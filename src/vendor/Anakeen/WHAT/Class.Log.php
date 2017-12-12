@@ -193,7 +193,6 @@ class Log
         $this->deb = $deb["sec"] + $deb["usec"] / 1000000;
         $this->tic = $this->deb;
         $this->ptext = $text; // prefix
-        
     }
     /**
      * log partial time
@@ -222,11 +221,17 @@ class Log
     
     public function push($string)
     {
-        if (is_int(strpos($this->getLogLevel() , "C"))) {
+        if (is_int(strpos($this->getLogLevel(), "C"))) {
             global $call_ind, $call_stack, $call_pre, $call_reqid;
-            if (!isset($call_ind)) $call_ind = 0;
-            if (!isset($call_pre)) $call_pre = "-";
-            if (!isset($call_reqid)) $call_reqid = rand(1, 100);
+            if (!isset($call_ind)) {
+                $call_ind = 0;
+            }
+            if (!isset($call_pre)) {
+                $call_pre = "-";
+            }
+            if (!isset($call_reqid)) {
+                $call_reqid = rand(1, 100);
+            }
             $this->callstack("($call_reqid) $call_pre : entering $string");
             $call_stack[$call_ind] = $string;
             $call_ind+= 1;
@@ -236,7 +241,7 @@ class Log
     
     public function pop()
     {
-        if (is_int(strpos($this->getLogLevel() , "C"))) {
+        if (is_int(strpos($this->getLogLevel(), "C"))) {
             global $call_ind, $call_stack, $call_pre, $call_reqid;
             $call_pre = substr($call_pre, 0, strlen($call_pre) - 1);
             $call_ind-= 1;
@@ -250,13 +255,17 @@ class Log
      * @param null $args unused
      * @param int $facility syslog level
      */
-    public function wlog($sta, $str, $args = NULL, $facility = LOG_LOCAL6)
+    public function wlog($sta, $str, $args = null, $facility = LOG_LOCAL6)
     {
         global $_SERVER;
         
-        if (!$str) return;
-        if (is_array($str)) $str = implode(", ", $str);
-        if ($sta == "S" || (is_int(strpos($this->getLogLevel() , $sta)))) {
+        if (!$str) {
+            return;
+        }
+        if (is_array($str)) {
+            $str = implode(", ", $str);
+        }
+        if ($sta == "S" || (is_int(strpos($this->getLogLevel(), $sta)))) {
             $addr = isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : '';
             $appf = "[{$sta}] Dynacase";
             $appf.= ($this->application != "" ? ":" . $this->application : "");
@@ -308,7 +317,7 @@ class Log
                         $pri = LOG_NOTICE;
                 }
                 if (empty($_SERVER['HTTP_HOST'])) {
-                    error_log(sprintf("%s LOG::$appf %s", date("d/m/Y H:i:s", time()) , $str));
+                    error_log(sprintf("%s LOG::$appf %s", date("d/m/Y H:i:s", time()), $str));
                 }
                 openlog("{$appf}", 0, $facility);
                 syslog($pri, "[{$addr}] " . $str);
@@ -316,11 +325,8 @@ class Log
                 
                 if ($sta == "E") {
                     error_log($str); // use apache syslog also
-                    
                 }
             }
         }
     }
 } // Class.Log
-
-?>

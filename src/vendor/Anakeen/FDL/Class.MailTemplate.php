@@ -8,6 +8,7 @@
  * Mail template document
  */
 namespace Dcp\Core;
+
 class MailTemplate extends \Dcp\Family\Document
 {
     /**
@@ -33,12 +34,12 @@ class MailTemplate extends \Dcp\Family\Document
 
     protected $notifySendMail = self::NOTIFY_SENDMAIL_AUTO;
     protected $stopIfNoRecip = false;
-    function preEdition()
+    public function preEdition()
     {
         global $action;
 
         if ($mailfamily = $this->getRawValue("tmail_family", getHttpVars("TMAIL_FAMILY"))) {
-            $action->parent->AddJsRef(htmlspecialchars("?app=FDL&action=FCKDOCATTR&famid=" . urlencode($mailfamily) , ENT_QUOTES));
+            $action->parent->AddJsRef(htmlspecialchars("?app=FDL&action=FCKDOCATTR&famid=" . urlencode($mailfamily), ENT_QUOTES));
         }
     }
     /**
@@ -52,22 +53,30 @@ class MailTemplate extends \Dcp\Family\Document
     {
         $tattrid = explode(":", $values);
         if (count($tattrid) == 1) { //no relation
-            if (!array_key_exists($tattrid[0], $doc)) return sprintf(_("Send mail error : Attribute %s not found.") , $tattrid[0]);
+            if (!array_key_exists($tattrid[0], $doc)) {
+                return sprintf(_("Send mail error : Attribute %s not found."), $tattrid[0]);
+            }
             return "";
         }
         $lattrid = array_pop($tattrid); // last attribute
         foreach ($tattrid as $v) {
-            if (!array_key_exists($v, $doc)) return sprintf(_("Send mail error : Relation to attribute %s not found. Incorrect relation key: %s") , $lattrid, $v);
+            if (!array_key_exists($v, $doc)) {
+                return sprintf(_("Send mail error : Relation to attribute %s not found. Incorrect relation key: %s"), $lattrid, $v);
+            }
             $docids = getLatestDocIds($this->dbaccess, array(
                 $doc[$v]
             ));
             if (!$docids) {
-                return sprintf(_("Send mail error : Relation to attribute %s not found. Relation key %s does'nt link to a document") , $lattrid, $v);
+                return sprintf(_("Send mail error : Relation to attribute %s not found. Relation key %s does'nt link to a document"), $lattrid, $v);
             }
             $doc = getTDoc($this->dbaccess, array_pop($docids));
-            if (!$doc) return sprintf(_("Send mail error : Relation to attribute %s not found. Relation key %s does'nt link to a document") , $lattrid, $v);
+            if (!$doc) {
+                return sprintf(_("Send mail error : Relation to attribute %s not found. Relation key %s does'nt link to a document"), $lattrid, $v);
+            }
         }
-        if (!array_key_exists($lattrid, $doc)) return sprintf(_("Send mail error : Attribute %s not found.") , $lattrid);
+        if (!array_key_exists($lattrid, $doc)) {
+            return sprintf(_("Send mail error : Attribute %s not found."), $lattrid);
+        }
         return "";
     }
 
@@ -80,7 +89,6 @@ class MailTemplate extends \Dcp\Family\Document
      */
     public function getMailMessage(\Doc & $doc, $keys = array())
     {
-
         global $action;
         $this->keys = $keys;
 
@@ -146,9 +154,9 @@ class MailTemplate extends \Dcp\Family\Document
                 case 'E': // text parameter
                     $aid = strtok($v["tmail_recip"], " ");
                     if (!$doc->getAttribute($aid)) {
-                        $action->log->error(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
-                        $doc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
-                        throw new \Dcp\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
+                        $action->log->error(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
+                        $doc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
+                        throw new \Dcp\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                     }
                     $mail = $doc->getFamilyParameterValue($aid);
                     break;
@@ -157,9 +165,9 @@ class MailTemplate extends \Dcp\Family\Document
                     if ($wdoc) {
                         $aid = strtok($v["tmail_recip"], " ");
                         if (!$wdoc->getAttribute($aid)) {
-                            $action->log->error(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
-                            $wdoc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
-                            throw new \Dcp\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
+                            $action->log->error(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
+                            $wdoc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
+                            throw new \Dcp\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                         }
                         $mail = $wdoc->getFamilyParameterValue($aid);
                     }
@@ -177,16 +185,15 @@ class MailTemplate extends \Dcp\Family\Document
                     }
                     if ($udoc) {
                         $aid = strtok($v["tmail_recip"], " ");
-                        if (!$udoc->getAttribute($aid) && !array_key_exists(strtolower($aid) , $udoc->getParamAttributes())) {
-                            $action->log->error(sprintf(_("Send mail error : Attribute %s not found") , $aid));
-                            $doc->addHistoryEntry(sprintf(_("Send mail error : Attribute %s not found") , $aid));
-                            throw new \Dcp\Exception(sprintf(_("Send mail error : Attribute %s not found") , $aid));
+                        if (!$udoc->getAttribute($aid) && !array_key_exists(strtolower($aid), $udoc->getParamAttributes())) {
+                            $action->log->error(sprintf(_("Send mail error : Attribute %s not found"), $aid));
+                            $doc->addHistoryEntry(sprintf(_("Send mail error : Attribute %s not found"), $aid));
+                            throw new \Dcp\Exception(sprintf(_("Send mail error : Attribute %s not found"), $aid));
                         }
                         if ($type == 'DE') {
                             $vdocid = $udoc->getFamilyParameterValue($aid);
                         } else {
                             $vdocid = $udoc->getRawValue($aid); // for array of users
-
                         }
                         $vdocid = str_replace('<BR>', "\n", $vdocid);
                         if (strpos($vdocid, "\n")) {
@@ -246,9 +253,9 @@ class MailTemplate extends \Dcp\Family\Document
                 case 'P':
                     $aid = strtok($v["tmail_recip"], " ");
                     if (!\Dcp\Core\ContextManager::getApplicationParam($aid)) {
-                        $action->log->error(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
-                        $doc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
-                        throw new \Dcp\Exception( sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
+                        $action->log->error(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
+                        $doc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
+                        throw new \Dcp\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                     }
                     $mail = \Dcp\Core\ContextManager::getApplicationParam($aid);
                     break;
@@ -266,13 +273,13 @@ class MailTemplate extends \Dcp\Family\Document
                      */
                     $recipientDoc = new_Doc($this->dbaccess, $recipDocId, true);
                     if (!is_object($recipientDoc) || !$recipientDoc->isAlive()) {
-                        $err = sprintf(_("Send mail error: recipient document '%s' does not exists.") , $recipDocId);
+                        $err = sprintf(_("Send mail error: recipient document '%s' does not exists."), $recipDocId);
                         $action->log->error($err);
                         $doc->addHistoryEntry($err);
                         throw new \Dcp\Exception($err);
                     }
                     if (!is_a($recipientDoc, 'IMailRecipient')) {
-                        $err = sprintf(_("Send mail error: recipient document '%s' does not implements IMailRecipient interface.") , $recipDocId);
+                        $err = sprintf(_("Send mail error: recipient document '%s' does not implements IMailRecipient interface."), $recipDocId);
                         $action->log->error($err);
                         $doc->addHistoryEntry($err);
                         throw new \Dcp\Exception($err);
@@ -280,25 +287,27 @@ class MailTemplate extends \Dcp\Family\Document
                     $mail = $recipientDoc->getMail();
                     break;
             }
-            if ($mail) $dest[$toccbcc][] = str_replace(array(
+            if ($mail) {
+                $dest[$toccbcc][] = str_replace(array(
                 "\n",
                 "\r"
-            ) , array(
+            ), array(
                 ",",
                 ""
-            ) , $mail);
+            ), $mail);
+            }
         }
         $subject = $this->generateMailInstance($doc, $this->getRawValue("tmail_subject"));
         $subject = str_replace(array(
             "\n",
             "\r",
             "<BR>"
-        ) , array(
+        ), array(
             " ",
             " ",
             ", "
-        ) , html_entity_decode($subject, ENT_COMPAT, "UTF-8"));
-        $pfout = $this->generateMailInstance($doc, $this->getRawValue("tmail_body") , $this->getAttribute("tmail_body"));
+        ), html_entity_decode($subject, ENT_COMPAT, "UTF-8"));
+        $pfout = $this->generateMailInstance($doc, $this->getRawValue("tmail_body"), $this->getAttribute("tmail_body"));
         // delete empty address
         $dest['to'] = array_filter($dest['to'], create_function('$v', 'return!preg_match("/^\s*$/", $v);'));
         $dest['cc'] = array_filter($dest['cc'], create_function('$v', 'return!preg_match("/^\s*$/", $v);'));
@@ -322,15 +331,17 @@ class MailTemplate extends \Dcp\Family\Document
         }
 
         if (trim($to . $cc . $bcc) == "") {
-            $action->log->info(sprintf(_("Send mail info : can't send mail %s: no sendee found") , $subject));
-            $doc->addHistoryEntry(sprintf(_("Send mail info : can't send mail %s: no sendee found") , $subject) ,  \DocHisto::NOTICE);
+            $action->log->info(sprintf(_("Send mail info : can't send mail %s: no sendee found"), $subject));
+            $doc->addHistoryEntry(sprintf(_("Send mail info : can't send mail %s: no sendee found"), $subject), \DocHisto::NOTICE);
             if ($this->stopIfNoRecip) {
                 return null;
             }
         } //nobody to send data
         if ($this->sendercopy && \Dcp\Core\ContextManager::getApplicationParam("FDL_BCC") == "yes") {
             $umail = getMailAddr($this->userid);
-            if ($umail != "") $bcc.= (trim($bcc) == "" ? "" : ",") . $umail;
+            if ($umail != "") {
+                $bcc.= (trim($bcc) == "" ? "" : ",") . $umail;
+            }
         }
 
         $body = new \Dcp\Mail\Body($pfout, 'text/html');
@@ -339,13 +350,13 @@ class MailTemplate extends \Dcp\Family\Document
         // add inserted image
         foreach ($this->ifiles as $k => $v) {
             if (file_exists($v)) {
-                $message->addBodyRelatedAttachment(new \Dcp\Mail\RelatedAttachment($v, $k, sprintf("image/%s", fileextension($v)) , $k));
+                $message->addBodyRelatedAttachment(new \Dcp\Mail\RelatedAttachment($v, $k, sprintf("image/%s", fileextension($v)), $k));
             }
         }
         //send attachment
         $ta = $this->getMultipleRawValues("tmail_attach");
         foreach ($ta as $k => $v) {
-            $err = $this->checkAttributeExistsInRelation(strtok($v, " ") , getLatestTDoc($this->dbaccess, $doc->initid));
+            $err = $this->checkAttributeExistsInRelation(strtok($v, " "), getLatestTDoc($this->dbaccess, $doc->initid));
             if ($err) {
                 $action->log->error($err);
                 $doc->addHistoryEntry($err);
@@ -385,8 +396,8 @@ class MailTemplate extends \Dcp\Family\Document
     {
         global $action;
 
-        include_once ("FDL/sendmail.php");
-        include_once ("FDL/Lib.Vault.php");
+        include_once("FDL/sendmail.php");
+        include_once("FDL/Lib.Vault.php");
         $err = '';
         if (!$doc->isAffected()) {
             return $err;
@@ -416,13 +427,13 @@ class MailTemplate extends \Dcp\Family\Document
         }
         $recip = "";
         if ($to) {
-            $recip.= sprintf(_("sendmailto %s") , $to);
+            $recip.= sprintf(_("sendmailto %s"), $to);
         }
         if ($cc) {
-            $recip.= ' ' . sprintf(_("sendmailcc %s") , $cc);
+            $recip.= ' ' . sprintf(_("sendmailcc %s"), $cc);
         }
         if ($bcc) {
-            $recip.= ' ' . sprintf(_("sendmailbcc %s") , $bcc);
+            $recip.= ' ' . sprintf(_("sendmailbcc %s"), $bcc);
         }
 
         if (self::NOTIFY_SENDMAIL_AUTO === $this->notifySendMail) {
@@ -435,16 +446,16 @@ class MailTemplate extends \Dcp\Family\Document
         }
 
         if ($err == "") {
-            $doc->addHistoryEntry(sprintf(_("send mail %s with template %s") , $recip, $this->title) , \DocHisto::INFO, "SENDMAIL");
-            $action->log->info(sprintf(_("Mail %s sent to %s") , $subject, $recip));
+            $doc->addHistoryEntry(sprintf(_("send mail %s with template %s"), $recip, $this->title), \DocHisto::INFO, "SENDMAIL");
+            $action->log->info(sprintf(_("Mail %s sent to %s"), $subject, $recip));
             if (self::NOTIFY_SENDMAIL_ALWAYS === $notifySendMail) {
-                addWarningMsg(sprintf(_("send mail %s") , $recip));
+                addWarningMsg(sprintf(_("send mail %s"), $recip));
             }
         } else {
-            $doc->addHistoryEntry(sprintf(_("cannot send mail %s with template %s : %s") , $recip, $this->title, $err) , \DocHisto::ERROR);
-            $action->log->error(sprintf(_("cannot send mail %s to %s : %s") , $subject, $recip, $err));
+            $doc->addHistoryEntry(sprintf(_("cannot send mail %s with template %s : %s"), $recip, $this->title, $err), \DocHisto::ERROR);
+            $action->log->error(sprintf(_("cannot send mail %s to %s : %s"), $subject, $recip, $err));
             if (self::NOTIFY_SENDMAIL_ALWAYS === $notifySendMail || self::NOTIFY_SENDMAIL_ERRORS_ONLY === $notifySendMail) {
-                addWarningMsg(sprintf(_("cannot send mail %s") , $err));
+                addWarningMsg(sprintf(_("cannot send mail %s"), $err));
             }
         }
         return $err;
@@ -482,16 +493,16 @@ class MailTemplate extends \Dcp\Family\Document
         $ulink = ($this->getRawValue("tmail_ulink") == "yes");
         /* Expand layout's [TAGS] */
         $doc->viewdefaultcard("mail", $ulink, false, true);
-        foreach ($this->keys as $k => $v) $doc->lay->set($k, $v);
+        foreach ($this->keys as $k => $v) {
+            $doc->lay->set($k, $v);
+        }
         $body = $doc->lay->gen();
         $body = preg_replace_callback(array(
             "/SRC=\"([^\"]+)\"/",
             "/src=\"([^\"]+)\"/"
-        ) , function ($matches)
-        {
+        ), function ($matches) {
             return $this->srcfile($matches[1]);
-        }
-            , $body);
+        }, $body);
         /* Expand remaining HTML constructions */
         if ($oattr !== false && $oattr->type == 'htmltext') {
             $body = $doc->getHtmlValue($oattr, $body, "mail", $ulink);
@@ -516,10 +527,10 @@ class MailTemplate extends \Dcp\Family\Document
             }
             foreach ($dests[$td] as & $aDest) {
                 foreach ($substituteMails as $aSumail) {
-                    $suName = str_replace('"', '', sprintf(_("%s (as substitute)") , $aSumail["suname"]));
-                    $aDest = str_replace(sprintf('<%s>', $aSumail["inmail"]) , sprintf('<%s>, "%s" <%s>', $aSumail["inmail"], $suName, $aSumail["sumail"]) , $aDest);
+                    $suName = str_replace('"', '', sprintf(_("%s (as substitute)"), $aSumail["suname"]));
+                    $aDest = str_replace(sprintf('<%s>', $aSumail["inmail"]), sprintf('<%s>, "%s" <%s>', $aSumail["inmail"], $suName, $aSumail["sumail"]), $aDest);
 
-                    $aDest = preg_replace(sprintf('/(^|,|\s)(%s)/', preg_quote($aSumail["inmail"], "/")) , sprintf('\1\2, "%s" <%s>', $suName, $aSumail["sumail"]) , $aDest);
+                    $aDest = preg_replace(sprintf('/(^|,|\s)(%s)/', preg_quote($aSumail["inmail"], "/")), sprintf('\1\2, "%s" <%s>', $suName, $aSumail["sumail"]), $aDest);
                 }
             }
             unset($aDest);
@@ -529,7 +540,9 @@ class MailTemplate extends \Dcp\Family\Document
     private function getUniqId()
     {
         static $unid = 0;
-        if (!$unid) $unid = date('Ymdhis');
+        if (!$unid) {
+            $unid = date('Ymdhis');
+        }
         return $unid;
     }
     private function srcfile($src)
@@ -542,7 +555,9 @@ class MailTemplate extends \Dcp\Family\Document
             "bmp"
         );
 
-        if (substr($src, 0, 3) == "cid") return "src=\"$src\"";
+        if (substr($src, 0, 3) == "cid") {
+            return "src=\"$src\"";
+        }
         if (substr($src, 0, 4) == "http") {
             $chopped_src = '';
             // Detect HTTP URLs pointing to myself
@@ -554,7 +569,7 @@ class MailTemplate extends \Dcp\Family\Document
                 if (strlen($url) <= 0) {
                     continue;
                 }
-                if (strcmp(substr($src, 0, strlen($url)) , $url) == 0) {
+                if (strcmp(substr($src, 0, strlen($url)), $url) == 0) {
                     // Chop the URL base part, and leave only the args/vars
                     $chopped_src = substr($src, strlen($url));
                     break;
@@ -577,7 +592,7 @@ class MailTemplate extends \Dcp\Family\Document
             $cid = "cid" . $this->getUniqId() . $reg[1] . '.' . fileextension($info->path);
         }
 
-        if (!in_array(strtolower(fileextension($src)) , $vext)) {
+        if (!in_array(strtolower(fileextension($src)), $vext)) {
             return "";
         }
 

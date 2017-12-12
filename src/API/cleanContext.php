@@ -11,8 +11,8 @@
 /**
  */
 // remove all tempory doc and orphelines values
-include_once ("FDL/Class.Doc.php");
-include_once ("WHAT/Class.SessionUtils.php");
+include_once("FDL/Class.Doc.php");
+include_once("WHAT/Class.SessionUtils.php");
 global $action;
 
 $usage = new ApiUsage();
@@ -87,7 +87,7 @@ function getSqlFiles($prefix)
         if ($file === '.' || $file === '..') {
             continue;
         }
-        if (preg_match(sprintf('/^%s_.*\.sql$/', preg_quote($prefix)) , $file) !== 1) {
+        if (preg_match(sprintf('/^%s_.*\.sql$/', preg_quote($prefix)), $file) !== 1) {
             continue;
         }
         $files[] = implode(DIRECTORY_SEPARATOR, array(
@@ -95,8 +95,7 @@ function getSqlFiles($prefix)
             $file
         ));
     }
-    uasort($files, function ($a, $b)
-    {
+    uasort($files, function ($a, $b) {
         return strcmp($a, $b);
     });
     return $files;
@@ -110,11 +109,11 @@ function execSqlFile(Action & $action, $sqlFile)
 PGSERVICE=%s psql --set ON_ERROR_STOP=1 -c '\timing' -a -f %s 2>&1 | logger -s -t %s
 exit ${PIPESTATUS[0]}
 EOF;
-    $script = sprintf($script, escapeshellarg($pgService) , escapeshellarg($sqlFile) , escapeshellarg("cleanContext(" . $action->GetParam("CORE_CLIENT") . ")"));
+    $script = sprintf($script, escapeshellarg($pgService), escapeshellarg($sqlFile), escapeshellarg("cleanContext(" . $action->GetParam("CORE_CLIENT") . ")"));
     $tmpScript = mkTmpScript($script, 'basicDbClean');
     $out = array();
     $ret = 0;
-    exec(sprintf("bash %s 2>&1", escapeshellarg($tmpScript)) , $out, $ret);
+    exec(sprintf("bash %s 2>&1", escapeshellarg($tmpScript)), $out, $ret);
     if ($ret !== 0) {
         unlink($tmpScript);
         throw new Exception(sprintf("Error executing SQL file '%s': %s", $sqlFile, join("\n", $out)));
@@ -131,8 +130,7 @@ function execSqlFiles(Action & $action, $prefix)
             printf("Executing '%s': ", $sqlFile);
             execSqlFile($action, $sqlFile);
             printf("[OK]\n");
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             printf("[ERROR]\n%s\n", $e->getMessage());
             $errors[] = $e->getMessage();
         }
@@ -205,13 +203,13 @@ function cleanOldFiles($dir, $maxAge)
     }
     /* We use find & xargs shell commands to do the cleaning. */
     /* First pass: remove expired files */
-    $cmd = sprintf('find %s -type f -mtime +%s -print0 | xargs -0 --no-run-if-empty rm', escapeshellarg($dir) , $maxAge);
+    $cmd = sprintf('find %s -type f -mtime +%s -print0 | xargs -0 --no-run-if-empty rm', escapeshellarg($dir), $maxAge);
     exec($cmd, $output, $ret);
     if ($ret != 0) {
         return sprintf("Error: removal of old files from '%s' returned with error: %s", $dir, join("\n", $output));
     }
     /* Second pass: remove expired empty directories */
-    $cmd = sprintf('find %s -type d -empty -mtime +%s -print0 | xargs -0 --no-run-if-empty rmdir', escapeshellarg($dir) , $maxAge);
+    $cmd = sprintf('find %s -type d -empty -mtime +%s -print0 | xargs -0 --no-run-if-empty rmdir', escapeshellarg($dir), $maxAge);
     exec($cmd, $output, $ret);
     if ($ret != 0) {
         return sprintf("Error: removal of empty temporary directories from '%s' returned with error: %s", $dir, join("\n", $output));
@@ -246,8 +244,7 @@ EOF;
     try {
         $sql = sprintf($sql, $days);
         simpleQuery('', $sql, $res, true, true, true);
-    }
-    catch(\Exception $e) {
+    } catch (\Exception $e) {
         printf("Error: removal of expired temporary documents returned with error: %s\n", $e->getMessage());
     }
 }

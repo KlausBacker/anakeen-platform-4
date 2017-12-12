@@ -557,8 +557,7 @@ function controlTdoc(&$tdoc, $aclname)
         $sql = sprintf("select getaperm('%s',%d) as uperm", $_memberOf, $tdoc['profid']);
         DbManager::query($sql, $uperm, true, true);
 
-            $tdoc["uperm"] = $uperm;
-
+        $tdoc["uperm"] = $uperm;
     }
     $err = $_ODocCtrol->ControlUp($tdoc["uperm"], $aclname);
 

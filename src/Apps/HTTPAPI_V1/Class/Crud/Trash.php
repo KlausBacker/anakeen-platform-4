@@ -8,7 +8,8 @@ namespace Dcp\HttpApi\V1\Crud;
 
 use Dcp\HttpApi\V1\DocManager\DocManager as DocManager;
 
-class Trash extends Document {
+class Trash extends Document
+{
 
     //region CRUD part
     /**
@@ -16,7 +17,8 @@ class Trash extends Document {
      * @throws Exception
      * @return mixed
      */
-    public function create() {
+    public function create()
+    {
         $exception = new Exception("CRUD0103", "create");
         $exception->setHttpStatus("405", "You cannot create a document in the trash");
         throw $exception;
@@ -28,7 +30,8 @@ class Trash extends Document {
      * @throws Exception
      * @return mixed
      */
-    public function update($resourceId) {
+    public function update($resourceId)
+    {
         if (isset($this->contentParameters["document"]["properties"]["status"]) &&
             $this->contentParameters["document"]["properties"]["status"] === "alive") {
             $this->setDocument($resourceId);
@@ -54,7 +57,8 @@ class Trash extends Document {
      * @throws Exception
      * @return mixed
      */
-    public function delete($resourceId) {
+    public function delete($resourceId)
+    {
         $exception = new Exception("CRUD0103", "delete");
         $exception->setHttpStatus("500", "Not yet implemented");
         throw $exception;
@@ -120,4 +124,4 @@ class Trash extends Document {
         }
         return $dataDocument;
     }
-} 
+}

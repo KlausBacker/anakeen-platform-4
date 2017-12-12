@@ -133,7 +133,9 @@ function getIconMimeFile($sysmime)
  */
 function getSysMimeFile($f, $fn = "")
 {
-    if (!file_exists($f)) return false;
+    if (!file_exists($f)) {
+        return false;
+    }
     
     $ret = getMimeFile($fn, 'sys');
     if ($ret !== false) {
@@ -144,54 +146,107 @@ function getSysMimeFile($f, $fn = "")
     $txt = getTextMimeFile($f);
     $sys = strtok($sys, " ;\n\t"); // only first part
     // correct errors of file function
-    if (preg_match('/Makefile/', $fn)) return 'text/x-makefile';
+    if (preg_match('/Makefile/', $fn)) {
+        return 'text/x-makefile';
+    }
     if (preg_match('/ASCII C\+\+/', $txt)) {
-        if (preg_match('/\.h$/', $fn)) return 'text/x-c-header';
+        if (preg_match('/\.h$/', $fn)) {
+            return 'text/x-c-header';
+        }
         return 'text/x-c++';
     }
-    if (preg_match('/PHP script/', $txt)) return 'text/x-php';
+    if (preg_match('/PHP script/', $txt)) {
+        return 'text/x-php';
+    }
     // open office archive
     if (preg_match('/zip$/', $sys) || (preg_match('/octet-stream$/', $sys))) {
-        
         if (preg_match('/OpenOffice/', $txt)) {
-            if (preg_match('/\.sxw$/', $fn)) return 'application/vnd.sun.xml.writer';
-            if (preg_match('/\.sxc$/', $fn)) return 'application/vnd.sun.xml.calc';
-            if (preg_match('/\.sxi$/', $fn)) return 'application/vnd.sun.xml.impress';
-            if (preg_match('/\.sxd$/', $fn)) return 'application/vnd.sun.xml.draw';
-            if (preg_match('/\.sxg$/', $fn)) return 'application/vnd.sun.xml.writer.global';
+            if (preg_match('/\.sxw$/', $fn)) {
+                return 'application/vnd.sun.xml.writer';
+            }
+            if (preg_match('/\.sxc$/', $fn)) {
+                return 'application/vnd.sun.xml.calc';
+            }
+            if (preg_match('/\.sxi$/', $fn)) {
+                return 'application/vnd.sun.xml.impress';
+            }
+            if (preg_match('/\.sxd$/', $fn)) {
+                return 'application/vnd.sun.xml.draw';
+            }
+            if (preg_match('/\.sxg$/', $fn)) {
+                return 'application/vnd.sun.xml.writer.global';
+            }
             return 'application/vnd.sun.xml.writer';
         }
         if (preg_match('/OpenDocument/', $txt)) {
-            if (preg_match('/\.odp$/', $fn)) return 'application/vnd.oasis.opendocument.presentation';
-            if (preg_match('/\.odt$/', $fn)) return 'application/vnd.oasis.opendocument.text';
-            if (preg_match('/\.ods$/', $fn)) return 'application/vnd.oasis.opendocument.spreadsheet';
-            if (preg_match('/\.odg$/', $fn)) return 'application/vnd.oasis.opendocument.graphics';
+            if (preg_match('/\.odp$/', $fn)) {
+                return 'application/vnd.oasis.opendocument.presentation';
+            }
+            if (preg_match('/\.odt$/', $fn)) {
+                return 'application/vnd.oasis.opendocument.text';
+            }
+            if (preg_match('/\.ods$/', $fn)) {
+                return 'application/vnd.oasis.opendocument.spreadsheet';
+            }
+            if (preg_match('/\.odg$/', $fn)) {
+                return 'application/vnd.oasis.opendocument.graphics';
+            }
             return 'application/vnd.oasis.opendocument.text';
         }
         
-        if (preg_match('/\.sxw$/', $fn)) return 'application/vnd.sun.xml.writer';
-        if (preg_match('/\.sxc$/', $fn)) return 'application/vnd.sun.xml.calc';
-        if (preg_match('/\.sxi$/', $fn)) return 'application/vnd.sun.xml.impress';
-        if (preg_match('/\.sxd$/', $fn)) return 'application/vnd.sun.xml.draw';
-        if (preg_match('/\.sxg$/', $fn)) return 'application/vnd.sun.xml.writer.global';
-        if (preg_match('/\.odp$/', $fn)) return 'application/vnd.oasis.opendocument.presentation';
-        if (preg_match('/\.odt$/', $fn)) return 'application/vnd.oasis.opendocument.text';
-        if (preg_match('/\.ods$/', $fn)) return 'application/vnd.oasis.opendocument.spreadsheet';
-        if (preg_match('/\.odg$/', $fn)) return 'application/vnd.oasis.opendocument.graphics';
+        if (preg_match('/\.sxw$/', $fn)) {
+            return 'application/vnd.sun.xml.writer';
+        }
+        if (preg_match('/\.sxc$/', $fn)) {
+            return 'application/vnd.sun.xml.calc';
+        }
+        if (preg_match('/\.sxi$/', $fn)) {
+            return 'application/vnd.sun.xml.impress';
+        }
+        if (preg_match('/\.sxd$/', $fn)) {
+            return 'application/vnd.sun.xml.draw';
+        }
+        if (preg_match('/\.sxg$/', $fn)) {
+            return 'application/vnd.sun.xml.writer.global';
+        }
+        if (preg_match('/\.odp$/', $fn)) {
+            return 'application/vnd.oasis.opendocument.presentation';
+        }
+        if (preg_match('/\.odt$/', $fn)) {
+            return 'application/vnd.oasis.opendocument.text';
+        }
+        if (preg_match('/\.ods$/', $fn)) {
+            return 'application/vnd.oasis.opendocument.spreadsheet';
+        }
+        if (preg_match('/\.odg$/', $fn)) {
+            return 'application/vnd.oasis.opendocument.graphics';
+        }
     }
     if (!$sys) {
         // try with text only
         if ($txt) {
-            if (preg_match('/^XML/', $txt)) return 'text/xml';
+            if (preg_match('/^XML/', $txt)) {
+                return 'text/xml';
+            }
         }
         
-        if (preg_match('/\.xls$/', $fn)) return 'application/vnd.ms-excel';
-        if (preg_match('/\.doc$/', $fn)) return 'application/msword';
-        if (preg_match('/\.ppt$/', $fn)) return 'application/vnd.ms-powerpoint';
+        if (preg_match('/\.xls$/', $fn)) {
+            return 'application/vnd.ms-excel';
+        }
+        if (preg_match('/\.doc$/', $fn)) {
+            return 'application/msword';
+        }
+        if (preg_match('/\.ppt$/', $fn)) {
+            return 'application/vnd.ms-powerpoint';
+        }
     }
     if ($sys == 'application/msword') { // for old sys mime info
-        if (preg_match('/\.xls$/', $fn)) return 'application/vnd.ms-excel';
-        if (preg_match('/\.ppt$/', $fn)) return 'application/vnd.ms-powerpoint';
+        if (preg_match('/\.xls$/', $fn)) {
+            return 'application/vnd.ms-excel';
+        }
+        if (preg_match('/\.ppt$/', $fn)) {
+            return 'application/vnd.ms-powerpoint';
+        }
     }
     
     return strtok($sys, " ;\n\t");
@@ -205,12 +260,19 @@ function getTextMimeFile($f, $fn = '')
     
     $txt = trim(shell_exec(sprintf("file -b %s", escapeshellarg($f))));
     if ($txt == 'data') {
-        if (preg_match('/\.ods$/', $f)) $txt = 'OpenDocument Spreadsheet';
-        else if (preg_match('/\.odt$/', $f)) $txt = 'OpenDocument Text';
-        else if (preg_match('/\.odp$/', $f)) $txt = 'OpenDocument Presentation';
-        else if (preg_match('/\.odg$/', $f)) $txt = 'OpenDocument Drawing';
+        if (preg_match('/\.ods$/', $f)) {
+            $txt = 'OpenDocument Spreadsheet';
+        } elseif (preg_match('/\.odt$/', $f)) {
+            $txt = 'OpenDocument Text';
+        } elseif (preg_match('/\.odp$/', $f)) {
+            $txt = 'OpenDocument Presentation';
+        } elseif (preg_match('/\.odg$/', $f)) {
+            $txt = 'OpenDocument Drawing';
+        }
     }
-    if (!$txt) return " ";
+    if (!$txt) {
+        return " ";
+    }
     return $txt;
 }
 /**
@@ -219,7 +281,7 @@ function getTextMimeFile($f, $fn = '')
  */
 function getExtension($smime)
 {
-    include_once ("MimeExtension.php");
+    include_once("MimeExtension.php");
     $exts = getExtensions();
     if (!empty($exts[$smime])) {
         return strtok($exts[$smime], " \n\t");
@@ -232,7 +294,9 @@ function getExtension($smime)
 function getFileExtension($filename)
 {
     $ext = false;
-    if ($filename && strrpos($filename, '.') > 0) $ext = substr($filename, strrpos($filename, '.') + 1);
+    if ($filename && strrpos($filename, '.') > 0) {
+        $ext = substr($filename, strrpos($filename, '.') + 1);
+    }
     return $ext;
 }
 /**
@@ -259,7 +323,7 @@ function getMimeFile($filename, $type = 'sys')
  */
 function loadUserMimeConf()
 {
-    include_once ('WHAT/Lib.Prefix.php');
+    include_once('WHAT/Lib.Prefix.php');
     
     $rules = array();
     
@@ -293,7 +357,7 @@ function loadUserMimeConf()
  */
 function loadMimeConf()
 {
-    include_once ('WHAT/Lib.Prefix.php');
+    include_once('WHAT/Lib.Prefix.php');
     
     $rules = array();
     
@@ -330,4 +394,3 @@ function getPdfNumberOfPages($file)
     }
     return $nbpages;
 }
-?>

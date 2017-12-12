@@ -10,7 +10,7 @@ class DebugTrace
 {
     private static $debug = array();
     
-    static public function addTrace($message)
+    public static function addTrace($message)
     {
         static $previous;
         static $start;
@@ -23,10 +23,10 @@ class DebugTrace
             $start = $mb;
         }
         $previous = $mb;
-        self::$debug[] = sprintf("%.03fms %.03fms: %s;", $delay, ($mb - $start) , $message);
+        self::$debug[] = sprintf("%.03fms %.03fms: %s;", $delay, ($mb - $start), $message);
     }
     
-    static public function getTraces()
+    public static function getTraces()
     {
         return self::$debug;
     }

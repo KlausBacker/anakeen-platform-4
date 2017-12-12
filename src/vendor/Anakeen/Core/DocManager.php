@@ -8,7 +8,7 @@ class DocManager
     /**
      * @var \Dcp\Core\DocManager\MemoryCache $localCache
      */
-    static protected $localCache = null;
+    protected static $localCache = null;
     protected static $firstgetIdFromName=true;
     protected static $firstgetNameFromId=true;
     protected static $familyNames=null;
@@ -22,7 +22,7 @@ class DocManager
      * @api Get document object from identifier
      * @return \Doc
      */
-    static public function getDocument($documentIdentifier, $latest = true, $useCache = true)
+    public static function getDocument($documentIdentifier, $latest = true, $useCache = true)
     {
         $id = self::getIdentifier($documentIdentifier, $latest);
 
@@ -39,7 +39,7 @@ class DocManager
             if ($fromid > 0) {
                 self::requireFamilyClass($fromid);
                 $classname = "\\Doc$fromid";
-            } else if ($fromid == - 1) {
+            } elseif ($fromid == - 1) {
                 $classname = \DocFam::class;
             }
             if ($classname) {
@@ -62,7 +62,7 @@ class DocManager
      * @api Get document object from identifier
      * @return \DocFam return null if id not match a family identifier
      */
-    static public function getFamily($familyIdentifier, $useCache = true)
+    public static function getFamily($familyIdentifier, $useCache = true)
     {
         $id = self::getFamilyIdFromName($familyIdentifier);
 
@@ -77,7 +77,7 @@ class DocManager
                 }
             }
 
-            $doc = new \DocFam("",  $id);
+            $doc = new \DocFam("", $id);
 
             if ($useCache && $doc->initid) {
                 self::cache()->addDocument($doc);
@@ -95,20 +95,26 @@ class DocManager
      * @throws Exception
      * @return int|null identifier relative to latest revision
      */
-    static protected function getLatestDocumentId($initid)
+    protected static function getLatestDocumentId($initid)
     {
         if (!is_numeric($initid)) {
             throw new Exception("APIDM0100", print_r($initid, true));
         }
         // first more quick if alive
-        DbManager::query( sprintf("select id from docread where initid='%d' and locked != -1", $initid) , $id, true, true);
-        if ($id > 0) return intval($id);
+        DbManager::query(sprintf("select id from docread where initid='%d' and locked != -1", $initid), $id, true, true);
+        if ($id > 0) {
+            return intval($id);
+        }
         // second for zombie document
-        DbManager::query( sprintf("select id from docread where initid='%d' order by id desc limit 1", $initid) , $id, true, true);
-        if ($id > 0) return intval($id);
+        DbManager::query(sprintf("select id from docread where initid='%d' order by id desc limit 1", $initid), $id, true, true);
+        if ($id > 0) {
+            return intval($id);
+        }
         // it is not really on initid
-        DbManager::query( sprintf("select id from docread where initid=(select initid from docread where id=%d) and locked != -1", $initid) , $id, true, true);
-        if ($id > 0) return intval($id);
+        DbManager::query(sprintf("select id from docread where initid=(select initid from docread where id=%d) and locked != -1", $initid), $id, true, true);
+        if ($id > 0) {
+            return intval($id);
+        }
         return null;
     }
     /**
@@ -119,11 +125,11 @@ class DocManager
      * @throws Exception
      * @return int|null initial document identifier
      */
-    static public function getInitIdFromIdOrName($name)
+    public static function getInitIdFromIdOrName($name)
     {
         $id = $name;
         if (!is_numeric($name)) {
-           return static::getInitIdFromName($name);
+            return static::getInitIdFromName($name);
         } else {
             DbManager::query(sprintf("select initid from docread where id='%d' limit 1;", $id), $initid, true, true);
             if ($id > 0) {
@@ -142,12 +148,12 @@ class DocManager
      * @throws Exception
      * @return int|null initial document identifier
      */
-    static public function getInitIdFromName($name)
+    public static function getInitIdFromName($name)
     {
         if (is_numeric($name)) {
             return null;
         }
-        DbManager::query( sprintf("select initid from docread where name='%s' limit 1;", pg_escape_string($name)) , $initid, true, true);
+        DbManager::query(sprintf("select initid from docread where name='%s' limit 1;", pg_escape_string($name)), $initid, true, true);
         if ($initid) {
             return intval($initid);
         }
@@ -163,7 +169,7 @@ class DocManager
      * @throws Exception
      * @return int|null identifier relative to latest revision
      */
-    static public function getRevisedDocumentId($initid, $revision)
+    public static function getRevisedDocumentId($initid, $revision)
     {
         if (!is_numeric($initid)) {
             $id = static::getIdFromName($initid);
@@ -175,21 +181,29 @@ class DocManager
         }
         if (is_numeric($revision) && $revision >= 0) {
             // first more quick if alive
-            DbManager::query( sprintf("select id from docread where initid='%d' and revision = %d", $initid, $revision) , $id, true, true);
+            DbManager::query(sprintf("select id from docread where initid='%d' and revision = %d", $initid, $revision), $id, true, true);
 
-            if ($id > 0) return intval($id);
+            if ($id > 0) {
+                return intval($id);
+            }
             // it is not really on initid
-            DbManager::query( sprintf("select id from docread where initid=(select initid from docread where id=%d) and revision = %d", $initid, $revision) , $id, true, true);
+            DbManager::query(sprintf("select id from docread where initid=(select initid from docread where id=%d) and revision = %d", $initid, $revision), $id, true, true);
 
-            if ($id > 0) return intval($id);
+            if ($id > 0) {
+                return intval($id);
+            }
         } else {
             if (preg_match('/^state:(.+)$/', $revision, $regStates)) {
-                DbManager::query( sprintf("select id from docread where initid='%d' and state = '%s' and locked = -1 order by id desc", $initid, pg_escape_string($regStates[1])) , $id, true, true);
-                if ($id > 0) return intval($id);
+                DbManager::query(sprintf("select id from docread where initid='%d' and state = '%s' and locked = -1 order by id desc", $initid, pg_escape_string($regStates[1])), $id, true, true);
+                if ($id > 0) {
+                    return intval($id);
+                }
                 // it is not really on initid
-                DbManager::query( sprintf("select id from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc", $initid, pg_escape_string($regStates[1])) , $id, true, true);
+                DbManager::query(sprintf("select id from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc", $initid, pg_escape_string($regStates[1])), $id, true, true);
 
-                if ($id > 0) return intval($id);
+                if ($id > 0) {
+                    return intval($id);
+                }
             }
         }
         return null;
@@ -202,9 +216,8 @@ class DocManager
      * @throws Exception
      * @return \Doc
      */
-    static public function initializeDocument($familyIdentifier)
+    public static function initializeDocument($familyIdentifier)
     {
-
         $famId = self::getFamilyIdFromName($familyIdentifier);
 
         if (empty($famId)) {
@@ -244,7 +257,7 @@ class DocManager
             throw new Exception("APIDM0102", $familyId);
         }
         $classFilePath = sprintf("%s/%s/Class.Doc%d.php", DEFAULT_PUBDIR, Settings::DocumentGenDirectory, $familyId);
-        require_once ($classFilePath);
+        require_once($classFilePath);
     }
     /**
      * Create document object
@@ -256,7 +269,7 @@ class DocManager
      * @throws Exception
      * @return \Doc
      */
-    static public function createDocument($familyIdentifier, $control = true, $useDefaultValues = true)
+    public static function createDocument($familyIdentifier, $control = true, $useDefaultValues = true)
     {
         $doc = self::initializeDocument($familyIdentifier);
         /**
@@ -289,7 +302,7 @@ class DocManager
      * @param bool $useDefaultValues
      * @return \Doc
      */
-    static public function createTemporaryDocument($familyIdentifier, $useDefaultValues = true)
+    public static function createTemporaryDocument($familyIdentifier, $useDefaultValues = true)
     {
         $doc = self::initializeDocument($familyIdentifier);
         $doc->doctype = 'T';
@@ -312,15 +325,18 @@ class DocManager
      * @api Get indexed array with property values and attribute values
      * @return string[] indexed properties and attributes values
      */
-    static public function getRawDocument($documentIdentifier, $latest = true)
+    public static function getRawDocument($documentIdentifier, $latest = true)
     {
-
         $id = self::getIdentifier($documentIdentifier, $latest);
         if ($id > 0) {
-            $fromid = self::getFromId( $id);
-            if ($fromid > 0) $table = "doc$fromid";
-            else if ($fromid == - 1) $table = "docfam";
-            else return []; // no document can be found
+            $fromid = self::getFromId($id);
+            if ($fromid > 0) {
+                $table = "doc$fromid";
+            } elseif ($fromid == - 1) {
+                $table = "docfam";
+            } else {
+                return [];
+            } // no document can be found
 
             $sql = sprintf("select * from only \"%s\" where id=%d", $table, $id);
 
@@ -338,9 +354,8 @@ class DocManager
      * @throws Exception APIDM0104, APIDM0105
      * @return \Doc
      */
-    static public function getDocumentFromRawDocument(array $rawDocument)
+    public static function getDocumentFromRawDocument(array $rawDocument)
     {
-
         if (empty($rawDocument["id"]) || !self::getIdentifier($rawDocument["id"], false)) {
             throw new Exception("APIDM0104", print_r($rawDocument, true));
         }
@@ -368,13 +383,12 @@ class DocManager
      * @param bool $latest
      * @return string|null
      */
-    static public function getTitle($documentIdentifier, $latest = true)
+    public static function getTitle($documentIdentifier, $latest = true)
     {
-
         $id = self::getIdentifier($documentIdentifier, $latest);
         if ($id > 0) {
             $sql = sprintf("select title from docread where id=%d", $id);
-            DbManager::query( $sql, $result, true, true);
+            DbManager::query($sql, $result, true, true);
 
             return $result;
         }
@@ -392,7 +406,7 @@ class DocManager
      * @param array $returnProperties list properties to return, if empty return all properties.
      * @return string[] indexed array of properties
      */
-    static public function getDocumentProperties($documentIdentifier, array $returnProperties, $latest = true)
+    public static function getDocumentProperties($documentIdentifier, array $returnProperties, $latest = true)
     {
         $id = self::getIdentifier($documentIdentifier, $latest);
         if ($id > 0) {
@@ -403,8 +417,8 @@ class DocManager
             foreach ($returnProperties as $rProp) {
                 $sqlSelect[] = sprintf('"%s"', pg_escape_string($rProp));
             }
-            $sql = sprintf("select %s from docread where id=%d", implode(',', $sqlSelect) , $id);
-            DbManager::query( $sql, $result, false, true);
+            $sql = sprintf("select %s from docread where id=%d", implode(',', $sqlSelect), $id);
+            DbManager::query($sql, $result, false, true);
 
             return $result;
         }
@@ -422,7 +436,7 @@ class DocManager
      * @param bool $useCache if true use cache object if exists
      * @return string the value
      */
-    static public function getRawValue($documentIdentifier, $dataIdentifier, $latest = true, $useCache = true)
+    public static function getRawValue($documentIdentifier, $dataIdentifier, $latest = true, $useCache = true)
     {
         $id = self::getIdentifier($documentIdentifier, $latest);
         if ($id > 0) {
@@ -436,8 +450,8 @@ class DocManager
             //$sql=sprintf("select avalues->'%s' from docread where id=%d", pg_escape_string($dataIdentifier), $id); // best perfo but cannot distinct null values and id not exists
             $fromid = self::getFromId($id);
             if ($fromid > 0) {
-                $sql = sprintf("select %s from doc%d where id=%d", pg_escape_string($dataIdentifier) , $fromid, $id);
-                DbManager::query( $sql, $result, true, true);
+                $sql = sprintf("select %s from doc%d where id=%d", pg_escape_string($dataIdentifier), $fromid, $id);
+                DbManager::query($sql, $result, true, true);
                 if ($result === null) {
                     $result = '';
                 } elseif ($result === false) {
@@ -462,7 +476,7 @@ class DocManager
      * @param bool $useCache if true use cache object if exists
      * @return array|null the values indexed by attribute or property identifiers, null if not found
      */
-    static public function getRawData($documentIdentifier, array $dataIdentifiers, $latest = true, $useCache = true)
+    public static function getRawData($documentIdentifier, array $dataIdentifiers, $latest = true, $useCache = true)
     {
         $id = self::getIdentifier($documentIdentifier, $latest);
         if ($id > 0) {
@@ -484,8 +498,8 @@ class DocManager
                     $selects[]=pg_escape_identifier($dataIdentifier);
                 }
 
-                $sql = sprintf("select %s from doc%d where id=%d", implode(",", $selects) , $fromid, $id);
-                DbManager::query( $sql, $result, false, true);
+                $sql = sprintf("select %s from doc%d where id=%d", implode(",", $selects), $fromid, $id);
+                DbManager::query($sql, $result, false, true);
                 if ($result === false) {
                     $result = null;
                 }
@@ -503,14 +517,13 @@ class DocManager
      * @param bool $latest if true search latest id
      * @return int
      */
-    static public function getIdentifier($documentIdentifier, $latest)
+    public static function getIdentifier($documentIdentifier, $latest)
     {
         if (empty($documentIdentifier)) {
             return 0;
         }
         if (!is_numeric($documentIdentifier)) {
             $id = self::getIdFromName($documentIdentifier);
-
         } else {
             $id = intval($documentIdentifier);
             if ($latest) {
@@ -529,7 +542,7 @@ class DocManager
      * @api Get document identifier fro logical name
      * @return int (return 0 if not found)
      */
-    static public function getIdFromName($documentName)
+    public static function getIdFromName($documentName)
     {
         $documentName=trim($documentName);
         if (empty($documentName)) {
@@ -556,7 +569,7 @@ class DocManager
         ));
         $n = pg_num_rows($result);
         if ($n > 0) {
-            $arr = pg_fetch_array($result, ($n - 1) , PGSQL_ASSOC);
+            $arr = pg_fetch_array($result, ($n - 1), PGSQL_ASSOC);
             $id = intval($arr["id"]);
         }
         return $id;
@@ -567,7 +580,7 @@ class DocManager
      * @api Get logical name of a document
      * @return string|null return null if id not found
      */
-    static public function getNameFromId($documentId)
+    public static function getNameFromId($documentId)
     {
         $dbid = DbManager::getDbid();
         $id = intval($documentId);
@@ -581,7 +594,7 @@ class DocManager
         ));
         $n = pg_num_rows($result);
         if ($n > 0) {
-            $arr = pg_fetch_array($result, ($n - 1) , PGSQL_ASSOC);
+            $arr = pg_fetch_array($result, ($n - 1), PGSQL_ASSOC);
             $name = $arr["name"];
         }
         return $name;
@@ -592,14 +605,16 @@ class DocManager
      * @param bool $reset
      * @return int return 0 if id not found
      */
-    static public function getFamilyIdFromName($famName, $reset = false)
+    public static function getFamilyIdFromName($famName, $reset = false)
     {
         if (!isset(self::$familyNames) || $reset) {
             self::$familyNames = array();
-            DbManager::query( "select id, name from docfam", $r);
+            DbManager::query("select id, name from docfam", $r);
 
             foreach ($r as $v) {
-                if ($v["name"] != "") self::$familyNames[strtoupper($v["name"]) ] = intval($v["id"]);
+                if ($v["name"] != "") {
+                    self::$familyNames[strtoupper($v["name"]) ] = intval($v["id"]);
+                }
             }
         }
         if (is_numeric($famName)) {
@@ -612,7 +627,9 @@ class DocManager
             }
         } else {
             $name = strtoupper($famName);
-            if (isset(self::$familyNames[$name])) return self::$familyNames[$name];
+            if (isset(self::$familyNames[$name])) {
+                return self::$familyNames[$name];
+            }
         }
 
         return 0;
@@ -624,7 +641,7 @@ class DocManager
      * @param int|string $documentId document identifier
      * @return null|int
      */
-    static public function getFromId($documentId)
+    public static function getFromId($documentId)
     {
         if (! $documentId) {
             return null;
@@ -655,7 +672,7 @@ class DocManager
      * @param int|string $documentId document identifier
      * @return null|string
      */
-    static public function getFromName($documentId)
+    public static function getFromName($documentId)
     {
         if (! $documentId) {
             return null;
@@ -681,7 +698,7 @@ class DocManager
      * Return Document Cache Object
      * @return DocManager\Cache
      */
-    static public function &cache()
+    public static function &cache()
     {
         static $documentCache = null;
         if ($documentCache === null) {

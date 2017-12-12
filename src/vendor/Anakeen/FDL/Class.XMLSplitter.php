@@ -60,7 +60,7 @@ class XMLSplitter
     public function __construct($splitdir)
     {
         if (!is_dir($splitdir) || !is_writable($splitdir)) {
-            $this->errmsg = sprintf(_("Invalid directory '%s'.") , $splitdir);
+            $this->errmsg = sprintf(_("Invalid directory '%s'."), $splitdir);
             throw new Dcp\Exception($this->errmsg);
         }
         
@@ -88,17 +88,16 @@ class XMLSplitter
             $eof = false;
             while (!$eof) {
                 if (($data = fread($this->in_fh, 8192)) === false) {
-                    $this->errmsg = sprintf(_("Error reading from file '%s'") , $this->in_file);
+                    $this->errmsg = sprintf(_("Error reading from file '%s'"), $this->in_file);
                     throw new Dcp\Exception($this->errmsg);
                 }
                 $eof = feof($this->in_fh);
                 if (!xml_parse($this->xml_parser, $data, $eof)) {
-                    $this->errmsg = sprintf(_("XML error %s at line %d") , xml_error_string(xml_get_error_code($this->xml_parser)) , xml_get_current_line_number($this->xml_parser));
+                    $this->errmsg = sprintf(_("XML error %s at line %d"), xml_error_string(xml_get_error_code($this->xml_parser)), xml_get_current_line_number($this->xml_parser));
                     throw new Dcp\Exception($this->errmsg);
                 }
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             $this->close();
             throw $e;
         }
@@ -124,7 +123,7 @@ class XMLSplitter
      * @param string $str the string to escape
      * @return string the string with reserved characters escaped
      */
-    static public function escapeEntities($str)
+    public static function escapeEntities($str)
     {
         $str = str_replace(array(
             '&',
@@ -132,13 +131,13 @@ class XMLSplitter
             "'",
             '<',
             '>'
-        ) , array(
+        ), array(
             '&amp;',
             '&quot;',
             '&apos;',
             '&lt;',
             '&gt;'
-        ) , $str);
+        ), $str);
         return $str;
     }
     /**
@@ -147,7 +146,7 @@ class XMLSplitter
      * @param string $str the string to unescape
      * @return string the string with the XML entities converted back to their characters
      */
-    static public function unescapeEntities($str)
+    public static function unescapeEntities($str)
     {
         $str = str_replace(array(
             '&quot;',
@@ -155,13 +154,13 @@ class XMLSplitter
             '&lt;',
             '&gt;',
             '&amp;'
-        ) , array(
+        ), array(
             '"',
             "'",
             '<',
             '>',
             '&'
-        ) , $str);
+        ), $str);
         return $str;
     }
     /**
@@ -171,17 +170,17 @@ class XMLSplitter
      * @param string $str the string to escape
      * @return string the string with reserved characters escaped
      */
-    static private function compatibilityEscapeEntities($str)
+    private static function compatibilityEscapeEntities($str)
     {
         $str = str_replace(array(
             '&',
             '<',
             '>'
-        ) , array(
+        ), array(
             '&amp;',
             '&lt;',
             '&gt;'
-        ) , $str);
+        ), $str);
         return $str;
     }
     /**
@@ -196,7 +195,7 @@ class XMLSplitter
         $this->in_file = $file;
         $this->in_fh = fopen($this->in_file, "r");
         if ($this->in_fh === false) {
-            $this->errmsg = sprintf(_("Could not open '%s' for reading.") , $this->in_file);
+            $this->errmsg = sprintf(_("Could not open '%s' for reading."), $this->in_file);
             throw new Dcp\Exception($this->errmsg);
         }
     }
@@ -212,7 +211,7 @@ class XMLSplitter
         if ($this->out_fh !== false) {
             $ret = fwrite($this->out_fh, $str);
             if ($ret === false) {
-                $this->errmsg = sprintf(_("Error writing to ouput file '%s'.") , $this->out_file);
+                $this->errmsg = sprintf(_("Error writing to ouput file '%s'."), $this->out_file);
                 throw new Dcp\Exception($this->errmsg);
             }
         }
@@ -227,7 +226,6 @@ class XMLSplitter
     {
         $attrList = array();
         foreach ($node['attrs'] as $name => $value) {
-            
             $value = $this::escapeEntities($value);
             
             $attrList[] = sprintf('%s="%s"', $name, $value);
@@ -294,7 +292,7 @@ class XMLSplitter
         );
         $this->depth++;
         if ($this->depth == 1 && $node['name'] != 'documents') {
-            $this->errmsg = sprintf(_("XML Root node is not a '%s' node (root node is '%s').") , 'documents', $node['name']);
+            $this->errmsg = sprintf(_("XML Root node is not a '%s' node (root node is '%s')."), 'documents', $node['name']);
             throw new Dcp\Exception($this->errmsg);
         }
         if ($this->depth == 2) {
@@ -334,7 +332,7 @@ class XMLSplitter
     private function openOutputFile(array $node)
     {
         if ($this->out_fh !== false) {
-            $this->errmsg = sprintf(_("Output file '%s' is already opened.") , $this->out_file);
+            $this->errmsg = sprintf(_("Output file '%s' is already opened."), $this->out_file);
             error_log($this->errmsg);
             throw new Dcp\Exception($this->errmsg);
         }
@@ -348,18 +346,18 @@ class XMLSplitter
         }
         
         if ($fname == '') {
-            $this->errmsg = sprintf(_("Could not generate output file name for node '%s'.") , $node['name']);
+            $this->errmsg = sprintf(_("Could not generate output file name for node '%s'."), $node['name']);
             throw new Dcp\Exception($this->errmsg);
         }
         
         $this->out_file = sprintf("%s%s%05d%s.xml", $this->splitdir, DIRECTORY_SEPARATOR, $this->fileIndex++, $fname);
         if (is_file($this->out_file)) {
-            $this->errmsg = sprintf(_("Output file '%s' already exists.") , $this->out_file);
+            $this->errmsg = sprintf(_("Output file '%s' already exists."), $this->out_file);
             throw new Dcp\Exception($this->errmsg);
         }
         $this->out_fh = fopen($this->out_file, 'wx');
         if ($this->out_fh === false) {
-            $this->errmsg = sprintf(_("Xml import : Cannot create file %s") , $this->out_file);
+            $this->errmsg = sprintf(_("Xml import : Cannot create file %s"), $this->out_file);
             throw new Dcp\Exception($this->errmsg);
         }
         $this->writeOutputFile("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");

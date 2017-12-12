@@ -6,15 +6,14 @@
 
 class SessionUtils
 {
-    
     private $dbaccess;
     
-    function __construct($dbaccess)
+    public function __construct($dbaccess)
     {
         $this->dbaccess = $dbaccess;
     }
     
-    function getSessionMaxAge()
+    public function getSessionMaxAge()
     {
         $query = new DbObj($this->dbaccess);
         $err = $query->exec_query("SELECT val FROM paramv WHERE name = 'CORE_SESSIONMAXAGE'");
@@ -33,7 +32,7 @@ class SessionUtils
         return $res['val'];
     }
     
-    function getSessionMaxAgeSeconds($default = "1 week")
+    public function getSessionMaxAgeSeconds($default = "1 week")
     {
         $session_maxage = $this->getSessionMaxAge($default);
         if ($session_maxage === false) {
@@ -51,12 +50,11 @@ class SessionUtils
                     if (substr($unit, 0, 2) == 'mo') {
                         $maxage = $maxage * 30 * 24 * 60 * 60;
                         break; # months
-                        
                     } else {
                         $maxage = $maxage * 60;
                         break; # minutes
-                        
                     }
+                    // no break
                 case 'w':
                     $maxage = $maxage * 7 * 24 * 60 * 60;
                     break; # weeks
@@ -73,16 +71,16 @@ class SessionUtils
                     break; # seconds
                     
                 default:
-                    return FALSE;
+                    return false;
             }
             return $maxage;
         }
-        return FALSE;
+        return false;
     }
     
-    function deleteExpiredSessionFiles()
+    public function deleteExpiredSessionFiles()
     {
-        include_once ('WHAT/Lib.Prefix.php');
+        include_once('WHAT/Lib.Prefix.php');
         
         global $pubdir;
         
@@ -116,4 +114,3 @@ class SessionUtils
         return "";
     }
 }
-?>

@@ -84,7 +84,7 @@ class ExportAccounts
             $k = 0;
             foreach ($accounts as $account) {
                 $k++;
-                $this->setSessionMessage(sprintf(___("Export accounts (%d/%d)", "fuserexport") , $k, $count));
+                $this->setSessionMessage(sprintf(___("Export accounts (%d/%d)", "fuserexport"), $k, $count));
                 switch ($account->accounttype) {
                     case \Account::USER_TYPE:
                         $this->addUserAccount($account);
@@ -105,8 +105,7 @@ class ExportAccounts
             $this->addDocumentNodes();
             $this->clearInfo();
             $this->reorderGroups();
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             if ($e->getDcpCode() === "ACCT0205") {
                 $this->aborted = true;
                 $this->rootNode->setAttribute("aborted", "true");
@@ -200,11 +199,9 @@ class ExportAccounts
         }
         if (count($groupLogins) > 0) {
             // Get all members of every exported groups
-            $sql = sprintf("select memberof,id from users where login in (%s)", implode(array_map(function ($s)
-            {
+            $sql = sprintf("select memberof,id from users where login in (%s)", implode(array_map(function ($s) {
                 return pg_escape_literal($s);
-            }
-            , $groupLogins) , ", "));
+            }, $groupLogins), ", "));
             simpleQuery("", $sql, $members);
             $searchGroups = array();
             foreach ($members as $parents) {
@@ -213,17 +210,14 @@ class ExportAccounts
                 $searchGroups = array_merge($searchGroups, $memberOf);
             }
             $searchGroups = array_unique($searchGroups);
-            $searchGroups = array_filter($searchGroups, function ($x)
-            {
+            $searchGroups = array_filter($searchGroups, function ($x) {
                 return !empty($x);
             });
             if ($searchGroups) {
                 // Get tree group information
-                $sql = sprintf("select groups.iduser as groupid, groups.idgroup as parentid, users.login as grouplogin from groups, users where groups.iduser in (%s) and groups.iduser=users.id and users.accounttype='G'", implode(array_map(function ($s)
-                {
+                $sql = sprintf("select groups.iduser as groupid, groups.idgroup as parentid, users.login as grouplogin from groups, users where groups.iduser in (%s) and groups.iduser=users.id and users.accounttype='G'", implode(array_map(function ($s) {
                     return pg_escape_literal($s);
-                }
-                , $searchGroups) , ", "));
+                }, $searchGroups), ", "));
                 simpleQuery("", $sql, $groupTree);
                 
                 if ($groupTree) {
@@ -240,10 +234,12 @@ class ExportAccounts
                         );
                     }
                     // sort by  order
-                    usort($groupOrdered, function ($a, $b)
-                    {
-                        if ($a["order"] > $b["order"]) return +1;
-                        elseif ($a["order"] < $b["order"]) return -1;
+                    usort($groupOrdered, function ($a, $b) {
+                        if ($a["order"] > $b["order"]) {
+                            return +1;
+                        } elseif ($a["order"] < $b["order"]) {
+                            return -1;
+                        }
                         return 0;
                     });
                     
@@ -370,7 +366,7 @@ class ExportAccounts
         $k = 0;
         foreach ($s as $doc) {
             $k++;
-            $this->setSessionMessage(sprintf(___("Export relative document (%d/%d)", "fuserexport") , $k, $count));
+            $this->setSessionMessage(sprintf(___("Export relative document (%d/%d)", "fuserexport"), $k, $count));
             
             $documentNode = $this->xml->createElement("document");
             $documentNode->setAttribute("family", $doc->fromname);
@@ -404,8 +400,8 @@ class ExportAccounts
     
     protected function writeCommonSchema()
     {
-        copy(sprintf("%s/vendor/Anakeen/FDL/Layout/fdl.xsd", DEFAULT_PUBDIR) , sprintf("%s/fdl.xsd", $this->exportSchemaDirectory));
-        copy(sprintf("%s/vendor/Anakeen/FDL/Layout/fdloptions.xsd", DEFAULT_PUBDIR) , sprintf("%s/fdloptions.xsd", $this->exportSchemaDirectory));
+        copy(sprintf("%s/vendor/Anakeen/FDL/Layout/fdl.xsd", DEFAULT_PUBDIR), sprintf("%s/fdl.xsd", $this->exportSchemaDirectory));
+        copy(sprintf("%s/vendor/Anakeen/FDL/Layout/fdloptions.xsd", DEFAULT_PUBDIR), sprintf("%s/fdloptions.xsd", $this->exportSchemaDirectory));
         $this->xml->documentElement->setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
         $this->xml->documentElement->setAttribute("xsi:noNamespaceSchemaLocation", self::XSDDIR . "/accounts.xsd");
         
@@ -448,7 +444,7 @@ class ExportAccounts
             $firstElement = $xpath->query('//xs:element')->item(0);
             $firstElement->parentNode->insertBefore($node, $firstElement);
         }
-        file_put_contents(sprintf("%s/accounts.xsd", $this->exportSchemaDirectory) , $xsd->saveXML());
+        file_put_contents(sprintf("%s/accounts.xsd", $this->exportSchemaDirectory), $xsd->saveXML());
     }
     
     protected function writeFamilySchema($familyName)
@@ -564,7 +560,6 @@ class ExportAccounts
      */
     private function addParentInfo(\Account $user, \DOMElement $node)
     {
-        
         $roles = $user->getRoles();
         $groups = $user->getGroupsId();
         
@@ -627,7 +622,7 @@ class ExportAccounts
         $node->appendChild($nodeInfo);
         
         if ($user->substitute) {
-            simpleQuery("", sprintf("select login from users where id = %d", $user->substitute) , $substituteLogin, true, true);
+            simpleQuery("", sprintf("select login from users where id = %d", $user->substitute), $substituteLogin, true, true);
             if ($substituteLogin) {
                 $nodeInfo = $this->xml->createElement("substitute");
                 $nodeInfo->setAttribute("reference", $substituteLogin);
@@ -706,7 +701,7 @@ class ExportAccounts
             return "concat(" . str_replace(array(
                 "'',",
                 ",''"
-            ) , "", "'" . implode("',\"'\",'", explode("'", $str)) . "'") . ")";
+            ), "", "'" . implode("',\"'\",'", explode("'", $str)) . "'") . ")";
         }
     }
 }

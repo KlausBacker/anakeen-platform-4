@@ -31,7 +31,9 @@ class DocTitle
         if ($docid && !is_numeric($docid)) {
             $docid = \Dcp\Core\DocManager::getIdFromName($docid);
         }
-        if (!$docid) return null;
+        if (!$docid) {
+            return null;
+        }
         if ($docrevOption === "") {
             $docrevOption = $latest ? "latest" : "fixed";
         }
@@ -52,7 +54,6 @@ class DocTitle
             } // unknow document
             if ($relCache["canaccess"] === 'f' && (!$isAdmin)) {
                 return false; //_("information access deny");
-                
             } else {
                 $info = $relCache;
                 return $relCache["title"];
@@ -84,11 +85,14 @@ class DocTitle
                 $ids = $doc->getMultipleRawValues($oa->id);
                 $realId = array();
                 foreach ($ids as $rid) {
-                    if (is_numeric($rid)) $realId[] = intval($rid);
-                    elseif (strpos($rid, '<BR>') !== false) {
+                    if (is_numeric($rid)) {
+                        $realId[] = intval($rid);
+                    } elseif (strpos($rid, '<BR>') !== false) {
                         $tt = explode('<BR>', $rid);
                         foreach ($tt as $brelid) {
-                            if (is_numeric($brelid)) $realId[] = intval($brelid);
+                            if (is_numeric($brelid)) {
+                                $realId[] = intval($brelid);
+                            }
                         }
                     }
                 }
@@ -104,10 +108,10 @@ class DocTitle
         }
         $latestId = array();
         foreach ($relationIds as $k => $relid) {
-            if ($relid["latest"]) $latestId[] = $relid["docid"];
-            elseif ($relid["state"]) {
-                
-                simpleQuery($doc->dbaccess, sprintf("select id from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc limit 1", $relid["docid"], pg_escape_string($relid["state"])) , $stateId, true, true);
+            if ($relid["latest"]) {
+                $latestId[] = $relid["docid"];
+            } elseif ($relid["state"]) {
+                simpleQuery($doc->dbaccess, sprintf("select id from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc limit 1", $relid["docid"], pg_escape_string($relid["state"])), $stateId, true, true);
                 if ($stateId) {
                     $relationIds[$k]["rid"] = $stateId;
                 }
@@ -134,10 +138,12 @@ class DocTitle
         $realIds = array();
         
         foreach ($relationIds as $relid) {
-            if (!empty($relid["rid"])) $realIds[] = $relid["rid"];
+            if (!empty($relid["rid"])) {
+                $realIds[] = $relid["rid"];
+            }
         }
         if ($realIds) {
-            $sql = sprintf("select id,initid,title,name,doctype,revision,icon,fromid,views && '%s' as canaccess from docread where id in (%s)", self::getUserVector() , implode(',', $realIds));
+            $sql = sprintf("select id,initid,title,name,doctype,revision,icon,fromid,views && '%s' as canaccess from docread where id in (%s)", self::getUserVector(), implode(',', $realIds));
             simpleQuery($doc->dbaccess, $sql, $result);
             $accesses = array();
             foreach ($result as $access) {
@@ -147,7 +153,6 @@ class DocTitle
             foreach ($relationIds as $k => $relid) {
                 $rid = $relid["rid"];
                 if ($rid && isset($accesses[$rid])) {
-                    
                     if ($accesses[$rid]["doctype"] === "C") {
                         $relationIds[$k]["title"] = DocFam::getLangTitle(array(
                             "name" => $accesses[$rid]["name"],
@@ -164,8 +169,11 @@ class DocTitle
                 }
             }
         }
-        if (!empty(self::$relationCache[$uid])) self::$relationCache[$uid] = array_merge($relationIds, self::$relationCache[$uid]);
-        else self::$relationCache[$uid] = $relationIds;
+        if (!empty(self::$relationCache[$uid])) {
+            self::$relationCache[$uid] = array_merge($relationIds, self::$relationCache[$uid]);
+        } else {
+            self::$relationCache[$uid] = $relationIds;
+        }
     }
     /**
      * Get title from database if not found in cache
@@ -178,15 +186,14 @@ class DocTitle
      */
     public static function getTitle($docid, $latest = true, $docrevOption = "latest", array & $info = array())
     {
-        
         if ($latest || $docrevOption === "latest") {
-            $sql = sprintf("select id,initid,title,revision,name,doctype,fromid,icon,views && '%s' as canaccess from docread where initid = %d and locked != -1", self::getUserVector() , $docid);
+            $sql = sprintf("select id,initid,title,revision,name,doctype,fromid,icon,views && '%s' as canaccess from docread where initid = %d and locked != -1", self::getUserVector(), $docid);
         } else {
             if (preg_match('/^state\(([^\)]+)\)/', $docrevOption, $matches)) {
                 $revState = $matches[1];
-                $sql = sprintf("select id,initid,revision,title,name,doctype,fromid,icon,views && '%s' as canaccess from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc limit 1", self::getUserVector() , $docid, pg_escape_string($revState));
+                $sql = sprintf("select id,initid,revision,title,name,doctype,fromid,icon,views && '%s' as canaccess from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc limit 1", self::getUserVector(), $docid, pg_escape_string($revState));
             } else {
-                $sql = sprintf("select id,initid,revision,title,name,doctype,fromid,icon,views && '%s' as canaccess from docread where id = %d", self::getUserVector() , $docid);
+                $sql = sprintf("select id,initid,revision,title,name,doctype,fromid,icon,views && '%s' as canaccess from docread where id = %d", self::getUserVector(), $docid);
             }
         }
         simpleQuery('', $sql, $result, false, true);
@@ -210,7 +217,6 @@ class DocTitle
                 return $result["title"];
             } else {
                 return false; //_("information access deny");
-                
             }
         }
         return null;

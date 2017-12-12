@@ -12,7 +12,7 @@ class htmlclean
      * Libxml's errors to ignore.
      * Error codes are taken from `include/libxml/xmlerror.h` from libxml's source code.
     */
-    static $libXMLErrorIgnoreCodes = array(
+    public static $libXMLErrorIgnoreCodes = array(
         /* Ignore "htmlParseEntityRef: expecting ';'" (XML_ERR_ENTITYREF_SEMICOL_MISSING) errors */
         23,
         /* Ignore "Tag video invalid in Entity" (XML_HTML_UNKNOWN_TAG) errors */
@@ -32,11 +32,11 @@ class htmlclean
             '&amp;',
             '&lt;',
             '&gt;'
-        ) , array(
+        ), array(
             '&amp;amp;',
             '&amp;lt;',
             '&amp;gt;'
-        ) , $data);
+        ), $data);
         $data = preg_replace('/(&#*\w+)[\x00-\x20]+;/u', '$1;', $data);
         $data = preg_replace('/(&#x*[0-9A-F]+);*/iu', '$1;', $data);
         $data = html_entity_decode($data, ENT_COMPAT, 'UTF-8');
@@ -118,8 +118,7 @@ class htmlclean
         }
         try {
             $dom->loadHTML($html, $libXMLOpts, $libXMLErrors);
-        }
-        catch(XDOMDocumentException $e) {
+        } catch (XDOMDocumentException $e) {
             $error = $e->getMessage();
             return false;
         }
@@ -140,10 +139,10 @@ class htmlclean
         $html = str_replace(array(
             "\n<",
             ">\n"
-        ) , array(
+        ), array(
             "<",
             ">"
-        ) , $html);
+        ), $html);
         return $html;
     }
     /**
@@ -178,8 +177,7 @@ class htmlclean
         }
         try {
             $dom->loadHTML($html, $libXMLOpts, $libXMLErrors);
-        }
-        catch(XDOMDocumentException $e) {
+        } catch (XDOMDocumentException $e) {
             $error = $e->getMessage();
             return false;
         }
@@ -227,11 +225,9 @@ class htmlclean
          * Map invalid control chars to theirs corresponding pictogram from the Control Pictures block:
          * - https://codepoints.net/control_pictures
         */
-        $str2 = preg_replace_callback('/(?P<char>[\x{00}-\x{08}\x{0B}\x{0C}\x{0E}-\x{1F}])/u', function ($m)
-        {
+        $str2 = preg_replace_callback('/(?P<char>[\x{00}-\x{08}\x{0B}\x{0C}\x{0E}-\x{1F}])/u', function ($m) {
             return "\xe2\x90" . chr(0x80 + ord($m['char']));
-        }
-        , $str);
+        }, $str);
         if ($str2 === null) {
             /* str is not a valid UTF8 string, so we return the original string */
             return $str;

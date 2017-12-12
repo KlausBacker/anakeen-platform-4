@@ -348,7 +348,6 @@ namespace {
 namespace Dcp\HttpApi\V1\Crud {
     class Exception extends \Dcp\Exception
     {
-
         protected $httpStatus = 400;
         protected $httpMessage = "Dcp Exception";
         protected $data = null;
@@ -459,6 +458,5 @@ namespace Dcp\HttpApi\V1\Crud {
         {
             return $this->headers;
         }
-
     }
 }

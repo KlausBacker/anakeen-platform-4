@@ -37,25 +37,24 @@ $LIB_DATE_PHP = '$Id: Lib.Date.php,v 1.2 2003/08/18 15:46:42 eric Exp $';
 
 function DayRound(&$timestamp)
 {
-    
-    return mktime(0, 0, 0, strftime("%m", $timestamp) , strftime("%d", $timestamp) , strftime("%Y", $timestamp));
+    return mktime(0, 0, 0, strftime("%m", $timestamp), strftime("%d", $timestamp), strftime("%Y", $timestamp));
 }
 
 function IncDay($timestamp, $inc)
 {
-    return mktime(0, 0, 0, strftime("%m", $timestamp) , strftime("%d", $timestamp) + $inc, strftime("%Y", $timestamp));
+    return mktime(0, 0, 0, strftime("%m", $timestamp), strftime("%d", $timestamp) + $inc, strftime("%Y", $timestamp));
 }
 // Return the next requested day
 function GoNextWeekDay($now, $daynumber)
 {
     $inc = ($daynumber - strftime("%w", $now)) % 7;
-    return mktime(0, 0, 0, strftime("%m", $now) , strftime("%d", $now) + $inc, strftime("%Y", $now));
+    return mktime(0, 0, 0, strftime("%m", $now), strftime("%d", $now) + $inc, strftime("%Y", $now));
 }
 // Return the week first day as an epoch time
 function FirstWeekDay($now)
 {
     $inc = (7 - strftime("%w", $now));
-    return mktime(0, 0, 0, strftime("%m", $now) , strftime("%d", $now) - $inc, strftime("%Y", $now));
+    return mktime(0, 0, 0, strftime("%m", $now), strftime("%d", $now) - $inc, strftime("%Y", $now));
 }
 /*
 function UpdateFields() {
@@ -80,8 +79,9 @@ function daycount($m, $y)
 function nextday($d, $m, $y, &$nd, &$nm, &$ny)
 {
     $nd = ($d == daycount($m, $y) ? 1 : $d + 1);
-    if ($nd == 1) nextmonth($m, $y, $nm, $ny);
-    else {
+    if ($nd == 1) {
+        nextmonth($m, $y, $nm, $ny);
+    } else {
         $nm = $m;
         $ny = $y;
     }
@@ -89,9 +89,10 @@ function nextday($d, $m, $y, &$nd, &$nm, &$ny)
 // Return the previous day
 function prevday($d, $m, $y, &$pd, &$pm, &$py)
 {
-    $pd = ($d == 1 ? daycount(($m - 1) , $y) : $d - 1);
-    if ($pd == daycount(($m - 1) , $y)) prevmonth($m, $y, $pm, $py);
-    else {
+    $pd = ($d == 1 ? daycount(($m - 1), $y) : $d - 1);
+    if ($pd == daycount(($m - 1), $y)) {
+        prevmonth($m, $y, $pm, $py);
+    } else {
         $pm = $m;
         $py = $y;
     }
@@ -116,7 +117,5 @@ function WeekNumber($epoch)
 // Return the week first day as an epoch time
 function GetWeekFirstDay($now, $epoch)
 {
-    
     return strftime("%W", $epoch);
 }
-?>

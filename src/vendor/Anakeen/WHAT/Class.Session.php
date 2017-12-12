@@ -8,25 +8,25 @@
 */
 
 $CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.38 2009/01/12 15:15:31 jerome Exp $';
-include_once ('Class.QueryDb.php');
-include_once ('Class.DbObj.php');
-include_once ('Class.Log.php');
-include_once ('Class.User.php');
-include_once ("Class.SessionCache.php");
+include_once('Class.QueryDb.php');
+include_once('Class.DbObj.php');
+include_once('Class.Log.php');
+include_once('Class.User.php');
+include_once("Class.SessionCache.php");
 
 class Session extends DbObj
 {
     const SESSION_CT_CLOSE = 2;
     const SESSION_CT_ARGS = 3;
     const SESSION_MIN_BYTE_LENGTH = 16; /* 16 bytes = 128 bits */
-    var $fields = array(
+    public $fields = array(
         "id",
         "userid",
         "name",
         "last_seen"
     );
     
-    var $id_fields = array(
+    public $id_fields = array(
         "id"
     );
     public $id;
@@ -35,31 +35,33 @@ class Session extends DbObj
     public $last_seen;
     public $status;
     private $sendCookie = true;
-    var $dbtable = "sessions";
+    public $dbtable = "sessions";
     
-    var $sqlcreate = "create table sessions ( id text,
+    public $sqlcreate = "create table sessions ( id text,
                         userid   int,
                         name text not null,
                         last_seen timestamp not null DEFAULT now() );
                   create unique index sessions_idx on sessions(id);
                   create index sessions_idx_userid on sessions(userid);";
     
-    var $sessiondb;
+    public $sessiondb;
     
     const PARAMNAME = 'dcpsession';
-    var $session_name = self::PARAMNAME;
-    function __construct($session_name = self::PARAMNAME, $sendCookie = true)
+    public $session_name = self::PARAMNAME;
+    public function __construct($session_name = self::PARAMNAME, $sendCookie = true)
     {
         if (!empty($_SERVER['HTTP_HOST'])) {
-            include_once (DEFAULT_PUBDIR."/config/sessionHandler.php");
+            include_once(DEFAULT_PUBDIR."/config/sessionHandler.php");
         }
         parent::__construct();
-        if ($session_name != '') $this->session_name = $session_name;
+        if ($session_name != '') {
+            $this->session_name = $session_name;
+        }
         $this->last_seen = strftime('%Y-%m-%d %H:%M:%S', time());
         $this->sendCookie = ($sendCookie === true);
     }
     
-    function set($id = "")
+    public function set($id = "")
     {
         global $_SERVER;
         
@@ -83,7 +85,6 @@ class Session extends DbObj
                     session_id($id);
                     @session_start();
                     @session_write_close(); // avoid block
-                    
                 }
             }
         }
@@ -94,13 +95,12 @@ class Session extends DbObj
                 $this->open($u->id);
             } else {
                 $this->open(Account::ANONYMOUS_ID); //anonymous session
-                
             }
         }
 
         // set cookie session
         if (!empty($_SERVER['HTTP_HOST'])) {
-           $this->setCookieSession($this->id, $this->SetTTL());
+            $this->setCookieSession($this->id, $this->SetTTL());
         }
         return true;
     }
@@ -164,7 +164,7 @@ class Session extends DbObj
 
         return $webRoot;
     }
-    function setCookieSession($id, $ttl = 0)
+    public function setCookieSession($id, $ttl = 0)
     {
         $webRootPath = self::getWebRootPath();
         if ($webRootPath !== false) {
@@ -177,7 +177,7 @@ class Session extends DbObj
     /**
      * Closes session and removes all datas
      */
-    function close()
+    public function close()
     {
         global $_SERVER; // use only cache with HTTP
         if (!empty($_SERVER['HTTP_HOST'])) {
@@ -195,12 +195,12 @@ class Session extends DbObj
     /**
      * Closes all session
      */
-    function closeAll($uid = null)
+    public function closeAll($uid = null)
     {
         if ($uid === null) {
             $this->exec_query(sprintf("delete from sessions where name = '%s';", pg_escape_string($this->session_name)));
         } else {
-            $this->exec_query(sprintf("delete from sessions where name = '%s' and userid=%d;", pg_escape_string($this->session_name) , $uid));
+            $this->exec_query(sprintf("delete from sessions where name = '%s' and userid=%d;", pg_escape_string($this->session_name), $uid));
         }
         $this->status = self::SESSION_CT_CLOSE;
         return $this->status;
@@ -208,15 +208,17 @@ class Session extends DbObj
     /**
      * Closes all user's sessions
      */
-    function closeUsers($uid = - 1)
+    public function closeUsers($uid = - 1)
     {
-        if (!$uid > 0) return '';
+        if (!$uid > 0) {
+            return '';
+        }
         $this->exec_query("delete from sessions where userid= '" . pg_escape_string($uid) . "'");
         $this->status = self::SESSION_CT_CLOSE;
         return $this->status;
     }
     
-    function open($uid = Account::ANONYMOUS_ID)
+    public function open($uid = Account::ANONYMOUS_ID)
     {
         $idsess = $this->newId();
         global $_SERVER; // use only cache with HTTP
@@ -226,7 +228,6 @@ class Session extends DbObj
             @session_start();
             @session_write_close(); // avoid block
             //	$this->initCache();
-            
         }
         $this->name = $this->session_name;
         $this->id = $idsess;
@@ -239,7 +240,7 @@ class Session extends DbObj
     // Stocke une variable de session args
     // $v est une chaine !
     // --------------------------------
-    function register($k = "", $v = "")
+    public function register($k = "", $v = "")
     {
         if ($k == "") {
             $this->status = self::SESSION_CT_ARGS;
@@ -252,7 +253,6 @@ class Session extends DbObj
             @session_start();
             $_SESSION[$k] = $v;
             @session_write_close(); // avoid block
-            
         }
         
         return true;
@@ -261,7 +261,7 @@ class Session extends DbObj
     // Récupère une variable de session
     // $v est une chaine !
     // --------------------------------
-    function read($k = "", $d = "")
+    public function read($k = "", $d = "")
     {
         if (empty($_SERVER['HTTP_HOST']) || ! $this->name) {
             return ($d);
@@ -289,7 +289,7 @@ class Session extends DbObj
     // Détruit une variable de session
     // $v est une chaine !
     // --------------------------------
-    function unregister($k = "")
+    public function unregister($k = "")
     {
         global $_SERVER; // use only cache with HTTP
         if ($this->name && !empty($_SERVER['HTTP_HOST'])) {
@@ -298,7 +298,6 @@ class Session extends DbObj
             @session_start();
             unset($_SESSION[$k]);
             @session_write_close(); // avoid block
-            
         }
         return true;
     }
@@ -320,7 +319,7 @@ class Session extends DbObj
     // ------------------------------------------------------------------------
     // utilities functions (private)
     // ------------------------------------------------------------------------
-    function newId()
+    public function newId()
     {
         $this->log->debug("newId");
         $byteLength = (int)\Dcp\Core\ContextManager::getApplicationParam('CORE_SESSION_BYTE_LENGTH');
@@ -354,7 +353,7 @@ class Session extends DbObj
      * @param string $paramValue
      * @return bool
      */
-    function replaceGlobalParam($paramName, $paramValue)
+    public function replaceGlobalParam($paramName, $paramValue)
     {
         global $_SERVER; // use only cache with HTTP
         if (!empty($_SERVER['HTTP_HOST'])) {
@@ -369,11 +368,10 @@ class Session extends DbObj
                 }
             }
             @session_write_close(); // avoid block
-            
         }
         return true;
     }
-    function setTTL()
+    public function setTTL()
     {
         $ttliv = $this->getSessionTTL(0);
         if ($ttliv > 0) {
@@ -383,7 +381,7 @@ class Session extends DbObj
         return 0;
     }
     
-    function getSessionTTL($default = 0, $ttlParamName = '')
+    public function getSessionTTL($default = 0, $ttlParamName = '')
     {
         if ($ttlParamName == '') {
             if ($this->userid == Account::ANONYMOUS_ID) {
@@ -395,19 +393,19 @@ class Session extends DbObj
         return intval(\Dcp\Core\ContextManager::getApplicationParam($ttlParamName, $default));
     }
     
-    function getSessionGcProbability($default = "0.01")
+    public function getSessionGcProbability($default = "0.01")
     {
         return \Dcp\Core\ContextManager::getApplicationParam("CORE_SESSIONGCPROBABILITY", $default);
     }
     
-    function touch()
+    public function touch()
     {
         $this->last_seen = strftime('%Y-%m-%d %H:%M:%S', time());
         $err = $this->modify();
         return $err;
     }
     
-    function deleteUserExpiredSessions()
+    public function deleteUserExpiredSessions()
     {
         $ttl = $this->getSessionTTL(0, 'CORE_SESSIONTTL');
         if ($ttl > 0) {
@@ -416,7 +414,7 @@ class Session extends DbObj
         return '';
     }
     
-    function deleteGuestExpiredSessions()
+    public function deleteGuestExpiredSessions()
     {
         $ttl = $this->getSessionTTL(0, 'CORE_GUEST_SESSIONTTL');
         if ($ttl > 0) {
@@ -425,7 +423,7 @@ class Session extends DbObj
         return '';
     }
     
-    function deleteMaxAgedSessions()
+    public function deleteMaxAgedSessions()
     {
         $maxage = \Dcp\Core\ContextManager::getApplicationParam('CORE_SESSIONMAXAGE', '');
         if ($maxage != '') {
@@ -434,7 +432,7 @@ class Session extends DbObj
         return '';
     }
     
-    function gcSessions()
+    public function gcSessions()
     {
         $gcP = $this->getSessionGcProbability();
         if ($gcP <= 0) {
@@ -458,7 +456,7 @@ class Session extends DbObj
         return "";
     }
     
-    function setuid($uid)
+    public function setuid($uid)
     {
         if (!is_numeric($uid)) {
             $u = new Account();
@@ -483,7 +481,6 @@ class Session extends DbObj
                     $_SESSION[$k] = $v;
                 }
                 session_write_close(); // avoid block
-                
             }
         }
         
@@ -491,9 +488,8 @@ class Session extends DbObj
         return $this->modify();
     }
     
-    function sessionDirExistsAndIsWritable()
+    public function sessionDirExistsAndIsWritable()
     {
-
         $sessionDir = sprintf("%s/var/session", DEFAULT_PUBDIR);
         if (!is_dir($sessionDir)) {
             trigger_error(sprintf("Session directory '%s' does not exists.", $sessionDir));
@@ -508,9 +504,9 @@ class Session extends DbObj
         return true;
     }
     
-    function hasExpired()
+    public function hasExpired()
     {
-        include_once ('FDL/Lib.Util.php');
+        include_once('FDL/Lib.Util.php');
         $ttl = $this->getSessionTTL(0);
         if ($ttl > 0) {
             $now = time();
@@ -522,9 +518,9 @@ class Session extends DbObj
         return false;
     }
     
-    function removeSessionFile($sessid = null)
+    public function removeSessionFile($sessid = null)
     {
-        include_once ('WHAT/Lib.Prefix.php');
+        include_once('WHAT/Lib.Prefix.php');
         global $pubdir;
         if ($sessid === null) {
             $sessid = $this->id;
@@ -541,7 +537,7 @@ class Session extends DbObj
      * @param string $exceptSessionId The session id to keep (default is $this->id)
      * @return string empty string on success, or the SQL error message
      */
-    function deleteUserSessionsExcept($userId = '', $exceptSessionId = '')
+    public function deleteUserSessionsExcept($userId = '', $exceptSessionId = '')
     {
         if ($userId == '') {
             $userId = $this->userid;

@@ -37,39 +37,38 @@
 //
 $CLASS_QUERYGEN_PHP = '$Id: Class.QueryGen.php,v 1.7 2007/05/09 15:44:27 eric Exp $';
 
-include_once ('Class.QueryDb.php');
-include_once ('Class.TableLayout.php');
-include_once ('Class.SubForm.php');
+include_once('Class.QueryDb.php');
+include_once('Class.TableLayout.php');
+include_once('Class.SubForm.php');
 
 class QueryGen
 {
+    public $table;
+    public $start;
+    public $slice;
+    public $order_by;
+    public $desc;
+    public $criteria = array();
+    public $operator;
+    public $value;
+    public $connector;
+    public $level;
+    public $fulltext = "";
+    public $fulltextfields = array();
+    public $freedata = "";
+    public $placeHolder = "";
     
-    var $table;
-    var $start;
-    var $slice;
-    var $order_by;
-    var $desc;
-    var $criteria = array();
-    var $operator;
-    var $value;
-    var $connector;
-    var $level;
-    var $fulltext = "";
-    var $fulltextfields = array();
-    var $freedata = "";
-    var $placeHolder = "";
-    
-    var $fulltextform = '
+    public $fulltextform = '
 <form name="fulltext" method="post" 
                       action="javascript:set_form_par(\'query\',\'fulltext\',self.document.fulltext.text.value,0);set_form_par(\'query\',\'start\',0,0);set_form_par(\'query\',\'all\',\'\',1);"
                       onreset="javascript:set_form_par(\'query\',\'fulltext\',\'\',0);set_form_par(\'query\',\'start\',0,0);set_form_par(\'query\',\'all\',\'\',1);">
   <input name="text" type="text" value="%s" size="10" placeholder="%s">
 </form>';
     
-    var $up = "&nbsp;^";
-    var $down = "&nbsp;v";
+    public $up = "&nbsp;^";
+    public $down = "&nbsp;v";
     
-    function __construct($dbaccess, $class, &$action)
+    public function __construct($dbaccess, $class, &$action)
     {
         //
         $this->log = new Log("", "QueryGen", "$class");
@@ -100,7 +99,9 @@ class QueryGen
         $i = 0;
         while ($i < $this->slice) {
             $this->Init("criteria", "", $i);
-            if (($this->criteria == "") || ($this->criteria[$i] == "")) break;
+            if (($this->criteria == "") || ($this->criteria[$i] == "")) {
+                break;
+            }
 
             
             $this->Init("operator", "", $i);
@@ -120,12 +121,12 @@ class QueryGen
         $this->table->slice = $this->slice;
     }
     
-    function SetFullTextForm($text)
+    public function SetFullTextForm($text)
     {
         $this->table->lay->set("FULLTEXTFORM", sprintf($this->fulltextform, $text, $this->placeHolder));
     }
     
-    function GenMainForm($name, $height, $width, $mainurl, $suburl = "")
+    public function GenMainForm($name, $height, $width, $mainurl, $suburl = "")
     {
         $this->form = new SubForm($name, $height, $width, $mainurl, $suburl);
         
@@ -141,7 +142,9 @@ class QueryGen
         
         $i = 0;
         while ($i < $this->slice) {
-            if (!isset($this->criteria[$i]) || $this->criteria[$i] == "") break;
+            if (!isset($this->criteria[$i]) || $this->criteria[$i] == "") {
+                break;
+            }
 
             
             $this->form->SetParam("criteria_$i", $this->criteria[$i]);
@@ -154,9 +157,8 @@ class QueryGen
         return ($this->form->GetMainForm());
     }
     
-    function Query($type = "TABLE")
+    public function Query($type = "TABLE")
     {
-        
         $this->query->order_by = $this->order_by;
         $this->query->desc = $this->desc;
         $this->AddFulltextQuery();
@@ -199,7 +201,7 @@ class QueryGen
         }
     }
     
-    function AddFulltextQuery()
+    public function AddFulltextQuery()
     {
         if (($this->fulltext != "") && (sizeof($this->fulltextfields) > 0)) {
             reset($this->fulltextfields);
@@ -212,9 +214,8 @@ class QueryGen
         }
     }
     
-    function Init($key, $defval, $ind = "")
+    public function Init($key, $defval, $ind = "")
     {
-        
         if ($ind == "") {
             $this->$key = GetHttpVars("$key", $this->action->ActRead($key, $defval));
             $this->action->ActRegister("$key", $this->$key);
@@ -224,9 +225,8 @@ class QueryGen
         }
     }
     
-    function AddQuery($contraint)
+    public function AddQuery($contraint)
     {
         $this->query->AddQuery($contraint);
     }
 }
-?>

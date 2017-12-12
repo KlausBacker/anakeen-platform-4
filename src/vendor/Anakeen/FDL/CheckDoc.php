@@ -28,14 +28,15 @@ class CheckDoc extends CheckData
      * @param Doc $doc
      * @return CheckDoc
      */
-    function check(array $data, &$extra = null)
+    public function check(array $data, &$extra = null)
     {
-        
         $this->famName = isset($data[1]) ? trim($data[1]) : '';
         $this->specName = isset($data[2]) ? trim($data[2]) : '';
         $this->folderId = isset($data[3]) ? trim($data[3]) : '';
         $this->CheckDocName();
-        if (!$this->hasErrors()) $this->CheckDocFrom();
+        if (!$this->hasErrors()) {
+            $this->CheckDocFrom();
+        }
         
         return $this;
     }
@@ -61,7 +62,7 @@ class CheckDoc extends CheckData
                 $this->addError(ErrorCode::getError('DOC0003', $this->famName, $this->specName));
             } else {
                 try {
-                    $f = new_doc(getDbAccess() , $this->famName);
+                    $f = new_doc(getDbAccess(), $this->famName);
                     if (!$f->isAlive()) {
                         $this->addError(ErrorCode::getError('DOC0005', $this->famName, $this->specName));
                     } else {
@@ -69,17 +70,17 @@ class CheckDoc extends CheckData
                             $this->addError(ErrorCode::getError('DOC0006', $this->famName, $this->specName));
                         } else {
                             $canCreateError = $f->control('create');
-                            if ($canCreateError) $this->addError(ErrorCode::getError('DOC0007', $this->famName, $this->specName));
+                            if ($canCreateError) {
+                                $this->addError(ErrorCode::getError('DOC0007', $this->famName, $this->specName));
+                            }
                         }
                         $this->famName = $f->name;
                     }
-                }
-                catch(Exception $e) {
+                } catch (Exception $e) {
                     $this->addError(ErrorCode::getError('DOC0010', $this->famName, $this->specName, $e->getMessage()));
                 }
             }
         } else {
-            
             $this->addError(ErrorCode::getError('DOC0002', $this->specName));
         }
     }

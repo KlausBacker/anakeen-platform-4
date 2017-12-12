@@ -8,9 +8,10 @@
  *
  */
 namespace Dcp\Core;
+
 class BatchDocument extends \Dcp\Family\Portfolio
 {
-    function filterContent()
+    public function filterContent()
     {
     }
     /**
@@ -21,9 +22,8 @@ class BatchDocument extends \Dcp\Family\Portfolio
      * @param bool $insertguide if true merge each content of guide else same as a normal folder
      * @return array array of document array
      */
-    function getContent($controlview = true, array $filter = array() , $famid = "", $insertguide = true, $unused = "")
+    public function getContent($controlview = true, array $filter = array(), $famid = "", $insertguide = true, $unused = "")
     {
-        
         return parent::getContent($controlview, $filter, $famid, $insertguide);
     }
 }

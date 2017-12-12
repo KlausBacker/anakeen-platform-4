@@ -20,9 +20,8 @@
 
 class digestAuthenticator
 {
-    function __construct($parms)
+    public function __construct($parms)
     {
         throw new Dcp\Exception(__CLASS__ . "::" . __FUNCTION__ . " " . "Not available yet...");
     }
 }
-?>

@@ -53,28 +53,27 @@
 //
 //
 // ---------------------------------------------------------------
-include_once ('Class.DbObj.php');
-include_once ('Class.QueryDb.php');
-include_once ('Class.Log.php');
+include_once('Class.DbObj.php');
+include_once('Class.QueryDb.php');
+include_once('Class.Log.php');
 
 class Lang extends DbObj
 {
-    
-    var $fmttxt = "NO TEXT DEFINED";
-    var $fields = array(
+    public $fmttxt = "NO TEXT DEFINED";
+    public $fields = array(
         "idapp",
         "lang",
         "code",
         "fmt"
     );
-    var $id_fields = array(
+    public $id_fields = array(
         "idapp",
         "lang",
         "code"
     );
-    var $dbtable = "lang";
+    public $dbtable = "lang";
     
-    var $sqlcreate = '
+    public $sqlcreate = '
 create table lang (idapp int not null,
 lang  varchar(10) not null,
 code  varchar(60) not null,
@@ -82,9 +81,9 @@ fmt   varchar(200) not null );
 create index lang_idx1 on lang(idapp, lang, code);
 ';
     
-    var $buffer = array();
+    public $buffer = array();
     
-    function Exist($idapp, $code, $lang)
+    public function Exist($idapp, $code, $lang)
     {
         $query = new QueryDb($this->dbaccess, "Lang");
         $query->basic_elem->sup_where = array(
@@ -94,11 +93,13 @@ create index lang_idx1 on lang(idapp, lang, code);
         );
         $query->Query();
         
-        if ($query->nb == 0) return FALSE;
-        return TRUE;
+        if ($query->nb == 0) {
+            return false;
+        }
+        return true;
     }
     
-    function SetEnv($id, $lang, $deflang)
+    public function SetEnv($id, $lang, $deflang)
     {
         $this->idapp = $id;
         $this->lang = $lang;
@@ -121,7 +122,7 @@ create index lang_idx1 on lang(idapp, lang, code);
         }
     }
     
-    function Store($idapp, $code, $lang, $fmt)
+    public function Store($idapp, $code, $lang, $fmt)
     {
         $this->idapp = $idapp;
         $this->lang = $lang;
@@ -134,9 +135,8 @@ create index lang_idx1 on lang(idapp, lang, code);
         }
     }
     
-    function Get($idapp, $lang, $code, $args = NULL)
+    public function Get($idapp, $lang, $code, $args = null)
     {
-        
         $query = new QueryDb($this->dbaccess, "Lang");
         $query->basic_elem->sup_where = array(
             "idapp={$idapp}",
@@ -147,34 +147,36 @@ create index lang_idx1 on lang(idapp, lang, code);
         
         if ($query->nb <= 0) {
             $this->fmttxt = "**{$code}**";
-            return FALSE;
+            return false;
         }
         
         $uf = $list[0]->fmt;
-        if ($args == NULL) {
+        if ($args == null) {
             $this->fmttxt = $uf;
         } else {
             $nfmt = preg_replace("/%([0-9]+)%/", "{\$args[\\1]}", $uf);
             eval("\$out = \"$nfmt\";");
             $this->fmttxt = $out;
         }
-        return TRUE;
+        return true;
     }
-    function GetText($code, $args = NULL)
+    public function GetText($code, $args = null)
     {
-        if (!isset($this->buffer[$code])) return FALSE;
+        if (!isset($this->buffer[$code])) {
+            return false;
+        }
         $uf = $this->buffer[$code];
-        if ($args == NULL) {
+        if ($args == null) {
             $this->fmttxt = $uf;
         } else {
             $nfmt = preg_replace("/%([0-9]+)%/", "{\$args[\\1]}", $uf);
             eval("\$out = \"$nfmt\";");
             $this->fmttxt = $out;
         }
-        return TRUE;
+        return true;
     }
     
-    function deletecatalog($idapp)
+    public function deletecatalog($idapp)
     {
         $query = new QueryDb($this->dbaccess, "Lang");
         $query->basic_elem->sup_where = array(
@@ -182,7 +184,9 @@ create index lang_idx1 on lang(idapp, lang, code);
         );
         $list = $query->Query();
         if ($query->nb > 0) {
-            foreach ($list as $k => $v) $v->delete();
+            foreach ($list as $k => $v) {
+                $v->delete();
+            }
         }
     }
 } // End Class

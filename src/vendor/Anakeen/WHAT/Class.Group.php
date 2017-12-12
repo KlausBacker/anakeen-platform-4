@@ -14,32 +14,32 @@
 /**
  */
 
-include_once ('Class.DbObj.php');
-include_once ('Class.QueryDb.php');
-include_once ('Class.Log.php');
-include_once ('Class.Application.php');
+include_once('Class.DbObj.php');
+include_once('Class.QueryDb.php');
+include_once('Class.Log.php');
+include_once('Class.Application.php');
 
 class Group extends DbObj
 {
-    var $fields = array(
+    public $fields = array(
         "iduser",
         "idgroup"
     );
     
-    var $id_fields = array(
+    public $id_fields = array(
         "iduser"
     );
     
-    var $dbtable = "groups";
+    public $dbtable = "groups";
     
-    var $sqlcreate = "
+    public $sqlcreate = "
 create table groups ( iduser      int not null,
                       idgroup    int not null);
 create index groups_idx1 on groups(iduser);
 create unique index groups_idx2 on groups(iduser,idgroup);
 create trigger t_nogrouploop before insert or update on groups for each row execute procedure nogrouploop();";
     
-    var $groups = array(); // user groups
+    public $groups = array(); // user groups
     public $iduser;
     public $idgroup;
     
@@ -52,7 +52,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
      * set groups attribute. This attribute containt id of group of a user
      * @return bool true if at least one group
      */
-    function GetGroups()
+    public function GetGroups()
     {
         $query = new QueryDb($this->dbaccess, "Group");
         
@@ -70,7 +70,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
      * @param bool $nopost set to to true to not perform postDelete methods
      * @return string error message
      */
-    function SuppressUser($uid, $nopost = false)
+    public function SuppressUser($uid, $nopost = false)
     {
         $err = "";
         
@@ -82,33 +82,37 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
             $g = new Group($dbf);
             $err.= $g->exec_query("delete from groups where idgroup=" . $this->iduser . " and iduser=$uid");
             
-            if (!$nopost) $this->PostDelete($uid);
+            if (!$nopost) {
+                $this->PostDelete($uid);
+            }
         }
         return $err;
     }
     /**
      * initialise groups for a user
      */
-    function PostSelect($id)
+    public function PostSelect($id)
     {
         $this->GetGroups();
     }
     
-    function preInsert()
+    public function preInsert()
     {
         // verify is exists
         $err = $this->exec_query(sprintf("select * from groups where idgroup=%s and iduser=%s", $this->idgroup, $this->iduser));
         if ($this->numrows() > 0) {
             $err = "OK"; // just to say it is not a real error
-            
         }
         return $err;
     }
     
-    function PostDelete($uid = 0)
+    public function PostDelete($uid = 0)
     {
-        if ($uid) $u = new Account("", $uid);
-        else $u = new Account("", $this->iduser);
+        if ($uid) {
+            $u = new Account("", $uid);
+        } else {
+            $u = new Account("", $this->iduser);
+        }
         $u->updateMemberOf();
         if ($u->accounttype != Account::USER_TYPE) {
             // recompute all doc profil
@@ -129,7 +133,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
         }
     }
     
-    function PostInsert()
+    public function PostInsert()
     {
         $err = $this->exec_query(sprintf("delete from sessions where userid=%d", $this->iduser));
         //    $this->FreedomCopyGroup();
@@ -187,14 +191,14 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
                 
                 bgexec(array(
                     $cmd
-                ) , $result, $err);
+                ), $result, $err);
             }
         }
     }
     /**
      * get ascendant direct group and group of group
      */
-    function GetAllGroups()
+    public function GetAllGroups()
     {
         $allg = $this->groups;
         foreach ($this->groups as $k => $gid) {
@@ -209,7 +213,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
      * get all child (descendant) group of this group
      * @return array id
      */
-    function getChildsGroupId($pgid)
+    public function getChildsGroupId($pgid)
     {
         $this->_initAllGroup();
         
@@ -231,7 +235,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
      * get all parent (ascendant) group of this group
      * @return array id
      */
-    function getParentsGroupId($pgid, $level = 0)
+    public function getParentsGroupId($pgid, $level = 0)
     {
         $this->_initAllGroup();
         
@@ -242,8 +246,11 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
                 if ($v["iduser"] == $pgid) {
                     $gid = $v["idgroup"];
                     $groupsid[$gid] = $gid;
-                    if (isset($this->levgid[$gid])) $this->levgid[$gid] = max($level, $this->levgid[$gid]);
-                    else $this->levgid[$gid] = $level;
+                    if (isset($this->levgid[$gid])) {
+                        $this->levgid[$gid] = max($level, $this->levgid[$gid]);
+                    } else {
+                        $this->levgid[$gid] = $level;
+                    }
                     
                     $groupsid+= $this->getParentsGroupId($gid, $level + 1);
                 }
@@ -255,7 +262,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
      * get all parent (ascendant) group of this group
      * @return array id
      */
-    function getDirectParentsGroupId($pgid = "", &$uasid)
+    public function getDirectParentsGroupId($pgid = "", &$uasid)
     {
         $this->levgid = array();
         $this->getParentsGroupId($pgid);
@@ -263,8 +270,11 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
         $groupsid = array();
         asort($this->levgid);
         foreach ($this->levgid as $k => $v) {
-            if ($v == 0) $groupsid[$k] = $k;
-            else $uasid[$k] = $k;
+            if ($v == 0) {
+                $groupsid[$k] = $k;
+            } else {
+                $uasid[$k] = $k;
+            }
         }
         return $groupsid;
     }

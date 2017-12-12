@@ -29,7 +29,6 @@ abstract class CheckData
     public function addError($msg)
     {
         if ($msg) {
-            
             if (!in_array($msg, $this->errors)) {
                 $this->errors[] = $msg;
                 error_log("ERROR:" . $msg);
@@ -42,5 +41,5 @@ abstract class CheckData
      * @param null $extra
      * @return CheckData this itself
      */
-    public abstract function check(array $data, &$extra = null);
+    abstract public function check(array $data, &$extra = null);
 }

@@ -6,7 +6,6 @@
 
 function init_rules(Action & $action)
 {
-    
     $usage = new ActionUsage($action);
     
     $usage->setStrictMode(false);
@@ -47,14 +46,13 @@ function initRoutes($directoryPath, $verifyProcess = false)
                     throw new Exception(sprintf("Incomplete middleware : Must contain \"process\" with value \"before\" or \"after\" : file \"%s\" :\n%s ", $currentPath, print_r($rule, true)));
                 }
                 if (empty($rule["description"])) {
-                    $currentRule[$kRule]["description"] = sprintf("Rule %s #%02d", basename($currentPath) , $kRule);
+                    $currentRule[$kRule]["description"] = sprintf("Rule %s #%02d", basename($currentPath), $kRule);
                 }
             }
             $rules = array_merge($rules, $currentRule);
         }
         
-        usort($rules, function ($value1, $value2)
-        {
+        usort($rules, function ($value1, $value2) {
             return ($value1["order"] > $value2["order"]) ? -1 : (($value1["order"] < $value2["order"]) ? 1 : 0);
         });
     }

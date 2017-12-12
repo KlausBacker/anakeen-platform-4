@@ -14,11 +14,11 @@
 /**
  */
 
-include_once ("FDL/Lib.Dir.php");
-include_once ("FDL/Lib.Util.php");
-include_once ("FDL/Class.DocAttr.php");
-include_once ("VAULT/Class.VaultFile.php");
-include_once ("FDL/import_file.php");
+include_once("FDL/Lib.Dir.php");
+include_once("FDL/Lib.Util.php");
+include_once("FDL/Class.DocAttr.php");
+include_once("VAULT/Class.VaultFile.php");
+include_once("FDL/import_file.php");
 /**
  * Exportation of documents from folder or searches
  * @param Action &$action current action
@@ -47,24 +47,24 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
     $wprof = ($usage->addOptionalParameter("wprof", "With profil", array(
         "Y",
         "N"
-    ) , "N") == "Y");
+    ), "N") == "Y");
     $wfile = ($usage->addOptionalParameter("wfile", "With files", array(
         "Y",
         "N"
-    ) , "N") == "Y");
+    ), "N") == "Y");
     $wident = ($usage->addOptionalParameter("wident", "With document numeric identifiers", array(
         "Y",
         "N"
-    ) , "Y") == "Y");
+    ), "Y") == "Y");
     
     $fileEncoding = $usage->addOptionalParameter("code", "File encoding", array(
         "utf8",
         "iso8859-15"
-    ) , "utf8");
+    ), "utf8");
     $profilType = $usage->addOptionalParameter("wproftype", "Profil option type", array(
         \Dcp\ExportDocument::useAclAccountType,
         \Dcp\ExportDocument::useAclDocumentType
-    ) , \Dcp\ExportDocument::useAclAccountType);
+    ), \Dcp\ExportDocument::useAclAccountType);
     $wutf8 = ($fileEncoding !== "iso8859-15");
     
     $nopref = ($usage->addOptionalParameter("wcolumn", "if - export preferences are ignored") == "-"); // no preference read
@@ -74,18 +74,17 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
         "F",
         "X",
         "Y"
-    ) , "I");
+    ), "I");
     $selection = $usage->addOptionalParameter("selection", "export selection  object (JSON)");
     $statusOnly = ($usage->addHiddenParameter("statusOnly", "Export progress status") != ""); // export selection  object (JSON)
     $exportId = $usage->addHiddenParameter("exportId", "Export status id"); // export status id
     if (!$aflid && !$selection && !$statusOnly) {
         $fldid = $usage->addRequiredParameter("id", "Folder identifier");
     } else {
-        $fldid = $usage->addOptionalParameter("id", "Folder identifier", array() , $aflid);
+        $fldid = $usage->addOptionalParameter("id", "Folder identifier", array(), $aflid);
     }
     
-    $csvSeparator = $usage->addOptionalParameter("csv-separator", "character to delimiter fields - generaly a comma", function ($values, $argName, ApiUsage $apiusage)
-    {
+    $csvSeparator = $usage->addOptionalParameter("csv-separator", "character to delimiter fields - generaly a comma", function ($values, $argName, ApiUsage $apiusage) {
         if ($values === ApiUsage::GET_USAGE) {
             return sprintf(' use single character or "auto"');
         }
@@ -101,11 +100,9 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
             }
         }
         return '';
-    }
-    , ";");
+    }, ";");
     
-    $csvEnclosure = $usage->addOptionalParameter("csv-enclosure", "character to enclose fields - generaly double-quote", function ($values, $argName, ApiUsage $apiusage)
-    {
+    $csvEnclosure = $usage->addOptionalParameter("csv-enclosure", "character to enclose fields - generaly double-quote", function ($values, $argName, ApiUsage $apiusage) {
         if ($values === ApiUsage::GET_USAGE) {
             return sprintf(' use single character or "auto"');
         }
@@ -118,12 +115,10 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
             }
         }
         return '';
-    }
-    , "");
+    }, "");
     $usage->verify();
     
     if ($statusOnly) {
-        
         header('Content-Type: application/json');
         $action->lay->noparse = true;
         $action->lay->template = json_encode($action->read($exportId));
@@ -142,8 +137,8 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
     
     if ((!$fldid) && $selection) {
         $selection = json_decode($selection);
-        include_once ("DATA/Class.DocumentSelection.php");
-        include_once ("FDL/Class.SearchDoc.php");
+        include_once("DATA/Class.DocumentSelection.php");
+        include_once("FDL/Class.SearchDoc.php");
         $os = new Fdl_DocumentSelection($selection);
         $ids = $os->getIdentificators();
         $exportCollection->recordStatus(_("Retrieve documents from database"));
@@ -154,17 +149,21 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
         $s->search();
         $fname = "selection";
     } else {
-        if (!$fldid) $action->exitError(_("no export folder specified"));
+        if (!$fldid) {
+            $action->exitError(_("no export folder specified"));
+        }
         
         $fld = new_Doc($dbaccess, $fldid);
-        if ($famid == "") $famid = GetHttpVars("famid");
+        if ($famid == "") {
+            $famid = GetHttpVars("famid");
+        }
         $fname = str_replace(array(
             " ",
             "'"
-        ) , array(
+        ), array(
             "_",
             ""
-        ) , $fld->getTitle());
+        ), $fld->getTitle());
         
         $exportCollection->recordStatus(_("Retrieve documents from database"));
         
@@ -192,7 +191,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
     }
     
     if (file_exists($foutname)) {
-        $action->exitError(sprintf("export is not allowed to override existing file %s") , $outputPath);
+        $action->exitError(sprintf("export is not allowed to override existing file %s"), $outputPath);
     }
     
     $exportCollection->setOutputFilePath($foutname);
@@ -217,7 +216,6 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
 
                 default:
                     if ($wfile) {
-                        
                         $fname.= ".zip";
                         $fileMime = "application/x-zip";
                     } else {
@@ -225,13 +223,12 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
                         $fileMime = "text/csv";
                     }
             }
-            $exportCollection->recordStatus(_("Export done") , true);
+            $exportCollection->recordStatus(_("Export done"), true);
             if (!$outputPath) {
                 Http_DownloadFile($foutname, $fname, $fileMime, false, false, true);
             }
         }
-    }
-    catch(Dcp\Exception $e) {
+    } catch (Dcp\Exception $e) {
         throw $e;
     }
 }
@@ -259,13 +256,17 @@ function recordStatus(Action & $action, $exportId, $msg, $endStatus = false)
  */
 function deleteContentDirectory($dirname)
 {
-    if (!is_dir($dirname)) return false;
+    if (!is_dir($dirname)) {
+        return false;
+    }
     $dcur = realpath($dirname);
     $darr = array();
     $darr[] = $dcur;
     if ($d = opendir($dcur)) {
         while ($f = readdir($d)) {
-            if ($f == '.' || $f == '..') continue;
+            if ($f == '.' || $f == '..') {
+                continue;
+            }
             $f = $dcur . '/' . $f;
             if (is_file($f)) {
                 unlink($f);

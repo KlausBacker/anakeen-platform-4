@@ -40,7 +40,7 @@ class ActionUsage extends ApiUsage
         $this->addHiddenParameter('sole', "display mode (deprecated)");
         $authType = $this->addHiddenParameter('authtype', "authentication type");
         $this->addHiddenParameter(\openAuthenticator::openGetId, "authentication token");
-        if("open" === $authType) {
+        if ("open" === $authType) {
             $this->addHiddenParameter("privateid", "token");
         }
     }
@@ -88,4 +88,3 @@ class ActionUsage extends ApiUsage
         return $err;
     }
 }
-?>

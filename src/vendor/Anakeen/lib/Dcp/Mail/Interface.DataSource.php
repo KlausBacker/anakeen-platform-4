@@ -6,7 +6,8 @@
 
 namespace Dcp\Mail;
 
-interface DataSource {
+interface DataSource
+{
     /**
      * @return string Mime type
      */

@@ -14,7 +14,6 @@ class VaultAnalyzerCLIException extends \Dcp\Exception
 
 class VaultAnalyzerCLI
 {
-    
     public static function main(\Action & $action)
     {
         $opts = array();
@@ -45,8 +44,7 @@ class VaultAnalyzerCLI
             } elseif ($opts['clean']) {
                 self::main_clean_orphans($opts['skip-trash']);
             }
-        }
-        catch(VaultAnalyzerCLIException $e) {
+        } catch (VaultAnalyzerCLIException $e) {
             printf("\nError: %s\n\n", $e->getMessage());
             exit(1);
         }
@@ -72,11 +70,11 @@ class VaultAnalyzerCLI
         printf("\n");
         printf("Used:\n");
         printf("\tcount = %d\n", $report['used']['count']);
-        printf("\tsize  = %d%s (%3.02f%%)\n", $report['used']['size'], ((empty($report['used']['size_pretty'])) ? '' : ' (' . $report['used']['size_pretty'] . ')') , (($report['all']['size'] != 0) ? ((100 * $report['used']['size']) / $report['all']['size']) : '0'));
+        printf("\tsize  = %d%s (%3.02f%%)\n", $report['used']['size'], ((empty($report['used']['size_pretty'])) ? '' : ' (' . $report['used']['size_pretty'] . ')'), (($report['all']['size'] != 0) ? ((100 * $report['used']['size']) / $report['all']['size']) : '0'));
         printf("\n");
         printf("Orphan:\n");
         printf("\tcount = %d\n", $report['orphan']['count']);
-        printf("\tsize  = %d%s (%3.02f%%)\n", $report['orphan']['size'], ((empty($report['orphan']['size_pretty'])) ? '' : ' (' . $report['orphan']['size_pretty'] . ')') , (($report['all']['size'] != 0) ? ((100 * $report['orphan']['size']) / $report['all']['size']) : '0'));
+        printf("\tsize  = %d%s (%3.02f%%)\n", $report['orphan']['size'], ((empty($report['orphan']['size_pretty'])) ? '' : ' (' . $report['orphan']['size_pretty'] . ')'), (($report['all']['size'] != 0) ? ((100 * $report['orphan']['size']) / $report['all']['size']) : '0'));
         printf("\n");
         
         return;

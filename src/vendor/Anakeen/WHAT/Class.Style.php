@@ -17,14 +17,14 @@ namespace {
     {
         const RULE_FLAG_PARSE_ON_RUNTIME = 1;
         
-        var $fields = array(
+        public $fields = array(
             "name",
             "description",
             "parsable",
             "rules"
         );
         
-        var $id_fields = array(
+        public $id_fields = array(
             "name"
         );
         public $name;
@@ -36,7 +36,7 @@ namespace {
          */
         public $parent;
         
-        var $sqlcreate = "
+        public $sqlcreate = "
     create table style (
         name text not null,
         primary key (name),
@@ -47,7 +47,7 @@ namespace {
     create sequence SEQ_ID_STYLE start 10000;
 ";
         
-        var $dbtable = "style";
+        public $dbtable = "style";
         
         protected $_expanded_rules = array();
         
@@ -74,12 +74,12 @@ namespace {
             $this->rules = json_encode($this->_expanded_rules);
         }
         
-        function set(&$parent)
+        public function set(&$parent)
         {
             $this->parent = & $parent;
         }
         
-        function getImageUrl($img, $default)
+        public function getImageUrl($img, $default)
         {
             $root = DEFAULT_PUBDIR;
             
@@ -96,7 +96,7 @@ namespace {
             }
         }
         
-        function getLayoutFile($layname, $default = "")
+        public function getLayoutFile($layname, $default = "")
         {
             $root = DEFAULT_PUBDIR;
             
@@ -104,16 +104,20 @@ namespace {
             // first see if i have an society style
             if ($socStyle != "") {
                 $file = $root . "/STYLE/" . $socStyle . "/Layout/" . $layname;
-                if (file_exists($file)) return ($file);
+                if (file_exists($file)) {
+                    return ($file);
+                }
             }
             
             $file = $root . "/STYLE/" . $this->name . "/Layout/" . $layname;
-            if (file_exists($file)) return ($file);
+            if (file_exists($file)) {
+                return ($file);
+            }
             
             return ($default);
         }
         
-        public function setRules(Array $filesDefinition)
+        public function setRules(array $filesDefinition)
         {
             $this->_expanded_rules = $filesDefinition;
         }
@@ -199,7 +203,9 @@ namespace Dcp\Style
          */
         private function _bo()
         {
-            if (true) $a = 1;
+            if (true) {
+                $a = 1;
+            }
         }
     }
     
@@ -210,7 +216,7 @@ namespace Dcp\Style
          * @param array $options
          * @param array $styleConfig full style configuration
          */
-        public function __construct($srcFiles, Array $options, Array $styleConfig);
+        public function __construct($srcFiles, array $options, array $styleConfig);
         /**
          * @param string $destFile destination file path relative to server root (if null, parsed result is returned)
          * @throws Exception
@@ -225,14 +231,13 @@ namespace Dcp\Style
     
     class dcpCssConcatParser implements ICssParser
     {
-        
         protected $_srcFiles = null;
         /**
          * @param string|string[] $srcFiles path or array of path of source file(s) relative to server root
          * @param array $options
          * @param array $styleConfig full style configuration
          */
-        public function __construct($srcFiles, Array $options, Array $styleConfig)
+        public function __construct($srcFiles, array $options, array $styleConfig)
         {
             if (is_array($srcFiles)) {
                 $this->_srcFiles = $srcFiles;
@@ -284,7 +289,6 @@ namespace Dcp\Style
     
     class dcpCssTemplateParser implements ICssParser
     {
-        
         protected $_srcFiles = null;
         protected $_styleConfig = array();
         /**
@@ -292,7 +296,7 @@ namespace Dcp\Style
          * @param array $options array of options
          * @param array $styleConfig full style configuration
          */
-        public function __construct($srcFiles, Array $options, Array $styleConfig)
+        public function __construct($srcFiles, array $options, array $styleConfig)
         {
             if (is_array($srcFiles)) {
                 $this->_srcFiles = $srcFiles;
@@ -354,14 +358,13 @@ namespace Dcp\Style
     
     class dcpCssCopyDirectory implements ICssParser
     {
-        
         protected $_srcFiles = null;
         /**
          * @param string|string[] $srcFiles path or array of path of source file(s) relative to server root
          * @param array $options array of options
          * @param array $styleConfig full style configuration
          */
-        public function __construct($srcFiles, Array $options, Array $styleConfig)
+        public function __construct($srcFiles, array $options, array $styleConfig)
         {
             if (is_array($srcFiles)) {
                 $this->_srcFiles = $srcFiles;
@@ -384,7 +387,6 @@ namespace Dcp\Style
             foreach ($this->_srcFiles as $srcPath) {
                 $srcFullPath = $pubDir . DIRECTORY_SEPARATOR . $srcPath;
                 if (!is_dir($srcFullPath)) {
-                    
                     throw new Exception("STY0009", $srcFullPath);
                 }
                 if (!is_dir($pubDir . DIRECTORY_SEPARATOR . $destFile)) {
@@ -393,7 +395,7 @@ namespace Dcp\Style
                         throw new Exception("STY0008", $pubDir . DIRECTORY_SEPARATOR . $destFile);
                     }
                 }
-                $cpCmd = sprintf("cp -r %s/* %s", escapeshellarg($srcFullPath) , escapeshellarg($pubDir . DIRECTORY_SEPARATOR . $destFile));
+                $cpCmd = sprintf("cp -r %s/* %s", escapeshellarg($srcFullPath), escapeshellarg($pubDir . DIRECTORY_SEPARATOR . $destFile));
                 $r = shell_exec("$cpCmd 2>&1 && echo 1");
                 if ($r === null) {
                     throw new Exception("STY0010", $srcFullPath, $pubDir . DIRECTORY_SEPARATOR . $destFile);
@@ -402,4 +404,3 @@ namespace Dcp\Style
         }
     }
 }
-

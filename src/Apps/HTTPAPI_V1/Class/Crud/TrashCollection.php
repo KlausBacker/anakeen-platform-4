@@ -8,9 +8,8 @@
 
 namespace Dcp\HttpApi\V1\Crud;
 
-
-class TrashCollection extends DocumentCollection {
-
+class TrashCollection extends DocumentCollection
+{
     protected function prepareSearchDoc()
     {
         $this->_searchDoc = new \SearchDoc();
@@ -39,4 +38,4 @@ class TrashCollection extends DocumentCollection {
             "title" => ___("The trash", "ddui")
         );
     }
-} 
+}

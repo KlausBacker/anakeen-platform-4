@@ -16,7 +16,7 @@
 
 function newFreeVaultFile($dbaccess)
 {
-    include_once ("VAULT/Class.VaultFile.php");
+    include_once("VAULT/Class.VaultFile.php");
     return new VaultFile($dbaccess, "FREEDOM");
 }
 /**
@@ -42,10 +42,14 @@ function toIso8601($fdate, $wtz = false)
     $tz = "";
     if (preg_match("/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s(\d\d)?:?(\d\d)?:?(\d\d)?\s+?(\w+)?$/", $fdate, $reg)) {
         $isoDate = sprintf("%04d-%02d-%02d %02d:%02d:%02d", $reg[3], $reg[2], $reg[1], $reg[4], $reg[5], $reg[6]);
-        if ($reg[8] != "") $tz = $reg[7];
+        if ($reg[8] != "") {
+            $tz = $reg[7];
+        }
     }
     // ISO 8601
-    if ($wtz && $tz) $isoDate.= " " . $tz;
+    if ($wtz && $tz) {
+        $isoDate.= " " . $tz;
+    }
     
     return $isoDate;
 }
@@ -53,7 +57,9 @@ function toIso8601($fdate, $wtz = false)
 function StringDateToJD($sdate)
 {
     $jd = FrenchDateToJD($sdate);
-    if ($jd === false) $jd = Iso8601ToJD($sdate);
+    if ($jd === false) {
+        $jd = Iso8601ToJD($sdate);
+    }
     return $jd;
 }
 /**
@@ -87,8 +93,11 @@ function FrenchDateToUnixTs($fdate, $utc = false)
         $r[4] = isset($r[4]) ? $r[4] : 0;
         $r[5] = isset($r[5]) ? $r[5] : 0;
         $r[6] = isset($r[6]) ? $r[6] : 0;
-        if ($utc) $dt = gmmktime($r[4], $r[5], $r[6], $r[2], $r[1], $r[3]);
-        else $dt = mktime($r[4], $r[5], $r[6], $r[2], $r[1], $r[3]);
+        if ($utc) {
+            $dt = gmmktime($r[4], $r[5], $r[6], $r[2], $r[1], $r[3]);
+        } else {
+            $dt = mktime($r[4], $r[5], $r[6], $r[2], $r[1], $r[3]);
+        }
     } else {
         $dt = - 1;
     }
@@ -108,10 +117,8 @@ function stringDateToLocaleDate($fdate, $format = '')
         if (!$hh && !$mm && !$ss) {
             $fdate = sprintf("%s/%s/%s", $dd, $mo, $yy);
         } elseif (!$ss) {
-            
             $fdate = sprintf("%s/%s/%s %s:%s", $dd, $mo, $yy, $hh, $mm);
         } else {
-            
             $fdate = sprintf("%s/%s/%s %s:%s:%s", $dd, $mo, $yy, $hh, $mm, $ss);
         }
     }
@@ -143,17 +150,29 @@ function FrenchDateToLocaleDate($fdate, $format = '')
     $d = substr($fdate, 0, 2);
     $m = substr($fdate, 3, 2);
     $y = substr($fdate, 6, 4);
-    if (!ctype_digit($d)) return $fdate;
-    if (!ctype_digit($m)) return $fdate;
-    if (!ctype_digit($y)) return $fdate;
+    if (!ctype_digit($d)) {
+        return $fdate;
+    }
+    if (!ctype_digit($m)) {
+        return $fdate;
+    }
+    if (!ctype_digit($y)) {
+        return $fdate;
+    }
     if (strlen($fdate) >= 16) {
         $h = substr($fdate, 11, 2);
         $i = substr($fdate, 14, 2);
-        if (!ctype_digit($h)) return $fdate;
-        if (!ctype_digit($i)) return $fdate;
+        if (!ctype_digit($h)) {
+            return $fdate;
+        }
+        if (!ctype_digit($i)) {
+            return $fdate;
+        }
         if (strlen($fdate) == 19) {
             $s = substr($fdate, 17, 2);
-            if (!ctype_digit($s)) return $fdate;
+            if (!ctype_digit($s)) {
+                return $fdate;
+            }
         }
     }
     $ldate = str_replace('%d', $d, $ldate);
@@ -179,11 +198,15 @@ function FrenchDateToLocaleDate($fdate, $format = '')
  */
 function FrenchDateToIso($fdate, $withT = true)
 {
-    if (!$fdate) return '';
+    if (!$fdate) {
+        return '';
+    }
     if (preg_match('/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/', $fdate, $r)) {
-        
-        if (empty($r[4])) $dt = sprintf("%04d-%02d-%02d", $r[3], $r[2], $r[1]);
-        else $dt = sprintf("%04d-%02d-%02d%s%02d:%02d:%02d", $r[3], $r[2], $r[1], ($withT) ? 'T' : ' ', $r[4], $r[5], $r[6]);
+        if (empty($r[4])) {
+            $dt = sprintf("%04d-%02d-%02d", $r[3], $r[2], $r[1]);
+        } else {
+            $dt = sprintf("%04d-%02d-%02d%s%02d:%02d:%02d", $r[3], $r[2], $r[1], ($withT) ? 'T' : ' ', $r[4], $r[5], $r[6]);
+        }
     } else {
         $dt = "";
     }
@@ -198,11 +221,20 @@ function FrenchDateToIso($fdate, $withT = true)
 function iso8601DateToUnixTs($isodate, $utc = false)
 {
     if (preg_match("/^(\d\d\d\d)-(\d\d)-(\d\d)[\s|T]?(\d\d)?:?(\d\d)?:?(\d\d)?/", $isodate, $r)) {
-        if (empty($r[4])) $r[4] = 0;
-        if (empty($r[5])) $r[5] = 0;
-        if (empty($r[6])) $r[6] = 0;
-        if ($utc) $dt = gmmktime($r[4], $r[5], $r[6], $r[2], $r[3], $r[1]);
-        else $dt = mktime($r[4], $r[5], $r[6], $r[2], $r[3], $r[1]);
+        if (empty($r[4])) {
+            $r[4] = 0;
+        }
+        if (empty($r[5])) {
+            $r[5] = 0;
+        }
+        if (empty($r[6])) {
+            $r[6] = 0;
+        }
+        if ($utc) {
+            $dt = gmmktime($r[4], $r[5], $r[6], $r[2], $r[3], $r[1]);
+        } else {
+            $dt = mktime($r[4], $r[5], $r[6], $r[2], $r[3], $r[1]);
+        }
     } else {
         $dt = - 1;
     }
@@ -217,7 +249,9 @@ function iso8601DateToUnixTs($isodate, $utc = false)
 function stringDateToUnixTs($isodate, $utc = false)
 {
     $dt = FrenchDateToUnixTs($isodate, $utc);
-    if ($dt < 0) $dt = iso8601DateToUnixTs($isodate, $utc);
+    if ($dt < 0) {
+        $dt = iso8601DateToUnixTs($isodate, $utc);
+    }
     return $dt;
 }
 /**
@@ -227,7 +261,9 @@ function stringDateToUnixTs($isodate, $utc = false)
  */
 function isValidDate($date)
 {
-    if ((strlen($date) > 0) && (strlen($date) < 3)) return false;
+    if ((strlen($date) > 0) && (strlen($date) < 3)) {
+        return false;
+    }
     $date = stringDateToIso($date, "");
     if (preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d)/', $date, $reg)) {
         return checkdate($reg[2], $reg[3], $reg[1]);
@@ -255,7 +291,9 @@ function stringDateToIso($date, $format = false, $withT = false)
             return $date;
         } else {
             $dt = FrenchDateToIso($date, $withT);
-            if (!$dt) return $date;
+            if (!$dt) {
+                return $date;
+            }
             return $dt;
         }
     }
@@ -279,13 +317,19 @@ function stringDateToIso($date, $format = false, $withT = false)
         $y = strpos($format, '%YYY');
         if ($d !== false && $m !== false && $y !== false) {
             $tmp = substr($date, $y, 4);
-            if (!ctype_digit($tmp)) return $date;
+            if (!ctype_digit($tmp)) {
+                return $date;
+            }
             $dt = $tmp . '-';
             $tmp = substr($date, $m, 2);
-            if (!ctype_digit($tmp)) return $date;
+            if (!ctype_digit($tmp)) {
+                return $date;
+            }
             $dt.= $tmp . '-';
             $tmp = substr($date, $d, 2);
-            if (!ctype_digit($tmp)) return $date;
+            if (!ctype_digit($tmp)) {
+                return $date;
+            }
             $dt.= $tmp;
         } else {
             return $date;
@@ -303,7 +347,9 @@ function stringDateToIso($date, $format = false, $withT = false)
         return $dt;
     } else {
         $dt = FrenchDateToIso($date, $withT);
-        if (!$dt) return $date;
+        if (!$dt) {
+            return $date;
+        }
         return $dt;
     }
 }
@@ -316,8 +362,12 @@ function stringDateToIso($date, $format = false, $withT = false)
 function Iso8601ToJD($isodate)
 {
     if (preg_match("/^(\d\d\d\d)-(\d\d)-(\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/", $isodate, $reg)) {
-        if (!isset($reg[4])) $reg[4] = 0;
-        if (!isset($reg[5])) $reg[5] = 0;
+        if (!isset($reg[4])) {
+            $reg[4] = 0;
+        }
+        if (!isset($reg[5])) {
+            $reg[5] = 0;
+        }
         return cal2jd("CE", $reg[1], $reg[2], $reg[3], $reg[4], $reg[5], 0);
     }
     return false;
@@ -331,7 +381,6 @@ function cal2jd($era, $y, $m, $d, $h, $mn, $s)
         $nd+= round($nm, 5);
         return $nd;
     } else {
-        
         if ($y == 0) {
             AddWarningMsg("There is no year 0 in the Julian system!");
             return "invalid";
@@ -341,7 +390,9 @@ function cal2jd($era, $y, $m, $d, $h, $mn, $s)
             return "invalid";
         }
         
-        if ($era == "BCE") $y = - $y + 1;
+        if ($era == "BCE") {
+            $y = - $y + 1;
+        }
         if ($m > 2) {
             $jy = $y;
             $jm = $m + 1;
@@ -368,7 +419,9 @@ function cal2jd($era, $y, $m, $d, $h, $mn, $s)
         //round to nearest second
         $jd0 = ($intgr + $frac) * 100000;
         $jd = floor($jd0);
-        if ($jd0 - $jd > 0.5) $jd++;
+        if ($jd0 - $jd > 0.5) {
+            $jd++;
+        }
         return $jd / 100000;
     }
 }
@@ -415,7 +468,9 @@ function jd2cal($jd, $dformat = '')
     if ($jd >= $gregjd) { //Gregorian calendar correction
         $tmp = floor((($intgr - 1867216.0) - 0.25) / 36524.25);
         $j1 = $intgr + 1 + $tmp - floor(0.25 * $tmp);
-    } else $j1 = $intgr;
+    } else {
+        $j1 = $intgr;
+    }
     //correction for half day offset
     $df = $frac + 0.5;
     if ($df >= 1.0) {
@@ -430,10 +485,16 @@ function jd2cal($jd, $dformat = '')
     
     $d = floor($j2 - $j4 - floor($j5 * 30.6001));
     $m = floor($j5 - 1.0);
-    if ($m > 12) $m-= 12;
+    if ($m > 12) {
+        $m-= 12;
+    }
     $y = floor($j3 - 4715.0);
-    if ($m > 2) $y--;
-    if ($y <= 0) $y--;
+    if ($m > 2) {
+        $y--;
+    }
+    if ($y <= 0) {
+        $y--;
+    }
     //
     // get time of day from day fraction
     //
@@ -442,7 +503,9 @@ function jd2cal($jd, $dformat = '')
     $f = (($df * 24.0 - $hr) * 60.0 - $mn) * 60.0;
     $sc = floor($f);
     $f-= $sc;
-    if ($f > 0.5) $sc++;
+    if ($f > 0.5) {
+        $sc++;
+    }
     if ($sc == 60) {
         $sc = 0;
         $mn++;
@@ -454,18 +517,15 @@ function jd2cal($jd, $dformat = '')
     if ($hr == 24) {
         $hr = 0;
         $d++; //this could cause a bug, but probably will never happen in practice
-        
     }
     
     if ($y < 0) {
         $y = - $y;
         $ce = ' BCE';
         // form.era[1].checked = true;
-        
     } else {
         $ce = '';
         //   form.era[0].checked = true;
-        
     }
     switch ($dformat) {
         case 'M':
@@ -501,10 +561,10 @@ function addJsSlashes($s)
     return str_replace(array(
         "'",
         "\""
-    ) , array(
+    ), array(
         "\\'",
         "&#34;"
-    ) , $s);
+    ), $s);
 }
 /**
  * Remove Character Accents
@@ -582,11 +642,17 @@ function sep_replace($ak, $idx, $by = "-", $sep = "\n")
         $idx--;
     } while (($idx >= 0) && ($endoff !== false));
     
-    if ($idx >= 0) return $ak . str_repeat("\n-", $idx) . "\n$by";
-    else if ($endoff == false) {
-        if ($offset == 0) return "$by";
-        else return substr($ak, 0, $offset - 1) . "\n$by";
-    } else return substr($ak, 0, $offset) . "$by\n" . substr($ak, $endoff + 1);
+    if ($idx >= 0) {
+        return $ak . str_repeat("\n-", $idx) . "\n$by";
+    } elseif ($endoff == false) {
+        if ($offset == 0) {
+            return "$by";
+        } else {
+            return substr($ak, 0, $offset - 1) . "\n$by";
+        }
+    } else {
+        return substr($ak, 0, $offset) . "$by\n" . substr($ak, $endoff + 1);
+    }
 }
 /**
  * change & < and > character to respetiv entity
@@ -599,21 +665,21 @@ function xml_entity_encode($s)
         '&',
         "<",
         ">"
-    ) , array(
+    ), array(
         "&amp;",
         "&lt;",
         "&gt;"
-    ) , $s);
+    ), $s);
 }
 function xml_entity_encode_all($s)
 {
     return str_replace(array(
         '"',
         "'"
-    ) , array(
+    ), array(
         "&quot;",
         "&apos;"
-    ) , xml_entity_encode($s));
+    ), xml_entity_encode($s));
 }
 /**
  * Remove JS and other insecure elements from HTML.
@@ -647,7 +713,7 @@ function cleanhtmljs($html)
     /*
      * Tokenize HTML: stream of ["text", "<TAG>", "text", "</TAG>", "text", "<FOO/>", "text", etc.]
     */
-    $tokens = preg_split("#(<[^>]*?>)#", $html, NULL, PREG_SPLIT_DELIM_CAPTURE);
+    $tokens = preg_split("#(<[^>]*?>)#", $html, null, PREG_SPLIT_DELIM_CAPTURE);
     /* Parse tokens and remove unwanted elements */
     $skip = false;
     foreach ($tokens as & $elmt) {

@@ -80,7 +80,6 @@ class Lock extends Crud
         $this->setDocument($resourceId);
         
         if ($this->temporaryLock && $this->_document->locked > 0) {
-            
             $exception = new Exception("CRUD0233", $this->_document->getTitle());
             throw $exception;
         }
@@ -169,7 +168,7 @@ class Lock extends Crud
      * @param array $array
      * @throws Exception
      */
-    public function setUrlParameters(Array $array)
+    public function setUrlParameters(array $array)
     {
         parent::setUrlParameters($array);
         $familyId = isset($this->urlParameters["familyId"]) ? $this->urlParameters["familyId"] : false;
@@ -196,7 +195,7 @@ class Lock extends Crud
             $id = $this->urlParameters["identifier"];
             $id = DocManager::getIdentifier($id, true);
             $sql = sprintf("select id, locked from docread where id = %d", $id);
-            simpleQuery(getDbAccess() , $sql, $result, false, true);
+            simpleQuery(getDbAccess(), $sql, $result, false, true);
             $result[] = getCurrentUser()->id;
             $result[] = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
             

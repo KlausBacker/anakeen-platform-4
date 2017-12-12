@@ -16,9 +16,8 @@ class CheckWid extends CheckData
      * @param Doc $doc
      * @return CheckWid
      */
-    function check(array $data, &$doc = null)
+    public function check(array $data, &$doc = null)
     {
-        
         $this->folderName = isset($data[1]) ? $data[1] : null;
         $this->doc = $doc;
         $this->checkWorkflow();
@@ -38,9 +37,8 @@ class CheckWid extends CheckData
                 } elseif (!is_a($d, "WDoc")) {
                     $this->addError(ErrorCode::getError('WID0002', $this->folderName, $this->doc->name));
                 }
-            }
-            catch(Exception $e) {
-                $this->addError(ErrorCode::getError('WID0003', $e->getMessage() , $this->doc->name));
+            } catch (Exception $e) {
+                $this->addError(ErrorCode::getError('WID0003', $e->getMessage(), $this->doc->name));
             }
         }
     }

@@ -29,7 +29,7 @@ class FamilyDocument extends Document
      * @param array $array
      * @throws Exception
      */
-    public function setUrlParameters(Array $array)
+    public function setUrlParameters(array $array)
     {
         parent::setUrlParameters($array);
         $familyId = isset($this->urlParameters["familyId"]) ? $this->urlParameters["familyId"] : false;

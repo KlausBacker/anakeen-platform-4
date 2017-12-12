@@ -57,4 +57,3 @@ class DbObjectList implements Iterator
         return ($this->index < $this->length);
     }
 }
-?>

@@ -7,6 +7,7 @@
  * Detailled search
  */
 namespace Dcp\Core;
+
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 class DetailSearch extends \Dcp\Family\Search
 {
@@ -16,8 +17,8 @@ class DetailSearch extends \Dcp\Family\Search
      */
     private $last_sug;
     
-    var $defaultedit = "FREEDOM:EDITDSEARCH"; #N_("include") N_("equal") N_("equal") _("not equal") N_("is empty") N_("is not empty") N_("one value equal")
-    var $defaultview = "FREEDOM:VIEWDSEARCH"; #N_("not include") N_("begin by") N_("not equal") N_("&gt; or equal") N_("&lt; or equal")  N_("content file word") N_("content file expression")
+    public $defaultedit = "FREEDOM:EDITDSEARCH"; #N_("include") N_("equal") N_("equal") _("not equal") N_("is empty") N_("is not empty") N_("one value equal")
+    public $defaultview = "FREEDOM:VIEWDSEARCH"; #N_("not include") N_("begin by") N_("not equal") N_("&gt; or equal") N_("&lt; or equal")  N_("content file word") N_("content file expression")
     
     /**
      * @var \DocFam|null
@@ -40,29 +41,40 @@ class DetailSearch extends \Dcp\Family\Search
      * @throws \Dcp\Db\Exception
      * @throws \Exception
      */
-    function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
+    public function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
     {
-        
         if ($dirid > 0) {
-            
-            if ($subfolder) $cdirid = getRChildDirId($this->dbaccess, $dirid);
-            else $cdirid = $dirid;
-        } else $cdirid = 0;;
+            if ($subfolder) {
+                $cdirid = getRChildDirId($this->dbaccess, $dirid);
+            } else {
+                $cdirid = $dirid;
+            }
+        } else {
+            $cdirid = 0;
+        };
         
         $filters = $this->getSqlGeneralFilters($keyword, $latest, $sensitive);
         $cond = $this->getSqlDetailFilter();
-        if ($cond === false) return array(
+        if ($cond === false) {
+            return array(
             false
         );
+        }
         $distinct = false;
         $only = '';
-        if ($latest == "lastfixed") $distinct = true;
-        if ($cond != "") $filters[] = $cond;
+        if ($latest == "lastfixed") {
+            $distinct = true;
+        }
+        if ($cond != "") {
+            $filters[] = $cond;
+        }
         if ($this->getRawValue("se_famonly") == "yes") {
-            if (!is_numeric($famid)) $famid = DocManager::getFamilyIdFromName($famid);
+            if (!is_numeric($famid)) {
+                $famid = DocManager::getFamilyIdFromName($famid);
+            }
             $only = "only";
         }
-        $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getRawValue("se_trash") , false, $level = 2, $join = '', $only);
+        $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getRawValue("se_trash"), false, $level = 2, $join = '', $only);
         
         return $query;
     }
@@ -70,7 +82,7 @@ class DetailSearch extends \Dcp\Family\Search
      * Change queries when use filters objects instead of declarative criteria
      * @see DocSearch#getQuery()
      */
-    function getQuery()
+    public function getQuery()
     {
         $filtersType = $this->getMultipleRawValues("se_typefilter");
         if ((count($this->getMultipleRawValues("se_filter")) > 0) && (empty($filtersType[0]) || $filtersType[0] != "generated")) {
@@ -78,7 +90,9 @@ class DetailSearch extends \Dcp\Family\Search
             $filters = $this->getMultipleRawValues("se_filter");
             foreach ($filters as $filter) {
                 $q = $this->getSqlXmlFilter($filter);
-                if ($q) $queries[] = $q;
+                if ($q) {
+                    $queries[] = $q;
+                }
             }
             return $queries;
         } else {
@@ -86,18 +100,19 @@ class DetailSearch extends \Dcp\Family\Search
         }
     }
     
-    function postStore()
+    public function postStore()
     {
         $err = parent::postStore();
         try {
             $this->getSqlDetailFilter(true);
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             $err.= $e->getMessage();
         }
         $err.= $this->updateFromXmlFilter();
         $err.= $this->updateXmlFilter();
-        if ((!$err) && ($this->isChanged())) $err = $this->modify();
+        if ((!$err) && ($this->isChanged())) {
+            $err = $this->modify();
+        }
         return $err;
     }
     /**
@@ -129,10 +144,15 @@ class DetailSearch extends \Dcp\Family\Search
                 $std = $this->simpleXml2StdClass($root);
                 if ($std->family) {
                     if (!is_numeric($std->family)) {
-                        if (preg_match("/([\w:]*)\s?(strict)?/", trim($std->family) , $reg)) {
-                            if (!is_numeric($reg[1])) $reg[1] = DocManager::getFamilyIdFromName($reg[1]);
-                            if ($reg[2] == "strict") $famid = '-' . $reg[1];
-                            else $famid = $reg[1];
+                        if (preg_match("/([\w:]*)\s?(strict)?/", trim($std->family), $reg)) {
+                            if (!is_numeric($reg[1])) {
+                                $reg[1] = DocManager::getFamilyIdFromName($reg[1]);
+                            }
+                            if ($reg[2] == "strict") {
+                                $famid = '-' . $reg[1];
+                            } else {
+                                $famid = $reg[1];
+                            }
                         }
                     } else {
                         $famid = ($std->family);
@@ -158,11 +178,12 @@ class DetailSearch extends \Dcp\Family\Search
             // try to update se_famid
             $typeFilters = $this->getMultipleRawValues("se_typefilter");
             if (count($this->getMultipleRawValues("se_filter")) == 1) {
-                if ($typeFilters[0] != "generated") return ''; // don't update specified filter created by data API
-                
+                if ($typeFilters[0] != "generated") {
+                    return '';
+                } // don't update specified filter created by data API
             }
             if ($this->getRawValue("se_famid")) {
-                $filterXml = sprintf("<filter><family>%s%s</family>", $this->getRawValue("se_famid") , ($this->getRawValue("se_famonly") == "yes" ? " strict" : ""));
+                $filterXml = sprintf("<filter><family>%s%s</family>", $this->getRawValue("se_famid"), ($this->getRawValue("se_famonly") == "yes" ? " strict" : ""));
                 
                 $filterXml.= "</filter>";
                 $this->setValue("se_typefilter", "generated"); // only one
@@ -176,7 +197,7 @@ class DetailSearch extends \Dcp\Family\Search
      * @param string $xml xml filter object
      * @return string the query
      */
-    function getSqlXmlFilter($xml)
+    public function getSqlXmlFilter($xml)
     {
         $root = simplexml_load_string($xml);
         // trasnform XmlObject to StdClass object
@@ -208,12 +229,16 @@ class DetailSearch extends \Dcp\Family\Search
         } else {
             foreach ($xml as $k => $se) {
                 if (isset($std->$k)) {
-                    if (!is_array($std->$k)) $std->$k = array(
+                    if (!is_array($std->$k)) {
+                        $std->$k = array(
                         $std->$k
                     );
+                    }
                     array_push($std->$k, $this->simpleXml2StdClass($se));
                 } else {
-                    if ($std === null) $std = new \stdClass();
+                    if ($std === null) {
+                        $std = new \stdClass();
+                    }
                     $std->$k = $this->simpleXml2StdClass($se);
                 }
             }
@@ -221,7 +246,7 @@ class DetailSearch extends \Dcp\Family\Search
         return $std;
     }
     
-    function preConsultation()
+    public function preConsultation()
     {
         $err = parent::preConsultation();
         if ($err !== '') {
@@ -238,7 +263,7 @@ class DetailSearch extends \Dcp\Family\Search
         return '';
     }
     
-    function preEdition()
+    public function preEdition()
     {
         if (count($this->getMultipleRawValues("se_filter")) > 0) {
             $type = $this->getMultipleRawValues("se_typefilter");
@@ -262,7 +287,7 @@ class DetailSearch extends \Dcp\Family\Search
      * verify parenthesis
      * @return string error message , empty if no errors
      */
-    function getSqlParseError()
+    public function getSqlParseError()
     {
         $err = "";
         $tlp = $this->getMultipleRawValues("SE_LEFTP");
@@ -271,9 +296,19 @@ class DetailSearch extends \Dcp\Family\Search
         $clr = 0;
         //if (count($tlp) > count($tlr)) $err=sprintf(_("left parenthesis is not closed"));
         if ($err == "") {
-            foreach ($tlp as $lp) if ($lp == "yes") $clp++;
-            foreach ($tlr as $lr) if ($lr == "yes") $clr++;
-            if ($clp != $clr) $err = sprintf(_("parenthesis number mismatch : %d left, %d right") , $clp, $clr);
+            foreach ($tlp as $lp) {
+                if ($lp == "yes") {
+                    $clp++;
+                }
+            }
+            foreach ($tlr as $lr) {
+                if ($lr == "yes") {
+                    $clr++;
+                }
+            }
+            if ($clp != $clr) {
+                $err = sprintf(_("parenthesis number mismatch : %d left, %d right"), $clp, $clr);
+            }
         }
         return $err;
     }
@@ -314,9 +349,8 @@ class DetailSearch extends \Dcp\Family\Search
         DbManager::savePoint($point);
         $q = sprintf("SELECT regexp_matches('', E'%s')", pg_escape_string($str));
         try {
-            DbManager::query( $q, $res);
-        }
-        catch(\Exception $e) {
+            DbManager::query($q, $res);
+        } catch (\Exception $e) {
             $err = $e->getMessage();
         }
         DbManager::rollbackPoint($point);
@@ -358,7 +392,7 @@ class DetailSearch extends \Dcp\Family\Search
         $err = '';
         $this->getSqlCond($attr, $op, $value, '', $err, true);
         if ($err != '') {
-            $err = sprintf(_("Invalid condition for attribute '%s' with value '%s': %s") , $attr, $value, $err);
+            $err = sprintf(_("Invalid condition for attribute '%s' with value '%s': %s"), $attr, $value, $err);
         }
         return array(
             'err' => $err,
@@ -416,11 +450,10 @@ class DetailSearch extends \Dcp\Family\Search
      * @throws Exception
      * @throws \Dcp\Db\Exception
      */
-    function getSqlCond($col, $op, $val = "", $val2 = "", &$err = "", $validateCond = false)
+    public function getSqlCond($col, $op, $val = "", $val2 = "", &$err = "", $validateCond = false)
     {
-        
         if ((!$this->searchfam) || ($this->searchfam->id != $this->getRawValue("se_famid"))) {
-            $this->searchfam = DocManager::getFamily( $this->getRawValue("se_famid"));
+            $this->searchfam = DocManager::getFamily($this->getRawValue("se_famid"));
         }
         $col = trim(strtok($col, ' ')); // a col is one word only (prevent injection)
         // because for historic reason revdate is not a date type
@@ -469,7 +502,6 @@ class DetailSearch extends \Dcp\Family\Search
                 }
                 
                 if (($atype == "timestamp") && ($op == "=")) {
-                    
                     $val = trim($val);
                     if (strlen($val) == 10) {
                         if ($hms == '') {
@@ -569,7 +601,7 @@ class DetailSearch extends \Dcp\Family\Search
 
             case "><":
                 if ((trim($val) != "") && (trim($val2) != "")) {
-                    $cond = sprintf("%s >= %s and %s <= %s", $col, $this->_pg_val($val) , $col, $this->_pg_val($val2));
+                    $cond = sprintf("%s >= %s and %s <= %s", $col, $this->_pg_val($val), $col, $this->_pg_val($val2));
                 }
                 break;
 
@@ -581,7 +613,7 @@ class DetailSearch extends \Dcp\Family\Search
                                 return '';
                             }
                         }
-                        DbManager::query(sprintf("select id from users where firstname ~* '%s' or lastname ~* '%s'", pg_escape_string($val) , pg_escape_string($val)) , $ids, true);
+                        DbManager::query(sprintf("select id from users where firstname ~* '%s' or lastname ~* '%s'", pg_escape_string($val), pg_escape_string($val)), $ids, true);
 
                             if (count($ids) == 0) {
                                 $cond = "false";
@@ -608,21 +640,20 @@ class DetailSearch extends \Dcp\Family\Search
                                     $fid = "IUSER";
                                 }
                                 if (!$fid) {
-                                    $err = sprintf(_("no compatible type with operator %s") , $op);
+                                    $err = sprintf(_("no compatible type with operator %s"), $op);
                                 } else {
                                     if (!is_numeric($fid)) {
                                         $fid = DocManager::getFamilyIdFromName($fid);
                                     }
-                                    DbManager::query( sprintf("select id from doc%d where title ~* '%s'", $fid, pg_escape_string($val)) , $ids, true);
+                                    DbManager::query(sprintf("select id from doc%d where title ~* '%s'", $fid, pg_escape_string($val)), $ids, true);
 
-                                        if (count($ids) == 0) {
-                                            $cond = "false";
-                                        } elseif (count($ids) == 1) {
-                                            $cond = " " . $col . " = '" . intval($ids[0]) . "' ";
-                                        } else {
-                                            $cond = " " . $col . " in ('" . implode("','", $ids) . "') ";
-                                        }
-
+                                    if (count($ids) == 0) {
+                                        $cond = "false";
+                                    } elseif (count($ids) == 1) {
+                                        $cond = " " . $col . " = '" . intval($ids[0]) . "' ";
+                                    } else {
+                                        $cond = " " . $col . " in ('" . implode("','", $ids) . "') ";
+                                    }
                                 }
                             } else {
                                 if ($otitle == "auto") {
@@ -632,28 +663,27 @@ class DetailSearch extends \Dcp\Family\Search
                                 if ($oat) {
                                     $cond = " " . $oat->id . " ~* '" . pg_escape_string(trim($val)) . "' ";
                                 } else {
-                                    $err = sprintf(_("attribute %s : cannot detect title attribute") , $col);
+                                    $err = sprintf(_("attribute %s : cannot detect title attribute"), $col);
                                 }
                             }
                         } elseif ($col == "fromid") {
-                             DbManager::query(sprintf("select id from docfam where title ~* '%s'", pg_escape_string($val)) , $ids, true);
+                            DbManager::query(sprintf("select id from docfam where title ~* '%s'", pg_escape_string($val)), $ids, true);
 
-                                if (count($ids) == 0) {
-                                    $cond = "false";
-                                } elseif (count($ids) == 1) {
-                                    $cond = " " . $col . " = " . intval($ids[0]) . " ";
-                                } else {
-                                    $cond = " " . $col . " in (" . implode(",", $ids) . ") ";
-                                }
-
+                            if (count($ids) == 0) {
+                                $cond = "false";
+                            } elseif (count($ids) == 1) {
+                                $cond = " " . $col . " = " . intval($ids[0]) . " ";
+                            } else {
+                                $cond = " " . $col . " in (" . implode(",", $ids) . ") ";
+                            }
                         }
                         break;
 
                     default:
                         if ($atype) {
-                            $err = sprintf(_("attribute %s : %s type is not allowed with %s operator") , $col, $atype, $op);
+                            $err = sprintf(_("attribute %s : %s type is not allowed with %s operator"), $col, $atype, $op);
                         } else {
-                            $err = sprintf(_("attribute %s not found [%s]") , $col, $atype);
+                            $err = sprintf(_("attribute %s not found [%s]"), $col, $atype);
                         }
                 }
                 break;
@@ -720,14 +750,16 @@ class DetailSearch extends \Dcp\Family\Search
                                     return '';
                                 }
                             }
-                            $cond = sprintf("( (%s is null) or (%s %s %s) )", $col, $col, trim($op) , $this->_pg_val($val));
+                            $cond = sprintf("( (%s is null) or (%s %s %s) )", $col, $col, trim($op), $this->_pg_val($val));
                         }
                         
                         break;
 
                     default:
                         if ($atype == "docid") {
-                            if (!is_numeric($val)) $val = DocManager::getIdFromName($val);
+                            if (!is_numeric($val)) {
+                                $val = DocManager::getIdFromName($val);
+                            }
                         }
                         $cond1 = " " . $col . " " . trim($op) . $this->_pg_val($val) . " ";
                         if (($op == '!=') || ($op == '!~*')) {
@@ -742,21 +774,23 @@ class DetailSearch extends \Dcp\Family\Search
                         }
                     }
             }
-            if (!$cond) {
-                $cond = "true";
-            } elseif ($stateCol == "activity") {
-                $cond = sprintf("(%s and locked != -1)", $cond);
-            } elseif ($stateCol == "fixstate") {
-                $cond = sprintf("(%s and locked = -1)", $cond);
-            }
-            return $cond;
+        if (!$cond) {
+            $cond = "true";
+        } elseif ($stateCol == "activity") {
+            $cond = sprintf("(%s and locked != -1)", $cond);
+        } elseif ($stateCol == "fixstate") {
+            $cond = sprintf("(%s and locked = -1)", $cond);
+        }
+        return $cond;
     }
     
     private static function _pg_val($s)
     {
         if (substr($s, 0, 2) == ':@') {
-            return " " . trim(strtok(substr($s, 2) , " \t")) . " ";
-        } else return " '" . pg_escape_string(trim($s)) . "' ";
+            return " " . trim(strtok(substr($s, 2), " \t")) . " ";
+        } else {
+            return " '" . pg_escape_string(trim($s)) . "' ";
+        }
     }
 
     /**
@@ -769,7 +803,7 @@ class DetailSearch extends \Dcp\Family\Search
      * @throws \Dcp\Db\Exception
      * @throws \Exception
      */
-    function getSqlDetailFilter($validateCond = false)
+    public function getSqlDetailFilter($validateCond = false)
     {
         $ol = $this->getRawValue("SE_OL");
         $tkey = $this->getMultipleRawValues("SE_KEYS");
@@ -788,10 +822,12 @@ class DetailSearch extends \Dcp\Family\Search
                 $this->modify();
             }
         }
-        if ($ol == "") $ol = "and";
+        if ($ol == "") {
+            $ol = "and";
+        }
         $cond = "";
         if (!$this->searchfam) {
-            $this->searchfam = DocManager::getFamily( $this->getRawValue("se_famid"));
+            $this->searchfam = DocManager::getFamily($this->getRawValue("se_famid"));
         }
         if ((count($taid) > 1) || (count($taid) > 0 && $taid[0] != "")) {
             // special loop for revdate
@@ -812,58 +848,80 @@ class DetailSearch extends \Dcp\Family\Search
                 }
                 if (substr($v, 0, 1) == "?") {
                     // it's a parameter
-                    $rv = getHttpVars(substr($v, 1) , "-");
-                    if ($rv == "-") return (false);
-                    if ($rv === "" || $rv === " ") unset($taid[$k]);
-                    else $tkey[$k] = $rv;
+                    $rv = getHttpVars(substr($v, 1), "-");
+                    if ($rv == "-") {
+                        return (false);
+                    }
+                    if ($rv === "" || $rv === " ") {
+                        unset($taid[$k]);
+                    } else {
+                        $tkey[$k] = $rv;
+                    }
                 }
                 if ($taid[$k] == "revdate") {
                     if (substr_count($tkey[$k], '/') === 2) {
                         list($dd, $mm, $yyyy) = explode("/", $tkey[$k]);
-                        if ($yyyy > 0) $tkey[$k] = mktime(0, 0, 0, $mm, $dd, $yyyy);
+                        if ($yyyy > 0) {
+                            $tkey[$k] = mktime(0, 0, 0, $mm, $dd, $yyyy);
+                        }
                     }
                 }
             }
             foreach ($taid as $k => $v) {
-                $cond1 = $this->getSqlCond($taid[$k], trim($tf[$k]) , $tkey[$k], "", $err, $validateCond);
+                $cond1 = $this->getSqlCond($taid[$k], trim($tf[$k]), $tkey[$k], "", $err, $validateCond);
                 if ($validateCond && $err != '') {
                     throw new \Exception($err);
                 }
                 if ($cond == "") {
-                    if (isset($tlp[$k]) && $tlp[$k] == "yes") $cond = '(' . $cond1 . " ";
-                    else $cond = $cond1 . " ";
-                    if (isset($tlr[$k]) && $tlr[$k] == "yes") $cond.= ')';
+                    if (isset($tlp[$k]) && $tlp[$k] == "yes") {
+                        $cond = '(' . $cond1 . " ";
+                    } else {
+                        $cond = $cond1 . " ";
+                    }
+                    if (isset($tlr[$k]) && $tlr[$k] == "yes") {
+                        $cond.= ')';
+                    }
                 } elseif ($cond1 != "") {
-                    if (isset($tols[$k]) && $tols[$k] != "" && $ol === "perso") $ol1 = $tols[$k];
-                    else $ol1 = $ol;
+                    if (isset($tols[$k]) && $tols[$k] != "" && $ol === "perso") {
+                        $ol1 = $tols[$k];
+                    } else {
+                        $ol1 = $ol;
+                    }
                     
                     if ($ol1 === "perso") {
                         // workaround if user set global as condition
                         $ol1 = "and";
                     }
-                    if (isset($tlp[$k]) && $tlp[$k] == "yes") $cond.= $ol1 . ' (' . $cond1 . " ";
-                    else $cond.= $ol1 . " " . $cond1 . " ";
-                    if (isset($tlr[$k]) && $tlr[$k] == "yes") $cond.= ') ';
+                    if (isset($tlp[$k]) && $tlp[$k] == "yes") {
+                        $cond.= $ol1 . ' (' . $cond1 . " ";
+                    } else {
+                        $cond.= $ol1 . " " . $cond1 . " ";
+                    }
+                    if (isset($tlr[$k]) && $tlr[$k] == "yes") {
+                        $cond.= ') ';
+                    }
                 }
             }
         }
-        if (trim($cond) == "") $cond = "true";
+        if (trim($cond) == "") {
+            $cond = "true";
+        }
         return $cond;
     }
     /**
      * return true if the search has parameters
      */
-    function isParameterizable()
+    public function isParameterizable()
     {
         $tkey = $this->getMultipleRawValues("SE_KEYS");
-        if (empty($tkey)) return false;
+        if (empty($tkey)) {
+            return false;
+        }
         if ((count($tkey) > 1) || ($tkey[0] != "")) {
             foreach ($tkey as $k => $v) {
-                
                 if ($v && $v[0] == '?') {
                     return true;
                     //if (getHttpVars(substr($v,1),"-") == "-") return true;
-                    
                 }
             }
         }
@@ -872,15 +930,15 @@ class DetailSearch extends \Dcp\Family\Search
     /**
      * return true if the search need parameters
      */
-    function needParameters()
+    public function needParameters()
     {
         $tkey = $this->getMultipleRawValues("SE_KEYS");
         if ((count($tkey) > 1) || (!empty($tkey[0]))) {
-            
             foreach ($tkey as $k => $v) {
-                
                 if ($v && $v[0] == '?') {
-                    if (getHttpVars(substr($v, 1) , "-") == "-") return true;
+                    if (getHttpVars(substr($v, 1), "-") == "-") {
+                        return true;
+                    }
                 }
             }
         }
@@ -894,16 +952,14 @@ class DetailSearch extends \Dcp\Family\Search
      *
      * @return string
      */
-    function urlWhatEncodeSpec($l)
+    public function urlWhatEncodeSpec($l)
     {
         $tkey = $this->getMultipleRawValues("SE_KEYS");
         
         if ((count($tkey) > 1) || (isset($tkey[0]) && $tkey[0] != "")) {
-            
             foreach ($tkey as $k => $v) {
-                
                 if ($v && $v[0] == '?') {
-                    if (getHttpVars(substr($v, 1) , "-") != "-") {
+                    if (getHttpVars(substr($v, 1), "-") != "-") {
                         $l.= '&' . substr($v, 1) . "=" . getHttpVars(substr($v, 1));
                     }
                 }
@@ -915,7 +971,7 @@ class DetailSearch extends \Dcp\Family\Search
     /**
      * add parameters in title
      */
-    function getCustomTitle()
+    public function getCustomTitle()
     {
         $tkey = $this->getMultipleRawValues("SE_KEYS");
         $taid = $this->getMultipleRawValues("SE_ATTRIDS");
@@ -923,11 +979,9 @@ class DetailSearch extends \Dcp\Family\Search
         if ((count($tkey) > 1) || (isset($tkey[0]) && $tkey[0] != "")) {
             $tl = array();
             foreach ($tkey as $k => $v) {
-                
                 if ($v && $v[0] == '?') {
-                    $vh = getHttpVars(substr($v, 1) , "-");
+                    $vh = getHttpVars(substr($v, 1), "-");
                     if (($vh != "-") && ($vh != "")) {
-                        
                         if (is_numeric($vh)) {
                             $fam = $this->getSearchFamilyDocument();
                             if ($fam) {
@@ -957,7 +1011,7 @@ class DetailSearch extends \Dcp\Family\Search
      *
      * @throws Exception
      */
-    function viewdsearch($target = "_self", $ulink = true, $abstract = false)
+    public function viewdsearch($target = "_self", $ulink = true, $abstract = false)
     {
         // Compute value to be inserted in a  layout
         $this->viewattr();
@@ -971,15 +1025,14 @@ class DetailSearch extends \Dcp\Family\Search
         $se_leftp = $this->getMultipleRawValues(\Dcp\AttributeIdentifiers\Dsearch::se_leftp);
         $se_rightp = $this->getMultipleRawValues(\Dcp\AttributeIdentifiers\Dsearch::se_rightp);
         if ((count($taid) > 1) || (!empty($taid[0]))) {
-            
-            $fdoc = DocManager::getFamily( $this->getRawValue("SE_FAMID", 1));
+            $fdoc = DocManager::getFamily($this->getRawValue("SE_FAMID", 1));
             $zpi = $fdoc->GetNormalAttributes();
             $zpi["state"] = new \BasicAttribute("state", $this->fromid, _("step"));
             $zpi["fixstate"] = new \BasicAttribute("fixstate", $this->fromid, _("state"));
             $zpi["activity"] = new \BasicAttribute("activity", $this->fromid, _("activity"));
             $zpi["title"] = new \BasicAttribute("title", $this->fromid, _("doctitle"));
             $zpi["revdate"] = new \BasicAttribute("revdate", $this->fromid, _("revdate"));
-            $zpi["cdate"] = new \BasicAttribute("cdate", $this->fromid, _("cdate") );
+            $zpi["cdate"] = new \BasicAttribute("cdate", $this->fromid, _("cdate"));
             $zpi["revision"] = new \BasicAttribute("cdate", $this->fromid, _("revision"));
             $zpi["owner"] = new \BasicAttribute("owner", $this->fromid, _("owner"));
             $zpi["locked"] = new \BasicAttribute("owner", $this->fromid, _("locked"));
@@ -989,7 +1042,9 @@ class DetailSearch extends \Dcp\Family\Search
             foreach ($taid as $k => $v) {
                 if (isset($zpi[$v])) {
                     $label = $zpi[$v]->getLabel();
-                    if ($label == "") $label = $v;
+                    if ($label == "") {
+                        $label = $v;
+                    }
                     if ($v == "activity") {
                         $fdoc->state = $tkey[$k];
                         $displayValue = $fdoc->getStatelabel();
@@ -998,8 +1053,11 @@ class DetailSearch extends \Dcp\Family\Search
                     }
                     $type = $zpi[$taid[$k]]->type;
                     if ($zpi[$taid[$k]]->isMultiple() || $zpi[$taid[$k]]->inArray()) {
-                        if ($type === "docid") $type = "docid[]";
-                        else if ($type === "account") $type = "account[]";
+                        if ($type === "docid") {
+                            $type = "docid[]";
+                        } elseif ($type === "account") {
+                            $type = "account[]";
+                        }
                     }
                     $elmts = array();
                     if ($se_ol == 'perso') {
@@ -1012,7 +1070,7 @@ class DetailSearch extends \Dcp\Family\Search
                         if (isset($se_leftp[$k]) && $se_leftp[$k] == 'yes') {
                             $elmts[] = '(';
                         }
-                        $elmts[] = sprintf("%s %s %s", mb_ucfirst($label) , $this->getOperatorLabel($tf[$k], $type) , $displayValue);
+                        $elmts[] = sprintf("%s %s %s", mb_ucfirst($label), $this->getOperatorLabel($tf[$k], $type), $displayValue);
                         if (isset($se_rightp[$k]) && $se_rightp[$k] == 'yes') {
                             $elmts[] = ')';
                         }
@@ -1021,7 +1079,7 @@ class DetailSearch extends \Dcp\Family\Search
                             /* Do not display operator on first line */
                             $elmts[] = _($se_ol);
                         }
-                        $elmts[] = sprintf("%s %s %s", mb_ucfirst($label) , $this->getOperatorLabel($tf[$k], $type) , $displayValue);
+                        $elmts[] = sprintf("%s %s %s", mb_ucfirst($label), $this->getOperatorLabel($tf[$k], $type), $displayValue);
                     }
                     $tcond[]["condition"] = join(' ', $elmts);
                     if (isset($tkey[$k][0]) && $tkey[$k][0] == '?') {
@@ -1039,7 +1097,7 @@ class DetailSearch extends \Dcp\Family\Search
      * return true if the sqlselect is writted by hand
      * @return bool
      */
-    function isStaticSql()
+    public function isStaticSql()
     {
         return ($this->getRawValue("se_static") != "");
     }
@@ -1050,7 +1108,9 @@ class DetailSearch extends \Dcp\Family\Search
     private function getSearchFamilyDocument()
     {
         static $fam = null;
-        if (!$fam) $fam = DocManager::createTemporaryDocument($this->getRawValue("SE_FAMID", 1));
+        if (!$fam) {
+            $fam = DocManager::createTemporaryDocument($this->getRawValue("SE_FAMID", 1));
+        }
         return $fam;
     }
 
@@ -1064,7 +1124,7 @@ class DetailSearch extends \Dcp\Family\Search
      *
      * @throws Exception
      */
-    function paramdsearch($target = "_self", $ulink = true, $abstract = false)
+    public function paramdsearch($target = "_self", $ulink = true, $abstract = false)
     {
         // Compute value to be inserted in a  layout
         $this->viewattr();
@@ -1076,7 +1136,6 @@ class DetailSearch extends \Dcp\Family\Search
         $tf = $this->getMultipleRawValues("SE_FUNCS");
         $zpi = $toperator = array();
         if ((count($taid) > 1) || ($taid[0] != "")) {
-            
             $fdoc = DocManager::getDocument($this->getRawValue("SE_FAMID", 1));
             $zpi = $fdoc->GetNormalAttributes();
             $zpi["state"] = new \BasicAttribute("state", $this->fromid, _("step"));
@@ -1102,7 +1161,7 @@ class DetailSearch extends \Dcp\Family\Search
         
         $this->lay->Set("ddetail", "");
         if (count($tparm) > 0) {
-            include_once ("FDL/editutil.php");
+            include_once("FDL/editutil.php");
             global $action;
             /** @noinspection PhpUndefinedFunctionInspection */
             editmode($action);
@@ -1119,7 +1178,9 @@ class DetailSearch extends \Dcp\Family\Search
                     $zpi[$vz]->id = $vz;
                     $v = $vz;
                 }
-                if ($zpi[$v]->fieldSet->type == 'array') $zpi[$v]->fieldSet->type = 'frame'; // no use array configuration for help input
+                if ($zpi[$v]->fieldSet->type == 'array') {
+                    $zpi[$v]->fieldSet->type = 'frame';
+                } // no use array configuration for help input
                 $ki++;
                 $inputset[$v] = true;
                 
@@ -1131,19 +1192,30 @@ class DetailSearch extends \Dcp\Family\Search
                 $tinputs[$k]["label"] = $zpi[$v]->getLabel();
                 $type = $zpi[$v]->type;
                 if ($zpi[$v]->isMultiple() || $zpi[$v]->inArray()) {
-                    if ($type === "docid") $type = "docid[]";
-                    else if ($type === "account") $type = "account[]";
+                    if ($type === "docid") {
+                        $type = "docid[]";
+                    } elseif ($type === "account") {
+                        $type = "account[]";
+                    }
                 }
                 $tinputs[$k]["operator"] = $this->getOperatorLabel($toperator[$k], $type);
-                if (($toperator[$k] == "=~*" || $toperator[$k] == "~*") && $zpi[$v]->type == "docid") $zpi[$v]->type = "text"; // present like a search when operator is text search
-                if ($zpi[$v]->visibility == 'R') $zpi[$v]->mvisibility = 'W';
-                if ($zpi[$v]->visibility == 'S') $zpi[$v]->mvisibility = 'W';
+                if (($toperator[$k] == "=~*" || $toperator[$k] == "~*") && $zpi[$v]->type == "docid") {
+                    $zpi[$v]->type = "text";
+                } // present like a search when operator is text search
+                if ($zpi[$v]->visibility == 'R') {
+                    $zpi[$v]->mvisibility = 'W';
+                }
+                if ($zpi[$v]->visibility == 'S') {
+                    $zpi[$v]->mvisibility = 'W';
+                }
                 if (isset($zpi[$v]->id)) {
                     $zpi[$v]->isAlone = true;
                     $tinputs[$k]["inputs"] = getHtmlInput($doc, $zpi[$v], getHttpVars($k));
                 } else {
                     $aotxt = new \BasicAttribute($v, $doc->id, "eou");
-                    if ($v == "revdate") $aotxt->type = "date";
+                    if ($v == "revdate") {
+                        $aotxt->type = "date";
+                    }
                     /** @noinspection PhpParamsInspection */
                     $tinputs[$k]["inputs"] = getHtmlInput($doc, $aotxt, getHttpVars($k));
                 }
@@ -1166,7 +1238,7 @@ class DetailSearch extends \Dcp\Family\Search
      *
      * @templateController default detailed search edit view
      */
-    function editdsearch()
+    public function editdsearch()
     {
         /**
          * @var \Action $action
@@ -1208,14 +1280,18 @@ class DetailSearch extends \Dcp\Family\Search
                     $famid1 = ($first["id"]);
                     $this->lay->set("restrict", true);
                     $tfamids = array_keys($tclassdoc);
-                    if (!in_array($famid, $tfamids)) $famid = $famid1;
+                    if (!in_array($famid, $tfamids)) {
+                        $famid = $famid1;
+                    }
                 }
             } else {
                 $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
             }
         } else {
             if ($onlysubfam) {
-                if (!is_numeric($onlysubfam)) $onlysubfam = DocManager::getFamilyIdFromName($onlysubfam);
+                if (!is_numeric($onlysubfam)) {
+                    $onlysubfam = DocManager::getFamilyIdFromName($onlysubfam);
+                }
                 $cdoc = DocManager::getFamily($onlysubfam);
                 $tsub = $cdoc->GetChildFam($cdoc->id, false);
                 $tclassdoc[$classid] = array(
@@ -1226,9 +1302,9 @@ class DetailSearch extends \Dcp\Family\Search
                 if ($alsosub) {
                     $tclassdoc = array_merge($tclassdoc, $tsub);
                 }
-                if (!$this->id) $this->setValue("se_famonly", $alsosub ? "no" : "yes");
-
-
+                if (!$this->id) {
+                    $this->setValue("se_famonly", $alsosub ? "no" : "yes");
+                }
             } else {
                 $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
                 $tclassdoc[] = array(
@@ -1262,9 +1338,14 @@ class DetailSearch extends \Dcp\Family\Search
             if (abs($tdoc["id"]) == abs($famid)) {
                 $selfam = true;
                 $selectclass[$k]["selected"] = 'selected="selected"';
-                if ($famid < 0) $this->lay->set("selfam", $tdoc["title"] . " " . _("(only)"));
-                else $this->lay->set("selfam", $tdoc["title"]);
-            } else $selectclass[$k]["selected"] = "";
+                if ($famid < 0) {
+                    $this->lay->set("selfam", $tdoc["title"] . " " . _("(only)"));
+                } else {
+                    $this->lay->set("selfam", $tdoc["title"]);
+                }
+            } else {
+                $selectclass[$k]["selected"] = "";
+            }
         }
         if (!$selfam) {
             $famid = abs($this->getRawValue("se_famid"));
@@ -1308,14 +1389,23 @@ class DetailSearch extends \Dcp\Family\Search
         );
         
         foreach ($internals as $k => $v) {
-            if ($k == "revdate") $type = "date";
-            else if ($k == "owner") $type = "uid";
-            else if ($k == "locked") $type = "uid";
-            else if ($k == "allocated") $type = "uid";
-            else if ($k == "cdate") $type = "date";
-            else if ($k == "revision") $type = "int";
-            else if ($k == "state") $type = "docid";
-            else $type = "text";
+            if ($k == "revdate") {
+                $type = "date";
+            } elseif ($k == "owner") {
+                $type = "uid";
+            } elseif ($k == "locked") {
+                $type = "uid";
+            } elseif ($k == "allocated") {
+                $type = "uid";
+            } elseif ($k == "cdate") {
+                $type = "date";
+            } elseif ($k == "revision") {
+                $type = "int";
+            } elseif ($k == "state") {
+                $type = "docid";
+            } else {
+                $type = "text";
+            }
             
             $tattr[$k] = array(
                 "attrid" => $k,
@@ -1327,8 +1417,8 @@ class DetailSearch extends \Dcp\Family\Search
         }
 
         if ($famid) {
-            $fdoc = DocManager::getFamily( abs($famid));
-            $tmpDoc = DocManager::createTemporaryDocument( abs($famid));
+            $fdoc = DocManager::getFamily(abs($famid));
+            $tmpDoc = DocManager::createTemporaryDocument(abs($famid));
             $zpi = $fdoc->GetNormalAttributes();
 
             foreach ($zpi as $k => $v) {
@@ -1368,9 +1458,12 @@ class DetailSearch extends \Dcp\Family\Search
             $display = '';
             if (isset($v["type"])) {
                 $ctype = implode(",", $v["type"]);
-                if (!in_array('text', $v["type"])) $display = 'none'; // first is title
-                
-            } else $ctype = "";
+                if (!in_array('text', $v["type"])) {
+                    $display = 'none';
+                } // first is title
+            } else {
+                $ctype = "";
+            }
             
             $tfunc[] = array(
                 "funcid" => $k,
@@ -1381,19 +1474,24 @@ class DetailSearch extends \Dcp\Family\Search
         }
         $this->lay->SetBlockData("FUNC", $tfunc);
         foreach ($tfunc as $k => $v) {
-            if (($v["functype"] != "") && (strpos($v["functype"], "enum") === false)) unset($tfunc[$k]);
+            if (($v["functype"] != "") && (strpos($v["functype"], "enum") === false)) {
+                unset($tfunc[$k]);
+            }
         }
         $this->lay->SetBlockData("FUNCSTATE", $tfunc);
         $this->lay->Set("icon", isset($fdoc)?$fdoc->getIcon():$this->getIcon());
         
-        if ($this->getRawValue("SE_LATEST") == "no") $this->lay->Set("select_all", "selected");
-        else $this->lay->Set("select_all", "");
+        if ($this->getRawValue("SE_LATEST") == "no") {
+            $this->lay->Set("select_all", "selected");
+        } else {
+            $this->lay->Set("select_all", "");
+        }
         $states = array();
         //-----------------------------------------------
         // display state
         $wdoc = null;
         if ($fdoc && $fdoc->wid > 0) {
-            $wdoc = DocManager::getDocument( $fdoc->wid);
+            $wdoc = DocManager::getDocument($fdoc->wid);
             /**
              * @var \Wdoc $wdoc
              */
@@ -1471,9 +1569,13 @@ class DetailSearch extends \Dcp\Family\Search
                                 "sstatename" => ($activity) ? _($activity) : _($vs)
                             );
                         }
-                        if ($vs == $v) $stateselected = true;
+                        if ($vs == $v) {
+                            $stateselected = true;
+                        }
                     }
-                    if (!$stateselected) $tcond[$k]["ISENUM"] = false;
+                    if (!$stateselected) {
+                        $tcond[$k]["ISENUM"] = false;
+                    }
                     $this->lay->SetBlockData("sstate$k", $tstates);
                     
                     $tattrSelect[] = array(
@@ -1498,10 +1600,14 @@ class DetailSearch extends \Dcp\Family\Search
                                 "sstate_selected" => ($ks == $v) ? "selected" : "",
                                 "sstatename" => $vs
                             );
-                            if ($ks == $v) $enumselected = true;
+                            if ($ks == $v) {
+                                $enumselected = true;
+                            }
                         }
                         $this->lay->SetBlockData("sstate$k", $tstates);
-                        if (!$enumselected) $tcond[$k]["ISENUM"] = false;
+                        if (!$enumselected) {
+                            $tcond[$k]["ISENUM"] = false;
+                        }
                     }
                     
                     $tattrSelect = $tattr;
@@ -1527,29 +1633,50 @@ class DetailSearch extends \Dcp\Family\Search
                 $tfunc = array();
                 foreach ($this->top as $ki => $vi) {
                     $oa = $fdoc->getAttribute($keyId);
-                    if ($oa) $type = $oa->type;
-                    else $type = '';
-                    if ($type == "") {
-                        if ($keyId == "title") $type = "text";
-                        elseif ($keyId == "cdate") $type = "date";
-                        elseif ($keyId == "fixstate") $type = "enum";
-                        elseif ($keyId == "activity") $type = "enum";
-                        elseif ($keyId == "revision") $type = "int";
-                        elseif ($keyId == "allocated") $type = "uid";
-                        elseif ($keyId == "locked") $type = "uid";
-                        elseif ($keyId == "revdate") $type = "date";
-                        elseif ($keyId == "owner") $type = "uid";
-                        elseif ($keyId == "svalues") $type = "text";
-                        elseif ($keyId == "state") $type = "enum";
+                    if ($oa) {
+                        $type = $oa->type;
                     } else {
-                        if (($oa->isMultiple() || $oa->inArray()) && $type === "docid") $type = "docid[]";
-                        else if (($oa->isMultiple() || $oa->inArray()) && $type === "account") $type = "account[]";
-                        else if ($oa->inArray() && ($oa->type != 'file')) $type = "array";
+                        $type = '';
+                    }
+                    if ($type == "") {
+                        if ($keyId == "title") {
+                            $type = "text";
+                        } elseif ($keyId == "cdate") {
+                            $type = "date";
+                        } elseif ($keyId == "fixstate") {
+                            $type = "enum";
+                        } elseif ($keyId == "activity") {
+                            $type = "enum";
+                        } elseif ($keyId == "revision") {
+                            $type = "int";
+                        } elseif ($keyId == "allocated") {
+                            $type = "uid";
+                        } elseif ($keyId == "locked") {
+                            $type = "uid";
+                        } elseif ($keyId == "revdate") {
+                            $type = "date";
+                        } elseif ($keyId == "owner") {
+                            $type = "uid";
+                        } elseif ($keyId == "svalues") {
+                            $type = "text";
+                        } elseif ($keyId == "state") {
+                            $type = "enum";
+                        }
+                    } else {
+                        if (($oa->isMultiple() || $oa->inArray()) && $type === "docid") {
+                            $type = "docid[]";
+                        } elseif (($oa->isMultiple() || $oa->inArray()) && $type === "account") {
+                            $type = "account[]";
+                        } elseif ($oa->inArray() && ($oa->type != 'file')) {
+                            $type = "array";
+                        }
                     }
                     $display = '';
                     $ctype = '';
                     if (isset($vi["type"])) {
-                        if (!in_array($type, $vi["type"])) $display = 'none';
+                        if (!in_array($type, $vi["type"])) {
+                            $display = 'none';
+                        }
                         $ctype = implode(",", $vi["type"]);
                     }
                     if ($tf[$k] == $ki && $display == '' && ((($type == 'docid' || $type == 'account') && ($ki == '=' || $ki == '!=')) || (($type == 'docid[]' || $type == 'account[]') && $ki == '~y'))) {
@@ -1614,7 +1741,9 @@ class DetailSearch extends \Dcp\Family\Search
                 }
             }
         }
-        if (count($tcond) > 0) $this->lay->SetBlockData("CONDITIONS", $tcond);
+        if (count($tcond) > 0) {
+            $this->lay->SetBlockData("CONDITIONS", $tcond);
+        }
         // Add select for enum attributes
         $tenums = array();
         foreach ($zpi as $k => $v) {
@@ -1653,7 +1782,9 @@ class DetailSearch extends \Dcp\Family\Search
         static $setAttribute = array();
         $level = 0;
         $tset = array();
-        if ($reset) $setAttribute = array();
+        if ($reset) {
+            $setAttribute = array();
+        }
         while ($fs && $fs->id != \Adoc::HIDDENFIELD) {
             if (!in_array($fs->id, $setAttribute)) {
                 $tset[$fs->id] = array(
@@ -1689,10 +1820,8 @@ class DetailSearch extends \Dcp\Family\Search
         /*
          * Escape Postgresql's regexp special chars into theirs UTF16 form "\u00xx"
         */
-        return preg_replace_callback('/[.|*+?{}\[\]()\\\\^$]/u', function ($m)
-        {
+        return preg_replace_callback('/[.|*+?{}\[\]()\\\\^$]/u', function ($m) {
             return sprintf('\\u00%x', ord($m[0]));
-        }
-        , $str);
+        }, $str);
     }
 }

@@ -6,10 +6,8 @@
 
 namespace Dcp\HttpApi\V1\Logger;
 
-
 class ErrorLog extends Logger
 {
-
     public function writeError($message, $context = null, $stack = null, $exception = null)
     {
         if ($context === null && \Doc::getUserId()) {
@@ -22,7 +20,6 @@ class ErrorLog extends Logger
 
     public function writeMessage($message, $context)
     {
-
     }
 
     public function writeWarning($message, $context = null, $stack = null)
@@ -39,4 +36,4 @@ class ErrorLog extends Logger
     {
         return \Doc::getUserId() . " " . \Doc::getUserName();
     }
-} 
+}

@@ -6,7 +6,7 @@
 
 namespace Dcp\Core;
 
-include_once ("FDL/freedom_util.php");
+include_once("FDL/freedom_util.php");
 
 class ImportAccounts
 {
@@ -79,11 +79,10 @@ class ImportAccounts
                 }
             }
             $this->setSessionMessage(___("Import end", "fuserimport"));
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             if ($e->getDcpCode() === "ACCT0204") {
                 $this->setSessionMessage(___("Import Aborted", "fuserimport"));
-                $this->addToReport("", "userAbort", ___("Import Aborted", "fuserimport") , "", null);
+                $this->addToReport("", "userAbort", ___("Import Aborted", "fuserimport"), "", null);
             } elseif ($e->getDcpCode() === "ACCT0206") {
                 $this->setSessionMessage(___("Import Aborted", "fuserimport"));
                 $this->addToReport("", "stopOnError", "", "", null);
@@ -265,7 +264,7 @@ class ImportAccounts
         $roles = $this->xpath->query("/accounts/roles/role");
         $count = $roles->length;
         foreach ($roles as $k => $role) {
-            $this->setSessionMessage(sprintf(___("Import role (%d/%d)", "fuserimport") , $k, $count));
+            $this->setSessionMessage(sprintf(___("Import role (%d/%d)", "fuserimport"), $k, $count));
             $this->importRole($role);
         }
     }
@@ -274,7 +273,7 @@ class ImportAccounts
         $groups = $this->xpath->query("/accounts/groups/group");
         $count = $groups->length;
         foreach ($groups as $k => $group) {
-            $this->setSessionMessage(sprintf(___("Import group (%d/%d)", "fuserimport") , $k, $count));
+            $this->setSessionMessage(sprintf(___("Import group (%d/%d)", "fuserimport"), $k, $count));
             $this->importGroup($group);
         }
     }
@@ -284,7 +283,7 @@ class ImportAccounts
         
         $count = $users->length;
         foreach ($users as $k => $user) {
-            $this->setSessionMessage(sprintf(___("Import user (%d/%d)", "fuserimport") , $k, $count));
+            $this->setSessionMessage(sprintf(___("Import user (%d/%d)", "fuserimport"), $k, $count));
             $this->importUser($user);
         }
     }
@@ -372,7 +371,6 @@ class ImportAccounts
      */
     protected function importGroup($node)
     {
-        
         $values = array();
         $matchings = array(
             "reference" => "login",
@@ -400,9 +398,9 @@ class ImportAccounts
      */
     protected function importParent($node, $tagName, \Account $account)
     {
-        $listNode = $this->xpath->query(sprintf("%ss", $tagName) , $node);
+        $listNode = $this->xpath->query(sprintf("%ss", $tagName), $node);
         if ($listNode->length > 0) {
-            $parents = $this->xpath->query(sprintf("%ss/%s", $tagName, $tagName) , $node);
+            $parents = $this->xpath->query(sprintf("%ss/%s", $tagName, $tagName), $node);
             /**
              * @var \DOMElement $listNodeItem
              */
@@ -449,7 +447,7 @@ class ImportAccounts
                         $this->addToReport($account->login, "already$tagName", "", $groupAccount->login, $parentNode);
                     }
                 } else {
-                    $this->addToReport($account->login, "add $tagName", sprintf("$tagName reference %s not exists", $parentLogin) , "", $parentNode);
+                    $this->addToReport($account->login, "add $tagName", sprintf("$tagName reference %s not exists", $parentLogin), "", $parentNode);
                 }
             }
             if ($needUpdate) {
@@ -516,12 +514,11 @@ class ImportAccounts
         
         $msg = "";
         if ($values) {
-            $msg = ___("Updated values", "dcp:import") . " :\n" . substr(print_r($values, true) , 7, -2);
+            $msg = ___("Updated values", "dcp:import") . " :\n" . substr(print_r($values, true), 7, -2);
         }
         
         if ($account->setLoginName($values["login"])) {
             // Already exists : update role
-            
         } else {
             if ($tag === "role") {
                 $account->accounttype = \Account::ROLE_TYPE;
@@ -540,7 +537,7 @@ class ImportAccounts
                 $err = $newDocAccount->add();
                 if (!$err) {
                     $account->fid = $newDocAccount->id;
-                    $this->addToReport($values["login"], "documentCreation", "", sprintf(___("Family %s", "fusersimport") , $newDocAccount->getFamilyDocument()->getTitle()) , $documentNode ? ($documentNode->cloneNode(false)) : null);
+                    $this->addToReport($values["login"], "documentCreation", "", sprintf(___("Family %s", "fusersimport"), $newDocAccount->getFamilyDocument()->getTitle()), $documentNode ? ($documentNode->cloneNode(false)) : null);
                 } else {
                     $this->addToReport($values["login"], "documentCreation", $err, "", $documentNode);
                 }
@@ -551,7 +548,7 @@ class ImportAccounts
         /**
          * @var \DOMElement $roleDocumentNode
          */
-        $roleDocumentNode = $this->xpath->query("document/" . strtolower($family) , $node)->item(0);
+        $roleDocumentNode = $this->xpath->query("document/" . strtolower($family), $node)->item(0);
         if (!$err) {
             $account->affect($values);
             /**
@@ -568,7 +565,7 @@ class ImportAccounts
                     $uNode->removeChild($delNode->item(0));
                 }
             }
-            $msg = sprintf(___("Account Type \"%s\"") , $tag) . "\n" . $msg;
+            $msg = sprintf(___("Account Type \"%s\""), $tag) . "\n" . $msg;
             if ($account->id > 0) {
                 $err = $account->modify();
                 
@@ -622,7 +619,7 @@ class ImportAccounts
         $importXml->importXmlFileDocument($tmpFile, $log);
         $msg = "";
         if ($log["values"]) {
-            $msg = ___("Updated values", "dcp:import") . " :\n" . substr(print_r($log["values"], true) , 7, -2);
+            $msg = ___("Updated values", "dcp:import") . " :\n" . substr(print_r($log["values"], true), 7, -2);
         }
         
         $this->addToReport($account->login, "documentUpdate", $log["err"], $msg, $node);

@@ -7,16 +7,16 @@
  * Sent email document
  */
 namespace Dcp\Core;
+
 class SentEmail extends \Dcp\Family\Document
 {
-    
-    var $defaultview = "FDL:VIEWEMESSAGE";
+    public $defaultview = "FDL:VIEWEMESSAGE";
     /**
      * @templateController
      */
-    function viewemessage($target = "_self", $ulink = true, $abstract = false)
+    public function viewemessage($target = "_self", $ulink = true, $abstract = false)
     {
-        include_once ("FDL/Lib.Dir.php");
+        include_once("FDL/Lib.Dir.php");
         
         $this->viewdefaultcard($target, $ulink, $abstract);
         
@@ -55,13 +55,17 @@ class SentEmail extends \Dcp\Family\Document
             $addr = str_replace(array(
                 "<",
                 ">"
-            ) , array(
+            ), array(
                 "&lt;",
                 "&gt;"
-            ) , $addr);
-            if ($reciptype[$k] == "cc") $tcc[] = $addr;
-            elseif ($reciptype[$k] == "bcc") $tbcc[] = $addr;
-            else $tto[] = $addr;
+            ), $addr);
+            if ($reciptype[$k] == "cc") {
+                $tcc[] = $addr;
+            } elseif ($reciptype[$k] == "bcc") {
+                $tbcc[] = $addr;
+            } else {
+                $tto[] = $addr;
+            }
         }
         
         if (count($tto) > 0) {
@@ -74,9 +78,12 @@ class SentEmail extends \Dcp\Family\Document
     /**
      * force no edition
      */
-    function control($aclname, $strict = false)
+    public function control($aclname, $strict = false)
     {
-        if (($this->id > 0) && ($this->doctype != 'C') && ($aclname == "edit") && ($this->getFamilyParameterValue("emsg_editcontrol") != "freeedit")) return _("electronic messages cannot be modified");
-        else return parent::control($aclname, $strict);
+        if (($this->id > 0) && ($this->doctype != 'C') && ($aclname == "edit") && ($this->getFamilyParameterValue("emsg_editcontrol") != "freeedit")) {
+            return _("electronic messages cannot be modified");
+        } else {
+            return parent::control($aclname, $strict);
+        }
     }
 }

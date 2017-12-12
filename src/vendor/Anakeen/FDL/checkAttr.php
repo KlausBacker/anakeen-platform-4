@@ -299,9 +299,10 @@ class CheckAttr extends CheckData
                     $this->addError(ErrorCode::getError('ATTR0606', $this->attrid, $this->doc->name));
                 }
             }
-            if (!$type) return;
+            if (!$type) {
+                return;
+            }
             if (!$this->isCompatibleModType($basicOriginType, $basicType)) {
-                
                 $this->addError(ErrorCode::getError('ATTR0604', $this->attrid, $this->doc->name, $type, $originType));
             }
         } else {
@@ -332,24 +333,32 @@ SQL;
     
     private function isCompatibleModType($typeA, $typeB)
     {
-        if ($typeA == $typeB) return true;
+        if ($typeA == $typeB) {
+            return true;
+        }
         $compatibleText = array(
             'text',
             'htmltext',
             'longtext'
         );
-        if (in_array($typeA, $compatibleText) && in_array($typeB, $compatibleText)) return true;
+        if (in_array($typeA, $compatibleText) && in_array($typeB, $compatibleText)) {
+            return true;
+        }
         $compatibleNumbers = array(
             'double',
             'money'
         );
-        if (in_array($typeA, $compatibleNumbers) && in_array($typeB, $compatibleNumbers)) return true;
+        if (in_array($typeA, $compatibleNumbers) && in_array($typeB, $compatibleNumbers)) {
+            return true;
+        }
         $compatibleRelation = array(
             'docid',
             'account',
             'thesaurus'
         );
-        if (in_array($typeA, $compatibleRelation) && in_array($typeB, $compatibleRelation)) return true;
+        if (in_array($typeA, $compatibleRelation) && in_array($typeB, $compatibleRelation)) {
+            return true;
+        }
         return false;
     }
     /**
@@ -482,18 +491,20 @@ SQL;
             $enums = str_replace(array(
                 "\\.",
                 "\\,"
-            ) , '-', $phpFunc); // to replace dot & comma separators
+            ), '-', $phpFunc); // to replace dot & comma separators
             $topt = explode(",", $enums);
             foreach ($topt as $opt) {
                 if (strpos($opt, '|') === false) {
                     $enumKey = $opt;
                     $enumLabel = null;
-                } else list($enumKey, $enumLabel) = explode("|", $opt, 2);
+                } else {
+                    list($enumKey, $enumLabel) = explode("|", $opt, 2);
+                }
                 if ($enumKey === '') {
                     $this->addError(ErrorCode::getError('ATTR1272', $opt, $this->attrid));
                 } elseif (!preg_match('/^[\x20-\x7E]+$/', $enumKey)) {
                     $this->addError(ErrorCode::getError('ATTR1271', $opt, $this->attrid));
-                } else if ($enumLabel === null) {
+                } elseif ($enumLabel === null) {
                     $this->addError(ErrorCode::getError('ATTR1270', $opt, $this->attrid));
                 }
             }
@@ -519,7 +530,6 @@ SQL;
                         if ($refFunc->isInternal()) {
                             $this->addError(ErrorCode::getError('ATTR1209', $phpFuncName));
                         } else {
-                            
                             $targetFile = $refFunc->getFileName();
                             $realPhpFile = realpath(sprintf(DEFAULT_PUBDIR."/EXTERNALS/%s", $phpFile));
                             if ($targetFile != $realPhpFile) {
@@ -533,14 +543,12 @@ SQL;
                                 }
                             }
                         }
-                    }
-                    catch(Exception $e) {
+                    } catch (Exception $e) {
                         $this->addError(ErrorCode::getError('ATTR1203', $phpFuncName));
                     }
                 }
             } else {
                 // parse method for computed attribute
-                
             }
         }
     }
@@ -550,7 +558,9 @@ SQL;
         $phpFunc = trim($this->structAttr->phpfunc);
         $type = $this->getType();
         
-        if ($this->isModAttr && (!$type)) return; // cannot really test if has not type
+        if ($this->isModAttr && (!$type)) {
+            return;
+        } // cannot really test if has not type
         $oParse = new parseFamilyMethod();
         $strucFunc = $oParse->parse($phpFunc, ($type == 'enum'));
         if ($strucFunc->getError()) {
@@ -578,14 +588,12 @@ SQL;
             } else {
                 // validity of method call cannot be tested here
                 // it is tested in checkEnd
-                
             }
         }
     }
     
     private function checkOptions()
     {
-        
         $options = trim($this->structAttr->options);
         if ($options) {
             $topt = explode("|", $options);
@@ -593,10 +601,12 @@ SQL;
                 if (strpos($opt, '=') === false) {
                     $optName = $opt;
                     $optValue = null;
-                } else list($optName, $optValue) = explode("=", $opt, 2);
+                } else {
+                    list($optName, $optValue) = explode("=", $opt, 2);
+                }
                 if (!preg_match('/^[a-z_-]{1,63}$/', $optName)) {
                     $this->addError(ErrorCode::getError('ATTR1500', $optName, $this->attrid));
-                } else if ($optValue === null) {
+                } elseif ($optValue === null) {
                     $this->addError(ErrorCode::getError('ATTR1501', $optName, $this->attrid));
                 }
             }
@@ -641,14 +651,18 @@ SQL;
     
     private function isNodeNeedSet()
     {
-        if ($this->isModAttr) return false;
+        if ($this->isModAttr) {
+            return false;
+        }
         $type = $this->getType();
         return (($type != "tab") && ($type != "frame") && ($type != "menu") && ($type != "action"));
     }
     
     private function isNodeNeedOrder()
     {
-        if ($this->isModAttr) return false;
+        if ($this->isModAttr) {
+            return false;
+        }
         $type = $this->getType();
         return (($type != "tab") && ($type != "frame"));
     }
@@ -697,15 +711,20 @@ class StructAttribute
     
     public function __construct(array $data = array())
     {
-        if (count($data) > 0) $this->set($data);
+        if (count($data) > 0) {
+            $this->set($data);
+        }
     }
     
     public function set(array $data)
     {
         $cid = 1;
         foreach ($this->dataOrder as $key) {
-            if ($key == 'phpfunc') $this->$key = isset($data[$cid]) ? $data[$cid] : '';
-            else $this->$key = isset($data[$cid]) ? trim($data[$cid]) : '';
+            if ($key == 'phpfunc') {
+                $this->$key = isset($data[$cid]) ? $data[$cid] : '';
+            } else {
+                $this->$key = isset($data[$cid]) ? trim($data[$cid]) : '';
+            }
             $cid++;
         }
     }

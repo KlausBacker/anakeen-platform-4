@@ -14,14 +14,14 @@
 /**
  */
 
-include_once ('Class.DbObj.php');
-include_once ('Class.QueryDb.php');
-include_once ('Class.Application.php');
-include_once ('Class.User.php');
+include_once('Class.DbObj.php');
+include_once('Class.QueryDb.php');
+include_once('Class.Application.php');
+include_once('Class.User.php');
 
 class Acl extends DbObj
 {
-    var $fields = array(
+    public $fields = array(
         "id",
         "id_application",
         "name",
@@ -30,7 +30,7 @@ class Acl extends DbObj
         "group_default"
     );
     
-    var $id_fields = array(
+    public $id_fields = array(
         "id"
     );
     public $id;
@@ -39,9 +39,9 @@ class Acl extends DbObj
     public $grant_level;
     public $description;
     public $group_default;
-    var $dbtable = "acl";
+    public $dbtable = "acl";
     
-    var $sqlcreate = '
+    public $sqlcreate = '
 create table acl (id int not null,
                   id_application int not null,
                   name text not null,
@@ -54,7 +54,7 @@ create index acl_idx3 on acl(name);
 create sequence SEQ_ID_ACL;
                  ';
     
-    function Set($name, $id_app)
+    public function Set($name, $id_app)
     {
         $query = new QueryDb($this->dbaccess, "Acl");
         $query->basic_elem->sup_where = array(
@@ -71,25 +71,29 @@ create sequence SEQ_ID_ACL;
         return true;
     }
     
-    function Complete()
+    public function Complete()
     {
     }
     
-    function PreInsert()
+    public function PreInsert()
     {
-        if ($this->Exists($this->name, $this->id_application)) return "Acl {$this->name} already exists...";
+        if ($this->Exists($this->name, $this->id_application)) {
+            return "Acl {$this->name} already exists...";
+        }
         $msg_res = $this->exec_query("select nextval ('seq_id_acl')");
         $arr = $this->fetch_array(0);
         $this->id = $arr["nextval"];
         return '';
     }
-    function PreUpdate()
+    public function PreUpdate()
     {
-        if ($this->dbid == - 1) return FALSE;
+        if ($this->dbid == - 1) {
+            return false;
+        }
         return '';
     }
     
-    function Exists($name, $id_app)
+    public function Exists($name, $id_app)
     {
         $query = new QueryDb($this->dbaccess, "Acl");
         $query->basic_elem->sup_where = array(
@@ -100,7 +104,7 @@ create sequence SEQ_ID_ACL;
         return ($query->nb > 0);
     }
     
-    function DelAppAcl($id)
+    public function DelAppAcl($id)
     {
         $query = new QueryDb($this->dbaccess, "Acl");
         $query->basic_elem->sup_where = array(
@@ -120,7 +124,7 @@ create sequence SEQ_ID_ACL;
         $permission->DelAppPerm($id);
     }
     
-    function Init($app, $app_acl, $update = FALSE)
+    public function Init($app, $app_acl, $update = false)
     {
         if (sizeof($app_acl) == 0) {
             $this->log->debug("No acl available");
@@ -128,8 +132,12 @@ create sequence SEQ_ID_ACL;
         }
         
         $default_grant_level_found = false; // indicate user default set explicitly
-        if (isset($app_acl[0]["grant_level"])) $oldacl = true; // for old ACL description (for compatibility with old application)
-        else $oldacl = false;
+        if (isset($app_acl[0]["grant_level"])) {
+            $oldacl = true;
+        } // for old ACL description (for compatibility with old application)
+        else {
+            $oldacl = false;
+        }
         // read init file
         $default_user_acl = array(); // default acl ids
         $default_acl = false; // to update default acl id
@@ -266,13 +274,10 @@ create sequence SEQ_ID_ACL;
         //       }
         //     }
         //   }
-        
-        
     }
     // get default ACL for an application
-    function getDefaultAcls($idapp)
+    public function getDefaultAcls($idapp)
     {
-        
         $aclids = array();
         $query = new QueryDb($this->dbaccess, "Acl");
         $query->AddQuery("id_application = $idapp");
@@ -285,13 +290,13 @@ create sequence SEQ_ID_ACL;
         return $aclids;
     }
     
-    function getAclApplication($idapp)
+    public function getAclApplication($idapp)
     {
-        
         $query = new QueryDb($this->dbaccess, "Acl");
         $query->AddQuery("id_application = $idapp");
-        if ($qacl = $query->Query()) return $qacl;
+        if ($qacl = $query->Query()) {
+            return $qacl;
+        }
         return 0;
     }
 }
-?>

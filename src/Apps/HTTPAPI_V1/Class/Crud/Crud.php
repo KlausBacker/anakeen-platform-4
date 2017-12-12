@@ -73,9 +73,8 @@ abstract class Crud
      * @return mixed data of process
      * @throws Exception
      */
-    public function execute($method, array & $messages = array() , &$httpStatus = "")
+    public function execute($method, array & $messages = array(), &$httpStatus = "")
     {
-        
         switch ($method) {
             case "CREATE":
                 $data = $this->create();
@@ -201,12 +200,11 @@ abstract class Crud
         $applicationId = null;
         try {
             simpleQuery($dbAccess, "select id from application where name='HTTPAPI_V1';", $applicationId, true, true, true);
-        }
-        catch(Exception $exception) {
+        } catch (Exception $exception) {
             throw new Exception("CRUD0104", "Unkown application");
         }
 
-          switch ($method) {
+        switch ($method) {
               case "CREATE":
                   $aclName="POST";
                   break;

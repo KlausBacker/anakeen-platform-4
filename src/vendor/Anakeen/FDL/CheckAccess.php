@@ -47,8 +47,11 @@ class CheckAccess extends CheckData
         
         for ($i = 3; $i < count($data); $i++) {
             if (!empty($data[$i])) {
-                if ($data[$i][0] == '-') $this->acls[] = substr($data[$i], 1);
-                else $this->acls[] = $data[$i];
+                if ($data[$i][0] == '-') {
+                    $this->acls[] = substr($data[$i], 1);
+                } else {
+                    $this->acls[] = $data[$i];
+                }
             }
         }
         
@@ -86,7 +89,7 @@ class CheckAccess extends CheckData
                 $findUser = User::getDisplayName($this->userId);
             } else {
                 // search document
-                $tu = getTDoc(getDbAccess() , $this->userId);
+                $tu = getTDoc(getDbAccess(), $this->userId);
                 if ($tu) {
                     $findUser = ($tu["us_whatid"] != '');
                 }

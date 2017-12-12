@@ -13,7 +13,6 @@ $usage->verify();
  */
 $handlerCode = '';
 if ($handlerName != "SessionHandler") {
-    
     if (!class_exists($handlerName)) {
         $action->exitError(sprintf("class handler %s not found", $handlerName));
     }
@@ -46,4 +45,3 @@ if ($handlerName != "SessionHandler") {
     file_put_contents("config/sessionHandler.php", $handlerCode);
     printf("Reset config/sessionHandler.php Done.\n");
 }
-

@@ -36,7 +36,7 @@ class FormDate
     // This class is used to produce HTML/JS code when you want to
     // create a separate window which exchange values with its parent
     // window (for instance an edit/update window or a query window)
-    var $formdate = '
+    public $formdate = '
 <input type="hidden" name="[NOM_DATE]" value="[VALEUR_DATE]">
 <small>
 <select size="1" 
@@ -62,7 +62,7 @@ class FormDate
 </select>
 ';
     
-    function FormDate($time, $name)
+    public function FormDate($time, $name)
     {
         $this->date = $time;
         $this->name = $name;
@@ -71,7 +71,7 @@ class FormDate
         $this->annee = strftime("%Y", $time);
     }
     
-    function Get()
+    public function Get()
     {
         $lay = new Layout("", "", $this->formdate);
         $lay->Set("NOM_DATE", $this->name);
@@ -91,7 +91,8 @@ class FormDate
         // Mois
         for ($d = 1; $d <= 12; $d++) {
             $mois = mktime(0, 0, 0, $d, 1, $this->annee);
-            $tab_mois[$d]["mois"] = strftime("%B", $mois);;
+            $tab_mois[$d]["mois"] = strftime("%B", $mois);
+            ;
             $tab_mois[$d]["val_mois"] = $d;
             if ($d == $this->mois) {
                 $tab_mois[$d]["selected_mois"] = "selected";
@@ -145,6 +146,4 @@ class FormDate
         return ($lay->gen());
     }
     // CLASS END
-    
 }
-?>

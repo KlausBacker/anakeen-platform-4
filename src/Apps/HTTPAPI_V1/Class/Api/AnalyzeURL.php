@@ -8,8 +8,7 @@ namespace Dcp\HttpApi\V1\Api;
 
 class AnalyzeURL
 {
-    
-    static public function getBaseURL()
+    public static function getBaseURL()
     {
         $coreURL = \ApplicationParameterManager::getScopedParameterValue("CORE_URLINDEX");
         $components = parse_url($coreURL);
@@ -57,7 +56,7 @@ class AnalyzeURL
         return '/';
     }
     
-    static protected function unparseURL($parsed_url)
+    protected static function unparseURL($parsed_url)
     {
         $scheme = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
         $host = isset($parsed_url['host']) ? $parsed_url['host'] : '';

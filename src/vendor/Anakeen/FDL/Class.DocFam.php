@@ -15,16 +15,16 @@
 
 use \Dcp\Core\DbManager;
 use \Dcp\Core\DocManager;
+
 /**
  * @class DocFam
  * @method  createProfileAttribute
  */
 class DocFam extends PFam
 {
+    public $dbtable = "docfam";
     
-    var $dbtable = "docfam";
-    
-    var $sqlcreate = "
+    public $sqlcreate = "
 create table docfam (cprofid int , 
                      dfldid int, 
                      cfldid int, 
@@ -40,13 +40,13 @@ create table docfam (cprofid int ,
                      tagable text,
                      configuration text) inherits (doc);
 create unique index idx_idfam on docfam(id);";
-    var $sqltcreate = array();
+    public $sqltcreate = array();
     
-    var $defDoctype = 'C';
+    public $defDoctype = 'C';
     
-    var $defaultview = "FDL:VIEWFAMCARD";
+    public $defaultview = "FDL:VIEWFAMCARD";
     
-    var $attr;
+    public $attr;
     public $specialmenu = "FDL:POPUPFAMDETAIL";
     public $addfields = array(
         "dfldid",
@@ -106,17 +106,18 @@ create unique index idx_idfam on docfam(id);";
      */
     private $FDLGEN_HasBeenLoaded = false;
     
-    function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0, $include = true)
+    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0, $include = true)
     {
-        
-        foreach ($this->addfields as $f) $this->fields[$f] = $f;
+        foreach ($this->addfields as $f) {
+            $this->fields[$f] = $f;
+        }
         // specials characteristics R : revised on each modification
         parent::__construct($dbaccess, $id, $res, $dbid);
         $this->doctype = 'C';
         if ($include && ($this->id > 0) && ($this->isAffected())) {
             $adoc = "Doc" . $this->id;
             $GEN = getGen($dbaccess);
-            if (include_once ("FDL$GEN/Class.$adoc.php")) {
+            if (include_once("FDL$GEN/Class.$adoc.php")) {
                 $adoc = "ADoc" . $this->id;
                 $this->attributes = new $adoc();
                 $this->attributes->orderAttributes();
@@ -133,7 +134,7 @@ create unique index idx_idfam on docfam(id);";
         $this->_xtparam = null;
     }
     
-    function preDocDelete()
+    public function preDocDelete()
     {
         return _("cannot delete family");
     }
@@ -142,38 +143,54 @@ create unique index idx_idfam on docfam(id);";
      * based on name
      * @return string
      */
-    function getCustomTitle()
+    public function getCustomTitle()
     {
         $r = $this->name . '#title';
         $i = _($r);
-        if ($i != $r) return $i;
+        if ($i != $r) {
+            return $i;
+        }
         return $this->title;
     }
     
-    static function getLangTitle($values)
+    public static function getLangTitle($values)
     {
         $r = $values["name"] . '#title';
         $i = _($r);
-        if ($i != $r) return $i;
+        if ($i != $r) {
+            return $i;
+        }
         return $values["title"];
     }
     
-    function postStore()
+    public function postStore()
     {
-        include_once ("FDL/Lib.Attr.php");
+        include_once("FDL/Lib.Attr.php");
         return refreshPhpPgDoc($this->dbaccess, $this->id);
     }
     
-    function preCreated()
+    public function preCreated()
     {
         $cdoc = $this->getFamilyDocument();
         if ($cdoc->isAlive()) {
-            if (!$this->ccvid) $this->ccvid = $cdoc->ccvid;
-            if (!$this->cprofid) $this->cprofid = $cdoc->cprofid;
-            if (!$this->defval) $this->defval = $cdoc->defval;
-            if (!$this->schar) $this->schar = $cdoc->schar;
-            if (!$this->usefor) $this->usefor = $cdoc->usefor;
-            if (!$this->tagable) $this->tagable = $cdoc->tagable;
+            if (!$this->ccvid) {
+                $this->ccvid = $cdoc->ccvid;
+            }
+            if (!$this->cprofid) {
+                $this->cprofid = $cdoc->cprofid;
+            }
+            if (!$this->defval) {
+                $this->defval = $cdoc->defval;
+            }
+            if (!$this->schar) {
+                $this->schar = $cdoc->schar;
+            }
+            if (!$this->usefor) {
+                $this->usefor = $cdoc->usefor;
+            }
+            if (!$this->tagable) {
+                $this->tagable = $cdoc->tagable;
+            }
         }
     }
     /**
@@ -181,7 +198,7 @@ create unique index idx_idfam on docfam(id);";
      * @param array $extra
      * @return string
      */
-    function postImport(array $extra = array())
+    public function postImport(array $extra = array())
     {
         $err = '';
         if (strstr($this->usefor, 'W')) {
@@ -213,11 +230,13 @@ create unique index idx_idfam on docfam(id);";
      * @throws \Dcp\Core\Exception
      * @throws \Dcp\Db\Exception
      */
-    function viewDefaultValues(
+    public function viewDefaultValues(
     /* @noinspection PhpUnusedParameterInspection */
-    $target = "_self", $ulink = true, $abstract = false)
-    {
-        $d= DocManager::createDocument( $this->id, false);
+    $target = "_self",
+        $ulink = true,
+        $abstract = false
+    ) {
+        $d= DocManager::createDocument($this->id, false);
         $defValues = $this->getDefValues();
         $ownDefValues = $this->explodeX($this->defval);
         $ownParValues = $this->explodeX($this->param);
@@ -226,7 +245,9 @@ create unique index idx_idfam on docfam(id);";
         $tp = $this->getParamAttributes();
         $pPowns = $this->getOwnParams();
         foreach ($tp as $aid => & $oa) {
-            if ($oa->type == "array") continue;
+            if ($oa->type == "array") {
+                continue;
+            }
             $tDefPar[$aid] = array(
                 "aid" => $aid,
                 "alabel" => $oa->getLabel() ,
@@ -252,7 +273,9 @@ create unique index idx_idfam on docfam(id);";
                     if (!empty($ownParValues[$aid])) {
                         $ownValue = $ownParValues[$aid];
                     } else {
-                        if ($ownValue) $ownValue.= ' <em>(' . _("default value") . ")</em>";
+                        if ($ownValue) {
+                            $ownValue.= ' <em>(' . _("default value") . ")</em>";
+                        }
                     }
                 }
             } else {
@@ -261,7 +284,6 @@ create unique index idx_idfam on docfam(id);";
             $inhValue = '';
             if ($parent) {
                 if ($oa->usefor == 'Q') {
-                    
                     $inhValue = $parent->getParameterRawValue($aid);
                 } else {
                     $inhValue = $parent->getDefValue($aid);
@@ -275,7 +297,6 @@ create unique index idx_idfam on docfam(id);";
                 "defresult" => $this->getHtmlValue($oa, $value)
             );
             if ($oa && $oa->usefor == 'Q') {
-                
                 $tDefPar[$aid] = $t;
             } else {
                 $tDefVal[$aid] = $t;
@@ -300,10 +321,12 @@ create unique index idx_idfam on docfam(id);";
      * @throws \Dcp\Core\Exception
      * @throws \Dcp\Db\Exception
      */
-    function viewfamcard(
+    public function viewfamcard(
     /* @noinspection PhpUnusedParameterInspection */
-    $target = "_self", $ulink = true, $abstract = false)
-    {
+    $target = "_self",
+        $ulink = true,
+        $abstract = false
+    ) {
         // -----------------------------------
         
         /** @var Action $action */
@@ -316,7 +339,6 @@ create unique index idx_idfam on docfam(id);";
         $this->lay->set("canInitProfil", $action->HasPermission("FREEDOM_ADMIN", "FREEDOM"));
         
         foreach ($this->fields as $k => $v) {
-            
             $this->lay->set("$v", $this->$v ? $this->$v : false);
             switch ($v) {
                 case 'cprofid':
@@ -452,7 +474,6 @@ create unique index idx_idfam on docfam(id);";
      */
     final public function getParameterRawValue($idp, $def = "")
     {
-        
         $pValue = $this->getXValue("param", $idp);
         if ($pValue === '') {
             $defsys = $this->getDefValue($idp);
@@ -476,7 +497,6 @@ create unique index idx_idfam on docfam(id);";
      */
     protected function getParameterFamilyRawValue($idp, $def)
     {
-        
         return $this->getParameterRawValue($idp, $def);
     }
 
@@ -486,7 +506,7 @@ create unique index idx_idfam on docfam(id);";
      * @return array string parameter value
      * @throws \Dcp\Db\Exception
      */
-    function getParams()
+    public function getParams()
     {
         return $this->getXValues("param");
     }
@@ -494,7 +514,7 @@ create unique index idx_idfam on docfam(id);";
      * return own family parameters values - no serach in parent families
      * @return array string parameter value
      */
-    function getOwnParams()
+    public function getOwnParams()
     {
         return $this->explodeX($this->param);
     }
@@ -514,9 +534,14 @@ create unique index idx_idfam on docfam(id);";
     public function getParamTValue($idAttr, $def = "", $index = - 1)
     {
         $t = $this->rawValueToArray($this->getParameterRawValue("$idAttr", $def));
-        if ($index == - 1) return $t;
-        if (isset($t[$index])) return $t[$index];
-        else return $def;
+        if ($index == - 1) {
+            return $t;
+        }
+        if (isset($t[$index])) {
+            return $t[$index];
+        } else {
+            return $def;
+        }
     }
     /**
      * set family parameter value
@@ -535,7 +560,7 @@ create unique index idx_idfam on docfam(id);";
         if ($check) {
             $oa = $this->getAttribute($idp); // never use getAttribute if not check
             if (!$oa) {
-                return ErrorCode::getError('DOC0120', $idp, $this->getTitle() , $this->name);
+                return ErrorCode::getError('DOC0120', $idp, $this->getTitle(), $this->name);
             }
         }
         
@@ -548,12 +573,18 @@ create unique index idx_idfam on docfam(id);";
         }
         if (!empty($val) && $oa && ($oa->type == "date" || $oa->type == "timestamp")) {
             $err = $this->convertDateToiso($oa, $val);
-            if ($err) return $err;
+            if ($err) {
+                return $err;
+            }
         }
         
         $err = '';
-        if ($this->isComplete()) $err = $this->checkSyntax($idp, $val);
-        if (!$err) $this->setXValue("param", strtolower($idp) , $val);
+        if ($this->isComplete()) {
+            $err = $this->checkSyntax($idp, $val);
+        }
+        if (!$err) {
+            $this->setXValue("param", strtolower($idp), $val);
+        }
         return $err;
     }
     
@@ -598,15 +629,20 @@ create unique index idx_idfam on docfam(id);";
          * @var NormalAttribute $oa
          */
         $oa = $this->getAttribute($aid);
-        if (!$oa) return ''; // cannot test in this case
+        if (!$oa) {
+            return '';
+        } // cannot test in this case
         $err = '';
         $type = $oa->type;
         if ($oa->isMultiple()) {
             $val = explode("\n", $val);
         }
         
-        if (is_array($val)) $vals = $val;
-        else $vals[] = $val;
+        if (is_array($val)) {
+            $vals = $val;
+        } else {
+            $vals[] = $val;
+        }
         
         foreach ($vals as $ka => $av) {
             if (!self::seemsMethod($av)) {
@@ -614,17 +650,17 @@ create unique index idx_idfam on docfam(id);";
                     case 'money':
                     case 'double':
                         if (!empty($av) && (!is_numeric($av))) {
-                            $err = sprintf(_("value [%s] is not a number") , $av);
+                            $err = sprintf(_("value [%s] is not a number"), $av);
                         }
                         break;
 
                     case 'int':
                         if (!empty($av)) {
                             if ((!is_numeric($av))) {
-                                $err = sprintf(_("value [%s] is not a number") , $av);
+                                $err = sprintf(_("value [%s] is not a number"), $av);
                             }
                             if (!$err && (!ctype_digit($av))) {
-                                $err = sprintf(_("value [%s] is not a integer") , $av);
+                                $err = sprintf(_("value [%s] is not a integer"), $av);
                             }
                         }
                         break;
@@ -634,7 +670,7 @@ create unique index idx_idfam on docfam(id);";
                     if ($oa->phpconstraint) {
                         //print_r2($aid."[$ka]".$oa->phpconstraint);
                         $map[$aid] = $av;
-                        $err = $this->applyMethod($oa->phpconstraint, null, $oa->isMultiple() ? $ka : -1, array() , $map);
+                        $err = $this->applyMethod($oa->phpconstraint, null, $oa->isMultiple() ? $ka : -1, array(), $map);
                     }
                 }
             }
@@ -675,7 +711,7 @@ create unique index idx_idfam on docfam(id);";
      *
      * @return array string default value
      */
-    function getOwnDefValues()
+    public function getOwnDefValues()
     {
         return $this->explodeX($this->defval);
     }
@@ -687,7 +723,7 @@ create unique index idx_idfam on docfam(id);";
      * @param bool $check
      * @return string error message
      */
-    function setDefValue($idp, $val, $check = true)
+    public function setDefValue($idp, $val, $check = true)
     {
         $idp = strtolower($idp);
         $err = '';
@@ -695,7 +731,7 @@ create unique index idx_idfam on docfam(id);";
         if ($check) {
             $oa = $this->getAttribute($idp);
             if (!$oa) {
-                return ErrorCode::getError('DOC0123', $idp, $this->getTitle() , $this->name);
+                return ErrorCode::getError('DOC0123', $idp, $this->getTitle(), $this->name);
             }
         }
         if (!empty($val) && $oa && ($oa->type == "date" || $oa->type == "timestamp")) {
@@ -716,15 +752,21 @@ create unique index idx_idfam on docfam(id);";
      * @return string default value
      * @throws \Dcp\Db\Exception
      */
-    function getXValue($X, $idp, $def = "")
+    public function getXValue($X, $idp, $def = "")
     {
         $tval = "_xt$X";
-        if (!isset($this->$tval)) $this->getXValues($X);
+        if (!isset($this->$tval)) {
+            $this->getXValues($X);
+        }
         
         $tval2 = $this->$tval;
         $v = isset($tval2[strtolower($idp) ]) ? $tval2[strtolower($idp) ] : '';
-        if ($v == "-") return $def;
-        if ($v !== "") return $v;
+        if ($v == "-") {
+            return $def;
+        }
+        if ($v !== "") {
+            return $v;
+        }
         return $def;
     }
     /**
@@ -737,10 +779,11 @@ create unique index idx_idfam on docfam(id);";
         $txval = array();
         $tdefattr = explode("][", substr($sx, 1, strlen($sx) - 2));
         foreach ($tdefattr as $k => $v) {
-            
             $aid = substr($v, 0, strpos($v, '|'));
-            $dval = substr(strstr($v, '|') , 1);
-            if ($aid) $txval[$aid] = $dval;
+            $dval = substr(strstr($v, '|'), 1);
+            if ($aid) {
+                $txval[$aid] = $dval;
+            }
         }
         return $txval;
     }
@@ -753,25 +796,29 @@ create unique index idx_idfam on docfam(id);";
      * @return array string default value
      * @throws \Dcp\Db\Exception
      */
-    function getXValues($X)
+    public function getXValues($X)
     {
         $Xval = "_xt$X";
         $defval = $this->$X;
         
-        if ($this->$Xval) return $this->$Xval;
+        if ($this->$Xval) {
+            return $this->$Xval;
+        }
         
         $XS[$this->id] = $defval;
         $this->$Xval = array();
         $inhIds = array();
         if ($this->attributes !== null && isset($this->attributes->fromids) && is_array($this->attributes->fromids)) {
-            $sql = sprintf("select id,%s from docfam where id in (%s)", pg_escape_string($X) , implode(',', $this->attributes->fromids));
+            $sql = sprintf("select id,%s from docfam where id in (%s)", pg_escape_string($X), implode(',', $this->attributes->fromids));
             DbManager::query($sql, $rx, false, false);
             foreach ($rx as $r) {
                 $XS[$r["id"]] = $r[$X];
             }
             $inhIds = array_values($this->attributes->fromids);
         }
-        if (!in_array($this->id, $inhIds)) $inhIds[] = $this->id;
+        if (!in_array($this->id, $inhIds)) {
+            $inhIds[] = $this->id;
+        }
         
         $txval = array();
         
@@ -797,8 +844,11 @@ create unique index idx_idfam on docfam(id);";
         $oa1 = $this->getAttribute($a1);
         $oa2 = $this->getAttribute($a2);
         if ($oa1 && $oa2) {
-            if ($oa1->ordered > $oa2->ordered) return 1;
-            else if ($oa1->ordered < $oa2->ordered) return -1;
+            if ($oa1->ordered > $oa2->ordered) {
+                return 1;
+            } elseif ($oa1->ordered < $oa2->ordered) {
+                return -1;
+            }
         }
         return 0;
     }
@@ -810,10 +860,12 @@ create unique index idx_idfam on docfam(id);";
      * @param string $val value of the default
      * @return void
      */
-    function setXValue($X, $idp, $val)
+    public function setXValue($X, $idp, $val)
     {
         $tval = "_xt$X";
-        if (is_array($val)) $val = $this->arrayToRawValue($val);
+        if (is_array($val)) {
+            $val = $this->arrayToRawValue($val);
+        }
         
         $txval = $this->explodeX($this->$X);
         
@@ -822,7 +874,9 @@ create unique index idx_idfam on docfam(id);";
         
         $tdefattr = array();
         foreach ($txval as $k => $v) {
-            if ($k && ($v !== '')) $tdefattr[] = "$k|$v";
+            if ($k && ($v !== '')) {
+                $tdefattr[] = "$k|$v";
+            }
         }
         $this->$tval = null;
         $this->$X = "[" . implode("][", $tdefattr) . "]";
@@ -857,7 +911,7 @@ create unique index idx_idfam on docfam(id);";
         return '';
     }
     
-    function saveVaultFile($vid, $stream)
+    public function saveVaultFile($vid, $stream)
     {
         $err = '';
         if (is_resource($stream) && get_resource_type($stream) == "stream") {
@@ -875,7 +929,9 @@ create unique index idx_idfam on docfam(id);";
                 $vf = newFreeVaultFile($this->dbaccess);
                 $info = null;
                 $err = $vf->Retrieve($vid, $info);
-                if ($err == "") $err = $vf->Save($filename, false, $vid);
+                if ($err == "") {
+                    $err = $vf->Save($filename, false, $vid);
+                }
                 unlink($filename);
             }
             return $err;
@@ -885,7 +941,7 @@ create unique index idx_idfam on docfam(id);";
     /**
      * read xml configuration file
      */
-    function getConfiguration()
+    public function getConfiguration()
     {
         if (!$this->_configuration) {
             if ($this->name) {
@@ -921,7 +977,7 @@ create unique index idx_idfam on docfam(id);";
      * @param bool $linkInclude if false fdl.xsd is write inside else use an include directive
      * @return string
      */
-    function getXmlSchema($linkInclude = false)
+    public function getXmlSchema($linkInclude = false)
     {
         $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/family_schema.xml", DEFAULT_PUBDIR));
         $lay->set("famname", strtolower($this->name));
@@ -951,7 +1007,9 @@ create unique index idx_idfam on docfam(id);";
         $tax = array();
         
         foreach ($la as $k => $v) {
-            if ((!$v) || ($v->getOption("autotitle") == "yes") || ($v->usefor == 'Q')) unset($la[$k]);
+            if ((!$v) || ($v->getOption("autotitle") == "yes") || ($v->usefor == 'Q')) {
+                unset($la[$k]);
+            }
         }
         foreach ($la as $k => $v) {
             if (($v->id != Adoc::HIDDENFIELD) && ($v->type == 'frame' || $v->type == "tab") && ((!$v->fieldSet) || $v->fieldSet->id == Adoc::HIDDENFIELD)) {

@@ -34,14 +34,14 @@
 // ---------------------------------------------------------------------------
 //  $Id: Class.ParamDef.php,v 1.4 2005/10/31 11:52:17 eric Exp $
 //
-include_once ('Class.Log.php');
-include_once ('Class.DbObj.php');
+include_once('Class.Log.php');
+include_once('Class.DbObj.php');
 
 $CLASS_PARAMDEF_PHP = '$Id: Class.ParamDef.php,v 1.4 2005/10/31 11:52:17 eric Exp $';
 
 class ParamDef extends DbObj
 {
-    var $fields = array(
+    public $fields = array(
         "name",
         "isuser",
         "isstyle",
@@ -58,14 +58,14 @@ class ParamDef extends DbObj
     public $descr;
     public $kind;
     
-    var $id_fields = array(
+    public $id_fields = array(
         "name",
         "appid"
     );
     
-    var $dbtable = "paramdef";
+    public $dbtable = "paramdef";
     
-    var $sqlcreate = '
+    public $sqlcreate = '
       create table paramdef (
               name    text,
               isuser   varchar(1),
@@ -86,14 +86,14 @@ class ParamDef extends DbObj
     {
         $d = null;
         if ($appid == null) {
-            simpleQuery('', sprintf("select * from paramdef where name='%s'", pg_escape_string($name)) , $paramDefValues, false, true);
+            simpleQuery('', sprintf("select * from paramdef where name='%s'", pg_escape_string($name)), $paramDefValues, false, true);
         } else {
             $sql = <<< 'SQL'
             SELECT * from paramdef
             where name='%s'
               and (isglob='Y' or appid=%d or appid=1 or appid=(select id from application where name=(select childof from application where id=%d)));
 SQL;
-            $sqlp = sprintf($sql, pg_escape_string($name) , $appid, $appid);
+            $sqlp = sprintf($sql, pg_escape_string($name), $appid, $appid);
             simpleQuery('', $sqlp, $paramDefValues, false, true);
         }
         if (!empty($paramDefValues)) {
@@ -103,4 +103,3 @@ SQL;
         return $d;
     }
 }
-?>

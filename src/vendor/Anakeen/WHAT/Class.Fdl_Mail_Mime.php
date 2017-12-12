@@ -24,7 +24,7 @@ class Fdl_Mail_mime extends Mail_mime
      * @return mixed true on success or PEAR_Error object
      * @access public
      */
-    function addAttachment($file, $c_type = 'application/octet-stream', $name = '', $isfilename = true, $encoding = 'base64', $cid = '', $charset = "UTF-8", $language = '', $location = '', $n_encoding = null, $f_encoding = null, $description = '')
+    public function addAttachment($file, $c_type = 'application/octet-stream', $name = '', $isfilename = true, $encoding = 'base64', $cid = '', $charset = "UTF-8", $language = '', $location = '', $n_encoding = null, $f_encoding = null, $description = '')
     {
         $filedata = ($isfilename === true) ? $this->_file2str($file) : $file;
         if ($isfilename === true) {
@@ -50,7 +50,7 @@ class Fdl_Mail_mime extends Mail_mime
         return true;
     }
     
-    function addAttachmentInline($file, $c_type = 'application/octet-stream', $name = '', $isfilename = true, $encoding = 'base64', $cid = '', $charset = "UTF-8")
+    public function addAttachmentInline($file, $c_type = 'application/octet-stream', $name = '', $isfilename = true, $encoding = 'base64', $cid = '', $charset = "UTF-8")
     {
         $filedata = ($isfilename === true) ? $this->_file2str($file) : $file;
         if ($isfilename === true) {
@@ -86,7 +86,7 @@ class Fdl_Mail_mime extends Mail_mime
      * @return Fdl_Mail_mimePart  The image mimePart object
      * @access private
      */
-    function &_addAttachmentPart(&$obj, $value)
+    public function &_addAttachmentPart(&$obj, $value)
     {
         $params['content_type'] = $value['c_type'];
         $params['encoding'] = $value['encoding'];
@@ -118,7 +118,7 @@ class Fdl_Mail_mime extends Mail_mime
         
         $obj->addSubpart($value['body'], $params);
     }
-    function __construct($crlf = "\r\n")
+    public function __construct($crlf = "\r\n")
     {
         parent::Mail_mime($crlf);
         $this->_build_params['html_charset'] = 'UTF-8';
@@ -129,9 +129,9 @@ class Fdl_Mail_mime extends Mail_mime
 
 class Fdl_Mail_mimePart extends Mail_mimePart
 {
-    var $_filename = '';
+    public $_filename = '';
     
-    function Fdl_Mail_mimePart($body = '', $params = array())
+    public function Fdl_Mail_mimePart($body = '', $params = array())
     {
         // Keep track of the unaltered/unencoded filename for further use
         if (isset($params['filename'])) {
@@ -147,7 +147,7 @@ class Fdl_Mail_mimePart extends Mail_mimePart
      * @param array $params
      * @return Fdl_Mail_mimePart
      */
-    function &addSubpart($body, $params)
+    public function &addSubpart($body, $params)
     {
         if (!property_exists('Mail_mimePart', '_body_file') && isset($params['body_file'])) {
             // Mail_mimePart < 1.6.0 has no support for passing a file with $param['body_file']
@@ -158,7 +158,7 @@ class Fdl_Mail_mimePart extends Mail_mimePart
         return $this->_subparts[count($this->_subparts) - 1];
     }
     
-    function setBodyFile($file)
+    public function setBodyFile($file)
     {
         if (!property_Exists('Mail_mimePart', '_body_file')) {
             // Mail_mimePart < 1.6.0

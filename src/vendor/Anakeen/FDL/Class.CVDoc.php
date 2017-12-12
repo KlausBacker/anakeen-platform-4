@@ -12,10 +12,12 @@
 /**
  */
 namespace Dcp\Core;
+
 /**
  * Control view Class
  */
 use \Dcp\AttributeIdentifiers\Cvdoc as MyAttributes;
+
 class CVDoc extends \Dcp\Family\Base
 {
     /**
@@ -24,17 +26,17 @@ class CVDoc extends \Dcp\Family\Base
      *
      * @var array
      */
-    var $acls = array(
+    public $acls = array(
         "view",
         "edit",
         "delete"
     );
     
-    var $nbId = 0;
+    public $nbId = 0;
     
-    var $usefor = 'SW';
-    var $defDoctype = 'P';
-    var $attrPrefix = "CVI"; // prefix attribute
+    public $usefor = 'SW';
+    public $defDoctype = 'P';
+    public $attrPrefix = "CVI"; // prefix attribute
     
     /**
      * @var \Doc instance document
@@ -45,10 +47,12 @@ class CVDoc extends \Dcp\Family\Base
      */
     private $pdoc = null;
     // --------------------------------------------------------------------
-    function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
+    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         // first construct acl array
-        if (isset($this->fromid)) $this->defProfFamId = $this->fromid; // it's a profil itself
+        if (isset($this->fromid)) {
+            $this->defProfFamId = $this->fromid;
+        } // it's a profil itself
         // don't use Doc constructor because it could call this constructor => infinitive loop
         \DocCtrl::__construct($dbaccess, $id, $res, $dbid);
         
@@ -64,17 +68,16 @@ class CVDoc extends \Dcp\Family\Base
         $menus = $this->getMultipleRawValues(MyAttributes::cv_menu);
         $vLabel = $this->getMultipleRawValues(MyAttributes::cv_lview);
         foreach ($menus as $k => $menuId) {
-            
             if ($menuId) {
                 $menuLabel = $this->getLocaleViewMenu($ids[$k]);
                 
                 if ($menuLabel && $menuLabel !== $menuId) {
-                    $this->setValue(MyAttributes::cv_menu, sprintf("%s (%s)", $menuId, $menuLabel) , $k);
+                    $this->setValue(MyAttributes::cv_menu, sprintf("%s (%s)", $menuId, $menuLabel), $k);
                 }
             }
             $label = $this->getLocaleViewLabel($ids[$k]);
             if ($vLabel[$k] && $vLabel[$k] !== $label) {
-                $this->setValue(MyAttributes::cv_lview, sprintf("%s (%s)", $vLabel[$k], $label) , $k);
+                $this->setValue(MyAttributes::cv_lview, sprintf("%s (%s)", $vLabel[$k], $label), $k);
             }
         }
         
@@ -98,7 +101,7 @@ class CVDoc extends \Dcp\Family\Base
     {
         $this->setAcls();
     }
-    function setAcls()
+    public function setAcls()
     {
         $this->extendedAcls = array();
         $ti = $this->getMultipleRawValues("CV_IDVIEW");
@@ -106,8 +109,11 @@ class CVDoc extends \Dcp\Family\Base
         $tk = $this->getMultipleRawValues("CV_KVIEW");
         
         foreach ($tk as $k => $v) {
-            if ($ti[$k] == "") $cvk = "CV$k";
-            else $cvk = $ti[$k];
+            if ($ti[$k] == "") {
+                $cvk = "CV$k";
+            } else {
+                $cvk = $ti[$k];
+            }
             $this->extendedAcls[$cvk] = array(
                 "name" => $cvk,
                 "description" => $tl[$k]
@@ -117,7 +123,7 @@ class CVDoc extends \Dcp\Family\Base
         }
     }
     
-    function computeCreationViewLabel($idCreationView)
+    public function computeCreationViewLabel($idCreationView)
     {
         if ('' !== $idCreationView) {
             $viewIds = $this->getAttributeValue(MyAttributes::cv_idview);
@@ -133,7 +139,7 @@ class CVDoc extends \Dcp\Family\Base
         }
     }
     
-    function isIdValid($value)
+    public function isIdValid($value)
     {
         $err = "";
         $sug = array();
@@ -143,7 +149,7 @@ class CVDoc extends \Dcp\Family\Base
         $originals = $dc->dacls;
         
         if (!preg_match('!^[0-9a-z_-]+$!i', $value)) {
-            $err = sprintf(_("You must use only a-z, 0-9, _, - characters : \"%s\"") , $value);
+            $err = sprintf(_("You must use only a-z, 0-9, _, - characters : \"%s\""), $value);
         } elseif (array_key_exists($value, $originals)) {
             $err = _("Impossible to name a view like a control acl");
         } else {
@@ -164,7 +170,7 @@ class CVDoc extends \Dcp\Family\Base
         );
     }
     
-    function isLabelValid($value)
+    public function isLabelValid($value)
     {
         $err = '';
         $sug = array();
@@ -177,12 +183,12 @@ class CVDoc extends \Dcp\Family\Base
         );
     }
     
-    function isCreationViewValid($idCreationView, $labelCreationView, $idViews)
+    public function isCreationViewValid($idCreationView, $labelCreationView, $idViews)
     {
         $err = '';
         if ('' !== $idCreationView) {
             if (!is_array($idViews) || !in_array($idCreationView, $idViews)) {
-                $err = sprintf(___("creation view '%s' does not exists", "CVDOC") , $labelCreationView);
+                $err = sprintf(___("creation view '%s' does not exists", "CVDOC"), $labelCreationView);
             }
         }
         return $err;
@@ -192,7 +198,7 @@ class CVDoc extends \Dcp\Family\Base
      * @param $vid
      * @return array|false false if vid not found
      */
-    function getView($vid)
+    public function getView($vid)
     {
         $tv = $this->getArrayRawValues("cv_t_views");
         foreach ($tv as $v) {
@@ -218,7 +224,7 @@ class CVDoc extends \Dcp\Family\Base
             return $lkey;
         }
         $view = $this->getView($vid);
-        return isset($view["CV_LVIEW"]) ? $view["CV_LVIEW"] : sprintf(_("Unlabeled view (%s)") , $vid);
+        return isset($view["CV_LVIEW"]) ? $view["CV_LVIEW"] : sprintf(_("Unlabeled view (%s)"), $vid);
     }
     /**
      * @param string $vid view identifier
@@ -232,15 +238,14 @@ class CVDoc extends \Dcp\Family\Base
             return $lkey;
         }
         $view = $this->getView($vid);
-        return isset($view["CV_MENU"]) ? $view["CV_MENU"] : sprintf(_("Unlabeled menu (%s)") , $vid);
+        return isset($view["CV_MENU"]) ? $view["CV_MENU"] : sprintf(_("Unlabeled menu (%s)"), $vid);
     }
     
-    function getViews()
+    public function getViews()
     {
         $ti = $this->getMultipleRawValues("CV_IDVIEW");
         $tv = array();
         foreach ($ti as $k => $v) {
-            
             $tv[$v] = $this->getView($v);
         }
         return $tv;
@@ -275,22 +280,23 @@ class CVDoc extends \Dcp\Family\Base
         return $displayableViews;
     }
     
-    function preImport(array $extra = array())
+    public function preImport(array $extra = array())
     {
         return $this->verifyAllConstraints();
     }
     
-    function postStore()
+    public function postStore()
     {
-        
         $ti = $this->getMultipleRawValues("CV_IDVIEW");
         foreach ($ti as $k => $v) {
-            if ($v == "") $ti[$k] = "CV$k";
+            if ($v == "") {
+                $ti[$k] = "CV$k";
+            }
         }
         $this->setValue("CV_IDVIEW", $ti);
     }
     
-    function docControl($aclname, $strict = false)
+    public function docControl($aclname, $strict = false)
     {
         return \Doc::control($aclname, $strict);
     }
@@ -302,11 +308,12 @@ class CVDoc extends \Dcp\Family\Base
      *
      * @return string
      */
-    function control($aclname, $strict = false)
+    public function control($aclname, $strict = false)
     {
-        
         $err = $this->docControl($aclname, $strict);
-        if ($err == "") return $err; // normal case
+        if ($err == "") {
+            return $err;
+        } // normal case
         if ($this->getRawValue("DPDOC_FAMID") > 0) {
             if ($this->doc) {
                 // special control for dynamic users
@@ -315,7 +322,9 @@ class CVDoc extends \Dcp\Family\Base
                     $pdoc->doctype = "T"; // temporary
                     //	$pdoc->setValue("DPDOC_FAMID",$this->getRawValue("DPDOC_FAMID"));
                     $err = $pdoc->Add();
-                    if ($err != "") return "CVDoc::Control:" . $err; // can't create profil
+                    if ($err != "") {
+                        return "CVDoc::Control:" . $err;
+                    } // can't create profil
                     $pdoc->acls = $this->acls;
                     $pdoc->extendedAcls = $this->extendedAcls;
                     $pdoc->setProfil($this->profid, $this->doc);
@@ -329,7 +338,7 @@ class CVDoc extends \Dcp\Family\Base
         return $err;
     }
     
-    function Set(&$doc)
+    public function Set(&$doc)
     {
         if (!isset($this->doc)) {
             $this->doc = & $doc;
@@ -340,7 +349,7 @@ class CVDoc extends \Dcp\Family\Base
      * @param bool $edition if true edition view else consultation view
      * @return string[] view definition "cv_idview", "cv_mskid"
      */
-    function getPrimaryView($edition = false)
+    public function getPrimaryView($edition = false)
     {
         $view = '';
         if ($this->doc) {
@@ -350,7 +359,9 @@ class CVDoc extends \Dcp\Family\Base
                     //	   control must be done by the caller
                     $viewU = $this->getView($vidcreate); // use it first if exist
                     $view = array();
-                    foreach ($viewU as $k => $v) $view[strtolower($k) ] = $v;
+                    foreach ($viewU as $k => $v) {
+                        $view[strtolower($k) ] = $v;
+                    }
                 }
             }
             

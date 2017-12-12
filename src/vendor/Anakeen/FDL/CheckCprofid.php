@@ -20,9 +20,8 @@ class CheckCprofid extends CheckData
      * @param Doc $doc
      * @return CheckCprofid
      */
-    function check(array $data, &$doc = null)
+    public function check(array $data, &$doc = null)
     {
-        
         $this->profilName = $data[1];
         $this->doc = $doc;
         $this->checkProfil();

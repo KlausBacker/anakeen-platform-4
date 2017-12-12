@@ -8,14 +8,15 @@
  *
  */
 namespace Dcp\Core;
+
 use \Dcp\AttributeIdentifiers\Mask as myAttr;
+
 class Mask extends \Dcp\Family\Base
 {
+    public $defaultedit = "FREEDOM:EDITMASK";
+    public $defaultview = "FREEDOM:VIEWMASK";
     
-    var $defaultedit = "FREEDOM:EDITMASK";
-    var $defaultview = "FREEDOM:VIEWMASK";
-    
-    function getLabelVis()
+    public function getLabelVis()
     {
         return array(
             "-" => " ",
@@ -28,7 +29,7 @@ class Mask extends \Dcp\Family\Base
             "I" => _("invisible")
         );
     }
-    function getLabelNeed()
+    public function getLabelNeed()
     {
         return array(
             "-" => " ",
@@ -40,7 +41,7 @@ class Mask extends \Dcp\Family\Base
      * suppress unmodified attributes visibilities
      * to simplify the mask structure
      */
-    function postStore()
+    public function postStore()
     {
         $tneed = $this->getMultipleRawValues("MSK_NEEDEEDS");
         $tattrid = $this->getMultipleRawValues("MSK_ATTRIDS");
@@ -92,14 +93,13 @@ class Mask extends \Dcp\Family\Base
         }
         foreach ($mskAttrids as $mAttrid) {
             if ($mAttrid && !in_array($mAttrid, $attrids)) {
-                
                 return \ErrorCode::getError("MSK0003", $mAttrid, $fam->name, $this->name);
             }
         }
         return "";
     }
     
-    function getVisibilities()
+    public function getVisibilities()
     {
         $tvisid = $this->getMultipleRawValues("MSK_VISIBILITIES");
         $tattrid = $this->getMultipleRawValues("MSK_ATTRIDS");
@@ -113,7 +113,7 @@ class Mask extends \Dcp\Family\Base
         return $tvisibilities;
     }
     
-    function getNeedeeds()
+    public function getNeedeeds()
     {
         $tvisid = $this->getMultipleRawValues("MSK_NEEDEEDS");
         $tattrid = $this->getMultipleRawValues("MSK_ATTRIDS");
@@ -130,9 +130,8 @@ class Mask extends \Dcp\Family\Base
      * @param bool $ulink
      * @param bool $abstract
      */
-    function viewmask($target = "_self", $ulink = true, $abstract = false)
+    public function viewmask($target = "_self", $ulink = true, $abstract = false)
     {
-        
         $docid = $this->getRawValue("MSK_FAMID", 1);
         
         $tvisibilities = $this->getVisibilities();
@@ -162,8 +161,12 @@ class Mask extends \Dcp\Family\Base
             /**
              * @var $attr \NormalAttribute|\ActionAttribute
              */
-            if (!$attr->visibility) continue;
-            if ($attr->usefor == 'Q') continue;
+            if (!$attr->visibility) {
+                continue;
+            }
+            if ($attr->usefor == 'Q') {
+                continue;
+            }
             $tmask[$k]["attrname"] = $attr->getLabel();
             $tmask[$k]["type"] = $attr->type;
             $tmask[$k]["attrid"] = $attr->id;
@@ -177,7 +180,9 @@ class Mask extends \Dcp\Family\Base
             if (in_array($k, $tkey_visibilities)) {
                 $tmask[$k]["classtype"].= " directmodified";
             } elseif ($tmask[$k]["visibility"] != $tmask[$k]["mvisibility"]) {
-                if ($tmask[$k]["mvisibility"] != $labelvis[$origattr[$k]->mvisibility]) $tmask[$k]["classtype"].= " inheritmodified";
+                if ($tmask[$k]["mvisibility"] != $labelvis[$origattr[$k]->mvisibility]) {
+                    $tmask[$k]["classtype"].= " inheritmodified";
+                }
             } else {
                 $tmask[$k]["classtype"].= " notmodified";
             }
@@ -208,12 +213,19 @@ class Mask extends \Dcp\Family\Base
                 $tmask[$k]["classtype"].= " needmodified";
             }
             
-            if ($attr->fieldSet && $attr->fieldSet->id && $attr->fieldSet->id != \Adoc::HIDDENFIELD) $tmask[$k]["framelabel"] = $attr->fieldSet->getLabel();
-            else $tmask[$k]["framelabel"] = "";
-            if (!empty($attr->waction)) $tmask[$k]["framelabel"] = _("Action");
+            if ($attr->fieldSet && $attr->fieldSet->id && $attr->fieldSet->id != \Adoc::HIDDENFIELD) {
+                $tmask[$k]["framelabel"] = $attr->fieldSet->getLabel();
+            } else {
+                $tmask[$k]["framelabel"] = "";
+            }
+            if (!empty($attr->waction)) {
+                $tmask[$k]["framelabel"] = _("Action");
+            }
             
             $tmask[$k]["displayorder"] = ($attr->ordered) ? $attr->ordered : -2;
-            if ($attr->type == "menu" || $attr->type == "action") $tmask[$k]["displayorder"]+= 1000000; // at then end
+            if ($attr->type == "menu" || $attr->type == "action") {
+                $tmask[$k]["displayorder"]+= 1000000;
+            } // at then end
             if (($attr->ordered > 0) && $attr->fieldSet && $attr->fieldSet->id && $attr->fieldSet->ordered < - 1) {
                 $attr->fieldSet->ordered = $attr->ordered - 1;
                 $tmask[$attr->fieldSet->id]["displayorder"] = $attr->ordered - 1;
@@ -235,9 +247,8 @@ class Mask extends \Dcp\Family\Base
     /**
      * @templateController special edition for mask
      */
-    function editmask()
+    public function editmask()
     {
-        
         $docid = $this->getRawValue("MSK_FAMID");
         
         $this->lay->Set("docid", $docid);
@@ -290,8 +301,12 @@ class Mask extends \Dcp\Family\Base
                 /**
                  * @var $attr \NormalAttribute|\FieldSetAttribute|\ActionAttribute
                  */
-                if ($attr->usefor == "Q") continue; // not parameters
-                if ($attr->docid == 0) continue; // not parameters
+                if ($attr->usefor == "Q") {
+                    continue;
+                } // not parameters
+                if ($attr->docid == 0) {
+                    continue;
+                } // not parameters
                 $newelem[$k]["attrid"] = $attr->id;
                 $newelem[$k]["attrname"] = $attr->getLabel();
                 $newelem[$k]["type"] = strtok($attr->type, '(');
@@ -311,11 +326,16 @@ class Mask extends \Dcp\Family\Base
                 
                 if ($attr->fieldSet && $attr->fieldSet->id && $attr->fieldSet->id != \Adoc::HIDDENFIELD) {
                     $newelem[$k]["attrinfo"].= '/' . $attr->fieldSet->id;
-                    if ($attr->fieldSet->fieldSet->id && $attr->fieldSet->fieldSet->id != \Adoc::HIDDENFIELD) $newelem[$k]["attrinfo"].= '/' . $attr->fieldSet->fieldSet->id;
+                    if ($attr->fieldSet->fieldSet->id && $attr->fieldSet->fieldSet->id != \Adoc::HIDDENFIELD) {
+                        $newelem[$k]["attrinfo"].= '/' . $attr->fieldSet->fieldSet->id;
+                    }
                 }
                 
-                if (($attr->type == "array") || (strtolower(get_class($attr)) == "fieldsetattribute")) $newelem[$k]["fieldweight"] = "bold";
-                else $newelem[$k]["fieldweight"] = "";
+                if (($attr->type == "array") || (strtolower(get_class($attr)) == "fieldsetattribute")) {
+                    $newelem[$k]["fieldweight"] = "bold";
+                } else {
+                    $newelem[$k]["fieldweight"] = "";
+                }
                 
                 if ($attr->docid == $docid) {
                     $newelem[$k]["disabled"] = "";
@@ -323,9 +343,14 @@ class Mask extends \Dcp\Family\Base
                     $newelem[$k]["disabled"] = "disabled";
                 }
                 
-                if ($attr->fieldSet && $attr->fieldSet->docid > 0) $newelem[$k]["framelabel"] = $attr->fieldSet->getLabel();
-                else $newelem[$k]["framelabel"] = "";
-                if (!empty($attr->waction)) $newelem[$k]["framelabel"] = _("Action");
+                if ($attr->fieldSet && $attr->fieldSet->docid > 0) {
+                    $newelem[$k]["framelabel"] = $attr->fieldSet->getLabel();
+                } else {
+                    $newelem[$k]["framelabel"] = "";
+                }
+                if (!empty($attr->waction)) {
+                    $newelem[$k]["framelabel"] = _("Action");
+                }
                 
                 reset($selectvis);
                 foreach ($selectvis as $kopt => $opt) {
@@ -345,7 +370,9 @@ class Mask extends \Dcp\Family\Base
                     }
                 }
                 $newelem[$k]["displayorder"] = ($attr->ordered) ? $attr->ordered : -2;
-                if ($attr->type == "menu" || $attr->type == "action") $newelem[$k]["displayorder"]+= 1000000; // at then end
+                if ($attr->type == "menu" || $attr->type == "action") {
+                    $newelem[$k]["displayorder"]+= 1000000;
+                } // at then end
                 if (($attr->ordered > 0) && $attr->fieldSet && $attr->fieldSet->id && $attr->fieldSet->ordered < - 1) {
                     $attr->fieldSet->ordered = $attr->ordered - 1;
                     $newelem[$attr->fieldSet->id]["displayorder"] = $attr->ordered - 1;
@@ -378,15 +405,23 @@ class Mask extends \Dcp\Family\Base
      * @param \BasicAttribute $b
      * @return int
      */
-    static function sortnewelem($a, $b)
+    public static function sortnewelem($a, $b)
     {
         if (isset($a["displayorder"]) && isset($b["displayorder"])) {
-            if ($a["displayorder"] == $b["displayorder"]) return 0;
-            if ($a["displayorder"] > $b["displayorder"]) return 1;
+            if ($a["displayorder"] == $b["displayorder"]) {
+                return 0;
+            }
+            if ($a["displayorder"] > $b["displayorder"]) {
+                return 1;
+            }
             return -1;
         }
-        if (isset($a["displayorder"])) return 1;
-        if (isset($b["displayorder"])) return -1;
+        if (isset($a["displayorder"])) {
+            return 1;
+        }
+        if (isset($b["displayorder"])) {
+            return -1;
+        }
         return 0;
     }
 }

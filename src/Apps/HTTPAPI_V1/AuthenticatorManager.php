@@ -5,7 +5,6 @@ use Dcp\HttpApi\V1\Api\Exception;
 
 class AuthenticatorManager extends \AuthenticatorManager
 {
-    
     protected static $authType;
     
     protected static function getAuthenticatorClass($authtype = null, $provider = \Authenticator::nullProvider)
@@ -133,4 +132,3 @@ class AuthenticatorManager extends \AuthenticatorManager
         return $token;
     }
 }
-

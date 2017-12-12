@@ -15,11 +15,10 @@
  */
 /**
  */
-include_once ('WHAT/Class.Authenticator.php');
+include_once('WHAT/Class.Authenticator.php');
 
 class htmlAuthenticator extends Authenticator
 {
-    
     public $auth_session = null;
     /*
      * Store the current authenticating user
@@ -36,17 +35,23 @@ class htmlAuthenticator extends Authenticator
 
         $this->username = $session->read('username');
 
-        if ($this->username != "") return Authenticator::AUTH_OK;
+        if ($this->username != "") {
+            return Authenticator::AUTH_OK;
+        }
 
-        if (!array_key_exists($this->parms['username'], $_POST)) return Authenticator::AUTH_ASK;
-        if (!array_key_exists($this->parms['password'], $_POST)) return Authenticator::AUTH_ASK;
+        if (!array_key_exists($this->parms['username'], $_POST)) {
+            return Authenticator::AUTH_ASK;
+        }
+        if (!array_key_exists($this->parms['password'], $_POST)) {
+            return Authenticator::AUTH_ASK;
+        }
         
         $this->username = getHttpVars($this->parms['username']);
         if (is_callable(array(
             $this->provider,
             'validateCredential'
         ))) {
-            if (!$this->provider->validateCredential(getHttpVars($this->parms['username']) , getHttpVars($this->parms{'password'}))) {
+            if (!$this->provider->validateCredential(getHttpVars($this->parms['username']), getHttpVars($this->parms{'password'}))) {
                 return Authenticator::AUTH_NOK;
             }
             
@@ -85,7 +90,7 @@ class htmlAuthenticator extends Authenticator
      **
      *
      */
-    function checkAuthorization($opt)
+    public function checkAuthorization($opt)
     {
         if (is_callable(array(
             $this->provider,
@@ -93,7 +98,7 @@ class htmlAuthenticator extends Authenticator
         ))) {
             return $this->provider->validateAuthorization($opt);
         }
-        return TRUE;
+        return true;
     }
     /**
      **
@@ -102,19 +107,22 @@ class htmlAuthenticator extends Authenticator
      */
     public function askAuthentication($args)
     {
-        if (empty($args)) $args = array();
+        if (empty($args)) {
+            $args = array();
+        }
         $session = $this->getAuthSession();
         /* Force removal of username if it already exists on the session */
         $session->register('username', '');
         $session->setuid(Account::ANONYMOUS_ID);
         $args=[];
         if (!isset($args['redirect_uri'])) {
-            if (!empty($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] !== "/")
-            $args['redirect_uri'] = $_SERVER['REQUEST_URI'];
+            if (!empty($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] !== "/") {
+                $args['redirect_uri'] = $_SERVER['REQUEST_URI'];
+            }
         }
         
         header(sprintf('Location: %s', $this->getAuthUrl($args)));
-        return TRUE;
+        return true;
     }
     /**
      * return url used to connect user
@@ -139,7 +147,6 @@ class htmlAuthenticator extends Authenticator
         foreach ($extendedArg as $k => $v) {
             $sargs.= sprintf("%s%s=%s", $hasArgs?'&':'?', $k, urlencode($v));
             $hasArgs=true;
-
         }
         return $location . $sargs;
     }
@@ -149,7 +156,7 @@ class htmlAuthenticator extends Authenticator
      */
     public function connectTo($uri)
     {
-        $location = sprintf('%s&redirect_uri=%s', $this->getAuthUrl() , urlencode($uri));
+        $location = sprintf('%s&redirect_uri=%s', $this->getAuthUrl(), urlencode($uri));
         header(sprintf('Location: %s', $location));
         exit(0);
     }
@@ -183,7 +190,7 @@ class htmlAuthenticator extends Authenticator
      */
     public function logout($redir_uri = '')
     {
-        include_once ('WHAT/Class.Session.php');
+        include_once('WHAT/Class.Session.php');
         $session_auth = $this->getAuthSession();
         if (array_key_exists(Session::PARAMNAME, $_COOKIE)) {
             $session_auth->close();
@@ -191,12 +198,12 @@ class htmlAuthenticator extends Authenticator
         if ($redir_uri == "") {
             if (isset($this->parms['auth']['app'])) {
                 header('Location: ' . $this->getAuthUrl());
-                return TRUE;
+                return true;
             }
             $redir_uri = \Dcp\Core\ContextManager::getApplicationParam("CORE_BASEURL");
         }
         header('Location: ' . $redir_uri);
-        return TRUE;
+        return true;
     }
     /**
      **
@@ -223,8 +230,8 @@ class htmlAuthenticator extends Authenticator
     
     public function logon()
     {
-        include_once ('WHAT/Class.ActionRouter.php');
-        include_once ('WHAT/Class.Account.php');
+        include_once('WHAT/Class.ActionRouter.php');
+        include_once('WHAT/Class.Account.php');
         
         $app = $this->getAuthApp();
         if ($app === false || $app == '') {

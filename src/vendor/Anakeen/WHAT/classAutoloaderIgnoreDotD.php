@@ -14,10 +14,16 @@ class autoloaderIgnoreDotD extends \FilterIterator
     {
         $c = $this->current()->getPathname();
         
-        if (substr($c, -4) != '.php') return false;
-        if (preg_match('/^Method/', basename($c))) return false;
+        if (substr($c, -4) != '.php') {
+            return false;
+        }
+        if (preg_match('/^Method/', basename($c))) {
+            return false;
+        }
         
-        if ($this->_inAutoloaderIgnore($c)) return false;
+        if ($this->_inAutoloaderIgnore($c)) {
+            return false;
+        }
         
         return is_readable($c);
     }
@@ -56,18 +62,14 @@ class autoloaderIgnoreDotD extends \FilterIterator
         if ($globList === false) {
             throw new DirectoriesAutoloaderException(sprintf("Error opening autoloader ignore file '%s'.", $ignoreFile));
         }
-        $globList = array_filter(array_map(function ($e)
-        {
+        $globList = array_filter(array_map(function ($e) {
             /* Remove trailing CR+LF */
             return rtrim($e, "\r\n");
-        }
-        , $globList) , function ($e)
-        {
+        }, $globList), function ($e) {
             /* Skip blank and comment lines */
             return !preg_match('/^\s*(#.*)?$/', $e);
         });
-        $globList = array_map(function ($e)
-        {
+        $globList = array_map(function ($e) {
             /*
              * Strip leading './' from glob patterns as they are
              * already considered relatives to the current directory.
@@ -76,8 +78,7 @@ class autoloaderIgnoreDotD extends \FilterIterator
                 $e = substr($e, 2);
             }
             return $e;
-        }
-        , $globList);
+        }, $globList);
         return $globList;
     }
     /**

@@ -12,8 +12,8 @@
  */
 global $action;
 
-include_once ("FDL/Lib.Attr.php");
-include_once ("FDL/Class.DocFam.php");
+include_once("FDL/Lib.Attr.php");
+include_once("FDL/Class.DocFam.php");
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("Delete family document and its documents");
@@ -55,7 +55,9 @@ function destroyFamily($dbaccess, $idfam, $force = false)
         print "Destroying [" . $tdoc["title"] . "(" . $tdoc["name"] . ")]\n";
         $dbid = \Dcp\Core\DbManager::getDbId();
         $tsql = array();
-        if (!$force) $tsql[] = "BEGIN;";
+        if (!$force) {
+            $tsql[] = "BEGIN;";
+        }
         $tsql+= array(
             sprintf("DELETE FROM fld WHERE childid IN (SELECT id FROM doc%d);", $resid) ,
             sprintf("DELETE FROM doc%d;", $resid) ,
@@ -67,7 +69,9 @@ function destroyFamily($dbaccess, $idfam, $force = false)
             sprintf("DROP TABLE IF EXISTS doc%d;", $resid) ,
             sprintf("DROP SEQUENCE IF EXISTS seq_doc%d;", $resid)
         );
-        if (!$force) $tsql[] = "COMMIT;";
+        if (!$force) {
+            $tsql[] = "COMMIT;";
+        }
         $fdlgen = sprintf("FDLGEN/Class.Doc%d.php", $tdoc["id"]);
         if (file_exists($fdlgen) && is_file($fdlgen)) {
             if (!unlink($fdlgen)) {
@@ -82,10 +86,14 @@ function destroyFamily($dbaccess, $idfam, $force = false)
             $res = @pg_query($dbid, $sql);
             if (!$res) {
                 print pg_last_error() . "\n";
-                if (!$force) break;
+                if (!$force) {
+                    break;
+                }
             }
         }
-        if ($res) printf("Family %s (id : %d) is destroyed.\n", $tdoc["name"], $tdoc["id"]);
+        if ($res) {
+            printf("Family %s (id : %d) is destroyed.\n", $tdoc["name"], $tdoc["id"]);
+        }
     } else {
         $action->exitError("cannot destroy $idfam\n");
     }

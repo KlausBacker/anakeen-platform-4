@@ -10,7 +10,6 @@
 
 class DocEnum extends DbObj
 {
-    
     public $fields = array(
         "famid",
         "attrid",
@@ -90,12 +89,12 @@ create unique index i_docenum on docenum(famid, attrid,  key);
         }
     }
     
-    function preUpdate()
+    public function preUpdate()
     {
         $this->consolidateOrder();
         return '';
     }
-    function preInsert()
+    public function preInsert()
     {
         $this->consolidateOrder();
         return '';
@@ -106,7 +105,7 @@ create unique index i_docenum on docenum(famid, attrid,  key);
     protected function consolidateOrder()
     {
         if (empty($this->eorder) || $this->eorder < 0) {
-            $sql = sprintf("select max(eorder) from docenum where famid = '%s' and attrid='%s'", pg_escape_string($this->famid) , pg_escape_string($this->attrid));
+            $sql = sprintf("select max(eorder) from docenum where famid = '%s' and attrid='%s'", pg_escape_string($this->famid), pg_escape_string($this->attrid));
             simpleQuery($this->dbaccess, $sql, $newOrder, true, true);
             if ($newOrder > 0) {
                 $this->eorder = intval($newOrder) + 1;
@@ -115,14 +114,13 @@ create unique index i_docenum on docenum(famid, attrid,  key);
     }
     public function shiftOrder($n)
     {
-        
         if ($n > 0) {
-            $sql = sprintf("update docenum set eorder=eorder + 1 where famid = '%s' and attrid='%s' and key != '%s' and eorder >= %d", pg_escape_string($this->famid) , pg_escape_string($this->attrid) , pg_escape_string($this->key) , $n);
+            $sql = sprintf("update docenum set eorder=eorder + 1 where famid = '%s' and attrid='%s' and key != '%s' and eorder >= %d", pg_escape_string($this->famid), pg_escape_string($this->attrid), pg_escape_string($this->key), $n);
             simpleQuery($this->dbaccess, $sql);
             $seqName = uniqid("tmpseqenum");
             $sql = sprintf("create temporary sequence %s;", $seqName);
             
-            $sql.= sprintf("UPDATE docenum SET eorder = neworder from (SELECT *, nextval('%s') as neworder from (select * from docenum where  famid='%s' and attrid = '%s'  order by eorder) as tmpz) as w where w.famid=docenum.famid and w.attrid=docenum.attrid and docenum.key=w.key;", $seqName, pg_escape_string($this->famid) , pg_escape_string($this->attrid));
+            $sql.= sprintf("UPDATE docenum SET eorder = neworder from (SELECT *, nextval('%s') as neworder from (select * from docenum where  famid='%s' and attrid = '%s'  order by eorder) as tmpz) as w where w.famid=docenum.famid and w.attrid=docenum.attrid and docenum.key=w.key;", $seqName, pg_escape_string($this->famid), pg_escape_string($this->attrid));
             
             simpleQuery($this->dbaccess, $sql);
         }
@@ -130,7 +128,7 @@ create unique index i_docenum on docenum(famid, attrid,  key);
     public function exists()
     {
         if ($this->famid && $this->attrid && $this->key !== null) {
-            simpleQuery($this->dbaccess, sprintf("select true from docenum where famid=%d and attrid='%s' and key='%s'", ($this->famid) , pg_escape_string($this->attrid) , pg_escape_string($this->key)) , $r, true, true);
+            simpleQuery($this->dbaccess, sprintf("select true from docenum where famid=%d and attrid='%s' and key='%s'", ($this->famid), pg_escape_string($this->attrid), pg_escape_string($this->key)), $r, true, true);
             return $r;
         }
         return false;
@@ -143,7 +141,7 @@ create unique index i_docenum on docenum(famid, attrid,  key);
         }
         $attrid = strtolower($attrid);
         $sql = sprintf("select * from docenum where famid=%d and attrid='%s' order by eorder", $famId, pg_escape_string($attrid));
-        simpleQuery(getDbAccess() , $sql, $enums);
+        simpleQuery(getDbAccess(), $sql, $enums);
         return $enums;
     }
     public static function getDisabledKeys($famId, $attrid)
@@ -154,7 +152,7 @@ create unique index i_docenum on docenum(famid, attrid,  key);
         $attrid = strtolower($attrid);
         $sql = sprintf("select key from docenum where famid=%d and attrid='%s' and disabled", $famId, pg_escape_string($attrid));
         
-        simpleQuery(getDbAccess() , $sql, $dKeys, true);
+        simpleQuery(getDbAccess(), $sql, $dKeys, true);
         return $dKeys;
     }
     
@@ -163,7 +161,7 @@ create unique index i_docenum on docenum(famid, attrid,  key);
         $sql = sprintf("SELECT count(*) FROM docenum WHERE famid = %d AND attrid = '%s'", $this->famid, pg_escape_string($this->attrid));
         simpleQuery($this->dbaccess, $sql, $count, true, true);
         if ($beforeThan !== null) {
-            $sql = sprintf("select eorder from docenum where famid=%d and attrid='%s' and key='%s'", $this->famid, pg_escape_string($this->attrid) , pg_escape_string($beforeThan));
+            $sql = sprintf("select eorder from docenum where famid=%d and attrid='%s' and key='%s'", $this->famid, pg_escape_string($this->attrid), pg_escape_string($beforeThan));
             simpleQuery($this->dbaccess, $sql, $beforeOrder, true, true);
             if ($beforeOrder) {
                 $this->eorder = $beforeOrder;
@@ -171,7 +169,7 @@ create unique index i_docenum on docenum(famid, attrid,  key);
                 /* If the next key does not exists, then set order to count + 1 */
                 $this->eorder = $count + 1;
             }
-        } else if (empty($this->eorder)) {
+        } elseif (empty($this->eorder)) {
             /*
              * If item has no beforeThan and eorder is not set, then we assume it's the last one
              * (there is nothing after him). So, the order is the number of items + 1
@@ -258,7 +256,7 @@ create unique index i_docenum on docenum(famid, attrid,  key);
     {
         $fam = new_Doc("", $famId);
         
-        $moFile = sprintf("%s/locale/%s/LC_MESSAGES/customFamily_%s.mo", DEFAULT_PUBDIR, substr($lang, 0, 2) , $fam->name);
+        $moFile = sprintf("%s/locale/%s/LC_MESSAGES/customFamily_%s.mo", DEFAULT_PUBDIR, substr($lang, 0, 2), $fam->name);
         return $moFile;
     }
     /**
@@ -283,7 +281,6 @@ create unique index i_docenum on docenum(famid, attrid,  key);
         $oa->resetEnum();
         //$curLabel = $oa->getEnumLabel($enumId);
         if ($label !== null) {
-            
             $moFile = self::getMoFilename($fam->name, $lang);
             $poFile = sprintf("%s.po", (substr($moFile, 0, -3)));
             $msgInit = '';
@@ -294,10 +291,10 @@ msgstr ""
 "PO-Revision-Date: %s"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"', $fam->name, substr($lang, 0, 2) , date('Y-m-d H:i:s'));
+"Content-Transfer-Encoding: 8bit\n"', $fam->name, substr($lang, 0, 2), date('Y-m-d H:i:s'));
             if (file_exists($moFile)) {
                 // Just test mo validity
-                $cmd = sprintf("(msgunfmt %s > %s) 2>&1", escapeshellarg($moFile) , escapeshellarg($poFile));
+                $cmd = sprintf("(msgunfmt %s > %s) 2>&1", escapeshellarg($moFile), escapeshellarg($poFile));
                 
                 exec($cmd, $output, $ret);
                 if ($ret) {
@@ -308,7 +305,7 @@ msgstr ""
             }
             // add new entry
             $localeKey = sprintf("%s#%s#%s", $fam->name, $oa->id, $enumId);
-            $msgEntry = sprintf('msgid "%s"' . "\n" . 'msgstr "%s"', str_replace('"', '\\"', $localeKey) , str_replace('"', '\\"', $label));
+            $msgEntry = sprintf('msgid "%s"' . "\n" . 'msgstr "%s"', str_replace('"', '\\"', $localeKey), str_replace('"', '\\"', $label));
             $content = file_get_contents($poFile);
             // fuzzy old entry
             $match = sprintf('msgid "%s"', $localeKey);
@@ -317,7 +314,7 @@ msgstr ""
             $content = str_replace('msgid ""', "#, fuzzy\nmsgid \"- HEADER DELETION -\"", $content);
             
             file_put_contents($poFile, $msgInit . $msgEntry . "\n\n" . $content);
-            $cmd = sprintf("(msguniq --use-first %s | msgfmt - -o %s; rm -f %s) 2>&1", escapeshellarg($poFile) , escapeshellarg($moFile) , escapeshellarg($poFile));
+            $cmd = sprintf("(msguniq --use-first %s | msgfmt - -o %s; rm -f %s) 2>&1", escapeshellarg($poFile), escapeshellarg($moFile), escapeshellarg($poFile));
             exec($cmd, $output, $ret);
             if ($ret) {
                 print $cmd;
@@ -377,4 +374,3 @@ class EnumLocale
         $this->label = $label;
     }
 }
-

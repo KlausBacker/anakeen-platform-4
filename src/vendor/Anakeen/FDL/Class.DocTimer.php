@@ -13,7 +13,7 @@
 /**
  */
 
-include_once ("Class.DbObj.php");
+include_once("Class.DbObj.php");
 class DocTimer extends DbObj
 {
     public $fields = array(
@@ -113,9 +113,9 @@ create table doctimer ( id serial,
                    result text  );
 ";
     
-    function preInsert()
+    public function preInsert()
     {
-        include_once ("Class.QueryDb.php");
+        include_once("Class.QueryDb.php");
         $docid = intval($this->docid);
         $timerid = intval($this->timerid);
         $q = new QueryDb($this->dbaccess, $this->dbtable);
@@ -124,7 +124,9 @@ create table doctimer ( id serial,
         $q->addQuery("timerid=$timerid");
         $c = $q->count();
         
-        if ($c > 0) return _("timer already set");
+        if ($c > 0) {
+            return _("timer already set");
+        }
         return "";
     }
     /**
@@ -134,13 +136,17 @@ create table doctimer ( id serial,
      * @param int &$c count of deletion
      * @return string error - empty if no error -
      */
-    function unattachFromOrigin($docid, $originid, &$c = 0)
+    public function unattachFromOrigin($docid, $originid, &$c = 0)
     {
         $docid = intval($docid);
         $originid = intval($originid);
         $err = "";
-        if ($docid == 0) $err = _("cannot detach : document id is not set");
-        if ($originid == 0) $err.= _("cannot detach : origin id is not set");
+        if ($docid == 0) {
+            $err = _("cannot detach : document id is not set");
+        }
+        if ($originid == 0) {
+            $err.= _("cannot detach : origin id is not set");
+        }
         if ($err == "") {
             $q = new QueryDb($this->dbaccess, $this->dbtable);
             $q->addQuery("docid=$docid");
@@ -158,11 +164,13 @@ create table doctimer ( id serial,
      * @param int &$c count of deletion
      * @return string error - empty if no error -
      */
-    function unattachAll($docid, &$c)
+    public function unattachAll($docid, &$c)
     {
         $docid = intval($docid);
         $err = "";
-        if ($docid == 0) $err = _("cannot detach : document id is not set");
+        if ($docid == 0) {
+            $err = _("cannot detach : document id is not set");
+        }
         if ($err == "") {
             $q = new QueryDb($this->dbaccess, $this->dbtable);
             $q->addQuery("docid=$docid");
@@ -179,20 +187,26 @@ create table doctimer ( id serial,
      * @param int $timerid timerc identifier to detach
      * @return string error - empty if no error -
      */
-    function unattachDocument($docid, $timerid)
+    public function unattachDocument($docid, $timerid)
     {
         $docid = intval($docid);
         $timerid = intval($timerid);
         $err = "";
-        if ($docid == 0) $err = _("cannot detach : document id is not set");
-        if ($timerid == 0) $err = _("cannot detach : timer id is not set");
-        if ($err == "") $err = $this->exec_query("delete from doctimer where docid=$docid and tododate is not null and timerid=$timerid");
+        if ($docid == 0) {
+            $err = _("cannot detach : document id is not set");
+        }
+        if ($timerid == 0) {
+            $err = _("cannot detach : timer id is not set");
+        }
+        if ($err == "") {
+            $err = $this->exec_query("delete from doctimer where docid=$docid and tododate is not null and timerid=$timerid");
+        }
         return $err;
     }
     /**
      * get all actions need to be executed now
      */
-    function getActionsToExecute()
+    public function getActionsToExecute()
     {
         $q = new QueryDb($this->dbaccess, "DocTimer");
         $q->addQuery("tododate is not null");
@@ -203,17 +217,21 @@ create table doctimer ( id serial,
         }
         $q->addQuery(sprintf("tododate > now() - interval '%d hour'", $timerhourlimit));
         $l = $q->Query(0, 0, "TABLE");
-        if ($q->nb > 0) return $l;
+        if ($q->nb > 0) {
+            return $l;
+        }
         return array();
     }
     
-    function executeTimerNow()
+    public function executeTimerNow()
     {
         $timer = new_doc($this->dbaccess, $this->timerid);
         /**
          * @var \Dcp\Family\TIMER $timer
          */
-        if (!$timer->isAlive()) return sprintf(_("cannot execute timer : timer %s is not found") , $this->timerid);
+        if (!$timer->isAlive()) {
+            return sprintf(_("cannot execute timer : timer %s is not found"), $this->timerid);
+        }
         
         $err = $timer->executeLevel($this->level, $this->docid, $msg, $gonextlevel);
         if ($gonextlevel) {
@@ -241,4 +259,3 @@ create table doctimer ( id serial,
         return $err;
     }
 }
-?>

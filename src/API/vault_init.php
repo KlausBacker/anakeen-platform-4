@@ -15,7 +15,7 @@
 /**
  */
 
-include_once ("FDL/Lib.Util.php");
+include_once("FDL/Lib.Util.php");
 
 $usage = new ApiUsage();
 
@@ -29,13 +29,12 @@ $dbaccess = getDbAccess();
 $err = "";
 if (!is_dir($dirname)) {
     if (is_dir(dirname($dirname))) {
-        print sprintf(_("create directory %s\n") , $dirname);
+        print sprintf(_("create directory %s\n"), $dirname);
         mkdir($dirname . "/", VaultFile::VAULT_DMODE);
     }
 }
 if (!is_dir($dirname)) {
-    
-    $err = sprintf(_("cannot create directory %s\nParent directory must be create before") , $dirname);
+    $err = sprintf(_("cannot create directory %s\nParent directory must be create before"), $dirname);
 }
 if ($err == "") {
     $vf = new VaultFile($dbaccess);
@@ -45,10 +44,15 @@ if ($err == "") {
     $l = $q->Query(0, 0, "TABLE");
     if ($q->nb == 0) {
         $err = $vf->storage->fs->createArch($size_in_bytes, $dirname, $fsname);
-        if ($err != "") $err = sprintf(_("cannot create %s: %s\n") , $dirname, $err);
-        else print sprintf(_("vault %s created.\n") , $dirname);
+        if ($err != "") {
+            $err = sprintf(_("cannot create %s: %s\n"), $dirname, $err);
+        } else {
+            print sprintf(_("vault %s created.\n"), $dirname);
+        }
     } else {
-        $err = sprintf(_("vault already created %s: aborted\n") , $dirname);
+        $err = sprintf(_("vault already created %s: aborted\n"), $dirname);
     }
 }
-if ($err) print sprintf(_("ERROR %s\n") , $err);
+if ($err) {
+    print sprintf(_("ERROR %s\n"), $err);
+}

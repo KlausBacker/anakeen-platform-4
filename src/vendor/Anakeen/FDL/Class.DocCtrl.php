@@ -13,9 +13,9 @@
 /**
  */
 
-include_once ("Class.DocLDAP.php");
-include_once ("FDL/Class.DocPerm.php");
-include_once ("FDL/Class.VGroup.php");
+include_once("Class.DocLDAP.php");
+include_once("FDL/Class.DocPerm.php");
+include_once("FDL/Class.VGroup.php");
 
 define("POS_INIT", 0);
 define("POS_VIEW", 1);
@@ -41,6 +41,7 @@ define("POS_WF", 12); // begin of workflow privilege definition
 
 use \Dcp\Core\DbManager;
 use \Dcp\Core\DocManager;
+
 /**
  * Control Access Document Class
  * @package FDL
@@ -60,7 +61,7 @@ class DocCtrl extends DocLDAP
     // --------------------------------------------------------------------
     //---------------------- OBJECT CONTROL PERMISSION --------------------
     // access privilege definition
-    var $dacls = array(
+    public $dacls = array(
         "init" => array(
             "pos" => POS_INIT,
             "description" => "control initialized"
@@ -172,9 +173,9 @@ class DocCtrl extends DocLDAP
      * To prevent to lock to many objects
      * @var bool
      */
-    static private $globalDocPermLock = false;
+    private static $globalDocPermLock = false;
     // --------------------------------------------------------------------
-    function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
+    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         // --------------------------------------------------------------------
         global $action; // necessary to see information about user privilege
@@ -184,22 +185,26 @@ class DocCtrl extends DocLDAP
         }
         
         if (!isset($this->attributes->attr)) {
-            if (!isset($this->attributes)) $this->attributes = new stdClass();
+            if (!isset($this->attributes)) {
+                $this->attributes = new stdClass();
+            }
             $this->attributes->attr = array();
         }
         parent::__construct($dbaccess, $id, $res, $dbid);
     }
     
-    function isControlled()
+    public function isControlled()
     {
         return ($this->profid != 0);
     }
     
-    function unsetControl()
+    public function unsetControl()
     {
         if ($this->id == $this->profid) {
             // inhibated all doc references this profil
-            if ($this->doctype == 'P') $this->exec_query("update doc set profid=-profid where profid=" . $this->id . " and locked != -1;");
+            if ($this->doctype == 'P') {
+                $this->exec_query("update doc set profid=-profid where profid=" . $this->id . " and locked != -1;");
+            }
         }
         $this->profid = "0";
         $this->modify(true, array(
@@ -211,7 +216,7 @@ class DocCtrl extends DocLDAP
      * @param int $userid user system identifier
      * @return string
      */
-    function removeControl($userid = - 1)
+    public function removeControl($userid = - 1)
     {
         if ($this->id == $this->profid) {
             if ($userid == - 1) {
@@ -230,7 +235,7 @@ class DocCtrl extends DocLDAP
      * @param bool $userctrl if true add all acls for current user
      * @return string
      */
-    function setControl($userctrl = true)
+    public function setControl($userctrl = true)
     {
         if ($userctrl) {
             $perm = new DocPerm($this->dbaccess, array(
@@ -248,12 +253,14 @@ class DocCtrl extends DocLDAP
             }
         }
         // reactivation of doc with its profil
-        if ($this->doctype == 'P') $this->exec_query("update doc set profid=-profid where profid=-" . $this->id . " and locked != -1;");
+        if ($this->doctype == 'P') {
+            $this->exec_query("update doc set profid=-profid where profid=-" . $this->id . " and locked != -1;");
+        }
         
         $this->profid = $this->id;
         $err = $this->modify(true, array(
             "profid"
-        ) , true);
+        ), true);
         return $err;
     }
 
@@ -267,10 +274,12 @@ class DocCtrl extends DocLDAP
      * @throws \Dcp\Core\Exception
      * @throws \Dcp\Db\Exception
      */
-    function setProfil($profid, $fromdocidvalues = null)
+    public function setProfil($profid, $fromdocidvalues = null)
     {
         $err = '';
-        if ($profid && !is_numeric($profid)) $profid = DocManager::getIdFromName($profid);
+        if ($profid && !is_numeric($profid)) {
+            $profid = DocManager::getIdFromName($profid);
+        }
         if (empty($profid)) {
             $profid = 0;
             $this->dprofid = 0;
@@ -285,13 +294,13 @@ class DocCtrl extends DocLDAP
                 $this->dprofid = $profid;
                 $this->computeDProfil($this->dprofid, $fromdocidvalues);
                 unset($this->uperm); // force recompute privileges
-                
             } else {
                 $this->dprofid = 0;
                 $this->setViewProfil();
             }
-            if ($pdoc->profid == 0) $this->profid = - $profid; // inhibition
-            
+            if ($pdoc->profid == 0) {
+                $this->profid = - $profid;
+            } // inhibition
         } elseif (($profid > 0) && ($profid == $this->id)) {
             $this->dprofid = 0;
             $this->setViewProfil();
@@ -301,7 +310,7 @@ class DocCtrl extends DocLDAP
                 "profid",
                 "dprofid",
                 "views"
-            ) , true);
+            ), true);
         }
         return $err;
     }
@@ -318,7 +327,9 @@ class DocCtrl extends DocLDAP
     private function computeDProfilExt($dprofid, $fromdocidvalues = null)
     {
         $err = '';
-        if (count($this->extendedAcls) == 0) return '';
+        if (count($this->extendedAcls) == 0) {
+            return '';
+        }
         
         $tVgroup2attrid = array();
         $query = new QueryDb($this->dbaccess, "DocPermExt");
@@ -328,7 +339,9 @@ class DocCtrl extends DocLDAP
             //	print "err $tacl";
             $tacl = array();
         }
-        if (!$tacl) return ''; // no ext acl
+        if (!$tacl) {
+            return '';
+        } // no ext acl
         $tgnum = array(); // list of virtual user/group
         foreach ($tacl as $v) {
             if ($v["userid"] >= STARTIDVGROUP) {
@@ -346,10 +359,11 @@ class DocCtrl extends DocLDAP
             }
         }
         $this->exec_query(sprintf("delete from docpermext where docid=%d", $this->id));
-        if ($fromdocidvalues == null) $fromdocidvalues = & $this;
+        if ($fromdocidvalues == null) {
+            $fromdocidvalues = & $this;
+        }
         $greenUid = array();
         foreach ($tacl as $v) {
-            
             if ($v["userid"] < STARTIDVGROUP) {
             } else {
                 $aid = $tVgroup2attrid[$v["userid"]];
@@ -357,19 +371,20 @@ class DocCtrl extends DocLDAP
                  * @var Doc $fromdocidvalues
                  */
                 $duid = $fromdocidvalues->getRawValue($aid);
-                if ($duid == "") $duid = $fromdocidvalues->getFamilyParameterValue($aid);
+                if ($duid == "") {
+                    $duid = $fromdocidvalues->getFamilyParameterValue($aid);
+                }
                 if ($duid != "") {
                     $duid = str_replace("<BR>", "\n", $duid); // docid multiple
                     $tduid = Doc::rawValueToArray($duid);
                     foreach ($tduid as $duid) {
                         if ($duid > 0) {
-                            $docu = DocManager::getRawDocument( intval($duid)); // not for idoc list for the moment
+                            $docu = DocManager::getRawDocument(intval($duid)); // not for idoc list for the moment
                             $greenUid[$docu["us_whatid"] . $v["acl"]] = array(
                                 "uid" => $docu["us_whatid"],
                                 "acl" => $v["acl"]
                             );
                             //print "<br>$aid:$duid:".$docu["us_whatid"];
-                            
                         }
                     }
                 }
@@ -398,13 +413,19 @@ class DocCtrl extends DocLDAP
      * @throws \Dcp\Core\Exception
      * @throws \Dcp\Db\Exception
      */
-    function computeDProfil($dprofid = 0, $fromdocidvalues = null)
+    public function computeDProfil($dprofid = 0, $fromdocidvalues = null)
     {
         $err = '';
         $pfamid=0;
-        if ($this->id == 0) return '';
-        if ($dprofid == 0) $dprofid = $this->dprofid;
-        if ($dprofid <= 0) return '';
+        if ($this->id == 0) {
+            return '';
+        }
+        if ($dprofid == 0) {
+            $dprofid = $this->dprofid;
+        }
+        if ($dprofid <= 0) {
+            return '';
+        }
         $perm = null;
         $vupacl = array();
         
@@ -451,10 +472,11 @@ class DocCtrl extends DocLDAP
             }
             // Need to lock to avoid constraint errors when concurrent docperm update
             $this->exec_query(sprintf("delete from docperm where docid=%d", $this->id));
-            if ($fromdocidvalues == null) $fromdocidvalues = & $this;
+            if ($fromdocidvalues == null) {
+                $fromdocidvalues = & $this;
+            }
             $greenUid = array();
             foreach ($tacl as $v) {
-                
                 if ($v["userid"] < STARTIDVGROUP) {
                     $tuid = array(
                         $v["userid"]
@@ -466,25 +488,27 @@ class DocCtrl extends DocLDAP
                      * @var Doc $fromdocidvalues
                      */
                     $duid = $fromdocidvalues->getRawValue($aid);
-                    if ($duid == "") $duid = $fromdocidvalues->getFamilyParameterValue($aid);
+                    if ($duid == "") {
+                        $duid = $fromdocidvalues->getFamilyParameterValue($aid);
+                    }
                     if ($duid != "") {
                         $duid = str_replace("<BR>", "\n", $duid); // docid multiple
                         $tduid = Doc::rawValueToArray($duid);
                         foreach ($tduid as $duid) {
                             if ($duid > 0) {
-                                $docu = DocManager::getRawDocument( intval($duid));
+                                $docu = DocManager::getRawDocument(intval($duid));
                                 if (!is_array($docu)) {
                                     // No use exception because document may has been deleted
-                                    $errorMessage = ErrorCode::getError('DOC0127', var_export($duid, true) , var_export($aid, true));
+                                    $errorMessage = ErrorCode::getError('DOC0127', var_export($duid, true), var_export($aid, true));
                                     $this->log->error($errorMessage);
                                     $this->addHistoryEntry($errorMessage, \DocHisto::ERROR);
                                 } elseif (!array_key_exists('us_whatid', $docu)) {
-                                    $errorMessage = ErrorCode::getError('DOC0128', var_export($duid, true) , var_export($aid, true));
+                                    $errorMessage = ErrorCode::getError('DOC0128', var_export($duid, true), var_export($aid, true));
                                     $this->log->error($errorMessage);
                                     $this->addHistoryEntry($errorMessage, \DocHisto::ERROR);
                                 } elseif (empty($docu['us_whatid'])) {
                                     // No use exception because account may has been deleted
-                                    $errorMessage = ErrorCode::getError('DOC0129', var_export($duid, true) , var_export($aid, true));
+                                    $errorMessage = ErrorCode::getError('DOC0129', var_export($duid, true), var_export($aid, true));
                                     $this->log->error($errorMessage);
                                     $this->addHistoryEntry($errorMessage, \DocHisto::ERROR);
                                 } else {
@@ -496,8 +520,12 @@ class DocCtrl extends DocLDAP
                 }
                 foreach ($tuid as $ku => $uid) {
                     // add right in case of multiple use of the same user : possible in dynamic profile
-                    if (($v["upacl"] & 2) && $uid) $greenUid[$uid] = $uid;
-                    if (!isset($vupacl[$uid])) $vupacl[$uid] = 0;
+                    if (($v["upacl"] & 2) && $uid) {
+                        $greenUid[$uid] = $uid;
+                    }
+                    if (!isset($vupacl[$uid])) {
+                        $vupacl[$uid] = 0;
+                    }
                     $vupacl[$uid] = (intval($vupacl[$uid]) | intval($v["upacl"]));
                     if ($uid > 0) {
                         $perm = new DocPerm($this->dbaccess, array(
@@ -506,8 +534,9 @@ class DocCtrl extends DocLDAP
                         ));
                         $perm->upacl = $vupacl[$uid];
                         // print "<BR>\nset perm $uid : ".$this->id."/".$perm->upacl.'/'.$vupacl[$uid]."\n";
-                        if ($perm->isAffected()) $err = $perm->modify();
-                        else {
+                        if ($perm->isAffected()) {
+                            $err = $perm->modify();
+                        } else {
                             if ($perm->upacl) {
                                 // add if necessary
                                 $err = $perm->Add();
@@ -521,7 +550,7 @@ class DocCtrl extends DocLDAP
             $this->views = '{' . implode(',', $greenUid) . '}';
             $this->Modify(true, array(
                 'views'
-            ) , true);
+            ), true);
             $err.= $this->computeDProfilExt($pdoc->id, $fromdocidvalues);
         }
         unset($this->uperm); // force recompute privileges
@@ -536,11 +565,11 @@ class DocCtrl extends DocLDAP
             $this->computeDProfil();
         } else {
             if ($this->profid == $this->id) {
-                DbManager::query(sprintf("select userid from docperm where docid=%d and upacl & 2 != 0", $this->id) , $uids, true, false);
+                DbManager::query(sprintf("select userid from docperm where docid=%d and upacl & 2 != 0", $this->id), $uids, true, false);
                 $this->views = '{' . implode(',', $uids) . '}';
                 $this->modify(true, array(
                     'views'
-                ) , true);
+                ), true);
                 if ($this->isRealProfile()) {
                     //propagate static profil views on linked documents
                     DbManager::query(sprintf("update doc set views='%s' where profid=%d and (dprofid is null or dprofid = 0)", $this->views, $this->id));
@@ -548,7 +577,7 @@ class DocCtrl extends DocLDAP
             } else {
                 // static profil
                 if ($this->profid > 0) {
-                    DbManager::query(sprintf("select views from docread where id=%d", $this->profid) , $view, true, true);
+                    DbManager::query(sprintf("select views from docread where id=%d", $this->profid), $view, true, true);
                 } else {
                     $view = '{0}';
                 }
@@ -556,7 +585,7 @@ class DocCtrl extends DocLDAP
                 if ($this->id) {
                     $this->modify(true, array(
                         'views'
-                    ) , true);
+                    ), true);
                 }
             }
         }
@@ -590,7 +619,9 @@ class DocCtrl extends DocLDAP
             $aclname
         ));
         if ($deletecontrol) {
-            if ($eacl->isAffected()) $err = $eacl->Delete();
+            if ($eacl->isAffected()) {
+                $err = $eacl->Delete();
+            }
         } else {
             // add extended acl
             if (!$eacl->isAffected()) {
@@ -622,7 +653,9 @@ class DocCtrl extends DocLDAP
             $uiid = DocManager::getIdFromName($accountReference);
             if ($uiid) {
                 $udoc = DocManager::getDocument($uiid);
-                if ($udoc && $udoc->isAlive()) $accountReference = $udoc->getRawValue("us_whatid");
+                if ($udoc && $udoc->isAlive()) {
+                    $accountReference = $udoc->getRawValue("us_whatid");
+                }
             }
         }
         // Test  account attribute reference
@@ -634,7 +667,7 @@ class DocCtrl extends DocLDAP
             $vg = new VGroup($this->dbaccess, strtolower($accountReference));
             if (!$vg->isAffected()) {
                 // try to add
-                $ddoc = DocManager::getFamily( $this->getRawValue("dpdoc_famid"));
+                $ddoc = DocManager::getFamily($this->getRawValue("dpdoc_famid"));
                 $oa = $ddoc->getAttribute($accountReference);
                 if (($oa->type == "docid") || ($oa->type == "account")) {
                     $vg->id = $oa->id;
@@ -659,11 +692,11 @@ class DocCtrl extends DocLDAP
      * @return string error message (empty if no errors)
      * @throws \Dcp\Core\Exception
      */
-    function modifyControl($uid, $aclname, $deletecontrol = false)
+    public function modifyControl($uid, $aclname, $deletecontrol = false)
     {
         $err = '';
         if (!isset($this->dacls[$aclname])) {
-            return sprintf(_("unknow privilege %s") , $aclname);
+            return sprintf(_("unknow privilege %s"), $aclname);
         }
         $pos = $this->dacls[$aclname]["pos"];
         $uid = $this->getUid($uid);
@@ -678,8 +711,9 @@ class DocCtrl extends DocLDAP
             } else {
                 $perm->SetControlP($pos);
             }
-            if ($perm->isAffected()) $err = $perm->modify();
-            else {
+            if ($perm->isAffected()) {
+                $err = $perm->modify();
+            } else {
                 $err = $perm->Add();
             }
         }
@@ -696,7 +730,7 @@ class DocCtrl extends DocLDAP
      * @return string error message (empty if no errors)
      * @throws \Dcp\Core\Exception
      */
-    function addControl($uid, $aclname)
+    public function addControl($uid, $aclname)
     {
         if ($this->isExtendedAcl($aclname)) {
             return $this->modifyExtendedControl($uid, $aclname, false);
@@ -721,7 +755,7 @@ class DocCtrl extends DocLDAP
      * @return string error message (empty if no errors)
      * @throws \Dcp\Core\Exception
      */
-    function delControl($uid, $aclname)
+    public function delControl($uid, $aclname)
     {
         if ($this->isExtendedAcl($aclname)) {
             return $this->modifyExtendedControl($uid, $aclname, true);
@@ -737,9 +771,11 @@ class DocCtrl extends DocLDAP
      *
      * @throws \Dcp\Core\Exception
      */
-    function setCvid($cvid)
+    public function setCvid($cvid)
     {
-        if ($cvid && !is_numeric($cvid)) $cvid = DocManager::getIdFromName($cvid);
+        if ($cvid && !is_numeric($cvid)) {
+            $cvid = DocManager::getIdFromName($cvid);
+        }
         $this->cvid = $cvid;
     }
     /**
@@ -750,7 +786,7 @@ class DocCtrl extends DocLDAP
      * @param bool $strict set to true to not use substitute
      * @return string if empty access granted else error message
      */
-    function controlId($docid, $aclname, $strict = false)
+    public function controlId($docid, $aclname, $strict = false)
     {
         if ($this->isExtendedAcl($aclname)) {
             return $this->controlExtId($docid, $aclname, $strict);
@@ -779,12 +815,14 @@ class DocCtrl extends DocLDAP
      * @param bool $strict set to true to not use substitute
      * @return string if empty access granted else error message
      */
-    function controlExtId($docid, $aclname, $strict = false)
+    public function controlExtId($docid, $aclname, $strict = false)
     {
         $err = '';
         $grant = DocPermExt::isGranted($this->userid, $aclname, $docid, $strict);
         
-        if (!$grant) $err = sprintf(_("no privilege %s for %s [%d]") , $aclname, $this->title, $this->id);
+        if (!$grant) {
+            $err = sprintf(_("no privilege %s for %s [%d]"), $aclname, $this->title, $this->id);
+        }
         return $err;
     }
     /**
@@ -795,15 +833,18 @@ class DocCtrl extends DocLDAP
      * @param string $aclname name of the acl (edit, view,...)
      * @return string if empty access granted else error message
      */
-    function controlUserId($docid, $uid, $aclname)
+    public function controlUserId($docid, $uid, $aclname)
     {
         $perm = new DocPerm($this->dbaccess, array(
             $docid,
             $uid
         ));
         
-        if ($perm->isAffected()) $uperm = $perm->uperm;
-        else $uperm = $perm->getUperm($docid, $uid);
+        if ($perm->isAffected()) {
+            $uperm = $perm->uperm;
+        } else {
+            $uperm = $perm->getUperm($docid, $uid);
+        }
         
         return $this->controlUp($uperm, $aclname);
     }
@@ -814,12 +855,12 @@ class DocCtrl extends DocLDAP
      * @param string $aclname name of the acl (edit, view,...)
      * @return string if empty access granted else error message
      */
-    function controlUp($uperm, $aclname)
+    public function controlUp($uperm, $aclname)
     {
         if (isset($this->dacls[$aclname])) {
-            return (($uperm & (1 << ($this->dacls[$aclname]["pos"]))) != 0) ? "" : sprintf(_("no privilege %s for %s [%d]") , $aclname, $this->title, $this->id);
+            return (($uperm & (1 << ($this->dacls[$aclname]["pos"]))) != 0) ? "" : sprintf(_("no privilege %s for %s [%d]"), $aclname, $this->title, $this->id);
         } else {
-            return sprintf(_("unknow privilege %s") , $aclname);
+            return sprintf(_("unknow privilege %s"), $aclname);
         }
     }
 
@@ -832,7 +873,7 @@ class DocCtrl extends DocLDAP
      * @throws \Dcp\Db\Exception
      * @throws \Dcp\Core\Exception
      */
-    function getUsersForAcl($aclname)
+    public function getUsersForAcl($aclname)
     {
         $pos = 0;
         $pdoc = null;
@@ -844,7 +885,9 @@ class DocCtrl extends DocLDAP
                     if (!isset($this->pdoc)) {
                         $pdoc = DocManager::createTemporaryDocument($this->fromid);
                         $err = $pdoc->Add();
-                        if ($err != "") return "getUsersForAcl:" . $err; // can't create profil
+                        if ($err != "") {
+                            return "getUsersForAcl:" . $err;
+                        } // can't create profil
                         $pdoc->setProfil($this->profid, $this->doc);
                         $this->pdoc = & $pdoc;
                     } else {
@@ -853,8 +896,11 @@ class DocCtrl extends DocLDAP
                 }
             }
         }
-        if ($pdoc) $pdocid = $pdoc->id;
-        else $pdocid = $this->profid;
+        if ($pdoc) {
+            $pdocid = $pdoc->id;
+        } else {
+            $pdocid = $this->profid;
+        }
         
         $query = new QueryDb($this->dbaccess, "DocPerm");
         $query->AddQuery("docid=" . $pdocid);
@@ -875,7 +921,9 @@ class DocCtrl extends DocLDAP
             }
             
             foreach ($ru as $k => $v) { // delete groups
-                if ($v["isgroup"] == "Y") unset($ru[$k]);
+                if ($v["isgroup"] == "Y") {
+                    unset($ru[$k]);
+                }
             }
         }
         return $ru;
@@ -893,7 +941,7 @@ class DocCtrl extends DocLDAP
     public function recomputeProfiledDocument()
     {
         if ($this->isRealProfile()) {
-            include_once ("FDL/Class.SearchDoc.php");
+            include_once("FDL/Class.SearchDoc.php");
             if ($this->getRawValue("dpdoc_famid") > 0) {
                 // dynamic profil
                 // recompute associated documents
@@ -947,7 +995,7 @@ class DocCtrl extends DocLDAP
     //       return sprintf(_("unknow privilege %s"),$aclname);
     //     }
     //   }
-    static public function parseMail($Email)
+    public static function parseMail($Email)
     {
         $sug = array(); // suggestions
         $err = "";
@@ -970,14 +1018,13 @@ class DocCtrl extends DocLDAP
             "sug" => $sug
         );
     }
-    /** 
+    /**
      * return true if the date is in the future (one day after at less)
      * @param string $date date JJ/MM/AAAA or AAAA-MM-DD
      * @return array
      */
-    static public function isFutureDate($date)
+    public static function isFutureDate($date)
     {
-        
         $err = "";
         $sug = array(); // suggestions
         if ($date != "") {
@@ -985,14 +1032,13 @@ class DocCtrl extends DocLDAP
             if (!preg_match("|^[0-9]{4}-[0-9]{2}-[0-9]{2}|", $date)) {
                 $err = _("the date syntax must be like : AAAA-MM-DD");
             } else {
-                
                 list($yy, $mm, $dd) = explode("-", $date);
                 $yy = intval($yy);
                 $mm = intval($mm);
                 $dd = intval($dd);
                 $ti = mktime(0, 0, 0, $mm, $dd + 1, $yy);
                 if ($ti < time()) {
-                    $err = sprintf(_("the date %s is in the past: today is %s") , date("d/m/Y", mktime(0, 0, 0, $mm, $dd, $yy)) , date("d/m/Y", time()));
+                    $err = sprintf(_("the date %s is in the past: today is %s"), date("d/m/Y", mktime(0, 0, 0, $mm, $dd, $yy)), date("d/m/Y", time()));
                     $sug[] = date("d/m/Y", time());
                 }
             }
@@ -1014,15 +1060,18 @@ class DocCtrl extends DocLDAP
      */
     public function isDocLinked($title, $docid)
     {
-        
         $err = "";
         $sug = array(); // suggestions
         if (trim($title) != "") {
-            if (trim($docid) == "") $err = _("need to select the document with the list");
-            else {
+            if (trim($docid) == "") {
+                $err = _("need to select the document with the list");
+            } else {
                 $d = DocManager::getDocument($docid);
-                if (!$d || !$d->isAlive()) $err = sprintf(_("the document id [%s] for this attribute is not valid") , $docid);
-                else if ($d->title != $title) $err = sprintf(_("the title of document [%s] is not conform to original [%s]") , $title, $d->title);
+                if (!$d || !$d->isAlive()) {
+                    $err = sprintf(_("the document id [%s] for this attribute is not valid"), $docid);
+                } elseif ($d->title != $title) {
+                    $err = sprintf(_("the title of document [%s] is not conform to original [%s]"), $title, $d->title);
+                }
             }
             if ($err) {
                 $sug[] = _("clic to the ... button to link document correctly");
@@ -1052,20 +1101,24 @@ class DocCtrl extends DocLDAP
                 $err = _("the document id is empty");
             } else {
                 $d = DocManager::getDocument($docid);
-                if (!$d || !$d->isAlive()) $err = sprintf(_("the document id [%s] for this attribute is not valid") , $docid);
+                if (!$d || !$d->isAlive()) {
+                    $err = sprintf(_("the document id [%s] for this attribute is not valid"), $docid);
+                }
             }
             if ($err) {
                 $sug[] = _("clic to the [...] button to link document correctly");
             }
         } else {
-            if (trim($docid) != "") $err = _("the document title is empty");
+            if (trim($docid) != "") {
+                $err = _("the document title is empty");
+            }
         }
         return array(
             "err" => $err,
             "sug" => $sug
         );
     }
-    /** 
+    /**
      * return true it is a number
      * use for constraint
      * @param float $x the number to test
@@ -1073,16 +1126,24 @@ class DocCtrl extends DocLDAP
      * @param float $max the maximum of the number (null to indicate no limit)
      * @return string err if cannot match range
      */
-    static public function isFloat($x, $min = null, $max = null)
+    public static function isFloat($x, $min = null, $max = null)
     {
         $err = "";
-        if ($x === "" || $x == '-') return "";
-        if (!is_numeric($x)) $err = sprintf(_("[%s] must be a number") , $x);
-        if (($min !== null) && ($x < $min)) $err = sprintf(_("[%s] must be greater than %s") , $x, $min);
-        if (($max !== null) && ($x > $max)) $err = sprintf(_("[%s] must be lower than %s") , $x, $max);
+        if ($x === "" || $x == '-') {
+            return "";
+        }
+        if (!is_numeric($x)) {
+            $err = sprintf(_("[%s] must be a number"), $x);
+        }
+        if (($min !== null) && ($x < $min)) {
+            $err = sprintf(_("[%s] must be greater than %s"), $x, $min);
+        }
+        if (($max !== null) && ($x > $max)) {
+            $err = sprintf(_("[%s] must be lower than %s"), $x, $max);
+        }
         return $err;
     }
-    /** 
+    /**
      * return true it is a integer
      * use for constraint
      * @param float $x the number to test
@@ -1090,18 +1151,20 @@ class DocCtrl extends DocLDAP
      * @param float $max the maximum of the number (null to indicate no limit)
      * @return string err if cannot match range
      */
-    static public function isInteger($x, $min = null, $max = null)
+    public static function isInteger($x, $min = null, $max = null)
     {
-        if ($x === "") return "";
+        if ($x === "") {
+            return "";
+        }
         if (($err = DocCtrl::isFloat($x, $min, $max)) != "") {
             return $err;
         }
         if (floatval($x) < - floatval(pow(2, 31)) || floatval($x) > floatval(pow(2, 31) - 1)) {
             // signed int32 overflow
-            return sprintf(_("[%s] must be between %s and %s") , $x, -floatval(pow(2, 31)) , floatval(pow(2, 31) - 1));
+            return sprintf(_("[%s] must be between %s and %s"), $x, -floatval(pow(2, 31)), floatval(pow(2, 31) - 1));
         }
         if (intval($x) != floatval($x)) {
-            return sprintf(_("[%s] must be a integer") , $x);
+            return sprintf(_("[%s] must be a integer"), $x);
         }
         
         return '';
@@ -1112,22 +1175,26 @@ class DocCtrl extends DocLDAP
      * @param string $p regexp pattern
      * @return array|string constraint response
      */
-    static public function isString($x, $p)
+    public static function isString($x, $p)
     {
         $err = "";
-        if ($x === "") return "";
-        if (!preg_match("/^$p$/", $x)) $err = sprintf(_("[%s] must match /%s/") , $x, $p);
+        if ($x === "") {
+            return "";
+        }
+        if (!preg_match("/^$p$/", $x)) {
+            $err = sprintf(_("[%s] must match /%s/"), $x, $p);
+        }
         return array(
             "err" => $err
         );
     }
-    /** 
+    /**
      * return MENU_ACTIVE if user can execute the specified action
      * @param string $appname application name
      * @param string $actname action name
      * @return int
      */
-    static public function canExecute($appname, $actname)
+    public static function canExecute($appname, $actname)
     {
         /**
          * @var Action $action
@@ -1136,19 +1203,22 @@ class DocCtrl extends DocLDAP
         
         $err = $action->canExecute($actname, $appname);
         
-        if ($err == "") return MENU_ACTIVE;
+        if ($err == "") {
+            return MENU_ACTIVE;
+        }
         return MENU_INVISIBLE;
     }
-    /** 
+    /**
      * return MENU_ACTIVE if user can edit document
      * @return int
      */
     public function canEditMenu()
     {
-        
         $err = $this->canEdit();
         
-        if ($err == "") return MENU_ACTIVE;
+        if ($err == "") {
+            return MENU_ACTIVE;
+        }
         return MENU_INVISIBLE;
     }
     /**
@@ -1161,17 +1231,21 @@ class DocCtrl extends DocLDAP
         //    if ($this->profid != $this->id) return MENU_INVISIBLE;
         $err = $this->control($acl);
         
-        if ($err == "") return MENU_ACTIVE;
+        if ($err == "") {
+            return MENU_ACTIVE;
+        }
         return MENU_INVISIBLE;
     }
     /**
      * return MENU_ACTIVE if profil is actvate
      * @return int
      */
-    function controlActifProfil()
+    public function controlActifProfil()
     {
         $m = $this->controlAclAccess('modifyacl');
-        if ($m == MENU_ACTIVE) $m = $this->profilIsActivate("true");
+        if ($m == MENU_ACTIVE) {
+            $m = $this->profilIsActivate("true");
+        }
         return $m;
     }
     /**
@@ -1182,14 +1256,22 @@ class DocCtrl extends DocLDAP
     public function profilIsActivate($yes = true)
     {
         $err = $this->control('modifyacl');
-        if ($err != "") return MENU_INVISIBLE;
+        if ($err != "") {
+            return MENU_INVISIBLE;
+        }
         $err = $this->control('edit');
-        if ($err != "") return MENU_INVISIBLE;
+        if ($err != "") {
+            return MENU_INVISIBLE;
+        }
         
         $r = ($this->profid == $this->id);
-        if ($yes == 'false') $r = !$r;
+        if ($yes == 'false') {
+            $r = !$r;
+        }
         
-        if ($r) return MENU_ACTIVE;
+        if ($r) {
+            return MENU_ACTIVE;
+        }
         return MENU_INVISIBLE;
     }
 }

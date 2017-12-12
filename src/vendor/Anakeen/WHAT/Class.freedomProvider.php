@@ -13,7 +13,7 @@
  */
 /**
  */
-include_once ("WHAT/Class.Provider.php");
+include_once("WHAT/Class.Provider.php");
 
 class freedomProvider extends Provider
 {
@@ -30,6 +30,6 @@ class freedomProvider extends Provider
         if ($user->setLoginName($username)) {
             return $user->checkpassword($password);
         }
-        return FALSE;
+        return false;
     }
 }

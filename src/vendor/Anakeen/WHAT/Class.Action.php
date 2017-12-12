@@ -12,8 +12,8 @@
  * @subpackage CORE
  */
 
-require_once ('WHAT/autoload.php');
-include_once ("FDL/Lib.Util.php");
+require_once('WHAT/autoload.php');
+include_once("FDL/Lib.Util.php");
 
 define("THROW_EXITERROR", 1968);
 /**
@@ -27,7 +27,7 @@ class Action extends DbObj
      * fake ACL to allow an action to be access free without its application being access_free
      */
     const ACCESS_FREE = "";
-    var $fields = array(
+    public $fields = array(
         "id",
         "id_application",
         "name",
@@ -67,19 +67,19 @@ class Action extends DbObj
     public $father;
     public $toc_order;
     
-    var $id_fields = array(
+    public $id_fields = array(
         "id"
     );
     
-    var $idx = array(
+    public $idx = array(
         "id",
         "id_application",
         "name"
     );
     
-    var $dbtable = "action";
+    public $dbtable = "action";
     
-    var $sqlcreate = '
+    public $sqlcreate = '
 create table action (id int not null,
                    primary key (id),
                    id_application int not null,
@@ -108,12 +108,12 @@ create sequence SEQ_ID_ACTION;
      */
     public $parent;
     
-    var $def = array(
+    public $def = array(
         "criteria" => "",
         "order_by" => "name"
     );
     
-    var $criterias = array(
+    public $criterias = array(
         "name" => array(
             "libelle" => "Nom",
             "type" => "TXT"
@@ -203,9 +203,15 @@ create sequence SEQ_ID_ACTION;
     public function completeSet(&$parent)
     {
         $this->parent = & $parent;
-        if ($this->script == "") $this->script = strtolower($this->name) . ".php";
-        if ($this->layout == "") $this->layout = strtolower($this->name) . ".xml";
-        if ($this->function == "") $this->function = substr($this->script, 0, strpos($this->script, '.php'));
+        if ($this->script == "") {
+            $this->script = strtolower($this->name) . ".php";
+        }
+        if ($this->layout == "") {
+            $this->layout = strtolower($this->name) . ".xml";
+        }
+        if ($this->function == "") {
+            $this->function = substr($this->script, 0, strpos($this->script, '.php'));
+        }
         
         $this->session = & $parent->session;
         
@@ -213,8 +219,11 @@ create sequence SEQ_ID_ACTION;
         // Set the hereurl if possible
         $this->url = $this->GetParam("CORE_BASEURL") . "app=" . $this->parent->name . "&action=" . $this->name;
         // Init a log attribute
-        if ($this->user) $this->log->loghead = sprintf("%s %s [%d] - ", $this->user->firstname, $this->user->lastname, $this->user->id);
-        else $this->log->loghead = "user not defined - ";
+        if ($this->user) {
+            $this->log->loghead = sprintf("%s %s [%d] - ", $this->user->firstname, $this->user->lastname, $this->user->id);
+        } else {
+            $this->log->loghead = "user not defined - ";
+        }
         
         $this->log->function = $this->name;
         $this->log->application = $this->parent->name;
@@ -283,7 +292,9 @@ create sequence SEQ_ID_ACTION;
     
     public function PreInsert()
     {
-        if ($this->Exists($this->name, $this->id_application)) return "Action {$this->name} already exists...";
+        if ($this->Exists($this->name, $this->id_application)) {
+            return "Action {$this->name} already exists...";
+        }
         $this->exec_query("select nextval ('seq_id_action')");
         $arr = $this->fetch_array(0);
         $this->id = $arr["nextval"];
@@ -291,8 +302,12 @@ create sequence SEQ_ID_ACTION;
     }
     public function PreUpdate()
     {
-        if ($this->dbid == - 1) return false;
-        if ($this->Exists($this->name, $this->id_application, $this->id)) return "Action {$this->name} already exists...";
+        if ($this->dbid == - 1) {
+            return false;
+        }
+        if ($this->Exists($this->name, $this->id_application, $this->id)) {
+            return "Action {$this->name} already exists...";
+        }
         return '';
     }
     /**
@@ -422,9 +437,12 @@ create sequence SEQ_ID_ACTION;
      */
     public function getIcon($name, $text, $width = "", $height = "")
     {
-        
-        if ($width != "") $width = "width = \"" . $width . "\"";
-        if ($height != "") $height = "height = \"" . $height . "\"";
+        if ($width != "") {
+            $width = "width = \"" . $width . "\"";
+        }
+        if ($height != "") {
+            $height = "height = \"" . $height . "\"";
+        }
         
         return ("<img border=0 " . $width . " " . $height . " src=\"" . $this->parent->getImageLink($name) . "\" title=\"" . $this->text($text) . "\" alt=\"" . $this->text($text) . "\">");
     }
@@ -436,7 +454,9 @@ create sequence SEQ_ID_ACTION;
      */
     public function getLayoutFile($layname)
     {
-        if (isset($this->parent)) return ($this->parent->GetLayoutFile($layname));
+        if (isset($this->parent)) {
+            return ($this->parent->GetLayoutFile($layname));
+        }
         return '';
     }
     /**
@@ -448,14 +468,15 @@ create sequence SEQ_ID_ACTION;
      */
     public function exists($name, $idapp, $id_func = 0)
     {
-        if ($idapp == '') return false;
+        if ($idapp == '') {
+            return false;
+        }
         $query = new QueryDb($this->dbaccess, "Action");
         
         if ($id_func != '') {
-            
-            $query->AddQuery(sprintf("name='%s' and id != %d and id_application=%d", pg_escape_string($name) , $id_func, $idapp));
+            $query->AddQuery(sprintf("name='%s' and id != %d and id_application=%d", pg_escape_string($name), $id_func, $idapp));
         } else {
-            $query->AddQuery(sprintf("name='%s' and id_application=%d", pg_escape_string($name) , $idapp));
+            $query->AddQuery(sprintf("name='%s' and id_application=%d", pg_escape_string($name), $idapp));
         }
         
         $query->Query();
@@ -471,10 +492,12 @@ create sequence SEQ_ID_ACTION;
      */
     public function hasPermission($acl_name = "", $app_name = "", $strict = false)
     {
-        if (self::ACCESS_FREE == $acl_name) return (true); // no control for this action
+        if (self::ACCESS_FREE == $acl_name) {
+            return (true);
+        } // no control for this action
         return ($this->parent->HasPermission($acl_name, $app_name, $strict));
     }
-    /** 
+    /**
      * Check if the current user can execute the specified action.
      * @api verify if an action can be executed
      * @param string $actname action name
@@ -484,22 +507,30 @@ create sequence SEQ_ID_ACTION;
      */
     public function canExecute($actname, $appid = "")
     {
-        
-        if ($this->user->id == 1) return "";
-        if ($appid == "") $appid = $this->parent->id;
-        elseif (!is_numeric($appid)) $appid = $this->parent->GetIdFromName($appid);
+        if ($this->user->id == 1) {
+            return "";
+        }
+        if ($appid == "") {
+            $appid = $this->parent->id;
+        } elseif (!is_numeric($appid)) {
+            $appid = $this->parent->GetIdFromName($appid);
+        }
         
         $aclname = $this->getAcl($actname, $appid);
-        if (!$aclname) return ""; // no control
+        if (!$aclname) {
+            return "";
+        } // no control
         $acl = new Acl($this->dbaccess);
         if (!$acl->Set($aclname, $appid)) {
-            return sprintf(_("Acl [%s] not available for App %s") , $aclname, $appid);
+            return sprintf(_("Acl [%s] not available for App %s"), $aclname, $appid);
         }
         $p = new Permission($this->dbaccess, array(
             $this->user->id,
             $appid
         ));
-        if (!$p->HasPrivilege($acl->id)) return sprintf("no privilege %s for %s %s", $aclname, $appid, $actname);
+        if (!$p->HasPrivilege($acl->id)) {
+            return sprintf("no privilege %s for %s %s", $aclname, $appid, $actname);
+        }
         return "";
     }
     /**
@@ -510,12 +541,16 @@ create sequence SEQ_ID_ACTION;
      */
     public function getAcl($actname, $appid = "")
     {
-        if ($appid == "") $appid = $this->parent->id;
+        if ($appid == "") {
+            $appid = $this->parent->id;
+        }
         $query = new QueryDb($this->dbaccess, $this->dbtable);
         $query->AddQuery("name = '$actname'");
         $query->AddQuery("id_application = $appid");
         $q = $query->Query(0, 0, "TABLE");
-        if (is_array($q)) return $q[0]["acl"];
+        if (is_array($q)) {
+            return $q[0]["acl"];
+        }
         return false;
     }
     /**
@@ -531,11 +566,13 @@ create sequence SEQ_ID_ACTION;
     public function execute()
     {
         // If no parent set , it's a misconfiguration
-        if (!isset($this->parent)) return '';
+        if (!isset($this->parent)) {
+            return '';
+        }
         
         if ($this->auth && $this->auth->parms["type"] === "open") {
             if ($this->openaccess !== 'Y') {
-                $this->exitForbidden(sprintf(_("action %s is not declared to be access in open mode") , $this->name));
+                $this->exitForbidden(sprintf(_("action %s is not declared to be access in open mode"), $this->name));
             }
         }
         
@@ -575,11 +612,12 @@ create sequence SEQ_ID_ACTION;
         $this->lay = new Layout($layout, $this);
         if (isset($this->script) && $this->script != "") {
             $script = $appDir . "/" . $this->parent->name . "/" . $this->script;
-            if (!file_exists($script)) // try generic application
-            $script = $appDir . "/" . $this->parent->childof . "/" . $this->script;
+            if (!file_exists($script)) { // try generic application
+                $script = $appDir . "/" . $this->parent->childof . "/" . $this->script;
+            }
             
             if (file_exists($script)) {
-                include_once ($script);
+                include_once($script);
                 $call = $this->function;
                 $call($this);
             } else {
@@ -700,10 +738,18 @@ create sequence SEQ_ID_ACTION;
                 $action->grant_level = 0;
             }
             // set non set values if possible
-            if ($action->long_name == "") $action->long_name = $action->short_name;
-            if ($action->script == "") $action->script = strtolower($action->name) . ".php";
-            if ($action->layout == "") $action->layout = strtolower($action->name) . ".xml";
-            if (!isset($action->level)) $action->level = 0;
+            if ($action->long_name == "") {
+                $action->long_name = $action->short_name;
+            }
+            if ($action->script == "") {
+                $action->script = strtolower($action->name) . ".php";
+            }
+            if ($action->layout == "") {
+                $action->layout = strtolower($action->name) . ".xml";
+            }
+            if (!isset($action->level)) {
+                $action->level = 0;
+            }
             
             $action->father = $father[$action->level];
             if ($action->Exists($node["name"], $app->id)) {
@@ -752,8 +798,11 @@ create sequence SEQ_ID_ACTION;
     public static function getArgument($k, $def = '')
     {
         $v = getHttpVars($k, null);
-        if ($v === null) return $def;
-        else return $v;
+        if ($v === null) {
+            return $def;
+        } else {
+            return $v;
+        }
     }
     /**
      * translate text
@@ -764,7 +813,9 @@ create sequence SEQ_ID_ACTION;
      */
     public static function text($code)
     {
-        if ($code == "") return "";
+        if ($code == "") {
+            return "";
+        }
         return _($code);
     }
     /**
@@ -824,7 +875,6 @@ create sequence SEQ_ID_ACTION;
      */
     public function appInstalled($appname)
     {
-        
         $pubdir = DEFAULT_PUBDIR;
         
         return (@is_dir($pubdir . "/" . $appname));
@@ -835,7 +885,6 @@ create sequence SEQ_ID_ACTION;
      */
     public function getAvailableApplication()
     {
-        
         $query = new QueryDb($this->dbaccess, "Application");
         $query->basic_elem->sup_where = array(
             "available='Y'",
@@ -847,7 +896,6 @@ create sequence SEQ_ID_ACTION;
             $i = 0;
             foreach ($list as $k => $appli) {
                 if ($appli["access_free"] == "N") {
-                    
                     if (isset($this->user)) {
                         if ($this->user->id != 1) { // no control for user Admin
                             //if ($p->id_acl == "") continue;
@@ -858,7 +906,9 @@ create sequence SEQ_ID_ACTION;
                             $queryact->AddQuery("root='Y'");
                             $listact = $queryact->Query(0, 0, "TABLE");
                             $root_acl_name = $listact[0]["acl"];
-                            if (!$this->HasPermission($root_acl_name, $appli["id"])) continue;
+                            if (!$this->HasPermission($root_acl_name, $appli["id"])) {
+                                continue;
+                            }
                         }
                     } else {
                         continue;
@@ -866,7 +916,9 @@ create sequence SEQ_ID_ACTION;
                 }
                 $appli["description"] = $this->text($appli["description"]); // translate
                 $appli["iconsrc"] = $this->parent->getImageLink($appli["icon"]);
-                if ($appli["iconsrc"] == "CORE/Images/core-noimage.png") $appli["iconsrc"] = $appli["name"] . "/Images/" . $appli["icon"];
+                if ($appli["iconsrc"] == "CORE/Images/core-noimage.png") {
+                    $appli["iconsrc"] = $appli["name"] . "/Images/" . $appli["icon"];
+                }
                 
                 $tab[$i++] = $appli;
             }

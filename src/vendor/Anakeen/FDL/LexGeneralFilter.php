@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Lex;
+
 /**
  * Analyse a general filter string
  * @package Dcp\Lex
@@ -68,7 +69,7 @@ class GeneralFilter
         while ($offset < strlen($source)) {
             $result = static::_match($source, $offset);
             if ($result === false) {
-                throw new LexException(sprintf(_("LEX_GENERAL_FILTER:Unable to parse %s") , $source));
+                throw new LexException(sprintf(_("LEX_GENERAL_FILTER:Unable to parse %s"), $source));
             }
             $tokens[] = $result;
             $offset+= strlen($result['match']);
@@ -137,7 +138,7 @@ class GeneralFilter
                 if ($currentMode === false) {
                     $currentMode = self::MODE_STRING;
                     continue;
-                } else if ($currentMode === self::MODE_STRING) {
+                } elseif ($currentMode === self::MODE_STRING) {
                     $keys[] = array(
                         "word" => $currentWord,
                         "mode" => self::MODE_STRING
@@ -174,7 +175,7 @@ class GeneralFilter
             if ($value["token"] === self::T_STAR_END) {
                 if ($currentMode === false || $currentMode === self::MODE_WORD) {
                     $currentMode = self::MODE_PARTIAL_END;
-                } else if ($currentMode === self::MODE_PARTIAL_BEGIN) {
+                } elseif ($currentMode === self::MODE_PARTIAL_BEGIN) {
                     $currentMode = self::MODE_PARTIAL_BOTH;
                 }
             }

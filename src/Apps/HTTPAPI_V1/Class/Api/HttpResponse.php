@@ -3,7 +3,6 @@ namespace Dcp\HttpApi\V1\Api;
 
 class HttpResponse
 {
-    
     protected $headers = [];
     protected $body;
     protected $response = null;
@@ -61,7 +60,7 @@ class HttpResponse
     {
         foreach ($this->headers as $h) {
             if (isset($h[1])) {
-                header(sprintf("%s: %s", $h[0], $h[1]) , false);
+                header(sprintf("%s: %s", $h[0], $h[1]), false);
             } else {
                 header_remove($h[0]);
             }

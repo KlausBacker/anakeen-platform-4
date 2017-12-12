@@ -14,9 +14,9 @@
 /**
  */
 
-require_once ('WHAT/autoload.php');
-include_once ('WHAT/Lib.Http.php');
-include_once ('WHAT/Lib.Common.php');
+require_once('WHAT/autoload.php');
+include_once('WHAT/Lib.Http.php');
+include_once('WHAT/Lib.Common.php');
 
 function f_paramglog($var)
 { // filter to select only not global
@@ -173,7 +173,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @param string|array $res
      * @param int $dbid
      */
-    function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
+    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         parent::__construct($dbaccess, $id, $res, $dbid);
         $this->rootdir = DEFAULT_PUBDIR. "/Apps";
@@ -232,7 +232,9 @@ create sequence SEQ_ID_APPLICATION start 10;
                     }
                 } else {
                     global $_SERVER;
-                    if (!empty($_SERVER['HTTP_HOST'])) Header("Location: " . $_SERVER['HTTP_REFERER']);
+                    if (!empty($_SERVER['HTTP_HOST'])) {
+                        Header("Location: " . $_SERVER['HTTP_REFERER']);
+                    }
                 }
             } else {
                 $e = new Dcp\Core\Exception("CORE0004", $name);
@@ -241,7 +243,9 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
         }
         
-        if ($this !== $parent) $this->parent = & $parent;
+        if ($this !== $parent) {
+            $this->parent = & $parent;
+        }
         if (is_object($this->parent) && isset($this->parent->session)) {
             $this->session = $this->parent->session;
             if (isset($this->parent->user) && is_object($this->parent->user)) {
@@ -249,10 +253,14 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
         }
         
-        if ($session != "") $this->SetSession($session);
+        if ($session != "") {
+            $this->SetSession($session);
+        }
         $this->param = new Param($this->dbaccess);
         $style = false;
-        if ($this->session) $style = $this->session->read("userCoreStyle", false);
+        if ($this->session) {
+            $style = $this->session->read("userCoreStyle", false);
+        }
         
         if ($style) {
             $this->InitStyle(false, $style);
@@ -297,7 +305,9 @@ create sequence SEQ_ID_APPLICATION start 10;
     
     public function preInsert()
     {
-        if ($this->Exists($this->name)) return "Ce nom d'application existe deja...";
+        if ($this->Exists($this->name)) {
+            return "Ce nom d'application existe deja...";
+        }
         if ($this->name == "CORE") {
             $this->id = 1;
         } else {
@@ -310,8 +320,12 @@ create sequence SEQ_ID_APPLICATION start 10;
     
     public function preUpdate()
     {
-        if ($this->dbid == - 1) return false;
-        if ($this->Exists($this->name, $this->id)) return "Ce nom d'application existe deja...";
+        if ($this->dbid == - 1) {
+            return false;
+        }
+        if ($this->Exists($this->name, $this->id)) {
+            return "Ce nom d'application existe deja...";
+        }
         return '';
     }
     /**
@@ -401,9 +415,11 @@ create sequence SEQ_ID_APPLICATION start 10;
             return $ref;
         }
         
-        if (is_file($ref)) return $ref;
+        if (is_file($ref)) {
+            return $ref;
+        }
         if (is_file($this->publicdir."/".$ref)) {
-             return $ref;
+            return $ref;
         }
         /* TODO : update with application log class */
         $this->log->error(__METHOD__ . " Unable to identify the ref $ref");
@@ -432,7 +448,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         
         $resourceLocation = $this->getResourceLocation($type, $ref, $needparse, $packName, true);
         if (!$resourceLocation) {
-            $wng = sprintf(_("Cannot find %s resource file") , $ref);
+            $wng = sprintf(_("Cannot find %s resource file"), $ref);
             $this->addLogMsg($wng);
             $this->log->warning($wng);
             $resourceLocation=sprintf("Ressource %s not found", $ref);
@@ -465,7 +481,6 @@ create sequence SEQ_ID_APPLICATION start 10;
         
         $key = isset($this->session) ? $this->session->getUKey(\Dcp\Core\ContextManager::getApplicationParam("WVERSION")) : uniqid(\Dcp\Core\ContextManager::getApplicationParam("WVERSION"));
         if ($packName) {
-            
             $resourcePackParseLocation = sprintf("?app=CORE&amp;action=CORE_CSS&amp;type=%s&amp;ukey=%s&amp;pack=%s", $type, $key, $packName);
             $resourcePackNoParseLocation = sprintf("pack.php?type=%s&amp;pack=%s&amp;wv=%s", $type, $packName, \Dcp\Core\ContextManager::getApplicationParam("WVERSION"));
             
@@ -534,7 +549,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         $styleParseRule = $this->detectCssParse($ref, $needparse);
         $rl = $this->getResourceLocation('css', $ref, $styleParseRule, $packName);
         if (!$rl) {
-            $msg = sprintf(_("Cannot find %s resource file") , $ref);
+            $msg = sprintf(_("Cannot find %s resource file"), $ref);
             $this->addLogMsg($msg);
             $this->log->warning($msg);
         }
@@ -558,7 +573,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         $rl = $this->getResourceLocation('js', $ref, $needparse, $packName);
         if (!$rl) {
-            $msg = sprintf(_("Cannot find %s resource file") , $ref);
+            $msg = sprintf(_("Cannot find %s resource file"), $ref);
             $this->addLogMsg($msg);
             $this->log->warning($msg);
         }
@@ -582,7 +597,9 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         $styleParseRule = $this->detectCssParse($ref, $needparse);
         
-        if (substr($ref, 0, 2) == './') $ref = substr($ref, 2);
+        if (substr($ref, 0, 2) == './') {
+            $ref = substr($ref, 2);
+        }
         return $this->AddRessourceRef('css', $ref, $styleParseRule, $packName);
     }
     
@@ -597,7 +614,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 }
                 $parseOnLoad = true;
                 if ((null !== $needparse) && ($parseOnLoad !== $needparse)) {
-                    $this->log->warning(sprintf("%s was added with needParse to %s but style has a rule saying %s", $ref, var_export($needparse, true) , var_export($parseOnLoad, true)));
+                    $this->log->warning(sprintf("%s was added with needParse to %s but style has a rule saying %s", $ref, var_export($needparse, true), var_export($parseOnLoad, true)));
                 }
                 $needparse = $parseOnLoad;
             }
@@ -634,7 +651,9 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function addJsRef($ref, $needparse = false, $packName = '')
     {
-        if (substr($ref, 0, 2) == './') $ref = substr($ref, 2);
+        if (substr($ref, 0, 2) == './') {
+            $ref = substr($ref, 2);
+        }
         return $this->AddRessourceRef('js', $ref, $needparse, $packName);
     }
     /**
@@ -724,7 +743,9 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function addLogMsg($code, $cut = 0)
     {
-        if ($code == "") return;
+        if ($code == "") {
+            return;
+        }
         // Js Code are stored in the top level application
         if ($this->hasParent()) {
             $this->parent->AddLogMsg($code, $cut);
@@ -739,7 +760,9 @@ create sequence SEQ_ID_APPLICATION start 10;
                 }
                 $this->session->register("logmsg", $logmsg);
                 $suser = sprintf("%s %s [%d] - ", $this->user->firstname, $this->user->lastname, $this->user->id);
-                if (is_array($code)) $code = print_r($code, true);
+                if (is_array($code)) {
+                    $code = print_r($code, true);
+                }
                 $this->log->info($suser . $code);
             } else {
                 error_log($code);
@@ -754,7 +777,9 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function addWarningMsg($code)
     {
-        if (($code == "") || ($code == "-")) return;
+        if (($code == "") || ($code == "-")) {
+            return;
+        }
         // Js Code are stored in the top level application
         if ($this->hasParent()) {
             $this->parent->addWarningMsg($code);
@@ -838,9 +863,10 @@ create sequence SEQ_ID_APPLICATION start 10;
             $this->log->warning("Action {$this->parent->name}:{$this->name} requires authentification");
             return false;
         }
-        if ($this->user->id == 1) return true; // admin can do everything
+        if ($this->user->id == 1) {
+            return true;
+        } // admin can do everything
         if ($app_name == "") {
-            
             $acl = new Acl($this->dbaccess);
             if (!$acl->Set($acl_name, $this->id)) {
                 $this->log->warning("Acl $acl_name not available for App $this->name");
@@ -863,8 +889,11 @@ create sequence SEQ_ID_APPLICATION start 10;
             return ($this->permission->HasPrivilege($acl->id, $strict));
         } else {
             // test permission for other application
-            if (!is_numeric($app_name)) $appid = $this->GetIdFromName($app_name);
-            else $appid = $app_name;
+            if (!is_numeric($app_name)) {
+                $appid = $this->GetIdFromName($app_name);
+            } else {
+                $appid = $app_name;
+            }
             
             $wperm = new Permission($this->dbaccess, array(
                 $this->user->id,
@@ -890,21 +919,26 @@ create sequence SEQ_ID_APPLICATION start 10;
     public function initStyle($init = true, $useStyle = '')
     {
         if ($init == true) {
-            if (isset($this->user)) $pstyle = new Param($this->dbaccess, array(
+            if (isset($this->user)) {
+                $pstyle = new Param($this->dbaccess, array(
                 "STYLE",
                 Param::PARAM_USER . $this->user->id,
                 "1"
             ));
-            else $pstyle = new Param($this->dbaccess, array(
+            } else {
+                $pstyle = new Param($this->dbaccess, array(
                 "STYLE",
                 Param::PARAM_USER . Account::ANONYMOUS_ID,
                 "1"
             ));
-            if (!$pstyle->isAffected()) $pstyle = new Param($this->dbaccess, array(
+            }
+            if (!$pstyle->isAffected()) {
+                $pstyle = new Param($this->dbaccess, array(
                 "STYLE",
                 Param::PARAM_APP,
                 "1"
             ));
+            }
             
             $style = $pstyle->val;
             $this->style = new Style($this->dbaccess, $style);
@@ -918,8 +952,6 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         if ($style) {
             //  $this->AddCssRef("css/dcp/system.css");
-            
-            
         }
     }
     
@@ -941,11 +973,10 @@ create sequence SEQ_ID_APPLICATION start 10;
     
     public function getImageFile($img)
     {
-        
         return $this->rootdir . "/" . $this->getImageLink($img);
     }
     
-    var $noimage = "CORE/Images/core-noimage.png";
+    public $noimage = "CORE/Images/core-noimage.png";
     /**
      * get image url of an application
      * can also get another image by search in Images general directory
@@ -960,13 +991,17 @@ create sequence SEQ_ID_APPLICATION start 10;
         static $cacheImgUrl = array();
         
         $cacheIndex = $img . $size;
-        if (isset($cacheImgUrl[$cacheIndex])) return $cacheImgUrl[$cacheIndex];
+        if (isset($cacheImgUrl[$cacheIndex])) {
+            return $cacheImgUrl[$cacheIndex];
+        }
         if ($img != "") {
             // try style first
             if ($detectstyle) {
                 $url = $this->style->GetImageUrl($img, "");
                 if ($url != "") {
-                    if ($size !== null) $url = 'resizeimg.php?img=' . urlencode($url) . '&size=' . $size;
+                    if ($size !== null) {
+                        $url = 'resizeimg.php?img=' . urlencode($url) . '&size=' . $size;
+                    }
                     $cacheImgUrl[$cacheIndex] = $url;
                     return $url;
                 }
@@ -974,18 +1009,24 @@ create sequence SEQ_ID_APPLICATION start 10;
             // try application
             if (file_exists($this->publicdir . "/" . $this->name . "/Images/" . $img)) {
                 $url = $this->name . "/Images/" . $img;
-                if ($size !== null) $url = 'resizeimg.php?img=' . urlencode($url) . '&size=' . $size;
+                if ($size !== null) {
+                    $url = 'resizeimg.php?img=' . urlencode($url) . '&size=' . $size;
+                }
                 $cacheImgUrl[$cacheIndex] = $url;
                 return $url;
             } else { // perhaps generic application
                 if (($this->childof != "") && (file_exists($this->publicdir . "/" . $this->childof . "/Images/" . $img))) {
                     $url = $this->childof . "/Images/" . $img;
-                    if ($size !== null) $url = 'resizeimg.php?img=' . urlencode($url) . '&size=' . $size;
+                    if ($size !== null) {
+                        $url = 'resizeimg.php?img=' . urlencode($url) . '&size=' . $size;
+                    }
                     $cacheImgUrl[$cacheIndex] = $url;
                     return $url;
-                } else if (file_exists($this->publicdir . "/Images/" . $img)) {
+                } elseif (file_exists($this->publicdir . "/Images/" . $img)) {
                     $url = "Images/" . $img;
-                    if ($size !== null) $url = 'resizeimg.php?img=' . urlencode($url) . '&size=' . $size;
+                    if ($size !== null) {
+                        $url = 'resizeimg.php?img=' . urlencode($url) . '&size=' . $size;
+                    }
                     $cacheImgUrl[$cacheIndex] = $url;
                     return $url;
                 }
@@ -993,12 +1034,16 @@ create sequence SEQ_ID_APPLICATION start 10;
             // try in parent
             if ($this->parent != "") {
                 $url = $this->parent->getImageLink($img);
-                if ($size !== null) $url = 'resizeimg.php?img=' . urlencode($url) . '&size=' . $size;
+                if ($size !== null) {
+                    $url = 'resizeimg.php?img=' . urlencode($url) . '&size=' . $size;
+                }
                 $cacheImgUrl[$cacheIndex] = $url;
                 return $url;
             }
         }
-        if ($size !== null) return 'resizeimg.php?img=' . urlencode($this->noimage) . '&size=' . $size;
+        if ($size !== null) {
+            return 'resizeimg.php?img=' . urlencode($this->noimage) . '&size=' . $size;
+        }
         $this->addLogMsg("No find image \"$img\"");
         return $this->noimage;
     }
@@ -1035,33 +1080,45 @@ create sequence SEQ_ID_APPLICATION start 10;
     
     public function getFilteredImageUrl($imgf)
     {
-        
         $ttf = explode(":", $imgf);
         $img = $ttf[0];
         $filter = $ttf[1];
         
         $url = $this->getImageLink($img);
-        if ($url == $this->noimage) return $url;
+        if ($url == $this->noimage) {
+            return $url;
+        }
         
         $tf = explode("|", $filter);
-        if (count($tf) != 2) return $url;
+        if (count($tf) != 2) {
+            return $url;
+        }
         
         $fcol = explode(",", $tf[0]);
-        if (count($fcol) != 3) return $url;
+        if (count($fcol) != 3) {
+            return $url;
+        }
         
-        if (substr($tf[1], 0, 1) == '#') $col = $tf[1];
-        else $col = $this->getParam($tf[1]);
+        if (substr($tf[1], 0, 1) == '#') {
+            $col = $tf[1];
+        } else {
+            $col = $this->getParam($tf[1]);
+        }
         $ncol[0] = hexdec(substr($col, 1, 2));
         $ncol[1] = hexdec(substr($col, 3, 2));
         $ncol[2] = hexdec(substr($col, 5, 2));
         
         $cdir = 'var/cache/image/';
         $rcdir = $this->rootdir . '/' . $cdir;
-        if (!is_dir($rcdir)) mkdir($rcdir);
+        if (!is_dir($rcdir)) {
+            mkdir($rcdir);
+        }
         
         $uimg = $cdir . $this->name . '-' . $fcol[0] . '.' . $fcol[1] . '.' . $fcol[2] . '_' . $ncol[0] . '.' . $ncol[1] . '.' . $ncol[2] . '.' . $img;
         $cimg = $this->rootdir . '/' . $uimg;
-        if (file_exists($cimg)) return $uimg;
+        if (file_exists($cimg)) {
+            return $uimg;
+        }
         
         $this->ImageFilterColor($this->rootdir . '/' . $url, $fcol, $ncol, $cimg);
         return $uimg;
@@ -1075,10 +1132,11 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         if (strstr($layname, '..')) {
             return ""; // not authorized
-            
         }
         $file = $this->style->GetLayoutFile($layname, "");
-        if ($file != "") return $file;
+        if ($file != "") {
+            return $file;
+        }
         
         $laydir = $this->rootdir . "/" . $this->name . "/Layout/";
         $file = $laydir . $layname; // default file
@@ -1087,9 +1145,13 @@ create sequence SEQ_ID_APPLICATION start 10;
         } else {
             // perhaps generic application
             $file = $this->rootdir . "/" . $this->childof . "/Layout/$layname";
-            if (file_exists($file)) return ($file);
+            if (file_exists($file)) {
+                return ($file);
+            }
         }
-        if ($this->parent != "") return ($this->parent->GetLayoutFile($layname));
+        if ($this->parent != "") {
+            return ($this->parent->GetLayoutFile($layname));
+        }
         return ("");
     }
     public function OldGetLayoutFile($layname)
@@ -1099,7 +1161,9 @@ create sequence SEQ_ID_APPLICATION start 10;
             $file = $this->style->GetLayoutFile($layname, $file);
             return ($file);
         }
-        if ($this->parent != "") return ($this->parent->GetLayoutFile($layname));
+        if ($this->parent != "") {
+            return ($this->parent->GetLayoutFile($layname));
+        }
         return ("");
     }
     /**
@@ -1111,8 +1175,11 @@ create sequence SEQ_ID_APPLICATION start 10;
     public function setParam($key, $val)
     {
         if (is_array($val)) {
-            if (isset($val["global"]) && $val["global"] == "Y") $type = Param::PARAM_GLB;
-            else $type = Param::PARAM_APP;
+            if (isset($val["global"]) && $val["global"] == "Y") {
+                $type = Param::PARAM_GLB;
+            } else {
+                $type = Param::PARAM_APP;
+            }
             $this->param->Set($key, $val["val"], $type, $this->id);
         } else { // old method
             $this->param->Set($key, $val, Param::PARAM_APP, $this->id);
@@ -1155,14 +1222,27 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         
         if (is_array($val)) {
-            if (isset($val["kind"])) $pdef->kind = $val["kind"];
-            if (isset($val["user"]) && $val["user"] == "Y") $pdef->isuser = "Y";
-            else $pdef->isuser = "N";
-            if (isset($val["style"]) && $val["style"] == "Y") $pdef->isstyle = "Y";
-            else $pdef->isstyle = "N";
-            if (isset($val["descr"])) $pdef->descr = $val["descr"];
-            if (isset($val["global"]) && $val["global"] == "Y") $pdef->isglob = "Y";
-            else $pdef->isglob = "N";
+            if (isset($val["kind"])) {
+                $pdef->kind = $val["kind"];
+            }
+            if (isset($val["user"]) && $val["user"] == "Y") {
+                $pdef->isuser = "Y";
+            } else {
+                $pdef->isuser = "N";
+            }
+            if (isset($val["style"]) && $val["style"] == "Y") {
+                $pdef->isstyle = "Y";
+            } else {
+                $pdef->isstyle = "N";
+            }
+            if (isset($val["descr"])) {
+                $pdef->descr = $val["descr"];
+            }
+            if (isset($val["global"]) && $val["global"] == "Y") {
+                $pdef->isglob = "Y";
+            } else {
+                $pdef->isglob = "N";
+            }
         }
         
         if ($pdef->appid == $this->id) {
@@ -1196,8 +1276,11 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function setVolatileParam($key, $val)
     {
-        if ($this->hasParent()) $this->parent->setVolatileParam($key, $val);
-        else $this->param->SetVolatile($key, $val);
+        if ($this->hasParent()) {
+            $this->parent->setVolatileParam($key, $val);
+        } else {
+            $this->param->SetVolatile($key, $val);
+        }
     }
     /**
      * get parameter value
@@ -1207,11 +1290,15 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function getParam($key, $default = "")
     {
-        if (!isset($this->param)) return ($default);
+        if (!isset($this->param)) {
+            return ($default);
+        }
         $z = $this->param->Get($key, "z");
         
         if ($z === "z") {
-            if ($this->hasParent()) return $this->parent->GetParam($key, $default);
+            if ($this->hasParent()) {
+                return $this->parent->GetParam($key, $default);
+            }
         } else {
             return ($z);
         }
@@ -1263,7 +1350,6 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function initApp($name, $update = false)
     {
-        
         $this->log->info("Init : $name");
 
         $appFilePath=sprintf("%s/%s/%s.app", $this->rootdir, $name, $name);
@@ -1274,7 +1360,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             $app_desc = array();
             $action_desc = array();
 
-                include($appFilePath);
+            include($appFilePath);
             $action_desc_ini = $action_desc;
             if (sizeof($app_desc) > 0) {
                 if (!$update) {
@@ -1321,9 +1407,9 @@ create sequence SEQ_ID_APPLICATION start 10;
             if ($this->childof != "") {
                 // init ACL & ACTION
                 // init acl
-                simpleQuery($this->dbaccess, sprintf("INSERT INTO acl (id,id_application,name,grant_level,description, group_default) SELECT nextval('seq_id_acl') as id, %d as id_application, acl.name, acl.grant_level, acl.description, acl.group_default from acl as acl,application as app where acl.id_application=app.id and app.name='%s' and acl.name NOT IN (SELECT acl.name from acl as acl, application as app  where id_application=app.id and app.name='%s')", $this->id, pg_escape_string($this->childof) , pg_escape_string($this->name)));
+                simpleQuery($this->dbaccess, sprintf("INSERT INTO acl (id,id_application,name,grant_level,description, group_default) SELECT nextval('seq_id_acl') as id, %d as id_application, acl.name, acl.grant_level, acl.description, acl.group_default from acl as acl,application as app where acl.id_application=app.id and app.name='%s' and acl.name NOT IN (SELECT acl.name from acl as acl, application as app  where id_application=app.id and app.name='%s')", $this->id, pg_escape_string($this->childof), pg_escape_string($this->name)));
                 // init actions
-                simpleQuery($this->dbaccess, sprintf("INSERT INTO action (id, id_application, name, short_name, long_name,script,function,layout,available,acl,grant_level,openaccess,root,icon,toc,father,toc_order) SELECT nextval('seq_id_action') as id, %d as id_application, action.name, action.short_name, action.long_name, action.script, action.function, action.layout, action.available, action.acl, action.grant_level, action.openaccess, action.root, action.icon, action.toc, action.father, action.toc_order from action as action,application as app where action.id_application=app.id and app.name='%s' and action.name NOT IN (SELECT action.name from action as action, application as app  where action.id_application=app.id and app.name='%s')", $this->id, pg_escape_string($this->childof) , pg_escape_string($this->name)));
+                simpleQuery($this->dbaccess, sprintf("INSERT INTO action (id, id_application, name, short_name, long_name,script,function,layout,available,acl,grant_level,openaccess,root,icon,toc,father,toc_order) SELECT nextval('seq_id_action') as id, %d as id_application, action.name, action.short_name, action.long_name, action.script, action.function, action.layout, action.available, action.acl, action.grant_level, action.openaccess, action.root, action.icon, action.toc, action.father, action.toc_order from action as action,application as app where action.id_application=app.id and app.name='%s' and action.name NOT IN (SELECT action.name from action as action, application as app  where action.id_application=app.id and app.name='%s')", $this->id, pg_escape_string($this->childof), pg_escape_string($this->name)));
                 $this->log->info(sprintf("Update Actions from %s parent", $this->childof));
                 $err = $this->_initACLWithGroupDefault();
                 if ($err != '') {
@@ -1334,7 +1420,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             // init application constant
             $initAppFile=sprintf("%s/%s/%s_init.php", $this->rootdir, $name, $name);
             if (file_exists($initAppFile)) {
-                include ($initAppFile);
+                include($initAppFile);
                 if ($update) {
                     /* Store previous version for post migration scripts */
                     global $app_const;
@@ -1351,17 +1437,21 @@ create sequence SEQ_ID_APPLICATION start 10;
                 }
                 if ($this->param) {
                     // delete paramters that cannot be change after initialisation to be change now
-                    if ($update) $this->param->DelStatic($this->id);
+                    if ($update) {
+                        $this->param->DelStatic($this->id);
+                    }
                     global $app_const;
-                    if (isset($app_const)) $this->InitAllParam($app_const, $update);
+                    if (isset($app_const)) {
+                        $this->InitAllParam($app_const, $update);
+                    }
                 }
             }
             //----------------------------------
             // add init father application constant
             if (file_exists($this->rootdir . "/{$this->childof}/{$this->childof}_init.php")) {
-                include ("{$this->childof}/{$this->childof}_init.php");
+                include("{$this->childof}/{$this->childof}_init.php");
                 global $app_const;
-                $this->InitAllParam(array_filter($app_const, "f_paramglog") , true);
+                $this->InitAllParam(array_filter($app_const, "f_paramglog"), true);
             }
             
             if ($this->id > 1) {
@@ -1374,13 +1464,11 @@ create sequence SEQ_ID_APPLICATION start 10;
                     "val" => $name,
                     "kind" => "static"
                 )); // use by generic application
-                
             }
             $this->updateChildApplications();
         } else {
             $this->log->info("No {$name}/{$name}.app available");
             throw new Dcp\Exception("CORE0015", $appFilePath);
-
         }
         return true;
     }
@@ -1402,8 +1490,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 try {
                     $a->set($childName, $noParent);
                     $a->initApp($childName, true);
-                }
-                catch(\Dcp\Exception $e) {
+                } catch (\Dcp\Exception $e) {
                     if ($e->getDcpCode() != "CORE0007") {
                         throw $e;
                     }
@@ -1426,7 +1513,6 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function updateAllApp()
     {
-        
         $query = new QueryDb($this->dbaccess, $this->dbtable);
         $query->AddQuery("available = 'Y'");
         $allapp = $query->Query();
@@ -1487,7 +1573,9 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public static function text($code)
     {
-        if ($code == "") return "";
+        if ($code == "") {
+            return "";
+        }
         return _($code);
     }
     /**
@@ -1498,7 +1586,6 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function updateUserAcl($iduser)
     {
-        
         $query = new QueryDb($this->dbaccess, $this->dbtable);
         $query->AddQuery("available = 'Y'");
         $allapp = $query->Query();
@@ -1529,7 +1616,9 @@ create sequence SEQ_ID_APPLICATION start 10;
         $query = new QueryDb($this->dbaccess, $this->dbtable);
         $query->AddQuery("name = '" . pg_escape_string(trim($name)) . "'");
         $app = $query->Query(0, 0, "TABLE");
-        if (is_array($app) && isset($app[0]) && isset($app[0]["id"])) return $app[0]["id"];
+        if (is_array($app) && isset($app[0]) && isset($app[0]["id"])) {
+            return $app[0]["id"];
+        }
         return 0;
     }
     /**
@@ -1547,9 +1636,8 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         $res = array();
         try {
-            simpleQuery($this->dbaccess, sprintf("SELECT * FROM acl WHERE id_application = %s AND group_default = 'Y'", $this->id) , $res, false, false, true);
-        }
-        catch(Exception $e) {
+            simpleQuery($this->dbaccess, sprintf("SELECT * FROM acl WHERE id_application = %s AND group_default = 'Y'", $this->id), $res, false, false, true);
+        } catch (Exception $e) {
             return $e->getMessage();
         }
         foreach ($res as $acl) {

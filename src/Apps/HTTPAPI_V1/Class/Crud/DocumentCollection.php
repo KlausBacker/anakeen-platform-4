@@ -14,7 +14,6 @@ namespace Dcp\HttpApi\V1\Crud;
 
 class DocumentCollection extends Crud
 {
-    
     const GET_PROPERTIES = "document.properties";
     const GET_PROPERTY = "document.properties.";
     const GET_ATTRIBUTES = "document.attributes";
@@ -238,7 +237,7 @@ class DocumentCollection extends Crud
         if ($this->hasFields(self::GET_PROPERTIES, true) && !$this->hasFields(self::GET_PROPERTY)) {
             $documentFormatter->useDefaultProperties();
         } else {
-            $documentFormatter->setProperties($this->_getPropertiesId() , $this->hasFields(self::GET_PROPERTIES, true));
+            $documentFormatter->setProperties($this->_getPropertiesId(), $this->hasFields(self::GET_PROPERTIES, true));
         }
         $documentFormatter->setAttributes($this->getAttributeFields());
         return $documentFormatter;

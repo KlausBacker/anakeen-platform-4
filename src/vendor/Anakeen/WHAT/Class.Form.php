@@ -61,48 +61,53 @@ $CLASS_FORM_PHP = '$Id';
 
 class Form
 {
+    public $cell_class;
+    public $label_class;
+    public $titre_class;
     
-    var $cell_class;
-    var $label_class;
-    var $titre_class;
-    
-    function Form($ClassLabel = "label3", $ClassTitre = "titre3", $ClassCell = "tab1")
+    public function Form($ClassLabel = "label3", $ClassTitre = "titre3", $ClassCell = "tab1")
     {
         $this->cell_class = $ClassCell;
         $this->label_class = $ClassLabel;
         $this->titre_class = $ClassTitre;
-        return TRUE;
+        return true;
     }
     
-    function Hidden($name, $value = '')
+    public function Hidden($name, $value = '')
     {
         $src = "<INPUT TYPE=\"hidden\" NAME=\"$name\" VALUE=\"$value\">\n";
         return $src;
     }
-    function Img($src, $alt = "", $border = 0, $vspace = 0, $hspace = 0)
+    public function Img($src, $alt = "", $border = 0, $vspace = 0, $hspace = 0)
     {
         $walt = "";
-        if ($alt != "") $walt = "ALT=\"$alt\"";
+        if ($alt != "") {
+            $walt = "ALT=\"$alt\"";
+        }
         $src = "<IMG SRC=\"$src\" BORDER=\"$border\" $walt VSPACE=$vspace HSPACE=$hspace>\n";
         return $src;
     }
-    function Table($border = 0, $width = "100%", $align = "", $space = 0, $padd = 0)
+    public function Table($border = 0, $width = "100%", $align = "", $space = 0, $padd = 0)
     {
         $walign = "";
-        if ($align != "") $walign = "ALIGN=\"$align\"";
+        if ($align != "") {
+            $walign = "ALIGN=\"$align\"";
+        }
         $src = "<TABLE BORDER=\"$border\" WIDTH=\"$width\" $walign CELLSPACING=\"$space\" CELLPADDING=\"$padd\">\n";
         return $src;
     }
     
-    function Hr($width = "100%", $align = "")
+    public function Hr($width = "100%", $align = "")
     {
         $walign = "";
-        if ($align != "") $walign = "ALIGN=\"$align\"";
+        if ($align != "") {
+            $walign = "ALIGN=\"$align\"";
+        }
         $src = "<HR WIDTH=\"$width\" $walign>\n";
         return $src;
     }
     
-    function NewLine($class = "")
+    public function NewLine($class = "")
     {
         if ($class == "") {
             return "</TR>\n<TR>\n";
@@ -112,7 +117,7 @@ class Form
         return $src;
     }
     
-    function LibCell($libelle, $value, $class = "", $align = "LEFT", $span = 1)
+    public function LibCell($libelle, $value, $class = "", $align = "LEFT", $span = 1)
     {
         $src = "\t<TD CLASS=\"{$this->label_class}\" ALIGN=\"$align\" COLSPAN=$span>$libelle\n";
         if ($class == "") {
@@ -122,15 +127,19 @@ class Form
         }
         return $src;
     }
-    function LibCells($libelle, $value, $classval = "", $classlib = "", $align = "LEFT")
+    public function LibCells($libelle, $value, $classval = "", $classlib = "", $align = "LEFT")
     {
-        if ($classlib == "") $classlib = $this->label_class;
-        if ($classval == "") $classval = $this->cell_class;
+        if ($classlib == "") {
+            $classlib = $this->label_class;
+        }
+        if ($classval == "") {
+            $classval = $this->cell_class;
+        }
         $src = "\t<TD CLASS=\"$classlib\" ALIGN=\"$align\">$libelle</TD>\n";
         $src.= "\t<TD CLASS=\"$classval\" ALIGN=\"$align\">$value</TD>\n";
         return $src;
     }
-    function Cell($value, $class = "", $align = "LEFT", $span = 1)
+    public function Cell($value, $class = "", $align = "LEFT", $span = 1)
     {
         if ($align == "") {
             $align = "LEFT";
@@ -143,7 +152,7 @@ class Form
         return $src;
     }
     
-    function TCell($value, $span = 1, $class = "", $align = "LEFT", $width = "")
+    public function TCell($value, $span = 1, $class = "", $align = "LEFT", $width = "")
     {
         $wwidth = "";
         if ($width != "") {
@@ -157,7 +166,7 @@ class Form
         return $src;
     }
     
-    function CellTextArea($CREATION, $libelle, $rows = 5, $cols = 55, $name, $entite, $span = 1)
+    public function CellTextArea($CREATION, $libelle, $rows = 5, $cols = 55, $name, $entite, $span = 1)
     {
         if (!$CREATION) {
             $value = $entite->$name;
@@ -173,7 +182,7 @@ class Form
         return $src;
     }
     
-    function CellInput($CREATION, $libelle, $max, $size, $name, $entite, $span = 1)
+    public function CellInput($CREATION, $libelle, $max, $size, $name, $entite, $span = 1)
     {
         if (!$CREATION) {
             $value = $entite->$name;
@@ -190,7 +199,7 @@ class Form
         $src.= "</FONT></TD>\n";
         return $src;
     }
-    function CellInputId($CREATION, $libelle, $max, $size, $name, $id, $entite, $span = 1)
+    public function CellInputId($CREATION, $libelle, $max, $size, $name, $id, $entite, $span = 1)
     {
         if (!$CREATION) {
             $value = $entite->$id;
@@ -207,7 +216,7 @@ class Form
         $src.= "</FONT></TD>\n";
         return $src;
     }
-    function CellInputNoDiv($CREATION, $libelle, $max, $size, $name, $entite, $span = 1)
+    public function CellInputNoDiv($CREATION, $libelle, $max, $size, $name, $entite, $span = 1)
     {
         if (!$CREATION) {
             $value = $entite->$name;
@@ -225,7 +234,7 @@ class Form
         return $src;
     }
     
-    function Input($CREATION, $libelle, $max, $size, $name, $entite, $span = 1)
+    public function Input($CREATION, $libelle, $max, $size, $name, $entite, $span = 1)
     {
         if (!$CREATION) {
             $value = $entite->$name;
@@ -241,7 +250,7 @@ class Form
         $src.= "</FONT>\n";
         return $src;
     }
-    function InputSimple($max, $size, $name, $value, $span = 1)
+    public function InputSimple($max, $size, $name, $value, $span = 1)
     {
         $src = "<FONT SIZE=\"-1\">" . "<INPUT MAXLENGTH=$max SIZE=$size NAME=\"p_$name\"";
         $src.= " VALUE=\"$value\">\n";
@@ -249,10 +258,12 @@ class Form
         return $src;
     }
     
-    function Select($libelle, $name, $name_id, $name_lib, $entite, $liste, $vide = "vide")
+    public function Select($libelle, $name, $name_id, $name_lib, $entite, $liste, $vide = "vide")
     {
         reset($liste);
-        if (isset($entite->$name) && ($entite->$name == "")) unset($entite->$name);
+        if (isset($entite->$name) && ($entite->$name == "")) {
+            unset($entite->$name);
+        }
         $src = "\t<TD CLASS=\"{$this->label_class}\">$libelle\n";
         $src.= "<DIV CLASS=\"{$this->titre_class}\">\n";
         $src.= "<SELECT NAME=\"p_$name\" SIZE=1>\n";
@@ -280,10 +291,12 @@ class Form
         return $src;
     }
     
-    function SelectConcat($libelle, $name, $name_id, $name_lib1, $name_lib2, $entite, $liste, $vide = "vide")
+    public function SelectConcat($libelle, $name, $name_id, $name_lib1, $name_lib2, $entite, $liste, $vide = "vide")
     {
         reset($liste);
-        if (isset($entite->$name) && ($entite->$name == "")) unset($entite->$name);
+        if (isset($entite->$name) && ($entite->$name == "")) {
+            unset($entite->$name);
+        }
         $src = "\t<TD CLASS=\"{$this->label_class}\">$libelle\n";
         $src.= "<DIV CLASS=\"{$this->titre_class}\">\n";
         $src.= "<SELECT NAME=\"p_$name\" SIZE=1>\n";
@@ -307,9 +320,8 @@ class Form
         return $src;
     }
     
-    function SelectListeSimple($libelle, $name, $entite, $liste, $vide = "OUI")
+    public function SelectListeSimple($libelle, $name, $entite, $liste, $vide = "OUI")
     {
-        
         reset($liste);
         $src = "\t<TD CLASS=\"{$this->label_class}\">$libelle\n";
         $src.= "<DIV CLASS=\"{$this->titre_class}\">\n";
@@ -335,4 +347,3 @@ class Form
         return $src;
     }
 }
-?>

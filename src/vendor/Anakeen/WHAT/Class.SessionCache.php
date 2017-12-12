@@ -14,26 +14,25 @@
 /**
  */
 
-include_once ('Class.DbObj.php');
+include_once('Class.DbObj.php');
 
 class SessionCache extends DbObj
 {
-    
-    var $fields = array(
+    public $fields = array(
         "index",
         "lasttime"
     );
     
-    var $id_fields = array(
+    public $id_fields = array(
         "index"
     );
     
-    var $dbtable = "session_cache";
+    public $dbtable = "session_cache";
     
-    var $sqlcreate = "create table session_cache ( index varchar(100), 
+    public $sqlcreate = "create table session_cache ( index varchar(100), 
 			    lasttime	    int);";
     
-    function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
+    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         parent::__construct($dbaccess, $id, $res, $dbid);
         if ((!$this->isAffected()) && ($id != '')) {
@@ -45,11 +44,10 @@ class SessionCache extends DbObj
         }
     }
     // modify with current date
-    function setTime()
+    public function setTime()
     {
         $date = gettimeofday();
         $this->lasttime = $date['sec'];
         $this->Modify();
     }
 }
-?>

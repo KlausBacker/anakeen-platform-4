@@ -13,7 +13,7 @@
 /**
  */
 
-include_once ("Class.DbObj.php");
+include_once("Class.DbObj.php");
 class DocRel extends DbObj
 {
     public $fields = array(
@@ -75,29 +75,41 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
     public function getRelations($reltype = "", $doctype = "", $limit = 0)
     {
         global $action;
-        include_once ("Class.QueryDb.php");
+        include_once("Class.QueryDb.php");
         if (empty($this->sinitid)) {
             return array();
         }
         $q = new QueryDb($this->dbaccess, get_class($this));
         $q->AddQuery(sprintf("sinitid = %d", $this->sinitid));
-        if ($reltype != "") $q->AddQuery("type='$reltype'");
-        if ($doctype != "") $q->AddQuery("doctype='$doctype'");
+        if ($reltype != "") {
+            $q->AddQuery("type='$reltype'");
+        }
+        if ($doctype != "") {
+            $q->AddQuery("doctype='$doctype'");
+        }
         $userid = $action->user->id;
         //    if ($userid!=1) $q->AddQuery("(profid <= 0 or hasviewprivilege($userid, profid))");
         $l = $q->Query(0, $limit, "TABLE");
-        if (is_array($l)) return $l;
+        if (is_array($l)) {
+            return $l;
+        }
         return array();
     }
     public function getIRelations($reltype = "", $doctype = "", $limit = 0)
     {
-        include_once ("Class.QueryDb.php");
+        include_once("Class.QueryDb.php");
         $q = new QueryDb($this->dbaccess, get_class($this));
         $q->AddQuery("cinitid=" . $this->sinitid);
-        if ($reltype != "") $q->AddQuery("type='$reltype'");
-        if ($doctype != "") $q->AddQuery("doctype='$doctype'");
+        if ($reltype != "") {
+            $q->AddQuery("type='$reltype'");
+        }
+        if ($doctype != "") {
+            $q->AddQuery("doctype='$doctype'");
+        }
         $l = $q->Query(0, $limit, "TABLE");
-        if (is_array($l)) return $l;
+        if (is_array($l)) {
+            return $l;
+        }
         return array();
     }
     /**
@@ -108,10 +120,15 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
      */
     public function resetRelations($type = "", $sinitid = 0)
     {
-        if ($sinitid == 0) $sinitid = $this->sinitid;
+        if ($sinitid == 0) {
+            $sinitid = $this->sinitid;
+        }
         if ($sinitid > 0) {
-            if ($type != "") $this->exec_query("delete from docrel where sinitid=" . $sinitid . " and type='$type'");
-            else $this->exec_query("delete from docrel where sinitid=" . $sinitid . " and type != 'folder'");
+            if ($type != "") {
+                $this->exec_query("delete from docrel where sinitid=" . $sinitid . " and type='$type'");
+            } else {
+                $this->exec_query("delete from docrel where sinitid=" . $sinitid . " and type != 'folder'");
+            }
         }
     }
     /**
@@ -120,7 +137,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
      * @param bool $force if force recomputing
      * @return void
      */
-    function initRelations(&$doc, $force = false)
+    public function initRelations(&$doc, $force = false)
     {
         $nattr = $doc->GetNormalAttributes();
         
@@ -129,7 +146,6 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
         $this->lockPoint($doc->initid, "IREL"); // need to avoid conflict in docrel index
         foreach ($nattr as $k => $v) {
             if (isset($doc->$k) && ($v->type == "docid" || $v->type == "account")) {
-                
                 if (!$force) {
                     if ($doc->getOldRawValue($v->id) === false) {
                         continue;
@@ -137,16 +153,21 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
                 }
                 // reset old relations
                 pg_query($this->dbid, sprintf("delete from docrel where sinitid=%d and type='%s'", $doc->initid, pg_escape_string($v->id)));
-                if ($v->inArray()) $tv = array_unique($doc->getMultipleRawValues($v->id));
-                else $tv = array(
+                if ($v->inArray()) {
+                    $tv = array_unique($doc->getMultipleRawValues($v->id));
+                } else {
+                    $tv = array(
                     $doc->$k
                 );
+                }
                 $tvrel = array();
                 foreach ($tv as $relid) {
                     if (strpos($relid, '<BR>') !== false) {
                         $tt = explode('<BR>', $relid);
                         foreach ($tt as $brelid) {
-                            if (is_numeric($brelid)) $tvrel[] = intval($brelid);
+                            if (is_numeric($brelid)) {
+                                $tvrel[] = intval($brelid);
+                            }
                         }
                     } elseif (is_numeric($relid)) {
                         $tvrel[] = intval($relid);
@@ -164,10 +185,9 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
      * @param Doc &$doc document source
      * @return void
      */
-    function copyRelations(&$tv, &$doc, $reltype)
+    public function copyRelations(&$tv, &$doc, $reltype)
     {
-        $tv = array_filter($tv, function ($a)
-        {
+        $tv = array_filter($tv, function ($a) {
             return (!empty($a));
         });
         if (count($tv) > 0) {
@@ -179,7 +199,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
                 $c = 0;
                 $tin = array();
                 while ($row = @pg_fetch_array($this->res, $c, PGSQL_ASSOC)) {
-                    $tin[] = sprintf("%d\t%d\t%s\t%s\t%s\t%s\t%s\t%s", $doc->initid, $row["initid"], $this->escapePgCopyChars($doc->title) , $this->escapePgCopyChars($row["title"]) , $doc->icon, $row["icon"], $reltype, $doc->doctype);
+                    $tin[] = sprintf("%d\t%d\t%s\t%s\t%s\t%s\t%s\t%s", $doc->initid, $row["initid"], $this->escapePgCopyChars($doc->title), $this->escapePgCopyChars($row["title"]), $doc->icon, $row["icon"], $reltype, $doc->doctype);
                     $c++;
                 }
                 

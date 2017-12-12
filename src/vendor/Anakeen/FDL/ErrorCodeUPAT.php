@@ -72,7 +72,9 @@ namespace {
          */
         private function _bo()
         {
-            if (true) return;
+            if (true) {
+                return;
+            }
         }
     }
 }
@@ -84,7 +86,9 @@ namespace Dcp\Upat {
          */
         private function _bo()
         {
-            if (true) return;
+            if (true) {
+                return;
+            }
         }
     }
 }

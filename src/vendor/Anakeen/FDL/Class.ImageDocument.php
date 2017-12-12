@@ -8,12 +8,12 @@
  *
  */
 namespace Dcp\Core;
+
 class Image extends \Dcp\Family\Document
 {
+    public $defaultview = "FDL:VIEWIMGCARD";
     
-    var $defaultview = "FDL:VIEWIMGCARD";
-    
-    var $cviews = array(
+    public $cviews = array(
         "FDL:VIEWIMGCARD:T"
     );
     /**
@@ -22,7 +22,7 @@ class Image extends \Dcp\Family\Document
      * @param bool $ulink
      * @param bool $abstract
      */
-    function viewimgcard($target = "_self", $ulink = true, $abstract = false)
+    public function viewimgcard($target = "_self", $ulink = true, $abstract = false)
     {
         // -----------------------------------
         $nbimg = 0; // number of image
@@ -35,7 +35,6 @@ class Image extends \Dcp\Family\Document
         $vf = newFreeVaultFile($this->dbaccess);
         // view all (and only) images
         foreach ($listattr as $i => $attr) {
-            
             $value = chop($this->getRawValue($i));
             //------------------------------
             // Set the table value elements
@@ -49,19 +48,22 @@ class Image extends \Dcp\Family\Document
                         if (preg_match(PREGEXPFILE, $value, $reg)) {
                             // reg[1] is mime type
                             $tableimage[$nbimg]["type"] = $reg[1];
-                            if ($vf->Show($reg[2], $info) == "") $fname = $info->name;
-                            else $fname = _("no filename");
+                            if ($vf->Show($reg[2], $info) == "") {
+                                $fname = $info->name;
+                            } else {
+                                $fname = _("no filename");
+                            }
                             $tableimage[$nbimg]["name"] = $fname;
                         }
                         break;
                     }
-                }
+            }
         }
         // Out
         $this->lay->SetBlockData("TABLEIMG", $tableimage);
     }
     
-    function postStore()
+    public function postStore()
     {
         return $this->SetValue("IMG_TITLE", $this->vault_filename("IMG_FILE"));
     }

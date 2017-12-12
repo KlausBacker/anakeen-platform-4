@@ -81,7 +81,6 @@ class FamilyAbsoluteOrder
         $familyIds = self::getFamilyInherits($familyId);
         $famAttribute = [];
         foreach ($familyIds as $familyId) {
-            
             foreach ($attributes as $oneAttribute) {
                 if ($oneAttribute["family"] == $familyId) {
                     $famAttribute[$oneAttribute["id"]] = $oneAttribute;
@@ -94,8 +93,7 @@ class FamilyAbsoluteOrder
             }
         }
         
-        uasort($attributes, function ($a, $b)
-        {
+        uasort($attributes, function ($a, $b) {
             return self::sortAttributeCallBackfunction($a, $b);
         });
     }
@@ -114,8 +112,7 @@ class FamilyAbsoluteOrder
             $anAttribute["familyLevel"] = self::getFamilyLevel($anAttribute["family"]);
         }
         
-        uasort($familyAttributes, function ($a, $b)
-        {
+        uasort($familyAttributes, function ($a, $b) {
             return self::sortAttributeCallBackfunction($a, $b);
         });
         foreach ($familyAttributes as & $anAttribute) {
@@ -123,8 +120,7 @@ class FamilyAbsoluteOrder
                 $anAttribute["prev"] = self::getPrevious($anAttribute["id"], $familyAttributes);
             }
         }
-        uasort($familyAttributes, function ($a, $b)
-        {
+        uasort($familyAttributes, function ($a, $b) {
             if ($a["numOrder"] > $b["numOrder"]) {
                 return 1;
             }
@@ -145,7 +141,6 @@ class FamilyAbsoluteOrder
         $first = current($r);
         printf("%20s|", "index");
         foreach (array_keys($first) as $h) {
-            
             printf("%20s|", $h);
         }
         print "\n";
@@ -371,7 +366,6 @@ class FamilyAbsoluteOrder
      */
     protected static function checkTree(array & $tree, $parent = "")
     {
-        
         foreach ($tree as $child) {
             if (!isset($child["parent"])) {
                 $child["parent"] = "";

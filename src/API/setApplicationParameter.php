@@ -11,7 +11,7 @@
  */
 /**
  */
-include_once ("Class.QueryDb.php");
+include_once("Class.QueryDb.php");
 $usage = new ApiUsage();
 
 $usage->setDefinitionText("set applicative parameter value");
@@ -31,17 +31,22 @@ if ($parapp != "") {
 $dbaccess = getDbAccess();
 $param = new QueryDb($dbaccess, "Param");
 $param->AddQuery("name='$parname'");
-if ($appid) $param->AddQuery("appid=$appid");
+if ($appid) {
+    $param->AddQuery("appid=$appid");
+}
 $list = $param->Query(0, 2);
 if ($param->nb == 0) {
-    printf(_("Attribute %s not found\n") , $parname);
+    printf(_("Attribute %s not found\n"), $parname);
 } elseif ($param->nb > 1) {
-    printf(_("Attribute %s found is not alone\nMust precise request with appname arguments\n") , $parname);
+    printf(_("Attribute %s found is not alone\nMust precise request with appname arguments\n"), $parname);
 } else {
     /** @var Param $p */
     $p = $list[0];
     $p->val = $parval;
     $err = $p->modify();
-    if ($err != "") printf(_("Attribute %s not modified : %s\n") , $parname, $err);
-    else printf(_("Attribute %s modified to %s") , $parname, $parval);
+    if ($err != "") {
+        printf(_("Attribute %s not modified : %s\n"), $parname, $err);
+    } else {
+        printf(_("Attribute %s modified to %s"), $parname, $parval);
+    }
 }

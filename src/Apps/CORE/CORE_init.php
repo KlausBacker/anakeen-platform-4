@@ -413,7 +413,7 @@ $app_const = array(
 
 
 if (file_exists('Apps/CORE/lang.php')) {
-    include_once ("Apps/CORE/lang.php");
+    include_once("Apps/CORE/lang.php");
 }
 
 if (isset($lang)) {

@@ -29,7 +29,9 @@ if (count($lang) <= 0) {
 
 foreach ($lang as $k => $v) {
     if (file_exists(DEFAULT_PUBDIR . "/locale/" . $v["locale"])) {
-        if (!isset($v["flag"]) || $v["flag"] == "") $lang[$k]["flag"] = $k . ".png";
+        if (!isset($v["flag"]) || $v["flag"] == "") {
+            $lang[$k]["flag"] = $k . ".png";
+        }
     }
 }
 
@@ -62,7 +64,6 @@ function load_lang(&$lang, $lang_dir)
 
 function load_lang_php(&$lang, $file)
 {
-    $ret = include ($file);
+    $ret = include($file);
     return $ret;
 }
-?>

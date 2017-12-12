@@ -12,7 +12,7 @@
  */
 // refreah for a classname
 // use this only if you have changed title attributes
-include_once ("FDL/Lib.Dir.php");
+include_once("FDL/Lib.Dir.php");
 
 
 $dbaccess = getDbAccess();
@@ -37,12 +37,13 @@ if ($whatid > 0) {
     $query->order_by = "isgroup,id";
 }
 
-if ($onlygroup) $query->AddQuery("isgroup='Y'");
+if ($onlygroup) {
+    $query->AddQuery("isgroup='Y'");
+}
 
 $table1 = $query->Query(0, 0, "TABLE");
 
 if ($query->nb > 0) {
-    
     printf("\n%d user to update\n", count($table1));
     $card = count($table1);
     $doc = new Doc($dbaccess);
@@ -88,32 +89,38 @@ if ($query->nb > 0) {
             /**
              * @var \Dcp\Family\IUSER|\Dcp\Family\IGROUP $udoc
              */
-            if (method_exists($udoc, "RefreshGroup")) $udoc->RefreshGroup();
-            else if (method_exists($udoc, "RefreshDocUser")) $udoc->RefreshDocUser();
+            if (method_exists($udoc, "RefreshGroup")) {
+                $udoc->RefreshGroup();
+            } elseif (method_exists($udoc, "RefreshDocUser")) {
+                $udoc->RefreshDocUser();
+            }
             //if (method_exists($tdoc[0],"SetGroupMail")) $tdoc[0]->SetGroupMail();
             //$tdoc[0]->refresh();
             //$tdoc[0]->postModify();
             $err = $udoc->modify();
-            if ($err != "") print "$err\n";
-            else {
+            if ($err != "") {
+                print "$err\n";
+            } else {
                 print "$reste)";
-                printf(_("%s updated\n") , $udoc->title);
+                printf(_("%s updated\n"), $udoc->title);
                 $fid = $udoc->id;
             }
         } else {
             // search in all usercard same title
-            if ($mail != "") $filter = array(
+            if ($mail != "") {
+                $filter = array(
                 "us_mail = '" . pg_escape_string($mail) . "'"
             );
-            else $filter = array(
+            } else {
+                $filter = array(
                 "lower(title) = '" . pg_escape_string($title) . "'"
             );
+            }
             $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", \Dcp\Core\DocManager::getFamilyIdFromName("IUSER"));
             if (count($tdoc) > 0) {
                 if (count($tdoc) > 1) {
-                    printf(_("find %s more than one, created aborded\n") , $title);
+                    printf(_("find %s more than one, created aborded\n"), $title);
                 } else {
-                    
                     $udoc = new_Doc($dbaccess, $tdoc[0]->id);
                     /**
                      * @var \Dcp\Family\IUSER $udoc
@@ -124,7 +131,7 @@ if ($query->nb > 0) {
                     $udoc->modify();
                     $fid = $udoc->id;
                     print "$reste)";
-                    printf(_("%s updated\n") , $title);
+                    printf(_("%s updated\n"), $title);
                     unset($udoc);
                 }
             } else {
@@ -137,7 +144,7 @@ if ($query->nb > 0) {
                     $iuser->postStore();
                     $iuser->modify();
                     print "$reste)";
-                    printf(_("%s igroup created\n") , $title);
+                    printf(_("%s igroup created\n"), $title);
                 } else {
                     $iuser = createDoc($dbaccess, \Dcp\Core\DocManager::getFamilyIdFromName("IUSER"));
                     $iuser->setValue("US_WHATID", $v["id"]);
@@ -147,10 +154,10 @@ if ($query->nb > 0) {
                         //$iuser->RefreshDocUser();
                         //$iuser->modify();
                         print "$reste)";
-                        printf(_("%s iuser created\n") , $title);
+                        printf(_("%s iuser created\n"), $title);
                     } else {
                         print "$reste)$err";
-                        printf(_("%s iuser aborded\n") , $title);
+                        printf(_("%s iuser aborded\n"), $title);
                     }
                 }
                 $fid = $iuser->id;

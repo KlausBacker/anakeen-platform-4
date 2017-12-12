@@ -18,9 +18,8 @@ class CheckCvid extends CheckData
      * @param Doc $doc
      * @return CheckCvid
      */
-    function check(array $data, &$doc = null)
+    public function check(array $data, &$doc = null)
     {
-        
         $this->folderName = $data[1];
         $this->doc = $doc;
         $this->checkCv();

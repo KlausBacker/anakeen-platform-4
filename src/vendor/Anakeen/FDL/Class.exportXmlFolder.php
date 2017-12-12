@@ -13,7 +13,7 @@
 /**
  */
 
-include_once ("FDL/import_file.php");
+include_once("FDL/import_file.php");
 require_once 'FDL/exportxmlfld.php';
 
 class exportXmlFolder
@@ -43,7 +43,7 @@ class exportXmlFolder
         if ($xy == self::zipFormat || $xy == self::xmlFormat) {
             $this->format = $xy;
         } else {
-            throw new Dcp\Exception(sprintf("format must be %s or %s") , self::zipFormat, self::xmlFormat);
+            throw new Dcp\Exception(sprintf("format must be %s or %s"), self::zipFormat, self::xmlFormat);
         }
     }
     /**
@@ -66,8 +66,11 @@ class exportXmlFolder
     {
         if (!$outputFile) {
             $ext = 'nop';
-            if ($this->format == self::xmlFormat) $ext = "xml";
-            else if ($this->format == self::zipFormat) $ext = 'zip';
+            if ($this->format == self::xmlFormat) {
+                $ext = "xml";
+            } elseif ($this->format == self::zipFormat) {
+                $ext = 'zip';
+            }
             $this->outputFile = uniqid(getTmpDir() . "/export") . ".$ext";
         } else {
             $this->outputFile = $outputFile;
@@ -126,4 +129,3 @@ class exportXmlFolder
         exportxmlfld($action, $folder = 0, $famid = "", null, $this->outputFile, $this->format, $this->useIdentificator ? 'Y' : 'N', $selection);
     }
 }
-?>

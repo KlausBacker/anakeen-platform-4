@@ -14,14 +14,13 @@
 /**
  */
 
-include_once ("FDL/Class.SearchDoc.php");
-include_once ("FDL/Class.DocSearch.php");
+include_once("FDL/Class.SearchDoc.php");
+include_once("FDL/Class.DocSearch.php");
 
-include_once ("FDL/freedom_util.php");
+include_once("FDL/freedom_util.php");
 
 class SearchHighlight
 {
-    
     private $dbid;
     /**
      * @var string limit size in Kb
@@ -43,7 +42,7 @@ class SearchHighlight
     public static function strtr8($s, $c1, $c2)
     {
         $s9 = utf8_decode($s);
-        $s9 = strtr($s9, utf8_decode($c1) , utf8_decode($c2));
+        $s9 = strtr($s9, utf8_decode($c1), utf8_decode($c2));
         return utf8_encode($s9);
     }
     /**
@@ -62,11 +61,11 @@ class SearchHighlight
             '£',
             $this->beginTag,
             $this->endTag
-        ) , array(
+        ), array(
             ' - ',
             " ",
             ""
-        ) , ($s)));
+        ), ($s)));
         $begin = strpos($out, $this->beginTag);
         $end = strpos($out, $this->endTag);
         if ($begin === false) {
@@ -101,10 +100,9 @@ class SearchHighlight
             $pos1 = mb_strpos($h, ' ');
             $pos2 = mb_strrpos($h, ' ');
             $headline = substr($h, $pos1, ($pos2 - $pos1));
-        } else if ((strlen($s) / 1024) > $this->limit) {
-            $headline = sprintf(_("document too big (%dKo): no highlight") , (strlen($s) / 1024));
+        } elseif ((strlen($s) / 1024) > $this->limit) {
+            $headline = sprintf(_("document too big (%dKo): no highlight"), (strlen($s) / 1024));
         } else {
-            
             $k = preg_replace('/\s+/u', '&', unaccent($k));
             // print_r("\n============\n\tK=$k\n");
             $s = self::strtr8($s, "£", ",");
@@ -113,11 +111,11 @@ class SearchHighlight
                 "<br />",
                 " \r",
                 "\n "
-            ) , array(
+            ), array(
                 '',
                 '',
                 "\n"
-            ) , $s);
+            ), $s);
             
             $s = preg_replace('/<[a-z][^>]+>/i', '', $s);
             $s = preg_replace('/<\/[a-z]+\s*>/i', '', $s);
@@ -130,13 +128,12 @@ class SearchHighlight
             //print_r("\n\tSL".mb_strlen($s).'=='.mb_strlen($us)."\n");
             //print_r("\n\tS=$s\n");
             //print_r("\n\tUS=$us\n");
-            $q = sprintf("select ts_headline('french','%s',to_tsquery('french','%s'),'MaxFragments=1,StartSel=%s, StopSel=%s')", pg_escape_string($us) , pg_escape_string($k) , pg_escape_string($this->beginTag) , pg_escape_string($this->endTag));
+            $q = sprintf("select ts_headline('french','%s',to_tsquery('french','%s'),'MaxFragments=1,StartSel=%s, StopSel=%s')", pg_escape_string($us), pg_escape_string($k), pg_escape_string($this->beginTag), pg_escape_string($this->endTag));
             $result = pg_query($this->dbid, $q);
             if (pg_numrows($result) > 0) {
                 $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
                 $headline = $arr["ts_headline"];
                 //print_r("\n\tL=$headline");
-                
             }
             
             $pos = mb_strpos($headline, $this->beginTag);
@@ -144,14 +141,16 @@ class SearchHighlight
                 $sw = (str_replace(array(
                     $this->beginTag,
                     $this->endTag
-                ) , array(
+                ), array(
                     '',
                     ''
-                ) , $headline));
+                ), $headline));
                 
                 $offset = mb_strpos($us, $sw);
                 
-                if ($offset === false) return $headline; // case mismatch in characters
+                if ($offset === false) {
+                    return $headline;
+                } // case mismatch in characters
                 $nh = mb_substr($s, $offset, mb_strlen($sw));
                 //print_r("\n\tN=$nh\n");
                 //print "\nGOOD : $offset - ".mb_strlen($headline)."========\n";
@@ -171,4 +170,3 @@ class SearchHighlight
         return $headline;
     }
 }
-?>

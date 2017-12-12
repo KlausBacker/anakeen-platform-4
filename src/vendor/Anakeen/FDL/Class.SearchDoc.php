@@ -13,7 +13,7 @@
 /**
  */
 
-include_once ("FDL/Lib.Dir.php");
+include_once("FDL/Lib.Dir.php");
 /**
  * document searches
  * @code
@@ -164,7 +164,9 @@ class SearchDoc
      */
     public function __construct($dbaccess = '', $fromid = 0)
     {
-        if ($dbaccess == "") $dbaccess = getDbAccess();
+        if ($dbaccess == "") {
+            $dbaccess = getDbAccess();
+        }
         $this->dbaccess = $dbaccess;
         $this->fromid = trim($fromid);
         $this->setOrder('title');
@@ -244,8 +246,11 @@ class SearchDoc
             }
             foreach ($tqsql as $sql) {
                 if ($sql) {
-                    if (preg_match('/from\s+(?:only\s+)?([a-z0-9_\-]*)/', $sql, $reg)) $maintable = $reg[1];
-                    else $maintable = '';
+                    if (preg_match('/from\s+(?:only\s+)?([a-z0-9_\-]*)/', $sql, $reg)) {
+                        $maintable = $reg[1];
+                    } else {
+                        $maintable = '';
+                    }
                     $maintabledot = ($maintable) ? $maintable . '.' : '';
                     
                     $mainid = ($maintable) ? "$maintable.id" : "id";
@@ -262,8 +267,7 @@ class SearchDoc
                     $mb = microtime(true);
                     try {
                         simpleQuery($this->dbaccess, $sql, $result, false, true, true);
-                    }
-                    catch(\Dcp\Db\Exception $e) {
+                    } catch (\Dcp\Db\Exception $e) {
                         $this->debuginfo["query"] = $sql;
                         $this->debuginfo["error"] = pg_last_error($dbid);
                         $this->count = - 1;
@@ -306,7 +310,7 @@ class SearchDoc
      */
     public function getOriginalQuery()
     {
-        return _internalGetDocCollection(true, $this->dbaccess, $this->dirid, $this->start, $this->slice, $this->getFilters() , $this->userid, $this->searchmode, $this->fromid, $this->distinct, $this->orderby, $this->latest, $this->trash, $debuginfo, $this->folderRecursiveLevel, $this->join, $this);
+        return _internalGetDocCollection(true, $this->dbaccess, $this->dirid, $this->start, $this->slice, $this->getFilters(), $this->userid, $this->searchmode, $this->fromid, $this->distinct, $this->orderby, $this->latest, $this->trash, $debuginfo, $this->folderRecursiveLevel, $this->join, $this);
     }
     /**
      * add join condition
@@ -364,11 +368,13 @@ class SearchDoc
     protected function countDocs()
     {
         $n = 0;
-        foreach ($this->result as $res) $n+= pg_num_rows($res);
+        foreach ($this->result as $res) {
+            $n+= pg_num_rows($res);
+        }
         reset($this->result);
         return $n;
     }
-    /** 
+    /**
      * reset results to use another search
      *
      *
@@ -389,11 +395,10 @@ class SearchDoc
      */
     public function rewind()
     {
-        
         $this->resultPos = 0;
         $this->resultQPos = 0;
     }
-    /** 
+    /**
      * Verify if query is already sended to database
      *
      * @return boolean
@@ -414,7 +419,7 @@ class SearchDoc
         } else {
             return array_merge(array(
                 $this->excludeFilter
-            ) , $this->filters);
+            ), $this->filters);
         }
     }
     /**
@@ -450,20 +455,31 @@ class SearchDoc
                     if ($this->fromid < - 1) {
                         $this->only = true;
                     }
-                    simpleQuery($this->dbaccess, sprintf("select doctype from docfam where id=%d", abs($this->fromid)) , $doctype, true, true);
-                    if ($doctype != 'C') $fromid = 0;
-                    else $fromid = $this->fromid;
-                } else $fromid = $this->fromid;
+                    simpleQuery($this->dbaccess, sprintf("select doctype from docfam where id=%d", abs($this->fromid)), $doctype, true, true);
+                    if ($doctype != 'C') {
+                        $fromid = 0;
+                    } else {
+                        $fromid = $this->fromid;
+                    }
+                } else {
+                    $fromid = $this->fromid;
+                }
             }
             if ($fromid == 0) {
-                $error = sprintf(_("%s is not a family") , $this->fromid);
+                $error = sprintf(_("%s is not a family"), $this->fromid);
                 $this->debuginfo["error"] = $error;
                 error_log("ERROR SearchDoc: " . $error);
-                if ($this->mode == "ITEM") return null;
-                else return array();
+                if ($this->mode == "ITEM") {
+                    return null;
+                } else {
+                    return array();
+                }
             }
-            if ($this->only) $this->fromid = - (abs($fromid));
-            else $this->fromid = $fromid;
+            if ($this->only) {
+                $this->fromid = - (abs($fromid));
+            } else {
+                $this->fromid = $fromid;
+            }
         }
         $this->recursiveSearchInit();
         $this->index = 0;
@@ -479,13 +495,19 @@ class SearchDoc
         }
         $debuginfo = array();
         $this->count = - 1;
-        $this->result = internalGetDocCollection($this->dbaccess, $this->dirid, $this->start, $this->slice, $this->getFilters() , $this->userid, $this->searchmode, $this->fromid, $this->distinct, $this->orderby, $this->latest, $this->trash, $debuginfo, $this->folderRecursiveLevel, $this->join, $this);
-        if ($this->searchmode == "TABLE") $this->count = count($this->result); // memo cause array is unset by shift
+        $this->result = internalGetDocCollection($this->dbaccess, $this->dirid, $this->start, $this->slice, $this->getFilters(), $this->userid, $this->searchmode, $this->fromid, $this->distinct, $this->orderby, $this->latest, $this->trash, $debuginfo, $this->folderRecursiveLevel, $this->join, $this);
+        if ($this->searchmode == "TABLE") {
+            $this->count = count($this->result);
+        } // memo cause array is unset by shift
         $this->debuginfo = $debuginfo;
-        if (($this->searchmode == "TABLE") && ($this->mode == "ITEM")) $this->mode = "TABLEITEM";
+        if (($this->searchmode == "TABLE") && ($this->mode == "ITEM")) {
+            $this->mode = "TABLEITEM";
+        }
         $this->resultPos = 0;
         $this->resultQPos = 0;
-        if ($this->mode == "ITEM") return $this;
+        if ($this->mode == "ITEM") {
+            return $this;
+        }
         
         return $this->result;
     }
@@ -505,7 +527,7 @@ class SearchDoc
      */
     public function getDocumentList()
     {
-        include_once ("FDL/Class.DocumentList.php");
+        include_once("FDL/Class.DocumentList.php");
         return new DocumentList($this);
     }
     /**
@@ -522,7 +544,9 @@ class SearchDoc
             $fields = array_merge($fdoc->fields, $fdoc->sup_fields);
         }
         foreach ($returns as $k => $r) {
-            if (empty($r)) unset($returns[$k]);
+            if (empty($r)) {
+                unset($returns[$k]);
+            }
             $returns[$k] = strtolower($r);
             // delete unknow fields
             if (!in_array($r, $fields)) {
@@ -534,14 +558,18 @@ class SearchDoc
             "title",
             "fromid",
             "doctype"
-        ) , $returns));
+        ), $returns));
     }
     public function getReturnsFields()
     {
-        if ($this->returnsFields) return $this->returnsFields;
+        if ($this->returnsFields) {
+            return $this->returnsFields;
+        }
         if ($this->fromid) {
             $fdoc = createTmpDoc($this->dbaccess, $this->fromid, false);
-            if ($fdoc->isAlive()) return array_merge($fdoc->fields, $fdoc->sup_fields);
+            if ($fdoc->isAlive()) {
+                return array_merge($fdoc->fields, $fdoc->sup_fields);
+            }
         }
         return null;
     }
@@ -560,7 +588,9 @@ class SearchDoc
      */
     public function getError()
     {
-        if ($this->debuginfo && isset($this->debuginfo["error"])) return $this->debuginfo["error"];
+        if ($this->debuginfo && isset($this->debuginfo["error"])) {
+            return $this->debuginfo["error"];
+        }
         return "";
     }
     /**
@@ -622,7 +652,9 @@ class SearchDoc
      */
     public function setSlice($slice)
     {
-        if ((!is_numeric($slice)) && ($slice != 'ALL')) return false;
+        if ((!is_numeric($slice)) && ($slice != 'ALL')) {
+            return false;
+        }
         $this->slice = $slice;
         return true;
     }
@@ -655,7 +687,7 @@ class SearchDoc
             $this->originalDirId = $this->dirid;
             return true;
         }
-        $this->debuginfo["error"] = sprintf(_("collection %s not exists") , $dirid);
+        $this->debuginfo["error"] = sprintf(_("collection %s not exists"), $dirid);
         
         return false;
     }
@@ -668,7 +700,9 @@ class SearchDoc
      */
     public function setStart($start)
     {
-        if (!(is_numeric($start))) return false;
+        if (!(is_numeric($start))) {
+            return false;
+        }
         $this->start = intval($start);
         return true;
     }
@@ -703,21 +737,29 @@ class SearchDoc
     {
         if ($this->mode == "ITEM") {
             $n = empty($this->result[$this->resultQPos]) ? null : $this->result[$this->resultQPos];
-            if (!$n) return false;
+            if (!$n) {
+                return false;
+            }
             $tdoc = @pg_fetch_array($n, $this->resultPos, PGSQL_ASSOC);
             if ($tdoc === false) {
                 $this->resultQPos++;
                 $n = empty($this->result[$this->resultQPos]) ? null : $this->result[$this->resultQPos];
-                if (!$n) return false;
+                if (!$n) {
+                    return false;
+                }
                 $this->resultPos = 0;
                 $tdoc = @pg_fetch_array($n, $this->resultPos, PGSQL_ASSOC);
-                if ($tdoc === false) return false;
+                if ($tdoc === false) {
+                    return false;
+                }
             }
             $this->resultPos++;
             return $this->iDoc = $this->getNextDocument($tdoc);
         } elseif ($this->mode == "TABLEITEM") {
             $tdoc = current(array_slice($this->result, $this->resultPos, 1));
-            if (!is_array($tdoc)) return false;
+            if (!is_array($tdoc)) {
+                return false;
+            }
             $this->resultPos++;
             return $this->iDoc = $this->getNextDocument($tdoc);
         } else {
@@ -740,7 +782,6 @@ class SearchDoc
                 }
             }
         } else {
-            
             foreach ($this->result as $raw) {
                 $ids[] = $raw["id"];
             }
@@ -753,11 +794,13 @@ class SearchDoc
      * @param array $v the values of documents
      * @return Doc the document object
      */
-    protected function getNextDocument(Array $v)
+    protected function getNextDocument(array $v)
     {
         $fromid = $v["fromid"];
         if ($v["doctype"] == "C") {
-            if (!isset($this->cacheDocuments["family"])) $this->cacheDocuments["family"] = new DocFam($this->dbaccess);
+            if (!isset($this->cacheDocuments["family"])) {
+                $this->cacheDocuments["family"] = new DocFam($this->dbaccess);
+            }
             $this->cacheDocuments["family"]->Affect($v, true);
             $fromid = "family";
         } else {
@@ -771,7 +814,9 @@ class SearchDoc
         
         $this->cacheDocuments[$fromid]->Affect($v, true);
         $this->cacheDocuments[$fromid]->nocache = true;
-        if ((!empty($this->returnsFields))) $this->cacheDocuments[$fromid]->doctype = "I"; // incomplete document
+        if ((!empty($this->returnsFields))) {
+            $this->cacheDocuments[$fromid]->doctype = "I";
+        } // incomplete document
         return $this->cacheDocuments[$fromid];
     }
     /**
@@ -783,7 +828,6 @@ class SearchDoc
      */
     public function addFilter($filter, $args = '')
     {
-        
         if ($filter != "") {
             $args = func_get_args();
             if (count($args) > 1) {
@@ -796,7 +840,9 @@ class SearchDoc
             if (preg_match('/(\s|^|\()(?P<relname>[a-z0-9_\-]+)\./', $filter, $reg)) {
                 // when use join filter like "zoo_espece.es_classe='Boo'"
                 $famid = \Dcp\Core\DocManager::getFamilyIdFromName($reg['relname']);
-                if ($famid > 0) $filter = preg_replace('/(\s|^|\()(?P<relname>[a-z0-9_\-]+)\./', '${1}doc' . $famid . '.', $filter);
+                if ($famid > 0) {
+                    $filter = preg_replace('/(\s|^|\()(?P<relname>[a-z0-9_\-]+)\./', '${1}doc' . $famid . '.', $filter);
+                }
             }
             $this->filters[] = $filter;
         }
@@ -819,7 +865,7 @@ class SearchDoc
         if (!$this->checkGeneralFilter($keywords)) {
             throw new \Dcp\SearchDoc\Exception("SD0004", $keywords);
         } else {
-            $filter = $this->getGeneralFilter(trim($keywords) , $useSpell, $this->pertinenceOrder, $this->highlightWords, $usePartial);
+            $filter = $this->getGeneralFilter(trim($keywords), $useSpell, $this->pertinenceOrder, $this->highlightWords, $usePartial);
             $this->addFilter($filter);
         }
     }
@@ -832,17 +878,27 @@ class SearchDoc
     public static function checkGeneralFilter($keyword)
     {
         // no symbol allowed
-        if (preg_match('/\(\s*\)/u', $keyword)) return false;
+        if (preg_match('/\(\s*\)/u', $keyword)) {
+            return false;
+        }
         // test parenthensis count
         $keyword = str_replace('\(', '-', $keyword);
         $keyword = str_replace('\)', '-', $keyword);
-        if (substr_count($keyword, '(') != substr_count($keyword, ')')) return false;
+        if (substr_count($keyword, '(') != substr_count($keyword, ')')) {
+            return false;
+        }
         $si = strlen($keyword); // be carrefyl no use mb_strlen here : it is wanted
         $pb = 0;
         for ($i = 0; $i < $si; $i++) {
-            if ($keyword[$i] == '(') $pb++;
-            if ($keyword[$i] == ')') $pb--;
-            if ($pb < 0) return false;
+            if ($keyword[$i] == '(') {
+                $pb++;
+            }
+            if ($keyword[$i] == ')') {
+                $pb--;
+            }
+            if ($pb < 0) {
+                return false;
+            }
         }
         return true;
     }
@@ -860,7 +916,9 @@ class SearchDoc
             $rank = preg_replace('/\s+/u', '&', $rank);
             $this->pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french', E'%s')) desc, id desc", pg_escape_string(unaccent($rank)));
         }
-        if ($this->pertinenceOrder) $this->setOrder($this->pertinenceOrder);
+        if ($this->pertinenceOrder) {
+            $this->setOrder($this->pertinenceOrder);
+        }
     }
     /**
      * get global filter
@@ -887,14 +945,13 @@ class SearchDoc
         $rankElement = "";
         $stringWords = array();
         
-        $convertOperatorToTs = function ($operator)
-        {
+        $convertOperatorToTs = function ($operator) {
             if ($operator === "") {
                 return "";
             }
             if ($operator === "and") {
                 return "&";
-            } else if ($operator === "or") {
+            } elseif ($operator === "or") {
                 return "|";
             } else {
                 throw new \Dcp\SearchDoc\Exception("SD0002", $operator);
@@ -965,10 +1022,9 @@ class SearchDoc
                         $point = sprintf('dcp:%s', uniqid(__METHOD__));
                         $dbObj->savePoint($point);
                         try {
-                            simpleQuery('', sprintf("select %s", $to_tsquery) , $indexedWord, true, true);
+                            simpleQuery('', sprintf("select %s", $to_tsquery), $indexedWord, true, true);
                             $dbObj->rollbackPoint($point);
-                        }
-                        catch(Dcp\Db\Exception $e) {
+                        } catch (Dcp\Db\Exception $e) {
                             $dbObj->rollbackPoint($point);
                             throw new \Dcp\SearchDoc\Exception("SD0007", unaccent($filterElement));
                         }
@@ -997,7 +1053,7 @@ class SearchDoc
                     $rankElement = trim(preg_replace('/[^\w]+/', ' ', $rankElement));
                     $stringWords[] = $rankElement;
                     
-                    $filterElement = sprintf("svalues ~* E'%s%s%s'", $begin, pg_escape_string(preg_quote($currentElement["word"])) , $end);
+                    $filterElement = sprintf("svalues ~* E'%s%s%s'", $begin, pg_escape_string(preg_quote($currentElement["word"])), $end);
                     break;
 
                 case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_END:
@@ -1019,7 +1075,7 @@ class SearchDoc
                     } else {
                         $end = '\\\\y';
                     }
-                    $filterElement = sprintf("svalues ~* E'%s%s'", pg_escape_string(preg_quote($currentElement["word"])) , $end);
+                    $filterElement = sprintf("svalues ~* E'%s%s'", pg_escape_string(preg_quote($currentElement["word"])), $end);
                     break;
 
                 case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_BOTH:
@@ -1039,9 +1095,8 @@ class SearchDoc
                 $rank.= $rank ? $convertOperatorToTs($currentOperator) . $rankElement : $rankElement;
                 $filterElement = "";
                 $currentOperator = "and";
-            } else if ($parenthesis) {
+            } elseif ($parenthesis) {
                 if ($isOnlyWord) {
-                    
                     $filter.= $filter && $parenthesis === "(" ? $convertOperatorToTs($currentOperator) . $parenthesis : $parenthesis;
                 } else {
                     $filter.= $filter && $parenthesis === "(" ? " " . $currentOperator . " " . $parenthesis : $parenthesis;
@@ -1081,10 +1136,16 @@ class SearchDoc
         if (!$oh) {
             $oh = new SearchHighlight();
         }
-        if ($beginTag) $oh->beginTag = $beginTag;
-        if ($endTag) $oh->endTag = $endTag;
-        if ($limit > 0) $oh->setLimit($limit);
-        simpleQuery($this->dbaccess, sprintf("select svalues from docread where id=%d", $doc->id) , $text, true, true);
+        if ($beginTag) {
+            $oh->beginTag = $beginTag;
+        }
+        if ($endTag) {
+            $oh->endTag = $endTag;
+        }
+        if ($limit > 0) {
+            $oh->setLimit($limit);
+        }
+        simpleQuery($this->dbaccess, sprintf("select svalues from docread where id=%d", $doc->id), $text, true, true);
         
         if ($wordMode) {
             $h = $oh->highlight($text, $this->highlightWords);
@@ -1106,7 +1167,9 @@ class SearchDoc
     {
         static $pspell_link = null;
         if (function_exists('pspell_new')) {
-            if (!$pspell_link) $pspell_link = pspell_new($language, "", "", "utf-8", PSPELL_FAST);
+            if (!$pspell_link) {
+                $pspell_link = pspell_new($language, "", "", "utf-8", PSPELL_FAST);
+            }
             if ((!is_numeric($word)) && (!pspell_check($pspell_link, $word))) {
                 $suggestions = pspell_suggest($pspell_link, $word);
                 $sug = false;
@@ -1138,7 +1201,9 @@ class SearchDoc
                 $sql_cond.= implode(",", $values);
                 $sql_cond.= ")";
             } else { // for text type
-                foreach ($values as & $v) $v = pg_escape_string($v);
+                foreach ($values as & $v) {
+                    $v = pg_escape_string($v);
+                }
                 $sql_cond = "$column in ('";
                 $sql_cond.= implode("','", $values);
                 $sql_cond.= "')";
@@ -1177,8 +1242,11 @@ class SearchDoc
      */
     public function setObjectReturn($returnobject = true)
     {
-        if ($returnobject) $this->mode = "ITEM";
-        else $this->mode = "TABLE";
+        if ($returnobject) {
+            $this->mode = "ITEM";
+        } else {
+            $this->mode = "TABLE";
+        }
     }
     
     public function isObjectReturn()
@@ -1205,7 +1273,7 @@ class SearchDoc
     {
         if ($exclude) {
             if ($this->userid != 1) {
-                $this->excludeFilter = sprintf("confidential is null or hasaprivilege('%s', profid,%d)", DocPerm::getMemberOfVector($this->userid) , 1 << POS_CONF);
+                $this->excludeFilter = sprintf("confidential is null or hasaprivilege('%s', profid,%d)", DocPerm::getMemberOfVector($this->userid), 1 << POS_CONF);
             }
         } else {
             $this->excludeFilter = '';
@@ -1252,12 +1320,12 @@ class SearchDoc
         
         $normFromId = $this->normalizeFromId($fromid);
         if ($normFromId === false) {
-            $this->debuginfo["error"] = sprintf(_("%s is not a family") , $fromid);
+            $this->debuginfo["error"] = sprintf(_("%s is not a family"), $fromid);
             return false;
         }
         $fromid = $normFromId;
         if (($fromid != "") && (!is_numeric($fromid))) {
-            preg_match('/^(?P<sign>-?)(?P<fromid>.+)$/', trim($fromid) , $m);
+            preg_match('/^(?P<sign>-?)(?P<fromid>.+)$/', trim($fromid), $m);
             $fromid = $m['sign'] . \Dcp\Core\DocManager::getFamilyIdFromName($m['fromid']);
         }
         if ($this->only && strpos($fromid, '-') !== 0) {
@@ -1279,12 +1347,14 @@ class SearchDoc
                     $fdoc = new_doc($dbaccess, $fromid);
                     $sqlfilters[-4] = GetSqlCond(array_merge(array(
                         $fromid
-                    ) , array_keys($fdoc->GetChildFam())) , "fromid", true);
+                    ), array_keys($fdoc->GetChildFam())), "fromid", true);
                 } else {
                     $table = "doc$fromid";
                 }
             } elseif ($fromid == 0) {
-                if (isSimpleFilter($sqlfilters)) $table = "docread";
+                if (isSimpleFilter($sqlfilters)) {
+                    $table = "docread";
+                }
             }
         }
         $maintable = $table; // can use join only on search
@@ -1297,7 +1367,7 @@ class SearchDoc
                 $maintable = $table;
                 $table.= ", " . $jointable;
             } else {
-                addWarningMsg(sprintf(_("search join syntax error : %s") , $join));
+                addWarningMsg(sprintf(_("search join syntax error : %s"), $join));
                 return false;
             }
         }
@@ -1312,14 +1382,18 @@ class SearchDoc
         }
         $sqlcond = "true";
         ksort($sqlfilters);
-        if (count($sqlfilters) > 0) $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
+        if (count($sqlfilters) > 0) {
+            $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
+        }
         
         $qsql = '';
         if ($dirid == 0) {
             //-------------------------------------------
             // search in all Db
             //-------------------------------------------
-            if (strpos(implode(",", $sqlfilters) , "archiveid") === false) $sqlfilters[-4] = $maintabledot . "archiveid is null";
+            if (strpos(implode(",", $sqlfilters), "archiveid") === false) {
+                $sqlfilters[-4] = $maintabledot . "archiveid is null";
+            }
             
             if ($trash === "only") {
                 $sqlfilters[-3] = $maintabledot . "doctype = 'Z'";
@@ -1353,16 +1427,27 @@ class SearchDoc
                         $hasFilters = true;
                     }
                 }
-                if (strpos(implode(",", $sqlfilters) , "archiveid") === false) $sqlfilters[-4] = $maintabledot . "archiveid is null";
+                if (strpos(implode(",", $sqlfilters), "archiveid") === false) {
+                    $sqlfilters[-4] = $maintabledot . "archiveid is null";
+                }
                 //if ($fld->getRawValue("se_trash")!="yes") $sqlfilters[-3] = "doctype != 'Z'";
-                if ($trash == "only") $sqlfilters[-1] = "locked = -1";
-                elseif ($latest) $sqlfilters[-1] = "locked != -1";
+                if ($trash == "only") {
+                    $sqlfilters[-1] = "locked = -1";
+                } elseif ($latest) {
+                    $sqlfilters[-1] = "locked != -1";
+                }
                 ksort($sqlfilters);
-                if (count($sqlfilters) > 0) $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
+                if (count($sqlfilters) > 0) {
+                    $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
+                }
                 
                 $sqlfld = "dirid=$dirid and qtype='S'";
-                if ($fromid == 2) $sqlfld.= " and doctype='D'";
-                if ($fromid == 5) $sqlfld.= " and doctype='S'";
+                if ($fromid == 2) {
+                    $sqlfld.= " and doctype='D'";
+                }
+                if ($fromid == 5) {
+                    $sqlfld.= " and doctype='S'";
+                }
                 if ($hasFilters) {
                     $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
                     $qsql = "select $selectfields from $only $table where $sqlcond ";
@@ -1423,7 +1508,6 @@ class SearchDoc
                                     if (!preg_match("/doctype[ ]*=[ ]*'Z'/", $sqlM, $reg)) {
                                         if (($trash != "also") && ($trash != "only")) {
                                             $sqlfilters[-3] = "doctype != 'Z'"; // no zombie if no trash
-                                            
                                         }
                                         ksort($sqlfilters);
                                         foreach ($sqlfilters as $kf => $sf) { // suppress doubles
@@ -1453,11 +1537,12 @@ class SearchDoc
                     }
                 } else {
                     return false; // no query avalaible
-                    
                 }
             }
         }
-        if (is_array($qsql)) return $qsql;
+        if (is_array($qsql)) {
+            return $qsql;
+        }
         return array(
             $qsql
         );
@@ -1492,13 +1577,13 @@ class SearchDoc
                     "('', NULL)"
                 );
                 foreach ($enumKeyLabelList as $key => $label) {
-                    $mapValues[] = sprintf("('%s', '%s')", pg_escape_string($key) , pg_escape_string($label));
+                    $mapValues[] = sprintf("('%s', '%s')", pg_escape_string($key), pg_escape_string($label));
                 }
-                $map = sprintf('(VALUES %s) AS map_%s(key, label)', join(', ', $mapValues) , $attr->id);
+                $map = sprintf('(VALUES %s) AS map_%s(key, label)', join(', ', $mapValues), $attr->id);
                 $where = sprintf("map_%s.key = coalesce(doc%s.%s, '')", $attr->id, $fromid, $attr->id);
                 
                 $sqlM = preg_replace('/ where /i', ", $map where ($where) and ", $sqlM);
-                $this->orderby = preg_replace(sprintf('/\b%s\b/', preg_quote($column, "/")) , sprintf("map_%s.label", $attr->id) , $this->orderby);
+                $this->orderby = preg_replace(sprintf('/\b%s\b/', preg_quote($column, "/")), sprintf("map_%s.label", $attr->id), $this->orderby);
                 break;
 
             case 'docid':
@@ -1511,7 +1596,7 @@ class SearchDoc
                     if ($opt_doctitle == 'auto') {
                         $opt_doctitle = sprintf('%s_title', $attr->id);
                     }
-                    $this->orderby = preg_replace(sprintf('/\b%s\b/', preg_quote($column, "/")) , $opt_doctitle, $this->orderby);
+                    $this->orderby = preg_replace(sprintf('/\b%s\b/', preg_quote($column, "/")), $opt_doctitle, $this->orderby);
                 }
         }
         return $sqlM;

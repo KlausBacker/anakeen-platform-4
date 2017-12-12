@@ -13,9 +13,9 @@ class processExecuteAPI
     
     public static function run(Action & $action)
     {
-        include_once ("FDL/Class.DocFam.php");
-        include_once ("FDL/Class.DocTimer.php");
-        include_once ("FDL/Class.SearchDoc.php");
+        include_once("FDL/Class.DocFam.php");
+        include_once("FDL/Class.DocTimer.php");
+        include_once("FDL/Class.SearchDoc.php");
         
         $usage = new ApiUsage();
         $usage->setDefinitionText("Execute Dynacase Processes when needed");
@@ -35,8 +35,7 @@ class processExecuteAPI
         } else {
             try {
                 self::execute_all($action);
-            }
-            catch(processExecuteAPIAlreadyRunningException $e) {
+            } catch (processExecuteAPIAlreadyRunningException $e) {
                 /* Skip execution and silently ignore already running processes */
             }
         }
@@ -47,7 +46,7 @@ class processExecuteAPI
         self::debug(sprintf("Locking exclusive execution..."));
         $i1 = unpack("i", "PROC") [1];
         $i2 = unpack("i", "EXEC") [1];
-        simpleQuery($action->dbaccess, sprintf("SELECT pg_try_advisory_lock(%d, %d)", $i1, $i2) , $res, true, true, true);
+        simpleQuery($action->dbaccess, sprintf("SELECT pg_try_advisory_lock(%d, %d)", $i1, $i2), $res, true, true, true);
         if ($res !== 't') {
             $msg = sprintf("A 'processExecute' API script is already running.");
             self::debug($msg);
@@ -62,28 +61,27 @@ class processExecuteAPI
         /* Unlock will be performed when the process exits and the Postgres connection is torn down. */
     }
     
-    static function debug($msg)
+    public static function debug($msg)
     {
         if (self::$debug) {
             error_log($msg);
         }
     }
     
-    static function execute_all($action)
+    public static function execute_all($action)
     {
         $lock = self::lock($action);
         try {
             self::verifyExecDocuments($action);
             self::verifyTimerDocuments($action);
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             self::unlock($action, $lock);
             throw $e;
         }
         self::unlock($action, $lock);
     }
     
-    static function execute_doctimer(Action & $action, $doctimerId)
+    public static function execute_doctimer(Action & $action, $doctimerId)
     {
         $dt = new DocTimer($action->dbaccess, $doctimerId);
         $time_start = microtime(true);
@@ -102,7 +100,7 @@ class processExecuteAPI
      * @param Action $action
      * @param \Dcp\Family\Exec|string $exec
      */
-    static function execute_exec(Action & $action, $exec)
+    public static function execute_exec(Action & $action, $exec)
     {
         if (is_scalar($exec)) {
             /**
@@ -116,7 +114,7 @@ class processExecuteAPI
         $exec->executeNow();
     }
     
-    static function verifyExecDocuments(Action & $action)
+    public static function verifyExecDocuments(Action & $action)
     {
         // Verify EXEC document
         $now = Doc::getTimeDate();
@@ -132,7 +130,7 @@ class processExecuteAPI
             $de->setValue("exec_status", "waiting");
             $de->modify(true, array(
                 "exec_status"
-            ) , true);
+            ), true);
         }
         
         $s = new SearchDoc($action->dbaccess, "EXEC");
@@ -151,14 +149,14 @@ class processExecuteAPI
             /**
              * @var \Dcp\Core\ExecProcessus $de
              */
-            self::debug(__METHOD__ . " " . sprintf("Executing document '%s' (%d).", $de->getTitle() , $de->id));
+            self::debug(__METHOD__ . " " . sprintf("Executing document '%s' (%d).", $de->getTitle(), $de->id));
             self::execute_exec($action, $de);
         }
         unset($exec);
         return;
     }
     
-    static function verifyTimerDocuments(Action & $action)
+    public static function verifyTimerDocuments(Action & $action)
     {
         // Verify EXEC document
         $dt = new DocTimer($action->dbaccess);
@@ -167,11 +165,11 @@ class processExecuteAPI
         self::debug(__METHOD__ . " " . sprintf("Found %d doctimers.", count($ate)));
         foreach ($ate as $k => $v) {
             try {
-                $tmpfile = tempnam(getTmpDir() , __METHOD__);
+                $tmpfile = tempnam(getTmpDir(), __METHOD__);
                 if ($tmpfile === false) {
                     throw new \Exception("Error: could not create temporary file.");
                 }
-                $cmd = sprintf("%s/wsh.php --api=processExecute --doctimer-id=%s > %s 2>&1", DEFAULT_PUBDIR, escapeshellarg($v['id']) , escapeshellarg($tmpfile));
+                $cmd = sprintf("%s/wsh.php --api=processExecute --doctimer-id=%s > %s 2>&1", DEFAULT_PUBDIR, escapeshellarg($v['id']), escapeshellarg($tmpfile));
                 self::debug(__METHOD__ . " " . sprintf("Running '%s'", $cmd));
                 system($cmd, $ret);
                 $out = file_get_contents($tmpfile);
@@ -179,8 +177,7 @@ class processExecuteAPI
                 if ($ret !== 0) {
                     throw new \Exception(sprintf("Process '%s' returned with error (%d): %s", $cmd, $ret, $out));
                 }
-            }
-            catch(\Exception $e) {
+            } catch (\Exception $e) {
                 $errMsg = formatErrorLogException($e);
                 
                 error_log($errMsg);

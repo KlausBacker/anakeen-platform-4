@@ -17,10 +17,12 @@ class CheckInitial extends CheckData
      * @param Doc $doc
      * @return CheckInitial
      */
-    function check(array $data, &$doc = null)
+    public function check(array $data, &$doc = null)
     {
         $this->InitialName = trim(strtolower($data[1]));
-        if (isset($data[2])) $this->InitialValue = trim($data[2]);
+        if (isset($data[2])) {
+            $this->InitialValue = trim($data[2]);
+        }
         $this->doc = $doc;
         $this->checkInitialName();
         $this->checkInitialValue();
@@ -50,7 +52,6 @@ class CheckInitial extends CheckData
             $oParse = new parseFamilyMethod();
             $strucFunc = $oParse->parse($this->InitialValue, true);
             if ($err = $strucFunc->getError()) {
-                
                 $this->addError(ErrorCode::getError('INIT0003', $this->InitialName, $this->InitialValue, $this->doc->name, $err));
             }
         }

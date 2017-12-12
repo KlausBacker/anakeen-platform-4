@@ -8,6 +8,7 @@
  *
  */
 namespace Dcp\Core;
+
 class RoleAccount extends \Dcp\Family\Document
 {
     /**
@@ -31,9 +32,10 @@ class RoleAccount extends \Dcp\Family\Document
     }
     public function PostDelete()
     {
-        
         $role = $this->getAccount();
-        if ($role) $role->Delete();
+        if ($role) {
+            $role->Delete();
+        }
     }
     public function preUndelete()
     {
@@ -56,7 +58,6 @@ class RoleAccount extends \Dcp\Family\Document
     {
         $login = $this->getRawValue("role_login");
         if (mb_strtolower($login) != $login) {
-            
             $this->setValue("role_login", mb_strtolower($login));
         }
     }
@@ -95,7 +96,7 @@ class RoleAccount extends \Dcp\Family\Document
                     $this->setValue("us_whatid", $sR->id);
                     $this->modify(true, array(
                         "us_whatid"
-                    ) , true);
+                    ), true);
                     $this->refreshDocUser();
                 }
             } else {
@@ -112,7 +113,7 @@ class RoleAccount extends \Dcp\Family\Document
     /**
      * recompute sytstem values from USER database
      */
-    function refreshDocUser()
+    public function refreshDocUser()
     {
         $wid = $this->getRawValue("us_whatid");
         if ($wid > 0) {
@@ -131,7 +132,7 @@ class RoleAccount extends \Dcp\Family\Document
      * @param bool $nocache
      * @return \Account|null return null if not found
      */
-    function getAccount($nocache = false)
+    public function getAccount($nocache = false)
     {
         if ($nocache) {
             unset($this->sysRole); // needed for reaffect new values
@@ -143,7 +144,9 @@ class RoleAccount extends \Dcp\Family\Document
                 $this->sysRole = new \Account("", $wid);
             }
         }
-        if (!$this->sysRole) return null;
+        if (!$this->sysRole) {
+            return null;
+        }
         return $this->sysRole;
     }
     /**
@@ -154,10 +157,12 @@ class RoleAccount extends \Dcp\Family\Document
     public function isUniqueLogin($login)
     {
         $err = "";
-        $sql = sprintf("select id from users where login = '%s' and id != %d", mb_strtolower(pg_escape_string($login)) , $this->getRawValue("us_whatid"));
+        $sql = sprintf("select id from users where login = '%s' and id != %d", mb_strtolower(pg_escape_string($login)), $this->getRawValue("us_whatid"));
         simpleQuery('', $sql, $id, true, true);
         
-        if ($id) $err = sprintf(_("role %s id is already used") , $login);
+        if ($id) {
+            $err = sprintf(_("role %s id is already used"), $login);
+        }
         
         return $err;
     }

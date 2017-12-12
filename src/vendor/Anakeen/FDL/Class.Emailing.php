@@ -7,20 +7,21 @@
  * Methods for emailing family
  */
 namespace Dcp\Core;
+
 class Emailing extends \Dcp\Family\Batch
 {
     /*
      * @end-method-ignore
     */
-    var $defaultedit = "FDL:FDL_PUBEDIT";
-    var $defaultmview = "FDL:FDL_PUBMAIL:T";
+    public $defaultedit = "FDL:FDL_PUBEDIT";
+    public $defaultmview = "FDL:FDL_PUBMAIL:T";
     /**
      * @param string $target
      * @param bool $ulink
      * @param bool $abstract
      * @templateController
      */
-    function fdl_pubsendmail($target = "_self", $ulink = true, $abstract = false)
+    public function fdl_pubsendmail($target = "_self", $ulink = true, $abstract = false)
     {
         $this->viewdefaultcard($target, $ulink, $abstract);
         $this->lay->set("V_PUBM_BODY", str_replace("&#x5B;", "[", $this->lay->get("V_PUBM_BODY")));
@@ -34,8 +35,11 @@ class Emailing extends \Dcp\Family\Batch
                 foreach ($listattr as $k => $v) {
                     $value = $udoc->getRawValue($v->id);
                     
-                    if ($value || ($v->type == "image")) $this->lay->Set(strtoupper($v->id) , $udoc->GetHtmlValue($v, $value, $atarget, $ulink));
-                    else $this->lay->Set(strtoupper($v->id) , false);
+                    if ($value || ($v->type == "image")) {
+                        $this->lay->Set(strtoupper($v->id), $udoc->GetHtmlValue($v, $value, $atarget, $ulink));
+                    } else {
+                        $this->lay->Set(strtoupper($v->id), false);
+                    }
                 }
             }
         }
@@ -46,21 +50,21 @@ class Emailing extends \Dcp\Family\Batch
      * @param bool $abstract
      * @templateController
      */
-    function fdl_pubprintone($target = "_self", $ulink = true, $abstract = false)
+    public function fdl_pubprintone($target = "_self", $ulink = true, $abstract = false)
     {
         $this->fdl_pubsendmail($target, $ulink, $abstract);
     }
     /**
      * @templateController
      */
-    function fdl_pubedit()
+    public function fdl_pubedit()
     {
         $this->editattr();
         $famid = $this->getRawValue("PUBM_IDFAM", "IUSER");
         $udoc = createDoc($this->dbaccess, $famid, false);
         if (!$udoc) {
-            addWarningMsg(sprintf(_("fdl_pubedit error: family %s not found") , $famid));
-            AddLogMsg(sprintf(_("fdl_pubedit error: family %s not found") , $famid));
+            addWarningMsg(sprintf(_("fdl_pubedit error: family %s not found"), $famid));
+            AddLogMsg(sprintf(_("fdl_pubedit error: family %s not found"), $famid));
             return false;
         }
         $listattr = $udoc->GetNormalAttributes();
@@ -85,7 +89,7 @@ class Emailing extends \Dcp\Family\Batch
                 );
             }
         }
-        $this->lay->set("famattr", sprintf(_("%s attribute") , $this->getRawValue("pubm_fam", "personne")));
+        $this->lay->set("famattr", sprintf(_("%s attribute"), $this->getRawValue("pubm_fam", "personne")));
         $this->lay->setBlockData("ATTR", $tatt);
         return true;
     }
@@ -95,7 +99,7 @@ class Emailing extends \Dcp\Family\Batch
      * @global uid string Http var : user document id (if not all use rpresent in folder)
      * @templateController
      */
-    function fdl_pubprint($target = "_self", $ulink = true, $abstract = false)
+    public function fdl_pubprint($target = "_self", $ulink = true, $abstract = false)
     {
         global $action;
         // GetAllParameters
@@ -128,7 +132,9 @@ class Emailing extends \Dcp\Family\Batch
                 );
             }
         }
-        if (count($t) == 0) $action->AddWarningMsg(_("no available persons found"));
+        if (count($t) == 0) {
+            $action->AddWarningMsg(_("no available persons found"));
+        }
         
         $this->lay->setBlockData("DOCS", $tlay);
         $this->lay->set("BGIMG", $this->getHtmlAttrValue("pubm_bgimg"));
@@ -140,7 +146,7 @@ class Emailing extends \Dcp\Family\Batch
      * @global uid string Http var : user document id (if not all use rpresent in folder)
      * @templateController
      */
-    function fdl_pubdisplay($target = "_self", $ulink = true, $abstract = false)
+    public function fdl_pubdisplay($target = "_self", $ulink = true, $abstract = false)
     {
         $this->fdl_pubprint($target, $ulink, $abstract);
     }
@@ -150,9 +156,9 @@ class Emailing extends \Dcp\Family\Batch
      * @param bool $abstract
      * @templateController
      */
-    function fdl_pubmail($target = "_self", $ulink = true, $abstract = false)
+    public function fdl_pubmail($target = "_self", $ulink = true, $abstract = false)
     {
-        include_once ("FDL/mailcard.php");
+        include_once("FDL/mailcard.php");
         global $action;
         $subject = $this->getRawValue("pubm_title");
         $body = $this->getRawValue("pubm_body");
@@ -182,7 +188,9 @@ class Emailing extends \Dcp\Family\Batch
             $tmail = array();
             foreach ($t as $k => $v) {
                 $mail = getv($v, $mailattr);
-                if ($mail != "") $tmail[] = $mail;
+                if ($mail != "") {
+                    $tmail[] = $mail;
+                }
             }
             $to = "";
             $bcc = implode(",", $tmail);
@@ -195,7 +203,9 @@ class Emailing extends \Dcp\Family\Batch
                 "status" => ($err) ? $err : "OK"
             );
         }
-        if ($err) $action->AddWarningMsg($err);
+        if ($err) {
+            $action->AddWarningMsg($err);
+        }
         $this->lay->setBlockData("MAILS", $tout);
         $this->viewattr($target, $ulink, $abstract);
     }
@@ -203,18 +213,16 @@ class Emailing extends \Dcp\Family\Batch
      * Preview of each document to be printed
      * @templateController
      */
-    function fdl_pubpreview($target = "_self", $ulink = true, $abstract = false)
+    public function fdl_pubpreview($target = "_self", $ulink = true, $abstract = false)
     {
-        
         $this->lay->set("dirid", $this->id);
     }
     /**
      * Preview of each document to be printed
      * @templateController
      */
-    function fdl_pubnavpreview($target = "_self", $ulink = true, $abstract = false)
+    public function fdl_pubnavpreview($target = "_self", $ulink = true, $abstract = false)
     {
-        
         $t = $this->getContent();
         $tlay = array();
         foreach ($t as $k => $v) {

@@ -21,20 +21,20 @@ class GroupAccount extends \Dcp\Family\Group
     use TAccount;
     public $wuser;
     
-    var $cviews = array(
+    public $cviews = array(
         "FUSERS:FUSERS_IGROUP"
     );
-    var $eviews = array(
+    public $eviews = array(
         "USERCARD:CHOOSEGROUP"
     );
-    var $exportLdap = array(
+    public $exportLdap = array(
         // posixGroup
         "gidNumber" => "GRP_GIDNUMBER",
         //			"mail" => "GRP_MAIL", // not in schema but used in mailing client application
         "description" => "GRP_DESC"
     );
-    var $ldapobjectclass = "posixGroup";
-    function preRefresh()
+    public $ldapobjectclass = "posixGroup";
+    public function preRefresh()
     {
         //  $err=$this->ComputeGroup();
         $err = "";
@@ -43,12 +43,16 @@ class GroupAccount extends \Dcp\Family\Group
         $iduser = $this->getRawValue("US_WHATID");
         if ($iduser > 0) {
             $user = $this->getAccount();
-            if (!$user) return sprintf(_("group #%d does not exist") , $iduser);
+            if (!$user) {
+                return sprintf(_("group #%d does not exist"), $iduser);
+            }
         } else {
             return _("group has not identificator");
         }
         
-        if ($this->getRawValue("grp_isrefreshed") == "0") $err.= _("this groups must be refreshed");
+        if ($this->getRawValue("grp_isrefreshed") == "0") {
+            $err.= _("this groups must be refreshed");
+        }
         return $err;
     }
     public function preUndelete()
@@ -58,22 +62,22 @@ class GroupAccount extends \Dcp\Family\Group
     /**
      * test if the document can be set in LDAP
      */
-    function canUpdateLdapCard()
+    public function canUpdateLdapCard()
     {
         return true;
     }
     /**
      * get LDAP title for group
      */
-    function getLDAPTitle()
+    public function getLDAPTitle()
     {
-        return sprintf(_("%s group") , $this->title);
+        return sprintf(_("%s group"), $this->title);
     }
     /**
      * get LDAP array of members
      * @return array
      */
-    function getLDAPMember()
+    public function getLDAPMember()
     {
         $g = $this->getAccount();
         $members = $g->getAllMembers();
@@ -83,10 +87,14 @@ class GroupAccount extends \Dcp\Family\Group
             $tdnu = explode("\n", $du["ldapdn"]);
             if (count($tdnu) > 0) {
                 $dnu = $tdnu[0];
-                if ($dnu) $tdn[] = $dnu;
+                if ($dnu) {
+                    $tdn[] = $dnu;
+                }
             }
         }
-        if (count($tdn) == 0) $tdn = "cn=nobody,dc=users," . $this->racine;
+        if (count($tdn) == 0) {
+            $tdn = "cn=nobody,dc=users," . $this->racine;
+        }
         return $tdn;
     }
     /**
@@ -96,10 +104,10 @@ class GroupAccount extends \Dcp\Family\Group
      *
      * @return string error message, if no error empty string
      */
-    function RefreshGroup()
+    public function RefreshGroup()
     {
         //if ($this->norefreshggroup) return '';
-        include_once ("FDL/Lib.Usercard.php");
+        include_once("FDL/Lib.Usercard.php");
         //  $err=_GROUP::RefreshGroup();
         $err = $this->RefreshDocUser();
         //$err.=$this->refreshMembers();
@@ -110,7 +118,7 @@ class GroupAccount extends \Dcp\Family\Group
         if ($err == "") {
             refreshGroups(array(
                 $this->getRawValue("us_whatid")
-            ) , true);
+            ), true);
             /*$this->setValue("grp_isrefreshed","1");
              $this->modify(true,array("grp_isrefreshed"),true);*/
         }
@@ -119,14 +127,14 @@ class GroupAccount extends \Dcp\Family\Group
     /**
      * Refresh folder parent containt
      */
-    function refreshParentGroup()
+    public function refreshParentGroup()
     {
         $tgid = $this->getMultipleRawValues("GRP_IDPGROUP");
         foreach ($tgid as $gid) {
             /**
              * @var \Dcp\Family\Igroup $gdoc
              */
-            $gdoc = DocManager::getDocument( $gid);
+            $gdoc = DocManager::getDocument($gid);
             if ($gdoc && $gdoc->isAlive()) {
                 $gdoc->insertGroups();
             }
@@ -177,7 +185,9 @@ class GroupAccount extends \Dcp\Family\Group
             //$this->RefreshGroup(); // in postinsert
             //    $this->refreshParentGroup();
             $wrg = $this->RefreshLdapCard();
-            if ($wrg) AddWarningMsg($wrg);
+            if ($wrg) {
+                AddWarningMsg($wrg);
+            }
             // add in default folder root groups : usefull for import
             $tgid = $this->getMultipleRawValues("GRP_IDPGROUP");
             $fdoc = $this->getFamilyDocument();
@@ -188,15 +198,20 @@ class GroupAccount extends \Dcp\Family\Group
                  */
                 $dfld = DocManager::getDocument($dfldid);
                 if ($dfld && $dfld->isAlive()) {
-                    if (count($tgid) == 0) $dfld->insertDocument($this->initid);
-                    else $dfld->removeDocument($this->initid);
+                    if (count($tgid) == 0) {
+                        $dfld->insertDocument($this->initid);
+                    } else {
+                        $dfld->removeDocument($this->initid);
+                    }
                 }
             }
             
             $err = $this->refreshMailMembersOnChange();
         }
         
-        if ($err == "") $err = "-"; // don't do modify after because it is must be set by USER::setGroups
+        if ($err == "") {
+            $err = "-";
+        } // don't do modify after because it is must be set by USER::setGroups
         return $err;
     }
     /**
@@ -208,7 +223,9 @@ class GroupAccount extends \Dcp\Family\Group
      */
     public function setGroupMail($nomail = false)
     {
-        if (!$nomail) $nomail = ($this->getRawValue("grp_hasmail") == "no");
+        if (!$nomail) {
+            $nomail = ($this->getRawValue("grp_hasmail") == "no");
+        }
         if (!$nomail) {
             $this->setValue("grp_mail", $this->getMail());
         } else {
@@ -231,7 +248,7 @@ class GroupAccount extends \Dcp\Family\Group
     /**
      * update LDAP menbers after imodification of containt
      */
-    function specPostInsert()
+    public function specPostInsert()
     {
         return $this->RefreshLdapCard();
     }
@@ -245,7 +262,7 @@ class GroupAccount extends \Dcp\Family\Group
      * @return string error message
      * @throws Exception
      */
-    function postInsertDocument($docid, $multiple = false)
+    public function postInsertDocument($docid, $multiple = false)
     {
         $err = "";
         if ($multiple == false) {
@@ -286,14 +303,12 @@ class GroupAccount extends \Dcp\Family\Group
      * @return string error message
      * @throws Exception
      */
-    function postInsertMultipleDocuments($tdocid)
+    public function postInsertMultipleDocuments($tdocid)
     {
-        
         $err = "";
         
         $gid = $this->getRawValue("US_WHATID");
         if ($gid > 0) {
-            
             $g = new \Group("");
             foreach ($tdocid as $k => $docid) {
                 /**
@@ -329,9 +344,8 @@ class GroupAccount extends \Dcp\Family\Group
      * @return string error message
      * @throws Exception
      */
-    function postRemoveDocument($docid, $multiple = false)
+    public function postRemoveDocument($docid, $multiple = false)
     {
-        
         $err = "";
         $gid = $this->getRawValue("US_WHATID");
         if ($gid > 0) {
@@ -340,34 +354,35 @@ class GroupAccount extends \Dcp\Family\Group
              */
             $du = DocManager::getDocument($docid);
             if ($du) {
-            $uid = $du->getRawValue("us_whatid");
-            if ($uid > 0) {
-                $g = new \Group("", $gid);
-                $g->iduser = $gid;
-                $err = $g->SuppressUser($uid);
-                if ($err == "") {
-                    $du->disableEditControl();
-                    $du->RefreshDocUser();
-                    $du->enableEditControl();
-                    $this->RefreshGroup();
+                $uid = $du->getRawValue("us_whatid");
+                if ($uid > 0) {
+                    $g = new \Group("", $gid);
+                    $g->iduser = $gid;
+                    $err = $g->SuppressUser($uid);
+                    if ($err == "") {
+                        $du->disableEditControl();
+                        $du->RefreshDocUser();
+                        $du->enableEditControl();
+                        $this->RefreshGroup();
+                    }
                 }
-            }
             }
         }
         return $err;
     }
-    function postDelete()
+    public function postDelete()
     {
-        
         $gAccount = $this->getAccount();
-        if ($gAccount) $gAccount->Delete();
+        if ($gAccount) {
+            $gAccount->Delete();
+        }
     }
     /**
      * (re)insert members of the group in folder from USER databasee
      *
      * @return string error message, if no error empty string
      */
-    function insertGroups()
+    public function insertGroups()
     {
         $gAccount = $this->getAccount();
         $err = "";
@@ -379,7 +394,9 @@ class GroupAccount extends \Dcp\Family\Group
             $tfid = array();
             foreach ($tu as $k => $v) {
                 //	if ($v["fid"]>0)  $err.=$this->AddFile($v["fid"]);
-                if ($v["fid"] > 0) $tfid[] = $v["fid"];
+                if ($v["fid"] > 0) {
+                    $tfid[] = $v["fid"];
+                }
             }
             $err = $this->QuickInsertMSDocId($tfid); // without postInsert
             $this->specPostInsert();
@@ -394,13 +411,13 @@ class GroupAccount extends \Dcp\Family\Group
      * @param int $docid user doc parameter
      * @return string error message, if no error empty string
      */
-    function insertMember($docid)
+    public function insertMember($docid)
     {
         $err = $this->insertDocument($docid, "latest", true); // without postInsert
         $this->setValue("grp_isrefreshed", "0");
         $this->modify(true, array(
             "grp_isrefreshed"
-        ) , true);
+        ), true);
         
         return $err;
     }
@@ -412,20 +429,20 @@ class GroupAccount extends \Dcp\Family\Group
      * @param int $docid user doc parameter
      * @return string error message, if no error empty string
      */
-    function deleteMember($docid)
+    public function deleteMember($docid)
     {
         $err = $this->removeDocument($docid, true); // without postInsert
         $this->setValue("grp_isrefreshed", "0");
         $this->modify(true, array(
             "grp_isrefreshed"
-        ) , true);
+        ), true);
         
         return $err;
     }
     /**
      * recompute intranet values from USER database
      */
-    function refreshDocUser()
+    public function refreshDocUser()
     {
         $err = "";
         $wid = $this->getRawValue("us_whatid");
@@ -461,7 +478,7 @@ class GroupAccount extends \Dcp\Family\Group
                     "grp_idgroup"
                 ));
             } else {
-                $err = sprintf(_("group %d does not exist") , $wid);
+                $err = sprintf(_("group %d does not exist"), $wid);
             }
         }
         return $err;
@@ -469,7 +486,7 @@ class GroupAccount extends \Dcp\Family\Group
     /**
      * refresh members of the group from USER database
      */
-    function refreshMembers()
+    public function refreshMembers()
     {
         $err = '';
         
@@ -480,7 +497,6 @@ class GroupAccount extends \Dcp\Family\Group
             $tu = $u->GetUsersGroupList($wid, true);
             $tglogin = '';
             if (count($tu) > 0) {
-                
                 foreach ($tu as $uid => $tvu) {
                     if ($tvu["accounttype"] == \Account::GROUP_TYPE) {
                         $tgid[$uid] = $tvu["fid"];
@@ -504,7 +520,7 @@ class GroupAccount extends \Dcp\Family\Group
     /**
      * Flush/empty group's content
      */
-    function clear()
+    public function clear()
     {
         $err = '';
         $content = $this->getContent(false);

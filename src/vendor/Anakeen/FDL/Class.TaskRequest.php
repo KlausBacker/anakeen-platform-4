@@ -13,7 +13,7 @@
 /**
  */
 
-include_once ("Class.DbObj.php");
+include_once("Class.DbObj.php");
 class TaskRequest extends DbObj
 {
     public $fields = array(
@@ -72,4 +72,3 @@ CREATE TABLE taskrequest (
 );
 SQL;
 }
-?>

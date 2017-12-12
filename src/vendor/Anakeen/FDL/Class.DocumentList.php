@@ -51,7 +51,9 @@ class DocumentList implements Iterator, Countable
     {
         if ($this->search) {
             if (!$this->init) {
-                if (!$this->search->isExecuted()) $this->search->search();
+                if (!$this->search->isExecuted()) {
+                    $this->search->search();
+                }
                 if ($this->search->getError()) {
                     throw new Dcp\Exception($this->search->getError());
                 }
@@ -70,7 +72,9 @@ class DocumentList implements Iterator, Countable
         if (!$good) {
             while ($this->currentDoc = $this->search->getNextDoc()) {
                 $good = ($this->callHook() !== false);
-                if ($good) break;
+                if ($good) {
+                    break;
+                }
             }
         }
     }
@@ -145,7 +149,9 @@ class DocumentList implements Iterator, Countable
         $this->search->setObjectReturn();
         $this->search->excludeConfidential();
         foreach ($ids as $k => $v) {
-            if ((!$v) || (!is_numeric($v))) unset($ids[$k]);
+            if ((!$v) || (!is_numeric($v))) {
+                unset($ids[$k]);
+            }
         }
         $ids = array_unique($ids);
         $sid = $useInitid ? "initid" : "id";

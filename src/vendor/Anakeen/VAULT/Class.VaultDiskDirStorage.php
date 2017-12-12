@@ -14,14 +14,12 @@
 //
 //
 // ---------------------------------------------------------------
-include_once ("VAULT/Class.VaultDiskDir.php");
+include_once("VAULT/Class.VaultDiskDir.php");
 
 class VaultDiskDirStorage extends VaultDiskDir
 {
-    
-    function __construct($dbaccess, $id_dir = '')
+    public function __construct($dbaccess, $id_dir = '')
     {
         parent::__construct($dbaccess, $id_dir, "storage");
     }
 }
-?>

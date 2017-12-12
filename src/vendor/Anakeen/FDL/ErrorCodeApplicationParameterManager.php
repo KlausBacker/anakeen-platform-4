@@ -61,7 +61,9 @@ namespace {
          */
         private function _bo()
         {
-            if (true) $a = 1;
+            if (true) {
+                $a = 1;
+            }
         }
     }
 }
@@ -78,7 +80,9 @@ namespace Dcp\ApplicationParameterManager {
          */
         private function _bo()
         {
-            if (true) $a = 1;
+            if (true) {
+                $a = 1;
+            }
         }
     }
 }

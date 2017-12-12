@@ -136,7 +136,7 @@ class MailAddrParser
      * @return \Dcp\Mail\Address[]
      * @throws MailAddrParserException
      */
-    function parse($s)
+    public function parse($s)
     {
         $this->s = $s;
         $this->p = 0;
@@ -189,7 +189,6 @@ class MailAddrParser
                         $this->esc = false;
                     } elseif ($this->isSpace($c)) {
                         // Discard spaces
-                        
                     } elseif ($c == ",") {
                         $this->state = self::ST_lookingForStartOfMail;
                     } else {
@@ -255,7 +254,6 @@ class MailAddrParser
                         $this->esc = false;
                     } elseif ($this->isSpace($c)) {
                         // Discard leading spaces
-                        
                     } elseif ($c == '<') {
                         $this->state = self::ST_inAngleMail;
                     } else {

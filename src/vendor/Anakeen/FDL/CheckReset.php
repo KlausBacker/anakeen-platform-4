@@ -25,9 +25,8 @@ class CheckReset extends CheckData
      * @param Doc $doc
      * @return CheckReset
      */
-    function check(array $data, &$doc = null)
+    public function check(array $data, &$doc = null)
     {
-        
         $this->value = strtolower($data[1]);
         $this->doc = $doc;
         $this->checkValue();

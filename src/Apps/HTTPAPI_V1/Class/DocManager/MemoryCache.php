@@ -8,7 +8,7 @@ namespace Dcp\HttpApi\V1\DocManager;
 
 class MemoryCache
 {
-    static $cacheObjects = array();
+    public static $cacheObjects = array();
     /**
      * Retrieve object from key identifier
      * @param string $key object identifier

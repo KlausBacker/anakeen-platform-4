@@ -30,4 +30,3 @@ function parseType($type)
 {
     return Dcp\FamilyImport::parseType($type);
 }
-

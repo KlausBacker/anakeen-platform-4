@@ -13,29 +13,29 @@
 /**
  */
 
-include_once ("FDL/Class.Doc.php");
+include_once("FDL/Class.Doc.php");
 
 class PFam extends Doc
 {
     // --------------------------------------------------------------------
     //---------------------- OBJECT CONTROL PERMISSION --------------------
-    var $acls = array(
+    public $acls = array(
         "view",
         "edit",
         "create",
         "icreate"
     );
     
-    var $defDoctype = 'P';
-    var $defProfFamId = FAM_ACCESSFAM;
+    public $defDoctype = 'P';
+    public $defProfFamId = FAM_ACCESSFAM;
     
-    function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
+    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         // don't use Doc constructor because it could call this constructor => infinitive loop
         DocCtrl::__construct($dbaccess, $id, $res, $dbid);
     }
     
-    function preImport(array $extra = array())
+    public function preImport(array $extra = array())
     {
         if ($this->getRawValue("dpdoc_famid")) {
             return ErrorCode::getError('PRFL0202', $this->getRawValue('ba_title'));

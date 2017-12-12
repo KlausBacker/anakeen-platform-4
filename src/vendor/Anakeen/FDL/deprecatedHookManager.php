@@ -85,7 +85,9 @@ class deprecatedHookManager
     
     private function extractMethods()
     {
-        if (count($this->methods) > 0) return;
+        if (count($this->methods) > 0) {
+            return;
+        }
         $tokens = token_get_all($this->content);
         $funcHunt = false;
         foreach ($tokens as $token) {
@@ -100,7 +102,6 @@ class deprecatedHookManager
                 }
             } else {
                 if ($token === ';' || $token === '{') {
-                    
                     $funcHunt = false;
                 }
             }
@@ -139,19 +140,21 @@ class deprecatedHookManager
     public function getDeprecatedHooks()
     {
         $this->extractMethods();
-        return array_intersect($this->getDeprecatedHookList() , $this->methods);
+        return array_intersect($this->getDeprecatedHookList(), $this->methods);
     }
     
     public function getNewHooks()
     {
         $this->extractMethods();
-        return array_intersect($this->getNewHookList() , $this->methods);
+        return array_intersect($this->getNewHookList(), $this->methods);
     }
     
     protected function getNewHookName($deprecatedName)
     {
         foreach ($this->deprecatedHooks as $dName => $nName) {
-            if (strtolower($dName) == strtolower($deprecatedName)) return $nName["newName"];
+            if (strtolower($dName) == strtolower($deprecatedName)) {
+                return $nName["newName"];
+            }
         }
         return '';
     }
@@ -159,7 +162,9 @@ class deprecatedHookManager
     protected function getArgCallHook($deprecatedName)
     {
         foreach ($this->deprecatedHooks as $dName => $nName) {
-            if (strtolower($dName) == strtolower($deprecatedName)) return $nName["call"];
+            if (strtolower($dName) == strtolower($deprecatedName)) {
+                return $nName["call"];
+            }
         }
         return '';
     }
@@ -167,14 +172,18 @@ class deprecatedHookManager
     protected function getArgDeclareHook($deprecatedName)
     {
         foreach ($this->deprecatedHooks as $dName => $nName) {
-            if (strtolower($dName) == strtolower($deprecatedName)) return $nName["declare"];
+            if (strtolower($dName) == strtolower($deprecatedName)) {
+                return $nName["declare"];
+            }
         }
         return '';
     }
     protected function getDeprecatedHookName($newName)
     {
         foreach ($this->deprecatedHooks as $dName => $nName) {
-            if (strtolower($nName["newName"]) == strtolower($newName)) return $dName;
+            if (strtolower($nName["newName"]) == strtolower($newName)) {
+                return $dName;
+            }
         }
         return '';
     }
@@ -182,8 +191,12 @@ class deprecatedHookManager
     protected function getOriginalName($name)
     {
         foreach ($this->deprecatedHooks as $dName => $nName) {
-            if (strtolower($nName["newName"]) == strtolower($name)) return $nName["newName"];
-            if (strtolower($dName) == strtolower($name)) return $dName;
+            if (strtolower($nName["newName"]) == strtolower($name)) {
+                return $nName["newName"];
+            }
+            if (strtolower($dName) == strtolower($name)) {
+                return $dName;
+            }
         }
         return $name;
     }
@@ -196,7 +209,7 @@ class deprecatedHookManager
             $alias.= "\n/**\n*generated alias : new method name\n";
             $alias.= sprintf("*@deprecated declare %s instead\n", $nHook);
             $alias.= sprintf("*/\n");
-            $alias.= sprintf('public function %s(%s) {deprecatedFunction("hook %s");return self::%s(%s);}', $this->getOriginalName($nHook) , $this->getArgDeclareHook($dHook) , $this->getOriginalName($dHook) , $this->getOriginalName($dHook) , $this->getArgCallHook($dHook));
+            $alias.= sprintf('public function %s(%s) {deprecatedFunction("hook %s");return self::%s(%s);}', $this->getOriginalName($nHook), $this->getArgDeclareHook($dHook), $this->getOriginalName($dHook), $this->getOriginalName($dHook), $this->getArgCallHook($dHook));
             $alias.= "\n";
         }
         
@@ -206,7 +219,7 @@ class deprecatedHookManager
             $alias.= "\n/**\n*generated alias : old compatibility\n";
             $alias.= sprintf("*@deprecated alias for %s\n", $nHook);
             $alias.= sprintf("*/\n");
-            $alias.= sprintf('public function %s(%s) {deprecatedFunction("hook %s");return self::%s(%s);}', $dHook, $this->getArgDeclareHook($dHook) , $this->getOriginalName($dHook) , $this->getOriginalName($nHook) , $this->getArgCallHook($dHook));
+            $alias.= sprintf('public function %s(%s) {deprecatedFunction("hook %s");return self::%s(%s);}', $dHook, $this->getArgDeclareHook($dHook), $this->getOriginalName($dHook), $this->getOriginalName($nHook), $this->getArgCallHook($dHook));
             $alias.= "\n";
         }
         return $alias;

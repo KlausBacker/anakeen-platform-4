@@ -8,11 +8,10 @@
 
 namespace Dcp\HttpApi\V1\Crud;
 
-
 use Dcp\HttpApi\V1\DocManager\DocManager;
 
-class TrashHistory extends History {
-
+class TrashHistory extends History
+{
     protected $baseURL = "trash";
 
     /**
@@ -66,5 +65,4 @@ class TrashHistory extends History {
         $search->trash = "also";
         return $search;
     }
-
-} 
+}

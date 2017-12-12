@@ -36,11 +36,16 @@ namespace Dcp {
                     $tArgs[] = func_get_arg($ip);
                 }
                 $msg = call_user_func_array("ErrorCode::getError", $tArgs);
-                if ($msg) $message = $msg;
+                if ($msg) {
+                    $message = $msg;
+                }
                 $this->dcpCode = $code;
             }
-            if ($argCode && is_numeric($argCode)) $intcode = intval($argCode);
-            else $intcode = 0;
+            if ($argCode && is_numeric($argCode)) {
+                $intcode = intval($argCode);
+            } else {
+                $intcode = 0;
+            }
             
             parent::__construct($message, $intcode);
         }
@@ -50,7 +55,9 @@ namespace Dcp {
          */
         public function getDcpCode()
         {
-            if ($this->dcpCode) return $this->dcpCode;
+            if ($this->dcpCode) {
+                return $this->dcpCode;
+            }
             if (preg_match("/^{([^}]+)/u", $this->message, $reg)) {
                 return $reg[1];
             }
@@ -62,9 +69,7 @@ namespace Dcp {
          */
         public function getDcpMessage()
         {
-            
             if (preg_match("/^{([^}]+)} *(.*)$/ums", $this->message, $reg)) {
-                
                 return $reg[2];
             }
             return $this->message;
@@ -86,4 +91,3 @@ namespace Dcp {
         }
     }
 }
-

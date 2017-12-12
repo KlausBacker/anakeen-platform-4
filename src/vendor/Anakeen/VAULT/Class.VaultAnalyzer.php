@@ -11,7 +11,7 @@ use Dcp\PgFetchArrayIterator;
 
 require_once 'WHAT/Lib.Common.php';
 
-Class VaultAnalyzerException extends \Dcp\Exception
+class VaultAnalyzerException extends \Dcp\Exception
 {
 }
 
@@ -41,21 +41,21 @@ class VaultAnalyzer
         $report = array();
         
         $res = $this->sqlQuery('SELECT count(id_file) AS count, sum(size) AS size, pg_size_pretty(sum(size)) AS size_pretty FROM vaultdiskstorage');
-        $t = pg_fetch_array($res, NULL, PGSQL_ASSOC);
+        $t = pg_fetch_array($res, null, PGSQL_ASSOC);
         if ($t === false) {
             throw new VaultAnalyzerException(pg_last_error($this->_conn));
         }
         $report['all'] = $t;
         
         $res = $this->sqlQuery('SELECT count(id_file) AS count, sum(size) AS size, pg_size_pretty(sum(size)) AS size_pretty FROM vaultdiskstorage WHERE NOT EXISTS (SELECT 1 FROM docvaultindex WHERE vaultid = id_file)');
-        $t = pg_fetch_array($res, NULL, PGSQL_ASSOC);
+        $t = pg_fetch_array($res, null, PGSQL_ASSOC);
         if ($t === false) {
             throw new VaultAnalyzerException(pg_last_error($this->_conn));
         }
         $report['orphan'] = $t;
         
         $res = $this->sqlQuery('SELECT count(id_file) AS count, sum(size) AS size, pg_size_pretty(sum(size)) AS size_pretty FROM vaultdiskstorage WHERE EXISTS (SELECT 1 FROM docvaultindex WHERE vaultid = id_file)');
-        $t = pg_fetch_array($res, NULL, PGSQL_ASSOC);
+        $t = pg_fetch_array($res, null, PGSQL_ASSOC);
         if ($t === false) {
             throw new VaultAnalyzerException(pg_last_error($this->_conn));
         }
@@ -173,7 +173,7 @@ EOF;
         $famIndex = 0;
         foreach ($families as $famid => & $fam) {
             $famIndex++;
-            $this->verbose("[+] (%d/%d) %s family '%s'...\n", $famIndex, count($families) , $mode, $fam['name']);
+            $this->verbose("[+] (%d/%d) %s family '%s'...\n", $famIndex, count($families), $mode, $fam['name']);
             foreach ($fam['vid'] as $vid) {
                 $this->sqlExec(self::STMT_INSERT_TMP, array(
                     $famid,

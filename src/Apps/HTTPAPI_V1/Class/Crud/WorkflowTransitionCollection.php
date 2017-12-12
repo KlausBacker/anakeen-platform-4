@@ -44,7 +44,6 @@ class WorkflowTransitionCollection extends WorkflowStateCollection
         $this->workflow->set($this->_document);
         
         foreach ($this->workflow->transitions as $k => $transition) {
-            
             $transitions[] = array(
                 "uri" => sprintf("%s%s", $info["uri"], $k) ,
                 "label" => _($k) ,

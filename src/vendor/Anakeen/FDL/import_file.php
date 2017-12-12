@@ -14,8 +14,8 @@
 /**
  */
 
-include_once ("FDL/Lib.Attr.php");
-require_once ("WHAT/Lib.FileMime.php");
+include_once("FDL/Lib.Attr.php");
+require_once("WHAT/Lib.FileMime.php");
 
 define("ALTSEPCHAR", ' --- ');
 define("SEPCHAR", ';');
@@ -25,7 +25,6 @@ function add_import_file(Action & $action, $fimport, $dirid = 0)
     setMaxExecutionTimeTo(300);
     if ($dirid == 0) {
         $dirid = GetHttpVars("dirid", 0); // directory to place imported doc
-        
     }
     $analyze = (GetHttpVars("analyze", "N") == "Y"); // just analyze
     $policy = GetHttpVars("policy", "update");
@@ -58,17 +57,22 @@ function add_import_file(Action & $action, $fimport, $dirid = 0)
  */
 function csvAddDoc($dbaccess, $data, $dirid = 0, $analyze = false, $ldir = '', $policy = "add", $tkey = array(
     "title"
-) , $prevalues = array() , $torder = array())
+), $prevalues = array(), $torder = array())
 {
-    
     $o = new importSingleDocument();
-    if ($tkey) $o->setKey($tkey);
-    if ($torder) $o->setOrder($torder);
+    if ($tkey) {
+        $o->setKey($tkey);
+    }
+    if ($torder) {
+        $o->setOrder($torder);
+    }
     $o->analyzeOnly($analyze);
     $o->setPolicy($policy);
     $o->setTargetDirectory($dirid);
     $o->setFilePath($ldir);
-    if ($prevalues) $o->setPreValues($prevalues);
+    if ($prevalues) {
+        $o->setPreValues($prevalues);
+    }
     return $o->import($data)->getImportResult();
 }
 
@@ -112,7 +116,6 @@ function AddVaultFile($dbaccess, $path, $analyze, &$vid)
         $err = $vf->Store($path, false, $vid);
     }
     if ($err != "") {
-        
         AddWarningMsg($err);
         return $err;
     } else {
@@ -126,10 +129,16 @@ function AddVaultFile($dbaccess, $path, $analyze, &$vid)
 }
 function seemsODS($filename)
 {
-    if (preg_match('/\.ods$/', $filename)) return true;
+    if (preg_match('/\.ods$/', $filename)) {
+        return true;
+    }
     $sys = trim(shell_exec(sprintf("file -bi %s", escapeshellarg($filename))));
-    if ($sys == "application/x-zip") return true;
-    if ($sys == "application/vnd.oasis.opendocument.spreadsheet") return true;
+    if ($sys == "application/x-zip") {
+        return true;
+    }
+    if ($sys == "application/vnd.oasis.opendocument.spreadsheet") {
+        return true;
+    }
     return false;
 }
 /**
@@ -140,13 +149,11 @@ function seemsODS($filename)
 function ods2csv($odsfile)
 {
     $csvfile = uniqid(getTmpDir() . "/csv") . "csv";
-    $cmd = sprintf("%s --api=ods2csv --odsfile=%s --csvfile=%s >/dev/null", getWshCmd() , escapeshellarg($odsfile) , escapeshellarg($csvfile));
+    $cmd = sprintf("%s --api=ods2csv --odsfile=%s --csvfile=%s >/dev/null", getWshCmd(), escapeshellarg($odsfile), escapeshellarg($csvfile));
     system($cmd, $out);
 
     if ($out !== 0) {
         throw new \Dcp\Core\Exception(sprintf("Cannnot convert to csv file \"%s\"", $odsfile));
-
     }
     return $csvfile;
 }
-?>

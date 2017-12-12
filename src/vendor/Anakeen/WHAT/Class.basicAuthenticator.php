@@ -15,11 +15,10 @@
  */
 /**
  */
-include_once ('WHAT/Class.Authenticator.php');
+include_once('WHAT/Class.Authenticator.php');
 
 class basicAuthenticator extends Authenticator
 {
-    
     const basicAuthorizationScheme = "Basic";
     protected $auth_session = null;
     public function checkAuthentication()
@@ -65,7 +64,7 @@ class basicAuthenticator extends Authenticator
     
     public function checkAuthorization($opt)
     {
-        return TRUE;
+        return true;
     }
     
     public function askAuthentication($args)
@@ -73,7 +72,7 @@ class basicAuthenticator extends Authenticator
         header('HTTP/1.1 401 Authentication Required');
         header('WWW-Authenticate: Basic realm="' . $this->parms{'realm'} . '"');
         header('Connection: close');
-        return TRUE;
+        return true;
     }
     
     public function getAuthUser()
@@ -97,7 +96,7 @@ class basicAuthenticator extends Authenticator
             }
         }
         header('Location: ' . $redir_uri);
-        return TRUE;
+        return true;
     }
     
     public function setSessionVar($name, $value)

@@ -14,7 +14,7 @@
 /**
  */
 
-include_once ("FDL/freedom_util.php");
+include_once("FDL/freedom_util.php");
 
 function getFirstDir($dbaccess)
 {
@@ -25,7 +25,6 @@ function getFirstDir($dbaccess)
     
     $tableq = $query->Query(0, 0, "TABLE", $qsql);
     if ($query->nb > 0) {
-        
         return $tableq[0]["id"];
     }
     
@@ -35,11 +34,13 @@ function getFirstDir($dbaccess)
 function getChildDir($dbaccess, $userid, $dirid, $notfldsearch = false, $restype = "LIST")
 {
     // query to find child directories (no recursive - only in the specified folder)
-    if (!($dirid > 0)) return array();
+    if (!($dirid > 0)) {
+        return array();
+    }
     // search classid and appid to test privilege
     if ($notfldsearch) {
         // just folder no serach
-        return internalGetDocCollection($dbaccess, $dirid, "0", "ALL", array() , $userid, $restype, 2, false, "title");
+        return internalGetDocCollection($dbaccess, $dirid, "0", "ALL", array(), $userid, $restype, 2, false, "title");
     } else {
         $folders = array();
         $searches = array();
@@ -47,16 +48,14 @@ function getChildDir($dbaccess, $userid, $dirid, $notfldsearch = false, $restype
         try {
             $folders = internalGetDocCollection($dbaccess, $dirid, "0", "ALL", array(
                 "doctype='D'"
-            ) , $userid, $restype, 2, false, "title");
-        }
-        catch(Exception $e) {
+            ), $userid, $restype, 2, false, "title");
+        } catch (Exception $e) {
         }
         try {
             $searches = internalGetDocCollection($dbaccess, $dirid, "0", "ALL", array(
                 "doctype='S'"
-            ) , $userid, $restype, 5, false, "title");
-        }
-        catch(Exception $e) {
+            ), $userid, $restype, 5, false, "title");
+        } catch (Exception $e) {
         }
         return array_merge($folders, $searches);
     }
@@ -64,7 +63,9 @@ function getChildDir($dbaccess, $userid, $dirid, $notfldsearch = false, $restype
 
 function isSimpleFilter($sqlfilters)
 {
-    if (!is_array($sqlfilters)) return true;
+    if (!is_array($sqlfilters)) {
+        return true;
+    }
     static $props = false;
     
     if (!$props) {
@@ -81,7 +82,9 @@ function isSimpleFilter($sqlfilters)
         $tok = strtok($tok, " !=~@");
         if (!(strpos($tok, '.') > 0)) { // join is not in main table
             //if ($tok == "fulltext") return true;
-            if (($tok !== false) && ($tok !== "true") && ($tok !== "false") && (!in_array(ltrim($tok, "(") , $props))) return false;
+            if (($tok !== false) && ($tok !== "true") && ($tok !== "false") && (!in_array(ltrim($tok, "("), $props))) {
+                return false;
+            }
         }
     }
     return true;
@@ -102,21 +105,24 @@ function isSimpleFilter($sqlfilters)
  * @param string $only set "only" to have only family (not descandent);
  * @return array|bool|string
  */
-function getSqlSearchDoc($dbaccess, $dirid, $fromid, $sqlfilters = array() , $distinct = false, // if want distinct without locked
+function getSqlSearchDoc($dbaccess, $dirid, $fromid, $sqlfilters = array(), $distinct = false, // if want distinct without locked
 $latest = true, // only latest document
 $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only = "")
 {
-    
     if (($fromid != "") && (!is_numeric($fromid))) {
-        preg_match('/^(?P<sign>-?)(?P<fromid>.+)$/', trim($fromid) , $m);
+        preg_match('/^(?P<sign>-?)(?P<fromid>.+)$/', trim($fromid), $m);
         $fromid = $m['sign'] . \Dcp\Core\DocManager::getFamilyIdFromName($m['fromid']);
     }
     $table = "doc";
     $qsql = array();
-    if ($trash == "only") $distinct = true;
-    if ($fromid == - 1) $table = "docfam";
-    elseif ($simplesearch) $table = "docread";
-    elseif ($fromid < 0) {
+    if ($trash == "only") {
+        $distinct = true;
+    }
+    if ($fromid == - 1) {
+        $table = "docfam";
+    } elseif ($simplesearch) {
+        $table = "docread";
+    } elseif ($fromid < 0) {
         $only = "only";
         $fromid = - $fromid;
         $table = "doc$fromid";
@@ -127,12 +133,14 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                 $fdoc = new_doc($dbaccess, $fromid);
                 $sqlfilters[-4] = GetSqlCond(array_merge(array(
                     $fromid
-                ) , array_keys($fdoc->GetChildFam())) , "fromid", true);
+                ), array_keys($fdoc->GetChildFam())), "fromid", true);
             } else {
                 $table = "doc$fromid";
             }
         } elseif ($fromid == 0) {
-            if (isSimpleFilter($sqlfilters)) $table = "docread";
+            if (isSimpleFilter($sqlfilters)) {
+                $table = "docread";
+            }
         }
     }
     $maintable = $table; // can use join only on search
@@ -145,7 +153,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             $maintable = $table;
             $table.= ", " . $jointable;
         } else {
-            addWarningMsg(sprintf(_("search join syntax error : %s") , $join));
+            addWarningMsg(sprintf(_("search join syntax error : %s"), $join));
             return false;
         }
     }
@@ -160,13 +168,17 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     }
     $sqlcond = "true";
     ksort($sqlfilters);
-    if (count($sqlfilters) > 0) $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
+    if (count($sqlfilters) > 0) {
+        $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
+    }
     
     if ($dirid == 0) {
         //-------------------------------------------
         // search in all Db
         //-------------------------------------------
-        if (strpos(implode(",", $sqlfilters) , "archiveid") === false) $sqlfilters[-4] = $maintabledot . "archiveid is null";
+        if (strpos(implode(",", $sqlfilters), "archiveid") === false) {
+            $sqlfilters[-4] = $maintabledot . "archiveid is null";
+        }
         
         if ($trash == "only") {
             $sqlfilters[-3] = $maintabledot . "doctype = 'Z'";
@@ -175,7 +187,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             }
         } elseif ($trash == "also") {
             $sqlfilters[-3] = sprintf("(%slocked != -1 or %slmodify='D')", $maintabledot, $maintabledot);
-        } else if (!$fromid) {
+        } elseif (!$fromid) {
             $sqlfilters[-3] = $maintabledot . "doctype != 'Z'";
         }
         
@@ -183,14 +195,18 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             $sqlfilters[-1] = $maintabledot . "locked != -1";
         }
         ksort($sqlfilters);
-        if (count($sqlfilters) > 0) $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
+        if (count($sqlfilters) > 0) {
+            $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
+        }
         $qsql = "select $selectfields " . "from $only $table  " . "where  " . $sqlcond;
     } else {
         //-------------------------------------------
         // in a specific folder
         //-------------------------------------------
         $fld = null;
-        if (!is_array($dirid)) $fld = new_Doc($dbaccess, $dirid);
+        if (!is_array($dirid)) {
+            $fld = new_Doc($dbaccess, $dirid);
+        }
         if ((is_array($dirid)) || ($fld && $fld->defDoctype != 'S')) {
             $hasFilters = false;
             if ($fld && method_exists($fld, "getSpecificFilters")) {
@@ -203,24 +219,34 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     $hasFilters = true;
                 }
             }
-            if (strpos(implode(",", $sqlfilters) , "archiveid") === false) $sqlfilters[-4] = $maintabledot . "archiveid is null";
+            if (strpos(implode(",", $sqlfilters), "archiveid") === false) {
+                $sqlfilters[-4] = $maintabledot . "archiveid is null";
+            }
             //if ($fld->getRawValue("se_trash")!="yes") $sqlfilters[-3] = "doctype != 'Z'";
             if ($trash == "only") {
                 $sqlfilters[-1] = "locked = -1";
                 if ($latest) {
                     $sqlfilters[] = $maintabledot . "lmodify = 'D'";
                 }
-            } elseif ($latest) $sqlfilters[-1] = "locked != -1";
+            } elseif ($latest) {
+                $sqlfilters[-1] = "locked != -1";
+            }
             ksort($sqlfilters);
-            if (count($sqlfilters) > 0) $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
+            if (count($sqlfilters) > 0) {
+                $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
+            }
             
             if (is_array($dirid)) {
                 $sqlfld = GetSqlCond($dirid, "dirid", true);
                 $qsql = "select $selectfields " . "from (select childid from fld where $sqlfld) as fld2 inner join $table on (initid=childid)  " . "where  $sqlcond ";
             } else {
                 $sqlfld = "dirid=$dirid and qtype='S'";
-                if ($fromid == 2) $sqlfld.= " and doctype='D'";
-                if ($fromid == 5) $sqlfld.= " and doctype='S'";
+                if ($fromid == 2) {
+                    $sqlfld.= " and doctype='D'";
+                }
+                if ($fromid == 5) {
+                    $sqlfld.= " and doctype='S'";
+                }
                 if ($hasFilters) {
                     $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
                     $qsql = "select $selectfields from $only $table where $sqlcond ";
@@ -252,7 +278,6 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     }
                 }
                 //$qsql= "select $selectfields "."from $table where $dirid = any(fldrels) and  "."  $sqlcond ";
-                
             }
         } else {
             //-------------------------------------------
@@ -272,41 +297,55 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                          * @var DocSearch $fld
                          */
                         $fld = new_Doc($dbaccess, $dirid);
-                        if ($trash) $fld->setValue("se_trash", $trash);
-                        else $trash = $fld->getRawValue("se_trash");
+                        if ($trash) {
+                            $fld->setValue("se_trash", $trash);
+                        } else {
+                            $trash = $fld->getRawValue("se_trash");
+                        }
                         $fld->folderRecursiveLevel = $folderRecursiveLevel;
                         $tsqlM = $fld->getQuery();
                         foreach ($tsqlM as $sqlM) {
                             if ($sqlM != false) {
                                 if (!preg_match("/doctype[ ]*=[ ]*'Z'/", $sqlM, $reg)) {
-                                    if (($trash != "also") && ($trash != "only")) $sqlfilters[-3] = "doctype != 'Z'"; // no zombie if no trash
+                                    if (($trash != "also") && ($trash != "only")) {
+                                        $sqlfilters[-3] = "doctype != 'Z'";
+                                    } // no zombie if no trash
                                     ksort($sqlfilters);
                                     foreach ($sqlfilters as $kf => $sf) { // suppress doubles
                                         if (strstr($sqlM, $sf)) {
                                             unset($sqlfilters[$kf]);
                                         }
                                     }
-                                    if (count($sqlfilters) > 0) $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
-                                    else $sqlcond = "";
+                                    if (count($sqlfilters) > 0) {
+                                        $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
+                                    } else {
+                                        $sqlcond = "";
+                                    }
                                 }
-                                if ($fromid > 0) $sqlM = str_replace("from doc ", "from $only $table ", $sqlM);
-                                if ($sqlcond) $qsql[] = $sqlM . " and " . $sqlcond;
-                                else $qsql[] = $sqlM;
+                                if ($fromid > 0) {
+                                    $sqlM = str_replace("from doc ", "from $only $table ", $sqlM);
+                                }
+                                if ($sqlcond) {
+                                    $qsql[] = $sqlM . " and " . $sqlcond;
+                                } else {
+                                    $qsql[] = $sqlM;
+                                }
                             }
                         }
                         break;
                     }
-                } else {
-                    return false; // no query avalaible
-                    
-                }
+            } else {
+                return false; // no query avalaible
             }
         }
-        if (is_array($qsql)) return $qsql;
-        return array(
+    }
+    if (is_array($qsql)) {
+        return $qsql;
+    }
+    return array(
             $qsql
         );
-    }
+}
     /**
      * get possibles errors before request of getChildDoc
      * @param string $dbaccess database specification
@@ -321,7 +360,6 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             //-------------------------------------------
             // search in all Db
             //-------------------------------------------
-            
         } else {
             //-------------------------------------------
             // in a specific folder
@@ -329,7 +367,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             $fld = null;
             if (!is_array($dirid)) {
                 $fld = new_Doc($dbaccess, $dirid);
-                if ($fld->getRawValue("se_phpfunc") != "") return $terr;
+                if ($fld->getRawValue("se_phpfunc") != "") {
+                    return $terr;
+                }
             }
             
             if ((is_array($dirid)) || ($fld->defDoctype != 'S')) {
@@ -357,15 +397,14 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                             $fld = new_Doc($dbaccess, $dirid);
                             $tsqlM = $fld->getQuery();
                             foreach ($tsqlM as $sqlM) {
-                                
-                                if ($sqlM == false) $terr[$dirid] = _("uncomplete request"); // uncomplete
-                                
+                                if ($sqlM == false) {
+                                    $terr[$dirid] = _("uncomplete request");
+                                } // uncomplete
                             }
                             break;
                         }
                 } else {
                     $terr[$dirid] = _("request not found"); // not found
-                    
                 }
             }
         }
@@ -394,7 +433,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      * @see SearchDoc
      * @return array/Doc
      */
-    function getChildDoc($dbaccess, $dirid, $start = "0", $slice = "ALL", $sqlfilters = array() , $userid = 1, $qtype = "LIST", $fromid = "", $distinct = false, $orderby = "title", $latest = true, $trash = "", &$debug = null, $folderRecursiveLevel = 2, $join = '', \SearchDoc & $searchDoc = null)
+    function getChildDoc($dbaccess, $dirid, $start = "0", $slice = "ALL", $sqlfilters = array(), $userid = 1, $qtype = "LIST", $fromid = "", $distinct = false, $orderby = "title", $latest = true, $trash = "", &$debug = null, $folderRecursiveLevel = 2, $join = '', \SearchDoc & $searchDoc = null)
     {
         deprecatedFunction();
         return internalGetDocCollection($dbaccess, $dirid, $start, $slice, $sqlfilters, $userid, $qtype, $fromid, $distinct, $orderby, $latest, $trash, $debug, $folderRecursiveLevel, $join, $searchDoc);
@@ -422,15 +461,19 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      * @see SearchDoc
      * @return array
      */
-    function internalGetDocCollection($dbaccess, $dirid, $start = "0", $slice = "ALL", $sqlfilters = array() , $userid = 1, $qtype = "LIST", $fromid = "", $distinct = false, $orderby = "title", $latest = true, $trash = "", &$debug = null, $folderRecursiveLevel = 2, $join = '', \SearchDoc & $searchDoc = null)
+    function internalGetDocCollection($dbaccess, $dirid, $start = "0", $slice = "ALL", $sqlfilters = array(), $userid = 1, $qtype = "LIST", $fromid = "", $distinct = false, $orderby = "title", $latest = true, $trash = "", &$debug = null, $folderRecursiveLevel = 2, $join = '', \SearchDoc & $searchDoc = null)
     {
         return _internalGetDocCollection(false, $dbaccess, $dirid, $start, $slice, $sqlfilters, $userid, $qtype, $fromid, $distinct, $orderby, $latest, $trash, $debug, $folderRecursiveLevel, $join, $searchDoc);
     }
-    function _internalGetDocCollection($returnSqlOnly = false, $dbaccess, $dirid, $start = "0", $slice = "ALL", $sqlfilters = array() , $userid = 1, $qtype = "LIST", $fromid = "", $distinct = false, $orderby = "title", $latest = true, $trash = "", &$debug = null, $folderRecursiveLevel = 2, $join = '', \SearchDoc & $searchDoc = null)
+    function _internalGetDocCollection($returnSqlOnly = false, $dbaccess, $dirid, $start = "0", $slice = "ALL", $sqlfilters = array(), $userid = 1, $qtype = "LIST", $fromid = "", $distinct = false, $orderby = "title", $latest = true, $trash = "", &$debug = null, $folderRecursiveLevel = 2, $join = '', \SearchDoc & $searchDoc = null)
     {
         // query to find child documents
-        if (($fromid != "") && (!is_numeric($fromid))) $fromid = \Dcp\Core\DocManager::getFamilyIdFromName($fromid);
-        if ($fromid == 0) $fromid = "";
+        if (($fromid != "") && (!is_numeric($fromid))) {
+            $fromid = \Dcp\Core\DocManager::getFamilyIdFromName($fromid);
+        }
+        if ($fromid == 0) {
+            $fromid = "";
+        }
         if (($fromid == "") && ($dirid != 0) && ($qtype == "TABLE")) {
             /**
              * @var DocCollection $fld
@@ -448,14 +491,16 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                 // try optimize containt of folder
                 if (!$fld->hasSpecificFilters()) {
                     $td = getFldDoc($dbaccess, $dirid, $sqlfilters);
-                    if (is_array($td)) return $td;
+                    if (is_array($td)) {
+                        return $td;
+                    }
                 }
             } else {
                 if ($fld->getRawValue("se_famid")) {
                     $fromid = $fld->getRawValue("se_famid");
-                    $fdoc = new_Doc($dbaccess, abs($fromid) , true);
+                    $fdoc = new_Doc($dbaccess, abs($fromid), true);
                     if (!is_object($fdoc) || !$fdoc->isAlive() || $fdoc->defDoctype != 'C') {
-                        throw new \Dcp\Exception(sprintf(_('Family [%s] not found') , abs($fromid)));
+                        throw new \Dcp\Exception(sprintf(_('Family [%s] not found'), abs($fromid)));
                     }
                     unset($fdoc);
                 }
@@ -464,14 +509,16 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             $fld = new_Doc($dbaccess, $dirid);
             if (($fld->defDoctype == 'S') && ($fld->getRawValue("se_famid"))) {
                 $fromid = $fld->getRawValue("se_famid");
-                $fdoc = new_Doc($dbaccess, abs($fromid) , true);
+                $fdoc = new_Doc($dbaccess, abs($fromid), true);
                 if (!is_object($fdoc) || !$fdoc->isAlive() || $fdoc->defDoctype != 'C') {
-                    throw new \Dcp\Exception(sprintf(_('Family [%s] not found') , abs($fromid)));
+                    throw new \Dcp\Exception(sprintf(_('Family [%s] not found'), abs($fromid)));
                 }
                 unset($fdoc);
             }
         }
-        if ($trash == "only") $distinct = true;
+        if ($trash == "only") {
+            $distinct = true;
+        }
         //   xdebug_var_dump(xdebug_get_function_stack());
         if ($searchDoc) {
             $tqsql = $searchDoc->getQueries();
@@ -482,7 +529,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         $tretdocs = array();
         if ($tqsql) {
             foreach ($tqsql as $k => & $qsql) {
-                if ($qsql == false) unset($tqsql[$k]);
+                if ($qsql == false) {
+                    unset($tqsql[$k]);
+                }
             }
             $isgroup = (count($tqsql) > 1);
             foreach ($tqsql as & $qsql) {
@@ -491,9 +540,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                         if (preg_match('/from\s+docread/', $qsql) || $isgroup) {
                             $fdoc = new DocRead($dbaccess);
                         } else {
-                            $fdoc = createDoc($dbaccess, abs($fromid) , false, false);
+                            $fdoc = createDoc($dbaccess, abs($fromid), false, false);
                             if ($fdoc === false) {
-                                throw new \Dcp\Exception(sprintf(_('Family [%s] not found') , abs($fromid)));
+                                throw new \Dcp\Exception(sprintf(_('Family [%s] not found'), abs($fromid)));
                             }
                         }
                     } else {
@@ -522,7 +571,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                             $if = 0;
                             if ($maintable) {
                                 foreach ($tsqlfields as $kf => $vf) {
-                                    if ($if++ > 0) $tsqlfields[$kf] = $maintable . '.' . $vf;
+                                    if ($if++ > 0) {
+                                        $tsqlfields[$kf] = $maintable . '.' . $vf;
+                                    }
                                 }
                             }
                         }
@@ -535,23 +586,32 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                         // no compute permission here, just test it
                         $qsql = str_replace("* from ", "$sqlfields  from ", $qsql);
                     } else {
-                        
                         $qsql = str_replace("* from ", "$sqlfields  from ", $qsql);
                     }
-                    if ((!$distinct) && strstr($qsql, "distinct")) $distinct = true;
-                    if ($start == "") $start = "0";
+                    if ((!$distinct) && strstr($qsql, "distinct")) {
+                        $distinct = true;
+                    }
+                    if ($start == "") {
+                        $start = "0";
+                    }
                     if ($distinct) {
                         if ($join || $maintable) {
                             $qsql.= " ORDER BY $maintable.initid, $maintable.id desc";
                         } else {
                             $qsql.= " ORDER BY initid, id desc";
                         }
-                        if (!$isgroup) $qsql.= " LIMIT $slice OFFSET $start";
+                        if (!$isgroup) {
+                            $qsql.= " LIMIT $slice OFFSET $start";
+                        }
                     } else {
-                        if (($fromid == "") && $orderby == "") $orderby = "title";
-                        elseif (substr($qsql, 0, 12) == "select doc.*") $orderby = "title";
-                        if ($orderby == "" && (!$isgroup)) $qsql.= "  LIMIT $slice OFFSET $start;";
-                        else {
+                        if (($fromid == "") && $orderby == "") {
+                            $orderby = "title";
+                        } elseif (substr($qsql, 0, 12) == "select doc.*") {
+                            $orderby = "title";
+                        }
+                        if ($orderby == "" && (!$isgroup)) {
+                            $qsql.= "  LIMIT $slice OFFSET $start;";
+                        } else {
                             if ($searchDoc) {
                                 $orderby = $searchDoc->orderby;
                             }
@@ -571,7 +631,6 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                         $qsql.= sprintf(" and (views && '%s')", searchDoc::getUserViewVector($userid));
                         // and get permission
                         //$qsql = str_replace("* from ", "* ,getuperm($userid,profid) as uperm from ", $qsql);
-                        
                     }
                     $qsql.= " ORDER BY $orderby LIMIT $slice OFFSET $start;";
                 }
@@ -594,8 +653,11 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     $query = new QueryDb($dbaccess, "Doc$fromid");
                 } else {
                     $usql = '(' . implode($tqsql, ") union (") . ')';
-                    if ($orderby) $usql.= " ORDER BY $orderby LIMIT $slice OFFSET $start;";
-                    else $usql.= " LIMIT $slice OFFSET $start;";
+                    if ($orderby) {
+                        $usql.= " ORDER BY $orderby LIMIT $slice OFFSET $start;";
+                    } else {
+                        $usql.= " LIMIT $slice OFFSET $start;";
+                    }
                     $query = new QueryDb($dbaccess, "Doc");
                 }
                 if ($returnSqlOnly) {
@@ -612,7 +674,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                 if ($query->nb > 0) {
                     if ($qtype == "ITEM") {
                         $tretdocs[] = $tableq;
-                    } else $tretdocs = array_merge($tretdocs, $tableq);
+                    } else {
+                        $tretdocs = array_merge($tretdocs, $tableq);
+                    }
                 }
                 // print "<HR><br><div style=\"border:red 1px inset;background-color:lightyellow;color:black\">".$query->LastQuery; print " - $qtype<B> [".$query->nb.']'.sprintf("%.03fs",microtime_diff(microtime(),$mb))."</B><b style='color:red'>".$query->basic_elem->msg_err."</b></div>";
                 if ($query->basic_elem->msg_err != "") {
@@ -622,13 +686,12 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                         "err" => $query->basic_elem->msg_err
                     ));
                     // print_r2(array_pop(debug_backtrace()));
-                    
                 }
                 if ($debug !== null) {
                     $debug["count"] = $query->nb;
                     $debug["query"] = $query->LastQuery;
                     $debug["error"] = $query->basic_elem->msg_err;
-                    $debug["delay"] = sprintf("%.03fs", microtime_diff(microtime() , $mb));
+                    $debug["delay"] = sprintf("%.03fs", microtime_diff(microtime(), $mb));
                     if (!empty($debug["log"])) {
                         addLogMsg($query->basic_elem->msg_err, 200);
                         addLogMsg($debug);
@@ -658,9 +721,8 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      * @param int $limit if -1 no limit
      * @param bool $reallylimit if false don't return false if limit is reached
      */
-    function getFldDoc($dbaccess, $dirid, $sqlfilters = array() , $limit = 100, $reallylimit = true)
+    function getFldDoc($dbaccess, $dirid, $sqlfilters = array(), $limit = 100, $reallylimit = true)
     {
-        
         if (is_array($dirid)) {
             $sqlfld = GetSqlCond($dirid, "dirid", true);
         } else {
@@ -676,7 +738,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         if ($limit > 0) {
             $tfld = $q->Query(0, $limit + 1, "TABLE");
             // use always this mode because is more quickly
-            if (($reallylimit) && ($q->nb > $limit)) return false;
+            if (($reallylimit) && ($q->nb > $limit)) {
+                return false;
+            }
         } else {
             $tfld = $q->Query(0, $limit + 1, "TABLE");
         }
@@ -684,9 +748,11 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         if ($q->nb > 0) {
             foreach ($tfld as $k => $v) {
                 $t[$v["childid"]] = getLatestTDoc($dbaccess, $v["childid"], $sqlfilters, ($v["doctype"] == "C") ? -1 : $v["fromid"]);
-                if ($t[$v["childid"]] == false) unset($t[$v["childid"]]);
-                elseif ($t[$v["childid"]]["archiveid"]) unset($t[$v["childid"]]);
-                else {
+                if ($t[$v["childid"]] == false) {
+                    unset($t[$v["childid"]]);
+                } elseif ($t[$v["childid"]]["archiveid"]) {
+                    unset($t[$v["childid"]]);
+                } else {
                     if ((getCurrentUser()->id != 1) && ($t[$v["childid"]]["uperm"] & (1 << POS_VIEW)) == 0) { // control view
                         unset($t[$v["childid"]]);
                     }
@@ -705,15 +771,14 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      * optimization for getChildDoc in case of grouped searches
      * not used
      */
-    function getMSearchDoc($dbaccess, $dirid, $start = "0", $slice = "ALL", $sqlfilters = array() , $userid = 1, $qtype = "LIST", $fromid = "", $distinct = false, $orderby = "title", $latest = true)
+    function getMSearchDoc($dbaccess, $dirid, $start = "0", $slice = "ALL", $sqlfilters = array(), $userid = 1, $qtype = "LIST", $fromid = "", $distinct = false, $orderby = "title", $latest = true)
     {
-        
         $sdoc = new_Doc($dbaccess, $dirid);
         
         $tidsearch = $sdoc->getMultipleRawValues("SEG_IDCOND");
         $tdoc = array();
         foreach ($tidsearch as $k => $v) {
-            $tdoc = array_merge(internalGetDocCollection($dbaccess, $v, $start, $slice, $sqlfilters, $userid, $qtype, $fromid, $distinct, $orderby, $latest) , $tdoc);
+            $tdoc = array_merge(internalGetDocCollection($dbaccess, $v, $start, $slice, $sqlfilters, $userid, $qtype, $fromid, $distinct, $orderby, $latest), $tdoc);
         }
         return $tdoc;
     }
@@ -735,12 +800,13 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      * @return array/Doc
      */
     function getKindDoc($dbaccess, $famname, $aid, $kid, $name = "", // filter on title
-    $sqlfilter = array() , $limit = 100, $qtype = "TABLE", $userid = 0)
+    $sqlfilter = array(), $limit = 100, $qtype = "TABLE", $userid = 0)
     {
-        
         global $action;
         
-        if ($userid == 0) $userid = $action->user->id;
+        if ($userid == 0) {
+            $userid = $action->user->id;
+        }
         
         $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famname);
         $fdoc = new_Doc($dbaccess, $famid);
@@ -751,7 +817,8 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
          */
         $a = $fdoc->getAttribute($aid);
         if ($a) {
-            $tkids = array();;
+            $tkids = array();
+            ;
             $enum = $a->getEnum();
             foreach ($enum as $k => $v) {
                 if (in_array($kid, explode(".", $k))) {
@@ -768,9 +835,11 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             }
         }
         
-        if ($name != "") $sqlfilter[] = "title ~* '$name'";
+        if ($name != "") {
+            $sqlfilter[] = "title ~* '$name'";
+        }
         
-        return internalGetDocCollection($dbaccess, 0, 0, $limit, $sqlfilter, $userid, "TABLE", \Dcp\Core\DocManager::getFamilyIdFromName($famname) , false, "title");
+        return internalGetDocCollection($dbaccess, 0, 0, $limit, $sqlfilter, $userid, "TABLE", \Dcp\Core\DocManager::getFamilyIdFromName($famname), false, "title");
     }
     function sqlval2array($sqlvalue)
     {
@@ -795,7 +864,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     {
         $tableid = array();
         
-        $tdir = internalGetDocCollection($dbaccess, $dirid, "0", "ALL", array() , $userid = 1, "TABLE", 2);
+        $tdir = internalGetDocCollection($dbaccess, $dirid, "0", "ALL", array(), $userid = 1, "TABLE", 2);
         
         foreach ($tdir as $k => $v) {
             $tableid[] = $v["id"];
@@ -816,7 +885,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      * @return array/int
      * @see getChildDir()
      */
-    function getRChildDirId($dbaccess, $dirid, $rchilds = array() , $level = 0, $levelmax = 2)
+    function getRChildDirId($dbaccess, $dirid, $rchilds = array(), $level = 0, $levelmax = 2)
     {
         global $action;
         
@@ -833,7 +902,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             foreach ($childs as $k => $v) {
                 if (!in_array($v, $rchilds)) {
                     $t = array_merge($rchilds, getRChildDirId($dbaccess, $v, $rchilds, $level + 1, $levelmax));
-                    if (is_array($t)) $rchilds = array_values(array_unique($t));
+                    if (is_array($t)) {
+                        $rchilds = array_values(array_unique($t));
+                    }
                 }
             }
         }
@@ -858,7 +929,6 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      */
     function hasChildFld($dbaccess, $dirid, $issearch = false)
     {
-        
         if ($issearch) {
             $query = new QueryDb($dbaccess, "QueryDir");
             $query->AddQuery("qtype='M'");
@@ -868,13 +938,16 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             if ($list) {
                 $oquery = $list[0]["query"];
                 if (preg_match("/select (.+) from (.+)/", $oquery, $reg)) {
-                    if (preg_match("/doctype( *)=/", $reg[2], $treg)) return false; // do not test if special doctype searches
+                    if (preg_match("/doctype( *)=/", $reg[2], $treg)) {
+                        return false;
+                    } // do not test if special doctype searches
                     $nq = sprintf("select count(%s) from %s and ((doctype='D')or(doctype='S')) limit 1", $reg[1], $reg[2]);
                     try {
                         $count = $query->Query(0, 0, "TABLE", $nq);
-                        if (($query->nb > 0) && (is_array($count)) && ($count[0]["count"] > 0)) return true;
-                    }
-                    catch(Exception $e) {
+                        if (($query->nb > 0) && (is_array($count)) && ($count[0]["count"] > 0)) {
+                            return true;
+                        }
+                    } catch (Exception $e) {
                         return false;
                     }
                 }
@@ -887,7 +960,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             $lq = $qfld->Query(0, 1, "TABLE");
             
             $qids = array();
-            if (!is_array($lq)) return false;
+            if (!is_array($lq)) {
+                return false;
+            }
             return ($qfld->nb > 0);
         }
         return false;
@@ -902,7 +977,6 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      */
     function GetClassesDoc($dbaccess, $userid, $classid = 0, $qtype = "LIST", $extraFilters = array())
     // --------------------------------------------------------------------
-    
     {
         $query = new QueryDb($dbaccess, "DocFam");
         
@@ -915,12 +989,14 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                 $use[] = $tcdoc["usefor"];
             }
             $query->AddQuery(GetSqlCond($use, "usefor"));
-        } else if ($classid > 0) {
+        } elseif ($classid > 0) {
             $cdoc = new DocFam($dbaccess, $classid);
             $query->AddQuery("usefor = '" . $cdoc->usefor . "'");
         }
         // if ($userid > 1) $query->AddQuery("hasviewprivilege(" . $userid . ",docfam.profid)");
-        if ($userid > 1) $query->AddQuery(sprintf("views && '%s'", searchDoc::getUserViewVector($userid)));
+        if ($userid > 1) {
+            $query->AddQuery(sprintf("views && '%s'", searchDoc::getUserViewVector($userid)));
+        }
         if (is_array($extraFilters) && count($extraFilters) > 0) {
             foreach ($extraFilters as $filter) {
                 $query->AddQuery($filter);
@@ -968,7 +1044,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     }
     function cmpfamtitle($a, $b)
     {
-        return strcasecmp(unaccent($a["title"]) , unaccent($b["title"]));
+        return strcasecmp(unaccent($a["title"]), unaccent($b["title"]));
     }
     /**
      * return array of possible profil for profile type
@@ -985,11 +1061,16 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         
         $doc = new_Doc($dbaccess, $docid);
         $chdoc = $doc->GetFromDoc();
-        if ($defProfFamId == "") $defProfFamId = $doc->defProfFamId;
+        if ($defProfFamId == "") {
+            $defProfFamId = $doc->defProfFamId;
+        }
         
         $cond = GetSqlCond($chdoc, "dpdoc_famid");
-        if ($cond != "") $filter[] = "dpdoc_famid is null or (" . GetSqlCond($chdoc, "dpdoc_famid") . ")";
-        else $filter[] = "dpdoc_famid is null";
+        if ($cond != "") {
+            $filter[] = "dpdoc_famid is null or (" . GetSqlCond($chdoc, "dpdoc_famid") . ")";
+        } else {
+            $filter[] = "dpdoc_famid is null";
+        }
         $filter[] = "fromid=" . $defProfFamId;
         $tcv = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, $action->user->id, "TABLE", $defProfFamId);
         
@@ -1005,14 +1086,13 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      */
     function getFamilyCreationIds($dbaccess, $uid, $tfid = array())
     {
-        
         $query = new QueryDb($dbaccess, "DocFam");
         if (count($tfid) > 0) {
             $query->AddQuery(GetSqlCond($tfid, "id"));
         }
         if ($uid != 1) {
             $perm = (2 << (POS_CREATE - 1)) + (2 << (POS_ICREATE - 1));
-            $query->AddQuery(sprintf("((profid = 0) OR hasaprivilege('%s', profid, %d))", DocPerm::getMemberOfVector($uid) , $perm));
+            $query->AddQuery(sprintf("((profid = 0) OR hasaprivilege('%s', profid, %d))", DocPerm::getMemberOfVector($uid), $perm));
         }
         $l = $query->Query(0, 0, "TABLE");
         
@@ -1033,7 +1113,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         $tdoc = array();
         foreach ($ids as $k => $id) {
             $tdoc1 = getTDoc($dbaccess, $id);
-            if ((($userid == 1) || controlTdoc($tdoc1, "view")) && ($tdoc1["doctype"] != 'Z')) $tdoc[$id] = $tdoc1;
+            if ((($userid == 1) || controlTdoc($tdoc1, "view")) && ($tdoc1["doctype"] != 'Z')) {
+                $tdoc[$id] = $tdoc1;
+            }
         }
         return $tdoc;
     }
@@ -1046,7 +1128,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         $tdoc = array();
         foreach ($ids as $k => $id) {
             $tdoc1 = getLatestTDoc($dbaccess, $id);
-            if (($tdoc1 !== false) && (($userid == 1) || controlTdoc($tdoc1, "view")) && ($tdoc1["doctype"] != 'Z')) $tdoc[$id] = $tdoc1;
+            if (($tdoc1 !== false) && (($userid == 1) || controlTdoc($tdoc1, "view")) && ($tdoc1["doctype"] != 'Z')) {
+                $tdoc[$id] = $tdoc1;
+            }
         }
         return $tdoc;
     }
@@ -1058,12 +1142,13 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      */
     function getVisibleDocsFromIds($dbaccess, $ids, $userid)
     {
-        
         $query = new QueryDb($dbaccess, "DocRead");
         $query->AddQuery("initid in (" . implode(",", $ids) . ')');
         $query->AddQuery("locked != -1");
         // if ($userid > 1) $query->AddQuery("hasviewprivilege(" . $userid . ",profid)");
-        if ($userid > 1) $query->AddQuery(sprintf("views && '%s'", searchDoc::getUserViewVector($userid)));
+        if ($userid > 1) {
+            $query->AddQuery(sprintf("views && '%s'", searchDoc::getUserViewVector($userid)));
+        }
         
         $tdoc = $query->Query(0, 0, "TABLE");
         
@@ -1078,9 +1163,13 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      */
     function familyNeedDocread($dbaccess, $id)
     {
-        if (!is_numeric($id)) $id = \Dcp\Core\DocManager::getFamilyIdFromName($id);
+        if (!is_numeric($id)) {
+            $id = \Dcp\Core\DocManager::getFamilyIdFromName($id);
+        }
         $id = abs(intval($id));
-        if ($id == 0) return false;
+        if ($id == 0) {
+            return false;
+        }
         $dbid = \Dcp\Core\DbManager::getDbId();
         $fromid = false;
         $result = pg_query($dbid, "select id from docfam where id=$id and usedocread=1");
@@ -1093,4 +1182,3 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         
         return false;
     }
-    

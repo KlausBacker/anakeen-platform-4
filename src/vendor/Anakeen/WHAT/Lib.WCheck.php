@@ -14,7 +14,7 @@
 /**
  */
 
-include_once ("WHAT/Lib.System.php");
+include_once("WHAT/Lib.System.php");
 //---------------------------------------------------
 function GetDbVersion($dbid, &$tmachine, $usePreviousVersion = false)
 {
@@ -52,18 +52,18 @@ function GetDbVersion($dbid, &$tmachine, $usePreviousVersion = false)
 //---------------------------------------------------
 function GetFileVersion($topdir)
 {
-    
     $tver = array();
     if ($dir = @opendir($topdir)) {
         while (($file = readdir($dir)) !== false) {
             $inifile = $topdir . "/$file/${file}_init.php";
             if (@is_file($inifile)) {
-                
                 $fini = fopen($inifile, "r");
                 while (!feof($fini)) {
                     $line = fgets($fini, 256);
                     if (preg_match("/VERSION.*=>[ \t]*\"[ \t]*([0-9\.\-]+)/", $line, $reg)) {
-                        if (isset($reg[1])) $tver[$file] = $reg[1];
+                        if (isset($reg[1])) {
+                            $tver[$file] = $reg[1];
+                        }
                     }
                 }
                 fclose($fini);
@@ -80,17 +80,18 @@ function GetFileVersion($topdir)
  */
 function getAppOrder($topdir)
 {
-    
     $tiorder = array();
     if ($dir = @opendir($topdir)) {
         while (($file = readdir($dir)) !== false) {
             $inifile = $topdir . "/$file/${file}.app";
             if (@is_file($inifile)) {
                 unset($app_desc);
-                include ($inifile);
+                include($inifile);
                 
                 if (isset($app_desc)) {
-                    if (isset($app_desc["iorder"])) $tiorder[$file] = $app_desc["iorder"];
+                    if (isset($app_desc["iorder"])) {
+                        $tiorder[$file] = $app_desc["iorder"];
+                    }
                 }
             }
         }
@@ -98,7 +99,7 @@ function getAppOrder($topdir)
     }
     return ($tiorder);
 }
-/** compare version like 1.2.3-4 
+/** compare version like 1.2.3-4
  * @param string $v1 version one
  * @param string $v2 version two
  * @return int 0 if equal -1 if ($v1<$v2) 1 if ($v2>$1)
@@ -119,7 +120,9 @@ function version2float($ver)
                 $matches[] = '0';
             }
         }
-        foreach ($matches as $k => $v) $sva.= sprintf("%02d", $v);
+        foreach ($matches as $k => $v) {
+            $sva.= sprintf("%02d", $v);
+        }
         return floatval($sva);
     }
     return 0;
@@ -163,7 +166,7 @@ function getCheckApp($pubdir, &$tapp, $usePreviousVersion = false)
         $tvfile = GetFileVersion("$pubdir");
         pg_close($dbid);
         
-        $ta = array_unique(array_merge(array_keys($tvdb) , array_keys($tvfile)));
+        $ta = array_unique(array_merge(array_keys($tvdb), array_keys($tvfile)));
         foreach ($ta as $k => $v) {
             if (!isset($tvfile[$v])) {
                 $tvfile[$v] = '';
@@ -171,14 +174,15 @@ function getCheckApp($pubdir, &$tapp, $usePreviousVersion = false)
             if (!isset($tvdb[$v])) {
                 $tvdb[$v] = '';
             }
-            if (($tmachine[$v] != "") && (gethostbyname($tmachine[$v]) != gethostbyname($_SERVER["HOSTNAME"]))) $chk[$v] = "?";
-            else if ($tvdb[$v] == $tvfile[$v]) {
+            if (($tmachine[$v] != "") && (gethostbyname($tmachine[$v]) != gethostbyname($_SERVER["HOSTNAME"]))) {
+                $chk[$v] = "?";
+            } elseif ($tvdb[$v] == $tvfile[$v]) {
                 $chk[$v] = "";
-            } else if ($tvdb[$v] == "") {
+            } elseif ($tvdb[$v] == "") {
                 $chk[$v] = "I";
-            } else if ($tvfile[$v] == "") {
+            } elseif ($tvfile[$v] == "") {
                 $chk[$v] = "D";
-            } else if (vercmp($tvdb[$v], $tvfile[$v]) == 1) {
+            } elseif (vercmp($tvdb[$v], $tvfile[$v]) == 1) {
                 $chk[$v] = "R";
             } else {
                 $chk[$v] = "U";
@@ -197,7 +201,6 @@ function getCheckApp($pubdir, &$tapp, $usePreviousVersion = false)
 
 function getCheckActions($pubdir, $tapp, &$tact, $usePreviousVersion = false)
 {
-    
     $wsh = array(); // application update
     $cmd = array(); // pre/post install
     $dump = array();
@@ -221,7 +224,9 @@ function getCheckActions($pubdir, $tapp, &$tact, $usePreviousVersion = false)
         if ($dir = @opendir("$pubdir/$k")) {
             while (($file = readdir($dir)) !== false) {
                 if (preg_match("/{$pattern}_(?:migr|premigr)_([0-9\.]+)$/", $file, $reg)) {
-                    if (($tvdb[$k] != "") && (vercmp($tvdb[$k], $reg[1]) < 0)) $migr[] = "$pubdir/$k/$file";
+                    if (($tvdb[$k] != "") && (vercmp($tvdb[$k], $reg[1]) < 0)) {
+                        $migr[] = "$pubdir/$k/$file";
+                    }
                 }
             }
         }
@@ -260,8 +265,11 @@ function getCheckActions($pubdir, $tapp, &$tact, $usePreviousVersion = false)
                 $cmd[] = "$pubdir/$k/{$k}_post  U";
             } else {
                 if (($v["chk"] != "R") && ($v["chk"] != "?")) {
-                    if ($v["chk"] == "D") $cmd[] = "#$pubdir/$k/{$k}_post " . $v["chk"];
-                    else $cmd[] = "$pubdir/$k/{$k}_post " . $v["chk"];
+                    if ($v["chk"] == "D") {
+                        $cmd[] = "#$pubdir/$k/{$k}_post " . $v["chk"];
+                    } else {
+                        $cmd[] = "$pubdir/$k/{$k}_post " . $v["chk"];
+                    }
                 }
             }
         }
@@ -270,8 +278,9 @@ function getCheckActions($pubdir, $tapp, &$tact, $usePreviousVersion = false)
         if ($dir = @opendir("$pubdir/$k")) {
             while (($file = readdir($dir)) !== false) {
                 if (preg_match("/{$pattern}_(?:pmigr|postmigr)_([0-9\.]+)$/", $file, $reg)) {
-                    
-                    if (($tvdb[$k] != "") && (vercmp($tvdb[$k], $reg[1]) < 0)) $migr[] = "$pubdir/$k/$file";
+                    if (($tvdb[$k] != "") && (vercmp($tvdb[$k], $reg[1]) < 0)) {
+                        $migr[] = "$pubdir/$k/$file";
+                    }
                 }
             }
         }
@@ -291,20 +300,30 @@ function getCheckActions($pubdir, $tapp, &$tact, $usePreviousVersion = false)
     $tact[] = "$pubdir/wstart";
     global $_SERVER;
     if (empty($_GET['httpdrestart']) || ($_GET['httpdrestart'] != 'no')) {
-        if (!empty($_SERVER['HTTP_HOST'])) $tact[] = "sudo $pubdir/admin/shttpd";
-        else $tact[] = "service httpd restart";
+        if (!empty($_SERVER['HTTP_HOST'])) {
+            $tact[] = "sudo $pubdir/admin/shttpd";
+        } else {
+            $tact[] = "service httpd restart";
+        }
     }
 }
 
 function cmpapp($a, $b)
 {
     if (isset($a["iorder"]) && isset($b["iorder"])) {
-        if ($a["iorder"] > $b["iorder"]) return 1;
-        else if ($a["iorder"] < $b["iorder"]) return -1;
+        if ($a["iorder"] > $b["iorder"]) {
+            return 1;
+        } elseif ($a["iorder"] < $b["iorder"]) {
+            return -1;
+        }
         return 0;
     }
-    if (isset($a["iorder"])) return -1;
-    if (isset($b["iorder"])) return 1;
+    if (isset($a["iorder"])) {
+        return -1;
+    }
+    if (isset($b["iorder"])) {
+        return 1;
+    }
     return 0;
 }
 

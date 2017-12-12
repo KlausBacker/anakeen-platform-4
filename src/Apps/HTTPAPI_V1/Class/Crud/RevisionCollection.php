@@ -10,7 +10,6 @@ use Dcp\HttpApi\V1\DocManager\DocManager;
 
 class RevisionCollection extends DocumentCollection
 {
-    
     protected $_document = null;
     protected $rootLevel = "documents";
     /**

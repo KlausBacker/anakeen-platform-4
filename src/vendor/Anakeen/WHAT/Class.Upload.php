@@ -73,27 +73,26 @@ Error codes:
 
 class uploader
 {
+    public $file;
+    public $errors;
+    public $accepted = "";
+    public $new_file = "";
+    public $max_filesize = 100000;
+    public $max_image_width = 1000;
+    public $max_image_height = 1000;
     
-    var $file;
-    var $errors;
-    var $accepted = "";
-    var $new_file = "";
-    var $max_filesize = 100000;
-    var $max_image_width = 1000;
-    var $max_image_height = 1000;
-    
-    function max_filesize($size)
+    public function max_filesize($size)
     {
         $this->max_filesize = $size;
     }
     
-    function max_image_size($width, $height)
+    public function max_image_size($width, $height)
     {
         $this->max_image_width = $width;
         $this->max_image_height = $height;
     }
     
-    function upload($filename, $accept_type, $extension)
+    public function upload($filename, $accept_type, $extension)
     {
         // get all the properties of the file
         $index = array(
@@ -112,17 +111,16 @@ class uploader
             //test max size
             if ($this->max_filesize && $this->file["size"] > $this->max_filesize) {
                 $this->errors[] = "Taille maximale dépassée:. Le fichier ne doit pas excéder " . $this->max_filesize / 1000 . "KB.";
-                return False;
+                return false;
             }
             if (preg_match("/image/", $this->file["type"])) {
-                
                 $image = getimagesize($this->file["file"]);
                 $this->file["width"] = $image[0];
                 $this->file["height"] = $image[1];
                 // test max image size
                 if (($this->max_image_width || $this->max_image_height) && (($this->file["width"] > $this->max_image_width) || ($this->file["height"] > $this->max_image_height))) {
                     $this->errors[] = "Les dimensions de l'image sont trop importantes. " . "L'image ne doit pas faire plus de : " . $this->max_image_width . " x " . $this->max_image_height . " pixels";
-                    return False;
+                    return false;
                 }
                 switch ($image[2]) {
                     case 1:
@@ -141,7 +139,7 @@ class uploader
                         $this->file["extension"] = $extension;
                         break;
                 }
-            } else if (!preg_match("/(\.)([a-z0-9]{3,5})$/", $this->file["name"]) && !$extension) {
+            } elseif (!preg_match("/(\.)([a-z0-9]{3,5})$/", $this->file["name"]) && !$extension) {
                 // add new mime types here
                 switch ($this->file["type"]) {
                     case "text/plain":
@@ -158,12 +156,12 @@ class uploader
             if ($accept_type) {
                 $pattern = preg_quote($accept_type, "/");
                 if (preg_match("/$pattern/", $this->file["type"])) {
-                    $this->accepted = True;
+                    $this->accepted = true;
                 } else {
                     $this->errors[] = "Seuls les fichiers de type " . preg_replace("/\|/", " or ", $accept_type) . " sont acceptés";
                 }
             } else {
-                $this->accepted = True;
+                $this->accepted = true;
             }
         } else {
             $this->errors[] = "Fichier introuvable...";
@@ -171,7 +169,7 @@ class uploader
         return $this->accepted;
     }
     
-    function save_file($path, $mode)
+    public function save_file($path, $mode)
     {
         global $NEW_NAME;
         
@@ -191,7 +189,9 @@ class uploader
                 $new_name = substr($new_name, 0, $pos);
             }
             $new_name = uniqid("") . "_" . $new_name;
-            if (!isset($this->file["extension"])) $this->file["extension"] = "";
+            if (!isset($this->file["extension"])) {
+                $this->file["extension"] = "";
+            }
             $this->new_file = $path . $new_name . $this->file["extension"];
             $NEW_NAME = $new_name . $this->file["extension"];
             
@@ -227,4 +227,3 @@ class uploader
         }
     }
 }
-?>

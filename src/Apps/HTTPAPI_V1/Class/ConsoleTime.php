@@ -14,12 +14,11 @@ namespace Dcp;
 
 class ConsoleTime
 {
-    
-    static protected $partial = array();
-    static protected $partialIndex = '';
-    static protected $records = array();
-    static protected $begin = array();
-    static protected $activated = false;
+    protected static $partial = array();
+    protected static $partialIndex = '';
+    protected static $records = array();
+    protected static $begin = array();
+    protected static $activated = false;
     
     public static function activate($active = true)
     {
@@ -57,10 +56,10 @@ class ConsoleTime
         }
 
         $record = & self::$records;
-            foreach (self::$partial as $aPartial) {
-                $record = & $record[$aPartial];
-            }
-            $record[$text] = array(
+        foreach (self::$partial as $aPartial) {
+            $record = & $record[$aPartial];
+        }
+        $record[$text] = array(
                 "__startPartial" => self::memory()
             );
 
@@ -90,14 +89,12 @@ class ConsoleTime
     
     protected static function getPartial($ptext, $pstats, &$out, &$prev)
     {
-        
         $prev = array_shift($pstats);
         $partialBegin = $prev;
         foreach ($pstats as $text => $stats) {
             if (isset($stats["__startPartial"])) {
                 self::getPartial($text, $stats, $out, $prev);
             } else {
-                
                 $out[$ptext . '/' . $text] = self::diff($stats, $prev);
                 $prev = $stats;
             }
@@ -110,7 +107,6 @@ class ConsoleTime
         $prev = self::$begin;
         $out = array();
         foreach (self::$records as $text => $stats) {
-            
             if (isset($stats["__startPartial"])) {
                 self::getPartial($text, $stats, $out, $prev);
             } else {

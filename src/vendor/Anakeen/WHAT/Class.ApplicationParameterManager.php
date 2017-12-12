@@ -59,8 +59,7 @@ class ApplicationParameterManager
             } else {
                 return null;
             }
-        }
-        catch(Dcp\ApplicationParameterManager\Exception $exception) {
+        } catch (Dcp\ApplicationParameterManager\Exception $exception) {
             return null;
         }
     }
@@ -103,8 +102,7 @@ class ApplicationParameterManager
             } else {
                 return null;
             }
-        }
-        catch(Dcp\ApplicationParameterManager\Exception $exception) {
+        } catch (Dcp\ApplicationParameterManager\Exception $exception) {
             return null;
         }
     }
@@ -147,7 +145,7 @@ class ApplicationParameterManager
             }
         }
         /* Test if user really exist*/
-        simpleQuery('', sprintf("select true from users where id=%d and accounttype='U'", $userId) , $uid, true, true, true);
+        simpleQuery('', sprintf("select true from users where id=%d and accounttype='U'", $userId), $uid, true, true, true);
         
         if ($uid === false) {
             throw new \Dcp\ApplicationParameterManager\Exception("APM0007", $applicationId, $parameterName, $userId);
@@ -192,12 +190,11 @@ class ApplicationParameterManager
         $applicationId = self::getApplicationId($application, $parameterName);
         
         $isGlobal = false;
-        $sql = sprintf("select type from paramv where (name='%s' and appid = %d);", pg_escape_string($parameterName) , $applicationId);
+        $sql = sprintf("select type from paramv where (name='%s' and appid = %d);", pg_escape_string($parameterName), $applicationId);
         simpleQuery('', $sql, $isGlobal, true, true, true);
         
         if ($isGlobal === false) {
-            
-            $sql = sprintf("select isglob from paramdef where (name='%s' and appid = %d);", pg_escape_string($parameterName) , $applicationId);
+            $sql = sprintf("select isglob from paramdef where (name='%s' and appid = %d);", pg_escape_string($parameterName), $applicationId);
             simpleQuery('', $sql, $isGlobal, true, true, true);
             if ($isGlobal === false) {
                 throw new \Dcp\ApplicationParameterManager\Exception("APM0011", $parameterName);
@@ -253,8 +250,7 @@ class ApplicationParameterManager
             }
             
             return $return;
-        }
-        catch(Dcp\ApplicationParameterManager\Exception $exception) {
+        } catch (Dcp\ApplicationParameterManager\Exception $exception) {
             return null;
         }
     }
@@ -273,7 +269,6 @@ class ApplicationParameterManager
      */
     public static function setParameterValue($application, $parameterName, $value)
     {
-        
         $applicationId = self::getApplicationId($application, $parameterName);
         
         $type = self::getParameter($applicationId, $parameterName);
@@ -323,7 +318,7 @@ class ApplicationParameterManager
                 WHERE
                 (paramdef.appid = app.id OR paramdef.appid = parent.id or paramdef.appid = 1)
                 and paramdef.name = '%s'
-                and app.id = %d;", pg_escape_string($parameterName) , $applicationId);
+                and app.id = %d;", pg_escape_string($parameterName), $applicationId);
         simpleQuery('', $sql, $result, false, true, true);
         if (empty($result)) {
             throw new \Dcp\ApplicationParameterManager\Exception("APM0008", $parameterName, $applicationId);

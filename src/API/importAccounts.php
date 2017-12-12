@@ -7,8 +7,7 @@
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("Import accounts definition");
-$filename = $usage->addRequiredParameter("file", "the input XML file", function ($values, $argName, ApiUsage $apiusage)
-{
+$filename = $usage->addRequiredParameter("file", "the input XML file", function ($values, $argName, ApiUsage $apiusage) {
     if ($values === ApiUsage::GET_USAGE) {
         return "";
     }
@@ -17,8 +16,7 @@ $filename = $usage->addRequiredParameter("file", "the input XML file", function 
     }
     return '';
 });
-$outfile = $usage->addOptionalParameter("report-file", "the output report file", function ($values, $argName, ApiUsage $apiusage)
-{
+$outfile = $usage->addOptionalParameter("report-file", "the output report file", function ($values, $argName, ApiUsage $apiusage) {
     if ($values === ApiUsage::GET_USAGE) {
         return "";
     }

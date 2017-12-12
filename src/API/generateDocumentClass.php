@@ -12,8 +12,8 @@
  */
 // refreah for a classname
 // use this only if you have changed title attributes
-include_once ("FDL/Lib.Attr.php");
-include_once ("FDL/Class.DocFam.php");
+include_once("FDL/Lib.Attr.php");
+include_once("FDL/Class.DocFam.php");
 
 
 
@@ -95,8 +95,7 @@ function updateDoc($dbaccess, $v)
         if ($err) {
             error_log($err);
         }
-    }
-    catch(\Dcp\Exception $e) {
+    } catch (\Dcp\Exception $e) {
         print $v["id"] . "[" . $v["title"] . "(" . $v["name"] . ")]\n";
         error_log($e->getMessage());
     }
@@ -104,9 +103,7 @@ function updateDoc($dbaccess, $v)
 // recursive sort by fromid
 function pushfam($fromid, &$tid, $tfam)
 {
-    
     foreach ($tfam as $k => $v) {
-        
         if ($v["fromid"] == $fromid) {
             $tid[$v["id"]] = $v;
             

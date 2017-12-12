@@ -63,9 +63,8 @@ class CheckProfil extends CheckData
      * @param array $data
      * @return CheckProfil
      */
-    function check(array $data, &$extra = null)
+    public function check(array $data, &$extra = null)
     {
-        
         if (!empty($data[2]) && !in_array($data[2], $this->availablesDefaultType)) {
             $this->prfName = $data[2];
             $this->docName = $data[1];
@@ -76,7 +75,9 @@ class CheckProfil extends CheckData
                 $this->acls[] = $data[$i];
             }
         }
-        if (isset($data[3])) $this->modifier = strtolower($data[3]);
+        if (isset($data[3])) {
+            $this->modifier = strtolower($data[3]);
+        }
         $this->checkUnknow();
         if (!$this->hasErrors()) {
             $this->checkModifier();
@@ -91,7 +92,7 @@ class CheckProfil extends CheckData
     {
         if ($this->prfName) {
             \Dcp\Core\DocManager::cache()->clear();
-            $this->profil = new_doc(getDbAccess() , $this->prfName);
+            $this->profil = new_doc(getDbAccess(), $this->prfName);
             if (!$this->profil->isAlive()) {
                 $this->addError(ErrorCode::getError('PRFL0002', $this->prfName));
             }
@@ -103,7 +104,7 @@ class CheckProfil extends CheckData
     private function checkIsACompatibleProfil()
     {
         if ($this->docName) {
-            $doc = new_doc(getDbAccess() , $this->docName);
+            $doc = new_doc(getDbAccess(), $this->docName);
             if (!$doc->isAlive()) {
                 $this->addError(ErrorCode::getError('PRFL0003', $this->docName));
             } else {
@@ -135,7 +136,6 @@ class CheckProfil extends CheckData
                         $aclId = $reg[1];
                         $userId = $reg[2];
                         if (!in_array($aclId, $profAcls)) {
-                            
                             $this->addError(ErrorCode::getError('PRFL0101', $aclId, $this->prfName, implode(',', $profAcls)));
                         }
                         $this->checkUsers(explode(',', $userId));
@@ -180,7 +180,7 @@ class CheckProfil extends CheckData
                 break;
 
             case ':useDocument':
-                $tu = getTDoc(getDbAccess() , $value);
+                $tu = getTDoc(getDbAccess(), $value);
                 if ($tu) {
                     $findUser = ($tu["us_whatid"] != '');
                 }
@@ -196,7 +196,7 @@ class CheckProfil extends CheckData
                     $findUser = Account::getDisplayName($reference);
                 } else {
                     // search document
-                    $tu = getTDoc(getDbAccess() , $reference);
+                    $tu = getTDoc(getDbAccess(), $reference);
                     if ($tu) {
                         $findUser = ($tu["us_whatid"] != '');
                     }
@@ -227,7 +227,7 @@ class CheckProfil extends CheckData
     {
         $login = mb_strtolower($login);
         if (!isset($this->userIds[$login])) {
-            simpleQuery("", sprintf("select login from users where login='%s'", pg_escape_string($login)) , $uid, true, true);
+            simpleQuery("", sprintf("select login from users where login='%s'", pg_escape_string($login)), $uid, true, true);
             $this->userIds[$uid] = $uid;
         }
         return $this->userIds[$login];
@@ -236,7 +236,7 @@ class CheckProfil extends CheckData
     {
         $dynName = $this->profil->getRawValue("dpdoc_famid");
         if (!$this->dynDoc) {
-            $this->dynDoc = new_doc(getDbAccess() , $dynName);
+            $this->dynDoc = new_doc(getDbAccess(), $dynName);
         }
         if (!$this->dynDoc->isAlive()) {
             $this->addError(ErrorCode::getError('PRFL0203', $dynName, $this->prfName));
@@ -250,10 +250,10 @@ class CheckProfil extends CheckData
                     $adocids[] = $naid;
                 }
             }
-            if (!in_array(strtolower($aid) , $aids)) {
+            if (!in_array(strtolower($aid), $aids)) {
                 $this->addError(ErrorCode::getError('PRFL0200', $aid, $this->prfName, implode(', ', $adocids)));
             } else {
-                if (!in_array(strtolower($aid) , $adocids)) {
+                if (!in_array(strtolower($aid), $adocids)) {
                     $this->addError(ErrorCode::getError('PRFL0201', $aid, $this->prfName, implode(', ', $adocids)));
                 }
             }

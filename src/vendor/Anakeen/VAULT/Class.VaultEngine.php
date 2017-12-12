@@ -13,7 +13,7 @@
 /**
  */
 
-include_once ("Class.DbObj.php");
+include_once("Class.DbObj.php");
 class VaultEngine extends DbObj
 {
     public $fields = array(
@@ -59,9 +59,8 @@ create table vaultengine ( name text not null,
                    comment text  );
 ";
     
-    function getNearEngine($engine, $mime)
+    public function getNearEngine($engine, $mime)
     {
-        
         if (!$this->isAffected()) {
             $mime = strtok($mime, ";");
             $eng = new VaultEngine($this->dbaccess, array(
@@ -88,8 +87,9 @@ create table vaultengine ( name text not null,
                 '*'
             ));
         }
-        if ($eng->isAffected()) return $eng;
+        if ($eng->isAffected()) {
+            return $eng;
+        }
         return false;
     }
 }
-?>

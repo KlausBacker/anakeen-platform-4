@@ -14,13 +14,12 @@
 // ---------------------------------------------------------------
 //
 // ---------------------------------------------------------------
-include_once ("Class.QueryDb.php");
+include_once("Class.QueryDb.php");
 
 define("VAULT_MAXENTRIESBYDIR", 1000);
 define("VAULT_MAXDIRBYDIR", 100);
 class VaultDiskDir extends DbObj
 {
-    
     public $fields = array(
         "id_dir",
         "id_fs",
@@ -57,7 +56,7 @@ SQL;
     public $size;
     protected $dirsToClose = [];
     // --------------------------------------------------------------------
-    function __construct($dbaccess, $id_dir = '', $def = '')
+    public function __construct($dbaccess, $id_dir = '', $def = '')
     {
         // --------------------------------------------------------------------
         $this->specific = $def;
@@ -78,7 +77,7 @@ SQL;
      *
      * @return string
      */
-    function nextdir($d, $max = VAULT_MAXDIRBYDIR)
+    public function nextdir($d, $max = VAULT_MAXDIRBYDIR)
     {
         $td = explode('/', $d);
         $dend = intval(end($td));
@@ -87,7 +86,8 @@ SQL;
         if ($dend < $max) {
             $td[$lastkey]++;
         } else {
-            $good = false;;
+            $good = false;
+            ;
             $key = $lastkey;
             while (($key >= 0) && (!$good)) {
                 $prev = intval(prev($td));
@@ -100,7 +100,9 @@ SQL;
                     }
                 }
             }
-            if (!$good) $td = array_fill(0, count($td) + 1, 1);
+            if (!$good) {
+                $td = array_fill(0, count($td) + 1, 1);
+            }
         }
         return implode('/', $td);
     }
@@ -110,7 +112,7 @@ SQL;
         $this->isfull = ($this->isfull === 't');
     }
     // --------------------------------------------------------------------
-    function SetFreeDir($fs)
+    public function SetFreeDir($fs)
     {
         // --------------------------------------------------------------------
         $query = new QueryDb($this->dbaccess, $this->dbtable);
@@ -121,7 +123,7 @@ SQL;
         );
         $query->order_by = "id_dir";
         // Lock directory : force each process to use its proper dir
-        $sql = sprintf("select * from %s where id_fs=%d and not isfull and pg_try_advisory_xact_lock(id_dir, %d) order by id_fs limit 1 for update;", pg_escape_identifier($this->dbtable) , $id_fs, unpack("i", "VLCK") [1]);
+        $sql = sprintf("select * from %s where id_fs=%d and not isfull and pg_try_advisory_xact_lock(id_dir, %d) order by id_fs limit 1 for update;", pg_escape_identifier($this->dbtable), $id_fs, unpack("i", "VLCK") [1]);
         
         $err = "";
         $dirs = $query->Query(0, 0, "TABLE", $sql);
@@ -205,22 +207,24 @@ SQL;
             }
         } else {
             error_log("Vault dirs full");
-            return sprintf(_("cannot extend vault: %s") , $err);
+            return sprintf(_("cannot extend vault: %s"), $err);
         }
         return $err;
     }
     // --------------------------------------------------------------------
-    function PreInsert()
+    public function PreInsert()
     {
         // --------------------------------------------------------------------
-        if ($this->Exists($this->l_path, $this->id_fs)) return (_("Directory already exists"));
+        if ($this->Exists($this->l_path, $this->id_fs)) {
+            return (_("Directory already exists"));
+        }
         $this->exec_query("select nextval ('" . $this->seq . "')");
         $arr = $this->fetch_array(0);
         $this->id_dir = $arr["nextval"];
         return '';
     }
     // --------------------------------------------------------------------
-    function Exists($path, $id_fs)
+    public function Exists($path, $id_fs)
     {
         // --------------------------------------------------------------------
         $query = new QueryDb($this->dbaccess, $this->dbtable);
@@ -232,7 +236,7 @@ SQL;
         return ($query->nb > 0);
     }
     // --------------------------------------------------------------------
-    function DelEntry()
+    public function DelEntry()
     {
         if ($this->isfull) {
             $this->isfull = false;

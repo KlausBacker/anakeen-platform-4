@@ -12,7 +12,7 @@
  */
 /**
  */
-include_once ("FDL/Class.Document.php");
+include_once("FDL/Class.Document.php");
 /**
  * Document selection Class
  *
@@ -21,34 +21,40 @@ class Fdl_DocumentSelection
 {
     private $mainSelector;
     private $selectionItems;
-    function __construct($config)
+    public function __construct($config)
     {
-        foreach ($config as $k => $v) $this->$k = $v;
+        foreach ($config as $k => $v) {
+            $this->$k = $v;
+        }
         $this->dbaccess = getDbAccess();
     }
     /**
      * return document identificators from selection
      * @return array
      */
-    function getIdentificators()
+    public function getIdentificators()
     {
         if (strtolower($this->mainSelector) != "all") {
             if (is_array($this->selectionItems)) {
                 return $this->selectionItems;
-            } else return array();
+            } else {
+                return array();
+            }
         } else {
             $cc = $this->getRawDocuments();
-            if (is_array($cc)) return array_keys($cc);
-            else return array();
+            if (is_array($cc)) {
+                return array_keys($cc);
+            } else {
+                return array();
+            }
         }
     }
     /**
      * return document data from selection
      * @return array
      */
-    function getRawDocuments()
+    public function getRawDocuments()
     {
-        
         if (strtolower($this->mainSelector) != "all") {
             if (is_array($this->selectionItems)) {
                 return getDocsFromIds($this->dbaccess, $this->selectionItems);
@@ -66,16 +72,23 @@ class Fdl_DocumentSelection
                 if ($this->filter) {
                     $err = $idoc->object2SqlFilter($this->filter, $famid, $sql);
                     if ($err == "") {
-                        if ($sql) $filter[] = $sql;
-                    } else return null;
+                        if ($sql) {
+                            $filter[] = $sql;
+                        }
+                    } else {
+                        return null;
+                    }
                 }
                 if (is_array($this->selectionItems)) {
                     $cc = $idoc->getContent(true, $filter, $famid);
                     foreach ($this->selectionItems as $eid) {
-                        if (isset($cc[$eid])) unset($cc[$eid]);
-                        else {
-                            $err = simpleQuery($this->dbaccess, sprintf("select initid from docread where id=%d", $eid) , $ids, true, true);
-                            if (isset($cc[$ids])) unset($cc[$ids]);
+                        if (isset($cc[$eid])) {
+                            unset($cc[$eid]);
+                        } else {
+                            $err = simpleQuery($this->dbaccess, sprintf("select initid from docread where id=%d", $eid), $ids, true, true);
+                            if (isset($cc[$ids])) {
+                                unset($cc[$ids]);
+                            }
                         }
                     }
                     return $cc;

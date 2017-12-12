@@ -103,7 +103,9 @@ namespace {
                     if (!isset($_FILES[$argName])) {
                         $err = sprintf("Argument doesn't support multiple value (values got are [%s])", implode(",", $argVal));
                     }
-                } else $err = sprintf("Value type %s isn't authorized for argument, must be a scalar", gettype($argVal));
+                } else {
+                    $err = sprintf("Value type %s isn't authorized for argument, must be a scalar", gettype($argVal));
+                }
             }
             return $err;
         }
@@ -382,7 +384,9 @@ namespace {
          */
         public function exitError($error = '')
         {
-            if ($error != '') $error.= "\n";
+            if ($error != '') {
+                $error.= "\n";
+            }
             $usage = $this->getUsage();
             
             if (!$this->useException) {
@@ -398,7 +402,6 @@ namespace {
                 if (!empty($_SERVER['HTTP_HOST'])) {
                     $this->action->exitError($error);
                 } else {
-                    
                     throw new \Dcp\ApiUsage\Exception("CORE0002", $error, $usage);
                 }
             } else {
@@ -483,11 +486,15 @@ namespace {
                     } else {
                         $error = \ApiUsage::isScalar($value, $arg["name"], $this);
                     }
-                    if ($error) $this->exitError(sprintf("Error checking argument \"%s\" : %s", $arg["name"], $error));
+                    if ($error) {
+                        $this->exitError(sprintf("Error checking argument \"%s\" : %s", $arg["name"], $error));
+                    }
                     
                     if (is_array($arg["restriction"]) && !empty($arg["restriction"]) && !$this->isCallable($arg["restriction"])) {
                         $error = $this->matchValues($value, $arg["restriction"]);
-                        if ($error) $this->exitError(sprintf("Error for argument '%s' : %s", $arg["name"], $error));
+                        if ($error) {
+                            $this->exitError(sprintf("Error for argument '%s' : %s", $arg["name"], $error));
+                        }
                     }
                 }
                 $argsKey[] = $arg["name"];
@@ -537,7 +544,9 @@ namespace Dcp\ApiUsage
         
         public function getUsage()
         {
-            if ($this->usage) return $this->usage;
+            if ($this->usage) {
+                return $this->usage;
+            }
             return null;
         }
     }

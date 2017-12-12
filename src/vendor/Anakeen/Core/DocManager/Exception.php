@@ -81,13 +81,14 @@ namespace {
          */
         private function _bo()
         {
-            if (true) return;
+            if (true) {
+                return;
+            }
         }
     }
 }
 namespace Dcp\Core\DocManager {
     class Exception extends \Dcp\Exception
     {
-
     }
 }

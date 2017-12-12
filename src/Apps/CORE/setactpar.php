@@ -41,7 +41,7 @@
 //
 //
 // ---------------------------------------------------------------
-include_once ("Class.Action.php");
+include_once("Class.Action.php");
 // -----------------------------------
 function setactpar(&$action)
 {

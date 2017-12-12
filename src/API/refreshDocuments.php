@@ -17,31 +17,36 @@
 global $action;
 // refreah for a classname
 // use this only if you have changed title attributes
-include_once ("FDL/Class.Doc.php");
-include_once ("FDL/Class.SearchDoc.php");
+include_once("FDL/Class.Doc.php");
+include_once("FDL/Class.SearchDoc.php");
 function color_failure($msg)
 {
-    if ($msg) $msg = chr(0x1b) . "[1;31m" . $msg . chr(0x1b) . "[0;39m";
+    if ($msg) {
+        $msg = chr(0x1b) . "[1;31m" . $msg . chr(0x1b) . "[0;39m";
+    }
     return $msg;
 }
 
 function color_success($msg)
 {
-    if ($msg) $msg = chr(0x1b) . "[1;32m" . $msg . chr(0x1b) . "[0;39m";
+    if ($msg) {
+        $msg = chr(0x1b) . "[1;32m" . $msg . chr(0x1b) . "[0;39m";
+    }
     return $msg;
 }
 
 function color_warning($msg)
 {
-    if ($msg) $msg = chr(0x1b) . "[1;33m" . $msg . chr(0x1b) . "[0;39m";
+    if ($msg) {
+        $msg = chr(0x1b) . "[1;33m" . $msg . chr(0x1b) . "[0;39m";
+    }
     return $msg;
 }
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("Refresh documents ");
 $famId = $usage->addRequiredParameter("famid", "the family identifier used to filter");
-$method = $usage->addOptionalParameter("method", "method to use", function ($value)
-{
+$method = $usage->addOptionalParameter("method", "method to use", function ($value) {
     if ($value === ApiUsage::GET_USAGE) {
         return '';
     }
@@ -52,25 +57,23 @@ $method = $usage->addOptionalParameter("method", "method to use", function ($val
         return sprintf("Invalid empty value for option --method=<methodName>");
     }
     return '';
-}
-, "refresh");
+}, "refresh");
 $arg = $usage->addOptionalParameter("arg", "optional method argument to set when calling method");
 $revision = $usage->addOptionalParameter("revision", "use all revision", array(
     "yes",
     "no"
-) , "no");
+), "no");
 $docid = $usage->addOptionalParameter("docid", "use only for this document id");
-$start = $usage->addOptionalParameter("start", "start from offset", array() , 0);
-$slice = $usage->addOptionalParameter("slice", "limit from offset", array() , "all");
+$start = $usage->addOptionalParameter("start", "start from offset", array(), 0);
+$slice = $usage->addOptionalParameter("slice", "limit from offset", array(), "all");
 $fldid = $usage->addOptionalParameter("fldid", "use collection id to limit search");
 $filter = $usage->addOptionalParameter("filter", "sql filter to limit search");
 $save = $usage->addOptionalParameter("save", "store mode", array(
     "complete",
     "light",
     "none"
-) , "light");
-$statusFile = $usage->addOptionalParameter("status-file", "refresh's status file or '-' for STDOUT", function ($value)
-{
+), "light");
+$statusFile = $usage->addOptionalParameter("status-file", "refresh's status file or '-' for STDOUT", function ($value) {
     if ($value === ApiUsage::GET_USAGE) {
         return '';
     }
@@ -127,10 +130,12 @@ if ($docid != '') {
 if ($fldid != '') {
     $s->useCollection($fldid);
 }
-if ($allrev) $s->latest = false;
+if ($allrev) {
+    $s->latest = false;
+}
 if ($filter) {
     // verify validity and prevent hack
-    if (@pg_prepare(\Dcp\Core\DbManager::getDbId() , 'refreshDocument', sprintf("select id from doc%d where %s", $s->fromid, $filter)) == false) {
+    if (@pg_prepare(\Dcp\Core\DbManager::getDbId(), 'refreshDocument', sprintf("select id from doc%d where %s", $s->fromid, $filter)) == false) {
         $action->exitError(sprintf("filter not valid :%s", pg_last_error()));
     } else {
         $s->addFilter($filter);
@@ -142,7 +147,9 @@ if ($s->searchError()) {
     $action->exitError(sprintf("search error : %s", $s->getError()));
 }
 $targ = array();
-if ($arg != "") $targ[] = $arg;
+if ($arg != "") {
+    $targ[] = $arg;
+}
 $card = $s->count();
 printf("\n%d %s to update with %s\n", $card, $famtitle, $method);
 
@@ -169,7 +176,7 @@ while ($doc = $s->getNextDoc()) {
         $ret = call_user_func_array(array(
             $doc,
             $method
-        ) , $targ);
+        ), $targ);
         if ($doc->isChanged()) {
             $olds = $doc->getOldRawValues();
             foreach ($olds as $k => $v) {
@@ -187,8 +194,7 @@ while ($doc = $s->getNextDoc()) {
                     break;
             }
         }
-    }
-    catch(\Exception $e) {
+    } catch (\Exception $e) {
         $err.= $e->getMessage();
     }
     $memory = '';
@@ -201,15 +207,16 @@ while ($doc = $s->getNextDoc()) {
         printf("%s)%s[%d] %s %s %s\n", $card, $doc->title, $doc->id, ($modified) ? '-M-' : '', $memory, color_success($ret));
         $countSuccess++;
     }
-    if ($smod) print $smod;
+    if ($smod) {
+        print $smod;
+    }
     if ($err != '' && $stopOnError) {
         break;
     }
     $card--;
 }
 
-$writeStatus = function ($statusFile, $status)
-{
+$writeStatus = function ($statusFile, $status) {
     $err = '';
     $fh = STDOUT;
     if ($statusFile !== '-') {

@@ -12,7 +12,7 @@
  */
 /**
  */
-include_once ("FDL/Class.WDoc.php");
+include_once("FDL/Class.WDoc.php");
 
 define("wprocess_private", "wprocess_private"); # N_("wprocess_private")
 define("wprocess_public", "wprocess_public"); # N_("wprocess_qualified")
@@ -25,16 +25,15 @@ define("Twprocess_public", "Twprocess_public"); # N_("Twprocess_public")
  */
 class WProcess extends WDoc
 {
+    public $attrPrefix = "PROWF"; // prefix attribute
+    public $firstState = wprocess_private;
     
-    var $attrPrefix = "PROWF"; // prefix attribute
-    var $firstState = wprocess_private;
-    
-    var $transitions = array(
+    public $transitions = array(
         "Twprocess_private",
         "Twprocess_public"
     );
     
-    var $cycle = array(
+    public $cycle = array(
         array(
             "e1" => wprocess_private,
             "e2" => wprocess_public,
@@ -48,4 +47,3 @@ class WProcess extends WDoc
         )
     );
 }
-?>

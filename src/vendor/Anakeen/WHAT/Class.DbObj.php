@@ -15,8 +15,8 @@
 /**
  */
 
-include_once ('Class.Log.php');
-include_once ('Lib.Common.php');
+include_once('Class.Log.php');
+include_once('Lib.Common.php');
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -30,51 +30,51 @@ class DbObj
      * the database connection resource
      * @var resource
      */
-    var $dbid = - 1;
+    public $dbid = - 1;
     /**
      * coordinates to access to database
      * @var string
      */
-    var $dbaccess = '';
+    public $dbaccess = '';
     /**
      * array of SQL fields use for the object
      * @var array
      */
-    var $fields = array(
+    public $fields = array(
         '*'
     );
     /**
      * name of the SQL table
      * @var string
      */
-    var $dbtable = '';
+    public $dbtable = '';
     
     public $id_fields;
     
-    var $criterias = array();
+    public $criterias = array();
     /**
      * array of other SQL fields, not in attribute of object
      * @var array
      */
-    var $sup_fields = array();
-    var $sup_where = array();
-    var $sup_tables = array();
-    var $fulltextfields = array();
+    public $sup_fields = array();
+    public $sup_where = array();
+    public $sup_tables = array();
+    public $fulltextfields = array();
     /**
      * sql field to order
      * @var string
      */
-    var $order_by = "";
+    public $order_by = "";
     /**
      * indicates if fields has been affected
      * @var string
      * @see Affect()
      */
-    var $isset = false; // indicate if fields has been affected (call affect methods)
-    static $savepoint = array();
-    static $lockpoint = array();
-    static private $masterLock = false;
-    static $sqlStrict = null;
+    public $isset = false; // indicate if fields has been affected (call affect methods)
+    public static $savepoint = array();
+    public static $lockpoint = array();
+    private static $masterLock = false;
+    public static $sqlStrict = null;
     /**
      * @var string error message
      */
@@ -109,9 +109,11 @@ class DbObj
      * @param resource $dbid the database connection resource
      * @return bool false if error occured
      */
-    function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
+    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
-        if (!$dbaccess) $dbaccess = \Dcp\Core\DbManager::getDbAccess();
+        if (!$dbaccess) {
+            $dbaccess = \Dcp\Core\DbManager::getDbAccess();
+        }
         $this->dbaccess = $dbaccess;
         $this->init_dbid();
         //global ${$this->oname};
@@ -149,7 +151,7 @@ class DbObj
             $this->Affect($res);
         }
         
-        return TRUE;
+        return true;
     }
     /**
      * Select object from its fields
@@ -157,13 +159,19 @@ class DbObj
      * @param int|array $id
      * @return bool|string
      */
-    function Select($id)
+    public function Select($id)
     {
-        if (!$id) return false;
-        if ($this->dbid == - 1) return FALSE;
+        if (!$id) {
+            return false;
+        }
+        if ($this->dbid == - 1) {
+            return false;
+        }
         
         $msg = $this->PreSelect($id);
-        if ($msg != '') return $msg;
+        if ($msg != '') {
+            return $msg;
+        }
         
         if ($this->dbtable == '') {
             return ("error : No Tables");
@@ -189,11 +197,9 @@ class DbObj
                 $wherestr = $wherestr . "( " . $this->dbtable . "." . $v . "=E'" . pg_escape_string($id[$k]) . "' )";
                 $count = $count + 1;
                 //$this->$v = $id[$k];
-                
             }
         } else {
             if (isset($this->id_fields[0])) {
-
                 $wherestr = "where " . $this->dbtable . "." . $this->id_fields[0] . "=E'" . pg_escape_string($id) . "'";
             } else {
                 $wherestr = "";
@@ -216,17 +222,19 @@ class DbObj
             $res = $this->fetch_array(0);
             $this->Affect($res);
         } else {
-            return FALSE;
+            return false;
         }
         $msg = $this->PostSelect($id);
-        if ($msg != '') return $msg;
-        return TRUE;
+        if ($msg != '') {
+            return $msg;
+        }
+        return true;
     }
     /**
      * get all values in indexed array
      * @return array
      */
-    function getValues()
+    public function getValues()
     {
         $r = array();
         foreach ($this->fields as $k => $v) {
@@ -240,12 +248,18 @@ class DbObj
      * @param array $fields sql field to affect
      * @return bool true if OK false else
      */
-    function affectColumn($fields, $reset = true)
+    public function affectColumn($fields, $reset = true)
     {
-        if ($this->dbid == - 1) return FALSE;
+        if ($this->dbid == - 1) {
+            return false;
+        }
         
-        if (!$this->isAffected()) return false;
-        if (count($fields) == 0) return true;
+        if (!$this->isAffected()) {
+            return false;
+        }
+        if (count($fields) == 0) {
+            return true;
+        }
         if ($this->dbtable == '') {
             return ("error : No Tables");
         }
@@ -265,15 +279,15 @@ class DbObj
             $res = $this->fetch_array(0);
             $this->affect($res, false, $reset);
         } else {
-            return FALSE;
+            return false;
         }
-        return TRUE;
+        return true;
     }
     /**
      * affect object with a set of values
      * @param array $array indexed array of values , index if the column attribute
      */
-    function affect($array, $more = false, $reset = true)
+    public function affect($array, $more = false, $reset = true)
     {
         foreach ($array as $k => $v) {
             if (!is_integer($k)) {
@@ -291,19 +305,18 @@ class DbObj
      * @see affect
      * @return bool
      */
-    function isAffected()
+    public function isAffected()
     {
         return $this->isset;
     }
     /**
      * @see affect
      */
-    function Complete()
+    public function Complete()
     {
         // This function should be replaced by the Child Class
-        
     }
-    /** 
+    /**
      * Method use before Add method
      * This method should be replaced by the Child Class
      * if return error message, modify is aborded
@@ -315,7 +328,7 @@ class DbObj
         // This function should be replaced by the Child Class
         return '';
     }
-    /** 
+    /**
      * Method use after Add method
      * This method should be replaced by the Child Class
      *
@@ -328,7 +341,7 @@ class DbObj
         // This function should be replaced by the Child Class
         return '';
     }
-    /** 
+    /**
      * Method use before Modify method
      * This method should be replaced by the Child Class
      * if return error message, modify is aborded
@@ -341,7 +354,7 @@ class DbObj
         // This function should be replaced by the Child Class
         return '';
     }
-    /** 
+    /**
      * Method use after Modify method
      * This method should be replaced by the Child Class
      *
@@ -353,7 +366,6 @@ class DbObj
     {
         return '';
         // This function should be replaced by the Child Class
-        
     }
     /**
      * if return error message, deletion is aborded
@@ -364,7 +376,6 @@ class DbObj
     {
         return '';
         // This function should be replaced by the Child Class
-        
     }
     /**
      * Method use after delete method
@@ -375,7 +386,6 @@ class DbObj
     {
         return '';
         // This function should be replaced by the Child Class
-        
     }
     /**
      * Method use before select method
@@ -398,7 +408,6 @@ class DbObj
     {
         return '';
         // This function should be replaced by the Child Class
-        
     }
     /**
      * Add the object to the database
@@ -408,12 +417,18 @@ class DbObj
      * @see PreInsert()
      * @see PostInsert()
      */
-    function Add($nopost = false, $nopre = false)
+    public function Add($nopost = false, $nopre = false)
     {
-        if ($this->dbid == - 1) return FALSE;
+        if ($this->dbid == - 1) {
+            return false;
+        }
         $msg = '';
-        if (!$nopre) $msg = $this->PreInsert();
-        if ($msg != '') return $msg;
+        if (!$nopre) {
+            $msg = $this->PreInsert();
+        }
+        if ($msg != '') {
+            return $msg;
+        }
         
         $sfields = implode(",", $this->fields);
         $sql = "insert into " . $this->dbtable . "($sfields) values (";
@@ -432,10 +447,12 @@ class DbObj
             return $msg_err;
         }
         $this->isset = true;
-        if (!$nopost) $msg = $this->PostInsert();
+        if (!$nopost) {
+            $msg = $this->PostInsert();
+        }
         return $msg;
     }
-    /** 
+    /**
      * Save the object to the database
      * @param bool $nopost PostUpdate() and method not apply if true
      * @param string $sfields only this column will ne updated if empty all fields
@@ -447,17 +464,26 @@ class DbObj
     public function modify($nopost = false, $sfields = "", $nopre = false)
     {
         $msg = '';
-        if ($this->dbid == - 1) return FALSE;
-        if (!$nopre) $msg = $this->PreUpdate();
-        if ($msg != '') return $msg;
+        if ($this->dbid == - 1) {
+            return false;
+        }
+        if (!$nopre) {
+            $msg = $this->PreUpdate();
+        }
+        if ($msg != '') {
+            return $msg;
+        }
         $sql = "update " . $this->dbtable . " set ";
         
         $nb_keys = 0;
         
-        if (!is_array($sfields)) $fields = $this->fields;
-        else {
+        if (!is_array($sfields)) {
+            $fields = $this->fields;
+        } else {
             $fields = $sfields;
-            foreach ($this->id_fields as $k => $v) $fields[] = $v;
+            foreach ($this->id_fields as $k => $v) {
+                $fields[] = $v;
+            }
         }
         
         $wstr = "";
@@ -487,7 +513,9 @@ class DbObj
             return $msg_err;
         }
         
-        if (!$nopost) $msg = $this->PostUpdate();
+        if (!$nopost) {
+            $msg = $this->PostUpdate();
+        }
         
         return $msg;
     }
@@ -499,7 +527,9 @@ class DbObj
     public function delete($nopost = false)
     {
         $msg = $this->PreDelete();
-        if ($msg != '') return $msg;
+        if ($msg != '') {
+            return $msg;
+        }
         $wherestr = "";
         $count = 0;
         
@@ -520,10 +550,12 @@ class DbObj
             return $msg_err;
         }
         
-        if (!$nopost) $msg = $this->PostDelete();
+        if (!$nopost) {
+            $msg = $this->PostDelete();
+        }
         return $msg;
     }
-    /** 
+    /**
      * Add several objects to the database
      * no post neither preInsert are called
      * @param bool $nopost PostInsert method not apply if true
@@ -531,10 +563,14 @@ class DbObj
      * @see PreInsert()
      * @see PostInsert()
      */
-    function Adds(&$tcopy, $nopost = false)
+    public function Adds(&$tcopy, $nopost = false)
     {
-        if ($this->dbid == - 1) return FALSE;
-        if (!is_array($tcopy)) return FALSE;
+        if ($this->dbid == - 1) {
+            return false;
+        }
+        if (!is_array($tcopy)) {
+            return false;
+        }
         $msg = '';
         
         $trow = array();
@@ -543,30 +579,33 @@ class DbObj
             foreach ($this->fields as $k => $v) {
                 $trow[$kc].= "" . ((isset($vc[$v])) ? $vc[$v] : ((($this->$v) != '') ? $this->$v : '\N')) . "\t";
                 //$trow[$kc][$k] .= ((isset($vc[$v]))?$vc[$v]:$this->$v);
-                
             }
             $trow[$kc] = substr($trow[$kc], 0, -1);
         }
         // query execution
         $berr = pg_copy_from($this->dbid, $this->dbtable, $trow, "\t");
         
-        if (!$berr) return sprintf(_("DbObj::Adds error in multiple insertion"));
+        if (!$berr) {
+            return sprintf(_("DbObj::Adds error in multiple insertion"));
+        }
         
-        if (!$nopost) $msg = $this->PostInsert();
+        if (!$nopost) {
+            $msg = $this->PostInsert();
+        }
         return $msg;
     }
-    function lw($prop)
+    public function lw($prop)
     {
         $result = (($prop == '') && ($prop !== 0)) ? "null" : "E'" . pg_escape_string($prop) . "'";
         return $result;
     }
-    function CloseConnect()
+    public function CloseConnect()
     {
         pg_close("$this->dbid");
-        return TRUE;
+        return true;
     }
     
-    function Create($nopost = false)
+    public function Create($nopost = false)
     {
         $msg = "";
         if (isset($this->sqlcreate)) {
@@ -591,7 +630,9 @@ class DbObj
             $this->log->info("DbObj::Create $msg");
             return $msg;
         }
-        if (!$nopost) $this->PostInit();
+        if (!$nopost) {
+            $this->PostInit();
+        }
         return ($msg);
     }
     
@@ -599,21 +640,21 @@ class DbObj
     {
     }
     
-    function init_dbid()
+    public function init_dbid()
     {
-        
         if ($this->dbaccess == "") {
             // don't test if file exist or must be searched in include_path
             $this->dbaccess = \Dcp\Core\DbManager::getDbAccess();
         }
         $this->dbid = Dcp\Core\DbManager::getDbid();
-        if ($this->dbid == 0) error_log(__METHOD__ . "null dbid");
+        if ($this->dbid == 0) {
+            error_log(__METHOD__ . "null dbid");
+        }
         return $this->dbid;
     }
     
     protected function tryCreate()
     {
-        
         $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
         
         $action_needed = "";
@@ -642,7 +683,6 @@ class DbObj
             // error_log(__METHOD__ . sprintf('[%s]%s {%s} - %s', $this->msg_err, $this->err_code, $action_needed, $this->dbtable));
             //print_r2(getDebugStack());print $sql;
             //trigger_error('<pre>'.$this->msg_err."\n".$sql.'</pre>');
-            
         }
         
         $originError = $this->msg_err;
@@ -652,7 +692,6 @@ class DbObj
                 if ($st == "") {
                     return true;
                 } else {
-                    
                     $err = ErrorCode::getError('DB0003', $this->dbtable, $st);
                     $this->msg_err = $originError . "\n" . $err;
                 }
@@ -666,7 +705,7 @@ class DbObj
                 if ($st == "") {
                     return true;
                 } else {
-                    
+
                     $err = ErrorCode::getError('DB0004', $this->dbtable, $st);
                     $this->msg_err = $originError . "\n" . $err;
                 }
@@ -691,13 +730,17 @@ class DbObj
      * @throw Dcp\Db\Exception if query fail
      * @return string error message if not strict mode
      */
-    function exec_query($sql, $lvl = 0, $prepare = false)
+    public function exec_query($sql, $lvl = 0, $prepare = false)
     {
         global $SQLDELAY, $SQLDEBUG;
         
-        if ($sql == "") return '';
+        if ($sql == "") {
+            return '';
+        }
         $sqlt1 = '';
-        if ($SQLDEBUG) $sqlt1 = microtime(); // to test delay of request
+        if ($SQLDEBUG) {
+            $sqlt1 = microtime();
+        } // to test delay of request
         $this->init_dbid();
         $this->log->debug("exec_query : $sql");
         $this->msg_err = $this->err_code = '';
@@ -716,7 +759,6 @@ class DbObj
             
             if ($this->msg_err == "") {
                 if (pg_send_execute($this->dbid, '', array()) === false) {
-                    
                     $this->msg_err = ErrorCode::getError('DB0007', pg_last_error($this->dbid));
                     $this->setError($sql);
                     
@@ -752,8 +794,7 @@ class DbObj
                     // redo the query if create table is done
                     $this->msg_err = $this->exec_query($sql, 1, $prepare);
                 }
-            }
-            catch(Exception $e) {
+            } catch (Exception $e) {
                 $this->msg_err = $orierr;
             }
         }
@@ -767,16 +808,16 @@ class DbObj
         
         if ($SQLDEBUG) {
             global $TSQLDELAY;
-            $SQLDELAY+= microtime_diff(microtime() , $sqlt1); // to test delay of request
+            $SQLDELAY+= microtime_diff(microtime(), $sqlt1); // to test delay of request
             $TSQLDELAY[] = array(
-                "t" => sprintf("%.04f", microtime_diff(microtime() , $sqlt1)) ,
+                "t" => sprintf("%.04f", microtime_diff(microtime(), $sqlt1)) ,
                 "s" => str_replace(array(
                     "from",
                     'where'
-                ) , array(
+                ), array(
                     "\nfrom",
                     "\nwhere"
-                ) , $sql) ,
+                ), $sql) ,
                 "st" => getDebugStack(1)
             );
         }
@@ -799,7 +840,6 @@ class DbObj
     
     public function fetch_array($c, $type = PGSQL_ASSOC)
     {
-        
         return (pg_fetch_array($this->res, $c, $type));
     }
     
@@ -812,7 +852,9 @@ class DbObj
     
     public function setError($moreerr = '')
     {
-        if ($moreerr == '') $err = $this->msg_err;
+        if ($moreerr == '') {
+            $err = $this->msg_err;
+        }
         $err = $this->msg_err . "\n" . $moreerr . "\n";
         
         logDebugStack(2);
@@ -828,7 +870,7 @@ class DbObj
     public function autoUpdate()
     {
         print $this->msg_err;
-        print (" - need update table " . $this->dbtable);
+        print(" - need update table " . $this->dbtable);
         $this->log->error("need Update table " . $this->dbtable);
         
         $this->log->info("Update table " . $this->dbtable);
@@ -840,19 +882,22 @@ class DbObj
         $err = $objupdate->exec_query("COPY " . $this->dbtable . "  TO '" . $dumpfile . "'");
         $this->log->info("Dump table " . $this->dbtable . " in " . $dumpfile);
         
-        if ($err != "") return ($err);
+        if ($err != "") {
+            return ($err);
+        }
         // ------------------------------
         // second : rename table to save data
         //$err = $objupdate-> exec_query("CREATE  TABLE ".$this->dbtable."_old ( ) INHERITS (".$this->dbtable.")",1);
         //$err = $objupdate-> exec_query("COPY ".$this->dbtable."_old FROM '".$dumpfile."'",				1 );
         $err = $objupdate->exec_query("ALTER TABLE " . $this->dbtable . " RENAME TO " . $this->dbtable . "_old", 1);
         
-        if ($err != "") return ($err);
+        if ($err != "") {
+            return ($err);
+        }
         // remove index : will be recreated in the following step (create)
         $err = $this->exec_query("select indexname from pg_indexes where tablename='" . $this->dbtable . "_old'", 1);
         $nbidx = $this->numrows();
         for ($c = 0; $c < $nbidx; $c++) {
-            
             $row = $this->fetch_array($c, PGSQL_ASSOC);
             $err = $objupdate->exec_query("DROP INDEX " . $row["indexname"], 1);
         }
@@ -866,12 +911,11 @@ class DbObj
         $this->exec_query("SELECT * FROM " . $this->dbtable . "_old");
         $nbold = $this->numrows();
         for ($c = 0; $c < $nbold; $c++) {
-            
             $row = $this->fetch_array($c, PGSQL_ASSOC);
             
             if ($first) {
                 // compute compatible fields
-                $inter_fields = array_intersect(array_keys($row) , $this->fields);
+                $inter_fields = array_intersect(array_keys($row), $this->fields);
                 reset($this->fields);
                 $fields = "(";
                 foreach ($inter_fields as $k => $v) {
@@ -892,7 +936,9 @@ class DbObj
             // copy compatible values
             $sqlInsert = sprintf("INSERT INTO %s %s VALUES ", $this->dbtable, $fields, $values);
             $err = $objupdate->exec_query($sqlInsert, 1);
-            if ($err != "") return ($err);
+            if ($err != "") {
+                return ($err);
+            }
         }
         // ---------------------------------------------------
         // 5th :delete old table (has been saved before - dump file)
@@ -991,5 +1037,4 @@ class DbObj
         return "";
     }
     // FIN DE CLASSE
-    
 }

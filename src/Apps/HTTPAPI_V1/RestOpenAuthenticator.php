@@ -7,7 +7,6 @@ class RestOpenAuthenticator extends \OpenAuthenticator
 {
     public static function getTokenId()
     {
-        
         if (!empty($_GET[self::openGetId])) {
             return $_GET[self::openGetId];
         }
@@ -74,7 +73,6 @@ class RestOpenAuthenticator extends \OpenAuthenticator
                     }
                     
                     if ($match) {
-                        
                         if (static::controlMethod($method)) {
                             $allow = true;
                             break;
@@ -100,11 +98,11 @@ class RestOpenAuthenticator extends \OpenAuthenticator
                     return ($method === "DELETE");
                 case \Dcp\HttpApi\V1\Crud\Crud::CREATE:
                     return ($method === "POST");
-                default;
+                default:
                 return false;
         }
-    } else {
-        return true;
+        } else {
+            return true;
+        }
     }
-}
 }

@@ -40,8 +40,9 @@ class Autoloader
         return self::getAutoloader()->classExists($pClassName);
     }
 
-    public static function resetRegenerate() {
-         self::getAutoloader()->resetRegenerate();
+    public static function resetRegenerate()
+    {
+        self::getAutoloader()->resetRegenerate();
     }
     /**
      *
@@ -73,7 +74,7 @@ class ExtensionFilterIteratorDecorator extends \FilterIterator
      */
     public function accept()
     {
-        if (substr($this->current() , -1 * strlen($this->_ext)) === $this->_ext) {
+        if (substr($this->current(), -1 * strlen($this->_ext)) === $this->_ext) {
             return is_readable($this->current());
         }
         return false;
@@ -96,7 +97,8 @@ class ExtensionFilterIteratorDecorator extends \FilterIterator
  * @author dev@dynacase.org <dev@dynacase.org>
  *
  */
-interface IClassHunter {
+interface IClassHunter
+{
     /**
      * Find all classes in given file
      *
@@ -230,7 +232,8 @@ class DirectoriesAutoloader
         ));
     }
 
-    public function resetRegenerate() {
+    public function resetRegenerate()
+    {
         $this->_canRegenerate=true;
     }
     /**
@@ -325,7 +328,6 @@ class DirectoriesAutoloader
                     $pCustomFilterClass
                 );
                 //error_log("adding [$pCustomFilterClass] as custom filter");
-                
             } else {
                 $this->_customFilterClasses[] = $pCustomFilterClass;
             }
@@ -405,8 +407,7 @@ class DirectoriesAutoloader
             $this->_includesAll();
             $this->addFamilies('FDLGEN');
             $this->_saveInCache();
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->_unlock();
             throw $e;
         }
@@ -464,7 +465,7 @@ class DirectoriesAutoloader
             $directories = new \AppendIterator();
             //add all paths that we want to browse
             if ($recursive) {
-                $directories->append(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory) , \RecursiveIteratorIterator::LEAVES_ONLY, \RecursiveIteratorIterator::CATCH_GET_CHILD));
+                $directories->append(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory), \RecursiveIteratorIterator::LEAVES_ONLY, \RecursiveIteratorIterator::CATCH_GET_CHILD));
             } else {
                 $directories->append(new \DirectoryIterator($directory));
             }
@@ -474,7 +475,6 @@ class DirectoriesAutoloader
                     //error_log("directories was a " . get_class($directories));
                     $directories = new $customFilterClass($directories);
                     //error_log("directories is now a " . get_class($directories));
-                    
                 }
             }
             //restrict files to php ones
@@ -486,7 +486,7 @@ class DirectoriesAutoloader
                 foreach ($classes as $className => $fileName2) {
                     $fileName1 = (isset($this->_classes[strtolower($className) ])) ? $this->_classes[strtolower($className) ] : null;
                     if ($fileName1 !== null && realpath($fileName1) !== false && realpath($fileName2) !== realpath($fileName1)) {
-                        $err.= ($err ? "\n" : '') . sprintf(_("Class %s from file %s already declared in autoload with file %s") , $className, $fileName2, $this->_classes[strtolower($className) ]);
+                        $err.= ($err ? "\n" : '') . sprintf(_("Class %s from file %s already declared in autoload with file %s"), $className, $fileName2, $this->_classes[strtolower($className) ]);
                     } else {
                         $this->_classes[strtolower($className) ] = $fileName2;
                     }
@@ -504,7 +504,6 @@ class DirectoriesAutoloader
             throw new DirectoriesAutoloaderException($err);
         }
         //error_log('included all classes as ' . var_export($this->_classes, true));
-        
     }
     /**
      * array of files containing classes indexed by class name
@@ -577,7 +576,7 @@ class DirectoriesAutoloader
     {
         $className = strtolower($pClassName);
         if ($this->classExists($className)) {
-            include_once ('WHAT/Lib.Prefix.php');
+            include_once('WHAT/Lib.Prefix.php');
             if (!file_exists(DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . $this->_classes[$className])) {
                 return false;
             }
@@ -600,7 +599,7 @@ class DirectoriesAutoloader
      */
     public function classExists($pClassName)
     {
-        $className = ltrim(strtolower($pClassName),"\\");
+        $className = ltrim(strtolower($pClassName), "\\");
         if (count($this->_classes) === 0) {
             if (is_readable($this->getCacheFilePath())) {
                 $classes = array();
@@ -641,11 +640,11 @@ class DirectoriesAutoloader
     public function addFamilies($genDirectory)
     {
         // Need include because autoloader not running yet
-        include_once ("Core/Settings.php");
-        include_once ("Core/ContextManager.php");
-        include_once ("Core/DbManager.php");
+        include_once("Core/Settings.php");
+        include_once("Core/ContextManager.php");
+        include_once("Core/DbManager.php");
         $sql = "select * from pg_tables where tablename = 'docfam'";
-        \Dcp\Core\DbManager::query( $sql, $exists);
+        \Dcp\Core\DbManager::query($sql, $exists);
         if (count($exists) > 0) {
             $sql = 'select id, "name" from docfam where name is not null order by id';
             try {

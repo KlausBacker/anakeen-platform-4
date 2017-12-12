@@ -13,7 +13,7 @@
 /**
  */
 
-include_once ("Class.DbObj.php");
+include_once("Class.DbObj.php");
 
 class DocCount extends DbObj
 {
@@ -61,11 +61,10 @@ create table doccount ( famid int not null,
 create index i_doccount on doccount(famid,aid);
 ";
     
-    function deleteAll()
+    public function deleteAll()
     {
         $sql = sprintf("delete from %s where famid = %s and aid = '%s'", $this->dbtable, $this->famid, pg_escape_string($this->aid));
         
         return $this->exec_query($sql);
     }
 }
-?>

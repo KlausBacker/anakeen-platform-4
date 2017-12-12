@@ -14,15 +14,16 @@
 /**
  */
 
-include_once ("VAULT/Class.VaultFile.php");
-include_once ("VAULT/Class.VaultEngine.php");
-include_once ("VAULT/Class.VaultDiskStorage.php");
+include_once("VAULT/Class.VaultFile.php");
+include_once("VAULT/Class.VaultEngine.php");
+include_once("VAULT/Class.VaultDiskStorage.php");
 
 function initVaultAccess()
 {
-    static $FREEDOM_VAULT = false;;
+    static $FREEDOM_VAULT = false;
+    ;
     if (!$FREEDOM_VAULT) {
-        include_once ("VAULT/Class.VaultFile.php");
+        include_once("VAULT/Class.VaultFile.php");
         $dbaccess = getDbAccess();
         $FREEDOM_VAULT = new VaultFile($dbaccess, "FREEDOM");
     }
@@ -37,16 +38,23 @@ function getOpenTeUrl($context = array())
     $urlindex = \Dcp\Core\ContextManager::getApplicationParam("TE_URLINDEX");
     if ($urlindex == "") { //case DAV
         $au = \Dcp\Core\ContextManager::getApplicationParam("CORE_URLINDEX");
-        if ($au != "") $urlindex = \Dcp\Core\ContextManager::getApplicationParam("CORE_URLINDEX");
-        else {
+        if ($au != "") {
+            $urlindex = \Dcp\Core\ContextManager::getApplicationParam("CORE_URLINDEX");
+        } else {
             $scheme = \Dcp\Core\ContextManager::getApplicationParam("CORE_ABSURL");
-            if ($scheme == "") $urlindex = '/freedom/';
-            else $urlindex = \Dcp\Core\ContextManager::getApplicationParam("CORE_ABSURL");
+            if ($scheme == "") {
+                $urlindex = '/freedom/';
+            } else {
+                $urlindex = \Dcp\Core\ContextManager::getApplicationParam("CORE_ABSURL");
+            }
         }
     }
     $token = $action->user->getUserToken(3600 * 24, true, $context);
-    if (strstr($urlindex, '?')) $beg = '&';
-    else $beg = '?';
+    if (strstr($urlindex, '?')) {
+        $beg = '&';
+    } else {
+        $beg = '?';
+    }
     $openurl = $urlindex . $beg . "authtype=open&privateid=$token";
     return $openurl;
 }
@@ -65,19 +73,23 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
     $err = '';
     if (($vidin > 0) && ($vidout > 0)) {
         $tea = \Dcp\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
-        if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) return '';
+        if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+            return '';
+        }
         global $action;
-        include_once ("FDL/Class.TaskRequest.php");
+        include_once("FDL/Class.TaskRequest.php");
         $of = new VaultDiskStorage($dbaccess, $vidin);
         $filename = $of->getPath();
-        if (!$of->isAffected()) return "no file $vidin";
+        if (!$of->isAffected()) {
+            return "no file $vidin";
+        }
         $ofout = new VaultDiskStorage($dbaccess, $vidout);
         $ofout->teng_state = \Dcp\TransformationEngine\Client::status_waiting; // in progress
         $ofout->modify();
         
         $urlindex = getOpenTeUrl();
         $callback = $urlindex . "&sole=Y&app=FDL&action=INSERTFILE&engine=$engine&vidin=$vidin&vidout=$vidout&isimage=$isimage&docid=$docid";
-        $ot = new \Dcp\TransformationEngine\Client(\Dcp\Core\ContextManager::getApplicationParam("TE_HOST") , \Dcp\Core\ContextManager::getApplicationParam("TE_PORT"));
+        $ot = new \Dcp\TransformationEngine\Client(\Dcp\Core\ContextManager::getApplicationParam("TE_HOST"), \Dcp\Core\ContextManager::getApplicationParam("TE_PORT"));
         $err = $ot->sendTransformation($engine, $vidout, $filename, $callback, $info);
         if ($err == "") {
             $tr = new TaskRequest($dbaccess);
@@ -98,8 +110,11 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
             $err.= $vf->Save($filename, false, $vidout);
             @unlink($filename);
             $vf->rename($vidout, _("impossible conversion") . ".txt");
-            if ($info["status"]) $vf->storage->teng_state = $info["status"];
-            else $vf->storage->teng_state = \Dcp\TransformationEngine\Client::status_inprogress;
+            if ($info["status"]) {
+                $vf->storage->teng_state = $info["status"];
+            } else {
+                $vf->storage->teng_state = \Dcp\TransformationEngine\Client::status_inprogress;
+            }
             $vf->storage->modify();
         }
     }
@@ -113,7 +128,6 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
  */
 function vault_properties($idfile, $teng_name = "")
 {
-    
     $FREEDOM_VAULT = initVaultAccess();
     $FREEDOM_VAULT->Show($idfile, $info, $teng_name);
     return $info;
@@ -129,7 +143,6 @@ function vault_uniqname($idfile, $teng_name = "")
     $FREEDOM_VAULT = initVaultAccess();
     $FREEDOM_VAULT->Show($idfile, $info, $teng_name);
     if ($info->name) {
-        
         $m2009 = iso8601DateToUnixTs("2009-01-01");
         $mdate = stringDateToUnixTs($info->mdate);
         $check = base_convert($mdate - $m2009, 10, 34);
@@ -152,10 +165,11 @@ function vault_uniqname($idfile, $teng_name = "")
  */
 function vault_store($filename, &$vid, $ftitle = "")
 {
-    
     $FREEDOM_VAULT = initVaultAccess();
     $err = $FREEDOM_VAULT->store($filename, false, $vid);
-    if (($err == "") && ($ftitle != "")) $FREEDOM_VAULT->rename($vid, $ftitle);
+    if (($err == "") && ($ftitle != "")) {
+        $FREEDOM_VAULT->rename($vid, $ftitle);
+    }
     return $err;
 }
 /**
@@ -170,7 +184,9 @@ function vault_get_content($idfile)
     
     if ($v->isAffected()) {
         $path = $v->getPath();
-        if (file_exists($path)) return file_get_contents($path);
+        if (file_exists($path)) {
+            return file_get_contents($path);
+        }
     }
     return false;
 }
@@ -181,19 +197,22 @@ function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
 {
     $err = '';
     if (($docid > 0) && ($vid > 0)) {
-        
         $tea = \Dcp\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
-        if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) return '';
+        if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+            return '';
+        }
         $tea = \Dcp\Core\ContextManager::getApplicationParam("TE_FULLTEXT");
-        if ($tea != "yes") return '';
+        if ($tea != "yes") {
+            return '';
+        }
         
         global $action;
-        include_once ("FDL/Class.TaskRequest.php");
+        include_once("FDL/Class.TaskRequest.php");
         $of = new VaultDiskStorage($dbaccess, $vid);
         $filename = $of->getPath();
         $urlindex = getOpenTeUrl();
         $callback = $urlindex . "&sole=Y&app=FDL&action=SETTXTFILE&docid=$docid&attrid=" . $attrid . "&index=$index";
-        $ot = new \Dcp\TransformationEngine\Client(\Dcp\Core\ContextManager::getApplicationParam("TE_HOST") , \Dcp\Core\ContextManager::getApplicationParam("TE_PORT"));
+        $ot = new \Dcp\TransformationEngine\Client(\Dcp\Core\ContextManager::getApplicationParam("TE_HOST"), \Dcp\Core\ContextManager::getApplicationParam("TE_PORT"));
         $err = $ot->sendTransformation('utf8', $vid, $filename, $callback, $info);
         if ($err == "") {
             $tr = new TaskRequest($dbaccess);
@@ -222,13 +241,15 @@ function convertFile($infile, $engine, $outfile, &$info)
     $err = '';
     if (file_exists($infile) && ($engine != "")) {
         $tea = \Dcp\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
-        if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) return _("TE not activated");
+        if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+            return _("TE not activated");
+        }
         $callback = "";
-        $ot = new \Dcp\TransformationEngine\Client(\Dcp\Core\ContextManager::getApplicationParam("TE_HOST") , \Dcp\Core\ContextManager::getApplicationParam("TE_PORT"));
+        $ot = new \Dcp\TransformationEngine\Client(\Dcp\Core\ContextManager::getApplicationParam("TE_HOST"), \Dcp\Core\ContextManager::getApplicationParam("TE_PORT"));
         $vid = '';
         $err = $ot->sendTransformation($engine, $vid, $infile, $callback, $info);
         if ($err == "") {
-            include_once ("FDL/Class.TaskRequest.php");
+            include_once("FDL/Class.TaskRequest.php");
             $dbaccess = getDbAccess();
             $tr = new TaskRequest($dbaccess);
             $tr->tid = $info["tid"];
@@ -242,7 +263,9 @@ function convertFile($infile, $engine, $outfile, &$info)
         $tid = 0;
         if ($err == "") {
             $tid = $info["tid"];
-            if ($tid == 0) $err = _("no task identificator");
+            if ($tid == 0) {
+                $err = _("no task identificator");
+            }
         }
         // waiting response
         if ($err == "") {
@@ -277,12 +300,12 @@ function convertFile($infile, $engine, $outfile, &$info)
                 sleep(2);
             }
             if (($err == "") && ($status == 'D')) {
-                include_once ("FDL/insertfile.php");
+                include_once("FDL/insertfile.php");
                 $err = getTEFile($tid, $outfile, $info);
             }
         }
     } else {
-        $err = sprintf(_("file %s not found") , $infile);
+        $err = sprintf(_("file %s not found"), $infile);
     }
     return $err;
 }

@@ -96,7 +96,7 @@ class Router
         $mainMessages = [];
         MiddleWareManager::preProcess($identifiedCrud, $request, $response);
         if (!$response->responseIsStopped()) {
-            $return = $crud->execute($request->getCrudMethod() , $mainMessages, $httpStatus);
+            $return = $crud->execute($request->getCrudMethod(), $mainMessages, $httpStatus);
             $response->setStatusHeader($httpStatus);
             
             foreach ($mainMessages as $message) {
@@ -136,7 +136,6 @@ class Router
      */
     protected static function verifyExtension()
     {
-        
         if (static::$extension === null || static::$extension === "") {
             $format = "application/json";
         } else {
@@ -164,11 +163,9 @@ class Router
     {
         $accept = isset($_SERVER['HTTP_ACCEPT']) ? mb_strtolower($_SERVER['HTTP_ACCEPT']) : "application/json";
         $accept = explode(",", $accept);
-        $accept = array_map(function ($header)
-        {
+        $accept = array_map(function ($header) {
             return preg_replace("/;.*/", "", $header);
-        }
-        , $accept);
+        }, $accept);
         // @TODO : NEVER USED MUST BE REWRITE FOR ACCEPT HTML ALSO : MAY BE UNNECESSARY
         if (!in_array("application/json", $accept) && !in_array("*/*", $accept)) {
             throw new Exception("API0006", join(",", $accept));
@@ -190,7 +187,7 @@ class Router
             static::$path = $matches['path'];
         }
         
-        $systemCrud = json_decode(self::getHttpApiParameter("CRUD_CLASS") , true);
+        $systemCrud = json_decode(self::getHttpApiParameter("CRUD_CLASS"), true);
         // rules are already ordered
         $crudFound = [];
         if (static::$extension && static::$extension !== "json") {
@@ -231,7 +228,7 @@ class Router
             static::$path = $matches['path'];
         }
         
-        $systemCrud = json_decode(self::getHttpApiParameter("CRUD_MIDDLECLASS") , true);
+        $systemCrud = json_decode(self::getHttpApiParameter("CRUD_MIDDLECLASS"), true);
         // rules are already ordered
         $crudMiddles = ["postProcessMiddleWare" => [], "preProcessMiddleWare" => []];
         if (static::$extension && static::$extension !== "json") {
@@ -314,7 +311,7 @@ class Router
     {
         $values = $_POST;
         if (static::convertActionToCrud() === Crud::UPDATE) {
-            parse_str(file_get_contents("php://input") , $values);
+            parse_str(file_get_contents("php://input"), $values);
         }
         $newValues = array();
         foreach ($values as $attrid => $value) {

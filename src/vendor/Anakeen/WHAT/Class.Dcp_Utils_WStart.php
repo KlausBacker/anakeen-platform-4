@@ -6,7 +6,8 @@
 
 namespace Dcp\Utils;
 
-interface WStartStdioInterface {
+interface WStartStdioInterface
+{
     public function wstart_stdout($msg);
     public function wstart_stderr($msg);
 }
@@ -353,7 +354,7 @@ class WStartInternals
         $content = call_user_func_array($callback, array(
             $content
         ));
-        $tmpFile = tempnam(getTmpDir() , 'sedFile');
+        $tmpFile = tempnam(getTmpDir(), 'sedFile');
         if ($tmpFile === false) {
             throw new WStartException(sprintf("Error creating temporary file."));
         }
@@ -451,13 +452,11 @@ class WStart extends WStartInternals
         require_once sprintf('%s/vendor/Anakeen/WHAT/Lib.Common.php', $this->contextRoot);
         $CORE_DBCONNECT = \Dcp\Core\ContextManager::getApplicationParam('CORE_DBCONNECT');
         if ($CORE_DBCONNECT == 'persistent') {
-            $this->sedFile($this->absolutize('WHAT/Lib.Common.php') , function ($content)
-            {
+            $this->sedFile($this->absolutize('WHAT/Lib.Common.php'), function ($content) {
                 return preg_replace('/\bpg_connect\b/', 'pg_pconnect', $content);
             });
         } else {
-            $this->sedFile($this->absolutize('vendor/Anakeen/WHAT/Lib.Common.php') , function ($content)
-            {
+            $this->sedFile($this->absolutize('vendor/Anakeen/WHAT/Lib.Common.php'), function ($content) {
                 return preg_replace('/\bpg_pconnect\b/', 'pg_connect', $content);
             });
         }
@@ -509,7 +508,7 @@ class WStart extends WStartInternals
             'standard_conforming_strings' => 'off'
         );
         foreach ($paramList as $paramName => $paramValue) {
-            $sql = sprintf("ALTER DATABASE %s SET %s = %s", pg_escape_identifier($dbName) , pg_escape_identifier($paramName) , pg_escape_literal($paramValue));
+            $sql = sprintf("ALTER DATABASE %s SET %s = %s", pg_escape_identifier($dbName), pg_escape_identifier($paramName), pg_escape_literal($paramValue));
             if (($err = simpleQuery('', $sql, $res, true, true, false)) !== '') {
                 throw new WStartException(sprintf("Error setting '%s' = '%s' on database '%s': %s", $paramName, $paramValue, $dbName, $err));
             }

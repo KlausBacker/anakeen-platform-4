@@ -82,4 +82,3 @@ $size = array(
         "img-xx-large" => "128px"
     )
 );
-?>

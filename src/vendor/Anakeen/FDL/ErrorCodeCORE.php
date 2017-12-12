@@ -87,7 +87,9 @@ namespace {
          */
         private function _bo()
         {
-            if (true) $a = 1;
+            if (true) {
+                $a = 1;
+            }
         }
     }
 }
@@ -99,7 +101,9 @@ namespace Dcp\Core {
          */
         private function _bo()
         {
-            if (true) $a = 1;
+            if (true) {
+                $a = 1;
+            }
         }
     }
 }

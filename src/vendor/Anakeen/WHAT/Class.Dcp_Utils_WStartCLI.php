@@ -39,8 +39,6 @@ Operations:
 
 
 EOF;
-        
-        
     }
     /**
      * Initialize context environment
@@ -216,7 +214,7 @@ EOF;
             if (call_user_func_array(array(
                 $wstart,
                 $name
-            ) , array()) === false) {
+            ), array()) === false) {
                 throw new WStartCLIException(sprintf("Execution of '%s' returned with error!", $name));
             }
         }

@@ -8,15 +8,15 @@
  *
  */
 namespace Dcp\Core;
+
 class MailEdit extends \Dcp\Family\Document
 {
-    var $defaultedit = "FDL:EDITMAILDOC";
+    public $defaultedit = "FDL:EDITMAILDOC";
     /**
      * @templateController
      */
-    function editmaildoc()
+    public function editmaildoc()
     {
         $this->editattr();
     }
-
 }

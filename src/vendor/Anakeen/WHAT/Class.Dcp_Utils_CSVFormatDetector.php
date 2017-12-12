@@ -79,8 +79,7 @@ class SampleAccumulator
     public function getCandidate($minConfidence = 0)
     {
         $samples = $this->getMergedSamples();
-        $samples = array_filter($samples, function (Sample & $sample) use ($minConfidence)
-        {
+        $samples = array_filter($samples, function (Sample & $sample) use ($minConfidence) {
             return ($sample->score >= $minConfidence);
         });
         if (count($samples) <= 0) {
@@ -90,8 +89,7 @@ class SampleAccumulator
     }
     protected function sortByScore(&$samples)
     {
-        uasort($samples, function (Sample $a, Sample $b)
-        {
+        uasort($samples, function (Sample $a, Sample $b) {
             if ($a->score == $b->score) {
                 return 0;
             }
@@ -229,13 +227,13 @@ class Detector
                      * Add one for each pattern found:
                      * the more we match, the greater the score will get
                     */
-                    $stats->add($sep, count($m[1]) , $weightMultiplier['count']);
+                    $stats->add($sep, count($m[1]), $weightMultiplier['count']);
                     foreach ($m[1] as $n) {
                         /*
                          * Add score with length of the found patterns:
                          * the longer we match, the greater the score will get
                         */
-                        $stats->add($sep, strlen($n[1]) , $weightMultiplier['length']);
+                        $stats->add($sep, strlen($n[1]), $weightMultiplier['length']);
                     }
                 }
             }

@@ -2,7 +2,6 @@
 
 namespace Dcp\Core;
 
-
 class ContextManager
 {
     /**
@@ -47,13 +46,13 @@ class ContextManager
         return $lang[$core_lang];
     }
 
-    function getLocales()
+    public function getLocales()
     {
         static $locales = null;
 
         if ($locales === null) {
             $lang = array();
-            include ('CORE/lang.php');
+            include('CORE/lang.php');
             $locales = $lang;
         }
         return $locales;
@@ -95,15 +94,15 @@ class ContextManager
 
 
         self::setLanguage(self::getApplicationParam("CORE_LANG", "fr_FR"));
-
     }
 
-    public static function recordContext(\Account $account, \Action $action=null) {
-         self::$coreUser = &$account;
-         if ($action) {
-             self::$coreAction = &$action;
-             self::$coreApplication = $action->parent;
-         }
+    public static function recordContext(\Account $account, \Action $action=null)
+    {
+        self::$coreUser = &$account;
+        if ($action) {
+            self::$coreAction = &$action;
+            self::$coreApplication = $action->parent;
+        }
     }
 
 
@@ -127,7 +126,6 @@ class ContextManager
         }
         $lang .= ".UTF-8";
         if (setlocale(LC_MESSAGES, $lang) === false) {
-
             throw new \Exception(sprintf(\ErrorCodeCORE::CORE0011, $lang));
         }
         setlocale(LC_CTYPE, $lang);
@@ -167,13 +165,13 @@ class ContextManager
      * @return string like fr_FR, en_US
      *
      */
-    public static function getLanguage() {
+    public static function getLanguage()
+    {
         return self::$language;
     }
 
     protected static function _initCoreVolatileParam(\Application &$core)
     {
-
         $absindex = $core->getParam("CORE_URLINDEX");
         if ($absindex == '') {
             $absindex = "./";
@@ -188,7 +186,6 @@ class ContextManager
 
     public static function sudo(\Account &$account)
     {
-
         self::$coreAction=self::getCurrentAction();
         if (!self::$coreAction) {
             throw new \Exception("CORE0017");
@@ -215,11 +212,15 @@ class ContextManager
     }
 
     /**
-     * @return \Account
+     * @return \Account|null
      */
     public static function getCurrentUser()
     {
-         return self::$coreUser=self::getCurrentAction()->user;
+        $cAction=self::getCurrentAction();
+        if ($cAction) {
+            return self::$coreUser = self::getCurrentAction()->user;
+        }
+        return null;
     }
 
     /**
@@ -256,7 +257,9 @@ class ContextManager
     public static function getApplicationParam($name, $def = "")
     {
         $action = self::getCurrentAction();
-        if ($action) return $action->getParam($name, $def);
+        if ($action) {
+            return $action->getParam($name, $def);
+        }
         // if context not yet initialized
         return self::getCoreParam($name, $def);
     }
@@ -279,16 +282,18 @@ class ContextManager
             self::$coreParams = array();
             $tparams = array();
             try {
-                \Dcp\Core\DbManager::query("select name, val from paramv where (type = 'G') or (type='A' and appid = (select id from application where name ='CORE'));",
-                    $tparams, false, false);
+                \Dcp\Core\DbManager::query(
+                    "select name, val from paramv where (type = 'G') or (type='A' and appid = (select id from application where name ='CORE'));",
+                    $tparams,
+                    false,
+                    false
+                );
 
                 foreach ($tparams as $p) {
                     self::$coreParams[$p['name']] = $p['val'];
                 }
             } catch (\Dcp\Db\Exception $e) {
-
             }
-
         }
         if (array_key_exists($name, self::$coreParams) == false) {
             error_log(sprintf("parameter %s not found use %s instead", $name, $def));
@@ -304,6 +309,5 @@ class ContextManager
             $pubdir = DEFAULT_PUBDIR;
         }
         return $pubdir;
-
     }
 }

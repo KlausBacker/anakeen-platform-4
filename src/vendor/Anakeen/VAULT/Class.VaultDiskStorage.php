@@ -13,14 +13,14 @@
 /**
  */
 
-include_once ("VAULT/Class.VaultDiskFsStorage.php");
-include_once ("VAULT/Class.VaultDiskFsCache.php");
-include_once ("VAULT/Class.VaultDiskDirStorage.php");
-include_once ("VAULT/Lib.VaultCommon.php");
+include_once("VAULT/Class.VaultDiskFsStorage.php");
+include_once("VAULT/Class.VaultDiskFsCache.php");
+include_once("VAULT/Class.VaultDiskDirStorage.php");
+include_once("VAULT/Lib.VaultCommon.php");
 
 class VaultDiskStorage extends DbObj
 {
-    var $fields = array(
+    public $fields = array(
         "id_file",
         "id_fs",
         "id_dir",
@@ -40,11 +40,11 @@ class VaultDiskStorage extends DbObj
         "teng_comment", // Comment for transformation
         
     );
-    var $id_fields = array(
+    public $id_fields = array(
         "id_file"
     );
-    var $dbtable = "vaultdiskstorage";
-    var $sqlcreate = "create table vaultdiskstorage  ( 
+    public $dbtable = "vaultdiskstorage";
+    public $sqlcreate = "create table vaultdiskstorage  ( 
                                      id_file          bigint not null, primary key (id_file),
                                      id_fs            int,
                                      id_dir           int,
@@ -92,13 +92,13 @@ class VaultDiskStorage extends DbObj
      * @var Log
      */
     protected $logger;
-    var $storage = 1;
+    public $storage = 1;
     /**
      * @var VaultDiskFsStorage
      */
     public $fs;
     // --------------------------------------------------------------------
-    function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
+    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         DbObj::__construct($dbaccess, $id, $res, $dbid);
         $this->logger = new Log("", "vault", $this->name);
@@ -107,7 +107,7 @@ class VaultDiskStorage extends DbObj
     /**
      * set fs object
      */
-    function Complete()
+    public function Complete()
     {
         if ($this->storage == 1) {
             if (!$this->fs) {
@@ -120,7 +120,7 @@ class VaultDiskStorage extends DbObj
         }
     }
     
-    function PreInsert()
+    public function PreInsert()
     {
         $this->id_file = $this->getNewVaultId();
         return '';
@@ -185,7 +185,7 @@ class VaultDiskStorage extends DbObj
 SELECT id_file FROM %s WHERE id_file = %d LIMIT 1
 SQL;
             
-            $err = $this->exec_query(sprintf($sql, pg_escape_identifier($this->dbtable) , $int));
+            $err = $this->exec_query(sprintf($sql, pg_escape_identifier($this->dbtable), $int));
             if ($err) {
                 throw new \Dcp\Db\Exception("DB0104", $err);
             }
@@ -199,7 +199,7 @@ SQL;
         return $newId;
     }
     // --------------------------------------------------------------------
-    function ListFiles(&$list)
+    public function ListFiles(&$list)
     {
         // --------------------------------------------------------------------
         $query = new QueryDb($this->dbaccess, $this->dbtable);
@@ -208,7 +208,7 @@ SQL;
         return $fc;
     }
     
-    function seems_utf8($Str)
+    public function seems_utf8($Str)
     {
         return preg_match('!!u', $Str);
     }
@@ -222,10 +222,10 @@ SQL;
      * @param int $te_id_file transformation engine file result identifier
      * @return string error message (empty if OK)
      */
-    function Store($infile, $public_access, &$idf, $fsname = "", $te_lname = "", $te_id_file = 0)
+    public function Store($infile, $public_access, &$idf, $fsname = "", $te_lname = "", $te_id_file = 0)
     {
         // --------------------------------------------------------------------
-        include_once ("WHAT/Lib.FileMime.php");
+        include_once("WHAT/Lib.FileMime.php");
         
         if (!is_file($infile)) {
             return ErrorCode::getError('FILE0007', $infile);
@@ -244,7 +244,9 @@ SQL;
         // printf("\nDIR:%s\n", $id_dir);
         $this->public_access = $public_access;
         $this->name = my_basename($infile);
-        if (!$this->seems_utf8($this->name)) $this->name = utf8_encode($this->name);
+        if (!$this->seems_utf8($this->name)) {
+            $this->name = utf8_encode($this->name);
+        }
         
         $this->mime_t = getTextMimeFile($infile);
         $this->mime_s = getSysMimeFile($infile, $this->name);
@@ -255,7 +257,9 @@ SQL;
         $this->teng_id_file = $te_id_file;
         
         $msg = $this->Add();
-        if ($msg != '') return ($msg);
+        if ($msg != '') {
+            return ($msg);
+        }
         
         $this->fs->closeCurrentDir();
         $idf = $this->id_file;
@@ -263,8 +267,8 @@ SQL;
         $f = vaultfilename($f_path, $infile, $this->id_file);
         if (!@copy($infile, $f)) {
             // Free entry
-            $this->logger->error(sprintf(_("Failed to copy %s to %s") , $infile, $f));
-            return (sprintf(_("Failed to copy %s to vault") , $infile));
+            $this->logger->error(sprintf(_("Failed to copy %s to %s"), $infile, $f));
+            return (sprintf(_("Failed to copy %s to vault"), $infile));
         }
         
         $this->logger->debug("File $infile stored in $f");
@@ -279,10 +283,11 @@ SQL;
      * @deprecated no usage
      * @throws \Dcp\Db\Exception
      */
-    function GetEngineObject($te_name, &$ngf)
+    public function GetEngineObject($te_name, &$ngf)
     {
-        
-        if (!$this->isAffected()) return _("vault file is not initialized");
+        if (!$this->isAffected()) {
+            return _("vault file is not initialized");
+        }
         $err = '';
         $q = new QueryDb($this->dbaccess, "VaultDiskStorage");
         $q->AddQuery("teng_id_file=" . $this->id_file);
@@ -299,7 +304,9 @@ SQL;
             $ngf->id_dir = $id_dir;
             $ngf->size = 0;
             $err = $ngf->Add();
-            if ($err) return $err;
+            if ($err) {
+                return $err;
+            }
         } else {
             $ngf = $tn[0];
         }
@@ -311,7 +318,7 @@ SQL;
      * @param string $teng_lname engine name
      * @return string
      */
-    function show($id_file, &$f_infos, $teng_lname = "")
+    public function show($id_file, &$f_infos, $teng_lname = "")
     {
         // --------------------------------------------------------------------
         $this->id_file = - 1;
@@ -356,7 +363,7 @@ SQL;
         }
     }
     
-    function updateAccessDate($id_file)
+    public function updateAccessDate($id_file)
     {
         $err = '';
         if ($this->id_file != $id_file) {
@@ -366,7 +373,7 @@ SQL;
             $this->adate = date("c", time());
             $err = $this->modify(true, array(
                 "adate"
-            ) , true);
+            ), true);
         }
         return $err;
     }
@@ -374,13 +381,13 @@ SQL;
      * return the complete path in file system
      * @return string the path
      */
-    function getPath()
+    public function getPath()
     {
         $this->fs->Show($this->id_fs, $this->id_dir, $f_path);
         return vaultfilename($f_path, $this->name, $this->id_file);
     }
     // --------------------------------------------------------------------
-    function Destroy($id)
+    public function Destroy($id)
     {
         // --------------------------------------------------------------------
         $msg = $this->Show($id, $inf);
@@ -393,7 +400,7 @@ SQL;
         return $msg;
     }
     // --------------------------------------------------------------------
-    function save($infile, $public_access, $idf)
+    public function save($infile, $public_access, $idf)
     {
         $err = '';
         $vf = new VaultFile($this->dbaccess);
@@ -412,10 +419,12 @@ SQL;
             $this->mdate = date("c", time());
             
             $msg = $this->modify();
-            if ($msg != '') return ($msg);
+            if ($msg != '') {
+                return ($msg);
+            }
             
             if (!copy($infile, $path)) {
-                $err = sprintf(_("Cannot copy file %s to %s") , $infile, $path);
+                $err = sprintf(_("Cannot copy file %s to %s"), $infile, $path);
             } else {
                 $this->fs->select($this->id_fs);
                 $this->logger->debug("File $infile saved in $path");
@@ -430,14 +439,14 @@ SQL;
     /**
      * reset all files product by transform engine
      */
-    function resetTEFiles()
+    public function resetTEFiles()
     {
         if (\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             $sql = <<<SQL
 UPDATE %s SET teng_state = %d WHERE teng_id_file = %s
 SQL;
             
-            $up = sprintf($sql, pg_escape_identifier($this->dbtable) , pg_escape_literal(\Dcp\TransformationEngine\Client::status_inprogress) , pg_escape_literal($this->id_file));
+            $up = sprintf($sql, pg_escape_identifier($this->dbtable), pg_escape_literal(\Dcp\TransformationEngine\Client::status_inprogress), pg_escape_literal($this->id_file));
             $this->exec_query($up);
         }
     }

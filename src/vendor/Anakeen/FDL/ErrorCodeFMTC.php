@@ -35,7 +35,9 @@ namespace {
          */
         private function _bo()
         {
-            if (true) $a = 1;
+            if (true) {
+                $a = 1;
+            }
         }
     }
 }
@@ -47,7 +49,9 @@ namespace Dcp\Fmtc {
          */
         private function _bo()
         {
-            if (true) $a = 1;
+            if (true) {
+                $a = 1;
+            }
         }
     }
 }

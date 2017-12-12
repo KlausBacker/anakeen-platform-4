@@ -14,9 +14,9 @@
 /**
  */
 
-include_once ('Class.Log.php');
-include_once ('Class.DbObj.php');
-include_once ('Class.ParamDef.php');
+include_once('Class.Log.php');
+include_once('Class.DbObj.php');
+include_once('Class.ParamDef.php');
 /** @deprecated use Param::PARAM_APP instead */
 define("PARAM_APP", "A");
 /** @deprecated use Param::PARAM_GLB instead */
@@ -28,20 +28,19 @@ define("PARAM_STYLE", "S");
 
 class Param extends DbObj
 {
-    
     const PARAM_APP = "A";
     const PARAM_GLB = "G";
     const PARAM_USER = "U";
     const PARAM_STYLE = "S";
     
-    var $fields = array(
+    public $fields = array(
         "name",
         "type",
         "appid",
         "val"
     );
     
-    var $id_fields = array(
+    public $id_fields = array(
         "name",
         "type",
         "appid"
@@ -51,9 +50,9 @@ class Param extends DbObj
     public $type;
     public $appid;
     public $val;
-    var $dbtable = "paramv";
+    public $dbtable = "paramv";
     
-    var $sqlcreate = '
+    public $sqlcreate = '
       create table paramv (
               name   varchar(50) not null,
               type   varchar(21),
@@ -63,32 +62,32 @@ class Param extends DbObj
       create unique index paramv_idx3 on paramv(name,type,appid);
                  ';
     
-    var $buffer = array();
+    public $buffer = array();
     
-    function PreInsert()
+    public function PreInsert()
     {
         if (strpos($this->name, " ") != 0) {
             return _("Parameter name does not include spaces");
         }
         return '';
     }
-    function PostInit()
+    public function PostInit()
     {
         $opd = new Paramdef();
         $opd->create();
     }
-    function PreUpdate()
+    public function PreUpdate()
     {
         $this->PreInsert();
     }
     
-    function SetKey($appid, $userid, $styleid = "0")
+    public function SetKey($appid, $userid, $styleid = "0")
     {
         $this->appid = $appid;
         $this->buffer = array_merge($this->buffer, $this->GetAll($appid, $userid, $styleid));
     }
     
-    function Set($name, $val, $type = self::PARAM_GLB, $appid = '')
+    public function Set($name, $val, $type = self::PARAM_GLB, $appid = '')
     {
         global $action;
         if ($action) {
@@ -112,12 +111,18 @@ class Param extends DbObj
             $type,
             $appid
         ));
-        if ($paramt->isAffected()) $err = $this->Modify();
-        else $err = $this->Add();
+        if ($paramt->isAffected()) {
+            $err = $this->Modify();
+        } else {
+            $err = $this->Add();
+        }
         
         $otype = '';
-        if ($type == self::PARAM_GLB) $otype = self::PARAM_APP;
-        elseif ($type == self::PARAM_APP) $otype = self::PARAM_GLB;
+        if ($type == self::PARAM_GLB) {
+            $otype = self::PARAM_APP;
+        } elseif ($type == self::PARAM_APP) {
+            $otype = self::PARAM_GLB;
+        }
         if ($otype) {
             // delete incompatible parameter
             $paramo = new Param($this->dbaccess, array(
@@ -125,22 +130,27 @@ class Param extends DbObj
                 $otype,
                 $appid
             ));
-            if ($paramo->isAffected()) $paramo->delete();
+            if ($paramo->isAffected()) {
+                $paramo->delete();
+            }
         }
         
         $this->buffer[$name] = $val;
         return $err;
     }
     
-    function SetVolatile($name, $val)
+    public function SetVolatile($name, $val)
     {
-        if ($val !== null) $this->buffer[$name] = $val;
-        else unset($this->buffer[$name]);
+        if ($val !== null) {
+            $this->buffer[$name] = $val;
+        } else {
+            unset($this->buffer[$name]);
+        }
     }
     
-    function Get($name, $def = "")
+    public function Get($name, $def = "")
     {
-        require_once ('WHAT/Class.ApplicationParameterManager.php');
+        require_once('WHAT/Class.ApplicationParameterManager.php');
         
         if (($value = ApplicationParameterManager::_catchDeprecatedGlobalParameter($name)) !== null) {
             return $value;
@@ -152,17 +162,22 @@ class Param extends DbObj
         }
     }
     
-    function GetAll($appid = "", $userid, $styleid = "0")
+    public function GetAll($appid = "", $userid, $styleid = "0")
     {
-        if ($appid == "") $appid = $this->appid;
+        if ($appid == "") {
+            $appid = $this->appid;
+        }
         $psize = new Param($this->dbaccess, array(
             "FONTSIZE",
             self::PARAM_USER . $userid,
             "1"
         ));
         $out = array();
-        if ($psize->val != '') $size = $psize->val;
-        else $size = 'normal';
+        if ($psize->val != '') {
+            $size = $psize->val;
+        } else {
+            $size = 'normal';
+        }
         $size = 'SIZE_' . strtoupper($size);
         
         if ($appid) {
@@ -185,7 +200,7 @@ class Param extends DbObj
         return ($out);
     }
     
-    function GetUser($userid = Account::ANONYMOUS_ID, $styleid = "")
+    public function GetUser($userid = Account::ANONYMOUS_ID, $styleid = "")
     {
         $query = new QueryDb($this->dbaccess, "Param");
         
@@ -199,7 +214,7 @@ class Param extends DbObj
      * if true return only parameters redifined by the style
      * @return array of parameters values
      */
-    function GetStyle($styleid, $onlystyle = false)
+    public function GetStyle($styleid, $onlystyle = false)
     {
         $query = new QueryDb($this->dbaccess, "Param");
         if ($onlystyle) {
@@ -211,7 +226,7 @@ class Param extends DbObj
         return ($tlist);
     }
     
-    function GetApps()
+    public function GetApps()
     {
         $query = new QueryDb($this->dbaccess, "Param");
         
@@ -220,19 +235,22 @@ class Param extends DbObj
         return ($tlist);
     }
     
-    function GetUParam($p, $u = Account::ANONYMOUS_ID, $appid = "")
+    public function GetUParam($p, $u = Account::ANONYMOUS_ID, $appid = "")
     {
-        if ($appid == "") $appid = $this->appid;
+        if ($appid == "") {
+            $appid = $this->appid;
+        }
         $req = "select val from paramv where name='" . $p . "' and type='U" . $u . "' and appid=" . $appid . ";";
         $query = new QueryDb($this->dbaccess, "Param");
         $tlist = $query->Query(0, 0, "TABLE", $req);
-        if ($query->nb != 0) return $tlist[0]["val"];
+        if ($query->nb != 0) {
+            return $tlist[0]["val"];
+        }
         return "";
     }
     // delete paramters that cannot be change after initialisation
-    function DelStatic($appid)
+    public function DelStatic($appid)
     {
-        
         $query = new QueryDb($this->dbaccess, "Param");
         $sql = sprintf("select paramv.*  from paramv, paramdef where paramdef.name=paramv.name and paramdef.kind='static' and paramdef.isuser!='Y' and paramv.appid=%d", $appid);
         $list = $query->Query(0, 0, "LIST", $sql);
@@ -244,17 +262,21 @@ class Param extends DbObj
              */
             foreach ($list as $k => $v) {
                 $v->Delete();
-                if (isset($this->buffer[$v->name])) unset($this->buffer[$v->name]);
+                if (isset($this->buffer[$v->name])) {
+                    unset($this->buffer[$v->name]);
+                }
             }
         }
     }
     
-    function PostDelete()
+    public function PostDelete()
     {
-        if (isset($this->buffer[$this->name])) unset($this->buffer[$this->name]);
+        if (isset($this->buffer[$this->name])) {
+            unset($this->buffer[$this->name]);
+        }
     }
     
-    function DelAll($appid = "")
+    public function DelAll($appid = "")
     {
         $query = new QueryDb($this->dbaccess, "Param");
         // delete all parameters not used by application
@@ -262,6 +284,4 @@ class Param extends DbObj
         return;
     }
     // FIN DE CLASSE
-    
 }
-?>

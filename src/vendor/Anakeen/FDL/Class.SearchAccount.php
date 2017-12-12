@@ -10,7 +10,7 @@
  * @package FDL
  */
 
-include_once ("FDL/Lib.Dir.php");
+include_once("FDL/Lib.Dir.php");
 /**
  * @class SearchAccount
  * @code
@@ -119,7 +119,6 @@ class SearchAccount
      */
     public function setTypeFilter($type)
     {
-        
         $this->returnUser = ($type & self::userType) == self::userType;
         $this->returnGroup = ($type & self::groupType) == self::groupType;
         $this->returnRole = ($type & self::roleType) == self::roleType;
@@ -168,8 +167,11 @@ class SearchAccount
         if (((!is_numeric($slice)) && (strtolower($slice) != 'all')) || ($slice < 0)) {
             throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0003", $slice));
         }
-        if (is_numeric($slice)) $this->slice = intval($slice);
-        else $this->slice = $slice;
+        if (is_numeric($slice)) {
+            $this->slice = intval($slice);
+        } else {
+            $this->slice = $slice;
+        }
     }
     /**
      * set start offset
@@ -280,7 +282,9 @@ class SearchAccount
     {
         if (!is_numeric($family)) {
             $famId = \Dcp\Core\DocManager::getFamilyIdFromName($family);
-            if (!$famId) throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0006", $family));
+            if (!$famId) {
+                throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0006", $family));
+            }
             $this->familyFilter = $famId;
         } else {
             $this->familyFilter = $family;
@@ -293,14 +297,16 @@ class SearchAccount
      */
     public function search()
     {
-        simpleQuery($this->dbaccess, $this->getQuery() , $this->searchResult);
+        simpleQuery($this->dbaccess, $this->getQuery(), $this->searchResult);
         if ($this->returnType == self::returnAccount) {
             $al = new AccountList($this->searchResult);
             return $al;
         } else {
             $ids = array();
             foreach ($this->searchResult as $account) {
-                if ($account["fid"]) $ids[] = $account["fid"];
+                if ($account["fid"]) {
+                    $ids[] = $account["fid"];
+                }
             }
             $dl = new DocumentList();
             
@@ -328,7 +334,6 @@ class SearchAccount
      */
     public function getQuery()
     {
-        
         $groupRoleFilter = $this->getgroupRoleFilter();
         
         $u = getCurrentUser();
@@ -354,16 +359,25 @@ class SearchAccount
         
         if ((!$this->returnUser) || (!$this->returnGroup) || (!$this->returnRole)) {
             $fa = array();
-            if ($this->returnUser) $fa[] = "accounttype='U'";
-            if ($this->returnGroup) $fa[] = "accounttype='G'";
-            if ($this->returnRole) $fa[] = "accounttype='R'";
-            if ($fa) $sql.= sprintf(" and (%s)", implode(' or ', $fa));
+            if ($this->returnUser) {
+                $fa[] = "accounttype='U'";
+            }
+            if ($this->returnGroup) {
+                $fa[] = "accounttype='G'";
+            }
+            if ($this->returnRole) {
+                $fa[] = "accounttype='R'";
+            }
+            if ($fa) {
+                $sql.= sprintf(" and (%s)", implode(' or ', $fa));
+            }
         }
         
-        if ($this->order) $sql.= sprintf(" order by %s", pg_escape_string($this->order));
+        if ($this->order) {
+            $sql.= sprintf(" order by %s", pg_escape_string($this->order));
+        }
         $sql.= sprintf(" offset %d limit %s", $this->start, pg_escape_string($this->slice));
         
         return $sql;
     }
 }
-?>

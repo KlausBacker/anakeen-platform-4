@@ -19,8 +19,7 @@
  */
 class Dir extends PDir
 {
-    
-    var $defDoctype = 'D';
+    public $defDoctype = 'D';
     private $authfam = false;
     private $norestrict = false;
     
@@ -28,33 +27,40 @@ class Dir extends PDir
         "FDL:EDITBODYCARD",
         "FDL:EDITRESTRICTION"
     );
-    function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
+    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         parent::__construct($dbaccess, $id, $res, $dbid);
-        if ($this->fromid == "") $this->fromid = FAM_DIR;
+        if ($this->fromid == "") {
+            $this->fromid = FAM_DIR;
+        }
     }
     /**
      * get the home and basket folder
      * @param bool $create set to false to disable auto creation
      * @return bool|\Dir false if the dir does not exists and $create is false, home document either
      */
-    function GetHome($create = true)
+    public function GetHome($create = true)
     {
         global $action;
         
-        include_once ("FDL/freedom_util.php");
-        include_once ("FDL/Lib.Dir.php");
+        include_once("FDL/freedom_util.php");
+        include_once("FDL/Lib.Dir.php");
         $rq = internalGetDocCollection($this->dbaccess, 0, 0, 1, array(
             "owner = -" . $this->userid
-        ) , $this->userid, "LIST", "DIR");
+        ), $this->userid, "LIST", "DIR");
         
-        if (count($rq) > 0) $home = $rq[0];
-        else {
-            if (!$create) return false;
+        if (count($rq) > 0) {
+            $home = $rq[0];
+        } else {
+            if (!$create) {
+                return false;
+            }
             /** @var Dir $home */
             $home = createDoc($this->dbaccess, "DIR");
             
-            if (!$home) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , \Dcp\Core\DocManager::getFamilyIdFromName("DIR")));
+            if (!$home) {
+                $action->exitError(sprintf(_("no privilege to create this kind (%d) of document"), \Dcp\Core\DocManager::getFamilyIdFromName("DIR")));
+            }
             
             $home->owner = - $this->userid;
             $user = new Account("", $this->userid);
@@ -65,7 +71,9 @@ class Dir extends PDir
             $home->Add();
             /** @var DocSearch $privlocked */
             $privlocked = createDoc($this->dbaccess, "SEARCH");
-            if (!$privlocked) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , \Dcp\Core\DocManager::getFamilyIdFromName("SEARCH")));
+            if (!$privlocked) {
+                $action->exitError(sprintf(_("no privilege to create this kind (%d) of document"), \Dcp\Core\DocManager::getFamilyIdFromName("SEARCH")));
+            }
             
             $privlocked->title = (_("locked document of ") . $home->title);
             $privlocked->Add();
@@ -74,16 +82,17 @@ class Dir extends PDir
         }
         // add basket in home
         if (\Dcp\Core\ContextManager::getApplicationParam("FREEDOM_IDBASKET") == "") {
-            
             $bas = createDoc($this->dbaccess, "BASKET");
-            if (!$bas) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document") , \Dcp\Core\DocManager::getFamilyIdFromName("BASKET")));
+            if (!$bas) {
+                $action->exitError(sprintf(_("no privilege to create this kind (%d) of document"), \Dcp\Core\DocManager::getFamilyIdFromName("BASKET")));
+            }
             
             $query = new QueryDb($this->dbaccess, "_BASKET");
             $query->AddQuery("owner = " . $this->userid);
             $rq = $query->Query();
             if ($query->nb == 0) {
                 $bas->setvalue("ba_title", _("Document basket"));
-                $bas->setvalue("ba_desc", sprintf(_("basket of %s") , $home->title));
+                $bas->setvalue("ba_desc", sprintf(_("basket of %s"), $home->title));
                 $home->name = sprintf('FLDBASKET_%d', $this->getSystemUserId());
                 $bas->Add();
                 $home->insertDocument($bas->id);
@@ -102,15 +111,19 @@ class Dir extends PDir
      *
      * @return string error message, if no error empty string
      */
-    function Clear()
+    public function Clear()
     {
-        if ($this->isLocked(true)) return sprintf(_("folder is locked. Cannot containt modification"));
+        if ($this->isLocked(true)) {
+            return sprintf(_("folder is locked. Cannot containt modification"));
+        }
         // need this privilege
         $err = $this->Control("modify");
-        if ($err != "") return $err;
+        if ($err != "") {
+            return $err;
+        }
         $this->addHistoryEntry(_("Folder cleared"));
         $this->addLog('clearcontent');
-        $err = $this->exec_query(sprintf("delete from fld where dirid=%d" , $this->initid));
+        $err = $this->exec_query(sprintf("delete from fld where dirid=%d", $this->initid));
         $this->updateFldRelations();
         return $err;
     }
@@ -123,7 +136,7 @@ class Dir extends PDir
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
      * @return string error message if not empty the insertion will be aborted
      */
-    function preInsertDocument($docid, $multiple = false)
+    public function preInsertDocument($docid, $multiple = false)
     {
         return "";
     }
@@ -136,7 +149,7 @@ class Dir extends PDir
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
      * @return string error message if not empty the insert will be aborted
      */
-    function preInsertDoc($docid, $multiple = false)
+    public function preInsertDoc($docid, $multiple = false)
     {
         deprecatedFunction("hook");
     }
@@ -148,7 +161,7 @@ class Dir extends PDir
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
      * @return string error message
      */
-    function postInsertDocument($docid, $multiple = false)
+    public function postInsertDocument($docid, $multiple = false)
     {
         return "";
     }
@@ -161,7 +174,7 @@ class Dir extends PDir
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
      * @return string error message
      */
-    function postInsertDoc($docid, $multiple = false)
+    public function postInsertDoc($docid, $multiple = false)
     {
         deprecatedFunction("hook");
     }
@@ -177,7 +190,7 @@ class Dir extends PDir
      * @param array $tdocid array of document identifier to insert
      * @return string warning message
      */
-    function postInsertMultipleDocuments($tdocid)
+    public function postInsertMultipleDocuments($tdocid)
     {
         return '';
     }
@@ -192,7 +205,7 @@ class Dir extends PDir
      * @param array $tdocid array of document identifier to insert
      * @return string warning message
      */
-    function preInsertMultipleDocuments($tdocid)
+    public function preInsertMultipleDocuments($tdocid)
     {
         return '';
     }
@@ -205,7 +218,7 @@ class Dir extends PDir
      * @param array $tdocid array of document identifier to insert
      * @return string warning message
      */
-    function postMInsertDoc($tdocid)
+    public function postMInsertDoc($tdocid)
     {
         deprecatedFunction("hook");
         return $this->postInsertMultipleDocuments($tdocid);
@@ -219,7 +232,7 @@ class Dir extends PDir
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
      * @return string error message if not empty the insert will be aborted
      */
-    function preRemoveDocument($docid, $multiple = false)
+    public function preRemoveDocument($docid, $multiple = false)
     {
         return "";
     }
@@ -232,7 +245,7 @@ class Dir extends PDir
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
      * @return string error message
      */
-    function postRemoveDocument($docid, $multiple = false)
+    public function postRemoveDocument($docid, $multiple = false)
     {
         return "";
     }
@@ -245,7 +258,7 @@ class Dir extends PDir
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
      * @return string error message if not empty the insert will be aborted
      */
-    function preUnlinkDoc($docid, $multiple = false)
+    public function preUnlinkDoc($docid, $multiple = false)
     {
         deprecatedFunction("hook");
     }
@@ -258,7 +271,7 @@ class Dir extends PDir
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
      * @return string error message
      */
-    function postUnlinkDoc($docid, $multiple = false)
+    public function postUnlinkDoc($docid, $multiple = false)
     {
         deprecatedFunction("hook");
     }
@@ -267,9 +280,11 @@ class Dir extends PDir
      *
      * @return string error message, if no error empty string
      */
-    function canModify()
+    public function canModify()
     {
-        if ($this->isLocked(true)) return sprintf(_("folder is locked. Cannot containt modification"));
+        if ($this->isLocked(true)) {
+            return sprintf(_("folder is locked. Cannot containt modification"));
+        }
         // need this privilege
         $err = $this->Control("modify");
         return $err;
@@ -290,7 +305,7 @@ class Dir extends PDir
      * @param bool $nocontrol if true no test acl "modify"
      * @return string error message, if no error empty string
      */
-    function AddFile($docid, $mode = "latest", $noprepost = false, $forcerestrict = false, $nocontrol = false)
+    public function AddFile($docid, $mode = "latest", $noprepost = false, $forcerestrict = false, $nocontrol = false)
     {
         deprecatedFunction();
         return $this->insertDocument($docid, $mode, $noprepost, $forcerestrict, $nocontrol);
@@ -310,12 +325,14 @@ class Dir extends PDir
      * @param bool $nocontrol if true no test acl "modify"
      * @return string error message, if no error empty string
      */
-    function insertDocument($docid, $mode = "latest", $noprepost = false, $forcerestrict = false, $nocontrol = false)
+    public function insertDocument($docid, $mode = "latest", $noprepost = false, $forcerestrict = false, $nocontrol = false)
     {
         $err = '';
         if (!$nocontrol) {
             $err = $this->canModify();
-            if ($err != "") return $err;
+            if ($err != "") {
+                return $err;
+            }
         }
         
         $doc = new_Doc($this->dbaccess, $docid);
@@ -329,7 +346,7 @@ class Dir extends PDir
             case "latest":
             default:
                 if (!$doc->isAffected()) {
-                    return sprintf(_("Cannot add in %s folder, doc id (%d) unknown") , $this->title, $docid);
+                    return sprintf(_("Cannot add in %s folder, doc id (%d) unknown"), $this->title, $docid);
                 }
                 $qf->qtype = 'S'; // single user query
                 $qf->childid = $doc->initid; // initial doc
@@ -339,16 +356,22 @@ class Dir extends PDir
         $qf->query = "";
         if (!$qf->Exists()) {
             // use pre virtual method
-            if (!$noprepost) $err = $this->preInsertDocument($doc->id);
-            if ($err != "") return $err;
+            if (!$noprepost) {
+                $err = $this->preInsertDocument($doc->id);
+            }
+            if ($err != "") {
+                return $err;
+            }
             // verify if doc family is autorized
-            if ((!$forcerestrict) && (!$this->isAuthorized($doc->fromid))) return sprintf(_("Cannot add %s in %s folder, restriction set to add this kind of document") , $doc->title, $this->title);
+            if ((!$forcerestrict) && (!$this->isAuthorized($doc->fromid))) {
+                return sprintf(_("Cannot add %s in %s folder, restriction set to add this kind of document"), $doc->title, $this->title);
+            }
             
             $err = $qf->Add();
             if ($err == "") {
-                AddLogMsg(sprintf(_("Add %s in %s folder") , $doc->title, $this->title));
-                $this->addHistoryEntry(sprintf(_("Document %s inserted") , $doc->title));
-                $doc->addHistoryEntry(sprintf(_("Document inserted in %s folder") , $this->title, DocHisto::INFO, "MOVEADD"));
+                AddLogMsg(sprintf(_("Add %s in %s folder"), $doc->title, $this->title));
+                $this->addHistoryEntry(sprintf(_("Document %s inserted"), $doc->title));
+                $doc->addHistoryEntry(sprintf(_("Document inserted in %s folder"), $this->title, DocHisto::INFO, "MOVEADD"));
                 
                 $this->addLog('addcontent', array(
                     "insert" => array(
@@ -366,8 +389,10 @@ class Dir extends PDir
                                 $err = $doc->modify(true, array(
                                     "profid",
                                     "dprofid"
-                                ) , true);
-                                if ($err == "") $doc->addHistoryEntry(sprintf(_("Change profil to default document profil : %d") , $profid));
+                                ), true);
+                                if ($err == "") {
+                                    $doc->addHistoryEntry(sprintf(_("Change profil to default document profil : %d"), $profid));
+                                }
                             }
                             break;
 
@@ -385,17 +410,19 @@ class Dir extends PDir
                                     $doc->setValue("FLD_PDOC", $this->getRawValue("FLD_PDOC"));
                                 }
                                 $err = $doc->modify();
-                                if ($err == "") $doc->addHistoryEntry(sprintf(_("Change profil to default subfolder profil : %d") , $profid));
+                                if ($err == "") {
+                                    $doc->addHistoryEntry(sprintf(_("Change profil to default subfolder profil : %d"), $profid));
+                                }
                             }
                             break;
                         }
-                    }
+                }
             }
             if ($doc->prelid == "") {
                 $doc->prelid = $this->initid;
                 $doc->modify(true, array(
                     "prelid"
-                ) , true);
+                ), true);
             }
             
             if ($err == "") {
@@ -404,7 +431,9 @@ class Dir extends PDir
                 
                 $this->updateFldRelations();
                 // use post virtual method
-                if (!$noprepost) $err = $this->postInsertDocument($doc->id, false);
+                if (!$noprepost) {
+                    $err = $this->postInsertDocument($doc->id, false);
+                }
             }
         }
         return $err;
@@ -428,7 +457,7 @@ class Dir extends PDir
      * @internal param \doc $array array document  for the insertion
      * @return string error message, if no error empty string
      */
-    function InsertMDoc($tdocs, $mode = "latest", $noprepost = false, &$tinserted = array() , &$twarning = array())
+    public function InsertMDoc($tdocs, $mode = "latest", $noprepost = false, &$tinserted = array(), &$twarning = array())
     {
         deprecatedFunction();
         return $this->insertMultipleDocuments($tdocs, $mode, $noprepost, $tinserted, $twarning);
@@ -449,7 +478,7 @@ class Dir extends PDir
      * @param array $info
      * @return string error message, if no error empty string
      */
-    function insertMultipleDocuments(array $tdocs, $mode = "latest", $noprepost = false, &$tinserted = array() , &$twarning = array() , &$info = array())
+    public function insertMultipleDocuments(array $tdocs, $mode = "latest", $noprepost = false, &$tinserted = array(), &$twarning = array(), &$info = array())
     {
         $insertError = array();
         if (!$noprepost) {
@@ -469,7 +498,9 @@ class Dir extends PDir
                 "preInsertDocument" => array() ,
                 "modifyError" => ""
             );
-            if ($err != "") return $err;
+            if ($err != "") {
+                return $err;
+            }
         }
         $err = $this->canModify();
         if ($err != "") {
@@ -489,7 +520,7 @@ class Dir extends PDir
         $tmsg = array();
         foreach ($tdocs as $tdoc) {
             if (!$this->isAuthorized($tdoc["fromid"])) {
-                $warn = sprintf(_("Cannot add %s in %s folder, restriction set to add this kind of document") , $tdoc["title"], $this->title);
+                $warn = sprintf(_("Cannot add %s in %s folder, restriction set to add this kind of document"), $tdoc["title"], $this->title);
                 $twarning[$tdoc['id']] = $warn;
             } else {
                 switch ($mode) {
@@ -513,13 +544,15 @@ class Dir extends PDir
                 $qf->dirid = $this->initid; // the reference folder is the initial id
                 $qf->query = "";
                 // use post virtual method
-                if (!$noprepost) $insertOne = $this->preInsertDocument($tdoc["initid"], true);
+                if (!$noprepost) {
+                    $insertOne = $this->preInsertDocument($tdoc["initid"], true);
+                }
                 
                 if ($insertOne == "") {
                     $insertOne = $qf->Add();
                     if ($insertOne == "") {
-                        AddLogMsg(sprintf(_("Add %s in %s folder") , $tdoc["title"], $this->title));
-                        $this->addHistoryEntry(sprintf(_("Document %s inserted") , $tdoc["title"]) , DocHisto::INFO, "MODCONTAIN");
+                        AddLogMsg(sprintf(_("Add %s in %s folder"), $tdoc["title"], $this->title));
+                        $this->addHistoryEntry(sprintf(_("Document %s inserted"), $tdoc["title"]), DocHisto::INFO, "MODCONTAIN");
                         
                         $this->addLog('addcontent', array(
                             "insert" => array(
@@ -528,7 +561,7 @@ class Dir extends PDir
                             )
                         ));
                         $tAddeddocids[] = $docid;
-                        $tinserted[$docid] = sprintf(_("Document %s inserted") , $tdoc["title"]);
+                        $tinserted[$docid] = sprintf(_("Document %s inserted"), $tdoc["title"]);
                         // use post virtual method
                         if (!$noprepost) {
                             $tmsg[$docid] = $this->postInsertDocument($tdoc["initid"], true);
@@ -579,11 +612,12 @@ class Dir extends PDir
      * @param array $tdocids identifier documents  for the insertion
      * @return string error message, if no error empty string
      */
-    function QuickInsertMSDocId($tdocids)
+    public function QuickInsertMSDocId($tdocids)
     {
-        
         $err = $this->canModify();
-        if ($err != "") return $err;
+        if ($err != "") {
+            return $err;
+        }
         $qf = new QueryDir($this->dbaccess);
         $qf->qtype = 'S'; // single user query
         $qf->dirid = $this->initid; // the reference folder is the initial id
@@ -605,13 +639,19 @@ class Dir extends PDir
      * @param int $docid identifier document  for the insertion  (must be initial id)
      * @return string error message, if no error empty string
      */
-    function insertFolder($docid)
+    public function insertFolder($docid)
     {
-        if (!is_numeric($docid)) return sprintf(_("Dir::insertFolder identifier [%s] must be numeric") , $docid);
-        if ($this->isLocked(true)) return sprintf(_("folder is locked. Cannot containt modification"));
+        if (!is_numeric($docid)) {
+            return sprintf(_("Dir::insertFolder identifier [%s] must be numeric"), $docid);
+        }
+        if ($this->isLocked(true)) {
+            return sprintf(_("folder is locked. Cannot containt modification"));
+        }
         // need this privilege
         $err = $this->Control("modify");
-        if ($err != "") return $err;
+        if ($err != "") {
+            return $err;
+        }
         
         $err = $this->exec_Query(sprintf("insert INTO fld (select %d,query,childid,qtype from fld where dirid=%d);", $this->initid, $docid));
         
@@ -619,7 +659,7 @@ class Dir extends PDir
         return $err;
     }
     // --------------------------------------------------------------------
-    function getQids($docid)
+    public function getQids($docid)
     {
         // return array of queries id includes in a directory
         // --------------------------------------------------------------------
@@ -653,7 +693,7 @@ class Dir extends PDir
      * @param bool $nocontrol if true no test acl "modify"
      * @return string error message, if no error empty string
      */
-    function DelFile($docid, $noprepost = false, $nocontrol = false)
+    public function DelFile($docid, $noprepost = false, $nocontrol = false)
     {
         deprecatedFunction();
         return $this->removeDocument($docid, $noprepost, $nocontrol);
@@ -668,43 +708,59 @@ class Dir extends PDir
      * @param bool $nocontrol if true no test acl "modify"
      * @return string error message, if no error empty string
      */
-    function removeDocument($docid, $noprepost = false, $nocontrol = false)
+    public function removeDocument($docid, $noprepost = false, $nocontrol = false)
     {
         $err = '';
         if (!$nocontrol) {
             $err = $this->canModify();
-            if ($err != "") return $err;
+            if ($err != "") {
+                return $err;
+            }
         }
         // use pre virtual method
-        if (!$noprepost) $err = $this->preRemoveDocument($docid);
-        if ($err != "") return $err;
+        if (!$noprepost) {
+            $err = $this->preRemoveDocument($docid);
+        }
+        if ($err != "") {
+            return $err;
+        }
         
         $doc = new_Doc($this->dbaccess, $docid);
         $docid = $doc->initid;
         //if (count($qids) == 0) $err = sprintf(_("cannot delete link : link not found for doc %d in folder %d"),$docid, $this->initid);
-        if ($err != "") return $err;
+        if ($err != "") {
+            return $err;
+        }
         // search original query
         $qf = new QueryDir($this->dbaccess, array(
             $this->initid,
             $docid
         ));
-        if (!($qf->isAffected())) $err = sprintf(_("cannot delete link : initial query not found for doc %d in folder %d") , $docid, $this->initid);
+        if (!($qf->isAffected())) {
+            $err = sprintf(_("cannot delete link : initial query not found for doc %d in folder %d"), $docid, $this->initid);
+        }
         
-        if ($err != "") return $err;
+        if ($err != "") {
+            return $err;
+        }
         
-        if ($qf->qtype == "M") $err = sprintf(_("cannot delete link for doc %d in folder %d : the document comes from a user query. Delete initial query if you want delete this document") , $docid, $this->initid);
+        if ($qf->qtype == "M") {
+            $err = sprintf(_("cannot delete link for doc %d in folder %d : the document comes from a user query. Delete initial query if you want delete this document"), $docid, $this->initid);
+        }
         
-        if ($err != "") return $err;
+        if ($err != "") {
+            return $err;
+        }
         $qf->Delete();
         
         if ($doc->prelid == $this->initid) {
             $doc->prelid = "";
             $doc->modify(true, array(
                 "prelid"
-            ) , true);
+            ), true);
         }
         
-        AddLogMsg(sprintf(_("Delete %d in %s folder") , $docid, $this->title));
+        AddLogMsg(sprintf(_("Delete %d in %s folder"), $docid, $this->title));
         
         $this->addLog('delcontent', array(
             "insert" => array(
@@ -712,8 +768,8 @@ class Dir extends PDir
                 "title" => $doc->title
             )
         ));
-        $this->addHistoryEntry(sprintf(_("Document %s umounted") , $doc->title) , DocHisto::INFO, "MODCONTAIN");
-        $doc->addHistoryEntry(sprintf(_("Document unlinked of %s folder") , $this->title, DocHisto::INFO, "MOVEUNLINK"));
+        $this->addHistoryEntry(sprintf(_("Document %s umounted"), $doc->title), DocHisto::INFO, "MODCONTAIN");
+        $doc->addHistoryEntry(sprintf(_("Document unlinked of %s folder"), $this->title, DocHisto::INFO, "MOVEUNLINK"));
         // use post virtual method
         if (!$noprepost) {
             $this->updateFldRelations();
@@ -731,7 +787,7 @@ class Dir extends PDir
      * @param integer $movetoid target destination
      * @return string error message (empty if null)
      */
-    function moveDocument($docid, $movetoid)
+    public function moveDocument($docid, $movetoid)
     {
         $err = $this->canModify();
         if ($err == "") {
@@ -752,10 +808,12 @@ class Dir extends PDir
                                             $doc->prelid = $da->initid;
                                             $err = $doc->modify(true, array(
                                                 "prelid"
-                                            ) , true);
+                                            ), true);
                                         }
                                     }
-                                } else $err = sprintf(_("document %s is not a folder") , $this->getTitle());
+                                } else {
+                                    $err = sprintf(_("document %s is not a folder"), $this->getTitle());
+                                }
                             }
                         } else {
                             if ($err == "") {
@@ -764,18 +822,20 @@ class Dir extends PDir
                                     $doc->prelid = $da->initid;
                                     $err = $doc->modify(true, array(
                                         "prelid"
-                                    ) , true);
+                                    ), true);
                                 }
                             }
                         }
                     }
-                } else $err = sprintf(_("document %s is not a folder") , $da->getTitle());
+                } else {
+                    $err = sprintf(_("document %s is not a folder"), $da->getTitle());
+                }
             }
         }
         return $err;
     }
     // --------------------------------------------------------------------
-    function postStore()
+    public function postStore()
     {
         // don't see restriction frame is not needed
         $allbut = $this->getRawValue("FLD_ALLBUT");
@@ -797,7 +857,7 @@ class Dir extends PDir
         return self::postStore();
     }
     
-    function hasNoRestriction()
+    public function hasNoRestriction()
     {
         if (!$this->authfam) {
             $this->getAuthorizedFamilies();
@@ -810,9 +870,8 @@ class Dir extends PDir
      * @param bool $verifyCreate set to true if you want to get only families the user can create (icreate acl)
      * @return array
      */
-    function getAuthorizedFamilies($classid = 0, $verifyCreate = false)
+    public function getAuthorizedFamilies($classid = 0, $verifyCreate = false)
     {
-        
         if (!$this->authfam) {
             $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
             $tfam = $this->getMultipleRawValues("FLD_FAM");
@@ -824,21 +883,20 @@ class Dir extends PDir
                 return array();
             }
             
-            $this->norestrict = false;;
+            $this->norestrict = false;
+            ;
             $tclassdoc = array();
             if ($allbut != "1") {
-                include_once ("FDL/Lib.Dir.php");
+                include_once("FDL/Lib.Dir.php");
                 $tallfam = GetClassesDoc($this->dbaccess, $this->userid, $classid, "TABLE");
                 
                 foreach ($tallfam as $cdoc) {
                     $tclassdoc[$cdoc["id"]] = $cdoc;
                     //	  $tclassdoc += $this->GetChildFam($cdoc["id"]);
-                    
                 }
                 // suppress undesirable families
                 reset($tfamid);
                 foreach ($tfamid as $k => $famid) {
-                    
                     unset($tclassdoc[intval($famid) ]);
                     if ($tsubfam[$k] != "yes") {
                         $tnofam = $this->GetChildFam(intval($famid));
@@ -857,7 +915,9 @@ class Dir extends PDir
                             "title" => $tfam[$k]
                         );
                     }
-                    if ($tsubfam[$k] != "no") $tclassdoc+= $this->GetChildFam(intval($famid));
+                    if ($tsubfam[$k] != "no") {
+                        $tclassdoc+= $this->GetChildFam(intval($famid));
+                    }
                 }
             }
             $this->authfam = $tclassdoc;
@@ -874,10 +934,16 @@ class Dir extends PDir
         if (!$this->authfam) {
             $this->getAuthorizedFamilies();
         }
-        if ($this->norestrict) return true;
-        if (!$classid) return true;
+        if ($this->norestrict) {
+            return true;
+        }
+        if (!$classid) {
+            return true;
+        }
         
-        if (isset($this->authfam[$classid])) return true;
+        if (isset($this->authfam[$classid])) {
+            return true;
+        }
         
         return false;
     }
@@ -890,11 +956,14 @@ class Dir extends PDir
      * @param string $trash
      * @return array array of document array
      */
-    public function getContent($controlview = true, array $filter = array() , $famid = "", $qtype = "TABLE", $trash = "")
+    public function getContent($controlview = true, array $filter = array(), $famid = "", $qtype = "TABLE", $trash = "")
     {
-        include_once ("FDL/Lib.Dir.php");
-        if ($controlview) $uid = $this->userid;
-        else $uid = 1;
+        include_once("FDL/Lib.Dir.php");
+        if ($controlview) {
+            $uid = $this->userid;
+        } else {
+            $uid = 1;
+        }
         $tdoc = internalGetDocCollection($this->dbaccess, $this->initid, 0, "ALL", $filter, $uid, $qtype, $famid, false, "title", true, $trash);
         return $tdoc;
     }
@@ -904,7 +973,6 @@ class Dir extends PDir
     public function updateFldRelations()
     {
         return; //inhibit folder relation (too slow for great folder)
-        
     }
     /**
      * return number of item in the static folder
@@ -915,11 +983,15 @@ class Dir extends PDir
     {
         if ($onlyprimary) {
             $tdoc = $this->getPrimaryChild();
-            if ($tdoc) return count($tdoc);
+            if ($tdoc) {
+                return count($tdoc);
+            }
         } else {
             $q = new QueryDb($this->dbaccess, "QueryDir");
             $tv = $q->Query(0, 0, "TABLE", "select childid from fld where dirid=" . $this->initid . " and qtype='S'");
-            if (is_array($tv)) return count($tv);
+            if (is_array($tv)) {
+                return count($tv);
+            }
         }
         return -1;
     }
@@ -932,7 +1004,9 @@ class Dir extends PDir
         $query = sprintf("select childid from fld where dirid=%d and qtype='S'", $this->initid);
         $initids = array();
         $err = simpleQuery($this->dbaccess, $query, $initids, true, false);
-        if ($err == "") return $initids;
+        if ($err == "") {
+            return $initids;
+        }
         
         return array();
     }
@@ -971,12 +1045,16 @@ class Dir extends PDir
                 /** @var Dir $doc */
                 $terr = array_merge($terr, $doc->deleteItems());
                 foreach ($terr as $err) {
-                    if ($err != "") $coulddelete = false;
+                    if ($err != "") {
+                        $coulddelete = false;
+                    }
                 }
             }
-            if ($coulddelete) $terr[$doc->id] = $doc->delete();
+            if ($coulddelete) {
+                $terr[$doc->id] = $doc->delete();
+            }
         }
-        $this->addHistoryEntry(_("Folder cleared") , DocHisto::INFO, "MODCONTAIN");
+        $this->addHistoryEntry(_("Folder cleared"), DocHisto::INFO, "MODCONTAIN");
         return $terr;
     }
     /**
@@ -1026,7 +1104,9 @@ class Dir extends PDir
     public function deleteRecursive()
     {
         $err = $this->predocdelete(); // test before try recursive deletion
-        if ($err != "") return $err;
+        if ($err != "") {
+            return $err;
+        }
         $coulddelete = true;
         $terr = $this->deleteItems();
         $err = "";
@@ -1036,7 +1116,9 @@ class Dir extends PDir
                 $err.= "\n$err1";
             }
         }
-        if ($coulddelete) $err = $this->delete();
+        if ($coulddelete) {
+            $err = $this->delete();
+        }
         return $err;
     }
     /**
@@ -1045,7 +1127,7 @@ class Dir extends PDir
      *
      * @return array an array of errors
      */
-    function reviveItems()
+    public function reviveItems()
     {
         $filter[] = "prelid=" . $this->initid;
         $lpdoc = $this->getContent(true, $filter, "", "ITEM", "only");

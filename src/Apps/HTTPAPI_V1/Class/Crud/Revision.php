@@ -77,7 +77,7 @@ class Revision extends Document
         throw $exception;
     }
     //endregion CRUD part
-    public function execute($method, array & $messages = array() , &$httpStatus = "")
+    public function execute($method, array & $messages = array(), &$httpStatus = "")
     {
         $this->initCrudParam();
         return parent::execute($method, $messages, $httpStatus);
@@ -163,7 +163,7 @@ class Revision extends Document
             $query = parse_url($pathInfo, PHP_URL_QUERY);
             $exception = new Exception("CRUD0222");
             $exception->setHttpStatus("307", "This is a revision");
-            $exception->addHeader("Location", $this->generateURL(sprintf("documents/%d/revisions/%s.json", $initid, $this->urlParameters["revision"]) , $query));
+            $exception->addHeader("Location", $this->generateURL(sprintf("documents/%d/revisions/%s.json", $initid, $this->urlParameters["revision"]), $query));
             $exception->setURI($this->generateURL(sprintf("documents/%d/revisions/%s.json", $initid, $this->urlParameters["revision"])));
             throw $exception;
         }

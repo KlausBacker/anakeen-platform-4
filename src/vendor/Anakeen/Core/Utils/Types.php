@@ -1,5 +1,6 @@
 <?php
 namespace Dcp\Core\Utils;
+
 /**
  * Architecture specific type manipulation.
  *

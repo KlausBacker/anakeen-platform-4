@@ -17,10 +17,12 @@ class CheckDefault extends CheckData
      * @param Doc $doc
      * @return CheckDefault
      */
-    function check(array $data, &$doc = null)
+    public function check(array $data, &$doc = null)
     {
         $this->defaultName = trim(strtolower($data[1]));
-        if (isset($data[2])) $this->defaultValue = trim($data[2]);
+        if (isset($data[2])) {
+            $this->defaultValue = trim($data[2]);
+        }
         $this->doc = $doc;
         $this->checkDefaultName();
         $this->checkDefaultValue();
@@ -37,7 +39,6 @@ class CheckDefault extends CheckData
                 $this->addError(ErrorCode::getError('DFLT0001', $this->defaultName, $this->doc->name));
             }
         } else {
-            
             $this->addError(ErrorCode::getError('DFLT0002', $this->doc->name));
         }
     }
@@ -51,7 +52,6 @@ class CheckDefault extends CheckData
             $oParse = new parseFamilyMethod();
             $strucFunc = $oParse->parse($this->defaultValue, true);
             if ($err = $strucFunc->getError()) {
-                
                 $this->addError(ErrorCode::getError('DFLT0003', $this->defaultName, $this->defaultValue, $this->doc->name, $err));
             }
         }
