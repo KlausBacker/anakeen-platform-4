@@ -139,14 +139,17 @@ define([
                     currentView.$el.find(".dcpAttribute__right").addClass("dcpAttribute__right--full");
                 } else {
                     if (currentView.model.getOption("labelPosition") === "left") {
+                        currentView.$el.addClass("dcpAttribute__labelPosition--left");
                         currentView.$el.find(".dcpAttribute__right").not(".dcpAttribute__description").addClass("dcpAttribute__labelPosition--left");
                         currentView.$el.find(".dcpAttribute__left").not(".dcpAttribute__description").addClass("dcpAttribute__labelPosition--left");
                     }
                     if (currentView.model.getOption("labelPosition") === "up") {
+                        currentView.$el.addClass("dcpAttribute__labelPosition--up");
                         currentView.$el.find(".dcpAttribute__right").not(".dcpAttribute__description").addClass("dcpAttribute__labelPosition--up");
                         currentView.$el.find(".dcpAttribute__left").not(".dcpAttribute__description").addClass("dcpAttribute__labelPosition--up");
                     }
                     if (currentView.model.getOption("labelPosition") === "auto") {
+                        currentView.$el.addClass("dcpAttribute__labelPosition--auto");
                         currentView.$el.find(".dcpAttribute__right").addClass("dcpAttribute__labelPosition--auto");
                         currentView.$el.find(".dcpAttribute__left").addClass("dcpAttribute__labelPosition--auto");
                     }

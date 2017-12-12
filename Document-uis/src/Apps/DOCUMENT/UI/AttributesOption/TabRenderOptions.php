@@ -42,16 +42,16 @@ class TabRenderOptions extends CommonRenderOptions
         $columns = array();
         $previousMax="0";
         foreach ($responsives as $responsive) {
-            if (!$responsive["minWidth"]) {
+            if (empty($responsive["minWidth"])) {
                 $responsive["minWidth"]=$previousMax;
             }
             $columns[] = [
                 "number" => $responsive["number"],
-                "minWidth" => $responsive["minWidth"],
-                "maxWidth" => $responsive["maxWidth"],
-                "grow" => $responsive["grow"],
+                "minWidth" => empty($responsive["minWidth"])?null:$responsive["minWidth"],
+                "maxWidth" => isset($responsive["maxWidth"])?$responsive["maxWidth"]:null,
+                "grow" => !empty($responsive["grow"]),
             ];
-            $previousMax=$responsive["maxWidth"];
+            $previousMax=empty($responsive["maxWidth"])?null:$responsive["maxWidth"];
         }
         $this->setOption(self::responsiveColumnsOption, $columns);
     }
