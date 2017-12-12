@@ -14,15 +14,17 @@
  */
 /**#@+
  * constant for log level history
- *
+ * @deprecated use DocHisto const instead
 */
+
 define("HISTO_NOTICE", 1);
 define("HISTO_INFO", 2);
 define("HISTO_MESSAGE", 4);
 define("HISTO_WARNING", 8);
 define("HISTO_ERROR", 16);
 
-include_once ("Class.DbObj.php");
+include_once("Class.DbObj.php");
+
 class DocHisto extends DbObj
 {
     const NOTICE = 1;
@@ -97,4 +99,3 @@ create index i_dochisto on dochisto(id);
 create index in_dochisto on dochisto(initid);
 ";
 }
-?>
