@@ -879,7 +879,7 @@ class setTranslation extends \Dcp\Ui\DefaultEdit
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
-        $options->commonOption(test_ddui_all__integer)->setTranslations([
+        $options->commonOption(myAttributes::test_ddui_all__integer)->setTranslations([
             "decreaseLabel" => "5 kilos de moins",
             "increaseLabel" => "50 kilos de plus"
         ]);
@@ -984,7 +984,7 @@ class DocumentController_reinitDocument             extends \Dcp\Ui\DefaultEdit
         $viewDoc->htmlContent = '<span>  Reinitialiser le document </span><i class="fa fa-eye"></i>';
         $viewDoc->class = "mybtn_DocumentController_reinitDocument userButton";
         $viewDoc->windowWidth = "400px";
-        $options->commonOption( test_ddui_all__title)->addButton($viewDoc);
+        $options->commonOption( myAttributes::test_ddui_all__title)->addButton($viewDoc);
 
 
         return $options;
@@ -1019,7 +1019,7 @@ class DocumentController_fetchDocument              extends \Dcp\Ui\DefaultEdit
         $viewDoc->htmlContent = '<span>  Fetcher le document </span><i class="fa fa-eye"></i>';
         $viewDoc->class = "mybtn_DocumentController_fetchDocument userButton";
         $viewDoc->windowWidth = "400px";
-        $options->commonOption( test_ddui_all__title)->addButton($viewDoc);
+        $options->commonOption( myAttributes::test_ddui_all__title)->addButton($viewDoc);
 
 
         return $options;
@@ -1054,7 +1054,7 @@ class DocumentController_saveDocument               extends \Dcp\Ui\DefaultEdit
         $viewDoc->htmlContent = '<span>  Sauvegarder le document </span><i class="fa fa-eye"></i>';
         $viewDoc->class = "mybtn_DocumentController_saveDocument userButton";
         $viewDoc->windowWidth = "400px";
-        $options->commonOption( test_ddui_all__title)->addButton($viewDoc);
+        $options->commonOption( myAttributes::test_ddui_all__title)->addButton($viewDoc);
 
 
         return $options;
