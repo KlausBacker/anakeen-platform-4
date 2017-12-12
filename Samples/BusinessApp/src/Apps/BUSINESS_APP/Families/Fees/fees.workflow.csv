@@ -5,4 +5,7 @@ ICON;workflow.png;;;;;;;;;;;;;;
 CLASS;Sample\BusinessApp\WFees;;;;;;;;;;;;;;
 //;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink ;constraint ;option
 ;;;;;;;;;;;;;;;
+PARAM;FEEW_F_ASK;;Ask;N;N;frame;::auto;W;;;;;;;
+PARAM;FEEW_SIGN;FEEW_F_ASK;Signer électroniquement la note de frais;N;N;enum;::auto;W;;;;1|Oui,2|Non;;;
+;;;;;;;;;;;;;;;
 END;;;;;;;;;;;;;;;

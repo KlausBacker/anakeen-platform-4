@@ -20,6 +20,7 @@
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/RHDirectory/rhdirectory.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Fees/fees.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Fees/fees.workflow.csv --csv-enclosure='&quot;'" />
+        <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Fees/BA_FEES_WORKFLOW.csv --csv-enclosure='&quot;'" />
         <!--<process command="./wsh.php &#45;&#45;api=importDocuments &#45;&#45;file=./Apps/BUSINESS_APP/Families/Laboratory/laboratory.struct.csv &#45;&#45;csv-enclosure='&quot;'" />-->
         <!--<process command="./wsh.php &#45;&#45;api=importDocuments &#45;&#45;file=./Apps/BUSINESS_APP/Families/Prospect/prospect.struct.csv &#45;&#45;csv-enclosure='&quot;'" />-->
         <!--<process command="./wsh.php &#45;&#45;api=importDocuments &#45;&#45;file=./Apps/BUSINESS_APP/Families/Prospect/prospect.param.csv &#45;&#45;csv-enclosure='&quot;'" />-->

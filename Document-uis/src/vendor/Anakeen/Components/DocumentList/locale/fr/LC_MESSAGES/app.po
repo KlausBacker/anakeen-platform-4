@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Document-uis 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-06 09:20+0100\n"
-"PO-Revision-Date: 2017-12-01 18:36+0100\n"
+"POT-Creation-Date: 2017-12-07 16:01+0100\n"
+"PO-Revision-Date: 2017-12-07 16:44+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -22,17 +22,17 @@ msgctxt "DocumentList"
 msgid "of"
 msgstr "sur"
 
+#: Document-uis/src/vendor/Anakeen/Components/DocumentList/documentList.controller.js:194
+msgctxt "DocumentList"
+msgid "Search in : %{collection}"
+msgstr "Rechercher dans : %{collection}"
+
 #: Document-uis/src/vendor/Anakeen/Components/DocumentList/documentList.controller.js:195
 msgctxt "DocumentList"
-msgid "Search in"
-msgstr "Rechercher dans"
+msgid "No %{collection} to display"
+msgstr "Aucun %{collection} à afficher"
 
-#: Document-uis/src/vendor/Anakeen/Components/DocumentList/documentList.controller.js:197
+#: Document-uis/src/vendor/Anakeen/Components/DocumentList/documentList.controller.js:200
 msgctxt "DocumentList"
 msgid "Items per page"
 msgstr "Eléments par page"
-
-#: Document-uis/src/vendor/Anakeen/Components/DocumentList/documentList.controller.js:198
-msgctxt "DocumentList"
-msgid "No Smart Element to display"
-msgstr "Aucun Smart Element à afficher"

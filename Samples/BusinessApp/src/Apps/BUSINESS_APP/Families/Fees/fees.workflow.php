@@ -4,6 +4,7 @@
 namespace Sample\BusinessApp;
 
 use \Dcp\AttributeIdentifiers\BA_FEES as FeesAttr;
+use \Dcp\AttributeIdentifiers\BA_WFEES as WFeesAttr;
 use Dcp\HttpApi\V1\DocManager\DocManager;
 
 class WFees extends \Dcp\Family\Wdoc
@@ -34,6 +35,8 @@ class WFees extends \Dcp\Family\Wdoc
 
     public $transitions = array(
         self::T_BA_SEND => array(
+            "ask" => array("feew_sign"),
+            "m1" => "checkSignNote",
             "nr" => true
         ),
         self::T_BA_VALID => array(
@@ -63,6 +66,13 @@ class WFees extends \Dcp\Family\Wdoc
         )
     );
 
-
+    public function checkSignNote($nextStep, $currentStep, $confirmationMessage) {
+        $sign = $this->getRawValue(WFeesAttr::feew_sign);
+        $err = "";
+        if ($sign == 2) {
+            $err = ___("You must sign the note to send it to validation", "BA_WFEES");
+        }
+        return $err;
+    }
 
 }

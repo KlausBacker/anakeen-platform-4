@@ -1,33 +1,25 @@
 {
     "families": {
-        "BA_LABORATORY": {
-            "renderAccessClass": "Sample\\BusinessApp\\Renders\\LaboratoryAccess",
-            "applyRefresh": false,
-            "disableEtag": false
-        },
-
-        "BA_PROSPECT": {
-            "renderAccessClass": "Sample\\BusinessApp\\Renders\\ProspectAccess",
-            "applyRefresh": false,
-            "disableEtag": false
-        },
-
-        "BA_CLIENT": {
+        "BA_CLIENT_CONTRACT": {
             "renderAccessClass": "Sample\\BusinessApp\\Renders\\ClientAccess",
             "applyRefresh": false,
             "disableEtag": false
         },
-        "BA_WCLIENT": {
-            "renderTransitionClass": "Sample\\BusinessApp\\Renders\\ClientTransitionsAccess"
-        },
-        "BA_CERTIFICATION": {
-            "renderAccessClass": "Sample\\BusinessApp\\Renders\\CertificationAccess",
+
+        "BA_FEES": {
+            "renderAccessClass": "Sample\\BusinessApp\\Renders\\FeesAccess",
             "applyRefresh": false,
             "disableEtag": false
         },
 
-        "BA_WCERTIFICATION": {
-            "renderTransitionClass": "Sample\\BusinessApp\\Renders\\CertificationTransitionsAccess"
+        "BA_WFEES": {
+            "renderTransitionClass": "Sample\\BusinessApp\\Renders\\FeesTransitionsAccess"
+        },
+
+        "BA_RHDIR": {
+            "renderAccessClass": "Sample\\BusinessApp\\Renders\\RHDirAccess",
+            "applyRefresh": false,
+            "disableEtag": false
         }
     }
 }
