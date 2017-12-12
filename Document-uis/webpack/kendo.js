@@ -20,6 +20,7 @@ define(["jquery",
     "kendo-ui-core/js/kendo.tabstrip",
     "kendo-ui-core/js/kendo.pager",
     "kendo-ui-core/js/kendo.button",
-    "kendo-ui-core/js/kendo.listview"], function ($, kendo) {
+    "kendo-ui-core/js/kendo.listview"
+], function ($, kendo) {
     return kendo.jQuery;
 });

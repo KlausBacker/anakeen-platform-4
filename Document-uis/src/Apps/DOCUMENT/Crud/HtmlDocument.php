@@ -100,8 +100,13 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
                 throw new Exception(sprintf(___("Revision \"%s\" must be a number or a state reference", "ddui") , $revision));
             }
         }
-        
-        $layout = new \Layout("DOCUMENT/Layout/view.html");
+
+        $modeDebug = \ApplicationParameterManager::getParameterValue("DOCUMENT", "MODE_DEBUG");
+        if ($modeDebug !== "FALSE") {
+            $layout = new \Layout("DOCUMENT/Layout/debug/view.html");
+        } else {
+            $layout = new \Layout("DOCUMENT/Layout/prod/view.html");
+        }
         $layout->set("BASEURL", self::getBaseUrl());
         $layout->set("NOTIFICATION_DELAY", \ApplicationParameterManager::getParameterValue("DOCUMENT", "NOTIFICATION_DELAY"));
         $layout->set("notificationLabelMore", ___("See more ...", "ddui:notification"));

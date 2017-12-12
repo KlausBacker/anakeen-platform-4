@@ -1,33 +1,52 @@
-const path = require('path');
+// Prevent the EMFILE too many open file error
 const fs = require('fs');
-const webpack = require('webpack');
-let confPerso;
+const gracefulFs = require('graceful-fs');
+gracefulFs.gracefulify(fs);
 
-if (fs.existsSync('./webpack-perso.js')) {
-    confPerso = require('./webpack-perso.js');
-} else {
-    confPerso = require('./webpack-perso.js.sample');
-    console.error('\n============= WARNING =============\n' +
-        'By default, "webpack-perso.js.sample" is used but ' +
-        '\nyou must define your own "webpack-perso.js" file' +
-        '\nin order to configure the anakeen server host' +
-        '\n===================================\n');
-}
-module.exports = {
-    entry: {
-        app: path.resolve(__dirname, 'src/vendor/Anakeen/Components/main.js')
-    },
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+const merge = require("webpack-merge");
+const parts = require("./webpack.parts");
+
+const PATHS = {
+    "document": path.resolve(__dirname, 'src/Apps/DOCUMENT/IHM/main.js'),
+    "components": path.resolve(__dirname, 'src/vendor/Anakeen/Components/main.js'),
+    "build": path.resolve(__dirname, 'src/public/'),
+};
+
+const commonConfig = merge([{
+    devtool: "cheap-module-eval-source-map",
     output: {
-        path: path.resolve(__dirname, 'src/public/components/dist/'),
-        publicPath: "/components/dist/",
-        filename: 'a4-components.js'
+        filename: '[name]-[chunkhash].js'
     },
-    externals: {
-        kendo: 'kendo',
-        jquery: 'jQuery'
+    resolve: {
+        extensions: [".js"],
+        alias: {
+            "dcpContextRoot": "",
+            "dcpDocument": path.resolve(__dirname, "src/Apps/DOCUMENT/IHM/"),
+            "datatables": "datatables.net",
+            "kendo-culture-fr": "kendo-ui-core/js/cultures/kendo.culture.fr-FR",
+            "tooltip": "bootstrap/js/src/tooltip",
+            "documentCkEditor": path.resolve(__dirname, "webpack/ckeditor.js")
+        }
     },
     module: {
         rules: [
+            {
+                test: /\.js$/,
+                exclude: [
+                    path.resolve(__dirname, 'node_modules/underscore/'),
+                    path.resolve(__dirname, 'node_modules/ckeditor/')
+                ],
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['env'],
+                        babelrc: false
+                    }
+                }
+            },
             {
                 test: /\.vue$/,
                 use: {
@@ -41,63 +60,128 @@ module.exports = {
                 }
             },
             {
-                test: /\.js$/,
-                include: [path.resolve(__dirname, 'src/vendor/Anakeen/Components/')],
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['env']
-                    }
-                }
-            },
-            {
                 test: /\.template.kd$/,
                 include: [path.resolve(__dirname, 'src/vendor/Anakeen/Components/')],
                 use: 'raw-loader'
-            },
-        ]
+            }
+        ],
     },
-    resolve: {
-        alias: {
-            kendo: path.resolve(__dirname, 'webpack/kendo.js')
+    plugins: [
+        new CopyWebpackPlugin(
+            [
+                //dynacase-report
+                {
+                    context: path.resolve(__dirname, "src/Apps/DOCUMENT/IHM/"),
+                    from: "dynacaseReport.js",
+                    to: path.resolve(__dirname, 'src/public/uiAssets/anakeen/')
+                }
+            ]
+        )
+    ]
+    },
+    parts.providePopper(),
+    parts.addExternals()
+    ]
+);
+
+const productionDocumentConfig = merge([
+    {
+        entry: {
+            'document': PATHS.document,
+        },
+        output: {
+            publicPath: 'uiAssets/anakeen/prod/',
+            path: path.resolve(PATHS.build, 'uiAssets/anakeen/prod/')
         }
+    },
+    parts.setFreeVariable("process.env.NODE_ENV", "production"),
+    parts.clean(path.resolve(PATHS.build, 'uiAssets/anakeen/prod/')),
+    parts.minifyJavaScript(),
+    parts.attachRevision(),
+    parts.generateViewHtml('src/Apps/DOCUMENT/Layout/prod/')
+]);
+
+const productionComponentConfig = merge([
+    {
+        entry: {
+            'a4-components': PATHS.components
+        },
+        output: {
+            publicPath: 'components/dist/',
+            path: path.resolve(PATHS.build, 'components/dist/')
+        }
+    },
+    parts.clean(path.resolve(PATHS.build, 'components/dist/')),
+    parts.minifyJavaScript(),
+    parts.attachRevision()
+]);
+
+const debugDocumentConfig = merge([
+    {
+        entry: {
+            'document': PATHS.document
+        },
+        output: {
+            publicPath: 'uiAssets/anakeen/debug/',
+            filename: '[name].js',
+            path: path.resolve(PATHS.build, 'uiAssets/anakeen/debug/')
+        }
+    },
+    parts.setFreeVariable("process.env.NODE_ENV", "debug"),
+    parts.generateViewHtml('src/Apps/DOCUMENT/Layout/debug/'),
+    parts.clean(path.resolve(PATHS.build, 'uiAssets/anakeen/debug/'))
+]);
+
+const debugComponentConfig = merge([
+    {
+        entry: {
+            'a4-components': PATHS.components
+        },
+        output: {
+            publicPath: 'components/debug/',
+            filename: '[name].js',
+            path: path.resolve(PATHS.build, 'components/debug/')
+        }
+    },
+    parts.clean(path.resolve(PATHS.build, 'components/debug/'))
+]);
+
+const devConfig = merge([
+    {
+        entry: {
+            'components/debug/a4-components': PATHS.components,
+            'uiAssets/anakeen/debug/main': PATHS.document,
+        },
+        output: {
+            filename: '[name].js',
+            chunkFilename: 'webpackChunk/debug/[name].js'
+        }
+    },
+    parts.setFreeVariable("process.env.NODE_ENV", "debug"),
+    parts.clean(path.resolve(PATHS.build, 'uiAssets/anakeen/debug/')),
+    parts.clean(path.resolve(PATHS.build, 'components/debug/')),
+    parts.generateViewHtml('src/Apps/DOCUMENT/Layout/debug/'),
+    parts.devServer(
+        {
+            host: process.env.HOST,
+            port: process.env.PORT,
+        }
+    )
+]);
+
+
+module.exports = env => {
+    if (env === "production") {
+        return [
+            merge(commonConfig, productionDocumentConfig),
+            merge(commonConfig, productionComponentConfig)
+        ];
     }
+    if (env === "debug") {
+        return [
+            merge(commonConfig, debugDocumentConfig),
+            merge(commonConfig, debugComponentConfig)
+        ];
+    }
+    return merge(commonConfig, devConfig);
 };
-
-if (process.env.NODE_ENV !== 'production') {
-    module.exports.devtool = "#cheap-module-eval-source-map";
-    module.exports.devServer = {
-        contentBase: path.resolve(__dirname, 'src/public/'),
-        openPage: '?app=BUSINESS_APP',
-        hot: true,
-        proxy: {
-            "!/src/public/components/dist/*.js": {
-                "target": confPerso.devServerURL
-            }
-        }
-    };
-    module.exports.plugins = (module.exports.plugins || []).concat([
-        new webpack.HotModuleReplacementPlugin()
-    ]);
-}
-
-if (process.env.NODE_ENV === 'production') {
-    module.exports.devtool = '#source-map';
-    // http://vue-loader.vuejs.org/en/workflow/production.html
-    module.exports.plugins = (module.exports.plugins || []).concat([
-        new webpack.LoaderOptionsPlugin({
-            minimize: true
-        }),
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: '"production"'
-            }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            sourceMap: true,
-            compress: {
-                warnings: false
-            }
-        })
-    ])
-}

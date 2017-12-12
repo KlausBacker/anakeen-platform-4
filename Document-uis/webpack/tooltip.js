@@ -1,1 +1,2 @@
-import "bootstrap/js/src/tooltip";
+require('popper.js');
+require("bootstrap/js/src/tooltip");

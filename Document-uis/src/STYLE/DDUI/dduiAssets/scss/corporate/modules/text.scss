@@ -3,8 +3,6 @@
 .dcpAttribute__value.dcpAttribute__value--edit > .k-multiselect-wrap
 {
   &:hover, &:focus {
-   // box-shadow: $A4-ui-doc-edit-attribute-hover-shadow;
-   // border: $A4-ui-doc-edit-attribute-hover-border;
     caret-color: $A4-ui-color-btn-action;
   }
 }
