@@ -26,7 +26,7 @@ class CrontabParser
             if ($currentSection !== null) {
                 if (preg_match(self::REGEXP_SECTION_END, $line, $m)) {
                     if (!$currentSection->match($m['contextRoot'], $m['file'])) {
-                        throw new CrontabParserException(sprintf("Section end mismatch at line #%d: expecting '%s:%s', found '%s:%s'", ($i + 1) , $currentSection->contextRoot, $currentSection->file, $m['contextRoot'], $m['file']));
+                        throw new CrontabParserException(sprintf("Section end mismatch at line #%d: expecting '%s:%s', found '%s:%s'", ($i + 1), $currentSection->contextRoot, $currentSection->file, $m['contextRoot'], $m['file']));
                     }
                     $crontabDocument->appendChild($currentSection);
                     $currentSection = null;

@@ -30,7 +30,7 @@ ini_set("session.name", "session");
 ini_set("session.cache_limiter", "nocache");
 ini_set("magic_quotes_gpc", "Off");
 ini_set("default_charset", "UTF-8");
-ini_set("pcre.backtrack_limit", max(ini_get("pcre.backtrack_limit") , 10000000));
+ini_set("pcre.backtrack_limit", max(ini_get("pcre.backtrack_limit"), 10000000));
 //ini_set("error_reporting", ini_get("error_reporting") & ~E_NOTICE);
 define("DEFAULT_PUBDIR", $pubdir);
 define("PUBLIC_DIR", realpath(DEFAULT_PUBDIR."/public"));

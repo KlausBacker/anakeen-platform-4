@@ -35,12 +35,16 @@ function Redirect($action, $appname, $actionname, $otherurl = "", $httpparamredi
                 "APPMNG",
                 "ACCESS",
                 "AUTHENT"
-            ))) $baseurl = $action->GetParam("CORE_BASEURL");
-            else $baseurl = '?';
-        } else $baseurl = $otherurl;
+            ))) {
+                $baseurl = $action->GetParam("CORE_BASEURL");
+            } else {
+                $baseurl = '?';
+            }
+        } else {
+            $baseurl = $otherurl;
+        }
         $location = $baseurl . "app=" . $appname . "&action=" . $actionname;
         //    $location .= "&session=".$action->session->id;
-
     }
 
     $action->log->debug("Redirect : $location");
@@ -48,7 +52,11 @@ function Redirect($action, $appname, $actionname, $otherurl = "", $httpparamredi
     if ($httpparamredirect) {
         //add ZONE_ARGS
         global $ZONE_ARGS;
-        if (is_array($ZONE_ARGS)) foreach ($ZONE_ARGS as $k => $v) $location.= "&$k=$v";
+        if (is_array($ZONE_ARGS)) {
+            foreach ($ZONE_ARGS as $k => $v) {
+                $location.= "&$k=$v";
+            }
+        }
     }
     global $SQLDEBUG;
     if ($SQLDEBUG) {
@@ -110,7 +118,9 @@ function redirectAsGuest(Action & $action)
              * @var htmlAuthenticator $auth
              */
             $auth = AuthenticatorManager::$auth;
-            if (is_a($auth, "htmlAuthenticator")) $auth->connectTo($_SERVER['REQUEST_URI']);
+            if (is_a($auth, "htmlAuthenticator")) {
+                $auth->connectTo($_SERVER['REQUEST_URI']);
+            }
         }
     }
 }
@@ -141,27 +151,34 @@ function getHttpVars($name, $def = "", $scope = "all")
 
 function GetHttpCookie($name, $def = "")
 {
-
     global $_COOKIE;
-    if (isset($_COOKIE[$name])) return $_COOKIE[$name];
+    if (isset($_COOKIE[$name])) {
+        return $_COOKIE[$name];
+    }
     return ($def);
 }
 
 function SetHttpVar($name, $def)
 {
-
     global $ZONE_ARGS;
-    if ($def == "") unset($ZONE_ARGS[$name]);
-    else $ZONE_ARGS[$name] = $def;
+    if ($def == "") {
+        unset($ZONE_ARGS[$name]);
+    } else {
+        $ZONE_ARGS[$name] = $def;
+    }
 }
 
 function GetMimeType($ext)
 {
     $mimes = file("/etc/mime.types");
     foreach ($mimes as $v) {
-        if (substr($v, 0, 1) == "#") continue;
+        if (substr($v, 0, 1) == "#") {
+            continue;
+        }
         $tab = preg_split('/\s+/', $v);
-        if ((isset($tab[1])) && ($tab[1] == $ext)) return ($tab[0]);
+        if ((isset($tab[1])) && ($tab[1] == $ext)) {
+            return ($tab[0]);
+        }
     }
     return ("text/any");
 }
@@ -170,7 +187,9 @@ function GetExt($mime_type)
 {
     $mimes = file("/etc/mime.types");
     foreach ($mimes as $v) {
-        if (substr($v, 0, 1) == "#") continue;
+        if (substr($v, 0, 1) == "#") {
+            continue;
+        }
         $tab = preg_split('\s+/', $v);
         if ((isset($tab[0])) && ($tab[0] == $mime_type)) {
             if (isset($tab[1])) {
@@ -194,10 +213,14 @@ function GetExt($mime_type)
  * @param string $mime_type the Content-Type MIME type of the response. If empty, compute MIME type from $ext extension (this is the default behaviour)
  * @return void
  */
-function Http_Download($src, $ext, $name, $add_ext = TRUE, $mime_type = "")
+function Http_Download($src, $ext, $name, $add_ext = true, $mime_type = "")
 {
-    if ($mime_type == '') $mime_type = GetMimeType($ext);
-    if ($add_ext) $name = $name . "." . $ext;
+    if ($mime_type == '') {
+        $mime_type = GetMimeType($ext);
+    }
+    if ($add_ext) {
+        $name = $name . "." . $ext;
+    }
     $name = str_replace('"', '\\"', $name);
     $uName = iconv("UTF-8", "ASCII//TRANSLIT", $name);
     $name = rawurlencode($name);
@@ -227,7 +250,7 @@ function Http_DownloadFile($filename, $name, $mime_type = '', $inline = false, $
     require_once 'FDL/Class.FileMimeConfig.php';
 
     if (!file_exists($filename)) {
-        printf(_("file not found : %s") , $filename);
+        printf(_("file not found : %s"), $filename);
         return;
     }
 
@@ -251,12 +274,13 @@ function Http_DownloadFile($filename, $name, $mime_type = '', $inline = false, $
             $duration = 24 * 3600;
             header("Cache-Control: private, max-age=$duration"); // use cache client (one hour) for speed optimsation
             header("Expires: " . gmdate("D, d M Y H:i:s T\n", time() + $duration)); // for mozilla
-
         } else {
             header("Cache-Control: private");
         }
         header("Pragma: "); // HTTP 1.0
-        if ($inline && substr($mime_type, 0, 4) == "text" && substr($mime_type, 0, 9) != "text/html" && substr($mime_type, 0, 8) != "text/xml") $mime_type = preg_replace("_text/([^;]*)_", "text/plain", $mime_type);
+        if ($inline && substr($mime_type, 0, 4) == "text" && substr($mime_type, 0, 9) != "text/html" && substr($mime_type, 0, 8) != "text/xml") {
+            $mime_type = preg_replace("_text/([^;]*)_", "text/plain", $mime_type);
+        }
 
         header("Content-type: " . $mime_type);
         header("X-Content-Type-Options: nosniff");
@@ -269,7 +293,9 @@ function Http_DownloadFile($filename, $name, $mime_type = '', $inline = false, $
         flush();
     }
     readfile($filename);
-    if ($deleteafter) unlink($filename);
+    if ($deleteafter) {
+        unlink($filename);
+    }
     exit;
 }
 
@@ -277,15 +303,23 @@ function PrintAllHttpVars()
 { // just to debug
     global $_GET, $_POST, $ZONE_ARGS;
     print "<PRE>";
-    if (isset($ZONE_ARGS)) print_r($ZONE_ARGS);
-    if (isset($_GET)) print_r($_GET);
-    if (isset($_POST)) print_r($_POST);
+    if (isset($ZONE_ARGS)) {
+        print_r($ZONE_ARGS);
+    }
+    if (isset($_GET)) {
+        print_r($_GET);
+    }
+    if (isset($_POST)) {
+        print_r($_POST);
+    }
     print "</PRE>";
 }
 
 function glue_url($parsed)
 {
-    if (!is_array($parsed)) return false;
+    if (!is_array($parsed)) {
+        return false;
+    }
     $uri = $parsed['scheme'] ? $parsed['scheme'] . ':' . ((strtolower($parsed['scheme']) == 'mailto') ? '' : '//') : '';
     $uri.= $parsed['user'] ? $parsed['user'] . ($parsed['pass'] ? ':' . $parsed['pass'] : '') . '@' : '';
     $uri.= $parsed['host'] ? $parsed['host'] : '';

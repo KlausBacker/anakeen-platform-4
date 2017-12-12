@@ -102,7 +102,7 @@ class WorkflowStateCollection extends Crud
             return call_user_func(array(
                 $this->workflow,
                 $tr["m0"],
-            ) , $state, $this->workflow->doc->state);
+            ), $state, $this->workflow->doc->state);
         }
         return null;
     }
@@ -187,7 +187,7 @@ class WorkflowStateCollection extends Crud
      *
      * @throws Exception
      */
-    public function setUrlParameters(Array $array)
+    public function setUrlParameters(array $array)
     {
         parent::setUrlParameters($array);
         $familyId = isset($this->urlParameters["familyId"]) ? $this->urlParameters["familyId"] : false;
@@ -249,7 +249,7 @@ class WorkflowStateCollection extends Crud
             $doc = DocManager::getDocument($id);
             if ($doc->wid > 0) {
                 $sql = sprintf("select id, revdate from docread where id = %d", $doc->wid);
-                simpleQuery(getDbAccess() , $sql, $result, false, true);
+                simpleQuery(getDbAccess(), $sql, $result, false, true);
                 $user = getCurrentUser();
                 $result[] = $doc->state;
                 $result[] = $user->id;

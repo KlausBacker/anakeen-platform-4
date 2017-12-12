@@ -13,7 +13,6 @@
  */
 class TwoDimensionStruct
 {
-    
     private $x = array();
     private $y = array();
     
@@ -28,7 +27,7 @@ class TwoDimensionStruct
      *
      * @return TwoDimensionStruct
      */
-    public function __construct(Array $data = null)
+    public function __construct(array $data = null)
     {
         if (!is_null($data)) {
             foreach ($data as $y => $column) {
@@ -77,7 +76,7 @@ class TwoDimensionStruct
      *
      * @return TwoDimensionStruct|NULL
      */
-    public function setRow($x, Array $row, $force = false)
+    public function setRow($x, array $row, $force = false)
     {
         if ((count($row) < count($this->y)) || $force == true) {
             foreach ($row as $key => $value) {
@@ -87,7 +86,7 @@ class TwoDimensionStruct
             }
             return $this;
         } else {
-            $this->addErrorMessage(sprintf("Unable to set a row bigger than the column size (%s < %s)", count($this->y) , count($row)));
+            $this->addErrorMessage(sprintf("Unable to set a row bigger than the column size (%s < %s)", count($this->y), count($row)));
             return null;
         }
     }
@@ -100,7 +99,7 @@ class TwoDimensionStruct
      *
      * @return TwoDimensionStruct|NULL
      */
-    public function insertRow($x, Array $row = array() , $force = false)
+    public function insertRow($x, array $row = array(), $force = false)
     {
         if ($x < count($this->x) && ((count($row) < count($this->y)) || $force == true)) {
             array_splice($this->x, $x, 0, array(
@@ -109,7 +108,7 @@ class TwoDimensionStruct
             $this->x = array_values($this->x);
             return $this->setRow($x, $row, $force);
         } else {
-            $this->addErrorMessage(sprintf("Unable to set a row bigger than the column size (%s < %s)", count($this->y) , count($row)));
+            $this->addErrorMessage(sprintf("Unable to set a row bigger than the column size (%s < %s)", count($this->y), count($row)));
             return null;
         }
     }
@@ -121,10 +120,10 @@ class TwoDimensionStruct
      *
      * @return TwoDimensionStruct|NULL
      */
-    public function addRow(Array $row = array() , $x = null)
+    public function addRow(array $row = array(), $x = null)
     {
         if (is_null($x)) {
-            return $this->setRow(count($this->x) , $row, true);
+            return $this->setRow(count($this->x), $row, true);
         } elseif ($x >= count($this->x)) {
             return $this->setRow($x, $row, true);
         } else {
@@ -159,7 +158,7 @@ class TwoDimensionStruct
      *
      * @return TwoDimensionStruct|NULL
      */
-    public function setColumn($y, Array $column, $force = false)
+    public function setColumn($y, array $column, $force = false)
     {
         if ((count($column) < count($this->x)) || $force == true) {
             foreach ($column as $key => $value) {
@@ -169,7 +168,7 @@ class TwoDimensionStruct
             }
             return $this;
         } else {
-            $this->addErrorMessage(sprintf("Unable to set a column bigger than the row size (%s < %s)", count($this->x) , count($column)));
+            $this->addErrorMessage(sprintf("Unable to set a column bigger than the row size (%s < %s)", count($this->x), count($column)));
             return null;
         }
     }
@@ -182,7 +181,7 @@ class TwoDimensionStruct
      *
      * @return TwoDimensionStruct|NULL
      */
-    public function insertColumn($y, Array $column = array() , $force = false)
+    public function insertColumn($y, array $column = array(), $force = false)
     {
         if ($y < count($this->y)) {
             array_splice($this->y, $y, 0, array(
@@ -191,7 +190,7 @@ class TwoDimensionStruct
             $this->y = array_values($this->y);
             return $this->setColumn($y, $column, $force);
         } else {
-            $this->addErrorMessage(sprintf("Unable to set a row bigger than the column size (%s < %s)", count($this->y) , $y));
+            $this->addErrorMessage(sprintf("Unable to set a row bigger than the column size (%s < %s)", count($this->y), $y));
             return null;
         }
     }
@@ -203,10 +202,10 @@ class TwoDimensionStruct
      *
      * @return TwoDimensionStruct|NULL
      */
-    public function addColumn(Array $column = array() , $y = null)
+    public function addColumn(array $column = array(), $y = null)
     {
         if (is_null($y)) {
-            return $this->setColumn(count($this->y) , $column, true);
+            return $this->setColumn(count($this->y), $column, true);
         } elseif ($y >= count($this->y)) {
             return $this->setColumn($y, $column, true);
         } else {
@@ -300,8 +299,11 @@ class TwoDimensionStruct
     public function getValue($x, $y)
     {
         if (isset($this->y[$y]) && isset($this->x[$x])) {
-            if (isset($this->data[$this->x[$x]][$this->y[$y]])) $value = $this->data[$this->x[$x]][$this->y[$y]];
-            else $value = null;
+            if (isset($this->data[$this->x[$x]][$this->y[$y]])) {
+                $value = $this->data[$this->x[$x]][$this->y[$y]];
+            } else {
+                $value = null;
+            }
             return is_null($value) ? $this->emptyValue : $value;
         } elseif (count($x) >= $x && count($y) >= $y) {
             return $this->emptyValue;
@@ -383,4 +385,3 @@ class TwoDimensionStruct
         return $this->errorMessage;
     }
 }
-?>

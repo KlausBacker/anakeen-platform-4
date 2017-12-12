@@ -79,8 +79,9 @@ class CheckProp extends CheckData
      * @param string $value The parameter's tuple value
      * @return array|bool boolean false on error, or the parsed parameter tuple on success
      */
-    public static function checkValueSyntax($value) {
-        if(!preg_match('/^(?P<name>[a-z]{1,63})=(?P<value>.*)$/i', $value, $m)) {
+    public static function checkValueSyntax($value)
+    {
+        if (!preg_match('/^(?P<name>[a-z]{1,63})=(?P<value>.*)$/i', $value, $m)) {
             return false;
         }
         return array(
@@ -96,7 +97,8 @@ class CheckProp extends CheckData
      * @param string $pName The parameter's name
      * @return bool boolean false if not valid, or boolean true if valid
      */
-    public static function checkParameterClassKey($pName) {
+    public static function checkParameterClassKey($pName)
+    {
         return in_array($pName, array_keys(self::$parameterClassMap));
     }
 
@@ -106,7 +108,8 @@ class CheckProp extends CheckData
      * @param null $key
      * @return string|array
      */
-    public static function getParameterClassMap($key = null) {
+    public static function getParameterClassMap($key = null)
+    {
         if ($key === null) {
             return self::$parameterClassMap;
         }

@@ -13,20 +13,20 @@
  */
 /**
  */
-include_once ("WHAT/Lib.Common.php");
+include_once("WHAT/Lib.Common.php");
 /**
  * @param Authenticator $auth
  * @param Action $action
  */
 function getMainAction($auth, &$action)
 {
-    include_once ('Class.Action.php');
-    include_once ('Class.Application.php');
-    include_once ('Class.Session.php');
-    include_once ('Lib.Http.php');
-    include_once ('Lib.Phpini.php');
-    include_once ('Class.Log.php');
-    include_once ('Class.DbObj.php');
+    include_once('Class.Action.php');
+    include_once('Class.Application.php');
+    include_once('Class.Session.php');
+    include_once('Lib.Http.php');
+    include_once('Lib.Phpini.php');
+    include_once('Class.Log.php');
+    include_once('Class.DbObj.php');
     $indexphp = basename($_SERVER["SCRIPT_NAME"]);
     
     $log = new Log("", $indexphp);
@@ -51,8 +51,11 @@ function getMainAction($auth, &$action)
         $session = $auth->auth_session;
     } else {
         $session = new Session();
-        if (isset($_COOKIE[Session::PARAMNAME])) $sess_num = $_COOKIE[Session::PARAMNAME];
-        else $sess_num = GetHttpVars(Session::PARAMNAME); //$_GET["session"];
+        if (isset($_COOKIE[Session::PARAMNAME])) {
+            $sess_num = $_COOKIE[Session::PARAMNAME];
+        } else {
+            $sess_num = GetHttpVars(Session::PARAMNAME);
+        } //$_GET["session"];
         if (!$session->Set($sess_num)) {
             print "<strong>:~((</strong>";
             exit;
@@ -80,7 +83,7 @@ function getMainAction($auth, &$action)
     // ----------------------------------------
     // Init Application & Actions Objects
     $appl = new Application();
-    $err = $appl->Set(getHttpVars("app") , $core, $session);
+    $err = $appl->Set(getHttpVars("app"), $core, $session);
     if ($err) {
         print $err;
         exit;
@@ -114,7 +117,7 @@ function getMainAction($auth, &$action)
     // -----------------------------------------------
     // now we are in correct protocol (http or https)
     $action = new Action();
-    $action->Set(getHttpVars("action") , $appl);
+    $action->Set(getHttpVars("action"), $appl);
     
     if ($auth) {
         $core_lang = $auth->getSessionVar('CORE_LANG');
@@ -124,7 +127,9 @@ function getMainAction($auth, &$action)
         }
         $action->auth = & $auth;
         $core->SetVolatileParam("CORE_BASICAUTH", '&authtype=basic');
-    } else $core->SetVolatileParam("CORE_BASICAUTH", '');
+    } else {
+        $core->SetVolatileParam("CORE_BASICAUTH", '');
+    }
     
     initExplorerParam($core);
     // init for gettext
@@ -262,7 +267,6 @@ function _initMainVolatileParamCli(Application & $core)
     $absindex = $core->GetParam("CORE_URLINDEX");
     if ($absindex == '') {
         $absindex = "$puburl/"; // try default
-        
     }
     $core_externurl = ($absindex) ? stripUrlSlahes($absindex) : stripUrlSlahes($puburl . "/");
     $core_mailaction = $core->getParam("CORE_MAILACTION");
@@ -287,9 +291,14 @@ function _initMainVolatileParamWeb(Application & $core, Session & $session = nul
     $pattern = preg_quote($indexphp, "|");
     if (preg_match("|(.*)/$pattern|", $_SERVER['SCRIPT_NAME'], $reg)) {
         // determine publish url (detect ssl require)
-        if (empty($_SERVER['HTTPS'])) $_SERVER['HTTPS'] = "off";
-        if ($_SERVER['HTTPS'] != 'on') $puburl = "http://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $reg[1];
-        else $puburl = "https://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $reg[1];
+        if (empty($_SERVER['HTTPS'])) {
+            $_SERVER['HTTPS'] = "off";
+        }
+        if ($_SERVER['HTTPS'] != 'on') {
+            $puburl = "http://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $reg[1];
+        } else {
+            $puburl = "https://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $reg[1];
+        }
     } else {
         // it is not allowed
         print "<strong>:~(</strong>";
@@ -328,8 +337,11 @@ function executeAction(&$action, &$out = null)
 {
     $standalone = GetHttpVars("sole", "Y");
     if ($standalone != "A") {
-        if ($out !== null) $out = $action->execute();
-        else echo ($action->execute());
+        if ($out !== null) {
+            $out = $action->execute();
+        } else {
+            echo($action->execute());
+        }
     } else {
         if ((isset($action->parent)) && ($action->parent->with_frame != "Y")) {
             // This document is not completed : does not contain header and footer
@@ -337,7 +349,7 @@ function executeAction(&$action, &$out = null)
             // achieve action
             $body = ($action->execute());
             // write HTML header
-            $head = new Layout($action->GetLayoutFile("htmltablehead.xml") , $action);
+            $head = new Layout($action->GetLayoutFile("htmltablehead.xml"), $action);
             // copy JS ref & code from action to header
             //$head->jsref = $action->parent->GetJsRef();
             //$head->jscode = $action->parent->GetJsCode();
@@ -345,20 +357,23 @@ function executeAction(&$action, &$out = null)
             if ($out !== null) {
                 $out = $head->gen();
                 $out.= $body;
-                $foot = new Layout($action->GetLayoutFile("htmltablefoot.xml") , $action);
+                $foot = new Layout($action->GetLayoutFile("htmltablefoot.xml"), $action);
                 $out.= $foot->gen();
             } else {
-                echo ($head->gen());
+                echo($head->gen());
                 // write HTML body
-                echo ($body);
+                echo($body);
                 // write HTML footer
-                $foot = new Layout($action->GetLayoutFile("htmltablefoot.xml") , $action);
-                echo ($foot->gen());
+                $foot = new Layout($action->GetLayoutFile("htmltablefoot.xml"), $action);
+                echo($foot->gen());
             }
         } else {
             // This document is completed
-            if ($out !== null) $out = $action->execute();
-            else echo ($action->execute());
+            if ($out !== null) {
+                $out = $action->execute();
+            } else {
+                echo($action->execute());
+            }
         }
     }
 }
@@ -408,11 +423,11 @@ function handleActionException($e)
     }
     errorLogException($e);
     if (isset($action) && is_a($action, 'Action') && isset($action->parent)) {
-            if (php_sapi_name() === 'cli') {
-                fwrite(STDERR, $e->getMessage() . "\n");
-            } else {
-                $action->exitError($e->getMessage());
-            }
+        if (php_sapi_name() === 'cli') {
+            fwrite(STDERR, $e->getMessage() . "\n");
+        } else {
+            $action->exitError($e->getMessage());
+        }
     } else {
         if (php_sapi_name() === 'cli') {
             fwrite(STDERR, $e->getMessage());
@@ -438,7 +453,7 @@ function _wsh_send_error($errMsg, $expand = array())
 {
     global $action;
     $wshError = new Dcp\WSHMailError($action, $errMsg);
-    $wshError->prefix = sprintf('%s %s ', date('c') , php_uname('n'));
+    $wshError->prefix = sprintf('%s %s ', date('c'), php_uname('n'));
     $wshError->addExpand($expand);
     $wshError->autosend();
 }
@@ -546,7 +561,7 @@ function formatErrorLogException($e)
     global $argv;
     
     $pid = getmypid();
-    $err = sprintf("%s> Dynacase got an uncaught exception '%s' with message '%s' in file %s at line %s:", $pid, get_class($e) , $e->getMessage() , $e->getFile() , $e->getLine());
+    $err = sprintf("%s> Dynacase got an uncaught exception '%s' with message '%s' in file %s at line %s:", $pid, get_class($e), $e->getMessage(), $e->getFile(), $e->getLine());
     if (php_sapi_name() == 'cli' && is_array($argv)) {
         $err.= sprintf("\n%s> Command line arguments: %s", $pid, join(' ', array_map("escapeshellarg", $argv)));
         $err.= sprintf("\n%s> error_log: %s", $pid, ini_get('error_log'));
@@ -569,7 +584,7 @@ function handleFatalShutdown()
 {
     global $action;
     $error = error_get_last();
-    if ($error !== NULL && $action) {
+    if ($error !== null && $action) {
         if ($error["type"] == E_ERROR) {
             ob_get_clean();
             if (!headers_sent()) {
@@ -577,10 +592,8 @@ function handleFatalShutdown()
             }
             $action->exitError($error["message"], false);
             // Fatal error are already logged by PHP
-            
         }
     }
 }
 
 set_exception_handler('handleActionException');
-

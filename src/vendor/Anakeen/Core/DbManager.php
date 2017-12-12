@@ -4,7 +4,6 @@ namespace Dcp\Core;
 
 class DbManager
 {
-
     protected static $savepoint;
     protected static $masterLock;
     protected static $lockpoint;
@@ -13,15 +12,17 @@ class DbManager
     {
         static $pgConnection = null;
 
-        if ($pgConnection) return $pgConnection;
+        if ($pgConnection) {
+            return $pgConnection;
+        }
 
         $configFile=ContextManager::getRootDirectory()."/".Settings::DbAccessFilePath;
         if (!file_exists($configFile)) {
             throw new \Dcp\Core\Exception("CORE0015", $configFile);
         }
         $pgservice_core=null;
-        if (!include ($configFile)) {
-             throw new \Dcp\Core\Exception("CORE0016", $configFile);
+        if (!include($configFile)) {
+            throw new \Dcp\Core\Exception("CORE0016", $configFile);
         }
 
 
@@ -56,7 +57,6 @@ class DbManager
         }
 
         return $dbRessource;
-
     }
 
     /**
@@ -78,21 +78,22 @@ class DbManager
         $r = @pg_query($dbid, $query);
         if ($r) {
             if (pg_numrows($r) > 0) {
-                if ($singlecolumn) $result = pg_fetch_all_columns($r, 0);
-                else $result = pg_fetch_all($r);
-                if ($singleresult) $result = $result[0];
+                if ($singlecolumn) {
+                    $result = pg_fetch_all_columns($r, 0);
+                } else {
+                    $result = pg_fetch_all($r);
+                }
+                if ($singleresult) {
+                    $result = $result[0];
+                }
             } else {
                 if ($singleresult && $singlecolumn) {
                     $result = false;
                 }
             }
-
         } else {
             throw new \Dcp\Db\Exception('DB0100', pg_last_error($dbid), $query);
-
         }
-
-
     }
     /**
      * set a database transaction save point
@@ -113,7 +114,7 @@ class DbManager
             self::$savepoint[$idbid][] = $point;
         }
 
-           self::query(sprintf('savepoint "%s"', pg_escape_string($point)));
+        self::query(sprintf('savepoint "%s"', pg_escape_string($point)));
     }
 
     /**
@@ -161,7 +162,6 @@ class DbManager
             $exclusiveLock,
             $prefixLockId
         );
-
     }
 
     /**
@@ -172,7 +172,6 @@ class DbManager
      */
     public static function commitPoint($point)
     {
-
         $idbid = intval(self::getDbid());
 
         $lastPoint = array_search($point, self::$savepoint[$idbid]);
@@ -180,13 +179,12 @@ class DbManager
         if ($lastPoint !== false) {
             self::$savepoint[$idbid] = array_slice(self::$savepoint[$idbid], 0, $lastPoint);
             self::query(sprintf('release savepoint "%s"', pg_escape_string($point)));
-            if ( count(self::$savepoint[$idbid]) == 0) {
+            if (count(self::$savepoint[$idbid]) == 0) {
                 self::query("commit");
             }
         } else {
-            throw new \Dcp\Core\Exception( sprintf("cannot commit unsaved point : %s", $point));
+            throw new \Dcp\Core\Exception(sprintf("cannot commit unsaved point : %s", $point));
         }
-
     }
     /**
      * revert to transaction save point
@@ -196,7 +194,6 @@ class DbManager
      */
     public static function rollbackPoint($point)
     {
-
         $idbid = intval(self::getDbid());
         if (isset(self::$savepoint[$idbid])) {
             $lastPoint = array_search($point, self::$savepoint[$idbid]);
@@ -204,17 +201,14 @@ class DbManager
             $lastPoint = false;
         }
         if ($lastPoint !== false) {
-
             self::$savepoint[$idbid] = array_slice(self::$savepoint[$idbid], 0, $lastPoint);
             self::query(sprintf('rollback to savepoint "%s"', pg_escape_string($point)));
-            if ( count(self::$savepoint[$idbid]) == 0) {
+            if (count(self::$savepoint[$idbid]) == 0) {
                 self::query("commit");
             }
         } else {
             throw new \Dcp\Core\Exception(sprintf("cannot rollback unsaved point : %s", $point));
         }
-
-
     }
     /**
      * set a database  master lock
@@ -225,12 +219,10 @@ class DbManager
      */
     public static function setMasterLock($useLock)
     {
-
-
         if ($useLock) {
             self::query('select pg_advisory_lock(0)');
         } else {
-           self::query('select pg_advisory_unlock(0)');
+            self::query('select pg_advisory_unlock(0)');
         }
 
         self::$masterLock = (bool)$useLock;

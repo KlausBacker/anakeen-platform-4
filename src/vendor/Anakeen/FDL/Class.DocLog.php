@@ -17,7 +17,7 @@
  *
 */
 
-include_once ("Class.DbObj.php");
+include_once("Class.DbObj.php");
 class DocLog extends DbObj
 {
     const LOG_NOTICE = 1;
@@ -107,4 +107,3 @@ create index in_doclog on doclog(initid);
 create index date_doclog on doclog(date);
 ";
 }
-?>

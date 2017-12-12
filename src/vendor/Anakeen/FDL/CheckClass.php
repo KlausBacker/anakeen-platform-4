@@ -23,7 +23,7 @@ class CheckClass extends CheckData
      * @param Doc $doc
      * @return CheckClass
      */
-    function check(array $data, &$doc = null)
+    public function check(array $data, &$doc = null)
     {
         if (!empty($data[1])) {
             $this->className = $data[1];
@@ -85,7 +85,7 @@ class CheckClass extends CheckData
      */
     public static function phpLintFile($fileName, &$output)
     {
-        exec(sprintf('php -n -l %s 2>&1', escapeshellarg($fileName)) , $output, $status);
+        exec(sprintf('php -n -l %s 2>&1', escapeshellarg($fileName)), $output, $status);
         return ($status === 0);
     }
     
@@ -98,7 +98,6 @@ class CheckClass extends CheckData
             }
             if ($this->doc) {
                 if ($this->doc->fromid > 0) {
-                    
                     $fromName = ucwords(strtolower(\Dcp\Core\DocManager::getNameFromId($this->doc->fromid)));
                     if (!$fromName) {
                         $this->addError(ErrorCode::getError('CLASS0007', $this->className, $this->fileName, $this->doc->name));
@@ -114,8 +113,7 @@ class CheckClass extends CheckData
                     $this->addError(ErrorCode::getError('CLASS0006', $this->className, $this->fileName, $parentClass, $this->doc->name));
                 }
             }
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->addError(ErrorCode::getError('CLASS0004', $this->className, $this->fileName, $this->doc->name, $e->getMessage()));
         }
     }

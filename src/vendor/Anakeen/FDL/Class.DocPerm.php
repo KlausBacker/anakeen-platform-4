@@ -13,7 +13,7 @@
 /**
  */
 
-include_once ("Class.DbObj.php");
+include_once("Class.DbObj.php");
 /**
  * Managing permissions of documents
  * @package FDL
@@ -21,13 +21,13 @@ include_once ("Class.DbObj.php");
  */
 class DocPerm extends DbObj
 {
-    var $fields = array(
+    public $fields = array(
         "docid",
         "userid",
         "upacl"
     );
     
-    var $id_fields = array(
+    public $id_fields = array(
         "docid",
         "userid"
     );
@@ -36,11 +36,11 @@ class DocPerm extends DbObj
     public $upacl;
     public $uperm;
     
-    var $dbtable = "docperm";
+    public $dbtable = "docperm";
     
-    var $order_by = "docid";
+    public $order_by = "docid";
     
-    var $sqlcreate = "
+    public $sqlcreate = "
 create table docperm ( 
                      docid int check (docid > 0),
                      userid int check (userid > 1),
@@ -48,7 +48,7 @@ create table docperm (
                    );
 create unique index idx_perm on docperm(docid, userid);";
     
-    function preSelect($tid)
+    public function preSelect($tid)
     {
         if (count($tid) == 2) {
             $this->docid = $tid[0];
@@ -56,13 +56,15 @@ create unique index idx_perm on docperm(docid, userid);";
         }
     }
     
-    function preInsert()
+    public function preInsert()
     {
-        if ($this->userid == 1) return _("not perm for admin");
+        if ($this->userid == 1) {
+            return _("not perm for admin");
+        }
         return '';
     }
     
-    function preUpdate()
+    public function preUpdate()
     {
         return $this->preInsert();
     }
@@ -78,11 +80,13 @@ create unique index idx_perm on docperm(docid, userid);";
     {
         if ($uid == 0) {
             global $action;
-            if ($strict) $mof = $action->user->getStrictMemberOf();
-            else $mof = $action->user->getMemberOf();
+            if ($strict) {
+                $mof = $action->user->getStrictMemberOf();
+            } else {
+                $mof = $action->user->getMemberOf();
+            }
             $mof[] = $action->user->id;
         } else {
-            
             $mof = Account::getUserMemberOf($uid, $strict);
             $mof[] = $uid;
         }
@@ -97,22 +101,30 @@ create unique index idx_perm on docperm(docid, userid);";
      */
     public static function getUperm($profid, $userid, $strict = false)
     {
-        if ($userid == 1) return -1;
+        if ($userid == 1) {
+            return -1;
+        }
         $userMember = DocPerm::getMemberOfVector($userid, $strict);
         $sql = sprintf("select getaperm('%s',%d) as uperm", $userMember, $profid);
-        simpleQuery(getDbAccess() , $sql, $uperm, true, true);
-        if ($uperm === false) return 0;
+        simpleQuery(getDbAccess(), $sql, $uperm, true, true);
+        if ($uperm === false) {
+            return 0;
+        }
         
         return $uperm;
     }
     
     public static function getStrictUperm($profid, $userid)
     {
-        if ($userid == 1) return -1;
+        if ($userid == 1) {
+            return -1;
+        }
         $userMember = DocPerm::getMemberOfVector($userid);
         $sql = sprintf("select getaperm('%s',%d) as uperm", $userMember, $profid);
-        simpleQuery(getDbAccess() , $sql, $uperm, true, true);
-        if ($uperm === false) return 0;
+        simpleQuery(getDbAccess(), $sql, $uperm, true, true);
+        if ($uperm === false) {
+            return 0;
+        }
         
         return $uperm;
     }
@@ -121,7 +133,7 @@ create unique index idx_perm on docperm(docid, userid);";
      * @param $pos
      * @return bool
      */
-    function ControlU($pos)
+    public function ControlU($pos)
     {
         if ($this->uperm == 0) {
             $this->uperm = $this->getUperm($this->docid, $this->userid);
@@ -135,7 +147,7 @@ create unique index idx_perm on docperm(docid, userid);";
      * @deprecated no need now. Control process has changed
      * @return bool
      */
-    function ControlG($pos)
+    public function ControlG($pos)
     {
         return false;
     }
@@ -144,7 +156,7 @@ create unique index idx_perm on docperm(docid, userid);";
      * @param $pos
      * @return bool
      */
-    function ControlUp($pos)
+    public function ControlUp($pos)
     {
         // --------------------------------------------------------------------
         if ($this->isAffected()) {
@@ -153,14 +165,14 @@ create unique index idx_perm on docperm(docid, userid);";
         return false;
     }
     // --------------------------------------------------------------------
-    function ControlMask($acl, $pos)
+    public function ControlMask($acl, $pos)
     {
         return (($acl & (1 << ($pos))) != 0);
     }
     /**
      * no control for anyone
      */
-    function UnSetControl()
+    public function UnSetControl()
     {
         $this->upacl = 0;
     }
@@ -168,7 +180,7 @@ create unique index idx_perm on docperm(docid, userid);";
      * set positive ACL in specified position
      * @param int $pos column number (0 is the first right column)
      */
-    function SetControlP($pos)
+    public function SetControlP($pos)
     {
         $this->upacl = intval($this->upacl) | (1 << $pos);
     }
@@ -176,7 +188,7 @@ create unique index idx_perm on docperm(docid, userid);";
      * unset positive ACL in specified position
      * @param int $pos column number (0 is the first right column)
      */
-    function UnSetControlP($pos)
+    public function UnSetControlP($pos)
     {
         $this->upacl = $this->upacl & (~(1 << $pos));
     }

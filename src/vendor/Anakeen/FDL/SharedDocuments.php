@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Core;
+
 /**
  * Manage Shared documents through the global array $gdocs
  * @deprecated use Dcp\Core\DocManager::cache()
@@ -63,7 +64,6 @@ class SharedDocuments
             return false;
         }
         if (count($gdocs) < self::$limit || $force === true) {
-
             \Dcp\Core\DocManager::cache()->addDocument($item);
             $gdocs[$key] = & $item;
             return true;

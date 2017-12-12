@@ -26,9 +26,8 @@ class RecordedImage extends ImageAsset
     
     protected function getDestinationCacheImage($localimage, $size)
     {
-        
         $fileExtension = $this->urlParameters["extension"];
-        $basedest = sprintf("%s/%s/%s-vid%s%s", DEFAULT_PUBDIR, self::CACHEIMGDIR, $size, str_replace("/", "_", $localimage) , $fileExtension);
+        $basedest = sprintf("%s/%s/%s-vid%s%s", DEFAULT_PUBDIR, self::CACHEIMGDIR, $size, str_replace("/", "_", $localimage), $fileExtension);
         
         return $basedest;
     }

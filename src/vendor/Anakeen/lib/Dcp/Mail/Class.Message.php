@@ -98,8 +98,7 @@ class Message
         $parser = new MailAddrParser();
         try {
             $addresses = $parser->parse($str);
-        }
-        catch(MailAddrParserException $e) {
+        } catch (MailAddrParserException $e) {
         }
         return $addresses;
     }
@@ -144,7 +143,8 @@ class Message
      * Get To email addresses
      * @return string
      */
-    public function getTo() {
+    public function getTo()
+    {
         return $this->addressesToString($this->to);
     }
 
@@ -152,21 +152,24 @@ class Message
      * Get Cc email addresses
      * @return string
      */
-    public function getCC() {
+    public function getCC()
+    {
         return $this->addressesToString($this->cc);
     }
     /**
      * Get Bcc email addresses
      * @return string
      */
-    public function getBCC() {
+    public function getBCC()
+    {
         return $this->addressesToString($this->bcc);
     }
     /**
      * Get From email address
      * @return string
      */
-    public function getFrom() {
+    public function getFrom()
+    {
         return $this->addressesToString([$this->from]);
     }
     /**
@@ -174,7 +177,8 @@ class Message
      *
      * @return string
      */
-    protected function addressesToString(array $tAddresses) {
+    protected function addressesToString(array $tAddresses)
+    {
         $tos=[];
         foreach ($tAddresses as $to) {
             if ($to->address) {
@@ -323,7 +327,7 @@ class Message
     }
     private function _sendWithPHPMailer()
     {
-        include_once ("WHAT/Lib.Common.php");
+        include_once("WHAT/Lib.Common.php");
         $lcConfig = ContextManager::getLocaleConfig();
         $mail = new \PHPMailer();
         /*
@@ -406,7 +410,7 @@ class Message
         $mail->CharSet = "UTF-8";
         $mail->XMailer = sprintf("Dynacase Platform %s", \ApplicationParameterManager::getParameterValue('CORE', 'VERSION'));
         $mail->MessageID = '<' . strftime("%Y%M%d%H%M%S-", time()) . rand(1, 65535) . "@%s>";
-        $mail->MessageID = sprintf('<%s%s@%s>', strftime("%Y%M%d%H%M%S-", time()) , rand(1, 65535) , $host);
+        $mail->MessageID = sprintf('<%s%s@%s>', strftime("%Y%M%d%H%M%S-", time()), rand(1, 65535), $host);
         $mail->Subject = $this->subject;
         $mail->AllowEmpty = true;
         if (isset($this->body)) {

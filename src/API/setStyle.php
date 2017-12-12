@@ -17,14 +17,13 @@ if (!$styFilePath) {
 $verbose = ('yes' === $usage->addOptionalParameter('verbose', 'verbose', array(
     'yes',
     'no'
-) , 'no'));
+), 'no'));
 $usage->verify();
 
 chdir(DEFAULT_PUBDIR);
 
 class styleManager
 {
-    
     const CUSTOM_RULES_DIR_NAME = "rules.d";
     const DEFAULT_CSS_PARSER_DEPLOY_CLASS = '\Dcp\Style\dcpCssConcatParser';
     const DEFAULT_CSS_PARSER_RUNTIME_CLASS = null;
@@ -50,7 +49,6 @@ class styleManager
     
     public function loadStyle($styFilePath)
     {
-        
         $styleDefinition = $this->loadStyleDefinition($styFilePath);
         $this->computeStyleColors($styleDefinition);
     }
@@ -96,7 +94,9 @@ class styleManager
             $customRulesFiles = scandir($customRulesDirPath);
             if (false !== $customRulesFiles) {
                 foreach ($customRulesFiles as $customRulesFile) {
-                    if ($customRulesFile == '.' || $customRulesFile == '..') continue;
+                    if ($customRulesFile == '.' || $customRulesFile == '..') {
+                        continue;
+                    }
                     $customRules = array_replace_recursive($customRules, $this->loadCustomRulesFromFile($customRulesDirPath . DIRECTORY_SEPARATOR . $customRulesFile));
                 }
             }
@@ -108,7 +108,9 @@ class styleManager
             $globalRulesFiles = scandir($globalRulesDirPath);
             if (false !== $globalRulesFiles) {
                 foreach ($globalRulesFiles as $globalRulesFile) {
-                    if ($globalRulesFile == '.' || $globalRulesFile == '..') continue;
+                    if ($globalRulesFile == '.' || $globalRulesFile == '..') {
+                        continue;
+                    }
                     $globalRules = array_replace_recursive($globalRules, $this->loadCustomRulesFromFile($globalRulesDirPath . DIRECTORY_SEPARATOR . $globalRulesFile));
                 }
             }
@@ -119,7 +121,6 @@ class styleManager
     
     protected function loadCustomRulesFromFile($customRulesFilePath)
     {
-        
         $this->log("load custom rules from $customRulesFilePath");
         if (!is_readable($customRulesFilePath)) {
             if (!file_exists($customRulesFilePath)) {
@@ -240,7 +241,6 @@ class styleManager
                 }
                 $param->Set($paramName, $color, $paramType, 1);
                 $this->action->parent->SetVolatileParam($paramName, $color); //add parameter in session cache
-                
             }
         }
         $this->logIndent-= 1;
@@ -258,7 +258,6 @@ class styleManager
             }
             $param->Set($paramName, $paramValue, $paramType, 1);
             $this->action->parent->SetVolatileParam($paramName, $paramValue); //add parameter in session cache
-            
         }
         $this->logIndent-= 1;
         // volatile register parsing params ($styleConfig['sty_local'])
@@ -274,7 +273,6 @@ class styleManager
                 $this->log("static value " . var_export($paramValue, true) . " used for $paramName ($paramValue)");
             }
             $this->action->parent->SetVolatileParam($paramName, $paramValue); //add parameter in session cache
-            
         }
         $this->logIndent-= 1;
         // apply sty_rules
@@ -288,7 +286,7 @@ class styleManager
         ApplicationParameterManager::setCommonParameterValue("CORE", "STYLE", $styleName);
     }
     
-    protected function deployStyleFiles(Array $rules)
+    protected function deployStyleFiles(array $rules)
     {
         $this->log("deploy style files");
         $this->logIndent+= 1;
@@ -302,7 +300,7 @@ class styleManager
         return $filesDefinition;
     }
     
-    protected function deployStyleCssFiles(Array $cssRules, $targetDirName)
+    protected function deployStyleCssFiles(array $cssRules, $targetDirName)
     {
         $this->log("deploy css files");
         $filesDefinition = array();
@@ -352,13 +350,21 @@ class styleManager
     
     protected function deleteDirectory($dir)
     {
-        if (!file_exists($dir)) return true;
-        if (!is_dir($dir) || is_link($dir)) return unlink($dir);
+        if (!file_exists($dir)) {
+            return true;
+        }
+        if (!is_dir($dir) || is_link($dir)) {
+            return unlink($dir);
+        }
         foreach (scandir($dir) as $item) {
-            if ($item == '.' || $item == '..') continue;
+            if ($item == '.' || $item == '..') {
+                continue;
+            }
             if (!$this->deleteDirectory($dir . "/" . $item)) {
                 chmod($dir . "/" . $item, 0777);
-                if (!$this->deleteDirectory($dir . "/" . $item)) return false;
+                if (!$this->deleteDirectory($dir . "/" . $item)) {
+                    return false;
+                }
             };
         }
         
@@ -375,4 +381,3 @@ $sm = new styleManager($action);
 $sm->setVerbose($verbose);
 $sm->loadStyle($styFilePath);
 $sm->applyStyle();
-

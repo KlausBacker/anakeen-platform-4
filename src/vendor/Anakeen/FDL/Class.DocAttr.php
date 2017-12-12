@@ -12,9 +12,9 @@
  */
 /**
  */
-include_once ('Class.DbObj.php');
-include_once ('Class.QueryDb.php');
-include_once ('Class.Log.php');
+include_once('Class.DbObj.php');
+include_once('Class.QueryDb.php');
+include_once('Class.Log.php');
 /**
  * Database Attribute document
  * @package FDL
@@ -22,7 +22,7 @@ include_once ('Class.Log.php');
  */
 class DocAttr extends DbObj
 {
-    var $fields = array(
+    public $fields = array(
         "id",
         "docid",
         "frameid",
@@ -42,16 +42,16 @@ class DocAttr extends DbObj
         "options"
     );
     
-    var $id_fields = array(
+    public $id_fields = array(
         "docid",
         "id"
     );
     
-    var $dbtable = "docattr";
+    public $dbtable = "docattr";
     
-    var $order_by = "ordered";
+    public $order_by = "ordered";
     
-    var $fulltextfields = array(
+    public $fulltextfields = array(
         "labeltext"
     );
     
@@ -73,7 +73,7 @@ class DocAttr extends DbObj
     public $usefor;
     public $options;
     
-    var $sqlcreate = "
+    public $sqlcreate = "
 create table docattr ( id  name,
                      docid int not null,
                      frameid  name,
@@ -95,7 +95,7 @@ create table docattr ( id  name,
 create sequence seq_id_docattr start 1000;
 create unique index idx_iddocid on docattr(id, docid);";
     // possible type of attributes
-    var $deftype = array(
+    public $deftype = array(
         "text",
         "longtext",
         "image",
@@ -109,28 +109,39 @@ create unique index idx_iddocid on docattr(id, docid);";
         "password"
     );
     
-    function PreInsert()
+    public function PreInsert()
     {
         // compute new id
         if ($this->id == "") {
             $res = pg_query($this->dbid, "select nextval ('seq_id_docattr')");
             $arr = pg_fetch_array($res, 0);
             $this->id = "auto_" . $arr[0]; // not a number must be alphanumeric begin with letter
-            
         }
         $this->id = strtolower($this->id);
         if ($this->id[0] != ':') {
-            if ($this->type == "") $this->type = "text";
-            if ($this->abstract == "") $this->abstract = 'N';
-            if ($this->title == "") $this->title = 'N';
-            if ($this->usefor == "") $this->usefor = 'N';
-            if ($this->visibility == "") $this->visibility = 'W';
+            if ($this->type == "") {
+                $this->type = "text";
+            }
+            if ($this->abstract == "") {
+                $this->abstract = 'N';
+            }
+            if ($this->title == "") {
+                $this->title = 'N';
+            }
+            if ($this->usefor == "") {
+                $this->usefor = 'N';
+            }
+            if ($this->visibility == "") {
+                $this->visibility = 'W';
+            }
         }
     }
     
     public function getRawType($type = '')
     {
-        if (!$type) $type = $this->type;
+        if (!$type) {
+            $type = $this->type;
+        }
         return strtok($type, '(');
     }
     public function isStructure()
@@ -151,4 +162,3 @@ create unique index idx_iddocid on docattr(id, docid);";
         return (strtolower($this->needed) == "y");
     }
 }
-?>

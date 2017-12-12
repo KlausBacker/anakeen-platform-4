@@ -16,11 +16,11 @@
 /**
  */
 
-include_once ('WHAT/Lib.Common.php');
-include_once ('WHAT/Class.Authenticator.php');
-include_once ('WHAT/Class.Session.php');
-include_once ('WHAT/Class.User.php');
-include_once ('WHAT/Class.Log.php');
+include_once('WHAT/Lib.Common.php');
+include_once('WHAT/Class.Authenticator.php');
+include_once('WHAT/Class.Session.php');
+include_once('WHAT/Class.User.php');
+include_once('WHAT/Class.Log.php');
 
 class AuthenticatorManager
 {
@@ -69,11 +69,11 @@ class AuthenticatorManager
                 $wu = new Account();
                 if ($wu->SetLoginName(self::$auth->getAuthUser())) {
                     if ($wu->id != 1) {
-                        include_once ("FDL/freedom_util.php");
+                        include_once("FDL/freedom_util.php");
                         /**
                          * @var \Dcp\Family\IUSER $du
                          */
-                        $du = new_Doc(getDbAccess() , $wu->fid);
+                        $du = new_Doc(getDbAccess(), $wu->fid);
                         if ($du->isAlive()) {
                             $du->disableEditControl();
                             $du->increaseLoginFailure();
@@ -140,7 +140,6 @@ class AuthenticatorManager
     
     protected static function getAuthenticatorClass($authtype = null, $provider = Authenticator::nullProvider)
     {
-        
         if (!$authtype) {
             $authtype = static::getAuthType();
         }
@@ -217,10 +216,9 @@ class AuthenticatorManager
 
             foreach ($headers as $k=>$v) {
                 if (strtolower($k) === "authorization") {
-                     if (preg_match("/^([a-z0-9]+)\\s+(.*)$/i", $v, $reg)) {
-
-                    return ["scheme"=>trim($reg[1]), "token"=>trim($reg[2])];
-                }
+                    if (preg_match("/^([a-z0-9]+)\\s+(.*)$/i", $v, $reg)) {
+                        return ["scheme"=>trim($reg[1]), "token"=>trim($reg[2])];
+                    }
                 }
             }
         }
@@ -241,7 +239,7 @@ class AuthenticatorManager
         
         if (method_exists(self::$auth, 'logout')) {
             if (is_object(self::$auth->provider)) {
-                self::secureLog("close", "see you tomorrow", self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], self::$auth->getAuthUser() , $_SERVER["HTTP_USER_AGENT"]);
+                self::secureLog("close", "see you tomorrow", self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], self::$auth->getAuthUser(), $_SERVER["HTTP_USER_AGENT"]);
             } else {
                 self::secureLog("close", "see you tomorrow");
             }
@@ -272,7 +270,7 @@ class AuthenticatorManager
         global $_GET;
         $log = new Log("", "Session", "Authentication");
         $facility = constant(\Dcp\Core\ContextManager::getApplicationParam("AUTHENT_LOGFACILITY", "LOG_AUTH"));
-        $log->wlog("S", sprintf("[%s] [%s] [%s] [%s] [%s] [%s]", $status, $additionalMessage, $provider, $clientIp, $account, $userAgent) , NULL, $facility);
+        $log->wlog("S", sprintf("[%s] [%s] [%s] [%s] [%s] [%s]", $status, $additionalMessage, $provider, $clientIp, $account, $userAgent), null, $facility);
         return 0;
     }
     
@@ -378,12 +376,11 @@ class AuthenticatorManager
         $login = $opt['username'];
         $wu = $opt['dcp_account'];
         if ($wu->id != 1) {
-            
-            include_once ("FDL/freedom_util.php");
+            include_once("FDL/freedom_util.php");
             /**
              * @var \Dcp\Family\IUSER $du
              */
-            $du = new_Doc(getDbAccess() , $wu->fid);
+            $du = new_Doc(getDbAccess(), $wu->fid);
             // First check if account is active
             if (!$du->isAccountActive()) {
                 AuthenticatorManager::secureLog("failure", "inactive account", AuthenticatorManager::$auth->provider->parms['type'] . "/" . AuthenticatorManager::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);

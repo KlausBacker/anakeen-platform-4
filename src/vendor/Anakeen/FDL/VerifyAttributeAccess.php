@@ -9,7 +9,6 @@ namespace Dcp;
 
 class VerifyAttributeAccess
 {
-    
     protected static $attributeGrants = array();
     /**
      * Verify is attribute has visible access
@@ -19,7 +18,6 @@ class VerifyAttributeAccess
      */
     public static function isAttributeAccessGranted(\Doc $doc, \BasicAttribute $attribute)
     {
-        
         $key = sprintf("%0d-%0d-%0d-%s", $doc->fromid, $doc->cvid, $doc->wid, $doc->state);
         
         if (!isset(self::$attributeGrants[$key])) {

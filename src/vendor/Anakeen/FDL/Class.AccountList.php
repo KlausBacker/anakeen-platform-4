@@ -27,7 +27,7 @@ class AccountList implements Iterator, Countable
     private $init = false;
     public $length = 0;
     
-    public function __construct(Array $data)
+    public function __construct(array $data)
     {
         $this->accountsData = $data;
         $this->length = count($this->accountsData);
@@ -44,14 +44,15 @@ class AccountList implements Iterator, Countable
     }
     private function initSearch()
     {
-        
         $this->currentIndex = 0;
         $this->currentAccount = new Account();
     }
     
     private function getCurrentAccount()
     {
-        if (empty($this->accountsData[$this->currentIndex])) return null;
+        if (empty($this->accountsData[$this->currentIndex])) {
+            return null;
+        }
         $this->currentAccount->affect($this->accountsData[$this->currentIndex]);
         return $this->currentAccount;
     }
@@ -87,4 +88,3 @@ class AccountList implements Iterator, Countable
         return (!empty($this->accountsData[$this->currentIndex]));
     }
 }
-?>

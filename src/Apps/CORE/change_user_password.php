@@ -10,7 +10,6 @@ include_once "FDL/freedom_util.php";
  */
 function change_user_password(Action & $action)
 {
-
     $return = array(
         "success" => true,
         "error" => array(),
@@ -18,7 +17,6 @@ function change_user_password(Action & $action)
     );
 
     try {
-
         $usage = new ActionUsage($action);
 
         $oldPassword = $usage->addRequiredParameter("old_password", "old password value");
@@ -53,7 +51,6 @@ function change_user_password(Action & $action)
         if ($err) {
             throw new Exception(sprintf(_("CHANGE_PASSWORD:Unable to change password (%s)"), $err));
         }
-
     } catch (Exception $e) {
         $return["success"] = false;
         $return["error"][] = $e->getMessage();
@@ -63,5 +60,4 @@ function change_user_password(Action & $action)
     $action->lay->template = json_encode($return);
     $action->lay->noparse = true;
     header('Content-type: application/json');
-
 }

@@ -6,14 +6,14 @@
  * @author Anakeen
  */
 
-include_once ("Class.QueryDb.php");
-include_once ("Lib.FileMime.php");
-include_once ("FDL/freedom_util.php");
+include_once("Class.QueryDb.php");
+include_once("Lib.FileMime.php");
+include_once("FDL/freedom_util.php");
 // define constant for search attributes in concordance with the file "init.freedom"
 /**#@+
  * constant for document family identifier in concordance with the file "FDL/init.freedom"
  *
-*/
+ */
 define("FAM_BASE", 1);
 define("FAM_DIR", 2);
 define("FAM_ACCESSDOC", 3);
@@ -46,326 +46,337 @@ use \Dcp\Core\DbManager;
 use \Dcp\Core\ContextManager;
 use \Dcp\Core\DocManager;
 
-
 /**
  * Document Class
  */
 class Doc extends DocCtrl
 {
-    const USEMASKCVVIEW = - 1;
-    const USEMASKCVEDIT = - 2;
-    public $fields = array(
-        "id",
-        "owner",
-        "title",
-        "revision",
-        "version",
-        "initid",
-        "fromid",
-        "doctype",
-        "locked",
-        "allocated",
-        "archiveid",
-        "icon",
-        "lmodify",
-        "profid",
-        "usefor",
-        "cdate",
-        "adate",
-        "revdate",
-        "comment",
-        "classname",
-        "state",
-        "wid",
-        "postitid",
-        "domainid",
-        "lockdomainid",
-        "cvid",
-        "name",
-        "dprofid",
-        "views",
-        "atags",
-        "prelid",
-        "confidential",
-        "ldapdn"
-    );
+    const USEMASKCVVIEW = -1;
+    const USEMASKCVEDIT = -2;
+    public $fields
+        = array(
+            "id",
+            "owner",
+            "title",
+            "revision",
+            "version",
+            "initid",
+            "fromid",
+            "doctype",
+            "locked",
+            "allocated",
+            "archiveid",
+            "icon",
+            "lmodify",
+            "profid",
+            "usefor",
+            "cdate",
+            "adate",
+            "revdate",
+            "comment",
+            "classname",
+            "state",
+            "wid",
+            "postitid",
+            "domainid",
+            "lockdomainid",
+            "cvid",
+            "name",
+            "dprofid",
+            "views",
+            "atags",
+            "prelid",
+            "confidential",
+            "ldapdn"
+        );
     /**
      * @var string searchable values
      */
     protected $svalues;
-    public $sup_fields = array(
-        "values",
-        "attrids"
-    ); // not be in fields else trigger error
-    public static $infofields = array(
-        "id" => array(
-            "type" => "integer",
-            "displayable" => true,
-            "sortable" => true,
-            "filterable" => true,
-            "label" => "prop_id"
-        ) , # N_("prop_id")
-        "owner" => array(
-            "type" => "uid",
-            "displayable" => true,
-            "sortable" => true,
-            "filterable" => true,
-            "label" => "prop_owner"
-        ) , # N_("prop_owner"),
-        "icon" => array(
-            "type" => "image",
-            "displayable" => true,
-            "sortable" => false,
-            "filterable" => false,
-            "label" => "prop_icon"
-        ) , # N_("prop_icon"),
-        "title" => array(
-            "type" => "text",
-            "displayable" => true,
-            "sortable" => true,
-            "filterable" => true,
-            "label" => "prop_title"
-        ) , # N_("prop_title"),
-        "revision" => array(
-            "type" => "integer",
-            "displayable" => true,
-            "sortable" => true,
-            "filterable" => true,
-            "label" => "prop_revision"
-        ) , # N_("prop_revision"),
-        "version" => array(
-            "type" => "text",
-            "displayable" => true,
-            "sortable" => true,
-            "filterable" => true,
-            "label" => "prop_version"
-        ) , # N_("prop_version"),
-        "initid" => array(
-            "type" => "docid",
-            "displayable" => true,
-            "sortable" => true,
-            "filterable" => true,
-            "label" => "prop_initid"
-        ) , # N_("prop_initid"),
-        "fromid" => array(
-            "type" => "docid",
-            "displayable" => true,
-            "sortable" => true,
-            "filterable" => true,
-            "label" => "prop_fromid"
-        ) , # N_("prop_fromid"),
-        "doctype" => array(
-            "type" => "text",
-            "displayable" => false,
-            "sortable" => true,
-            "filterable" => true,
-            "label" => "prop_doctype"
-        ) , # N_("prop_doctype"),
-        "locked" => array(
-            "type" => "uid",
-            "displayable" => true,
-            "sortable" => false,
-            "filterable" => false,
-            "label" => "prop_locked"
-        ) , # N_("prop_locked"),
-        "allocated" => array(
-            "type" => "uid",
-            "displayable" => false,
-            "sortable" => true,
-            "filterable" => true,
-            "label" => "prop_allocated"
-        ) , # N_("prop_allocated"),
-        "lmodify" => array(
-            "type" => "text",
-            "displayable" => false,
-            "sortable" => false,
-            "filterable" => false,
-            "label" => "prop_lmodify"
-        ) , # N_("prop_lmodify"),
-        "profid" => array(
-            "type" => "integer",
-            "displayable" => false,
-            "sortable" => false,
-            "filterable" => false,
-            "label" => "prop_profid"
-        ) , # N_("prop_profid"),
-        "usefor" => array(
-            "type" => "text",
-            "displayable" => false,
-            "sortable" => false,
-            "filterable" => false,
-            "label" => "prop_usefor"
-        ) , # N_("prop_usefor")
-        "cdate" => array(
-            "type" => "timestamp",
-            "displayable" => true,
-            "sortable" => true,
-            "filterable" => true,
-            "label" => "prop_cdate"
-        ) , # N_("prop_cdate")
-        "adate" => array(
-            "type" => "timestamp",
-            "displayable" => true,
-            "sortable" => true,
-            "filterable" => true,
-            "label" => "prop_adate"
-        ) , # N_("prop_adate"),
-        "revdate" => array(
-            "type" => "timestamp",
-            "displayable" => true,
-            "sortable" => true,
-            "filterable" => true,
-            "label" => "prop_revdate"
-        ) , # N_("prop_revdate"),
-        "comment" => array(
-            "type" => "text",
-            "displayable" => false,
-            "sortable" => false,
-            "filterable" => false,
-            "label" => "prop_comment"
-        ) , # N_("prop_comment"),
-        "classname" => array(
-            "type" => "text",
-            "displayable" => false,
-            "sortable" => false,
-            "filterable" => false,
-            "label" => "prop_classname"
-        ) , # N_("prop_classname")
-        "state" => array(
-            "type" => "text",
-            "displayable" => true,
-            "sortable" => true,
-            "filterable" => true,
-            "label" => "prop_state"
-        ) , # N_("prop_state"),
-        "wid" => array(
-            "type" => "docid",
-            "displayable" => false,
-            "sortable" => false,
-            "filterable" => false,
-            "label" => "prop_wid"
-        ) , # N_("prop_wid")
-        "postitid" => array(
-            "type" => "text",
-            "displayable" => false,
-            "sortable" => false,
-            "filterable" => false,
-            "label" => "prop_postitid"
-        ) , # N_("prop_postitid")
-        "cvid" => array(
-            "type" => "integer",
-            "displayable" => false,
-            "sortable" => false,
-            "filterable" => false,
-            "label" => "prop_cvid"
-        ) , # N_("prop_cvid")
-        "name" => array(
-            "type" => "text",
-            "displayable" => true,
-            "sortable" => true,
-            "filterable" => true,
-            "label" => "prop_name"
-        ) , # N_("prop_name")
-        "dprofid" => array(
-            "type" => "docid",
-            "displayable" => false,
-            "sortable" => false,
-            "filterable" => false,
-            "label" => "prop_dprofid"
-        ) , # N_("prop_dprofid")
-        "atags" => array(
-            "type" => "text",
-            "displayable" => false,
-            "sortable" => false,
-            "filterable" => false,
-            "label" => "prop_atags"
-        ) , # N_("prop_atags")
-        "prelid" => array(
-            "type" => "docid",
-            "displayable" => false,
-            "sortable" => false,
-            "filterable" => false,
-            "label" => "prop_prelid"
-        ) , # N_("prop_prelid")
-        "lockdomainid" => array(
-            "type" => "docid",
-            "displayable" => true,
-            "sortable" => true,
-            "filterable" => false,
-            "label" => "prop_lockdomainid"
-        ) , # N_("prop_lockdomainid")
-        "domainid" => array(
-            "type" => "docid",
-            "displayable" => false,
-            "sortable" => false,
-            "filterable" => false,
-            "label" => "prop_domainid"
-        ) , # N_("prop_domainid")
-        "confidential" => array(
-            "type" => "integer",
-            "displayable" => false,
-            "sortable" => false,
-            "filterable" => true,
-            "label" => "prop_confidential"
-        ) , # N_("prop_confidential")
-        "svalues" => array(
-            "type" => "fulltext",
-            "displayable" => false,
-            "sortable" => false,
-            "filterable" => true,
-            "label" => "prop_svalues"
-        ) , # N_("prop_svalues")
-        "ldapdn" => array(
-            "type" => "text",
-            "displayable" => false,
-            "sortable" => false,
-            "filterable" => false,
-            "label" => "prop_ldapdn"
-        )
-    ); # N_("prop_ldapdn");
-    
+    public $sup_fields
+        = array(
+            "values",
+            "attrids"
+        ); // not be in fields else trigger error
+    public static $infofields
+        = array(
+            "id" => array(
+                "type" => "integer",
+                "displayable" => true,
+                "sortable" => true,
+                "filterable" => true,
+                "label" => "prop_id"
+            ), # N_("prop_id")
+            "owner" => array(
+                "type" => "uid",
+                "displayable" => true,
+                "sortable" => true,
+                "filterable" => true,
+                "label" => "prop_owner"
+            ), # N_("prop_owner"),
+            "icon" => array(
+                "type" => "image",
+                "displayable" => true,
+                "sortable" => false,
+                "filterable" => false,
+                "label" => "prop_icon"
+            ), # N_("prop_icon"),
+            "title" => array(
+                "type" => "text",
+                "displayable" => true,
+                "sortable" => true,
+                "filterable" => true,
+                "label" => "prop_title"
+            ), # N_("prop_title"),
+            "revision" => array(
+                "type" => "integer",
+                "displayable" => true,
+                "sortable" => true,
+                "filterable" => true,
+                "label" => "prop_revision"
+            ), # N_("prop_revision"),
+            "version" => array(
+                "type" => "text",
+                "displayable" => true,
+                "sortable" => true,
+                "filterable" => true,
+                "label" => "prop_version"
+            ), # N_("prop_version"),
+            "initid" => array(
+                "type" => "docid",
+                "displayable" => true,
+                "sortable" => true,
+                "filterable" => true,
+                "label" => "prop_initid"
+            ), # N_("prop_initid"),
+            "fromid" => array(
+                "type" => "docid",
+                "displayable" => true,
+                "sortable" => true,
+                "filterable" => true,
+                "label" => "prop_fromid"
+            ), # N_("prop_fromid"),
+            "doctype" => array(
+                "type" => "text",
+                "displayable" => false,
+                "sortable" => true,
+                "filterable" => true,
+                "label" => "prop_doctype"
+            ), # N_("prop_doctype"),
+            "locked" => array(
+                "type" => "uid",
+                "displayable" => true,
+                "sortable" => false,
+                "filterable" => false,
+                "label" => "prop_locked"
+            ), # N_("prop_locked"),
+            "allocated" => array(
+                "type" => "uid",
+                "displayable" => false,
+                "sortable" => true,
+                "filterable" => true,
+                "label" => "prop_allocated"
+            ), # N_("prop_allocated"),
+            "lmodify" => array(
+                "type" => "text",
+                "displayable" => false,
+                "sortable" => false,
+                "filterable" => false,
+                "label" => "prop_lmodify"
+            ), # N_("prop_lmodify"),
+            "profid" => array(
+                "type" => "integer",
+                "displayable" => false,
+                "sortable" => false,
+                "filterable" => false,
+                "label" => "prop_profid"
+            ), # N_("prop_profid"),
+            "usefor" => array(
+                "type" => "text",
+                "displayable" => false,
+                "sortable" => false,
+                "filterable" => false,
+                "label" => "prop_usefor"
+            ), # N_("prop_usefor")
+            "cdate" => array(
+                "type" => "timestamp",
+                "displayable" => true,
+                "sortable" => true,
+                "filterable" => true,
+                "label" => "prop_cdate"
+            ), # N_("prop_cdate")
+            "adate" => array(
+                "type" => "timestamp",
+                "displayable" => true,
+                "sortable" => true,
+                "filterable" => true,
+                "label" => "prop_adate"
+            ), # N_("prop_adate"),
+            "revdate" => array(
+                "type" => "timestamp",
+                "displayable" => true,
+                "sortable" => true,
+                "filterable" => true,
+                "label" => "prop_revdate"
+            ), # N_("prop_revdate"),
+            "comment" => array(
+                "type" => "text",
+                "displayable" => false,
+                "sortable" => false,
+                "filterable" => false,
+                "label" => "prop_comment"
+            ), # N_("prop_comment"),
+            "classname" => array(
+                "type" => "text",
+                "displayable" => false,
+                "sortable" => false,
+                "filterable" => false,
+                "label" => "prop_classname"
+            ), # N_("prop_classname")
+            "state" => array(
+                "type" => "text",
+                "displayable" => true,
+                "sortable" => true,
+                "filterable" => true,
+                "label" => "prop_state"
+            ), # N_("prop_state"),
+            "wid" => array(
+                "type" => "docid",
+                "displayable" => false,
+                "sortable" => false,
+                "filterable" => false,
+                "label" => "prop_wid"
+            ), # N_("prop_wid")
+            "postitid" => array(
+                "type" => "text",
+                "displayable" => false,
+                "sortable" => false,
+                "filterable" => false,
+                "label" => "prop_postitid"
+            ), # N_("prop_postitid")
+            "cvid" => array(
+                "type" => "integer",
+                "displayable" => false,
+                "sortable" => false,
+                "filterable" => false,
+                "label" => "prop_cvid"
+            ), # N_("prop_cvid")
+            "name" => array(
+                "type" => "text",
+                "displayable" => true,
+                "sortable" => true,
+                "filterable" => true,
+                "label" => "prop_name"
+            ), # N_("prop_name")
+            "dprofid" => array(
+                "type" => "docid",
+                "displayable" => false,
+                "sortable" => false,
+                "filterable" => false,
+                "label" => "prop_dprofid"
+            ), # N_("prop_dprofid")
+            "atags" => array(
+                "type" => "text",
+                "displayable" => false,
+                "sortable" => false,
+                "filterable" => false,
+                "label" => "prop_atags"
+            ), # N_("prop_atags")
+            "prelid" => array(
+                "type" => "docid",
+                "displayable" => false,
+                "sortable" => false,
+                "filterable" => false,
+                "label" => "prop_prelid"
+            ), # N_("prop_prelid")
+            "lockdomainid" => array(
+                "type" => "docid",
+                "displayable" => true,
+                "sortable" => true,
+                "filterable" => false,
+                "label" => "prop_lockdomainid"
+            ), # N_("prop_lockdomainid")
+            "domainid" => array(
+                "type" => "docid",
+                "displayable" => false,
+                "sortable" => false,
+                "filterable" => false,
+                "label" => "prop_domainid"
+            ), # N_("prop_domainid")
+            "confidential" => array(
+                "type" => "integer",
+                "displayable" => false,
+                "sortable" => false,
+                "filterable" => true,
+                "label" => "prop_confidential"
+            ), # N_("prop_confidential")
+            "svalues" => array(
+                "type" => "fulltext",
+                "displayable" => false,
+                "sortable" => false,
+                "filterable" => true,
+                "label" => "prop_svalues"
+            ), # N_("prop_svalues")
+            "ldapdn" => array(
+                "type" => "text",
+                "displayable" => false,
+                "sortable" => false,
+                "filterable" => false,
+                "label" => "prop_ldapdn"
+            )
+        ); # N_("prop_ldapdn");
+
     /**
      * identifier of the document
+     *
      * @var int
      */
     public $id;
     /**
      * user identifier for the creator
+     *
      * @var int
      */
     public $owner;
     /**
      * the title of the document
+     *
      * @var string
      */
     public $title;
     /**
      * number of the revision. First is zero
+     *
      * @var int
      */
     public $revision;
     /**
      * tag for version
+     *
      * @var string
      */
     public $version;
     /**
      * identifier of the first revision document
+     *
      * @var int
      */
     public $initid;
     /**
      * identifier of the family document
+     *
      * @var int
      */
     public $fromid;
     /**
      * domain where document is lock
+     *
      * @var int
      */
     public $lockdomainid;
     /**
      * domain where document is attached
+     *
      * @var string
      */
     public $domainid;
@@ -386,46 +397,55 @@ class Doc extends DocCtrl
     public $doctype;
     /**
      * user identifier for the locker
+     *
      * @vart
      */
     public $locked;
     /**
      * filename or vault id for the icon
+     *
      * @var string
      */
     public $icon;
     /**
      * set to 'Y' if the document has been modify until last revision
+     *
      * @var string single character
      */
     public $lmodify;
     /**
      * identifier of the profil document
+     *
      * @var int
      */
     public $profid;
     /**
      * user/group/role which can view document
+     *
      * @var string
      */
     public $views;
     /**
      * to precise a special use of the document
+     *
      * @var string single character
      */
     public $usefor;
     /**
      * date of the last modification (the revision date for fixed document)
+     *
      * @var int
      */
     public $revdate;
     /**
      * date of creation
+     *
      * @var string date 'YYYY-MM-DD'
      */
     public $cdate;
     /**
      * date of latest access
+     *
      * @var string date 'YYYY-MM-DD'
      */
     public $adate;
@@ -436,11 +456,13 @@ class Doc extends DocCtrl
     public $comment;
     /**
      * class name in case of special family (only set in family document)
+     *
      * @var string
      */
     public $classname;
     /**
      * state of the document if it is associated with a workflow
+     *
      * @var string
      */
     public $state;
@@ -448,6 +470,7 @@ class Doc extends DocCtrl
      * identifier of the workflow document
      *
      * if 0 then no workflow
+     *
      * @var int
      */
     public $wid;
@@ -455,6 +478,7 @@ class Doc extends DocCtrl
      * identifier of the control view document
      *
      * if 0 then no special control view
+     *
      * @var int
      */
     public $cvid;
@@ -468,6 +492,7 @@ class Doc extends DocCtrl
      * identifier of the mask document
      *
      * if 0 then no mask
+     *
      * @var int
      */
     public $mid = 0;
@@ -475,6 +500,7 @@ class Doc extends DocCtrl
      * identifier of dynamic profil
      *
      * if 0 then no dynamic profil
+     *
      * @var int
      */
     public $dprofid = 0;
@@ -482,6 +508,7 @@ class Doc extends DocCtrl
      * primary relation id
      *
      * generally towards a folder
+     *
      * @var int
      */
     public $prelid = 0;
@@ -494,6 +521,7 @@ class Doc extends DocCtrl
     public $atags;
     /**
      * idengtificator of document's note
+     *
      * @var int
      */
     public $postitid;
@@ -536,16 +564,19 @@ class Doc extends DocCtrl
     public $fulltext;
     /**
      * for system purpose only
+     *
      * @var string concatenation of all values
      */
     protected $values;
     /**
      * for system purpose only
+     *
      * @var string concatenation of all attribute ids (use it with ::values)
      */
     protected $attrids;
     /**
      * param value cache
+     *
      * @var array
      */
     private $_paramValue = array();
@@ -560,14 +591,16 @@ class Doc extends DocCtrl
      *
      * @var array
      */
-    public $cviews = array(
-        "FDL:VIEWBODYCARD",
-        "FDL:VIEWABSTRACTCARD",
-        "FDL:VIEWTHUMBCARD"
-    );
-    public $eviews = array(
-        "FDL:EDITBODYCARD"
-    );
+    public $cviews
+        = array(
+            "FDL:VIEWBODYCARD",
+            "FDL:VIEWABSTRACTCARD",
+            "FDL:VIEWTHUMBCARD"
+        );
+    public $eviews
+        = array(
+            "FDL:EDITBODYCARD"
+        );
     /**
      * @var WDoc
      */
@@ -576,40 +609,43 @@ class Doc extends DocCtrl
      * @var Adoc
      */
     public $attributes = null;
-    public static $sqlindex = array(
-        "doc_initid" => array(
-            "unique" => false,
-            "on" => "initid"
-        ) ,
-        "doc_title" => array(
-            "unique" => false,
-            "on" => "title"
-        ) ,
-        "doc_name" => array(
-            "unique" => true,
-            "on" => "name,revision,doctype"
-        ) ,
-        "doc_full" => array(
-            "unique" => false,
-            "using" => "gin",
-            "on" => "fulltext"
-        ) ,
-        "doc_profid" => array(
-            "unique" => false,
-            "on" => "profid"
-        )
-    );
-    public $id_fields = array(
-        "id"
-    );
-    
+    public static $sqlindex
+        = array(
+            "doc_initid" => array(
+                "unique" => false,
+                "on" => "initid"
+            ),
+            "doc_title" => array(
+                "unique" => false,
+                "on" => "title"
+            ),
+            "doc_name" => array(
+                "unique" => true,
+                "on" => "name,revision,doctype"
+            ),
+            "doc_full" => array(
+                "unique" => false,
+                "using" => "gin",
+                "on" => "fulltext"
+            ),
+            "doc_profid" => array(
+                "unique" => false,
+                "on" => "profid"
+            )
+        );
+    public $id_fields
+        = array(
+            "id"
+        );
+
     public $dbtable = "doc";
-    
+
     public $order_by = "title, revision desc";
-    
-    public $fulltextfields = array(
-        "title"
-    );
+
+    public $fulltextfields
+        = array(
+            "title"
+        );
     private $mvalues = array();
     /**
      * number of disabledEditControl
@@ -630,31 +666,37 @@ class Doc extends DocCtrl
     private $oooFormater = null;
     /**
      * used by fulltext indexing
+     *
      * @var array
      */
     private $textsend = array();
     private $vidNoSendTextToEngine = array();
     /**
      * to not detect changed when it is automatic setValue
+     *
      * @var bool
      */
     private $_setValueCompleteArray = false;
     /**
      * list of availaible control
+     *
      * @var array
      */
     public $acls = array();
     /**
      * document layout
+     *
      * @var \Layout|\OooLayout
      */
     public $lay = null;
     /**
      * default family id for the profil access
+     *
      * @var int
      */
     public $defProfFamId = FAM_ACCESSDOC;
-    public $sqlcreate = "
+    public $sqlcreate
+        = "
 create table doc ( id int not null,
                    primary key (id),
                    owner int,
@@ -709,73 +751,86 @@ create unique index i_docir on doc(initid, revision);";
     //---------------------- OBJECT CONTROL PERMISSION --------------------
     public $obj_acl = array(); // set by childs classes
     // --------------------------------------------------------------------
-    
+
     /**
      * default view to view card
+     *
      * @var string
      */
     public $defaultview = "FDL:VIEWBODYCARD";
     /**
      * default view to edit card
+     *
      * @var string
      */
     public $defaultedit = "FDL:EDITBODYCARD";
     /**
      * default view for abstract card
+     *
      * @var string
      */
     public $defaultabstract = "FDL:VIEWABSTRACTCARD";
     /**
      * default view use when edit document for the first time (creation mode)
+     *
      * @var string
      */
     public $defaultcreate = "";
     /**
      * for email : the same as $defaultview by default
+     *
      * @var string
      */
     public $defaultmview = "";
     /**
      * use when family wants to define a special context menu
+     *
      * @var array
      */
     public $specialmenu = array();
-    
+
     public $defDoctype = 'F';
     /**
      * to indicate values modification
+     *
      * @var bool
      * @access private
      */
     private $hasChanged = false;
-    
+
     public $paramRefresh = array();
     /**
      * optimize: compute mask in needed only
+     *
      * @var bool
      * @access private
      */
     private $_maskApplied = false; // optimize: compute mask if needed only
-    
+
     /**
      * By default, setValue() will call completeArrayRow when setting
      * values of arrays columns.
+     *
      * @var bool
      * @access private
      */
     private $_setValueNeedCompleteArray = true;
+
     /**
      * display document main properties as string
+     *
      * @return string
      */
     public function __toString()
     {
-        return sprintf('%s "%s" [#%d]', $this->fromname, $this->getTitle() , $this->id);
+        return sprintf('%s "%s" [#%d]', $this->fromname, $this->getTitle(), $this->id);
     }
+
     /**
      * Increment sequence of family and call to Doc::PostCreated
      * send mail if workflow is attached to it
      * affect profil
+     *
      * @see Doc::PostCreated
      *
      * @return void
@@ -790,7 +845,9 @@ create unique index i_docir on doc(initid, revision);";
             $famDoc = $this->getFamilyDocument();
             $incumbentName = ContextManager::getCurrentUser()->getIncumbentPrivilege($famDoc, 'create');
             $createComment = _("document creation");
-            if ($incumbentName) $createComment = sprintf(_("(substitute of %s) : ") , $incumbentName) . $createComment;
+            if ($incumbentName) {
+                $createComment = sprintf(_("(substitute of %s) : "), $incumbentName) . $createComment;
+            }
             $this->addHistoryEntry($createComment, DocHisto::INFO, "CREATE");
             if ($this->wdoc) {
                 $this->wdoc->workflowSendMailTemplate($this->state, _("creation"));
@@ -815,40 +872,45 @@ create unique index i_docir on doc(initid, revision);";
             "cdate",
             "adate",
             "revdate"
-        ) , true); // to force also execute sql trigger
+        ), true); // to force also execute sql trigger
         if ($this->doctype != 'C') {
             // set to shared : because comes from createDoc
             \Dcp\Core\DocManager::cache()->addDocument($this);
         }
         if ($this->doctype != "T") {
             $err = $this->PostCreated();
-            if ($err != "") AddWarningMsg($err);
+            if ($err != "") {
+                AddWarningMsg($err);
+            }
             $this->sendTextToEngine();
             if ($this->dprofid > 0) {
                 $this->setProfil($this->dprofid); // recompute profil if needed
                 $this->modify(true, array(
                     "profid"
-                ) , true);
+                ), true);
             }
             $this->UpdateVaultIndex();
             $this->updateRelations(true);
         }
         $this->hasChanged = false;
     }
-    
-    function setChanged()
+
+    public function setChanged()
     {
         $this->hasChanged = true;
     }
+
     /**
      * return true if document has changed after setValue/clearValue calling
+     *
      * @api test if document attributes are changed
      * @return bool
      */
-    function isChanged()
+    public function isChanged()
     {
         return ($this->hasChanged === true);
     }
+
     /**
      * set default values and creation date
      * the access control is provided by {@see Doc::createDoc()} function.
@@ -856,40 +918,58 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return string error message, if no error empty string
      */
-    final public function PreInsert()
+    final public function preInsert()
     {
-        
         $err = $this->PreCreated();
-        if ($err != "") return $err;
+        if ($err != "") {
+            return $err;
+        }
         // compute new id
         if ($this->id == "") {
-            if ($this->doctype == 'T') $res = pg_query($this->init_dbid() , "select nextval ('seq_id_tdoc')");
-            else $res = pg_query($this->init_dbid() , "select nextval ('seq_id_doc')");
+            if ($this->doctype == 'T') {
+                $res = pg_query($this->init_dbid(), "select nextval ('seq_id_tdoc')");
+            } else {
+                $res = pg_query($this->init_dbid(), "select nextval ('seq_id_doc')");
+            }
             $arr = pg_fetch_array($res, 0);
             $this->id = $arr[0];
         }
         // set default values
-        if ($this->initid == "") $this->initid = $this->id;
+        if ($this->initid == "") {
+            $this->initid = $this->id;
+        }
         $this->RefreshTitle();
         if (chop($this->title) == "") {
             $fdoc = $this->getFamilyDocument();
-            $this->title = sprintf(_("untitle %s %d") , $fdoc->title, $this->initid);
+            $this->title = sprintf(_("untitle %s %d"), $fdoc->title, $this->initid);
         }
-        if ($this->doctype == "") $this->doctype = $this->defDoctype;
-        if ($this->revision == "") $this->revision = "0";
-        
+        if ($this->doctype == "") {
+            $this->doctype = $this->defDoctype;
+        }
+        if ($this->revision == "") {
+            $this->revision = "0";
+        }
+
         if ($this->profid == "") {
             $this->views = "{0}";
             $this->profid = "0";
         }
-        if ($this->usefor == "") $this->usefor = "N";
-        
-        if ($this->lmodify == "") $this->lmodify = "N";
-        if ($this->locked == "") $this->locked = "0";
-        if ($this->owner == "") $this->owner = $this->userid;
+        if ($this->usefor == "") {
+            $this->usefor = "N";
+        }
+
+        if ($this->lmodify == "") {
+            $this->lmodify = "N";
+        }
+        if ($this->locked == "") {
+            $this->locked = "0";
+        }
+        if ($this->owner == "") {
+            $this->owner = $this->userid;
+        }
         //      if ($this->state == "") $this->state=$this->firstState;
         $this->version = $this->getVersion();
-        
+
         if ($this->name && $this->revision == 0) {
             $err = $this->setLogicalName($this->name, false, true);
             if ($err) {
@@ -908,39 +988,59 @@ create unique index i_docir on doc(initid, revision);";
             $wdoc = DocManager::getDocument($this->wid);
             $this->wdoc = $wdoc;
             if ($this->wdoc && $this->wdoc->isAlive()) {
-                if ($this->wdoc->doctype != 'W') $err = sprintf(_("creation : document %s is not a workflow") , $this->wid);
-                else $this->wdoc->Set($this); // set first state
-                
-            } else $err = sprintf(_("creation : workflow %s not exists") , $this->wid);
+                if ($this->wdoc->doctype != 'W') {
+                    $err = sprintf(_("creation : document %s is not a workflow"), $this->wid);
+                } else {
+                    $this->wdoc->Set($this);
+                } // set first state
+            } else {
+                $err = sprintf(_("creation : workflow %s not exists"), $this->wid);
+            }
         } else {
             $this->wdoc = null;
         }
         return $err;
     }
+
     /**
      * Verify control edit
      *
      * if {@link Doc::disableEditControl()} is call before control permission is desactivated
      * if attribute values are changed the modification date is updated
+     *
      * @return string error message, if no error empty string
      */
-    function preUpdate()
+    public function preUpdate()
     {
-        if ($this->id == "") return _("cannot update no initialized document");
-        if ($this->doctype == 'I') return _("cannot update inconsistent document"); // provides from waiting document or searchDOc with setReturns
+        if ($this->id == "") {
+            return _("cannot update no initialized document");
+        }
+        if ($this->doctype == 'I') {
+            return _("cannot update inconsistent document");
+        } // provides from waiting document or searchDOc with setReturns
         if (!$this->withoutControl) {
             $err = $this->control("edit");
-            if ($err != "") return ($err);
+            if ($err != "") {
+                return ($err);
+            }
         }
-        if ($this->locked == - 1) $this->lmodify = 'N';
+        if ($this->locked == -1) {
+            $this->lmodify = 'N';
+        }
         $err = $this->docIsCleanToModify();
-        if ($err) return $err;
-        if ($this->constraintbroken) return (sprintf(_("constraint broken %s") , $this->constraintbroken));
-        
+        if ($err) {
+            return $err;
+        }
+        if ($this->constraintbroken) {
+            return (sprintf(_("constraint broken %s"), $this->constraintbroken));
+        }
+
         unset($this->fields["svalues"]);
         $this->RefreshTitle();
         if ($this->hasChanged) {
-            if (chop($this->title) == "") $this->title = _("untitle document");
+            if (chop($this->title) == "") {
+                $this->title = _("untitle document");
+            }
             // set modification date
             if ($this->doctype !== "T") {
                 $this->svalues = $this->getExtraSearchableDisplayValues();
@@ -951,54 +1051,66 @@ create unique index i_docir on doc(initid, revision);";
             $this->version = $this->getVersion();
             $this->lmodify = 'Y';
         }
-        
+
         return '';
     }
-    
+
     private function docIsCleanToModify()
     {
         if ($this->initid > 0 && $this->fromid > 0) {
-            DbManager::query(sprintf("select initid, id, revision, locked from only doc%d where initid=%d", $this->fromid, $this->initid) , $r);
-            
+            DbManager::query(
+                sprintf(
+                    "select initid, id, revision, locked from only doc%d where initid=%d",
+                    $this->fromid,
+                    $this->initid
+                ),
+                $r
+            );
+
             $cAlive = 0;
             $imAlive = false;
             foreach ($r as $docInfo) {
-                if (($docInfo["id"] == $this->id) && ($docInfo["locked"] == - 1)) {
-                    return ErrorCode::getError('DOC0118', $this->getTitle() , $this->id);
-                } elseif ($docInfo["locked"] != - 1) {
-                    if ($docInfo["id"] == $this->id) $imAlive = true;
+                if (($docInfo["id"] == $this->id) && ($docInfo["locked"] == -1)) {
+                    return ErrorCode::getError('DOC0118', $this->getTitle(), $this->id);
+                } elseif ($docInfo["locked"] != -1) {
+                    if ($docInfo["id"] == $this->id) {
+                        $imAlive = true;
+                    }
                     $cAlive++;
                 }
             }
-            if ($this->locked != - 1 && $cAlive == 1 && $imAlive) {
+            if ($this->locked != -1 && $cAlive == 1 && $imAlive) {
                 return ''; // OK
-                
             } elseif ($cAlive > 1) {
                 // multiple alive already set : need fix it
                 fixMultipleAliveDocument($this);
                 if ($this->isFixed()) { // if locked now ?
-                    return ErrorCode::getError('DOC0119', $this->getTitle() , $this->id);
+                    return ErrorCode::getError('DOC0119', $this->getTitle(), $this->id);
                 }
             }
         }
         return '';
     }
+
     /**
      * optimize for speed : memorize object for future use
+     *
      * @return string
      */
-    function postUpdate()
+    public function postUpdate()
     {
         fixMultipleAliveDocument($this);
-        
+
         if ($this->hasChanged) {
             $this->computeDProfil();
             if ($this->doctype != 'C') {
                 $this->regenerateTemplates();
                 $this->UpdateVaultIndex();
                 $this->updateRelations();
-                
-                if ($this->getATag("DYNTIMER")) $this->resetDynamicTimers();
+
+                if ($this->getATag("DYNTIMER")) {
+                    $this->resetDynamicTimers();
+                }
                 $this->addLog("changed", array_keys($this->getOldRawValues()));
             }
         }
@@ -1006,31 +1118,33 @@ create unique index i_docir on doc(initid, revision);";
         $this->hasChanged = false;
         return '';
     }
+
     /**
      * Regenerate the template referenced by an attribute
      *
-     * @param string $aid the name of the attribute holding the template
-     * @param int $index the value for $index row (default value -1 means all values)
+     * @param string $aid   the name of the attribute holding the template
+     * @param int    $index the value for $index row (default value -1 means all values)
+     *
      * @return string error message, if no error empty string
      */
-    function regenerateTemplate($aid, $index = - 1)
+    public function regenerateTemplate($aid, $index = -1)
     {
         $layout = 'THIS:' . $aid;
-        if ($index > - 1) {
-            $layout.= '[' . $index . ']';
+        if ($index > -1) {
+            $layout .= '[' . $index . ']';
         }
         $orifile = $this->getZoneFile($layout);
         if (!$orifile) {
-            $err = sprintf(_("Dynamic template %s not found ") , $orifile);
+            $err = sprintf(_("Dynamic template %s not found "), $orifile);
             return $err;
         }
         if (!file_exists($orifile)) {
-            $err = sprintf(_("Dynamic template %s not found ") , $orifile);
+            $err = sprintf(_("Dynamic template %s not found "), $orifile);
             addWarningMsg($err);
             return $err;
         }
         if (getFileExtension($orifile) != 'odt') {
-            $err = sprintf(_("Dynamic template %s not an odt file ") , $orifile);
+            $err = sprintf(_("Dynamic template %s not an odt file "), $orifile);
             addWarningMsg($err);
             return $err;
         }
@@ -1042,7 +1156,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         $fh = fopen($outfile, 'rb');
         if ($fh === false) {
-            $err = sprintf(_("Error opening %s file '%s'") , 'outfile', $outfile);
+            $err = sprintf(_("Error opening %s file '%s'"), 'outfile', $outfile);
             addWarningMsg($err);
             return $err;
         }
@@ -1052,15 +1166,16 @@ create unique index i_docir on doc(initid, revision);";
             return $err;
         }
         fclose($fh);
-        $this->addHistoryEntry(sprintf(_('regeneration of file template %s') , $aid));
+        $this->addHistoryEntry(sprintf(_('regeneration of file template %s'), $aid));
         return '';
     }
+
     /**
      * Regenerate all templates referenced by the document attributes
      *
      * @return string error message, if no error empty string
      */
-    final function regenerateTemplates()
+    final public function regenerateTemplates()
     {
         $fa = $this->GetFileAttributes();
         $errorList = array();
@@ -1088,53 +1203,72 @@ create unique index i_docir on doc(initid, revision);";
         }
         return '';
     }
+
     /**
      * Set relation doc id use on docrel table
+     *
      * @param bool $force true to reinit all relations
      */
-    function updateRelations($force = false)
+    public function updateRelations($force = false)
     {
         //    return; // for the moment
-        include_once ("FDL/Class.DocRel.php");
+        include_once("FDL/Class.DocRel.php");
         $or = new DocRel($this->dbaccess);
         //    $or->resetRelations('',$this->initid); // not necessary now
         $or->initRelations($this, $force);
     }
+
     /**
      * get current sequence number :: number of doc for this family
+     *
      * @return int
      */
-    function getCurSequence()
+    public function getCurSequence()
     {
-        if ($this->doctype == 'C') return 0;
-        if ($this->fromid == "") return 0;
+        if ($this->doctype == 'C') {
+            return 0;
+        }
+        if ($this->fromid == "") {
+            return 0;
+        }
         // cannot use currval if nextval is not use before
-        $res = pg_query($this->init_dbid() , "select nextval ('seq_doc" . $this->fromid . "')");
+        $res = pg_query($this->init_dbid(), "select nextval ('seq_doc" . $this->fromid . "')");
         $arr = pg_fetch_array($res, 0);
         $cur = intval($arr[0]) - 1;
-        pg_query($this->init_dbid() , "select setval ('seq_doc" . $this->fromid . "',$cur)");
-        
+        pg_query($this->init_dbid(), "select setval ('seq_doc" . $this->fromid . "',$cur)");
+
         return $cur;
     }
+
     /**
      * set next sequence family
+     *
      * @param int $fromid
+     *
      * @return int
      */
-    function nextSequence($fromid = 0)
+    public function nextSequence($fromid = 0)
     {
-        if ($fromid == 0) $fromid = $this->fromid;
-        if ($this->fromid == 0) return 0;
-        if ($this->doctype == 'C') return 0;
+        if ($fromid == 0) {
+            $fromid = $this->fromid;
+        }
+        if ($this->fromid == 0) {
+            return 0;
+        }
+        if ($this->doctype == 'C') {
+            return 0;
+        }
         // cannot use currval if nextval is not use before
-        $res = pg_query($this->init_dbid() , "select nextval ('seq_doc" . $fromid . "')");
+        $res = pg_query($this->init_dbid(), "select nextval ('seq_doc" . $fromid . "')");
         $arr = pg_fetch_array($res, 0);
         $cur = intval($arr[0]);
         return $cur;
     }
+
     /**
      * disable edit control for setValue/modify/store
      * the document can be modified without testing edit acl
+     *
      * @see Doc::enableEditControl
      * @api disable edit control for setValue/modify/store
      */
@@ -1143,9 +1277,11 @@ create unique index i_docir on doc(initid, revision);";
         $this->withoutControlN++;
         $this->withoutControl = true;
     }
+
     /**
      * default edit control enable
      * restore control which are disabled by disableEditControl
+     *
      * @see Doc::disableEditControl
      * @api default edit control enable
      */
@@ -1157,53 +1293,67 @@ create unique index i_docir on doc(initid, revision);";
             $this->withoutControl = false;
         }
     }
+
     /**
      * to know if the document can be revised
+     *
      * @return bool true is revisable
      */
     public function isRevisable()
     {
         if (($this->doctype == 'F') && ($this->usefor != 'P')) {
             $fdoc = $this->getFamilyDocument();
-            if ($fdoc->schar != "S") return true;
+            if ($fdoc->schar != "S") {
+                return true;
+            }
         }
         return false;
     }
+
     /**
      * copy values from anothers document (must be same family or descendant)
      *
      * @param Doc &$from document source for the transfert
+     *
      * @return string error message from setValue, if no error, empty string
      */
     final public function transfertValuesFrom(&$from)
     {
-        
         $values = $from->getValues();
         $err = "";
         foreach ($values as $k => $v) {
-            $err.= ($err ? '\n' : '') . $this->setValue($k, $v);
+            $err .= ($err ? '\n' : '') . $this->setValue($k, $v);
         }
         return $err;
     }
+
     /**
      * convert to another family
      * loose all revisions
-     * @param int $fromid family identifier where the document will be converted
+     *
+     * @param int   $fromid    family identifier where the document will be converted
      * @param array $prevalues values which will be added before conversion
+     *
      * @return doc|false|string the document converted (don't reuse $this) if error return string message
      */
     final public function convert($fromid, $prevalues = array())
     {
         $cdoc = DocManager::createDocument($fromid);
 
-        if ($this->fromid == $cdoc->fromid) return false; // no convert if not needed
-        if ($this->locked == - 1) return false; // not revised document
-        if ($cdoc->fromid == 0) return false;
+        if ($this->fromid == $cdoc->fromid) {
+            return false;
+        } // no convert if not needed
+        if ($this->locked == -1) {
+            return false;
+        } // not revised document
+        if ($cdoc->fromid == 0) {
+            return false;
+        }
         $f1doc = $this->getFamilyDocument();
         $f1from = $f1doc->title . "[" . $f1doc->id . "]";
         $f2doc = $cdoc->getFamilyDocument();
         $f2from = $f2doc->title . "[" . $f2doc->id . "]";
-        
+
         $cdoc->id = $this->id;
         $cdoc->initid = $this->id;
         $cdoc->revision = 0;
@@ -1214,13 +1364,15 @@ create unique index i_docir on doc(initid, revision);";
         $cdoc->profid = $this->profid;
         $cdoc->dprofid = $this->dprofid;
         $cdoc->prelid = $this->prelid;
-        
+
         $values = $this->getValues();
         $point = "dcp:convert" . $this->id;
         DbManager::savePoint($point); // begin transaction in case of fail add
         $err = $this->delete(true, false, true); // delete before add to avoid double id (it is not authorized)
-        if ($err != "") return $err;
-        
+        if ($err != "") {
+            return $err;
+        }
+
         foreach ($prevalues as $k => $v) {
             $cdoc->setValue($k, $v);
         }
@@ -1229,11 +1381,11 @@ create unique index i_docir on doc(initid, revision);";
             DbManager::rollbackPoint($point);
             return $err;
         }
-        
+
         foreach ($values as $k => $v) {
             $cdoc->setValue($k, $v);
         }
-        
+
         $err = $cdoc->Modify();
         if ($err == "") {
             if ($this->revision > 0) {
@@ -1241,19 +1393,21 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         $this->exec_query(sprintf("update fld set fromid=%d where childid=%d", $cdoc->fromid, $this->initid));
-        
-        $cdoc->addHistoryEntry(sprintf(_("convertion from %s to %s family") , $f1from, $f2from));
-        
+
+        $cdoc->addHistoryEntry(sprintf(_("convertion from %s to %s family"), $f1from, $f2from));
+
         DbManager::commitPoint($point);
         if (\Dcp\Core\DocManager::cache()->isDocumentIdInCache($this->id)) {
             \Dcp\Core\DocManager::cache()->addDocument($cdoc);
         }
-        
+
         return $cdoc;
     }
+
     /**
      * test if the document can be revised now
      * it must be locked by the current user
+     *
      * @deprecated use canEdit instead
      * @return string empty means user can update else message of the raison
      */
@@ -1262,12 +1416,15 @@ create unique index i_docir on doc(initid, revision);";
         deprecatedFunction();
         return $this->canEdit();
     }
+
     /**
      * save document if attribute are change
      * not be use when modify properties
      * only use with use of setValue.
-     * @param stdClass $info refresh and postStore messages
-     * @param boolean $skipConstraint set to true to not test constraints
+     *
+     * @param stdClass $info           refresh and postStore messages
+     * @param boolean  $skipConstraint set to true to not test constraints
+     *
      * @deprecated use ::store() instead
      * @return string error message
      */
@@ -1287,23 +1444,29 @@ create unique index i_docir on doc(initid, revision);";
                 //in case of change in postModify
                 $err = $this->modify();
             }
-            if ($err == "") $this->addHistoryEntry(_("save document") , DocHisto::INFO, "MODIFY");
+            if ($err == "") {
+                $this->addHistoryEntry(_("save document"), DocHisto::INFO, "MODIFY");
+            }
         }
         $info->error = $err;
         return $err;
     }
+
     /**
      * record new document or update
+     *
      * @api record new document or update it in database
-     * @param storeInfo $info refresh and postStore messages
-     * @param boolean $skipConstraint set to true to not test constraints
+     *
+     * @param storeInfo $info           refresh and postStore messages
+     * @param boolean   $skipConstraint set to true to not test constraints
+     *
      * @return string error message
      */
     public function store(&$info = null, $skipConstraint = false)
     {
         $constraint = [];
         $info = new storeInfo();
-        
+
         $err = $this->preStore();
         if ($err) {
             $info->preStore = $err;
@@ -1330,14 +1493,18 @@ create unique index i_docir on doc(initid, revision);";
                     $info->postStore = $this->postStore();
                     /* @noinspection PhpDeprecationInspection
                      * compatibility until postModify exists
-                    */
+                     */
                     $info->postModify = $info->postStore;
                     if ($this->hasChanged) {
                         //in case of change in postStore
                         $err = $this->modify();
-                        if ($err) $info->errorCode = storeInfo::UPDATE_ERROR;
+                        if ($err) {
+                            $info->errorCode = storeInfo::UPDATE_ERROR;
+                        }
                     }
-                    if ($err == "" && (!$create)) $this->addHistoryEntry(_("save document") , DocHisto::INFO, "MODIFY");
+                    if ($err == "" && (!$create)) {
+                        $this->addHistoryEntry(_("save document"), DocHisto::INFO, "MODIFY");
+                    }
                 }
             } else {
                 $info->errorCode = storeInfo::CREATE_ERROR;
@@ -1349,56 +1516,78 @@ create unique index i_docir on doc(initid, revision);";
         $info->error = $err;
         return $err;
     }
+
     /**
      * test if the document can be modified by the current user
      * the document is not need to be locked
+     *
      * @param bool $verifyDomain
+     *
      * @return string empty means user can update else message of the raison
      */
     public function canEdit($verifyDomain = true)
     {
-        if ($this->locked == - 1) {
-            $err = sprintf(_("cannot update file %s (rev %d) : fixed. Get the latest version") , $this->title, $this->revision);
+        if ($this->locked == -1) {
+            $err = sprintf(
+                _("cannot update file %s (rev %d) : fixed. Get the latest version"),
+                $this->title,
+                $this->revision
+            );
             return ($err);
         }
         if ($this->userid == 1) {
             return "";
         } // admin can do anything but not modify fixed doc
         if ($verifyDomain && ($this->lockdomainid > 0)) {
-            $err = sprintf(_("document is booked in domain %s") , $this->getTitle($this->lockdomainid));
+            $err = sprintf(_("document is booked in domain %s"), $this->getTitle($this->lockdomainid));
         } else {
             if ($this->withoutControl) {
                 return "";
             } // no more test if disableEditControl activated
             if (($this->locked != 0) && (abs($this->locked) != $this->userid)) {
                 $user = new Account("", abs($this->locked));
-                if ($this->locked < - 1) $err = sprintf(_("Document %s is in edition by %s.") , $this->getTitle() , $user->firstname . " " . $user->lastname);
-                else $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s.") , $this->getTitle() , $this->revision, $user->firstname . " " . $user->lastname);
+                if ($this->locked < -1) {
+                    $err = sprintf(
+                        _("Document %s is in edition by %s."),
+                        $this->getTitle(),
+                        $user->firstname . " " . $user->lastname
+                    );
+                } else {
+                    $err = sprintf(
+                        _("you are not allowed to update the file %s (rev %d) is locked by %s."),
+                        $this->getTitle(),
+                        $this->revision,
+                        $user->firstname . " " . $user->lastname
+                    );
+                }
             } else {
                 $err = $this->Control("edit");
             }
         }
         return ($err);
     }
+
     /**
      * test if the document can be locked
      * it is not locked before, and the current user can edit document
      *
      * @return string empty means user can update else message of the raison
      */
-    final public function CanLockFile()
+    final public function canLockFile()
     {
         $err = $this->canEdit();
         return $err;
     }
+
     /**
      * @see Doc::canUnLock
      * @return boolean true if current user can lock file
      */
     public function canLock()
     {
-        return ($this->CanLockFile() == "");
+        return ($this->canLockFile() == "");
     }
+
     /**
      * @see Doc::canLock
      * @return bool true if current user can lock file
@@ -1407,23 +1596,31 @@ create unique index i_docir on doc(initid, revision);";
     {
         return ($this->CanUnLockFile() == "");
     }
+
     /**
      * test if the document can be unlocked
+     *
      * @see Doc::CanLockFile()
      * @see Doc::CanUpdateDoc()
      * @return string empty means user can update else message of the raison
      */
-    final public function CanUnLockFile()
+    final public function canUnLockFile()
     {
-        if ($this->userid == 1) return ""; // admin can do anything
+        if ($this->userid == 1) {
+            return "";
+        } // admin can do anything
         $err = "";
         if ($this->locked != 0) { // if is already unlocked
-            if ($this->profid > 0) $err = $this->Control("unlock"); // first control unlock privilege
-            else $err = _("cannot unlock"); // not control unlock if the document is not controlled
-            
+            if ($this->profid > 0) {
+                $err = $this->Control("unlock");
+            } // first control unlock privilege
+            else {
+                $err = _("cannot unlock");
+            } // not control unlock if the document is not controlled
         }
-        if ($err != "") $err = $this->canEdit();
-        else {
+        if ($err != "") {
+            $err = $this->canEdit();
+        } else {
             $err = $this->Control("edit");
             if ($err != "") {
                 if ($this->profid > 0) {
@@ -1433,9 +1630,12 @@ create unique index i_docir on doc(initid, revision);";
         }
         return ($err);
     }
+
     /**
      * test if the document is locked
+     *
      * @see Doc::canLockFile()
+     *
      * @param bool $my if true test if it is lock of current user
      *
      * @return bool true if locked. If $my return true if it is locked by another user
@@ -1444,23 +1644,31 @@ create unique index i_docir on doc(initid, revision);";
     {
         if ($my) {
             if ($this->userid == 1) {
-                if ($this->locked == 1) return false;
-            } elseif (abs($this->locked) == $this->userid) return false;
+                if ($this->locked == 1) {
+                    return false;
+                }
+            } elseif (abs($this->locked) == $this->userid) {
+                return false;
+            }
         }
-        return (($this->locked > 0) || ($this->locked < - 1));
+        return (($this->locked > 0) || ($this->locked < -1));
     }
+
     /**
      * test if the document is confidential
+     *
      * @return bool true if confidential and current user is not authorized
      */
     final public function isConfidential()
     {
         return (($this->confidential > 0) && ($this->controlId($this->profid, 'confidential') != ""));
     }
+
     /**
      * return the family document where the document comes from
+     *
      * @deprecated use {@link Doc::getFamilyDocument} instead
-     * @see Doc::getFamilyDocument
+     * @see        Doc::getFamilyDocument
      * @return DocFam
      */
     final public function getFamDoc()
@@ -1468,8 +1676,10 @@ create unique index i_docir on doc(initid, revision);";
         deprecatedFunction();
         return $this->getFamilyDocument();
     }
+
     /**
      * return the family document where the document comes from
+     *
      * @api return family odcument
      * @return DocFam
      */
@@ -1479,66 +1689,81 @@ create unique index i_docir on doc(initid, revision);";
          * @var DocFam $famdoc
          */
         static $famdoc = null;
-        if (($famdoc === null) || ($famdoc->id != $this->fromid)) $famdoc = DocManager::getFamily($this->fromid);
+        if (($famdoc === null) || ($famdoc->id != $this->fromid)) {
+            $famdoc = DocManager::getFamily($this->fromid);
+        }
         if (!$famdoc) {
-            $famdoc=new \DocFam();
+            $famdoc = new \DocFam();
         }
         return $famdoc;
     }
+
     /**
      * search the first document from its title
+     *
      * @param string $title the title to search (must be exactly the same title)
+     *
      * @return int document identifier
      */
-    function getFreedomFromTitle($title)
+    public function getFreedomFromTitle($title)
     {
-        
         $query = new QueryDb($this->dbaccess, "Doc");
         $query->basic_elem->sup_where = array(
             "title='" . $title . "'"
         );
-        
+
         $table1 = $query->Query();
         $id = 0;
         if ($query->nb > 0) {
             $id = $table1[0]->id;
-            
+
             unset($table1);
         }
         return $id;
     }
+
     /**
      * return family parameter
      *
      * @deprecated use {@link Doc::getFamilyParameterValue} instead
-     * @see Doc::getFamilyParameterValue
+     * @see        Doc::getFamilyParameterValue
+     *
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
+     *
      * @return string parameter value
      */
     public function getParamValue($idp, $def = "")
     {
         return $this->getFamilyParameterValue($idp, $def);
     }
+
     /**
      * return family parameter
      *
-     * @api return family parameter value
+     * @api  return family parameter value
+     *
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
+     *
      * @note The value of parameter can come from inherited family if its own value is empty.
-     The value of parameter comes from default configuration value if no one value are set in its family or in a parent family.
-     the default configuration value comes from inherited family if no default configuration.
-     In last case, if no values and no configurated default values, the $def argument is returned
+     * The value of parameter comes from default configuration value if no one value are set in its family
+     * or in a parent family.
+     * the default configuration value comes from inherited family if no default configuration.
+     * In last case, if no values and no configurated default values, the $def argument is returned
      * @return string parameter value
      */
     public function getFamilyParameterValue($idp, $def = "")
     {
-        if (isset($this->_paramValue[$idp])) return $this->_paramValue[$idp];
+        if (isset($this->_paramValue[$idp])) {
+            return $this->_paramValue[$idp];
+        }
         $r = $this->getParameterFamilyRawValue($idp, $def);
         /* @var NormalAttribute $paramAttr */
         $paramAttr = $this->getAttribute($idp);
-        if (!$paramAttr) return $def;
+        if (!$paramAttr) {
+            return $def;
+        }
         if ($paramAttr->phpfunc != "" && $paramAttr->phpfile == "" && $paramAttr->type !== "enum") {
             $this->_paramValue[$idp] = $r;
             if ($paramAttr->inArray()) {
@@ -1546,14 +1771,18 @@ create unique index i_docir on doc(initid, revision);";
                 $max = 0;
                 foreach ($attributes_array as $attr) {
                     $count = count($this->rawValueToArray($this->getFamilyParameterValue($attr->id)));
-                    if ($count > $max) $max = $count;
+                    if ($count > $max) {
+                        $max = $count;
+                    }
                 }
                 $tmpVal = "";
                 for ($i = 0; $i < $max; $i++) {
                     $val = $this->applyMethod($paramAttr->phpfunc, "", $i);
                     if ($val != $paramAttr->phpfunc) {
-                        if ($tmpVal) $tmpVal.= "\n";
-                        $tmpVal.= $val;
+                        if ($tmpVal) {
+                            $tmpVal .= "\n";
+                        }
+                        $tmpVal .= $val;
                     }
                 }
                 $r = $tmpVal;
@@ -1563,27 +1792,34 @@ create unique index i_docir on doc(initid, revision);";
                     $r = $val;
                 }
             }
-        } else if ($r) {
+        } elseif ($r) {
             $this->_paramValue[$idp] = $r;
             $r = $this->getValueMethod($r);
         }
         $this->_paramValue[$idp] = $r;
         return $r;
     }
-    
+
     protected function getParameterFamilyRawValue($idp, $def)
     {
-        if (!$this->fromid) return false;
+        if (!$this->fromid) {
+            return false;
+        }
         $fdoc = $this->getFamilyDocument();
-        if (!$fdoc->isAlive()) $r = false;
-        else $r = $fdoc->getParameterRawValue($idp, $def);
+        if (!$fdoc->isAlive()) {
+            $r = false;
+        } else {
+            $r = $fdoc->getParameterRawValue($idp, $def);
+        }
         return $r;
     }
+
     /**
      * return similar documents
      *
      * @param string $key1 first attribute id to perform search
      * @param string $key2 second attribute id to perform search
+     *
      * @return Doc[] similar documents
      */
     final public function getDocWithSameTitle($key1 = "title", $key2 = "")
@@ -1607,21 +1843,24 @@ create unique index i_docir on doc(initid, revision);";
         }
         return ($t);
     }
+
     /**
      * return the latest revision id with the indicated state
      * For the user the document is in the trash
+     *
      * @param string $state wanted state
-     * @param bool $fixed set to true if not search in current state
+     * @param bool   $fixed set to true if not search in current state
+     *
      * @return int document id (0 if no found)
      */
     final public function getRevisionState($state, $fixed = false)
     {
         $ldoc = $this->GetRevisions("TABLE");
         $vdocid = 0;
-        
+
         foreach ($ldoc as $k => $v) {
             if ($v["state"] == $state) {
-                if ((($v["locked"] == - 1) && $fixed) || (!$fixed)) {
+                if ((($v["locked"] == -1) && $fixed) || (!$fixed)) {
                     $vdocid = $v["id"];
                     break;
                 }
@@ -1629,42 +1868,58 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $vdocid;
     }
+
     // --------------------------------------------------------------------
     final public function deleteTemporary()
     {
         // --------------------------------------------------------------------
-        pg_query($this->init_dbid() , "delete from doc where doctype='T'");
+        pg_query($this->init_dbid(), "delete from doc where doctype='T'");
     }
+
     /**
      * Control if the doc can be deleted
+     *
      * @access private
      * @return string error message, if no error empty string
-     * @see Doc::Delete()
+     * @see    Doc::Delete()
      */
-    function PreDocDelete()
+    public function preDocDelete()
     {
-        if ($this->doctype == 'Z') return _("already deleted");
-        if ($this->isLocked(true)) return _("locked");
-        if ($this->lockdomainid > 0) return sprintf(_("document is booked in domain %s") , $this->getTitle($this->lockdomainid));
+        if ($this->doctype == 'Z') {
+            return _("already deleted");
+        }
+        if ($this->isLocked(true)) {
+            return _("locked");
+        }
+        if ($this->lockdomainid > 0) {
+            return sprintf(_("document is booked in domain %s"), $this->getTitle($this->lockdomainid));
+        }
         $err = $this->Control("delete");
-        
+
         return $err;
     }
+
     /**
      * Really delete document from database
+     *
      * @deprecated use {@link Doc::delete} instead
-     * @see Doc::delete
+     * @see        Doc::delete
+     *
      * @param bool $nopost set to true if no need tu call postDelete methods
+     *
      * @return string error message, if no error empty string
      */
-    final public function ReallyDelete($nopost)
+    final public function reallyDelete($nopost)
     {
         deprecatedFunction();
         return $this->_destroy($nopost);
     }
+
     /**
      * Really delete document from database
+     *
      * @param bool $nopost set to true if no need tu call postDelete methods
+     *
      * @return string error message, if no error empty string
      */
     final private function _destroy($nopost)
@@ -1680,13 +1935,17 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $err;
     }
+
     /**
      * Set the document to zombie state
      * For the user the document is in the trash
+     *
      * @api Delete document
-     * @param bool $really if true  really delete from database
+     *
+     * @param bool $really  if true  really delete from database
      * @param bool $control if false don't control 'delete' acl
-     * @param bool $nopost if true don't call {@link Doc::postDelete} and {@link Doc::preDelete}
+     * @param bool $nopost  if true don't call {@link Doc::postDelete} and {@link Doc::preDelete}
+     *
      * @return string error message
      */
     final public function delete($really = false, $control = true, $nopost = false)
@@ -1695,17 +1954,27 @@ create unique index i_docir on doc(initid, revision);";
         if ($control) {
             // Control if the doc can be deleted
             $err = $this->PreDocDelete();
-            if ($err != '') return $err;
+            if ($err != '') {
+                return $err;
+            }
         }
-        
+
         if ($really) {
             if ($this->id != "") {
                 // delete all revision also
                 global $action;
                 global $_SERVER;
                 $appli = $action->parent;
-                $this->addHistoryEntry(sprintf(_("Destroyed by action %s/%s from %s") , $appli->name, $action->name, isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 'bash mode') , DocHisto::NOTICE);
-                $this->addHistoryEntry(_("Document destroyed") , DocHisto::MESSAGE, "DELETE");
+                $this->addHistoryEntry(
+                    sprintf(
+                        _("Destroyed by action %s/%s from %s"),
+                        $appli->name,
+                        $action->name,
+                        isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 'bash mode'
+                    ),
+                    DocHisto::NOTICE
+                );
+                $this->addHistoryEntry(_("Document destroyed"), DocHisto::MESSAGE, "DELETE");
                 $this->addLog('delete', array(
                     "really" => $really
                 ));
@@ -1716,39 +1985,55 @@ create unique index i_docir on doc(initid, revision);";
             }
         } else {
             // Control if the doc can be deleted
-            if ($this->doctype == 'Z') $err = _("already deleted");
-            if ($err != '') return $err;
-            
+            if ($this->doctype == 'Z') {
+                $err = _("already deleted");
+            }
+            if ($err != '') {
+                return $err;
+            }
+
             if (!$nopost) {
                 $err = $this->preDelete();
-                if ($err != '') return $err;
+                if ($err != '') {
+                    return $err;
+                }
             }
-            
+
             if ($this->doctype != 'Z') {
-                
-                if ($this->name != "") $this->exec_query(sprintf("delete from doc%d where name='%s' and doctype='Z'", $this->fromid, pg_escape_string($this->name))); // need to not have twice document with same name
+                if ($this->name != "") {
+                    $this->exec_query(sprintf(
+                        "delete from doc%d where name='%s' and doctype='Z'",
+                        $this->fromid,
+                        pg_escape_string($this->name)
+                    ));
+                } // need to not have twice document with same name
                 $this->doctype = 'Z'; // Zombie Doc
-                $this->locked = - 1;
+                $this->locked = -1;
                 $this->lmodify = 'D'; // indicate last delete revision
                 $date = gettimeofday();
                 $this->revdate = $date['sec']; // Delete date
                 global $action;
                 global $_SERVER;
-                
+
                 $appli = $action->parent;
-                $this->addHistoryEntry(sprintf(_("delete by action %s/%s from %s") , $appli->name, $action->name, isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 'bash mode') , DocHisto::NOTICE);
-                $this->addHistoryEntry(_("document deleted") , DocHisto::MESSAGE, "DELETE");
+                $this->addHistoryEntry(sprintf(
+                    _("delete by action %s/%s from %s"),
+                    $appli->name,
+                    $action->name,
+                    isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 'bash mode'
+                ), DocHisto::NOTICE);
+                $this->addHistoryEntry(_("document deleted"), DocHisto::MESSAGE, "DELETE");
                 $this->addLog('delete', array(
                     "really" => $really
                 ));
-                
+
                 $err = $this->modify(true, array(
                     "doctype",
                     "revdate",
                     "locked",
                     "owner",
                     "lmodify"
-                ) , true);
+                ), true);
                 if ($err == "") {
                     if (!$nopost) {
                         $msg = $this->postDelete();
@@ -1761,9 +2046,11 @@ create unique index i_docir on doc(initid, revision);";
                     foreach ($rev as $k => $v) {
                         if ($v->doctype != 'Z') {
                             $v->doctype = 'Z'; // Zombie Doc
-                            if ($v->locked == - 1) $v->modify(true, array(
-                                "doctype"
-                            ) , true);
+                            if ($v->locked == -1) {
+                                $v->modify(true, array(
+                                    "doctype"
+                                ), true);
+                            }
                         }
                     }
                 }
@@ -1771,9 +2058,11 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $err;
     }
+
     /**
      * To restore a document which is in the trash
-     * @see Doc::undelete
+     *
+     * @see        Doc::undelete
      * @deprecated use {@link Doc::undelete} instead
      * @return string error message (empty message if no errors);
      */
@@ -1782,8 +2071,10 @@ create unique index i_docir on doc(initid, revision);";
         deprecatedFunction();
         return $this->undelete();
     }
+
     /**
      * To restore a document which is in the trash
+     *
      * @api restore deleted document
      * @see Doc::delete
      * @return string error message (empty message if no errors);
@@ -1793,68 +2084,81 @@ create unique index i_docir on doc(initid, revision);";
         if (($this->control('delete') == "") || ($this->userid == 1)) {
             if (!$this->isAlive()) {
                 $err = $this->preUndelete();
-                if ($err) return $err;
-                DbManager::query( sprintf("SELECT id from only doc%d where initid = %d order by id desc limit 1", $this->fromid, $this->initid) , $latestId, true, true);
-               
-                    if (!$latestId) $err = sprintf(_("document %s [%d] is strange") , $this->title, $this->id);
-                    else {
-                        $previousName = $this->name;
-                        $this->doctype = $this->defDoctype;
-                        $this->locked = 0;
-                        $this->id = $latestId;
-                        $this->name = '';
-                        $this->lmodify = 'Y'; // indicate last restoration
-                        $this->modify(true, array(
-                            "doctype",
-                            "locked",
-                            "lmodify",
-                            "name"
-                        ) , true);
-                        $this->addHistoryEntry(_("revival document") , DocHisto::MESSAGE, "REVIVE");
-                        $msg = $this->postUndelete();
-                        if ($msg) $this->addHistoryEntry($msg, DocHisto::MESSAGE);
-                        $this->addLog('undelete');
-                        $rev = $this->getRevisions();
-                        /**
-                         * @var Doc $v
-                         */
-                        foreach ($rev as $k => $v) {
-                            if ($v->doctype == 'Z') {
-                                $v->doctype = $v->defDoctype;
-                                $v->name = '';
-                                $err.= $v->modify(true, array(
-                                    "doctype",
-                                    "name"
-                                ) , true);
-                            }
-                        }
-                        if ($previousName) {
-                            // Reaffect logical name if can be
-                            $this->setLogicalName($previousName);
+                if ($err) {
+                    return $err;
+                }
+                DbManager::query(sprintf(
+                    "SELECT id from only doc%d where initid = %d order by id desc limit 1",
+                    $this->fromid,
+                    $this->initid
+                ), $latestId, true, true);
+
+                if (!$latestId) {
+                    $err = sprintf(_("document %s [%d] is strange"), $this->title, $this->id);
+                } else {
+                    $previousName = $this->name;
+                    $this->doctype = $this->defDoctype;
+                    $this->locked = 0;
+                    $this->id = $latestId;
+                    $this->name = '';
+                    $this->lmodify = 'Y'; // indicate last restoration
+                    $this->modify(true, array(
+                        "doctype",
+                        "locked",
+                        "lmodify",
+                        "name"
+                    ), true);
+                    $this->addHistoryEntry(_("revival document"), DocHisto::MESSAGE, "REVIVE");
+                    $msg = $this->postUndelete();
+                    if ($msg) {
+                        $this->addHistoryEntry($msg, DocHisto::MESSAGE);
+                    }
+                    $this->addLog('undelete');
+                    $rev = $this->getRevisions();
+                    /**
+                     * @var Doc $v
+                     */
+                    foreach ($rev as $k => $v) {
+                        if ($v->doctype == 'Z') {
+                            $v->doctype = $v->defDoctype;
+                            $v->name = '';
+                            $err .= $v->modify(true, array(
+                                "doctype",
+                                "name"
+                            ), true);
                         }
                     }
-                
+                    if ($previousName) {
+                        // Reaffect logical name if can be
+                        $this->setLogicalName($previousName);
+                    }
+                }
             } else {
-                $err = sprintf(_("document %s [%d] is not in the trash") , $this->getTitle() , $this->id);
+                $err = sprintf(_("document %s [%d] is not in the trash"), $this->getTitle(), $this->id);
             }
         } else {
-            $err = sprintf(_("need privilege delete to restore %s") , $this->getTitle());
+            $err = sprintf(_("need privilege delete to restore %s"), $this->getTitle());
         }
         return $err;
     }
+
     /**
      * Adaptation of affect Method from DbObj because of inheritance table
      * this function is call from QueryDb and all fields can not be instanciate
+     *
      * @param array $array the data array
-     * @param bool $more add values from values attributes needed only if cast document
-     * @param bool $reset reset all values before set and clean private variables
+     * @param bool  $more  add values from values attributes needed only if cast document
+     * @param bool  $reset reset all values before set and clean private variables
+     *
      * @return void
      */
     final public function affect($array, $more = false, $reset = true)
     {
         if (is_array($array)) {
             $this->preAffect($array, $more, $reset);
-            if ($more) $this->resetMoreValues();
+            if ($more) {
+                $this->resetMoreValues();
+            }
             if ($reset) {
                 foreach ($this->fields as $key) {
                     $this->$key = null;
@@ -1867,8 +2171,10 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
             $this->complete();
-            if ($more) $this->getMoreValues();
-            
+            if ($more) {
+                $this->getMoreValues();
+            }
+
             if ($reset) {
                 $this->_maskApplied = false;
                 $this->_oldvalue = array();
@@ -1893,60 +2199,74 @@ create unique index i_docir on doc(initid, revision);";
             $this->postAffect($array, $more, $reset);
         }
     }
+
     /**
-     * @see Doc::affect()
-     * @final Doc::complete()
-     * @access private
+     * @see      Doc::affect()
+     * @final    Doc::complete()
+     * @access   private
      * @internal use Doc::postAffect() instead
      */
     public function complete()
     {
     }
+
     /**
-     * @see Doc::affect()
-     * @param array $data data use to affect document values
-     * @param bool $more use "values" attribute in case of incomplete data
-     * @param bool $reset reset all values before set and clean private variables
+     * @see   Doc::affect()
+     *
+     * @param array $data  data use to affect document values
+     * @param bool  $more  use "values" attribute in case of incomplete data
+     * @param bool  $reset reset all values before set and clean private variables
+     *
      * @since 3.2.20
      * @return void
      */
     protected function preAffect(array & $data, &$more, &$reset)
     {
     }
+
     /**
-     * @see Doc::affect()
-     * @param array $data data use to affect document values
-     * @param bool $more use "values" attribute in case of incomplete data
-     * @param bool $reset reset all values before set and clean private variables
+     * @see   Doc::affect()
+     *
+     * @param array $data  data use to affect document values
+     * @param bool  $more  use "values" attribute in case of incomplete data
+     * @param bool  $reset reset all values before set and clean private variables
+     *
      * @since 3.2.20
      * @return void
      */
     protected function postAffect(array $data, $more, $reset)
     {
     }
+
     /**
      * Set to default values before add new doc
+     *
      * @return void
      */
-    function init()
+    public function init()
     {
         $this->isset = false;
         $this->id = "";
         $this->initid = "";
         $nattr = $this->GetNormalAttributes();
         foreach ($nattr as $k => $v) {
-            if (isset($this->$k) && ($this->$k != "")) $this->$k = "";
+            if (isset($this->$k) && ($this->$k != "")) {
+                $this->$k = "";
+            }
         }
     }
+
     // --------------------------------------------------------------------
-    function description()
+    public function description()
     {
         // --------------------------------------------------------------------
         return $this->title . " - " . $this->revision;
     }
+
     /**
      * use for system purpose
      *  prefer ::getFromDoc instead
+     *
      * @return int[]
      */
     final public function getFathersDoc()
@@ -1954,7 +2274,6 @@ create unique index i_docir on doc(initid, revision);";
         // --------------------------------------------------------------------
         // Return array of father doc id : class document
         if ($this->fathers === null) {
-            
             $this->fathers = array();
             if ($this->fromid > 0) {
                 $fdoc = $this->getFamilyDocument();
@@ -1964,28 +2283,39 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $this->fathers;
     }
+
     /**
      * Return array of fathers doc id : class document
+     *
      * @return int[]
      */
     final public function getFromDoc()
     {
         return $this->attributes->fromids;
     }
+
     /**
      * Return array of child family raw documents
-     * @param int $id if -1 use child for current document else for the family identifier set
+     *
+     * @param int  $id            if -1 use child for current document else for the family identifier set
      * @param bool $controlcreate set to true to not return documents which cannot be created by current user
+     *
      * @return array raw docfam values
      */
-    final public function getChildFam($id = - 1, $controlcreate = false)
+    final public function getChildFam($id = -1, $controlcreate = false)
     {
-        if ($id == 0) return array();
-        if (($id != - 1) || (!isset($this->childs))) {
-            include_once ("FDL/Class.SearchDoc.php");
-            if ($id == - 1) $id = $this->id;
-            if (!isset($this->childs)) $this->childs = array();
-            
+        if ($id == 0) {
+            return array();
+        }
+        if (($id != -1) || (!isset($this->childs))) {
+            include_once("FDL/Class.SearchDoc.php");
+            if ($id == -1) {
+                $id = $this->id;
+            }
+            if (!isset($this->childs)) {
+                $this->childs = array();
+            }
+
             $s = new SearchDoc($this->dbaccess, -1);
             $s->addFilter("fromid = " . $id);
             $s->overrideViewControl();
@@ -2001,10 +2331,13 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $this->childs;
     }
+
     /**
      * return all revision documents
-     * @param string $type LIST|TABLE il LIST return Doc object else if TABLE raw documents
-     * @param int $limit limit of revision (by default the 200 latest revisions)
+     *
+     * @param string $type  LIST|TABLE il LIST return Doc object else if TABLE raw documents
+     * @param int    $limit limit of revision (by default the 200 latest revisions)
+     *
      * @return Doc[]|array
      */
     final public function getRevisions($type = "LIST", $limit = 200)
@@ -2014,17 +2347,22 @@ create unique index i_docir on doc(initid, revision);";
         //$query->AddQuery("revision <= ".$this->revision);
         $query->AddQuery("initid = " . $this->initid);
         $query->order_by = "revision DESC LIMIT $limit";
-        
+
         $rev = $query->Query(0, 0, $type);
-        if ($query->nb == 0) return array();
+        if ($query->nb == 0) {
+            return array();
+        }
         return $rev;
     }
+
     /** get Latest Id of document
      *
      * @deprecated use {@link Doc::getLatestId} instead
-     * @param bool $fixed if true latest fixed revision
+     *
+     * @param bool $fixed      if true latest fixed revision
      * @param bool $forcequery if true force recompute of id (use it in case of modification by another program)
-     * @see Doc::getLatestId
+     *
+     * @see        Doc::getLatestId
      * @return int identifier of latest revision
      */
     final public function latestId($fixed = false, $forcequery = false)
@@ -2032,38 +2370,55 @@ create unique index i_docir on doc(initid, revision);";
         deprecatedFunction();
         return $this->getLatestId($fixed, $forcequery);
     }
+
     /** get Latest Id of document
      *
      * @api get latest id of document
-     * @param bool $fixed if true latest fixed revision
+     *
+     * @param bool $fixed      if true latest fixed revision
      * @param bool $forcequery if true force recompute of id (use it in case of modification by another program)
+     *
      * @return int identifier of latest revision
      */
     final public function getLatestId($fixed = false, $forcequery = false)
     {
-        if ($this->id == "") return false;
-        if (!$forcequery) {
-            if (($this->locked != - 1) && (!$fixed)) return $this->id;
-            if ($fixed && ($this->lmodify == "L")) return $this->id;
+        if ($this->id == "") {
+            return false;
         }
-        if (!$fixed) return getLatestDocId($this->dbaccess, $this->initid);
+        if (!$forcequery) {
+            if (($this->locked != -1) && (!$fixed)) {
+                return $this->id;
+            }
+            if ($fixed && ($this->lmodify == "L")) {
+                return $this->id;
+            }
+        }
+        if (!$fixed) {
+            return getLatestDocId($this->dbaccess, $this->initid);
+        }
         $query = new QueryDb($this->dbaccess, strtolower(get_class($this)));
         $query->AddQuery("initid = " . $this->initid);
-        if ($fixed) $query->AddQuery("lmodify = 'L'");
-        elseif ($this->doctype != 'Z') $query->AddQuery("locked != -1");
-        else {
+        if ($fixed) {
+            $query->AddQuery("lmodify = 'L'");
+        } elseif ($this->doctype != 'Z') {
+            $query->AddQuery("locked != -1");
+        } else {
             $query->order_by = "id desc";
         }
         $rev = $query->Query(0, 2, "TABLE");
-        
+
         if ($this->doctype != 'Z') {
-            if (count($rev) > 1) addWarningMsg(sprintf("document %d : multiple alive revision", $this->initid));
+            if (count($rev) > 1) {
+                addWarningMsg(sprintf("document %d : multiple alive revision", $this->initid));
+            }
         }
         return $rev[0]["id"];
     }
+
     /**
      * get version of document
      * can be redefined by child document classes if needed
+     *
      * @return string
      */
     public function getVersion()
@@ -2076,25 +2431,37 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         }
-        if (count($tversion) > 0) $version = implode(" ", $tversion);
-        else $version = $this->version;
+        if (count($tversion) > 0) {
+            $version = implode(" ", $tversion);
+        } else {
+            $version = $this->version;
+        }
         return $version;
     }
+
     /**
      * return the string label text for a id (label depends of current user locale)
+     *
      * @param string $idAttr attribute identifier
+     *
      * @return string
      */
     final public function getLabel($idAttr)
     {
-        if (isset($this->attributes->attr[$idAttr])) return $this->attributes->attr[$idAttr]->getLabel();
+        if (isset($this->attributes->attr[$idAttr])) {
+            return $this->attributes->attr[$idAttr]->getLabel();
+        }
         return _("unknow attribute");
     }
+
     /**
      * return the property value like id, initid, revision, ...
+     *
      * @deprecated use {@link Doc::getPropertyValue} instead
-     * @see Doc::getPropertyValue
+     * @see        Doc::getPropertyValue
+     *
      * @param string $prop property identifier
+     *
      * @return string false if not an property
      */
     final public function getProperty($prop)
@@ -2102,19 +2469,28 @@ create unique index i_docir on doc(initid, revision);";
         deprecatedFunction();
         return $this->getPropertyValue($prop);
     }
+
     /**
      * return the property value like id, initid, revision, ...
+     *
      * @api get property value
+     *
      * @param string $prop property identifier
+     *
      * @return string false if not an property
      */
     final public function getPropertyValue($prop)
     {
         $prop = trim(strtolower($prop));
-        if (!in_array($prop, $this->fields)) return false;
-        if (isset($this->fields[$prop])) return false; // it's an attribute
+        if (!in_array($prop, $this->fields)) {
+            return false;
+        }
+        if (isset($this->fields[$prop])) {
+            return false;
+        } // it's an attribute
         return $this->$prop;
     }
+
     /**
      * Return the tag object for the document
      *
@@ -2127,7 +2503,7 @@ create unique index i_docir on doc(initid, revision);";
          * @var TagManager $tag
          */
         static $tag = null;
-        
+
         if (empty($tag) || $tag->docid != $this->initid) {
             if (class_exists("TagManager")) {
                 $tag = new TagManager($this, $this->initid);
@@ -2137,13 +2513,17 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $tag;
     }
+
     /**
      * return the attribute object for a id
      * the attribute can be defined in fathers
+     *
      * @api get attribute object
-     * @param string $idAttr attribute identifier
-     * @param BasicAttribute &$oa object reference use this if want to modify attribute
-     * @param bool $useMask set to false to not apply mask if needed (quick access mode)
+     *
+     * @param string         $idAttr  attribute identifier
+     * @param BasicAttribute &$oa     object reference use this if want to modify attribute
+     * @param bool           $useMask set to false to not apply mask if needed (quick access mode)
+     *
      * @return BasicAttribute|bool|NormalAttribute
      */
     final public function &getAttribute($idAttr, &$oa = null, $useMask = true)
@@ -2159,13 +2539,16 @@ create unique index i_docir on doc(initid, revision);";
         } else {
             $oa = false;
         }
-        
+
         return $oa;
     }
+
     /**
      * return all the attributes object
      * the attribute can be defined in fathers
+     *
      * @param bool $useMask set to false to not apply mask if needed (quick access mode)
+     *
      * @return BasicAttribute[]
      */
     final public function &getAttributes($useMask = true)
@@ -2180,7 +2563,7 @@ create unique index i_docir on doc(initid, revision);";
             $GEN = getGen($this->dbaccess);
             $includePath = "FDL$GEN/Class.$classname.php";
             if (stream_resolve_include_path($includePath)) {
-                include_once ($includePath);
+                include_once($includePath);
                 $this->attributes = new $adocClassName();
             }
         }
@@ -2190,26 +2573,29 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $this->attributes->attr;
     }
+
     /**
      * retrieve first compatible view from default view control
-     * @param bool $edition if true edition view else consultation view
+     *
+     * @param bool   $edition if true edition view else consultation view
      * @param string $extract [id|mask|all]
+     *
      * @return array|int view definition "cv_idview", "cv_mskid"
      */
     final public function getDefaultView($edition = false, $extract = "all")
     {
         if ($this->cvid > 0) {
             // special controlled view
-            
+
             /**
              * @var \Dcp\Core\CVDoc $cvdoc
              */
             $cvdoc = DocManager::getDocument($this->cvid);
             $cvdoc = clone $cvdoc;
             $cvdoc->set($this);
-            
+
             $view = $cvdoc->getPrimaryView($edition);
-            
+
             if ($view) {
                 switch ($extract) {
                     case 'id':
@@ -2223,10 +2609,12 @@ create unique index i_docir on doc(initid, revision);";
         }
         return 0;
     }
+
     /**
      * set visibility mask
      *
      * @param int $mid mask ident
+     *
      * @return string error message
      */
     final public function setMask($mid)
@@ -2242,11 +2630,13 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $this->ApplyMask($mid);
     }
+
     /**
      * apply visibility mask
      *
-     * @param int $mid mask ident, if not set it is found from possible workflow
+     * @param int  $mid   mask ident, if not set it is found from possible workflow
      * @param bool $force set to true to force reapply mask even it is already applied
+     *
      * @return string error message
      */
     final public function applyMask($mid = 0, $force = false)
@@ -2257,11 +2647,19 @@ create unique index i_docir on doc(initid, revision);";
         $oas = $this->getAttributes();
         if (is_array($oas)) {
             foreach ($oas as $k => $v) {
-                if ($oas[$k]) $oas[$k]->mvisibility = ComputeVisibility($v->visibility, (empty($v->fieldSet)) ? '' : $v->fieldSet->mvisibility, (!empty($v->fieldSet->fieldSet)) ? $v->fieldSet->fieldSet->mvisibility : '');
+                if ($oas[$k]) {
+                    $oas[$k]->mvisibility = ComputeVisibility(
+                        $v->visibility,
+                        (empty($v->fieldSet)) ? '' : $v->fieldSet->mvisibility,
+                        (!empty($v->fieldSet->fieldSet)) ? $v->fieldSet->fieldSet->mvisibility : ''
+                    );
+                }
             }
         }
         $argMid = $mid;
-        if ((!$force) && (($this->doctype == 'C') || (($this->doctype == 'T') && ($mid == 0)))) return '';
+        if ((!$force) && (($this->doctype == 'C') || (($this->doctype == 'T') && ($mid == 0)))) {
+            return '';
+        }
         // modify visibilities if needed
         if ((!is_numeric($mid)) && ($mid != "")) {
             $imid = DocManager::getIdFromName($mid);
@@ -2272,8 +2670,10 @@ create unique index i_docir on doc(initid, revision);";
                 $mid = $imid;
             }
         }
-        
-        if ($mid == 0) $mid = $this->mid;
+
+        if ($mid == 0) {
+            $mid = $this->mid;
+        }
         if ($mid == Doc::USEMASKCVVIEW || $mid == Doc::USEMASKCVEDIT) {
             if ($this->cvid) {
                 /**
@@ -2283,7 +2683,7 @@ create unique index i_docir on doc(initid, revision);";
                 if ($cvdoc && $cvdoc->isAlive()) {
                     $cvdoc = clone $cvdoc;
                     $cvdoc->Set($this);
-                    $vid = $this->getDefaultView(($mid == Doc::USEMASKCVEDIT) , "id");
+                    $vid = $this->getDefaultView(($mid == Doc::USEMASKCVEDIT), "id");
                     if ($vid != '') {
                         $tview = $cvdoc->getView($vid);
                         $mid = ($tview !== false) ? $tview["CV_MSKID"] : 0;
@@ -2297,7 +2697,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($mid == 0) {
             if (($this->wid > 0) && ($this->wid != $this->id)) {
                 // search mask from workflow
-                
+
                 /**
                  * @var $wdoc WDoc
                  */
@@ -2307,57 +2707,82 @@ create unique index i_docir on doc(initid, revision);";
                         $wdoc->set($this);
                     }
                     $mid = $wdoc->getStateMask($this->state);
-                    if ((!is_numeric($mid)) && ($mid != "")) $mid = DocManager::getIdFromName( $mid);
+                    if ((!is_numeric($mid)) && ($mid != "")) {
+                        $mid = DocManager::getIdFromName($mid);
+                    }
                 }
             }
         }
-        
+
         if ($mid) {
-            if (!$argMid) $argMid = $mid;
+            if (!$argMid) {
+                $argMid = $mid;
+            }
             /**
              * @var \Dcp\Family\MASK $mdoc
              */
             $mdoc = DocManager::getDocument($mid);
             if ($mdoc && $mdoc->isAlive()) {
                 if (is_a($mdoc, '\Dcp\Family\Mask')) {
-                    
                     $maskFam = $mdoc->getRawValue("msk_famid");
                     if (!in_array($maskFam, $this->getFromDoc())) {
-                        $err = ErrorCode::getError('DOC1002', $argMid, $this->getTitle() , DocManager::getNameFromId( $maskFam));
+                        $err = ErrorCode::getError(
+                            'DOC1002',
+                            $argMid,
+                            $this->getTitle(),
+                            DocManager::getNameFromId($maskFam)
+                        );
                     } else {
                         $tvis = $mdoc->getVisibilities();
                         foreach ($tvis as $k => $v) {
                             if (isset($oas[$k])) {
-                                if ($v != "-") $oas[$k]->mvisibility = $v;
+                                if ($v != "-") {
+                                    $oas[$k]->mvisibility = $v;
+                                }
                             }
                         }
-                        $tdiff = array_diff(array_keys($oas) , array_keys($tvis));
+                        $tdiff = array_diff(array_keys($oas), array_keys($tvis));
                         // compute frame before because has no order
                         foreach ($tdiff as $k) {
                             $v = $oas[$k];
                             if ($v->type == "frame") {
-                                $oas[$k]->mvisibility = ComputeVisibility($v->visibility, isset($v->fieldSet) ? $v->fieldSet->mvisibility : '', '');
+                                $oas[$k]->mvisibility = ComputeVisibility(
+                                    $v->visibility,
+                                    isset($v->fieldSet) ? $v->fieldSet->mvisibility : '',
+                                    ''
+                                );
                             }
                         }
                         foreach ($tdiff as $k) {
                             $v = $oas[$k];
                             if ($v->type == "array") {
-                                $oas[$k]->mvisibility = ComputeVisibility($v->visibility, isset($v->fieldSet) ? $v->fieldSet->mvisibility : '', isset($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : '');
+                                $oas[$k]->mvisibility = ComputeVisibility(
+                                    $v->visibility,
+                                    isset($v->fieldSet) ? $v->fieldSet->mvisibility : '',
+                                    isset($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : ''
+                                );
                             }
                         }
                         // recompute loosed attributes
                         foreach ($tdiff as $k) {
                             $v = $oas[$k];
                             if ($v->type != "frame") {
-                                $oas[$k]->mvisibility = ComputeVisibility($v->visibility, isset($v->fieldSet) ? $v->fieldSet->mvisibility : '', isset($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : '');
+                                $oas[$k]->mvisibility = ComputeVisibility(
+                                    $v->visibility,
+                                    isset($v->fieldSet) ? $v->fieldSet->mvisibility : '',
+                                    isset($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : ''
+                                );
                             }
                         }
                         // modify needed attribute also
                         $tneed = $mdoc->getNeedeeds();
                         foreach ($tneed as $k => $v) {
                             if (isset($oas[$k])) {
-                                if ($v == "Y") $oas[$k]->needed = true;
-                                else if ($v == "N") $oas[$k]->needed = false;
+                                if ($v == "Y") {
+                                    $oas[$k]->needed = true;
+                                } elseif ($v == "N") {
+                                    $oas[$k]->needed = false;
+                                }
                             }
                         }
                     }
@@ -2371,22 +2796,32 @@ create unique index i_docir on doc(initid, revision);";
         if (!empty($this->attributes->attr)) {
             $this->attributes->orderAttributes();
         }
-        
-        if ($err) error_log($err);
+
+        if ($err) {
+            error_log($err);
+        }
         return $err;
     }
+
     /**
      * return all the attributes except frame & menu & action
+     *
      * @param boolean $onlyopt get only optional attributes
      *
      * @return NormalAttribute[]
      */
     final public function getNormalAttributes($onlyopt = false)
     {
-        if (!$this->_maskApplied) $this->ApplyMask();
-        if ((isset($this->attributes)) && (method_exists($this->attributes, "GetNormalAttributes"))) return $this->attributes->GetNormalAttributes($onlyopt);
-        else return array();
+        if (!$this->_maskApplied) {
+            $this->ApplyMask();
+        }
+        if ((isset($this->attributes)) && (method_exists($this->attributes, "GetNormalAttributes"))) {
+            return $this->attributes->GetNormalAttributes($onlyopt);
+        } else {
+            return array();
+        }
     }
+
     /**
      * return  frame attributes
      *
@@ -2394,14 +2829,19 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getFieldAttributes()
     {
-        if (!$this->_maskApplied) $this->ApplyMask();
+        if (!$this->_maskApplied) {
+            $this->ApplyMask();
+        }
         $tsa = array();
-        
+
         foreach ($this->attributes->attr as $k => $v) {
-            if (get_class($v) == "FieldSetAttribute") $tsa[$v->id] = $v;
+            if (get_class($v) == "FieldSetAttribute") {
+                $tsa[$v->id] = $v;
+            }
         }
         return $tsa;
     }
+
     /**
      * return action attributes
      *
@@ -2409,55 +2849,72 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getActionAttributes()
     {
-        if (!$this->_maskApplied) $this->ApplyMask();
+        if (!$this->_maskApplied) {
+            $this->ApplyMask();
+        }
         $tsa = array();
         if (isset($this->attributes)) {
             $at = $this->attributes->GetActionAttributes();
             foreach ($at as $k => $v) {
-                if ($v->mvisibility != 'H') $tsa[$v->id] = $v;
+                if ($v->mvisibility != 'H') {
+                    $tsa[$v->id] = $v;
+                }
             }
         }
         return $tsa;
     }
+
     /**
      * return all the attributes object for abstract
      * the attribute can be defined in fathers
+     *
      * @return  NormalAttribute[]
      */
     final public function getAbstractAttributes()
     {
-        if (!$this->_maskApplied) $this->ApplyMask();
+        if (!$this->_maskApplied) {
+            $this->ApplyMask();
+        }
         $tsa = array();
-        
+
         if (isset($this->attributes->attr)) {
             foreach ($this->attributes->attr as $k => $v) {
                 /**
                  * @var NormalAttribute $v
                  */
-                if ((get_class($v) == "NormalAttribute") && ($v->usefor != 'Q') && ($v->isInAbstract)) $tsa[$v->id] = $v;
+                if ((get_class($v) == "NormalAttribute") && ($v->usefor != 'Q') && ($v->isInAbstract)) {
+                    $tsa[$v->id] = $v;
+                }
             }
         }
         return $tsa;
     }
+
     /**
      * return all the attributes object for title
      * the attribute can be defined in fathers
+     *
      * @return  NormalAttribute[]
      */
     final public function getTitleAttributes()
     {
-        if (!$this->_maskApplied) $this->ApplyMask();
+        if (!$this->_maskApplied) {
+            $this->ApplyMask();
+        }
         $tsa = array();
         if (isset($this->attributes->attr)) {
             foreach ($this->attributes->attr as $k => $v) {
                 /**
                  * @var NormalAttribute $v
                  */
-                if ((get_class($v) == "NormalAttribute") && ($v->isInTitle)) $tsa[$v->id] = $v;
+                if ((get_class($v) == "NormalAttribute") && ($v->isInTitle)) {
+                    $tsa[$v->id] = $v;
+                }
             }
         }
         return $tsa;
     }
+
     /**
      * return all the attributes that can be use in profil
      *
@@ -2465,7 +2922,9 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getProfilAttributes()
     {
-        if (!$this->_maskApplied) $this->ApplyMask();
+        if (!$this->_maskApplied) {
+            $this->ApplyMask();
+        }
         $tsa = array();
         $tsb = array();
         $wopt = false;
@@ -2473,65 +2932,98 @@ create unique index i_docir on doc(initid, revision);";
             foreach ($this->attributes->attr as $k => $v) {
                 if ($v->type == "docid") {
                     if ($v->getOption("isuser") != "") {
-                        if ($v->getOption("isuser") == "yes") $tsb[$v->id] = $v;
+                        if ($v->getOption("isuser") == "yes") {
+                            $tsb[$v->id] = $v;
+                        }
                         $wopt = true;
                     }
                 } elseif ($v->type == "account") {
                     $wopt = true;
-                    if ($v->getOption("isuser") != "no") $tsb[$v->id] = $v;
+                    if ($v->getOption("isuser") != "no") {
+                        $tsb[$v->id] = $v;
+                    }
                 }
             }
         }
-        if ($wopt) return $tsb;
+        if ($wopt) {
+            return $tsb;
+        }
         return $tsa;
     }
+
     /**
      * return all the attributes object for to e use in edition
      * the attribute can be defined in fathers
+     *
      * @param bool $onlyopt deprecated arguments
+     *
      * @return  NormalAttribute[]
      */
     final public function getInputAttributes($onlyopt = false)
     {
-        if (!$this->_maskApplied) $this->ApplyMask();
+        if (!$this->_maskApplied) {
+            $this->ApplyMask();
+        }
         $tsa = array();
-        
+
         foreach ($this->attributes->attr as $k => $v) {
-            if ((get_class($v) == "NormalAttribute") && (!$v->inArray()) && ($v->mvisibility != "I")) { // I means not editable
-                if ((($this->usefor == "Q") && ($v->usefor == "Q")) || (($this->usefor != "Q") && ((($v->usefor != "Q") && (!$onlyopt)) || (($v->usefor == "O") && ($onlyopt))))) $tsa[$v->id] = $v; //special parameters
-                
+            if ((get_class($v) == "NormalAttribute") && (!$v->inArray())
+                && ($v->mvisibility != "I")) { // I means not editable
+                if ((($this->usefor == "Q") && ($v->usefor == "Q"))
+                    || (($this->usefor != "Q")
+                        && ((($v->usefor != "Q")
+                                && (!$onlyopt))
+                            || (($v->usefor == "O") && ($onlyopt))))) {
+                    $tsa[$v->id] = $v;
+                } //special parameters
             }
         }
         return $tsa;
     }
+
     /**
      * return all the parameters definition for its family
      * the attribute can be defined in fathers
+     *
      * @return  NormalAttribute[]
      */
     final public function getParamAttributes()
     {
-        
-        if (!$this->_maskApplied) $this->ApplyMask();
-        if ((isset($this->attributes)) && (method_exists($this->attributes, "getParamAttributes"))) return $this->attributes->getParamAttributes();
-        else return array();
+        if (!$this->_maskApplied) {
+            $this->ApplyMask();
+        }
+        if ((isset($this->attributes)) && (method_exists($this->attributes, "getParamAttributes"))) {
+            return $this->attributes->getParamAttributes();
+        } else {
+            return array();
+        }
     }
+
     /**
      * return all the attributes object for abstract
      * the attribute can be defined in fathers
+     *
      * @param bool $onlyfile set to true if don't want images
+     *
      * @return  NormalAttribute[]
      */
     final public function getFileAttributes($onlyfile = false)
     {
-        if (!$this->_maskApplied) $this->ApplyMask();
+        if (!$this->_maskApplied) {
+            $this->ApplyMask();
+        }
         $tsa = array();
-        
+
         foreach ($this->attributes->attr as $k => $v) {
-            if ((get_class($v) == "NormalAttribute") && ($v->usefor != 'Q') && ((($v->type == "image") && (!$onlyfile)) || ($v->type == "file"))) $tsa[$v->id] = $v;
+            if ((get_class($v) == "NormalAttribute") && ($v->usefor != 'Q')
+                && ((($v->type == "image") && (!$onlyfile))
+                    || ($v->type == "file"))) {
+                $tsa[$v->id] = $v;
+            }
         }
         return $tsa;
     }
+
     /**
      * return files properties of file attributes
      *
@@ -2548,11 +3040,14 @@ create unique index i_docir on doc(initid, revision);";
             $err = $vf->Retrieve($vid, $info);
             $t = get_object_vars($info);
             $t["vid"] = $vid;
-            if ($err == "") $tinfo[] = $t;
+            if ($err == "") {
+                $tinfo[] = $t;
+            }
         }
-        
+
         return $tinfo;
     }
+
     /**
      * verify if has some files waiting conversion
      *
@@ -2565,16 +3060,25 @@ create unique index i_docir on doc(initid, revision);";
         }
         $dvi = new DocVaultIndex($this->dbaccess);
         $tvid = $dvi->getVaultIds($this->id);
-        if (count($tvid) == 0) return false;
-        $sql = sprintf("select id_file from vaultdiskstorage where teng_state=%d and %s limit 1", \Dcp\TransformationEngine\Client::status_waiting, getSqlCond($tvid, "id_file", true));
-        DbManager::query( $sql, $waiting, true, true);
+        if (count($tvid) == 0) {
+            return false;
+        }
+        $sql = sprintf(
+            "select id_file from vaultdiskstorage where teng_state=%d and %s limit 1",
+            \Dcp\TransformationEngine\Client::status_waiting,
+            getSqlCond($tvid, "id_file", true)
+        );
+        DbManager::query($sql, $waiting, true, true);
         return ($waiting != false);
     }
+
     /**
      * reset Conversion of file
      * update $attrid_txt table column
+     *
      * @param string $attrid file attribute identifier
-     * @param int $index index in case of multiple attribute
+     * @param int    $index  index in case of multiple attribute
+     *
      * @apiExpose
      * @return string error message
      */
@@ -2585,10 +3089,10 @@ create unique index i_docir on doc(initid, revision);";
             return $err;
         }
         $val = $this->getMultipleRawValues($attrid, false, $index);
-        if (($index == - 1) && (count($val) == 1)) {
+        if (($index == -1) && (count($val) == 1)) {
             $val = $val[0];
         }
-        
+
         if ($val) {
             $info = $this->getFileInfo($val);
             if ($info) {
@@ -2600,23 +3104,29 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $err;
     }
+
     /**
      * send a request to TE to convert files
      * update $attrid_txt table column
      * waiting end of conversion
-     * @param string $va value of file attribute like mime|vid|name
-     * @param string $engine the name of transformation
-     * @param bool $isimage set true if it is an image (error returns is not same)
+     *
+     * @param string $va      value of file attribute like mime|vid|name
+     * @param string $engine  the name of transformation
+     * @param bool   $isimage set true if it is an image (error returns is not same)
+     *
      * @return string new file reference
      */
     public function convertVaultFile($va, $engine, $isimage = false)
     {
-        include_once ("FDL/Lib.Vault.php");
+        include_once("FDL/Lib.Vault.php");
         $engine = strtolower($engine);
         $value = '';
-        if (is_array($va)) return "";
+        if (is_array($va)) {
+            return "";
+        }
         $err = '';
-        if (ContextManager::getApplicationParam("TE_ACTIVATE") == "yes" && \Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+        if (ContextManager::getApplicationParam("TE_ACTIVATE") == "yes"
+            && \Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             if (preg_match(PREGEXPFILE, $va, $reg)) {
                 $vidin = $reg[2];
                 $vidout = 0;
@@ -2633,15 +3143,22 @@ create unique index i_docir on doc(initid, revision);";
                     $vf = newFreeVaultFile($this->dbaccess);
                     if (!$info->teng_vid) {
                         // create temporary file
-                        $value = sprintf(_("conversion %s in progress") , $engine);
+                        $value = sprintf(_("conversion %s in progress"), $engine);
                         if ($isimage) {
                             $filename = DEFAULT_PUBDIR . "/Images/workinprogress.png";
-                        } else $filename = uniqid(getTmpDir() . "/conv") . ".txt";
+                        } else {
+                            $filename = uniqid(getTmpDir() . "/conv") . ".txt";
+                        }
                         file_put_contents($filename, $value);
                         $vidout = 0;
                         $err = $vf->Store($filename, false, $vidout, "", $engine, $vidin);
                         if ($err) {
-                            $this->addHistoryEntry(sprintf(_("convert file %s as %s failed : %s") , $info->name, $engine, $err) , DocHisto::ERROR);
+                            $this->addHistoryEntry(sprintf(
+                                _("convert file %s as %s failed : %s"),
+                                $info->name,
+                                $engine,
+                                $err
+                            ), DocHisto::ERROR);
                             error_log($err);
                             return '';
                         }
@@ -2652,10 +3169,15 @@ create unique index i_docir on doc(initid, revision);";
                         } else {
                             $mime = 'image/png';
                         }
-                        
+
                         $value = "$mime|$vidout";
-                        if ($err == "") $vf->rename($vidout, sprintf(_("conversion of %s in progress") . ".%s", $info->name, $engine));
-                        
+                        if ($err == "") {
+                            $vf->rename(
+                                $vidout,
+                                sprintf(_("conversion of %s in progress") . ".%s", $info->name, $engine)
+                            );
+                        }
+
                         $this->addHistoryEntry("value $engine : $value");
                         /* Do not index temporary vid "vidout" while waiting for transformation result */
                         $this->vidNoSendTextToEngine[$vidout] = true;
@@ -2667,18 +3189,28 @@ create unique index i_docir on doc(initid, revision);";
                             $value = $info->mime_s . '|' . $info->id_file;
                         }
                     }
-                    
+
                     $err = vault_generate($this->dbaccess, $engine, $vidin, $vidout, $isimage, $this->initid);
                     if ($err != "") {
-                        $this->addHistoryEntry(sprintf(_("convert file %s as %s failed : %s") , $info->name, $engine, $err) , DocHisto::ERROR);
+                        $this->addHistoryEntry(sprintf(
+                            _("convert file %s as %s failed : %s"),
+                            $info->name,
+                            $engine,
+                            $err
+                        ), DocHisto::ERROR);
                     }
                 } else {
                     if ($isimage) {
                         if ($info->teng_state < 0) {
-                            if ($info->teng_state == \Dcp\TransformationEngine\Client::error_convert) $value = "convertfail.png";
-                            else $value = "convertimpossible.png";
+                            if ($info->teng_state == \Dcp\TransformationEngine\Client::error_convert) {
+                                $value = "convertfail.png";
+                            } else {
+                                $value = "convertimpossible.png";
+                            }
                         } else {
-                            if ($info->teng_state == \Dcp\TransformationEngine\Client::status_done) $value = $info->mime_s . '|' . $info->id_file . '|' . $info->name;
+                            if ($info->teng_state == \Dcp\TransformationEngine\Client::status_done) {
+                                $value = $info->mime_s . '|' . $info->id_file . '|' . $info->name;
+                            }
                         }
                     } else {
                         $value = $info->mime_s . '|' . $info->id_file . '|' . $info->name;
@@ -2692,50 +3224,67 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $value;
     }
+
     /**
      * Return all the attributes object for popup menu
      * the attribute can be defined in fathers
+     *
      * @param bool $viewhidden set to true if need all defined menu (hidden also)
+     *
      * @return MenuAttribute[]
      */
-    function getMenuAttributes($viewhidden = false)
+    public function getMenuAttributes($viewhidden = false)
     {
-        if (!$this->_maskApplied) $this->ApplyMask();
+        if (!$this->_maskApplied) {
+            $this->ApplyMask();
+        }
         $tsa = array();
-        
+
         reset($this->attributes->attr);
         foreach ($this->attributes->attr as $k => $v) {
-            if (((get_class($v) == "MenuAttribute")) && (($v->mvisibility != 'H') || $viewhidden)) $tsa[$v->id] = $v;
+            if (((get_class($v) == "MenuAttribute")) && (($v->mvisibility != 'H') || $viewhidden)) {
+                $tsa[$v->id] = $v;
+            }
         }
         return $tsa;
     }
+
     /**
      * return all the necessary attributes
+     *
      * @param bool $parameters set to true if want parameters instead of attributes
+     *
      * @return NormalAttribute[]
      */
     final public function getNeededAttributes($parameters = false)
     {
         $tsa = array();
-        
+
         if ($parameters) {
             foreach ($this->attributes->attr as $k => $v) {
                 /**
                  * @var NormalAttribute $v
                  */
-                if ((get_class($v) == "NormalAttribute") && ($v->needed) && ($v->usefor == 'Q')) $tsa[$v->id] = $v;
+                if ((get_class($v) == "NormalAttribute") && ($v->needed) && ($v->usefor == 'Q')) {
+                    $tsa[$v->id] = $v;
+                }
             }
         } else {
-            if (!$this->_maskApplied) $this->ApplyMask();
+            if (!$this->_maskApplied) {
+                $this->ApplyMask();
+            }
             foreach ($this->attributes->attr as $k => $v) {
                 /**
                  * @var NormalAttribute $v
                  */
-                if ((get_class($v) == "NormalAttribute") && ($v->needed) && ($v->usefor != 'Q')) $tsa[$v->id] = $v;
+                if ((get_class($v) == "NormalAttribute") && ($v->needed) && ($v->usefor != 'Q')) {
+                    $tsa[$v->id] = $v;
+                }
             }
         }
         return $tsa;
     }
+
     /**
      * verify if all needed attributes are set
      *
@@ -2751,55 +3300,65 @@ create unique index i_docir on doc(initid, revision);";
                 $columnValues = $this->getMultipleRawValues($v->id);
                 foreach ($columnValues as $value) {
                     if ($value == "") {
-                        $err.= sprintf(_("%s needed\n") , $v->getLabel());
+                        $err .= sprintf(_("%s needed\n"), $v->getLabel());
                         /* Do not report multiple errors for the same column */
                         break;
                     }
                 }
             } else {
                 if ($this->getRawValue($v->id) == "") {
-                    $err.= sprintf(_("%s needed\n") , $v->getLabel());
+                    $err .= sprintf(_("%s needed\n"), $v->getLabel());
                 }
             }
         }
         return $err;
     }
+
     /**
      * verify if attribute equals $b
      * to be use in constraint
+     *
      * @param string $a attribute identifier
      * @param string $b value
+     *
      * @return bool
      */
     final public function equal($a, $b)
     {
         return ($this->$a == $b);
     }
+
     /**
      * return list of attribut which can be exported
-     * @param bool $withfile true if export also file attribute
+     *
+     * @param bool $withfile     true if export also file attribute
      * @param bool $forcedefault if true preference FREEDOM_EXPORTCOLS are not read
+     *
      * @return NormalAttribute[]
      */
     final public function getExportAttributes($withfile = false, $forcedefault = false)
     {
         global $action;
-        
-        if ($this->doctype == 'C') $famid = $this->id;
-        else $famid = $this->fromid;
-        if (!$this->_maskApplied) $this->ApplyMask();
+
+        if ($this->doctype == 'C') {
+            $famid = $this->id;
+        } else {
+            $famid = $this->fromid;
+        }
+        if (!$this->_maskApplied) {
+            $this->ApplyMask();
+        }
         $tsa = array();
         if (isset($this->attributes->attr)) {
-            $pref="";
+            $pref = "";
             if (file_exists(sprintf("%s/Apps/GENERIC/generic_util.php", DEFAULT_PUBDIR))) {
-                include_once ("GENERIC/generic_util.php");
+                include_once("GENERIC/generic_util.php");
                 /** @noinspection PhpUndefinedFunctionInspection */
                 $pref = getFamilyParameter($action, $famid, "FREEDOM_EXPORTCOLS");
             }
             if ((!$forcedefault) && ($pref != "")) {
-                
                 $tpref = explode(";", $pref);
-                
+
                 foreach ($this->attributes->attr as $k => $v) {
                     if (in_array($v->id, $tpref)) {
                         $tsa[$v->id] = $v;
@@ -2808,22 +3367,26 @@ create unique index i_docir on doc(initid, revision);";
             } else {
                 foreach ($this->attributes->attr as $k => $v) {
                     if (get_class($v) == "NormalAttribute" && $v->usefor != 'Q') {
-                        
-                        if (($v->type != "array") && ($withfile || (($v->type != "image") && ($v->type != "file")))) $tsa[$v->id] = $v;
+                        if (($v->type != "array") && ($withfile || (($v->type != "image") && ($v->type != "file")))) {
+                            $tsa[$v->id] = $v;
+                        }
                     }
                 }
             }
         }
         return $tsa;
     }
+
     /**
      * return all the attributes object for import
+     *
      * @return NormalAttribute[]
      */
     final public function getImportAttributes()
     {
-        
-        if (!$this->_maskApplied) $this->ApplyMask();
+        if (!$this->_maskApplied) {
+            $this->ApplyMask();
+        }
         $tsa = array();
         if (!empty($this->attributes->attr)) {
             $this->attributes->orderAttributes();
@@ -2833,25 +3396,30 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var NormalAttribute $v
              */
-            
-            if ((get_class($v) == "NormalAttribute") && (($v->mvisibility == "W") || ($v->mvisibility == "O") || ($v->type == "docid")) && ($v->type != "array")) {
-                
+
+            if ((get_class($v) == "NormalAttribute")
+                && (($v->mvisibility == "W") || ($v->mvisibility == "O")
+                    || ($v->type == "docid"))
+                && ($v->type != "array")) {
                 if (preg_match("/\(([^\)]+)\):(.+)/", $v->phpfunc, $reg)) {
-                    
                     $aout = explode(",", $reg[2]);
                     foreach ($aout as $ka => $va) {
                         $ra = $this->GetAttribute($va);
-                        if ($ra) $tsa[strtolower($va) ] = $ra;
+                        if ($ra) {
+                            $tsa[strtolower($va)] = $ra;
+                        }
                     }
                 }
                 $tsa[$v->id] = $v;
             }
         }
-        
+
         return $tsa;
     }
+
     /**
      * return all the attributes which can be sorted
+     *
      * @return NormalAttribute[]
      */
     public function getSortAttributes()
@@ -2859,204 +3427,253 @@ create unique index i_docir on doc(initid, revision);";
         $tsa = array();
         $nattr = $this->GetNormalAttributes();
         reset($nattr);
-        
+
         foreach ($nattr as $k => $a) {
-            if ($a->repeat || ($a->visibility == "I") || ($a->visibility == "O") || ($a->type == "longtext") || ($a->type == "xml") || ($a->type == "htmltext") || ($a->type == "image") || ($a->type == "file") || ($a->getOption('sortable') != 'asc' && $a->getOption('sortable') != 'desc')) {
+            if ($a->repeat || ($a->visibility == "I") || ($a->visibility == "O") || ($a->type == "longtext")
+                || ($a->type == "xml")
+                || ($a->type == "htmltext")
+                || ($a->type == "image")
+                || ($a->type == "file")
+                || ($a->getOption('sortable') != 'asc' && $a->getOption('sortable') != 'desc')) {
                 continue;
             }
             $tsa[$a->id] = $a;
         }
         return $tsa;
     }
+
     /**
      * recompute the title from attribute values
      */
     final public function refreshTitle()
     {
-        
-        if ($this->doctype == 'C') return; // no refresh for family  document
+        if ($this->doctype == 'C') {
+            return;
+        } // no refresh for family  document
         $ltitle = $this->GetTitleAttributes();
-        
+
         $title1 = "";
         foreach ($ltitle as $k => $v) {
             if ($this->getRawValue($v->id) != "") {
                 if ($v->inArray() && ($v->getOption('multiple') == 'yes')) {
-                    $title1.= mb_trim(str_replace("<BR>", " ", $this->getRawValue($v->id))) . " ";
-                } else $title1.= $this->getRawValue($v->id) . " ";
+                    $title1 .= mb_trim(str_replace("<BR>", " ", $this->getRawValue($v->id))) . " ";
+                } else {
+                    $title1 .= $this->getRawValue($v->id) . " ";
+                }
             }
         }
         /* Replace control chars with spaces, and limit title to 256 chars */
-        if (mb_trim($title1) != "") $this->title = mb_substr(mb_trim(preg_replace('/\p{Cc}/u', ' ', $title1)) , 0, 255);
-        $this->title = mb_substr(mb_trim(preg_replace('/\p{Cc}/u', ' ', $this->getCustomTitle())) , 0, 255);
+        if (mb_trim($title1) != "") {
+            $this->title = mb_substr(mb_trim(preg_replace('/\p{Cc}/u', ' ', $title1)), 0, 255);
+        }
+        $this->title = mb_substr(mb_trim(preg_replace('/\p{Cc}/u', ' ', $this->getCustomTitle())), 0, 255);
     }
+
     /**
      * call after construct
+     *
      * @return void
      */
-    function postConstructor()
+    public function postConstructor()
     {
     }
+
     /**
      * no in postUpdate method :: call this only if real change (values)
+     *
      * @deprecated hook use {@link Doc::postStore} instead
-     * @see Doc::postStore
+     * @see        Doc::postStore
      * @return string error message
      */
-    function postModify()
+    public function postModify()
     {
         return "";
     }
+
     /**
      * no in postUpdate method :: call this only if real change (values)
+     *
      * @api hook called in ::store()
      * @return string error message
      */
-    function postStore()
+    public function postStore()
     {
         // to be defined in child class
         return "";
     }
+
     /**
      * call in beging store before constraint verification
      * if error message is returned store is aborted and the message is returned by store method
+     *
      * @api hook called in Doc::store()
      * @see Doc::store()
      * @return string error message
      */
-    function preStore()
+    public function preStore()
     {
         // to be defined in child class
         return "";
     }
+
     /**
      * called when user edit a document FDL/editcard
+     *
      * @api hook called when compose edit document web interface
      */
-    function preEdition()
+    public function preEdition()
     {
         // to be defined in child class
         return "";
     }
+
     /**
      * called when user view a document FDL/fdl_card
+     *
      * @api hook called when compose view document web interface
      */
-    function preConsultation()
+    public function preConsultation()
     {
         // to be defined in child class
         return "";
     }
+
     /**
      * call in doc::postInsert method
+     *
      * @api hook called when document is created in database
      * @return string error message
      */
-    function postCreated()
+    public function postCreated()
     {
         // to be defined in child class
         return "";
     }
+
     /**
      * call in doc::add method
      * if return message, creation is aborted
+     *
      * @api hook called before document is created in database
      * @return string error message
      */
-    function preCreated()
+    public function preCreated()
     {
         // to be defined in child class
         return "";
     }
+
     /**
      * call when doc is being imported before any modification
      * if return non null string import will ne aborted
+     *
      * @api hook called when import document - before import it
+     *
      * @param array $extra extra parameters
+     *
      * @return string error message, if no error empty string
      */
-    function preImport(array $extra = array())
+    public function preImport(array $extra = array())
     {
         return "";
     }
+
     /**
      * call when doc is imported after databases modification
      * the error message will appeared like message
+     *
      * @api hook called when import document - after it is imported
+     *
      * @param array $extra extra parameters
+     *
      * @return string warning message, if no warning empty string
      */
-    function postImport(array $extra = array())
+    public function postImport(array $extra = array())
     {
         return "";
     }
+
     /**
      * call when doc is being revised before new document is created
      * if return non null string revision will ne aborted
+     *
      * @api hook called when revise document - before revise it
      * @see Doc::revise
      * @return string error message, if no error empty string
      */
-    function preRevise()
+    public function preRevise()
     {
         return "";
     }
+
     /**
      * call when doc is revised after new document is created
      * the error message will appeared like message
+     *
      * @api hook called when revise document - after it is revided
      * @see Doc::revise
      * @return string message - message is added to history
      */
-    function postRevise()
+    public function postRevise()
     {
         return "";
     }
+
     /**
      * call when doc is being undelete
      * if return non null string undelete will ne aborted
+     *
      * @api hook called before undelete document
      * @see Doc::undelete
      * @return string error message, if no error empty string
      */
-    function preUndelete()
+    public function preUndelete()
     {
         return "";
     }
+
     /**
      * call when doc is revived after resurrection in database
      * the error message will appeared like message
+     *
      * @api hook called after undelete document
      * @return string warning message, if no warning empty string
      */
-    function postUndelete()
+    public function postUndelete()
     {
         return "";
     }
+
     /**
      * call when doc is being undelete
      * if return non null string undelete will ne aborted
+     *
      * @deprecated hook use {@link Doc:::preUndelete} instead
-     * @see Doc::preUndelete
+     * @see        Doc::preUndelete
      * @return string error message, if no error empty string
      */
-    function preRevive()
+    public function preRevive()
     {
         return "";
     }
+
     /**
      * call when doc is revived after resurrection in database
      * the error message will appeared like message
+     *
      * @deprecated hook use {@link Doc:::postUndelete} instead
-     * @see Doc::postUndelete
+     * @see        Doc::postUndelete
      * @return string warning message, if no warning empty string
      */
-    function postRevive()
+    public function postRevive()
     {
         return "";
     }
+
     /**
      * set attribute title value
      * the first value of type text use for title will be modify to have the new title
+     *
      * @param string $title new title
      */
     final public function setTitle($title)
@@ -3074,13 +3691,15 @@ create unique index i_docir on doc(initid, revision);";
              * @var NormalAttribute $otitle
              */
             $idt = $otitle->id;
-            
+
             $this->title = str_replace("\n", " ", $title);
             $this->setvalue($idt, $title);
         }
     }
+
     /**
      * return all attribute values
+     *
      * @return array all attribute values, index is attribute identifier
      */
     final public function getValues()
@@ -3097,20 +3716,23 @@ create unique index i_docir on doc(initid, revision);";
         return $lvalues;
     }
     //-------------------------------------------------------------------
-    
-    
+
+
     /**
      * return the raw value (database value) of an attribute document
+     *
      * @api get the value of an attribute
+     *
      * @param string $idAttr attribute identifier
-     * @param string $def default value returned if attribute not found or if is empty
+     * @param string $def    default value returned if attribute not found or if is empty
+     *
      * @code
-     $doc = new_Doc('',7498 );
-     if ($doc->isAlive()) {
-     $rev = $doc->getPropertyValue('revision');
-     $order = $doc->getRawValue("tst_order");
-     $level = $doc->getRawValue("tst_level","0");
-     }
+    $doc = new_Doc('',7498 );
+     * if ($doc->isAlive()) {
+     * $rev = $doc->getPropertyValue('revision');
+     * $order = $doc->getRawValue("tst_order");
+     * $level = $doc->getRawValue("tst_level","0");
+     * }
      * @endcode
      * @see Doc::getAttributeValue
      * @return string the attribute value
@@ -3118,10 +3740,13 @@ create unique index i_docir on doc(initid, revision);";
     final public function getRawValue($idAttr, $def = "")
     {
         $lidAttr = strtolower($idAttr);
-        if (isset($this->$lidAttr) && ($this->$lidAttr != "")) return $this->$lidAttr;
-        
+        if (isset($this->$lidAttr) && ($this->$lidAttr != "")) {
+            return $this->$lidAttr;
+        }
+
         return $def;
     }
+
     /**
      * get a typed value of an attribute
      *
@@ -3129,8 +3754,11 @@ create unique index i_docir on doc(initid, revision);";
      * return null if value is empty
      * return an array for multiple value
      * return date in DateTime format, number in int or double
+     *
      * @api get typed value of an attribute
+     *
      * @param string $idAttr attribute identifier
+     *
      * @throws Dcp\Exception DOC0114 code
      * @see ErrorCodeDoc::DOC0114
      * @return mixed the typed value
@@ -3144,19 +3772,23 @@ create unique index i_docir on doc(initid, revision);";
         if (!$oa) {
             throw new Dcp\Exception('DOC0114', $idAttr, $this->title, $this->fromname);
         }
-        
+
         if (empty($oa->isNormal)) {
             throw new Dcp\Exception('DOC0116', $idAttr, $this->title, $this->fromname);
         }
         return Dcp\AttributeValue::getTypedValue($this, $oa);
     }
+
     /**
      * Set a value to a document's attribute
      * the affectation is only in object. To set modification in database the Doc::store() method must be
      * call after modification
+     *
      * @api Set a value to an attribute
+     *
      * @param string $idAttr attribute identifier
-     * @param mixed $value the new value - value format must be compatible with type
+     * @param mixed  $value  the new value - value format must be compatible with type
+     *
      * @throws Dcp\Exception
      * @see ErrorCodeDoc::DOC0115
      * @see ErrorCodeDoc::DOC0117
@@ -3191,12 +3823,16 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
     }
+
     /**
      * return the value of an attribute document
+     *
      * @deprecated use {@link Doc::getRawValue} instead
+     *
      * @param string $idAttr attribute identifier
-     * @param string $def default value returned if attribute not found or if is empty
-     * @see Doc::getRawValue
+     * @param string $def    default value returned if attribute not found or if is empty
+     *
+     * @see        Doc::getRawValue
      * @return string the attribute value
      */
     final public function getValue($idAttr, $def = "")
@@ -3208,18 +3844,22 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $this->getRawValue($idAttr, $def);
     }
+
     /**
      * return all values of a multiple value attribute
      *
      * the attribute must be in an array or declared with multiple option
+     *
      * @deprecated use {@link Doc::getMultipleRawValues} instead
+     *
      * @param string $idAttr identifier of list attribute
-     * @param string $def default value returned if attribute not found or if is empty
-     * @param int $index the values for $index row (default value -1 means all values)
-     * @see Doc::getMultipleRawValues
+     * @param string $def    default value returned if attribute not found or if is empty
+     * @param int    $index  the values for $index row (default value -1 means all values)
+     *
+     * @see        Doc::getMultipleRawValues
      * @return array the list of attribute values
      */
-    final public function getTValue($idAttr, $def = "", $index = - 1)
+    final public function getTValue($idAttr, $def = "", $index = -1)
     {
         static $first = true;
         if ($first) {
@@ -3228,30 +3868,39 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $this->getMultipleRawValues($idAttr, $def, $index);
     }
+
     /**
      * return all values of a multiple value attribute
      *
      * @api return all values of a multiple value attribute
      * the attribute must be in an array or declared with multiple option
+     *
      * @param string $idAttr identifier of list attribute
-     * @param string $def default value returned if attribute not found or if is empty
-     * @param int $index the values for $index row (default value -1 means all values)
+     * @param string $def    default value returned if attribute not found or if is empty
+     * @param int    $index  the values for $index row (default value -1 means all values)
+     *
      * @return array|string the list of attribute values
      */
-    final public function getMultipleRawValues($idAttr, $def = "", $index = - 1)
+    final public function getMultipleRawValues($idAttr, $def = "", $index = -1)
     {
         $v = $this->getRawValue("$idAttr", null);
         if ($v === null) {
-            if ($index == - 1) return array();
-            else return $def;
-        } else if ($v == "\t") {
-            if ($index == - 1) return array(
-                ""
-            );
-            else return $def;
+            if ($index == -1) {
+                return array();
+            } else {
+                return $def;
+            }
+        } elseif ($v == "\t") {
+            if ($index == -1) {
+                return array(
+                    ""
+                );
+            } else {
+                return $def;
+            }
         }
         $t = $this->rawValueToArray($v);
-        if ($index == - 1) {
+        if ($index == -1) {
             $oa = $this->getAttribute($idAttr, $nothing, false);
             if ($oa && $oa->type == "xml") {
                 foreach ($t as $k => $v) {
@@ -3262,35 +3911,47 @@ create unique index i_docir on doc(initid, revision);";
         }
         if (isset($t[$index])) {
             $oa = $this->getAttribute($idAttr, $nothing, false);
-            if ($oa && $oa->type == "xml") $t[$index] = str_replace('<BR>', "\n", $t[$index]);
+            if ($oa && $oa->type == "xml") {
+                $t[$index] = str_replace('<BR>', "\n", $t[$index]);
+            }
             return $t[$index];
-        } else return $def;
+        } else {
+            return $def;
+        }
     }
+
     /**
      * return the array of values for an array attribute
      *
      * the attribute must  an array type
+     *
      * @deprecated use {@link Doc::getArrayRawValues} instead
-     * @see Doc::getArrayRawValues
+     * @see        Doc::getArrayRawValues
+     *
      * @param string $idAttr identifier of array attribute
-     * @param int $index the values for $index row (default value -1 means all values)
+     * @param int    $index  the values for $index row (default value -1 means all values)
+     *
      * @return array all values of array order by rows (return false if not an array attribute)
      */
-    final public function getAValues($idAttr, $index = - 1)
+    final public function getAValues($idAttr, $index = -1)
     {
         deprecatedFunction();
         return $this->getArrayRawValues($idAttr, $index);
     }
+
     /**
      * return the array of values for an array attribute
      *
      * the attribute must  an array type
+     *
      * @api get all values for an array attribute
+     *
      * @param string $idAttr identifier of array attribute
-     * @param int $index the values for $index row (default value -1 means all values)
+     * @param int    $index  the values for $index row (default value -1 means all values)
+     *
      * @return array|false all values of array order by rows (return false if not an array attribute)
      */
-    final public function getArrayRawValues($idAttr, $index = - 1)
+    final public function getArrayRawValues($idAttr, $index = -1)
     {
         $a = $this->getAttribute($idAttr);
         if ($a->type == "array") {
@@ -3307,23 +3968,31 @@ create unique index i_docir on doc(initid, revision);";
             }
             foreach ($ta as $k => $v) {
                 for ($i = 0; $i < $ix; $i++) {
-                    $ti[$i]+= array(
+                    $ti[$i] += array(
                         $k => isset($tv[$k][$i]) ? $tv[$k][$i] : ''
                     );
                 }
             }
-            if ($index == - 1) return $ti;
-            else return $ti[$index];
+            if ($index == -1) {
+                return $ti;
+            } else {
+                return $ti[$index];
+            }
         }
         return false;
     }
+
     /**
      * delete a row in an array attribute
      *
      * the attribute must an array type
+     *
      * @param string $idAttr identifier of array attribute
+     *
      * @api delete a row in an array attribute
+     *
      * @param string $index  $index row (first is 0)
+     *
      * @return string error message, if no error empty string
      */
     final public function removeArrayRow($idAttr, $index)
@@ -3337,38 +4006,43 @@ create unique index i_docir on doc(initid, revision);";
                 $tv = $this->getMultipleRawValues($k);
                 unset($tv[$index]);
                 $tvu = array();
-                foreach ($tv as $vv) $tvu[] = $vv; // key reorder
-                $err.= $this->setValue($k, $tvu);
+                foreach ($tv as $vv) {
+                    $tvu[] = $vv;
+                } // key reorder
+                $err .= $this->setValue($k, $tvu);
             }
             return $err;
         }
-        return sprintf(_("%s is not an array attribute") , $idAttr);
+        return sprintf(_("%s is not an array attribute"), $idAttr);
     }
+
     /**
      * in case of array where each column are not the same length
      *
      * the attribute must an array type
      * fill uncomplete column with null values
-     * @param string $idAttr identifier of array attribute
-     * @param bool $deleteLastEmptyRows by default empty rows which are in the end are deleted
+     *
+     * @param string $idAttr              identifier of array attribute
+     * @param bool   $deleteLastEmptyRows by default empty rows which are in the end are deleted
+     *
      * @return string error message, if no error empty string
      */
     final public function completeArrayRow($idAttr, $deleteLastEmptyRows = true)
     {
         /* Prevent recursive calls of completeArrayRow() by setValue() */
         static $calls = array();
-        if (array_key_exists(strtolower($idAttr) , $calls)) {
+        if (array_key_exists(strtolower($idAttr), $calls)) {
             return '';
         } else {
-            $calls[strtolower($idAttr) ] = 1;
+            $calls[strtolower($idAttr)] = 1;
         }
-        
+
         $err = '';
         $a = $this->getAttribute($idAttr);
         if ($a->type == "array") {
             $ta = $this->attributes->getArrayElements($a->id);
-            
-            $max = - 1;
+
+            $max = -1;
             $needRepad = false;
             $tValues = array();
             foreach ($ta as $k => $v) { // delete empty end values
@@ -3379,16 +4053,23 @@ create unique index i_docir on doc(initid, revision);";
                         if ($tValues[$k][$i] === '' || $tValues[$k][$i] === null) {
                             unset($tValues[$k][$i]);
                             $needRepad = true;
-                        } else break;
+                        } else {
+                            break;
+                        }
                     }
                 }
             }
             foreach ($ta as $k => $v) { // detect uncompleted rows
                 $c = count($tValues[$k]);
-                if ($max < 0) $max = $c;
-                else {
-                    if ($c != $max) $needRepad = true;
-                    if ($max < $c) $max = $c;
+                if ($max < 0) {
+                    $max = $c;
+                } else {
+                    if ($c != $max) {
+                        $needRepad = true;
+                    }
+                    if ($max < $c) {
+                        $max = $c;
+                    }
                 }
             }
             if ($needRepad) {
@@ -3398,49 +4079,55 @@ create unique index i_docir on doc(initid, revision);";
                     $c = count($tValues[$k]);
                     if ($c < $max) {
                         $nt = array_pad($tValues[$k], $max, "");
-                        $err.= $this->setValue($k, $nt);
+                        $err .= $this->setValue($k, $nt);
                     } else {
-                        $err.= $this->setValue($k, $tValues[$k]);
+                        $err .= $this->setValue($k, $tValues[$k]);
                     }
                 }
                 $this->_setValueCompleteArray = $oldComplete;
             }
-            
-            unset($calls[strtolower($idAttr) ]);
+
+            unset($calls[strtolower($idAttr)]);
             return $err;
         }
-        
-        unset($calls[strtolower($idAttr) ]);
-        return sprintf(_("%s is not an array attribute") , $idAttr);
+
+        unset($calls[strtolower($idAttr)]);
+        return sprintf(_("%s is not an array attribute"), $idAttr);
     }
+
     /**
      * add new row in an array attribute
      *
      * the attribute must be an array type
+     *
      * @api add new row in an array attribute
+     *
      * @param string $idAttr identifier of array attribute
-     * @param array $tv values of each column. Array index must be the attribute identifier
-     * @param int $index  $index row (first is 0) -1 at the end; x means before x row
+     * @param array  $tv     values of each column. Array index must be the attribute identifier
+     * @param int    $index  $index row (first is 0) -1 at the end; x means before x row
+     *
      * @return string error message, if no error empty string
      */
-    final public function addArrayRow($idAttr, $tv, $index = - 1)
+    final public function addArrayRow($idAttr, $tv, $index = -1)
     {
-        if (!is_array($tv)) return sprintf('values "%s" must be an array', $tv);
+        if (!is_array($tv)) {
+            return sprintf('values "%s" must be an array', $tv);
+        }
         $old_setValueCompleteArrayRow = $this->_setValueNeedCompleteArray;
         $this->_setValueNeedCompleteArray = false;
-        
+
         $tv = array_change_key_case($tv, CASE_LOWER);
         $a = $this->getAttribute($idAttr);
         if ((!empty($a)) && $a->type == "array") {
             $err = $this->completeArrayRow($idAttr, false);
             if ($err == "") {
                 $ta = $this->attributes->getArrayElements($a->id);
-                $attrOut = array_diff(array_keys($tv) , array_keys($ta));
+                $attrOut = array_diff(array_keys($tv), array_keys($ta));
                 if ($attrOut) {
                     $this->_setValueNeedCompleteArray = $old_setValueCompleteArrayRow;
-                    return sprintf(_('attribute "%s" is not a part of array "%s"') , implode(', ', $attrOut) , $idAttr);
+                    return sprintf(_('attribute "%s" is not a part of array "%s"'), implode(', ', $attrOut), $idAttr);
                 }
-                
+
                 $err = "";
                 // add in each columns
                 foreach ($ta as $k => $v) {
@@ -3454,11 +4141,11 @@ create unique index i_docir on doc(initid, revision);";
                         $t2 = array_slice($tnv, $index);
                         $tnv = array_merge($t1, array(
                             $val
-                        ) , $t2);
+                        ), $t2);
                     } else {
                         $tnv[] = $val;
                     }
-                    $err.= $this->setValue($k, $tnv);
+                    $err .= $this->setValue($k, $tnv);
                 }
                 if ($err == "") {
                     $err = $this->completeArrayRow($idAttr, false);
@@ -3468,42 +4155,49 @@ create unique index i_docir on doc(initid, revision);";
             return $err;
         }
         $this->_setValueNeedCompleteArray = $old_setValueCompleteArrayRow;
-        return sprintf(_("%s is not an array attribute") , $idAttr);
+        return sprintf(_("%s is not an array attribute"), $idAttr);
     }
+
     /**
      * delete all attributes values of an array
      *
      * the attribute must be an array type
+     *
      * @api delete all attributes values of an array
+     *
      * @param string $idAttr identifier of array attribute
+     *
      * @return string error message, if no error empty string
      */
     final public function clearArrayValues($idAttr)
     {
         $old_setValueCompleteArrayRow = $this->_setValueNeedCompleteArray;
         $this->_setValueNeedCompleteArray = false;
-        
+
         $a = $this->getAttribute($idAttr);
         if ($a->type == "array") {
             $ta = $this->attributes->getArrayElements($a->id);
             $err = "";
             // delete each columns
             foreach ($ta as $k => $v) {
-                $err.= $this->clearValue($k);
+                $err .= $this->clearValue($k);
             }
             $this->_setValueNeedCompleteArray = $old_setValueCompleteArrayRow;
             return $err;
         }
         $this->_setValueNeedCompleteArray = $old_setValueCompleteArrayRow;
-        return sprintf(_("%s is not an array attribute") , $idAttr);
+        return sprintf(_("%s is not an array attribute"), $idAttr);
     }
+
     /**
      * delete all attributes values of an array
      *
      * the attribute must be an array type
+     *
      * @param string $idAttr identifier of array attribute
+     *
      * @deprecated use {@link Doc::clearArrayValues} instead
-     * @see Doc::clearArrayValues
+     * @see        Doc::clearArrayValues
      * @return string error message, if no error empty string
      */
     final public function deleteArray($idAttr)
@@ -3511,6 +4205,7 @@ create unique index i_docir on doc(initid, revision);";
         deprecatedFunction();
         return $this->clearArrayValues($idAttr);
     }
+
     /**
      * affect value for $attrid attribute
      *
@@ -3518,21 +4213,26 @@ create unique index i_docir on doc(initid, revision);";
      * call after modification
      * If value is empty no modification are set. To reset a value use Doc::clearValue method.
      * an array can be use as value for values which are in arrays
+     *
      * @api affect value for an attribute
      * @see Doc::setAttributeValue
-     * @param string $attrid attribute identifier
-     * @param string|array $value new value for the attribute
-     * @param int $index only for array values affect value in a specific row
-     * @param int &$kvalue in case of error the index of error (for arrays)
+     *
+     * @param string       $attrid  attribute identifier
+     * @param string|array $value   new value for the attribute
+     * @param int          $index   only for array values affect value in a specific row
+     * @param int          &$kvalue in case of error the index of error (for arrays)
+     *
      * @return string error message, if no error empty string
      */
-    final public function setValue($attrid, $value, $index = - 1, &$kvalue = null)
+    final public function setValue($attrid, $value, $index = -1, &$kvalue = null)
     {
         // control edit before set values
         if (!$this->withoutControl) {
             if ($this->id > 0) { // no control yet if no effective doc
                 $err = $this->Control("edit");
-                if ($err != "") return ($err);
+                if ($err != "") {
+                    return ($err);
+                }
             }
         }
         $attrid = strtolower($attrid);
@@ -3540,7 +4240,7 @@ create unique index i_docir on doc(initid, revision);";
          * @var NormalAttribute $oattr
          */
         $oattr = $this->GetAttribute($attrid);
-        if ($index > - 1) { // modify one value in a row
+        if ($index > -1) { // modify one value in a row
             $tval = $this->getMultipleRawValues($attrid);
             if (($index + 1) > count($tval)) {
                 $tval = array_pad($tval, $index + 1, "");
@@ -3551,13 +4251,14 @@ create unique index i_docir on doc(initid, revision);";
         if (is_array($value)) {
             if (count($value) == 0) {
                 $value = DELVALUE;
-            } elseif ((count($value) == 1) && (first($value) === "" || first($value) === null) && (substr(key($value) , 0, 1) != "s")) {
+            } elseif ((count($value) == 1) && (first($value) === "" || first($value) === null)
+                && (substr(key($value), 0, 1) != "s")) {
                 // special tab for array of one empty cell
                 $value = "\t";
             } else {
-                if ($oattr && $oattr->repeat && (count($value) == 1) && substr(key($value) , 0, 1) == "s") {
+                if ($oattr && $oattr->repeat && (count($value) == 1) && substr(key($value), 0, 1) == "s") {
                     $ov = $this->getMultipleRawValues($attrid);
-                    $rank = intval(substr(key($value) , 1));
+                    $rank = intval(substr(key($value), 1));
                     if (count($ov) < ($rank - 1)) { // fill array if not set
                         $start = count($ov);
                         for ($i = $start; $i < $rank; $i++) {
@@ -3565,7 +4266,7 @@ create unique index i_docir on doc(initid, revision);";
                         }
                     }
                     foreach ($value as $k => $v) {
-                        $ov[substr($k, 1, 1) ] = $v;
+                        $ov[substr($k, 1, 1)] = $v;
                     }
                     $value = $ov;
                 }
@@ -3581,19 +4282,27 @@ create unique index i_docir on doc(initid, revision);";
             // change only if different
             if ($oattr === false) {
                 if ($this->id > 0) {
-                    return sprintf(_("attribute %s unknow in document \"%s\" [%s]") , $attrid, $this->getTitle() , $this->fromname);
+                    return sprintf(
+                        _("attribute %s unknow in document \"%s\" [%s]"),
+                        $attrid,
+                        $this->getTitle(),
+                        $this->fromname
+                    );
                 } else {
-                    return sprintf(_("attribute %s unknow in family \"%s\"") , $attrid, $this->fromname);
+                    return sprintf(_("attribute %s unknow in family \"%s\""), $attrid, $this->fromname);
                 }
             }
             if ($oattr->mvisibility == "I") {
                 if ($this->_setValueCompleteArray === false) {
-                    return sprintf(_("no permission to modify this attribute %s") , $attrid);
+                    return sprintf(_("no permission to modify this attribute %s"), $attrid);
                 }
             }
             if ($value === DELVALUE) {
-                if ($oattr->type != "password") $value = " ";
-                else return '';
+                if ($oattr->type != "password") {
+                    $value = " ";
+                } else {
+                    return '';
+                }
             }
             if ($value === " ") {
                 $value = ""; // erase value
@@ -3611,16 +4320,19 @@ create unique index i_docir on doc(initid, revision);";
                 }
             } else {
                 $value = trim($value, " \x0B\r"); // suppress white spaces end & begin
-                if (!isset($this->$attrid)) $this->$attrid = "";
-                
-                if (strcmp($this->$attrid, $value) != 0 && strcmp($this->$attrid, str_replace("\n ", "\n", $value)) != 0) {
+                if (!isset($this->$attrid)) {
+                    $this->$attrid = "";
+                }
+
+                if (strcmp($this->$attrid, $value) != 0
+                    && strcmp($this->$attrid, str_replace("\n ", "\n", $value)) != 0) {
                     // print "change2 $attrid  to <PRE>[{$this->$attrid}] [$value]</PRE><BR>";
                     if ($oattr->repeat) {
                         $tvalues = $this->rawValueToArray($value);
                     } else {
                         $tvalues[] = $value;
                     }
-                    
+
                     foreach ($tvalues as $kvalue => $avalue) {
                         if (($avalue != "") && ($avalue != "\t")) {
                             if ($oattr) {
@@ -3651,13 +4363,13 @@ create unique index i_docir on doc(initid, revision);";
                                         $tvalues[$kvalue] = str_replace(" ", "", $tvalues[$kvalue]);
                                         if ($avalue != "\t") {
                                             if (!is_numeric($tvalues[$kvalue])) {
-                                                return sprintf(_("value [%s] is not a number") , $tvalues[$kvalue]);
+                                                return sprintf(_("value [%s] is not a number"), $tvalues[$kvalue]);
                                             } else {
-                                                $tvalues[$kvalue] = (string)((double)$tvalues[$kvalue]); // delete non signifiant zeros
-                                                
+                                                $tvalues[$kvalue]
+                                                    = (string)((double)$tvalues[$kvalue]); // delete non signifiant zeros
                                             }
                                         }
-                                        
+
                                         break;
 
                                     case 'money':
@@ -3667,9 +4379,9 @@ create unique index i_docir on doc(initid, revision);";
                                         $tvalues[$kvalue] = str_replace(",", ".", $avalue);
                                         $tvalues[$kvalue] = str_replace(" ", "", $tvalues[$kvalue]);
                                         if (($avalue != "\t") && (!is_numeric($tvalues[$kvalue]))) {
-                                            return sprintf(_("value [%s] is not a number") , $tvalues[$kvalue]);
+                                            return sprintf(_("value [%s] is not a number"), $tvalues[$kvalue]);
                                         }
-                                        $tvalues[$kvalue] = round(doubleval($tvalues[$kvalue]) , 2);
+                                        $tvalues[$kvalue] = round(doubleval($tvalues[$kvalue]), 2);
                                         break;
 
                                     case 'integer':
@@ -3678,16 +4390,22 @@ create unique index i_docir on doc(initid, revision);";
                                             $avalue = 0;
                                         }
                                         if (($avalue != "\t") && (!is_numeric($avalue))) {
-                                            return sprintf(_("value [%s] is not a number") , $avalue);
+                                            return sprintf(_("value [%s] is not a number"), $avalue);
                                         }
-                                        if (floatval($avalue) < - floatval(pow(2, 31)) || floatval($avalue) > floatval(pow(2, 31) - 1)) {
+                                        if (floatval($avalue) < -floatval(pow(2, 31))
+                                            || floatval($avalue) > floatval(pow(2, 31) - 1)) {
                                             // signed int32 overflow
-                                            return sprintf(_("[%s] must be between %s and %s") , $avalue, -floatval(pow(2, 31)) , floatval(pow(2, 31) - 1));
+                                            return sprintf(
+                                                _("[%s] must be between %s and %s"),
+                                                $avalue,
+                                                -floatval(pow(2, 31)),
+                                                floatval(pow(2, 31) - 1)
+                                            );
                                         }
                                         if (intval($avalue) != floatval($avalue)) {
-                                            return sprintf(_("[%s] must be a integer") , $avalue);
+                                            return sprintf(_("[%s] must be a integer"), $avalue);
                                         }
-                                        
+
                                         $tvalues[$kvalue] = intval($avalue);
                                         break;
 
@@ -3697,7 +4415,7 @@ create unique index i_docir on doc(initid, revision);";
                                             $mm = intval($reg[2]);
                                             $ss = isset($reg[3]) ? intval($reg[3]) : 0; // seconds are optionals
                                             if ($hh < 0 || $hh > 23 || $mm < 0 || $mm > 59 || $ss < 0 || $ss > 59) {
-                                                return sprintf(_("value [%s] is out of limit time") , $avalue);
+                                                return sprintf(_("value [%s] is out of limit time"), $avalue);
                                             }
                                             if (isset($reg[3])) {
                                                 $tvalues[$kvalue] = sprintf("%02d:%02d:%02d", $hh, $mm, $ss);
@@ -3705,9 +4423,9 @@ create unique index i_docir on doc(initid, revision);";
                                                 $tvalues[$kvalue] = sprintf("%02d:%02d", $hh, $mm);
                                             }
                                         } else {
-                                            return sprintf(_("value [%s] is not a valid time") , $avalue);
+                                            return sprintf(_("value [%s] is not a valid time"), $avalue);
                                         }
-                                        
+
                                         break;
 
                                     case 'date':
@@ -3717,12 +4435,15 @@ create unique index i_docir on doc(initid, revision);";
                                             }
                                         } else {
                                             if (!isValidDate($avalue)) {
-                                                return sprintf(_("value [%s] is not a valid date") , $avalue);
+                                                return sprintf(_("value [%s] is not a valid date"), $avalue);
                                             }
-                                            
+
                                             $localeconfig = ContextManager::getLocaleConfig();
                                             if ($localeconfig !== false) {
-                                                $tvalues[$kvalue] = stringDateToIso($avalue, $localeconfig['dateFormat']);
+                                                $tvalues[$kvalue] = stringDateToIso(
+                                                    $avalue,
+                                                    $localeconfig['dateFormat']
+                                                );
                                             } else {
                                                 return sprintf(_("local config for date not found"));
                                             }
@@ -3736,12 +4457,15 @@ create unique index i_docir on doc(initid, revision);";
                                             }
                                         } else {
                                             if (!isValidDate($avalue)) {
-                                                return sprintf(_("value [%s] is not a valid timestamp") , $avalue);
+                                                return sprintf(_("value [%s] is not a valid timestamp"), $avalue);
                                             }
-                                            
+
                                             $localeconfig = ContextManager::getLocaleConfig();
                                             if ($localeconfig !== false) {
-                                                $tvalues[$kvalue] = stringDateToIso($avalue, $localeconfig['dateTimeFormat']);
+                                                $tvalues[$kvalue] = stringDateToIso(
+                                                    $avalue,
+                                                    $localeconfig['dateTimeFormat']
+                                                );
                                             } else {
                                                 return sprintf(_("local config for timestamp not found"));
                                             }
@@ -3750,11 +4474,16 @@ create unique index i_docir on doc(initid, revision);";
 
                                     case 'file':
                                         // clear fulltext realtive column
-                                        if ((!$oattr->repeat) || ($avalue != $this->getMultipleRawValues($attrid, "", $kvalue))) {
+                                        if ((!$oattr->repeat)
+                                            || ($avalue != $this->getMultipleRawValues($attrid, "", $kvalue))) {
                                             // only if changed
                                             $this->clearFullAttr($oattr->id, ($oattr->repeat) ? $kvalue : -1);
                                         }
-                                        $tvalues[$kvalue] = str_replace('\\', '', $tvalues[$kvalue]); // correct possible save error in old versions
+                                        $tvalues[$kvalue] = str_replace(
+                                            '\\',
+                                            '',
+                                            $tvalues[$kvalue]
+                                        ); // correct possible save error in old versions
                                         break;
 
                                     case 'image':
@@ -3763,7 +4492,11 @@ create unique index i_docir on doc(initid, revision);";
 
                                     case 'htmltext':
                                         $tvalues[$kvalue] = str_replace('&#39;', "'", $tvalues[$kvalue]);
-                                        $tvalues[$kvalue] = preg_replace("/<!--.*?-->/ms", "", $tvalues[$kvalue]); //delete comments
+                                        $tvalues[$kvalue] = preg_replace(
+                                            "/<!--.*?-->/ms",
+                                            "",
+                                            $tvalues[$kvalue]
+                                        ); //delete comments
                                         $tvalues[$kvalue] = \Dcp\Utils\htmlclean::xssClean($tvalues[$kvalue]);
                                         if ($oattr->getOption("htmlclean") == "yes") {
                                             $tvalues[$kvalue] = \Dcp\Utils\htmlclean::cleanStyle($tvalues[$kvalue]);
@@ -3782,12 +4515,16 @@ create unique index i_docir on doc(initid, revision);";
                                             $tvalues[$kvalue] = $html;
                                         }
                                         /* Encode '[' to prevent further layout interpretation/evaluation */
-                                        $tvalues[$kvalue] = str_replace("[", "&#x5B;", $tvalues[$kvalue]); // need to stop auto instance
+                                        $tvalues[$kvalue] = str_replace(
+                                            "[",
+                                            "&#x5B;",
+                                            $tvalues[$kvalue]
+                                        ); // need to stop auto instance
                                         break;
 
                                     case 'thesaurus':
                                         // reset cache of doccount
-                                        include_once ("FDL/Class.DocCount.php");
+                                        include_once("FDL/Class.DocCount.php");
                                         $d = new docCount($this->dbaccess);
                                         $d->famid = $this->fromid;
                                         $d->aid = $attrid;
@@ -3816,26 +4553,28 @@ create unique index i_docir on doc(initid, revision);";
         }
         return '';
     }
+
     /**
      * clear $attrid_txt and $attrid_vec
      *
      * @param string $attrid identifier of file attribute
-     * @param int $index in case of multiple values
+     * @param int    $index  in case of multiple values
+     *
      * @return void
      */
-    final private function clearFullAttr($attrid, $index = - 1)
+    final private function clearFullAttr($attrid, $index = -1)
     {
         $attrid = strtolower($attrid);
         $oa = $this->getAttribute($attrid);
         if ($oa && $oa->usefor != 'Q') {
             if ($oa->getOption("search") != "no") {
                 $ak = $attrid . '_txt';
-                if ($index == - 1) {
+                if ($index == -1) {
                     $this->$ak = '';
                 } else {
                     if ($this->affectColumn(array(
                         $ak
-                    ) , false)) {
+                    ), false)) {
                         $this->$ak = sep_replace($this->$ak, $index);
                     }
                 }
@@ -3852,6 +4591,7 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
     }
+
     /**
      * send text transformation
      * after ::clearFullAttr is called
@@ -3861,11 +4601,14 @@ create unique index i_docir on doc(initid, revision);";
     {
         $err = '';
         if (!empty($this->textsend)) {
-            include_once ("FDL/Lib.Vault.php");
+            include_once("FDL/Lib.Vault.php");
             foreach ($this->textsend as $k => $v) {
                 $index = $v["index"];
-                if ($index > 0) $fval = $this->getMultipleRawValues($v["attrid"], "", $index);
-                else $fval = strtok($this->getRawValue($v["attrid"]) , "\n");
+                if ($index > 0) {
+                    $fval = $this->getMultipleRawValues($v["attrid"], "", $index);
+                } else {
+                    $fval = strtok($this->getRawValue($v["attrid"]), "\n");
+                }
                 if (preg_match(PREGEXPFILE, $fval, $reg)) {
                     $vid = $reg[2];
                     if (isset($this->vidNoSendTextToEngine[$vid])) {
@@ -3879,20 +4622,25 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
             $this->textsend = array(); //reinit
-            
         }
         return $err;
     }
+
     /**
      * force recompute all file text transformation
+     *
      * @param string $aid file attribute identifier. If empty all files attributes will be reseted
+     *
      * @return string error message, if no error empty string
      */
     final public function recomputeTextFiles($aid = '')
     {
-        if (!$aid) $afiles = $this->GetFileAttributes(true);
-        else $afiles[$aid] = $this->getAttribute($aid);
-        
+        if (!$aid) {
+            $afiles = $this->GetFileAttributes(true);
+        } else {
+            $afiles[$aid] = $this->getAttribute($aid);
+        }
+
         $ttxt = array();
         foreach ($afiles as $k => $v) {
             $kt = $k . '_txt';
@@ -3914,13 +4662,16 @@ create unique index i_docir on doc(initid, revision);";
         $err = $this->sendTextToEngine();
         return $err;
     }
+
     /**
      * affect text value in $attrid file attribute
      *
      * create a new file in Vault to replace old file
+     *
      * @param string $attrid identifier of file attribute
-     * @param string $value new value for the attribute
+     * @param string $value  new value for the attribute
      * @param string $ftitle the name of file (if empty the same as before)
+     *
      * @return string error message, if no error empty string
      */
     final public function setTextValueInFile($attrid, $value, $ftitle = "")
@@ -3936,7 +4687,7 @@ create unique index i_docir on doc(initid, revision);";
                 //$mimetype = $reg[1];
                 $info = new vaultFileInfo();
                 $err = $vf->Retrieve($vaultid, $info);
-                
+
                 if ($err == "") {
                     $basename = $info->name;
                 }
@@ -3962,19 +4713,23 @@ create unique index i_docir on doc(initid, revision);";
                 //$err="file conversion $mime|$vid";
                 if ($err == "xx") {
                     $this->clearFullAttr($attrid); // because internal values not changed
-                    
                 }
             }
-            if ($nc > 0) unlink($filename);
+            if ($nc > 0) {
+                unlink($filename);
+            }
         }
         return $err;
     }
+
     /**
      * get text value from $attrid file attribute
      *
      * get content of a file (must be an ascii file)
+     *
      * @param string $attrid identifier of file attribute
-     * @param string &$text the content of the file
+     * @param string &$text  the content of the file
+     *
      * @return string error message, if no error empty string
      */
     final public function getTextValueFromFile($attrid, &$text)
@@ -3991,7 +4746,7 @@ create unique index i_docir on doc(initid, revision);";
                  * VaultFileInfo $info
                  */
                 $err = $vf->Retrieve($vaultid, $info);
-                
+
                 if (!$err) {
                     $filename = $info->path;
                     $text = file_get_contents($filename);
@@ -4000,17 +4755,20 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $err;
     }
+
     /**
      * save stream file in an file attribute
      *
      * replace a new file in Vault to replace old file
-     * @param string $attrid identifier of file attribute
+     *
+     * @param string   $attrid identifier of file attribute
      * @param resource $stream file resource from fopen
-     * @param string $ftitle to change title of file also (empty to unchange)
-     * @param int $index for array of file : modify in specific row
+     * @param string   $ftitle to change title of file also (empty to unchange)
+     * @param int      $index  for array of file : modify in specific row
+     *
      * @return string error message, if no error empty string
      */
-    final public function saveFile($attrid, $stream, $ftitle = "", $index = - 1)
+    final public function saveFile($attrid, $stream, $ftitle = "", $index = -1)
     {
         $err = '';
         if (is_resource($stream) && get_resource_type($stream) == "stream") {
@@ -4018,8 +4776,11 @@ create unique index i_docir on doc(initid, revision);";
             $a = $this->getAttribute($attrid);
             if ($a->type == "file") {
                 $vf = newFreeVaultFile($this->dbaccess);
-                if ($index > - 1) $fvalue = $this->getMultipleRawValues($attrid, '', $index);
-                else $fvalue = $this->getRawValue($attrid);
+                if ($index > -1) {
+                    $fvalue = $this->getMultipleRawValues($attrid, '', $index);
+                } else {
+                    $fvalue = $this->getRawValue($attrid);
+                }
                 $basename = "";
                 if (preg_match(PREGEXPFILE, $fvalue, $reg)) {
                     $vaultid = $reg[2];
@@ -4027,7 +4788,7 @@ create unique index i_docir on doc(initid, revision);";
                     $oftitle = $reg[3];
                     $info = new VaultFileInfo();
                     $err = $vf->Retrieve($vaultid, $info);
-                    
+
                     if ($err == "") {
                         $basename = $info->name;
                     }
@@ -4035,8 +4796,10 @@ create unique index i_docir on doc(initid, revision);";
                 if ($ftitle) {
                     $ext = getFileExtension($ftitle);
                 }
-                if ($ext == "") $ext = "nop";
-                
+                if ($ext == "") {
+                    $ext = "nop";
+                }
+
                 $filename = uniqid(getTmpDir() . "/_fdl") . ".$ext";
                 $tmpstream = fopen($filename, "w");
                 while (!feof($stream)) {
@@ -4049,7 +4812,7 @@ create unique index i_docir on doc(initid, revision);";
                 if (!$err) {
                     // verify if need to create new file in case of revision
                     $newfile = ($basename == "");
-                    
+
                     if ($this->revision > 0) {
                         $trev = $this->GetRevisions("TABLE", 2);
                         /**
@@ -4057,9 +4820,11 @@ create unique index i_docir on doc(initid, revision);";
                          */
                         $revdoc = $trev[1];
                         $prevfile = getv($revdoc, strtolower($attrid));
-                        if ($prevfile == $fvalue) $newfile = true;
+                        if ($prevfile == $fvalue) {
+                            $newfile = true;
+                        }
                     }
-                    
+
                     if (!$newfile) {
                         $err = $vf->Save($filename, false, $vaultid);
                     } else {
@@ -4071,38 +4836,47 @@ create unique index i_docir on doc(initid, revision);";
                         $vf->Rename($vaultid, $basename);
                     }
                     if ($err == "") {
-                        if ($mimetype) $mime = $mimetype;
-                        else $mime = trim(shell_exec(sprintf("file -ib %s", escapeshellarg($filename))));
-                        if ($ftitle) $value = "$mime|$vaultid|$ftitle";
-                        else $value = "$mime|$vaultid|$oftitle";
+                        if ($mimetype) {
+                            $mime = $mimetype;
+                        } else {
+                            $mime = trim(shell_exec(sprintf("file -ib %s", escapeshellarg($filename))));
+                        }
+                        if ($ftitle) {
+                            $value = "$mime|$vaultid|$ftitle";
+                        } else {
+                            $value = "$mime|$vaultid|$oftitle";
+                        }
                         $err = $this->setValue($attrid, $value, $index);
                         if ($err == "") {
                             $this->clearFullAttr($attrid); // because internal values not changed
-                            
                         }
                         //$err="file conversion $mime|$vid";
-                        
                     }
                     unlink($filename);
-                    $this->addHistoryEntry(sprintf(_("modify file %s") , $ftitle));
+                    $this->addHistoryEntry(sprintf(_("modify file %s"), $ftitle));
                     $this->hasChanged = true;
                 }
             }
         }
         return $err;
     }
+
     /**
      * use for duplicate physicaly the file
      *
-     * @param string $idattr identifier of file attribute
+     * @param string $idattr  identifier of file attribute
      * @param string $newname basename if want change name of file
-     * @param int $index in case of array
+     * @param int    $index   in case of array
+     *
      * @return string attribut value formated to be inserted into a file attribute
      */
-    final function copyFile($idattr, $newname = "", $index = - 1)
+    final public function copyFile($idattr, $newname = "", $index = -1)
     {
-        if ($index >= 0) $f = $this->getMultipleRawValues($idattr, "", $index);
-        else $f = $this->getRawValue($idattr);
+        if ($index >= 0) {
+            $f = $this->getMultipleRawValues($idattr, "", $index);
+        } else {
+            $f = $this->getRawValue($idattr);
+        }
         if ($f) {
             if (preg_match(PREGEXPFILE, $f, $reg)) {
                 $vf = newFreeVaultFile($this->dbaccess);
@@ -4117,7 +4891,9 @@ create unique index i_docir on doc(initid, revision);";
                          */
                         $err = $vf->Store($cible, false, $vid);
                         if ($err == "") {
-                            if (!$newname) $newname = $info->name;
+                            if (!$newname) {
+                                $newname = $info->name;
+                            }
                             if ($newname) {
                                 $vf->Rename($vid, $newname);
                             }
@@ -4129,19 +4905,24 @@ create unique index i_docir on doc(initid, revision);";
         }
         return false;
     }
+
     /**
      * rename physicaly the file
      *
-     * @param string $idattr identifier of file attribute
+     * @param string $idattr  identifier of file attribute
      * @param string $newname base name file
-     * @param int $index in case of array of files
+     * @param int    $index   in case of array of files
+     *
      * @return string empty if no error
      */
-    final function renameFile($idattr, $newname, $index = - 1)
+    final public function renameFile($idattr, $newname, $index = -1)
     {
         if ($newname) {
-            if ($index == - 1) $f = $this->getRawValue($idattr);
-            else $f = $this->getMultipleRawValues($idattr, "", $index);
+            if ($index == -1) {
+                $f = $this->getRawValue($idattr);
+            } else {
+                $f = $this->getMultipleRawValues($idattr, "", $index);
+            }
             if ($f) {
                 if (preg_match(PREGEXPFILE, $f, $reg)) {
                     $vf = newFreeVaultFile($this->dbaccess);
@@ -4152,7 +4933,6 @@ create unique index i_docir on doc(initid, revision);";
                     if ($vf->Show($reg[2], $info) == "") {
                         $cible = $info->path;
                         if (file_exists($cible)) {
-                            
                             $vf->Rename($vid, $newname);
                             $this->setValue($idattr, $info->mime_s . '|' . $vid . '|' . $newname, $index);
                         }
@@ -4162,19 +4942,21 @@ create unique index i_docir on doc(initid, revision);";
         }
         return false;
     }
+
     /**
      * Register (store) a file in the vault and return the file's vault's informations
      *
-     * @param string $filename the file pathname
-     * @param string $ftitle override the stored file name or empty string to keep the original file name
-     * @param VaultFileInfo $info the vault's informations for the stored file or null if could not get informations
+     * @param string        $filename the file pathname
+     * @param string        $ftitle   override the stored file name or empty string to keep the original file name
+     * @param VaultFileInfo $info     the vault's informations for the stored file or null if could not get informations
+     *
      * @return string trigram of the file in the vault: "mime_s|id_file|name"
      * @throws \Exception on error
      */
     final public function vaultRegisterFile($filename, $ftitle = "", &$info = null)
     {
-        include_once ('FDL/Lib.Vault.php');
-        
+        include_once('FDL/Lib.Vault.php');
+
         $vaultid = 0;
         $err = vault_store($filename, $vaultid, $ftitle);
         if ($err != '') {
@@ -4184,22 +4966,24 @@ create unique index i_docir on doc(initid, revision);";
         if (!is_object($info) || !is_a($info, 'VaultFileInfo')) {
             throw new \Exception(ErrorCode::getError('FILE0010', $filename));
         }
-        
+
         return sprintf("%s|%s|%s", $info->mime_s, $info->id_file, $info->name);
     }
+
     /**
      * Store a file in a file attribute
      *
-     * @param string $attrid identifier of file attribute
+     * @param string $attrid   identifier of file attribute
      * @param string $filename file path
-     * @param string $ftitle basename of file
-     * @param int $index only for array values affect value in a specific row
+     * @param string $ftitle   basename of file
+     * @param int    $index    only for array values affect value in a specific row
+     *
      * @return string error message, if no error empty string
      */
-    final public function setFile($attrid, $filename, $ftitle = "", $index = - 1)
+    final public function setFile($attrid, $filename, $ftitle = "", $index = -1)
     {
-        include_once ("FDL/Lib.Vault.php");
-        
+        include_once("FDL/Lib.Vault.php");
+
         try {
             $a = $this->getAttribute($attrid);
             if ($a) {
@@ -4208,83 +4992,91 @@ create unique index i_docir on doc(initid, revision);";
                     $vaultid = $this->vaultRegisterFile($filename, $ftitle, $info);
                     $err = $this->setValue($attrid, $vaultid, $index);
                 } else {
-                    $err = sprintf(_("attribute %s is not a file attribute") , $a->getLabel());
+                    $err = sprintf(_("attribute %s is not a file attribute"), $a->getLabel());
                 }
             } else {
-                $err = sprintf(_("unknow attribute %s") , $attrid);
+                $err = sprintf(_("unknow attribute %s"), $attrid);
             }
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             errorLogException($e);
             $err = $e->getMessage();
         }
         return $err;
     }
+
     /**
      * store new file in an file attribute
      *
      * @deprecated use setFile() instead
      *
-     * @param string $attrid identifier of file attribute
+     * @param string $attrid   identifier of file attribute
      * @param string $filename file path
-     * @param string $ftitle basename of file
-     * @param int $index only for array values affect value in a specific row
+     * @param string $ftitle   basename of file
+     * @param int    $index    only for array values affect value in a specific row
+     *
      * @return string error message, if no error empty string
      */
-    final public function storeFile($attrid, $filename, $ftitle = "", $index = - 1)
+    final public function storeFile($attrid, $filename, $ftitle = "", $index = -1)
     {
         deprecatedFunction();
-        
+
         return $this->setFile($attrid, $filename, $ftitle, $index);
     }
+
     /**
      * store multiples new files in an file array attribute
      *
      * @deprecated use setFile() instead
      *
-     * @param string $attrid identifier of file attribute
-     * @param array $filenames file path
-     * @param array|string $ftitle basename of file
+     * @param string       $attrid    identifier of file attribute
+     * @param array        $filenames file path
+     * @param array|string $ftitle    basename of file
+     *
      * @return string error message, if no error empty string
      */
     final public function storeFiles($attrid, $filenames, $ftitle = "")
     {
         deprecatedFunction();
         $err = '';
-        if (!is_array($filenames)) return _("no files");
-        
+        if (!is_array($filenames)) {
+            return _("no files");
+        }
+
         $a = $this->getAttribute($attrid);
         if (($a->type == "file") || ($a->type == "image")) {
             if ($a->inArray()) {
                 $tvid = array();
                 foreach ($filenames as $k => $filename) {
                     if (is_file($filename)) {
-                        include_once ("FDL/Lib.Vault.php");
-                        
+                        include_once("FDL/Lib.Vault.php");
+
                         $err = vault_store($filename, $vaultid, $ftitle[$k]);
                         if ($err == "") {
                             $info = vault_properties($vaultid);
                             $mime = $info->mime_s;
-                            if ($ftitle[$k] == "") $ftitle[$k] = $info->name;
+                            if ($ftitle[$k] == "") {
+                                $ftitle[$k] = $info->name;
+                            }
                             $tvid[] = "$mime|$vaultid|" . $ftitle[$k];
                         }
                     }
                 }
                 $this->setValue($attrid, $tvid);
             } else {
-                $err = sprintf(_("attribute %s is not int a array") , $a->getLabel());
+                $err = sprintf(_("attribute %s is not int a array"), $a->getLabel());
             }
         } else {
-            $err = sprintf(_("attribute %s is not a file attribute") , $a->getLabel());
+            $err = sprintf(_("attribute %s is not a file attribute"), $a->getLabel());
         }
-        
+
         return $err;
     }
+
     /**
      * Duplicate physically all files of documents
      *
      */
-    function duplicateFiles()
+    public function duplicateFiles()
     {
         $err = "";
         $fa = $this->GetFileAttributes();
@@ -4302,12 +5094,14 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $err;
     }
+
     /**
      * Return the related value by linked attributes.
      *
      * Can be used to retrieve a value by traversing multiple docid.
      *
      * For example,
+     *
      * @code
      * $val = $this->getRValue("id1:id2:id3")
      * @endcode
@@ -4326,9 +5120,10 @@ create unique index i_docir on doc(initid, revision);";
      * @endwarning
      *
      * @param string $RidAttr attributes identifier chain (separated by ':')
-     * @param string $def $def default return value
-     * @param bool $latest always last revision of document
-     * @param bool $html return formated value for html
+     * @param string $def     $def default return value
+     * @param bool   $latest  always last revision of document
+     * @param bool   $html    return formated value for html
+     *
      * @return array|string
      */
     final public function getRValue($RidAttr, $def = "", $latest = true, $html = false)
@@ -4338,20 +5133,31 @@ create unique index i_docir on doc(initid, revision);";
         $doc = $this;
         foreach ($tattrid as $k => $v) {
             $docid = $doc->getRawValue($v);
-            if ($docid == "") return $def;
-            $doc = DocManager::getDocument( $docid, $latest);
+            if ($docid == "") {
+                return $def;
+            }
+            $doc = DocManager::getDocument($docid, $latest);
 
-            if (!$doc) return $def;
+            if (!$doc) {
+                return $def;
+            }
         }
-        if ($html) return $doc->getHtmlAttrValue($lattrid, $def);
-        else return $doc->getRawValue($lattrid, $def);
+        if ($html) {
+            return $doc->getHtmlAttrValue($lattrid, $def);
+        } else {
+            return $doc->getRawValue($lattrid, $def);
+        }
     }
+
     /**
      * return the previous value for a attibute set before Doc::SetValue
      * can be used in Doc::postStore generaly
+     *
      * @deprecated use Doc::getOldRawvalue
-     * @see Doc::getOldRawValue
+     * @see        Doc::getOldRawValue
+     *
      * @param string $attrid attribute identifier
+     *
      * @return string the old value (false if not modified before)
      */
     final public function getOldValue($attrid)
@@ -4359,24 +5165,32 @@ create unique index i_docir on doc(initid, revision);";
         deprecatedFunction();
         return $this->getOldRawValue($attrid);
     }
+
     /**
      * return the previous value for a attibute set before Doc::SetValue
      * can be used in Doc::postModify generaly
+     *
      * @api get previous value of an attribute
+     *
      * @param string $attrid attribute identifier
+     *
      * @return string the old value (false if not modified before)
      *
      */
     final public function getOldRawValue($attrid)
     {
         $attrid = strtolower($attrid);
-        if (isset($this->_oldvalue[$attrid])) return $this->_oldvalue[$attrid];
+        if (isset($this->_oldvalue[$attrid])) {
+            return $this->_oldvalue[$attrid];
+        }
         return false;
     }
+
     /**
      * return all modified values from last modify
+     *
      * @deprecated use Doc::getOldRawValues instead
-     * @see Doc::getOldRawValues
+     * @see        Doc::getOldRawValues
      * @return array indexed by attribute identifier (lowercase)
      */
     final public function getOldValues()
@@ -4384,20 +5198,28 @@ create unique index i_docir on doc(initid, revision);";
         deprecatedFunction();
         return $this->getOldRawValues();
     }
+
     /**
      * return all modified values from last modify
+     *
      * @api get all modified values from last modify
      * @return array indexed by attribute identifier (lowercase)
      */
     final public function getOldRawValues()
     {
-        if (isset($this->_oldvalue)) return $this->_oldvalue;
+        if (isset($this->_oldvalue)) {
+            return $this->_oldvalue;
+        }
         return array();
     }
+
     /**
      * delete a value of an attribute
+     *
      * @see Doc::setValue
+     *
      * @param string $attrid attribute identifier
+     *
      * @api clear value of an attribute
      * @return string error message
      */
@@ -4415,12 +5237,16 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $this->SetValue($attrid, " ");
     }
+
     /**
      * delete a value of an attribute
-     * @see Doc::setValue
+     *
+     * @see        Doc::setValue
+     *
      * @param string $attrid attribute identifier
+     *
      * @deprecated use {@link Doc::clearValue} instead
-     * @see Doc::clearValue
+     * @see        Doc::clearValue
      * @return string error message
      */
     final public function deleteValue($attrid)
@@ -4428,6 +5254,7 @@ create unique index i_docir on doc(initid, revision);";
         deprecatedFunction();
         return $this->clearValue($attrid);
     }
+
     /**
      * add values present in values field
      */
@@ -4442,7 +5269,6 @@ create unique index i_docir on doc(initid, revision);";
                     if (($attrid != "") && empty($this->$attrid)) {
                         $this->$attrid = $v;
                         $this->mvalues[$attrid] = $v; // to be use in getValues()
-                        
                     }
                 }
             } else {
@@ -4454,7 +5280,7 @@ create unique index i_docir on doc(initid, revision);";
                     }
                 }
                 if ($missingAttrIds) {
-                    $missingValues = Dcp\Core\DocManager::getRawData( $this->id, $missingAttrIds, false);
+                    $missingValues = Dcp\Core\DocManager::getRawData($this->id, $missingAttrIds, false);
                     foreach ($missingValues as $attrid => $value) {
                         $this->$attrid = $value;
                     }
@@ -4462,6 +5288,7 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
     }
+
     /**
      * reset values present in values field
      */
@@ -4477,8 +5304,10 @@ create unique index i_docir on doc(initid, revision);";
         }
         $this->mvalues = array();
     }
+
     /**
      * @param $value
+     *
      * @return string
      */
     final public function getValueMethod($value)
@@ -4486,37 +5315,48 @@ create unique index i_docir on doc(initid, revision);";
         $value = $this->ApplyMethod($value, $value);
         return $value;
     }
-    
+
     public static function seemsMethod($method)
     {
         return is_string($method) && preg_match('/([^:]*)::([^\(]+)\(([^\)]*)\)/', $method);
     }
+
     /**
      * apply a method to a doc
      * specified like ::getFoo(10)
-     * @param string $method the method to apply
-     * @param string $def default value if no method
-     * @param int $index index in case of value in row
-     * @param array $bargs first arguments sent before for the method
-     * @param array $mapArgs indexed array to add more possibilities to map arguments
-     * @param string $err error message
+     *
+     * @param string $method  the method to apply
+     * @param string $def     default value if no method
+     * @param int    $index   index in case of value in row
+     * @param array  $bargs   first arguments sent before for the method
+     * @param array  $mapArgs indexed array to add more possibilities to map arguments
+     * @param string $err     error message
      *
      * @return string the value
      */
-    final public function applyMethod($method, $def = "", $index = - 1, array $bargs = array() , array $mapArgs = array() , &$err = '')
-    {
+    final public function applyMethod(
+        $method,
+        $def = "",
+        $index = -1,
+        array $bargs = array(),
+        array $mapArgs = array(),
+        &$err = ''
+    ) {
         $value = $def;
         $err = '';
-        
+
         if (self::seemsMethod($method)) {
-            
             $parseMethod = new parseFamilyMethod();
             $parseMethod->parse($method);
             $err = $parseMethod->getError();
-            if ($err) return $err;
-            
+            if ($err) {
+                return $err;
+            }
+
             $staticClass = $parseMethod->className;
-            if (!$staticClass) $staticClass = $this;
+            if (!$staticClass) {
+                $staticClass = $this;
+            }
             $methodName = $parseMethod->methodName;
             if (method_exists($staticClass, $methodName)) {
                 if ((count($parseMethod->inputs) == 0) && (empty($bargs))) {
@@ -4528,7 +5368,7 @@ create unique index i_docir on doc(initid, revision);";
                 } else {
                     // with argument
                     $args = array();
-                    
+
                     $inputs = array();
                     foreach ($bargs as $extraArg) {
                         $inputs[] = new inputArgument($extraArg);
@@ -4539,32 +5379,40 @@ create unique index i_docir on doc(initid, revision);";
                         if ($input->type == "string") {
                             $args[$ki] = $input->name;
                         } else {
-                            $mapped = (isset($mapArgs[strtolower($input->name) ])) ? $mapArgs[strtolower($input->name) ] : null;
+                            $mapped = (isset($mapArgs[strtolower($input->name)])) ? $mapArgs[strtolower($input->name)]
+                                : null;
                             if ($mapped) {
-                                if (is_object($mapped)) $args[$ki] = & $mapArgs[strtolower($input->name) ];
-                                else $args[$ki] = $mapped;
+                                if (is_object($mapped)) {
+                                    $args[$ki] = &$mapArgs[strtolower($input->name)];
+                                } else {
+                                    $args[$ki] = $mapped;
+                                }
                             } elseif ($attr = $this->getAttribute($input->name)) {
                                 if ($attr->usefor == 'Q') {
                                     if ($attr->inArray()) {
                                         $pas = $this->rawValueToArray($this->getFamilyParameterValue($input->name));
-                                        if ($index == - 1) $args[$ki] = $pas;
-                                        else $args[$ki] = isset($pas[$index]) ? $pas[$index] : null;
+                                        if ($index == -1) {
+                                            $args[$ki] = $pas;
+                                        } else {
+                                            $args[$ki] = isset($pas[$index]) ? $pas[$index] : null;
+                                        }
                                     } else {
                                         $args[$ki] = $this->getFamilyParameterValue($input->name);
                                     }
                                 } else {
-                                    if ($attr->inArray()) $args[$ki] = $this->getMultipleRawValues($input->name, "", $index);
-                                    else $args[$ki] = $this->getRawValue($input->name);
+                                    if ($attr->inArray()) {
+                                        $args[$ki] = $this->getMultipleRawValues($input->name, "", $index);
+                                    } else {
+                                        $args[$ki] = $this->getRawValue($input->name);
+                                    }
                                 }
                             } else {
                                 if ($input->name == 'THIS') {
-                                    $args[$ki] = & $this;
+                                    $args[$ki] = &$this;
                                 } elseif ($input->name == 'K') {
                                     $args[$ki] = $index;
                                 } else {
-                                    
                                     $args[$ki] = $input->name; // not an attribute just text
-                                    
                                 }
                             }
                         }
@@ -4572,27 +5420,29 @@ create unique index i_docir on doc(initid, revision);";
                     $value = call_user_func_array(array(
                         $staticClass,
                         $methodName,
-                    ) , $args);
+                    ), $args);
                 }
             } else {
-                $err = sprintf(_("Method [%s] not exists") , $method);
+                $err = sprintf(_("Method [%s] not exists"), $method);
                 addWarningMsg($err);
-                error_log(print_r(getDebugStack() , true));
+                error_log(print_r(getDebugStack(), true));
                 return null;
             }
         }
         return $value;
     }
+
     /**
      * verify attribute constraint
      *
      * @param string $attrid attribute identifier
-     * @param int $index index in case of multiple values
+     * @param int    $index  index in case of multiple values
+     *
      * @return array array of 2 items ("err" + "sug").
      * The err is the string error message (empty means no error)
      * The sug is an array of possibles corrections
      */
-    final public function verifyConstraint($attrid, $index = - 1)
+    final public function verifyConstraint($attrid, $index = -1)
     {
         $ok = array(
             "err" => "",
@@ -4604,43 +5454,51 @@ create unique index i_docir on doc(initid, revision);";
         $oattr = $this->getAttribute($attrid);
         if (strlen(trim($oattr->phpconstraint)) > 1) {
             $ko = array(
-                "err" => sprintf(_("method %s not found") , $oattr->phpconstraint) ,
+                "err" => sprintf(_("method %s not found"), $oattr->phpconstraint),
                 "sug" => array()
             );
             $res = $this->applyMethod($oattr->phpconstraint, $ko, $index);
-            
+
             if ($res !== true) {
                 if (!is_array($res)) {
-                    if ($res === false) $res = array(
-                        "err" => _("constraint error") ,
-                        "sug" => array()
-                    );
-                    elseif (is_string($res)) $res = array(
-                        "err" => $res,
-                        "sug" => array()
-                    );
+                    if ($res === false) {
+                        $res = array(
+                            "err" => _("constraint error"),
+                            "sug" => array()
+                        );
+                    } elseif (is_string($res)) {
+                        $res = array(
+                            "err" => $res,
+                            "sug" => array()
+                        );
+                    }
                 } elseif (!empty($res["sug"]) && (!is_array($res["sug"]))) {
                     $res["sug"] = array(
                         $res["sug"]
                     );
                 }
-                if (is_array($res) && $res["err"] != "") $this->constraintbroken = "[$attrid] " . $res["err"];
+                if (is_array($res) && $res["err"] != "") {
+                    $this->constraintbroken = "[$attrid] " . $res["err"];
+                }
                 return $res;
             }
         }
-        
+
         return $ok;
     }
+
     /**
      * verify if constraint ore OK
+     *
      * @param boolean $stoptofirst stop in first constraint error
-     * @param array &$info set of information about constraint test
+     * @param array   &$info       set of information about constraint test
+     *
      * @return string error message (empty means no error)
      */
     final public function verifyAllConstraints($stoptofirst = true, &$info = array())
     {
         $err = "";
-        
+
         $listattr = $this->GetNormalAttributes();
         foreach ($listattr as $v) {
             if (strlen($v->phpconstraint) > 1) {
@@ -4651,13 +5509,15 @@ create unique index i_docir on doc(initid, revision);";
                         if ($res["err"] != "") {
                             $info[$v->id . $i] = array(
                                 "id" => $v->id,
-                                "label" => $v->getLabel() ,
+                                "label" => $v->getLabel(),
                                 "sug" => $res["sug"],
                                 "err" => $res["err"],
                                 "index" => $i,
                                 "pid" => $v->fieldSet->id
                             );
-                            if ($stoptofirst) return sprintf("[%s] %s", $v->getLabel() , $res["err"]);
+                            if ($stoptofirst) {
+                                return sprintf("[%s] %s", $v->getLabel(), $res["err"]);
+                            }
                             $err = $res["err"];
                         }
                     }
@@ -4666,12 +5526,14 @@ create unique index i_docir on doc(initid, revision);";
                     if ($res["err"] != "") {
                         $info[$v->id] = array(
                             "id" => $v->id,
-                            "label" => $v->getLabel() ,
+                            "label" => $v->getLabel(),
                             "pid" => $v->fieldSet->id,
                             "sug" => $res["sug"],
                             "err" => $res["err"]
                         );
-                        if ($stoptofirst) return sprintf("[%s] %s", $v->getLabel() , $res["err"]);
+                        if ($stoptofirst) {
+                            return sprintf("[%s] %s", $v->getLabel(), $res["err"]);
+                        }
                         $err = $res["err"];
                     }
                 }
@@ -4679,36 +5541,49 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $err;
     }
+
     /**
      * return the first attribute of type 'file' false if no file
+     *
      * @return NormalAttribute|bool
      */
     final public function getFirstFileAttributes()
     {
         $t = $this->GetFileAttributes();
-        if (count($t) > 0) return current($t);
+        if (count($t) > 0) {
+            return current($t);
+        }
         return false;
     }
+
     /**
      * Add a comment line in history document
      * note : modify is call automatically
+     *
      * @api Add a comment message in history document
+     *
      * @param string $comment the comment to add
-     * @param int $level level of comment DocHisto::INFO, DocHisto::ERROR, DocHisto::NOTICE DocHisto::MESSAGE, DocHisto::WARNING
-     * @param string $code use when memorize notification
-     * @param string $uid user identifier : by default its the current user
+     * @param int    $level   level of comment DocHisto::INFO, DocHisto::ERROR,
+     *                        DocHisto::NOTICE DocHisto::MESSAGE, DocHisto::WARNING
+     * @param string $code    use when memorize notification
+     * @param string $uid     user identifier : by default its the current user
+     *
      * @return string error message
      */
     final public function addHistoryEntry($comment = '', $level = DocHisto::INFO, $code = '', $uid = '')
     {
         global $action;
-        if ($this->id == "") return '';
-        
+        if ($this->id == "") {
+            return '';
+        }
+
         $h = new DocHisto($this->dbaccess);
-        
+
         $h->id = $this->id;
         $h->initid = $this->initid;
-        if (!isUTF8($comment)) $comment = utf8_encode($comment);
+        if (!isUTF8($comment)) {
+            $comment = utf8_encode($comment);
+        }
         $h->comment = $comment;
         $h->date = date("d-m-Y H:i:s");
         if ($uid > 0) {
@@ -4721,22 +5596,26 @@ create unique index i_docir on doc(initid, revision);";
         }
         $h->level = $level;
         $h->code = $code;
-        
+
         $err = $h->Add();
         if ($level == DocHisto::ERROR) {
             error_log(sprintf("document %s [%d] : %s", $this->title, $this->id, $comment));
         }
         return $err;
     }
+
     /**
      * Add a comment line in history document
      * note : modify is call automatically
+     *
      * @param string $comment the comment to add
-     * @param int $level level of comment DocHisto::INFO, DocHisto::ERROR, DocHisto::NOTICE DocHisto::MESSAGE, DocHisto::WARNING
-     * @param string $code use when memorize notification
-     * @param string $uid user identifier : by default its the current user
+     * @param int    $level   level of comment DocHisto::INFO, DocHisto::ERROR,
+     *                        DocHisto::NOTICE DocHisto::MESSAGE, DocHisto::WARNING
+     * @param string $code    use when memorize notification
+     * @param string $uid     user identifier : by default its the current user
+     *
      * @deprecated use {@link Doc::addHistoryEntry} instead
-     * @see Doc::addHistoryEntry
+     * @see        Doc::addHistoryEntry
      * @return string error message
      */
     final public function addComment($comment = '', $level = DocHisto::INFO, $code = '', $uid = '')
@@ -4744,29 +5623,35 @@ create unique index i_docir on doc(initid, revision);";
         deprecatedFunction();
         return $this->addHistoryEntry($comment, $level, $code, $uid);
     }
+
     /**
      * Add a log entry line in log document
      *
      * @param string $comment the comment to add
-     * @param string $level level of comment
-     * @param string $code use when memorize notification
-     * @param string $arg serialized object
-     * @param string $uid user identifier : by default its the current user
+     * @param string $level   level of comment
+     * @param string $code    use when memorize notification
+     * @param string $arg     serialized object
+     * @param string $uid     user identifier : by default its the current user
+     *
      * @return string error message
      */
     final public function addLog($code = '', $arg = '', $comment = '', $level = '', $uid = '')
     {
         global $action;
-        if (($this->id == "") || ($this->doctype == 'T')) return '';
-        
-        include_once ("FDL/Class.DocLog.php");
+        if (($this->id == "") || ($this->doctype == 'T')) {
+            return '';
+        }
+
+        include_once("FDL/Class.DocLog.php");
         $h = new DocLog($this->dbaccess);
         $h->id = $this->id;
         $h->initid = $this->initid;
         $h->title = $this->title;
-        if (!isUTF8($comment)) $comment = utf8_encode($comment);
+        if (!isUTF8($comment)) {
+            $comment = utf8_encode($comment);
+        }
         $h->comment = $comment;
-        
+
         if ($uid > 0) {
             $u = new Account("", $uid);
             $h->uid = $u->id;
@@ -4777,81 +5662,108 @@ create unique index i_docir on doc(initid, revision);";
         }
         $h->level = $level ? $level : DocLog::LOG_NOTIFY;
         $h->code = $code;
-        if ($arg) $h->arg = serialize($arg);
-        
+        if ($arg) {
+            $h->arg = serialize($arg);
+        }
+
         $err = $h->Add();
         return $err;
     }
+
     /**
      * Get history for the document
-     * @param bool $allrev set true if want for all revision
      *
-     * @param string $code code filter
-     * @param int $limit limit of items returned
+     * @param bool   $allrev set true if want for all revision
+     *
+     * @param string $code   code filter
+     * @param int    $limit  limit of items returned
+     *
      * @return array of different comment
      */
     public function getHisto($allrev = false, $code = "", $limit = 0)
     {
-        include_once ("Class.QueryDb.php");
+        include_once("Class.QueryDb.php");
         $q = new QueryDb($this->dbaccess, "dochisto");
-        if ($allrev) $q->AddQuery("initid=" . $this->initid);
-        else $q->AddQuery("id=" . $this->id);
-        if ($code) $q->addQuery(sprintf("code='%s'", pg_escape_string($code)));
+        if ($allrev) {
+            $q->AddQuery("initid=" . $this->initid);
+        } else {
+            $q->AddQuery("id=" . $this->id);
+        }
+        if ($code) {
+            $q->addQuery(sprintf("code='%s'", pg_escape_string($code)));
+        }
         $q->order_by = "date desc";
         $l = $q->Query(0, $limit, "TABLE");
-        
-        if (is_array($l)) return $l;
+
+        if (is_array($l)) {
+            return $l;
+        }
         return array();
     }
+
     /**
      * Add a application tag for the document
      * if it is already set no set twice
      * A application tag must not contains "\n" character
+     *
      * @param string $tag the tag to add
+     *
      * @return string error message
      */
     final public function addATag($tag)
     {
         $err = "";
-        if (strpos($tag, "\n") !== false) return ErrorCode::getError('DOC0121', $tag, $this->id);
-        if (!$tag) return ErrorCode::getError('DOC0122', $this->id);
+        if (strpos($tag, "\n") !== false) {
+            return ErrorCode::getError('DOC0121', $tag, $this->id);
+        }
+        if (!$tag) {
+            return ErrorCode::getError('DOC0122', $this->id);
+        }
         if ($this->atags == "") {
             $this->atags = $tag;
             $err = $this->modify(true, array(
                 "atags"
-            ) , true);
+            ), true);
         } else {
             if (!$this->getATag($tag)) {
-                $this->atags.= "\n$tag";
+                $this->atags .= "\n$tag";
                 $err = $this->modify(true, array(
                     "atags"
-                ) , true);
+                ), true);
             }
         }
         return $err;
     }
+
     /**
      * Return true if application tag is present
      *
      * @param string $tag the tag to search
+     *
      * @return bool
      */
     final public function getATag($tag)
     {
-        if ($this->atags == "") return false;
-        return (preg_match(sprintf('/^(%s)$/m', preg_quote($tag, '/')) , $this->atags) > 0);
+        if ($this->atags == "") {
+            return false;
+        }
+        return (preg_match(sprintf('/^(%s)$/m', preg_quote($tag, '/')), $this->atags) > 0);
     }
+
     /**
      * Delete a application tag for the document
      *
      * @param string $tag the tag to delete
+     *
      * @return string error message
      */
     final public function delATag($tag)
     {
         $err = "";
-        if ($this->atags == "") return "";
-        $atags = preg_replace(sprintf('/^%s$/m', preg_quote($tag, '/')) , '', $this->atags);
+        if ($this->atags == "") {
+            return "";
+        }
+        $atags = preg_replace(sprintf('/^%s$/m', preg_quote($tag, '/')), '', $this->atags);
         $atags = str_replace("\n\n", "\n", $atags);
         $atags = preg_replace("/\n$/m", '', $atags);
         $atags = preg_replace("/^\n/", '', $atags);
@@ -4859,28 +5771,35 @@ create unique index i_docir on doc(initid, revision);";
             $this->atags = $atags;
             $err = $this->modify(true, array(
                 "atags"
-            ) , true);
+            ), true);
         }
         return $err;
     }
+
     /**
      * Add a user tag for the document
      * if it is already set no set twice
-     * @param int $uid the system user identifier
-     * @param string $tag the key tag
-     * @param string $datas a comment or a value for the tag
-     * @param bool $allrevision set to false if attach a tag to a specific version
+     *
+     * @param int    $uid         the system user identifier
+     * @param string $tag         the key tag
+     * @param string $datas       a comment or a value for the tag
+     * @param bool   $allrevision set to false if attach a tag to a specific version
+     *
      * @return string error message
      */
     final public function addUTag($uid, $tag, $datas = "", $allrevision = true)
     {
-        if (!$this->initid) return "";
-        if ($tag == "") return _("no user tag specified");
+        if (!$this->initid) {
+            return "";
+        }
+        if ($tag == "") {
+            return _("no user tag specified");
+        }
         $this->delUTag($uid, $tag, $allrevision);
-        
+
         global $action;
         $h = new DocUTag($this->dbaccess);
-        
+
         $h->id = $this->id;
         $h->initid = $this->initid;
         $h->fixed = ($allrevision) ? 'false' : 'true';
@@ -4891,24 +5810,28 @@ create unique index i_docir on doc(initid, revision);";
             $h->uname = sprintf("%s %s", $u->firstname, $u->lastname);
         }
         $h->fromuid = $action->user->id;
-        
+
         $h->tag = $tag;
         $h->comment = $datas;
-        
+
         $err = $h->Add();
         return $err;
     }
+
     /**
      * Test if current user has the user tag specified
      *
-     * @param string $tag the tag to verify
-     * @param bool $allrevision set to false to verify a tag to a specific version
+     * @param string $tag         the tag to verify
+     * @param bool   $allrevision set to false to verify a tag to a specific version
+     *
      * @return bool
      */
     final public function hasUTag($tag, $allrevision = true)
     {
-        if (!$this->initid) return false;
-        include_once ("FDL/Class.DocUTag.php");
+        if (!$this->initid) {
+            return false;
+        }
+        include_once("FDL/Class.DocUTag.php");
         $docid = ($allrevision) ? $this->initid : $this->id;
         $utag = new DocUTag($this->dbaccess, array(
             $docid,
@@ -4917,39 +5840,53 @@ create unique index i_docir on doc(initid, revision);";
         ));
         return $utag->isAffected();
     }
+
     /**
      * Get current user tag specified
      *
-     * @param string $tag the tag to verify
-     * @param bool $allrevision set to false to get a tag to a specific version
-     * @param int $uid system user identifier
+     * @param string $tag         the tag to verify
+     * @param bool   $allrevision set to false to get a tag to a specific version
+     * @param int    $uid         system user identifier
+     *
      * @return bool|DocUTag
      * @throws \Dcp\Db\Exception
      */
     final public function getUTag($tag, $allrevision = true, $uid = null)
     {
-        if (!$this->initid) return "";
+        if (!$this->initid) {
+            return "";
+        }
         if ($uid === null) {
             $uid = $this->userid;
         }
-        
-        include_once ("FDL/Class.DocUTag.php");
+
+        include_once("FDL/Class.DocUTag.php");
         $q = new QueryDb($this->dbaccess, "docUTag");
         $q->addQuery("uid=" . intval($uid));
-        if ($tag) $q->addQuery("tag = '" . pg_escape_string($tag) . "'");
-        if ($allrevision) $q->addQuery("initid = " . $this->initid);
-        else $q->addQuery("id = " . $this->id);
+        if ($tag) {
+            $q->addQuery("tag = '" . pg_escape_string($tag) . "'");
+        }
+        if ($allrevision) {
+            $q->addQuery("initid = " . $this->initid);
+        } else {
+            $q->addQuery("id = " . $this->id);
+        }
         $q->order_by = "id desc";
         $r = $q->Query(0, 1);
-        if ($q->nb == 1) return $r[0];
+        if ($q->nb == 1) {
+            return $r[0];
+        }
         return false;
     }
+
     /**
      * Remove a user tag for the document
      * if it is already set no set twice
-     * @param int $uid the system user identifier
-     * @param string $tag the tag to add
-     * @param bool $allrevision set to false to del a tag to a specific version
+     *
+     * @param int    $uid         the system user identifier
+     * @param string $tag         the tag to add
+     * @param bool   $allrevision set to false to del a tag to a specific version
+     *
      * @return string error message
      */
     final public function delUTag($uid, $tag, $allrevision = true)
@@ -4957,71 +5894,113 @@ create unique index i_docir on doc(initid, revision);";
         if ($tag == "") {
             return _("no user tag specified");
         }
-        
+
         if ($allrevision) {
-            $err = $this->exec_query(sprintf("delete from docutag where initid=%d and tag='%s' and uid=%d", $this->initid, pg_escape_string($tag) , $uid));
+            $err = $this->exec_query(sprintf(
+                "delete from docutag where initid=%d and tag='%s' and uid=%d",
+                $this->initid,
+                pg_escape_string($tag),
+                $uid
+            ));
         } else {
-            $err = $this->exec_query(sprintf("delete from docutag where id=%d and tag='%s' and uid=%d", $this->id, pg_escape_string($tag) , $uid));
+            $err = $this->exec_query(sprintf(
+                "delete from docutag where id=%d and tag='%s' and uid=%d",
+                $this->id,
+                pg_escape_string($tag),
+                $uid
+            ));
         }
         return $err;
     }
+
     /**
      * Remove all user tag for the document
      *
      * @param int $uid the system user identifier
+     *
      * @return string error message
      */
     final public function delUTags($uid = 0)
     {
-        if (!$this->initid) return "";
-        if (!$uid) $uid = $this->userid;
+        if (!$this->initid) {
+            return "";
+        }
+        if (!$uid) {
+            $uid = $this->userid;
+        }
         $err = $this->exec_query(sprintf("delete from docutag where initid=%d and uid=%d", $this->initid, $uid));
-        
+
         return $err;
     }
+
     /**
      * Refresh all user tag for the document in case of revision
+     *
      * @return string error message
      */
     final public function refreshUTags()
     {
         $err = '';
-        if (!$this->initid) return "";
-        include_once ("FDL/Class.DocUTag.php");
+        if (!$this->initid) {
+            return "";
+        }
+        include_once("FDL/Class.DocUTag.php");
         $q = new QueryDb($this->dbaccess, "docUTag");
-        $q->Query(0, 0, "TABLE", sprintf("update docutag set id=%d where initid=%d and (not fixed)", $this->id, $this->initid));
-        
+        $q->Query(
+            0,
+            0,
+            "TABLE",
+            sprintf("update docutag set id=%d where initid=%d and (not fixed)", $this->id, $this->initid)
+        );
+
         return $err;
     }
+
     /**
      * search all user tag for the document
-     * @param string $tag tag to search
+     *
+     * @param string  $tag         tag to search
      * @param boolean $allrevision view tags for all revision
-     * @param boolean $allusers view tags of all users
+     * @param boolean $allusers    view tags of all users
+     *
      * @return array user tags key=>value
      */
     final public function searchUTags($tag = "", $allrevision = true, $allusers = false)
     {
-        if (!$this->initid) return [];
-        include_once ("FDL/Class.DocUTag.php");
+        if (!$this->initid) {
+            return [];
+        }
+        include_once("FDL/Class.DocUTag.php");
         $q = new QueryDb($this->dbaccess, "docUTag");
-        if (!$allusers) $q->addQuery("uid=" . intval($this->userid));
-        if ($tag) $q->addQuery("tag = '" . pg_escape_string($tag) . "'");
-        if ($allrevision) $q->addQuery("initid = " . $this->initid);
-        else $q->addQuery("id = " . $this->id);
+        if (!$allusers) {
+            $q->addQuery("uid=" . intval($this->userid));
+        }
+        if ($tag) {
+            $q->addQuery("tag = '" . pg_escape_string($tag) . "'");
+        }
+        if ($allrevision) {
+            $q->addQuery("initid = " . $this->initid);
+        } else {
+            $q->addQuery("id = " . $this->id);
+        }
         $r = $q->Query(0, 0, "TABLE");
-        if ($q->nb == 0) $r = array();
+        if ($q->nb == 0) {
+            $r = array();
+        }
         return $r;
     }
+
     /**
      * get ask for current users
+     *
      * @param bool $control if false all associated askes else only askes available for current user
+     *
      * @return array
      */
     public function getWasks($control = true)
     {
         $t = array();
-        if ($this->wid > 0 && $this->locked == - 1 && $this->doctype != 'Z' && $this->state) {
+        if ($this->wid > 0 && $this->locked == -1 && $this->doctype != 'Z' && $this->state) {
             /**
              * @var WDoc $wdoc
              */
@@ -5036,11 +6015,14 @@ create unique index i_docir on doc(initid, revision);";
                     $wask = Dcp\Core\DocManager::getDocument($waskid);
                     if ($wask && $wask->isAlive()) {
                         $ut = $this->getUTag("ASK_" . $wask->id, false);
-                        if ($ut) $answer = $ut->comment;
-                        else $answer = "";
+                        if ($ut) {
+                            $answer = $ut->comment;
+                        } else {
+                            $answer = "";
+                        }
                         $t[] = array(
                             "waskid" => $wask->id,
-                            "ask" => $wask->getRawValue("was_ask") ,
+                            "ask" => $wask->getRawValue("was_ask"),
                             "key" => $answer,
                             "label" => $wask->getAskLabel($answer)
                         );
@@ -5050,42 +6032,55 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $t;
     }
+
     /**
      * set a answer for a document for a ask (for current user)
-     * @param int $waskid the identifier of wask
+     *
+     * @param int    $waskid the identifier of wask
      * @param string $answer new answer response
+     *
      * @return string error message
      */
-    function setWaskAnswer($waskid, $answer)
+    public function setWaskAnswer($waskid, $answer)
     {
         $err = _("setWaskAnswer::invalid parameters");
         $waskid = intval($waskid);
         if ($waskid && $answer) {
-            if (is_array($answer)) $answer = $this->arrayToRawValue($answer);
-            $err = $this->addUTag($this->userid, "ASK_" . intval($waskid) , $answer, false);
+            if (is_array($answer)) {
+                $answer = $this->arrayToRawValue($answer);
+            }
+            $err = $this->addUTag($this->userid, "ASK_" . intval($waskid), $answer, false);
             return $err;
         }
         return $err;
     }
+
     /**
      * all ask are answer ?
+     *
      * @return bool true if all ask are answer or when has no askes
      */
-    function askIsCompleted()
+    public function askIsCompleted()
     {
         $ans = $this->getWasks();
         foreach ($ans as $an) {
-            if (!$an["key"]) return false;
+            if (!$an["key"]) {
+                return false;
+            }
         }
         return true;
     }
+
     /**
      * return the latest document id in history of a document which has ask
+     *
      * @return int the identifier
      */
-    function getLatestIdWithAsk()
+    public function getLatestIdWithAsk()
     {
-        if (!$this->wid) return false;
+        if (!$this->wid) {
+            return false;
+        }
         $ldoc = $this->GetRevisions("TABLE");
         /**
          * @var WDoc $wdoc
@@ -5095,51 +6090,67 @@ create unique index i_docir on doc(initid, revision);";
             $wdoc->set($this);
             foreach ($ldoc as $k => $v) {
                 $aask = $wdoc->attrPrefix . "_ASKID" . ($v["state"]);
-                if ($v["locked"] == - 1 && $wdoc->getRawValue($aask)) {
-                    if ($wdoc->getRawValue($aask)) return $v["id"];
+                if ($v["locked"] == -1 && $wdoc->getRawValue($aask)) {
+                    if ($wdoc->getRawValue($aask)) {
+                        return $v["id"];
+                    }
                 }
             }
         }
         return false;
     }
+
     /**
      * verify if document is really fixed (verify in database)
+     *
      * @return bool
      */
-    function isFixed()
+    public function isFixed()
     {
         return isFixedDoc($this->dbaccess, $this->id);
     }
+
     /**
      * Create a new revision of a document
      * the current document is revised (became a fixed document)
      * a new revision is created, a new identifier if set
+     *
      * @api Create a new revision of a document
+     *
      * @param string $comment the comment of the revision
+     *
      * @return string error text (empty if no error)
      */
     final public function revise($comment = '')
     {
         // first control
-        if ($this->locked == - 1) return _("document already revised");
+        if ($this->locked == -1) {
+            return _("document already revised");
+        }
         if ($this->isFixed()) {
             $err = _("document already revised");
             $this->addHistoryEntry($err, DocHisto::ERROR, "REVERROR");
             return $err;
         }
         $err = $this->preRevise();
-        if ($err) return $err;
+        if ($err) {
+            return $err;
+        }
         if (!$this->withoutControl) {
             $err = $this->Control("edit");
-            if ($err != "") return ($err);
+            if ($err != "") {
+                return ($err);
+            }
         }
         $fdoc = $this->getFamilyDocument();
-        
-        if ($fdoc->schar == "S") return sprintf(_("the document of %s family cannot be revised") , $fdoc->title);
+
+        if ($fdoc->schar == "S") {
+            return sprintf(_("the document of %s family cannot be revised"), $fdoc->title);
+        }
         $locked = $this->locked;
         $allocated = $this->allocated;
         $postitid = $this->postitid; // transfert post-it to latest revision
-        $this->locked = - 1; // the file is archived
+        $this->locked = -1; // the file is archived
         $this->lmodify = 'N'; // not locally modified
         $this->allocated = 0; // cannot allocated fixed document
         $this->owner = $this->userid; // rev user
@@ -5148,7 +6159,9 @@ create unique index i_docir on doc(initid, revision);";
         $this->revdate = $date['sec']; // change rev date
         $point = "dcp:revision" . $this->id;
         DbManager::savePoint($point);
-        if ($comment != '') $this->addHistoryEntry($comment, DocHisto::MESSAGE, "REVISION");
+        if ($comment != '') {
+            $this->addHistoryEntry($comment, DocHisto::MESSAGE, "REVISION");
+        }
         $err = $this->modify();
         if ($err != "") {
             DbManager::rollbackPoint($point);
@@ -5163,7 +6176,7 @@ create unique index i_docir on doc(initid, revision);";
             DbManager::commitPoint($point);
             return $err;
         }
-        
+
         $fa = $this->GetFileAttributes(true); // copy cached values
         $ca = array();
         foreach ($fa as $k => $v) {
@@ -5171,15 +6184,21 @@ create unique index i_docir on doc(initid, revision);";
         }
         $this->affectColumn($ca, false);
         foreach ($ca as $a) {
-            if ($this->$a != "") $this->fields[$a] = $a;
+            if ($this->$a != "") {
+                $this->fields[$a] = $a;
+            }
         }
         //$listvalue = $this->GetValues(); // save copy of values
         // duplicate values
         $olddocid = $this->id;
         $this->id = "";
-        
-        if ($locked > 0) $this->locked = $locked; // report the lock
-        else $this->locked = 0;
+
+        if ($locked > 0) {
+            $this->locked = $locked;
+        } // report the lock
+        else {
+            $this->locked = 0;
+        }
         $this->allocated = $allocated; // report the allocate
         $this->revision = $this->revision + 1;
         $this->postitid = $postitid;
@@ -5191,15 +6210,17 @@ create unique index i_docir on doc(initid, revision);";
             // restore last revision
             // $this->exec_query("rollback;");
             DbManager::rollbackPoint($point);
-            
+
             $this->select($olddocid); // reset db values
             return $err;
         }
-        
+
         DbManager::commitPoint($point);
-        
+
         $this->refresh(); // to recompute possible dynamic profil variable
-        if ($this->dprofid > 0) $this->setProfil($this->dprofid); // recompute profil if needed
+        if ($this->dprofid > 0) {
+            $this->setProfil($this->dprofid);
+        } // recompute profil if needed
         $err = $this->modify(); // need to applicate SQL triggers
         $this->UpdateVaultIndex();
         $this->refreshUTags();
@@ -5218,30 +6239,38 @@ create unique index i_docir on doc(initid, revision);";
             if ($maxrev > 0) {
                 if ($this->revision > $maxrev) {
                     // need delete first revision
-                    
+
                     /**
                      * @var $revs array
                      */
                     $revs = $this->getRevisions("TABLE", "ALL");
                     for ($i = $maxrev; $i < count($revs); $i++) {
-                        $d = Dcp\Core\DocManager::getDocumentFromRawDocument( $revs[$i]);
-                        if ($d) $d->_destroy(true);
+                        $d = Dcp\Core\DocManager::getDocumentFromRawDocument($revs[$i]);
+                        if ($d) {
+                            $d->_destroy(true);
+                        }
                     }
                 }
             }
             $msg = $this->postRevise();
-            if ($msg) $this->addHistoryEntry($msg, DocHisto::MESSAGE, "POSTREVISE");
+            if ($msg) {
+                $this->addHistoryEntry($msg, DocHisto::MESSAGE, "POSTREVISE");
+            }
         }
-        
+
         return $err;
     }
+
     /**
      * Create a new revision of a document
      * the current document is revised (became a fixed document)
      * a new revision is created, a new identifier if set
+     *
      * @deprecated use {@link Doc::revise} instead
-     * @see Doc::revise
+     * @see        Doc::revise
+     *
      * @param string $comment the comment of the revision
+     *
      * @return string error text (empty if no error)
      */
     final public function addRevision($comment = '')
@@ -5249,84 +6278,126 @@ create unique index i_docir on doc(initid, revision);";
         deprecatedFunction();
         return $this->revise($comment);
     }
+
     /**
      * Set a free state to the document
      * for the document without workflow
      * a new revision is created
+     *
      * @param string $newstateid the document id of the state (FREESTATE family)
-     * @param string $comment the comment of the state change
-     * @param bool $revision if false no revision are made
+     * @param string $comment    the comment of the state change
+     * @param bool   $revision   if false no revision are made
+     *
      * @return string error text (empty if no error)
      */
     final public function changeFreeState($newstateid, $comment = '', $revision = true)
     {
-        if ($this->wid > 0) return sprintf(_("cannot set free state in workflow controlled document %s") , $this->title);
-        if ($this->wid == - 1) return sprintf(_("cannot set free state for document %s: workflow not allowed") , $this->title);
-        if (!$this->isRevisable()) return sprintf(_("cannot set free state for document %s: document cannot be revised") , $this->title);
+        if ($this->wid > 0) {
+            return sprintf(_("cannot set free state in workflow controlled document %s"), $this->title);
+        }
+        if ($this->wid == -1) {
+            return sprintf(_("cannot set free state for document %s: workflow not allowed"), $this->title);
+        }
+        if (!$this->isRevisable()) {
+            return sprintf(_("cannot set free state for document %s: document cannot be revised"), $this->title);
+        }
         if ($newstateid == 0) {
             $this->state = "";
             $err = $this->modify(false, array(
                 "state"
             ));
             if ($err == "") {
-                $comment = sprintf(_("remove state : %s") , $comment);
-                if ($revision) $err = $this->revise($comment);
-                else $err = $this->addHistoryEntry($comment);
+                $comment = sprintf(_("remove state : %s"), $comment);
+                if ($revision) {
+                    $err = $this->revise($comment);
+                } else {
+                    $err = $this->addHistoryEntry($comment);
+                }
             }
         } else {
-            
             $state = Dcp\Core\DocManager::getDocument($newstateid);
-            if (!$state || !$state->isAlive()) return sprintf(_("invalid freestate document %s") , $newstateid);
-            if ($state->fromid != 39) return sprintf(_("not a freestate document %s") , $state->title);
-            
+            if (!$state || !$state->isAlive()) {
+                return sprintf(_("invalid freestate document %s"), $newstateid);
+            }
+            if ($state->fromid != 39) {
+                return sprintf(_("not a freestate document %s"), $state->title);
+            }
+
             $this->state = $state->id;
             $err = $this->modify(false, array(
                 "state"
             ));
             if ($err == "") {
-                $comment = sprintf(_("change state to %s : %s") , $state->title, $comment);
-                if ($revision) $err = $this->revise($comment);
-                else $err = $this->addHistoryEntry($comment);
+                $comment = sprintf(_("change state to %s : %s"), $state->title, $comment);
+                if ($revision) {
+                    $err = $this->revise($comment);
+                } else {
+                    $err = $this->addHistoryEntry($comment);
+                }
             }
         }
         return $err;
     }
+
     /**
      * set state for a document controled by a workflow
      * apply associated transaction
      *
      * @api set state for a document controled by a workflow
-     * @param string $newstate the new state
-     * @param string $comment optional comment to set in history
-     * @param bool $force is true when it is the second passage (without interactivity)
-     * @param bool $withcontrol set to false if you want to not verify control permission ot transition
-     * @param bool $wm1 set to false if you want to not apply m1 methods
-     * @param bool $wm2 set to false if you want to not apply m2 methods
-     * @param bool $wneed set to false to not test required attributes
-     * @param bool $wm0 set to false if you want to not apply m0 methods
-     * @param bool $wm3 set to false if you want to not apply m3 methods
-     * @param string $msg return message from m2 or m3
+     *
+     * @param string $newstate    the new state
+     * @param string $comment     optional comment to set in history
+     * @param bool   $force       is true when it is the second passage (without interactivity)
+     * @param bool   $withcontrol set to false if you want to not verify control permission ot transition
+     * @param bool   $wm1         set to false if you want to not apply m1 methods
+     * @param bool   $wm2         set to false if you want to not apply m2 methods
+     * @param bool   $wneed       set to false to not test required attributes
+     * @param bool   $wm0         set to false if you want to not apply m0 methods
+     * @param bool   $wm3         set to false if you want to not apply m3 methods
+     * @param string $msg         return message from m2 or m3
+     *
      * @return string error message empty if no error
      */
-    final public function setState($newstate, $comment = '', $force = false, $withcontrol = true, $wm1 = true, $wm2 = true, $wneed = true, $wm0 = true, $wm3 = true, &$msg = '')
-    {
-        if ($newstate == "") return _("no state specified");
-        if (!$this->wid) return _("document is not controlled by a workflow");
+    final public function setState(
+        $newstate,
+        $comment = '',
+        $force = false,
+        $withcontrol = true,
+        $wm1 = true,
+        $wm2 = true,
+        $wneed = true,
+        $wm0 = true,
+        $wm3 = true,
+        &$msg = ''
+    ) {
+        if ($newstate == "") {
+            return _("no state specified");
+        }
+        if (!$this->wid) {
+            return _("document is not controlled by a workflow");
+        }
         /**
          * @var WDoc $wdoc
          */
-        $wdoc = Dcp\Core\DocManager::getDocument( $this->wid);
-        if (!$wdoc || !$wdoc->isAlive()) return _("assigned workflow is not alive");
+        $wdoc = Dcp\Core\DocManager::getDocument($this->wid);
+        if (!$wdoc || !$wdoc->isAlive()) {
+            return _("assigned workflow is not alive");
+        }
         try {
             $wdoc->Set($this);
             $err = $wdoc->ChangeState($newstate, $comment, $force, $withcontrol, $wm1, $wm2, $wneed, $wm0, $wm3, $msg);
-        }
-        catch(Dcp\Exception $e) {
-            $err = sprintf(_("Unexpected transition error on workflow %s [%d] : %s") , $wdoc->title, $wdoc->id, $e->getMessage());
+        } catch (Dcp\Exception $e) {
+            $err = sprintf(
+                _("Unexpected transition error on workflow %s [%d] : %s"),
+                $wdoc->title,
+                $wdoc->id,
+                $e->getMessage()
+            );
             errorLogException($e);
         }
         return $err;
     }
+
     /**
      * return the state of a document
      * if document has workflow it is the key
@@ -5337,20 +6408,24 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function getState()
     {
-        if ($this->wid > 0) return $this->state;
+        if ($this->wid > 0) {
+            return $this->state;
+        }
         if (is_numeric($this->state) && ($this->state > 0)) {
             $state = $this->getTitle($this->state);
             return $state;
         }
-        
+
         return $this->state;
     }
+
     /**
      * return the color associated for the state of a document
      * if document has workflow : the color state
      * if document state is a free state the color
      *
      * @param string $def default color if state not found or color is empty
+     *
      * @return string the color of the state - empty if no state
      */
     public function getStateColor($def = "")
@@ -5359,8 +6434,10 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var WDoc $wdoc
              */
-            $wdoc = Dcp\Core\DocManager::getDocument( $this->wid);
-            if ($wdoc && $wdoc->isAffected()) return $wdoc->getColor($this->state, $def);
+            $wdoc = Dcp\Core\DocManager::getDocument($this->wid);
+            if ($wdoc && $wdoc->isAffected()) {
+                return $wdoc->getColor($this->state, $def);
+            }
         } else {
             if (is_numeric($this->state) && ($this->state > 0)) {
                 $state = $this->getDocValue($this->state, "frst_color", $def);
@@ -5369,12 +6446,14 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $def;
     }
+
     /**
      * return the action associated for the state of a document
      * if document has workflow : the action label description
      * if document state is a free state : state description
      *
      * @param string $def default activity is activity is empty
+     *
      * @return string the color of the state - empty if no state
      */
     final public function getStateActivity($def = "")
@@ -5384,7 +6463,9 @@ create unique index i_docir on doc(initid, revision);";
              * @var WDoc $wdoc
              */
             $wdoc = DocManager::getDocument($this->wid);
-            if ($wdoc->isAffected()) return $wdoc->getActivity($this->state, $def);
+            if ($wdoc->isAffected()) {
+                return $wdoc->getActivity($this->state, $def);
+            }
         } else {
             if (is_numeric($this->state) && ($this->state > 0)) {
                 $stateact = $this->getDocValue($this->state, "frst_desc", $def);
@@ -5393,28 +6474,38 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $def;
     }
+
     /**
      * return state label if ficed document else activity label
      * if not activity return state
+     *
      * @return string localized state label
      */
     final public function getStatelabel()
     {
-        if ($this->locked == - 1) $stateValue = $this->getState();
-        else $stateValue = $this->getStateActivity($this->getState());
+        if ($this->locked == -1) {
+            $stateValue = $this->getState();
+        } else {
+            $stateValue = $this->getStateActivity($this->getState());
+        }
         return (empty($stateValue) ? '' : _($stateValue));
     }
+
     /**
      * return the copy (duplication) of the document
      * the copy is created to the database
      * the profil of the copy is the default profil according to his family
      * the copy is not locked and if it is related to a workflow, his state is the first state
+     *
      * @deprecated use {@link Doc::duplicate} instead
-     * @see Doc::duplicate
+     * @see        Doc::duplicate
+     *
      * @param bool $temporary if true the document create it as temporary document
-     * @param bool $control if false don't control acl create (generaly use when temporary is true)
-     * @param bool $linkfld if true and document is a folder then document included in folder are also inserted in the copy (are not duplicated) just linked
-     * @param bool $copyfile if true duplicate files of the document
+     * @param bool $control   if false don't control acl create (generaly use when temporary is true)
+     * @param bool $linkfld   if true and document is a folder then documents included in folder
+     *                        are also inserted in the copy (are not duplicated) just linked
+     * @param bool $copyfile  if true duplicate files of the document
+     *
      * @return Doc in case of error return a string that indicate the error
      */
     final public function copy($temporary = false, $control = true, $linkfld = false, $copyfile = false)
@@ -5433,7 +6524,8 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param bool $temporary if true the document create it as temporary document
      * @param bool $control   if false don't control acl create (generaly use when temporary is true)
-     * @param bool $linkfld   if true and document is a folder then document included in folder are also inserted in the copy (are not duplicated) just linked
+     * @param bool $linkfld   if true and document is a folder then documents included in folder
+     *                        are also inserted in the copy (are not duplicated) just linked
      * @param bool $copyfile  if true duplicate files of the document
      *
      * @return Doc|string in case of error return a string that indicate the error
@@ -5447,23 +6539,25 @@ create unique index i_docir on doc(initid, revision);";
         try {
             $copy = DocManager::createDocument($this->fromid, $control);
         } catch (\Dcp\Core\Exception $e) {
-             return false;
+            return false;
         }
 
         /**
          * @var Doc $copy
          */
         $err = $copy->transfertValuesFrom($this);
-        if ($err != "") return $err;
-        
+        if ($err != "") {
+            return $err;
+        }
+
         $copy->id = "";
         $copy->initid = "";
         $copy->revision = "0";
         $copy->locked = "0";
         $copy->allocated = "0";
         $copy->state = "";
-        $copy->icon = $this->icon;;
-        
+        $copy->icon = $this->icon;
+
         if ($temporary) {
             $copy->doctype = "T";
             $copy->profid = 0;
@@ -5472,21 +6566,27 @@ create unique index i_docir on doc(initid, revision);";
             $cdoc = $this->getFamilyDocument();
             $copy->setProfil($cdoc->cprofid);
         }
-        
+
         $err = $copy->preDuplicate($this);
-        if ($err != "") return $err;
-        
+        if ($err != "") {
+            return $err;
+        }
+
         $err = $copy->Add();
-        if ($err != "") return $err;
-        $copy->addHistoryEntry(sprintf(_("copy from document #%d -%s-") , $this->id, $this->title));
-        
-        if ($copyfile) $copy->duplicateFiles();
-        
+        if ($err != "") {
+            return $err;
+        }
+        $copy->addHistoryEntry(sprintf(_("copy from document #%d -%s-"), $this->id, $this->title));
+
+        if ($copyfile) {
+            $copy->duplicateFiles();
+        }
+
         $msg = $copy->postDuplicate($this);
         if ($msg != "") {
             $copy->addHistoryEntry($msg, DocHisto::MESSAGE);
         }
-        
+
         $copy->Modify();
         if ($linkfld && method_exists($copy, "insertFolder")) {
             /**
@@ -5494,65 +6594,81 @@ create unique index i_docir on doc(initid, revision);";
              */
             $copy->insertFolder($this->initid);
         }
-        
+
         return $copy;
     }
+
     /**
      * call before copy document
      * if return error message duplicate is aborted
+     *
      * @api hook called before duplicate document
      * @see Doc::duplicate
+     *
      * @param Doc $copyfrom original document
+     *
      * @return string
      */
-    function preDuplicate(
-    /* @noinspection PhpUnusedParameterInspection */ & $copyfrom)
-    {
+    public function preDuplicate(
+        & $copyfrom
+    ) {
         // to be defined in child class
         return "";
     }
+
     /**
      * call before copy document
      * if return error message duplicate is aborted
+     *
      * @deprecated hook use {@link Doc::preDuplicate} instead
-     * @see Doc::preDuplicate
+     * @see        Doc::preDuplicate
+     *
      * @param Doc $copyfrom
+     *
      * @return string
      */
-    function preCopy(
-    /* @noinspection PhpUnusedParameterInspection */ & $copyfrom)
-    {
+    public function preCopy(
+        & $copyfrom
+    ) {
         // to be defined in child class
         return "";
     }
+
     /**
      * call after copy document
+     *
      * @api hook called after duplicate document
      * @see Doc::duplicate
+     *
      * @param Doc $copyfrom
+     *
      * @return string
      */
-    function postDuplicate(
-    /* @noinspection PhpUnusedParameterInspection */ & $copyfrom)
-    {
+    public function postDuplicate(
+        & $copyfrom
+    ) {
         // to be defined in child class
         return "";
     }
+
     /**
      * call after copy document
-     * @api hook called after duplicate document
+     *
+     * @api        hook called after duplicate document
      * @deprecated use {@link Doc::postDuplicate} hook instead
-     * @see Doc::postDuplicate
+     * @see        Doc::postDuplicate
+     *
      * @param Doc $copyfrom
+     *
      * @return string
      */
-    function postCopy(
-    /* @noinspection PhpUnusedParameterInspection */ & $copyfrom)
-    {
+    public function postCopy(
+        & $copyfrom
+    ) {
         // to be defined in child class
         return "";
     }
-    
+
     final public function translate($docid, $translate)
     {
         $doc = DocManager::getDocument($docid);
@@ -5562,17 +6678,23 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
     }
+
     /**
      * Put document in an archive
+     *
      * @param \Doc $archive the archive document
+     *
      * @return string error message
      */
     final public function archive(&$archive)
     {
         $err = "";
         if ($this->archiveid == 0) {
-            if ($this->doctype == "C") $err = sprintf("families cannot be archieved");
-            elseif (!$this->withoutControl) $err = $this->control("edit");
+            if ($this->doctype == "C") {
+                $err = sprintf("families cannot be archieved");
+            } elseif (!$this->withoutControl) {
+                $err = $this->control("edit");
+            }
             if ($err == "") {
                 $this->locked = 0;
                 $this->archiveid = $archive->id;
@@ -5584,19 +6706,35 @@ create unique index i_docir on doc(initid, revision);";
                     "archiveid",
                     "dprofid",
                     "profid"
-                ) , true);
+                ), true);
                 if (!$err) {
-                    $this->addHistoryEntry(sprintf(_("Archiving into %s") , $archive->getTitle()) , DocHisto::MESSAGE, "ARCHIVE");
-                    $this->addLog('archive', $archive->id, sprintf(_("Archiving into %s") , $archive->getTitle()));
-                    $err = $this->exec_query(sprintf("update doc%d set archiveid=%d, dprofid=-abs(profid), profid=%d where initid=%d and locked = -1", $this->fromid, $archive->id, $archprof, $this->initid));
+                    $this->addHistoryEntry(
+                        sprintf(_("Archiving into %s"), $archive->getTitle()),
+                        DocHisto::MESSAGE,
+                        "ARCHIVE"
+                    );
+                    $this->addLog('archive', $archive->id, sprintf(_("Archiving into %s"), $archive->getTitle()));
+                    $err = $this->exec_query(
+                        sprintf(
+                            "update doc%d set archiveid=%d, dprofid=-abs(profid), profid=%d where initid=%d and locked = -1",
+                            $this->fromid,
+                            $archive->id,
+                            $archprof,
+                            $this->initid
+                        )
+                    );
                 }
             }
-        } else $err = sprintf("document is already archived");
-        
+        } else {
+            $err = sprintf("document is already archived");
+        }
+
         return $err;
     }
+
     /**
      * Delete document in an archive
+     *
      * @param \Doc $archive the archive document
      *
      * @return string error message
@@ -5604,37 +6742,55 @@ create unique index i_docir on doc(initid, revision);";
     final public function unArchive(&$archive)
     {
         $err = "";
-        
+
         if ($this->archiveid == $archive->id) {
-            if (!$this->withoutControl) $err = $this->control("edit");
+            if (!$this->withoutControl) {
+                $err = $this->control("edit");
+            }
             if ($err == "") {
                 $this->locked = 0;
                 $this->archiveid = ""; // set to null
                 $restoreprofil = abs($this->dprofid);
                 $this->dprofid = 0;
                 $err = $this->setProfil($restoreprofil);
-                if (!$err) $err = $this->modify(true, array(
-                    "locked",
-                    "archiveid",
-                    "dprofid",
-                    "profid"
-                ) , true);
                 if (!$err) {
-                    $this->addHistoryEntry(sprintf(_("Unarchiving from %s") , $archive->getTitle()) , DocHisto::MESSAGE, "UNARCHIVE");
-                    $this->addLog('unarchive', $archive->id, sprintf(_("Unarchiving from %s") , $archive->getTitle()));
-                    $err = $this->exec_query(sprintf("update doc%d set archiveid=null, profid=abs(dprofid), dprofid=null where initid=%d and locked = -1", $this->fromid, $this->initid));
+                    $err = $this->modify(true, array(
+                        "locked",
+                        "archiveid",
+                        "dprofid",
+                        "profid"
+                    ), true);
+                }
+                if (!$err) {
+                    $this->addHistoryEntry(
+                        sprintf(_("Unarchiving from %s"), $archive->getTitle()),
+                        DocHisto::MESSAGE,
+                        "UNARCHIVE"
+                    );
+                    $this->addLog('unarchive', $archive->id, sprintf(_("Unarchiving from %s"), $archive->getTitle()));
+                    $err = $this->exec_query(
+                        sprintf(
+                            "update doc%d set archiveid=null, profid=abs(dprofid), dprofid=null where initid=%d and locked = -1",
+                            $this->fromid,
+                            $this->initid
+                        )
+                    );
                 }
             }
-        } else $err = sprintf("document not archived");
-        
+        } else {
+            $err = sprintf("document not archived");
+        }
+
         return $err;
     }
+
     /**
      * lock document
      *
      * the auto lock is unlocked when the user discard edition or when he's modify document
-     * @param bool $auto if true it is a automatic lock due to an edition (@see Doc::editcard()}
-     * @param int $userid if set lock with another userid, the edit control will be disabled
+     *
+     * @param bool $auto   if true it is a automatic lock due to an edition (@see Doc::editcard()}
+     * @param int  $userid if set lock with another userid, the edit control will be disabled
      *
      * @return string error message, if no error empty string, if message
      * @see Doc::CanLockFile()
@@ -5642,11 +6798,12 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function lock($auto = false, $userid = 0)
     {
-        
         $err = "";
         if ($userid == 0) {
             $err = $this->CanLockFile();
-            if ($err != "") return $err;
+            if ($err != "") {
+                return $err;
+            }
             $userid = $this->userid;
         } else {
             $this->disableEditControl();
@@ -5654,11 +6811,13 @@ create unique index i_docir on doc(initid, revision);";
         // test if is not already locked
         if ($auto) {
             if (($userid != 1) && ($this->locked == 0)) {
-                $this->locked = - $userid; // in case of auto lock the locked id is negative
+                $this->locked = -$userid; // in case of auto lock the locked id is negative
                 $err = $this->modify(false, array(
                     "locked"
                 ));
-                if (!$err) $this->addLog('lock');
+                if (!$err) {
+                    $this->addLog('lock');
+                }
             }
         } else {
             if (($this->locked != $userid) || ($this->lockdomainid)) {
@@ -5666,19 +6825,23 @@ create unique index i_docir on doc(initid, revision);";
                 $err = $this->modify(false, array(
                     "locked"
                 ));
-                if (!$err) $this->addLog('lock');
+                if (!$err) {
+                    $this->addLog('lock');
+                }
             }
         }
         $this->enableEditControl();
-        
+
         return $err;
     }
+
     /**
      * unlock document
      *
      * the automatic unlock is done only if the lock has been set automatically also
      * the explicit unlock, unlock in all case (if CanUnLockFile)
-     * @param bool $auto if true it is a automatic unlock
+     *
+     * @param bool $auto  if true it is a automatic unlock
      * @param bool $force if true no control oif can unlock
      *
      * @return string error message, if no error empty string
@@ -5688,62 +6851,76 @@ create unique index i_docir on doc(initid, revision);";
     final public function unLock($auto = false, $force = false)
     {
         $err = '';
-        if ($this->locked == 0) return "";
-        if (!$force) $err = $this->CanUnLockFile();
-        if ($err != "") return $err;
-        
+        if ($this->locked == 0) {
+            return "";
+        }
+        if (!$force) {
+            $err = $this->CanUnLockFile();
+        }
+        if ($err != "") {
+            return $err;
+        }
+
         if ($auto) {
-            if ($this->locked < - 1) {
+            if ($this->locked < -1) {
                 $this->locked = "0";
                 $this->modify(false, array(
                     "locked"
                 ));
-                if (!$err) $this->addLog('unlock');
+                if (!$err) {
+                    $this->addLog('unlock');
+                }
             }
         } else {
-            if ($this->locked != - 1) {
+            if ($this->locked != -1) {
                 $this->locked = "0";
                 $this->lockdomainid = '';
                 $this->modify(false, array(
                     "locked",
                     "lockdomainid"
                 ));
-                if (!$err) $this->addLog('unlock');
+                if (!$err) {
+                    $this->addLog('unlock');
+                }
             }
         }
-        
+
         return "";
     }
+
     /**
      * allocate document
      *
      * affect a document to a user
-     * @param int $userid the system identifier of the user to affect
-     * @param string $comment message for allocation
-     * @param bool $revision if false no revision are made
-     * @param bool $autolock if false no lock are made
+     *
+     * @param int    $userid   the system identifier of the user to affect
+     * @param string $comment  message for allocation
+     * @param bool   $revision if false no revision are made
+     * @param bool   $autolock if false no lock are made
      *
      * @return string error message, if no error empty string, if message
      */
     final public function allocate($userid, $comment = "", $revision = false, $autolock = true)
     {
-        
         $err = $this->canEdit();
-        if ($err != "") $err = _("Affectation aborded") . "\n" . $err;
+        if ($err != "") {
+            $err = _("Affectation aborded") . "\n" . $err;
+        }
         if ($err == "") {
             $u = new Account("", $userid);
             if ($u->isAffected()) {
-                if ($err != "") $err = _("Affectation aborded") . "\n" . $err;
+                if ($err != "") {
+                    $err = _("Affectation aborded") . "\n" . $err;
+                }
                 // no test if allocated can edit document
                 //$err=$this->ControlUser($u->id,"edit");
-                //if ($err != "") $err=sprintf(_("Affectation aborded\n%s for user %s %s"),$err,$u->firstname,$u->lastname);
                 if ($err == "") {
-                    $this->addHistoryEntry(sprintf(_("Affected to %s %s") , $u->firstname, $u->lastname));
+                    $this->addHistoryEntry(sprintf(_("Affected to %s %s"), $u->firstname, $u->lastname));
                     if ($comment) {
                         if ($revision) {
-                            $this->revise(sprintf(_("Affected for %s") , $comment));
+                            $this->revise(sprintf(_("Affected for %s"), $comment));
                         } else {
-                            $this->addHistoryEntry(sprintf(_("Affected for %s") , $comment));
+                            $this->addHistoryEntry(sprintf(_("Affected for %s"), $comment));
                         }
                     }
                     $this->addLog('allocate', array(
@@ -5753,10 +6930,12 @@ create unique index i_docir on doc(initid, revision);";
                             "lastname" => $u->lastname
                         )
                     ));
-                    
+
                     $this->delUTag($this->userid, "AFFECTED"); // TODO need delete all AFFECTED tag
                     $this->addUTag($userid, "AFFECTED", $comment);
-                    if ($autolock) $err = $this->lock(false, $userid);
+                    if ($autolock) {
+                        $err = $this->lock(false, $userid);
+                    }
                 }
             } else {
                 $err = _("Affectation aborded : user not know");
@@ -5766,37 +6945,51 @@ create unique index i_docir on doc(initid, revision);";
             $this->allocated = $userid;
             $this->modify(true, array(
                 "allocated"
-            ) , true);
+            ), true);
         }
-        
+
         return $err;
     }
+
     /**
      * unallocate document
      *
      * unaffect a document to a user
      * only the allocated user can unallocate and also users which has unlock acl
-     * @param string $comment message for unallocation
-     * @param bool $revision if false no revision are made
+     *
+     * @param string $comment  message for unallocation
+     * @param bool   $revision if false no revision are made
      *
      * @return string error message, if no error empty string, if message
      */
     final public function unallocate($comment = "", $revision = true)
     {
-        if ($this->allocated == 0) return "";
+        if ($this->allocated == 0) {
+            return "";
+        }
         $err = $this->canEdit();
         if ($err == "") {
-            if ((!$this->withoutControl) && ($this->userid != $this->allocated)) $err = $this->control("unlock");
+            if ((!$this->withoutControl) && ($this->userid != $this->allocated)) {
+                $err = $this->control("unlock");
+            }
         }
-        
+
         if ($err == "") {
             $u = new Account("", $this->allocated);
             if ($u->isAffected()) {
                 $err = $this->unlock();
                 if ($err == "") {
                     $this->delUTag($this->userid, "AFFECTED"); // TODO need delete all AFFECTED tag
-                    if ($revision) $this->revise(sprintf(_("Unallocated of %s %s : %s") , $u->firstname, $u->lastname, $comment));
-                    else $this->addHistoryEntry(sprintf(_("Unallocated of %s %s: %s") , $u->firstname, $u->lastname, $comment));
+                    if ($revision) {
+                        $this->revise(sprintf(_("Unallocated of %s %s : %s"), $u->firstname, $u->lastname, $comment));
+                    } else {
+                        $this->addHistoryEntry(sprintf(
+                            _("Unallocated of %s %s: %s"),
+                            $u->firstname,
+                            $u->lastname,
+                            $comment
+                        ));
+                    }
                 }
             } else {
                 $err = _("user not know");
@@ -5806,19 +6999,24 @@ create unique index i_docir on doc(initid, revision);";
             $this->allocated = 0;
             $this->modify(true, array(
                 "allocated"
-            ) , true);
+            ), true);
             $this->addLog('unallocate');
         }
-        
-        if ($err != "") $err = _("Unallocate aborded") . "\n" . $err;
+
+        if ($err != "") {
+            $err = _("Unallocate aborded") . "\n" . $err;
+        }
         return $err;
     }
+
     /**
      * return icon url
      * if no icon found return doc.png
+     *
      * @param string $idicon
-     * @param int $size width size
-     * @param int $otherId icon for other document id
+     * @param int    $size    width size
+     * @param int    $otherId icon for other document id
+     *
      * @return string icon url
      */
     final public function getIcon($idicon = "", $size = null, $otherId = null)
@@ -5827,12 +7025,18 @@ create unique index i_docir on doc(initid, revision);";
          * @var Action $action
          */
         global $action;
-        if ($idicon == "") $idicon = $this->icon;
+        if ($idicon == "") {
+            $idicon = $this->icon;
+        }
         if ($idicon != "") {
-            
             if (preg_match(PREGEXPFILE, $idicon, $reg)) {
                 if ($idicon[0] === "!") {
-                    $efile = sprintf("file/%s/0/icon/-1/%s?inline=yes&width=%s", ($otherId == null) ? $this->id : $otherId, rawurlencode($reg["name"]) , $size);
+                    $efile = sprintf(
+                        "file/%s/0/icon/-1/%s?inline=yes&width=%s",
+                        ($otherId == null) ? $this->id : $otherId,
+                        rawurlencode($reg["name"]),
+                        $size
+                    );
                 } elseif ($size) {
                     $efile = "resizeimg.php?vid=" . $reg["vid"] . "&size=" . $size;
                 } else {
@@ -5846,9 +7050,12 @@ create unique index i_docir on doc(initid, revision);";
             return $action->parent->getImageLink("doc.png", true, $size);
         }
     }
+
     /**
      * change icon for a class or a simple doc
+     *
      * @param string $icon basename icon file
+     *
      * @return string empty string on success, non-empty string on error
      */
     final public function changeIcon($icon)
@@ -5856,14 +7063,14 @@ create unique index i_docir on doc(initid, revision);";
         $point = "dcp:changeIcon";
 
         DbManager::savePoint($point);
-        
+
         if (preg_match(PREGEXPFILE, $icon, $reg)) {
             $fileData = \Dcp\VaultManager::getFileInfo($reg["vid"]);
             if (!$fileData->public_access) {
                 $icon = "!" . $icon;
             }
         }
-        
+
         if ($this->doctype == "C") { //  a class
             $fromid = $this->initid;
             $tableName = sprintf("doc%s", $fromid);
@@ -5871,13 +7078,29 @@ create unique index i_docir on doc(initid, revision);";
                 // need disabled triggers to increase speed
                 $qt = array();
                 $qt[] = sprintf("ALTER TABLE %s DISABLE TRIGGER ALL", pg_escape_identifier($tableName));
-                $qt[] = sprintf("UPDATE %s SET icon = %s WHERE (fromid = %s) AND (doctype != 'C') AND ((icon = %s) OR (icon IS NULL))", pg_escape_identifier($tableName) , pg_escape_literal($icon) , pg_escape_literal($fromid) , pg_escape_literal($this->icon));
+                $qt[] = sprintf(
+                    "UPDATE %s SET icon = %s WHERE (fromid = %s) AND (doctype != 'C') AND ((icon = %s) OR (icon IS NULL))",
+                    pg_escape_identifier($tableName),
+                    pg_escape_literal($icon),
+                    pg_escape_literal($fromid),
+                    pg_escape_literal($this->icon)
+                );
                 $qt[] = sprintf("ALTER TABLE %s ENABLE TRIGGER ALL", pg_escape_identifier($tableName));
-                $qt[] = sprintf("UPDATE DOCREAD SET icon = %s WHERE (fromid = %s) AND (doctype != 'C') AND ((icon = %s) OR (icon IS NULL))", pg_escape_literal($icon) , pg_escape_literal($fromid) , pg_escape_literal($this->icon));
-                DbManager::query( implode("; ", $qt));
+                $qt[] = sprintf(
+                    "UPDATE DOCREAD SET icon = %s WHERE (fromid = %s) AND (doctype != 'C') AND ((icon = %s) OR (icon IS NULL))",
+                    pg_escape_literal($icon),
+                    pg_escape_literal($fromid),
+                    pg_escape_literal($this->icon)
+                );
+                DbManager::query(implode("; ", $qt));
             } else {
-                $q = sprintf("UPDATE %s SET icon = %s WHERE (fromid = %s) AND (doctype != 'C') AND (icon IS NULL)", pg_escape_identifier($tableName) , pg_escape_literal($icon) , pg_escape_literal($fromid));
-                DbManager::query( $q);
+                $q = sprintf(
+                    "UPDATE %s SET icon = %s WHERE (fromid = %s) AND (doctype != 'C') AND (icon IS NULL)",
+                    pg_escape_identifier($tableName),
+                    pg_escape_literal($icon),
+                    pg_escape_literal($fromid)
+                );
+                DbManager::query($q);
             }
         }
         //    $this->title = AddSlashes($this->title);
@@ -5887,13 +7110,15 @@ create unique index i_docir on doc(initid, revision);";
             return $err;
         }
         DbManager::commitPoint($point);
-        
+
         $this->UpdateVaultIndex();
         return '';
     }
+
     /**
      * declare a dependance between several attributes
-     * @param string $in attributes id use for compute $out attributes separates by commas
+     *
+     * @param string $in  attributes id use for compute $out attributes separates by commas
      * @param string $out attributes id calculated by $in attributes separates by commas
      */
     final public function addParamRefresh($in, $out)
@@ -5906,8 +7131,10 @@ create unique index i_docir on doc(initid, revision);";
             "out" => $tout
         );
     }
+
     /**
      * compute new visibility with depended attributes
+     *
      * @return array of visibilities computed with dependance between attributes
      */
     public function getRefreshVisibility()
@@ -5926,63 +7153,76 @@ create unique index i_docir on doc(initid, revision);";
             }
             if ($val) {
                 foreach ($v["out"] as $oa) {
-                    if (($tv[$oa] == "W") || ($tv[$oa] == "O")) $tv[$oa] = "S";
+                    if (($tv[$oa] == "W") || ($tv[$oa] == "O")) {
+                        $tv[$oa] = "S";
+                    }
                 }
             }
         }
-        
+
         return $tv;
     }
+
     /**
      * Special Refresh
      * called when refresh document : when view, modify document - generally when access to the document
+     *
      * @note during preRefresh edit control is disabled
-     * @see Doc::refresh
-     * @api hook called in begining of refresh before update computed attributes
+     * @see  Doc::refresh
+     * @api  hook called in begining of refresh before update computed attributes
      */
     public function preRefresh()
     {
         return '';
     }
+
     /**
      * Special Refresh
      * called when refresh document : when view, modify document - generally when access to the document
-     * @note during specRefresh edit control is disabled
+     *
+     * @note       during specRefresh edit control is disabled
      * @deprecated This hook may be replaced by preRefresh in the the next version.
-     * @see Doc::refresh
+     * @see        Doc::refresh
      */
     public function specRefresh()
     {
         return '';
     }
+
     /**
      * post Refresh
      * called when refresh document : when view, modify document - generally when access to the document
      * a modify is done after if attributes are chahged
+     *
      * @note during postRefresh edit control is disabled
-     * @see Doc::refresh
-     * @api hook called at the end of refresh after update computed attributes
+     * @see  Doc::refresh
+     * @api  hook called at the end of refresh after update computed attributes
      */
     public function postRefresh()
     {
         return '';
     }
+
     /**
      * Special Refresh Generated automatically
      * is defined in generated child classes
+     *
      * @param bool $onlyspec
+     *
      * @return string
      */
     public function specRefreshGen(
-    /* @noinspection PhpUnusedParameterInspection */
-    $onlyspec = false)
-    {
+        $onlyspec = false
+    ) {
         return '';
     }
+
     /**
      * Special Refresh Generated for a single attribute
-     * @param string $attrId Attribute's name
+     *
+     * @param string $attrId     Attribute's name
      * @param string $callMethod Method to apply
+     *
      * @return string Error message or empty string on succcess
      * @throws \Dcp\Exception
      */
@@ -5990,7 +7230,9 @@ create unique index i_docir on doc(initid, revision);";
     {
         $err = '';
         $oAttr = $this->getAttribute($attrId);
-        if (!$oAttr) throw new Dcp\Exception(ErrorCode::getError('ATTR1212', $callMethod, $this->fromname));
+        if (!$oAttr) {
+            throw new Dcp\Exception(ErrorCode::getError('ATTR1212', $callMethod, $this->fromname));
+        }
         if ($oAttr->mvisibility == 'I') {
             $this->log->warning(ErrorCode::getError('ATTR1800', $oAttr->id, $callMethod));
         } else {
@@ -5998,38 +7240,50 @@ create unique index i_docir on doc(initid, revision);";
                 $this->completeArrayRow($oAttr->fieldSet->id);
                 $t = $this->getMultipleRawValues($attrId);
                 foreach ($t as $k => $v) {
-                    $err.= $this->setValue($attrId, $this->applyMethod($callMethod, '', $k) , $k);
+                    $err .= $this->setValue($attrId, $this->applyMethod($callMethod, '', $k), $k);
                 }
             } else {
-                $err.= $this->setValue($attrId, $this->applyMethod($callMethod));
+                $err .= $this->setValue($attrId, $this->applyMethod($callMethod));
             }
         }
         return $err;
     }
+
     /**
      * recompute all computed attribut
      * and save the document in database if changes occurred
+     *
      * @api refresh document by calling specRefresh and update computed attributes
      * @return string information message
      */
     final public function refresh()
     {
-        if ($this->locked == - 1) return ''; // no refresh revised document
-        if (($this->doctype == 'C') || ($this->doctype == 'Z')) return ''; // no refresh for family  and zombie document
-        if ($this->lockdomainid > 0) return '';
+        if ($this->locked == -1) {
+            return '';
+        } // no refresh revised document
+        if (($this->doctype == 'C') || ($this->doctype == 'Z')) {
+            return '';
+        } // no refresh for family  and zombie document
+        if ($this->lockdomainid > 0) {
+            return '';
+        }
         $changed = $this->hasChanged;
-        if (!$changed) $this->disableEditControl(); // disabled control just to refresh
+        if (!$changed) {
+            $this->disableEditControl();
+        } // disabled control just to refresh
         $msg = $this->preRefresh();
         // if ($this->id == 0) return; // no refresh for no created document
-        $msg.= $this->SpecRefreshGen();
-        $msg.= $this->postRefresh();
+        $msg .= $this->SpecRefreshGen();
+        $msg .= $this->postRefresh();
         if ($this->hasChanged && $this->id > 0) {
             $this->lastRefreshError = $this->modify(); // refresh title
-            
         }
-        if (!$changed) $this->enableEditControl();
+        if (!$changed) {
+            $this->enableEditControl();
+        }
         return $msg;
     }
+
     /**
      * Recompute file name in concordance with rn option
      *
@@ -6049,9 +7303,9 @@ create unique index i_docir on doc(initid, revision);";
                             $fname = $this->applyMethod($rn, "", $k, array(
                                 $cfname
                             ));
-                            
+
                             if ($fname != $cfname) {
-                                $err.= $this->renameFile($oa->id, $fname, $k);
+                                $err .= $this->renameFile($oa->id, $fname, $k);
                             }
                         }
                     }
@@ -6062,7 +7316,7 @@ create unique index i_docir on doc(initid, revision);";
                             $cfname
                         ));
                         if ($fname != $cfname) {
-                            $err.= $this->renameFile($oa->id, $fname);
+                            $err .= $this->renameFile($oa->id, $fname);
                         }
                     }
                 }
@@ -6070,29 +7324,31 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $err;
     }
+
     /**
      * replace % tag of a link attribute
+     *
      * @param string $link url to analyze
-     * @param int $k index
+     * @param int    $k    index
+     *
      * @return bool|string
      */
-    final public function urlWhatEncode($link, $k = - 1)
+    final public function urlWhatEncode($link, $k = -1)
     {
         /**
          * @var Action $action
          */
         global $action;
-        
+
         $urllink = "";
         $mi = strlen($link);
         for ($i = 0; $i < $mi; $i++) {
             switch ($link[$i]) {
                 case '%':
                     $i++;
-                    
+
                     if (isset($link[$i]) && $link[$i] == "%") {
-                        $urllink.= "%"; // %% is %
-                        
+                        $urllink .= "%"; // %% is %
                     } else {
                         $optional = false;
                         if (isset($link[$i]) && $link[$i] == "?") {
@@ -6103,36 +7359,33 @@ create unique index i_docir on doc(initid, revision);";
                             // special link
                             switch ($link[$i]) {
                                 case "B": // baseurl
-                                    $urllink.= $action->GetParam("CORE_BASEURL","?");
+                                    $urllink .= $action->GetParam("CORE_BASEURL", "?");
                                     break;
 
                                 case "S": // standurl
-                                    $urllink.= $action->GetParam("CORE_STANDURL","?");
+                                    $urllink .= $action->GetParam("CORE_STANDURL", "?");
                                     break;
 
                                 case "U": // extern url
-                                    $urllink.= $action->GetParam("CORE_EXTERNURL");
+                                    $urllink .= $action->GetParam("CORE_EXTERNURL");
                                     break;
 
                                 case "I": // id
-                                    $urllink.= $this->id;
+                                    $urllink .= $this->id;
                                     break;
 
                                 case "T": // title
-                                    $urllink.= rawurlencode($this->title);
+                                    $urllink .= rawurlencode($this->title);
                                     break;
 
                                 default:
-                                    
                                     break;
                             }
                             $i++; // skip end '%'
-                            
                         } else {
-                            
                             $sattrid = "";
                             while (($i < $mi) && ($link[$i] != "%")) {
-                                $sattrid.= $link[$i];
+                                $sattrid .= $link[$i];
                                 $i++;
                             }
                             if (preg_match('/^[a-z0-9_\\\\]*::/i', $sattrid)) {
@@ -6140,17 +7393,15 @@ create unique index i_docir on doc(initid, revision);";
                                 foreach (self::$infofields as $propId => $prop) {
                                     $mapArgs[$propId] = $this->getPropertyValue($propId);
                                 }
-                                $urllink.= $this->applyMethod($sattrid, $sattrid, $k, array() , $mapArgs);
+                                $urllink .= $this->applyMethod($sattrid, $sattrid, $k, array(), $mapArgs);
                             } else {
-                                
-                                if (!in_array(mb_strtolower($sattrid) , $this->fields)) {
+                                if (!in_array(mb_strtolower($sattrid), $this->fields)) {
                                     if (preg_match('/[0-9A-F][0-9A-F]/', $sattrid)) {
-                                        $urllink.= '%' . $sattrid; // hexa code
+                                        $urllink .= '%' . $sattrid; // hexa code
                                         if (isset($link[$i]) && $link[$i] == '%') {
-                                            $urllink.= '%';
+                                            $urllink .= '%';
                                         }
                                     } else {
-                                        
                                         if (!$optional) {
                                             return false;
                                         }
@@ -6162,7 +7413,7 @@ create unique index i_docir on doc(initid, revision);";
                                     $oa = $this->GetAttribute($sattrid);
                                     if (($k >= 0) && ($oa && $oa->repeat)) {
                                         $tval = $this->getMultipleRawValues($sattrid);
-                                        
+
                                         $ovalue = isset($tval[$k]) ? chop($tval[$k]) : '';
                                     } else {
                                         // get property also
@@ -6171,12 +7422,11 @@ create unique index i_docir on doc(initid, revision);";
                                     if ($ovalue == "" && (!$optional)) {
                                         return false;
                                     }
-                                    
+
                                     if (strstr($ovalue, "\n")) {
                                         $ovalue = str_replace("\n", '\n', $ovalue);
                                     }
-                                    $urllink.= rawurlencode($ovalue); // need encode
-                                    
+                                    $urllink .= rawurlencode($ovalue); // need encode
                                 }
                             }
                         }
@@ -6185,53 +7435,66 @@ create unique index i_docir on doc(initid, revision);";
 
                 case '{':
                     $i++;
-                    
+
                     $sattrid = "";
                     while ($link[$i] != '}') {
-                        $sattrid.= $link[$i];
+                        $sattrid .= $link[$i];
                         $i++;
                     }
                     //	  print "attr=$sattrid";
                     $ovalue = $action->getParam($sattrid);
-                    $urllink.= rawurlencode($ovalue);
-                    
+                    $urllink .= rawurlencode($ovalue);
+
                     break;
 
                 default:
-                    $urllink.= $link[$i];
+                    $urllink .= $link[$i];
             }
         }
         $urllink = $this->urlWhatEncodeSpec($urllink); // complete in special case families
         return (chop($urllink));
     }
+
     /**
      * virtual method must be use in child families if needed complete url
+     *
      * @param string $l url to encode
+     *
      * @return string
      */
     public function urlWhatEncodeSpec($l)
     {
         return $l;
     }
+
     /**
      * convert flat attribute value to an array for multiple attributes
      *
      * use only for specific purpose. If need typed attributes use Doc::getAttribute()
+     *
      * @api convert flat attribute value to an array
      * @see Doc::getAttributeValue
+     *
      * @param string $v value
+     *
      * @return array
      */
     public static function rawValueToArray($v)
     {
-        if ($v === "" || $v === null) return array();
+        if ($v === "" || $v === null) {
+            return array();
+        }
         return explode("\n", str_replace("\r", "", $v));
     }
+
     /**
      * convert flat attribute value to an array for multiple attributes
+     *
      * @deprecated use instead {@Doc::rawValueToArray}
-     * @see Doc::rawValueToArray
+     * @see        Doc::rawValueToArray
+     *
      * @param string $v value
+     *
      * @return array
      */
     public static function _val2array($v)
@@ -6239,25 +7502,34 @@ create unique index i_docir on doc(initid, revision);";
         deprecatedFunction();
         return self::rawValueToArray($v);
     }
+
     /**
      * convert array value to flat attribute value
+     *
      * @api convert array value to flat attribute value
-     * @param array $v
+     *
+     * @param array  $v
      * @param string $br
+     *
      * @return string
      */
     public static function arrayToRawValue($v, $br = '<BR>')
     {
         $v = str_replace("\n", $br, $v);
-        if (count($v) == 0) return "";
+        if (count($v) == 0) {
+            return "";
+        }
         return implode("\n", $v);
     }
+
     /**
      * convert array value to flat attribute value
-     * @param array $v
+     *
+     * @param array  $v
      * @param string $br
+     *
      * @deprecated use {@link Doc::arrayToRawValue} instead
-     * @see Doc::arrayToRawValue
+     * @see        Doc::arrayToRawValue
      * @return string
      */
     public static function _array2val($v, $br = '<BR>')
@@ -6265,8 +7537,10 @@ create unique index i_docir on doc(initid, revision);";
         deprecatedFunction();
         return self::arrayToRawValue($v, $br);
     }
+
     /**
      * return an url to access of folder/search RSS in open mode authentication
+     *
      * @return string the url anchor
      */
     public function getRssLink()
@@ -6275,31 +7549,47 @@ create unique index i_docir on doc(initid, revision);";
          * @var Action $action
          */
         global $action;
-        return sprintf("%s?app=FREEDOM&action=FREEDOM_RSS&dcpopen-authorization=%s&id=%s", $action->getParam("CORE_OPENURL", $action->getParam("CORE_EXTERNURL")) , $action->user->getUserToken(false, false, ["action" => "FREEDOM_RSS", "app" => "FREEDOM"]) , $this->id);
+        return sprintf(
+            "%s?app=FREEDOM&action=FREEDOM_RSS&dcpopen-authorization=%s&id=%s",
+            $action->getParam("CORE_OPENURL", $action->getParam("CORE_EXTERNURL")),
+            $action->user->getUserToken(false, false, ["action" => "FREEDOM_RSS", "app" => "FREEDOM"]),
+            $this->id
+        );
     }
+
     /**
      * return an url to download for file attribute
-     * @param string $attrid attribute identifier
-     * @param int $index set to row rank if it is in array else use -1
-     * @param bool $cache set to true if file may be persistent in client cache
-     * @param bool $inline set to true if file must be displayed in web browser
-     * @param string $otherValue use another file value instead of attribute value
-     * @param VaultFileInfo $info extra file info
+     *
+     * @param string        $attrid     attribute identifier
+     * @param int           $index      set to row rank if it is in array else use -1
+     * @param bool          $cache      set to true if file may be persistent in client cache
+     * @param bool          $inline     set to true if file must be displayed in web browser
+     * @param string        $otherValue use another file value instead of attribute value
+     * @param VaultFileInfo $info       extra file info
+     *
      * @return string the url anchor
      */
-    public function getFileLink($attrid, $index = - 1, $cache = false, $inline = false, $otherValue = '', $info = null)
+    public function getFileLink($attrid, $index = -1, $cache = false, $inline = false, $otherValue = '', $info = null)
     {
         if ($index === '' || $index === null) {
-            $index = - 1;
+            $index = -1;
         }
         if (!$otherValue) {
-            if ($index >= 0) $avalue = $this->getMultipleRawValues($attrid, "", $index);
-            else $avalue = $this->getRawValue($attrid);
+            if ($index >= 0) {
+                $avalue = $this->getMultipleRawValues($attrid, "", $index);
+            } else {
+                $avalue = $this->getRawValue($attrid);
+            }
         } else {
             if ($index >= 0) {
-                if (is_array($otherValue)) $avalue = $otherValue[$index];
-                else $avalue = $otherValue;
-            } else $avalue = $otherValue;
+                if (is_array($otherValue)) {
+                    $avalue = $otherValue[$index];
+                } else {
+                    $avalue = $otherValue;
+                }
+            } else {
+                $avalue = $otherValue;
+            }
         }
         $oa = $this->getAttribute($attrid);
         if ($oa->usefor === "Q" && $this->doctype !== "C") {
@@ -6307,7 +7597,7 @@ create unique index i_docir on doc(initid, revision);";
         } else {
             $docid = $this->id;
         }
-        
+
         if (preg_match(PREGEXPFILE, $avalue, $reg)) {
             $fileKey = 0;
             if ($info) {
@@ -6318,41 +7608,64 @@ create unique index i_docir on doc(initid, revision);";
                 $fname = str_replace('"', '-', $reg[3]);
             }
             // will be rewrited by apache rules
-            //rewrite to  "%s?app=FDL&action=EXPORTFILE&cache=%s&inline=%s&vid=%s&docid=%s&attrid=%s&index=%d", "", $cache ? "yes" : "no", $inline ? "yes" : "no", $vid, $this->id, $attrid, $index);
-            $url = sprintf("file/%s/%d/%s/%s/%s?cache=%s&inline=%s", $docid, $fileKey, $attrid, $index, rawurlencode($fname) , $cache ? "yes" : "no", $inline ? "yes" : "no");
+
+            $url = sprintf(
+                "file/%s/%d/%s/%s/%s?cache=%s&inline=%s",
+                $docid,
+                $fileKey,
+                $attrid,
+                $index,
+                rawurlencode($fname),
+                $cache ? "yes" : "no",
+                $inline ? "yes" : "no"
+            );
             if ($this->cvid > 0) {
                 $viewId = getHttpVars("vid");
                 if ($viewId) {
-                    $url.= '&cvViewid=' . $viewId;
+                    $url .= '&cvViewid=' . $viewId;
                 }
             }
             return $url;
         }
         return '';
     }
+
     /**
      * return an html anchor to a document
+     *
      * @api return an html anchor to a document
-     * @param int $id identifier of document
-     * @param string $target window target
-     * @param bool $htmllink must be true else return nothing
-     * @param bool|string $title should we override default title
-     * @param bool $js should we add a javascript contextual menu
-     * @param string $docrev style of link (default:latest, other values: fixed or state(xxx))
-     * @param bool $viewIcon set to true to have icon in html link
+     *
+     * @param int         $id       identifier of document
+     * @param string      $target   window target
+     * @param bool        $htmllink must be true else return nothing
+     * @param bool|string $title    should we override default title
+     * @param bool        $js       should we add a javascript contextual menu
+     * @param string      $docrev   style of link (default:latest, other values: fixed or state(xxx))
+     * @param bool        $viewIcon set to true to have icon in html link
+     *
      * @return string the html anchor
      */
-    final public function getDocAnchor($id, $target = "_self", $htmllink = true, $title = false, $js = true, $docrev = "latest", $viewIcon = false)
-    {
+    final public function getDocAnchor(
+        $id,
+        $target = "_self",
+        $htmllink = true,
+        $title = false,
+        $js = true,
+        $docrev = "latest",
+        $viewIcon = false
+    ) {
         $latest = ($docrev == "latest" || $docrev == "");
         if ($htmllink) {
-            if (!$title) $title = $this->getHTMLTitle(strtok($id, '#') , '', $latest);
-            else $title = $this->htmlEncode($title);
+            if (!$title) {
+                $title = $this->getHTMLTitle(strtok($id, '#'), '', $latest);
+            } else {
+                $title = $this->htmlEncode($title);
+            }
             if (trim($title) == "") {
                 if ($id < 0) {
                     $a = "<a>" . sprintf(_("document not exists yet")) . "</a>";
                 } else {
-                    $a = "<a>" . sprintf(_("unknown document id %s") , $id) . "</a>";
+                    $a = "<a>" . sprintf(_("unknown document id %s"), $id) . "</a>";
                 }
             } else {
                 /* Setup base URL */
@@ -6372,44 +7685,60 @@ create unique index i_docir on doc(initid, revision);";
                             $specialUl = true;
                         } else {
                             $ul = htmlspecialchars(ContextManager::getApplicationParam("CORE_MAILACTIONURL"));
-                            $ul.= "&amp;id=$id";
+                            $ul .= "&amp;id=$id";
                         }
                         break;
 
                     case "ext":
-                        $ul.= "&amp;app=FDL&amp;action=VIEWEXTDOC&amp;id=$id";
+                        $ul .= "&amp;app=FDL&amp;action=VIEWEXTDOC&amp;id=$id";
                         break;
 
                     default:
-                        $ul.= "&amp;app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=$id";
+                        $ul .= "&amp;app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=$id";
                 }
                 /* Add target's specific elements to base URL */
                 if ($target == "ext") {
                     //$ec=getSessionValue("ext:targetRelation");
                     $jslatest = ($latest) ? 'true' : 'false';
-                    $ec = getHttpVars("ext:targetRelation", 'Ext.fdl.Document.prototype.publish("opendocument",null,%V%,"view",{latest:' . $jslatest . '})');
+                    $ec = getHttpVars(
+                        "ext:targetRelation",
+                        'Ext.fdl.Document.prototype.publish("opendocument",null,%V%,"view",{latest:' . $jslatest
+                        . '})'
+                    );
                     if ($ec) {
-                        if (!is_numeric($id)) $id = DocManager::getIdFromName( $id);
-                        else if ($latest) {
+                        if (!is_numeric($id)) {
+                            $id = DocManager::getIdFromName($id);
+                        } elseif ($latest) {
                             $lid = getLatestDocId($this->dbaccess, $id);
-                            if ($lid) $id = $lid;
+                            if ($lid) {
+                                $id = $lid;
+                            }
                         }
                         $ec = str_replace("%V%", $id, $ec);
                         $ecu = str_replace("'", '"', $ec);
                         $ajs = "";
                         if ($viewIcon) {
-                            DbManager::query( sprintf('select icon from docread where id=%d', $id) , $iconValue, true, true);
-                            $ajs.= sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14));
+                            DbManager::query(
+                                sprintf('select icon from docread where id=%d', $id),
+                                $iconValue,
+                                true,
+                                true
+                            );
+                            $ajs .= sprintf(
+                                'class="relation" style="background-image:url(%s)"',
+                                $this->getIcon($iconValue, 14)
+                            );
                         }
-                        $afmt='<a %s '; // Need to cut to avoid PHPStorm warning
-                        $afmt .="onclick='%s.parent'>%s</a>";
+                        $afmt = '<a %s '; // Need to cut to avoid PHPStorm warning
+                        $afmt .= "onclick='%s.parent'>%s</a>";
                         $a = sprintf($afmt, $ajs, $ecu, $title);
                     } else {
-                        if ($docrev == "latest" || $docrev == "" || !$docrev) $ul.= "&amp;latest=Y";
-                        elseif ($docrev != "fixed") {
+                        if ($docrev == "latest" || $docrev == "" || !$docrev) {
+                            $ul .= "&amp;latest=Y";
+                        } elseif ($docrev != "fixed") {
                             // validate that docrev looks like state(xxx)
                             if (preg_match("/^state\\(([a-zA-Z0-9_:-]+)\\)/", $docrev, $matches)) {
-                                $ul.= "&amp;state=" . $matches[1];
+                                $ul .= "&amp;state=" . $matches[1];
                             }
                         }
                         $a = "<a href=\"$ul\">$title</a>";
@@ -6417,49 +7746,68 @@ create unique index i_docir on doc(initid, revision);";
                 } else {
                     if (!$specialUl) {
                         if ($docrev == "latest" || $docrev == "" || !$docrev) {
-                            $ul.= "&amp;latest=Y";
+                            $ul .= "&amp;latest=Y";
                         } elseif ($docrev != "fixed") {
                             // validate that docrev looks like state(xxx)
                             if (preg_match("/^state\\(([a-zA-Z0-9_:-]+)\\)/", $docrev, $matches)) {
-                                $ul.= "&amp;state=" . $matches[1];
+                                $ul .= "&amp;state=" . $matches[1];
                             }
                         }
                     }
-                    if ($js) $ajs = "oncontextmenu=\"popdoc(event,'$ul');return false;\"";
-                    else $ajs = "";
-                    
-                    $ajs.= sprintf(' documentId="%s" ', $id);
+                    if ($js) {
+                        $ajs = "oncontextmenu=\"popdoc(event,'$ul');return false;\"";
+                    } else {
+                        $ajs = "";
+                    }
+
+                    $ajs .= sprintf(' documentId="%s" ', $id);
                     if ($viewIcon) {
-                        DbManager::query( sprintf('select icon from docread where id=%d', $id) , $iconValue, true, true);
-                        $ajs.= sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14));
+                        DbManager::query(sprintf('select icon from docread where id=%d', $id), $iconValue, true, true);
+                        $ajs .= sprintf(
+                            'class="relation" style="background-image:url(%s)"',
+                            $this->getIcon($iconValue, 14)
+                        );
                     }
                     $a = "<a $ajs target=\"$target\" href=\"$ul\">$title</a>";
                 }
             }
         } else {
-            if (!$title) $a = $this->getHTMLTitle($id, '', $latest);
-            else $a = $this->htmlEncode($title);
+            if (!$title) {
+                $a = $this->getHTMLTitle($id, '', $latest);
+            } else {
+                $a = $this->htmlEncode($title);
+            }
         }
         return $a;
     }
+
     /**
      * return HTML formated value of an attribute
+     *
      * @param NormalAttribute $oattr
-     * @param string $value raw value
-     * @param string $target html target in case of link
-     * @param bool $htmllink
-     * @param int $index
-     * @param bool $entities
-     * @param bool $abstract
+     * @param string          $value  raw value
+     * @param string          $target html target in case of link
+     * @param bool            $htmllink
+     * @param int             $index
+     * @param bool            $entities
+     * @param bool            $abstract
+     *
      * @return string the formated value
      */
-    final public function getHtmlValue($oattr, $value, $target = "_self", $htmllink = true, $index = - 1, $entities = true, $abstract = false)
-    {
+    final public function getHtmlValue(
+        $oattr,
+        $value,
+        $target = "_self",
+        $htmllink = true,
+        $index = -1,
+        $entities = true,
+        $abstract = false
+    ) {
         if (!$this->htmlFormater) {
             $this->htmlFormater = new DocHtmlFormat($this);
         }
         if ($this->formaterLevel == 0) {
-            $htmlFormater = & $this->htmlFormater;
+            $htmlFormater = &$this->htmlFormater;
         } else {
             if (!isset($this->otherFormatter[$this->formaterLevel])) {
                 $this->otherFormatter[$this->formaterLevel] = new DocHtmlFormat($this);
@@ -6490,29 +7838,41 @@ create unique index i_docir on doc(initid, revision);";
      * @return string
      * @throws \Dcp\Exception
      */
-    final public function getHtmlAttrValue($attrid, $target = "_self", $htmllink = 2, $index = - 1, $entities = true, $abstract = false)
-    {
+    final public function getHtmlAttrValue(
+        $attrid,
+        $target = "_self",
+        $htmllink = 2,
+        $index = -1,
+        $entities = true,
+        $abstract = false
+    ) {
         $oattr = $this->getAttribute($attrid);
         if (!$oattr) {
             throw new Dcp\Exception('DOC0130', $attrid, $this->id, $this->fromid);
         }
-        
-        if ($index != - 1) $v = $this->getMultipleRawValues($attrid, "", $index);
-        else $v = $this->getRawValue($attrid);
-        
+
+        if ($index != -1) {
+            $v = $this->getMultipleRawValues($attrid, "", $index);
+        } else {
+            $v = $this->getRawValue($attrid);
+        }
+
         return $this->GetHtmlValue($oattr, $v, $target, $htmllink, $index, $entities, $abstract);
     }
+
     /**
      * Get a textual representation of the content of an attribute
      *
-     * @param string $attrId logical name of the attr
-     * @param $index
-     * @param array $configuration value config array : dateFormat => 'US' 'ISO', decimalSeparator => '.',
-     * multipleSeparator => array(0 => 'arrayLine', 1 => 'multiple') (defaultValue : dateFormat : 'US', decimalSeparator : '.', multiple => array(0 => "\n", 1 => ", "))
+     * @param string $attrId        logical name of the attr
+     * @param        $index
+     * @param array  $configuration value config array : dateFormat => 'US' 'ISO', decimalSeparator => '.',
+     *                              multipleSeparator => array(0 => 'arrayLine', 1 => 'multiple')
+     *                              (defaultValue : dateFormat : 'US', decimalSeparator : '.',
+     *                              multiple => array(0 => "\n", 1 => ", "))
      *
      * @return string|bool return false if attribute not found else the textual value
      */
-    final public function getTextualAttrValue($attrId, $index = - 1, Array $configuration = array())
+    final public function getTextualAttrValue($attrId, $index = -1, array $configuration = array())
     {
         $objectAttr = $this->getAttribute($attrId);
         if ($objectAttr) {
@@ -6521,41 +7881,56 @@ create unique index i_docir on doc(initid, revision);";
             return $objectAttr;
         }
     }
+
     /**
      * get value for open document text template
-     * @param string $attrid attribute identifier
-     * @param string $target unused
-     * @param bool $htmllink unused
-     * @param int $index index rank in case of multiple attribute value
+     *
+     * @param string $attrid   attribute identifier
+     * @param string $target   unused
+     * @param bool   $htmllink unused
+     * @param int    $index    index rank in case of multiple attribute value
+     *
      * @return string XML fragment
      */
-    final public function getOooAttrValue($attrid,
-    /* @noinspection PhpUnusedParameterInspection */
-    $target = "_self",
-    /* @noinspection PhpUnusedParameterInspection */
-    $htmllink = false, $index = - 1)
-    {
-        if ($index != - 1) $v = $this->getMultipleRawValues($attrid, "", $index);
-        else $v = $this->getRawValue($attrid);
-        if ($v == "") return $v;
-        return $this->getOooValue($this->getAttribute($attrid) , $v, '', false, $index);
+    final public function getOooAttrValue(
+        $attrid,
+        /* @noinspection PhpUnusedParameterInspection */
+        $target = "_self",
+        /* @noinspection PhpUnusedParameterInspection */
+        $htmllink = false,
+        $index = -1
+    ) {
+        if ($index != -1) {
+            $v = $this->getMultipleRawValues($attrid, "", $index);
+        } else {
+            $v = $this->getRawValue($attrid);
+        }
+        if ($v == "") {
+            return $v;
+        }
+        return $this->getOooValue($this->getAttribute($attrid), $v, '', false, $index);
     }
+
     /**
      * return open document text format for attribute value
+     *
      * @param NormalAttribute $oattr
-     * @param string $value
-     * @param string $target unused
-     * @param bool $htmllink unused
-     * @param int $index index rank in case of multiple attribute value
+     * @param string          $value
+     * @param string          $target   unused
+     * @param bool            $htmllink unused
+     * @param int             $index    index rank in case of multiple attribute value
+     *
      * @return string XML fragment
      */
-    final public function getOooValue($oattr, $value,
-    /* @noinspection PhpUnusedParameterInspection */
-    $target = "_self",
-    /* @noinspection PhpUnusedParameterInspection */
-    $htmllink = false, $index = - 1)
-    {
-        
+    final public function getOooValue(
+        $oattr,
+        $value,
+        /* @noinspection PhpUnusedParameterInspection */
+        $target = "_self",
+        /* @noinspection PhpUnusedParameterInspection */
+        $htmllink = false,
+        $index = -1
+    ) {
         if (!$this->oooFormater) {
             $this->oooFormater = new DocOooFormat($this);
         }
@@ -6564,12 +7939,14 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $this->oooFormater->getOooValue($oattr, $value, $index);
     }
+
     /**
      * Prevent displaying the document's title in the error message
      * if the user has no 'view' privilege
      *
      * @param Doc $doc
-     * @param $aclname
+     * @param     $aclname
+     *
      * @return string
      */
     protected function noPrivilegeMessage(Doc & $doc, $aclname)
@@ -6580,18 +7957,20 @@ create unique index i_docir on doc(initid, revision);";
          * document, then we should not display the document's title
         */
         if (($aclname == 'view') || ($doc->isConfidential()) || ($doc->control('view') !== '')) {
-            return sprintf(_("no privilege %s for document with id %d") , $aclname, $doc->id);
+            return sprintf(_("no privilege %s for document with id %d"), $aclname, $doc->id);
         }
         /*
          * Otherwise, display the error message with the document's title
         */
-        return sprintf(_("no privilege %s for %s [%d]") , $aclname, $doc->getTitle() , $doc->id);
+        return sprintf(_("no privilege %s for %s [%d]"), $aclname, $doc->getTitle(), $doc->id);
     }
+
     /**
      * Control Access privilege for document for current user
      *
      * @param string $aclname identifier of the privilege to test
-     * @param bool $strict set tio true to test without notion of account susbstitute
+     * @param bool   $strict  set tio true to test without notion of account susbstitute
+     *
      * @return string empty means access granted else it is an error message (access unavailable)
      */
     public function control($aclname, $strict = false)
@@ -6601,7 +7980,6 @@ create unique index i_docir on doc(initid, revision);";
         }
         if (($this->profid <= 0) || ($this->userid == 1)) {
             return ""; // no profil or admin
-            
         }
         $err = $this->controlId($this->profid, $aclname, $strict);
         if ($err != "") {
@@ -6614,37 +7992,48 @@ create unique index i_docir on doc(initid, revision);";
         }
         return '';
     }
+
     /**
      * Control Access privilege for document for current user
      *
      * @api control document access
+     *
      * @param string $aclName identifier of the privilege to test
-     * @param bool $strict set tio true to test without notion of account susbstitute
+     * @param bool   $strict  set tio true to test without notion of account susbstitute
+     *
      * @return bool return true if access $aclName is granted, false else
      */
     public function hasPermission($aclName, $strict = false)
     {
         return ($this->control($aclName, $strict) == "");
     }
+
     /**
      * Control Access privilege for document for other user
      *
-     * @param int $uid user identifier
+     * @param int    $uid     user identifier
      * @param string $aclname identifier of the privilege to test
+     *
      * @return string empty means access granted else it is an error message (access unavailable)
      */
     public function controlUser($uid, $aclname)
     {
         // --------------------------------------------------------------------
         if ($this->IsAffected()) {
-            if (($this->profid <= 0) || ($uid == 1)) return ""; // no profil or admin
-            if (!$uid) return _("control :: user identifier is null");
+            if (($this->profid <= 0) || ($uid == 1)) {
+                return "";
+            } // no profil or admin
+            if (!$uid) {
+                return _("control :: user identifier is null");
+            }
             return $this->controlUserId($this->profid, $uid, $aclname);
         }
         return "";
     }
+
     /**
      * verify that the document exists and is not in trash (not a zombie)
+     *
      * @api verify that the document exists and is not in trash
      * @return bool
      */
@@ -6652,30 +8041,38 @@ create unique index i_docir on doc(initid, revision);";
     {
         return ((DbObj::isAffected()) && ($this->doctype != 'Z'));
     }
+
     /**
      * add several triggers to update different tables (such as docread) or attributes (such as values)
+     *
      * @param bool $onlydrop set to false for only drop triggers
      * @param bool $code
+     *
      * @return string sql commands
      */
     final public function sqlTrigger($onlydrop = false, $code = false)
     {
-        
         if (get_class($this) == "DocFam") {
             $cid = "fam";
             $famId = $this->id;
         } else {
-            if ($this->doctype == 'C') return '';
-            if (intval($this->fromid) == 0) return '';
-            
+            if ($this->doctype == 'C') {
+                return '';
+            }
+            if (intval($this->fromid) == 0) {
+                return '';
+            }
+
             $cid = $this->fromid;
             $famId = $this->fromid;
         }
-        
+
         $sql = "";
         // delete all relative triggers
-        $sql.= "select droptrigger('doc" . $cid . "');";
-        if ($onlydrop) return $sql; // only drop
+        $sql .= "select droptrigger('doc" . $cid . "');";
+        if ($onlydrop) {
+            return $sql;
+        } // only drop
         if ($code) {
             $files = array();
             $lay = new Layout("vendor/Anakeen/FDL/Layout/sqltrigger.sql");
@@ -6693,12 +8090,12 @@ create unique index i_docir on doc(initid, revision);";
                         );
                     }
                     // svalues += attribute allowed to be indexed
-                    if (($v->type != "file") && ($v->type != "image") && ($v->type != "password") && ($opt_searchcriteria != "hidden")) {
-                        
+                    if (($v->type != "file") && ($v->type != "image") && ($v->type != "password")
+                        && ($opt_searchcriteria != "hidden")) {
                         $tsearch[] = array(
                             "attrid" => $k
                         );
-                        
+
                         $fulltext_c[] = array(
                             "attrid" => $k
                         );
@@ -6724,7 +8121,8 @@ create unique index i_docir on doc(initid, revision);";
                 if ($opt_searchcriteria == "hidden") {
                     continue;
                 }
-                if (($v->type != "array") && ($v->type != "file") && ($v->type != "image") && ($v->type != "password")) {
+                if (($v->type != "array") && ($v->type != "file") && ($v->type != "image")
+                    && ($v->type != "password")) {
                     $tabstract[] = array(
                         "attrid" => $k
                     );
@@ -6743,25 +8141,25 @@ create unique index i_docir on doc(initid, revision);";
             $lay->set("docid", $this->fromid);
             $sql = $lay->gen();
         } else {
-            
-            if ($this->attributes !== null && isset($this->attributes->fromids) && is_array($this->attributes->fromids)) {
+            if ($this->attributes !== null && isset($this->attributes->fromids)
+                && is_array($this->attributes->fromids)) {
                 foreach ($this->attributes->fromids as $k => $v) {
-                    
-                    $sql.= "create trigger UV{$cid}_$v BEFORE INSERT OR UPDATE ON doc$cid FOR EACH ROW EXECUTE PROCEDURE upval$v();";
+                    $sql .= "create trigger UV{$cid}_$v BEFORE INSERT OR UPDATE ON doc$cid FOR EACH ROW EXECUTE PROCEDURE upval$v();";
                 }
             }
             // the reset trigger must begin with 'A' letter to be proceed first (pgsql 7.3.2)
             if ($cid != "fam") {
-                $sql.= "create trigger AUVR{$cid} BEFORE UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE resetvalues();";
-                $sql.= "create trigger VSEARCH{$cid} BEFORE INSERT OR UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE searchvalues$cid();";
+                $sql .= "create trigger AUVR{$cid} BEFORE UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE resetvalues();";
+                $sql .= "create trigger VSEARCH{$cid} BEFORE INSERT OR UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE searchvalues$cid();";
             } else {
-                $sql.= "create trigger UVdocfam before insert or update on docfam FOR EACH ROW EXECUTE PROCEDURE upvaldocfam();";
+                $sql .= "create trigger UVdocfam before insert or update on docfam FOR EACH ROW EXECUTE PROCEDURE upvaldocfam();";
             }
-            $sql.= "create trigger zread{$cid} AFTER INSERT OR UPDATE OR DELETE ON doc$cid FOR EACH ROW EXECUTE PROCEDURE setread();";
-            $sql.= "create trigger FIXDOC{$cid} AFTER INSERT ON doc$cid FOR EACH ROW EXECUTE PROCEDURE fixeddoc();";
+            $sql .= "create trigger zread{$cid} AFTER INSERT OR UPDATE OR DELETE ON doc$cid FOR EACH ROW EXECUTE PROCEDURE setread();";
+            $sql .= "create trigger FIXDOC{$cid} AFTER INSERT ON doc$cid FOR EACH ROW EXECUTE PROCEDURE fixeddoc();";
         }
         return $sql;
     }
+
     /**
      * add specials SQL indexes
      *
@@ -6769,16 +8167,20 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getSqlIndex()
     {
-        $t = array();;
+        $t = array();
         $id = $this->fromid;
-        if (static::$sqlindex) $sqlindex = array_merge(static::$sqlindex, Doc::$sqlindex);
-        else $sqlindex = Doc::$sqlindex;
+        if (static::$sqlindex) {
+            $sqlindex = array_merge(static::$sqlindex, Doc::$sqlindex);
+        } else {
+            $sqlindex = Doc::$sqlindex;
+        }
         foreach ($sqlindex as $k => $v) {
-            
-            if (!empty($v["unique"])) $unique = "unique";
-            else $unique = "";
+            if (!empty($v["unique"])) {
+                $unique = "unique";
+            } else {
+                $unique = "";
+            }
             if (!empty($v["using"])) {
-                
                 if ($v["using"][0] == "@") {
                     $v["using"] = ContextManager::getApplicationParam(substr($v["using"], 1));
                 }
@@ -6789,18 +8191,21 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $t;
     }
+
     /**
      * return the basename of template file
+     *
      * @param string $zone zone to parse
+     *
      * @return string|null (return null if template not found)
      */
     public function getZoneFile($zone)
     {
-        $index = - 1;
+        $index = -1;
         if ($zone == "") {
             return null;
         }
-        
+
         $reg = $this->parseZone($zone);
         if (is_array($reg)) {
             $aid = $reg['layout'];
@@ -6818,20 +8223,23 @@ create unique index i_docir on doc(initid, revision);";
                     $tt = $this->rawValueToArray($template);
                     $template = $tt[$index];
                 }
-                
+
                 if ($template == "") {
                     return null;
                 }
-                
+
                 return $this->vault_filename_fromvalue($template, true);
             }
             return getLayoutFile($reg['app'], ($aid));
         }
         return null;
     }
+
     /**
      * return the character in third part of zone
+     *
      * @param string $zone APP:LAYOUT:OPTIONS
+     *
      * @return string single character
      */
     public function getZoneOption($zone = "")
@@ -6839,17 +8247,20 @@ create unique index i_docir on doc(initid, revision);";
         if ($zone == "") {
             $zone = $this->defaultview;
         }
-        
+
         $zoneElements = $this->parseZone($zone);
         if ($zoneElements === false) {
             return '';
         }
-        
+
         return $zoneElements['modifier'];
     }
+
     /**
      * return the characters in fourth part of zone
+     *
      * @param string $zone APP:LAYOUT:OPTIONS
+     *
      * @return string
      */
     public function getZoneTransform($zone = "")
@@ -6857,21 +8268,24 @@ create unique index i_docir on doc(initid, revision);";
         if ($zone == "") {
             $zone = $this->defaultview;
         }
-        
+
         $zoneElements = $this->parseZone($zone);
         if ($zoneElements === false) {
             return '';
         }
-        
+
         return $zoneElements['transform'];
     }
+
     /**
      * set default values define in family document
      * the format of the string which define default values is like
      * [US_ROLE|director][US_SOCIETY|alwaysNet]...
-     * @param array $tdefval the default values
-     * @param bool $method set to false if don't want interpreted values
-     * @param bool $forcedefault force default values
+     *
+     * @param array $tdefval      the default values
+     * @param bool  $method       set to false if don't want interpreted values
+     * @param bool  $forcedefault force default values
+     *
      * @throws \Dcp\Exception
      */
     final public function setDefaultValues($tdefval, $method = true, $forcedefault = false)
@@ -6882,21 +8296,28 @@ create unique index i_docir on doc(initid, revision);";
                  * @var BasicAttribute $oattr
                  */
                 $oattr = $this->getAttribute($aid);
-                
+
                 $ok = false;
-                if (empty($oattr)) $ok = false;
-                elseif ($dval === '' || $dval === null) $ok = false;
-                elseif (!is_a($oattr, "BasicAttribute")) $ok = false;
-                elseif ($forcedefault) $ok = true;
-                elseif (!$oattr->inArray()) $ok = true;
-                elseif ($oattr->fieldSet->format != "empty" && $oattr->fieldSet->getOption("empty") != "yes") {
-                    if (empty($tdefval[$oattr->fieldSet->id])) $ok = true;
-                    else $ok = false;
+                if (empty($oattr)) {
+                    $ok = false;
+                } elseif ($dval === '' || $dval === null) {
+                    $ok = false;
+                } elseif (!is_a($oattr, "BasicAttribute")) {
+                    $ok = false;
+                } elseif ($forcedefault) {
+                    $ok = true;
+                } elseif (!$oattr->inArray()) {
+                    $ok = true;
+                } elseif ($oattr->fieldSet->format != "empty" && $oattr->fieldSet->getOption("empty") != "yes") {
+                    if (empty($tdefval[$oattr->fieldSet->id])) {
+                        $ok = true;
+                    } else {
+                        $ok = false;
+                    }
                 }
                 if ($ok) {
                     if ($oattr->type == "array") {
                         if ($method) {
-                            
                             $values = json_decode($dval, true);
                             if ($values === null) {
                                 $values = $this->applyMethod($dval, null);
@@ -6910,29 +8331,41 @@ create unique index i_docir on doc(initid, revision);";
                             $terr = [];
                             foreach ($values as $row) {
                                 $err = $this->addArrayRow($aid, $row);
-                                if ($err) $terr[] = $err;
+                                if ($err) {
+                                    $terr[] = $err;
+                                }
                             }
-                            if ($terr) throw new Dcp\Exception("DFLT0009", $aid, $dval, $values, $this->fromname, implode('; ', $terr));
+                            if ($terr) {
+                                throw new Dcp\Exception(
+                                    "DFLT0009",
+                                    $aid,
+                                    $dval,
+                                    $values,
+                                    $this->fromname,
+                                    implode('; ', $terr)
+                                );
+                            }
                         }
                         //print_r($this->getValues());
-                        
                     } else {
                         if ($method) {
                             $this->setValue($aid, $this->GetValueMethod($dval));
                         } else {
                             $this->setValue($aid, $dval); // raw data
-                            
                         }
                     }
                 }
             }
         }
     }
+
     /**
      * set default name reference
      * if no name a new name will ne computed from its initid and family name
      * the new name is set to name attribute
+     *
      * @param boolean $temporary compute a temporary logical name that will be deleted by the cleanContext API
+     *
      * @return string error message (empty means OK).
      */
     final public function setNameAuto($temporary = false)
@@ -6940,7 +8373,9 @@ create unique index i_docir on doc(initid, revision);";
         $err = '';
         if (($this->name == "") && ($this->initid > 0)) {
             $dfam = $this->getFamilyDocument();
-            if ($dfam->name == "") return sprintf("no family name %s", $dfam->id);
+            if ($dfam->name == "") {
+                return sprintf("no family name %s", $dfam->id);
+            }
             if ($temporary) {
                 $this->name = sprintf('TEMPORARY_%s_%s_%s', $dfam->name, $this->initid, uniqid());
             } else {
@@ -6948,33 +8383,41 @@ create unique index i_docir on doc(initid, revision);";
             }
             $err = $this->modify(true, array(
                 "name"
-            ) , true);
+            ), true);
         }
         return $err;
     }
+
     /**
      * Return the main path relation
      * list of prelid properties (primary relation)
      * the first item is the direct parent, the second:the grand-parent , etc.
+     *
      * @return array key=id , value=title of relation
      */
-    function getMainPath()
+    public function getMainPath()
     {
         $tr = array();
-        
+
         if ($this->prelid > 0) {
-            
-            $d = DocManager::getRawData( $this->prelid, ["initid", "title", "prelid", "profid"]);
+            $d = DocManager::getRawData($this->prelid, ["initid", "title", "prelid", "profid"]);
             $fini = false;
             while (!$fini) {
                 if ($d) {
                     if (controlTDoc($d, "view")) {
                         if (!in_array($d["initid"], array_keys($tr))) {
                             $tr[$d["initid"]] = $d["title"];
-                            if ($d["prelid"] > 0) $d = DocManager::getRawData( $d["prelid"], ["initid", "title", "prelid", "profid"]);
-                            else $fini = true;
-                        } else $fini = true;
-                    } else $fini = true;
+                            if ($d["prelid"] > 0) {
+                                $d = DocManager::getRawData($d["prelid"], ["initid", "title", "prelid", "profid"]);
+                            } else {
+                                $fini = true;
+                            }
+                        } else {
+                            $fini = true;
+                        }
+                    } else {
+                        $fini = true;
+                    }
                 } else {
                     $fini = true;
                 }
@@ -6982,25 +8425,33 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $tr;
     }
+
     /**
      * generate HTML code for view doc
-     * @param string $layout layout to use to view document
-     * @param string $target window target name for hyperlink destination
-     * @param bool $ulink if false hyperlink are not generated
-     * @param bool $abstract if true only abstract attribute are generated
-     * @param bool $changelayout if true the internal layout ($this->lay) will be replace by the new layout
+     *
+     * @param string $layout       layout to use to view document
+     * @param string $target       window target name for hyperlink destination
+     * @param bool   $ulink        if false hyperlink are not generated
+     * @param bool   $abstract     if true only abstract attribute are generated
+     * @param bool   $changelayout if true the internal layout ($this->lay) will be replace by the new layout
+     *
      * @throws Exception
      * @return string genererated template . If target is binary, return file path of temporary generated file
      */
-    final public function viewDoc($layout = "FDL:VIEWBODYCARD", $target = "_self", $ulink = true, $abstract = false, $changelayout = false)
-    {
+    final public function viewDoc(
+        $layout = "FDL:VIEWBODYCARD",
+        $target = "_self",
+        $ulink = true,
+        $abstract = false,
+        $changelayout = false
+    ) {
         global $action;
-        
+
         $reg = $this->parseZone($layout);
         if ($reg === false) {
-            return htmlspecialchars(sprintf(_("error in pzone format %s") , $layout) , ENT_QUOTES);
+            return htmlspecialchars(sprintf(_("error in pzone format %s"), $layout), ENT_QUOTES);
         }
-        
+
         if (array_key_exists('args', $reg)) {
             // in case of arguments in zone
             global $ZONE_ARGS;
@@ -7016,12 +8467,12 @@ create unique index i_docir on doc(initid, revision);";
             $play = $this->lay;
         }
         $binary = ($this->getZoneOption($layout) == "B");
-        
+
         $tplfile = $this->getZoneFile($layout);
-        
+
         $ext = getFileExtension($tplfile);
         if (strtolower($ext) == "odt") {
-            include_once ('Class.OOoLayout.php');
+            include_once('Class.OOoLayout.php');
             $target = "ooo";
             $ulink = false;
             $this->lay = new OOoLayout($tplfile, $action, $this);
@@ -7030,23 +8481,31 @@ create unique index i_docir on doc(initid, revision);";
         }
         //if (! file_exists($this->lay->file)) return sprintf(_("template file (layout [%s]) not found"), $layout);
         $this->lay->set("_readonly", ($this->Control('edit') != ""));
-        $method = strtok(strtolower($reg['layout']) , '.');
+        $method = strtok(strtolower($reg['layout']), '.');
         if (method_exists($this, $method)) {
             try {
-                $refMeth = new ReflectionMethod(get_class($this) , $method);
+                $refMeth = new ReflectionMethod(get_class($this), $method);
                 if (preg_match('/@templateController\b/', $refMeth->getDocComment())) {
                     $this->$method($target, $ulink, $abstract);
                 } else {
                     global $action;
-                    $syserr = ErrorCode::getError("DOC1101", $refMeth->getDeclaringClass()->getName() , $refMeth->getName() , $this);
+                    $syserr = ErrorCode::getError(
+                        "DOC1101",
+                        $refMeth->getDeclaringClass()->getName(),
+                        $refMeth->getName(),
+                        $this
+                    );
                     $action->log->error($syserr);
-                    $err = htmlspecialchars(sprintf(_("Layout \"%s\" : Controller not allowed") , $layout) , ENT_QUOTES);
+                    $err = htmlspecialchars(sprintf(_("Layout \"%s\" : Controller not allowed"), $layout), ENT_QUOTES);
                     return $err;
                 }
-            }
-            catch(Exception $e) {
+            } catch (Exception $e) {
                 if ((!file_exists($this->lay->file) && (!$this->lay->template))) {
-                    return htmlspecialchars(sprintf(_("template file (layout [%s]) not found") . ": %s", $layout, $e->getMessage()) , ENT_QUOTES);
+                    return htmlspecialchars(sprintf(
+                        _("template file (layout [%s]) not found") . ": %s",
+                        $layout,
+                        $e->getMessage()
+                    ), ENT_QUOTES);
                 } else {
                     throw $e;
                 }
@@ -7054,26 +8513,28 @@ create unique index i_docir on doc(initid, revision);";
         } else {
             $this->viewdefaultcard($target, $ulink, $abstract);
         }
-        
+
         if ((!file_exists($this->lay->file) && (!$this->lay->template))) {
-            return htmlspecialchars(sprintf(_("template file (layout [%s]) not found") , $layout) , ENT_QUOTES);
+            return htmlspecialchars(sprintf(_("template file (layout [%s]) not found"), $layout), ENT_QUOTES);
         }
-        
+
         $laygen = $this->lay->gen();
-        
-        if (!$changelayout) $this->lay = $play;
-        
+
+        if (!$changelayout) {
+            $this->lay = $play;
+        }
+
         if (!$ulink) {
             // suppress href attributes
             return preg_replace(array(
                 "/href=\"index\\.php[^\"]*\"/i",
                 "/onclick=\"[^\"]*\"/i",
                 "/ondblclick=\"[^\"]*\"/i"
-            ) , array(
+            ), array(
                 "",
                 "",
                 ""
-            ) , $laygen);
+            ), $laygen);
         }
         if ($target == "mail") {
             // suppress session id
@@ -7085,40 +8546,45 @@ create unique index i_docir on doc(initid, revision);";
             file_put_contents($tmpfile, $laygen);
             $laygen = $tmpfile;
         }
-        
+
         return $laygen;
     }
+
     /**
      * default construct layout for view card containt
      *
      * @templateController default controller view
-     * @param string $target window target name for hyperlink destination
-     * @param bool $ulink if false hyperlink are not generated
-     * @param bool $abstract if true only abstract attribute are generated
-     * @param bool $viewhidden if true view also hidden attributes
+     *
+     * @param string $target     window target name for hyperlink destination
+     * @param bool   $ulink      if false hyperlink are not generated
+     * @param bool   $abstract   if true only abstract attribute are generated
+     * @param bool   $viewhidden if true view also hidden attributes
      */
     final public function viewdefaultcard($target = "_self", $ulink = true, $abstract = false, $viewhidden = false)
     {
         $this->viewattr($target, $ulink, $abstract, $viewhidden);
         $this->viewprop($target, $ulink, $abstract);
     }
+
     /**
      * construct layout for view card containt
      *
      * @templateController default HTML view controller
-     * @param string $target window target name for hyperlink destination
-     * @param bool $ulink if false hyperlink are not generated
-     * @param bool $abstract if true only abstract attribute are generated
-     * @param bool $onlyopt if true only optional attributes are displayed
+     *
+     * @param string $target   window target name for hyperlink destination
+     * @param bool   $ulink    if false hyperlink are not generated
+     * @param bool   $abstract if true only abstract attribute are generated
+     * @param bool   $onlyopt  if true only optional attributes are displayed
+     *
      * @throws \Dcp\Exception
      */
-    function viewbodycard($target = "_self", $ulink = true, $abstract = false, $onlyopt = false)
+    public function viewbodycard($target = "_self", $ulink = true, $abstract = false, $onlyopt = false)
     {
         /**
          * @var Action $action
          */
         global $action;
-        
+
         $frames = array();
         if ($abstract) {
             // only 3 properties for abstract mode
@@ -7126,7 +8592,7 @@ create unique index i_docir on doc(initid, revision);";
         } else {
             $listattr = $this->GetNormalAttributes($onlyopt);
         }
-        
+
         $k = 0; // number of frametext
         $v = 0; // number of value in one frametext
         $nbimg = 0; // number of image in one frametext
@@ -7140,7 +8606,7 @@ create unique index i_docir on doc(initid, revision);";
         $tableimage = array();
         $ttabs = array();
         $frametpl = '';
-        
+
         $iattr = 0;
         $onlytab = strtolower(getHttpVars("onlytab"));
         $tabonfly = false; // I want tab on fly
@@ -7152,42 +8618,54 @@ create unique index i_docir on doc(initid, revision);";
          * @var NormalAttribute $attr
          */
         foreach ($listattr as $i => $attr) {
-            if ($onlytab && ($attr->fieldSet->id != $onlytab && $attr->fieldSet->fieldSet->id != $onlytab)) continue;
-            
+            if ($onlytab && ($attr->fieldSet->id != $onlytab && $attr->fieldSet->fieldSet->id != $onlytab)) {
+                continue;
+            }
+
             $iattr++;
             $htmlvalue = '';
             //------------------------------
             // Compute value element
             $value = chop($this->getRawValue($i));
             if (!$attr->fieldSet) {
-                addWarningMsg(sprintf(_("unknow set for attribute %s %s") , $attr->id, $attr->getLabel()));
+                addWarningMsg(sprintf(_("unknow set for attribute %s %s"), $attr->id, $attr->getLabel()));
                 continue;
             }
             $frametpl = $attr->fieldSet->getOption("viewtemplate");
             if ($attr->fieldSet && ($frametpl && $attr->fieldSet->type != "array")) {
                 $goodvalue = false;
                 if ($currentFrameId != $attr->fieldSet->id) {
-                    if (($currentFrameId != "") && ($attr->fieldSet->mvisibility != "H") && ($attr->fieldSet->mvisibility != "I")) {
+                    if (($currentFrameId != "") && ($attr->fieldSet->mvisibility != "H")
+                        && ($attr->fieldSet->mvisibility != "I")) {
                         $changeframe = true;
                     }
                 }
             } else {
-                $goodvalue = ((($value != "") || ($attr->type == "array") || $attr->getOption("showempty")) && ($attr->mvisibility != "H") && ($attr->mvisibility != "I") && ($attr->mvisibility != "O") && (!$attr->inArray()));
+                $goodvalue = ((($value != "") || ($attr->type == "array") || $attr->getOption("showempty"))
+                    && ($attr->mvisibility != "H")
+                    && ($attr->mvisibility != "I")
+                    && ($attr->mvisibility != "O")
+                    && (!$attr->inArray()));
                 if (($attr->type == "array") && (!$attr->getOption("showempty"))) {
-                    if (count($this->getArrayRawValues($attr->id)) == 0) $goodvalue = false;
+                    if (count($this->getArrayRawValues($attr->id)) == 0) {
+                        $goodvalue = false;
+                    }
                 }
-                
+
                 if ($goodvalue) {
                     // detect first tab
                     $toptab = $attr->getTab();
                     /**
                      * @var FieldsetAttribute $toptab
                      */
-                    if ($toptab) $tabonfly = ($toptab->getOption("viewonfly") == "yes");
+                    if ($toptab) {
+                        $tabonfly = ($toptab->getOption("viewonfly") == "yes");
+                    }
                     if ($tabonfly && (!$showonlytab)) {
                         $ut = $this->getUtag("lasttab");
-                        if ($ut) $showonlytab = $ut->comment;
-                        elseif ($attr->fieldSet->id && $attr->fieldSet->fieldSet) {
+                        if ($ut) {
+                            $showonlytab = $ut->comment;
+                        } elseif ($attr->fieldSet->id && $attr->fieldSet->fieldSet) {
                             $showonlytab = $attr->fieldSet->fieldSet->id;
                         }
                     }
@@ -7201,20 +8679,29 @@ create unique index i_docir on doc(initid, revision);";
                                 if ($this->getZoneOption($viewtpl) == 'S') {
                                     $attr->setOption("vlabel", "none");
                                 }
-                                $htmlvalue = sprintf("[ZONE FDL:VIEWTPL?id=%d&famid=%d&target=%s&zone=%s]", $this->id, $this->fromid, $target, $viewtpl);
+                                $htmlvalue = sprintf(
+                                    "[ZONE FDL:VIEWTPL?id=%d&famid=%d&target=%s&zone=%s]",
+                                    $this->id,
+                                    $this->fromid,
+                                    $target,
+                                    $viewtpl
+                                );
                             }
                         } else {
                             $htmlvalue = $this->GetHtmlValue($attr, $value, $target, $ulink);
                         }
                     } else {
                         $htmlvalue = false; // display defer
-                        
                     }
-                } else $htmlvalue = "";
-                
+                } else {
+                    $htmlvalue = "";
+                }
+
                 if (($htmlvalue === false) || ($goodvalue)) { // to define when change frame
                     if ($currentFrameId != $attr->fieldSet->id) {
-                        if (($currentFrameId != "") && ($attr->fieldSet->mvisibility != "H")) $changeframe = true;
+                        if (($currentFrameId != "") && ($attr->fieldSet->mvisibility != "H")) {
+                            $changeframe = true;
+                        }
                     }
                 }
             }
@@ -7231,10 +8718,11 @@ create unique index i_docir on doc(initid, revision);";
                 $frametpl = $oaf->getOption("viewtemplate");
                 $changeframe = false;
                 if ((($v + $nbimg) > 0) || $frametpl) { // one value detected
-                    $frames[$k]["frametext"] = ($oaf && $oaf->getOption("vlabel") != "none") ? mb_ucfirst($this->GetLabel($oaf->id)) : "";
+                    $frames[$k]["frametext"] = ($oaf && $oaf->getOption("vlabel") != "none")
+                        ? mb_ucfirst($this->GetLabel($oaf->id)) : "";
                     $frames[$k]["frameid"] = $oaf->id;
                     $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
-                    
+
                     $frames[$k]["tag"] = "";
                     $frames[$k]["TAB"] = false;
                     /**
@@ -7246,15 +8734,23 @@ create unique index i_docir on doc(initid, revision);";
                         $frames[$k]["TAB"] = true;
                         $ttabs[$pSet->id] = array(
                             "tabid" => $pSet->id,
-                            "tabtitle" => ($pSet->getOption("vlabel") == "none") ? '&nbsp;' : mb_ucfirst($pSet->getLabel())
+                            "tabtitle" => ($pSet->getOption("vlabel") == "none") ? '&nbsp;'
+                                : mb_ucfirst($pSet->getLabel())
                         );
                     }
                     $frames[$k]["viewtpl"] = ($frametpl != "");
-                    $frames[$k]["zonetpl"] = ($frametpl != "") ? sprintf("[ZONE FDL:VIEWTPL?id=%d&famid=%d&target=%s&zone=%s]", $this->id, $this->fromid, $target, $frametpl) : '';
-                    
+                    $frames[$k]["zonetpl"] = ($frametpl != "")
+                        ? sprintf(
+                            "[ZONE FDL:VIEWTPL?id=%d&famid=%d&target=%s&zone=%s]",
+                            $this->id,
+                            $this->fromid,
+                            $target,
+                            $frametpl
+                        ) : '';
+
                     $frames[$k]["rowspan"] = $v + 1; // for images cell
                     $frames[$k]["TABLEVALUE"] = "TABLEVALUE_$k";
-                    
+
                     $this->lay->SetBlockData($frames[$k]["TABLEVALUE"], $tableframe);
                     $frames[$k]["IMAGES"] = "IMAGES_$k";
                     $this->lay->SetBlockData($frames[$k]["IMAGES"], $tableimage);
@@ -7293,7 +8789,8 @@ create unique index i_docir on doc(initid, revision);";
                 switch ($attr->type) {
                     case "image":
                         $tableimage[$nbimg]["imgsrc"] = $htmlvalue;
-                        $tableimage[$nbimg]["itarget"] = ($action->Read("navigator", "") == "NETSCAPE") ? "_self" : "_blank";
+                        $tableimage[$nbimg]["itarget"] = ($action->Read("navigator", "") == "NETSCAPE") ? "_self"
+                            : "_blank";
                         $width = $attr->getOption("iwidth", "80px");
                         $tableimage[$nbimg]["imgwidth"] = $width;
                         if (strstr($htmlvalue, 'EXPORTFILE')) {
@@ -7310,20 +8807,22 @@ create unique index i_docir on doc(initid, revision);";
                         $tableframe[$v]["value"] = $htmlvalue;
                         break;
                 }
-                
+
                 if (($attr->fieldSet->mvisibility != "H") && ($htmlvalue !== "" || $goodvalue)) {
                     $currentFrameId = $attr->fieldSet->id;
                     $currentFrame = $attr->fieldSet;
                 }
                 // print name except image (printed otherthere)
                 if ($attr->type != "image") {
-                    $tableframe[$v]["wvalue"] = (($attr->type == "array") && ($attr->getOption("vlabel") == "up" || $attr->getOption("vlabel") == "none")) ? "1%" : "30%"; // width
+                    $tableframe[$v]["wvalue"] = (($attr->type == "array")
+                        && ($attr->getOption("vlabel") == "up"
+                            || $attr->getOption("vlabel") == "none")) ? "1%" : "30%"; // width
                     $tableframe[$v]["ndisplay"] = "inline";
-                    
+
                     if ($attr->getOption("vlabel") == "none") {
                         $tableframe[$v]["nonelabel"] = true;
                         $tableframe[$v]["normallabel"] = false;
-                    } else if ($attr->getOption("vlabel") == "up") {
+                    } elseif ($attr->getOption("vlabel") == "up") {
                         if ($attr->type == "array") { // view like none label
                             $tableframe[$v]["nonelabel"] = true;
                             $tableframe[$v]["normallabel"] = false;
@@ -7343,7 +8842,7 @@ create unique index i_docir on doc(initid, revision);";
                             }
                         }
                     }
-                    
+
                     $tableframe[$v]["attrid"] = $attr->id;
                     $tableframe[$v]["atype"] = $attr->type;
                     $tableframe[$v]["classback"] = ($attr->usefor == "O") ? "FREEDOMOpt" : "FREEDOMBack1";
@@ -7361,16 +8860,25 @@ create unique index i_docir on doc(initid, revision);";
         if ($oaf) {
             $frametpl = $oaf->getOption("viewtemplate");
         }
-        if ((($v + $nbimg) > 0) || $frametpl) // // last fieldset
-        {
-            if ($oaf) $frames[$k]["frametext"] = ($oaf->getOption("vlabel") != "none") ? mb_ucfirst($this->GetLabel($currentFrameId)) : "";
-            else $frames[$k]["frametext"] = '';
+        if ((($v + $nbimg) > 0) || $frametpl) { // // last fieldset
+            if ($oaf) {
+                $frames[$k]["frametext"] = ($oaf->getOption("vlabel") != "none")
+                    ? mb_ucfirst($this->GetLabel($currentFrameId)) : "";
+            } else {
+                $frames[$k]["frametext"] = '';
+            }
             $frames[$k]["frameid"] = $currentFrameId;
             $frames[$k]["tag"] = "";
             $frames[$k]["TAB"] = false;
             $frames[$k]["viewtpl"] = ($frametpl != "");
-            $frames[$k]["zonetpl"] = ($frametpl != "") ? sprintf("[ZONE FDL:VIEWTPL?id=%d&famid=%d&target=%s&zone=%s]", $this->id, $this->fromid, $target, $frametpl) : '';
-            
+            $frames[$k]["zonetpl"] = ($frametpl != "") ? sprintf(
+                "[ZONE FDL:VIEWTPL?id=%d&famid=%d&target=%s&zone=%s]",
+                $this->id,
+                $this->fromid,
+                $target,
+                $frametpl
+            ) : '';
+
             $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
             $pSet = (isset($currentFrame->fieldSet) ? $currentFrame->fieldSet : null);
             if ($pSet !== null && ($pSet->id != "") && ($pSet->id != Adoc::HIDDENFIELD)) {
@@ -7383,9 +8891,9 @@ create unique index i_docir on doc(initid, revision);";
             }
             $frames[$k]["rowspan"] = $v + 1; // for images cell
             $frames[$k]["TABLEVALUE"] = "TABLEVALUE_$k";
-            
+
             $this->lay->SetBlockData($frames[$k]["TABLEVALUE"], $tableframe);
-            
+
             $frames[$k]["IMAGES"] = "IMAGES_$k";
             $this->lay->SetBlockData($frames[$k]["IMAGES"], $tableimage);
             $frames[$k]["notloaded"] = false;
@@ -7403,51 +8911,71 @@ create unique index i_docir on doc(initid, revision);";
         $this->lay->Set("ONETAB", count($ttabs) > 0);
         $this->lay->Set("NOTAB", ($target == "mail") || $onlytab);
         $this->lay->Set("docid", $this->id);
-        
+
         if (count($ttabs) > 0) {
             $this->lay->Set("firsttab", false);
             $ut = $this->getUtag("lasttab");
-            if ($ut) $firstopen = $ut->comment; // last memo tab
-            else $firstopen = false;
+            if ($ut) {
+                $firstopen = $ut->comment;
+            } // last memo tab
+            else {
+                $firstopen = false;
+            }
             foreach ($ttabs as $k => $v) {
                 $oa = $this->getAttribute($k);
-                if ($oa->getOption("firstopen") == "yes") $this->lay->set("firsttab", $k);
-                if ($firstopen == $oa->id) $this->lay->Set("firsttab", $k);
+                if ($oa->getOption("firstopen") == "yes") {
+                    $this->lay->set("firsttab", $k);
+                }
+                if ($firstopen == $oa->id) {
+                    $this->lay->Set("firsttab", $k);
+                }
             }
         }
     }
+
     /**
      * write layout for thumb view
+     *
      * @templateController controller for thumb view (used in mail link)
+     *
      * @param string $target
-     * @param bool $ulink
-     * @param bool $abstract
+     * @param bool   $ulink
+     * @param bool   $abstract
      */
-    function viewthumbcard($target = "finfo", $ulink = true, $abstract = true)
+    public function viewthumbcard($target = "finfo", $ulink = true, $abstract = true)
     {
         $this->viewabstractcard($target, $ulink, $abstract);
         $this->viewprop($target, $ulink, $abstract);
         $this->lay->set("iconsrc", $this->getIcon());
         $this->lay->set("TITLE", $this->getHTMLTitle());
         $state = $this->getState();
-        if ($state != "") $this->lay->set("state", _($state));
-        else $this->lay->set("state", "");
+        if ($state != "") {
+            $this->lay->set("state", _($state));
+        } else {
+            $this->lay->set("state", "");
+        }
     }
+
     /**
      *  layout for view answers
+     *
      * @templateController controller used if use WASK in workflow
      */
-    function viewanswers( /*$target = "finfo", $ulink = true, $abstract = true*/)
+    public function viewanswers()
     {
         $err = '';
-        if (!$this->isAlive()) $err = (sprintf(_("unknow document reference '%s'") , GetHttpVars("docid")));
-        if ($err == "") $err = $this->control("wask");
+        if (!$this->isAlive()) {
+            $err = (sprintf(_("unknow document reference '%s'"), GetHttpVars("docid")));
+        }
+        if ($err == "") {
+            $err = $this->control("wask");
+        }
         if ($err) {
             $this->lay->template = $err;
             $this->lay->noparse = true;
             return;
         }
-        
+
         $answers = $this->getWasks(false);
         $tw = array();
         foreach ($answers as $ka => $ans) {
@@ -7457,9 +8985,9 @@ create unique index i_docir on doc(initid, revision);";
              */
             $wask = DocManager::getDocument($ans["waskid"]);
             $wask->set($this);
-            
+
             $taguid = array();
-            
+
             $t = array();
             foreach ($utags as $k => $v) {
                 $taguid[] = $v["uid"];
@@ -7467,9 +8995,9 @@ create unique index i_docir on doc(initid, revision);";
                 $t[$k]["label"] = $wask->getAskLabel($v["comment"]);
                 $t[$k]["ask"] = $wask->getRawValue("was_ask");
             }
-            
+
             uasort($t, array(
-                get_class($this) ,
+                get_class($this),
                 "_cmpanswers"
             ));
             $prevc = '';
@@ -7483,15 +9011,15 @@ create unique index i_docir on doc(initid, revision);";
             }
             // find user not answered
             $ru = $wask->getUsersForAcl('answer'); // all users must answered
-            $una = array_diff(array_keys($ru) , $taguid);
-            
+            $una = array_diff(array_keys($ru), $taguid);
+
             $tna = array();
-            
+
             $tuna = array();
             foreach ($una as $k => $v) {
                 $tuna[$v] = $ru[$v]["login"];
             }
-            
+
             asort($tuna, SORT_STRING);
             foreach ($tuna as $k => $v) {
                 $tna[] = array(
@@ -7500,40 +9028,45 @@ create unique index i_docir on doc(initid, revision);";
                     "ln" => $ru[$k]["lastname"]
                 );
             }
-            
+
             $this->lay->setBlockData("ANSWERS" . $wask->id, $t);
             $this->lay->setBlockData("NOTANS" . $wask->id, $tna);
             $title = $wask->getTitle();
-            
+
             $this->lay->set("asktitle", $title);
             $tw[] = array(
                 "waskid" => $wask->id,
-                "nacount" => sprintf(_("number of waiting answers %d") , count($una)) ,
-                "count" => (count($t) > 1) ? sprintf(_("%d answers") , count($t)) : sprintf(_("%d answer") , count($t)) ,
+                "nacount" => sprintf(_("number of waiting answers %d"), count($una)),
+                "count" => (count($t) > 1) ? sprintf(_("%d answers"), count($t)) : sprintf(_("%d answer"), count($t)),
                 "ask" => $wask->getRawValue("was_ask")
             );
         }
         $this->lay->setBlockData("WASK", $tw);
         $this->lay->set("docid", $this->id);
     }
+
     /**
      * to sort answer by response
+     *
      * @param string[] $a
      * @param string[] $b
+     *
      * @return int
      */
-    static function _cmpanswers($a, $b)
+    public static function _cmpanswers($a, $b)
     {
         return strcasecmp($a["comment"] . $a["uname"], $b["comment"] . $b["uname"]);
     }
+
     /**
      * @templateController controller to view document properties
      * write layout for properties view
+     *
      * @param string $target
-     * @param bool $ulink
-     * @param bool $abstract
+     * @param bool   $ulink
+     * @param bool   $abstract
      */
-    function viewproperties($target = "finfo", $ulink = true, $abstract = true)
+    public function viewproperties($target = "finfo", $ulink = true, $abstract = true)
     {
         global $action;
         $this->viewprop($target, $ulink, $abstract);
@@ -7544,40 +9077,53 @@ create unique index i_docir on doc(initid, revision);";
         $this->lay->rSet("username", str_replace(array(
             '[',
             ']'
-        ) , array(
+        ), array(
             '&#91;',
             '&#93;'
-        ) , htmlspecialchars($owner->firstname . " " . $owner->lastname)));
+        ), htmlspecialchars($owner->firstname . " " . $owner->lastname)));
         $this->lay->rSet("userid", $owner->fid);
         $this->lay->rSet("lockedby", $this->lay->get("locked"));
-        
+
         $this->lay->rSet("lockdomain", '');
-        if ($this->locked == - 1) {
+        if ($this->locked == -1) {
             $this->lay->rSet("lockedid", false);
         } else {
             $user = new Account("", abs($this->locked));
             // $this->lay->Set("locked", $user->firstname." ".$user->lastname);
             if ($this->lockdomainid) {
-                $this->lay->eSet("lockdomain", sprintf(_("in domain %s") , $this->getDocAnchor($this->lockdomainid, '_blank', true, '', false, true, true)));
+                $this->lay->eSet("lockdomain", sprintf(
+                    _("in domain %s"),
+                    $this->getDocAnchor($this->lockdomainid, '_blank', true, '', false, true, true)
+                ));
             }
             $this->lay->rSet("lockedid", $user->fid);
         }
         $state = $this->getState();
         if ($state != "") {
-            if (($this->locked == - 1) || ($this->lmodify != 'Y')) $this->lay->eSet("state", _($state));
-            else $this->lay->rSet("state", sprintf(_("current (<em>%s</em>)") , htmlspecialchars(_($state) , ENT_QUOTES)));
-        } else $this->lay->eset("state", _("no state"));
+            if (($this->locked == -1) || ($this->lmodify != 'Y')) {
+                $this->lay->eSet("state", _($state));
+            } else {
+                $this->lay->rSet("state", sprintf(_("current (<em>%s</em>)"), htmlspecialchars(_($state), ENT_QUOTES)));
+            }
+        } else {
+            $this->lay->eset("state", _("no state"));
+        }
         if (is_numeric($this->state) && ($this->state > 0) && (!$this->wid)) {
             $this->lay->rSet("freestate", $this->state);
-        } else $this->lay->rSet("freestate", false);
+        } else {
+            $this->lay->rSet("freestate", false);
+        }
         $this->lay->rSet("setname", (bool)$action->parent->Haspermission("FREEDOM_MASTER", "FREEDOM"));
         $this->lay->rSet("lname", $this->name);
         $this->lay->rSet("hasrevision", ($this->revision > 0));
         $this->lay->eSet("moddate", strftime("%Y-%m-%d %H:%M:%S", $this->revdate));
         $this->lay->eSet("moddatelabel", _("last modification date"));
-        if ($this->locked == - 1) {
-            if ($this->doctype == 'Z') $this->lay->eSet("moddatelabel", _("suppression date"));
-            else $this->lay->eSet("moddatelabel", _("revision date"));
+        if ($this->locked == -1) {
+            if ($this->doctype == 'Z') {
+                $this->lay->eSet("moddatelabel", _("suppression date"));
+            } else {
+                $this->lay->eSet("moddatelabel", _("revision date"));
+            }
         }
         if (ContextManager::getApplicationParam("CORE_LANG") == "fr_FR") { // date format depend of locale
             $this->lay->eSet("revdate", strftime("%a %d %b %Y %H:%M", $this->revdate));
@@ -7585,19 +9131,39 @@ create unique index i_docir on doc(initid, revision);";
             $this->lay->eSet("revdate", strftime("%x %T", $this->revdate));
         }
         $this->lay->eSet("version", $this->version);
-        
+
         if ((abs($this->profid) > 0) && ($this->profid != $this->id)) {
-            
-            $this->lay->rSet("profile", $this->getDocAnchor(abs($this->profid) , '_blank', true, '', false, 'latest', true));
+            $this->lay->rSet(
+                "profile",
+                $this->getDocAnchor(abs($this->profid), '_blank', true, '', false, 'latest', true)
+            );
         } else {
             if ($this->profid == 0) {
                 $this->lay->eSet("profile", _("no access control"));
             } else {
                 if ($this->dprofid == 0) {
-                    
-                    $this->lay->rSet("profile", $this->getDocAnchor(abs($this->profid) , '_blank', true, _("specific control") , false, 'latest', true));
+                    $this->lay->rSet(
+                        "profile",
+                        $this->getDocAnchor(
+                            abs($this->profid),
+                            '_blank',
+                            true,
+                            _("specific control"),
+                            false,
+                            'latest',
+                            true
+                        )
+                    );
                 } else {
-                    $this->lay->rSet("profile", $this->getDocAnchor(abs($this->dprofid) , '_blank', true, _("dynamic control") . " (" . $this->getTitle(abs($this->dprofid)) . ")", false, 'latest', true));
+                    $this->lay->rSet("profile", $this->getDocAnchor(
+                        abs($this->dprofid),
+                        '_blank',
+                        true,
+                        _("dynamic control") . " (" . $this->getTitle(abs($this->dprofid)) . ")",
+                        false,
+                        'latest',
+                        true
+                    ));
                 }
             }
         }
@@ -7609,7 +9175,6 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->prelid == 0) {
             $this->lay->eSet("prel", _("no folder"));
         } else {
-            
             $this->lay->rSet("prel", $this->getDocAnchor($this->prelid, '_blank', true, '', false, 'latest', true));
             $fldids = $this->getParentFolderIds();
             $tfld = array();
@@ -7630,31 +9195,35 @@ create unique index i_docir on doc(initid, revision);";
             $this->lay->eSet("allocate", $user->firstname . " " . $user->lastname);
             $this->lay->rSet("allocateid", $user->fid);
         }
-        
+
         $tms = $this->getAttachedTimers();
-        
+
         $this->lay->rSet("Timers", (count($tms) > 0));
     }
+
     /**
      * @templateController controller for abstract view
      * write layout for abstract view
+     *
      * @param string $target
-     * @param bool $ulink
-     * @param bool $abstract
+     * @param bool   $ulink
+     * @param bool   $abstract
      */
-    function viewabstractcard($target = "finfo", $ulink = true,
-    /* @noinspection PhpUnusedParameterInspection */
-    $abstract = false)
-    {
+    public function viewabstractcard(
+        $target = "finfo",
+        $ulink = true,
+        /* @noinspection PhpUnusedParameterInspection */
+        $abstract = false
+    ) {
         $listattr = $this->GetAbstractAttributes();
-        
+
         $tableframe = array();
-        
+
         foreach ($listattr as $i => $attr) {
             //------------------------------
             // Compute value elements
             $value = $this->getRawValue($i);
-            
+
             if (($attr->mvisibility != "H") && ($attr->mvisibility != "I")) {
                 $dValue = '';
                 switch ($attr->type) {
@@ -7671,12 +9240,12 @@ create unique index i_docir on doc(initid, revision);";
 
                     default:
                         $dValue = $this->getHtmlValue($listattr[$i], $value, $target, $ulink = 1, -1, true, true);
-                        
+
                         break;
                 }
                 if ($dValue !== '') {
                     $tableframe[] = array(
-                        "name" => $attr->getLabel() ,
+                        "name" => $attr->getLabel(),
                         "aid" => $attr->id,
                         "value" => $dValue
                     );
@@ -7685,13 +9254,15 @@ create unique index i_docir on doc(initid, revision);";
         }
         $this->lay->SetBlockData("TABLEVALUE", $tableframe);
     }
+
     /**
      * set V_<attrid> and L_<attrid> keys for current layout
      * the keys are in uppercase letters
-     * @param string $target HTML target for links
-     * @param bool $ulink set to true to have HTML hyperlink when it is possible
-     * @param bool $abstract set to true to restrict to abstract attributes
-     * @param bool $viewhidden set to true to return also hidden attribute (visibility H)
+     *
+     * @param string $target     HTML target for links
+     * @param bool   $ulink      set to true to have HTML hyperlink when it is possible
+     * @param bool   $abstract   set to true to restrict to abstract attributes
+     * @param bool   $viewhidden set to true to return also hidden attribute (visibility H)
      */
     final public function viewattr($target = "_self", $ulink = true, $abstract = false, $viewhidden = false)
     {
@@ -7701,16 +9272,18 @@ create unique index i_docir on doc(initid, revision);";
             $value = chop($this->getRawValue($v->id));
             //------------------------------
             // Set the table value elements
-            $this->lay->Set("S_" . strtoupper($v->id) , ($value != ""));
+            $this->lay->Set("S_" . strtoupper($v->id), ($value != ""));
             // don't see  non abstract if not
-            if ((($v->mvisibility == "H") && (!$viewhidden)) || ($v->mvisibility == "I") || (($abstract) && (!$v->isInAbstract))) {
-                $this->lay->Set("V_" . strtoupper($v->id) , "");
-                $this->lay->Set("L_" . strtoupper($v->id) , "");
+            if ((($v->mvisibility == "H") && (!$viewhidden)) || ($v->mvisibility == "I")
+                || (($abstract)
+                    && (!$v->isInAbstract))) {
+                $this->lay->Set("V_" . strtoupper($v->id), "");
+                $this->lay->Set("L_" . strtoupper($v->id), "");
             } else {
                 if ($target == "ooo") {
                     if ($v->type == "array") {
                         $tva = $this->getArrayRawValues($v->id);
-                        
+
                         $tmkeys = array();
                         foreach ($tva as $kindex => $kvalues) {
                             foreach ($kvalues as $kaid => $va) {
@@ -7724,18 +9297,17 @@ create unique index i_docir on doc(initid, revision);";
                                     $values = explode("<BR>", $va);
                                     $ovalues = array();
                                     foreach ($values as $ka => $vaa) {
-                                        $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($oa, $vaa) , ENT_QUOTES);
+                                        $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($oa, $vaa), ENT_QUOTES);
                                     }
                                     //print_r(array($oa->id=>$ovalues));
-                                    $tmkeys[$kindex]["V_" . strtoupper($kaid) ] = $ovalues;
+                                    $tmkeys[$kindex]["V_" . strtoupper($kaid)] = $ovalues;
                                     $oa->setOption("multiple", "yes"); //  needto have values like first level
-                                    
                                 } else {
                                     $oooValue = $this->GetOOoValue($oa, $va);
                                     if ($oa->type !== "htmltext") {
                                         $oooValue = htmlspecialchars_decode($oooValue, ENT_QUOTES);
                                     }
-                                    $tmkeys[$kindex]["V_" . strtoupper($kaid) ] = $oooValue;
+                                    $tmkeys[$kindex]["V_" . strtoupper($kaid)] = $oooValue;
                                 }
                             }
                         }
@@ -7743,82 +9315,103 @@ create unique index i_docir on doc(initid, revision);";
                         $this->lay->setRepeatable($tmkeys);
                     } else {
                         $ovalue = $this->GetOOoValue($v, $value);
-                        if ($v->isMultiple()) $ovalue = str_replace("<text:tab/>", ', ', $ovalue);
-                        $this->lay->Set("V_" . strtoupper($v->id) , $ovalue);
+                        if ($v->isMultiple()) {
+                            $ovalue = str_replace("<text:tab/>", ', ', $ovalue);
+                        }
+                        $this->lay->Set("V_" . strtoupper($v->id), $ovalue);
                         // print_r(array("V_".strtoupper($v->id)=>$this->GetOOoValue($v, $value),"raw"=>$value));
                         if ((!$v->inArray()) && ($v->getOption("multiple") == "yes")) {
                             $values = $this->getMultipleRawValues($v->id);
                             $ovalues = array();
                             $v->setOption("multiple", "no");
                             foreach ($values as $ka => $va) {
-                                $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($v, $va) , ENT_QUOTES);
+                                $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($v, $va), ENT_QUOTES);
                             }
                             $v->setOption("multiple", "yes");
                             //print_r(array("V_".strtoupper($v->id)=>$ovalues,"raw"=>$values));
-                            $this->lay->setColumn("V_" . strtoupper($v->id) , $ovalues);
+                            $this->lay->setColumn("V_" . strtoupper($v->id), $ovalues);
                         }
                     }
-                } else $this->lay->Set("V_" . strtoupper($v->id) , $this->GetHtmlValue($v, $value, $target, $ulink));
-                $this->lay->Set("L_" . strtoupper($v->id) , $v->getLabel());
+                } else {
+                    $this->lay->Set("V_" . strtoupper($v->id), $this->GetHtmlValue($v, $value, $target, $ulink));
+                }
+                $this->lay->Set("L_" . strtoupper($v->id), $v->getLabel());
             }
         }
         $listattr = $this->GetFieldAttributes();
         // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
         foreach ($listattr as $k => $v) {
-            $this->lay->Set("L_" . strtoupper($v->id) , $v->getLabel());
+            $this->lay->Set("L_" . strtoupper($v->id), $v->getLabel());
         }
     }
+
     /**
      * set properties keys in current layout
      *  the keys are in uppercase letters
      * produce alse V_TITLE key to have a HTML link to document (for HTML layout)
+     *
      * @param string $target
-     * @param bool $ulink for the V_TITLE key
-     * @param bool $abstract unused
+     * @param bool   $ulink    for the V_TITLE key
+     * @param bool   $abstract unused
      */
-    final public function viewprop($target = "_self", $ulink = true,
-    /* @noinspection PhpUnusedParameterInspection */
-    $abstract = false)
-    {
+    final public function viewprop(
+        $target = "_self",
+        $ulink = true,
+        /* @noinspection PhpUnusedParameterInspection */
+        $abstract = false
+    ) {
         foreach ($this->fields as $k => $v) {
-            if ($target == 'ooo') $this->lay->Set(strtoupper($v) , ($this->$v === null) ? false : str_replace(array(
-                "<",
-                ">",
-                '&'
-            ) , array(
-                "&lt;",
-                "&gt;",
-                "&amp;"
-            ) , $this->$v));
-            else $this->lay->Set(strtoupper($v) , ($this->$v === null) ? false : $this->$v);
+            if ($target == 'ooo') {
+                $this->lay->Set(strtoupper($v), ($this->$v === null)
+                    ? false
+                    : str_replace(array(
+                        "<",
+                        ">",
+                        '&'
+                    ), array(
+                        "&lt;",
+                        "&gt;",
+                        "&amp;"
+                    ), $this->$v));
+            } else {
+                $this->lay->Set(strtoupper($v), ($this->$v === null) ? false : $this->$v);
+            }
         }
-        if ($target == 'ooo') $this->lay->Set("V_TITLE", $this->lay->get("TITLE"));
-        else $this->lay->Set("V_TITLE", $this->getDocAnchor($this->id, $target, $ulink, false, false));
+        if ($target == 'ooo') {
+            $this->lay->Set("V_TITLE", $this->lay->get("TITLE"));
+        } else {
+            $this->lay->Set("V_TITLE", $this->getDocAnchor($this->id, $target, $ulink, false, false));
+        }
     }
+
     /**
      * affect a logical name that can be use as unique reference of a document independant of database
-     * @param string $name new logical name
-     * @param bool $reset set to true to accept change
+     *
+     * @param string $name  new logical name
+     * @param bool   $reset set to true to accept change
+     *
      * @deprecated use ::setLogicalName instead
      * @return string error message if cannot be
      */
-    function setLogicalIdentificator($name, $reset = false)
+    public function setLogicalIdentificator($name, $reset = false)
     {
         deprecatedFunction();
         return $this->setLogicalName($name, $reset);
     }
+
     /**
      * Affect a logical name that can be use as unique reference of a document independant of database.
      *
      * The logical name is affected only if it's not an empty string or NULL:
      * if empty or NULL, then the affectation is silently bypassed.
      *
-     * @param string $name new logical name
-     * @param bool $reset set to true to accept change
-     * @param bool $verifyOnly if true only verify syntax and unicity
+     * @param string $name       new logical name
+     * @param bool   $reset      set to true to accept change
+     * @param bool   $verifyOnly if true only verify syntax and unicity
+     *
      * @return string error message if cannot be
      */
-    function setLogicalName($name, $reset = false, $verifyOnly = false)
+    public function setLogicalName($name, $reset = false, $verifyOnly = false)
     {
         if ($name === "" || $name === null) {
             return '';
@@ -7826,53 +9419,77 @@ create unique index i_docir on doc(initid, revision);";
         if (!CheckDoc::isWellformedLogicalName($name)) {
             if (!$this->isAffected()) {
                 $this->name = $name; // affect to be controlled in add and return error also
-                
             }
-            return (sprintf(_("name must begin with a letter and contain only alphanumeric characters or - and _: invalid  [%s]") , $name));
+            return (sprintf(
+                _("name must begin with a letter and contain only alphanumeric characters or - and _: invalid  [%s]"),
+                $name
+            ));
         } elseif (!$verifyOnly && !$this->isAffected()) {
             $this->name = $name;
-            
+
             return "";
         } elseif (!$verifyOnly && $this->isAffected() && ($this->name != "") && ($this->doctype != 'Z') && !$reset) {
-            return (sprintf(_("Logical name %s already set for %s. Use reset parameter to overhide it") , $name, $this->title));
+            return (sprintf(
+                _("Logical name %s already set for %s. Use reset parameter to overhide it"),
+                $name,
+                $this->title
+            ));
         } else {
             // verify not use yet
             $d = DocManager::getRawDocument($name);
 
             if ($d && $d["doctype"] != 'Z') {
-                return sprintf(_("Logical name %s already use in document %s") , $name, $d["title"]);
+                return sprintf(_("Logical name %s already use in document %s"), $name, $d["title"]);
             } elseif (!$verifyOnly) {
-                
                 if ($this->name) {
-                    DbManager::query( sprintf("UPDATE docname SET name = '%s' WHERE name = '%s'", pg_escape_string($name) , pg_escape_string($this->name)));
+                    DbManager::query(sprintf(
+                        "UPDATE docname SET name = '%s' WHERE name = '%s'",
+                        pg_escape_string($name),
+                        pg_escape_string($this->name)
+                    ));
                 }
-		$this->name = $name;
-                DbManager::query( sprintf("update %s set name='%s' where initid=%d", pg_escape_string($this->dbtable) , pg_escape_string($name) , $this->initid));
-                DbManager::query( sprintf("select name from docname where id=%d", $this->id) , $dbdocname, true, true);
-                
+                $this->name = $name;
+                DbManager::query(sprintf(
+                    "update %s set name='%s' where initid=%d",
+                    pg_escape_string($this->dbtable),
+                    pg_escape_string($name),
+                    $this->initid
+                ));
+                DbManager::query(sprintf("select name from docname where id=%d", $this->id), $dbdocname, true, true);
+
                 if (!$dbdocname) {
-                    $sql = sprintf("delete from docname where name='%s';insert into docname (id,fromid,name) select id, fromid, name from docread where name='%s' and locked != -1", pg_escape_string($name) , pg_escape_string($name));
-                    DbManager::query( $sql);
+                    $sql = sprintf(
+                        "delete from docname where name='%s';insert into docname (id,fromid,name) select id, fromid, name from docread where name='%s' and locked != -1",
+                        pg_escape_string($name),
+                        pg_escape_string($name)
+                    );
+                    DbManager::query($sql);
                 }
             }
         }
         return "";
     }
+
     /**
      * value for edit interface
+     *
      * @templateController default control for HTML form document edition
+     *
      * @param string $target
-     * @param bool $ulink
-     * @param bool $abstract
-     * @param bool $onlyopt if true only optional attributes are displayed
+     * @param bool   $ulink
+     * @param bool   $abstract
+     * @param bool   $onlyopt if true only optional attributes are displayed
+     *
      * @throws \Dcp\Core\Exception
      */
-    function editbodycard(
-    /* @noinspection PhpUnusedParameterInspection */
-    $target = "_self", $ulink = true, $abstract = false, $onlyopt = false)
-    {
-        include_once ("FDL/editutil.php");
-        
+    public function editbodycard(
+        $target = "_self",
+        $ulink = true,
+        $abstract = false,
+        $onlyopt = false
+    ) {
+        include_once("FDL/editutil.php");
+
         $docid = $this->id; // document to edit
         // ------------------------------------------------------
         //  new or modify ?
@@ -7880,16 +9497,18 @@ create unique index i_docir on doc(initid, revision);";
             // new document
             if ($this->fromid > 0) {
                 $cdoc = $this->getFamilyDocument();
-                $this->lay->Set("title", sprintf(_("new %s") , $cdoc->getHtmlTitle()));
+                $this->lay->Set("title", sprintf(_("new %s"), $cdoc->getHtmlTitle()));
             }
         } else {
             // when modification
-            
+
             /**
              * @var Action $action
              */
             global $action;
-            if (!$this->isAlive()) $action->ExitError(_("document not referenced"));
+            if (!$this->isAlive()) {
+                $action->ExitError(_("document not referenced"));
+            }
             $this->lay->Set("title", $this->getHtmlTitle());
         }
         $this->lay->Set("id", $docid);
@@ -7901,7 +9520,7 @@ create unique index i_docir on doc(initid, revision);";
         // ------------------------------------------------------
         $frames = array();
         $listattr = $this->GetInputAttributes($onlyopt);
-        
+
         $k = 0; // number of frametext
         $v = 0; // number of value in one frametext
         $currentFrameId = "";
@@ -7919,19 +9538,21 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($listattr as $i => $attr) {
             $iattr++;
             // Compute value elements
-            if ($docid > 0) $value = $this->getRawValue($attr->id);
-            else {
+            if ($docid > 0) {
+                $value = $this->getRawValue($attr->id);
+            } else {
                 $value = $this->getRawValue($attr->id);
                 //	$value = $this->GetValueMethod($this->GetValue($listattr[$i]->id));
-                
             }
             if (!$attr->fieldSet) {
-                addWarningMsg(sprintf(_("unknow set for attribute %s %s") , $attr->id, $attr->getLabel()));
+                addWarningMsg(sprintf(_("unknow set for attribute %s %s"), $attr->id, $attr->getLabel()));
                 continue;
             }
-            
+
             if ($currentFrameId != $attr->fieldSet->id) {
-                if ($currentFrameId != "") $changeframe = true;
+                if ($currentFrameId != "") {
+                    $changeframe = true;
+                }
             }
             if ($changeframe) { // to generate final frametext
                 $changeframe = false;
@@ -7940,25 +9561,35 @@ create unique index i_docir on doc(initid, revision);";
                  */
                 $oaf = $this->getAttribute($currentFrameId);
                 if ($v > 0 || $frametpl) { // one value detected
-                    if ($oaf->getOption("vlabel") == "none") $currentFrameText = '';
-                    else $currentFrameText = mb_ucfirst($oaf->GetLabel());
-                    
+                    if ($oaf->getOption("vlabel") == "none") {
+                        $currentFrameText = '';
+                    } else {
+                        $currentFrameText = mb_ucfirst($oaf->GetLabel());
+                    }
+
                     $frames[$k]["frametext"] = $currentFrameText;
                     $frames[$k]["frameid"] = $oaf->id;
                     $frames[$k]["tag"] = "";
                     $frames[$k]["TAB"] = false;
                     $frames[$k]["edittpl"] = ($frametpl != "");
-                    $frames[$k]["zonetpl"] = ($frametpl != "") ? sprintf("[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]", $this->id, $this->fromid, $frametpl) : '';
+                    $frames[$k]["zonetpl"] = ($frametpl != "") ? sprintf(
+                        "[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]",
+                        $this->id,
+                        $this->fromid,
+                        $frametpl
+                    ) : '';
                     $oaf = $this->getAttribute($oaf->id);
                     $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
                     $frames[$k]["ehelp"] = ($help && $help->isAlive()) ? $help->getAttributeHelpUrl($oaf->id) : false;
                     $frames[$k]["ehelpid"] = ($help && $help->isAlive()) ? $help->id : false;
-                    if ($oaf && $oaf->fieldSet && ($oaf->fieldSet->id != "") && ($oaf->fieldSet->id != Adoc::HIDDENFIELD)) {
+                    if ($oaf && $oaf->fieldSet && ($oaf->fieldSet->id != "")
+                        && ($oaf->fieldSet->id != Adoc::HIDDENFIELD)) {
                         $frames[$k]["tag"] = "TAG" . $oaf->fieldSet->id;
                         $frames[$k]["TAB"] = true;
                         $ttabs[$oaf->fieldSet->id] = array(
                             "tabid" => $oaf->fieldSet->id,
-                            "tabtitle" => ($oaf->fieldSet->getOption("vlabel") == "none") ? '&nbsp;' : mb_ucfirst($oaf->fieldSet->getLabel())
+                            "tabtitle" => ($oaf->fieldSet->getOption("vlabel") == "none") ? '&nbsp;'
+                                : mb_ucfirst($oaf->fieldSet->getLabel())
                         );
                     }
                     $frames[$k]["TABLEVALUE"] = "TABLEVALUE_$k";
@@ -7969,11 +9600,12 @@ create unique index i_docir on doc(initid, revision);";
                 }
                 $v = 0;
             }
-            
+
             $currentFrameId = $listattr[$i]->fieldSet->id;
             $currentFrame = $attr->fieldSet;
-            
-            if ($currentFrame->mvisibility == 'R' || $currentFrame->mvisibility == 'H' || $currentFrame->mvisibility == 'I') {
+
+            if ($currentFrame->mvisibility == 'R' || $currentFrame->mvisibility == 'H'
+                || $currentFrame->mvisibility == 'I') {
                 $frametpl = '';
             } else {
                 $frametpl = $currentFrame->getOption("edittemplate");
@@ -7986,9 +9618,12 @@ create unique index i_docir on doc(initid, revision);";
                     if ($listattr[$i]->type != "array") {
                         $thidden[$ih]["hname"] = "_" . $listattr[$i]->id;
                         $thidden[$ih]["hid"] = $listattr[$i]->id;
-                        if (($value == "") && ($this->id == 0)) $thidden[$ih]["hvalue"] = GetHttpVars($listattr[$i]->id);
-                        else $thidden[$ih]["hvalue"] = chop(htmlentities($value, ENT_COMPAT, "UTF-8"));
-                        
+                        if (($value == "") && ($this->id == 0)) {
+                            $thidden[$ih]["hvalue"] = GetHttpVars($listattr[$i]->id);
+                        } else {
+                            $thidden[$ih]["hvalue"] = chop(htmlentities($value, ENT_COMPAT, "UTF-8"));
+                        }
+
                         $thidden[$ih]["inputtype"] = getHtmlInput($this, $listattr[$i], $value, "", "", true);
                     }
                     $ih++;
@@ -7997,26 +9632,35 @@ create unique index i_docir on doc(initid, revision);";
                     $label = $listattr[$i]->getLabel();
                     $tableframe[$v]["attrid"] = $listattr[$i]->id;
                     $tableframe[$v]["name"] = mb_ucfirst($label);
-                    
-                    if ($listattr[$i]->needed) $tableframe[$v]["labelclass"] = "FREEDOMLabelNeeded";
-                    else $tableframe[$v]["labelclass"] = "FREEDOMLabel";
+
+                    if ($listattr[$i]->needed) {
+                        $tableframe[$v]["labelclass"] = "FREEDOMLabelNeeded";
+                    } else {
+                        $tableframe[$v]["labelclass"] = "FREEDOMLabel";
+                    }
                     $tableframe[$v]["aneeded"] = $listattr[$i]->needed;
                     $elabel = $listattr[$i]->getoption("elabel");
                     $elabel = str_replace("'", "&rsquo;", $elabel);
                     $tableframe[$v]["elabel"] = mb_ucfirst(str_replace('"', "&rquot;", $elabel));
-                    $tableframe[$v]["aehelp"] = ($help && $help->isAlive()) ? $help->getAttributeHelpUrl($listattr[$i]->id) : false;
+                    $tableframe[$v]["aehelp"] = ($help && $help->isAlive())
+                        ? $help->getAttributeHelpUrl($listattr[$i]->id) : false;
                     $tableframe[$v]["aehelpid"] = ($help && $help->isAlive()) ? $help->id : false;
-                    
+
                     $tableframe[$v]["multiple"] = ($attr->getOption("multiple") == "yes") ? "true" : "false";
                     $tableframe[$v]["atype"] = $attr->type;
                     $tableframe[$v]["name"] = mb_ucfirst($label);
                     $tableframe[$v]["classback"] = ($attr->usefor == "O") ? "FREEDOMOpt" : "FREEDOMBack1";
-                    
+
                     $tableframe[$v]["SINGLEROW"] = true;
-                    
+
                     $vlabel = $listattr[$i]->getOption("vlabel");
-                    if ((($listattr[$i]->type == "array") && ($vlabel != 'left')) || (($listattr[$i]->type == "htmltext") && ($vlabel != 'left')) || ($vlabel == 'up') || ($vlabel == 'none')) $tableframe[$v]["SINGLEROW"] = false;
-                    
+                    if ((($listattr[$i]->type == "array") && ($vlabel != 'left'))
+                        || (($listattr[$i]->type == "htmltext") && ($vlabel != 'left'))
+                        || ($vlabel == 'up')
+                        || ($vlabel == 'none')) {
+                        $tableframe[$v]["SINGLEROW"] = false;
+                    }
+
                     $tableframe[$v]["viewlabel"] = (($listattr[$i]->type != "array") && ($vlabel != 'none'));
                     $edittpl = $listattr[$i]->getOption("edittemplate");
                     if ($edittpl) {
@@ -8027,7 +9671,12 @@ create unique index i_docir on doc(initid, revision);";
                                 $tableframe[$v]["SINGLEROW"] = false;
                                 $tableframe[$v]["viewlabel"] = false;
                             }
-                            $tableframe[$v]["inputtype"] = sprintf("[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]", $this->id, $this->fromid, $edittpl);
+                            $tableframe[$v]["inputtype"] = sprintf(
+                                "[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]",
+                                $this->id,
+                                $this->fromid,
+                                $edittpl
+                            );
                         }
                     } else {
                         $tableframe[$v]["inputtype"] = getHtmlInput($this, $listattr[$i], $value);
@@ -8045,18 +9694,26 @@ create unique index i_docir on doc(initid, revision);";
                 $frametpl = $oaf->getOption("edittemplate");
             }
             if ($v > 0 || $frametpl) { // latest fieldset
-                if ($oaf->getOption("vlabel") == "none") $currentFrameText = '';
-                else $currentFrameText = mb_ucfirst($oaf->GetLabel());
+                if ($oaf->getOption("vlabel") == "none") {
+                    $currentFrameText = '';
+                } else {
+                    $currentFrameText = mb_ucfirst($oaf->GetLabel());
+                }
                 $frames[$k]["frametext"] = $currentFrameText;
                 $frames[$k]["frameid"] = $oaf->id;
                 $frames[$k]["TABLEVALUE"] = "TABLEVALUE_$k";
                 $frames[$k]["tag"] = "";
                 $frames[$k]["TAB"] = false;
                 $frames[$k]["edittpl"] = ($frametpl != "");
-                $frames[$k]["zonetpl"] = ($frametpl != "") ? sprintf("[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]", $this->id, $this->fromid, $frametpl) : '';
+                $frames[$k]["zonetpl"] = ($frametpl != "") ? sprintf(
+                    "[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]",
+                    $this->id,
+                    $this->fromid,
+                    $frametpl
+                ) : '';
                 $frames[$k]["ehelp"] = ($help && $help->isAlive()) ? $help->getAttributeHelpUrl($oaf->id) : false;
                 $frames[$k]["ehelpid"] = ($help && $help->isAlive()) ? $help->id : false;
-                
+
                 $oaf = $this->getAttribute($oaf->id);
                 $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
                 if (($currentFrame->fieldSet->id != "") && ($currentFrame->fieldSet->id != Adoc::HIDDENFIELD)) {
@@ -8064,7 +9721,8 @@ create unique index i_docir on doc(initid, revision);";
                     $frames[$k]["TAB"] = true;
                     $ttabs[$currentFrame->fieldSet->id] = array(
                         "tabid" => $currentFrame->fieldSet->id,
-                        "tabtitle" => ($currentFrame->fieldSet->getOption("vlabel") == "none") ? '&nbsp;' : mb_ucfirst($currentFrame->fieldSet->getLabel())
+                        "tabtitle" => ($currentFrame->fieldSet->getOption("vlabel") == "none") ? '&nbsp;'
+                            : mb_ucfirst($currentFrame->fieldSet->getLabel())
                     );
                 }
                 $this->lay->SetBlockData($frames[$k]["TABLEVALUE"], $tableframe);
@@ -8079,78 +9737,102 @@ create unique index i_docir on doc(initid, revision);";
         if (count($ttabs) > 0) {
             $this->lay->Set("firsttab", false);
             $ut = $this->getUtag("lasttab");
-            if ($ut) $firstopen = $ut->comment; // last memo tab
-            else $firstopen = false;
-            
+            if ($ut) {
+                $firstopen = $ut->comment;
+            } // last memo tab
+            else {
+                $firstopen = false;
+            }
+
             foreach ($ttabs as $k => $v) {
                 $oa = $this->getAttribute($k);
-                if ($oa->getOption("firstopen") == "yes") $this->lay->Set("firsttab", $k);
-                if ($firstopen == $oa->id) $this->lay->Set("firsttab", $k);
+                if ($oa->getOption("firstopen") == "yes") {
+                    $this->lay->Set("firsttab", $k);
+                }
+                if ($firstopen == $oa->id) {
+                    $this->lay->Set("firsttab", $k);
+                }
             }
         }
     }
+
     /**
      * add V_<<ATTRID> keys for HTML form in current layout
      * add also L_<ATTRID> for attribute labels
      * create input fields for attribute document
+     *
      * @param bool $withtd set to false if don't wan't <TD> tag in the middle bet<een fields and button
      */
     final public function editattr($withtd = true)
     {
-        
-        include_once ("FDL/editutil.php");
+        include_once("FDL/editutil.php");
         $listattr = $this->GetNormalAttributes();
         // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
         foreach ($listattr as $k => $v) {
             //------------------------------
             // Set the table value elements
             $value = chop($this->getRawValue($v->id));
-            if ($v->mvisibility == "R") $v->mvisibility = "H"; // don't see in edit mode
-            $this->lay->Set("V_" . strtoupper($v->id) , getHtmlInput($this, $v, $value, "", "", (!$withtd)));
-            if ($v->needed == "Y") $this->lay->Set("L_" . strtoupper($v->id) , "<B>" . $v->getLabel() . "</B>");
-            else $this->lay->Set("L_" . strtoupper($v->id) , $v->getLabel());
-            $this->lay->Set("W_" . strtoupper($v->id) , ($v->mvisibility != "H"));
+            if ($v->mvisibility == "R") {
+                $v->mvisibility = "H";
+            } // don't see in edit mode
+            $this->lay->Set("V_" . strtoupper($v->id), getHtmlInput($this, $v, $value, "", "", (!$withtd)));
+            if ($v->needed == "Y") {
+                $this->lay->Set("L_" . strtoupper($v->id), "<B>" . $v->getLabel() . "</B>");
+            } else {
+                $this->lay->Set("L_" . strtoupper($v->id), $v->getLabel());
+            }
+            $this->lay->Set("W_" . strtoupper($v->id), ($v->mvisibility != "H"));
         }
-        
+
         $listattr = $this->GetFieldAttributes();
         // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
         foreach ($listattr as $k => $v) {
-            $this->lay->Set("L_" . strtoupper($v->id) , $v->getLabel());
+            $this->lay->Set("L_" . strtoupper($v->id), $v->getLabel());
         }
-        
+
         $this->setFamidInLayout();
     }
+
     /**
      * add IDFAM_<famNAme> keys in current layout
      */
     final public function setFamidInLayout()
     {
         // add IDFAM_ attribute in layout
-        DbManager::query( "select id, name from docfam", $famids);
+        DbManager::query("select id, name from docfam", $famids);
 
         foreach ($famids as $famid) {
-            $k=$famid["name"];
-            $v=$famid["id"];
+            $k = $famid["name"];
+            $v = $famid["id"];
             $this->lay->set("IDFAM_$k", $v);
         }
     }
+
     /**
      * get vault file name or server path of filename
+     *
      * @param string $attrid identifier of file attribute
-     * @param bool $path false return original file name (basename) , true the real path
-     * @param int $index in case of array of files
+     * @param bool   $path   false return original file name (basename) , true the real path
+     * @param int    $index  in case of array of files
+     *
      * @return string the file name of the attribute
      */
-    final public function vault_filename($attrid, $path = false, $index = - 1)
+    final public function vault_filename($attrid, $path = false, $index = -1)
     {
-        if ($index == - 1) $fileid = $this->getRawValue($attrid);
-        else $fileid = $this->getMultipleRawValues($attrid, '', $index);
+        if ($index == -1) {
+            $fileid = $this->getRawValue($attrid);
+        } else {
+            $fileid = $this->getMultipleRawValues($attrid, '', $index);
+        }
         return $this->vault_filename_fromvalue($fileid, $path);
     }
+
     /**
      * get vault file name or server path of filename
+     *
      * @param string $fileid value of file attribute
-     * @param bool $path false return original file name (basename) , true the real path
+     * @param bool   $path   false return original file name (basename) , true the real path
+     *
      * @return string the file name of the attribute
      */
     final public function vault_filename_fromvalue($fileid, $path = false)
@@ -8163,37 +9845,46 @@ create unique index i_docir on doc(initid, revision);";
              * @var vaultFileInfo $info
              */
             if ($vf->Show($reg[2], $info) == "") {
-                if ($path) $fname = $info->path;
-                else $fname = $info->name;
+                if ($path) {
+                    $fname = $info->path;
+                } else {
+                    $fname = $info->name;
+                }
             }
         }
         return $fname;
     }
+
     /**
      * get vault file name or server path of filename
+     *
      * @param NormalAttribute $attr identifier of file attribute
+     *
      * @return array of properties :
-     [0]=>
-     [name] => TP_Users.pdf
-     [size] => 179435
-     [public_access] =>
-     [mime_t] => PDF document, version 1.4
-     [mime_s] => application/pdf
-     [cdate] => 24/12/2010 11:44:36
-     [mdate] => 24/12/2010 11:44:41
-     [adate] => 25/03/2011 08:13:34
-     [teng_state] => 1
-     [teng_lname] => pdf
-     [teng_vid] => 15
-     [teng_comment] =>
-     [path] => /var/www/eric/vaultfs/1/16.pdf
-     [vid] => 16
+     * [0]=>
+     * [name] => TP_Users.pdf
+     * [size] => 179435
+     * [public_access] =>
+     * [mime_t] => PDF document, version 1.4
+     * [mime_s] => application/pdf
+     * [cdate] => 24/12/2010 11:44:36
+     * [mdate] => 24/12/2010 11:44:41
+     * [adate] => 25/03/2011 08:13:34
+     * [teng_state] => 1
+     * [teng_lname] => pdf
+     * [teng_vid] => 15
+     * [teng_comment] =>
+     * [path] => /var/www/eric/vaultfs/1/16.pdf
+     * [vid] => 16
      */
     final public function vault_properties(NormalAttribute $attr)
     {
-        if ($attr->inArray()) $fileids = $this->getMultipleRawValues($attr->id);
-        else $fileids[] = $this->getRawValue($attr->id);
-        
+        if ($attr->inArray()) {
+            $fileids = $this->getMultipleRawValues($attr->id);
+        } else {
+            $fileids[] = $this->getRawValue($attr->id);
+        }
+
         $tinfo = array();
         foreach ($fileids as $k => $fileid) {
             if (preg_match(PREGEXPFILE, $fileid, $reg)) {
@@ -8208,27 +9899,37 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         }
-        
+
         return $tinfo;
     }
+
     /**
      * return a property of vault file value
+     *
      * @param string $filesvalue the file value : like application/pdf|12345
-     * @param string $key one of property id_file, name, size, public_access, mime_t, mime_s, cdate, mdate, adate, teng_state, teng_lname, teng_vid, teng_comment, path
+     * @param string $key        one of property id_file, name, size, public_access, mime_t, mime_s, cdate, mdate, adate, teng_state, teng_lname, teng_vid, teng_comment, path
      * @param string $returnType if "array" return indexed array else return VaultFileInfo object
+     *
      * @return array|string|VaultFileInfo value of property or array of all properties if no key
      */
     final public function getFileInfo($filesvalue, $key = "", $returnType = "array")
     {
-        if (!is_string($filesvalue)) return false;
+        if (!is_string($filesvalue)) {
+            return false;
+        }
         if (preg_match(PREGEXPFILE, $filesvalue, $reg)) {
-            include_once ("FDL/Lib.Vault.php");
+            include_once("FDL/Lib.Vault.php");
             $vid = $reg[2];
             $info = vault_properties($vid);
-            if (!$info) return false;
+            if (!$info) {
+                return false;
+            }
             if ($key != "") {
-                if (isset($info->$key)) return $info->$key;
-                else return sprintf(_("unknow %s file property") , $key);
+                if (isset($info->$key)) {
+                    return $info->$key;
+                } else {
+                    return sprintf(_("unknow %s file property"), $key);
+                }
             } else {
                 if ($returnType === "array") {
                     return get_object_vars($info);
@@ -8239,18 +9940,26 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $key ? '' : array();
     }
+
     /**
      *
-     * @param string &$xml content xml (empty if $outfile is not empty
-     * @param boolean $withfile include files in base64 encoded
-     * @param string $outfile if not empty means content is put into this file
-     * @param bool $wident set true to ident xml
-     * @param bool $flat set to true if don't want structure
-     * @param array $exportAttributes to export only a part of attributes
+     * @param string  &$xml             content xml (empty if $outfile is not empty
+     * @param boolean $withfile         include files in base64 encoded
+     * @param string  $outfile          if not empty means content is put into this file
+     * @param bool    $wident           set true to ident xml
+     * @param bool    $flat             set to true if don't want structure
+     * @param array   $exportAttributes to export only a part of attributes
+     *
      * @return string error message (empty if no error)
      */
-    public function exportXml(&$xml, $withfile = false, $outfile = "", $wident = true, $flat = false, $exportAttributes = array())
-    {
+    public function exportXml(
+        &$xml,
+        $withfile = false,
+        $outfile = "",
+        $wident = true,
+        $flat = false,
+        $exportAttributes = array()
+    ) {
         try {
             $exd = new Dcp\ExportXmlDocument();
             $exd->setDocument($this);
@@ -8259,15 +9968,14 @@ create unique index i_docir on doc(initid, revision);";
             $exd->setStructureAttributes(!$flat);
             $exd->setIncludeSchemaReference(!$flat);
             $exd->setAttributeToExport($exportAttributes);
-            
+
 
             if ($outfile) {
                 $exd->writeTo($outfile);
             } else {
                 $xml = $exd->getXml();
             }
-        }
-        catch(Dcp\Exception $e) {
+        } catch (Dcp\Exception $e) {
             errorLogException($e);
             return $e->getMessage();
         }
@@ -8276,6 +9984,7 @@ create unique index i_docir on doc(initid, revision);";
 
     /**
      * define custom title used to set title propert when update or create document
+     *
      * @api hook called in refresh title
      * this method can be redefined in child family to compose specific title
      */
@@ -8283,8 +9992,10 @@ create unique index i_docir on doc(initid, revision);";
     {
         return $this->title;
     }
+
     /**
      * define custom title used to set title propert when update or create document
+     *
      * @deprecated This hook may be replaced by getCustomTitle in the the next version.
      * this method can be redefined in child family to compose specific title
      */
@@ -8292,10 +10003,12 @@ create unique index i_docir on doc(initid, revision);";
     {
         return $this->title;
     }
+
     /**
      * @deprecated not needed until 2.0 version
+     *
      * @param string $nameId
-     * @param $nameTitle
+     * @param        $nameTitle
      */
     final public function refreshDocTitle($nameId, $nameTitle)
     {
@@ -8303,56 +10016,84 @@ create unique index i_docir on doc(initid, revision);";
         // gettitle(D,SI_IDSOC):SI_SOCIETY,SI_IDSOC
         $this->AddParamRefresh("$nameId", "$nameTitle");
         $doc = DocManager::getDocument($this->getRawValue($nameId));
-        if ($doc && $doc->isAlive()) $this->setValue($nameTitle, $doc->title);
-        else {
+        if ($doc && $doc->isAlive()) {
+            $this->setValue($nameTitle, $doc->title);
+        } else {
             // suppress
-            if (!$doc->isAffected()) $this->clearValue($nameId);
+            if (!$doc->isAffected()) {
+                $this->clearValue($nameId);
+            }
         }
     }
+
     /**
      * get filename image emblem for the doc like lock/nowrite
+     *
      * @param int $size image width in pixel
+     *
      * @return string the url of the image
      */
-    function getEmblem($size = null)
+    public function getEmblem($size = null)
     {
         /**
          * @var Action $action
          */
         global $action;
-        if ($this->confidential > 0) return $action->parent->getImageLink("confidential.gif", true, $size);
-        else if ($this->locked == - 1) return $action->parent->getImageLink("revised.png", true, $size);
-        else if ($this->lockdomainid > 0) {
+        if ($this->confidential > 0) {
+            return $action->parent->getImageLink("confidential.gif", true, $size);
+        } elseif ($this->locked == -1) {
+            return $action->parent->getImageLink("revised.png", true, $size);
+        } elseif ($this->lockdomainid > 0) {
             if ($this->locked > 0) {
-                if ((abs($this->locked) == $this->userid)) return $action->parent->getImageLink("lockorange.png", true, $size);
-                else return $action->parent->getImageLink("lockred.png", true, $size);
-            } else return $action->parent->getImageLink("lockorange.png", true, $size);
-        } else if ($this->allocated == $this->userid) return $action->parent->getImageLink("lockblue.png", true, $size);
-        else if ((abs($this->locked) == $this->userid)) return $action->parent->getImageLink("lockgreen.png", true, $size);
-        else if ($this->locked != 0) return $action->parent->getImageLink("lockred.png", true, $size);
-        else if ($this->archiveid != 0) return $action->parent->getImageLink("archive.png", true, $size);
-        else if ($this->control("edit") != "") return $action->parent->getImageLink("nowrite.png", true, $size);
-        else return $action->parent->getImageLink("1x1.gif");
+                if ((abs($this->locked) == $this->userid)) {
+                    return $action->parent->getImageLink("lockorange.png", true, $size);
+                } else {
+                    return $action->parent->getImageLink("lockred.png", true, $size);
+                }
+            } else {
+                return $action->parent->getImageLink("lockorange.png", true, $size);
+            }
+        } elseif ($this->allocated == $this->userid) {
+            return $action->parent->getImageLink("lockblue.png", true, $size);
+        } elseif ((abs($this->locked) == $this->userid)) {
+            return $action->parent->getImageLink("lockgreen.png", true, $size);
+        } elseif ($this->locked != 0) {
+            return $action->parent->getImageLink("lockred.png", true, $size);
+        } elseif ($this->archiveid != 0) {
+            return $action->parent->getImageLink("archive.png", true, $size);
+        } elseif ($this->control("edit") != "") {
+            return $action->parent->getImageLink("nowrite.png", true, $size);
+        } else {
+            return $action->parent->getImageLink("1x1.gif");
+        }
     }
+
     /**
      * use only for paramRefresh in attribute definition of a family
+     *
      * @param string $a
      * @param string $b
      * @param string $c
+     *
      * @return string
      */
-    function nothing(
-    /* @noinspection PhpUnusedParameterInspection */
-    $a = "", $b = "", $c = "")
-    {
+    public function nothing(
+        $a = "",
+        $b = "",
+        $c = ""
+    ) {
         return "";
     }
+
     /**
      * return application parameter value
+     *
      * @deprecated use instead getParam global function or parameterManager
-     * @see Doc::parameterManager
-     * @param  string  $param parameter
-     * @param  string  $defv default return value
+     * @see        Doc::parameterManager
+     *
+     * @param  string $param parameter
+     * @param  string $defv  default return value
+     *
      * @return string  returns parameter value ou default value
      */
     final public function getParam($param, $defv = "")
@@ -8364,33 +10105,45 @@ create unique index i_docir on doc(initid, revision);";
     //   USUAL METHODS USE FOR CALCULATED ATTRIBUTES OR FUNCTION SEARCHES
     //----------------------------------------------------------------------
     // ALL THESE METHODS NAME MUST BEGIN WITH 'GET'
-    
+
     /**
      * return title of document in latest revision
-     * @param string $id identifier of document
+     *
+     * @param string $id  identifier of document
      * @param string $def default value if document not found
+     *
      * @return string
      */
     final public function getLastTitle($id = "-1", $def = "")
     {
         return $this->getTitle($id, $def, true);
     }
+
     /**
      * return title of document
+     *
      * @api get document's title
-     * @param string $id identifier of document (if not set use current document)
-     * @param string $def default value if document not found
+     *
+     * @param string  $id     identifier of document (if not set use current document)
+     * @param string  $def    default value if document not found
      * @param boolean $latest search title in latest revision
+     *
      * @return string
      * @see Doc::getCustomTitle()
      */
     final public function getTitle($id = "-1", $def = "", $latest = false)
     {
-        if (is_array($id)) return $def;
-        if ($id == "") return $def;
+        if (is_array($id)) {
+            return $def;
+        }
+        if ($id == "") {
+            return $def;
+        }
         if ($id == "-1") {
-            if ($this->locked != - 1 || (!$latest)) {
-                if ($this->isConfidential()) return _("confidential document");
+            if ($this->locked != -1 || (!$latest)) {
+                if ($this->isConfidential()) {
+                    return _("confidential document");
+                }
                 return $this->getCustomTitle();
             } else {
                 // search latest
@@ -8405,33 +10158,44 @@ create unique index i_docir on doc(initid, revision);";
             }
             return implode("\n", $ttitle);
         } else {
-            if (!is_numeric($id)) $id = DocManager::getIdFromName( $id);
+            if (!is_numeric($id)) {
+                $id = DocManager::getIdFromName($id);
+            }
             if ($id > 0) {
                 $title = getDocTitle($id, $latest);
-                if (!$title) return " "; // delete title
+                if (!$title) {
+                    return " ";
+                } // delete title
                 return $title;
             }
         }
         return $def;
     }
+
     /**
      * Same as ::getTitle()
      * the < & > characters as replace by entities
-     * @param string $id docuemnt identifier to set else use current document title
-     * @param string $def default value if document not found
-     * @param bool $latest force use latest revision of document
+     *
+     * @param string $id     docuemnt identifier to set else use current document title
+     * @param string $def    default value if document not found
+     * @param bool   $latest force use latest revision of document
+     *
      * @see Doc::getTitle
      * @return string
      */
-    function getHTMLTitle($id = "-1", $def = "", $latest = false)
+    public function getHTMLTitle($id = "-1", $def = "", $latest = false)
     {
         $t = $this->getTitle($id, $def, $latest);
         return $this->htmlEncode($t);
     }
+
     /**
      * the < > & characters as replace by entities
+     *
      * @static
+     *
      * @param $s
+     *
      * @return mixed
      */
     public static function htmlEncode($s)
@@ -8439,17 +10203,20 @@ create unique index i_docir on doc(initid, revision);";
         $s = htmlspecialchars($s, ENT_QUOTES);
         return str_replace("[", "&#091;", $s);
     }
+
     /**
      * return the today date with european format DD/MM/YYYY
      *
      * @searchLabel today
-     * @searchType date
-     * @searchType timestamp
-     * @api get date
-     * @param int $daydelta to have the current date more or less day (-1 means yesterday, 1 tomorrow)
-     * @param int|string $dayhour hours of day
-     * @param int|string $daymin minutes of day
-     * @param bool $getlocale whether to return locale date or not
+     * @searchType  date
+     * @searchType  timestamp
+     * @api         get date
+     *
+     * @param int        $daydelta  to have the current date more or less day (-1 means yesterday, 1 tomorrow)
+     * @param int|string $dayhour   hours of day
+     * @param int|string $daymin    minutes of day
+     * @param bool       $getlocale whether to return locale date or not
+     *
      * @return string YYYY-MM-DD or DD/MM/YYYY (depend of CORE_LCDATE parameter) or locale dateDD/MM/YYYY or locale date
      */
     public static function getDate($daydelta = 0, $dayhour = "", $daymin = "", $getlocale = false)
@@ -8457,7 +10224,7 @@ create unique index i_docir on doc(initid, revision);";
         $delta = abs(intval($daydelta));
         if ($daydelta > 0) {
             $nd = strtotime("+$delta day");
-        } else if ($daydelta < 0) {
+        } elseif ($daydelta < 0) {
             $nd = strtotime("-$delta day");
         } else {
             $nd = time();
@@ -8466,16 +10233,16 @@ create unique index i_docir on doc(initid, revision);";
             $delta = abs(intval($dayhour));
             if ($dayhour > 0) {
                 $nd = strtotime("+$delta hour", $nd);
-            } else if ($dayhour < 0) {
+            } elseif ($dayhour < 0) {
                 $nd = strtotime("-$delta hour", $nd);
             }
             $delta = abs(intval($daymin));
             if ($daymin > 0) {
                 $nd = strtotime("+$delta min", $nd);
-            } else if ($daymin < 0) {
+            } elseif ($daymin < 0) {
                 $nd = strtotime("-$delta min", $nd);
             }
-            
+
             if ($getlocale) {
                 return stringDateToLocaleDate(date("Y-m-d H:i", $nd));
             } else {
@@ -8489,36 +10256,48 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
     }
+
     /**
      * return the today date and time with european format DD/MM/YYYY HH:MM
-     * @param int $hourdelta to have the current date more or less hour  (-1 means one hour before, 1 one hour after)
-     * @param bool $second if true format DD/MM/YYYY HH:MM
+     *
+     * @param int  $hourdelta to have the current date more or less hour  (-1 means one hour before, 1 one hour after)
+     * @param bool $second    if true format DD/MM/YYYY HH:MM
+     *
      * @return string DD/MM/YYYY HH:MM or YYYY-MM-DD HH:MM (depend of CORE_LCDATE parameter)
      */
     public static function getTimeDate($hourdelta = 0, $second = false)
     {
         $delta = abs(intval($hourdelta));
-        if ($second) $format = "Y-m-d H:i:s";
-        else $format = "Y-m-d H:i";
+        if ($second) {
+            $format = "Y-m-d H:i:s";
+        } else {
+            $format = "Y-m-d H:i";
+        }
         if ($hourdelta > 0) {
             if (is_float($hourdelta)) {
                 $dm = intval((abs($hourdelta) - $delta) * 60);
                 return date($format, strtotime("+$delta hour $dm minute"));
-            } else return date($format, strtotime("+$delta hour"));
-        } else if ($hourdelta < 0) {
+            } else {
+                return date($format, strtotime("+$delta hour"));
+            }
+        } elseif ($hourdelta < 0) {
             if (is_float($hourdelta)) {
                 $dm = intval((abs($hourdelta) - $delta) * 60);
                 return date($format, strtotime("-$delta hour $dm minute"));
-            } else return date($format, strtotime("-$delta hour"));
+            } else {
+                return date($format, strtotime("-$delta hour"));
+            }
         }
         return date($format);
     }
+
     /**
      * Return the related value by linked attributes starting from referenced document.
      *
      * Can be used to retrieve a value by traversing multiple docid.
      *
      * For example,
+     *
      * @code
      * $val = $this->getDocValue("id", "id1:id2:id3")
      * @endcode
@@ -8533,23 +10312,25 @@ create unique index i_docir on doc(initid, revision);";
      * Elsewhere, the returned value is $def
      * @endwarning
      * @see Doc::getRValue
-     * @param int $docid document identifier
+     *
+     * @param int    $docid  document identifier
      * @param string $attrid attributes identifier chain (separated by ':')
-     * @param string $def $def default return value
-     * @param bool $latest always last revision of document
+     * @param string $def    $def default return value
+     * @param bool   $latest always last revision of document
+     *
      * @return array|string
      */
     final public function getDocValue($docid, $attrid, $def = " ", $latest = false)
     {
         if ((!is_numeric($docid)) && ($docid != "")) {
-            $docid = DocManager::getIdFromName( $docid);
+            $docid = DocManager::getIdFromName($docid);
         }
         if (intval($docid) > 0) {
             if (strpos(':', $attrid) === false) {
                 $attrid = strtolower($attrid);
                 return DocManager::getRawValue($docid, $attrid, $latest);
             } else {
-                $doc = DocManager::getDocument( $docid, $latest);
+                $doc = DocManager::getDocument($docid, $latest);
                 if ($doc) {
                     DocManager::cache()->addDocument($doc);
                     return $doc->getRValue($attrid, $def, $latest);
@@ -8558,51 +10339,64 @@ create unique index i_docir on doc(initid, revision);";
         }
         return "";
     }
+
     /**
      * return value of an property for the document referenced
+     *
      * @see Doc::getPropertyValue
-     * @param int $docid document identifier
+     *
+     * @param int    $docid  document identifier
      * @param string $propid property identifier
-     * @param bool $latest always last revision of document if true
+     * @param bool   $latest always last revision of document if true
+     *
      * @return string
      */
     final public function getDocProp($docid, $propid, $latest = false)
     {
         if ($docid) {
-            $propid=strtolower($propid);
-            $data = DocManager::getRawData($docid,[$propid], $latest );
+            $propid = strtolower($propid);
+            $data = DocManager::getRawData($docid, [$propid], $latest);
             return $data[$propid];
         }
         return "";
     }
+
     /**
      * return the current user display name
+     *
      * @param bool $withfirst if true compose first below last name
+     *
      * @return string
      */
     public static function getUserName($withfirst = false)
     {
-        $user=ContextManager::getCurrentUser();
-        if ($withfirst) return $user->firstname . " " . $user->lastname;
+        $user = ContextManager::getCurrentUser();
+        if ($withfirst) {
+            return $user->firstname . " " . $user->lastname;
+        }
         return $user->lastname;
     }
+
     /**
      * return the user document identifier associated to the current account
+     *
      * @return int
      */
     public static function userDocId()
     {
-        $user=ContextManager::getCurrentUser();
+        $user = ContextManager::getCurrentUser();
         if ($user) {
             return $user->fid;
         }
         return 0;
     }
+
     /**
      * alias for Doc::userDocId
+     *
      * @searchLabel My user account id
-     * @searchType account
-     * @searchType docid("IUSER")
+     * @searchType  account
+     * @searchType  docid("IUSER")
      *
      * @return int
      */
@@ -8610,51 +10404,64 @@ create unique index i_docir on doc(initid, revision);";
     {
         return Doc::userDocId();
     }
+
     /**
      * return system user id
+     *
      * @deprecated use getSystemUserId instead
      * @return int
      */
     public static function getWhatUserId()
     {
         deprecatedFunction();
-        
+
         return self::getSystemUserId();
     }
+
     /**
      * return system user id
+     *
      * @searchLabel My system user id
-     * @searchType uid
+     * @searchType  uid
      * @return string the numeric system identifier of user
      */
     public static function getSystemUserId()
     {
         return ContextManager::getCurrentUser()->id;
     }
+
     /**
      * return a specific attribute of the current user document
+     *
      * @searchLabel account attribute
+     *
      * @param string $idattr attribute identifier
+     *
      * @return int
      */
     final public function getMyAttribute($idattr)
     {
-        $mydoc = DocManager::getDocument( $this->getUserId());
+        $mydoc = DocManager::getDocument($this->getUserId());
         DocManager::cache()->addDocument($mydoc);
-        
+
         return $mydoc->getRawValue($idattr);
     }
+
     /**
      * concatenate and format string
      * to be use in computed attribute
+     *
      * @param string $fmt like sprintf format
+     *
      * @return string the composed string
      */
-    function formatString($fmt)
+    public function formatString($fmt)
     {
         $nargs = func_num_args();
-        
-        if ($nargs < 1) return "";
+
+        if ($nargs < 1) {
+            return "";
+        }
         $fmt = func_get_arg(0);
         $sp = array();
         for ($ip = 1; $ip < $nargs; $ip++) {
@@ -8666,23 +10473,26 @@ create unique index i_docir on doc(initid, revision);";
         $r = vsprintf($fmt, $sp);
         return $r;
     }
+
     /**
      * update internal vault index relation table
      * Delete temporary file property
      */
     public function updateVaultIndex()
     {
-        if (empty($this->id)) return;
+        if (empty($this->id)) {
+            return;
+        }
         $dvi = new DocVaultIndex($this->dbaccess);
-        
+
         $point = uniqid("dcp:updateVaultIndex");
         DbManager::savePoint($point);
         DbManager::lockPoint($this->initid, "UPVI");
         // Need to lock to avoid constraint errors when concurrent docvaultindex update
         $dvi->DeleteDoc($this->id);
-        
+
         $tvid = \Dcp\Core\vidExtractor\vidExtractor::getVidsFromDoc($this);
-        
+
         $vids = array();
         foreach ($tvid as $vid) {
             if ($vid > 0) {
@@ -8699,12 +10509,14 @@ create unique index i_docir on doc(initid, revision);";
     }
     // ===================
     // Timer Part
-    
+
     /**
      * attach timer to a document
-     * @param \Dcp\Family\TIMER &$timer the timer document
-     * @param Doc &$origin the document which comes from the attachement
-     * @param string $execdate date to execute first action YYYY-MM-DD HH:MM:SS
+     *
+     * @param \Dcp\Family\TIMER &$timer   the timer document
+     * @param Doc               &$origin  the document which comes from the attachement
+     * @param string            $execdate date to execute first action YYYY-MM-DD HH:MM:SS
+     *
      * @api Attach timer to a document
      * @return string error - empty if no error -
      */
@@ -8712,7 +10524,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         $dyn = false;
         if ($execdate == null) {
-            $dyn = trim(strtok($timer->getRawValue("tm_dyndate") , " "));
+            $dyn = trim(strtok($timer->getRawValue("tm_dyndate"), " "));
             if ($dyn) {
                 $execdate = $this->getRawValue($dyn);
                 if (empty($execdate)) {
@@ -8723,8 +10535,10 @@ create unique index i_docir on doc(initid, revision);";
         if (method_exists($timer, 'attachDocument')) {
             $err = $timer->attachDocument($this, $origin, $execdate);
             if ($err == "") {
-                if ($dyn) $this->addATag("DYNTIMER");
-                $this->addHistoryEntry(sprintf(_("attach timer %s [%d]") , $timer->title, $timer->id) , DocHisto::NOTICE);
+                if ($dyn) {
+                    $this->addATag("DYNTIMER");
+                }
+                $this->addHistoryEntry(sprintf(_("attach timer %s [%d]"), $timer->title, $timer->id), DocHisto::NOTICE);
                 $this->addLog("attachtimer", array(
                     "timer" => $timer->id
                 ));
@@ -8734,9 +10548,12 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $err;
     }
+
     /**
      * unattach timer of a document
+     *
      * @param \Dcp\Family\TIMER &$timer the timer document
+     *
      * @api Unattach timer of a document
      * @return string error - empty if no error -
      */
@@ -8745,14 +10562,20 @@ create unique index i_docir on doc(initid, revision);";
         if (method_exists($timer, 'unattachDocument')) {
             $err = $timer->unattachDocument($this);
             if ($err == "") {
-                $this->addHistoryEntry(sprintf(_("unattach timer %s [%d]") , $timer->title, $timer->id) , DocHisto::NOTICE);
+                $this->addHistoryEntry(
+                    sprintf(_("unattach timer %s [%d]"), $timer->title, $timer->id),
+                    DocHisto::NOTICE
+                );
                 $this->addLog("unattachtimer", array(
                     "timer" => $timer->id
                 ));
             }
-        } else $err = sprintf(_("unattachTimer : the timer parameter is not a document of TIMER family"));
+        } else {
+            $err = sprintf(_("unattachTimer : the timer parameter is not a document of TIMER family"));
+        }
         return $err;
     }
+
     /**
      * Recompute timer's delay for all attached dynamic timers
      */
@@ -8766,16 +10589,19 @@ create unique index i_docir on doc(initid, revision);";
                 /**
                  * @var Dcp\Family\Timer $t
                  */
-                $t = DocManager::getDocument( $v["timerid"]);
+                $t = DocManager::getDocument($v["timerid"]);
                 if ($t && $t->isAlive()) {
-                    $dynDateAttr = trim(strtok($t->getRawValue("tm_dyndate") , " "));
+                    $dynDateAttr = trim(strtok($t->getRawValue("tm_dyndate"), " "));
                     if ($dynDateAttr) {
                         $execdate = $this->getRawValue($dynDateAttr);
                         $previousExecdate = $this->getOldRawValue($dynDateAttr);
                         // detect if need reset timer : when date has changed
                         if ($previousExecdate !== false && ($execdate != $previousExecdate)) {
-                            if ($v["originid"]) $ori = DocManager::getDocument( $v["originid"]);
-                            else $ori = null;
+                            if ($v["originid"]) {
+                                $ori = DocManager::getDocument($v["originid"]);
+                            } else {
+                                $ori = null;
+                            }
                             $this->unattachTimer($t);
                             $this->attachTimer($t, $ori);
                         }
@@ -8786,9 +10612,12 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
     }
+
     /**
      * unattach several timers to a document
+     *
      * @param Doc &$origin if set unattach all timer which comes from this origin
+     *
      * @api Unattach all times of the document
      * @return string error - empty if no error -
      */
@@ -8797,12 +10626,18 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * @var \Dcp\Family\TIMER $timer
          */
-        $timer = Dcp\Core\DocManager::createTemporaryDocument( "TIMER");
+        $timer = Dcp\Core\DocManager::createTemporaryDocument("TIMER");
         $c = 0;
         $err = $timer->unattachAllDocument($this, $origin, $c);
         if ($err == "" && $c > 0) {
-            if ($origin) $this->addHistoryEntry(sprintf(_("unattach %d timers associated to %s") , $c, $origin->title) , DocHisto::NOTICE);
-            else $this->addHistoryEntry(sprintf(_("unattach all timers [%s]") , $c) , DocHisto::NOTICE);
+            if ($origin) {
+                $this->addHistoryEntry(
+                    sprintf(_("unattach %d timers associated to %s"), $c, $origin->title),
+                    DocHisto::NOTICE
+                );
+            } else {
+                $this->addHistoryEntry(sprintf(_("unattach all timers [%s]"), $c), DocHisto::NOTICE);
+            }
             $this->addLog("unattachtimer", array(
                 "timer" => "all",
                 "number" => $c
@@ -8810,38 +10645,47 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $err;
     }
+
     /**
      * return all activated document timer
+     *
      * @api Get all timer attached to the document
      * @return array of doctimer values
      */
     final public function getAttachedTimers()
     {
-        include_once ("Class.QueryDb.php");
-        include_once ("Class.DocTimer.php");
+        include_once("Class.QueryDb.php");
+        include_once("Class.DocTimer.php");
         $q = new QueryDb($this->dbaccess, "doctimer");
         $q->AddQuery("docid=" . $this->initid);
         $q->AddQuery("donedate is null");
         $l = $q->Query(0, 0, "TABLE");
-        
-        if (is_array($l)) return $l;
+
+        if (is_array($l)) {
+            return $l;
+        }
         return array();
     }
+
     /**
      * get all domains where document is attached by current user
-     * @param boolean $user is set to false list all domains (independant of current user)
+     *
+     * @param boolean $user       is set to false list all domains (independant of current user)
      * @param boolean $folderName is set to true append also folder name
+     *
      * @return array id
      */
     public function getDomainIds($user = true, $folderName = false)
     {
         if (file_exists("OFFLINE/Class.DomainManager.php")) {
-            include_once ("FDL/Class.SearchDoc.php");
+            include_once("FDL/Class.SearchDoc.php");
             $s = new searchDoc($this->dbaccess, "OFFLINEFOLDER");
             $s->join("id = fld(dirid)");
             $s->addFilter("fld.childid = %d", $this->initid);
             $uid = $this->getUserId();
-            if ($user) $s->addFilter("off_user = '%d' or off_user is null", $uid);
+            if ($user) {
+                $s->addFilter("off_user = '%d' or off_user is null", $uid);
+            }
             $s->overrideViewControl();
             $t = $s->search();
             $ids = array();
@@ -8855,16 +10699,21 @@ create unique index i_docir on doc(initid, revision);";
         }
         return null;
     }
+
     /**
      * attach lock to specific domain.
+     *
      * @param int $domainId domain identifier
-     * @param int $userid system user's id
+     * @param int $userid   system user's id
+     *
      * @return string error message
      */
     public function lockToDomain($domainId, $userid = 0)
     {
-        if (!$userid) $userid = $this->userid;
-        
+        if (!$userid) {
+            $userid = $this->userid;
+        }
+
         if ($domainId != '') {
             /*
              * Memorize current core lock and lock document
@@ -8889,7 +10738,7 @@ create unique index i_docir on doc(initid, revision);";
                 $this->locked = $tag->comment;
                 $err = $this->modify(true, array(
                     "locked"
-                ) , true);
+                ), true);
                 if ($err != '') {
                     return $err;
                 }
@@ -8901,19 +10750,27 @@ create unique index i_docir on doc(initid, revision);";
         $this->lockdomainid = $domainId;
         $err = $this->modify(true, array(
             "lockdomainid"
-        ) , true);
+        ), true);
         return $err;
     }
+
     /**
      * return folder where document is set into
+     *
      * @return array of folder identifiers
      */
     public function getParentFolderIds()
     {
         $fldids = array();
-        DbManager::query( sprintf("select dirid from fld where qtype='S' and childid=%d", $this->initid) , $fldids, true, false);
+        DbManager::query(
+            sprintf("select dirid from fld where qtype='S' and childid=%d", $this->initid),
+            $fldids,
+            true,
+            false
+        );
         return $fldids;
     }
+
     /**
      * update Domain list
      */
@@ -8923,40 +10780,54 @@ create unique index i_docir on doc(initid, revision);";
         //delete domain lock if is not in the list
         $this->domainid = trim($this->arrayToRawValue($domains));
         if ($this->lockdomainid) {
-            if (!in_array($this->lockdomainid, $domains)) $this->lockdomainid = '';
-            else {
+            if (!in_array($this->lockdomainid, $domains)) {
+                $this->lockdomainid = '';
+            } else {
                 if ($this->locked > 0) {
-                    DbManager::query( sprintf("select id from users where id=%d", $this->locked) , $lockUserId, true, true);
-                    
+                    DbManager::query(
+                        sprintf("select id from users where id=%d", $this->locked),
+                        $lockUserId,
+                        true,
+                        true
+                    );
+
                     if ($lockUserId && (!$this->isInDomain(true, $lockUserId))) {
                         $this->lockdomainid = '';
                     }
                 }
             }
         }
-        
+
         $this->modify(true, array(
             "domainid",
             "lockdomainid"
-        ) , true);
+        ), true);
     }
+
     /**
      * verify is doc is set in a domain
-     * @param boolean $user limit domains where user as set document
-     * @param string $userId another user's id else current user
+     *
+     * @param boolean $user   limit domains where user as set document
+     * @param string  $userId another user's id else current user
+     *
      * @return bool
      */
     public function isInDomain($user = true, $userId = '')
     {
         if ($user) {
             global $action;
-            if (!$userId) $userId = $action->user->id;
-            if (preg_match('/_' . $userId . '$/m', $this->domainid)) return true;
+            if (!$userId) {
+                $userId = $action->user->id;
+            }
+            if (preg_match('/_' . $userId . '$/m', $this->domainid)) {
+                return true;
+            }
             return false;
         } else {
             return (!empty($this->domainid));
         }
     }
+
     /**
      * Parse a zone string "FOO:BAR[-1]:B:PDF?k1=v1,k2=v2" into an array:
      *
@@ -8974,24 +10845,28 @@ create unique index i_docir on doc(initid, revision);";
      *     'transform' => 'PDF'
      *  )
      *
-     * @param zone string "APP:LAYOUT:etc." $zone
+     * @param string $zone "APP:LAYOUT:etc." $zone
+     *
      * @return bool|array false on error or an array containing the components
      */
-    static public function parseZone($zone)
+    public static function parseZone($zone)
     {
         $p = array();
         // Separate layout (left) from args (right)
         $split = preg_split('/\?/', $zone, 2);
         $left = $split[0];
-        if (count($split) > 1) $right = $split[1];
-        else $right = '';
+        if (count($split) > 1) {
+            $right = $split[1];
+        } else {
+            $right = '';
+        }
         // Check that the layout part has al least 2 elements
         $el = preg_split('/:/', $left);
         if (count($el) < 2) {
             return false;
         }
         $p['fulllayout'] = $left;
-        $p['index'] = - 1;
+        $p['index'] = -1;
         // Parse args into argv (k => v)
         if ($right != "") {
             $p['args'] = $right;
@@ -9011,12 +10886,19 @@ create unique index i_docir on doc(initid, revision);";
             2 => 'modifier',
             3 => 'transform'
         );
-        foreach ($parts as $aPart) $p[$aPart] = null;
+        foreach ($parts as $aPart) {
+            $p[$aPart] = null;
+        }
         $match = array();
         $i = 0;
         while ($i < count($el)) {
             if (!array_key_exists($i, $parts)) {
-                error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Unexpected part '%s' in zone '%s'.", $el[$i], $zone));
+                error_log(__CLASS__ . "::" . __FUNCTION__ . " " .
+                    sprintf(
+                        "Unexpected part '%s' in zone '%s'.",
+                        $el[$i],
+                        $zone
+                    ));
                 return false;
             }
             // Extract index from 'layout' part if present
@@ -9030,12 +10912,15 @@ create unique index i_docir on doc(initid, revision);";
             $p[$parts[$i]] = $el[$i];
             $i++;
         }
-        
+
         return $p;
     }
+
     /**
      * Get the helppage document associated to the document family.
+     *
      * @param string $fromid get the helppage for this family id (default is the family of the current document)
+     *
      * @return \Dcp\Family\HELPPAGE the helppage document on success, or a non-alive document if no helppage is associated with the family
      */
     public function getHelpPage($fromid = "")
@@ -9051,19 +10936,23 @@ create unique index i_docir on doc(initid, revision);";
             $helpId = $help[0]["id"];
         }
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return DocManager::getDocument( $helpId);
+        return DocManager::getDocument($helpId);
     }
+
     /**
      * Get the list of compatible search methods for a given attribute type
-     * @param string $attrId attribute name
-     * @param string $attrType empty string to returns all methods or attribute type (e.g. 'date', 'docid', 'docid("IUSER")', etc.) to restrict search to methods supporting this type
+     *
+     * @param string $attrId   attribute name
+     * @param string $attrType empty string to returns all methods or attribute type
+     *                         (e.g. 'date', 'docid', 'docid("IUSER")', etc.) to restrict search to methods supporting this type
+     *
      * @return array list of array('method' => '::foo()', 'label' => 'Foo Bar Baz')
      */
     public function getSearchMethods(
-    /* @noinspection PhpUnusedParameterInspection */
-    $attrId, $attrType = '')
-    {
-        include_once ('FDL/Lib.Attr.php');
+        $attrId,
+        $attrType = ''
+    ) {
+        include_once('FDL/Lib.Attr.php');
         /**
          * @var Action $action
          */
@@ -9073,33 +10962,31 @@ create unique index i_docir on doc(initid, revision);";
         if ($pType['type'] != 'docid') {
             $attrType = $pType['type'];
         }
-        
+
         $collator = new Collator($action->GetParam('CORE_LANG', 'fr_FR'));
-        
+
         $compatibleMethods = array();
-        
+
         if ($attrType == 'date' || $attrType == 'timestamp') {
             $compatibleMethods = array_merge($compatibleMethods, array(
                 array(
-                    'label' => _("yesterday") ,
+                    'label' => _("yesterday"),
                     'method' => '::getDate(-1)'
-                ) ,
+                ),
                 array(
-                    'label' => _("tomorrow") ,
+                    'label' => _("tomorrow"),
                     'method' => '::getDate(1)'
                 )
             ));
         }
-        
+
         try {
             $rc = new ReflectionClass(get_class($this));
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return $compatibleMethods;
         }
-        
-        $methods = array_filter($rc->getMethods() , function ($aMethod)
-        {
+
+        $methods = array_filter($rc->getMethods(), function ($aMethod) {
             /**
              * @var ReflectionMethod $aMethod
              */
@@ -9111,10 +10998,10 @@ create unique index i_docir on doc(initid, revision);";
          */
         foreach ($methods as $method) {
             $tags = self::getDocCommentTags($method->getDocComment());
-            
+
             $searchLabel = null;
             $searchTypes = array();
-            
+
             foreach ($tags as $tag) {
                 if ($tag['name'] == 'searchLabel') {
                     $searchLabel = $tag['value'];
@@ -9122,34 +11009,35 @@ create unique index i_docir on doc(initid, revision);";
                     $searchTypes[] = $tag['value'];
                 }
             }
-            
+
             if ($searchLabel === null) {
                 continue;
             }
-            
+
             if ($attrType == '' || in_array($attrType, $searchTypes)) {
                 $compatibleMethods[] = array(
-                    'label' => _($searchLabel) ,
+                    'label' => _($searchLabel),
                     'method' => sprintf('::%s()', $method->getName())
                 );
             }
         }
-        
-        usort($compatibleMethods, function ($a, $b) use ($collator)
-        {
+
+        usort($compatibleMethods, function ($a, $b) use ($collator) {
             /**
              * @var Collator $collator
              */
             return $collator->compare($a['label'], $b['label']);
         });
-        
+
         return $compatibleMethods;
     }
+
     /**
      * Check if a specific method from a specific class is a valid search method
      *
-     * @param string|object $className the class name
-     * @param string $methodName the method name
+     * @param string|object $className  the class name
+     * @param string        $methodName the method name
+     *
      * @return bool boolean 'true' if valid, boolean 'false' is not valid
      */
     public function isValidSearchMethod($className, $methodName)
@@ -9161,66 +11049,79 @@ create unique index i_docir on doc(initid, revision);";
             $rc = new ReflectionClass($className);
             $method = $rc->getMethod($methodName);
             $tags = self::getDocCommentTags($method->getDocComment());
-            
+
             foreach ($tags as $tag) {
                 if ($tag['name'] == 'searchLabel') {
                     return true;
                 }
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         return false;
     }
+
     /**
      * Extract tags names/values from methods doc comments text
+     *
      * @static
+     *
      * @param string $docComment the doc comment text
+     *
      * @return array|null list of array('name' => $tagName, 'value' => $tagValue)
      */
     final private static function getDocCommentTags($docComment = '')
     {
-        if (!preg_match_all('/^.*?@(?P<name>[a-zA-Z0-9_-]+)\s+(?P<value>.*?)\s*$/m', $docComment, $tags, PREG_SET_ORDER)) {
+        if (!preg_match_all(
+            '/^.*?@(?P<name>[a-zA-Z0-9_-]+)\s+(?P<value>.*?)\s*$/m',
+            $docComment,
+            $tags,
+            PREG_SET_ORDER
+        )) {
             return array();
         }
-        $tags = array_map(function ($tag)
-        {
+        $tags = array_map(function ($tag) {
             return array(
                 'name' => $tag['name'],
                 'value' => $tag['value']
             );
-        }
-        , $tags);
+        }, $tags);
         return $tags;
     }
+
     /**
      * Parse a docid's single or multiple value and resolve logical name references
      *
      * The function can report unknown logical names and can take an additional list of
      * known logical names to not report
+     *
      * @param NormalAttribute $oattr
-     * @param string $avalue docid's raw value
-     * @param array $unknownLogicalNames Return list of unknown logical names
-     * @param array $knownLogicalNames List of known logical names that should not be reported as unknown in $unknownLogicalNames
+     * @param string          $avalue              docid's raw value
+     * @param array           $unknownLogicalNames Return list of unknown logical names
+     * @param array           $knownLogicalNames   List of known logical names that should not be reported as unknown in $unknownLogicalNames
+     *
      * @return int|string The value with logical names replaced by their id
      */
-    public function resolveDocIdLogicalNames(NormalAttribute & $oattr, $avalue, &$unknownLogicalNames = array() , &$knownLogicalNames = array())
-    {
+    public function resolveDocIdLogicalNames(
+        NormalAttribute & $oattr,
+        $avalue,
+        &$unknownLogicalNames = array(),
+        &$knownLogicalNames = array()
+    ) {
         $res = $avalue;
         if (!is_numeric($avalue)) {
             if ((!strstr($avalue, "<BR>")) && (!strstr($avalue, "\n"))) {
                 if ($oattr->getOption("docrev", "latest") == "latest") {
                     $res = DocManager::getInitidFromName($avalue);
                 } else {
-                    $res = DocManager::getIdFromName( $avalue);
+                    $res = DocManager::getIdFromName($avalue);
                 }
                 if (!$res && !in_array($avalue, $knownLogicalNames)) {
                     $unknownLogicalNames[] = $avalue;
                 }
             } else {
                 $tnames = explode("\n", $avalue);
-                
+
                 $tids = array();
                 foreach ($tnames as $lname) {
                     $mids = explode("<BR>", $lname);
@@ -9230,7 +11131,7 @@ create unique index i_docir on doc(initid, revision);";
                             if ($oattr->getOption("docrev", "latest") == "latest") {
                                 $llid = DocManager::getInitidFromName($llname);
                             } else {
-                                $llid = DocManager::getIdFromName( $llname);
+                                $llid = DocManager::getIdFromName($llname);
                             }
                             if (!$llid && !in_array($llname, $knownLogicalNames)) {
                                 $unknownLogicalNames[] = $llname;
@@ -9242,33 +11143,34 @@ create unique index i_docir on doc(initid, revision);";
                     }
                     $tids[] = implode('<BR>', $tlids);
                 }
-                
+
                 $res = implode("\n", $tids);
             }
         }
         return $res;
     }
+
     /**
      * get display values for general searches
      *
      * @param bool $withLocale use all defined locale
+     *
      * @return string
-     * @throws \Dcp\Core\Exception
      * @throws \Dcp\Exception
      * @throws \Dcp\Fmtc\Exception
      *
      */
     protected function getExtraSearchableDisplayValues($withLocale = true)
     {
-        
         $moreSearchValues = [];
-        
+
         $fmt = new \FormatCollection($this);
         $attributes = $this->getNormalAttributes();
         $datesValues = [];
         $oneAttributeAtLeast = false;
         foreach ($attributes as $attr) {
-            if ($attr->type !== "array" && $attr->getOption("searchcriteria") !== "hidden" && $this->getRawValue($attr->id)) {
+            if ($attr->type !== "array" && $attr->getOption("searchcriteria") !== "hidden"
+                && $this->getRawValue($attr->id)) {
                 $fmt->addAttribute($attr->id);
                 $oneAttributeAtLeast = true;
                 if ($attr->type === "date") {
@@ -9280,7 +11182,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         }
-        
+
         if ($oneAttributeAtLeast) {
             $datesValues = array_unique($datesValues);
             if ($withLocale) {
@@ -9302,7 +11204,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
                 $moreSearchValues[] = $this->getTitle();
                 $r = $fmt->render();
-                
+
                 foreach ($datesValues as $date) {
                     $moreSearchValues[] = strftime("%A %B %Y %m %d", strtotime($date));
                 }
@@ -9328,7 +11230,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         }
-        
+
         $custom = $this->getCustomSearchValues();
         if ($custom) {
             if (!is_array($custom)) {
@@ -9338,6 +11240,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         return implode("£", array_unique($moreSearchValues));
     }
+
     /**
      * @api Hook to add values used in general searches
      * @return string[]

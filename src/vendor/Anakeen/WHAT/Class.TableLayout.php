@@ -22,66 +22,66 @@
 //
 // ---------------------------------------------------------------------------
 //
-include_once ('Class.Log.php');
+include_once('Class.Log.php');
 
 class TableLayout
 {
     // ---------------------------------------------------------------------------
     // Public var
     //
-    var $table_name;
-    var $array; // THE Array (2 dimensionnal) or
+    public $table_name;
+    public $array; // THE Array (2 dimensionnal) or
     // array of objects
     // Fields attributes
-    var $fields; // array of the field names to show
-    var $order_by; // the current ordering field
-    var $desc = ""; // the ordering =up or down
-    var $sort_link; // the URL used to perform a reordering of the table
+    public $fields; // array of the field names to show
+    public $order_by; // the current ordering field
+    public $desc = ""; // the ordering =up or down
+    public $sort_link; // the URL used to perform a reordering of the table
     // this URL is a format string with a %s where we
     // should give the column name
     // Header attributes
-    var $headcontent; // the content of the header
+    public $headcontent; // the content of the header
     // if not set, the field string is used
-    var $headsortfields; // column with sorting capabilities
+    public $headsortfields; // column with sorting capabilities
     // Footer attributes
-    var $footcontent; // content of the footer
+    public $footcontent; // content of the footer
     // if not set, the field string is used
     // Hyperlinks
-    var $links; // array of links associated with fields, each link
+    public $links; // array of links associated with fields, each link
     // is a composed with a dynamic url + an array of
     // value that should replace %s format tag
     // in the url using an sprintff function
     // Paging attributes
-    var $start = 0; // the start index
-    var $slice = 20; // the slice size, zero means all
-    var $page_numbering = 0; // if true a page number is displayed
-    var $prev = "prev"; // the text (can be <img...) used to link to the
+    public $start = 0; // the start index
+    public $slice = 20; // the slice size, zero means all
+    public $page_numbering = 0; // if true a page number is displayed
+    public $prev = "prev"; // the text (can be <img...) used to link to the
     // previous page
-    var $next = "next"; // the text (can be <img...) used to link to the
+    public $next = "next"; // the text (can be <img...) used to link to the
     // next page
-    var $first = "first"; // the text (can be <img...) used to link to the
+    public $first = "first"; // the text (can be <img...) used to link to the
     // first page
-    var $last = "last"; // the text (can be <img...) used to link to the
+    public $last = "last"; // the text (can be <img...) used to link to the
     // last page
-    var $page_link; // the URL used to turn pages. This URL is a format
+    public $page_link; // the URL used to turn pages. This URL is a format
     // string with two %s in it the first on gives the
     // index of the page start, the second gives the
     // page size (number of elements in the page
-    var $nb_tot = 0; // Total number of elements
+    public $nb_tot = 0; // Total number of elements
     // ---------------------------------------------------------------------------
     // Private var
-    var $row = 0; // index of the current displayed row
-    var $out; // the output string
-    var $paging_zone;
-    var $header_zone;
-    var $table_zone;
-    var $footer_zone;
+    public $row = 0; // index of the current displayed row
+    public $out; // the output string
+    public $paging_zone;
+    public $header_zone;
+    public $table_zone;
+    public $footer_zone;
     //
     // ---------------------------------------------------------------------------
     // Public methods
     // ---------------------------------------------------------------------------
     //
-    function __construct(&$lay, $table_name = 'TABLE')
+    public function __construct(&$lay, $table_name = 'TABLE')
     {
         $this->table_name = $table_name;
         $this->log = new Log("", "TableLayout", "");
@@ -92,9 +92,11 @@ class TableLayout
     // Private methods
     // ---------------------------------------------------------------------------
     //
-    function Set()
+    public function Set()
     {
-        if ($this->start == "") $this->start = 0;
+        if ($this->start == "") {
+            $this->start = 0;
+        }
         // check the table
         if (!is_array($this->array)) {
             return;
@@ -108,10 +110,11 @@ class TableLayout
         $this->GenFooter();
     }
     
-    function GenHeader()
+    public function GenHeader()
     {
-        
-        if (!isset($this->headcontent)) return;
+        if (!isset($this->headcontent)) {
+            return;
+        }
         reset($this->headcontent);
         foreach ($this->headcontent as $k => $v) {
             /* link ? */
@@ -131,16 +134,20 @@ class TableLayout
         }
     }
     // ----------------------------------------------
-    function GenTable()
+    public function GenTable()
     {
         $ind = 0;
         reset($this->array);
         $tmparray = "";
         foreach ($this->array as $key => $val) {
-            if ($ind > $this->slice) break;
+            if ($ind > $this->slice) {
+                break;
+            }
 
             
-            if ((!is_array($val)) && (!is_object($val))) continue;
+            if ((!is_array($val)) && (!is_object($val))) {
+                continue;
+            }
             
             reset($this->fields);
             foreach ($this->fields as $k => $v) {
@@ -182,7 +189,7 @@ class TableLayout
         $this->lay->SetBlockData($this->table_name . "BODY", $tmparray);
     }
     // ----------------------------------------------
-    function GenFooter()
+    public function GenFooter()
     {
         reset($this->fields);
         foreach ($this->fields as $k => $v) {
@@ -201,9 +208,8 @@ class TableLayout
         return;
     }
     // ----------------------------------------------
-    function GenPaging()
+    public function GenPaging()
     {
-        
         $link_first = "";
         $link_last = "";
         $link_next = "";
@@ -212,7 +218,6 @@ class TableLayout
         $page_tot = 1;
         // Next/Prev pages
         if ($this->slice && ($this->slice < $this->nb_tot) && isset($this->page_link)) {
-            
             $page_tot = (ceil(($this->nb_tot / $this->slice) * $this->slice) == $this->nb_tot) ? ceil($this->nb_tot / $this->slice) : ceil($this->nb_tot / $this->slice + 1);
             $page_num = (int)($this->start / $this->slice) + 1;
             
@@ -242,12 +247,16 @@ class TableLayout
     }
     // ----------------------------------------------
     // Used if fields are not provided
-    function SelectColnames()
+    public function SelectColnames()
     {
-        if (isset($this->fields)) return;
+        if (isset($this->fields)) {
+            return;
+        }
         reset($this->array);
         list($key, $val) = each($this->array);
-        if (is_object($val)) $val = get_object_vars($val);
+        if (is_object($val)) {
+            $val = get_object_vars($val);
+        }
         reset($val);
         foreach ($val as $k => $v) {
             $this->fields[] = $k;
@@ -258,15 +267,16 @@ class TableLayout
     //  this function is here because we don't know where we should put it
     //  so !!
     //
-    function create_link($template, $values, $text)
+    public function create_link($template, $values, $text)
     {
         $link = "<a href=\"" . $template . "\">";
         for ($i = 0; $i < 9; $i++) {
-            if (!isset($values[$i])) $values[$i] = "";
+            if (!isset($values[$i])) {
+                $values[$i] = "";
+            }
         }
         $link = sprintf($link, $values[0], $values[1], $values[2], $values[3], $values[4], $values[5], $values[6], $values[7], $values[8]);
         $link = $link . $text . "</a>";
         return ($link);
     }
 }
-?>

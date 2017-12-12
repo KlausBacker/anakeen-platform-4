@@ -13,13 +13,13 @@
 /**
  */
 
-include_once ("FDL/Class.DocCollection.php");
+include_once("FDL/Class.DocCollection.php");
 
 class PDir extends DocCollection
 {
     // --------------------------------------------------------------------
     //---------------------- OBJECT CONTROL PERMISSION --------------------
-    var $acls = array(
+    public $acls = array(
         "view",
         "edit",
         "delete",
@@ -30,13 +30,12 @@ class PDir extends DocCollection
         "confidential"
     );
     // --------------------------------------------------------------------
-    var $defDoctype = 'P';
-    var $defProfFamId = FAM_ACCESSDIR;
+    public $defDoctype = 'P';
+    public $defProfFamId = FAM_ACCESSDIR;
     
-    function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
+    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         // don't use Doc constructor because it could call this constructor => infinitive loop
         DocCtrl::__construct($dbaccess, $id, $res, $dbid);
     }
 }
-?>

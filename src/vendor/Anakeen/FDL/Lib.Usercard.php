@@ -19,14 +19,16 @@
  * @return
  */
 
-function refreshGroups($groupIdList, $refresh = false, &$currentPath = array() , &$groupDepth = array())
+function refreshGroups($groupIdList, $refresh = false, &$currentPath = array(), &$groupDepth = array())
 {
     /**
      * @var Group $wg
      */
     static $wg = null;
     
-    if (!$wg) $wg = new group("", 2); // working group;
+    if (!$wg) {
+        $wg = new group("", 2);
+    } // working group;
     // Iterate over given groups list
     foreach ($groupIdList as $groupId) {
         // Detect loops in groups
@@ -38,8 +40,11 @@ function refreshGroups($groupIdList, $refresh = false, &$currentPath = array() ,
         $parentGroupIdList = $wg->getParentsGroupId($groupId);
         // Compute depth of current group and recursively compute depth on parent groups
         array_push($currentPath, $groupId);
-        if (isset($groupDepth[$groupId])) $groupDepth[$groupId] = max($groupDepth[$groupId], count($currentPath));
-        else $groupDepth[$groupId] = count($currentPath);
+        if (isset($groupDepth[$groupId])) {
+            $groupDepth[$groupId] = max($groupDepth[$groupId], count($currentPath));
+        } else {
+            $groupDepth[$groupId] = count($currentPath);
+        }
         refreshGroups($parentGroupIdList, $refresh, $currentPath, $groupDepth);
         array_pop($currentPath);
     }
@@ -58,7 +63,9 @@ function refreshGroups($groupIdList, $refresh = false, &$currentPath = array() ,
 function array_unset(&$t, $vp)
 {
     foreach ($t as $k => $v) {
-        if ($v == $vp) unset($t[$k]);
+        if ($v == $vp) {
+            unset($t[$k]);
+        }
     }
 }
 
@@ -74,15 +81,17 @@ function refreshOneGroup($gid, $refresh)
         $doc = new_Doc($dbaccess, $g->fid);
         if ($doc->isAlive()) {
             //if ($_SERVER['HTTP_HOST'] == "") error_log(sprintf("\trefreshing %s\n", $doc->title));
-            wbartext(sprintf(_("refreshing %s") , $doc->title));
-            if ($refresh) $doc->refreshMembers();
+            wbartext(sprintf(_("refreshing %s"), $doc->title));
+            if ($refresh) {
+                $doc->refreshMembers();
+            }
             $doc->SetGroupMail();
             $doc->modify();
             $doc->specPostInsert();
             $doc->setValue("grp_isrefreshed", "1");
             $doc->modify(true, array(
                 "grp_isrefreshed"
-            ) , true);
+            ), true);
         }
     }
 }

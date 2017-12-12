@@ -7,6 +7,7 @@
  * help document for family
  */
 namespace Dcp\Core;
+
 class HelpPage extends \Dcp\Family\Document
 {
     /*
@@ -27,10 +28,14 @@ class HelpPage extends \Dcp\Family\Document
             return $this->title;
         }
         if (array_key_exists($user_lang, $titles)) {
-            if ($titles[$user_lang]['help_name']) return $titles[$user_lang]['help_name'];
+            if ($titles[$user_lang]['help_name']) {
+                return $titles[$user_lang]['help_name'];
+            }
         } else {
             $item = array_shift($titles);
-            if ($item['help_name']) return $item['help_name'];
+            if ($item['help_name']) {
+                return $item['help_name'];
+            }
         }
         return $this->title;
     }
@@ -43,7 +48,6 @@ class HelpPage extends \Dcp\Family\Document
         $oa->type = 'longtext';
         $err = '';
         if (!$this->id) {
-            
             $oa = $this->getAttribute('help_family');
             $oa->setVisibility('S');
         }
@@ -55,11 +59,13 @@ class HelpPage extends \Dcp\Family\Document
                     $this->Affect(getTdoc($this->dbaccess, $doc->id));
                     
                     $this->setValue("help_family", getHttpVars("help_family"));
-                    if ($this->getRawValue("help_family")) $this->title = sprintf(_("help for %s") , $this->getTitle($this->getRawValue("help_family")));
+                    if ($this->getRawValue("help_family")) {
+                        $this->title = sprintf(_("help for %s"), $this->getTitle($this->getRawValue("help_family")));
+                    }
                     
                     $this->modify();
                     global $action;
-                    redirect($action, getHttpVars("app") , getHttpVars("action") . '&id=' . $this->id);
+                    redirect($action, getHttpVars("app"), getHttpVars("action") . '&id=' . $this->id);
                 }
             }
         }
@@ -173,7 +179,7 @@ class HelpPage extends \Dcp\Family\Document
             foreach ($docattributes as & $attribute) {
                 $attributes[] = array(
                     'HELPATTRVALUE' => $attribute->id,
-                    'HELPATTRNAME' => sprintf("%s (%s)", $attribute->getLabel() , $attribute->type)
+                    'HELPATTRNAME' => sprintf("%s (%s)", $attribute->getLabel(), $attribute->type)
                 );
             }
             unset($attribute);
@@ -258,7 +264,7 @@ class HelpPage extends \Dcp\Family\Document
     {
         global $action;
         
-        include_once ("FDL/Class.SearchDoc.php");
+        include_once("FDL/Class.SearchDoc.php");
         
         $this->lay->set('HELPTITLE', $this->getTitle());
         $this->lay->set('DOCID', $this->id);
@@ -305,7 +311,7 @@ class HelpPage extends \Dcp\Family\Document
                         'SECKEY' => $sec['help_sec_key'],
                         'SECNAME' => $sec['help_sec_name'],
                         'SECLANG' => $sec['help_sec_lang'],
-                        'SECTEXT' => $this->getHtmlValue($this->getAttribute('help_sec_text') , $sec['help_sec_text']) ,
+                        'SECTEXT' => $this->getHtmlValue($this->getAttribute('help_sec_text'), $sec['help_sec_text']) ,
                         'SECDISPLAY' => $lang_key == $first_lang ? 'block' : 'none',
                         'SECLANGS' => 'seclangs' . $i,
                         'SECHEADER' => '0',
@@ -363,7 +369,7 @@ class HelpPage extends \Dcp\Family\Document
         $s->search();
         while ($doc = $s->getNextDoc()) {
             $aides[] = array(
-                'AIDE' => $doc->getDocAnchor($doc->id, $target, true, $doc->getTitle() , false) ,
+                'AIDE' => $doc->getDocAnchor($doc->id, $target, true, $doc->getTitle(), false) ,
             );
         }
         $this->lay->setBlockData('LEFTHELPS', $aides);
@@ -378,7 +384,6 @@ class HelpPage extends \Dcp\Family\Document
      */
     public function getLangsFromItem($all_langs, $current_lang, $item)
     {
-        
         $langs = array();
         foreach ($all_langs as $lang_key => $lang_name) {
             if ($lang_key == $current_lang) {
@@ -468,4 +473,3 @@ class HelpPage extends \Dcp\Family\Document
 /*
  * @end-method-ignore
 */
-?>

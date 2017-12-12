@@ -8,7 +8,6 @@ namespace Dcp\HttpApi\V1\Api;
 
 class RecordReturn implements \JsonSerializable
 {
-    
     protected $httpStatus = 200;
     protected $httpMessage = "OK";
     protected $returnMode = "json";
@@ -117,7 +116,7 @@ class RecordReturn implements \JsonSerializable
         header(sprintf('HTTP/1.1 %s', str_replace(array(
             "\n",
             "\r"
-        ) , "", $this->httpStatusHeader)));
+        ), "", $this->httpStatusHeader)));
         $needHtmlResponse = (isset($_GET["alt"]) && $_GET["alt"] === "html");
         
         if ($needHtmlResponse) {
@@ -145,7 +144,7 @@ class RecordReturn implements \JsonSerializable
         header(sprintf('HTTP/1.1 %s', str_replace(array(
             "\n",
             "\r"
-        ) , "", $this->httpStatusHeader)));
+        ), "", $this->httpStatusHeader)));
         
         header('Content-Type: text/html');
         
@@ -167,8 +166,6 @@ class RecordReturn implements \JsonSerializable
                          .error {color:#a94442;border:solid 0.5em #FB657D;margin:1em;padding:1em}                      
                          </style></head><body>
 HTML;
-                        
-                        
                     }
                     print '<div class="error">';
                     print htmlspecialchars($message->contentText);
@@ -190,7 +187,7 @@ HTML;
         header(sprintf('HTTP/1.1 %s', str_replace(array(
             "\n",
             "\r"
-        ) , "", $this->httpStatusHeader)));
+        ), "", $this->httpStatusHeader)));
         
         foreach ($this->headers as $key => $currentHeader) {
             header(sprintf("%s: %s", $key, $currentHeader));
@@ -225,4 +222,3 @@ HTML;
         return $values;
     }
 }
-

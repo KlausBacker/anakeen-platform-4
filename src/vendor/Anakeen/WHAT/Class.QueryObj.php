@@ -109,21 +109,20 @@
 // and it gives the result of the query
 $CLASS_QUERYOBJ_PHP = '$Id: Class.QueryObj.php,v 1.3 2004/03/22 15:21:40 eric Exp $';
 
-include_once ('Class.Out.php');
-include_once ('Class.Table.php');
-include_once ('Class.Log.php');
-include_once ('Class.QueryDb.php');
+include_once('Class.Out.php');
+include_once('Class.Table.php');
+include_once('Class.Log.php');
+include_once('Class.QueryDb.php');
 
 class QueryObj extends QueryDb
 {
+    public $down = "&nbsp;v";
+    public $up = "&nbsp;^";
     
-    var $down = "&nbsp;v";
-    var $up = "&nbsp;^";
+    public $display_alpha = "FALSE";
+    public $alpha_default = "NONE";
     
-    var $display_alpha = "FALSE";
-    var $alpha_default = "NONE";
-    
-    function QueryObj($dbaccess, $class)
+    public function QueryObj($dbaccess, $class)
     {
         //
         $this->init("string", "");
@@ -143,7 +142,7 @@ class QueryObj extends QueryDb
         $this->Query($dbaccess, $class);
     }
     
-    function AlphaClause()
+    public function AlphaClause()
     {
         $out = "";
         if (($this->display_alpha == "TRUE") && ($this->alpha != "ALL") && ($this->alpha != "NONE")) {
@@ -159,9 +158,8 @@ class QueryObj extends QueryDb
     //   different tables). say FALSE if all the fields you need are checked out in
     //   the query. If you use complete on large results, it may take a while and
     //   a lot of memory.
-    function GenPage($url, $nores, $complete = "FALSE", $display_form = "YES")
+    public function GenPage($url, $nores, $complete = "FALSE", $display_form = "YES")
     {
-        
         $this->init("alpha", $this->alpha_default);
         
         $this->table->start = $this->start;
@@ -206,10 +204,11 @@ class QueryObj extends QueryDb
         return ($o->flush());
     }
     // Generate the Query Form
-    function GenForm($url, $display_form = "YES")
+    public function GenForm($url, $display_form = "YES")
     {
-        
-        if (sizeof($this->basic_elem->criterias) == 0) return ("");
+        if (sizeof($this->basic_elem->criterias) == 0) {
+            return ("");
+        }
         $this->log->debug("Nouvelle forme");
         
         $o = new Out();
@@ -355,11 +354,15 @@ class QueryObj extends QueryDb
                     }
                 }
                 $o->cat("</td><td align=\"center\">");
-                if ($this->alpha == "ALL") $o->cat('<b>[');
+                if ($this->alpha == "ALL") {
+                    $o->cat('<b>[');
+                }
                 $o->cat("<a href=\"javascript:void(0)\"
                   onClick=\"setAlpha(document.QueryObj,'ALL');return false\">");
                 $o->cat('<font size="-1">Tout</font></a>');
-                if ($this->alpha == "ALL") $o->cat(']</b>');
+                if ($this->alpha == "ALL") {
+                    $o->cat(']</b>');
+                }
                 $o->cat("<br>");
                 if ($this->alpha == "NONE") {
                     $o->cat('<b>[');
@@ -434,7 +437,7 @@ class QueryObj extends QueryDb
         return ($o->flush());
     }
     
-    function init($attr, $default)
+    public function init($attr, $default)
     {
         global $_POST;
         if (is_array($_POST) && isset($_POST["p_$attr"])) {
@@ -448,4 +451,3 @@ class QueryObj extends QueryDb
         }
     }
 }
-?>

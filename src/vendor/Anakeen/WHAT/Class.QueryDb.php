@@ -14,17 +14,16 @@
 /**
  */
 
-include_once ('Class.Log.php');
+include_once('Class.Log.php');
 
 class QueryDb
 {
+    public $nb = 0;
+    public $LastQuery = "";
     
-    var $nb = 0;
-    var $LastQuery = "";
+    public $table;
     
-    var $table;
-    
-    var $operators = array(
+    public $operators = array(
         "none" => array(
             "lib" => " --",
             "oper" => "",
@@ -76,10 +75,10 @@ class QueryDb
             "param" => "NONE"
         )
     );
-    var $casse = "NON";
+    public $casse = "NON";
     
-    var $criteria = "";
-    var $order_by = "";
+    public $criteria = "";
+    public $order_by = "";
     public $operator;
     public $string;
     public $slice;
@@ -87,13 +86,13 @@ class QueryDb
     public $desc;
     public $res_type;
     public $cindex;
-    var $list = array();
+    public $list = array();
     /**
      * @var DbObj
      */
     public $basic_elem;
     
-    function __construct($dbaccess, $class)
+    public function __construct($dbaccess, $class)
     {
         //
         $this->log = new Log("", "Query", "$class");
@@ -104,7 +103,9 @@ class QueryDb
     
     private function initQuery($start = 0, $slice = 0, $p_query = "", $onlycont = false)
     {
-        if ($start == "") $start = 0;
+        if ($start == "") {
+            $start = 0;
+        }
         if ($p_query == '') {
             // select construct
             $select = "";
@@ -165,8 +166,12 @@ class QueryDb
                     $query = $query . " desc";
                 }
             }
-            if ($slice > 0) $query.= " limit $slice";
-            if ($start > 0) $query.= " offset $start";
+            if ($slice > 0) {
+                $query.= " limit $slice";
+            }
+            if ($start > 0) {
+                $query.= " offset $start";
+            }
             $query.= ';';
         } else {
             $query = $p_query;
@@ -188,9 +193,8 @@ class QueryDb
      *        ITEM  : means a ressource to step by step use table field rows
      *        ITER  : return class DbObjectList
      */
-    function Query($start = 0, $slice = 0, $res_type = "LIST", $p_query = "")
+    public function Query($start = 0, $slice = 0, $res_type = "LIST", $p_query = "")
     {
-        
         $query = $this->initQuery($start, $slice, $p_query);
         $this->res_type = $res_type;
         $err = $this->basic_elem->exec_query($query, 0, true);
@@ -199,16 +203,18 @@ class QueryDb
             if ($err) {
                 throw new Dcp\Db\Exception("query fail : " . $err);
             }
-            include_once ("Class.DbObjectList.php");
+            include_once("Class.DbObjectList.php");
             return new DbObjectList($this->dbaccess, $this->basic_elem->res, $this->class);
         }
         
-        if ($err != "") return ($err);
+        if ($err != "") {
+            return ($err);
+        }
         
         $this->nb = $this->basic_elem->numrows();
         
         if ($this->nb == 0) {
-            return FALSE;
+            return false;
         }
         if ($res_type == "ITEM") {
             $this->cindex = 0; // current index row
@@ -245,20 +251,21 @@ class QueryDb
     /**
      * Perform the query : return only the count fo rows returned
      */
-    function Count($start = 0, $slice = 0)
+    public function Count($start = 0, $slice = 0)
     {
-        
         $query = $this->initQuery($start, $slice, "", true);
         $this->res_type = "TABLE";
         $err = $this->basic_elem->exec_query($query);
         //	print "$query $res_type $p_query<BR>\n";
-        if ($err != "") return ($err);
+        if ($err != "") {
+            return ($err);
+        }
         
         $result = $this->basic_elem->fetch_array(0);
         return ($result["count"]);
     }
     
-    function CriteriaClause()
+    public function CriteriaClause()
     {
         $out = "";
         if (isset($this->criteria) && ($this->criteria != "") && ($this->operator != "none")) {
@@ -291,12 +298,12 @@ class QueryDb
         return ($out);
     }
     
-    function AlphaClause()
+    public function AlphaClause()
     {
         return '';
     }
     
-    function SupClause()
+    public function SupClause()
     {
         $out = "";
         if (sizeof($this->basic_elem->sup_where) > 0) {
@@ -314,19 +321,21 @@ class QueryDb
         return ($out);
     }
     
-    function AddQuery($contraint)
+    public function AddQuery($contraint)
     {
         $this->basic_elem->sup_where[] = $contraint;
     }
-    function resetQuery()
+    public function resetQuery()
     {
         $this->basic_elem->sup_where = array();
         unset($this->list);
     }
-    function AddField($sqlattr, $resultname = "")
+    public function AddField($sqlattr, $resultname = "")
     {
-        if ($resultname == "") $this->basic_elem->sup_fields[] = $sqlattr;
-        else $this->basic_elem->sup_fields[] = "$sqlattr as $resultname";
+        if ($resultname == "") {
+            $this->basic_elem->sup_fields[] = $sqlattr;
+        } else {
+            $this->basic_elem->sup_fields[] = "$sqlattr as $resultname";
+        }
     }
 }
-?>

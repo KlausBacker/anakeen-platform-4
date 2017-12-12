@@ -25,22 +25,22 @@ class SubForm
     // This class is used to produce HTML/JS code when you want to
     // create a separate window which exchange values with its parent
     // window (for instance an edit/update window or a query window)
-    var $mainjs = '
+    public $mainjs = '
 function submit_withpar(height,width,name,[id],url) {
   subwindow(height,width,name,url+\'&[id]=\'+[id]);
 }
 ';
     
-    var $jsmaincall = 'submit_withpar([height],[width],\'[name]\',\'[id]\',\'[url]\')';
+    public $jsmaincall = 'submit_withpar([height],[width],\'[name]\',\'[id]\',\'[url]\')';
     
-    var $mainform = '
+    public $mainform = '
 <form name="[name]" method="POST" action="[url]">
 [BLOCK PAR]
   <input type="hidden" name="[name]" value="[val]"> [ENDBLOCK PAR]
 </form>
 ';
     
-    var $subjs = '
+    public $subjs = '
 function sendform() {
   var p = self.opener.document.forms.[name];
   var lf = self.document.[name];
@@ -52,10 +52,10 @@ function sendform() {
   p.submit();
 }';
     
-    var $param = array(); // contains all exchanged vars in the form
+    public $param = array(); // contains all exchanged vars in the form
     // "key" => "val" , val is the initial value
     // of the key.
-    function __construct($name, $width = 100, $height = 100, $mainurl = "", $suburl = "")
+    public function __construct($name, $width = 100, $height = 100, $mainurl = "", $suburl = "")
     {
         $this->name = $name;
         $this->width = $width;
@@ -64,23 +64,23 @@ function sendform() {
         $this->suburl = $suburl;
     }
     
-    function SetParams($array)
+    public function SetParams($array)
     {
         $this->param = array_merge($array, $this->param);
     }
     
-    function SetParam($key, $val = "", $type = "")
+    public function SetParam($key, $val = "", $type = "")
     {
         $this->param[$key]["val"] = $val;
         $this->param[$key]["typ"] = $type;
     }
     
-    function SetKey($key)
+    public function SetKey($key)
     {
         $this->key = $key;
     }
     
-    function GetMainForm()
+    public function GetMainForm()
     {
         $lay = new Layout("", null, $this->mainform);
         $tab = array();
@@ -97,7 +97,7 @@ function sendform() {
         return ($lay->gen());
     }
     
-    function GetMainJs()
+    public function GetMainJs()
     {
         $lay = new Layout("", null, $this->mainjs);
         $lay->Set("formname", $this->name);
@@ -105,7 +105,7 @@ function sendform() {
         return ($lay->gen());
     }
     
-    function GetSubJs()
+    public function GetSubJs()
     {
         $lay = new Layout("", null, $this->subjs);
         $tab = array();
@@ -123,18 +123,18 @@ function sendform() {
         if ($isel > - 1) {
             $lay->SetBlockData("SEL", $tabsel);
         } else {
-            $lay->SetBlockData("SEL", NULL);
+            $lay->SetBlockData("SEL", null);
         }
         if ($c > - 1) {
             $lay->SetBlockData("PAR", $tab);
         } else {
-            $lay->SetBlockData("PAR", NULL);
+            $lay->SetBlockData("PAR", null);
         }
         $lay->Set("name", $this->name);
         return ($lay->gen());
     }
     
-    function GetLinkJsMainCall()
+    public function GetLinkJsMainCall()
     {
         $lay = new Layout("", "", $this->jsmaincall);
         $lay->Set("url", $this->suburl);
@@ -144,7 +144,7 @@ function sendform() {
         return ($lay->gen());
     }
     
-    function GetEmptyJsMainCall()
+    public function GetEmptyJsMainCall()
     {
         $lay = new Layout("", "", $this->jsmaincall);
         $lay->Set("id", "");
@@ -155,6 +155,4 @@ function sendform() {
         return ($lay->gen());
     }
     // CLASS END
-    
 }
-?>

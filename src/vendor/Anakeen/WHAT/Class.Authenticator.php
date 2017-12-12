@@ -33,11 +33,14 @@ abstract class Authenticator
     
     public function __construct($authtype, $authprovider)
     {
+        include_once('WHAT/Lib.Common.php');
         
-        include_once ('WHAT/Lib.Common.php');
-        
-        if ($authtype == "") throw new Dcp\Exception(__METHOD__ . " " . "Error: authentication mode not set");
-        if ($authprovider == "") throw new Dcp\Exception(__METHOD__ . " " . "Error: authentication provider not set");
+        if ($authtype == "") {
+            throw new Dcp\Exception(__METHOD__ . " " . "Error: authentication mode not set");
+        }
+        if ($authprovider == "") {
+            throw new Dcp\Exception(__METHOD__ . " " . "Error: authentication provider not set");
+        }
         
         $tx = array(
             'type' => $authtype,
@@ -55,10 +58,10 @@ abstract class Authenticator
             
             $classFile = 'WHAT/Class.' . $providerClass . '.php';
             $ret = stream_resolve_include_path($classFile);
-            if ($ret === FALSE) {
+            if ($ret === false) {
                 throw new Dcp\Exception(__METHOD__ . " " . "Error: ." . $classFile . " not found");
             }
-            include_once ($classFile);
+            include_once($classFile);
             if (!class_exists($providerClass)) {
                 throw new Dcp\Exception(__METHOD__ . " " . "Error: " . $providerClass . " class not found");
             }
@@ -73,7 +76,9 @@ abstract class Authenticator
     }
     public static function getAuthParam($provider = "")
     {
-        if ($provider == "") return array();
+        if ($provider == "") {
+            return array();
+        }
         $freedom_providers = getDbAccessValue('freedom_providers');
         if (!is_array($freedom_providers)) {
             return array();
@@ -94,7 +99,7 @@ abstract class Authenticator
             throw new Dcp\Exception('FILE0006');
         }
         
-        if (!array_key_exists(AuthenticatorManager::getAuthType() , $freedom_authtypeparams)) {
+        if (!array_key_exists(AuthenticatorManager::getAuthType(), $freedom_authtypeparams)) {
             return array();
         }
         
@@ -103,33 +108,33 @@ abstract class Authenticator
     
     public static function freedomUserExists($username)
     {
-        include_once ('FDL/Class.Doc.php');
-        include_once ('WHAT/Class.User.php');
+        include_once('FDL/Class.Doc.php');
+        include_once('WHAT/Class.User.php');
         
         $u = new Account();
         if ($u->SetLoginName($username)) {
             $dbaccess = getDbAccess();
             $du = new_Doc($dbaccess, $u->fid);
             if ($du->isAlive()) {
-                return TRUE;
+                return true;
             }
         }
-        return FALSE;
+        return false;
     }
     
     public function tryInitializeUser($username)
     {
         if (!$this->provider->canICreateUser()) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Authentication failed for user '%s' because auto-creation is disabled for provider '%s'!", $username, $this->provider->pname));
-            return FALSE;
+            return false;
         }
         $err = $this->provider->initializeUser($username);
         if ($err != "") {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Error creating user '%s' err=[%s]", $username, $err));
-            return FALSE;
+            return false;
         }
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Initialized user '%s'!", $username));
-        return TRUE;
+        return true;
     }
     
     public function getProviderErrno()
@@ -148,12 +153,12 @@ abstract class Authenticator
         return false;
     }
     
-    abstract function checkAuthentication();
-    abstract function checkAuthorization($opt);
-    abstract function askAuthentication($args);
-    abstract function getAuthUser();
-    abstract function getAuthPw();
-    abstract function logout($redir_uri = '');
-    abstract function setSessionVar($name, $value);
-    abstract function getSessionVar($name);
+    abstract public function checkAuthentication();
+    abstract public function checkAuthorization($opt);
+    abstract public function askAuthentication($args);
+    abstract public function getAuthUser();
+    abstract public function getAuthPw();
+    abstract public function logout($redir_uri = '');
+    abstract public function setSessionVar($name, $value);
+    abstract public function getSessionVar($name);
 }

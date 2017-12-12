@@ -148,7 +148,6 @@ class CheckWorkflow
     {
         $activities = $this->wdoc->stateactivity;
         if (!is_array($activities)) {
-            
             $this->addCodeError('WFL0051', $this->className);
         } else {
             $states = $this->wdoc->getStates();
@@ -163,10 +162,8 @@ class CheckWorkflow
     
     public function checkTransitions()
     {
-        
         $cycle = $this->wdoc->cycle;
         if (!is_array($cycle)) {
-            
             $this->addCodeError('WFL0200', $this->className);
         } else {
             foreach ($cycle as $k => $state) {
@@ -177,11 +174,14 @@ class CheckWorkflow
                 $props = array_keys($state);
                 $diff = array_diff($props, $this->transitionProperties);
                 if (count($diff) > 0) {
-                    
-                    $this->addCodeError('WFL0201', implode(',', $diff) , $k, $this->className, implode(',', $this->transitionProperties));
+                    $this->addCodeError('WFL0201', implode(',', $diff), $k, $this->className, implode(',', $this->transitionProperties));
                 }
-                if (!empty($state["e1"])) $this->checkTransitionStateKey($state["e1"]);
-                if (!empty($state["e2"])) $this->checkTransitionStateKey($state["e2"]);
+                if (!empty($state["e1"])) {
+                    $this->checkTransitionStateKey($state["e1"]);
+                }
+                if (!empty($state["e2"])) {
+                    $this->checkTransitionStateKey($state["e2"]);
+                }
                 if (!empty($state["t"])) {
                 } else {
                     $this->addCodeError('WFL0202', $k, $this->className);
@@ -192,7 +192,6 @@ class CheckWorkflow
     
     public function checkTransitionModels()
     {
-        
         $transitions = $this->wdoc->transitions;
         if (!is_array($transitions)) {
             $this->addCodeError('WFL0100', $this->className);
@@ -213,7 +212,7 @@ class CheckWorkflow
                 $props = array_keys($transition);
                 $diff = array_diff($props, $this->transitionModelProperties);
                 if (count($diff) > 0) {
-                    $this->addCodeError('WFL0101', implode(',', $diff) , $tkey, $this->className, implode(',', $this->transitionModelProperties));
+                    $this->addCodeError('WFL0101', implode(',', $diff), $tkey, $this->className, implode(',', $this->transitionModelProperties));
                 }
                 
                 if (isset($transition["ask"]) && (!is_array($transition["ask"]))) {
@@ -222,25 +221,21 @@ class CheckWorkflow
                 
                 if (!empty($transition["m0"])) {
                     if (!method_exists($this->wdoc, $transition["m0"])) {
-                        
                         $this->addCodeError('WFL0108', $transition["m0"], $tkey, $this->className);
                     }
                 }
                 if (!empty($transition["m1"])) {
                     if (!method_exists($this->wdoc, $transition["m1"])) {
-                        
                         $this->addCodeError('WFL0105', $transition["m1"], $tkey, $this->className);
                     }
                 }
                 if (!empty($transition["m2"])) {
                     if (!method_exists($this->wdoc, $transition["m2"])) {
-                        
                         $this->addCodeError('WFL0106', $transition["m2"], $tkey, $this->className);
                     }
                 }
                 if (!empty($transition["m3"])) {
                     if (!method_exists($this->wdoc, $transition["m3"])) {
-                        
                         $this->addCodeError('WFL0109', $transition["m3"], $tkey, $this->className);
                     }
                 }
@@ -260,7 +255,6 @@ class CheckWorkflow
         if (!is_array($transitions)) {
             $this->addCodeError('WFL0100', $this->className);
         } else {
-            
             foreach ($transitions as $tkey => $transition) {
                 $this->checkTransitionStateKey($tkey);
                 $askes = isset($transition["ask"]) ? $transition["ask"] : null;
@@ -268,11 +262,10 @@ class CheckWorkflow
                     if (!is_array($askes)) {
                         $this->addCodeError('WFL0103', $tkey, $this->className);
                     } else {
-                        
                         $wi = createTmpDoc($this->wdoc->dbaccess, $this->familyName);
                         $aids = array_keys($wi->getAttributes());
                         foreach ($askes as $aid) {
-                            if (!in_array(strtolower($aid) , $aids)) {
+                            if (!in_array(strtolower($aid), $aids)) {
                                 $this->addCodeError('WFL0104', $aid, $this->className);
                             }
                         }
@@ -297,7 +290,7 @@ class CheckWorkflow
         if (CheckClass::phpLintFile($fileName, $output) === false) {
             $this->addCodeError('WFL0003', implode("\n", $output));
         } else {
-            include_once ($this->getWorkflowClassFile());
+            include_once($this->getWorkflowClassFile());
             if (!class_exists($this->className)) {
                 $this->addCodeError('WFL0004', $this->className);
             } else {

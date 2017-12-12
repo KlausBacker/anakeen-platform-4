@@ -14,27 +14,25 @@
 /**
  */
 
-include_once ('Class.DbObj.php');
+include_once('Class.DbObj.php');
 
 class SessionVar extends DbObj
 {
-    
-    var $fields = array(
+    public $fields = array(
         "session",
         "key",
         "val"
     );
     
-    var $id_fields = array(
+    public $id_fields = array(
         "session",
         "key"
     );
     
-    var $dbtable = "session_vars";
+    public $dbtable = "session_vars";
     
-    var $sqlcreate = "create table session_vars ( session varchar(100), 
+    public $sqlcreate = "create table session_vars ( session varchar(100), 
 			    key	    varchar(50),
 			    val	    varchar(200));
 create index session_vars_idx on session_vars(session,key);";
 }
-?>

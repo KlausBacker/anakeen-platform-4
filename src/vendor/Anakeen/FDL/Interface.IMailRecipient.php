@@ -4,7 +4,8 @@
  * @package FDL
 */
 
-interface IMailRecipient {
+interface IMailRecipient
+{
     /**
      * return a RFC822-compliant mail address like "john" <john@example.net>
      * @return string
@@ -24,4 +25,3 @@ interface IMailRecipient {
      */
     public static function getMailAttribute();
 }
-

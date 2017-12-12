@@ -29,7 +29,7 @@ WHERE
     AND table_name = %s
 LIMIT 1
 EOF;
-        $q = sprintf($tpl_sql, pg_escape_literal($schemaName) , pg_escape_literal($tableName));
+        $q = sprintf($tpl_sql, pg_escape_literal($schemaName), pg_escape_literal($tableName));
         simpleQuery($dbaccess, $q, $res, true, true, true);
         return ($res === 't');
     }
@@ -54,7 +54,7 @@ WHERE
     table_schema = %s
     AND table_name = %s
 EOF;
-        $q = sprintf($tpl_sql, pg_escape_literal($schemaName) , pg_escape_literal($tableName));
+        $q = sprintf($tpl_sql, pg_escape_literal($schemaName), pg_escape_literal($tableName));
         simpleQuery($dbaccess, $q, $res, true, false, true);
         return $res;
     }
@@ -87,7 +87,7 @@ WHERE
     AND ct.oid = ix.indrelid
     AND ci.oid = ix.indexrelid
 EOF;
-        $q = sprintf($tpl_sql, pg_escape_literal($schemaName) , pg_escape_literal($tableName));
+        $q = sprintf($tpl_sql, pg_escape_literal($schemaName), pg_escape_literal($tableName));
         simpleQuery($dbaccess, $q, $res, true, false, true);
         return $res;
     }

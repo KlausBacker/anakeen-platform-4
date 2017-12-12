@@ -6,6 +6,7 @@
 namespace Dcp\HttpApi\V1\Crud;
 
 use Dcp\HttpApi\V1\DocManager\Exception as DocumentException;
+
 /**
  * Class DocumentFormatter
  * This class is a facade of FormatCollection (had format for REST collection)
@@ -14,8 +15,7 @@ use Dcp\HttpApi\V1\DocManager\Exception as DocumentException;
  */
 class DocumentFormatter
 {
-    
-    static protected $uselessProperties = array(
+    protected static $uselessProperties = array(
         "lockdomainid",
         "domainid",
         "svalues",
@@ -59,8 +59,7 @@ class DocumentFormatter
         }
         $this->rootPath = \Dcp\HttpApi\V1\Api\Router::getHttpApiParameter("REST_BASE_URL");
         /* init the standard generator of url (redirect to the documents collection */
-        $this->generateUrl = function ($document)
-        {
+        $this->generateUrl = function ($document) {
             if ($document) {
                 if ($document->defDoctype === "C") {
                     return URLUtils::generateURL(sprintf("families/%s.json", $document->name));
@@ -95,7 +94,7 @@ class DocumentFormatter
      *
      * @param array $attributes (array of attribute id)
      */
-    public function setAttributes(Array $attributes)
+    public function setAttributes(array $attributes)
     {
         foreach ($attributes as $currentAttribute) {
             $this->formatCollection->addAttribute($currentAttribute);
@@ -108,7 +107,7 @@ class DocumentFormatter
      * @param bool $withDefault (add the standard default list)
      * @throws Exception
      */
-    public function setProperties(Array $properties, $withDefault = false)
+    public function setProperties(array $properties, $withDefault = false)
     {
         $this->properties = array();
         foreach ($properties as $currentProperty) {
@@ -169,8 +168,7 @@ class DocumentFormatter
         $this->formatCollection->setPropDateStyle(\DateAttributeValue::isoWTStyle);
         /** Format uniformly the void multiple values */
         
-        $this->formatCollection->setAttributeRenderHook(function ($info, $attribute)
-        {
+        $this->formatCollection->setAttributeRenderHook(function ($info, $attribute) {
             /**
              * @var \NormalAttribute $attribute
              */
@@ -181,7 +179,6 @@ class DocumentFormatter
                     $info = new \StandardAttributeValue($attribute, null);
                 }
             } elseif ($attribute->type === "docid" || $attribute->type === "account" || $attribute->type === "file" || $attribute->type === "image") {
-                
                 if (is_array($info)) {
                     foreach ($info as & $oneInfo) {
                         if (is_array($oneInfo)) {
@@ -222,8 +219,7 @@ class DocumentFormatter
         });
         $generateUrl = $this->generateUrl;
         /** Add uri property and suppress state if no state **/
-        $this->formatCollection->setDocumentRenderHook(function ($values, \Doc $document) use ($generateUrl)
-        {
+        $this->formatCollection->setDocumentRenderHook(function ($values, \Doc $document) use ($generateUrl) {
             $values["uri"] = $generateUrl($document);
             if (isset($values["properties"]["state"]) && !$values["properties"]["state"]->reference) {
                 unset($values["properties"]["state"]);
@@ -255,37 +251,36 @@ class DocumentFormatter
             $imgUrl = sprintf("%simages/recorded/sizes/%sx%sc/%s.png", $this->rootPath, $reg[2], $reg[2], $reg[1]);
         }
         //file/1383/0/icon/-1/200-0.jpg?inline=yes
-            $pattern = "%file/([0-9]+)/[0-9]+/([^/]+)/-1/([^\\?]+)\\?.*&width=([0-9]+)%";
-            if (preg_match($pattern, $imgUrl, $reg)) {
-                $imgUrl = sprintf("%sdocuments/%d/images/%s/-1/sizes/%sx%sc.png", $this->rootPath, $reg[1], $reg[2], $reg[4], $reg[4]);
-            }
-        }
-        protected function rewriteThumbUrl(&$imgUrl)
-        {
-            //http://localhost/tmp32/file/66519/0/en_photo/0/Migaloo-Baleine-04.jpg?cache=no&inline=yes&width=48&size=48&width=48
-            //file/66519/0/en_photo/4/faisan4.gif?cache=no&inline=yes&width=48
-            $pattern = "%file/(?P<docid>[0-9]+)/([^/]+)/(?P<attrid>[^/]+)/(?P<index>[^/]+)/.*&width=(?P<size>[0-9]+)%";
-            if (preg_match($pattern, $imgUrl, $reg)) {
-                $imgUrl = sprintf("%sdocuments/%d/images/%s/%s/sizes/%s.png", $this->rootPath, $reg["docid"], $reg["attrid"], $reg["index"], $reg["size"]);
-            }
-        }
-        
-        protected function rewriteFileUrl(&$fileUrl)
-        {
-            //file/66519/1461587595/en_photo/5/Agouti-Animals-Photos.JPG?cache=no&inline=yes
-            $pattern = "%file/(?P<docid>[0-9]+)/([^/]+)/(?P<attrid>[^/]+)/(?P<index>[^/]+)/(?P<filename>[^/?]+)%";
-            if (preg_match($pattern, $fileUrl, $reg)) {
-                $fileUrl = sprintf("%sdocuments/%d/files/%s/%s/%s", $this->rootPath, $reg["docid"], $reg["attrid"], $reg["index"], $reg["filename"]);
-            }
-        }
-        /**
-         * Return the format collection
-         *
-         * @return \FormatCollection
-         */
-        public function getFormatCollection()
-        {
-            return $this->formatCollection;
+        $pattern = "%file/([0-9]+)/[0-9]+/([^/]+)/-1/([^\\?]+)\\?.*&width=([0-9]+)%";
+        if (preg_match($pattern, $imgUrl, $reg)) {
+            $imgUrl = sprintf("%sdocuments/%d/images/%s/-1/sizes/%sx%sc.png", $this->rootPath, $reg[1], $reg[2], $reg[4], $reg[4]);
         }
     }
-    
+    protected function rewriteThumbUrl(&$imgUrl)
+    {
+        //http://localhost/tmp32/file/66519/0/en_photo/0/Migaloo-Baleine-04.jpg?cache=no&inline=yes&width=48&size=48&width=48
+        //file/66519/0/en_photo/4/faisan4.gif?cache=no&inline=yes&width=48
+        $pattern = "%file/(?P<docid>[0-9]+)/([^/]+)/(?P<attrid>[^/]+)/(?P<index>[^/]+)/.*&width=(?P<size>[0-9]+)%";
+        if (preg_match($pattern, $imgUrl, $reg)) {
+            $imgUrl = sprintf("%sdocuments/%d/images/%s/%s/sizes/%s.png", $this->rootPath, $reg["docid"], $reg["attrid"], $reg["index"], $reg["size"]);
+        }
+    }
+        
+    protected function rewriteFileUrl(&$fileUrl)
+    {
+        //file/66519/1461587595/en_photo/5/Agouti-Animals-Photos.JPG?cache=no&inline=yes
+        $pattern = "%file/(?P<docid>[0-9]+)/([^/]+)/(?P<attrid>[^/]+)/(?P<index>[^/]+)/(?P<filename>[^/?]+)%";
+        if (preg_match($pattern, $fileUrl, $reg)) {
+            $fileUrl = sprintf("%sdocuments/%d/files/%s/%s/%s", $this->rootPath, $reg["docid"], $reg["attrid"], $reg["index"], $reg["filename"]);
+        }
+    }
+    /**
+     * Return the format collection
+     *
+     * @return \FormatCollection
+     */
+    public function getFormatCollection()
+    {
+        return $this->formatCollection;
+    }
+}

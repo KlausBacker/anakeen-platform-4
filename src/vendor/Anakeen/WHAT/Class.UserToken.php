@@ -17,13 +17,13 @@
 /**
  */
 
-include_once ('Class.DbObj.php');
+include_once('Class.DbObj.php');
 
 class UserToken extends DbObj
 {
-    var $Class = '$Id: Class.UserToken.php,v 1.6 2009/01/16 13:33:00 jerome Exp $';
+    public $Class = '$Id: Class.UserToken.php,v 1.6 2009/01/16 13:33:00 jerome Exp $';
 
-    var $fields = array(
+    public $fields = array(
         'token',
         'type',
         'cdate',
@@ -45,13 +45,13 @@ class UserToken extends DbObj
     public $description;
     public $type = "CORE";
 
-    var $id_fields = array(
+    public $id_fields = array(
         'token'
     );
 
-    var $dbtable = 'usertoken';
+    public $dbtable = 'usertoken';
 
-    var $sqlcreate = "
+    public $sqlcreate = "
     CREATE TABLE usertoken (
       token text NOT NULL PRIMARY KEY,
       type text,
@@ -66,8 +66,8 @@ class UserToken extends DbObj
     CREATE INDEX usertoken_idx ON usertoken(token);
   ";
 
-    var $tokenByteLength = 20; // Token size: 160 bits (equal to SHA1 digest output length)
-    var $expiration = 86400; // 24 hours
+    public $tokenByteLength = 20; // Token size: 160 bits (equal to SHA1 digest output length)
+    public $expiration = 86400; // 24 hours
     const INFINITY = "infinity";
 
     public function preInsert()

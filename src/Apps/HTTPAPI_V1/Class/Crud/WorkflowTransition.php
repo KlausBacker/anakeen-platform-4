@@ -10,7 +10,6 @@ use Dcp\HttpApi\V1\DocManager\DocManager as DocManager;
 
 class WorkflowTransition extends WorkflowState
 {
-    
     protected $transition = null;
     /**
      * @var \WDoc
@@ -100,7 +99,7 @@ class WorkflowTransition extends WorkflowState
      * @param array $array
      * @throws Exception
      */
-    public function setUrlParameters(Array $array)
+    public function setUrlParameters(array $array)
     {
         parent::setUrlParameters($array);
         

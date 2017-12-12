@@ -34,7 +34,6 @@ class ErrorCode
                     $rc = new ReflectionClass($class);
                     $fmt = $rc->getConstant($code);
                     if ($fmt) {
-                        
                         $nargs = func_num_args();
                         $sp = array();
                         for ($ip = 1; $ip < $nargs; $ip++) {
@@ -50,9 +49,8 @@ class ErrorCode
                     } else {
                         $msg = sprintf("unknow error code %s", $code);
                     }
-                }
-                catch(Exception $e) {
-                    $msg = sprintf("cannot find class error for %s : %s (%s)", $code, $e->getMessage() , implode(', ', func_get_args()));
+                } catch (Exception $e) {
+                    $msg = sprintf("cannot find class error for %s : %s (%s)", $code, $e->getMessage(), implode(', ', func_get_args()));
                 }
             } else {
                 $msg = sprintf("wrong error code %s", $code);

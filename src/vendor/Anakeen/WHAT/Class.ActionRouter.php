@@ -4,9 +4,9 @@
  * @package FDL
 */
 
-require_once ('WHAT/autoload.php');
+require_once('WHAT/autoload.php');
 
-include_once ('WHAT/Lib.Main.php');
+include_once('WHAT/Lib.Main.php');
 
 class ActionRouter
 {

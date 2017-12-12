@@ -5,7 +5,7 @@
  * @package FDL
 */
 
-include_once ('Class.Account.php');
+include_once('Class.Account.php');
 /**
  * Manage User, Group and Role account object
  * @class User

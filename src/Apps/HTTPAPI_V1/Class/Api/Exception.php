@@ -94,14 +94,15 @@ namespace {
          */
         private function _bo()
         {
-            if (true) return;
+            if (true) {
+                return;
+            }
         }
     }
 }
 namespace Dcp\HttpApi\V1\Api {
     class Exception extends \Dcp\Exception
     {
-        
         protected $httpStatus = 400;
         protected $httpMessage = "Dcp Exception";
         protected $data = null;
@@ -207,7 +208,9 @@ namespace Dcp\HttpApi\V1\Api {
          */
         private function _bo()
         {
-            if (true) return;
+            if (true) {
+                return;
+            }
         }
     }
 }

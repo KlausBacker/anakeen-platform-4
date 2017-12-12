@@ -25,7 +25,7 @@ class CheckProfid extends CheckData
      * @param array $data
      * @return CheckProfid
      */
-    function check(array $data, &$extra = null)
+    public function check(array $data, &$extra = null)
     {
         $this->prfName = $data[1];
         $this->checkUnknow();
@@ -40,12 +40,13 @@ class CheckProfid extends CheckData
     {
         if ($this->prfName) {
             try {
-                $this->profil = new_doc(getDbAccess() , $this->prfName);
-            }
-            catch(Exception $e) {
+                $this->profil = new_doc(getDbAccess(), $this->prfName);
+            } catch (Exception $e) {
                 // due to no test validity of the family now
-                $fam = getTDoc(getDbAccess() , $this->prfName);
-                if (!$fam) throw $e;
+                $fam = getTDoc(getDbAccess(), $this->prfName);
+                if (!$fam) {
+                    throw $e;
+                }
                 if ($fam["doctype"] == "C") {
                     $this->profil = new DocFam();
                     $this->profil->affect($fam);

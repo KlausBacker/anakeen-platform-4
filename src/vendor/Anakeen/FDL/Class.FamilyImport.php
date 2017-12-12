@@ -38,19 +38,19 @@ class FamilyImport
         $dir = dirname($fileName);
         $temp = tempnam($dir, basename($fileName) . '.tmp');
         if ($temp === false) {
-            return sprintf(_("Error creating temporary file in '%s'.") , $dir);
+            return sprintf(_("Error creating temporary file in '%s'."), $dir);
         }
         if (file_put_contents($temp, $content) === false) {
             unlink($temp);
-            return sprintf(_("Error writing content to file '%s'.") , $temp);
+            return sprintf(_("Error writing content to file '%s'."), $temp);
         }
         if (\CheckClass::phpLintFile($temp, $output) === false) {
             // Leave temp file for syntax error analysis
-            return sprintf(_("Syntax error in file '%s': %s") , $temp, join("\n", $output));
+            return sprintf(_("Syntax error in file '%s': %s"), $temp, join("\n", $output));
         }
         if (rename($temp, $fileName) === false) {
             unlink($temp);
-            return sprintf(_("Error renaming '%s' to '%s'.") , $temp, $fileName);
+            return sprintf(_("Error renaming '%s' to '%s'."), $temp, $fileName);
         }
         return '';
     }
@@ -137,7 +137,6 @@ class FamilyImport
         $pa = self::getParentAttributes($dbaccess, $tdoc["fromid"]);
         $allAttributes = [];
         if ($query->nb > 0) {
-            
             $tmenu = array();
             $tfield = array();
             $tnormal = array();
@@ -331,7 +330,6 @@ class FamilyImport
                         $atype = strtolower(trim($atype));
                         // create code for calculated attributes
                         if ((!$v->phpfile) && preg_match('/^(?:(?:[a-z_][a-z0-9_]*\\\\)*[a-z_][a-z0-9_]*)?::[a-z_][a-z0-9_]*\(/i', $v->phpfunc, $reg) && ($v->usefor != 'Q')) {
-                            
                             $pM->parse($v->phpfunc);
                             $error = $pM->getError();
                             if ($error) {
@@ -367,7 +365,7 @@ class FamilyImport
                                     }
                                     $options.= sprintf("family=%s", $aformat);
                                 }
-                                $v->phpfunc = sprintf('fdlGetAccounts(CT,15,"%s"):%s,CT', str_replace('"', '\\"', $options) , $v->id);
+                                $v->phpfunc = sprintf('fdlGetAccounts(CT,15,"%s"):%s,CT', str_replace('"', '\\"', $options), $v->id);
                             }
                         }
                         $tnormal[($v->id) ] = array(
@@ -401,7 +399,6 @@ class FamilyImport
                             }
                             if ($repeat == "true") {
                                 $attrids[$v->id] = ($v->id) . " text"; // for the moment all repeat are text
-                                
                             } else {
                                 switch ($atype) {
                                     case 'double':
@@ -468,7 +465,7 @@ class FamilyImport
             $phpAdoc->Set("PHPclassName", sprintf('%s', str_replace(array(
                 ":",
                 "-"
-            ) , "_", ucwords(strtolower($tdoc["name"])))));
+            ), "_", ucwords(strtolower($tdoc["name"])))));
         }
         $phpAdoc->Set("docTitle", str_replace('"', '\\"', $tdoc["title"]));
         $phpAdoc->set("HOOKALIAS", "");
@@ -519,7 +516,6 @@ class FamilyImport
             $phpAdoc->Set("STARMETHOD", true);
             $phpAdoc->Set("docNameIndirect", '_SMethod_Doc' . $tdoc["id"] . "__");
             if ($hasMethod) {
-                
                 $phpAdoc->Set("RedirectDocParent", $phpAdoc->Get("ClassDocParent"));
                 $phpAdoc->Set("ClassDocParent", '\\' . $phpAdoc->Get("docNameIndirect"));
             } else {
@@ -544,7 +540,7 @@ class FamilyImport
             $phpAdoc->Set("extend", ucwords(strtolower(str_replace(array(
                 ":",
                 "-"
-            ) , "_", $fromName))));
+            ), "_", $fromName))));
         }
         
         $phpAdoc->Set("fromid", $tdoc["fromid"]);
@@ -552,7 +548,7 @@ class FamilyImport
         $phpAdoc->Set("className", ucfirst(strtolower(str_replace(array(
             ":",
             "-"
-        ) , "_", $tdoc["name"]))));
+        ), "_", $tdoc["name"]))));
         
         $query = new \QueryDb($dbaccess, "DocAttr");
         $query->AddQuery(sprintf("docid=%d", $tdoc["id"]));
@@ -662,9 +658,7 @@ class FamilyImport
                             $repeat = (isset($tattr[$attr->frameid]) && $tattr[$attr->frameid]->type == "array");
                         }
                         if (($repeat && ($attr->type != 'tsvector'))) {
-                            
                             $sqltype = " text"; // for the moment all repeat are text
-                            
                         } else {
                             $rtype = strtok($attr->type, "(");
                             switch ($rtype) {
@@ -714,13 +708,13 @@ class FamilyImport
     
     protected static function tableExists($dbaccess, $schemaName, $tableName)
     {
-        simpleQuery($dbaccess, sprintf("SELECT 'true' FROM information_schema.tables WHERE table_schema = %s AND table_name = %s", pg_escape_literal($schemaName) , pg_escape_literal($tableName)) , $res, true, true, true);
+        simpleQuery($dbaccess, sprintf("SELECT 'true' FROM information_schema.tables WHERE table_schema = %s AND table_name = %s", pg_escape_literal($schemaName), pg_escape_literal($tableName)), $res, true, true, true);
         return ($res == 'true');
     }
     
     protected static function viewExists($dbaccess, $schemaName, $viewName)
     {
-        simpleQuery($dbaccess, sprintf("SELECT 'true' FROM information_schema.views WHERE table_schema = %s AND table_name = %s", pg_escape_literal($schemaName) , pg_escape_literal($viewName)) , $res, true, true, true);
+        simpleQuery($dbaccess, sprintf("SELECT 'true' FROM information_schema.views WHERE table_schema = %s AND table_name = %s", pg_escape_literal($schemaName), pg_escape_literal($viewName)), $res, true, true, true);
         return ($res == 'true');
     }
     
@@ -737,18 +731,18 @@ class FamilyImport
     
     protected static function recreateFamilyView($dbaccess, $docname, $docid)
     {
-        DbManager::query(sprintf("SELECT refreshFamilySchemaViews(%s, %s)", pg_escape_literal($docname) , pg_escape_literal(intval($docid))) , $res, true, true);
+        DbManager::query(sprintf("SELECT refreshFamilySchemaViews(%s, %s)", pg_escape_literal($docname), pg_escape_literal(intval($docid))), $res, true, true);
     }
     
     protected static function getTableColumns($dbaccess, $schemaName, $tableName)
     {
-        DbManager::query(sprintf("SELECT column_name FROM information_schema.columns WHERE table_schema = %s AND table_name = %s", pg_escape_literal($schemaName) , pg_escape_literal($tableName)) , $res, true, false);
+        DbManager::query(sprintf("SELECT column_name FROM information_schema.columns WHERE table_schema = %s AND table_name = %s", pg_escape_literal($schemaName), pg_escape_literal($tableName)), $res, true, false);
         return $res;
     }
     
     protected static function alterTableAddColumn($dbaccess, $schemaName, $tableName, $columnName, $columnType)
     {
-        DbManager::query(sprintf("ALTER TABLE %s.%s ADD COLUMN %s %s", pg_escape_identifier($schemaName) , pg_escape_identifier($tableName) , pg_escape_identifier($columnName) , $columnType) , $res, true, true);
+        DbManager::query(sprintf("ALTER TABLE %s.%s ADD COLUMN %s %s", pg_escape_identifier($schemaName), pg_escape_identifier($tableName), pg_escape_identifier($columnName), $columnType), $res, true, true);
     }
     
     public static function createDocFile($dbaccess, $tdoc)
@@ -775,7 +769,7 @@ class FamilyImport
     public static function activateTrigger($dbaccess, $docid)
     {
         $cdoc = createTmpDoc($dbaccess, $docid, false);
-        $cdoc->exec_query($cdoc->sqltrigger(false, true) , 1);
+        $cdoc->exec_query($cdoc->sqltrigger(false, true), 1);
         $sqlcmds = explode(";", $cdoc->SqlTrigger());
         //$cdoc = new_Doc($dbacceanss, $docid);
         //  print $cdoc->SqlTrigger();
@@ -856,8 +850,7 @@ class FamilyImport
             if (($err = $doc->setMasterLock(false)) !== '') {
                 throw new \Dcp\Core\Exception($err);
             }
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             if ($savepointed) {
                 $doc->rollbackPoint(__METHOD__);
             }
@@ -920,7 +913,6 @@ class FamilyImport
                     if ($ta->$k == "-") {
                         $tw->$k = "";
                     } // suppress value
-                    
                 }
             }
             
@@ -949,7 +941,7 @@ class FamilyImport
             
             $nextfromid = getFamFromId($dbaccess, $fromid);
             if ($nextfromid > 0) {
-                $pa = array_merge(self::getParentAttributes($dbaccess, $nextfromid) , $pa);
+                $pa = array_merge(self::getParentAttributes($dbaccess, $nextfromid), $pa);
             }
             $paf = array();
             foreach ($pa as $v) {
@@ -1022,7 +1014,7 @@ class FamilyImport
             "<?php\n",
             "<?php\r\n",
             "\n?>"
-        ) , "", $contents);
+        ), "", $contents);
         return (string)$contents;
     }
 }

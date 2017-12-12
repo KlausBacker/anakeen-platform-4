@@ -13,7 +13,7 @@
 /**
  */
 
-include_once ("FDL/Class.SearchDoc.php");
+include_once("FDL/Class.SearchDoc.php");
 /*
  * foreach($this->doc->fields as $k=>$v) {
                 if (is_numeric($k)) $props[$v] = $this->doc->$v;
@@ -187,7 +187,9 @@ class Form1NF
      */
     private function getPgEscape($value, $nullAllowed = true)
     {
-        if ($nullAllowed && "$value" === "") return 'NULL';
+        if ($nullAllowed && "$value" === "") {
+            return 'NULL';
+        }
         return "'" . pg_escape_string($value) . "'";
     }
     /**
@@ -197,17 +199,19 @@ class Form1NF
      */
     private function getPgEscapeCopy($value, $nullAllowed = true)
     {
-        if ($nullAllowed && "$value" === "") return "\\N";
+        if ($nullAllowed && "$value" === "") {
+            return "\\N";
+        }
         $value = pg_escape_string($value);
         $value = str_replace(array(
             "\r",
             "\n",
             "\t"
-        ) , array(
+        ), array(
             "\\r",
             "\\n",
             "\\t"
-        ) , $value);
+        ), $value);
         return $value;
     }
     /**
@@ -254,8 +258,12 @@ class Form1NF
      */
     private function sqlLogOpen()
     {
-        if (!$this->sqlPostgresLogOpen()) return false;
-        if (!$this->sqlStandardLogOpen()) return false;
+        if (!$this->sqlPostgresLogOpen()) {
+            return false;
+        }
+        if (!$this->sqlStandardLogOpen()) {
+            return false;
+        }
         return true;
     }
     /**
@@ -263,8 +271,12 @@ class Form1NF
      */
     private function sqlLogClose()
     {
-        if (!$this->sqlPostgresLogClose()) return false;
-        if (!$this->sqlStandardLogClose()) return false;
+        if (!$this->sqlPostgresLogClose()) {
+            return false;
+        }
+        if (!$this->sqlStandardLogClose()) {
+            return false;
+        }
         return true;
     }
     /**
@@ -326,11 +338,10 @@ class Form1NF
             if (!empty($this->params['outputsql'])) {
                 $this->sqlStandardLogHandle = @fopen($this->params['outputsql'], 'w');
                 if (!$this->sqlStandardLogHandle) {
-                    $this->stdError(_("Error could not open output log file '%s' for writing.") , $this->params['outputsql']);
+                    $this->stdError(_("Error could not open output log file '%s' for writing."), $this->params['outputsql']);
                 }
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         return true;
@@ -382,12 +393,12 @@ class Form1NF
      */
     private function sqlPostgresLogOpen()
     {
-        include_once ('WHAT/Lib.Common.php');
+        include_once('WHAT/Lib.Common.php');
         
         try {
             if (!empty($this->params['outputpgservice']) || !empty($this->params['sqllog'])) {
                 if (empty($this->params['sqllog'])) {
-                    $this->sqlPostgresFileName = tempnam(getTmpDir() , 'sqlPostgres.tmp.1nf.');
+                    $this->sqlPostgresFileName = tempnam(getTmpDir(), 'sqlPostgres.tmp.1nf.');
                     if ($this->sqlPostgresFileName === false) {
                         $this->stdError(_("Error creating temp file for sql log output."));
                     }
@@ -397,11 +408,10 @@ class Form1NF
                 
                 $this->sqlPostgresLogHandle = @fopen($this->sqlPostgresFileName, 'w');
                 if (!$this->sqlPostgresLogHandle) {
-                    $this->stdError(_("Error could not open sql log file '%s' for writing.") , $this->sqlPostgresFileName);
+                    $this->stdError(_("Error could not open sql log file '%s' for writing."), $this->sqlPostgresFileName);
                 }
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         return true;
@@ -412,50 +422,76 @@ class Form1NF
      */
     public function run()
     {
-        
         try {
             // parse xml config
-            if (!$this->configParse()) return false;
+            if (!$this->configParse()) {
+                return false;
+            }
             // check freedom connection
-            if (!$this->freedomDatabaseConnection()) return false;
+            if (!$this->freedomDatabaseConnection()) {
+                return false;
+            }
             // check tmp connection
-            if (!$this->tmpDatabaseConnection()) return false;
+            if (!$this->tmpDatabaseConnection()) {
+                return false;
+            }
             // whether to empty tmp db or not
             if ($this->params['tmpemptydb'] == 'yes') {
                 // empty database
-                if (!$this->tmpDatabaseEmpty()) return false;
+                if (!$this->tmpDatabaseEmpty()) {
+                    return false;
+                }
                 // dump freedom
                 $dumpFile = $this->databaseDump($this->freedom_pgservice);
-                if ($dumpFile === false) return false;
+                if ($dumpFile === false) {
+                    return false;
+                }
                 // load dump into tmp
-                if (!$this->databaseLoad($dumpFile, $this->params['tmppgservice'])) return false;
+                if (!$this->databaseLoad($dumpFile, $this->params['tmppgservice'])) {
+                    return false;
+                }
                 // delete dump file
                 @unlink($dumpFile);
             }
             // open log file
-            if (!$this->sqlLogOpen()) return false;
+            if (!$this->sqlLogOpen()) {
+                return false;
+            }
             // load config
-            if (!$this->configLoad()) return false;
+            if (!$this->configLoad()) {
+                return false;
+            }
             // create temporary schema
-            if (!$this->sqlCreateSchema()) return false;
+            if (!$this->sqlCreateSchema()) {
+                return false;
+            }
             // create tables
-            if (!$this->sqlCreateTables()) return false;
+            if (!$this->sqlCreateTables()) {
+                return false;
+            }
             // fill tables
-            if (!$this->sqlFillTables()) return false;
+            if (!$this->sqlFillTables()) {
+                return false;
+            }
             // make references
-            if (!$this->sqlMakeReferences()) return false;
+            if (!$this->sqlMakeReferences()) {
+                return false;
+            }
             // close log file
-            if (!$this->sqlLogClose()) return false;
+            if (!$this->sqlLogClose()) {
+                return false;
+            }
             // output management
             if (!empty($this->params['outputpgservice'])) {
-                if (!$this->databaseLoad($this->sqlPostgresFileName, $this->params['outputpgservice'])) return false;
+                if (!$this->databaseLoad($this->sqlPostgresFileName, $this->params['outputpgservice'])) {
+                    return false;
+                }
             }
             // temporary file
             if (!empty($this->sqlPostgresFileName) && empty($this->params['sqllog'])) {
                 @unlink($this->sqlPostgresFileName);
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         
@@ -478,9 +514,13 @@ class Form1NF
             if (preg_match("/^\s*--/", $sql)) {
                 continue;
             }
-            if ($log) $this->sqlLogWrite($sql);
+            if ($log) {
+                $this->sqlLogWrite($sql);
+            }
             $res = @pg_query($this->tmp_conn, $sql);
-            if (!$res) $this->checkErrorPostgresql($sql);
+            if (!$res) {
+                $this->checkErrorPostgresql($sql);
+            }
         }
         return true;
     }
@@ -495,17 +535,25 @@ class Form1NF
             $sql = 'COPY "' . $this->params['tmpschemaname'] . '"."' . $tableName . '" FROM STDIN;';
             $this->sqlPostgresLogWrite($sql, false, false);
             $res = @pg_query($this->tmp_conn, $sql);
-            if (!$res) $this->checkErrorPostgresql($sql);
+            if (!$res) {
+                $this->checkErrorPostgresql($sql);
+            }
             foreach ($rows as $row) {
                 $this->sqlPostgresLogWrite($row, false, false);
                 $res = @pg_put_line($this->tmp_conn, $row . "\n");
-                if (!$res) $this->checkErrorPostgresql("ROW $row");
+                if (!$res) {
+                    $this->checkErrorPostgresql("ROW $row");
+                }
             }
             $this->sqlPostgresLogWrite("\\.\n", false, false);
             $res = @pg_put_line($this->tmp_conn, "\\.\n");
-            if (!$res) $this->checkErrorPostgresql();
+            if (!$res) {
+                $this->checkErrorPostgresql();
+            }
             $res = @pg_end_copy($this->tmp_conn);
-            if (!$res) $this->checkErrorPostgresql();
+            if (!$res) {
+                $this->checkErrorPostgresql();
+            }
         }
         $this->sqlInsertBuffer = array();
         $this->sqlInsertCounter = 0;
@@ -537,11 +585,10 @@ class Form1NF
     private function sqlCreateSchema()
     {
         try {
-            $this->stdInfo(_("Create Schema '%s' ...") , $this->params['tmpschemaname']);
+            $this->stdInfo(_("Create Schema '%s' ..."), $this->params['tmpschemaname']);
             $this->sqlExecute('DROP SCHEMA IF EXISTS "' . $this->params['tmpschemaname'] . '" CASCADE', false);
             $this->sqlExecute('CREATE SCHEMA "' . $this->params['tmpschemaname'] . '"', false);
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         return true;
@@ -555,7 +602,6 @@ class Form1NF
         try {
             $this->stdInfo(_("Create Tables ..."));
             foreach ($this->config as $table) {
-                
                 $insertDefaults = true;
                 $fields = array();
                 switch ($table->type) {
@@ -596,15 +642,14 @@ class Form1NF
                     }
                 }
                 
-                $this->stdInfo(_("Create Table '%s'") , strtolower($table->name));
-                $this->sqlLogWrite(sprintf("Create table %s", strtolower($table->name)) , true);
+                $this->stdInfo(_("Create Table '%s'"), strtolower($table->name));
+                $this->sqlLogWrite(sprintf("Create table %s", strtolower($table->name)), true);
                 
                 $sql = sprintf('CREATE TABLE "%s"."%s" (', $this->params['tmpschemaname'], strtolower($table->name)) . "\n";
                 $sql.= implode(",\n", $fields) . "\n)";
                 $this->sqlExecute($sql);
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         return true;
@@ -616,19 +661,17 @@ class Form1NF
     private function sqlMakeReferences()
     {
         try {
-            
             $this->stdInfo(_("Make references ..."));
             $this->sqlLogWrite("Building References", true);
             
             foreach ($this->config as $table) {
                 foreach ($table->references as $reference) {
-                    $sql = sprintf('ALTER TABLE "%s"."%s" ADD CONSTRAINT "%s" FOREIGN KEY ("%s") REFERENCES "%s"."%s" ("%s") MATCH SIMPLE', $this->params['tmpschemaname'], strtolower($table->name) , $reference->attributeName, $reference->attributeName, $this->params['tmpschemaname'], strtolower($reference->foreignTable) , $reference->foreignKey);
+                    $sql = sprintf('ALTER TABLE "%s"."%s" ADD CONSTRAINT "%s" FOREIGN KEY ("%s") REFERENCES "%s"."%s" ("%s") MATCH SIMPLE', $this->params['tmpschemaname'], strtolower($table->name), $reference->attributeName, $reference->attributeName, $this->params['tmpschemaname'], strtolower($reference->foreignTable), $reference->foreignKey);
                     
                     $this->sqlExecute($sql);
                 }
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         
@@ -681,8 +724,8 @@ class Form1NF
             // export family tables
             foreach ($this->config as $table) {
                 if ($table->type == 'family') {
-                    $this->stdInfo(_("Filling family table '%s' and relatives") , strtolower($table->name));
-                    $this->sqlLogWrite(sprintf("Filling table %s and relatives", strtolower($table->name)) , true);
+                    $this->stdInfo(_("Filling family table '%s' and relatives"), strtolower($table->name));
+                    $this->sqlLogWrite(sprintf("Filling table %s and relatives", strtolower($table->name)), true);
                     // search documents
                     $s = new SearchDoc($this->tmp_dbaccess, $table->name);
                     $s->setObjectReturn();
@@ -715,7 +758,7 @@ class Form1NF
                         foreach ($table->references as $reference) {
                             $fTable = strtolower($reference->foreignTable);
                             if (!array_key_exists($fTable, $tablesByName)) {
-                                $this->stdError(_("Table '%s' unknown !") , $reference->foreignTable);
+                                $this->stdError(_("Table '%s' unknown !"), $reference->foreignTable);
                             }
                             
                             switch ($tablesByName[$fTable]->type) {
@@ -742,7 +785,7 @@ class Form1NF
                             }
                         }
                         
-                        $this->sqlInsert(strtolower($table->name) , $table->sqlFields, $fieldCopyValues, $fieldValues);
+                        $this->sqlInsert(strtolower($table->name), $table->sqlFields, $fieldCopyValues, $fieldValues);
                         // manage linked tables :
                         //  \_ enum_multiple_link
                         //  \_ docid_multiple_link
@@ -757,10 +800,10 @@ class Form1NF
                                             if (isset($data['enumtable'])) {
                                                 $data['enumtable']->checkEnumValue($value);
                                             }
-                                            $this->sqlInsert(strtolower($data['table']->name) , $data['table']->sqlFields, array(
+                                            $this->sqlInsert(strtolower($data['table']->name), $data['table']->sqlFields, array(
                                                 $this->getPgEscapeCopy($value) ,
                                                 $doc->id
-                                            ) , array(
+                                            ), array(
                                                 $this->getPgEscapeCopy($value) ,
                                                 $doc->id
                                             ));
@@ -771,10 +814,10 @@ class Form1NF
                                         $values = $doc->getMultipleRawValues($data['column']->name);
                                         foreach ($values as $value) {
                                             $id = $this->sqlGetValidDocId($value);
-                                            $this->sqlInsert(strtolower($data['table']->name) , $data['table']->sqlFields, array(
+                                            $this->sqlInsert(strtolower($data['table']->name), $data['table']->sqlFields, array(
                                                 $id == 'NULL' ? "\\N" : $id,
                                                 $doc->id
-                                            ) , array(
+                                            ), array(
                                                 $id,
                                                 $doc->id
                                             ));
@@ -786,7 +829,6 @@ class Form1NF
                                         $array = $doc->getArrayRawValues($data['table']->arrayName);
                                         // for each row of array
                                         foreach ($array as $iRow => $row) {
-                                            
                                             $arrayId = $this->sqlNextSequenceId($data['table']->name);
                                             // init with auto increment id
                                             $fieldValues = array();
@@ -802,7 +844,7 @@ class Form1NF
                                             foreach ($data['table']->references as $reference) {
                                                 $fTable = strtolower($reference->foreignTable);
                                                 if (!array_key_exists($fTable, $tablesByName)) {
-                                                    $this->stdError(_("Table '%s' unknown !") , $reference->foreignTable);
+                                                    $this->stdError(_("Table '%s' unknown !"), $reference->foreignTable);
                                                 }
                                                 if ($tablesByName[$fTable]->type == 'family' && strtolower($reference->attributeName) == strtolower($reference->foreignTable)) {
                                                     // link to family
@@ -830,16 +872,16 @@ class Form1NF
                                                 }
                                             }
                                             // insert
-                                            $this->sqlInsert(strtolower($data['table']->name) , $data['table']->sqlFields, $fieldCopyValues, $fieldValues);
+                                            $this->sqlInsert(strtolower($data['table']->name), $data['table']->sqlFields, $fieldCopyValues, $fieldValues);
                                             // docid multiple in array
                                             foreach ($data['linkedTables'] as $data2) {
                                                 $values = $doc->rawValueToArray(str_replace('<BR>', "\n", $row[$data2['column']->name]));
                                                 foreach ($values as $val) {
                                                     $id = $this->sqlGetValidDocId($val);
-                                                    $this->sqlInsert(strtolower($data2['table']->name) , $data2['table']->sqlFields, array(
+                                                    $this->sqlInsert(strtolower($data2['table']->name), $data2['table']->sqlFields, array(
                                                         $id == 'NULL' ? "\\N" : $id,
                                                         $arrayId
-                                                    ) , array(
+                                                    ), array(
                                                         $id,
                                                         $arrayId
                                                     ));
@@ -848,28 +890,24 @@ class Form1NF
                                         }
                                         break;
                                 } // end switch
-                                
                             }
                         } // end foreach linkedTabled
-                        
                     } // end while nextDoc
-                    
                 } // end if
-                
             } // end foreach family
             // export enum tables
             foreach ($this->config as $table) {
                 if ($table->type == 'enum' || $table->type == 'enum_multiple' || $table->type == 'enum_inarray') {
-                    $this->stdInfo(_("Filling enum table '%s'") , $table->name);
-                    $this->sqlLogWrite(sprintf("Filling enum table %s", strtolower($table->name)) , true);
+                    $this->stdInfo(_("Filling enum table '%s'"), $table->name);
+                    $this->sqlLogWrite(sprintf("Filling enum table %s", strtolower($table->name)), true);
                     foreach ($table->enumDatas as $key => $value) {
                         $this->sqlInsert($table->name, array(
                             'id',
                             'title'
-                        ) , array(
+                        ), array(
                             $this->getPgEscapeCopy($key, false) ,
                             $this->getPgEscapeCopy($value)
-                        ) , array(
+                        ), array(
                             $this->getPgEscape($key, false) ,
                             $this->getPgEscape($value)
                         ));
@@ -878,8 +916,7 @@ class Form1NF
             }
             // should flush insert datas before leaving !!
             $this->sqlInsertFlush();
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         return true;
@@ -890,12 +927,21 @@ class Form1NF
      */
     private function configLoad()
     {
-        
-        if (!$this->configLoadFamilies()) return false;
-        if (!$this->configLoadAttributes()) return false;
-        if (!$this->configLoadExplodeContainers()) return false;
-        if (!$this->configLoadTables()) return false;
-        if (!$this->configLoadCheck()) return false;
+        if (!$this->configLoadFamilies()) {
+            return false;
+        }
+        if (!$this->configLoadAttributes()) {
+            return false;
+        }
+        if (!$this->configLoadExplodeContainers()) {
+            return false;
+        }
+        if (!$this->configLoadTables()) {
+            return false;
+        }
+        if (!$this->configLoadCheck()) {
+            return false;
+        }
         
         return true;
     }
@@ -909,7 +955,9 @@ class Form1NF
     {
         $arrayColumns = array();
         foreach ($family->columns as $i => $column) {
-            if ($column->arrayName == $arrayName) $arrayColumns[$i] = $column;
+            if ($column->arrayName == $arrayName) {
+                $arrayColumns[$i] = $column;
+            }
         }
         return $arrayColumns;
     }
@@ -924,48 +972,62 @@ class Form1NF
                 // check duplicate columns
                 $delete = array();
                 foreach ($family->columns as $i => $column1) {
-                    if (in_array($i, $delete)) continue; // avoid if already deleted
+                    if (in_array($i, $delete)) {
+                        continue;
+                    } // avoid if already deleted
                     foreach ($family->columns as $j => $column2) {
-                        if ($i == $j) continue; // avoid check on same column
+                        if ($i == $j) {
+                            continue;
+                        } // avoid check on same column
                         if ($column1->name == $column2->name) {
                             $delete[] = $j;
                         }
                     }
                 }
                 foreach ($delete as $i) {
-                    $this->stdInfo(_("Remove duplicate attribute '%s' in family '%s'") , $this->config[$iFamily]->columns[$i]->name, $family->name);
+                    $this->stdInfo(_("Remove duplicate attribute '%s' in family '%s'"), $this->config[$iFamily]->columns[$i]->name, $family->name);
                     unset($this->config[$iFamily]->columns[$i]);
                 }
                 // check duplicate references
                 $delete = array();
                 foreach ($family->references as $i => $ref1) {
-                    if (in_array($i, $delete)) continue; // avoid if already deleted
+                    if (in_array($i, $delete)) {
+                        continue;
+                    } // avoid if already deleted
                     foreach ($family->references as $j => $ref2) {
-                        if ($i == $j) continue; // avoid check on same column
+                        if ($i == $j) {
+                            continue;
+                        } // avoid check on same column
                         if ($ref1->isSameAs($ref2)) {
                             $delete[] = $j;
                         }
                     }
                 }
                 foreach ($delete as $i) {
-                    $this->stdInfo(_("Remove duplicate reference '%s' in family '%s'") , $this->config[$iFamily]->references[$i]->attributeName, $family->name);
+                    $this->stdInfo(_("Remove duplicate reference '%s' in family '%s'"), $this->config[$iFamily]->references[$i]->attributeName, $family->name);
                     unset($this->config[$iFamily]->references[$i]);
                 }
                 // the following checks are only for families
-                if ($family->type != 'family') continue;
+                if ($family->type != 'family') {
+                    continue;
+                }
                 // check duplicate property
                 $delete = array();
                 foreach ($family->properties as $i => $property1) {
-                    if (in_array($i, $delete)) continue; // avoid if already deleted
+                    if (in_array($i, $delete)) {
+                        continue;
+                    } // avoid if already deleted
                     foreach ($family->properties as $j => $property2) {
-                        if ($i == $j) continue; // avoid check on same column
+                        if ($i == $j) {
+                            continue;
+                        } // avoid check on same column
                         if ($property1->name == $property2->name) {
                             $delete[] = $j;
                         }
                     }
                 }
                 foreach ($delete as $i) {
-                    $this->stdInfo(_("Remove duplicate property '%s' in family '%s'") , $this->config[$iFamily]->properties[$i]->name, $family->name);
+                    $this->stdInfo(_("Remove duplicate property '%s' in family '%s'"), $this->config[$iFamily]->properties[$i]->name, $family->name);
                     unset($this->config[$iFamily]->properties[$i]);
                 }
                 // check special property
@@ -980,12 +1042,11 @@ class Form1NF
                     }
                 }
                 foreach ($delete as $i) {
-                    $this->stdInfo(_("Skip already added property '%s' in family '%s'") , $this->config[$iFamily]->properties[$i]->name, $family->name);
+                    $this->stdInfo(_("Skip already added property '%s' in family '%s'"), $this->config[$iFamily]->properties[$i]->name, $family->name);
                     unset($this->config[$iFamily]->properties[$i]);
                 }
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         return true;
@@ -997,7 +1058,9 @@ class Form1NF
      */
     private function getDocidFamily($column, $table)
     {
-        if (!empty($column->docidFamily)) return $column->docidFamily;
+        if (!empty($column->docidFamily)) {
+            return $column->docidFamily;
+        }
         $found = '';
         foreach ($table->famAttributes as $attribute) {
             if (!empty($attribute->phpfunc)) {
@@ -1009,12 +1072,12 @@ class Form1NF
         }
         // break process if not found
         if (empty($found)) {
-            $this->stdError(_("Attribute Error: impossible to found the family for docid attribute '%s'") , $column->name);
+            $this->stdError(_("Attribute Error: impossible to found the family for docid attribute '%s'"), $column->name);
         }
         // test if family exists
         $fam = new_Doc($this->tmp_dbaccess, $found, true);
         if (!is_object($fam) || !$fam->isAlive()) {
-            $this->stdError(_("Attribute Error: family '%s' is not valid or alive for docid '%s'.") , $found, $column->name);
+            $this->stdError(_("Attribute Error: family '%s' is not valid or alive for docid '%s'."), $found, $column->name);
         }
         return $found;
     }
@@ -1026,13 +1089,16 @@ class Form1NF
     {
         try {
             foreach ($this->config as $iFamily => $family) {
-                
-                if ($family->type != 'family') continue;
+                if ($family->type != 'family') {
+                    continue;
+                }
                 
                 $delete = array();
                 
                 foreach ($family->columns as $iColumn => $column) {
-                    if (in_array($iColumn, $delete)) continue;
+                    if (in_array($iColumn, $delete)) {
+                        continue;
+                    }
                     switch ($column->fullType) {
                         case 'simple': // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                             // nothing to do
@@ -1050,7 +1116,7 @@ class Form1NF
                         case 'docid': // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                             if (empty($column->docidLinkedColumn)) {
                                 // real docid
-                                $table = $this->getConfigTable($this->getDocidFamily($column, $family) , true);
+                                $table = $this->getConfigTable($this->getDocidFamily($column, $family), true);
                                 $family->references[] = new Form1NF_Reference($table->name, $column->name);
                             } else {
                                 // added column
@@ -1089,7 +1155,7 @@ class Form1NF
                             $tableNameLink = $this->getUniqueTableName($family->name . '_' . $column->name);
                             $newTableLink = new Form1NF_Table('docid_multiple_link', $tableNameLink);
                             
-                            $newTableDocid = $this->getConfigTable($this->getDocidFamily($column, $family) , true);
+                            $newTableDocid = $this->getConfigTable($this->getDocidFamily($column, $family), true);
                             
                             $newTableLink->references[] = new Form1NF_Reference($newTableDocid->name, 'iddoc');
                             $newTableLink->references[] = new Form1NF_Reference($family->name); // idfamille
@@ -1111,7 +1177,7 @@ class Form1NF
                             // get all columns of array
                             $arrayColumns = $this->getArrayColumns($family, $column->arrayName);
                             if ($arrayColumns === false) {
-                                $this->stdError(_("Error: No column found in array '%s'") , $column->arrayName);
+                                $this->stdError(_("Error: No column found in array '%s'"), $column->arrayName);
                             }
                             // get or create table
                             $tableArrayName = $family->name . '_' . $column->arrayName;
@@ -1141,7 +1207,7 @@ class Form1NF
                                         break;
 
                                     case 'docid_inarray':
-                                        $tableDocid = $this->getConfigTable($this->getDocidFamily($col, $family) , true);
+                                        $tableDocid = $this->getConfigTable($this->getDocidFamily($col, $family), true);
                                         $tableArray->references[] = new Form1NF_Reference($tableDocid->name, $col->name);
                                         $tableDocid->type = 'family';
                                         break;
@@ -1150,7 +1216,7 @@ class Form1NF
                                         $tableNameLink = $this->getUniqueTableName($tableArrayName . '_' . $col->name);
                                         $newTableLink = new Form1NF_Table('docid_multiple_inarray_link', $tableNameLink);
                                         
-                                        $newTableDocid = $this->getConfigTable($this->getDocidFamily($col, $family) , true);
+                                        $newTableDocid = $this->getConfigTable($this->getDocidFamily($col, $family), true);
                                         
                                         $newTableLink->references[] = new Form1NF_Reference($newTableDocid->name); // idfamille
                                         $newTableLink->references[] = new Form1NF_Reference($tableArrayName, 'idarray');
@@ -1165,7 +1231,7 @@ class Form1NF
                                         break;
 
                                     default:
-                                        $this->stdError(_("Incoherent column type '%s' in array '%s'.") , $colType, $column->arrayName);
+                                        $this->stdError(_("Incoherent column type '%s' in array '%s'."), $colType, $column->arrayName);
                                         break;
                                 }
                                 $delete[] = $i;
@@ -1174,14 +1240,15 @@ class Form1NF
                             break;
 
                         default:
-                            $this->stdError(_("Column type '%s' is not managed for export.") , $column->fullType);
+                            $this->stdError(_("Column type '%s' is not managed for export."), $column->fullType);
                             break;
                     }
                 }
-                foreach ($delete as $iColumn) unset($this->config[$iFamily]->columns[$iColumn]);
+                foreach ($delete as $iColumn) {
+                    unset($this->config[$iFamily]->columns[$iColumn]);
+                }
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         return true;
@@ -1203,14 +1270,14 @@ class Form1NF
                         // try to upper the name
                         $famId = \Dcp\Core\DocManager::getFamilyIdFromName(strtoupper($family->name));
                         if ($famId === 0) {
-                            $this->stdError(_("Could not get family id for '%s'.") , $family->name);
+                            $this->stdError(_("Could not get family id for '%s'."), $family->name);
                         }
                     }
                 }
                 // try to load family id
                 $fam = new_Doc($this->tmp_dbaccess, $famId, true);
                 if (!is_object($fam) || !$fam->isAlive()) {
-                    $this->stdError(_("Family '%s' is not valid or alive.") , $famId);
+                    $this->stdError(_("Family '%s' is not valid or alive."), $famId);
                 }
                 // load all attributes
                 $famAttributes = $fam->GetAttributes();
@@ -1222,14 +1289,13 @@ class Form1NF
                 $allowedProperties = array_keys(Doc::$infofields);
                 foreach ($family->properties as $property) {
                     if (!in_array($property->name, $allowedProperties)) {
-                        $this->stdError(_("Property '%s' is not valid (family '%s').") , $property->name, $family->name);
+                        $this->stdError(_("Property '%s' is not valid (family '%s')."), $property->name, $family->name);
                     }
                     // load correct type
                     $property->setType(Doc::$infofields[$property->name]['type']);
                 }
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         return true;
@@ -1245,7 +1311,9 @@ class Form1NF
                 // explode TABS, ARRAY or FRAMES columns with their attributes
                 $delete = array();
                 foreach ($family->columns as $i => $column) {
-                    if (in_array($i, $delete)) continue;
+                    if (in_array($i, $delete)) {
+                        continue;
+                    }
                     if ($column->isContainer) {
                         $columns = $family->getChildAttributes($column->name);
                         if ($columns === false) {
@@ -1257,10 +1325,11 @@ class Form1NF
                         $delete[] = $i;
                     }
                 }
-                foreach ($delete as $i) unset($family->columns[$i]);
+                foreach ($delete as $i) {
+                    unset($family->columns[$i]);
+                }
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         return true;
@@ -1275,7 +1344,6 @@ class Form1NF
             foreach ($this->config as $family) {
                 // load each column attribute
                 foreach ($family->columns as $column) {
-                    
                     $columnName = $column->name;
                     $columnLinkedName = '';
                     
@@ -1293,38 +1361,36 @@ class Form1NF
                     }
                     
                     if ($attributeFound === null) {
-                        $this->stdError(_("Could not find attribute '%s' in family '%s'.") , $column->name, $family->name);
+                        $this->stdError(_("Could not find attribute '%s' in family '%s'."), $column->name, $family->name);
                     }
                     
                     $column->copyFromColumn($attributeFound);
                     // search linked docid attribute
                     if (!empty($columnLinkedName)) {
-                        
                         if ($attributeFound->type != 'docid') {
-                            $this->stdError(_("Attribute '%s' should reference a docid attribute in family '%s'.") , $column->name, $family->name);
+                            $this->stdError(_("Attribute '%s' should reference a docid attribute in family '%s'."), $column->name, $family->name);
                         }
                         
                         if (empty($attributeFound->docidFamily)) {
-                            $this->stdError(_("Attribute format should not be empty on attribute '%s' in family '%s'.") , $column->name, $family->name);
+                            $this->stdError(_("Attribute format should not be empty on attribute '%s' in family '%s'."), $column->name, $family->name);
                         }
                         
                         $doc = new_Doc($this->tmp_dbaccess, $attributeFound->docidFamily);
                         
                         if (!is_object($doc) || !$doc->isAlive()) {
-                            $this->stdError(_("Family '%s' is not valid or alive.") , $attributeFound->docidFamily);
+                            $this->stdError(_("Family '%s' is not valid or alive."), $attributeFound->docidFamily);
                         }
                         
                         $attribute = $doc->getAttribute($columnLinkedName);
                         
                         if (!is_object($attribute) || empty($attribute)) {
-                            $this->stdError(_("Attribute '%s' could not be found in family '%s'.") , $columnLinkedName, $attributeFound->docidFamily);
+                            $this->stdError(_("Attribute '%s' could not be found in family '%s'."), $columnLinkedName, $attributeFound->docidFamily);
                         }
                         $column->docidLinkedColumn = new Form1NF_Column($attribute);
                     }
                 }
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         return true;
@@ -1397,7 +1463,6 @@ class Form1NF
      */
     private function configParse()
     {
-        
         $msgerr = '';
         
         try {
@@ -1454,8 +1519,7 @@ class Form1NF
                 $this->stdError(_("XML Error: no table defined."));
             }
             $this->stdInfo(_("XML config parsed OK !"));
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         
@@ -1468,12 +1532,12 @@ class Form1NF
      */
     private function databaseDump($pgservice)
     {
-        include_once ('WHAT/Lib.Common.php');
+        include_once('WHAT/Lib.Common.php');
         
         try {
-            $this->stdInfo(_("Dump pgservice '%s' ...") , $pgservice);
+            $this->stdInfo(_("Dump pgservice '%s' ..."), $pgservice);
             
-            $tmp_dump = tempnam(getTmpDir() , 'pg_dump.tmp.1nf.');
+            $tmp_dump = tempnam(getTmpDir(), 'pg_dump.tmp.1nf.');
             if ($tmp_dump === false) {
                 $this->stdError(_("Error creating temp file for pg_dump output."));
             }
@@ -1488,7 +1552,7 @@ class Form1NF
                 '--disable-triggers',
                 '-f',
                 $tmp_dump
-            ) , array(
+            ), array(
                 'closestdin' => true,
                 'closestdout' => true,
                 'envs' => array(
@@ -1497,10 +1561,9 @@ class Form1NF
             ));
             
             if ($ret != 0) {
-                $this->stdError(_("Dump to '%s' returned with exitcode %s") , $tmp_dump, $ret);
+                $this->stdError(_("Dump to '%s' returned with exitcode %s"), $tmp_dump, $ret);
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         return $tmp_dump;
@@ -1513,7 +1576,7 @@ class Form1NF
     private function databaseLoad($dumpFile, $pgservice)
     {
         try {
-            $this->stdInfo(_("Load dump file into '%s' ...") , $pgservice);
+            $this->stdInfo(_("Load dump file into '%s' ..."), $pgservice);
             
             $psql_cmd = LibSystem::getCommandPath('psql');
             if ($psql_cmd === false) {
@@ -1525,7 +1588,7 @@ class Form1NF
                 '--quiet',
                 '-f',
                 $dumpFile
-            ) , array(
+            ), array(
                 'closestdin' => true,
                 'closestdout' => true,
                 'envs' => array(
@@ -1533,10 +1596,9 @@ class Form1NF
                 )
             ));
             if ($ret != 0) {
-                $this->stdError(_("Loading of dump '%s' returned with exitcode %s") , $dumpFile, $ret);
+                $this->stdError(_("Loading of dump '%s' returned with exitcode %s"), $dumpFile, $ret);
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         return $dumpFile;
@@ -1551,13 +1613,12 @@ class Form1NF
         try {
             $this->conn = @pg_connect($this->freedom_dbaccess);
             if ($this->conn === false) {
-                $this->stdError(_("PG Error: Connection to freedom pg service '%s' failed !") , $this->freedom_pgservice);
+                $this->stdError(_("PG Error: Connection to freedom pg service '%s' failed !"), $this->freedom_pgservice);
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
-        $this->stdInfo(_("Connection to freedom pg service '%s' OK !") , $this->freedom_pgservice);
+        $this->stdInfo(_("Connection to freedom pg service '%s' OK !"), $this->freedom_pgservice);
         return $this->conn;
     }
     /**
@@ -1570,13 +1631,12 @@ class Form1NF
         try {
             $this->tmp_conn = @pg_connect($this->tmp_dbaccess);
             if ($this->tmp_conn === false) {
-                $this->stdError(_("PG Error: Connection to temporary pg service '%s' failed !") , $this->params['tmppgservice']);
+                $this->stdError(_("PG Error: Connection to temporary pg service '%s' failed !"), $this->params['tmppgservice']);
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
-        $this->stdInfo(_("Connection to temporary pg service '%s' OK !") , $this->params['tmppgservice']);
+        $this->stdInfo(_("Connection to temporary pg service '%s' OK !"), $this->params['tmppgservice']);
         return $this->tmp_conn;
     }
     /**
@@ -1586,13 +1646,12 @@ class Form1NF
     private function tmpDatabaseEmpty()
     {
         try {
-            $this->stdInfo(_("Emptying temporary database '%s' ...") , $this->params['tmppgservice']);
+            $this->stdInfo(_("Emptying temporary database '%s' ..."), $this->params['tmppgservice']);
             foreach ($this->dropSchemas as $schema) {
-                $this->sqlExecute(sprintf('DROP SCHEMA IF EXISTS "%s" CASCADE', $schema) , false);
+                $this->sqlExecute(sprintf('DROP SCHEMA IF EXISTS "%s" CASCADE', $schema), false);
             }
             $this->sqlExecute('CREATE SCHEMA "public"', false);
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         return true;
@@ -1639,10 +1698,18 @@ class Form1NF_Reference
      */
     public function isSameAs($ref)
     {
-        if ($this->attributeName != $ref->attributeName) return false;
-        if ($this->foreignTable != $ref->foreignTable) return false;
-        if ($this->foreignKey != $ref->foreignKey) return false;
-        if ($this->type != $ref->type) return false;
+        if ($this->attributeName != $ref->attributeName) {
+            return false;
+        }
+        if ($this->foreignTable != $ref->foreignTable) {
+            return false;
+        }
+        if ($this->foreignKey != $ref->foreignKey) {
+            return false;
+        }
+        if ($this->type != $ref->type) {
+            return false;
+        }
         return true;
     }
 }
@@ -1724,7 +1791,9 @@ class Form1NF_Table
      */
     public function checkEnumValue($value)
     {
-        if ("$value" === "") return false;
+        if ("$value" === "") {
+            return false;
+        }
         if (!array_key_exists($value, $this->enumDatas)) {
             $this->enumDatas[$value] = $value;
         }
@@ -1736,12 +1805,17 @@ class Form1NF_Table
      */
     public function getChildAttributes($name)
     {
-        
         $columns = array();
         foreach ($this->famAttributes as $attribute) {
-            if ($attribute->type == 'array') continue;
-            if ($attribute->type == 'frame') continue;
-            if ($attribute->type == 'tab') continue;
+            if ($attribute->type == 'array') {
+                continue;
+            }
+            if ($attribute->type == 'frame') {
+                continue;
+            }
+            if ($attribute->type == 'tab') {
+                continue;
+            }
             if (in_array($name, $attribute->containers)) {
                 $columns[] = $attribute;
             }
@@ -1757,7 +1831,9 @@ class Form1NF_Table
     public function hasColumn($name)
     {
         foreach ($this->columns as $column) {
-            if (strtolower($column->name) == strtolower($name)) return $column;
+            if (strtolower($column->name) == strtolower($name)) {
+                return $column;
+            }
         }
         return false;
     }
@@ -1863,8 +1939,12 @@ class Form1NF_Column
         if (is_object($name)) {
             $this->loadFromAttribute($name);
         } else {
-            if ($name !== null) $this->name = strtolower($name);
-            if ($type !== null) $this->type = $type;
+            if ($name !== null) {
+                $this->name = strtolower($name);
+            }
+            if ($type !== null) {
+                $this->type = $type;
+            }
         }
     }
     /**
@@ -1890,7 +1970,9 @@ class Form1NF_Column
         $this->isDocid = ($this->type == 'docid');
         $this->isContainer = ($this->type == 'tab' || $this->type == 'frame' || $this->type == 'array');
         
-        if ($this->isEnum) $this->enumDatas = $attribute->getEnum();
+        if ($this->isEnum) {
+            $this->enumDatas = $attribute->getEnum();
+        }
         
         $this->pgType = $this->getPgType();
         $this->fullType = $this->getFullType();
@@ -1922,9 +2004,15 @@ class Form1NF_Column
      */
     private function loadContainers($fieldset)
     {
-        if (!is_object($fieldset)) return;
-        if ($fieldset->id == \Adoc::HIDDENFIELD) return;
-        if (empty($this->arrayName) && $fieldset->type == 'array') $this->arrayName = $fieldset->id;
+        if (!is_object($fieldset)) {
+            return;
+        }
+        if ($fieldset->id == \Adoc::HIDDENFIELD) {
+            return;
+        }
+        if (empty($this->arrayName) && $fieldset->type == 'array') {
+            $this->arrayName = $fieldset->id;
+        }
         $this->containers[] = $fieldset->id;
         if (property_exists($fieldset, 'fieldSet')) {
             $this->loadContainers($fieldset->fieldSet);
@@ -1940,9 +2028,15 @@ class Form1NF_Column
         if ($pgType === null) {
             $pgType = $this->getPgType();
         }
-        if ("$value" === "") return 'NULL';
-        if ($pgType == 'integer' || $pgType == 'double precision') return $value;
-        if ($this->isProperty && $this->name == 'revdate') $value = date('Y-m-d H:i:s', $value);
+        if ("$value" === "") {
+            return 'NULL';
+        }
+        if ($pgType == 'integer' || $pgType == 'double precision') {
+            return $value;
+        }
+        if ($this->isProperty && $this->name == 'revdate') {
+            $value = date('Y-m-d H:i:s', $value);
+        }
         return "'" . pg_escape_string($value) . "'";
     }
     /**
@@ -1952,18 +2046,22 @@ class Form1NF_Column
      */
     public function getPgEscapeCopy($value, $pgType = null)
     {
-        if ("$value" === "") return "\\N";
-        if ($this->isProperty && $this->name == 'revdate') $value = date('Y-m-d H:i:s', $value);
+        if ("$value" === "") {
+            return "\\N";
+        }
+        if ($this->isProperty && $this->name == 'revdate') {
+            $value = date('Y-m-d H:i:s', $value);
+        }
         $value = pg_escape_string($value);
         $value = str_replace(array(
             "\r",
             "\n",
             "\t"
-        ) , array(
+        ), array(
             "\\r",
             "\\n",
             "\\t"
-        ) , $value);
+        ), $value);
         return $value;
     }
     /**
@@ -2016,11 +2114,18 @@ class Form1NF_Column
     private function getFullType()
     {
         $type = 'simple';
-        if ($this->isEnum) $type = 'enum';
-        elseif ($this->isDocid) $type = 'docid';
+        if ($this->isEnum) {
+            $type = 'enum';
+        } elseif ($this->isDocid) {
+            $type = 'docid';
+        }
         
-        if ($this->isMultiple) $type.= '_multiple';
-        if ($this->inArray) $type.= '_inarray';
+        if ($this->isMultiple) {
+            $type.= '_multiple';
+        }
+        if ($this->inArray) {
+            $type.= '_inarray';
+        }
         
         return $type;
     }

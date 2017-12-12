@@ -9,9 +9,9 @@
 namespace Dcp\Core;
 
 use \Dcp\AttributeIdentifiers\Report as MyAttributes;
+
 class Report extends \Dcp\Family\Dsearch
 {
-    
     public $defaultedit = "FREEDOM:EDITREPORT";
     public $defaultview = "FREEDOM:VIEWREPORT";
     
@@ -117,7 +117,7 @@ class Report extends \Dcp\Family\Dsearch
         foreach ($colums as $k => $col) {
             $colId = $col[1];
             if (isset(\Doc::$infofields[$colId])) {
-                $proAttr[$colId] = new \NormalAttribute($colId, $doc->id, _(\Doc::$infofields[$colId]["label"]) , "text", "", false, $k, "", "R", false, false, false, $proFrame, "", "", "");
+                $proAttr[$colId] = new \NormalAttribute($colId, $doc->id, _(\Doc::$infofields[$colId]["label"]), "text", "", false, $k, "", "R", false, false, false, $proFrame, "", "", "");
             }
         }
         $toa = array_merge($proAttr, $toa);
@@ -139,8 +139,9 @@ class Report extends \Dcp\Family\Dsearch
          * @var \NormalAttribute $oa
          */
         foreach ($toa as $oa) {
-            
-            if ($oa->type == "array") continue;
+            if ($oa->type == "array") {
+                continue;
+            }
             
             $struct = $oa->fieldSet->id;
             
@@ -153,7 +154,7 @@ class Report extends \Dcp\Family\Dsearch
                 $structArray = $structFrame = $structTab = '';
                 if ($soa->type == "array") {
                     $structArray = $soa->id;
-                } else if ($soa->type == "frame") {
+                } elseif ($soa->type == "frame") {
                     $structFrame = $soa->id;
                 }
                 if (isset($soa->fieldSet) && $soa->fieldSet->id != \Adoc::HIDDENFIELD) {
@@ -176,7 +177,7 @@ class Report extends \Dcp\Family\Dsearch
                 $currentArray = $currentFrame = $currentTab = '';
                 if ($soa->type == "array") {
                     $currentArray = $soa->id;
-                } else if ($soa->type == "frame") {
+                } elseif ($soa->type == "frame") {
                     $currentFrame = $soa->id;
                 }
                 if (isset($soa->fieldSet) && $soa->fieldSet->id != \Adoc::HIDDENFIELD) {
@@ -202,7 +203,6 @@ class Report extends \Dcp\Family\Dsearch
                     $tattr[] = $this->getColumnBlockItem($doc, $currentTab, false);
                 }
                 if ($structTab != $currentTab && $structTab) {
-                    
                     $tattr[] = $this->getColumnBlockItem($doc, $structTab, true);
                 }
                 if ($structFrame != $currentFrame && $structFrame) {
@@ -307,7 +307,7 @@ class Report extends \Dcp\Family\Dsearch
         $rfamid = $this->getRawValue("SE_FAMID", 1);
         $rdoc = createDoc($this->dbaccess, $rfamid, false);
         if ($rdoc === false) {
-            $err = sprintf(_('Family [%s] not found') , $rfamid);
+            $err = sprintf(_('Family [%s] not found'), $rfamid);
             $this->lay->template = htmlspecialchars($err, ENT_QUOTES);
             $this->lay->noparse = true;
             return $err;
@@ -349,7 +349,7 @@ class Report extends \Dcp\Family\Dsearch
         $tcols[] = "state";
         $this->lay->setBlockData("COLS", $tcolumn2);
         $this->lay->set("HASCOLS", count($tcolumn2) > 0);
-        include_once ("FDL/Lib.Dir.php");
+        include_once("FDL/Lib.Dir.php");
         
         $this->lay->set("reportstyle", $this->getRawValue("REP_STYLE", "perso"));
         $this->lay->set("isperso", ($this->getRawValue("REP_STYLE", "perso") == "perso"));
@@ -368,7 +368,9 @@ class Report extends \Dcp\Family\Dsearch
         if ($oa) {
             if (($oa->type == "docid") && ($oa->getOption("doctitle") != "")) {
                 $order = $oa->getOption("doctitle");
-                if ($order == 'auto') $order = $oa->id . '_title';
+                if ($order == 'auto') {
+                    $order = $oa->id . '_title';
+                }
             }
         }
         $order.= " " . $this->getRawValue("REP_ORDERSORT");
@@ -379,13 +381,15 @@ class Report extends \Dcp\Family\Dsearch
         $s->setObjectReturn();
         $limit = intval($limit);
         $maxDisplayLimit = intval($this->getFamilyParameterValue("rep_maxdisplaylimit", 1000)) + 1;
-        if ($limit == 0) $limit = $maxDisplayLimit;
-        else $limit = min($limit, $maxDisplayLimit);
+        if ($limit == 0) {
+            $limit = $maxDisplayLimit;
+        } else {
+            $limit = min($limit, $maxDisplayLimit);
+        }
         $s->setSlice($limit);
         try {
             $s->search();
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             /*
              * Prevent exception from stopping the view's composition
              * The error will be handled and reported with the getError() method below
@@ -398,7 +402,7 @@ class Report extends \Dcp\Family\Dsearch
         }
         $needRemoveLast = false;
         if ($s->count() >= $maxDisplayLimit) {
-            addWarningMsg(sprintf(_("Max display limit %s reached. Use export to see all") , $maxDisplayLimit - 1));
+            addWarningMsg(sprintf(_("Max display limit %s reached. Use export to see all"), $maxDisplayLimit - 1));
             $needRemoveLast = true;
         }
         $trodd = false;
@@ -421,10 +425,11 @@ class Report extends \Dcp\Family\Dsearch
             
             foreach ($tcolumn2 as $ki => $vc) {
                 $kc = $vc["colid"];
-                if ($rdoc->getRawValue($kc) == "") $tcell[$ki] = array(
+                if ($rdoc->getRawValue($kc) == "") {
+                    $tcell[$ki] = array(
                     "cellval" => ""
                 );
-                else {
+                } else {
                     $visible = true;
                     switch ($kc) {
                         case "revdate":
@@ -454,7 +459,7 @@ class Report extends \Dcp\Family\Dsearch
                                 $cval = $rdoc->getPropertyValue($kc);
                                 if ($cval === false) {
                                     $visible = \Dcp\VerifyAttributeAccess::isAttributeAccessGranted($rdoc, $lattr[$kc]);
-                                    $cval = $rdoc->getHtmlValue($lattr[$kc], $rdoc->getRawValue($kc) , $target, $ulink);
+                                    $cval = $rdoc->getHtmlValue($lattr[$kc], $rdoc->getRawValue($kc), $target, $ulink);
                                 }
                             }
                             if (isset($lattr[$kc]) && $lattr[$kc]->type == "image") {
@@ -482,7 +487,9 @@ class Report extends \Dcp\Family\Dsearch
             $this->lay->setBlockData("row$k", $tcell);
         }
         
-        if ($needRemoveLast) array_pop($trow);
+        if ($needRemoveLast) {
+            array_pop($trow);
+        }
         $this->lay->setBlockData("ROWS", $trow);
         // ---------------------
         // footer
@@ -500,9 +507,13 @@ class Report extends \Dcp\Family\Dsearch
                     $val = 0;
                     foreach ($trow as $kr => $vr) {
                         $ctr = $this->lay->getBlockData($vr["CELLS"]);
-                        if (isset($ctr[$k]["rawval"])) $val+= $ctr[$k]["rawval"];
+                        if (isset($ctr[$k]["rawval"])) {
+                            $val+= $ctr[$k]["rawval"];
+                        }
                     }
-                    if ($v == "MOY") $val = $val / count($trow);
+                    if ($v == "MOY") {
+                        $val = $val / count($trow);
+                    }
                     if (!$rdoc) {
                         $rdoc = createTmpDoc($this->dbaccess, $this->getRawValue("se_famid"));
                     }
@@ -514,18 +525,18 @@ class Report extends \Dcp\Family\Dsearch
                 default:
                     $val = "-";
                 }
-                $footRight = '';
-                if (isset($tcolumn2[$k])) {
-                    $footRight = $tcolumn2[$k]["rightfornumber"];
-                }
-                $tlfoots[] = array(
+            $footRight = '';
+            if (isset($tcolumn2[$k])) {
+                $footRight = $tcolumn2[$k]["rightfornumber"];
+            }
+            $tlfoots[] = array(
                     "footval" => $val,
                     "rightfornumber" => $footRight
                 );
-            }
-            $this->lay->setBlockData("TFOOT", $tlfoots);
-            $this->lay->set("TITLE", $this->getHTMLTitle());
-            return $err;
+        }
+        $this->lay->setBlockData("TFOOT", $tlfoots);
+        $this->lay->set("TITLE", $this->getHTMLTitle());
+        return $err;
     }
     /**
      * Generate data struct to csv export of a report
@@ -575,12 +586,14 @@ class Report extends \Dcp\Family\Dsearch
     {
         global $action;
         $expVarName = $action->getParam("exportSession");
-        if ($expVarName) $action->Register($expVarName, array(
+        if ($expVarName) {
+            $action->Register($expVarName, array(
             "status" => $s
         ));
+        }
     }
     
-    protected function generatePivotCSV(\SearchDoc $search, Array $columns, \Doc $famDoc, $pivotId, $refresh, $separator, $dateFormat, $stripHtmlTags, $renderNumber = "format")
+    protected function generatePivotCSV(\SearchDoc $search, array $columns, \Doc $famDoc, $pivotId, $refresh, $separator, $dateFormat, $stripHtmlTags, $renderNumber = "format")
     {
         $convertFormat = array(
             "dateFormat" => $dateFormat,
@@ -632,7 +645,9 @@ class Report extends \Dcp\Family\Dsearch
         $k = 0;
         while ($currentDoc = $search->getNextDoc()) {
             $k++;
-            if ($k % 10 == 0) $this->setStatus(sprintf(_("Pivot rendering %d/%d") , $k, $nbDoc));
+            if ($k % 10 == 0) {
+                $this->setStatus(sprintf(_("Pivot rendering %d/%d"), $k, $nbDoc));
+            }
             if ($refresh) {
                 $currentDoc->refresh();
             }
@@ -705,7 +720,7 @@ class Report extends \Dcp\Family\Dsearch
      *
      * @return array
      */
-    protected function generateBasicCSV(\SearchDoc $search, Array $columns, Array $displayOptions, \Doc $famDoc, $refresh, $separator, $dateFormat, $stripHtmlFormat = true, $renderNumber = "format")
+    protected function generateBasicCSV(\SearchDoc $search, array $columns, array $displayOptions, \Doc $famDoc, $refresh, $separator, $dateFormat, $stripHtmlFormat = true, $renderNumber = "format")
     {
         $fc = new \FormatCollection();
         $dl = $search->getDocumentList();
@@ -715,7 +730,9 @@ class Report extends \Dcp\Family\Dsearch
         $htmlNoAccess->loadHTML($this->getFamilyParameterValue(MyAttributes::rep_noaccesstext));
         
         $fc->setNoAccessText(trim($htmlNoAccess->textContent));
-        if ($separator) $fc->setDecimalSeparator($separator);
+        if ($separator) {
+            $fc->setDecimalSeparator($separator);
+        }
         $fc->relationIconSize = 0;
         $fc->stripHtmlTags($stripHtmlFormat);
         switch ($dateFormat) {
@@ -747,8 +764,7 @@ class Report extends \Dcp\Family\Dsearch
         
         $fc->setLongtextMultipleBrToCr(" "); // longtext are in a single line if multiple
         $fc->setNc('-');
-        $fc->setHookAdvancedStatus(function ($s)
-        {
+        $fc->setHookAdvancedStatus(function ($s) {
             \Dcp\Family\Report::setStatus($s);
         });
         $r = $fc->render();
@@ -760,7 +776,9 @@ class Report extends \Dcp\Family\Dsearch
                 $line[$kc] = _(\Doc::$infofields[$col]["label"]);
             } else {
                 $line[$kc] = $famDoc->getLabel($col);
-                if ($displayOptions[$kc] == "docid") $line[$kc].= ' (' . _("report:docid") . ')';
+                if ($displayOptions[$kc] == "docid") {
+                    $line[$kc].= ' (' . _("report:docid") . ')';
+                }
             }
         }
         $out[] = $line;

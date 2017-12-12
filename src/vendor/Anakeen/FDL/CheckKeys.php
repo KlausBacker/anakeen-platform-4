@@ -23,15 +23,18 @@ class CheckKeys extends CheckData
      * @param Doc $doc
      * @return CheckDoc
      */
-    function check(array $data, &$extra = null)
+    public function check(array $data, &$extra = null)
     {
-        
         $this->famName = (isset($data[1])) ? trim($data[1]) : null;
         $this->attrIds = getOrder($data);
         
         $this->CheckKeysFamily();
-        if (!$this->hasErrors()) $this->CheckKeysCount();
-        if (!$this->hasErrors()) $this->CheckKeysAttribute();
+        if (!$this->hasErrors()) {
+            $this->CheckKeysCount();
+        }
+        if (!$this->hasErrors()) {
+            $this->CheckKeysAttribute();
+        }
         
         return $this;
     }
@@ -47,7 +50,7 @@ class CheckKeys extends CheckData
                 $this->addError(ErrorCode::getError('KEYS0001', $this->famName));
             } else {
                 try {
-                    $this->family = new_doc(getDbAccess() , $this->famName);
+                    $this->family = new_doc(getDbAccess(), $this->famName);
                     if (!$this->family->isAlive()) {
                         $this->addError(ErrorCode::getError('KEYS0002', $this->famName));
                     } else {
@@ -55,11 +58,12 @@ class CheckKeys extends CheckData
                             $this->addError(ErrorCode::getError('KEYS0003', $this->famName));
                         } else {
                             $canCreateError = $this->family->control('create');
-                            if ($canCreateError) $this->addError(ErrorCode::getError('KEYS0004', $this->famName));
+                            if ($canCreateError) {
+                                $this->addError(ErrorCode::getError('KEYS0004', $this->famName));
+                            }
                         }
                     }
-                }
-                catch(Exception $e) {
+                } catch (Exception $e) {
                     $this->addError(ErrorCode::getError('KEYS0005', $this->famName, $e->getMessage()));
                 }
             }
@@ -87,15 +91,16 @@ class CheckKeys extends CheckData
      */
     protected function CheckKeyscount()
     {
-        
         $c = 0;
         foreach ($this->attrIds as $aid) {
-            if ($aid) $c++;
+            if ($aid) {
+                $c++;
+            }
         }
         if ($c == 0) {
             $this->addError(ErrorCode::getError('KEYS0101', $this->family->name));
         } elseif ($c > 2) {
-            $this->addError(ErrorCode::getError('KEYS0102', implode(', ', $this->attrIds) , $this->family->name));
+            $this->addError(ErrorCode::getError('KEYS0102', implode(', ', $this->attrIds), $this->family->name));
         }
     }
     private function checkName($name)

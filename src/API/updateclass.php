@@ -19,13 +19,12 @@
 
 global $action;
 
-include_once ('Class.Application.php');
+include_once('Class.Application.php');
 
 $usage = new ApiUsage();
 
 $usage->setDefinitionText("Update the SQL structure of a table of a DbObj Object");
-$appClass = $usage->addOptionalParameter('appc', "application class folder", function ($value, $name)
-{
+$appClass = $usage->addOptionalParameter('appc', "application class folder", function ($value, $name) {
     if (!is_scalar($value)) {
         return sprintf("Multiple values for '%s' not allowed.", $name);
     }
@@ -33,10 +32,8 @@ $appClass = $usage->addOptionalParameter('appc', "application class folder", fun
         return sprintf("Value for '%s' must not contain directory separator chars ('%s').", $name, DIRECTORY_SEPARATOR);
     }
     return '';
-}
-, 'WHAT');
-$class = $usage->addRequiredParameter('class', 'Class name', function ($value, $name)
-{
+}, 'WHAT');
+$class = $usage->addRequiredParameter('class', 'Class name', function ($value, $name) {
     if (!is_scalar($value)) {
         return sprintf("Multiple values for '%s' not allowed.", $name);
     }
@@ -63,7 +60,7 @@ if ($updateExistingTable) {
     $commonColumns = array_intersect($o->fields, $columns);
     /* Add SQL rename of current table to table + '_old' */
     $oldTableName = sprintf("%s_old", $o->dbtable);
-    $sql[] = sprintf("ALTER TABLE public.%s RENAME TO %s", pg_escape_identifier($o->dbtable) , pg_escape_identifier($oldTableName));
+    $sql[] = sprintf("ALTER TABLE public.%s RENAME TO %s", pg_escape_identifier($o->dbtable), pg_escape_identifier($oldTableName));
     /* Add SQL creation of new table */
     $sqlCommands = explode(";", str_replace("\n", " ", $o->sqlcreate));
     foreach ($sqlCommands as $k => $sqlQuery) {
@@ -75,15 +72,17 @@ if ($updateExistingTable) {
                 $sql[] = sprintf("DROP INDEX public.%s", pg_escape_identifier($m['indexName']));
             }
         }
-        if (chop($sqlQuery) != "") $sql[] = $sqlQuery;
+        if (chop($sqlQuery) != "") {
+            $sql[] = $sqlQuery;
+        }
     }
     /* Add SQL to load common columns data from old table */
-    $sql[] = sprintf("INSERT INTO public.%s (%s) SELECT %s FROM public.%s", pg_escape_identifier($o->dbtable) , implode(", ", array_map('pg_escape_identifier', $commonColumns)) , implode(", ", array_map('pg_escape_identifier', $commonColumns)) , pg_escape_identifier($oldTableName));
+    $sql[] = sprintf("INSERT INTO public.%s (%s) SELECT %s FROM public.%s", pg_escape_identifier($o->dbtable), implode(", ", array_map('pg_escape_identifier', $commonColumns)), implode(", ", array_map('pg_escape_identifier', $commonColumns)), pg_escape_identifier($oldTableName));
     /* Drop old table */
     $sql[] = sprintf("DROP TABLE public.%s", pg_escape_identifier($oldTableName));
 }
 /* Play SQL commands */
-$point = uniqid(sprintf('%s/%s', $appClass, $class) , true);
+$point = uniqid(sprintf('%s/%s', $appClass, $class), true);
 if (($err = $o->savePoint($point)) !== '') {
     $action->exitError($err);
 }

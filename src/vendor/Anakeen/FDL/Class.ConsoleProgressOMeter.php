@@ -118,7 +118,7 @@ class ConsoleProgressOMeter
         }
         if ($this->isTimeToUpdateProgress($p)) {
             $ratio = (($this->max == 0) ? 0 : $p / $this->max);
-            $line = sprintf("%s%3d%% (%d/%d) [elapsed: %d sec. | remaining: %d sec. | ETA: %s]", ($this->prefix != '' ? $this->prefix . ' ' : '') , intval(100 * $ratio) , $p, $this->max, (microtime(true) - $this->starttime) , $this->eta($p, false) , $this->eta($p));
+            $line = sprintf("%s%3d%% (%d/%d) [elapsed: %d sec. | remaining: %d sec. | ETA: %s]", ($this->prefix != '' ? $this->prefix . ' ' : ''), intval(100 * $ratio), $p, $this->max, (microtime(true) - $this->starttime), $this->eta($p, false), $this->eta($p));
             if ($this->isInteractive) {
                 print "\r" . $line;
                 if (strlen($line) < $this->prevLineLen) {

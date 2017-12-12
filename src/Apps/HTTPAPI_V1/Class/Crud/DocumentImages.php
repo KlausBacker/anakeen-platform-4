@@ -8,7 +8,6 @@ namespace Dcp\HttpApi\V1\Crud;
 
 class DocumentImage extends DocumentFile
 {
-    
     const CACHEIMGDIR = "var/cache/file/";
     /**
      * @var \Doc
@@ -37,7 +36,7 @@ class DocumentImage extends DocumentFile
             $this->fileInfo = $this->getFileInfo($resourceId);
         }
         $destination = $this->getDestinationCacheImage($this->fileInfo->id_file, $size);
-        
+
         if (file_exists($destination)) {
             $outFile = $destination;
         } else {
@@ -71,7 +70,7 @@ class DocumentImage extends DocumentFile
         } else {
             $fileExtension = $this->urlParameters["extension"];
         }
-        $basedest = sprintf("%s/%s/%s-vid-%s%s", DEFAULT_PUBDIR, self::CACHEIMGDIR, $size, str_replace("/", "_", $localimage) , $fileExtension);
+        $basedest = sprintf("%s/%s/%s-vid-%s%s", DEFAULT_PUBDIR, self::CACHEIMGDIR, $size, str_replace("/", "_", $localimage), $fileExtension);
         
         return $basedest;
     }
@@ -80,7 +79,6 @@ class DocumentImage extends DocumentFile
     {
         $this->fileInfo = $this->getFileInfo($this->urlParameters["identifier"]);
         if ($this->fileInfo) {
-            
             return $this->fileInfo->mdate;
         }
         return null;

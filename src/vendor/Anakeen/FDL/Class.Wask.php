@@ -8,25 +8,25 @@
  *
  */
 namespace Dcp\Core;
+
 class Wask extends \Dcp\Family\Document
 {
     /**
      * @var \Dcp\Family\Wask
      */
     private $prdoc = null;
-    function postConstructor()
+    public function postConstructor()
     {
         $this->dacls["answer"] = array(
             "pos" => 31,
             "description" => _("need answer")
         );
         $this->acls[] = "answer"; # _("answer")
-        
     }
     /**
      * return sql query to search wanted document
      */
-    function getAskLabels($keys)
+    public function getAskLabels($keys)
     {
         $tk = array();
         foreach ($keys as $k) {
@@ -35,7 +35,7 @@ class Wask extends \Dcp\Family\Document
         return $tk;
     }
     
-    function getAskLabel($keys)
+    public function getAskLabel($keys)
     {
         $i = array_search($keys, $this->getMultipleRawValues("was_keys"));
         if ($i !== false) {
@@ -44,25 +44,28 @@ class Wask extends \Dcp\Family\Document
         return "";
     }
     
-    function DocControl($aclname)
+    public function DocControl($aclname)
     {
         return \Doc::Control($aclname);
     }
     /**
      * Special control in case of dynamic controlled profil
      */
-    function Control($aclname, $strict = false)
+    public function Control($aclname, $strict = false)
     {
-        
         $err = $this->DocControl($aclname);
-        if ($err == "") return $err; // normal case
+        if ($err == "") {
+            return $err;
+        } // normal case
         if ($this->getRawValue("DPDOC_FAMID") > 0) {
             if ($this->doc) {
                 // special control for dynamic users
                 if (!isset($this->prdoc)) {
                     $pdoc = createTmpDoc($this->dbaccess, $this->fromid);
                     $err = $pdoc->Add();
-                    if ($err != "") return "Wask::Control:" . $err; // can't create profil
+                    if ($err != "") {
+                        return "Wask::Control:" . $err;
+                    } // can't create profil
                     $pdoc->setProfil($this->profid, $this->doc);
                     $this->prdoc = & $pdoc;
                 }
@@ -72,7 +75,7 @@ class Wask extends \Dcp\Family\Document
         return $err;
     }
     
-    function Set(&$doc)
+    public function Set(&$doc)
     {
         if (!isset($this->doc)) {
             $this->doc = & $doc;

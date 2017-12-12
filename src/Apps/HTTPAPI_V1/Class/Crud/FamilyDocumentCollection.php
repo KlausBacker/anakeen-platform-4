@@ -35,8 +35,7 @@ class FamilyDocumentCollection extends DocumentCollection
     {
         try {
             $this->_document = DocManager::createDocument($this->_family->id);
-        }
-        catch(DocManagerException $exception) {
+        } catch (DocManagerException $exception) {
             if ($exception->getDcpCode() === "APIDM0003") {
                 $exception = new Exception("API0204", $this->_family->name);
                 $exception->setHttpStatus(403, "Forbidden");
@@ -54,8 +53,7 @@ class FamilyDocumentCollection extends DocumentCollection
                 } else {
                     $this->_document->setAttributeValue($attrid, $value);
                 }
-            }
-            catch(\Dcp\AttributeValue\Exception $e) {
+            } catch (\Dcp\AttributeValue\Exception $e) {
                 $exception = new Exception("CRUD0205", $this->_family->name, $attrid, $e->getDcpMessage());
                 $exception->setHttpStatus("500", "Unable to create the document");
                 $exception->setUserMEssage(___("Update failed", "HTTPAPI_V1"));
@@ -76,7 +74,7 @@ class FamilyDocumentCollection extends DocumentCollection
             $exception->setData($info);
             throw $exception;
         }
-        $this->_document->addHistoryEntry(___("Create by HTTP API", "HTTPAPI_V1") , \DocHisto::NOTICE);
+        $this->_document->addHistoryEntry(___("Create by HTTP API", "HTTPAPI_V1"), \DocHisto::NOTICE);
         DocManager::cache()->addDocument($this->_document);
         
         $familyDocument = new FamilyDocument();
@@ -89,7 +87,7 @@ class FamilyDocumentCollection extends DocumentCollection
      * @param array $array
      * @throws Exception
      */
-    public function setUrlParameters(Array $array)
+    public function setUrlParameters(array $array)
     {
         parent::setUrlParameters($array);
         $familyId = isset($this->urlParameters["familyId"]) ? $this->urlParameters["familyId"] : false;
@@ -150,7 +148,7 @@ class FamilyDocumentCollection extends DocumentCollection
     protected function getCollectionProperties()
     {
         return array(
-            "title" => sprintf(___("%s Documents", "ddui") , $this->_family->getTitle())
+            "title" => sprintf(___("%s Documents", "ddui"), $this->_family->getTitle())
         );
     }
 }

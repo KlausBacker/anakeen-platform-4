@@ -13,7 +13,7 @@
  */
 /**
  */
-include_once ("Class.Application.php");
+include_once("Class.Application.php");
 global $action;
 
 $usage = new ApiUsage();
@@ -24,7 +24,7 @@ $method = $usage->addOptionalParameter("method", "action to do", array(
     "update",
     "reinit",
     "delete"
-) , "init");
+), "init");
 
 $usage->verify();
 
@@ -68,4 +68,3 @@ switch ($method) {
         }
         break;
 }
-

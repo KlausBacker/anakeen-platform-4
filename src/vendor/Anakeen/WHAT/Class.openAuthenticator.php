@@ -15,7 +15,7 @@
  */
 /**
  */
-include_once ('WHAT/Class.Authenticator.php');
+include_once('WHAT/Class.Authenticator.php');
 
 class openAuthenticator extends Authenticator
 {
@@ -30,7 +30,7 @@ class openAuthenticator extends Authenticator
      */
     public function checkAuthentication()
     {
-        include_once ('WHAT/Lib.Http.php');
+        include_once('WHAT/Lib.Http.php');
         $privatekey = static::getTokenId();
         if (!$privatekey) {
             return Authenticator::AUTH_NOK;
@@ -69,8 +69,8 @@ class openAuthenticator extends Authenticator
     
     public static function getLoginFromPrivateKey($privatekey)
     {
-        include_once ('WHAT/Class.UserToken.php');
-        include_once ('WHAT/Class.User.php');
+        include_once('WHAT/Class.UserToken.php');
+        include_once('WHAT/Class.User.php');
         
         $token = static::getUserToken($privatekey);
         if ($token === false) {
@@ -101,10 +101,8 @@ class openAuthenticator extends Authenticator
     }
     public static function getUserToken($tokenId)
     {
-        
         $token = new UserToken('', $tokenId);
         if (!is_object($token) || !$token->isAffected()) {
-            
             return false;
         }
         
@@ -153,7 +151,7 @@ class openAuthenticator extends Authenticator
     
     public function consumeToken($privatekey)
     {
-        include_once ('WHAT/Class.UserToken.php');
+        include_once('WHAT/Class.UserToken.php');
         
         $token = new UserToken('', $privatekey);
         if (!is_object($token) || !$token->isAffected()) {
@@ -171,7 +169,7 @@ class openAuthenticator extends Authenticator
     
     public function checkAuthorization($opt)
     {
-        return TRUE;
+        return true;
     }
     /**
      * no ask

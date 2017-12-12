@@ -15,4 +15,3 @@ class RelatedAttachment extends Attachment
         $this->cid = $cid;
     }
 }
-

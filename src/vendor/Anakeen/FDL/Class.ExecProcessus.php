@@ -8,6 +8,7 @@
  *
  */
 namespace Dcp\Core;
+
 class ExecProcessus extends \Dcp\Family\Document
 {
     private $execuserid;
@@ -17,7 +18,7 @@ class ExecProcessus extends \Dcp\Family\Document
      * @param string $comment
      * @return int shell status (0 means OK).
      */
-    function bgExecute($comment = "")
+    public function bgExecute($comment = "")
     {
         /**
          * @var \Action $action
@@ -36,7 +37,7 @@ class ExecProcessus extends \Dcp\Family\Document
      * @apiExpose
      * @return string
      */
-    function resetExecute()
+    public function resetExecute()
     {
         $this->clearValue("exec_status");
         $this->clearValue("exec_statusdate");
@@ -44,22 +45,24 @@ class ExecProcessus extends \Dcp\Family\Document
         return $err;
     }
     
-    function isInprogress()
+    public function isInprogress()
     {
         if ($this->canEdit() == "") {
-            if ($this->getRawValue("exec_status") == "progressing") return MENU_ACTIVE;
+            if ($this->getRawValue("exec_status") == "progressing") {
+                return MENU_ACTIVE;
+            }
         }
         return MENU_INVISIBLE;
     }
     
-    function postStore()
+    public function postStore()
     {
         $this->setValue("exec_nextdate", $this->getNextExecDate());
     }
     /**
      * return the wsh command which be send
      */
-    function bgCommand($masteruserid = false)
+    public function bgCommand($masteruserid = false)
     {
         $bgapp = $this->getRawValue("exec_application");
         $bgact = $this->getRawValue("exec_action");
@@ -78,11 +81,14 @@ class ExecProcessus extends \Dcp\Family\Document
             $this->execuserid = $this->getUserId();
         }
         $cmd.= " --userid=$wuid";
-        if (!$bgapi) $cmd.= sprintf(" --app=%s --action=%s", escapeshellarg($bgapp) , escapeshellarg($bgact));
-        else $cmd.= sprintf(" --api=%s", escapeshellarg($bgapi));
+        if (!$bgapi) {
+            $cmd.= sprintf(" --app=%s --action=%s", escapeshellarg($bgapp), escapeshellarg($bgact));
+        } else {
+            $cmd.= sprintf(" --api=%s", escapeshellarg($bgapi));
+        }
         
         foreach ($tp as $k => $v) {
-            $b = sprintf(" --%s=%s", escapeshellarg($v["exec_idvar"]) , escapeshellarg($v["exec_valuevar"]));
+            $b = sprintf(" --%s=%s", escapeshellarg($v["exec_idvar"]), escapeshellarg($v["exec_valuevar"]));
             $cmd.= $b;
         }
         return $cmd;
@@ -91,7 +97,7 @@ class ExecProcessus extends \Dcp\Family\Document
      * return the document user id for the next execution
      * @return string
      */
-    function getExecUserID()
+    public function getExecUserID()
     {
         return $this->execuserid;
     }
@@ -99,7 +105,7 @@ class ExecProcessus extends \Dcp\Family\Document
      * return the next date to execute process
      * @return string date
      */
-    function getNextExecDate()
+    public function getNextExecDate()
     {
         $ndh = $this->getRawValue("exec_handnextdate");
         if ($ndh == "") {
@@ -116,7 +122,7 @@ class ExecProcessus extends \Dcp\Family\Document
         return $ndh;
     }
     
-    function getPrevExecDate()
+    public function getPrevExecDate()
     {
         if ($this->revision > 0) {
             $pid = $this->getLatestId(true);
@@ -128,14 +134,18 @@ class ExecProcessus extends \Dcp\Family\Document
         return '';
     }
     
-    function isLatestExec()
+    public function isLatestExec()
     {
-        if ($this->locked == - 1) return MENU_INVISIBLE;
-        if (!$this->canExecuteAction()) return MENU_INACTIVE;
+        if ($this->locked == - 1) {
+            return MENU_INVISIBLE;
+        }
+        if (!$this->canExecuteAction()) {
+            return MENU_INACTIVE;
+        }
         return MENU_ACTIVE;
     }
     
-    function canExecuteAction()
+    public function canExecuteAction()
     {
         $err = $this->control('edit');
         return ($err == "");
@@ -156,9 +166,9 @@ class ExecProcessus extends \Dcp\Family\Document
         $err = $del->store();
         
         if ($status == 0) {
-            print sprintf("Execute %s [%d] (%s) : %s\n", $del->title, $del->id, $del->getRawValue("exec_handnextdate") , $err);
+            print sprintf("Execute %s [%d] (%s) : %s\n", $del->title, $del->id, $del->getRawValue("exec_handnextdate"), $err);
         } else {
-            print sprintf("Error executing %s [%d] (%s) : %s (%s)\n", $del->title, $del->id, $del->getRawValue("exec_handnextdate") , $err, $status);
+            print sprintf("Error executing %s [%d] (%s) : %s (%s)\n", $del->title, $del->id, $del->getRawValue("exec_handnextdate"), $err, $status);
         }
     }
     
@@ -169,7 +179,7 @@ class ExecProcessus extends \Dcp\Family\Document
         $cmd = getWshCmd(true);
         $cmd.= " --api=fdl_execute";
         $cmd.= " --docid=" . $this->id;
-        
+
         $cmd.= " --userid=" . $this->userid;
         if ($comment != "") $cmd.= " --comment=" . base64_encode($comment); // prevent hack
         */
@@ -179,11 +189,11 @@ class ExecProcessus extends \Dcp\Family\Document
         $time_end = microtime(true);
         $time = $time_end - $time_start;
         if ($status == 0) {
-            AddWarningMsg(sprintf(_("Process %s [%d] executed") , $this->title, $this->id));
-            $action->log->info(sprintf(_("Process %s [%d] executed in %.03f seconds") , $this->title, $this->id, $time));
+            AddWarningMsg(sprintf(_("Process %s [%d] executed"), $this->title, $this->id));
+            $action->log->info(sprintf(_("Process %s [%d] executed in %.03f seconds"), $this->title, $this->id, $time));
         } else {
-            AddWarningMsg(sprintf(_("Error : Process %s [%d]: status %d") , $this->title, $this->id, $status));
-            $action->log->error(sprintf(_("Error : Process %s [%d]: status %d in %.03f seconds") , $this->title, $this->id, $status, $time));
+            AddWarningMsg(sprintf(_("Error : Process %s [%d]: status %d"), $this->title, $this->id, $status));
+            $action->log->error(sprintf(_("Error : Process %s [%d]: status %d in %.03f seconds"), $this->title, $this->id, $status, $time));
         }
         return $status;
     }
@@ -203,7 +213,7 @@ class ExecProcessus extends \Dcp\Family\Document
         $doc->modify(true, array(
             "exec_status",
             "exec_statusdate"
-        ) , true);
+        ), true);
         $cmd = $doc->bgCommand($action->user->id == 1);
         $f = uniqid(getTmpDir() . "/fexe");
         $fout = "$f.out";
@@ -211,7 +221,7 @@ class ExecProcessus extends \Dcp\Family\Document
         $cmd.= ">$fout 2>$ferr";
         $m1 = microtime();
         system($cmd, $statut);
-        $m2 = microtime_diff(microtime() , $m1);
+        $m2 = microtime_diff(microtime(), $m1);
         $ms = gmstrftime("%H:%M:%S", $m2);
         
         if (file_exists($fout)) {
@@ -234,8 +244,10 @@ class ExecProcessus extends \Dcp\Family\Document
         $doc->refresh();
         $err = $doc->modify();
         if ($err == "") {
-            if ($comment != "") $doc->addHistoryEntry($comment);
-            $err = $doc->revise(sprintf(_("execution by %s done %s") , $doc->getTitle($doc->getExecUserID()) , $statut));
+            if ($comment != "") {
+                $doc->addHistoryEntry($comment);
+            }
+            $err = $doc->revise(sprintf(_("execution by %s done %s"), $doc->getTitle($doc->getExecUserID()), $statut));
             if ($err == "") {
                 $doc->clearValue("exec_elapsed");
                 $doc->clearValue("exec_detail");
@@ -250,7 +262,9 @@ class ExecProcessus extends \Dcp\Family\Document
             $doc->addHistoryEntry($err, DocHisto::ERROR);
         }
         
-        if ($err != "") return 1;
+        if ($err != "") {
+            return 1;
+        }
         return 0;
     }
 }

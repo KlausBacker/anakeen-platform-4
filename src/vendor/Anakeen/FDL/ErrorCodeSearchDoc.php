@@ -59,7 +59,9 @@ namespace {
          */
         private function _bo()
         {
-            if (true) return;
+            if (true) {
+                return;
+            }
         }
     }
 }
@@ -72,7 +74,9 @@ namespace Dcp\SearchDoc {
          */
         private function _bo()
         {
-            if (true) return;
+            if (true) {
+                return;
+            }
         }
     }
 }

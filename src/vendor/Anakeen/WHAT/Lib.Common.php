@@ -13,7 +13,7 @@
  */
 /**
  */
-include_once ("Lib.Prefix.php");
+include_once("Lib.Prefix.php");
 
 function N_($s)
 {
@@ -24,8 +24,11 @@ if (!function_exists('pgettext')) {
     {
         $contextString = "{$context}\004{$msgid}";
         $translation = _($contextString);
-        if ($translation === $contextString) return $msgid;
-        else return $translation;
+        if ($translation === $contextString) {
+            return $msgid;
+        } else {
+            return $translation;
+        }
     }
     
     function npgettext($context, $msgid, $msgid_plural, $num)
@@ -35,7 +38,7 @@ if (!function_exists('pgettext')) {
         $translation = ngettext($contextString, $contextStringp, $num);
         if ($translation === $contextString) {
             return $msgid;
-        } else if ($translation === $contextStringp) {
+        } elseif ($translation === $contextStringp) {
             return $msgid_plural;
         } else {
             return $translation;
@@ -77,7 +80,9 @@ function print_r2($z, $ret = false)
 function AddLogMsg($msg, $cut = 80)
 {
     global $action;
-    if (isset($action->parent)) $action->parent->AddLogMsg($msg, $cut);
+    if (isset($action->parent)) {
+        $action->parent->AddLogMsg($msg, $cut);
+    }
 }
 /**
  * send a message to system log
@@ -86,7 +91,9 @@ function AddLogMsg($msg, $cut = 80)
 function deprecatedFunction($msg = '')
 {
     global $action;
-    if (isset($action->parent)) $action->parent->log->deprecated("Deprecated : " . $msg);
+    if (isset($action->parent)) {
+        $action->parent->log->deprecated("Deprecated : " . $msg);
+    }
 }
 /**
  * send a warning msg to the user interface
@@ -95,7 +102,9 @@ function deprecatedFunction($msg = '')
 function addWarningMsg($msg)
 {
     global $action;
-    if (isset($action->parent)) $action->parent->addWarningMsg($msg);
+    if (isset($action->parent)) {
+        $action->parent->addWarningMsg($msg);
+    }
 }
 /**
  * like ucfirst for utf-8
@@ -105,7 +114,7 @@ function addWarningMsg($msg)
 function mb_ucfirst($s)
 {
     if ($s) {
-        $s = mb_strtoupper(mb_substr($s, 0, 1, 'UTF-8') , 'UTF-8') . mb_substr($s, 1, mb_strlen($s) , 'UTF-8');
+        $s = mb_strtoupper(mb_substr($s, 0, 1, 'UTF-8'), 'UTF-8') . mb_substr($s, 1, mb_strlen($s), 'UTF-8');
     }
     return $s;
 }
@@ -121,8 +130,12 @@ function mb_trim($string)
 function setMaxExecutionTimeTo($limit)
 {
     $im = intval(ini_get("max_execution_time"));
-    if ($im > 0 && $im < $limit && $limit >= 0) ini_set("max_execution_time", $limit);
-    if ($limit <= 0) ini_set("max_execution_time", 0);
+    if ($im > 0 && $im < $limit && $limit >= 0) {
+        ini_set("max_execution_time", $limit);
+    }
+    if ($limit <= 0) {
+        ini_set("max_execution_time", 0);
+    }
 }
 /**
  * get mail addr of a user
@@ -194,7 +207,7 @@ function getTmpDir($def = '/tmp')
  */
 function getParam($name, $def = "")
 {
-    return \Dcp\Core\ContextManager::getApplicationParam($name, $def );
+    return \Dcp\Core\ContextManager::getApplicationParam($name, $def);
 }
 /**
  * return value of a parameter
@@ -208,7 +221,7 @@ function getParam($name, $def = "")
  */
 function getCoreParam($name, $def = "")
 {
-    return \Dcp\Core\ContextManager::getCoreParam($name, $def );
+    return \Dcp\Core\ContextManager::getCoreParam($name, $def);
 }
 /**
  *
@@ -219,7 +232,9 @@ function getCoreParam($name, $def = "")
 function getSessionValue($name, $def = "")
 {
     global $action;
-    if ($action) return $action->read($name, $def);
+    if ($action) {
+        return $action->read($name, $def);
+    }
     return null;
 }
 /**
@@ -237,7 +252,9 @@ function getLayoutFile($app, $layfile)
     if (strstr($layfile, '..')) {
         return "";
     }
-    if (!strstr($layfile, '.')) $layfile.= ".xml";
+    if (!strstr($layfile, '.')) {
+        $layfile.= ".xml";
+    }
     $socStyle = \Dcp\Core\ContextManager::getApplicationParam("CORE_SOCSTYLE");
     $style = \Dcp\Core\ContextManager::getApplicationParam("STYLE");
     $appDir = $action->parent->rootdir;
@@ -303,11 +320,12 @@ function microtime_diff($a, $b)
 function getDebugStack($slice = 1)
 {
     $td = @debug_backtrace(false);
-    if (!is_array($td)) return array();
+    if (!is_array($td)) {
+        return array();
+    }
     $t = array_slice($td, $slice);
     foreach ($t as $k => $s) {
         unset($t[$k]["args"]); // no set arg
-        
     }
     return $t;
 }
@@ -356,7 +374,9 @@ function getServiceCore()
 {
     static $pg_service = null;
     
-    if ($pg_service) return $pg_service;
+    if ($pg_service) {
+        return $pg_service;
+    }
     $pgservice_core = getDbAccessvalue('pgservice_core');
     
     if ($pgservice_core == "") {
@@ -377,23 +397,27 @@ function getDbAccessValue($varName)
     $included = false;
     $filename = sprintf("%s/config/dbaccess.php", DEFAULT_PUBDIR);
     if (file_exists($filename)) {
-        if (include ($filename)) {
+        if (include($filename)) {
             $included = true;
         }
     }
     if (!$included) {
-        fprintf(STDERR,  "Error: %s", $filename);
+        fprintf(STDERR, "Error: %s", $filename);
         throw new Dcp\Exception("FILE0005", $filename);
     }
     
-    if (!isset($$varName)) return null;
+    if (!isset($$varName)) {
+        return null;
+    }
     return $$varName;
 }
 function getServiceFreedom()
 {
     static $pg_service = null;
     
-    if ($pg_service) return $pg_service;
+    if ($pg_service) {
+        return $pg_service;
+    }
     $pgservice_freedom = getDbAccessValue('pgservice_freedom');
     if ($pgservice_freedom == "") {
         error_log("Undefined pgservice_freedom in dbaccess.php");
@@ -428,11 +452,11 @@ function getServiceName($dbaccess)
  * @throws Dcp\Db\Exception
  * @return string error message. Empty message if no errors (when strict mode is not enable)
  */
-function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = false, $singleresult = false, $useStrict = null)
+function simpleQuery($dbaccess, $query, &$result = array(), $singlecolumn = false, $singleresult = false, $useStrict = null)
 {
     static $sqlStrict = null;
     try {
-        \Dcp\Core\DbManager::query($query, $result , $singlecolumn, $singleresult );
+        \Dcp\Core\DbManager::query($query, $result, $singlecolumn, $singleresult);
     } catch (\Dcp\Db\Exception $e) {
         if ($useStrict !== false) {
             if ($sqlStrict === null) {
@@ -442,7 +466,7 @@ function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = fal
                 throw $e;
             }
         }
-            return $e->getMessage();
+        return $e->getMessage();
     }
     return "";
 }
@@ -503,11 +527,17 @@ function getAuthParam($freedomctx = "", $provider = "")
 function getWshCmd($nice = false, $userid = 0, $sudo = false)
 {
     $wsh = '';
-    if ($nice) $wsh.= "nice -n +10 ";
-    if ($sudo) $wsh.= "sudo ";
+    if ($nice) {
+        $wsh.= "nice -n +10 ";
+    }
+    if ($sudo) {
+        $wsh.= "sudo ";
+    }
     $wsh.= escapeshellarg(DEFAULT_PUBDIR) . "/wsh.php  ";
     $userid = intval($userid);
-    if ($userid > 0) $wsh.= "--userid=$userid ";
+    if ($userid > 0) {
+        $wsh.= "--userid=$userid ";
+    }
     return $wsh;
 }
 /**
@@ -542,7 +572,6 @@ function bgexec($tcmd, &$result, &$err)
     //  if (session_id()) session_write_close(); // necessary to close if not background cmd
     exec("exec nohup $foutname > /dev/null 2>&1 &", $result, $err);
     //if (session_id()) @session_start();
-    
 }
 
 function wbartext($text)
@@ -553,12 +582,20 @@ function wbartext($text)
 function wbar($reste, $total, $text = "", $fbar = false)
 {
     static $preste, $ptotal;
-    if (!$fbar) $fbar = GetHttpVars("bar"); // for progress bar
+    if (!$fbar) {
+        $fbar = GetHttpVars("bar");
+    } // for progress bar
     if ($fbar) {
-        if ($reste === '-') $reste = $preste;
-        else $preste = $reste;
-        if ($total === '-') $total = $ptotal;
-        else $ptotal = $total;
+        if ($reste === '-') {
+            $reste = $preste;
+        } else {
+            $preste = $reste;
+        }
+        if ($total === '-') {
+            $total = $ptotal;
+        } else {
+            $ptotal = $total;
+        }
         if (file_exists("$fbar.lck")) {
             $wmode = "w";
             unlink("$fbar.lck");
@@ -573,7 +610,7 @@ function wbar($reste, $total, $text = "", $fbar = false)
 
 function getJsVersion()
 {
-    include_once ("Class.QueryDb.php");
+    include_once("Class.QueryDb.php");
     $q = new QueryDb("", "param");
     $q->AddQuery("name='WVERSION'");
     $l = $q->Query(0, 0, "TABLE");
@@ -599,12 +636,13 @@ function getJsVersion()
  * @internal param string $force link to be produced according the value
  * @return string like user admin dbname anakeen
  */
-function setMailtoAnchor($to, $acontent = "", $subject = "", $cc = "", $bcc = "", $from = "", $anchorattr = array() , $forcelink = "")
+function setMailtoAnchor($to, $acontent = "", $subject = "", $cc = "", $bcc = "", $from = "", $anchorattr = array(), $forcelink = "")
 {
-    
     global $action;
     
-    if ($to == "") return '';
+    if ($to == "") {
+        return '';
+    }
     $classcode = '';
     if ($forcelink == "mailto") {
         $target = $forcelink;
@@ -620,7 +658,9 @@ function setMailtoAnchor($to, $acontent = "", $subject = "", $cc = "", $bcc = ""
     
     $attrcode = "";
     if (is_array($anchorattr)) {
-        foreach ($anchorattr as $k => $v) $attrcode.= ' ' . $k . '="' . $v . '"';
+        foreach ($anchorattr as $k => $v) {
+            $attrcode.= ' ' . $k . '="' . $v . '"';
+        }
     }
     
     $subject = str_replace(" ", "%20", $subject);
@@ -658,8 +698,11 @@ function setMailtoAnchor($to, $acontent = "", $subject = "", $cc = "", $bcc = ""
  */
 function isUTF8($string)
 {
-    if (is_array($string)) return seems_utf8(implode('', $string));
-    else return seems_utf8($string);
+    if (is_array($string)) {
+        return seems_utf8(implode('', $string));
+    } else {
+        return seems_utf8($string);
+    }
 }
 /**
  * Returns <kbd>true</kbd> if the string  is encoded in UTF8.
@@ -679,8 +722,8 @@ function seems_utf8($Str)
 function WhatInitialisation($session = null)
 {
     global $action;
-    include_once ('Class.User.php');
-    include_once ('Class.Session.php');
+    include_once('Class.User.php');
+    include_once('Class.Session.php');
     
     $CoreNull = "";
     $core = new Application();
@@ -702,8 +745,8 @@ function WhatInitialisation($session = null)
 function setSystemLogin($login)
 {
     global $action;
-    include_once ('Class.User.php');
-    include_once ('Class.Session.php');
+    include_once('Class.User.php');
+    include_once('Class.Session.php');
     
     if ($login != "") {
         $action->user = new Account(); //create user
@@ -721,11 +764,9 @@ function mkpasswd($length = 8, $charspace = "")
         $charspace = "[:alnum:]";
     }
     // Repeat a pattern e.g. [:a:3] -> [:a:][:a:][:a:]
-    $charspace = preg_replace_callback('/(\[:[a-z]+:)(\d+)(\])/', function ($matches)
-    {
+    $charspace = preg_replace_callback('/(\[:[a-z]+:)(\d+)(\])/', function ($matches) {
         return str_repeat($matches[1] . $matches[3], $matches[2]);
-    }
-    , $charspace);
+    }, $charspace);
     // Expand [:patterns:]
     $charspace = preg_replace(array(
         "/\[:alnum:\]/",
@@ -735,7 +776,7 @@ function mkpasswd($length = 8, $charspace = "")
         "/\[:upper:\]/",
         "/\[:digit:\]/",
         "/\[:extra:\]/",
-    ) , array(
+    ), array(
         "[:lower:][:upper:][:digit:]",
         "[:extra:],;:=+*/(){}[]&@#!?\"'<>",
         "[:digit:]abcdef",
@@ -743,11 +784,11 @@ function mkpasswd($length = 8, $charspace = "")
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
         "0123456789",
         "-_.",
-    ) , $charspace);
+    ), $charspace);
     
     $passwd = "";
     for ($i = 0; $i < $length; $i++) {
-        $passwd.= substr($charspace, rand(0, strlen($charspace) - 1) , 1);
+        $passwd.= substr($charspace, rand(0, strlen($charspace) - 1), 1);
     }
     
     return $passwd;
@@ -778,7 +819,7 @@ function getLocales()
     
     if ($locales === null) {
         $lang = array();
-        include ('Apps/CORE/lang.php');
+        include('Apps/CORE/lang.php');
         $locales = $lang;
     }
     return $locales;

@@ -6,10 +6,8 @@
 
 namespace Dcp\HttpApi\V1\Logger;
 
-
 class Dcp extends Logger
 {
-
     public function __construct()
     {
         $this->logger = new \Log(false, "HTTAPI_V1", "LOGGER");
@@ -49,4 +47,4 @@ class Dcp extends Logger
     {
         return \Doc::getUserId() . " " . \Doc::getUserName();
     }
-} 
+}

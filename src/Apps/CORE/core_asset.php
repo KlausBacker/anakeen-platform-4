@@ -7,7 +7,6 @@
  */
 function core_asset(Action & $action)
 {
-
     $ref = $action->getArgument("ref");
 
     $action->lay->template = '';
@@ -18,7 +17,6 @@ function core_asset(Action & $action)
     $assetType = $reg[1];
 
     if (preg_match("/([A-Z_0-9-]+):([^:]+):{0,1}[A-Z]{0,1}/", $ref, $reg)) {
-
         $lfile = getLayoutFile($reg[1], strtolower($reg[2]));
         if (file_exists($lfile)) {
             $action->lay->template = file_get_contents($lfile);
@@ -39,6 +37,4 @@ function core_asset(Action & $action)
             setHeaderCache("application/javascript");
             break;
     }
-
-
 }

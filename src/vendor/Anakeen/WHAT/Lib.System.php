@@ -15,12 +15,11 @@
  */
 /**
  */
-include_once ("Lib.Common.php");
+include_once("Lib.Common.php");
 
 class LibSystem
 {
-    
-    static function getCommandPath($cmdname)
+    public static function getCommandPath($cmdname)
     {
         $path_env = getenv("PATH");
         if ($path_env == false) {
@@ -34,12 +33,12 @@ class LibSystem
         return false;
     }
     
-    static function getHostName()
+    public static function getHostName()
     {
         return php_uname('n');
     }
     
-    static function getHostIPAddress($hostname = "")
+    public static function getHostIPAddress($hostname = "")
     {
         if ($hostname == false) {
             $hostname = LibSystem::getHostName();
@@ -51,22 +50,22 @@ class LibSystem
         return $ip;
     }
     
-    static function getServerName()
+    public static function getServerName()
     {
         return getenv("SERVER_NAME");
     }
     
-    static function getServerAddr()
+    public static function getServerAddr()
     {
         return getenv("SERVER_ADDR");
     }
     
-    static function runningInHttpd()
+    public static function runningInHttpd()
     {
         return LibSystem::getServerAddr();
     }
     
-    static function ssystem($args, $opt = null)
+    public static function ssystem($args, $opt = null)
     {
         $pid = pcntl_fork();
         if ($pid == - 1) {
@@ -97,7 +96,7 @@ class LibSystem
         return 0;
     }
     
-    static function getAbsolutePath($path)
+    public static function getAbsolutePath($path)
     {
         if (is_link($path)) {
             $path = readlink($path);
@@ -105,7 +104,7 @@ class LibSystem
         return realpath($path);
     }
     
-    static function tempnam($dir, $prefix)
+    public static function tempnam($dir, $prefix)
     {
         if ($dir === null || $dir === false) {
             $dir = getTmpDir();
@@ -115,12 +114,11 @@ class LibSystem
     /**
      * force new index
      */
-    static function reloadLocaleCache()
+    public static function reloadLocaleCache()
     {
-        exec(sprintf("%s/whattext 2>&1", escapeshellarg(DEFAULT_PUBDIR)) , $output, $ret);
+        exec(sprintf("%s/whattext 2>&1", escapeshellarg(DEFAULT_PUBDIR)), $output, $ret);
         if ($ret) {
             error_log(implode(",", $output));
         }
     }
 }
-?>

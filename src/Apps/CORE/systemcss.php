@@ -16,7 +16,6 @@
 
 function systemcss(Action & $action)
 {
-    
     $file = DEFAULT_PUBDIR . "/css/dcp/main.css";
     
     $tsize = file_get_contents($file);

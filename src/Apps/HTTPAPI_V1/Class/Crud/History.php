@@ -100,7 +100,7 @@ class History extends Crud
                 }
             }
             $revisionHistory[] = array(
-                "uri" => $this->generateURL(sprintf("%s/%s/revisions/%d.json", $this->baseURL, ($revision->name ? $revision->name : $revision->initid) , $revision->revision)) ,
+                "uri" => $this->generateURL(sprintf("%s/%s/revisions/%d.json", $this->baseURL, ($revision->name ? $revision->name : $revision->initid), $revision->revision)) ,
                 "properties" => array(
                     "id" => intval($revision->initid) ,
                     "title" => $revision->getTitle() ,
@@ -186,7 +186,7 @@ class History extends Crud
      * @param array $array
      * @throws Exception
      */
-    public function setUrlParameters(Array $array)
+    public function setUrlParameters(array $array)
     {
         parent::setUrlParameters($array);
         $familyId = isset($this->urlParameters["familyId"]) ? $this->urlParameters["familyId"] : false;
@@ -254,7 +254,7 @@ class History extends Crud
             $id = $this->urlParameters["identifier"];
             $id = DocManager::getIdentifier($id, true);
             $sql = sprintf("select id, date, comment from dochisto where id = %d order by date desc limit 1", $id);
-            simpleQuery(getDbAccess() , $sql, $result, false, true);
+            simpleQuery(getDbAccess(), $sql, $result, false, true);
             $user = getCurrentUser();
             $result[] = $user->id;
             $result[] = $user->memberof;

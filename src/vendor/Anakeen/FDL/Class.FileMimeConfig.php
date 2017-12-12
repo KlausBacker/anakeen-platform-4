@@ -144,8 +144,7 @@ class FileMimeConfig
             $this->inlineRules[$mime] = $target;
         }
         /* Order rules with most specificity first and least specificity last */
-        uksort($this->inlineRules, function ($mime1, $mime2)
-        {
+        uksort($this->inlineRules, function ($mime1, $mime2) {
             return $this->cmpMimePatternSpecificity($mime2, $mime1);
         });
         return true;
@@ -180,5 +179,4 @@ class FileMimeConfig
         return $specificity;
     }
     //endregion
-
 }

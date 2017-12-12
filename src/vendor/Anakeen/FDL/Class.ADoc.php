@@ -13,7 +13,7 @@
 /**
  */
 
-include_once ("FDL/Class.DocAttribute.php");
+include_once("FDL/Class.DocAttribute.php");
 /**
  * Attribute Document Class
  *
@@ -47,8 +47,12 @@ class ADoc
      */
     public function getAttr($id)
     {
-        if (isset($this->attr[$id])) return $this->attr[$id];
-        if (isset($this->attr[strtolower($id) ])) return $this->attr[$id];
+        if (isset($this->attr[$id])) {
+            return $this->attr[$id];
+        }
+        if (isset($this->attr[strtolower($id) ])) {
+            return $this->attr[$id];
+        }
         
         return false;
     }
@@ -69,7 +73,9 @@ class ADoc
         $tsa = array();
         if (isset($this->attr)) {
             foreach ($this->attr as & $v) {
-                if ((isset($v->isNormal)) && ((($v->usefor != "Q") && (!$onlyopt)) || (($v->usefor == "O") && ($onlyopt)))) $tsa[$v->id] = & $v;
+                if ((isset($v->isNormal)) && ((($v->usefor != "Q") && (!$onlyopt)) || (($v->usefor == "O") && ($onlyopt)))) {
+                    $tsa[$v->id] = & $v;
+                }
             }
         }
         return $tsa;
@@ -84,7 +90,9 @@ class ADoc
         $tsa = array();
         
         foreach ($this->attr as $k => $v) {
-            if (get_class($v) == "ActionAttribute") $tsa[$v->id] = $v;
+            if (get_class($v) == "ActionAttribute") {
+                $tsa[$v->id] = $v;
+            }
         }
         return $tsa;
     }
@@ -98,7 +106,9 @@ class ADoc
         if (isset($this->attr)) {
             reset($this->attr);
             foreach ($this->attr as $k => $v) {
-                if ((get_class($v) == "NormalAttribute") && ($v->usefor == "Q")) $tsa[$v->id] = $v;
+                if ((get_class($v) == "NormalAttribute") && ($v->usefor == "Q")) {
+                    $tsa[$v->id] = $v;
+                }
             }
         }
         return $tsa;
@@ -119,7 +129,9 @@ class ADoc
             }
             $ta = array();
             foreach ($tsa as $k => $v) {
-                if ($v->fieldSet->id == $id) $ta[$v->id] = $v;
+                if ($v->fieldSet->id == $id) {
+                    $ta[$v->id] = $v;
+                }
             }
             return $ta;
         }

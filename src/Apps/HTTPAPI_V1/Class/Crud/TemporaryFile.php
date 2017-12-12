@@ -21,7 +21,7 @@ class TemporaryFile extends Crud
     {
         if (count($_FILES) === 0) {
             $exception = new Exception("CRUD0302", "");
-            $exception->setUserMessage(sprintf(___("File not recorded, File size transfert limited to %d Mb", "HTTPAPI_V1") , $this->getUploadLimit() / 1024 / 1024));
+            $exception->setUserMessage(sprintf(___("File not recorded, File size transfert limited to %d Mb", "HTTPAPI_V1"), $this->getUploadLimit() / 1024 / 1024));
             throw $exception;
         }
         $file = current($_FILES);
@@ -30,7 +30,7 @@ class TemporaryFile extends Crud
             throw new Exception("CRUD0303", $this->getUploadErrorMessage($file["error"]));
         }
         
-        include_once ('FDL/Lib.Vault.php');
+        include_once('FDL/Lib.Vault.php');
         try {
             $vaultid = VaultManager::storeTemporaryFile($file["tmp_name"], $file["name"]);
             $info = VaultManager::getFileInfo($vaultid);
@@ -38,8 +38,7 @@ class TemporaryFile extends Crud
                 $exception = new Exception("CRUD0301", $file["name"]);
                 throw $exception;
             }
-        }
-        catch(\Dcp\Exception $exception) {
+        } catch (\Dcp\Exception $exception) {
             $newException = new Exception("CRUD0300", $exception->getDcpMessage());
             switch ($exception->getDcpCode()) {
                 case "VAULT0002":
@@ -168,8 +167,7 @@ class TemporaryFile extends Crud
          * @param $size
          * @return mixed
          */
-        $normalize = function ($size)
-        {
+        $normalize = function ($size) {
             if (preg_match('/^([\d\.]+)([KMG])$/i', $size, $match)) {
                 $pos = array_search($match[2], array(
                     "K",
@@ -184,16 +182,20 @@ class TemporaryFile extends Crud
         };
         $max_upload = $normalize(ini_get('upload_max_filesize'));
         
-        $max_post = (ini_get('post_max_size') == 0) ? function ()
-        {
+        $max_post = (ini_get('post_max_size') == 0) ? function () {
             throw new Exception('Check Your php.ini settings');
-        } : $normalize(ini_get('post_max_size'));
+        }
+        : $normalize(ini_get('post_max_size'));
         
         $memory_limit = (ini_get('memory_limit') == - 1) ? $max_post : $normalize(ini_get('memory_limit'));
         
-        if ($memory_limit < $max_post || $memory_limit < $max_upload) return $memory_limit;
+        if ($memory_limit < $max_post || $memory_limit < $max_upload) {
+            return $memory_limit;
+        }
         
-        if ($max_post < $max_upload) return $max_post;
+        if ($max_post < $max_upload) {
+            return $max_post;
+        }
         
         $maxFileSize = min($max_upload, $max_post, $memory_limit);
         return $maxFileSize;

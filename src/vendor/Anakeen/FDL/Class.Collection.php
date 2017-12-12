@@ -12,8 +12,8 @@
  */
 /**
  */
-include_once ("FDL/Class.Document.php");
-include_once ("FDL/Lib.FullSearch.php");
+include_once("FDL/Class.Document.php");
+include_once("FDL/Lib.FullSearch.php");
 /**
  * Document Class
  * @deprecated
@@ -111,8 +111,11 @@ class Fdl_Collection extends Fdl_Document
      */
     public function getContent()
     {
-        if ($this->documentList) return $this->getDocumentListContent();
-        else return $this->getCollectionContent();
+        if ($this->documentList) {
+            return $this->getDocumentListContent();
+        } else {
+            return $this->getCollectionContent();
+        }
     }
     /**
      * return documents list
@@ -127,10 +130,12 @@ class Fdl_Collection extends Fdl_Document
      */
     public function getCollectionContent()
     {
-        include_once ("FDL/Class.SearchDoc.php");
+        include_once("FDL/Class.SearchDoc.php");
         $s = new SearchDoc($this->dbaccess);
         $s->useCollection($this->getProperty('initid'));
-        if ($this->contentOrderBy) $s->orderby = $this->contentOrderBy;
+        if ($this->contentOrderBy) {
+            $s->orderby = $this->contentOrderBy;
+        }
         $s->setSlice($this->contentSlice);
         $s->setStart($this->contentStart);
         $s->excludeConfidential();
@@ -148,10 +153,14 @@ class Fdl_Collection extends Fdl_Document
                     $fullorderby = '';
                     $keyword = '';
                     DocSearch::getFullSqlFilters($key, $sqlfilters, $fullorderby, $keyword);
-                    foreach ($sqlfilters as $vfilter) $s->addFilter($vfilter);
-                    if (!$s->orderby) $s->orderby = $fullorderby;
+                    foreach ($sqlfilters as $vfilter) {
+                        $s->addFilter($vfilter);
+                    }
+                    if (!$s->orderby) {
+                        $s->orderby = $fullorderby;
+                    }
                 } else {
-                    $s->addFilter("%s ~* '%s'", ($this->contentSearchProperty ? $this->contentSearchProperty : "svalues") , $key);
+                    $s->addFilter("%s ~* '%s'", ($this->contentSearchProperty ? $this->contentSearchProperty : "svalues"), $key);
                 }
             }
             if ($this->contentFilter) {
@@ -166,16 +175,20 @@ class Fdl_Collection extends Fdl_Document
                     $sfilter = '';
                     $err = $this->doc->object2SqlFilter($this->contentFilter, $ofamid, $sfilter);
                     $this->setError($err);
-                    if ($ofamid) $s->fromid = $ofamid;
+                    if ($ofamid) {
+                        $s->fromid = $ofamid;
+                    }
                     $s->addFilter($sfilter);
                 }
             }
             if ($this->onlyAttributes !== null) {
-                $s->returnsOnly(array_merge(array_keys(Doc::$infofields) , $this->onlyAttributes));
+                $s->returnsOnly(array_merge(array_keys(Doc::$infofields), $this->onlyAttributes));
             }
             if ($err == "") {
                 $s->search();
-                if ($this->debug) $out->info = $s->getSearchInfo();
+                if ($this->debug) {
+                    $out->info = $s->getSearchInfo();
+                }
                 $err = $s->getError();
                 if ($err) {
                     $this->setError($out->info["error"]);
@@ -185,7 +198,9 @@ class Fdl_Collection extends Fdl_Document
                     return $this->getDocumentListContent();
                 }
             }
-        } else $this->error = sprintf(_("document not initialized"));
+        } else {
+            $this->error = sprintf(_("document not initialized"));
+        }
         $out->error = $this->error;
         
         foreach ($content as & $v) {
@@ -214,7 +229,6 @@ class Fdl_Collection extends Fdl_Document
      */
     private function getDocumentListContent()
     {
-        
         $dl = $this->documentList;
         $content = null;
         $out = new stdClass();
@@ -223,11 +237,17 @@ class Fdl_Collection extends Fdl_Document
         } else {
             $content = array();
             $s = $dl->getSearchDocument();
-            if ($this->contentMap) $dl->listMap($this->contentMap);
-            if ($this->debug) $out->info = $s->getSearchInfo();
+            if ($this->contentMap) {
+                $dl->listMap($this->contentMap);
+            }
+            if ($this->debug) {
+                $out->info = $s->getSearchInfo();
+            }
             $out->slice = $s->slice;
             $out->start = $s->start;
-            if (isset($out->info["error"])) $this->setError($out->info["error"]);
+            if (isset($out->info["error"])) {
+                $this->setError($out->info["error"]);
+            }
             $tmpdoc = new Fdl_Document();
             if ($this->onlyAttributes !== null) {
                 $tmpdoc->usePartialDocument($this->onlyAttributes);
@@ -241,7 +261,7 @@ class Fdl_Collection extends Fdl_Document
                 $tmpdoc->affect($doc);
                 if (!$doc->isConfidential()) {
                     if ($verifyhaschild) {
-                        $tmpdoc->setVolatileProperty("haschildfolder", hasChildFld($this->dbaccess, $tmpdoc->getProperty('initid') , ($doc->doctype == 'S')));
+                        $tmpdoc->setVolatileProperty("haschildfolder", hasChildFld($this->dbaccess, $tmpdoc->getProperty('initid'), ($doc->doctype == 'S')));
                     }
                     $content[$kd] = $tmpdoc->getDocument($this->contentOnlyValue, $this->completeProperties);
                     $kd++;
@@ -254,8 +274,12 @@ class Fdl_Collection extends Fdl_Document
                 $s->start = 0;
                 $s->reset();
                 $oc = $s->onlyCount();
-                if ($this->debug) $out->info["totalCount"] = $s->getSearchInfo();
-                if ($oc) $out->totalCount = $oc;
+                if ($this->debug) {
+                    $out->info["totalCount"] = $s->getSearchInfo();
+                }
+                if ($oc) {
+                    $out->totalCount = $oc;
+                }
             }
         }
         $out->error = $this->error;
@@ -280,7 +304,7 @@ class Fdl_Collection extends Fdl_Document
      */
     public function simpleSearch($key, $mode = "word", $famid = 0, $filter = "", $start = 0, $slice = 100, $orderby = "", $onlyvalues = true, $searchproperty = "svalues", $whl = false, $verifyhaschild = false)
     {
-        include_once ("FDL/Class.SearchDoc.php");
+        include_once("FDL/Class.SearchDoc.php");
         static $sw = null;
         $out = new stdClass();
         $tfid = array();
@@ -290,14 +314,20 @@ class Fdl_Collection extends Fdl_Document
             // multi family search
             $tfamids = explode('|', $famid);
             foreach ($tfamids as $fid) {
-                if (!is_numeric($fid)) $fid = \Dcp\Core\DocManager::getFamilyIdFromName($fid);
-                if ($fid > 0) $tfid[] = $fid;
+                if (!is_numeric($fid)) {
+                    $fid = \Dcp\Core\DocManager::getFamilyIdFromName($fid);
+                }
+                if ($fid > 0) {
+                    $tfid[] = $fid;
+                }
             }
             
             $famid = 0;
         }
-        if (preg_match('/([\w:]*)\s?strict/', trim($famid) , $reg)) {
-            if (!is_numeric($reg[1])) $reg[1] = \Dcp\Core\DocManager::getFamilyIdFromName($reg[1]);
+        if (preg_match('/([\w:]*)\s?strict/', trim($famid), $reg)) {
+            if (!is_numeric($reg[1])) {
+                $reg[1] = \Dcp\Core\DocManager::getFamilyIdFromName($reg[1]);
+            }
             $famid = '-' . $reg[1];
         }
         $s = new SearchDoc($this->dbaccess, $famid);
@@ -307,8 +337,12 @@ class Fdl_Collection extends Fdl_Document
                 $fullorderby = '';
                 $keyword = '';
                 DocSearch::getFullSqlFilters($key, $sqlfilters, $fullorderby, $keyword);
-                foreach ($sqlfilters as $vfilter) $s->addFilter($vfilter);
-                if (!$orderby) $orderby = $fullorderby;
+                foreach ($sqlfilters as $vfilter) {
+                    $s->addFilter($vfilter);
+                }
+                if (!$orderby) {
+                    $orderby = $fullorderby;
+                }
             } else {
                 $s->addFilter(sprintf("%s ~* '%s'", $searchproperty, $key));
             }
@@ -339,38 +373,48 @@ class Fdl_Collection extends Fdl_Document
             }
         }
         if ($err == "") {
-            if (count($tfid) > 0) $s->addFilter(getSqlCond($tfid, 'fromid', true));
+            if (count($tfid) > 0) {
+                $s->addFilter(getSqlCond($tfid, 'fromid', true));
+            }
             $completeprop = false;
             $content = array();
             $s->slice = $slice;
             $s->start = $start;
-            if ($orderby) $s->orderby = $orderby;
+            if ($orderby) {
+                $s->orderby = $orderby;
+            }
             $s->setObjectReturn();
             $s->excludeConfidential();
             $s->search();
             $info = $s->getSearchInfo();
             $out->error = $info["error"];
-            if ($this->debug) $out->info = $info;
+            if ($this->debug) {
+                $out->info = $info;
+            }
             
             if (!$out->error) {
                 /**
                  * @var \Dcp\Family\DSEARCH $ws
                  */
                 $ws = createTmpDoc($this->dbaccess, "DSEARCH");
-                $ws->setValue("ba_title", sprintf(_("search %s") , $key));
+                $ws->setValue("ba_title", sprintf(_("search %s"), $key));
                 $ws->add();
                 $ws->addStaticQuery($s->getOriginalQuery());
                 $tmpdoc = new Fdl_Document($ws->id);
                 $out->document = $tmpdoc->getDocument(true, false);
                 $idx = 0;
-                if (!$keyword) $keyword = str_replace(" ", "|", $key);
+                if (!$keyword) {
+                    $keyword = str_replace(" ", "|", $key);
+                }
                 while ($doc = $s->getNextDoc()) {
                     $tmpdoc->affect($doc);
                     if ($verifyhaschild) {
-                        $tmpdoc->setVolatileProperty("haschildfolder", hasChildFld($this->dbaccess, $tmpdoc->getProperty('initid') , ($doc->doctype == 'S')));
+                        $tmpdoc->setVolatileProperty("haschildfolder", hasChildFld($this->dbaccess, $tmpdoc->getProperty('initid'), ($doc->doctype == 'S')));
                     }
                     $content[$idx] = $tmpdoc->getDocument($onlyvalues, $completeprop);
-                    if ($whl) $content[$idx]['highlight'] = getHighlight($doc, $keyword);
+                    if ($whl) {
+                        $content[$idx]['highlight'] = getHighlight($doc, $keyword);
+                    }
                     $idx++;
                 }
                 
@@ -406,14 +450,15 @@ class Fdl_Collection extends Fdl_Document
         $out = new stdClass();
         $fam = new_doc($this->dbaccess, $famid);
         if (!$fam->isAlive()) {
-            $out->error = sprintf(_("data:family %s not alive") , $famid);
+            $out->error = sprintf(_("data:family %s not alive"), $famid);
         } elseif ($fam->doctype != 'C') {
-            $out->error = sprintf(_("data:document %s is not a family") , $famid);
+            $out->error = sprintf(_("data:document %s is not a family"), $famid);
         } else {
-            
             $content = array();
             $fld = new Dir($this->dbaccess);
-            if (!is_numeric($famid)) $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famid);
+            if (!is_numeric($famid)) {
+                $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famid);
+            }
             $tfam = $fld->GetChildFam($famid, $controlcreate);
             if (count($tfam) > 0) {
                 $tmpdoc = new Fdl_Document();
@@ -446,9 +491,11 @@ class Fdl_Collection extends Fdl_Document
                 $this->setError($err);
                 $out->error = $err;
             } else {
-                $out->message = sprintf(_("document %d inserted") , $docid);
+                $out->message = sprintf(_("document %d inserted"), $docid);
             }
-        } else $out->error = sprintf(_("document not set"));
+        } else {
+            $out->error = sprintf(_("document not set"));
+        }
         return $out;
     }
     /**
@@ -456,7 +503,7 @@ class Fdl_Collection extends Fdl_Document
      * @param int $docid the document identifier to unlink
      * @return object with error or message field
      */
-    function unlinkDocument($docid)
+    public function unlinkDocument($docid)
     {
         $out = new stdClass();
         if ($this->docisset()) {
@@ -465,9 +512,11 @@ class Fdl_Collection extends Fdl_Document
                 $this->setError($err);
                 $out->error = $err;
             } else {
-                $out->message = sprintf(_("document %d deleted") , $docid);
+                $out->message = sprintf(_("document %d deleted"), $docid);
             }
-        } else $out->error = sprintf(_("document not set"));
+        } else {
+            $out->error = sprintf(_("document not set"));
+        }
         return $out;
     }
     /**
@@ -475,10 +524,10 @@ class Fdl_Collection extends Fdl_Document
      * @param object $selection selection of document
      * @return object with error or message field
      */
-    function unlinkDocuments($selection)
+    public function unlinkDocuments($selection)
     {
         $out = new stdClass();
-        include_once ("DATA/Class.DocumentSelection.php");
+        include_once("DATA/Class.DocumentSelection.php");
         $os = new Fdl_DocumentSelection($selection);
         $ids = $os->getIdentificators();
         
@@ -494,13 +543,15 @@ class Fdl_Collection extends Fdl_Document
                     if ($err != "") {
                         $out->notunlinked[$docid] = $err;
                     } else {
-                        $out->unlinked[$docid] = sprintf(_("document %d unlinked") , $docid) . "\n";
+                        $out->unlinked[$docid] = sprintf(_("document %d unlinked"), $docid) . "\n";
                     }
                 }
                 $out->unlinkedCount = count($out->unlinked);
                 $out->notUnlinkedCount = count($out->notunlinked);
             }
-        } else $out->error = sprintf(_("document not set"));
+        } else {
+            $out->error = sprintf(_("document not set"));
+        }
         return $out;
     }
     /**
@@ -508,7 +559,7 @@ class Fdl_Collection extends Fdl_Document
      * @param object $selection selection of document
      * @return object with error or message field
      */
-    function unlinkAllDocuments()
+    public function unlinkAllDocuments()
     {
         $out = new stdClass();
         if ($this->docisset()) {
@@ -519,7 +570,9 @@ class Fdl_Collection extends Fdl_Document
             } else {
                 $out->error = $this->doc->clear();
             }
-        } else $out->error = sprintf(_("document not set"));
+        } else {
+            $out->error = sprintf(_("document not set"));
+        }
         return $out;
     }
     /**
@@ -527,10 +580,10 @@ class Fdl_Collection extends Fdl_Document
      * @param object $selection selection of document
      * @return object with error or message field
      */
-    function moveDocuments($selection, $targetId)
+    public function moveDocuments($selection, $targetId)
     {
         $out = new stdClass();
-        include_once ("DATA/Class.DocumentSelection.php");
+        include_once("DATA/Class.DocumentSelection.php");
         $os = new Fdl_DocumentSelection($selection);
         $ids = $os->getIdentificators();
         
@@ -544,12 +597,13 @@ class Fdl_Collection extends Fdl_Document
                  */
                 $targetDoc = new_doc($this->dbaccess, $targetId);
                 if ($targetDoc->isAlive()) {
-                    if ($targetDoc->defDoctype != 'D') $err = sprintf(_("target folder [%s] is not a folder") , $targetDoc->getTitle());
-                    else {
+                    if ($targetDoc->defDoctype != 'D') {
+                        $err = sprintf(_("target folder [%s] is not a folder"), $targetDoc->getTitle());
+                    } else {
                         $err = $targetDoc->canModify();
                     }
                 } else {
-                    $err = sprintf(_("target folder [%s] is not set") , $targetId);
+                    $err = sprintf(_("target folder [%s] is not set"), $targetId);
                 }
                 if ($err != "") {
                     $out->error = $err;
@@ -559,7 +613,7 @@ class Fdl_Collection extends Fdl_Document
                         if ($err != "") {
                             $out->notmoved[$docid] = $err;
                         } else {
-                            $out->moved[$docid] = sprintf(_("document %d moved") , $docid) . "\n";
+                            $out->moved[$docid] = sprintf(_("document %d moved"), $docid) . "\n";
                         }
                     }
                     $out->movedCount = count($out->moved);
@@ -568,7 +622,9 @@ class Fdl_Collection extends Fdl_Document
             } else {
                 $out->error = $err;
             }
-        } else $out->error = sprintf(_("document not set"));
+        } else {
+            $out->error = sprintf(_("document not set"));
+        }
         return $out;
     }
     /**
@@ -576,10 +632,10 @@ class Fdl_Collection extends Fdl_Document
      * @param object $selection selection of document
      * @return object with error or message field
      */
-    function insertDocuments($selection)
+    public function insertDocuments($selection)
     {
         $out = new stdClass();
-        include_once ("DATA/Class.DocumentSelection.php");
+        include_once("DATA/Class.DocumentSelection.php");
         $os = new Fdl_DocumentSelection($selection);
         if ($this->docisset()) {
             $tdocs = $os->getRawDocuments();
@@ -589,15 +645,16 @@ class Fdl_Collection extends Fdl_Document
             $out->insertedCount = count($out->inserted);
             $out->notInsertedCount = count($out->notinserted);
             $out->error = $err;
-        } else $out->error = sprintf(_("document not set"));
+        } else {
+            $out->error = sprintf(_("document not set"));
+        }
         return $out;
     }
     
-    function getAuthorizedFamilies()
+    public function getAuthorizedFamilies()
     {
         if ($this->docisset()) {
             if (method_exists($this->doc, "getAuthorizedFamilies")) {
-                
                 return array(
                     "restriction" => $this->doc->hasNoRestriction() ? false : true,
                     "families" => $this->doc->getAuthorizedFamilies()
@@ -607,4 +664,3 @@ class Fdl_Collection extends Fdl_Document
         return null;
     }
 }
-?>

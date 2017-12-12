@@ -13,9 +13,9 @@
 /**
  */
 
-include_once ('Class.Log.php');
-include_once ('Class.Action.php');
-include_once ('Class.Application.php');
+include_once('Class.Log.php');
+include_once('Class.Action.php');
+include_once('Class.Application.php');
 /**
  *
  * @class Layout
@@ -117,10 +117,13 @@ class Layout
         $this->initialFile=$caneva;
         $this->LOG = new Log("", "Layout");
         if (($template == "[OUT]") && ($caneva != "")) {
-            $this->template = sprintf(_("Template [%s] not found") , $caneva);
+            $this->template = sprintf(_("Template [%s] not found"), $caneva);
+        } else {
+            $this->template = $template;
         }
-        else $this->template = $template;
-        if ($action) $this->action = & $action;
+        if ($action) {
+            $this->action = & $action;
+        }
         $this->generation = "";
         $this->noGoZoneMapping = uniqid($this->noGoZoneMapping);
         $this->escapeBracket = uniqid($this->escapeBracket);
@@ -128,10 +131,10 @@ class Layout
         $this->file = "";
         if ($caneva != "") {
             if ($this->initialFile[0] !== '/') {
-                if ((!file_exists($file)) ) {
+                if ((!file_exists($file))) {
                     $file = DEFAULT_PUBDIR . "/Apps/".$this->initialFile; // try absolute in Apps
                 }
-                if ((!file_exists($file)) ) {
+                if ((!file_exists($file))) {
                     $file = DEFAULT_PUBDIR . "/" .$this->initialFile; // try absolute
                 }
             }
@@ -172,9 +175,9 @@ class Layout
      * @param string $p_nom_modele
      * @param string $p_nom
      */
-    public function setBlockCorresp($p_nom_block, $p_nom_modele, $p_nom = NULL)
+    public function setBlockCorresp($p_nom_block, $p_nom_modele, $p_nom = null)
     {
-        $this->corresp["$p_nom_block"]["[$p_nom_modele]"] = ($p_nom == NULL ? $p_nom_modele : "$p_nom");
+        $this->corresp["$p_nom_block"]["[$p_nom_modele]"] = ($p_nom == null ? $p_nom_modele : "$p_nom");
     }
     /**
      * set encoded data to fill a block
@@ -182,7 +185,7 @@ class Layout
      * @param string $p_nom_block block name
      * @param array $data data to fill the block
      */
-    public function eSetBlockData($p_nom_block, $data = NULL)
+    public function eSetBlockData($p_nom_block, $data = null)
     {
         if (is_array($data)) {
             foreach ($data as & $aRow) {
@@ -201,7 +204,7 @@ class Layout
      * @param string $p_nom_block block name
      * @param array $data data to fill the block
      */
-    public function setBlockData($p_nom_block, $data = NULL)
+    public function setBlockData($p_nom_block, $data = null)
     {
         $this->data["$p_nom_block"] = $data;
         // affect the $corresp block if not
@@ -226,7 +229,9 @@ class Layout
      */
     public function getBlockData($p_nom_block)
     {
-        if (isset($this->data["$p_nom_block"])) return $this->data["$p_nom_block"];
+        if (isset($this->data["$p_nom_block"])) {
+            return $this->data["$p_nom_block"];
+        }
         return false;
     }
     
@@ -242,11 +247,13 @@ class Layout
         if (isset($this->data) && isset($this->data["$name"]) && is_array($this->data["$name"])) {
             foreach ($this->data["$name"] as $k => $v) {
                 $loc = $block;
-                if (!is_array($this->corresp["$name"])) return sprintf(_("SetBlock:error [%s]") , $name);
+                if (!is_array($this->corresp["$name"])) {
+                    return sprintf(_("SetBlock:error [%s]"), $name);
+                }
                 foreach ($this->corresp["$name"] as $k2 => $v2) {
                     $vv2 = (isset($v[$v2])) ? $v[$v2] : '';
                     if ((!is_object($vv2)) && (!is_array($vv2))) {
-                        $loc = str_replace($k2, str_replace($this->goZoneMapping, $this->noGoZoneMapping, $vv2) , $loc);
+                        $loc = str_replace($k2, str_replace($this->goZoneMapping, $this->noGoZoneMapping, $vv2), $loc);
                     }
                 }
                 $this->rif = & $v;
@@ -261,11 +268,9 @@ class Layout
     
     protected function ParseBlock(&$out)
     {
-        $out = preg_replace_callback('/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/s', function ($matches)
-        {
+        $out = preg_replace_callback('/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/s', function ($matches) {
             return $this->SetBlock($matches[1], $matches[2]);
-        }
-        , $out);
+        }, $out);
     }
     
     protected function TestIf($name, $block, $not = false)
@@ -282,30 +287,31 @@ class Layout
                 $this->ParseIf($out);
             }
         } else {
-            if ($this->strip == 'Y') $block = str_replace("\\\"", "\"", $block);
+            if ($this->strip == 'Y') {
+                $block = str_replace("\\\"", "\"", $block);
+            }
             
-            if ($not) $out = "[IFNOT $name]" . $block . "[ENDIF $name]";
-            else $out = "[IF $name]" . $block . "[ENDIF $name]";
+            if ($not) {
+                $out = "[IFNOT $name]" . $block . "[ENDIF $name]";
+            } else {
+                $out = "[IF $name]" . $block . "[ENDIF $name]";
+            }
         }
         return ($out);
     }
     
     protected function ParseIf(&$out)
     {
-        $out = preg_replace_callback('/\[IF(NOT)?\s+([^\]]*)\](.*?)\[ENDIF\s+\\2\]/smu', function ($matches)
-        {
+        $out = preg_replace_callback('/\[IF(NOT)?\s+([^\]]*)\](.*?)\[ENDIF\s+\\2\]/smu', function ($matches) {
             return $this->TestIf($matches[2], $matches[3], $matches[1]);
-        }
-        , $out);
+        }, $out);
     }
     
     protected function ParseZone(&$out)
     {
-        $out = preg_replace_callback('/\[ZONE\s+([^:]*):([^\]]*)\]/', function ($matches)
-        {
+        $out = preg_replace_callback('/\[ZONE\s+([^:]*):([^\]]*)\]/', function ($matches) {
             return $this->execute($matches[1], $matches[2]);
-        }
-        , $out);
+        }, $out);
     }
     
     protected function ParseKey(&$out)
@@ -325,7 +331,6 @@ class Layout
         if ($enc == "utf-8") {
             $this->encoding = $enc;
             // bind_textdomain_codeset("what", 'UTF-8');
-            
         }
     }
     
@@ -339,7 +344,9 @@ class Layout
             }
         }
         
-        if ($this->action == "") return ("Layout not used in a core environment");
+        if ($this->action == "") {
+            return ("Layout not used in a core environment");
+        }
         
         $this->zoneLevel++;
         // analyse action & its args
@@ -371,7 +378,6 @@ class Layout
             $act = new Action();
             $res = '';
             if ($act->Exists($actionname, $appl->id)) {
-                
                 $act->Set($actionname, $appl);
             } else {
                 // it's a no-action zone (no ACL, cannot be call directly by URL)
@@ -436,55 +442,55 @@ class Layout
      * @param string $tag
      * @return string
      */
-    function get($tag)
+    public function get($tag)
     {
-        if (isset($this->rkey[$tag])) return $this->rkey[$tag];
+        if (isset($this->rkey[$tag])) {
+            return $this->rkey[$tag];
+        }
         return "";
     }
     
     protected function ParseRef(&$out)
     {
-        if (!$this->action) return;
-        $out = preg_replace_callback('/\[IMG:([^\|\]]+)\|([0-9]+)\]/', function ($matches)
-        {
+        if (!$this->action) {
+            return;
+        }
+        $out = preg_replace_callback('/\[IMG:([^\|\]]+)\|([0-9]+)\]/', function ($matches) {
             global $action;
             return $action->parent->getImageLink($matches[1], true, $matches[2]);
-        }
-        , $out);
+        }, $out);
         
-        $out = preg_replace_callback('/\[IMG:([^\]\|]+)\]/', function ($matches)
-        {
+        $out = preg_replace_callback('/\[IMG:([^\]\|]+)\]/', function ($matches) {
             global $action;
             return $action->parent->getImageLink($matches[1]);
-        }
-        , $out);
+        }, $out);
         
-        $out = preg_replace_callback('/\[IMGF:([^\]]*)\]/', function ($matches)
-        {
+        $out = preg_replace_callback('/\[IMGF:([^\]]*)\]/', function ($matches) {
             global $action;
             return $action->parent->GetFilteredImageUrl($matches[1]);
-        }
-        , $out);
+        }, $out);
     }
     
     protected function ParseText(&$out)
     {
-        $out = preg_replace_callback('/\[TEXT(\([^\)]*\))?:([^\]]*)\]/', function ($matches)
-        {
+        $out = preg_replace_callback('/\[TEXT(\([^\)]*\))?:([^\]]*)\]/', function ($matches) {
             $s = $matches[2];
-            if ($s == "") return $s;
+            if ($s == "") {
+                return $s;
+            }
             if (!$matches[1]) {
                 return _($s);
             } else {
                 return ___($s, trim($matches[1], '()'));
             }
-        }
-        , $out);
+        }, $out);
     }
     
     protected function Text($s)
     {
-        if ($s == "") return $s;
+        if ($s == "") {
+            return $s;
+        }
         return _($s);
     }
     
@@ -492,7 +498,9 @@ class Layout
     {
         $js = "";
         $list[] = $this->action->GetParam("CORE_JSURL") . "/logmsg.js?wv=" . $this->action->GetParam("WVERSION");
-        if (!empty($this->action->parent)) $list = array_merge($list, $this->action->parent->GetJsRef());
+        if (!empty($this->action->parent)) {
+            $list = array_merge($list, $this->action->parent->GetJsRef());
+        }
         
         reset($list);
         
@@ -510,9 +518,10 @@ class Layout
     public function GenJsCode($showlog, $onlylog = false)
     {
         $out = "";
-        if (empty($this->action->parent)) return $out;
+        if (empty($this->action->parent)) {
+            return $out;
+        }
         if (!$onlylog) {
-            
             $list = $this->action->parent->GetJsCode();
             foreach ($list as $k => $v) {
                 $out.= $v . "\n";
@@ -524,8 +533,11 @@ class Layout
             reset($list);
             $out.= "var logmsg=new Array();\n";
             foreach ($list as $k => $v) {
-                if (($v[0] == '{')) $out.= "logmsg[$k]=$v;\n";
-                else $out.= "logmsg[$k]=" . json_encode($v) . ";\n";
+                if (($v[0] == '{')) {
+                    $out.= "logmsg[$k]=$v;\n";
+                } else {
+                    $out.= "logmsg[$k]=" . json_encode($v) . ";\n";
+                }
             }
             
             $out.= "if ('displayLogMsg' in window) displayLogMsg(logmsg);\n";
@@ -533,7 +545,7 @@ class Layout
             // Add warning messages
             $list = $this->action->parent->GetWarningMsg();
             if (count($list) > 0) {
-                $out.= "displayWarningMsg(" . json_encode(implode("\n---------\n", array_unique($list)) , JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP) . ");\n";
+                $out.= "displayWarningMsg(" . json_encode(implode("\n---------\n", array_unique($list)), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP) . ");\n";
             }
             $this->action->parent->ClearWarningMsg();
         }
@@ -557,29 +569,25 @@ class Layout
     
     protected function ParseJs(&$out)
     {
-        $out = preg_replace_callback('/\[JS:REF\]/', function ()
-        {
+        $out = preg_replace_callback('/\[JS:REF\]/', function () {
             return $this->GenJsRef();
-        }
-        , $out);
+        }, $out);
         
-        $out = preg_replace_callback('/\[JS:CODE\]/', function ()
-        {
+        $out = preg_replace_callback('/\[JS:CODE\]/', function () {
             return $this->GenJsCode(true);
-        }
-        , $out);
+        }, $out);
         
-        $out = preg_replace_callback('/\[JS:CODENLOG\]/', function ()
-        {
+        $out = preg_replace_callback('/\[JS:CODENLOG\]/', function () {
             return $this->GenJsCode(false);
-        }
-        , $out);
+        }, $out);
     }
     
     protected function GenCssRef($oldCompatibility = true)
     {
         $css = "";
-        if (empty($this->action->parent)) return "";
+        if (empty($this->action->parent)) {
+            return "";
+        }
         if ($oldCompatibility) {
             $cssLink = $this->action->parent->getCssLink("css/dcp/system.css", true);
             $css.= "<link rel=\"stylesheet\" type=\"text/css\" href=\"$cssLink\">\n";
@@ -593,7 +601,9 @@ class Layout
     
     protected function GenCssCode()
     {
-        if (empty($this->action->parent)) return "";
+        if (empty($this->action->parent)) {
+            return "";
+        }
         $list = $this->action->parent->GetCssCode();
         reset($list);
         $out = "";
@@ -604,22 +614,16 @@ class Layout
     }
     protected function ParseCss(&$out)
     {
-        $out = preg_replace_callback('/\[CSS:REF\]/', function ()
-        {
+        $out = preg_replace_callback('/\[CSS:REF\]/', function () {
             return $this->GenCssRef();
-        }
-        , $out);
-        $out = preg_replace_callback('/\[CSS:CUSTOMREF\]/', function ()
-        {
+        }, $out);
+        $out = preg_replace_callback('/\[CSS:CUSTOMREF\]/', function () {
             return $this->GenCssRef(false);
-        }
-        , $out);
+        }, $out);
         
-        $out = preg_replace_callback('/\[CSS:CODE\]/', function ()
-        {
+        $out = preg_replace_callback('/\[CSS:CODE\]/', function () {
             return $this->GenCssCode();
-        }
-        , $out);
+        }, $out);
     }
     /**
      * Generate text from template with data included
@@ -628,7 +632,9 @@ class Layout
      */
     public function gen()
     {
-        if ($this->noparse) return $this->template;
+        if ($this->noparse) {
+            return $this->template;
+        }
         // if used in an app , set the app params
         $out = $this->template;
         
@@ -653,14 +659,13 @@ class Layout
         $out = str_replace(array(
             $this->noGoZoneMapping,
             $this->escapeBracket
-        ) , array(
+        ), array(
             $this->goZoneMapping,
             "["
-        ) , $out);
+        ), $out);
 
         if ($out === '[OUT]') {
-            $out = sprintf("[ERROR LAYOUT: %s]",$this->initialFile);
-
+            $out = sprintf("[ERROR LAYOUT: %s]", $this->initialFile);
         }
 
         return ($out);
@@ -681,8 +686,11 @@ class Layout
                 }
             } elseif ($this->zoneLevel === 0) {
                 foreach ($list as $k => $v) {
-                    if ($v === null) $v = '';
-                    elseif (!is_scalar($v)) $v = "notScalar";
+                    if ($v === null) {
+                        $v = '';
+                    } elseif (!is_scalar($v)) {
+                        $v = "notScalar";
+                    }
                     $keys[] = "[$k]";
                     $pval[] = $v;
                 }
@@ -731,7 +739,7 @@ class Layout
      */
     protected function printRecursionCountError($class, $function, $count)
     {
-        include_once ('WHAT/Lib.Prefix.php');
+        include_once('WHAT/Lib.Prefix.php');
         
         $http_code = 500;
         $http_reason = "Recursion Count Error";
@@ -741,7 +749,7 @@ class Layout
         print "<title>" . htmlspecialchars($http_reason) . "</title>\n";
         print "</head></body>\n";
         
-        print "<h1>" . sprintf("%s %s", htmlspecialchars($http_code) , htmlspecialchars($http_reason)) . "</h1>\n";
+        print "<h1>" . sprintf("%s %s", htmlspecialchars($http_code), htmlspecialchars($http_reason)) . "</h1>\n";
         
         $message = sprintf("Infinite recursive loop in %s::%s() (call count = '%s')", $class, $function, $count);
         print "<h2>" . htmlspecialchars($message) . "</h2>\n";

@@ -62,7 +62,9 @@ class UserTagCollection extends Crud
         $q->addQuery(sprintf("initid = %d", $this->_document->initid));
         $q->order_by = "date desc";
         $userTags = $q->Query($this->offset, $this->slice, "TABLE");
-        if ($q->nb == 0) $userTags = array();
+        if ($q->nb == 0) {
+            $userTags = array();
+        }
         
         $tags = array();
         /**
@@ -164,7 +166,7 @@ class UserTagCollection extends Crud
      * @param array $array
      * @throws Exception
      */
-    public function setUrlParameters(Array $array)
+    public function setUrlParameters(array $array)
     {
         parent::setUrlParameters($array);
         $familyId = isset($this->urlParameters["familyId"]) ? $this->urlParameters["familyId"] : false;
@@ -228,7 +230,7 @@ class UserTagCollection extends Crud
             $id = $this->urlParameters["identifier"];
             $id = DocManager::getIdentifier($id, true);
             $sql = sprintf("select id, date, comment from docutag where id = %d order by date desc limit 1", $id);
-            simpleQuery(getDbAccess() , $sql, $result, false, true);
+            simpleQuery(getDbAccess(), $sql, $result, false, true);
             $result[] = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
             return join("", $result);
         }

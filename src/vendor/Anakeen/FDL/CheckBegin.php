@@ -20,9 +20,8 @@ class CheckBegin extends CheckData
      * @param Doc $doc
      * @return CheckBegin
      */
-    function check(array $data, &$doc = null)
+    public function check(array $data, &$doc = null)
     {
-        
         $this->parentName = ($data[1] == "--" || $data[1] == "-") ? "" : $data[1];
         $this->famId = isset($data[3]) ? $data[3] : 0;
         $this->famTitle = isset($data[2]) ? $data[2] : null;
@@ -40,7 +39,7 @@ class CheckBegin extends CheckData
      * @param Doc $doc
      * @return CheckBegin
      */
-    function checkClass(array $data, &$doc = null)
+    public function checkClass(array $data, &$doc = null)
     {
         $this->doc = $doc;
         if (strstr($doc->usefor, 'W')) {
@@ -67,7 +66,6 @@ class CheckBegin extends CheckData
             }
         }
         return $file;
-
     }
     private function checkClassFile($phpfile)
     {
@@ -75,10 +73,10 @@ class CheckBegin extends CheckData
             $fileName = realpath($this->getClassFile($phpfile));
             if ($fileName) {
                 if (CheckClass::phpLintFile($fileName, $output) === false) {
-                    $this->addError(ErrorCode::getError('FAM0400', $this->getClassFile($phpfile) , $this->famName, implode("\n", $output)));
+                    $this->addError(ErrorCode::getError('FAM0400', $this->getClassFile($phpfile), $this->famName, implode("\n", $output)));
                 }
             } else {
-                $this->addError(ErrorCode::getError('FAM0401', $this->getClassFile($phpfile) , $this->famName));
+                $this->addError(ErrorCode::getError('FAM0401', $this->getClassFile($phpfile), $this->famName));
             }
         }
     }
@@ -120,7 +118,6 @@ class CheckBegin extends CheckData
                 } elseif ($p["doctype"] != 'C') {
                     $this->addError(ErrorCode::getError('FAM0104', $this->parentName, $this->famName));
                 } else {
-                    
                     $me = getTdoc('', $this->famName);
                     if ($me) {
                         $fromId = $me['fromid'];

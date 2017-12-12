@@ -43,7 +43,6 @@ class DocOooFormat
      */
     public function getOooValue($oattr, $value, $index = - 1)
     {
-        
         $this->oattr = $oattr;
         $this->index = $index;
         $this->cFormat = $this->oattr->format;
@@ -154,7 +153,7 @@ class DocOooFormat
             
             if (($this->cFormat != "") && ($atype != "doc") && ($atype != "array") && ($atype != "option")) {
                 //printf($oooval);
-                $oooval = sprintf($this->xmlEncode($this->cFormat) , $oooval);
+                $oooval = sprintf($this->xmlEncode($this->cFormat), $oooval);
             }
             
             $thtmlval[$kvalue] = $oooval;
@@ -181,12 +180,12 @@ class DocOooFormat
             '"',
             "<",
             ">"
-        ) , array(
+        ), array(
             "&amp;",
             '&quot;',
             "&lt;",
             "&gt;"
-        ) , $s);
+        ), $s);
     }
     /**
      * format Idoc attribute
@@ -197,9 +196,8 @@ class DocOooFormat
     public function formatIDoc(
     /** @noinspection PhpUnusedParameterInspection */
     
-    $avalue)
-    {
-        
+    $avalue
+    ) {
         $oooval = "";
         
         return $oooval;
@@ -212,7 +210,6 @@ class DocOooFormat
      */
     public function formatImage($avalue)
     {
-        
         $oooval = $this->doc->vault_filename_fromvalue($avalue, true);
         
         return $oooval;
@@ -225,7 +222,6 @@ class DocOooFormat
      */
     public function formatFile($avalue)
     {
-        
         $oooval = $this->doc->vault_filename_fromvalue($avalue, false);
         return $oooval;
     }
@@ -237,15 +233,14 @@ class DocOooFormat
      */
     public function formatLongtext($avalue)
     {
-        
         $oooval = str_replace("&", "&amp;", $avalue);
         $oooval = str_replace(array(
             "<",
             ">"
-        ) , array(
+        ), array(
             "&lt;",
             "&gt;"
-        ) , $oooval);
+        ), $oooval);
         $oooval = str_replace("\n", "<text:line-break/>", $oooval);
         $oooval = str_replace("&lt;BR&gt;", "<text:line-break/>", $oooval);
         $oooval = str_replace("\r", "", $oooval);
@@ -259,9 +254,8 @@ class DocOooFormat
      */
     public function formatPassword(
     /** @noinspection PhpUnusedParameterInspection */
-    $avalue)
-    {
-        
+    $avalue
+    ) {
         $oooval = "*****";
         return $oooval;
     }
@@ -273,7 +267,6 @@ class DocOooFormat
      */
     public function formatEnum($avalue)
     {
-        
         $enumlabel = $this->oattr->getEnumlabel();
         $colors = $this->oattr->getOption("boolcolor");
         if ($colors != "") {
@@ -287,10 +280,15 @@ class DocOooFormat
                     $color = $tcolor[1];
                     $oooval = sprintf('<pre style="background-color:%s;display:inline">&nbsp;&bull;&nbsp;</pre>', $color);
                 }
-            } else $oooval = $avalue;
+            } else {
+                $oooval = $avalue;
+            }
         } else {
-            if (isset($enumlabel[$avalue])) $oooval = $enumlabel[$avalue];
-            else $oooval = $avalue;
+            if (isset($enumlabel[$avalue])) {
+                $oooval = $enumlabel[$avalue];
+            } else {
+                $oooval = $avalue;
+            }
         }
         return $oooval;
     }
@@ -302,9 +300,8 @@ class DocOooFormat
      */
     public function formatArray(
     /** @noinspection PhpUnusedParameterInspection */
-    $avalue)
-    {
-        
+    $avalue
+    ) {
         $oooval = "";
         return $oooval;
     }
@@ -316,8 +313,8 @@ class DocOooFormat
      */
     public function formatDoc(
     /** @noinspection PhpUnusedParameterInspection */
-    $avalue)
-    {
+    $avalue
+    ) {
         $oooval = "";
         
         return $oooval;
@@ -329,7 +326,9 @@ class DocOooFormat
      */
     public function formatAccount($avalue)
     {
-        if (!$this->oattr->format) $this->oattr->format = "x";
+        if (!$this->oattr->format) {
+            $this->oattr->format = "x";
+        }
         return $this->formatDocid($avalue);
     }
     /**
@@ -340,9 +339,7 @@ class DocOooFormat
      */
     public function formatDocid($avalue)
     {
-        
         if ($this->oattr->format != "") {
-            
             $this->cFormat = "";
             $isLatest = $this->oattr->getOption("docrev", "latest") == "latest";
             
@@ -353,19 +350,27 @@ class DocOooFormat
                 $tval = explode("<BR>", $avalue);
                 $thval = array();
                 foreach ($tval as $kv => $vv) {
-                    if (trim($vv) == "") $thval[] = $vv;
-                    else $thval[] = $this->doc->getDocAnchor(trim($vv) , '', false);
+                    if (trim($vv) == "") {
+                        $thval[] = $vv;
+                    } else {
+                        $thval[] = $this->doc->getDocAnchor(trim($vv), '', false);
+                    }
                 }
                 $oooval = implode("<text:tab/>", $thval);
             } else {
-                if ($avalue == "") $oooval = $avalue;
-                else {
-                    $title = DocTitle::getRelationTitle(trim($avalue) , $isLatest, $this->doc);
-                    if ($title === false) $title = $this->doc->htmlEncode($this->oattr->getOption("noaccesstext", _("information access deny")));
+                if ($avalue == "") {
+                    $oooval = $avalue;
+                } else {
+                    $title = DocTitle::getRelationTitle(trim($avalue), $isLatest, $this->doc);
+                    if ($title === false) {
+                        $title = $this->doc->htmlEncode($this->oattr->getOption("noaccesstext", _("information access deny")));
+                    }
                     $oooval = $this->doc->htmlEncode($title);
                 }
             }
-        } else $oooval = $avalue;
+        } else {
+            $oooval = $avalue;
+        }
         return $oooval;
     }
     /**
@@ -376,7 +381,6 @@ class DocOooFormat
      */
     public function formatThesaurus($avalue)
     {
-        
         $this->cFormat = "";
         $multiple = ($this->oattr->getOption("multiple") == "yes");
         if ($multiple) {
@@ -384,20 +388,28 @@ class DocOooFormat
             $tval = explode("<BR>", $avalue);
             $thval = array();
             foreach ($tval as $kv => $vv) {
-                if (trim($vv) == "") $thval[] = $vv;
-                else {
+                if (trim($vv) == "") {
+                    $thval[] = $vv;
+                } else {
                     $thc = new_doc($this->doc->dbaccess, trim($vv));
-                    if ($thc->isAlive()) $thval[] = $thc->getCustomTitle();
-                    else $thval[] = "th error $vv";
+                    if ($thc->isAlive()) {
+                        $thval[] = $thc->getCustomTitle();
+                    } else {
+                        $thval[] = "th error $vv";
+                    }
                 }
             }
             $oooval = implode("<text:tab/>", $thval);
         } else {
-            if ($avalue == "") $oooval = $avalue;
-            else {
+            if ($avalue == "") {
+                $oooval = $avalue;
+            } else {
                 $thc = new_doc($this->doc->dbaccess, $avalue);
-                if ($thc->isAlive()) $oooval = $thc->getCustomTitle();
-                else $oooval = "th error $avalue";
+                if ($thc->isAlive()) {
+                    $oooval = $thc->getCustomTitle();
+                } else {
+                    $oooval = "th error $avalue";
+                }
             }
         }
         return $oooval;
@@ -410,9 +422,8 @@ class DocOooFormat
      */
     public function formatOption(
     /** @noinspection PhpUnusedParameterInspection */
-    $avalue)
-    {
-        
+    $avalue
+    ) {
         $oooval = "";
         return $oooval;
     }
@@ -424,7 +435,6 @@ class DocOooFormat
      */
     public function formatMoney($avalue)
     {
-        
         $oooval = money_format('%!.2n', doubleval($avalue));
         return $oooval;
     }
@@ -439,28 +449,28 @@ class DocOooFormat
         $oooval = '';
         $attrid = $this->oattr->id;
         $html_body = trim($avalue);
-        if (!$html_body) return '';
+        if (!$html_body) {
+            return '';
+        }
         $html_body = \Dcp\Utils\htmlclean::normalizeHTMLFragment($html_body, $error);
         if ($error != '') {
-            addWarningMsg(sprintf(_("Malformed HTML in attribute '%s' from document '%s': %s") , $this->oattr->id, $this->doc->title, $error));
+            addWarningMsg(sprintf(_("Malformed HTML in attribute '%s' from document '%s': %s"), $this->oattr->id, $this->doc->title, $error));
         }
         if ($html_body === false) {
             return '';
         }
         $xhtml_body = \Dcp\Utils\htmlclean::convertHTMLFragmentToXHTMLDocument($html_body, $error);
         if ($error != '') {
-            addWarningMsg(sprintf(_("Error converting HTML from attribute '%s' from document '%s': %s") , $this->oattr->id, $this->doc->title, $error));
+            addWarningMsg(sprintf(_("Error converting HTML from attribute '%s' from document '%s': %s"), $this->oattr->id, $this->doc->title, $error));
         }
         if ($xhtml_body === false) {
             return '';
         }
         
         $xhtml_body = preg_replace("/<!--.*?-->/ums", "", $xhtml_body); //delete comments
-        $xhtml_body = preg_replace_callback('/(<\/?)([^\s>]+)([^>]*)(>)/u', function ($matches)
-        {
+        $xhtml_body = preg_replace_callback('/(<\/?)([^\s>]+)([^>]*)(>)/u', function ($matches) {
             return $this->_fixupStyle($matches[1], $matches[2], $matches[3], $matches[4]);
-        }
-        , $xhtml_body);
+        }, $xhtml_body);
         $xhtml_body = $this->cleanhtml($xhtml_body);
         
         $domHtml = new \Dcp\Utils\XDOMDocument();
@@ -472,9 +482,8 @@ class DocOooFormat
         try {
             $dom = new \Dcp\Utils\XDOMDocument();
             $dom->loadXML($xhtml_body);
-        }
-        catch(Exception $e) {
-            addWarningMsg(sprintf(_("possible incorrect conversion HTML to ODT %s: %s") , $this->doc->title, $e->getMessage()));
+        } catch (Exception $e) {
+            addWarningMsg(sprintf(_("possible incorrect conversion HTML to ODT %s: %s"), $this->doc->title, $e->getMessage()));
             /*
             print "Exception catched:\n";
             print "Code: ".$e->getCode()."\n";
@@ -504,14 +513,14 @@ class DocOooFormat
                 '<office:text>',
                 '</office:text>',
                 '<office:text/>'
-            ) , "", $officetext);
+            ), "", $officetext);
             // work around : tables are not in paragraph
             $oooval = preg_replace('!(<text:p>\s*<table:table )!u', "<table:table ", $oooval);
             $oooval = preg_replace('!(</table:table>\s*</text:p>)!u', "</table:table> ", $oooval);
             
             $oooval = sprintf('<text:section text:style-name="Sect%s" text:name="Section%s" aid="%s">%s</text:section>', $attrid, $attrid, $attrid, $oooval);
         } else {
-            addWarningMsg(sprintf(_("incorrect conversion HTML to ODT %s") , $this->doc->title));
+            addWarningMsg(sprintf(_("incorrect conversion HTML to ODT %s"), $this->doc->title));
         }
         return $oooval;
     }
@@ -595,10 +604,12 @@ class DocOooFormat
      */
     public function formatDate($avalue)
     {
-        
         if (($this->cFormat != "") && (trim($avalue) != "")) {
-            if ($avalue) $oooval = strftime($this->cFormat, stringDateToUnixTs($avalue));
-            else $oooval = $avalue;
+            if ($avalue) {
+                $oooval = strftime($this->cFormat, stringDateToUnixTs($avalue));
+            } else {
+                $oooval = $avalue;
+            }
         } elseif (trim($avalue) == "") {
             $oooval = "";
         } else {
@@ -615,14 +626,15 @@ class DocOooFormat
      */
     public function formatTime($avalue)
     {
-        
         if ($this->cFormat != "") {
-            if ($avalue) $oooval = strftime($this->cFormat, strtotime($avalue));
-            else $oooval = $avalue;
+            if ($avalue) {
+                $oooval = strftime($this->cFormat, strtotime($avalue));
+            } else {
+                $oooval = $avalue;
+            }
             $this->cFormat = "";
         } else {
             $oooval = substr($avalue, 0, 5); // do not display second
-            
         }
         return $oooval;
     }
@@ -634,10 +646,12 @@ class DocOooFormat
      */
     public function formatTimestamp($avalue)
     {
-        
         if (($this->cFormat != "") && (trim($avalue) != "")) {
-            if ($avalue) $oooval = strftime($this->cFormat, stringDateToUnixTs($avalue));
-            else $oooval = $avalue;
+            if ($avalue) {
+                $oooval = strftime($this->cFormat, stringDateToUnixTs($avalue));
+            } else {
+                $oooval = $avalue;
+            }
         } elseif (trim($avalue) == "") {
             $oooval = "";
         } else {
@@ -654,8 +668,8 @@ class DocOooFormat
      */
     public function formatIfile(
     /** @noinspection PhpUnusedParameterInspection */
-    $avalue)
-    {
+    $avalue
+    ) {
         global $action;
         $lay = new Layout("FDL/Layout/viewifile.xml", $action);
         $lay->set("aid", $this->oattr->id);
@@ -672,7 +686,6 @@ class DocOooFormat
      */
     public function formatColor($avalue)
     {
-        
         $oooval = sprintf("<span style=\"background-color:%s\">%s</span>", $avalue, $avalue);
         return $oooval;
     }

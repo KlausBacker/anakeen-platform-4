@@ -7,13 +7,13 @@
 /**
  * WHAT SHELL
  *
- * @author Anakeen
+ * @author  Anakeen
  * @version $Id: wsh.php,v 1.35 2008/05/06 08:43:33 jerome Exp $
  * @package FDL
  */
 
 ini_set("max_execution_time", "0");
-require_once __DIR__.'/vendor/Anakeen/WHAT/Lib.Prefix.php';
+require_once __DIR__ . '/vendor/Anakeen/WHAT/Lib.Prefix.php';
 require_once 'Class.Action.php';
 require_once 'Class.Application.php';
 require_once 'Class.Session.php';
@@ -26,7 +26,9 @@ checkWshExecUid(__FILE__);
 
 function print_usage()
 {
-    print "Usage\twsh.php --app=APPLICATION --action=ACTION [--ARG=VAL] ...:  execute an action\n" . "\twsh.php --api=API [--ARG=VAL] ....   :  execute an api function\n" . "\twsh.php --listapi                     : view api list\n";
+    print "Usage\twsh.php --app=APPLICATION --action=ACTION [--ARG=VAL] ...:  execute an action\n" .
+        "\twsh.php --api=API [--ARG=VAL] ....   :  execute an api function\n" .
+        "\twsh.php --listapi                     : view api list\n";
 }
 
 wbar(1, -1, "initialisation");
@@ -43,23 +45,22 @@ if (isset($_SERVER['HTTP_HOST'])) {
 }
 if (count($argv) == 1) {
     print_usage();
-    
+
     exit(1);
 }
 
 foreach ($argv as $k => $v) {
-
     if (preg_match("/--([^=]+)=(.*)/", $v, $reg)) {
         if (substr($reg[1], -2) == "[]") {
-            $_GET[substr($reg[1], 0, -2) ][] = $reg[2];
+            $_GET[substr($reg[1], 0, -2)][] = $reg[2];
         } else {
             $_GET[$reg[1]] = $reg[2];
         }
-    } else if (preg_match("/--(.+)/", $v, $reg)) {
+    } elseif (preg_match("/--(.+)/", $v, $reg)) {
         if ($reg[1] == "listapi") {
             $apiList = array();
             foreach (new DirectoryIterator(DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . 'API') as $entry) {
-                if (preg_match('/^(?<basename>.+)\.php$/', $entry->getFilename() , $m)) {
+                if (preg_match('/^(?<basename>.+)\.php$/', $entry->getFilename(), $m)) {
                     $apiList[] = $m['basename'];
                 }
             }
@@ -96,7 +97,9 @@ if (isset($_GET["userid"])) { //special user
 }
 $core->Set("CORE", $CoreNull);
 $core->session = new Session();
-if (!isset($_GET["userid"])) $core->user = new Account("", 1); //admin
+if (!isset($_GET["userid"])) {
+    $core->user = new Account("", 1);
+} //admin
 ini_set("memory_limit", -1);
 
 initMainVolatileParam($core);
@@ -131,8 +134,7 @@ try {
         // Authorize administrators to execute admin actions
         $action->parent->setAdminMode();
     }
-}
-catch(Dcp\Exception $e) {
+} catch (Dcp\Exception $e) {
     _wsh_exception_handler($e);
 }
 // init for gettext
@@ -141,16 +143,16 @@ catch(Dcp\Exception $e) {
 if (isset($_GET["api"])) {
     $apifile = trim($_GET["api"]);
     if (!file_exists(sprintf("%s/API/%s.php", DEFAULT_PUBDIR, $apifile))) {
-        echo sprintf(_("API file %s not found\n") , "API/" . $apifile . ".php");
+        echo sprintf(_("API file %s not found\n"), "API/" . $apifile . ".php");
         exit(4);
     } else {
         try {
-            include ("API/" . $apifile . ".php");
-        }
-        catch(Dcp\ApiUsage\Exception $e) {
+            include("API/" . $apifile . ".php");
+        } /** @noinspection PhpRedundantCatchClauseInspection */
+        catch (Dcp\ApiUsage\Exception $e) {
             switch ($e->getDcpCode()) {
                 case "CORE0002":
-                    echo sprintf(_("Error : %s\n") , $e->getDcpMessage());
+                    echo sprintf(_("Error : %s\n"), $e->getDcpMessage());
                     _wsh_exception_handler($e, false);
                     exit(1);
                     break;
@@ -165,23 +167,22 @@ if (isset($_GET["api"])) {
                     _wsh_exception_handler($e, false);
                     exit(1);
             }
-        }
-        catch(Dcp\Exception $e) {
+        } /** @noinspection PhpRedundantCatchClauseInspection */
+        catch (Dcp\Exception $e) {
             _wsh_exception_handler($e);
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             _wsh_exception_handler($e);
         }
     }
 } else {
     if (!isset($_GET["wshfldid"])) {
         try {
-            echo ($action->execute());
-        }
-        catch(Dcp\ApiUsage\Exception $e) {
+            echo($action->execute());
+        } /** @noinspection PhpRedundantCatchClauseInspection */
+        catch (Dcp\ApiUsage\Exception $e) {
             switch ($e->getDcpCode()) {
                 case "CORE0002":
-                    echo sprintf(_("Error : %s\n") , $e->getDcpMessage());
+                    echo sprintf(_("Error : %s\n"), $e->getDcpMessage());
                     exit(1);
                     break;
 
@@ -194,11 +195,9 @@ if (isset($_GET["api"])) {
                     echo sprintf($e->getDcpMessage());
                     exit(1);
             }
-        }
-        catch(Dcp\Exception $e) {
+        } catch (Dcp\Exception $e) {
             _wsh_exception_handler($e);
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             _wsh_exception_handler($e);
         }
     } else {
@@ -208,20 +207,21 @@ if (isset($_GET["api"])) {
             print "Database not found : appl->dbaccess";
             exit;
         }
-        include_once ("FDL/Class.Doc.php");
+        include_once("FDL/Class.Doc.php");
         $http_iddoc = "id"; // default correspondance
-        if (isset($_GET["wshfldhttpdocid"])) $http_iddoc = $_GET["wshfldhttpdocid"];
+        if (isset($_GET["wshfldhttpdocid"])) {
+            $http_iddoc = $_GET["wshfldhttpdocid"];
+        }
         /**
          * @var Dir $fld
          */
-        $fld = new_Doc($dbaccess, $_GET["wshfldid"]);
+        $fld = Dcp\Core\DocManager::getDocument($_GET["wshfldid"]);
         $ld = $fld->getContent();
         foreach ($ld as $k => $v) {
             $_GET[$http_iddoc] = $v["id"];
             try {
-                echo ($action->execute());
-            }
-            catch(Exception $e) {
+                echo($action->execute());
+            } catch (Exception $e) {
                 switch ($e->getCode()) {
                     case THROW_EXITERROR:
                         errorLogException($e);

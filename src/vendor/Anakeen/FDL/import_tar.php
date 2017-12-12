@@ -14,8 +14,8 @@
 /**
  */
 
-include_once ("FDL/import_file.php");
-include_once ("WHAT/Lib.Prefix.php");
+include_once("FDL/import_file.php");
+include_once("WHAT/Lib.Prefix.php");
 
 define("TARUPLOAD", DEFAULT_PUBDIR . "/var/upload/");
 define("TAREXTRACT", "/extract/");
@@ -28,7 +28,9 @@ function getTarUploadDir(Action & $action)
     if (substr($dtar, 0, 1) != '/') {
         $dtar = $pubdir . '/' . $dtar;
     }
-    if ($dtar == "") $dtar = TARUPLOAD;
+    if ($dtar == "") {
+        $dtar = TARUPLOAD;
+    }
     return $dtar . "/" . $action->user->login . TARTARS;
 }
 function getTarExtractDir(Action & $action, $tar)
@@ -38,7 +40,9 @@ function getTarExtractDir(Action & $action, $tar)
     if (substr($dtar, 0, 1) != '/') {
         $dtar = $pubdir . '/' . $dtar;
     }
-    if ($dtar == "") $dtar = TARUPLOAD;
+    if ($dtar == "") {
+        $dtar = TARUPLOAD;
+    }
     return $dtar . "/" . $action->user->login . TAREXTRACT . $tar . "_D";
 }
 /**
@@ -78,19 +82,27 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                     $tr = analyze_csv($absfile, $dbaccess, $dirid, $lfamid, $lfldid, $analyze);
                 }
             }
-            if ($lfamid > 0) $famid = $lfamid; // set local default family identifier
-            if ($lfldid > 0) $dfldid = $lfldid; // set local default family folder identifier
+            if ($lfamid > 0) {
+                $famid = $lfamid;
+            } // set local default family identifier
+            if ($lfldid > 0) {
+                $dfldid = $lfldid;
+            } // set local default family folder identifier
             rewinddir($handle);
             /* This is the correct way to loop over the directory. */
             $defaultdoc = createDoc($dbaccess, $famid);
-            if (!$defaultdoc) $action->AddWarningMsg(sprintf(_("you cannot create this kind [%s] of document") , $famid));
+            if (!$defaultdoc) {
+                $action->AddWarningMsg(sprintf(_("you cannot create this kind [%s] of document"), $famid));
+            }
             $fimgattr = null;
             if (($lfamid == 0) && ($famid == 7)) {
                 $defaultimg = createDoc($dbaccess, "IMAGE");
                 $fimgattr = $defaultimg->GetFirstFileAttributes();
             }
             $newdir = createDoc($dbaccess, $dfldid);
-            if (!$newdir) $action->AddWarningMsg(sprintf(_("you cannot create this kind [%s] of folder") , $dfldid));
+            if (!$newdir) {
+                $action->AddWarningMsg(sprintf(_("you cannot create this kind [%s] of folder"), $dfldid));
+            }
             $ffileattr = $defaultdoc->GetFirstFileAttributes();
             
             $dir = null;
@@ -110,10 +122,14 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                 if (is_file($absfile)) {
                     if (!$onlycsv) { // add also unmarked files
                         if (!isset($importedFiles[$absfile])) {
-                            if (!isUTF8($file)) $file = utf8_encode($file);
-                            if (!isUTF8($ldir)) $ldir = utf8_encode($ldir);
+                            if (!isUTF8($file)) {
+                                $file = utf8_encode($file);
+                            }
+                            if (!isUTF8($ldir)) {
+                                $ldir = utf8_encode($ldir);
+                            }
                             $tr[$index] = array(
-                                "err" => ($defaultdoc) ? "" : sprintf(_("you cannot create this kind [%s] of document") , $famid) ,
+                                "err" => ($defaultdoc) ? "" : sprintf(_("you cannot create this kind [%s] of document"), $famid) ,
                                 "folderid" => 0,
                                 "foldername" => $ldir,
                                 "filename" => $file,
@@ -153,7 +169,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                                         $tr[$index]["action"] = N_("not added");
                                         $tr[$index]["err"] = $err;
                                     } else {
-                                        $ddoc->addHistoryEntry(sprintf("create by import from archive %s", substr(basename($ldir) , 0, -2)));
+                                        $ddoc->addHistoryEntry(sprintf("create by import from archive %s", substr(basename($ldir), 0, -2)));
                                         $tr[$index]["action"] = N_("added");
                                         $tr[$index]["id"] = $ddoc->id;
                                         $ddoc->postStore();
@@ -170,14 +186,17 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                             }
                         }
                     }
-                } else if (is_dir($absfile) && ($file[0] != '.')) {
-                    
-                    if (!isUTF8($file)) $file = utf8_encode($file);
-                    if (!isUTF8($ldir)) $ldir = utf8_encode($ldir);
+                } elseif (is_dir($absfile) && ($file[0] != '.')) {
+                    if (!isUTF8($file)) {
+                        $file = utf8_encode($file);
+                    }
+                    if (!isUTF8($ldir)) {
+                        $ldir = utf8_encode($ldir);
+                    }
                     
                     if ((!$onlycsv) || (!preg_match("/^[0-9]+-.*_D$/i", $file))) {
                         $tr[$index] = array(
-                            "err" => ($newdir) ? "" : sprintf(_("you cannot create this kind [%s] of folder") , $dfldid) ,
+                            "err" => ($newdir) ? "" : sprintf(_("you cannot create this kind [%s] of folder"), $dfldid) ,
                             "folderid" => 0,
                             "foldername" => $ldir,
                             "filename" => $file,
@@ -256,11 +275,9 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
                 "action" => "-"
             );
             if ($csvLinebreak) {
-                $data = array_map(function ($v) use ($csvLinebreak)
-                {
+                $data = array_map(function ($v) use ($csvLinebreak) {
                     return str_replace($csvLinebreak, "\n", $v);
-                }
-                , $data);
+                }, $data);
             }
             switch ($data[0]) {
                     // -----------------------------------
@@ -277,44 +294,58 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
                     break;
 
                 case "ORDER":
-                    if (is_numeric($data[1])) $orfromid = $data[1];
-                    else $orfromid = \Dcp\Core\DocManager::getFamilyIdFromName($data[1]);
+                    if (is_numeric($data[1])) {
+                        $orfromid = $data[1];
+                    } else {
+                        $orfromid = \Dcp\Core\DocManager::getFamilyIdFromName($data[1]);
+                    }
                     
                     $tcolorder[$orfromid] = getOrder($data);
-                    $tr[$index]["action"] = sprintf(_("new column order %s") , implode(" - ", $tcolorder[$orfromid]));
+                    $tr[$index]["action"] = sprintf(_("new column order %s"), implode(" - ", $tcolorder[$orfromid]));
                     break;
 
                 case "KEYS":
-                    if (is_numeric($data[1])) $orfromid = $data[1];
-                    else $orfromid = \Dcp\Core\DocManager::getFamilyIdFromName($data[1]);
+                    if (is_numeric($data[1])) {
+                        $orfromid = $data[1];
+                    } else {
+                        $orfromid = \Dcp\Core\DocManager::getFamilyIdFromName($data[1]);
+                    }
                     
                     $tkeys[$orfromid] = getOrder($data);
                     if (($tkeys[$orfromid][0] == "") || (count($tkeys[$orfromid]) == 0)) {
-                        $tr[$index]["err"] = sprintf(_("error in import keys : %s") , implode(" - ", $tkeys[$orfromid]));
+                        $tr[$index]["err"] = sprintf(_("error in import keys : %s"), implode(" - ", $tkeys[$orfromid]));
                         unset($tkeys[$orfromid]);
                         $tr[$index]["action"] = "ignored";
                     } else {
-                        $tr[$index]["action"] = sprintf(_("new import keys : %s") , implode(" - ", $tkeys[$orfromid]));
+                        $tr[$index]["action"] = sprintf(_("new import keys : %s"), implode(" - ", $tkeys[$orfromid]));
                     }
                     break;
 
                 case "DOC":
-                    if (is_numeric($data[1])) $fromid = $data[1];
-                    else $fromid = \Dcp\Core\DocManager::getFamilyIdFromName($data[1]);
-                    if (isset($tkeys[$fromid])) $tk = $tkeys[$fromid];
-                    else $tk = array(
+                    if (is_numeric($data[1])) {
+                        $fromid = $data[1];
+                    } else {
+                        $fromid = \Dcp\Core\DocManager::getFamilyIdFromName($data[1]);
+                    }
+                    if (isset($tkeys[$fromid])) {
+                        $tk = $tkeys[$fromid];
+                    } else {
+                        $tk = array(
                         "title"
                     );
-                    $tr[$index] = csvAddDoc($dbaccess, $data, $dirid, $analyze, $ldir, "update", $tk, array() , $tcolorder[$fromid]);
-                    if ($tr[$index]["err"] == "") $nbdoc++;
+                    }
+                    $tr[$index] = csvAddDoc($dbaccess, $data, $dirid, $analyze, $ldir, "update", $tk, array(), $tcolorder[$fromid]);
+                    if ($tr[$index]["err"] == "") {
+                        $nbdoc++;
+                    }
                     
                     break;
                 }
-            }
-            fclose($fcsv);
         }
-        return $tr;
+        fclose($fcsv);
     }
+    return $tr;
+}
     /**
      * decode characters wihich comes from windows zip
      * @param $s string to decode
@@ -344,7 +375,9 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
         
         $s2 = $s;
         for ($i = 0; $i < strlen($s); $i++) {
-            if (isset($td[ord($s[$i]) ])) $s2[$i] = $td[ord($s[$i]) ];
+            if (isset($td[ord($s[$i]) ])) {
+                $s2[$i] = $td[ord($s[$i]) ];
+            }
         }
         return $s2;
     }
@@ -357,7 +390,7 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
     {
         $handle = opendir($ldir);
         if ($handle === false) {
-            return sprintf(_("Error opening directory '%s'.") , $ldir);
+            return sprintf(_("Error opening directory '%s'."), $ldir);
         }
         while (false !== ($file = readdir($handle))) {
             if ($file[0] != ".") {
@@ -365,9 +398,9 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
                 
                 if (is_file($afile)) {
                     if (rename($afile, "$ldir/" . WNGBdecode($file)) === false) {
-                        return sprintf(_("Error renaming '%s' to '%s'.") , $afile, WNGBdecode($file));
+                        return sprintf(_("Error renaming '%s' to '%s'."), $afile, WNGBdecode($file));
                     };
-                } else if (is_dir($afile)) {
+                } elseif (is_dir($afile)) {
                     if (($err = WNGBDirRename($afile)) != '') {
                         return $err;
                     }
@@ -377,7 +410,7 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
         
         closedir($handle);
         if (rename($ldir, WNGBdecode($ldir)) === false) {
-            return sprintf(_("Error renaming '%s' to '%s'.") , $ldir, WNGBdecode($ldir));
+            return sprintf(_("Error renaming '%s' to '%s'."), $ldir, WNGBdecode($ldir));
         }
         return '';
     }
@@ -394,57 +427,56 @@ function extractTar($tar, $untardir, $mime = "")
             case "gzip":
             case "application/x-compressed-tar":
             case "application/x-gzip":
-                exec(sprintf("rm -rf %s 2>&1", escapeshellarg($untardir)) , $output, $status);
+                exec(sprintf("rm -rf %s 2>&1", escapeshellarg($untardir)), $output, $status);
                 if ($status !== 0) {
-                    throw new Exception(sprintf(_("Error deleting directory '%s': %s") , $untardir, join("\n", $output)));
+                    throw new Exception(sprintf(_("Error deleting directory '%s': %s"), $untardir, join("\n", $output)));
                 }
-                exec(sprintf("mkdir -p %s 2>&1", escapeshellarg($untardir)) , $output, $status);
+                exec(sprintf("mkdir -p %s 2>&1", escapeshellarg($untardir)), $output, $status);
                 if ($status !== 0) {
-                    throw new Exception(sprintf(_("Error creating directory '%s': %s") , $untardir, join("\n", $output)));
+                    throw new Exception(sprintf(_("Error creating directory '%s': %s"), $untardir, join("\n", $output)));
                 }
-                exec(sprintf("tar -C %s -zxf %s 2>&1", escapeshellarg($untardir) , escapeshellarg($tar)) , $output, $status);
+                exec(sprintf("tar -C %s -zxf %s 2>&1", escapeshellarg($untardir), escapeshellarg($tar)), $output, $status);
                 if ($status !== 0) {
-                    throw new Exception(sprintf(_("Error extracting archive '%s' in '%s': %s") , $tar, $untardir, join("\n", $output)));
+                    throw new Exception(sprintf(_("Error extracting archive '%s' in '%s': %s"), $tar, $untardir, join("\n", $output)));
                 }
                 break;
 
             case "bzip2":
-                exec(sprintf("rm -rf %s 2>&1", escapeshellarg($untardir)) , $output, $status);
+                exec(sprintf("rm -rf %s 2>&1", escapeshellarg($untardir)), $output, $status);
                 if ($status !== 0) {
-                    throw new Exception(sprintf(_("Error deleting directory '%s': %s") , $untardir, join("\n", $output)));
+                    throw new Exception(sprintf(_("Error deleting directory '%s': %s"), $untardir, join("\n", $output)));
                 }
-                exec(sprintf("mkdir -p %s 2>&1", escapeshellarg($untardir)) , $output, $status);
+                exec(sprintf("mkdir -p %s 2>&1", escapeshellarg($untardir)), $output, $status);
                 if ($status !== 0) {
-                    throw new Exception(sprintf(_("Error creating directory '%s': %s") , $untardir, join("\n", $output)));
+                    throw new Exception(sprintf(_("Error creating directory '%s': %s"), $untardir, join("\n", $output)));
                 }
-                exec(sprintf("tar -C %s -jxf %s 2>&1", escapeshellarg($untardir) , escapeshellarg($tar)) , $output, $status);
+                exec(sprintf("tar -C %s -jxf %s 2>&1", escapeshellarg($untardir), escapeshellarg($tar)), $output, $status);
                 if ($status !== 0) {
-                    throw new Exception(sprintf(_("Error extracting archive '%s' in '%s': %s") , $tar, $untardir, join("\n", $output)));
+                    throw new Exception(sprintf(_("Error extracting archive '%s' in '%s': %s"), $tar, $untardir, join("\n", $output)));
                 }
                 break;
 
             case "Zip":
             case "application/x-zip-compressed":
             case "application/x-zip":
-                exec(sprintf("rm -rf %s 2>&1", escapeshellarg($untardir)) , $output, $status);
+                exec(sprintf("rm -rf %s 2>&1", escapeshellarg($untardir)), $output, $status);
                 if ($status !== 0) {
-                    throw new Exception(sprintf(_("Error deleting directory '%s': %s") , $untardir, join("\n", $output)));
+                    throw new Exception(sprintf(_("Error deleting directory '%s': %s"), $untardir, join("\n", $output)));
                 }
-                exec(sprintf("mkdir -p %s 2>&1", escapeshellarg($untardir)) , $output, $status);
+                exec(sprintf("mkdir -p %s 2>&1", escapeshellarg($untardir)), $output, $status);
                 if ($status !== 0) {
-                    throw new Exception(sprintf(_("Error creating directory '%s': %s") , $untardir, join("\n", $output)));
+                    throw new Exception(sprintf(_("Error creating directory '%s': %s"), $untardir, join("\n", $output)));
                 }
-                exec(sprintf("unzip -d %s %s 2>&1", escapeshellarg($untardir) , escapeshellarg($tar)) , $output, $status);
+                exec(sprintf("unzip -d %s %s 2>&1", escapeshellarg($untardir), escapeshellarg($tar)), $output, $status);
                 if ($status !== 0) {
-                    throw new Exception(sprintf(_("Error extracting archive '%s' in '%s': %s") , $tar, $untardir, join("\n", $output)));
+                    throw new Exception(sprintf(_("Error extracting archive '%s' in '%s': %s"), $tar, $untardir, join("\n", $output)));
                 }
                 break;
 
             default:
-                throw new Exception(sprintf(_("Unsupported archive format '%s' for archive '%s'.") , $mime, $tar));
+                throw new Exception(sprintf(_("Unsupported archive format '%s' for archive '%s'."), $mime, $tar));
         }
-    }
-    catch(Exception $e) {
+    } catch (Exception $e) {
         $err = $e->getMessage();
     }
     return $err;

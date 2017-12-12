@@ -7,10 +7,10 @@
  * document to attach file
  */
 namespace Dcp\Core;
+
 class File extends \Dcp\Family\Document
 {
-    
-    function postStore()
+    public function postStore()
     {
         $filename = $this->vault_filename("FI_FILE");
         /* to not view extension file
@@ -19,7 +19,10 @@ class File extends \Dcp\Family\Document
         $filename=substr($filename,0,$pos);
         }
         */
-        if ($this->getRawValue("FI_TITLEW") == "") $this->SetValue("FI_TITLE", $filename);
-        else $this->SetValue("FI_TITLE", $this->getRawValue("FI_TITLEW"));
+        if ($this->getRawValue("FI_TITLEW") == "") {
+            $this->SetValue("FI_TITLE", $filename);
+        } else {
+            $this->SetValue("FI_TITLE", $this->getRawValue("FI_TITLEW"));
+        }
     }
 }

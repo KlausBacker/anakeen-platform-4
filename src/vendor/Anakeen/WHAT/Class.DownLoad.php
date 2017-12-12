@@ -43,20 +43,20 @@ $CLASS_DOWNLOAD_PHP = '$Id:';
 
 class DownLoad
 {
-    var $dbid = - 1;
+    public $dbid = - 1;
     
-    var $ContentType;
-    var $FileType;
+    public $ContentType;
+    public $FileType;
     
-    var $array; // THE Array (2 dimensionnal)
-    var $fields; // array of the field names to show
-    var $NomModele = "";
-    var $Application = "";
+    public $array; // THE Array (2 dimensionnal)
+    public $fields; // array of the field names to show
+    public $NomModele = "";
+    public $Application = "";
     
-    var $white = 0;
-    var $black = 0;
-    var $im = 0;
-    var $liste_extract = array();
+    public $white = 0;
+    public $black = 0;
+    public $im = 0;
+    public $liste_extract = array();
     // ---------------------------------------------------------------------------
     // NOM	       : DownLoad
     //
@@ -65,7 +65,7 @@ class DownLoad
     // PARAMETRES  : entree: aucun.
     //
     // ---------------------------------------------------------------------------
-    function DownLoad()
+    public function DownLoad()
     {
         $this->liste_extract["all"]["content"] = "application/vnd.ms-excel";
         $this->liste_extract["all"]["extension"] = "";
@@ -74,17 +74,17 @@ class DownLoad
         $this->liste_extract["rtf"]["content"] = "application/rtf";
         $this->liste_extract["rtf"]["extension"] = "rtf";
         
-        return TRUE;
+        return true;
     }
     // ---------------------------------------------------------------------------
-    function Generer($src, $p_type_file = "cvs", $p_filename = "extract", $add_ext = "OUI")
+    public function Generer($src, $p_type_file = "cvs", $p_filename = "extract", $add_ext = "OUI")
     {
         $this->FileType = $p_type_file;
         $this->ConstruireFichier($src, $p_filename, $add_ext);
         exit;
-        return (TRUE);
+        return (true);
     }
-    function ConstruireFichier($src, $p_filename, $add_ext)
+    public function ConstruireFichier($src, $p_filename, $add_ext)
     {
         $this->InitFile($p_filename, $add_ext);
         $this->ShowContent($src);
@@ -92,7 +92,7 @@ class DownLoad
         
         return;
     }
-    function InitFile($p_filename, $add_ext)
+    public function InitFile($p_filename, $add_ext)
     {
         $name = $p_filename;
         ###$this->ContentType=$this->liste_extract["{$this->FileType}"]["content"];
@@ -109,17 +109,17 @@ class DownLoad
                 break;
         }
     }
-    function InitHtml()
+    public function InitHtml()
     {
         echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2//EN\">\n" . " <HTML>\n" . "<HEAD>" . "<LINK REL=STYLESHEET TYPE=\"text/css\" HREF=\"../Style1/Css/style.css\">" . "<TITLE>Extraction</TITLE></HEAD>";
         echo '<BODY BGCOLOR="#FFFFFF" link="#FFFFFF" vlink="#FFFFFF" alink="#FF0000">';
     }
-    function ShowContent($src)
+    public function ShowContent($src)
     {
         echo $src;
     }
     
-    function EndFile()
+    public function EndFile()
     {
         switch ($this->FileType) {
             case "html":
@@ -128,10 +128,9 @@ class DownLoad
         }
     }
     
-    function EndHtml()
+    public function EndHtml()
     {
         echo "</BODY>\n";
         echo "</HTML>\n";
     }
 }
-?>

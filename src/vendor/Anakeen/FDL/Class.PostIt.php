@@ -7,11 +7,11 @@
  * templates for postit
  */
 namespace Dcp\Core;
+
 class PostitView extends \Dcp\Family\Document
 {
-    
-    var $defaultview = "FDL:VIEWPOSTIT:T";
-    var $defaultedit = "FDL:EDITPOSTIT:T";
+    public $defaultview = "FDL:VIEWPOSTIT:T";
+    public $defaultedit = "FDL:EDITPOSTIT:T";
     // -----------------------------------
     
     /**
@@ -20,7 +20,7 @@ class PostitView extends \Dcp\Family\Document
      * @param bool $ulink
      * @param bool $abstract
      */
-    function viewpostit($target = "_self", $ulink = true, $abstract = false)
+    public function viewpostit($target = "_self", $ulink = true, $abstract = false)
     {
         // -----------------------------------
         $tcomment = $this->getMultipleRawValues("PIT_COM");
@@ -29,21 +29,25 @@ class PostitView extends \Dcp\Family\Document
         $tcolor = $this->getMultipleRawValues("PIT_COLOR");
         
         $nbcar = strlen($this->getRawValue("PIT_COM"));
-        if ($nbcar < 60) $fontsize = 120;
-        elseif ($nbcar < 200) $fontsize = 100;
-        else $fontsize = 80;
+        if ($nbcar < 60) {
+            $fontsize = 120;
+        } elseif ($nbcar < 200) {
+            $fontsize = 100;
+        } else {
+            $fontsize = 80;
+        }
         $tlaycomment = array();
         foreach ($tcomment as $k => $v) {
             $tlaycomment[] = array(
-                "comments" => $this->getHtmlValue($this->getAttribute('PIT_COM') , $v, '_blank') ,
+                "comments" => $this->getHtmlValue($this->getAttribute('PIT_COM'), $v, '_blank') ,
                 "user" => str_replace(array(
                     '[',
                     ']'
-                ) , array(
+                ), array(
                     '&#91;',
                     '&#93;'
-                ) , htmlspecialchars($tuser[$k], ENT_QUOTES)) ,
-                "date" => htmlspecialchars(stringDateToLocaleDate($tdate[$k]) , ENT_QUOTES) ,
+                ), htmlspecialchars($tuser[$k], ENT_QUOTES)) ,
+                "date" => htmlspecialchars(stringDateToLocaleDate($tdate[$k]), ENT_QUOTES) ,
                 "color" => htmlspecialchars($tcolor[$k], ENT_QUOTES)
             );
         }
@@ -57,16 +61,16 @@ class PostitView extends \Dcp\Family\Document
      *
      * @templateController special view postit
      */
-    function editpostit()
+    public function editpostit()
     {
         $this->editattr();
     }
     
-    function getpostittitle($s)
+    public function getpostittitle($s)
     {
-        return sprintf(_("postit of %s") , $this->getTitle($s));
+        return sprintf(_("postit of %s"), $this->getTitle($s));
     }
-    function postStore()
+    public function postStore()
     {
         $docid = $this->getRawValue("PIT_IDADOC");
         if ($docid > 0) {
@@ -81,7 +85,6 @@ class PostitView extends \Dcp\Family\Document
         
         $ncom = $this->getRawValue("PIT_NCOM");
         if ($ncom != "") {
-            
             $tcom = $this->getMultipleRawValues("PIT_COM");
             $tdate = $this->getMultipleRawValues("PIT_DATE");
             $tiduser = $this->getMultipleRawValues("PIT_IDUSER");
@@ -110,12 +113,14 @@ class PostitView extends \Dcp\Family\Document
         }
     }
     
-    function PostDelete()
+    public function PostDelete()
     {
         $docid = $this->getRawValue("PIT_IDADOC");
         if ($docid > 0) {
             $doc = new_Doc($this->dbaccess, $docid);
-            if ($doc->locked == - 1) $doc = new_Doc($this->dbaccess, $doc->getLatestId());
+            if ($doc->locked == - 1) {
+                $doc = new_Doc($this->dbaccess, $doc->getLatestId());
+            }
             if (intval($doc->postitid) > 0) {
                 $doc->disableEditControl();
                 $doc->postitid = 0;
@@ -125,11 +130,12 @@ class PostitView extends \Dcp\Family\Document
         }
     }
     
-    function preCreated()
+    public function preCreated()
     {
-        
         $tcomment = $this->getRawValue("PIT_NCOM");
-        if ($tcomment == "") return (_("no message : post-it creation aborted"));
+        if ($tcomment == "") {
+            return (_("no message : post-it creation aborted"));
+        }
         return '';
     }
 }

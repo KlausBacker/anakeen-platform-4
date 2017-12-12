@@ -68,7 +68,9 @@ namespace {
          */
         private function _bo()
         {
-            if (true) return;
+            if (true) {
+                return;
+            }
         }
     }
 }
@@ -97,7 +99,6 @@ namespace Dcp\Layout {
         }
         public function __construct($code, $message, $corruptedFile = '')
         {
-            
             $this->corruptedFile = $corruptedFile;
             parent::__construct($code, $message);
         }
@@ -106,7 +107,9 @@ namespace Dcp\Layout {
          */
         private function _bo()
         {
-            if (true) return;
+            if (true) {
+                return;
+            }
         }
     }
 }

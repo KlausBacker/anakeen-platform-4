@@ -2,7 +2,8 @@
 
 namespace Dcp\Core;
 
-class Settings {
+class Settings
+{
     const DocumentGenDirectory="FDLGEN";
     const DbAccessFilePath="config/dbaccess.php";
     const RouterConfigDir="configuration/router";

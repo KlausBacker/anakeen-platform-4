@@ -14,8 +14,8 @@
  */
 global $action;
 
-include_once ("FDL/Lib.Attr.php");
-include_once ("FDL/Class.DocFam.php");
+include_once("FDL/Lib.Attr.php");
+include_once("FDL/Class.DocFam.php");
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("Update attribute value for a document set");
@@ -42,9 +42,8 @@ switch ($method) {
             call_user_func_array(array(
                 $ua,
                 $method
-            ) , $args);
-        }
-        catch(Exception $e) {
+            ), $args);
+        } catch (Exception $e) {
             $ua->logStatus("ERROR:" . $e->getMessage());
             $ua->logStatus("END");
         }
@@ -55,4 +54,3 @@ switch ($method) {
         $ua->logStatus("END");
         $action->exitError(sprintf("method %s not available", $method));
 }
-?>

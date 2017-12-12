@@ -99,21 +99,22 @@ class ExportXmlDocument
         $lay->set("revision", $this->document->revision);
         $lay->set("version", $this->document->getVersion());
         $lay->set("state", $this->document->getState());
-        $lay->set("title", htmlspecialchars($this->document->getTitle() , ENT_QUOTES));
+        $lay->set("title", htmlspecialchars($this->document->getTitle(), ENT_QUOTES));
         $lay->set("mdate", strftime("%FT%H:%M:%S", $this->document->revdate));
         $lay->set("flat", (!$this->includeSchemaReference || !$this->structureAttributes));
         $la = $this->document->GetFieldAttributes();
         $level1 = array();
         
         foreach ($la as $k => $v) {
-            if ((!$v) || ($v->getOption("autotitle") == "yes") || ($v->usefor == 'Q')) unset($la[$k]);
+            if ((!$v) || ($v->getOption("autotitle") == "yes") || ($v->usefor == 'Q')) {
+                unset($la[$k]);
+            }
         }
         $option = new \exportOptionAttribute();
         $option->outFile = $outfile;
         
         foreach ($la as $k => & $v) {
             if (($v->id != \Adoc::HIDDENFIELD) && ($v->type == 'frame' || $v->type == "tab") && ((!$v->fieldSet) || $v->fieldSet->id == \Adoc::HIDDENFIELD)) {
-                
                 $level1[] = array(
                     "level" => $this->getStructXmlValue($v)
                 );
@@ -121,13 +122,11 @@ class ExportXmlDocument
         }
         $lay->setBlockData("top", $level1);
         if ($outfile) {
-            
             $this->writeToFile = true;
             if ($this->exportFiles) {
                 $xmlcontent = $lay->gen();
                 $fo = fopen($outfile, "w");
                 if (!$fo) {
-                    
                     throw new Exception("EXPC0101", $outfile);
                 }
                 $pos = strpos($xmlcontent, "[FILE64");
@@ -156,7 +155,6 @@ class ExportXmlDocument
                 fclose($fo);
             } else {
                 if (file_put_contents($outfile, $lay->gen()) === false) {
-                    
                     throw new Exception("EXPC0100", $outfile);
                 }
             }
@@ -181,15 +179,21 @@ class ExportXmlDocument
             return sprintf("<%s granted=\"false\"/>", $attribute->id);
         }
         
-        if ($indexValue > - 1) $v = $doc->getMultipleRawValues($attribute->id, null, $indexValue);
-        else $v = $doc->getRawValue($attribute->id, null);
+        if ($indexValue > - 1) {
+            $v = $doc->getMultipleRawValues($attribute->id, null, $indexValue);
+        } else {
+            $v = $doc->getRawValue($attribute->id, null);
+        }
         //if (! $v) return sprintf("<!-- no value %s -->",$attribute->id);
         if ($attribute->getOption("autotitle") == "yes") {
             return sprintf("<!--autotitle %s %s -->", $attribute->id, $v);
         }
         if (($v === null) && ($attribute->type != 'array')) {
-            if (($attribute->type == 'file') || ($attribute->type == 'image')) return sprintf('<%s mime="" title="" xsi:nil="true"/>', $attribute->id);
-            else return sprintf('<%s xsi:nil="true"/>', $attribute->id);
+            if (($attribute->type == 'file') || ($attribute->type == 'image')) {
+                return sprintf('<%s mime="" title="" xsi:nil="true"/>', $attribute->id);
+            } else {
+                return sprintf('<%s xsi:nil="true"/>', $attribute->id);
+            }
         }
         switch ($attribute->type) {
             case 'timestamp':
@@ -210,7 +214,7 @@ class ExportXmlDocument
                             $xmlvalues[] = $this->getAttributeXmlValue($oa, $indexValue);
                         }
                     }
-                    $axml[] = sprintf("<%s>%s</%s>", $attribute->id, implode("\n", $xmlvalues) , $attribute->id);
+                    $axml[] = sprintf("<%s>%s</%s>", $attribute->id, implode("\n", $xmlvalues), $attribute->id);
                 }
                 $indexValue = - 1; // restore initial index
                 return implode("\n", $axml);
@@ -234,7 +238,7 @@ class ExportXmlDocument
                             if ($this->writeToFile) {
                                 return sprintf('<%s vid="%s" mime="%s" title="%s">[FILE64:%s]</%s>', $attribute->id, $vid, $mime, $name, $path, $attribute->id);
                             } else {
-                                return sprintf('<%s vid="%s" mime="%s" title="%s">%s</%s>', $attribute->id, $vid, $mime, $name, base64_encode(file_get_contents($path)) , $attribute->id);
+                                return sprintf('<%s vid="%s" mime="%s" title="%s">%s</%s>', $attribute->id, $vid, $mime, $name, base64_encode(file_get_contents($path)), $attribute->id);
                             }
                         } else {
                             return sprintf('<!-- file not found --><%s vid="%s" mime="%s" title="%s"/>', $attribute->id, $vid, $mime, $name, $attribute->id);
@@ -245,13 +249,14 @@ class ExportXmlDocument
                 } else {
                     return sprintf("<%s>%s</%s>", $attribute->id, $v, $attribute->id);
                 }
+                // no break
             case 'thesaurus':
             case 'account':
             case 'docid':
                 if (!$v) {
                     return sprintf('<%s xsi:nil="true"/>', $attribute->id);
                 } else {
-                    $info = getTDoc($doc->dbaccess, $v, array() , array(
+                    $info = getTDoc($doc->dbaccess, $v, array(), array(
                         "title",
                         "name",
                         "id",
@@ -281,26 +286,24 @@ class ExportXmlDocument
                             $info["name"] = htmlspecialchars($info["name"], ENT_QUOTES);
                             
                             if ($this->exportDocumentNumericIdentiers) {
-                                return sprintf('<%s id="%s" name="%s"%s>%s</%s>', $attribute->id, $docid, $info["name"], $revAttr, $attribute->encodeXml($info["title"]) , $attribute->id);
+                                return sprintf('<%s id="%s" name="%s"%s>%s</%s>', $attribute->id, $docid, $info["name"], $revAttr, $attribute->encodeXml($info["title"]), $attribute->id);
                             } else {
                                 if ($revAttr) {
-                                    addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : importation not support revision links without identifiers") , $doc->getTitle() , $attribute->getLabel()));
+                                    addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : importation not support revision links without identifiers"), $doc->getTitle(), $attribute->getLabel()));
                                 }
-                                return sprintf('<%s name="%s"%s>%s</%s>', $attribute->id, $info["name"], $revAttr, $attribute->encodeXml($info["title"]) , $attribute->id);
+                                return sprintf('<%s name="%s"%s>%s</%s>', $attribute->id, $info["name"], $revAttr, $attribute->encodeXml($info["title"]), $attribute->id);
                             }
                         } else {
                             if ($this->exportDocumentNumericIdentiers) {
-                                return sprintf('<%s id="%s"%s>%s</%s>', $attribute->id, $docid, $revAttr, $attribute->encodeXml($info["title"]) , $attribute->id);
+                                return sprintf('<%s id="%s"%s>%s</%s>', $attribute->id, $docid, $revAttr, $attribute->encodeXml($info["title"]), $attribute->id);
                             } else {
-                                
-                                return sprintf('<%s>%s</%s>', $attribute->id, $attribute->encodeXml($info["title"]) , $attribute->id);
+                                return sprintf('<%s>%s</%s>', $attribute->id, $attribute->encodeXml($info["title"]), $attribute->id);
                             }
                         }
                     } else {
                         if ((strpos($v, '<BR>') === false) && (strpos($v, "\n") === false)) {
-                            return sprintf('<%s id="%s">%s</%s>', $attribute->id, $v, _("unreferenced document") , $attribute->id);
+                            return sprintf('<%s id="%s">%s</%s>', $attribute->id, $v, _("unreferenced document"), $attribute->id);
                         } else {
-                            
                             $tids = explode("\n", str_replace('<BR>', "\n", $v));
                             $mName = array();
                             $mId = array();
@@ -309,7 +312,9 @@ class ExportXmlDocument
                                 $lName = \Dcp\Core\DocManager::getNameFromId($id);
                                 $mName[] = $lName;
                                 $mId[] = $id;
-                                if ($lName) $foundName = true;
+                                if ($lName) {
+                                    $foundName = true;
+                                }
                             }
                             $sIds = '';
                             if ($this->exportDocumentNumericIdentiers) {
@@ -317,15 +322,15 @@ class ExportXmlDocument
                             }
                             $sName = '';
                             if ($foundName) {
-                                
                                 $sName = sprintf('name="%s"', implode(',', $mName));
                             }
-                            return sprintf('<%s %s %s>%s</%s>', $attribute->id, $sName, $sIds, _("multiple document") , $attribute->id);
+                            return sprintf('<%s %s %s>%s</%s>', $attribute->id, $sName, $sIds, _("multiple document"), $attribute->id);
                         }
                     }
                 }
+                // no break
             default:
-                return sprintf("<%s>%s</%s>", $attribute->id, $attribute->encodeXml($v) , $attribute->id);
+                return sprintf("<%s>%s</%s>", $attribute->id, $attribute->encodeXml($v), $attribute->id);
             }
     }
     
@@ -365,8 +370,7 @@ class ExportXmlDocument
                 if ($v->type == "htmltext" && $this->exportFiles) {
                     $value = $v->prepareHtmltextForExport($value);
                     if ($this->exportFiles) {
-                        $value = preg_replace_callback('/(&lt;img.*?)src="(((?=.*docid=(.*?)&)(?=.*attrid=(.*?)&)(?=.*index=(-?[0-9]+)))|(file\/(.*?)\/[0-9]+\/(.*?)\/(-?[0-9]+))).*?"/', function ($matches)
-                        {
+                        $value = preg_replace_callback('/(&lt;img.*?)src="(((?=.*docid=(.*?)&)(?=.*attrid=(.*?)&)(?=.*index=(-?[0-9]+)))|(file\/(.*?)\/[0-9]+\/(.*?)\/(-?[0-9]+))).*?"/', function ($matches) {
                             if (isset($matches[7])) {
                                 $docid = $matches[8];
                                 $attrid = $matches[9];
@@ -376,28 +380,30 @@ class ExportXmlDocument
                                 $index = $matches[6] == "-1" ? 0 : $matches[6];
                                 $attrid = $matches[5];
                             }
-                            $docimg = new_Doc(getDbAccess() , $docid);
+                            $docimg = new_Doc(getDbAccess(), $docid);
                             $attr = $docimg->getAttribute($attrid);
                             $tfiles = $docimg->vault_properties($attr);
                             $f = $tfiles[$index];
                             $f["name"] = htmlspecialchars($f["name"], ENT_QUOTES);
                             if (is_file($f["path"])) {
                                 if ($this->writeToFile) {
-                                    return sprintf('%s title="%s" src="data:%s;base64,[FILE64:%s]"', "\n" . $matches[1], unaccent($f["name"]) , $f["mime_s"], $f["path"]);
+                                    return sprintf('%s title="%s" src="data:%s;base64,[FILE64:%s]"', "\n" . $matches[1], unaccent($f["name"]), $f["mime_s"], $f["path"]);
                                 } else {
-                                    return sprintf('%s title="%s" src="data:%s;base64,%s"', "\n" . $matches[1], unaccent($f["name"]) , $f["mime_s"], base64_encode(file_get_contents($f["path"])));
+                                    return sprintf('%s title="%s" src="data:%s;base64,%s"', "\n" . $matches[1], unaccent($f["name"]), $f["mime_s"], base64_encode(file_get_contents($f["path"])));
                                 }
                             } else {
-                                return sprintf('%s title="%s" src="data:%s;base64,file not found"', "\n" . $matches[1], unaccent($f["name"]) , $f["mime_s"]);
+                                return sprintf('%s title="%s" src="data:%s;base64,file not found"', "\n" . $matches[1], unaccent($f["name"]), $f["mime_s"]);
                             }
-                        }
-                        , $value);
+                        }, $value);
                     }
                 }
                 $xmlvalues[] = $value;
             }
         }
-        if (!$this->structureAttributes) return implode("\n", $xmlvalues);
-        else return sprintf("<%s>%s</%s>", $structAttribute->id, implode("\n", $xmlvalues) , $structAttribute->id);
+        if (!$this->structureAttributes) {
+            return implode("\n", $xmlvalues);
+        } else {
+            return sprintf("<%s>%s</%s>", $structAttribute->id, implode("\n", $xmlvalues), $structAttribute->id);
+        }
     }
 }

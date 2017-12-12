@@ -11,7 +11,6 @@ use Dcp\HttpApi\V1\Api\RecordReturnMessage as RecordReturnMessage;
 
 class Document extends Crud
 {
-    
     const GET_PROPERTIES = "document.properties";
     const GET_PROPERTY = "document.properties.";
     const GET_ATTRIBUTES = "document.attributes";
@@ -81,7 +80,7 @@ class Document extends Crud
             $this->_document->applyMask(\Doc::USEMASKCVVIEW);
         }
         $data=$this->getDocumentData();
-        $data["duration"]=sprintf("%.04f",microtime(true) - $mb);
+        $data["duration"]=sprintf("%.04f", microtime(true) - $mb);
         return $data;
     }
     /**
@@ -117,8 +116,7 @@ class Document extends Crud
                 } else {
                     $this->_document->setAttributeValue($aid, $value);
                 }
-            }
-            catch(\Dcp\AttributeValue\Exception $e) {
+            } catch (\Dcp\AttributeValue\Exception $e) {
                 $exception = new Exception("CRUD0211", $this->_document->id, $aid, $e->getDcpMessage());
                 $exception->setHttpStatus("500", "Unable to modify the document");
                 $exception->setUserMEssage(___("Update failed", "HTTPAPI_V1"));
@@ -160,7 +158,7 @@ class Document extends Crud
             $message->code = "store";
             $this->addMessage($message);
         }
-        $this->_document->addHistoryEntry(___("Updated by HTTP API", "HTTPAPI_V1") , \DocHisto::NOTICE);
+        $this->_document->addHistoryEntry(___("Updated by HTTP API", "HTTPAPI_V1"), \DocHisto::NOTICE);
         DocManager::cache()->addDocument($this->_document);
         
         return $this->read($this->_document->initid);
@@ -184,14 +182,14 @@ class Document extends Crud
         
         $err = $this->_document->delete();
         if ($err) {
-            $exception = new Exception("CRUD0215", $this->_document->getTitle() , $err);
+            $exception = new Exception("CRUD0215", $this->_document->getTitle(), $err);
             throw $exception;
         }
-        $this->_document->addHistoryEntry(___("Deleted by HTTP API", "HTTPAPI_V1") , \DocHisto::NOTICE);
+        $this->_document->addHistoryEntry(___("Deleted by HTTP API", "HTTPAPI_V1"), \DocHisto::NOTICE);
         return $this->getDocumentData();
     }
     //endregion CRUD part
-    public function execute($method, array & $messages = array() , &$httpStatus = "")
+    public function execute($method, array & $messages = array(), &$httpStatus = "")
     {
         $identifier = isset($this->urlParameters["identifier"]) ? $this->urlParameters["identifier"] : null;
         $this->checkId($identifier);
@@ -283,7 +281,6 @@ class Document extends Crud
      */
     protected function _getAttributes()
     {
-        
         if ($this->_document->doctype === "C") {
             return array();
         }
@@ -359,7 +356,7 @@ class Document extends Crud
         } elseif ($this->hasFields(self::GET_PROPERTY)) {
             $correctField = true;
             $hasProperties = true;
-            $this->documentFormater->setProperties($this->_getPropertiesId() , $this->hasFields(self::GET_PROPERTIES, true));
+            $this->documentFormater->setProperties($this->_getPropertiesId(), $this->hasFields(self::GET_PROPERTIES, true));
         }
         
         if ($this->hasFields(self::GET_ATTRIBUTES)) {
@@ -415,13 +412,13 @@ class Document extends Crud
             foreach ($parentIds as $aid) {
                 if ($previousId === null) {
                     if (!isset($return[$aid])) {
-                        $return[$aid] = $this->getAttributeInfo($this->_document->getAttribute($aid) , $order++);
+                        $return[$aid] = $this->getAttributeInfo($this->_document->getAttribute($aid), $order++);
                         $return[$aid]["content"] = array();
                     }
                     $target = & $return[$aid]["content"];
                 } else {
                     if (!isset($target[$aid])) {
-                        $target[$aid] = $this->getAttributeInfo($this->_document->getAttribute($aid) , $order++);
+                        $target[$aid] = $this->getAttributeInfo($this->_document->getAttribute($aid), $order++);
                         $target[$aid]["content"] = array();
                     }
                     $target = & $target[$aid]["content"];
@@ -514,7 +511,7 @@ class Document extends Crud
                 }
                 $info["enumItems"] = $enumItems;
             }
-            $url=sprintf("families/%s/enumerates/%s", ($this->_document->doctype === "C" ? $this->_document->name : $this->_document->fromname) , $attribute->id);
+            $url=sprintf("families/%s/enumerates/%s", ($this->_document->doctype === "C" ? $this->_document->name : $this->_document->fromname), $attribute->id);
             $info["enumUrl"] = "api/v1/".$url ;
             $info["enumUri"] = $this->generateURL($url);
         }
@@ -547,7 +544,7 @@ class Document extends Crud
     {
         $result = array();
         $sql = sprintf("select id, revdate, views from docread where id = %d", $id);
-        DbManager::query( $sql, $result, false, true);
+        DbManager::query($sql, $result, false, true);
         $user = getCurrentUser();
         $result[] = $user->id;
         $result[] = $user->memberof;

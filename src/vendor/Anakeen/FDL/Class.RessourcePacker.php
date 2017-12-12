@@ -21,7 +21,7 @@ class RessourcePacker
      * @param string $extraCode add js code before including file
      * @return boolean true
      */
-    static function pack_js(Action & $action, array & $static_js = array() , array & $dynamic_js = array() , $extraCode = '')
+    public static function pack_js(Action & $action, array & $static_js = array(), array & $dynamic_js = array(), $extraCode = '')
     {
         print "//Pack js\n";
         print $extraCode . "\n";
@@ -39,7 +39,7 @@ class RessourcePacker
                 print sprintf("// -- </static file='%s'> ---\n", $jsfile);
                 print "\n";
             } else {
-                print ("\nalert(\"$jsfile not found.\");\n");
+                print("\nalert(\"$jsfile not found.\");\n");
             }
         }
         foreach ($dynamic_js as $jsfile) {
@@ -74,7 +74,7 @@ class RessourcePacker
      * @param array $static_css List of static CSS stylesheets to pack
      * @param array $dynamic_css List of dynamic CSS stylesheets to pack
      */
-    static function pack_css(Action & $action, array $static_css = array() , array $dynamic_css = array())
+    public static function pack_css(Action & $action, array $static_css = array(), array $dynamic_css = array())
     {
         foreach ($static_css as $cssfile) {
             if (!is_file($cssfile)) {
@@ -106,4 +106,3 @@ class RessourcePacker
         return true;
     }
 }
-?>

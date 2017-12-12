@@ -18,7 +18,6 @@
  */
 abstract class Provider
 {
-    
     public $parms;
     public $pname;
     public $errno;
@@ -32,7 +31,7 @@ abstract class Provider
         $this->errno = 0;
     }
     
-    abstract function validateCredential($username, $password);
+    abstract public function validateCredential($username, $password);
     
     public function validateAuthorization($opt)
     {
@@ -46,9 +45,9 @@ abstract class Provider
             'initializeUser'
         ))) {
             $this->errno = 0;
-            return TRUE;
+            return true;
         }
         $this->errno = 0;
-        return FALSE;
+        return false;
     }
 }

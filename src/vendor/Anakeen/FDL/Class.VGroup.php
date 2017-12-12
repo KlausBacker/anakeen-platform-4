@@ -13,9 +13,9 @@
 /**
  */
 
-include_once ('Class.DbObj.php');
-include_once ('Class.QueryDb.php');
-include_once ('Class.Log.php');
+include_once('Class.DbObj.php');
+include_once('Class.QueryDb.php');
+include_once('Class.Log.php');
 define("STARTIDVGROUP", 1000000);
 /**
  * Virtual groups
@@ -24,35 +24,33 @@ define("STARTIDVGROUP", 1000000);
  */
 class VGroup extends DbObj
 {
-    var $fields = array(
+    public $fields = array(
         "id",
         "num"
     );
     
-    var $id_fields = array(
+    public $id_fields = array(
         "id"
     );
     
     public $id;
     public $num;
-    var $dbtable = "vgroup";
+    public $dbtable = "vgroup";
     
-    var $order_by = "id";
+    public $order_by = "id";
     
-    var $sqlcreate = "
+    public $sqlcreate = "
 create table vgroup ( id  text primary key,
                       num int not null);
 create sequence seq_id_docvgroup start 1000000;";
     
-    function PreInsert()
+    public function PreInsert()
     {
         // compute new id
         if ($this->num == "") {
             $res = pg_query($this->dbid, "select nextval ('seq_id_docvgroup')");
             $arr = pg_fetch_array($res, 0);
             $this->num = $arr[0]; // not a number must be alphanumeric begin with letter
-            
         }
     }
 }
-?>

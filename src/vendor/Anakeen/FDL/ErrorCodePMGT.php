@@ -55,7 +55,9 @@ namespace {
          */
         private function _bo()
         {
-            if (true) $a = 1;
+            if (true) {
+                $a = 1;
+            }
         }
     }
 }
@@ -72,7 +74,9 @@ namespace Dcp\PMGT {
          */
         private function _bo()
         {
-            if (true) $a = 1;
+            if (true) {
+                $a = 1;
+            }
         }
     }
 }

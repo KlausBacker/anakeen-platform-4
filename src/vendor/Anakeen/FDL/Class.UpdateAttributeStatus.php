@@ -35,7 +35,6 @@
  */
 class UpdateAttributeStatus
 {
-    
     private $statusFile = '';
     private $content = null;
     const statusRunning = 1;
@@ -45,7 +44,9 @@ class UpdateAttributeStatus
     public function __construct($statusFile)
     {
         $this->statusFile = $statusFile;
-        if (!file_exists($this->statusFile)) throw new Dcp\Upat\Exception("UPAT0003", $statusFile);
+        if (!file_exists($this->statusFile)) {
+            throw new Dcp\Upat\Exception("UPAT0003", $statusFile);
+        }
     }
     
     private function readStatus()
@@ -59,7 +60,9 @@ class UpdateAttributeStatus
      */
     public function getContent()
     {
-        if ($this->content === null) $this->readStatus();
+        if ($this->content === null) {
+            $this->readStatus();
+        }
         return $this->content;
     }
     /**
@@ -72,9 +75,13 @@ class UpdateAttributeStatus
         $this->readStatus();
         if ($this->content) {
             $last = end($this->content);
-            if (strpos($last, 'END') > 0) return self::StatusFinished;
+            if (strpos($last, 'END') > 0) {
+                return self::StatusFinished;
+            }
             $first = $this->content[0];
-            if (strpos($first, 'BEGIN') > 0) return self::statusRunning;
+            if (strpos($first, 'BEGIN') > 0) {
+                return self::statusRunning;
+            }
         }
         return self::statusUnknown;
     }
@@ -85,10 +92,14 @@ class UpdateAttributeStatus
      */
     public function getCodeLines($code)
     {
-        if ($this->content === null) $this->readStatus();
+        if ($this->content === null) {
+            $this->readStatus();
+        }
         $lines = array();
         foreach ($this->content as $line) {
-            if (preg_match(sprintf("/^[0-9T:-]{19} [\w-]* ?%s/u", preg_quote($code, "/")) , $line)) $lines[] = $line;
+            if (preg_match(sprintf("/^[0-9T:-]{19} [\w-]* ?%s/u", preg_quote($code, "/")), $line)) {
+                $lines[] = $line;
+            }
         }
         return $lines;
     }
@@ -99,7 +110,7 @@ class UpdateAttributeStatus
     public function getLastMessage()
     {
         $l = new UpdateAttributeStatusLine();
-        list($l->date, $l->processCode, $l->message) = explode(' ', trim(end($this->content)) , 3);
+        list($l->date, $l->processCode, $l->message) = explode(' ', trim(end($this->content)), 3);
         
         return $l;
     }
@@ -112,7 +123,6 @@ class UpdateAttributeStatus
     {
         $r = $this->getCodeLines("ERROR");
         if ($r) {
-            
             return implode("\n", $r);
         }
         return '';

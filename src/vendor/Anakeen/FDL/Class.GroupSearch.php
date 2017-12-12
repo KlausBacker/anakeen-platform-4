@@ -7,12 +7,13 @@
  * Grouped searches
  */
 namespace Dcp\Core;
+
 class GroupedSearch extends \Dcp\Family\Search
 {
-    var $defaultedit = "FDL:EDITBODYCARD";
-    var $defaultview = "FDL:VIEWBODYCARD";
+    public $defaultedit = "FDL:EDITBODYCARD";
+    public $defaultview = "FDL:VIEWBODYCARD";
     
-    function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
+    public function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
     {
         $tidsearch = $this->getMultipleRawValues("SEG_IDCOND");
         
@@ -25,7 +26,6 @@ class GroupedSearch extends \Dcp\Family\Search
             $err = $doc->control("execute");
             
             if ($err == "" && method_exists($doc, "getQuery")) {
-                
                 $doc->setValue("SE_IDCFLD", $this->getRawValue("SE_IDCFLD"));
                 $q = $doc->getQuery();
                 
@@ -39,7 +39,7 @@ class GroupedSearch extends \Dcp\Family\Search
      * return false : is never staticSql
      * @return bool
      */
-    function isStaticSql()
+    public function isStaticSql()
     {
         return false;
     }

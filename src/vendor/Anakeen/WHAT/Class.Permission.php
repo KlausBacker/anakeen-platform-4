@@ -14,34 +14,34 @@
 /**
  */
 
-include_once ('Class.DbObj.php');
-include_once ('Class.QueryDb.php');
-include_once ('Class.Application.php');
-include_once ('Class.Action.php');
-include_once ('Class.Acl.php');
-include_once ('Class.User.php');
-include_once ('Class.Group.php');
+include_once('Class.DbObj.php');
+include_once('Class.QueryDb.php');
+include_once('Class.Application.php');
+include_once('Class.Action.php');
+include_once('Class.Acl.php');
+include_once('Class.User.php');
+include_once('Class.Group.php');
 
 class Permission extends DbObj
 {
-    var $fields = array(
+    public $fields = array(
         "id_user",
         "id_application",
         "id_acl",
         "computed"
     );
     
-    var $id_fields = array(
+    public $id_fields = array(
         "id_user",
         "id_application"
     );
     
-    var $dbtable = "permission";
-    var $privileges = array(); // privileges array for a user (including group) in an application
+    public $dbtable = "permission";
+    public $privileges = array(); // privileges array for a user (including group) in an application
     private $upprivileges = false; // specifific privileges array for a user in an application
     private $unprivileges = false; // specifific NO privileges array for a user in an application
     private $gprivileges = false; // privileges array for the group user
-    var $sqlcreate = '
+    public $sqlcreate = '
 create table permission (id_user int not null,
                          id_application int not null,
                          id_acl int not null,
@@ -60,8 +60,8 @@ create index permission_idx4 on permission(computed);
      */
     public $computed;
     
-    var $actions = array(); // actions array for a user (including group) in an application
-    function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0, $computed = true)
+    public $actions = array(); // actions array for a user (including group) in an application
+    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0, $computed = true)
     {
         if ($id && $id[0] && $id[1]) {
             parent::__construct($dbaccess, $id, $res, $dbid);
@@ -69,7 +69,6 @@ create index permission_idx4 on permission(computed);
             parent::__construct($dbaccess, '', $res, $dbid);
         }
         if (!$this->isAffected()) {
-            
             if (is_array($id) && $id[0] && $id[1]) {
                 $this->Affect(array(
                     "id_user" => $id[0],
@@ -80,31 +79,33 @@ create index permission_idx4 on permission(computed);
             }
         }
     }
-    function postSelect($id)
+    public function postSelect($id)
     {
         // init privileges
         $this->GetPrivileges();
     }
-    function PostDelete()
+    public function PostDelete()
     {
         // update privileges
         $this->GetPrivileges();
     }
     
-    function PostUpdate()
+    public function PostUpdate()
     {
         // update privileges
         $this->GetPrivileges();
     }
     
-    function PreInsert()
+    public function PreInsert()
     {
         // no duplicate items
-        if ($this->Exists($this->id_user, $this->id_application, $this->id_acl)) return "Permission ({$this->id_user},{$this->id_application},{$this->id_acl}) already exists...";
+        if ($this->Exists($this->id_user, $this->id_application, $this->id_acl)) {
+            return "Permission ({$this->id_user},{$this->id_application},{$this->id_acl}) already exists...";
+        }
         
         return "";
     }
-    function postInsert()
+    public function postInsert()
     {
         if (!$this->computed) {
             $this->exec_query(sprintf("delete from permission where  id_application=%d and abs(id_acl)=%d and computed", $this->id_application, abs($this->id_acl)));
@@ -118,7 +119,7 @@ create index permission_idx4 on permission(computed);
      * @param Application $app
      * @return array
      */
-    function ListUserPermissions($user, $app)
+    public function ListUserPermissions($user, $app)
     {
         $query = new QueryDb($this->dbaccess, "Permission");
         $query->basic_elem->sup_where = array(
@@ -135,7 +136,7 @@ create index permission_idx4 on permission(computed);
         return ($res);
     }
     // Gives the list of application where a user has permission
-    function ListUserApplications($user)
+    public function ListUserApplications($user)
     {
         $query = new QueryDb($this->dbaccess, "Permission");
         $query->basic_elem->sup_where = array(
@@ -153,7 +154,7 @@ create index permission_idx4 on permission(computed);
         return ($res);
     }
     
-    function ListApplicationUsers($app)
+    public function ListApplicationUsers($app)
     {
         $query = new QueryDb($this->dbaccess, "Permission");
         $query->basic_elem->sup_where = array(
@@ -170,7 +171,7 @@ create index permission_idx4 on permission(computed);
         return ($res);
     }
     
-    function Exists($userid, $applicationid, $aclid = 0)
+    public function Exists($userid, $applicationid, $aclid = 0)
     {
         $query = new QueryDb($this->dbaccess, "Permission");
         $query->basic_elem->sup_where = array(
@@ -187,7 +188,7 @@ create index permission_idx4 on permission(computed);
         return ($query->nb > 0);
     }
     
-    function IsOver($user, $application, $acl)
+    public function IsOver($user, $application, $acl)
     {
         $query = new QueryDb($this->dbaccess, "Permission");
         $query->basic_elem->sup_where = array(
@@ -195,12 +196,14 @@ create index permission_idx4 on permission(computed);
             "id_user='{$user->id}'"
         );
         $list = $query->Query();
-        if ($query->nb == 0) return FALSE;
+        if ($query->nb == 0) {
+            return false;
+        }
         $aclu = new Acl($this->dbaccess, $list[0]->id_acl);
         return ($aclu->grant_level >= $acl->grant_level);
     }
     
-    function GrantLevel($user, $application)
+    public function GrantLevel($user, $application)
     {
         $query = new QueryDb($this->dbaccess, "Permission");
         $query->basic_elem->sup_where = array(
@@ -208,12 +211,14 @@ create index permission_idx4 on permission(computed);
             "id_user='{$user->id}'"
         );
         $list = $query->Query();
-        if ($query->nb == 0) return (0);
+        if ($query->nb == 0) {
+            return (0);
+        }
         $acl = new Acl($this->dbaccess, $list[0]->id_acl);
         return ($acl->grant_level);
     }
     
-    function DelAppPerm($id)
+    public function DelAppPerm($id)
     {
         $query = new QueryDb($this->dbaccess, "Permission");
         $query->basic_elem->sup_where = array(
@@ -323,7 +328,6 @@ create index permission_idx4 on permission(computed);
      */
     public function GetPrivileges($force = false, $computed = true)
     {
-        
         if (!$force) {
             $privileges = "";
             if ($computed) {
@@ -345,12 +349,11 @@ create index permission_idx4 on permission(computed);
         $ugroup = new Group($this->dbaccess, $this->id_user);
         
         foreach ($ugroup->groups as $gid) {
-            
             $gperm = new permission($this->dbaccess, array(
                 $gid,
                 $this->id_application,
                 false
-            ) , '', 0, $computed);
+            ), '', 0, $computed);
             // add group
             foreach ($gperm->privileges as $gacl) {
                 if (!in_array($gacl, $this->privileges)) {
@@ -379,7 +382,7 @@ create index permission_idx4 on permission(computed);
                     // suppress privilege
                     $this->unprivileges[] = - ($v->id_acl);
                     
-                    $nk = array_search(-($v->id_acl) , $this->privileges, false);
+                    $nk = array_search(-($v->id_acl), $this->privileges, false);
                     if (is_integer($nk)) {
                         unset($this->privileges[$nk]);
                     }
@@ -395,12 +398,16 @@ create index permission_idx4 on permission(computed);
      * @param bool $strict set to true to not use substitute user account property
      * @return bool
      */
-    function hasPrivilege($idacl, $strict = false)
+    public function hasPrivilege($idacl, $strict = false)
     {
         $grant = (($this->id_user == 1) || // admin user
         (in_array($idacl, $this->privileges)));
-        if ($grant) return true;
-        if ($strict) return $grant;
+        if ($grant) {
+            return true;
+        }
+        if ($strict) {
+            return $grant;
+        }
         return $this->substituteHasPrivilege($idacl);
     }
     /**
@@ -408,7 +415,7 @@ create index permission_idx4 on permission(computed);
      * @param string $idacl acl id
      * @return bool
      */
-    function substituteHasPrivilege($idacl)
+    public function substituteHasPrivilege($idacl)
     {
         $u = new Account($this->dbaccess, $this->id_user);
         $incumbents = $u->getIncumbents();
@@ -418,17 +425,18 @@ create index permission_idx4 on permission(computed);
                 $this->id_application
             ));
             $grant = $p->hasPrivilege($idacl, true);
-            if ($grant) return true;
+            if ($grant) {
+                return true;
+            }
         }
         return false;
     }
     // id_user field must be set before
-    function AddUserPermission($appname, $aclname)
+    public function AddUserPermission($appname, $aclname)
     {
         $app = new Application($this->dbaccess);
         $appid = $app->GetIdFromName($appname);
         if ($appid != 0) {
-            
             $this->id_application = $appid;
             
             $acl = new Acl($this->dbaccess);
@@ -438,20 +446,21 @@ create index permission_idx4 on permission(computed);
             }
         }
     }
-    /** 
+    /**
      * return ACTION list for a user
      *
      * @author Philippe VALENCIA <pvalencia@fram.fr>
      * @return array actions available for current user
      */
-    function GetActions()
+    public function GetActions()
     {
-        
         $this->actions = array();
         
         $acls = $this->GetPrivileges();
         
-        if (!count($acls)) return array();
+        if (!count($acls)) {
+            return array();
+        }
         
         $sSql = " select distinct action.name from action inner join acl on
 action.acl = acl.name where ";
@@ -497,4 +506,3 @@ action.acl = acl.name where ";
         return false;
     }
 }
-

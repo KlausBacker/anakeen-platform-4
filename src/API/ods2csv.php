@@ -33,7 +33,9 @@ function startElementOds($parser, $name, $attrs)
             // fill empty cells
             $idx = 0;
             foreach ($rows[$nrow] as $k => $v) {
-                if (!isset($rows[$nrow][$idx])) $rows[$nrow][$idx] = '';
+                if (!isset($rows[$nrow][$idx])) {
+                    $rows[$nrow][$idx] = '';
+                }
                 $idx++;
             }
             ksort($rows[$nrow], SORT_NUMERIC);
@@ -52,7 +54,9 @@ function startElementOds($parser, $name, $attrs)
         }
     }
     if ($name == "TEXT:P") {
-        if ((isset($rows[$nrow][$ncol])) && strlen($rows[$nrow][$ncol]) > 0) $rows[$nrow][$ncol].= '\n';
+        if ((isset($rows[$nrow][$ncol])) && strlen($rows[$nrow][$ncol]) > 0) {
+            $rows[$nrow][$ncol].= '\n';
+        }
     }
 }
 
@@ -103,7 +107,6 @@ function characterDataOds($parser, $data)
         $celldata.= preg_replace('/\s/u', ' ', preg_replace('/^\s*[\r\n]\s*$/ms', '', str_replace(SEPCHAR, ALTSEPCHAR, $data)));
     }
     //  print $data. "- ";
-    
 }
 
 function getOfficeTypedValue($attrs)
@@ -135,7 +138,7 @@ function xmlcontent2csv($xmlcontent, &$fcsv)
     xml_set_character_data_handler($xml_parser, "characterDataOds");
     
     if (!xml_parse($xml_parser, $xmlcontent)) {
-        return (sprintf("error XML : %s line %d", xml_error_string(xml_get_error_code($xml_parser)) , xml_get_current_line_number($xml_parser)));
+        return (sprintf("error XML : %s line %d", xml_error_string(xml_get_error_code($xml_parser)), xml_get_current_line_number($xml_parser)));
     }
     
     xml_parser_free($xml_parser);
@@ -148,10 +151,12 @@ function xmlcontent2csv($xmlcontent, &$fcsv)
 
 function ods2content($odsfile, &$content)
 {
-    if (!file_exists($odsfile)) return "file $odsfile not found";
+    if (!file_exists($odsfile)) {
+        return "file $odsfile not found";
+    }
     $cibledir = uniqid(getTmpDir() . "/ods");
     
-    $cmd = sprintf("unzip -j %s content.xml -d %s >/dev/null", escapeshellarg($odsfile) , escapeshellarg($cibledir));
+    $cmd = sprintf("unzip -j %s content.xml -d %s >/dev/null", escapeshellarg($odsfile), escapeshellarg($cibledir));
     system($cmd);
     
     $contentxml = $cibledir . "/content.xml";
@@ -177,9 +182,16 @@ if ($err == "") {
     if ($err == "") {
         if ($csvfile) {
             $n = file_put_contents($csvfile, $csv);
-            if ($n > 0) print sprintf(_("csv file <%s> wroted") . "\n", $csvfile);
-            else $err = sprintf(_("cannot write  %s") , $csvfile);
-        } else print $csv;
+            if ($n > 0) {
+                print sprintf(_("csv file <%s> wroted") . "\n", $csvfile);
+            } else {
+                $err = sprintf(_("cannot write  %s"), $csvfile);
+            }
+        } else {
+            print $csv;
+        }
     }
 }
-if ($err != "") print "ERROR:$err\n";
+if ($err != "") {
+    print "ERROR:$err\n";
+}

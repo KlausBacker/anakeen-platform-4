@@ -48,7 +48,7 @@ class BasicAttribute
      * @param string $docid
      * @param string $label
      */
-    function __construct($id, $docid, $label)
+    public function __construct($id, $docid, $label)
     {
         $this->id = $id;
         $this->docid = $docid;
@@ -59,11 +59,13 @@ class BasicAttribute
      *
      * @return string
      */
-    function getLabel()
+    public function getLabel()
     {
         $r = $this->docname . '#' . $this->id;
         $i = _($r);
-        if ($i != $r) return $i;
+        if ($i != $r) {
+            return $i;
+        }
         return $this->labelText;
     }
     /**
@@ -74,7 +76,7 @@ class BasicAttribute
      *
      * @return string
      */
-    function getOption($x, $def = "")
+    public function getOption($x, $def = "")
     {
         if (!isset($this->_topt)) {
             $topt = explode("|", $this->options);
@@ -88,7 +90,9 @@ class BasicAttribute
         }
         $r = $this->docname . '#' . $this->id . '#' . $x;
         $i = _($r);
-        if ($i != $r) return $i;
+        if ($i != $r) {
+            return $i;
+        }
         
         $v = (isset($this->_topt[$x]) && $this->_topt[$x] !== '') ? $this->_topt[$x] : $def;
         return $v;
@@ -98,7 +102,7 @@ class BasicAttribute
      *
      * @return array
      */
-    function getOptions()
+    public function getOptions()
     {
         if (!isset($this->_topt)) {
             $this->getOption('a');
@@ -113,7 +117,7 @@ class BasicAttribute
      *
      * @return void
      */
-    function setOption($x, $v)
+    public function setOption($x, $v)
     {
         if (!isset($this->_topt)) {
             $this->getOption($x);
@@ -125,7 +129,7 @@ class BasicAttribute
      * @param string $vis new visibility : R|H|W|O|I
      * @return void
      */
-    function setVisibility($vis)
+    public function setVisibility($vis)
     {
         $this->mvisibility = $vis;
     }
@@ -134,7 +138,7 @@ class BasicAttribute
      *
      * @return boolean
      */
-    function isReal()
+    public function isReal()
     {
         return $this->getOption("autocreated") != "yes";
     }
@@ -145,7 +149,7 @@ class BasicAttribute
      * @param bool $quot to encode also quote "
      * @return string
      */
-    static function encodeXml($s, $quot = false)
+    public static function encodeXml($s, $quot = false)
     {
         if ($quot) {
             return str_replace(array(
@@ -153,22 +157,22 @@ class BasicAttribute
                 '<',
                 '>',
                 '"'
-            ) , array(
+            ), array(
                 '&amp;',
                 '&lt;',
                 '&gt;',
                 '&quot;'
-            ) , $s);
+            ), $s);
         } else {
             return str_replace(array(
                 '&',
                 '<',
                 '>'
-            ) , array(
+            ), array(
                 '&amp;',
                 '&lt;',
                 '&gt;'
-            ) , $s);
+            ), $s);
         }
     }
     /**
@@ -176,7 +180,7 @@ class BasicAttribute
      *
      * @return boolean
      */
-    function inArray()
+    public function inArray()
     {
         return false;
     }
@@ -185,7 +189,7 @@ class BasicAttribute
      *
      * @return boolean
      */
-    function isMultiple()
+    public function isMultiple()
     {
         return ($this->inArray() || ($this->getOption('multiple') === 'yes'));
     }
@@ -194,7 +198,7 @@ class BasicAttribute
      *
      * @return boolean
      */
-    function isMultipleInArray()
+    public function isMultipleInArray()
     {
         return ($this->inArray() && ($this->getOption('multiple') === 'yes'));
     }
@@ -204,7 +208,7 @@ class BasicAttribute
      *
      * @return FieldSetAttribute|bool
      */
-    function getTab()
+    public function getTab()
     {
         if ($this->type == 'tab') {
             return $this;
@@ -220,7 +224,7 @@ class BasicAttribute
      * @param array $la array of DocAttribute
      * @return string
      */
-    function getXmlSchema($la)
+    public function getXmlSchema($la)
     {
         return sprintf("<!-- no Schema %s (%s)-->", $this->id, $this->type);
     }
@@ -233,7 +237,7 @@ class BasicAttribute
      *
      * @return string
      */
-    function getXmlValue(Doc & $doc, $opt = false)
+    public function getXmlValue(Doc & $doc, $opt = false)
     {
         return sprintf("<!-- no value %s (%s)-->", $this->id, $this->type);
     }
@@ -247,7 +251,7 @@ class BasicAttribute
      *
      * @return string
      */
-    public function getTextualValue(Doc $doc, $index = - 1, Array $configuration = array())
+    public function getTextualValue(Doc $doc, $index = - 1, array $configuration = array())
     {
         return null;
     }
@@ -256,9 +260,8 @@ class BasicAttribute
      *
      * @param Layout $play
      */
-    function common_getXmlSchema(&$play)
+    public function common_getXmlSchema(&$play)
     {
-        
         $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "infoattribute_schema.xml"));
         $lay->set("aname", $this->id);
         $lay->set("label", $this->encodeXml($this->labelText));
@@ -276,10 +279,12 @@ class BasicAttribute
         $tops = $this->getOptions();
         $t = array();
         foreach ($tops as $k => $v) {
-            if ($k) $t[] = array(
+            if ($k) {
+                $t[] = array(
                 "key" => $k,
                 "val" => $this->encodeXml($v)
             );
+            }
         }
         $lay->setBlockData("options", $t);
         
@@ -375,7 +380,7 @@ class NormalAttribute extends BasicAttribute
      * @param string $options option string
      * @param string $docname
      */
-    function __construct($id, $docid, $label, $type, $format, $repeat, $order, $link, $visibility, $needed, $isInTitle, $isInAbstract, &$fieldSet, $phpfile, $phpfunc, $elink, $phpconstraint = "", $usefor = "", $eformat = "", $options = "", $docname = "")
+    public function __construct($id, $docid, $label, $type, $format, $repeat, $order, $link, $visibility, $needed, $isInTitle, $isInAbstract, &$fieldSet, $phpfile, $phpfunc, $elink, $phpconstraint = "", $usefor = "", $eformat = "", $options = "", $docname = "")
     {
         $this->id = $id;
         $this->docid = $docid;
@@ -404,7 +409,7 @@ class NormalAttribute extends BasicAttribute
      * @param bool $need true means needed, false not needed
      * @return void
      */
-    function setNeeded($need)
+    public function setNeeded($need)
     {
         $this->needed = $need;
     }
@@ -414,15 +419,13 @@ class NormalAttribute extends BasicAttribute
      * @param string $value Formated value of attribute
      * @return string Value transformed
      */
-    function prepareHtmltextForExport($value)
+    public function prepareHtmltextForExport($value)
     {
         if ($this->type == "htmltext") {
-            $value = preg_replace_callback('/(data-initid=")([0-9]+)/', function ($matches)
-            {
+            $value = preg_replace_callback('/(data-initid=")([0-9]+)/', function ($matches) {
                 $name = \Dcp\Core\DocManager::getNameFromId($matches[2]);
                 return $matches[1] . ($name ? $name : $matches[2]);
-            }
-            , $value);
+            }, $value);
         }
         return $value;
     }
@@ -433,7 +436,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string
      */
-    function getXmlSchema($la)
+    public function getXmlSchema($la)
     {
         switch ($this->type) {
             case 'text':
@@ -475,9 +478,8 @@ class NormalAttribute extends BasicAttribute
      *
      * @param Layout $play
      */
-    function common_getXmlSchema(&$play)
+    public function common_getXmlSchema(&$play)
     {
-        
         $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "infoattribute_schema.xml"));
         $lay->set("aname", $this->id);
         $lay->set("label", $this->encodeXml($this->labelText));
@@ -499,10 +501,12 @@ class NormalAttribute extends BasicAttribute
         $tops = $this->getOptions();
         $t = array();
         foreach ($tops as $k => $v) {
-            if ($k) $t[] = array(
+            if ($k) {
+                $t[] = array(
                 "key" => $k,
                 "val" => $this->encodeXml($v)
             );
+            }
         }
         $lay->setBlockData("options", $t);
         
@@ -521,17 +525,23 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string
      */
-    function getXmlValue(Doc & $doc, $opt = false)
+    public function getXmlValue(Doc & $doc, $opt = false)
     {
-        if ($opt->index > - 1) $v = $doc->getMultipleRawValues($this->id, null, $opt->index);
-        else $v = $doc->getRawValue($this->id, null);
+        if ($opt->index > - 1) {
+            $v = $doc->getMultipleRawValues($this->id, null, $opt->index);
+        } else {
+            $v = $doc->getRawValue($this->id, null);
+        }
         //if (! $v) return sprintf("<!-- no value %s -->",$this->id);
         if ($this->getOption("autotitle") == "yes") {
             return sprintf("<!--autotitle %s %s -->", $this->id, $v);
         }
         if (($v === null) && ($this->type != 'array')) {
-            if (($this->type == 'file') || ($this->type == 'image')) return sprintf('<%s mime="" title="" xsi:nil="true"/>', $this->id);
-            else return sprintf('<%s xsi:nil="true"/>', $this->id);
+            if (($this->type == 'file') || ($this->type == 'image')) {
+                return sprintf('<%s mime="" title="" xsi:nil="true"/>', $this->id);
+            } else {
+                return sprintf('<%s xsi:nil="true"/>', $this->id);
+            }
         }
         switch ($this->type) {
             case 'timestamp':
@@ -552,7 +562,7 @@ class NormalAttribute extends BasicAttribute
                             $xmlvalues[] = $oa->getXmlValue($doc, $opt);
                         }
                     }
-                    $axml[] = sprintf("<%s>%s</%s>", $this->id, implode("\n", $xmlvalues) , $this->id);
+                    $axml[] = sprintf("<%s>%s</%s>", $this->id, implode("\n", $xmlvalues), $this->id);
                 }
                 $opt->index = - 1; // restore initial index
                 return implode("\n", $axml);
@@ -576,7 +586,7 @@ class NormalAttribute extends BasicAttribute
                             if ($opt->outFile) {
                                 return sprintf('<%s vid="%s" mime="%s" title="%s">[FILE64:%s]</%s>', $this->id, $vid, $mime, $name, $path, $this->id);
                             } else {
-                                return sprintf('<%s vid="%s" mime="%s" title="%s">%s</%s>', $this->id, $vid, $mime, $name, base64_encode(file_get_contents($path)) , $this->id);
+                                return sprintf('<%s vid="%s" mime="%s" title="%s">%s</%s>', $this->id, $vid, $mime, $name, base64_encode(file_get_contents($path)), $this->id);
                             }
                         } else {
                             return sprintf('<!-- file not found --><%s vid="%s" mime="%s" title="%s"/>', $this->id, $vid, $mime, $name, $this->id);
@@ -587,13 +597,14 @@ class NormalAttribute extends BasicAttribute
                 } else {
                     return sprintf("<%s>%s</%s>", $this->id, $v, $this->id);
                 }
+                // no break
             case 'thesaurus':
             case 'account':
             case 'docid':
                 if (!$v) {
                     return sprintf('<%s xsi:nil="true"/>', $this->id);
                 } else {
-                    $info = getTDoc($doc->dbaccess, $v, array() , array(
+                    $info = getTDoc($doc->dbaccess, $v, array(), array(
                         "title",
                         "name",
                         "id",
@@ -612,23 +623,21 @@ class NormalAttribute extends BasicAttribute
                         }
                         if ($info["name"]) {
                             if ($opt->withIdentifier) {
-                                return sprintf('<%s id="%s" name="%s">%s</%s>', $this->id, $docid, $info["name"], $this->encodeXml($info["title"]) , $this->id);
+                                return sprintf('<%s id="%s" name="%s">%s</%s>', $this->id, $docid, $info["name"], $this->encodeXml($info["title"]), $this->id);
                             } else {
-                                return sprintf('<%s name="%s">%s</%s>', $this->id, $info["name"], $this->encodeXml($info["title"]) , $this->id);
+                                return sprintf('<%s name="%s">%s</%s>', $this->id, $info["name"], $this->encodeXml($info["title"]), $this->id);
                             }
                         } else {
                             if ($opt->withIdentifier) {
-                                return sprintf('<%s id="%s">%s</%s>', $this->id, $docid, $this->encodeXml($info["title"]) , $this->id);
+                                return sprintf('<%s id="%s">%s</%s>', $this->id, $docid, $this->encodeXml($info["title"]), $this->id);
                             } else {
-                                
-                                return sprintf('<%s>%s</%s>', $this->id, $this->encodeXml($info["title"]) , $this->id);
+                                return sprintf('<%s>%s</%s>', $this->id, $this->encodeXml($info["title"]), $this->id);
                             }
                         }
                     } else {
                         if ((strpos($v, '<BR>') === false) && (strpos($v, "\n") === false)) {
-                            return sprintf('<%s id="%s">%s</%s>', $this->id, $v, _("unreferenced document") , $this->id);
+                            return sprintf('<%s id="%s">%s</%s>', $this->id, $v, _("unreferenced document"), $this->id);
                         } else {
-                            
                             $tids = explode("\n", str_replace('<BR>', "\n", $v));
                             $mName = array();
                             $mId = array();
@@ -637,7 +646,9 @@ class NormalAttribute extends BasicAttribute
                                 $lName = \Dcp\Core\DocManager::getNameFromId($id);
                                 $mName[] = $lName;
                                 $mId[] = $id;
-                                if ($lName) $foundName = true;
+                                if ($lName) {
+                                    $foundName = true;
+                                }
                             }
                             $sIds = '';
                             if ($opt->withIdentifier) {
@@ -645,15 +656,15 @@ class NormalAttribute extends BasicAttribute
                             }
                             $sName = '';
                             if ($foundName) {
-                                
                                 $sName = sprintf('name="%s"', implode(',', $mName));
                             }
-                            return sprintf('<%s %s %s>%s</%s>', $this->id, $sName, $sIds, _("multiple document") , $this->id);
+                            return sprintf('<%s %s %s>%s</%s>', $this->id, $sName, $sIds, _("multiple document"), $this->id);
                         }
                     }
                 }
+                // no break
             default:
-                return sprintf("<%s>%s</%s>", $this->id, $this->encodeXml($v) , $this->id);
+                return sprintf("<%s>%s</%s>", $this->id, $this->encodeXml($v), $this->id);
             }
     }
     /**
@@ -661,7 +672,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string
      */
-    function text_getXmlSchema()
+    public function text_getXmlSchema()
     {
         $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "textattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
@@ -675,7 +686,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string
      */
-    function enum_getXmlSchema()
+    public function enum_getXmlSchema()
     {
         $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "enumattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
@@ -696,7 +707,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string
      */
-    function docid_getXmlSchema()
+    public function docid_getXmlSchema()
     {
         $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "docidattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
@@ -709,7 +720,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string
      */
-    function date_getXmlSchema()
+    public function date_getXmlSchema()
     {
         $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "dateattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
@@ -720,7 +731,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string
      */
-    function timestamp_getXmlSchema()
+    public function timestamp_getXmlSchema()
     {
         $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "timestampattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
@@ -731,7 +742,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string
      */
-    function color_getXmlSchema()
+    public function color_getXmlSchema()
     {
         $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "colorattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
@@ -742,7 +753,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string
      */
-    function int_getXmlSchema()
+    public function int_getXmlSchema()
     {
         $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "intattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
@@ -753,7 +764,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string
      */
-    function longtext_getXmlSchema()
+    public function longtext_getXmlSchema()
     {
         $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "longtextattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
@@ -764,7 +775,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string
      */
-    function float_getXmlSchema()
+    public function float_getXmlSchema()
     {
         $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "floatattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
@@ -775,7 +786,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string
      */
-    function time_getXmlSchema()
+    public function time_getXmlSchema()
     {
         $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "timeattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
@@ -786,7 +797,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string
      */
-    function file_getXmlSchema()
+    public function file_getXmlSchema()
     {
         $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "fileattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
@@ -798,7 +809,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string
      */
-    function array_getXmlSchema(&$la)
+    public function array_getXmlSchema(&$la)
     {
         $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "arrayattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
@@ -830,7 +841,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string
      */
-    public function getTextualValue(Doc $doc, $index = - 1, Array $configuration = array())
+    public function getTextualValue(Doc $doc, $index = - 1, array $configuration = array())
     {
         $decimalSeparator = isset($configuration['decimalSeparator']) ? $configuration['decimalSeparator'] : '.';
         
@@ -863,7 +874,6 @@ class NormalAttribute extends BasicAttribute
             $fc->setLongtextMultipleBrToCr($configuration['longtextMultipleBrToCr']);
         } else {
             $fc->setLongtextMultipleBrToCr(" "); // long text are in a single line
-            
         }
         $info = $fc->getInfo($this, $value, $doc);
         if (empty($info)) {
@@ -874,7 +884,6 @@ class NormalAttribute extends BasicAttribute
     
     public function getNumberValue(Doc $doc, $index = - 1, $decimalSeparator = ".")
     {
-        
         if ($index >= 0) {
             $numberValue = $doc->getMultipleRawValues($this->id, "", $index);
             if ($this->format) {
@@ -903,7 +912,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @return boolean
      */
-    function inArray()
+    public function inArray()
     {
         return ($this->fieldSet && $this->fieldSet->type === "array");
     }
@@ -914,12 +923,12 @@ class NormalAttribute extends BasicAttribute
      * @param bool $returnDisabled if false disabled enum are not returned
      * @return array
      */
-    function getEnum($returnDisabled = true)
+    public function getEnum($returnDisabled = true)
     {
         $cached = self::_cacheFetch(self::_cEnum, array(
             $this->docid,
             $this->id
-        ) , null, $returnDisabled);
+        ), null, $returnDisabled);
         if ($cached !== null) {
             return $cached;
         }
@@ -935,12 +944,12 @@ class NormalAttribute extends BasicAttribute
             }
             if (($this->phpfile != "") && ($this->phpfile != "-")) {
                 // for dynamic  specification of kind attributes
-                if (!include_once ("EXTERNALS/$this->phpfile")) {
+                if (!include_once("EXTERNALS/$this->phpfile")) {
                     /**
                      * @var Action $action
                      */
                     global $action;
-                    $action->exitError(sprintf(_("the external pluggin file %s cannot be read") , $this->phpfile));
+                    $action->exitError(sprintf(_("the external pluggin file %s cannot be read"), $this->phpfile));
                 }
                 if (preg_match('/(.*)\((.*)\)/', $this->phpfunc, $reg)) {
                     $args = explode(",", $reg[2]);
@@ -955,20 +964,20 @@ class NormalAttribute extends BasicAttribute
                         
                         EnumAttributeTools::flatEnumNotationToEnumArray($this->phpfunc, $this->enum, $this->enumlabel, $br);
                     } else {
-                        AddWarningMsg(sprintf(_("function [%s] not exists") , $this->phpfunc));
+                        AddWarningMsg(sprintf(_("function [%s] not exists"), $this->phpfunc));
                         $this->phpfunc = "";
                     }
                 } else {
-                    AddWarningMsg(sprintf(_("invalid syntax for [%s] for enum attribute [%s]") , $this->phpfunc, $this->id));
+                    AddWarningMsg(sprintf(_("invalid syntax for [%s] for enum attribute [%s]"), $this->phpfunc, $this->id));
                 }
                 self::_cacheStore(self::_cEnum, array(
                     $this->docid,
                     $this->id
-                ) , $this->enum);
+                ), $this->enum);
                 self::_cacheStore(self::_cEnumLabel, array(
                     $this->docid,
                     $this->id
-                ) , $this->enumlabel);
+                ), $this->enumlabel);
             } else {
                 // static enum
                 $famId = $this->_getRecursiveParentFamHavingAttribute($this->docid, $this->id);
@@ -976,7 +985,7 @@ class NormalAttribute extends BasicAttribute
                 $cached = self::_cacheFetch(self::_cEnum, array(
                     $famId,
                     $this->id
-                ) , null, $returnDisabled);
+                ), null, $returnDisabled);
                 if ($cached !== null) {
                     return $cached;
                 }
@@ -1009,18 +1018,18 @@ class NormalAttribute extends BasicAttribute
                 self::_cacheStore(self::_cEnum, array(
                     $famId,
                     $this->id
-                ) , $this->enum);
+                ), $this->enum);
                 self::_cacheStore(self::_cEnumLabel, array(
                     $famId,
                     $this->id
-                ) , $this->enumlabel);
+                ), $this->enumlabel);
             }
         }
         if (!$returnDisabled) {
             return self::_cacheFetch(self::_cEnum, array(
                 $this->docid,
                 $this->id
-            ) , null, $returnDisabled);
+            ), null, $returnDisabled);
         }
         return $this->enum;
     }
@@ -1030,8 +1039,7 @@ class NormalAttribute extends BasicAttribute
         foreach ($enums as $item) {
             if ($item["key"] === $key) {
                 if ($item["parentkey"] !== null) {
-                    
-                    return sprintf("%s.%s", $this->getCompleteEnumKey($item["parentkey"], $enums) , $item["keyPath"]);
+                    return sprintf("%s.%s", $this->getCompleteEnumKey($item["parentkey"], $enums), $item["keyPath"]);
                 } else {
                     return $item["keyPath"];
                 }
@@ -1050,8 +1058,7 @@ class NormalAttribute extends BasicAttribute
                     $label = $item["label"];
                 }
                 if ($item["parentkey"] !== null) {
-                    
-                    return sprintf("%s/%s", $this->getCompleteEnumLabel($item["parentkey"], $enums, $prefix) , $label);
+                    return sprintf("%s/%s", $this->getCompleteEnumLabel($item["parentkey"], $enums, $prefix), $label);
                 } else {
                     return $label;
                 }
@@ -1076,7 +1083,7 @@ class NormalAttribute extends BasicAttribute
      * @param bool $returnDisabled if false disabled enum are not returned
      * @return array|string|null
      */
-    function getEnumLabel($enumid = null, $returnDisabled = true)
+    public function getEnumLabel($enumid = null, $returnDisabled = true)
     {
         $implode = false;
         $this->getEnum($returnDisabled);
@@ -1084,14 +1091,14 @@ class NormalAttribute extends BasicAttribute
         $cached = self::_cacheFetch(self::_cEnumLabel, array(
             $this->docid,
             $this->id
-        ) , null, $returnDisabled);
+        ), null, $returnDisabled);
         if ($cached === null) {
             $famId = $this->_getRecursiveParentFamHavingAttribute($this->docid, $this->id);
             if ($famId !== $this->docid) {
                 $cached = self::_cacheFetch(self::_cEnumLabel, array(
                     $famId,
                     $this->id
-                ) , null, $returnDisabled);
+                ), null, $returnDisabled);
             }
         }
         if ($cached !== null) {
@@ -1127,10 +1134,12 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string error message (empty means ok)
      */
-    function addEnum($dbaccess, $key, $label)
+    public function addEnum($dbaccess, $key, $label)
     {
         $err = '';
-        if ($key == "") return "";
+        if ($key == "") {
+            return "";
+        }
         
         $famId = $this->docid;
         $attrId = $this->id;
@@ -1143,7 +1152,7 @@ class NormalAttribute extends BasicAttribute
             /* Search attribute in parents */
             $a = $this->_getDocAttrFromParents($dbaccess, $famId, $attrId);
             if ($a === false) {
-                $err = sprintf(_("unknow attribute %s (family %s)") , $attrId, $famId);
+                $err = sprintf(_("unknow attribute %s (family %s)"), $attrId, $famId);
                 return $err;
             }
         }
@@ -1158,14 +1167,14 @@ class NormalAttribute extends BasicAttribute
             
             $key = str_replace(array(
                 '|'
-            ) , array(
+            ), array(
                 '_'
-            ) , $key);
+            ), $key);
             $label = str_replace(array(
                 '|'
-            ) , array(
+            ), array(
                 '_'
-            ) , $label);
+            ), $label);
             if (!$oe->isAffected()) {
                 $oe->attrid = $attrId;
                 $oe->famid = $famId;
@@ -1178,25 +1187,25 @@ class NormalAttribute extends BasicAttribute
                     $cachedEnum = self::_cacheFetch(self::_cEnum, array(
                         $famId,
                         $this->id
-                    ) , array());
+                    ), array());
                     $cachedEnumLabel = self::_cacheFetch(self::_cEnumLabel, array(
                         $famId,
                         $this->id
-                    ) , array());
+                    ), array());
                     $cachedEnum[$key] = $label;
                     $cachedEnumLabel[$key] = $label;
                     self::_cacheStore(self::_cEnum, array(
                         $famId,
                         $this->id
-                    ) , $cachedEnum);
+                    ), $cachedEnum);
                     self::_cacheStore(self::_cEnumLabel, array(
                         $famId,
                         $this->id
-                    ) , $cachedEnumLabel);
+                    ), $cachedEnumLabel);
                 }
             }
         } else {
-            $err = sprintf(_("unknow attribute %s (family %s)") , $attrId, $famId);
+            $err = sprintf(_("unknow attribute %s (family %s)"), $attrId, $famId);
         }
         return $err;
     }
@@ -1240,14 +1249,14 @@ WITH RECURSIVE parent_attr(fromid, docid, id) AS (
 )
 SELECT docid FROM parent_attr WHERE id = '%s' LIMIT 1;
 SQL;
-        $sql = sprintf($sql, pg_escape_string($famId) , pg_escape_string($attrId));
+        $sql = sprintf($sql, pg_escape_string($famId), pg_escape_string($attrId));
         $parentFamId = false;
         simpleQuery('', $sql, $parentFamId, true, true);
         if ($parentFamId !== false) {
             self::_cacheStore(self::_cParent, array(
                 $famId,
                 $attrId
-            ) , $parentFamId);
+            ), $parentFamId);
         }
         return $parentFamId;
     }
@@ -1267,7 +1276,7 @@ SQL;
      * @param bool $completeKey if true test complete key with path else without path
      * @return bool
      */
-    function existEnum($key, $completeKey = true)
+    public function existEnum($key, $completeKey = true)
     {
         if ($key == "") {
             return false;
@@ -1290,7 +1299,7 @@ SQL;
     {
         if (is_scalar($k)) {
             return $k;
-        } else if (is_array($k)) {
+        } elseif (is_array($k)) {
             return implode(':', $k);
         }
         return serialize($k);
@@ -1402,7 +1411,7 @@ class FieldSetAttribute extends BasicAttribute
      * @param string $options option string
      * @param string $docname
      */
-    function __construct($id, $docid, $label, $visibility = "", $usefor = "", $type = "frame", &$fieldSet = null, $options = "", $docname = "")
+    public function __construct($id, $docid, $label, $visibility = "", $usefor = "", $type = "frame", &$fieldSet = null, $options = "", $docname = "")
     {
         $this->id = $id;
         $this->docid = $docid;
@@ -1421,7 +1430,7 @@ class FieldSetAttribute extends BasicAttribute
      *
      * @return string
      */
-    function getXmlSchema($la)
+    public function getXmlSchema($la)
     {
         $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "fieldattribute_schema.xml"));
         $lay->set("aname", $this->id);
@@ -1451,7 +1460,7 @@ class FieldSetAttribute extends BasicAttribute
      *
      * @return string
      */
-    function getXmlValue(Doc & $doc, $opt = false)
+    public function getXmlValue(Doc & $doc, $opt = false)
     {
         $la = $doc->getAttributes();
         $xmlvalues = array();
@@ -1464,8 +1473,7 @@ class FieldSetAttribute extends BasicAttribute
                 if ($v->type == "htmltext" && $opt !== false) {
                     $value = $v->prepareHtmltextForExport($value);
                     if ($opt->withFile) {
-                        $value = preg_replace_callback('/(&lt;img.*?)src="(((?=.*docid=(.*?)&)(?=.*attrid=(.*?)&)(?=.*index=(-?[0-9]+)))|(file\/(.*?)\/[0-9]+\/(.*?)\/(-?[0-9]+))).*?"/', function ($matches) use ($opt)
-                        {
+                        $value = preg_replace_callback('/(&lt;img.*?)src="(((?=.*docid=(.*?)&)(?=.*attrid=(.*?)&)(?=.*index=(-?[0-9]+)))|(file\/(.*?)\/[0-9]+\/(.*?)\/(-?[0-9]+))).*?"/', function ($matches) use ($opt) {
                             if (isset($matches[7])) {
                                 $docid = $matches[8];
                                 $attrid = $matches[9];
@@ -1475,28 +1483,30 @@ class FieldSetAttribute extends BasicAttribute
                                 $index = $matches[6] == "-1" ? 0 : $matches[6];
                                 $attrid = $matches[5];
                             }
-                            $doc = new_Doc(getDbAccess() , $docid);
+                            $doc = new_Doc(getDbAccess(), $docid);
                             $attr = $doc->getAttribute($attrid);
                             $tfiles = $doc->vault_properties($attr);
                             $f = $tfiles[$index];
                             if (is_file($f["path"])) {
                                 if ($opt->outFile) {
-                                    return sprintf('%s title="%s" src="data:%s;base64,[FILE64:%s]"', "\n" . $matches[1], unaccent($f["name"]) , $f["mime_s"], $f["path"]);
+                                    return sprintf('%s title="%s" src="data:%s;base64,[FILE64:%s]"', "\n" . $matches[1], unaccent($f["name"]), $f["mime_s"], $f["path"]);
                                 } else {
-                                    return sprintf('%s title="%s" src="data:%s;base64,%s"', "\n" . $matches[1], unaccent($f["name"]) , $f["mime_s"], base64_encode(file_get_contents($f["path"])));
+                                    return sprintf('%s title="%s" src="data:%s;base64,%s"', "\n" . $matches[1], unaccent($f["name"]), $f["mime_s"], base64_encode(file_get_contents($f["path"])));
                                 }
                             } else {
-                                return sprintf('%s title="%s" src="data:%s;base64,file not found"', "\n" . $matches[1], unaccent($f["name"]) , $f["mime_s"]);
+                                return sprintf('%s title="%s" src="data:%s;base64,file not found"', "\n" . $matches[1], unaccent($f["name"]), $f["mime_s"]);
                             }
-                        }
-                        , $value);
+                        }, $value);
                     }
                 }
                 $xmlvalues[] = $value;
             }
         }
-        if ($opt->flat) return implode("\n", $xmlvalues);
-        else return sprintf("<%s>%s</%s>", $this->id, implode("\n", $xmlvalues) , $this->id);
+        if ($opt->flat) {
+            return implode("\n", $xmlvalues);
+        } else {
+            return sprintf("<%s>%s</%s>", $this->id, implode("\n", $xmlvalues), $this->id);
+        }
     }
 }
 
@@ -1504,7 +1514,7 @@ class MenuAttribute extends BasicAttribute
 {
     public $link; // hypertext link
     public $precond; // pre-condition to activate menu
-    function __construct($id, $docid, $label, $order, $link, $visibility = "", $precond = "", $options = "", $docname = "")
+    public function __construct($id, $docid, $label, $order, $link, $visibility = "", $precond = "", $options = "", $docname = "")
     {
         $this->id = $id;
         $this->docid = $docid;
@@ -1521,11 +1531,10 @@ class MenuAttribute extends BasicAttribute
 
 class ActionAttribute extends BasicAttribute
 {
-    
     public $wapplication; // the what application name
     public $waction; // the what action name
     public $precond; // pre-condition to activate action
-    function __construct($id, $docid, $label, $order, $visibility = "", $wapplication = "", $waction = "", $precond = "", $options = "", $docname = "")
+    public function __construct($id, $docid, $label, $order, $visibility = "", $wapplication = "", $waction = "", $precond = "", $options = "", $docname = "")
     {
         $this->id = $id;
         $this->docid = $docid;
@@ -1539,7 +1548,7 @@ class ActionAttribute extends BasicAttribute
         $this->type = "action";
         $this->docname = $docname;
     }
-    function getLink($docid)
+    public function getLink($docid)
     {
         $l = \Dcp\Core\ContextManager::getApplicationParam("CORE_STANDURL");
         $batch = ($this->getOption("batchfolder") == "yes");
@@ -1550,7 +1559,9 @@ class ActionAttribute extends BasicAttribute
         } else {
             $l.= "&app=" . $this->wapplication;
             $l.= "&action=" . $this->waction;
-            if (!stristr($this->waction, "&id=")) $l.= "&id=" . $docid;
+            if (!stristr($this->waction, "&id=")) {
+                $l.= "&id=" . $docid;
+            }
         }
         return $l;
     }
@@ -1594,10 +1605,11 @@ class EnumAttributeTools
      * @param string $locale the prefix key for locale values (if empty no locale are set)
      * @return array
      */
-    public static function flatEnumNotationToEnumArray($phpfunc, array & $theEnum, array & $theEnumlabel = array() , $locale = '')
+    public static function flatEnumNotationToEnumArray($phpfunc, array & $theEnum, array & $theEnumlabel = array(), $locale = '')
     {
-        
-        if (!$phpfunc) return array();
+        if (!$phpfunc) {
+            return array();
+        }
         if (preg_match('/^\[[a-z]*\](.*)/', $phpfunc, $reg)) {
             //delete old enum format syntax
             $phpfunc = $reg[1];
@@ -1608,14 +1620,18 @@ class EnumAttributeTools
         
         $sphpfunc = str_replace("\\.", "-dot-", $phpfunc); // to replace dot & comma separators
         $sphpfunc = str_replace("\\,", "-comma-", $sphpfunc);
-        if ($sphpfunc == "-") $sphpfunc = ""; // it is recorded
+        if ($sphpfunc == "-") {
+            $sphpfunc = "";
+        } // it is recorded
         if ($sphpfunc != "") {
             $tenum = explode(",", $sphpfunc);
             foreach ($tenum as $k => $v) {
                 list($enumKey, $enumValue) = explode("|", $v, 2);
                 $treeKeys = explode(".", $enumKey);
                 $enumKey = trim($enumKey);
-                if (strlen($enumKey) == 0) $enumKey = " ";
+                if (strlen($enumKey) == 0) {
+                    $enumKey = " ";
+                }
                 $enumValue = trim($enumValue);
                 
                 $n = count($treeKeys);
@@ -1623,10 +1639,10 @@ class EnumAttributeTools
                     $enumValue = str_replace(array(
                         '-dot-',
                         '-comma-'
-                    ) , array(
+                    ), array(
                         '\.',
                         ','
-                    ) , $enumValue);
+                    ), $enumValue);
                     
                     if ($locale) {
                         $translatedEnumValue = _($locale . $enumKey);
@@ -1638,17 +1654,17 @@ class EnumAttributeTools
                     $theEnum[str_replace(array(
                         '-dot-',
                         '-comma-'
-                    ) , array(
+                    ), array(
                         '\.',
                         ','
-                    ) , $enumKey) ] = $enumValue;
+                    ), $enumKey) ] = $enumValue;
                     $theEnumlabel[str_replace(array(
                         '-dot-',
                         '-comma-'
-                    ) , array(
+                    ), array(
                         '.',
                         ','
-                    ) , $enumKey) ] = $enumValue;
+                    ), $enumKey) ] = $enumValue;
                 } else {
                     $enumlabelKey = '';
                     $tmpKey = '';
@@ -1666,10 +1682,10 @@ class EnumAttributeTools
                     $tmpKey = str_replace(array(
                         '-dot-',
                         '-comma-'
-                    ) , array(
+                    ), array(
                         '\.',
                         ','
-                    ) , $tmpKey);
+                    ), $tmpKey);
                     
                     if ($locale) {
                         $translatedEnumValue = _($locale . $enumlabelKey);
@@ -1681,24 +1697,24 @@ class EnumAttributeTools
                     $enumlabelValue = str_replace(array(
                         '-dot-',
                         '-comma-'
-                    ) , array(
+                    ), array(
                         '\.',
                         ','
-                    ) , $enumlabelValue);
+                    ), $enumlabelValue);
                     $theEnum[str_replace(array(
                         '-dot-',
                         '-comma-'
-                    ) , array(
+                    ), array(
                         '\.',
                         ','
-                    ) , $enumKey) ] = $enumValue;
+                    ), $enumKey) ] = $enumValue;
                     $theEnumlabel[str_replace(array(
                         '-dot-',
                         '-comma-'
-                    ) , array(
+                    ), array(
                         '.',
                         ','
-                    ) , $enumlabelKey) ] = $enumlabelValue;
+                    ), $enumlabelKey) ] = $enumlabelValue;
                 }
             }
         }
@@ -1709,7 +1725,7 @@ class EnumAttributeTools
     private static function getEnumHierarchy($key, $parents)
     {
         if (isset($parents[$key])) {
-            return array_merge(self::getEnumHierarchy($parents[$key], $parents) , array(
+            return array_merge(self::getEnumHierarchy($parents[$key], $parents), array(
                 $key
             ));
         } else {
@@ -1726,7 +1742,7 @@ class EnumAttributeTools
      */
     public static function getFlatEnumNotation($famid, $attrid)
     {
-        $sql = sprintf("select * from docenum where famid='%s' and attrid='%s' and (disabled is null or not disabled) order by eorder", pg_escape_string($famid) , pg_escape_string($attrid));
+        $sql = sprintf("select * from docenum where famid='%s' and attrid='%s' and (disabled is null or not disabled) order by eorder", pg_escape_string($famid), pg_escape_string($attrid));
         simpleQuery('', $sql, $results);
         $tItems = array();
         $hierarchy = array();
@@ -1748,9 +1764,8 @@ class EnumAttributeTools
             } else {
                 $key = str_replace('.', '\\.', $key);
             }
-            $tItems[] = sprintf("%s|%s", str_replace(',', '\\,', $key) , str_replace(',', '\\,', $label));
+            $tItems[] = sprintf("%s|%s", str_replace(',', '\\,', $key), str_replace(',', '\\,', $label));
         }
         return implode(",", $tItems);
     }
 }
-?>

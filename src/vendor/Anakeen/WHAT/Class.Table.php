@@ -14,7 +14,7 @@
 /**
  */
 //
-include_once ('Class.Log.php');
+include_once('Class.Log.php');
 
 $CLASS_TABLE_PHP = "";
 /**
@@ -25,88 +25,88 @@ class Table
     // ---------------------------------------------------------------------------
     // Public var
     //
-    var $array; // THE Array (2 dimensionnal)
-    var $arrayobj = "FALSE"; // if set to TRUE, Table can manage array of i
+    public $array; // THE Array (2 dimensionnal)
+    public $arrayobj = "FALSE"; // if set to TRUE, Table can manage array of i
     // Objects, it means that fields are considered as
     // Object Attributes
     // Fields attributes
-    var $fields; // array of the field names to show
-    var $filter = "/[A-Za-z0-9][A-Za-z0-9_]*/"; // Regexp: Field names to show
-    var $sortable_fields; // array of the fields you can sort using the
+    public $fields; // array of the field names to show
+    public $filter = "/[A-Za-z0-9][A-Za-z0-9_]*/"; // Regexp: Field names to show
+    public $sortable_fields; // array of the fields you can sort using the
     // sort_link
-    var $ordered_by; // the current ordering field
-    var $sort_link; // the URL used to perform a reordering of the table
+    public $ordered_by; // the current ordering field
+    public $sort_link; // the URL used to perform a reordering of the table
     // this URL is a format string with a %s where we
     // should give the column name
-    var $fieldsattr; // array, foreach field gives the align attr
+    public $fieldsattr; // array, foreach field gives the align attr
     // Header attributes
-    var $heading = 0; // if set, create a <th> section
-    var $headcontent; // the content of the header
+    public $heading = 0; // if set, create a <th> section
+    public $headcontent; // the content of the header
     // if not set, the field string is used
-    var $headattr; // foreach element of the header gives the spanning
+    public $headattr; // foreach element of the header gives the spanning
     // and align attributes
-    var $headcolor; // Background color of header line, if not set,
+    public $headcolor; // Background color of header line, if not set,
     // we use the first color of colortab
-    var $indexcolor; // Background color of index line
+    public $indexcolor; // Background color of index line
     // Footer attributes
-    var $footing = 0; // Do we use a footer ?
-    var $footcontent; // content of the footer
+    public $footing = 0; // Do we use a footer ?
+    public $footcontent; // content of the footer
     // if not set, the field string is used
-    var $footattr; // foreach element of the footer gives the spanning
+    public $footattr; // foreach element of the footer gives the spanning
     // and align attributes
-    var $footcolor; // background color of the footer, if not set,
+    public $footcolor; // background color of the footer, if not set,
     // we use the color from colortab
     // Hyperlinks
-    var $links; // array of links associated with fields, each link
+    public $links; // array of links associated with fields, each link
     // is a composed with a dynamic url + an array of
     // value that should replace %s format tag
     // in the url using an sprintff function
     // General Layout
-    var $class; // the class (CSS) associated with <table, <tr, <td
-    var $index_class; // the class (CSS) associated with the index
-    var $head_class; // the class (CSS) associated with the header
-    var $width = "100%"; // table width
-    var $colortab; // table of alternate colors used for each row
-    var $border = 0; // border size
-    var $cellspacing = 0; // cellspacing size
-    var $defaultcolor = "#FFFFFF"; // too easy
-    var $page_bgcolor = "#FFFFFF"; // background color for nav fields
+    public $class; // the class (CSS) associated with <table, <tr, <td
+    public $index_class; // the class (CSS) associated with the index
+    public $head_class; // the class (CSS) associated with the header
+    public $width = "100%"; // table width
+    public $colortab; // table of alternate colors used for each row
+    public $border = 0; // border size
+    public $cellspacing = 0; // cellspacing size
+    public $defaultcolor = "#FFFFFF"; // too easy
+    public $page_bgcolor = "#FFFFFF"; // background color for nav fields
     // Page Layout
-    var $start = 0; // the start index
-    var $slice = 20; // the slice size, zero means all
-    var $alpha_index = 0; // do you want an alphabetical index before the table
+    public $start = 0; // the start index
+    public $slice = 20; // the slice size, zero means all
+    public $alpha_index = 0; // do you want an alphabetical index before the table
     // it's a bitstream :
     // 1 : UpperCase letter
     // 2 : lowerCase letter
-    var $page_numbering = 0; // if true a page number is displayed
-    var $previous = "prev"; // the text (can be <img...) used to link to the
+    public $page_numbering = 0; // if true a page number is displayed
+    public $previous = "prev"; // the text (can be <img...) used to link to the
     // previous page
-    var $next = "next"; // the text (can be <img...) used to link to the
+    public $next = "next"; // the text (can be <img...) used to link to the
     // next page
-    var $first = "first"; // the text (can be <img...) used to link to the
+    public $first = "first"; // the text (can be <img...) used to link to the
     // first page
-    var $last = "last"; // the text (can be <img...) used to link to the
+    public $last = "last"; // the text (can be <img...) used to link to the
     // last page
-    var $page_link; // the URL used to turn pages. This URL is a format
+    public $page_link; // the URL used to turn pages. This URL is a format
     // string with two %s in it the first on gives the
     // index of the page start, the second gives the
     // page size
     // ---------------------------------------------------------------------------
     // Private var
-    var $row = 0; // index of the current displayed row
-    var $out; // the output string
+    public $row = 0; // index of the current displayed row
+    public $out; // the output string
     //
     // ---------------------------------------------------------------------------
     // Public methods
     // ---------------------------------------------------------------------------
     //
-    function show()
+    public function show()
     {
         $this->construct_table();
         print $this->out;
     }
     
-    function get()
+    public function get()
     {
         $this->construct_table();
         return ($this->out);
@@ -116,11 +116,13 @@ class Table
     // Private methods
     // ---------------------------------------------------------------------------
     //
-    function construct_table()
+    public function construct_table()
     {
         $this->out = "";
         // check the table
-        if (!is_array($this->array)) return;
+        if (!is_array($this->array)) {
+            return;
+        }
         if (($this->arrayobj == "FALSE") && !is_array($this->array[$this->start])) {
             return;
         }
@@ -143,11 +145,14 @@ class Table
         return;
     }
     // ----------------------------------------------
-    function show_alpha()
+    public function show_alpha()
     {
-        
-        if (!isset($this->alpha_index)) return;
-        if (!isset($this->ordered_by)) return;
+        if (!isset($this->alpha_index)) {
+            return;
+        }
+        if (!isset($this->ordered_by)) {
+            return;
+        }
         $ind = 0;
         $lettre = array();
         reset($this->array);
@@ -223,14 +228,20 @@ class Table
             "z"
         );
         
-        if (($this->alpha_index & 1)) $alpha_list = $alpha_up;
-        if (($this->alpha_index & 2)) $alpha_list = $alpha_low;
+        if (($this->alpha_index & 1)) {
+            $alpha_list = $alpha_up;
+        }
+        if (($this->alpha_index & 2)) {
+            $alpha_list = $alpha_low;
+        }
         $this->table_open();
         $this->table_index_row_open();
         $idx = "[";
         $prev = 0;
         foreach ($alpha_list as $k => $car) {
-            if ($prev) $idx = $idx . "|";
+            if ($prev) {
+                $idx = $idx . "|";
+            }
             if (!isset($lettre[$car])) {
                 $idx = $idx . "&nbsp;$car&nbsp;";
                 $prev = 1;
@@ -252,10 +263,11 @@ class Table
         $this->table_close();
     }
     // ----------------------------------------------
-    function show_header()
+    public function show_header()
     {
-        
-        if (!$this->heading) return;
+        if (!$this->heading) {
+            return;
+        }
         $this->row = 0;
         
         $this->table_heading_row_open();
@@ -282,16 +294,22 @@ class Table
         $this->table_row_close();
     }
     // ----------------------------------------------
-    function show_table()
+    public function show_table()
     {
         $ind = 0;
         reset($this->array);
         foreach ($this->array as $key => $val) {
-            if ($ind++ < $this->start) continue;
-            if (($this->slice > 0) && ($ind > ($this->start + $this->slice))) break;
+            if ($ind++ < $this->start) {
+                continue;
+            }
+            if (($this->slice > 0) && ($ind > ($this->start + $this->slice))) {
+                break;
+            }
 
             
-            if ((!is_array($val)) && (!is_object($val))) continue;
+            if ((!is_array($val)) && (!is_object($val))) {
+                continue;
+            }
             
             $this->table_row_open();
             
@@ -300,7 +318,6 @@ class Table
                 if ($this->arrayobj == "TRUE") {
                     $curval = $val->$v;
                     ######## BUG ########### echo $val->Parents->nomp;
-                    
                 } else {
                     if (isset($val[$v])) {
                         $curval = $val[$v];
@@ -331,7 +348,7 @@ class Table
         }
     }
     // ----------------------------------------------
-    function show_footer()
+    public function show_footer()
     {
         if ($this->footing) {
             $this->table_row_open("", $this->footcolor);
@@ -354,10 +371,12 @@ class Table
         return;
     }
     // ----------------------------------------------
-    function show_navbar()
+    public function show_navbar()
     {
         // Next/Prev pages
-        if (!$this->slice || ($this->slice >= sizeof($this->array))) return;
+        if (!$this->slice || ($this->slice >= sizeof($this->array))) {
+            return;
+        }
         $this->table_open();
         $this->table_row_open("", $this->page_bgcolor);
         $nbcol = 5;
@@ -399,28 +418,32 @@ class Table
         $this->table_close();
     }
     // ----------------------------------------------
-    function select_colnames()
+    public function select_colnames()
     {
-        if (isset($this->fields) || ($this->arrayobj == "TRUE")) return;
+        if (isset($this->fields) || ($this->arrayobj == "TRUE")) {
+            return;
+        }
         reset($this->array);
         list($key, $val) = each($this->array);
         reset($val);
         foreach ($val as $k => $v) {
-            if (preg_match($this->filter, $k)) $this->fields[] = $k;
+            if (preg_match($this->filter, $k)) {
+                $this->fields[] = $k;
+            }
         }
     }
     // ----------------------------------------------
-    function table_open()
+    public function table_open()
     {
         $this->out = $this->out . sprintf("<table%s %s cellpadding=\"0\" %s %s >\n", isset($this->class) ? " class=$this->class" : "", isset($this->border) ? " border=$this->border" : "", isset($this->cellspacing) ? " cellspacing=$this->cellspacing" : "", isset($this->width) ? " width=$this->width" : "");
     }
     // ----------------------------------------------
-    function table_close()
+    public function table_close()
     {
         $this->out = $this->out . "</table>\n";
     }
     // ----------------------------------------------
-    function table_row_open($nbcol = "", $color = "")
+    public function table_row_open($nbcol = "", $color = "")
     {
         if (!$color && (isset($this->colortab))) {
             $color = $this->colortab[$this->row % sizeof($this->colortab) ];
@@ -428,23 +451,23 @@ class Table
         $this->out = $this->out . sprintf(" <tr%s%s%s>\n", $color ? " bgcolor=$color" : "", isset($this->class) ? " class=$this->class" : "", $nbcol ? " cols=$nbcol" : "");
     }
     // ----------------------------------------------
-    function table_row_close()
+    public function table_row_close()
     {
         $this->out = $this->out . " </tr>\n";
         $this->row++;
     }
     // ----------------------------------------------
-    function table_index_row_open()
+    public function table_index_row_open()
     {
         $this->out = $this->out . sprintf(" <tr%s%s>\n", isset($this->index_class) ? " class=\"$this->index_class\"" : "", isset($this->indexcolor) ? " bgcolor=$this->indexcolor" : "");
     }
     // ----------------------------------------------
-    function table_heading_row_open()
+    public function table_heading_row_open()
     {
         $this->out = $this->out . sprintf(" <tr%s%s>\n", isset($this->head_class) ? " class=\"$this->head_class\"" : "", isset($this->headcolor) ? " bgcolor=$this->headcolor" : "");
     }
     // ----------------------------------------------
-    function table_heading_cell($val, $colspan = 1, $class = "", $align = "left")
+    public function table_heading_cell($val, $colspan = 1, $class = "", $align = "left")
     {
         $w_class = "";
         if (isset($class)) {
@@ -457,7 +480,7 @@ class Table
         $this->out = $this->out . sprintf("  <th%s%s%s><p>%s</p></th>\n", $w_class, $colspan ? " colspan=$colspan" : "", $align ? " align=$align" : "", $val);
     }
     // ----------------------------------------------
-    function table_cell($val, $colspan = 1, $align = "left", $wrap = "", $class = "", $width = "")
+    public function table_cell($val, $colspan = 1, $align = "left", $wrap = "", $class = "", $width = "")
     {
         $w_class = "";
         if ($class != "") {
@@ -474,7 +497,7 @@ class Table
     //  this function is here because we don't know where we should put it
     //  so !!
     //
-    function create_link($template, $values, $text)
+    public function create_link($template, $values, $text)
     {
         $link = "\$link = sprintf (\"\n<a href=\\\"" . $template . "\\\">\"";
         reset($values);
@@ -487,4 +510,3 @@ class Table
         return ($link);
     }
 }
-?>

@@ -13,9 +13,9 @@
 /**
  */
 
-include_once ("Class.DbObj.php");
-include_once ("Class.QueryDb.php");
-include_once ("Class.Log.php");
+include_once("Class.DbObj.php");
+include_once("Class.QueryDb.php");
+include_once("Class.Log.php");
 /**
  * Folder managing
  * @package FDL
@@ -45,15 +45,15 @@ class QueryDir extends DbObj
     public $fromid;
     public $qtype;
     public $doctype;
-    var $dbtable = "fld";
+    public $dbtable = "fld";
     
-    var $order_by = "dirid";
+    public $order_by = "dirid";
     
-    var $fulltextfields = array(
+    public $fulltextfields = array(
         ""
     );
     
-    var $sqlcreate = "
+    public $sqlcreate = "
 create table fld ( 
                     dirid   int not null,
                     query   text,
@@ -68,25 +68,22 @@ create unique index fld_u on fld(qtype,dirid,childid);
 create sequence seq_id_fld start 100;
 CREATE TRIGGER tfldfrom before insert on fld FOR EACH ROW execute procedure fromfld();";
     #CREATE TRIGGER tfldrel after insert or update or delete on fld FOR EACH ROW execute procedure relfld();";
-    function PreInsert()
+    public function PreInsert()
     {
         // test if not already exist
         if ($this->qtype != "M") {
             $this->delete(false); // delete before insert
-            
         }
     }
-    function Exists()
+    public function Exists()
     {
         // test if  already exist
         if ($this->qtype != "M") {
             $err = $this->exec_query(sprintf("select * from fld where dirid=%s and childid=%s", $this->dirid, $this->childid));
             if ($this->numrows() > 0) {
                 return true; // just to say it is not a real error
-                
             }
         }
         return false;
     }
 }
-?>

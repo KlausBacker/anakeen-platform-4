@@ -13,24 +13,23 @@
 /**
  */
 
-include_once ("WHAT/Class.Provider.php");
+include_once("WHAT/Class.Provider.php");
 class ldapProvider extends Provider
 {
     public function validateCredential($username, $password)
     {
-        
         $host = ($this->parms{'host'} != '' ? $this->parms{'host'} : '127.0.0.1');
         $port = ($this->parms{'port'} != '' ? $this->parms{'port'} : '389');
         $ssl = (strtolower($this->parms{'ssl'}) == 'y' ? true : false);
         $dnbase = ($this->parms{'dn'} != '' ? $this->parms{'dn'} : '%s');
         
-        $uri = sprintf("%s://%s:%s/", ($ssl ? 'ldaps' : 'ldap') , $host, $port);
+        $uri = sprintf("%s://%s:%s/", ($ssl ? 'ldaps' : 'ldap'), $host, $port);
         $r = ldap_connect($uri);
         $err = ldap_get_option($r, LDAP_OPT_PROTOCOL_VERSION, $ret);
         if (!$err) {
             error_log("[$ret] Can't establish LDAP connection : $uri");
             $this->errno = 0;
-            return FALSE;
+            return false;
         }
         $opts = $this->parms{'options'};
         foreach ($opts as $k => $v) {
@@ -41,13 +40,13 @@ class ldapProvider extends Provider
         $b = @ldap_bind($r, $dn, $password);
         if ($b) {
             $this->errno = 0;
-            return TRUE;
+            return true;
         } else {
             $err = ldap_error($r);
             error_log("user=[$dn] pass=[*********] result=>" . ($b ? "OK" : "NOK") . " ($err)");
         }
         $this->errno = 0;
-        return FALSE;
+        return false;
     }
     /**
      * @param User $whatuser
@@ -76,10 +75,10 @@ class ldapProvider extends Provider
         error_log("What user $username added (id=" . $whatuser->id . ")");
         if ($err != "") {
             $this->errno = 0;
-            return sprintf(_("cannot create user %s: %s") , $username, $err);
+            return sprintf(_("cannot create user %s: %s"), $username, $err);
         }
         
-        include_once ("FDL/Class.DocFam.php");
+        include_once("FDL/Class.DocFam.php");
         $dbaccess = getDbAccess();
         $du = new_doc($dbaccess, $whatuser->fid);
         if ($du->isAlive()) {
@@ -94,12 +93,14 @@ class ldapProvider extends Provider
                     $gu = new_Doc($dbaccess, $this->parms{'dGroup'});
                     if ($gu->isAlive()) {
                         $errg = $gu->addFile($du->id);
-                        if ($errg == "") error_log("User $username added to group " . $this->parms{'dGroup'});
+                        if ($errg == "") {
+                            error_log("User $username added to group " . $this->parms{'dGroup'});
+                        }
                     }
                 }
             }
         } else {
-            sprintf(_("cannot create user %s: %s") , $username, $err);
+            sprintf(_("cannot create user %s: %s"), $username, $err);
         }
         $core->session->close();
         

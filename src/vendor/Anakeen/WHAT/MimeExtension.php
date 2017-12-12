@@ -523,4 +523,3 @@ function getExtensions()
         "x-conference/x-cooltalk" => "ice"
     );
 };
-?>

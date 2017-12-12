@@ -11,32 +11,28 @@ if (! defined("ALTSEPCHAR")) {
 }
 class WriteCsv
 {
-    
-    static public $enclosure = '';
-    static public $separator = ';';
-    static public $encoding = "utf-8";
+    public static $enclosure = '';
+    public static $separator = ';';
+    public static $encoding = "utf-8";
     /**
      * @param resource $handler
      * @param array $data
      */
-    static function fput($handler, array $data)
+    public static function fput($handler, array $data)
     {
-        
         if (empty(self::$enclosure)) {
             //str_replace(SEPCHAR, ALTSEPCHAR
-            $cleanData = array_map(function ($item)
-            {
+            $cleanData = array_map(function ($item) {
                 return str_replace(array(
                     "\n",
                     self::$separator,
                     "\r"
-                ) , array(
+                ), array(
                     "\\n",
                     ALTSEPCHAR,
                     ""
-                ) , $item);
-            }
-            , $data);
+                ), $item);
+            }, $data);
             $s = implode(self::$separator, $cleanData);
             if (self::$encoding === "iso8859-15") {
                 $s = utf8_decode($s);
@@ -44,11 +40,9 @@ class WriteCsv
             fputs($handler, $s . "\n");
         } else {
             if (self::$encoding === "iso8859-15") {
-                $data = array_map(function ($cell)
-                {
+                $data = array_map(function ($cell) {
                     return utf8_decode($cell);
-                }
-                , $data);
+                }, $data);
             }
             fputcsv($handler, $data, self::$separator, self::$enclosure);
         }

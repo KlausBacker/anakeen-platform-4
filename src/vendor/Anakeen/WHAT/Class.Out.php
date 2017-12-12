@@ -39,29 +39,30 @@ $CLASS_OUT_PHP = "";
 
 class Out
 {
+    public $stream;
+    public $cr;
     
-    var $stream;
-    var $cr;
-    
-    function Out($rt = 0)
+    public function Out($rt = 0)
     {
         $this->stream = "";
-        if ($rt) $this->cr = "\n";
-        else $this->cr = "";
+        if ($rt) {
+            $this->cr = "\n";
+        } else {
+            $this->cr = "";
+        }
     }
     
-    function Cat($string)
+    public function Cat($string)
     {
         $this->stream = $this->stream . $string . $this->cr;
     }
-    function Reset()
+    public function Reset()
     {
         $this->stream = "";
     }
     
-    function Flush()
+    public function Flush()
     {
         return ($this->stream);
     }
 }
-?>

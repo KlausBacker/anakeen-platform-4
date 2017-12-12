@@ -360,7 +360,6 @@ class FormatCollection
      */
     public function addAttribute($attrid)
     {
-        
         $this->fmtAttrs[$attrid] = $attrid;
         return $this;
     }
@@ -473,16 +472,20 @@ class FormatCollection
         $countDoc = count($this->dl);
         \Dcp\VerifyAttributeAccess::clearCache();
         foreach ($this->dl as $docid => $doc) {
-            if ($kdoc % 10 == 0) $this->callHookStatus(sprintf(_("Doc Render %d/%d") , $kdoc, $countDoc));
+            if ($kdoc % 10 == 0) {
+                $this->callHookStatus(sprintf(_("Doc Render %d/%d"), $kdoc, $countDoc));
+            }
             $renderDoc = array();
             foreach ($this->fmtProps as $propName) {
-                $renderDoc["properties"][$propName] = $this->callPropertyRenderHook($this->getPropInfo($propName, $doc) , $propName, $doc);
+                $renderDoc["properties"][$propName] = $this->callPropertyRenderHook($this->getPropInfo($propName, $doc), $propName, $doc);
             }
             
             foreach ($this->fmtAttrs as $attrid) {
                 $oa = $doc->getAttribute($attrid);
                 if ($oa) {
-                    if (($oa->type == "array") || ($oa->type == "tab") || ($oa->type == "frame")) throw new \Dcp\Fmtc\Exception("FMTC0002", $attrid);
+                    if (($oa->type == "array") || ($oa->type == "tab") || ($oa->type == "frame")) {
+                        throw new \Dcp\Fmtc\Exception("FMTC0002", $attrid);
+                    }
                     
                     $value = $doc->getRawValue($oa->id);
                     if ($value === '') {
@@ -501,7 +504,7 @@ class FormatCollection
                     }
                     $renderDoc["attributes"][$oa->id] = $this->callAttributeRenderHook($attributeInfo, $oa, $doc);
                 } else {
-                    $renderDoc["attributes"][$attrid] = $this->callAttributeRenderHook(new UnknowAttributeValue($this->ncAttribute) , null, $doc);
+                    $renderDoc["attributes"][$attrid] = $this->callAttributeRenderHook(new UnknowAttributeValue($this->ncAttribute), null, $doc);
                 }
             }
             
@@ -531,7 +534,7 @@ class FormatCollection
             case self::propUrl:
                 return sprintf("?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=%d", $doc->id);
             case self::revdate:
-                return $this->getFormatDate(date("Y-m-d H:i:s", intval($doc->$propName)) , $this->propDateStyle);
+                return $this->getFormatDate(date("Y-m-d H:i:s", intval($doc->$propName)), $this->propDateStyle);
             case self::cdate:
             case self::adate:
                 return $this->getFormatDate($doc->$propName, $this->propDateStyle);
@@ -540,7 +543,7 @@ class FormatCollection
             case self::propLastAccessDate:
                 return $this->getFormatDate($doc->adate, $this->propDateStyle);
             case self::propLastModificationDate:
-                return $this->getFormatDate(date("Y-m-d H:i:s", $doc->revdate) , $this->propDateStyle);
+                return $this->getFormatDate(date("Y-m-d H:i:s", $doc->revdate), $this->propDateStyle);
             case self::propCreationDate:
                 if ($doc->revision == 0) {
                     return $this->getFormatDate($doc->cdate, $this->propDateStyle);
@@ -549,6 +552,7 @@ class FormatCollection
                     simpleQuery($doc->dbaccess, $sql, $cdate, true, true);
                     return $this->getFormatDate($cdate, $this->propDateStyle);
                 }
+                // no break
             case self::propCreatedBy:
                 return $this->getCreatedByData($doc);
             case self::propRevisionData:
@@ -584,7 +588,7 @@ class FormatCollection
             $sql = sprintf("select owner from docread where initid=%d and revision = 0", $doc->initid);
             simpleQuery($doc->dbaccess, $sql, $ownerId, true, true);
         }
-        return $this->getAccountData(abs($ownerId) , $doc);
+        return $this->getAccountData(abs($ownerId), $doc);
     }
     
     protected function getStatusData(\Doc $doc)
@@ -708,7 +712,7 @@ class FormatCollection
                 );
             } else {
                 $info["lock"] = array(
-                    "lockedBy" => $this->getAccountData(abs($doc->locked) , $doc) ,
+                    "lockedBy" => $this->getAccountData(abs($doc->locked), $doc) ,
                     "temporary" => ($doc->locked < - 1)
                 );
             }
@@ -720,7 +724,6 @@ class FormatCollection
         $info["readOnly"] = ($doc->canEdit() != "");
         $info["fixed"] = ($doc->locked == - 1);
         if ($doc->profid != 0) {
-            
             if ($doc->profid == $doc->id) {
                 $info["profil"] = array(
                     "id" => intval($doc->initid) ,
@@ -784,7 +787,7 @@ class FormatCollection
             "isModified" => ($doc->lmodify == "Y") ,
             "id" => intval($doc->id) ,
             "number" => intval($doc->revision) ,
-            "createdBy" => $this->getAccountData(abs($doc->owner) , $doc)
+            "createdBy" => $this->getAccountData(abs($doc->owner), $doc)
         );
     }
     
@@ -803,14 +806,19 @@ class FormatCollection
         if (!$dateStyle) {
             $dateStyle = $this->dateStyle;
         }
-        if ($dateStyle === DateAttributeValue::defaultStyle) return stringDateToLocaleDate($v);
-        else if ($dateStyle === DateAttributeValue::isoStyle) return stringDateToIso($v, false, true);
-        else if ($dateStyle === DateAttributeValue::isoWTStyle) return stringDateToIso($v, false, false);
-        else if ($dateStyle === DateAttributeValue::frenchStyle) {
-            
+        if ($dateStyle === DateAttributeValue::defaultStyle) {
+            return stringDateToLocaleDate($v);
+        } elseif ($dateStyle === DateAttributeValue::isoStyle) {
+            return stringDateToIso($v, false, true);
+        } elseif ($dateStyle === DateAttributeValue::isoWTStyle) {
+            return stringDateToIso($v, false, false);
+        } elseif ($dateStyle === DateAttributeValue::frenchStyle) {
             $ldate = stringDateToLocaleDate($v, '%d/%m/%Y %H:%M');
-            if (strlen($v) < 11) return substr($ldate, 0, strlen($v));
-            else return $ldate;
+            if (strlen($v) < 11) {
+                return substr($ldate, 0, strlen($v));
+            } else {
+                return $ldate;
+            }
         }
         return stringDateToLocaleDate($v);
     }
@@ -823,8 +831,11 @@ class FormatCollection
             
             if ($doc->locked != - 1) {
                 $s->activity = $doc->getStateActivity();
-                if ($s->activity) $s->displayValue = $s->activity;
-                else $s->displayValue = $s->stateLabel;
+                if ($s->activity) {
+                    $s->displayValue = $s->activity;
+                } else {
+                    $s->displayValue = $s->stateLabel;
+                }
             } else {
                 $s->displayValue = $s->stateLabel;
             }
@@ -842,8 +853,11 @@ class FormatCollection
     {
         $i = count($t) - 1;
         for ($k = $i; $k >= 0; $k--) {
-            if ($t[$k] === null) unset($t[$k]);
-            else break;
+            if ($t[$k] === null) {
+                unset($t[$k]);
+            } else {
+                break;
+            }
         }
         return $t;
     }
@@ -863,7 +877,6 @@ class FormatCollection
                             $tvv = $this->rtrimNull($av);
                         } else {
                             $tvv = explode('<BR>', $av); // second level multiple
-                            
                         }
                         if (count($tvv) == 0) {
                             $info[$k] = array();
@@ -890,7 +903,6 @@ class FormatCollection
             
             return $info;
         } else {
-            
             return $this->getSingleInfo($oa, $value, $doc);
         }
     }
@@ -902,7 +914,6 @@ class FormatCollection
         if ($this->verifyAttributeAccess === true && !\Dcp\VerifyAttributeAccess::isAttributeAccessGranted($doc, $oa)) {
             $info = new noAccessAttributeValue($this->noAccessText);
         } else {
-            
             switch ($oa->type) {
                 case 'text':
                     $info = new TextAttributeValue($oa, $value);
@@ -1107,8 +1118,11 @@ class FormatAttributeValue extends StandardAttributeValue
     public function __construct(NormalAttribute $oa, $v)
     {
         $this->value = ($v === '') ? null : $v;
-        if ($oa->format) $this->displayValue = sprintf($oa->format, $v);
-        else $this->displayValue = $v;
+        if ($oa->format) {
+            $this->displayValue = sprintf($oa->format, $v);
+        } else {
+            $this->displayValue = $v;
+        }
     }
 }
 
@@ -1154,15 +1168,22 @@ class DateAttributeValue extends StandardAttributeValue
         if ($oa->format != "") {
             $this->displayValue = strftime($oa->format, stringDateToUnixTs($v));
         } else {
-            if ($dateStyle === self::defaultStyle) $this->displayValue = stringDateToLocaleDate($v);
-            else if ($dateStyle === self::isoStyle) $this->displayValue = stringDateToIso($v, false, true);
-            else if ($dateStyle === self::isoWTStyle) $this->displayValue = stringDateToIso($v, false, false);
-            else if ($dateStyle === self::frenchStyle) {
-                
+            if ($dateStyle === self::defaultStyle) {
+                $this->displayValue = stringDateToLocaleDate($v);
+            } elseif ($dateStyle === self::isoStyle) {
+                $this->displayValue = stringDateToIso($v, false, true);
+            } elseif ($dateStyle === self::isoWTStyle) {
+                $this->displayValue = stringDateToIso($v, false, false);
+            } elseif ($dateStyle === self::frenchStyle) {
                 $ldate = stringDateToLocaleDate($v, '%d/%m/%Y %H:%M');
-                if (strlen($v) < 11) $this->displayValue = substr($ldate, 0, strlen($v));
-                else $this->displayValue = $ldate;
-            } else $this->displayValue = stringDateToLocaleDate($v);
+                if (strlen($v) < 11) {
+                    $this->displayValue = substr($ldate, 0, strlen($v));
+                } else {
+                    $this->displayValue = $ldate;
+                }
+            } else {
+                $this->displayValue = stringDateToLocaleDate($v);
+            }
         }
     }
 }
@@ -1177,13 +1198,12 @@ class HtmltextAttributeValue extends StandardAttributeValue
     {
         parent::__construct($oa, $v);
         if ($stripHtmlTag) {
-            $this->displayValue = html_entity_decode(strip_tags($this->displayValue) , ENT_NOQUOTES, 'UTF-8');
+            $this->displayValue = html_entity_decode(strip_tags($this->displayValue), ENT_NOQUOTES, 'UTF-8');
         }
     }
 }
 class DoubleAttributeValue extends FormatAttributeValue
 {
-    
     public function __construct(NormalAttribute $oa, $v, $decimalSeparator = ',')
     {
         parent::__construct($oa, $v);
@@ -1210,7 +1230,6 @@ class DoubleAttributeValue extends FormatAttributeValue
 
 class MoneyAttributeValue extends FormatAttributeValue
 {
-    
     public function __construct(NormalAttribute $oa, $v)
     {
         parent::__construct($oa, $v);
@@ -1266,7 +1285,6 @@ class FileAttributeValue extends StandardAttributeValue
     
     public function __construct(NormalAttribute $oa, $v, Doc $doc, $index, $iconMimeSize = 24)
     {
-        
         $this->value = ($v === '') ? null : $v;
         if ($v) {
             $finfo = $doc->getFileInfo($v, "", "object");
@@ -1278,7 +1296,9 @@ class FileAttributeValue extends StandardAttributeValue
                 $this->displayValue = $this->fileName;
                 
                 $iconFile = getIconMimeFile($this->mime);
-                if ($iconFile) $this->icon = $doc->getIcon($iconFile, $iconMimeSize);
+                if ($iconFile) {
+                    $this->icon = $doc->getIcon($iconFile, $iconMimeSize);
+                }
                 $this->url = $doc->getFileLink($oa->id, $index, false, true, $v, $finfo);
             }
         }
@@ -1342,7 +1362,7 @@ class DocidAttributeValue extends StandardAttributeValue
                 $this->url = $this->getDocUrl($v, $docRevOption);
                 if ($docRevOption === "fixed") {
                     $this->revision = intval($info["revision"]);
-                } else if (preg_match('/^state\(([^\)]+)\)/', $docRevOption, $matches)) {
+                } elseif (preg_match('/^state\(([^\)]+)\)/', $docRevOption, $matches)) {
                     $this->revision = array(
                         "state" => $matches[1]
                     );
@@ -1356,18 +1376,24 @@ class DocidAttributeValue extends StandardAttributeValue
             }
         } else {
             $this->visible = false;
-            if ($relationNoAccessText) $this->displayValue = $relationNoAccessText;
-            else $this->displayValue = $oa->getOption("noaccesstext", _("information access deny"));
+            if ($relationNoAccessText) {
+                $this->displayValue = $relationNoAccessText;
+            } else {
+                $this->displayValue = $oa->getOption("noaccesstext", _("information access deny"));
+            }
         }
     }
     
     protected function getDocUrl($v, $docrev)
     {
-        if (!$v) return '';
+        if (!$v) {
+            return '';
+        }
         $ul = "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=" . $v;
         
-        if ($docrev == "latest" || $docrev == "" || !$docrev) $ul.= "&amp;latest=Y";
-        elseif ($docrev != "fixed") {
+        if ($docrev == "latest" || $docrev == "" || !$docrev) {
+            $ul.= "&amp;latest=Y";
+        } elseif ($docrev != "fixed") {
             // validate that docrev looks like state(xxx)
             if (preg_match('/^state\(([a-zA-Z0-9_:-]+)\)/', $docrev, $matches)) {
                 $ul.= "&amp;state=" . $matches[1];
@@ -1378,8 +1404,8 @@ class DocidAttributeValue extends StandardAttributeValue
 }
 class ThesaurusAttributeValue extends DocidAttributeValue
 {
-    static $thcDoc = null;
-    static $thcDocTitle = array();
+    public static $thcDoc = null;
+    public static $thcDocTitle = array();
     public function __construct(NormalAttribute $oa, $v, Doc & $doc, $iconsize = 24, $relationNoAccessText = '')
     {
         parent::__construct($oa, $v, $doc, $iconsize, $relationNoAccessText);
@@ -1400,4 +1426,3 @@ class ThesaurusAttributeValue extends DocidAttributeValue
         }
     }
 }
-

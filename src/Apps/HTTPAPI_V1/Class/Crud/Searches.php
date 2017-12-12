@@ -8,7 +8,6 @@ namespace Dcp\HttpApi\V1\Crud;
 
 class Searches extends DocumentCollection
 {
-    
     protected function prepareSearchDoc()
     {
         $this->_searchDoc = new \SearchDoc();
@@ -26,8 +25,7 @@ class Searches extends DocumentCollection
     protected function prepareDocumentFormatter($documentList)
     {
         $documentFormatter = parent::prepareDocumentFormatter($documentList);
-        $documentFormatter->setGenerateURI(function ($document)
-        {
+        $documentFormatter->setGenerateURI(function ($document) {
             return URLUtils::generateURL("searches/{$document->initid}/documents/");
         });
         return $documentFormatter;

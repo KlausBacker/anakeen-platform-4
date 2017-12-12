@@ -10,7 +10,6 @@ use Dcp\HttpApi\V1\DocManager\DocManager as DocManager;
 
 class Enumerates extends Crud
 {
-    
     const startsOperator = "startswith";
     const containsOperator = "contains";
     const orderByKeyword = "orderBy";
@@ -53,8 +52,7 @@ class Enumerates extends Crud
                 "enumerates" => array() ,
             );
             $attributes = $this->family->getNormalAttributes();
-            $enums = array_filter($attributes, function ($currentAttribute)
-            {
+            $enums = array_filter($attributes, function ($currentAttribute) {
                 return $currentAttribute->type === "enum";
             });
             foreach ($enums as $currentEnum) {
@@ -114,8 +112,7 @@ class Enumerates extends Crud
         }
         switch ($this->getOrderBy()) {
             case self::orderByKeyOption:
-                usort($enumItems, function ($a, $b)
-                {
+                usort($enumItems, function ($a, $b) {
                     if ($a['key'] == $b['key']) {
                         return 0;
                     }
@@ -127,8 +124,7 @@ class Enumerates extends Crud
                 $locale = \ApplicationParameterManager::getScopedParameterValue('CORE_LANG');
                 $collator = new \Collator($locale);
                 
-                usort($enumItems, function ($a, $b) use ($collator)
-                {
+                usort($enumItems, function ($a, $b) use ($collator) {
                     return $collator->compare($a['label'], $b['label']);
                 });
                 break;
@@ -240,7 +236,7 @@ class Enumerates extends Crud
      * @param array $array
      * @throws Exception
      */
-    public function setUrlParameters(Array $array)
+    public function setUrlParameters(array $array)
     {
         parent::setUrlParameters($array);
         $familyId = isset($this->urlParameters["familyId"]) ? $this->urlParameters["familyId"] : false;

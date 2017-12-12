@@ -16,7 +16,6 @@ use Dcp\HttpApi\V1\DocManager\DocManager;
 
 class TrashRevisionCollection extends RevisionCollection
 {
-    
     protected $rootLevel = "trash";
     
     protected function prepareSearchDoc()

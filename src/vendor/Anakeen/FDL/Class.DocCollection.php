@@ -337,17 +337,22 @@ class DocCollection extends Doc
     public function getOperatorLabel($operator, $attributeType)
     {
         $op = $this->top[$operator];
-        if (!$op) return _("unknow operator") . " : $operator"; // TODO set exception
+        if (!$op) {
+            return _("unknow operator") . " : $operator";
+        } // TODO set exception
         if ($attributeType) {
             if (isset($op["slabel"]) && is_array($op["slabel"])) {
                 foreach ($op["slabel"] as $type => $label) {
-                    if ($type == $attributeType) return _($label);
+                    if ($type == $attributeType) {
+                        return _($label);
+                    }
                 }
             }
         }
-        if ($op["label"]) return _($op["label"]);
+        if ($op["label"]) {
+            return _($op["label"]);
+        }
         return $operator; // no label found
-        
     }
     /**
      * return document includes in search folder
@@ -358,7 +363,7 @@ class DocCollection extends Doc
      *
      * @return array array of document array
      */
-    public function getContent($controlview = true, array $filter = array() , $famid = "", $qtype = "TABLE", $trash = "")
+    public function getContent($controlview = true, array $filter = array(), $famid = "", $qtype = "TABLE", $trash = "")
     {
         return array();
     }
@@ -374,10 +379,15 @@ class DocCollection extends Doc
     public function object2SqlFilter($of, &$famid, &$fsql)
     {
         if (!empty($of->family)) {
-            if (preg_match('/([\w:]*)\s?(strict)?/', trim($of->family) , $reg)) {
-                if (!is_numeric($reg[1])) $reg[1] = \Dcp\Core\DocManager::getFamilyIdFromName($reg[1]);
-                if (isset($reg[2]) && ($reg[2] == "strict")) $famid = '-' . $reg[1];
-                else $famid = $reg[1];
+            if (preg_match('/([\w:]*)\s?(strict)?/', trim($of->family), $reg)) {
+                if (!is_numeric($reg[1])) {
+                    $reg[1] = \Dcp\Core\DocManager::getFamilyIdFromName($reg[1]);
+                }
+                if (isset($reg[2]) && ($reg[2] == "strict")) {
+                    $famid = '-' . $reg[1];
+                } else {
+                    $famid = $reg[1];
+                }
             }
         }
         if (!$famid) {
@@ -391,7 +401,9 @@ class DocCollection extends Doc
             }
         }
         $sql = array();
-        if (!empty($of->sql)) $of->sql = trim($of->sql);
+        if (!empty($of->sql)) {
+            $of->sql = trim($of->sql);
+        }
         if (!empty($of->sql)) {
             if ((!strstr($of->sql, '--')) && (!strstr($of->sql, ';')) && (!stristr($of->sql, 'insert')) && (!stristr($of->sql, 'alter')) && (!stristr($of->sql, 'delete')) && (!stristr($of->sql, 'update'))) {
                 // try to prevent sql injection
@@ -399,15 +411,21 @@ class DocCollection extends Doc
             }
         }
         if ((!empty($of->criteria)) && (!is_array($of->criteria))) {
-            if ($of->criteria->operator) $of->criteria = array(
+            if ($of->criteria->operator) {
+                $of->criteria = array(
                 $of->criteria
             );
-            if ($of->criteria->or) $of->criteria = array(
+            }
+            if ($of->criteria->or) {
+                $of->criteria = array(
                 $of->criteria
             );
-            if ($of->criteria->and) $of->criteria = array(
+            }
+            if ($of->criteria->and) {
+                $of->criteria = array(
                 $of->criteria
             );
+            }
         }
         $err = '';
         if ((!empty($of->criteria)) && is_array($of->criteria)) {
@@ -415,19 +433,24 @@ class DocCollection extends Doc
                 $sqlone = '';
                 if (!empty($c->operator)) {
                     $err.= $this->_1object2SqlFilter($c, $sqlone, $famid);
-                    if ($err == "") $sql[] = $sqlone;
+                    if ($err == "") {
+                        $sql[] = $sqlone;
+                    }
                 } elseif ($c->or && is_array($c->or)) {
                     $sqlor = array();
                     foreach ($c->or as $cor) {
-                        if ($cor->operator) $err.= $this->_1object2SqlFilter($cor, $sqlone, $famid);
-                        else {
+                        if ($cor->operator) {
+                            $err.= $this->_1object2SqlFilter($cor, $sqlone, $famid);
+                        } else {
                             $oone = new stdClass();
                             $oone->criteria = $cor;
                             $sqlone = '';
                             $_f = '';
                             $this->object2SqlFilter($oone, $_f, $sqlone);
                         }
-                        if ($err == "") $sqlor[] = $sqlone;
+                        if ($err == "") {
+                            $sqlor[] = $sqlone;
+                        }
                     }
                     if (count($sqlor) > 0) {
                         $sql[] = '(' . implode(') or (', $sqlor) . ')';
@@ -435,14 +458,17 @@ class DocCollection extends Doc
                 } elseif ($c->and && is_array($c->and)) {
                     $sqlor = array();
                     foreach ($c->and as $cor) {
-                        if ($cor->operator) $err.= $this->_1object2SqlFilter($cor, $sqlone, $famid);
-                        else {
+                        if ($cor->operator) {
+                            $err.= $this->_1object2SqlFilter($cor, $sqlone, $famid);
+                        } else {
                             $oone = new stdClass();
                             $oone->criteria = $cor;
                             $_f = '';
                             $this->object2SqlFilter($oone, $_f, $sqlone);
                         }
-                        if ($err == "") $sqlor[] = $sqlone;
+                        if ($err == "") {
+                            $sqlor[] = $sqlone;
+                        }
                     }
                     if (count($sqlor) > 0) {
                         $sql[] = '(' . implode(') and (', $sqlor) . ')';
@@ -488,7 +514,9 @@ class DocCollection extends Doc
                         // it's method call
                         $val1 = $this->ApplyMethod($val1);
                     }
-                } else $val1 = "";
+                } else {
+                    $val1 = "";
+                }
                 if ($third) {
                     $val2 = $c->$third;
                     if (!$val2) {
@@ -499,7 +527,9 @@ class DocCollection extends Doc
                         // it's method call
                         $val2 = $this->ApplyMethod($val2);
                     }
-                } else $val2 = "";
+                } else {
+                    $val2 = "";
+                }
                 if (!$sw) {
                     $sw = createTmpDoc($this->dbaccess, "DSEARCH");
                 }
@@ -509,7 +539,7 @@ class DocCollection extends Doc
                 $sw->setValue("se_famid", $famid);
                 $sql = $sw->getSqlCond($col, $c->operator, $val1, $val2, $err);
             } else {
-                $err = sprintf(_("operator [%s] not allowed") , $c->operator);
+                $err = sprintf(_("operator [%s] not allowed"), $c->operator);
             }
         } else {
             $err = sprintf(_("no operator detected"));
@@ -549,4 +579,3 @@ class DocCollection extends Doc
         return $s->search()->getDocumentList();
     }
 }
-

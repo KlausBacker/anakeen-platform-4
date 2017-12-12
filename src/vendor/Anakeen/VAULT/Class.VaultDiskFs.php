@@ -8,25 +8,25 @@
  * @package FDL
  */
 // ---------------------------------------------------------------
-include_once ("Class.QueryDb.php");
-include_once ("Class.DbObj.php");
-include_once ("VAULT/Class.VaultDiskDir.php");
+include_once("Class.QueryDb.php");
+include_once("Class.DbObj.php");
+include_once("VAULT/Class.VaultDiskDir.php");
 
 class VaultDiskFs extends DbObj
 {
-    var $fields = array(
+    public $fields = array(
         "id_fs",
         "fsname",
         "max_size",
         "r_path"
     );
-    var $id_fields = array(
+    public $id_fields = array(
         "id_fs"
     );
-    var $dbtable_tmpl = "vaultdiskfs%s";
-    var $order_by = "";
-    var $seq_tmpl = "seq_id_vaultdiskfs%s";
-    var $sqlcreate_tmpl = <<<EOF
+    public $dbtable_tmpl = "vaultdiskfs%s";
+    public $order_by = "";
+    public $seq_tmpl = "seq_id_vaultdiskfs%s";
+    public $sqlcreate_tmpl = <<<EOF
            create table vaultdiskfs%s  (
                                 id_fs int not null,
                                 fsname text,
@@ -61,7 +61,7 @@ Deny from all
 
 EOF;
     // --------------------------------------------------------------------
-    function __construct($dbaccess, $id_fs = '')
+    public function __construct($dbaccess, $id_fs = '')
     {
         // --------------------------------------------------------------------
         $this->dbtable = sprintf($this->dbtable_tmpl, $this->specific);
@@ -70,13 +70,13 @@ EOF;
         parent::__construct($dbaccess, $id_fs);
     }
     
-    function createArch($maxsize, $path, $fsname = "-")
+    public function createArch($maxsize, $path, $fsname = "-")
     {
         if (!is_dir($path)) {
-            return sprintf(_("%s directory not found") , $path);
+            return sprintf(_("%s directory not found"), $path);
         }
         if (!is_writable($path)) {
-            return sprintf(_("%s directory not writable") , $path);
+            return sprintf(_("%s directory not writable"), $path);
         }
         if (($err = $this->setHtaccess($path)) != "") {
             return $err;
@@ -90,27 +90,31 @@ EOF;
      * verify if fs is availlable (file system is mounted)
      * @return bool
      */
-    function isAvailable()
+    public function isAvailable()
     {
         if ($this->isAffected()) {
             if ($this->r_path) {
-                if (is_dir($this->r_path)) return true;
+                if (is_dir($this->r_path)) {
+                    return true;
+                }
             }
         }
         return false;
     }
     // --------------------------------------------------------------------
-    function PreInsert()
+    public function PreInsert()
     {
         // --------------------------------------------------------------------
-        if ($this->Exists($this->r_path)) return (_("File System already exists"));
+        if ($this->Exists($this->r_path)) {
+            return (_("File System already exists"));
+        }
         $this->exec_query(sprintf("select nextval ('%s')", pg_escape_string($this->seq)));
         $arr = $this->fetch_array(0);
         $this->id_fs = $arr["nextval"];
         return '';
     }
     // --------------------------------------------------------------------
-    function Exists($path)
+    public function Exists($path)
     {
         // --------------------------------------------------------------------
         $query = new QueryDb($this->dbaccess, $this->dbtable);
@@ -121,7 +125,7 @@ EOF;
         return ($query->nb > 0);
     }
     // --------------------------------------------------------------------
-    function SetFreeFs($f_size, &$id_fs, &$id_dir, &$f_path, $fsname)
+    public function SetFreeFs($f_size, &$id_fs, &$id_dir, &$f_path, $fsname)
     {
         // --------------------------------------------------------------------
         $id_fs = $id_dir = - 1;
@@ -140,7 +144,7 @@ EOF;
                 $f_path = $this->r_path . "/" . $this->sd->l_path;
                 if (!is_dir($f_path)) {
                     if (!mkdir($f_path, VaultFile::VAULT_DMODE, true)) {
-                        return (sprintf(_("Failed to create directory \"%s\" in vault") , $f_path));
+                        return (sprintf(_("Failed to create directory \"%s\" in vault"), $f_path));
                     }
                 }
             } else {
@@ -186,7 +190,7 @@ SQL;
             $sqlName = '';
         }
         
-        $sql = sprintf(str_replace(":SQLFSNAME:", $sqlName, $sql) , $size);
+        $sql = sprintf(str_replace(":SQLFSNAME:", $sqlName, $sql), $size);
         $this->exec_query($sql);
         if ($this->numrows() > 0) {
             $result = $this->fetch_array(0);
@@ -253,7 +257,7 @@ SQL;
         $this->exec_query($sql);
     }
     // --------------------------------------------------------------------
-    function Show($id_fs, $id_dir, &$f_path)
+    public function Show($id_fs, $id_dir, &$f_path)
     {
         // --------------------------------------------------------------------
         $query = new QueryDb($this->dbaccess, $this->dbtable);
@@ -274,7 +278,7 @@ SQL;
         return '';
     }
     // --------------------------------------------------------------------
-    function DelEntry($id_fs, $id_dir, $fs)
+    public function DelEntry($id_fs, $id_dir, $fs)
     {
         // --------------------------------------------------------------------
         DbObj::Select($id_fs);
@@ -298,7 +302,7 @@ SQL;
             return "";
         }
         if (file_put_contents($htaccess, $this->htaccess) === false) {
-            return sprintf(_("Error writing content to '%s'.") , $htaccess);
+            return sprintf(_("Error writing content to '%s'."), $htaccess);
         }
         return "";
     }

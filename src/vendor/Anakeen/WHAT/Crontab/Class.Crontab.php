@@ -19,10 +19,10 @@
 
 class Crontab
 {
-    var $user = NULL;
-    var $crontab = '';
+    public $user = null;
+    public $crontab = '';
     
-    public function __construct($user = NULL)
+    public function __construct($user = null)
     {
         $this->user = $user;
         return $this;
@@ -36,28 +36,28 @@ class Crontab
     
     public function unsetUser()
     {
-        $this->user = NULL;
+        $this->user = null;
         return $this->user;
     }
     
     private function load()
     {
         $cmd = 'crontab -l';
-        if ($this->user != NULL) {
+        if ($this->user != null) {
             $cmd.= ' -u ' . escapeshellarg($this->user);
         }
         $cmd.= ' 2> /dev/null';
         
         $ph = popen($cmd, 'r');
-        if ($ph === FALSE) {
+        if ($ph === false) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " Error popen");
-            return FALSE;
+            return false;
         }
         
         $crontab = stream_get_contents($ph);
-        if ($crontab === FALSE) {
+        if ($crontab === false) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " Error stream_get_contents");
-            return FALSE;
+            return false;
         }
         
         $this->crontab = $crontab;
@@ -67,22 +67,22 @@ class Crontab
     
     private function save()
     {
-        include_once ('WHAT/Lib.System.php');
+        include_once('WHAT/Lib.System.php');
         
-        $tmp = tempnam(getTmpDir() , 'crontab');
-        if ($tmp === FALSE) {
+        $tmp = tempnam(getTmpDir(), 'crontab');
+        if ($tmp === false) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " Error creating temporary file");
-            return FALSE;
+            return false;
         }
         
         $ret = file_put_contents($tmp, $this->crontab);
-        if ($ret === FALSE) {
+        if ($ret === false) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " Error writing content to file '" . $tmp . "'");
-            return FALSE;
+            return false;
         }
         
         $cmd = 'crontab';
-        if ($this->user != NULL) {
+        if ($this->user != null) {
             $cmd.= ' -u ' . escapeshellarg($this->user);
         }
         $cmd.= ' ' . escapeshellarg($tmp);
@@ -91,7 +91,7 @@ class Crontab
         system($cmd, $ret);
         if ($ret != 0) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " Error saving crontab '" . $tmp . "'");
-            return FALSE;
+            return false;
         }
         
         return $this->crontab;
@@ -99,12 +99,12 @@ class Crontab
     
     public function registerFile($file)
     {
-        include_once ('WHAT/Lib.Prefix.php');
+        include_once('WHAT/Lib.Prefix.php');
         
         $crontab = file_get_contents($file);
-        if ($crontab === FALSE) {
+        if ($crontab === false) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " Error reading content from file '" . $file . "'");
-            return FALSE;
+            return false;
         }
         
         $newSectionElement = new \Dcp\CrontabSectionElement(DEFAULT_PUBDIR, $file);
@@ -112,16 +112,15 @@ class Crontab
         $newSectionElement->appendChild(new \Dcp\CrontabTextElement($crontab));
         
         $crontabData = $this->load();
-        if ($crontabData === FALSE) {
+        if ($crontabData === false) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " Error reading active crontab");
-            return FALSE;
+            return false;
         }
         
         $parser = new \Dcp\CrontabParser();
         $crontabDocument = $parser->parse($crontabData);
         /* Remove existing sections for this context and file */
-        $crontabDocument->childs = array_filter($crontabDocument->childs, function ($element) use ($file)
-        {
+        $crontabDocument->childs = array_filter($crontabDocument->childs, function ($element) use ($file) {
             if (is_a($element, '\Dcp\CrontabSectionElement')) {
                 /**
                  * @var $element \Dcp\CrontabSectionElement
@@ -139,9 +138,9 @@ class Crontab
         
         printf("Saving crontab...\n");
         $ret = $this->save();
-        if ($ret === FALSE) {
+        if ($ret === false) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " Error saving crontab");
-            return FALSE;
+            return false;
         }
         printf("Done.\n");
         
@@ -150,19 +149,18 @@ class Crontab
     
     public function unregisterFile($file)
     {
-        include_once ('WHAT/Lib.Prefix.php');
+        include_once('WHAT/Lib.Prefix.php');
         
         $crontabData = $this->load();
-        if ($crontabData === FALSE) {
+        if ($crontabData === false) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " Error reading active crontab");
-            return FALSE;
+            return false;
         }
         
         $parser = new \Dcp\CrontabParser();
         $crontabDocument = $parser->parse($crontabData);
         /* Remove existing sections for this context/file */
-        $crontabDocument->childs = array_filter($crontabDocument->childs, function (\Dcp\CrontabElement & $element) use ($file)
-        {
+        $crontabDocument->childs = array_filter($crontabDocument->childs, function (\Dcp\CrontabElement & $element) use ($file) {
             if (is_a($element, '\Dcp\CrontabSectionElement')) {
                 /**
                  * @var $element \Dcp\CrontabSectionElement
@@ -178,9 +176,9 @@ class Crontab
         
         printf("Saving crontab...\n");
         $ret = $this->save();
-        if ($ret === FALSE) {
+        if ($ret === false) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " Error saving crontab");
-            return FALSE;
+            return false;
         }
         printf("Done.\n");
         
@@ -190,9 +188,9 @@ class Crontab
     public function listAll()
     {
         $crontabs = $this->getActiveCrontab();
-        if ($crontabs === FALSE) {
+        if ($crontabs === false) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " Error retrieving active crontabs");
-            return FALSE;
+            return false;
         }
         
         print "\n";
@@ -204,17 +202,17 @@ class Crontab
             print "--8<--\n" . $crontab['content'] . "\n-->8--\n\n";
         }
         
-        return TRUE;
+        return true;
     }
     
     public function getActiveCrontab()
     {
-        include_once ('WHAT/Lib.Prefix.php');
+        include_once('WHAT/Lib.Prefix.php');
         
         $crontabData = $this->load();
-        if ($crontabData === FALSE) {
+        if ($crontabData === false) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " Error reading active crontab");
-            return FALSE;
+            return false;
         }
         
         $parser = new \Dcp\CrontabParser();
@@ -239,19 +237,18 @@ class Crontab
     
     public function unregisterAll()
     {
-        include_once ('WHAT/Lib.Prefix.php');
+        include_once('WHAT/Lib.Prefix.php');
         
         $crontabData = $this->load();
-        if ($crontabData === FALSE) {
+        if ($crontabData === false) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " Error reading active crontab");
-            return FALSE;
+            return false;
         }
         
         $parser = new \Dcp\CrontabParser();
         $crontabDocument = $parser->parse($crontabData);
         /* Remove existing sections for this context */
-        $crontabDocument->childs = array_filter($crontabDocument->childs, function (\Dcp\CrontabElement & $element)
-        {
+        $crontabDocument->childs = array_filter($crontabDocument->childs, function (\Dcp\CrontabElement & $element) {
             if (is_a($element, '\Dcp\CrontabSectionElement')) {
                 /**
                  * @var $element \Dcp\CrontabSectionElement
@@ -267,9 +264,9 @@ class Crontab
         
         printf("Saving crontab...\n");
         $ret = $this->save();
-        if ($ret === FALSE) {
+        if ($ret === false) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " Error saving crontab");
-            return FALSE;
+            return false;
         }
         printf("Done.\n");
         

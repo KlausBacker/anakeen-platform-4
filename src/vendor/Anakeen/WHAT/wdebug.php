@@ -30,7 +30,7 @@ function dtic($text = "")
         $ptic0 = $tuc1;
     }
     
-    $msg = sprintf("%s : %.03f -  %.03f ", $text, ($tuc1 - $ptic) , ($tuc1 - $ptic0));
+    $msg = sprintf("%s : %.03f -  %.03f ", $text, ($tuc1 - $ptic), ($tuc1 - $ptic0));
     $ptic = $tuc1;
     return $msg;
 }
@@ -45,11 +45,13 @@ function dtrace($text)
 
 function stacktrace($level = 3, $uplevel = 1)
 {
-    if (!function_exists('xdebug_get_function_stack')) return '';
+    if (!function_exists('xdebug_get_function_stack')) {
+        return '';
+    }
     $stack = xdebug_get_function_stack();
     $t = array();
     foreach ($stack as $k => $v) {
-        $t[] = sprintf("[%s:%d]%s", basename($v["file"]) , $v["line"], $v["function"]);
+        $t[] = sprintf("[%s:%d]%s", basename($v["file"]), $v["line"], $v["function"]);
     }
     $l = (-1 - $level);
     $t = array_slice($t, $l, -$uplevel);
@@ -62,13 +64,11 @@ function dmtrace($text = "", $level = 3)
 
 function printdtrace()
 {
-    
     global $trace;
     foreach ($trace as $k => $v) {
         //[test.php:26]AddFile/<br>[Class.Dir.php:276]updateFldRelations:updateFldRelations : 0.075 -  0.075 #17
         if (preg_match("/(.*):([^-]+)-([^#]+)#(.*)$/", $v, $reg)) {
-            printf("%30.30s : %.03f | %02.03f | %d\n", substr($reg[1], -30) , $reg[2], $reg[3], $reg[4]);
+            printf("%30.30s : %.03f | %02.03f | %d\n", substr($reg[1], -30), $reg[2], $reg[3], $reg[4]);
         }
     }
 }
-?>

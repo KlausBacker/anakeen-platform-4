@@ -14,8 +14,8 @@
 /**
  */
 
-include_once ("FDL/Class.Doc.php");
-include_once ("FDL/Class.DocAttr.php");
+include_once("FDL/Class.Doc.php");
+include_once("FDL/Class.DocAttr.php");
 
 function enumjschoice(&$action)
 {
@@ -39,7 +39,7 @@ function enumjschoice(&$action)
 function getFuncVar($n, $def = "", $whttpvars, &$doc, &$oa)
 {
     if ($whttpvars) {
-        return GetHttpVars("_" . strtolower($n) , $def);
+        return GetHttpVars("_" . strtolower($n), $def);
     }
     $h = GetHttpVars(strtolower($n));
     if ($h) {
@@ -65,10 +65,10 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
     $phpfunc = str_replace(array(
         '\)',
         '\('
-    ) , array(
+    ), array(
         '&rparenthesis;',
         '&lparenthesis;'
-    ) , $phpfunc);
+    ), $phpfunc);
     $oParse = new parseFamilyFunction();
     $strucFunc = $oParse->parse($phpfunc);
     if ($strucFunc->getError()) {
@@ -76,19 +76,19 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
     }
     
     if (!preg_match('/(.*)\((.*)\)\:(.*)/', $phpfunc, $reg)) {
-        return sprintf(_("the pluggins function description '%s' is not conform for %s attribut") , $phpfunc, $oattr->id);
+        return sprintf(_("the pluggins function description '%s' is not conform for %s attribut"), $phpfunc, $oattr->id);
     }
     $callfunc = $oParse->functionName;
     if (!function_exists($callfunc)) {
         if (!file_exists(DEFAULT_PUBDIR."/EXTERNALS/$oattr->phpfile")) {
-            return sprintf(_("the external pluggin file %s cannot be read") , $oattr->phpfile);
+            return sprintf(_("the external pluggin file %s cannot be read"), $oattr->phpfile);
         } else {
-            include_once ("EXTERNALS/$oattr->phpfile");
+            include_once("EXTERNALS/$oattr->phpfile");
         }
     }
     if (!function_exists($callfunc)) {
         error_log(__METHOD__ . " $callfunc not found from " . $oattr->phpfile);
-        return sprintf(_("function '%s' declared in %s is not found") , $callfunc, $oattr->id);
+        return sprintf(_("function '%s' declared in %s is not found"), $callfunc, $oattr->id);
     }
     $rargids = $oParse->outputs; // return args
     $arg = array();
@@ -96,10 +96,10 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
         $v = str_replace(array(
             '&rparenthesis;',
             '&lparenthesis;'
-        ) , array(
+        ), array(
             ')',
             '('
-        ) , $inpArg->name);
+        ), $inpArg->name);
         if ($v != " ") {
             $v = trim($v);
         }
@@ -119,7 +119,7 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
             $arg[$k] = $doc->dbaccess;
         } elseif ($v == "I") {
             $arg[$k] = $doc->id;
-        } else if ($v == "WIID") {
+        } elseif ($v == "WIID") {
             $arg[$k] = getHttpVars("wiid");
         } elseif ($v == "K") {
             $arg[$k] = $index;
@@ -205,8 +205,7 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
     }
     try {
         $res = call_user_func_array($callfunc, $arg);
-    }
-    catch(Exception $e) {
+    } catch (Exception $e) {
         $res = $e->getMessage();
     }
     
@@ -220,7 +219,7 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
             }
             foreach ($v as $k2 => $v2) {
                 if (!seems_utf8($v2)) {
-                    $err = ErrorCode::getError("INH0002", iconv('ISO-8859-1', "UTF-8//TRANSLIT", $v2) , $callfunc, $oattr->id);
+                    $err = ErrorCode::getError("INH0002", iconv('ISO-8859-1', "UTF-8//TRANSLIT", $v2), $callfunc, $oattr->id);
                     error_log($err);
                     return $err;
                 }
@@ -251,7 +250,9 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
 function getAttr($dbaccess, $aid)
 {
     $r = \Dcp\Core\ContextManager::getApplicationParam($aid);
-    if ($r == "") $r = \Dcp\Core\DocManager::getFamilyIdFromName($aid);
+    if ($r == "") {
+        $r = \Dcp\Core\DocManager::getFamilyIdFromName($aid);
+    }
     
     return $r;
 }

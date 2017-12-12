@@ -10,8 +10,7 @@
 /**
  */
 
-include_once ("WHAT/Class.Crontab.php");
-include_once ("FDL/Lib.Util.php");
+include_once("FDL/Lib.Util.php");
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("API script to manipulate user crontab");
@@ -21,8 +20,8 @@ $cmd = $usage->addRequiredParameter("cmd", "command to execute", array(
     "unregister",
     "unregister-all"
 ));
-$file = $usage->addOptionalParameter("file", "path to cronfile (needed for cmd=register|unregister)", null, NULL);
-$user = $usage->addOptionalParameter("user", "id of user", null, NULL);
+$file = $usage->addOptionalParameter("file", "path to cronfile (needed for cmd=register|unregister)", null, null);
+$user = $usage->addOptionalParameter("user", "id of user", null, null);
 $usage->verify();
 /*function usage()
 {
@@ -36,31 +35,31 @@ switch ($cmd) {
     case 'list':
         $crontab = new Crontab($user);
         $ret = $crontab->listAll();
-        if ($ret === FALSE) {
+        if ($ret === false) {
             exit(1);
         }
         break;
 
     case 'register':
-        if ($file === NULL) {
+        if ($file === null) {
             error_log("Error: missing --file argument");
             exit(1);
         }
         $crontab = new Crontab($user);
         $ret = $crontab->registerFile($file);
-        if ($ret === FALSE) {
+        if ($ret === false) {
             exit(1);
         }
         break;
 
     case 'unregister':
-        if ($file === NULL) {
+        if ($file === null) {
             error_log("Error: missing --file argument");
             exit(1);
         }
         $crontab = new Crontab($user);
         $ret = $crontab->unregisterFile($file);
-        if ($ret === FALSE) {
+        if ($ret === false) {
             exit(1);
         }
         break;

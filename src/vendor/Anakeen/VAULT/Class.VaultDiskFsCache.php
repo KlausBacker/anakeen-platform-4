@@ -14,15 +14,13 @@
 //
 //
 // ---------------------------------------------------------------
-include_once ("VAULT/Class.VaultDiskFs.php");
+include_once("VAULT/Class.VaultDiskFs.php");
 
 class VaultDiskFsCache extends VaultDiskFs
 {
-    
-    function __construct($dbaccess, $id_fs = '')
+    public function __construct($dbaccess, $id_fs = '')
     {
         $this->specific = "cache";
         parent::__construct($dbaccess, $id_fs);
     }
 }
-?>

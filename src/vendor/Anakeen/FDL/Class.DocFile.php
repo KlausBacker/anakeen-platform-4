@@ -10,8 +10,6 @@
  */
 class DocFile extends \PDoc
 {
-    
-    var $defDoctype = 'F';
-    var $defClassname = '\Dcp\Family\Document';
+    public $defDoctype = 'F';
+    public $defClassname = '\Dcp\Family\Document';
 }
-?>

@@ -13,8 +13,8 @@
 /**
  */
 
-include_once ("FDL/Class.DocWait.php");
-include_once ("FDL/Class.Doc.php");
+include_once("FDL/Class.DocWait.php");
+include_once("FDL/Class.Doc.php");
 
 class DocWaitManager
 {
@@ -45,7 +45,9 @@ class DocWaitManager
             $wd->domain = $domainId;
             $wd->transaction = $transaction;
             $wd->date = date('Y-m-d H:i:s.u');
-            if ($extraData !== null) $wd->extradata = json_encode($extraData);
+            if ($extraData !== null) {
+                $wd->extradata = json_encode($extraData);
+            }
             
             if ($wd->isAffected()) {
                 $err = $wd->modify();
@@ -70,7 +72,7 @@ class DocWaitManager
      */
     public static function getWaitingDoc($id)
     {
-        $wd = new DocWait(getDbAccess() , array(
+        $wd = new DocWait(getDbAccess(), array(
             $id,
             Doc::getSystemUserId()
         ));
@@ -88,7 +90,7 @@ class DocWaitManager
      */
     public static function getUnresolvedLocalLinks($domain = - 1, $user = - 1)
     {
-        $q = new QueryDb(getDbAccess() , "docWait");
+        $q = new QueryDb(getDbAccess(), "docWait");
         $q->addQuery(sprintf("domain = %d", $domain));
         $q->addQuery(sprintf("uid = %d", $user));
         $q->addQuery("localid is not null");
@@ -110,7 +112,7 @@ class DocWaitManager
      */
     public static function getWaitingDocs($transaction)
     {
-        $q = new QueryDb(getDbAccess() , "docWait");
+        $q = new QueryDb(getDbAccess(), "docWait");
         $q->addQuery(sprintf("transaction = %d", $transaction));
         
         return $q->Query(0, 0, 'ITER');
@@ -122,7 +124,7 @@ class DocWaitManager
      */
     public static function getWaitingDocsByDomain($domainId)
     {
-        $q = new QueryDb(getDbAccess() , "docWait");
+        $q = new QueryDb(getDbAccess(), "docWait");
         $q->addQuery(sprintf("domain = %d", $domainId));
         
         return $q->Query(0, 0, 'ITER');
@@ -133,7 +135,7 @@ class DocWaitManager
      */
     public static function getTransaction()
     {
-        $err = simpleQuery(getDbAccess() , "select nextval ('seq_waittransaction')", $transaction, true, true);
+        $err = simpleQuery(getDbAccess(), "select nextval ('seq_waittransaction')", $transaction, true, true);
         return $transaction;
     }
     /**
@@ -157,11 +159,10 @@ class DocWaitManager
         }
         //error_log("clearWaitingDocs $domain - $user - $docinitid");
         if (count($wheres) == 0) {
-            $err = simpleQuery(getDbAccess() , "delete from docwait");
+            $err = simpleQuery(getDbAccess(), "delete from docwait");
         } else {
-            $err = simpleQuery(getDbAccess() , sprintf("delete from docwait where %s", implode(" and ", $wheres)));
+            $err = simpleQuery(getDbAccess(), sprintf("delete from docwait where %s", implode(" and ", $wheres)));
         }
         return $err;
     }
 }
-?>

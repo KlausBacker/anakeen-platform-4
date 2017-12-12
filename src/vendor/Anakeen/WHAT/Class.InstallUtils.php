@@ -6,7 +6,6 @@
 
 class InstallUtils
 {
-    
     public static function replace_usage()
     {
         return <<<'EOF'
@@ -34,8 +33,6 @@ Usage:
 
 
 EOF;
-        
-        
     }
     public static function replace($argv)
     {
@@ -69,7 +66,7 @@ EOF;
                 }
             } elseif (!$end && $opt == '-e') {
                 $regex = false;
-            } else if (!$end && $opt == '--') {
+            } elseif (!$end && $opt == '--') {
                 $end = true;
             } elseif (!$end && $opt == '-f') {
                 $file = array_shift($argv);
@@ -142,8 +139,6 @@ Returns the string escaped and enclosed between quotes (").
 
 
 EOF;
-        
-        
     }
     public static function doublequote($argv)
     {
@@ -161,7 +156,7 @@ EOF;
                 $quote = true;
             } elseif (!$end && $opt == '-q') {
                 $quote = false;
-            } else if (!$end && $opt == '--') {
+            } elseif (!$end && $opt == '--') {
                 $end = true;
             } else {
                 $strings[] = array(
@@ -175,19 +170,19 @@ EOF;
             if ($string['backslash']) {
                 $string['value'] = str_replace(array(
                     "\""
-                ) , array(
+                ), array(
                     "\\\""
-                ) , $string['value']);
+                ), $string['value']);
             }
             $string['value'] = str_replace(array(
                 "\""
-            ) , array(
+            ), array(
                 "\\\""
-            ) , $string['value']);
+            ), $string['value']);
             if ($string['quote']) {
                 $string['value'] = '"' . $string['value'] . '"';
             }
-            print ($string['value'] . PHP_EOL);
+            print($string['value'] . PHP_EOL);
         }
     }
     public static function pg_escape_string_usage()
@@ -201,8 +196,6 @@ Usage:
 Returns the string escaped for inclusion between apostrophes.
 
 EOF;
-        
-        
     }
     public static function pg_escape_string($argv)
     {

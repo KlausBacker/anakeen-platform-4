@@ -5,23 +5,20 @@
 */
 function default_page(Action & $action)
 {
-    
     $usage = new ActionUsage($action);
     
     $usage->setStrictMode(false);
     $usage->verify(true);
-    $crud = json_decode(\ApplicationParameterManager::getParameterValue("HTTPAPI_V1", "CRUD_CLASS") , true);
-    $middle = json_decode(\ApplicationParameterManager::getParameterValue("HTTPAPI_V1", "CRUD_MIDDLECLASS") , true);
+    $crud = json_decode(\ApplicationParameterManager::getParameterValue("HTTPAPI_V1", "CRUD_CLASS"), true);
+    $middle = json_decode(\ApplicationParameterManager::getParameterValue("HTTPAPI_V1", "CRUD_MIDDLECLASS"), true);
     
     $baseURL = \Dcp\HttpApi\V1\Api\AnalyzeURL::getBaseURL();
     
-    usort($crud, function ($value1, $value2)
-    {
+    usort($crud, function ($value1, $value2) {
         return $value1["canonicalURL"] > $value2["canonicalURL"];
     });
     
-    $defaultValues = function ($value) use ($baseURL)
-    {
+    $defaultValues = function ($value) use ($baseURL) {
         $value["canonicalURL"] = isset($value["canonicalURL"]) ? $value["canonicalURL"] : $value["regExp"];
         $value["canonicalURL"] = $baseURL . $value["canonicalURL"];
         $value["description"] = isset($value["description"]) ? $value["description"] : $value["class"];

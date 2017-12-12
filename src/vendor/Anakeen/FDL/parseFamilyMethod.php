@@ -6,7 +6,6 @@
 
 class parseFamilyMethod extends parseFamilyFunction
 {
-    
     public $methodName = '';
     public $className = '';
     /**
@@ -16,7 +15,6 @@ class parseFamilyMethod extends parseFamilyFunction
      */
     public function parse($methCall, $noOut = false)
     {
-        
         $this->initParse($methCall);
         
         $methodName = trim(substr($methCall, 0, $this->firstParenthesis));
@@ -24,7 +22,6 @@ class parseFamilyMethod extends parseFamilyFunction
             if (strpos($methodName, '::') === false) {
                 $this->setError(ErrorCode::getError('ATTR1251', $methCall));
             } else {
-                
                 list($className, $methodName) = explode('::', $methodName, 2);
                 $this->methodName = $methodName;
                 $this->className = $className;
@@ -39,8 +36,11 @@ class parseFamilyMethod extends parseFamilyFunction
                     
                     $this->parseArguments();
                     $this->parseOutput();
-                    if ($noOut) $this->limitOutputToZero();
-                    else $this->limitOutputToOne();
+                    if ($noOut) {
+                        $this->limitOutputToZero();
+                    } else {
+                        $this->limitOutputToOne();
+                    }
                 }
             }
         }

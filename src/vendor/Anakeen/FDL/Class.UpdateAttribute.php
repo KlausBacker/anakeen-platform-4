@@ -56,8 +56,11 @@ class UpdateAttribute
         $this->famid = '';
         if ($search) {
             $famName = $search->fromid;
-            if (!is_numeric($famName)) $this->famid = \Dcp\Core\DocManager::getFamilyIdFromName($famName);
-            else $this->famid = $famName;
+            if (!is_numeric($famName)) {
+                $this->famid = \Dcp\Core\DocManager::getFamilyIdFromName($famName);
+            } else {
+                $this->famid = $famName;
+            }
         }
         return $this->famid;
     }
@@ -71,7 +74,9 @@ class UpdateAttribute
     {
         $this->dl = $l;
         $s = $l->getSearchDocument();
-        if (!$s->isObjectReturn()) throw new \Dcp\Upat\Exception(ErrorCode::getError("UPAT0002"));
+        if (!$s->isObjectReturn()) {
+            throw new \Dcp\Upat\Exception(ErrorCode::getError("UPAT0002"));
+        }
         return $this;
     }
     /**
@@ -152,16 +157,18 @@ class UpdateAttribute
             $r->profilingError = $err;
             $this->error.= $err;
             $c++;
-            if ($c % 10 == 0) $this->logStatus(sprintf(_("%d/%d profiling done") , $c, $nbR));
+            if ($c % 10 == 0) {
+                $this->logStatus(sprintf(_("%d/%d profiling done"), $c, $nbR));
+            }
         }
-        $this->logStatus(sprintf(_("%d/%d profiling done") , $c, $nbR));
+        $this->logStatus(sprintf(_("%d/%d profiling done"), $c, $nbR));
     }
     /**
      * process a revision for each documents
      */
     protected function executeRevision(array $ids)
     {
-        $this->logStatus(sprintf(_("process revision for %d documents") , $this->dl->length));
+        $this->logStatus(sprintf(_("process revision for %d documents"), $this->dl->length));
         /**
          * @var Doc $doc
          */
@@ -178,10 +185,12 @@ class UpdateAttribute
                 $r->revisionError = $err;
                 $this->error.= $err;
                 $c++;
-                if ($c % 10 == 0) $this->logStatus(sprintf(_("%d/%d revision done") , $c, $nbR));
+                if ($c % 10 == 0) {
+                    $this->logStatus(sprintf(_("%d/%d revision done"), $c, $nbR));
+                }
             }
         }
-        $this->logStatus(sprintf(_("%d/%d revision done") , $c, $nbR));
+        $this->logStatus(sprintf(_("%d/%d revision done"), $c, $nbR));
         $this->logStatus(sprintf(_("process revision done")));
     }
     /**
@@ -191,8 +200,7 @@ class UpdateAttribute
      */
     protected function executeHistory($ids)
     {
-        
-        $this->logStatus(sprintf(_("process history for %d documents") , count($ids)));
+        $this->logStatus(sprintf(_("process history for %d documents"), count($ids)));
         $sql = "insert into dochisto (id,initid,uid,uname,date,level,code,comment ) values ";
         $vs = array();
         $u = getCurrentUser();
@@ -202,7 +210,7 @@ class UpdateAttribute
         $level = DocHisto::MESSAGE;
         $code = "UPDATE";
         foreach ($ids as $id => $initid) {
-            $vs[] = sprintf("(%d,%d,%d,'%s','%s',%d,'%s','%s')", $id, $initid, $uid, pg_escape_string($uname) , pg_escape_string($date) , $level, pg_escape_string($code) , pg_escape_string($this->historyComment));
+            $vs[] = sprintf("(%d,%d,%d,'%s','%s',%d,'%s','%s')", $id, $initid, $uid, pg_escape_string($uname), pg_escape_string($date), $level, pg_escape_string($code), pg_escape_string($this->historyComment));
         }
         $sql.= implode(',', $vs);
         simpleQuery($this->dbaccess, $sql);
@@ -215,21 +223,23 @@ class UpdateAttribute
     
     private function executeSetValue(array $ids, $attrid, $newValue)
     {
-        $this->logStatus(sprintf(_("process setValue for %d documents") , count($ids)));
-        if (is_array($newValue)) $newValue = Doc::arrayToRawValue($newValue);
-        $this->logStatus(sprintf(_("argument %s=>%s") , $attrid, $newValue));
-        $sql = sprintf("update doc%s set \"%s\"=E'%s' where locked != -1 and initid in (%s)", $this->famid, ($attrid) , pg_escape_string($newValue) , implode(',', $ids));
+        $this->logStatus(sprintf(_("process setValue for %d documents"), count($ids)));
+        if (is_array($newValue)) {
+            $newValue = Doc::arrayToRawValue($newValue);
+        }
+        $this->logStatus(sprintf(_("argument %s=>%s"), $attrid, $newValue));
+        $sql = sprintf("update doc%s set \"%s\"=E'%s' where locked != -1 and initid in (%s)", $this->famid, ($attrid), pg_escape_string($newValue), implode(',', $ids));
         simpleQuery($this->dbaccess, $sql);
         foreach ($ids as $id => $initid) {
             $this->results[$initid]->changed = true;
         }
         
-        $this->logStatus(sprintf(_("%d documents are updated") , count($ids)));
+        $this->logStatus(sprintf(_("%d documents are updated"), count($ids)));
     }
     
     private function executeRemoveValue(array $ids, $attrid, $valueToRemove)
     {
-        $this->logStatus(sprintf(_("process removeValue for %d documents") , count($ids)));
+        $this->logStatus(sprintf(_("process removeValue for %d documents"), count($ids)));
         
         if (is_array($valueToRemove)) {
             foreach ($valueToRemove as $k => $v) {
@@ -239,7 +249,7 @@ class UpdateAttribute
         } else {
             $searchValue = pg_escape_string($valueToRemove);
         }
-        $this->logStatus(sprintf(_("argument %s=>%s") , $attrid, print_r($valueToRemove, true)));
+        $this->logStatus(sprintf(_("argument %s=>%s"), $attrid, print_r($valueToRemove, true)));
         $sql = sprintf("update doc%s set \"%s\"=regexp_replace(\"%s\",E'(\\\\A|\\n|<BR>)(%s)(\\\\Z|\n|<BR>)',E'\\\\1\\\\3','g')  where locked != -1 and initid in (%s)", $this->famid, $attrid, $attrid, $searchValue, implode(',', $ids));
         simpleQuery($this->dbaccess, $sql);
         
@@ -267,19 +277,21 @@ class UpdateAttribute
             $this->results[$initid]->changed = true;
         }
         
-        $this->logStatus(sprintf(_("%d documents are updated") , count($ids)));
+        $this->logStatus(sprintf(_("%d documents are updated"), count($ids)));
     }
     private function executeAddValue(array $ids, $attrid, $valueToAdd)
     {
         $pattrid = pg_escape_string(strtolower($attrid));
-        $this->logStatus(sprintf(_("process addValue for %d documents") , count($ids)));
-        if (is_array($valueToAdd)) $valueToAdd = Doc::arrayToRawValue($valueToAdd);
+        $this->logStatus(sprintf(_("process addValue for %d documents"), count($ids)));
+        if (is_array($valueToAdd)) {
+            $valueToAdd = Doc::arrayToRawValue($valueToAdd);
+        }
         
-        $this->logStatus(sprintf(_("argument %s=>%s") , $attrid, $valueToAdd));
+        $this->logStatus(sprintf(_("argument %s=>%s"), $attrid, $valueToAdd));
         $oa = $this->getFamilyAttribute($attrid);
         if ($oa->isMultipleInArray()) {
             //double multiple
-            $sql = sprintf("update doc%s set \"%s\"=regexp_replace(\"%s\",E'\$',E'<BR>%s','gn')  where locked != -1 and \"%s\" is not null and initid in (%s)", $this->famid, $pattrid, $pattrid, pg_escape_string($valueToAdd) , $pattrid, implode(',', $ids));
+            $sql = sprintf("update doc%s set \"%s\"=regexp_replace(\"%s\",E'\$',E'<BR>%s','gn')  where locked != -1 and \"%s\" is not null and initid in (%s)", $this->famid, $pattrid, $pattrid, pg_escape_string($valueToAdd), $pattrid, implode(',', $ids));
             
             simpleQuery($this->dbaccess, $sql);
             // trim when is first
@@ -288,11 +300,11 @@ class UpdateAttribute
             simpleQuery($this->dbaccess, $sql);
         } else {
             // add if not null
-            $sql = sprintf("update doc%s set \"%s\"=\"%s\" || E'\\n%s' where locked != -1 and \"%s\" is not null and initid in (%s)", $this->famid, $pattrid, $pattrid, pg_escape_string($valueToAdd) , $pattrid, implode(',', $ids));
+            $sql = sprintf("update doc%s set \"%s\"=\"%s\" || E'\\n%s' where locked != -1 and \"%s\" is not null and initid in (%s)", $this->famid, $pattrid, $pattrid, pg_escape_string($valueToAdd), $pattrid, implode(',', $ids));
             
             simpleQuery($this->dbaccess, $sql);
             // set when is null
-            $sql = sprintf("update doc%s set \"%s\"= E'%s' where locked != -1 and \"%s\" is null and initid in (%s)", $this->famid, $pattrid, pg_escape_string($valueToAdd) , $pattrid, implode(',', $ids));
+            $sql = sprintf("update doc%s set \"%s\"= E'%s' where locked != -1 and \"%s\" is null and initid in (%s)", $this->famid, $pattrid, pg_escape_string($valueToAdd), $pattrid, implode(',', $ids));
             
             simpleQuery($this->dbaccess, $sql);
         }
@@ -300,26 +312,28 @@ class UpdateAttribute
             $this->results[$initid]->changed = true;
         }
         
-        $this->logStatus(sprintf(_("%d documents are updated") , count($ids)));
+        $this->logStatus(sprintf(_("%d documents are updated"), count($ids)));
     }
     
     private function executeReplaceValue(array $ids, $attrid, $oldvalue, $newValue)
     {
-        $this->logStatus(sprintf(_("process replaceValue for %d documents") , count($ids)));
+        $this->logStatus(sprintf(_("process replaceValue for %d documents"), count($ids)));
         
-        if (is_array($newValue)) $newValue = Doc::arrayToRawValue($newValue);
+        if (is_array($newValue)) {
+            $newValue = Doc::arrayToRawValue($newValue);
+        }
         
-        $this->logStatus(sprintf(_("argument %s=>%s") , $attrid, $oldvalue . '/' . $newValue));
+        $this->logStatus(sprintf(_("argument %s=>%s"), $attrid, $oldvalue . '/' . $newValue));
         $this->getFamily();
         //  replace for multiple
-        $sql = sprintf("update doc%s set \"%s\"= regexp_replace(\"%s\",E'(\\\\A|\\n)%s(\\\\Z|\\n)',E'\\\\1%s\\\\2','g')  where locked != -1  and initid in (%s)", $this->famid, strtolower($attrid) , strtolower($attrid) , pg_escape_string($oldvalue) , pg_escape_string($newValue) , implode(',', $ids));
+        $sql = sprintf("update doc%s set \"%s\"= regexp_replace(\"%s\",E'(\\\\A|\\n)%s(\\\\Z|\\n)',E'\\\\1%s\\\\2','g')  where locked != -1  and initid in (%s)", $this->famid, strtolower($attrid), strtolower($attrid), pg_escape_string($oldvalue), pg_escape_string($newValue), implode(',', $ids));
         simpleQuery($this->dbaccess, $sql);
         
         foreach ($ids as $id => $initid) {
             $this->results[$initid]->changed = true;
         }
         
-        $this->logStatus(sprintf(_("%d documents are updated") , count($ids)));
+        $this->logStatus(sprintf(_("%d documents are updated"), count($ids)));
     }
     /**
      * change value of an attribute for docment list
@@ -345,22 +359,31 @@ class UpdateAttribute
          * @var Doc $doc
          */
         foreach ($this->dl as $doc) {
-            if ($doc->getRawValue($attrid) != $newValue) $ids[$doc->id] = intval($doc->initid);
-            else $upToDateIds[$doc->id] = intval($doc->initid);
+            if ($doc->getRawValue($attrid) != $newValue) {
+                $ids[$doc->id] = intval($doc->initid);
+            } else {
+                $upToDateIds[$doc->id] = intval($doc->initid);
+            }
             $this->results[$doc->initid] = new UpdateAttributeResults();
         }
         foreach ($upToDateIds as $id => $initid) {
             $this->results[$initid]->changed = false;
         }
         
-        $this->logStatus(sprintf(_("process %s") , json_encode(array_keys($ids))));
+        $this->logStatus(sprintf(_("process %s"), json_encode(array_keys($ids))));
         if ($ids) {
             $this->beginTransaction();
-            if ($this->historyComment) $this->executeHistory($ids + $upToDateIds);
-            if ($this->useRevision) $this->executeRevision($ids);
+            if ($this->historyComment) {
+                $this->executeHistory($ids + $upToDateIds);
+            }
+            if ($this->useRevision) {
+                $this->executeRevision($ids);
+            }
             $this->executeSetValue($ids, $attrid, $newValue);
             
-            if ($this->useProfiling) $this->executeProfiling($ids);
+            if ($this->useProfiling) {
+                $this->executeProfiling($ids);
+            }
             $this->endTransaction();
         }
         $this->logStatusReport();
@@ -375,7 +398,6 @@ class UpdateAttribute
      */
     public function replaceValue($attrid, $oldValue, $newValue)
     {
-        
         $oa = $this->getFamilyAttribute($attrid);
         $attrid = $oa->id;
         
@@ -393,21 +415,30 @@ class UpdateAttribute
          * @var Doc $doc
          */
         foreach ($this->dl as $doc) {
-            if (preg_match(sprintf('/\b%s\b/', preg_quote($oldValue, "/")) , $doc->getRawValue($attrid))) $ids[$doc->id] = intval($doc->initid);
-            else $upToDateIds[$doc->id] = intval($doc->initid);
+            if (preg_match(sprintf('/\b%s\b/', preg_quote($oldValue, "/")), $doc->getRawValue($attrid))) {
+                $ids[$doc->id] = intval($doc->initid);
+            } else {
+                $upToDateIds[$doc->id] = intval($doc->initid);
+            }
             $this->results[$doc->initid] = new UpdateAttributeResults();
         }
         foreach ($upToDateIds as $id => $initid) {
             $this->results[$initid]->changed = false;
         }
         
-        $this->logStatus(sprintf(_("process %s") , json_encode(array_keys($ids))));
+        $this->logStatus(sprintf(_("process %s"), json_encode(array_keys($ids))));
         if ($ids) {
             $this->beginTransaction();
-            if ($this->historyComment) $this->executeHistory($ids + $upToDateIds);
-            if ($this->useRevision) $this->executeRevision($ids);
+            if ($this->historyComment) {
+                $this->executeHistory($ids + $upToDateIds);
+            }
+            if ($this->useRevision) {
+                $this->executeRevision($ids);
+            }
             $this->executeReplaceValue($ids, $attrid, $oldValue, $newValue);
-            if ($this->useProfiling) $this->executeProfiling($ids);
+            if ($this->useProfiling) {
+                $this->executeProfiling($ids);
+            }
             $this->endTransaction();
         }
         $this->logStatusReport();
@@ -421,11 +452,17 @@ class UpdateAttribute
     private function getFamilyAttribute($attrid)
     {
         $famid = $this->getFamily();
-        if (!$famid) throw new \Dcp\Upat\Exception(ErrorCode::getError("UPAT0006"));
+        if (!$famid) {
+            throw new \Dcp\Upat\Exception(ErrorCode::getError("UPAT0006"));
+        }
         $fam = new_doc($this->dbaccess, $famid);
-        if (!$fam->isAlive()) throw new \Dcp\Upat\Exception(ErrorCode::getError("UPAT0005", $this->getFamily()));
+        if (!$fam->isAlive()) {
+            throw new \Dcp\Upat\Exception(ErrorCode::getError("UPAT0005", $this->getFamily()));
+        }
         $oa = $fam->getAttribute($attrid);
-        if (!$oa) throw new \Dcp\Upat\Exception("UPAT0004", $attrid, $fam->getTitle());
+        if (!$oa) {
+            throw new \Dcp\Upat\Exception("UPAT0004", $attrid, $fam->getTitle());
+        }
         return $oa;
     }
     /**
@@ -472,8 +509,11 @@ class UpdateAttribute
              * @var Doc $doc
              */
             foreach ($this->dl as $doc) {
-                if (!in_array($valueToAdd, $doc->getMultipleRawValues($attrid))) $ids[$doc->id] = intval($doc->initid);
-                else $upToDateIds[$doc->id] = intval($doc->initid);
+                if (!in_array($valueToAdd, $doc->getMultipleRawValues($attrid))) {
+                    $ids[$doc->id] = intval($doc->initid);
+                } else {
+                    $upToDateIds[$doc->id] = intval($doc->initid);
+                }
                 
                 $this->results[$doc->initid] = new UpdateAttributeResults();
             }
@@ -498,13 +538,19 @@ class UpdateAttribute
         }
         $this->logStatus("BEGIN");
         
-        $this->logStatus(sprintf(_("process %s") , json_encode(array_keys($ids))));
+        $this->logStatus(sprintf(_("process %s"), json_encode(array_keys($ids))));
         if ($ids) {
             $this->beginTransaction();
-            if ($this->historyComment) $this->executeHistory($ids + $upToDateIds);
-            if ($this->useRevision) $this->executeRevision($ids);
+            if ($this->historyComment) {
+                $this->executeHistory($ids + $upToDateIds);
+            }
+            if ($this->useRevision) {
+                $this->executeRevision($ids);
+            }
             $this->executeAddValue($ids, $attrid, $valueToAdd);
-            if ($this->useProfiling) $this->executeProfiling($ids);
+            if ($this->useProfiling) {
+                $this->executeProfiling($ids);
+            }
             $this->endTransaction();
         }
         $this->logStatusReport();
@@ -545,11 +591,16 @@ class UpdateAttribute
          */
         foreach ($this->dl as $doc) {
             if (is_array($valueToRemove)) {
-                if (array_intersect($this->linearize($doc->getRawValue($attrid)) , $valueToRemove)) {
+                if (array_intersect($this->linearize($doc->getRawValue($attrid)), $valueToRemove)) {
                     $ids[$doc->id] = intval($doc->initid);
-                } else $upToDateIds[$doc->id] = intval($doc->initid);
-            } elseif (in_array($valueToRemove, $this->linearize($doc->getRawValue($attrid)))) $ids[$doc->id] = intval($doc->initid);
-            else $upToDateIds[$doc->id] = intval($doc->initid);
+                } else {
+                    $upToDateIds[$doc->id] = intval($doc->initid);
+                }
+            } elseif (in_array($valueToRemove, $this->linearize($doc->getRawValue($attrid)))) {
+                $ids[$doc->id] = intval($doc->initid);
+            } else {
+                $upToDateIds[$doc->id] = intval($doc->initid);
+            }
             
             $this->results[$doc->initid] = new UpdateAttributeResults();
         }
@@ -559,13 +610,19 @@ class UpdateAttribute
         
         $this->logStatus("BEGIN");
         
-        $this->logStatus(sprintf(_("process %s") , json_encode(array_keys($ids))));
+        $this->logStatus(sprintf(_("process %s"), json_encode(array_keys($ids))));
         if ($ids) {
             $this->beginTransaction();
-            if ($this->historyComment) $this->executeHistory($ids + $upToDateIds);
-            if ($this->useRevision) $this->executeRevision($ids);
+            if ($this->historyComment) {
+                $this->executeHistory($ids + $upToDateIds);
+            }
+            if ($this->useRevision) {
+                $this->executeRevision($ids);
+            }
             $this->executeRemoveValue($ids, $attrid, $valueToRemove);
-            if ($this->useProfiling) $this->executeProfiling($ids);
+            if ($this->useProfiling) {
+                $this->executeProfiling($ids);
+            }
             $this->endTransaction();
         }
         $this->logStatusReport();
@@ -602,7 +659,9 @@ class UpdateAttribute
                     $values[$ka] = $aValue;
                 }
             } else {
-                if (!is_numeric($values)) $values = $this->getInitIdFromName($values);
+                if (!is_numeric($values)) {
+                    $values = $this->getInitIdFromName($values);
+                }
             }
         }
         
@@ -615,14 +674,16 @@ class UpdateAttribute
      */
     public static function getInitIdFromName($name)
     {
-        simpleQuery(getDbAccess() , sprintf("select initid from docread where name = '%s' limit 1", pg_escape_string($name)) , $initid, true, true);
+        simpleQuery(getDbAccess(), sprintf("select initid from docread where name = '%s' limit 1", pg_escape_string($name)), $initid, true, true);
         return $initid;
     }
     private function linearize($v)
     {
         $t = explode("\n", str_replace('<BR>', "\n", $v));
         foreach ($t as $k => $vt) {
-            if (!$vt) unset($t[$k]);
+            if (!$vt) {
+                unset($t[$k]);
+            }
         }
         return $t;
     }
@@ -632,8 +693,10 @@ class UpdateAttribute
             $st = getDebugStack(2);
             
             $f = $st[0]["function"];
-            if ($f == "include") $f = '-';
-            file_put_contents($this->statusFile, sprintf("%s %s %s\n", date("Y-m-d\\TH:i:s") , $f, $s) , FILE_APPEND);
+            if ($f == "include") {
+                $f = '-';
+            }
+            file_put_contents($this->statusFile, sprintf("%s %s %s\n", date("Y-m-d\\TH:i:s"), $f, $s), FILE_APPEND);
         }
     }
     /**
@@ -646,14 +709,14 @@ class UpdateAttribute
      */
     public function bgSetValue($attrid, $newValue)
     {
-        $tmpThis = tempnam(getTmpDir() , 'uptSetValue');
+        $tmpThis = tempnam(getTmpDir(), 'uptSetValue');
         file_put_contents($tmpThis, serialize($this));
-        $tmpArgs = tempnam(getTmpDir() , 'argSetValue');
+        $tmpArgs = tempnam(getTmpDir(), 'argSetValue');
         file_put_contents($tmpArgs, serialize(func_get_args()));
         $wsh = getWshCmd(true, getCurrentUser()->id);
-        $tmpStatus = tempnam(getTmpDir() , 'statusSetValue');
+        $tmpStatus = tempnam(getTmpDir(), 'statusSetValue');
         
-        $cmd[] = sprintf("$wsh  --api=updateAttribute --objectFile=%s --argsFile=%s --statusFile=%s --method=setValue", escapeshellarg($tmpThis) , escapeshellarg($tmpArgs) , escapeshellarg($tmpStatus));
+        $cmd[] = sprintf("$wsh  --api=updateAttribute --objectFile=%s --argsFile=%s --statusFile=%s --method=setValue", escapeshellarg($tmpThis), escapeshellarg($tmpArgs), escapeshellarg($tmpStatus));
         
         bgexec($cmd, $result, $err);
         return $tmpStatus;
@@ -668,14 +731,14 @@ class UpdateAttribute
      */
     public function bgAddValue($attrid, $valueToAdd)
     {
-        $tmpThis = tempnam(getTmpDir() , 'uptAddValue');
+        $tmpThis = tempnam(getTmpDir(), 'uptAddValue');
         file_put_contents($tmpThis, serialize($this));
-        $tmpArgs = tempnam(getTmpDir() , 'argAddValue');
+        $tmpArgs = tempnam(getTmpDir(), 'argAddValue');
         file_put_contents($tmpArgs, serialize(func_get_args()));
         $wsh = getWshCmd(true, getCurrentUser()->id);
-        $tmpStatus = tempnam(getTmpDir() , 'statusAddValue');
+        $tmpStatus = tempnam(getTmpDir(), 'statusAddValue');
         
-        $cmd[] = sprintf("$wsh  --api=updateAttribute --objectFile=%s --argsFile=%s --statusFile=%s --method=addValue", escapeshellarg($tmpThis) , escapeshellarg($tmpArgs) , escapeshellarg($tmpStatus));
+        $cmd[] = sprintf("$wsh  --api=updateAttribute --objectFile=%s --argsFile=%s --statusFile=%s --method=addValue", escapeshellarg($tmpThis), escapeshellarg($tmpArgs), escapeshellarg($tmpStatus));
         
         bgexec($cmd, $result, $err);
         return $tmpStatus;
@@ -690,14 +753,14 @@ class UpdateAttribute
      */
     public function bgRemoveValue($attrid, $valueToRemove)
     {
-        $tmpThis = tempnam(getTmpDir() , 'uptRemoveValue');
+        $tmpThis = tempnam(getTmpDir(), 'uptRemoveValue');
         file_put_contents($tmpThis, serialize($this));
-        $tmpArgs = tempnam(getTmpDir() , 'argRemoveValue');
+        $tmpArgs = tempnam(getTmpDir(), 'argRemoveValue');
         file_put_contents($tmpArgs, serialize(func_get_args()));
         $wsh = getWshCmd(true, getCurrentUser()->id);
-        $tmpStatus = tempnam(getTmpDir() , 'statusRemoveValue');
+        $tmpStatus = tempnam(getTmpDir(), 'statusRemoveValue');
         
-        $cmd[] = sprintf("$wsh  --api=updateAttribute --objectFile=%s --argsFile=%s --statusFile=%s --method=removeValue", escapeshellarg($tmpThis) , escapeshellarg($tmpArgs) , escapeshellarg($tmpStatus));
+        $cmd[] = sprintf("$wsh  --api=updateAttribute --objectFile=%s --argsFile=%s --statusFile=%s --method=removeValue", escapeshellarg($tmpThis), escapeshellarg($tmpArgs), escapeshellarg($tmpStatus));
         
         bgexec($cmd, $result, $err);
         return $tmpStatus;
@@ -713,14 +776,14 @@ class UpdateAttribute
      */
     public function bgReplaceValue($attrid, $oldValue, $newValue)
     {
-        $tmpThis = tempnam(getTmpDir() , 'uptReplValue');
+        $tmpThis = tempnam(getTmpDir(), 'uptReplValue');
         file_put_contents($tmpThis, serialize($this));
-        $tmpArgs = tempnam(getTmpDir() , 'argReplValue');
+        $tmpArgs = tempnam(getTmpDir(), 'argReplValue');
         file_put_contents($tmpArgs, serialize(func_get_args()));
         $wsh = getWshCmd(true, getCurrentUser()->id);
-        $tmpStatus = tempnam(getTmpDir() , 'statusReplValue');
+        $tmpStatus = tempnam(getTmpDir(), 'statusReplValue');
         
-        $cmd[] = sprintf("$wsh  --api=updateAttribute --objectFile=%s --argsFile=%s --statusFile=%s --method=replaceValue", escapeshellarg($tmpThis) , escapeshellarg($tmpArgs) , escapeshellarg($tmpStatus));
+        $cmd[] = sprintf("$wsh  --api=updateAttribute --objectFile=%s --argsFile=%s --statusFile=%s --method=replaceValue", escapeshellarg($tmpThis), escapeshellarg($tmpArgs), escapeshellarg($tmpStatus));
         
         bgexec($cmd, $result, $err);
         return $tmpStatus;
@@ -755,4 +818,3 @@ class UpdateAttributeResults
      */
     public $historyUpdated = false;
 }
-

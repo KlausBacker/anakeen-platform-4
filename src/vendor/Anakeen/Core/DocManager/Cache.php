@@ -11,7 +11,7 @@ class Cache
     /**
      * @var MemoryCache $localCache
      */
-    static protected $localCache = null;
+    protected static $localCache = null;
     /**
      * Set document object to local cache
      *
@@ -22,14 +22,14 @@ class Cache
      * @api Record document to local cache
      * @return \Doc|\DocFam
      */
-    static public function &addDocument(\Doc & $document)
+    public static function &addDocument(\Doc & $document)
     {
         if (empty($document->id)) {
             throw new Exception("APIDM0200");
         }
         if (($document->doctype != 'C') || (count($document->attributes->attr) > 0)) {
             if (!self::getLocalCache()->set($document->id, $document)) {
-                throw new Exception("APIDM0201", $document->getTitle() , $document->id);
+                throw new Exception("APIDM0201", $document->getTitle(), $document->id);
             }
             // For legacy compatibility
             global $gdocs;
@@ -45,7 +45,7 @@ class Cache
      * @api Clear local cache
      * @return void
      */
-    static public function clear()
+    public static function clear()
     {
         if (!self::getLocalCache()->clear()) {
             throw new Exception("APIDM0202");
@@ -61,7 +61,7 @@ class Cache
      * @throws Exception
      * @return bool
      */
-    static public function isDocumentIdInCache($documentId)
+    public static function isDocumentIdInCache($documentId)
     {
         if (empty($documentId)) {
             return false;
@@ -80,7 +80,7 @@ class Cache
      * @param string $documentId object key
      * @return \Doc|null
      */
-    static public function getDocumentFromCache($documentId)
+    public static function getDocumentFromCache($documentId)
     {
         $cachedDocument = self::getLocalCache()->get($documentId);
         if (is_object($cachedDocument)) {
@@ -101,7 +101,7 @@ class Cache
      * @api Unset document object from local cache
      * @return \Doc
      */
-    static public function &removeDocument(\Doc & $document)
+    public static function &removeDocument(\Doc & $document)
     {
         self::getLocalCache()->remove($document->id);
 
@@ -118,7 +118,7 @@ class Cache
      * @param int $id
      * @return bool bool(true) on success or bool(false) if $key is invalid
      */
-    static public function removeDocumentById($id)
+    public static function removeDocumentById($id)
     {
         return self::getLocalCache()->remove($id);
     }
@@ -130,7 +130,7 @@ class Cache
      * @param \Doc $document
      * @return bool
      */
-    static public function isInCache(\Doc & $document)
+    public static function isInCache(\Doc & $document)
     {
         return self::getLocalCache()->isInCache($document->id, $document);
     }

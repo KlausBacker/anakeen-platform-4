@@ -17,7 +17,6 @@ class MiddleWareManager
      */
     public static function preProcess(array $processInfo, HttpRequest $request, HttpResponse $response)
     {
-        
         foreach ($processInfo["preProcessMiddleWare"] as $k => $info) {
             self::process($info, $request, $response);
         }

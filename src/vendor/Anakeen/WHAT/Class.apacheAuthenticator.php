@@ -1,9 +1,9 @@
 <?php
-include_once ('WHAT/Class.Authenticator.php');
+include_once('WHAT/Class.Authenticator.php');
 
 class apacheAuthenticator extends Authenticator
 {
-    function checkAuthentication()
+    public function checkAuthentication()
     {
         if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['REMOTE_USER']) || empty($_SERVER['PHP_AUTH_PW']) || ($_SERVER['PHP_AUTH_USER'] !== $_SERVER['REMOTE_USER'])) {
             header('HTTP/1.0 403 Forbidden');
@@ -14,29 +14,29 @@ class apacheAuthenticator extends Authenticator
         return self::AUTH_OK;
     }
     
-    function checkAuthorization($opt)
+    public function checkAuthorization($opt)
     {
-        return TRUE;
+        return true;
     }
     
-    function askAuthentication($args)
+    public function askAuthentication($args)
     {
         header('HTTP/1.0 403 Forbidden');
         echo _("User must be authenticate");
         echo "\nApache authentication module does not seems to be active.";
     }
     
-    function getAuthUser()
+    public function getAuthUser()
     {
         return $_SERVER['PHP_AUTH_USER'];
     }
     
-    function getAuthPw()
+    public function getAuthPw()
     {
         return $_SERVER['PHP_AUTH_PW'];
     }
     
-    function logout($redir_uri = '')
+    public function logout($redir_uri = '')
     {
         if ($redir_uri == '') {
             $pUri = parse_url($_SERVER['REQUEST_URI']);
@@ -48,12 +48,12 @@ class apacheAuthenticator extends Authenticator
         return true;
     }
     
-    function setSessionVar($name, $value)
+    public function setSessionVar($name, $value)
     {
         return true;
     }
     
-    function getSessionVar($name)
+    public function getSessionVar($name)
     {
         return '';
     }

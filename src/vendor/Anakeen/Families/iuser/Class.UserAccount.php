@@ -8,6 +8,7 @@
  *
  */
 namespace Dcp\Core;
+
 use Dcp\AttributeIdentifiers\Iuser as MyAttributes;
 
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
@@ -19,33 +20,43 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
 {
     use TAccount;
     public $wuser;
-    var $eviews = array(
+    public $eviews = array(
         "USERCARD:CHOOSEGROUP"
     );
-    var $defaultview = "FDL:VIEWBODYCARD";
-    var $defaultedit = "FDL:EDITBODYCARD";
-    function preRefresh()
+    public $defaultview = "FDL:VIEWBODYCARD";
+    public $defaultedit = "FDL:EDITBODYCARD";
+    public function preRefresh()
     {
         $err = parent::preRefresh();
         
-        if ($this->getRawValue("US_STATUS") == 'D') $err.= ($err == "" ? "" : "\n") . _("user is deactivated");
+        if ($this->getRawValue("US_STATUS") == 'D') {
+            $err.= ($err == "" ? "" : "\n") . _("user is deactivated");
+        }
         
         $iduser = $this->getRawValue("US_WHATID");
         if ($iduser > 0) {
             $user = $this->getAccount();
-            if (!$user->isAffected()) return sprintf(_("user #%d does not exist") , $iduser);
+            if (!$user->isAffected()) {
+                return sprintf(_("user #%d does not exist"), $iduser);
+            }
         } else {
-            if ($this->getRawValue("us_login") != '-') $err = _("user has not identificator");
+            if ($this->getRawValue("us_login") != '-') {
+                $err = _("user has not identificator");
+            }
             /**
              * @var \NormalAttribute $oa
              */
             $oa = $this->getAttribute("us_passwd1");
-            if ($oa) $oa->needed = true;
+            if ($oa) {
+                $oa->needed = true;
+            }
             /**
              * @var \NormalAttribute $oa
              */
             $oa = $this->getAttribute("us_passwd2");
-            if ($oa) $oa->needed = true;
+            if ($oa) {
+                $oa->needed = true;
+            }
             $oa = $this->getAttribute("us_tab_system");
             $oa->setOption("firstopen", "yes");
         }
@@ -62,7 +73,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     /**
      * test if the document can be set in LDAP
      */
-    function canUpdateLdapCard()
+    public function canUpdateLdapCard()
     {
         return ($this->getRawValue("US_STATUS") != 'D');
     }
@@ -80,14 +91,13 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
      */
     public function getUserGroups()
     {
-         DbManager::query( sprintf("SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;", $this->getRawValue("us_whatid")) , $groupIds, false, false);
+        DbManager::query(sprintf("SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;", $this->getRawValue("us_whatid")), $groupIds, false, false);
 
-            $gids = array();
-            foreach ($groupIds as $gid) {
-                $gids[$gid["id"]] = $gid["fid"];
-            }
-            return $gids;
-
+        $gids = array();
+        foreach ($groupIds as $gid) {
+            $gids[$gid["id"]] = $gid["fid"];
+        }
+        return $gids;
     }
 
     /**
@@ -102,7 +112,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     {
         $groupIds = array();
         if ($gid > 0) {
-            DbManager::query( sprintf("SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;", $gid) , $groupIds, false, false);
+            DbManager::query(sprintf("SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;", $gid), $groupIds, false, false);
             $gids = array(); // current level
             $pgids = array(); // fathers
             foreach ($groupIds as $gid) {
@@ -130,7 +140,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     /**
      * Refresh folder parent containt
      */
-    function refreshParentGroup()
+    public function refreshParentGroup()
     {
         $tgid = $this->getMultipleRawValues("US_IDGROUP");
         foreach ($tgid as $gid) {
@@ -146,9 +156,8 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     /**
      * recompute intranet values from USER database
      */
-    function refreshDocUser()
+    public function refreshDocUser()
     {
-        
         $err = "";
         $wid = $this->getRawValue("us_whatid");
         if ($wid > 0) {
@@ -210,7 +219,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
                 }
                 $err = $this->modify();
             } else {
-                $err = sprintf(_("user %d does not exist") , $wid);
+                $err = sprintf(_("user %d does not exist"), $wid);
             }
         }
         
@@ -219,7 +228,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     /**
      * affect to default group
      */
-    function setToDefaultGroup()
+    public function setToDefaultGroup()
     {
         $grpid = $this->getFamilyParameterValue("us_defaultgroup");
         $err = '';
@@ -227,7 +236,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
             /**
              * @var \Dcp\Family\Igroup $grp
              */
-            $grp = DocManager::getDocument( $grpid);
+            $grp = DocManager::getDocument($grpid);
             if ($grp && $grp->isAlive()) {
                 $err = $grp->insertDocument($this->initid);
             }
@@ -235,7 +244,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         return $err;
     }
     
-    function postCreated()
+    public function postCreated()
     {
         $err = "";
         /**
@@ -246,9 +255,11 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         if ($ed > 0) {
             $expdate = time() + ($ed * 24 * 3600);
             $err = $this->SetValue("us_accexpiredate", strftime("%Y-%m-%d 00:00:00", $expdate));
-            if ($err == '') $err = $this->modify(true, array(
+            if ($err == '') {
+                $err = $this->modify(true, array(
                 "us_accexpiredate"
-            ) , true);
+            ), true);
+            }
         }
         
         return $err;
@@ -259,7 +270,9 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     public function postStore()
     {
         $err = $this->synchronizeSystemUser();
-        if (!$err) $this->refreshRoles();
+        if (!$err) {
+            $this->refreshRoles();
+        }
         return $err;
     }
     /**
@@ -274,7 +287,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     /**
      * Modify system account from document IUSER
      */
-    function synchronizeSystemUser()
+    public function synchronizeSystemUser()
     {
         $err = '';
         $lname = $this->getRawValue("us_lname");
@@ -282,8 +295,11 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         $pwd1 = $this->getRawValue("us_passwd1");
         $pwd2 = $this->getRawValue("us_passwd2");
         $daydelay = $this->getRawValue("us_daydelay");
-        if ($daydelay == - 1) $passdelay = $daydelay;
-        else $passdelay = intval($daydelay) * 3600 * 24;
+        if ($daydelay == - 1) {
+            $passdelay = $daydelay;
+        } else {
+            $passdelay = intval($daydelay) * 3600 * 24;
+        }
         $status = $this->getRawValue("us_status");
         $login = $this->getRawValue("us_login");
         $substitute = $this->getRawValue("us_substitute");
@@ -300,7 +316,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
             if ($expdate != "") {
                 if (preg_match("|([0-9][0-9])/([0-9][0-9])/(2[0-9][0-9][0-9]) ([0-2][0-9]):([0-5][0-9]):([0-5][0-9])|", $expdate, $reg)) {
                     $expires = mktime($reg[4], $reg[5], $reg[6], $reg[2], $reg[1], $reg[3]);
-                } else if (preg_match("|(2[0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9]) ([0-2][0-9]):([0-5][0-9]):([0-5][0-9])|", $expdate, $reg)) {
+                } elseif (preg_match("|(2[0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9]) ([0-2][0-9]):([0-5][0-9]):([0-5][0-9])|", $expdate, $reg)) {
                     $expires = mktime($reg[4], $reg[5], $reg[6], $reg[2], $reg[3], $reg[1]);
                 }
             }
@@ -316,11 +332,15 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
             // get direct system role ids
             $roles = array();
             foreach ($allRoles as $arole) {
-                if ($arole["us_rolesorigin"] != "group") $roles[] = $arole["us_roles"];
+                if ($arole["us_rolesorigin"] != "group") {
+                    $roles[] = $arole["us_roles"];
+                }
             }
             $roleIds = $this->getSystemIds($roles);
             // perform update system User table
-            if ($substitute) $substitute = $this->getDocValue($substitute, "us_whatid");
+            if ($substitute) {
+                $substitute = $this->getDocValue($substitute, "us_whatid");
+            }
             $err.= $user->updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail, $roleIds, $substitute);
             if ($err == "") {
                 if ($user) {
@@ -332,7 +352,9 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
                         MyAttributes::us_meid
                     ));
                     $err = $this->setGroups(); // set groups (add and suppress) may be long
-                    if ($newuser) $err.= $this->setToDefaultGroup();
+                    if ($newuser) {
+                        $err.= $this->setToDefaultGroup();
+                    }
                 }
             }
             
@@ -340,14 +362,19 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
                 $err = $this->RefreshDocUser(); // refresh from core database
                 //      $this->refreshParentGroup();
                 $errldap = $this->RefreshLdapCard();
-                if ($errldap != "") AddWarningMsg($errldap);
+                if ($errldap != "") {
+                    AddWarningMsg($errldap);
+                }
             }
         } else {
             // tranfert extern mail if no login specified yet
             if ($this->getRawValue("us_login") == "-") {
                 $email = $this->getRawValue("us_extmail");
-                if (($email != "") && ($email[0] != "<")) $this->setValue("us_mail", $email);
-                else $this->clearValue("us_mail");
+                if (($email != "") && ($email[0] != "<")) {
+                    $this->setValue("us_mail", $email);
+                } else {
+                    $this->clearValue("us_mail");
+                }
             }
         }
         
@@ -355,12 +382,14 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         return $err;
     }
     
-    function PostDelete()
+    public function PostDelete()
     {
         parent::PostDelete();
         
         $user = $this->getAccount();
-        if ($user) $user->Delete();
+        if ($user) {
+            $user->Delete();
+        }
     }
     /**
      * Do not call ::setGroup if its import
@@ -368,7 +397,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
      * @param array $extra
      * @return string|void
      */
-    function preImport(array $extra = array())
+    public function preImport(array $extra = array())
     {
         if ($this->id > 0) {
             global $_POST;
@@ -387,7 +416,9 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         // get direct system role ids
         $roles = array();
         foreach ($allRoles as $arole) {
-            if ($arole["us_rolesorigin"] != "group") $roles[] = $arole["us_roles"];
+            if ($arole["us_rolesorigin"] != "group") {
+                $roles[] = $arole["us_roles"];
+            }
         }
         $this->setValue("us_roles", $roles);
     }
@@ -397,13 +428,18 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     public function refreshRoles()
     {
         $u = $this->getAccount();
-        if (!$u) return;
+        if (!$u) {
+            return;
+        }
         $directRoleIds = $u->getRoles();
         $allParents = $u->getUserParents();
         $allRoles = $allGroup = array();
         foreach ($allParents as $aParent) {
-            if ($aParent["accounttype"] == \Account::ROLE_TYPE) $allRoles[] = $aParent;
-            else $allGroup[] = $aParent;
+            if ($aParent["accounttype"] == \Account::ROLE_TYPE) {
+                $allRoles[] = $aParent;
+            } else {
+                $allGroup[] = $aParent;
+            }
         }
         
         $this->clearArrayValues("us_t_roles");
@@ -421,7 +457,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
             $rid = $role["id"];
             $tgroup = array();
             foreach ($allGroup as $aGroup) {
-                DbManager::query( sprintf("select idgroup from groups where iduser=%d and idgroup=%d", $aGroup["id"], $rid) , $gr);
+                DbManager::query(sprintf("select idgroup from groups where iduser=%d and idgroup=%d", $aGroup["id"], $rid), $gr);
                 if ($gr) {
                     $tgroup[] = $aGroup["fid"];
                 }
@@ -473,16 +509,20 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         }
         return '';
     }
-    function constraintPassword($pwd1, $pwd2, $login)
+    public function constraintPassword($pwd1, $pwd2, $login)
     {
-        if ($this->testForcePassword($pwd1)) return '';
+        if ($this->testForcePassword($pwd1)) {
+            return '';
+        }
         $sug = array();
         $err = "";
         
         if ($pwd1 <> $pwd2) {
             $err = _("the 2 passwords are not the same");
-        } else if (($pwd1 == "") && ($this->getRawValue("us_whatid") == "")) {
-            if ($login != "-") $err = _("passwords must not be empty");
+        } elseif (($pwd1 == "") && ($this->getRawValue("us_whatid") == "")) {
+            if ($login != "-") {
+                $err = _("passwords must not be empty");
+            }
         }
         
         return array(
@@ -503,23 +543,39 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         }
         
         $msg = sprintf(_("Your password is not secure."));
-        if ($minLength > 0) $msg.= "\n " . sprintf(_("It must contains at least %d characters (total length)") , $minLength);
-        if ($minDigitLength + $minUpperLength + $minLowerLength + $minSymbolLength > 0) $msg.= " " . sprintf(_("with these conditions"));
+        if ($minLength > 0) {
+            $msg.= "\n " . sprintf(_("It must contains at least %d characters (total length)"), $minLength);
+        }
+        if ($minDigitLength + $minUpperLength + $minLowerLength + $minSymbolLength > 0) {
+            $msg.= " " . sprintf(_("with these conditions"));
+        }
         if ($minDigitLength) {
-            if ($minDigitLength > 1) $msg.= "\n  - " . sprintf(_("at least %d digits") , $minDigitLength);
-            else $msg.= "\n  - " . sprintf(_("at least one digit"));
+            if ($minDigitLength > 1) {
+                $msg.= "\n  - " . sprintf(_("at least %d digits"), $minDigitLength);
+            } else {
+                $msg.= "\n  - " . sprintf(_("at least one digit"));
+            }
         }
         if ($minUpperLength) {
-            if ($minUpperLength > 1) $msg.= "\n  - " . sprintf(_("at least %d uppercase alpha characters") , $minUpperLength);
-            else $msg.= "\n  - " . sprintf(_("at least one uppercase alpha character"));
+            if ($minUpperLength > 1) {
+                $msg.= "\n  - " . sprintf(_("at least %d uppercase alpha characters"), $minUpperLength);
+            } else {
+                $msg.= "\n  - " . sprintf(_("at least one uppercase alpha character"));
+            }
         }
         if ($minLowerLength) {
-            if ($minLowerLength > 1) $msg.= "\n  - " . sprintf(_("at least %d lowercase alpha characters") , $minLowerLength);
-            else $msg.= "\n  - " . sprintf(_("at least one lowercase alpha character"));
+            if ($minLowerLength > 1) {
+                $msg.= "\n  - " . sprintf(_("at least %d lowercase alpha characters"), $minLowerLength);
+            } else {
+                $msg.= "\n  - " . sprintf(_("at least one lowercase alpha character"));
+            }
         }
         if ($minSymbolLength) {
-            if ($minSymbolLength > 1) $msg.= "\n  - " . sprintf(_("at least %d symbol characters") , $minSymbolLength);
-            else $msg.= "\n  - " . sprintf(_("at least one symbol character"));
+            if ($minSymbolLength > 1) {
+                $msg.= "\n  - " . sprintf(_("at least %d symbol characters"), $minSymbolLength);
+            } else {
+                $msg.= "\n  - " . sprintf(_("at least one symbol character"));
+            }
         }
         if (mb_strlen($pwd) < $minLength) {
             $err = _("Not enough characters.") . "\n";
@@ -566,7 +622,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
      * @param $daydelay
      * @return array
      */
-    function constraintExpires($expiresd, $expirest, $daydelay)
+    public function constraintExpires($expiresd, $expirest, $daydelay)
     {
         $err = '';
         $sug = array();
@@ -590,11 +646,11 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
      * @throws Exception
      * @throws \Exception
      */
-    function editlikeperson($target = "finfo", $ulink = true, $abstract = "Y")
+    public function editlikeperson($target = "finfo", $ulink = true, $abstract = "Y")
     {
         global $action;
         
-        $this->lay = new \Layout(getLayoutFile("FDL", "editbodycard.xml") , $action);
+        $this->lay = new \Layout(getLayoutFile("FDL", "editbodycard.xml"), $action);
         
         $this->attributes->attr['us_tab_system']->visibility = 'R';
         $this->attributes->attr['us_fr_userchange']->visibility = 'R';
@@ -611,7 +667,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
      * interface to only modify name and password
      * @templateController
      */
-    function editchangepassword()
+    public function editchangepassword()
     {
         $this->viewprop();
         $this->editattr(false);
@@ -621,13 +677,13 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
      * @param string $password password to crypt
      * @return string
      */
-    function setPassword($password)
+    public function setPassword($password)
     {
         $idwuser = $this->getRawValue("US_WHATID");
         
         $wuser = $this->getAccount();
         if (!$wuser->isAffected()) {
-            return sprintf(_("user #%d does not exist") , $idwuser);
+            return sprintf(_("user #%d does not exist"), $idwuser);
         }
         // Change what user password
         $wuser->password_new = $password;
@@ -641,15 +697,17 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     /**
      * Increase login failure count
      */
-    function increaseLoginFailure()
+    public function increaseLoginFailure()
     {
-        if ($this->getRawValue("us_whatid") == 1) return ""; // it makes non sense for admin
+        if ($this->getRawValue("us_whatid") == 1) {
+            return "";
+        } // it makes non sense for admin
         $lf = intval($this->getRawValue("us_loginfailure", 0)) + 1;
         $err = $this->SetValue("us_loginfailure", $lf);
         if ($err == "") {
             $this->modify(false, array(
                 "us_loginfailure"
-            ) , false);
+            ), false);
         }
         return "";
     }
@@ -657,9 +715,11 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
      * Reset login failure count
      * @apiExpose
      */
-    function resetLoginFailure()
+    public function resetLoginFailure()
     {
-        if ($this->getRawValue("us_whatid") == 1) return ""; // it makes non sense for admin
+        if ($this->getRawValue("us_whatid") == 1) {
+            return "";
+        } // it makes non sense for admin
         $err = $this->canEdit();
         if ($err == '') {
             if (intval($this->getRawValue("us_loginfailure")) > 0) {
@@ -667,7 +727,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
                 if ($err == "") {
                     $err = $this->modify(false, array(
                         "us_loginfailure"
-                    ) , false);
+                    ), false);
                 }
             }
         }
@@ -691,7 +751,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     /**
      * Security menus visibilities
      */
-    function menuResetLoginFailure()
+    public function menuResetLoginFailure()
     {
         // Do not show the menu if the user has no FUSERS privileges
         global $action;
@@ -712,7 +772,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         }
         return MENU_ACTIVE;
     }
-    function menuActivateAccount()
+    public function menuActivateAccount()
     {
         // Do not show the menu if the user has no FUSERS privileges
         global $action;
@@ -733,7 +793,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         }
         return MENU_ACTIVE;
     }
-    function menuDeactivateAccount()
+    public function menuDeactivateAccount()
     {
         // Do not show the menu if the user has no FUSERS privileges
         global $action;
@@ -757,9 +817,11 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     /**
      * Manage account security
      */
-    function isAccountActive()
+    public function isAccountActive()
     {
-        if ($this->getRawValue("us_whatid") == 1) return false; // it makes non sense for admin
+        if ($this->getRawValue("us_whatid") == 1) {
+            return false;
+        } // it makes non sense for admin
         $u = $this->getAccount();
         if ($u) {
             return $u->status != 'D';
@@ -770,7 +832,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
      * @apiExpose
      * @return string error message
      */
-    function activateAccount()
+    public function activateAccount()
     {
         // Check that the user has FUSERS privileges
         global $action;
@@ -785,12 +847,12 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         if ($err == "") {
             $err = $this->modify(true, array(
                 "us_status"
-            ) , true);
+            ), true);
             $this->synchronizeSystemUser();
         }
         return $err;
     }
-    function isAccountInactive()
+    public function isAccountInactive()
     {
         return (!$this->isAccountActive());
     }
@@ -798,7 +860,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
      * @apiExpose
      * @return string error message
      */
-    function deactivateAccount()
+    public function deactivateAccount()
     {
         // Check that the user has FUSERS privileges
         global $action;
@@ -813,21 +875,23 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         if ($err == "") {
             $err = $this->modify(true, array(
                 "us_status"
-            ) , true);
+            ), true);
             $this->synchronizeSystemUser();
         }
         return $err;
     }
-    function accountHasExpired()
+    public function accountHasExpired()
     {
-        if ($this->getRawValue("us_whatid") == 1) return false;
+        if ($this->getRawValue("us_whatid") == 1) {
+            return false;
+        }
         $expd = $this->getRawValue("us_accexpiredate");
         //convert date
         $expires = 0;
         if ($expd != "") {
             if (preg_match("|([0-9][0-9])/([0-9][0-9])/(2[0-9][0-9][0-9])|", $expd, $reg)) {
                 $expires = mktime(0, 0, 0, $reg[2], $reg[1], $reg[3]);
-            } else if (preg_match("|(2[0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])|", $expd, $reg)) {
+            } elseif (preg_match("|(2[0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])|", $expd, $reg)) {
                 $expires = mktime(0, 0, 0, $reg[2], $reg[3], $reg[1]);
             }
             return ($expires <= time());
@@ -838,7 +902,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
      * return attribute used to filter from keyword
      * @return string
      */
-    static function getMailAttribute()
+    public static function getMailAttribute()
     {
         return "us_mail";
     }

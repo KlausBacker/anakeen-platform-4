@@ -85,7 +85,7 @@ class XDOMDocument extends \DOMDocument
                 $error->file = $filename;
                 $errors[] = $error;
             }
-            throw new XDOMDocumentException(sprintf("Error loading XML file '%s': %s", $filename, $error[0]->message) , $errors);
+            throw new XDOMDocumentException(sprintf("Error loading XML file '%s': %s", $filename, $error[0]->message), $errors);
         }
         return true;
     }
@@ -123,7 +123,7 @@ class XDOMDocument extends \DOMDocument
                 }
                 $errors[] = $error;
             }
-            throw new XDOMDocumentException(sprintf("Error loading XML data: %s", $errors[0]->message) , $errors);
+            throw new XDOMDocumentException(sprintf("Error loading XML data: %s", $errors[0]->message), $errors);
         }
         return true;
     }
@@ -154,7 +154,7 @@ class XDOMDocument extends \DOMDocument
                 $error->file = $filename;
                 $errors[] = $error;
             }
-            throw new XDOMDocumentException(sprintf("Error loading HTML file '%s': %s", $filename, $errors[0]->message) , $errors);
+            throw new XDOMDocumentException(sprintf("Error loading HTML file '%s': %s", $filename, $errors[0]->message), $errors);
         }
         return true;
     }
@@ -192,7 +192,7 @@ class XDOMDocument extends \DOMDocument
                 }
                 $errors[] = $error;
             }
-            throw new XDOMDocumentException(sprintf("Error loading HTML data: %s", $errors[0]->message) , $errors);
+            throw new XDOMDocumentException(sprintf("Error loading HTML data: %s", $errors[0]->message), $errors);
         }
         return true;
     }

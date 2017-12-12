@@ -4,6 +4,6 @@
  * @package FDL
 */
 
-require_once ('WHAT/classAutoloader.php');
+require_once('WHAT/classAutoloader.php');
 
 \Dcp\Autoloader::register();

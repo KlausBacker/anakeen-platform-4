@@ -69,7 +69,7 @@ class ParameterManager
                 $t[$values["name"]] = $values["val"];
             }
             $uid = getCurrentUser()->id;
-            $sql = sprintf("select paramv.name,paramv.val from paramv, application where application.name='%s' and application.id=paramv.appid and paramv.type = 'U%d';", pg_escape_string($appName) , $uid);
+            $sql = sprintf("select paramv.name,paramv.val from paramv, application where application.name='%s' and application.id=paramv.appid and paramv.type = 'U%d';", pg_escape_string($appName), $uid);
             
             simpleQuery('', $sql, $r);
             foreach ($r as $values) {
@@ -139,7 +139,7 @@ class ParameterManager
     {
         deprecatedFunction();
         // verify if parameter exists
-        $sql = sprintf("select paramdef.*, application.name as appname from paramdef, application where application.name in ('%s',(select childof from application where  name='%s'))  and application.id=paramdef.appid and paramdef.name = '%s' and isuser='Y';", pg_escape_string($appName) , pg_escape_string($appName) , pg_escape_string($name));
+        $sql = sprintf("select paramdef.*, application.name as appname from paramdef, application where application.name in ('%s',(select childof from application where  name='%s'))  and application.id=paramdef.appid and paramdef.name = '%s' and isuser='Y';", pg_escape_string($appName), pg_escape_string($appName), pg_escape_string($name));
         simpleQuery('', $sql, $r, false, true);
         if (empty($r)) {
             throw new \Dcp\PMGT\Exception("PMGT0004", $name, $appName);
@@ -153,7 +153,9 @@ class ParameterManager
                 throw new \Dcp\PMGT\Exception("PMGT0006", $name, $appName);
             }
         }
-        if ($userId === null) $userId = getCurrentUser()->id;
+        if ($userId === null) {
+            $userId = getCurrentUser()->id;
+        }
         self::setUserApplicationTypeParameter($userId, $appName, $appId, $r["name"], $value);
     }
     /**
@@ -174,7 +176,9 @@ class ParameterManager
             throw new \Dcp\PMGT\Exception("PMGT0007", $name);
         }
         
-        if ($userId === null) $userId = getCurrentUser()->id;
+        if ($userId === null) {
+            $userId = getCurrentUser()->id;
+        }
         self::setUserApplicationTypeParameter($userId, $r["appname"], $r["appid"], $r["name"], $value);
     }
     private static function setApplicationTypeParameter($type, $appName, $appId, $name, $value)
@@ -191,7 +195,9 @@ class ParameterManager
         if ($err) {
             throw new \Dcp\PMGT\Exception("PMGT0002", $name, $appName, $err);
         }
-        if (isset(self::$cache[$appName][$name])) self::$cache[$appName][$name] = $value;
+        if (isset(self::$cache[$appName][$name])) {
+            self::$cache[$appName][$name] = $value;
+        }
         
         $a = self::getAction();
     }
@@ -204,7 +210,7 @@ class ParameterManager
             $p = new Param(getDbAccess());
         }
         
-        simpleQuery('', sprintf("select id from users where id=%d and accounttype='U'", $userId) , $uid, true, true);
+        simpleQuery('', sprintf("select id from users where id=%d and accounttype='U'", $userId), $uid, true, true);
         if (!$uid) {
             throw new \Dcp\PMGT\Exception("PMGT0008", $name, $appName, $userId);
         }
@@ -213,6 +219,8 @@ class ParameterManager
         if ($err) {
             throw new \Dcp\PMGT\Exception("PMGT0005", $name, $appName, $err);
         }
-        if (isset(self::$cache[$appName][$name])) self::$cache[$appName][$name] = $value;
+        if (isset(self::$cache[$appName][$name])) {
+            self::$cache[$appName][$name] = $value;
+        }
     }
 }

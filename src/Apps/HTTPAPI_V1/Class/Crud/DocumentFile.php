@@ -7,9 +7,9 @@
 namespace Dcp\HttpApi\V1\Crud;
 
 use Dcp\HttpApi\V1\DocManager\DocManager as DocManager;
+
 class DocumentFile extends Crud
 {
-    
     const CACHEIMGDIR = "var/cache/file/";
     
     private $tmpFlag = "_tmp_";
@@ -180,11 +180,11 @@ class DocumentFile extends Crud
     
     protected function zipFiles(\NormalAttribute $attribute, array $files)
     {
-        $tmpZip = tempnam(getTmpDir() , "file" . $this->_document->id . "-") . ".zip";
+        $tmpZip = tempnam(getTmpDir(), "file" . $this->_document->id . "-") . ".zip";
         
         $zip = new \ZipArchive();
         if ($zip->open($tmpZip, \ZipArchive::CREATE) === true) {
-            $fileNamePattern = sprintf("%%0%dd-%%s", floor(log(count($files) , 10)) + 1);
+            $fileNamePattern = sprintf("%%0%dd-%%s", floor(log(count($files), 10)) + 1);
             foreach ($files as $k => $file) {
                 preg_match(PREGEXPFILE, $file, $reg);
                 if (empty($reg["vid"])) {
@@ -255,7 +255,7 @@ class DocumentFile extends Crud
      * @param array $array
      * @throws Exception
      */
-    public function setUrlParameters(Array $array)
+    public function setUrlParameters(array $array)
     {
         parent::setUrlParameters($array);
         $familyId = isset($this->urlParameters["familyId"]) ? $this->urlParameters["familyId"] : false;

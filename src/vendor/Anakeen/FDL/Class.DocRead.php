@@ -13,7 +13,7 @@
 /**
  */
 
-include_once ("Class.Doc.php");
+include_once("Class.Doc.php");
 class DocRead extends DbObj
 {
     /**
@@ -114,6 +114,4 @@ create index full_docread on docread using gist(fulltext);";
         "svalues",
         "attrids"
     ); // not be in fields else trigger error
-    
 }
-?>

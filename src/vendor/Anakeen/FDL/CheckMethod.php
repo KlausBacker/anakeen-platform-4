@@ -16,12 +16,15 @@ class CheckMethod extends CheckData
      * @param Doc $doc
      * @return CheckMethod
      */
-    function check(array $data, &$doc = null)
+    public function check(array $data, &$doc = null)
     {
         if (!empty($data[1])) {
             $prefix = $data[1][0];
-            if (($prefix == '+') || ($prefix == '*')) $this->methodFile = substr($data[1], 1);
-            else $this->methodFile = $data[1];
+            if (($prefix == '+') || ($prefix == '*')) {
+                $this->methodFile = substr($data[1], 1);
+            } else {
+                $this->methodFile = $data[1];
+            }
             $this->doc = $doc;
             $this->checkMethodFile();
         }

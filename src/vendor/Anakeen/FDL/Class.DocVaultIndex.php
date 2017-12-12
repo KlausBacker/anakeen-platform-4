@@ -14,28 +14,28 @@
 /**
  */
 
-include_once ('Class.DbObj.php');
-include_once ('Class.QueryDb.php');
-include_once ('Class.Log.php');
+include_once('Class.DbObj.php');
+include_once('Class.QueryDb.php');
+include_once('Class.Log.php');
 
 class DocVaultIndex extends DbObj
 {
-    var $fields = array(
+    public $fields = array(
         "docid",
         "vaultid"
     );
     
-    var $id_fields = array(
+    public $id_fields = array(
         "docid",
         "vaultid"
     );
     
-    var $dbtable = "docvaultindex";
+    public $dbtable = "docvaultindex";
     
-    var $order_by = "docid";
+    public $order_by = "docid";
     public $docid;
     public $vaultid;
-    var $sqlcreate = "
+    public $sqlcreate = "
 create table docvaultindex ( docid  int not null,
                              vaultid bigint not null
                    );
@@ -46,7 +46,7 @@ create unique index idx_docvaultindex on docvaultindex (docid, vaultid);";
      * @param int $vid vault id
      * @return array object
      */
-    function getDocIds($vid)
+    public function getDocIds($vid)
     {
         $t = array();
         $query = new QueryDb($this->dbaccess, "DocVaultIndex");
@@ -62,12 +62,14 @@ create unique index idx_docvaultindex on docvaultindex (docid, vaultid);";
      * @param int $vid vault id
      * @return int id of document
      */
-    function getDocId($vid)
+    public function getDocId($vid)
     {
         $query = new QueryDb($this->dbaccess, "DocVaultIndex");
         $query->AddQuery("vaultid = $vid");
         $t = $query->Query(0, 1, "TABLE");
-        if (is_array($t)) return $t[0]["docid"];
+        if (is_array($t)) {
+            return $t[0]["docid"];
+        }
         return false;
     }
     /**
@@ -75,9 +77,11 @@ create unique index idx_docvaultindex on docvaultindex (docid, vaultid);";
      * @param int $docid document id
      * @return array
      */
-    function getVaultIds($docid)
+    public function getVaultIds($docid)
     {
-        if (!$docid) return array();
+        if (!$docid) {
+            return array();
+        }
         $query = new QueryDb($this->dbaccess, "DocVaultIndex");
         $query->AddQuery("docid = $docid");
         $t = $query->Query(0, 0, "TABLE");
@@ -90,13 +94,13 @@ create unique index idx_docvaultindex on docvaultindex (docid, vaultid);";
         return $tvid;
     }
     
-    function DeleteDoc($docid)
+    public function DeleteDoc($docid)
     {
         $err = $this->exec_query("delete from " . $this->dbtable . " where docid=" . $docid);
         return $err;
     }
     
-    function DeleteVaultId($vid)
+    public function DeleteVaultId($vid)
     {
         $err = $this->exec_query("delete from " . $this->dbtable . " where vaultid=" . $vid);
         return $err;

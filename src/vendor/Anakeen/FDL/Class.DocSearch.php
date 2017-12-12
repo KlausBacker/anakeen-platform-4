@@ -13,11 +13,10 @@
 /**
  */
 
-include_once ("FDL/Lib.Dir.php");
+include_once("FDL/Lib.Dir.php");
 
 class DocSearch extends PDocSearch
 {
-    
     public $defDoctype = 'S';
     public $defaultedit = "FREEDOM:EDITSEARCH";
     
@@ -33,20 +32,21 @@ class DocSearch extends PDocSearch
      */
     public $folderRecursiveLevel = 2;
     
-    function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
+    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
-        
         PDocSearch::__construct($dbaccess, $id, $res, $dbid);
-        if (((!isset($this->fromid))) || ($this->fromid == "")) $this->fromid = FAM_SEARCH;
+        if (((!isset($this->fromid))) || ($this->fromid == "")) {
+            $this->fromid = FAM_SEARCH;
+        }
     }
     
     public function preConsultation()
     {
         $famId = $this->getRawValue(\Dcp\AttributeIdentifiers\Search::se_famid);
         if ($famId) {
-            $doc = new_Doc($this->dbaccess, abs($famId) , true);
+            $doc = new_Doc($this->dbaccess, abs($famId), true);
             if (!is_object($doc) || !$doc->isAlive() || $doc->defDoctype != 'C') {
-                $err = sprintf(_('Family [%s] not found') , abs($famId));
+                $err = sprintf(_('Family [%s] not found'), abs($famId));
                 return $err;
             }
         }
@@ -75,28 +75,37 @@ class DocSearch extends PDocSearch
      * @param string $tquery the sql query
      * @return string error message (empty if no error)
      */
-    function addStaticQuery($tquery)
+    public function addStaticQuery($tquery)
     {
         $this->setValue("se_static", "1");
         $err = $this->addQuery($tquery);
         return $err;
     }
     
-    function AddQuery($tquery)
+    public function AddQuery($tquery)
     {
         // insert query in search document
-        if (is_array($tquery)) $query = implode(";\n", $tquery);
-        else $query = $tquery;
+        if (is_array($tquery)) {
+            $query = implode(";\n", $tquery);
+        } else {
+            $query = $tquery;
+        }
         
-        if ($query == "") return "";
-        if ($this->id == "") return "";
+        if ($query == "") {
+            return "";
+        }
+        if ($this->id == "") {
+            return "";
+        }
         
         $oqd = new QueryDir($this->dbaccess);
         $oqd->dirid = $this->id;
         $oqd->qtype = "M"; // multiple
         $oqd->query = $query;
         
-        if ($this->id > 0) $this->exec_query("delete from fld where dirid=" . intval($this->id) . " and qtype='M'");
+        if ($this->id > 0) {
+            $this->exec_query("delete from fld where dirid=" . intval($this->id) . " and qtype='M'");
+        }
         $err = $oqd->Add();
         if ($err == "") {
             $this->setValue("SE_SQLSELECT", $query);
@@ -110,19 +119,19 @@ class DocSearch extends PDocSearch
      * always false for a search
      * @return string error message, if no error empty string
      */
-    function canModify()
+    public function canModify()
     {
         return _("containt of searches cannot be modified");
     }
     /**
      * return true if the search has parameters
      */
-    function isParameterizable()
+    public function isParameterizable()
     {
         return false;
     }
     
-    function GetQueryOld()
+    public function GetQueryOld()
     {
         $query = new QueryDb($this->dbaccess, "QueryDir");
         $query->AddQuery("dirid=" . $this->id);
@@ -138,17 +147,15 @@ class DocSearch extends PDocSearch
      * return SQL query(ies) needed to search documents
      * @return array string
      */
-    function getQuery()
+    public function getQuery()
     {
         if (!$this->isStaticSql()) {
-            $query = $this->ComputeQuery($this->getRawValue("se_key") , $this->getRawValue("se_famid") , $this->getRawValue("se_latest") , $this->getRawValue("se_case") == "yes", $this->getRawValue("se_idfld") , $this->getRawValue("se_sublevel") === "", $this->getRawValue("se_case") == "full");
+            $query = $this->ComputeQuery($this->getRawValue("se_key"), $this->getRawValue("se_famid"), $this->getRawValue("se_latest"), $this->getRawValue("se_case") == "yes", $this->getRawValue("se_idfld"), $this->getRawValue("se_sublevel") === "", $this->getRawValue("se_case") == "full");
             // print "<HR>getQuery1:[$query]";
-            
         } else {
             $query[] = $this->getRawValue("SE_SQLSELECT");
             // print "<BR><HR>".$this->getRawValue("se_latest")."/".$this->getRawValue("se_case")."/".$this->getRawValue("se_key");
             //  print "getQuery2:[$query]";
-            
         }
         
         return $query;
@@ -156,7 +163,7 @@ class DocSearch extends PDocSearch
     /**
      * @param bool $full set to true if wan't use full text indexing
      */
-    function getSqlGeneralFilters($keyword, $latest, $sensitive, $full = false)
+    public function getSqlGeneralFilters($keyword, $latest, $sensitive, $full = false)
     {
         $filters = array();
         
@@ -167,7 +174,7 @@ class DocSearch extends PDocSearch
                 $dacl = $this->dacls[$acl];
                 if ($dacl) {
                     $posacl = $dacl["pos"];
-                    $filters[] = sprintf("hasaprivilege('%s', profid, %d)", DocPerm::getMemberOfVector($this->userid) , (1 << intval($posacl)));
+                    $filters[] = sprintf("hasaprivilege('%s', profid, %d)", DocPerm::getMemberOfVector($this->userid), (1 << intval($posacl)));
                 }
             }
         }
@@ -175,7 +182,7 @@ class DocSearch extends PDocSearch
         if ($latest == "fixed") {
             $filters[] = "locked = -1";
             $filters[] = "lmodify = 'L'";
-        } else if ($latest == "allfixed") {
+        } elseif ($latest == "allfixed") {
             $filters[] = "locked = -1";
         }
         if ($latest == "lastfixed") {
@@ -189,7 +196,7 @@ class DocSearch extends PDocSearch
             if ($keyword[0] == '~') {
                 $full = false; // force REGEXP
                 $keyword = substr($keyword, 1);
-            } else if ($keyword[0] == '*') {
+            } elseif ($keyword[0] == '*') {
                 $full = true; // force FULLSEARCH
                 $keyword = substr($keyword, 1);
             }
@@ -207,7 +214,7 @@ class DocSearch extends PDocSearch
                 // it's method call
                 $keyword = $this->ApplyMethod($keyword);
                 $filters[] = sprintf("svalues %s '%s'", $op, pg_escape_string($keyword));
-            } else if ($keyword != "") {
+            } elseif ($keyword != "") {
                 // transform conjonction
                 $tkey = explode(" ", $keyword);
                 $ing = false;
@@ -221,7 +228,7 @@ class DocSearch extends PDocSearch
                         } else {
                             $ckey.= " " . $v;
                         }
-                    } else if ($v && $v[0] == '"') {
+                    } elseif ($v && $v[0] == '"') {
                         if ($v[strlen($v) - 1] == '"') {
                             $ckey = substr($v, 1, -1);
                             $filters[] = sprintf("svalues %s '%s'", $op, pg_escape_string($ckey));
@@ -250,14 +257,16 @@ class DocSearch extends PDocSearch
      * @param string &$fullkeys return tsearch2 keys for use it in headline sql function
      * @return void
      */
-    static function getFullSqlFilters($keyword, &$sqlfilters, &$sqlorder, &$fullkeys)
+    public static function getFullSqlFilters($keyword, &$sqlfilters, &$sqlorder, &$fullkeys)
     {
         $fullkeys = "";
         $sqlorder = "";
         $sqlfilters = array(
             "true"
         );
-        if ($keyword == "") return;
+        if ($keyword == "") {
+            return;
+        }
         $pspell_link = false;
         if (function_exists('pspell_new')) {
             $pspell_link = pspell_new("fr", "", "", "utf-8", PSPELL_FAST);
@@ -279,7 +288,9 @@ class DocSearch extends PDocSearch
                         $suggestions = pspell_suggest($pspell_link, $key);
                         $sug = $suggestions[0];
                         //foreach ($suggestions as $k=>$suggestion) {  echo "$k : $suggestion\n";  }
-                        if ($sug && (unaccent($sug) != $key) && (!strstr($sug, ' '))) $tsearchkeys[$k] = "$key|$sug";
+                        if ($sug && (unaccent($sug) != $key) && (!strstr($sug, ' '))) {
+                            $tsearchkeys[$k] = "$key|$sug";
+                        }
                     }
                 }
                 if (strstr($key, '"') !== false) {
@@ -290,44 +301,54 @@ class DocSearch extends PDocSearch
                             '&',
                             '(',
                             ')'
-                        ) , array(
+                        ), array(
                             "",
                             ' ',
                             '',
                             ''
-                        ) , $key)) . "\\\\y' ";
+                        ), $key)) . "\\\\y' ";
                     } else {
                         list($left, $right) = explode("|", $key);
-                        if (strstr($left, '"') !== false) $q1 = "svalues ~* E'\\\\y" . pg_escape_string(str_replace(array(
+                        if (strstr($left, '"') !== false) {
+                            $q1 = "svalues ~* E'\\\\y" . pg_escape_string(str_replace(array(
                             '"',
                             '&',
                             '(',
                             ')'
-                        ) , array(
+                        ), array(
                             "",
                             ' ',
                             '',
                             ''
-                        ) , $left)) . "\\\\y' ";
-                        else $q1 = "";
-                        if (strstr($right, '"') !== false) $q2 = "svalues ~* E'\\\\y" . pg_escape_string(str_replace(array(
+                        ), $left)) . "\\\\y' ";
+                        } else {
+                            $q1 = "";
+                        }
+                        if (strstr($right, '"') !== false) {
+                            $q2 = "svalues ~* E'\\\\y" . pg_escape_string(str_replace(array(
                             '"',
                             '&',
                             '(',
                             ')'
-                        ) , array(
+                        ), array(
                             "",
                             ' ',
                             '',
                             ''
-                        ) , $right)) . "\\\\y' ";
-                        else $q2 = "";
+                        ), $right)) . "\\\\y' ";
+                        } else {
+                            $q2 = "";
+                        }
                         $q3 = "fulltext @@ to_tsquery('french','" . pg_escape_string(unaccent($left)) . "') ";
                         $q4 = "fulltext @@ to_tsquery('french','" . pg_escape_string(unaccent($right)) . "') ";
                         
-                        if ((!$q1) && $q2) $sqlfiltersbrut[] = "($q4 and $q2) or $q3";
-                        elseif ((!$q2) && $q1) $sqlfiltersbrut[] = "($q3 and $q1) or $q4";
-                        elseif ($q2 && $q1) $sqlfiltersbrut[] = "($q3 and $q1) or ($q4 and $q2)";
+                        if ((!$q1) && $q2) {
+                            $sqlfiltersbrut[] = "($q4 and $q2) or $q3";
+                        } elseif ((!$q2) && $q1) {
+                            $sqlfiltersbrut[] = "($q3 and $q1) or $q4";
+                        } elseif ($q2 && $q1) {
+                            $sqlfiltersbrut[] = "($q3 and $q1) or ($q4 and $q2)";
+                        }
                     }
                 }
             }
@@ -339,21 +360,28 @@ class DocSearch extends PDocSearch
             $fullkeys = pg_escape_string($fullkeys);
             $sqlfilters[] = sprintf("fulltext @@ to_tsquery('french','%s') ", pg_escape_string($fullkeys));
         }
-        if (count($sqlfiltersbrut) > 0) $sqlfilters = array_merge($sqlfilters, $sqlfiltersbrut);
+        if (count($sqlfiltersbrut) > 0) {
+            $sqlfilters = array_merge($sqlfilters, $sqlfiltersbrut);
+        }
         $sqlorder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc", pg_escape_string($fullkeys));
     }
     
-    function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
+    public function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
     {
         if ($dirid > 0) {
-            if ($subfolder) $cdirid = getRChildDirId($this->dbaccess, $dirid, array() , 0, $this->folderRecursiveLevel);
-            else $cdirid = $dirid;
-        } else $cdirid = 0;
+            if ($subfolder) {
+                $cdirid = getRChildDirId($this->dbaccess, $dirid, array(), 0, $this->folderRecursiveLevel);
+            } else {
+                $cdirid = $dirid;
+            }
+        } else {
+            $cdirid = 0;
+        }
         if ($keyword) {
             if ($keyword[0] == '~') {
                 $full = false;
                 $keyword = substr($keyword, 1);
-            } else if ($keyword[0] == '*') {
+            } elseif ($keyword[0] == '*') {
                 $full = true;
                 $keyword = substr($keyword, 1);
             }
@@ -362,11 +390,13 @@ class DocSearch extends PDocSearch
         
         $only = '';
         if ($this->getRawValue("se_famonly") == "yes") {
-            if (!is_numeric($famid)) $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famid);
+            if (!is_numeric($famid)) {
+                $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famid);
+            }
             $only = "only";
         }
         
-        $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, false, $latest == "yes", $this->getRawValue("se_trash") , false, $level = 2, $join = '', $only);
+        $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, false, $latest == "yes", $this->getRawValue("se_trash"), false, $level = 2, $join = '', $only);
         
         return $query;
     }
@@ -374,7 +404,7 @@ class DocSearch extends PDocSearch
      * return true if the sqlselect is writted by hand
      * @return bool
      */
-    function isStaticSql()
+    public function isStaticSql()
     {
         return ($this->getRawValue("se_static") != "") || (($this->getRawValue("se_latest") == "") && ($this->getRawValue("se_case") == "") && ($this->getRawValue("se_key") == ""));
     }
@@ -382,28 +412,33 @@ class DocSearch extends PDocSearch
      * return error if query filters are not compatibles
      * @return string error message , empty if no errors
      */
-    function getSqlParseError()
+    public function getSqlParseError()
     {
         return "";
     }
     
-    function preRefresh()
+    public function preRefresh()
     {
         $err = "";
         
         if (!$this->isStaticSql()) {
-            if (!$this->isParameterizable()) $query = $this->getQuery();
-            else $query = 'select id from only doc where false';
+            if (!$this->isParameterizable()) {
+                $query = $this->getQuery();
+            } else {
+                $query = 'select id from only doc where false';
+            }
             $err = $this->AddQuery($query);
         }
-        if ($err == "") $err = $this->getSqlParseError();
+        if ($err == "") {
+            $err = $this->getSqlParseError();
+        }
         return $err;
     }
     /**
      * @templateController
      * @return string
      */
-    function editsearch()
+    public function editsearch()
     {
         global $action;
         
@@ -413,7 +448,9 @@ class DocSearch extends PDocSearch
         $this->lay->set("archive", false);
         
         $farch = new_doc($this->dbaccess, "ARCHIVING");
-        if ($farch) $this->lay->set("archive", ($farch->control("view") == ""));
+        if ($farch) {
+            $this->lay->set("archive", ($farch->control("view") == ""));
+        }
         $this->lay->eset("thekey", $this->getRawValue("se_key"));
         $dirid = GetHttpVars("dirid"); // to set restriction family
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/edittable.js");
@@ -455,9 +492,14 @@ class DocSearch extends PDocSearch
             $selectclass[$k]["system_fam"] = (substr($cdoc["usefor"], 0, 1) == 'S') ? true : false;
             if (abs($cdoc["initid"]) == abs($famid)) {
                 $selectclass[$k]["selected"] = "selected";
-                if ($famid < 0) $this->lay->eset("selfam", $cdoc["title"] . " " . !!_("(only)"));
-                else $this->lay->eset("selfam", $cdoc["title"]);
-            } else $selectclass[$k]["selected"] = "";
+                if ($famid < 0) {
+                    $this->lay->eset("selfam", $cdoc["title"] . " " . !!_("(only)"));
+                } else {
+                    $this->lay->eset("selfam", $cdoc["title"]);
+                }
+            } else {
+                $selectclass[$k]["selected"] = "";
+            }
         }
         
         $this->lay->SetBlockData("SELECTCLASS", $selectclass);
@@ -470,7 +512,7 @@ class DocSearch extends PDocSearch
      * @templateController
      * @return string
      */
-    function editspeedsearch()
+    public function editspeedsearch()
     {
         return $this->editsearch();
     }
@@ -481,13 +523,15 @@ class DocSearch extends PDocSearch
      * @param int $famid family identifier to restrict search
      * @return array array of document array
      */
-    public function getContent($controlview = true, array $filter = array() , $famid = "", $qtype = "TABLE", $trash = "")
+    public function getContent($controlview = true, array $filter = array(), $famid = "", $qtype = "TABLE", $trash = "")
     {
-        if ($controlview) $uid = $this->userid;
-        else $uid = 1;
+        if ($controlview) {
+            $uid = $this->userid;
+        } else {
+            $uid = 1;
+        }
         $orderby = $this->getRawValue("se_orderby", "title");
         $tdoc = internalGetDocCollection($this->dbaccess, $this->initid, 0, "ALL", $filter, $uid, "TABLE", $famid, false, $orderby, true, $this->getRawValue("se_trash"));
         return $tdoc;
     }
 }
-?>

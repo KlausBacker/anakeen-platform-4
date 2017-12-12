@@ -15,8 +15,9 @@
  */
 
 namespace Dcp\Core;
-include_once ("FDL/import_tar.php");
-include_once ('FDL/Class.XMLSplitter.php');
+
+include_once("FDL/import_tar.php");
+include_once('FDL/Class.XMLSplitter.php');
 
 class importXml
 {
@@ -92,7 +93,7 @@ class importXml
     {
         $err = "";
         $zipfiles = realpath($zipfiles);
-        $ll = exec(sprintf("cd %s && unzip %s", $splitdir, $zipfiles) , $out, $retval);
+        $ll = exec(sprintf("cd %s && unzip %s", $splitdir, $zipfiles), $out, $retval);
         if ($retval != 0) {
             throw new \Dcp\Exception("IMPC0004", $zipfiles, $ll);
         }
@@ -147,7 +148,7 @@ class importXml
         );
         
         if (!is_file($xmlfile)) {
-            $err = sprintf(_("Xml import file %s not found") , $xmlfile);
+            $err = sprintf(_("Xml import file %s not found"), $xmlfile);
             $log["err"] = $err;
             return $err;
         }
@@ -160,8 +161,7 @@ class importXml
         $dom = new \Dcp\Utils\XDOMDocument();
         try {
             $dom->load($xmlfile, 0, $error);
-        }
-        catch(\Dcp\Utils\XDOMDocumentException $e) {
+        } catch (\Dcp\Utils\XDOMDocumentException $e) {
             $log["action"] = 'ignored';
             $log["err"] = $e->getMessage();
             return $e->getMessage();
@@ -254,10 +254,12 @@ class importXml
                         }
                         if ($v->getOption("multiple") == "yes") {
                             $id = str_replace(',', '\n', $id);
-                            if ($v->inArray()) $id = str_replace(array(
+                            if ($v->inArray()) {
+                                $id = str_replace(array(
                                 '\\n',
                                 "\n",
-                            ) , "<BR>", $id);
+                            ), "<BR>", $id);
+                            }
                         }
                         $val[] = $id;
                         break;
@@ -286,16 +288,19 @@ class importXml
                     default:
                         $val[] = $item->nodeValue;
                     }
-                    //  print $v->id.":".$item->nodeValue."\n";
-                    
+                //  print $v->id.":".$item->nodeValue."\n";
             }
             $tord[] = $v->id;
             $tdoc[] = implode("\n", $val);
         }
         //$log = csvAddDoc($dbaccess, $tdoc, $importdirid, $analyze, $splitdir, $policy, $tkey, $prevalues, $tord);
         $o = new \importSingleDocument();
-        if ($tkey) $o->setKey($tkey);
-        if ($tord) $o->setOrder($tord);
+        if ($tkey) {
+            $o->setKey($tkey);
+        }
+        if ($tord) {
+            $o->setOrder($tord);
+        }
         $o->analyzeOnly($analyze);
         $o->setPolicy($policy);
         $o->setFilePath($splitdir);
@@ -304,7 +309,9 @@ class importXml
             $folders = str_replace(',', ' ', $folders);
             $tfolders = explode(' ', $folders);
             foreach ($tfolders as $k => $aFolder) {
-                if (!$aFolder) unset($tfolders[$k]);
+                if (!$aFolder) {
+                    unset($tfolders[$k]);
+                }
             }
             
             if ($tfolders) {
@@ -367,7 +374,9 @@ class importXml
             throw new \Dcp\Exception("IMPC0001", $file);
         }
         $mediadir = "media";
-        if (!is_dir("$dir/$mediadir")) mkdir("$dir/$mediadir");
+        if (!is_dir("$dir/$mediadir")) {
+            mkdir("$dir/$mediadir");
+        }
         $f = fopen($file, "r");
         if ($f === false) {
             throw new \Dcp\Exception("IMPC0009", $file);
@@ -385,9 +394,11 @@ class importXml
                         $tag = $reg[1];
                         if (preg_match("/<([a-z_0-9-]+)[^>]*title=\"([^\"]+)\"/", $buffer, $regtitle)) {
                             $title = \XMLSplitter::unescapeEntities($regtitle[2]);
-                        } else if (preg_match("/<([a-z_0-9-]+)[^>]*title='([^']+)'/", $buffer, $regtitle)) {
+                        } elseif (preg_match("/<([a-z_0-9-]+)[^>]*title='([^']+)'/", $buffer, $regtitle)) {
                             $title = \XMLSplitter::unescapeEntities($regtitle[2]);
-                        } else $title = "noname";
+                        } else {
+                            $title = "noname";
+                        }
                         if (strpos($title, DIRECTORY_SEPARATOR) !== false) {
                             throw new \Dcp\Exception("IMPC0005", DIRECTORY_SEPARATOR, $title);
                         }
@@ -435,12 +446,14 @@ class importXml
                     } else {
                         self::fputsError($nf, $buffer);
                     }
-                } else if (preg_match("/&lt;img.*?src=\"data:[^;]*;base64,(.*)/", $buffer, $reg)) {
+                } elseif (preg_match("/&lt;img.*?src=\"data:[^;]*;base64,(.*)/", $buffer, $reg)) {
                     if (preg_match("/&lt;img.*?title=\"([^\"]+)\"/", $buffer, $regtitle)) {
                         $title = $regtitle[1];
-                    } else if (preg_match("/&lt;img.*?title='([^']+)'/", $buffer, $regtitle)) {
+                    } elseif (preg_match("/&lt;img.*?title='([^']+)'/", $buffer, $regtitle)) {
                         $title = $regtitle[1];
-                    } else $title = "noname";
+                    } else {
+                        $title = "noname";
+                    }
                     if (strpos($title, DIRECTORY_SEPARATOR) !== false) {
                         throw new \Dcp\Exception("IMPC0005", DIRECTORY_SEPARATOR, $title);
                     }
@@ -488,8 +501,7 @@ class importXml
                     self::fputsError($nf, $buffer);
                 }
             }
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             fclose($f);
             fclose($nf);
             throw $e;

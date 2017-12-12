@@ -15,7 +15,7 @@
  */
 // refreah for a classname
 // use this only if you have changed title attributes
-include_once ("FDL/Lib.Attr.php");
+include_once("FDL/Lib.Attr.php");
 
 $usage = new ApiUsage();
 
@@ -38,19 +38,21 @@ if ($docid != - 1) {
     $query = new QueryDb($dbaccess, "Doc");
     $query->AddQuery("doctype='C'");
     
-    if ($docid > 0) $query->AddQuery("id=$docid");
+    if ($docid > 0) {
+        $query->AddQuery("id=$docid");
+    }
     
     $table1 = $query->Query(0, 0, "TABLE");
     
     if ($query->nb > 0) {
-        
         $pubdir = DEFAULT_PUBDIR;
         
         foreach ($table1 as $k => $v) {
             $doc = createDoc($dbaccess, $v["id"]);
             
-            if ($trig) print $doc->sqltrigger($drop) . "\n";
-            else {
+            if ($trig) {
+                print $doc->sqltrigger($drop) . "\n";
+            } else {
                 $triggers = $doc->sqltrigger(false, true);
                 
                 if (is_array($triggers)) {
@@ -65,13 +67,13 @@ if ($docid != - 1) {
 }
 
 if (($docid == - 1) || ($docid == 0)) {
-
     $doc = new DocFam($dbaccess);
     
     $doc->doctype = 'C';
     $doc->fromid = 'fam';
-    if ($trig) print $doc->sqltrigger($drop) . "\n";
-    else if (!empty($doc->sqltcreate)) {
+    if ($trig) {
+        print $doc->sqltrigger($drop) . "\n";
+    } elseif (!empty($doc->sqltcreate)) {
         if (is_array($doc->sqltcreate)) {
             print implode(";\n", $doc->sqltcreate);
         } else {

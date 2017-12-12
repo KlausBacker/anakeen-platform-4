@@ -13,7 +13,7 @@
 /**
  */
 
-include_once ("Class.DbObj.php");
+include_once("Class.DbObj.php");
 class DocAttrLDAP extends DbObj
 {
     public $fields = array(
@@ -64,4 +64,3 @@ class DocAttrLDAP extends DbObj
                     index char);
 create index i_docattrldap on docattrldap(famid,ldapname);";
 }
-?>

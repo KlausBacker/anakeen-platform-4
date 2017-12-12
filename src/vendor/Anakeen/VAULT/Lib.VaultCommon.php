@@ -15,7 +15,9 @@
 function fileextension($filename, $ext = "nop")
 {
     $te = explode(".", basename($filename));
-    if (count($te) > 1) $ext = $te[count($te) - 1];
+    if (count($te) > 1) {
+        $ext = $te[count($te) - 1];
+    }
     return $ext;
 }
 // ---------------------------------------------------------
@@ -30,4 +32,3 @@ function my_basename($p)
     $r = strrpos($p, "/");
     return ($r !== false) ? substr($p, $r + 1) : $p;
 }
-?>

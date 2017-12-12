@@ -8,14 +8,12 @@ namespace Dcp;
 
 class VaultManager
 {
-    
     protected static $vault = null;
     /**
      * @return \VaultFile
      */
     protected static function getVault()
     {
-        
         if (self::$vault === null) {
             self::$vault = new \VaultFile("", "FREEDOM");
         }
@@ -45,12 +43,13 @@ class VaultManager
      */
     public static function storeFile($filepath, $ftitle = "", $public_access = false)
     {
-        
         $err = self::getVault()->store($filepath, $public_access, $vid);
         if ($err) {
             throw new Exception("VAULT0001", $err);
         }
-        if ($ftitle != "") self::getVault()->rename($vid, $ftitle);
+        if ($ftitle != "") {
+            self::getVault()->rename($vid, $ftitle);
+        }
         return $vid;
     }
     /**
@@ -70,7 +69,9 @@ class VaultManager
         if ($err) {
             throw new Exception("VAULT0002", $err);
         }
-        if ($ftitle != "") self::getVault()->rename($vid, $ftitle);
+        if ($ftitle != "") {
+            self::getVault()->rename($vid, $ftitle);
+        }
         return $vid;
     }
     /**
@@ -80,11 +81,9 @@ class VaultManager
     public static function setFilesPersitent(array $vids)
     {
         if (count($vids) > 0) {
-            $sql = sprintf("update vaultdiskstorage set id_tmp = null where id_tmp is not null and id_file in (%s)", implode(",", array_map(function ($x)
-            {
+            $sql = sprintf("update vaultdiskstorage set id_tmp = null where id_tmp is not null and id_file in (%s)", implode(",", array_map(function ($x) {
                 return intval($x);
-            }
-            , $vids)));
+            }, $vids)));
             simpleQuery("", $sql);
         }
     }

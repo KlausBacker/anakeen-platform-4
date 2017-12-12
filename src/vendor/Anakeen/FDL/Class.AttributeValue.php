@@ -17,7 +17,6 @@ class AttributeValue
      */
     public static function getTypedValue(\Doc & $doc, \NormalAttribute & $oAttr)
     {
-        
         if (!isset($doc->attributes->attr[$oAttr->id])) {
             throw new \Dcp\AttributeValue\Exception('VALUE0101', $oAttr->id, $doc->fromname, $doc->getTitle());
         }
@@ -54,7 +53,6 @@ class AttributeValue
     
     private static function getMultiple2Values(\Doc & $doc, \NormalAttribute & $oAttr)
     {
-        
         $rawValues = $doc->getMultipleRawValues($oAttr->id);
         $type = $oAttr->type;
         $typedValues = array();
@@ -77,7 +75,9 @@ class AttributeValue
      */
     private static function castValue($type, $rawValue)
     {
-        if ($rawValue === null || $rawValue === '') return null;
+        if ($rawValue === null || $rawValue === '') {
+            return null;
+        }
         switch ($type) {
             case 'int':
                 $typedValue = intval($rawValue);
@@ -111,7 +111,9 @@ class AttributeValue
     }
     private static function typed2string($type, $typedValue)
     {
-        if ($typedValue === null || $typedValue === '') return null;
+        if ($typedValue === null || $typedValue === '') {
+            return null;
+        }
         
         if (is_array($typedValue)) {
             $arrayString = array();
@@ -132,14 +134,14 @@ class AttributeValue
         switch ($type) {
             case 'int':
                 if (!is_string($typedValue) && !is_int($typedValue)) {
-                    throw new \Dcp\AttributeValue\Exception('VALUE0200', print_r($typedValue, true) , gettype($typedValue));
+                    throw new \Dcp\AttributeValue\Exception('VALUE0200', print_r($typedValue, true), gettype($typedValue));
                 }
                 break;
 
             case 'money':
             case 'double':
                 if (!is_string($typedValue) && !is_int($typedValue) && !is_double($typedValue)) {
-                    throw new \Dcp\AttributeValue\Exception('VALUE0201', print_r($typedValue, true) , gettype($typedValue));
+                    throw new \Dcp\AttributeValue\Exception('VALUE0201', print_r($typedValue, true), gettype($typedValue));
                 }
                 break;
 
@@ -167,13 +169,12 @@ class AttributeValue
                 ;
         }
         if (!is_scalar($typedValue)) {
-            throw new \Dcp\AttributeValue\Exception('VALUE0202', print_r($typedValue, true) , gettype($typedValue));
+            throw new \Dcp\AttributeValue\Exception('VALUE0202', print_r($typedValue, true), gettype($typedValue));
         }
         return $typedValue;
     }
     private static function getArrayValues(\Doc & $doc, \NormalAttribute & $oAttr)
     {
-        
         if ($oAttr->type == "array") {
             $ta = $doc->attributes->getArrayElements($oAttr->id);
             $ti = $tv = array();
@@ -203,7 +204,7 @@ class AttributeValue
         $doc->clearArrayValues($oAttr->id);
         foreach ($value as $row) {
             if (!is_array($row)) {
-                throw new \Dcp\AttributeValue\Exception('VALUE0009', $oAttr->id, $doc->fromname, $doc->getTitle() , print_r($row, true));
+                throw new \Dcp\AttributeValue\Exception('VALUE0009', $oAttr->id, $doc->fromname, $doc->getTitle(), print_r($row, true));
             }
             foreach ($row as $columnName => & $columnValue) {
                 $cAttr = $doc->getAttribute($columnName);
@@ -214,7 +215,7 @@ class AttributeValue
             unset($columnValue);
             $err = $doc->addArrayRow($oAttr->id, $row);
             if ($err) {
-                throw new \Dcp\AttributeValue\Exception('VALUE0007', $oAttr->id, $doc->fromname, $doc->getTitle() , $err);
+                throw new \Dcp\AttributeValue\Exception('VALUE0007', $oAttr->id, $doc->fromname, $doc->getTitle(), $err);
             }
         }
     }
@@ -239,10 +240,9 @@ class AttributeValue
             } else {
                 $err = $doc->clearValue($oAttr->id);
             }
-        } else if ($oAttr->isMultiple()) {
-            
+        } elseif ($oAttr->isMultiple()) {
             if (!is_array($value)) {
-                $e = new \Dcp\AttributeValue\Exception('VALUE0002', print_r($value, true) , $oAttr->id, $doc->fromname, $doc->getTitle());
+                $e = new \Dcp\AttributeValue\Exception('VALUE0002', print_r($value, true), $oAttr->id, $doc->fromname, $doc->getTitle());
                 $e->attributeId = $oAttr->id;
                 throw $e;
             }
@@ -258,41 +258,40 @@ class AttributeValue
                             if ($rowValues === null) {
                                 $rawValues[$k] = '';
                             } else {
-                                $e = new \Dcp\AttributeValue\Exception('VALUE0003', print_r($value, true) , $oAttr->id, $doc->fromname, $doc->getTitle());
+                                $e = new \Dcp\AttributeValue\Exception('VALUE0003', print_r($value, true), $oAttr->id, $doc->fromname, $doc->getTitle());
                                 $e->attributeId = $oAttr->id;
                                 throw $e;
                             }
                         }
                     }
-                    $err = $doc->setValue($oAttr->id, self::typed2string($oAttr->type, $rawValues) , -1, $kindex);
+                    $err = $doc->setValue($oAttr->id, self::typed2string($oAttr->type, $rawValues), -1, $kindex);
                 } else {
-                    $err = $doc->setValue($oAttr->id, self::typed2string($oAttr->type, $value) , -1, $kindex);
+                    $err = $doc->setValue($oAttr->id, self::typed2string($oAttr->type, $value), -1, $kindex);
                 }
             }
         } elseif ($oAttr->type == "array") {
             if (!is_array($value)) {
-                $e = new \Dcp\AttributeValue\Exception('VALUE0008', $oAttr->id, $doc->fromname, $doc->getTitle() , print_r($value, true));
+                $e = new \Dcp\AttributeValue\Exception('VALUE0008', $oAttr->id, $doc->fromname, $doc->getTitle(), print_r($value, true));
                 $e->attributeId = $oAttr->id;
                 throw $e;
             }
             self::setTypedArrayValue($doc, $oAttr, $value);
         } else {
             if (is_array($value)) {
-                $e = new \Dcp\AttributeValue\Exception('VALUE0006', $oAttr->id, $doc->fromname, $doc->getTitle() , print_r($value, true));
+                $e = new \Dcp\AttributeValue\Exception('VALUE0006', $oAttr->id, $doc->fromname, $doc->getTitle(), print_r($value, true));
                 $e->attributeId = $oAttr->id;
                 throw $e;
             }
             try {
-                $err = $doc->setValue($oAttr->id, self::typed2string($oAttr->type, $value) , -1, $kindex);
-            }
-            catch(\Dcp\AttributeValue\Exception $e) {
-                $e = new \Dcp\AttributeValue\Exception('VALUE0005', $oAttr->id, $doc->fromname, $doc->getTitle() , $e->getMessage());
+                $err = $doc->setValue($oAttr->id, self::typed2string($oAttr->type, $value), -1, $kindex);
+            } catch (\Dcp\AttributeValue\Exception $e) {
+                $e = new \Dcp\AttributeValue\Exception('VALUE0005', $oAttr->id, $doc->fromname, $doc->getTitle(), $e->getMessage());
                 $e->attributeId = $oAttr->id;
                 throw $e;
             }
         }
         if ($err) {
-            $e = new \Dcp\AttributeValue\Exception('VALUE0001', $oAttr->id, $doc->fromname, $doc->getTitle() , $err);
+            $e = new \Dcp\AttributeValue\Exception('VALUE0001', $oAttr->id, $doc->fromname, $doc->getTitle(), $err);
             $e->originalError = $err;
             $e->attributeId = $oAttr->id;
             $e->index = $kindex;

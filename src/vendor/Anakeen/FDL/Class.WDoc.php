@@ -13,7 +13,7 @@
 /**
  */
 
-include_once ('FDL/Class.Doc.php');
+include_once('FDL/Class.Doc.php');
 /**
  * WorkFlow Class
  */
@@ -25,30 +25,30 @@ class WDoc extends Doc
      *
      * @var array
      */
-    var $acls = array(
+    public $acls = array(
         "view",
         "edit",
         "delete"
     );
     
-    var $usefor = 'SW';
-    var $defDoctype = 'W';
-    var $defClassname = 'WDoc';
-    var $attrPrefix = "WF"; // prefix attribute
+    public $usefor = 'SW';
+    public $defDoctype = 'W';
+    public $defClassname = 'WDoc';
+    public $attrPrefix = "WF"; // prefix attribute
     
     /**
      * state's activities labels
      * @var array
      */
-    var $stateactivity = array(); // label of states
+    public $stateactivity = array(); // label of states
     // --------------------------------------------------------------------
     //----------------------  TRANSITION DEFINITION --------------------
-    var $transitions = array(); // set by childs classes
-    var $cycle = array(); // set by childs classes
-    var $autonext = array(); // set by childs classes
-    var $firstState = ""; // first state in workflow
-    var $viewnext = "list"; // view interface as select list may be (list|button)
-    var $nosave = array(); // states where it is not permitted to save and stay (force next state)
+    public $transitions = array(); // set by childs classes
+    public $cycle = array(); // set by childs classes
+    public $autonext = array(); // set by childs classes
+    public $firstState = ""; // first state in workflow
+    public $viewnext = "list"; // view interface as select list may be (list|button)
+    public $nosave = array(); // states where it is not permitted to save and stay (force next state)
     
     /**
      * @var array
@@ -63,7 +63,7 @@ class WDoc extends Doc
      * @var Doc
      */
     public $doc = null;
-    function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
+    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         // first construct acl array
         if (is_array($this->transitions)) {
@@ -75,7 +75,9 @@ class WDoc extends Doc
                 $this->acls[] = $k;
             }
         }
-        if (isset($this->fromid)) $this->defProfFamId = $this->fromid; // it's a profil itself
+        if (isset($this->fromid)) {
+            $this->defProfFamId = $this->fromid;
+        } // it's a profil itself
         // don't use Doc constructor because it could call this constructor => infinitive loop
         DocCtrl::__construct($dbaccess, $id, $res, $dbid);
     }
@@ -85,7 +87,7 @@ class WDoc extends Doc
      * @param bool $force set to true to force a doc reset
      * @return void
      */
-    function set(Doc & $doc, $force = false)
+    public function set(Doc & $doc, $force = false)
     {
         if ((!isset($this->doc)) || ($this->doc->id != $doc->id) || $force) {
             $this->doc = & $doc;
@@ -96,7 +98,7 @@ class WDoc extends Doc
             }
         }
     }
-    function getFirstState()
+    public function getFirstState()
     {
         return $this->firstState;
     }
@@ -105,12 +107,14 @@ class WDoc extends Doc
      * @param string $newstate new state of document
      * @return string
      */
-    function changeProfil($newstate)
+    public function changeProfil($newstate)
     {
         $err = '';
         if ($newstate != "") {
             $profid = $this->getRawValue($this->_Aid("_ID", $newstate));
-            if (!is_numeric($profid)) $profid = \Dcp\Core\DocManager::getIdFromName($profid);
+            if (!is_numeric($profid)) {
+                $profid = \Dcp\Core\DocManager::getIdFromName($profid);
+            }
             if ($profid > 0) {
                 // change only if new profil
                 $err = $this->doc->setProfil($profid);
@@ -123,7 +127,7 @@ class WDoc extends Doc
      * @param string $newstate new state of document
      * @return string
      */
-    function changeAllocateUser($newstate)
+    public function changeAllocateUser($newstate)
     {
         $err = "";
         if ($newstate != "") {
@@ -131,26 +135,33 @@ class WDoc extends Doc
             if ($auserref) {
                 $uid = $this->getAllocatedUser($newstate);
                 $wuid = 0;
-                if ($uid) $wuid = $this->getDocValue($uid, "us_whatid");
+                if ($uid) {
+                    $wuid = $this->getDocValue($uid, "us_whatid");
+                }
                 if ($wuid > 0) {
                     $lock = (trim($this->getRawValue($this->_Aid("_AFFECTLOCK", $newstate))) == "yes");
                     $err = $this->doc->allocate($wuid, "", false, $lock);
                     if ($err == "") {
                         $automail = (trim($this->getRawValue($this->_Aid("_AFFECTMAIL", $newstate))) == "yes");
                         if ($automail) {
-                            include_once ("FDL/mailcard.php");
+                            include_once("FDL/mailcard.php");
                             $to = trim($this->getDocValue($uid, "us_mail"));
-                            if (!$to) addWarningMsg(sprintf(_("%s has no email address") , $this->getTitle($uid)));
-                            else {
-                                $subject = sprintf(_("allocation for %s document") , $this->doc->title);
+                            if (!$to) {
+                                addWarningMsg(sprintf(_("%s has no email address"), $this->getTitle($uid)));
+                            } else {
+                                $subject = sprintf(_("allocation for %s document"), $this->doc->title);
                                 $commentaction = '';
-                                $err = sendCard($action, $this->doc->id, $to, "", $subject, "", true, $commentaction, "", "", "htmlnotif");
-                                if ($err != "") addWarningMsg($err);
+                                $err = sendCard(\Dcp\Core\ContextManager::getCurrentAction(), $this->doc->id, $to, "", $subject, "", true, $commentaction, "", "", "htmlnotif");
+                                if ($err != "") {
+                                    addWarningMsg($err);
+                                }
                             }
                         }
                     }
                 }
-            } else $err = $this->doc->unallocate("", false);
+            } else {
+                $err = $this->doc->unallocate("", false);
+            }
         }
         return $err;
     }
@@ -159,7 +170,9 @@ class WDoc extends Doc
     {
         $auserref = trim($this->getRawValue($this->_Aid("_AFFECTREF", $newstate)));
         $type = trim($this->getRawValue($this->_Aid("_AFFECTTYPE", $newstate)));
-        if (!$auserref) return false;
+        if (!$auserref) {
+            return false;
+        }
         $aid = strtok($auserref, " ");
         $uid = false;
         switch ($type) {
@@ -194,12 +207,13 @@ class WDoc extends Doc
      * change cv according to state
      * @param string $newstate new state of document
      */
-    function changeCv($newstate)
+    public function changeCv($newstate)
     {
-        
         if ($newstate != "") {
             $cvid = ($this->getRawValue($this->_Aid("_CVID", $newstate)));
-            if (!is_numeric($cvid)) $cvid = \Dcp\Core\DocManager::getIdFromName($cvid);
+            if (!is_numeric($cvid)) {
+                $cvid = \Dcp\Core\DocManager::getIdFromName($cvid);
+            }
             if ($cvid > 0) {
                 // change only if set
                 $this->doc->cvid = $cvid;
@@ -266,7 +280,7 @@ class WDoc extends Doc
      */
     public function getTransitionTimers($transName)
     {
-        return array_merge($this->getMultipleRawValues($this->_Aid("_trans_pa_tmid", $transName)) , $this->getMultipleRawValues($this->_Aid("_trans_tmid", $transName)));
+        return array_merge($this->getMultipleRawValues($this->_Aid("_trans_pa_tmid", $transName)), $this->getMultipleRawValues($this->_Aid("_trans_tmid", $transName)));
     }
     /**
      * get the mail ids according to transition
@@ -294,8 +308,11 @@ class WDoc extends Doc
     public function createProfileAttribute($cid = 0)
     {
         if (!$cid) {
-            if ($this->doctype == 'C') $cid = $this->id;
-            else $cid = $this->fromid;
+            if ($this->doctype == 'C') {
+                $cid = $this->id;
+            } else {
+                $cid = $this->fromid;
+            }
         }
         $ordered = 1000;
         if (($err = $this->setMasterLock(true)) !== '') {
@@ -317,13 +334,16 @@ class WDoc extends Doc
             $oattr->type = "frame";
             $oattr->id = $aidframe;
             $oattr->frameid = "wf_tab_states";
-            $oattr->labeltext = sprintf(_("parameters for %s step") , _($state));
+            $oattr->labeltext = sprintf(_("parameters for %s step"), _($state));
             $oattr->link = "";
             $oattr->phpfunc = "";
             $oattr->options = "autocreated=yes";
             $oattr->ordered = $ordered++;
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
             // --------------------------
             // profil id
             $aidprofilid = $this->_Aid("_ID", $state); //strtolower($this->attrPrefix."_ID".strtoupper($state));
@@ -335,7 +355,7 @@ class WDoc extends Doc
             $oattr->visibility = "W";
             $oattr->type = 'docid("PROFIL")';
             $oattr->id = $aidprofilid;
-            $oattr->labeltext = sprintf(_("%s profile") , _($state));
+            $oattr->labeltext = sprintf(_("%s profile"), _($state));
             $oattr->link = "";
             $oattr->frameid = $aidframe;
             $oattr->options = "autocreated=yes";
@@ -343,8 +363,11 @@ class WDoc extends Doc
             $oattr->phpfile = "fdl.php";
             $oattr->phpfunc = "lprofil(D,CT,WF_FAMID):$aidprofilid,CT";
             $oattr->ordered = $ordered++;
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
             // --------------------------
             // mask id
             $aid = $this->_Aid("_MSKID", $state);
@@ -357,7 +380,7 @@ class WDoc extends Doc
             $oattr->visibility = "W";
             $oattr->type = 'docid("MASK")';
             $oattr->id = $aid;
-            $oattr->labeltext = sprintf(_("%s mask") , _($state));
+            $oattr->labeltext = sprintf(_("%s mask"), _($state));
             $oattr->link = "";
             $oattr->frameid = $aidframe;
             $oattr->phpfile = "fdl.php";
@@ -365,8 +388,11 @@ class WDoc extends Doc
             $oattr->elink = '';
             $oattr->options = 'autocreated=yes|creation={autoclose:"yes",msk_famid:wf_famid,ba_title:"' . str_replace(':', ' ', _($state)) . '"}';
             $oattr->ordered = $ordered++;
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
             // --------------------------
             // state color
             $aid = $this->_Aid("_COLOR", $state);
@@ -384,9 +410,12 @@ class WDoc extends Doc
             $oattr->ordered = $ordered++;
             $oattr->phpfunc = "";
             $oattr->options = "autocreated=yes";
-            $oattr->labeltext = sprintf(_("%s color") , _($state));
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            $oattr->labeltext = sprintf(_("%s color"), _($state));
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
             // --------------------------
             // CV link
             $aid = $this->_Aid("_CVID", $state);
@@ -406,9 +435,12 @@ class WDoc extends Doc
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
             
-            $oattr->labeltext = sprintf(_("%s cv") , _($state));
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            $oattr->labeltext = sprintf(_("%s cv"), _($state));
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
             // --------------------------
             // Mail template link
             $aid = $this->_Aid("_MTID", $state);
@@ -429,9 +461,12 @@ class WDoc extends Doc
             $oattr->elink = '';
             $oattr->options = 'autocreated=yes|multiple=yes|creation={autoclose:"yes",tmail_family:wf_famid,tmail_workflow:fromid}';
             $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s mail template") , _($state));
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            $oattr->labeltext = sprintf(_("%s mail template"), _($state));
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
             // --------------------------
             //  Timer link
             $aid = $this->_Aid("_TMID", $state);
@@ -450,9 +485,12 @@ class WDoc extends Doc
             $oattr->options = 'autocreated=yes|creation={autoclose:"yes",tm_family:wf_famid,tm_workflow:fromid,tm_title:"' . str_replace(':', ' ', _($state)) . '"}';
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s timer") , _($state));
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            $oattr->labeltext = sprintf(_("%s timer"), _($state));
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
             // --------------------------
             //  Ask link
             $aid = $this->_Aid("_ASKID", $state);
@@ -471,9 +509,12 @@ class WDoc extends Doc
             $oattr->options = 'multiple=yes|autocreated=yes|creation={autoclose:"yes"}';
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s wask") , _($state));
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            $oattr->labeltext = sprintf(_("%s wask"), _($state));
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
             // --------------------------
             // Label action
             $aid = $this->_Aid("_ACTIVITYLABEL", $k);
@@ -485,7 +526,9 @@ class WDoc extends Doc
             
             if (!(empty($this->stateactivity[$k]))) {
                 $oattr->visibility = "S";
-            } else $oattr->visibility = "W";
+            } else {
+                $oattr->visibility = "W";
+            }
             $oattr->type = 'text';
             $oattr->link = "";
             $oattr->phpfile = "";
@@ -495,9 +538,12 @@ class WDoc extends Doc
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
             
-            $oattr->labeltext = sprintf(_("%s activity") , _($k));
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            $oattr->labeltext = sprintf(_("%s activity"), _($k));
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
             // --------------------------
             //  Affected user link
             $aid = $this->_Aid("_T_AFFECT", $state);
@@ -513,9 +559,12 @@ class WDoc extends Doc
             $oattr->frameid = $aidframe;
             $oattr->options = "vlabel=none|autocreated=yes";
             $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s affectation") , _($state));
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            $oattr->labeltext = sprintf(_("%s affectation"), _($state));
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
             
             $aid = $this->_Aid("_AFFECTTYPE", $state);
             $aidtype = $aid;
@@ -527,13 +576,20 @@ class WDoc extends Doc
             $oattr->visibility = "W";
             $oattr->type = 'enum';
             $oattr->options = "autocreated=yes|system=yes";
-            $oattr->phpfunc = "F|" . _("Utilisateur fixe") . ",D|" . _("Attribut relation") . ",PR|" . _("Relation parametre") . ",WD|" . _("Relation cycle") . ",WPR|" . _("Parametre cycle");
+            $oattr->phpfunc = "F|" . _("Utilisateur fixe") .
+                ",D|" . _("Attribut relation") .
+                ",PR|" . _("Relation parametre") .
+                ",WD|" . _("Relation cycle") .
+                ",WPR|" . _("Parametre cycle");
             $oattr->id = $aid;
             $oattr->frameid = $afaid;
             $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s affectation type") , _($state));
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            $oattr->labeltext = sprintf(_("%s affectation type"), _($state));
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
             
             $aid = $this->_Aid("_AFFECTREF", $state);
             $oattr = new DocAttr($this->dbaccess, array(
@@ -550,9 +606,12 @@ class WDoc extends Doc
             $oattr->id = $aid;
             $oattr->frameid = $afaid;
             $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s affected user") , _($state));
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            $oattr->labeltext = sprintf(_("%s affected user"), _($state));
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
             
             $aid = $this->_Aid("_AFFECTLOCK", $state);
             $oattr = new DocAttr($this->dbaccess, array(
@@ -568,9 +627,12 @@ class WDoc extends Doc
             $oattr->id = $aid;
             $oattr->frameid = $afaid;
             $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s autolock") , _($state));
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            $oattr->labeltext = sprintf(_("%s autolock"), _($state));
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
             
             $aid = $this->_Aid("_AFFECTMAIL", $state);
             $oattr = new DocAttr($this->dbaccess, array(
@@ -586,9 +648,12 @@ class WDoc extends Doc
             $oattr->id = $aid;
             $oattr->frameid = $afaid;
             $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s automail") , _($state));
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            $oattr->labeltext = sprintf(_("%s automail"), _($state));
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
         }
         
         foreach ($this->transitions as $k => $trans) {
@@ -604,13 +669,16 @@ class WDoc extends Doc
             $oattr->type = "frame";
             $oattr->id = $aidframe;
             $oattr->frameid = "wf_tab_transitions";
-            $oattr->labeltext = sprintf(_("parameters for %s transition") , _($k));
+            $oattr->labeltext = sprintf(_("parameters for %s transition"), _($k));
             $oattr->link = "";
             $oattr->phpfunc = "";
             $oattr->options = "autocreated=yes";
             $oattr->ordered = $ordered++;
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
             // --------------------------
             // Mail template link
             $aid = $this->_Aid("_TRANS_MTID", $k);
@@ -630,9 +698,12 @@ class WDoc extends Doc
             $oattr->ordered = $ordered++;
             $oattr->options = 'autocreated=yes|multiple=yes|creation={autoclose:"yes",tmail_family:wf_famid,tmail_workflow:fromid}';
             
-            $oattr->labeltext = sprintf(_("%s mail template") , _($k));
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            $oattr->labeltext = sprintf(_("%s mail template"), _($k));
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
             // --------------------------
             // Timer link
             $aid = $this->_Aid("_TRANS_TMID", $k);
@@ -652,9 +723,12 @@ class WDoc extends Doc
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s timer") , _($k));
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            $oattr->labeltext = sprintf(_("%s timer"), _($k));
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
             // --------------------------
             // Persistent Attach Timer link
             $aid = $this->_Aid("_TRANS_PA_TMID", $k);
@@ -674,9 +748,12 @@ class WDoc extends Doc
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s persistent timer") , _($k));
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            $oattr->labeltext = sprintf(_("%s persistent timer"), _($k));
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
             // --------------------------
             // Persistent UnAttach Timer link
             $aid = $this->_Aid("_TRANS_PU_TMID", $k);
@@ -695,9 +772,12 @@ class WDoc extends Doc
             $oattr->options = "multiple=yes|autocreated=yes";
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s unattach timer") , _($k));
-            if ($oattr->isAffected()) $oattr->Modify();
-            else $oattr->Add();
+            $oattr->labeltext = sprintf(_("%s unattach timer"), _($k));
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->Add();
+            }
         }
         if (($err = $this->setMasterLock(false)) !== '') {
             return $err;
@@ -719,7 +799,7 @@ class WDoc extends Doc
      * @param string $msg return message from m2 or m3 methods
      * @return string error message, if no error empty string
      */
-    function changeState($newstate, $addcomment = "", $force = false, $withcontrol = true, $wm1 = true, $wm2 = true, $wneed = true, $wm0 = true, $wm3 = true, &$msg = '')
+    public function changeState($newstate, $addcomment = "", $force = false, $withcontrol = true, $wm1 = true, $wm2 = true, $wneed = true, $wm0 = true, $wm3 = true, &$msg = '')
     {
         $err = '';
         // if ($this->doc->state == $newstate) return ""; // no change => no action
@@ -741,8 +821,12 @@ class WDoc extends Doc
         }
         
         if ($this->userid != 1) { // admin can go to any states
-            if (!$foundTo) return (sprintf(_("ChangeState :: the new state '%s' is not known or is not allowed from %s") , _($newstate) , _($this->doc->state)));
-            if (!$foundFrom) return (sprintf(_("ChangeState :: the initial state '%s' is not known") , _($this->doc->state)));
+            if (!$foundTo) {
+                return (sprintf(_("ChangeState :: the new state '%s' is not known or is not allowed from %s"), _($newstate), _($this->doc->state)));
+            }
+            if (!$foundFrom) {
+                return (sprintf(_("ChangeState :: the initial state '%s' is not known"), _($this->doc->state)));
+            }
             if ($this->doc->isLocked()) {
                 $lockUserId = abs($this->doc->locked);
                 $lockUserAccount = getDocFromUserId($this->dbaccess, $lockUserId);
@@ -752,43 +836,51 @@ class WDoc extends Doc
                         /* The document is locked by another user */
                         if ($this->doc->locked < 0) {
                             /* Currently being edited by another user */
-                            return sprintf(_("Could not perform transition because the document is being edited by '%s'") , $lockUserTitle);
+                            return sprintf(_("Could not perform transition because the document is being edited by '%s'"), $lockUserTitle);
                         } else {
                             /* Explicitly locked by another user */
-                            return sprintf(_("Could not perform transition because the document is locked by '%s'") , $lockUserTitle);
+                            return sprintf(_("Could not perform transition because the document is locked by '%s'"), $lockUserTitle);
                         }
                     }
                 }
             }
         }
         // verify if privilege granted
-        if ($withcontrol) $err = $this->control($tname);
-        if ($err != "") return $err;
+        if ($withcontrol) {
+            $err = $this->control($tname);
+        }
+        if ($err != "") {
+            return $err;
+        }
         /* Set edition mask from view control if a view control is applied on the document */
         $this->doc->setMask(Doc::USEMASKCVEDIT);
         
         if ($wm0 && (!empty($tr["m0"]))) {
             // apply first method (condition for the change)
-            if (!method_exists($this, $tr["m0"])) return (sprintf(_("the method '%s' is not known for the object class %s") , $tr["m0"], get_class($this)));
+            if (!method_exists($this, $tr["m0"])) {
+                return (sprintf(_("the method '%s' is not known for the object class %s"), $tr["m0"], get_class($this)));
+            }
             
             $err = call_user_func(array(
                 $this,
                 $tr["m0"]
-            ) , $newstate, $this->doc->state, $addcomment);
+            ), $newstate, $this->doc->state, $addcomment);
             if ($err != "") {
                 $this->doc->unlock(true);
-                return (sprintf(_("Error : %s") , $err));
+                return (sprintf(_("Error : %s"), $err));
             }
         }
         
         if ($wm1 && (!empty($tr["m1"]))) {
             // apply first method (condition for the change)
-            if (!method_exists($this, $tr["m1"])) return (sprintf(_("the method '%s' is not known for the object class %s") , $tr["m1"], get_class($this)));
+            if (!method_exists($this, $tr["m1"])) {
+                return (sprintf(_("the method '%s' is not known for the object class %s"), $tr["m1"], get_class($this)));
+            }
             
             $err = call_user_func(array(
                 $this,
                 $tr["m1"]
-            ) , $newstate, $this->doc->state, $addcomment);
+            ), $newstate, $this->doc->state, $addcomment);
             
             if ($err == "->") {
                 if ($force) {
@@ -796,20 +888,23 @@ class WDoc extends Doc
                     SetHttpVar("redirect_app", ""); // override the redirect
                     SetHttpVar("redirect_act", "");
                 } else {
-                    if ($addcomment != "") $this->doc->addHistoryEntry($addcomment); // add comment now because it will be lost
+                    if ($addcomment != "") {
+                        $this->doc->addHistoryEntry($addcomment);
+                    } // add comment now because it will be lost
                     return ""; //it is not a real error, but don't change state (reported)
-                    
                 }
             }
             if ($err != "") {
                 $this->doc->unlock(true);
-                return (sprintf(_("Error : %s") , $err));
+                return (sprintf(_("Error : %s"), $err));
             }
         }
         // verify if completed doc
         if ($wneed) {
             $err = $this->doc->isCompleteNeeded();
-            if ($err != "") return $err;
+            if ($err != "") {
+                return $err;
+            }
         }
         // change the state
         $oldstate = $this->doc->state == "" ? " " : $this->doc->state;
@@ -818,10 +913,14 @@ class WDoc extends Doc
         $this->changeCv($newstate);
         $this->doc->disableEditControl();
         $err = $this->doc->Modify(); // don't control edit permission
-        if ($err != "") return $err;
+        if ($err != "") {
+            return $err;
+        }
         
-        $revcomment = sprintf(_("change state : %s to %s") , _($oldstate) , _($newstate));
-        if ($addcomment != "") $this->doc->addHistoryEntry($addcomment);
+        $revcomment = sprintf(_("change state : %s to %s"), _($oldstate), _($newstate));
+        if ($addcomment != "") {
+            $this->doc->addHistoryEntry($addcomment);
+        }
         if (isset($tr["ask"])) {
             foreach ($tr["ask"] as $vpid) {
                 $oa = $this->getAttribute($vpid);
@@ -833,12 +932,11 @@ class WDoc extends Doc
                         } else {
                             $displayValue = str_replace("\n", ", ", $this->getRawValue($arrayAttribute->id));
                         }
-                        $revcomment.= sprintf("\n-%s : %s", $arrayAttribute->getLabel() , $displayValue);
+                        $revcomment.= sprintf("\n-%s : %s", $arrayAttribute->getLabel(), $displayValue);
                     }
                 } else {
                     $pv = $this->getRawValue($vpid);
                     if ($pv != "") {
-                        
                         if ($oa->type == "password") {
                             $pv = "*****";
                         }
@@ -846,13 +944,15 @@ class WDoc extends Doc
                         if (is_array($pv)) {
                             $pv = implode(", ", $pv);
                         }
-                        $revcomment.= sprintf("\n-%s : %s", $oa->getLabel() , $pv);
+                        $revcomment.= sprintf("\n-%s : %s", $oa->getLabel(), $pv);
                     }
                 }
             }
         }
-        $incumbentName = getCurrentUser()->getIncumbentPrivilege($this, $tname);
-        if ($incumbentName) $revcomment = sprintf(_("(substitute of %s) : ") , $incumbentName) . $revcomment;
+        $incumbentName = \Dcp\Core\ContextManager::getCurrentUser()->getIncumbentPrivilege($this, $tname);
+        if ($incumbentName) {
+            $revcomment = sprintf(_("(substitute of %s) : "), $incumbentName) . $revcomment;
+        }
         $err = $this->doc->revise($revcomment);
         if ($err != "") {
             $this->doc->disableEditControl(); // restore old states
@@ -864,21 +964,29 @@ class WDoc extends Doc
             
             return $err . $err2;
         }
-        AddLogMsg(sprintf(_("%s new state %s") , $this->doc->title, _($newstate)));
+        AddLogMsg(sprintf(_("%s new state %s"), $this->doc->title, _($newstate)));
         
         $this->doc->enableEditControl();
         // post action
         $msg2 = '';
         if ($wm2 && (!empty($tr["m2"]))) {
-            if (!method_exists($this, $tr["m2"])) return (sprintf(_("the method '%s' is not known for the object class %s") , $tr["m2"], get_class($this)));
+            if (!method_exists($this, $tr["m2"])) {
+                return (sprintf(_("the method '%s' is not known for the object class %s"), $tr["m2"], get_class($this)));
+            }
             $msg2 = call_user_func(array(
                 $this,
                 $tr["m2"]
-            ) , $newstate, $oldstate, $addcomment);
+            ), $newstate, $oldstate, $addcomment);
             
-            if ($msg2 == "->") $msg2 = ""; //it is not a real error
-            if ($msg2) $this->doc->addHistoryEntry($msg2);
-            if ($msg2 != "") $msg2 = sprintf(_("Warning : %s") , $msg2);
+            if ($msg2 == "->") {
+                $msg2 = "";
+            } //it is not a real error
+            if ($msg2) {
+                $this->doc->addHistoryEntry($msg2);
+            }
+            if ($msg2 != "") {
+                $msg2 = sprintf(_("Warning : %s"), $msg2);
+            }
         }
         $this->doc->addLog("state", array(
             "id" => $this->id,
@@ -889,25 +997,37 @@ class WDoc extends Doc
             "message" => $msg2
         ));
         $this->doc->disableEditControl();
-        if (!$this->domainid) $this->doc->unlock(false, true);
+        if (!$this->domainid) {
+            $this->doc->unlock(false, true);
+        }
         $msg.= $this->workflowSendMailTemplate($newstate, $addcomment, $tname);
         $this->workflowAttachTimer($newstate, $tname);
         $err.= $this->changeAllocateUser($newstate);
         // post action
         $msg3 = '';
         if ($wm3 && (!empty($tr["m3"]))) {
-            if (!method_exists($this, $tr["m3"])) return (sprintf(_("the method '%s' is not known for the object class %s") , $tr["m3"], get_class($this)));
+            if (!method_exists($this, $tr["m3"])) {
+                return (sprintf(_("the method '%s' is not known for the object class %s"), $tr["m3"], get_class($this)));
+            }
             $msg3 = call_user_func(array(
                 $this,
                 $tr["m3"]
-            ) , $newstate, $oldstate, $addcomment);
+            ), $newstate, $oldstate, $addcomment);
             
-            if ($msg3 == "->") $msg3 = ""; //it is not a real error
-            if ($msg3) $this->doc->addHistoryEntry($msg3);
-            if ($msg3 != "") $msg3 = sprintf(_("Warning : %s") , $msg3);
+            if ($msg3 == "->") {
+                $msg3 = "";
+            } //it is not a real error
+            if ($msg3) {
+                $this->doc->addHistoryEntry($msg3);
+            }
+            if ($msg3 != "") {
+                $msg3 = sprintf(_("Warning : %s"), $msg3);
+            }
         }
         $msg.= ($msg && $msg2 ? "\n" : '') . $msg2;
-        if ($msg && $msg3) $msg.= "\n";
+        if ($msg && $msg3) {
+            $msg.= "\n";
+        }
         $msg.= $msg3;
         $this->doc->enableEditControl();
         return $err;
@@ -917,12 +1037,18 @@ class WDoc extends Doc
      * @param bool $noVerifyDomain set to true if want to get next states when document is locked into a domain
      * @return array
      */
-    function getFollowingStates($noVerifyDomain = false)
+    public function getFollowingStates($noVerifyDomain = false)
     {
         // search if following states in concordance with transition array
-        if ($this->doc->locked == - 1) return array(); // no next state for revised document
-        if (($this->doc->locked > 0) && ($this->doc->locked != $this->doc->userid)) return array(); // no next state if locked by another person
-        if ((!$noVerifyDomain) && ($this->doc->lockdomainid > 0)) return array(); // no next state if locked in a domain
+        if ($this->doc->locked == - 1) {
+            return array();
+        } // no next state for revised document
+        if (($this->doc->locked > 0) && ($this->doc->locked != $this->doc->userid)) {
+            return array();
+        } // no next state if locked by another person
+        if ((!$noVerifyDomain) && ($this->doc->lockdomainid > 0)) {
+            return array();
+        } // no next state if locked in a domain
         $fstate = array();
         if ($this->doc->state == "") {
             $this->doc->state = $this->getFirstState();
@@ -934,7 +1060,9 @@ class WDoc extends Doc
         foreach ($this->cycle as $tr) {
             if ($this->doc->state == $tr["e1"]) {
                 // from state OK
-                if ($this->control($tr["t"]) == "") $fstate[] = $tr["e2"];
+                if ($this->control($tr["t"]) == "") {
+                    $fstate[] = $tr["e2"];
+                }
             }
         }
         return $fstate;
@@ -943,13 +1071,17 @@ class WDoc extends Doc
      * return an array of all states availables for the workflow
      * @return array
      */
-    function getStates()
+    public function getStates()
     {
         if ($this->states === null) {
             $this->states = array();
             foreach ($this->cycle as $k => $tr) {
-                if (!empty($tr["e1"])) $this->states[$tr["e1"]] = $tr["e1"];
-                if (!empty($tr["e2"])) $this->states[$tr["e2"]] = $tr["e2"];
+                if (!empty($tr["e1"])) {
+                    $this->states[$tr["e1"]] = $tr["e1"];
+                }
+                if (!empty($tr["e2"])) {
+                    $this->states[$tr["e2"]] = $tr["e2"];
+                }
             }
         }
         return $this->states;
@@ -960,7 +1092,7 @@ class WDoc extends Doc
      * @param string $def default value if not set
      * @return string the color (#RGB)
      */
-    function getColor($state, $def = "")
+    public function getColor($state, $def = "")
     {
         //$acolor=$this->attrPrefix."_COLOR".($state);
         $acolor = $this->_Aid("_COLOR", $state);
@@ -972,12 +1104,14 @@ class WDoc extends Doc
      * @param string $def default value if not set
      * @return string the text of action
      */
-    function getActivity($state, $def = "")
+    public function getActivity($state, $def = "")
     {
         //$acolor=$this->attrPrefix."_ACTIVITYLABEL".($state);
         $acolor = $this->_Aid("_ACTIVITYLABEL", $state);
         $v = $this->getRawValue($acolor);
-        if ($v) return _($v);
+        if ($v) {
+            return _($v);
+        }
         return $def;
     }
     /**
@@ -987,7 +1121,7 @@ class WDoc extends Doc
      * @param string $def default value if not set
      * @return string the text of action
      */
-    function getAction($state, $def = "")
+    public function getAction($state, $def = "")
     {
         deprecatedFunction();
         return $this->getActivity($state, $def);
@@ -999,7 +1133,7 @@ class WDoc extends Doc
      * @param bool $control set to false to not control ask access
      * @return string[] texts of action
      */
-    function getDocumentWasks($state, $control = true)
+    public function getDocumentWasks($state, $control = true)
     {
         $aask = $this->_Aid("_ASKID", $state);
         $vasks = $this->getMultipleRawValues($aask);
@@ -1011,7 +1145,9 @@ class WDoc extends Doc
                  */
                 $ask = new_doc($this->dbaccess, $askid);
                 $ask->set($this->doc);
-                if ($ask->isAlive() && ($ask->control('answer') == "")) $cask[] = $ask->id;
+                if ($ask->isAlive() && ($ask->control('answer') == "")) {
+                    $cask[] = $ask->id;
+                }
             }
             return $cask;
         } else {
@@ -1023,12 +1159,14 @@ class WDoc extends Doc
      *
      * @return bool true if at least one ask is set in workflow
      */
-    function hasWasks()
+    public function hasWasks()
     {
         $states = $this->getStates();
         foreach ($states as $state) {
             $aask = $this->_Aid("_ASKID", $state);
-            if ($this->getRawValue($aask)) return true;
+            if ($this->getRawValue($aask)) {
+                return true;
+            }
         }
         return false;
     }
@@ -1039,7 +1177,7 @@ class WDoc extends Doc
      * @param string $tname transition name
      * @return string
      */
-    function workflowSendMailTemplate($state, $comment = "", $tname = "")
+    public function workflowSendMailTemplate($state, $comment = "", $tname = "")
     {
         $err = '';
         $tmtid = $this->getMultipleRawValues($this->_Aid("_TRANS_MTID", $tname));
@@ -1093,7 +1231,7 @@ class WDoc extends Doc
      * @param string $tname transition name
      * @return string
      */
-    function workflowAttachTimer($state, $tname = "")
+    public function workflowAttachTimer($state, $tname = "")
     {
         $err = '';
         $mtid = $this->getRawValue($this->_Aid("_TRANS_TMID", $tname));
@@ -1146,7 +1284,7 @@ class WDoc extends Doc
      * @param string $comment
      * @return string
      */
-    function changeStateOfDocid($docid, $newstate, $comment = "")
+    public function changeStateOfDocid($docid, $newstate, $comment = "")
     {
         $err = '';
         $cmd = new_Doc($this->dbaccess, $docid);
@@ -1159,11 +1297,17 @@ class WDoc extends Doc
              */
             $wdoc = new_Doc($this->dbaccess, $cmd->wid);
             
-            if (!$wdoc) $err = sprintf(_("cannot change state of document #%d to %s") , $cmd->wid, $newstate);
-            if ($err != "") return $err;
+            if (!$wdoc) {
+                $err = sprintf(_("cannot change state of document #%d to %s"), $cmd->wid, $newstate);
+            }
+            if ($err != "") {
+                return $err;
+            }
             $wdoc->Set($cmd);
-            $err = $wdoc->ChangeState($newstate, sprintf(_("automaticaly by change state of %s\n%s") , $this->doc->title, $comment));
-            if ($err != "") return $err;
+            $err = $wdoc->ChangeState($newstate, sprintf(_("automaticaly by change state of %s\n%s"), $this->doc->title, $comment));
+            if ($err != "") {
+                return $err;
+            }
         }
         return $err;
     }
@@ -1173,7 +1317,7 @@ class WDoc extends Doc
      * @param string $from next state
      * @return array transition array (false if not found)
      */
-    function getTransition($from, $to)
+    public function getTransition($from, $to)
     {
         foreach ($this->cycle as $v) {
             if (($v["e1"] == $from) && ($v["e2"] == $to)) {
@@ -1191,7 +1335,7 @@ class WDoc extends Doc
      * @see Doc::control()
      * @return string
      */
-    function docControl($aclname, $strict = false)
+    public function docControl($aclname, $strict = false)
     {
         return Doc::Control($aclname, $strict);
     }
@@ -1201,10 +1345,12 @@ class WDoc extends Doc
      * @param bool $strict set to true to not use substitute informations
      * @return string error message
      */
-    function control($aclname, $strict = false)
+    public function control($aclname, $strict = false)
     {
         $err = Doc::control($aclname, $strict);
-        if ($err == "") return $err; // normal case
+        if ($err == "") {
+            return $err;
+        } // normal case
         if ($this->getRawValue("DPDOC_FAMID") > 0) {
             // special control for dynamic users
             if ($this->pdoc === null) {
@@ -1212,7 +1358,9 @@ class WDoc extends Doc
                 $pdoc->doctype = "T"; // temporary
                 //	$pdoc->setValue("DPDOC_FAMID",$this->getRawValue("DPDOC_FAMID"));
                 $err = $pdoc->Add();
-                if ($err != "") return "WDoc::Control:" . $err; // can't create profil
+                if ($err != "") {
+                    return "WDoc::Control:" . $err;
+                } // can't create profil
                 $pdoc->setProfil($this->profid, $this->doc);
                 
                 $this->pdoc = & $pdoc;
@@ -1224,18 +1372,22 @@ class WDoc extends Doc
     /**
      * affect action label
      */
-    function postStore()
+    public function postStore()
     {
         foreach ($this->stateactivity as $k => $v) {
-            $this->setValue($this->_Aid("_ACTIVITYLABEL", $k) , $v);
+            $this->setValue($this->_Aid("_ACTIVITYLABEL", $k), $v);
         }
         $this->getStates();
         foreach ($this->states as $k => $state) {
             $allo = trim($this->getRawValue($this->_Aid("_AFFECTREF", $state)));
-            if (!$allo) $this->removeArrayRow($this->_Aid("_T_AFFECT", $state) , 0);
+            if (!$allo) {
+                $this->removeArrayRow($this->_Aid("_T_AFFECT", $state), 0);
+            }
         }
         
-        if ($this->isChanged()) $this->modify();
+        if ($this->isChanged()) {
+            $this->modify();
+        }
     }
     /**
      * get value of instanced document
@@ -1243,7 +1395,7 @@ class WDoc extends Doc
      * @param bool $def default value if no value
      * @return string return the value, false if attribute not exist or document not set
      */
-    function getInstanceValue($attrid, $def = false)
+    public function getInstanceValue($attrid, $def = false)
     {
         if ($this->doc) {
             return $this->doc->getRawValue($attrid, $def);

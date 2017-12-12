@@ -22,8 +22,7 @@ class ConfigurationStore
         $codec = new JSONCodec();
         try {
             $store = $codec->decode($str, true);
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         $this->store = $store;
@@ -104,8 +103,7 @@ class ConfigurationStore
         $codec = new JSONCodec();
         try {
             $str = $codec->encode($this->store);
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         return $str;

@@ -8,7 +8,6 @@ namespace Dcp\HttpApi\V1\Crud;
 
 class ImageAsset extends Crud
 {
-    
     const CACHEIMGDIR = "var/cache/image/";
     protected $size;
     protected $imageFileName;
@@ -93,7 +92,7 @@ class ImageAsset extends Crud
      * @param array $array
      * @throws Exception
      */
-    public function setUrlParameters(Array $array)
+    public function setUrlParameters(array $array)
     {
         parent::setUrlParameters($array);
         $this->size = isset($this->urlParameters["size"]) ? $this->urlParameters["size"] : null;

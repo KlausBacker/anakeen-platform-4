@@ -113,7 +113,6 @@ class UserTag extends Crud
         $userTag = $this->_document->getUTag($this->tagIdentifier, false);
         
         if (!$userTag) {
-            
             $exception = new Exception("CRUD0223", $this->tagIdentifier);
             $exception->setHttpStatus("404", "Not found");
             throw $exception;
@@ -182,7 +181,7 @@ class UserTag extends Crud
      * @param array $array
      * @throws Exception
      */
-    public function setUrlParameters(Array $array)
+    public function setUrlParameters(array $array)
     {
         parent::setUrlParameters($array);
         $familyId = isset($this->urlParameters["familyId"]) ? $this->urlParameters["familyId"] : false;
@@ -231,11 +230,10 @@ class UserTag extends Crud
     
     public function analyseJSON($jsonString)
     {
-
         $tagValue=json_decode($jsonString);
         if (!$tagValue) {
             $tagValue=$jsonString;
-        } else if (is_object($tagValue)) {
+        } elseif (is_object($tagValue)) {
             $tagValue=json_encode($tagValue);
         }
         return array(
@@ -254,7 +252,7 @@ class UserTag extends Crud
             $id = $this->urlParameters["identifier"];
             $id = DocManager::getIdentifier($id, true);
             $sql = sprintf("select id, date, comment from docutag where id = %d order by date desc limit 1", $id);
-            simpleQuery(getDbAccess() , $sql, $result, false, true);
+            simpleQuery(getDbAccess(), $sql, $result, false, true);
             $result[] = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
             return join("", $result);
         }

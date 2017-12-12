@@ -7,7 +7,7 @@ class LibPhpini
     /**
      * @var \Application
      */
-    static $coreApplication = null;
+    public static $coreApplication = null;
 
     public static function applyLimits()
     {
@@ -63,7 +63,7 @@ class LibPhpini
 
     protected static function getParam($name, $defaultValue)
     {
-        if(is_null(self::$coreApplication)) {
+        if (is_null(self::$coreApplication)) {
             global $action;
             if ($action instanceof \Action &&
                 "CORE" === $action->parent->name) {
@@ -91,13 +91,15 @@ class LibPhpini
         $val = trim($val);
         $last = strtolower(substr($val, -1));
         $val=intval($val);
-        switch($last) {
+        switch ($last) {
             /** @noinspection PhpMissingBreakStatementInspection */
             case 'g':
                 $val *= 1024;
             /** @noinspection PhpMissingBreakStatementInspection */
+            // no break
             case 'm':
                 $val *= 1024;
+                // no break
             case 'k':
                 $val *= 1024;
         }

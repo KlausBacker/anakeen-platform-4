@@ -107,14 +107,13 @@ class WorkflowState extends Crud
         
         $state = isset($allStates[$this->getState() ]) ? $allStates[$this->getState() ] : null;
         if ($state === null) {
-            $exception = new Exception("CRUD0228", $this->getState() , $this->workflow->title, $this->workflow->id);
+            $exception = new Exception("CRUD0228", $this->getState(), $this->workflow->title, $this->workflow->id);
             $exception->setHttpStatus("404", "State not found");
             throw $exception;
         }
         
         $transition = $this->workflow->getTransition($this->_document->state, $state);
         if ($transition) {
-            
             $transitionData = array(
                 "uri" => sprintf("%stransitions/%s", $baseUrl, $transition["id"]) ,
                 "label" => _($transition["id"])
@@ -218,7 +217,7 @@ class WorkflowState extends Crud
      * @param array $array
      * @throws Exception
      */
-    public function setUrlParameters(Array $array)
+    public function setUrlParameters(array $array)
     {
         parent::setUrlParameters($array);
         $familyId = isset($this->urlParameters["familyId"]) ? $this->urlParameters["familyId"] : false;
@@ -253,8 +252,8 @@ class WorkflowState extends Crud
             $doc = DocManager::getDocument($id);
             if ($doc->wid > 0) {
                 $sql = sprintf("select id, revdate from docread where id = %d or id = %d", $doc->wid, $doc->id);
-                simpleQuery(getDbAccess() , $sql, $results, false, false);
-                $result = array_merge(array_values($results[0]) , array_values($results[1]));
+                simpleQuery(getDbAccess(), $sql, $results, false, false);
+                $result = array_merge(array_values($results[0]), array_values($results[1]));
                 
                 $user = getCurrentUser();
                 $result[] = $doc->state;

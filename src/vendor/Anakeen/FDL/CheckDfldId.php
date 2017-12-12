@@ -18,9 +18,8 @@ class CheckDfldid extends CheckData
      * @param Doc $doc
      * @return CheckDfldid
      */
-    function check(array $data, &$doc = null)
+    public function check(array $data, &$doc = null)
     {
-        
         $this->folderName = isset($data[1]) ? $data[1] : null;
         $this->doc = $doc;
         $this->checkFolder();

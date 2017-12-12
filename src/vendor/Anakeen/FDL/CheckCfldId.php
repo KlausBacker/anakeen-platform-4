@@ -20,9 +20,8 @@ class CheckCfldid extends CheckData
      * @param Doc $doc
      * @return CheckCfldid
      */
-    function check(array $data, &$doc = null)
+    public function check(array $data, &$doc = null)
     {
-        
         $this->folderName = $data[1];
         $this->doc = $doc;
         $this->checkSearch();

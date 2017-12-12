@@ -19,4 +19,3 @@ $parname = $usage->addOptionalParameter("param", "Parameter name");
 $usage->verify();
 
 print \Dcp\Core\ContextManager::getApplicationParam($parname) . "\n";
-?>

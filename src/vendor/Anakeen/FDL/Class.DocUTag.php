@@ -13,7 +13,7 @@
 /**
  */
 
-include_once ("Class.DbObj.php");
+include_once("Class.DbObj.php");
 class DocUtag extends DbObj
 {
     public $fields = array(
@@ -92,4 +92,3 @@ create index i_docutag on docutag(id);
 create index in_docutag on docutag(initid);
 ";
 }
-?>

@@ -87,7 +87,7 @@ class ExportDocument
     protected function getUserLogin($uid)
     {
         if (!isset($this->logins[$uid])) {
-            simpleQuery("", sprintf("select login from users where id=%d", $uid) , $login, true, true);
+            simpleQuery("", sprintf("select login from users where id=%d", $uid), $login, true, true);
             $this->logins[$uid] = $login ? $login : 0;
         }
         return $this->logins[$uid];
@@ -95,7 +95,7 @@ class ExportDocument
     protected function getUserLogicalName($uid)
     {
         if (!isset($this->logicalName[$uid])) {
-            simpleQuery("", sprintf("select name from docread where id=(select fid from users where id = %d)", $uid) , $logicalName, true, true);
+            simpleQuery("", sprintf("select name from docread where id=(select fid from users where id = %d)", $uid), $logicalName, true, true);
             $this->logicalName[$uid] = $logicalName ? $logicalName : 0;
         }
         return $this->logicalName[$uid];
@@ -106,13 +106,18 @@ class ExportDocument
      */
     public function exportProfil($fout, $docid)
     {
-        if (!$docid) return;
+        if (!$docid) {
+            return;
+        }
         // import its profile
         $doc = \new_Doc("", $docid); // needed to have special acls
         $doc->acls[] = "viewacl";
         $doc->acls[] = "modifyacl";
-        if ($doc->name != "") $name = $doc->name;
-        else $name = $doc->id;
+        if ($doc->name != "") {
+            $name = $doc->name;
+        } else {
+            $name = $doc->id;
+        }
         
         $dbaccess = getDbAccess();
         $q = new \QueryDb($dbaccess, "DocPerm");
@@ -165,7 +170,7 @@ class ExportDocument
         if ($doc->extendedAcls) {
             $extAcls = array_keys($doc->extendedAcls);
             $aclCond = GetSqlCond($extAcls, "acl");
-            simpleQuery($dbaccess, sprintf("select * from docpermext where docid=%d and %s order by userid", $doc->profid, $aclCond) , $eAcls);
+            simpleQuery($dbaccess, sprintf("select * from docpermext where docid=%d and %s order by userid", $doc->profid, $aclCond), $eAcls);
             
             foreach ($eAcls as $kAcl => $aAcl) {
                 $uid = $aAcl["userid"];
@@ -209,9 +214,12 @@ class ExportDocument
     }
     public function csvExport(\Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
     {
-        
-        if (!$doc->isAffected()) return;
-        if (in_array($doc->id, $this->alreadyExported)) return;
+        if (!$doc->isAffected()) {
+            return;
+        }
+        if (in_array($doc->id, $this->alreadyExported)) {
+            return;
+        }
         $this->alreadyExported[] = $doc->id;
         
         \Dcp\WriteCsv::$separator = $this->csvSeparator;
@@ -225,9 +233,14 @@ class ExportDocument
                 \Dcp\WriteCsv::fput($fout, array());
             }
             $adoc = $doc->getFamilyDocument();
-            if ($adoc->name != "") $this->familyName = $adoc->name;
-            else $this->familyName = $adoc->id;
-            if (!$this->familyName) return;
+            if ($adoc->name != "") {
+                $this->familyName = $adoc->name;
+            } else {
+                $this->familyName = $adoc->id;
+            }
+            if (!$this->familyName) {
+                return;
+            }
             $this->lattr = $adoc->GetExportAttributes($wfile, $nopref);
             $data = array();
             
@@ -239,12 +252,10 @@ class ExportDocument
                     "<fldid>"
                 );
                 //fputs_utf8($fout, "//FAM;" . $adoc->title . "(" . $this->familyName . ");<specid>;<fldid>;");
-                
             }
             foreach ($this->lattr as $attr) {
                 $data[] = $attr->getLabel();
                 //fputs_utf8($fout, str_replace(SEPCHAR, ALTSEPCHAR, $attr->getLabel()) . SEPCHAR);
-                
             }
             WriteCsv::fput($fout, $data);
             //fputs_utf8($fout, "\n");
@@ -259,23 +270,21 @@ class ExportDocument
                 foreach ($this->lattr as $attr) {
                     $data[] = $attr->id;
                     //fputs_utf8($fout, $attr->id . ";");
-                    
                 }
                 WriteCsv::fput($fout, $data);
                 // fputs_utf8($fout, "\n");
-                
             }
             $this->prevfromid = $doc->fromid;
         }
         $docName = '';
         if ($doc->name != "" && $doc->locked != - 1) {
             $docName = $doc->name;
-        } else if ($wprof) {
+        } elseif ($wprof) {
             if ($doc->locked != - 1) {
                 $err = $doc->setNameAuto(true);
                 $docName = $doc->name;
             }
-        } else if ($wident) {
+        } elseif ($wident) {
             $docName = $doc->id;
         }
         $data = array();
@@ -299,18 +308,17 @@ class ExportDocument
                     $value = str_replace(array(
                         '<BR>',
                         '<br/>'
-                    ) , array(
+                    ), array(
                         "\n",
                         "\\n"
-                    ) , $doc->getHtmlAttrValue($attr->id, '', false, -1, false));
+                    ), $doc->getHtmlAttrValue($attr->id, '', false, -1, false));
                 } else {
                     $value = str_replace(array(
                         '<BR>',
                         '<br/>'
-                    ) , '\\n', $doc->getHtmlAttrValue($attr->id, '', false, -1, false));
+                    ), '\\n', $doc->getHtmlAttrValue($attr->id, '', false, -1, false));
                 }
             } else {
-                
                 $value = $doc->getRawValue($attr->id);
             }
             // invert HTML entities
@@ -328,7 +336,7 @@ class ExportDocument
                     );
                 }
                 $value = implode("\n", $tf);
-            } else if ($attr->type == "docid" || $attr->type == "account" || $attr->type == "thesaurus") {
+            } elseif ($attr->type == "docid" || $attr->type == "account" || $attr->type == "thesaurus") {
                 $docrevOption = $attr->getOption("docrev", "latest");
                 if ($value != "") {
                     if (strstr($value, "\n") || ($attr->getOption("multiple") == "yes")) {
@@ -343,7 +351,7 @@ class ExportDocument
                                     if ($docrevOption === "latest") {
                                         $tnbr[] = $n;
                                     } else {
-                                        addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name") , $doc->getTitle() , $attr->getLabel()));
+                                        addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name"), $doc->getTitle(), $attr->getLabel()));
                                         $tnbr[] = $brid;
                                     }
                                 } else {
@@ -359,16 +367,15 @@ class ExportDocument
                             if ($docrevOption === "latest") {
                                 $value = $n;
                             } else {
-                                addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name") , $doc->getTitle() , $attr->getLabel()));
+                                addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name"), $doc->getTitle(), $attr->getLabel()));
                             }
                         }
                     }
                 }
-            } else if ($attr->type == "htmltext") {
+            } elseif ($attr->type == "htmltext") {
                 $value = $attr->prepareHtmltextForExport($value);
                 if ($wfile) {
-                    $value = preg_replace_callback('/(<img.*?src=")(((?=.*docid=(.*?)&)(?=.*attrid=(.*?)&)(?=.*index=(-?[0-9]+)))|(file\/(.*?)\/[0-9]+\/(.*?)\/(-?[0-9]+))).*?"/', function ($matches) use (&$ef)
-                    {
+                    $value = preg_replace_callback('/(<img.*?src=")(((?=.*docid=(.*?)&)(?=.*attrid=(.*?)&)(?=.*index=(-?[0-9]+)))|(file\/(.*?)\/[0-9]+\/(.*?)\/(-?[0-9]+))).*?"/', function ($matches) use (&$ef) {
                         if (isset($matches[7])) {
                             $docid = $matches[8];
                             $attrid = $matches[9];
@@ -378,7 +385,7 @@ class ExportDocument
                             $index = $matches[6] == "-1" ? 0 : $matches[6];
                             $attrid = $matches[5];
                         }
-                        $doc = \new_Doc(getDbAccess() , $docid);
+                        $doc = \new_Doc(getDbAccess(), $docid);
                         $attr = $doc->getAttribute($attrid);
                         $tfiles = $doc->vault_properties($attr);
                         $f = $tfiles[$index];
@@ -391,22 +398,17 @@ class ExportDocument
                             "fname" => unaccent($f["name"])
                         );
                         return $matches[1] . "file://" . $fname . '"';
-                    }
-                    , $value);
+                    }, $value);
                 }
             } else {
                 $trans = $this->getTrans();
-                $value = preg_replace_callback('/(\&[a-zA-Z0-9\#]+;)/s', function ($matches) use ($trans)
-                {
+                $value = preg_replace_callback('/(\&[a-zA-Z0-9\#]+;)/s', function ($matches) use ($trans) {
                     return strtr($matches[1], $trans);
-                }
-                , $value);
+                }, $value);
                 // invert HTML entities which ascii code like &#232;
-                $value = preg_replace_callback('/\&#([0-9]+);/s', function ($matches)
-                {
+                $value = preg_replace_callback('/\&#([0-9]+);/s', function ($matches) {
                     return chr($matches[1]);
-                }
-                , $value);
+                }, $value);
             }
             $data[] = $value;
         }
@@ -415,11 +417,15 @@ class ExportDocument
             $profid = ($doc->dprofid) ? $doc->dprofid : $doc->profid;
             if ($profid == $doc->id) {
                 $this->exportProfil($fout, $doc->id);
-            } else if ($profid > 0) {
+            } elseif ($profid > 0) {
                 $name = \Dcp\Core\DocManager::getNameFromId($profid);
                 $dname = $doc->name;
-                if (!$dname) $dname = $doc->id;
-                if (!$name) $name = $profid;
+                if (!$dname) {
+                    $dname = $doc->id;
+                }
+                if (!$name) {
+                    $name = $profid;
+                }
                 if (!isset($tdoc[$profid])) {
                     $tdoc[$profid] = true;
                     $pdoc = \new_Doc($dbaccess, $profid);

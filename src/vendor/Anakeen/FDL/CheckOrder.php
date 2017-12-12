@@ -23,14 +23,15 @@ class CheckOrder extends CheckData
      * @param Doc $doc
      * @return CheckDoc
      */
-    function check(array $data, &$extra = null)
+    public function check(array $data, &$extra = null)
     {
-        
         $this->famName = isset($data[1]) ? trim($data[1]) : null;
         $this->attrIds = getOrder($data);
         
         $this->CheckOrderFamily();
-        if (!$this->hasErrors()) $this->CheckOrderAttribute();
+        if (!$this->hasErrors()) {
+            $this->CheckOrderAttribute();
+        }
         
         return $this;
     }
@@ -66,7 +67,7 @@ class CheckOrder extends CheckData
                 $this->addError(ErrorCode::getError('ORDR0001', $this->famName));
             } else {
                 try {
-                    $this->family = new_doc(getDbAccess() , $this->famName);
+                    $this->family = new_doc(getDbAccess(), $this->famName);
                     if (!$this->family->isAlive()) {
                         $this->addError(ErrorCode::getError('ORDR0002', $this->famName));
                     } else {
@@ -74,16 +75,16 @@ class CheckOrder extends CheckData
                             $this->addError(ErrorCode::getError('ORDR0003', $this->famName));
                         } else {
                             $canCreateError = $this->family->control('create');
-                            if ($canCreateError) $this->addError(ErrorCode::getError('ORDR0004', $this->famName));
+                            if ($canCreateError) {
+                                $this->addError(ErrorCode::getError('ORDR0004', $this->famName));
+                            }
                         }
                     }
-                }
-                catch(Exception $e) {
+                } catch (Exception $e) {
                     $this->addError(ErrorCode::getError('ORDR0005', $this->famName, $e->getMessage()));
                 }
             }
         } else {
-            
             $this->addError(ErrorCode::getError('ORDR0006'));
         }
     }

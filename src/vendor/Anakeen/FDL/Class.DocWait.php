@@ -197,8 +197,9 @@ create sequence seq_waittransaction start 1;
     {
         $err = '';
         $this->status = $this->computeStatus();
-        if ($this->status == self::conflict) $err = $this->statusmessage;
-        else {
+        if ($this->status == self::conflict) {
+            $err = $this->statusmessage;
+        } else {
             $wdoc = $this->getWaitingDocument();
             $wdoc->doctype = $wdoc->defDoctype; // become consistent
             if ($this->localid) {
@@ -291,8 +292,12 @@ create sequence seq_waittransaction start 1;
      */
     public function getRefererDocument($reset = false)
     {
-        if ($reset) $this->refererDoc = null;
-        if ($this->refererid <= 0) return null;
+        if ($reset) {
+            $this->refererDoc = null;
+        }
+        if ($this->refererid <= 0) {
+            return null;
+        }
         if (!$this->refererDoc) {
             $this->refererDoc = new_doc($this->dbaccess, $this->refererid, true);
             $this->refererDocId = $this->refererDoc->id;
@@ -327,7 +332,9 @@ create sequence seq_waittransaction start 1;
             $this->waitingDoc = clone $cdoc;
             $waitValues = unserialize($this->values);
             foreach ($waitValues as $aid => $v) {
-                if ($v == '') $v = ' ';
+                if ($v == '') {
+                    $v = ' ';
+                }
                 $this->waitingDoc->setValue($aid, $v);
             }
             $this->waitingDoc->doctype = 'I';
@@ -364,10 +371,12 @@ create sequence seq_waittransaction start 1;
                         $this->status = self::conflict;
                     } else {
                         if ($currentDoc->locked != $currentDoc->getSystemUserId()) {
-                            $this->statusmessage = sprintf("document %s [%d] not locked", $currentDoc->getTitle() , $currentDoc->id);
+                            $this->statusmessage = sprintf("document %s [%d] not locked", $currentDoc->getTitle(), $currentDoc->id);
                             $this->status = self::conflict;
                         } else {
-                            if ($mask) $currentDoc->ApplyMask($mask);
+                            if ($mask) {
+                                $currentDoc->ApplyMask($mask);
+                            }
                             $attrs = $this->getWriteAttribute($currentDoc);
                             $this->status = self::upToDate;
                             $this->statusmessage = '';
@@ -386,7 +395,7 @@ create sequence seq_waittransaction start 1;
                                 $cvalue = $currentDoc->getRawValue($oa->id);
                                 if ($ovalue != $cvalue) {
                                     $this->status = self::conflict;
-                                    $this->statusmessage.= sprintf(_("conflict %s [%s]: referer=%s, modified=%s") , $oa->getLabel() , $oa->id, $cvalue, $ovalue) . "\n";
+                                    $this->statusmessage.= sprintf(_("conflict %s [%s]: referer=%s, modified=%s"), $oa->getLabel(), $oa->id, $cvalue, $ovalue) . "\n";
                                 }
                             }
                             $this->statusmessage = substr($this->statusmessage, 0, -1);
@@ -413,4 +422,3 @@ create sequence seq_waittransaction start 1;
         return ($this->extradata) ? json_decode($this->extradata) : null;
     }
 }
-?>

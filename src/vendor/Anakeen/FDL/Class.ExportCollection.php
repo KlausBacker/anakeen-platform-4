@@ -5,6 +5,7 @@
 */
 
 namespace Dcp;
+
 class ExportCollection
 {
     /**
@@ -246,7 +247,7 @@ class ExportCollection
         $exportDoc->setVerifyAttributeAccess($this->verifyAttributeAccess);
         $outDir = '';
         if ($this->exportFiles) {
-            $outDir = tempnam(getTmpDir() , 'exportFolder');
+            $outDir = tempnam(getTmpDir(), 'exportFolder');
             if (is_file($outDir)) {
                 unlink($outDir);
             }
@@ -267,14 +268,14 @@ class ExportCollection
         $rc = count($dl);
         if ($this->exportProfil) {
             foreach ($dl as $doc) {
-                $this->recordStatus(sprintf(_("Record documents %d/%d") , $c, $rc));
+                $this->recordStatus(sprintf(_("Record documents %d/%d"), $c, $rc));
                 if ($doc->doctype === "C") {
                     /**
                      * @var \DocFam $doc
                      */
                     $c++;
                     if ($c % 20 == 0) {
-                        $this->recordStatus(sprintf(_("Record documents %d/%d") , $c, $rc));
+                        $this->recordStatus(sprintf(_("Record documents %d/%d"), $c, $rc));
                     }
                     $this->csvFamilyExport($doc);
                 }
@@ -283,14 +284,12 @@ class ExportCollection
         }
         $fileInfos = array();
         foreach ($dl as $doc) {
-            
             if ($doc->doctype !== "C") {
                 $c++;
                 if ($c % 20 == 0) {
-                    
-                    $this->recordStatus(sprintf(_("Record documents %d/%d") , $c, $rc));
+                    $this->recordStatus(sprintf(_("Record documents %d/%d"), $c, $rc));
                 }
-                $exportDoc->csvExport($doc, $fileInfos, $this->outHandler, $this->exportProfil, $this->exportFiles, $this->exportDocumentNumericIdentiers, ($this->outputFileEncoding === self::utf8Encoding) , !$this->useUserColumnParameter, $this->outputFormat);
+                $exportDoc->csvExport($doc, $fileInfos, $this->outHandler, $this->exportProfil, $this->exportFiles, $this->exportDocumentNumericIdentiers, ($this->outputFileEncoding === self::utf8Encoding), !$this->useUserColumnParameter, $this->outputFormat);
             }
         }
         fclose($this->outHandler);
@@ -339,7 +338,6 @@ class ExportCollection
      */
     protected function csvFamilyExport(\DocFam $family)
     {
-        
         $wname = "";
         $cvname = "";
         $cpname = "";
@@ -351,21 +349,30 @@ class ExportCollection
             $fp = getTDoc($dbaccess, $family->profid);
             $tmoredoc[$fp["id"]] = "famprof";
             $this->addDocumentToExport($fp["id"]);
-            if ($fp["name"] != "") $fpname = $fp["name"];
-            else $fpname = $fp["id"];
+            if ($fp["name"] != "") {
+                $fpname = $fp["name"];
+            } else {
+                $fpname = $fp["id"];
+            }
         } else {
         }
         if ($family->cprofid) {
             $cp = getTDoc($dbaccess, $family->cprofid);
-            if ($cp["name"] != "") $cpname = $cp["name"];
-            else $cpname = $cp["id"];
+            if ($cp["name"] != "") {
+                $cpname = $cp["name"];
+            } else {
+                $cpname = $cp["id"];
+            }
             $tmoredoc[$cp["id"]] = "cprofid";
             $this->addDocumentToExport($cp["id"]);
         }
         if ($family->ccvid > 0) {
             $cv = getTDoc($dbaccess, $family->ccvid);
-            if ($cv["name"] != "") $cvname = $cv["name"];
-            else $cvname = $cv["id"];
+            if ($cv["name"] != "") {
+                $cvname = $cv["name"];
+            } else {
+                $cvname = $cv["id"];
+            }
             $tmskid = $family->rawValueToArray($cv["cv_mskid"]);
             
             foreach ($tmskid as $kmsk => $imsk) {
@@ -384,8 +391,11 @@ class ExportCollection
         
         if ($family->wid > 0) {
             $wdoc = \new_doc($dbaccess, $family->wid);
-            if ($wdoc->name != "") $wname = $wdoc->name;
-            else $wname = $wdoc->id;
+            if ($wdoc->name != "") {
+                $wname = $wdoc->name;
+            } else {
+                $wname = $wdoc->id;
+            }
             $tattr = $wdoc->getAttributes();
             foreach ($tattr as $ka => $oa) {
                 if ($oa->type == "docid") {
@@ -476,7 +486,6 @@ class ExportCollection
      */
     protected function writeFamilies()
     {
-        
         $exportDoc = new \Dcp\ExportDocument();
         $exportDoc->setCsvEnclosure($this->cvsEnclosure);
         $exportDoc->setCsvSeparator($this->cvsSeparator);
@@ -486,11 +495,9 @@ class ExportCollection
         $searchDl = $more->getSearchDocument();
         $searchDl->setOrder("fromid, name, id");
         foreach ($more as $adoc) {
-            
-            $exportDoc->csvExport($adoc, $fileInfos, $this->outHandler, false, $this->exportFiles, $this->exportDocumentNumericIdentiers, ($this->outputFileEncoding === self::utf8Encoding) , !$this->useUserColumnParameter, $this->outputFormat);
+            $exportDoc->csvExport($adoc, $fileInfos, $this->outHandler, false, $this->exportFiles, $this->exportDocumentNumericIdentiers, ($this->outputFileEncoding === self::utf8Encoding), !$this->useUserColumnParameter, $this->outputFormat);
         }
         foreach ($more as $adoc) {
-            
             $exportDoc->exportProfil($this->outHandler, $adoc->id);
         }
         
@@ -502,8 +509,9 @@ class ExportCollection
         }
         
         foreach ($this->familyData as $famid => $aRow) {
-            
-            foreach ($aRow as $data) \Dcp\WriteCsv::fput($this->outHandler, $data);
+            foreach ($aRow as $data) {
+                \Dcp\WriteCsv::fput($this->outHandler, $data);
+            }
         }
     }
     protected function zipFiles($directory, array $infos)
@@ -512,7 +520,9 @@ class ExportCollection
         foreach ($infos as $info) {
             $source = $info["path"];
             $ddir = $directory . '/' . $info["ldir"];
-            if (!is_dir($ddir)) mkdir($ddir);
+            if (!is_dir($ddir)) {
+                mkdir($ddir);
+            }
             $dest = $ddir . '/' . $info["fname"];
             if (!copy($source, $dest)) {
                 throw new Exception("EXPC0014", $source, $dest);
@@ -520,10 +530,9 @@ class ExportCollection
         }
         
         $zipfile = $this->outputFilePath . ".zip";
-        $cmd = sprintf("cd %s && zip -r %s -- * > /dev/null && mv %s %s", escapeshellarg($directory) , escapeshellarg($zipfile) , escapeshellarg($zipfile) , escapeshellarg($this->outputFilePath));
+        $cmd = sprintf("cd %s && zip -r %s -- * > /dev/null && mv %s %s", escapeshellarg($directory), escapeshellarg($zipfile), escapeshellarg($zipfile), escapeshellarg($this->outputFilePath));
         system($cmd, $ret);
         if (!is_file($this->outputFilePath)) {
-            
             throw new Exception("EXPC0012", $this->outputFilePath);
         }
     }
@@ -554,13 +563,13 @@ class ExportCollection
         foreach ($dl as $doc) {
             $c++;
             if ($c % 20 == 0) {
-                $this->recordStatus(sprintf(_("Record documents %d/%d") , $c, $rc));
+                $this->recordStatus(sprintf(_("Record documents %d/%d"), $c, $rc));
             }
             
             $ftitle = $this->cleanFileName($doc->getTitle());
             $suffix = sprintf("{%d}.xml", $doc->id);
             $maxBytesLen = MAX_FILENAME_LEN - strlen($suffix);
-            $fname = sprintf("%s/%s%s", $foutdir, mb_strcut($ftitle, 0, $maxBytesLen, 'UTF-8') , $suffix);
+            $fname = sprintf("%s/%s%s", $foutdir, mb_strcut($ftitle, 0, $maxBytesLen, 'UTF-8'), $suffix);
             
             $exd->setDocument($doc);
             $exd->writeTo($fname);
@@ -588,14 +597,14 @@ class ExportCollection
             "'",
             ':',
             " "
-        ) , array(
+        ), array(
             '-',
             '-',
             '-',
             '-',
             '-',
             '_'
-        ) , $fileName);
+        ), $fileName);
     }
     /**
      * zip Xml files included in directory
@@ -604,13 +613,11 @@ class ExportCollection
      */
     protected function zipXml($directory)
     {
-        
         $zipfile = $this->outputFilePath . ".zip";
-        $cmd = sprintf("cd %s && zip -r %s -- * > /dev/null && mv %s %s", escapeshellarg($directory) , escapeshellarg($zipfile) , escapeshellarg($zipfile) , escapeshellarg($this->outputFilePath));
+        $cmd = sprintf("cd %s && zip -r %s -- * > /dev/null && mv %s %s", escapeshellarg($directory), escapeshellarg($zipfile), escapeshellarg($zipfile), escapeshellarg($this->outputFilePath));
         
         system($cmd, $ret);
         if (!is_file($this->outputFilePath)) {
-            
             throw new Exception("EXPC0012", $this->outputFilePath);
         }
     }
@@ -621,7 +628,6 @@ class ExportCollection
      */
     protected function catXml($directory)
     {
-        
         $fout = fopen($this->outputFilePath, "w");
         if (!$fout) {
             throw new Exception("EXPC0005", $this->outputFilePath);
@@ -636,7 +642,7 @@ EOF;
         } else {
             $exportname = sprintf("Custom '\"export");
         }
-        $xml_head = sprintf($xml_head, htmlspecialchars(strftime("%FT%T")) , htmlspecialchars(\Account::getDisplayName(getCurrentUser()->id) , ENT_QUOTES) , htmlspecialchars($exportname, ENT_QUOTES));
+        $xml_head = sprintf($xml_head, htmlspecialchars(strftime("%FT%T")), htmlspecialchars(\Account::getDisplayName(getCurrentUser()->id), ENT_QUOTES), htmlspecialchars($exportname, ENT_QUOTES));
         
         $ret = fwrite($fout, $xml_head);
         if ($ret === false) {

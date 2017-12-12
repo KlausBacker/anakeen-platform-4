@@ -10,10 +10,9 @@ namespace Dcp\HttpApi\V1\Crud;
 
 use Dcp\HttpApi\V1\Api\AnalyzeURL;
 
-
-class URLUtils {
-
-    static public function generateURL($path, $query = null)
+class URLUtils
+{
+    public static function generateURL($path, $query = null)
     {
         $url = AnalyzeURL::getBaseURL() . $path;
         if ($query) {
@@ -21,4 +20,4 @@ class URLUtils {
         }
         return $url;
     }
-} 
+}

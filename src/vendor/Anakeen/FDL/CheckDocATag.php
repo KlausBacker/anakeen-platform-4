@@ -18,7 +18,7 @@ class CheckDocATag extends CheckData
      * @param Doc $doc
      * @return CheckDocATag
      */
-    function check(array $data, &$doc = null)
+    public function check(array $data, &$doc = null)
     {
         if (!isset($data[3])) {
             $this->addError(ErrorCode::getError('ATAG0004'));
@@ -48,7 +48,6 @@ class CheckDocATag extends CheckData
         
         $this->doc = new_doc("", $this->docid);
         if (!$this->doc->isAlive()) {
-            
             $this->addError(ErrorCode::getError('ATAG0003', $this->docid));
         }
     }
@@ -60,7 +59,7 @@ class CheckDocATag extends CheckData
     {
         $allowedAction = ["ADD", "DELETE", "SET"];
         if ($this->tagAction && !in_array($this->tagAction, $allowedAction)) {
-            $this->addError(ErrorCode::getError('ATAG0001', $this->tagAction, $this->doc->getTitle() , implode(",", $allowedAction)));
+            $this->addError(ErrorCode::getError('ATAG0001', $this->tagAction, $this->doc->getTitle(), implode(",", $allowedAction)));
         }
     }
     
@@ -69,7 +68,7 @@ class CheckDocATag extends CheckData
         $i = 4;
         while (!empty($data[$i])) {
             if (strpos($data[$i], "\n") !== false) {
-                $this->addError(ErrorCode::getError('ATAG0005', $this->doc->getTitle() , $data[$i]));
+                $this->addError(ErrorCode::getError('ATAG0005', $this->doc->getTitle(), $data[$i]));
             }
             $i++;
         }

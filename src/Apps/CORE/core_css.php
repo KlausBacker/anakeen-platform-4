@@ -14,7 +14,6 @@
  */
 function core_css(Action & $action)
 {
-    
     $layout = $action->getArgument("layout");
     $type = $action->getArgument("type");
     $packName = $action->getArgument("pack");
@@ -35,23 +34,28 @@ function core_css(Action & $action)
                 $action->lay->noparse = false;
                 if (preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/", $resource["ref"], $reg)) {
                     $lfile = getLayoutFile($reg[1], strtolower($reg[2]));
-                    if ($lfile) $action->lay->template.= file_get_contents($lfile);
-                    else $nfFile[] = $resource["ref"];
+                    if ($lfile) {
+                        $action->lay->template.= file_get_contents($lfile);
+                    } else {
+                        $nfFile[] = $resource["ref"];
+                    }
                 }
             } else {
                 $action->lay->template.= file_get_contents($resource["ref"]);
             }
         }
     } else {
-        
         if (preg_match("/([A-Z_0-9-]+):([^:]+):{0,1}[A-Z]{0,1}/", $layout, $reg)) {
             $action->lay->template = '';
             $lfile = getLayoutFile($reg[1], strtolower($reg[2]));
-            if ($lfile) $action->lay = new Layout($lfile, $action);
+            if ($lfile) {
+                $action->lay = new Layout($lfile, $action);
+            }
         } else {
             if (preg_match("/^css/", $layout, $reg) && strpos($layout, '..') === false) {
-                
-                if (is_file($layout)) $action->lay = new Layout($layout, $action);
+                if (is_file($layout)) {
+                    $action->lay = new Layout($layout, $action);
+                }
             }
         }
     }
@@ -62,7 +66,6 @@ function core_css(Action & $action)
     
     $mimetype = '';
     if ($type == '' || $type == 'css') {
-        
         $mimetype = 'text/css';
     } elseif ($type == 'js') {
         $mimetype = 'text/javascript';
@@ -73,4 +76,3 @@ function core_css(Action & $action)
         setHeaderCache($mimetype);
     }
 }
-?>
