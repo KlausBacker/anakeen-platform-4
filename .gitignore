@@ -2,12 +2,13 @@
 *~
 *#
 localpub/
-ui/node_modules/
-ui/DataTables/
-Document-uis/src/public/uiAssets/externals/
 .idea/
 Document-uis/node_modules/
 Document-uis/src/public/login/dist/
 Document-uis/src/public/components/dist/
 Document-uis/src/vendor/Anakeen/Components/translation.json
 Document-uis/webpack-perso.js
+Document-uis/src/public/uiAssets/externals/
+Document-uis/src/public/uiAssets/anakeen/
+Document-uis/src/Apps/DOCUMENT/Layout/debug/
+Document-uis/src/Apps/DOCUMENT/Layout/prod/
