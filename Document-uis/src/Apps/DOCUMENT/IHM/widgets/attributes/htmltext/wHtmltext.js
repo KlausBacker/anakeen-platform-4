@@ -106,9 +106,8 @@
             }
             return {
                 language: locale.substring(0, 2),
-                contentsCss: ['uiAssets/externals/ckeditor/contents.css', 'css/a4/document/ckeditor.css'],
+                contentsCss: ['css/a4/document/ckeditor.css'],
                 removePlugins: 'elementspath', // no see HTML path elements
-                //extraPlugins: 'sourcedialog',
                 toolbarCanCollapse: true,
                 entities: false, // no use HTML entities
                 baseHref : hrefBase,
