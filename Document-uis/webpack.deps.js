@@ -21,8 +21,8 @@ const commonConfig = merge([{
     },
     externals: {
         jquery: 'jQuery'
-    }
-}
+    },
+},parts.progressBar()
 ]);
 
 const cleanAndCopyCssConfig = merge([

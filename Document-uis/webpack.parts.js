@@ -6,6 +6,7 @@ const ExtractTextWebpackPlugin = require("extract-text-webpack-plugin");
 const StyleExtHtmlWebpackPlugin = require("style-ext-html-webpack-plugin");
 const HtmlWebpackInlineSVGPlugin = require('html-webpack-inline-svg-plugin');
 const GitRevisionPlugin = require('git-revision-webpack-plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const webpack = require("webpack");
 
 exports.minifyJavaScript = () => ({
@@ -31,8 +32,8 @@ exports.generateViewHtml = (currentPath) => ({
     },
     plugins: [
         new HtmlWebpackPlugin({
-        filename: path.resolve(__dirname, currentPath, 'view.html'),
-        template: path.resolve(__dirname, 'src/Apps/DOCUMENT/IHM/view.html')
+            filename: path.resolve(__dirname, currentPath, 'view.html'),
+            template: path.resolve(__dirname, 'src/Apps/DOCUMENT/IHM/view.html')
         }),
         new ExtractTextWebpackPlugin('loading.css'),
         new StyleExtHtmlWebpackPlugin(),
@@ -56,6 +57,15 @@ exports.devServer = ({host, port} = {}) => ({
             }
         }
     },
+});
+
+exports.progressBar = () => ({
+    plugins: [
+        new ProgressBarPlugin({
+            format: '  build [:bar] :percent (:elapsed seconds)',
+            clear: false
+        })
+    ]
 });
 
 exports.addExternals = () => ({
@@ -90,3 +100,13 @@ exports.setFreeVariable = (key, value) => {
         plugins: [new webpack.DefinePlugin(env)],
     };
 };
+
+exports.extractCommonChunk = () => ({
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "vendor",
+            minChunks:2
+        })
+    ]
+
+});

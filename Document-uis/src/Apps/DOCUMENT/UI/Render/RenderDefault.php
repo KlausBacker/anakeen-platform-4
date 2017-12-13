@@ -46,11 +46,12 @@ class RenderDefault implements IRenderConfig
             $jsRef = [
                 "jquery"=> "$pubExternalPath/jquery/jquery.min.js?ws=" . $version,
                 "kendoui" => "$pubExternalPath/KendoUI/KendoUI.js?ws=" . $version,
+                "vendor"=> "$pubInternalPath/debug/vendor.js?ws=\" . $version,"
             ];
         } else {
             $jsRef = [
                 "jquery"=> "$pubExternalPath/jquery/jquery.min.js?ws=" . $version,
-                "kendoui" => "$pubExternalPath/KendoUI/KendoUI.built.js?ws=" . $version,
+                "kendoui" => "$pubExternalPath/KendoUI/KendoUI.built.js?ws=" . $version
             ];
         }
 
