@@ -148,6 +148,13 @@ define([
                 Promise.all(promisesColumn).then(function renderDone() {
                     currentView.$el.attr("data-attrid", currentView.model.id);
                     currentView.model.trigger("renderDone", {model: currentView.model, $el: currentView.$el});
+                    if (currentView.$el.find('.dcpCustomTemplate[data-attrid="'+currentView.model.id+
+                            '"] .dcpCustomTemplate--content[data-attrid="'+currentView.model.id+'"]').length > 0) {
+                        // it's a fake array view because template declare itself inside
+                        currentView.stopListening(currentView.model, 'addWidgetLine');
+                        currentView.stopListening(currentView.model, 'removeWidgetLine');
+                        currentView.undelegateEvents();
+                    }
                     resolve(currentView);
                 });
 

@@ -80,12 +80,35 @@
             this._initDom().then(_.bind(function onDomOK() {
                 this._trigger("widgetReady");
             }, this));
-            this._initActionClickEvent();
-            this._bindEvents();
+            if (!this._isEventBinded()) {
+                this._initActionClickEvent();
+                this._bindEvents();
+                this._isEventBinded(true);
+            }
+            this.element.find(".dcpArray--collapsable").on("click" + this.eventNamespace, _.bind(function toogleTable() {
+                this.toggleCollapse.apply(this);
+            }, this));
+
             if (this.options.renderOptions.collapse === "collapse") {
                 this.toggleCollapse(null, true);
             }
+
             this.initializing = false;
+        },
+
+        _isInitialized: function dcpArray_isInitialized(value) {
+            var $tbody=this.element.find(".dcpArray__body");
+            if (value !== undefined) {
+                $tbody.data("bodyGenerated", value);
+            }
+            return $tbody.data("bodyGenerated");
+        },
+        _isEventBinded: function dcpArray_isEventBinded(value) {
+            var $tbody=this.element.find(".dcpArray__body");
+            if (value !== undefined) {
+                $tbody.data("eventsBinded", value);
+            }
+            return $tbody.data("eventsBinded");
         },
 
         _initDom: function dcpArray_initDom() {
@@ -117,7 +140,7 @@
                     if (this.options.customTemplate) {
                         // The template is already composed on view
                         this.element.append(this.options.customTemplate);
-                        this.element.find(".dcpCustomTemplate table.dcpArray__table tbody tr").addClass("dcpArray__content__line");
+                        this.element.find(".dcpCustomTemplate table.dcpArray__table > tbody > tr").addClass("dcpArray__content__line");
                         this._indexLine();
                         this.element.find(".dcpArray__content__line").attr("data-attrid", this.options.id);
                         this.element.find(".dcpCustomTemplate").addClass("dcpArray__content dcpArray__content--open");
@@ -235,7 +258,12 @@
                     });
                 }
                 _.delay(_.bind(this._initCSSResponsive, this), 10);
-                this.addAllLines(this.options.nbLines).then(resolve)["catch"](reject);
+
+                if (!this._isInitialized()) {
+                    this.addAllLines(this.options.nbLines).then(resolve)["catch"](reject);
+                    this._isInitialized(true);
+                }
+
             }, this));
 
         },
@@ -374,9 +402,8 @@
                 currentWidget.element.find(".dcpArray__copy").prop("disabled", true);
 
             });
-            this.element.on("click" + this.eventNamespace, ".dcpArray--collapsable", function toogleTable() {
-                currentWidget.toggleCollapse.apply(currentWidget);
-            });
+
+
         },
 
         toggleCollapse: function toggleCollapse(event, hideNow) {
@@ -427,7 +454,8 @@
 
         addAllLines: function dcpArrayaddAllLines(lineNumber) {
             var i, min, allPromiseLines = [];
-            this.element.find(".dcpArray__body").empty();
+            var $tbody=this.element.find(".dcpArray__body");
+            $tbody.empty();
 
             for (i = 0; i < lineNumber; i += 1) {
                 this.addLine(i);
@@ -441,6 +469,7 @@
                     }
                 }
             }
+
             return Promise.all(allPromiseLines).then(_.bind(function allLineAdded() {
                 this._trigger("linesGenerated");
             }, this));
