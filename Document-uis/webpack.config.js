@@ -108,6 +108,7 @@ const productionComponentConfig = merge([
         },
         output: {
             publicPath: 'components/dist/',
+            filename: '[name].js',
             path: path.resolve(PATHS.build, 'components/dist/')
         }
     },
@@ -149,17 +150,15 @@ const debugComponentConfig = merge([
 const devConfig = merge([
     {
         entry: {
-            'components/debug/a4-components': PATHS.components,
-            'uiAssets/anakeen/debug/main': PATHS.document,
+            'document': PATHS.document
         },
         output: {
+            publicPath: 'uiAssets/anakeen/debug/',
             filename: '[name].js',
-            chunkFilename: 'webpackChunk/debug/[name].js'
+            path: path.resolve(PATHS.build, 'uiAssets/anakeen/debug/')
         }
     },
     parts.setFreeVariable("process.env.NODE_ENV", "debug"),
-    parts.clean(path.resolve(PATHS.build, 'uiAssets/anakeen/debug/')),
-    parts.clean(path.resolve(PATHS.build, 'components/debug/')),
     parts.generateViewHtml('src/Apps/DOCUMENT/Layout/debug/'),
     parts.devServer(
         {
@@ -183,5 +182,7 @@ module.exports = env => {
             merge(commonConfig, debugComponentConfig)
         ];
     }
-    return merge(commonConfig, devConfig);
+    if (env === "documentDev") {
+        return merge(commonConfig, devConfig);
+    }
 };

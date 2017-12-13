@@ -44,7 +44,6 @@ exports.generateViewHtml = (currentPath) => ({
 exports.devServer = ({host, port} = {}) => ({
     devServer: {
         contentBase: path.resolve(__dirname, 'src/public/'),
-        stats: "errors-only",
         host, // Defaults to `localhost`
         port, // Defaults to 8080
         overlay: {
@@ -52,7 +51,7 @@ exports.devServer = ({host, port} = {}) => ({
             warnings: true,
         },
         proxy: {
-            "!/src/public/": {
+            "!/uiAssets/anakeen/debug/*.js": {
                 "target": "http://localhost"
             }
         }
