@@ -11,6 +11,7 @@ const parts = require("./webpack.parts");
 
 const PATHS = {
     "document": path.resolve(__dirname, 'src/Apps/DOCUMENT/IHM/main.js'),
+    "documentGrid": path.resolve(__dirname, 'src/Apps/DOCUMENT_GRID_HTML5/widgets/documentGrid.js'),
     "components": path.resolve(__dirname, 'src/vendor/Anakeen/Components/main.js'),
     "build": path.resolve(__dirname, 'src/public/'),
 };
@@ -26,6 +27,7 @@ const commonConfig = merge([{
             "dcpContextRoot": "",
             "dcpDocument": path.resolve(__dirname, "src/Apps/DOCUMENT/IHM/"),
             "datatables": "datatables.net",
+            "datatables-bootstrap": "datatables.net-bs4",
             "kendo-culture-fr": "kendo-ui-core/js/cultures/kendo.culture.fr-FR",
             "tooltip": "bootstrap/js/src/tooltip",
             "documentCkEditor": path.resolve(__dirname, "webpack/ckeditor.js")
@@ -37,7 +39,8 @@ const commonConfig = merge([{
                 test: /\.js$/,
                 exclude: [
                     path.resolve(__dirname, 'node_modules/underscore/'),
-                    path.resolve(__dirname, 'node_modules/ckeditor/')
+                    path.resolve(__dirname, 'node_modules/ckeditor/'),
+                    path.resolve(__dirname, 'node_modules/lodash/')
                 ],
                 use: {
                     loader: 'babel-loader',
@@ -80,7 +83,8 @@ const commonConfig = merge([{
     ]
     },
     parts.providePopper(),
-    parts.addExternals()
+    parts.addExternals(),
+    parts.progressBar()
     ]
 );
 
@@ -120,7 +124,9 @@ const productionComponentConfig = merge([
 const debugDocumentConfig = merge([
     {
         entry: {
-            'document': PATHS.document
+            'document': PATHS.document,
+            'documentGrid': PATHS.documentGrid,
+            'vendor': ['dcpDocument/widgets/widget', 'underscore']
         },
         output: {
             publicPath: 'uiAssets/anakeen/debug/',
@@ -128,6 +134,7 @@ const debugDocumentConfig = merge([
             path: path.resolve(PATHS.build, 'uiAssets/anakeen/debug/')
         }
     },
+    parts.extractCommonChunk(),
     parts.setFreeVariable("process.env.NODE_ENV", "debug"),
     parts.generateViewHtml('src/Apps/DOCUMENT/Layout/debug/'),
     parts.clean(path.resolve(PATHS.build, 'uiAssets/anakeen/debug/'))
