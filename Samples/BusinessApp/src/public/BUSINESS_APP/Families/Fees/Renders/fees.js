@@ -46,11 +46,6 @@ window.dcp.document.documentController("addEventListener",
             for (var i = 0; i < indexes.length; i++) {
                 var index = indexes[i];
                 if (allTaxedAmount[index].value && values.current[index].value) {
-                    console.log('setValue', {
-                        displayValue: computeTVA(values.current[index].value, allTaxedAmount[index].value)+ '%',
-                        value: computeTVA(values.current[index].value, allTaxedAmount[index].value)+ '%',
-                        index: index
-                    });
                     $(this).documentController('setValue',
                         'fee_exp_tva',
                         {
@@ -117,7 +112,6 @@ window.dcp.document.documentController(
                     previewWindow.data("kendoWindow").destroy();
                 }
                 var pdf = $(this).documentController('getValue', 'fee_pdffile');
-                console.log(pdf);
                 previewWindow.kendoWindow({
                     width: '30%',
                     height: '70%',
