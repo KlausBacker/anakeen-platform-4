@@ -1529,16 +1529,16 @@ define([
 
         /**
          * Get the attribute interface object
-         *
+         * Return null if attribute not found
          * @param attributeId
-         * @returns AttributeInterface
+         * @returns AttributeInterface|null
          */
         getAttribute: function documentControllerGetAttribute(attributeId)
         {
             this._checkInitialisedModel();
             var attributeModel = this._getAttributeModel(attributeId);
             if (!attributeModel) {
-                return undefined;
+                return null;
             }
             return new AttributeInterface(this._getAttributeModel(attributeId));
         },
