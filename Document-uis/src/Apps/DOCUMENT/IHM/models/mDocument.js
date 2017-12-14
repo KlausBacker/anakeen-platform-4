@@ -633,7 +633,7 @@ define([
                         message: errorMessage.join(', ' + "\n"),
                         errorCode: "attributeNeeded"
                     };
-                    if (options.error) {
+                    if (options && options.error) {
                         options.error(_.extend({"eventPrevented": true}, error));
                     }
                     return error;
