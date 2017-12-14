@@ -521,7 +521,7 @@ define([
                                         contentHtml: '',
                                         contentText: item.error,
                                         type: "error"
-                                    }
+                                    };
                                 }
                             item.title = item.title || '';
 

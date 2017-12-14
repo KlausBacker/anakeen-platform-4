@@ -44,7 +44,7 @@
 
     $.widget("dcp.document", {
 
-        _template: _.template('<iframe class="dcpDocumentWrapper" name="<%- options.iframeName %>" style="border : 0;" data-src="api/v1/documents/0.html#widgetValue<%- options.json_encode %>"></iframe>'),
+        _template: _.template('<iframe class="dcpDocumentWrapper" name="<%- options.iframeName %>" style="border : 0;" data-src="<%- base %>api/v1/documents/0.html#widgetValue<%- options.json_encode %>"></iframe>'),
 
         defaults: {
             "resizeMarginHeight": 3,
@@ -85,9 +85,11 @@
                 "constraintList"
             ));
             this.element.empty().append(this._template({options:  {
-                iframeName : this.options.iframeName,
-                json_encode: options_encode
-            }}));
+                    iframeName : this.options.iframeName,
+                    json_encode: options_encode
+                },
+                base:$("base").attr("href") || ''
+            }));
             //bind the internal controller to the documentWidget
             $iframe = this.element.find(".dcpDocumentWrapper");
             //Listen the load to the iframe (initial JS added and page loaded)
