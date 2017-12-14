@@ -8,6 +8,11 @@ class FeesEdit extends CommonEdit
     {
         $options = parent::getOptions($document);
         $options->commonOption('fee_exp_tva')->showEmptyContent("Non calculé");
+        $options->date('fee_period')->setKendoDateConfiguration(array(
+            "start" => "year",
+            "depth" => "year",
+            "format" => "MMMM yyyy"
+        ));
         $options->htmltext()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
         $options->htmltext()->setToolbar(\dcp\Ui\HtmltextRenderOptions::basicToolbar);
         $options->arrayAttribute('fee_t_all_exp')->setLabelPosition(\Dcp\ui\CommonRenderOptions::nonePosition);

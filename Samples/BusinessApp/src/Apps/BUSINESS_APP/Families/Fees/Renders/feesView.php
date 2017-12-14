@@ -10,31 +10,21 @@ class FeesView extends CommonView
         $options = parent::getOptions($document);
 
         $options->frame()->showEmptyContent("<div>Aucunes informations</div>");
+        $options->date('fee_period')->setKendoDateConfiguration(
+            array(
+                "format" => "MMMM yyyy"
+            )
+        );
         $options->arrayAttribute()->setLabelPosition(\Dcp\ui\CommonRenderOptions::nonePosition);
         $options->htmltext()->setToolbar(\dcp\Ui\HtmltextRenderOptions::basicToolbar);
         $options->frame('fee_fr_viz')->setLabelPosition(\Dcp\ui\CommonRenderOptions::nonePosition);
-        $options->frame('fee_fr_viz')->setTemplate(file_get_contents(__DIR__."/feesVisualization.mustache"));
-        /*$cert=null;
-        if (!$document->getRawValue(MyAttr::cli_cert)) {
-            $s=new \SearchDoc("", "BA_CERTIFICATION");
-            $s->addFilter("cert_client = '%s'", $document->initid) ;
-            $s->setObjectReturn(true);
-            $s->search();
-            if ($s->count() === 1) {
-                $cert=$s->getNextDoc();
-                $document->setValue(MyAttr::cli_cert, $cert->initid);
-                $document->modify();
-            }
-        } else {
-            $cert=DocManager::getDocument($document->getRawValue(MyAttr::cli_cert));
+        $imgFiles = $document->getMultipleRawValues('fee_exp_file');
+        if ($imgFiles) {
+            $options->frame('fee_fr_viz')->setTemplate(file_get_contents(__DIR__."/feesVisualization.mustache"),
+                array(
+                    "expensesLabel"=>$this->getExpensesDisplayTitles(count($imgFiles)),
+                ));
         }
-        if ($cert) {
-
-            $tplCert = sprintf('{{{attribute.htmlContent}}} <span class="client-state" style="background-color:%s">&nbsp;</span> <i>%s</i>', $cert->getStateColor(), _($cert->getStatelabel()));
-            $options->docid(MyAttr::cli_cert)->setTemplate($tplCert);
-        }*/
-
-
         return $options;
     }
 
@@ -44,7 +34,7 @@ class FeesView extends CommonView
         $item = new ItemMenu('fee_preview', 'Prévisualiser la note de frais');
         $item->setBeforeContent('<i class="fa fa-eye"></i>');
         $item->setUrl("#action/preview");
-        $menu->insertBefore('modify', $item);
+        $menu->insertAfter('modify', $item);
         return $menu;
     }
 
@@ -54,6 +44,7 @@ class FeesView extends CommonView
         $css = parent::getCssReferences($document);
         $ws=\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $css[__CLASS__] = "BUSINESS_APP/Families/Fees/Renders/fees.css"."?ws=$ws";
+        $css['feesMap'] = "https://unpkg.com/leaflet@1.2.0/dist/leaflet.css";
         return $css;
     }
 
@@ -62,6 +53,16 @@ class FeesView extends CommonView
         $js = parent::getJsReferences($document);
         $ws=\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js[__CLASS__] = "BUSINESS_APP/Families/Fees/Renders/fees.js"."?ws=$ws";
+        $js['feesMap'] = "https://unpkg.com/leaflet@1.2.0/dist/leaflet.js";
+        $js['feesLoadMap'] = "BUSINESS_APP/Families/Fees/Renders/feesMap.js"."?ws=$ws";
         return $js;
+    }
+
+    protected function getExpensesDisplayTitles($expensesLength) {
+        $titles = [];
+        for ($i = 1; $i <= $expensesLength; $i++) {
+            $titles[] = array("displayTitle" => "Dépense $i");
+        }
+        return $titles;
     }
 }

@@ -1,5 +1,67 @@
-<div id="fees-expenses-viztabstrip" class="fees-expenses-visualization">
+<div class="fees-expenses-visualization">
+    <div id="fees-expenses-viztabstrip" class="fees-expenses-viztabstrip">
+    <ul class="fees-expenses-list">
+    {{#expensesLabel}}
+        <li class="fees-expenses-listitem">{{displayTitle}}</li>
+    {{/expensesLabel}}
+    </ul>
     {{#attributes.fee_t_all_exp.rows}}
-        <div>Dépense {{index}} {{content.fee_exp_nature.attributeValue.displayValue}}</div>
+    <div data-rowid="{{index}}">
+        <div  class="fees-expenses-list-content">
+            <div class="fees-expenses-list-content-detail">
+                <div class="fees-attribute">
+                    <div class="fees-attribute-label">{{content.fee_exp_nature.label}} :</div>
+                    <div class="fees-attribute-value">{{content.fee_exp_nature.attributeValue.displayValue}}</div>
+                </div>
+                <div class="fees-attribute">
+                    <div class="fees-attribute-label">{{content.fee_exp_category.label}} :</div>
+                    <div class="fees-attribute-value">{{content.fee_exp_category.attributeValue.displayValue}}</div>
+                </div>
+                <div class="fees-attribute">
+                    <div class="fees-attribute-label">{{content.fee_exp_client.label}} :</div>
+                    <div class="fees-attribute-value">{{content.fee_exp_client.attributeValue.displayValue}}</div>
+                </div>
+                <div class="fees-attribute">
+                    <div class="fees-attribute-label">{{content.fee_exp_provider.label}} :</div>
+                    <div class="fees-attribute-value">{{content.fee_exp_provider.attributeValue.displayValue}}</div>
+                </div>
+                <div class="fees-attribute">
+                    <div class="fees-attribute-label">{{content.fee_exp_pretax.label}} :</div>
+                    <div class="fees-attribute-value">{{content.fee_exp_pretax.attributeValue.displayValue}} €</div>
+                </div>
+                <div class="fees-attribute">
+                    <div class="fees-attribute-label">{{content.fee_exp_tax.label}} :</div>
+                    <div class="fees-attribute-value">{{content.fee_exp_tax.attributeValue.displayValue}} €</div>
+                </div>
+                <div class="fees-attribute">
+                    <div class="fees-attribute-label">{{content.fee_exp_date.label}} :</div>
+                    <div class="fees-attribute-value">{{content.fee_exp_date.attributeValue.displayValue}}</div>
+                </div>
+            </div>
+            <div class="fees-expenses-list-content-img">
+                <img class="fees-expenses-img" src="api/v1/documents/{{properties.id}}/images/fee_exp_file/{{index}}/sizes/370x500"/>
+            </div>
+        </div>
+    </div>
     {{/attributes.fee_t_all_exp.rows}}
+    </div>
+    <div class="fees-expenses-geoloc">
+        <div id="feesMap" class="fees-expenses-geoloc-section"></div>
+        <div id="fees-expenses-exif" class="fees-expenses-geoloc-section fees-expenses-exif">
+            <h3 class="fees-expenses-geoloc-section-title">Géolocalisation</h3>
+            <div class="fees-expenses-geoloc-section-content">
+                <div class="fees-attribute">
+                    <div class="fees-attribute-label">Date du justificatif</div>
+                    <div id="fee-exp-file-date-value" class="fees-attribute-value"></div>
+                </div>
+                <div class="fees-attribute">
+                    <div class="fees-attribute-label">Adresse du justificatif</div>
+                    <div id="fee-exp-file-address-value" class="fees-attribute-value"></div>
+                </div>
+            </div>
+        </div>
+        <div class="fees-expenses-geoloc-section fees-expenses-timestamp">
+            <h3 class="fees-expenses-geoloc-section-title">Timestamp</h3>
+        </div>
+    </div>
 </div>
