@@ -11,7 +11,10 @@ class Fees extends \Dcp\Family\Document
     public function getCustomTitle()
     {
         $period = $this->getAttributeValue(FeesAttr::fee_period);
-        return sprintf("Note de frais %s", strftime("%B %Y", $period->getTimestamp()));
+        if ($period) {
+            return strftime("%B %Y", $period->getTimestamp());
+        }
+        return parent::getCustomTitle();
     }
 
     public function postStore()
@@ -19,8 +22,9 @@ class Fees extends \Dcp\Family\Document
         require_once("FDL/Lib.Vault.php");
         $outfile = getTmpDir().'/fee-preview.pdf';
         $infile = $this->viewDoc($layout = "THIS:FEE_PREVIEW_TEMPLATE:B","ooo");
-        convertFile($infile, "pdf", $outfile);
-        $this->setFile("fee_pdffile", $outfile);
+        $info = [];
+        $this->setFile(FeesAttr::fee_odtfile, $infile);
+        $this->setValue(FeesAttr::fee_pdffile, $this->convertVaultFile($this->getRawValue(FeesAttr::fee_odtfile), 'pdf'));
         return "";
     }
 
@@ -32,35 +36,103 @@ class Fees extends \Dcp\Family\Document
      */
     public function fee_preview_template($target, $ulink, $abstract) {
         $this->viewdefaultcard($target, $ulink, $abstract);
-        $total = 0.0;
+        $total = $this->getRawValue(FeesAttr::fee_total);
         $advance = $this->getRawValue(FeesAttr::fee_advance);
-        $allTaxedValues = $this->getAttributeValue(FeesAttr::fee_exp_tax);
-        foreach ($allTaxedValues as $val) {
-            $total += $val;
-        }
-        $this->lay->eSet('FEE_TOTAL', $total);
         $this->lay->eSet('FEE_REPAY', $total - $advance);
     }
 
+    /**
+     * Return the Degree Decimal position (latitutde or longitude) of the image attribute
+     * @param $img the image attribute
+     * @param string $position "Latitude" or "Longitude" position
+     * @return float|null the degree decimal value
+     */
     public function getImagePosition($img, $position) {
         $path = $this->vault_filename_fromvalue($img, true);
-        $exif = exif_read_data($path, 0, true);
-        $positionDMS = $exif['GPS']["GPS$position"];
-        return $this->rationalToFloat($positionDMS[0]) + $this->rationalToFloat($positionDMS[1])/60 + $this->rationalToFloat($positionDMS[2])/3600;
+        $exif = exif_read_data($path, 'GPS');
+        $positionDMS = $exif["GPS$position"];
+        $positionDMSRef = $exif["GPS$position"."Ref"];
+        if (empty($positionDMSRef) || empty($positionDMS)) {
+            return null;
+        }
+        $fullPosition = Fees::stringifyDMSPosition($positionDMS, $positionDMSRef);
+        return Fees::convertDec($fullPosition);
     }
 
+    /**
+     * Return the date of the image
+     * @param $img the image attribute
+     * @return null|string the date of the image
+     */
     public function getImageDate($img) {
         $path = $this->vault_filename_fromvalue($img, true);
-        $exif = exif_read_data($path, 0, true);
+        $exif = exif_read_data($path, "EXIF", true);
+        if (!$exif || empty($exif['EXIF']['DateTimeOriginal'])) {
+            return null;
+        }
         $dt = new \DateTime($exif['EXIF']["DateTimeOriginal"]);
-        return $dt->format(\DateTime::ISO8601);
+        if ($dt) {
+            return $dt->format(\DateTime::ISO8601);
+        }
+        return null;
     }
 
-    protected function rationalToFloat($fraction) {
-        $values = explode('/', $fraction);
-        if ($values) {
-            return doubleval($values[0])/doubleval($values[1]);
+    /**
+     * Return the sum of the all tax amount
+     * @param float[] $taxedAmounts the all taxed amounts attribute
+     * @return float the computed total
+     */
+    public function computeTotal($taxedAmounts) {
+        if (!empty($taxedAmounts)) {
+            $sumArray = function ($carry, $item) {
+                $carry += $item;
+                return $carry;
+            };
+            return array_reduce($taxedAmounts, $sumArray, 0);
         }
         return 0;
+    }
+
+    /**
+     * Stringify the GPS position from the EXIF PHP format to the DMS position format
+     * @param string[] $arrayPos rational format (x/y) values of DMS position
+     * @param string $posRef "N|E|S|O" position reference
+     * @return string the DMS position
+     */
+    static function stringifyDMSPosition($arrayPos, $posRef) {
+        if (!empty($arrayPos) && count($arrayPos) === 3) {
+            return Fees::rationalToFloat($arrayPos[0]) . "°"
+                . Fees::rationalToFloat($arrayPos[1]) . "'"
+                . Fees::rationalToFloat($arrayPos[2]) . "\"" . $posRef;
+        }
+        return "";
+    }
+
+    /**
+     * Convert a string representation of a rational value "x/y" to a float value
+     * @param string $fraction rational value
+     * @return float
+     */
+    static function rationalToFloat($fraction) {
+        $values = explode('/', $fraction);
+        if ($values && count($values) === 2) {
+            return doubleval($values[0])/doubleval($values[1]);
+        }
+        return 0.0;
+    }
+
+    /**
+     * Convert a DMS GPS position to a DD GPS Position
+     * @param string $var DMS GPS Position
+     * @return float DD GPS Position
+     */
+    static function convertDec($var) { // Sexagésimal vers décimal
+
+        $var = preg_replace('#([^.a-z0-9]+)#i', '-', $var);
+        $tab = explode('-', $var);
+        $varD = $tab[0] + ($tab[1] / 60) + ($tab[2] / 3600);
+        $pattern = array('n', 's', 'e', 'o', 'N', 'S', 'E', 'O');
+        $replace = array('', '-', '', '-', '', '-', '', '-');
+        return doubleval(str_replace($pattern, $replace, $tab[3]) . $varD);
     }
 }
