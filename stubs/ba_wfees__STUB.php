@@ -1,0 +1,76 @@
+<?php
+namespace Dcp\Family {
+	/** Note de frais  */
+	class Ba_fees extends \Sample\BusinessApp\Fees { const familyName="BA_FEES";}
+	/** Cycle Notes de frais  */
+	class Ba_wfees extends \Sample\BusinessApp\WFees { const familyName="BA_WFEES";}
+}
+
+namespace Dcp\AttributeIdentifiers {
+	/** Note de frais  */
+	class Ba_fees {
+		/** [frame] Preview */
+		const fee_fr_preview='fee_fr_preview';
+		/** [file] Preview template */
+		const fee_preview_template='fee_preview_template';
+		/** [frame] Informations */
+		const fee_fr_info='fee_fr_info';
+		/** [docid("BA_RH_DIR")] Personne */
+		const fee_person='fee_person';
+		/** [date] Période */
+		const fee_period='fee_period';
+		/** [money] Avance */
+		const fee_advance='fee_advance';
+		/** [money] Total des dépenses */
+		const fee_total='fee_total';
+		/** [tab] Dépenses */
+		const fee_tab_all_exp='fee_tab_all_exp';
+		/** [frame] Tableau des dépenses */
+		const fee_fr_all_exp='fee_fr_all_exp';
+		/** [array] Tableau des dépenses */
+		const fee_t_all_exp='fee_t_all_exp';
+		/** [date] Date */
+		const fee_exp_date='fee_exp_date';
+		/** [docid("BA_CLIENT_CONTRACT")] Client */
+		const fee_exp_client='fee_exp_client';
+		/** [enum] Catégorie */
+		const fee_exp_category='fee_exp_category';
+		/** [docid("BA_PROVIDER_CONTRACT")] Fournisseur */
+		const fee_exp_provider='fee_exp_provider';
+		/** [text] Nature */
+		const fee_exp_nature='fee_exp_nature';
+		/** [money] Montant HT */
+		const fee_exp_pretax='fee_exp_pretax';
+		/** [text] Taux TVA */
+		const fee_exp_tva='fee_exp_tva';
+		/** [money] Montant TTC */
+		const fee_exp_tax='fee_exp_tax';
+		/** [image] Fichier Justificatif */
+		const fee_exp_file='fee_exp_file';
+		/** [date] Date photo */
+		const fee_exp_file_date='fee_exp_file_date';
+		/** [double] Latitude */
+		const fee_exp_file_lat='fee_exp_file_lat';
+		/** [double] Longitude */
+		const fee_exp_file_lng='fee_exp_file_lng';
+		/** [tab] Visualisation géographique des dépenses */
+		const fee_tab_viz='fee_tab_viz';
+		/** [frame] Visualisation géographique des dépenses */
+		const fee_fr_viz='fee_fr_viz';
+		/** [text]  */
+		const fee_viz_title='fee_viz_title';
+		/** [frame] Note de frais */
+		const fee_fr_pdffile='fee_fr_pdffile';
+		/** [file] Fichier ODT */
+		const fee_odtfile='fee_odtfile';
+		/** [file] Fichier PDF */
+		const fee_pdffile='fee_pdffile';
+	}
+	/** Cycle Notes de frais  */
+	class Ba_wfees extends Wdoc {
+		/** [frame] Ask */
+		const feew_f_ask='feew_f_ask';
+		/** [enum] Signer électroniquement la note de frais */
+		const feew_sign='feew_sign';
+	}
+}

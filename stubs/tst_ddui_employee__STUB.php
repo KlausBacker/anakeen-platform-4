@@ -15,14 +15,10 @@ namespace Dcp\AttributeIdentifiers {
 		const tst_civilite='tst_civilite';
 		/** [text] Nom */
 		const tst_nom='tst_nom';
-		/** [text] Nom */
-		const tst_nom_translit='tst_nom_translit';
 		/** [text] Nom de naissance */
 		const tst_nom_naissance='tst_nom_naissance';
 		/** [text] Prénom */
 		const tst_prenom='tst_prenom';
-		/** [text] Prénom */
-		const tst_prenom_translit='tst_prenom_translit';
 		/** [text] Courriel de correspondance principal */
 		const tst_mail_principal='tst_mail_principal';
 		/** [text] Courriel de correspondance secondaire */
@@ -55,12 +51,8 @@ namespace Dcp\AttributeIdentifiers {
 		const tst_emp_corps='tst_emp_corps';
 		/** [text] Titre */
 		const tst_emp_titre='tst_emp_titre';
-		/** [docid] Établissement de rattachement référencé */
+		/** [text] Établissement de rattachement référencé */
 		const tst_emp_idetab='tst_emp_idetab';
-		/** [text] Établissement de rattachement si non référencé */
-		const tst_emp_etab='tst_emp_etab';
-		/** [text] Établissement de rattachement */
-		const tst_emp_etab_mixed='tst_emp_etab_mixed';
 		/** [int] Depuis (année) */
 		const tst_exp_since='tst_exp_since';
 		/** [text] Laboratoire de rattachement */
@@ -101,28 +93,6 @@ namespace Dcp\AttributeIdentifiers {
 		const tst_lang_ecrit='tst_lang_ecrit';
 		/** [enum] Parlé */
 		const tst_lang_parle='tst_lang_parle';
-		/** [frame] Domaines de Compétences */
-		const tst_f_domain='tst_f_domain';
-		/** [array] Disciplines ERC */
-		const tst_a_erc='tst_a_erc';
-		/** [thesaurus] Disciplines */
-		const tst_cd_erc='tst_cd_erc';
-		/** [double] Pourcentage */
-		const tst_cd_erc_pc='tst_cd_erc_pc';
-		/** [enum] Sections CNU */
-		const tst_cd_cnu='tst_cd_cnu';
-		/** [enum] Sections CNRS */
-		const tst_cd_cnrs='tst_cd_cnrs';
-		/** [enum] CSS Inserm */
-		const tst_cd_inserm='tst_cd_inserm';
-		/** [enum] CSS Inra */
-		const tst_cd_inra='tst_cd_inra';
-		/** [enum] CSS IRD */
-		const tst_cd_ird='tst_cd_ird';
-		/** [array] Mots-clés */
-		const tst_t_key_word='tst_t_key_word';
-		/** [text] Mot-clé */
-		const tst_key_word='tst_key_word';
 		/** [tab] Parcours professionnel */
 		const tst_t_parcours_professionnel='tst_t_parcours_professionnel';
 		/** [frame] Parcours professionnel */
@@ -255,19 +225,5 @@ namespace Dcp\AttributeIdentifiers {
 		const tst_pj_label='tst_pj_label';
 		/** [file] Fichier */
 		const tst_pj_file='tst_pj_file';
-		/** [tab] Acteurs & Historique */
-		const tst_t_act_histo='tst_t_act_histo';
-		/** [frame] Acteurs */
-		const tst_f_act='tst_f_act';
-		/** [account] Créateur */
-		const tst_crea='tst_crea';
-		/** [account] Valideur */
-		const tst_valid='tst_valid';
-		/** [account] Approbateur */
-		const tst_approb='tst_approb';
-		/** [account] Personne ayant effectué le retrait */
-		const tst_ret='tst_ret';
-		/** [account] Dernier solliciteur */
-		const tst_soli='tst_soli';
 	}
 }
