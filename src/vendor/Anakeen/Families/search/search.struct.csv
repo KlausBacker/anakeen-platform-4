@@ -2,7 +2,7 @@
 ;;;;;;;;;;;;;;;
 BEGIN;BASE;Recherche;5;DocSearch;SEARCH;;;;;;;;;;
 TYPE;C;;;;;;;;;;;;;;
-ICON;search.gif;;;;;;;;;;;;;;
+ICON;se-search.png;;;;;;;;;;;;;;
 //;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
 ATTR;SE_AUTHOR;FR_BASIC;Auteur;N;N;account;29;R;;;;;;;
 ATTR;GUI_COLOR;FR_BASIC;Couleur intercalaire;N;N;color;30;O;;;;;;;

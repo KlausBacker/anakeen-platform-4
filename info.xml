@@ -280,6 +280,14 @@
                 command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/mail/mail.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Mail form family</label>
         </process>
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/mailtemplate/mailtemplate.struct.csv  --csv-enclosure='&quot;'">
+            <label>Add Mail Template form family</label>
+        </process>
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/sentmessage/sentmessage.struct.csv  --csv-enclosure='&quot;'">
+            <label>Add Sent message family</label>
+        </process>
 
         <process
                 command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/exec/exec.struct.csv  --csv-enclosure='&quot;'">
@@ -631,6 +639,15 @@ This can be solved by:<br/>
         <process
                 command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/mail/mail.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Mail form family</label>
+        </process>
+
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/mailtemplate/mailtemplate.struct.csv  --csv-enclosure='&quot;'">
+            <label>Add Mail Template form family</label>
+        </process>
+        <process
+                command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/sentmessage/sentmessage.struct.csv  --csv-enclosure='&quot;'">
+            <label>Add Sent message family</label>
         </process>
 
         <process

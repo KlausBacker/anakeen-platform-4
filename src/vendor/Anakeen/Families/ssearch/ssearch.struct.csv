@@ -1,7 +1,7 @@
 // recherche détaillée;fromid;;id;class;name;;;;;;;;;;
 ;;;;;;;;;;;;;;;
 BEGIN;SEARCH;Recherche spécialisée;38;;SSEARCH;;;;;;;;;;
-ICON;searchs.gif;;;;;;;;;;;;;;
+ICON;se-ssearch.png;;;;;;;;;;;;;;
 USEFOR;S;;;;;;;;;;;;;;
 CLASS;Dcp\Core\SpecialSearch;;;;;;;;;;;;;;
 METHOD;;;;;;;;;;;;;;;

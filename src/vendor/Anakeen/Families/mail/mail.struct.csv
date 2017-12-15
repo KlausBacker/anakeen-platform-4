@@ -4,7 +4,7 @@ TYPE;C;;;;;;;;;;;;;;
 METHOD;;;;;;;;;;;;;;;
 CLASS;Dcp\Core\MailEdit;;;;;;;;;;;;;;
 USEFOR;S;;;;;;;;;;;;;;
-ICON;dmail.gif;;;;;;;;;;;;;;
+ICON;se-mail.png;;;;;;;;;;;;;;
 //;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
 ATTR;MAIL_FR;;Adresses;N;N;frame;10;W;;;;;;;
 ATTR;MAIL_FROM;MAIL_FR;De;N;Y;text;20;R;;;;;;;
@@ -19,71 +19,3 @@ ATTR;MAIL_FR_CM;;Commentaire;N;N;frame;100;W;;;;;;;
 ATTR;MAIL_CM;MAIL_FR_CM;Commentaire;N;Y;longtext;110;W;;;;;;;
 ATTR;MAIL_FORMAT;MAIL_FR_CM;Format;N;Y;enum;120;W;;;;html|HTML,pdf|PDF,htmlpdf|HTML & PDF;;;system=yes
 END;0;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;
-BEGIN;0;Modèle de mail;41;;MAILTEMPLATE;;;;;;;;;;
-TYPE;C;;;;;;;;;;;;;;
-METHOD;;;;;;;;;;;;;;;
-CLASS;Dcp\Core\MailTemplate;;;;;;;;;;;;;;
-RESET;attributes;;;;;;;;;;;;;;
-USEFOR;S;;;;;;;;;;;;;;
-ICON;tmail.png;;;;;;;;;;;;;;
-//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
-ATTR;TMAIL_FR;;Entête;N;N;frame;10;W;;;;;;;
-ATTR;TMAIL_TITLE;TMAIL_FR;Titre;Y;N;text;20;O;Y;;;;;;
-ATTR;TMAIL_FAMILY;TMAIL_FR;Famille;N;N;"docid(""x"")";30;W;;;fdl.php;lfamilies(D, CT):TMAIL_FAMILY,CT;;;
-ATTR;TMAIL_WORKFLOW;TMAIL_FR;Famille cycle;N;N;"docid(""x"")";40;W;;;fdl.php;lfamilies(D, CT,20):TMAIL_WORKFLOW,CT;;;elabel=famille cycle pour récupérer le commentaire ou les paramètres de transition
-ATTR;TMAIL_T_FROM;TMAIL_FR;Émetteur;N;N;array;50;U;;;;;;;
-ATTR;TMAIL_FROMTYPE;TMAIL_T_FROM;type;N;N;enum;60;W;;;;F|Adresse fixe,A|Attribut texte,D|Attribut relation,E|Paramètre de famille texte,DE|Paramètre de famille relation,P|Paramètres globaux,WA|Attribut cycle,WD|Relation cycle,WE|Paramètre cycle;;;system=yes|bmenu=no
-ATTR;TMAIL_FROM;TMAIL_T_FROM;De;N;N;text;70;W;;;fdl.php;tplmail(D,TMAIL_FROMTYPE,TMAIL_FAMILY,TMAIL_WORKFLOW,TMAIL_FROM):TMAIL_FROM;;;
-ATTR;TMAIL_DEST;TMAIL_FR;Destinataires;N;N;array;80;W;;;;;;;
-ATTR;TMAIL_COPYMODE;TMAIL_DEST;-;N;N;enum;90;W;;;;to|À,cc|Cc,bcc|Bcc;;;system=yes|bmenu=no
-ATTR;TMAIL_DESTTYPE;TMAIL_DEST;Type;N;N;enum;100;W;;;;F|Adresse fixe,A|Attribut texte,D|Attribut relation,E|Paramètre de famille texte,DE|Paramètre de famille relation,P|Paramètres globaux,WA|Attribut cycle,WD|Relation cycle,WE|Paramètre cycle,RD|Document destinataire;;;system=yes|bmenu=no
-ATTR;TMAIL_RECIP;TMAIL_DEST;Destinataire;N;N;text;110;W;;;fdl.php;tplmail(D,TMAIL_DESTTYPE,TMAIL_FAMILY,TMAIL_WORKFLOW,TMAIL_RECIP):TMAIL_RECIP;;;
-ATTR;TMAIL_SUBJECT;TMAIL_FR;Sujet;N;Y;text;120;W;;;;;;;
-ATTR;TMAIL_FR_CONTENT;;Contenu;N;N;frame;130;W;;;;;;;
-ATTR;TMAIL_SAVECOPY;TMAIL_FR_CONTENT;Enregistrer une copie;N;N;enum;140;W;;;;no|Pas de copie,yes|Copie sur le serveur;;;eformat=bool|system=yes|bmenu=no|elabel=enregistrer une copie du message sur le serveur lors de l'envoi
-ATTR;TMAIL_ULINK;TMAIL_FR_CONTENT;Avec liens;N;N;enum;150;W;;;;no|Sans lien,yes|Avec liens;;;eformat=bool|system=yes|bmenu=no
-ATTR;TMAIL_BODY;TMAIL_FR_CONTENT;Corps;N;N;htmltext;160;W;;;;;;;"jsonconf={""addPlugins"": [""docattr""]}|allowedcontent=all"
-ATTR;TMAIL_T_ATTACH;TMAIL_FR_CONTENT;Attachements;N;N;array;170;W;;;;;;;
-ATTR;TMAIL_ATTACH;TMAIL_T_ATTACH;Attachement;N;N;text;180;W;;;fdl.php;tplmail(D,'G,TMAIL_FAMILY,TMAIL_WORKFLOW,TMAIL_ATTACH):TMAIL_ATTACH;;;
-ATTR;TMAIL_FORMAT;TMAIL_FR_CONTENT;Format;N;N;enum;190;H;;;;html|HTML,pdf|PDF,htmlpdf|HTML & PDF;;;system=yes|bmenu=no
-DEFAULT;TMAIL_ULINK;yes;;;;;;;;;;;;;
-END;0;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;
-BEGIN;;Message envoyé;;;SENTMESSAGE;;;;;;;;;;
-TYPE;C;;;;;;;;;;;;;;
-CLASS;Dcp\Core\SentEmail;;;;;;;;;;;;;;
-ICON;sentmessage.png;;;;;;;;;;;;;;
-SCHAR;S;;;;;;;;;;;;;;
-CVID;0;;;;;;;;;;;;;;
-METHOD;;;;;;;;;;;;;;;
-USEFOR;S;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;
-//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
-ATTR;EMSG_FR_IDENT;;Identification;N;N;frame;100;R;;;;;;;
-ATTR;EMSG_REFID;EMSG_FR_IDENT;Document référence;;;"docid(""x"")";110;R;;;;;;;
-ATTR;EMSG_FROM;EMSG_FR_IDENT;De;;;text;120;S;;;;;;;
-ATTR;EMSG_T_RECIPIENT;EMSG_FR_IDENT;Destinataires;;;array;500;U;;;;;;;
-ATTR;EMSG_SENDTYPE;EMSG_T_RECIPIENT;Type;;;enum;510;S;;;;to|Pour,cc|Copie,bcc|Copie cachée;;;
-ATTR;EMSG_RECIPIENT;EMSG_T_RECIPIENT;Destinataire;;;text;520;S;;;;;;;
-ATTR;EMSG_SUBJECT;EMSG_FR_IDENT;Sujet;Y;;text;530;S;;;;;;;
-ATTR;EMSG_DATE;EMSG_FR_IDENT;Date;;;"timestamp(""%d %B %Y %H:%S"")";540;S;;;;;;;iwidth=64px
-ATTR;EMSG_SIZE;EMSG_FR_IDENT;Taille;;;int;550;R;;;;;;;
-ATTR;EMSG_FR_BODIES;;Corps de messages;;;frame;560;R;;;;;;;
-ATTR;EMSG_TEXTBODY;EMSG_FR_BODIES;Texte;;;longtext;570;R;;;;;;;vlabel=up
-ATTR;EMSG_HTMLBODY;EMSG_FR_BODIES;Texte formaté;;;ifile;580;R;;;;;;;vlabel=up
-ATTR;EMSG_T_ATTACH;EMSG_FR_BODIES;Attachements;;;array;590;R;;;;;;;
-ATTR;EMSG_ATTACH;EMSG_T_ATTACH;Fichier;;;file;600;R;;;;;;;vlabel=none
-;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;
-PARAM;EMSG_FR_PARAMETERS;;Paramètres;;;frame;10;W;;;;;;;
-PARAM;EMSG_EDITCONTROL;EMSG_FR_PARAMETERS;Force la lecture seule;N;N;enum;20;W;;;;lockedit|Droit édit verrouillé,freeedit|Droit édit libre;;;system=yes|bmenu=no
-;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;
-END;;;;;;;;;;;;;;;

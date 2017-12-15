@@ -3,7 +3,7 @@ BEGIN;1;Masque de saisie;21;;MASK;;;;;;;
 CLASS;Dcp\Core\Mask;;;;;;;;;;;
 USEFOR;S;;;;;;;;;;;
 SCHAR;S;;;;;;;;;;;
-ICON;masque.gif;;;;;;;;;;;
+ICON;se-mask.png;;;;;;;;;;;
 METHOD;;;;;;;;;;;;
 //;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc
 ATTR;MSK_FR_REST;;Famille;N;N;frame;0;W;;;;

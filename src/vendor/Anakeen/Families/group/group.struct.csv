@@ -2,7 +2,7 @@
 BEGIN;DIR;Groupe de personnes;129;;GROUP;;;;;;;;;;
 TYPE;C;;;;;;;;;;;;;;
 SCHAR;S;;;;;;;;;;;;;;
-ICON;group.gif;;;;;;;;;;;;;;
+ICON;se-group.png;;;;;;;;;;;;;;
 CLASS;Dcp\Core\AccountCollection;;;;;;;;;;;;;;
 METHOD;;;;;;;;;;;;;;;
 USEFOR;S;;;;;;;;;;;;;;
