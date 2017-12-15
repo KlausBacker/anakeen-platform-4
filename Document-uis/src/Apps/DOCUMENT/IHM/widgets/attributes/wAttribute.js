@@ -742,7 +742,7 @@
 
                 this.element.find('.dcpAttribute__content__link[title]').tooltip({
                     placement: "top",
-                    container: this.element.parent(),
+                    container: ".dcpDocument",
                     html: true,
                     trigger: "hover"
                 }).each(function wAttributeInitLinkTooltip()
