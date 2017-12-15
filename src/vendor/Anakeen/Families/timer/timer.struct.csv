@@ -1,6 +1,6 @@
 BEGIN;0;Minuteur;42;;TIMER;;;;;;;;;;
 CLASS;Dcp\Core\Timer;;;;;;;;;;;;;;
-ICON;timer.png;;;;;;;;;;;;;;
+ICON;se-timer.png;;;;;;;;;;;;;;
 METHOD;;;;;;;;;;;;;;;
 SCHAR;S;;;;;;;;;;;;;;
 USEFOR;S;;;;;;;;;;;;;;

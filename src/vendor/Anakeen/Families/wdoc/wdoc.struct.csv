@@ -1,7 +1,7 @@
 // famille cycle;;;id;class;name;;;;;;;;;;
 BEGIN;1;Cycle de vie;20;WDoc;WDOC;;;;;;;;;;
 TYPE;C;;;;;;;;;;;;;;
-ICON;workflow.png;;;;;;;;;;;;;;
+ICON;se-wdoc.png;;;;;;;;;;;;;;
 SCHAR;S;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;
 USEFOR;SW;;;;;;;;;;;;;;
