@@ -339,8 +339,19 @@ define([
             });
             this._model.listenTo(this._model, "beforeSave", function documentController_triggerBeforeSave(event, customClientData)
             {
+                var _model=this;
+                var requestOptions={
+                    getRequestData: function getRequestData() {
+                        return _model.toJSON();
+                    },
+                    setRequestData: function documentControllerSetRequestData(data) {
+                       _model._customRequestData=data;
+                    }
+                };
                 event.prevent = !currentWidget._triggerControllerEvent("beforeSave",
-                    currentWidget.getProperties(), currentWidget._model.getModelProperties(), customClientData);
+                    currentWidget.getProperties(),
+                    requestOptions,
+                    customClientData);
             });
             this._model.listenTo(this._model, "afterSave", function documentController_triggerAfterSave(oldProperties)
             {
@@ -1398,7 +1409,6 @@ define([
                 }
             }
             return this._registerOutputPromise(documentPromise, options);
-
         },
 
         /**

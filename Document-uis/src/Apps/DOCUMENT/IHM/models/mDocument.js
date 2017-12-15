@@ -110,6 +110,7 @@ define([
         sync: function mDocumentSync(method, model, options)
         {
             this.set("currentHttpMethod", method); // record for url method
+            options.attrs=this._customRequestData;
             return Backbone.Model.prototype.sync.apply(this, arguments);
         },
         /**
@@ -728,6 +729,7 @@ define([
                 originalValues: view.documentData.document.attributes
             };
             this._customClientData = {};
+            this._customRequestData = null;
             if (response.data.properties.creationView === true) {
                 values.creationFamid = view.documentData.document.properties.family.name;
             } else {

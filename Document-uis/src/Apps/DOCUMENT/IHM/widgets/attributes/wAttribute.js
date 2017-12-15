@@ -434,8 +434,10 @@
          */
         _completeRevisionData: function wAttribute_completeRevisionData(data)
         {
-            data.isRevision = data.revision !== -1 && data.revision !== null && !_.isUndefined(data.revision);
-            if (data.isRevision) {
+            var isRevision=data.revision !== -1 && data.revision !== null && !_.isUndefined(data.revision);
+
+            if (isRevision) {
+                data.isRevision=isRevision;
                 if (data.revision.state) {
                     data.revisionTarget = "state:" + data.revision.state;
                 } else {
@@ -740,7 +742,7 @@
 
                 this.element.find('.dcpAttribute__content__link[title]').tooltip({
                     placement: "top",
-                    container: this.element.parent(),
+                    container: ".dcpDocument",
                     html: true,
                     trigger: "hover"
                 }).each(function wAttributeInitLinkTooltip()
