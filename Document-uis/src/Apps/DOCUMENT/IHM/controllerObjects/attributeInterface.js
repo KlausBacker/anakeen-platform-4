@@ -48,6 +48,16 @@ define([
     };
 
     /**
+     * Get the attribute label
+     *
+     * @returns string
+     */
+    AttributPrototype.prototype.getLabel = function AttributeInterfaceGetLabel()
+    {
+        return this._attributeModel.get("label");
+    };
+
+    /**
      * Get the options of the current attribute
      * @returns {*}
      */
@@ -66,6 +76,17 @@ define([
     AttributPrototype.prototype.getOption = function AttributeInterfaceGetOption(name)
     {
         return this._attributeModel.getOption(name);
+    };
+
+
+    /**
+     * Return true if attribute value is changed since last record
+     *
+     * @returns bool
+     */
+    AttributPrototype.prototype.isModified = function AttributeInterfaceisModified()
+    {
+        return this._attributeModel.hasValueChanged();
     };
 
     /**
