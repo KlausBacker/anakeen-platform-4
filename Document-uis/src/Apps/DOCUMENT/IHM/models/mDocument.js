@@ -529,6 +529,7 @@ define([
                                 currentModel.trigger("showMessage", {
                                     title: message.contentText + " " + (message.code ? message.code : ""),
                                     type: message.type,
+                                    message: message.contentText,
                                     htmlMessage: message.contentHtml,
                                     errorCode: message.code
                                 });
@@ -633,7 +634,7 @@ define([
                         message: errorMessage.join(', ' + "\n"),
                         errorCode: "attributeNeeded"
                     };
-                    if (options.error) {
+                    if (options && options.error) {
                         options.error(_.extend({"eventPrevented": true}, error));
                     }
                     return error;
@@ -1186,7 +1187,21 @@ define([
                         if (needToUnlock.initid === values.initid) {
                             // If same document "get" must be perform after unlock
                             lockModel = new DocumentLock({"initid": needToUnlock.initid, "type": "temporary"});
-                            lockModel.destroy(lockCallback);
+                            lockModel.destroy({
+                                success: function () {
+                                    lockCallback.success();
+                                },
+                                error: function (arg) {
+
+                                    currentModel.trigger("showMessage", {
+                                        title: i18n.___("Document has been locked by someone else.", "ddui"),
+                                        type: "info"
+                                    });
+                                    lockCallback.success();
+                                }
+                            });
+
+                            lockCallback.success();
                         } else {
                             lockModel = new DocumentLock({"initid": needToUnlock.initid, "type": "temporary"});
                             lockModel.destroy();

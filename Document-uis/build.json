@@ -15,7 +15,8 @@
   ],
   "po": {
     "php" : ["src"],
-    "layout": ["src/Apps/DOCUMENT/Layout"]
+    "layout": ["src/Apps/DOCUMENT/Layout"],
+    "js": ["src/Apps/DOCUMENT"]
   },
   "csvParam": {
     "enclosure": "\"",
