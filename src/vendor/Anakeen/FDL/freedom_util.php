@@ -304,9 +304,9 @@ function getDocTitle($id, $latest = true)
         } else {
             $sql
                 = sprintf(
-                    "select title, doctype, locked, initid, name from docread where initid=(select initid from docread where id=%d) order by id desc limit 1",
+                "select title, doctype, locked, initid, name from docread where initid=(select initid from docread where id=%d) order by id desc limit 1",
                 $id
-                );
+            );
         }
         DbManager::query($sql, $t, false, true);
 
@@ -350,10 +350,10 @@ function getDocProperties(
         } else {
             $sql
                 = sprintf(
-                    "select %s, doctype, locked, initid from docread where initid=(select initid from docread where id=%d) order by id desc limit 1",
+                "select %s, doctype, locked, initid from docread where initid=(select initid from docread where id=%d) order by id desc limit 1",
                 $sProps,
-                    $id
-                );
+                $id
+            );
         }
         DbManager::query($sql, $t, false, true);
 
@@ -756,7 +756,7 @@ function getNameFromId($dbaccess, $id)
  * @param string $dbaccess database specification
  * @param int    $userid   what user identifier
  *
- * @return Doc the user document
+ * @return Doc|false the user document
  */
 function getDocFromUserId($dbaccess, $userid)
 {
@@ -821,9 +821,8 @@ function getFamTitle(&$tdoc)
  */
 function isFixedDoc($dbaccess, $id)
 {
-    $tdoc = getTDoc($dbaccess, $id, array(), array(
-        "locked"
-    ));
+    $tdoc = DocManager::getRawData($id, ["locked"], false, false);
+
     if (!$tdoc) {
         return null;
     }
@@ -914,7 +913,7 @@ function ComputeVisibility($vis, $fvis, $ffvis = '')
  * @param string $initid     initial identifier of the  document
  * @param array  $sqlfilters add sql supply condition
  *
- * @return array values array if found. False if initid not avalaible
+ * @return array|false values array if found. False if initid not avalaible
  */
 function getLatestTDoc($dbaccess, $initid, $sqlfilters = array(), $fromid = false)
 {
@@ -947,25 +946,23 @@ function getLatestTDoc($dbaccess, $initid, $sqlfilters = array(), $fromid = fals
     $userid = $action->user->id;
     if ($userid) {
         $userMember = DocPerm::getMemberOfVector();
-        $sql
-            = sprintf(
-                "select *,getaperm('%s',profid) as uperm  from only %s where initid=%d and doctype != 'T' and locked != -1 %s",
+        $sql = sprintf(
+            "select *,getaperm('%s',profid) as uperm  from only %s where initid=%d and doctype != 'T' and locked != -1 %s",
             $userMember,
+            $table,
+            $initid,
+            $sqlcond
+        );
+        DbManager::query($sql, $result);
+        if (!$result) {
+            // zombie doc ?
+            $sql = sprintf(
+                "select *,getaperm('%s',profid) as uperm  from only %s where initid=%d and doctype != 'T' %s order by id desc limit 1",
+                $userMember,
                 $table,
                 $initid,
                 $sqlcond
             );
-        DbManager::query($sql, $result);
-        if (!$result) {
-            // zombie doc ?
-            $sql
-                = sprintf(
-                    "select *,getaperm('%s',profid) as uperm  from only %s where initid=%d and doctype != 'T' %s order by id desc limit 1",
-                $userMember,
-                    $table,
-                    $initid,
-                    $sqlcond
-                );
             DbManager::query($sql, $result);
         }
 
@@ -1004,9 +1001,9 @@ function getLatestDocIds($dbaccess, $ids)
     $sids = implode($ids, ",");
     $sql
         = sprintf(
-            "SELECT id,initid from docread where initid in (SELECT initid from docread where id in (%s)) and locked != -1;",
+        "SELECT id,initid from docread where initid in (SELECT initid from docread where id in (%s)) and locked != -1;",
         $sids
-        );
+    );
     $result = @pg_query($dbid, $sql);
     if ($result) {
         $arr = pg_fetch_all($result);

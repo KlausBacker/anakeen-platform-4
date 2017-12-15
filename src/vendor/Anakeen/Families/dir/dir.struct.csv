@@ -1,7 +1,7 @@
 // famille dossier;;;id;class;name;;;;;;;;;;
 BEGIN;BASE;Dossier;2;Dir;DIR;;;;;;;;;;
 ;;;;;;;;;;;;;;;
-ICON;folder.png;;;;;;;;;;;;;;
+ICON;se-dir.png;;;;;;;;;;;;;;
 USEFOR;F;;;;;;;;;;;;;;
 //;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
 ATTR;BA_DESC;FR_BASIC;Description;N;Y;longtext;20;W;;;;;;;
@@ -26,5 +26,4 @@ ATTR;FLD_OPENFOLIO;;Ouvrir comme une chemise;N;N;menu;40;R;;C%S%app=FREEDOM&acti
 ATTR;FLD_INSERTDOC;;Insérer des documents;N;N;menu;50;R;;C%S%app=FDL&action=EDITINSERTDOCUMENT&id=%I%;;;;;ltarget=_self
 ATTR;FLD_SETSYSRSS;;RSS visible/masquée aux utilisateurs;N;N;menu;60;R;;C%S%app=FREEDOM&action=SETSYSRSS&id=%I%;;;;;ltarget=_self
 DEFAULT;FLD_SUBFAM;;;;;;;;;;;;;;
-END;;;;;;;;;;;;;;;;;
-
+END;;;;;;;;;;;;;;;

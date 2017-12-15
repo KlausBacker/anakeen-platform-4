@@ -44,7 +44,7 @@ class DocumentImage extends DocumentFile
         }
         
         $fileName = sprintf("%s-%s", $size, $this->fileInfo->name);
-        $fileExtension = $this->urlParameters["extension"];
+        $fileExtension = isset($this->urlParameters["extension"])?$this->urlParameters["extension"]:null;
         $mime = "image/png";
         if ($fileExtension) {
             $fileName = substr($fileName, 0, strrpos($fileName, '.'));
