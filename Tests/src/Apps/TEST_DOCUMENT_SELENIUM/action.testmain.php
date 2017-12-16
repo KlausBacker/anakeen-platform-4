@@ -2,15 +2,17 @@
 
 
 function testMain(Action $action) {
-    $action->parent->addJsRef("lib/RequireJS/require.js");
-    $action->parent->addJsRef("lib/underscore/underscore.js");
-    $action->parent->addJsRef("lib/jquery/ddui/jquery.js");
-    $action->parent->addJsRef("lib/bootstrap/3/js/bootstrap.js");
-    //$action->parent->addJsRef("lib/jquery-dataTables/1.10/js/jquery.dataTables.js");
-    $action->parent->addJsRef("TEST_DOCUMENT_SELENIUM/Layout/testmain.js");
-   
-    $action->parent->AddCssRef("css/dcp/document/bootstrap.css");
-    $action->parent->AddCssRef("TEST_DOCUMENT_SELENIUM/Layout/testmain.css");
+    $smartElement = \Dcp\UI\UIGetAssetPath::getSmartElement();
+    $ws = \Dcp\UI\UIGetAssetPath::getWs();
 
+    foreach ($smartElement["js"] as $currentPath) {
+        $action->parent->addJsRef($currentPath);
+    }
+    $action->parent->addJsRef("TEST_DOCUMENT_SELENIUM/dist/testmain.js?ws=".$ws);
+
+    foreach ($smartElement["css"] as $currentPath) {
+        $action->parent->AddCssRef($currentPath);
+    }
+    $action->parent->AddCssRef("css/ank/document/bootstrap.css?ws=".$ws);
 
 }

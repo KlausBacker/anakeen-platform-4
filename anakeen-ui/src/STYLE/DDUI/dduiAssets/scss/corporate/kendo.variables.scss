@@ -1,0 +1,72 @@
+// Kendo scss variables : redefined by Anakeen Variables
+
+/// Font family across all components.
+$font-family-sans-serif: $ank-ui-font;
+$button-padding-x: $ank-ui-button1-padding;
+
+//$input-padding-y: $A4-ui-doc-edit-label-padding;
+
+/// The background of selected items.
+$selected-bg: $ank-ui-color-selected;
+$selected-text: $ank-ui-color-text-colored;
+
+$text-color: $ank-ui-color-text;
+$bg-color: $ank-ui-color-body-background;
+
+/// The background of the components' chrome area.
+$base-bg: $ank-ui-color-frame-background;
+$base-text: $ank-ui-color-font-document;
+
+
+/// The background of hovered items.
+$hovered-bg: $ank-ui-color-hovered;
+
+$error: $ank-ui-color-error;
+
+// Primary button
+$primary-button-bg: $ank-ui-button1-color-background;
+$primary-button-text: $ank-ui-button1-color-text;
+
+$primary-button-hovered-bg: $ank-ui-button1-hover-color-background;
+$primary-button-hovered-text: $ank-ui-button1-hover-color-text;
+
+$primary-button-pressed-bg: $ank-ui-color-btn-click;
+$primary-button-pressed-text: $ank-ui-color-font-button;
+
+// Widget
+$widget-bg: $ank-ui-color-frame-background;
+$widget-text: $text-color;
+$widget-bg: $bg-color;
+$widget-border: $border-color;
+
+// Panel
+$panel-text: $text-color;
+
+// Header
+$header-text: $ank-ui-color-font-title;
+$header-bg: transparent;
+
+// Input
+$input-height: $ank-ui-doc-edit-attribute-height;
+$input-text: $ank-ui-color-font-document;
+$input-bg: $ank-ui-doc-edit-attribute-bg;
+$input-border: $ank-ui-color-font-placeholder;
+$input-shadow: none;
+
+$input-hovered-border: $ank-ui-doc-edit-attribute-hover-color;
+$input-hovered-shadow: $ank-ui-doc-edit-attribute-hover-shadow;
+
+$input-focused-border: $input-hovered-border;
+$input-focused-shadow: $input-hovered-shadow;
+
+$notification-error-text : $ank-ui-color-picto-colored;
+$notification-error-bg: $error;
+
+// Link
+$link-text: $ank-ui-color-link;
+$link-hover-text: $ank-ui-color-link;
+
+//Icons
+$icon-size: $ank-ui-icon-size;
+$icon-size-lg: 2.666666rem;
+$icon-spacing: $ank-ui-icon-spacer;

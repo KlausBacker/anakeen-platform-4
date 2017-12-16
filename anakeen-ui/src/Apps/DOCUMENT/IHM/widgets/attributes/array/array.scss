@@ -1,0 +1,191 @@
+.dcpArray__content__toolCell {
+  white-space: nowrap;
+  vertical-align: middle;
+  line-height: 2.4;
+}
+
+.dcpArray__toolCell {
+  width:1em;
+  .k-radio-label {
+    padding-left: 1.2em;
+  }
+  .btn {
+    padding: 0.1rem 0.6rem;
+    background-color: transparent;
+  }
+}
+
+.dcpArray__content__toolCell .dcpArray__content__toolCell__check{
+  .k-radio-label {
+    padding-top: 1em;
+  }
+}
+
+.dcpArray {
+  .dcpLabel {
+    padding: 0.4rem 0.7rem;
+  }
+}
+.dcpArray__head {
+  background-color: $ank-ui-array-header-background;
+}
+.dcpArray__head__cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 10em;
+}
+
+.dcpArray__content__cell {
+  //overflow-x: auto;
+  //overflow-y: hidden;
+}
+
+.dcpArray__content__toolCell__check, .dcpArray__content__toolCell__delete {
+  cursor: pointer;
+}
+
+.dcpArray__content__toolCell__check {
+  margin-right: 2px;
+}
+
+.dcpArray__content__toolCell {
+  padding-top:0;
+  padding-bottom:0;
+
+  .fa {
+    font-size: 1.5em;
+    line-height: 1.3em;
+  }
+}
+
+.dcpArray__content__toolCell__dragDrop .btn {
+  cursor: move;
+}
+
+.dcpArray__content__toolCell__delete {
+  visibility: hidden;
+}
+
+.dcpArray__content__line--selected .dcpArray__content__toolCell__delete {
+  visibility: visible;
+}
+
+.dcpDocument--edit {
+  .dcpAttribute--needed.dcpArray__head__cell:after {
+    content: "*";
+    padding-left: 0.1em;
+  }
+}
+
+.dcpArray__button {
+  display: inline-block;
+}
+
+.dcpArray__dragLine {
+  background-color: fade($accent, 90%);
+  cursor: move!important;
+  margin: 0;
+  opacity: 0.9;
+}
+
+// More priority than bootstrap
+.table-hover.dcpArray__dragLine > tbody > tr:hover {
+  background-color: fade($accent, 90%);
+}
+
+.dcpArray__dragLine input,
+.dcpArray__dragLine button,
+.dcpArray__dragLine .k-input,
+.dcpArray__dragLine .k-button {
+  cursor: move;
+}
+
+.dcpArray__dragLine .dcpArray__content__toolCell,
+.dcpArray__dragLine .dcpArray__content__line--selected .dcpArray__content__toolCell__delete {
+  visibility: hidden;
+}
+
+.dcpDocument--view .dcpArray__tools {
+  display: none;
+}
+
+.dcpFrame .dcpArray__content > table {
+  margin: 0;
+}
+
+.dcpFrame__content .dcpArray__content {
+  padding: 0;
+}
+
+.dcpArray--error {
+  outline: solid 1px $error;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px fade-in($error, 0.6);
+}
+
+.dcpArray__label--count::after {
+  content: ")"
+}
+
+.dcpArray__label--count::before {
+  content: "("
+}
+
+.dcpArray--collapsable {
+  cursor: pointer;
+}
+
+.dcp__array__caret {
+  width: 1em;
+}
+
+table.responsive {
+  border-collapse: collapse;
+}
+
+.dcpArray__content {
+  overflow-x: auto;
+}
+
+.dcpArray__label.dcpAttribute__left {
+  padding-left: $ank-ui-font-base-size/2;
+}
+
+.dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--left {
+  background-color: inherit;
+  border: none;
+  text-align: right;
+  clear: both;
+
+}
+
+.dcpArray__tools {
+  margin: ($dcp-set-padding / 2);
+}
+
+.dcpArray--left.dcpAttribute__labelPosition--left {
+  border: none;
+}
+
+.dcpArray__label.dcpAttribute__left.dcpAttribute__labelPosition--auto {
+  background-color: inherit;
+  border-style: none;
+  text-align: right;
+  clear: both;
+
+}
+
+.dcpArray--left.dcpAttribute__labelPosition--auto {
+  border-style: none;
+  padding-left: 0;
+}
+
+.dcpArray.dcpAttribute__labelPosition--up .dcpArray__content > .table-bordered {
+  border-style: none;
+}
+
+.dcpArray .dcpArray__content > .table-bordered > thead > tr > th {
+  border-bottom-width: 1px;
+}
+
+

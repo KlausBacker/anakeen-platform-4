@@ -1,4 +1,0 @@
-<a4-welcome-tab #if (data.welcomeMessage) {# welcome-message="#=welcomeMessage#" #}#
-                #if (data.promptMessage) {# prompt-message="#=promptMessage#" #}#
-                user-name="#=user#"
-                collections="#: collections#"></a4-welcome-tab>
