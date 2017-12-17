@@ -1285,7 +1285,7 @@ commander@2.8.x:
   dependencies:
     graceful-readlink ">= 1.0.0"
 
-commander@^2.9.0, commander@~2.11.0:
+commander@^2.9.0:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
 
@@ -1411,6 +1411,10 @@ copy-webpack-plugin@^4.1.1:
 core-js@^2.4.0, core-js@^2.5.0:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.1.tgz#ae6874dc66937789b80754ff5428df66819ca50b"
+
+core-js@^2.5.3:
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.3.tgz#8acc38345824f16d8365b7c9b4259168e8ed603e"
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -5254,13 +5258,6 @@ uglify-js@^2.4.19, uglify-js@^2.8.27:
     yargs "~3.10.0"
   optionalDependencies:
     uglify-to-browserify "~1.0.0"
-
-"uglify-js@git://github.com/mishoo/UglifyJS2.git#harmony":
-  version "3.1.4"
-  resolved "git://github.com/mishoo/UglifyJS2.git#b6a7ca292ec45fc512650972f884cb2c2601f2f9"
-  dependencies:
-    commander "~2.11.0"
-    source-map "~0.6.1"
 
 uglify-js@~2.2.5:
   version "2.2.5"

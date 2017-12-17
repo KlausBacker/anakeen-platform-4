@@ -22,26 +22,13 @@ const commonConfig = merge([{
     output: {
         filename: '[name]-[chunkhash].js'
     },
-    resolve: {
-        extensions: [".js"],
-        alias: {
-            "dcpContextRoot": "",
-            "dcpDocument": path.resolve(__dirname, "anakeen-ui/src/Apps/DOCUMENT/IHM/"),
-            "datatables": "datatables.net",
-            "datatables-bootstrap": "datatables.net-bs4",
-            "kendo-culture-fr": "kendo-ui-core/js/cultures/kendo.culture.fr-FR",
-            "tooltip": "bootstrap/js/src/tooltip",
-            "documentCkEditor": path.resolve(__dirname, "anakeen-ui/webpack/ckeditor.js")
-        }
-    },
     module: {
         rules: [
             {
                 test: /\.js$/,
-                exclude: [
-                    path.resolve(__dirname, 'node_modules/underscore/'),
-                    path.resolve(__dirname, 'node_modules/ckeditor/'),
-                    path.resolve(__dirname, 'node_modules/lodash/')
+                include: [
+                    path.resolve(__dirname, 'anakeen-ui/'),
+                    path.resolve(__dirname, 'node_modules/popper.js/'),
                 ],
                 use: {
                     loader: 'babel-loader',
@@ -50,13 +37,6 @@ const commonConfig = merge([{
                         babelrc: false
                     }
                 }
-            },
-            {
-                test: /\.css$/,
-                exclude: [
-                    /loading\.css/
-                ],
-                use: [ 'style-loader', 'css-loader' ]
             },
             {
                 test: /\.vue$/,
@@ -90,6 +70,10 @@ const commonConfig = merge([{
         )
     ]
     },
+    parts.cssLoader([
+        /loading\.css/
+    ]),
+    parts.getSmartElementResolve(),
     parts.providePopper(),
     parts.addExternals(),
     parts.progressBar()
@@ -99,7 +83,8 @@ const commonConfig = merge([{
 const productionDocumentConfig = merge([
     {
         entry: {
-            'mainSmartElement': PATHS.mainSmartElement
+            //inject promise polyfill
+            'mainSmartElement': ["core-js/es6/promise", PATHS.mainSmartElement]
         },
         output: {
             publicPath: 'uiAssets/anakeen/prod/',
@@ -168,7 +153,7 @@ const productionComponentConfig = merge([
 const debugDocumentConfig = merge([
     {
         entry: {
-            'mainSmartElement': PATHS.mainSmartElement,
+            'mainSmartElement': ["core-js/es6/promise", PATHS.mainSmartElement],
         },
         output: {
             publicPath: 'uiAssets/anakeen/debug/',
@@ -230,10 +215,7 @@ const debugComponentConfig = merge([
 const devConfig = merge([
     {
         entry: {
-            'mainSmartElement': PATHS.mainSmartElement,
-            'smartElementGrid': PATHS.smartElementGrid,
-            'smartElement': PATHS.smartElement,
-            'vendor': ['dcpDocument/widgets/widget', 'underscore']
+            'mainSmartElement': ["core-js/es6/promise", PATHS.mainSmartElement]
         },
         output: {
             publicPath: 'uiAssets/anakeen/debug/',
@@ -242,11 +224,16 @@ const devConfig = merge([
         }
     },
     parts.setFreeVariable("process.env.NODE_ENV", "debug"),
-    parts.generateViewHtml('anakeen-ui/src/Apps/DOCUMENT/Layout/debug/', ["smartElementGrid", "jquery-smartElement"]),
+    parts.generateViewHtml('anakeen-ui/src/Apps/DOCUMENT/Layout/debug/'),
     parts.devServer(
         {
             host: process.env.HOST,
             port: process.env.PORT,
+            proxy : {
+                "!/uiAssets/anakeen/debug/*.js": {
+                    "target": process.env.PROXY_URL || "http://localhost"
+                }
+            }
         }
     )
 ]);

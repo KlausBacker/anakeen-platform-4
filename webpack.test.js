@@ -3,6 +3,8 @@ const fs = require('fs');
 const gracefulFs = require('graceful-fs');
 gracefulFs.gracefulify(fs);
 
+console.log(process.env);
+
 const path = require('path');
 
 const merge = require("webpack-merge");
@@ -31,27 +33,39 @@ const commonConfig = merge([{
             rules: [
                 {
                     test: /\.js$/,
-                    exclude: [
-                        path.resolve(__dirname, 'node_modules/underscore/')
+                    include: [
+                        path.resolve(__dirname, 'Tests/src/Apps/TEST_DOCUMENT_SELENIUM/IHM/')
                     ],
                     use: {
-                        loader: 'babel-loader',
-                        options: {
-                            presets: ['env'],
-                            babelrc: false
-                        }
+                        loader: 'babel-loader'
                     }
-                },
-                {
-                    test: /\.css$/,
-                    use: [ 'style-loader', 'css-loader' ]
-                }]
+                }
+                ]
         }
     },
+        parts.cssLoader([]),
         parts.clean(path.resolve(PATHS.build)),
         parts.addExternals(),
         parts.progressBar()
     ]
 );
 
-module.exports = merge(commonConfig);
+const devConfig = merge([
+    parts.devServer({
+        host: process.env.HOST,
+        port: process.env.PORT,
+        proxy : {
+            "!/TEST_DOCUMENT_SELENIUM/dist/*.js": {
+                "target": process.env.PROXY_URL || "http://localhost"
+            }
+        }
+    })
+]);
+
+module.exports = env => {
+    if (env === "dev") {
+        return merge(commonConfig, devConfig);
+    }
+    return merge(commonConfig);
+};
+

@@ -33,28 +33,14 @@ class Search_html5_edit_render extends DefaultEdit
 
         $js = parent::getJsReferences($document);
 
-        $js["mySearchAttributeHelper"]
-            = "uiAssets/Families/dsearch/searchAttributeHelper.js";
-        $js["searchUIconstraints"] = "uiAssets/Families/dsearch/searchConstraints.js";
-        $js["searchUI"] = "uiAssets/Families/dsearch/searchUI.js";
-        $js["searchUIEventEdit"]
-            = "uiAssets/Families/dsearch/searchUIEventEdit.js";
-        $js["searchUICreationEvent"]
-            = "uiAssets/Families/dsearch/searchUICreationEvent.js";
+        $ws = \Dcp\UI\UIGetAssetPath::getWs();
+        $js["smartElementGrid"] = \Dcp\UI\UIGetAssetPath::getJSSmartElementGridPath();
+        $js["dSearch"] = 'uiAssets/Families/dsearch/prod/dsearch.js?ws='.$ws;
+        if (\Dcp\UI\UIGetAssetPath::isInDebug()) {
+            $js["dSearch"] = 'uiAssets/Families/dsearch/debug/dsearch.js?ws='.$ws;
+        }
 
-        $js["stickyTable"]="uiAssets/Families/dsearch/jquery.stickytableheaders.min.js";
         return $js;
-    }
-
-    public function getCssReferences(\Doc $document = null)
-    {
-
-        $css = parent::getJsReferences($document);
-
-        $css["searchEditStyle"] = "uiAssets/Families/dsearch/searchRender.css";
-        $css["docGridStyle"] = "DOCUMENT_GRID_HTML5/widgets/docGrid.css";
-
-        return $css;
     }
 
     public function getMenu(\Doc $document)
@@ -64,17 +50,6 @@ class Search_html5_edit_render extends DefaultEdit
         $myItem->setTextLabel(___("consult", "searchUi"));
         $myItem->setUrl("#action/previewEdit");
         $myMenu->appendElement($myItem);
-
-        /*
-        $createItem = $myMenu->getElement("create");
-        if ($createItem) {
-            $createItem->setUrl("#action/confirmCreation");
-        }
-
-        $createAndCloseItem = $myMenu->getElement("createAndClose");
-        if ($createAndCloseItem) {
-            $createAndCloseItem->setUrl("#action/confirmCreationClose");
-        }*/
 
         return $myMenu;
     }

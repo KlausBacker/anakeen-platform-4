@@ -4,7 +4,7 @@ localpub=$(shell pwd)/localpub
 port=80
 
 stub:
-	./anakeen-devtool.phar generateStub -s Document-uis -o ./stubs/
+	./anakeen-devtool.phar generateStub -s anakeen-ui -o ./stubs/
 	./anakeen-devtool.phar generateStub -s Tests -o ./stubs/
 	./anakeen-devtool.phar generateStub -s Samples/BusinessApp -o ./stubs/
 

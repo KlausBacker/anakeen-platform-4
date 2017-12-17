@@ -44,7 +44,7 @@ exports.generateViewHtml = (currentPath, excludeChunks) => ({
 });
 
 
-exports.devServer = ({host, port} = {}) => ({
+exports.devServer = ({host, port, proxy} = {}) => ({
     devServer: {
         contentBase: path.resolve(__dirname, 'anakeen-ui/src/public/'),
         host, // Defaults to `localhost`
@@ -53,11 +53,7 @@ exports.devServer = ({host, port} = {}) => ({
             errors: true,
             warnings: true,
         },
-        proxy: {
-            "!/uiAssets/anakeen/debug/*.js": {
-                "target": "http://localhost"
-            }
-        }
+        proxy
     },
 });
 
@@ -153,4 +149,31 @@ exports.generateNamedChunk = () => ({
             }
         }
     ]
+});
+
+exports.getSmartElementResolve = () => ({
+    resolve: {
+        extensions: [".js"],
+        alias: {
+            "dcpContextRoot": "",
+            "dcpDocument": path.resolve(__dirname, "anakeen-ui/src/Apps/DOCUMENT/IHM/"),
+            "datatables": "datatables.net",
+            "datatables-bootstrap": "datatables.net-bs4",
+            "kendo-culture-fr": "kendo-ui-core/js/cultures/kendo.culture.fr-FR",
+            "tooltip": "bootstrap/js/src/tooltip",
+            "documentCkEditor": path.resolve(__dirname, "anakeen-ui/webpack/ckeditor.js")
+        }
+    }
+});
+
+exports.cssLoader = (exclude) => ({
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                exclude,
+                use: [ 'style-loader', 'css-loader' ]
+            }
+        ],
+    },
 });
