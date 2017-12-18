@@ -10,6 +10,7 @@ stub:
 
 
 app-selenium:
+	yarn install
 	yarn buildTest
 	-mkdir -p $(localpub)/selenium/
 	rsync --delete -azvr Tests $(localpub)/selenium/
