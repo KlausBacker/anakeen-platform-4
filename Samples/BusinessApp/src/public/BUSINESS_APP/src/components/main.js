@@ -43,6 +43,7 @@ Vue.kendo = Vue.prototype.$kendo = kendo;
 import Splitter from '@/splitter/splitter.vue';
 import WelcomeTab from '@/welcomeTab/welcomeTab.vue';
 import Collections from '@/collectionsList/collections.vue';
+import ReportingTab from '@/reportingTab/reportingTab.vue';
 
 // import Store from '@/store/store.vue';
 

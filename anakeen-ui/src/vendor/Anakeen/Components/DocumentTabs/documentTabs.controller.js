@@ -8,9 +8,10 @@ import abstractAnakeenComponent from '../componentBase';
 import TabModel from './model/tabModel';
 
 const Constants = {
-    WELCOME_TAB_ID: 'welcome_tab',
-    NEW_TAB_ID: 'new_tab',
+    WELCOME_TAB_ID: 'welcome_tab_id',
+    NEW_TAB_ID: 'new_tab_id',
     LAZY_TAB_ID: 'lazy_tab_id',
+    CUSTOM_TAB_ID: 'custom_tab_id'
 };
 export default {
     mixins: [abstractAnakeenComponent],
@@ -480,6 +481,7 @@ export default {
                 if (lazyIndex != -1) {
                     this.tabModel.remove(lazyIndex);
                 }
+
                 this.tabModel.add(this.newLazyTab);
             },
 
@@ -600,6 +602,13 @@ export default {
 
         closeAllDocuments() {
             this.tabModel.removeAll();
+        },
+
+        addCustomTab(tabConfiguration) {
+            if (tabConfiguration.tabId && tabConfiguration.headerTemplate && tabConfiguration.contentTemplate) {
+                this.tabModel.add(Object.assign({}, { tabId: Constants.CUSTOM_TAB_ID }, tabConfiguration));
+                this.selectDocument({ initid: Constants.CUSTOM_TAB_ID });
+            }
         },
     },
 };

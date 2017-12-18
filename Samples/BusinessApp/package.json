@@ -24,6 +24,7 @@
     "css-loader": "^0.26.2",
     "document-register-element": "^1.7.0",
     "file-loader": "^0.11.1",
+    "highcharts": "^6.0.3",
     "jscs": "^3.0.7",
     "jscs-loader": "^0.3.0",
     "node-sass": "^4.5.3",
