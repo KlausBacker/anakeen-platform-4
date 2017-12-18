@@ -50,5 +50,6 @@ import ReportingTab from '@/reportingTab/reportingTab.vue';
 // Vue.customElement('a4-store', Store);
 Vue.customElement('ank-splitter', Splitter);
 Vue.customElement('ank-welcome-tab', WelcomeTab);
+Vue.customElement('ank-reporting-tab', ReportingTab);
 Vue.customElement('ank-collections', Collections);
 
