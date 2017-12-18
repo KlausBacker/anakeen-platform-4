@@ -43,11 +43,13 @@ Vue.kendo = Vue.prototype.$kendo = kendo;
 import Splitter from '@/splitter/splitter.vue';
 import WelcomeTab from '@/welcomeTab/welcomeTab.vue';
 import Collections from '@/collectionsList/collections.vue';
+import ReportingTab from '@/reportingTab/reportingTab.vue';
 
 // import Store from '@/store/store.vue';
 
 // Vue.customElement('a4-store', Store);
 Vue.customElement('ank-splitter', Splitter);
 Vue.customElement('ank-welcome-tab', WelcomeTab);
+Vue.customElement('ank-reporting-tab', ReportingTab);
 Vue.customElement('ank-collections', Collections);
 

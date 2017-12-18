@@ -59,18 +59,15 @@
     background-color: #c1c1c1;
   }
 
-  .documentsList__collections__button--settings,
-  .documentsList__collections__button--notif,
-  .documentsList__collections__button--state,
-  .documentsList__collections__button--disconnect {
-    background-color: #7a7a7a;
-  }
+  .documentsList__collections__buttons--bottom > .documentsList__collections__button {
+    background-color: #7A7A7A;
 
-  .documentsList__collections__button__icon.documentsList__collections__button__icon--notif,
-  .documentsList__collections__button__icon.documentsList__collections__button__icon--settings,
-  .documentsList__collections__button__icon.documentsList__collections__button__icon--state,
-  .documentsList__collections__button__icon.documentsList__collections__button__icon--disconnect {
-    background-color: #646464;
+    & > .documentsList__collections__button__icon {
+      background-color: #646464;
+      i {
+        color: white;
+      }
+    }
   }
 
   .documentsList__collectionCard {

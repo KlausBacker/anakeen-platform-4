@@ -31,12 +31,13 @@
             <div class="documentsList__collections__list" ref="listView"></div>
 
             <div class="documentsList__collections_buttons documentsList__collections__buttons--bottom">
-                <div v-for="b in buttons" :class="`documentsList__collections__button documentsList__collections__button--${b.id}`"
+                <slot name="bottomButton"></slot>
+                <div v-for="b in buttons" class="documentsList__collections__button"
                 @click="b.click">
-                    <div :class="`documentsList__collections__button__icon documentsList__collections__button__icon--${b.id}`">
+                    <div class="documentsList__collections__button__icon">
                         <i :class="b.icon"></i>
                     </div>
-                    <div :class="`documentsList__collections__button__title documentsList__collections__button__title--${b.id}`">
+                    <div class="documentsList__collections__button__title">
                         {{b.title}}
                     </div>
                 </div>

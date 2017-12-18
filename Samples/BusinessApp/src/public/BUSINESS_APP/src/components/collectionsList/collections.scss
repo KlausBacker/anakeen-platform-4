@@ -162,18 +162,12 @@
   }
 }
 
-.documentsList__collections__button--notif,
-.documentsList__collections__button--settings,
-.documentsList__collections__button--state,
-.documentsList__collections__button--disconnect {
+.documentsList__collections__button--bottom > .documentsList__collections__button {
   line-height: 2;
   text-align: left;
 }
 
-.documentsList__collections__button__title--notif,
-.documentsList__collections__button__title--settings,
-.documentsList__collections__button__title--state,
-.documentsList__collections__button__title--disconnect {
+.documentsList__collections__buttons--bottom .documentsList__collections__button__title {
   font-weight: 400;
 }
 

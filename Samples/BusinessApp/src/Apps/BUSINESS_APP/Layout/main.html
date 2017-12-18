@@ -6,9 +6,9 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Business App</title>
-    <link rel="stylesheet" type="text/css" href="css/a4/document/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="css/a4/document/kendo.css"/>
-    <link rel="stylesheet" href="css/a4/business-app/business-app.css">
+    <link rel="stylesheet" type="text/css" href="css/ank/document/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/ank/document/kendo.css"/>
+    <link rel="stylesheet" href="css/ank/business-app/business-app.css">
 </head>
 <body>
 
@@ -19,6 +19,14 @@
                                     collection-selected: #splitter.publicMethods.setCollection,
                                     collection-selected: #documentsList.publicMethods.setCollection,
                                     collection-selected: #splitter.publicMethods.openSplitter">
+            <div id="reportingButton" vue-slot="bottomButton" class="documentsList__collections__button">
+                <div class="documentsList__collections__button__icon">
+                    <i class="material-icons">insert_chart</i>
+                </div>
+                <div class="documentsList__collections__button__title">
+                    Reporting
+                </div>
+            </div>
 
         </ank-collections>
         <ank-document-list id="documentsList"
@@ -28,7 +36,7 @@
     </div>
     <div vue-slot="mainPane">
         <ank-document-tabs id="documentsTabs"
-                          document-css="css/a4/business-app/document-sample.css"
+                          document-css="css/ank/business-app/document-sample.css"
                           bind-event="document-modified: #documentsList.publicMethods.refreshDocumentsList,
                                       document-deleted: #documentsList.publicMethods.refreshDocumentsList">
         </ank-document-tabs>
@@ -45,6 +53,10 @@
         list.addEventListener('document-selected', () => {
            onDocumentSelected();
         });
+        var reportingButton = document.getElementById('reportingButton');
+        reportingButton.addEventListener('click', () => {
+           onReportingButtonClick();
+        });
     });
     function onDocumentSelected() {
         var width = window.innerWidth || document.body.clientWidth;
@@ -52,6 +64,15 @@
             var splitter = document.getElementById('splitter');
             splitter.publicMethods.closeSplitter();
         }
+    }
+    function onReportingButtonClick() {
+        var tabs = document.getElementById('documentsTabs');
+        tabs.publicMethods.addCustomTab({
+            tabId: 'REPORTING_TAB',
+            headerTemplate: '<span class="tab__document__header__content"><i class="tab__document__icon material-icons">insert_chart</i><span class="tab__document__title">Reporting</span></span>',
+            contentTemplate: '<ank-reporting-tab></ank-reporting-tab>',
+            data: {}
+        });
     }
 </script>
 </body>
