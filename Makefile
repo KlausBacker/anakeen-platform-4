@@ -36,6 +36,7 @@ app:
 
 app-showcase:
 	rm -f showcase*app
+	yarn install
 	make -f pojs.make OUTPUT_DIR=Samples/BusinessApp/src/public/BUSINESS_APP/src/components compile
 	cd Samples/BusinessApp && yarn install && yarn build
 	-mkdir -p $(localpub)/Samples
