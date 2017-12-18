@@ -4,12 +4,13 @@ localpub=$(shell pwd)/localpub
 port=80
 
 stub:
-	./anakeen-devtool.phar generateStub -s Document-uis -o ./stubs/
+	./anakeen-devtool.phar generateStub -s anakeen-ui -o ./stubs/
 	./anakeen-devtool.phar generateStub -s Tests -o ./stubs/
 	./anakeen-devtool.phar generateStub -s Samples/BusinessApp -o ./stubs/
 
 
 app-selenium:
+	yarn buildTest
 	-mkdir -p $(localpub)/selenium/
 	rsync --delete -azvr Tests $(localpub)/selenium/
 	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/selenium/Tests/build.json $(localpub)/selenium/Tests/src/Apps/TEST_DOCUMENT_SELENIUM/TEST_DOCUMENT_SELENIUM_init.php
@@ -23,18 +24,16 @@ deploy-test:
 
 
 app:
-	cd Document-uis && yarn install
+	yarn install
 	make -f pojs.make compile
-	cd Document-uis && yarn buildAsset && yarn build
-	cd Document-uis/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; composer install
-
+	yarn buildAsset && yarn build
+	cd anakeen-ui/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; composer install
 	-mkdir -p $(localpub)/webinst
-	rsync --delete -azvr --exclude 'node_modules' Document-uis $(localpub)/webinst/
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/webinst/Document-uis/build.json $(localpub)/webinst/Document-uis/src/Apps/DOCUMENT/DOCUMENT_init.php
-	./anakeen-devtool.phar generateWebinst -s $(localpub)/webinst/Document-uis/ -o .
+	rsync --delete -azvr --exclude 'node_modules' anakeen-ui $(localpub)/webinst/
+	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/webinst/anakeen-ui/build.json $(localpub)/webinst/anakeen-ui/src/Apps/DOCUMENT/DOCUMENT_init.php
+	./anakeen-devtool.phar generateWebinst -s $(localpub)/webinst/anakeen-ui/ -o .
 
 app-showcase:
-	cd Document-uis && yarn install && yarn buildAsset
 	make -f pojs.make OUTPUT_DIR=Samples/BusinessApp/src/public/BUSINESS_APP/src/components compile
 	cd Samples/BusinessApp && yarn install && yarn build
 	-mkdir -p $(localpub)/Samples
@@ -43,7 +42,7 @@ app-showcase:
 
 
 po:
-	./anakeen-devtool.phar extractPo -s Document-uis -o Document-uis/src
+	./anakeen-devtool.phar extractPo -s anakeen-ui -o anakeen-ui/src
 
 
 pojs:
@@ -56,7 +55,7 @@ clean:
 	make -f pojs.make clean
 
 mrproper: clean
-	rm -rf Document-uis/node_modules
+	rm -rf node_modules
 	rm -rf Samples/BusinessApp/node_modules
 	rm -f *.app
 

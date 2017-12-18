@@ -1,0 +1,81 @@
+// Menu
+.dcpDocument__menu {
+  background-color: $ank-ui-tab-active-bg;
+  padding: 0;
+  box-shadow: 0 0.41666rem 0.5rem rgba(0, 0, 0, 0.15);
+}
+
+.menu__content {
+  padding: 0 !important;
+  margin: 0 !important;
+
+  &.k-menu {
+    background-color: $ank-ui-menu-bg;
+    color: $ank-ui-menu-font-color;
+    font-family: $ank-ui-menu-fixed-font;
+    justify-content: flex-end;
+    height: $ank-ui-menu-height;
+  }
+
+  // Menu item hovered
+  a.k-link:hover, .k-menu:not(.k-context-menu) > .k-item.k-state-hover:not(.menu--separator) > .k-link {
+    color: $ank-ui-color-btn-action;
+  }
+
+  .menu__element {
+    height: 100%;
+    padding-top: ($ank-ui-menu-height - 1.666rem)/2;
+    padding-bottom: ($ank-ui-menu-height - 1.666rem)/2;
+
+    &.k-menu-horizontal.k-menu {
+      padding-top: ($ank-ui-menu-height - 1.666rem)/2;
+      padding-bottom: ($ank-ui-menu-height - 1.666rem)/2;
+
+    }
+
+
+    &.menu__element--item.menu--important.k-item {
+      font-weight: bold;
+    }
+  }
+}
+
+.k-state-focused {
+  .k-link {
+    box-shadow: none ! important;
+  }
+}
+
+// Set style of the fixed (sticky) menu
+.menu--fixed {
+  ul.menu__content {
+    background-color: $ank-ui-menu-fixed-bg;
+    color: $ank-ui-menu-fixed-font-color;
+    font-family: $ank-ui-menu-fixed-font;
+
+    .k-menu .menu__element.k-item > .k-link {
+      border-left-color: $ank-ui-menu-fixed-font-color;
+    }
+
+    .k-menu .k-item.k-state-hover, .k-menu .k-item.k-state-hover * {
+      background-color: $ank-ui-color-hovered;
+      color: $ank-ui-color-btn-action;
+    }
+  }
+}
+
+// Menu item separator
+.menu__content .k-menu .menu__element.k-item {
+   > .k-link {
+    border-left: $ank-ui-menu-separator;
+    padding: $ank-ui-menu-item-padding;
+
+
+  }
+  &.menu--left {
+     > .k-link {
+       border-left: none;
+       border-right: $ank-ui-menu-separator;
+     }
+  }
+}

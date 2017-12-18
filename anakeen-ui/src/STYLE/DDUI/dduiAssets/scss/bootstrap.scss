@@ -1,0 +1,21 @@
+$fa-font-path: "../../../../uiAssets/externals/font-awesome/fonts";
+@import "../../../../public/uiAssets/externals/font-awesome/scss/font-awesome.scss";
+$material-design-icons-font-path: "../../../../uiAssets/externals/material-design-icons/fonts/";
+@import "../../../../public/uiAssets/externals/material-design-icons/material-design-icons.scss";
+
+@import "../../../../public/uiAssets/externals/KendoUI/scss/bootstrap_dist";
+@import "../../../custom-scss-variable.d/global_variables.scss";
+
+$border-radius-base: $ank-ui-doc-edit-attribute-border-radius;
+
+.form-group {
+  margin-bottom: $font-size-base/2;
+}
+
+
+
+.alert-danger {
+  background-color: $ank-ui-color-error;
+  color: $ank-ui-color-picto-colored;
+}
+

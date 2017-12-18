@@ -1,0 +1,278 @@
+.dcpAttribute {
+  margin-right: 0;
+  margin-left: 0;
+
+}
+
+.dcpAttribute__value--read {
+  position: inherit;
+}
+
+.dcpAttribute__value--read .dcpAttribute__content__value {
+  word-wrap: break-word;
+}
+
+.dcpAttribute__value {
+  a:hover, a:focus {
+    text-decoration: none;
+  }
+}
+
+
+.dcpDocument--view .dcpAttribute__content .dcpAttribute__content__buttons {
+  float: right;
+}
+
+.dcpAttribute__content .input-group .k-autocomplete input {
+  height: $ank-ui-input-height;
+}
+
+.dcpAttribute__content .input-group {
+  width: 100%;
+}
+
+.dcpAttribute__content .input-group-addon {
+  background-color: transparent;
+}
+
+.dcpAttribute__value {
+  height: $ank-ui-input-height;
+}
+
+.dcpDocument--edit {
+  .dcpAttribute__label.dcpAttribute__left,
+  .dcpAttribute--visibility--S .dcpAttribute__right {
+    min-height: $ank-ui-input-height;
+  }
+
+  .dcpAttribute--visibility--S .dcpAttribute__right {
+    padding-top: $dcp-attribute-padding-base-vertical;
+  }
+}
+
+.dcpAttribute__content .k-widget > .k-state-default {
+  //border-radius: $border-radius-base 0 0 $border-radius-base;
+}
+
+.dcpAttribute__content .input-group .dcpAttribute__content__nobutton,
+.dcpAttribute__content .input-group .dcpAttribute__value.dcpAttribute__content__nobutton,
+.dcpAttribute__content .form-control.dcpAttribute__value.dcpAttribute__value--edit.dcpAttribute__content__nobutton .k-state-default.dcpAttribute__content__nobutton,
+.dcpAttribute__content .k-widget > .k-state-default.dcpAttribute__content__nobutton,
+.dcpAttribute__content .dcpAttribute__content__nobutton > .k-state-default {
+  border-bottom-right-radius: $border-radius-base;
+  border-top-right-radius: $border-radius-base;
+}
+
+.dcpAttribute__content .input-group input.form-control,
+.dcpArray__content__cell .input-group input.form-control,
+.dcpAttribute__content .input-group .k-autocomplete {
+  height: calc( #{$ank-ui-input-height} - 2px);
+  border:none;
+}
+
+
+
+.dcpAttribute__content > .input-group {
+  border: $ank-ui-doc-edit-attribute-border;
+  border-radius: $ank-ui-doc-edit-attribute-border-radius;
+  overflow: hidden;
+
+  &:hover {
+    border: $ank-ui-doc-edit-attribute-hover-border;
+    box-shadow: $ank-ui-doc-edit-attribute-hover-shadow;
+
+  }
+}
+
+
+.dcpAttribute--focus {
+  &.dcpAttribute__content > .input-group {
+    border-color: $ank-ui-doc-edit-attribute-focus-color;
+
+    box-shadow: $ank-ui-doc-edit-attribute-focus-shadow;
+  }
+
+  .k-state-focused {
+    box-shadow: none;
+  }
+}
+
+.dcpAttribute__content .input-group-addon,
+.dcpArray__content__cell .input-group-addon {
+  padding: 0;
+  border-right: 0;
+  border-left:0;
+}
+
+.dcpAttribute__content,
+.dcpArray__content__cell {
+  .input-group-addon:first-child {
+    border-radius: $border-radius-base 0 0 $border-radius-base;
+    > button.btn {
+      border-top-left-radius: $border-radius-inset;
+      border-bottom-left-radius: $border-radius-inset;
+
+    }
+  }
+  .input-group .k-widget.form-control:not(:first-child):not(:last-child) .k-dropdown-wrap {
+     // border-radius: $border-radius-base;
+      border:none;
+
+  }
+}
+
+.dcpAttribute__content--widget {
+
+  .k-dropdown-wrap,
+   .input-group > .k-widget {
+    //border-radius: $border-radius-base;
+  }
+  .input-group .k-widget.form-control:not(:first-child):not(:last-child) .k-multiselect-wrap,
+  .k-widget.form-control > .k-multiselect-wrap,
+  .k-widget > .k-state-default {
+    border:none;
+    //border-top-right-radius:  $border-radius-base;
+    //border-bottom-right-radius:  $border-radius-base;
+
+  }
+}
+.dcpAttribute__content .input-group-addon button,
+.dcpArray__content__cell .input-group-addon button {
+  border: none;
+  min-width: 2.333333rem;
+  height: 100%;
+  padding: 0;
+}
+
+.dcpAttribute__content .input-group-addon button {
+  border-right: 0.0833333rem solid $btn-default-border;
+}
+
+.dcpAttribute__content .input-group-addon button:last-child {
+  border-right: none;
+  border-radius: 0;
+}
+
+.dcpAttribute__value--flash input,
+.dcpAttribute__value--flash textarea,
+.dcpAttribute__value--flash .k-input,
+iframe.dcpAttribute__value--flash {
+  background-color: $info;
+}
+
+.k-input.form-control {
+  float: none;
+}
+
+.dcpAttribute__value--endflash input,
+.dcpAttribute__value--endflash textarea,
+.dcpAttribute__value--endflash .k-input,
+iframe.dcpAttribute__value--endflash {
+  background-color: inherit;
+  transition: background-color 500ms linear;
+}
+
+.button-close-error {
+  padding: 0.2rem;
+  cursor: pointer;
+}
+
+.dcpAttribute__content .k-autocomplete .k-loading {
+  position: relative;
+  right: 20px;
+  z-index: 3;
+  top: 5px;
+}
+
+.k-list .k-state-error {
+  border: none;
+  width: 100%;
+  display: inline-block;
+}
+
+
+
+
+.dcpAttribute__content .input-group-addon button.dcpAttribute__content__button--extra,
+.dcpArray__content__cell .input-group-addon button.dcpAttribute__content__button--extra {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.dcpAttribute__content__buttons {
+  position: relative;
+  .dcpAttribute__content__button--delete {
+    color: $gray-light;
+    background-color:transparent;
+    position: absolute;
+    left: -2rem;
+    z-index: 3;
+    top: 0;
+
+    .char-close {
+      border-radius:50%;
+      height:1rem;
+      width:1rem;
+      line-height: 1rem;
+      vertical-align: middle;
+      display: inline-block;
+
+      &.char-close::before {
+        font-family: "WebComponentsIcons";
+        content: '\e11b';
+      }
+    }
+
+    cursor:pointer;
+
+    &:hover {
+      .char-close {
+        background-color: $error;
+        color: $ank-ui-color-text-colored;
+      }
+    }
+  }
+}
+
+/**
+* no delete button on IE10
+*/
+//noinspection CssInvalidPseudoSelector
+.dcpAttribute__content input[type=text]::-ms-clear {
+  display: none;
+}
+
+.dcpAttribute__content .tooltip-inner {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.dcpAttribute__content__button--extra {
+  border-radius: 0;
+  &:last-child {
+    border-bottom-right-radius: $border-radius-base;
+    border-top-right-radius: $border-radius-base;
+  }
+}
+
+.dcpAutocomplete div {
+  padding-left: 1em;
+  border-radius: $border-radius-base;
+}
+
+.dcpAutocomplete--message {
+  background-color: $info;
+}
+
+.dcpAutocomplete--warning {
+  background-color: $warning;
+}
+
+.dcpAutocomplete--error {
+  background-color: $error;
+}
+
+.dcpCustomTemplate--content--value .dcpAttribute__content {
+  padding-top: 0;
+}

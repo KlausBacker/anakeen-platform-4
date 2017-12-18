@@ -23,7 +23,7 @@
 
   .documentsList__collections__button__title--user__cogs {
     &:hover {
-      color: $A4-ui-color-selected;
+      color: $ank-ui-color-selected;
     }
   }
 
@@ -88,7 +88,7 @@
   .documentsList__collectionCard {
 
     .documentsList__collectionCard__heading__content__label {
-      color: $A4-ui-color-label;
+      color: $ank-ui-color-label;
       font-weight: 400;
     }
 
@@ -97,19 +97,19 @@
       font-weight: 600;
 
       .documentsList__collectionCard__heading__content__label {
-        color: $A4-ui-color-selected;
+        color: $ank-ui-color-selected;
         font-weight: bold;
       }
 
       .documentsList__collectionCard__heading__content__icon {
-        box-shadow: inset 3px 0px 0px 0px $A4-ui-color-client;
+        box-shadow: inset 3px 0px 0px 0px $ank-ui-color-client;
       }
     }
   }
   // Expanded style
   &.documentsList__collections--expanded {
     .documentsList__collectionCard.k-state-selected {
-      box-shadow: inset 3px 0px 0px 0px $A4-ui-color-client;
+      box-shadow: inset 3px 0px 0px 0px $ank-ui-color-client;
     }
 
     .documentsList__collectionCard.k-state-selected {

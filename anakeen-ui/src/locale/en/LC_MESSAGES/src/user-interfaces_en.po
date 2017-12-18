@@ -1,0 +1,728 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: user-interfaces_en\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-17 18:34+0100\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain;  charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#, php-format
+msgctxt "ddui"
+msgid "%s Creation"
+msgstr ""
+
+#, php-format
+msgctxt "ddui"
+msgid "Access not granted for document #%s"
+msgstr ""
+
+#, php-format
+msgctxt "ddui"
+msgid "Access not granted to create \"%s\" document"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Account access deny"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Add a note to the history"
+msgstr ""
+
+#. _COMMENT: content.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Add new line"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Advanced"
+msgstr ""
+
+#, php-format
+msgctxt "authent"
+msgid "An email has been sended to user \"%s\""
+msgstr ""
+
+#, php-format
+msgctxt "ddui"
+msgid "Attribute \"%s\" not found "
+msgstr ""
+
+msgctxt "ddui-file"
+msgid "B"
+msgstr ""
+
+msgid "CVDOC_ARRAY_VIEW:display"
+msgstr ""
+
+msgid "CVDOC_ARRAY_VIEW:idview"
+msgstr ""
+
+msgid "CVDOC_ARRAY_VIEW:type"
+msgstr ""
+
+msgid "CVDOC_ARRAY_VIEW:view"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Cancel"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Cancel transition"
+msgstr ""
+
+#, php-format
+msgctxt "authent"
+msgid "Cannot find user \"%s\"."
+msgstr ""
+
+msgctxt "ddui-enum"
+msgid "Choose"
+msgstr ""
+
+msgctxt "ddui-enum"
+msgid "Choose another choice"
+msgstr ""
+
+msgctxt "ddui-file"
+msgid "Choose file"
+msgstr ""
+
+msgctxt "ddui-image"
+msgid "Choose image"
+msgstr ""
+
+#, php-format
+msgid "Class \"%s\" not exists"
+msgstr ""
+
+#, php-format
+msgid "Class \"%s\" not implement %s"
+msgstr ""
+
+#, php-format
+msgid "Class \"%s\" problem : %s"
+msgstr ""
+
+msgctxt "ddui-file"
+msgid "Click to upload file"
+msgstr ""
+
+msgctxt "ddui-image"
+msgid "Click to upload image"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Close"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Close Transition Window"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Close form"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Close message"
+msgstr ""
+
+#, php-format
+msgctxt "docgrid"
+msgid "Collection \"%s\" not found"
+msgstr ""
+
+#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: mustache key
+msgctxt "dsearch"
+msgid "Conditions"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Confidential document"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Confirm"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Confirm deletion"
+msgstr ""
+
+msgid "Confirm deletion of {{{document.properties.title}}}"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Confirm transition"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Core View Consultation"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Core View Create"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Core View Edition"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Create"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Create !"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Create and close"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Create and insert to \"{{label}}\""
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Create new document to server"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Create to server and view document"
+msgstr ""
+
+msgid "DCOGRIDHTML5: Document_grid_ui"
+msgstr ""
+
+msgid "DCOGRIDHTML5:KITCHEN_SINK"
+msgstr ""
+
+msgid "DOCGRID: Access to document grid element"
+msgstr ""
+
+msgid "DOCGRIDHTML5: sFirst"
+msgstr ""
+
+msgid "DOCGRIDHTML5: sInfo"
+msgstr ""
+
+msgid "DOCGRIDHTML5: sInfoEmpty"
+msgstr ""
+
+msgid "DOCGRIDHTML5: sInfoFiltered"
+msgstr ""
+
+msgid "DOCGRIDHTML5: sInfoPostFix"
+msgstr ""
+
+msgid "DOCGRIDHTML5: sLast"
+msgstr ""
+
+msgid "DOCGRIDHTML5: sLengthMenu"
+msgstr ""
+
+msgid "DOCGRIDHTML5: sLoadingRecords"
+msgstr ""
+
+msgid "DOCGRIDHTML5: sNext"
+msgstr ""
+
+msgid "DOCGRIDHTML5: sPrevious"
+msgstr ""
+
+msgid "DOCGRIDHTML5: sProcessing"
+msgstr ""
+
+msgid "DOCGRIDHTML5: sSearch"
+msgstr ""
+
+msgid "DOCGRIDHTML5: sZeroRecords"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Default Edit"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Default View"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Delete"
+msgstr ""
+
+#. _COMMENT: longtextWrite.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Delete : "
+msgstr ""
+
+#. _COMMENT: line.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Delete line"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Display document form"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Display latest document revision"
+msgstr ""
+
+#, php-format
+msgctxt "ddui"
+msgid "Document \"%s\" not found "
+msgstr ""
+
+#, php-format
+msgctxt "ddui"
+msgid "Document identifier \"%s\"not found"
+msgstr ""
+
+#. _COMMENT: document__header-fixed.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "DocumentDeleted"
+msgstr ""
+
+msgctxt "ddui-file"
+msgid "Download file"
+msgstr ""
+
+msgctxt "ddui-image"
+msgid "Download image"
+msgstr ""
+
+#. _COMMENT: line.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Drag to move line"
+msgstr ""
+
+msgctxt "ddui-file"
+msgid "Drop file here"
+msgstr ""
+
+msgctxt "ddui-image"
+msgid "Drop image here"
+msgstr ""
+
+#. _COMMENT: content.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Duplicate selected row"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Family View"
+msgstr ""
+
+#, php-format
+msgctxt "docgrid"
+msgid ""
+"Filter \"%s\" is not a date value.\n"
+"You can use date operator \"contains\" or filter like \"> 23/11/2015\" , \"< "
+"23/11/2015\" or \"= 23/11/2015\" or \"> 2015\" or \"< 2015\""
+msgstr ""
+
+#, php-format
+msgctxt "docgrid"
+msgid ""
+"Filter \"%s\" is not a numeric value.\n"
+"You can use single numeric for operator \"contains\" or filter like \"> "
+"1234\" , \"< 1234\" or \"= 1234\""
+msgstr ""
+
+msgctxt "ddui"
+msgid "Force transition"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Goto next activity"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Help"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Historic"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Ignored CORE view"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Ignored HTML5 view"
+msgstr ""
+
+msgctxt "ddui"
+msgid "In progress transition"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Information access deny"
+msgstr ""
+
+msgctxt "ddui-date"
+msgid "Invalid date"
+msgstr ""
+
+msgctxt "ddui-enum"
+msgid "Invalid entry"
+msgstr ""
+
+msgctxt "authent"
+msgid "Invalid key to update password"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Invalid transition"
+msgstr ""
+
+msgctxt "ddui helppage"
+msgid "Lang"
+msgstr ""
+
+#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: mustache key
+msgctxt "dsearch"
+msgid "Loading criteria ..."
+msgstr ""
+
+msgctxt "ddui"
+msgid "Locked by"
+msgstr ""
+
+#, php-format
+msgctxt "ddui"
+msgid "Menu id \"%s\" not found "
+msgstr ""
+
+msgctxt "ddui"
+msgid "Min row limit is {{limit}}"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Modify"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Modifying by"
+msgstr ""
+
+#, php-format
+msgctxt "ddui"
+msgid "No matches \"<i>%s</i>\""
+msgstr ""
+
+msgctxt "ddui-docid"
+msgid "No more matching"
+msgstr ""
+
+msgctxt "ddui"
+msgid "No result found"
+msgstr ""
+
+msgctxt "ddui:notification"
+msgid "Notification"
+msgstr ""
+
+#, php-format
+msgctxt "authent"
+msgid "Password has been reset for \"%s\""
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Properties"
+msgstr ""
+
+msgctxt "searchui"
+msgid "Properties"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Put document to the trash"
+msgstr ""
+
+msgid "RESULT:ACTION_NAME"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Read only document"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Record document to server"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Record document without constraint check"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Record to server and view document"
+msgstr ""
+
+msgctxt "ddui-file"
+msgid "Recording"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Restore"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Restore document from the trash"
+msgstr ""
+
+#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: mustache key
+msgctxt "dsearch"
+msgid "Results"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Retry transition"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Revision"
+msgstr ""
+
+#, php-format
+msgctxt "ddui"
+msgid "Revision \"%s\" must be a number or a state reference"
+msgstr ""
+
+#. _COMMENT: document__header-fixed.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Revision :"
+msgstr ""
+
+#. _COMMENT: document__header-fixed.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "RevisionCreated"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Row count limit to {{limit}}"
+msgstr ""
+
+msgid "SEARCH_UI_HTML5:Basic ACL"
+msgstr ""
+
+msgid "SEARCH_UI_HTML5:SEARCH_UI_HTML5"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Save"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Save !"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Save and close"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Save and update \"{{label}}\""
+msgstr ""
+
+#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: mustache key
+msgctxt "dsearch"
+msgid "Searching ..."
+msgstr ""
+
+msgctxt "ddui:notification"
+msgid "See more ..."
+msgstr ""
+
+msgctxt "ddui-enum"
+msgid "Select alternative choice"
+msgstr ""
+
+#. _COMMENT: line.mustache
+#. _COMMENT: mustache key
+msgctxt "ddui"
+msgid "Select line"
+msgstr ""
+
+#, php-format
+msgctxt "UiMenu"
+msgid "Sure delete %s ?"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "System"
+msgstr ""
+
+msgctxt "ddui-file"
+msgid "Transferring"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Transition Comment"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Transition success"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "View current revision"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "View transition graph"
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "View workflow graph"
+msgstr ""
+
+msgid "Visible columns by family"
+msgstr ""
+
+#, php-format
+msgctxt "ddui"
+msgid "Workflow Parameters : %s"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Workflow Transition Comment"
+msgstr ""
+
+msgid "activity"
+msgstr ""
+
+msgctxt "searchui"
+msgid "any values"
+msgstr ""
+
+msgctxt "searchui"
+msgid "cdate"
+msgstr ""
+
+msgctxt "searchUi"
+msgid "consult"
+msgstr ""
+
+msgid "ddui:Admin"
+msgstr ""
+
+msgid "ddui:COLLECT_ERROR"
+msgstr ""
+
+msgid "ddui:Click to reload the document"
+msgstr ""
+
+msgid "ddui:Delay notifications display (in ms)"
+msgstr ""
+
+msgid "ddui:Document Render"
+msgstr ""
+
+msgid "ddui:Document render"
+msgstr ""
+
+msgid "ddui:Document render long"
+msgstr ""
+
+#. _COMMENT: document__header.mustache
+#. _COMMENT: mustache key
+msgid "ddui:Editing form"
+msgstr ""
+
+msgid "ddui:Get some template"
+msgstr ""
+
+msgid "ddui:INIT_RENDERPARAMETERS"
+msgstr ""
+
+msgid "ddui:Render a document"
+msgstr ""
+
+msgid "ddui:Unable to load try again"
+msgstr ""
+
+msgid "ddui:View documents"
+msgstr ""
+
+msgid "ddui:activate logging"
+msgstr ""
+
+msgid "ddui:debug mode"
+msgstr ""
+
+msgid "ddui:logging class"
+msgstr ""
+
+msgid "ddui:render parameters"
+msgstr ""
+
+msgctxt "searchui"
+msgid "doctitle"
+msgstr ""
+
+msgctxt "searchui"
+msgid "id allocated"
+msgstr ""
+
+msgctxt "searchui"
+msgid "id locked"
+msgstr ""
+
+msgctxt "searchui"
+msgid "id owner"
+msgstr ""
+
+msgctxt "ddui-file"
+msgid "kB"
+msgstr ""
+
+msgctxt "searchui"
+msgid "revdate"
+msgstr ""
+
+msgctxt "searchui"
+msgid "revision"
+msgstr ""
+
+msgid "state"
+msgstr ""
+
+msgid "step"
+msgstr ""
+
+msgid "workflow"
+msgstr ""
+
+#, php-format
+msgctxt "ddui"
+msgid ""
+"wrong return type when calling function %s\n"
+"%s"
+msgstr ""
+
+msgctxt "ddui-enum"
+msgid "{{value}} **"
+msgstr ""

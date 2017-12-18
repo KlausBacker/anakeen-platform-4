@@ -7,7 +7,7 @@ export default {
             this.fireStoreChangeEvent(mutation, state);
         });
         document.addEventListener('DOMContentLoaded', (event) => {
-            const components = document.getElementsByClassName('a4-component');
+            const components = document.getElementsByClassName('ank-component');
             for (let i = 0; i < components.length; i++) {
                 components[i].addEventListener('store-save', (event) => {
                     const action = event.detail && event.detail.length ? event.detail[0] : null;

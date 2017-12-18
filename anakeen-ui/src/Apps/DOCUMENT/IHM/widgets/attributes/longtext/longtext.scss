@@ -1,0 +1,22 @@
+.dcpAttribute__content--longtext .dcpAttribute__content__value {
+  white-space:pre-line;
+}
+.dcpAttribute__content--longtext textarea {
+  resize:vertical;
+  min-height: $ank-ui-input-height;
+  border:none;
+}
+
+.dcpAttribute__content--longtext textarea.form-control.k-textbox {
+  width:100%;
+  padding-left : 1em;
+  padding-top : 0.4em;
+}
+
+
+.dcpAttribute__content.dcpAttribute__content--longtext .input-group-addon {
+  .dcpAttribute__content__button--delete {
+    height:2rem;
+    left: -2rem;
+  }
+}

@@ -47,7 +47,7 @@ import Collections from '@/collectionsList/collections.vue';
 // import Store from '@/store/store.vue';
 
 // Vue.customElement('a4-store', Store);
-Vue.customElement('a4-splitter', Splitter);
-Vue.customElement('a4-welcome-tab', WelcomeTab);
-Vue.customElement('a4-collections', Collections);
+Vue.customElement('ank-splitter', Splitter);
+Vue.customElement('ank-welcome-tab', WelcomeTab);
+Vue.customElement('ank-collections', Collections);
 

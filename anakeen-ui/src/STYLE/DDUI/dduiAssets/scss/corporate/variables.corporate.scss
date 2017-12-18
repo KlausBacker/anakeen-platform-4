@@ -1,0 +1,229 @@
+$roboto-font-path: '../../../../../uiAssets/externals/roboto-fontface/fonts/';
+
+@import "../../../../../public/uiAssets/externals/roboto-fontface/scss/roboto/sass/roboto-fontface-bold.scss";
+@import "../../../../../public/uiAssets/externals/roboto-fontface/scss/roboto/sass/roboto-fontface-regular.scss";
+
+// Base colors
+$blue-darker: #003DB0;
+$blue-dark: #2361DB;
+$blue: #157EFB;
+$blue-light: #00B4FC;
+$blue-lighter: #78D2FE;
+$orange: #FF542C;
+$gray-darker: #353535;
+$gray-dark: #505050;
+$gray: #878787;
+$gray-light: #C8C8C8;
+$gray-light-alt: #DDDDDD;
+$gray-lighter: #F4F4F4;
+$gray-lighter-alt: #F1F1F1;
+$green-light: #8AE234;
+$white: #FFFFFF;
+
+// Colors
+$ank-ui-color-link: $blue-lighter;
+$ank-ui-color-btn-action: $blue;
+$ank-ui-color-btn-creation: $blue-dark;
+$ank-ui-color-selected: $blue-light;
+$ank-ui-color-error: $orange;
+$ank-ui-color-text: $gray-darker;
+$ank-ui-color-text-colored: $white;
+$ank-ui-color-picto: $gray;
+$ank-ui-color-picto-colored: $white;
+$ank-ui-color-hovered: $gray-lighter;
+$ank-ui-color-font-document: $gray-dark;
+$ank-ui-color-font-placeholder: $gray-light;
+
+$ank-ui-color-client: $green-light;
+
+$ank-ui-color-label: #505050;
+$ank-ui-color-btn-click: $blue-darker;
+
+$ank-ui-color-body-background: $gray-lighter-alt;
+$ank-ui-color-frame-background: $white;
+
+$ank-ui-color-font-button: $ank-ui-color-text-colored;
+$ank-ui-color-font-title: $ank-ui-color-text;
+$ank-ui-color-btn-tool-bg: #E4E4E4;
+
+$ank-ui-font-size: 12px;
+$ank-ui-line-height: 1.2;
+
+$ank-ui-font: 'Roboto-Regular', 'Helvetica', sans-serif;
+$ank-ui-font-base-size: 1rem;
+$ank-ui-title-size: 1rem;
+$ank-ui-title-font-weight: bold;
+$ank-ui-title-font-line-height: 1.333rem;
+$ank-ui-title-font-variant: 'Roboto-Bold';
+$ank-ui-label-font-size: 1rem;
+$ank-ui-label-font-weight: normal;
+$ank-ui-label-font-variant: 'Roboto-Regular';
+$ank-ui-label-font-line-height: 1.333rem;
+$ank-ui-value-font-size: 1rem;
+$ank-ui-value-font-weight: normal;
+$ank-ui-value-font-variant: 'Roboto-Bold';
+$ank-ui-value-font-line-height: 1.333rem;
+$ank-ui-button-font-size: 1rem;
+$ank-ui-button-font-weight: normal;
+$ank-ui-button-font-variant: 'Roboto-Bold';
+$ank-ui-button-font-line-height: 1.333rem;
+
+// Button 1
+$ank-ui-button1-width: auto;
+$ank-ui-button1-height: 2.5rem;
+$ank-ui-button1-color-background: $ank-ui-color-btn-action;
+$ank-ui-button1-color-text: $ank-ui-color-text-colored;
+$ank-ui-button1-border-radius: 0.166rem;
+$ank-ui-button1-padding: 2.5rem;
+$ank-ui-button1-disabled-color-background: $ank-ui-color-font-placeholder;
+$ank-ui-button1-disabled-color-text: $ank-ui-color-font-document;
+$ank-ui-button1-disabled-hover-color-background: $ank-ui-button1-disabled-color-background;
+$ank-ui-button1-disabled-hover-color-text: $ank-ui-button1-disabled-color-text;
+$ank-ui-button1-disabled-opacity: 0.5;
+$ank-ui-button1-hover-color-background: $ank-ui-color-btn-click;
+$ank-ui-button1-hover-color-text: $ank-ui-color-text-colored;
+$ank-ui-button1-hover-shadow: 0.416rem 0.416rem 1rem 1rem #1508A5 inset;
+
+// Button 2
+$ank-ui-button2-color-text: #157EFB;
+$ank-ui-button2-color-background: #FFFFFF;
+$ank-ui-button2-color-border: #157EFB;
+
+$ank-ui-button2-color-hover-text: #FFFFFF;
+$ank-ui-button2-color-hover-background: #157EFB;
+
+$ank-ui-button2-width: auto;
+$ank-ui-button2-height: 2.5rem;
+$ank-ui-button2-border-radius: 0.166rem;
+$ank-ui-button2-padding: 2.5rem;
+
+$ank-ui-button2-disabled-color-background: #FFFFFF;
+$ank-ui-button2-disabled-color-text: #C8C8C8;
+$ank-ui-button2-disabled-hover-color-background: $ank-ui-button2-disabled-color-background;
+$ank-ui-button2-disabled-hover-color-text: $ank-ui-button2-disabled-color-text;
+$ank-ui-button2-disabled-color-border: #C8C8C8;
+
+// Button 3
+$ank-ui-button3-width: auto;
+$ank-ui-button3-border-radius: O;
+$ank-ui-button3-padding: 2.833rem;
+$ank-ui-button3-color-border: #157EFB;
+$ank-ui-button3-disabled-color-background: #FFFFFF;
+$ank-ui-button3-disabled-color-text: #C8C8C8;
+$ank-ui-button3-disabled-hover-color-background: #FFFFFF;
+$ank-ui-button3-disabled-hover-color-text: #C8C8C8;
+$ank-ui-button3-color-text: #157EFB;
+$ank-ui-button3-color-background: #FFFFFF;
+$ank-ui-button3-color-hover-text: #157EFB;
+$ank-ui-button3-color-hover-background: #FFFFFF;
+
+// Toggle button
+$ank-ui-toggle-color-bg-off: #EEE;
+$ank-ui-toggle-color-text-off: #777;
+$ank-ui-toggle-padding-off: 0 0 0 2.5rem;
+$ank-ui-toggle-transition: background-color 1s, padding-left 1s;
+$ank-ui-toggle-color-bg-on: #00B4FC;
+$ank-ui-toggle-color-text-on: $white;
+$ank-ui-toggle-padding-on: 0 2rem 0 1rem;
+$ank-ui-toggle-line-height: 1.72;
+
+// Radio button
+$ank-ui-radio-color-bg: $white;
+$ank-ui-radio-color-checked: $ank-ui-toggle-color-bg-on;
+$ank-ui-radio-size: 1.33333rem;
+$ank-ui-radio-size-checked: 0.83333rem;
+$ank-ui-radio-border-selected: $gray;
+$ank-ui-radio-border-unselected: fade-out($gray, 0.3);
+$ank-ui-check-font: 'Material Icons';
+$ank-ui-check-content: "\E5CA";
+
+// Attribute
+$ank-ui-doc-edit-label-padding: 0;
+$ank-ui-doc-edit-attribute-bg: $white;
+$ank-ui-doc-edit-attribute-height: 2.166rem;
+$ank-ui-doc-edit-attribute-color-border: #E6E6E6;
+$ank-ui-doc-edit-attribute-border-radius: 0.33rem;
+$ank-ui-doc-edit-attribute-border: solid $ank-ui-doc-edit-attribute-color-border 0.083rem;
+$ank-ui-doc-edit-attribute-hover-color: #157EFB;
+$ank-ui-doc-edit-attribute-focus-color: #157EFB;
+$ank-ui-doc-edit-attribute-hover-border: solid $ank-ui-doc-edit-attribute-hover-color 0.083rem;
+$ank-ui-doc-edit-attribute-hover-shadow: 0rem 0rem 0.583rem $ank-ui-doc-edit-attribute-hover-color;
+$ank-ui-doc-edit-attribute-focus-shadow: 0rem 0rem 0.583rem $ank-ui-doc-edit-attribute-focus-color;
+$ank-ui-doc-edit-attribute-error-color: $ank-ui-color-error;
+$ank-ui-doc-edit-attribute-error-spacing: 0.166rem;
+$ank-ui-doc-edit-attribute-error-text-color: $white;
+$ank-ui-doc-read-label-padding: 0;
+$ank-ui-doc-read-attribute-height: auto;
+$ank-ui-doc-read-attribute-border: 0.083rem solid #F1EFEF;
+$ank-ui-doc-read-attribute-value-padding: 0 0 0.6666rem 0;
+$ank-ui-doc-read-attribute-link-color: #78D2FE;
+$ank-ui-doc-read-attribute-picto-space: 0.6666rem;
+$ank-ui-input-height: 2.5rem;
+
+//Frames
+$ank-ui-frame-font-variant: $ank-ui-value-font-variant;
+$ank-ui-frame-padding: 0rem 1.166rem 0 1.666rem;
+$ank-ui-frame-shadow:rgba(0, 0, 0, 0.1) 0 0.25rem 0.25rem;
+$ank-ui-frame-color-title: #878787;
+$ank-ui-frame-size-title: 1.1rem;
+$ank-ui-frame-header-border-bottom: 0.083rem solid #d8d9da;;
+$ank-ui-frame-header-padding: 0 0 0 0rem;
+$ank-ui-frame-header-line-height: 2.5rem;
+$ank-ui-frame-header-margin: 0 0 1.25rem 0;
+
+// Array
+$ank-ui-array-shadow: $ank-ui-frame-shadow;
+$ank-ui-array-header-background: white;
+$ank-ui-array-padding: 0 1.1666rem 1.66666rem 1.1666rem;
+$ank-ui-array-border: 1px solid #e8e8e8;
+$ank-ui-array-margin: 0 0.8333rem 0.8333rem;
+$ank-ui-array-border-radius: 0.25rem;
+
+// Tabs
+$ank-ui-tabs-height: 3rem;
+$ank-ui-tab-active-bg: #FAFAFA;
+$ank-ui-tab-inactive-bg: #E6E6E6;
+$ank-ui-tab-space: 0.166rem;
+$ank-ui-tab-padding: 0.833rem;
+
+@mixin A4ClientTabDecoration() {
+  position: absolute;
+  content: "";
+  right: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 1.25rem 1.25rem 0;
+  border-color: transparent $ank-ui-color-client transparent transparent;
+}
+
+// Menu
+$ank-ui-menu-bg: #FAFAFA;
+$ank-ui-menu-fixed-bg: #157EFB;
+$ank-ui-menu-fixed-font: $ank-ui-font;
+$ank-ui-menu-font-color: $gray;
+$ank-ui-menu-fixed-font-color: #FFFFFF;
+$ank-ui-menu-separator: 1px solid #ccc;
+$ank-ui-menu-height: 2.833rem;
+$ank-ui-menu-item-padding: 0 1.666rem 0 1.666rem;
+
+// Icons
+$ank-ui-icon-size: 1.166rem;
+$ank-ui-icon-color: $gray;
+$ank-ui-icon-spacer: 0.583rem;
+
+// Header
+$ank-ui-header-height: 2.5rem;
+$ank-ui-header-bg: $ank-ui-color-frame-background;
+$ank-ui-header-title-margin: 0;
+$ank-ui-header-title-size: 1.2rem;
+
+
+
+$dcp-set-padding: 10px;
+$dcp-attribute-padding-base-vertical: 6px + 1;
+
+// Attribute decription field
+$dcpAttributeDescriptionArrowSize: 8px;
+$dcpAttributeDescriptionBackgroundColor: #f5f5f5;

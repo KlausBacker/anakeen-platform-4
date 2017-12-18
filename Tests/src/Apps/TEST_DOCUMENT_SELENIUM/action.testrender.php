@@ -2,13 +2,17 @@
 
 
 function testRender(Action $action) {
-    $action->parent->addJsRef("uiAssets/externals/RequireJS/require.js");
-    $action->parent->addJsRef("uiAssets/externals/underscore/underscore.js");
-    $action->parent->addJsRef("uiAssets/externals/jquery/jquery.js");
-    $action->parent->addJsRef("TEST_DOCUMENT_SELENIUM/Layout/testrender.js");
 
-    $action->parent->AddCssRef("css/a4/document/bootstrap.css");
-    $action->parent->AddCssRef("TEST_DOCUMENT_SELENIUM/Layout/testrender.css");
+    $smartElement = \Dcp\UI\UIGetAssetPath::getSmartElement();
+    $ws = \Dcp\UI\UIGetAssetPath::getWs();
 
+    foreach ($smartElement["js"] as $currentPath) {
+        $action->parent->addJsRef($currentPath);
+    }
+    $action->parent->addJsRef("TEST_DOCUMENT_SELENIUM/dist/testrender.js?ws=".$ws);
 
+    foreach ($smartElement["css"] as $currentPath) {
+        $action->parent->AddCssRef($currentPath);
+    }
+    $action->parent->AddCssRef("css/ank/document/bootstrap.css?ws=".$ws);
 }

@@ -12,32 +12,32 @@
 </head>
 <body>
 
-<a4-splitter id="splitter" bind-event="close: #collectionsList.publicMethods.closeCollections">
+<ank-splitter id="splitter" bind-event="close: #collectionsList.publicMethods.closeCollections">
     <div vue-slot="leftPane" style="height: 100%">
-        <a4-collections id="collectionsList"
+        <ank-collections id="collectionsList"
                         bind-event="open: #splitter.publicMethods.openSplitter,
                                     collection-selected: #splitter.publicMethods.setCollection,
                                     collection-selected: #documentsList.publicMethods.setCollection,
                                     collection-selected: #splitter.publicMethods.openSplitter">
 
-        </a4-collections>
-        <a4-document-list id="documentsList"
+        </ank-collections>
+        <ank-document-list id="documentsList"
                            logo-url="CORE/Images/anakeen-logo.svg"
                            bind-event="document-selected: #documentsTabs.publicMethods.addDocument"
-        ></a4-document-list>
+        ></ank-document-list>
     </div>
     <div vue-slot="mainPane">
-        <a4-document-tabs id="documentsTabs"
+        <ank-document-tabs id="documentsTabs"
                           document-css="css/a4/business-app/document-sample.css"
                           bind-event="document-modified: #documentsList.publicMethods.refreshDocumentsList,
                                       document-deleted: #documentsList.publicMethods.refreshDocumentsList">
-        </a4-document-tabs>
+        </ank-document-tabs>
     </div>
-</a4-splitter>
+</ank-splitter>
 <script src="../uiAssets/externals/jquery/jquery.min.js"></script>
 <script src="../uiAssets/externals/KendoUI/KendoUI.js"></script>
-<script src="BUSINESS_APP/dist/a4-business-app-components.js"></script>
-<script src="components/dist/a4-components.js"></script>
+<script src="BUSINESS_APP/dist/ank-business-app-components.js"></script>
+<script src="components/dist/ank-components.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         var list = document.getElementById('documentsList');
