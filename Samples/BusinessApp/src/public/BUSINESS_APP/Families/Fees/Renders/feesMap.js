@@ -72,9 +72,7 @@ window.dcp.document.documentController(
                 }
 
                 mymap = L.map(map[0]).fitBounds(positions);
-                L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
-                    attribution: 'Map data OpenStreetMap contributors',
-                }).addTo(mymap);
+                L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png').addTo(mymap);
 
                 var markers = [];
                 var marker = null;
@@ -92,6 +90,8 @@ window.dcp.document.documentController(
 
                     markers.push(marker);
                 }
+
+                $(map[0]).find('.leaflet-control-attribution.leaflet-control a').prop('target', '_blank');
             }
         }
 

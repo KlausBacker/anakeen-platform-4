@@ -22,7 +22,6 @@ class Fees extends \Dcp\Family\Document
         require_once("FDL/Lib.Vault.php");
         $outfile = getTmpDir().'/fee-preview.pdf';
         $infile = $this->viewDoc($layout = "THIS:FEE_PREVIEW_TEMPLATE:B","ooo");
-        $info = [];
         $this->setFile(FeesAttr::fee_odtfile, $infile);
         $this->setValue(FeesAttr::fee_pdffile, $this->convertVaultFile($this->getRawValue(FeesAttr::fee_odtfile), 'pdf'));
         return "";
@@ -50,13 +49,14 @@ class Fees extends \Dcp\Family\Document
     public function getImagePosition($img, $position) {
         $path = $this->vault_filename_fromvalue($img, true);
         $exif = exif_read_data($path, 'GPS');
-        $positionDMS = $exif["GPS$position"];
-        $positionDMSRef = $exif["GPS$position"."Ref"];
-        if (empty($positionDMSRef) || empty($positionDMS)) {
+        if (!$exif || !array_key_exists("GPS$position", $exif) || !array_key_exists("GPS$position"."Ref", $exif)) {
             return null;
         }
+        $positionDMS = $exif["GPS$position"];
+        $positionDMSRef = $exif["GPS$position"."Ref"];
         $fullPosition = Fees::stringifyDMSPosition($positionDMS, $positionDMSRef);
-        return Fees::convertDec($fullPosition);
+        $positionValue = Fees::convertDec($fullPosition);
+        return $positionValue;
     }
 
     /**
@@ -67,7 +67,7 @@ class Fees extends \Dcp\Family\Document
     public function getImageDate($img) {
         $path = $this->vault_filename_fromvalue($img, true);
         $exif = exif_read_data($path, "EXIF", true);
-        if (!$exif || empty($exif['EXIF']['DateTimeOriginal'])) {
+        if (!$exif || !array_key_exists('DateTimeOriginal', $exif['EXIF'])) {
             return null;
         }
         $dt = new \DateTime($exif['EXIF']["DateTimeOriginal"]);

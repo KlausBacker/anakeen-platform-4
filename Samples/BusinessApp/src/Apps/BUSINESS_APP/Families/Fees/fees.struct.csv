@@ -13,7 +13,7 @@ ATTR;FEE_FR_INFO;;Informations;N;N;frame;::auto;W;;;;;;;
 ATTR;FEE_PERSON;FEE_FR_INFO;Personne;N;N;"docid(""BA_RH_DIR"")";::auto;W;;;;;;;
 ATTR;FEE_PERIOD;FEE_FR_INFO;Période;N;N;date;::auto;W;;;;;;;
 ATTR;FEE_ADVANCE;FEE_FR_INFO;Avance;N;N;money;::auto;W;;;;;;;
-ATTR;FEE_TOTAL;FEE_FR_INFO;Total des dépenses;N;N;money;::auto;W;;;;::computeTotal(fee_exp_tax);;;
+ATTR;FEE_TOTAL;FEE_FR_INFO;Total des dépenses;N;N;money;::auto;H;;;;::computeTotal(fee_exp_tax);;;
 ;;;;;;;;;;;;;;;
 ATTR;FEE_TAB_ALL_EXP;;Dépenses;N;N;tab;::auto;W;;;;;;;
 ATTR;FEE_FR_ALL_EXP;FEE_TAB_ALL_EXP;Tableau des dépenses;N;N;frame;::auto;W;;;;;;;
