@@ -6,9 +6,9 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Business App</title>
-    <link rel="stylesheet" type="text/css" href="css/a4/document/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="css/a4/document/kendo.css"/>
-    <link rel="stylesheet" href="css/a4/business-app/business-app.css">
+    <link rel="stylesheet" type="text/css" href="css/ank/document/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/ank/document/kendo.css"/>
+    <link rel="stylesheet" href="css/ank/business-app/business-app.css">
 </head>
 <body>
 
@@ -36,7 +36,7 @@
     </div>
     <div vue-slot="mainPane">
         <ank-document-tabs id="documentsTabs"
-                          document-css="css/a4/business-app/document-sample.css"
+                          document-css="css/ank/business-app/document-sample.css"
                           bind-event="document-modified: #documentsList.publicMethods.refreshDocumentsList,
                                       document-deleted: #documentsList.publicMethods.refreshDocumentsList">
         </ank-document-tabs>
