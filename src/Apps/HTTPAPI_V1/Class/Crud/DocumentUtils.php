@@ -133,6 +133,10 @@ class DocumentUtils
             return mb_stripos($currentField, $prefix) === 0 && $currentField !== $prefix;
         });
         $restrictedAttributes = array_unique($restrictedAttributes);
+        if (count($restrictedAttributes) === 1 && current($restrictedAttributes) === "document.attributes.all") {
+            $restrictedAttributes = [];
+        }
+
         // end compute list
         // Analyze if all the restricted attributes as a part of the current doc or the current fam
         if ($currentDoc) {
@@ -140,9 +144,11 @@ class DocumentUtils
                 $attributeId = str_replace($prefix, "", $currentField);
                 /* @var \Doc $currentDoc */
                 self::isAttribute($currentDoc, $attributeId);
+
                 return $attributeId;
             }, $restrictedAttributes);
         }
+
         // if there is attributes that not valid throw exception
         if (!empty($falseAttribute)) {
             throw new Exception("CRUD0218", join(" and attribute ", $falseAttribute));
