@@ -51,6 +51,7 @@ define([
             this.listenTo(this.model, 'displayNetworkError', this.displayNetworkError);
             this.listenTo(this.model, 'actionAttributeLink', this.doStandardAction);
             this.listenTo(this.model, 'loadDocument', this.loadDocument);
+            this.listenTo(this.model, 'doSelectTab', this.selectTab);
             this.listenTo(this.model, 'dduiDocumentReady', this.cleanAndRender);
             this.listenTo(this.model, 'dduiDocumentDisplayView', this.showView);
         },
@@ -259,6 +260,13 @@ define([
                             this._dcpNotFirstactivate = true;
                         }
                     },
+                    "select": function vDocumentKendoSelectTab(event) {
+                        var tabId = $(event.item).data("attrid");
+                        var tab=currentView.model.get("attributes").get(tabId);
+
+                        tab.trigger("attributeBeforeTabSelect", event, tabId);
+                        console.log("inside before",  event);
+                    },
                     show: function vDocumentShowTab(event) {
                         var tabId = $(event.item).data("attrid");
                         var scrollY = $(window).scrollTop();
@@ -274,7 +282,7 @@ define([
                                 if (tab) {
                                     // Hide parasite tooltip if any
                                     currentView.$el.find("[aria-describedby*='tooltip']").tooltip("hide");
-                                    tab.trigger("showTab");
+                                    tab.trigger("showTab", event);
                                     _.each(viewMenus, function (viewMenu) {
                                         viewMenu.refresh();
                                     });
@@ -363,6 +371,15 @@ define([
             }, 500);
 
             return this;
+        },
+
+        selectTab: function VDocumentSelectTab(tabId) {
+            if (tabId) {
+                if (! Number.isInteger(tabId)) {
+                    tabId=this.$el.find('li.dcpTab__label[data-attrid="'+tabId+'"]');
+                }
+                this.kendoTabs.data("kendoTabStrip").select(tabId);
+            }
         },
 
         resizeForFooter: function vDocumentresizeForFooter() {

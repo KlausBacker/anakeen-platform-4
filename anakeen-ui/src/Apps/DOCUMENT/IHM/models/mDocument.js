@@ -886,6 +886,16 @@ define([
                 {
                     currentModel.trigger("anchorClick", event, attrid, options);
                 });
+                //Propagate attributeBeforeTabSelect
+                currentModel.listenTo(value, "attributeBeforeTabSelect", function mDocumentattributeBeforeTabSelect(event, attrid)
+                {
+                    currentModel.trigger("attributeBeforeTabSelect", event, attrid);
+                });
+                //Propagate attributeAfterTabSelect
+                currentModel.listenTo(value, "attributeAfterTabSelect", function mDocumentattributeAfterTabSelect(event, attrid)
+                {
+                    currentModel.trigger("attributeAfterTabSelect", event, attrid);
+                });
             }
             return Backbone.Model.prototype.set.call(this, keyOrValues, value);
         },

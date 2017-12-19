@@ -65,9 +65,10 @@ define([
 
         },
 
-        renderContent: function vTabContentRenderContent(options) {
+        renderContent: function vTabContentRenderContent(event)
+        {
             var currentView = this;
-            return (new Promise(_.bind(function vTabContentRenderContent_Promise(resolve, reject) {
+            var pTabRenderPromise= (new Promise(_.bind(function vTabContentRenderContent_Promise(resolve, reject) {
                 var customRender,
                     $content = currentView.$el,
                     model = currentView.model,
@@ -84,7 +85,8 @@ define([
                     if (currentView.customView) {
                         $content.append(currentView.customView);
                     } else {
-                        currentView.model.get("content").each(function vTabContentRenderContent(currentAttr) {
+                        currentView.model.get("content").each(function vTabContentRenderContent(currentAttr)
+                        {
                             var view;
                             try {
                                 if (!currentAttr.isDisplayable()) {
@@ -119,13 +121,22 @@ define([
                         resolve();
                     }).catch(reject);
 
+                } else {
+                    resolve();
                 }
                 $(window.document).trigger("redrawErrorMessages");
                 currentView.model.get("content").propageEvent('resize');
             }, this)));
+
+            pTabRenderPromise.then(function () {
+                console.log("post TAb SELECT");
+                currentView.model.trigger("attributeAfterTabSelect", event, currentView.model.id);
+            });
+
+            return pTabRenderPromise;
+
         },
-
-
+  
         /**
          * Add responsive column classes according to responsiveColumns render option
          */
@@ -188,7 +199,6 @@ define([
             $(window).on("resize.v"+this.model.cid, setResponsiveClasse);
             _.defer(setResponsiveClasse);
         },
-
         propageShowTab: function vTabContentPropageShowTab()
         {
             this.model.get("content").propageEvent('showTab');

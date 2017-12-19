@@ -42,6 +42,7 @@ define([
         "beforeDelete", "afterDelete",
         "beforeRestore", "afterRestore",
         "failTransition", "successTransition",
+        "attributeBeforeTabSelect", "attributeAfterTabSelect",
         "beforeDisplayTransition", "afterDisplayTransition",
         "beforeTransition", "beforeTransitionClose",
         "destroy", "attributeCreateDialogDocumentBeforeSetFormValues",
@@ -540,6 +541,26 @@ define([
                     }
                 }
             });
+
+            this._model.listenTo(this._model, "attributeBeforeTabSelect", function documentController_triggerBeforeSelectTab(event, attrid)
+            {
+                var currentAttribute = currentWidget.getAttribute(attrid);
+                var prevent=event.prevent;
+
+
+                prevent = !currentWidget._triggerAttributeControllerEvent("attributeBeforeTabSelect", currentAttribute,
+                    currentWidget.getProperties(), currentAttribute, $(event.item));
+                if (prevent) {
+                    event.preventDefault();
+                }
+            });
+            this._model.listenTo(this._model, "attributeAfterTabSelect", function documentController_triggerAfterSelectTab(event, attrid)
+            {
+                var currentAttribute = currentWidget.getAttribute(attrid);
+
+                currentWidget._triggerAttributeControllerEvent("attributeAfterTabSelect", currentAttribute,
+                    currentWidget.getProperties(), currentAttribute, $(event.item));
+            });
             this._model.listenTo(this._model, "helperSearch", function documentController_triggerHelperSearch(event, attrid, options)
             {
                 try {
@@ -569,7 +590,6 @@ define([
                         console.error(error);
                     }
                 }
-
             });
             this._model.listenTo(this._model, "helperSelect", function documentController_triggerHelperSelect(event, attrid, options)
             {
@@ -1610,6 +1630,20 @@ define([
                     return new MenuInterface(currentMenu);
                 }
             );
+        },
+
+
+        /**
+         * Get the menu interface object
+         *
+         * @param tabId
+         * @returns MenuInterface
+         */
+        selectTab: function documentControllerSelectTab(tabId)
+        {
+            this._checkInitialisedModel();
+
+            this._model.trigger("doSelectTab", tabId);
         },
 
         /**
