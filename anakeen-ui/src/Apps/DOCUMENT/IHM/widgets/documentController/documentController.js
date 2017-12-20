@@ -1622,10 +1622,10 @@ define([
 
 
         /**
-         * Get the menu interface object
+         * Select a tab
          *
          * @param tabId
-         * @returns MenuInterface
+         * @returns void
          */
         selectTab: function documentControllerSelectTab(tabId)
         {
@@ -1639,6 +1639,26 @@ define([
             }
 
             this._model.trigger("doSelectTab", tabId);
+        },
+
+        /**
+         * Draw tab content
+         *
+         * @param tabId
+         * @returns void
+         */
+        drawTab: function documentControllerDrawTab(tabId)
+        {
+            this._checkInitialisedModel();
+            var attributeModel = this._getAttributeModel(tabId);
+            if (!attributeModel) {
+                throw new Error('The attribute "' + tabId + '" cannot be found.');
+            }
+            if (attributeModel.get("type") !== "tab") {
+                throw new Error('The attribute "' + tabId + '" is not a tab.');
+            }
+
+            this._model.trigger("doDrawTab", tabId);
         },
 
         /**

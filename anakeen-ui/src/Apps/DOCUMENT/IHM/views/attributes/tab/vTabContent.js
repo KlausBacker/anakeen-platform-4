@@ -136,7 +136,10 @@ define([
             }, this)));
 
             pTabRenderPromise.then(function () {
-                currentView.model.trigger("attributeAfterTabSelect", event, currentView.model.id);
+                if (currentView.model.isRealSelected) {
+                    currentView.model.trigger("attributeAfterTabSelect", event, currentView.model.id);
+                    currentView.model.isRealSelected=false;
+                }
             });
 
             return pTabRenderPromise;

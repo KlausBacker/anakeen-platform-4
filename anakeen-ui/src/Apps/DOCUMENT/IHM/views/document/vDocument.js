@@ -53,6 +53,7 @@ define([
             this.listenTo(this.model, 'loadDocument', this.loadDocument);
             this.listenTo(this.model, 'redrawErrorMessages', this.redrawTootips);
             this.listenTo(this.model, 'doSelectTab', this.selectTab);
+            this.listenTo(this.model, 'doDrawTab', this.drawTab);
             this.listenTo(this.model, 'dduiDocumentReady', this.cleanAndRender);
             this.listenTo(this.model, 'dduiDocumentDisplayView', this.showView);
         },
@@ -264,7 +265,7 @@ define([
                     "select": function vDocumentKendoSelectTab(event) {
                         var tabId = $(event.item).data("attrid");
                         var tab=currentView.model.get("attributes").get(tabId);
-
+                        tab.isRealSelected=true;
                         tab.trigger("attributeBeforeTabSelect", event, tabId);
                     },
                     show: function vDocumentShowTab(event) {
@@ -377,6 +378,14 @@ define([
                     tabId=this.$el.find('li.dcpTab__label[data-attrid="'+tabId+'"]');
                 }
                 this.kendoTabs.data("kendoTabStrip").select(tabId);
+            }
+        },
+        drawTab: function VDocumentDrawTab(tabId) {
+            if (tabId) {
+                var tab = this.model.get("attributes").get(tabId);
+                if (tab) {
+                     tab.trigger("showTab", event);
+                }
             }
         },
 
