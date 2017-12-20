@@ -379,6 +379,10 @@ define([
 
             barmenuWidth -= $hamburger.outerWidth();
 
+            if (barmenuWidth <= 0) {
+                return;
+            }
+
             // When no scrollbar need to add hypothetic scrollbar width because no event to refresh when scrollbar appear
             if (window.document.documentElement.scrollHeight <= window.document.documentElement.clientHeight) {
                 barmenuWidth -= this.getScrollBarWidth(); // Supposed that scrollbar width is max 20px
