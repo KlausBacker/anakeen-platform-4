@@ -25,7 +25,7 @@
         "beforeSave", "afterSave", "attributeDownloadFile", "attributeUploadFile", "attributeUploadFileDone",
         "beforeDelete", "afterDelete",
         "beforeRestore", "afterRestore",
-        "attributeBeforeTabSelect", "attributeAfterTabSelect",
+        "attributeBeforeTabSelect", "attributeAfterTabSelect","attributeTabChange",
         "failTransition", "successTransition",
         "beforeDisplayTransition", "afterDisplayTransition",
         "beforeTransition", "beforeTransitionClose",

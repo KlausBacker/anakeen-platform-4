@@ -94,6 +94,10 @@ define([
 
         setError: function vTabLabel_setError(event, data)
         {
+            this.model.trigger("attributeTabChange", event, this.model.id, this.$el, {error:data});
+            if (event.prevent) {
+                return;
+            }
             if (data) {
                 this.$el.addClass("has-error");
             } else {
@@ -103,6 +107,7 @@ define([
 
         updateLabel: function vTabLabel_updateLabel()
         {
+            this.model.trigger("attributeTabChange", event, this.model.id, this.$el, {});
             this.$el.text(this.model.get("label"));
         },
 
@@ -136,7 +141,7 @@ define([
             options = action.substring(8).split(":");
             eventOptions = {
                 target: event.target,
-                index: scopeWidget._getIndex(),
+                index: -1,
                 eventId: options.shift(),
                 options: options
             };

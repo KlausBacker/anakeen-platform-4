@@ -42,7 +42,7 @@ define([
         "beforeDelete", "afterDelete",
         "beforeRestore", "afterRestore",
         "failTransition", "successTransition",
-        "attributeBeforeTabSelect", "attributeAfterTabSelect",
+        "attributeBeforeTabSelect", "attributeAfterTabSelect","attributeTabChange",
         "beforeDisplayTransition", "afterDisplayTransition",
         "beforeTransition", "beforeTransitionClose",
         "destroy", "attributeCreateDialogDocumentBeforeSetFormValues",
@@ -527,6 +527,13 @@ define([
                 if (prevent) {
                     event.preventDefault();
                 }
+            });
+            this._model.listenTo(this._model, "attributeTabChange", function documentController_triggerAfterSelectTab(event, attrid, $el, data)
+            {
+                var currentAttribute = currentWidget.getAttribute(attrid);
+
+                currentWidget._triggerAttributeControllerEvent("attributeTabChange", event, currentAttribute,
+                    currentWidget.getProperties(), currentAttribute, $el, data);
             });
             this._model.listenTo(this._model, "attributeAfterTabSelect", function documentController_triggerAfterSelectTab(event, attrid)
             {
@@ -1623,6 +1630,13 @@ define([
         selectTab: function documentControllerSelectTab(tabId)
         {
             this._checkInitialisedModel();
+            var attributeModel = this._getAttributeModel(tabId);
+            if (!attributeModel) {
+                throw new Error('The attribute "' + tabId + '" cannot be found.');
+            }
+            if (attributeModel.get("type") !== "tab") {
+                throw new Error('The attribute "' + tabId + '" is not a tab.');
+            }
 
             this._model.trigger("doSelectTab", tabId);
         },

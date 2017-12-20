@@ -124,12 +124,11 @@ define([
                 } else {
                     resolve();
                 }
-                $(window.document).trigger("redrawErrorMessages");
+                currentView.model.getDocumentModel().trigger("redrawErrorMessages");
                 currentView.model.get("content").propageEvent('resize');
             }, this)));
 
             pTabRenderPromise.then(function () {
-                console.log("post TAb SELECT");
                 currentView.model.trigger("attributeAfterTabSelect", event, currentView.model.id);
             });
 
