@@ -96,7 +96,7 @@
 
 }
 
-.documentsList__collections__button__icon {
+.documentsList__collections__button__icon, .documentsList__collections__slot__buttons .button__icon {
   width: 50px;
   display: flex;
   flex-direction: column;
@@ -107,7 +107,7 @@
   transition: left 1s;
 }
 
-.documentsList__collections__button__title {
+.documentsList__collections__button__title, .documentsList__collections__slot__buttons .button__title {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -124,12 +124,13 @@
 }
 
 .documentsList__collections__button__title,
-.documentsList__collectionCard__heading__content__label {
+.documentsList__collectionCard__heading__content__label,
+.documentsList__collections__slot__buttons .button__title{
   opacity: 0;
   transition: opacity 0.2s;
 }
 
-.documentsList__collections__button {
+.documentsList__collections__button, .documentsList__collections__slot__buttons > * {
   display: flex;
   align-items: center;
   padding: 0px;
@@ -149,25 +150,14 @@
   padding-right: 42px;
 }
 
-.documentsList__collections_button.documentsList__collections_button--up,
-.documentsList__collections_button.documentsList__collections_button--down {
-  height: 30px;
-}
-
-.documentsList__collections__button__icon.documentsList__collections__button__icon--up,
-.documentsList__collections__button__icon.documentsList__collections__button__icon--down {
-  background: transparent;
-  .fa {
-    color: #eee;
-  }
-}
-
-.documentsList__collections__button--bottom > .documentsList__collections__button {
+.documentsList__collections__button--bottom > .documentsList__collections__button,
+.documentsList__collections__slot__buttons > * {
   line-height: 2;
   text-align: left;
 }
 
-.documentsList__collections__buttons--bottom .documentsList__collections__button__title {
+.documentsList__collections__buttons--bottom .documentsList__collections__button__title,
+.documentsList__collections__slot__buttons .button__title {
   font-weight: 400;
 }
 
@@ -248,7 +238,8 @@
   left: 0;
 
   .documentsList__collectionCard__heading__content__icon,
-  .documentsList__collections__button__icon:not(.documentsList__collections__button__icon--collapse) {
+  .documentsList__collections__button__icon:not(.documentsList__collections__button__icon--collapse),
+  .documentsList__collections__slot__buttons .button__icon {
     left: 0px;
   }
 
@@ -262,15 +253,11 @@
   }
 
   .documentsList__collections__button__title,
-  .documentsList__collectionCard__heading__content__label {
+  .documentsList__collectionCard__heading__content__label,
+  .documentsList__collections__slot__buttons .button__title {
     opacity: 1;
     transition: opacity 1s;
     transition-timing-function: ease-in;
-  }
-
-  .documentsList__collections__button__icon.documentsList__collections__button__icon--up,
-  .documentsList__collections__button__icon.documentsList__collections__button__icon--down {
-    left: calc(50% - 25px);
   }
 }
 

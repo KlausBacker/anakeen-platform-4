@@ -36,22 +36,8 @@
     }
   }
 
-  .documentsList__collections__button__icon {
-    background-color: #FFFFFF;
-  }
-
   .documentsList__collections__button--collapse {
     text-transform: uppercase;
-  }
-
-  .documentsList__collections__button--collapse,
-  .documentsList__collections__button--collapse .documentsList__collections__button__icon {
-    background-color: #7a7a7a;
-    color: #fff;
-  }
-
-  .documentsList__collections__button__icon--collapse {
-    background-color: #646464 !important;
   }
 
   .documentsList__collections__button.documentsList__collections__button--up,
@@ -59,13 +45,50 @@
     background-color: #c1c1c1;
   }
 
-  .documentsList__collections__buttons--bottom > .documentsList__collections__button {
+  .documentsList__collections__buttons--bottom > .documentsList__collections__button,
+  .documentsList__collections__buttons--top > .documentsList__collections__button {
     background-color: #7A7A7A;
 
     & > .documentsList__collections__button__icon {
       background-color: #646464;
       i {
         color: white;
+      }
+    }
+  }
+
+  .documentsList__collections__slot__buttons > * {
+    background-color: #c7a266;
+    .button__icon {
+      color: white;
+    }
+  }
+
+  .documentsList__collections__slot__buttons .button__icon {
+    height: 100%;
+    background-color: #e19f36;
+    .fa {
+      font-size: 1.5rem;
+      color: #FFF;
+    }
+  }
+
+  .documentsList__collections__buttons--bottom, .documentsList__collections__buttons--top {
+    .documentsList__collections__slot__buttons > * {
+      &:hover {
+        .button__icon {
+          background-color: lighten(#e19f36, 8);
+        }
+        background-color: lighten(#c7a266, 8);
+      }
+    }
+
+    .documentsList__collections__button {
+      &:hover {
+        background-color: lighten(#7A7A7A, 8);
+        & > .documentsList__collections__button__icon {
+          background-color: lighten(#646464, 8);
+        }
       }
     }
   }

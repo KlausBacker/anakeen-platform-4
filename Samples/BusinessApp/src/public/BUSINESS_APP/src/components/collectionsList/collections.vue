@@ -31,7 +31,9 @@
             <div class="documentsList__collections__list" ref="listView"></div>
 
             <div class="documentsList__collections_buttons documentsList__collections__buttons--bottom">
-                <slot name="bottomButton"></slot>
+                <div class="documentsList__collections__slot__buttons">
+                    <slot name="bottomButton"></slot>
+                </div>
                 <div v-for="b in buttons" class="documentsList__collections__button"
                 @click="b.click">
                     <div class="documentsList__collections__button__icon">
