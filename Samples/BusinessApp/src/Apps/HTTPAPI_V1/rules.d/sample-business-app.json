@@ -33,5 +33,12 @@
     "regExp": "%^/sba/currentUser/?$%",
     "description": "Get user information",
     "canonicalURL": "sba/currentUser"
+  },
+  {
+    "order": 1000,
+    "class": "\\Anakeen\\Sample\\Routes\\Reporting",
+    "regExp": "%^/sba/reporting/(?P<year>[^/]+)/?$%",
+    "description": "Get reporting information",
+    "canonicalURL": "sba/reporting/<year>/"
   }
 ]
