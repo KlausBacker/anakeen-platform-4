@@ -29,17 +29,16 @@ class DefaultEdit extends RenderDefault
         $menu = new BarMenu();
         $user = ContextManager::getCurrentUser();
 
+
+        $this->setEmblemMenu($document, $menu);
+
         if ($document->wid > 0) {
             $workflowMenu = new SeparatorMenu("workflow", _($document->getStateActivity($document->getState())));
-            $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--letf");
+            $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--left");
             $workflowMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square" />', $document->getStateColor("transparent")));
 
             $menu->appendElement($workflowMenu);
         }
-
-        $this->setEmblemMenu($document, $menu);
-
-
         
         $item = new ItemMenu("save", ___("Save", "UiMenu") , "#action/document.save");
         $item->setBeforeContent('<div class="fa fa-save" />');
