@@ -9,9 +9,9 @@
   {
     "order": 1000,
     "class": "\\Anakeen\\Sample\\Routes\\Collections",
-    "regExp": "%^/sba/collections/(?P<collectionRef>[^/]+)/?$%",
-    "description": "Get collection",
-    "canonicalURL": "sba/collections/<collectionRef>/"
+    "regExp": "%^/sba/collections/?$%",
+    "description": "Get collections",
+    "canonicalURL": "sba/collections/"
   },
   {
     "order": 1000,

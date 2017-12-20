@@ -9,11 +9,13 @@
 namespace Anakeen\Sample\Routes;
 
 use Dcp\HttpApi\V1\Crud\Crud;
+use Dcp\HttpApi\V1\Crud\DocumentCollection;
+use Dcp\HttpApi\V1\Crud\FamilyDocumentCollection;
 use Dcp\HttpApi\V1\DocManager\DocManager;
 use Dcp\Core\ContextManager;
 use Anakeen\Sample\Routes\Exception;
 
-class Collections extends Crud
+class Collections extends DocumentCollection
 {
     /**
      * @var \Doc current dcp collection
@@ -55,15 +57,20 @@ class Collections extends Crud
     public function read($resourceId)
     {
 //        $bdlConfig = Utils::getBdlConfig($this->_bdlInstance);
-        $return = [];
-        if(null !== $this->_collectionRef)
-        {
-            $return['collection'] = $this->_collection;
-        } else {
-            $return['collections'] = json_decode(\ApplicationParameterManager::getParameterValue("BUSINESS_APP", "SAMPLE_CONFIG"))->collections;
-        }
+        $return = parent::read($resourceId);
+        $return["resultMax"] = $this->_searchDoc->onlyCount();
         $user = ContextManager::getCurrentUser();
         $return['user'] = [ 'id' => $user->id, 'firstName' => $user->firstname, 'lastName' => $user->lastname, 'fid' => $user->fid];
+        $return['debug']=$this->_searchDoc->getSearchInfo();
+        $getCollectionInfo = function ($c) {
+            return array(
+                "ref"=>$c['properties']['name'],
+                "initid"=>$c['properties']['name'],
+                "image_url"=>$c['properties']['icon'],
+                "html_label"=>$c['properties']['title']
+            );
+        };
+        $return['collections'] = array_map($getCollectionInfo, $return['documents']);
         return $return;
     }
 
@@ -101,34 +108,12 @@ class Collections extends Crud
         throw $exception;
     }
 
-    public function setUrlParameters(array $parameters)
+    protected function prepareSearchDoc()
     {
-        parent::setUrlParameters($parameters);
-        if (isset($this->urlParameters['collectionRef'])) {
-            $this->_collectionRef = $this->urlParameters['collectionRef'];
-            $collections = json_decode(\ApplicationParameterManager::getParameterValue('BUSINESS_APP', 'SAMPLE_CONFIG'), TRUE);
-            if (isset($collections['collections'])) {
-                foreach ($collections['collections'] as $collection) {
-                    if ($collection['ref'] === $this->_collectionRef) {
-                        $this->_collection = $collection;
-                        break;
-                    }
-                }
-                if (null !== $this->_collection) {
-                    $this->_apCollection = DocManager::getDocument($this->_collection['initid']);
-                }
-                if ((null === $this->_apCollection) || ('' !== $this->_apCollection->control('open'))) {
-                    //FIXME: error message when collection does not exists
-                    $exception = new Exception("FIXME");
-                    $exception->setHttpStatus("404", "collection $this->_collectionRef does not exists.");
-                    throw $exception;
-                }
-            } else {
-                $exception = new Exception("FIXME");
-                $exception->setHttpStatus("404", "collections not found");
-                throw $exception;
-            }
-        }
-    }
+        parent::prepareSearchDoc();
+        $this->_searchDoc->fromid = -1;
+        $families = json_decode(\ApplicationParameterManager::getParameterValue("BUSINESS_APP", "SAMPLE_CONFIG"))->showcase_families;
+        $this->_searchDoc->addFilter(sprintf("name IN ('%s')", implode("','", $families)));
 
+    }
 }
