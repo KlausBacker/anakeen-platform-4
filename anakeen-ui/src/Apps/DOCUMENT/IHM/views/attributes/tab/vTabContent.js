@@ -31,7 +31,7 @@ define([
             this.listenTo(this.model, 'show', this.show);
             this.listenTo(this.model, 'haveView', this._identifyView);
             this.initializeContent = options.initializeContent;
-            this.initialized = false;
+            this.initializing = false;
             this.options = options;
         },
 
@@ -50,16 +50,22 @@ define([
                     return value.isDisplayable();
                 });
 
-                if (!hasOneContent || !currentView.initializeContent) {
+                if (!hasOneContent) {
                     currentView.$el.append(currentView.model.getOption('showEmptyContent'));
                     currentView.$el.removeClass("dcpTab__content--loading");
                     currentView.model.trigger("renderDone", {model: currentView.model, $el: currentView.$el});
                     currentView.propageShowTab();
                     resolve(currentView);
                 } else {
-                    currentView.renderContent().then(function vTabContentRender_renderContent() {
+
+                    if (currentView.initializeContent === true) {
+                        currentView.renderContent().then(function vTabContentRender_renderContent()
+                        {
+                            resolve(currentView);
+                        });
+                    } else {
                         resolve(currentView);
-                    });
+                    }
                 }
             }, this)));
 
@@ -73,7 +79,8 @@ define([
                     $content = currentView.$el,
                     model = currentView.model,
                     promisesFrame = [];
-                if (currentView.initialized === false) {
+                if (currentView.initializing === false) {
+                    currentView.initializing = true;
                     currentView.$el.empty();
                     if (currentView.originalView !== true) {
                         if (currentView.model.getOption("template")) {
@@ -117,7 +124,7 @@ define([
                     Promise.all(promisesFrame).then(function tabAllFramesRenderDone() {
                         currentView.$el.removeClass("dcpTab__content--loading");
                         currentView.model.trigger("renderDone", {model: currentView.model, $el: currentView.$el});
-                        currentView.initialized = true;
+
                         resolve();
                     }).catch(reject);
 
