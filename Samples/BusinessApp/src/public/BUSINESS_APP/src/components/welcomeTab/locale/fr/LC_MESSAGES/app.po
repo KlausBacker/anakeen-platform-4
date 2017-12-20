@@ -28,7 +28,6 @@ msgid "Consultation"
 msgstr "Consultation"
 
 #: Samples/BusinessApp/src/public/BUSINESS_APP/src/components/welcomeTab/welcomeTab.controller.js:138
-#, fuzzy
 msgctxt "WelcomeTab"
 msgid "Recent Consultations"
 msgstr "Consultations Récentes"

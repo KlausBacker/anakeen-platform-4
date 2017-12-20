@@ -4,6 +4,9 @@
 namespace Sample\BusinessApp;
 
 use Dcp\AttributeIdentifiers\BA_FEES as FeesAttr;
+use Dcp\AttributeIdentifiers\Ba_rh_dir as RHAttr;
+use Dcp\Core\ContextManager;
+use Dcp\Core\DocManager;
 
 class Fees extends \Dcp\Family\Document
 {
@@ -37,6 +40,7 @@ class Fees extends \Dcp\Family\Document
         $this->viewdefaultcard($target, $ulink, $abstract);
         $total = $this->getRawValue(FeesAttr::fee_total);
         $advance = $this->getRawValue(FeesAttr::fee_advance);
+        $this->lay->eSet('FEE_TOTAL', $total);
         $this->lay->eSet('FEE_REPAY', $total - $advance);
     }
 
@@ -50,7 +54,7 @@ class Fees extends \Dcp\Family\Document
         $path = $this->vault_filename_fromvalue($img, true);
         $exif = exif_read_data($path, 'GPS');
         if (!$exif || !array_key_exists("GPS$position", $exif) || !array_key_exists("GPS$position"."Ref", $exif)) {
-            return null;
+            return "";
         }
         $positionDMS = $exif["GPS$position"];
         $positionDMSRef = $exif["GPS$position"."Ref"];
@@ -75,6 +79,10 @@ class Fees extends \Dcp\Family\Document
             return $dt->format(\DateTime::ISO8601);
         }
         return null;
+    }
+
+    public function getAccount($rhDirDocument) {
+        return DocManager::getRawValue($rhDirDocument, RHAttr::rh_person_account);
     }
 
     /**

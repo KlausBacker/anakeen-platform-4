@@ -1,17 +1,12 @@
-.dcpDocument--view .dcpAttribute__content[data-attrid=csl_alerte_acteur],
-.dcpDocument--view .dcpAttribute__content[data-attrid=csl_notification_montants],
-.dcpDocument--view .dcpAttribute__content[data-attrid=csl_type_soutien],
-.dcpDocument--view .dcpAttribute__content[data-attrid=csl_notification_statut]
-{
-    color:red;
-    font-weight: bold;
+.dcpDocument--view .dcpCustomTemplate.dcpArray__content .dcpAttribute__content {
+    border-bottom: none;
 }
 
-.document section .dcpFrame__content > .dcpAttribute[data-attrid=cli_cert],
-.document section .dcpFrame__content > .dcpAttribute[data-attrid=cli_rd] {
-    width: 100%;
-}
+.dcpDocument--edit .dcpArray__content .dcpArray__content__line
 
+.dcpCustomTemplate.dcpArray__content .dcpArray__content__line {
+    border-bottom: 0.083rem solid #ECECEC;
+}
 .menu--right.k-item > .k-animation-container ul {
     right: auto;
 }
@@ -61,19 +56,19 @@
     flex: .33;
 }
 
-.fees-expenses-visualization > .fees-expenses-geoloc > .fees-expenses-exif > .fees-expenses-geoloc-section-content {
-    display: flex;
-    justify-content: space-around;
-}
-
 .fees-expenses-visualization > .fees-expenses-geoloc > .fees-expenses-timestamp {
     flex: .33;
 }
 
-.fees-expenses-visualization > .fees-expenses-geoloc > .fees-expenses-exif .fees-attribute {
-    padding-left: 1rem;
-    display: inline-block;
+.fees-expenses-visualization > .fees-expenses-geoloc .fees-attribute {
+    padding: 0 1rem;
     vertical-align: top;
+    border-bottom: none;
+    display: flex;
+}
+
+.fees-expenses-visualization > .fees-expenses-geoloc .fees-attribute > .fees-attribute-label {
+    margin-right: 1rem;
 }
 
 .fees-expenses-visualization > .fees-expenses-geoloc .fees-expenses-geoloc-section-title {
@@ -102,18 +97,7 @@
 .fees-expenses-visualization .k-tabstrip-items .k-item.k-state-active {
     background-color: white;
     border-bottom: 1px solid rgba(0, 0, 0, .125);
-}
-.fees-expenses-visualization .k-tabstrip-items .k-item.k-state-active::before {
-    position: absolute;
-    content: "";
-    left: 0;
-    top: 0;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 1.25rem 0 0 1.25rem;
-    border-color: transparent transparent transparent #8ae234;
-    transform: rotate(90deg);
+    border-left: 3px solid #8AE234;
 }
 
 .fees-expenses-list-content {
@@ -122,7 +106,7 @@
 
 .fees-expenses-list-content-detail {
     flex: 1;
-    padding-left: 2rem;
+    padding: 0 2rem;
 }
 
 .fees-expenses-list-content-img {
@@ -130,7 +114,8 @@
 }
 
 .fees-attribute {
-    margin: 1rem 0;
+    padding: 1rem 0;
+    border-bottom: 1px solid lightgrey;
 }
 
 .fees-attribute-label {

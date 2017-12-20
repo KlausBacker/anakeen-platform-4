@@ -21,6 +21,8 @@ namespace Dcp\AttributeIdentifiers {
 		const rh_person_address='rh_person_address';
 		/** [text] Courriel */
 		const rh_person_mail='rh_person_mail';
+		/** [account] Compte */
+		const rh_person_account='rh_person_account';
 		/** [tab] Fichiers */
 		const rh_tab_files='rh_tab_files';
 		/** [frame] Fichiers */

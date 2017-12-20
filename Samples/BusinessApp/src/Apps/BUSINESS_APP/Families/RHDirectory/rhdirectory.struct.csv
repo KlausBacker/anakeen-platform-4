@@ -1,6 +1,6 @@
 //;héritage;titre;id;class;name;;;;;;;;;;
-BEGIN;;Dossier RH;;;BA_RH_DIR;;;;;;;;;;
-;;;;;;;;;;;;;;;
+BEGIN;;Dossiers RH;;;BA_RH_DIR;;;;;;;;;;
+RESET;structure;;;;;;;;;;;;;;
 ICON;BA_RHDir.png;;;;;;;;;;;;;;
 CLASS;Sample\BusinessApp\RHDir;;;;;;;;;;;;;;
 //;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink ;constraint ;option
@@ -12,6 +12,7 @@ ATTR;RH_PERSON_JOB;RH_FR_PERSON;Emploi;N;N;text;::auto;W;;;;;;;
 ATTR;RH_PERSON_BIRTHDATE;RH_FR_PERSON;Date de naissance;N;N;date;::auto;W;;;;;;;
 ATTR;RH_PERSON_ADDRESS;RH_FR_PERSON;Adresse;N;N;longtext;::auto;W;;;;;;;
 ATTR;RH_PERSON_MAIL;RH_FR_PERSON;Courriel;N;N;text;::auto;W;Y;;;;;;
+ATTR;RH_PERSON_ACCOUNT;RH_FR_PERSON;Compte;N;N;account;::auto;W;;;;;;;
 ATTR;RH_TAB_FILES;;Fichiers;N;N;tab;::auto;W;;;;;;;
 ATTR;RH_FR_FILES;RH_TAB_FILES;Fichiers;N;N;frame;::auto;W;;;;;;;
 ATTR;RH_T_FILES;RH_FR_FILES;Fichiers;N;N;array;::auto;W;;;;;;;

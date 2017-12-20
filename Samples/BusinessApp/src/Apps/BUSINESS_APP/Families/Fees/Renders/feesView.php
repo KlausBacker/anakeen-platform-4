@@ -1,5 +1,6 @@
 <?php
 namespace Sample\BusinessApp\Renders;
+use Dcp\AttributeIdentifiers\Ba_fees as FeesAttr;
 use Dcp\Ui\ItemMenu;
 
 
@@ -10,17 +11,20 @@ class FeesView extends CommonView
         $options = parent::getOptions($document);
 
         $options->frame()->showEmptyContent("<div>Aucunes informations</div>");
-        $options->date('fee_period')->setKendoDateConfiguration(
+        $options->date(FeesAttr::fee_period)->setKendoDateConfiguration(
             array(
                 "format" => "MMMM yyyy"
             )
         );
         $options->arrayAttribute()->setLabelPosition(\Dcp\ui\CommonRenderOptions::nonePosition);
         $options->htmltext()->setToolbar(\dcp\Ui\HtmltextRenderOptions::basicToolbar);
-        $options->frame('fee_fr_viz')->setLabelPosition(\Dcp\ui\CommonRenderOptions::nonePosition);
-        $imgFiles = $document->getMultipleRawValues('fee_exp_file');
+        $options->frame(FeesAttr::fee_fr_viz)->setLabelPosition(\Dcp\ui\CommonRenderOptions::nonePosition);
+        $options->arrayAttribute(FeesAttr::fee_t_all_exp)->setTemplate(file_get_contents(__DIR__.'/feesArray.mustache'));
+        $options->image(FeesAttr::fee_exp_file)->setThumbnailSize('50x50c');
+
+        $imgFiles = $document->getMultipleRawValues(FeesAttr::fee_exp_file);
         if ($imgFiles) {
-            $options->frame('fee_fr_viz')->setTemplate(file_get_contents(__DIR__."/feesVisualization.mustache"),
+            $options->frame(FeesAttr::fee_fr_viz)->setTemplate(file_get_contents(__DIR__."/feesVisualization.mustache"),
                 array(
                     "expensesLabel"=>$this->getExpensesDisplayTitles(count($imgFiles)),
                 ));

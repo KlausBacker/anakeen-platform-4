@@ -1,5 +1,5 @@
 //;héritage;titre;id;class;name;;;;;;;;;;
-BEGIN;;Contrat Fournisseur;;;BA_PROVIDER_CONTRACT;;;;;;;;;;
+BEGIN;;Contrats Fournisseurs;;;BA_PROVIDER_CONTRACT;;;;;;;;;;
 ;;;;;;;;;;;;;;;
 ICON;BA_Provider.png;;;;;;;;;;;;;;
 CLASS;Sample\BusinessApp\Provider;;;;;;;;;;;;;;
