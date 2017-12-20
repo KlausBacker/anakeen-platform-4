@@ -387,15 +387,11 @@ define([
         },
         downloadFileSelect: function vAttributedownloadFileSelect(widgetEvent, options)
         {
-            var event = {prevent: false};
-
             this.model.trigger("downloadFile", widgetEvent, this.model.id, options);
 
         },
         uploadFileSelect: function vAttributeuploadFileSelect(widgetEvent, options)
         {
-            var event = {prevent: false};
-
             this.model.trigger("uploadFile", widgetEvent, this.model.id, options);
 
         },
@@ -408,12 +404,7 @@ define([
 
         anchorClick: function vAttributeAnchorClick(widgetEvent, options)
         {
-            var internalEvent = {prevent: false};
-
-            this.model.trigger("anchorClick", internalEvent, this.model.id, options);
-            if (internalEvent.prevent) {
-                widgetEvent.preventDefault();
-            }
+            this.model.trigger("anchorClick", widgetEvent, this.model.id, options);
         },
 
         /**

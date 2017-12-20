@@ -559,10 +559,15 @@ define([
                         title: "Unable to save"
                     };
                 }
+
+                this.get("attributes").each(function mDocumentvalidateClearErrorEach(currentAttribute)
+                {
+                    currentAttribute.setErrorMessage(null);
+                });
+
                 this.get("attributes").each(function mDocumentvalidateEach(currentAttribute)
                 {
                     var parentAttribute = currentDocument.get("attributes").get(currentAttribute.get("parent"));
-                    currentAttribute.setErrorMessage(null);
 
                     if (currentAttribute.get("needed") === true) {
                         var currentValue = currentAttribute.get("attributeValue"),
@@ -597,7 +602,6 @@ define([
                             }
                         } else {
                             if ((!currentValue || !currentValue.value) && currentValue.value !== 0) {
-                                currentAttribute.setErrorMessage(i18n.___("Empty value not allowed", "ddui"));
                                 oneSuccess = false;
                             }
                         }
@@ -646,23 +650,6 @@ define([
             }
 
             return undefined;
-        },
-
-        /**
-         * Redraw messages for the error displayed
-         */
-        redrawErrorMessages: function mDocumentredrawErrorMessages()
-        {
-            var attrModels = this.get('attributes') || [];
-            _.each(attrModels.models, function mDocumentredrawErrorMessagesEach(attrModel)
-            {
-                var message = attrModel.get("errorMessage");
-                // redo error after document is show
-                if (message) {
-                    attrModel.setErrorMessage(null);// use double affect to force tooltip redraw
-                    attrModel.setErrorMessage(message);
-                }
-            });
         },
 
         /**
@@ -895,6 +882,10 @@ define([
                 currentModel.listenTo(value, "attributeAfterTabSelect", function mDocumentattributeAfterTabSelect(event, attrid)
                 {
                     currentModel.trigger("attributeAfterTabSelect", event, attrid);
+                });
+                currentModel.listenTo(value, "attributeTabChange", function mDocumentattributeTabChange(event, attrid, $el, data)
+                {
+                    currentModel.trigger("attributeTabChange", event, attrid, $el, data);
                 });
             }
             return Backbone.Model.prototype.set.call(this, keyOrValues, value);
