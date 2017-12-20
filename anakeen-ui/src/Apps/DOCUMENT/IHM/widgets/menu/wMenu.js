@@ -361,7 +361,7 @@ define([
             var freeWidth = 0;
             var barmenuWidth = barMenu.width() - 2;
             var kendoMenu = this.kendoMenuWidget;
-            var $hamburger = $(".menu_element--hamburger");
+            var $hamburger = barMenu.find(".menu_element--hamburger");
             var hiddenItemsCount;
             var visibleItemCount;
             var $hiddenItems = $($hamburger.find("ul").get(0)).find("> li.k-item");

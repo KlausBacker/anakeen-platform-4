@@ -445,6 +445,8 @@
                             this.removeLine(this.options.nbLines - 1, options);
                         }
                         resolve();
+                    } else {
+                        resolve();
                     }
                 } else {
                     resolve();
