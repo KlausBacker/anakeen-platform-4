@@ -920,7 +920,9 @@ define([
         injectCurrentDocJS: function mDocumentInjectCurrentDocJS()
         {
             var allInjectPromises = [],
+                injectPromise = this._promiseCallback(),
                 customJS = _.pluck(this.get("customJS"), "path");
+
             _.each(customJS, function injectElement(currentPath) {
                 allInjectPromises.push((new Promise(function addJs(resolve, reject) {
                     load(currentPath, function addJsDone(err) {
@@ -933,7 +935,10 @@ define([
                 })));
             });
 
-            return Promise.all(allInjectPromises);
+            Promise.all(allInjectPromises).then(injectPromise.success).catch(injectPromise.error);
+
+            return injectPromise.promise;
+
         },
 
         /**
@@ -1027,28 +1032,28 @@ define([
                 success = function onSuccess(values)
                 {
                     var successArguments = values;
-                    if (values && successArguments["arguments"]) {
-                        successArguments = values["arguments"];
+                    if (values && successArguments["promiseArguments"]) {
+                        successArguments = values["promiseArguments"];
                     } else {
                         successArguments = arguments;
                     }
                     if (values && successArguments.documentProperties) {
                         properties = successArguments.documentProperties;
                     }
-                    resolve({documentProperties: properties, arguments: successArguments});
+                    resolve({documentProperties: properties, promiseArguments: successArguments});
                 };
                 error = function onError(values)
                 {
                     var errorArguments = values;
-                    if (values && errorArguments["arguments"]) {
-                        errorArguments = values["arguments"];
+                    if (values && errorArguments["promiseArguments"]) {
+                        errorArguments = values["promiseArguments"];
                     } else {
                         errorArguments = arguments;
                     }
                     if (values && errorArguments.documentProperties) {
                         properties = errorArguments.documentProperties;
                     }
-                    reject({documentProperties: properties, arguments: errorArguments});
+                    reject({documentProperties: properties, promiseArguments: errorArguments});
                 };
             });
 
@@ -1078,16 +1083,16 @@ define([
                 {
                     currentModel.injectCurrentDocJS().then(function mDocument_injectJSDone(values)
                     {
-                        resolve({documentProperties: properties, successArguments: arguments});
+                        resolve({documentProperties: properties, successpromiseArguments: arguments});
                     }, function mDocument_injectJSFail(values)
                     {
-                        reject({documentProperties: properties, arguments: arguments});
-                        currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.arguments));
+                        reject({documentProperties: properties, promiseArguments: arguments});
+                        currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.promiseArguments));
                     });
                 }, function mDocument_onGetStructureFail(values)
                 {
-                    reject({documentProperties: properties, arguments: arguments});
-                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.arguments));
+                    reject({documentProperties: properties, promiseArguments: arguments});
+                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.promiseArguments));
                 });
             });
         },
@@ -1121,11 +1126,11 @@ define([
                     globalCallback.success.apply(currentModelProperties, values);
                 }, function mDocument_loadDocumentFail(values)
                 {
-                    globalCallback.error.apply(currentModelProperties, values);
+                    globalCallback.error.apply(currentModelProperties, (values && values.promiseArguments)?values.promiseArguments:values);
                 });
             }, function mDocument_onFetchDocumentFail(values)
             {
-                globalCallback.error.call(serverProperties, values);
+                globalCallback.error.call(serverProperties, (values && values.promiseArguments)?values.promiseArguments:values);
             });
 
             globalCallback.promise.then(function onPrepareDocumentDone(values)
@@ -1134,14 +1139,14 @@ define([
                     options.success(values);
                 }
                 currentModel.trigger("close", serverProperties);
-                currentModel.trigger.apply(currentModel, _.union(["dduiDocumentReady"], values.arguments));
+                currentModel.trigger.apply(currentModel, _.union(["dduiDocumentReady"], values.promiseArguments));
             }, function onPrepareDocumentFail(values)
             {
                 if (_.isFunction(options.error)) {
                     options.error(values);
                 }
-                if (!(values.arguments && values.arguments[0] && values.arguments[0].eventPrevented)) {
-                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.arguments));
+                if (!(values.promiseArguments && values.promiseArguments[0] && values.promiseArguments[0].eventPrevented)) {
+                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.promiseArguments));
                 }
             });
 
@@ -1299,14 +1304,14 @@ define([
                 if (_.isFunction(options.success)) {
                     options.success();
                 }
-                currentModel.trigger.apply(currentModel, _.union(["dduiDocumentReady"], values.arguments));
+                currentModel.trigger.apply(currentModel, _.union(["dduiDocumentReady"], values.promiseArguments));
             }, function onSaveFail(values)
             {
                 if (_.isFunction(options.error)) {
                     options.error();
                 }
-                if (!(values.arguments && values.arguments[0] && values.arguments[0].eventPrevented)) {
-                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.arguments));
+                if (!(values.promiseArguments && values.promiseArguments[0] && values.promiseArguments[0].eventPrevented)) {
+                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.promiseArguments));
                 }
             });
 
@@ -1356,14 +1361,14 @@ define([
                 if (_.isFunction(options.success)) {
                     options.success();
                 }
-                currentModel.trigger.apply(currentModel, _.union(["dduiDocumentReady"], values.arguments));
+                currentModel.trigger.apply(currentModel, _.union(["dduiDocumentReady"], values.promiseArguments));
             }, function onDeleteFail(values)
             {
                 if (_.isFunction(options.error)) {
                     options.error();
                 }
-                if (!(values.arguments && values.arguments[0] && values.arguments[0].eventPrevented)) {
-                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail", currentModel], values.arguments));
+                if (!(values.promiseArguments && values.promiseArguments[0] && values.promiseArguments[0].eventPrevented)) {
+                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail", currentModel], values.promiseArguments));
                 }
             });
 
@@ -1426,15 +1431,15 @@ define([
                     if (_.isFunction(options.success)) {
                         options.success();
                     }
-                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentReady"], values.arguments));
+                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentReady"], values.promiseArguments));
                 },
                 function mDocument_restoreDocument_onFail(values)
                 {
                     if (_.isFunction(options.error)) {
                         options.error();
                     }
-                    if (!(values.arguments && values.arguments[0] && (values.arguments[0].eventPrevented || values.arguments[0].systemError))) {
-                        currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.arguments));
+                    if (!(values.promiseArguments && values.promiseArguments[0] && (values.promiseArguments[0].eventPrevented || values.promiseArguments[0].systemError))) {
+                        currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.promiseArguments));
                     }
                 }
             );

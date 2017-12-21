@@ -54,7 +54,7 @@ class operators extends DocumentCollection
             $tmpTypedLabel = array();
             $tmpTypedTitle = array();
             $tmpTypeArray = array();
-            $tmpCompatibleTypes = $tmptop["type"];
+            $tmpCompatibleTypes = isset($tmptop["type"])?$tmptop["type"]:null;
             $tmpId = array_search($tmptop, $doccollection->top);
             
             if (is_array($tmpCompatibleTypes)) {

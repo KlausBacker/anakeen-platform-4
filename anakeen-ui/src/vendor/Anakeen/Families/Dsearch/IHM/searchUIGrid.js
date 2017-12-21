@@ -1,6 +1,7 @@
 /*global define*/
 
 
+const _ = require('underscore');
 export default (searchId, $target) =>
 {
     var $r = $.Deferred();
