@@ -387,37 +387,24 @@ define([
         },
         downloadFileSelect: function vAttributedownloadFileSelect(widgetEvent, options)
         {
-            var event = {prevent: false};
+            this.model.trigger("downloadFile", widgetEvent, this.model.id, options);
 
-            this.model.trigger("downloadFile", event, this.model.id, options);
-            if (event.prevent) {
-                widgetEvent.preventDefault();
-            }
         },
         uploadFileSelect: function vAttributeuploadFileSelect(widgetEvent, options)
         {
-            var event = {prevent: false};
+            this.model.trigger("uploadFile", widgetEvent, this.model.id, options);
 
-            this.model.trigger("uploadFile", event, this.model.id, options);
-            if (event.prevent) {
-                widgetEvent.preventDefault();
-            }
         },
         uploadFileDone: function vAttributeuploadFileSEnd(widgetEvent, options)
         {
             var event = {prevent: false};
 
-            this.model.trigger("uploadFileDone", event, this.model.id, options);
+            this.model.trigger("uploadFileDone", widgetEvent, this.model.id, options);
         },
 
         anchorClick: function vAttributeAnchorClick(widgetEvent, options)
         {
-            var internalEvent = {prevent: false};
-
-            this.model.trigger("anchorClick", internalEvent, this.model.id, options);
-            if (internalEvent.prevent) {
-                widgetEvent.preventDefault();
-            }
+            this.model.trigger("anchorClick", widgetEvent, this.model.id, options);
         },
 
         /**

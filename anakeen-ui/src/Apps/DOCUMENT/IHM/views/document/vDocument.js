@@ -51,6 +51,9 @@ define([
             this.listenTo(this.model, 'displayNetworkError', this.displayNetworkError);
             this.listenTo(this.model, 'actionAttributeLink', this.doStandardAction);
             this.listenTo(this.model, 'loadDocument', this.loadDocument);
+            this.listenTo(this.model, 'redrawErrorMessages', this.redrawTootips);
+            this.listenTo(this.model, 'doSelectTab', this.selectTab);
+            this.listenTo(this.model, 'doDrawTab', this.drawTab);
             this.listenTo(this.model, 'dduiDocumentReady', this.cleanAndRender);
             this.listenTo(this.model, 'dduiDocumentDisplayView', this.showView);
         },
@@ -259,6 +262,12 @@ define([
                             this._dcpNotFirstactivate = true;
                         }
                     },
+                    "select": function vDocumentKendoSelectTab(event) {
+                        var tabId = $(event.item).data("attrid");
+                        var tab=currentView.model.get("attributes").get(tabId);
+                        tab.isRealSelected=true;
+                        tab.trigger("attributeBeforeTabSelect", event, tabId);
+                    },
                     show: function vDocumentShowTab(event) {
                         var tabId = $(event.item).data("attrid");
                         var scrollY = $(window).scrollTop();
@@ -272,9 +281,7 @@ define([
                             if (currentView && currentView.model && currentView.model.get("attributes")) {
                                 var tab = currentView.model.get("attributes").get(tabId);
                                 if (tab) {
-                                    // Hide parasite tooltip if any
-                                    currentView.$el.find("[aria-describedby*='tooltip']").tooltip("hide");
-                                    tab.trigger("showTab");
+                                    tab.trigger("showTab", event);
                                     _.each(viewMenus, function (viewMenu) {
                                         viewMenu.refresh();
                                     });
@@ -325,10 +332,10 @@ define([
             $(window.document).on("drop.v" + this.model.cid + " dragover." + this.model.cid, function vDocumentPreventDragDrop(e) {
                 e.preventDefault();
             }).on("redrawErrorMessages.v" + this.model.cid, function vDocumentRedrawErrorMessages() {
-                documentView.model.redrawErrorMessages();
+                documentView.redrawTootips();
             });
             $(window).on("resize.v" + this.model.cid, _.debounce(function vDocumentResizeDebounce() {
-                documentView.model.redrawErrorMessages();
+                documentView.redrawTootips();
                 documentView.scrollTobVisibleTab();
             }, 100, false));
 
@@ -363,6 +370,23 @@ define([
             }, 500);
 
             return this;
+        },
+
+        selectTab: function VDocumentSelectTab(tabId) {
+            if (tabId) {
+                if (! Number.isInteger(tabId)) {
+                    tabId=this.$el.find('li.dcpTab__label[data-attrid="'+tabId+'"]');
+                }
+                this.kendoTabs.data("kendoTabStrip").select(tabId);
+            }
+        },
+        drawTab: function VDocumentDrawTab(tabId) {
+            if (tabId) {
+                var tab = this.model.get("attributes").get(tabId);
+                if (tab) {
+                     tab.trigger("showTab", event);
+                }
+            }
         },
 
         resizeForFooter: function vDocumentresizeForFooter() {
@@ -487,6 +511,22 @@ define([
                 }
             }
 
+        },
+        /**
+         * Redraw messages for the error displayed
+         * Change placement of tooltips
+         */
+        redrawTootips: function vDocumentredrawTootips()
+        {
+            var $tooltips=$(".tooltip:visible");
+
+            $tooltips.each(function () {
+                var bTooltip=$(this).data("bs.tooltip");
+                if (bTooltip) {
+                    bTooltip.hide();
+                    bTooltip.show();
+                }
+            });
         },
         /**
          * Add menu if needed in topFix placement tab
@@ -1125,7 +1165,7 @@ define([
             this.$el.find(".dcpDocument--disabled").remove();
             this.trigger("loaderHide");
             this.$el.show();
-            this.model.redrawErrorMessages();
+            this.redrawTootips();
         },
 
         /**

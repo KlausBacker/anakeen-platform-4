@@ -31,7 +31,7 @@ define([
             this.listenTo(this.model, 'show', this.show);
             this.listenTo(this.model, 'haveView', this._identifyView);
             this.initializeContent = options.initializeContent;
-            this.initialized = false;
+            this.initializing = false;
             this.options = options;
         },
 
@@ -50,29 +50,37 @@ define([
                     return value.isDisplayable();
                 });
 
-                if (!hasOneContent || !currentView.initializeContent) {
+                if (!hasOneContent) {
                     currentView.$el.append(currentView.model.getOption('showEmptyContent'));
                     currentView.$el.removeClass("dcpTab__content--loading");
                     currentView.model.trigger("renderDone", {model: currentView.model, $el: currentView.$el});
                     currentView.propageShowTab();
                     resolve(currentView);
                 } else {
-                    currentView.renderContent().then(function vTabContentRender_renderContent() {
+
+                    if (currentView.initializeContent === true) {
+                        currentView.renderContent().then(function vTabContentRender_renderContent()
+                        {
+                            resolve(currentView);
+                        });
+                    } else {
                         resolve(currentView);
-                    });
+                    }
                 }
             }, this)));
 
         },
 
-        renderContent: function vTabContentRenderContent(options) {
+        renderContent: function vTabContentRenderContent(event)
+        {
             var currentView = this;
-            return (new Promise(_.bind(function vTabContentRenderContent_Promise(resolve, reject) {
+            var pTabRenderPromise= (new Promise(_.bind(function vTabContentRenderContent_Promise(resolve, reject) {
                 var customRender,
                     $content = currentView.$el,
                     model = currentView.model,
                     promisesFrame = [];
-                if (currentView.initialized === false) {
+                if (currentView.initializing === false) {
+                    currentView.initializing = true;
                     currentView.$el.empty();
                     if (currentView.originalView !== true) {
                         if (currentView.model.getOption("template")) {
@@ -84,7 +92,8 @@ define([
                     if (currentView.customView) {
                         $content.append(currentView.customView);
                     } else {
-                        currentView.model.get("content").each(function vTabContentRenderContent(currentAttr) {
+                        currentView.model.get("content").each(function vTabContentRenderContent(currentAttr)
+                        {
                             var view;
                             try {
                                 if (!currentAttr.isDisplayable()) {
@@ -115,17 +124,28 @@ define([
                     Promise.all(promisesFrame).then(function tabAllFramesRenderDone() {
                         currentView.$el.removeClass("dcpTab__content--loading");
                         currentView.model.trigger("renderDone", {model: currentView.model, $el: currentView.$el});
-                        currentView.initialized = true;
+
                         resolve();
                     }).catch(reject);
 
+                } else {
+                    resolve();
                 }
-                $(window.document).trigger("redrawErrorMessages");
+                currentView.model.getDocumentModel().trigger("redrawErrorMessages");
                 currentView.model.get("content").propageEvent('resize');
             }, this)));
+
+            pTabRenderPromise.then(function () {
+                if (currentView.model.isRealSelected) {
+                    currentView.model.trigger("attributeAfterTabSelect", event, currentView.model.id);
+                    currentView.model.isRealSelected=false;
+                }
+            });
+
+            return pTabRenderPromise;
+
         },
-
-
+  
         /**
          * Add responsive column classes according to responsiveColumns render option
          */
@@ -188,7 +208,6 @@ define([
             $(window).on("resize.v"+this.model.cid, setResponsiveClasse);
             _.defer(setResponsiveClasse);
         },
-
         propageShowTab: function vTabContentPropageShowTab()
         {
             this.model.get("content").propageEvent('showTab');

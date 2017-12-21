@@ -290,7 +290,7 @@ define([
             } else {
                 $contentElement.slideToggle(200);
                 if ($contentElement.hasClass("dcpFrame__content--open")) {
-                    this.model.getDocumentModel().redrawErrorMessages();
+                    this.model.getDocumentModel().trigger("redrawErrorMessages");
                 }
             }
         },
