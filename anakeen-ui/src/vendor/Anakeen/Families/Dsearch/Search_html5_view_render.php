@@ -16,22 +16,16 @@ class Search_html5_view_render extends \Dcp\Ui\DefaultView {
 
     public function getJsReferences(\Doc $document=null){
 
-        $js=parent::getJsReferences($document);
+        $js = parent::getJsReferences($document);
 
-        $js["searchUIEventView"]="uiAssets/Families/dsearch/searchUIEventView.js";
-        $js["searchUIEventEdit"]="uiAssets/Families/dsearch/searchUIEventEdit.js";
+        $ws = \Dcp\UI\UIGetAssetPath::getWs();
+        $js["smartElementGrid"] = \Dcp\UI\UIGetAssetPath::getJSSmartElementGridPath();
+        $js["dSearch"] = 'uiAssets/Families/dsearch/prod/dsearch.js?ws='.$ws;
+        if (\Dcp\UI\UIGetAssetPath::isInDebug()) {
+            $js["dSearch"] = 'uiAssets/Families/dsearch/debug/dsearch.js?ws='.$ws;
+        }
 
         return $js;
-    }
-
-    public function getCssReferences(\Doc $document=null){
-
-        $css=parent::getJsReferences($document);
-
-        $css["searchEditStyle"] = "uiAssets/Families/dsearch/searchRender.css";
-        $css["docGridStyle"] = "DOCUMENT_GRID_HTML5/widgets/docGrid.css";
-
-        return $css;
     }
 
     public function getMenu(\Doc $document){
