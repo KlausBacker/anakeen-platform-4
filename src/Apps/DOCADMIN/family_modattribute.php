@@ -38,8 +38,8 @@ function familyModAttribute(Action & $action)
         return;
     }
     
-    $family = new_Doc($action->dbaccess, $famid);
-    if (!$family->isAlive()) {
+    $family = Dcp\Core\DocManager::getFamily($famid);
+    if (!$family) {
         $action->exitError(sprintf(___("document %s not found", "docadmin") , $famid));
     } elseif ($family->doctype != 'C') {
         $action->exitError(sprintf(___("document %s is not a family", "docadmin") , $family->getTitle()));
@@ -184,9 +184,9 @@ function familyModAttribute(Action & $action)
         }
         
         if ($isNewAttribute) {
-            $family->addHistoryEntry(sprintf(___("Add Attribute \"%s\" ", "docadmin") , $attrid) , HISTO_INFO, "MODATTR");
+            $family->addHistoryEntry(sprintf(___("Add Attribute \"%s\" ", "docadmin") , $attrid) , DocHisto::INFO, "MODATTR");
         } else {
-            $family->addHistoryEntry(sprintf(___("Modify Attribute \"%s\" ", "docadmin") , $attrid) , HISTO_INFO, "MODATTR");
+            $family->addHistoryEntry(sprintf(___("Modify Attribute \"%s\" ", "docadmin") , $attrid) , DocHisto::INFO, "MODATTR");
         }
     } else {
         header('HTTP/1.0 400 Error');
