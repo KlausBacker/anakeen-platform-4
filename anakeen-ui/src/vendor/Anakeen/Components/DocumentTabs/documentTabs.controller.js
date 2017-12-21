@@ -172,16 +172,17 @@ export default {
             },
 
             setTabstripPagination: () => {
-                const paginatorWidth = this.$(this.$refs.tabsPaginator).outerWidth(true);
+                const paginatorWidth = this.$(this.$refs.tabsTools).outerWidth(true);
                 let marginRight = paginatorWidth || 0;
-                const prev = this.tabstripEl.find('.k-tabstrip-prev');
+                // let marginLeft = 0;
+                // const prev = this.tabstripEl.find('.k-tabstrip-prev');
                 const next = this.tabstripEl.find('.k-tabstrip-next');
-                if (prev.length && next.length) {
+                if (/*prev.length && */next.length) {
                     const nextWidth = next.outerWidth(true);
-                    const prevWidth = prev.outerWidth(true);
+                    // const prevWidth = prev.outerWidth(true);
                     next.css('right', `${paginatorWidth}px`);
-                    prev.css('right', `${paginatorWidth + nextWidth}px`);
-                    marginRight = marginRight + prevWidth + nextWidth;
+                    // prev.css('right', `${paginatorWidth + nextWidth}px`);
+                    marginRight += nextWidth;
                 }
 
                 this.tabstrip.tabGroup.css('margin-right', `${marginRight}px`);

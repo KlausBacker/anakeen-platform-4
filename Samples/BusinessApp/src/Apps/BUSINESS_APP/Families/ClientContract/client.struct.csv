@@ -1,5 +1,5 @@
 //;héritage;titre;id;class;name;;;;;;;;;;
-BEGIN;;Dossier client;;;BA_CLIENT_CONTRACT;;;;;;;;;;
+BEGIN;;Contrats clients;;;BA_CLIENT_CONTRACT;;;;;;;;;;
 ;;;;;;;;;;;;;;;
 ICON;BA_Client.png;;;;;;;;;;;;;;
 CLASS;Sample\BusinessApp\Client;;;;;;;;;;;;;;

@@ -1,20 +1,19 @@
 <template>
-    <div class="reportingTab__wrapper">
+    <div class="reportingTab__wrapper" ref="wrapper">
+        <h1 class="reportingTab__title">Dépenses pour l'année {{year}}</h1>
         <div class="reportingTab__chart" ref="chart"></div>
         <div class="reportingTab__categories">
             <table class="reportingTab__categories__table table-bordered table table-hover">
                 <thead>
                     <tr>
                         <th>Catégories</th>
-                        <th>Fournisseur</th>
                         <th>Montant</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Logement</td>
-                        <td>Toto</td>
-                        <td>122 €</td>
+                    <tr v-for="cat in categoriesArray">
+                        <td>{{cat.name}}</td>
+                        <td>{{cat.amount}} €</td>
                     </tr>
                 </tbody>
             </table>

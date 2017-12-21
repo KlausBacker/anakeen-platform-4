@@ -3,3 +3,24 @@
 .dcpAttribute__content--longtext {
     text-align: justify;
 }
+
+.dcpAttribute__content[data-type=money] .k-select .k-link-increase .k-icon {
+    font-size: .9rem;
+}
+
+.dcpAttribute__content[data-type=money] .k-select .k-link-decrease .k-icon {
+    font-size: .9rem;
+}
+
+
+.dcpAttribute__content[data-type=money] .k-select .k-link-increase .k-icon::before {
+    content: "\e11e";
+}
+
+.dcpAttribute__content[data-type=money] .k-select .k-link-decrease .k-icon::before {
+    content: "\e121";
+}
+
+.dcpNotifications {
+    display: none;
+}

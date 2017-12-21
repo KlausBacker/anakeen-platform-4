@@ -17,6 +17,8 @@ namespace Dcp\AttributeIdentifiers {
 		const fee_fr_info='fee_fr_info';
 		/** [docid("BA_RH_DIR")] Personne */
 		const fee_person='fee_person';
+		/** [account] Compte utilisateur */
+		const fee_account='fee_account';
 		/** [date] Période */
 		const fee_period='fee_period';
 		/** [money] Avance */

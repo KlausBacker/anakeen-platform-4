@@ -21,11 +21,11 @@ msgstr "Déposée"
 
 #. _COMMENT: Sample\BusinessApp\WFees (fees.workflow.php)
 msgid "e_ba_integrated"
-msgstr "Intégrée"
+msgstr "Remboursée"
 
 #. _COMMENT: Sample\BusinessApp\WFees (fees.workflow.php)
 msgid "e_ba_integrating"
-msgstr "En intégration"
+msgstr "En cours de remboursement"
 
 #. _COMMENT: Sample\BusinessApp\WFees (fees.workflow.php)
 msgid "e_ba_validated"
@@ -41,7 +41,7 @@ msgstr "En rédaction"
 
 #. _COMMENT: Sample\BusinessApp\WFees (fees.workflow.php)
 msgid "t_ba_integrate"
-msgstr "Intégrer"
+msgstr "Rembourser"
 
 #. _COMMENT: Sample\BusinessApp\WFees (fees.workflow.php)
 msgid "t_ba_send"
@@ -49,4 +49,4 @@ msgstr "Envoyer en validation"
 
 #. _COMMENT: Sample\BusinessApp\WFees (fees.workflow.php)
 msgid "t_ba_valid"
-msgstr "Valider pour intégration"
+msgstr "Valider pour remboursement"

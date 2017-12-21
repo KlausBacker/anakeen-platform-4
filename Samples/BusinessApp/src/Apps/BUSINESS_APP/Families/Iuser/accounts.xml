@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accounts date="2017-12-18T16:16:01">
+  <roles>
+    <role id="11">
+      <reference>role5a37d9994267e</reference>
+      <displayName>Utilisateur Business App</displayName>
+      <document family="ROLE">
+        <role title="Utilisateur Business App" revision="0" modification-date="2017-12-18T16:07:05" version="" state=""/>
+      </document>
+    </role>
+    <role id="12">
+      <reference>role5a37d9a83cb3e</reference>
+      <displayName>Directeur Business App</displayName>
+      <document family="ROLE">
+        <role title="Directeur Business App" revision="0" modification-date="2017-12-18T16:07:20" version="" state=""/>
+      </document>
+    </role>
+    <role id="13">
+      <reference>role5a37d9b6b1617</reference>
+      <displayName>Comptable Business App</displayName>
+      <document family="ROLE">
+        <role title="Comptable Business App" revision="0" modification-date="2017-12-18T16:07:34" version="" state=""/>
+      </document>
+    </role>
+  </roles>
+  <groups>
+    <group id="2">
+      <reference>all</reference>
+      <displayName>Utilisateurs</displayName>
+      <document family="IGROUP">
+        <igroup name="GDEFAULT" title="Utilisateurs" revision="0" modification-date="2017-12-18T16:13:09" version="" state=""/>
+      </document>
+    </group>
+    <group id="14">
+      <reference>grp_users_ba</reference>
+      <displayName>Utilisateurs Business App</displayName>
+      <associatedRoles reset="false">
+        <associatedRole reference="role5a37d9994267e"/>
+      </associatedRoles>
+      <parentGroups reset="false">
+        <parentGroup reference="all"/>
+      </parentGroups>
+      <document family="IGROUP">
+        <igroup title="Utilisateurs Business App" revision="0" modification-date="2017-12-18T16:13:08" version="" state=""/>
+      </document>
+    </group>
+    <group id="15">
+      <reference>grp_direction_ba</reference>
+      <displayName>Direction</displayName>
+      <associatedRoles reset="false">
+        <associatedRole reference="role5a37d9a83cb3e"/>
+      </associatedRoles>
+      <parentGroups reset="false">
+        <parentGroup reference="grp_users_ba"/>
+      </parentGroups>
+      <document family="IGROUP">
+        <igroup title="Direction" revision="0" modification-date="2017-12-18T16:11:53" version="" state=""/>
+      </document>
+    </group>
+    <group id="16">
+      <reference>grp_compta_ba</reference>
+      <displayName>Comptabilité</displayName>
+      <associatedRoles reset="false">
+        <associatedRole reference="role5a37d9b6b1617"/>
+      </associatedRoles>
+      <parentGroups reset="false">
+        <parentGroup reference="grp_users_ba"/>
+      </parentGroups>
+      <document family="IGROUP">
+        <igroup title="Comptabilité" revision="0" modification-date="2017-12-18T16:13:08" version="" state=""/>
+      </document>
+    </group>
+  </groups>
+</accounts>

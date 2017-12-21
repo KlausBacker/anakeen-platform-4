@@ -19,35 +19,6 @@ window.dcp.document.documentController(
             var index = $(event.item).index();
             var selectedMarker = markers[index];
             selectedMarker.openPopup();
-            var position = selectedMarker.getLatLng();
-            var date = $(_this).documentController('getValue', 'fee_exp_file_date')[index].displayValue;
-            $.ajax({
-                dataType: 'json',
-                success: function (data) {
-                    $('#fee-exp-file-address-value, #fee-exp-file-date-value').fadeOut(function () {
-                        if (data && data.address) {
-                            var address = data.address.building + ', ' + data.address.road + '<br/>' +
-                                data.address.postcode + ' ' +  data.address.town + ', ' + data.address.country;
-                            $('#fee-exp-file-address-value').html(address).fadeIn();
-                        } else if (data.display_name) {
-                            $('#fee-exp-file-address-value').text(data.display_name).fadeIn();
-                        } else {
-                            $('#fee-exp-file-address-value').text('Non renseigné').fadeIn();
-                        }
-
-                        if (date) {
-                            $('#fee-exp-file-date-value').text(date).fadeIn(50);
-                        }
-                    });
-                },
-
-                error: function (xhr, status, error) {
-                    console.error(status, error);
-                },
-
-                url: 'http://nominatim.openstreetmap.org/reverse?format=json&lat=' + position.lat + '&lon=' + position.lng,
-
-            });
         };
 
         var tabstrip = $('#fees-expenses-viztabstrip').kendoTabStrip({
