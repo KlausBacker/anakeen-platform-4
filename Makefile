@@ -28,7 +28,7 @@ app:
 	rm -f user-interfaces-*.app
 	yarn install
 	make -f pojs.make compile
-	yarn buildAsset && yarn build
+	yarn buildAsset && yarn build && yarn buildFamily
 	cd anakeen-ui/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; composer install
 	-mkdir -p $(localpub)/webinst
 	rsync --delete -azvr anakeen-ui $(localpub)/webinst/
