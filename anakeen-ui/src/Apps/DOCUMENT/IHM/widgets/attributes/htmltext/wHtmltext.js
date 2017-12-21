@@ -109,7 +109,7 @@
             }
             return {
                 language: locale.substring(0, 2),
-                contentsCss: ['css/a4/document/ckeditor.css'],
+                contentsCss: ['css/ank/document/ckeditor.css'],
                 removePlugins: 'elementspath', // no see HTML path elements
                 toolbarCanCollapse: true,
                 entities: false, // no use HTML entities

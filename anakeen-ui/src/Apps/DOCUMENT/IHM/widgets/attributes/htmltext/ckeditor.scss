@@ -1,4 +1,21 @@
+@import "../../../../../../STYLE/DDUI/dduiAssets/scss/corporate/variables.corporate";
+
+html {
+  font-size: $ank-ui-font-size;
+}
+
 body {
-  margin: 0;
+  margin: 0.5rem;
   background-color: transparent;
+  /* Font */
+  font-family: $ank-ui-font;
+
+  /* Text color */
+  color: $ank-ui-color-text;
+  line-height: 1.2;
+}
+
+a {
+  color: $ank-ui-color-link;
+  text-decoration: none;
 }

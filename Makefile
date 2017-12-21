@@ -31,7 +31,7 @@ app:
 	yarn buildAsset && yarn build
 	cd anakeen-ui/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; composer install
 	-mkdir -p $(localpub)/webinst
-	rsync --delete -azvr --exclude 'node_modules' anakeen-ui $(localpub)/webinst/
+	rsync --delete -azvr anakeen-ui $(localpub)/webinst/
 	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/webinst/anakeen-ui/build.json $(localpub)/webinst/anakeen-ui/src/Apps/DOCUMENT/DOCUMENT_init.php
 	php ./anakeen-devtool.phar generateWebinst -s $(localpub)/webinst/anakeen-ui/ -o .
 
