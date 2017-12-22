@@ -8,6 +8,12 @@ export default {
             type: String,
             default: 'CORE/Images/anakeen-logo.svg',
         },
+        smartStructureName: {
+            default: '',
+        },
+        label: {
+            default: '',
+        },
     },
 
     created() {
@@ -148,6 +154,14 @@ export default {
             this.privateScope.initKendo();
             this.privateScope.replaceTopPagerButton();
             this.$kendo.ui.progress(this.$(this.$refs.wrapper), false);
+
+            if (this.smartStructureName) {
+                this.setCollection({
+                    initid: this.smartStructureName,
+                    html_label: this.label,
+                    ref: this.smartStructureName,
+                });
+            }
         };
 
         if (document.readyState === 'loading') {
@@ -155,6 +169,7 @@ export default {
         } else {
             ready();
         }
+
     },
 
     data() {

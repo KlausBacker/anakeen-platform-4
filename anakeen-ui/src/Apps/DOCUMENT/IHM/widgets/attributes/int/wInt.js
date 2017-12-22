@@ -45,7 +45,7 @@
             this.element.addClass("dcpAttribute__content");
             this.element.attr("data-type", this.getType());
             this.element.attr("data-attrid", this.options.id);
-            if (parseFloat(this.options.attributeValue.displayValue) === parseFloat(this.options.attributeValue.value)) {
+            if (this._stringToFloat(this.options.attributeValue.displayValue) === parseFloat(this.options.attributeValue.value)) {
                 this.options.attributeValue.displayValue = this.formatNumber(this.options.attributeValue.value);
             }
 
@@ -81,6 +81,13 @@
             }
         },
 
+        _stringToFloat: function (text) {
+            if (typeof text === "string") {
+                return parseFloat(text.replace(" ", "").replace(",", "."));
+            }
+            return parseFloat(text);
+        },
+
         setValue: function wIntSetValue(value)
         {
             // this._super.(value);
@@ -91,7 +98,7 @@
             if (_.has(value, "value") && !_.has(value, "displayValue")) {
                 value.displayValue = this.formatNumber(value.value);
             } else {
-                if (parseFloat(value.displayValue) === parseFloat(value.value)) {
+                if (this._stringToFloat(value.displayValue) === parseFloat(value.value)) {
                     value.displayValue = this.formatNumber(value.value);
                 }
             }

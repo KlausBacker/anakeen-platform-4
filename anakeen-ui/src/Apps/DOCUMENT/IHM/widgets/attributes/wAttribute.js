@@ -198,7 +198,11 @@
          */
         getContentElements: function wAttributeGetContentElements()
         {
-            return this.element.find('.dcpAttribute__value[name="' + this.options.id + '"]');
+            if (this.getMode() === "read") {
+                return this.element.find('.dcpAttribute__value[data-attrid="' + this.options.id + '"] .dcpAttribute__content__value');
+            } else {
+                return this.element.find('.dcpAttribute__value[name="' + this.options.id + '"]');
+            }
         },
 
         /**

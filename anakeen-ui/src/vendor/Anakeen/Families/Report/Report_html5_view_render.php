@@ -36,7 +36,7 @@ class Report_html5_view_render extends Search_html5_view_render {
     public function getJsReferences(\Doc $document = null)
     {
         $js= parent::getJsReferences($document);
-        $js["stickyTable"]="uiAssets/Families/dsearch/jquery.stickytableheaders.min.js";
+
         return $js;
     }
 }

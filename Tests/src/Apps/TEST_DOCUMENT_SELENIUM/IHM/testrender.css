@@ -1,5 +1,6 @@
 html, body {
     height:100vh;
+    font-size:12px;
 }
 
 body {
@@ -12,7 +13,7 @@ body {
 .systemLeft {
     flex-grow: 0;
     overflow:auto;
-    width:20em;
+    width:28em;
     box-shadow: 10px 10px 10px 0px #297d2c;
     margin: 1em;
 }
@@ -35,4 +36,8 @@ body {
     text-align: left;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.documentsList__documents__search > .input-group {
+    width: inherit;
 }
