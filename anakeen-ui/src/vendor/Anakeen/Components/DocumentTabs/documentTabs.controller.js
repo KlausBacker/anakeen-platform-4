@@ -11,7 +11,7 @@ const Constants = {
     WELCOME_TAB_ID: 'welcome_tab_id',
     NEW_TAB_ID: 'new_tab_id',
     LAZY_TAB_ID: 'lazy_tab_id',
-    CUSTOM_TAB_ID: 'custom_tab_id'
+    CUSTOM_TAB_ID: 'custom_tab_id',
 };
 export default {
     mixins: [abstractAnakeenComponent],
@@ -195,7 +195,7 @@ export default {
                     contentTemplate: welcomeTemplateContent,
                     data: {
                         user: this.currentUser.firstName,
-                        welcomeMessage: 'bienvenue sur Business App.',
+                        welcomeMessage: 'bienvenue sur xPs Business App.',
                         promptMessage: 'Que voulez-vous faire ?',
                         collections: JSON.stringify(this.collections),
                         title: 'Bienvenue',

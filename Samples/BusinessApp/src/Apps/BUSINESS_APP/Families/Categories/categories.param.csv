@@ -1,0 +1,12 @@
+//FAM;"Profil de document(PDOC)";<specid>;<fldid>;Titre;Description;"Famille (id)";Famille
+ORDER;PDOC;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam
+DOC;PDOC;PDOC_CATEGORIES;;"Pour Création du document de Dépenses Maximales";;;
+//BEGIN;"Parent family";"Family title";;;"Family name"
+BEGIN;;;;;BA_CATEGORIES
+PROFID;BA_CATEGORIES
+CPROFID;PDOC_CATEGORIES
+//PARAM;Id;Parent;Label;isTitle;isAbstract;Type;Order;Visibility;Needed;Link;PhpFile;PhpFunc;Elink;Constraint;Options
+END;;;;;
+//PROFIL;Id;AccountType;Reset;Access
+PROFIL;BA_CATEGORIES;:useAccount;;view=role5a37d9994267e;viewacl=role5a37d9994267e
+PROFIL;PDOC_CATEGORIES;:useAccount;;view=role5a37d9994267e;edit=role5a37d9a83cb3e;edit=role5a37d9b6b1617

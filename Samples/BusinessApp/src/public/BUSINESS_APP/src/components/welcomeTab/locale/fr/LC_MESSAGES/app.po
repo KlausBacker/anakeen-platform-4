@@ -53,7 +53,6 @@ msgid "Consultation date"
 msgstr "Date de consultation"
 
 #: Samples/BusinessApp/src/public/BUSINESS_APP/src/components/welcomeTab/welcomeTab.controller.js:143
-#, fuzzy
 msgctxt "WelcomeTab"
 msgid "No recent consultations"
 msgstr "Aucune consultation récente"

@@ -1,21 +1,23 @@
 <?php
 namespace Dcp\Family {
-	/** Note de frais  */
+	/** Notes de frais  */
 	class Ba_fees extends \Sample\BusinessApp\Fees { const familyName="BA_FEES";}
 	/** Cycle Notes de frais  */
 	class Ba_wfees extends \Sample\BusinessApp\WFees { const familyName="BA_WFEES";}
 }
 
 namespace Dcp\AttributeIdentifiers {
-	/** Note de frais  */
+	/** Notes de frais  */
 	class Ba_fees {
 		/** [frame] Preview */
 		const fee_fr_preview='fee_fr_preview';
 		/** [file] Preview template */
 		const fee_preview_template='fee_preview_template';
+		/** [docid(""BA_CATEGORIES"")] Dépenses Maximales */
+		const fee_limit_values='fee_limit_values';
 		/** [frame] Informations */
 		const fee_fr_info='fee_fr_info';
-		/** [docid("BA_RH_DIR")] Personne */
+		/** [docid("BA_RH_DIR")] Bénéficiaire */
 		const fee_person='fee_person';
 		/** [account] Compte utilisateur */
 		const fee_account='fee_account';
@@ -43,7 +45,7 @@ namespace Dcp\AttributeIdentifiers {
 		const fee_exp_nature='fee_exp_nature';
 		/** [money] Montant HT */
 		const fee_exp_pretax='fee_exp_pretax';
-		/** [text] Taux TVA */
+		/** [enum] Taux TVA */
 		const fee_exp_tva='fee_exp_tva';
 		/** [money] Montant TTC */
 		const fee_exp_tax='fee_exp_tax';
@@ -55,9 +57,9 @@ namespace Dcp\AttributeIdentifiers {
 		const fee_exp_file_lat='fee_exp_file_lat';
 		/** [double] Longitude */
 		const fee_exp_file_lng='fee_exp_file_lng';
-		/** [tab] Visualisation géographique des dépenses */
+		/** [tab] Visualisation de chaque dépense */
 		const fee_tab_viz='fee_tab_viz';
-		/** [frame] Visualisation géographique des dépenses */
+		/** [frame] Visualisation de chaque dépense */
 		const fee_fr_viz='fee_fr_viz';
 		/** [text]  */
 		const fee_viz_title='fee_viz_title';

@@ -1,11 +1,11 @@
 <?php
 namespace Dcp\Family {
-	/** Contrat client  */
+	/** Contrats clients  */
 	class Ba_client_contract extends \Sample\BusinessApp\Client { const familyName="BA_CLIENT_CONTRACT";}
 }
 
 namespace Dcp\AttributeIdentifiers {
-	/** Contrat client  */
+	/** Contrats clients  */
 	class Ba_client_contract {
 		/** [frame] Identification */
 		const cli_fr_ident='cli_fr_ident';

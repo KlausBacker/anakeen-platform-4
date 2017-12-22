@@ -1,11 +1,11 @@
 <?php
 namespace Dcp\Family {
-	/** Contrat Fournisseur  */
+	/** Contrats Fournisseurs  */
 	class Ba_provider_contract extends \Sample\BusinessApp\Provider { const familyName="BA_PROVIDER_CONTRACT";}
 }
 
 namespace Dcp\AttributeIdentifiers {
-	/** Contrat Fournisseur  */
+	/** Contrats Fournisseurs  */
 	class Ba_provider_contract {
 		/** [frame] Identification */
 		const pro_fr_ident='pro_fr_ident';

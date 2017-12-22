@@ -1,0 +1,23 @@
+//FAM;"Profil de document(PDOC)";<specid>;<fldid>;Titre;Description;"Famille (id)";Famille
+ORDER;PDOC;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam
+DOC;PDOC;pdoc_fees;;"Profil des documents Notes de frais";;BA_FEES;"Note de frais"
+//FAM;"Profil de famille(PFAM)";<specid>;<fldid>;Titre;Description;"Famille (id)";Famille
+ORDER;PFAM;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam
+DOC;PFAM;pfam_fees;;"Profil de Notes de frais";;;
+//BEGIN;"Parent family";"Family title";;;"Family name"
+BEGIN;;;;;BA_FEES
+PROFID;pfam_fees
+CPROFID;pdoc_fees
+//PARAM;Id;Parent;Label;isTitle;isAbstract;Type;Order;Visibility;Needed;Link;PhpFile;PhpFunc;Elink;Constraint;Options
+PARAM;fee_fr_preview;;Preview;N;N;frame;::auto;W;N;;;;;;
+PARAM;fee_preview_template;fee_fr_preview;"Preview template";N;N;file;::auto;W;N;;;;;;
+PARAM;fee_limit_values;fee_fr_preview;"Dépenses Maximales";N;N;"docid(""""BA_CATEGORIES"""")";::auto;W;N;;;;;;
+//DEFAULT;Id;"Default Value"
+DEFAULT;fee_exp_tva;"Non calculé"
+//INITIAL;Id;"Initial value"
+INITIAL;fee_preview_template;application/vnd.oasis.opendocument.text|1170013321|template.odt
+INITIAL;fee_limit_values;BA_DOC_CATEGORIES
+END;;;;;
+//PROFIL;Id;AccountType;Reset;Access
+PROFIL;pdoc_fees;:useAccount;;view=role5a37d9994267e;edit=role5a37d9994267e;delete=role5a37d9994267e;send=role5a37d9994267e;viewacl=role5a37d9994267e
+PROFIL;pfam_fees;:useAccount;;view=role5a37d9994267e;create=role5a37d9994267e;icreate=role5a37d9994267e;viewacl=role5a37d9994267e

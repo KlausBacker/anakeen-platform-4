@@ -8,6 +8,7 @@
 
 namespace Anakeen\Sample\Routes;
 
+use Dcp\HttpApi\V1\Crud\DocumentUtils;
 use Dcp\HttpApi\V1\Crud\FamilyDocumentCollection;
 use Dcp\HttpApi\V1\DocManager\DocManager;
 use Dcp\Core\ContextManager;
@@ -61,6 +62,7 @@ class DocumentsList extends FamilyDocumentCollection
         $return["resultMax"] = $this->_searchDoc->onlyCount();
         $return['paginationState'] = $this->getPaginationState();
         $return['user'] = ["id"=>intval(ContextManager::getCurrentUser()->id), "fid"=>intval(ContextManager::getCurrentUser()->fid)];
+        $return['debug'] = $this->_searchDoc->getSearchInfo();
         return $return;
     }
 
@@ -92,15 +94,45 @@ class DocumentsList extends FamilyDocumentCollection
         throw $exception;
     }
 
-    protected function prepareSearchDoc()
+    public function setUrlParameters(Array $array)
     {
-        parent::prepareSearchDoc();
+        $this->urlParameters = $array;
+        $familyId = isset($this->urlParameters["familyId"]) ? $this->urlParameters["familyId"] : false;
+        if ($familyId === 'BA_FEES_TO_VALIDATE' || $familyId === 'BA_FEES_TO_INTEGRATE') {
+            $familyId = 'BA_FEES';
+        }
+        DocumentUtils::checkFamilyId($familyId, "families/%s/documents/");
+        $this->_family = DocManager::getFamily($familyId);
+        if (!$this->_family) {
+            $exception = new Exception("CRUD0200", $familyId);
+            $exception->setHttpStatus("404", "Family not found");
+            throw $exception;
+        }
+    }
+
+    protected function prepareSearchDoc() {
+
+        if ($this->urlParameters['familyId'] === 'BA_FEES_TO_VALIDATE') {
+            $this->_searchDoc = new \SearchDoc("", "BA_FEES");
+            $this->_searchDoc->addFilter("state = 'e_ba_filled'");
+        } elseif ($this->urlParameters['familyId'] === 'BA_FEES_TO_INTEGRATE') {
+            $this->_searchDoc = new \SearchDoc("", "BA_FEES");
+            $this->_searchDoc->addFilter("state = 'e_ba_validated'");
+        } else {
+            $this->_searchDoc = new \SearchDoc("", $this->_family->name);
+        }
+        $this->_searchDoc->setObjectReturn();
+
+        if ($this->urlParameters['familyId'] === 'BA_FEES') {
+            $this->_searchDoc->addFilter("fee_account = '%s'", ContextManager::getCurrentUser()->fid);
+        }
+
         if (!empty($this->contentParameters['filter'])) {
             $this->_filter = $this->contentParameters['filter'];
             $this->_searchDoc->addFilter("title ~* '%s'", preg_quote($this->_filter));
         }
-    }
 
+    }
     protected function getPaginationState()
     {
         return ["page" => intval($this->contentParameters['page']) , "slice" => intval($this->contentParameters['slice']) , "total_entries" => $this->_searchDoc->onlyCount() ];
