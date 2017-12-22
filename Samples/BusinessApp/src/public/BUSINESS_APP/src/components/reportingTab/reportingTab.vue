@@ -1,13 +1,13 @@
 <template>
     <div class="reportingTab__wrapper" ref="wrapper">
-        <h1 class="reportingTab__title">Dépenses pour l'année {{year}}</h1>
+        <h1 class="reportingTab__title">Dépenses totales pour l'année {{year}}</h1>
         <div class="reportingTab__chart" ref="chart"></div>
         <div class="reportingTab__categories">
             <table class="reportingTab__categories__table table-bordered table table-hover">
                 <thead>
                     <tr>
                         <th>Catégories</th>
-                        <th>Montant</th>
+                        <th>Montant total</th>
                     </tr>
                 </thead>
                 <tbody>

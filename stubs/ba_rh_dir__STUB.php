@@ -1,11 +1,11 @@
 <?php
 namespace Dcp\Family {
-	/** Dossier RH  */
+	/** Dossiers RH  */
 	class Ba_rh_dir extends \Sample\BusinessApp\RHDir { const familyName="BA_RH_DIR";}
 }
 
 namespace Dcp\AttributeIdentifiers {
-	/** Dossier RH  */
+	/** Dossiers RH  */
 	class Ba_rh_dir {
 		/** [frame] Personne */
 		const rh_fr_person='rh_fr_person';

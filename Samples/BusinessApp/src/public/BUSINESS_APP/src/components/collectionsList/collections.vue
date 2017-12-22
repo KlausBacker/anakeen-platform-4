@@ -5,7 +5,7 @@
                 <div class="documentsList__collections__button__icon documentsList__collections__button__icon--user" @click="openAccount">
                     <transition name="fade" mode="out-in">
                         <div key="collapsed" class="documentsList__collections__button__icon--user__icon--collapsed" v-if="!showCollections">
-                            <i  class="documentsList__collections__button__icon--user__icon material-icons">account_circle</i>
+                            <img  class="documentsList__collections__button__icon--user__icon" src="api/v1/images/assets/sizes/50x50c/showcase_user.png"/>
                             <span class="documentsList__collections__button__icon--user__initial">
                                 {{userInitial}}
                             </span>
@@ -31,7 +31,7 @@
             <div class="documentsList__collections__list" ref="listView"></div>
 
             <div class="documentsList__collections_buttons documentsList__collections__buttons--bottom">
-                <div class="documentsList__collections__slot__buttons">
+                <div v-show="seeReporting" class="documentsList__collections__slot__buttons">
                     <slot name="bottomButton"></slot>
                 </div>
                 <div v-for="b in buttons" class="documentsList__collections__button"

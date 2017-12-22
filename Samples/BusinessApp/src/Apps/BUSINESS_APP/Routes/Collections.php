@@ -60,8 +60,7 @@ class Collections extends DocumentCollection
         $return = parent::read($resourceId);
         $return["resultMax"] = $this->_searchDoc->onlyCount();
         $user = ContextManager::getCurrentUser();
-        $return['user'] = [ 'id' => $user->id, 'firstName' => $user->firstname, 'lastName' => $user->lastname, 'fid' => $user->fid];
-        $return['debug']=$this->_searchDoc->getSearchInfo();
+        $return['user'] = [ 'id' => $user->id, 'firstName' => $user->firstname, 'lastName' => $user->lastname, 'fid' => $user->fid, 'roles' => $user->getAllRoles()];
         $getCollectionInfo = function ($c) {
             return array(
                 "ref"=>$c['properties']['name'],

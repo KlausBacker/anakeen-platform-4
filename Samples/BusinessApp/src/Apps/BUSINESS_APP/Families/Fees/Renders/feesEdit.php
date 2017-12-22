@@ -7,7 +7,7 @@ class FeesEdit extends CommonEdit
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
-        $options->commonOption('fee_exp_tva')->showEmptyContent("Non calculé");
+        $options->commonOption('fee_exp_tax')->showEmptyContent("Non calculé");
         $options->date('fee_period')->setKendoDateConfiguration(array(
             "start" => "year",
             "depth" => "year",

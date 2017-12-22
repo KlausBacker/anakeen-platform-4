@@ -1,0 +1,36 @@
+//FAM;"Dépenses Maximales(BA_CATEGORIES)";<specid>;<fldid>;Nom;"Montant Maximum";Période
+ORDER;BA_CATEGORIES;;;cat_name;cat_max;cat_period
+DOC;BA_CATEGORIES;BA_DOC_CATEGORIES;;"Train
+Avion
+Carburant
+Péage
+Hotel
+Déjeuner
+Diner
+Repas affaire
+Téléphone
+Location véhicule
+Parking
+Taxi";"100
+100
+100
+50
+90
+40
+40
+50
+100
+400
+100
+100";"2
+2
+2
+2
+3
+3
+3
+3
+2
+2
+2
+2"

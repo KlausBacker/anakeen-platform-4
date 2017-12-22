@@ -1,0 +1,12 @@
+//FAM;"Profil de document(PDOC)";<specid>;<fldid>;Titre;Description;"Famille (id)";Famille
+ORDER;PDOC;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam
+DOC;PDOC;PDOC-Pour_Creation_du_document_de_Contrat_client;;"Pour Création du document de Contrat client";;;
+//BEGIN;"Parent family";"Family title";;;"Family name"
+BEGIN;;;;;BA_CLIENT_CONTRACT
+PROFID;BA_CLIENT_CONTRACT
+CPROFID;PDOC-Pour_Creation_du_document_de_Contrat_client
+//PARAM;Id;Parent;Label;isTitle;isAbstract;Type;Order;Visibility;Needed;Link;PhpFile;PhpFunc;Elink;Constraint;Options
+END;;;;;
+//PROFIL;Id;AccountType;Reset;Access
+PROFIL;BA_CLIENT_CONTRACT;:useAccount;;view=role5a37d9a83cb3e;view=role5a37d9b6b1617;edit=role5a37d9a83cb3e;create=role5a37d9a83cb3e;icreate=role5a37d9a83cb3e;viewacl=role5a37d9a83cb3e
+PROFIL;PDOC-Pour_Creation_du_document_de_Contrat_client;:useAccount;;view=role5a37d9a83cb3e;view=role5a37d9b6b1617;edit=role5a37d9a83cb3e;delete=role5a37d9a83cb3e;send=role5a37d9a83cb3e;wask=role5a37d9a83cb3e;wask=role5a37d9b6b1617;viewacl=role5a37d9a83cb3e

@@ -1,17 +1,9 @@
-function computeTVA(ht, ttc) {
-    var tvas = [20, 5.5, 2.1, 10];
-    var tva = ((ttc/ht) - 1)*100;
-    var tvaid = -1;
-    var delta = 100;
-    for (var i = 0; i < tvas.length; i++) {
-        var distance = Math.abs(tvas[i] - tva);
-        if (distance < delta) {
-            delta = distance;
-            tvaid = i;
-        }
+function computeTTC(ht, tva) {
+    var tvaVal = parseFloat(tva);
+    if (isNaN(tvaVal)) {
+        return 0;
     }
-    return tvas[tvaid];
-
+    return ht*(1 + (tvaVal/100))
 }
 
 function findModifiedIndex(current, previous) {
@@ -40,17 +32,18 @@ window.dcp.document.documentController("addEventListener",
         }
     },
     function (event, documentObject, attributeObject, values) {
-        var allTaxedAmount = $(this).documentController("getValue", "fee_exp_tax");
+        var tvaAmount = $(this).documentController("getValue", "fee_exp_tva");
         var indexes = findModifiedIndex(values.current, values.previous);
         if (indexes.length) {
             for (var i = 0; i < indexes.length; i++) {
                 var index = indexes[i];
-                if (allTaxedAmount[index].value && values.current[index].value) {
+                if (tvaAmount[index].value && values.current[index].value) {
+                    var ttc = computeTTC(values.current[index].value, tvaAmount[index].value);
                     $(this).documentController('setValue',
-                        'fee_exp_tva',
+                        'fee_exp_tax',
                         {
-                            displayValue: computeTVA(values.current[index].value, allTaxedAmount[index].value)+ '%',
-                            value: computeTVA(values.current[index].value, allTaxedAmount[index].value)+ '%',
+                            displayValue: ttc + ' €',
+                            value: ttc,
                             index: index
                         }
                     );
@@ -63,12 +56,12 @@ window.dcp.document.documentController("addEventListener",
 window.dcp.document.documentController("addEventListener",
     "change",
     {
-        "name": "BA_FEES::fee_exp_tax",
+        "name": "BA_FEES::fee_exp_tva",
         "documentCheck": function (documentObject) {
             return documentObject.family.name === 'BA_FEES'
         },
         "attributeCheck": function (attribute) {
-            if (attribute.id === 'fee_exp_tax') {
+            if (attribute.id === 'fee_exp_tva') {
                 return true;
             }
         }
@@ -80,11 +73,12 @@ window.dcp.document.documentController("addEventListener",
             for (var i = 0; i < indexes.length; i++) {
                 const index = indexes[i];
                 if (preTaxedAmount[index].value && values.current[index].value) {
+                    var ttc = computeTTC(preTaxedAmount[index].value, values.current[index].value);
                     $(this).documentController('setValue',
-                        'fee_exp_tva',
+                        'fee_exp_tax',
                         {
-                            displayValue: computeTVA(preTaxedAmount[index].value, values.current[index].value)+ ' %',
-                            value: computeTVA(preTaxedAmount[index].value, values.current[index].value)+ ' %',
+                            displayValue: ttc + ' €',
+                            value: ttc,
                             index: index
                         })
                 }

@@ -5,7 +5,9 @@ namespace Sample\BusinessApp;
 
 use Dcp\AttributeIdentifiers\BA_FEES as FeesAttr;
 use Dcp\AttributeIdentifiers\Ba_rh_dir as RHAttr;
+use Dcp\AttributeIdentifiers\Ba_categories as CategoriesAttr;
 use Dcp\Core\ContextManager;
+use Dcp\Core\DbManager;
 use Dcp\Core\DocManager;
 
 class Fees extends \Dcp\Family\Document
@@ -23,7 +25,8 @@ class Fees extends \Dcp\Family\Document
     public function postStore()
     {
         require_once("FDL/Lib.Vault.php");
-        $outfile = getTmpDir().'/fee-preview.pdf';
+        $this->setValue(FeesAttr::fee_person, $this->getRHDirFromAccount(ContextManager::getCurrentUser()));
+        $this->setValue(FeesAttr::fee_account, $this->getAccount($this->getRawValue(FeesAttr::fee_person)));
         $infile = $this->viewDoc($layout = "THIS:FEE_PREVIEW_TEMPLATE:B","ooo");
         $this->setFile(FeesAttr::fee_odtfile, $infile);
         $this->setValue(FeesAttr::fee_pdffile, $this->convertVaultFile($this->getRawValue(FeesAttr::fee_odtfile), 'pdf'));
@@ -101,6 +104,69 @@ class Fees extends \Dcp\Family\Document
         return 0;
     }
 
+    public function checkAmount($amount, $category, $date, $index) {
+        $amountLimitRef = $this->getParameterFamilyRawValue(FeesAttr::fee_limit_values, null);
+        if (!empty($amountLimitRef)) {
+            $categoriesDoc = DocManager::getDocument($amountLimitRef);
+            if (!empty($categoriesDoc) && !empty($category)) {
+                $maxValues = $categoriesDoc->getMultipleRawValues(CategoriesAttr::cat_max);
+                $periods = $categoriesDoc->getMultipleRawValues(CategoriesAttr::cat_period);
+                $maxValue = $maxValues[$category - 1];
+                $period = $periods[$category - 1];
+                $total = $this->getPeriodOutgoings($period, $category, $date, $index);
+                if (($total + $amount) > $maxValue) {
+                    return _("You exceed the authorized amount. Contact your supervisor.");
+                }
+
+            } else if (empty($category)) {
+                return _("You should choose a category for your outgoings");
+            }
+        }
+        return null;
+    }
+
+    protected function getPeriodOutgoings($period, $category, $date, $indexInitial) {
+        $searchDoc = new \SearchDoc();
+        $searchDoc->fromid = DocManager::getFamilyIdFromName('BA_FEES');
+        $searchDoc->setObjectReturn();
+        $searchDoc->addFilter(FeesAttr::fee_account." = '%s'", ContextManager::getCurrentUser()->fid);
+        $dt = new \DateTime($date);
+        $dateBegin = $date;
+        $dateEnd = $date;
+        if ($period == 1) {
+            $year = $dt->format("Y");
+            $dateBegin = "$year-01-01";
+            $dateEnd = (intval($year)+1)."-01-01";
+        } elseif ($period == 2) {
+            $year = $dt->format("Y");
+            $month = $dt->format("m");
+            $dateBegin = "$year-$month-01";
+            $dt->add(new \DateInterval('P1M'));
+            $year = $dt->format("Y");
+            $month = $dt->format("m");
+            $dateEnd = "$year-$month-01";
+        }
+        $searchDoc->addFilter("%s BETWEEN to_date('%s', 'YYYY-MM-DD') AND to_date('%s', 'YYYY-MM-DD')",
+            FeesAttr::fee_period, $dateBegin, $dateEnd);
+        if ($searchDoc->onlyCount() === 0) {
+            return 0;
+        }
+        $documents = $searchDoc->getDocumentList();
+        $total = 0;
+        foreach ($documents as $key => $doc) {
+            $arrayValues = $doc->getArrayRawValues(FeesAttr::fee_t_all_exp);
+            for ($i = 0; $i < count($arrayValues); $i++) {
+                $value = $arrayValues[$i];
+                if (!($this->id === $doc->id && $i == $indexInitial)) {
+                    if ($doc->getRawValue(FeesAttr::fee_exp_category) == $category) {
+                        $total += $doc->getAttributeValue(FeesAttr::fee_exp_tax)[0];
+                    }
+                }
+            }
+        }
+        return $total;
+    }
+
     /**
      * Stringify the GPS position from the EXIF PHP format to the DMS position format
      * @param string[] $arrayPos rational format (x/y) values of DMS position
@@ -142,5 +208,20 @@ class Fees extends \Dcp\Family\Document
         $pattern = array('n', 's', 'e', 'o', 'N', 'S', 'E', 'O');
         $replace = array('', '-', '', '-', '', '-', '', '-');
         return doubleval(str_replace($pattern, $replace, $tab[3]) . $varD);
+    }
+
+    protected function getRHDirFromAccount($getCurrentUser)
+    {
+        $searchDoc = new \SearchDoc();
+        $searchDoc->fromid = DocManager::getFamilyIdFromName('BA_RH_DIR');
+        $searchDoc->setObjectReturn();
+        $searchDoc->addFilter("%s = '%s'", RHAttr::rh_person_account, $getCurrentUser->fid);
+        $searchDoc->search();
+        $rhdirdoc = $searchDoc->getNextDoc();
+        if ($rhdirdoc) {
+            return $rhdirdoc->id;
+        }
+        return null;
+
     }
 }
