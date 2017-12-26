@@ -28,7 +28,7 @@ ATTR;FEE_EXP_CATEGORY;FEE_T_ALL_EXP;Catégorie;N;N;enum;::auto;W;Y;;;1|Train,2|A
 ATTR;FEE_EXP_PROVIDER;FEE_T_ALL_EXP;Fournisseur;N;N;"docid(""BA_PROVIDER_CONTRACT"")";::auto;W;;;;;;;
 ATTR;FEE_EXP_NATURE;FEE_T_ALL_EXP;Nature;N;N;text;::auto;W;;;;;;;
 ATTR;FEE_EXP_PRETAX;FEE_T_ALL_EXP;Montant HT;N;N;money;::auto;W;Y;;;;;;
-ATTR;FEE_EXP_TVA;FEE_T_ALL_EXP;Taux TVA;N;N;enum;::auto;W;Y;;;0|0,5|5 %,10|10 %,15|15 %,20|20%;;;system=yes
+ATTR;FEE_EXP_TVA;FEE_T_ALL_EXP;Taux TVA;N;N;enum;::auto;W;Y;;;0|0 %,5|5 %,10|10 %,15|15 %,20|20%;;;system=yes
 ATTR;FEE_EXP_TAX;FEE_T_ALL_EXP;Montant TTC;N;N;money;::auto;S;;;;;;::checkAmount(fee_exp_tax,fee_exp_category,fee_exp_date,K);
 ATTR;FEE_EXP_FILE;FEE_T_ALL_EXP;Fichier Justificatif;N;N;image;::auto;W;;;;;;;
 ATTR;FEE_EXP_FILE_DATE;FEE_T_ALL_EXP;Date photo;N;N;date;::auto;H;;;;::getImageDate(fee_exp_file);;;

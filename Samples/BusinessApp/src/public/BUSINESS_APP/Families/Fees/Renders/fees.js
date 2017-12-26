@@ -37,7 +37,7 @@ window.dcp.document.documentController("addEventListener",
         if (indexes.length) {
             for (var i = 0; i < indexes.length; i++) {
                 var index = indexes[i];
-                if (tvaAmount[index].value && values.current[index].value) {
+                if (tvaAmount[index].value !== undefined && values.current[index].value) {
                     var ttc = computeTTC(values.current[index].value, tvaAmount[index].value);
                     $(this).documentController('setValue',
                         'fee_exp_tax',
