@@ -2,18 +2,16 @@
 namespace Sample\BusinessApp\Renders;
 class CommonEdit extends \Dcp\Ui\DefaultEdit
 {
-    use Common {
-        Common::getOptions as getCommonOptions;
-    }
 
     public function getOptions(\Doc $document)
     {
-        $options = $this->getCommonOptions($document);
+        $options = parent::getOptions($document);
 
         // active native spell checker
         $options->htmltext()->setCkEditorConfiguration([
             "disableNativeSpellChecker" => false
         ]);
+        $options->money()->setTemplate(file_get_contents(__DIR__.'/moneyAttribute.mustache'));
 
         return $options;
     }
@@ -23,6 +21,13 @@ class CommonEdit extends \Dcp\Ui\DefaultEdit
         $js = parent::getJsReferences($document);
         $js["ba-common"] = "BUSINESS_APP/Families/Common/Renders/common.js";
         return $js;
+    }
+
+    public function getCssReferences(\Doc $document = null)
+    {
+        $css = parent::getCssReferences($document);
+        $css["ba-common"] = "./BUSINESS_APP/Families/Common/Renders/common.css";
+        return $css;
     }
 
     public function getTemplates(\Doc $document = null) {

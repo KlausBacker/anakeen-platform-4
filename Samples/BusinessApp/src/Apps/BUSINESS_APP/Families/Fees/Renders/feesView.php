@@ -1,6 +1,9 @@
 <?php
 namespace Sample\BusinessApp\Renders;
 use Dcp\AttributeIdentifiers\Ba_fees as FeesAttr;
+use Dcp\AttributeIdentifiers\Ba_wfees as WFeesAttr;
+use Dcp\Core\ContextManager;
+use Dcp\Family\Ba_wfees;
 use Dcp\Ui\ItemMenu;
 
 
@@ -38,7 +41,13 @@ class FeesView extends CommonView
         $item = new ItemMenu('fee_preview', 'Prévisualiser la note de frais');
         $item->setBeforeContent('<i class="fa fa-eye"></i>');
         $item->setUrl("#action/preview");
-        $menu->insertAfter('modify', $item);
+        if ($document->getState() !== Ba_wfees::E_BA_DRAFT && ContextManager::getCurrentUser()->id != 1) {
+            $menu->getElement('modify')->setVisibility(\Dcp\Ui\ItemMenu::VisibilityHidden);
+            $menu->getElement('delete')->setVisibility(\Dcp\Ui\ItemMenu::VisibilityHidden);
+            $menu->appendElement($item);
+        } else {
+            $menu->insertAfter('modify', $item);
+        }
         return $menu;
     }
 

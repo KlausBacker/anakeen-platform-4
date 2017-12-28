@@ -2,15 +2,9 @@
 BEGIN;;Notes de frais;;;BA_FEES;;;;;;;;;;
 RESET;enums;;;;;;;;;;;;;;
 RESET;structure;;;;;;;;;;;;;;
+RESET;default;;;;;;;;;;;;;;
 ICON;BA_Fees.png;;;;;;;;;;;;;;
 CLASS;Sample\BusinessApp\Fees;;;;;;;;;;;;;;
-
-INITIAL;FEE_PREVIEW_TEMPLATE;Apps/BUSINESS_APP/Families/Fees/Config/template.odt;;;;;;;;;;;;;
-INITIAL;FEE_LIMIT_VALUES;BA_DOC_CATEGORIES;;;;;;;;;;;;;
-
-PARAM;FEE_FR_PREVIEW;;Preview;N;N;frame;::auto;W;;;;;;;
-PARAM;FEE_PREVIEW_TEMPLATE;FEE_FR_PREVIEW;Preview template;N;N;file;::auto;W;;;;;;;
-PARAM;FEE_LIMIT_VALUES;FEE_FR_PREVIEW;Dépenses Maximales;N;N;docid(""BA_CATEGORIES"");::auto;W;;;;;;;
 //;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink ;constraint ;option
 ATTR;FEE_FR_INFO;;Informations;N;N;frame;::auto;W;;;;;;;
 ATTR;FEE_PERSON;FEE_FR_INFO;Bénéficiaire;N;N;"docid(""BA_RH_DIR"")";::auto;R;;;;;;;
@@ -27,9 +21,7 @@ ATTR;FEE_EXP_CLIENT;FEE_T_ALL_EXP;Client;N;N;"docid(""BA_CLIENT_CONTRACT"")";::a
 ATTR;FEE_EXP_CATEGORY;FEE_T_ALL_EXP;Catégorie;N;N;enum;::auto;W;Y;;;1|Train,2|Avion,3|Carburant,4|Péage,5|Hôtel,6|Déjeuner,7|Dîner,8|Repas affaire,9|Téléphone,10|Location véhicule,11|Parking,12|Taxi;;;
 ATTR;FEE_EXP_PROVIDER;FEE_T_ALL_EXP;Fournisseur;N;N;"docid(""BA_PROVIDER_CONTRACT"")";::auto;W;;;;;;;
 ATTR;FEE_EXP_NATURE;FEE_T_ALL_EXP;Nature;N;N;text;::auto;W;;;;;;;
-ATTR;FEE_EXP_PRETAX;FEE_T_ALL_EXP;Montant HT;N;N;money;::auto;W;Y;;;;;;
-ATTR;FEE_EXP_TVA;FEE_T_ALL_EXP;Taux TVA;N;N;enum;::auto;W;Y;;;0|0 %,5|5 %,10|10 %,15|15 %,20|20%;;;system=yes
-ATTR;FEE_EXP_TAX;FEE_T_ALL_EXP;Montant TTC;N;N;money;::auto;S;;;;;;::checkAmount(fee_exp_tax,fee_exp_category,fee_exp_date,K);
+ATTR;FEE_EXP_TAX;FEE_T_ALL_EXP;Montant TTC;N;N;money;::auto;W;;;;;;;
 ATTR;FEE_EXP_FILE;FEE_T_ALL_EXP;Fichier Justificatif;N;N;image;::auto;W;;;;;;;
 ATTR;FEE_EXP_FILE_DATE;FEE_T_ALL_EXP;Date photo;N;N;date;::auto;H;;;;::getImageDate(fee_exp_file);;;
 ATTR;FEE_EXP_FILE_LAT;FEE_T_ALL_EXP;Latitude;N;N;double;::auto;H;;;;::getImagePosition(fee_exp_file,"Latitude");;;

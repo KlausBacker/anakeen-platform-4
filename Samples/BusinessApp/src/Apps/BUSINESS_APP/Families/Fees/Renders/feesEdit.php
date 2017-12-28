@@ -1,13 +1,13 @@
 <?php
 namespace Sample\BusinessApp\Renders;
 use Dcp\AttributeIdentifiers\BA_FEES as MyAttr;
+
 class FeesEdit extends CommonEdit
 {
 
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
-        $options->commonOption('fee_exp_tax')->showEmptyContent("Non calculé");
         $options->date('fee_period')->setKendoDateConfiguration(array(
             "start" => "year",
             "depth" => "year",
@@ -22,8 +22,6 @@ class FeesEdit extends CommonEdit
 
         return $options;
     }
-
-
 
     public function getCssReferences(\Doc $document = null)
     {
