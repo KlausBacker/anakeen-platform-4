@@ -122,9 +122,9 @@ class DocumentsList extends FamilyDocumentCollection
             $this->_searchDoc = new \SearchDoc("", $this->_family->name);
         }
         $this->_searchDoc->setObjectReturn();
-
-        if ($this->urlParameters['familyId'] === 'BA_FEES') {
-            $this->_searchDoc->addFilter("fee_account = '%s'", ContextManager::getCurrentUser()->fid);
+        $user = ContextManager::getCurrentUser();
+        if ($this->urlParameters['familyId'] === 'BA_FEES' && $user->id != 1 ) {
+            $this->_searchDoc->addFilter("fee_account = '%s'", $user->fid);
         }
 
         if (!empty($this->contentParameters['filter'])) {
