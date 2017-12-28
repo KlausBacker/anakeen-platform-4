@@ -26,6 +26,7 @@ ATTR;FEE_EXP_FILE;FEE_T_ALL_EXP;Fichier Justificatif;N;N;image;::auto;W;;;;;;;
 ATTR;FEE_EXP_FILE_DATE;FEE_T_ALL_EXP;Date photo;N;N;date;::auto;H;;;;::getImageDate(fee_exp_file);;;
 ATTR;FEE_EXP_FILE_LAT;FEE_T_ALL_EXP;Latitude;N;N;double;::auto;H;;;;::getImagePosition(fee_exp_file,"Latitude");;;
 ATTR;FEE_EXP_FILE_LNG;FEE_T_ALL_EXP;Longitude;N;N;double;::auto;H;;;;::getImagePosition(fee_exp_file,"Longitude");;;
+ATTR;FEE_EXP_EXCEED;FEE_T_ALL_EXP;Dépassement de dépense;N;N;text;::auto;H;;;;;;;
 ;;;;;;;;;;;;;;;
 ATTR;FEE_TAB_VIZ;;Visualisation de chaque dépense;N;N;tab;::auto;R;;;;;;;
 ATTR;FEE_FR_VIZ;FEE_TAB_VIZ;Visualisation de chaque dépense;N;N;frame;::auto;R;;;;;;;

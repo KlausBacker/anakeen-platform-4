@@ -35,19 +35,15 @@ class WFees extends \Dcp\Family\Wdoc
 
     public $transitions = array(
         self::T_BA_SEND => array(
-            "ask" => array("feew_sign"),
-            "m1" => "checkUserSignNote",
+            "ask" => array("wfee_user_valid"),
+            "m1" => "handleUserResponse",
             "nr" => true
         ),
         self::T_BA_VALID => array(
-            "nr" => true,
-            "ask" => array("feew_sign"),
-            "m1" => "checkDirectorSignNote",
+            "nr" => true
         ),
         self::T_BA_INTEGRATE => array(
-            "nr" => true,
-            "ask" => array("feew_sign"),
-            "m1" => "checkComptableSignNote"
+            "nr" => true
         )
     );
 
@@ -70,31 +66,7 @@ class WFees extends \Dcp\Family\Wdoc
         )
     );
 
-    public function checkUserSignNote($nextStep, $currentStep, $confirmationMessage) {
-        $sign = $this->getRawValue(WFeesAttr::feew_sign);
-        $err = "";
-        if ($sign == 2) {
-            $err = ___("You must sign the note to send it to validation", "BA_WFEES");
-        }
-        return $err;
+    public function handleUserResponse($nextStep, $currentStep, $confirmationMessage) {
+        return "";
     }
-
-    public function checkDirectorSignNote($nextStep, $currentStep, $confirmationMessage) {
-        $sign = $this->getRawValue(WFeesAttr::feew_sign);
-        $err = "";
-        if ($sign == 2) {
-            $err = ___("You must sign the note to send it to integration", "BA_WFEES");
-        }
-        return $err;
-    }
-
-    public function checkComptableSignNote($nextStep, $currentStep, $confirmationMessage) {
-        $sign = $this->getRawValue(WFeesAttr::feew_sign);
-        $err = "";
-        if ($sign == 2) {
-            $err = ___("You must sign the note to integrate it", "BA_WFEES");
-        }
-        return $err;
-    }
-
 }
