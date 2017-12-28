@@ -183,6 +183,11 @@ export default {
                     next.css('right', `${paginatorWidth}px`);
                     // prev.css('right', `${paginatorWidth + nextWidth}px`);
                     marginRight += nextWidth;
+                    this.tabstrip.tabGroup.find('#documentsList__documentsTabs__new__tab__button')
+                        .addClass('new__tab__button--sticky');
+                } else {
+                    this.tabstrip.tabGroup.find('#documentsList__documentsTabs__new__tab__button')
+                        .removeClass('new__tab__button--sticky');
                 }
 
                 this.tabstrip.tabGroup.css('margin-right', `${marginRight}px`);

@@ -44,7 +44,7 @@
       display: flex;
       z-index: 200;
       height: 3.5rem;
-
+      box-shadow: 0px 0px 2px 0px rgb(200, 200, 200);
       .documentsList__documentsTabs__tabs__paginator__button {
         @include paginatorButton(3.5rem);
 
@@ -131,6 +131,11 @@
 
         & > .k-tabstrip-prev {
           left: auto;
+          box-shadow: 2px 0 2px 0 rgb(200, 200, 200)!important;
+        }
+
+        & > .k-tabstrip-next {
+          box-shadow: -2px 0 2px 0 rgb(200, 200, 200) !important;
         }
 
         & > .k-tabstrip-items {
@@ -142,19 +147,19 @@
             border: 1px solid lightgray;
             background: #FFFFFF;
             display: flex;
-            position: relative;
+            position: sticky;
+            z-index: 200;
             left: .4rem;
+            right: 0;
             top: .6rem;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transform: skew(25deg);
             transition: background-color .2s ease;
             &:hover {
               background-color: #F3F3F3;
             }
             i.material-icons {
-              transform: skew(-25deg);
               font-size: 1.5rem;
             }
           }

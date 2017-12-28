@@ -1,9 +1,35 @@
+$animationDuration: .3s;
 .documentsList__documentsTabs__wrapper {
   .documentsList__documentsTabs__tabs__wrapper {
     .k-tabstrip-wrapper {
       .documentsList__documentsTabs__tabs {
         & > .k-tabstrip-items {
           padding-left: 2rem;
+          transition: margin-right .5s ease;
+
+          & > #documentsList__documentsTabs__new__tab__button {
+            transform: skew(25deg);
+            margin-left: .6rem;
+            margin-right: .5rem;
+            transition: background-color .2s ease, transform $animationDuration ease, height $animationDuration ease, width $animationDuration ease, margin $animationDuration ease, box-shadow $animationDuration ease !important;
+
+            i.material-icons {
+              transform: skew(-25deg);
+              transition: transform $animationDuration ease;
+            }
+
+            &.new__tab__button--sticky {
+              width: 3.5rem;
+              height: 3.5rem;
+              margin: 0;
+              transform: skew(0deg);
+              z-index: 210;
+              box-shadow: -2px 0 2px 0 rgb(200, 200, 200);
+              i.material-icons {
+                transform: skew(0deg);
+              }
+            }
+          }
           & > .k-item {
             transform: perspective(100px) rotateX(25deg);
             background-color: #FFFFFF !important;
