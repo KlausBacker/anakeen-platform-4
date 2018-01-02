@@ -31,6 +31,11 @@ export default {
             collections: [],
             currentUser: null,
             dataSources: null,
+            notificationEl: null,
+            notificationCounter: {
+                exceeds: 0,
+                toValidate: 0,
+            },
             buttons: [
                 /*{
                   id: 'notif',
@@ -126,6 +131,12 @@ export default {
 
             return false;
         },
+
+        notification() {
+            if (this.notificationEl) {
+                return this.notificationEl.data('kendoNotification');
+            }
+        },
     },
 
     methods: {
@@ -174,6 +185,10 @@ export default {
                 change: this.onSelectItemList,
             });
 
+            this.notificationEl = this.$(this.$refs.showcaseNotification).kendoNotification({
+            });
+            this.checkNotifications();
+
             this.updateKendoData();
         },
 
@@ -203,8 +218,26 @@ export default {
             });
         },
 
+        checkNotifications() {
+            this.sendGetRequest('api/v1/sba/collections/BA_FEES_EXCEED/documentsList').then((response) => {
+                this.notificationCounter.exceeds = response.data.data.resultMax;
+            });
+            this.sendGetRequest('api/v1/sba/collections/BA_FEES_TO_VALIDATE/documentsList').then((response) => {
+                this.notificationCounter.toValidate = response.data.data.resultMax;
+            });
+        },
+
         openAccount() {
             // Open user account
+        },
+
+        onClickToExceed() {
+            this.selectCollection({
+                html_label: 'Notes de frais en dépassement',
+                ref: 'BA_FEES_EXCEED',
+                initid: 'BA_FEES_EXCEED',
+                image_url: 'api/v1/images/assets/sizes/24x24c/BA_Fees_exceed.png',
+            });
         },
 
         onClickToValidate() {

@@ -96,6 +96,20 @@
 
 }
 
+.documentsList__collections__slot__buttons .button__notification__counter {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: calc(50px / 2 + .5rem);
+  top: .5rem;
+  border-radius: 50%;
+  color: white;
+  background-color: red;
+  width: 14px;
+  height: 14px;
+}
+
 .documentsList__collections__button__icon, .documentsList__collections__slot__buttons .button__icon {
   width: 50px;
   display: flex;

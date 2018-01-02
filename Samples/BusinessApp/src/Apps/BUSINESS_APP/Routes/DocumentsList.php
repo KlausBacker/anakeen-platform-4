@@ -98,7 +98,7 @@ class DocumentsList extends FamilyDocumentCollection
     {
         $this->urlParameters = $array;
         $familyId = isset($this->urlParameters["familyId"]) ? $this->urlParameters["familyId"] : false;
-        if ($familyId === 'BA_FEES_TO_VALIDATE' || $familyId === 'BA_FEES_TO_INTEGRATE') {
+        if ($familyId === 'BA_FEES_TO_VALIDATE' || $familyId === 'BA_FEES_TO_INTEGRATE' || $familyId === 'BA_FEES_EXCEED') {
             $familyId = 'BA_FEES';
         }
         DocumentUtils::checkFamilyId($familyId, "families/%s/documents/");
@@ -118,6 +118,9 @@ class DocumentsList extends FamilyDocumentCollection
         } elseif ($this->urlParameters['familyId'] === 'BA_FEES_TO_INTEGRATE') {
             $this->_searchDoc = new \SearchDoc("", "BA_FEES");
             $this->_searchDoc->addFilter("state = 'e_ba_validated'");
+        } elseif ($this->urlParameters['familyId'] === 'BA_FEES_EXCEED') {
+            $this->_searchDoc = new \SearchDoc("", "BA_FEES");
+            $this->_searchDoc->addFilter("state = 'e_ba_draft_exceed'");
         } else {
             $this->_searchDoc = new \SearchDoc("", $this->_family->name);
         }
