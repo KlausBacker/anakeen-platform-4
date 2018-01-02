@@ -65,14 +65,16 @@ define([
 
             options = options || {};
 
-            //Guess if the view is a template (originalView = false in this case)
-            options.originalView = options.originalView !== false;
-
             if (options.displayLabel === false || this.model.getOption("labelPosition") === "none") {
                 this.displayLabel = false;
             }
 
-            //Attribute without template so we bind event
+            if (options.originalView === undefined) {
+                options.originalView = _.isEmpty(this.model.getOption("template"));
+            }
+
+
+            //Attribute without custom template so we bind event
             if (options.originalView === true) {
                 events = this.attributeEvents;
                 //For vColumn events
@@ -81,6 +83,7 @@ define([
                 }
                 this.delegateEvents(events);
             }
+
             this.options = options;
         },
 
