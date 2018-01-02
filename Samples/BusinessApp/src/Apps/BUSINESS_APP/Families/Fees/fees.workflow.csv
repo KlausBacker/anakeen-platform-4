@@ -9,5 +9,6 @@ CLASS;Sample\BusinessApp\WFees;;;;;;;;;;;;;;
 PARAM;WFEE_FR_ASK;;Asks;N;N;frame;::auto;W;;;;;;;
 PARAM;WFEE_USER_VALID;WFEE_FR_ASK;Asks;N;N;enum;::auto;W;;;;1|Demande,2|Annuler,3|Confirmer;;;
 PARAM;WFEE_EXCEED_DECISION;WFEE_FR_ASK;Autorisez-vous la demande de dépassement ?;N;N;enum;::auto;W;;;;1|Autoriser,2|Refuser;;;
+PARAM;WFEE_DIRECTOR;WFEE_FR_ASK;Directeur sample;N;N;docid("BA_RHDIR");::auto;H;;;;;;;
 ;;;;;;;;;;;;;;;
 END;;;;;;;;;;;;;;;
