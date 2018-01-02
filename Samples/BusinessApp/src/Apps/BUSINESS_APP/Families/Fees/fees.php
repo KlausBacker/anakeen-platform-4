@@ -9,6 +9,7 @@ use Dcp\AttributeIdentifiers\Ba_categories as CategoriesAttr;
 use Dcp\Core\ContextManager;
 use Dcp\Core\DbManager;
 use Dcp\Core\DocManager;
+use Sample\BusinessApp\Utils\StamperyUtils;
 
 class Fees extends \Dcp\Family\Document
 {
@@ -33,6 +34,7 @@ class Fees extends \Dcp\Family\Document
         $this->setFile(FeesAttr::fee_odtfile, $infile);
         $this->setValue(FeesAttr::fee_pdffile, $this->convertVaultFile($this->getRawValue(FeesAttr::fee_odtfile), 'pdf'));
         $this->setOutgoingsExceed();
+        $this->setStampIds();
         return "";
     }
 
@@ -117,6 +119,25 @@ class Fees extends \Dcp\Family\Document
 
         }
         return null;
+    }
+
+    protected function setStampIds() {
+        $currentOutgoings = $this->getArrayRawValues(FeesAttr::fee_t_all_exp);
+        $stampery = new StamperyUtils();
+        for ($i = 0 ; $i < count($currentOutgoings); $i++) {
+            $file = $currentOutgoings[$i][FeesAttr::fee_exp_file];
+            $currentHash = $currentOutgoings[$i][FeesAttr::fee_exp_file_hash];
+            $computedHash = $stampery->getHashFromFile($this->vault_filename_fromvalue($file, true));
+            if (isset($computedHash) && $computedHash !== $currentHash) {
+                $return = $stampery->stampingHash($computedHash);
+                $this->setValue(FeesAttr::fee_exp_file_hash, $computedHash, $i);
+                $this->setValue(FeesAttr::fee_exp_file_stampid, $return["result"]["id"], $i);
+                if (!empty($return["result"]["time"])) {
+                    $this->setValue(FeesAttr::fee_exp_file_stamp_date, $return["result"]["time"], $i);
+                }
+                error_log("LOG_STAMPERY_RESPONSE : ".print_r($return, true));
+            }
+        }
     }
 
     protected function setOutgoingsExceed() {
