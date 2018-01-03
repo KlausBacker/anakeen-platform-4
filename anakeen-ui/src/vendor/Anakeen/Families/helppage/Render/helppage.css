@@ -47,3 +47,7 @@
 .helppage--chapter.helppage--select .helppage-chapter-content  {
     border-left: solid 3px #7676FF;
 }
+
+.dcpDocument--view.dcpFamily--HELPPAGE {
+    background-color: white;
+}
