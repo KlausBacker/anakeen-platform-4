@@ -232,7 +232,7 @@ const devConfig = merge([
             proxy : {
                 "!/uiAssets/anakeen/debug/*.js": {
                     "target": process.env.PROXY_URL || "http://localhost"
-                }
+                },
             }
         }
     )

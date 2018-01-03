@@ -261,6 +261,7 @@ import searchAttributes from './searchAttributes';
         $environment.kendoComboBox({
             width: 200,
             placeholder: "Choisir attribut",
+            clearButton: false,
             filter: "contains",
             minLength: 0,
             dataValueField: "id",

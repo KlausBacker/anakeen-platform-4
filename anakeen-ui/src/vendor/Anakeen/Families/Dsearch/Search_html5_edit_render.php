@@ -9,7 +9,7 @@
 namespace Dcp\Search\html5;
 
 
-use Dcp\AttributeIdentifiers\Dsearch;
+use Dcp\AttributeIdentifiers\Dsearch as myAttr;
 use Dcp\Ui\DefaultEdit;
 use dcp\ui\MenuTargetOptions as MenuTargetOptions;
 use dcp\ui\ItemMenu as ItemMenu;
@@ -17,14 +17,17 @@ use dcp\ui\ItemMenu as ItemMenu;
 class Search_html5_edit_render extends DefaultEdit
 {
 
-    public function getLabel(\Doc $document = null) {
+    public function getLabel(\Doc $document = null)
+    {
         return "Search edit";
     }
+
     public function getTemplates(\Doc $document = null)
     {
         $templates = parent::getTemplates($document);
         $templates["sections"]["content"]["file"]
-            = __DIR__."/searchHTML5_edit.mustache";
+            = __DIR__ . "/searchHTML5_edit.mustache";
+
         return $templates;
     }
 
@@ -35,9 +38,9 @@ class Search_html5_edit_render extends DefaultEdit
 
         $ws = \Dcp\UI\UIGetAssetPath::getWs();
         $js["smartElementGrid"] = \Dcp\UI\UIGetAssetPath::getJSSmartElementGridPath();
-        $js["dSearch"] = 'uiAssets/Families/dsearch/prod/dsearch.js?ws='.$ws;
+        $js["dSearch"] = 'uiAssets/Families/dsearch/prod/dsearch.js?ws=' . $ws;
         if (\Dcp\UI\UIGetAssetPath::isInDebug()) {
-            $js["dSearch"] = 'uiAssets/Families/dsearch/debug/dsearch.js?ws='.$ws;
+            $js["dSearch"] = 'uiAssets/Families/dsearch/debug/dsearch.js?ws=' . $ws;
         }
 
         return $js;
@@ -58,35 +61,47 @@ class Search_html5_edit_render extends DefaultEdit
     {
         $options = parent::getOptions($document);
 
-        $options->enum(Dsearch::se_ol)->setDisplay(
+        $options->enum(myAttr::se_ol)->setDisplay(
             \Dcp\Ui\EnumRenderOptions::horizontalDisplay
         )->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
-        $options->enum(Dsearch::se_ol)->useFirstChoice(true);
-        $options->enum(Dsearch::se_leftp)->setDisplay(
+        $options->enum(myAttr::se_ol)->useFirstChoice(true);
+        $options->enum(myAttr::se_leftp)->setDisplay(
             \Dcp\Ui\EnumRenderOptions::boolDisplay
         );
-        $options->enum(Dsearch::se_rightp)->setDisplay(
+        $options->enum(myAttr::se_rightp)->setDisplay(
             \Dcp\Ui\EnumRenderOptions::boolDisplay
         );
-        $options->enum(Dsearch::se_famonly)->setDisplay(
+        $options->enum(myAttr::se_famonly)->setDisplay(
             \Dcp\Ui\EnumRenderOptions::boolDisplay
         );
-        $options->enum(Dsearch::se_trash)->setDisplay(
+        $options->enum(myAttr::se_trash)->setDisplay(
             \Dcp\Ui\EnumRenderOptions::horizontalDisplay
         );
-        $options->enum(Dsearch::se_acl)->setDisplay(
+        $options->enum(myAttr::se_acl)->setDisplay(
             \Dcp\Ui\EnumRenderOptions::horizontalDisplay
         );
-        $options->enum(Dsearch::se_sysfam)->setDisplay(
+        $options->enum(myAttr::se_sysfam)->setDisplay(
             \Dcp\Ui\EnumRenderOptions::boolDisplay
         );
-        $options->enum(Dsearch::se_ols)->useFirstChoice(true);
+        $options->enum(myAttr::se_ols)->useFirstChoice(true);
 
-        $options->frame(Dsearch::se_crit)->setOption("collapse", false);
+        $options->frame(myAttr::se_crit)->setOption("collapse", false);
 
-        $options->text(Dsearch::se_t_detail)->setLabelPosition("none");
-        $options->enum(Dsearch::se_leftp)->setAttributeLabel("(");
-        $options->enum(Dsearch::se_rightp)->setAttributeLabel(")");
+        $options->text(myAttr::se_t_detail)->setLabelPosition("none");
+        $options->enum(myAttr::se_leftp)->setAttributeLabel("(");
+        $options->enum(myAttr::se_rightp)->setAttributeLabel(")");
+
+        $options->frame(myAttr::se_crit)->setResponsiveColumns(array(
+            [
+                "number" => 2,
+                "minWidth" => "60rem",
+                "maxWidth" => "100rem",
+                "grow" => true],
+            [
+                "number" => 3,
+                "grow" => true
+            ]
+        ));
 
         return $options;
     }
@@ -96,11 +111,11 @@ class Search_html5_edit_render extends DefaultEdit
         $visibilities = parent::getVisibilities($document);
 
         $visibilities->setVisibility(
-            Dsearch::se_key,
+            myAttr::se_key,
             \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility
         );
         $visibilities->setVisibility(
-            Dsearch::se_case,
+            myAttr::se_case,
             \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility
         );
 

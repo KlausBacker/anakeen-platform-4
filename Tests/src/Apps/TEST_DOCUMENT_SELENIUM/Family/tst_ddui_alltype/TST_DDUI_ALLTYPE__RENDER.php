@@ -947,6 +947,12 @@ class setTemplate extends \Dcp\Ui\DefaultEdit
         <p> mon designer est toto</p>
         </div>'
         );
+
+
+        $options->money()->setTemplate("<h2>Des sous</h2>");
+        $options->int()->setTemplate("<h2>Des entiers</h2>");
+
+        $options->text()->setTemplate("<h2>Des textes</h2>");
         $options->arrayAttribute("test_ddui_all__array_account")->setTemplate(file_get_contents(__DIR__ . "/Templates/myInfoArray.mustache"));
         $options->text("test_ddui_all__longtext")->setTemplate(file_get_contents(__DIR__ . "/Templates/myInfo.mustache"));
         $options->account("test_ddui_all__account_multiple")->setTemplate(file_get_contents(__DIR__ . "/Templates/myInfoMultiple.mustache"));

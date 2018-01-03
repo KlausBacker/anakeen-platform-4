@@ -34,15 +34,20 @@ class HelppageViewRender extends \Dcp\Ui\DefaultView
     public function getJsReferences(\Doc $document = null)
     {
         $js = parent::getJsReferences();
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
-        $js["dduiHelppage"] = "uiAssets/Families/helppage/helppage.js?ws=" . $version;
+        $ws = \Dcp\UI\UIGetAssetPath::getWs();
+
+        $js["dduiHelppage"] = 'uiAssets/Families/helppage/prod/helppage.js?ws='.$ws;
+        if (\Dcp\UI\UIGetAssetPath::isInDebug()) {
+            $js["dduiHelppage"] = 'uiAssets/Families/helppage/debug/helppage.js?ws='.$ws;
+        }
+
         return $js;
     }
     public function getCssReferences(\Doc $document = null)
     {
         $css = parent::getCssReferences();
         $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
-        $css["dduiHelppage"] = "uiAssets/Families/helppage/helppage.css?ws=" . $version;
+        //$css["dduiHelppage"] = "uiAssets/Families/helppage/helppage.css?ws=" . $version;
         return $css;
     }
     /**

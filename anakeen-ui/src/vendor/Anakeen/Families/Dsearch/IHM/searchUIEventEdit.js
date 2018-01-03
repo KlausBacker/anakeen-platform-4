@@ -29,6 +29,12 @@ import showGrid from './searchUIGrid';
                   if ($li.hasClass("result-tab")) {
                       showTmpGrid(event, $documentController, $('.result--content'));
                   }
+                  $li.parent().find("li.dcpLabel--active").removeClass("dcpLabel--active");
+                  $li.addClass("dcpLabel--active");
+              },
+              show : function (event) {
+                  // To update responsiveColumn
+                $(window).trigger("resize");
               }
           });
 

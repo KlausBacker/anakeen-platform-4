@@ -1,3 +1,6 @@
+import './helppage.css';
+
+
 define(["mustache", "jquery", "underscore",
     "dcpDocument/i18n/documentCatalog"], function helppageCustomMain(Mustache, $, _, i18n)
 {

@@ -199,7 +199,7 @@ import './docGrid.css';
                 var url = columnRender.prepareUrl(cellData),
                   html = '';
                 if (url) {
-                    html += $('<a><span class="glyphicon glyphicon-new-window"></span></a>').addClass("openDoc overlay btn btn-default btn-xs")
+                    html += $('<a><span class="fa fa-external-link"></span></a>').addClass("openDoc overlay btn btn-outline-secondary btn-xs")
                       .attr("href", url)
                       .attr("data-docid", cellData.properties.initid)
                       .attr("data-revision", cellData.properties.revision)[0].outerHTML;
