@@ -1135,7 +1135,7 @@ define([
                 $element = $(currentWidget.element);
             event.target = currentWidget.element;
             // internal event trigger
-            if (originalEvent) {
+            if (originalEvent && originalEvent.preventDefault) {
                 event.originalEvent = originalEvent;
             }
             args.unshift(event);
@@ -1179,7 +1179,7 @@ define([
         {
             var currentWidget = this, args = Array.prototype.slice.call(arguments, 2), event = $.Event(eventName);
             event.target = currentWidget.element;
-            if (originalEvent) {
+            if (originalEvent && originalEvent.preventDefault) {
                 event.originalEvent = originalEvent;
             }
             // internal event trigger
@@ -2129,9 +2129,12 @@ define([
          */
         triggerEvent: function documentController_triggerEvent(eventName)
         {
+            var args=_.toArray(arguments);
             this._checkInitialisedModel();
             this._checkEventName(eventName);
-            return this._triggerControllerEvent.apply(this, arguments);
+
+            args.splice(1, 0, null); // Add null originalEvent
+            return this._triggerControllerEvent.apply(this, args);
         },
 
         /**
@@ -2293,7 +2296,7 @@ define([
                     reject("Unable to destroy because user refuses it");
                     return;
                 }
-                event.prevent = !currentWidget._triggerControllerEvent("beforeClose", currentWidget._model.getServerProperties());
+                event.prevent = !currentWidget._triggerControllerEvent("beforeClose", null, currentWidget._model.getServerProperties());
                 if (event.prevent) {
                     reject("Unable to destroy because before close refuses it");
                     return;

@@ -88,4 +88,5 @@ table.document-grid thead th.cell-openDoc {
 }
 table.document-grid td {
     overflow:hidden;
+    vertical-align: middle;
 }

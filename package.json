@@ -8,6 +8,7 @@
     "build": "./node_modules/webpack/bin/webpack.js --env production &&  ./node_modules/webpack/bin/webpack.js --env debug",
     "buildFamily": "./node_modules/webpack/bin/webpack.js --env production --config webpack.family.js &&  ./node_modules/webpack/bin/webpack.js --env debug --config webpack.family.js",
     "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --env documentDev",
+    "dev-families": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --env dev --config ./webpack.family.js",
     "buildAsset": " ./node_modules/webpack/bin/webpack.js --env debug --config ./webpack.deps.js &&  ./node_modules/webpack/bin/webpack.js --env production --config ./webpack.deps.js"
   },
   "browserslist": "last 2 versions, ie 10",

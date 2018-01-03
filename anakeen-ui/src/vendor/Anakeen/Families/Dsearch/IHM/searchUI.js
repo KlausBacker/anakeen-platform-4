@@ -1194,6 +1194,7 @@ import searchAttributes from './searchAttributes';
         $environment.kendoComboBox({
             width: 200,
             filter: "contains",
+            clearButton: false,
             minLength: 0,
             dataValueField: "id",
             dataTextField: "label",
@@ -1252,6 +1253,7 @@ import searchAttributes from './searchAttributes';
             filter: "contains",
             dataValueField: "id",
             dataTextField: "htmlTitle",
+            clearButton: false,
             dataSource: {
                 type: "json",
                 serverFiltering: true,
@@ -1302,6 +1304,7 @@ import searchAttributes from './searchAttributes';
         $environment.kendoComboBox({
             width: 200,
             filter: "contains",
+            clearButton: false,
             dataValueField: "value",
             dataTextField: "displayValue",
             dataSource: {
@@ -1517,6 +1520,7 @@ import searchAttributes from './searchAttributes';
                 $environment.kendoComboBox({
                     width: 200,
                     filter: "contains",
+                    clearButton: false,
                     minLength: 0,
                     dataValueField: "method",
                     dataTextField: "method",

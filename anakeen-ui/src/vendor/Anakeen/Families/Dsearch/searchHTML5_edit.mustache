@@ -1,6 +1,8 @@
-<div class="panel panel-default dcpFrame">
-    <div class="panel-body dcpFrame_content dcpFrame_content--open">
-        <div class="myFrame">
+<section class="container-fluid dcpDsearch__body">
+
+    <div class="card card-default dcpFrame">
+    <div class="card-body dcpFrame_content dcpFrame_content--open">
+        <div class="dcpSearch-desc">
             {{{document.attributes.ba_title.htmlView}}}
             {{{document.attributes.se_fam.htmlView}}}
         </div>
@@ -11,9 +13,9 @@
 
 <div id="search-tabstrip" class="dcpDocument__tabs search-tabs">
     <ul class="dcpDocument__tabs__list">
-        <li class="k-state-active">[[#i18n]]dsearch::Conditions[[/i18n]]</li>
-        <li>{{document.attributes.se_crit.label}}</li>
-        <li class="result-tab">[[#i18n]]dsearch::Results[[/i18n]]</li>
+        <li class="dcpLabel dcpLabel--active dcpTab__label k-state-active">[[#i18n]]dsearch::Conditions[[/i18n]]</li>
+        <li class="dcpLabel dcpTab__label">{{document.attributes.se_crit.label}}</li>
+        <li class="dcpLabel dcpTab__label result-tab">[[#i18n]]dsearch::Results[[/i18n]]</li>
     </ul>
     <div class="dcpTab__content dcpTab--loading">
         <div class="result-waiting">
@@ -24,3 +26,4 @@
     <div class="dcpTab__content">{{{document.attributes.se_crit.htmlView}}}</div>
     <div class="dcpTab__content result--content"></div>
 </div>
+</section>

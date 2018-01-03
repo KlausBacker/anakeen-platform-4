@@ -1,4 +1,3 @@
-
 import './searchRender.css';
 
 $.getJSON('api/v1/i18n/SEARCH_UI_HTML5').done((catalog) => {

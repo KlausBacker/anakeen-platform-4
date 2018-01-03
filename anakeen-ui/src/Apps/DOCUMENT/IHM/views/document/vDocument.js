@@ -265,8 +265,11 @@ define([
                     "select": function vDocumentKendoSelectTab(event) {
                         var tabId = $(event.item).data("attrid");
                         var tab=currentView.model.get("attributes").get(tabId);
-                        tab.isRealSelected=true;
-                        tab.trigger("attributeBeforeTabSelect", event, tabId);
+
+                        if (tab) {
+                            tab.isRealSelected = true;
+                            tab.trigger("attributeBeforeTabSelect", event, tabId);
+                        }
                     },
                     show: function vDocumentShowTab(event) {
                         var tabId = $(event.item).data("attrid");
@@ -877,7 +880,6 @@ define([
                     $dialogDiv = $('<div/>').addClass("dcpHelp-wrapper");
 
                     $dialogDiv.kendoWindow({
-                        title: htmlLink.windowTitle,
                         width: htmlLink.windowWidth,
                         height: htmlLink.windowHeight,
                         iframe: true,
@@ -891,6 +893,7 @@ define([
                         }
                     });
 
+                    $dialogDiv.closest(".k-window").find(".k-window-title").html(htmlLink.windowTitle);
                     $dialogDiv.on("documentcreate", function vDocumentHelpCreate() {
                         $dialogDiv.find("> iframe").addClass("k-content-frame");
                     });

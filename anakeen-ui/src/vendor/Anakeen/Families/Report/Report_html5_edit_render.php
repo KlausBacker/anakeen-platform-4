@@ -4,7 +4,7 @@
 namespace Dcp\Search\html5;
 
 
-use Dcp\AttributeIdentifiers\Report;
+use Dcp\AttributeIdentifiers\Report as myAttr;
 use Dcp\HttpApi\V1\DocManager\DocManager;
 
 class Report_html5_edit_render extends Search_html5_edit_render
@@ -21,11 +21,11 @@ class Report_html5_edit_render extends Search_html5_edit_render
             if (!$document->id) {
                 $family = $data["familyName"];
                 if ($family) {
-                    $document->setValue(Report::se_famid, DocManager::getIdFromName($family));
-                    $document->setValue(Report::se_fam, DocManager::getTitle($family));
+                    $document->setValue(myAttr::se_famid, DocManager::getIdFromName($family));
+                    $document->setValue(myAttr::se_fam, DocManager::getTitle($family));
                 }
                 if (!empty($data["memo"])) {
-                    $document->setValue(Report::se_memo, "yes");
+                    $document->setValue(myAttr::se_memo, "yes");
                 }
             }
         }
@@ -43,26 +43,28 @@ class Report_html5_edit_render extends Search_html5_edit_render
     {
         $options = parent::getOptions($document);
 
-        $options->frame(Report::rep_fr_presentation)
+        $options->frame(myAttr::rep_fr_presentation)
             ->setOption("collapse", false)
             ->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
-        $options->frame(Report::se_crit)
+        $options->frame(myAttr::se_crit)
             ->setOption("collapse", false)
            ->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
-
+        $options->frame(myAttr::rep_fr_presentation)->setResponsiveColumns(array([
+            "number" => 2,
+            "minWidth" => "60rem",
+            "grow" => true
+        ]));
         return $options;
     }
 
     public function getVisibilities(\Doc $document)
     {
         $vis= parent::getVisibilities($document);
-        $vis->setVisibility(Report::rep_style, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
-        $vis->setVisibility(Report::rep_coloreven, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
-        $vis->setVisibility(Report::rep_colorodd, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
-        $vis->setVisibility(Report::rep_colors, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
-        $vis->setVisibility(Report::rep_colorhf, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
+        $vis->setVisibility(myAttr::rep_style, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
+        $vis->setVisibility(myAttr::rep_coloreven, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
+        $vis->setVisibility(myAttr::rep_colorodd, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
+        $vis->setVisibility(myAttr::rep_colors, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
+        $vis->setVisibility(myAttr::rep_colorhf, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
         return $vis;
     }
-
-
 }

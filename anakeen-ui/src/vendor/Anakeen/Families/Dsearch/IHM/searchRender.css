@@ -1,3 +1,7 @@
+.dcpDsearch__body {
+    padding: 1.166rem 0 0 0;
+}
+
 .dcpAttribute__content[data-attrid=se_funcs] .k-dropdown-wrap .k-state-default {
     width: 100%;
     position: absolute;
@@ -184,11 +188,16 @@
 }
 
 li.menu__element.menu__element--item[data-menu-id=view] {
-    background: #5eb4ff;
+    background: #157EFB;
+    color:white;
 }
 li.menu__element.menu__element--item[data-menu-id=view]:hover {
-    background: #5bacf4;
+    background: #156ad5;
 }
+li.menu__element.menu__element--item[data-menu-id=view].k-item.k-state-hover a.k-link:hover {
+    color:white;
+}
+
 .search-tabs ul.k-tabstrip-items li {
     max-width: 15em;
     width:calc(25% - 2px);
@@ -238,3 +247,18 @@ thead.tableFloatingHeaderOriginal th {
     width:auto;
 }
 
+.dcpSearch-desc {
+    display:flex;
+    flex-direction: row;
+}
+
+.dcpSearch-desc .dcpCustomTemplate--content {
+    flex-grow:1;
+    margin: 1rem;
+}
+
+@media screen and (max-width: 600px) {
+    .dcpSearch-desc {
+    flex-direction: column;
+  }
+}
