@@ -19,7 +19,6 @@
   .dcpDocument__tabs {
     .dcpDocument__tabs__list {
       border-bottom: none;
-      overflow: hidden;
     }
   }
 
@@ -45,7 +44,6 @@
     color: $ank-ui-color-font-title;
     background-color: $ank-ui-tab-active-bg;
     border-bottom: none;
-    overflow:hidden;
     //
     &:before {
       @include A4ClientTabDecoration;
