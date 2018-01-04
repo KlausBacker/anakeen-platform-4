@@ -11,14 +11,6 @@ export default {
             type: String,
             default: '',
         },
-        userName: {
-            type: String,
-            default: '',
-        },
-        collections: {
-            type: String,
-            required: true,
-        },
     },
     created() {
         this.privateScope = {
@@ -26,7 +18,7 @@ export default {
                 this.$(this.$refs.buttonGroup).find('.documentsList__documentsTabs__welcome__collection__button')
                     .on('click', (e) => {
                         const newId = e.target.dataset.famid;
-                        const collection = this.collectionsArray.find((c) => c.initid === newId);
+                        const collection = this.collections.find((c) => c.initid === newId);
                         if (collection) {
                             this.$emit('document-creation', collection);
                         }
@@ -58,7 +50,7 @@ export default {
                         transport: {
                             read: (options) => {
                                 const params = {
-                                    collections: this.collectionsArray.map(c => c.initid).join(','),
+                                    collections: this.collections.map(c => c.initid).join(','),
                                     fields: 'document.properties.icon,document.properties.title',
                                     slice: 'all',
                                 };
@@ -87,8 +79,9 @@ export default {
             prepareWelcomeTabData: () => new Promise((resolve, reject) => {
                 this.privateScope.sendGetRequest('sba/documentsSearch', {
                     params: {
-                        collections: this.collectionsArray.map(c => c.initid).join(','),
-                        fields: 'document.properties.title,document.properties.icon,document.properties.state,document.properties.family',
+                        collections: this.collections.map(c => c.initid).join(','),
+                        fields: 'document.properties.title,document.properties.icon,' +
+                        'document.properties.state,document.properties.family',
                         slice: '5',
                         utag: 'open_document',
                         iconSize: '24x24c',
@@ -124,11 +117,6 @@ export default {
     },
 
     computed: {
-        collectionsArray() {
-            if (this.collections) {
-                return JSON.parse(this.collections);
-            } else return [];
-        },
 
         translations() {
             return {
@@ -143,16 +131,31 @@ export default {
                 noRecentConsult: this.$pgettext('WelcomeTab', 'No recent consultations'),
             };
         },
+
+        userName() {
+            if (this.user) {
+                return this.user.firstName;
+            }
+
+            return '';
+        },
     },
 
     mounted() {
-        this.refresh();
-        this.privateScope.configureWelcomeTab();
+        this.privateScope.sendGetRequest('sba/collections')
+            .then((response) => {
+                this.collections = response.data.data.collections;
+                this.user = response.data.data.user;
+                this.refresh();
+                this.privateScope.configureWelcomeTab();
+            });
     },
 
     data() {
         return {
             lastConsultations: [],
+            user: null,
+            collections: [],
         };
     },
 

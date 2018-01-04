@@ -1,4 +1,0 @@
-<ank-welcome-tab #if (data.welcomeMessage) {# welcome-message="#=welcomeMessage#" #}#
-                #if (data.promptMessage) {# prompt-message="#=promptMessage#" #}#
-                user-name="#=user#"
-                collections="#: collections#"></ank-welcome-tab>

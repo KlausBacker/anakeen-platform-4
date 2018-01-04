@@ -35,7 +35,7 @@
                 </div>
                 <div class="documentsList__documentsTabs__welcome__content__inner--content">
                     <div class="btn-group" ref="buttonGroup">
-                        <button v-for="c in collectionsArray" class="documentsList__documentsTabs__welcome__collection__button btn-default" :data-famid="c.initid">
+                        <button v-for="c in collections" class="documentsList__documentsTabs__welcome__collection__button btn-default" :data-famid="c.initid">
                             <div class="button-icon">
                                 <img class="button-icon-img" :src="c.image_url">
                             </div>

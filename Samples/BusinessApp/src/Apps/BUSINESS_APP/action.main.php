@@ -1,5 +1,6 @@
 <?php
 
-function main() {
+function main(Action $action) {
 
+    $action->lay->set("WS", $action->getParam(("WVERSION")));
 }
