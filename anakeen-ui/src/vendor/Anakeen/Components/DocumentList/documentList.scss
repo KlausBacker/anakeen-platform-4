@@ -114,7 +114,7 @@
 }
 
 
-.documentsList__documents__summary {
+.documentsList__documents__summary.k-widget {
   padding-right: 10px;
   text-align: right;
   justify-content: center;
@@ -278,7 +278,7 @@ $flexRatioButton: 0.13;
   }
 }
 
-.documentsList__documents__list__pager {
+.documentsList__documents__list__pager.k-widget {
   display: flex;
   flex: 1 - $flexRatioButton;
   padding-left: 0;
