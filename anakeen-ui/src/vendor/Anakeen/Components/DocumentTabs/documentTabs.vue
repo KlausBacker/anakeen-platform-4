@@ -11,7 +11,7 @@
         <div class="documentsList__documentsTabs__empty" v-if="emptyState">
             <img class="documentsList__documentsTabs__empty__img" :src="emptyImg"/>
         </div>
-        <div v-show="!emptyState" class="documentsList__documentsTabs__tabs__wrapper">
+        <div class="documentsList__documentsTabs__tabs__wrapper">
             <div  ref="tabstrip" class="documentsList__documentsTabs__tabs"></div>
         </div>
     </div>

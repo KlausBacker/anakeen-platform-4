@@ -1,5 +1,0 @@
-<span class="tab__document__header__content">
-    <img class="tab__document__icon" src="api/v1/images/assets/sizes/15x15/anakeen_monogramme_S.png"
-         style="position:relative; top: 0.1666rem;"/>
-    <span class="tab__document__title">#= title#</span>
-</span>

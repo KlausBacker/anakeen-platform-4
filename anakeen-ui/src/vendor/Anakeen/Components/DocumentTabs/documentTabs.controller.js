@@ -1,8 +1,6 @@
 // jscs:disable requirePaddingNewLinesBeforeLineComments
 import contentTemplate from './templates/tab/documentTabsContent.template.kd';
 import headerTemplate from './templates/tab/documentTabsHeader.template.kd';
-import welcomeTemplateHeader from './templates/welcomeTab/documentTabsWelcomeHeader.template.kd';
-import welcomeTemplateContent from './templates/welcomeTab/documentTabsWelcomeContent.template.kd';
 import openedTabListItemTemplate from './templates/openedTabList/documentOpenedTabListItem.template.kd';
 import abstractAnakeenComponent from '../componentBase';
 import TabModel from './model/tabModel';
@@ -30,17 +28,21 @@ export default {
             type: String,
             default: '',
         },
+        addable: {
+            type: Boolean,
+            default: true,
+        },
 
     },
 
     data() {
         return {
-            collections: [],
-            currentUser: null,
             tabModel: null,
             tabstripEl: null,
             tabslistEl: null,
             tabslistSource: null,
+            newTabConfig: null,
+            welcomeTabConfig: null,
         };
     },
 
@@ -98,6 +100,10 @@ export default {
                 });
             }
         },
+
+        addable(newValue) {
+            this.privateScope.setAddTabButton(newValue);
+        },
     },
 
     created() {
@@ -105,12 +111,7 @@ export default {
             createKendoComponents: () => {
                 this.privateScope.createKendoTabStrip();
                 this.privateScope.createKendoOpenedTabsList();
-                this.privateScope.sendGetRequest('sba/collections')
-                    .then((response) => {
-                        this.collections = response.data.data.collections;
-                        this.currentUser = response.data.data.user;
-                        this.privateScope.initTabModel();
-                    });
+                this.privateScope.initTabModel();
                 this.$(window).resize(() => {
                     this.privateScope.resizeComponents();
                 });
@@ -194,25 +195,19 @@ export default {
             },
 
             initTabModel: () => {
-                const welcomeTab = {
-                    tabId: Constants.WELCOME_TAB_ID,
-                    headerTemplate: welcomeTemplateHeader,
-                    contentTemplate: welcomeTemplateContent,
-                    data: {
-                        user: this.currentUser.firstName,
-                        welcomeMessage: 'bienvenue sur xPs Business App.',
-                        promptMessage: 'Que voulez-vous faire ?',
-                        collections: JSON.stringify(this.collections),
-                        title: 'Bienvenue',
-                    },
-                };
-                if (this.privateScope.getLazyTabIndex() > -1) {
-                    this.tabModel.add(welcomeTab);
-                } else {
-                    this.tabModel.add(welcomeTab, this.newLazyTab);
+                if (this.welcomeTabConfig) {
+                    const welcomeTab = Object.assign({}, { tabId: Constants.WELCOME_TAB_ID }, this.welcomeTabConfig);
+                    if (this.privateScope.getLazyTabIndex() > -1) {
+                        this.tabModel.add(welcomeTab);
+                    } else {
+                        this.tabModel.add(welcomeTab, this.newLazyTab);
+                    }
+
+                    this.selectDocument(0);
                 }
 
-                this.selectDocument(0);
+                this.privateScope
+                    .setAddTabButton(this.addable);
             },
 
             canUseLazyTab: () => {
@@ -233,14 +228,20 @@ export default {
                 return -1;
             },
 
-            setAddTabButton: () => {
+            setAddTabButton: (addable = true) => {
                 let newTabButton = this.$('#documentsList__documentsTabs__new__tab__button');
-                if (!newTabButton.length) {
-                    newTabButton = this.$('<button id="documentsList__documentsTabs__new__tab__button" class="tab__new__button"><i class="material-icons">add</i></button>');
-                    newTabButton.on('click', this.privateScope.onAddTabClick);
-                }
+                if (addable) {
+                    if (!newTabButton.length) {
+                        newTabButton = this.$('<button id="documentsList__documentsTabs__new__tab__button" class="tab__new__button"><i class="material-icons">add</i></button>');
+                        newTabButton.on('click', this.privateScope.onAddTabClick);
+                    }
 
-                this.tabstrip.tabGroup.append(newTabButton);
+                    this.tabstrip.tabGroup.append(newTabButton);
+                } else {
+                    if (newTabButton.length) {
+                        newTabButton.remove();
+                    }
+                }
             },
 
             setCloseTabButton: (tab, forceClose) => {
@@ -254,16 +255,6 @@ export default {
                     $tab.off('click', "[data-type='remove']");
                     $tab.find("span[data-type='remove']").remove();
                 }
-            },
-
-            setVisitedTagToDocument: (document) => {
-                this.$http.put(`documents/${document.initid}/usertags/open_document`, {
-                    counter: 1,
-                }).then((response) => {
-                    // console.log(response);
-                }).catch((error) => {
-                    console.error(error);
-                });
             },
 
             loadLazyTabDocument: (data) => {
@@ -365,7 +356,7 @@ export default {
 
             onAddGenericTab: (index) => {
                 this.privateScope
-                    .setAddTabButton();
+                    .setAddTabButton(this.addable);
                 this.privateScope
                     .setCloseTabButton(this.tabstrip.items()[index]);
                 this.privateScope.setTabstripPagination();
@@ -400,18 +391,10 @@ export default {
             onAddTabClick: (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                this.tabModel.add({
-                    tabId: Constants.NEW_TAB_ID,
-                    headerTemplate: welcomeTemplateHeader,
-                    contentTemplate: welcomeTemplateContent,
-                    data: {
-                        user: this.currentUser.firstName,
-                        promptMessage: 'Que voulez-vous faire ?',
-                        collections: JSON.stringify(this.collections),
-                        title: 'Nouvel Onglet',
-                    },
-                });
-                this.selectDocument(this.tabModel.size() - 1);
+                if (this.newTabConfig) {
+                    this.tabModel.add(Object.assign({}, { tabId: Constants.NEW_TAB_ID }, this.newTabConfig));
+                    this.selectDocument(this.tabModel.size() - 1);
+                }
             },
 
             onCloseTabClick: (e) => {
@@ -424,16 +407,11 @@ export default {
 
             onCreateDocumentClick: (e, index) => {
                 const newId = e.detail[0].initid;
-                const collection = this.collections.find((c) => c.initid === newId);
-                if (collection) {
-                    this.setDocument({
-                        initid: collection.initid,
-                        viewid: '!defaultCreation',
-                        title: `Création ${collection.html_label}`,
-                        icon: collection.image_url,
-                    }, index);
-                    this.selectDocument(index);
-                }
+                this.setDocument({
+                    initid: newId,
+                    viewid: '!defaultCreation',
+                }, index);
+                this.selectDocument(index);
             },
 
             onTabstripSelect: (e) => {
@@ -550,7 +528,7 @@ export default {
                 }
 
                 this.selectDocument(document);
-                this.privateScope.setVisitedTagToDocument(document);
+                this.$emit('document-tab-selected', document, this.$http);
             } else {
                 this.selectDocument(index);
             }
@@ -608,6 +586,15 @@ export default {
 
         closeAllDocuments() {
             this.tabModel.removeAll();
+        },
+
+        setNewTabConfig(newTabConfiguration) {
+            this.newTabConfig = newTabConfiguration;
+        },
+
+        initWithWelcomeTab(tabConfig = null) {
+            this.welcomeTabConfig = tabConfig || this.newTabConfig;
+            this.privateScope.initTabModel();
         },
 
         addCustomTab(tabConfiguration) {

@@ -43,38 +43,10 @@
         </ank-document-tabs>
     </div>
 </ank-splitter>
-<script src="../uiAssets/externals/jquery/jquery.min.js"></script>
-<script src="../uiAssets/externals/KendoUI/KendoUI.js"></script>
-<script src="BUSINESS_APP/dist/ank-business-app-components.js"></script>
-<script src="components/dist/ank-components.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        var list = document.getElementById('documentsList');
-        var splitter = document.getElementById('splitter');
-        list.addEventListener('document-selected', () => {
-           onDocumentSelected();
-        });
-        var reportingButton = document.getElementById('reportingButton');
-        reportingButton.addEventListener('click', () => {
-           onReportingButtonClick();
-        });
-    });
-    function onDocumentSelected() {
-        var width = window.innerWidth || document.body.clientWidth;
-        if (width < 958) {
-            var splitter = document.getElementById('splitter');
-            splitter.publicMethods.closeSplitter();
-        }
-    }
-    function onReportingButtonClick() {
-        var tabs = document.getElementById('documentsTabs');
-        tabs.publicMethods.addCustomTab({
-            tabId: 'REPORTING_TAB',
-            headerTemplate: '<span class="tab__document__header__content"><i class="tab__document__icon material-icons" style="height: auto; font-size: 1.3rem; color:black;">insert_chart</i><span class="tab__document__title">Reporting</span></span>',
-            contentTemplate: '<ank-reporting-tab></ank-reporting-tab>',
-            data: {}
-        });
-    }
-</script>
+<script src="uiAssets/externals/jquery/jquery.min.js?ws=[WS]"></script>
+<script src="uiAssets/externals/KendoUI/KendoUI.js?ws=[WS]"></script>
+<script src="BUSINESS_APP/dist/ank-business-app-components.js?ws=[WS]"></script>
+<script src="components/dist/ank-components.js?ws=[WS]"></script>
+<script src="BUSINESS_APP/Layout/main.js?ws=[WS]"></script>
 </body>
 </html>
