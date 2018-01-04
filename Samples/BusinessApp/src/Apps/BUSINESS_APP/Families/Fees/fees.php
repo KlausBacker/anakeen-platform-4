@@ -9,9 +9,12 @@ use Dcp\AttributeIdentifiers\Ba_categories as CategoriesAttr;
 use Dcp\Core\ContextManager;
 use Dcp\Core\DbManager;
 use Dcp\Core\DocManager;
+use Sample\BusinessApp\Utils\StamperyUtils;
 
 class Fees extends \Dcp\Family\Document
 {
+
+    protected $_categoriesAmountsLimits = null;
 
     public function getCustomTitle()
     {
@@ -30,6 +33,8 @@ class Fees extends \Dcp\Family\Document
         $infile = $this->viewDoc($layout = "THIS:FEE_PREVIEW_TEMPLATE:B","ooo");
         $this->setFile(FeesAttr::fee_odtfile, $infile);
         $this->setValue(FeesAttr::fee_pdffile, $this->convertVaultFile($this->getRawValue(FeesAttr::fee_odtfile), 'pdf'));
+        $this->setOutgoingsExceed();
+        $this->setStampIds();
         return "";
     }
 
@@ -104,32 +109,70 @@ class Fees extends \Dcp\Family\Document
         return 0;
     }
 
-    public function checkAmount($amount, $category, $date, $index) {
-        $amountLimitRef = $this->getParameterFamilyRawValue(FeesAttr::fee_limit_values, null);
-        if (!empty($amountLimitRef)) {
-            $categoriesDoc = DocManager::getDocument($amountLimitRef);
-            if (!empty($categoriesDoc) && !empty($category)) {
-                $maxValues = $categoriesDoc->getMultipleRawValues(CategoriesAttr::cat_max);
-                $periods = $categoriesDoc->getMultipleRawValues(CategoriesAttr::cat_period);
-                $maxValue = $maxValues[$category - 1];
-                $period = $periods[$category - 1];
-                $total = $this->getPeriodOutgoings($period, $category, $date, $index);
-                if (($total + $amount) > $maxValue) {
-                    return _("You exceed the authorized amount. Contact your supervisor.");
-                }
-
-            } else if (empty($category)) {
-                return _("You should choose a category for your outgoings");
+    protected function getLimitsValues() {
+        $docRef = $this->getParameterFamilyRawValue(FeesAttr::fee_limit_values, null);
+        if ($docRef) {
+            $doc = DocManager::getDocument($docRef);
+            if (!empty($doc)) {
+                return $doc->getArrayRawValues(CategoriesAttr::cat_t_categories);
             }
+
         }
         return null;
     }
 
-    protected function getPeriodOutgoings($period, $category, $date, $indexInitial) {
-        $searchDoc = new \SearchDoc();
-        $searchDoc->fromid = DocManager::getFamilyIdFromName('BA_FEES');
-        $searchDoc->setObjectReturn();
-        $searchDoc->addFilter(FeesAttr::fee_account." = '%s'", ContextManager::getCurrentUser()->fid);
+    protected function setStampIds() {
+        $currentOutgoings = $this->getArrayRawValues(FeesAttr::fee_t_all_exp);
+        $stampery = new StamperyUtils();
+        for ($i = 0 ; $i < count($currentOutgoings); $i++) {
+            $file = $currentOutgoings[$i][FeesAttr::fee_exp_file];
+            $currentHash = $currentOutgoings[$i][FeesAttr::fee_exp_file_hash];
+            $computedHash = $stampery->getHashFromFile($this->vault_filename_fromvalue($file, true));
+            if (isset($computedHash) && $computedHash !== $currentHash) {
+                $return = $stampery->stampingHash($computedHash);
+                $this->setValue(FeesAttr::fee_exp_file_hash, $computedHash, $i);
+                $this->setValue(FeesAttr::fee_exp_file_stampid, $return["result"]["id"], $i);
+                if (!empty($return["result"]["time"])) {
+                    $this->setValue(FeesAttr::fee_exp_file_stamp_date, $return["result"]["time"], $i);
+                }
+                error_log("LOG_STAMPERY_RESPONSE : ".print_r($return, true));
+            }
+        }
+    }
+
+    protected function setOutgoingsExceed() {
+        $currentOutgoings = $this->getArrayRawValues(FeesAttr::fee_t_all_exp);
+        $categories = [];
+        $this->_categoriesAmountsLimits = $this->getLimitsValues();
+        if ($currentOutgoings) {
+            for ($i = 0 ; $i < count($currentOutgoings); $i++) {
+                $category = $currentOutgoings[$i][FeesAttr::fee_exp_category];
+                $date = $currentOutgoings[$i][FeesAttr::fee_exp_date];
+                $amount = $currentOutgoings[$i][FeesAttr::fee_exp_tax];
+                $exceed = $this->checkOutgoing($category, $date, $amount, $i);
+                $this->setValue(FeesAttr::fee_exp_exceed, $exceed, $i);
+            }
+        }
+    }
+
+    protected function checkOutgoing($category, $date, $amount, $positionToIgnore) {
+        if (isset($this->_categoriesAmountsLimits)) {
+            $outgoingRule = $this->_categoriesAmountsLimits[$category - 1];
+            $dateInterval = $this->getDateInterval($date, $outgoingRule[CategoriesAttr::cat_period]);
+            $sameCategoryAmount = $this->getCategoryOutgoings($category, $dateInterval, $positionToIgnore);
+            if (($sameCategoryAmount + doubleval($amount)) > doubleval($outgoingRule[CategoriesAttr::cat_max])) {
+                return "yes";
+            }
+        }
+        return "";
+    }
+
+    /**
+     * @param string $date date iso format value
+     * @param int $period 1 means by year, 2 by month and 3 by day
+     * @return array
+     */
+    protected function getDateInterval($date, $period) {
         $dt = new \DateTime($date);
         $dateBegin = $date;
         $dateEnd = $date;
@@ -137,7 +180,7 @@ class Fees extends \Dcp\Family\Document
             $year = $dt->format("Y");
             $dateBegin = "$year-01-01";
             $dateEnd = (intval($year)+1)."-01-01";
-        } elseif ($period == 2) {
+        } elseif ($period == 2 || $period == 3) {
             $year = $dt->format("Y");
             $month = $dt->format("m");
             $dateBegin = "$year-$month-01";
@@ -146,20 +189,56 @@ class Fees extends \Dcp\Family\Document
             $month = $dt->format("m");
             $dateEnd = "$year-$month-01";
         }
+        return array(
+            'start' => $dateBegin,
+            'end' => $dateEnd,
+            'period' => $period,
+            'date' => $date
+        );
+    }
+
+    protected function getCategoryOutgoings($category, $dateInterval, $positionToIgnore) {
+        $searchDoc = new \SearchDoc();
+        $searchDoc->fromid = DocManager::getFamilyIdFromName('BA_FEES');
+        $searchDoc->setObjectReturn();
+        $searchDoc->addFilter(FeesAttr::fee_account." = '%s'", ContextManager::getCurrentUser()->fid);
         $searchDoc->addFilter("%s BETWEEN to_date('%s', 'YYYY-MM-DD') AND to_date('%s', 'YYYY-MM-DD')",
-            FeesAttr::fee_period, $dateBegin, $dateEnd);
-        if ($searchDoc->onlyCount() === 0) {
-            return 0;
-        }
+            FeesAttr::fee_period, $dateInterval['start'], $dateInterval['end']);
         $documents = $searchDoc->getDocumentList();
-        $total = 0;
+        $total = $this->getCurrentDocCategoryOutgoings($category, $dateInterval, $positionToIgnore);
         foreach ($documents as $key => $doc) {
-            $arrayValues = $doc->getArrayRawValues(FeesAttr::fee_t_all_exp);
-            for ($i = 0; $i < count($arrayValues); $i++) {
+            if ($this->id != $doc->id) {
+                $arrayValues = $doc->getArrayRawValues(FeesAttr::fee_t_all_exp);
+                for ($i = 0; $i < count($arrayValues); $i++) {
+                    $value = $arrayValues[$i];
+                    if ($value[FeesAttr::fee_exp_category] === $category) {
+                        if ($dateInterval['period'] === 3) { // daily limit
+                            if ($dateInterval['date'] === $value[FeesAttr::fee_exp_date]) {
+                                $total += doubleval($value[FeesAttr::fee_exp_tax]);
+                            }
+                        } else {
+                            $total += doubleval($value[FeesAttr::fee_exp_tax]);
+                        }
+                    }
+                }
+            }
+        }
+        return $total;
+    }
+
+    protected function getCurrentDocCategoryOutgoings($category, $dateInterval, $positionToIgnore) {
+        $arrayValues = $this->getArrayRawValues(FeesAttr::fee_t_all_exp);
+        $total = 0;
+        for ($i = 0; $i < count($arrayValues); $i++) {
+            if ($i != $positionToIgnore) {
                 $value = $arrayValues[$i];
-                if (!($this->id === $doc->id && $i == $indexInitial)) {
-                    if ($doc->getRawValue(FeesAttr::fee_exp_category) == $category) {
-                        $total += $doc->getAttributeValue(FeesAttr::fee_exp_tax)[0];
+                if ($value[FeesAttr::fee_exp_category] === $category) {
+                    if ($dateInterval['period'] === 3) { // daily limit
+                        if ($dateInterval['date'] === $value[FeesAttr::fee_exp_date]) {
+                            $total += doubleval($value[FeesAttr::fee_exp_tax]);
+                        }
+                    } else {
+                        $total += doubleval($value[FeesAttr::fee_exp_tax]);
                     }
                 }
             }

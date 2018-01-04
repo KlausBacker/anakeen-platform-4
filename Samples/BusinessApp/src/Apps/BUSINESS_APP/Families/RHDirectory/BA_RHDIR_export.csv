@@ -1,0 +1,4 @@
+//FAM;Dossiers RH(BA_RH_DIR);<specid>;<fldid>;Nom;Prénom;Emploi;Date de naissance;Adresse;Courriel;Compte;Code Pays;Code de vérification;RIB (BBAN)
+ORDER;BA_RH_DIR;;;rh_person_lastname;rh_person_firstname;rh_person_job;rh_person_birthdate;rh_person_address;rh_person_mail;rh_person_account;rh_fin_country;rh_fin_check;rh_fin_rib
+DOC;BA_RH_DIR;;;COUSIN;Victor;;;Salon-de-Provence;vcousin@vcousin.com;6823;;;
+DOC;BA_RH_DIR;;;DUFOUR;Aurélie;;;Aubervilliers;adufour@adufour.com;6824;;;

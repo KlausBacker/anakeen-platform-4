@@ -15,11 +15,13 @@
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="programs/record_application BUSINESS_APP"/>
 
+        <process command='./wsh.php --api=importAccounts --file=./Apps/BUSINESS_APP/Families/Iuser/accounts.xml'/>
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/ClientContract/client.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/ClientContract/client.param.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/ProviderContract/provider.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/ProviderContract/provider.param.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/RHDirectory/rhdirectory.struct.csv --csv-enclosure='&quot;'" />
+        <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/RHDirectory/BA_RHDIR_export.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Fees/fees.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Fees/fees.param.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Fees/fees.workflow.csv --csv-enclosure='&quot;'" />
@@ -27,7 +29,6 @@
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Categories/categories.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Categories/categories.param.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Categories/BA_CATEGORIES.csv --csv-enclosure='&quot;'" />
-        <process command='./wsh.php --api=importAccounts --file=./Apps/BUSINESS_APP/Families/Iuser/accounts.xml'/>
 
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="./wsh.php --app=DOCUMENT --action=LOAD_RENDERPARAMETERS"/>
@@ -40,6 +41,7 @@
         <process command="programs/record_application BUSINESS_APP"/>
         <process command="programs/post_migration BUSINESS_APP"/>
 
+        <process command='./wsh.php --api=importAccounts --file=./Apps/BUSINESS_APP/Families/Iuser/accounts.xml'/>
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/ClientContract/client.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/ClientContract/client.param.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/ProviderContract/provider.struct.csv --csv-enclosure='&quot;'" />
@@ -50,7 +52,6 @@
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Fees/fees.workflow.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Categories/categories.struct.csv --csv-enclosure='&quot;'" />
         <process command="./wsh.php --api=importDocuments --file=./Apps/BUSINESS_APP/Families/Categories/categories.param.csv --csv-enclosure='&quot;'" />
-        <process command='./wsh.php --api=importAccounts --file=./Apps/BUSINESS_APP/Families/Iuser/accounts.xml'/>
 
         <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
         <process command="./wsh.php --app=DOCUMENT --action=LOAD_RENDERPARAMETERS"/>

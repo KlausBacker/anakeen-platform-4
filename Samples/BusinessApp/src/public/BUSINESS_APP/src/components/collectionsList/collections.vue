@@ -32,6 +32,25 @@
 
             <div class="documentsList__collections_buttons documentsList__collections__buttons--bottom">
                 <div v-show="seeReporting" class="documentsList__collections__slot__buttons">
+                    <div v-if="isDirecteur" @click="onClickToExceed">
+                        <div class="button__icon">
+                            <i class="material-icons">vertical_align_top</i>
+                            <div class="button__notification__counter">{{notificationCounter.exceeds}}</div>
+                        </div>
+                        <div class="button__title">
+                            Notes de frais en dépassement
+                        </div>
+
+                    </div>
+                    <div v-if="isDirecteur" @click="onClickToValidate">
+                        <div class="button__icon">
+                            <i class="material-icons">present_to_all</i>
+                            <div class="button__notification__counter">{{notificationCounter.toValidate}}</div>
+                        </div>
+                        <div class="button__title">
+                            Notes de frais à valider
+                        </div>
+                    </div>
                     <slot name="bottomButton"></slot>
                 </div>
                 <div v-for="b in buttons" class="documentsList__collections__button"
@@ -45,6 +64,7 @@
                 </div>
             </div>
         </div>
+        <span ref="showcaseNotification" style="display: none"></span>
     </div>
 </template>
 <style lang="scss">

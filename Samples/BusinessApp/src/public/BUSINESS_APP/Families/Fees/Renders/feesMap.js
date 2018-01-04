@@ -15,10 +15,20 @@ window.dcp.document.documentController(
     },
     function (event, documentObject, attribute, el) {
         var _this = this;
+        var dates = $(this).documentController('getValue', 'fee_exp_file_stamp_date');
+        var stampIds = $(this).documentController('getValue', 'fee_exp_file_stampid');
         var onSelectTab = function (event) {
             var index = $(event.item).index();
             var selectedMarker = markers[index];
             selectedMarker.openPopup();
+            var date = new Date(dates[index].value);
+            $('#fee-exp-date-value').text(date.toLocaleDateString());
+            $('#fee-exp-time-value').text(date.toLocaleTimeString());
+            var stampId = stampIds[index].value;
+            if (stampId) {
+                $('#fee-exp-file-value').prop('href', 'https://2d802663ae12cde:0f45595d-6779-4410-96e8-4266a5e942c@api-prod.stampery.com/stamps/' + stampId + '.pdf');
+            }
+
         };
 
         var tabstrip = $('#fees-expenses-viztabstrip').kendoTabStrip({

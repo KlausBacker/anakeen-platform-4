@@ -4,9 +4,6 @@ namespace Sample\BusinessApp\Renders;
 
 class CommonView extends \Dcp\Ui\DefaultView
 {
-    use Common {
-        Common::getOptions as getCommonOptions;
-    }
 
     public function getLabel(\Doc $document = null)
     {
@@ -15,7 +12,7 @@ class CommonView extends \Dcp\Ui\DefaultView
 
     public function getOptions(\Doc $document)
     {
-        $options = $this->getCommonOptions($document);
+        $options = parent::getOptions($document);
         return $options;
     }
 
@@ -26,6 +23,13 @@ class CommonView extends \Dcp\Ui\DefaultView
         $ws=\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js["ba-common"] = "BUSINESS_APP/Families/Common/Renders/common.js"."?ws=$ws";
         return $js;
+    }
+
+    public function getCssReferences(\Doc $document = null)
+    {
+        $css = parent::getCssReferences($document);
+        $css["ba-common"] = "./BUSINESS_APP/Families/Common/Renders/common.css";
+        return $css;
     }
 
 

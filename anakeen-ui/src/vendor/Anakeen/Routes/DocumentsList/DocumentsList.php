@@ -6,30 +6,20 @@
  * Time: 11:50
  */
 
-namespace Anakeen\Sample\Routes;
+namespace Anakeen\Routes\DocumentsList;
 
-use Dcp\HttpApi\V1\Crud\DocumentUtils;
-use Dcp\HttpApi\V1\Crud\FamilyDocumentCollection;
+use Dcp\HttpApi\V1\Crud\DocumentCollection;
 use Dcp\HttpApi\V1\DocManager\DocManager;
 use Dcp\Core\ContextManager;
-use Anakeen\Sample\Routes\Exception;
+use Dcp\HttpApi\V1\Api\Exception;
 
-class DocumentsList extends FamilyDocumentCollection
+class DocumentsList extends DocumentCollection
 {
-
-    /**
-     * @var \Doc current anakeen platform collection
-     */
-    protected $_apCollection = null;
-
-    /**
-     * @var string reference of current collection
-     */
-    protected $_collectionRef;
     /**
      * @var array definition of current collection
      */
-    protected $_collection;
+    protected $_collectionDoc = null;
+    protected $_familyDoc = null;
     /**
      * @var string default value for order
      */
@@ -62,7 +52,6 @@ class DocumentsList extends FamilyDocumentCollection
         $return["resultMax"] = $this->_searchDoc->onlyCount();
         $return['paginationState'] = $this->getPaginationState();
         $return['user'] = ["id"=>intval(ContextManager::getCurrentUser()->id), "fid"=>intval(ContextManager::getCurrentUser()->fid)];
-        $return['debug'] = $this->_searchDoc->getSearchInfo();
         return $return;
     }
 
@@ -98,37 +87,40 @@ class DocumentsList extends FamilyDocumentCollection
     {
         $this->urlParameters = $array;
         $familyId = isset($this->urlParameters["familyId"]) ? $this->urlParameters["familyId"] : false;
-        if ($familyId === 'BA_FEES_TO_VALIDATE' || $familyId === 'BA_FEES_TO_INTEGRATE' || $familyId === 'BA_FEES_EXCEED') {
-            $familyId = 'BA_FEES';
-        }
-        DocumentUtils::checkFamilyId($familyId, "families/%s/documents/");
-        $this->_family = DocManager::getFamily($familyId);
-        if (!$this->_family) {
-            $exception = new Exception("CRUD0200", $familyId);
-            $exception->setHttpStatus("404", "Family not found");
-            throw $exception;
+        $doc = DocManager::getDocument($familyId);
+        switch ($doc->defDoctype) {
+            case 'C':
+                $this->_familyDoc = $doc;
+                if (!$this->_familyDoc) {
+                    $exception = new Exception('DOCLIST0001', $familyId);
+                    $exception->setHttpStatus("404", "Family not found");
+                    throw $exception;
+                }
+                break;
+            case 'F':
+            case 'S':
+                $this->_collectionDoc = $doc;
+                if (!$this->_collectionDoc) {
+                    $exception = new Exception("DOCLIST0002", $familyId);
+                    $exception->setHttpStatus("404", "Collection not found");
+                    throw $exception;
+                }
+                break;
+            default:
+                $exception = new Exception("DOCLIST0003", $familyId);
+                $exception->setHttpStatus("400", "Document is not a family or collection");
+                throw $exception;
         }
     }
 
     protected function prepareSearchDoc() {
-
-        if ($this->urlParameters['familyId'] === 'BA_FEES_TO_VALIDATE') {
-            $this->_searchDoc = new \SearchDoc("", "BA_FEES");
-            $this->_searchDoc->addFilter("state = 'e_ba_filled'");
-        } elseif ($this->urlParameters['familyId'] === 'BA_FEES_TO_INTEGRATE') {
-            $this->_searchDoc = new \SearchDoc("", "BA_FEES");
-            $this->_searchDoc->addFilter("state = 'e_ba_validated'");
-        } elseif ($this->urlParameters['familyId'] === 'BA_FEES_EXCEED') {
-            $this->_searchDoc = new \SearchDoc("", "BA_FEES");
-            $this->_searchDoc->addFilter("state = 'e_ba_draft_exceed'");
-        } else {
-            $this->_searchDoc = new \SearchDoc("", $this->_family->name);
+        $this->_searchDoc = new \SearchDoc();
+        if ($this->_collectionDoc) {
+            $this->_searchDoc->useCollection($this->_collection->id);
+        } else if ($this->_familyDoc) {
+            $this->_searchDoc->fromid = $this->_familyDoc->id;
         }
         $this->_searchDoc->setObjectReturn();
-        $user = ContextManager::getCurrentUser();
-        if ($this->urlParameters['familyId'] === 'BA_FEES' && $user->id != 1 ) {
-            $this->_searchDoc->addFilter("fee_account = '%s'", $user->fid);
-        }
 
         if (!empty($this->contentParameters['filter'])) {
             $this->_filter = $this->contentParameters['filter'];

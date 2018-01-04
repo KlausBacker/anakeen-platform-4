@@ -12,8 +12,6 @@ CPROFID;pdoc_fees
 PARAM;fee_fr_preview;;Preview;N;N;frame;::auto;W;N;;;;;;
 PARAM;fee_preview_template;fee_fr_preview;"Preview template";N;N;file;::auto;W;N;;;;;;
 PARAM;fee_limit_values;fee_fr_preview;"Dépenses Maximales";N;N;"docid(""""BA_CATEGORIES"""")";::auto;W;N;;;;;;
-//DEFAULT;Id;"Default Value"
-DEFAULT;fee_exp_tva;"Non calculé"
 //INITIAL;Id;"Initial value"
 INITIAL;fee_preview_template;application/vnd.oasis.opendocument.text|1170013321|template.odt
 INITIAL;fee_limit_values;BA_DOC_CATEGORIES

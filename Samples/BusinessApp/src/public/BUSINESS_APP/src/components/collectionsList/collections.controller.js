@@ -10,22 +10,6 @@ export default {
                 .then((response) => {
                     this.collections = response.data.data.collections;
                     this.currentUser = response.data.data.user;
-                    if (this.isDirecteur) {
-                        this.collections.push({
-                            html_label: 'Notes de frais à valider',
-                            ref: 'BA_FEES_TO_VALIDATE',
-                            initid: 'BA_FEES_TO_VALIDATE',
-                            image_url: 'api/v1/images/assets/sizes/24x24c/BA_Fees_to_action.png',
-                        });
-                    } else if (this.isComptable) {
-                        this.collections.push({
-                            html_label: 'Notes de frais à rembourser',
-                            ref: 'BA_FEES_TO_INTEGRATE',
-                            initid: 'BA_FEES_TO_INTEGRATE',
-                            image_url: 'api/v1/images/assets/sizes/24x24c/BA_Fees_to_action.png',
-                        });
-                    }
-
                     this.updateKendoData();
                     const listView = this.$(this.$refs.listView).data('kendoListView');
                     listView.select(listView.element.children().first());
@@ -47,13 +31,18 @@ export default {
             collections: [],
             currentUser: null,
             dataSources: null,
+            notificationEl: null,
+            notificationCounter: {
+                exceeds: 0,
+                toValidate: 0,
+            },
             buttons: [
                 /*{
                   id: 'notif',
                   icon: 'fa fa-bell',
                   title: 'Notifications',
                 },
-                {
+                /*{
                   id: 'settings',
                   icon: 'fa fa-cog',
                   title: 'Paramètres',
@@ -142,6 +131,12 @@ export default {
 
             return false;
         },
+
+        notification() {
+            if (this.notificationEl) {
+                return this.notificationEl.data('kendoNotification');
+            }
+        },
     },
 
     methods: {
@@ -190,6 +185,10 @@ export default {
                 change: this.onSelectItemList,
             });
 
+            this.notificationEl = this.$(this.$refs.showcaseNotification).kendoNotification({
+            });
+            this.checkNotifications();
+
             this.updateKendoData();
         },
 
@@ -219,8 +218,35 @@ export default {
             });
         },
 
+        checkNotifications() {
+            this.sendGetRequest('api/v1/sba/collections/BA_FEES_EXCEED/documentsList').then((response) => {
+                this.notificationCounter.exceeds = response.data.data.resultMax;
+            });
+            this.sendGetRequest('api/v1/sba/collections/BA_FEES_TO_VALIDATE/documentsList').then((response) => {
+                this.notificationCounter.toValidate = response.data.data.resultMax;
+            });
+        },
+
         openAccount() {
             // Open user account
+        },
+
+        onClickToExceed() {
+            this.selectCollection({
+                html_label: 'Notes de frais en dépassement',
+                ref: 'BA_FEES_EXCEED',
+                initid: 'BA_FEES_EXCEED',
+                image_url: 'api/v1/images/assets/sizes/24x24c/BA_Fees_exceed.png',
+            });
+        },
+
+        onClickToValidate() {
+            this.selectCollection({
+                        html_label: 'Notes de frais à valider',
+                        ref: 'BA_FEES_TO_VALIDATE',
+                        initid: 'BA_FEES_TO_VALIDATE',
+                        image_url: 'api/v1/images/assets/sizes/24x24c/BA_Fees_to_action.png',
+                    });
         },
     },
 };

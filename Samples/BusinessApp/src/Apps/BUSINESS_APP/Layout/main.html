@@ -32,6 +32,7 @@
         <ank-document-list id="documentsList"
                            logo-url="CORE/Images/anakeen-logo.svg"
                            bind-event="document-selected: #documentsTabs.publicMethods.addDocument"
+                           content-url="api/v1/sba/collections/<familyId>/documentsList"
         ></ank-document-list>
     </div>
     <div vue-slot="mainPane">

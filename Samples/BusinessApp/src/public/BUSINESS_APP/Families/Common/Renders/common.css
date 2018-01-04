@@ -21,6 +21,25 @@
     content: "\e121";
 }
 
-.dcpNotifications {
+.dcpAttribute__content[data-type=money] .k-select {
     display: none;
+}
+
+.input-group-addon.money__currency__selector__wrapper {
+    background-color: #e4e7eb;
+    color: #878787;
+}
+
+.money__currency__selector__wrapper > .money__currency__selector {
+    background-color: inherit;
+    color: inherit;
+    border: none;
+}
+
+.dcpAttribute__content[data-type=money] .k-numeric-wrap {
+    padding-left: 0;
+}
+
+.dcpNotification--notice, .k-notification-notice {
+    display: none !important;
 }
