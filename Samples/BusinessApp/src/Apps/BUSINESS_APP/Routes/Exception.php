@@ -6,8 +6,14 @@
  * Time: 10:01
  */
 
-namespace Anakeen\Sample\Routes;
+namespace {
 
-class Exception extends \Dcp\HttpApi\V1\Crud\Exception {
+    class ErrorCodeShowcase
+    {
+        /**
+         * @errorCode in case of user not found
+         */
+        const SHOWCASE001 = 'Error, user "%s" not found';
 
+    }
 }

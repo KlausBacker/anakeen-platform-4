@@ -14,6 +14,10 @@ export default {
         label: {
             default: '',
         },
+        contentUrl: {
+            type: String,
+            default: 'documentsList/<familyId>',
+        },
     },
 
     created() {
@@ -41,8 +45,10 @@ export default {
                                     params.filter = this.filterInput;
                                 }
 
+                                const request = this.contentUrl.replace('<familyId>', options.data.collection);
+
                                 _this.privateScope
-                                    .sendGetRequest(`api/v1/sba/collections/${options.data.collection}/documentsList`,
+                                    .sendGetRequest(request,
                                         {
                                             params,
                                         })
@@ -217,6 +223,16 @@ export default {
                         collection: this.collection ? this.collection.html_label : '',
                     }),
             };
+        },
+
+        collectionLabel() {
+            if (this.collection && this.collection.html_label) {
+                return this.collection.html_label;
+            } else if (this.label) {
+                return this.label;
+            } else {
+                return '';
+            }
         },
     },
 
