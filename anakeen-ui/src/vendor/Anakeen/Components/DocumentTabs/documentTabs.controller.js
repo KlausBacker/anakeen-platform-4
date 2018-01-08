@@ -30,7 +30,7 @@ export default {
         },
         addable: {
             type: Boolean,
-            default: true,
+            default: false,
         },
 
     },

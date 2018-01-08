@@ -116,7 +116,7 @@ class DocumentsList extends DocumentCollection
     protected function prepareSearchDoc() {
         $this->_searchDoc = new \SearchDoc();
         if ($this->_collectionDoc) {
-            $this->_searchDoc->useCollection($this->_collection->id);
+            $this->_searchDoc->useCollection($this->_collectionDoc->id);
         } else if ($this->_familyDoc) {
             $this->_searchDoc->fromid = $this->_familyDoc->id;
         }

@@ -8,7 +8,7 @@
             <div class="documentsList__documents__header__wrapper">
                 <div class="documentsList__documents__header">
                     <div class="documentsList__documents__header__label">
-                        {{collection ? collection.html_label : ''}}
+                        {{collectionLabel}}
                     </div>
                 </div>
             </div>

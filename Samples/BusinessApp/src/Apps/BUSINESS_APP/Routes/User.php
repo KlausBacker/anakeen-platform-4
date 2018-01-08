@@ -7,7 +7,7 @@
  */
 
 namespace Anakeen\Sample\Routes;
-use Dcp\Core\ContextManager;
+use Dcp\HttpApi\V1\Crud\Exception;
 use Dcp\HttpApi\V1\Crud\Crud;
 
 
@@ -53,7 +53,7 @@ class User extends Crud
             ];
             return $return;
         } catch (Exception $e)  {
-            $exception = new Exception("FIXME");
+            $exception = new Exception("SHOWCASE001");
             $exception->setHttpStatus(
                 "404", "User not found"
             );
