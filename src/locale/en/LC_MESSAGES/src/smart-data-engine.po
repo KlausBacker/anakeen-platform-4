@@ -1,0 +1,4799 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Toolbox\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-12 15:54+0100\n"
+"PO-Revision-Date: 2016-11-18 15:26+0100\n"
+"Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
+"Language-Team: English team <>\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#, php-format
+msgid "%d answer"
+msgstr ""
+
+#, php-format
+msgid "%d answers"
+msgstr ""
+
+#, php-format
+msgid "%d day"
+msgstr ""
+
+#, php-format
+msgid "%d days"
+msgstr ""
+
+#, php-format
+msgid "%d document detected"
+msgid_plural "%d documents detected"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "%d document processed"
+msgid_plural "%d documents processed"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "%d documents are updated"
+msgstr ""
+
+#, php-format
+msgid "%d hour"
+msgstr ""
+
+#, php-format
+msgid "%d hours"
+msgstr ""
+
+#, php-format
+msgid "%d minute"
+msgstr ""
+
+#, php-format
+msgid "%d minutes"
+msgstr ""
+
+#, php-format
+msgid "%d/%d profiling done"
+msgstr ""
+
+#, php-format
+msgid "%d/%d revision done"
+msgstr ""
+
+#, php-format
+msgid "%s (as substitute)"
+msgstr ""
+
+#, php-format
+msgctxt "ddui"
+msgid "%s Documents"
+msgstr ""
+
+#, php-format
+msgid "%s activity"
+msgstr ""
+
+#, php-format
+msgid "%s affectation"
+msgstr ""
+
+#, php-format
+msgid "%s affectation type"
+msgstr ""
+
+#, php-format
+msgid "%s affected user"
+msgstr ""
+
+#, php-format
+msgid "%s application has no aclss"
+msgstr ""
+
+#, php-format
+msgid "%s application not exists"
+msgstr ""
+
+#, php-format
+msgid "%s attribute"
+msgstr ""
+
+#, php-format
+msgid "%s autolock"
+msgstr ""
+
+#, php-format
+msgid "%s automail"
+msgstr ""
+
+#, php-format
+msgid "%s color"
+msgstr ""
+
+#, php-format
+msgid "%s cv"
+msgstr ""
+
+#, php-format
+msgid "%s directory not found"
+msgstr ""
+
+#, php-format
+msgid "%s directory not writable"
+msgstr ""
+
+#, php-format
+msgid "%s group"
+msgstr ""
+
+#, php-format
+msgid "%s has no email address"
+msgstr ""
+
+#, php-format
+msgid "%s igroup created\n"
+msgstr ""
+
+#, php-format
+msgid "%s is not a family"
+msgstr ""
+
+#, php-format
+msgid "%s is not an array attribute"
+msgstr ""
+
+#, php-format
+msgid "%s iuser aborded\n"
+msgstr ""
+
+#, php-format
+msgid "%s iuser created\n"
+msgstr ""
+
+#, php-format
+msgid "%s mail template"
+msgstr ""
+
+#, php-format
+msgid "%s mask"
+msgstr ""
+
+#, php-format
+msgid "%s needed\n"
+msgstr ""
+
+#, php-format
+msgid "%s new state %s"
+msgstr ""
+
+#, php-format
+msgid "%s persistent timer"
+msgstr ""
+
+#, php-format
+msgid "%s profile"
+msgstr ""
+
+#, php-format
+msgid "%s timer"
+msgstr ""
+
+#, php-format
+msgid "%s to be add"
+msgstr ""
+
+#, php-format
+msgid "%s unattach timer"
+msgstr ""
+
+#, php-format
+msgid "%s updated\n"
+msgstr ""
+
+#, php-format
+msgid "%s wask"
+msgstr ""
+
+#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
+msgid "&gt; or equal"
+msgstr ""
+
+#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
+msgid "&lt; or equal"
+msgstr ""
+
+msgid "(Other input)"
+msgstr ""
+
+msgid "(Other)"
+msgstr ""
+
+msgid "(file not found)"
+msgstr ""
+
+msgid "(only)"
+msgstr ""
+
+#, php-format
+msgid "(substitute of %s) : "
+msgstr ""
+
+msgid "(title)"
+msgstr ""
+
+msgid "<it's a message>"
+msgstr ""
+
+#, php-format
+msgid "API file %s not found\n"
+msgstr ""
+
+#, php-format
+msgid "Account Type \"%s\""
+msgstr ""
+
+#, php-format
+msgid "Acl [%s] not available for App %s"
+msgstr ""
+
+msgid "Action"
+msgstr ""
+
+#, php-format
+msgid "Add %s in %s folder"
+msgstr ""
+
+#, php-format
+msgid "Add atags \"%s\""
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Add group reference"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Add role reference"
+msgstr ""
+
+msgid "Affectation aborded"
+msgstr ""
+
+msgid "Affectation aborded : user not know"
+msgstr ""
+
+#, php-format
+msgid "Affected for %s"
+msgstr ""
+
+#, php-format
+msgid "Affected to %s %s"
+msgstr ""
+
+msgid "Allow guest access"
+msgstr ""
+
+#, php-format
+msgid "Archiving into %s"
+msgstr ""
+
+msgid "Attribut relation"
+msgstr ""
+
+#, php-format
+msgid ""
+"Attribute %s found is not alone\n"
+"Must precise request with appname arguments\n"
+msgstr ""
+
+#, php-format
+msgid "Attribute %s modified to %s"
+msgstr ""
+
+#, php-format
+msgid "Attribute %s not found\n"
+msgstr ""
+
+#, php-format
+msgid "Attribute %s not modified : %s\n"
+msgstr ""
+
+#, php-format
+msgid "Attribute '%s' could not be found in family '%s'."
+msgstr ""
+
+#, php-format
+msgid "Attribute '%s' should reference a docid attribute in family '%s'."
+msgstr ""
+
+#, php-format
+msgid "Attribute Error: family '%s' is not valid or alive for docid '%s'."
+msgstr ""
+
+#, php-format
+msgid ""
+"Attribute Error: impossible to found the family for docid attribute '%s'"
+msgstr ""
+
+#, php-format
+msgid "Attribute format should not be empty on attribute '%s' in family '%s'."
+msgstr ""
+
+msgctxt "authentOpen"
+msgid "Authorization Required"
+msgstr ""
+
+msgid "CHANGE_PASSWORD:The old password is not good"
+msgstr "The old password is not good"
+
+#, php-format
+msgid "CHANGE_PASSWORD:The provided password is not good (%s)"
+msgstr "The provided password is not good (%s)"
+
+#, php-format
+msgid "CHANGE_PASSWORD:Unable to change password (%s)"
+msgstr "Unable to change password (%s)"
+
+msgid "CHANGE_PASSWORD:You can't modify your account"
+msgstr "You can't modify your account"
+
+#, php-format
+msgid "CVID : %s"
+msgstr ""
+
+#, php-format
+msgid "CVID : view control '%s' not found"
+msgstr ""
+
+#, php-format
+msgid "Cannot access to vault file system"
+msgstr ""
+
+#, php-format
+msgid ""
+"Cannot add %s in %s folder, restriction set to add this kind of document"
+msgstr ""
+
+#, php-format
+msgid "Cannot add in %s folder, doc id (%d) unknown"
+msgstr ""
+
+#, php-format
+msgid "Cannot copy file %s to %s"
+msgstr ""
+
+#, php-format
+msgid "Cannot find %s resource file"
+msgstr ""
+
+#, php-format
+msgid ""
+"Cannot import document because the ORDER line for family '%s' is incorrect: "
+"%s"
+msgstr ""
+
+msgctxt "HTTPAPI_V1"
+msgid "Cannot store file because vault size limit is reached"
+msgstr ""
+
+#, php-format
+msgid "Cannot write to log %s"
+msgstr ""
+
+#, php-format
+msgid "Change profil to default document profil : %d"
+msgstr ""
+
+#, php-format
+msgid "Change profil to default subfolder profil : %d"
+msgstr ""
+
+#, php-format
+msgid "ChangeState :: the initial state '%s' is not known"
+msgstr ""
+
+#, php-format
+msgid ""
+"ChangeState :: the new state '%s' is not known or is not allowed from %s"
+msgstr ""
+
+#, php-format
+msgid "Class %s from file %s already declared in autoload with file %s"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+#, php-format
+msgid "Close archive"
+msgstr ""
+
+#, php-format
+msgid "Column type '%s' is not managed for export."
+msgstr ""
+
+#, php-format
+msgid "Config file %s : attribute name not set"
+msgstr ""
+
+#, php-format
+msgid "Config file %s : family name [%s] not match a know family"
+msgstr ""
+
+#, php-format
+msgid "Config file %s : family name not set"
+msgstr ""
+
+#, php-format
+msgid "Config file %s : unknow attribute name %s"
+msgstr ""
+
+#, php-format
+msgid "Connection to freedom pg service '%s' OK !"
+msgstr "Connection to pg service '%s' OK!"
+
+#, php-format
+msgid "Connection to temporary pg service '%s' OK !"
+msgstr ""
+
+msgid "Control characters are not allowed"
+msgstr ""
+
+#, php-format
+msgid "Could not find attribute '%s' in family '%s'."
+msgstr ""
+
+msgid "Could not find pg_dump command in PATH."
+msgstr ""
+
+msgid "Could not find psql command in PATH."
+msgstr ""
+
+#, php-format
+msgid "Could not generate output file name for node '%s'."
+msgstr ""
+
+#, php-format
+msgid "Could not get family id for '%s'."
+msgstr ""
+
+#, php-format
+msgid "Could not open '%s' for reading."
+msgstr ""
+
+#, php-format
+msgid ""
+"Could not perform transition because the document is being edited by '%s'"
+msgstr ""
+
+#, php-format
+msgid "Could not perform transition because the document is locked by '%s'"
+msgstr ""
+
+#, php-format
+msgid "Create Schema '%s' ..."
+msgstr ""
+
+#, php-format
+msgid "Create Table '%s'"
+msgstr ""
+
+msgid "Create Tables ..."
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Create account"
+msgstr ""
+
+msgctxt "HTTPAPI_V1"
+msgid "Create by HTTP API"
+msgstr ""
+
+#, php-format
+msgid "DbObj::Adds error in multiple insertion"
+msgstr ""
+
+#, php-format
+msgid "Del atags \"%s\""
+msgstr ""
+
+#, php-format
+msgid "Delete %d in %s folder"
+msgstr ""
+
+msgctxt "HTTPAPI_V1"
+msgid "Deleted by HTTP API"
+msgstr ""
+
+#, php-format
+msgid "Destroyed by action %s/%s from %s"
+msgstr ""
+
+msgid "DetailSearch:malformed timestamp"
+msgstr "malformed timestamp"
+
+msgid "DetailSearch:unbalanced parenthesis"
+msgstr "unbalanced parenthesis"
+
+#, php-format
+msgid "Dir::insertFolder identifier [%s] must be numeric"
+msgstr ""
+
+msgid "Directory already exists"
+msgstr ""
+
+msgid "Display available choices"
+msgstr ""
+
+msgid "Display errors in request response"
+msgstr ""
+
+msgid "Do choice"
+msgstr "Select"
+
+#, php-format
+msgid ""
+"Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical "
+"name"
+msgstr ""
+
+#, php-format
+msgid ""
+"Doc %s : Attribut \"%s\" reference revised identifier : importation not "
+"support revision links without identifiers"
+msgstr ""
+
+#, php-format
+msgid "Doc Render %d/%d"
+msgstr ""
+
+msgid "DocProperties"
+msgstr "Properties"
+
+#, php-format
+msgid "Document %s inserted"
+msgstr ""
+
+#, php-format
+msgid "Document %s is in edition by %s."
+msgstr ""
+
+#, php-format
+msgid "Document %s umounted"
+msgstr ""
+
+msgid "Document Properties"
+msgstr ""
+
+msgid "Document basket"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Document creation"
+msgstr ""
+
+msgid "Document destroyed"
+msgstr ""
+
+msgctxt "HTTPAPI_V1"
+msgid "Document information"
+msgstr ""
+
+#, php-format
+msgid "Document inserted in %s folder"
+msgstr ""
+
+#, php-format
+msgid "Document unlinked of %s folder"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Document update"
+msgstr ""
+
+msgid "Doing csv render"
+msgstr ""
+
+msgid "Doing render"
+msgstr ""
+
+msgid "Doing search request"
+msgstr ""
+
+#, php-format
+msgid "Dump pgservice '%s' ..."
+msgstr ""
+
+#, php-format
+msgid "Dump to '%s' returned with exitcode %s"
+msgstr ""
+
+msgid "Dynacase frontpage description"
+msgstr ""
+
+msgid "Dynacase pages favico"
+msgstr ""
+
+#, php-format
+msgid "Dynamic template %s not an odt file "
+msgstr ""
+
+#, php-format
+msgid "Dynamic template %s not found "
+msgstr ""
+
+#, php-format
+msgid "ERROR %s\n"
+msgstr ""
+
+msgid "ERROR :"
+msgstr ""
+
+#, php-format
+msgid ""
+"Element can't be perfectly analyze, some error might occur or be corrected "
+"when importing"
+msgstr ""
+
+#, php-format
+msgid "Emptying temporary database '%s' ..."
+msgstr ""
+
+msgid "English"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+#, php-format
+msgid "Error : %s"
+msgstr ""
+
+#, php-format
+msgid "Error : %s\n"
+msgstr ""
+
+#, php-format
+msgid "Error : Process %s [%d]: status %d"
+msgstr ""
+
+#, php-format
+msgid "Error : Process %s [%d]: status %d in %.03f seconds"
+msgstr ""
+
+#, php-format
+msgid "Error : need edit privilege to execute"
+msgstr ""
+
+#, php-format
+msgid "Error converting HTML from attribute '%s' from document '%s': %s"
+msgstr ""
+
+#, php-format
+msgid "Error could not open output log file '%s' for writing."
+msgstr ""
+
+#, php-format
+msgid "Error could not open sql log file '%s' for writing."
+msgstr ""
+
+#, php-format
+msgid "Error creating directory '%s': %s"
+msgstr ""
+
+msgid "Error creating temp file for pg_dump output."
+msgstr ""
+
+msgid "Error creating temp file for sql log output."
+msgstr ""
+
+#, php-format
+msgid "Error creating temporary file in '%s'."
+msgstr ""
+
+#, php-format
+msgid "Error deleting directory '%s': %s"
+msgstr ""
+
+#, php-format
+msgid "Error extracting archive '%s' in '%s': %s"
+msgstr ""
+
+#, php-format
+msgid "Error in portfolio : folder %s not exists"
+msgstr ""
+
+#, php-format
+msgid "Error opening %s file '%s'"
+msgstr ""
+
+#, php-format
+msgid "Error opening directory '%s'."
+msgstr ""
+
+#, php-format
+msgid "Error reading from file '%s'"
+msgstr ""
+
+#, php-format
+msgid "Error renaming '%s' to '%s'."
+msgstr ""
+
+#, php-format
+msgid "Error writing content to '%s'."
+msgstr ""
+
+#, php-format
+msgid "Error writing content to file '%s'."
+msgstr ""
+
+#, php-format
+msgid "Error writing to ouput file '%s'."
+msgstr ""
+
+#, php-format
+msgid "Error: No column found in array '%s'"
+msgstr ""
+
+msgid "Error: empty action->dbaccess"
+msgstr ""
+
+msgid "Expiration delay must not be 0 to keep expiration date"
+msgstr ""
+
+msgid "Export 1NF done"
+msgstr ""
+
+msgctxt "fuserexport"
+msgid "Export Aborted"
+msgstr ""
+
+#, php-format
+msgctxt "fuserexport"
+msgid "Export accounts (%d/%d)"
+msgstr ""
+
+msgid "Export done"
+msgstr ""
+
+#, php-format
+msgctxt "fuserexport"
+msgid "Export relative document (%d/%d)"
+msgstr ""
+
+msgid "Export:Warnings"
+msgstr "Export warnings :"
+
+#, php-format
+msgid "Failed to copy %s to %s"
+msgstr ""
+
+#, php-format
+msgid "Failed to copy %s to vault"
+msgstr ""
+
+#, php-format
+msgid "Failed to create directory \"%s\" in vault"
+msgstr ""
+
+#, php-format
+msgctxt "fusersimport"
+msgid "Family %s"
+msgstr ""
+
+#, php-format
+msgid "Family '%s' does not implements IMailRecipient interface."
+msgstr ""
+
+#, php-format
+msgid "Family '%s' is not valid or alive."
+msgstr ""
+
+#, php-format
+msgid "Family [%s] not found"
+msgstr ""
+
+msgid "File System already exists"
+msgstr ""
+
+#, php-format
+msgctxt "HTTPAPI_V1"
+msgid "File not recorded, File size transfert limited to %d Mb"
+msgstr ""
+
+msgid "File:: Processing"
+msgstr ""
+
+msgid "File:: Waiting"
+msgstr ""
+
+msgid "File:: converted"
+msgstr ""
+
+msgid "File:: failed"
+msgstr ""
+
+msgid "Fill Tables ..."
+msgstr ""
+
+#, php-format
+msgid "Filling enum table '%s'"
+msgstr ""
+
+#, php-format
+msgid "Filling family table '%s' and relatives"
+msgstr ""
+
+#, php-format
+msgid "Fix multiple alive document #%s"
+msgstr ""
+
+#, php-format
+msgid "Fix multiple alive document for \"%s\" #%s"
+msgstr ""
+
+#, php-format
+msgid "Fix multiple alive revision for \"%s\""
+msgstr ""
+
+msgid "Folder cleared"
+msgstr ""
+
+msgid "French"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Group reference already added"
+msgstr ""
+
+msgid "HTTPAPI_V1:API default page"
+msgstr ""
+
+msgid "HTTPAPI_V1:Anakeen documentation URL"
+msgstr ""
+
+msgid "HTTPAPI_V1:Base URL used to generate canonic URL response (uri)"
+msgstr ""
+
+msgid "HTTPAPI_V1:activate memory/time tracing"
+msgstr ""
+
+msgid "HTTPAPI_V1:activate the etag cache for the request that handle it"
+msgstr ""
+
+msgid "HTTPAPI_V1:crud class"
+msgstr ""
+
+msgid "HTTPAPI_V1:custom logger class"
+msgstr ""
+
+msgid "HTTPAPI_V1:default logger class"
+msgstr ""
+
+msgid "HTTPAPI_V1:default value of the slice for collection"
+msgstr ""
+
+msgid "HTTPAPI_V1:middleware crud classes"
+msgstr ""
+
+msgctxt "fuserimport"
+msgid "Import Aborted"
+msgstr ""
+
+msgctxt "fuserimport"
+msgid "Import end"
+msgstr ""
+
+#, php-format
+msgctxt "fuserimport"
+msgid "Import group (%d/%d)"
+msgstr ""
+
+#, php-format
+msgctxt "fuserimport"
+msgid "Import role (%d/%d)"
+msgstr ""
+
+#, php-format
+msgctxt "fuserimport"
+msgid "Import user (%d/%d)"
+msgstr ""
+
+msgid "Impossible to have several identical names"
+msgstr ""
+
+msgid "Impossible to name a view like a control acl"
+msgstr ""
+
+#, php-format
+msgid "Incoherent column type '%s' in array '%s'."
+msgstr ""
+
+#, php-format
+msgid "Invalid condition for attribute '%s' with value '%s': %s"
+msgstr ""
+
+#, php-format
+msgid "Invalid directory '%s'."
+msgstr ""
+
+#, php-format
+msgid "It must contains at least %d characters (total length)"
+msgstr ""
+
+#, php-format
+msgid "LDAP Attribute added to %s %s"
+msgstr ""
+
+#, php-format
+msgid "LDAP Attribute modified to %s %s"
+msgstr ""
+
+#, php-format
+msgid "LEX_GENERAL_FILTER:Unable to parse %s"
+msgstr ""
+
+msgid "Label must not be empty"
+msgstr ""
+
+#, php-format
+msgid "Layout \"%s\" : Controller not allowed"
+msgstr ""
+
+msgctxt "fuserimport"
+msgid "Load XML file"
+msgstr ""
+
+#, php-format
+msgid "Load dump file into '%s' ..."
+msgstr ""
+
+#, php-format
+msgid "Loading of dump '%s' returned with exitcode %s"
+msgstr ""
+
+msgid "Loading..."
+msgstr ""
+
+#, php-format
+msgid "Logical name %s already set for %s. Use reset parameter to overhide it"
+msgstr ""
+
+#, php-format
+msgid "Logical name %s already use in document %s"
+msgstr ""
+
+#, php-format
+msgid "Mail %s sent to %s"
+msgstr ""
+
+msgid "Mail action URL"
+msgstr "Mail action URL"
+
+msgid "Make references ..."
+msgstr ""
+
+#, php-format
+msgid "Malformed HTML in attribute '%s' from document '%s': %s"
+msgstr ""
+
+msgid "Malformed HTML:"
+msgstr ""
+
+#, php-format
+msgid "Max display limit %s reached. Use export to see all"
+msgstr ""
+
+#, php-format
+msgid "Method [%s] not exists"
+msgstr ""
+
+msgid "Modify table"
+msgstr ""
+
+#. _COMMENT: Doc (Class.Doc.php)
+#. _COMMENT: searchLabel key
+#. _COMMENT: types: uid
+msgid "My system user id"
+msgstr ""
+
+#. _COMMENT: Doc (Class.Doc.php)
+#. _COMMENT: searchLabel key
+#. _COMMENT: types: docid("IUSER")
+msgid "My user account id"
+msgstr ""
+
+msgid "N"
+msgstr ""
+
+msgid "Name of table cannot be empty"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "New password"
+msgstr ""
+
+#, php-format
+msgid "No Icon specified"
+msgstr ""
+
+#, php-format
+msgid "No identifier found for relation '%s' %s in %s file"
+msgstr ""
+
+#, php-format
+msgid "Not a family [%s]"
+msgstr ""
+
+msgid "Not enough characters."
+msgstr ""
+
+msgid "Not enough digits."
+msgstr ""
+
+msgid "Not enough lowercase characters."
+msgstr ""
+
+msgid "Not enough special characters."
+msgstr ""
+
+msgid "Not enough uppercase characters."
+msgstr ""
+
+#, php-format
+msgid "Only %s %s can view and edit"
+msgstr ""
+
+msgid "Other..."
+msgstr ""
+
+#, php-format
+msgid "Output file '%s' already exists."
+msgstr ""
+
+#, php-format
+msgid "Output file '%s' is already opened."
+msgstr ""
+
+#, php-format
+msgid "PG Error: Connection to freedom pg service '%s' failed !"
+msgstr "PG Error: Connection to pg service '%s' failed!"
+
+#, php-format
+msgid "PG Error: Connection to temporary pg service '%s' failed !"
+msgstr ""
+
+msgid "Parameter name does not include spaces"
+msgstr ""
+
+msgid "Parametre cycle"
+msgstr ""
+
+#, php-format
+msgid "Personal profile for %s %s"
+msgstr ""
+
+#, php-format
+msgid "Pivot rendering %d/%d"
+msgstr ""
+
+msgctxt "authentOpen"
+msgid "Private key identifier is not valid"
+msgstr ""
+
+#, php-format
+msgid "Process %s [%d] executed"
+msgstr ""
+
+#, php-format
+msgid "Process %s [%d] executed in %.03f seconds"
+msgstr ""
+
+#, php-format
+msgid "Profil for document's archive %s"
+msgstr ""
+
+#, php-format
+msgid "Property '%s' is not valid (family '%s')."
+msgstr ""
+
+#, php-format
+msgid "Purge archive"
+msgstr ""
+
+msgid "REPORT_pivot"
+msgstr ""
+
+msgid "Recomputing profiled documents"
+msgstr ""
+
+#, php-format
+msgid "Record documents %d/%d"
+msgstr ""
+
+msgid "Relation cycle"
+msgstr ""
+
+msgid "Relation parametre"
+msgstr ""
+
+#, php-format
+msgid "Remove duplicate attribute '%s' in family '%s'"
+msgstr ""
+
+#, php-format
+msgid "Remove duplicate property '%s' in family '%s'"
+msgstr ""
+
+#, php-format
+msgid "Remove duplicate reference '%s' in family '%s'"
+msgstr ""
+
+#, php-format
+msgid "Reopen archive"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Reset all direct associated roles"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Reset all group attachment"
+msgstr ""
+
+#, php-format
+msgid "Reset attribute structure"
+msgstr ""
+
+#, php-format
+msgid "Reset defaults values"
+msgstr ""
+
+#, php-format
+msgid "Reset enums definition"
+msgstr ""
+
+#, php-format
+msgid "Reset parameters values"
+msgstr ""
+
+msgctxt "fuserexport"
+msgid "Retrieve Account data"
+msgstr ""
+
+msgid "Retrieve documents from database"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Role reference already added"
+msgstr ""
+
+#, php-format
+msgid "Send mail error : Attribute %s not found"
+msgstr ""
+
+#, php-format
+msgid "Send mail error : Attribute %s not found."
+msgstr ""
+
+#, php-format
+msgid "Send mail error : Parameter %s doesn't exists"
+msgstr ""
+
+#, php-format
+msgid ""
+"Send mail error : Relation to attribute %s not found. Incorrect relation "
+"key: %s"
+msgstr ""
+
+#, php-format
+msgid ""
+"Send mail error : Relation to attribute %s not found. Relation key %s "
+"does'nt link to a document"
+msgstr ""
+
+#, php-format
+msgid "Send mail error: recipient document '%s' does not exists."
+msgstr ""
+
+#, php-format
+msgid ""
+"Send mail error: recipient document '%s' does not implements IMailRecipient "
+"interface."
+msgstr ""
+
+#, php-format
+msgid "Send mail info : can't send mail %s: no sendee found"
+msgstr ""
+
+#, php-format
+msgid "Set atags \"%s\""
+msgstr ""
+
+#, php-format
+msgid "SetBlock:error [%s]"
+msgstr ""
+
+msgid "Show a notification when a mail is sent"
+msgstr ""
+
+#, php-format
+msgid "Skip already added property '%s' in family '%s'"
+msgstr ""
+
+#, php-format
+msgid ""
+"Some characters are not authorized for file name %s. They are replaced by -"
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Stopped on first error"
+msgstr ""
+
+#, php-format
+msgid "Syntax error in file '%s': %s"
+msgstr ""
+
+msgid "TE not activated"
+msgstr ""
+
+#, php-format
+msgid "Table '%s' unknown !"
+msgstr ""
+
+#, php-format
+msgid "Template [%s] not found"
+msgstr ""
+
+msgctxt "ddui"
+msgid "The folders"
+msgstr ""
+
+msgctxt "ddui"
+msgid "The trash"
+msgstr ""
+
+msgid "Timer infinity date"
+msgstr ""
+
+#. _COMMENT: Class.WProcess.php
+msgid "Twprocess_private"
+msgstr ""
+
+#. _COMMENT: Class.WProcess.php
+msgid "Twprocess_public"
+msgstr ""
+
+msgid "Ui style"
+msgstr ""
+
+msgid "Unallocate aborded"
+msgstr ""
+
+#, php-format
+msgid "Unallocated of %s %s : %s"
+msgstr ""
+
+#, php-format
+msgid "Unallocated of %s %s: %s"
+msgstr ""
+
+#, php-format
+msgid "Unarchiving from %s"
+msgstr ""
+
+#, php-format
+msgid "Unexpected transition error on workflow %s [%d] : %s"
+msgstr ""
+
+#, php-format
+msgid "Unknown logical name '%s' in attribute '%s'."
+msgstr ""
+
+#, php-format
+msgid "Unlabeled menu (%s)"
+msgstr ""
+
+#, php-format
+msgid "Unlabeled view (%s)"
+msgstr ""
+
+#, php-format
+msgid "Unsupported archive format '%s' for archive '%s'."
+msgstr ""
+
+msgctxt "fusersimport"
+msgid "Update account"
+msgstr ""
+
+msgid "Update by importation"
+msgstr ""
+
+msgctxt "HTTPAPI_V1"
+msgid "Update failed"
+msgstr ""
+
+msgctxt "HTTPAPI_V1"
+msgid "Update forbidden"
+msgstr ""
+
+#, php-format
+msgid "Update history done"
+msgstr ""
+
+msgctxt "HTTPAPI_V1"
+msgid "Updated by HTTP API"
+msgstr ""
+
+msgctxt "dcp:import"
+msgid "Updated values"
+msgstr ""
+
+msgid "User must be authenticate"
+msgstr "User must be authenticated"
+
+msgid "Utilisateur fixe"
+msgstr ""
+
+msgid ""
+"Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
+"pour acceder a cette ressource"
+msgstr ""
+
+#, php-format
+msgid "WID : %s"
+msgstr ""
+
+#, php-format
+msgid "WID : workflow '%s' is not a workflow"
+msgstr ""
+
+#, php-format
+msgid "WID : workflow '%s' not found"
+msgstr ""
+
+msgid "WSH error mail recipients (comma-separated list of mail addresses)"
+msgstr ""
+
+msgid "WSH error mail subject"
+msgstr ""
+
+#, php-format
+msgid "Warning : %s"
+msgstr ""
+
+msgctxt "dcp"
+msgid "Whoops, looks like something went wrong"
+msgstr ""
+
+msgid "XML Error: no 'family' attribute on <table/> node."
+msgstr ""
+
+msgid "XML Error: no <database/> root node."
+msgstr ""
+
+msgid "XML Error: no property or attribute on <column/> node."
+msgstr ""
+
+msgid "XML Error: no table defined."
+msgstr ""
+
+msgid "XML Error: only one <database/> root node allowed."
+msgstr ""
+
+#, php-format
+msgid "XML Root node is not a '%s' node (root node is '%s')."
+msgstr ""
+
+msgid "XML config parsed OK !"
+msgstr ""
+
+#, php-format
+msgid "XML error %s at line %d"
+msgstr ""
+
+msgid "Xml file cannot be created"
+msgstr ""
+
+#, php-format
+msgid "Xml import : Cannot create file %s"
+msgstr ""
+
+#, php-format
+msgid "Xml import file %s not found"
+msgstr ""
+
+msgid "Y"
+msgstr ""
+
+#, php-format
+msgid "You must use only a-z, 0-9, _, - characters : \"%s\""
+msgstr ""
+
+#, php-format
+msgid "Your password is not secure."
+msgstr ""
+
+msgid "Zip Archive cannot be created"
+msgstr ""
+
+#, php-format
+msgid "[%s] must be a integer"
+msgstr ""
+
+#, php-format
+msgid "[%s] must be a number"
+msgstr ""
+
+#, php-format
+msgid "[%s] must be between %s and %s"
+msgstr ""
+
+#, php-format
+msgid "[%s] must be greater than %s"
+msgstr ""
+
+#, php-format
+msgid "[%s] must be lower than %s"
+msgstr ""
+
+#, php-format
+msgid "[%s] must match /%s/"
+msgstr ""
+
+#. _COMMENT: Doc (Class.Doc.php)
+#. _COMMENT: searchLabel key
+#. _COMMENT: types: all
+msgid "account attribute"
+msgstr ""
+
+#, php-format
+msgid "action %s is not declared to be access in open mode"
+msgstr ""
+
+msgid "activity"
+msgstr ""
+
+#, php-format
+msgid "add %s for %s"
+msgstr ""
+
+#, php-format
+msgid "add %s id [%d]  "
+msgstr ""
+
+#, php-format
+msgid "add %s search"
+msgstr ""
+
+#, php-format
+msgid "add acl %s"
+msgstr ""
+
+#, php-format
+msgid "add default value %s %s"
+msgstr ""
+
+#, php-format
+msgid "add id [%d] "
+msgstr ""
+
+msgid "add inputs"
+msgstr ""
+
+#, php-format
+msgid "add negative acl %s"
+msgstr ""
+
+#. _COMMENT: importSingleDocument (Class.ImportSingleDocument.php)
+msgid "added"
+msgstr ""
+
+msgid "affect auto lock"
+msgstr ""
+
+msgid "affect auto mail"
+msgstr ""
+
+msgid "affect no lock"
+msgstr ""
+
+msgid "affect no mail"
+msgstr ""
+
+#, php-format
+msgid "all columns are hiddens"
+msgstr ""
+
+msgid "allocated"
+msgstr ""
+
+#, php-format
+msgid "allocation for %s document"
+msgstr ""
+
+msgid "already deleted"
+msgstr ""
+
+msgid "anchor color"
+msgstr ""
+
+#. _COMMENT: DocSearch (Class.DocSearch.php)
+msgid "and"
+msgstr ""
+
+#, php-format
+msgid "and add in %s folder "
+msgstr ""
+
+#. _COMMENT: Dcp\Core\Wask (Class.Wask.php)
+msgid "answer"
+msgstr ""
+
+msgid "any families"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "any value include"
+msgstr ""
+
+msgid "any values"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "any values include {right}"
+msgstr ""
+
+msgid "application version"
+msgstr ""
+
+#, php-format
+msgid "apply method %s"
+msgstr ""
+
+msgid "archieve status must be open to modify content"
+msgstr ""
+
+#, php-format
+msgid "argument %s=>%s"
+msgstr ""
+
+msgid "assigned workflow is not alive"
+msgstr ""
+
+#, php-format
+msgid "at least %d digits"
+msgstr ""
+
+#, php-format
+msgid "at least %d lowercase alpha characters"
+msgstr ""
+
+#, php-format
+msgid "at least %d symbol characters"
+msgstr ""
+
+#, php-format
+msgid "at least %d uppercase alpha characters"
+msgstr ""
+
+#, php-format
+msgid "at least one digit"
+msgstr ""
+
+#, php-format
+msgid "at least one lowercase alpha character"
+msgstr ""
+
+#, php-format
+msgid "at least one symbol character"
+msgstr ""
+
+#, php-format
+msgid "at least one uppercase alpha character"
+msgstr ""
+
+#, php-format
+msgid "attach timer %s [%d]"
+msgstr ""
+
+#, php-format
+msgid "attachTimer : the timer parameter is not a document of TIMER family"
+msgstr ""
+
+#, php-format
+msgid "attr key is empty"
+msgstr ""
+
+#, php-format
+msgid "attribute \"%s\" is not a part of array \"%s\""
+msgstr ""
+
+#, php-format
+msgid "attribute %s : %s type is not allowed with %s operator"
+msgstr ""
+
+#, php-format
+msgid "attribute %s : cannot detect title attribute"
+msgstr ""
+
+#, php-format
+msgid "attribute %s is not a file attribute"
+msgstr ""
+
+#, php-format
+msgid "attribute %s is not int a array"
+msgstr ""
+
+#, php-format
+msgid "attribute %s not found [%s]"
+msgstr ""
+
+#, php-format
+msgid "attribute %s unknow in document \"%s\" [%s]"
+msgstr ""
+
+#, php-format
+msgid "attribute %s unknow in family \"%s\""
+msgstr ""
+
+#, php-format
+msgid ""
+"automaticaly by change state of %s\n"
+"%s"
+msgstr ""
+
+msgid "background color for table cells"
+msgstr ""
+
+msgid "background color or image"
+msgstr ""
+
+msgid "background color or image in security mode"
+msgstr ""
+
+msgid "background image for bar"
+msgstr ""
+
+msgid "background image for menu"
+msgstr ""
+
+#, php-format
+msgid "basket of %s"
+msgstr ""
+
+#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
+msgid "begin by"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "between"
+msgstr ""
+
+msgid "can't access file"
+msgstr ""
+
+#, php-format
+msgid "cannot access to vault file system"
+msgstr ""
+
+#, php-format
+msgid "cannot change state of document #%d to %s"
+msgstr ""
+
+msgid "cannot contact server"
+msgstr ""
+
+#, php-format
+msgid "cannot create %s: %s\n"
+msgstr ""
+
+#, php-format
+msgid ""
+"cannot create directory %s\n"
+"Parent directory must be create before"
+msgstr ""
+
+#, php-format
+msgid "cannot create document for family [%s]"
+msgstr ""
+
+#, php-format
+msgid "cannot create from family [%s]"
+msgstr ""
+
+#, php-format
+msgid "cannot create user %s: %s"
+msgstr ""
+
+msgid "cannot delete family"
+msgstr ""
+
+#, php-format
+msgid "cannot delete link : initial query not found for doc %d in folder %d"
+msgstr ""
+
+#, php-format
+msgid ""
+"cannot delete link for doc %d in folder %d : the document comes from a user "
+"query. Delete initial query if you want delete this document"
+msgstr ""
+
+msgid "cannot detach : document id is not set"
+msgstr ""
+
+msgid "cannot detach : origin id is not set"
+msgstr ""
+
+msgid "cannot detach : timer id is not set"
+msgstr ""
+
+#, php-format
+msgid "cannot execute : document %s is not found"
+msgstr ""
+
+#, php-format
+msgid "cannot execute timer : timer %s is not found"
+msgstr ""
+
+#, php-format
+msgid "cannot extend vault: %s"
+msgstr ""
+
+#, php-format
+msgid "cannot extract archive %s: status : %s"
+msgstr ""
+
+#, php-format
+msgid "cannot load xml %s layout file"
+msgstr ""
+
+#, php-format
+msgid "cannot load xml layout file : %s"
+msgstr ""
+
+#, php-format
+msgid "cannot load xml template : %s"
+msgstr ""
+
+#, php-format
+msgid "cannot open %s layout file"
+msgstr ""
+
+#, php-format
+msgid "cannot open layout file : %s"
+msgstr ""
+
+msgid "cannot produce sql request"
+msgstr ""
+
+#, php-format
+msgid "cannot send mail %s"
+msgstr ""
+
+#, php-format
+msgid "cannot send mail %s to %s : %s"
+msgstr ""
+
+#, php-format
+msgid "cannot send mail %s with template %s : %s"
+msgstr ""
+
+#, php-format
+msgid "cannot set free state for document %s: document cannot be revised"
+msgstr ""
+
+#, php-format
+msgid "cannot set free state for document %s: workflow not allowed"
+msgstr ""
+
+#, php-format
+msgid "cannot set free state in workflow controlled document %s"
+msgstr ""
+
+#, php-format
+msgid "cannot set substitute %s id not found"
+msgstr ""
+
+#, php-format
+msgid "cannot set substitute %s login not found"
+msgstr ""
+
+#, php-format
+msgid "cannot set substitute account object not affected"
+msgstr ""
+
+#, php-format
+msgid "cannot substitute itself"
+msgstr ""
+
+msgid "cannot unlock"
+msgstr ""
+
+#, php-format
+msgid "cannot update file %s (rev %d) : fixed. Get the latest version"
+msgstr ""
+
+msgid "cannot update inconsistent document"
+msgstr ""
+
+msgid "cannot update no initialized document"
+msgstr ""
+
+#, php-format
+msgid "cannot write  %s"
+msgstr ""
+
+#, php-format
+msgid "cannot write log in %s"
+msgstr ""
+
+msgid "cdate"
+msgstr "Revision creation date"
+
+#, php-format
+msgid "change %s"
+msgstr ""
+
+#, php-format
+msgid "change application tag to '%s'"
+msgstr ""
+
+#, php-format
+msgid "change default creation profile id  to '%s'"
+msgstr ""
+
+#, php-format
+msgid "change methods to '%s'"
+msgstr ""
+
+#, php-format
+msgid "change profil %s"
+msgstr ""
+
+#, php-format
+msgid "change profile id  to '%s'"
+msgstr ""
+
+#, php-format
+msgid "change special use to '%s'"
+msgstr ""
+
+#, php-format
+msgid "change state : %s to %s"
+msgstr ""
+
+#, php-format
+msgid "change state to %s"
+msgstr ""
+
+#, php-format
+msgid "change state to %s : %s"
+msgstr ""
+
+#, php-format
+msgid "change tagable parameter to '%s'"
+msgstr ""
+
+#, php-format
+msgid "change version to %s"
+msgstr ""
+
+#, php-format
+msgid "choose inputs for %s"
+msgstr ""
+
+msgid "clear inputs"
+msgstr ""
+
+msgid "clear selected inputs"
+msgstr ""
+
+msgid "clic to the ... button to link document correctly"
+msgstr ""
+
+msgid "clic to the [...] button to link document correctly"
+msgstr ""
+
+msgid "client logo"
+msgstr ""
+
+msgid "client name"
+msgstr ""
+
+#, php-format
+msgid "collection %s not exists"
+msgstr ""
+
+msgid "color picker"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "confidential"
+msgstr ""
+
+#, php-format
+msgid "confidential document"
+msgstr ""
+
+#, php-format
+msgid "config file %s not found"
+msgstr ""
+
+#, php-format
+msgid "conflict %s [%s]: referer=%s, modified=%s"
+msgstr ""
+
+msgid "connection type"
+msgstr ""
+
+#, php-format
+msgid "connexion to %s has failed"
+msgstr ""
+
+#, php-format
+msgid "constraint broken %s"
+msgstr ""
+
+msgid "constraint error"
+msgstr ""
+
+msgid "containt of searches cannot be modified"
+msgstr ""
+
+#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
+msgid "content file expression"
+msgstr ""
+
+#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
+msgid "content file word"
+msgstr ""
+
+msgid "control :: user identifier is null"
+msgstr ""
+
+#, php-format
+msgid "conversion %s in progress"
+msgstr ""
+
+#, php-format
+msgid "conversion of %s in progress"
+msgstr ""
+
+#, php-format
+msgid "convert file %s as %s failed : %s"
+msgstr ""
+
+#, php-format
+msgid "convertion from %s to %s family"
+msgstr ""
+
+#, php-format
+msgid "copy attribute %s from %s"
+msgstr ""
+
+#, php-format
+msgid "copy from document #%d -%s-"
+msgstr ""
+
+msgid "core_guest_sessionttl"
+msgstr "Guest session lifetime (in seconds)"
+
+msgid "core_layout_execute_recursion_limit"
+msgstr "Recursion limit for the Layout execute function"
+
+msgid "core_session_byte_length"
+msgstr "Session's identifier length in bytes (at least 16 bytes)"
+
+msgid "core_sessiongcprobability"
+msgstr ""
+"Probability of running the suppression of unused sessions (expressed as a "
+"percentage by a number between 0 and 1)"
+
+msgid "core_sessionmaxage"
+msgstr "Maximum time after which an unused session is eligible for suppression"
+
+msgid "core_sessionttl"
+msgstr "Session lifetime (in seconds)"
+
+msgid "core_tmpdir_maxage"
+msgstr ""
+"Maximum time (in days) after which the temporary files and directories are "
+"deleted"
+
+msgid "core_tmpdoc_maxage"
+msgstr "Maximum time (in days) after which the temporary documents are deleted"
+
+#, php-format
+msgid "create %s family %s"
+msgstr ""
+
+#, php-format
+msgid "create a %s document"
+msgstr ""
+
+#, php-format
+msgid "create default folder (id [%d])\n"
+msgstr ""
+
+#, php-format
+msgid "create directory %s\n"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "create doc"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "create doc manually"
+msgstr ""
+
+msgid "createdate"
+msgstr "Creation date"
+
+msgid "creation"
+msgstr ""
+
+#, php-format
+msgid "creation : document %s is not a workflow"
+msgstr ""
+
+#, php-format
+msgid "creation : workflow %s not exists"
+msgstr ""
+
+#, php-format
+msgctxt "CVDOC"
+msgid "creation view '%s' does not exists"
+msgstr ""
+
+#, php-format
+msgid "csv file <%s> wroted"
+msgstr ""
+
+#, php-format
+msgid "current (<em>%s</em>)"
+msgstr ""
+
+msgid "current user cannot deactivate account"
+msgstr ""
+
+msgid "cycle family must be defined"
+msgstr ""
+
+#, php-format
+msgid "data:document %s is not a family"
+msgstr ""
+
+#, php-format
+msgid "data:family %s not alive"
+msgstr ""
+
+msgid "default delay before expiration of password in day"
+msgstr ""
+
+msgid "default folder"
+msgstr ""
+
+#, php-format
+msgid "default folder already set. Auto ignored"
+msgstr ""
+
+msgid "default start application"
+msgstr ""
+
+msgid "default value"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "delete"
+msgstr "Delete"
+
+#, php-format
+msgid "delete %s for %s"
+msgstr ""
+
+#, php-format
+msgid "delete by action %s/%s from %s"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "delete document"
+msgstr ""
+
+#, php-format
+msgid "destroyed by archive purge from %s"
+msgstr ""
+
+msgid "doctitle"
+msgstr "Title"
+
+#, php-format
+msgid "document %d deleted"
+msgstr ""
+
+#, php-format
+msgid "document %d inserted"
+msgstr ""
+
+#, php-format
+msgid "document %d moved"
+msgstr ""
+
+#, php-format
+msgid "document %d unlinked"
+msgstr ""
+
+#, php-format
+msgid "document %s : set icon to '%s'"
+msgstr ""
+
+#, php-format
+msgid "document %s [%d] is not in the trash"
+msgstr ""
+
+#, php-format
+msgid "document %s [%d] is strange"
+msgstr ""
+
+#, php-format
+msgid "document %s is not a folder"
+msgstr ""
+
+#, php-format
+msgid "document %s not exist"
+msgstr ""
+
+msgid "document already revised"
+msgstr ""
+
+msgid "document creation"
+msgstr ""
+
+msgid "document deleted"
+msgstr ""
+
+msgid "document id"
+msgstr ""
+
+#, php-format
+msgid "document is booked in domain %s"
+msgstr ""
+
+msgid "document is not controlled by a workflow"
+msgstr ""
+
+#, php-format
+msgid "document not exists yet"
+msgstr ""
+
+#, php-format
+msgid "document not initialized"
+msgstr ""
+
+msgid "document not referenced"
+msgstr ""
+
+#, php-format
+msgid "document not set"
+msgstr ""
+
+#, php-format
+msgid "document too big (%dKo): no highlight"
+msgstr ""
+
+msgid "duration for log conservation (in days)"
+msgstr ""
+
+msgid "dynacase cron try execute"
+msgstr ""
+
+msgid "dynamic control"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "edit"
+msgstr "Edit"
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "edit document"
+msgstr ""
+
+msgid "electronic messages cannot be modified"
+msgstr ""
+
+#, php-format
+msgid "elinkEncode::attribute not found %s in %s : %s"
+msgstr ""
+
+#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
+msgid "equal"
+msgstr ""
+
+#, php-format
+msgid ""
+"errldapadd:%s\n"
+"%s\n"
+"%d\n"
+msgstr ""
+
+msgid "errldapconnect"
+msgstr "LDAP server cannot be contacted"
+
+msgid "errldaporginit"
+msgstr ""
+
+msgid "error color"
+msgstr ""
+
+msgid "error in filename"
+msgstr ""
+
+#, php-format
+msgid "error in import keys : %s"
+msgstr ""
+
+#, php-format
+msgid "error in pzone format %s"
+msgstr ""
+
+msgid "error sending text conversion"
+msgstr ""
+
+#, php-format
+msgid "error storing configuration property (%s, %s, %s)"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "execute"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "execute search"
+msgstr ""
+
+#, php-format
+msgid "execute timer %s (level %d) : %s"
+msgstr ""
+
+#, php-format
+msgid "execution by %s done %s"
+msgstr ""
+
+#, php-format
+msgid "family %s does not implement IMailRecipent - missing getMail method"
+msgstr ""
+
+#, php-format
+msgid ""
+"family %s does not implement IMailRecipent - missing getMailAttribute method"
+msgstr ""
+
+#, php-format
+msgid ""
+"family %s does not implement IMailRecipient - missing getMailTitle method"
+msgstr ""
+
+#, php-format
+msgid "family %s not found"
+msgstr ""
+
+msgid "family must be defined"
+msgstr ""
+
+#, php-format
+msgid "fdl_pubedit error: family %s not found"
+msgstr ""
+
+#, php-format
+msgid "file %d"
+msgstr ""
+
+#, php-format
+msgid "file %s not found"
+msgstr ""
+
+msgid "file conversion failed"
+msgstr ""
+
+msgid "file conversion not supported"
+msgstr ""
+
+msgid "file does not exist in vault"
+msgstr ""
+
+#, php-format
+msgid "file not found : %s"
+msgstr ""
+
+msgid "file status"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "file {left} contain the expression {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "file {left} contain the word {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "filename or type include"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "filename or type not include"
+msgstr ""
+
+#, php-format
+msgid "find %s more than one, created aborded\n"
+msgstr ""
+
+msgid "fixstate"
+msgstr ""
+
+msgid "folder"
+msgstr ""
+
+#, php-format
+msgid "folder is locked. Cannot containt modification"
+msgstr ""
+
+#, php-format
+msgid "folder/search %s not found"
+msgstr ""
+
+msgid "font size"
+msgstr ""
+
+msgid "frame border size"
+msgstr ""
+
+msgid "frame size"
+msgstr ""
+
+msgid "french"
+msgstr ""
+
+#, php-format
+msgid "function '%s' declared in %s is not found"
+msgstr ""
+
+#, php-format
+msgid "function [%s] not exists"
+msgstr ""
+
+#, php-format
+msgid "generate version '%s'"
+msgstr ""
+
+msgid "generating file"
+msgstr ""
+
+#, php-format
+msgid "group #%d does not exist"
+msgstr ""
+
+#, php-format
+msgid "group %d does not exist"
+msgstr ""
+
+msgid "group cannot be revived"
+msgstr ""
+
+msgid "group has not identificator"
+msgstr ""
+
+#, php-format
+msgid "help for %s"
+msgstr ""
+
+msgid "hidden"
+msgstr ""
+
+msgid "highlight background color"
+msgstr ""
+
+#, php-format
+msgid "icon already set. No update allowed"
+msgstr ""
+
+msgid "icon size"
+msgstr "icon size"
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "icreate"
+msgstr ""
+
+msgid "id allocated"
+msgstr ""
+
+msgid "id locked"
+msgstr ""
+
+msgid "id owner"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "identificator equal"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "identificator not equal"
+msgstr ""
+
+#. _COMMENT: importSingleDocument (Class.ImportSingleDocument.php)
+msgid "ignored"
+msgstr ""
+
+#, php-format
+msgid "import file %s not found"
+msgstr ""
+
+#, php-format
+msgid "import file '%s' is not a valid file"
+msgstr ""
+
+msgid "impossible conversion"
+msgstr ""
+
+#, php-format
+msgid "in domain %s"
+msgstr ""
+
+#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
+msgid "include"
+msgstr ""
+
+#, php-format
+msgid "incorrect conversion HTML to ODT %s"
+msgstr ""
+
+msgid "information access deny"
+msgstr ""
+
+msgid "input color bg"
+msgstr ""
+
+#, php-format
+msgid "invalid freestate document %s"
+msgstr ""
+
+msgid "invalid regular expression"
+msgstr ""
+
+#, php-format
+msgid "invalid syntax for [%s] for enum attribute [%s]"
+msgstr ""
+
+msgid "inverse video background color"
+msgstr ""
+
+msgid "inverse video color text"
+msgstr ""
+
+msgid "invisible"
+msgstr ""
+
+#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
+msgid "is empty"
+msgstr ""
+
+#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
+msgid "is not empty"
+msgstr ""
+
+msgid "language"
+msgstr "lang"
+
+msgid "last modification date"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "last or first name include"
+msgstr ""
+
+#, php-format
+msgid "local config for date not found"
+msgstr ""
+
+#, php-format
+msgid "local config for timestamp not found"
+msgstr ""
+
+msgid "locked"
+msgstr ""
+
+msgid "locked document of "
+msgstr ""
+
+#, php-format
+msgid "log file %s not writable"
+msgstr ""
+
+msgid "login must not be empty"
+msgstr ""
+
+msgid "login yet use"
+msgstr ""
+
+msgctxt "mask"
+msgid "mandatory"
+msgstr ""
+
+#, php-format
+msgid "max revision '%d'"
+msgstr ""
+
+msgid "memory max for PHP in Mo"
+msgstr "minimum value for memory_limit (in Mo)"
+
+#, php-format
+msgid "method %s not found"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "modify"
+msgstr "Content"
+
+#, php-format
+msgid "modify %s family"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "modify acl"
+msgstr ""
+
+#, php-format
+msgid "modify document"
+msgstr ""
+
+#, php-format
+msgid "modify file %s"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "modify folder"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "modifyacl"
+msgstr ""
+
+msgid "mot of the day"
+msgstr ""
+
+msgid "multiple document"
+msgstr ""
+
+#, php-format
+msgid ""
+"name must begin with a letter and contain only alphanumeric characters or - "
+"and _: invalid  [%s]"
+msgstr ""
+
+msgid "need answer"
+msgstr ""
+
+#, php-format
+msgid "need privilege delete to restore %s"
+msgstr ""
+
+#, php-format
+msgid "need to select family"
+msgstr ""
+
+msgid "need to select the document with the list"
+msgstr ""
+
+#, php-format
+msgid "need to select workflow"
+msgstr ""
+
+#, php-format
+msgid "new %s"
+msgstr ""
+
+#, php-format
+msgid "new column order %s"
+msgstr ""
+
+#, php-format
+msgid "new import keys : %s"
+msgstr ""
+
+msgid "no access control"
+msgstr ""
+
+msgid "no allocate"
+msgstr ""
+
+msgid "no available persons found"
+msgstr ""
+
+#, php-format
+msgid "no change icon : document %s not found"
+msgstr ""
+
+#, php-format
+msgid "no columns specified"
+msgstr ""
+
+#, php-format
+msgid "no compatible type with operator %s"
+msgstr ""
+
+#, php-format
+msgid "no document match '%s'"
+msgstr ""
+
+msgid "no empty vault file system found"
+msgstr ""
+
+msgid "no export folder specified"
+msgstr ""
+
+msgid "no family"
+msgstr ""
+
+msgid "no file"
+msgstr ""
+
+msgid "no filename"
+msgstr "No file"
+
+msgid "no files"
+msgstr ""
+
+msgid "no folder"
+msgstr ""
+
+msgid "no freedom DB access"
+msgstr "No access to Dynacase database"
+
+msgid "no image"
+msgstr ""
+
+#, php-format
+msgid "no level 0 specified in timer %s [%d]"
+msgstr ""
+
+msgid "no message : post-it creation aborted"
+msgstr ""
+
+#, php-format
+msgid "no operator detected"
+msgstr ""
+
+#, php-format
+msgid "no permission to modify this attribute %s"
+msgstr ""
+
+#, php-format
+msgid "no privilege %s for %s [%d]"
+msgstr ""
+
+#, php-format
+msgid "no privilege %s for document with id %d"
+msgstr ""
+
+#, php-format
+msgid "no privilege to create this kind (%d) of document"
+msgstr ""
+
+#, php-format
+msgid "no privilege view for %d"
+msgstr ""
+
+#, php-format
+msgid "no processes specified in timer %s [%d]"
+msgstr ""
+
+msgid "no referer url found"
+msgstr ""
+
+msgid "no revisable"
+msgstr ""
+
+msgid "no state"
+msgstr ""
+
+msgid "no state specified"
+msgstr ""
+
+msgid "no task identificator"
+msgstr ""
+
+msgid "no user tag specified"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "no value include"
+msgstr ""
+
+msgid "no vault directory found"
+msgstr ""
+
+msgid "no vault file system found"
+msgstr ""
+
+msgid "no view control"
+msgstr ""
+
+#, php-format
+msgid "no workflow for this document"
+msgstr ""
+
+#, php-format
+msgid "none families are described to be used as recipient"
+msgstr ""
+
+#, php-format
+msgid "not a freestate document %s"
+msgstr ""
+
+msgid "not added"
+msgstr ""
+
+#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
+msgid "not equal"
+msgstr ""
+
+#, php-format
+msgid "not in XML format"
+msgstr ""
+
+#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
+msgid "not include"
+msgstr ""
+
+msgid "not perm for admin"
+msgstr ""
+
+#, php-format
+msgid "nothing to export. Do export before"
+msgstr ""
+
+#, php-format
+msgid "number of waiting answers %d"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "one id equal"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "one of the titles include"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "one of the titles {left} include {right}"
+msgstr ""
+
+#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
+msgid "one value equal"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "one value include"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "one value of {left} include {right}"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "open"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "open folder"
+msgstr ""
+
+#, php-format
+msgid "operator [%s] not allowed"
+msgstr ""
+
+msgctxt "mask"
+msgid "optional"
+msgstr ""
+
+#. _COMMENT: DocSearch (Class.DocSearch.php)
+msgid "or"
+msgstr ""
+
+msgid "owner"
+msgstr ""
+
+#, php-format
+msgid "parameters for %s step"
+msgstr ""
+
+#, php-format
+msgid "parameters for %s transition"
+msgstr ""
+
+#, php-format
+msgid "parenthesis number mismatch : %d left, %d right"
+msgstr ""
+
+#, php-format
+msgid "parse error config file %s : %s"
+msgstr ""
+
+msgid "passwords must not be empty"
+msgstr ""
+
+#, php-format
+msgid "php file %s needed for request not found"
+msgstr ""
+
+msgid "plug inserted in footer"
+msgstr ""
+
+#, php-format
+msgid "possible incorrect conversion HTML to ODT %s: %s"
+msgstr ""
+
+#, php-format
+msgid "postit of %s"
+msgstr ""
+
+#, php-format
+msgid "process %s"
+msgstr ""
+
+#, php-format
+msgid "process addValue for %d documents"
+msgstr ""
+
+#, php-format
+msgid "process history for %d documents"
+msgstr ""
+
+#, php-format
+msgid "process removeValue for %d documents"
+msgstr ""
+
+#, php-format
+msgid "process replaceValue for %d documents"
+msgstr ""
+
+#, php-format
+msgid "process revision done"
+msgstr ""
+
+#, php-format
+msgid "process revision for %d documents"
+msgstr ""
+
+#, php-format
+msgid "process setValue for %d documents"
+msgstr ""
+
+msgid "produce link for"
+msgstr ""
+
+#, php-format
+msgid "profil id unknow %s"
+msgstr ""
+
+#, php-format
+msgid "profil id unkonow %s"
+msgstr ""
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_adate"
+msgstr "access date"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_allocated"
+msgstr "allocate"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_atags"
+msgstr "application tags"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_cdate"
+msgstr "revision creation date"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_classname"
+msgstr "class name"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_comment"
+msgstr "comment"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_confidential"
+msgstr "confidential"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_cvid"
+msgstr "view control"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_doctype"
+msgstr "doctype"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_domainid"
+msgstr ""
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_dprofid"
+msgstr "template profil"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_fromid"
+msgstr "family"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_icon"
+msgstr "icon"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_id"
+msgstr "identificator"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_initid"
+msgstr "initial identificator"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_ldapdn"
+msgstr "ldap DN"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_lmodify"
+msgstr "is modified"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_lockdomainid"
+msgstr ""
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_locked"
+msgstr "lock"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_name"
+msgstr "logical name"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_owner"
+msgstr "owner"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_postitid"
+msgstr "note"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_prelid"
+msgstr "primary relation"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_profid"
+msgstr "profil"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_revdate"
+msgstr "modfication date"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_revision"
+msgstr "revision"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_state"
+msgstr "state"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_svalues"
+msgstr "search values"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_title"
+msgstr "title"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_usefor"
+msgstr "use for"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_version"
+msgstr "version"
+
+#. _COMMENT: Doc (Class.Doc.php)
+msgid "prop_wid"
+msgstr "workflow"
+
+#, php-format
+msgid "query %s has failed"
+msgstr ""
+
+msgid "read disabled"
+msgstr ""
+
+msgid "read only"
+msgstr ""
+
+msgid "read write"
+msgstr ""
+
+msgid "real value to set"
+msgstr ""
+
+msgid "realm name for http authenticate"
+msgstr ""
+
+#, php-format
+msgid "refreshing %s"
+msgstr ""
+
+#, php-format
+msgid "regeneration of file template %s"
+msgstr ""
+
+#, php-format
+msgid "reinit all attributes"
+msgstr ""
+
+#, php-format
+msgid "reinit all properties"
+msgstr ""
+
+#, php-format
+msgid "remove state : %s"
+msgstr ""
+
+msgid "report:docid"
+msgstr "id"
+
+msgid "request not found"
+msgstr ""
+
+#, php-format
+msgid "reset profil %s"
+msgstr ""
+
+#, php-format
+msgid "reset version"
+msgstr ""
+
+msgid "restore document"
+msgstr ""
+
+#, php-format
+msgid "result of import  %s"
+msgstr ""
+
+msgid "retry file conversion"
+msgstr ""
+
+msgid "revdate"
+msgstr "Revision date"
+
+msgid "revision"
+msgstr ""
+
+msgid "revision date"
+msgstr ""
+
+msgid "revision of document"
+msgstr ""
+
+msgid "revival document"
+msgstr ""
+
+#, php-format
+msgid "role %s id is already used"
+msgstr ""
+
+msgid "role cannot be revived"
+msgstr ""
+
+#, php-format
+msgid "root for %s"
+msgstr ""
+
+#, php-format
+msgid "roweditzone syntax %s is invalid"
+msgstr ""
+
+msgid "save document"
+msgstr ""
+
+msgid "search"
+msgstr ""
+
+#, php-format
+msgid "search %s"
+msgstr ""
+
+#, php-format
+msgid "search join syntax error : %s"
+msgstr ""
+
+msgid "second background color"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "send"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "send document"
+msgstr ""
+
+#, php-format
+msgid "send mail %s"
+msgstr ""
+
+#, php-format
+msgid "send mail %s with template %s"
+msgstr ""
+
+#, php-format
+msgid "send mail with template %s [%d]"
+msgstr ""
+
+msgid "send search"
+msgstr ""
+
+#, php-format
+msgid "sendmailbcc %s"
+msgstr ""
+
+#, php-format
+msgid "sendmailcc %s"
+msgstr ""
+
+#, php-format
+msgid "sendmailto %s"
+msgstr ""
+
+#, php-format
+msgid "set default folder to '%s'"
+msgstr ""
+
+#, php-format
+msgid "set default view control to '%s'"
+msgstr ""
+
+#, php-format
+msgid "set default workflow to '%s'"
+msgstr ""
+
+#, php-format
+msgid "set doctype to '%s'"
+msgstr ""
+
+#, php-format
+msgid "set for %s, unset for %s"
+msgstr ""
+
+#, php-format
+msgid "set icon to '%s'"
+msgstr ""
+
+#, php-format
+msgid "set primary folder to '%s'"
+msgstr ""
+
+#, php-format
+msgid "set profile %s"
+msgstr ""
+
+#, php-format
+msgid "set special characteristics to '%s'"
+msgstr ""
+
+msgid "setWaskAnswer::invalid parameters"
+msgstr ""
+
+#, php-format
+msgid "similar document %s found. keep similar"
+msgstr ""
+
+msgid "society style"
+msgstr ""
+
+msgid "specific control"
+msgstr ""
+
+msgid "state"
+msgstr ""
+
+msgid "static array"
+msgstr ""
+
+msgid "step"
+msgstr ""
+
+msgid "stop on sql error"
+msgstr ""
+
+msgid "suppression date"
+msgstr ""
+
+msgid ""
+"system id already set in database\n"
+"This kind of document can not be duplicated"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "system identifiant equal"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "system identifier not equal"
+msgstr ""
+
+#. _COMMENT: CORE_init.php
+#. _COMMENT: searchLabel key
+#. _COMMENT: types: all
+msgid "tag"
+msgstr ""
+
+#, php-format
+msgid "target folder [%s] is not a folder"
+msgstr ""
+
+#, php-format
+msgid "target folder [%s] is not set"
+msgstr ""
+
+#, php-format
+msgid "template file (layout [%s]) not found"
+msgstr ""
+
+msgid "text color"
+msgstr ""
+
+msgid "the 2 passwords are not the same"
+msgstr ""
+
+#, php-format
+msgid "the date %s is in the past: today is %s"
+msgstr ""
+
+msgid "the date syntax must be like : AAAA-MM-DD"
+msgstr ""
+
+#, php-format
+msgid "the document id [%s] for this attribute is not valid"
+msgstr ""
+
+msgid "the document id is empty"
+msgstr ""
+
+#, php-format
+msgid "the document of %s family cannot be revised"
+msgstr ""
+
+msgid "the document title is empty"
+msgstr ""
+
+msgid "the email must containt the @ character"
+msgstr ""
+
+msgid "the email syntax  is like : john.doe@anywhere.org"
+msgstr ""
+
+#, php-format
+msgid "the external pluggin file %s cannot be read"
+msgstr ""
+
+msgid "the login must not be empty"
+msgstr ""
+
+#, php-format
+msgid "the method '%s' is not known for the object class %s"
+msgstr ""
+
+#, php-format
+msgid "the pluggins function description '%s' is not conform for %s attribut"
+msgstr ""
+
+#, php-format
+msgid "the title of document [%s] is not conform to original [%s]"
+msgstr ""
+
+msgid "this groups must be refreshed"
+msgstr ""
+
+msgid "this login exists"
+msgstr ""
+
+msgid "this system user cannot be deleted"
+msgstr ""
+
+msgid "timer already set"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "title include"
+msgstr ""
+
+msgid "to be add"
+msgstr ""
+
+#, php-format
+msgid "to be update %s [%d] "
+msgstr ""
+
+#. _COMMENT: Doc (Class.Doc.php)
+#. _COMMENT: searchLabel key
+#. _COMMENT: types: timestamp
+msgid "today"
+msgstr ""
+
+msgid "tomorrow"
+msgstr ""
+
+msgid "top url to find help documentation"
+msgstr ""
+
+#, php-format
+msgid "try add acl %s"
+msgstr ""
+
+#, php-format
+msgid "unattach %d timers associated to %s"
+msgstr ""
+
+#, php-format
+msgid "unattach all timers [%s]"
+msgstr ""
+
+#, php-format
+msgid "unattach timer %s [%d]"
+msgstr ""
+
+#, php-format
+msgid "unattachTimer : the timer parameter is not a document of TIMER family"
+msgstr ""
+
+msgid "uncomplete request"
+msgstr ""
+
+msgid "unit:GB"
+msgstr "GB"
+
+msgid "unit:MB"
+msgstr "MB"
+
+msgid "unit:TB"
+msgstr "TB"
+
+msgid "unit:byte"
+msgid_plural "unit:bytes"
+msgstr[0] "byte"
+msgstr[1] "bytes"
+
+msgid "unit:kB"
+msgstr "kB"
+
+#, php-format
+msgid "unknow %s file property"
+msgstr ""
+
+#, php-format
+msgid "unknow acl %s"
+msgstr ""
+
+msgid "unknow attribute"
+msgstr ""
+
+#, php-format
+msgid "unknow attribute %s"
+msgstr ""
+
+#, php-format
+msgid "unknow attribute %s (family %s)"
+msgstr ""
+
+#, php-format
+msgid "unknow document reference '%s'"
+msgstr ""
+
+msgid "unknow operator"
+msgstr ""
+
+#, php-format
+msgid "unknow privilege %s"
+msgstr ""
+
+#, php-format
+msgid "unknow set for attribute %s %s"
+msgstr ""
+
+#, php-format
+msgid "unknown document id %s"
+msgstr ""
+
+#, php-format
+msgid "unknown file state %s"
+msgstr ""
+
+msgid "unlimited revisions"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "unlock"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "unlock unowner locked doc"
+msgstr ""
+
+msgid "unreferenced document"
+msgstr ""
+
+msgid "unset default view control"
+msgstr ""
+
+msgid "unset default workflow"
+msgstr ""
+
+#, php-format
+msgid "untitle %s %d"
+msgstr ""
+
+msgid "untitle document"
+msgstr ""
+
+#, php-format
+msgid "update %s [%d] "
+msgstr ""
+
+#, php-format
+msgid "update %s attribute"
+msgstr ""
+
+#, php-format
+msgid "update %s family %s"
+msgstr ""
+
+#, php-format
+msgid "update %s search"
+msgstr ""
+
+#, php-format
+msgid "update id [%d] "
+msgstr ""
+
+#, php-format
+msgid "update of %s in progress"
+msgstr ""
+
+#. _COMMENT: importSingleDocument (Class.ImportSingleDocument.php)
+msgid "updated"
+msgstr ""
+
+#, php-format
+msgid "updated by import"
+msgstr ""
+
+msgid "url to reach http server index"
+msgstr ""
+
+msgid "url to reach http server index in open mode"
+msgstr ""
+
+msgid "use dynacase user management"
+msgstr ""
+
+#, php-format
+msgid "user #%d does not exist"
+msgstr ""
+
+#, php-format
+msgid "user %d does not exist"
+msgstr ""
+
+msgid "user cannot be revived"
+msgstr ""
+
+msgid "user has not identificator"
+msgstr ""
+
+msgid "user is deactivated"
+msgstr ""
+
+msgid "user not know"
+msgstr ""
+
+#, php-format
+msgid "value [%s] is not a integer"
+msgstr ""
+
+#, php-format
+msgid "value [%s] is not a number"
+msgstr ""
+
+#, php-format
+msgid "value [%s] is not a valid date"
+msgstr ""
+
+#, php-format
+msgid "value [%s] is not a valid time"
+msgstr ""
+
+#, php-format
+msgid "value [%s] is not a valid timestamp"
+msgstr ""
+
+#, php-format
+msgid "value [%s] is out of limit time"
+msgstr ""
+
+#, php-format
+msgid "vault %s created.\n"
+msgstr ""
+
+#, php-format
+msgid "vault already created %s: aborted\n"
+msgstr ""
+
+msgid "vault file error"
+msgstr ""
+
+msgid "vault file is not initialized"
+msgstr ""
+
+msgid "version identificator"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "view"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "view acl"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "view answers"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "view confidential"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "view document"
+msgstr ""
+
+#, php-format
+msgid "viewDoc did not returned a valid file"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "viewacl"
+msgstr ""
+
+#, php-format
+msgid "waiting : document not set"
+msgstr ""
+
+msgid "waiting conversion file"
+msgstr ""
+
+#. _COMMENT: importDocumentDescription (Class.ImportDescription.php)
+msgid "warning"
+msgstr ""
+
+#. _COMMENT: DocCtrl (Class.DocCtrl.php)
+msgid "wask"
+msgstr ""
+
+#, php-format
+msgid "with these conditions"
+msgstr ""
+
+#. _COMMENT: Class.WProcess.php
+msgid "wprocess_private"
+msgstr ""
+
+#. _COMMENT: Class.WProcess.php
+msgid "wprocess_qualified"
+msgstr ""
+
+msgid "write only"
+msgstr ""
+
+msgid "yesterday"
+msgstr ""
+
+#, php-format
+msgid "you are not allowed to update the file %s (rev %d) is locked by %s."
+msgstr ""
+
+#, php-format
+msgid "you cannot create this kind [%s] of document"
+msgstr ""
+
+#, php-format
+msgid "you cannot create this kind [%s] of folder"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} begin by {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} equal {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} filename or type include {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} filename or type not include {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} greater or equal to {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} greater than {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} identifier equal {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} identifier not equal {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} include no value of {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} include {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} is between {min} and {max}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} is not empty"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} is not equal {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} is null"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} last or first name include {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} lesser or equal to {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} lesser than {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} not include {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} one id equal {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} one value equal {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} system identifier equal {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} system identifier not equal {right}"
+msgstr ""
+
+#. _COMMENT: DocCollection (Class.DocCollection.php)
+msgid "{left} title include {right}"
+msgstr ""
+
+#~ msgid " Please, see your manager"
+#~ msgstr "Please, see your manager"
+
+#~ msgid "%s Authentification"
+#~ msgstr "%s Authentication"
+
+#~ msgid "Access to change password function"
+#~ msgstr "Access to change password function"
+
+#~ msgid "Admin edit"
+#~ msgstr "Edit as admin"
+
+#~ msgid "Advanced search"
+#~ msgstr "Advanced search"
+
+#~ msgid "All css in one for consultation"
+#~ msgstr "Concatenate all CSS for consultation"
+
+#~ msgid "All js in one for consultation"
+#~ msgstr "Concatenate all JS scripts for consultation"
+
+#~ msgid "All js in one for edition"
+#~ msgstr "Concatenate all JS scripts for edition"
+
+#~ msgid "Basic search"
+#~ msgstr "basic search"
+
+#~ msgid "CVDOC_ARRAY_VIEW:display"
+#~ msgstr "display"
+
+#~ msgid "CVDOC_ARRAY_VIEW:idview"
+#~ msgstr "identification"
+
+#~ msgid "CVDOC_ARRAY_VIEW:type"
+#~ msgstr "type"
+
+#~ msgid "CVDOC_ARRAY_VIEW:view"
+#~ msgstr "view"
+
+#~ msgid "Change State"
+#~ msgstr "Next step"
+
+#~ msgid "Change state"
+#~ msgstr "Next step"
+
+#~ msgid "Change state to"
+#~ msgstr "Next step to"
+
+#~ msgid "Common function for FREEDOM client API"
+#~ msgstr "Common function for Dynacase Platform client API"
+
+#~ msgid "Core"
+#~ msgstr "Platform Core"
+
+#~ msgid "Current_state"
+#~ msgstr "Current step"
+
+#~ msgid "Default delay for account expiration (days)"
+#~ msgstr "Default delay for account expiration (days)"
+
+#~ msgid "Do connection"
+#~ msgstr "Connect"
+
+#~ msgid "EXPORT_CSV : identifiant unique"
+#~ msgstr "id (unique identifier)"
+
+#~ msgid "EXPORT_CSV CSV options :"
+#~ msgstr "CSV options: "
+
+#~ msgid "EXPORT_CSV Click to show options"
+#~ msgstr "View CSV options"
+
+#~ msgid "EXPORT_CSV Date format :"
+#~ msgstr "Date Format :"
+
+#~ msgid "EXPORT_CSV Date format FR"
+#~ msgstr "Date format FR"
+
+#~ msgid "EXPORT_CSV Date format ISO"
+#~ msgstr "Date format ISO"
+
+#~ msgid "EXPORT_CSV Date format US"
+#~ msgstr "Date format US"
+
+#~ msgid "EXPORT_CSV Decimal separator :"
+#~ msgstr "Decimal separator: "
+
+#~ msgid "EXPORT_CSV Definition of the export param :"
+#~ msgstr "Definition of export parameters"
+
+#~ msgid "EXPORT_CSV Delimiter :"
+#~ msgstr "Field delimiter: "
+
+#~ msgid "EXPORT_CSV Enclosure :"
+#~ msgstr "Text delimiter: "
+
+#~ msgid "EXPORT_CSV Encoding :"
+#~ msgstr "Charset: "
+
+#~ msgid "EXPORT_CSV Exporter"
+#~ msgstr "Export"
+
+#~ msgid "EXPORT_CSV ISO-8859-15 (european)"
+#~ msgstr "ISO-8859-15 (european)"
+
+#~ msgid "EXPORT_CSV Kind of export :"
+#~ msgstr "Export type: "
+
+#~ msgid "EXPORT_CSV Numeric render :"
+#~ msgstr "Numeric Render"
+
+#~ msgid "EXPORT_CSV Select export kind :"
+#~ msgstr "Select export type"
+
+#~ msgid "EXPORT_CSV Select pivot :"
+#~ msgstr "Select pivot: "
+
+#~ msgid "EXPORT_CSV Simple"
+#~ msgstr "Simple"
+
+#~ msgid "EXPORT_CSV formatted numbers "
+#~ msgstr "Formatted number"
+
+#~ msgid "EXPORT_CSV help"
+#~ msgstr "Help"
+
+#~ msgid "EXPORT_CSV pivot"
+#~ msgstr "Pivot"
+
+#~ msgid "EXPORT_CSV raw numbers"
+#~ msgstr "Raw number"
+
+#~ msgid "EXPORT_CSV utf8"
+#~ msgstr "UTF-8"
+
+#~ msgid "Edit"
+#~ msgstr "Modify"
+
+#~ msgid "Edit in new window"
+#~ msgstr "Modify in new window"
+
+#~ msgid "EditEnumHelpMessage"
+#~ msgstr ""
+#~ "<p> An enumerated value is characterized by: </p>\n"
+#~ "<ul>\n"
+#~ "<li> its rank : it allows you to organize the values ​​</li>\n"
+#~ "<li> its key : unique identifier of the value </li>\n"
+#~ "<li> its label : the untranslated text used in the absence of translation "
+#~ "</li>\n"
+#~ "<li> its translations : in all languages ​​as configured for your "
+#~ "application. </li>\n"
+#~ "</ul>\n"
+#~ "<p>\n"
+#~ "Changes in the characteristics-the key is non-modifiable are by clicking "
+#~ "on the feature. At the end of editing, press the [Enter] key or clicking "
+#~ "outside the edit field, commits the change. </p>\n"
+#~ "<p>\n"
+#~ "The ranks of the values ​​are even numbers. If you want to edit a row, you "
+#~ "simply enter an odd integer. The value will be moved directly between "
+#~ "peers rank lower and upper. The modified rank is recalculated. </p>\n"
+#~ "<p>\n"
+#~ "Adding value is made using the form at the bottom of the page. </p>\n"
+#~ "<p>\n"
+#~ "All changes of values ​​are highlighted by a color change of the row. </p>\n"
+#~ "<p>\n"
+#~ "Changes remain local. Record on the server and use by applications is "
+#~ "effective only upon record via the [Save] button. </p>"
+
+#~ msgid "EnumWidget:Add"
+#~ msgstr "Add"
+
+#~ msgid "EnumWidget:Cancel"
+#~ msgstr "Cancel"
+
+#~ msgid "EnumWidget:Cancel change"
+#~ msgstr "Cancel change"
+
+#~ msgid "EnumWidget:Key"
+#~ msgstr "Key"
+
+#~ msgid "EnumWidget:Label"
+#~ msgstr "Label"
+
+#~ msgid "EnumWidget:No translation"
+#~ msgstr "No translation"
+
+#~ msgid "EnumWidget:OFF"
+#~ msgstr "OFF"
+
+#~ msgid "EnumWidget:ON"
+#~ msgstr "ON"
+
+#~ msgid "EnumWidget:Rank"
+#~ msgstr "Rank"
+
+#~ msgid "EnumWidget:Reload"
+#~ msgstr "Reload"
+
+#~ msgid "EnumWidget:Reload data"
+#~ msgstr "Reload data"
+
+#~ msgid "EnumWidget:Remove"
+#~ msgstr "Remove"
+
+#~ msgid "EnumWidget:Save change"
+#~ msgstr "Save change"
+
+#~ msgid "EnumWidget:Translate"
+#~ msgstr "Translate"
+
+#~ msgid "EnumWidget:tooltip order"
+#~ msgstr "Display rank for item"
+
+#~ msgid "FGSEARCH:Add search engine"
+#~ msgstr "Add search engine"
+
+#~ msgid "FGSEARCH:Add search engine to your browser"
+#~ msgstr "Add search engine to your browser"
+
+#~ msgid "FGSEARCH:Advanced search"
+#~ msgstr "Advanced search"
+
+#~ msgid "FGSEARCH:Basic search"
+#~ msgstr "Basic search"
+
+#~ msgid "FGSEARCH:Close"
+#~ msgstr "Close"
+
+#~ msgid "FGSEARCH:Open in new window"
+#~ msgstr "Open in new window"
+
+#~ msgid "FGSEARCH:ToSearch"
+#~ msgstr "Search"
+
+#~ msgid "FGSEARCH:any familly"
+#~ msgstr "Any familly"
+
+#~ msgid "FGSEARCH:close search online help"
+#~ msgstr "Close search online help"
+
+#~ msgid "FGSEARCH:help (intro)"
+#~ msgstr ""
+#~ "<h1>General search</h1>\n"
+#~ "<p>\n"
+#~ "    General search allows to search across all documets.\n"
+#~ "    Search is done across document content and attached files.\n"
+#~ "    To start a search, enter wanted words in the input, choose a family "
+#~ "if needed, and launch it.<br/>\n"
+#~ "    Search is launched by pressing [Enter] key or by clicking on the "
+#~ "[Search] button.\n"
+#~ "</p>"
+
+#~ msgid "FGSEARCH:help characters search"
+#~ msgstr ""
+#~ "<h2>Search input</h2>\n"
+#~ "\n"
+#~ "<h3><em>Characters</em> search</h3>\n"
+#~ "\n"
+#~ "<p>\n"
+#~ "    This input must be filled with keywords.\n"
+#~ "</p>\n"
+#~ "\n"
+#~ "<p>\n"
+#~ "    Search use following rules :\n"
+#~ "</p>\n"
+#~ "<ul>\n"
+#~ "    <li>\n"
+#~ "        Search is performed with accent characters.\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        When there are multiple keywords, search will look for documents\n"
+#~ "        containing all of the keywords.\n"
+#~ "    </li>\n"
+#~ "</ul>\n"
+#~ "<h2>Using <em>operators</em></h2>\n"
+#~ "\n"
+#~ "<p>\n"
+#~ "    When a more precise search is required, one can use operators.\n"
+#~ "</p>\n"
+#~ "<ul>\n"
+#~ "    <li>\n"
+#~ "        <em class=\"help-operator\">AND</em> and <em class=\"help-operator"
+#~ "\">OR</em><br/>\n"
+#~ "        These operators make keywords combination.\n"
+#~ "        <ul>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">horse AND turtle</em> will "
+#~ "find\n"
+#~ "                documents containing both <em class=\"help-keyword"
+#~ "\">horse</em>\n"
+#~ "                and <em class=\"help-keyword\">turtle</em> .\n"
+#~ "            </li>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">horse OR turtle</em> will "
+#~ "find\n"
+#~ "                documents containing either <em class=\"help-keyword"
+#~ "\">horse</em>\n"
+#~ "                or <em class=\"help-keyword\">turtle</em> or both.\n"
+#~ "            </li>\n"
+#~ "        </ul>\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        <em class=\"help-operator\">(</em> and <em class=\"help-operator"
+#~ "\">)</em><br/>\n"
+#~ "        Parenthesis express priorities between operators.\n"
+#~ "        <ul>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">(horse OR turtle) AND white</"
+#~ "em>\n"
+#~ "                will find documents containing\n"
+#~ "                <ul>\n"
+#~ "                    <li>\n"
+#~ "                        either <em class=\"help-keyword\">horse</em> and\n"
+#~ "                        <em class=\"help-keyword\">white</em> ;\n"
+#~ "                    </li>\n"
+#~ "                    <li>\n"
+#~ "                        either <em class=\"help-keyword\">turtle</em> "
+#~ "and\n"
+#~ "                        <em class=\"help-keyword\">white</em> ;\n"
+#~ "                    </li>\n"
+#~ "                    <li>\n"
+#~ "                        either <em class=\"help-keyword\">horse</em> and\n"
+#~ "                        <em class=\"help-keyword\">turtle</em> and\n"
+#~ "                        <em class=\"help-keyword\">white</em>.\n"
+#~ "                    </li>\n"
+#~ "                </ul>\n"
+#~ "            </li>\n"
+#~ "        </ul>\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        <em class=\"help-operator\">\"</em><br/>\n"
+#~ "        Quotes express <em>characters sequence</em>.\n"
+#~ "        <ul>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">\"white horse\"</em> will "
+#~ "find\n"
+#~ "                documents containing the characters sequence <em class="
+#~ "\"help-keyword\">\n"
+#~ "                white horse</em> (be careful, <em class=\"help-keyword"
+#~ "\">horse</em> must be\n"
+#~ "                immediately after <em class=\"help-keyword\">white</"
+#~ "em>).\n"
+#~ "            </li>\n"
+#~ "        </ul>\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        <em class=\"help-operator\">*</em><br/>\n"
+#~ "        Star express partial <em>words</em>.\n"
+#~ "        <ul>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">cheva*</em> will find\n"
+#~ "                documents containig words begining with\n"
+#~ "                <em class=\"help-keyword\">cheva</em>, like\n"
+#~ "                <em class=\"help-keyword\">chevalet</em>,\n"
+#~ "                <em class=\"help-keyword\">chevron</em>,\n"
+#~ "                <em class=\"help-keyword\">chevaliers</em>,\n"
+#~ "                etc.\n"
+#~ "            </li>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">*vage</em> will find\n"
+#~ "                documents containig words ending with\n"
+#~ "                <em class=\"help-keyword\">vage</em>, like\n"
+#~ "                <em class=\"help-keyword\">sauvage</em>,\n"
+#~ "                <em class=\"help-keyword\">lavage</em>,\n"
+#~ "                <em class=\"help-keyword\">rivage</em>,\n"
+#~ "                etc.\n"
+#~ "            </li>\n"
+#~ "        </ul>\n"
+#~ "    </li>\n"
+#~ "</ul>\n"
+#~ "<p>\n"
+#~ "    Of course, these operators can be combined to make a more precise "
+#~ "search.\n"
+#~ "</p>"
+
+#~ msgid "FGSEARCH:help for advanced search"
+#~ msgstr ""
+#~ "<h2>Advanced search</h2>\n"
+#~ "\n"
+#~ "<p>\n"
+#~ "    When search is more precise, and does not involve all documents "
+#~ "content, but only several attributes,\n"
+#~ "    one can use advanced search. It allows to enter conditions like <em "
+#~ "class=\"help-keyword\">title contains cheval</em>, etc.\n"
+#~ "</p>"
+
+#~ msgid "FGSEARCH:help for family selection"
+#~ msgstr ""
+#~ "<h2>Family selection</h2>\n"
+#~ "\n"
+#~ "<p>\n"
+#~ "    If search must only be done on a single family, choose it in the "
+#~ "list.\n"
+#~ "    results will then be restricted to documents from selected family.\n"
+#~ "</p>"
+
+#~ msgid "FGSEARCH:help for input"
+#~ msgstr ""
+#~ "<h2>Search input</h2>\n"
+#~ "\n"
+#~ "<h3><em>Words</em> search</h3>\n"
+#~ "\n"
+#~ "<p>\n"
+#~ "    This input must be filled with keywords.\n"
+#~ "</p>\n"
+#~ "\n"
+#~ "<p>\n"
+#~ "    Search can correct input words. For example :\n"
+#~ "</p>\n"
+#~ "<ul>\n"
+#~ "    <li>\n"
+#~ "        Search is done by using singular and plural forms. So when the "
+#~ "keyword is\n"
+#~ "        <em class=\"help-keyword\">cheval</em>, documents containing <em "
+#~ "class=\"help-keyword\">cheval</em>,\n"
+#~ "        or <em class=\"help-keyword\">chevaux</em> will be found.\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        Stop words are ignored (<em class=\"help-keyword\">le</em>, <em "
+#~ "class=\"help-keyword\">la</em>…).\n"
+#~ "        So when keywords are <em class=\"help-keyword\">le cheval</em>,\n"
+#~ "        only <em class=\"help-keyword\">cheval</em> (and its plurals) "
+#~ "will be looked for.\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        When there are multiple keywords, search will look for documents\n"
+#~ "        containing all of the keywords (and their plural forms).\n"
+#~ "    </li>\n"
+#~ "</ul>\n"
+#~ "<h2>Using <em>operators</em></h2>\n"
+#~ "\n"
+#~ "<p>\n"
+#~ "    When a more precise search is required, one can use operators.\n"
+#~ "</p>\n"
+#~ "<ul>\n"
+#~ "    <li>\n"
+#~ "        <em class=\"help-operator\">AND</em> and <em class=\"help-operator"
+#~ "\">OR</em><br/>\n"
+#~ "        These operators make keywords combination.\n"
+#~ "        <ul>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">cheval AND chèvre</em> will "
+#~ "find\n"
+#~ "                documents containing both <em class=\"help-keyword"
+#~ "\">cheval</em>\n"
+#~ "                and <em class=\"help-keyword\">chèvre</em> (or their "
+#~ "plural forms).\n"
+#~ "            </li>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">cheval OR chèvre</em> will "
+#~ "find\n"
+#~ "                documents containing either <em class=\"help-keyword"
+#~ "\">cheval</em>\n"
+#~ "                or <em class=\"help-keyword\">chèvre</em> or both (or "
+#~ "their plural forms).\n"
+#~ "            </li>\n"
+#~ "        </ul>\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        <em class=\"help-operator\">(</em> and <em class=\"help-operator"
+#~ "\">)</em><br/>\n"
+#~ "        Parenthesis express priorities between operators.\n"
+#~ "        <ul>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">(cheval OR chèvre) AND blanc</"
+#~ "em>\n"
+#~ "                will find documents containing\n"
+#~ "                <ul>\n"
+#~ "                    <li>\n"
+#~ "                        either <em class=\"help-keyword\">cheval</em> "
+#~ "and\n"
+#~ "                        <em class=\"help-keyword\">blanc</em> (or their "
+#~ "plural forms) ;\n"
+#~ "                    </li>\n"
+#~ "                    <li>\n"
+#~ "                        either <em class=\"help-keyword\">chèvre</em> "
+#~ "and\n"
+#~ "                        <em class=\"help-keyword\">blanc</em> (or their "
+#~ "plural forms) ;\n"
+#~ "                    </li>\n"
+#~ "                    <li>\n"
+#~ "                        either <em class=\"help-keyword\">cheval</em> "
+#~ "and\n"
+#~ "                        <em class=\"help-keyword\">chèvre</em> and\n"
+#~ "                        <em class=\"help-keyword\">blanc</em>  (or their "
+#~ "plural forms).\n"
+#~ "                    </li>\n"
+#~ "                </ul>\n"
+#~ "            </li>\n"
+#~ "        </ul>\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        <em class=\"help-operator\">\"</em><br/>\n"
+#~ "        Quotes express <em>exact search</em>.\n"
+#~ "        <ul>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">\"cheval\"</em> will find\n"
+#~ "                documents containing the exact word\n"
+#~ "                <em class=\"help-keyword\">cheval</em>, but won't find "
+#~ "those\n"
+#~ "                containing <em class=\"help-keyword\">chevaux</em> ;\n"
+#~ "            </li>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">\"cheval blanc\"</em> will "
+#~ "find\n"
+#~ "                documents containing the exact words <em class=\"help-"
+#~ "keyword\">cheval\n"
+#~ "                blanc</em> (be careful, <em class=\"help-keyword\">blanc</"
+#~ "em> must be\n"
+#~ "                immediately after <em class=\"help-keyword\">cheval</"
+#~ "em>).\n"
+#~ "            </li>\n"
+#~ "        </ul>\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        <em class=\"help-operator\">*</em><br/>\n"
+#~ "        Star express partial <em>words</em>.\n"
+#~ "        <ul>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">cheva*</em> will find\n"
+#~ "                documents containig words begining with\n"
+#~ "                <em class=\"help-keyword\">cheva</em>, like\n"
+#~ "                <em class=\"help-keyword\">cheval</em>,\n"
+#~ "                <em class=\"help-keyword\">chevalier</em>,\n"
+#~ "                <em class=\"help-keyword\">chevaux</em>,\n"
+#~ "                etc.\n"
+#~ "            </li>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">*vage</em> will find\n"
+#~ "                documents containig words ending with\n"
+#~ "                <em class=\"help-keyword\">vage</em>, like\n"
+#~ "                <em class=\"help-keyword\">élevage</em>,\n"
+#~ "                <em class=\"help-keyword\">gavage</em>,\n"
+#~ "                <em class=\"help-keyword\">pavage</em>,\n"
+#~ "                etc.\n"
+#~ "            </li>\n"
+#~ "        </ul>\n"
+#~ "    </li>\n"
+#~ "</ul>\n"
+#~ "<p>\n"
+#~ "    Of course, these operators can be combined to make a more precise "
+#~ "search.\n"
+#~ "</p>"
+
+#~ msgid "FGSEARCH:help words search"
+#~ msgstr ""
+#~ "<h2>Search input</h2>\n"
+#~ "\n"
+#~ "<h3><em>Words</em> search</h3>\n"
+#~ "\n"
+#~ "<p>\n"
+#~ "    This input must be filled with keywords.\n"
+#~ "</p>\n"
+#~ "\n"
+#~ "<p>\n"
+#~ "    Search can correct input words. For example :\n"
+#~ "</p>\n"
+#~ "<ul>\n"
+#~ "    <li>\n"
+#~ "        Search is done by using singular and plural forms. So when the "
+#~ "keyword is\n"
+#~ "        <em class=\"help-keyword\">cheval</em>, documents containing <em "
+#~ "class=\"help-keyword\">cheval</em>,\n"
+#~ "        or <em class=\"help-keyword\">chevaux</em> will be found.\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        Stop words are ignored (<em class=\"help-keyword\">le</em>, <em "
+#~ "class=\"help-keyword\">la</em>…).\n"
+#~ "        So when keywords are <em class=\"help-keyword\">le cheval</em>,\n"
+#~ "        only <em class=\"help-keyword\">cheval</em> (and its plurals) "
+#~ "will be looked for.\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        When there are multiple keywords, search will look for documents\n"
+#~ "        containing all of the keywords (and their plural forms).\n"
+#~ "    </li>\n"
+#~ "</ul>\n"
+#~ "<h2>Using <em>operators</em></h2>\n"
+#~ "\n"
+#~ "<p>\n"
+#~ "    When a more precise search is required, one can use operators.\n"
+#~ "</p>\n"
+#~ "<ul>\n"
+#~ "    <li>\n"
+#~ "        <em class=\"help-operator\">AND</em> and <em class=\"help-operator"
+#~ "\">OR</em><br/>\n"
+#~ "        These operators make keywords combination.\n"
+#~ "        <ul>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">cheval AND chèvre</em> will "
+#~ "find\n"
+#~ "                documents containing both <em class=\"help-keyword"
+#~ "\">cheval</em>\n"
+#~ "                and <em class=\"help-keyword\">chèvre</em> (or their "
+#~ "plural forms).\n"
+#~ "            </li>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">cheval OR chèvre</em> will "
+#~ "find\n"
+#~ "                documents containing either <em class=\"help-keyword"
+#~ "\">cheval</em>\n"
+#~ "                or <em class=\"help-keyword\">chèvre</em> or both (or "
+#~ "their plural forms).\n"
+#~ "            </li>\n"
+#~ "        </ul>\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        <em class=\"help-operator\">(</em> and <em class=\"help-operator"
+#~ "\">)</em><br/>\n"
+#~ "        Parenthesis express priorities between operators.\n"
+#~ "        <ul>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">(cheval OR chèvre) AND blanc</"
+#~ "em>\n"
+#~ "                will find documents containing\n"
+#~ "                <ul>\n"
+#~ "                    <li>\n"
+#~ "                        either <em class=\"help-keyword\">cheval</em> "
+#~ "and\n"
+#~ "                        <em class=\"help-keyword\">blanc</em> (or their "
+#~ "plural forms) ;\n"
+#~ "                    </li>\n"
+#~ "                    <li>\n"
+#~ "                        either <em class=\"help-keyword\">chèvre</em> "
+#~ "and\n"
+#~ "                        <em class=\"help-keyword\">blanc</em> (or their "
+#~ "plural forms) ;\n"
+#~ "                    </li>\n"
+#~ "                    <li>\n"
+#~ "                        either <em class=\"help-keyword\">cheval</em> "
+#~ "and\n"
+#~ "                        <em class=\"help-keyword\">chèvre</em> and\n"
+#~ "                        <em class=\"help-keyword\">blanc</em>  (or their "
+#~ "plural forms).\n"
+#~ "                    </li>\n"
+#~ "                </ul>\n"
+#~ "            </li>\n"
+#~ "        </ul>\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        <em class=\"help-operator\">\"</em><br/>\n"
+#~ "        Quotes express <em>exact search</em>.\n"
+#~ "        <ul>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">\"cheval\"</em> will find\n"
+#~ "                documents containing the exact word\n"
+#~ "                <em class=\"help-keyword\">cheval</em>, but won't find "
+#~ "those\n"
+#~ "                containing <em class=\"help-keyword\">chevaux</em> ;\n"
+#~ "            </li>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">\"cheval blanc\"</em> will "
+#~ "find\n"
+#~ "                documents containing the exact words <em class=\"help-"
+#~ "keyword\">cheval\n"
+#~ "                blanc</em> (be careful, <em class=\"help-keyword\">blanc</"
+#~ "em> must be\n"
+#~ "                immediately after <em class=\"help-keyword\">cheval</"
+#~ "em>).\n"
+#~ "            </li>\n"
+#~ "        </ul>\n"
+#~ "    </li>\n"
+#~ "    <li>\n"
+#~ "        <em class=\"help-operator\">*</em><br/>\n"
+#~ "        Star express partial <em>words</em>.\n"
+#~ "        <ul>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">cheva*</em> will find\n"
+#~ "                documents containig words begining with\n"
+#~ "                <em class=\"help-keyword\">cheva</em>, like\n"
+#~ "                <em class=\"help-keyword\">cheval</em>,\n"
+#~ "                <em class=\"help-keyword\">chevalier</em>,\n"
+#~ "                <em class=\"help-keyword\">chevaux</em>,\n"
+#~ "                etc.\n"
+#~ "            </li>\n"
+#~ "            <li>\n"
+#~ "                <em class=\"help-keyword\">*vage</em> will find\n"
+#~ "                documents containig words ending with\n"
+#~ "                <em class=\"help-keyword\">vage</em>, like\n"
+#~ "                <em class=\"help-keyword\">élevage</em>,\n"
+#~ "                <em class=\"help-keyword\">gavage</em>,\n"
+#~ "                <em class=\"help-keyword\">pavage</em>,\n"
+#~ "                etc.\n"
+#~ "            </li>\n"
+#~ "        </ul>\n"
+#~ "    </li>\n"
+#~ "</ul>\n"
+#~ "<p>\n"
+#~ "    Of course, these operators can be combined to make a more precise "
+#~ "search.\n"
+#~ "</p>"
+
+#~ msgid "FGSEARCH:search online help"
+#~ msgstr "Search's online help"
+
+#~ msgid "FGSEARCH:switch search mode (basic/advanced)"
+#~ msgstr "Switch search mode (basic/advanced)"
+
+#~ msgid "Freedom"
+#~ msgstr "Dynacase"
+
+#~ msgid "Freedom accessibilities"
+#~ msgstr "Dynacase rights management"
+
+#~ msgid "Freedom deletion"
+#~ msgstr "Deletion of documents"
+
+#~ msgid "Freedom group accessibilities"
+#~ msgstr "Dynacase group rights"
+
+#~ msgid "Freedom imodification"
+#~ msgstr "Modify virtual document"
+
+#~ msgid "Freedom initialisation"
+#~ msgstr "Dynacase initialization"
+
+#~ msgid "Freedom modification"
+#~ msgstr "Modify document"
+
+#~ msgid "Freedom modify accessibilities"
+#~ msgstr "Modify rights"
+
+#~ msgid "Freedoms RSS syndication"
+#~ msgstr "Dynacase RSS"
+
+#~ msgid "Freedoms card"
+#~ msgstr "View as card"
+
+#~ msgid "Freedoms detail list"
+#~ msgstr "Detailed list"
+
+#~ msgid "Freedoms icon list"
+#~ msgstr "Icon list"
+
+#~ msgid "Freedoms lib"
+#~ msgstr "Dynacase library"
+
+#~ msgid "Freedoms library"
+#~ msgstr "Dynacase library"
+
+#~ msgid "Freedoms list"
+#~ msgstr "List"
+
+#~ msgid "Freedoms view folder"
+#~ msgstr "View as folder"
+
+#~ msgid "Histo:Comment"
+#~ msgstr "Comment"
+
+#~ msgid "Histo:Date"
+#~ msgstr "Date"
+
+#~ msgid "Histo:User"
+#~ msgstr "User"
+
+#~ msgid ""
+#~ "Input variables exceeded %s. To increase the limit change max_input_vars "
+#~ "in php.ini."
+#~ msgstr ""
+#~ "Input variables exceeded %s. Please contact your system administrator to "
+#~ "increase max_input_vars in php.ini."
+
+#~ msgid "Legend:Acl set"
+#~ msgstr "Acl set"
+
+#~ msgid "Legend:Acl's type"
+#~ msgstr "Acl's type"
+
+#~ msgid "Legend:Actors"
+#~ msgstr "Actors"
+
+#~ msgid "Legend:Dynamic"
+#~ msgstr "Account attribute"
+
+#~ msgid "Legend:Dynamic multiple"
+#~ msgstr "Account multpile attribute"
+
+#~ msgid "Legend:Groups"
+#~ msgstr "Groups"
+
+#~ msgid "Legend:Legacy"
+#~ msgstr "Acl inherited"
+
+#~ msgid "Legend:Roles"
+#~ msgstr "Roles"
+
+#~ msgid "Legend:Users"
+#~ msgstr "Users"
+
+#~ msgid "Loading menu"
+#~ msgstr "Loading menu"
+
+#~ msgid "No columns has been defined"
+#~ msgstr "No column had been selected for report presentation."
+
+#~ msgid "OP_AND"
+#~ msgstr "and"
+
+#~ msgid "OP_GLOB"
+#~ msgstr "global"
+
+#~ msgid "OP_OR"
+#~ msgstr "or"
+
+#~ msgid "POST_IT:Blue"
+#~ msgstr "Blue"
+
+#~ msgid "POST_IT:Green"
+#~ msgstr "Green"
+
+#~ msgid "POST_IT:Orange"
+#~ msgstr "Orange"
+
+#~ msgid "POST_IT:Purple"
+#~ msgstr "Purple"
+
+#~ msgid "POST_IT:Red"
+#~ msgstr "Red"
+
+#~ msgid "POST_IT:Yellow"
+#~ msgstr "Yellow"
+
+#~ msgid "Session authentication log facility"
+#~ msgstr "Session authentication log facility"
+
+#~ msgid "StateConfirm"
+#~ msgstr "Confirm"
+
+#~ msgid "This account has expired."
+#~ msgstr "This account has expired."
+
+#~ msgid "This account is deactivated."
+#~ msgstr "This account is deactivated."
+
+#~ msgid "Too many files. The maximum accepted is"
+#~ msgstr ""
+#~ "Too many files. Please contact your system administrator to increase "
+#~ "max_file_uploads in php.ini. The maximum accepted is"
+
+#~ msgid "Too many incorrect password attempts."
+#~ msgstr "Too many incorrect password attempts."
+
+#~ msgid "WIDGET_CHANGE_PASSWORD:Change"
+#~ msgstr "Change"
+
+#~ msgid "WIDGET_CHANGE_PASSWORD:Loading..."
+#~ msgstr "Loading..."
+
+#~ msgid "WIDGET_CHANGE_PASSWORD:New password"
+#~ msgstr "New password"
+
+#~ msgid "WIDGET_CHANGE_PASSWORD:New passwords are not identical"
+#~ msgstr "New passwords are not identical"
+
+#~ msgid "WIDGET_CHANGE_PASSWORD:Old password"
+#~ msgstr "Old password"
+
+#~ msgid "WIDGET_CHANGE_PASSWORD:Password updated"
+#~ msgstr "Password updated"
+
+#~ msgid "WIDGET_CHANGE_PASSWORD:Verify new password"
+#~ msgstr "Verify new password"
+
+#~ msgid "WIDGET_CHANGE_PASSWORD:You need to provide a new password"
+#~ msgstr "You need to provide a new password"
+
+#~ msgid "WIDGET_CHANGE_PASSWORD:You need to provide the old password"
+#~ msgstr "You need to provide the old password"
+
+#~ msgid "WIDGET_CHANGE_PASSWORD:You need to provide twice the new password"
+#~ msgstr "You need to provide twice the new password"
+
+#~ msgid "WebDav FREEDOM system file"
+#~ msgstr "Dynacase WebDAV file system"
+
+#~ msgid "addactivity"
+#~ msgstr "Activity"
+
+#~ msgid "addcond"
+#~ msgstr "Add condition"
+
+#~ msgid "any familly"
+#~ msgstr "any familiy"
+
+#~ msgid "auth_failure"
+#~ msgstr "Authentication failed : try again"
+
+#~ msgid "authent reqpassword"
+#~ msgstr "Lost password?"
+
+#~ msgid "callbackreqpasswd_mail_hello"
+#~ msgstr "Hello"
+
+#~ msgid "callbackreqpasswd_mail_password"
+#~ msgstr ""
+#~ "<p>You new password is now:</p>\n"
+#~ "<pre>\n"
+#~ "[PASSWORD]\n"
+#~ "</pre>\n"
+#~ "<p>You can now log in at <a href=\"[CORE_EXTERNURL]\">[CORE_EXTERNURL]</"
+#~ "a></p>"
+
+#~ msgid "chgstates"
+#~ msgstr "Steps"
+
+#~ msgid "csv, ods, xml, zip (xml) supported import files"
+#~ msgstr "supported file types: csv, ods, xml, zip (xml)"
+
+#~ msgid "csv-comma"
+#~ msgstr "Comma"
+
+#~ msgid "csv-custom : "
+#~ msgstr "Custom"
+
+#~ msgid "csv-doublequote"
+#~ msgstr "Quotation mark"
+
+#~ msgid "csv-noenclosure"
+#~ msgstr "No enclosures"
+
+#~ msgid "csv-other-enclosure"
+#~ msgstr "Other enclosure"
+
+#~ msgid "csv-other-separator"
+#~ msgstr "Other separator"
+
+#~ msgid "csv-semicolon"
+#~ msgstr "Semicolon"
+
+#~ msgid "csv-simplequote"
+#~ msgstr "Quote"
+
+#~ msgid "description"
+#~ msgstr "Description"
+
+#~ msgid "errno_bug_639_message"
+#~ msgstr ""
+#~ "<p>You must re-initialize your password.</p>\n"
+#~ "<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Re-initialize "
+#~ "my password</a></p>"
+
+#~ msgid "fgsearch"
+#~ msgstr "Global search"
+
+#~ msgid "forum_id"
+#~ msgstr "forum"
+
+#~ msgid "freedom database"
+#~ msgstr "Dynacase database"
+
+#~ msgid "freedom global search"
+#~ msgstr "Global search"
+
+#~ msgid "generic#search"
+#~ msgstr "Search"
+
+#~ msgid "generic:search placeholder"
+#~ msgstr "Search"
+
+#~ msgid "goaccess"
+#~ msgstr "Control access"
+
+#~ msgid "help"
+#~ msgstr "Help"
+
+#~ msgid "histoError"
+#~ msgstr "Error"
+
+#~ msgid "histoInfo"
+#~ msgstr "Info"
+
+#~ msgid "histoMessage"
+#~ msgstr "Message"
+
+#~ msgid "histoNotice"
+#~ msgstr "Notice"
+
+#~ msgid "histoWarning"
+#~ msgstr "Warning"
+
+#~ msgid "loginform:help"
+#~ msgstr "Help"
+
+#~ msgid "name"
+#~ msgstr "Name"
+
+#~ msgid "no"
+#~ msgstr "No"
+
+#~ msgid "reqpasswd_email"
+#~ msgstr "E-mail address"
+
+#~ msgid "reqpasswd_login"
+#~ msgstr "Login"
+
+#~ msgid "reqpasswd_or"
+#~ msgstr "or"
+
+#~ msgid "reqpasswd_submit"
+#~ msgstr "Submit"
+
+#~ msgid "search dynacase documents"
+#~ msgstr "search documents"
+
+#~ msgid "search methods"
+#~ msgstr "Search methods"
+
+#~ msgid "search online help"
+#~ msgstr "Start search"
+
+#~ msgid "searchdate prefix"
+#~ msgstr "at "
+
+#~ msgid "short_name"
+#~ msgstr "Short Name"
+
+#~ msgid "show language selection"
+#~ msgstr "Show language selection in login panel"
+
+#~ msgid "show request for password"
+#~ msgstr "Show password request link in login panel"
+
+#~ msgid "submitreqpasswd_form_multiplemail"
+#~ msgstr ""
+#~ "<p>The email address is used by several users.</p>\n"
+#~ "<p>In this case, you need to use login identifier</p>"
+
+#~ msgid "submitreqpasswd_form_send_error_external_auth"
+#~ msgstr ""
+#~ "<p>Your account uses an external authentication.</p>\n"
+#~ "<p>You cannot change your password from this application.</p>\n"
+#~ "<p>Please use the application dedicated to your authentication system.</p>"
+
+#~ msgid "submitreqpasswd_form_send_error_invalid_args"
+#~ msgstr "<p>The login or e-mail address is not valid</p>"
+
+#~ msgid "submitreqpasswd_form_send_error_unknown"
+#~ msgstr ""
+#~ "<p>The server accountered an error processing your request</p>\n"
+#~ "<p>Retry your request, and if the problem persist, please contact <a href="
+#~ "\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request"
+#~ "\">[ON_ERROR_CONTACT]</a></p>"
+
+#~ msgid "submitreqpasswd_form_send_ok"
+#~ msgstr ""
+#~ "<p>Your request has been taken into account.</p>\n"
+#~ "<p>You'll receive a mail containing instructions to follow in order to "
+#~ "complete your password reinitialization.</p>"
+
+#~ msgid "switch search mode (basic/advanced)"
+#~ msgstr "basic/advanced mode"
+
+#~ msgid "updateldap"
+#~ msgstr "Update LDAP server"
+
+#~ msgid "updatetitle"
+#~ msgstr "Update Title Cards"
+
+#~ msgid "username"
+#~ msgstr "Name"
+
+#~ msgid "warning_name"
+#~ msgstr "Your name is required"
+
+#~ msgid "warning_pass"
+#~ msgstr "Your password is required"
+
+#~ msgid "welcome"
+#~ msgstr "Welcome !"
+
+#~ msgid "yes"
+#~ msgstr "Yes"
+
+#~ msgid "yourpassword"
+#~ msgstr "Password :"
+
+#~ msgid "yourusername"
+#~ msgstr "Login :"

@@ -17,7 +17,7 @@ deploy-test:
 
 
 po:
-	php ./anakeen-devtool.phar extractPo -s src
+	php ./anakeen-devtool.phar extractPo -s . -o ./src
 
 stub:
 	php ./anakeen-devtool.phar generateStub -s . -o stubs/
