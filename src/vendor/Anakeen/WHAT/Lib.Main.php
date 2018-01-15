@@ -13,23 +13,20 @@
  */
 /**
  */
-include_once("WHAT/Lib.Common.php");
+include_once ("WHAT/Lib.Common.php");
 /**
  * @param Authenticator $auth
  * @param Action $action
  */
 function getMainAction($auth, &$action)
 {
-    include_once('Class.Action.php');
-    include_once('Class.Application.php');
-    include_once('Class.Session.php');
-    include_once('Lib.Http.php');
-    include_once('Lib.Phpini.php');
-    include_once('Class.Log.php');
-    include_once('Class.DbObj.php');
-    $indexphp = basename($_SERVER["SCRIPT_NAME"]);
-    
-    $log = new Log("", $indexphp);
+    include_once ('Class.Action.php');
+    include_once ('Class.Application.php');
+    include_once ('Class.Session.php');
+    include_once ('Lib.Http.php');
+    include_once ('Lib.Phpini.php');
+    include_once ('Class.Log.php');
+    include_once ('Class.DbObj.php');
     
     $CoreNull = "";
     
@@ -72,10 +69,9 @@ function getMainAction($auth, &$action)
     if ($defaultapp && $core->GetParam("CORE_START_APP")) {
         $_GET["app"] = $core->GetParam("CORE_START_APP");
     }
-
+    
     \Dcp\Core\LibPhpini::setCoreApplication($core);
     \Dcp\Core\LibPhpini::applyLimits();
-
     //$core->SetSession($session);
     // ----------------------------------------
     // Init PUBLISH URL from script name
@@ -83,22 +79,9 @@ function getMainAction($auth, &$action)
     // ----------------------------------------
     // Init Application & Actions Objects
     $appl = new Application();
-    $err = $appl->Set(getHttpVars("app"), $core, $session);
+    $err = $appl->Set(getHttpVars("app") , $core, $session);
     if ($err) {
         print $err;
-        exit;
-    }
-    
-    if (($appl->machine != "") && ($_SERVER['SERVER_NAME'] != $appl->machine)) { // special machine to redirect
-        if (substr($_SERVER['REQUEST_URI'], 0, 6) == "http:/") {
-            $aquest = parse_url($_SERVER['REQUEST_URI']);
-            $aquest['host'] = $appl->machine;
-            $puburl = glue_url($aquest);
-        } else {
-            $puburl = "http://" . $appl->machine . $_SERVER['REQUEST_URI'];
-        }
-        
-        Header("Location: $puburl");
         exit;
     }
     // ----------------------------------------
@@ -117,7 +100,7 @@ function getMainAction($auth, &$action)
     // -----------------------------------------------
     // now we are in correct protocol (http or https)
     $action = new Action();
-    $action->Set(getHttpVars("action"), $appl);
+    $action->Set(getHttpVars("action") , $appl);
     
     if ($auth) {
         $core_lang = $auth->getSessionVar('CORE_LANG');
@@ -267,6 +250,7 @@ function _initMainVolatileParamCli(Application & $core)
     $absindex = $core->GetParam("CORE_URLINDEX");
     if ($absindex == '') {
         $absindex = "$puburl/"; // try default
+        
     }
     $core_externurl = ($absindex) ? stripUrlSlahes($absindex) : stripUrlSlahes($puburl . "/");
     $core_mailaction = $core->getParam("CORE_MAILACTION");
@@ -340,7 +324,7 @@ function executeAction(&$action, &$out = null)
         if ($out !== null) {
             $out = $action->execute();
         } else {
-            echo($action->execute());
+            echo ($action->execute());
         }
     } else {
         if ((isset($action->parent)) && ($action->parent->with_frame != "Y")) {
@@ -349,7 +333,7 @@ function executeAction(&$action, &$out = null)
             // achieve action
             $body = ($action->execute());
             // write HTML header
-            $head = new Layout($action->GetLayoutFile("htmltablehead.xml"), $action);
+            $head = new Layout($action->GetLayoutFile("htmltablehead.xml") , $action);
             // copy JS ref & code from action to header
             //$head->jsref = $action->parent->GetJsRef();
             //$head->jscode = $action->parent->GetJsCode();
@@ -357,22 +341,22 @@ function executeAction(&$action, &$out = null)
             if ($out !== null) {
                 $out = $head->gen();
                 $out.= $body;
-                $foot = new Layout($action->GetLayoutFile("htmltablefoot.xml"), $action);
+                $foot = new Layout($action->GetLayoutFile("htmltablefoot.xml") , $action);
                 $out.= $foot->gen();
             } else {
-                echo($head->gen());
+                echo ($head->gen());
                 // write HTML body
-                echo($body);
+                echo ($body);
                 // write HTML footer
-                $foot = new Layout($action->GetLayoutFile("htmltablefoot.xml"), $action);
-                echo($foot->gen());
+                $foot = new Layout($action->GetLayoutFile("htmltablefoot.xml") , $action);
+                echo ($foot->gen());
             }
         } else {
             // This document is completed
             if ($out !== null) {
                 $out = $action->execute();
             } else {
-                echo($action->execute());
+                echo ($action->execute());
             }
         }
     }
@@ -421,18 +405,19 @@ function handleActionException($e)
             header("HTTP/1.1 500 Dynacase Uncaught Exception");
         }
     }
-    errorLogException($e);
+    
+    $displayMsg = \Dcp\Core\LogException::logMessage($e, $errId);
     if (isset($action) && is_a($action, 'Action') && isset($action->parent)) {
         if (php_sapi_name() === 'cli') {
-            fwrite(STDERR, $e->getMessage() . "\n");
+            fwrite(STDERR, sprintf("[%s]: %s\n", $errId, $displayMsg));
         } else {
-            $action->exitError($e->getMessage());
+            $action->exitError($displayMsg, true, $errId);
         }
     } else {
         if (php_sapi_name() === 'cli') {
-            fwrite(STDERR, $e->getMessage());
+            fwrite(STDERR, $displayMsg);
         } else {
-            print htmlspecialchars($e->getMessage());
+            print htmlspecialchars($displayMsg);
         }
         exit(1);
     }
@@ -453,11 +438,10 @@ function _wsh_send_error($errMsg, $expand = array())
 {
     global $action;
     $wshError = new Dcp\WSHMailError($action, $errMsg);
-    $wshError->prefix = sprintf('%s %s ', date('c'), php_uname('n'));
+    $wshError->prefix = sprintf('%s %s ', date('c') , php_uname('n'));
     $wshError->addExpand($expand);
     $wshError->autosend();
 }
-
 /**
  * Handle exceptions by logging errors or by sending mails
  * depending if the program is used in a CLI or not.
@@ -469,12 +453,12 @@ function _wsh_send_error($errMsg, $expand = array())
 function _wsh_exception_handler($e, $callStack = true)
 {
     if ($callStack === true) {
-        $errMsg = formatErrorLogException($e);
+        $errMsg = \Dcp\Core\LogException::formatErrorLogException($e);
         error_log($errMsg);
     } else {
         $errMsg = $e->getMessage();
     }
-
+    
     if (!isInteractiveCLI()) {
         $expand = array(
             'm' => preg_replace('/^([^\n]*).*/s', '\1', $e->getMessage())
@@ -554,44 +538,49 @@ function enable_wsh_safetybelts()
 }
 /**
  * @param Throwable $e
+ * @deprecated use Dcp\Core\LogException::formatErrorLogException()
  * @return string
  */
 function formatErrorLogException($e)
 {
-    global $argv;
-    
-    $pid = getmypid();
-    $err = sprintf("%s> Dynacase got an uncaught exception '%s' with message '%s' in file %s at line %s:", $pid, get_class($e), $e->getMessage(), $e->getFile(), $e->getLine());
-    if (php_sapi_name() == 'cli' && is_array($argv)) {
-        $err.= sprintf("\n%s> Command line arguments: %s", $pid, join(' ', array_map("escapeshellarg", $argv)));
-        $err.= sprintf("\n%s> error_log: %s", $pid, ini_get('error_log'));
-    }
-    foreach (preg_split('/\n/', $e->getTraceAsString()) as $line) {
-        $err.= sprintf("\n%s> %s", $pid, $line);
-    }
-    $err.= sprintf("\n%s> End Of Exception.", $pid);
-    return $err;
+    return \Dcp\Core\LogException::formatErrorLogException($e);
 }
 /**
  * @param Exception|Error  $e
  */
 function errorLogException($e)
 {
-    error_log(formatErrorLogException($e));
+    \Dcp\Core\LogException::writeLog($e);
 }
 
 function handleFatalShutdown()
 {
     global $action;
+    
     $error = error_get_last();
+    
     if ($error !== null && $action) {
-        if ($error["type"] == E_ERROR) {
+        if (in_array($error["type"], array(
+            E_ERROR,
+            E_PARSE,
+            E_COMPILE_ERROR,
+            E_CORE_ERROR,
+            E_USER_ERROR,
+            E_RECOVERABLE_ERROR
+        ))) {
             ob_get_clean();
             if (!headers_sent()) {
-                header("HTTP/1.1 500 Dynacase Fatal Error");
+                header("HTTP/1.1 500 Anakeen Fatal Error");
             }
-            $action->exitError($error["message"], false);
+            
+            $displayMsg = \Dcp\Core\LogException::logMessage($error, $errId);
+            if ($action) {
+                $action->exitError($displayMsg, false, $errId);
+            } else {
+                print $displayMsg;
+            }
             // Fatal error are already logged by PHP
+            
         }
     }
 }

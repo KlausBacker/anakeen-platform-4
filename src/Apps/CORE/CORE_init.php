@@ -6,39 +6,40 @@
 /**
  * @mainpage Dynacase Core Documentation
  * @brief
- * @author Anakeen <labs@anakeen.com>
+ * @author   Anakeen <labs@anakeen.com>
  *
  *
  *
- * @par Reference manual:
+ * @par      Reference manual:
  * The Dynacase Reference Manual gives you all informations you need to design, code, test your applications.
- This manual should be your daily companion, with all answers to all questions when developping on Dynacase Platform.
+ * This manual should be your daily companion, with all answers to all questions when developping on Dynacase Platform.
  * ==> http://docs.anakeen.com
  *
- * @par Explanation of related pages
- * @li Methods for document menus@n These methods are tagged with @@apiExpose tag@n List methods which can be called by FDL:FDL_METHOD action
- * @li Error codes@n List all code's error which are returned when a problem appear. Most of them are send when import families definition's
- * @li Methods used as search conditions@n These methods results can be used as criteria to filter document's searches@n They are tagged with @@searchLabel tag
- * @li Supported Apis@n These methods are described in reference documentation. Their signature (argument and return) are maintained from one version to another
- * @li Deprecated List@n These methods are no longer supported. They can be removed in the next version
+ * @par      Explanation of related pages
+ * @li       Methods for document menus@n These methods are tagged with @@apiExpose tag@n List methods which can be called by FDL:FDL_METHOD action
+ * @li       Error codes@n List all code's error which are returned when a problem appear. Most of them are send when import families definition's
+ * @li       Methods used as search conditions@n These methods results can be used as criteria to filter document's searches@n They are tagged with @@searchLabel tag
+ * @li       Supported Apis@n These methods are described in reference documentation. Their signature (argument and return) are maintained from one version to another
+ * @li       Deprecated List@n These methods are no longer supported. They can be removed in the next version
  *
- * @note Build
+ * @note     Build
  *  3.2.23-2
  *
  */
 /**
  * Application parameters
  *
- * @author Anakeen
- * @package FDL
+ * @author     Anakeen
+ * @package    FDL
  * @subpackage CORE
  */
 /**
  */
 /**
  * Application parameters
- * @name $app_const
- * @global array $GLOBALS['app_const']
+ *
+ * @name         $app_const
+ * @global array $GLOBALS ['app_const']
  */
 global $app_const;
 $app_const = array(
@@ -408,12 +409,18 @@ $app_const = array(
         "descr" => N_("WSH error mail subject") ,
         "user" => "N",
         "global" => "Y"
+    ) ,
+    "CORE_DISPLAY_ERROR" => array(
+        "val" => "no",
+        "descr" => N_("Display errors in request response") ,
+        "user" => "N",
+        "kind" => "enum(yes|no)",
+        "global" => "Y"
     )
 );
 
-
 if (file_exists('Apps/CORE/lang.php')) {
-    include_once("Apps/CORE/lang.php");
+    include_once ("Apps/CORE/lang.php");
 }
 
 if (isset($lang)) {
