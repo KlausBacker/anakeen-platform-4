@@ -666,6 +666,16 @@ define([
 
         getTypedWidgetClass: function vAttributeGetTypedWidgetClass(type)
         {
+            var error = "",
+                customWidgetClass = this.model.getOption('customWidget');
+            if(customWidgetClass) {
+                if (_.isFunction($.fn[customWidgetClass])) {
+                    return $.fn[customWidgetClass];
+                }
+                error = "$.fn." + customWidgetClass + " is not a function";
+                console.error(error);
+                throw new Error(error);
+            }
             switch (type) {
                 case "text" :
                     return $.fn.dcpText;
