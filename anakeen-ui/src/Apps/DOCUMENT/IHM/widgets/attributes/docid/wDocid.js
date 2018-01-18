@@ -355,7 +355,9 @@
                     this.ul.addClass("dcpAttribute__select--docid");
                 },
                 close: function wDocidSelectClose() {
-                    currentWidget._hasBeenRequested = false;
+                    if (this.ns !== ".kendoDropDownList") {
+                        currentWidget._hasBeenRequested = false;
+                    }
                 },
                 filtering: function wDocidSelectOpen()
                 {
