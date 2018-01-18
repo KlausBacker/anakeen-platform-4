@@ -26,6 +26,7 @@ class CommonRenderOptions extends BaseRenderOptions
     const attributeLabelOption = "attributeLabel";
     const formatOption = "format";
     const helpLinkIdentifierOption = "helpLinkIdentifier";
+    const customWidgetAttributeFunctionOption="customWidgetAttributeFunction";
     
     const autoPosition = "auto";
     const leftPosition = "left";
@@ -227,6 +228,19 @@ class CommonRenderOptions extends BaseRenderOptions
         }
         DocManager::cache()->addDocument($helpDocument);
         return $this->setOption(self::helpLinkIdentifierOption, $documentIdentifier);
+    }
+
+    /**
+     * Replace standard attribute jQuery Widget ($.widget) by another One
+     * The new widget must inherit from $.dcp.dcpAttribute function
+     *
+     * @param string $widgetFunctionName Name of Widget
+     * @return $this
+     */
+    public function setCustomWidgetAttributeFunction($widgetFunctionName)
+    {
+        $this->setOption(self::customWidgetAttributeFunctionOption, $widgetFunctionName);
+        return $this;
     }
 }
 
