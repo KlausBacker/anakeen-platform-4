@@ -611,7 +611,7 @@
                     var attrValue = currentWidget.getValue();
                     return Mustache.render(title || "", attrValue);
                 },
-                container: this.element.parent()
+                container: this.element.closest(".row")
             });
 
             return this;
