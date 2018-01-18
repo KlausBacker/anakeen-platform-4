@@ -104,6 +104,7 @@
                     this.kendoWidget = this.element.find(".dcpAttribute__value--docid");
                     if (this.options.renderOptions.placeHolder) {
                         this.options.renderOptions.kendoMultiSelectConfiguration.placeholder = this.options.renderOptions.placeHolder;
+                        this.options.renderOptions.kendoComboBoxConfiguration.placeholder = this.options.renderOptions.placeHolder;
                     }
                     if (this._isMultiple()) {
                         this._decorateMultipleValue(this.kendoWidget);
@@ -355,7 +356,9 @@
                     this.ul.addClass("dcpAttribute__select--docid");
                 },
                 close: function wDocidSelectClose() {
-                    currentWidget._hasBeenRequested = false;
+                    if (this.ns !== ".kendoDropDownList") {
+                        currentWidget._hasBeenRequested = false;
+                    }
                 },
                 filtering: function wDocidSelectOpen()
                 {
