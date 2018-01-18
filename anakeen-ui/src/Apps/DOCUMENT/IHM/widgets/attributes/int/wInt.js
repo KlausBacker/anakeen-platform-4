@@ -133,6 +133,15 @@
             inputValue.css("display", "inline-block");
             kendoWidget = inputValue.kendoNumericTextBox(this.getKendoNumericOptions());
             kendoWidget.closest(".k-widget").addClass(currentCSSClass);
+
+            if (this.options.renderOptions.max !== undefined || this.options.renderOptions.min !== undefined) {
+                if (this.options.attributeValue.value > this.options.renderOptions.max) {
+                    this.element.find(".k-formatted-value.k-input").val(this.formatNumber(this.options.attributeValue.value));
+                }
+                if (this.options.attributeValue.value < this.options.renderOptions.min) {
+                    this.element.find(".k-formatted-value.k-input").val(this.formatNumber(this.options.attributeValue.value));
+                }
+            }
             return kendoWidget;
         },
 

@@ -124,6 +124,10 @@ define([
                 message: options.message,
                 htmlMessage: options.htmlMessage // @TODO NEED TO CLEAN HTML TO PREVENT XSS
             }, type);
+
+            if (type === "error" && console.error) {
+                console.error(options.title, options.message,  options.htmlMessage);
+            }
         },
 
         showError: function wNotificationShowError(options)

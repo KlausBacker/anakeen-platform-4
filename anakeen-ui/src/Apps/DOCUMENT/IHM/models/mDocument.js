@@ -404,12 +404,13 @@ define([
                 properties;
             //Analyze XHR
             var messages = [];
+            var result;
             try {
                 if (!xhr && model.message) {
                     messages.push({type: "error", contentText: model.message});
                     xhr = {status: 500, statusText: "Internal - No HTTP response"};
                 } else {
-                    var result = JSON.parse(xhr.responseText);
+                    result = JSON.parse(xhr.responseText);
                     messages = result.messages;
                 }
             } catch (e) {
@@ -446,18 +447,22 @@ define([
             }
 
             parsedReturn = {
-                messages: messages,
+                messages: messages || [],
                 responseText: "Unexpected error: " + xhr.status + " " + xhr.statusText
             };
 
             this.cleanErrorMessages();
             if (parsedReturn.messages.length === 0) {
+                if (result && result.exceptionMessage) {
+                    parsedReturn.responseText = result.exceptionMessage;
+                }
+
                 if (currentModel.get("properties")) {
                     title = currentModel.get("properties").get("title");
                 }
                 currentModel.trigger("showError", {
                     "errorCode": errorCode,
-                    "title": i18n.___("Unexpected error ", "ddui") + title,
+                    "title": i18n.___("Unexpected error ", "ddui") + " : " + title,
                     "message": parsedReturn.responseText
                 });
             }
