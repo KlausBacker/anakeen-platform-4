@@ -666,6 +666,16 @@ define([
 
         getTypedWidgetClass: function vAttributeGetTypedWidgetClass(type)
         {
+            var error = "",
+                customWidgetClass = this.model.getOption('customWidgetAttributeFunction');
+            if(customWidgetClass) {
+                if (_.isFunction($.fn[customWidgetClass])) {
+                    return $.fn[customWidgetClass];
+                }
+                error = "Custom Widget Function : $.fn." + customWidgetClass + " is not a function. Attribute : "+this.model.id;
+                console.error(error);
+                throw new Error(error);
+            }
             switch (type) {
                 case "text" :
                     return $.fn.dcpText;

@@ -1151,7 +1151,7 @@ define([
                     options.error(values);
                 }
                 if (!(values.promiseArguments && values.promiseArguments[0] && values.promiseArguments[0].eventPrevented)) {
-                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.promiseArguments));
+                    currentModel.trigger.apply(currentModel, _.union(["dduiDocumentFail"], values.promiseArguments[0]));
                 }
             });
 

@@ -44,7 +44,7 @@ class UIGetAssetPath
     protected static function getWidgetPath() {
         if (self::$widgetPaths === null) {
             $lastPart = self::isInDebug() ? "/debug/" : "/prod/";
-            error_log(self::$widgetPath."/".$lastPart."/smartElement.json");
+
             self::$widgetPaths = json_decode(file_get_contents(self::$widgetPath."/".$lastPart."/smartElement.json"), true);
         }
         return self::$widgetPaths;
@@ -73,7 +73,7 @@ class UIGetAssetPath
 
     public static function getJSSmartElementPath() {
         $paths = self::getWidgetPath();
-        error_log(var_export($paths, true));
+
         return $paths["smartElement"]["js"];
     }
 
@@ -90,7 +90,7 @@ class UIGetAssetPath
                 ],
             "css" => []
         ];
-        error_log(var_export($elements, true));
+
         return $elements;
     }
 
