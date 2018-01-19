@@ -138,6 +138,12 @@ class DocumentsList extends FamilyDocumentCollection
     }
     protected function getPaginationState()
     {
+        if (empty($this->contentParameters['slice'])) {
+            $this->contentParameters['slice']=0;
+        }
+        if (empty($this->contentParameters['page'])) {
+            $this->contentParameters['page']=0;
+        }
         return ["page" => intval($this->contentParameters['page']) , "slice" => intval($this->contentParameters['slice']) , "total_entries" => $this->_searchDoc->onlyCount() ];
     }
 }

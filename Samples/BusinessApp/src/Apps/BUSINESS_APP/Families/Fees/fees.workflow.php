@@ -40,16 +40,16 @@ class WFees extends \Dcp\Family\Wdoc
     public $transitions = array(
         self::T_BA_SEND => array(
             "m0" => "checkSend",
-            "ask" => array(WFeesAttr::wfee_user_valid),
+            "ask" => array("wfee_user_valid"),
             "nr" => true
         ),
         self::T_BA_EXCEED_DEMAND => array(
             "m0" => "checkExceeds",
-            "ask" => array(WFeesAttr::wfee_user_valid),
+            "ask" => array("wfee_user_valid"),
             "nr" => true
         ),
         self::T_BA_EXCEED_RESPONSE => array(
-            "ask" => array(WFeesAttr::wfee_exceed_decision),
+            "ask" => array("wfee_exceed_decision"),
             "nr" => true
         ),
         self::T_BA_VALID => array(
