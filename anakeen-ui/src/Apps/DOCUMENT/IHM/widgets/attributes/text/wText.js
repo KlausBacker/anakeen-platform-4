@@ -27,6 +27,7 @@
                 format: "",
                 kendoAutoCompleteConfiguration: {
                     filter: "contains",
+                    clearButton: false,
                     minLength: 1,
                     template: '<div class="dcpAutocomplete"><span class="k-state-default">#= data.title#</span>' +
                     '#if (data.message) {#' +
