@@ -1,6 +1,5 @@
 .dcpAttribute__value--multiple {
   button.dcpAttribute__value--docid--button {
-    background-color: $ank-ui-color-btn-tool-bg;
     border: none;
     min-width: 2em;
     height: 100%;
@@ -10,7 +9,6 @@
 
 .dcpAttribute__value.dcpAttribute__value--docid {
   .k-select {
-    background-color: $ank-ui-color-btn-tool-bg;
     left: 0;
     right: auto;
     border: none;

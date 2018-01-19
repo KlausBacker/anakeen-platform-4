@@ -8,6 +8,23 @@
   position: inherit;
 }
 
+
+.dcpAttribute__content .input-group-addon .btn,
+.dcpAttribute__content .k-state-default >.k-select,
+.dcpAttribute__value2 .k-select {
+
+    background-color: $ank-ui-color-btn-tool-bg;
+
+    &.dcpAttribute__content__button--delete {
+      background-color:transparent;
+    }
+}
+
+
+
+.dcpAttribute__content__buttons.input-group-addon {
+  border:0;
+}
 .dcpAttribute__value--read .dcpAttribute__content__value {
   word-wrap: break-word;
 }
@@ -108,6 +125,7 @@
 .dcpArray__content__cell {
   .input-group-addon:first-child {
     border-radius: $border-radius-base 0 0 $border-radius-base;
+    border:none;
     > button.btn {
       border-top-left-radius: $border-radius-inset;
       border-bottom-left-radius: $border-radius-inset;
