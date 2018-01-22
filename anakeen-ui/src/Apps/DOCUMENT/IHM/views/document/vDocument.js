@@ -1435,7 +1435,7 @@ define([
             if (this.model && this.model.get("templates")) {
                 templates = this.model.get("templates");
             }
-            if (templates[key]) {
+            if (! _.isUndefined(templates[key])) {
                 return templates[key];
             }
             // Get from a gobal element (for unittest)
