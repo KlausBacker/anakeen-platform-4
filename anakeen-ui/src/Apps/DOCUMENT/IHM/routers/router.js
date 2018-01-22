@@ -233,15 +233,18 @@ define([
         getUrlParameters: function router_getUrlParameters(searchPart)
         {
             var extract,
-                getParameters = searchPart.substr(1).split('&'),
+                getParameters,
                 result = {};
 
-            for (var i = 0; i < getParameters.length; i++) {
-                extract = getParameters[i].match(/^([^=]+)=(.*)$/);
-                if (extract) {
-                    result[extract[1]] = decodeURIComponent(extract[2]);
-                } else {
-                    result[getParameters[i]] = "";
+            if (searchPart) {
+                getParameters = searchPart.substr(1).split('&');
+                for (var i = 0; i < getParameters.length; i++) {
+                    extract = getParameters[i].match(/^([^=]+)=(.*)$/);
+                    if (extract) {
+                        result[extract[1]] = decodeURIComponent(extract[2]);
+                    } else {
+                        result[getParameters[i]] = "";
+                    }
                 }
             }
             return result;
