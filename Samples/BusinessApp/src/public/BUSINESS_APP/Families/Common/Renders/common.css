@@ -30,6 +30,16 @@
     color: #878787;
 }
 
+.dcpAttribute__content--money > .dcpCustomTemplate > .input-group:hover {
+    border: solid #157EFB 0.083rem;
+    box-shadow: 0rem 0rem 0.583rem #157EFB;
+    border-radius: 0.33rem;
+}
+
+.dcpAttribute__content--money > .dcpCustomTemplate > .input-group .dcpCustomTemplate--content--value[data-type=money] > .input-group:hover {
+    border:none;
+    box-shadow: none;
+}
 .money__currency__selector__wrapper > .money__currency__selector {
     background-color: inherit;
     color: inherit;

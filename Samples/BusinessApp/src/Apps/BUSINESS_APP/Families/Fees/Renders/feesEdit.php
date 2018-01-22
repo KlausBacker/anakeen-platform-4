@@ -17,6 +17,9 @@ class FeesEdit extends CommonEdit
         $options->htmltext()->setToolbar(\dcp\Ui\HtmltextRenderOptions::basicToolbar);
         $options->arrayAttribute(MyAttr::fee_t_all_exp)->setLabelPosition(\Dcp\ui\CommonRenderOptions::nonePosition);
         $options->arrayAttribute(MyAttr::fee_t_all_exp)->setTemplate(file_get_contents(__DIR__."/feesArray.mustache"));
+        $options->file(MyAttr::fee_exp_file)->setPlaceHolder("");
+        $options->enum(MyAttr::fee_exp_category)->setPlaceHolder("");
+
         $options->arrayAttribute()->setRowMinDefault(1);
 
 
