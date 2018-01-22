@@ -207,7 +207,7 @@ $xml_str = <<<EOD
 $MODULES_LIST
     </modules>
     <repositories>
-      <access name="dynacase" description="Dynacase" baseurl="http://dynacase.anakeen.com/3.2/webinst/" />
+      <access name="dynacase" description="Dynacase" baseurl="https://dynacase.anakeen.com/3.2/webinst/" />
     </repositories>
     <parameters-value>
       <param name="client_name" modulename="freedom-core" value="$CORE_CLIENT" />

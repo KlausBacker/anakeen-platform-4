@@ -66,6 +66,49 @@ if (is_dir($olddir)) {
     }
 }
 
+/*
+ * Upgrade dynacase.anakeen.com repo from HTTP to HTTPS
+*/
+$xml = $wiff->loadParamsDOMDocument();
+if ($xml === false) {
+    $errors[] = $wiff->errorMessage;
+} else {
+    $x = new DOMXPath($xml);
+    /*
+     * Upgrade repos
+     */
+    $repos = $x->query("/wiff/repositories/access[@host='dynacase.anakeen.com']");
+    for ($i = 0; $i < $repos->length; $i++) {
+        $repo = $repos->item($i);
+        if ($repo->getAttribute('protocol') == 'http') {
+            printf("Upgrading repository '%s' to HTTPS... ", $repo->getAttribute('name'));
+            $repo->setAttribute('protocol', 'https');
+            printf("[OK]\n");
+        }
+    }
+    /*
+     * Upgrade wiff-update-host
+     */
+    $params = $x->query("/wiff/parameters/param[@name='wiff-update-host']");
+    for ($i = 0; $i < $params->length; $i++) {
+        $param = $params->item($i);
+        $value = $param->getAttribute('value');
+        if (preg_match('!^http://dynacase\\.anakeen\\.com(?:$|/)!', $value)) {
+            if (($value = preg_replace('!^http://(dynacase\\.anakeen\\.com(?:$|/))!', 'https://\\1', $value)) !== null) {
+                printf("Upgrading wiff-update-host to HTTPS... ");
+                $param->setAttribute('value', $value);
+                printf("[OK]\n");
+            }
+        }
+    }
+    try {
+        $xml->commit();
+    } catch (Exception $e) {
+        $errors[] = $e->getMessage();
+        printf("[FAIL]\n");
+    }
+}
+
 if (count($errors) > 0) {
     error_log(join(PHP_EOL, $errors));
     exit(1);
