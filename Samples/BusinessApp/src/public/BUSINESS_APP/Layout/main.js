@@ -29,13 +29,13 @@ function setVisitedTagToDocument(document, axios) {
 
 document.addEventListener('DOMContentLoaded', () => {
     var list = document.getElementById('documentsList');
+    var collections = document.getElementById('collectionsList');
     var splitter = document.getElementById('splitter');
-    list.addEventListener('document-selected', () => {
-        onDocumentSelected();
-    });
-    var reportingButton = document.getElementById('reportingButton');
-    reportingButton.addEventListener('click', () => {
+    collections.addEventListener('reporting-click', function displayReportTab() {
         onReportingButtonClick();
+    });
+    list.addEventListener('document-selected', function selectDoc() {
+        onDocumentSelected();
     });
     var tab = document.getElementById('documentsTabs');
     tab.addEventListener('document-tab-selected', function tagDoc(event) {
@@ -63,5 +63,4 @@ document.addEventListener('DOMContentLoaded', () => {
         'prompt-message="Que voulez-vous faire ?"></ank-welcome-tab>',
         data: {},
     });
-
 });

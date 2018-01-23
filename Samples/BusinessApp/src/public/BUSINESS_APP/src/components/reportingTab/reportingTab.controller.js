@@ -54,20 +54,20 @@ export default {
     },
 
     computed: {
-      categoriesArray() {
-          if (!this.formattedData) {
-              return [];
-          }
+        categoriesArray() {
+            if (!this.formattedData) {
+                return [];
+            }
 
-          return Object.keys(this.formattedData).map((key) => {
-              return {
-                  name: key,
-                  amount: this.formattedData[key].data.reduce((acc, currentValue) => {
-                      return acc + currentValue;
-                  }, 0),
-              };
-          });
-      }
+            return Object.keys(this.formattedData).map((key) => {
+                return {
+                    name: key,
+                    amount: this.formattedData[key].data.reduce((acc, currentValue) => {
+                        return acc + currentValue;
+                    }, 0),
+                };
+            });
+        }
     },
 
     mounted() {

@@ -140,6 +140,9 @@ export default {
     },
 
     methods: {
+        onClickReporting() {
+            this.$emit('reporting-click')
+        },
         onToggleCollections() {
             if (this.showCollections) {
                 this.closeCollections();

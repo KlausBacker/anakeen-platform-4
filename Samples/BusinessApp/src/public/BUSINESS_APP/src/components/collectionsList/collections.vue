@@ -51,7 +51,14 @@
                             Notes de frais à valider
                         </div>
                     </div>
-                    <slot name="bottomButton"></slot>
+                    <div v-if="seeReporting" @click="onClickReporting">
+                        <div class="button__icon">
+                            <i class="material-icons">insert_chart</i>
+                        </div>
+                        <div class="button__title">
+                            Reporting
+                        </div>
+                    </div>
                 </div>
                 <div v-for="b in buttons" class="documentsList__collections__button"
                 @click="b.click">

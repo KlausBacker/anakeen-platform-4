@@ -119,7 +119,9 @@ export default {
 
             onPagerChange: (e) => {
                 this.dataSource.page(e.index);
-                this.refreshDocumentsList();
+                this.refreshDocumentsList().then().catch((err) => {
+                    console.error(err);
+                });
             },
 
             sendGetRequest: (url, conf) => {
@@ -141,7 +143,9 @@ export default {
                 const counter = this.$(this.$refs.pagerCounter).data('kendoDropDownList');
                 const newPageSize = counter.dataItem(e.item).value;
                 this.dataSource.pageSize(newPageSize);
-                this.refreshDocumentsList();
+                this.refreshDocumentsList().then().catch((err) => {
+                    console.error(err);
+                });
             },
 
             onSelectDocument: (...arg) => {
@@ -216,11 +220,11 @@ export default {
             const noDataTranslated = this.$pgettext('DocumentList', 'No %{collection} to display');
             return {
                 searchPlaceholder: this.$gettextInterpolate(searchTranslated, {
-                        collection: this.collection ? this.collection.html_label.toUpperCase() : '',
+                        collection: this.collectionLabel.toUpperCase(),
                     }),
                 itemsPerPageLabel: this.$pgettext('DocumentList', 'Items per page'),
                 noDataPagerLabel: this.$gettextInterpolate(noDataTranslated, {
-                        collection: this.collection ? this.collection.html_label : '',
+                        collection: this.collectionLabel,
                     }),
             };
         },
@@ -245,7 +249,9 @@ export default {
         filterDocumentsList(filterValue) {
             this.filterInput = filterValue;
             if (filterValue) {
-                this.refreshDocumentsList();
+                this.refreshDocumentsList().then().catch((err) => {
+                    console.error(err);
+                });
             } else {
                 this.clearDocumentsListFilter();
             }
@@ -253,19 +259,24 @@ export default {
 
         clearDocumentsListFilter() {
             this.filterInput = '';
-            this.refreshDocumentsList();
+            this.refreshDocumentsList().then().catch((err) => {
+                console.error(err);
+            });
         },
 
         setCollection(c) {
             this.collection = c;
             this.dataSource.page(1);
-            this.refreshDocumentsList();
+            this.refreshDocumentsList().then().catch((err) => {
+                console.error(err);
+            });
         },
 
         refreshDocumentsList() {
             return new Promise((resolve, reject) => {
                 if (this.collection && this.dataSource) {
-                    this.dataSource.read({ collection: this.collection.initid }).then(resolve).catch(reject);
+                    this.dataSource.read({ collection: this.collection.initid })
+                        .then(resolve).catch(reject);
                 } else {
                     reject();
                 }
