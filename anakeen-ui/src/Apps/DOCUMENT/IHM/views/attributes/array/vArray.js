@@ -194,7 +194,19 @@ define([
             if (!attributeModel) {
                 throw new Error("Unknown attribute " + options.id);
             }
-            attributeModel.setValue(options.value, options.index);
+            if (options.index >= 0) {
+                var currentValues=attributeModel.get("attributeValue");
+                var currentValue=currentValues[options.index];
+
+                if (! _.isEqual(currentValue, options.value)) {
+                    // Update model only if a change is detected
+                    if (!currentValue.value || !options.value || !options.value.value || currentValue.value !== options.value.value) {
+                        attributeModel.setValue(options.value, options.index);
+                    }
+                }
+            } else {
+                attributeModel.setValue(options.value, options.index);
+            }
         },
 
         refresh: function vArray_Refresh() {

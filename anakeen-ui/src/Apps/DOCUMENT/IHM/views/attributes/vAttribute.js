@@ -211,7 +211,7 @@ define([
             if (this.model.isInArray()) {
                 // adjust line number to column length
                 arrayWrapper = this.$el;
-                arrayWrapper.dcpArray("setLines", values.length, options).then(_.bind(function setValue() {
+                arrayWrapper.dcpArray("setLines", values.length, options).then(_.bind(function vAttributeDrawValue() {
                     values = _.toArray(values);
                     _.each(values, function analyzeValues(currentValue, index)
                     {

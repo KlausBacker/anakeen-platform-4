@@ -1677,7 +1677,7 @@ define([
                 return null;
             }
             attribute = new AttributeInterface(attributeModel);
-            return attribute.getValue(type);
+            return _.clone(attribute.getValue(type));
         },
 
         /**
@@ -1816,12 +1816,35 @@ define([
                     index = value.length - 1;
                 }
                 currentValueLength = attributeInterface.getValue().length;
+                attributeInterface.setValue(value);
 
-                // Add new necessary rows before set value
-                for (i = currentValueLength; i <= index; i++) {
-                    this.appendArrayRow(attributeModel.getParent(), {});
-                }
 
+                // Pad values of complete array with default values
+                var arrayModel=attributeModel.getParent();
+                var modifiedColumns={};
+                arrayModel.get("content").each(function (aModel) {
+                   var aValue=_.clone(aModel.get("attributeValue"));
+                   var defaultValue=aModel.get("defaultValue");
+
+                   if (!defaultValue) {
+                       defaultValue=aModel.hasMultipleOption()?[]:{value:null, displayValue:""};
+                   }
+
+                    for (i = currentValueLength; i <= index; i++) {
+                       if (_.isUndefined(aValue[i])) {
+                           aValue[i]=defaultValue;
+                           modifiedColumns[aModel.id]={model:aModel, values:aValue};
+                       }
+                    }
+                });
+
+                _.each(modifiedColumns, function (modData, colId) {
+                     _.defer(function documentControllerPadValues() {
+                         modData.model.set("attributeValue", modData.values);
+                     });
+                });
+
+                return;
             }
             return attributeInterface.setValue(value);
         },
