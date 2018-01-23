@@ -1,0 +1,40 @@
+@import '../login-page.scss';
+
+.login-page {
+  background-image: url('../../../BUSINESS_APP/Images/login_background.png');
+  background-size: cover;
+
+  .login-wrapper {
+    background-color: white;
+    box-shadow: #dddddd 0 4px 10px;
+    margin-top: 1.5rem;
+    border-radius: .5rem;
+
+    .login-banner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .app-logo {
+        margin-right: .5rem;
+      }
+    }
+    .login-form {
+      .authent-form {
+        box-shadow: none;
+      }
+    }
+  }
+  .anakeen-banner {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    .poweredBy {
+      color: white;
+      font-style: italic;
+    }
+    .imgbanner {
+      height: auto;
+    }
+
+  }
+}
