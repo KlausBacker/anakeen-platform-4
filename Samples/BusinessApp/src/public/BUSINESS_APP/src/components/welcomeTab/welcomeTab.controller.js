@@ -14,17 +14,6 @@ export default {
     },
     created() {
         this.privateScope = {
-            bindNewTabEvents: () => {
-                this.$(this.$refs.buttonGroup).find('.documentsList__documentsTabs__welcome__collection__button')
-                    .on('click', (e) => {
-                        const newId = e.target.dataset.famid;
-                        const collection = this.collections.find((c) => c.initid === newId);
-                        if (collection) {
-                            this.$emit('document-creation', collection);
-                        }
-                    });
-            },
-
             createAutocompleteSearch: () => {
                 const $input = this.$(this.$refs.documentsSearch);
                 const kendoInput = $input.kendoAutoComplete({
@@ -71,7 +60,6 @@ export default {
             },
 
             configureWelcomeTab: () => {
-                this.privateScope.bindNewTabEvents();
                 this.privateScope
                     .createAutocompleteSearch();
             },
@@ -82,7 +70,7 @@ export default {
                         collections: this.collections.map(c => c.initid).join(','),
                         fields: 'document.properties.title,document.properties.icon,' +
                         'document.properties.state,document.properties.family',
-                        slice: '5',
+                        slice: '3',
                         utag: 'open_document',
                         iconSize: '24x24c',
                     },
@@ -164,6 +152,13 @@ export default {
             this.privateScope.prepareWelcomeTabData().then((result) => {
                 this.lastConsultations = result;
             });
+        },
+
+        onCreateDocumentClick(cId) {
+            const collection = this.collections.find((c) => c.initid === cId);
+            if (collection) {
+                this.$emit('document-creation', collection);
+            }
         },
 
         onRecentDocumentClick(document) {

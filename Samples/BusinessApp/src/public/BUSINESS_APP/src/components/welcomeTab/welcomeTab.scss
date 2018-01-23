@@ -104,6 +104,7 @@
           & > .documentsList__documentsTabs__welcome__collection__button {
             cursor: pointer;
             display: flex;
+            text-transform: uppercase;
             justify-content: center;
             align-items: center;
             font-size: 1rem;
@@ -199,6 +200,9 @@
             tr {
               height: 3rem;
               cursor: pointer;
+              td {
+                text-transform: uppercase;
+              }
             }
           }
           .recentDocuments__state__info {
