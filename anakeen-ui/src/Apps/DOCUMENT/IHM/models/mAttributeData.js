@@ -48,8 +48,8 @@ define([
         addValue: function mAttributeaddValue(value, index, options)
         {
             var currentValue;
-            if (this.hasMultipleOption() && !_.isNumber(index)) {
-                throw new Error("You need to add an index to set value for a multiple id " + this.id);
+            if (this.hasMultipleOption() && !_.isNumber(index) && !_.isArray(value)) {
+                throw new Error("You need to add an index or use array to set value for a multiple id " + this.id);
             }
             // clone array references
             currentValue = _.toArray(_.map(this.get("attributeValue"), _.clone));
@@ -63,7 +63,7 @@ define([
                 this.set("attributeValue", currentValue, options);
             } else {
                 currentValue.push(value);
-                this.set("attributeValue", currentValue, options);
+                this.set("attributeValue", _.clone(currentValue), options);
             }
         },
 
