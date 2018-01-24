@@ -857,7 +857,7 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
                     printerr(sprintf("Error: could not read answer!\n"));
                     return 1;
                 }
-                $param->value = $value;
+                $param->value = $param::cleanXMLUTF8($value);
                 
                 $ret = $module->storeParameter($param);
                 if ($ret === false) {
