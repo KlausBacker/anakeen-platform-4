@@ -256,12 +256,6 @@ define([
                             effects: "fadeIn"
                         }
                     },
-                    activate: function vDocument(event) {
-                        if (!this._dcpNotFirstactivate) {
-                            _.delay(_.bind(documentView.scrollTobVisibleTab, documentView), 500);
-                            this._dcpNotFirstactivate = true;
-                        }
-                    },
                     "select": function vDocumentKendoSelectTab(event) {
                         var tabId = $(event.item).data("attrid");
                         var tab=currentView.model.get("attributes").get(tabId);
@@ -271,7 +265,7 @@ define([
                             tab.trigger("attributeBeforeTabSelect", event, tabId);
                         }
                     },
-                    show: function vDocumentShowTab(event) {
+                    activate: function vDocumentShowTab(event) {
                         var tabId = $(event.item).data("attrid");
                         var scrollY = $(window).scrollTop();
                         currentView.$(".dcpTab__label").removeClass("dcpLabel--active").addClass("dcpLabel--default");
@@ -295,6 +289,10 @@ define([
                                 }
                             }
                         });
+                        if (!this._dcpNotFirstactivate) {
+                            _.delay(_.bind(documentView.scrollTobVisibleTab, documentView), 500);
+                            this._dcpNotFirstactivate = true;
+                        }
                     }
                 });
                 if (tabPlacement === "topProportional") {
