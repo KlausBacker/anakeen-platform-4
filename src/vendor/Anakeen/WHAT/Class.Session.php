@@ -458,7 +458,7 @@ class Session extends DbObj
     
     public function setuid($uid)
     {
-        if (!is_numeric($uid)) {
+        if (!is_int($uid)) {
             $u = new Account();
             if ($u->SetLoginName($uid)) {
                 $uid = $u->id;
