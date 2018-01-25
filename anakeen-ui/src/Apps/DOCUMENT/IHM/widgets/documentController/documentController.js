@@ -199,7 +199,7 @@ define([
         /**
          * Init the view and bind the events
          *
-         * @returns {DocumentView}
+         * @returns DocumentView
          * @private
          */
         _initView: function documentController_initView()
@@ -305,7 +305,7 @@ define([
             this._model.listenTo(this._model, "getCustomClientData", function documentController_triggerAddCustomData()
             {
                 try {
-                    currentWidget._model._customClientData = currentWidget.getCustomClientData();
+                    currentWidget._model._customClientData = currentWidget.getCustomClientData(false);
                 } catch (e) {
 
                 }
@@ -364,26 +364,30 @@ define([
                     if (mAttribute.getParent().get("type") !== "array") {
                         index = -1;
                     } else {
-                        _.find(values.current, function documentController_valueIsModified(currentValue)
+                        var changesIndex=[];
+                        _.each(values.current, function documentController_valueIsModified(currentValue)
                         {
                             var result, previous = values.previous[index];
                             if (!previous) {
-                                index++;
-                                return true;
+                                changesIndex.push(index);
+                            } else {
+                                if (_.isArray(currentValue)) {
+                                    currentValue = currentValue.join(",");
+                                }
+                                currentValue = _.has(currentValue, "value") ? currentValue.value : currentValue;
+                                if (_.isArray(previous)) {
+                                    previous = previous.join(",");
+                                }
+                                previous = _.has(previous, "value") ? previous.value : previous;
+                                if (previous !== currentValue) {
+                                     changesIndex.push(index);
+                                }
+
                             }
-                            if (_.isArray(currentValue)) {
-                                currentValue = currentValue.join(",");
-                            }
-                            currentValue = _.has(currentValue, "value") ? currentValue.value : currentValue;
-                            if (_.isArray(previous)) {
-                                previous = previous.join(",");
-                            }
-                            previous = _.has(previous, "value") ? previous.value : previous;
-                            result = previous !== currentValue;
                             index++;
-                            return result;
+
                         });
-                        index--;
+                        index=(changesIndex.length === 1)?changesIndex[0]:-1;
                     }
                     currentWidget._triggerAttributeControllerEvent("change", null, currentAttribute,
                         currentWidget.getProperties(),
@@ -520,7 +524,7 @@ define([
             this._model.listenTo(this._model, "attributeBeforeTabSelect", function documentController_triggerBeforeSelectTab(event, attrid)
             {
                 var currentAttribute = currentWidget.getAttribute(attrid);
-                var prevent=event.prevent;
+                var prevent;
 
                 prevent = !currentWidget._triggerAttributeControllerEvent("attributeBeforeTabSelect", event, currentAttribute,
                     currentWidget.getProperties(), currentAttribute, $(event.item));
@@ -1173,6 +1177,7 @@ define([
          * That kind of event are only for this widget
          *
          * @param eventName
+         * @param originalEvent
          * @returns {boolean}
          */
         _triggerControllerEvent: function documentController_triggerControllerEvent(eventName, originalEvent)
@@ -1838,8 +1843,8 @@ define([
                     }
                 });
 
-                _.each(modifiedColumns, function (modData, colId) {
-                     _.defer(function documentControllerPadValues() {
+                _.each(modifiedColumns, function documentControllerPadValues(modData) {
+                     _.defer(function documentControllerPadValue() {
                          modData.model.set("attributeValue", modData.values);
                      });
                 });
