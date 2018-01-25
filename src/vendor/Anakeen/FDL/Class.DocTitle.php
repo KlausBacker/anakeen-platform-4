@@ -3,8 +3,13 @@
  * @author Anakeen
  * @package FDL
 */
+
+use \Dcp\Core\ContextManager;
+use \Dcp\Core\DbManager;
+
 /**
  * Get Title from ids
+ *
  * @class DocTitle
  *
  */
@@ -12,22 +17,30 @@ class DocTitle
 {
     private static $viewUserVector = array();
     private static $relationCache = array();
+
     /**
      * return title of relation
      * return false if access deny
      * return null if relation not found
-     * @param int $docid relation documentg id
-     * @param bool $latest true if it is latest
-     * @param Doc $doc document where comes from relation
+     *
+     * @param int    $docid        relation documentg id
+     * @param bool   $latest       true if it is latest
+     * @param Doc    $doc          document where comes from relation
      * @param string $docrevOption docrev attribute option
-     * @param array $info more information about document target (revision, initid)
+     * @param array  $info         more information about document target (revision, initid)
+     *
      * @return bool|null|string
      */
-    public static function getRelationTitle($docid, $latest = true, Doc $doc, $docrevOption = "", array & $info = array())
-    {
-        $uid = getCurrentUser()->id; // index by uid in case of sudo
+    public static function getRelationTitle(
+        $docid,
+        $latest = true,
+        Doc $doc,
+        $docrevOption = "",
+        array & $info = array()
+    ) {
+        $uid = ContextManager::getCurrentUser()->id; // index by uid in case of sudo
         $isAdmin = ($uid == 1);
-        
+
         if ($docid && !is_numeric($docid)) {
             $docid = \Dcp\Core\DocManager::getIdFromName($docid);
         }
@@ -38,11 +51,11 @@ class DocTitle
             $docrevOption = $latest ? "latest" : "fixed";
         }
         $keyCache = intval($docid) . '-' . $docrevOption;
-        
+
         if (!isset(self::$relationCache[$uid][$keyCache])) {
             self::setRelationCache($doc, $uid);
         }
-        
+
         if (isset(self::$relationCache[$uid][$keyCache])) {
         } else {
             $keyCache = intval($docid) . '-' . $docrevOption;
@@ -62,11 +75,15 @@ class DocTitle
         $title = self::getTitle($docid, $latest, $docrevOption, $info);
         return $title;
     }
+
     /**
      * get all title and access of document's relations
+     *
      * @static
+     *
      * @param Doc $doc
      * @param int $uid user identifier
+     *
      * @return void
      */
     protected static function setRelationCache(Doc $doc, $uid)
@@ -111,23 +128,36 @@ class DocTitle
             if ($relid["latest"]) {
                 $latestId[] = $relid["docid"];
             } elseif ($relid["state"]) {
-                simpleQuery($doc->dbaccess, sprintf("select id from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc limit 1", $relid["docid"], pg_escape_string($relid["state"])), $stateId, true, true);
+                DbManager::query(
+                    sprintf(
+                        "select id from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc limit 1",
+                        $relid["docid"],
+                        pg_escape_string($relid["state"])
+                    ),
+                    $stateId,
+                    true,
+                    true
+                );
                 if ($stateId) {
                     $relationIds[$k]["rid"] = $stateId;
                 }
             }
         }
         if ($latestId) {
-            $sql = sprintf("select id,initid from docread where initid in (%s) and locked != -1", implode(',', $latestId));
+            $sql = sprintf(
+                "select id,initid from docread where initid in (%s) and locked != -1",
+                implode(',', $latestId)
+            );
             //$sql = sprintf("select id,initid from docread where initid in (select initid from docread where id in (%s)) and  locked != -1", implode(',', $getLatestId));
-            simpleQuery($doc->dbaccess, $sql, $result);
+            DbManager::query($sql, $result);
             $tInitid = array();
             foreach ($result as $aRow) {
                 $tInitid[$aRow["initid"]] = $aRow["id"];
             }
             foreach ($relationIds as $k => $relid) {
                 if ($relid["latest"]) {
-                    $relationIds[$k]["rid"] = empty($tInitid[$relid["docid"]]) ? $relid["docid"] : $tInitid[$relid["docid"]];
+                    $relationIds[$k]["rid"] = empty($tInitid[$relid["docid"]]) ? $relid["docid"]
+                        : $tInitid[$relid["docid"]];
                 } else {
                     if (!$relid["state"]) {
                         $relationIds[$k]["rid"] = $relid["docid"];
@@ -136,20 +166,24 @@ class DocTitle
             }
         }
         $realIds = array();
-        
+
         foreach ($relationIds as $relid) {
             if (!empty($relid["rid"])) {
                 $realIds[] = $relid["rid"];
             }
         }
         if ($realIds) {
-            $sql = sprintf("select id,initid,title,name,doctype,revision,icon,fromid,views && '%s' as canaccess from docread where id in (%s)", self::getUserVector(), implode(',', $realIds));
-            simpleQuery($doc->dbaccess, $sql, $result);
+            $sql = sprintf(
+                "select id,initid,title,name,doctype,revision,icon,fromid,views && '%s' as canaccess from docread where id in (%s)",
+                self::getUserVector(),
+                implode(',', $realIds)
+            );
+            DbManager::query($sql, $result);
             $accesses = array();
             foreach ($result as $access) {
                 $accesses[$access["id"]] = $access;
             }
-            
+
             foreach ($relationIds as $k => $relid) {
                 $rid = $relid["rid"];
                 if ($rid && isset($accesses[$rid])) {
@@ -175,30 +209,46 @@ class DocTitle
             self::$relationCache[$uid] = $relationIds;
         }
     }
+
     /**
      * Get title from database if not found in cache
-     * @param int $docid Document identifier
-     * @param bool $latest
+     *
+     * @param int    $docid Document identifier
+     * @param bool   $latest
      * @param string $docrevOption
-     * @param array $info
+     * @param array  $info
+     *
      * @return bool|null
      * @throws \Dcp\Db\Exception
      */
     public static function getTitle($docid, $latest = true, $docrevOption = "latest", array & $info = array())
     {
         if ($latest || $docrevOption === "latest") {
-            $sql = sprintf("select id,initid,title,revision,name,doctype,fromid,icon,views && '%s' as canaccess from docread where initid = %d and locked != -1", self::getUserVector(), $docid);
+            $sql = sprintf(
+                "select id,initid,title,revision,name,doctype,fromid,icon,views && '%s' as canaccess from docread where initid = %d and locked != -1",
+                self::getUserVector(),
+                $docid
+            );
         } else {
             if (preg_match('/^state\(([^\)]+)\)/', $docrevOption, $matches)) {
                 $revState = $matches[1];
-                $sql = sprintf("select id,initid,revision,title,name,doctype,fromid,icon,views && '%s' as canaccess from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc limit 1", self::getUserVector(), $docid, pg_escape_string($revState));
+                $sql = sprintf(
+                    "select id,initid,revision,title,name,doctype,fromid,icon,views && '%s' as canaccess from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc limit 1",
+                    self::getUserVector(),
+                    $docid,
+                    pg_escape_string($revState)
+                );
             } else {
-                $sql = sprintf("select id,initid,revision,title,name,doctype,fromid,icon,views && '%s' as canaccess from docread where id = %d", self::getUserVector(), $docid);
+                $sql = sprintf(
+                    "select id,initid,revision,title,name,doctype,fromid,icon,views && '%s' as canaccess from docread where id = %d",
+                    self::getUserVector(),
+                    $docid
+                );
             }
         }
-        simpleQuery('', $sql, $result, false, true);
+        DbManager::query($sql, $result, false, true);
         if ($result) {
-            $uid = getCurrentUser()->id;
+            $uid = ContextManager::getCurrentUser()->id;
             $keyCache = $result["id"] . '-' . intval($latest);
             self::$relationCache[$uid][$keyCache] = array(
                 "docid" => $result["id"],
@@ -211,8 +261,8 @@ class DocTitle
                 "icon" => $result["icon"],
                 "canaccess" => $result["canaccess"]
             );
-            
-            if ($result["canaccess"] === 't') {
+
+            if ($result["canaccess"] === 't' || $uid === "1") {
                 $info = $result;
                 return $result["title"];
             } else {
@@ -221,14 +271,16 @@ class DocTitle
         }
         return null;
     }
+
     /**
      * get user vector of current user
+     *
      * @static
      * @return string
      */
     private static function getUserVector()
     {
-        $uid = getCurrentUser()->id;
+        $uid = ContextManager::getCurrentUser()->id;
         if (!isset(self::$viewUserVector[$uid])) {
             self::$viewUserVector[$uid] = SearchDoc::getUserViewVector($uid);
         }
