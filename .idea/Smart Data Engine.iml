@@ -23,55 +23,5 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library name="PHP" type="php">
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/ide/vendor/composer" />
-          <root url="file://$MODULE_DIR$/ide/vendor/doctrine/annotations" />
-          <root url="file://$MODULE_DIR$/ide/vendor/doctrine/lexer" />
-          <root url="file://$MODULE_DIR$/ide/vendor/friendsofphp/php-cs-fixer" />
-          <root url="file://$MODULE_DIR$/ide/vendor/gecko-packages/gecko-php-unit" />
-          <root url="file://$MODULE_DIR$/ide/vendor/paragonie/random_compat" />
-          <root url="file://$MODULE_DIR$/ide/vendor/php-cs-fixer/diff" />
-          <root url="file://$MODULE_DIR$/ide/vendor/squizlabs/php_codesniffer" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/console" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/event-dispatcher" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/filesystem" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/finder" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/options-resolver" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/polyfill-mbstring" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/polyfill-php70" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/polyfill-php72" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/process" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/stopwatch" />
-          <root url="file://$MODULE_DIR$/../Te" />
-          <root url="file://$MODULE_DIR$/../Workflow" />
-          <root url="file://$MODULE_DIR$/../../Testing/PhpUnit" />
-        </CLASSES>
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/ide/vendor/composer" />
-          <root url="file://$MODULE_DIR$/ide/vendor/doctrine/annotations" />
-          <root url="file://$MODULE_DIR$/ide/vendor/doctrine/lexer" />
-          <root url="file://$MODULE_DIR$/ide/vendor/friendsofphp/php-cs-fixer" />
-          <root url="file://$MODULE_DIR$/ide/vendor/gecko-packages/gecko-php-unit" />
-          <root url="file://$MODULE_DIR$/ide/vendor/paragonie/random_compat" />
-          <root url="file://$MODULE_DIR$/ide/vendor/php-cs-fixer/diff" />
-          <root url="file://$MODULE_DIR$/ide/vendor/squizlabs/php_codesniffer" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/console" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/event-dispatcher" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/filesystem" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/finder" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/options-resolver" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/polyfill-mbstring" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/polyfill-php70" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/polyfill-php72" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/process" />
-          <root url="file://$MODULE_DIR$/ide/vendor/symfony/stopwatch" />
-          <root url="file://$MODULE_DIR$/../Te" />
-          <root url="file://$MODULE_DIR$/../Workflow" />
-          <root url="file://$MODULE_DIR$/../../Testing/PhpUnit" />
-        </SOURCES>
-      </library>
-    </orderEntry>
   </component>
 </module>

@@ -21,3 +21,4 @@ locale/*
 programs/*
 var/*
 vaultfs/*
+vendor/Anakeen/lib/vendor/composer/*

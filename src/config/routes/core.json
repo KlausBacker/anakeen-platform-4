@@ -1,0 +1,40 @@
+{
+  "accesses": {},
+  "routes": [
+    {
+      "priority": 100,
+      "callable": "\\Dcp\\Routes\\Document::get",
+      "methods": [
+        "get"
+      ],
+      "pattern": "/api/v2/documents/{docid}",
+      "description": "Get data for a document",
+      "name": "Core:GetDocumentData",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 100,
+      "callable": "\\Dcp\\Routes\\Document::put",
+      "methods": [
+        "put"
+      ],
+      "pattern": "/api/v2/documents/{docid}",
+      "description": "Modify data for a document",
+      "name": "Core:ModifyDocumentData",
+      "requiredAccesses": []
+    }
+  ],
+  "middlewares": [
+    {
+      "priority": 100,
+      "callable": "\\Dcp\\Routes\\Middleware\\Authent::Authenticate",
+      "methods": [
+        "get"
+      ],
+      "pattern": "/api/v2/documents/{middleDocid}",
+      "description": "Verify authentication",
+      "name": "Core:Middleware:Authent",
+      "requiredAccesses": []
+    }
+  ]
+}

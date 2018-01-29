@@ -8,3 +8,4 @@ ide/vendor/
 .idea/php.xml
 smart-data-engine*app
 .php_cs.cache
+.idea/*.iml"

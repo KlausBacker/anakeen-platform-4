@@ -18,3 +18,7 @@ Options -Indexes
         Header set X-UA-Compatible "IE=Edge"
 </FilesMatch>
 
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index4.php [QSA,L]
