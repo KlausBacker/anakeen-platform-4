@@ -6,6 +6,7 @@ class ContextManager
     /**
      * Control user has a good session
      * Complete AuthenticatorManager singleton
+     * @deprecated use \Dcp\Core\ContextManager::authent
      * @throws Api\Exception
      */
     public static function controlAuthent()
@@ -45,11 +46,7 @@ class ContextManager
     
     public static function initCoreApplication()
     {
-        $u=new \Account();
-
-        if (!empty($_SERVER['PHP_AUTH_USER'])) {
-            $u->setLoginName($_SERVER['PHP_AUTH_USER']);
-        }
+        $u=\Dcp\Core\ContextManager::authentUser();
 
         \Dcp\Core\ContextManager::initContext($u, "HTTPAPI_V1", "", \AuthenticatorManager::$session);
     }

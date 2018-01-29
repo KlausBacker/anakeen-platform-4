@@ -42,6 +42,7 @@ $app->add(
          * @var \Slim\Route $currentRoute
          */
         $currentRoute = $request->getAttribute("route");
+
         $sParser = new \FastRoute\RouteParser\Std;
         // print_r($currentRoute->getArguments());
 

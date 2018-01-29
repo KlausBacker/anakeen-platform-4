@@ -29,11 +29,22 @@
       "priority": 100,
       "callable": "\\Dcp\\Routes\\Middleware\\Authent::Authenticate",
       "methods": [
-        "get"
+        "any"
       ],
-      "pattern": "/api/v2/documents/{middleDocid}",
+      "pattern": "/api/v2",
       "description": "Verify authentication",
-      "name": "Core:Middleware:Authent",
+      "name": "Core:Middleware:ApiAuthent",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 100,
+      "callable": "\\Dcp\\Routes\\Middleware\\Authent::Authenticate",
+      "methods": [
+        "any"
+      ],
+      "pattern": "/app/v2",
+      "description": "Verify authentication",
+      "name": "Core:Middleware:AppAuthent",
       "requiredAccesses": []
     }
   ]

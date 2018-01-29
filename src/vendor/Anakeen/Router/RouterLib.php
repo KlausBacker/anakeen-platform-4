@@ -9,11 +9,19 @@ class RouterLib
 {
 
     /**
+     * @var RouterConfig
+     */
+    protected static $config = null;
+
+    /**
      * @return RouterConfig
      * @throws Exception
      */
     public static function getRouterConfig()
     {
+        if (self::$config) {
+            return self::$config;
+        }
 
         $dir = ContextManager::getRootDirectory() . "/" . \Dcp\Core\Settings::RouterConfigDir;
         if ($handle = opendir($dir)) {
@@ -28,17 +36,39 @@ class RouterLib
                         throw new Exception("CORE0019", $dir . "/" . $entry);
                     }
                     $config = array_merge_recursive($config, $conf);
-
                 }
             }
 
 
             closedir($handle);
 
-            return json_decode(json_encode($config));
+            self::$config = json_decode(json_encode($config));
+            return self::$config;
         } else {
             throw new Exception("CORE0020", $dir);
         }
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return RouterInfo|null
+     * @throws Exception
+     */
+    public static function getRouteInfo($name)
+    {
+        $config = self::getRouterConfig();
+        foreach ($config->routes as $route) {
+            if ($route->name === $name) {
+                $vars = get_object_vars($route);
+                $info = new RouterInfo();
+                foreach ($vars as $k => $v) {
+                    $info->$k = $v;
+                }
+                return $info;
+            }
+        }
+        return null;
     }
 
     public static function parseInfoToRegExp(array $parseInfos)
@@ -86,4 +116,5 @@ class RouterInfo
     public $description;
     public $name;
     public $methods = [];
+    public $authenticated = true;
 }

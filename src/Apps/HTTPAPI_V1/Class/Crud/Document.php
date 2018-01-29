@@ -108,7 +108,6 @@ class Document extends Crud
         }
         
         $newValues = $this->contentParameters;
-
         foreach ($newValues as $aid => $value) {
             try {
                 if ($value === null or $value === '') {
@@ -545,7 +544,7 @@ class Document extends Crud
         $result = array();
         $sql = sprintf("select id, revdate, views from docread where id = %d", $id);
         DbManager::query($sql, $result, false, true);
-        $user = getCurrentUser();
+        $user = \Dcp\Core\ContextManager::getCurrentUser();
         $result[] = $user->id;
         $result[] = $user->memberof;
         // Necessary only when use family.structure

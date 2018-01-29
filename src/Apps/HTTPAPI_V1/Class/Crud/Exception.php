@@ -406,7 +406,7 @@ namespace Dcp\HttpApi\V1\Crud {
          */
         public function getHttpStatus()
         {
-            return $this->httpStatus;
+            return (int)$this->httpStatus;
         }
 
         /**

@@ -1,58 +1,55 @@
 <?php
 
 namespace Dcp\Routes;
+
+use Dcp\Exception;
+use Dcp\HttpApi\V1\Api\RecordReturnMessage;
+use Dcp\HttpApi\V1\Crud\Response;
+
 class Document
 {
 
     /**
-     * @param \Slim\Http\request $request
+     * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
-     * @param $args
+     * @param                     $args
+     *
      * @return \Slim\Http\response
      */
-    public static function get(\Slim\Http\request $request, \Slim\Http\response $response, $args): \Slim\Http\response
+    public static function get(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-
         error_log(__METHOD__);
- return $response->withJson(["success"=>$args["docid"]]);
-        // $response->write("Doc Yo");
         $docid = $args["docid"];
-        //  $response = $response->withJson($this->read($docid), 200);
 
-        $mb = microtime(true);
-        $crudDocument = new \Dcp\HttpApi\V1\Crud\Document();
+        $crudCall=function (&$crudObject) use ($docid) {
+            $crudObject = new \Dcp\HttpApi\V1\Crud\Document();
+            Response::initRequest($crudObject);
+            return $crudObject->read($docid);
+        };
 
-        $docData = $crudDocument->read($docid);
+        $response = Response::withCrud($request, $response, $crudCall);
 
-        $data = ["data" => $docData,
-            "duration" => sprintf("%.04f", microtime(true) - $mb)];
-
-
-        return $response->withJson($data);
+        return $response;
     }
 
     /**
-     * @param \Slim\Http\request $request
+     * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
-     * @param $args
+     * @param                     $args
+     *
      * @return \Slim\Http\response
      */
-    public static function put(\Slim\Http\request $request, \Slim\Http\response $response, $args): \Slim\Http\response
+    public static function put(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-
-        // $response->write("Doc Yo");
         $docid = $args["docid"];
-        //  $response = $response->withJson($this->read($docid), 200);
 
-        $mb = microtime(true);
-        $crudDocument = new Crud\Document();
+        $crudCall=function (&$crudObject) use ($docid) {
+            $crudObject = new \Dcp\HttpApi\V1\Crud\Document();
+            Response::initRequest($crudObject);
+            return $crudObject->update($docid);
+        };
 
-        $docData = $crudDocument->update($docid);
-
-        $data = ["data" => $docData,
-            "duration" => sprintf("%.04f", microtime(true) - $mb)];
-
-
-        return $response->withJson($data);
+        $response = Response::withCrud($request, $response, $crudCall);
+        return $response;
     }
 }

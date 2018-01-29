@@ -66,7 +66,6 @@ class Router
         if (isset($identifiedCrud["standalone"]) && $identifiedCrud["standalone"] === true) {
             $crud->setControlAcl(false);
         } else {
-            \Dcp\HttpApi\V1\ContextManager::controlAuthent();
             \Dcp\HttpApi\V1\ContextManager::initCoreApplication();
         }
         
@@ -300,6 +299,7 @@ class Router
     protected static function getJSONAttributeValues(Crud $crudElement)
     {
         $body = file_get_contents("php://input");
+
         return $crudElement->analyseJSON($body);
     }
     /**
