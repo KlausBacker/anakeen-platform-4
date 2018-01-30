@@ -9,7 +9,7 @@
       ],
       "pattern": "/api/v2/documents/{docid}",
       "description": "Get data for a document",
-      "name": "Core:GetDocumentData",
+      "name": "Core:GetDocument",
       "requiredAccesses": []
     },
     {
@@ -20,7 +20,29 @@
       ],
       "pattern": "/api/v2/documents/{docid}",
       "description": "Modify data for a document",
-      "name": "Core:ModifyDocumentData",
+      "name": "Core:ModifyDocument",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 100,
+      "callable": "\\Dcp\\Routes\\Document::delete",
+      "methods": [
+        "delete"
+      ],
+      "pattern": "/api/v2/documents/{docid}",
+      "description": "Delete document (put in trash)",
+      "name": "Core:DeleteDocument",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 100,
+      "callable": "\\Dcp\\Routes\\DocumentList",
+      "methods": [
+        "get"
+      ],
+      "pattern": "/api/v2/documents/",
+      "description": "List all documents",
+      "name": "Core:ListDocuments",
       "requiredAccesses": []
     }
   ],

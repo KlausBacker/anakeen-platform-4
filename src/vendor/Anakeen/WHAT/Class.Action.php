@@ -717,30 +717,16 @@ create sequence SEQ_ID_ACTION;
             $useHtml = ((!empty($accept) && preg_match("@\\btext/html\\b@", $accept)));
 
             if ($useHtml) {
-                $this->lay = new Layout("CORE/Layout/error.xml", $this);
-                $this->lay->set("TITLE", _("Error"));
-                header('Warning: ' . strtok($texterr, "\n"));
-                $texterr = cleanhtmljs(\Dcp\Utils\htmlclean::normalizeHTMLFragment(nl2br($texterr)));
-                $this->lay->set("error", str_replace("[", "&#x5b;", $texterr));
-                $this->lay->set("serror",
-                    str_replace("[", "\\u005b", json_encode($texterr, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP)));
-                $this->lay->set("appname", (empty($this->parent)) ? '' : $this->parent->name);
-                $this->lay->set("appact", $this->name);
-                $this->lay->eset("code", $code ? "[$code]" : "");
-
-                print $this->lay->gen();
+                $tooltip= sprintf("%s/%s", (empty($this->parent)) ? '' : $this->parent->name, $this->name);
+                print \Dcp\Core\Utils\ErrorMessage::getHtml($texterr, $code, $tooltip);
             } else {
-                if ($code) {
-                    $texterr = sprintf("[%s] %s", $code, $texterr);
-                }
                 $useJSON = ((!empty($accept) && preg_match("@\\bapplication/json\\b@", $accept)));
-
                 if ($useJSON) {
                     header('Content-Type: application/json');
-                    $error = ["success" => false, "exceptionMessage" => $texterr];
-                    print json_encode($error);
+                    print \Dcp\Core\Utils\ErrorMessage::getJson($texterr, $code);
                 } else {
-                    print $texterr;
+                    header('Content-Type: text/plain');
+                    print \Dcp\Core\Utils\ErrorMessage::getText($texterr, $code);
                 }
             }
             if ($exit) {

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <LINK REL="icon" HREF="[DYNACASE_FAVICO]"/>
+    <LINK REL="SHORTCUT ICON" HREF="[DYNACASE_FAVICO]"/>
+    <title>[title]</title>
+
+    <style type="text/css">
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: sans-serif;
+            margin: 0;
+        }
+
+        .text-error {
+            width: 80%;
+            text-align: left;
+            font-weight: bold;
+            word-break: break-word;
+        }
+
+        .container-error {
+            background: #c78393;
+            color: white;
+            margin: 0;
+            border: none;
+            padding: 2rem 1rem;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container-error">
+    <div id="ankError" class="section-error" [IF tooltip]title="[tooltip]" [ENDIF tooltip]>
+        <h1 class="text-error">[title].</h1>
+        <p><i>HTTP Method <b>[method]</b> not allowed. Must be one of: [methods].</i></p>
+    </div>
+
+
+</div>
+</body>
+</html>

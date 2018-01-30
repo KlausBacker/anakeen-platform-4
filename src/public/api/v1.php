@@ -83,13 +83,18 @@ try {
     } else {
         throw new \Dcp\HttpApi\V1\Api\Exception("Unable to read custom logger, you should check the custom logger conf.");
     }
+    /**
+     * @return \Dcp\HttpApi\V1\Api\RecordReturnMessage
+     */
     $defaultPageMessage = function () {
         $coreURL = \ApplicationParameterManager::getScopedParameterValue("CORE_URLINDEX");
         $defaultURL = $coreURL . \Dcp\HttpApi\V1\Api\Router::getHttpApiParameter("DEFAULT_PAGE");
         $message = new Dcp\HttpApi\V1\Api\RecordReturnMessage();
         $message->contentText = sprintf("You can consult %s to have info on the API", $defaultURL);
-        $message->contentHtml = sprintf('You can consult <a href="%s">the REST page</a> to have info on the API',
-            $defaultURL);
+        $message->contentHtml = sprintf(
+            'You can consult <a href="%s">the REST page</a> to have info on the API',
+            $defaultURL
+        );
         $message->type = Dcp\HttpApi\V1\Api\RecordReturnMessage::DEBUG;
         return $message;
     };
@@ -141,7 +146,7 @@ catch (Dcp\HttpApi\V1\Etag\Exception $exception) {
     return;
 } catch (Dcp\HttpApi\V1\Crud\Exception $exception) {
     $return->setHttpStatusCode($exception->getHttpStatus(), $exception->getHttpMessage());
-    $return->exceptionMessage = $exceptionMsg;
+    $return->exceptionMessage = $exception->getDcpMessage();
     $return->success = false;
 
     $message = new Dcp\HttpApi\V1\Api\RecordReturnMessage();

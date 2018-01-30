@@ -66,6 +66,7 @@ $action_desc = array(
     ),
     array(
         "name" => "ERROR",
+        "layout" => "error.html"
     ),
     array(
         "name" => "LOGOUT",

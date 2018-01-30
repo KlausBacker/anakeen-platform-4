@@ -52,4 +52,25 @@ class Document
         $response = Response::withCrud($request, $response, $crudCall);
         return $response;
     }
+
+    /**
+     * @param \Slim\Http\request  $request
+     * @param \Slim\Http\response $response
+     * @param                     $args
+     *
+     * @return \Slim\Http\response
+     */
+    public static function delete(\Slim\Http\request $request, \Slim\Http\response $response, $args)
+    {
+        $docid = $args["docid"];
+
+        $crudCall=function (&$crudObject) use ($docid) {
+            $crudObject = new \Dcp\HttpApi\V1\Crud\Document();
+            Response::initRequest($crudObject);
+            return $crudObject->delete($docid);
+        };
+
+        $response = Response::withCrud($request, $response, $crudCall);
+        return $response;
+    }
 }

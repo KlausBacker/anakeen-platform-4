@@ -33,7 +33,7 @@ class Response
                 "messages" => $crudObject->getMessages()
             ];
         } catch (\Dcp\HttpApi\V1\Crud\Exception $exception) {
-            $exceptionMsg = \Dcp\Core\LogException::getMessage($exception, $errId);
+            $exceptionMsg = \Dcp\Core\LogException::logMessage($exception, $errId);
             $response = $response->withStatus($exception->getHttpStatus(), $exception->getHttpMessage());
 
             $message = new \Dcp\HttpApi\V1\Api\RecordReturnMessage();
@@ -56,7 +56,7 @@ class Response
                 "messages" => [$message]
             ];
         } catch (\Dcp\HttpApi\V1\Api\Exception $exception) {
-            $exceptionMsg = \Dcp\Core\LogException::getMessage($exception, $errId);
+            $exceptionMsg = \Dcp\Core\LogException::logMessage($exception, $errId);
             $response = $response->withStatus($exception->getHttpStatus(), $exception->getHttpMessage());
             $message = new \Dcp\HttpApi\V1\Api\RecordReturnMessage();
             $message->contentText = $exception->getUserMessage();
@@ -78,7 +78,7 @@ class Response
                 "messages" => [$message]
             ];
         } catch (\Dcp\Exception $exception) {
-            $exceptionMsg = \Dcp\Core\LogException::getMessage($exception, $errId);
+            $exceptionMsg = \Dcp\Core\LogException::logMessage($exception, $errId);
 
             $response = $response->withStatus(400, "Anakeen Exception");
 
@@ -94,7 +94,7 @@ class Response
                 "messages" => [$message]
             ];
         } catch (\Exception $exception) {
-            $exceptionMsg = \Dcp\Core\LogException::getMessage($exception, $errId);
+            $exceptionMsg = \Dcp\Core\LogException::logMessage($exception, $errId);
             $response = $response->withStatus(400, "Exception");
 
             $message = new \Dcp\HttpApi\V1\Api\RecordReturnMessage();

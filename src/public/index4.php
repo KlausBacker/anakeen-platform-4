@@ -11,7 +11,6 @@ require_once('WHAT/autoload.php');
 register_shutdown_function('handleFatalShutdown');
 set_exception_handler('handleActionException');
 
-
 // To add other path
 // @TODO inspect config autoload path
 $loader->addPsr4('Dcp\\', __DIR__ . '/../vendor/Anakeen/');
@@ -30,6 +29,26 @@ $routes = $routeConfig->routes;
 $middleWares = $routeConfig->middlewares;
 $app = new \Slim\App($config);
 
+
+$c = $app->getContainer();
+
+$c['phpErrorHandler'] = function ($c) {
+    return new \Dcp\Router\ErrorHandler();
+};
+
+$c['errorHandler'] = function ($c) {
+    return new \Dcp\Router\ErrorHandler();
+};
+$c['notFoundHandler'] = function ($c) {
+    return function ($request, $response) use ($c) {
+        return \Dcp\Router\NotHandler::notFound($request, $c["response"]);
+    };
+};
+$c['notAllowedHandler'] = function ($c) {
+    return function ($request, $response, $methods) use ($c) {
+        return \Dcp\Router\NotHandler::notAllowed($request, $c["response"], $methods);
+    };
+};
 foreach ($routes as $route) {
     $app->map($route->methods, $route->pattern, $route->callable)->setName($route->name);
 }
@@ -37,55 +56,55 @@ foreach ($routes as $route) {
 $app->add(
     function (\Slim\Http\request $request, \Slim\Http\response $response, $next) use ($middleWares) {
 
-        error_log("GLOBAL YEAH FIRST");
         /**
          * @var \Slim\Route $currentRoute
          */
         $currentRoute = $request->getAttribute("route");
 
-        $sParser = new \FastRoute\RouteParser\Std;
-        // print_r($currentRoute->getArguments());
+        if ($currentRoute) {
+            $sParser = new \FastRoute\RouteParser\Std;
+            // print_r($currentRoute->getArguments());
 
-        error_log($currentRoute->getPattern());
-        error_log(print_r($currentRoute->getMethods(), true));
+            error_log($request->getMethod()." ".$currentRoute->getPattern());
 
-        $uri = $request->getUri()->getPath();
-        foreach ($middleWares as $middleWare) {
-            $pattern = $middleWare->pattern;
-            $patternInfos = $sParser->parse($pattern);
+            $uri = $request->getUri()->getPath();
+            foreach ($middleWares as $middleWare) {
+                $pattern = $middleWare->pattern;
+                $patternInfos = $sParser->parse($pattern);
 
-            $regExps = \Dcp\Router\RouterLib::parseInfoToRegExp($patternInfos);
+                $regExps = \Dcp\Router\RouterLib::parseInfoToRegExp($patternInfos);
 
-            foreach ($regExps as $regExp) {
-                if (preg_match($regExp, $uri, $matches)) {
-                    error_log("Add Middleware : " . $middleWare->name);
+                foreach ($regExps as $regExp) {
+                    if (preg_match($regExp, $uri, $matches)) {
+                        error_log("Add Middleware : " . $middleWare->name);
 
-                    foreach ($matches as $k => $v) {
-                        if (is_numeric($k)) {
-                            unset($matches[$k]);
+                        foreach ($matches as $k => $v) {
+                            if (is_numeric($k)) {
+                                unset($matches[$k]);
+                            }
                         }
+
+                        $currentRoute->add(function ($request, $response, $next) use ($middleWare, $matches) {
+                            error_log("Before Exec " . $middleWare->name);
+                            $callMiddleWare = $middleWare->callable;
+
+
+                            if (!is_callable($callMiddleWare)) {
+                                throw new \Dcp\Exception(
+                                    sprintf(
+                                        "Middleware \"%s\" not callable : \"%s\"",
+                                        $middleWare->name,
+                                        $middleWare->callable
+                                    )
+                                );
+                            }
+
+                            $response = $callMiddleWare($request, $response, $next, $matches);
+
+                            error_log("After Exec" . $middleWare->name);
+                            return $response;
+                        });
                     }
-
-                    $currentRoute->add(function ($request, $response, $next) use ($middleWare, $matches) {
-                        error_log("Before Exec " . $middleWare->name);
-                        $callMiddleWare = $middleWare->callable;
-
-
-                        if (!is_callable($callMiddleWare)) {
-                            throw new \Dcp\Exception(
-                                sprintf(
-                                    "Middleware \"%s\" not callable : \"%s\"",
-                                    $middleWare->name,
-                                    $middleWare->callable
-                                )
-                            );
-                        }
-
-                        $response = $callMiddleWare($request, $response, $next, $matches);
-
-                        error_log("After Exec" . $middleWare->name);
-                        return $response;
-                    });
                 }
             }
         }
@@ -95,7 +114,6 @@ $app->add(
         return $response;
     }
 );
-
 
 
 // Define app routes
