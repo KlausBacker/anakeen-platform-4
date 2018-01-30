@@ -30,10 +30,10 @@ define("GADMIN_ID", 4);
  */
 class Account extends DbObj
 {
-    const ANONYMOUS_ID = "3";
-    const GALL_ID = "2";
-    const GADMIN_ID = "4";
-    const ADMIN_ID="1";
+    const ANONYMOUS_ID = 3;
+    const GALL_ID = 2;
+    const GADMIN_ID = 4;
+    const ADMIN_ID=1;
     
     const USER_TYPE = "U";
     const GROUP_TYPE = "G";
