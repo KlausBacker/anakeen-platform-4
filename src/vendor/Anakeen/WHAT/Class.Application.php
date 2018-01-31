@@ -844,7 +844,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         if ($this->hasParent()) {
             return $this->parent->isInAdminMode();
         }
-        return $this->adminMode === true || $this->user->id == 1;
+        return $this->adminMode === true || $this->user->id == Account::ADMIN_ID;
     }
     /**
      * Test permission for current user in current application

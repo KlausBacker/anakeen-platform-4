@@ -98,7 +98,7 @@ class Account extends DbObj
     
     public $dbtable = "users";
     
-    public $order_by = "lastname, isgroup desc";
+    public $order_by = "lastname, accounttype";
     
     public $fulltextfields = array(
         "login",
@@ -290,6 +290,9 @@ create sequence seq_id_users start 10;";
                 $this->accounttype = self::GROUP_TYPE;
             }
             $this->password = '-'; // no passwd for group,role
+            if ($this->accounttype === self::GROUP_TYPE) {
+                $this->isgroup = "Y";
+            }
         } else {
             $this->isgroup = "N";
         }
@@ -544,7 +547,6 @@ create sequence seq_id_users start 10;";
         $this->mail = $this->getMail();
         $this->fid = $fid;
         if (!$this->isAffected()) {
-            $this->isgroup = "Y";
             $this->accounttype = self::GROUP_TYPE;
             $err = $this->Add();
         } else {
@@ -733,41 +735,51 @@ union
     public function PostInit()
     {
         $group = new group($this->dbaccess);
+
+        $userAdmin=new Account($this->dbaccess);
         // Create admin user
-        $this->id = 1;
-        $this->lastname = "Master";
-        $this->firstname = "Dynacase Platform";
-        
-        $this->password_new = "anakeen";
-        $this->login = "admin";
-        $this->Add(true);
-        $group->iduser = $this->id;
+        $userAdmin->id = Account::ADMIN_ID;
+        $userAdmin->lastname = "Master";
+        $userAdmin->firstname = "Dynacase Platform";
+        $userAdmin->password_new = "anakeen";
+        $userAdmin->login = "admin";
+        $userAdmin->Add(true);
+
+        $group->iduser = $userAdmin->id;
+
         // Create default group
-        $this->id = Account::GALL_ID;
-        $this->lastname = "Utilisateurs";
-        $this->firstname = "";
-        $this->login = "all";
-        $this->isgroup = "Y";
-        $this->accounttype = self::GROUP_TYPE;
-        $this->Add(true);
-        $group->idgroup = $this->id;
+
+        $groupAll=new Account($this->dbaccess);
+        $groupAll->id = Account::GALL_ID;
+        $groupAll->lastname = "Utilisateurs";
+        $groupAll->firstname = "";
+        $groupAll->login = "all";
+        $groupAll->accounttype = self::GROUP_TYPE;
+        $groupAll->Add(true);
+
+        $group->idgroup = $groupAll->id;
         $group->Add(true);
+
         // Create anonymous user
-        $this->id = Account::ANONYMOUS_ID;
-        $this->lastname = "anonymous";
-        $this->firstname = "guest";
-        $this->login = "anonymous";
-        $this->isgroup = "N";
-        $this->accounttype = self::USER_TYPE;
-        $this->Add(true);
+
+        $anonymousUser=new Account($this->dbaccess);
+        $anonymousUser->id = Account::ANONYMOUS_ID;
+        $anonymousUser->lastname = "anonymous";
+        $anonymousUser->firstname = "guest";
+        $anonymousUser->login = "anonymous";
+        $anonymousUser->password = "-";
+        $anonymousUser->accounttype = self::USER_TYPE;
+        $anonymousUser->Add(true);
+
         // Create admin group
-        $this->id = Account::GADMIN_ID;
-        $this->lastname = "Administrateurs";
-        $this->firstname = "";
-        $this->login = "gadmin";
-        $this->isgroup = "Y";
-        $this->accounttype = self::GROUP_TYPE;
-        $this->Add(true);
+
+        $groupAdmin=new Account($this->dbaccess);
+        $groupAdmin->id = Account::GADMIN_ID;
+        $groupAdmin->lastname = "Administrateurs";
+        $groupAdmin->firstname = "";
+        $groupAdmin->login = "gadmin";
+        $groupAdmin->accounttype = self::GROUP_TYPE;
+        $groupAdmin->Add(true);
         $group->idgroup = Account::GALL_ID;
         $group->iduser = Account::GADMIN_ID;
         $group->Add(true);
@@ -878,7 +890,7 @@ union
         if ($query->nb > 0) {
             foreach ($list as $k => $v) {
                 $uid[$v["id"]] = $v;
-                if ($v["isgroup"] == "Y") {
+                if ($v["accounttype"] === "G") {
                     if (!in_array($v["id"], $r)) {
                         array_push($r, $v["id"]);
                         $uid+= $this->GetRUsersList($v["id"], $r);

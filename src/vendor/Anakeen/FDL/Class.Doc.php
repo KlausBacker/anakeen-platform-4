@@ -1535,7 +1535,7 @@ create unique index i_docir on doc(initid, revision);";
             );
             return ($err);
         }
-        if ($this->userid == 1) {
+        if ($this->userid == Account::ADMIN_ID) {
             return "";
         } // admin can do anything but not modify fixed doc
         if ($verifyDomain && ($this->lockdomainid > 0)) {
@@ -1606,7 +1606,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function canUnLockFile()
     {
-        if ($this->userid == 1) {
+        if ($this->userid == Account::ADMIN_ID) {
             return "";
         } // admin can do anything
         $err = "";
@@ -7978,7 +7978,7 @@ create unique index i_docir on doc(initid, revision);";
         if (!$this->isAffected()) {
             return '';
         }
-        if (($this->profid <= 0) || ($this->userid == 1)) {
+        if (($this->profid <= 0) || ($this->userid == Account::ADMIN_ID)) {
             return ""; // no profil or admin
         }
         $err = $this->controlId($this->profid, $aclname, $strict);
@@ -8020,7 +8020,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         // --------------------------------------------------------------------
         if ($this->IsAffected()) {
-            if (($this->profid <= 0) || ($uid == 1)) {
+            if (($this->profid <= 0) || ($uid == Account::ADMIN_ID)) {
                 return "";
             } // no profil or admin
             if (!$uid) {
