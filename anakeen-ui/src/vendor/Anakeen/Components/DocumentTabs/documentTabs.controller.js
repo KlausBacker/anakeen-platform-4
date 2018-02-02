@@ -286,6 +286,7 @@ export default {
                 documentComponent.on('actionClick', e => this.privateScope.onDocumentActionClick(e, index));
                 documentComponent.on('afterSave', e => this.privateScope.onDocumentAfterSave(e, index));
                 documentComponent.on('afterDelete', e => this.privateScope.onDocumentAfterDelete(e, index));
+                documentComponent.on('successTransition', e => this.privateScope.onSuccessTransition(e, index))
             },
 
             onModelAddItem: (event) => {
@@ -458,7 +459,14 @@ export default {
 
                 if (tabPosition !== undefined) {
                     this.$(this.tabstrip.items()[tabPosition])
-                        .find('a.tab__document__header__content').prop('href', readyEvent.detail[1].url);
+                        .find('a.tab__document__header__content')
+                        .prop('href', readyEvent.detail[1].url);
+                    this.$(this.tabstrip.items()[tabPosition])
+                        .find('a.tab__document__header__content .tab__document__title')
+                        .text(readyEvent.detail[1].title);
+                    this.$(this.tabstrip.items()[tabPosition])
+                        .find('a.tab__document__header__content .tab__document__icon')
+                        .replaceWith(`<img class="tab__document__icon" src="${readyEvent.detail[1].icon}" />`);
                 }
 
                 const lazyIndex = this.privateScope.getLazyTabIndex();
@@ -490,6 +498,10 @@ export default {
 
             onDocumentAfterDelete: (e, tabPosition) => {
                 this.$emit('document-deleted', e.detail);
+            },
+
+            onSuccessTransition: (e, tabPosition) => {
+                this.$emit('document-success-transition', e.detail);
             },
         };
     },
