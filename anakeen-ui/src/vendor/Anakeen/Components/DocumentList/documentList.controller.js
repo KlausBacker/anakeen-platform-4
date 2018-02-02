@@ -18,6 +18,10 @@ export default {
             type: String,
             default: 'documentsList/<familyId>',
         },
+        order: {
+            type: String,
+            default: 'title:asc',
+        },
     },
 
     created() {
@@ -40,13 +44,13 @@ export default {
                                     page: options.data.page,
                                     offset: (options.data.page - 1) * options.data.take,
                                     slice: options.data.take,
+                                    orderBy: this.orderBy,
                                 };
                                 if (this.filterInput) {
                                     params.filter = this.filterInput;
                                 }
 
                                 const request = this.contentUrl.replace('<familyId>', options.data.collection);
-
                                 _this.privateScope
                                     .sendGetRequest(request,
                                         {
@@ -167,8 +171,9 @@ export default {
 
             if (this.smartStructureName) {
                 this.setCollection({
+                    id: this.smartStructureName,
                     initid: this.smartStructureName,
-                    html_label: this.label,
+                    title: this.label,
                     ref: this.smartStructureName,
                 });
             }
@@ -189,6 +194,7 @@ export default {
             appConfig: null,
             dataSource: null,
             filterInput: '',
+            orderBy: this.order,
             pageSizeOptions: [
                 {
                     text: '5',
@@ -230,8 +236,8 @@ export default {
         },
 
         collectionLabel() {
-            if (this.collection && this.collection.html_label) {
-                return this.collection.html_label;
+            if (this.collection && this.collection.title) {
+                return this.collection.title;
             } else if (this.label) {
                 return this.label;
             } else {
@@ -264,18 +270,24 @@ export default {
             });
         },
 
-        setCollection(c) {
+        setCollection(c, opts = null) {
             this.collection = c;
+            if (opts && opts.order) {
+                this.orderBy = opts.order;
+            } else {
+                this.orderBy = 'title:asc';
+            }
+
             this.dataSource.page(1);
             this.refreshDocumentsList().then().catch((err) => {
                 console.error(err);
             });
         },
 
-        refreshDocumentsList() {
+        refreshDocumentsList(opts = {}) {
             return new Promise((resolve, reject) => {
                 if (this.collection && this.dataSource) {
-                    this.dataSource.read({ collection: this.collection.initid })
+                    this.dataSource.read({ collection: this.collection.name })
                         .then(resolve).catch(reject);
                 } else {
                     reject();

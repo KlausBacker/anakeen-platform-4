@@ -9,6 +9,7 @@
 namespace Anakeen\Routes\DocumentsList;
 
 use Dcp\HttpApi\V1\Crud\DocumentCollection;
+use Dcp\HttpApi\V1\Crud\DocumentUtils;
 use Dcp\HttpApi\V1\DocManager\DocManager;
 use Dcp\Core\ContextManager;
 use Dcp\HttpApi\V1\Api\Exception;
@@ -128,6 +129,22 @@ class DocumentsList extends DocumentCollection
         }
 
     }
+
+    protected function extractOrderBy()
+    {
+        $orderBy = isset($this->contentParameters["orderBy"]) ? $this->contentParameters["orderBy"] : "title:asc";
+        if ($this->_familyDoc) {
+            return DocumentUtils::extractOrderBy($orderBy, $this->_familyDoc);
+
+        } else if ($this->_collectionDoc) {
+            $familyOfCollectionId = $this->_collectionDoc->getValue("se_famid");
+            if (isset($familyOfCollectionId)) {
+                return DocumentUtils::extractOrderBy($orderBy, DocManager::getFamily($familyOfCollectionId));
+            }
+        }
+
+    }
+
     protected function getPaginationState()
     {
         return ["page" => intval($this->contentParameters['page']) , "slice" => intval($this->contentParameters['slice']) , "total_entries" => $this->_searchDoc->onlyCount() ];
