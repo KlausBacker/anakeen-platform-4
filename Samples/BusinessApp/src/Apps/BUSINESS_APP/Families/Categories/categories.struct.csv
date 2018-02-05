@@ -1,9 +1,0 @@
-//BEGIN;"Parent family";"Family title";;;"Family name"
-BEGIN;;;;;BA_CATEGORIES
-//ATTR;Id;Parent;Label;isTitle;isAbstract;Type;Order;Visibility;Needed;Link;PhpFile;PhpFunc;Elink;Constraint;Options
-ATTR;cat_fr_ident;;Catégories;N;N;frame;::auto;W;N;;;;;;
-ATTR;cat_t_categories;cat_fr_ident;Catégories;N;N;array;::auto;W;N;;;;;;
-ATTR;cat_name;cat_t_categories;Nom;N;N;text;::auto;W;N;;;;;;
-ATTR;cat_max;cat_t_categories;"Montant Maximum";N;N;money;::auto;W;N;;;;;;
-ATTR;cat_period;cat_t_categories;Période;N;N;enum;::auto;W;N;;;1|Annuel,2|Mensuel,3|Journalier;;;
-END;;;;;
