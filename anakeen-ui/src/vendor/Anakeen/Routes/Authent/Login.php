@@ -59,7 +59,10 @@ class Login extends Crud
         $session->set();
         $session->register('username', $login);
         if ($language) {
-            \Dcp\HttpApi\V1\ContextManager::initCoreApplication();
+            $u=new \Account();
+            $u->setLoginName($login);
+
+            \Dcp\Core\ContextManager::initContext($u, "HTTPAPI_V1", "", \AuthenticatorManager::$session);
             \ApplicationParameterManager::setUserParameterValue("CORE", "CORE_LANG",$language );
         }
 
