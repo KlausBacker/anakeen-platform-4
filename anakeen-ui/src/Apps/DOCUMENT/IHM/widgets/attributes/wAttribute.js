@@ -124,7 +124,7 @@
                             placement: "bottom",
                             html: true,
                             animation: false,
-                            container: scope.element.parent(), //".dcpDocument",// no use scope.element because when item is in the bottom of the page a scrollbar can appear
+                            container: scope.element.parent().get(0), //".dcpDocument",// no use scope.element because when item is in the bottom of the page a scrollbar can appear
                             title: function wAttributeSetErrorTitle()
                             {
                                 var rawMessage = $('<div/>').text(indexMessage.message).html();
@@ -611,7 +611,7 @@
                     var attrValue = currentWidget.getValue();
                     return Mustache.render(title || "", attrValue);
                 },
-                container: this.element.closest(".row")
+                container: this.element.closest(".row").get(0)
             });
 
             return this;
