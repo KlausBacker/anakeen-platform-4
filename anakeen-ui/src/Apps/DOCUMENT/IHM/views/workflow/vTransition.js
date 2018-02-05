@@ -308,6 +308,8 @@ define([
         {
             var event = {prevent: false}, currentView = this, saveXhr;
             this.model.trigger("beforeChangeState", event);
+            this.$el.find(".dcpTransition-button-ok").tooltip("hide");
+
 
             if (event.prevent === false) {
                 saveXhr = this.model.save();

@@ -133,6 +133,9 @@ define([
                     if (!_.isObject(singleValue) || _.isUndefined(singleValue.value)) {
                         throw new Error("Each values must be an object with at least value properties");
                     }
+                    if ( _.isUndefined(singleValue.displayValue)) {
+                        singleValue.displayValue=(singleValue.value!==null)?String(singleValue.value):"";
+                    }
                 });
             } else {
                 if (!_.isObject(value) || _.isUndefined(value.value) || _.isUndefined(value.index) || value.index === null) {
@@ -150,7 +153,7 @@ define([
                     }
                     value = value.value;
                 } else {
-                    value = _.defaults(value, {displayValue: value.value});
+                    value = _.defaults(value, {displayValue: (value.value!==null)?String(value.value):""});
                 }
 
                 currentValue = this._attributeModel.get("attributeValue").slice();
@@ -163,7 +166,7 @@ define([
                 throw new Error("Value must be an object with at least value properties");
             }
 
-            value = _.defaults(value, {displayValue: value.value});
+            value = _.defaults(value, {displayValue: (value.value!==null)?String(value.value):""});
         }
         if (!dryRun) {
             this._attributeModel.set("attributeValue", value);

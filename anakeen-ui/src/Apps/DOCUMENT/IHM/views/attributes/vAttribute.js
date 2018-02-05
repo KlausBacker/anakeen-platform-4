@@ -211,20 +211,22 @@ define([
             if (this.model.isInArray()) {
                 // adjust line number to column length
                 arrayWrapper = this.$el;
-                arrayWrapper.dcpArray("setLines", values.length, options).then(_.bind(function setValue() {
+                arrayWrapper.dcpArray("setLines", values.length, options).then(_.bind(function vAttributeDrawValue() {
                     values = _.toArray(values);
-                    _.each(values, function analyzeValues(currentValue, index)
-                    {
-                        if (_.isUndefined(currentValue)) {
-                            return;
-                        }
-                        var cssIndex = '.dcpAttribute__content--widget[data-attrid="' + model.id + '"]';
-                        $(allWrapper[index]).find(cssIndex).addBack(cssIndex).each(
-                            function vAttributeRefreshOneValue(index, element)
+
+                    if (_.isEqual(values, scope.model.getValue())) {
+                        _.each(values, function analyzeValues(currentValue, index)
+                        {
+                            if (_.isUndefined(currentValue)) {
+                                return;
+                            }
+                            var cssIndex = '.dcpAttribute__content--widget[data-attrid="' + model.id + '"]';
+                            $(allWrapper[index]).find(cssIndex).addBack(cssIndex).each(function vAttributeRefreshOneValue(index, element)
                             {
                                 scope.widgetApply($(element), "setValue", currentValue);
                             });
-                    });
+                        });
+                    }
                 }, this));
             } else {
                 this.widgetApply(allWrapper.find('.dcpAttribute__content--widget[data-attrid="' + model.id + '"]'), "setValue", values);

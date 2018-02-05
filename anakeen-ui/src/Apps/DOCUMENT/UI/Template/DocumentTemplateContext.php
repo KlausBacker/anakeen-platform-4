@@ -215,9 +215,9 @@ class DocumentTemplateContext implements \ArrayAccess
      * </p>
      * @return mixed Can return all value types.
      */
-    public function offsetGet($offset)
+    public function &offsetGet($offset)
     {
-        $x = $this->keys[$offset];
+        $x = &$this->keys[$offset];
         if (is_callable($x)) {
             return call_user_func($x);
         }
