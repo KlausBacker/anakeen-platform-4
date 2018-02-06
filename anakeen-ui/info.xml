@@ -3,6 +3,9 @@
          license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
 
     <description>A4 : Document interfaces</description>
+    <requires>
+        <module name="smart-data-engine"/>
+    </requires>
     <replaces>
         <module name="dynacase-document-uis-light"/>
         <module name="dynacase-document-uis"/>
