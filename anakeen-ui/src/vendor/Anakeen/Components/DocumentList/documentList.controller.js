@@ -18,6 +18,10 @@ export default {
             type: String,
             default: 'documentsList/<familyId>',
         },
+        order: {
+            type: String,
+            default: 'title:asc',
+        },
     },
 
     created() {
@@ -40,13 +44,13 @@ export default {
                                     page: options.data.page,
                                     offset: (options.data.page - 1) * options.data.take,
                                     slice: options.data.take,
+                                    orderBy: this.orderBy,
                                 };
                                 if (this.filterInput) {
                                     params.filter = this.filterInput;
                                 }
 
                                 const request = this.contentUrl.replace('<familyId>', options.data.collection);
-
                                 _this.privateScope
                                     .sendGetRequest(request,
                                         {
@@ -119,7 +123,9 @@ export default {
 
             onPagerChange: (e) => {
                 this.dataSource.page(e.index);
-                this.refreshDocumentsList();
+                this.refreshDocumentsList().then().catch((err) => {
+                    console.error(err);
+                });
             },
 
             sendGetRequest: (url, conf) => {
@@ -141,7 +147,9 @@ export default {
                 const counter = this.$(this.$refs.pagerCounter).data('kendoDropDownList');
                 const newPageSize = counter.dataItem(e.item).value;
                 this.dataSource.pageSize(newPageSize);
-                this.refreshDocumentsList();
+                this.refreshDocumentsList().then().catch((err) => {
+                    console.error(err);
+                });
             },
 
             onSelectDocument: (...arg) => {
@@ -163,8 +171,9 @@ export default {
 
             if (this.smartStructureName) {
                 this.setCollection({
+                    id: this.smartStructureName,
                     initid: this.smartStructureName,
-                    html_label: this.label,
+                    title: this.label,
                     ref: this.smartStructureName,
                 });
             }
@@ -185,6 +194,7 @@ export default {
             appConfig: null,
             dataSource: null,
             filterInput: '',
+            orderBy: this.order,
             pageSizeOptions: [
                 {
                     text: '5',
@@ -216,18 +226,18 @@ export default {
             const noDataTranslated = this.$pgettext('DocumentList', 'No %{collection} to display');
             return {
                 searchPlaceholder: this.$gettextInterpolate(searchTranslated, {
-                        collection: this.collection ? this.collection.html_label.toUpperCase() : '',
+                        collection: this.collectionLabel.toUpperCase(),
                     }),
                 itemsPerPageLabel: this.$pgettext('DocumentList', 'Items per page'),
                 noDataPagerLabel: this.$gettextInterpolate(noDataTranslated, {
-                        collection: this.collection ? this.collection.html_label : '',
+                        collection: this.collectionLabel,
                     }),
             };
         },
 
         collectionLabel() {
-            if (this.collection && this.collection.html_label) {
-                return this.collection.html_label;
+            if (this.collection && this.collection.title) {
+                return this.collection.title;
             } else if (this.label) {
                 return this.label;
             } else {
@@ -245,7 +255,9 @@ export default {
         filterDocumentsList(filterValue) {
             this.filterInput = filterValue;
             if (filterValue) {
-                this.refreshDocumentsList();
+                this.refreshDocumentsList().then().catch((err) => {
+                    console.error(err);
+                });
             } else {
                 this.clearDocumentsListFilter();
             }
@@ -253,19 +265,30 @@ export default {
 
         clearDocumentsListFilter() {
             this.filterInput = '';
-            this.refreshDocumentsList();
+            this.refreshDocumentsList().then().catch((err) => {
+                console.error(err);
+            });
         },
 
-        setCollection(c) {
+        setCollection(c, opts = null) {
             this.collection = c;
+            if (opts && opts.order) {
+                this.orderBy = opts.order;
+            } else {
+                this.orderBy = 'title:asc';
+            }
+
             this.dataSource.page(1);
-            this.refreshDocumentsList();
+            this.refreshDocumentsList().then().catch((err) => {
+                console.error(err);
+            });
         },
 
-        refreshDocumentsList() {
+        refreshDocumentsList(opts = {}) {
             return new Promise((resolve, reject) => {
                 if (this.collection && this.dataSource) {
-                    this.dataSource.read({ collection: this.collection.initid }).then(resolve).catch(reject);
+                    this.dataSource.read({ collection: this.collection.name })
+                        .then(resolve).catch(reject);
                 } else {
                     reject();
                 }

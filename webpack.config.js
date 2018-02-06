@@ -238,6 +238,31 @@ const devConfig = merge([
     )
 ]);
 
+const devComponentConfig = merge([
+    {
+        entry: {
+            'ank-components': PATHS.components
+        },
+        output: {
+            publicPath: 'components/debug/',
+            filename: '[name].js',
+            path: path.resolve(PATHS.build, 'components/debug/')
+        }
+    },
+    parts.setFreeVariable("process.env.NODE_ENV", "debug"),
+    parts.devServer(
+        {
+            host: process.env.HOST,
+            port: process.env.PORT,
+            proxy : {
+                "!/components/debug/*.js": {
+                    "target": process.env.PROXY_URL || "http://localhost"
+                },
+            }
+        }
+    )
+])
+
 
 module.exports = env => {
     if (env === "production") {
@@ -253,6 +278,9 @@ module.exports = env => {
             merge(commonConfig, debugSmartElementConfig),
             merge(commonConfig, debugDocumentConfig)
         ];
+    }
+    if (env === "componentsDev") {
+        return merge(commonConfig, devComponentConfig);
     }
     if (env === "documentDev") {
         return merge(commonConfig, devConfig);

@@ -286,13 +286,14 @@ export default {
                 documentComponent.on('actionClick', e => this.privateScope.onDocumentActionClick(e, index));
                 documentComponent.on('afterSave', e => this.privateScope.onDocumentAfterSave(e, index));
                 documentComponent.on('afterDelete', e => this.privateScope.onDocumentAfterDelete(e, index));
+                documentComponent.on('successTransition', e => this.privateScope.onSuccessTransition(e, index))
             },
 
             onModelAddItem: (event) => {
                 const addedItems = event.items;
                 addedItems.forEach((item, pos) => {
-                    const header = this.$kendo.template(item.headerTemplate)(item.data);
-                    const content = this.$kendo.template(item.contentTemplate)(item.data);
+                    const header = this.$kendo.template(item.headerTemplate)(item.data || {});
+                    const content = this.$kendo.template(item.contentTemplate)(item.data || {});
                     const tabAdded = { text: header, encoded: false, content: content };
                     const index = event.index + pos;
                     if (index === this.tabModel.size() - addedItems.length) {
@@ -458,7 +459,14 @@ export default {
 
                 if (tabPosition !== undefined) {
                     this.$(this.tabstrip.items()[tabPosition])
-                        .find('a.tab__document__header__content').prop('href', readyEvent.detail[1].url);
+                        .find('a.tab__document__header__content')
+                        .prop('href', readyEvent.detail[1].url);
+                    this.$(this.tabstrip.items()[tabPosition])
+                        .find('a.tab__document__header__content .tab__document__title')
+                        .text(readyEvent.detail[1].title);
+                    this.$(this.tabstrip.items()[tabPosition])
+                        .find('a.tab__document__header__content .tab__document__icon')
+                        .replaceWith(`<img class="tab__document__icon" src="${readyEvent.detail[1].icon}" />`);
                 }
 
                 const lazyIndex = this.privateScope.getLazyTabIndex();
@@ -490,6 +498,10 @@ export default {
 
             onDocumentAfterDelete: (e, tabPosition) => {
                 this.$emit('document-deleted', e.detail);
+            },
+
+            onSuccessTransition: (e, tabPosition) => {
+                this.$emit('document-success-transition', e.detail);
             },
         };
     },
@@ -598,8 +610,8 @@ export default {
         },
 
         addCustomTab(tabConfiguration) {
-            if (tabConfiguration.tabId && tabConfiguration.headerTemplate && tabConfiguration.contentTemplate) {
-                this.tabModel.add(Object.assign({}, { tabId: Constants.CUSTOM_TAB_ID }, tabConfiguration));
+            if (tabConfiguration.headerTemplate && tabConfiguration.contentTemplate) {
+                this.tabModel.add(Object.assign({}, tabConfiguration, { tabId: Constants.CUSTOM_TAB_ID }));
                 this.selectDocument({ initid: Constants.CUSTOM_TAB_ID });
             }
         },
