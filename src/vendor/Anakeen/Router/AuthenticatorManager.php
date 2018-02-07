@@ -1,17 +1,11 @@
 <?php
-namespace Dcp\HttpApi\V1;
 
-use Dcp\HttpApi\V1\Api\Exception;
+namespace Anakeen\Router;
 
-/**
- * Class AuthenticatorManager
- * @deprecated
- * @package Dcp\HttpApi\V1
- */
 class AuthenticatorManager extends \AuthenticatorManager
 {
     protected static $authType;
-    
+
     protected static function getAuthenticatorClass($authtype = null, $provider = \Authenticator::nullProvider)
     {
         if (!$authtype) {
@@ -20,15 +14,16 @@ class AuthenticatorManager extends \AuthenticatorManager
         if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $authtype)) {
             throw new Exception(sprintf("Invalid authtype '%s'", $authtype));
         }
-        
+
+
         $auth = null;
         switch ($authtype) {
             case "html":
                 $auth = new \htmlAuthenticator($authtype, $provider);
                 break;
 
-            case "open":
-                $auth = new RestOpenAuthenticator($authtype, $provider);
+            case "token":
+                $auth = new TokenAuthenticator($authtype, $provider);
                 break;
 
             case "basic":
@@ -42,38 +37,39 @@ class AuthenticatorManager extends \AuthenticatorManager
                 }
                 $auth = new $authClass($authtype, $provider);
         }
-        
+
         return $auth;
     }
+
     /**
-     * @param \Account      $userAccount account identify use for the token
-     * @param array         $routes list of routes matches
+     * @param \Account $userAccount account identify use for the token
+     * @param array $routes list of routes matches
      * @param int|\DateTime $expiration if it is a number, is use as a delay in seconds, if it is a DateTime object use as end validity date
-     * @param bool          $oneshot if true the token can be used only on time (it is destroyed after use)
-     * @param string        $description text description
+     * @param bool $oneshot if true the token can be used only on time (it is destroyed after use)
+     * @param string $description text description
      *
      * @return string   return the token identifier
      * @throws Exception
      */
-    public static function getAuthorizationToken(\Account $userAccount, array $routes, $expiration = - 1, $oneshot = false, $description = "")
+    public static function getAuthorizationToken(\Account $userAccount, array $routes, $expiration = -1, $oneshot = false, $description = "")
     {
-        if ($expiration === - 1) {
+        if ($expiration === -1) {
             $expiration = \UserToken::INFINITY;
         }
-        
+
         if (count($routes) === 0) {
-            throw new Exception("API0105");
+            throw new Exception("ROUTER0105");
         }
-        
+
         foreach ($routes as $k => $rules) {
             if (is_array($rules)) {
-                if (empty($rules["route"])) {
-                    throw new Exception("API0101", $k);
+                if (empty($rules["pattern"])) {
+                    throw new Exception("ROUTER0101", $k);
                 }
-                
+
                 $methods = $rules["methods"];
-                $queries = isset($rules["query"])?$rules["query"]:[];
-                $route = $rules["route"];
+                $queries = isset($rules["query"]) ? $rules["query"] : [];
+                $route = $rules["pattern"];
             } else {
                 // Simple route
                 if (preg_match("/^(GET|POST|PUT|DELETE)\\s+(.*)/", $rules, $reg)) {
@@ -82,35 +78,30 @@ class AuthenticatorManager extends \AuthenticatorManager
                 } else {
                     $method = "*";
                 }
-                
+
                 $methods = [$method];
                 $queries = [];
                 $route = $rules;
             }
-            
-            $apiv1 = preg_quote("api/v1/", $route[0]);
-            
+
+
             if (strlen($route) < 2) {
-                throw new Exception("API0102", $route);
+                throw new Exception("ROUTER0102", $route);
             }
-            $pattern = sprintf("%s%s%s", $route[0], $apiv1, substr($route, 1));
-            
-            $match = @preg_match($pattern, '');
-            if ($match === false) {
-                $errors = error_get_last();
-                if (!empty($errors["message"])) {
-                    $errors = $errors["message"];
-                };
-                
-                throw new Exception("API0103", $k + 1, print_r($errors, true));
+            if (empty($methods) || !is_array($methods)) {
+                throw new Exception("ROUTER0103");
             }
-            $routes[$k] = ["route" => $route, "methods" => $methods, "query" => $queries];
+
+            $sParser = new \FastRoute\RouteParser\Std;
+            $sParser->parse($route);
+
+            $routes[$k] = ["pattern" => $route, "methods" => $methods, "query" => $queries];
         }
-        
+
         $scontext = serialize($routes);
-        
+
         if (!$userAccount->isAffected()) {
-            throw new Exception("API0106");
+            throw new Exception("ROUTER0106");
         }
         // create one
         $uk = new \UserToken("");
@@ -125,15 +116,15 @@ class AuthenticatorManager extends \AuthenticatorManager
             $uk->expire = $uk->setExpiration($expiration);
         }
         $uk->expendable = $oneshot;
-        $uk->type = "REST";
+        $uk->type = "ROUTE";
         $uk->context = $scontext;
         $uk->description = $description;
         $err = $uk->add();
         if ($err) {
-            throw new Exception("API0104", $err);
+            throw new Exception("ROUTER0104", $err);
         }
         $token = $uk->token;
-        
+
         return $token;
     }
 }

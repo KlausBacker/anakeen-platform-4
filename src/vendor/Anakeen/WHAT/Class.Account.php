@@ -659,7 +659,7 @@ create sequence seq_id_users start 10;";
      */
     public function checkpassword($pass)
     {
-        if ($this->accounttype != 'U') {
+        if ($this->accounttype !== 'U') {
             return false;
         } // don't log in group or role
         return ($this->checkpass($pass, $this->password));
@@ -667,7 +667,7 @@ create sequence seq_id_users start 10;";
     // --------------------------------------------------------------------
     public function checkpass($pass, $passk)
     {
-        if (substr($passk, 0, 3) != '$5$') {
+        if (substr($passk, 0, 3) !== '$5$') {
             /* Old DES crypted passwords => SSHA256 crypting*/
             $salt = substr($passk, 0, 2);
             $passres = crypt($pass, $salt);
@@ -689,7 +689,7 @@ create sequence seq_id_users start 10;";
             $salt = substr($passk, 3, 19);
             $passres = crypt($pass, "\$5\${$salt}");
         }
-        return ($passres == $passk);
+        return ($passres === $passk);
     }
     /**
      * return mail adress

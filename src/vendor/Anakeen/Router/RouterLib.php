@@ -4,6 +4,7 @@ namespace Dcp\Router;
 
 use \Dcp\Core\ContextManager;
 use \Dcp\Core\Exception;
+use FastRoute\BadRouteException;
 
 class RouterLib
 {
@@ -90,6 +91,20 @@ class RouterLib
             $regExps[] = $regExp;
         }
         return $regExps;
+    }
+
+    public static function matchPattern($pattern, $url)
+    {
+        $sParser = new \FastRoute\RouteParser\Std;
+
+            $patternInfos = $sParser->parse($pattern);
+            $regExps = self::parseInfoToRegExp($patternInfos);
+            foreach ($regExps as $regExp) {
+                if (preg_match($regExp, $url)) {
+                    return true;
+                }
+            }
+        return false;
     }
 }
 

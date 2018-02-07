@@ -5,6 +5,7 @@ namespace Dcp\Routes;
 use Dcp\Exception;
 use Dcp\HttpApi\V1\Api\RecordReturnMessage;
 use Dcp\HttpApi\V1\Crud\Response;
+use Dcp\Router\ApiV2Response;
 
 class Document
 {
@@ -18,16 +19,25 @@ class Document
      */
     public static function get(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        error_log(__METHOD__);
         $docid = $args["docid"];
+        $etag = "";
 
-        $crudCall=function (&$crudObject) use ($docid) {
+        $crudCall = function (&$crudObject) use ($request, $docid, &$etag) {
             $crudObject = new \Dcp\HttpApi\V1\Crud\Document();
-            Response::initRequest($crudObject);
-            return $crudObject->read($docid);
+            Response::initRequest($crudObject, ["identifier" => $docid]);
+            $etag = $crudObject->getEtagInfo();
+            if (!ApiV2Response::matchEtag($request, $etag)) {
+                return $crudObject->read($docid);
+            } else {
+                return [];
+            }
         };
 
         $response = Response::withCrud($request, $response, $crudCall);
+
+        $response = ApiV2Response::withEtag($request, $response, $etag);
+
+        error_log("etag:$etag");
 
         return $response;
     }
@@ -43,7 +53,7 @@ class Document
     {
         $docid = $args["docid"];
 
-        $crudCall=function (&$crudObject) use ($docid) {
+        $crudCall = function (&$crudObject) use ($docid) {
             $crudObject = new \Dcp\HttpApi\V1\Crud\Document();
             Response::initRequest($crudObject);
             return $crudObject->update($docid);
@@ -64,7 +74,7 @@ class Document
     {
         $docid = $args["docid"];
 
-        $crudCall=function (&$crudObject) use ($docid) {
+        $crudCall = function (&$crudObject) use ($docid) {
             $crudObject = new \Dcp\HttpApi\V1\Crud\Document();
             Response::initRequest($crudObject);
             return $crudObject->delete($docid);

@@ -2,6 +2,8 @@
 
 namespace Dcp\Core\Utils;
 
+use Dcp\DevTools\Template\ApplicationParameter;
+
 class ErrorMessage
 {
     public static function getHtml($htmlMessage, $errId, $tooltip = "")
@@ -11,6 +13,8 @@ class ErrorMessage
         $lay->set("tooltip", $tooltip);
         $lay->set("error", str_replace("[", "&#x5b;", $htmlMessage));
         $lay->eset("code", $errId ? "[$errId]" : "");
+
+        $lay->set("ico", \ApplicationParameterManager::getScopedParameterValue("DYNACASE_FAVICO"));
         return $lay->gen();
     }
 

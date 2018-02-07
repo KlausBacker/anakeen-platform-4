@@ -25,9 +25,20 @@ $config = [
 
 
 $routeConfig = \Dcp\Router\RouterLib::getRouterConfig();
+
+// @TODO Need to sort routes
 $routes = $routeConfig->routes;
+// @TODO Need to sort middleware
 $middleWares = $routeConfig->middlewares;
-$app = new \Slim\App($config);
+
+$container = new \Slim\Container($config);
+$container['cache'] = function () {
+    return new \Slim\HttpCache\CacheProvider();
+};
+
+// Add middleware to the application
+$app = new \Slim\App($container);
+$app->add(new \Slim\HttpCache\Cache('public', 86400));
 
 
 $c = $app->getContainer();
@@ -49,13 +60,37 @@ $c['notAllowedHandler'] = function ($c) {
         return \Dcp\Router\NotHandler::notAllowed($request, $c["response"], $methods);
     };
 };
+
+$app->get('/foo', function ($req, $res, $args) {
+
+    $itag="a4";
+    error_log(get_class($this));
+    $resWithEtag = $this->cache->withEtag($res, $itag);
+    /**
+     * @var \Slim\Http\response $resWithEtag
+     */
+    $date = date("Y-m-dTH:i:s");
+  //  $resWithEtag->write($date . "aaaaaaaaaaaaaaaaaaa");
+    $resWithEtag= $resWithEtag->withJSON(["date"=>$date, "idx"=> $itag]);
+    var_dump((string)$resWithEtag->getBody());
+    var_dump($date);
+
+
+
+
+    error_log("Foo:" . $date);
+    error_log("Foo:" . (string)$resWithEtag->getBody());
+    return $resWithEtag;
+});
+
 foreach ($routes as $route) {
     $app->map($route->methods, $route->pattern, $route->callable)->setName($route->name);
 }
 
 $app->add(
-    function (\Slim\Http\request $request, \Slim\Http\response $response, $next) use ($middleWares) {
+    function (\Slim\Http\request $request, \Slim\Http\response $response, $next) use ($middleWares, $c) {
 
+        session_cache_limiter('');
         /**
          * @var \Slim\Route $currentRoute
          */
@@ -65,7 +100,8 @@ $app->add(
             $sParser = new \FastRoute\RouteParser\Std;
             // print_r($currentRoute->getArguments());
 
-            error_log($request->getMethod()." ".$currentRoute->getPattern());
+            error_log($request->getMethod() . " " . $currentRoute->getPattern());
+            $request=$request->withAttribute("container", $c);
 
             $uri = $request->getUri()->getPath();
             foreach ($middleWares as $middleWare) {
@@ -74,9 +110,10 @@ $app->add(
 
                 $regExps = \Dcp\Router\RouterLib::parseInfoToRegExp($patternInfos);
 
+                // Add all middleware matches
                 foreach ($regExps as $regExp) {
                     if (preg_match($regExp, $uri, $matches)) {
-                        error_log("Add Middleware : " . $middleWare->name);
+                       // error_log("Add Middleware : " . $middleWare->name);
 
                         foreach ($matches as $k => $v) {
                             if (is_numeric($k)) {
@@ -84,8 +121,9 @@ $app->add(
                             }
                         }
 
+                        // @TODO : Need to match METHODS also
                         $currentRoute->add(function ($request, $response, $next) use ($middleWare, $matches) {
-                            error_log("Before Exec " . $middleWare->name);
+                           // error_log("Before Exec " . $middleWare->name);
                             $callMiddleWare = $middleWare->callable;
 
 
@@ -98,10 +136,13 @@ $app->add(
                                     )
                                 );
                             }
-
+                            /**
+                             * @var \Slim\Http\Response $response
+                             */
+                            $response=$response->withHeader("X-Middleware", $middleWare->name);
                             $response = $callMiddleWare($request, $response, $next, $matches);
 
-                            error_log("After Exec" . $middleWare->name);
+                           // error_log("After Exec" . $middleWare->name);
                             return $response;
                         });
                     }

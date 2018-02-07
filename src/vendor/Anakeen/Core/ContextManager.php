@@ -2,7 +2,7 @@
 
 namespace Dcp\Core;
 
-use Dcp\HttpApi\V1\AuthenticatorManager;
+use Anakeen\Router\AuthenticatorManager;
 
 class ContextManager
 {
@@ -132,21 +132,23 @@ class ContextManager
             default:
                 $auth = AuthenticatorManager::$auth;
                 if ($auth === false) {
-                    $exception = new \Dcp\HttpApi\V1\Api\Exception("Could not get authenticator");
+                    $exception = new \Anakeen\Router\Exception("Could not get authenticator");
                     $exception->setHttpStatus("500", "Could not get authenticator");
                     $exception->setUserMessage("Could not get authenticator");
                     throw $exception;
                 }
 
-                $exception = new \Dcp\HttpApi\V1\Api\Exception("User must be authenticated");
+                $exception = new \Anakeen\Router\Exception("User must be authenticated");
                 $exception->setHttpStatus("403", "Forbidden");
+                $exception->setUserMessage(___("Access not granted", "ank"));
                 throw $exception;
         }
         $_SERVER['PHP_AUTH_USER'] = AuthenticatorManager::$auth->getAuthUser();
         // First control
         if (empty($_SERVER['PHP_AUTH_USER'])) {
-            $exception = new \Dcp\HttpApi\V1\Api\Exception("User must be authenticated");
+            $exception = new \Anakeen\Router\Exception("User must be authenticated");
             $exception->setHttpStatus("403", "Forbidden");
+            $exception->setUserMessage(___("Access not granted", "ank"));
             throw $exception;
         }
         $u=new \Account();

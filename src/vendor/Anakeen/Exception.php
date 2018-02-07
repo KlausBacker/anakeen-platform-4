@@ -29,6 +29,7 @@ class Exception extends \Exception
      * Redefined exception : message text is mandatory now
      *
      * @param string $message error message or code error
+     * @param int    $argCode
      */
     public function __construct($message, $argCode = 0)
     {
@@ -102,4 +103,3 @@ class Exception extends \Exception
         return implode("\n", $this->httpHeader);
     }
 }
-

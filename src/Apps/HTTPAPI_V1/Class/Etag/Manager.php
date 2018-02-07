@@ -46,6 +46,7 @@ class Manager
     
     public static function setEtagHeaders()
     {
+        error_log(__METHOD__);
         header("Cache-Control: private, no-cache, must-revalidate", true);
         header_remove("Pragma");
         header_remove("Expires");

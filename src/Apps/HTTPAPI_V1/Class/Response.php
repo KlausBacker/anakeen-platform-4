@@ -23,7 +23,6 @@ class Response
          * @var \Dcp\HttpApi\V1\Crud\Crud $crudObject
          */
         $crudObject = null;
-        $data = [];
 
         try {
             $returnData = $crudCallable($crudObject);
@@ -113,7 +112,7 @@ class Response
         return $response->withJson($data);
     }
 
-    public static function initRequest(\Dcp\HttpApi\V1\Crud\Crud $crudObject)
+    public static function initRequest(\Dcp\HttpApi\V1\Crud\Crud $crudObject, array $args = [])
     {
 
         $crudObject->setContentParameters(
@@ -122,6 +121,7 @@ class Response
                 $crudObject
             )
         );
+
+        $crudObject->setUrlParameters($args);
     }
 }
-

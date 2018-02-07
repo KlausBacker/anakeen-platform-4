@@ -7,7 +7,7 @@
       "methods": [
         "get"
       ],
-      "pattern": "/api/v2/documents/{docid}",
+      "pattern": "/api/v2/documents/{docid:[^.]+}[.json]",
       "description": "Get data for a document",
       "name": "Core:GetDocument",
       "requiredAccesses": []
@@ -18,7 +18,7 @@
       "methods": [
         "put"
       ],
-      "pattern": "/api/v2/documents/{docid}",
+      "pattern": "/api/v2/documents/{docid:[^.]+}[.json]",
       "description": "Modify data for a document",
       "name": "Core:ModifyDocument",
       "requiredAccesses": []
@@ -29,7 +29,7 @@
       "methods": [
         "delete"
       ],
-      "pattern": "/api/v2/documents/{docid}",
+      "pattern": "/api/v2/documents/{docid:[^.]+}[.json]",
       "description": "Delete document (put in trash)",
       "name": "Core:DeleteDocument",
       "requiredAccesses": []

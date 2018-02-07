@@ -45,6 +45,7 @@ class DocumentList
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->request=$request;
+
         $documentList = $this->prepareDocumentList();
         $return = array(
             "requestParameters" => array(
@@ -61,6 +62,9 @@ class DocumentList
         $data = $documentFormatter->format();
         $return["documents"] = $data;
 
+        /**
+         * @var \Slim\Http\response $response
+         */
         return  ApiV2Response::withData($response, $return);
     }
 
