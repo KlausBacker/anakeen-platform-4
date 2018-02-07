@@ -9,3 +9,4 @@ ide/vendor/
 smart-data-engine*app
 .php_cs.cache
 .idea/*.iml"
+src/vendor/Anakeen/lib/vendor/
