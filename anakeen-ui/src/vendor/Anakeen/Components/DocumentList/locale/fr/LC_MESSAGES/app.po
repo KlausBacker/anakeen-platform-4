@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Document-uis 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-15 16:22+0100\n"
+"POT-Creation-Date: 2018-02-06 11:06+0100\n"
 "PO-Revision-Date: 2017-12-07 16:44+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,22 +17,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/DocumentList/documentList.controller.js:90
+#: anakeen-ui/src/vendor/Anakeen/Components/DocumentList/documentList.controller.js:106
 msgctxt "DocumentList"
 msgid "of"
 msgstr "sur"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/DocumentList/documentList.controller.js:194
+#: anakeen-ui/src/vendor/Anakeen/Components/DocumentList/documentList.controller.js:225
 msgctxt "DocumentList"
 msgid "Search in : %{collection}"
 msgstr "Rechercher dans : %{collection}"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/DocumentList/documentList.controller.js:195
+#: anakeen-ui/src/vendor/Anakeen/Components/DocumentList/documentList.controller.js:226
 msgctxt "DocumentList"
 msgid "No %{collection} to display"
 msgstr "Aucun %{collection} à afficher"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/DocumentList/documentList.controller.js:200
+#: anakeen-ui/src/vendor/Anakeen/Components/DocumentList/documentList.controller.js:231
 msgctxt "DocumentList"
 msgid "Items per page"
 msgstr "Eléments par page"

@@ -216,7 +216,7 @@ export default {
 
             let login = encodeURIComponent(this.login);
             event.preventDefault();
-            this.$http.post(`/authent/sessions/${login}`, {
+            this.$http2.post(`/authent/sessions/${login}`, {
                 password: this.pwd,
                 language: this.$language.current,
             }).then(() => {
@@ -227,11 +227,11 @@ export default {
                 console.log('Error', e);
                 if (e.response && e.response.data && e.response.data.exceptionMessage) {
                     let info = e.response.data;
-                    if (info.messages && info.messages.length > 0 && info.messages[0].code === 'AUTH0001') {
+                    if (info.code === 'AUTH0001') {
                         // Normal authentication error
                         this.authentError = this.translations.authentError;
                     } else {
-                        this.authentError = e.response.data.exceptionMessage;
+                        this.authentError = info.userMessage || info.exceptionMessage;
                     }
                 } else {
                     this.authentError = this.translations.authentError;
@@ -253,7 +253,7 @@ export default {
 
             let login = encodeURIComponent(this.login);
             event.preventDefault();
-            this.$http.post(`/authent/mailPassword/${login}`, {
+            this.$http2.post(`/authent/mailPassword/${login}`, {
                 password: this.pwd,
                 language: this.$language.current,
             }).then((response) => {
@@ -270,7 +270,7 @@ export default {
                     if (info.messages && info.messages.length > 0) {
                         this.forgetError = info.messages[0].contentText;
                     } else {
-                        this.forgetError = e.response.data.exceptionMessage;
+                        this.forgetError = info.userMessage || info.exceptionMessage;
                     }
 
                 } else {
@@ -297,9 +297,9 @@ export default {
             }
 
             let httpAuth = axios.create({
-                baseURL: '/api/v1',
+                baseURL: '/api/v2',
                 headers: {
-                    Authorization: 'DcpOpen ' + this.authToken,
+                    Authorization: 'Token ' + this.authToken,
                 },
             });
 
@@ -329,7 +329,7 @@ export default {
                     if (info.messages && info.messages.length > 0) {
                         this.resetError = info.messages[0].contentText;
                     } else {
-                        this.resetError = e.response.data.exceptionMessage;
+                        this.resetError = e.response.data.userMessage || e.response.data.exceptionMessage;
                     }
                 } else {
                     this.resetError = this.translations.unexpectedError;

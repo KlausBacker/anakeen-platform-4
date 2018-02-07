@@ -5,28 +5,27 @@
 */
 namespace Anakeen\Routes\Authent;
 
-use Dcp\HttpApi\V1\Crud\Crud;
 use Dcp\HttpApi\V1\DocManager\DocManager;
-use Dcp\HttpApi\V1\Api\Exception;
+use Anakeen\Router\Exception;
+use Dcp\Router\ApiV2Response;
 
-class MailPassword extends Crud
+class MailPassword
 {
     const failDelay=2;
 
+
     /**
-     * Create new ressource
-     * @return mixed
+     * Send mail password
+     * @param \Slim\Http\request $request
+     * @param \Slim\Http\response $response
+     * @param $args
+     * @return \Slim\Http\response
      * @throws Exception
      */
-    public function create()
+    public function  __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-
-        $login=$this->urlParameters["identifier"];
-        $language=isset($this->contentParameters["language"])?$this->contentParameters["language"]:null;
-
-        \Dcp\HttpApi\V1\Api\Router::setExtension("json");
-
-
+        $login=$args["userId"];
+        // $language=$request->getParam("language");
 
         $user = new \Account();
         $user->setLoginName($login);
@@ -52,8 +51,7 @@ class MailPassword extends Crud
         }
         $output=[];
         if ($user->isAffected()) {
-            $_SERVER['PHP_AUTH_USER']=$user->login;
-            \Dcp\HttpApi\V1\ContextManager::initCoreApplication();
+            \Dcp\Core\ContextManager::initContext($user, "CORE", "", \AuthenticatorManager::$session);
 
             $userDocument=DocManager::getDocument($user->fid);
             $mailTemplateId=\ApplicationParameterManager::getParameterValue("AUTHENT", "AUTHENT_MAILASKPWD");
@@ -69,10 +67,11 @@ class MailPassword extends Crud
             $description="Reset password";
             $context=array([
                 "methods"=>["PUT"],
-                "route"=>"%authent/password/%"
+                "pattern"=>"api/v2/authent/password/"
             ]);
             $expire=3600*24; // One day
-            $tokenKey = \Dcp\HttpApi\V1\AuthenticatorManager::getAuthorizationToken($user, $context, $expire, true , $description);
+            $oneshot=true;
+            $tokenKey = \Anakeen\Router\AuthenticatorManager::getAuthorizationToken($user, $context, $expire, $oneshot , $description);
 
             $key["LINK_CHANGE_PASSWORD"]=sprintf("%s/login/?passkey=%s&uid=%s", \ApplicationParameterManager::getScopedParameterValue("CORE_EXTERNURL"),  urlencode($tokenKey), urlencode($user->login));
             $err=$mailTemplate->sendDocument($userDocument, $key);
@@ -89,47 +88,7 @@ class MailPassword extends Crud
 
         // $output["debugurlpass"]=$key["LINK_CHANGE_PASSWORD"];
         $output["message"]=sprintf(___("An email has been sended to user \"%s\"", "authent"), $login);
-        return $output;
-    }
-
-    /**
-     * Delete a resource
-     * @param string|int $resourceId Resource identifier
-     * @return mixed
-     * @throws \Dcp\HttpApi\V1\Crud\Exception
-     */
-    public function delete($resourceId)
-    {
-        $e = new \Dcp\HttpApi\V1\Crud\Exception('CRUD0103', __METHOD__);
-        $e->setHttpStatus('405', 'You cannot delete element with the API');
-        throw $e;
-    }
-
-    /**
-     * Read a resource
-     * @param int|string $ressourceId
-     * @return mixed
-     * @throws \Dcp\HttpApi\V1\Crud\Exception
-     * @internal param int|string $resourceId Resource identifier
-     */
-    public function read($ressourceId)
-    {
-        $e = new \Dcp\HttpApi\V1\Crud\Exception('CRUD0103', __METHOD__);
-        $e->setHttpStatus('405', 'You cannot consult element with the API');
-        throw $e;
-    }
-
-    /**
-     * Update the resource
-     * @param string|int $resourceId Resource identifier
-     * @return mixed
-     * @throws \Dcp\HttpApi\V1\Crud\Exception
-     */
-    public function update($resourceId)
-    {
-        $e = new \Dcp\HttpApi\V1\Crud\Exception('CRUD0103', __METHOD__);
-        $e->setHttpStatus('405', 'You cannot update element with the API');
-        throw $e;
+        return ApiV2Response::withData($response, $output);
     }
 
 }

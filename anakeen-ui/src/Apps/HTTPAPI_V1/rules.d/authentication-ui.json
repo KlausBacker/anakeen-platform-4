@@ -7,24 +7,5 @@
     "canonicalURL": "authent/sessions/<login>",
     "acceptExtensions" : ["*"],
     "standalone": true
-  },
-
-  {
-    "order": 300,
-    "class": "\\Anakeen\\Routes\\Authent\\MailPassword",
-    "regExp": "%^/authent/mailPassword/(?P<identifier>[^/]+)$%",
-    "description": "Send email to change password",
-    "canonicalURL": "authent/password/<identifier>",
-    "acceptExtensions" : ["*"],
-    "standalone": true
-  },
-
-  {
-    "order": 300,
-    "class": "\\Anakeen\\Routes\\Authent\\Password",
-    "regExp": "%^/authent/password/(?P<identifier>[^/]+)$%",
-    "description": "Change password",
-    "canonicalURL": "authent/password/<identifier>",
-    "acceptExtensions" : ["*"]
   }
 ]

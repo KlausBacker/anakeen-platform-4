@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-14 17:38+0100\n"
-"PO-Revision-Date: 2017-11-24 13:39+0100\n"
+"POT-Creation-Date: 2018-02-06 15:25+0100\n"
+"PO-Revision-Date: 2018-02-06 15:31+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -47,7 +47,7 @@ msgstr "Autres"
 #, php-format
 msgctxt "authent"
 msgid "An email has been sended to user \"%s\""
-msgstr ""
+msgstr "Un courriel a été envoyé à \"%s\""
 
 #, php-format
 msgctxt "ddui"
@@ -81,7 +81,7 @@ msgstr "Annuler"
 #, php-format
 msgctxt "authent"
 msgid "Cannot find user \"%s\"."
-msgstr ""
+msgstr "Utilisateur \"%s\" non trouvé."
 
 msgctxt "ddui-enum"
 msgid "Choose"
@@ -404,7 +404,7 @@ msgstr "Entrée invalide"
 
 msgctxt "authent"
 msgid "Invalid key to update password"
-msgstr ""
+msgstr "Clef invalide pour la mise à jour du mot de passe"
 
 msgctxt "ddui"
 msgid "Invalid transition"
@@ -461,7 +461,7 @@ msgstr "Notification"
 #, php-format
 msgctxt "authent"
 msgid "Password has been reset for \"%s\""
-msgstr ""
+msgstr "Le mot de passe a été réinitialisé pour \"%s\""
 
 msgctxt "UiMenu"
 msgid "Properties"
@@ -745,4 +745,3 @@ msgstr ""
 msgctxt "ddui-enum"
 msgid "{{value}} **"
 msgstr "{{value}} (autre choix)"
-

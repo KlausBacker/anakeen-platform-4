@@ -35,6 +35,10 @@ Vue.http = Vue.prototype.$http = axios.create({
     baseURL: '/api/v1',
     timeout: 10000,
 });
+Vue.http2 = Vue.prototype.$http2 = axios.create({
+    baseURL: '/api/v2',
+    timeout: 10000,
+});
 Vue.jQuery = Vue.jquery = Vue.prototype.$ = kendo.jQuery;
 Vue.prototype.$kendo = Vue.kendo = kendo;
 
