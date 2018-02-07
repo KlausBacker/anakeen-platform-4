@@ -16,7 +16,7 @@ class Authent
      */
     public static function Authenticate($request, $response, $next, $args = [])
     {
-       // error_log("Before inside" . __METHOD__);
+        error_log("Before inside" . __METHOD__);
 
         /**
          * @var \Slim\Route $currentRoute

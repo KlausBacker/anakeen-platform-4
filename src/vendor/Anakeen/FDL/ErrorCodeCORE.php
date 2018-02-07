@@ -94,6 +94,10 @@ namespace {
          * @errorCode Router Config methods limited to get, put, post, delete
          */
         const CORE0021 = "Router : method \"%s\" not supported";
+        /**
+         * @errorCode The user is not authenticated
+         */
+        const CORE0022 = "User not authenticated";
 
     }
 }

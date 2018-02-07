@@ -2,8 +2,6 @@
 
 namespace Dcp\Routes;
 
-use Dcp\Exception;
-use Dcp\HttpApi\V1\Api\RecordReturnMessage;
 use Dcp\HttpApi\V1\Crud\Response;
 use Dcp\Router\ApiV2Response;
 
@@ -34,10 +32,7 @@ class Document
         };
 
         $response = Response::withCrud($request, $response, $crudCall);
-
         $response = ApiV2Response::withEtag($request, $response, $etag);
-
-        error_log("etag:$etag");
 
         return $response;
     }

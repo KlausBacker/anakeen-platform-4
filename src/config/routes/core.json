@@ -2,7 +2,7 @@
   "accesses": {},
   "routes": [
     {
-      "priority": 100,
+      "priority": 1,
       "callable": "\\Dcp\\Routes\\Document::get",
       "methods": [
         "get"
@@ -13,7 +13,7 @@
       "requiredAccesses": []
     },
     {
-      "priority": 100,
+      "priority": 1,
       "callable": "\\Dcp\\Routes\\Document::put",
       "methods": [
         "put"
@@ -24,7 +24,7 @@
       "requiredAccesses": []
     },
     {
-      "priority": 100,
+      "priority": 1,
       "callable": "\\Dcp\\Routes\\Document::delete",
       "methods": [
         "delete"
@@ -35,7 +35,7 @@
       "requiredAccesses": []
     },
     {
-      "priority": 100,
+      "priority": 1,
       "callable": "\\Dcp\\Routes\\DocumentList",
       "methods": [
         "get"
@@ -48,7 +48,7 @@
   ],
   "middlewares": [
     {
-      "priority": 100,
+      "priority": 1,
       "callable": "\\Dcp\\Routes\\Middleware\\Authent::Authenticate",
       "methods": [
         "any"
@@ -59,7 +59,7 @@
       "requiredAccesses": []
     },
     {
-      "priority": 100,
+      "priority": 1,
       "callable": "\\Dcp\\Routes\\Middleware\\Authent::Authenticate",
       "methods": [
         "any"

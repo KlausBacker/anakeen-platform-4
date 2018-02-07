@@ -4,7 +4,6 @@ namespace Dcp\Router;
 
 use \Dcp\Core\ContextManager;
 use \Dcp\Core\Exception;
-use FastRoute\BadRouteException;
 
 class RouterLib
 {
@@ -43,7 +42,7 @@ class RouterLib
 
             closedir($handle);
 
-            self::$config = json_decode(json_encode($config));
+            self::$config = new RouterConfig(json_decode(json_encode($config)));
             return self::$config;
         } else {
             throw new Exception("CORE0020", $dir);
@@ -59,7 +58,7 @@ class RouterLib
     public static function getRouteInfo($name)
     {
         $config = self::getRouterConfig();
-        foreach ($config->routes as $route) {
+        foreach ($config->getRoutes() as $route) {
             if ($route->name === $name) {
                 $vars = get_object_vars($route);
                 $info = new RouterInfo();
@@ -97,39 +96,13 @@ class RouterLib
     {
         $sParser = new \FastRoute\RouteParser\Std;
 
-            $patternInfos = $sParser->parse($pattern);
-            $regExps = self::parseInfoToRegExp($patternInfos);
-            foreach ($regExps as $regExp) {
-                if (preg_match($regExp, $url)) {
-                    return true;
-                }
+        $patternInfos = $sParser->parse($pattern);
+        $regExps = self::parseInfoToRegExp($patternInfos);
+        foreach ($regExps as $regExp) {
+            if (preg_match($regExp, $url)) {
+                return true;
             }
+        }
         return false;
     }
-}
-
-class RouterConfig
-{
-    /**
-     * @var RouterInfo[]
-     */
-    public $routes;
-    /**
-     * @var RouterInfo[]
-     */
-    public $middlewares;
-}
-
-class RouterInfo
-{
-    public $priority;
-    /**
-     * @var \Callable
-     */
-    public $callable;
-    public $pattern;
-    public $description;
-    public $name;
-    public $methods = [];
-    public $authenticated = true;
 }

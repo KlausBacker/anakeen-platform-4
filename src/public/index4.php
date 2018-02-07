@@ -26,10 +26,8 @@ $config = [
 
 $routeConfig = \Dcp\Router\RouterLib::getRouterConfig();
 
-// @TODO Need to sort routes
-$routes = $routeConfig->routes;
-// @TODO Need to sort middleware
-$middleWares = $routeConfig->middlewares;
+$routes = $routeConfig->getRoutes();
+$middleWares = $routeConfig->getMiddlewares();
 
 $container = new \Slim\Container($config);
 $container['cache'] = function () {
@@ -61,28 +59,8 @@ $c['notAllowedHandler'] = function ($c) {
     };
 };
 
-$app->get('/foo', function ($req, $res, $args) {
-
-    $itag="a4";
-    error_log(get_class($this));
-    $resWithEtag = $this->cache->withEtag($res, $itag);
-    /**
-     * @var \Slim\Http\response $resWithEtag
-     */
-    $date = date("Y-m-dTH:i:s");
-  //  $resWithEtag->write($date . "aaaaaaaaaaaaaaaaaaa");
-    $resWithEtag= $resWithEtag->withJSON(["date"=>$date, "idx"=> $itag]);
-    var_dump((string)$resWithEtag->getBody());
-    var_dump($date);
-
-
-
-
-    error_log("Foo:" . $date);
-    error_log("Foo:" . (string)$resWithEtag->getBody());
-    return $resWithEtag;
-});
-
+// Need to reverse : Slim use the last route match
+$routes = array_reverse($routes);
 foreach ($routes as $route) {
     $app->map($route->methods, $route->pattern, $route->callable)->setName($route->name);
 }
@@ -95,12 +73,12 @@ $app->add(
          * @var \Slim\Route $currentRoute
          */
         $currentRoute = $request->getAttribute("route");
-
+        $requestMethod=$request->getMethod();
         if ($currentRoute) {
             $sParser = new \FastRoute\RouteParser\Std;
             // print_r($currentRoute->getArguments());
 
-            error_log($request->getMethod() . " " . $currentRoute->getPattern());
+            error_log($request->getMethod() . " " .$currentRoute->getName(). " ". $currentRoute->getPattern());
             $request=$request->withAttribute("container", $c);
 
             $uri = $request->getUri()->getPath();
@@ -108,6 +86,10 @@ $app->add(
                 $pattern = $middleWare->pattern;
                 $patternInfos = $sParser->parse($pattern);
 
+
+                if ($middleWare->methods !== ["ANY"] && ! in_array($requestMethod, $middleWare->methods)) {
+                    continue;
+                }
                 $regExps = \Dcp\Router\RouterLib::parseInfoToRegExp($patternInfos);
 
                 // Add all middleware matches
@@ -121,7 +103,6 @@ $app->add(
                             }
                         }
 
-                        // @TODO : Need to match METHODS also
                         $currentRoute->add(function ($request, $response, $next) use ($middleWare, $matches) {
                            // error_log("Before Exec " . $middleWare->name);
                             $callMiddleWare = $middleWare->callable;
@@ -139,10 +120,10 @@ $app->add(
                             /**
                              * @var \Slim\Http\Response $response
                              */
-                            $response=$response->withHeader("X-Middleware", $middleWare->name);
+                            $headerMiddleware=$response->getHeaderLine("X-Middleware");
+                            $response=$response->withHeader("X-Middleware", $headerMiddleware.($headerMiddleware?", ":"").$middleWare->name);
                             $response = $callMiddleWare($request, $response, $next, $matches);
 
-                           // error_log("After Exec" . $middleWare->name);
                             return $response;
                         });
                     }
@@ -150,9 +131,7 @@ $app->add(
             }
         }
 
-
-        $response = $next($request, $response);
-        return $response;
+        return  $next($request, $response);
     }
 );
 
