@@ -2,11 +2,18 @@
 
 namespace Anakeen\Routes\Core;
 
-use Dcp\HttpApi\V1\Crud\DocumentFormatter;
+use Dcp\Core\Settings;
 use Dcp\HttpApi\V1\Crud\DocumentUtils;
-use Dcp\HttpApi\V1\Crud\URLUtils;
+use Anakeen\Router\URLUtils;
 use Dcp\Router\ApiV2Response;
 
+/**
+ * Class DocumentList
+ *
+ * List all visible documents
+ * @note Used by route : GET /api/v2/documents/
+ * @package Anakeen\Routes\Core
+ */
 class DocumentList
 {
     const GET_PROPERTIES = "document.properties";
@@ -35,6 +42,7 @@ class DocumentList
 
     /**
      * Return all visible documents
+     *
      * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
      * @param                     $args
@@ -44,10 +52,21 @@ class DocumentList
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $this->request=$request;
+        $this->request = $request;
 
+        $return = $this->getData();
+
+        /**
+         * @var \Slim\Http\response $response
+         */
+        return ApiV2Response::withData($response, $return);
+    }
+
+
+    protected function getData()
+    {
         $documentList = $this->prepareDocumentList();
-        $return = array(
+        $data = array(
             "requestParameters" => array(
                 "slice" => $this->slice,
                 "offset" => $this->offset,
@@ -56,16 +75,12 @@ class DocumentList
             )
         );
 
-        $return["uri"] = URLUtils::generateURL("documents/");
-        $return["properties"] = $this->getCollectionProperties();
+        $data["uri"] = URLUtils::generateURL(Settings::ApiV2."documents/");
+        $data["properties"] = $this->getCollectionProperties();
         $documentFormatter = $this->prepareDocumentFormatter($documentList);
-        $data = $documentFormatter->format();
-        $return["documents"] = $data;
-
-        /**
-         * @var \Slim\Http\response $response
-         */
-        return  ApiV2Response::withData($response, $return);
+        $docData = $documentFormatter->format();
+        $data["documents"] = $docData;
+        return $data;
     }
 
     /**
@@ -93,7 +108,7 @@ class DocumentList
     protected function getFields()
     {
         if ($this->returnFields === null) {
-            $fields= $this->request->getQueryParam("fields");
+            $fields = $this->request->getQueryParam("fields");
             if (!$fields) {
                 $fields = $this->defaultFields;
             }
@@ -170,7 +185,7 @@ class DocumentList
     public function prepareDocumentList()
     {
         $this->prepareSearchDoc();
-        $slice=$this->request->getQueryParam("slice");
+        $slice = $this->request->getQueryParam("slice");
 
         $this->slice = !empty($slice)
             ?
@@ -203,9 +218,9 @@ class DocumentList
      */
     protected function extractOrderBy()
     {
-        $orderBy=$this->request->getQueryParam("orderby");
+        $orderBy = $this->request->getQueryParam("orderby");
         if (!$orderBy) {
-            $orderBy= "title:asc";
+            $orderBy = "title:asc";
         }
         return DocumentUtils::extractOrderBy($orderBy);
     }
@@ -216,11 +231,11 @@ class DocumentList
      *
      * @param $documentList
      *
-     * @return DocumentFormatter
+     * @return CollectionDataFormatter
      */
     protected function prepareDocumentFormatter($documentList)
     {
-        $documentFormatter = new DocumentFormatter($documentList);
+        $documentFormatter = new CollectionDataFormatter($documentList);
         if ($this->hasFields(self::GET_PROPERTIES, true) && !$this->hasFields(self::GET_PROPERTY)) {
             $documentFormatter->useDefaultProperties();
         } else {

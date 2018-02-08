@@ -5,6 +5,7 @@ namespace Anakeen\Routes\Core;
 use Anakeen\Router\URLUtils;
 use Dcp\Core\DbManager;
 use Dcp\Core\DocManager;
+use Dcp\Core\Settings;
 use Dcp\HttpApi\V1\Crud\DocumentUtils;
 use Dcp\Router\ApiV2Response;
 use Anakeen\Router\Exception;
@@ -77,7 +78,7 @@ class DocumentData
 
         if (! $this->checkId($resourceId, $initid)) {
             // Redirect to other url
-            $location=URLUtils::generateUrl(sprintf("api/v2/documents/%d", $initid));
+            $location=URLUtils::generateUrl(sprintf("%sdocuments/%d", Settings::ApiV2, $initid));
             return $response->withStatus(307)
                 ->withHeader("location", $location);
         }
@@ -94,10 +95,13 @@ class DocumentData
             if ($this->_document->isConfidential()) {
                 $err = "Confidential document";
             }
+        } else {
+            $err="Access not granted";
         }
         if ($err) {
-            $exception = new Exception("CRUD0201", $resourceId, $err);
+            $exception = new Exception("ROUTES0101", $resourceId, $err);
             $exception->setHttpStatus("403", "Forbidden");
+            $exception->setUserMessage(___("Document access not granted", "ank"));
             throw $exception;
         }
         if ($this->_document->mid == 0) {
@@ -118,14 +122,15 @@ class DocumentData
     {
         $this->_document = DocManager::getDocument($ressourceId);
         if (!$this->_document) {
-            $exception = new Exception("CRUD0200", $ressourceId);
+            $exception = new Exception("ROUTES0100", $ressourceId);
             $exception->setHttpStatus("404", "Document not found");
+            $exception->setUserMessage(sprintf(___("Document \"%s\" not found", "ank"), $ressourceId));
             throw $exception;
         }
         if ($this->_document->doctype === "Z") {
-            $exception = new Exception("CRUD0219", $ressourceId);
+            $exception = new Exception("ROUTES0102", $ressourceId);
             $exception->setHttpStatus("404", "Document deleted");
-            $location=URLUtils::generateUrl(sprintf("api/v2/trash/%d", $this->_document->initid));
+            $location=URLUtils::generateUrl(sprintf("%s/trash/%d", Settings::ApiV2, $this->_document->initid));
             $exception->setURI($location);
             throw $exception;
         }
@@ -292,7 +297,7 @@ class DocumentData
         if (!$correctField) {
             $fields = $this->getFields();
             if ($fields) {
-                throw new Exception("CRUD0214", implode(",", $fields));
+                throw new Exception("ROUTES0103", implode(",", $fields));
             }
         }
         return $return;
@@ -427,7 +432,7 @@ class DocumentData
             }
             $url=sprintf("families/%s/enumerates/%s", ($this->_document->doctype === "C" ? $this->_document->name : $this->_document->fromname), $attribute->id);
 
-            $info["enumUri"] = sprintf("%sapi/v2/%s", URLUtils::getBaseURL(), $url);
+            $info["enumUri"] = sprintf("%s%s/%s", URLUtils::getBaseURL(), Settings::ApiV2, $url);
         }
 
         return $info;

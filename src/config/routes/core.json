@@ -7,7 +7,7 @@
       "methods": [
         "get"
       ],
-      "pattern": "/api/v2/documentsv1/{docid:[^.]+}[.json]",
+      "pattern": "/api/v2/documentsv1/{docid:[^/.]+}[.json]",
       "description": "Get data for a document",
       "name": "Core:GetDocumentLike a v1",
       "requiredAccesses": []
@@ -18,7 +18,7 @@
       "methods": [
         "get"
       ],
-      "pattern": "/api/v2/documents/{docid:[^.]+}[.json]",
+      "pattern": "/api/v2/documents/{docid:[^/.]+}[.json]",
       "description": "Get data for a document",
       "name": "Core:GetDocument",
       "requiredAccesses": []
@@ -54,6 +54,39 @@
       "pattern": "/api/v2/documents/",
       "description": "List all documents",
       "name": "Core:ListDocuments",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Core\\DocumentFamilyData",
+      "methods": [
+        "get"
+      ],
+      "pattern": "/api/v2/families/{family}/documents/{docid:[^/.]+}[.json]",
+      "description": "Get data for a document",
+      "name": "Core:GetFamilyDocument",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Core\\FamilyData",
+      "methods": [
+        "get"
+      ],
+      "pattern": "/api/v2/families/{family:[^/.]+}[.json]",
+      "description": "Get data for a family",
+      "name": "Core:GetFamily",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Core\\FamilyDocumentList",
+      "methods": [
+        "get"
+      ],
+      "pattern": "/api/v2/families/{family}/documents/",
+      "description": "List all documents of a family",
+      "name": "Core:ListFamilyDocuments",
       "requiredAccesses": []
     }
   ],

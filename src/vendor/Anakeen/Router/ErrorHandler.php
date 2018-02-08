@@ -82,23 +82,26 @@ class ErrorHandler
         $accept = $request->getHeaderLine("HTTP_ACCEPT");
 
         $useHtml = (preg_match("@\\btext/html\\b@", $accept));
-
+        $errId="";
         $response = $response->withStatus($exception->getHttpStatus());
+        $userMsg=$exception->getUserMessage();
+        if (!$userMsg) {
+            $userMsg=LogException::logMessage($exception, $errId);
+        }
+
         if ($useHtml) {
-            $exceptionMsg = LogException::getMessage($exception, $errId);
             return $response
                 ->withHeader('Content-Type', 'text/html')
-                ->write(ErrorMessage::getHtml($exceptionMsg, $errId));
+                ->write(ErrorMessage::getHtml($userMsg, $errId));
         } else {
             $useJSON = (preg_match("@\\bapplication/json\\b@", $accept));
             if ($useJSON) {
                 return $response
                     ->withJson($exception);
             } else {
-                $exceptionMsg = LogException::getMessage($exception, $errId);
                 return $response
                     ->withHeader('Content-Type', 'text/plain')
-                    ->write(ErrorMessage::getText($exceptionMsg, $errId));
+                    ->write(ErrorMessage::getText($userMsg, $errId));
             }
         }
     }

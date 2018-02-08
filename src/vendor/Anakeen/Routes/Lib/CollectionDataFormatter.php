@@ -7,6 +7,7 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Router\URLUtils;
+use Dcp\Core\Settings;
 use Dcp\HttpApi\V1\DocManager\Exception as DocumentException;
 use Anakeen\Router\Exception;
 
@@ -18,7 +19,7 @@ use Anakeen\Router\Exception;
  */
 class CollectionDataFormatter
 {
-    const APIURL = "api/v2/";
+    const APIURL = Settings::ApiV2;
     protected static $uselessProperties
         = array(
             "lockdomainid",
