@@ -1,8 +1,8 @@
 <?php
 
-namespace Dcp\Routes\Middleware;
+namespace Anakeen\Routes\Middleware;
 
-use Dcp\Router\RouterLib;
+use Anakeen\Router\RouterLib;
 
 class Authent
 {
@@ -16,8 +16,6 @@ class Authent
      */
     public static function Authenticate($request, $response, $next, $args = [])
     {
-        error_log("Before inside" . __METHOD__);
-
         /**
          * @var \Slim\Route $currentRoute
          */

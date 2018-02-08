@@ -244,21 +244,15 @@ function initMainVolatileParam(Application & $core, Session & $session = null)
 
 function _initMainVolatileParamCli(Application & $core)
 {
-    $hostname = LibSystem::getHostName();
-    $puburl = $core->GetParam("CORE_PUBURL", "http://" . $hostname . "/freedom");
-    
     $absindex = $core->GetParam("CORE_URLINDEX");
-    if ($absindex == '') {
-        $absindex = "$puburl/"; // try default
-        
-    }
-    $core_externurl = ($absindex) ? stripUrlSlahes($absindex) : stripUrlSlahes($puburl . "/");
+
+    $core_externurl = ($absindex) ? stripUrlSlahes($absindex) : ".";
     $core_mailaction = $core->getParam("CORE_MAILACTION");
     $core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction) : ($core_externurl . "?app=FDL&action=OPENDOC&mode=view");
     
     $core->SetVolatileParam("CORE_EXTERNURL", $core_externurl);
     $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
-    $core->SetVolatileParam("CORE_ABSURL", $puburl . "/"); // absolute links
+    $core->SetVolatileParam("CORE_ABSURL", $core_externurl); // absolute links
     $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
     $core->SetVolatileParam("CORE_ROOTURL", "$absindex?sole=R&");
     $core->SetVolatileParam("CORE_BASEURL", "$absindex?sole=A&");

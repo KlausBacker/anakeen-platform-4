@@ -7,6 +7,17 @@
       "methods": [
         "get"
       ],
+      "pattern": "/api/v2/documentsv1/{docid:[^.]+}[.json]",
+      "description": "Get data for a document",
+      "name": "Core:GetDocumentLike a v1",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Core\\DocumentData",
+      "methods": [
+        "get"
+      ],
       "pattern": "/api/v2/documents/{docid:[^.]+}[.json]",
       "description": "Get data for a document",
       "name": "Core:GetDocument",
@@ -36,7 +47,7 @@
     },
     {
       "priority": 1,
-      "callable": "\\Dcp\\Routes\\DocumentList",
+      "callable": "\\Anakeen\\Routes\\Core\\DocumentList",
       "methods": [
         "get"
       ],
@@ -49,7 +60,7 @@
   "middlewares": [
     {
       "priority": 1,
-      "callable": "\\Dcp\\Routes\\Middleware\\Authent::Authenticate",
+      "callable": "\\Anakeen\\Routes\\Middleware\\Authent::Authenticate",
       "methods": [
         "any"
       ],
@@ -60,11 +71,11 @@
     },
     {
       "priority": 1,
-      "callable": "\\Dcp\\Routes\\Middleware\\Authent::Authenticate",
+      "callable": "\\Anakeen\\Routes\\Middleware\\Authent::Authenticate",
       "methods": [
         "any"
       ],
-      "pattern": "/app/v2",
+      "pattern": "/app/",
       "description": "Verify authentication",
       "name": "Core:Middleware:AppAuthent",
       "requiredAccesses": []

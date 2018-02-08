@@ -24,7 +24,7 @@ $config = [
 ];
 
 
-$routeConfig = \Dcp\Router\RouterLib::getRouterConfig();
+$routeConfig = \Anakeen\Router\RouterLib::getRouterConfig();
 
 $routes = $routeConfig->getRoutes();
 $middleWares = $routeConfig->getMiddlewares();
@@ -36,7 +36,7 @@ $container['cache'] = function () {
 
 // Add middleware to the application
 $app = new \Slim\App($container);
-$app->add(new \Slim\HttpCache\Cache('public', 86400));
+$app->add(new \Slim\HttpCache\Cache('private', 86400));
 
 
 $c = $app->getContainer();
@@ -90,7 +90,7 @@ $app->add(
                 if ($middleWare->methods !== ["ANY"] && ! in_array($requestMethod, $middleWare->methods)) {
                     continue;
                 }
-                $regExps = \Dcp\Router\RouterLib::parseInfoToRegExp($patternInfos);
+                $regExps = \Anakeen\Router\RouterLib::parseInfoToRegExp($patternInfos);
 
                 // Add all middleware matches
                 foreach ($regExps as $regExp) {

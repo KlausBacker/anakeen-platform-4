@@ -3,12 +3,7 @@
  * @author Anakeen
  * @package FDL
 */
-/**
- * Created by PhpStorm.
- * User: charles
- * Date: 05/11/14
- * Time: 17:44
- */
+
 
 namespace Dcp\HttpApi\V1\Crud;
 
@@ -63,7 +58,7 @@ class DocumentUtils
             throw new Exception("CRUD0209", $jsonString);
         }
         $values = $dataDocument["document"]["attributes"];
-        
+
         $newValues = array();
         // Only keep the value element of each attribute passed
         foreach ($values as $attributeId => $value) {

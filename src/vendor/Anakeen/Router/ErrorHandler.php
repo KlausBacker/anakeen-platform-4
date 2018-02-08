@@ -2,6 +2,7 @@
 
 namespace Dcp\Router;
 
+use Dcp\Core\LogException;
 use Dcp\Core\Utils\ErrorMessage;
 
 class ErrorHandler
@@ -23,12 +24,10 @@ class ErrorHandler
              */
             return self::getFailApiResponse($request, $response, $exception);
         } else {
-
             $exceptionMsg = \Dcp\Core\LogException::logMessage($exception, $errId);
-            $response=$response->withStatus(500);
+            $response = $response->withStatus(500);
             return self::getResponsePage($request, $response, $exceptionMsg, $errId);
         }
-
     }
 
     /**
@@ -69,10 +68,9 @@ class ErrorHandler
 
 
     /**
-     * @param \Slim\Http\request  $request
-     * @param \Slim\Http\response $response
-     * @param                     $exceptionMsg
-     * @param string              $errId
+     * @param \Slim\Http\request        $request
+     * @param \Slim\Http\response       $response
+     * @param \Anakeen\Router\Exception $exception
      *
      * @return \Slim\Http\response
      */
@@ -85,8 +83,9 @@ class ErrorHandler
 
         $useHtml = (preg_match("@\\btext/html\\b@", $accept));
 
-        $response=$response->withStatus($exception->getHttpStatus());
+        $response = $response->withStatus($exception->getHttpStatus());
         if ($useHtml) {
+            $exceptionMsg = LogException::getMessage($exception, $errId);
             return $response
                 ->withHeader('Content-Type', 'text/html')
                 ->write(ErrorMessage::getHtml($exceptionMsg, $errId));
@@ -96,6 +95,7 @@ class ErrorHandler
                 return $response
                     ->withJson($exception);
             } else {
+                $exceptionMsg = LogException::getMessage($exception, $errId);
                 return $response
                     ->withHeader('Content-Type', 'text/plain')
                     ->write(ErrorMessage::getText($exceptionMsg, $errId));

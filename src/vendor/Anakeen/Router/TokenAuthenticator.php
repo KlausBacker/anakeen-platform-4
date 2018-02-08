@@ -2,7 +2,7 @@
 
 namespace Anakeen\Router;
 
-use Dcp\Router\RouterLib;
+use Anakeen\Router\RouterLib;
 
 class TokenAuthenticator extends \OpenAuthenticator
 {

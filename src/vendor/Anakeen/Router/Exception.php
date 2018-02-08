@@ -131,6 +131,7 @@ class Exception extends \Dcp\Exception implements \JsonSerializable
             "message" => $this->getDcpMessage(),
             "data" => $this->getData(),
             "code" => $this->getDcpCode(),
+            "uri" => $this->getURI(),
             "userMessage" => $this->getUserMessage(),
         ];
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\Router;
+namespace Anakeen\Router;
 
 use \Dcp\Core\ContextManager;
 use \Dcp\Core\Exception;

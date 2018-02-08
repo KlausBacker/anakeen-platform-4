@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\Routes;
+namespace Anakeen\Routes\Core;
 
 use Dcp\HttpApi\V1\Crud\DocumentFormatter;
 use Dcp\HttpApi\V1\Crud\DocumentUtils;

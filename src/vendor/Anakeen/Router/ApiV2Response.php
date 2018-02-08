@@ -20,6 +20,13 @@ class ApiV2Response
         return $response->withJson($return);
     }
 
+    /**
+     * @param \Slim\Http\request  $request
+     * @param \Slim\Http\response $response
+     * @param                     $eTag
+     *
+     * @return \Slim\Http\response
+     */
     public static function withEtag(\Slim\Http\request $request, \Slim\Http\response $response, $eTag)
     {
         /**
@@ -45,8 +52,8 @@ class ApiV2Response
     {
         if ($etag) {
             $ifNoneMatch = $request->getHeaderLine('If-None-Match');
-
             if ($ifNoneMatch) {
+                $ifNoneMatch=base64_decode($ifNoneMatch);
                 $etagList = preg_split('@\s*,\s*@', $ifNoneMatch);
                 if (in_array($etag, $etagList) || in_array('*', $etagList)) {
                     return true;

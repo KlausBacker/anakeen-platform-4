@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\Router;
+namespace Anakeen\Router;
 
 class RouterConfig
 {
