@@ -29,7 +29,7 @@
       "methods": [
         "put"
       ],
-      "pattern": "/api/v2/documents/{docid:[^.]+}[.json]",
+      "pattern": "/api/v2/documents/{docid:[^/.]+}[.json]",
       "description": "Modify data for a document",
       "name": "Core:ModifyDocument",
       "requiredAccesses": []
@@ -40,7 +40,7 @@
       "methods": [
         "delete"
       ],
-      "pattern": "/api/v2/documents/{docid:[^.]+}[.json]",
+      "pattern": "/api/v2/documents/{docid:[^/.]+}[.json]",
       "description": "Delete document (put in trash)",
       "name": "Core:DeleteDocument",
       "requiredAccesses": []
@@ -87,6 +87,17 @@
       "pattern": "/api/v2/families/{family}/documents/",
       "description": "List all documents of a family",
       "name": "Core:ListFamilyDocuments",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Core\\RevisionData",
+      "methods": [
+        "get"
+      ],
+      "pattern": "/api/v2/documents/{docid}/revisions/{revisionNumber:[0-9]+}",
+      "description": "List all documents of a family",
+      "name": "Core:RevisionData",
       "requiredAccesses": []
     }
   ],

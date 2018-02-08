@@ -9,6 +9,7 @@ use Dcp\Core\Settings;
 use Dcp\HttpApi\V1\Crud\DocumentUtils;
 use Dcp\Router\ApiV2Response;
 use Anakeen\Router\Exception;
+use Dcp\Routes\Document;
 
 /**
  * Class DocumentData
@@ -44,6 +45,7 @@ class DocumentData
      * @var int document icon width in px
      */
     public $iconSize = 32;
+    protected $documentId;
 
     /**
      * DocumentData constructor.
@@ -74,16 +76,17 @@ class DocumentData
     {
         $mb=microtime(true);
         $this->request=$request;
-        $resourceId=$args["docid"];
+        $this->documentId=$args["docid"];
 
-        if (! $this->checkId($resourceId, $initid)) {
+        if (! $this->checkId($this->documentId, $initid)) {
             // Redirect to other url
-            $location=URLUtils::generateUrl(sprintf("%sdocuments/%d", Settings::ApiV2, $initid));
+            $document=DocManager::getDocument($initid, false);
+            $location=Document::getURI($document);
             return $response->withStatus(307)
                 ->withHeader("location", $location);
         }
 
-        $this->setDocument($resourceId);
+        $this->setDocument($this->documentId);
         $etag=$this->getDocumentEtag($this->_document->id);
         $response=ApiV2Response::withEtag($request, $response, $etag);
         if (ApiV2Response::matchEtag($request, $etag)) {
@@ -99,7 +102,7 @@ class DocumentData
             $err="Access not granted";
         }
         if ($err) {
-            $exception = new Exception("ROUTES0101", $resourceId, $err);
+            $exception = new Exception("ROUTES0101", $this->documentId, $err);
             $exception->setHttpStatus("403", "Forbidden");
             $exception->setUserMessage(___("Document access not granted", "ank"));
             throw $exception;

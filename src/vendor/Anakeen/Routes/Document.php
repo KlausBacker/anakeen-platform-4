@@ -2,8 +2,11 @@
 
 namespace Dcp\Routes;
 
+use Dcp\Core\Settings;
 use Dcp\HttpApi\V1\Crud\Response;
 use Dcp\Router\ApiV2Response;
+
+use Anakeen\Router\URLUtils;
 
 class Document
 {
@@ -77,5 +80,38 @@ class Document
 
         $response = Response::withCrud($request, $response, $crudCall);
         return $response;
+    }
+
+    public static function getURI($document, $prefix = Settings::ApiV2)
+    {
+        if ($document) {
+            if ($document->defDoctype === "C") {
+                return URLUtils::generateURL(sprintf("%s/families/%s.json", $prefix, $document->name));
+            } else {
+                if ($document->doctype === "Z") {
+                    return URLUtils::generateURL(sprintf("%s/trash/%s.json", $prefix, $document->initid));
+                } else {
+                    if ($document->locked == -1) {
+                        return URLUtils::generateURL(
+                            sprintf(
+                                "%s/documents/%s/revisions/%d.json",
+                                $prefix,
+                                $document->initid,
+                                $document->revision
+                            )
+                        );
+                    } else {
+                        return URLUtils::generateURL(
+                            sprintf(
+                                "%s/documents/%s.json",
+                                $prefix,
+                                $document->initid
+                            )
+                        );
+                    }
+                }
+            }
+        }
+        return "";
     }
 }

@@ -10,6 +10,7 @@ use Anakeen\Router\URLUtils;
 use Dcp\Core\Settings;
 use Dcp\HttpApi\V1\DocManager\Exception as DocumentException;
 use Anakeen\Router\Exception;
+use Dcp\Routes\Document;
 
 /**
  * Class DocumentFormatter
@@ -76,35 +77,7 @@ class CollectionDataFormatter
         $this->rootPath = URLUtils::stripUrlSlahes($this->rootPath);
         /* init the standard generator of url (redirect to the documents collection */
         $this->generateUrl = function ($document) {
-            if ($document) {
-                if ($document->defDoctype === "C") {
-                    return URLUtils::generateURL(sprintf("%s/families/%s.json", static::APIURL, $document->name));
-                } else {
-                    if ($document->doctype === "Z") {
-                        return URLUtils::generateURL(sprintf("%s/trash/%s.json", static::APIURL, $document->initid));
-                    } else {
-                        if ($document->locked == -1) {
-                            return URLUtils::generateURL(
-                                sprintf(
-                                    "%s/documents/%s/revisions/%d.json",
-                                    static::APIURL,
-                                    $document->initid,
-                                    $document->revision
-                                )
-                            );
-                        } else {
-                            return URLUtils::generateURL(
-                                sprintf(
-                                    "%s/documents/%s.json",
-                                    static::APIURL,
-                                    $document->initid
-                                )
-                            );
-                        }
-                    }
-                }
-            }
-            return "";
+            return Document::getURI($document, static::APIURL);
         };
     }
 

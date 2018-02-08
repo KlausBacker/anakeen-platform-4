@@ -17,6 +17,13 @@ use Anakeen\Routes\Core\CollectionDataFormatter;
 class DocumentFormatter extends CollectionDataFormatter
 {
     const APIURL="api/v1/";
+
+
+    public function __construct($source)
+    {
+        parent::__construct($source);
+        $this->rootPath=self::APIURL;
+    }
     public function getFormatCollection()
     {
         $fmt = parent::getFormatCollection();
