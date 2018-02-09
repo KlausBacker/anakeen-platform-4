@@ -64,4 +64,50 @@ class ErrorCodeRoutes
      * @errorCode The document is not deleted
      */
     const ROUTES0113 = 'Cannot update deleted document "%s"';
+    /**
+     * @errorCode The image file must be an real image
+     */
+    const ROUTES0114 = 'Asset Image file "%s" is not an image';
+    /**
+     * @errorCode The image file must be in "Images" directory
+     */
+    const ROUTES0115 = 'Asset Image file "%s" not found';
+    /**
+     * @errorCode The attribute set in url is not part of document
+     */
+    const ROUTES0116 = 'Cannot download file : Attribut "%s" of document "%s" not exists';
+    /**
+     * @errorCode The attribute as an "I" visibility
+     */
+    const ROUTES0117 = 'Access denied to download image : Attribut "%s" of document "%s" is protected';
+
+    /**
+     * @errorCode The attribute value is empty
+     */
+    const ROUTES0118 = 'No image in attribute "%s" (index "%s") in document "%s"';
+    /**
+     * @errorCode The vault id set in attribute not exists
+     */
+    const ROUTES0119 = 'Image id not exists in attribute "%s" (index "%s") in document "%s"';
+    /**
+     * @errorCode The attribute value is malformed
+     */
+    const ROUTES0120 = 'Incorrect value in file/image in attribute "%s" (index "%s") in document "%s"';
+    /**
+     * @errorCode The index must be greater or equal to 0
+     */
+    const ROUTES0121 = 'Incorrect index "%s" attribute "%s" is multiple in document "%s"';
+    /**
+     * @errorCode The index for a single value must be -1
+     */
+    const ROUTES0122 = 'Incorrect index "%s" (must be -1) attribute "%s" is not multiple in document "%s"';
+    /**
+     * @errorCode The index to select attribute value is -1 for single value or >=0 for multiple values
+     */
+    const ROUTES0123 = 'Incorrect index "%s" (must be >= -1) attribute "%s" in document "%s"';
+
+    /**
+     * @errorCode The attribute must reference a file
+     */
+    const ROUTES0124 = 'Attribute "%s" is not a file or image attribute in document "%s"';
 }

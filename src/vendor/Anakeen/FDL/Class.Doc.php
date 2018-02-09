@@ -5425,7 +5425,7 @@ create unique index i_docir on doc(initid, revision);";
             } else {
                 $err = sprintf(_("Method [%s] not exists"), $method);
                 addWarningMsg($err);
-                error_log(print_r(getDebugStack(), true));
+                error_log($err.print_r(getDebugStack(), true));
                 return null;
             }
         }

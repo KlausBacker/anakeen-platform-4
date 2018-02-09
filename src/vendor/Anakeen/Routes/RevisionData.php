@@ -23,6 +23,7 @@ class RevisionData extends DocumentData
         if (!$checkId) {
             $initid = $this->documentId;
         }
+        return true;
     }
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)

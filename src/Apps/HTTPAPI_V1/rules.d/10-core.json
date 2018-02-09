@@ -273,9 +273,10 @@
     {
         "order" :        100,
         "class" :        "\\Dcp\\HttpApi\\V1\\Crud\\DocumentFile",
-        "regExp" :       "%^/documents/(?P<identifier>[^/]+)/revisions/(?P<revision>[0-9]+)/files/(?P<attrid>[^/]+)/(?P<index>-?[0-9]+)$%",
+        "regExp" :       "%^/documents/(?P<identifier>[^/]+)/revisions/(?P<revision>[0-9]+)/files/(?P<attrid>[^/]+)/(?P<index>-?[0-9]+)?(/(?P<filename>-?[^/]+))?$%",
         "description" :  "Download resized file image included in document",
-        "canonicalURL" : "documents/<documentId>/revisions/<revisionId>/files/<attrid>/<index>"
+        "canonicalURL" : "documents/<documentId>/revisions/<revisionId>/files/<attrid>/<index>",
+        "acceptExtensions" : ["*"]
     },
     {
         "order" :        100,

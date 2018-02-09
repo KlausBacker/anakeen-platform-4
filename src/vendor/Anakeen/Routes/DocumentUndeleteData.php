@@ -10,7 +10,7 @@ use Dcp\Router\ApiV2Response;
  *
  * Undelete deleted document
  * Need to set {document:{properties:{status:alive}}} in request body to activate undeletion
- * @note    Used by route : GET /api/v2/trash/{docid}
+ * @note    Used by route : PUT /api/v2/trash/{docid}
  * @package Anakeen\Routes\Core
  */
 class DocumentUnDeleteData extends DocumentDeletedData

@@ -174,7 +174,7 @@ class CollectionDataFormatter
         $formatCollection->addProperty("initid");
         /** Format uniformly the void multiple values */
 
-        $formatCollection->setAttributeRenderHook(function ($info, $attribute) {
+        $formatCollection->setAttributeRenderHook(function ($info, $attribute, $doc) {
             /**
              * @var \NormalAttribute $attribute
              */
@@ -203,11 +203,11 @@ class CollectionDataFormatter
                             }
 
                             if ($attribute->type === "image" && !empty($oneInfo->thumbnail)) {
-                                $this->rewriteThumbUrl($oneInfo->thumbnail);
+                                $this->rewriteThumbUrl($oneInfo->thumbnail, $doc->initid, ($doc->locked == -1)?$doc->revision:-1);
                             }
                             if (($attribute->type === "image" || $attribute->type === "file")
                                 && !empty($oneInfo->url)) {
-                                $this->rewriteFileUrl($oneInfo->url);
+                                $this->rewriteFileUrl($oneInfo->url, $doc->initid, ($doc->locked == -1)?$doc->revision:-1);
                             }
                         }
                     }
@@ -216,10 +216,10 @@ class CollectionDataFormatter
                         $this->rewriteImageUrl($info->icon);
                     }
                     if ($attribute->type === "image" && !empty($info->thumbnail)) {
-                        $this->rewriteThumbUrl($info->thumbnail);
+                        $this->rewriteThumbUrl($info->thumbnail, $doc->initid, ($doc->locked == -1)?$doc->revision:-1);
                     }
                     if (($attribute->type === "image" || $attribute->type === "file") && !empty($info->url)) {
-                        $this->rewriteFileUrl($info->url);
+                        $this->rewriteFileUrl($info->url, $doc->initid, ($doc->locked == -1)?$doc->revision:-1);
                     }
                 }
             }
@@ -272,36 +272,60 @@ class CollectionDataFormatter
         }
     }
 
-    protected function rewriteThumbUrl(&$imgUrl)
+    protected function rewriteThumbUrl(&$imgUrl, $docid = 0, $revision = -1)
     {
         //http://localhost/tmp32/file/66519/0/en_photo/0/Migaloo-Baleine-04.jpg?cache=no&inline=yes&width=48&size=48&width=48
         //file/66519/0/en_photo/4/faisan4.gif?cache=no&inline=yes&width=48
         $pattern = "%file/(?P<docid>[0-9]+)/([^/]+)/(?P<attrid>[^/]+)/(?P<index>[^/]+)/.*&width=(?P<size>[0-9]+)%";
         if (preg_match($pattern, $imgUrl, $reg)) {
-            $imgUrl = sprintf(
-                "%sdocuments/%d/images/%s/%s/sizes/%s.png",
-                $this->rootPath,
-                $reg["docid"],
-                $reg["attrid"],
-                $reg["index"],
-                $reg["size"]
-            );
+            if ($revision === -1) {
+                $imgUrl = sprintf(
+                    "%sdocuments/%d/images/%s/%s/sizes/%s.png",
+                    $this->rootPath,
+                    $docid ? $docid : $reg["docid"],
+                    $reg["attrid"],
+                    $reg["index"],
+                    $reg["size"]
+                );
+            } else {
+                $imgUrl = sprintf(
+                    "%sdocuments/%d/revisions/%d/images/%s/%s/sizes/%s.png",
+                    $this->rootPath,
+                    $docid ? $docid : $reg["docid"],
+                    $revision,
+                    $reg["attrid"],
+                    $reg["index"],
+                    $reg["size"]
+                );
+            }
         }
     }
 
-    protected function rewriteFileUrl(&$fileUrl)
+    protected function rewriteFileUrl(&$fileUrl, $docid = 0, $revision = -1)
     {
         //file/66519/1461587595/en_photo/5/Agouti-Animals-Photos.JPG?cache=no&inline=yes
         $pattern = "%file/(?P<docid>[0-9]+)/([^/]+)/(?P<attrid>[^/]+)/(?P<index>[^/]+)/(?P<filename>[^/?]+)%";
         if (preg_match($pattern, $fileUrl, $reg)) {
-            $fileUrl = sprintf(
-                "%sdocuments/%d/files/%s/%s/%s",
-                $this->rootPath,
-                $reg["docid"],
-                $reg["attrid"],
-                $reg["index"],
-                $reg["filename"]
-            );
+            if ($revision === -1) {
+                $fileUrl = sprintf(
+                    "%sdocuments/%d/files/%s/%s/%s",
+                    $this->rootPath,
+                    $docid?$docid:$reg["docid"],
+                    $reg["attrid"],
+                    $reg["index"],
+                    $reg["filename"]
+                );
+            } else {
+                $fileUrl = sprintf(
+                    "%sdocuments/%d/revisions/%d/files/%s/%s/%s",
+                    $this->rootPath,
+                    $docid?$docid:$reg["docid"],
+                    $revision,
+                    $reg["attrid"],
+                    $reg["index"],
+                    $reg["filename"]
+                );
+            }
         }
     }
 

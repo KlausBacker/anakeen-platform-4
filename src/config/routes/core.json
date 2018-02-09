@@ -84,7 +84,7 @@
       "methods": [
         "get"
       ],
-      "pattern": "/api/v2/documents/{docid}/revisions/{revisionNumber:[0-9]+}",
+      "pattern": "/api/v2/documents/{docid}/revisions/{revisionNumber:[0-9]+}[.json]",
       "description": "List all documents of a family",
       "name": "Core:RevisionData",
       "requiredAccesses": []
@@ -109,6 +109,72 @@
       "pattern": "/api/v2/trash/{docid:[^/.]+}[.json]",
       "description": "Undelete document",
       "name": "Core:UndeleteDocument",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Core\\ImageAsset",
+      "methods": [
+        "get"
+      ],
+      "pattern": "/api/v2/images/assets/original/{image}",
+      "description": "Download file image",
+      "name": "Core:OriginalImage",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Core\\ImageAsset",
+      "methods": [
+        "get"
+      ],
+      "pattern": "/api/v2/images/assets/sizes/{size:[0-9x]+[cfs]?}/{image}",
+      "description": "Download file image",
+      "name": "Core:resizeImage",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Core\\FileAttribute",
+      "methods": [
+        "get"
+      ],
+      "pattern": "/api/v2/documents/{docid}/files/{attrid}/{index}/{fileName}",
+      "description": "Download file from document",
+      "name": "Core:fileAttributeImage",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Core\\FileAttribute",
+      "methods": [
+        "get"
+      ],
+      "pattern": "/api/v2/documents/{docid}/revisions/{revision}/files/{attrid}/{index}/{fileName}",
+      "description": "Download file from document",
+      "name": "Core:revisedFileAttributeImage",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Core\\ImageAttribute",
+      "methods": [
+        "get"
+      ],
+      "pattern": "/api/v2/documents/{docid}/images/{attrid}/{index}/sizes/{size:[0-9x]+[cfs]?}[.{extension}]",
+      "description": "Download file image from document",
+      "name": "Core:resizeAttributeImage",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Core\\ImageAttribute",
+      "methods": [
+        "get"
+      ],
+      "pattern": "/api/v2/documents/{docid}/revisions/{revision}/images/{attrid}/{index}/sizes/{size:[0-9x]+[cfs]?}[.{extension}]",
+      "description": "Download file image from document",
+      "name": "Core:resizeRevisedAttributeImage",
       "requiredAccesses": []
     }
   ],
