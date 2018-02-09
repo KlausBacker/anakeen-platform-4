@@ -3,17 +3,6 @@
   "routes": [
     {
       "priority": 1,
-      "callable": "\\Dcp\\Routes\\Document::get",
-      "methods": [
-        "get"
-      ],
-      "pattern": "/api/v2v1/documents/{docid:[^/.]+}[.json]",
-      "description": "Get data for a document",
-      "name": "Core:GetDocumentLike a v1",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
       "callable": "\\Anakeen\\Routes\\Core\\DocumentData",
       "methods": [
         "get"
@@ -36,18 +25,7 @@
     },
     {
       "priority": 1,
-      "callable": "\\Dcp\\Routes\\Document::put",
-      "methods": [
-        "put"
-      ],
-      "pattern": "/api/v2v1/documents/{docid:[^/.]+}[.json]",
-      "description": "Modify data for a document",
-      "name": "Core:GetDocumentLike a v1",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
-      "callable": "\\Dcp\\Routes\\Document::delete",
+      "callable": "\\Anakeen\\Routes\\Core\\DocumentDeleteData",
       "methods": [
         "delete"
       ],
@@ -109,6 +87,28 @@
       "pattern": "/api/v2/documents/{docid}/revisions/{revisionNumber:[0-9]+}",
       "description": "List all documents of a family",
       "name": "Core:RevisionData",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Core\\DocumentDeletedData",
+      "methods": [
+        "get"
+      ],
+      "pattern": "/api/v2/trash/{docid:[^/.]+}[.json]",
+      "description": "Get deleted data for a document",
+      "name": "Core:GetDeletedDocument",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Core\\DocumentUndeleteData",
+      "methods": [
+        "put"
+      ],
+      "pattern": "/api/v2/trash/{docid:[^/.]+}[.json]",
+      "description": "Undelete document",
+      "name": "Core:UndeleteDocument",
       "requiredAccesses": []
     }
   ],

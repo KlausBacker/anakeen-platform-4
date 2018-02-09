@@ -37,6 +37,7 @@ class CollectionDataFormatter
             "initid",
             "title",
             "revision",
+            "status",
             "state",
             "icon",
             "name"

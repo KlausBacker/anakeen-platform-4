@@ -133,6 +133,7 @@ class DocumentData
         if ($this->_document->doctype === "Z") {
             $exception = new Exception("ROUTES0102", $ressourceId);
             $exception->setHttpStatus("404", "Document deleted");
+            $exception->setUserMessage(sprintf(___("Document \"%s\" is deleted", "ank"), $ressourceId));
             $location=URLUtils::generateUrl(sprintf("%s/trash/%d", Settings::ApiV2, $this->_document->initid));
             $exception->setURI($location);
             throw $exception;

@@ -40,6 +40,9 @@ class URLUtils
     public static function stripUrlSlahes($url)
     {
         $pos = mb_strpos($url, '://');
+        if ($pos === false) {
+            $pos=-3;
+        }
         return mb_substr($url, 0, $pos + 3) . preg_replace('/\/+/u', '/', mb_substr($url, $pos + 3));
     }
 

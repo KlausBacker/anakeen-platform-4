@@ -47,4 +47,21 @@ class ErrorCodeRoutes
      * @errorCode The document cannot be recorded
      */
     const ROUTES0109 = 'Update document "%s" fail  : "%s"';
+
+    /**
+     * @errorCode The document cannot be deleted
+     */
+    const ROUTES0110 = 'Delete deny for document "%s" fail : "%s" ';
+    /**
+     * @errorCode The document cannot be deleted
+     */
+    const ROUTES0111 = 'Delete Document "%s" fail : "%s" ';
+    /**
+     * @errorCode The document is not deleted
+     */
+    const ROUTES0112 = 'Document "%s" is not in the trash';
+    /**
+     * @errorCode The document is not deleted
+     */
+    const ROUTES0113 = 'Cannot update deleted document "%s"';
 }
