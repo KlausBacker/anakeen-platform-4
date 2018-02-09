@@ -6,7 +6,7 @@
 
 namespace Dcp\HttpApi\V1\Crud;
 
-use Dcp\HttpApi\V1\Api\RecordReturnMessage as RecordReturnMessage;
+use Dcp\HttpApi\V1\Api\RecordReturnMessage;
 
 abstract class Crud
 {

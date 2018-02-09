@@ -7,7 +7,7 @@
       "methods": [
         "get"
       ],
-      "pattern": "/api/v2/documentsv1/{docid:[^/.]+}[.json]",
+      "pattern": "/api/v2v1/documents/{docid:[^/.]+}[.json]",
       "description": "Get data for a document",
       "name": "Core:GetDocumentLike a v1",
       "requiredAccesses": []
@@ -25,13 +25,24 @@
     },
     {
       "priority": 1,
-      "callable": "\\Dcp\\Routes\\Document::put",
+      "callable": "\\Anakeen\\Routes\\Core\\DocumentUpdateData",
       "methods": [
         "put"
       ],
       "pattern": "/api/v2/documents/{docid:[^/.]+}[.json]",
       "description": "Modify data for a document",
       "name": "Core:ModifyDocument",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 1,
+      "callable": "\\Dcp\\Routes\\Document::put",
+      "methods": [
+        "put"
+      ],
+      "pattern": "/api/v2v1/documents/{docid:[^/.]+}[.json]",
+      "description": "Modify data for a document",
+      "name": "Core:GetDocumentLike a v1",
       "requiredAccesses": []
     },
     {
@@ -108,7 +119,7 @@
       "methods": [
         "any"
       ],
-      "pattern": "/api/v2",
+      "pattern": "/api/",
       "description": "Verify authentication",
       "name": "Core:Middleware:ApiAuthent",
       "requiredAccesses": []
