@@ -2,6 +2,7 @@
 
 namespace Anakeen\Pu\Routes;
 
+use Anakeen\Router\Exception;
 use Anakeen\Router\URLUtils;
 use Dcp\Core\ContextManager;
 use Dcp\Core\DocManager;
@@ -13,7 +14,8 @@ require_once 'PU_testcase_dcp_commonfamily.php';
 
 class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
 {
-
+    protected static $importCsvEnclosure = '"';
+    protected static $importCsvSeparator = ";";
 
     /**
      * @var \Slim\App
@@ -48,10 +50,10 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
         $request = Request::createFromEnvironment($env);
 
         if (!empty($env["CONTENT"])) {
-            $body=new RequestBody();
+            $body = new RequestBody();
             $body->write($env["CONTENT"]);
             $body->rewind();
-            $request=$request->withBody($body);
+            $request = $request->withBody($body);
         }
         self::$routerApp->getContainer()['request'] = $request;
 
@@ -59,12 +61,50 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
         /**
          * @var \Slim\Http\Response $response
          */
-        $response=self::$routerApp->getContainer()['response'];
+        $response = self::$routerApp->getContainer()['response'];
         if ($response) {
             $response->getBody()->rewind();
         }
 
         return self::$routerApp;
+    }
+
+
+    /**
+     * Init Router with uri
+     * @param string $uri like "GET /api/v2/foo?a=3"
+     * @param string   $jsonContent
+     *
+     * @return \Slim\App
+     * @throws Exception
+     */
+    protected static function setApiUriEnv($uri, $jsonContent = null)
+    {
+        if (!preg_match("/([A-Z]+)\s+(.*)/", $uri, $reg)) {
+            throw new Exception("Syntax error in uri : $uri");
+        }
+        $method = $reg[1];
+        $uri = $reg[2];
+        $url = parse_url($uri);
+        if (!$url) {
+            throw new Exception("Syntax error in uri (url) : $uri");
+        }
+
+        $envConfig = [
+            'REQUEST_METHOD' => $method,
+            'HTTP_ACCEPT' => 'application/json',
+            'REQUEST_URI' => $url["path"]
+        ];
+        if (!empty($url["query"])) {
+            $envConfig['QUERY_STRING'] = $url["query"];
+        }
+        if (!empty($jsonContent)) {
+            $envConfig['CONTENT_TYPE'] = 'application/json;charset=utf8';
+            $envConfig['CONTENT'] = $jsonContent;
+        }
+
+        $env = Environment::mock($envConfig);
+        return self::setApiEnv($env);
     }
 
     protected static function resetDocumentCache()
@@ -112,7 +152,8 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
                         $expectedValue,
                         $data[$currentKey],
                         sprintf(
-                            'Wrong value for key "%s.%s" [api result : %s] // [expected : %s].'."\n". 'See file "%s"',
+                            'Wrong value for key "%s.%s" [api result : %s] // [expected : %s].' . "\n"
+                            . 'See file "%s"',
                             $keys,
                             $currentKey,
                             var_export($data[$currentKey], true),
