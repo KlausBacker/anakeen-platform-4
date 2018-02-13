@@ -16,11 +16,11 @@ class DocumentDeletedData extends DocumentData
 {
     protected function setDocument($ressourceId)
     {
-        $this->_document = DocManager::getDocument($ressourceId);
+        $this->_document = DocManager::getDocument($ressourceId, false);
         if (!$this->_document) {
             $exception = new Exception("ROUTES0100", $ressourceId);
             $exception->setHttpStatus("404", "Document not found");
-            $exception->setUserMessage(sprintf(___("Document \"%s\" not found", "ank"), $ressourceId));
+            $exception->setUserMessage(sprintf(___("Deleted document \"%s\" not found", "ank"), $ressourceId));
             throw $exception;
         }
         if ($this->_document->doctype !== "Z") {

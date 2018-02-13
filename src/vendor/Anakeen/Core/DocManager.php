@@ -615,6 +615,15 @@ class DocManager
             $arr = pg_fetch_array($result, ($n - 1), PGSQL_ASSOC);
             $id = intval($arr["id"]);
         }
+
+        if ($id === 0) {
+            // May be a deleted document
+            DbManager::query(sprintf("select id from docread where name='%s' and doctype='Z' order by id desc limit 1", pg_escape_string($documentName)), $deletedId, true, true);
+
+            if ($deletedId) {
+                $id=intval($deletedId);
+            }
+        }
         return $id;
     }
 

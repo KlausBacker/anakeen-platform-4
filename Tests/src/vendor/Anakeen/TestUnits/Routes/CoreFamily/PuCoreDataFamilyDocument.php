@@ -11,7 +11,6 @@ require DEFAULT_PUBDIR . '/vendor/Anakeen/lib/vendor/autoload.php';
 class CoreDataFamilyDocument extends TestCaseRoutes
 {
 
-
     /**
      * import TST_APIBASE family
      *
@@ -55,28 +54,6 @@ class CoreDataFamilyDocument extends TestCaseRoutes
      * @throws \Slim\Exception\NotFoundException
      */
     public function testGetDocument($uri, $expectedJsonFile)
-    {
-        $app = $this->setApiUriEnv($uri);
-
-        $response = $app->run(true);
-        $rawBody = (string)$response->getBody();
-        $this->isJSONMatch($rawBody, file_get_contents($expectedJsonFile));
-    }
-
-
-    /**
-     * Test Simple Get revised Document
-     *
-     * @dataProvider dataGetDocument
-     *
-     * @param $uri
-     * @param $expectedJsonFile
-     *
-     * @throws \Exception
-     * @throws \Slim\Exception\MethodNotAllowedException
-     * @throws \Slim\Exception\NotFoundException
-     */
-    public function __testGetRevisedDocument($uri, $expectedJsonFile)
     {
         $app = $this->setApiUriEnv($uri);
 
