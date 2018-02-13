@@ -125,7 +125,7 @@ class DocumentUpdateData extends DocumentData
     {
 
         if (!isset($dataDocument["document"]["attributes"]) || !is_array($dataDocument["document"]["attributes"])) {
-            throw new Exception("ROUTES0106");
+            throw new Exception("ROUTES0106", print_r($dataDocument, true));
         }
         $values = $dataDocument["document"]["attributes"];
 

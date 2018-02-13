@@ -60,7 +60,7 @@ function getSysMimeFile($f, $fn = "")
  */
 function getTextMimeFile($f, $fn = '')
 {
-    return \Anakeen\Core\FileMime::getMimeFile($f, $fn);
+    return \Anakeen\Core\FileMime::getTextMimeFile($f, $fn);
 }
 
 /**

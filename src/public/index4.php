@@ -15,125 +15,15 @@ set_exception_handler('handleActionException');
 // @TODO inspect config autoload path
 $loader->addPsr4('Dcp\\', __DIR__ . '/../vendor/Anakeen/');
 
-$config = [
-    'settings' => [
-        'displayErrorDetails' => true,
-        'debug' => true,
-        "determineRouteBeforeAppMiddleware" => true,
-    ]
-];
-
 
 $routeConfig = \Anakeen\Router\RouterLib::getRouterConfig();
-
 $routes = $routeConfig->getRoutes();
 $middleWares = $routeConfig->getMiddlewares();
 
-$container = new \Slim\Container($config);
-$container['cache'] = function () {
-    return new \Slim\HttpCache\CacheProvider();
-};
-
-// Add middleware to the application
-$app = new \Slim\App($container);
-$app->add(new \Slim\HttpCache\Cache('private', 86400));
-
-
-$c = $app->getContainer();
-
-$c['phpErrorHandler'] = function ($c) {
-    return new \Dcp\Router\ErrorHandler();
-};
-
-$c['errorHandler'] = function ($c) {
-    return new \Dcp\Router\ErrorHandler();
-};
-$c['notFoundHandler'] = function ($c) {
-    return function ($request, $response) use ($c) {
-        return \Dcp\Router\NotHandler::notFound($request, $c["response"]);
-    };
-};
-$c['notAllowedHandler'] = function ($c) {
-    return function ($request, $response, $methods) use ($c) {
-        return \Dcp\Router\NotHandler::notAllowed($request, $c["response"], $methods);
-    };
-};
-
-// Need to reverse : Slim use the last route match
-$routes = array_reverse($routes);
-foreach ($routes as $route) {
-    $app->map($route->methods, $route->pattern, $route->callable)->setName($route->name);
-}
-
-$app->add(
-    function (\Slim\Http\request $request, \Slim\Http\response $response, $next) use ($middleWares, $c) {
-
-        session_cache_limiter('');
-        /**
-         * @var \Slim\Route $currentRoute
-         */
-        $currentRoute = $request->getAttribute("route");
-        $requestMethod=$request->getMethod();
-        if ($currentRoute) {
-            $sParser = new \FastRoute\RouteParser\Std;
-            // print_r($currentRoute->getArguments());
-
-            error_log($request->getMethod() . " " .$currentRoute->getName(). " ". $currentRoute->getPattern());
-            $request=$request->withAttribute("container", $c);
-
-            $uri = $request->getUri()->getPath();
-            foreach ($middleWares as $middleWare) {
-                $pattern = $middleWare->pattern;
-                $patternInfos = $sParser->parse($pattern);
-
-
-                if ($middleWare->methods !== ["ANY"] && ! in_array($requestMethod, $middleWare->methods)) {
-                    continue;
-                }
-                $regExps = \Anakeen\Router\RouterLib::parseInfoToRegExp($patternInfos);
-
-                // Add all middleware matches
-                foreach ($regExps as $regExp) {
-                    if (preg_match($regExp, $uri, $matches)) {
-                       // error_log("Add Middleware : " . $middleWare->name);
-
-                        foreach ($matches as $k => $v) {
-                            if (is_numeric($k)) {
-                                unset($matches[$k]);
-                            }
-                        }
-
-                        $currentRoute->add(function ($request, $response, $next) use ($middleWare, $matches) {
-                           // error_log("Before Exec " . $middleWare->name);
-                            $callMiddleWare = $middleWare->callable;
-
-
-                            if (!is_callable($callMiddleWare)) {
-                                throw new \Dcp\Exception(
-                                    sprintf(
-                                        "Middleware \"%s\" not callable : \"%s\"",
-                                        $middleWare->name,
-                                        $middleWare->callable
-                                    )
-                                );
-                            }
-                            /**
-                             * @var \Slim\Http\Response $response
-                             */
-                            $headerMiddleware=$response->getHeaderLine("X-Middleware");
-                            $response=$response->withHeader("X-Middleware", $headerMiddleware.($headerMiddleware?", ":"").$middleWare->name);
-                            $response = $callMiddleWare($request, $response, $next, $matches);
-
-                            return $response;
-                        });
-                    }
-                }
-            }
-        }
-
-        return  $next($request, $response);
-    }
-);
+$app=\Anakeen\Router\RouterManager::getSlimApp();
+\Anakeen\Router\RouterManager::addRoutes($routes);
+// Add middlewares to the application
+\Anakeen\Router\RouterManager::addMiddlewares($middleWares);
 
 
 // Define app routes

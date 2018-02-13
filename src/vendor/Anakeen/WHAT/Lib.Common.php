@@ -160,39 +160,14 @@ function getMailAddr($userid, $full = false)
     return $mailAddr;
 }
 
+/**
+ * @param string $def
+ * @deprecated use \Dcp\Core\ContextManager::getTmpDir()
+ * @return string
+ */
 function getTmpDir($def = '/tmp')
 {
-    static $tmp;
-    if (isset($tmp) && !empty($tmp)) {
-        return $tmp;
-    }
-    $tmp = \Dcp\Core\ContextManager::getApplicationParam('CORE_TMPDIR', $def);
-    if (empty($tmp)) {
-        if (empty($def)) {
-            $tmp = './var/tmp';
-        } else {
-            $tmp = $def;
-        }
-    }
-    
-    if (substr($tmp, 0, 1) != '/') {
-        $tmp = DEFAULT_PUBDIR . '/' . $tmp;
-    }
-    /* Try to create the directory if it does not exists */
-    if (!is_dir($tmp)) {
-        mkdir($tmp);
-    }
-    /* Add suffix, and try to create the sub-directory */
-    $tmp = $tmp . '/dcp';
-    if (!is_dir($tmp)) {
-        mkdir($tmp);
-    }
-    /* We ignore any failure in the directory creation
-     * and return the expected tmp dir.
-     * The caller will have to handle subsequent
-     * errors...
-    */
-    return $tmp;
+    return \Dcp\Core\ContextManager::getTmpDir($def);
 }
 /**
  * return value of parameters

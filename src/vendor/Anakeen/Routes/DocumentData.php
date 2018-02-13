@@ -77,6 +77,7 @@ class DocumentData
         $mb=microtime(true);
         $this->request=$request;
         $this->documentId=$args["docid"];
+        $this->returnFields=null;
 
         if (! $this->checkId($this->documentId, $initid)) {
             // Redirect to other url

@@ -37,10 +37,12 @@ class ApiV2Response
          */
         $container = $request->getAttribute("container");
 
-        // Need to clear headers set by session.cache_limiter='nocache'
-        header_remove("Cache-Control");
-        header_remove("Pragma");
-        header_remove("Expires");
+        if (php_sapi_name() !== 'cli') {
+            // Need to clear headers set by session.cache_limiter='nocache'
+            header_remove("Cache-Control");
+            header_remove("Pragma");
+            header_remove("Expires");
+        }
 
         /**
          * @var \Slim\HttpCache\CacheProvider $cache

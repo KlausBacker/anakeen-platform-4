@@ -27,7 +27,11 @@ class Authent
             return $next($request, $response);
         }
 
-        $user=\Dcp\Core\ContextManager::authentUser();
+        $user=\Dcp\Core\ContextManager::getCurrentUser();
+        if (!$user) {
+            $user=\Dcp\Core\ContextManager::authentUser();
+        }
+
         \Dcp\Core\ContextManager::initContext($user, "CORE", "", \AuthenticatorManager::$session);
 
        // error_log("Exec Middle" . __METHOD__ . " : " . print_r($args, true));

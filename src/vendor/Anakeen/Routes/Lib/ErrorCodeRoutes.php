@@ -32,7 +32,7 @@ class ErrorCodeRoutes
     /**
      * @errorCode Content-type said json and content must be contains {document:{attributes:[]}
      */
-    const ROUTES0106 = 'Record fail. Json object not contains attributes // example : {"document":{"attributes":{"attributeId" : {"value" : "newValue"}}}}';
+    const ROUTES0106 = 'Record fail. Json object not contains attributes // example : {"document":{"attributes":{"attributeId" : {"value" : "newValue"}}}} : %s';
 
     /**
      * @errorCode An attribute cannot be set

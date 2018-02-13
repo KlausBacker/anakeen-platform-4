@@ -65,8 +65,14 @@ class ContextManager
     /**
      * Initialise application context
      *
-     * @param string $appName
-     * @param string $actionName
+     * @param \Account      $account
+     * @param string        $appName
+     * @param string        $actionName
+     * @param \Session|null $session
+     *
+     * @throws Exception
+     * @throws \Dcp\Db\Exception
+     * @throws \Exception
      */
     public static function initContext(\Account $account, $appName = "", $actionName = "", \Session $session = null)
     {
@@ -114,14 +120,21 @@ class ContextManager
     /**
      * Control user has a good session
      * Complete AuthenticatorManager singleton
+     *
      * @return \Account
      */
     public static function authentUser()
     {
-        // Ask authentification if HTML required
-        $urlInfo = parse_url($_SERVER["REQUEST_URI"]);
-        $headers = apache_request_headers();
-        $askAuthent = (preg_match("/\\.html$/", $urlInfo["path"]) || (!empty($headers["Accept"]) && preg_match("@\\btext/html\\b@", $headers["Accept"])));
+        if (php_sapi_name() !== 'cli') {
+            // Ask authentification if HTML required
+            $urlInfo = parse_url($_SERVER["REQUEST_URI"]);
+            $headers = apache_request_headers();
+            $askAuthent = (preg_match("/\\.html$/", $urlInfo["path"])
+                || (!empty($headers["Accept"])
+                    && preg_match("@\\btext/html\\b@", $headers["Accept"])));
+        } else {
+            $askAuthent = false;
+        }
 
         $status = AuthenticatorManager::checkAccess(null, !$askAuthent);
 
@@ -151,7 +164,7 @@ class ContextManager
             $exception->setUserMessage(___("Access not granted", "ank"));
             throw $exception;
         }
-        $u=new \Account();
+        $u = new \Account();
         $u->setLoginName($_SERVER['PHP_AUTH_USER']);
         return $u;
     }
@@ -365,5 +378,48 @@ class ContextManager
             $pubdir = DEFAULT_PUBDIR;
         }
         return $pubdir;
+    }
+
+
+    /**
+     * Get Application temporary directory
+     * This directory is cleaned each days
+     * @param string $def
+     *
+     * @return string
+     */
+    public static function getTmpDir($def = '/tmp')
+    {
+        static $tmp;
+        if (isset($tmp) && !empty($tmp)) {
+            return $tmp;
+        }
+        $tmp = \Dcp\Core\ContextManager::getApplicationParam('CORE_TMPDIR', $def);
+        if (empty($tmp)) {
+            if (empty($def)) {
+                $tmp = './var/tmp';
+            } else {
+                $tmp = $def;
+            }
+        }
+
+        if (substr($tmp, 0, 1) != '/') {
+            $tmp = DEFAULT_PUBDIR . '/' . $tmp;
+        }
+        /* Try to create the directory if it does not exists */
+        if (!is_dir($tmp)) {
+            mkdir($tmp);
+        }
+        /* Add suffix, and try to create the sub-directory */
+        $tmp = $tmp . '/ank';
+        if (!is_dir($tmp)) {
+            mkdir($tmp);
+        }
+        /* We ignore any failure in the directory creation
+         * and return the expected tmp dir.
+         * The caller will have to handle subsequent
+         * errors...
+        */
+        return $tmp;
     }
 }
