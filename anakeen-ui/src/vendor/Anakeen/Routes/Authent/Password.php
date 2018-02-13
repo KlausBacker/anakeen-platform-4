@@ -11,6 +11,12 @@ use Dcp\HttpApi\V1\DocManager\DocManager;
 use Anakeen\Router\Exception;
 use Dcp\Router\ApiV2Response;
 
+/**
+ * Class Password
+ * Change user password
+ * @note Used by route : PUT /api/v2/authent/password/{login}
+ * @package Anakeen\Routes\Authent
+ */
 class Password
 {
     /**

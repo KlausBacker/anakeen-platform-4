@@ -2,7 +2,7 @@
   "accesses": {},
   "routes": [
     {
-      "priority": 100,
+      "priority": 1,
       "callable": "\\Anakeen\\Routes\\Authent\\LoginPage",
       "methods": [
         "GET"
@@ -13,7 +13,7 @@
       "requiredAccesses": []
     },
     {
-      "priority": 100,
+      "priority": 1,
       "callable": "\\Anakeen\\Routes\\Authent\\Session",
       "methods": [
         "POST"
@@ -25,7 +25,7 @@
       "authenticated": false
     },
     {
-      "priority": 100,
+      "priority": 1,
       "callable": "\\Anakeen\\Routes\\Authent\\MailPassword",
       "methods": [
         "POST"
@@ -37,7 +37,7 @@
       "authenticated": false
     },
     {
-      "priority": 100,
+      "priority": 1,
       "callable": "\\Anakeen\\Routes\\Authent\\Password",
       "methods": [
         "PUT"

@@ -9,6 +9,12 @@ use Dcp\HttpApi\V1\DocManager\DocManager;
 use Anakeen\Router\Exception;
 use Dcp\Router\ApiV2Response;
 
+/**
+ * Class MailPassword
+ * Send mail to reset password
+ * @note Used by route : POST /api/v2/authent/mailPassword/{userId}
+ * @package Anakeen\Routes\Authent
+ */
 class MailPassword
 {
     const failDelay=2;

@@ -3,15 +3,22 @@
  * @author Anakeen
  * @package FDL
 */
+
 namespace Anakeen\Routes\Authent;
 
 use Anakeen\Router\Exception;
 use Dcp\Core\LogException;
 use Dcp\Router\ApiV2Response;
 
+/**
+ * Class Session
+ * Create a user session
+ * @note Used by route : POST /api/v2/authent/sessions/{login}
+ * @package Anakeen\Routes\Authent
+ */
 class Session
 {
-    const failDelay=2;
+    const failDelay = 2;
 
     /**
      * Create User Session after verify authentication
@@ -22,12 +29,12 @@ class Session
      * @throws Exception
      * @throws \Dcp\ApplicationParameterManager\Exception
      */
-    public function  __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
+    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
 
-        $login=$args["login"];
-        $password=$request->getParam("password");
-        $language=$request->getParam("language");
+        $login = $args["login"];
+        $password = $request->getParam("password");
+        $language = $request->getParam("language");
 
 
         if (empty($password)) {
@@ -38,10 +45,10 @@ class Session
         }
         $user = new \Account();
         $user->setLoginName($login);
-        $result=false;
+        $result = false;
         if ($user->isAffected()) {
             try {
-                $result=$user->checkpassword($password);
+                $result = $user->checkpassword($password);
             } catch (\Exception $e) {
                 LogException::writeLog($e);
                 sleep(self::failDelay);
@@ -49,30 +56,30 @@ class Session
                 $e->setHttpStatus('403', 'Forbidden');
                 throw $e;
             }
-        } else if (!$user->isAffected()){
+        } else if (!$user->isAffected()) {
             sleep(self::failDelay);
             $e = new Exception('AUTH0001', __METHOD__);
             $e->setHttpStatus('403', 'Forbidden');
             throw $e;
         }
-        if(!$result){
+        if (!$result) {
             sleep(self::failDelay);
             $e = new Exception('AUTH0001', __METHOD__);
             $e->setHttpStatus('403', 'Forbidden');
             throw $e;
         }
-        $_SERVER['PHP_AUTH_USER']=$login;
+        $_SERVER['PHP_AUTH_USER'] = $login;
         $session = new \Session();
         $session->set();
         $session->register('username', $login);
         if ($language) {
-            $u=new \Account();
+            $u = new \Account();
             $u->setLoginName($login);
 
             \Dcp\Core\ContextManager::initContext($u, "CORE", "", \AuthenticatorManager::$session);
-            \ApplicationParameterManager::setUserParameterValue("CORE", "CORE_LANG",$language );
+            \ApplicationParameterManager::setUserParameterValue("CORE", "CORE_LANG", $language);
         }
 
-        return ApiV2Response::withData($response, ["login"=>$login]);
+        return ApiV2Response::withData($response, ["login" => $login]);
     }
 }

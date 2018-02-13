@@ -287,7 +287,7 @@ export default {
         refreshDocumentsList(opts = {}) {
             return new Promise((resolve, reject) => {
                 if (this.collection && this.dataSource) {
-                    this.dataSource.read({ collection: this.collection.name })
+                    this.dataSource.read({ collection: this.collection.initid || this.collection.name })
                         .then(resolve).catch(reject);
                 } else {
                     reject();

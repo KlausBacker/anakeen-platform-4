@@ -8,6 +8,11 @@ namespace Anakeen\Routes\Authent;
 use Dcp\HttpApi\V1\Crud\Crud;
 use Dcp\HttpApi\V1\Api\Exception;
 
+/**
+ * Class Login
+ * @deprecated use Anakeen\Routes\Authent\Session instead
+ * @package Anakeen\Routes\Authent
+ */
 class Login extends Crud
 {
     const failDelay=2;
@@ -19,7 +24,6 @@ class Login extends Crud
      */
     public function create()
     {
-
         $login=$this->urlParameters["login"];
         $password=isset($this->contentParameters["password"])?$this->contentParameters["password"]:null;
         $language=isset($this->contentParameters["language"])?$this->contentParameters["language"]:null;

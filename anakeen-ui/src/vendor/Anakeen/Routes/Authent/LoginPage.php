@@ -5,11 +5,17 @@
 */
 namespace Anakeen\Routes\Authent;
 
-
+/**
+ * Main page to login
+ *
+ * Class LoginPage
+ * @note Used by route : GET /login/
+ * @package Anakeen\Routes\Authent
+ */
 class LoginPage
 {
     /**
-     * Return all visible documents
+     * Return html page to login
      * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
      * @param                     $args
@@ -23,5 +29,4 @@ class LoginPage
         $response->write(file_get_contents($page));
         return $response;
     }
-
 }

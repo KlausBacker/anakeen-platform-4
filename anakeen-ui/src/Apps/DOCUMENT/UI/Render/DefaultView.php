@@ -114,7 +114,7 @@ class DefaultView extends RenderDefault
         $menu->appendElement($item);
 
 
-        if (ContextManager::getCurrentUser()->id === \Account::ADMIN_ID) {
+        if (ContextManager::getCurrentUser()->id == \Account::ADMIN_ID) {
             self::appendSystemMenu($document, $menu);
         }
 
@@ -176,7 +176,7 @@ class DefaultView extends RenderDefault
 
     }
     
-    public function getTemplats(\Doc $document = null)
+    public function getTemplates(\Doc $document = null)
     {
         $templates = parent::getTemplates($document);
         if ($document->locked == - 1) {
