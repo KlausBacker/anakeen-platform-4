@@ -2,7 +2,6 @@
 
 namespace Anakeen\Pu\Routes;
 
-use Dcp\Core\DbManager;
 use Dcp\Core\DocManager;
 
 require_once __DIR__ . '/../TestCaseRoutes.php';
@@ -46,6 +45,8 @@ class CoreDataDocument extends TestCaseRoutes
         $doc->delete();
         $doc = DocManager::getDocument("TST_APIDOC15_DEL");
         $doc->revise();
+        $doc->delete();
+        $doc = DocManager::getDocument("TST_APIDOC16_DEL");
         $doc->delete();
     }
 
@@ -92,6 +93,23 @@ class CoreDataDocument extends TestCaseRoutes
         $this->isJSONMatch($rawBody, file_get_contents($expectedJsonFile));
     }
 
+    /**
+     * Test Restore deleted Document
+     *
+     * @dataProvider dataTrash
+     *
+     * @param        $uri
+     * @param string $postContent json data
+     * @param        $expectedJsonFile
+     *
+     * @throws \Exception
+     * @throws \Slim\Exception\MethodNotAllowedException
+     * @throws \Slim\Exception\NotFoundException
+     */
+    public function testTrash($uri, $postContent, $expectedJsonFile)
+    {
+        $this->testPutDocument($uri, $postContent, $expectedJsonFile);
+    }
 
     public function dataGetDocument()
     {
@@ -162,6 +180,32 @@ class CoreDataDocument extends TestCaseRoutes
                 ]),
 
                 __DIR__ . "/Expects/doc1Hello.json"
+            )
+        );
+    }
+
+
+    public function dataTrash()
+    {
+        return array(
+
+            array(
+                'PUT /api/v2/trash/TST_APIDOC16_DEL',
+                json_encode([
+                    "document" => [
+                        "properties" => [
+                            "status" => "alive"
+
+                        ]
+                    ]
+                ]),
+
+                __DIR__ . "/Expects/doc16.json"
+            ),
+            array(
+                'DELETE /api/v2/documents/TST_APIDOC17',
+                null,
+                __DIR__ . "/Expects/doc17.json"
             )
         );
     }
