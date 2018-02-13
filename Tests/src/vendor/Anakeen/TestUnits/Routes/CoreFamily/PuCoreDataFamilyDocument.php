@@ -2,6 +2,8 @@
 
 namespace Anakeen\Pu\Routes;
 
+use Dcp\Core\DocManager;
+
 require_once __DIR__ . '/../TestCaseRoutes.php';
 require DEFAULT_PUBDIR . '/vendor/Anakeen/lib/vendor/autoload.php';
 
@@ -25,6 +27,20 @@ class CoreDataFamilyDocument extends TestCaseRoutes
         return $import;
     }
 
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+
+
+        $doc = DocManager::getDocument("TST_F21D1");
+
+        $title = $doc->getTitle();
+
+        for ($i = 0; $i < 3; $i++) {
+            $doc->setValue("tst_f2_title", sprintf("%s - #%02d", $title, $doc->revision + 1));
+            $doc->revise(sprintf("Test revision #%d", $doc->revision + 1));
+        }
+    }
 
     /**
      * Test Simple Get Document
@@ -39,6 +55,28 @@ class CoreDataFamilyDocument extends TestCaseRoutes
      * @throws \Slim\Exception\NotFoundException
      */
     public function testGetDocument($uri, $expectedJsonFile)
+    {
+        $app = $this->setApiUriEnv($uri);
+
+        $response = $app->run(true);
+        $rawBody = (string)$response->getBody();
+        $this->isJSONMatch($rawBody, file_get_contents($expectedJsonFile));
+    }
+
+
+    /**
+     * Test Simple Get revised Document
+     *
+     * @dataProvider dataGetDocument
+     *
+     * @param $uri
+     * @param $expectedJsonFile
+     *
+     * @throws \Exception
+     * @throws \Slim\Exception\MethodNotAllowedException
+     * @throws \Slim\Exception\NotFoundException
+     */
+    public function __testGetRevisedDocument($uri, $expectedJsonFile)
     {
         $app = $this->setApiUriEnv($uri);
 
@@ -67,6 +105,7 @@ class CoreDataFamilyDocument extends TestCaseRoutes
         $rawBody = (string)$response->getBody();
         $this->isJSONMatch($rawBody, file_get_contents($expectedJsonFile));
     }
+
 
     public function dataGetDocument()
     {
@@ -111,6 +150,22 @@ class CoreDataFamilyDocument extends TestCaseRoutes
             array(
                 'GET /api/v2/families/TST_F2_2/documents/TST_F22D2',
                 __DIR__ . "/Expects/TST_F22D2.json"
+            ),
+            array(
+                'GET /api/v2/families/TST_F2_1/documents/TST_F21D1',
+                __DIR__ . "/Expects/TST_F21D1.json"
+            ),
+            array(
+                'GET /api/v2/families/TST_F2_1/documents/TST_F21D1/revisions/0',
+                __DIR__ . "/Expects/TST_F21D1_rev0.json"
+            ),
+            array(
+                'GET /api/v2/families/TST_F2_1/documents/TST_F21D1/revisions/1',
+                __DIR__ . "/Expects/TST_F21D1_rev1.json"
+            ),
+            array(
+                'GET /api/v2/families/TST_F2_1/documents/TST_F21D1/revisions/3',
+                __DIR__ . "/Expects/TST_F21D1.json"
             )
         );
     }

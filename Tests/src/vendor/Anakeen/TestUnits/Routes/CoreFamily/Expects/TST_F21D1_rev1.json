@@ -3,20 +3,20 @@
     "data": {
         "document": {
             "properties": {
-                "title": "Ind\u00e9pendance du Canada",
-                "icon": "http:\/\/a5\/api\/v2\/images\/assets\/sizes\/24x24c\/doc.png",
+                "title": "Test n\u00b02 - #02",
+                "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png",
                 "name": "TST_F21D1",
-                "revision": 3,
-                "status": "alive"
+                "revision": 1,
+                "status": "fixed"
             },
             "attributes": {
                 "tst_f2_title": {
-                    "value": "Ind\u00e9pendance du Canada",
-                    "displayValue": "Ind\u00e9pendance du Canada"
+                    "value": "Test n\u00b02 - #02",
+                    "displayValue": "Test n\u00b02 - #02"
                 },
                 "tst_f2_date": {
-                    "value": "1857-07-01",
-                    "displayValue": "01\/07\/1857"
+                    "value": "2018-01-16",
+                    "displayValue": "16\/01\/2018"
                 },
                 "tst_f2_time": {
                     "value": "02:00:00",

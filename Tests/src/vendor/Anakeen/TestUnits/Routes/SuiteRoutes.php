@@ -2,8 +2,6 @@
 
 namespace Anakeen\Pu\Routes;
 
-use Dcp\HttpApi\V1\Crud\Exception;
-use Dcp\HttpApi\V1\DocManager\DocManager;
 use Dcp\Pu\FrameworkDcp;
 
 require_once __DIR__ . "/../../WHAT/Lib.Prefix.php";

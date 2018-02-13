@@ -85,8 +85,19 @@
         "get"
       ],
       "pattern": "/api/v2/documents/{docid}/revisions/{revisionNumber:[0-9]+}[.json]",
-      "description": "List all documents of a family",
+      "description": "Get a specific revision of a document",
       "name": "Core:RevisionData",
+      "requiredAccesses": []
+    },
+    {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Core\\RevisionFamilyData",
+      "methods": [
+        "get"
+      ],
+      "pattern": "/api/v2/families/{family}/documents/{docid}/revisions/{revisionNumber:[0-9]+}[.json]",
+      "description": "Get a specific revision of a document",
+      "name": "Core:FamilyRevisionData",
       "requiredAccesses": []
     },
     {

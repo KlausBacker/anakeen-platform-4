@@ -14,12 +14,20 @@
         "documents": [
             {
                 "properties": {
-                    "title": "Test n\u00b01 Plus"
+                    "title": "Test n\u00b01 Plus",
+                    "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png",
+                    "name": "TST_F22D1",
+                    "revision": 0,
+                    "status": "alive"
                 }
             },
             {
                 "properties": {
-                    "title": "Test n\u00b02 Plus"
+                    "title": "Test n\u00b02 Plus",
+                    "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png",
+                    "name": "TST_F22D2",
+                    "revision": 0,
+                    "status": "alive"
                 }
             }
         ]
