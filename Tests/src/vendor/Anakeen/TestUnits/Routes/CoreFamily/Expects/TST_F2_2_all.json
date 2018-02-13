@@ -3,39 +3,30 @@
     "data": {
         "document": {
             "properties": {
-                "id": 2,
-                "title": "Dossier",
-                "adate": "%isoDate%",
+                "title": "Test F2 \/ 2",
                 "affected": {
                     "id": 0,
                     "title": ""
                 },
                 "allocated": null,
                 "atags": null,
-                "cdate": "%isoDate%",
                 "confidential": null,
                 "createdBy": {
                     "title": "Master Dynacase Platform",
                     "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/se-iuser.png"
                 },
-                "creationDate": "%isoDate%",
                 "cvid": null,
                 "doctype": "C",
-                "dprofid": "0",
+                "dprofid": null,
                 "family": {
-                    "title": "de base",
-                    "name": "BASE",
-                    "id": 1,
+                    "title": "Test F2 / 1",
+                    "name": "TST_F2_1",
                     "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png"
                 },
-                "fromid": "1",
-                "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/se-dir.png",
-                "initid": 2,
-                "lastAccessDate": "%isoDate%",
-                "lastModificationDate": "%isoDate%",
+                "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png",
                 "lmodify": "N",
                 "locked": 0,
-                "name": "DIR",
+                "name": "TST_F2_2",
                 "note": {
                     "id": 0,
                     "title": ""
@@ -43,12 +34,10 @@
                 "owner": "1",
                 "postitid": null,
                 "prelid": null,
-                "profid": "510",
-                "revdate": "%isoDate%",
+                "profid": "0",
                 "revision": 0,
                 "revisionData": {
                     "isModified": false,
-                    "id": 2,
                     "number": 0,
                     "createdBy": {
                         "title": "Master Dynacase Platform",
@@ -62,11 +51,8 @@
                     "readOnly": false,
                     "fixed": false,
                     "profil": {
-                        "id": 510,
-                        "icon": "resizeimg.php?img=CORE%2FImages%2Fse-pfam.png&size=24",
-                        "type": "linked",
-                        "activated": true,
-                        "title": "Cr\u00e9ation administrateur"
+                        "id": 0,
+                        "title": ""
                     },
                     "confidentiality": "public"
                 },
@@ -74,7 +60,7 @@
                 "tags": [],
                 "type": "family",
                 "usage": "normal",
-                "usefor": "F",
+                "usefor": "N",
                 "version": null,
                 "viewController": {
                     "id": 0,
@@ -86,7 +72,7 @@
                     "title": ""
                 }
             },
-            "uri": "%baseURL%api\/v2\/families\/DIR.json"
+            "uri": "%baseURL%api\/v2\/families\/TST_F2_2.json"
         }
     },
     "messages": []

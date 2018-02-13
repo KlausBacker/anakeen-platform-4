@@ -26,7 +26,7 @@ class CoreGetDocument extends TestCaseRoutes
     protected static function getCommonImportFile()
     {
         $import = array();
-        $import[] = __DIR__."/Inputs/TST_API_ALLTYPE__STRUCT.csv";
+        $import[] = __DIR__."/Inputs/tst_f01.struct.csv";
         $import[] = __DIR__."/Inputs/doc1.xml";
         return $import;
     }

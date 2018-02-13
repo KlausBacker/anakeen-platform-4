@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents date="2018-02-13T13:22:32" author="Dynacase Platform Master" name="Custom &#039;&quot;export">
+    <tst_f2_1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_f2_1.xsd"  revision="0" name="TST_F21D0">
+        <tst_f2_f_title>
+            <tst_f2_title>Test n°1</tst_f2_title>
+        </tst_f2_f_title>
+        <tst_f2_fr_date>
+            <tst_f2_date>2018-02-08</tst_f2_date>
+            <tst_f2_time>02:00:00</tst_f2_time>
+        </tst_f2_fr_date>
+        <tst_f2_fr_number>
+            <tst_f2_integer>3</tst_f2_integer>
+            <tst_f2_double>3.56</tst_f2_double>
+        </tst_f2_fr_number>
+    </tst_f2_1>
+
+    <tst_f2_1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_f2_1.xsd" revision="0" name="TST_F21D1">
+        <tst_f2_f_title>
+            <tst_f2_title>Test n°2</tst_f2_title>
+        </tst_f2_f_title>
+        <tst_f2_fr_date>
+            <tst_f2_date>2018-01-16</tst_f2_date>
+            <tst_f2_time>02:00:00</tst_f2_time>
+        </tst_f2_fr_date>
+        <tst_f2_fr_number>
+            <tst_f2_integer>-456</tst_f2_integer>
+            <tst_f2_double>5673.6789</tst_f2_double>
+        </tst_f2_fr_number>
+    </tst_f2_1>
+
+
+    <tst_f2_1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_f2_1.xsd" revision="0" name="TST_F21D2">
+        <tst_f2_f_title>
+            <tst_f2_title>Test n°3</tst_f2_title>
+        </tst_f2_f_title>
+        <tst_f2_fr_date>
+            <tst_f2_date>2017-01-16</tst_f2_date>
+            <tst_f2_time>22:30:00</tst_f2_time>
+        </tst_f2_fr_date>
+        <tst_f2_fr_number>
+            <tst_f2_integer>-3456</tst_f2_integer>
+            <tst_f2_double>563.6789</tst_f2_double>
+        </tst_f2_fr_number>
+    </tst_f2_1>
+
+
+    <tst_f2_1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_f2_1.xsd" revision="0" name="TST_F21D3">
+        <tst_f2_f_title>
+            <tst_f2_title>Test n°4</tst_f2_title>
+        </tst_f2_f_title>
+        <tst_f2_fr_date>
+            <tst_f2_date>2017-02-16</tst_f2_date>
+            <tst_f2_time>23:35:00</tst_f2_time>
+        </tst_f2_fr_date>
+        <tst_f2_fr_number>
+            <tst_f2_integer>56</tst_f2_integer>
+            <tst_f2_double>2.4</tst_f2_double>
+        </tst_f2_fr_number>
+    </tst_f2_1>
+
+    <tst_f2_2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_f2_2.xsd"  revision="0" name="TST_F22D1">
+        <tst_f2_f_title>
+            <tst_f2_title>Test n°1</tst_f2_title>
+            <tst_f2_subtitle>Plus</tst_f2_subtitle>
+        </tst_f2_f_title>
+        <tst_f2_fr_date>
+            <tst_f2_date>2018-02-08</tst_f2_date>
+            <tst_f2_time>11:00:00</tst_f2_time>
+            <tst_f2_timestamp>2018-02-13 12:30:00</tst_f2_timestamp>
+        </tst_f2_fr_date>
+        <tst_f2_fr_number>
+            <tst_f2_integer>0</tst_f2_integer>
+            <tst_f2_double>-4536.789</tst_f2_double>
+            <tst_f2_money>23.5</tst_f2_money>
+        </tst_f2_fr_number>
+    </tst_f2_2>
+
+    <tst_f2_2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_f2_2.xsd"  revision="0" name="TST_F22D2">
+        <tst_f2_f_title>
+            <tst_f2_title>Test n°2</tst_f2_title>
+            <tst_f2_subtitle>Plus</tst_f2_subtitle>
+        </tst_f2_f_title>
+        <tst_f2_fr_date>
+            <tst_f2_date>2018-01-28</tst_f2_date>
+            <tst_f2_time>11:30:05</tst_f2_time>
+            <tst_f2_timestamp>2018-02-13 12:32:10</tst_f2_timestamp>
+        </tst_f2_fr_date>
+    </tst_f2_2>
+</documents>

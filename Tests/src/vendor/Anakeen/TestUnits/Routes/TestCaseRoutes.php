@@ -25,7 +25,6 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
     {
         parent::setUpBeforeClass();
 
-        error_log("setup");
         $routeConfig = \Anakeen\Router\RouterLib::getRouterConfig();
         $routes = $routeConfig->getRoutes();
         $middleWares = $routeConfig->getMiddlewares();
@@ -44,7 +43,7 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
     protected static function setApiEnv(Environment $env)
     {
         /**
-         * @var \Slim\Http\Request
+         * @var \Slim\Http\Request $request
          */
         $request = Request::createFromEnvironment($env);
 
@@ -53,9 +52,18 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
             $body->write($env["CONTENT"]);
             $body->rewind();
             $request=$request->withBody($body);
-
         }
         self::$routerApp->getContainer()['request'] = $request;
+
+
+        /**
+         * @var \Slim\Http\Response $response
+         */
+        $response=self::$routerApp->getContainer()['response'];
+        if ($response) {
+            $response->getBody()->rewind();
+        }
+
         return self::$routerApp;
     }
 

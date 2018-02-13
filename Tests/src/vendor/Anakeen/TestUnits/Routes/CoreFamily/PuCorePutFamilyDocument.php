@@ -12,7 +12,7 @@ require_once __DIR__ . '/../TestCaseRoutes.php';
 require DEFAULT_PUBDIR . '/vendor/Anakeen/lib/vendor/autoload.php';
 
 
-class CorePutDocument extends TestCaseRoutes
+class CorePutFamilyDocument extends TestCaseRoutes
 {
 
     protected static $importCsvEnclosure = '"';
@@ -27,7 +27,8 @@ class CorePutDocument extends TestCaseRoutes
     protected static function getCommonImportFile()
     {
         $import = array();
-        $import[] = __DIR__."/Inputs/tst_f01.struct.csv";
+        $import[] = __DIR__ . "/Inputs/tst_f02_1.struct.csv";
+        $import[] = __DIR__ . "/Inputs/tst_f02_2.struct.csv";
         $import[] = __DIR__ . "/Inputs/doc1.xml";
         $import[] = __DIR__ . "/Inputs/doc2.xml";
         return $import;
@@ -40,9 +41,9 @@ class CorePutDocument extends TestCaseRoutes
      *
      * @dataProvider dataPutDocument
      *
-     * @param $uri
+     * @param        $uri
      * @param string $postContent json data
-     * @param $expectedJsonFile
+     * @param        $expectedJsonFile
      *
      * @throws \Exception
      * @throws \Slim\Exception\MethodNotAllowedException
@@ -81,7 +82,7 @@ class CorePutDocument extends TestCaseRoutes
                     ]
                 ]),
 
-                __DIR__."/Expects/doc1Hello.json"
+                __DIR__ . "/Expects/doc1Hello.json"
             )
         );
     }

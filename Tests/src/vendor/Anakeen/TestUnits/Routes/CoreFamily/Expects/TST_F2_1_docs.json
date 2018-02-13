@@ -1,0 +1,48 @@
+{
+    "success": true,
+    "data": {
+        "requestParameters": {
+            "slice": 10,
+            "offset": 0,
+            "length": 6,
+            "orderBy": "title asc, id desc"
+        },
+        "uri": "%baseURL%api\/v2\/families\/TST_F2_1\/documents\/",
+        "properties": {
+            "title": ""
+        },
+        "documents": [
+            {
+                "properties": {
+                    "title": "Test n\u00b01"
+                }
+            },
+            {
+                "properties": {
+                    "title": "Test n\u00b01 Plus"
+                }
+            },
+            {
+                "properties": {
+                    "title": "Test n\u00b02"
+                }
+            },
+            {
+                "properties": {
+                    "title": "Test n\u00b02 Plus"
+                }
+            },
+            {
+                "properties": {
+                    "title": "Test n\u00b03"
+                }
+            },
+            {
+                "properties": {
+                    "title": "Test n\u00b04"
+                }
+            }
+        ]
+    },
+    "messages": []
+}

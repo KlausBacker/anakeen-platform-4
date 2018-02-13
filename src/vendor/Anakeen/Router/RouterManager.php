@@ -33,6 +33,7 @@ class RouterManager
     {
 
         self::$container = new \Slim\Container(self::getSlimConfig());
+
         self::$container['cache'] = function () {
             return new \Slim\HttpCache\CacheProvider();
         };

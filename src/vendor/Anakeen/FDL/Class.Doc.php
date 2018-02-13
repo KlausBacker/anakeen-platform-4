@@ -1143,7 +1143,7 @@ create unique index i_docir on doc(initid, revision);";
             addWarningMsg($err);
             return $err;
         }
-        if (getFileExtension($orifile) != 'odt') {
+        if (\Anakeen\Core\FileMime::getFileExtension($orifile) != 'odt') {
             $err = sprintf(_("Dynamic template %s not an odt file "), $orifile);
             addWarningMsg($err);
             return $err;
@@ -3147,7 +3147,7 @@ create unique index i_docir on doc(initid, revision);";
                         if ($isimage) {
                             $filename = DEFAULT_PUBDIR . "/Images/workinprogress.png";
                         } else {
-                            $filename = uniqid(getTmpDir() . "/conv") . ".txt";
+                            $filename = uniqid(ContextManager::getTmpDir() . "/conv") . ".txt";
                         }
                         file_put_contents($filename, $value);
                         $vidout = 0;
@@ -4692,7 +4692,7 @@ create unique index i_docir on doc(initid, revision);";
                     $basename = $info->name;
                 }
             }
-            $filename = uniqid(getTmpDir() . "/_html") . ".html";
+            $filename = uniqid(ContextManager::getTmpDir() . "/_html") . ".html";
             $nc = file_put_contents($filename, $value);
             /**
              * @var int $vid
@@ -4794,13 +4794,13 @@ create unique index i_docir on doc(initid, revision);";
                     }
                 }
                 if ($ftitle) {
-                    $ext = getFileExtension($ftitle);
+                    $ext = \Anakeen\Core\FileMime::getFileExtension($ftitle);
                 }
                 if ($ext == "") {
                     $ext = "nop";
                 }
 
-                $filename = uniqid(getTmpDir() . "/_fdl") . ".$ext";
+                $filename = uniqid(ContextManager::getTmpDir() . "/_fdl") . ".$ext";
                 $tmpstream = fopen($filename, "w");
                 while (!feof($stream)) {
                     if (false === fwrite($tmpstream, fread($stream, 4096))) {
@@ -8470,7 +8470,7 @@ create unique index i_docir on doc(initid, revision);";
 
         $tplfile = $this->getZoneFile($layout);
 
-        $ext = getFileExtension($tplfile);
+        $ext = \Anakeen\Core\FileMime::getFileExtension($tplfile);
         if (strtolower($ext) == "odt") {
             include_once('Class.OOoLayout.php');
             $target = "ooo";
@@ -8542,7 +8542,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         if ($binary && ($target != "ooo")) {
             // set result into file
-            $tmpfile = uniqid(getTmpDir() . "/fdllay") . ".html";
+            $tmpfile = uniqid(ContextManager::getTmpDir() . "/fdllay") . ".html";
             file_put_contents($tmpfile, $laygen);
             $laygen = $tmpfile;
         }
