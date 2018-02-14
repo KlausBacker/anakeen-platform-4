@@ -4,7 +4,7 @@
         "document": {
             "properties": {
                 "title": "Ind\u00e9pendance du Canada",
-                "icon": "http:\/\/a5\/api\/v2\/images\/assets\/sizes\/24x24c\/doc.png",
+                "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png",
                 "name": "TST_F21D1",
                 "revision": 3,
                 "status": "alive"

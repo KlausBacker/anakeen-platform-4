@@ -21,7 +21,7 @@
                 "creationDate": "%isoDate%",
                 "cvid": null,
                 "doctype": "C",
-                "dprofid": "0",
+                "dprofid": 0,
                 "family": {
                     "title": "",
                     "name": "",

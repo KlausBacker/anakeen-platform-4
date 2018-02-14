@@ -1,15 +1,11 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Document list class
  *
- * @author Anakeen
- * @version $Id:  $
- * @package FDL
  */
+
+use \Dcp\Core\DocManager;
+
 /**
  * Format document list to be easily used in
  * @class FormatCollection
@@ -198,6 +194,10 @@ class FormatCollection
      * state property
      */
     const propState = "state";
+    /**
+     * state property
+     */
+    const propDProfid = "dprofid";
     /**
      * revision date
      */
@@ -549,7 +549,7 @@ class FormatCollection
                     return $this->getFormatDate($doc->cdate, $this->propDateStyle);
                 } else {
                     $sql = sprintf("select cdate from docread where initid=%d and revision = 0", $doc->initid);
-                    simpleQuery($doc->dbaccess, $sql, $cdate, true, true);
+                    \Dcp\Core\DbManager::query($sql, $cdate, true, true);
                     return $this->getFormatDate($cdate, $this->propDateStyle);
                 }
                 // no break
@@ -575,6 +575,8 @@ class FormatCollection
                 return $this->getUsageData($doc);
             case self::propType:
                 return $this->getTypeData($doc);
+            case self::propDProfid:
+                return (int)$doc->dprofid;
             default:
                 return $doc->$propName;
         }
@@ -586,7 +588,7 @@ class FormatCollection
             $ownerId = $doc->owner;
         } else {
             $sql = sprintf("select owner from docread where initid=%d and revision = 0", $doc->initid);
-            simpleQuery($doc->dbaccess, $sql, $ownerId, true, true);
+            \Dcp\Core\DbManager::query($sql, $ownerId, true, true);
         }
         return $this->getAccountData(abs($ownerId), $doc);
     }
@@ -633,7 +635,7 @@ class FormatCollection
     protected function getNoteData(\Doc $doc)
     {
         if ($doc->postitid > 0) {
-            $note = new_doc($doc->dbaccess, $doc->postitid);
+            $note = DocManager::getDocument($doc->postitid);
             return array(
                 "id" => intval($note->initid) ,
                 "title" => $note->getTitle() ,
@@ -649,7 +651,7 @@ class FormatCollection
     protected function getWorkflowData(\Doc $doc)
     {
         if ($doc->wid > 0) {
-            $workflow = new_doc($doc->dbaccess, $doc->wid);
+            $workflow = DocManager::getDocument($doc->wid);
             return array(
                 "id" => intval($workflow->initid) ,
                 "title" => $workflow->getTitle() ,
@@ -686,7 +688,8 @@ class FormatCollection
     protected function getAccountData($accountId, \Doc $doc)
     {
         $sql = sprintf("select initid, icon, title from doc128 where us_whatid='%d' and locked != -1", $accountId);
-        simpleQuery("", $sql, $result, false, true);
+
+        \Dcp\Core\DbManager::query($sql, $result, false, true);
         if ($result) {
             return array(
                 "id" => intval($result["initid"]) ,
@@ -734,7 +737,7 @@ class FormatCollection
                     "title" => $doc->getTitle()
                 );
                 if ($doc->dprofid > 0) {
-                    $profil = new_doc($doc->dbaccess, $doc->dprofid);
+                    $profil = DocManager::getDocument($doc->dprofid);
                     $info["profil"]["reference"] = array(
                         "id" => intval($profil->initid) ,
                         "icon" => $profil->getIcon("", $this->familyIconSize) ,
@@ -744,7 +747,7 @@ class FormatCollection
                     $info["profil"]["type"] = "dynamic";
                 }
             } else {
-                $profil = new_doc($doc->dbaccess, abs($doc->profid));
+                $profil = DocManager::getDocument(abs($doc->profid));
                 $info["profil"] = array(
                     "id" => intval($profil->initid) ,
                     "icon" => $profil->getIcon("", $this->familyIconSize) ,
@@ -767,7 +770,7 @@ class FormatCollection
     protected function getViewControllerData(\Doc $doc)
     {
         if ($doc->cvid > 0) {
-            $cv = new_doc($doc->dbaccess, $doc->cvid);
+            $cv = DocManager::getDocument($doc->cvid);
             return array(
                 "id" => intval($cv->initid) ,
                 
