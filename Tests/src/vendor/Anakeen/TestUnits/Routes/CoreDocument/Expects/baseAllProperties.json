@@ -43,7 +43,6 @@
                 "owner": "1",
                 "postitid": null,
                 "prelid": null,
-                "profid": "510",
                 "revdate": "%isoDate%",
                 "revision": 0,
                 "revisionData": {
@@ -62,7 +61,6 @@
                     "readOnly": false,
                     "fixed": false,
                     "profil": {
-                        "id": 510,
                         "icon": "resizeimg.php?img=CORE%2FImages%2Fse-pfam.png&size=24",
                         "type": "linked",
                         "activated": true,
