@@ -60,12 +60,6 @@
                     },
                     "readOnly": false,
                     "fixed": false,
-                    "profil": {
-                        "icon": "resizeimg.php?img=CORE%2FImages%2Fse-pfam.png&size=24",
-                        "type": "linked",
-                        "activated": true,
-                        "title": "Cr\u00e9ation administrateur"
-                    },
                     "confidentiality": "public"
                 },
                 "status": "alive",
