@@ -10,17 +10,6 @@
       "pattern": "/login/",
       "description": "Login page",
       "name": "Ui:Authent:Login",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Authent\\Session",
-      "methods": [
-        "POST"
-      ],
-      "pattern": "/api/v2/authent/sessions/{login}",
-      "description": "Login page",
-      "name": "Ui:Authent:Session:Login",
       "requiredAccesses": [],
       "authenticated": false
     },

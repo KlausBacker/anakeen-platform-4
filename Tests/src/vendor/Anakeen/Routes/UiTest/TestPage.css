@@ -1,0 +1,43 @@
+html, body {
+    height:100vh;
+    font-size:12px;
+}
+
+body {
+    display:flex;
+    flex-direction: row;
+    box-sizing: border-box;
+}
+
+
+.systemLeft {
+    flex-grow: 0;
+    overflow:auto;
+    width:28em;
+    box-shadow: 10px 10px 10px 0px #297d2c;
+    margin: 1em;
+}
+
+.systemRight {
+    flex-grow: 1;
+    height:100%;
+
+}
+
+.systemRight > iframe{
+    width:100%;
+    height: 100%;
+    display: block;
+}
+
+.systemLeft .btn {
+    width:calc(100% - 0.4em);
+    margin:0.2em;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.documentsList__documents__search > .input-group {
+    width: inherit;
+}
