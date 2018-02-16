@@ -6,9 +6,9 @@
 /**
  * Users Definition
  *
- * @author Anakeen
- * @version $Id: Class.User.php,v 1.65 2008/08/11 14:14:14 marc Exp $
- * @package FDL
+ * @author     Anakeen
+ * @version    $Id: Class.User.php,v 1.65 2008/08/11 14:14:14 marc Exp $
+ * @package    FDL
  * @subpackage CORE
  */
 /**
@@ -21,11 +21,15 @@ include_once('Class.Application.php');
 include_once('Class.Group.php');
 include_once('WHAT/Lib.Common.php');
 
+use Dcp\Core\DbManager;
+
 define("GALL_ID", 2);
 define("ANONYMOUS_ID", 3);
 define("GADMIN_ID", 4);
+
 /**
  * Manage User, Group and Role account object
+ *
  * @class Account
  */
 class Account extends DbObj
@@ -33,28 +37,29 @@ class Account extends DbObj
     const ANONYMOUS_ID = 3;
     const GALL_ID = 2;
     const GADMIN_ID = 4;
-    const ADMIN_ID=1;
-    
+    const ADMIN_ID = 1;
+
     const USER_TYPE = "U";
     const GROUP_TYPE = "G";
     const ROLE_TYPE = "R";
-    
-    public $fields = array(
-        "id",
-        "lastname",
-        "firstname",
-        "login",
-        "password",
-        "substitute",
-        "isgroup",
-        "accounttype",
-        "memberof",
-        "expires",
-        "passdelay",
-        "status",
-        "mail",
-        "fid"
-    );
+
+    public $fields
+        = array(
+            "id",
+            "lastname",
+            "firstname",
+            "login",
+            "password",
+            "substitute",
+            "isgroup",
+            "accounttype",
+            "memberof",
+            "expires",
+            "passdelay",
+            "status",
+            "mail",
+            "fid"
+        );
 
     /**
      * @var string numeric id
@@ -85,6 +90,7 @@ class Account extends DbObj
     public $substitute;
     /**
      * family identifier of user document default is IUSER/IGROUP
+     *
      * @var string
      */
     public $famid;
@@ -92,21 +98,24 @@ class Account extends DbObj
      * @var string new password
      */
     public $password_new;
-    public $id_fields = array(
-        "id"
-    );
-    
+    public $id_fields
+        = array(
+            "id"
+        );
+
     public $dbtable = "users";
-    
+
     public $order_by = "lastname, accounttype";
-    
-    public $fulltextfields = array(
-        "login",
-        "lastname",
-        "firstname"
-    );
-    
-    public $sqlcreate = "
+
+    public $fulltextfields
+        = array(
+            "login",
+            "lastname",
+            "firstname"
+        );
+
+    public $sqlcreate
+        = "
 create table users ( id      int not null,
                 primary key (id),
                         lastname   text,
@@ -125,18 +134,21 @@ create table users ( id      int not null,
 create index users_idx2 on users(lastname);
 CREATE UNIQUE INDEX users_login on users (login);
 create sequence seq_id_users start 10;";
+
     /**
      * affect account from login name
+     *
      * @param string $login login
+     *
      * @return bool true if ok
      */
     public function setLoginName($login)
     {
         $login = mb_trim(mb_strtolower($login));
-        
+
         $query = new QueryDb($this->dbaccess, "Account");
         $query->AddQuery("login='" . pg_escape_string($login) . "'");
-        
+
         $list = $query->Query(0, 0, "TABLE");
         if ($query->nb > 0) {
             $this->Affect($list[0]);
@@ -144,9 +156,11 @@ create sequence seq_id_users start 10;";
         }
         return false;
     }
+
     /**
      * return substitute account
      * return null if no susbtitute
+     *
      * @return Account|null
      */
     public function getSubstitute()
@@ -158,9 +172,12 @@ create sequence seq_id_users start 10;";
         }
         return null;
     }
+
     /**
      * return incumbent ids account list (accounts which has this account as substitute)
+     *
      * @param bool $returnSystemIds set to true to return system account id, false to return document user id
+     *
      * @return int[]
      */
     public function getIncumbents($returnSystemIds = true)
@@ -168,14 +185,17 @@ create sequence seq_id_users start 10;";
         $incumbents = array();
         if ($this->isAffected()) {
             $sql = sprintf("select %s from users where substitute=%d;", $returnSystemIds ? 'id' : 'fid', $this->id);
-            simpleQuery($this->dbaccess, $sql, $incumbents, true, false);
+            DbManager::query($sql, $incumbents, true, false);
         }
         return $incumbents;
     }
+
     /**
      * set substitute to this user
      * this user become the incumbent of $substitute
+     *
      * @param string $substitute login or user system id
+     *
      * @return string error message (empty if not)
      */
     public function setSubstitute($substitute)
@@ -190,7 +210,7 @@ create sequence seq_id_users start 10;";
         if ($substitute) {
             if (!(is_numeric($substitute))) {
                 $sql = sprintf("select id from users where login = '%s'", pg_escape_string($substitute));
-                simpleQuery($this->dbaccess, $sql, $substituteId, true, true);
+                DbManager::query($sql, $substituteId, true, true);
                 if ($substituteId) {
                     $substitute = $substituteId;
                 } else {
@@ -201,7 +221,7 @@ create sequence seq_id_users start 10;";
                 return $err;
             }
             $sql = sprintf("select id from users where id = '%d'", $substitute);
-            simpleQuery($this->dbaccess, $sql, $substituteId, true, true);
+            DbManager::query($sql, $substituteId, true, true);
             if (!$substituteId) {
                 $err = sprintf(_("cannot set substitute %s id not found"), $substitute);
             }
@@ -217,7 +237,7 @@ create sequence seq_id_users start 10;";
         }
         $oldSubstitute = $this->substitute;
         $this->substitute = $substitute;
-        
+
         $err = $this->modify();
         if (!$err) {
             $u = new \Account($this->dbaccess, $this->substitute);
@@ -226,7 +246,7 @@ create sequence seq_id_users start 10;";
                 $u->select($oldSubstitute);
                 $u->updateMemberOf();
             }
-            
+
             global $action;
             if ($action->user->id == $u->id) {
                 $action->user->revert();
@@ -234,10 +254,12 @@ create sequence seq_id_users start 10;";
         }
         return $err;
     }
+
     /**
      * affect account from its login
      *
      * @param string $login login
+     *
      * @deprecated use setLoginName instead
      * @return bool true if ok
      */
@@ -245,10 +267,12 @@ create sequence seq_id_users start 10;";
     {
         return $this->setLoginName($login);
     }
+
     /**
      * affect account from its document id
      *
      * @param int $fid
+     *
      * @return bool true if ok
      */
     public function setFid($fid)
@@ -263,7 +287,7 @@ create sequence seq_id_users start 10;";
         }
         return true;
     }
-    
+
     public function preInsert()
     {
         $err = '';
@@ -271,7 +295,7 @@ create sequence seq_id_users start 10;";
             // compute auto role reference
             $this->login = uniqid('role');
         }
-        
+
         if ($this->setloginName($this->login)) {
             return _("this login exists");
         }
@@ -284,8 +308,9 @@ create sequence seq_id_users start 10;";
             $arr = pg_fetch_array($res, 0);
             $this->id = $arr["nextval"];
         }
-        
-        if (($this->accounttype == self::GROUP_TYPE) || ($this->accounttype == self::ROLE_TYPE) || ($this->isgroup == "Y")) {
+
+        if (($this->accounttype == self::GROUP_TYPE) || ($this->accounttype == self::ROLE_TYPE)
+            || ($this->isgroup == "Y")) {
             if ((!$this->accounttype) && ($this->isgroup == "Y")) {
                 $this->accounttype = self::GROUP_TYPE;
             }
@@ -299,12 +324,12 @@ create sequence seq_id_users start 10;";
         if (!$this->accounttype) {
             $this->accounttype = self::USER_TYPE;
         }
-        
+
         if ($this->accounttype === self::USER_TYPE && !$this->status) {
             $this->status = "A";
         }
         $this->login = mb_strtolower($this->login);
-        
+
         if (isset($this->password_new) && ($this->password_new != "")) {
             $this->computepass($this->password_new, $this->password);
             if ($this->id == 1) {
@@ -315,7 +340,7 @@ create sequence seq_id_users start 10;";
         $this->GetExpires();
         return $err;
     }
-    
+
     public function PostInsert()
     {
         //Add default group to user
@@ -328,12 +353,12 @@ create sequence seq_id_users start 10;";
         $err = $this->synchroAccountDocument();
         return $err;
     }
-    
+
     public function postUpdate()
     {
         return $this->synchroAccountDocument();
     }
-    
+
     public function preUpdate()
     {
         if (isset($this->password_new) && ($this->password_new != "")) {
@@ -342,12 +367,12 @@ create sequence seq_id_users start 10;";
                 $this->setSupervisorHtpasswd($this->password_new);
             }
         }
-        
+
         $this->login = mb_strtolower($this->login);
         //expires and passdelay
         $this->GetExpires();
     }
-    
+
     public function postDelete()
     {
         include_once("WHAT/Class.Session.php");
@@ -357,30 +382,33 @@ create sequence seq_id_users start 10;";
         $ugroups = $group->groups;
         // delete reference in group table
         $sql = sprintf("delete from groups where iduser=%d or idgroup=%d", $this->id, $this->id);
-        simpleQuery($this->dbaccess, $sql);
-        
+        DbManager::query($sql);
+
         refreshGroups($ugroups, true);
-        
+
         global $action;
         $action->session->CloseUsers($this->id);
-        
+
         return $err;
     }
+
     /**
      * @deprecated use SearchAccount class instead
+     *
      * @param string $login
      * @param string $unused
-     * @param int $whatid
+     * @param int    $whatid
+     *
      * @return bool
      */
     public function CheckLogin($login, $unused, $whatid)
     {
         $query = new QueryDb($this->dbaccess, "Account");
-        
+
         $query->basic_elem->sup_where = array(
             "login='" . pg_escape_string($login) . "'"
         );
-        
+
         $list = $query->Query();
         if ($query->nb == 0 or ($query->nb == 1 and $list[0]->id == $whatid)) {
             return true;
@@ -388,15 +416,18 @@ create sequence seq_id_users start 10;";
             return false;
         }
     }
+
     /**
      * return display name of a user
+     *
      * @param int $uid user identifier
+     *
      * @return string|null firstname and lastname or null if not found
      */
     public static function getDisplayName($uid)
     {
         static $tdn = array();
-        
+
         $uid = intval($uid);
         if ($uid > 0) {
             if (isset($tdn[$uid])) {
@@ -417,6 +448,7 @@ create sequence seq_id_users start 10;";
         }
         return null;
     }
+
     /**
      * Same as ::getDisplayName but for current object
      */
@@ -424,65 +456,104 @@ create sequence seq_id_users start 10;";
     {
         return trim(sprintf("%s %s", $this->firstname, $this->lastname));
     }
+
     /**
      * return system user identifier from user document reference
+     *
      * @static
      * @see getFidFromUid
+     *
      * @param int $fid
+     *
      * @return int
      */
     public static function getUidFromFid($fid)
     {
         $uid = 0;
         if ($fid) {
-            simpleQuery('', sprintf("select id from users where fid=%d", $fid), $uid, true, true);
+            DbManager::query(sprintf("select id from users where fid=%d", $fid), $uid, true, true);
         }
         return $uid;
     }
+
     /**
      * return user document reference from system user identifier
+     *
      * @static
      * @see getUidFromFid
+     *
      * @param int $fid
+     *
      * @return int
      */
     public static function getFidFromUid($uid)
     {
         $fid = 0;
         if ($uid) {
-            simpleQuery('', sprintf("select fid from users where id=%d", $uid), $fid, true, true);
+            DbManager::query(sprintf("select fid from users where id=%d", $uid), $fid, true, true);
         }
         return $fid;
     }
+
     /**
      * update user from IUSER document
+     *
      * @deprecated replace by updateUser
-     * @param int $fid document id
+     *
+     * @param int    $fid   document id
      * @param string $login login
      */
-    public function setUsers($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $unused = '', $extmail = '')
-    {
+    public function setUsers(
+        $fid,
+        $lname,
+        $fname,
+        $expires,
+        $passdelay,
+        $login,
+        $status,
+        $pwd1,
+        $pwd2,
+        $unused = '',
+        $extmail = ''
+    ) {
         return $this->updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail);
     }
+
     /**
      * update user from IUSER document
-     * @param int $fid document id
-     * @param string $lname  last name
-     * @param string $fname first name
-     * @param string $expires expiration date
-     * @param int $passdelay password delay
-     * @param string $login login
-     * @param string $status 'A' (Activate) , 'D' (Desactivated)
-     * @param string $pwd1 password one
-     * @param string $pwd2 password two
-     * @param string $extmail mail address
-     * @param array $roles
-     * @param int $substitute system substitute id
+     *
+     * @param int    $fid        document id
+     * @param string $lname      last name
+     * @param string $fname      first name
+     * @param string $expires    expiration date
+     * @param int    $passdelay  password delay
+     * @param string $login      login
+     * @param string $status     'A' (Activate) , 'D' (Desactivated)
+     * @param string $pwd1       password one
+     * @param string $pwd2       password two
+     * @param string $extmail    mail address
+     * @param array  $roles
+     * @param int    $substitute system substitute id
+     *
      * @return string error message
      */
-    public function updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail = '', array $roles = array(-1
-    ), $substitute = - 1)
-    {
+    public function updateUser(
+        $fid,
+        $lname,
+        $fname,
+        $expires,
+        $passdelay,
+        $login,
+        $status,
+        $pwd1,
+        $pwd2,
+        $extmail = '',
+        array $roles
+        = array(
+            -1
+        ),
+        $substitute = -1
+    ) {
         $this->lastname = $lname;
         $this->firstname = $fname;
         $this->status = $status;
@@ -493,7 +564,7 @@ create sequence seq_id_users start 10;";
         if ($pwd1 == $pwd2 and $pwd1 <> "") {
             $this->password_new = $pwd2;
         }
-        
+
         if ($extmail != "") {
             $this->mail = trim($extmail);
         } else {
@@ -504,46 +575,55 @@ create sequence seq_id_users start 10;";
         }
         if ($passdelay > 0) {
             $this->passdelay = $passdelay;
-        } elseif ($passdelay == - 1) { // suppress expire date
+        } elseif ($passdelay == -1) { // suppress expire date
             $this->expires = 0;
             $this->passdelay = 0;
         }
-        
+
         $this->fid = $fid;
         if (!$this->isAffected()) {
             $err = $this->Add();
         } else {
             $err = $this->Modify();
         }
-        if ($roles != array(-1
-        )) {
-            $err.= $this->setRoles($roles);
+        if ($roles != array(
+                -1
+            )) {
+            $err .= $this->setRoles($roles);
         } else {
             $this->updateMemberOf();
         }
-        
-        if ((!$err) && ($substitute > - 1)) {
+
+        if ((!$err) && ($substitute > -1)) {
             $err = $this->setSubstitute($substitute);
         }
         return $err;
     }
+
     /**
      * update user from FREEDOM IGROUP document
-     * @param int $fid document id
+     *
+     * @param int    $fid   document id
      * @param string $gname group name
      * @param string $login login
-     * @param array $roles system role ids
+     * @param array  $roles system role ids
      */
-    public function setGroups($fid, $gname, $login, array $roles = array(-1
-    ))
-    {
+    public function setGroups(
+        $fid,
+        $gname,
+        $login,
+        array $roles
+        = array(
+            -1
+        )
+    ) {
         if ($gname != "") {
             $this->lastname = $gname;
         }
         if (($this->login == "") && ($login != "")) {
             $this->login = $login;
         }
-        
+
         $this->mail = $this->getMail();
         $this->fid = $fid;
         if (!$this->isAffected()) {
@@ -552,14 +632,16 @@ create sequence seq_id_users start 10;";
         } else {
             $err = $this->Modify();
         }
-        if ($roles != array(-1
-        )) {
-            $err.= $this->setRoles($roles);
+        if ($roles != array(
+                -1
+            )) {
+            $err .= $this->setRoles($roles);
         } else {
             $this->updateMemberOf();
         }
         return $err;
     }
+
     /**
      * revert values from database
      */
@@ -581,10 +663,9 @@ create sequence seq_id_users start 10;";
             $this->expires = time() + $this->passdelay;
         }
     }
-    
+
     public function synchroAccountDocument()
     {
-        $err = '';
         $dbaccess = $this->dbaccess;
         if ($dbaccess == "") {
             return _("no freedom DB access");
@@ -594,8 +675,8 @@ create sequence seq_id_users start 10;";
             /**
              * @var \Dcp\Family\IUSER $iuser
              */
-            $iuser = new_Doc($dbaccess, $this->fid);
-            
+            $iuser = Dcp\Core\DocManager::getDocument($this->fid);
+
             $err = $iuser->RefreshDocUser();
         } //Update from what
         else {
@@ -615,7 +696,7 @@ create sequence seq_id_users start 10;";
             $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", $fam);
             if (count($tdoc) == 0) {
                 //Create a new doc IUSER
-                
+
                 /**
                  * @var \Dcp\Family\IUSER $iuser
                  */
@@ -641,6 +722,7 @@ create sequence seq_id_users start 10;";
         }
         return $err;
     }
+
     // --------------------------------------------------------------------
     public function computepass($pass, &$passk)
     {
@@ -648,13 +730,15 @@ create sequence seq_id_users start 10;";
         $salt_space = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ./";
         srand((double)microtime() * 1000000);
         for ($i = 0; $i < 16; $i++) {
-            $salt.= $salt_space[rand(0, strlen($salt_space) - 1) ];
+            $salt .= $salt_space[rand(0, strlen($salt_space) - 1)];
         }
         $passk = crypt($pass, "\$5\${$salt}");
         $this->_deleteUserSessions();
     }
+
     /**
      * @param string $pass clear password to test
+     *
      * @return bool
      */
     public function checkpassword($pass)
@@ -664,6 +748,7 @@ create sequence seq_id_users start 10;";
         } // don't log in group or role
         return ($this->checkpass($pass, $this->password));
     }
+
     // --------------------------------------------------------------------
     public function checkpass($pass, $passk)
     {
@@ -681,8 +766,14 @@ create sequence seq_id_users start 10;";
                         $this->setSupervisorHtpasswd($pass);
                     }
                     $log = new Log("", "Session", "Authentication");
-                    $facility = constant(\Dcp\Core\ContextManager::getApplicationParam("AUTHENT_LOGFACILITY", "LOG_AUTH"));
-                    $log->wlog("S", sprintf('User %s password crypted with salted SHA256 algorithm.', $this->login), null, $facility);
+                    $facility = constant(\Dcp\Core\ContextManager::getApplicationParam(
+                        "AUTHENT_LOGFACILITY",
+                        "LOG_AUTH"
+                    ));
+                    $log->wlog("S", sprintf(
+                        'User %s password crypted with salted SHA256 algorithm.',
+                        $this->login
+                    ), null, $facility);
                 }
             }
         } else {
@@ -691,9 +782,12 @@ create sequence seq_id_users start 10;";
         }
         return ($passres === $passk);
     }
+
     /**
      * return mail adress
+     *
      * @param bool $rawmail set to false to have long mail with firstname and lastname
+     *
      * @return string mail address empty if no mail
      */
     public function getMail($rawmail = true)
@@ -714,8 +808,9 @@ create sequence seq_id_users start 10;";
  select iduser, users.login, users.mail from groups,users where idgroup = %d and users.id=groups.iduser
 union
  select iduser, users.login, users.mail from groups,users, amembers where groups.idgroup = amembers.uid and users.id=groups.iduser
-) select users.firstname, users.lastname, users.mail from amembers, users where users.id=amembers.uid and users.accounttype='U' and users.mail is not null order by users.mail;", $this->id);
-            simpleQuery($this->dbaccess, $sql, $umail);
+) select users.firstname, users.lastname, users.mail from amembers, users where users.id=amembers.uid and users.accounttype='U' and users.mail is not null order by users.mail;",
+                $this->id);
+            DbManager::query($sql, $umail);
             $tMail = array();
             if ($rawmail) {
                 foreach ($umail as $aMail) {
@@ -731,12 +826,12 @@ union
             return implode(', ', $tMail);
         }
     }
-    
+
     public function PostInit()
     {
         $group = new group($this->dbaccess);
 
-        $userAdmin=new Account($this->dbaccess);
+        $userAdmin = new Account($this->dbaccess);
         // Create admin user
         $userAdmin->id = Account::ADMIN_ID;
         $userAdmin->lastname = "Master";
@@ -749,7 +844,7 @@ union
 
         // Create default group
 
-        $groupAll=new Account($this->dbaccess);
+        $groupAll = new Account($this->dbaccess);
         $groupAll->id = Account::GALL_ID;
         $groupAll->lastname = "Utilisateurs";
         $groupAll->firstname = "";
@@ -762,7 +857,7 @@ union
 
         // Create anonymous user
 
-        $anonymousUser=new Account($this->dbaccess);
+        $anonymousUser = new Account($this->dbaccess);
         $anonymousUser->id = Account::ANONYMOUS_ID;
         $anonymousUser->lastname = "anonymous";
         $anonymousUser->firstname = "guest";
@@ -773,7 +868,7 @@ union
 
         // Create admin group
 
-        $groupAdmin=new Account($this->dbaccess);
+        $groupAdmin = new Account($this->dbaccess);
         $groupAdmin->id = Account::GADMIN_ID;
         $groupAdmin->lastname = "Administrateurs";
         $groupAdmin->firstname = "";
@@ -785,10 +880,13 @@ union
         $group->Add(true);
         // Store error messages
     }
+
     /**
      * get the first incumbent which has $acl privilege
-     * @param Doc $doc document to verify
+     *
+     * @param Doc    $doc document to verify
      * @param string $acl document acl name
+     *
      * @return string incumbent's name which has privilege
      */
     public function getIncumbentPrivilege(Doc & $doc, $acl)
@@ -808,102 +906,130 @@ union
         }
         return '';
     }
+
     /**
      * get All Users (not group not role)
+     *
      * @static
-     * @param string $qtype return type LIST|TABLE|ITEM
-     * @param int $start
-     * @param int $slice
+     *
+     * @param string $qtype      return type LIST|TABLE|ITEM
+     * @param int    $start
+     * @param int    $slice
      * @param string $filteruser keyword to filter user on login or lastname
+     *
      * @return array
      */
     public static function getUserList($qtype = "LIST", $start = 0, $slice = 0, $filteruser = '')
     {
-        $query = new QueryDb(getDbAccess(), "Account");
+        $query = new QueryDb("", "Account");
         $query->order_by = "lastname";
         $query->AddQuery("(accountType='U')");
         if ($filteruser) {
-            $query->AddQuery("(login ~* '" . pg_escape_string($filteruser) . "')" . " or " . "(lastname ~* '" . pg_escape_string($filteruser) . "')");
+            $query->AddQuery("(login ~* '" . pg_escape_string($filteruser) . "')" . " or " . "(lastname ~* '"
+                . pg_escape_string($filteruser) . "')");
         }
         return ($query->Query($start, $slice, $qtype));
     }
+
     /**
      * get All groups
+     *
      * @param string $qtype return type LIST|TABLE|ITEM
+     *
      * @return array
      */
     public static function getGroupList($qtype = "LIST")
     {
-        $query = new QueryDb(getDbAccess(), "Account");
+        $query = new QueryDb("", "Account");
         $query->order_by = "lastname";
         $query->AddQuery("(accountType='G')");
         $l = $query->Query(0, 0, $qtype);
         return ($query->nb > 0) ? $l : array();
     }
+
     /**
      * get All Roles
+     *
      * @param string $qtype return type LIST|TABLE|ITEM
+     *
      * @return array
      */
     public static function getRoleList($qtype = "LIST")
     {
-        $query = new QueryDb(getDbAccess(), "Account");
+        $query = new QueryDb("", "Account");
         $query->order_by = "lastname";
         $query->AddQuery("(accountType='R')");
         $l = $query->Query(0, 0, $qtype);
         return ($query->nb > 0) ? $l : array();
     }
+
     /**
      * get All users & groups (except role)
+     *
      * @param string $qtype return type LIST|TABLE|ITEM
+     *
      * @return array
      */
     public static function getUserAndGroupList($qtype = "LIST")
     {
-        $query = new QueryDb(getDbAccess(), "Account");
+        $query = new QueryDb("", "Account");
         $query->AddQuery("(accountType='G' or accountType='U')");
-        
+
         $query->order_by = "accounttype, lastname";
         return ($query->Query(0, 0, $qtype));
     }
+
     /**
      * get All ascendant group ids of the user object
      */
     public function getGroupsId()
     {
-        $sql = sprintf("select idgroup from groups, users where groups.idgroup=users.id and users.accounttype='G' and groups.iduser=%d", $this->id);
-        simpleQuery($this->dbaccess, $sql, $groupsid, true, false);
+        $sql = sprintf(
+            "select idgroup from groups, users where groups.idgroup=users.id and users.accounttype='G' and groups.iduser=%d",
+            $this->id
+        );
+        DbManager::query($sql, $groupsid, true, false);
         return $groupsid;
     }
+
     /**
      * for group :: get All user & groups ids in all descendant(recursive);
+     *
      * @param int $id group identifier
+     *
      * @return array of account array
      */
     public function getRUsersList($id, $r = array())
     {
         $query = new QueryDb($this->dbaccess, "Account");
-        $list = $query->Query(0, 0, "TABLE", "select users.* from users, groups where " . "groups.iduser=users.id and " . "idgroup=$id ;");
-        
+        $list = $query->Query(
+            0,
+            0,
+            "TABLE",
+            "select users.* from users, groups where " . "groups.iduser=users.id and " . "idgroup=$id ;"
+        );
+
         $uid = array();
-        
+
         if ($query->nb > 0) {
             foreach ($list as $k => $v) {
                 $uid[$v["id"]] = $v;
                 if ($v["accounttype"] === "G") {
                     if (!in_array($v["id"], $r)) {
                         array_push($r, $v["id"]);
-                        $uid+= $this->GetRUsersList($v["id"], $r);
+                        $uid += $this->GetRUsersList($v["id"], $r);
                     }
                 }
             }
         }
-        
+
         return $uid;
     }
+
     /**
      * for group :: get All direct user & groups ids
-     * @param int $id group identifier
+     *
+     * @param int  $id        group identifier
      * @param bool $onlygroup set to true if you want only child groups
      */
     public function getUsersGroupList($gid, $onlygroup = false)
@@ -913,26 +1039,31 @@ union
         if ($onlygroup) {
             $optgroup = " and users.accounttype='G' ";
         }
-        
-        $list = $query->Query(0, 0, "TABLE", "select users.* from users, groups where " . "groups.iduser=users.id and " . "idgroup=$gid $optgroup;");
-        
+
+        $list = $query->Query(
+            0,
+            0,
+            "TABLE",
+            "select users.* from users, groups where " . "groups.iduser=users.id and " . "idgroup=$gid $optgroup;"
+        );
+
         $uid = array();
         if ($query->nb > 0) {
             foreach ($list as $k => $v) {
                 $uid[$v["id"]] = $v;
             }
         }
-        
+
         return $uid;
     }
+
     /**
      * return all user members (recursive)
+     *
      * @return array of user values ["login"=>, "id"=>, "fid"=>,...)
      */
     private function getUserMembers()
     {
-        $tr = array();
-        
         $g = new Group($this->dbaccess);
         $lg = $g->getChildsGroupId($this->id);
         $lg[] = $this->id;
@@ -941,19 +1072,27 @@ union
             $cond = "true";
         }
         $condname = "";
-        
+
         $sort = 'lastname';
-        $sql = sprintf("SELECT distinct on (%s, users.id) users.id, users.login, users.firstname , users.lastname, users.mail,users.fid from users, groups where %s and (groups.iduser=users.id) %s and accounttype='U' order by %s", $sort, $cond, $condname, $sort);
-        
-        $err = simpleQuery($this->dbaccess, $sql, $result);
-        if ($err != "") {
-            return $err;
-        }
+        $sql = sprintf(
+            "SELECT distinct on (%s, users.id) users.id, users.login, users.firstname , users.lastname, users.mail,users.fid from users, groups where %s and (groups.iduser=users.id) %s and accounttype='U' order by %s",
+            $sort,
+            $cond,
+            $condname,
+            $sort
+        );
+
+
+        DbManager::query($sql, $result);
+
         return $result;
     }
+
     /**
      * return all group (recursive) /role of user
+     *
      * @param string $accountFilter G|R to indicate if want only group or only role
+     *
      * @return array of users characteristics
      */
     public function getUserParents($accountFilter = '')
@@ -967,18 +1106,21 @@ union
 union
  select idgroup from groups,users, agroups where groups.iduser = agroups.gid and users.id=groups.idgroup
 ) select users.* from agroups, users where users.id=agroups.gid %s order by lastname", $this->id, $acond);
-        simpleQuery($this->dbaccess, $sql, $parents);
+        DbManager::query($sql, $parents);
         return $parents;
     }
+
     /**
      * get memberof for user without substitutes
+     *
      * @param int $uid if not set it is the current account object else use another account identifier
+     *
      * @return array
      * @throws Dcp\Exception
      */
-    public function getStrictMemberOf($uid = - 1)
+    public function getStrictMemberOf($uid = -1)
     {
-        if ($uid == - 1) {
+        if ($uid == -1) {
             $uid = $this->id;
         }
         if (!$uid) {
@@ -990,13 +1132,16 @@ union
    union
  select idgroup, users.login, users.accounttype from groups,users, agroups where groups.iduser = agroups.gid and users.id=groups.idgroup
 ) select gid from agroups;", $uid);
-        
-        simpleQuery($this->dbaccess, $sql, $gids, true, false);
+
+        DbManager::query($sql, $gids, true, false);
         return $gids;
     }
+
     /**
      * update memberof fields with all group/role of user
+     *
      * @param bool $updateSubstitute also update substitute by default
+     *
      * @return array of memberof identificators
      * @throws Dcp\Exception
      */
@@ -1005,17 +1150,17 @@ union
         if (!$this->id) {
             return array();
         }
-        
+
         $lg = $this->getStrictMemberOf();
         // search incumbents
         $sql = sprintf("select id from users where substitute=%d;", $this->id);
-        simpleQuery($this->dbaccess, $sql, $incumbents, true, false);
+        DbManager::query($sql, $incumbents, true, false);
         foreach ($incumbents as $aIncumbent) {
             $lg[] = $aIncumbent;
             // use strict no propagate substitutes
             $lg = array_merge($lg, $this->getStrictMemberOf($aIncumbent));
         }
-        
+
         $lg = array_values(array_unique($lg));
         $this->memberof = '{' . implode(',', $lg) . '}';
         $err = $this->modify(true, array(
@@ -1028,12 +1173,15 @@ union
             $u = new Account($this->dbaccess, $this->substitute);
             $u->updateMemberOf(false);
         }
-        
+
         return $lg;
     }
+
     /**
      * return id of group/role id
+     *
      * @param bool $useSystemId set to false to return document id instead of system id
+     *
      * @return array
      */
     public function getMemberOf($useSystemId = true)
@@ -1044,23 +1192,29 @@ union
         }
         if (!$useSystemId) {
             if (!empty($memberOf)) {
-                simpleQuery($this->dbaccess, sprintf("select fid from users where id in (%s)", implode(',', $memberOf)), $dUids, true);
+                DbManager::query(sprintf(
+                    "select fid from users where id in (%s)",
+                    implode(',', $memberOf)
+                ), $dUids, true);
                 return $dUids;
             }
         }
         return $memberOf;
     }
+
     /**
      * return list of account (group/role) member for a user
      * return null if user not exists
+     *
      * @static
+     *
      * @param int $uid user identifier
+     *
      * @return array|null
      */
     public static function getUserMemberOf($uid, $strict = false)
     {
         global $action;
-        $memberOf = array();
         if ($action->user->id == $uid) {
             if ($strict) {
                 $memberOf = $action->user->getStrictMemberOf();
@@ -1081,14 +1235,14 @@ union
         }
         return $memberOf;
     }
+
     /**
      * verify if user is member of group (recursive)
+     *
      * @return bool
      */
     public function isMember($uid)
     {
-        $tr = array();
-        
         $g = new Group($this->dbaccess);
         $lg = $g->getChildsGroupId($this->id);
         $lg[] = $this->id;
@@ -1096,20 +1250,27 @@ union
         if (!$cond) {
             $cond = "true";
         }
-        
-        $sql = sprintf("select users.id from users, groups where %s and (groups.iduser=users.id) and users.id=%d and isgroup != 'Y'", $cond, $uid);
-        
-        $err = simpleQuery($this->dbaccess, $sql, $result, true, true);
-        
+
+        $sql = sprintf(
+            "select users.id from users, groups where %s and (groups.iduser=users.id) and users.id=%d and isgroup != 'Y'",
+            $cond,
+            $uid
+        );
+
+        DbManager::query($sql, $result, true, true);
+
         return ($result != '');
     }
+
     /**
      * only use with group or role
      * if it is a group : get all direct user member of a group
      * if it is a role : het user which has role directly
-     * @param string $qtype LIST|TABLE|ITEM
-     * @param bool $withgroup set to true to return sub group also
-     * @param int|string $limit max users returned
+     *
+     * @param string     $qtype     LIST|TABLE|ITEM
+     * @param bool       $withgroup set to true to return sub group also
+     * @param int|string $limit     max users returned
+     *
      * @return array of user properties
      */
     public function getGroupUserList($qtype = "LIST", $withgroup = false, $limit = "all")
@@ -1120,12 +1281,21 @@ union
         if ($withgroup) {
             $selgroup = "";
         }
-        return ($query->Query(0, $limit, $qtype, "select users.* from users, groups where " . "groups.iduser=users.id and " . "idgroup={$this->id} {$selgroup};"));
+        return $query->Query(
+            0,
+            $limit,
+            $qtype,
+            "select users.* from users, groups where " . "groups.iduser=users.id and "
+            . "idgroup={$this->id} {$selgroup};"
+        );
     }
+
     /**
      * get all users of a group/role direct or indirect
-     * @param int|string $limit max users returned
-     * @param bool $onlyUsers set to true to have also sub groups
+     *
+     * @param int|string $limit     max users returned
+     * @param bool       $onlyUsers set to true to have also sub groups
+     *
      * @return array of user properties
      */
     public function getAllMembers($limit = "all", $onlyUsers = true)
@@ -1134,13 +1304,22 @@ union
             $limit = intval($limit);
         }
         if ($onlyUsers) {
-            $sql = sprintf("select * from users where memberof && '{%d}' and accounttype='U' order by lastname limit %s", $this->id, $limit);
+            $sql = sprintf(
+                "select * from users where memberof && '{%d}' and accounttype='U' order by lastname limit %s",
+                $this->id,
+                $limit
+            );
         } else {
-            $sql = sprintf("select * from users where memberof && '{%d}' order by accounttype, lastname limit %s", $this->id, $limit);
+            $sql = sprintf(
+                "select * from users where memberof && '{%d}' order by accounttype, lastname limit %s",
+                $this->id,
+                $limit
+            );
         }
-        simpleQuery($this->dbaccess, $sql, $users);
+        DbManager::query($sql, $users);
         return $users;
     }
+
     /**
      * Get user token for open access
      *
@@ -1154,9 +1333,14 @@ union
      * @return string
      * @throws \Dcp\Exception
      */
-    public function getUserToken($expireDelay = - 1, $oneshot = false, $context = array(), $description = "", $forceCreate = false)
-    {
-        if ($expireDelay === - 1 || $expireDelay === false) {
+    public function getUserToken(
+        $expireDelay = -1,
+        $oneshot = false,
+        $context = array(),
+        $description = "",
+        $forceCreate = false
+    ) {
+        if ($expireDelay === -1 || $expireDelay === false) {
             $expireDelay = UserToken::INFINITY;
         }
         if ($context && (count($context) > 0)) {
@@ -1164,13 +1348,13 @@ union
         } else {
             $scontext = '';
         }
-        
+
         if (!$this->isAffected()) {
             throw new Dcp\Exception(sprintf("User token : account must be affected"));
         }
         include_once('WHAT/Class.UserToken.php');
         include_once('WHAT/Class.QueryDb.php');
-        
+
         $expireDate = UserToken::getExpirationDate($expireDelay);
         $tu = array();
         if (!$oneshot && !$forceCreate) {
@@ -1185,7 +1369,7 @@ union
         } else {
             $create = true;
         }
-        
+
         if ($create) {
             // create one
             $uk = new UserToken("");
@@ -1209,13 +1393,15 @@ union
         }
         return $token;
     }
+
     /**
      * Set password for the admin account in the `admin' subdir
      *
      * @deprecated use {@link Account::setSupervisorHtpasswd} instead
-     * @see Account::setSupervisorHtpasswd
+     * @see        Account::setSupervisorHtpasswd
      *
      * @param string $admin_passwd the password
+     *
      * @return string error message, emptuy string if no error
      */
     public function setAdminHtpasswd($admin_passwd)
@@ -1223,9 +1409,12 @@ union
         deprecatedFunction();
         return $this->setSupervisorHtpasswd($admin_passwd);
     }
+
     /**
      * Set password for the admin account in the `admin' subdir
+     *
      * @param string $admin_passwd the password
+     *
      * @return string error message, emptuy string if no error
      */
     public function setSupervisorHtpasswd($admin_passwd)
@@ -1234,35 +1423,40 @@ union
             $err = sprintf("Method %s can only be used on the admin user.", __FUNCTION__);
             return $err;
         }
-        
-        $supervisorDir = PUBLIC_DIR. DIRECTORY_SEPARATOR . 'supervisor';
-        $tmpFile = @tempnam($supervisorDir, '.htpasswd');
-        if ($tmpFile === false) {
-            $err = sprintf("Error creating temporary file in '%s'.", $supervisorDir);
-            return $err;
-        }
-        if (chmod($tmpFile, 0600) === false) {
-            $err = sprintf("Error setting mode 0600 on temporary file '%s'.", $tmpFile);
-            unlink($tmpFile);
-            return $err;
-        }
-        $passwdLine = sprintf("%s:{SHA}%s", 'admin', base64_encode(sha1($admin_passwd, true)));
-        if (file_put_contents($tmpFile, $passwdLine) === false) {
-            $err = sprintf("Error writing to temporary file '%s'.", $tmpFile);
-            unlink($tmpFile);
-            return $err;
-        }
-        $htpasswdFile = $supervisorDir . DIRECTORY_SEPARATOR . '.htpasswd';
-        if (rename($tmpFile, $htpasswdFile) === false) {
-            $err = sprintf("Error renaming temporary file '%s' to '%s'.\n", $tmpFile, $htpasswdFile);
-            unlink($tmpFile);
-            return $err;
+
+        $supervisorDir = PUBLIC_DIR . DIRECTORY_SEPARATOR . 'supervisor';
+        if (is_dir($supervisorDir)) {
+            $tmpFile = @tempnam($supervisorDir, '.htpasswd');
+            if ($tmpFile === false) {
+                $err = sprintf("Error creating temporary file in '%s'.", $supervisorDir);
+                return $err;
+            }
+            if (chmod($tmpFile, 0600) === false) {
+                $err = sprintf("Error setting mode 0600 on temporary file '%s'.", $tmpFile);
+                unlink($tmpFile);
+                return $err;
+            }
+            $passwdLine = sprintf("%s:{SHA}%s", 'admin', base64_encode(sha1($admin_passwd, true)));
+            if (file_put_contents($tmpFile, $passwdLine) === false) {
+                $err = sprintf("Error writing to temporary file '%s'.", $tmpFile);
+                unlink($tmpFile);
+                return $err;
+            }
+            $htpasswdFile = $supervisorDir . DIRECTORY_SEPARATOR . '.htpasswd';
+            if (rename($tmpFile, $htpasswdFile) === false) {
+                $err = sprintf("Error renaming temporary file '%s' to '%s'.\n", $tmpFile, $htpasswdFile);
+                unlink($tmpFile);
+                return $err;
+            }
         }
         return '';
     }
+
     /**
      * add a role to a user/group
+     *
      * @param string $idRole system identicator or reference role (login)
+     *
      * @return string error message
      */
     public function addRole($idRole)
@@ -1274,7 +1468,10 @@ union
             return ErrorCode::getError("ACCT0003", $idRole, $this->login);
         }
         if (!is_numeric($idRole)) {
-            simpleQuery($this->dbaccess, sprintf("select id from users where login = '%'", pg_escape_string($idRole)), $idRoleW, true, true);
+            DbManager::query(sprintf(
+                "select id from users where login = '%'",
+                pg_escape_string($idRole)
+            ), $idRoleW, true, true);
             if ($idRoleW) {
                 $idRole = $idRoleW;
             }
@@ -1292,9 +1489,12 @@ union
         }
         return $err;
     }
+
     /**
      * set role set to a user/group
+     *
      * @param array $roleIds system identicators or reference roles (login)
+     *
      * @return string error message
      */
     public function setRoles(array $roleIds)
@@ -1302,7 +1502,7 @@ union
         if (!$this->isAffected()) {
             return ErrorCode::getError("ACCT0006", implode(',', $roleIds));
         }
-        
+
         if ($this->accounttype == self::ROLE_TYPE) {
             return ErrorCode::getError("ACCT0007", implode(',', $roleIds), $this->login);
         }
@@ -1312,13 +1512,16 @@ union
             $g = new group($this->dbaccess);
             foreach ($roleIds as $rid) {
                 if (!is_numeric($rid)) {
-                    simpleQuery($this->dbaccess, sprintf("select id from users where login = '%'", pg_escape_string($rid)), $idRoleW, true, true);
+                    DbManager::query(sprintf(
+                        "select id from users where login = '%'",
+                        pg_escape_string($rid)
+                    ), $idRoleW, true, true);
                     if ($idRoleW) {
                         $rid = $idRoleW;
                     }
                 }
                 if (!is_numeric($rid)) {
-                    $err.= ErrorCode::getError("ACCT0008", $rid, $this->login);
+                    $err .= ErrorCode::getError("ACCT0008", $rid, $this->login);
                 } else {
                     $g->idgroup = $rid;
                     $g->iduser = $this->id;
@@ -1326,10 +1529,10 @@ union
                     if ($gerr == 'OK') {
                         $gerr = '';
                     }
-                    $err.= $gerr;
+                    $err .= $gerr;
                 }
             }
-            
+
             $this->updateMemberOf();
         }
         if ($this->accounttype == self::GROUP_TYPE) {
@@ -1343,21 +1546,31 @@ union
         }
         return $err;
     }
+
     /**
      * return direct role ids (not role which can comes from parent groups)
+     *
      * @param bool $useSystemId if true return system id else return document ids
+     *
      * @return array
      */
     public function getRoles($useSystemId = true)
     {
         $returnColumn = $useSystemId ? "id" : "fid";
-        $sql = sprintf("SELECT users.%s from users, groups where groups.iduser=%d and users.id = groups.idgroup and users.accounttype='R'", $returnColumn, $this->id);
-        simpleQuery($this->dbaccess, $sql, $rids, true, false);
+        $sql = sprintf(
+            "SELECT users.%s from users, groups where groups.iduser=%d and users.id = groups.idgroup and users.accounttype='R'",
+            $returnColumn,
+            $this->id
+        );
+        DbManager::query($sql, $rids, true, false);
         return $rids;
     }
+
     /**
      * return direct and indirect role which comes from groups
+     *
      * @param bool $useSystemId if true return system id else return document ids
+     *
      * @return array of users properties
      */
     public function getAllRoles()
@@ -1367,11 +1580,14 @@ union
             return array();
         }
         $sql = sprintf("SELECT * from users where id in (%s) and accounttype='R'", implode(',', $mo));
-        simpleQuery($this->dbaccess, $sql, $rusers);
+
+        DbManager::query($sql, $rusers);
         return $rusers;
     }
+
     /**
      * delete all role of a user/group
+     *
      * @return string error message
      */
     public function deleteRoles()
@@ -1382,15 +1598,18 @@ union
         if ($this->accounttype == self::ROLE_TYPE) {
             return ErrorCode::getError("ACCT0005", $this->login);
         }
-        $err = '';
-        $sql = sprintf("DELETE FROM groups USING users where groups.iduser=%d and users.id=groups.idgroup and users.accounttype='R'", $this->id);
-        $err = simpleQuery($this->dbaccess, $sql);
-        if (!$err) {
-            $err = simpleQuery($this->dbaccess, "delete from permission where computed");
-        }
-        
-        return $err;
+        $sql = sprintf(
+            "DELETE FROM groups USING users where groups.iduser=%d and users.id=groups.idgroup and users.accounttype='R'",
+            $this->id
+        );
+        DbManager::query($sql);
+
+        DbManager::query("delete from permission where computed");
+
+
+        return "";
     }
+
     private function _deleteUserSessions()
     {
         if (AuthenticatorManager::$session !== null && AuthenticatorManager::$session->userid == $this->id) {

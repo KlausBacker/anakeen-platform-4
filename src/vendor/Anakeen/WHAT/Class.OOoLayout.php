@@ -1690,7 +1690,7 @@ class OOoLayout extends Layout
         }
     }
     
-    protected function GenJsRef()
+    protected function GenJsRef($useLegacyLog = true)
     {
         return "";
     }

@@ -3,7 +3,6 @@
 namespace Anakeen\Routes\Core;
 
 use Dcp\Core\Settings;
-use Dcp\HttpApi\V1\Crud\DocumentUtils;
 use Anakeen\Router\URLUtils;
 use Dcp\Router\ApiV2Response;
 
@@ -23,7 +22,7 @@ class DocumentList
 
     protected $defaultFields = null;
     protected $returnFields = null;
-    protected $slice = 0;
+    protected $slice = 10;
     protected $offset = 0;
     protected $orderBy = "";
     /**
@@ -187,13 +186,11 @@ class DocumentList
         $this->prepareSearchDoc();
         $slice = $this->request->getQueryParam("slice");
 
-        $this->slice = !empty($slice)
-            ?
-            mb_strtolower($slice)
-            :
-            \Dcp\HttpApi\V1\Api\Router::getHttpApiParameter("COLLECTION_DEFAULT_SLICE");
-        if ($this->slice !== "all") {
-            $this->slice = intval($this->slice);
+        if ($slice) {
+            $this->slice = $slice;
+            if ($this->slice !== "all") {
+                $this->slice = intval($this->slice);
+            }
         }
         $this->_searchDoc->setSlice($this->slice);
         $this->offset = intval($this->request->getQueryParam("offset"));
