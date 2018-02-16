@@ -19,7 +19,6 @@ export default {
     computed: {
         viewBox() {
             return '0 0 400 120';
-
         },
     },
 };

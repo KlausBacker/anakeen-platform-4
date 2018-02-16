@@ -286,7 +286,7 @@ export default {
                 documentComponent.on('actionClick', e => this.privateScope.onDocumentActionClick(e, index));
                 documentComponent.on('afterSave', e => this.privateScope.onDocumentAfterSave(e, index));
                 documentComponent.on('afterDelete', e => this.privateScope.onDocumentAfterDelete(e, index));
-                documentComponent.on('successTransition', e => this.privateScope.onSuccessTransition(e, index))
+                documentComponent.on('successTransition', e => this.privateScope.onSuccessTransition(e, index));
             },
 
             onModelAddItem: (event) => {
@@ -335,7 +335,12 @@ export default {
                 }
 
                 this.privateScope.setTabstripPagination();
-                event.items.forEach(i => this.tabsListSource.remove(i));
+                event.items.forEach(i => {
+                    const deletedEl = this.tabsListSource.data().find((e) => e.tabId == i.tabId);
+                    if (deletedEl) {
+                        this.tabsListSource.remove(deletedEl);
+                    }
+                });
             },
 
             onModelItemChange: (event, model) => {
@@ -434,7 +439,7 @@ export default {
                     e.preventDefault();
                     e.stopPropagation();
                     this.closeDocument({
-                        tabId: e.target.parentElement.dataset.docid,
+                        tabId: $(e.target).closest('.documentTabs__openedTab__listItem').data('docid'),
                     });
                 });
             },
