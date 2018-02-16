@@ -1,9 +1,0 @@
-{
-    "requestParameters" : {
-        "slice" :   1,
-        "offset" :  0,
-        "length" :  1,
-        "orderBy" : "adate asc, id desc"
-    },
-    "uri" :               "%baseURL%searches/"
-}

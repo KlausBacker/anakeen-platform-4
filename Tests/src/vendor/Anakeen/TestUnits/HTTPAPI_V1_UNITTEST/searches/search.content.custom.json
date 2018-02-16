@@ -1,8 +1,0 @@
-{
-    "requestParameters" : {
-        "slice" :   1,
-        "offset" :  1,
-        "orderBy" : "adate asc, id desc"
-    },
-    "uri" :               "%baseURL%searches/%searchId%/documents/"
-}

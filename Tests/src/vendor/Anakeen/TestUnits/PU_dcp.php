@@ -32,7 +32,6 @@ class TestSuiteDcp
         $suite->addTest(SuiteDcpAttribute::suite());
         $suite->addTest(SuiteDcpUser::suite());
         $suite->addTest(SuiteDcpSecurity::suite());
-        $suite->addTest(SuiteApi::suite());
         // ...
         printf("\nerror log in %s, messages in %s\n", self::logFile, self::msgFile);
         return $suite;

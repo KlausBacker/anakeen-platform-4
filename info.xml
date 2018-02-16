@@ -382,8 +382,6 @@
         <process command="./wsh.php --api=manageContextCrontab --cmd=register --file=vendor/Anakeen/anakeen.cron"/>
 
 
-        <process command="programs/record_application HTTPAPI_V1"/>
-        <process command="./wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
 
         <process command="programs/update_catalog"/>
     </post-install>
@@ -717,11 +715,6 @@ This can be solved by:<br/>
         <process command="programs/post_migration CORE">
             <label lang="en">Migration second level</label>
         </process>
-
-
-        <process command="programs/record_application HTTPAPI_V1"/>
-        <process command="wsh.php --app=HTTPAPI_V1 --action=INIT_RULES"/>
-
 
         <process command="programs/check_autoloader">
             <label lang="en">Check autoloader</label>
