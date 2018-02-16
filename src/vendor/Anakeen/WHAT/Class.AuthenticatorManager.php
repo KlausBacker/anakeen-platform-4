@@ -108,7 +108,7 @@ class AuthenticatorManager
             if (self::$session->read('username') == "") {
                 self::secureLog("failure", "username should exists in session", $authprovider = "",
                     $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
-                exit(0);
+                throw new \Dcp\Exception("Authent Session Error");
             }
         }
 
@@ -253,12 +253,10 @@ class AuthenticatorManager
                 self::secureLog("close", "see you tomorrow");
             }
             self::$auth->logout(null);
-            exit(0);
+            return;
         }
 
-        header('HTTP/1.0 500 Internal Error');
-        print sprintf("logout method not supported by authtype '%s'", static::getAuthType());
-        exit(0);
+        throw new \Dcp\Exception(sprintf("logout method not supported by authtype '%s'", static::getAuthType()));
     }
 
     /**

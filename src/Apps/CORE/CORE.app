@@ -37,7 +37,8 @@ $app_desc = array(
 $action_desc = array(
     array(
         "name" => "WELCOME",
-        "root" => "Y"
+        "root" => "Y",
+        "layout" => "welcome.html"
     ),
     array(
         "name" => "INVALID",
@@ -57,9 +58,6 @@ $action_desc = array(
     array(
         "name" => "CORE_CSS",
         "layout" => "core.css"
-    ),
-    array(
-        "name" => "CORE_ASSET",
     ),
     array(
         "name" => "SETACTPAR"

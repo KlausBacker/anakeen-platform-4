@@ -13,10 +13,16 @@ class RouterConfig
      */
     protected $middlewares;
 
+    /**
+     * @var AppInfo[]
+     */
+    protected $apps;
+
     public function __construct(\stdClass $data)
     {
-        $this->middlewares = $data->middlewares;
-        $this->routes = $data->routes;
+        $this->middlewares = isset($data->middlewares)?$data->middlewares:[];
+        $this->routes = isset($data->routes)?$data->routes:[];
+        $this->apps = isset($data->apps)?$data->apps:[];
         static::sortRoutesByPriority($this->routes);
         $this->uniqueName($this->routes);
         static::sortMiddleByPriority($this->middlewares);
@@ -88,18 +94,25 @@ class RouterConfig
     {
         return $this->middlewares;
     }
-}
 
-class RouterInfo
-{
-    public $priority;
     /**
-     * @var \Callable
+     * @return AppInfo[]
      */
-    public $callable;
-    public $pattern;
-    public $description;
-    public $name;
-    public $methods = [];
-    public $authenticated = true;
+    public function getApps()
+    {
+        $appsInfo = [];
+        foreach ($this->apps as $appData) {
+            $appsInfo[] = new AppInfo($appData);
+        }
+
+        return $appsInfo;
+    }
+
+    public function updateApps()
+    {
+        $apps = $this->getApps();
+        foreach ($apps as $appInfo) {
+            $appInfo->record();
+        }
+    }
 }

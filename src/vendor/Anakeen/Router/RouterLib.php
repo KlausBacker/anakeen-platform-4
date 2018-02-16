@@ -60,11 +60,7 @@ class RouterLib
         $config = self::getRouterConfig();
         foreach ($config->getRoutes() as $route) {
             if ($route->name === $name) {
-                $vars = get_object_vars($route);
-                $info = new RouterInfo();
-                foreach ($vars as $k => $v) {
-                    $info->$k = $v;
-                }
+                $info = new RouterInfo($route);
                 return $info;
             }
         }

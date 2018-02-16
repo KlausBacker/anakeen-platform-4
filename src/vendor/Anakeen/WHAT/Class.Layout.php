@@ -494,18 +494,24 @@ class Layout
         return _($s);
     }
     
-    protected function GenJsRef()
+    protected function GenJsRef($useLegacyLog = true)
     {
         $js = "";
-        $list[] = $this->action->GetParam("CORE_JSURL") . "/logmsg.js?wv=" . $this->action->GetParam("WVERSION");
-        if (!empty($this->action->parent)) {
-            $list = array_merge($list, $this->action->parent->GetJsRef());
-        }
-        
-        reset($list);
-        
-        foreach ($list as $k => $v) {
-            $js.= "\n" . sprintf('<script type="text/javascript" language="JavaScript" src="%s"></script>', $v);
+        if ($this->action) {
+            $list=[];
+            if ($useLegacyLog) {
+                $list[] = $this->action->GetParam("CORE_JSURL") . "/logmsg.js?wv="
+                    . $this->action->GetParam("WVERSION");
+            }
+            if (!empty($this->action->parent)) {
+                $list = array_merge($list, $this->action->parent->GetJsRef());
+            }
+
+            reset($list);
+
+            foreach ($list as $k => $v) {
+                $js .= "\n" . sprintf('<script type="text/javascript" language="JavaScript" src="%s"></script>', $v);
+            }
         }
         return $js;
     }
@@ -571,6 +577,10 @@ class Layout
     {
         $out = preg_replace_callback('/\[JS:REF\]/', function () {
             return $this->GenJsRef();
+        }, $out);
+
+        $out = preg_replace_callback('/\[JS:CUSTOMREF\]/', function () {
+            return $this->GenJsRef(false);
         }, $out);
         
         $out = preg_replace_callback('/\[JS:CODE\]/', function () {

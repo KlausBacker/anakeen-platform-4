@@ -74,7 +74,7 @@ class ContextManager
      * @throws \Dcp\Db\Exception
      * @throws \Exception
      */
-    public static function initContext(\Account $account, $appName = "", $actionName = "", \Session $session = null)
+    public static function initContext(\Account $account, $appName = "CORE", $actionName = "", \Session $session = null)
     {
         global $action;
         set_include_path(self::getRootDirectory() . PATH_SEPARATOR . get_include_path());
@@ -93,6 +93,9 @@ class ContextManager
             $application = new \Application();
             $application->set($appName, $coreApplication);
             self::$coreApplication = $application;
+            if (!$actionName) {
+                $actionName = self::getRootActionName($application);
+            }
         } else {
             self::$coreApplication = $coreApplication;
         }
@@ -100,11 +103,27 @@ class ContextManager
         self::$coreAction = new \Action();
         $action = new \Action();
         self::$coreAction = &$action;
-        self::$coreAction->Set($actionName, self::$coreApplication);
+        if ($actionName) {
+            self::$coreAction->Set($actionName, self::$coreApplication);
+        } else {
+            self::$coreAction->parent = self::$coreApplication;
+            self::$coreAction->session = &self::$coreApplication->session;
+        }
         self::$coreAction->user =& $account;
 
 
         self::setLanguage(self::getApplicationParam("CORE_LANG", "fr_FR"));
+    }
+
+    protected static function getRootActionName(\Application $application)
+    {
+        DbManager::query(
+            sprintf("select name from action where id_application=%d and root='Y'", $application->id),
+            $actionRoot,
+            true,
+            true
+        );
+        return $actionRoot;
     }
 
     public static function recordContext(\Account $account, \Action $action = null)
@@ -384,6 +403,7 @@ class ContextManager
     /**
      * Get Application temporary directory
      * This directory is cleaned each days
+     *
      * @param string $def
      *
      * @return string

@@ -235,8 +235,12 @@ create sequence SEQ_ID_ACTION;
         $this->url = $this->GetParam("CORE_BASEURL") . "app=" . $this->parent->name . "&action=" . $this->name;
         // Init a log attribute
         if ($this->user) {
-            $this->log->loghead = sprintf("%s %s [%d] - ", $this->user->firstname, $this->user->lastname,
-                $this->user->id);
+            $this->log->loghead = sprintf(
+                "%s %s [%d] - ",
+                $this->user->firstname,
+                $this->user->lastname,
+                $this->user->id
+            );
         } else {
             $this->log->loghead = "user not defined - ";
         }
@@ -520,8 +524,12 @@ create sequence SEQ_ID_ACTION;
         $query = new QueryDb($this->dbaccess, "Action");
 
         if ($id_func != '') {
-            $query->AddQuery(sprintf("name='%s' and id != %d and id_application=%d", pg_escape_string($name), $id_func,
-                $idapp));
+            $query->AddQuery(sprintf(
+                "name='%s' and id != %d and id_application=%d",
+                pg_escape_string($name),
+                $id_func,
+                $idapp
+            ));
         } else {
             $query->AddQuery(sprintf("name='%s' and id_application=%d", pg_escape_string($name), $idapp));
         }
@@ -642,8 +650,13 @@ create sequence SEQ_ID_ACTION;
         $appTag = $this->parent->tag;
         if (preg_match('/(\W|\A)ADMIN(\W|\Z)/i', $appTag)) {
             if (!$this->parent->isInAdminMode()) {
-                $e = new Dcp\Exception("CORE0009", $this->short_name, $this->name, $this->parent->name,
-                    $this->parent->short_name);
+                $e = new Dcp\Exception(
+                    "CORE0009",
+                    $this->short_name,
+                    $this->name,
+                    $this->parent->name,
+                    $this->parent->short_name
+                );
                 $e->addHttpHeader('HTTP/1.0 503 Action forbidden');
                 throw $e;
             }
@@ -717,7 +730,7 @@ create sequence SEQ_ID_ACTION;
             $useHtml = ((!empty($accept) && preg_match("@\\btext/html\\b@", $accept)));
 
             if ($useHtml) {
-                $tooltip= sprintf("%s/%s", (empty($this->parent)) ? '' : $this->parent->name, $this->name);
+                $tooltip = sprintf("%s/%s", (empty($this->parent)) ? '' : $this->parent->name, $this->name);
                 print \Dcp\Core\Utils\ErrorMessage::getHtml($texterr, $code, $tooltip);
             } else {
                 $useJSON = ((!empty($accept) && preg_match("@\\bapplication/json\\b@", $accept)));
@@ -847,10 +860,12 @@ create sequence SEQ_ID_ACTION;
                  * @var Action $act
                  */
                 $find = false;
-                reset($action_desc);
-                /** @noinspection PhpUnusedLocalVariableInspection */
-                while ((list($k2, $v2) = each($action_desc)) && (!$find)) {
+
+                foreach ($action_desc as $k2 => $v2) {
                     $find = ($v2["name"] == $act->name);
+                    if ($find) {
+                        break;
+                    }
                 }
                 if (!$find) {
                     // remove the action

@@ -1,0 +1,164 @@
+{
+    "apps": [
+        {
+            "name": "CORE",
+            "short_name": "",
+            "description": "",
+            "icon": "apps/uitest/uitest.png",
+            "displayable": true,
+            "parameters": {
+                "WVERSION": {
+                    "value": "",
+                    "description": "Version key",
+                    "access": "static"
+                },
+                "CORE_TMPDIR": {
+                    "value": "./var/tmp",
+                    "description": "Temporary dir used by applications",
+                    "access": "admin"
+                },
+                "CORE_TMPDIR_MAXAGE": {
+                    "value": "2",
+                    "description": "Maximum time (in days) after which the temporary files and directories are deleted",
+                    "access": "admin"
+                },
+                "CORE_TMPDOC_MAXAGE": {
+                    "value": 1,
+                    "description": "Maximum time (in days) after which the temporary documents are deleted",
+                    "type":"integer",
+                    "access": "admin"
+                },
+                "CORE_CLIENT": {
+                    "value": "N O M du C L I E N T",
+                    "description": "client name",
+                    "access": "admin"
+                },
+                "CORE_URLINDEX": {
+                    "value": "",
+                    "description": "Url to reach http server index",
+                    "access": "admin"
+                },
+                "MEMORY_LIMIT": {
+                    "value": "64",
+                    "description": "Memory max for PHP in Mo",
+                    "access": "admin"
+                },
+                "CORE_REALM": {
+                    "value": "Dynacase",
+                    "description": "Realm name for http authenticate",
+                    "access": "admin"
+                },
+                "CORE_LOGDURATION": {
+                    "value": 30,
+                    "description": "Duration for log conservation (in days)",
+                    "type":"integer",
+                    "access": "admin"
+                },
+                "CORE_MAIL_LINK": {
+                    "value": "optimal",
+                    "description": "produce link for",
+                    "user": "Y",
+                    "type": "enum(optimal|mailto)",
+                    "global": "Y"
+                },
+                "CORE_START_APP": {
+                    "value": "CORE",
+                    "description": "Default start application",
+                    "access": "admin"
+                },
+                "CORE_SESSIONTTL": {
+                    "value": 0,
+                    "description": "Session lifetime (in seconds) - 0 means until web browser quit",
+                    "type":"integer",
+                    "category":"authent",
+                    "access": "admin"
+                },
+                "CORE_GUEST_SESSIONTTL": {
+                    "value": 3600,
+                    "description": "Probability of running the suppression of unused sessions (expressed as a percentage by a number between 0 and 1)",
+                    "type":"integer",
+                    "category":"authent",
+                    "access": "static"
+                },
+                "CORE_SESSIONMAXAGE": {
+                    "value": "1 week",
+                    "description": "Maximum time after which an unused session is eligible for deletion",
+                    "access": "admin",
+                    "category":"authent",
+                    "type": "enum(1 day|1 week|1 month)"
+                },
+                "CORE_SESSIONGCPROBABILITY": {
+                    "value": 0.01,
+                    "description": "Probability of running the suppression of unused sessions (expressed as a percentage by a number between 0 and 1)",
+                    "type": "double",
+                    "category":"authent",
+                    "access": "admin"
+                },
+                "CORE_SESSION_BYTE_LENGTH": {
+                    "value": 16,
+                    "description": "Session's identifier length in bytes (at least 16 bytes)",
+                    "access": "admin",
+                    "category":"authent",
+                    "type":"integer"
+                },
+                "CORE_ALLOW_GUEST": {
+                    "value": "yes",
+                    "description": "Allow guest access",
+                    "type": "enum(yes|no)",
+                    "access": "admin"
+                },
+                "CORE_MAILACTION": {
+                    "value": "",
+                    "description": "Mail action URL",
+                    "access": "admin"
+                },
+                "CORE_NOTIFY_SENDMAIL": {
+                    "value": "always",
+                    "description": "Show a notification when a mail is sent",
+                    "type": "enum(always|errors only|never)",
+                    "access": "admin"
+                },
+                "CORE_WSH_MAILTO": {
+                    "value": "",
+                    "description": "WSH error mail recipients (comma-separated list of mail addresses)",
+                    "access": "admin"
+                },
+                "CORE_WSH_MAILSUBJECT": {
+                    "value": "[%h](%c) Script error: %m",
+                    "description": "WSH error mail subject",
+                    "access": "admin"
+                },
+                "CORE_DISPLAY_ERROR": {
+                    "value": "no",
+                    "description": "Display errors in request response",
+                    "access": "admin",
+                    "type": "enum(yes|no)"
+                }
+            }
+        }
+    ],
+    "routes": [
+        {
+            "priority": 1,
+            "callable": "\\Anakeen\\App\\Core\\WelcomePage",
+            "methods": [
+                "get"
+            ],
+            "pattern": "/",
+            "description": "Welcome Page",
+            "name": "Core:Root",
+            "requiredAccesses": []
+        },
+        {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\LayoutAsset",
+            "methods": [
+                "get"
+            ],
+            "pattern": "/assets/{asset}",
+            "description": "Get css/js asset from Layout directory",
+            "name": "Core:LayoutAsset",
+            "requiredAccesses": []
+        }
+    ]
+}

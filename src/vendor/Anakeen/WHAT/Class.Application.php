@@ -397,7 +397,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             // Fallback for legacy : return css/js from Apps/Layout
             $location = sprintf('%s/%s/Layout/%s', $this->rootdir, $m['appname'], $m['filename']);
             if (is_file($location)) {
-                return sprintf('?app=CORE&action=CORE_ASSET&ref=%s', urlencode($ref));
+                return sprintf('/assets/%s', urlencode($ref));
             }
         }
         /* Try hardcoded locations */
@@ -452,6 +452,10 @@ create sequence SEQ_ID_APPLICATION start 10;
             $this->addLogMsg($wng);
             $this->log->warning($wng);
             $resourceLocation=sprintf("Ressource %s not found", $ref);
+        }
+
+        if (strpos($resourceLocation, "?") === false) {
+            $resourceLocation.="?ws=".$this->getParam("WVERSION");
         }
         if ($type == 'js') {
             $this->jsref[$resourceLocation] = $resourceLocation;
