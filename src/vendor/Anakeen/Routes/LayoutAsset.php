@@ -3,25 +3,26 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Router\Exception;
-use Dcp\Core\ContextManager;
+use Dcp\Router\ApiV2Response;
 
 /**
- * Class WelcomePage
+ * Class LayoutAsset
  *
- * Welcome Page
+ * Return js or css from Application layout directory
  *
- * @note    Used by route : GET /
+ * @note    Used by route : GET /assets/{asset}
  * @package Anakeen\Routes\Core
  */
 class LayoutAsset
 {
 
     /**
-     * Return all visible documents
+     * Return js or css from Application layout directory
+     *
      *
      * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
-     * @param                     $args
+     * @param  array              $args like CORE:welcome.css
      *
      * @return \Slim\Http\response
      *
@@ -39,9 +40,10 @@ class LayoutAsset
             $lfile = getLayoutFile($reg[1], strtolower($reg[2]));
             if (file_exists($lfile)) {
                 $response->write(file_get_contents($lfile));
+                $response=ApiV2Response::withEtag($request, $response, filemtime($lfile));
             } else {
                 header(sprintf("HTTP/1.1 404 ref [%s] not found", $ref));
-                $response=$response->withStatus(404, sprintf("Ref [%s] not found", $ref));
+                $response = $response->withStatus(404, sprintf("Ref [%s] not found", $ref));
             }
         } else {
             throw new Exception(sprintf("Ref \"%s\" not an valid reference", $ref));
@@ -50,10 +52,10 @@ class LayoutAsset
 
         switch ($assetType) {
             case "css":
-                $response=$response->withHeader("content-type", "text/css");
+                $response = $response->withHeader("content-type", "text/css");
                 break;
             case "js":
-                $response=$response->withHeader("content-type", "application/javascript");
+                $response = $response->withHeader("content-type", "application/javascript");
                 break;
         }
 

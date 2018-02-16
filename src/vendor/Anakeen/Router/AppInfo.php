@@ -2,17 +2,23 @@
 
 namespace Anakeen\Router;
 
+/**
+ * Class AppInfo
+ *
+ * Configuration data for an application
+ * @see \Application
+ * @package Anakeen\Router
+ */
 class AppInfo
 {
-
     public $name;
     public $short_name;
     public $pattern;
     public $description;
-    public $icon = [];
+    public $icon = "";
     public $displayable = true;
     public $parentName;
-
+    public $parameters=[];
 
     public function __construct($data = null)
     {
@@ -25,6 +31,11 @@ class AppInfo
         }
     }
 
+    /**
+     * Record application to database
+     * @throws Exception
+     * @throws \Dcp\Db\Exception
+     */
     public function record()
     {
         $query = new \QueryDb("", \Application::class);
@@ -38,6 +49,10 @@ class AppInfo
         }
     }
 
+    /**
+     * Record new application to database
+     * @throws Exception
+     */
     protected function addApplication()
     {
         $app=new \Application();
@@ -54,8 +69,12 @@ class AppInfo
         }
     }
 
+    /**
+     * Update application to database
+     * @throws Exception
+     */
     protected function updateApplication()
     {
-
+        // @TODO ...
     }
 }

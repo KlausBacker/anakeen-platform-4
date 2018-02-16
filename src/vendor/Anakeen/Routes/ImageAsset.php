@@ -55,6 +55,7 @@ class ImageAsset
             $outFile = $location;
         }
 
+        $response=ApiV2Response::withEtag($request, $response, filemtime($location));
         return ApiV2Response::withFile($response, $outFile, "", true);
     }
 

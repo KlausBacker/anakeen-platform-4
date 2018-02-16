@@ -2,8 +2,6 @@
 
 namespace Anakeen\Router;
 
-use Anakeen\Router\RouterLib;
-
 class TokenAuthenticator extends \OpenAuthenticator
 {
     const AUTHORIZATION_SCHEME = "Token";
@@ -87,4 +85,3 @@ class TokenAuthenticator extends \OpenAuthenticator
         return $allow;
     }
 }
-

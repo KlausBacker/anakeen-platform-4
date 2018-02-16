@@ -14,6 +14,7 @@ class RouterLib
     protected static $config = null;
 
     /**
+     * Extract configuration from config files included in "config" directory
      * @return RouterConfig
      * @throws Exception
      */
@@ -50,7 +51,8 @@ class RouterLib
     }
 
     /**
-     * @param string $name
+     * Get route configuration for a nemed route
+     * @param string $name route name
      *
      * @return RouterInfo|null
      * @throws Exception
@@ -67,6 +69,13 @@ class RouterLib
         return null;
     }
 
+    /**
+     * Convert parse info into regexp to be used to match pattern routes
+     * @param array $parseInfos
+     * @see \FastRoute\RouteParser\Std::parse()
+     * @see matchPattern()
+     * @return array
+     */
     public static function parseInfoToRegExp(array $parseInfos)
     {
         $delimiteur = "@";
@@ -88,6 +97,13 @@ class RouterLib
         return $regExps;
     }
 
+    /**
+     * Verify if url match the pattern
+     * @param string $pattern route pattern configuration
+     * @param string $url request url
+     *
+     * @return bool true if match
+     */
     public static function matchPattern($pattern, $url)
     {
         $sParser = new \FastRoute\RouteParser\Std;

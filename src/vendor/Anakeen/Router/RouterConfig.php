@@ -2,6 +2,11 @@
 
 namespace Anakeen\Router;
 
+/**
+ * Class RouterConfig
+ * Extract configuration from config files included in "config" directory
+ * @package Anakeen\Router
+ */
 class RouterConfig
 {
     /**
@@ -20,9 +25,9 @@ class RouterConfig
 
     public function __construct(\stdClass $data)
     {
-        $this->middlewares = isset($data->middlewares)?$data->middlewares:[];
-        $this->routes = isset($data->routes)?$data->routes:[];
-        $this->apps = isset($data->apps)?$data->apps:[];
+        $this->middlewares = isset($data->middlewares) ? $data->middlewares : [];
+        $this->routes = isset($data->routes) ? $data->routes : [];
+        $this->apps = isset($data->apps) ? $data->apps : [];
         static::sortRoutesByPriority($this->routes);
         $this->uniqueName($this->routes);
         static::sortMiddleByPriority($this->middlewares);
@@ -108,7 +113,10 @@ class RouterConfig
         return $appsInfo;
     }
 
-    public function updateApps()
+    /**
+     * Record all application configuration in database
+     */
+    public function recordApps()
     {
         $apps = $this->getApps();
         foreach ($apps as $appInfo) {

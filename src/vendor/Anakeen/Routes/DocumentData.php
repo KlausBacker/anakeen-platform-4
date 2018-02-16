@@ -14,7 +14,7 @@ use Dcp\Routes\Document;
 /**
  * Class DocumentData
  *
- * @note Used by route : GET /api/v2/documents/{docid}
+ * @note    Used by route : GET /api/v2/documents/{docid}
  * @package Anakeen\Routes\Core
  */
 class DocumentData
@@ -74,22 +74,22 @@ class DocumentData
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $mb=microtime(true);
-        $this->request=$request;
-        $this->documentId=$args["docid"];
-        $this->returnFields=null;
+        $mb = microtime(true);
+        $this->request = $request;
+        $this->documentId = $args["docid"];
+        $this->returnFields = null;
 
-        if (! $this->checkId($this->documentId, $initid)) {
+        if (!$this->checkId($this->documentId, $initid)) {
             // Redirect to other url
-            $document=DocManager::getDocument($initid, false);
-            $location=Document::getURI($document);
+            $document = DocManager::getDocument($initid, false);
+            $location = Document::getURI($document);
             return $response->withStatus(307)
                 ->withHeader("location", $location);
         }
 
         $this->setDocument($this->documentId);
-        $etag=$this->getDocumentEtag($this->_document->id);
-        $response=ApiV2Response::withEtag($request, $response, $etag);
+        $etag = $this->getDocumentEtag($this->_document->id);
+        $response = ApiV2Response::withEtag($request, $response, $etag);
         if (ApiV2Response::matchEtag($request, $etag)) {
             return $response;
         }
@@ -100,7 +100,7 @@ class DocumentData
                 $err = "Confidential document";
             }
         } else {
-            $err="Access not granted";
+            $err = "Access not granted";
         }
         if ($err) {
             $exception = new Exception("ROUTES0101", $this->documentId, $err);
@@ -111,8 +111,8 @@ class DocumentData
         if ($this->_document->mid == 0) {
             $this->_document->applyMask(\Doc::USEMASKCVVIEW);
         }
-        $data=$this->getDocumentData();
-        $data["duration"]=sprintf("%.04f", microtime(true) - $mb);
+        $data = $this->getDocumentData();
+        $data["duration"] = sprintf("%.04f", microtime(true) - $mb);
         return ApiV2Response::withData($response, $data);
     }
 
@@ -120,6 +120,7 @@ class DocumentData
      * Find the current document and set it in the internal options
      *
      * @param $ressourceId string|int identifier of the document
+     *
      * @throws Exception
      */
     protected function setDocument($ressourceId)
@@ -135,17 +136,19 @@ class DocumentData
             $exception = new Exception("ROUTES0102", $ressourceId);
             $exception->setHttpStatus("404", "Document deleted");
             $exception->setUserMessage(sprintf(___("Document \"%s\" is deleted", "ank"), $ressourceId));
-            $location=URLUtils::generateUrl(sprintf("%s/trash/%d", Settings::ApiV2, $this->_document->initid));
+            $location = URLUtils::generateUrl(sprintf("%s/trash/%d", Settings::ApiV2, $this->_document->initid));
             $exception->setURI($location);
             throw $exception;
         }
 
         DocManager::cache()->addDocument($this->_document);
     }
+
     /**
      * Initialize the default fields
      *
      * @param $fields
+     *
      * @return $this
      */
     public function setDefaultFields($fields)
@@ -154,10 +157,13 @@ class DocumentData
         $this->defaultFields = $fields;
         return $this;
     }
+
     /**
      * Get data from document object
      * No access control are done
+     *
      * @param \Doc $document Document
+     *
      * @throws Exception
      * @return mixed
      */
@@ -184,6 +190,7 @@ class DocumentData
         }
         return $properties;
     }
+
     /**
      * Get the attributes values
      *
@@ -197,6 +204,7 @@ class DocumentData
 
         return DocumentUtils::getAttributesFields($this->_document, self::GET_ATTRIBUTE, $this->getFields());
     }
+
     /**
      * Get the restrict fields value
      *
@@ -207,7 +215,7 @@ class DocumentData
     protected function getFields()
     {
         if ($this->returnFields === null) {
-            $fields=$this->request->getQueryParam("fields");
+            $fields = $this->request->getQueryParam("fields");
             if (empty($fields)) {
                 $fields = $this->defaultFields;
             }
@@ -219,11 +227,12 @@ class DocumentData
         }
         return $this->returnFields;
     }
+
     /**
      * Check if the current restrict field exist
      *
-     * @param string $fieldId field
-     * @param boolean $strict strict test
+     * @param string  $fieldId field
+     * @param boolean $strict  strict test
      *
      * @return bool
      */
@@ -245,6 +254,12 @@ class DocumentData
 
         return false;
     }
+
+    protected function getDocumentDataFormatter()
+    {
+        return new DocumentDataFormatter($this->_document);
+    }
+
     /**
      * Get document data
      *
@@ -254,7 +269,7 @@ class DocumentData
     protected function getDocumentData()
     {
         $return = array();
-        $this->documentFormater = new DocumentDataFormatter($this->_document);
+        $this->documentFormater = $this->getDocumentDataFormatter();
         $correctField = false;
         $hasProperties = false;
 
@@ -265,7 +280,10 @@ class DocumentData
         } elseif ($this->hasFields(self::GET_PROPERTY)) {
             $correctField = true;
             $hasProperties = true;
-            $this->documentFormater->setProperties($this->_getPropertiesId(), $this->hasFields(self::GET_PROPERTIES, true));
+            $this->documentFormater->setProperties(
+                $this->_getPropertiesId(),
+                $this->hasFields(self::GET_PROPERTIES, true)
+            );
         }
 
         if ($this->hasFields(self::GET_ATTRIBUTES)) {
@@ -292,6 +310,7 @@ class DocumentData
         }
         return $return;
     }
+
     /**
      * Generate the structure of the document
      *
@@ -324,13 +343,13 @@ class DocumentData
                         $return[$aid] = $this->getAttributeInfo($this->_document->getAttribute($aid), $order++);
                         $return[$aid]["content"] = array();
                     }
-                    $target = & $return[$aid]["content"];
+                    $target = &$return[$aid]["content"];
                 } else {
                     if (!isset($target[$aid])) {
                         $target[$aid] = $this->getAttributeInfo($this->_document->getAttribute($aid), $order++);
                         $target[$aid]["content"] = array();
                     }
-                    $target = & $target[$aid]["content"];
+                    $target = &$target[$aid]["content"];
                 }
                 $previousId = $aid;
             }
@@ -338,11 +357,13 @@ class DocumentData
         }
         return $return;
     }
+
     /**
      * Get the attribute info
      *
      * @param \BasicAttribute $attribute
-     * @param int $order
+     * @param int             $order
+     *
      * @return array
      */
     public function getAttributeInfo(\BasicAttribute $attribute, $order = 0)
@@ -350,10 +371,10 @@ class DocumentData
         $info = array(
             "id" => $attribute->id,
             "visibility" => ($attribute->mvisibility) ? $attribute->mvisibility : $attribute->visibility,
-            "label" => $attribute->getLabel() ,
+            "label" => $attribute->getLabel(),
             "type" => $attribute->type,
             "logicalOrder" => $order,
-            "multiple" => $attribute->isMultiple() ,
+            "multiple" => $attribute->isMultiple(),
             "options" => $attribute->getOptions()
         );
 
@@ -395,7 +416,8 @@ class DocumentData
                 $defaultValue = $this->_document->applyMethod($defaultValue, $defaultValue);
             }
 
-            $formatDefaultValue = $this->documentFormater->getFormatCollection()->getInfo($attribute, $defaultValue, $this->_document);
+            $formatDefaultValue = $this->documentFormater->getFormatCollection()
+                ->getInfo($attribute, $defaultValue, $this->_document);
 
             if ($formatDefaultValue) {
                 if ($attribute->isMultipleInArray()) {
@@ -420,7 +442,11 @@ class DocumentData
                 }
                 $info["enumItems"] = $enumItems;
             }
-            $url=sprintf("families/%s/enumerates/%s", ($this->_document->doctype === "C" ? $this->_document->name : $this->_document->fromname), $attribute->id);
+            $url = sprintf(
+                "families/%s/enumerates/%s",
+                ($this->_document->doctype === "C" ? $this->_document->name : $this->_document->fromname),
+                $attribute->id
+            );
 
             $info["enumUri"] = sprintf("%s%s/%s", URLUtils::getBaseURL(), Settings::ApiV2, $url);
         }
@@ -440,7 +466,7 @@ class DocumentData
     {
         $result = array();
         $sql = sprintf("select id, revdate, views from docread where id = %d", $id);
-        
+
         DbManager::query($sql, $result, false, true);
         $user = \Dcp\Core\ContextManager::getCurrentUser();
         $result[] = $user->id;
@@ -463,7 +489,7 @@ class DocumentData
     protected function checkId($identifier, &$initid)
     {
         if (is_numeric($identifier)) {
-            $identifier=(int)$identifier;
+            $identifier = (int)$identifier;
             $initid = DocManager::getInitIdFromIdOrName($identifier);
 
             if ($initid !== 0 && $initid != $identifier) {

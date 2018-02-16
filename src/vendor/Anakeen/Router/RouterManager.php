@@ -27,6 +27,8 @@ class RouterManager
 
 
     /**
+     * Get main router
+     * Is configured with error handlers and default cache
      * @return \Slim\App
      */
     public static function getSlimApp()
@@ -39,7 +41,8 @@ class RouterManager
         };
 
         self::$app = new \Slim\App(self::$container);
-        self::$app->add(new \Slim\HttpCache\Cache('private', 86400));
+        // By default no cache activated
+        self::$app->add(new \Slim\HttpCache\Cache('private', 0, true));
 
 
         $c = self::$app->getContainer();
@@ -64,7 +67,11 @@ class RouterManager
         return self::$app;
     }
 
-    public static function addRoutes($routes)
+    /**
+     * Add all availables routes to main router
+     * @param RouterInfo[]  $routes
+     */
+    public static function addRoutes(array $routes)
     {
         // Need to reverse : Slim use the last route match
         $routes = array_reverse($routes);
@@ -73,7 +80,12 @@ class RouterManager
         }
     }
 
-    public static function addMiddlewares($middleWares)
+    /**
+     * Add matches middleWares to main router
+     *
+     * @param RouterInfo[] $middleWares list of all available middlewares
+     */
+    public static function addMiddlewares(array $middleWares)
     {
         $c = self::$container;
         self::$app->add(
@@ -87,18 +99,21 @@ class RouterManager
                 $requestMethod = $request->getMethod();
                 if ($currentRoute) {
                     $sParser = new \FastRoute\RouteParser\Std;
-                    // print_r($currentRoute->getArguments());
 
+                    // @TODO to delete : used to debug for the moment
                     error_log($request->getMethod() . " " . $currentRoute->getName() . " "
                         . $currentRoute->getPattern());
                     $request = $request->withAttribute("container", $c);
 
                     $uri = $request->getUri()->getPath();
                     foreach ($middleWares as $middleWare) {
+                        /**
+                         * @var RouterInfo $middleWare
+                         */
                         $pattern = $middleWare->pattern;
                         $patternInfos = $sParser->parse($pattern);
 
-
+                        // Reject if HTTP method not match
                         if ($middleWare->methods !== ["ANY"] && !in_array($requestMethod, $middleWare->methods)) {
                             continue;
                         }
@@ -107,8 +122,6 @@ class RouterManager
                         // Add all middleware matches
                         foreach ($regExps as $regExp) {
                             if (preg_match($regExp, $uri, $matches)) {
-                                // error_log("Add Middleware : " . $middleWare->name);
-
                                 foreach ($matches as $k => $v) {
                                     if (is_numeric($k)) {
                                         unset($matches[$k]);
@@ -116,12 +129,11 @@ class RouterManager
                                 }
 
                                 $currentRoute->add(function ($request, $response, $next) use ($middleWare, $matches) {
-                                    // error_log("Before Exec " . $middleWare->name);
+
                                     $callMiddleWare = $middleWare->callable;
 
-
                                     if (!is_callable($callMiddleWare)) {
-                                        throw new \Dcp\Exception(
+                                        throw new \Anakeen\Router\Exception(
                                             sprintf(
                                                 "Middleware \"%s\" not callable : \"%s\"",
                                                 $middleWare->name,
@@ -133,6 +145,7 @@ class RouterManager
                                      * @var \Slim\Http\Response $response
                                      */
                                     $headerMiddleware = $response->getHeaderLine("X-Middleware");
+                                    // Add middleware used in header
                                     $response = $response->withHeader(
                                         "X-Middleware",
                                         $headerMiddleware . ($headerMiddleware ? ", " : "") . $middleWare->name

@@ -4,8 +4,6 @@
             "name": "CORE",
             "short_name": "",
             "description": "",
-            "icon": "apps/uitest/uitest.png",
-            "displayable": true,
             "parameters": {
                 "WVERSION": {
                     "value": "",
@@ -40,7 +38,7 @@
                 },
                 "MEMORY_LIMIT": {
                     "value": "64",
-                    "description": "Memory max for PHP in Mo",
+                    "description": "Memory max by PHP process in Mo",
                     "access": "admin"
                 },
                 "CORE_REALM": {
@@ -147,6 +145,17 @@
             "pattern": "/",
             "description": "Welcome Page",
             "name": "Core:Root",
+            "requiredAccesses": []
+        },
+        {
+            "priority": 1,
+            "callable": "\\Anakeen\\App\\Core\\WelcomePage",
+            "methods": [
+                "get"
+            ],
+            "pattern": "/welcome",
+            "description": "Welcome Page",
+            "name": "Core:Welcome",
             "requiredAccesses": []
         },
         {
