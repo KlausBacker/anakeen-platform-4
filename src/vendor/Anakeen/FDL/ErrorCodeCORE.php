@@ -81,29 +81,24 @@ namespace {
          * @see \Dcp\Core\ContextManager::initContext()
          */
         const CORE0017 = "Context not initialized yet";
+
         /**
-         * @errorCode
-         * for beautifier
+         * @errorCode Router File config must be a valid json
          */
-        private function _bo()
-        {
-            if (true) {
-                $a = 1;
-            }
-        }
+        const CORE0019 = "Cannot decode JSON of router config file \"%s\"";
+        /**
+         * @errorCode Router Config directory must exists
+         */
+        const CORE0020 = "Cannot read router config directory  \"%s\"";
+        /**
+         * @errorCode Router Config methods limited to get, put, post, delete
+         */
+        const CORE0021 = "Router : method \"%s\" not supported";
+        /**
+         * @errorCode The user is not authenticated
+         */
+        const CORE0022 = "User not authenticated";
+
     }
 }
-namespace Dcp\Core {
-    class Exception extends \Dcp\Exception
-    {
-        /**
-         * for beautifier
-         */
-        private function _bo()
-        {
-            if (true) {
-                $a = 1;
-            }
-        }
-    }
-}
+

@@ -37,7 +37,8 @@ $app_desc = array(
 $action_desc = array(
     array(
         "name" => "WELCOME",
-        "root" => "Y"
+        "root" => "Y",
+        "layout" => "welcome.html"
     ),
     array(
         "name" => "INVALID",
@@ -59,13 +60,11 @@ $action_desc = array(
         "layout" => "core.css"
     ),
     array(
-        "name" => "CORE_ASSET",
-    ),
-    array(
         "name" => "SETACTPAR"
     ),
     array(
         "name" => "ERROR",
+        "layout" => "error.html"
     ),
     array(
         "name" => "LOGOUT",

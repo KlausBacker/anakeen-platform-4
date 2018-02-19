@@ -1,14 +1,17 @@
 <?php
+
 namespace Dcp;
 
 class CrontabParser
 {
     const REGEXP_SECTION_BEGIN = '/^#\s+BEGIN:FREEDOM_CRONTAB:(?P<contextRoot>[^:]+):(?P<file>.*)$/';
     const REGEXP_SECTION_END = '/^#\s+END:FREEDOM_CRONTAB:(?P<contextRoot>[^:]+):(?P<file>.*)$/';
+
     /**
      * Parse a crontab into Text and Section elements
      *
      * @param string $crontab
+     *
      * @return CrontabDocument
      * @throws CrontabParserException
      */
@@ -26,27 +29,43 @@ class CrontabParser
             if ($currentSection !== null) {
                 if (preg_match(self::REGEXP_SECTION_END, $line, $m)) {
                     if (!$currentSection->match($m['contextRoot'], $m['file'])) {
-                        throw new CrontabParserException(sprintf("Section end mismatch at line #%d: expecting '%s:%s', found '%s:%s'", ($i + 1), $currentSection->contextRoot, $currentSection->file, $m['contextRoot'], $m['file']));
+                        throw new CrontabParserException(
+                            sprintf(
+                                "Section end mismatch at line #%d: expecting '%s:%s', found '%s:%s'",
+                                ($i + 1),
+                                $currentSection->contextRoot,
+                                $currentSection->file,
+                                $m['contextRoot'],
+                                $m['file']
+                            )
+                        );
                     }
                     $crontabDocument->appendChild($currentSection);
                     $currentSection = null;
                 } else {
-                    $currentSection->appendChild(new CrontabTextElement($line));
+                    $newTextElement = new CrontabTextElement($line);
+                    $currentSection->appendChild($newTextElement);
                 }
             } else {
                 if (preg_match(self::REGEXP_SECTION_BEGIN, $line, $m)) {
                     if ($currentSection !== null) {
-                        throw new CrontabParserException(sprintf("Beginning of section found while already in a section at line #%d", ($i+1)));
+                        throw new CrontabParserException(
+                            sprintf(
+                                "Beginning of section found while already in a section at line #%d",
+                                ($i + 1)
+                            )
+                        );
                     }
                     $currentSection = new CrontabSectionElement($m['contextRoot'], $m['file']);
                 } else {
-                    $crontabDocument->appendChild(new CrontabTextElement($line));
+                    $newTextElement = new CrontabTextElement($line);
+                    $crontabDocument->appendChild($newTextElement);
                 }
             }
             $i++;
         }
         if ($currentSection !== null) {
-            throw new CrontabParserException(sprintf("Section end not found at line #%d", ($i+1)));
+            throw new CrontabParserException(sprintf("Section end not found at line #%d", ($i + 1)));
         }
 
         return $crontabDocument;

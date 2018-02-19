@@ -9,15 +9,17 @@ class DocManager
      * @var \Dcp\Core\DocManager\MemoryCache $localCache
      */
     protected static $localCache = null;
-    protected static $firstgetIdFromName=true;
-    protected static $firstgetNameFromId=true;
-    protected static $familyNames=null;
+    protected static $firstgetIdFromName = true;
+    protected static $firstgetNameFromId = true;
+    protected static $familyNames = null;
 
     /**
      * Get document object identified by its identifier
+     *
      * @param int|string $documentIdentifier
-     * @param bool $latest
-     * @param bool $useCache
+     * @param bool       $latest
+     * @param bool       $useCache
+     *
      * @throws Exception
      * @api Get document object from identifier
      * @return \Doc
@@ -39,11 +41,11 @@ class DocManager
             if ($fromid > 0) {
                 self::requireFamilyClass($fromid);
                 $classname = "\\Doc$fromid";
-            } elseif ($fromid == - 1) {
+            } elseif ($fromid == -1) {
                 $classname = \DocFam::class;
             }
             if ($classname) {
-                /* @var  \Doc  $doc */
+                /* @var  \Doc $doc */
                 $doc = new $classname("", $id);
 
 
@@ -56,8 +58,10 @@ class DocManager
 
     /**
      * Get family object identified by its identifier
+     *
      * @param int|string $familyIdentifier
-     * @param bool $useCache to use and to add family in cache if not
+     * @param bool       $useCache to use and to add family in cache if not
+     *
      * @throws Exception
      * @api Get document object from identifier
      * @return \DocFam return null if id not match a family identifier
@@ -88,10 +92,12 @@ class DocManager
 
         return null;
     }
+
     /**
      * return latest id of document from its initid or other id
      *
      * @param int $initid document identificator
+     *
      * @throws Exception
      * @return int|null identifier relative to latest revision
      */
@@ -101,22 +107,26 @@ class DocManager
             throw new Exception("APIDM0100", print_r($initid, true));
         }
         // first more quick if alive
-        DbManager::query(sprintf("select id from docread where initid='%d' and locked != -1", $initid), $id, true, true);
+        DbManager::query(sprintf("select id from docread where initid='%d' and locked != -1", $initid), $id, true,
+            true);
         if ($id > 0) {
             return intval($id);
         }
         // second for zombie document
-        DbManager::query(sprintf("select id from docread where initid='%d' order by id desc limit 1", $initid), $id, true, true);
+        DbManager::query(sprintf("select id from docread where initid='%d' order by id desc limit 1", $initid), $id,
+            true, true);
         if ($id > 0) {
             return intval($id);
         }
         // it is not really on initid
-        DbManager::query(sprintf("select id from docread where initid=(select initid from docread where id=%d) and locked != -1", $initid), $id, true, true);
+        DbManager::query(sprintf("select id from docread where initid=(select initid from docread where id=%d) and locked != -1",
+            $initid), $id, true, true);
         if ($id > 0) {
             return intval($id);
         }
         return null;
     }
+
     /**
      * return initial  id of document from its id or logical name
      *
@@ -153,7 +163,8 @@ class DocManager
         if (is_numeric($name)) {
             return null;
         }
-        DbManager::query(sprintf("select initid from docread where name='%s' limit 1;", pg_escape_string($name)), $initid, true, true);
+        DbManager::query(sprintf("select initid from docread where name='%s' limit 1;", pg_escape_string($name)),
+            $initid, true, true);
         if ($initid) {
             return intval($initid);
         }
@@ -166,6 +177,7 @@ class DocManager
      *
      * @param int $initid document identificator
      * @param int $revision
+     *
      * @throws Exception
      * @return int|null identifier relative to latest revision
      */
@@ -181,25 +193,29 @@ class DocManager
         }
         if (is_numeric($revision) && $revision >= 0) {
             // first more quick if alive
-            DbManager::query(sprintf("select id from docread where initid='%d' and revision = %d", $initid, $revision), $id, true, true);
+            DbManager::query(sprintf("select id from docread where initid='%d' and revision = %d", $initid, $revision),
+                $id, true, true);
 
             if ($id > 0) {
                 return intval($id);
             }
             // it is not really on initid
-            DbManager::query(sprintf("select id from docread where initid=(select initid from docread where id=%d) and revision = %d", $initid, $revision), $id, true, true);
+            DbManager::query(sprintf("select id from docread where initid=(select initid from docread where id=%d) and revision = %d",
+                $initid, $revision), $id, true, true);
 
             if ($id > 0) {
                 return intval($id);
             }
         } else {
             if (preg_match('/^state:(.+)$/', $revision, $regStates)) {
-                DbManager::query(sprintf("select id from docread where initid='%d' and state = '%s' and locked = -1 order by id desc", $initid, pg_escape_string($regStates[1])), $id, true, true);
+                DbManager::query(sprintf("select id from docread where initid='%d' and state = '%s' and locked = -1 order by id desc",
+                    $initid, pg_escape_string($regStates[1])), $id, true, true);
                 if ($id > 0) {
                     return intval($id);
                 }
                 // it is not really on initid
-                DbManager::query(sprintf("select id from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc", $initid, pg_escape_string($regStates[1])), $id, true, true);
+                DbManager::query(sprintf("select id from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc",
+                    $initid, pg_escape_string($regStates[1])), $id, true, true);
 
                 if ($id > 0) {
                     return intval($id);
@@ -208,11 +224,14 @@ class DocManager
         }
         return null;
     }
+
     /**
      * Initialize document object
      *
      * The document is not yet recorded to database and has no identifier
+     *
      * @param int|string $familyIdentifier
+     *
      * @throws Exception
      * @return \Doc
      */
@@ -235,7 +254,7 @@ class DocManager
 
         $classname = "Doc" . $famId;
         self::requireFamilyClass($family->id);
-        /* @var  \Doc  $doc */
+        /* @var  \Doc $doc */
         $doc = new $classname();
 
         $doc->revision = "0";
@@ -259,13 +278,16 @@ class DocManager
         $classFilePath = sprintf("%s/%s/Class.Doc%d.php", DEFAULT_PUBDIR, Settings::DocumentGenDirectory, $familyId);
         require_once($classFilePath);
     }
+
     /**
      * Create document object
      *
      * The document is not yet recorded to database and has no identifier
+     *
      * @param int|string $familyIdentifier
-     * @param bool $control
-     * @param bool $useDefaultValues
+     * @param bool       $control
+     * @param bool       $useDefaultValues
+     *
      * @throws Exception
      * @return \Doc
      */
@@ -293,13 +315,16 @@ class DocManager
         $doc->applyMask();
         return $doc;
     }
+
     /**
      * Create document object
      *
      * The document is not yet recorded to database and has no identifier
      * this document has no profile. It will be destroyed by dynacaseDbCleaner wsh program
+     *
      * @param int|string $familyIdentifier
-     * @param bool $useDefaultValues
+     * @param bool       $useDefaultValues
+     *
      * @return \Doc
      */
     public static function createTemporaryDocument($familyIdentifier, $useDefaultValues = true)
@@ -316,12 +341,15 @@ class DocManager
         $doc->applyMask();
         return $doc;
     }
+
     /**
      * Get document's values
      *
      * retrieve raw values directly from database
+     *
      * @param int|string $documentIdentifier
-     * @param bool $latest
+     * @param bool       $latest
+     *
      * @api Get indexed array with property values and attribute values
      * @return string[] indexed properties and attributes values
      */
@@ -332,7 +360,7 @@ class DocManager
             $fromid = self::getFromId($id);
             if ($fromid > 0) {
                 $table = "doc$fromid";
-            } elseif ($fromid == - 1) {
+            } elseif ($fromid == -1) {
                 $table = "docfam";
             } else {
                 return [];
@@ -350,7 +378,9 @@ class DocManager
      * Create document object from document's values
      *
      * No call to database is done to retrieve attributes values
+     *
      * @param string[] $rawDocument
+     *
      * @throws Exception APIDM0104, APIDM0105
      * @return \Doc
      */
@@ -371,6 +401,7 @@ class DocManager
         $d->affect($rawDocument);
         return $d;
     }
+
     /**
      * Get document title
      *
@@ -379,8 +410,10 @@ class DocManager
      * No use Doc::getCustomTitle(), so dynamic title cannot be get with this method
      *
      * @see Doc::getTitle()
+     *
      * @param int|string $documentIdentifier
-     * @param bool $latest
+     * @param bool       $latest
+     *
      * @return string|null
      */
     public static function getTitle($documentIdentifier, $latest = true)
@@ -395,6 +428,7 @@ class DocManager
 
         return null;
     }
+
     /**
      * Get document properties
      *
@@ -402,8 +436,9 @@ class DocManager
      * No use any cache
      *
      * @param int|string $documentIdentifier
-     * @param bool $latest
-     * @param array $returnProperties list properties to return, if empty return all properties.
+     * @param bool       $latest
+     * @param array      $returnProperties list properties to return, if empty return all properties.
+     *
      * @return string[] indexed array of properties
      */
     public static function getDocumentProperties($documentIdentifier, array $returnProperties, $latest = true)
@@ -425,15 +460,17 @@ class DocManager
 
         return null;
     }
+
     /**
      * Get raw value for a document
      *
      * Retrieve raw value of document directly from database
      *
      * @param string|int $documentIdentifier
-     * @param string $dataIdentifier attribute or property identifier
-     * @param bool $latest
-     * @param bool $useCache if true use cache object if exists
+     * @param string     $dataIdentifier attribute or property identifier
+     * @param bool       $latest
+     * @param bool       $useCache       if true use cache object if exists
+     *
      * @return string the value
      */
     public static function getRawValue($documentIdentifier, $dataIdentifier, $latest = true, $useCache = true)
@@ -471,9 +508,10 @@ class DocManager
      * Retrieve raw value of document
      *
      * @param string|int $documentIdentifier
-     * @param string[] $dataIdentifiers list of attribute or property identifiers
-     * @param bool $latest
-     * @param bool $useCache if true use cache object if exists
+     * @param string[]   $dataIdentifiers list of attribute or property identifiers
+     * @param bool       $latest
+     * @param bool       $useCache        if true use cache object if exists
+     *
      * @return array|null the values indexed by attribute or property identifiers, null if not found
      */
     public static function getRawData($documentIdentifier, array $dataIdentifiers, $latest = true, $useCache = true)
@@ -483,7 +521,7 @@ class DocManager
             if ($useCache) {
                 if (self::cache()->isDocumentIdInCache($id)) {
                     $cacheDoc = self::cache()->getDocumentFromCache($id);
-                    $data=[];
+                    $data = [];
                     foreach ($dataIdentifiers as $dataIdentifier) {
                         $data[$dataIdentifier] = $cacheDoc->getRawValue($dataIdentifier);
                     }
@@ -493,9 +531,9 @@ class DocManager
             //$sql=sprintf("select avalues->'%s' from docread where id=%d", pg_escape_string($dataIdentifier), $id); // best perfo but cannot distinct null values and id not exists
             $fromid = self::getFromId($id);
             if ($fromid > 0) {
-                $selects=[];
-                foreach ($dataIdentifiers  as $dataIdentifier) {
-                    $selects[]=pg_escape_identifier($dataIdentifier);
+                $selects = [];
+                foreach ($dataIdentifiers as $dataIdentifier) {
+                    $selects[] = pg_escape_identifier($dataIdentifier);
                 }
 
                 $sql = sprintf("select %s from doc%d where id=%d", implode(",", $selects), $fromid, $id);
@@ -513,8 +551,10 @@ class DocManager
 
     /**
      * Return numerical id
+     *
      * @param int|string $documentIdentifier document identifier
-     * @param bool $latest if true search latest id
+     * @param bool       $latest             if true search latest id
+     *
      * @return int
      */
     public static function getIdentifier($documentIdentifier, $latest)
@@ -535,20 +575,23 @@ class DocManager
         }
         return $id;
     }
+
     /**
      * Get latest id from document name (logical name)
+     *
      * @param string $documentName
+     *
      * @throws Exception
      * @api Get document identifier fro logical name
      * @return int (return 0 if not found)
      */
     public static function getIdFromName($documentName)
     {
-        $documentName=trim($documentName);
+        $documentName = trim($documentName);
         if (empty($documentName)) {
             return 0;
         }
-        if (! is_string($documentName)) {
+        if (!is_string($documentName)) {
             throw new Exception("APIDM0101", print_r($documentName, true));
         }
 
@@ -572,11 +615,23 @@ class DocManager
             $arr = pg_fetch_array($result, ($n - 1), PGSQL_ASSOC);
             $id = intval($arr["id"]);
         }
+
+        if ($id === 0) {
+            // May be a deleted document
+            DbManager::query(sprintf("select id from docread where name='%s' and doctype='Z' order by id desc limit 1", pg_escape_string($documentName)), $deletedId, true, true);
+
+            if ($deletedId) {
+                $id=intval($deletedId);
+            }
+        }
         return $id;
     }
+
     /**
      * Get document name (logical name) from numerical identifier
+     *
      * @param int $documentId
+     *
      * @api Get logical name of a document
      * @return string|null return null if id not found
      */
@@ -599,10 +654,13 @@ class DocManager
         }
         return $name;
     }
+
     /**
      * Get Family Id
+     *
      * @param string $famName familyName
-     * @param bool $reset
+     * @param bool   $reset
+     *
      * @return int return 0 if id not found
      */
     public static function getFamilyIdFromName($famName, $reset = false)
@@ -613,7 +671,7 @@ class DocManager
 
             foreach ($r as $v) {
                 if ($v["name"] != "") {
-                    self::$familyNames[strtoupper($v["name"]) ] = intval($v["id"]);
+                    self::$familyNames[strtoupper($v["name"])] = intval($v["id"]);
                 }
             }
         }
@@ -638,18 +696,20 @@ class DocManager
 
     /**
      * Get document fromid
+     *
      * @param int|string $documentId document identifier
+     *
      * @return null|int
      */
     public static function getFromId($documentId)
     {
-        if (! $documentId) {
+        if (!$documentId) {
             return null;
         }
         if (!is_numeric($documentId)) {
             $documentId = self::getIdFromName($documentId);
         }
-        if (! $documentId) {
+        if (!$documentId) {
             return null;
         }
         $dbid = DbManager::getDbid();
@@ -669,12 +729,14 @@ class DocManager
 
     /**
      * Get document from name
+     *
      * @param int|string $documentId document identifier
+     *
      * @return null|string
      */
     public static function getFromName($documentId)
     {
-        if (! $documentId) {
+        if (!$documentId) {
             return null;
         }
         if (!is_numeric($documentId)) {
@@ -683,7 +745,11 @@ class DocManager
         $dbid = DbManager::getDbid();
         $fromName = null;
 
-        $result = pg_query($dbid, sprintf("select docfam.name from docfrom, docfam where docfrom.id=%d and docfam.id=docfrom.fromid", $documentId));
+        $result = pg_query($dbid,
+            sprintf("select docfam.name from docfrom, docfam where docfrom.id=%d and docfam.id=docfrom.fromid",
+                $documentId
+            )
+        );
         if ($result) {
             if (pg_num_rows($result) > 0) {
                 $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
@@ -696,6 +762,7 @@ class DocManager
 
     /**
      * Return Document Cache Object
+     *
      * @return DocManager\Cache
      */
     public static function &cache()

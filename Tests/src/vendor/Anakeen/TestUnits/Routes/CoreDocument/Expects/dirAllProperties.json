@@ -1,0 +1,85 @@
+{
+    "success": true,
+    "data": {
+        "document": {
+            "properties": {
+                "id": 2,
+                "title": "Dossier",
+                "adate": "%isoDate%",
+                "affected": {
+                    "id": 0,
+                    "title": ""
+                },
+                "allocated": null,
+                "atags": null,
+                "cdate": "%isoDate%",
+                "confidential": null,
+                "createdBy": {
+                    "title": "Master Dynacase Platform",
+                    "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/se-iuser.png"
+                },
+                "creationDate": "%isoDate%",
+                "cvid": null,
+                "doctype": "C",
+                "dprofid": "0",
+                "family": {
+                    "title": "de base",
+                    "name": "BASE",
+                    "id": 1,
+                    "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png"
+                },
+                "fromid": "1",
+                "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/se-dir.png",
+                "initid": 2,
+                "lastAccessDate": "%isoDate%",
+                "lastModificationDate": "%isoDate%",
+                "lmodify": "N",
+                "locked": 0,
+                "name": "DIR",
+                "note": {
+                    "id": 0,
+                    "title": ""
+                },
+                "owner": "1",
+                "postitid": null,
+                "prelid": null,
+                "revdate": "%isoDate%",
+                "revision": 0,
+                "revisionData": {
+                    "isModified": false,
+                    "id": 2,
+                    "number": 0,
+                    "createdBy": {
+                        "title": "Master Dynacase Platform",
+                        "icon": "resizeimg.php?img=CORE%2FImages%2Fse-iuser.png&size=24"
+                    }
+                },
+                "security": {
+                    "lock": {
+                        "id": 0
+                    },
+                    "readOnly": false,
+                    "fixed": false,
+                    "confidentiality": "public"
+                },
+                "status": "alive",
+                "tags": [],
+                "type": "family",
+                "usage": "normal",
+                "usefor": "F",
+                "version": null,
+                "viewController": {
+                    "id": 0,
+                    "title": ""
+                },
+                "wid": null,
+                "workflow": {
+                    "id": 0,
+                    "title": ""
+                }
+            },
+            "uri": "%baseURL%api\/v2\/families\/DIR.json"
+        }
+    },
+    "messages": []
+}

@@ -79,13 +79,16 @@ create unique index idx_perm on docperm(docid, userid);";
     public static function getMemberOfVector($uid = 0, $strict = false)
     {
         if ($uid == 0) {
-            global $action;
-            if ($strict) {
-                $mof = $action->user->getStrictMemberOf();
-            } else {
-                $mof = $action->user->getMemberOf();
+            $user=\Dcp\Core\ContextManager::getCurrentUser();
+            if (!$user) {
+                throw new \Dcp\Core\Exception("CORE0022");
             }
-            $mof[] = $action->user->id;
+            if ($strict) {
+                $mof = $user->getStrictMemberOf();
+            } else {
+                $mof = $user->getMemberOf();
+            }
+            $mof[] = $user->id;
         } else {
             $mof = Account::getUserMemberOf($uid, $strict);
             $mof[] = $uid;
@@ -106,7 +109,7 @@ create unique index idx_perm on docperm(docid, userid);";
         }
         $userMember = DocPerm::getMemberOfVector($userid, $strict);
         $sql = sprintf("select getaperm('%s',%d) as uperm", $userMember, $profid);
-        simpleQuery(getDbAccess(), $sql, $uperm, true, true);
+        \Dcp\Core\DbManager::query($sql, $uperm, true, true);
         if ($uperm === false) {
             return 0;
         }
@@ -121,7 +124,8 @@ create unique index idx_perm on docperm(docid, userid);";
         }
         $userMember = DocPerm::getMemberOfVector($userid);
         $sql = sprintf("select getaperm('%s',%d) as uperm", $userMember, $profid);
-        simpleQuery(getDbAccess(), $sql, $uperm, true, true);
+
+        \Dcp\Core\DbManager::query($sql, $uperm, true, true);
         if ($uperm === false) {
             return 0;
         }
@@ -196,7 +200,7 @@ create unique index idx_perm on docperm(docid, userid);";
     {
         $sql = sprintf("SELECT docid, userid, upacl FROM docperm WHERE docid = %d ORDER BY docid, userid, upacl", $docid);
         $res = array();
-        simpleQuery('', $sql, $res, false, false, true);
+        \Dcp\Core\DbManager::query($sql, $res, false, false);
         return $res;
     }
 }

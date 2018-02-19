@@ -1,0 +1,37 @@
+{
+    "success": true,
+    "data": {
+        "document": {
+            "properties": {
+                "title": "Test n\u00b02 - #02",
+                "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png",
+                "name": "TST_F21D1",
+                "revision": 1,
+                "status": "fixed"
+            },
+            "attributes": {
+                "tst_f2_title": {
+                    "value": "Test n\u00b02 - #02",
+                    "displayValue": "Test n\u00b02 - #02"
+                },
+                "tst_f2_date": {
+                    "value": "2018-01-16",
+                    "displayValue": "16\/01\/2018"
+                },
+                "tst_f2_time": {
+                    "value": "02:00:00",
+                    "displayValue": "02:00:00"
+                },
+                "tst_f2_integer": {
+                    "value": -456,
+                    "displayValue": "-456"
+                },
+                "tst_f2_double": {
+                    "value": 5673.6789,
+                    "displayValue": "5673.6789"
+                }
+            }
+        }
+    },
+    "messages": []
+}

@@ -17,27 +17,30 @@
  */
 include_once('WHAT/Class.Authenticator.php');
 
-class basicAuthenticator extends Authenticator
+class BasicAuthenticator extends Authenticator
 {
     const basicAuthorizationScheme = "Basic";
     protected $auth_session = null;
     public function checkAuthentication()
     {
-        if (array_key_exists('logout', $_COOKIE) && $_COOKIE['logout'] == "true") {
-            setcookie('logout', '', time() - 3600, null, null, null, true);
-            return Authenticator::AUTH_ASK;
-        }
-        
+
         if (!array_key_exists('PHP_AUTH_USER', $_SERVER)) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: undefined _SERVER[PHP_AUTH_USER]");
             return Authenticator::AUTH_ASK;
         }
-        
+
         if (!array_key_exists('PHP_AUTH_PW', $_SERVER)) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: undefined _SERVER[PHP_AUTH_PW] for user " . $_SERVER['PHP_AUTH_USER']);
             return Authenticator::AUTH_ASK;
         }
-        
+
+        if (array_key_exists('logout', $_COOKIE) && $_COOKIE['logout'] == "true") {
+            $session = $this->getAuthSession();
+            $session->register('username', $this->getAuthUser());
+            setcookie('logout', '', time() - 3600, "/", null, null, false);
+            return Authenticator::AUTH_ASK;
+        }
+
         if (!is_callable(array(
             $this->provider,
             'validateCredential'
@@ -45,17 +48,17 @@ class basicAuthenticator extends Authenticator
             error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: " . $this->parms{'type'} . $this->parms{'provider'} . "Provider must implement validateCredential()");
             return Authenticator::AUTH_NOK;
         }
-        
+
         if (!$this->provider->validateCredential($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {
             return Authenticator::AUTH_NOK;
         }
-        
+
         if (!$this->freedomUserExists($_SERVER['PHP_AUTH_USER'])) {
             if (!$this->tryInitializeUser($_SERVER['PHP_AUTH_USER'])) {
                 return Authenticator::AUTH_NOK;
             }
         }
-        
+
         $session = $this->getAuthSession();
         $session->register('username', $this->getAuthUser());
         $session->setuid($this->getAuthUser());
@@ -87,13 +90,10 @@ class basicAuthenticator extends Authenticator
     
     public function logout($redir_uri = '')
     {
-        setcookie('logout', 'true', 0, null, null, null, true);
+        setcookie('logout', 'true', 0, "", null, null, true);
         
         if ($redir_uri == '') {
-            $pUri = parse_url($_SERVER['REQUEST_URI']);
-            if (preg_match(':(?P<path>.*/)[^/]*$:', $pUri['path'], $m)) {
-                $redir_uri = $m['path'];
-            }
+            $redir_uri = \Dcp\Core\ContextManager::getApplicationParam("CORE_URLINDEX", "/");
         }
         header('Location: ' . $redir_uri);
         return true;
@@ -116,9 +116,14 @@ class basicAuthenticator extends Authenticator
     public function getAuthSession()
     {
         if (!$this->auth_session) {
-            $this->auth_session = new Session(Session::PARAMNAME, false);
-            
-            $this->auth_session->Set();
+            $sendCookie=!empty($_SERVER['HTTP_REFERER']);
+            // Send cookie if find a referer
+            $this->auth_session = new Session(Session::PARAMNAME, $sendCookie);
+            if (array_key_exists(Session::PARAMNAME, $_COOKIE)) {
+                $this->auth_session->Set($_COOKIE[Session::PARAMNAME]);
+            } else {
+                $this->auth_session->Set();
+            }
         }
         return $this->auth_session;
     }

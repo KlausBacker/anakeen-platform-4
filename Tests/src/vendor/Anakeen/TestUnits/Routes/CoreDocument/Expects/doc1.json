@@ -1,0 +1,283 @@
+{
+    "success": true,
+    "data": {
+        "document": {
+            "properties": {
+                "title": "Test n\u00b01",
+                "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png",
+                "name": "TST_APIDOC01",
+                "revision": 0,
+                "status": "alive"
+            },
+            "attributes": {
+                "tst_api__title": {
+                    "value": "Test n\u00b01",
+                    "displayValue": "Test n\u00b01"
+                },
+                "tst_api__account": {
+                    "value": null,
+                    "displayValue": null
+                },
+                "tst_api__account_multiple": [],
+                "tst_api__docid": {
+                    "value": null,
+                    "displayValue": null
+                },
+                "tst_api__docid_multiple": [],
+                "tst_api__date": {
+                    "value": "2018-01-31",
+                    "displayValue": "31\/01\/2018"
+                },
+                "tst_api__time": {
+                    "value": "03:30:00",
+                    "displayValue": "03:30:00"
+                },
+                "tst_api__timestamp": {
+                    "value": "2018-02-14 02:00:00",
+                    "displayValue": "14\/02\/2018 02:00"
+                },
+                "tst_api__integer": {
+                    "value": 2345,
+                    "displayValue": "2345"
+                },
+                "tst_api__double": {
+                    "value": 31416926535,
+                    "displayValue": "31416926535"
+                },
+                "tst_api__money": {
+                    "value": 236780,
+                    "displayValue": "236 780,00"
+                },
+                "tst_api__password": {
+                    "value": null,
+                    "displayValue": null
+                },
+                "tst_api__color": {
+                    "value": "#cf2929",
+                    "displayValue": "#cf2929"
+                },
+                "tst_api__file": {
+                    "value": null,
+                    "displayValue": null
+                },
+                "tst_api__image": {
+                    "value": null,
+                    "displayValue": null
+                },
+                "tst_api__htmltext": {
+                    "value": "<p>Les <strong>ours<\/strong> forment la <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Famille_(biologie)\" title=\"Famille (biologie)\">famille<\/a> de <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Mammif%C3%A8res\" title=\"Mammif\u00e8res\">mammif\u00e8res<\/a> des <strong>ursid\u00e9s<\/strong> (<strong>Ursidae<\/strong>), de l'ordre des <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Carnivora\" title=\"Carnivora\">carnivores<\/a> (<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Carnivora\" title=\"Carnivora\">Carnivora<\/a>). Le <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Grand_panda\" title=\"Grand panda\">Grand panda<\/a>, dont la classification a longtemps pr\u00eat\u00e9 \u00e0 d\u00e9bat, est aujourd'hui consid\u00e9r\u00e9 comme un ours <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Herbivore\" title=\"Herbivore\">herbivore<\/a> au sein de cette famille<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursidae#cite_note-1\">1<\/a>,<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursidae#cite_note-2\">2<\/a>. Il n'existe que huit esp\u00e8ces d'ours vivantes r\u00e9parties dans une grande vari\u00e9t\u00e9 d'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Habitat_(%C3%A9cologie)\" title=\"Habitat (\u00e9cologie)\">habitats<\/a>, \u00e0 la fois dans l'h\u00e9misph\u00e8re Nord et dans une partie de l'h\u00e9misph\u00e8re Sud. Les ours vivent sur les continents d'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Europe\" title=\"Europe\">Europe<\/a>, d'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Am%C3%A9rique_du_Nord\" title=\"Am\u00e9rique du Nord\">Am\u00e9rique du Nord<\/a>, d'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Am%C3%A9rique_du_Sud\" title=\"Am\u00e9rique du Sud\">Am\u00e9rique du Sud<\/a>, et en <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Asie\" title=\"Asie\">Asie<\/a>.<\/p>",
+                    "displayValue": "<p>Les <strong>ours<\/strong> forment la <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Famille_(biologie)\" title=\"Famille (biologie)\">famille<\/a> de <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Mammif%C3%A8res\" title=\"Mammif\u00e8res\">mammif\u00e8res<\/a> des <strong>ursid\u00e9s<\/strong> (<strong>Ursidae<\/strong>), de l'ordre des <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Carnivora\" title=\"Carnivora\">carnivores<\/a> (<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Carnivora\" title=\"Carnivora\">Carnivora<\/a>). Le <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Grand_panda\" title=\"Grand panda\">Grand panda<\/a>, dont la classification a longtemps pr\u00eat\u00e9 \u00e0 d\u00e9bat, est aujourd'hui consid\u00e9r\u00e9 comme un ours <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Herbivore\" title=\"Herbivore\">herbivore<\/a> au sein de cette famille<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursidae#cite_note-1\">1<\/a>,<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursidae#cite_note-2\">2<\/a>. Il n'existe que huit esp\u00e8ces d'ours vivantes r\u00e9parties dans une grande vari\u00e9t\u00e9 d'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Habitat_(%C3%A9cologie)\" title=\"Habitat (\u00e9cologie)\">habitats<\/a>, \u00e0 la fois dans l'h\u00e9misph\u00e8re Nord et dans une partie de l'h\u00e9misph\u00e8re Sud. Les ours vivent sur les continents d'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Europe\" title=\"Europe\">Europe<\/a>, d'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Am%C3%A9rique_du_Nord\" title=\"Am\u00e9rique du Nord\">Am\u00e9rique du Nord<\/a>, d'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Am%C3%A9rique_du_Sud\" title=\"Am\u00e9rique du Sud\">Am\u00e9rique du Sud<\/a>, et en <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Asie\" title=\"Asie\">Asie<\/a>.<\/p>"
+                },
+                "tst_api__longtext": {
+                    "value": "Les ours sont chass\u00e9s depuis la pr\u00e9histoire pour leur viande et leur fourrure. Ils ont jou\u00e9 un r\u00f4le de premier plan dans la culture (mythologie, l\u00e9gendes, etc.) et les arts. \u00c0 l'\u00e9poque moderne, les populations d'ours sont victimes de pressions (comme celles des \u00e9leveurs dans les Pyr\u00e9n\u00e9es), de l'empi\u00e8tement de l'homme sur son habitat naturel, de l'artificialisation et de la fragmentation des for\u00eats, ainsi que du commerce illicite, notamment le march\u00e9 asiatique de la bile d'ours. L'UICN a class\u00e9 six esp\u00e8ces d'ours comme vuln\u00e9rables ou menac\u00e9es d'extinction. L'ours brun pourrait dispara\u00eetre dans certains pays europ\u00e9ens. Le braconnage et le commerce international des populations les plus en danger sont interdits, mais se pratiquent toujours.",
+                    "displayValue": "Les ours sont chass\u00e9s depuis la pr\u00e9histoire pour leur viande et leur fourrure. Ils ont jou\u00e9 un r\u00f4le de premier plan dans la culture (mythologie, l\u00e9gendes, etc.) et les arts. \u00c0 l'\u00e9poque moderne, les populations d'ours sont victimes de pressions (comme celles des \u00e9leveurs dans les Pyr\u00e9n\u00e9es), de l'empi\u00e8tement de l'homme sur son habitat naturel, de l'artificialisation et de la fragmentation des for\u00eats, ainsi que du commerce illicite, notamment le march\u00e9 asiatique de la bile d'ours. L'UICN a class\u00e9 six esp\u00e8ces d'ours comme vuln\u00e9rables ou menac\u00e9es d'extinction. L'ours brun pourrait dispara\u00eetre dans certains pays europ\u00e9ens. Le braconnage et le commerce international des populations les plus en danger sont interdits, mais se pratiquent toujours."
+                },
+                "tst_api__text": {
+                    "value": "Tous les ours ont un grand corps trapu et massif, des membres puissants.",
+                    "displayValue": "Tous les ours ont un grand corps trapu et massif, des membres puissants."
+                },
+                "tst_api__enumlist": {
+                    "exists": true,
+                    "value": "BG",
+                    "displayValue": "Bulgarie"
+                },
+                "tst_api__enumhorizontal": {
+                    "exists": true,
+                    "value": "lightblue",
+                    "displayValue": "Bleu\/Bleu ciel"
+                },
+                "tst_api__enumslist": [
+                    {
+                        "exists": true,
+                        "value": "BM",
+                        "displayValue": "Bermudes"
+                    },
+                    {
+                        "exists": true,
+                        "value": "CC",
+                        "displayValue": "Iles Cocos"
+                    }
+                ],
+                "tst_api__enumshorizontal": [
+                    {
+                        "exists": true,
+                        "value": "blue",
+                        "displayValue": "Bleu"
+                    },
+                    {
+                        "exists": true,
+                        "value": "yellow",
+                        "displayValue": "Jaune"
+                    },
+                    {
+                        "exists": true,
+                        "value": "navyblue",
+                        "displayValue": "Bleu\/Bleu marine"
+                    }
+                ],
+                "tst_api__date_array": [
+                    {
+                        "value": "2018-02-07",
+                        "displayValue": "07\/02\/2018"
+                    },
+                    {
+                        "value": "2018-03-03",
+                        "displayValue": "03\/03\/2018"
+                    },
+                    {
+                        "value": "2018-03-13",
+                        "displayValue": "13\/03\/2018"
+                    },
+                    {
+                        "value": "2018-03-23",
+                        "displayValue": "23\/03\/2018"
+                    }
+                ],
+                "tst_api__time_array": [
+                    {
+                        "value": "01:00",
+                        "displayValue": "01:00"
+                    },
+                    {
+                        "value": "01:00",
+                        "displayValue": "01:00"
+                    },
+                    {
+                        "value": "01:04",
+                        "displayValue": "01:04"
+                    },
+                    {
+                        "value": "01:40",
+                        "displayValue": "01:40"
+                    }
+                ],
+                "tst_api__timestamp_array": [
+                    {
+                        "value": "2018-02-12T01:30:00",
+                        "displayValue": "12\/02\/2018 01:30"
+                    },
+                    {
+                        "value": "2018-02-12T21:30:00",
+                        "displayValue": "12\/02\/2018 21:30"
+                    },
+                    {
+                        "value": "2018-02-15T11:30:00",
+                        "displayValue": "15\/02\/2018 11:30"
+                    },
+                    {
+                        "value": "2018-03-03T01:59:00",
+                        "displayValue": "03\/03\/2018 01:59"
+                    }
+                ],
+                "tst_api__docid_array": [],
+                "tst_api__docid_multiple_array": [],
+                "tst_api__account_array": [],
+                "tst_api__account_multiple_array": [],
+                "tst_api__double_array": [
+                    {
+                        "value": -15.6783,
+                        "displayValue": "-15.6783"
+                    },
+                    {
+                        "value": 2.6783,
+                        "displayValue": "2.6783"
+                    },
+                    {
+                        "value": -456.09,
+                        "displayValue": "-456.09"
+                    }
+                ],
+                "tst_api__integer_array": [
+                    {
+                        "value": 2,
+                        "displayValue": "2"
+                    },
+                    {
+                        "value": -2,
+                        "displayValue": "-2"
+                    },
+                    {
+                        "value": 23,
+                        "displayValue": "23"
+                    }
+                ],
+                "tst_api__money_array": [
+                    {
+                        "value": 1000,
+                        "displayValue": "1 000,00"
+                    },
+                    {
+                        "value": 0.5,
+                        "displayValue": "0,50"
+                    },
+                    {
+                        "value": 0,
+                        "displayValue": "0,00"
+                    }
+                ],
+                "tst_api__color_array": [
+                    {
+                        "value": "#b26f6f",
+                        "displayValue": "#b26f6f"
+                    },
+                    {
+                        "value": "#451818",
+                        "displayValue": "#451818"
+                    },
+                    {
+                        "value": "#23265e",
+                        "displayValue": "#23265e"
+                    }
+                ],
+                "tst_api__password_array": [
+                    {
+                        "value": "a",
+                        "displayValue": "a"
+                    },
+                    {
+                        "value": "b",
+                        "displayValue": "b"
+                    },
+                    {
+                        "value": "c",
+                        "displayValue": "c"
+                    }
+                ],
+                "tst_api__file_array": [],
+                "tst_api__image_array": [],
+                "tst_api__text_array": [
+                    {
+                        "value": "Les ours se servent plut\u00f4t de la patte gauche",
+                        "displayValue": "Les ours se servent plut\u00f4t de la patte gauche"
+                    },
+                    {
+                        "value": "Cette famille a \u00e9t\u00e9 d\u00e9crite pour la premi\u00e8re fois en 1817",
+                        "displayValue": "Cette famille a \u00e9t\u00e9 d\u00e9crite pour la premi\u00e8re fois en 1817"
+                    }
+                ],
+                "tst_api__longtext_array": [
+                    {
+                        "value": "laissant supposer une lat\u00e9ralit\u00e9 du comportement de l'animal. Michel Pastoureau remarque : \u00ab Deux auteurs, l'un m\u00e9di\u00e9val, l'autre moderne5 ont en effet remarqu\u00e9 que l'ours se servait plus fr\u00e9quemment de sa patte gauche que de sa droite et en ont conclu \u2014 un peu rapidement \u2014 qu'il \u00e9tait gaucher \u00bb6.",
+                        "displayValue": "laissant supposer une lat\u00e9ralit\u00e9 du comportement de l'animal. Michel Pastoureau remarque : \u00ab Deux auteurs, l'un m\u00e9di\u00e9val, l'autre moderne5 ont en effet remarqu\u00e9 que l'ours se servait plus fr\u00e9quemment de sa patte gauche que de sa droite et en ont conclu \u2014 un peu rapidement \u2014 qu'il \u00e9tait gaucher \u00bb6."
+                    },
+                    {
+                        "value": "Genre Ailuropoda Milne-Edwards, 1870\n    Ailuropoda melanoleuca (David, 1869) \u2013 le Panda g\u00e9ant\n\nGenre Helarctos Horsfield, 1825\n\n    Helarctos malayanus (Raffles, 1821) \u2013 l'Ours malais\n\nGenre Melursus Meyer, 1793\n\n    Melursus ursinus Shaw, 1791 - l'Ours lippu",
+                        "displayValue": "Genre Ailuropoda Milne-Edwards, 1870\n    Ailuropoda melanoleuca (David, 1869) \u2013 le Panda g\u00e9ant\n\nGenre Helarctos Horsfield, 1825\n\n    Helarctos malayanus (Raffles, 1821) \u2013 l'Ours malais\n\nGenre Melursus Meyer, 1793\n\n    Melursus ursinus Shaw, 1791 - l'Ours lippu"
+                    }
+                ],
+                "tst_api__htmltext_array": [
+                    {
+                        "value": "<p>Les ursid\u00e9s sont une famille d'\u00e9volution tardive, ils partagent un anc\u00eatre commun avec les <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Canidae\" title=\"Canidae\">canid\u00e9s<\/a>, et un plus r\u00e9cent avec les <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Must%C3%A9lid%C3%A9s\" title=\"Must\u00e9lid\u00e9s\">must\u00e9lid\u00e9s<\/a> et les <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Pinnip%C3%A8des\" title=\"Pinnip\u00e8des\">pinnip\u00e8des<\/a>.<\/p><p>L'anc\u00eatre des <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Must%C3%A9lid%C3%A9s\" title=\"Must\u00e9lid\u00e9s\">must\u00e9lid\u00e9s<\/a> et des <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Pinnip%C3%A8des\" title=\"Pinnip\u00e8des\">pinnip\u00e8des<\/a> a diverg\u00e9 de celui des ours il y a environ 30 <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Million_d%27ann%C3%A9es\" title=\"Million d'ann\u00e9es\">Ma<\/a>. L'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_%C3%A0_lunettes\" title=\"Ours \u00e0 lunettes\">Ours \u00e0 lunettes<\/a> s'est s\u00e9par\u00e9 des autres ours il y a environ 13 millions d'ann\u00e9es. Les six esp\u00e8ces distinctes d'ursin\u00e9s sont apparues il y a environ 6 millions d'ann\u00e9es. Les t\u00e9moignages fossiles et l'analyse de leurs <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Acide_d%C3%A9soxyribonucl%C3%A9ique\" title=\"Acide d\u00e9soxyribonucl\u00e9ique\">ADN<\/a> ont montr\u00e9 que l'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_blanc\" title=\"Ours blanc\">Ours blanc<\/a> a diverg\u00e9 de l'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_brun\" title=\"Ours brun\">Ours brun<\/a> il y a environ 200\u00a0000 ans.<\/p><p><a href=\"https:\/\/commons.wikimedia.org\/wiki\/File:Map_of_Bear_species_distribution.png?uselang=fr\"><img alt=\"\" src=\"https:\/\/upload.wikimedia.org\/wikipedia\/commons\/thumb\/b\/b8\/Map_of_Bear_species_distribution.png\/550px-Map_of_Bear_species_distribution.png\" style=\"float:right; height:273px; width:550px\" \/><\/a> \u00a0\u00a0\u00a0 \u00a0 \u00a0 \u00a0\u00a0\u00a0\u00a0<em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ailuropoda_melanoleuca\" title=\"Ailuropoda melanoleuca\">Ailuropoda melanoleuca<\/a><\/em> (et \u00a0\u00a0\u00a0, \u00a0\u00a0\u00a0)<br \/>\u00a0\u00a0\u00a0 \u00a0 \u00a0 \u00a0\u00a0\u00a0\u00a0<em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Helarctos_malayanus\" title=\"Helarctos malayanus\">Helarctos malayanus<\/a><\/em> (et \u00a0\u00a0\u00a0)<br \/>\u00a0\u00a0\u00a0 \u00a0 \u00a0 \u00a0\u00a0\u00a0\u00a0<em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Melursus_ursinus\" title=\"Melursus ursinus\">Melursus ursinus<\/a><\/em> (et \u00a0\u00a0\u00a0)<br \/>\u00a0\u00a0\u00a0 \u00a0 \u00a0 \u00a0\u00a0\u00a0\u00a0<em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Tremarctos_ornatus\" title=\"Tremarctos ornatus\">Tremarctos ornatus<\/a><\/em><br \/>\u00a0\u00a0\u00a0 \u00a0\u00a0\u00a0 \u00a0 \u00a0\u00a0<em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus_americanus\" title=\"Ursus americanus\">Ursus americanus<\/a><\/em><br \/>\u00a0\u00a0\u00a0 \u00a0 \u00a0 \u00a0\u00a0\u00a0\u00a0<em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus_thibetanus\" title=\"Ursus thibetanus\">Ursus thibetanus<\/a><\/em> (et \u00a0\u00a0\u00a0, \u00a0\u00a0\u00a0, \u00a0\u00a0\u00a0, \u00a0\u00a0\u00a0)<br \/>\u00a0\u00a0\u00a0 \u00a0\u00a0\u00a0 \u00a0\u00a0\u00a0 <em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus_arctos\" title=\"Ursus arctos\">Ursus arctos<\/a><\/em> (et \u00a0\u00a0\u00a0)<br \/>\u00a0\u00a0\u00a0 \u00a0\u00a0\u00a0 \u00a0 \u00a0\u00a0<em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus_maritimus\" title=\"Ursus maritimus\">Ursus maritimus<\/a><\/em><\/p>",
+                        "displayValue": "<p>Les ursid\u00e9s sont une famille d'\u00e9volution tardive, ils partagent un anc\u00eatre commun avec les <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Canidae\" title=\"Canidae\">canid\u00e9s<\/a>, et un plus r\u00e9cent avec les <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Must%C3%A9lid%C3%A9s\" title=\"Must\u00e9lid\u00e9s\">must\u00e9lid\u00e9s<\/a> et les <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Pinnip%C3%A8des\" title=\"Pinnip\u00e8des\">pinnip\u00e8des<\/a>.<\/p><p>L'anc\u00eatre des <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Must%C3%A9lid%C3%A9s\" title=\"Must\u00e9lid\u00e9s\">must\u00e9lid\u00e9s<\/a> et des <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Pinnip%C3%A8des\" title=\"Pinnip\u00e8des\">pinnip\u00e8des<\/a> a diverg\u00e9 de celui des ours il y a environ 30 <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Million_d%27ann%C3%A9es\" title=\"Million d'ann\u00e9es\">Ma<\/a>. L'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_%C3%A0_lunettes\" title=\"Ours \u00e0 lunettes\">Ours \u00e0 lunettes<\/a> s'est s\u00e9par\u00e9 des autres ours il y a environ 13 millions d'ann\u00e9es. Les six esp\u00e8ces distinctes d'ursin\u00e9s sont apparues il y a environ 6 millions d'ann\u00e9es. Les t\u00e9moignages fossiles et l'analyse de leurs <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Acide_d%C3%A9soxyribonucl%C3%A9ique\" title=\"Acide d\u00e9soxyribonucl\u00e9ique\">ADN<\/a> ont montr\u00e9 que l'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_blanc\" title=\"Ours blanc\">Ours blanc<\/a> a diverg\u00e9 de l'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_brun\" title=\"Ours brun\">Ours brun<\/a> il y a environ 200\u00a0000 ans.<\/p><p><a href=\"https:\/\/commons.wikimedia.org\/wiki\/File:Map_of_Bear_species_distribution.png?uselang=fr\"><img alt=\"\" src=\"https:\/\/upload.wikimedia.org\/wikipedia\/commons\/thumb\/b\/b8\/Map_of_Bear_species_distribution.png\/550px-Map_of_Bear_species_distribution.png\" style=\"float:right; height:273px; width:550px\" \/><\/a> \u00a0\u00a0\u00a0 \u00a0 \u00a0 \u00a0\u00a0\u00a0\u00a0<em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ailuropoda_melanoleuca\" title=\"Ailuropoda melanoleuca\">Ailuropoda melanoleuca<\/a><\/em> (et \u00a0\u00a0\u00a0, \u00a0\u00a0\u00a0)<br \/>\u00a0\u00a0\u00a0 \u00a0 \u00a0 \u00a0\u00a0\u00a0\u00a0<em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Helarctos_malayanus\" title=\"Helarctos malayanus\">Helarctos malayanus<\/a><\/em> (et \u00a0\u00a0\u00a0)<br \/>\u00a0\u00a0\u00a0 \u00a0 \u00a0 \u00a0\u00a0\u00a0\u00a0<em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Melursus_ursinus\" title=\"Melursus ursinus\">Melursus ursinus<\/a><\/em> (et \u00a0\u00a0\u00a0)<br \/>\u00a0\u00a0\u00a0 \u00a0 \u00a0 \u00a0\u00a0\u00a0\u00a0<em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Tremarctos_ornatus\" title=\"Tremarctos ornatus\">Tremarctos ornatus<\/a><\/em><br \/>\u00a0\u00a0\u00a0 \u00a0\u00a0\u00a0 \u00a0 \u00a0\u00a0<em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus_americanus\" title=\"Ursus americanus\">Ursus americanus<\/a><\/em><br \/>\u00a0\u00a0\u00a0 \u00a0 \u00a0 \u00a0\u00a0\u00a0\u00a0<em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus_thibetanus\" title=\"Ursus thibetanus\">Ursus thibetanus<\/a><\/em> (et \u00a0\u00a0\u00a0, \u00a0\u00a0\u00a0, \u00a0\u00a0\u00a0, \u00a0\u00a0\u00a0)<br \/>\u00a0\u00a0\u00a0 \u00a0\u00a0\u00a0 \u00a0\u00a0\u00a0 <em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus_arctos\" title=\"Ursus arctos\">Ursus arctos<\/a><\/em> (et \u00a0\u00a0\u00a0)<br \/>\u00a0\u00a0\u00a0 \u00a0\u00a0\u00a0 \u00a0 \u00a0\u00a0<em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus_maritimus\" title=\"Ursus maritimus\">Ursus maritimus<\/a><\/em><\/p>"
+                    },
+                    {
+                        "value": "<p><a href=\"https:\/\/commons.wikimedia.org\/wiki\/File:Ursus_thibetanus_ussuricus.JPG?uselang=fr\"><img alt=\"\" src=\"https:\/\/upload.wikimedia.org\/wikipedia\/commons\/thumb\/d\/de\/Ursus_thibetanus_ussuricus.JPG\/220px-Ursus_thibetanus_ussuricus.JPG\" style=\"float:right; height:176px; width:220px\" \/><\/a><\/p><p><em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus_thibetanus\" title=\"Ursus thibetanus\">Ursus thibetanus<\/a><\/em><\/p><p>Genres et esp\u00e8ces <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Taxon_actuel\" title=\"Taxon actuel\">actuelles<\/a> selon <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Syst%C3%A8me_d%27information_taxonomique_int%C3%A9gr%C3%A9\" title=\"Syst\u00e8me d'information taxonomique int\u00e9gr\u00e9\">ITIS<\/a> (4 juillet 2015)<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursidae#cite_note-ITIS4_juillet_2015-9\">9<\/a> et <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Mammal_Species_of_the_World\" title=\"Mammal Species of the World\">Mammal Species of the World<\/a> (4 juillet 2015)<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursidae#cite_note-MSW4_juillet_2015-10\">10<\/a>:<\/p><ul>\t<li><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Genre_(biologie)\" title=\"Genre (biologie)\">Genre<\/a> <em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ailuropoda\" title=\"Ailuropoda\">Ailuropoda<\/a><\/em> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Henri_Milne_Edwards\" title=\"Henri Milne Edwards\">Milne-Edwards<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1870\" title=\"1870\">1870<\/a>\t<ul>\t\t<li><em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ailuropoda_melanoleuca\" title=\"Ailuropoda melanoleuca\">Ailuropoda melanoleuca<\/a><\/em> (<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Armand_David\" title=\"Armand David\">David<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1869\" title=\"1869\">1869<\/a>) \u2013 le <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Panda_g%C3%A9ant\" title=\"Panda g\u00e9ant\">Panda g\u00e9ant<\/a><\/li>\t<\/ul>\t<\/li>\t<li>Genre <em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Helarctos\" title=\"Helarctos\">Helarctos<\/a><\/em> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Thomas_Horsfield\" title=\"Thomas Horsfield\">Horsfield<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1825\" title=\"1825\">1825<\/a>\t<ul>\t\t<li><em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Helarctos_malayanus\" title=\"Helarctos malayanus\">Helarctos malayanus<\/a><\/em> (<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Thomas_Stamford_Raffles\" title=\"Thomas Stamford Raffles\">Raffles<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1821\" title=\"1821\">1821<\/a>) \u2013 l'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_malais\" title=\"Ours malais\">Ours malais<\/a><\/li>\t<\/ul>\t<\/li>\t<li>Genre <em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Melursus\" title=\"Melursus\">Melursus<\/a><\/em> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Friedrich_Albrecht_Anton_Meyer\" title=\"Friedrich Albrecht Anton Meyer\">Meyer<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1793\" title=\"1793\">1793<\/a>\t<ul>\t\t<li><em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Melursus_ursinus\" title=\"Melursus ursinus\">Melursus ursinus<\/a><\/em> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/George_Kearsley_Shaw\" title=\"George Kearsley Shaw\">Shaw<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1791\" title=\"1791\">1791<\/a> - l'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_lippu\" title=\"Ours lippu\">Ours lippu<\/a><\/li>\t<\/ul>\t<\/li>\t<li>Genre <em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Tremarctos\" title=\"Tremarctos\">Tremarctos<\/a><\/em> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Paul_Gervais_(zoologiste)\" title=\"Paul Gervais (zoologiste)\">Gervais<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1855\" title=\"1855\">1855<\/a>\t<ul>\t\t<li><em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Tremarctos_ornatus\" title=\"Tremarctos ornatus\">Tremarctos ornatus<\/a><\/em> (<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Fr%C3%A9d%C3%A9ric_Cuvier\" title=\"Fr\u00e9d\u00e9ric Cuvier\">F. G. Cuvier<\/a>, 1825) \u2013 l'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_%C3%A0_lunettes\" title=\"Ours \u00e0 lunettes\">Ours \u00e0 lunettes<\/a><\/li>\t<\/ul>\t<\/li>\t<li>Genre <em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus\" title=\"Ursus\">Ursus<\/a><\/em> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Carl_von_Linn%C3%A9\" title=\"Carl von Linn\u00e9\">Linnaeus<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1758\" title=\"1758\">1758<\/a>\t<ul>\t\t<li><em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus_americanus\" title=\"Ursus americanus\">Ursus americanus<\/a><\/em> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Peter_Simon_Pallas\" title=\"Peter Simon Pallas\">Pallas<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1780\" title=\"1780\">1780<\/a> \u2013 l'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_noir\" title=\"Ours noir\">Ours noir<\/a><\/li>\t\t<li><em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus_arctos\" title=\"Ursus arctos\">Ursus arctos<\/a><\/em> Linnaeus, 1758 - l'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_brun\" title=\"Ours brun\">Ours brun<\/a><\/li>\t\t<li><em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus_maritimus\" title=\"Ursus maritimus\">Ursus maritimus<\/a><\/em> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Constantine_John_Phipps\" title=\"Constantine John Phipps\">Phipps<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1774\" title=\"1774\">1774<\/a> \u2013 l'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_blanc\" title=\"Ours blanc\">Ours blanc<\/a><\/li>\t\t<li><em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus_thibetanus\" title=\"Ursus thibetanus\">Ursus thibetanus<\/a><\/em> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Georges_Cuvier\" title=\"Georges Cuvier\">Cuvier<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1823\" title=\"1823\">1823<\/a> \u2013 l'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_noir_d%27Asie\" title=\"Ours noir d'Asie\">Ours noir d'Asie<\/a><\/li>\t<\/ul>\t<\/li><\/ul><p>Diverses \u00e9tudes classent les <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Genre_(biologie)\" title=\"Genre (biologie)\">genres<\/a> actuels en trois <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Sous-famille_(biologie)\" title=\"Sous-famille (biologie)\">sous-familles<\/a> distinctes<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursidae#cite_note-krause-11\">11<\/a>,<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursidae#cite_note-Ursus-12\">12<\/a>:<\/p><ul>\t<li>Sous-famille <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ailuropodinae\" title=\"Ailuropodinae\">Ailuropodinae<\/a> <a href=\"https:\/\/fr.wikipedia.org\/w\/index.php?title=Karl_Grev%C3%A9&amp;action=edit&amp;redlink=1\" title=\"Karl Grev\u00e9 (page inexistante)\">Grev\u00e9<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1894\" title=\"1894\">1894<\/a>\t<ul>\t\t<li>Genre <em>Ailuropoda<\/em> Milne-Edwards, 1870<\/li>\t<\/ul>\t<\/li>\t<li>Sous-famille <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Tremarctinae\" title=\"Tremarctinae\">Tremarctinae<\/a> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/John_Campbell_Merriam\" title=\"John Campbell Merriam\">Merriam<\/a> &amp; <a href=\"https:\/\/fr.wikipedia.org\/w\/index.php?title=Chester_Stock&amp;action=edit&amp;redlink=1\" title=\"Chester Stock (page inexistante)\">Stock<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1925\" title=\"1925\">1925<\/a>\t<ul>\t\t<li>Genre <em>Tremarctos<\/em> Gervais, 1855<\/li>\t<\/ul>\t<\/li>\t<li>Sous-famille <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursinae\" title=\"Ursinae\">Ursinae<\/a> Fischer von Waldheim, 1817\t<ul>\t\t<li>Genre <em>Helarctos<\/em> Horsfield, 1825<\/li>\t\t<li>Genre <em>Melursus<\/em> Meyer, 1793<\/li>\t\t<li>Genre <em>Ursus<\/em> Linnaeus, 1758<\/li>\t<\/ul>\t<\/li><\/ul><h3>Liste des taxons \u00e9teints<\/h3><p>Sous-familles et genres fossiles d'apr\u00e8s <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Fossilworks_Paleobiology_Database\" title=\"Fossilworks Paleobiology Database\">Fossilworks Paleobiology Database<\/a> (novembre 2015)<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursidae#cite_note-TPDBnovembre_2015-13\">13<\/a>:<\/p><ul>\t<li>Dans la sous-famille <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ailuropodinae\" title=\"Ailuropodinae\">Ailuropodinae<\/a>:\t<ul>\t\t<li>Genre \u2020 <em><a href=\"https:\/\/fr.wikipedia.org\/w\/index.php?title=Agriarctos&amp;action=edit&amp;redlink=1\" title=\"Agriarctos (page inexistante)\">Agriarctos<\/a><\/em><\/li>\t<\/ul>\t<\/li>\t<li>Sous-famille \u2020 <a href=\"https:\/\/fr.wikipedia.org\/w\/index.php?title=Amphicynodontinae&amp;action=edit&amp;redlink=1\" title=\"Amphicynodontinae (page inexistante)\">Amphicynodontinae<\/a> Simpson, 1945<\/li>\t<li>Sous-famille \u2020 <a href=\"https:\/\/fr.wikipedia.org\/w\/index.php?title=Hemicyoninae&amp;action=edit&amp;redlink=1\" title=\"Hemicyoninae (page inexistante)\">Hemicyoninae<\/a> Frick, 1926<\/li>\t<li>Dans la sous-famille <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Tremarctinae\" title=\"Tremarctinae\">Tremarctinae<\/a>:\t<ul>\t\t<li>Genre \u2020 <em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Arctodus\" title=\"Arctodus\">Arctodus<\/a><\/em> Leidy, 1854, les <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_%C3%A0_face_courte\" title=\"Ours \u00e0 face courte\">ours \u00e0 face courte<\/a><\/li>\t\t<li>Genre \u2020 <em><a href=\"https:\/\/fr.wikipedia.org\/w\/index.php?title=Arctotherium&amp;action=edit&amp;redlink=1\" title=\"Arctotherium (page inexistante)\">Arctotherium<\/a><\/em> Bravard, 1857<\/li>\t\t<li>Genre \u2020 <em><a href=\"https:\/\/fr.wikipedia.org\/w\/index.php?title=Plionarctos&amp;action=edit&amp;redlink=1\" title=\"Plionarctos (page inexistante)\">Plionarctos<\/a><\/em> Frick, 1926<\/li>\t<\/ul>\t<\/li>\t<li>Dans la sous-famille <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursinae\" title=\"Ursinae\">Ursinae<\/a>:\t<ul>\t\t<li>Genre \u2020<a href=\"https:\/\/fr.wikipedia.org\/w\/index.php?title=Indarctos&amp;action=edit&amp;redlink=1\" title=\"Indarctos (page inexistante)\">Indarctos<\/a> Pilgrim, 1913<\/li>\t<\/ul>\t<\/li><\/ul>",
+                        "displayValue": "<p><a href=\"https:\/\/commons.wikimedia.org\/wiki\/File:Ursus_thibetanus_ussuricus.JPG?uselang=fr\"><img alt=\"\" src=\"https:\/\/upload.wikimedia.org\/wikipedia\/commons\/thumb\/d\/de\/Ursus_thibetanus_ussuricus.JPG\/220px-Ursus_thibetanus_ussuricus.JPG\" style=\"float:right; height:176px; width:220px\" \/><\/a><\/p><p><em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus_thibetanus\" title=\"Ursus thibetanus\">Ursus thibetanus<\/a><\/em><\/p><p>Genres et esp\u00e8ces <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Taxon_actuel\" title=\"Taxon actuel\">actuelles<\/a> selon <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Syst%C3%A8me_d%27information_taxonomique_int%C3%A9gr%C3%A9\" title=\"Syst\u00e8me d'information taxonomique int\u00e9gr\u00e9\">ITIS<\/a> (4 juillet 2015)<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursidae#cite_note-ITIS4_juillet_2015-9\">9<\/a> et <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Mammal_Species_of_the_World\" title=\"Mammal Species of the World\">Mammal Species of the World<\/a> (4 juillet 2015)<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursidae#cite_note-MSW4_juillet_2015-10\">10<\/a>:<\/p><ul>\t<li><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Genre_(biologie)\" title=\"Genre (biologie)\">Genre<\/a> <em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ailuropoda\" title=\"Ailuropoda\">Ailuropoda<\/a><\/em> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Henri_Milne_Edwards\" title=\"Henri Milne Edwards\">Milne-Edwards<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1870\" title=\"1870\">1870<\/a>\t<ul>\t\t<li><em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ailuropoda_melanoleuca\" title=\"Ailuropoda melanoleuca\">Ailuropoda melanoleuca<\/a><\/em> (<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Armand_David\" title=\"Armand David\">David<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1869\" title=\"1869\">1869<\/a>) \u2013 le <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Panda_g%C3%A9ant\" title=\"Panda g\u00e9ant\">Panda g\u00e9ant<\/a><\/li>\t<\/ul>\t<\/li>\t<li>Genre <em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Helarctos\" title=\"Helarctos\">Helarctos<\/a><\/em> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Thomas_Horsfield\" title=\"Thomas Horsfield\">Horsfield<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1825\" title=\"1825\">1825<\/a>\t<ul>\t\t<li><em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Helarctos_malayanus\" title=\"Helarctos malayanus\">Helarctos malayanus<\/a><\/em> (<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Thomas_Stamford_Raffles\" title=\"Thomas Stamford Raffles\">Raffles<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1821\" title=\"1821\">1821<\/a>) \u2013 l'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_malais\" title=\"Ours malais\">Ours malais<\/a><\/li>\t<\/ul>\t<\/li>\t<li>Genre <em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Melursus\" title=\"Melursus\">Melursus<\/a><\/em> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Friedrich_Albrecht_Anton_Meyer\" title=\"Friedrich Albrecht Anton Meyer\">Meyer<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1793\" title=\"1793\">1793<\/a>\t<ul>\t\t<li><em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Melursus_ursinus\" title=\"Melursus ursinus\">Melursus ursinus<\/a><\/em> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/George_Kearsley_Shaw\" title=\"George Kearsley Shaw\">Shaw<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1791\" title=\"1791\">1791<\/a> - l'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_lippu\" title=\"Ours lippu\">Ours lippu<\/a><\/li>\t<\/ul>\t<\/li>\t<li>Genre <em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Tremarctos\" title=\"Tremarctos\">Tremarctos<\/a><\/em> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Paul_Gervais_(zoologiste)\" title=\"Paul Gervais (zoologiste)\">Gervais<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1855\" title=\"1855\">1855<\/a>\t<ul>\t\t<li><em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Tremarctos_ornatus\" title=\"Tremarctos ornatus\">Tremarctos ornatus<\/a><\/em> (<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Fr%C3%A9d%C3%A9ric_Cuvier\" title=\"Fr\u00e9d\u00e9ric Cuvier\">F. G. Cuvier<\/a>, 1825) \u2013 l'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_%C3%A0_lunettes\" title=\"Ours \u00e0 lunettes\">Ours \u00e0 lunettes<\/a><\/li>\t<\/ul>\t<\/li>\t<li>Genre <em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus\" title=\"Ursus\">Ursus<\/a><\/em> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Carl_von_Linn%C3%A9\" title=\"Carl von Linn\u00e9\">Linnaeus<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1758\" title=\"1758\">1758<\/a>\t<ul>\t\t<li><em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus_americanus\" title=\"Ursus americanus\">Ursus americanus<\/a><\/em> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Peter_Simon_Pallas\" title=\"Peter Simon Pallas\">Pallas<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1780\" title=\"1780\">1780<\/a> \u2013 l'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_noir\" title=\"Ours noir\">Ours noir<\/a><\/li>\t\t<li><em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus_arctos\" title=\"Ursus arctos\">Ursus arctos<\/a><\/em> Linnaeus, 1758 - l'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_brun\" title=\"Ours brun\">Ours brun<\/a><\/li>\t\t<li><em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus_maritimus\" title=\"Ursus maritimus\">Ursus maritimus<\/a><\/em> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Constantine_John_Phipps\" title=\"Constantine John Phipps\">Phipps<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1774\" title=\"1774\">1774<\/a> \u2013 l'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_blanc\" title=\"Ours blanc\">Ours blanc<\/a><\/li>\t\t<li><em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursus_thibetanus\" title=\"Ursus thibetanus\">Ursus thibetanus<\/a><\/em> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Georges_Cuvier\" title=\"Georges Cuvier\">Cuvier<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1823\" title=\"1823\">1823<\/a> \u2013 l'<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_noir_d%27Asie\" title=\"Ours noir d'Asie\">Ours noir d'Asie<\/a><\/li>\t<\/ul>\t<\/li><\/ul><p>Diverses \u00e9tudes classent les <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Genre_(biologie)\" title=\"Genre (biologie)\">genres<\/a> actuels en trois <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Sous-famille_(biologie)\" title=\"Sous-famille (biologie)\">sous-familles<\/a> distinctes<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursidae#cite_note-krause-11\">11<\/a>,<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursidae#cite_note-Ursus-12\">12<\/a>:<\/p><ul>\t<li>Sous-famille <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ailuropodinae\" title=\"Ailuropodinae\">Ailuropodinae<\/a> <a href=\"https:\/\/fr.wikipedia.org\/w\/index.php?title=Karl_Grev%C3%A9&amp;action=edit&amp;redlink=1\" title=\"Karl Grev\u00e9 (page inexistante)\">Grev\u00e9<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1894\" title=\"1894\">1894<\/a>\t<ul>\t\t<li>Genre <em>Ailuropoda<\/em> Milne-Edwards, 1870<\/li>\t<\/ul>\t<\/li>\t<li>Sous-famille <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Tremarctinae\" title=\"Tremarctinae\">Tremarctinae<\/a> <a href=\"https:\/\/fr.wikipedia.org\/wiki\/John_Campbell_Merriam\" title=\"John Campbell Merriam\">Merriam<\/a> &amp; <a href=\"https:\/\/fr.wikipedia.org\/w\/index.php?title=Chester_Stock&amp;action=edit&amp;redlink=1\" title=\"Chester Stock (page inexistante)\">Stock<\/a>, <a href=\"https:\/\/fr.wikipedia.org\/wiki\/1925\" title=\"1925\">1925<\/a>\t<ul>\t\t<li>Genre <em>Tremarctos<\/em> Gervais, 1855<\/li>\t<\/ul>\t<\/li>\t<li>Sous-famille <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursinae\" title=\"Ursinae\">Ursinae<\/a> Fischer von Waldheim, 1817\t<ul>\t\t<li>Genre <em>Helarctos<\/em> Horsfield, 1825<\/li>\t\t<li>Genre <em>Melursus<\/em> Meyer, 1793<\/li>\t\t<li>Genre <em>Ursus<\/em> Linnaeus, 1758<\/li>\t<\/ul>\t<\/li><\/ul><h3>Liste des taxons \u00e9teints<\/h3><p>Sous-familles et genres fossiles d'apr\u00e8s <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Fossilworks_Paleobiology_Database\" title=\"Fossilworks Paleobiology Database\">Fossilworks Paleobiology Database<\/a> (novembre 2015)<a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursidae#cite_note-TPDBnovembre_2015-13\">13<\/a>:<\/p><ul>\t<li>Dans la sous-famille <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ailuropodinae\" title=\"Ailuropodinae\">Ailuropodinae<\/a>:\t<ul>\t\t<li>Genre \u2020 <em><a href=\"https:\/\/fr.wikipedia.org\/w\/index.php?title=Agriarctos&amp;action=edit&amp;redlink=1\" title=\"Agriarctos (page inexistante)\">Agriarctos<\/a><\/em><\/li>\t<\/ul>\t<\/li>\t<li>Sous-famille \u2020 <a href=\"https:\/\/fr.wikipedia.org\/w\/index.php?title=Amphicynodontinae&amp;action=edit&amp;redlink=1\" title=\"Amphicynodontinae (page inexistante)\">Amphicynodontinae<\/a> Simpson, 1945<\/li>\t<li>Sous-famille \u2020 <a href=\"https:\/\/fr.wikipedia.org\/w\/index.php?title=Hemicyoninae&amp;action=edit&amp;redlink=1\" title=\"Hemicyoninae (page inexistante)\">Hemicyoninae<\/a> Frick, 1926<\/li>\t<li>Dans la sous-famille <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Tremarctinae\" title=\"Tremarctinae\">Tremarctinae<\/a>:\t<ul>\t\t<li>Genre \u2020 <em><a href=\"https:\/\/fr.wikipedia.org\/wiki\/Arctodus\" title=\"Arctodus\">Arctodus<\/a><\/em> Leidy, 1854, les <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ours_%C3%A0_face_courte\" title=\"Ours \u00e0 face courte\">ours \u00e0 face courte<\/a><\/li>\t\t<li>Genre \u2020 <em><a href=\"https:\/\/fr.wikipedia.org\/w\/index.php?title=Arctotherium&amp;action=edit&amp;redlink=1\" title=\"Arctotherium (page inexistante)\">Arctotherium<\/a><\/em> Bravard, 1857<\/li>\t\t<li>Genre \u2020 <em><a href=\"https:\/\/fr.wikipedia.org\/w\/index.php?title=Plionarctos&amp;action=edit&amp;redlink=1\" title=\"Plionarctos (page inexistante)\">Plionarctos<\/a><\/em> Frick, 1926<\/li>\t<\/ul>\t<\/li>\t<li>Dans la sous-famille <a href=\"https:\/\/fr.wikipedia.org\/wiki\/Ursinae\" title=\"Ursinae\">Ursinae<\/a>:\t<ul>\t\t<li>Genre \u2020<a href=\"https:\/\/fr.wikipedia.org\/w\/index.php?title=Indarctos&amp;action=edit&amp;redlink=1\" title=\"Indarctos (page inexistante)\">Indarctos<\/a> Pilgrim, 1913<\/li>\t<\/ul>\t<\/li><\/ul>"
+                    }
+                ]
+            }
+            
+        }
+    },
+    "messages": []
+}

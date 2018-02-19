@@ -1,0 +1,25 @@
+{
+    "success": true,
+    "data": {
+        "document": {
+            "properties": {
+                "title": "Test n\u00b013 - #01",
+                "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png",
+                "name": "TST_APIDOC13",
+                "revision": 0,
+                "status": "fixed"
+            },
+            "attributes": {
+                "tst_api__title": {
+                    "value": "Test n\u00b013 - #01",
+                    "displayValue": "Test n\u00b013 - #01"
+                },
+                "tst_api__date": {
+                    "value": "2019-01-31",
+                    "displayValue": "31\/01\/2019"
+                }
+            }
+        }
+    },
+    "messages": []
+}

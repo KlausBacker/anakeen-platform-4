@@ -2,6 +2,8 @@
 
 namespace Dcp\Core;
 
+use Anakeen\Router\AuthenticatorManager;
+
 class ContextManager
 {
     /**
@@ -27,6 +29,7 @@ class ContextManager
     /**
      *
      * @param string $core_lang
+     *
      * @return bool|array
      */
     public static function getLocaleConfig($core_lang = '')
@@ -35,10 +38,11 @@ class ContextManager
             $core_lang = self::getApplicationParam("CORE_LANG", "fr_FR");
         }
         $lng = substr($core_lang, 0, 2);
-        if (preg_match('#^[a-z0-9_\.-]+$#i', $core_lang) && file_exists(DEFAULT_PUBDIR."/locale/" . $lng . "/lang.php")) {
-            include(DEFAULT_PUBDIR."/locale/" . $lng . "/lang.php");
+        if (preg_match('#^[a-z0-9_\.-]+$#i', $core_lang)
+            && file_exists(DEFAULT_PUBDIR . "/locale/" . $lng . "/lang.php")) {
+            include(DEFAULT_PUBDIR . "/locale/" . $lng . "/lang.php");
         } else {
-            include(DEFAULT_PUBDIR."/locale/fr/lang.php");
+            include(DEFAULT_PUBDIR . "/locale/fr/lang.php");
         }
         if (!isset($lang) || !isset($lang[$core_lang]) || !is_array($lang[$core_lang])) {
             return false;
@@ -60,10 +64,17 @@ class ContextManager
 
     /**
      * Initialise application context
-     * @param string $appName
-     * @param string $actionName
+     *
+     * @param \Account      $account
+     * @param string        $appName
+     * @param string        $actionName
+     * @param \Session|null $session
+     *
+     * @throws Exception
+     * @throws \Dcp\Db\Exception
+     * @throws \Exception
      */
-    public static function initContext(\Account $account, $appName = "", $actionName = "", \Session $session=null)
+    public static function initContext(\Account $account, $appName = "CORE", $actionName = "", \Session $session = null)
     {
         global $action;
         set_include_path(self::getRootDirectory() . PATH_SEPARATOR . get_include_path());
@@ -74,7 +85,7 @@ class ContextManager
         $coreApplication->Set("CORE", $CoreNull);
         $coreApplication->session = $session;
         if (!$coreApplication->session) {
-            $coreApplication->session=new \Session();
+            $coreApplication->session = new \Session();
         }
 
         self::_initCoreVolatileParam($coreApplication);
@@ -82,21 +93,40 @@ class ContextManager
             $application = new \Application();
             $application->set($appName, $coreApplication);
             self::$coreApplication = $application;
+            if (!$actionName) {
+                $actionName = self::getRootActionName($application);
+            }
         } else {
             self::$coreApplication = $coreApplication;
         }
 
         self::$coreAction = new \Action();
-        $action=new \Action();
+        $action = new \Action();
         self::$coreAction = &$action;
-        self::$coreAction->Set($actionName, self::$coreApplication);
-        self::$coreAction->user=&$account;
+        if ($actionName) {
+            self::$coreAction->Set($actionName, self::$coreApplication);
+        } else {
+            self::$coreAction->parent = self::$coreApplication;
+            self::$coreAction->session = &self::$coreApplication->session;
+        }
+        self::$coreAction->user =& $account;
 
 
         self::setLanguage(self::getApplicationParam("CORE_LANG", "fr_FR"));
     }
 
-    public static function recordContext(\Account $account, \Action $action=null)
+    protected static function getRootActionName(\Application $application)
+    {
+        DbManager::query(
+            sprintf("select name from action where id_application=%d and root='Y'", $application->id),
+            $actionRoot,
+            true,
+            true
+        );
+        return $actionRoot;
+    }
+
+    public static function recordContext(\Account $account, \Action $action = null)
     {
         self::$coreUser = &$account;
         if ($action) {
@@ -105,6 +135,58 @@ class ContextManager
         }
     }
 
+
+    /**
+     * Control user has a good session
+     * Complete AuthenticatorManager singleton
+     *
+     * @return \Account
+     */
+    public static function authentUser()
+    {
+        if (php_sapi_name() !== 'cli') {
+            // Ask authentification if HTML required
+            $urlInfo = parse_url($_SERVER["REQUEST_URI"]);
+            $headers = apache_request_headers();
+            $askAuthent = (preg_match("/\\.html$/", $urlInfo["path"])
+                || (!empty($headers["Accept"])
+                    && preg_match("@\\btext/html\\b@", $headers["Accept"])));
+        } else {
+            $askAuthent = false;
+        }
+
+        $status = AuthenticatorManager::checkAccess(null, !$askAuthent);
+
+        switch ($status) {
+            case \Authenticator::AUTH_OK: // it'good, user is authentified
+                break;
+
+            default:
+                $auth = AuthenticatorManager::$auth;
+                if ($auth === false) {
+                    $exception = new \Anakeen\Router\Exception("Could not get authenticator");
+                    $exception->setHttpStatus("500", "Could not get authenticator");
+                    $exception->setUserMessage("Could not get authenticator");
+                    throw $exception;
+                }
+
+                $exception = new \Anakeen\Router\Exception("User must be authenticated");
+                $exception->setHttpStatus("403", "Forbidden");
+                $exception->setUserMessage(___("Access not granted", "ank"));
+                throw $exception;
+        }
+        $_SERVER['PHP_AUTH_USER'] = AuthenticatorManager::$auth->getAuthUser();
+        // First control
+        if (empty($_SERVER['PHP_AUTH_USER'])) {
+            $exception = new \Anakeen\Router\Exception("User must be authenticated");
+            $exception->setHttpStatus("403", "Forbidden");
+            $exception->setUserMessage(___("Access not granted", "ank"));
+            throw $exception;
+        }
+        $u = new \Account();
+        $u->setLoginName($_SERVER['PHP_AUTH_USER']);
+        return $u;
+    }
 
     /**
      * use new \locale language
@@ -156,7 +238,7 @@ class ContextManager
         bind_textdomain_codeset($td, 'utf-8');
         textdomain($td);
         mb_internal_encoding('UTF-8');
-        self::$language=$lang;
+        self::$language = $lang;
     }
 
     /**
@@ -178,7 +260,8 @@ class ContextManager
         }
         $core_externurl = self::stripUrlSlahes($absindex);
         $core_mailaction = $core->getParam("CORE_MAILACTION");
-        $core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction) : ($core_externurl . "?app=FDL&action=OPENDOC&mode=view");
+        $core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction)
+            : ($core_externurl . "?app=FDL&action=OPENDOC&mode=view");
 
         $core->SetVolatileParam("CORE_EXTERNURL", $core_externurl);
         $core->SetVolatileParam("CORE_MAILACTIONURL", $core_mailactionurl);
@@ -186,14 +269,14 @@ class ContextManager
 
     public static function sudo(\Account &$account)
     {
-        self::$coreAction=self::getCurrentAction();
+        self::$coreAction = self::getCurrentAction();
         if (!self::$coreAction) {
             throw new \Exception("CORE0017");
         }
         self::$coreUser = $account;
 
         self::$coreAction->parent->user = &self::$coreUser;
-        self::$coreApplication=&self::$coreAction->parent;
+        self::$coreApplication =& self::$coreAction->parent;
         self::$coreAction->user = &self::$coreUser;
         if (self::$coreApplication->parent && self::$coreApplication->parent->id !== self::$coreApplication->id) {
             self::$coreApplication->parent->user = &self::$coreUser;
@@ -202,7 +285,9 @@ class ContextManager
 
     /**
      * Delete double slashes in url path
+     *
      * @param string $url
+     *
      * @return string
      */
     protected static function stripUrlSlahes($url)
@@ -216,7 +301,7 @@ class ContextManager
      */
     public static function getCurrentUser()
     {
-        $cAction=self::getCurrentAction();
+        $cAction = self::getCurrentAction();
         if ($cAction) {
             return self::$coreUser = self::getCurrentAction()->user;
         }
@@ -228,15 +313,16 @@ class ContextManager
      */
     public static function getCurrentAction()
     {
-        if (! self::$coreAction) {
+        if (!self::$coreAction) {
             global $action;
             if ($action) {
-                self::$coreAction=&$action;
-                self::$coreApplication=&self::$coreAction->parent;
+                self::$coreAction =& $action;
+                self::$coreApplication =& self::$coreAction->parent;
             }
         }
         return self::$coreAction;
     }
+
     /**
      * @return \Application|null
      */
@@ -249,8 +335,9 @@ class ContextManager
      * return value of an global application parameter
      *
      * @brief must be in core or global type
+     *
      * @param string $name param name
-     * @param string $def default value if value is empty
+     * @param string $def  default value if value is empty
      *
      * @return string
      */
@@ -268,8 +355,9 @@ class ContextManager
      * return value of a parameter
      *
      * @brief must be in core or global type
+     *
      * @param string $name param name
-     * @param string $def default value if value is empty
+     * @param string $def  default value if value is empty
      *
      * @return string
      */
@@ -309,5 +397,49 @@ class ContextManager
             $pubdir = DEFAULT_PUBDIR;
         }
         return $pubdir;
+    }
+
+
+    /**
+     * Get Application temporary directory
+     * This directory is cleaned each days
+     *
+     * @param string $def
+     *
+     * @return string
+     */
+    public static function getTmpDir($def = '/tmp')
+    {
+        static $tmp;
+        if (isset($tmp) && !empty($tmp)) {
+            return $tmp;
+        }
+        $tmp = \Dcp\Core\ContextManager::getApplicationParam('CORE_TMPDIR', $def);
+        if (empty($tmp)) {
+            if (empty($def)) {
+                $tmp = './var/tmp';
+            } else {
+                $tmp = $def;
+            }
+        }
+
+        if (substr($tmp, 0, 1) != '/') {
+            $tmp = DEFAULT_PUBDIR . '/' . $tmp;
+        }
+        /* Try to create the directory if it does not exists */
+        if (!is_dir($tmp)) {
+            mkdir($tmp);
+        }
+        /* Add suffix, and try to create the sub-directory */
+        $tmp = $tmp . '/ank';
+        if (!is_dir($tmp)) {
+            mkdir($tmp);
+        }
+        /* We ignore any failure in the directory creation
+         * and return the expected tmp dir.
+         * The caller will have to handle subsequent
+         * errors...
+        */
+        return $tmp;
     }
 }

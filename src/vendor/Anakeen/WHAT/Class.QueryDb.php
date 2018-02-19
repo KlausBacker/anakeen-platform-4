@@ -321,7 +321,7 @@ class QueryDb
         return ($out);
     }
     
-    public function AddQuery($contraint)
+    public function addQuery($contraint)
     {
         $this->basic_elem->sup_where[] = $contraint;
     }

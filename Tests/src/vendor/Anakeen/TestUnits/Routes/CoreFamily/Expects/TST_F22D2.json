@@ -1,0 +1,49 @@
+{
+    "success": true,
+    "data": {
+        "document": {
+            "properties": {
+                "title": "Test n\u00b02 Plus",
+                "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png",
+                "name": "TST_F22D2",
+                "revision": 0,
+                "status": "alive"
+            },
+            "attributes": {
+                "tst_f2_title": {
+                    "value": "Test n\u00b02",
+                    "displayValue": "Test n\u00b02"
+                },
+                "tst_f2_subtitle": {
+                    "value": "Plus",
+                    "displayValue": "Plus"
+                },
+                "tst_f2_date": {
+                    "value": "2018-01-28",
+                    "displayValue": "28\/01\/2018"
+                },
+                "tst_f2_time": {
+                    "value": "11:30:05",
+                    "displayValue": "11:30:05"
+                },
+                "tst_f2_timestamp": {
+                    "value": "2018-02-13 12:32:10",
+                    "displayValue": "13\/02\/2018 12:32"
+                },
+                "tst_f2_integer": {
+                    "value": null,
+                    "displayValue": null
+                },
+                "tst_f2_double": {
+                    "value": null,
+                    "displayValue": null
+                },
+                "tst_f2_money": {
+                    "value": null,
+                    "displayValue": null
+                }
+            }
+        }
+    },
+    "messages": []
+}

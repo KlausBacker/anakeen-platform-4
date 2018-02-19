@@ -12,9 +12,13 @@ DirectoryIndex index.php
 
 Options -Indexes
 
-
-
 <FilesMatch ".php$">
         Header set X-UA-Compatible "IE=Edge"
 </FilesMatch>
 
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteCond "%{DOCUMENT_ROOT}%{REQUEST_URI}index.php" "!-f" [OR]
+RewriteCond "%{REQUEST_URI}" "!/$"
+RewriteRule ^ index4.php [QSA,L]

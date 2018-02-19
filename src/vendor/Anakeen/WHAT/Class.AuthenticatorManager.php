@@ -8,7 +8,7 @@
  *
  * Manage authentification method (classes)
  *
- * @author Anakeen
+ * @author  Anakeen
  * @version $Id: Class.Authenticator.php,v 1.6 2009/01/16 13:33:00 jerome Exp $
  * @package FDL
  * @subpackage
@@ -28,7 +28,7 @@ class AuthenticatorManager
      * @var \Session
      */
     public static $session = null;
-    const AccessBug = - 1;
+    const AccessBug = -1;
     const AccessOk = 0;
     const AccessHasNoLocalAccount = 1;
     const AccessMaxLoginFailure = 2;
@@ -41,7 +41,7 @@ class AuthenticatorManager
      */
     public static $auth = null;
     public static $provider_errno = 0;
-    
+
     public static function checkAccess($authtype = null, $noask = false)
     {
         /*
@@ -63,7 +63,9 @@ class AuthenticatorManager
             $remote_addr = isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : "";
             $auth_user = isset($_REQUEST["auth_user"]) ? $_REQUEST["auth_user"] : "";
             $http_user_agent = isset($_SERVER["HTTP_USER_AGENT"]) ? $_SERVER["HTTP_USER_AGENT"] : "";
-            self::secureLog("failure", "invalid credential", self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $remote_addr, $auth_user, $http_user_agent);
+            self::secureLog("failure", "invalid credential",
+                self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $remote_addr,
+                $auth_user, $http_user_agent);
             // count login failure
             if (\Dcp\Core\ContextManager::getApplicationParam("AUTHENT_FAILURECOUNT") > 0) {
                 $wu = new Account();
@@ -93,7 +95,7 @@ class AuthenticatorManager
         if ($ret !== self::AccessOk) {
             return $ret;
         }
-        
+
         $login = AuthenticatorManager::$auth->getAuthUser();
         /*
          * All authenticators are not necessarily based on sessions (i.e. 'basic')
@@ -104,19 +106,20 @@ class AuthenticatorManager
              * @var self::$session Session
              */
             if (self::$session->read('username') == "") {
-                self::secureLog("failure", "username should exists in session", $authprovider = "", $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
-                exit(0);
+                self::secureLog("failure", "username should exists in session", $authprovider = "",
+                    $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+                throw new \Dcp\Exception("Authent Session Error");
             }
         }
-        
+
         self::clearGDocs();
         return self::AccessOk;
     }
-    
+
     protected static function checkAuthentication($authtype = null, $noask = false)
     {
         self::$provider_errno = 0;
-        
+
         self::$auth = static::getAuthenticatorClass();
         $authProviderList = static::getAuthProviderList();
         $status = false;
@@ -137,7 +140,7 @@ class AuthenticatorManager
         }
         return $status;
     }
-    
+
     protected static function getAuthenticatorClass($authtype = null, $provider = Authenticator::nullProvider)
     {
         if (!$authtype) {
@@ -146,26 +149,28 @@ class AuthenticatorManager
         if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $authtype)) {
             throw new \Dcp\Exception(sprintf("Invalid authtype '%s'", $authtype));
         }
-        
+
         $authClass = strtolower($authtype) . "Authenticator";
         if (!\Dcp\Autoloader::classExists($authClass)) {
             throw new \Dcp\Exception(sprintf("Cannot find authenticator '%s'", $authtype));
         }
         return new $authClass($authtype, $provider);
     }
+
     /**
      * @return string
      */
     public static function getAuthProvider()
     {
         $freedom_authprovider = getDbAccessValue('freedom_authprovider');
-        
+
         if ($freedom_authprovider == "") {
             $freedom_authprovider = "html";
         }
-        
+
         return trim($freedom_authprovider);
     }
+
     /**
      * @return array
      */
@@ -173,7 +178,7 @@ class AuthenticatorManager
     {
         return preg_split("/\\s*,\\s*/", static::getAuthProvider());
     }
-    
+
     public static function getAuthType()
     {
         if (array_key_exists('authtype', $_GET)) {
@@ -185,10 +190,12 @@ class AuthenticatorManager
         if (!empty($_GET[OpenAuthenticator::openGetId])) {
             return "open";
         }
-        
+
         $scheme = self::getAuthorizationScheme();
         if ($scheme) {
             switch ($scheme) {
+                case \Anakeen\Router\TokenAuthenticator::AUTHORIZATION_SCHEME:
+                    return "token";
                 case OpenAuthenticator::openAuthorizationScheme:
                     return "open";
                 case \basicAuthenticator::basicAuthorizationScheme:
@@ -197,16 +204,15 @@ class AuthenticatorManager
                     throw new Exception(sprintf("Invalid authorization method \"%s\"", $scheme));
             }
         }
-        
+
         $freedom_authtype = getDbAccessValue('freedom_authtype');
-        
+
         if ($freedom_authtype == "") {
             $freedom_authtype = "html";
         }
-        
+
         return trim($freedom_authtype);
     }
-
 
 
     public static function getAuthorizationValue()
@@ -214,43 +220,45 @@ class AuthenticatorManager
         if (php_sapi_name() !== 'cli') {
             $headers = apache_request_headers();
 
-            foreach ($headers as $k=>$v) {
+            foreach ($headers as $k => $v) {
                 if (strtolower($k) === "authorization") {
                     if (preg_match("/^([a-z0-9]+)\\s+(.*)$/i", $v, $reg)) {
-                        return ["scheme"=>trim($reg[1]), "token"=>trim($reg[2])];
+                        return ["scheme" => trim($reg[1]), "token" => trim($reg[2])];
                     }
                 }
             }
         }
         return false;
     }
+
     protected static function getAuthorizationScheme()
     {
-        $authValue=self::getAuthorizationValue();
+        $authValue = self::getAuthorizationValue();
         if ($authValue) {
             return $authValue["scheme"];
         }
         return "";
     }
-    
+
     public static function closeAccess()
     {
         self::$auth = static::getAuthenticatorClass();
-        
+
         if (method_exists(self::$auth, 'logout')) {
             if (is_object(self::$auth->provider)) {
-                self::secureLog("close", "see you tomorrow", self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], self::$auth->getAuthUser(), $_SERVER["HTTP_USER_AGENT"]);
+                self::secureLog("close", "see you tomorrow",
+                    self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'],
+                    $_SERVER["REMOTE_ADDR"], self::$auth->getAuthUser(), $_SERVER["HTTP_USER_AGENT"]);
             } else {
                 self::secureLog("close", "see you tomorrow");
             }
             self::$auth->logout(null);
-            exit(0);
+            return;
         }
-        
-        header('HTTP/1.0 500 Internal Error');
-        print sprintf("logout method not supported by authtype '%s'", static::getAuthType());
-        exit(0);
+
+        throw new \Dcp\Exception(sprintf("logout method not supported by authtype '%s'", static::getAuthType()));
     }
+
     /**
      * Send a 401 Unauthorized HTTP header
      */
@@ -259,26 +267,35 @@ class AuthenticatorManager
         //   Header( "WWW-Authenticate: Basic realm=\"WHAT Connection\", stale=FALSE");
         //Header( "WWW-Authenticate: Basic realm=\"WHAT Connection\", stale=true");
         //Header( "HTTP/1.0 401 Unauthorized");
-        header('WWW-Authenticate: Basic realm="' . \Dcp\Core\ContextManager::getApplicationParam("CORE_REALM", "Dynacase Platform connection") . '"');
+        header('WWW-Authenticate: Basic realm="' . \Dcp\Core\ContextManager::getApplicationParam("CORE_REALM",
+                "Dynacase Platform connection") . '"');
         header('HTTP/1.0 401 Unauthorized');
         echo _("Vous devez entrer un nom d'utilisateur valide et un mot de passe correct pour acceder a cette ressource");
         exit;
     }
-    
-    public static function secureLog($status = "", $additionalMessage = "", $provider = "", $clientIp = "", $account = "", $userAgent = "")
-    {
+
+    public static function secureLog(
+        $status = "",
+        $additionalMessage = "",
+        $provider = "",
+        $clientIp = "",
+        $account = "",
+        $userAgent = ""
+    ) {
         global $_GET;
         $log = new Log("", "Session", "Authentication");
         $facility = constant(\Dcp\Core\ContextManager::getApplicationParam("AUTHENT_LOGFACILITY", "LOG_AUTH"));
-        $log->wlog("S", sprintf("[%s] [%s] [%s] [%s] [%s] [%s]", $status, $additionalMessage, $provider, $clientIp, $account, $userAgent), null, $facility);
+        $log->wlog("S",
+            sprintf("[%s] [%s] [%s] [%s] [%s] [%s]", $status, $additionalMessage, $provider, $clientIp, $account,
+                $userAgent), null, $facility);
         return 0;
     }
-    
+
     public static function clearGDocs()
     {
         \Dcp\Core\DocManager::cache()->clear();
     }
-    
+
     public static function getAccount()
     {
         $login = self::$auth->getAuthUser();
@@ -288,10 +305,12 @@ class AuthenticatorManager
         }
         return false;
     }
+
     /**
      * Get Provider's protocol version.
      *
      * @param Provider $provider
+     *
      * @return int version (0, 1, etc.)
      */
     public static function _getProviderProtocolVersion(Provider $provider)
@@ -301,6 +320,7 @@ class AuthenticatorManager
         }
         return $provider->PROTOCOL_VERSION;
     }
+
     /**
      * Main authorization check entry point
      *
@@ -315,17 +335,21 @@ class AuthenticatorManager
         if ($wu->SetLoginName($login)) {
             $existu = true;
         }
-        
+
         if (!$existu) {
-            AuthenticatorManager::secureLog("failure", "login have no Dynacase account", AuthenticatorManager::$auth->provider->parms['type'] . "/" . AuthenticatorManager::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+            AuthenticatorManager::secureLog("failure", "login have no Dynacase account",
+                AuthenticatorManager::$auth->provider->parms['type'] . "/"
+                . AuthenticatorManager::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login,
+                $_SERVER["HTTP_USER_AGENT"]);
             return AuthenticatorManager::AccessHasNoLocalAccount;
         }
-        
+
         $protoVersion = self::_getProviderProtocolVersion(self::$auth->provider);
         if (!is_integer($protoVersion)) {
-            throw new \Dcp\Exception(sprintf("Invalid provider protocol version '%s' for provider '%s'.", $protoVersion, get_class(self::$auth->provider)));
+            throw new \Dcp\Exception(sprintf("Invalid provider protocol version '%s' for provider '%s'.", $protoVersion,
+                get_class(self::$auth->provider)));
         }
-        
+
         switch ($protoVersion) {
             case 0:
                 return self::protocol_0_authorization(array(
@@ -334,12 +358,15 @@ class AuthenticatorManager
                 ));
                 break;
         }
-        throw new \Dcp\Exception(sprintf("Unsupported provider protocol version '%s' for provider '%s'.", $protoVersion, get_class(self::$auth->provider)));
+        throw new \Dcp\Exception(sprintf("Unsupported provider protocol version '%s' for provider '%s'.", $protoVersion,
+            get_class(self::$auth->provider)));
     }
+
     /**
      * Protocol 0: check only Dynacase's authorization.
      *
      * @param array $opt
+     *
      * @return int
      */
     private static function protocol_0_authorization($opt)
@@ -350,10 +377,12 @@ class AuthenticatorManager
         }
         return self::checkDynacaseAuthorization($opt);
     }
+
     /**
      * Check Provider's authorization.
      *
      * @param array $opt
+     *
      * @return int
      */
     private static function checkProviderAuthorization($opt)
@@ -364,10 +393,12 @@ class AuthenticatorManager
         }
         return self::AccessNotAuthorized;
     }
+
     /**
      * Check Dynacase's authorization.
      *
      * @param array $opt
+     *
      * @throws \Dcp\Exception
      * @return int
      */
@@ -383,20 +414,29 @@ class AuthenticatorManager
             $du = new_Doc(getDbAccess(), $wu->fid);
             // First check if account is active
             if (!$du->isAccountActive()) {
-                AuthenticatorManager::secureLog("failure", "inactive account", AuthenticatorManager::$auth->provider->parms['type'] . "/" . AuthenticatorManager::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+                AuthenticatorManager::secureLog("failure", "inactive account",
+                    AuthenticatorManager::$auth->provider->parms['type'] . "/"
+                    . AuthenticatorManager::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login,
+                    $_SERVER["HTTP_USER_AGENT"]);
                 AuthenticatorManager::clearGDocs();
                 return AuthenticatorManager::AccessAccountIsNotActive;
             }
             // check if the account expiration date is elapsed
             if ($du->accountHasExpired()) {
-                AuthenticatorManager::secureLog("failure", "account has expired", AuthenticatorManager::$auth->provider->parms['type'] . "/" . AuthenticatorManager::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+                AuthenticatorManager::secureLog("failure", "account has expired",
+                    AuthenticatorManager::$auth->provider->parms['type'] . "/"
+                    . AuthenticatorManager::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login,
+                    $_SERVER["HTTP_USER_AGENT"]);
                 AuthenticatorManager::clearGDocs();
                 return AuthenticatorManager::AccessAccountHasExpired;
             }
             // check count of login failure
             $maxfail = \Dcp\Core\ContextManager::getApplicationParam("AUTHENT_FAILURECOUNT");
             if ($maxfail > 0 && $du->getRawValue("us_loginfailure", 0) >= $maxfail) {
-                AuthenticatorManager::secureLog("failure", "max connection (" . $maxfail . ") attempts exceeded", AuthenticatorManager::$auth->provider->parms['type'] . "/" . AuthenticatorManager::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+                AuthenticatorManager::secureLog("failure", "max connection (" . $maxfail . ") attempts exceeded",
+                    AuthenticatorManager::$auth->provider->parms['type'] . "/"
+                    . AuthenticatorManager::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login,
+                    $_SERVER["HTTP_USER_AGENT"]);
                 AuthenticatorManager::clearGDocs();
                 return AuthenticatorManager::AccessMaxLoginFailure;
             }
@@ -405,7 +445,7 @@ class AuthenticatorManager
             $du->resetLoginFailure();
             $du->enableEditControl();
         }
-        
+
         return AuthenticatorManager::AccessOk;
     }
 }

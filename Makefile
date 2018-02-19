@@ -1,6 +1,7 @@
 
 
 app:
+	cd src/vendor/Anakeen/lib; composer install
 	php ./anakeen-devtool.phar generateWebinst -s .
 
 

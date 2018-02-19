@@ -1,0 +1,81 @@
+{
+    "success": true,
+    "data": {
+        "document": {
+            "properties": {
+                "title": "Test F2 / 1",
+                "affected": {
+                    "id": 0,
+                    "title": ""
+                },
+                "allocated": null,
+                "atags": null,
+                "confidential": null,
+                "createdBy": {
+                    "title": "Master Dynacase Platform",
+                    "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/se-iuser.png"
+                },
+                "cvid": null,
+                "doctype": "C",
+                "dprofid": null,
+                "family": {
+                    "title": "",
+                    "name": "",
+                    "id": 0,
+                    "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png"
+                },
+                "fromid": "0",
+                "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png",
+                "lmodify": "N",
+                "locked": 0,
+                "name": "TST_F2_1",
+                "note": {
+                    "id": 0,
+                    "title": ""
+                },
+                "owner": "1",
+                "postitid": null,
+                "prelid": null,
+                "profid": "0",
+                "revision": 0,
+                "revisionData": {
+                    "isModified": false,
+                    "number": 0,
+                    "createdBy": {
+                        "title": "Master Dynacase Platform",
+                        "icon": "resizeimg.php?img=CORE%2FImages%2Fse-iuser.png&size=24"
+                    }
+                },
+                "security": {
+                    "lock": {
+                        "id": 0
+                    },
+                    "readOnly": false,
+                    "fixed": false,
+                    "profil": {
+                        "id": 0,
+                        "title": ""
+                    },
+                    "confidentiality": "public"
+                },
+                "status": "alive",
+                "tags": [],
+                "type": "family",
+                "usage": "normal",
+                "usefor": "N",
+                "version": null,
+                "viewController": {
+                    "id": 0,
+                    "title": ""
+                },
+                "wid": null,
+                "workflow": {
+                    "id": 0,
+                    "title": ""
+                }
+            },
+            "uri": "%baseURL%api\/v2\/families\/TST_F2_1.json"
+        }
+    },
+    "messages": []
+}

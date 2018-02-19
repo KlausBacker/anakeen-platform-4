@@ -82,7 +82,7 @@ class DbObj
     public static $savepoint = array();
     public static $lockpoint = array();
     private static $masterLock = false;
-    public static $sqlStrict = null;
+    public static $sqlStrict = true;
     /**
      * @var string error message
      */
