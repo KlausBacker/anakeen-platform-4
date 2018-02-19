@@ -1,13 +1,14 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: user-interfaces_en\n"
+"Project-Id-Version: ANAKEEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-17 18:34+0100\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"POT-Creation-Date: 2017-11-24 14:34+0100\n"
+"PO-Revision-Date: 2017-11-24 13:42+0100\n"
+"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
+"Language-Team: English <distrib@anakeen.com>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain;  charset=UTF-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
@@ -202,52 +203,52 @@ msgid "Create to server and view document"
 msgstr ""
 
 msgid "DCOGRIDHTML5: Document_grid_ui"
-msgstr ""
+msgstr "Document grid UI"
 
 msgid "DCOGRIDHTML5:KITCHEN_SINK"
-msgstr ""
+msgstr "Kitchen Sink"
 
 msgid "DOCGRID: Access to document grid element"
-msgstr ""
+msgstr "Access to document grid element"
 
 msgid "DOCGRIDHTML5: sFirst"
-msgstr ""
+msgstr "First"
 
 msgid "DOCGRIDHTML5: sInfo"
-msgstr ""
+msgstr "Showing _START_ to _END_ of _TOTAL_ entries"
 
 msgid "DOCGRIDHTML5: sInfoEmpty"
-msgstr ""
+msgstr "Showing 0 to 0 of 0 entries"
 
 msgid "DOCGRIDHTML5: sInfoFiltered"
-msgstr ""
+msgstr "(filtered from _MAX_ total entries)"
 
 msgid "DOCGRIDHTML5: sInfoPostFix"
-msgstr ""
+msgstr " "
 
 msgid "DOCGRIDHTML5: sLast"
-msgstr ""
+msgstr "Last"
 
 msgid "DOCGRIDHTML5: sLengthMenu"
-msgstr ""
+msgstr "Show _MENU_ entries"
 
 msgid "DOCGRIDHTML5: sLoadingRecords"
-msgstr ""
+msgstr "Loading..."
 
 msgid "DOCGRIDHTML5: sNext"
-msgstr ""
+msgstr "Next"
 
 msgid "DOCGRIDHTML5: sPrevious"
-msgstr ""
+msgstr "Previous"
 
 msgid "DOCGRIDHTML5: sProcessing"
-msgstr ""
+msgstr "Processing..."
 
 msgid "DOCGRIDHTML5: sSearch"
-msgstr ""
+msgstr "Search:"
 
 msgid "DOCGRIDHTML5: sZeroRecords"
-msgstr ""
+msgstr "No matching records found"
 
 msgctxt "ddui"
 msgid "Default Edit"
@@ -261,7 +262,7 @@ msgctxt "UiMenu"
 msgid "Delete"
 msgstr ""
 
-#. _COMMENT: longtextWrite.mustache
+#. _COMMENT: docidWrite.mustache
 #. _COMMENT: mustache key
 msgctxt "ddui"
 msgid "Delete : "
@@ -295,7 +296,7 @@ msgstr ""
 #. _COMMENT: mustache key
 msgctxt "ddui"
 msgid "DocumentDeleted"
-msgstr ""
+msgstr "Document deleted at"
 
 msgctxt "ddui-file"
 msgid "Download file"
@@ -452,7 +453,7 @@ msgstr ""
 
 msgctxt "searchui"
 msgid "Properties"
-msgstr ""
+msgstr "Properties"
 
 msgctxt "UiMenu"
 msgid "Put document to the trash"
@@ -518,7 +519,7 @@ msgstr ""
 #. _COMMENT: mustache key
 msgctxt "ddui"
 msgid "RevisionCreated"
-msgstr ""
+msgstr "Revision created at"
 
 msgctxt "ddui"
 msgid "Row count limit to {{limit}}"
@@ -612,37 +613,37 @@ msgid "Workflow Transition Comment"
 msgstr ""
 
 msgid "activity"
-msgstr ""
+msgstr "Activity"
 
 msgctxt "searchui"
 msgid "any values"
-msgstr ""
+msgstr "Any values"
 
 msgctxt "searchui"
 msgid "cdate"
-msgstr ""
+msgstr "Creation date"
 
 msgctxt "searchUi"
 msgid "consult"
-msgstr ""
+msgstr "Launch the research"
 
 msgid "ddui:Admin"
-msgstr ""
+msgstr "Admin"
 
 msgid "ddui:COLLECT_ERROR"
-msgstr ""
+msgstr "Collect errors"
 
 msgid "ddui:Click to reload the document"
-msgstr ""
+msgstr "Click to reload the document"
 
 msgid "ddui:Delay notifications display (in ms)"
-msgstr ""
+msgstr "Notification display delay (in ms)"
 
 msgid "ddui:Document Render"
-msgstr ""
+msgstr "Document Render"
 
 msgid "ddui:Document render"
-msgstr ""
+msgstr "Document render"
 
 msgid "ddui:Document render long"
 msgstr ""
@@ -650,71 +651,71 @@ msgstr ""
 #. _COMMENT: document__header.mustache
 #. _COMMENT: mustache key
 msgid "ddui:Editing form"
-msgstr ""
+msgstr "Form is modified"
 
 msgid "ddui:Get some template"
-msgstr ""
+msgstr "Get some template"
 
 msgid "ddui:INIT_RENDERPARAMETERS"
-msgstr ""
+msgstr "Init render parameters"
 
 msgid "ddui:Render a document"
-msgstr ""
+msgstr "Render a document"
 
 msgid "ddui:Unable to load try again"
-msgstr ""
+msgstr "Unable to load. Try again"
 
 msgid "ddui:View documents"
-msgstr ""
+msgstr "View documents"
 
 msgid "ddui:activate logging"
-msgstr ""
+msgstr "Activate logging"
 
 msgid "ddui:debug mode"
-msgstr ""
+msgstr "Debug mode"
 
 msgid "ddui:logging class"
-msgstr ""
+msgstr "Loggionf class"
 
 msgid "ddui:render parameters"
-msgstr ""
+msgstr "Render parameters"
 
 msgctxt "searchui"
 msgid "doctitle"
-msgstr ""
+msgstr "Title"
 
 msgctxt "searchui"
 msgid "id allocated"
-msgstr ""
+msgstr "Allocated user id"
 
 msgctxt "searchui"
 msgid "id locked"
-msgstr ""
+msgstr "Lock id"
 
 msgctxt "searchui"
 msgid "id owner"
-msgstr ""
+msgstr "Owner's id"
 
 msgctxt "ddui-file"
 msgid "kB"
-msgstr ""
+msgstr "kB"
 
 msgctxt "searchui"
 msgid "revdate"
-msgstr ""
+msgstr "Last modif. date"
 
 msgctxt "searchui"
 msgid "revision"
-msgstr ""
+msgstr "Revision"
 
 msgid "state"
-msgstr ""
+msgstr "State"
 
 msgid "step"
-msgstr ""
+msgstr "Step"
 
 msgid "workflow"
-msgstr ""
+msgstr "Workflow"
 
 #, php-format
 msgctxt "ddui"
@@ -726,3 +727,15 @@ msgstr ""
 msgctxt "ddui-enum"
 msgid "{{value}} **"
 msgstr ""
+
+#~ msgid "KITCHEN_SINK:Title"
+#~ msgstr "Kitchen Sink"
+
+#~ msgid "ddui::Initialisation"
+#~ msgstr "Initialization"
+
+#~ msgid "ddui:Autocomplete attributes"
+#~ msgstr "Autocomplete attributes"
+
+#~ msgid "ddui:Get dynamic sub menu"
+#~ msgstr "Get dynamic sub menu"

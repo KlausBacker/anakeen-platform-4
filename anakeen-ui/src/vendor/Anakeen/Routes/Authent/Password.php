@@ -6,27 +6,34 @@
 
 namespace Anakeen\Routes\Authent;
 
-use Dcp\HttpApi\V1\Crud\Crud;
+use Dcp\Core\ContextManager;
 use Dcp\HttpApi\V1\DocManager\DocManager;
-use Dcp\HttpApi\V1\Api\Exception;
+use Anakeen\Router\Exception;
+use Dcp\Router\ApiV2Response;
 
-class Password extends Crud
+/**
+ * Class Password
+ * Change user password
+ * @note Used by route : PUT /api/v2/authent/password/{login}
+ * @package Anakeen\Routes\Authent
+ */
+class Password
 {
-    const failDelay = 2;
-
     /**
      * Reset password
-     * @param string|int $resourceId Resource identifier
-     * @return mixed
-     * @throws \Dcp\HttpApi\V1\Crud\Exception
+     * @param \Slim\Http\request $request
+     * @param \Slim\Http\response $response
+     * @param $args
+     * @return \Slim\Http\response
+     * @throws Exception
+     * @throws \Dcp\Core\Exception
      */
-    public function update($resourceId)
+    public function  __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
+        $userIdentifier = $args["login"];
+        $password=$request->getParam("password");
 
-        $userIdentifier = $this->urlParameters["identifier"];
-        $password = $this->contentParameters["password"];
-
-        $currentUser = getCurrentUser();
+        $currentUser = ContextManager::getCurrentUser();
 
 
         if ($currentUser->login !== $userIdentifier && $currentUser->mail !== $userIdentifier) {
@@ -53,48 +60,6 @@ class Password extends Crud
             throw new Exception("AUTH0021", $err);
         }
 
-        return ["message" => sprintf(___("Password has been reset for \"%s\"", "authent"), $currentUser->getAccountName())];
+        return ApiV2Response::withData($response, ["message" => sprintf(___("Password has been reset for \"%s\"", "authent"), $currentUser->getAccountName())]);
     }
-
-
-    /**
-     * Create new ressource
-     * @return mixed
-     * @throws Exception
-     */
-    public function create()
-    {
-        $e = new \Dcp\HttpApi\V1\Crud\Exception('CRUD0103', __METHOD__);
-        $e->setHttpStatus('405', 'You cannot create element with the API');
-        throw $e;
-    }
-
-    /**
-     * Delete a resource
-     * @param string|int $resourceId Resource identifier
-     * @return mixed
-     * @throws \Dcp\HttpApi\V1\Crud\Exception
-     */
-    public function delete($resourceId)
-    {
-        $e = new \Dcp\HttpApi\V1\Crud\Exception('CRUD0103', __METHOD__);
-        $e->setHttpStatus('405', 'You cannot delete element with the API');
-        throw $e;
-    }
-
-    /**
-     * Read a resource
-     * @param int|string $ressourceId
-     * @return mixed
-     * @throws \Dcp\HttpApi\V1\Crud\Exception
-     * @internal param int|string $resourceId Resource identifier
-     */
-    public function read($ressourceId)
-    {
-        $e = new \Dcp\HttpApi\V1\Crud\Exception('CRUD0103', __METHOD__);
-        $e->setHttpStatus('405', 'You cannot consult element with the API');
-        throw $e;
-    }
-
-
 }
