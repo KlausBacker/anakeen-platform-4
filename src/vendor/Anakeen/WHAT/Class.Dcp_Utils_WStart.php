@@ -444,23 +444,12 @@ class WStart extends WStartInternals
         $this->verbose(1, sprintf("[+] Done.\n"));
     }
     /**
+     * @deprecated no use
      * @throws WStartException
      */
     public function configureDbConnect()
     {
-        $this->verbose(1, sprintf("[+] Configuring CORE_DBCONNECT.\n"));
-        require_once sprintf('%s/vendor/Anakeen/WHAT/Lib.Common.php', $this->contextRoot);
-        $CORE_DBCONNECT = \Dcp\Core\ContextManager::getApplicationParam('CORE_DBCONNECT');
-        if ($CORE_DBCONNECT == 'persistent') {
-            $this->sedFile($this->absolutize('WHAT/Lib.Common.php'), function ($content) {
-                return preg_replace('/\bpg_connect\b/', 'pg_pconnect', $content);
-            });
-        } else {
-            $this->sedFile($this->absolutize('vendor/Anakeen/WHAT/Lib.Common.php'), function ($content) {
-                return preg_replace('/\bpg_pconnect\b/', 'pg_connect', $content);
-            });
-        }
-        $this->verbose(1, sprintf("[+] Done.\n"));
+        return;
     }
     /**
      * @throws WStartException
