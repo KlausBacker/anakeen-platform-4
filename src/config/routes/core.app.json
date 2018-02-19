@@ -2,139 +2,178 @@
     "apps": [
         {
             "name": "CORE",
-            "short_name": "",
-            "description": "",
+            "short_name": "Core",
+            "description": "System application",
+            "version" : "4.0.0",
             "parameters": {
                 "WVERSION": {
                     "value": "",
                     "description": "Version key",
-                    "access": "static"
+                    "access": "static",
+                    "global": true
+                },
+                "CORE_LOGLEVEL": {
+                    "value": "WEF",
+                    "description": "Core Log Level",
+                    "access": "admin",
+                    "global": true
                 },
                 "CORE_TMPDIR": {
                     "value": "./var/tmp",
                     "description": "Temporary dir used by applications",
-                    "access": "admin"
+                    "access": "admin",
+                    "global": true
                 },
                 "CORE_TMPDIR_MAXAGE": {
                     "value": "2",
                     "description": "Maximum time (in days) after which the temporary files and directories are deleted",
+                    "global": true,
                     "access": "admin"
                 },
                 "CORE_TMPDOC_MAXAGE": {
                     "value": 1,
                     "description": "Maximum time (in days) after which the temporary documents are deleted",
+                    "global": true,
                     "type":"integer",
                     "access": "admin"
                 },
                 "CORE_CLIENT": {
                     "value": "N O M du C L I E N T",
                     "description": "client name",
+                    "global": true,
                     "access": "admin"
                 },
                 "CORE_URLINDEX": {
                     "value": "",
                     "description": "Url to reach http server index",
-                    "access": "admin"
+                    "access": "admin",
+                    "global": true
                 },
                 "MEMORY_LIMIT": {
                     "value": "64",
                     "description": "Memory max by PHP process in Mo",
-                    "access": "admin"
+                    "access": "admin",
+                    "global": true
                 },
                 "CORE_REALM": {
                     "value": "Dynacase",
                     "description": "Realm name for http authenticate",
-                    "access": "admin"
+                    "access": "admin",
+                    "global": true
                 },
                 "CORE_LOGDURATION": {
                     "value": 30,
                     "description": "Duration for log conservation (in days)",
                     "type":"integer",
-                    "access": "admin"
+                    "access": "admin",
+                    "global": true
                 },
                 "CORE_MAIL_LINK": {
                     "value": "optimal",
                     "description": "produce link for",
                     "user": "Y",
                     "type": "enum(optimal|mailto)",
-                    "global": "Y"
+                    "global": true
                 },
                 "CORE_START_APP": {
                     "value": "CORE",
                     "description": "Default start application",
-                    "access": "admin"
+                    "access": "admin",
+                    "global": true
                 },
                 "CORE_SESSIONTTL": {
                     "value": 0,
                     "description": "Session lifetime (in seconds) - 0 means until web browser quit",
                     "type":"integer",
                     "category":"authent",
-                    "access": "admin"
+                    "access": "admin",
+                    "global": true
                 },
                 "CORE_GUEST_SESSIONTTL": {
                     "value": 3600,
                     "description": "Probability of running the suppression of unused sessions (expressed as a percentage by a number between 0 and 1)",
                     "type":"integer",
                     "category":"authent",
-                    "access": "static"
+                    "access": "static",
+                    "global": true
                 },
                 "CORE_SESSIONMAXAGE": {
                     "value": "1 week",
                     "description": "Maximum time after which an unused session is eligible for deletion",
                     "access": "admin",
                     "category":"authent",
-                    "type": "enum(1 day|1 week|1 month)"
+                    "type": "enum(1 day|1 week|1 month)",
+                    "global": true
                 },
                 "CORE_SESSIONGCPROBABILITY": {
                     "value": 0.01,
                     "description": "Probability of running the suppression of unused sessions (expressed as a percentage by a number between 0 and 1)",
                     "type": "double",
                     "category":"authent",
-                    "access": "admin"
+                    "access": "admin",
+                    "global": true
                 },
                 "CORE_SESSION_BYTE_LENGTH": {
                     "value": 16,
                     "description": "Session's identifier length in bytes (at least 16 bytes)",
                     "access": "admin",
                     "category":"authent",
-                    "type":"integer"
+                    "type":"integer",
+                    "global": true
                 },
                 "CORE_ALLOW_GUEST": {
                     "value": "yes",
                     "description": "Allow guest access",
                     "type": "enum(yes|no)",
-                    "access": "admin"
+                    "access": "admin",
+                    "global": true
                 },
                 "CORE_MAILACTION": {
                     "value": "",
                     "description": "Mail action URL",
-                    "access": "admin"
+                    "access": "admin",
+                    "global": true
                 },
                 "CORE_NOTIFY_SENDMAIL": {
                     "value": "always",
                     "description": "Show a notification when a mail is sent",
                     "type": "enum(always|errors only|never)",
-                    "access": "admin"
+                    "access": "admin",
+                    "global": true
                 },
                 "CORE_WSH_MAILTO": {
                     "value": "",
                     "description": "WSH error mail recipients (comma-separated list of mail addresses)",
-                    "access": "admin"
+                    "access": "admin",
+                    "global": true
                 },
                 "CORE_WSH_MAILSUBJECT": {
                     "value": "[%h](%c) Script error: %m",
                     "description": "WSH error mail subject",
-                    "access": "admin"
+                    "access": "admin",
+                    "global": true
                 },
                 "CORE_DISPLAY_ERROR": {
                     "value": "no",
                     "description": "Display errors in request response",
                     "access": "admin",
-                    "type": "enum(yes|no)"
+                    "type": "enum(yes|no)",
+                    "global": true
+                },
+                "STYLE" : {
+                    "value": "NONE",
+                    "description": "Ui style",
+                    "access": "readonly"
                 }
             }
         }
     ],
+    "accesses": {
+        "core:admin": {
+            "category": "System",
+            "description": "Admin Access"
+        }
+    },
     "routes": [
         {
             "priority": 1,
@@ -168,6 +207,17 @@
             "description": "Get css/js asset from Layout directory",
             "name": "Core:LayoutAsset",
             "requiredAccesses": []
+        },
+        {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\RecordApplications",
+            "methods": [
+                "post"
+            ],
+            "pattern": "/api/v2/admin/applications/",
+            "description": "Record all application configuration",
+            "name": "CoreAdmin:RecordApplication",
+            "requiredAccesses": ["core:admin"]
         }
     ]
 }

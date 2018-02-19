@@ -282,6 +282,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             throw $e;
         }
         $this->permission = null;
+
         return '';
     }
     
@@ -1174,7 +1175,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      * affect new value to an application parameter
      * @see ParameterManager to easily manage application parameters
      * @param string $key parameter id
-     * @param string $val parameter value
+     * @param string|string[] $val parameter value
      */
     public function setParam($key, $val)
     {

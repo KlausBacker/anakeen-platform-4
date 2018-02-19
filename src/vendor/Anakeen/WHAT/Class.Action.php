@@ -200,9 +200,14 @@ create sequence SEQ_ID_ACTION;
             $this->Affect($query->list[0]);
             $this->log->debug("Set Action to {$this->name}");
         } else {
-            $e = new Dcp\Core\Exception("CORE0005", $name, $parent->name, $parent->id);
-            $e->addHttpHeader('HTTP/1.0 404 Action not found');
-            throw $e;
+            if (empty($name)) {
+                // Accept action without explicit root action
+                $this->name="DEFAULT";
+            } else {
+                $e = new Dcp\Core\Exception("CORE0005", $name, $parent->name, $parent->id);
+                $e->addHttpHeader('HTTP/1.0 404 Action not found');
+                throw $e;
+            }
         }
 
         $this->CompleteSet($parent);

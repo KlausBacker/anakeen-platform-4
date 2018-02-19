@@ -107,7 +107,7 @@ class RouterConfig
     {
         $appsInfo = [];
         foreach ($this->apps as $appData) {
-            $appsInfo[] = new AppInfo($appData);
+            $appsInfo[$appData->name] = new AppInfo($appData);
         }
 
         return $appsInfo;
