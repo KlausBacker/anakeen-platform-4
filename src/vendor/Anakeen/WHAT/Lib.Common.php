@@ -440,12 +440,7 @@ function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = fal
     }
     catch(\Dcp\Db\Exception $e) {
         if ($useStrict !== false) {
-            if ($sqlStrict === null) {
-                $sqlStrict = (\Dcp\Core\ContextManager::getApplicationParam("CORE_SQLSTRICT") !== "no");
-            }
-            if ($useStrict === true || $sqlStrict) {
-                throw $e;
-            }
+            throw $e;
         }
         return $e->getMessage();
     }
