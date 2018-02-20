@@ -75,6 +75,17 @@ class RouterLib
             $config["middlewares"] = $nr;
         }
 
+
+        if (!empty($config["apps"])) {
+            $apps = $config["apps"];
+            $nr = [];
+            foreach ($apps as $name => $app) {
+                $app["name"] = $name;
+                $nr[] = $app;
+            }
+            $config["apps"] = $nr;
+        }
+
         return $config;
     }
 
