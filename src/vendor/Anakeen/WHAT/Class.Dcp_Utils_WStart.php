@@ -391,7 +391,7 @@ class WStart extends WStartInternals
      */
     public function imageAndDocsLinks()
     {
-        $this->verbose(1, sprintf("[+] Re-generating Images and Docs symlinks.\n"));
+        $this->verbose(1, sprintf("[+] Re-generating Images symlinks.\n"));
         $linked = array();
         /* Images */
         $imagesDir = $this->publize('Images');
@@ -401,14 +401,7 @@ class WStart extends WStartInternals
             $this->linkFiles($dir, $imagesDir, $linked);
         }
         $this->deleteDeadLinks($imagesDir);
-        /* Docs */
-        $docsDir = $this->publize('Docs');
-        $this->mkdir($docsDir);
-        $dirs = $this->getDocsDirs();
-        foreach ($dirs as $dir) {
-            $this->linkFiles($dir, $this->contextRoot . DIRECTORY_SEPARATOR . 'Docs', $linked);
-        }
-        $this->deleteDeadLinks($docsDir);
+
         /* Check for conflicts */
         foreach ($linked as $link => $targetList) {
             if (count($targetList) <= 1) {

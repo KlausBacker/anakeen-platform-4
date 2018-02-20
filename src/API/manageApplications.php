@@ -18,6 +18,10 @@ $method = $usage->addOptionalParameter("method", "action to do", array(
     "reinit",
     "delete"
 ), "init");
+$legacy = $usage->addOptionalParameter("legacy", "legacy mode", array(
+    "no",
+    "yes"
+), "no") === "yes";
 
 $usage->verify();
 
@@ -27,7 +31,7 @@ echo " $appname...$method\n";
 $routeConfig = \Anakeen\Router\RouterLib::getRouterConfig();
 $apps = $routeConfig->getApps();
 
-if (!empty($apps[$appname])) {
+if (!$legacy && !empty($apps[$appname])) {
     $apps[$appname]->record();
 
     switch ($method) {

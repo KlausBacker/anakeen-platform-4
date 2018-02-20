@@ -13,7 +13,7 @@ namespace Anakeen\Router;
 class AppInfo
 {
     public $name;
-    public $short_name;
+    public $shortName;
     public $pattern;
     public $description;
     public $icon = "";
@@ -63,13 +63,15 @@ class AppInfo
     /**
      * Record new application to database
      *
+     * @param bool $fullInit if false not add parameters
+     *
      * @throws Exception
      */
-    public function addApplication($fullInit=true)
+    public function addApplication($fullInit = true)
     {
         $this->application = new \Application();
         $this->application->name = $this->name;
-        $this->application->short_name = $this->short_name;
+        $this->application->short_name = $this->shortName;
         $this->application->description = $this->description;
         $this->application->icon = $this->icon;
         $this->application->displayable = $this->displayable;
@@ -100,7 +102,7 @@ class AppInfo
 
         $this->application->param = new \Param();
         $this->application->name = $this->name;
-        $this->application->short_name = $this->short_name;
+        $this->application->short_name = $this->shortName;
         $this->application->description = $this->description;
         $this->application->icon = $this->icon;
         $this->application->displayable = $this->displayable;
@@ -142,12 +144,13 @@ class AppInfo
             /**
              * @var ParameterInfo $parameter
              */
-            $paramDefData=[
+            $paramDefData = [
                 "val" => $parameter->value,
                 "descr" => $parameter->description,
-                "kind" => ($parameter->access === "static" || $parameter->access === "readonly")?$parameter->access:$parameter->type,
-                "global" => empty($parameter->global)?"N":"Y",
-                "user" => empty($parameter->isUser)?"N":"Y"
+                "kind" => ($parameter->access === "static" || $parameter->access === "readonly") ? $parameter->access
+                    : $parameter->type,
+                "global" => empty($parameter->global) ? "N" : "Y",
+                "user" => empty($parameter->isUser) ? "N" : "Y"
             ];
             $this->application->setParamDef($name, $paramDefData); // update definition
             if ($updateMode) {

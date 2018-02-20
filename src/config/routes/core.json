@@ -1,216 +1,187 @@
 {
-  "accesses": {},
-  "routes": [
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Core\\DocumentData",
-      "methods": [
-        "get"
-      ],
-      "pattern": "/api/v2/documents/{docid:[^/.]+}[.json]",
-      "description": "Get data for a document",
-      "name": "Core:GetDocument",
-      "requiredAccesses": []
+    "accesses": [],
+    "routes": {
+        "Core:GetDocument": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\DocumentData",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid:[^\/.]+}[.json]",
+            "description": "Get data for a document",
+            "requiredAccesses": []
+        },
+        "Core:ModifyDocument": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\DocumentUpdateData",
+            "methods": [
+                "put"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid:[^\/.]+}[.json]",
+            "description": "Modify data for a document",
+            "requiredAccesses": []
+        },
+        "Core:DeleteDocument": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\DocumentDeleteData",
+            "methods": [
+                "delete"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid:[^\/.]+}[.json]",
+            "description": "Delete document (put in trash)",
+            "requiredAccesses": []
+        },
+        "Core:ListDocuments": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\DocumentList",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/documents\/",
+            "description": "List all documents",
+            "requiredAccesses": []
+        },
+        "Core:GetFamilyDocument": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\DocumentFamilyData",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/families\/{family}\/documents\/{docid:[^\/.]+}[.json]",
+            "description": "Get data for a document",
+            "requiredAccesses": []
+        },
+        "Core:GetFamily": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\FamilyData",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/families\/{family:[^\/.]+}[.json]",
+            "description": "Get data for a family",
+            "requiredAccesses": []
+        },
+        "Core:ListFamilyDocuments": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\FamilyDocumentList",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/families\/{family}\/documents\/",
+            "description": "List all documents of a family",
+            "requiredAccesses": []
+        },
+        "Core:RevisionData": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\RevisionData",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revisionNumber:[0-9]+}[.json]",
+            "description": "Get a specific revision of a document",
+            "requiredAccesses": []
+        },
+        "Core:FamilyRevisionData": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\RevisionFamilyData",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/families\/{family}\/documents\/{docid}\/revisions\/{revisionNumber:[0-9]+}[.json]",
+            "description": "Get a specific revision of a document",
+            "requiredAccesses": []
+        },
+        "Core:GetDeletedDocument": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\DocumentDeletedData",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/trash\/{docid:[^\/.]+}[.json]",
+            "description": "Get deleted data for a document",
+            "requiredAccesses": []
+        },
+        "Core:UndeleteDocument": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\DocumentUndeleteData",
+            "methods": [
+                "put"
+            ],
+            "pattern": "\/api\/v2\/trash\/{docid:[^\/.]+}[.json]",
+            "description": "Undelete document",
+            "requiredAccesses": []
+        },
+        "Core:OriginalImage": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\ImageAsset",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/images\/assets\/original\/{image}",
+            "description": "Download file image",
+            "requiredAccesses": []
+        },
+        "Core:resizeImage": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\ImageAsset",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/images\/assets\/sizes\/{size:[0-9x]+[cfs]?}\/{image}",
+            "description": "Download file image",
+            "requiredAccesses": []
+        },
+        "Core:fileAttributeImage": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\FileAttribute",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/files\/{attrid}\/{index}\/{fileName}",
+            "description": "Download file from document",
+            "requiredAccesses": []
+        },
+        "Core:revisedFileAttributeImage": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\FileAttribute",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revision}\/files\/{attrid}\/{index}\/{fileName}",
+            "description": "Download file from document",
+            "requiredAccesses": []
+        },
+        "Core:resizeAttributeImage": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\ImageAttribute",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/images\/{attrid}\/{index}\/sizes\/{size:[0-9x]+[cfs]?}[.{extension}]",
+            "description": "Download file image from document",
+            "requiredAccesses": []
+        },
+        "Core:resizeRevisedAttributeImage": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\ImageAttribute",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revision}\/images\/{attrid}\/{index}\/sizes\/{size:[0-9x]+[cfs]?}[.{extension}]",
+            "description": "Download file image from document",
+            "requiredAccesses": []
+        }
     },
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Core\\DocumentUpdateData",
-      "methods": [
-        "put"
-      ],
-      "pattern": "/api/v2/documents/{docid:[^/.]+}[.json]",
-      "description": "Modify data for a document",
-      "name": "Core:ModifyDocument",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Core\\DocumentDeleteData",
-      "methods": [
-        "delete"
-      ],
-      "pattern": "/api/v2/documents/{docid:[^/.]+}[.json]",
-      "description": "Delete document (put in trash)",
-      "name": "Core:DeleteDocument",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Core\\DocumentList",
-      "methods": [
-        "get"
-      ],
-      "pattern": "/api/v2/documents/",
-      "description": "List all documents",
-      "name": "Core:ListDocuments",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Core\\DocumentFamilyData",
-      "methods": [
-        "get"
-      ],
-      "pattern": "/api/v2/families/{family}/documents/{docid:[^/.]+}[.json]",
-      "description": "Get data for a document",
-      "name": "Core:GetFamilyDocument",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Core\\FamilyData",
-      "methods": [
-        "get"
-      ],
-      "pattern": "/api/v2/families/{family:[^/.]+}[.json]",
-      "description": "Get data for a family",
-      "name": "Core:GetFamily",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Core\\FamilyDocumentList",
-      "methods": [
-        "get"
-      ],
-      "pattern": "/api/v2/families/{family}/documents/",
-      "description": "List all documents of a family",
-      "name": "Core:ListFamilyDocuments",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Core\\RevisionData",
-      "methods": [
-        "get"
-      ],
-      "pattern": "/api/v2/documents/{docid}/revisions/{revisionNumber:[0-9]+}[.json]",
-      "description": "Get a specific revision of a document",
-      "name": "Core:RevisionData",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Core\\RevisionFamilyData",
-      "methods": [
-        "get"
-      ],
-      "pattern": "/api/v2/families/{family}/documents/{docid}/revisions/{revisionNumber:[0-9]+}[.json]",
-      "description": "Get a specific revision of a document",
-      "name": "Core:FamilyRevisionData",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Core\\DocumentDeletedData",
-      "methods": [
-        "get"
-      ],
-      "pattern": "/api/v2/trash/{docid:[^/.]+}[.json]",
-      "description": "Get deleted data for a document",
-      "name": "Core:GetDeletedDocument",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Core\\DocumentUndeleteData",
-      "methods": [
-        "put"
-      ],
-      "pattern": "/api/v2/trash/{docid:[^/.]+}[.json]",
-      "description": "Undelete document",
-      "name": "Core:UndeleteDocument",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Core\\ImageAsset",
-      "methods": [
-        "get"
-      ],
-      "pattern": "/api/v2/images/assets/original/{image}",
-      "description": "Download file image",
-      "name": "Core:OriginalImage",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Core\\ImageAsset",
-      "methods": [
-        "get"
-      ],
-      "pattern": "/api/v2/images/assets/sizes/{size:[0-9x]+[cfs]?}/{image}",
-      "description": "Download file image",
-      "name": "Core:resizeImage",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Core\\FileAttribute",
-      "methods": [
-        "get"
-      ],
-      "pattern": "/api/v2/documents/{docid}/files/{attrid}/{index}/{fileName}",
-      "description": "Download file from document",
-      "name": "Core:fileAttributeImage",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Core\\FileAttribute",
-      "methods": [
-        "get"
-      ],
-      "pattern": "/api/v2/documents/{docid}/revisions/{revision}/files/{attrid}/{index}/{fileName}",
-      "description": "Download file from document",
-      "name": "Core:revisedFileAttributeImage",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Core\\ImageAttribute",
-      "methods": [
-        "get"
-      ],
-      "pattern": "/api/v2/documents/{docid}/images/{attrid}/{index}/sizes/{size:[0-9x]+[cfs]?}[.{extension}]",
-      "description": "Download file image from document",
-      "name": "Core:resizeAttributeImage",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Core\\ImageAttribute",
-      "methods": [
-        "get"
-      ],
-      "pattern": "/api/v2/documents/{docid}/revisions/{revision}/images/{attrid}/{index}/sizes/{size:[0-9x]+[cfs]?}[.{extension}]",
-      "description": "Download file image from document",
-      "name": "Core:resizeRevisedAttributeImage",
-      "requiredAccesses": []
-    },
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Core\\ImageAttribute",
-      "methods": [
-        "get"
-      ],
-      "pattern": "/api/v2/documents/{docid}/revisions/{revision}/images/{attrid}/{index}/sizes/{size:[0-9x]+[cfs]?}[.{extension}]",
-      "description": "Download file image from document",
-      "name": "Core:resizeRevisedAttributeImage",
-      "requiredAccesses": []
+    "middlewares": {
+        "Core:Middleware:ApiAuthent": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Middleware\\Authent::Authenticate",
+            "methods": [
+                "any"
+            ],
+            "pattern": "[/{args:.*}]",
+            "description": "Verify authentication",
+            "requiredAccesses": []
+        }
     }
-  ],
-  "middlewares": [
-    {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Middleware\\Authent::Authenticate",
-      "methods": [
-        "any"
-      ],
-      "pattern": "/",
-      "description": "Verify authentication",
-      "name": "Core:Middleware:ApiAuthent",
-      "requiredAccesses": []
-    }
-  ]
 }

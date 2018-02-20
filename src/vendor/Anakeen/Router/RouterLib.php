@@ -15,6 +15,7 @@ class RouterLib
 
     /**
      * Extract configuration from config files included in "config" directory
+     *
      * @return RouterConfig
      * @throws Exception
      */
@@ -36,22 +37,51 @@ class RouterLib
                     if ($conf === null) {
                         throw new Exception("CORE0019", $dir . "/" . $entry);
                     }
+                    $conf = self::normalizeConfig($conf);
                     $config = array_merge_recursive($config, $conf);
                 }
             }
 
 
             closedir($handle);
-
-            self::$config = new RouterConfig(json_decode(json_encode($config)));
+            $config = json_decode(json_encode($config));
+            self::$config = new RouterConfig($config);
             return self::$config;
         } else {
             throw new Exception("CORE0020", $dir);
         }
     }
 
+    protected static function normalizeConfig(array $config)
+    {
+
+        if (!empty($config["routes"])) {
+            $routes = $config["routes"];
+            $nr = [];
+            foreach ($routes as $routeName => $route) {
+                $route["name"] = $routeName;
+                $nr[] = $route;
+            }
+            $config["routes"] = $nr;
+        }
+
+        if (!empty($config["middlewares"])) {
+            $middles = $config["middlewares"];
+            $nr = [];
+            foreach ($middles as $name => $middle) {
+                $middle["name"] = $name;
+                $nr[] = $middle;
+            }
+            $config["middlewares"] = $nr;
+        }
+
+        return $config;
+    }
+
+
     /**
      * Get route configuration for a nemed route
+     *
      * @param string $name route name
      *
      * @return RouterInfo|null
@@ -71,7 +101,9 @@ class RouterLib
 
     /**
      * Convert parse info into regexp to be used to match pattern routes
+     *
      * @param array $parseInfos
+     *
      * @see \FastRoute\RouteParser\Std::parse()
      * @see matchPattern()
      * @return array
@@ -81,7 +113,7 @@ class RouterLib
         $delimiteur = "@";
         $regExps = [];
         foreach ($parseInfos as $parseInfo) {
-            $regExp = $delimiteur;
+            $regExp = $delimiteur.'^';
             foreach ($parseInfo as $parsePart) {
                 // print_r($parsePart);
                 if (is_string($parsePart)) {
@@ -91,7 +123,7 @@ class RouterLib
                     $regExp .= sprintf("(?P<%s>%s)", $parsePart[0], $parsePart[1]);
                 }
             }
-            $regExp .= $delimiteur;
+            $regExp .= '$'.$delimiteur;
             $regExps[] = $regExp;
         }
         return $regExps;
@@ -99,8 +131,9 @@ class RouterLib
 
     /**
      * Verify if url match the pattern
+     *
      * @param string $pattern route pattern configuration
-     * @param string $url request url
+     * @param string $url     request url
      *
      * @return bool true if match
      */

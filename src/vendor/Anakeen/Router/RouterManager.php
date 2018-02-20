@@ -29,6 +29,7 @@ class RouterManager
     /**
      * Get main router
      * Is configured with error handlers and default cache
+     *
      * @return \Slim\App
      */
     public static function getSlimApp()
@@ -69,13 +70,17 @@ class RouterManager
 
     /**
      * Add all availables routes to main router
-     * @param RouterInfo[]  $routes
+     *
+     * @param RouterInfo[] $routes
      */
     public static function addRoutes(array $routes)
     {
         // Need to reverse : Slim use the last route match
         $routes = array_reverse($routes);
         foreach ($routes as $route) {
+            if (count($route->methods) && strtoupper($route->methods[0]) === "ANY") {
+                $route->methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
+            }
             self::$app->map($route->methods, $route->pattern, $route->callable)->setName($route->name);
         }
     }
@@ -133,13 +138,26 @@ class RouterManager
                                     $callMiddleWare = $middleWare->callable;
 
                                     if (!is_callable($callMiddleWare)) {
-                                        throw new \Anakeen\Router\Exception(
-                                            sprintf(
-                                                "Middleware \"%s\" not callable : \"%s\"",
-                                                $middleWare->name,
-                                                $middleWare->callable
-                                            )
-                                        );
+                                        if (!class_exists($callMiddleWare)) {
+                                            throw new \Anakeen\Router\Exception(
+                                                sprintf(
+                                                    "Middleware \"%s\" : Class \"%s\" not exists",
+                                                    $middleWare->name,
+                                                    $middleWare->callable
+                                                )
+                                            );
+                                        } else {
+                                            $callMiddleWare = new $callMiddleWare;
+                                            if (!is_callable($callMiddleWare)) {
+                                                throw new \Anakeen\Router\Exception(
+                                                    sprintf(
+                                                        "Middleware \"%s\" : not Callable \"%s\"",
+                                                        $middleWare->name,
+                                                        $middleWare->callable
+                                                    )
+                                                );
+                                            }
+                                        }
                                     }
                                     /**
                                      * @var \Slim\Http\Response $response
@@ -150,7 +168,9 @@ class RouterManager
                                         "X-Middleware",
                                         $headerMiddleware . ($headerMiddleware ? ", " : "") . $middleWare->name
                                     );
+
                                     $response = $callMiddleWare($request, $response, $next, $matches);
+
 
                                     return $response;
                                 });
