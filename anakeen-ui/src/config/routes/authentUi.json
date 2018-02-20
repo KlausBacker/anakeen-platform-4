@@ -1,42 +1,39 @@
 {
-  "accesses": {},
-  "routes": [
-    {
+  "accesses": [],
+  "routes": {
+    "Ui:Authent:Login": {
       "priority": 1,
       "callable": "\\Anakeen\\Routes\\Authent\\LoginPage",
       "methods": [
         "GET"
       ],
-      "pattern": "/login/",
+      "pattern": "\/login\/",
       "description": "Login page",
-      "name": "Ui:Authent:Login",
       "requiredAccesses": [],
       "authenticated": false
     },
-    {
+    "Ui:Authent:MailPassword": {
       "priority": 1,
       "callable": "\\Anakeen\\Routes\\Authent\\MailPassword",
       "methods": [
         "POST"
       ],
-      "pattern": "/api/v2/authent/mailPassword/{userId}",
+      "pattern": "\/api\/v2\/authent\/mailPassword\/{userId}",
       "description": "Send email to change password",
-      "name": "Ui:Authent:MailPassword",
       "requiredAccesses": [],
       "authenticated": false
     },
-    {
+    "Ui:Authent:Password": {
       "priority": 1,
       "callable": "\\Anakeen\\Routes\\Authent\\Password",
       "methods": [
         "PUT"
       ],
-      "pattern": "/api/v2/authent/password/{login}",
+      "pattern": "\/api\/v2\/authent\/password\/{login}",
       "description": "Change password",
-      "name": "Ui:Authent:Password",
       "requiredAccesses": [],
       "authenticated": true
     }
-  ]
-
+  },
+  "middlewares": []
 }

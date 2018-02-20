@@ -1,49 +1,48 @@
 {
-  "apps": [
-    {
+  "apps": {
+    "UITEST": {
       "name": "UITEST",
       "short_name": "List all ui test pages",
       "description": "Interface to view test pages",
-      "icon": "apps/uitest/uitest.png"
+      "icon": "apps\/uitest\/uitest.png"
     }
-  ],
+  },
   "accesses": {
     "uitest:user": {
-      "category": "Test Ui access",
+      "applicationContext": "UITEST",
       "description": "Normal Access"
     },
     "uitest:admin": {
-      "category": "Test Ui access",
+      "applicationContext": "UITEST",
       "description": "Administrator Access"
     }
   },
-  "routes": [
-    {
+  "routes": {
+    "Ui:Test:Page": {
       "priority": 1,
       "callable": "\\Anakeen\\Routes\\UiTest\\TestPage",
       "methods": [
         "GET"
       ],
-      "pattern": "/apps/uitest/",
+      "pattern": "\/apps\/uitest\/",
       "description": "Test Ui Page",
-      "name": "Ui:Test:Page",
       "applicationContext": "UITEST",
       "requiredAccesses": [
         "uitest:user"
       ]
     },
-    {
+    "Ui:Test:ExportData": {
       "priority": 1,
       "callable": "\\Anakeen\\Routes\\UiTest\\ExportData",
       "methods": [
         "GET"
       ],
-      "pattern": "/api/v2/uitest/data",
+      "pattern": "\/api\/v2\/uitest\/data",
       "description": "Test Ui Export Test Description",
-      "name": "Ui:Test:ExportData",
       "requiredAccesses": [
         "uitest:admin"
       ]
     }
-  ]
+  },
+  "middlewares": []
 }
