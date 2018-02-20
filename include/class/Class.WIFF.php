@@ -458,7 +458,7 @@ class WIFF extends WiffCommon
         
         $v2 = $this->getVersion();
         
-        $this->log(LOG_INFO, sprintf("Running post-upgrade scripts."));
+        $this->log(LOG_INFO, sprintf("Running post-upgrade scripts ('%s', '%s').", $v1, $v2));
         if (($this->postUpgrade($v1, $v2)) === false) {
             $this->log(LOG_ERR, sprintf("post-upgrade scripts returned with error: %s", $this->errorMessage));
             return false;
@@ -2148,7 +2148,8 @@ EOF;
             $wiff_root = $wiff_root . DIRECTORY_SEPARATOR;
         }
         
-        $dir = @opendir(sprintf('%s/%s', $wiff_root, 'migr'));
+        $migrDir = sprintf('%s/%s', $wiff_root, 'migr');
+        $dir = @opendir($migrDir);
         if ($dir === false) {
             $this->errorMessage = sprintf("Failed to open 'migr' directory.");
             return false;
@@ -2159,7 +2160,7 @@ EOF;
             if ($migr == '.' || $migr == '..') {
                 continue;
             }
-            if (!is_file($dir . DIRECTORY_SEPARATOR . $migr)) {
+            if (!is_file($migrDir . DIRECTORY_SEPARATOR . $migr)) {
                 continue;
             }
             if (!preg_match('/^[0-9.-]+$/', $migr)) {
@@ -2167,7 +2168,6 @@ EOF;
             }
             array_push($migrList, $migr);
         }
-        
         usort($migrList, array(
             $this,
             'postUpgradeCompareVersion'
