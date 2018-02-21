@@ -3,8 +3,6 @@
 namespace Anakeen\Routes\Core;
 
 use Dcp\Core\DocManager;
-use Anakeen\Router\URLUtils;
-use Dcp\Core\Settings;
 use Anakeen\Router\Exception;
 
 /**
@@ -51,5 +49,4 @@ class RevisionFamilyData extends RevisionData
 
         return parent::__invoke($request, $response, $args);
     }
-
 }

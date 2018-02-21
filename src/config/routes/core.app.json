@@ -60,6 +60,13 @@
                     "access": "admin",
                     "global": true
                 },
+                "CORE_LANG": {
+                    "value": "fr_FR",
+                    "description": "user language",
+                    "isUser": true,
+                    "type": "enum(optimal|mailto)",
+                    "global": true
+                },
                 "CORE_LOGDURATION": {
                     "value": 30,
                     "description": "Duration for log conservation (in days)",
