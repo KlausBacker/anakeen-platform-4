@@ -60,7 +60,7 @@ define([
          */
         url: function mDocumenturl()
         {
-            var urlData = "api/v1/", viewId = this.get("viewId");
+            var urlData = "api/v2/", viewId = this.get("viewId");
             var customClientData = this._customClientData;
             var currentMethod = this.get("currentHttpMethod");
             var revision = this.get("revision");

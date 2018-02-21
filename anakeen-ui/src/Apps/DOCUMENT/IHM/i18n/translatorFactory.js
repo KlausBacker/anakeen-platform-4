@@ -1,5 +1,5 @@
 /*global define*/
-// use "text!dcpContextRoot/api/v1/i18n/DOCUMENT" to get only DDUI translation
+// use "text!dcpContextRoot/api/v2/i18n/DOCUMENT" to get only DDUI translation
 
 window.dcp = window.dcp || {};
 

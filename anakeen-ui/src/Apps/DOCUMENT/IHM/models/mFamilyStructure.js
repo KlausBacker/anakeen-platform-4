@@ -12,7 +12,7 @@ define([
 
         url: function mFamilyStructure_url()
         {
-            var urlStructure = _.template("api/v1/families/<%- familyId %>/views/structure");
+            var urlStructure = _.template("api/v2/families/<%- familyId %>/views/structure");
 
             return urlStructure({
                 familyId: this.get("familyId")
