@@ -16,7 +16,7 @@ export default {
         },
         contentUrl: {
             type: String,
-            default: 'documentsList/<familyId>',
+            default: 'api/v2/pager/{collection}/pages/{page}',
         },
         order: {
             type: String,
@@ -41,8 +41,6 @@ export default {
                             if (options.data.collection) {
                                 const params = {
                                     fields: 'document.properties.state,document.properties.icon',
-                                    page: options.data.page,
-                                    offset: (options.data.page - 1) * options.data.take,
                                     slice: options.data.take,
                                     orderBy: this.orderBy,
                                 };
@@ -50,7 +48,9 @@ export default {
                                     params.filter = this.filterInput;
                                 }
 
-                                const request = this.contentUrl.replace('<familyId>', options.data.collection);
+                                const request = this.contentUrl.
+                                replace('{collection}', options.data.collection).
+                                replace('{page}', options.data.page);
                                 _this.privateScope
                                     .sendGetRequest(request,
                                         {

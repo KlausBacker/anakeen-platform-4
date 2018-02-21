@@ -1,9 +1,0 @@
-[
-  {
-    "order": 300,
-    "class": "\\Anakeen\\Routes\\DocumentsList\\DocumentsList",
-    "regExp": "%^/documentsList/(?P<familyId>[^/]+)/?$%",
-    "description": "Get documents from family or collection",
-    "canonicalURL": "documentsList/<familyId|collectionId>"
-  }
-]

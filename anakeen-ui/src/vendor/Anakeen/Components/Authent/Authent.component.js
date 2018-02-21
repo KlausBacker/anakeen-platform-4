@@ -216,7 +216,7 @@ export default {
 
             let login = encodeURIComponent(this.login);
             event.preventDefault();
-            this.$http2.post(`/authent/sessions/${login}`, {
+            this.$http.post(`/api/v2/authent/sessions/${login}`, {
                 password: this.pwd,
                 language: this.$language.current,
             }).then(() => {
@@ -253,7 +253,7 @@ export default {
 
             let login = encodeURIComponent(this.login);
             event.preventDefault();
-            this.$http2.post(`/authent/mailPassword/${login}`, {
+            this.$http.post(`/api/v2/authent/mailPassword/${login}`, {
                 password: this.pwd,
                 language: this.$language.current,
             }).then((response) => {
