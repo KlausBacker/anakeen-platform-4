@@ -336,7 +336,7 @@ class Layout
     
     protected function execute($appname, $actionargn)
     {
-        $limit = \Dcp\Core\ContextManager::getApplicationParam('CORE_LAYOUT_EXECUTE_RECURSION_LIMIT', 0);
+        $limit = \Dcp\Core\ContextManager::getApplicationParam('CORE_LAYOUT_EXECUTE_RECURSION_LIMIT', 30);
         if (is_numeric($limit) && $limit > 0) {
             $loop = $this->getRecursionCount(__CLASS__, __FUNCTION__);
             if ($loop['count'] >= $limit) {

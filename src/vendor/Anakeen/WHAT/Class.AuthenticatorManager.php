@@ -268,7 +268,7 @@ class AuthenticatorManager
         //Header( "WWW-Authenticate: Basic realm=\"WHAT Connection\", stale=true");
         //Header( "HTTP/1.0 401 Unauthorized");
         header('WWW-Authenticate: Basic realm="' . \Dcp\Core\ContextManager::getApplicationParam("CORE_REALM",
-                "Dynacase Platform connection") . '"');
+                "Anakeen Platform connection") . '"');
         header('HTTP/1.0 401 Unauthorized');
         echo _("Vous devez entrer un nom d'utilisateur valide et un mot de passe correct pour acceder a cette ressource");
         exit;

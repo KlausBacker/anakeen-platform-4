@@ -60,8 +60,6 @@ $FREEDOM_CONTEXT = 'default';
 
 putenv(sprintf("wpub=%s", $WIFF_CONTEXT_ROOT));
 putenv(sprintf("pgservice_core=%s", $PGSERVICE_CORE));
-putenv(sprintf("pgservice_freedom=%s", $PGSERVICE_CORE));
-putenv(sprintf("freedom_context=%s", $FREEDOM_CONTEXT));
 
 $err = getCheckActions($pubdir, array(
     $appname => $app

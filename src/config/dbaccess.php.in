@@ -8,7 +8,6 @@
  */
 
 $pgservice_core = "@CORE_DB@";
-$pgservice_freedom = "@FREEDOM_DB@";;
 $freedom_context = "default";
 $dbpsql = $pgservice_core;
 $useIndexAsGuest = false;

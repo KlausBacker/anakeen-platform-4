@@ -55,7 +55,7 @@
                     "global": true
                 },
                 "CORE_REALM": {
-                    "value": "Dynacase",
+                    "value": "Anakeen Platform",
                     "description": "Realm name for http authenticate",
                     "access": "admin",
                     "global": true
@@ -64,7 +64,7 @@
                     "value": "fr_FR",
                     "description": "user language",
                     "isUser": true,
-                    "type": "enum(optimal|mailto)",
+                    "type": "enum(fr_FR|en_US)",
                     "global": true
                 },
                 "CORE_LOGDURATION": {

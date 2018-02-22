@@ -152,7 +152,6 @@ function getCheckApp($pubdir, &$tapp, $usePreviousVersion = false)
     $err = '';
     $dbaccess_core = getDbAccessCore();
     $pgservice_core = getServiceCore();
-    $pgservice_freedom = getServiceFreedom();
     
     $IP = LibSystem::getHostIPAddress();
     $dbid = @pg_connect($dbaccess_core);
@@ -206,7 +205,6 @@ function getCheckActions($pubdir, $tapp, &$tact, $usePreviousVersion = false)
     $dump = array();
     
     $pgservice_core = getServiceCore();
-    $pgservice_freedom = getServiceFreedom();
     
     $dbid = @pg_connect("service='$pgservice_core'");
     
@@ -289,7 +287,6 @@ function getCheckActions($pubdir, $tapp, &$tact, $usePreviousVersion = false)
     }
     
     $dump[] = "PGSERVICE=\"$pgservice_core\" pg_dump > " . getTmpDir() . "/" . uniqid($pgservice_core);
-    $dump[] = "PGSERVICE=\"$pgservice_freedom\" pg_dump -D > " . getTmpDir() . "/" . uniqid($pgservice_freedom);
     //  $dump[] = "/etc/rc.d/init.d/httpd stop";
     $dump[] = "$pubdir/wstop";
     $dump[] = "$pubdir/whattext";

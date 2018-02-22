@@ -31,6 +31,26 @@
             "description": "Delete document (put in trash)",
             "requiredAccesses": []
         },
+        "Core:LockDocument": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\DocumentLock",
+            "methods": [
+                "delete", "get", "post", "put"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/locks/{lockType:permanent|temporary}",
+            "description": "Lock document",
+            "requiredAccesses": []
+        },
+        "Core:LockFamilyDocument": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\DocumentLock",
+            "methods": [
+                "delete", "get", "post", "put"
+            ],
+            "pattern": "\/api\/v2\/families\/{family}\/documents\/{docid}\/locks/{lockType:permanent|temporary}",
+            "description": "Lock a family document",
+            "requiredAccesses": []
+        },
         "Core:ListDocuments": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\DocumentList",
