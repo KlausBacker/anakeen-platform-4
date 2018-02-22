@@ -146,7 +146,7 @@ class RenderDefault implements IRenderConfig
                 ) ,
                 "htmltext" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"
+                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/htmltext/htmltextWrite.mustache"
                     ) ,
                     "read" => array(
                         "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/htmltext/htmltextRead.mustache"

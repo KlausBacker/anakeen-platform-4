@@ -25,3 +25,30 @@
     left: -4rem;
   }
 }
+
+
+.dcpAttribute__content--htmltext div[contenteditable="true"] {
+  overflow:auto;
+  height: 100%;
+  min-height: 3em;
+  display:block;
+  border:none;
+}
+
+.cke.cke_float {
+
+  border-top: solid 0.2rem transparent;
+  border-bottom: solid 0.2rem transparent;
+  //border-width: 0.2rem;
+  //border-style:solid;
+
+  .cke_inner {
+    border: $ank-ui-doc-edit-attribute-hover-border;
+    box-shadow: $ank-ui-doc-edit-attribute-focus-shadow;
+    border-radius:$ank-ui-doc-edit-attribute-border-radius;
+  }
+  .cke_top {
+    border:0;
+    background: transparent;
+  }
+}

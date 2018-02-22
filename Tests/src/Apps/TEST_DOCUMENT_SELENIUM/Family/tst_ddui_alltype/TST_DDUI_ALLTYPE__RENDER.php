@@ -53,6 +53,7 @@ class AllRenderConfigEdit extends \Dcp\Ui\DefaultEdit
         $options->enum(myAttributes::test_ddui_all__enumsserververtical)->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay)->useSourceUri(false);
         $options->enum(myAttributes::test_ddui_all__enumsserverhorizontal)->setDisplay(\Dcp\Ui\EnumRenderOptions::horizontalDisplay)->useSourceUri(false);
 
+        $options->htmltext()->useCkInline(true);
 
         return $options;
     }
