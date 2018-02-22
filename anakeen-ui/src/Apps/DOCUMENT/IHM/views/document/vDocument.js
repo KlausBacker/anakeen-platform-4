@@ -322,7 +322,7 @@ define([
                 }
 
                 if (this.kendoTabs.length > 0 && this.kendoTabs.data("kendoTabStrip")) {
-                    var selectTab = 'li[data-attrid=' + this.selectedTab + ']';
+                    var selectTab = 'li[data-attrid="' + this.selectedTab + '"]';
                     if (this.selectedTab && $(selectTab).length > 0) {
                         this.kendoTabs.data("kendoTabStrip").select(selectTab);
                     } else {
@@ -460,9 +460,6 @@ define([
                                 $ul.css("top", (menuHeight) + "px");
                                 $tabs.find(".k-bare").css("top", (menuHeight + 0) + "px");
 
-                                if ($liActive.length === 1) {
-                                    kendoTabStrip.activateTab($liActive);
-                                }
                             }
                         } else {
                             if (parseInt($ul.css("margin-left")) > 0) {
@@ -488,9 +485,7 @@ define([
                                     $ul.css("margin-left", $ul.data("originalMargins").left);
                                     $ul.css("margin-right", $ul.data("originalMargins").right);
                                 }
-                                if ($liActive.length === 1) {
-                                    kendoTabStrip.activateTab($liActive);
-                                }
+
                                 kendoTabStrip.resize();
                             }
                         }
@@ -616,7 +611,7 @@ define([
             });
 
             $tabs.find(".dcpLabel--select").removeClass("dcpLabel--select k-state-active");
-            $tabs.find(".dcpLabel[data-attrid=" + $selectedTabId + "]").addClass("k-state-active");
+            $tabs.find('.dcpLabel[data-attrid="' + $selectedTabId + '"]').addClass("k-state-active");
 
             if (hiddens.length > 0) {
 
@@ -652,12 +647,12 @@ define([
                         dataValueField: "id",
                         dataBound: function vDocumentTabSelectDatabound() {
                             var myTab = $(this.element).closest("li");
-                            var liItem = $tabs.find("li[data-attrid=" + this.value() + "]");
+                            var liItem = $tabs.find('li[data-attrid="' + this.value() + '"]');
                             myTab.data("tooltipLabelSelect", liItem.data("tooltipLabel"));
                         },
                         select: function vDocumentTabSelectSelect(event) {
                             var dataItem = this.dataSource.at(event.item.index());
-                            var liItem = $tabs.find("li[data-attrid=" + dataItem.id + "]");
+                            var liItem = $tabs.find('li[data-attrid="' + dataItem.id + '"]');
                             var myTab = $(this.element).closest("li");
 
                             myTab.data("tooltipLabelSelect", dataItem.tooltipLabel);
@@ -731,7 +726,7 @@ define([
                     $tabs.on("click", ".dcpLabel--select .k-dropdown-wrap .k-input", function vDocumentTabSelectClick(event) {
                         var selectedTab = $kendoTabs.select().data("attrid");
                         var selectedItem = $tabs.data("selectFixOn").data("kendoComboBox").value();
-                        var liItem = $tabs.find("li[data-attrid=" + selectedItem + "]");
+                        var liItem = $tabs.find('li[data-attrid="' + selectedItem + '"]');
                         var myTab = $(this).closest("li");
 
                         if (selectedItem !== selectedTab) {
