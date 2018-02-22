@@ -92,8 +92,8 @@ class DocumentView
         $this->request = $request;
         $this->viewIdentifier = $args["view"];
 
-        if ($request->getQueryParam("revision")) {
-            $this->revision = $request->getQueryParam("revision");
+        if (isset($args["revision"])) {
+            $this->revision = $args["revision"];
         }
         $refreshMsg = '';
         $creationMode = false;

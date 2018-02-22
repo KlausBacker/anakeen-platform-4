@@ -44,6 +44,53 @@
       ],
       "pattern": "\/api\/v2\/families\/{family}\/views\/structure",
       "description": "Get attributes structure of family"
+    },
+
+    "Ui:Document:HtmlPage": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\DocumentHtml",
+      "methods": [
+        "GET"
+      ],
+      "pattern": "\/api\/v2\/documents\/{docid}.html",
+      "description": "Html page to view document"
+    },
+    "Ui:Revision:HtmlPage": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\DocumentHtml",
+      "methods": [
+        "GET"
+      ],
+      "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revision:[0-9]+}.html",
+      "description": "Html page to view revision"
+    },
+
+    "Ui:Document:HtmlViewPage": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\DocumentHtml",
+      "methods": [
+        "GET"
+      ],
+      "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}.html",
+      "description": "Html page to view document with specific view"
+    },
+    "Ui:Revision:HtmlViewPage": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\DocumentHtml",
+      "methods": [
+        "GET"
+      ],
+      "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revision:[0-9]+}\/views\/{view}.html",
+      "description": "Html page to view revision with specific view"
+    },
+    "Ui:Document:Lock": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\LockView",
+      "methods": [
+        "delete", "get", "post", "put"
+      ],
+      "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}\/locks\/{lockType:permanent|temporary}",
+      "description": "Lock document"
     }
   }
 }

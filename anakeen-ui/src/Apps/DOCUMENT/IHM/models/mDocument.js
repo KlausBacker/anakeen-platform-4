@@ -142,7 +142,7 @@ define([
                 if (theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
                     // No use model destroy : page is destroyed before request is some case
                     $.ajax({
-                        url: "api/v1/documents/" + theModel.get("initid") + "/locks/temporary",
+                        url: "api/v2/documents/" + theModel.get("initid") + "/locks/temporary",
                         type: "DELETE",
                         async: false
                     });
@@ -159,7 +159,7 @@ define([
 
                 if (!unlocking && theModel.get("renderMode") === "edit" && security && security.lock && security.lock.temporary) {
                     $.ajax({
-                        url: "api/v1/documents/" + theModel.get("initid") + "/locks/temporary",
+                        url: "api/v2/documents/" + theModel.get("initid") + "/locks/temporary",
                         type: "DELETE",
                         async: false
                     });

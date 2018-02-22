@@ -4,8 +4,8 @@ define([
 ], function require_lock(_, Backbone) {
     "use strict";
 
-    var urlCore = _.template("api/v1/documents/<%- initid %>/locks/<%- type %>");
-    var urlView = _.template("api/v1/documents/<%- initid %>/views/<%- viewId %>/locks/<%- type %>");
+    var urlCore = _.template("api/v2/documents/<%- initid %>/locks/<%- type %>");
+    var urlView = _.template("api/v2/documents/<%- initid %>/views/<%- viewId %>/locks/<%- type %>");
 
     return Backbone.Model.extend({
         typeModel:"ddui:lock",

@@ -7,7 +7,9 @@
     <script type="text/javascript">
         window.dcp = window.dcp || {};
 
-        if (window.location.pathname.indexOf("/api/v1/") >= 0) {
+        if (window.location.pathname.indexOf("/api/v2/") >= 0) {
+            window.dcp.baseHref = window.location.href.substr(0, window.location.href.indexOf("/api/v2/") + 1);
+        } else if (window.location.pathname.indexOf("/api/v1/") >= 0) {
             window.dcp.baseHref = window.location.href.substr(0, window.location.href.indexOf("/api/v1/") + 1);
         } else {
             if (window.location.search) {

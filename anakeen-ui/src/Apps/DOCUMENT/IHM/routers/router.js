@@ -15,10 +15,10 @@ define([
 
             this.document = options.document;
 
-            this.route(/api\/v1\/documents\/([^\/]+)\.html/, "viewDocument");
-            this.route(/api\/v1\/documents\/(.+)\/revisions\/([^\/]+)\.html/, "viewRevision");
-            this.route(/api\/v1\/documents\/(.+)\/views\/([^\/]+)\.html/, "viewView");
-            this.route(/api\/v1\/documents\/(.+)\/revisions\/([^\/]+)\/views\/([^\/]+)\.html/, "viewRevisionView");
+            this.route(/api\/v2\/documents\/([^\/]+)\.html/, "viewDocument");
+            this.route(/api\/v2\/documents\/(.+)\/revisions\/([^\/]+)\.html/, "viewRevision");
+            this.route(/api\/v2\/documents\/(.+)\/views\/([^\/]+)\.html/, "viewView");
+            this.route(/api\/v2\/documents\/(.+)\/revisions\/([^\/]+)\/views\/([^\/]+)\.html/, "viewRevisionView");
 
             this.route(/[^?]*\?app=DOCUMENT([^#]+)/, "fetch");
 
@@ -97,7 +97,7 @@ define([
                             urlSecondPart = "/revisions/" + encodeURIComponent(options.revision);
                         }
                     }
-                    newUrl = window.location.pathname + 'api/v1/documents/' + options.initid + urlSecondPart + ".html";
+                    newUrl = window.location.pathname + 'api/v2/documents/' + options.initid + urlSecondPart + ".html";
                     if (searchPart.length > 0) {
                         newUrl += '?' + searchPart.join('&');
                     }
@@ -117,7 +117,7 @@ define([
             var parsePath = false, parseHash = false, beginPath = '', urlSecondPart = '', locationSearch = window.location.search, locationHash = window.location.hash;
             var noRecordHistory;
             if (options.initid) {
-                parsePath = window.location.pathname.match('(.*)api\\/v1\\/documents\\/(.*)');
+                parsePath = window.location.pathname.match('(.*)api\\/v2\\/documents\\/(.*)');
                 if (parsePath) {
                     beginPath = parsePath[1];
 
@@ -164,7 +164,7 @@ define([
                     }
 
                     this.navigate(beginPath +
-                        'api/v1/documents/' +
+                        'api/v2/documents/' +
                         options.initid +
                         urlSecondPart + '.html' +
                         locationSearch + locationHash,
