@@ -56,7 +56,6 @@ if (!$app) {
 require ('lib/Lib.Cli.php');
 
 $PGSERVICE_CORE = wiff_getParamValue('core_db');
-$FREEDOM_CONTEXT = 'default';
 
 putenv(sprintf("wpub=%s", $WIFF_CONTEXT_ROOT));
 putenv(sprintf("pgservice_core=%s", $PGSERVICE_CORE));

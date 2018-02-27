@@ -15,7 +15,7 @@
  */
 include_once("WHAT/Class.Provider.php");
 
-class freedomProvider extends Provider
+class InternalProvider extends Provider
 {
     /**
      * checks user login and password
@@ -26,7 +26,7 @@ class freedomProvider extends Provider
      */
     public function validateCredential($username, $password)
     {
-        $user = new User();
+        $user = new Account();
         if ($user->setLoginName($username)) {
             return $user->checkpassword($password);
         }

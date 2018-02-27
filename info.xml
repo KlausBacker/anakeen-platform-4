@@ -608,8 +608,8 @@ This can be solved by:<br/>
         <process command="programs/core_sanitize">
             <label lang="en">Sanitize core database</label>
         </process>
-        <process command="programs/core_update">
-            <label lang="en">Update core</label>
+        <process command="programs/core_accessUpdate">
+            <label lang="en">Resync dbaccess config</label>
         </process>
         <process command="programs/pre_migration CORE">
             <label lang="en">Migration first level</label>

@@ -9,7 +9,7 @@
     [CSS:CUSTOMREF]
 
     <script>
-        document.addEventListener( 'DOMContentLoaded__', function () {
+        document.addEventListener( 'DOMContentLoaded', function () {
 
             var el = document.getElementById("logout");
             el.addEventListener("click", function ()
@@ -27,24 +27,6 @@
                     }
                 };
                 httpRequest.send();
-            });
-        }, false );
-
-
-        document.addEventListener( 'DOMContentLoaded', function () {
-            var el = document.getElementById("logout");
-            el.addEventListener("click", function ()
-            {
-                window.fetch('api/v2/authent/sessions/current', {
-                    credentials: "same-origin",
-                    method : "DELETE"
-                }).then(function (response) {
-                    if (response.status === 200 || response.status === 401) {
-                        window.location.href = '/';
-                    } else {
-                        alert('Logout failed.');
-                    }
-                });
             });
         }, false );
     </script>

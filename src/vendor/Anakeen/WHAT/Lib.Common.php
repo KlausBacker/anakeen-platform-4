@@ -414,7 +414,8 @@ function getServiceCore()
 function getDbAccessValue($varName)
 {
     $included = false;
-    $filename = sprintf("%s/config/dbaccess.php", DEFAULT_PUBDIR);
+
+    $filename = sprintf("%s/%s", DEFAULT_PUBDIR, \Dcp\Core\Settings::DbAccessFilePath);
     if (file_exists($filename)) {
         if (include($filename)) {
             $included = true;

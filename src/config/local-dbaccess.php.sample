@@ -7,9 +7,9 @@
 
 if ($_SERVER['HTTP_HOST'] == 'admin.example.net') {
     /* Access to http://admin.example.net/ are authenticated against local accounts only */
-    $freedom_authtype = 'freedom';
+    $authentMode = 'internal';
 } else {
     /* While everything else is authenticated with networkuser accounts only */
-    $freedom_authtype = 'freedomNu';
+    $authentMode = 'freedomNu';
     $freedom_providers['freedomNu'] = array();
 }
