@@ -1,15 +1,9 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
- * freedomProvider class
+ * InternalProvider class
  *
- * This class provides methods for autentication based on freeedom
+ * This class provides methods for authentication based on internal database
  * @author Anakeen
- * @version $Id:  $
- * @package FDL
  */
 /**
  */
