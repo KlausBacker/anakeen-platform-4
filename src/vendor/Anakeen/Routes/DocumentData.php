@@ -81,7 +81,7 @@ class DocumentData
         if (!$this->checkId($this->documentId, $initid)) {
             // Redirect to other url
             $document = DocManager::getDocument($initid, false);
-            $location = Document::getURI($document);
+            $location = DocumentUtils::getURI($document);
             return $response->withStatus(307)
                 ->withHeader("location", $location);
         }

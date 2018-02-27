@@ -77,7 +77,7 @@ class CollectionDataFormatter
         $this->rootPath = URLUtils::stripUrlSlahes($this->rootPath);
         /* init the standard generator of url (redirect to the documents collection */
         $this->generateUrl = function ($document) {
-            return Document::getURI($document, static::APIURL);
+            return DocumentUtils::getURI($document, static::APIURL);
         };
     }
 

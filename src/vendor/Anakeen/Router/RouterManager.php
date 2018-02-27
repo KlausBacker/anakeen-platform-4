@@ -34,6 +34,7 @@ class RouterManager
      */
     public static function getSlimApp()
     {
+        self::cleanApacheDeflateAlterETag();
 
         self::$container = new \Slim\Container(self::getSlimConfig());
 
@@ -182,5 +183,15 @@ class RouterManager
                 return $next($request, $response);
             }
         );
+    }
+
+    /**
+     * Workaround because apache 2.4 alter etag when deflate module is activated
+     */
+    protected static function cleanApacheDeflateAlterETag()
+    {
+        if (!empty($_SERVER["HTTP_IF_NONE_MATCH"]) && preg_match("/\-gzip/", $_SERVER["HTTP_IF_NONE_MATCH"])) {
+            $_SERVER["HTTP_IF_NONE_MATCH"] = str_replace("-gzip", "", $_SERVER["HTTP_IF_NONE_MATCH"]);
+        }
     }
 }

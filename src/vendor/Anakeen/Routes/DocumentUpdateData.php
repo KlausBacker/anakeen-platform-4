@@ -11,7 +11,7 @@ use Anakeen\Router\Exception;
  *
  * Modify attribute values of a document
  *
- * @note    Used by route : POST /api/v2/documents/{docid}
+ * @note    Used by route : PUT /api/v2/documents/{docid}
  * @package Anakeen\Routes\Core
  */
 class DocumentUpdateData extends DocumentData
