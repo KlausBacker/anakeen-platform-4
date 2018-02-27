@@ -391,7 +391,7 @@ class DocumentApiData
                 $attribute->id
             );
 
-            $info["enumUrl"] = sprintf("%s%s/%s", URLUtils::getBaseURL(), Settings::ApiV2, $url);
+            $info["enumUrl"] = sprintf("%s%s%s", URLUtils::getBaseURL(), Settings::ApiV2, $url);
         }
 
         return $info;

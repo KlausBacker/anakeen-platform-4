@@ -171,7 +171,7 @@ class DocumentLock
             );
         }
         $info["uri"] = URLUtils::generateURL(sprintf(
-            "%s/documents/%s/locks/%s",
+            "%sdocuments/%s/locks/%s",
             Settings::ApiV2,
             $this->_document->name ? $this->_document->name : $this->_document->initid,
             ($this->hasTemporaryLock()) ? "temporary" : "permanent"

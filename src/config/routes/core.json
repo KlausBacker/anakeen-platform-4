@@ -190,6 +190,16 @@
             "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revision}\/images\/{attrid}\/{index}\/sizes\/{size:[0-9x]+[cfs]?}[.{extension}]",
             "description": "Download file image from document",
             "requiredAccesses": []
+        },
+        "Core:FamilyEnum": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\Enumerates",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/families\/{family}\/enumerates\/{enum}",
+            "description": "Content of the enumerate <attributeIdentifier> of the family <familyId>",
+            "requiredAccesses": []
         }
     },
     "middlewares": {
