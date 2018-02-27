@@ -111,6 +111,14 @@ class DocumentView
             $refreshMsg = $this->setRefresh();
         }
 
+        $etag = $this->getEtagInfo($resourceId);
+        if ($etag) {
+            $response = ApiV2Response::withEtag($request, $response, $etag);
+            if (ApiV2Response::matchEtag($request, $etag)) {
+                return $response;
+            }
+        }
+
         if (!in_array($this->viewIdentifier, array(
                 self::coreViewCreationId,
                 self::defaultViewConsultationId,
@@ -614,15 +622,13 @@ class DocumentView
     /**
      * Return etag info
      *
+     * @param string $docid
      * @return null|string
      */
-    public function getEtagInfo()
+    protected function getEtagInfo($docid)
     {
-        if (isset($this->documentId)) {
-            DocManager::getIdentifier($this->documentId, true);
-            return $this->extractEtagDocument($this->documentId);
-        }
-        return null;
+            DocManager::getIdentifier($docid, true);
+            return $this->extractEtagDocument($docid);
     }
 
     /**
@@ -635,19 +641,13 @@ class DocumentView
     protected function extractEtagDocument($id)
     {
 
-        \Dcp\ConsoleTime::startPartial("Etag");
-        \Dcp\ConsoleTime::step("etag");
         $this->getDocument($id);
-        \Dcp\ConsoleTime::step("getDocument");
 
         $refreshMsg = $this->setRefresh();
-        \Dcp\ConsoleTime::step("refresh");
 
         $disableEtag = \Dcp\Ui\RenderConfigManager::getRenderParameter($this->document->fromname, "disableEtag");
-        \Dcp\ConsoleTime::step("eTag test");
 
         if ($disableEtag) {
-            \Dcp\ConsoleTime::stopPartial();
             return null;
         }
         $viewId = $this->viewIdentifier;
@@ -655,7 +655,6 @@ class DocumentView
             $config = $this->getRenderConfig($viewId);
             $renderEtag = $config->getEtag($this->document);
             if ($renderEtag !== "") {
-                \Dcp\ConsoleTime::stopPartial();
                 return $renderEtag . $refreshMsg;
             }
         }
@@ -663,7 +662,6 @@ class DocumentView
         $etag = $this->getDefaultETag($this->document);
 
         $etag .= $refreshMsg;
-        \Dcp\ConsoleTime::stopPartial();
 
         return $etag;
     }
