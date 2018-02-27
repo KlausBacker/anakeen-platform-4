@@ -6,8 +6,8 @@ class NotHandler
 {
 
     /**
+     * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
-     * @param \Exception          $exception
      *
      * @return \Slim\Http\response
      */
@@ -19,16 +19,21 @@ class NotHandler
     }
 
     /**
+     * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
-     * @param \Exception          $exception
+     * @param  array              $methods
      *
      * @return \Slim\Http\response
      */
     public static function NotAllowed(\Slim\Http\request $request, \Slim\Http\response $response, $methods)
     {
-        $args = ["title" => sprintf(___("Method Not Allowed", "ank"))];
-        $args["methods"]=implode(", ", $methods);
-        $args["method"]=$request->getMethod();
+        $args = [
+            "title" => sprintf(
+                ___("Method \"%s\" Not Allowed. Must be one of: %s", "ank"),
+                $request->getMethod(),
+                implode(", ", $methods)
+            )
+        ];
         $response = $response->withStatus(405);
 
         return self::getResponsePage($request, $response, $args, "CORE/Layout/notAllowed.html");
@@ -37,8 +42,8 @@ class NotHandler
     /**
      * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
-     * @param                     $title
-     * @param string              $errId
+     * @param array               $args
+     * @param                     $layout
      *
      * @return \Slim\Http\response
      */

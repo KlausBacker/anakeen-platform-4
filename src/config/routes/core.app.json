@@ -1,15 +1,14 @@
 {
-    "apps": [
-        {
-            "name": "CORE",
-            "short_name": "Core",
+    "apps": {
+        "CORE": {
+            "shortName": "Core",
             "description": "System application",
-            "version" : "4.0.0",
+            "version": "4.0.0",
             "parameters": {
                 "WVERSION": {
                     "value": "",
                     "description": "Version key",
-                    "access": "static",
+                    "access": "readonly",
                     "global": true
                 },
                 "CORE_LOGLEVEL": {
@@ -34,7 +33,7 @@
                     "value": 1,
                     "description": "Maximum time (in days) after which the temporary documents are deleted",
                     "global": true,
-                    "type":"integer",
+                    "type": "integer",
                     "access": "admin"
                 },
                 "CORE_CLIENT": {
@@ -56,15 +55,22 @@
                     "global": true
                 },
                 "CORE_REALM": {
-                    "value": "Dynacase",
+                    "value": "Anakeen Platform",
                     "description": "Realm name for http authenticate",
                     "access": "admin",
+                    "global": true
+                },
+                "CORE_LANG": {
+                    "value": "fr_FR",
+                    "description": "user language",
+                    "isUser": true,
+                    "type": "enum(fr_FR|en_US)",
                     "global": true
                 },
                 "CORE_LOGDURATION": {
                     "value": 30,
                     "description": "Duration for log conservation (in days)",
-                    "type":"integer",
+                    "type": "integer",
                     "access": "admin",
                     "global": true
                 },
@@ -84,16 +90,16 @@
                 "CORE_SESSIONTTL": {
                     "value": 0,
                     "description": "Session lifetime (in seconds) - 0 means until web browser quit",
-                    "type":"integer",
-                    "category":"authent",
+                    "type": "integer",
+                    "category": "authent",
                     "access": "admin",
                     "global": true
                 },
                 "CORE_GUEST_SESSIONTTL": {
                     "value": 3600,
                     "description": "Probability of running the suppression of unused sessions (expressed as a percentage by a number between 0 and 1)",
-                    "type":"integer",
-                    "category":"authent",
+                    "type": "integer",
+                    "category": "authent",
                     "access": "static",
                     "global": true
                 },
@@ -101,7 +107,7 @@
                     "value": "1 week",
                     "description": "Maximum time after which an unused session is eligible for deletion",
                     "access": "admin",
-                    "category":"authent",
+                    "category": "authent",
                     "type": "enum(1 day|1 week|1 month)",
                     "global": true
                 },
@@ -109,7 +115,7 @@
                     "value": 0.01,
                     "description": "Probability of running the suppression of unused sessions (expressed as a percentage by a number between 0 and 1)",
                     "type": "double",
-                    "category":"authent",
+                    "category": "authent",
                     "access": "admin",
                     "global": true
                 },
@@ -117,8 +123,8 @@
                     "value": 16,
                     "description": "Session's identifier length in bytes (at least 16 bytes)",
                     "access": "admin",
-                    "category":"authent",
-                    "type":"integer",
+                    "category": "authent",
+                    "type": "integer",
                     "global": true
                 },
                 "CORE_ALLOW_GUEST": {
@@ -160,22 +166,22 @@
                     "type": "enum(yes|no)",
                     "global": true
                 },
-                "STYLE" : {
+                "STYLE": {
                     "value": "NONE",
                     "description": "Ui style",
                     "access": "readonly"
                 }
             }
         }
-    ],
+    },
     "accesses": {
         "core:admin": {
             "category": "System",
             "description": "Admin Access"
         }
     },
-    "routes": [
-        {
+    "routes": {
+        "Core:Root": {
             "priority": 1,
             "callable": "\\Anakeen\\App\\Core\\WelcomePage",
             "methods": [
@@ -183,10 +189,9 @@
             ],
             "pattern": "/",
             "description": "Welcome Page",
-            "name": "Core:Root",
             "requiredAccesses": []
         },
-        {
+        "Core:Welcome": {
             "priority": 1,
             "callable": "\\Anakeen\\App\\Core\\WelcomePage",
             "methods": [
@@ -194,10 +199,9 @@
             ],
             "pattern": "/welcome",
             "description": "Welcome Page",
-            "name": "Core:Welcome",
             "requiredAccesses": []
         },
-        {
+        "Core:LayoutAsset": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\LayoutAsset",
             "methods": [
@@ -205,19 +209,7 @@
             ],
             "pattern": "/assets/{asset}",
             "description": "Get css/js asset from Layout directory",
-            "name": "Core:LayoutAsset",
             "requiredAccesses": []
-        },
-        {
-            "priority": 1,
-            "callable": "\\Anakeen\\Routes\\Core\\RecordApplications",
-            "methods": [
-                "post"
-            ],
-            "pattern": "/api/v2/admin/applications/",
-            "description": "Record all application configuration",
-            "name": "CoreAdmin:RecordApplication",
-            "requiredAccesses": ["core:admin"]
         }
-    ]
+    }
 }

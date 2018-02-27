@@ -79,31 +79,31 @@ abstract class Authenticator
         if ($provider == "") {
             return array();
         }
-        $freedom_providers = getDbAccessValue('freedom_providers');
-        if (!is_array($freedom_providers)) {
+        $authentConfigs = getDbAccessValue('authentProvidersConfig');
+        if (!is_array($authentConfigs)) {
             return array();
         }
         
-        if (!array_key_exists($provider, $freedom_providers)) {
-            error_log(__FUNCTION__ . ":" . __LINE__ . "provider " . $provider . " does not exists in freedom_providers");
+        if (!array_key_exists($provider, $authentConfigs)) {
+            error_log(__FUNCTION__ . ":" . __LINE__ . "provider " . $provider . " does not exists in authentProvidersConfig");
             return array();
         }
         
-        return $freedom_providers[$provider];
+        return $authentConfigs[$provider];
     }
     
     public static function getAuthTypeParams()
     {
-        $freedom_authtypeparams = getDbAccessValue('freedom_authtypeparams');
-        if (!is_array($freedom_authtypeparams)) {
+        $authModeConfig = getDbAccessValue('authentModeConfig');
+        if (!is_array($authModeConfig)) {
             throw new Dcp\Exception('FILE0006');
         }
         
-        if (!array_key_exists(AuthenticatorManager::getAuthType(), $freedom_authtypeparams)) {
+        if (!array_key_exists(AuthenticatorManager::getAuthType(), $authModeConfig)) {
             return array();
         }
         
-        return $freedom_authtypeparams[AuthenticatorManager::getAuthType() ];
+        return $authModeConfig[AuthenticatorManager::getAuthType() ];
     }
     
     public static function freedomUserExists($username)

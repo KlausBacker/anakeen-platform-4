@@ -73,7 +73,11 @@ class BasicAuthenticator extends Authenticator
     public function askAuthentication($args)
     {
         header('HTTP/1.1 401 Authentication Required');
-        header('WWW-Authenticate: Basic realm="' . $this->parms{'realm'} . '"');
+        header('WWW-Authenticate: Basic realm="' .
+            \Dcp\Core\ContextManager::getApplicationParam(
+                "CORE_REALM",
+                "Anakeen Platform connection"
+            )  . '"');
         header('Connection: close');
         return true;
     }

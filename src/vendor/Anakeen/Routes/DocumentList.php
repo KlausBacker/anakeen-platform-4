@@ -10,7 +10,8 @@ use Dcp\Router\ApiV2Response;
  * Class DocumentList
  *
  * List all visible documents
- * @note Used by route : GET /api/v2/documents/
+ *
+ * @note    Used by route : GET /api/v2/documents/
  * @package Anakeen\Routes\Core
  */
 class DocumentList
@@ -64,17 +65,17 @@ class DocumentList
 
     protected function getData()
     {
-        $documentList = $this->prepareDocumentList();
+        $documentList = $this->getDocumentList();
         $data = array(
             "requestParameters" => array(
-                "slice" => $this->slice,
-                "offset" => $this->offset,
+                "slice" => $this->_searchDoc->slice,
+                "offset" => $this->_searchDoc->start,
                 "length" => count($documentList),
                 "orderBy" => $this->orderBy
             )
         );
 
-        $data["uri"] = URLUtils::generateURL(Settings::ApiV2."documents/");
+        $data["uri"] = URLUtils::generateURL(Settings::ApiV2 . "documents/");
         $data["properties"] = $this->getCollectionProperties();
         $documentFormatter = $this->prepareDocumentFormatter($documentList);
         $docData = $documentFormatter->format();
@@ -179,9 +180,9 @@ class DocumentList
     /**
      * Analyze the slice, offset and sortBy
      *
-     * @return \DocumentList
+     * @return void
      */
-    public function prepareDocumentList()
+    protected function prepareDocumentList()
     {
         $this->prepareSearchDoc();
         $slice = $this->request->getQueryParam("slice");
@@ -193,13 +194,27 @@ class DocumentList
             }
         }
         $this->_searchDoc->setSlice($this->slice);
-        $this->offset = intval($this->request->getQueryParam("offset"));
+
+        if ($this->request->getQueryParam("offset") !== null) {
+            $this->offset = intval($this->request->getQueryParam("offset"));
+        }
 
         $this->_searchDoc->setStart($this->offset);
         $this->orderBy = $this->extractOrderBy();
         $this->_searchDoc->setOrder($this->orderBy);
+    }
+
+    /**
+     * Return Document list from searchDoc
+     *
+     * @return \DocumentList
+     */
+    protected function getDocumentList()
+    {
+        $this->prepareDocumentList();
         return $this->_searchDoc->getDocumentList();
     }
+
 
     protected function getCollectionProperties()
     {

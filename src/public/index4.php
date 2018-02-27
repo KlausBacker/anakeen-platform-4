@@ -25,9 +25,6 @@ $app=\Anakeen\Router\RouterManager::getSlimApp();
 \Anakeen\Router\RouterManager::addRoutes($routes);
 // Add middlewares to the application
 \Anakeen\Router\RouterManager::addMiddlewares($middleWares);
-//$routeConfig->updateApps();exit;
-
-
 
 
 // Run app

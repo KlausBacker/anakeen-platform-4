@@ -8,7 +8,6 @@ namespace Anakeen\Routes\Core;
 
 use Anakeen\Router\URLUtils;
 use Dcp\Core\Settings;
-use Dcp\HttpApi\V1\DocManager\Exception as DocumentException;
 use Anakeen\Router\Exception;
 use Dcp\Routes\Document;
 
@@ -78,7 +77,7 @@ class CollectionDataFormatter
         $this->rootPath = URLUtils::stripUrlSlahes($this->rootPath);
         /* init the standard generator of url (redirect to the documents collection */
         $this->generateUrl = function ($document) {
-            return Document::getURI($document, static::APIURL);
+            return DocumentUtils::getURI($document, static::APIURL);
         };
     }
 
@@ -128,7 +127,7 @@ class CollectionDataFormatter
      *
      * @param string $propertyId
      *
-     * @throws DocumentException
+     * @throws Exception
      */
     public function addProperty($propertyId)
     {
@@ -142,7 +141,7 @@ class CollectionDataFormatter
             }
         } else {
             if (!in_array($propertyId, $propertyKeys) || in_array($propertyId, static::$uselessProperties)) {
-                throw new DocumentException("CRUD0202", $propertyId);
+                throw new Exception("CRUD0202", $propertyId);
             }
             $this->properties[] = $propertyId;
         }
@@ -175,76 +174,94 @@ class CollectionDataFormatter
         /** Format uniformly the void multiple values */
 
         $formatCollection->setAttributeRenderHook(function ($info, $attribute, $doc) {
-            /**
-             * @var \NormalAttribute $attribute
-             */
-            if ($info === null) {
-                if ($attribute->isMultiple()) {
-                    $info = array();
-                } else {
-                    $info = new \StandardAttributeValue($attribute, null);
-                }
-            } elseif ($attribute->type === "docid" || $attribute->type === "account" || $attribute->type === "file"
-                || $attribute->type === "image") {
-                if (is_array($info)) {
-                    foreach ($info as & $oneInfo) {
-                        if (is_array($oneInfo)) {
-                            foreach ($oneInfo as & $subInfo) {
-                                if (!empty($subInfo->icon)) {
-                                    $this->rewriteImageUrl($subInfo->icon);
-                                }
-                            }
-                        } else {
-                            /**
-                             * @var \DocidAttributeValue|\ImageAttributeValue $oneInfo
-                             */
-                            if (!empty($oneInfo->icon)) {
-                                $this->rewriteImageUrl($oneInfo->icon);
-                            }
-
-                            if ($attribute->type === "image" && !empty($oneInfo->thumbnail)) {
-                                $this->rewriteThumbUrl($oneInfo->thumbnail, $doc->initid, ($doc->locked == -1)?$doc->revision:-1);
-                            }
-                            if (($attribute->type === "image" || $attribute->type === "file")
-                                && !empty($oneInfo->url)) {
-                                $this->rewriteFileUrl($oneInfo->url, $doc->initid, ($doc->locked == -1)?$doc->revision:-1);
-                            }
-                        }
-                    }
-                } else {
-                    if (!empty($info->icon)) {
-                        $this->rewriteImageUrl($info->icon);
-                    }
-                    if ($attribute->type === "image" && !empty($info->thumbnail)) {
-                        $this->rewriteThumbUrl($info->thumbnail, $doc->initid, ($doc->locked == -1)?$doc->revision:-1);
-                    }
-                    if (($attribute->type === "image" || $attribute->type === "file") && !empty($info->url)) {
-                        $this->rewriteFileUrl($info->url, $doc->initid, ($doc->locked == -1)?$doc->revision:-1);
-                    }
-                }
-            }
-            return $info;
+            return $this->attributeHook($info, $attribute, $doc);
         });
-        $generateUrl = $this->generateUrl;
         /** Add uri property and suppress state if no state **/
-        $formatCollection->setDocumentRenderHook(function ($values, \Doc $document) use ($generateUrl) {
-            $values["uri"] = $generateUrl($document);
-            if (isset($values["properties"]["state"]) && !$values["properties"]["state"]->reference) {
-                unset($values["properties"]["state"]);
-            }
-
-            if (isset($values["properties"]["icon"])) {
-                $this->rewriteImageUrl($values["properties"]["icon"]);
-            }
-            foreach ($values["properties"] as & $subProp) {
-                if (is_array($subProp) && !empty($subProp["icon"])) {
-                    $this->rewriteImageUrl($subProp["icon"]);
-                }
-            }
-            return $values;
+        $formatCollection->setDocumentRenderHook(function ($values, \Doc $document) {
+            return $this->documentHook($values, $document);
         });
 
         return $formatCollection->render();
+    }
+
+    protected function documentHook($values, \Doc $document)
+    {
+        $generateUrl = $this->generateUrl;
+        $values["uri"] = $generateUrl($document);
+        if (isset($values["properties"]["state"]) && !$values["properties"]["state"]->reference) {
+            unset($values["properties"]["state"]);
+        }
+
+        if (isset($values["properties"]["icon"])) {
+            $this->rewriteImageUrl($values["properties"]["icon"]);
+        }
+        foreach ($values["properties"] as & $subProp) {
+            if (is_array($subProp) && !empty($subProp["icon"])) {
+                $this->rewriteImageUrl($subProp["icon"]);
+            }
+        }
+        return $values;
+    }
+
+    protected function attributeHook($info, $attribute, $doc)
+    {
+        /**
+         * @var \NormalAttribute $attribute
+         */
+        if ($info === null) {
+            if ($attribute->isMultiple()) {
+                $info = array();
+            } else {
+                $info = new \StandardAttributeValue($attribute, null);
+            }
+        } elseif ($attribute->type === "docid" || $attribute->type === "account" || $attribute->type === "file"
+            || $attribute->type === "image") {
+            if (is_array($info)) {
+                foreach ($info as & $oneInfo) {
+                    if (is_array($oneInfo)) {
+                        foreach ($oneInfo as & $subInfo) {
+                            if (!empty($subInfo->icon)) {
+                                $this->rewriteImageUrl($subInfo->icon);
+                            }
+                        }
+                    } else {
+                        /**
+                         * @var \DocidAttributeValue|\ImageAttributeValue $oneInfo
+                         */
+                        if (!empty($oneInfo->icon)) {
+                            $this->rewriteImageUrl($oneInfo->icon);
+                        }
+
+                        if ($attribute->type === "image" && !empty($oneInfo->thumbnail)) {
+                            $this->rewriteThumbUrl(
+                                $oneInfo->thumbnail,
+                                $doc->initid,
+                                ($doc->locked == -1) ? $doc->revision : -1
+                            );
+                        }
+                        if (($attribute->type === "image" || $attribute->type === "file")
+                            && !empty($oneInfo->url)) {
+                            $this->rewriteFileUrl(
+                                $oneInfo->url,
+                                $doc->initid,
+                                ($doc->locked == -1) ? $doc->revision : -1
+                            );
+                        }
+                    }
+                }
+            } else {
+                if (!empty($info->icon)) {
+                    $this->rewriteImageUrl($info->icon);
+                }
+                if ($attribute->type === "image" && !empty($info->thumbnail)) {
+                    $this->rewriteThumbUrl($info->thumbnail, $doc->initid, ($doc->locked == -1) ? $doc->revision : -1);
+                }
+                if (($attribute->type === "image" || $attribute->type === "file") && !empty($info->url)) {
+                    $this->rewriteFileUrl($info->url, $doc->initid, ($doc->locked == -1) ? $doc->revision : -1);
+                }
+            }
+        }
+        return $info;
     }
 
     protected function rewriteImageUrl(&$imgUrl)
@@ -310,7 +327,7 @@ class CollectionDataFormatter
                 $fileUrl = sprintf(
                     "%sdocuments/%d/files/%s/%s/%s",
                     $this->rootPath,
-                    $docid?$docid:$reg["docid"],
+                    $docid ? $docid : $reg["docid"],
                     $reg["attrid"],
                     $reg["index"],
                     $reg["filename"]
@@ -319,7 +336,7 @@ class CollectionDataFormatter
                 $fileUrl = sprintf(
                     "%sdocuments/%d/revisions/%d/files/%s/%s/%s",
                     $this->rootPath,
-                    $docid?$docid:$reg["docid"],
+                    $docid ? $docid : $reg["docid"],
                     $revision,
                     $reg["attrid"],
                     $reg["index"],

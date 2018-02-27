@@ -4,6 +4,7 @@ namespace Anakeen\Routes\Core;
 
 use Anakeen\Router\Exception;
 use Anakeen\Router\URLUtils;
+use Dcp\Core\ContextManager;
 use Dcp\Core\DocManager;
 use Dcp\Core\Settings;
 use Dcp\Router\ApiV2Response;
@@ -156,7 +157,7 @@ class FileAttribute
 
     protected function zipFiles(\NormalAttribute $attribute, array $files)
     {
-        $tmpZip = tempnam(getTmpDir(), "file" . $this->_document->id . "-") . ".zip";
+        $tmpZip = tempnam(ContextManager::getTmpDir(), "file" . $this->_document->id . "-") . ".zip";
 
         $zip = new \ZipArchive();
         if ($zip->open($tmpZip, \ZipArchive::CREATE) === true) {

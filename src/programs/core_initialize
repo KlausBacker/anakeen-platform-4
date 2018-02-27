@@ -1,27 +1,12 @@
 #!/bin/bash
 
-authtype=`"$WIFF_ROOT"/wiff --getValue=authtype`
-core_db=`"$WIFF_ROOT"/wiff --getValue=core_db`
-freedom_db=`"$WIFF_ROOT"/wiff --getValue=freedom_db`
 mod_deflate=`"$WIFF_ROOT"/wiff --getValue=mod_deflate`
 
-if [ -z "$freedom_db" ]; then
-    freedom_db=$core_db
-fi
-
-
-dbaccesstpl="$WIFF_CONTEXT_ROOT"/config/dbaccess.php.in
-dbaccess="$WIFF_CONTEXT_ROOT"/config/dbaccess.php
 
 prefix="$WIFF_CONTEXT_ROOT"/WHAT/Lib.Prefix.php
-htaccesstpl="$WIFF_CONTEXT_ROOT"/public/supervisor/.htaccess.in
-htaccess="$WIFF_CONTEXT_ROOT"/public/supervisor/.htaccess
 corepost="$WIFF_CONTEXT_ROOT"/vendor/Anakeen/CORE_init
 
-if [ ! -f "$dbaccesstpl" ]; then
-    echo "file '$dbaccesstpl' not found" >&2
-    exit 1
-fi
+
 
 if [ ! -x "$corepost" ]; then
     echo "file '$corepost' not found or not executable" >&2
@@ -33,13 +18,8 @@ fi
 
 (
     set -e
-    cp "$dbaccesstpl" "$dbaccess" && installUtils replace -f "$dbaccess" +s +e ".@AUTHTYPE@." "$authtype" ".@CORE_DB@." "$core_db" ".@FREEDOM_DB@." "$freedom_db" -q "@prefix@" "$WIFF_CONTEXT_ROOT"
-    V=$(installUtils doublequote -q "$WIFF_CONTEXT_ROOT")
-    if [ -f "$htaccesstpl" ]; then
-        cp "$htaccesstpl" "$htaccess" && installUtils replace -f "$htaccess" +em '@prefix@(.*)$' "\"$V\$1\""
-        V=$(installUtils doublequote -q "$WIFF_CONTEXT_ROOT")
-    fi
-    installUtils replace -f public/.htaccess +em '^(\s*php_value\s+session\.save_path\s+).*$' "\$1\"$V/var/session\""
+    "$WIFF_CONTEXT_ROOT"/programs/core_accessUpdate
+    
 )
 RET=$?
 if [ $RET -ne 0 ]; then

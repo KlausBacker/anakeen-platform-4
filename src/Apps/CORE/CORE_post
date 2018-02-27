@@ -26,7 +26,7 @@ if [ "$1" = "U" ] ; then
     log "Setting database parameters..."
     DATABASE=`PGSERVICE="$pgservice_core" psql -At -c "SELECT current_database();" 2> /dev/null`
     DATABASE_QUOTED=$(echo "$DATABASE" | sed -e 's/"/""/g')
-    PGSERVICE="$pgservice_freedom" psql -c "ALTER DATABASE \"$DATABASE_QUOTED\" SET standard_conforming_strings = 'off';"
+    PGSERVICE="$pgservice_core" psql -c "ALTER DATABASE \"$DATABASE_QUOTED\" SET standard_conforming_strings = 'off';"
     RET=$?
     if [ $RET -ne 0 ]; then
 	echo "An error occured while setting standard_conforming_strings to 'off'."
@@ -43,7 +43,7 @@ if [ "$1" = "U" ] ; then
     fi
 
 
-    PGSERVICE="$pgservice_freedom" pgExecuteSqlFile "$wpub/vendor/Anakeen/FDL/fdl.sql"
+    PGSERVICE="$pgservice_core" pgExecuteSqlFile "$wpub/vendor/Anakeen/FDL/fdl.sql"
     RET=$?
     if [ $RET -ne 0 ]; then
 	echo "Error executing sql file \"$wpub/FDL/fdl.sql\""

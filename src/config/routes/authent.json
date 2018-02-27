@@ -1,7 +1,6 @@
 {
-    "routes": [
-
-        {
+    "routes": {
+        "Core:Authent:Session:Login": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Authent\\Session",
             "methods": [
@@ -9,21 +8,20 @@
             ],
             "pattern": "/api/v2/authent/sessions/{login}",
             "description": "Create user session",
-            "name": "Core:Authent:Session:Login",
             "requiredAccesses": [],
             "authenticated": false
         },
-        {
+        "Core:Authent:Session:Logout": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Authent\\Logout",
             "methods": [
-                "DELETE", "GET"
+                "DELETE",
+                "GET"
             ],
             "pattern": "/api/v2/authent/sessions/current",
             "description": "Destroy current user session",
-            "name": "Core:Authent:Session:Logout",
             "requiredAccesses": [],
             "authenticated": true
         }
-    ]
+    }
 }

@@ -40,7 +40,7 @@ class ErrorCodeFILE
      * @errorCode
      * dbaccess.php file is incomplete
      */
-    const FILE0006 = 'dbaccess.php file does not contain freedom_authtypeparams variable. May be old syntax for configuration file';
+    const FILE0006 = 'dbaccess.php file does not contain authentModeConfig variable. May be old syntax for configuration file';
     /**
      * @errorCode
      * The given file could not be stored in the vault because it does

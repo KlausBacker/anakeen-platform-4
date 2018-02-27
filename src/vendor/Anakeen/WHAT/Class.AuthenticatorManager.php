@@ -162,13 +162,13 @@ class AuthenticatorManager
      */
     public static function getAuthProvider()
     {
-        $freedom_authprovider = getDbAccessValue('freedom_authprovider');
+        $authprovider = getDbAccessValue('authentProvider');
 
-        if ($freedom_authprovider == "") {
-            $freedom_authprovider = "html";
+        if ($authprovider == "") {
+            $authprovider = "internal";
         }
 
-        return trim($freedom_authprovider);
+        return trim($authprovider);
     }
 
     /**
@@ -205,13 +205,13 @@ class AuthenticatorManager
             }
         }
 
-        $freedom_authtype = getDbAccessValue('freedom_authtype');
+        $authMode = getDbAccessValue('authentMode');
 
-        if ($freedom_authtype == "") {
-            $freedom_authtype = "html";
+        if ($authMode == "") {
+            $authMode = "html";
         }
 
-        return trim($freedom_authtype);
+        return trim($authMode);
     }
 
 
@@ -268,7 +268,7 @@ class AuthenticatorManager
         //Header( "WWW-Authenticate: Basic realm=\"WHAT Connection\", stale=true");
         //Header( "HTTP/1.0 401 Unauthorized");
         header('WWW-Authenticate: Basic realm="' . \Dcp\Core\ContextManager::getApplicationParam("CORE_REALM",
-                "Dynacase Platform connection") . '"');
+                "Anakeen Platform connection") . '"');
         header('HTTP/1.0 401 Unauthorized');
         echo _("Vous devez entrer un nom d'utilisateur valide et un mot de passe correct pour acceder a cette ressource");
         exit;

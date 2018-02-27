@@ -1,0 +1,53 @@
+#!/bin/bash -e
+
+# Regenerate config/dbaccess.php from dbaccess.php.in and access paramters
+
+authtype=`"$WIFF_CONTEXT_ROOT"/programs/config.php --get authentMode`
+
+if [ "$authtype" = "" ]; then
+    authtype=`"$WIFF_ROOT"/wiff --getValue=authtype`
+    "$WIFF_CONTEXT_ROOT"/programs/config.php --set authentMode "$authtype"
+fi
+
+
+
+core_db=`"$WIFF_CONTEXT_ROOT"/programs/config.php --get dbService`
+
+if [ "$core_db" = "" ]; then
+    core_db=`"$WIFF_ROOT"/wiff --getValue=core_db`
+    "$WIFF_CONTEXT_ROOT"/programs/config.php --set dbService "$core_db"
+fi
+
+
+dbaccesstpl="$WIFF_CONTEXT_ROOT"/config/dbaccess.php.in
+dbaccess="$WIFF_CONTEXT_ROOT"/config/dbaccess.php
+
+supervisorHtaccessIn="$WIFF_CONTEXT_ROOT"/public/supervisor/.htaccess.in
+supervisorHtaccess="$WIFF_CONTEXT_ROOT"/public/supervisor/.htaccess
+
+if [ ! -f "$dbaccesstpl" ]; then
+    echo "file '$dbaccesstpl' not found" >&2
+    exit 1
+fi
+
+# initialize configuration files
+
+. "$WIFF_CONTEXT_ROOT/libutil.sh"
+(
+    set -e
+    cp "$dbaccesstpl" "$dbaccess" && installUtils replace -f "$dbaccess" +s +e ".@AUTHTYPE@." "$authtype" ".@CORE_DB@." "$core_db"
+    V=$(installUtils doublequote -q "$WIFF_CONTEXT_ROOT")
+    if [ -f "$supervisorHtaccessIn" ]; then
+        cp "$supervisorHtaccessIn" "$supervisorHtaccess" && installUtils replace -f "$supervisorHtaccess" +em '@prefix@(.*)$' "\"$V\$1\""
+        V=$(installUtils doublequote -q "$WIFF_CONTEXT_ROOT")
+    fi
+)
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error regenerating files from templates."
+    exit $RET
+fi
+
+
+export wpub=$WIFF_CONTEXT_ROOT # same as `wiff --getValue=rootdirectory`
+. "$WIFF_CONTEXT_ROOT"/programs/core_environment

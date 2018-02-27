@@ -3,6 +3,8 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Router\Exception;
+use Dcp\Core\Settings;
+use Anakeen\Router\URLUtils;
 
 class DocumentUtils
 {
@@ -146,5 +148,39 @@ class DocumentUtils
             }
         }
         return true;
+    }
+
+
+    public static function getURI($document, $prefix = Settings::ApiV2)
+    {
+        if ($document) {
+            if ($document->defDoctype === "C") {
+                return URLUtils::generateURL(sprintf("%s/families/%s.json", $prefix, $document->name));
+            } else {
+                if ($document->doctype === "Z") {
+                    return URLUtils::generateURL(sprintf("%s/trash/%s.json", $prefix, $document->initid));
+                } else {
+                    if ($document->locked == -1) {
+                        return URLUtils::generateURL(
+                            sprintf(
+                                "%s/documents/%s/revisions/%d.json",
+                                $prefix,
+                                $document->initid,
+                                $document->revision
+                            )
+                        );
+                    } else {
+                        return URLUtils::generateURL(
+                            sprintf(
+                                "%s/documents/%s.json",
+                                $prefix,
+                                $document->initid
+                            )
+                        );
+                    }
+                }
+            }
+        }
+        return "";
     }
 }
