@@ -31,6 +31,7 @@
                 ckEditorConfiguration: {},
                 ckEditorAllowAllTags:false
             },
+            inline:false,
             locale: "en"
         },
 
@@ -41,6 +42,9 @@
             var currentWidget = this, bind_super = _.bind(this._super, this), bindInitEvent = _.bind(this._initEvent, this);
             try {
                 this.popupWindows = {};
+                if (this.options.renderOptions.ckEditorInline) {
+                    this.options.inline=true;
+                }
                 if (this.getMode() === "write") {
                     (function wHtmltext_umdRequire(factory)
                     {
@@ -72,6 +76,7 @@
                             };
                             options.disallowedContent = 'script; *[on*]';
                         }
+
                         currentWidget.ckEditorInstance = currentWidget.getContentElements().ckeditor(
                             options
                         ).editor;
@@ -114,6 +119,7 @@
                 toolbarCanCollapse: true,
                 entities: false, // no use HTML entities
                 baseHref : hrefBase,
+                title : '',
                 filebrowserImageBrowseUrl: hrefBase+'?sole=Y&app=FDL&action=CKIMAGE',
                 filebrowserImageUploadUrl: hrefBase+'?sole=Y&app=FDL&action=CKUPLOAD',
                 toolbar_Full: [
@@ -369,8 +375,13 @@
                 if (originalValue.trim() != value.value.trim()) {
 
                     // Modify value only if different
-                    this.getContentElements().val(value.value);
-                    this.flashElement(this.element.find('iframe'));
+                    if (this.options.inline) {
+                        this.getContentElements().html(value.value);
+                    } else
+                    {
+                        this.getContentElements().val(value.value);
+                        this.flashElement(this.element.find('iframe'));
+                    }
                 }
             } else
                 if (this.getMode() === "read") {

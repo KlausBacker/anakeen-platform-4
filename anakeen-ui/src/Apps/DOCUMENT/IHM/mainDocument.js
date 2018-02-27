@@ -5,7 +5,7 @@
 import "./loading/loading.css";
 import $ from "jquery";
 
-$.get("api/v1/i18n/DOCUMENT").done(function translationLoaded(catalog) {
+$.get("api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
 
     //Trigger an event when translation loaded
     window.dcp.i18n = catalog;

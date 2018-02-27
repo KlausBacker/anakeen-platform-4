@@ -21,6 +21,5 @@
   "csvParam": {
     "enclosure": "\"",
     "delimiter": ";"
-  },
-  "permission_masks": {}
+  }
 }

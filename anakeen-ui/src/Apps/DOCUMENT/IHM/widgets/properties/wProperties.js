@@ -55,14 +55,14 @@ define([
                 '<tr><td class="properties-description">{{labels.revision}}</td><td class="properties-value">{{revision}}</td></tr>' +
                 '<tr><td class="properties-description">{{labels.version}}</td><td class="properties-value">{{version}}</td></tr>' +
                 '<tr><td class="properties-separator" colspan="2"></td></tr>' +
-                '<tr><td class="properties-description">{{labels.workflow}}</td><td class="properties-value"><a  data-document-id="{{workflow.id}}" href="api/v1/documents/{{workflow.id}}.html">{{#workflow.icon}}<img src="{{workflow.icon}}"/>{{/workflow.icon}}{{workflow.title}}</a></td></tr>' +
+                '<tr><td class="properties-description">{{labels.workflow}}</td><td class="properties-value"><a  data-document-id="{{workflow.id}}" href="api/v2/documents/{{workflow.id}}.html">{{#workflow.icon}}<img src="{{workflow.icon}}"/>{{/workflow.icon}}{{workflow.title}}</a></td></tr>' +
                 '<tr><td class="properties-description">{{labels.activity}}</td><td class="properties-value">{{#state.reference}}<div class="properties-value-statecolor" style="background-color:{{state.color}}"/>{{state.displayValue}}{{/state.reference}}</td></tr>' +
-                '<tr><td class="properties-description">{{labels.family}}</td><td class="properties-value"><a data-document-id="{{family.id}}" href="api/v1/documents/{{family.id}}.html"><img src="{{family.icon}}"/>{{family.title}}</a><br/><div class="properties-value--famname">{{family.name}}</div></td></tr>' +
+                '<tr><td class="properties-description">{{labels.family}}</td><td class="properties-value"><a data-document-id="{{family.id}}" href="api/v2/documents/{{family.id}}.html"><img src="{{family.icon}}"/>{{family.title}}</a><br/><div class="properties-value--famname">{{family.name}}</div></td></tr>' +
                 '<tr><td class="properties-separator" colspan="2"></td></tr>' +
-                '<tr><td class="properties-description">{{labels.createdBy}}</td><td class="properties-value"><a data-document-id="{{createdBy.id}}" href="api/v1/documents/{{createdBy.id}}.html"><img src="{{createdBy.icon}}"/>{{createdBy.title}}</a></td></tr>' +
+                '<tr><td class="properties-description">{{labels.createdBy}}</td><td class="properties-value"><a data-document-id="{{createdBy.id}}" href="api/v2/documents/{{createdBy.id}}.html"><img src="{{createdBy.icon}}"/>{{createdBy.title}}</a></td></tr>' +
                 '<tr><td class="properties-description">{{labels.lockedBy}}</td><td class="properties-value">' +
                 '{{#security.lock.lockedBy.id}}' +
-                '<a data-document-id="{{security.lock.lockedBy.id}}" href="api/v1/documents/{{security.lock.lockedBy.id}}.html"><img src="{{security.lock.lockedBy.icon}}"/>{{security.lock.lockedBy.title}}</a>' +
+                '<a data-document-id="{{security.lock.lockedBy.id}}" href="api/v2/documents/{{security.lock.lockedBy.id}}.html"><img src="{{security.lock.lockedBy.icon}}"/>{{security.lock.lockedBy.title}}</a>' +
                 '{{/security.lock.lockedBy.id}}' +
                 '{{^security.lock.lockedBy.id}}{{labels.notLocked}}{{/security.lock.lockedBy.id}}' +
                 '</td></tr>' +
@@ -77,9 +77,9 @@ define([
                 '<tr><td class="properties-description">{{labels.lastModificationDate}}</td><td class="properties-value">{{#formatDate}}{{lastModificationDate}}{{/formatDate}}</td></tr>' +
                 '<tr><td class="properties-description">{{labels.lastAccessDate}}</td><td class="properties-value">{{#formatDate}}{{lastAccessDate}}{{/formatDate}}</td></tr>' +
                 '<tr><td class="properties-separator" colspan="2"></td></tr>' +
-                '<tr><td class="properties-description">{{labels.profil}}</td><td class="properties-value"><a data-document-id="{{security.profil.id}}" href="api/v1/documents/{{security.profil.id}}.html">{{#security.profil.icon}}<img src="{{security.profil.icon}}"/>{{/security.profil.icon}}{{security.profil.title}}</a></td></tr>' +
-                '<tr><td class="properties-description">{{labels.profilReference}}</td><td class="properties-value"><a data-document-id="{{security.profil.reference.id}}" href="api/v1/documents/{{security.profil.reference.id}}.html">{{#security.profil.reference.icon}}<img src="{{security.profil.reference.icon}}"/>{{/security.profil.reference.icon}}{{security.profil.reference.title}}</a></td></tr>' +
-                '<tr><td class="properties-description">{{labels.viewController}}</td><td class="properties-value"><a data-document-id="{{viewController.id}}" href="api/v1/documents/{{viewController.id}}.html">{{#viewController.icon}}<img src="{{viewController.icon}}"/>{{/viewController.icon}}{{viewController.title}}</a></td></tr>' +
+                '<tr><td class="properties-description">{{labels.profil}}</td><td class="properties-value"><a data-document-id="{{security.profil.id}}" href="api/v2/documents/{{security.profil.id}}.html">{{#security.profil.icon}}<img src="{{security.profil.icon}}"/>{{/security.profil.icon}}{{security.profil.title}}</a></td></tr>' +
+                '<tr><td class="properties-description">{{labels.profilReference}}</td><td class="properties-value"><a data-document-id="{{security.profil.reference.id}}" href="api/v2/documents/{{security.profil.reference.id}}.html">{{#security.profil.reference.icon}}<img src="{{security.profil.reference.icon}}"/>{{/security.profil.reference.icon}}{{security.profil.reference.title}}</a></td></tr>' +
+                '<tr><td class="properties-description">{{labels.viewController}}</td><td class="properties-value"><a data-document-id="{{viewController.id}}" href="api/v2/documents/{{viewController.id}}.html">{{#viewController.icon}}<img src="{{viewController.icon}}"/>{{/viewController.icon}}{{viewController.title}}</a></td></tr>' +
                 '</tbody></table>';
         },
 

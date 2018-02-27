@@ -220,9 +220,9 @@ import './docGrid.css';
                         html += columnRender._icon(data);
                     }
                     if (data.value) {
-                        url = "api/v1/documents/" + window.encodeURIComponent(data.value) + '.html';
+                        url = "api/v2/documents/" + window.encodeURIComponent(data.value) + '.html';
                         if (revision !== -1) {
-                            url = "api/v1/documents/" + window.encodeURIComponent(data.value) + '/revisions/' + revision + '.html';
+                            url = "api/v2/documents/" + window.encodeURIComponent(data.value) + '/revisions/' + revision + '.html';
                         }
                         html += $('<a/>').addClass("openDoc overlay")
                           .attr("href", url)
@@ -344,9 +344,9 @@ import './docGrid.css';
 
             prepareUrl: function documentPrepareUrl(cellData) {
                 var revision = _.isNumber(cellData.properties.revision) ? cellData.properties.revision : -1,
-                  url = "api/v1/documents/" + window.encodeURIComponent(cellData.properties.initid) + '.html';
+                  url = "api/v2/documents/" + window.encodeURIComponent(cellData.properties.initid) + '.html';
                 if (revision !== -1) {
-                    url = "api/v1/documents/" + window.encodeURIComponent(cellData.properties.initid) + '/revisions/' + revision + '.html';
+                    url = "api/v2/documents/" + window.encodeURIComponent(cellData.properties.initid) + '/revisions/' + revision + '.html';
                 }
                 return url;
             }

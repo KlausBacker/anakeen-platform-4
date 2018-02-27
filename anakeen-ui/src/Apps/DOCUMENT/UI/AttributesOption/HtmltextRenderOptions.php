@@ -15,6 +15,7 @@ class HtmltextRenderOptions extends CommonRenderOptions
     const toolbarStartupExpandedOption = "toolbarStartupExpanded";
     const ckEditorConfigurationOption = "ckEditorConfiguration";
     const ckEditorAllowAllTagsOption = "ckEditorAllowAllTags";
+    const ckEditorAllowInlineOption = "ckEditorInline";
     const anchorsOptions = "anchors";
     
     const fullToolbar = "Full";
@@ -44,10 +45,10 @@ class HtmltextRenderOptions extends CommonRenderOptions
         return $this->setOption(self::toolbarOption, $toolbar);
     }
     /**
-     * Set height of text edior body
+     * Set height of text editor body
      * Need to precise unit like "px" or "em", if not "px" is used
      *
-     * @note use only in edition mode
+     * @note use only in edition mode (ignored in inline mode)
      * @param string $height the body height
      *
      * @return $this
@@ -80,6 +81,12 @@ class HtmltextRenderOptions extends CommonRenderOptions
     {
         return $this->setOption(self::ckEditorAllowAllTagsOption, (bool)$allow);
     }
+
+    public function useCkInline($inline)
+    {
+        return $this->setOption(self::ckEditorAllowInlineOption, (bool)$inline);
+    }
+
 
     /**
      * Add a html link on value (view mode only)

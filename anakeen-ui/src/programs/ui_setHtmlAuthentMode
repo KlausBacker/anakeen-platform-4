@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+# Change default authent mode to use html screen to log in
+"$WIFF_CONTEXT_ROOT"/programs/config.php --set authentMode html
+
+# initialize configuration files
+
+"$WIFF_CONTEXT_ROOT"/programs/core_accessUpdate
+

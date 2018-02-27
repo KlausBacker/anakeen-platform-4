@@ -12,6 +12,7 @@
 
     <post-install>
         <process command="programs/record_application TEST_DOCUMENT_SELENIUM"/>
+        <process command="programs/record_application UITEST"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/TST_DDUI_ALLTYPE__STRUCT.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/TST_DDUI_ALLTYPE__CVDOC.xml"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/TST_DDUI_ALLTYPE__PARAM.csv"/>
@@ -44,6 +45,7 @@
     </post-install>
     <post-upgrade>
         <process command="programs/record_application TEST_DOCUMENT_SELENIUM"/>
+        <process command="programs/record_application UITEST"/>
 
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/TST_DDUI_ALLTYPE__STRUCT.csv"/>
         <process command="./wsh.php --api=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/TST_DDUI_ALLTYPE__CVDOC.xml"/>

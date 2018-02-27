@@ -17,7 +17,7 @@ class ErrorCodeCrudUI
     /**
      * @errorCode Access deny must have profil view control to access this view
      */
-    const CRUDUI0003 = 'Access deny view "%s". From "%s" view cnntrol assciated to "%s" document';
+    const CRUDUI0003 = 'Access deny view "%s". From "%s" view cnntrol associated to "%s" document';
     /**
      * @errorCode restricted field for GET is not know
      */
@@ -38,7 +38,7 @@ class ErrorCodeCrudUI
     /**
      * @errorCode Access deny to update with this view
      */
-    const CRUDUI0008 = 'Access deny view "%s". From "%s" view cnntrol assciated to "%s" document';
+    const CRUDUI0008 = 'Access deny view "%s". From "%s" view control associated to "%s" document';
     /**
      * @errorCode Translation catalog not found
      */

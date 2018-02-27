@@ -5,6 +5,8 @@
     <description>A4 : Document interfaces</description>
     <requires>
         <module name="smart-data-engine"/>
+        <!-- Until dependance with HTTAPI_V1 disappeared -->
+        <module name="legacy"/>
     </requires>
     <replaces>
         <module name="dynacase-document-uis-light"/>
@@ -26,11 +28,14 @@
 
         <process command="programs/record_application SEARCH_UI_HTML5"/>
         <process command="programs/record_application DOCUMENT_GRID_HTML5"/>
+        <process command="programs/ui_setHtmlAuthentMode"/>
+
 
         <process command="programs/update_catalog"/>
     </post-install>
 
     <post-upgrade>
+        <process command="programs/ui_setHtmlAuthentMode"/>
         <process command="programs/record_application DOCUMENT"/>
         <process
                 command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/cvdoc/ddui_cvdoc.struct.csv --csv-enclosure='&quot;'">
