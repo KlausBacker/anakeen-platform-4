@@ -24,7 +24,7 @@ class ApiV2Response
     }
 
     /**
-     * @param \Slim\Http\request $request
+     * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
      * @param                     $eTag
      *
@@ -52,6 +52,33 @@ class ApiV2Response
         return $cache->withEtag($response, base64_encode($eTag));
     }
 
+
+    /**
+     * Return normalize output for http api
+     * Add more messages in data response
+     *
+     * @param \Slim\Http\response $response
+     * @param array               $messages
+     *
+     * @return \Slim\Http\response
+     */
+    public static function withMessages(\Slim\Http\response $response, $messages)
+    {
+        $data = (string)$response->getBody();
+        if ($data) {
+            $data = json_decode($data, true);
+
+            if (!isset($data["messages"])) {
+                $data["messages"] = [];
+            }
+        } else {
+            $data = ["success" => true, "messages" => []];
+        }
+
+        $data["messages"] = array_merge($data["messages"], $messages);
+
+        return $response->withJson($data);
+    }
 
     public static function matchEtag(\Slim\Http\request $request, $etag)
     {
