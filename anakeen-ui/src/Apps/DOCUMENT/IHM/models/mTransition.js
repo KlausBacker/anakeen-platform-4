@@ -24,7 +24,7 @@ define([
          * @returns {string}
          */
         url: function mTransition_url() {
-            var urlData = "api/v1/documents/<%= documentId %>/views/states/<%= state %>";
+            var urlData = "api/v2/documents/<%= documentId %>/views/states/<%= state %>";
 
             urlData = urlData.replace("<%= documentId %>", encodeURIComponent(this.get("documentId")));
             urlData = urlData.replace("<%= state %>", encodeURIComponent(this.get("state")));

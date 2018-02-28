@@ -56,6 +56,28 @@
       "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revision:[0-9]+}\/views\/{view}",
       "description": "Get render view data"
     },
+
+    "Ui:Transition:View": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\TransitionView",
+      "methods": [
+        "GET"
+      ],
+      "pattern": "\/api\/v2\/documents\/{docid}\/views\/states\/{state}",
+      "description": "Document Workflow Transition View"
+    },
+
+
+    "Ui:Transition:Set": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\TransitionSet",
+      "methods": [
+        "POST"
+      ],
+      "pattern": "\/api\/v2\/documents\/{docid}\/views\/states\/{state}",
+      "description": "Change state for a document"
+    },
+
     "Ui:Family:Structure": {
       "priority": 1,
       "callable": "\\Anakeen\\Routes\\Ui\\FamilyStructure",
