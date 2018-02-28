@@ -543,7 +543,7 @@ define([
             if (event.prevent) {
                 return this;
             }
-            autocompleteUrl = "api/v1/documents/" + (documentModel.id || "0" ) + "/autocomplete/" + this.model.id;
+            autocompleteUrl = "api/v2/documents/" + (documentModel.id || "0" ) + "/autocomplete/" + this.model.id;
 
 
             options.data.fromid = documentModel.get("properties").get("family").id;

@@ -101,6 +101,15 @@
       ],
       "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}\/locks\/{lockType:permanent|temporary}",
       "description": "Lock document"
+    },
+    "Ui:Document:AutoComplete": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\Autocomplete",
+      "methods": [
+        "post"
+      ],
+      "pattern": "\/api\/v2\/documents\/{docid}\/autocomplete\/{attrid}",
+      "description": "Get Autocomplete suggestion for an attribute"
     }
   }
 }
