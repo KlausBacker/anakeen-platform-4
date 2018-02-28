@@ -169,7 +169,8 @@
                 "STYLE": {
                     "value": "NONE",
                     "description": "Ui style",
-                    "access": "readonly"
+                    "access": "readonly",
+                    "global": true
                 }
             }
         }

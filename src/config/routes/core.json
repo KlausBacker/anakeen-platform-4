@@ -51,6 +51,17 @@
             "description": "Lock a family document",
             "requiredAccesses": []
         },
+
+        "Core:DocumentUserTag": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\DocumentUserTag",
+            "methods": [
+                "delete", "get", "post", "put"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/usertags/{tag}",
+            "description": "User Tag for document",
+            "requiredAccesses": []
+        },
         "Core:ListDocuments": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\DocumentList",
