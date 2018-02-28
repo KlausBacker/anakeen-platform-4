@@ -27,6 +27,16 @@
       "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}",
       "description": "Get render view data"
     },
+
+    "Ui:Document:CreationView": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\CreationView",
+      "methods": [
+        "POST"
+      ],
+      "pattern": "\/api\/v2\/families\/{family}\/documentsViews/",
+      "description": "Get render view data"
+    },
     "Ui:Revision:ViewUpdate": {
       "priority": 1,
       "callable": "\\Anakeen\\Routes\\Ui\\DocumentViewUpdate",
