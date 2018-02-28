@@ -21,6 +21,17 @@
             "description": "Modify data for a document",
             "requiredAccesses": []
         },
+
+        "Core:CreateDocument": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\FamilyDocumentCreation",
+            "methods": [
+                "post"
+            ],
+            "pattern": "\/api\/v2\/families\/{family}\/",
+            "description": "Create document of family",
+            "requiredAccesses": []
+        },
         "Core:DeleteDocument": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\DocumentDeleteData",

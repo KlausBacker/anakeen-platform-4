@@ -51,7 +51,12 @@ class DocumentUpdateData extends DocumentData
             $exception->setHttpStatus("403", "Forbidden");
             throw $exception;
         }
+        $this->updateDocument($request, $messages);
+    }
 
+    protected function updateDocument(\Slim\Http\request $request, &$messages = [])
+    {
+        $messages=[];
         $dataDocument = $request->getParsedBody();
         $newValues = $this->getAttributeValues($dataDocument);
         foreach ($newValues as $aid => $value) {
