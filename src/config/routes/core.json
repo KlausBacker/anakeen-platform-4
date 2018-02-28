@@ -28,7 +28,7 @@
             "methods": [
                 "post"
             ],
-            "pattern": "\/api\/v2\/families\/{family}\/",
+            "pattern": "\/api\/v2\/families\/{family}\/documents/",
             "description": "Create document of family",
             "requiredAccesses": []
         },
@@ -221,6 +221,46 @@
             ],
             "pattern": "\/api\/v2\/families\/{family}\/enumerates\/{enum}",
             "description": "Content of the enumerate <attributeIdentifier> of the family <familyId>",
+            "requiredAccesses": []
+        },
+        "Core:Workflow:State": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\WorkflowState",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/workflows\/states\/{state}",
+            "description": "Information about a workflow state",
+            "requiredAccesses": []
+        },
+        "Core:Workflow:SetState": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\WorkflowSetState",
+            "methods": [
+                "post"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/workflows\/states\/{state}",
+            "description": "Document go to a new state",
+            "requiredAccesses": []
+        },
+        "Core:Workflow:Transition": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\WorkflowTransition",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/workflows\/transitions\/{transition}",
+            "description": "Information about a workflow transition",
+            "requiredAccesses": []
+        },
+        "Core:Workflow:SetTransition": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\WorkflowSetTransition",
+            "methods": [
+                "post"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/workflows\/transitions\/{transition}",
+            "description": "Pass a transition",
             "requiredAccesses": []
         }
     },
