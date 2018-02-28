@@ -120,7 +120,7 @@ import searchAttributes from './searchAttributes';
                     }).done(function doneSecondSReady() {
                         var $r = $.Deferred();
                         if (testWorkflow) {
-                            $.getJSON("api/v1/documents/" + famid + "/workflows/states/?allStates=1", function requestWorkflows(data) {
+                            $.getJSON("api/v2/documents/" + famid + "/workflows/states/?allStates=1", function requestWorkflows(data) {
                                 myWorkflows = [];
                                 $.each(data.data.states, function eachStatesSReady(key, value) {
                                     myWorkflows.push(value);
@@ -675,7 +675,7 @@ import searchAttributes from './searchAttributes';
                     testWorkflow = findIfWorkflow(myAttributes, $documentController);
                 }).then(function doneFamidChanged() {
                     if (testWorkflow) {
-                        $.getJSON("api/v1/documents/" + famid + "/workflows/states/?allStates=1", function requestWorkflowsFamidChanged(data) {
+                        $.getJSON("api/v2/documents/" + famid + "/workflows/states/?allStates=1", function requestWorkflowsFamidChanged(data) {
                             myWorkflows = [];
                             $.each(data.data.states, function eachDataStatesFamidChanged(key, value) {
                                 myWorkflows.push(value);

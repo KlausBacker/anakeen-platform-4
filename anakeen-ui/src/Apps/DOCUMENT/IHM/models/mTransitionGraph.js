@@ -22,7 +22,7 @@ define([
          * @returns {string}
          */
         url: function mTransition_url() {
-            var urlData = "api/v1/documents/<%= documentId %>/workflows/states/?allStates=1";
+            var urlData = "api/v2/documents/<%= documentId %>/workflows/states/?allStates=1";
 
             urlData = urlData.replace("<%= documentId %>", encodeURIComponent(this.get("documentId")));
 
