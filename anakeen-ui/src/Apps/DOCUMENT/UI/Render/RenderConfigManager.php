@@ -1,17 +1,9 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
-/**
- * Created by PhpStorm.
- * User: eric
- * Date: 15/09/14
- * Time: 15:04
- */
 
 namespace Dcp\Ui;
-use Dcp\HttpApi\V1\DocManager\DocManager;
+
+use Dcp\Core\DocManager;
+
 class RenderConfigManager
 {
     

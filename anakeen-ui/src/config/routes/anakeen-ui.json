@@ -120,6 +120,15 @@
       ],
       "pattern": "\/api\/v2\/documents\/{docid}\/autocomplete\/{attrid}",
       "description": "Get Autocomplete suggestion for an attribute"
+    },
+    "Ui:Document:SubMenu": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\SubMenu",
+      "methods": [
+        "get"
+      ],
+      "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}\/menus\/{menu}",
+      "description": "Get submenu items"
     }
   }
 }
