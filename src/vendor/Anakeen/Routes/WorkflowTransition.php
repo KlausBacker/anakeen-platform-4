@@ -40,7 +40,7 @@ class WorkflowTransition extends WorkflowState
         $this->workflow->set($this->_document);
     }
 
-    protected function doRequest()
+    protected function doRequest(&$messages = [])
     {
         $info = array();
 

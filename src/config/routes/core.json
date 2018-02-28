@@ -223,6 +223,16 @@
             "description": "Content of the enumerate <attributeIdentifier> of the family <familyId>",
             "requiredAccesses": []
         },
+        "Core:Workflow:StateList": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\WorkflowStateCollection",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/workflows\/states\/",
+            "description": "List of availables next states",
+            "requiredAccesses": []
+        },
         "Core:Workflow:State": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\WorkflowState",
