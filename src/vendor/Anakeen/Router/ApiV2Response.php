@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\Router;
+namespace Anakeen\Router;
 
 use Anakeen\Core\FileMime;
 use Anakeen\Router\Exception;
@@ -10,9 +10,9 @@ class ApiV2Response
     /**
      * Return normalize output for http api
      *
-     * @param \Slim\Http\response $response
-     * @param mixed               $data
-     * @param array               $messages
+     * @param \Slim\Http\response               $response
+     * @param mixed                             $data
+     * @param \Anakeen\Routes\Core\ApiMessage[] $messages
      *
      * @return \Slim\Http\response
      */

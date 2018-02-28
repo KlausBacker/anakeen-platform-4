@@ -6,9 +6,8 @@ use Anakeen\Router\URLUtils;
 use Dcp\Core\DbManager;
 use Dcp\Core\DocManager;
 use Dcp\Core\Settings;
-use Dcp\Router\ApiV2Response;
+use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
-use Dcp\Routes\Document;
 
 /**
  * Class DocumentData

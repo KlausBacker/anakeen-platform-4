@@ -4,7 +4,7 @@ namespace Anakeen\Routes\Core;
 
 use Dcp\Core\Settings;
 use Anakeen\Router\URLUtils;
-use Dcp\Router\ApiV2Response;
+use Anakeen\Router\ApiV2Response;
 
 /**
  * Class DocumentList

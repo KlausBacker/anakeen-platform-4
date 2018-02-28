@@ -7,7 +7,7 @@ use Anakeen\Router\URLUtils;
 use Dcp\Core\ContextManager;
 use Dcp\Core\DocManager;
 use Dcp\Core\Settings;
-use Dcp\Router\ApiV2Response;
+use Anakeen\Router\ApiV2Response;
 
 /**
  * Class FileAttribute

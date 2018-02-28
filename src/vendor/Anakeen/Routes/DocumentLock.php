@@ -7,7 +7,7 @@ use Dcp\Core\DocManager;
 use Anakeen\Router\URLUtils;
 use Anakeen\Router\Exception;
 use Dcp\Core\Settings;
-use Dcp\Router\ApiV2Response;
+use Anakeen\Router\ApiV2Response;
 
 /**
  * Class Lock

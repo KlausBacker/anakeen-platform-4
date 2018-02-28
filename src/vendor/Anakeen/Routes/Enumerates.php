@@ -10,7 +10,7 @@ namespace Anakeen\Routes\Core;
 use Anakeen\Router\URLUtils;
 use Dcp\Core\DocManager;
 use Dcp\Core\Settings;
-use Dcp\Router\ApiV2Response;
+use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 
 /**

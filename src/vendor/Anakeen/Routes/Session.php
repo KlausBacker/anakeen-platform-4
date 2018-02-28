@@ -8,7 +8,7 @@ namespace Anakeen\Routes\Authent;
 
 use Anakeen\Router\Exception;
 use Dcp\Core\LogException;
-use Dcp\Router\ApiV2Response;
+use Anakeen\Router\ApiV2Response;
 
 /**
  * Class Session
