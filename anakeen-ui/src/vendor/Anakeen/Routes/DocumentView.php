@@ -13,7 +13,7 @@ use Dcp\Core\DbManager;
 use Dcp\Core\Settings;
 use Anakeen\Router\Exception;
 use Dcp\Core\DocManager as DocManager;
-use Dcp\Router\ApiV2Response;
+use Anakeen\Router\ApiV2Response;
 
 /**
  * Class DocumentView

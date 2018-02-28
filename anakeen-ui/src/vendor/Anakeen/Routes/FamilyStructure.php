@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Ui;
 
 use Dcp\Core\DbManager;
-use Dcp\Router\ApiV2Response;
+use Anakeen\Router\ApiV2Response;
 
 /**
  * Class FamilyStructure

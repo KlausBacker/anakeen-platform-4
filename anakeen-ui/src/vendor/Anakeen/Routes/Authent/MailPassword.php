@@ -7,7 +7,7 @@ namespace Anakeen\Routes\Authent;
 
 use Dcp\HttpApi\V1\DocManager\DocManager;
 use Anakeen\Router\Exception;
-use Dcp\Router\ApiV2Response;
+use Anakeen\Router\ApiV2Response;
 
 /**
  * Class MailPassword
