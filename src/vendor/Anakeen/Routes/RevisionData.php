@@ -26,10 +26,19 @@ class RevisionData extends DocumentData
         return true;
     }
 
-    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
+    protected function initParameters(\Slim\Http\request $request, $args)
     {
+        parent::initParameters($request, $args);
         $this->revisionNumber = $args["revisionNumber"];
-        return parent::__invoke($request, $response, $args);
+    }
+
+    protected function doRequest(&$messages = [])
+    {
+        $info = parent::doRequest($messages);
+
+        $info["revision"] = $info["document"];
+        unset($info["document"]);
+        return $info;
     }
 
     /**

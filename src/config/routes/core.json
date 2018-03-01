@@ -272,6 +272,16 @@
             "pattern": "\/api\/v2\/documents\/{docid}\/workflows\/transitions\/{transition}",
             "description": "Pass a transition",
             "requiredAccesses": []
+        },
+        "Core:Document:History": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\DocumentHistory",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/history/",
+            "description": "Get document history information",
+            "requiredAccesses": []
         }
     },
     "middlewares": {
