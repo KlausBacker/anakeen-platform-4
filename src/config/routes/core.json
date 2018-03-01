@@ -153,7 +153,7 @@
             "description": "Undelete document",
             "requiredAccesses": []
         },
-        "Core:OriginalImage": {
+        "Core:File:OriginalImage": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\ImageAsset",
             "methods": [
@@ -163,7 +163,7 @@
             "description": "Download file image",
             "requiredAccesses": []
         },
-        "Core:resizeImage": {
+        "Core:File:resizeImage": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\ImageAsset",
             "methods": [
@@ -173,7 +173,7 @@
             "description": "Download file image",
             "requiredAccesses": []
         },
-        "Core:fileAttributeImage": {
+        "Core:File:fileAttributeImage": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\FileAttribute",
             "methods": [
@@ -183,7 +183,7 @@
             "description": "Download file from document",
             "requiredAccesses": []
         },
-        "Core:revisedFileAttributeImage": {
+        "Core:File:revisedFileAttributeImage": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\FileAttribute",
             "methods": [
@@ -193,7 +193,7 @@
             "description": "Download file from document",
             "requiredAccesses": []
         },
-        "Core:resizeAttributeImage": {
+        "Core:File:ResizeAttributeImage": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\ImageAttribute",
             "methods": [
@@ -203,7 +203,7 @@
             "description": "Download file image from document",
             "requiredAccesses": []
         },
-        "Core:resizeRevisedAttributeImage": {
+        "Core:File:ResizeRevisedAttributeImage": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\ImageAttribute",
             "methods": [
@@ -211,6 +211,36 @@
             ],
             "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revision}\/images\/{attrid}\/{index}\/sizes\/{size:[0-9x]+[cfs]?}[.{extension}]",
             "description": "Download file image from document",
+            "requiredAccesses": []
+        },
+        "Core:File:ResizeRecordedImage": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\RecordedImage",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/images\/recorded\/sizes\/{size:[0-9x]+[cfs]?}\/{image:[^\\.]+}[.{extension}]",
+            "description": "Download resized file image (temporary file)",
+            "requiredAccesses": []
+        },
+        "Core:File:RecordedImage": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\RecordedImage",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/images\/recorded\/original\/{image:[^\\.]+}[.{extension}]",
+            "description": "Download resized file image (temporary file)",
+            "requiredAccesses": []
+        },
+        "Core:File:RecordedFile": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\RecordedFile",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/files\/recorded\/temporary\/{file:[0-9]+}[.{extension}]",
+            "description": "Download temporary file",
             "requiredAccesses": []
         },
         "Core:FamilyEnum": {
@@ -279,7 +309,17 @@
             "methods": [
                 "get"
             ],
-            "pattern": "\/api\/v2\/documents\/{docid}\/history/",
+            "pattern": "\/api\/v2\/documents\/{docid}\/history\/",
+            "description": "Get document history information",
+            "requiredAccesses": []
+        },
+        "Core:File:Temporary": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\TemporaryFile",
+            "methods": [
+                "post"
+            ],
+            "pattern": "\/api\/v2\/temporaryFiles\/",
             "description": "Get document history information",
             "requiredAccesses": []
         }
