@@ -46,6 +46,7 @@ class DOMDocumentCache extends DOMDocument
         if ($filename === null) {
             throw new Exception(sprintf("documentURI location is not defined."));
         }
+        $filename = rawurldecode($filename);
         $dirName = dirname($filename);
         $baseName = basename($filename);
         $tmpfile = WiffLibSystem::tempnam($dirName, 'tmp.' . $baseName . '.XXXXXX');
