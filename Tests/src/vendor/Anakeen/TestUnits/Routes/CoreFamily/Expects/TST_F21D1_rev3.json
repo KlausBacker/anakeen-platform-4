@@ -3,16 +3,16 @@
     "data": {
         "revision": {
             "properties": {
-                "title": "Test n\u00b02 - #01",
+                "title": "Test n\u00b02 - #03",
                 "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png",
                 "name": "TST_F21D1",
-                "revision": 0,
-                "status": "fixed"
+                "revision": 3,
+                "status": "alive"
             },
             "attributes": {
                 "tst_f2_title": {
-                    "value": "Test n\u00b02 - #01",
-                    "displayValue": "Test n\u00b02 - #01"
+                    "value": "Test n\u00b02 - #03",
+                    "displayValue": "Test n\u00b02 - #03"
                 },
                 "tst_f2_date": {
                     "value": "2018-01-16",

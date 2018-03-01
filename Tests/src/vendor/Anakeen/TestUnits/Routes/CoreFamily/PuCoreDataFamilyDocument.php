@@ -142,7 +142,7 @@ class CoreDataFamilyDocument extends TestCaseRoutes
             ),
             array(
                 'GET /api/v2/families/TST_F2_1/documents/TST_F21D1/revisions/3',
-                __DIR__ . "/Expects/TST_F21D1.json"
+                __DIR__ . "/Expects/TST_F21D1_rev3.json"
             )
         );
     }

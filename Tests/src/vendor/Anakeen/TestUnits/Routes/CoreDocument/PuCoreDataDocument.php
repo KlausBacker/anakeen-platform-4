@@ -149,7 +149,7 @@ class CoreDataDocument extends TestCaseRoutes
             ),
             array(
                 'GET /api/v2/documents/TST_APIDOC13/revisions/3',
-                __DIR__ . "/Expects/doc13.json"
+                __DIR__ . "/Expects/doc13_rev3.json"
             ),
             array(
                 'GET /api/v2/trash/TST_APIDOC14_DEL',
