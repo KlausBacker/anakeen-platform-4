@@ -585,7 +585,7 @@ import './docGrid.css';
                 temporarySearch: null,
                 gridDataSourceUrl: "api/v1/documentGrid/content/",
                 columnsDefUrl: "api/v1/documentGrid/columnsDefinition/",
-                filterEnumContentUrl: "/api/v1/families/<%= famId %>/enumerates/<%= attrId %>",
+                filterEnumContentUrl: "/api/v2/families/<%= famId %>/enumerates/<%= attrId %>",
                 filterStateContentUrl: "/api/v1/documentGrid/states/<%= famId %>/",
                 columnsUserSelection: false,
                 dataTableOptions: {}

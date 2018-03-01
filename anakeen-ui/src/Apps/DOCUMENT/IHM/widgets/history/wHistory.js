@@ -404,7 +404,7 @@ define([
                 "ajax": function whistory_getData(data, callback)
                 {
 
-                    $.getJSON("api/v1/documents/" + historyWidget.options.documentId + '/history/').
+                    $.getJSON("api/v2/documents/" + historyWidget.options.documentId + '/history/').
                     done(function whistory_getDataDone(response)
                     {
                         var tableData = historyWidget._fillDataTable(response);

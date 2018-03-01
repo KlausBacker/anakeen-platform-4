@@ -106,7 +106,7 @@ define([
         _displayProperties: function wPropertiesGetProperties()
         {
             var scope = this;
-            $.getJSON("api/v1/documents/" + this.options.documentId +
+            $.getJSON("api/v2/documents/" + this.options.documentId +
                 ".json?fields=document.properties.all").done(function wProperties_done(data)
             {
                 var info;

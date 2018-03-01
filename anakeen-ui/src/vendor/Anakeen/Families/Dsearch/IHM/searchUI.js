@@ -1325,7 +1325,7 @@ import searchAttributes from './searchAttributes';
                         }
                         $.ajax({
                             type: "GET",
-                            url: "api/v1/families/" + famid + "/enumerates/" + attrid,
+                            url: "api/v2/families/" + famid + "/enumerates/" + attrid,
                             data: filter,
                             dataType: "json",
                             success: function succesRequestEnumsIEnum(result) {
