@@ -288,14 +288,31 @@ class WIFF extends WiffCommon
     
     public function createHtaccessFile()
     {
-        @$accessFile = fopen('.htaccess', 'w');
-        fwrite($accessFile, "AuthUserFile " . getenv('WIFF_ROOT') . "/.htpasswd\n" . "AuthName 'Veuillez vous identifier'\n" . "AuthType Basic\n" . "\n" . "Require valid-user\n");
+        $template = <<<'EOF'
+AuthUserFile "{WIFF_ROOT}/.htpasswd"
+AuthName 'Veuillez vous identifier'
+AuthType Basic
+
+Require valid-user
+
+EOF;
+        $escapedWiffRoot = str_replace(array(
+            "\\",
+            "\""
+        ) , array(
+            "\\\\",
+            "\\\""
+        ) , rtrim(self::getWiffRoot(), '/'));
+        $content = str_replace('{WIFF_ROOT}', $escapedWiffRoot, $template) . "\n";
+        
+        @$accessFile = fopen(sprintf('%s/.htaccess', self::getWiffRoot()) , 'w');
+        fwrite($accessFile, $content);
         fclose($accessFile);
     }
     
     public function createHtpasswdFile($login, $password)
     {
-        @$passwordFile = fopen('.htpasswd', 'w');
+        @$passwordFile = fopen(sprintf('%s/.htpasswd', self::getWiffRoot()) , 'w');
         fwrite($passwordFile, sprintf("%s:{SHA}%s", $login, base64_encode(sha1($password, true))));
         fclose($passwordFile);
     }
