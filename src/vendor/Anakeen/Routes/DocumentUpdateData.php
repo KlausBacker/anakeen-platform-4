@@ -159,7 +159,7 @@ class DocumentUpdateData extends DocumentData
                         }
                         $multipleValues[] = $multipleSecondLevelValues;
                     } else {
-                        if (!isset($singleValue["value"])) {
+                        if (!array_key_exists("value", $singleValue)) {
                             throw new Exception("ROUTES0108", $attributeId);
                         }
                         $multipleValues[] = $singleValue["value"];
