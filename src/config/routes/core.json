@@ -325,9 +325,9 @@
             "description": "Download temporary file",
             "requiredAccesses": []
         },
-        "Core:FamilyEnum": {
+        "Core:Family:Enum": {
             "priority": 1,
-            "callable": "\\Anakeen\\Routes\\Core\\Enumerates",
+            "callable": "\\Anakeen\\Routes\\Core\\Enumerate",
             "methods": [
                 "get"
             ],

@@ -19,7 +19,7 @@ use Anakeen\Router\Exception;
  * @note    Used by route : POST /api/v2/families/{family}/enums/{enum}
  * @package Anakeen\Routes\Core
  */
-class Enumerates
+class Enumerate
 {
     const STARTSOPERATOR = "startswith";
     const CONTAINSOPERATOR = "contains";

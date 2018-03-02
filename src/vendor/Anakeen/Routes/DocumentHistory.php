@@ -183,19 +183,6 @@ class DocumentHistory
             $exception->setHttpStatus("404", "Document not found");
             throw $exception;
         }
-
-        if ($this->_family && !is_a($this->_document, sprintf("\\Dcp\\Family\\%s", $this->_family->name))) {
-            $exception = new Exception("CRUD0220", $resourceId, $this->_family->name);
-            $exception->setHttpStatus("404", "Document is not a document of the family " . $this->_family->name);
-            throw $exception;
-        }
-
-        if ($this->_document->doctype === "Z") {
-            $exception = new Exception("CRUD0219", $resourceId);
-            $exception->setHttpStatus("404", "Document deleted");
-            $exception->setURI(DocumentUtils::getURI($this->_document));
-            throw $exception;
-        }
     }
 
     /**
@@ -269,8 +256,13 @@ class DocumentHistory
         if ($this->offset > 0) {
             $search->setStart($this->offset);
         }
+        if ($this->_document->doctype === "Z") {
+            $search->trash='only';
+        }
         $search->setObjectReturn();
         $search->latest = false;
+
+        $search->search();
         return $search;
     }
 }

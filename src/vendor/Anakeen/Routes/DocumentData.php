@@ -47,6 +47,7 @@ class DocumentData
      */
     public $iconSize = 32;
     protected $documentId;
+    protected $useTrash=false;
 
     /**
      * DocumentData constructor.
@@ -131,6 +132,7 @@ class DocumentData
         }
 
         $this->request = $request;
+        $this->useTrash = ($request->getQueryParam("useTrash") === "true");
     }
 
     /**
@@ -149,7 +151,7 @@ class DocumentData
             $exception->setUserMessage(sprintf(___("Document \"%s\" not found", "ank"), $ressourceId));
             throw $exception;
         }
-        if ($this->_document->doctype === "Z") {
+        if (!$this->useTrash && $this->_document->doctype === "Z") {
             $exception = new Exception("ROUTES0102", $ressourceId);
             $exception->setHttpStatus("404", "Document deleted");
             $exception->setUserMessage(sprintf(___("Document \"%s\" is deleted", "ank"), $ressourceId));

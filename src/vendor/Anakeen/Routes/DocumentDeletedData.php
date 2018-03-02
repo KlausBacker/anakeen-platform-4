@@ -16,7 +16,7 @@ class DocumentDeletedData extends DocumentData
 {
     protected function setDocument($ressourceId)
     {
-        $this->_document = DocManager::getDocument($ressourceId, false);
+        $this->_document = DocManager::getDocument($ressourceId, true);
         if (!$this->_document) {
             $exception = new Exception("ROUTES0100", $ressourceId);
             $exception->setHttpStatus("404", "Document not found");
