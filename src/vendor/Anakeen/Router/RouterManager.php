@@ -82,7 +82,13 @@ class RouterManager
             if (count($route->methods) && strtoupper($route->methods[0]) === "ANY") {
                 $route->methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
             }
-            self::$app->map($route->methods, $route->pattern, $route->callable)->setName($route->name);
+            if (is_array($route->pattern)) {
+                foreach ($route->pattern as $pattern) {
+                    self::$app->map($route->methods, $pattern, $route->callable)->setName($route->name);
+                }
+            } else {
+                self::$app->map($route->methods, $route->pattern, $route->callable)->setName($route->name);
+            }
         }
     }
 

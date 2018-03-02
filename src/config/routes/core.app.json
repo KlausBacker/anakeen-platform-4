@@ -77,7 +77,7 @@
                 "CORE_MAIL_LINK": {
                     "value": "optimal",
                     "description": "produce link for",
-                    "user": "Y",
+                    "isUser": true,
                     "type": "enum(optimal|mailto)",
                     "global": true
                 },

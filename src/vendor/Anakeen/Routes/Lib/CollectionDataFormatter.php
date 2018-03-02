@@ -9,7 +9,6 @@ namespace Anakeen\Routes\Core;
 use Anakeen\Router\URLUtils;
 use Dcp\Core\Settings;
 use Anakeen\Router\Exception;
-use Dcp\Routes\Document;
 
 /**
  * Class DocumentFormatter

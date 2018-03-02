@@ -12,6 +12,7 @@ use Anakeen\Router\Exception;
  * Class WorkflowState
  *
  * @note    Used by route : GET /api/v2/documents/{docid}/workflows/states/{state}
+ * @note    Used by route : GET /api/v2/families/{family}/documents/{docid}/workflows/states/{state}
  * @package Anakeen\Routes\Core
  */
 class WorkflowState
@@ -21,10 +22,6 @@ class WorkflowState
      * @var \Doc
      */
     protected $_document = null;
-    /**
-     * @var \DocFam
-     */
-    protected $_family = null;
     /**
      * @var string workflow state asked
      */
@@ -58,12 +55,18 @@ class WorkflowState
             $exception->setHttpStatus("403", "Forbidden");
             throw $exception;
         }
+
+        if (isset($args["family"])) {
+            DocumentUtils::verifyFamily($args["family"], $this->_document);
+        }
+
         /**
          * @var \WDoc $workflow
          */
         $this->workflow = DocManager::getDocument($this->_document->wid);
         $this->workflow->set($this->_document);
     }
+
 
     protected function doRequest(&$messages = [])
     {
@@ -105,6 +108,9 @@ class WorkflowState
         return $info;
     }
 
+
+
+
     protected function getStateInfo($state)
     {
         if (empty($state)) {
@@ -134,12 +140,6 @@ class WorkflowState
         if (!$this->_document) {
             $exception = new Exception("CRUD0200", $resourceId);
             $exception->setHttpStatus("404", "Document not found");
-            throw $exception;
-        }
-
-        if ($this->_family && !is_a($this->_document, sprintf("\\Dcp\\Family\\%s", $this->_family->name))) {
-            $exception = new Exception("CRUD0220", $resourceId, $this->_family->name);
-            $exception->setHttpStatus("404", "Document is not a document of the family " . $this->_family->name);
             throw $exception;
         }
 

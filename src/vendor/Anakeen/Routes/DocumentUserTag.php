@@ -12,7 +12,8 @@ use Anakeen\Router\Exception;
 /**
  * Class DocumentUserTag
  *
- * @note    Used by route : GET /api/v2/documents/{docid}/usertags/{tag}
+ * @note    Used by route : GET|POST\DELETE|PUT /api/v2/documents/{docid}/usertags/{tag}
+ * @note    Used by route : GET|POST\DELETE|PUT /api/v2/families/{family}/documents/{docid}/usertags/{tag}
  * @package Anakeen\Routes\Core
  */
 class DocumentUserTag
@@ -22,14 +23,6 @@ class DocumentUserTag
      * @var \Doc
      */
     protected $_document = null;
-    /**
-     * @var \DocFam
-     */
-    protected $_family = null;
-
-    protected $slice = -1;
-
-    protected $offset = 0;
 
     protected $tagIdentifier = "";
     protected $tagValue;
@@ -43,7 +36,9 @@ class DocumentUserTag
 
         $this->setDocument($docid);
 
-
+        if (isset($args["family"])) {
+            DocumentUtils::verifyFamily($args["family"], $this->_document);
+        }
         $data = [];
         switch ($method) {
             case "GET":
@@ -205,11 +200,7 @@ class DocumentUserTag
             throw $exception;
         }
 
-        if ($this->_family && !is_a($this->_document, sprintf("\\Dcp\\Family\\%s", $this->_family->name))) {
-            $exception = new Exception("CRUD0220", $resourceId, $this->_family->name);
-            $exception->setHttpStatus("404", "Document is not a document of the family " . $this->_family->name);
-            throw $exception;
-        }
+
 
         if ($this->_document->doctype === "Z") {
             $exception = new Exception("CRUD0219", $resourceId);

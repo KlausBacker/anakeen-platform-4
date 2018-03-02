@@ -5,9 +5,10 @@ namespace Anakeen\Routes\Core;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use Anakeen\Router\URLUtils;
+use Dcp\Core\ContextManager;
+use Dcp\Core\DbManager;
 use Dcp\Core\DocManager;
 use Dcp\Core\Settings;
-
 
 /**
  * Class DocumentHistory
@@ -37,7 +38,11 @@ class DocumentHistory
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->initParameters($request, $args);
-
+        $etag = $this->getEtagInfo();
+        $response = ApiV2Response::withEtag($request, $response, $etag);
+        if (ApiV2Response::matchEtag($request, $etag)) {
+            return $response;
+        }
         return ApiV2Response::withData($response, $this->doRequest());
     }
 
@@ -46,6 +51,10 @@ class DocumentHistory
         $this->documentId = $args["docid"];
 
         $this->setDocument($this->documentId);
+        if (isset($args["family"])) {
+            DocumentUtils::verifyFamily($args["family"], $this->_document);
+        }
+
 
         $slice = $request->getQueryParam("slice");
         if ($slice !== null) {
@@ -63,15 +72,6 @@ class DocumentHistory
         }
     }
 
-
-    /**
-     * Get ressource
-     *
-     * @param string $resourceId Resource identifier
-     *
-     * @throws Exception
-     * @return mixed
-     */
     public function doRequest()
     {
         $err = $this->_document->control("view");
@@ -237,20 +237,19 @@ class DocumentHistory
      */
     public function getEtagInfo()
     {
-        if (isset($this->urlParameters["identifier"])) {
-            $id = $this->urlParameters["identifier"];
-            $id = DocManager::getIdentifier($id, true);
-            $sql = sprintf("select id, date, comment from dochisto where id = %d order by date desc limit 1", $id);
-            simpleQuery(getDbAccess(), $sql, $result, false, true);
-            $user = getCurrentUser();
-            $result[] = $user->id;
-            $result[] = $user->memberof;
-            // Necessary for localized state label
-            $result[] = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
-            $result[] = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
-            return join("", $result);
-        }
-        return null;
+
+        $id = $this->documentId;
+        $id = DocManager::getIdentifier($id, true);
+        $sql = sprintf("select id, date, comment from dochisto where id = %d order by date desc limit 1", $id);
+
+        DbManager::query($sql, $result, false, true);
+        $user = ContextManager::getCurrentUser();
+        $result[] = $user->id;
+        $result[] = $user->memberof;
+        // Necessary for localized state label
+        $result[] = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
+        $result[] = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        return join("", $result);
     }
 
     /**

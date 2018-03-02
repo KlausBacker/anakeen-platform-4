@@ -27,7 +27,8 @@ if [ "$2" = "I" ]; then
 	exit $RET
     fi
 elif [ "$2" = "U" ]; then
-    "$wpub/wsh.php" --api=manageApplications --method=update --appname="$1"
+    "$wpub/wsh.php" --api=
+     --method=update --appname="$1"
     RET=$?
     if [ $RET -ne 0 ]; then
 	echo "Error: manageApplications update of '$1' returned with exit code '$RET'"

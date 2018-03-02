@@ -11,6 +11,7 @@ use Anakeen\Router\Exception;
  * Class FamilyData
  *
  * @note    Used by route : GET /api/v2/documents/{docid}/revisions/{revisionNumber}
+ * @note    Used by route : GET /api/v2/documents/{docid}/revisions/{revisionNumber}
  * @package Anakeen\Routes\Core
  */
 class RevisionData extends DocumentData

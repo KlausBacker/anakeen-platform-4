@@ -1,5 +1,5 @@
 {
-    "accesses": [],
+    "accesses": {},
     "routes": {
         "Core:GetDocument": {
             "priority": 1,
@@ -7,7 +7,10 @@
             "methods": [
                 "get"
             ],
-            "pattern": "\/api\/v2\/documents\/{docid:[^\/.]+}[.json]",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid:[^\/.]+}[.json]",
+                "\/api\/v2\/families\/{family}\/documents\/{docid:[^\/.]+}[.json]"
+            ],
             "description": "Get data for a document",
             "requiredAccesses": []
         },
@@ -17,11 +20,13 @@
             "methods": [
                 "put"
             ],
-            "pattern": "\/api\/v2\/documents\/{docid:[^\/.]+}[.json]",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid:[^\/.]+}[.json]",
+                "\/api\/v2\/families\/{family}\/documents\/{docid:[^\/.]+}[.json]"
+            ],
             "description": "Modify data for a document",
             "requiredAccesses": []
         },
-
         "Core:CreateDocument": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\FamilyDocumentCreation",
@@ -38,7 +43,10 @@
             "methods": [
                 "delete"
             ],
-            "pattern": "\/api\/v2\/documents\/{docid:[^\/.]+}[.json]",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid:[^\/.]+}[.json]",
+                "\/api\/v2\/families\/{family}\/documents\/{docid:[^\/.]+}[.json]"
+            ],
             "description": "Delete document (put in trash)",
             "requiredAccesses": []
         },
@@ -46,30 +54,58 @@
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\DocumentLock",
             "methods": [
-                "delete", "get", "post", "put"
+                "delete",
+                "get",
+                "post",
+                "put"
             ],
-            "pattern": "\/api\/v2\/documents\/{docid}\/locks/{lockType:permanent|temporary}",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/locks/{lockType:permanent|temporary}",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/locks/{lockType:permanent|temporary}"
+            ],
             "description": "Lock document",
             "requiredAccesses": []
         },
-        "Core:LockFamilyDocument": {
+        "Core:Document:Locks": {
             "priority": 1,
-            "callable": "\\Anakeen\\Routes\\Core\\DocumentLock",
+            "callable": "\\Anakeen\\Routes\\Core\\DocumentLocks",
             "methods": [
-                "delete", "get", "post", "put"
+                "get",
+                "delete"
             ],
-            "pattern": "\/api\/v2\/families\/{family}\/documents\/{docid}\/locks/{lockType:permanent|temporary}",
-            "description": "Lock a family document",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/locks/",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/locks/"
+            ],
+            "description": "Document locks information",
             "requiredAccesses": []
         },
-
         "Core:DocumentUserTag": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\DocumentUserTag",
             "methods": [
-                "delete", "get", "post", "put"
+                "delete",
+                "get",
+                "post",
+                "put"
             ],
-            "pattern": "\/api\/v2\/documents\/{docid}\/usertags/{tag}",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/usertags/{tag}",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/usertags/{tag}"
+            ],
+            "description": "User Tag for document",
+            "requiredAccesses": []
+        },
+        "Core:DocumentUserTags": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\DocumentUserTags",
+            "methods": [
+                "get"
+            ],
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/usertags/",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/usertags/"
+            ],
             "description": "User Tag for document",
             "requiredAccesses": []
         },
@@ -81,16 +117,6 @@
             ],
             "pattern": "\/api\/v2\/documents\/",
             "description": "List all documents",
-            "requiredAccesses": []
-        },
-        "Core:GetFamilyDocument": {
-            "priority": 1,
-            "callable": "\\Anakeen\\Routes\\Core\\DocumentFamilyData",
-            "methods": [
-                "get"
-            ],
-            "pattern": "\/api\/v2\/families\/{family}\/documents\/{docid:[^\/.]+}[.json]",
-            "description": "Get data for a document",
             "requiredAccesses": []
         },
         "Core:GetFamily": {
@@ -119,18 +145,24 @@
             "methods": [
                 "get"
             ],
-            "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revisionNumber:[0-9]+}[.json]",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/revisions\/{revisionNumber:[0-9]+}[.json]",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/revisions\/{revisionNumber:[0-9]+}[.json]"
+            ],
             "description": "Get a specific revision of a document",
             "requiredAccesses": []
         },
-        "Core:FamilyRevisionData": {
+        "Core:RevisionList": {
             "priority": 1,
-            "callable": "\\Anakeen\\Routes\\Core\\RevisionFamilyData",
+            "callable": "\\Anakeen\\Routes\\Core\\RevisionList",
             "methods": [
                 "get"
             ],
-            "pattern": "\/api\/v2\/families\/{family}\/documents\/{docid}\/revisions\/{revisionNumber:[0-9]+}[.json]",
-            "description": "Get a specific revision of a document",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/revisions\/",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/revisions\/"
+            ],
+            "description": "Get a revisions of a document",
             "requiredAccesses": []
         },
         "Core:GetDeletedDocument": {
@@ -269,7 +301,10 @@
             "methods": [
                 "get"
             ],
-            "pattern": "\/api\/v2\/documents\/{docid}\/workflows\/states\/{state}",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/workflows\/states\/{state}",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/workflows\/states\/{state}"
+            ],
             "description": "Information about a workflow state",
             "requiredAccesses": []
         },
@@ -309,7 +344,10 @@
             "methods": [
                 "get"
             ],
-            "pattern": "\/api\/v2\/documents\/{docid}\/history\/",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/history\/",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/history\/"
+            ],
             "description": "Get document history information",
             "requiredAccesses": []
         },

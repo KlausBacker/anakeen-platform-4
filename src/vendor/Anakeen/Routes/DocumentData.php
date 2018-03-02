@@ -11,6 +11,7 @@ use Anakeen\Router\Exception;
  * Class DocumentData
  *
  * @note    Used by route : GET /api/v2/documents/{docid}
+ * @note    Used by route : GET /api/v2/families/{family}documents/{docid}
  * @package Anakeen\Routes\Core
  */
 class DocumentData
@@ -80,7 +81,9 @@ class DocumentData
         }
 
         $this->setDocument($this->documentId);
-
+        if (isset($args["family"])) {
+            DocumentUtils::verifyFamily($args["family"], $this->_document);
+        }
 
         $etag = $this->getDocumentEtag($this->_document->id);
         $response = ApiV2Response::withEtag($request, $response, $etag);

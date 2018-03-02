@@ -21,21 +21,10 @@ class FamilyDocumentList extends DocumentList
      */
     protected $_family = null;
 
-
-    /**
-     * Return all visible documents
-     *
-     * @param \Slim\Http\request  $request
-     * @param \Slim\Http\response $response
-     * @param                     $args
-     *
-     * @return \Slim\Http\response
-     *
-     */
-    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
+    protected function initParameters(\Slim\Http\request $request, $args)
     {
+        parent::initParameters($request, $args);
         $famName = $args["family"];
-        $this->request = $request;
 
         $this->_family = DocManager::getFamily($famName);
         if (!$this->_family) {
@@ -44,12 +33,6 @@ class FamilyDocumentList extends DocumentList
             $exception->setUserMessage(sprintf(___("Family \"%s\" not found", "ank"), $famName));
             throw $exception;
         }
-
-
-        /**
-         * @var \Slim\Http\response $response
-         */
-        return parent::__invoke($request, $response, $args);
     }
 
     protected function getData()
