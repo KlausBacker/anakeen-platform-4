@@ -46,6 +46,15 @@
       "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revision:[0-9]+}\/views\/{view}",
       "description": "Modify document data"
     },
+    "Ui:Document:Delete": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\DocumentViewDelete",
+      "methods": [
+        "DELETE"
+      ],
+      "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}",
+      "description": "Delete document data"
+    },
 
     "Ui:Revision:View": {
       "priority": 1,

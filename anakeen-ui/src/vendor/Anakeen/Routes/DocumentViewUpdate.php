@@ -27,9 +27,7 @@ class DocumentViewUpdate extends DocumentView
         $messages=[];
 
         $document = $this->getDocument($resourceId);
-        if ($err = $document->canEdit()) {
-            throw new Exception("CRUD0201", $resourceId, $err);
-        }
+
 
         if ($this->viewIdentifier != self::coreViewEditionId) {
             // apply specified mask
@@ -69,6 +67,9 @@ class DocumentViewUpdate extends DocumentView
                 throw new \Dcp\Ui\Exception("Unable to restore $err");
             }
         } else {
+            if ($err = $document->canEdit()) {
+                throw new Exception("CRUD0201", $resourceId, $err);
+            }
             $documentData = new DocumentUpdateData();
             $documentData->updateData($request, $document->initid, $messages);
         }
