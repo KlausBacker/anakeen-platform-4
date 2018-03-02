@@ -107,7 +107,7 @@ define([
         {
             var scope = this;
             $.getJSON("api/v2/documents/" + this.options.documentId +
-                ".json?fields=document.properties.all").done(function wProperties_done(data)
+                ".json?fields=document.properties.all&useTrash=true").done(function wProperties_done(data)
             {
                 var info;
                 scope.documentProperties = data.data.document.properties;

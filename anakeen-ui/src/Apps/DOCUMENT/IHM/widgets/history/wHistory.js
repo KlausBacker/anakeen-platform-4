@@ -416,36 +416,12 @@ define([
                         var result = JSON.parse(response.responseText);
                         _.each(result.messages, function whistory_getDataParseMessage(error)
                         {
-                            if (error.code === "CRUD0219" && error.uri) {
-                                // redirect with the good trash uri
-                                $.getJSON(error.uri.replace('.json', '') + '/history/').
-                                done(function whistory_getDataRedirect(response)
-                                {
-                                    var tableData = historyWidget._fillDataTable(response);
-                                    callback(
-                                        {data: tableData}
-                                    );
-                                }).fail(function whistory_getDataFail(response)
-                                {
-                                    var result = JSON.parse(response.responseText);
-                                    _.each(result.messages, function whistory_getDataFailParseMessage(error)
-                                    {
-                                        if (error.type === "error") {
-                                            $('body').trigger("notification", {
-                                                type: error.type,
-                                                message: error.contentText
-                                            });
-                                        }
-                                    });
-                                    console.error("fail", response);
+                            if (error.type === "error") {
+                                $('body').trigger("notification", {
+                                    type: error.type,
+                                    message: error.contentText
                                 });
-                            } else
-                                if (error.type === "error") {
-                                    $('body').trigger("notification", {
-                                        type: error.type,
-                                        message: error.contentText
-                                    });
-                                }
+                            }
                         });
                         console.error("fail", response);
                     });

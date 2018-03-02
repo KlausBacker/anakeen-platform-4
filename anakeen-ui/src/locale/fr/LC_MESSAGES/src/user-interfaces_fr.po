@@ -175,7 +175,7 @@ msgstr "Vue de création core"
 
 msgctxt "ddui"
 msgid "Core View Edition"
-msgstr "Vue de consultation core"
+msgstr "Vue d'édition core"
 
 msgctxt "UiMenu"
 msgid "Create"

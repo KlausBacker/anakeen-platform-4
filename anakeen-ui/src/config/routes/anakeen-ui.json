@@ -28,6 +28,16 @@
       "description": "Get render view data"
     },
 
+    "Ui:Document:Views": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\DocumentViewCollection",
+      "methods": [
+        "GET"
+      ],
+      "pattern": "\/api\/v2\/documents\/{docid}\/views\/",
+      "description": "Get render view list"
+    },
+
     "Ui:Document:CreationView": {
       "priority": 1,
       "callable": "\\Anakeen\\Routes\\Ui\\CreationView",

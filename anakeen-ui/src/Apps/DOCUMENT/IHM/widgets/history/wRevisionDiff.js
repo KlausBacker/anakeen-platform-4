@@ -165,12 +165,12 @@ define([
 
                     $.getJSON("api/v2/documents/" + revisionDiffWidget.options.documentId +
                     "/revisions/" + revisionDiffWidget.options.firstRevision +
-                    ".json?fields=family.structure,document.properties.revdate,document.properties.revision,document.attributes").
+                    ".json?useTrash=true&fields=family.structure,document.properties.revdate,document.properties.revision,document.attributes").
                         done(function dcpRevisionDiff_getDataDone(data1) {
                             revisionDiffWidget.firstDocument = data1.data.revision;
                             $.getJSON("api/v2/documents/" + revisionDiffWidget.options.documentId +
                             "/revisions/" + revisionDiffWidget.options.secondRevision +
-                            ".json?fields=document.properties.revdate,document.properties.revision,document.attributes").
+                            ".json?useTrash=true&fields=document.properties.revdate,document.properties.revision,document.attributes").
                                 done(function dcpRevisionDiff_getRevisionDone(data2) {
                                     revisionDiffWidget.secondDocument = data2.data.revision;
                                     _.each(data1.data.revision.attributes, function dcpRevisionDiff_analyzeAttribute(firstValue, index) {
