@@ -11,6 +11,7 @@ use Anakeen\Router\Exception;
  * Class WorkflowTransition
  *
  * @note    Used by route : GET /api/v2/documents/{docid}/workflows/transitions/{transition}
+ * @note    Used by route : GET /api/v2/families/{family}documents/{docid}/workflows/transitions/{transition}
  * @package Anakeen\Routes\Core
  */
 class WorkflowTransition extends WorkflowState
@@ -27,6 +28,12 @@ class WorkflowTransition extends WorkflowState
         $this->documentId = $args["docid"];
         $this->transition = $args["transition"];
         $this->setDocument($this->documentId);
+
+
+        if (isset($args["family"])) {
+            DocumentUtils::verifyFamily($args["family"], $this->_document);
+        }
+
         $err = $this->_document->control("view");
         if ($err) {
             $exception = new Exception("CRUD0201", $this->documentId, $err);

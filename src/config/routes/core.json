@@ -175,6 +175,46 @@
             "description": "Get deleted data for a document",
             "requiredAccesses": []
         },
+        "Core:Folder:List": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\Folders",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/folders\/",
+            "description": "List all folders",
+            "requiredAccesses": []
+        },
+        "Core:Folder:Content": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\FolderContent",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/folders\/{folder}\/documents\/",
+            "description": "List all documents included in a folder",
+            "requiredAccesses": []
+        },
+        "Core:Searches:List": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\Searches",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/searches\/",
+            "description": "List all searches",
+            "requiredAccesses": []
+        },
+        "Core:Searches:Content": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\SearchContent",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/searches\/{search}\/documents\/",
+            "description": "List all documents found in a search",
+            "requiredAccesses": []
+        },
         "Core:UndeleteDocument": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\DocumentUndeleteData",
@@ -183,6 +223,16 @@
             ],
             "pattern": "\/api\/v2\/trash\/{docid:[^\/.]+}[.json]",
             "description": "Undelete document",
+            "requiredAccesses": []
+        },
+        "Core:Trash:Content": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\TrashContent",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/trash\/",
+            "description": "Trash content",
             "requiredAccesses": []
         },
         "Core:File:OriginalImage": {
@@ -291,7 +341,8 @@
             "methods": [
                 "get"
             ],
-            "pattern": "\/api\/v2\/documents\/{docid}\/workflows\/states\/",
+            "pattern": ["\/api\/v2\/documents\/{docid}\/workflows\/states\/",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/workflows\/states\/" ],
             "description": "List of availables next states",
             "requiredAccesses": []
         },
@@ -318,13 +369,29 @@
             "description": "Document go to a new state",
             "requiredAccesses": []
         },
+        "Core:Workflow:TransitionList": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\WorkflowTransitionCollection",
+            "methods": [
+                "get"
+            ],
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/workflows\/transitions\/",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/workflows\/transitions\/"
+            ],
+            "description": "List available transitions",
+            "requiredAccesses": []
+        },
         "Core:Workflow:Transition": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\WorkflowTransition",
             "methods": [
                 "get"
             ],
-            "pattern": "\/api\/v2\/documents\/{docid}\/workflows\/transitions\/{transition}",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/workflows\/transitions\/{transition}",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/workflows\/transitions\/{transition}"
+            ],
             "description": "Information about a workflow transition",
             "requiredAccesses": []
         },
@@ -334,7 +401,10 @@
             "methods": [
                 "post"
             ],
-            "pattern": "\/api\/v2\/documents\/{docid}\/workflows\/transitions\/{transition}",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/workflows\/transitions\/{transition}",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/workflows\/transitions\/{transition}"
+            ],
             "description": "Pass a transition",
             "requiredAccesses": []
         },

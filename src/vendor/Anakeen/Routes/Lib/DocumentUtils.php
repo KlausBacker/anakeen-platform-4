@@ -188,12 +188,12 @@ class DocumentUtils
     {
         $family = \Dcp\Core\DocManager::getFamily($famName);
         if (!$family) {
-            $exception = new Exception("CRUD0200", $famName);
+            $exception = new Exception("ROUTES0105", $famName);
             $exception->setHttpStatus("404", "Family not found");
             throw $exception;
         }
         if ($family && !is_a($document, sprintf("\\Dcp\\Family\\%s", $family->name))) {
-            $exception = new Exception("CRUD0220", $document->initid, $family->name);
+            $exception = new Exception("ROUTES0104", $document->initid, $family->name);
             $exception->setHttpStatus("404", "Document is not a document of the family " . $family->name);
             throw $exception;
         }

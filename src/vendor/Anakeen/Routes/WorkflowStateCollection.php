@@ -33,7 +33,6 @@ class WorkflowStateCollection
      */
     protected $allStates = false;
     protected $documentId;
-    protected $state;
 
 
     /**
@@ -57,8 +56,10 @@ class WorkflowStateCollection
         $this->allStates = !empty($request->getQueryParam("allState"));
 
         $this->documentId= $args["docid"];
-        $this->state = $args["state"];
         $this->setDocument($this->documentId);
+        if (isset($args["family"])) {
+            DocumentUtils::verifyFamily($args["family"], $this->_document);
+        }
     }
 
     /**
