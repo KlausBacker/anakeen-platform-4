@@ -96,7 +96,7 @@ class DocumentList
                 "slice" => $this->_searchDoc->slice,
                 "offset" => $this->_searchDoc->start,
                 "length" => count($documentList),
-                "orderBy" => $this->orderBy
+                "orderBy" => $this->_searchDoc->orderby
             )
         );
 
@@ -202,8 +202,7 @@ class DocumentList
 
 
         $this->_searchDoc->setStart($this->offset);
-        $this->orderBy = $this->extractOrderBy();
-        $this->_searchDoc->setOrder($this->orderBy);
+        $this->_searchDoc->setOrder($this->extractOrderBy());
     }
 
     /**

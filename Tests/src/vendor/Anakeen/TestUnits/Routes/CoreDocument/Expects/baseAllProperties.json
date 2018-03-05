@@ -15,7 +15,7 @@
                 "cdate": "%isoDate%",
                 "confidential": null,
                 "createdBy": {
-                    "title": "Master Dynacase Platform",
+                    "title": "%userDocName%",
                     "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/se-iuser.png"
                 },
                 "creationDate": "%isoDate%",
@@ -50,7 +50,7 @@
                     "id": 1,
                     "number": 0,
                     "createdBy": {
-                        "title": "Master Dynacase Platform",
+                        "title": "%userDocName%",
                         "icon": "resizeimg.php?img=CORE%2FImages%2Fse-iuser.png&size=24"
                     }
                 },

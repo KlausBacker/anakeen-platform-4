@@ -95,7 +95,7 @@ class DocumentUtils
             if ($orderDirection !== "asc" && $orderDirection !== "desc") {
                 throw new Exception("CRUD0501", $orderDirection);
             }
-            if (!in_array($orderBy, $propertiesList) && !self::isAttribute($currentDoc, $orderBy)) {
+            if (!in_array($orderBy, $propertiesList) && (!$currentDoc || !self::isAttribute($currentDoc, $orderBy))) {
                 throw new Exception("CRUD0506", $orderBy);
             }
             if ($orderBy === "id") {

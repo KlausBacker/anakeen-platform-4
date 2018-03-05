@@ -96,11 +96,11 @@ class CoreDataFamilyDocument extends TestCaseRoutes
                 'GET /api/v2/families/TST_F2_2',
                 __DIR__ . "/Expects/TST_F2_2.json"
             ),
-            array(
+            "all1"=>array(
                 'GET /api/v2/families/TST_F2_1?fields=document.properties.all',
                 __DIR__ . "/Expects/TST_F2_1_all.json"
             ),
-            array(
+            "all2"=>array(
                 'GET /api/v2/families/TST_F2_2?fields=document.properties.all',
                 __DIR__ . "/Expects/TST_F2_2_all.json"
             ),
@@ -132,18 +132,26 @@ class CoreDataFamilyDocument extends TestCaseRoutes
                 'GET /api/v2/families/TST_F2_1/documents/TST_F21D1',
                 __DIR__ . "/Expects/TST_F21D1.json"
             ),
-            array(
+            "revision0"=>array(
                 'GET /api/v2/families/TST_F2_1/documents/TST_F21D1/revisions/0',
                 __DIR__ . "/Expects/TST_F21D1_rev0.json"
             ),
-            array(
+            "revision1"=>array(
                 'GET /api/v2/families/TST_F2_1/documents/TST_F21D1/revisions/1',
                 __DIR__ . "/Expects/TST_F21D1_rev1.json"
             ),
-            array(
+            "revision3"=>array(
                 'GET /api/v2/families/TST_F2_1/documents/TST_F21D1/revisions/3',
                 __DIR__ . "/Expects/TST_F21D1_rev3.json"
-            )
+            ),
+            "revisions"=>array(
+                'GET /api/v2/families/TST_F2_1/documents/TST_F21D1/revisions/',
+                __DIR__ . "/Expects/TST_F21D1_revs.json"
+            ),
+            "history"=>array(
+                'GET /api/v2/families/TST_F2_1/documents/TST_F21D1/history/',
+                __DIR__ . "/Expects/TST_F21D1_history.json"
+            ),
         );
     }
 

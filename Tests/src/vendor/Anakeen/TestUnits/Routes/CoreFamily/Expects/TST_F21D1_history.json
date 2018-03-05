@@ -1,0 +1,141 @@
+{
+    "success": true,
+    "data": {
+        "uri": "\/api\/v2\/documents\/TST_F21D1\/history\/",
+        "requestParameters": {
+            "slice": -1,
+            "offset": 0,
+            "revision": -1
+        },
+        "history": [
+            {
+                "uri": "\/api\/v2\/documents\/TST_F21D1\/revisions\/3.json",
+                "properties": {
+                    "title": "Test n\u00b02 - #03",
+                    "status": "alive",
+                    "revision": 3,
+                    "owner": {
+                        "id": "1",
+                        "title": "%userName%"
+                    },
+                    "state": {
+                        "reference": null,
+                        "stateLabel": "",
+                        "activity": "",
+                        "color": ""
+                    },
+                    "version": null,
+                    "revisionDate": "%isoDate%"
+                },
+                "messages": []
+            },
+            {
+                "uri": "\/api\/v2\/documents\/TST_F21D1\/revisions\/2.json",
+                "properties": {
+                    "title": "Test n\u00b02 - #03",
+                    "status": "fixed",
+                    "revision": 2,
+                    "owner": {
+                        "id": "1",
+                        "title": "%userName%"
+                    },
+                    "state": {
+                        "reference": null,
+                        "stateLabel": "",
+                        "activity": "",
+                        "color": ""
+                    },
+                    "version": null,
+                    "revisionDate": "%isoDate%"
+                },
+                "messages": [
+                    {
+                        "uid": 1,
+                        "uname": "%userName%",
+                        "date": "%isoDate%",
+                        "level": "message",
+                        "code": "REVISION",
+                        "comment": "Test revision #3"
+                    }
+                ]
+            },
+            {
+                "uri": "\/api\/v2\/documents\/TST_F21D1\/revisions\/1.json",
+                "properties": {
+                    "title": "Test n\u00b02 - #02",
+                    "status": "fixed",
+                    "revision": 1,
+                    "owner": {
+                        "id": "1",
+                        "title": "%userName%"
+                    },
+                    "state": {
+                        "reference": null,
+                        "stateLabel": "",
+                        "activity": "",
+                        "color": ""
+                    },
+                    "version": null,
+                    "revisionDate": "%isoDate%"
+                },
+                "messages": [
+                    {
+                        "uid": 1,
+                        "uname": "%userName%",
+                        "date": "%isoDate%",
+                        "level": "message",
+                        "code": "REVISION",
+                        "comment": "Test revision #2"
+                    }
+                ]
+            },
+            {
+                "uri": "\/api\/v2\/documents\/TST_F21D1\/revisions\/0.json",
+                "properties": {
+                    "title": "Test n\u00b02 - #01",
+                    "status": "fixed",
+                    "revision": 0,
+                    "owner": {
+                        "id": "1",
+                        "title": "%userName%"
+                    },
+                    "state": {
+                        "reference": null,
+                        "stateLabel": "",
+                        "activity": "",
+                        "color": ""
+                    },
+                    "version": null,
+                    "revisionDate": "%isoDate%"
+                },
+                "messages": [
+                    {
+                        "uid": 1,
+                        "uname": "%userName%",
+                        "date": "%isoDate%",
+                        "level": "info",
+                        "code": "CREATE",
+                        "comment": "Cr\u00e9ation du document"
+                    },
+                    {
+                        "uid": 1,
+                        "uname": "%userName%",
+                        "date": "%isoDate%",
+                        "level": "info",
+                        "code": null,
+                        "comment": "mise \u00e0 jour par import"
+                    },
+                    {
+                        "uid": 1,
+                        "uname": "%userName%",
+                        "date": "%isoDate%",
+                        "level": "message",
+                        "code": "REVISION",
+                        "comment": "Test revision #1"
+                    }
+                ]
+            }
+        ]
+    },
+    "messages": []
+}

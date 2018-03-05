@@ -130,6 +130,7 @@ class DocumentHistory
                         $history[$k]["level"] = "notice";
                         break;
                 }
+                $history[$k]["date"][10]='T';
             }
             $revisionHistory[] = array(
                 "uri" => URLUtils::generateURL(sprintf(
@@ -140,7 +141,8 @@ class DocumentHistory
                     $revision->revision
                 )),
                 "properties" => array(
-                    "id" => intval($revision->initid),
+                    "id" => intval($revision->id),
+                    "initid" => intval($revision->initid),
                     "title" => $revision->getTitle(),
                     "status" => ($revision->doctype == "Z") ? "deleted"
                         : (($revision->locked == -1) ? "fixed" : "alive"),
@@ -158,7 +160,7 @@ class DocumentHistory
                     ),
 
                     "version" => $revision->version,
-                    "revisionDate" => strftime("%Y-%m-%d %T", $revision->revdate)
+                    "revisionDate" => strftime("%Y-%m-%dT%T", $revision->revdate)
                 ),
                 "messages" => $history
             );
