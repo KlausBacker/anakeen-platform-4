@@ -2,18 +2,16 @@
 
 namespace Anakeen\Routes\Core;
 
-use Anakeen\Router\URLUtils;
 use Dcp\Core\DbManager;
 use Dcp\Core\DocManager;
-use Dcp\Core\Settings;
-use Dcp\Router\ApiV2Response;
+use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
-use Dcp\Routes\Document;
 
 /**
  * Class DocumentData
  *
  * @note    Used by route : GET /api/v2/documents/{docid}
+ * @note    Used by route : GET /api/v2/families/{family}documents/{docid}
  * @package Anakeen\Routes\Core
  */
 class DocumentData
@@ -49,6 +47,7 @@ class DocumentData
      */
     public $iconSize = 32;
     protected $documentId;
+    protected $useTrash=false;
 
     /**
      * DocumentData constructor.
@@ -73,11 +72,7 @@ class DocumentData
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $mb = microtime(true);
-        $this->request = $request;
-        $this->documentId = $args["docid"];
-        $this->returnFields = null;
-
+        $this->initParameters($request, $args);
         if (!$this->checkId($this->documentId, $initid)) {
             // Redirect to other url
             $document = DocManager::getDocument($initid, false);
@@ -87,12 +82,21 @@ class DocumentData
         }
 
         $this->setDocument($this->documentId);
+        if (isset($args["family"])) {
+            DocumentUtils::verifyFamily($args["family"], $this->_document);
+        }
+
         $etag = $this->getDocumentEtag($this->_document->id);
         $response = ApiV2Response::withEtag($request, $response, $etag);
         if (ApiV2Response::matchEtag($request, $etag)) {
             return $response;
         }
 
+        return ApiV2Response::withData($response, $this->doRequest());
+    }
+
+    protected function doRequest(&$messages = [])
+    {
         $err = $this->_document->control("view");
         if (!$err) {
             if ($this->_document->isConfidential()) {
@@ -110,9 +114,25 @@ class DocumentData
         if ($this->_document->mid == 0) {
             $this->_document->applyMask(\Doc::USEMASKCVVIEW);
         }
-        $data = $this->getDocumentData();
-        $data["duration"] = sprintf("%.04f", microtime(true) - $mb);
-        return ApiV2Response::withData($response, $data);
+        return $this->getDocumentData();
+    }
+
+    protected function initParameters(\Slim\Http\request $request, $args)
+    {
+        $this->documentId = $args["docid"];
+
+        $fields = $request->getQueryParam("fields");
+        if (empty($fields)) {
+            $fields = $this->defaultFields;
+        }
+        if ($fields) {
+            $this->returnFields = array_map("trim", explode(",", $fields));
+        } else {
+            $this->returnFields = array();
+        }
+
+        $this->request = $request;
+        $this->useTrash = ($request->getQueryParam("useTrash") === "true");
     }
 
     /**
@@ -131,11 +151,11 @@ class DocumentData
             $exception->setUserMessage(sprintf(___("Document \"%s\" not found", "ank"), $ressourceId));
             throw $exception;
         }
-        if ($this->_document->doctype === "Z") {
+        if (!$this->useTrash && $this->_document->doctype === "Z") {
             $exception = new Exception("ROUTES0102", $ressourceId);
             $exception->setHttpStatus("404", "Document deleted");
             $exception->setUserMessage(sprintf(___("Document \"%s\" is deleted", "ank"), $ressourceId));
-            $location = URLUtils::generateUrl(sprintf("%s/trash/%d", Settings::ApiV2, $this->_document->initid));
+            $location = DocumentUtils::getURI($this->_document);
             $exception->setURI($location);
             throw $exception;
         }
@@ -170,23 +190,10 @@ class DocumentData
     protected function getFields()
     {
         if ($this->returnFields === null) {
-            if ($this->request) {
-                $fields = $this->request->getQueryParam("fields");
-                if (empty($fields)) {
-                    $fields = $this->defaultFields;
-                }
-                if ($fields) {
-                    $this->returnFields = array_map("trim", explode(",", $fields));
-                } else {
-                    $this->returnFields = array();
-                }
-            } else {
-                return array_map("trim", explode(",", $this->defaultFields));
-            }
+            return array_map("trim", explode(",", $this->defaultFields));
         }
         return $this->returnFields;
     }
-
 
 
     protected function getDocumentApiData()

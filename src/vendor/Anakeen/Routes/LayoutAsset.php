@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Router\Exception;
-use Dcp\Router\ApiV2Response;
+use Anakeen\Router\ApiV2Response;
 
 /**
  * Class LayoutAsset

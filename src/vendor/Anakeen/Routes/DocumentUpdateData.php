@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Core;
 
 use Dcp\Core\DocManager;
-use Dcp\Router\ApiV2Response;
+use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 
 /**
@@ -21,12 +21,26 @@ class DocumentUpdateData extends DocumentData
         $mb = microtime(true);
         $this->request = $request;
         $this->documentId = $args["docid"];
+
+
         $messages = [];
-        $this->setDocument($this->documentId);
+        $this->updateData($request, $this->documentId, $messages);
+
+
+        $data = $this->getDocumentData();
+        $data["duration"] = sprintf("%.04f", microtime(true) - $mb);
+
+        return ApiV2Response::withData($response, $data, $messages);
+    }
+
+
+    public function updateData(\Slim\Http\request $request, $docid, &$messages = [])
+    {
+        $this->setDocument($docid);
 
         $err = $this->_document->canEdit();
         if ($err) {
-            $exception = new Exception("CRUD0201", $this->documentId, $err);
+            $exception = new Exception("CRUD0201", $docid, $err);
             $exception->setUserMessage(___("Update forbidden", "HTTPAPI_V1"));
             $exception->setHttpStatus("403", "Forbidden");
             throw $exception;
@@ -37,7 +51,12 @@ class DocumentUpdateData extends DocumentData
             $exception->setHttpStatus("403", "Forbidden");
             throw $exception;
         }
+        $this->updateDocument($request, $messages);
+    }
 
+    protected function updateDocument(\Slim\Http\request $request, &$messages = [])
+    {
+        $messages=[];
         $dataDocument = $request->getParsedBody();
         $newValues = $this->getAttributeValues($dataDocument);
         foreach ($newValues as $aid => $value) {
@@ -91,11 +110,8 @@ class DocumentUpdateData extends DocumentData
         }
         $this->_document->addHistoryEntry(___("Updated by API", "ank"), \DocHisto::NOTICE, "UPDATE");
         DocManager::cache()->addDocument($this->_document);
-
-        $data = $this->getDocumentData();
-        $data["duration"] = sprintf("%.04f", microtime(true) - $mb);
-        return ApiV2Response::withData($response, $data, $messages);
     }
+
 
     /**
      * Honor "rn" file option
@@ -116,6 +132,7 @@ class DocumentUpdateData extends DocumentData
 
     /**
      * Extract raw value from body content
+     *
      * @param array $dataDocument
      *
      * @return array
@@ -142,7 +159,7 @@ class DocumentUpdateData extends DocumentData
                         }
                         $multipleValues[] = $multipleSecondLevelValues;
                     } else {
-                        if (!isset($singleValue["value"])) {
+                        if (!array_key_exists("value", $singleValue)) {
                             throw new Exception("ROUTES0108", $attributeId);
                         }
                         $multipleValues[] = $singleValue["value"];

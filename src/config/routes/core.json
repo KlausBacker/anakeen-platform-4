@@ -1,5 +1,5 @@
 {
-    "accesses": [],
+    "accesses": {},
     "routes": {
         "Core:GetDocument": {
             "priority": 1,
@@ -7,7 +7,10 @@
             "methods": [
                 "get"
             ],
-            "pattern": "\/api\/v2\/documents\/{docid:[^\/.]+}[.json]",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid:[^\/.]+}[.json]",
+                "\/api\/v2\/families\/{family}\/documents\/{docid:[^\/.]+}[.json]"
+            ],
             "description": "Get data for a document",
             "requiredAccesses": []
         },
@@ -17,8 +20,21 @@
             "methods": [
                 "put"
             ],
-            "pattern": "\/api\/v2\/documents\/{docid:[^\/.]+}[.json]",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid:[^\/.]+}[.json]",
+                "\/api\/v2\/families\/{family}\/documents\/{docid:[^\/.]+}[.json]"
+            ],
             "description": "Modify data for a document",
+            "requiredAccesses": []
+        },
+        "Core:CreateDocument": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\FamilyDocumentCreation",
+            "methods": [
+                "post"
+            ],
+            "pattern": "\/api\/v2\/families\/{family}\/documents/",
+            "description": "Create document of family",
             "requiredAccesses": []
         },
         "Core:DeleteDocument": {
@@ -27,7 +43,10 @@
             "methods": [
                 "delete"
             ],
-            "pattern": "\/api\/v2\/documents\/{docid:[^\/.]+}[.json]",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid:[^\/.]+}[.json]",
+                "\/api\/v2\/families\/{family}\/documents\/{docid:[^\/.]+}[.json]"
+            ],
             "description": "Delete document (put in trash)",
             "requiredAccesses": []
         },
@@ -35,20 +54,59 @@
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\DocumentLock",
             "methods": [
-                "delete", "get", "post", "put"
+                "delete",
+                "get",
+                "post",
+                "put"
             ],
-            "pattern": "\/api\/v2\/documents\/{docid}\/locks/{lockType:permanent|temporary}",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/locks/{lockType:permanent|temporary}",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/locks/{lockType:permanent|temporary}"
+            ],
             "description": "Lock document",
             "requiredAccesses": []
         },
-        "Core:LockFamilyDocument": {
+        "Core:Document:Locks": {
             "priority": 1,
-            "callable": "\\Anakeen\\Routes\\Core\\DocumentLock",
+            "callable": "\\Anakeen\\Routes\\Core\\DocumentLocks",
             "methods": [
-                "delete", "get", "post", "put"
+                "get",
+                "delete"
             ],
-            "pattern": "\/api\/v2\/families\/{family}\/documents\/{docid}\/locks/{lockType:permanent|temporary}",
-            "description": "Lock a family document",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/locks/",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/locks/"
+            ],
+            "description": "Document locks information",
+            "requiredAccesses": []
+        },
+        "Core:DocumentUserTag": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\DocumentUserTag",
+            "methods": [
+                "delete",
+                "get",
+                "post",
+                "put"
+            ],
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/usertags/{tag}",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/usertags/{tag}"
+            ],
+            "description": "User Tag for document",
+            "requiredAccesses": []
+        },
+        "Core:DocumentUserTags": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\DocumentUserTags",
+            "methods": [
+                "get"
+            ],
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/usertags/",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/usertags/"
+            ],
+            "description": "User Tag for document",
             "requiredAccesses": []
         },
         "Core:ListDocuments": {
@@ -59,16 +117,6 @@
             ],
             "pattern": "\/api\/v2\/documents\/",
             "description": "List all documents",
-            "requiredAccesses": []
-        },
-        "Core:GetFamilyDocument": {
-            "priority": 1,
-            "callable": "\\Anakeen\\Routes\\Core\\DocumentFamilyData",
-            "methods": [
-                "get"
-            ],
-            "pattern": "\/api\/v2\/families\/{family}\/documents\/{docid:[^\/.]+}[.json]",
-            "description": "Get data for a document",
             "requiredAccesses": []
         },
         "Core:GetFamily": {
@@ -97,18 +145,24 @@
             "methods": [
                 "get"
             ],
-            "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revisionNumber:[0-9]+}[.json]",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/revisions\/{revisionNumber:[0-9]+}[.json]",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/revisions\/{revisionNumber:[0-9]+}[.json]"
+            ],
             "description": "Get a specific revision of a document",
             "requiredAccesses": []
         },
-        "Core:FamilyRevisionData": {
+        "Core:RevisionList": {
             "priority": 1,
-            "callable": "\\Anakeen\\Routes\\Core\\RevisionFamilyData",
+            "callable": "\\Anakeen\\Routes\\Core\\RevisionList",
             "methods": [
                 "get"
             ],
-            "pattern": "\/api\/v2\/families\/{family}\/documents\/{docid}\/revisions\/{revisionNumber:[0-9]+}[.json]",
-            "description": "Get a specific revision of a document",
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/revisions\/",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/revisions\/"
+            ],
+            "description": "Get a revisions of a document",
             "requiredAccesses": []
         },
         "Core:GetDeletedDocument": {
@@ -121,6 +175,46 @@
             "description": "Get deleted data for a document",
             "requiredAccesses": []
         },
+        "Core:Folder:List": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\Folders",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/folders\/",
+            "description": "List all folders",
+            "requiredAccesses": []
+        },
+        "Core:Folder:Content": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\FolderContent",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/folders\/{folder}\/documents\/",
+            "description": "List all documents included in a folder",
+            "requiredAccesses": []
+        },
+        "Core:Searches:List": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\Searches",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/searches\/",
+            "description": "List all searches",
+            "requiredAccesses": []
+        },
+        "Core:Searches:Content": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\SearchContent",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/searches\/{search}\/documents\/",
+            "description": "List all documents found in a search",
+            "requiredAccesses": []
+        },
         "Core:UndeleteDocument": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\DocumentUndeleteData",
@@ -131,7 +225,17 @@
             "description": "Undelete document",
             "requiredAccesses": []
         },
-        "Core:OriginalImage": {
+        "Core:Trash:Content": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\TrashContent",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/trash\/",
+            "description": "Trash content",
+            "requiredAccesses": []
+        },
+        "Core:File:OriginalImage": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\ImageAsset",
             "methods": [
@@ -141,7 +245,7 @@
             "description": "Download file image",
             "requiredAccesses": []
         },
-        "Core:resizeImage": {
+        "Core:File:resizeImage": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\ImageAsset",
             "methods": [
@@ -151,7 +255,7 @@
             "description": "Download file image",
             "requiredAccesses": []
         },
-        "Core:fileAttributeImage": {
+        "Core:File:fileAttributeImage": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\FileAttribute",
             "methods": [
@@ -161,7 +265,7 @@
             "description": "Download file from document",
             "requiredAccesses": []
         },
-        "Core:revisedFileAttributeImage": {
+        "Core:File:revisedFileAttributeImage": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\FileAttribute",
             "methods": [
@@ -171,7 +275,7 @@
             "description": "Download file from document",
             "requiredAccesses": []
         },
-        "Core:resizeAttributeImage": {
+        "Core:File:ResizeAttributeImage": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\ImageAttribute",
             "methods": [
@@ -181,7 +285,7 @@
             "description": "Download file image from document",
             "requiredAccesses": []
         },
-        "Core:resizeRevisedAttributeImage": {
+        "Core:File:ResizeRevisedAttributeImage": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Core\\ImageAttribute",
             "methods": [
@@ -191,14 +295,140 @@
             "description": "Download file image from document",
             "requiredAccesses": []
         },
-        "Core:FamilyEnum": {
+        "Core:File:ResizeRecordedImage": {
             "priority": 1,
-            "callable": "\\Anakeen\\Routes\\Core\\Enumerates",
+            "callable": "\\Anakeen\\Routes\\Core\\RecordedImage",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/images\/recorded\/sizes\/{size:[0-9x]+[cfs]?}\/{image:[^\\.]+}[.{extension}]",
+            "description": "Download resized file image (temporary file)",
+            "requiredAccesses": []
+        },
+        "Core:File:RecordedImage": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\RecordedImage",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/images\/recorded\/original\/{image:[^\\.]+}[.{extension}]",
+            "description": "Download resized file image (temporary file)",
+            "requiredAccesses": []
+        },
+        "Core:File:RecordedFile": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\RecordedFile",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/files\/recorded\/temporary\/{file:[0-9]+}[.{extension}]",
+            "description": "Download temporary file",
+            "requiredAccesses": []
+        },
+        "Core:Family:Enum": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\Enumerate",
             "methods": [
                 "get"
             ],
             "pattern": "\/api\/v2\/families\/{family}\/enumerates\/{enum}",
             "description": "Content of the enumerate <attributeIdentifier> of the family <familyId>",
+            "requiredAccesses": []
+        },
+        "Core:Workflow:StateList": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\WorkflowStateCollection",
+            "methods": [
+                "get"
+            ],
+            "pattern": ["\/api\/v2\/documents\/{docid}\/workflows\/states\/",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/workflows\/states\/" ],
+            "description": "List of availables next states",
+            "requiredAccesses": []
+        },
+        "Core:Workflow:State": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\WorkflowState",
+            "methods": [
+                "get"
+            ],
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/workflows\/states\/{state}",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/workflows\/states\/{state}"
+            ],
+            "description": "Information about a workflow state",
+            "requiredAccesses": []
+        },
+        "Core:Workflow:SetState": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\WorkflowSetState",
+            "methods": [
+                "post"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/workflows\/states\/{state}",
+            "description": "Document go to a new state",
+            "requiredAccesses": []
+        },
+        "Core:Workflow:TransitionList": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\WorkflowTransitionCollection",
+            "methods": [
+                "get"
+            ],
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/workflows\/transitions\/",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/workflows\/transitions\/"
+            ],
+            "description": "List available transitions",
+            "requiredAccesses": []
+        },
+        "Core:Workflow:Transition": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\WorkflowTransition",
+            "methods": [
+                "get"
+            ],
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/workflows\/transitions\/{transition}",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/workflows\/transitions\/{transition}"
+            ],
+            "description": "Information about a workflow transition",
+            "requiredAccesses": []
+        },
+        "Core:Workflow:SetTransition": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\WorkflowSetTransition",
+            "methods": [
+                "post"
+            ],
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/workflows\/transitions\/{transition}",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/workflows\/transitions\/{transition}"
+            ],
+            "description": "Pass a transition",
+            "requiredAccesses": []
+        },
+        "Core:Document:History": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\DocumentHistory",
+            "methods": [
+                "get"
+            ],
+            "pattern": [
+                "\/api\/v2\/documents\/{docid}\/history\/",
+                "\/api\/v2\/families\/{family}\/documents\/{docid}\/history\/"
+            ],
+            "description": "Get document history information",
+            "requiredAccesses": []
+        },
+        "Core:File:Temporary": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Core\\TemporaryFile",
+            "methods": [
+                "post"
+            ],
+            "pattern": "\/api\/v2\/temporaryFiles\/",
+            "description": "Get document history information",
             "requiredAccesses": []
         }
     },

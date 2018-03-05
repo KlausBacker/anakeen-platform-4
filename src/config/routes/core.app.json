@@ -77,7 +77,7 @@
                 "CORE_MAIL_LINK": {
                     "value": "optimal",
                     "description": "produce link for",
-                    "user": "Y",
+                    "isUser": true,
                     "type": "enum(optimal|mailto)",
                     "global": true
                 },
@@ -169,7 +169,8 @@
                 "STYLE": {
                     "value": "NONE",
                     "description": "Ui style",
-                    "access": "readonly"
+                    "access": "readonly",
+                    "global": true
                 }
             }
         }

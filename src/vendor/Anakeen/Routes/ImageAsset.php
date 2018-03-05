@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Router\Exception;
-use Dcp\Router\ApiV2Response;
+use Anakeen\Router\ApiV2Response;
 
 /**
  * Class ImageAsset
@@ -32,10 +32,7 @@ class ImageAsset
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $imageId = $args["image"];
-        $this->size = $args["size"];
-        $this->imageFileName = urldecode($imageId);
-
+        $this->initParameters($request, $args);
         $location = $this->getSourceImage();
 
         if ($this->size !== null) {
@@ -49,7 +46,7 @@ class ImageAsset
         } else {
             $tsize = getimagesize($location);
             if (!$tsize) {
-                throw new Exception("ROUTES0114", $imageId);
+                throw new Exception("ROUTES0114", $this->imageFileName);
             }
             // original file
             $outFile = $location;
@@ -59,6 +56,12 @@ class ImageAsset
         return ApiV2Response::withFile($response, $outFile, "", true);
     }
 
+
+    protected function initParameters(\Slim\Http\request $request, $args)
+    {
+        $this->size = $args["size"];
+        $this->imageFileName = urldecode($args["image"]);
+    }
 
     protected function getDestinationCacheImage($localimage, $size)
     {

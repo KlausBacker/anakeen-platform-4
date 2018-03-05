@@ -2,7 +2,7 @@
 
 namespace Anakeen\Routes\Core;
 
-use Dcp\Router\ApiV2Response;
+use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 
 /**

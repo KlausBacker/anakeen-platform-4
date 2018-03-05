@@ -835,7 +835,7 @@ union
         // Create admin user
         $userAdmin->id = Account::ADMIN_ID;
         $userAdmin->lastname = "Master";
-        $userAdmin->firstname = "Dynacase Platform";
+        $userAdmin->firstname = "Anakeen Platform";
         $userAdmin->password_new = "anakeen";
         $userAdmin->login = "admin";
         $userAdmin->Add(true);

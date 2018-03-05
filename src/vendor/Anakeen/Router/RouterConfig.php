@@ -68,11 +68,13 @@ class RouterConfig
             if ($a->priority < $b->priority) {
                 return -1;
             }
-            if (strlen($a->pattern) > strlen($b->pattern)) {
-                return 1;
-            }
-            if (strlen($a->pattern) < strlen($b->pattern)) {
-                return -1;
+            if (!is_array($a->pattern) && !is_array($b->pattern)) {
+                if (strlen($a->pattern) > strlen($b->pattern)) {
+                    return 1;
+                }
+                if (strlen($a->pattern) < strlen($b->pattern)) {
+                    return -1;
+                }
             }
             return strcmp($a->name, $b->name);
         });

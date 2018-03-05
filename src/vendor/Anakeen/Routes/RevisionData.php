@@ -11,6 +11,7 @@ use Anakeen\Router\Exception;
  * Class FamilyData
  *
  * @note    Used by route : GET /api/v2/documents/{docid}/revisions/{revisionNumber}
+ * @note    Used by route : GET /api/v2/documents/{docid}/revisions/{revisionNumber}
  * @package Anakeen\Routes\Core
  */
 class RevisionData extends DocumentData
@@ -26,10 +27,19 @@ class RevisionData extends DocumentData
         return true;
     }
 
-    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
+    protected function initParameters(\Slim\Http\request $request, $args)
     {
+        parent::initParameters($request, $args);
         $this->revisionNumber = $args["revisionNumber"];
-        return parent::__invoke($request, $response, $args);
+    }
+
+    protected function doRequest(&$messages = [])
+    {
+        $info = parent::doRequest($messages);
+
+        $info["revision"] = $info["document"];
+        unset($info["document"]);
+        return $info;
     }
 
     /**
@@ -49,7 +59,7 @@ class RevisionData extends DocumentData
             $exception->setUserMessage(sprintf(___("Document \"%s\" not found", "ank"), $ressourceId));
             throw $exception;
         }
-        if ($this->_document->doctype === "Z") {
+        if (!$this->useTrash && $this->_document->doctype === "Z") {
             $exception = new Exception("ROUTES0102", $ressourceId);
             $exception->setHttpStatus("404", "Document deleted");
             $location = URLUtils::generateUrl(sprintf("%s/trash/%d", Settings::ApiV2, $this->_document->initid));

@@ -7,7 +7,7 @@ use Anakeen\Router\URLUtils;
 use Dcp\Core\ContextManager;
 use Dcp\Core\DocManager;
 use Dcp\Core\Settings;
-use Dcp\Router\ApiV2Response;
+use Anakeen\Router\ApiV2Response;
 
 /**
  * Class FileAttribute
@@ -221,13 +221,6 @@ class FileAttribute
             throw $exception;
         }
 
-        if ($this->_document->doctype === "Z") {
-            $exception = new Exception("CRUD0219", $resourceId);
-            $exception->setHttpStatus("404", "Document deleted");
 
-            $location = URLUtils::generateUrl(sprintf("%s/trash/%d", Settings::ApiV2, $this->_document->initid));
-            $exception->setURI($location);
-            throw $exception;
-        }
     }
 }

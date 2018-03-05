@@ -15,8 +15,7 @@
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Authent\\Logout",
             "methods": [
-                "DELETE",
-                "GET"
+                "DELETE"
             ],
             "pattern": "/api/v2/authent/sessions/current",
             "description": "Destroy current user session",

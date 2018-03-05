@@ -4,7 +4,7 @@ namespace Anakeen\Routes\Core;
 
 use Dcp\Core\Settings;
 use Anakeen\Router\URLUtils;
-use Dcp\Router\ApiV2Response;
+use Anakeen\Router\ApiV2Response;
 
 /**
  * Class DocumentList
@@ -25,11 +25,8 @@ class DocumentList
     protected $returnFields = null;
     protected $slice = 10;
     protected $offset = 0;
-    protected $orderBy = "";
-    /**
-     * @var \Slim\Http\request
-     */
-    protected $request;
+    protected $orderBy = "title:asc";
+
     /**
      * @var \SearchDoc
      */
@@ -37,7 +34,7 @@ class DocumentList
 
     public function __construct()
     {
-        $this->defaultFields = self::GET_PROPERTIES;
+        $this->defaultFields = [self::GET_PROPERTIES];
     }
 
     /**
@@ -52,7 +49,7 @@ class DocumentList
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $this->request = $request;
+        $this->initParameters($request, $args);
 
         $return = $this->getData();
 
@@ -63,6 +60,34 @@ class DocumentList
     }
 
 
+    protected function initParameters(\Slim\Http\request $request, $args)
+    {
+        if ($request->getQueryParam("offset") !== null) {
+            $this->offset = intval($request->getQueryParam("offset"));
+        }
+
+        $slice = $request->getQueryParam("slice");
+
+        if ($slice) {
+            $this->slice = $slice;
+            if ($this->slice !== "all") {
+                $this->slice = intval($this->slice);
+            }
+        }
+
+        $orderBy = $request->getQueryParam("orderby");
+        if ($orderBy) {
+            $this->orderBy = $orderBy;
+        }
+
+        $fields = $request->getQueryParam("fields");
+        if (!$fields) {
+            $this->returnFields = $this->defaultFields;
+        } else {
+            $this->returnFields = array_map("trim", explode(",", $fields));
+        }
+    }
+
     protected function getData()
     {
         $documentList = $this->getDocumentList();
@@ -71,12 +96,11 @@ class DocumentList
                 "slice" => $this->_searchDoc->slice,
                 "offset" => $this->_searchDoc->start,
                 "length" => count($documentList),
-                "orderBy" => $this->orderBy
+                "orderBy" => $this->_searchDoc->orderby
             )
         );
 
         $data["uri"] = URLUtils::generateURL(Settings::ApiV2 . "documents/");
-        $data["properties"] = $this->getCollectionProperties();
         $documentFormatter = $this->prepareDocumentFormatter($documentList);
         $docData = $documentFormatter->format();
         $data["documents"] = $docData;
@@ -107,17 +131,6 @@ class DocumentList
      */
     protected function getFields()
     {
-        if ($this->returnFields === null) {
-            $fields = $this->request->getQueryParam("fields");
-            if (!$fields) {
-                $fields = $this->defaultFields;
-            }
-            if ($fields) {
-                $this->returnFields = array_map("trim", explode(",", $fields));
-            } else {
-                $this->returnFields = array();
-            }
-        }
         return $this->returnFields;
     }
 
@@ -185,23 +198,11 @@ class DocumentList
     protected function prepareDocumentList()
     {
         $this->prepareSearchDoc();
-        $slice = $this->request->getQueryParam("slice");
-
-        if ($slice) {
-            $this->slice = $slice;
-            if ($this->slice !== "all") {
-                $this->slice = intval($this->slice);
-            }
-        }
         $this->_searchDoc->setSlice($this->slice);
 
-        if ($this->request->getQueryParam("offset") !== null) {
-            $this->offset = intval($this->request->getQueryParam("offset"));
-        }
 
         $this->_searchDoc->setStart($this->offset);
-        $this->orderBy = $this->extractOrderBy();
-        $this->_searchDoc->setOrder($this->orderBy);
+        $this->_searchDoc->setOrder($this->extractOrderBy());
     }
 
     /**
@@ -216,13 +217,6 @@ class DocumentList
     }
 
 
-    protected function getCollectionProperties()
-    {
-        return array(
-            "title" => ""
-        );
-    }
-
     /**
      * Extract orderBy
      *
@@ -230,11 +224,7 @@ class DocumentList
      */
     protected function extractOrderBy()
     {
-        $orderBy = $this->request->getQueryParam("orderby");
-        if (!$orderBy) {
-            $orderBy = "title:asc";
-        }
-        return DocumentUtils::extractOrderBy($orderBy);
+        return DocumentUtils::extractOrderBy($this->orderBy);
     }
 
     /**
@@ -248,26 +238,14 @@ class DocumentList
     protected function prepareDocumentFormatter($documentList)
     {
         $documentFormatter = new CollectionDataFormatter($documentList);
+
         if ($this->hasFields(self::GET_PROPERTIES, true) && !$this->hasFields(self::GET_PROPERTY)) {
             $documentFormatter->useDefaultProperties();
         } else {
             $documentFormatter->setProperties($this->_getPropertiesId(), $this->hasFields(self::GET_PROPERTIES, true));
         }
+
         $documentFormatter->setAttributes($this->getAttributeFields());
         return $documentFormatter;
-    }
-
-    /**
-     * Initialize the default fields
-     *
-     * @param $fields
-     *
-     * @return $this
-     */
-    public function setDefaultFields($fields)
-    {
-        $this->returnFields = null;
-        $this->defaultFields = $fields;
-        return $this;
     }
 }

@@ -110,4 +110,12 @@ class ErrorCodeRoutes
      * @errorCode The attribute must reference a file
      */
     const ROUTES0124 = 'Attribute "%s" is not a file or image attribute in document "%s"';
+    /**
+     * @errorCode Document reference must be an folder id
+     */
+    const ROUTES0125 = 'Document "%s" not a folder';
+    /**
+     * @errorCode Document reference must be an search id
+     */
+    const ROUTES0126 = 'Document "%s" not a search';
 }

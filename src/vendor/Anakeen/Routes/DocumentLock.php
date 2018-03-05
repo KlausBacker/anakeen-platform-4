@@ -7,7 +7,7 @@ use Dcp\Core\DocManager;
 use Anakeen\Router\URLUtils;
 use Anakeen\Router\Exception;
 use Dcp\Core\Settings;
-use Dcp\Router\ApiV2Response;
+use Anakeen\Router\ApiV2Response;
 
 /**
  * Class Lock
@@ -34,36 +34,48 @@ class DocumentLock
 
     protected $temporaryLock = false;
     protected $lockType = "permanent";
-    protected $docid=0;
-
-    //region CRUD part
+    protected $docid = 0;
+    protected $method;
 
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $method = $request->getMethod();
-        $familyId = $args["family"];
-        if ($familyId) {
-            $this->_family = DocManager::getFamily($familyId);
-            if (!$this->_family) {
-                $exception = new Exception("CRUD0200", $familyId);
-                $exception->setHttpStatus("404", "Family not found");
-                throw $exception;
-            }
+        $this->method = $request->getMethod();
+
+        $this->initParameters($request, $args);
+
+        if (isset($args["family"])) {
+            DocumentUtils::verifyFamily($args["family"], $this->_document);
         }
-        $this->lockType = $args["lockType"];
+
+        $data = $this->doRequest();
+
+        if ($this->method === "POST") {
+            $response = $response->withStatus(201);
+        }
+        return ApiV2Response::withData($response, $data);
+    }
+
+
+    protected function initParameters(\Slim\Http\request $request, $args)
+    {
+        if (!empty($args["lockType"])) {
+            $this->lockType = $args["lockType"];
+        }
         $this->temporaryLock = ($this->lockType === "temporary");
         $this->docid = $args["docid"];
         $this->setDocument($this->docid);
+    }
 
+    protected function doRequest()
+    {
         $data = [];
-        switch ($method) {
+        switch ($this->method) {
             case "GET":
                 $data = $this->get();
                 break;
             case "POST":
                 $data = $this->create();
-                $response=$response->withStatus(201);
                 break;
             case "PUT":
                 $data = $this->create();
@@ -72,8 +84,7 @@ class DocumentLock
                 $data = $this->delete();
                 break;
         }
-
-        return ApiV2Response::withData($response, $data);
+        return $data;
     }
 
     /**
@@ -197,11 +208,6 @@ class DocumentLock
             throw $exception;
         }
 
-        if ($this->_family && !is_a($this->_document, sprintf("\\Dcp\\Family\\%s", $this->_family->name))) {
-            $exception = new Exception("CRUD0220", $resourceId, $this->_family->name);
-            $exception->setHttpStatus("404", "Document is not a document of the family " . $this->_family->name);
-            throw $exception;
-        }
 
         if ($this->_document->doctype === "Z") {
             $exception = new Exception("CRUD0219", $resourceId);
