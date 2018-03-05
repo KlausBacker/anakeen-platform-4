@@ -50,7 +50,7 @@ define([
             var currentWidget = this, $widget = $(this);
 
             this.element.html(this.htmlCaneva());
-            require(['datatables'], function dcpDocumentWHistory_initTable()
+            require.ensure(['datatables'], function dcpDocumentWHistory_initTable()
             {
                 require('datatables.net-bs4/css/dataTables.bootstrap4.css');
                 require('datatables');
@@ -163,14 +163,14 @@ define([
                 "ajax" : function dcpRevisionDiff_getData(data, callback) {
                     var myData = [];
 
-                    $.getJSON("api/v1/documents/" + revisionDiffWidget.options.documentId +
+                    $.getJSON("api/v2/documents/" + revisionDiffWidget.options.documentId +
                     "/revisions/" + revisionDiffWidget.options.firstRevision +
-                    ".json?fields=family.structure,document.properties.revdate,document.properties.revision,document.attributes").
+                    ".json?useTrash=true&fields=family.structure,document.properties.revdate,document.properties.revision,document.attributes").
                         done(function dcpRevisionDiff_getDataDone(data1) {
                             revisionDiffWidget.firstDocument = data1.data.revision;
-                            $.getJSON("api/v1/documents/" + revisionDiffWidget.options.documentId +
+                            $.getJSON("api/v2/documents/" + revisionDiffWidget.options.documentId +
                             "/revisions/" + revisionDiffWidget.options.secondRevision +
-                            ".json?fields=document.properties.revdate,document.properties.revision,document.attributes").
+                            ".json?useTrash=true&fields=document.properties.revdate,document.properties.revision,document.attributes").
                                 done(function dcpRevisionDiff_getRevisionDone(data2) {
                                     revisionDiffWidget.secondDocument = data2.data.revision;
                                     _.each(data1.data.revision.attributes, function dcpRevisionDiff_analyzeAttribute(firstValue, index) {

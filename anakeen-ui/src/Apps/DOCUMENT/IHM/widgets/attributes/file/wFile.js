@@ -219,12 +219,7 @@
                 });
 
             } else {
-                this.addOldBrowserForm();
-
-                this.element.on("change" + this.eventNamespace, "input[type=file]", function wFileChangeOld(/*event*/)
-                {
-                    currentWidget.uploadFileForm();
-                });
+                alert("Your browser not support FormData");
             }
         },
 
@@ -234,78 +229,6 @@
             return $inputFile.attr("fileValue") || null;
         },
 
-        /**
-         * Add real form and iframe for browsers without FormData
-         */
-        addOldBrowserForm: function wFileAddOldBrowserForm()
-        {
-            var inputFile = this.element.find("input[type=file]");
-            var inputText = this.element.find(".dcpAttribute__value");
-            var inputId = inputFile.attr("id");
-            var fileTarget = "fileupload" + inputId + '-' + this.options.index;
-            var originalText = inputText.val();
-            var scope = this;
-            var formHtml = '<form id="form{{id}}" target="{{target}}" method="POST" enctype="multipart/form-data" action="api/v1/temporaryFiles/?alt=html">' +
-                '</form><iframe style="display:none" name="{{target}}"></iframe>';
-            $(Mustache.render(formHtml || "", {id: inputId, target: fileTarget})).insertAfter(inputFile);
-
-            var container = '<div class="dcpFile__form"/>';
-
-            $(container).insertAfter(inputText).append(inputText);
-
-            this.element.find("form").append(inputFile).css("display", "inline");
-
-            this.element.find(".dcpFile__form").append(this.element.find("form"));
-
-            inputFile.show();
-            this.element.addClass("dcpFile--old-browser");
-
-            inputFile.attr("title", inputText.attr("data-original-title"));
-            inputFile.tooltip({
-                trigger: "hover",
-                placement: "bottom",
-                container: ".dcpDocument"
-            });
-            this.element.find("iframe").on("load", function wFileLoad()
-            {
-                if ($(this).contents().find("textarea").length === 0) {
-                    // fake load when insert iframe
-                    return;
-                }
-                var response = JSON.parse($(this).contents().find("textarea").val());
-
-                if (response.exceptionMessage) {
-                    _.each(response.messages, function wFileMessages(errorMessage)
-                    {
-
-                        $('body').trigger("notification", {
-                            htmlMessage: errorMessage.contentHtml,
-                            message: errorMessage.contentText,
-
-                            type: errorMessage.type
-                        });
-
-                    });
-                } else {
-                    var dataFile = response.data.file;
-                    scope.setValue({
-                        value: dataFile.reference,
-                        size: dataFile.size,
-                        fileName: dataFile.fileName,
-                        displayValue: dataFile.fileName,
-                        creationDate: dataFile.cdate,
-                        thumbnail: dataFile.thumbnailUrl,
-                        url: dataFile.downloadUrl,
-                        icon: dataFile.iconUrl
-                    });
-                }
-
-                inputText.val(originalText);
-                inputText.removeClass("dcpAttribute__value--transferring");
-                scope._setVisibilitySavingMenu("visible");
-            });
-
-        },
 
         /**
          * Condition before upload file
@@ -362,7 +285,7 @@
             var infoBgColor = inputText.css("background-color");
             $.ajax({
                 type: 'POST',
-                url: "api/v1/temporaryFiles/",
+                url: "api/v2/temporaryFiles/",
                 processData: false,
                 contentType: false,
                 cache: false,

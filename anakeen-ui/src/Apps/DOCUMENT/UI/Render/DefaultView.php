@@ -157,7 +157,7 @@ class DefaultView extends RenderDefault
      }
 
     /**
-     * @param $document
+     * @param \Doc $document
      * @param Barmenu $menu
      */
     public static function appendSystemMenu($document, $menu) {
@@ -172,8 +172,32 @@ class DefaultView extends RenderDefault
         $item->setBeforeContent('<div class="fa fa-info" />');
         $systemList->appendElement($item);
 
+        $item = new ItemMenu("lock", ___("Lock", "UiMenu") , "#action/document.lock");
+
+        $item->setTooltipLabel(___("Lock document", "ddui"));
+        $item->setBeforeContent('<div class="fa fa-lock" />');
+        $systemList->appendElement($item);
+
+        $item = new ItemMenu("unlock", ___("Unlock", "UiMenu") , "#action/document.unlock");
+
+        $item->setTooltipLabel(___("Unlock document", "ddui"));
+        $item->setBeforeContent('<div class="fa fa-unlock" />');
+        $systemList->appendElement($item);
         $menu->appendElement($systemList);
 
+        if ($document->isLocked()) {
+            $menu->getElement("lock")->setVisibility(ElementMenu::VisibilityHidden);
+            $errcuf = $document->CanUnLockFile();
+            if ($errcuf) {
+                if ($document->locked == - 1) {
+                    $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityHidden);
+                } else {
+                    $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityDisabled)->setTooltipLabel($errcuf);
+                }
+            }
+        } else {
+            $menu->getElement("unlock")->setVisibility(ElementMenu::VisibilityHidden);
+        }
     }
     
     public function getTemplates(\Doc $document = null)

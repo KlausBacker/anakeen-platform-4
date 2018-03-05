@@ -27,6 +27,26 @@
       "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}",
       "description": "Get render view data"
     },
+
+    "Ui:Document:Views": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\DocumentViewCollection",
+      "methods": [
+        "GET"
+      ],
+      "pattern": "\/api\/v2\/documents\/{docid}\/views\/",
+      "description": "Get render view list"
+    },
+
+    "Ui:Document:CreationView": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\CreationView",
+      "methods": [
+        "POST"
+      ],
+      "pattern": "\/api\/v2\/families\/{family}\/documentsViews/",
+      "description": "Get render view data"
+    },
     "Ui:Revision:ViewUpdate": {
       "priority": 1,
       "callable": "\\Anakeen\\Routes\\Ui\\DocumentViewUpdate",
@@ -35,6 +55,15 @@
       ],
       "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revision:[0-9]+}\/views\/{view}",
       "description": "Modify document data"
+    },
+    "Ui:Document:Delete": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\DocumentViewDelete",
+      "methods": [
+        "DELETE"
+      ],
+      "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}",
+      "description": "Delete document data"
     },
 
     "Ui:Revision:View": {
@@ -46,6 +75,28 @@
       "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revision:[0-9]+}\/views\/{view}",
       "description": "Get render view data"
     },
+
+    "Ui:Transition:View": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\TransitionView",
+      "methods": [
+        "GET"
+      ],
+      "pattern": "\/api\/v2\/documents\/{docid}\/views\/states\/{state}",
+      "description": "Document Workflow Transition View"
+    },
+
+
+    "Ui:Transition:Set": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\TransitionSet",
+      "methods": [
+        "POST"
+      ],
+      "pattern": "\/api\/v2\/documents\/{docid}\/views\/states\/{state}",
+      "description": "Change state for a document"
+    },
+
     "Ui:Family:Structure": {
       "priority": 1,
       "callable": "\\Anakeen\\Routes\\Ui\\FamilyStructure",
@@ -101,6 +152,24 @@
       ],
       "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}\/locks\/{lockType:permanent|temporary}",
       "description": "Lock document"
+    },
+    "Ui:Document:AutoComplete": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\Autocomplete",
+      "methods": [
+        "post"
+      ],
+      "pattern": "\/api\/v2\/documents\/{docid}\/autocomplete\/{attrid}",
+      "description": "Get Autocomplete suggestion for an attribute"
+    },
+    "Ui:Document:SubMenu": {
+      "priority": 1,
+      "callable": "\\Anakeen\\Routes\\Ui\\SubMenu",
+      "methods": [
+        "get"
+      ],
+      "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}\/menus\/{menu}",
+      "description": "Get submenu items"
     }
   }
 }

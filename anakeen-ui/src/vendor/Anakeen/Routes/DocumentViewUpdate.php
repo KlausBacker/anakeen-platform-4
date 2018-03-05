@@ -1,8 +1,4 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 namespace Anakeen\Routes\Ui;
 
@@ -10,6 +6,7 @@ use Anakeen\Routes\Core\DocumentUpdateData;
 use Dcp\AttributeIdentifiers\Cvdoc as CvdocAttribute;
 use Anakeen\Router\Exception;
 use Dcp\Core\DocManager as DocManager;
+use Anakeen\Router\ApiV2Response;
 
 /**
  * Class DocumentViewUpdate
@@ -25,12 +22,12 @@ class DocumentViewUpdate extends DocumentView
         $resourceId = $args["docid"];
         $this->request = $request;
         $this->viewIdentifier = $args["view"];
-
         $this->revision = $args["revision"];
+
+        $messages=[];
+
         $document = $this->getDocument($resourceId);
-        if ($err = $document->canEdit()) {
-            throw new Exception("CRUD0201", $resourceId, $err);
-        }
+
 
         if ($this->viewIdentifier != self::coreViewEditionId) {
             // apply specified mask
@@ -70,8 +67,11 @@ class DocumentViewUpdate extends DocumentView
                 throw new \Dcp\Ui\Exception("Unable to restore $err");
             }
         } else {
+            if ($err = $document->canEdit()) {
+                throw new Exception("CRUD0201", $resourceId, $err);
+            }
             $documentData = new DocumentUpdateData();
-            $response = $documentData->__invoke($request, $response, $args);
+            $documentData->updateData($request, $document->initid, $messages);
         }
 
 
@@ -80,7 +80,11 @@ class DocumentViewUpdate extends DocumentView
             $args["view"] = self::defaultViewConsultationId;
         }
 
-        return parent::__invoke($request, $response, $args);
+        $response= parent::__invoke($request, $response, $args);
+        if ($messages) {
+            $response=ApiV2Response::withMessages($response, $messages);
+        }
+        return $response;
     }
 
     protected function getEtagInfo($docid)

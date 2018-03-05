@@ -27,7 +27,7 @@ class DynamicMenu extends ElementMenu
     {
         $this->contentDefinition = $definition;
         
-        $this->url = sprintf("api/v1/documents/{{document.properties.id}}/menus/%s?render={{document.properties.renderMode}}&viewId={{document.properties.viewId}}", urlencode($this->id));
+        $this->url = sprintf("api/v2/documents/{{document.properties.id}}/views/{{document.properties.viewId}}/menus/%s", urlencode($this->id));
     }
     /**
      * Return instanciated dynamic menu

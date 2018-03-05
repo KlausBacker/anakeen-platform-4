@@ -212,7 +212,7 @@ class Document extends \Dcp\HttpApi\V1\Crud\Crud
         if ($_SERVER["SERVER_PORT"] !== "80") {
             $url.= sprintf(":%s", $_SERVER["SERVER_PORT"]);
         }
-        if (preg_match('@^(.*)/api/v1/@', $_SERVER["REQUEST_URI"], $reg)) {
+        if (preg_match('@^(.*)/api/v[1-2]/@', $_SERVER["REQUEST_URI"], $reg)) {
             $url.= $reg[1];
         } else {
             if (preg_match('@^(.*)/\\?@', $_SERVER["REQUEST_URI"], $reg)) {

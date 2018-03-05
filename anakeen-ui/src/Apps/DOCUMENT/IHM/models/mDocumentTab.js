@@ -4,7 +4,7 @@ define([
 ], function (_, Backbone) {
     "use strict";
 
-    var url = _.template("api/v1/documents/<%- initid %>/usertags/lasttab");
+    var url = _.template("api/v2/documents/<%- initid %>/usertags/lasttab");
 
     return Backbone.Model.extend({
 

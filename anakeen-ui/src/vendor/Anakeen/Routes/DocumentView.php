@@ -1,8 +1,4 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 namespace Anakeen\Routes\Ui;
 
@@ -13,7 +9,7 @@ use Dcp\Core\DbManager;
 use Dcp\Core\Settings;
 use Anakeen\Router\Exception;
 use Dcp\Core\DocManager as DocManager;
-use Dcp\Router\ApiV2Response;
+use Anakeen\Router\ApiV2Response;
 
 /**
  * Class DocumentView
@@ -72,10 +68,9 @@ class DocumentView
     protected $customClientData = null;
     protected $renderConfig = null;
     protected $renderVid = '';
-    /**
-     * @var \Slim\Http\request
-     */
-    protected $request;
+
+    protected $documentId;
+    protected $requestFields=[];
 
     /**
      * Read a resource
@@ -88,30 +83,10 @@ class DocumentView
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $resourceId = $args["docid"];
-        $this->request = $request;
-        $this->viewIdentifier = $args["view"];
+        $this->initParameters($request, $args);
 
-        if (isset($args["revision"])) {
-            $this->revision = $args["revision"];
-        }
-        $refreshMsg = '';
-        $creationMode = false;
-        $family = null;
-        if ($this->viewIdentifier === self::coreViewCreationId || $this->viewIdentifier === self::defaultViewCreationId) {
-            /**
-             * @var \DocFam $family
-             */
-            $family = DocManager::getFamily($resourceId);
-            DocManager::cache()->addDocument($family);
-            $this->createDocument($resourceId);
-            $creationMode = true;
-        } else {
-            $this->getDocument($resourceId);
-            $refreshMsg = $this->setRefresh();
-        }
 
-        $etag = $this->getEtagInfo($resourceId);
+        $etag = $this->getEtagInfo($this->documentId);
         if ($etag) {
             $response = ApiV2Response::withEtag($request, $response, $etag);
             if (ApiV2Response::matchEtag($request, $etag)) {
@@ -127,9 +102,60 @@ class DocumentView
                 self::coreViewConsultationId,
                 self::coreViewEditionId
             )) && !$this->document->cvid) {
-            $exception = new Exception("CRUDUI0001", $this->viewIdentifier, $resourceId);
+            $exception = new Exception("CRUDUI0001", $this->viewIdentifier, $this->documentId);
             $exception->setHttpStatus("404", "View not found");
             throw $exception;
+        }
+
+        $info = $this->doRequest($messages);
+        return ApiV2Response::withData($response, $info, $messages);
+    }
+
+    protected function initParameters(\Slim\Http\request $request, $args)
+    {
+        $this->documentId = $args["docid"];
+        $this->viewIdentifier = $args["view"];
+        if (isset($args["revision"])) {
+            $this->revision = $args["revision"];
+        }
+
+        if (!empty($request->getQueryParam("fields"))) {
+            $parameterfields = $request->getQueryParam("fields");
+            $this->requestFields = array_map("trim", explode(",", $parameterfields));
+            foreach ($this->requestFields as $field) {
+                if (!in_array($field, $this->fields)) {
+                    throw new Exception("CRUDUI0004", $field, implode(", ", $this->fields));
+                }
+            }
+        } else {
+            $this->requestFields = $this->fields;
+        }
+
+
+        if (!empty($request->getQueryParam("noStructureFamily"))) {
+            $this->needSendFamilyStructure = false;
+        }
+        if (!empty($request->getQueryParam(self::fieldCustomClientData))) {
+            $this->customClientData = json_decode($request->getQueryParam(self::fieldCustomClientData), true);
+        }
+    }
+
+    protected function doRequest(&$messages = [])
+    {
+        $refreshMsg = '';
+        $creationMode = false;
+        $family = null;
+        if ($this->viewIdentifier === self::coreViewCreationId || $this->viewIdentifier === self::defaultViewCreationId) {
+            /**
+             * @var \DocFam $family
+             */
+            $family = DocManager::getFamily($this->documentId);
+            DocManager::cache()->addDocument($family);
+            $this->createDocument($this->documentId);
+            $creationMode = true;
+        } else {
+            $this->getDocument($this->documentId);
+            $refreshMsg = $this->setRefresh();
         }
 
         $info = array(
@@ -174,7 +200,7 @@ class DocumentView
             $msg->code = "REFRESH";
             $messages[] = $msg;
         }
-        return ApiV2Response::withData($response, $info, $messages);
+        return $info;
     }
 
     /**
@@ -522,22 +548,9 @@ class DocumentView
      */
     protected function getFields()
     {
-        if (!empty($this->request->getQueryParam("fields"))) {
-            $parameterfields = $this->request->getQueryParam("fields");
-            $fields = array_map("trim", explode(",", $parameterfields));
-            foreach ($fields as $field) {
-                if (!in_array($field, $this->fields)) {
-                    throw new Exception("CRUDUI0004", $field, implode(", ", $this->fields));
-                }
-            }
-        } else {
-            $fields = $this->fields;
-        }
-        if (!empty($this->request->getQueryParam("noStructureFamily"))) {
-            $this->needSendFamilyStructure = false;
-        }
 
-        return $fields;
+
+        return $this->requestFields;
     }
 
     /**
@@ -627,8 +640,8 @@ class DocumentView
      */
     protected function getEtagInfo($docid)
     {
-            DocManager::getIdentifier($docid, true);
-            return $this->extractEtagDocument($docid);
+        DocManager::getIdentifier($docid, true);
+        return $this->extractEtagDocument($docid);
     }
 
     /**
@@ -726,10 +739,7 @@ class DocumentView
         if ($this->customClientData) {
             return $this->customClientData;
         }
-        if (!empty($this->request->getQueryParam(self::fieldCustomClientData))) {
-            $this->customClientData = json_decode($this->request->getQueryParam(self::fieldCustomClientData), true);
-            return $this->customClientData;
-        }
+
         return null;
     }
 }
