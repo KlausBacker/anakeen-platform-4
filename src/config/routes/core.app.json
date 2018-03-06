@@ -190,7 +190,7 @@
             ],
             "pattern": "/",
             "description": "Welcome Page",
-            "requiredAccesses": []
+            "requiredAccess": null
         },
         "Core:Welcome": {
             "priority": 1,
@@ -200,7 +200,7 @@
             ],
             "pattern": "/welcome",
             "description": "Welcome Page",
-            "requiredAccesses": []
+            "requiredAccess": null
         },
         "Core:LayoutAsset": {
             "priority": 1,
@@ -210,7 +210,7 @@
             ],
             "pattern": "/assets/{asset}",
             "description": "Get css/js asset from Layout directory",
-            "requiredAccesses": []
+            "requiredAccess": null
         }
     }
 }

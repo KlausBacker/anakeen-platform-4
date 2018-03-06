@@ -14,7 +14,16 @@ class RouterInfo
     public $name;
     public $methods = [];
     public $authenticated = true;
+    /**
+     * @var string partial or complete
+     */
+    public $override;
     public $applicationContext = "CORE";
+    /**
+     * @var RequiredAccessInfo
+     */
+    public $requiredAccess;
+    public $configFile;
 
     public function __construct($data = null)
     {

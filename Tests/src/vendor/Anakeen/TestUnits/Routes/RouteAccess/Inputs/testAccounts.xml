@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accounts>
+    <roles>
+        <role>
+            <reference>test.role.bigboss</reference>
+            <displayName>Big boss</displayName>
+            <document family="ROLE">
+                <role  name="test-role-bigboss" />
+            </document>
+        </role>
+        <role>
+            <reference>test.role.boss</reference>
+            <displayName>Boss</displayName>
+            <document family="ROLE">
+                <role  name="test-role-boss" />
+            </document>
+        </role>
+    </roles>
+    <groups>
+        <group>
+            <reference>test.group.users</reference>
+            <displayName>Users</displayName>
+            <document family="IGROUP">
+                <igroup  name="test-group-users" />
+            </document>
+        </group>
+        <group>
+            <reference>test.group.visitor</reference>
+            <displayName>Visitors</displayName>
+            <document family="IGROUP">
+                <igroup  name="test-group-visitor" />
+            </document>
+        </group>
+    </groups>
+    <users>
+        <user>
+            <login>test.admin</login>
+            <firstname>Admin</firstname>
+            <lastname>Test</lastname>
+            <status activated="true"/>
+            <associatedRoles reset="false">
+                <associatedRole reference="test.role.bigboss"/>
+            </associatedRoles>
+            <parentGroups reset="false">
+                <parentGroup reference="test.group.users"/>
+            </parentGroups>
+            <document family="IUSER">
+                <iuser  name="test-admin" />
+            </document>
+        </user>
+        <user>
+            <login>test.user1</login>
+            <firstname>Jerry</firstname>
+            <lastname>Dallas</lastname>
+            <status activated="true"/>
+            <associatedRoles reset="false">
+                <associatedRole reference="test.role.boss"/>
+            </associatedRoles>
+            <document family="IUSER">
+                <iuser  name="test-user1" />
+            </document>
+        </user>
+        <user>
+            <login>test.user2</login>
+            <firstname>Jane</firstname>
+            <lastname>Ford</lastname>
+            <status activated="true"/>
+            <associatedRoles reset="false">
+                <associatedRole reference="test.role.boss"/>
+            </associatedRoles>
+            <parentGroups reset="false">
+                <parentGroup reference="test.group.visitor"/>
+            </parentGroups>
+            <document family="IUSER">
+                <iuser  name="test-user2" />
+            </document>
+        </user>
+        <user>
+            <login>test.user3</login>
+            <firstname>John</firstname>
+            <lastname>Doe</lastname>
+            <status activated="true"/>
+            <document family="IUSER">
+                <iuser  name="test-user3" />
+            </document>
+        </user>
+        <user>
+            <login>test.user4</login>
+            <firstname>Janis</firstname>
+            <lastname>Delaware</lastname>
+            <status activated="true"/>
+            <parentGroups reset="false">
+                <parentGroup reference="test.group.visitor"/>
+            </parentGroups>
+            <document family="IUSER">
+                <iuser  name="test-user4" />
+            </document>
+        </user>
+    </users>
+</accounts>

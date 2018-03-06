@@ -37,14 +37,15 @@ class RouterLib
                     if ($conf === null) {
                         throw new Exception("CORE0019", $dir . "/" . $entry);
                     }
-                    $conf = self::normalizeConfig($conf);
+                    $conf = self::normalizeConfig($conf, $entry);
                     $config = array_merge_recursive($config, $conf);
                 }
             }
 
-
             closedir($handle);
+
             $config = json_decode(json_encode($config));
+
             self::$config = new RouterConfig($config);
             return self::$config;
         } else {
@@ -52,7 +53,7 @@ class RouterLib
         }
     }
 
-    protected static function normalizeConfig(array $config)
+    protected static function normalizeConfig(array $config, $configFileName)
     {
 
         if (!empty($config["routes"])) {
@@ -60,6 +61,7 @@ class RouterLib
             $nr = [];
             foreach ($routes as $routeName => $route) {
                 $route["name"] = $routeName;
+                $route["configFile"] = $configFileName;
                 $nr[] = $route;
             }
             $config["routes"] = $nr;
@@ -70,6 +72,7 @@ class RouterLib
             $nr = [];
             foreach ($middles as $name => $middle) {
                 $middle["name"] = $name;
+                $middle["configFile"] = $configFileName;
                 $nr[] = $middle;
             }
             $config["middlewares"] = $nr;
@@ -81,9 +84,22 @@ class RouterLib
             $nr = [];
             foreach ($apps as $name => $app) {
                 $app["name"] = $name;
+                $app["configFile"] = $configFileName;
                 $nr[] = $app;
             }
             $config["apps"] = $nr;
+        }
+
+
+        if (!empty($config["accesses"])) {
+            $acls = $config["accesses"];
+            $nr = [];
+            foreach ($acls as $name => $acl) {
+                $acl["name"] = $name;
+                $acl["configFile"] = $configFileName;
+                $nr[] = $acl;
+            }
+            $config["accesses"] = $nr;
         }
 
         return $config;

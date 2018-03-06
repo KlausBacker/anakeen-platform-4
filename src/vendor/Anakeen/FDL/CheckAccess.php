@@ -38,7 +38,7 @@ class CheckAccess extends CheckData
     private $acls = array();
     /**
      * @param array $data
-     * @return CheckProfid
+     * @return CheckAccess
      */
     public function check(array $data, &$action = null)
     {
@@ -120,7 +120,7 @@ class CheckAccess extends CheckData
      */
     private function checkSyntax($acl)
     {
-        if (preg_match("/^-?[A-Z_0-9_-]{1,63}$/i", $acl)) {
+        if (preg_match("/^-?[A-Z_0-9_:-]{1,63}$/i", $acl)) {
             return true;
         }
         return false;

@@ -1,0 +1,89 @@
+{
+    "apps": {
+        "CORETEST": {
+            "version": "1.0.0",
+            "shortName": "Some test routes",
+            "description": "Testing routes"
+        }
+    },
+    "accesses": {
+        "coretest:user": {
+            "applicationContext": "CORETEST",
+            "description": "Normal Access"
+        },
+        "coretest:admin": {
+            "applicationContext": "CORETEST",
+            "description": "Administrator Access"
+        },
+        "coretest:guest": {
+            "applicationContext": "CORETEST",
+            "description": "Guest Access"
+        }
+    },
+    "routes": {
+        "Core:Test:Routes": {
+            "priority": 0,
+            "callable": "\\Anakeen\\Routes\\Tests\\TestRouteConfig",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "/tests/routes/",
+            "description": "Route config",
+            "requiredAccess": null
+        },
+        "Core:Test:RouteSecurit": {
+            "priority": 0,
+            "callable": "\\Anakeen\\Routes\\Tests\\TestRouteConfig",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "/tests/routes/securit/",
+            "description": "Route config",
+            "applicationContext": "CORETEST",
+            "requiredAccess": "coretest:user"
+        },
+        "Core:Test:RouteVerySecurit": {
+            "priority": 0,
+            "callable": "\\Anakeen\\Routes\\Tests\\TestRouteConfig",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "/tests/routes/userguest/",
+            "description": "Route config",
+            "applicationContext": "CORETEST",
+            "requiredAccess": {"and" :["coretest:user", "coretest:guest"]}
+        },
+        "Core:Test:RouteForAll": {
+            "priority": 0,
+            "callable": "\\Anakeen\\Routes\\Tests\\TestRouteConfig",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "/tests/routes/forall/",
+            "description": "Route config",
+            "applicationContext": "CORETEST",
+            "requiredAccess": {"or" :["coretest:user", "coretest:guest", "core:admin"]}
+        },
+
+        "Core:Test:Routes:Over1": {
+            "priority": 0,
+            "callable": "\\Anakeen\\Routes\\Tests\\TestRouteConfig",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "/tests/routes/over1/",
+            "description": "Route config",
+            "requiredAccess": null
+        },
+        "Core:Test:Routes:Over2": {
+            "priority": 0,
+            "callable": "\\Anakeen\\Routes\\Tests\\TestRouteConfig",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "/tests/routes/over2/",
+            "description": "Route config",
+            "requiredAccess": null
+        }
+    }
+}

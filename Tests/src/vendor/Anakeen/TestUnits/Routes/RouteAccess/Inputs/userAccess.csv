@@ -1,0 +1,3 @@
+ACCESS;test-role-bigboss;CORETEST;coretest:user;coretest:admin
+ACCESS;test-role-boss;CORETEST;coretest:user;
+ACCESS;test-group-visitor;CORETEST;coretest:guest;

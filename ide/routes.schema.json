@@ -7,23 +7,41 @@
     "properties": {
         "routes": {
             "type": "object",
+            "description": "Route access list",
             "patternProperties": {
                 "^([A-Za-z:0-9-]+)$": {
-                    "$ref": "#/definitions/route"
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/routeComplete"
+                        },
+                        {
+                            "$ref": "#/definitions/routeOverPartial"
+                        }
+                    ]
                 }
             },
             "additionalProperties": false
         },
         "middlewares": {
             "type": "object",
+            "description": "Middleware access list",
             "patternProperties": {
-                "^([A-Za-z:]+)$": {
-                    "$ref": "#/definitions/middleware"
+                "^([A-Za-z0-9:]+)$": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/middlewareComplete"
+                        },
+                        {
+                            "$ref": "#/definitions/middlewareOverPartial"
+                        }
+                    ]
                 }
-            }
+            },
+            "additionalProperties": false
         },
         "accesses": {
             "type": "object",
+            "description": "Access list",
             "patternProperties": {
                 "^([A-Za-z:]+)$": {
                     "$ref": "#/definitions/access"
@@ -33,12 +51,12 @@
         },
         "apps": {
             "type": "object",
+            "description": "Application information",
             "patternProperties": {
                 "^([A-Z_]+)$": {
                     "$ref": "#/definitions/app"
                 }
-            },
-            "additionalProperties": false
+            }
         }
     },
     "definitions": {
@@ -88,13 +106,46 @@
                     },
                     "uniqueItems": true
                 },
-                "requiredAccesses": {
-                    "type": "array",
-                    "description": "Access right to verify before grant the access",
-                    "items": {
-                        "type": "string"
-                    },
-                    "uniqueItems": true
+                "requiredAccess": {
+                    "oneOf": [
+                        {
+                            "type": "string",
+                            "minLength": 1
+                        },
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "object",
+                            "patternProperties": {
+                                "^(and)|(or)$": {
+                                    "type": "array",
+                                    "minItems": 2,
+                                    "uniqueItems": true
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    ],
+                    "description": "Access right to verify before grant the access"
+                }
+            },
+            "additionalProperties": false
+        },
+        "middlewareComplete": {
+            "type": "object",
+            "description": "Middleware complete definition access",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/middleware"
+                }
+            ],
+            "properties": {
+                "override": {
+                    "description": "Override route",
+                    "enum": [
+                        "complete"
+                    ]
                 }
             },
             "required": [
@@ -105,8 +156,30 @@
             ],
             "additionalProperties": false
         },
+        "middlewareOverPartial": {
+            "type": "object",
+            "description": "Middleware partial definition access",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/middleware"
+                }
+            ],
+            "properties": {
+                "override": {
+                    "description": "Override route",
+                    "enum": [
+                        "partial"
+                    ]
+                }
+            },
+            "required": [
+                "override"
+            ],
+            "additionalProperties": true
+        },
         "route": {
             "type": "object",
+            "description": "Route definition access",
             "allOf": [
                 {
                     "$ref": "#/definitions/middleware"
@@ -116,12 +189,71 @@
                 "authenticated": {
                     "description": "Is the route need authentication (default is true)",
                     "type": "boolean"
+                },
+                "applicationContext": {
+                    "description": "Application Context",
+                    "type": "string"
                 }
             },
             "additionalProperties": false
         },
+        "routeComplete": {
+            "type": "object",
+            "description": "Route complete definition access",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/route"
+                }
+            ],
+            "properties": {
+                "authenticated": {
+                    "description": "Is the route need authentication (default is true)",
+                    "type": "boolean"
+                },
+                "applicationContext": {
+                    "description": "Application Context",
+                    "type": "string"
+                },
+                "override": {
+                    "description": "Override route",
+                    "enum": [
+                        "complete"
+                    ]
+                }
+            },
+            "required": [
+                "requiredAccess",
+                "priority",
+                "pattern",
+                "methods",
+                "callable"
+            ],
+            "additionalProperties": false
+        },
+        "routeOverPartial": {
+            "type": "object",
+            "description": "Route partial definition access",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/route"
+                }
+            ],
+            "properties": {
+                "override": {
+                    "description": "Override route",
+                    "enum": [
+                        "partial"
+                    ]
+                }
+            },
+            "required": [
+                "override"
+            ],
+            "additionalProperties": true
+        },
         "access": {
             "type": "object",
+            "description": "Right of access definition",
             "properties": {
                 "category": {
                     "description": "Category to classify the access",
@@ -130,10 +262,13 @@
                 "description": {
                     "description": "Access textual description",
                     "type": "string"
+                },
+                "applicationContext": {
+                    "description": "Application Context",
+                    "type": "string"
                 }
             },
             "required": [
-                "category",
                 "description"
             ],
             "additionalProperties": false

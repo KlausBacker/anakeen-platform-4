@@ -26,6 +26,7 @@ class SuiteRoutes
 
         $suite->addTestSuite("Anakeen\\Pu\\Routes\\CoreDataDocument");
         $suite->addTestSuite("Anakeen\\Pu\\Routes\\CoreDataFamilyDocument");
+        $suite->addTestSuite("Anakeen\\Pu\\Routes\\CoreRouteAccess");
 
         return $suite;
     }

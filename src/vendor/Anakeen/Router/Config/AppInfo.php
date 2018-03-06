@@ -74,8 +74,9 @@ class AppInfo
         $this->application->short_name = $this->shortName;
         $this->application->description = $this->description;
         $this->application->icon = $this->icon;
-        $this->application->displayable = $this->displayable;
+        $this->application->displayable = $this->displayable?"Y":"N";
         $this->application->childof = $this->parentName;
+        $this->application->available = 'Y';
 
         $this->application->param = new \Param();
         $err = $this->application->add();
@@ -105,7 +106,7 @@ class AppInfo
         $this->application->short_name = $this->shortName;
         $this->application->description = $this->description;
         $this->application->icon = $this->icon;
-        $this->application->displayable = $this->displayable;
+        $this->application->displayable = $this->displayable?"Y":"N";
         $this->application->childof = $this->parentName;
 
         $err = $this->application->modify();
