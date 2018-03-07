@@ -154,8 +154,8 @@ class AppInfo
             $paramDefData = [
                 "val" => $parameter->value,
                 "descr" => $parameter->description,
-                "kind" => ($parameter->access === "static" || $parameter->access === "readonly") ? $parameter->access
-                    : empty($parameter->type)?"text":$parameter->type,
+                "kind" => (!empty($parameter->access) && ($parameter->access === "static" || $parameter->access === "readonly")) ? $parameter->access
+                    : (!empty($parameter->type) ? $parameter->type : 'text'),
                 "global" => empty($parameter->global) ? "N" : "Y",
                 "user" => empty($parameter->isUser) ? "N" : "Y"
             ];
