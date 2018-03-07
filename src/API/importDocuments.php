@@ -55,7 +55,7 @@ $reset = $usage->addOptionalParameter("reset", "reset options", function ($value
     if ($values === ApiUsage::GET_USAGE) {
         return sprintf(" [%s] ", implode('|', $opt));
     }
-    
+
     $error = $apiusage->matchValues($values, $opt);
     if ($error) {
         $apiusage->exitError(sprintf("Error: wrong value for argument 'reset' : %s", $error));
@@ -165,12 +165,11 @@ if ($logfile) {
 }
 // mode HTML
 if ($to) {
-    include_once("FDL/sendmail.php");
-    
     $message = new \Dcp\Mail\Message();
-    
-    $message->setBody(new \Dcp\Mail\Body(file_get_contents($logfile), (($htmlmode == 'yes') ? 'text/html' : 'text/plain')));
-    
+
+    $body = new \Dcp\Mail\Body(file_get_contents($logfile), (($htmlmode == 'yes') ? 'text/html' : 'text/plain'));
+    $message->setBody($body);
+
     $from = getMailAddr($action->user->id);
     if ($from == "") {
         $from = \Dcp\Core\ContextManager::getApplicationParam('SMTP_FROM');
@@ -178,9 +177,12 @@ if ($to) {
     if ($from == "") {
         $from = $action->user->login . '@' . php_uname('n');
     }
-    
+
     $subject = sprintf(_("result of import  %s"), basename(GetHttpVars("file")));
-    $err = sendmail($to, $from, $cc = '', $bcc = '', $subject, $message);
+    $message->setSubject($subject);
+    $message->setFrom($from);
+    $message->addTo($to);
+    $err = $message->send();
     if ($err) {
         error_log("import sending mail: Error:$err");
     }
