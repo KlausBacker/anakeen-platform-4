@@ -10,15 +10,15 @@ use Anakeen\Pu\Routes\SuiteRoutes;
 
 require_once __DIR__ . "/../WHAT/Lib.Prefix.php";
 
-set_include_path(get_include_path() . PATH_SEPARATOR . "./DCPTEST:./WHAT");
+set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__);
 
 require_once 'WHAT/autoload.php';
 
 // ...
 class TestSuiteDcp
 {
-    const logFile = "/var/tmp/pudcp.log";
-    const msgFile = "/var/tmp/pudcp.msg";
+    const LOGFILE = "/var/tmp/pudcp.log";
+    const MSGFILE = "/var/tmp/pudcp.msg";
     public static $allInProgress = false;
 
     public static function suite()
@@ -33,15 +33,15 @@ class TestSuiteDcp
         $suite->addTest(SuiteDcpUser::suite());
         $suite->addTest(SuiteDcpSecurity::suite());
         // ...
-        printf("\nerror log in %s, messages in %s\n", self::logFile, self::msgFile);
+        printf("\nerror log in %s, messages in %s\n", self::LOGFILE, self::MSGFILE);
         return $suite;
     }
 
     public static function configure()
     {
-        @unlink(self::logFile);
-        ini_set("error_log", self::logFile);
-        file_put_contents(self::msgFile, strftime('%Y-%m-%d %T'));
+        @unlink(self::LOGFILE);
+        ini_set("error_log", self::LOGFILE);
+        file_put_contents(self::MSGFILE, strftime('%Y-%m-%d %T'));
     }
 
     public static function addMessage($msg)
@@ -50,7 +50,7 @@ class TestSuiteDcp
         if (!self::$allInProgress) {
             print "$msg\n";
         } else {
-            file_put_contents(self::msgFile, $msg, FILE_APPEND);
+            file_put_contents(self::MSGFILE, $msg, FILE_APPEND);
         }
     }
 }

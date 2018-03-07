@@ -5,20 +5,19 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
  */
 
 
-
 use Dcp\Core\ContextManager;
 use Dcp\Core\DbManager;
-use Dcp\Core\DocManager;
 
-require_once __DIR__."/../WHAT/Lib.Prefix.php";
+require_once __DIR__ . "/../WHAT/Lib.Prefix.php";
 require_once 'WHAT/autoload.php';
-include_once ("FDL/Class.Doc.php"); // to include some libraries
+include_once("FDL/Class.Doc.php"); // to include some libraries
 class TestCaseDcp extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -43,12 +42,12 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      * Store original include_path
      */
     protected static $include_path = null;
-    
+
     protected static $testDirectory = __DIR__;
-    
+
     protected static $importCsvEnclosure = "auto";
     protected static $importCsvSeparator = "auto";
-    
+
     protected function setUp()
     {
         $this->log(sprintf("========== %s ========", $this->getName()));
@@ -57,19 +56,21 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
 
         $this->beginTransaction();
     }
+
     protected function tearDown()
     {
         $this->rollbackTransaction();
     }
-    
+
     public static function setUpBeforeClass()
     {
     }
-    
+
     public static function log($text)
     {
-        file_put_contents(TestSuiteDcp::logFile, sprintf("[%s] %s\n", date("Y-m-d H:i:s") , $text) , FILE_APPEND);
+        file_put_contents(TestSuiteDcp::LOGFILE, sprintf("[%s] %s\n", date("Y-m-d H:i:s"), $text), FILE_APPEND);
     }
+
     /**
      * Make a begin in the db
      *
@@ -83,8 +84,9 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         }
         self::$odb->savePoint('putransaction');
         // $err = simpleQuery(self::$dbaccess, "begin", $r);
-        
+
     }
+
     /**
      *  Make a rollback in the db
      *
@@ -92,11 +94,12 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     protected static function rollbackTransaction()
     {
-        
+
         self::$odb->rollbackPoint('putransaction');
         //$err = simpleQuery(self::$dbaccess, "rollback", $r);
-        
+
     }
+
     /**
      * Connect as a user
      *
@@ -106,24 +109,25 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     protected static function connectUser($login = "admin")
     {
-        $action=ContextManager::getCurrentAction();
+        $action = ContextManager::getCurrentAction();
         if (!$action) {
-            $u=new \Account();
+            $u = new \Account();
             $u->setLoginName($login);
             \Dcp\Core\ContextManager::initContext($u);
         }
     }
+
     /**
      * Current action
      * @return \Action
      */
     protected static function &getAction()
     {
-        $action=ContextManager::getCurrentAction();
+        $action = ContextManager::getCurrentAction();
         if (!$action) {
             self::connectUser();
         }
-        $action=ContextManager::getCurrentAction();
+        $action = ContextManager::getCurrentAction();
         if (!$action->dbid) {
             if (!$action->dbid) $action->init_dbid();
             if (!$action->dbid) error_log(__METHOD__ . "lost action dbid");
@@ -131,6 +135,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         }
         return $action;
     }
+
     /**
      * Current application
      * @return \Application
@@ -141,6 +146,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         if ($action) return $action->parent;
         return null;
     }
+
     /**
      * return a single value from DB
      *
@@ -153,6 +159,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         DbManager::query($sql, $sval, true, true);
         return $sval;
     }
+
     /**
      * reset shared documents
      *
@@ -162,6 +169,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
     {
         \Dcp\Core\DocManager::cache()->clear();
     }
+
     /**
      * use another user
      *
@@ -183,6 +191,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         self::resetDocumentCache();
         return $u;
     }
+
     /**
      * exit sudo
      *
@@ -195,6 +204,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
             self::$user = null;
         }
     }
+
     /**
      * Import a file document description
      *
@@ -207,7 +217,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         if (is_array($file)) {
             return self::importDocuments($file);
         }
-        
+
         $realfile = $file;
         if (!file_exists($realfile)) {
             $ext = substr($file, strrpos($file, '.') + 1);
@@ -224,11 +234,14 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         $oImport->setCsvOptions(static::$importCsvSeparator, static::$importCsvEnclosure);
         //error_log(__METHOD__."import $realfile");
         $oImport->setVerifyAttributeAccess(false);
-        $cr = $oImport->importDocuments(self::getAction() , $realfile);
+        $cr = $oImport->importDocuments(self::getAction(), $realfile);
         $err = $oImport->getErrorMessage();
-        if ($err) throw new \Dcp\Exception($err);
+        if ($err) {
+            throw new \Dcp\Exception($err);
+        }
         return $cr;
     }
+
     /**
      * Import multiple files specified as a array list
      * @param array $fileList list of files to import
@@ -241,12 +254,13 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
             $cr[] = self::importDocument($fileList);
             return $cr;
         }
-        
+
         foreach ($fileList as $file) {
             $cr[] = self::importDocument($file);
         }
         return $cr;
     }
+
     /**
      * Import CSV data
      * @param string $data CSV data
@@ -254,7 +268,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     public function importCsvData($data)
     {
-        $tmpFile = tempnam(getTmpDir() , "importData");
+        $tmpFile = tempnam(getTmpDir(), "importData");
         if ($tmpFile === false) {
             throw new \Dcp\Exception(sprintf("Error creating temporary file in '%s'.", getTmpDir()));
         }
@@ -270,6 +284,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         $this->importDocument($tmpFile);
         unlink($tmpFile);
     }
+
     /**
      * Set the include_path INI parameter
      * @param string $include_path the new include_path to use
@@ -281,6 +296,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         }
         ini_set('include_path', $include_path);
     }
+
     /**
      * Set back the original include_path INI parameter
      */
@@ -290,6 +306,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
             ini_set('include_path', self::$include_path);
         }
     }
+
     /**
      * Mark test as incomplete (skip) if a core param is not equal
      * to the required value.
@@ -309,27 +326,5 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
             $this->markTestIncomplete(sprintf("Test requires %s '%s' (found '%s').", $paramName, $requiredValue, $value));
         }
         return false;
-    }
-}
-
-class LateNameResolver
-{
-    private $value = null;
-    public function __construct($value)
-    {
-        $this->value = $value;
-        return $this;
-    }
-    public function __toString()
-    {
-        return $this->resolve($this->value);
-    }
-    private function resolve($value)
-    {
-        $id = DocManager::getIdFromName( $value);
-        if (is_numeric($id)) {
-            return (string)$id;
-        }
-        return (string)$value;
     }
 }

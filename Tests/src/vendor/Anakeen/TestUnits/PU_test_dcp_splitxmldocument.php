@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -15,19 +16,18 @@ require_once 'PU_testcase_dcp.php';
 /**
  * Test class for splitXmlDocument() function.
  */
-
 class TestSplitXmlDocument extends TestCaseDcp
 {
     static private $runid = 0;
     static private $workDir = false;
     public $errmsg = '';
-    
+
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
         self::createWorkDir();
     }
-    
+
     public static function tearDownAfterClass()
     {
         parent::tearDownAfterClass();
@@ -36,18 +36,19 @@ class TestSplitXmlDocument extends TestCaseDcp
             rmdir(self::$workDir);
         }
     }
+
     /**
      * @dataProvider dataSplitXmlDocument
      */
     public function testExecuteSplitXmlDocument($data)
     {
         self::$runid++;
-        
+
         $testDir = self::$workDir . DIRECTORY_SEPARATOR . self::$runid;
         mkdir($testDir);
-        
-        $src = '.' . DIRECTORY_SEPARATOR . 'Layout' . DIRECTORY_SEPARATOR . $data['xml'];
-        $workingXML = $testDir . DIRECTORY_SEPARATOR . $data['xml'];
+
+        $src = self::$testDirectory . DIRECTORY_SEPARATOR . $data['xml'];
+        $workingXML = $testDir . DIRECTORY_SEPARATOR . basename($data['xml']);
         $ret = copy($src, $workingXML);
         if ($ret === false) {
             throw new \Exception(sprintf("Could not copy '%s' to '%s'.", $src, $workingXML));
@@ -60,7 +61,7 @@ class TestSplitXmlDocument extends TestCaseDcp
             $ret = call_user_func(array(
                 $this,
                 $data['xml_alter']
-            ) , $workingXML, $args);
+            ), $workingXML, $args);
             if ($ret === false) {
                 throw new \Exception($this->errmsg);
             }
@@ -70,32 +71,32 @@ class TestSplitXmlDocument extends TestCaseDcp
             try {
                 \Dcp\Core\importXml::splitXmlDocument($workingXML, $testDir);
                 $this->assertTrue(false, "XML Error not detected");
+            } catch (\Exception $e) {
+                $this->assertNotEmpty($e->getMessage(), sprintf("splitXmlDocument did not returned with an expected error"));
             }
-            catch(\Exception $e) {
-                $this->assertNotEmpty($e->getMessage() , sprintf("splitXmlDocument did not returned with an expected error"));
-            }
-            
+
             return;
         } else {
             \Dcp\Core\importXml::splitXmlDocument($workingXML, $testDir);
         }
-        
+
         if (!isset($data['produces'])) {
             return;
         }
         /* check that the expected files are present */
         foreach ($data['produces'] as $file) {
             $file = $testDir . DIRECTORY_SEPARATOR . $file;
-            $this->assertTrue(is_file($file) , sprintf("Required file '%s' has not been produced by splitXmlDocument.", $file));
+            $this->assertTrue(is_file($file), sprintf("Required file '%s' has not been produced by splitXmlDocument.", $file));
         }
         /* check they are valid XML files */
         foreach ($data['produces'] as $file) {
             $file = $testDir . DIRECTORY_SEPARATOR . $file;
-            $this->assertTrue($this->isValidXML($file) , sprintf("Output file '%s' does not seems to be a valid XML file according to xmllint.", $file));
+            $this->assertTrue($this->isValidXML($file), sprintf("Output file '%s' does not seems to be a valid XML file according to xmllint.", $file));
         }
-        
+
         $this->rm_Rf($testDir);
     }
+
     private static function createWorkDir()
     {
         $tmpdir = getTmpDir();
@@ -112,12 +113,12 @@ class TestSplitXmlDocument extends TestCaseDcp
         }
         self::$workDir = $tmpname;
     }
-    
+
     private function isValidXML($file)
     {
         $cmd = sprintf("xmllint --sax %s | grep -c '^SAX\\.error' > /dev/null 2>&1", escapeshellarg($file));
         $ret = 0;
-        $out = system($cmd, $ret);
+        system($cmd, $ret);
         if ($ret == 0) {
             /* If grep exit code is 0, it means it found a "SAX.error" line,
              * which means there are errors in the XML file
@@ -127,10 +128,11 @@ class TestSplitXmlDocument extends TestCaseDcp
         /* grep found no "SAX.error" lines */
         return true;
     }
+
     /** @noinspection PhpUnusedPrivateMethodInspection */
     private function addBigNode($xml, $args = array())
     {
-        $addNodeData = file_get_contents('.' . DIRECTORY_SEPARATOR . 'Layout' . DIRECTORY_SEPARATOR . 'PU_data_dcp_splitxmldocument_bignode_template.xml');
+        $addNodeData = file_get_contents(self::$testDirectory . DIRECTORY_SEPARATOR . 'Layout' . DIRECTORY_SEPARATOR . 'PU_data_dcp_splitxmldocument_bignode_template.xml');
         if ($addNodeData === false) {
             $this->errmsg = sprintf("Could not get content from XML file '%s'.", "PU_data_dcp_splitxmldocument_bignode_template.xml");
             return false;
@@ -173,7 +175,7 @@ class TestSplitXmlDocument extends TestCaseDcp
             return false;
         }
         /* write back the top part */
-        $ret = fwrite($fh, $xmlElmts['top']);
+        fwrite($fh, $xmlElmts['top']);
         /*
          * expand @DATA@ (2nd pass)
         */
@@ -200,11 +202,11 @@ class TestSplitXmlDocument extends TestCaseDcp
         }
         unset($el);
         /* write back the bottom part */
-        $ret = fwrite($fh, $xmlElmts['bottom']);
+        fwrite($fh, $xmlElmts['bottom']);
         fclose($fh);
         return $xml;
     }
-    
+
     private function rm_Rf($dir)
     {
         $type = filetype($dir);
@@ -227,31 +229,31 @@ class TestSplitXmlDocument extends TestCaseDcp
         rmdir($dir);
         return true;
     }
-    
+
     public function dataSplitXmlDocument()
     {
         return array(
             array(
                 array(
                     'description' => 'Small XML file',
-                    'xml' => 'PU_data_dcp_splitxmldocument.xml',
+                    'xml' => 'Layout/PU_data_dcp_splitxmldocument.xml',
                     'produces' => array(
                         '00000PU_DATA_DCP_SPLITXMLDOCUMENT_1.xml',
                         '00001PU_DATA_DCP_SPLITXMLDOCUMENT_2.xml',
                         '00002PU_DATA_DCP_SPLITXMLDOCUMENT_3.xml'
                     )
                 )
-            ) ,
+            ),
             array(
                 array(
                     'description' => 'Big XML file',
-                    'xml' => 'PU_data_dcp_splitxmldocument.xml',
+                    'xml' => 'Layout/PU_data_dcp_splitxmldocument.xml',
                     'xml_alter' => 'addBigNode',
                     'xml_alter_args' => array(
                         'NAME' => 'PU_DATA_DCP_SPLITXMLDOCUMENT_BIGNODE',
                         'TITLE' => 'big.bin',
                         'size_in_MB' => '100'
-                    ) ,
+                    ),
                     'produces' => array(
                         '00000PU_DATA_DCP_SPLITXMLDOCUMENT_1.xml',
                         '00001PU_DATA_DCP_SPLITXMLDOCUMENT_2.xml',
@@ -259,15 +261,14 @@ class TestSplitXmlDocument extends TestCaseDcp
                         '00003PU_DATA_DCP_SPLITXMLDOCUMENT_BIGNODE.xml'
                     )
                 )
-            ) ,
+            ),
             array(
                 array(
                     'description' => 'Invalid root node',
-                    'xml' => 'PU_data_dcp_splitxmldocument_invalid_root_node.xml',
+                    'xml' => 'Layout/PU_data_dcp_splitxmldocument_invalid_root_node.xml',
                     'expect_error' => true
                 )
             )
         );
     }
 }
-?>
