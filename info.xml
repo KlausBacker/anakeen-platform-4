@@ -383,6 +383,7 @@
 
 
 
+        <process command="./wsh.php --api=recordRoutes" />
         <process command="programs/update_catalog"/>
     </post-install>
 
@@ -720,6 +721,7 @@ This can be solved by:<br/>
             <label lang="en">Check autoloader</label>
         </process>
 
+        <process command="./wsh.php --api=recordRoutes" />
         <process command="programs/update_catalog"/>
     </post-upgrade>
 

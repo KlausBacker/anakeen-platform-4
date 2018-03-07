@@ -146,4 +146,12 @@ class ErrorCodeRoutes
      * @errorCode The requiredAccess reference unknow access right
      */
     const ROUTES0133 = 'Route access : Unknow acl "%s".';
+    /**
+     * @errorCode Cannot defined same app twice
+     */
+    const ROUTES0134 = 'Config : app  "%s" already defined';
+    /**
+     * @errorCode Override app config : only partial mode
+     */
+    const ROUTES0135 = 'Config : override app  only partial is allowed. Found "%s"';
 }

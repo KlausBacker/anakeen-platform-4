@@ -34,6 +34,8 @@ class RouterConfig
         $this->routes = isset($data->routes) ? $data->routes : [];
         $this->apps = isset($data->apps) ? $data->apps : [];
         $this->accesses = isset($data->accesses) ? $data->accesses : [];
+
+        static::sortApps($this->apps);
         static::sortRoutesByPriority($this->routes);
         $this->uniqueName($this->routes);
         static::sortMiddleByPriority($this->middlewares);
@@ -59,8 +61,11 @@ class RouterConfig
                     throw new Exception("ROUTES0128", $routeInfo->name);
                 }
                 if ($routeInfo->override === "partial") {
-                    $routeInfo->configFile=$uRoutes[$routeInfo->name]->configFile.', '.$routeInfo->configFile;
-                    $uRoutes[$routeInfo->name] = (object)array_merge((array)$uRoutes[$routeInfo->name], (array)$routeInfo);
+                    $routeInfo->configFile = $uRoutes[$routeInfo->name]->configFile . ', ' . $routeInfo->configFile;
+                    $uRoutes[$routeInfo->name] = (object)array_merge(
+                        (array)$uRoutes[$routeInfo->name],
+                        (array)$routeInfo
+                    );
                 } elseif ($routeInfo->override === "complete") {
                     $uRoutes[$routeInfo->name] = $routeInfo;
                 } else {
@@ -68,7 +73,7 @@ class RouterConfig
                 }
             } else {
                 if (!empty($routeInfo->override)) {
-                     throw new Exception("ROUTES0130", $routeInfo->name);
+                    throw new Exception("ROUTES0130", $routeInfo->name);
                 }
                 $uRoutes[$routeInfo->name] = $routeInfo;
             }
@@ -83,6 +88,33 @@ class RouterConfig
                 $method = strtoupper($method);
             }
         }
+    }
+
+    protected static function sortApps(array &$apps)
+    {
+        usort($apps, function ($a, $b) {
+
+            /**
+             * @var AppInfo $a
+             * @var AppInfo $b
+             */
+
+            if (!empty($a->override) && empty($b->override)) {
+                return 1;
+            }
+            if (!empty($b->override) && empty($a->override)) {
+                return -1;
+            }
+            if (!empty($a->parentName) && empty($b->parentName)) {
+                return 1;
+            }
+            if (!empty($b->parentName) && empty($a->parentName)) {
+                return -1;
+            }
+
+
+            return strcmp($a->name, $b->name);
+        });
     }
 
     protected static function sortRoutesByPriority(array &$routes)
@@ -108,10 +140,10 @@ class RouterConfig
                     return -1;
                 }
             }
-            if (isset($a->priority) && ! isset($b->priority)) {
+            if (isset($a->priority) && !isset($b->priority)) {
                 return 1;
             }
-            if (!isset($a->priority) &&  isset($b->priority)) {
+            if (!isset($a->priority) && isset($b->priority)) {
                 return -1;
             }
 
@@ -155,8 +187,24 @@ class RouterConfig
     public function getApps()
     {
         $appsInfo = [];
+        /**
+         * @var AppInfo $appData
+         */
         foreach ($this->apps as $appData) {
-            $appsInfo[$appData->name] = new AppInfo($appData);
+            if (isset($appsInfo[$appData->name])) {
+                if (empty($appData->override)) {
+                    throw new Exception("ROUTES0134", $appData->name);
+                }
+
+                if ($appData->override === "partial") {
+                    $appData->configFile = $appsInfo[$appData->name]->configFile . ', ' . $appData->configFile;
+                    $appsInfo[$appData->name]->set($appData);
+                } else {
+                    throw new Exception("ROUTES0135", $appData->name);
+                }
+            } else {
+                $appsInfo[$appData->name] = new AppInfo($appData);
+            }
         }
 
         return $appsInfo;
@@ -183,6 +231,25 @@ class RouterConfig
         $apps = $this->getApps();
         foreach ($apps as $appInfo) {
             $appInfo->record();
+        }
+    }
+
+
+    /**
+     * Record all application access in database
+     *
+     * @param string $appName
+     *
+     * @throws Exception
+     * @throws \Dcp\Db\Exception
+     */
+    public function recordAccesses($appName = "CORE")
+    {
+        $accesses = $this->getAccesses();
+        foreach ($accesses as $access) {
+            if ($access->applicationContext === $appName) {
+                $access->record();
+            }
         }
     }
 }

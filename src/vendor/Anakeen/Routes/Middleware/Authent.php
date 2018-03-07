@@ -79,7 +79,7 @@ class Authent
             } elseif (!empty($access->and) && count($access->and) > 1) {
                 foreach ($access->and as $aclName) {
                     if (!self::hasPermission($aclName)) {
-                        $e = new Exception("ROUTES0131", "AND:".implode(", ", $access->and));
+                        $e = new Exception("ROUTES0131", "AND:" . implode(", ", $access->and));
                         $e->setHttpStatus(403, "Access Forbidden");
                         throw $e;
                     }
@@ -112,9 +112,11 @@ class Authent
             throw new Exception("ROUTES0133", $aclName);
         }
 
-        if ($permission->id_application !== $acl->id_application || $permission->id_user !== ContextManager::getCurrentUser()->id) {
+        if ($permission->id_application !== $acl->id_application
+            || $permission->id_user !== ContextManager::getCurrentUser()->id) {
             $permission->id_application = $acl->id_application;
             $permission->id_user = ContextManager::getCurrentUser()->id;
+
 
             $permission->getPrivileges();
         }

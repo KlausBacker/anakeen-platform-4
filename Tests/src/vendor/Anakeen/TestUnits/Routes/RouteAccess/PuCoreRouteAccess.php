@@ -54,7 +54,6 @@ class CoreRouteAccess extends TestCaseRoutes
     public function dataGetRouteAccess()
     {
         return array(
-
             "accessRouteAdmin" => array(
                 'GET /tests/routes/',
                 "test.admin",
@@ -154,6 +153,32 @@ class CoreRouteAccess extends TestCaseRoutes
                 'GET /tests/routes/forall/',
                 "test.user4",
                 __DIR__ . "/Expects/routeAccess.json"
+            ),
+            "accessGlobalAdmin" => array(
+                'GET /tests/routes/global/',
+                "test.admin",
+                __DIR__ . "/Expects/routeAccessDeny.json"
+            ),
+            "accessGlobalUser1" => array(
+                'GET /tests/routes/global/',
+                "test.user1",
+                __DIR__ . "/Expects/routeAccess.json"
+            ),
+
+            "accessGlobalUser2" => array(
+                'GET /tests/routes/global/',
+                "test.user2",
+                __DIR__ . "/Expects/routeAccess.json"
+            ),
+            "accessGlobalUser3" =>  array(
+                'GET /tests/routes/global/',
+                "test.user3",
+                __DIR__ . "/Expects/routeAccessDeny.json"
+            ),
+            "accessGlobalUser4" => array(
+                'GET /tests/routes/global/',
+                "test.user4",
+                __DIR__ . "/Expects/routeAccessDeny.json"
             )
         );
     }

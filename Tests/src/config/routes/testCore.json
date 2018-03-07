@@ -18,6 +18,9 @@
         "coretest:guest": {
             "applicationContext": "CORETEST",
             "description": "Guest Access"
+        },
+        "coretest:global": {
+            "description": "Global Access"
         }
     },
     "routes": {
@@ -84,6 +87,16 @@
             "pattern": "/tests/routes/over2/",
             "description": "Route config",
             "requiredAccess": null
+        },
+        "Core:Test:Global": {
+            "priority": 0,
+            "callable": "\\Anakeen\\Routes\\Tests\\TestRouteConfig",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "/tests/routes/global/",
+            "description": "Route config",
+            "requiredAccess": "coretest:global"
         }
     }
 }

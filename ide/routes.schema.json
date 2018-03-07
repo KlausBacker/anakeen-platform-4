@@ -54,7 +54,14 @@
             "description": "Application information",
             "patternProperties": {
                 "^([A-Z_]+)$": {
-                    "$ref": "#/definitions/app"
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/appComplete"
+                        },
+                        {
+                            "$ref": "#/definitions/appPartial"
+                        }
+                    ]
                 }
             }
         }
@@ -311,11 +318,51 @@
                     "additionalProperties": false
                 }
             },
+            "additionalProperties": false
+        },
+        "appPartial" : {
+            "type": "object",
+            "description": "Route partial definition access",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/app"
+                }
+            ],
+            "properties": {
+                "override": {
+                    "description": "Override app",
+                    "enum": [
+                        "partial"
+                    ]
+                }
+            },
+            "required": [
+                "override"
+            ],
+            "additionalProperties": true
+        },
+        "appComplete" : {
+
+            "type": "object",
+            "description": "Route partial definition access",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/app"
+                }
+            ],
+            "properties": {
+                "override": {
+                    "description": "Override app",
+                    "enum": [
+                        "partial"
+                    ]
+                }
+            },
             "required": [
                 "shortName",
                 "version"
             ],
-            "additionalProperties": false
+            "additionalProperties": true
         },
         "parameter": {
             "type": "object",

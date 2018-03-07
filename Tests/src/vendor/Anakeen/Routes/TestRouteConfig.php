@@ -22,7 +22,9 @@ class TestRouteConfig
         return $response->withJson(
             [
                 "routes" => $routeConfig->getRoutes(),
-                "middleware" => $routeConfig->getMiddlewares()
+                "middleware" => $routeConfig->getMiddlewares(),
+                "apps" => $routeConfig->getApps(),
+                "accesses" => $routeConfig->getAccesses()
             ]
         );
     }

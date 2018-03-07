@@ -25,6 +25,7 @@
         <process command="programs/update_catalog"/>
 
         <process command="./wsh.php --api=manageApplications --method=init --appname=CORETEST" />
+        <process command="./wsh.php --api=recordRoutes" />
     </post-install>
 
     <pre-upgrade>
@@ -38,6 +39,7 @@
 
     <post-upgrade>
         <process command="./wsh.php --api=manageApplications --method=update --appname=CORETEST" />
+        <process command="./wsh.php --api=recordRoutes" />
     </post-upgrade>
 
 </module>

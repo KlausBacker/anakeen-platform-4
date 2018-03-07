@@ -8,6 +8,7 @@ use \Dcp\Core\Exception;
 class RouterLib
 {
 
+    const cacheFile="config.cache";
     /**
      * @var RouterConfig
      */
