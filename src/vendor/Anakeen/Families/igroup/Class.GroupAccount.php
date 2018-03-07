@@ -19,8 +19,7 @@ use Dcp\AttributeIdentifiers\Igroup as MyAttributes;
 class GroupAccount extends \Dcp\Family\Group
 {
     use TAccount;
-    public $wuser;
-    
+
     public $cviews = array(
         "FUSERS:FUSERS_IGROUP"
     );
