@@ -430,8 +430,7 @@ function isInteractiveCLI()
 
 function _wsh_send_error($errMsg, $expand = array())
 {
-    global $action;
-    $wshError = new Dcp\WSHMailError($action, $errMsg);
+    $wshError = new Dcp\WSHMailError($errMsg);
     $wshError->prefix = sprintf('%s %s ', date('c') , php_uname('n'));
     $wshError->addExpand($expand);
     $wshError->autosend();

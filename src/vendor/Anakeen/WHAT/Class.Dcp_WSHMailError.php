@@ -1,4 +1,5 @@
 <?php
+
 namespace Dcp;
 
 class WSHMailError
@@ -7,38 +8,37 @@ class WSHMailError
     /**
      * @var \Action
      */
-    public $action = null;
     public $msg = '';
     public $from = '';
     public $mailto = '';
     public $subject = '';
     public $prefix = false;
+
     /**
      * WSHError constructor.
-     * @param \Action $action
      * @param $msg
      */
-    public function __construct(\Action & $action, $msg)
+    public function __construct($msg)
     {
-        $this->reset($action, $msg);
+        $this->reset($msg);
     }
+
     /**
-     * @param \Action $action
      * @param $msg
      */
-    public function reset(\Action & $action, $msg)
+    public function reset($msg)
     {
         $this->expand = array(
-            'h' => php_uname('n') ,
+            'h' => php_uname('n'),
             'c' => \ApplicationParameterManager::getParameterValue('CORE', 'CORE_CLIENT')
         );
-        $this->action = $action;
         $this->msg = $msg;
         $this->from = '';
         $this->mailto = '';
         $this->subject = '';
         $this->prefix = false;
     }
+
     /**
      * @param $str
      * @return string
@@ -52,59 +52,62 @@ class WSHMailError
             $c = mb_substr($str, $p, 1);
             if ($expandNextChar) {
                 if ($c == '%') {
-                    $res.= '%';
+                    $res .= '%';
                 } elseif (isset($this->expand[$c])) {
-                    $res.= $this->expand[$c];
+                    $res .= $this->expand[$c];
                 } else {
-                    $res.= $c;
+                    $res .= $c;
                 }
                 $expandNextChar = false;
             } else {
                 if ($c == '%') {
                     $expandNextChar = true;
                 } else {
-                    $res.= $c;
+                    $res .= $c;
                 }
             }
             $p++;
         }
         return $res;
     }
+
     /**
      * @return string
      */
     public function autosend()
     {
-        $from = getMailAddr($this->action->user->id);
+        $user = \Dcp\Core\ContextManager::getCurrentUser();
+        $from = (!empty($user) ? getMailAddr($user->id) : '');
         if ($from == '') {
             $from = \ApplicationParameterManager::getParameterValue('FDL', 'SMTP_FROM');
         }
         if ($from == '') {
-            $from = $this->action->user->login . '@' . php_uname('n');
+            $from = (!empty($user) ? $user->login : 'no-reply') . '@' . php_uname('n');
         }
         $this->from = $from;
-        
+
         $mailto = trim(\ApplicationParameterManager::getParameterValue('CORE', 'CORE_WSH_MAILTO'));
         if ($mailto == '') {
             return '';
         }
         $this->mailto = $mailto;
-        
+
         $subject = \ApplicationParameterManager::getParameterValue('CORE', 'CORE_WSH_MAILSUBJECT');
         if ($subject == '') {
             $subject = 'Script error';
         }
         $this->subject = $this->expand($subject);
-        
+
         $msg = $this->msg;
         if (is_string($this->prefix) && strlen($this->prefix) > 0) {
             $msg = $this->prefixize($this->prefix, $msg);
         }
-        
+
         $htmlBody = sprintf('<pre>%s</pre>', htmlspecialchars($msg, ENT_QUOTES));
-        
+
         return $this->send($this->from, $this->mailto, $this->subject, $htmlBody, $msg);
     }
+
     /**
      * Add a prefix at beginning of each lines
      * @param string $prefix
@@ -115,13 +118,26 @@ class WSHMailError
     {
         return $prefix . str_replace("\n", "\n" . $prefix, $msg);
     }
+
     /**
      * @param string $from Sender's email address (e.g. 'john.doe@example.net')
      * @param string|string[] $mailto Recipient(s) address(es) as a comma-separated list of mail addresses, or and array og mail addresses
      * @param string $subject Subject
      * @param string $htmlBody The main body in HTML format
      * @param string $altTextBody Optional text variant of the main HTML body
-     * @param array[] $attachments Optional attachments (e.g. array( array('file' => '/path/to/att.dat', 'name' => 'icon.png', 'mime' => 'image/png' [, 'cid' => 'CIDidentifier'] ), [...] )))
+     * @param array[] $attachments Optional attachments
+     *
+     * Syntax for `$attachments`:
+     *      [
+     *          [
+     *              'file' => '/path/to/att.dat', // required
+     *              'name' => 'icon.png',         // required
+     *              'mime' => 'image/png',        // required
+     *              'cid' => 'CIDidentifier'      // optional
+     *          ],
+     *          <...>
+     *      ]
+     *
      * @return string Non-empty string with error message on failure, or empty string on success
      */
     public function send($from, $mailto, $subject, $htmlBody, $altTextBody = '', $attachments = array())
@@ -166,6 +182,7 @@ class WSHMailError
         }
         return $err;
     }
+
     /**
      * @param string[] $expand
      */
