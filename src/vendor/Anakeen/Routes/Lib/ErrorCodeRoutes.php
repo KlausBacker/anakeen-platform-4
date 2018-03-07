@@ -5,6 +5,10 @@ class ErrorCodeRoutes
 
 
     /**
+     * @errorCode Cache is corrupted
+     */
+    const ROUTES0010 = 'Config : route cache config file is corrupted';
+    /**
      * @errorCode The ressource is not found
      */
     const ROUTES0100 = 'Document "%s" not found';

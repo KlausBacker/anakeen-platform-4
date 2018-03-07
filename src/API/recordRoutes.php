@@ -12,3 +12,6 @@ $usage->verify();
 
 $routeConfig = \Anakeen\Router\RouterLib::getRouterConfig();
 $routeConfig->recordAccesses();
+
+$routesConfig=new \Anakeen\Router\RoutesConfig();
+$routesConfig->resetCache();
