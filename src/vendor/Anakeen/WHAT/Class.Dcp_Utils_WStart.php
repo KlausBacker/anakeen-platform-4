@@ -386,6 +386,21 @@ class WStart extends WStartInternals
         \Dcp\Autoloader::forceRegenerate();
         $this->verbose(1, sprintf("[+] Done.\n"));
     }
+
+
+    public function resetRouteConfig()
+    {
+        $this->verbose(1, sprintf("[+] Update global route access definition.\n"));
+
+        $routeConfig = \Anakeen\Router\RouterLib::getRouterConfig();
+        $routeConfig->recordAccesses();
+
+        $this->verbose(1, sprintf("[+] Reset cache route configuration file.\n"));
+        $routesConfig=new \Anakeen\Router\RoutesConfig();
+        $routesConfig->resetCache();
+
+        $this->verbose(1, sprintf("[+] Done.\n"));
+    }
     /**
      * @throws WStartException
      */
