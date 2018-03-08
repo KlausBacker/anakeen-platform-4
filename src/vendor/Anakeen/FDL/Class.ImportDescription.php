@@ -45,7 +45,8 @@ class importDocumentDescription
     /**
      * @var array
      */
-    private $colOrders = array();
+    private $colOrders = [];
+    private $colKeys = [];
     /**
      * @var array
      */
@@ -865,8 +866,8 @@ class importDocumentDescription
             $fromid = \Dcp\Core\DocManager::getFamilyIdFromName($data[1]);
         }
         
-        if (isset($tkeys[$fromid])) {
-            $tk = $tkeys[$fromid];
+        if (isset($this->colKeys[$fromid])) {
+            $tk = $this->colKeys[$fromid];
         } else {
             $tk = array(
             "title"
@@ -1494,8 +1495,8 @@ class importDocumentDescription
             $wid = trim($data[1]);
         } else {
             $pid = \Dcp\Core\DocManager::getIdFromName(trim($data[1]));
-            $tdoc = getTDoc($this->dbaccess, $pid);
-            $wid = getv($tdoc, "us_whatid");
+            $tdoc = \Dcp\Core\DocManager::getRawData($pid, ["us_whatid"]);
+            $wid = $tdoc["us_whatid"];
         }
         $idapp = $action->parent->GetIdFromName($data[2]);
         if ($idapp == 0) {
@@ -1783,13 +1784,13 @@ class importDocumentDescription
             $orfromid = \Dcp\Core\DocManager::getFamilyIdFromName($data[1]);
         }
         
-        $tkeys[$orfromid] = getOrder($data);
-        if (($tkeys[$orfromid][0] == "") || (count($tkeys[$orfromid]) == 0)) {
-            $this->tcr[$this->nLine]["err"] = sprintf(_("error in import keys : %s"), implode(" - ", $tkeys[$orfromid]));
-            unset($tkeys[$orfromid]);
+        $this->colKeys[$orfromid] = getOrder($data);
+        if (($this->colKeys[$orfromid][0] == "") || (count($this->colKeys[$orfromid]) == 0)) {
+            $this->tcr[$this->nLine]["err"] = sprintf(_("error in import keys : %s"), implode(" - ", $this->colKeys[$orfromid]));
+            unset($this->colKeys[$orfromid]);
             $this->tcr[$this->nLine]["action"] = "ignored";
         } else {
-            $this->tcr[$this->nLine]["msg"] = sprintf(_("new import keys : %s"), implode(" - ", $tkeys[$orfromid]));
+            $this->tcr[$this->nLine]["msg"] = sprintf(_("new import keys : %s"), implode(" - ", $this->colKeys[$orfromid]));
         }
     }
     /**

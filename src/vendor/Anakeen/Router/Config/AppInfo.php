@@ -14,12 +14,12 @@ class AppInfo
 {
     public $name;
     public $shortName;
-    public $pattern;
     public $description;
     public $icon = "";
     public $displayable = true;
     public $parentName;
     public $version;
+    public $override;
     /**
      * @var ParameterInfo[]
      */
@@ -29,8 +29,14 @@ class AppInfo
      * @var \Application
      */
     protected $application;
+    public $configFile;
 
     public function __construct($data = null)
+    {
+        $this->set($data);
+    }
+
+    public function set($data = null)
     {
         if ($data) {
             $vars = get_object_vars($data);
@@ -74,8 +80,9 @@ class AppInfo
         $this->application->short_name = $this->shortName;
         $this->application->description = $this->description;
         $this->application->icon = $this->icon;
-        $this->application->displayable = $this->displayable;
+        $this->application->displayable = $this->displayable?"Y":"N";
         $this->application->childof = $this->parentName;
+        $this->application->available = 'Y';
 
         $this->application->param = new \Param();
         $err = $this->application->add();
@@ -105,7 +112,7 @@ class AppInfo
         $this->application->short_name = $this->shortName;
         $this->application->description = $this->description;
         $this->application->icon = $this->icon;
-        $this->application->displayable = $this->displayable;
+        $this->application->displayable = $this->displayable?"Y":"N";
         $this->application->childof = $this->parentName;
 
         $err = $this->application->modify();
@@ -148,7 +155,7 @@ class AppInfo
                 "val" => $parameter->value,
                 "descr" => $parameter->description,
                 "kind" => ($parameter->access === "static" || $parameter->access === "readonly") ? $parameter->access
-                    : $parameter->type,
+                    : empty($parameter->type)?"text":$parameter->type,
                 "global" => empty($parameter->global) ? "N" : "Y",
                 "user" => empty($parameter->isUser) ? "N" : "Y"
             ];

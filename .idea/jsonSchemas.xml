@@ -14,6 +14,10 @@
                     <option name="path" value="src/config/routes" />
                     <option name="directory" value="true" />
                   </Item>
+                  <Item>
+                    <option name="path" value="Tests/src/config/routes" />
+                    <option name="directory" value="true" />
+                  </Item>
                 </list>
               </option>
             </SchemaInfo>

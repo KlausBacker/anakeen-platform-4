@@ -30,6 +30,7 @@ Options:
 Operations:
 
     -r|--resetAutoloader    Re-generate class autoloader.
+    --resetRouteConfig      Reread route config files to update global access and rewrite route cache file.
     -l|--links              Re-generate Images and Docs symlinks.
     -c|--clearFile          Clear cached content.
     -u|--upgradeVersion     Increment WVERSION.
@@ -107,6 +108,10 @@ EOF;
                     $opts['resetAutoloader'] = true;
                     break;
 
+                case '--resetRouteConfig':
+                    $opts['resetRouteConfig'] = true;
+                    break;
+
                 case '-l':
                 case '--links':
                     $opts['links'] = true;
@@ -157,6 +162,7 @@ EOF;
             'imageAndDocsLinks' => false,
             'clearFileCache' => false,
             'refreshJsVersion' => false,
+            'resetRouteConfig' => false,
             'configureDbConnect' => false,
             'style' => false,
             'unStop' => false
@@ -164,6 +170,10 @@ EOF;
         $all = true;
         if (isset($opts['resetAutoloader'])) {
             $operations['clearAutoloadCache'] = true;
+            $all = false;
+        }
+        if (isset($opts['resetRouteConfig'])) {
+            $operations['resetRouteConfig'] = true;
             $all = false;
         }
         if (isset($opts['links'])) {

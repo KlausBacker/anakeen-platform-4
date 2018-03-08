@@ -1,0 +1,33 @@
+{
+    "apps": {
+        "CORETEST": {
+            "override" : "partial",
+            "description": "Testing routes and add parameters",
+            "parameters": {
+                "TEST_EYELEVEL": {
+                    "value": "007",
+                    "description": "Test Level",
+                    "access": "admin",
+                    "global": false
+                }
+            }
+        }
+    },
+    "routes": {
+        "Core:Test:Routes:Over1": {
+            "priority": 10,
+            "description": "Route override",
+            "override": "partial"
+        },
+        "Core:Test:Routes:Over2": {
+            "priority": 3,
+            "callable": "\\Anakeen\\Routes\\Tests\\TestRouteConfig",
+            "methods": [
+                "PUT"
+            ],
+            "pattern": "/tests/routes/over2/",
+            "requiredAccess": null,
+            "override": "complete"
+        }
+    }
+}

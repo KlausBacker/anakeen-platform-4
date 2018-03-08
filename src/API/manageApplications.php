@@ -57,6 +57,14 @@ if (!$legacy && !empty($apps[$appname])) {
             }
             break;
     }
+
+    $accesses = $routeConfig->getAccesses();
+    foreach ($accesses as $access) {
+        if ($access->applicationContext === $appname) {
+            $access->record();
+        }
+    }
+
 } else {
     // Legacy Method to declare applications
 

@@ -326,7 +326,7 @@ create index permission_idx4 on permission(computed);
     /**
      * return ACL list for a user
      */
-    public function GetPrivileges($force = false, $computed = true)
+    public function getPrivileges($force = false, $computed = true)
     {
         if (!$force) {
             $privileges = "";

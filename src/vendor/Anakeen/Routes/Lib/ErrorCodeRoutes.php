@@ -5,6 +5,10 @@ class ErrorCodeRoutes
 
 
     /**
+     * @errorCode Cache is corrupted
+     */
+    const ROUTES0010 = 'Config : route cache config file is corrupted';
+    /**
      * @errorCode The ressource is not found
      */
     const ROUTES0100 = 'Document "%s" not found';
@@ -118,4 +122,40 @@ class ErrorCodeRoutes
      * @errorCode Document reference must be an search id
      */
     const ROUTES0126 = 'Document "%s" not a search';
+    /**
+     * @errorCode ApplicationContext of accesses must reference recorded application
+     */
+    const ROUTES0127 = 'Accesses : ApplicationContext  "%s" not found';
+    /**
+     * @errorCode Cannot defined same route twice
+     */
+    const ROUTES0128 = 'Config : route  "%s" already defined';
+    /**
+     * @errorCode Cannot defined same route twice
+     */
+    const ROUTES0129 = 'Config : override route  only partial or complete is allowed. Found "%s"';
+    /**
+     * @errorCode Cannot override a route not recorded
+     */
+    const ROUTES0130 = 'Config : override route. No find "%s" route to override.';
+    /**
+     * @errorCode Current user has no enought privileges to execute route
+     */
+    const ROUTES0131 = 'Route access deny : %s';
+    /**
+     * @errorCode The requiredAccess defined in route configuration not respect syntax
+     */
+    const ROUTES0132 = 'Route access misconfiguration';
+    /**
+     * @errorCode The requiredAccess reference unknow access right
+     */
+    const ROUTES0133 = 'Route access : Unknow acl "%s".';
+    /**
+     * @errorCode Cannot defined same app twice
+     */
+    const ROUTES0134 = 'Config : app  "%s" already defined';
+    /**
+     * @errorCode Override app config : only partial mode
+     */
+    const ROUTES0135 = 'Config : override app  only partial is allowed. Found "%s"';
 }

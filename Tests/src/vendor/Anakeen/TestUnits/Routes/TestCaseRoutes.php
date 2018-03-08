@@ -171,7 +171,7 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
         $result = json_decode($jsonResult, true);
         $this->assertNotEmpty($result, sprintf("Fail decode result json : %s", $jsonResult));
 
-       
+
         $expectedResult = str_replace('%baseURL%', URLUtils::getBaseURL(), $expectedResult);
         $expectedResult = str_replace('%userName%', ContextManager::getCurrentUser()->getAccountName(), $expectedResult);
         $expectedResult = str_replace('%userDocName%', DocManager::getTitle(ContextManager::getCurrentUser()->fid), $expectedResult);

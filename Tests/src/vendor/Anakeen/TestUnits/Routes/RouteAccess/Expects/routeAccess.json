@@ -1,0 +1,42 @@
+{
+    "routes": {
+
+        "Core:Test:Routes": {
+            "priority": 0,
+            "callable": "\\Anakeen\\Routes\\Tests\\TestRouteConfig",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "\/tests\/routes\/",
+            "description": "Route config",
+            "requiredAccess": null,
+            "name": "Core:Test:Routes",
+            "configFile": "testCore.json"
+        },
+        "Core:Test:Routes:Over1": {
+            "priority": 10,
+            "callable": "\\Anakeen\\Routes\\Tests\\TestRouteConfig",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "\/tests\/routes\/over1\/",
+            "description": "Route override",
+            "requiredAccess": null,
+            "name": "Core:Test:Routes:Over1",
+            "configFile": "testCore.json, testCoreOverride.json",
+            "override": "partial"
+        },
+        "Core:Test:Routes:Over2": {
+            "priority": 3,
+            "callable": "\\Anakeen\\Routes\\Tests\\TestRouteConfig",
+            "methods": [
+                "PUT"
+            ],
+            "pattern": "/tests/routes/over2/",
+            "requiredAccess": null,
+            "configFile": "testCoreOverride.json",
+            "override": "complete"
+        }
+
+    }
+}

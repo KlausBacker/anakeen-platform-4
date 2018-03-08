@@ -381,8 +381,6 @@
 
         <process command="./wsh.php --api=manageContextCrontab --cmd=register --file=vendor/Anakeen/anakeen.cron"/>
 
-
-
         <process command="programs/update_catalog"/>
     </post-install>
 
