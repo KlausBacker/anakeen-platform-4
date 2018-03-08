@@ -113,9 +113,9 @@
                         "uid": 1,
                         "uname": "%userName%",
                         "date": "%isoDate%",
-                        "level": "info",
-                        "code": "CREATE",
-                        "comment": "Cr\u00e9ation du document"
+                        "level": "message",
+                        "code": "REVISION",
+                        "comment": "Test revision #1"
                     },
                     {
                         "uid": 1,
@@ -129,9 +129,9 @@
                         "uid": 1,
                         "uname": "%userName%",
                         "date": "%isoDate%",
-                        "level": "message",
-                        "code": "REVISION",
-                        "comment": "Test revision #1"
+                        "level": "info",
+                        "code": "CREATE",
+                        "comment": "Cr\u00e9ation du document"
                     }
                 ]
             }

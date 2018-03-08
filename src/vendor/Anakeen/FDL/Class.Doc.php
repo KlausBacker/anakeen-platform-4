@@ -5585,7 +5585,7 @@ create unique index i_docir on doc(initid, revision);";
             $comment = utf8_encode($comment);
         }
         $h->comment = $comment;
-        $h->date = date("d-m-Y H:i:s");
+        $h->date = date("d-m-Y H:i:s").substr(microtime(), 1, 8);
         if ($uid > 0) {
             $u = new Account("", $uid);
             $h->uid = $u->id;
