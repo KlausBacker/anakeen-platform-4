@@ -1,8 +1,8 @@
 {
   "apps": {
     "UITEST": {
-      "name": "UITEST",
-      "short_name": "List all ui test pages",
+      "version": "1.0.0",
+      "shortName": "List all ui test pages",
       "description": "Interface to view test pages",
       "icon": "apps\/uitest\/uitest.png"
     }
@@ -27,9 +27,7 @@
       "pattern": "\/apps\/uitest\/",
       "description": "Test Ui Page",
       "applicationContext": "UITEST",
-      "requiredAccesses": [
-        "uitest:user"
-      ]
+      "requiredAccess": "uitest:user"
     },
     "Ui:Test:ExportData": {
       "priority": 1,
@@ -39,10 +37,11 @@
       ],
       "pattern": "\/api\/v2\/uitest\/data",
       "description": "Test Ui Export Test Description",
-      "requiredAccesses": [
-        "uitest:admin"
-      ]
+      "requiredAccess": {
+        "and": [
+          "uitest:admin", "uitest:user"
+        ]
+      }
     }
-  },
-  "middlewares": []
+  }
 }

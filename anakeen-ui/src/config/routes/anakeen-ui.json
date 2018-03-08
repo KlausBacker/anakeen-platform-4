@@ -1,175 +1,187 @@
 {
-  "routes": {
-    "Ui:Document:Pager": {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Ui\\DocumentsPager",
-      "methods": [
-        "GET"
-      ],
-      "pattern": "\/api\/v2\/pager\/{collection}\/pages\/{page}",
-      "description": "Document list page by page"
-    },
-    "Ui:i18n": {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Ui\\I18nCatalog",
-      "methods": [
-        "GET"
-      ],
-      "pattern": "\/api\/v2\/i18n\/{catalog}",
-      "description": "Get translation catalog"
-    },
-    "Ui:Document:View": {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Ui\\DocumentView",
-      "methods": [
-        "GET"
-      ],
-      "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}",
-      "description": "Get render view data"
-    },
-
-    "Ui:Document:Views": {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Ui\\DocumentViewCollection",
-      "methods": [
-        "GET"
-      ],
-      "pattern": "\/api\/v2\/documents\/{docid}\/views\/",
-      "description": "Get render view list"
-    },
-
-    "Ui:Document:CreationView": {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Ui\\CreationView",
-      "methods": [
-        "POST"
-      ],
-      "pattern": "\/api\/v2\/families\/{family}\/documentsViews/",
-      "description": "Get render view data"
-    },
-    "Ui:Revision:ViewUpdate": {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Ui\\DocumentViewUpdate",
-      "methods": [
-        "PUT"
-      ],
-      "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revision:[0-9]+}\/views\/{view}",
-      "description": "Modify document data"
-    },
-    "Ui:Document:Delete": {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Ui\\DocumentViewDelete",
-      "methods": [
-        "DELETE"
-      ],
-      "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}",
-      "description": "Delete document data"
-    },
-
-    "Ui:Revision:View": {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Ui\\DocumentView",
-      "methods": [
-        "GET"
-      ],
-      "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revision:[0-9]+}\/views\/{view}",
-      "description": "Get render view data"
-    },
-
-    "Ui:Transition:View": {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Ui\\TransitionView",
-      "methods": [
-        "GET"
-      ],
-      "pattern": "\/api\/v2\/documents\/{docid}\/views\/states\/{state}",
-      "description": "Document Workflow Transition View"
-    },
-
-
-    "Ui:Transition:Set": {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Ui\\TransitionSet",
-      "methods": [
-        "POST"
-      ],
-      "pattern": "\/api\/v2\/documents\/{docid}\/views\/states\/{state}",
-      "description": "Change state for a document"
-    },
-
-    "Ui:Family:Structure": {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Ui\\FamilyStructure",
-      "methods": [
-        "GET"
-      ],
-      "pattern": "\/api\/v2\/families\/{family}\/views\/structure",
-      "description": "Get attributes structure of family"
-    },
-
-    "Ui:Document:HtmlPage": {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Ui\\DocumentHtml",
-      "methods": [
-        "GET"
-      ],
-      "pattern": "\/api\/v2\/documents\/{docid}.html",
-      "description": "Html page to view document"
-    },
-    "Ui:Revision:HtmlPage": {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Ui\\DocumentHtml",
-      "methods": [
-        "GET"
-      ],
-      "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revision:[0-9]+}.html",
-      "description": "Html page to view revision"
-    },
-
-    "Ui:Document:HtmlViewPage": {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Ui\\DocumentHtml",
-      "methods": [
-        "GET"
-      ],
-      "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}.html",
-      "description": "Html page to view document with specific view"
-    },
-    "Ui:Revision:HtmlViewPage": {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Ui\\DocumentHtml",
-      "methods": [
-        "GET"
-      ],
-      "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revision:[0-9]+}\/views\/{view}.html",
-      "description": "Html page to view revision with specific view"
-    },
-    "Ui:Document:Lock": {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Ui\\LockView",
-      "methods": [
-        "delete", "get", "post", "put"
-      ],
-      "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}\/locks\/{lockType:permanent|temporary}",
-      "description": "Lock document"
-    },
-    "Ui:Document:AutoComplete": {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Ui\\Autocomplete",
-      "methods": [
-        "post"
-      ],
-      "pattern": "\/api\/v2\/documents\/{docid}\/autocomplete\/{attrid}",
-      "description": "Get Autocomplete suggestion for an attribute"
-    },
-    "Ui:Document:SubMenu": {
-      "priority": 1,
-      "callable": "\\Anakeen\\Routes\\Ui\\SubMenu",
-      "methods": [
-        "get"
-      ],
-      "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}\/menus\/{menu}",
-      "description": "Get submenu items"
+    "routes": {
+        "Ui:Document:Pager": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Ui\\DocumentsPager",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "\/api\/v2\/pager\/{collection}\/pages\/{page}",
+            "description": "Document list page by page",
+            "requiredAccess": null
+        },
+        "Ui:i18n": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Ui\\I18nCatalog",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "\/api\/v2\/i18n\/{catalog}",
+            "description": "Get translation catalog",
+            "requiredAccess": null
+        },
+        "Ui:Document:View": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Ui\\DocumentView",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}",
+            "description": "Get render view data",
+            "requiredAccess": null
+        },
+        "Ui:Document:Views": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Ui\\DocumentViewCollection",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/views\/",
+            "description": "Get render view list",
+            "requiredAccess": null
+        },
+        "Ui:Document:CreationView": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Ui\\CreationView",
+            "methods": [
+                "POST"
+            ],
+            "pattern": "\/api\/v2\/families\/{family}\/documentsViews/",
+            "description": "Get render view data",
+            "requiredAccess": null
+        },
+        "Ui:Revision:ViewUpdate": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Ui\\DocumentViewUpdate",
+            "methods": [
+                "PUT"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revision:[0-9]+}\/views\/{view}",
+            "description": "Modify document data",
+            "requiredAccess": null
+        },
+        "Ui:Document:Delete": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Ui\\DocumentViewDelete",
+            "methods": [
+                "DELETE"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}",
+            "description": "Delete document data",
+            "requiredAccess": null
+        },
+        "Ui:Revision:View": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Ui\\DocumentView",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revision:[0-9]+}\/views\/{view}",
+            "description": "Get render view data",
+            "requiredAccess": null
+        },
+        "Ui:Transition:View": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Ui\\TransitionView",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/views\/states\/{state}",
+            "description": "Document Workflow Transition View",
+            "requiredAccess": null
+        },
+        "Ui:Transition:Set": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Ui\\TransitionSet",
+            "methods": [
+                "POST"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/views\/states\/{state}",
+            "description": "Change state for a document",
+            "requiredAccess": null
+        },
+        "Ui:Family:Structure": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Ui\\FamilyStructure",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "\/api\/v2\/families\/{family}\/views\/structure",
+            "description": "Get attributes structure of family",
+            "requiredAccess": null
+        },
+        "Ui:Document:HtmlPage": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Ui\\DocumentHtml",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}.html",
+            "description": "Html page to view document",
+            "requiredAccess": null
+        },
+        "Ui:Revision:HtmlPage": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Ui\\DocumentHtml",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revision:[0-9]+}.html",
+            "description": "Html page to view revision",
+            "requiredAccess": null
+        },
+        "Ui:Document:HtmlViewPage": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Ui\\DocumentHtml",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}.html",
+            "description": "Html page to view document with specific view",
+            "requiredAccess": null
+        },
+        "Ui:Revision:HtmlViewPage": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Ui\\DocumentHtml",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/revisions\/{revision:[0-9]+}\/views\/{view}.html",
+            "description": "Html page to view revision with specific view",
+            "requiredAccess": null
+        },
+        "Ui:Document:Lock": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Ui\\LockView",
+            "methods": [
+                "delete",
+                "get",
+                "post",
+                "put"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}\/locks\/{lockType:permanent|temporary}",
+            "description": "Lock document",
+            "requiredAccess": null
+        },
+        "Ui:Document:AutoComplete": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Ui\\Autocomplete",
+            "methods": [
+                "post"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/autocomplete\/{attrid}",
+            "description": "Get Autocomplete suggestion for an attribute",
+            "requiredAccess": null
+        },
+        "Ui:Document:SubMenu": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Ui\\SubMenu",
+            "methods": [
+                "get"
+            ],
+            "pattern": "\/api\/v2\/documents\/{docid}\/views\/{view}\/menus\/{menu}",
+            "description": "Get submenu items",
+            "requiredAccess": null
+        }
     }
-  }
 }
