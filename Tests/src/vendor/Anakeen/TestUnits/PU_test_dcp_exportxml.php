@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -18,7 +19,8 @@ class TestExportXml extends TestCaseDcpCommonFamily
      * @var \DOMDocument
      */
     private $dom;
-    static function getCommonImportFile()
+
+    public static function getCommonImportFile()
     {
         return array(
             "PU_data_dcp_exportfamily.ods",
@@ -27,6 +29,96 @@ class TestExportXml extends TestCaseDcpCommonFamily
             "PU_data_dcp_exportdocimagexml.ods"
         );
     }
+
+    /**
+     * @dataProvider dataDocumentFiles
+     */
+    public function testExportRelation($docName, $attrName, $expectedValue)
+    {
+
+        $dom = $this->getExportedSearchDom();
+        $this->domTestExportValue($dom, $docName, $attrName, 'name', $expectedValue);
+    }
+
+    /**
+     * @return \DOMDocument
+     */
+    private function getExportedSearchDom()
+    {
+        if (!$this->dom) {
+            $s = new \SearchDoc(self::$dbaccess, "TST_EXPORTFAM1");
+            //print_r( $s->search());
+            $export = new \exportXmlFolder();
+
+            $export->setOutputFormat(\exportXmlFolder::xmlFormat);
+            $export->useIdentificator(false);
+            $export->exportFromSearch($s);
+
+            $this->dom = new \DOMDocument();
+            $this->dom->load($export->getOutputFile());
+            @unlink($export->getOutputFile());
+            return $this->dom;
+        } else {
+            return $this->dom;
+        }
+    }
+
+    private function domTestExportValue(\DOMDocument $dom, $docName, $attrName, $domAttr, $expectedValue)
+    {
+
+        $docs = $dom->getElementsByTagName("tst_exportfam1");
+        /**
+         * \DOMElement $xmldoc
+         */
+        $xmldoc = null;
+        foreach ($docs as $doc) {
+            /**
+             * @var \DOMElement $doc
+             */
+
+            if ($doc->getAttribute('name') == $docName) {
+                $xmldoc = $doc;
+                break;
+            }
+        }
+
+        $this->assertNotEmpty($xmldoc, sprintf("document %s not found in xml", $docName));
+        /**
+         * @var \DOMNodeList $attrs
+         */
+        $attrs = $xmldoc->getElementsByTagName($attrName);
+        if (!is_array($expectedValue)) {
+            $expectedValue = array(
+                $expectedValue
+            );
+        }
+        $this->assertEquals(count($expectedValue), $attrs->length, sprintf("attribute %s not found in %s document", $attrName, $docName));
+
+        $ka = 0;
+        foreach ($attrs as $attr) {
+            /**
+             * @var \DOMElement $attr
+             */
+            if ($domAttr == 'content') {
+                $value = $attr->nodeValue;
+            } else {
+                $value = $attr->getAttribute($domAttr);
+            }
+            $this->assertTrue($expectedValue[$ka] === $value, sprintf("incorrect value for attribute %s in %s document", $attrName, $docName));
+            $ka++;
+        }
+    }
+
+    /**
+     * @dataProvider dataDocumentFiles
+     */
+    public function testExportSelectionRelation($docName, $attrName, $expectedValue)
+    {
+
+        $dom = $this->getExportedSelectionDom();
+        $this->domTestExportValue($dom, $docName, $attrName, 'name', $expectedValue);
+    }
+
     /**
      * @return \DOMDocument
      */
@@ -42,9 +134,11 @@ class TestExportXml extends TestCaseDcpCommonFamily
             $config = array();
             foreach ($selNames as $name) {
                 $id = \Dcp\Core\DocManager::getIdFromName($name);
-                if ($id) $config["selectionItems"][] = $id;
+                if ($id) {
+                    $config["selectionItems"][] = $id;
+                }
             }
-            
+
             $s = new \Fdl_DocumentSelection($config);
             //print_r( $s->search());
             $export = new \exportXmlFolder();
@@ -56,8 +150,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
                 $this->dom->load($export->getOutputFile());
                 @unlink($export->getOutputFile());
                 return $this->dom;
-            }
-            catch(\Exception $e) {
+            } catch (\Exception $e) {
                 print $e->getMessage();
             }
             return null;
@@ -65,102 +158,21 @@ class TestExportXml extends TestCaseDcpCommonFamily
             return $this->dom;
         }
     }
-    /**
-     * @return \DOMDocument
-     */
-    private function getExportedSearchDom()
-    {
-        if (!$this->dom) {
-            $s = new \SearchDoc(self::$dbaccess, "TST_EXPORTFAM1");
-            //print_r( $s->search());
-            $export = new \exportXmlFolder();
-            
-            $export->setOutputFormat(\exportXmlFolder::xmlFormat);
-            $export->useIdentificator(false);
-            $export->exportFromSearch($s);
 
-            $this->dom = new \DOMDocument();
-            $this->dom->load($export->getOutputFile());
-            @unlink($export->getOutputFile());
-            return $this->dom;
-        } else {
-            return $this->dom;
-        }
-    }
-    /**
-     * @dataProvider dataDocumentFiles
-     */
-    public function testExportRelation($docName, $attrName, $expectedValue)
-    {
-        
-        $dom = $this->getExportedSearchDom();
-        $this->domTestExportValue($dom, $docName, $attrName, 'name', $expectedValue);
-    }
-    /**
-     * @dataProvider dataDocumentFiles
-     */
-    public function testExportSelectionRelation($docName, $attrName, $expectedValue)
-    {
-        
-        $dom = $this->getExportedSelectionDom();
-        $this->domTestExportValue($dom, $docName, $attrName, 'name', $expectedValue);
-    }
     /**
      * @dataProvider dataValues
      */
     public function testExportSimpleValue($docName, $attrName, $expectedValue)
     {
-        
+
         $dom = $this->getExportedSearchDom();
         $this->domTestExportValue($dom, $docName, $attrName, 'content', $expectedValue);
     }
-    private function domTestExportValue(\DOMDocument $dom, $docName, $attrName, $domAttr, $expectedValue)
-    {
-        
-        $docs = $dom->getElementsByTagName("tst_exportfam1");
-        /**
-         * \DOMElement $xmldoc
-         */
-        $xmldoc = null;
-        foreach ($docs as $doc) {
-            /**
-             * @var \DOMElement $doc
-             */
-            
-            if ($doc->getAttribute('name') == $docName) {
-                $xmldoc = $doc;
-                break;
-            }
-        }
-        
-        $this->assertNotEmpty($xmldoc, sprintf("document %s not found in xml", $docName));
-        /**
-         * @var \DOMNodeList $attrs
-         */
-        $attrs = $xmldoc->getElementsByTagName($attrName);
-        if (!is_array($expectedValue)) $expectedValue = array(
-            $expectedValue
-        );
-        $this->assertEquals(count($expectedValue) , $attrs->length, sprintf("attribute %s not found in %s document", $attrName, $docName));
-        
-        $ka = 0;
-        foreach ($attrs as $attr) {
-            /**
-             * @var \DOMElement $attr
-             */
-            if ($domAttr == 'content') {
-                $value = $attr->nodeValue;
-            } else {
-                $value = $attr->getAttribute($domAttr);
-            }
-            $this->assertTrue($expectedValue[$ka] === $value, sprintf("incorrect value for attribute %s in %s document", $attrName, $docName));
-            $ka++;
-        }
-    }
+
     /**
      * @dataProvider dataExportTitleLimits
      */
-    function testExportTitleLimits($folderId)
+    public function testExportTitleLimits($folderId)
     {
         if (file_exists("/.dockerenv")) {
             $this->markTestSkipped(sprintf("Skipping test because Docker's AUFS has a NAME_LEN < 255 (see #2399 and #6336)"));
@@ -174,16 +186,23 @@ class TestExportXml extends TestCaseDcpCommonFamily
             $this->dom = new \DOMDocument();
             $this->dom->load($export->getOutputFile());
             @unlink($export->getOutputFile());
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             $catchedMessage = $e->getMessage();
         }
         $this->assertEmpty($catchedMessage, sprintf("Export thrown an unexpected exception: %s", $catchedMessage));
-        $this->assertTrue((is_object($this->dom) && isset($this->dom->documentElement) && $this->dom->documentElement !== null) , sprintf("Invalid XML export for folder '%s': %s", $folderId, ($catchedMessage != '') ? $catchedMessage : '<no-error-message>'));
+        $this->assertTrue(
+            (is_object($this->dom) && isset($this->dom->documentElement) && $this->dom->documentElement !== null),
+            sprintf(
+                "Invalid XML export for folder '%s': %s",
+                $folderId,
+                ($catchedMessage != '') ? $catchedMessage : '<no-error-message>'
+            )
+        );
     }
+
     /**
      * Test that exported documents have no param columns
-     * @param array $archiveFile
+     * @param string $archiveFile
      * @param $needles
      * @param $type
      * @throws \Dcp\Exception
@@ -191,33 +210,40 @@ class TestExportXml extends TestCaseDcpCommonFamily
      */
     public function testExportImageXmlZip($archiveFile, $needles, $type)
     {
-        include_once ('FDL/exportfld.php');
-        include_once ('Lib.FileDir.php');
-        
+        include_once('FDL/exportfld.php');
+        include_once('Lib.FileDir.php');
+
         $oImport = new \ImportDocument();
-        $oImport->importDocuments(self::getAction() , $archiveFile, false, true);
+        $oImport->importDocuments(self::getAction(), $archiveFile, false, true);
         $err = $oImport->getErrorMessage();
-        if ($err) throw new \Dcp\Exception($err);
-        
+        if ($err) {
+            throw new \Dcp\Exception($err);
+        }
+
         $folderId = "TEXT_FOLDER_EXPORT_IMAGE_XML";
         $famid = "TST_EXPORT_IMAGE_XML";
         $testFolder = uniqid(getTmpDir() . "/testexportimage");
         $testExtractFolder = uniqid(getTmpDir() . "/testexportextractimage");
         mkdir($testFolder);
         $testarchivefile = $testFolder . "/xml";
-        if ($type == "X") $testarchivefile.= ".zip";
-        else $testarchivefile.= ".xml";
+        if ($type == "X") {
+            $testarchivefile .= ".zip";
+        } else {
+            $testarchivefile .= ".xml";
+        }
         SetHttpVar("wfile", "Y");
-        
-        exportxmlfld(self::getAction() , $folderId, $famid, null, $testarchivefile, $type, "Y", null, false);
-        
+
+        exportxmlfld(self::getAction(), $folderId, $famid, null, $testarchivefile, $type, "Y", null, false);
+
         if ($type == "X") {
             $err = extractTar($testarchivefile, $testExtractFolder);
             $this->assertEmpty($err, sprintf("Unexpected error while extracting archive '%s': %s", $testarchivefile, $err));
-        } else $testExtractFolder = $testFolder;
-        
+        } else {
+            $testExtractFolder = $testFolder;
+        }
+
         $output = array();
-        exec(sprintf("cat %s/*.xml", escapeshellarg($testExtractFolder)) , $output);
+        exec(sprintf("cat %s/*.xml", escapeshellarg($testExtractFolder)), $output);
         foreach ($needles as $needle) {
             $found = false;
             foreach ($output as $line) {
@@ -230,29 +256,29 @@ class TestExportXml extends TestCaseDcpCommonFamily
         }
         remove_dir($testFolder);
     }
-    
+
     public function dataExportImage()
     {
         return array(
             array(
-                "././PU_dcp_data_exportxmlimage.zip",
+                self::$testDirectory . DIRECTORY_SEPARATOR . "PU_dcp_data_exportxmlimage.zip",
                 array(
                     "PU_data_dcp_exportdocimageexample.png",
                     "PU_data_dcp_exportdocimage.ods"
-                ) ,
+                ),
                 "X"
-            ) ,
+            ),
             array(
-                "././PU_dcp_data_exportxmlimage.zip",
+                self::$testDirectory . DIRECTORY_SEPARATOR . "PU_dcp_data_exportxmlimage.zip",
                 array(
                     "PU_data_dcp_exportdocimageexample.png",
                     "PU_data_dcp_exportdocimage.ods"
-                ) ,
+                ),
                 "Y"
             )
         );
     }
-    
+
     public function dataDocumentFiles()
     {
         return array(
@@ -260,17 +286,17 @@ class TestExportXml extends TestCaseDcpCommonFamily
                 "TST_REL1",
                 "tst_relone",
                 "TST_OUTREL1"
-            ) ,
+            ),
             array(
                 "TST_REL1",
                 "tst_account",
                 "TST_U_USERONE"
-            ) ,
+            ),
             array(
                 "TST_REL2",
                 "tst_relmul",
                 "TST_OUTREL1,TST_OUTREL2,TST_OUTREL3"
-            ) ,
+            ),
             array(
                 "TST_REL3",
                 "tst_colrelone",
@@ -279,7 +305,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
                     "TST_OUTREL2",
                     "TST_OUTREL3"
                 )
-            ) ,
+            ),
             array(
                 "TST_REL4",
                 "tst_colrelmul",
@@ -291,7 +317,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
             )
         );
     }
-    
+
     public function dataValues()
     {
         return array(
@@ -299,17 +325,17 @@ class TestExportXml extends TestCaseDcpCommonFamily
                 "TST_NUM1",
                 "tst_number",
                 "1"
-            ) ,
+            ),
             array(
                 "TST_NUM0",
                 "tst_number",
                 "0"
-            ) ,
+            ),
             array(
                 "TST_DATE1",
                 "tst_date",
                 "2012-02-20"
-            ) ,
+            ),
             array(
                 "TST_DATE1",
                 "tst_number",
@@ -317,7 +343,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
             )
         );
     }
-    
+
     public function dataExportTitleLimits()
     {
         return array(
@@ -327,4 +353,3 @@ class TestExportXml extends TestCaseDcpCommonFamily
         );
     }
 }
-?>

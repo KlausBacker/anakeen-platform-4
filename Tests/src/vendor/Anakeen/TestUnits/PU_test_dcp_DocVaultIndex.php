@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -17,12 +18,13 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
     /**
      * import some documents
      * @static
-     * @return string
+     * @return array
      */
     protected static function getCommonImportFile()
     {
         return array();
     }
+
     /**
      * @dataProvider dataDocVaultIndex
      * @param array() $data
@@ -32,7 +34,7 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
     {
         foreach ($data['import:family'] as $file => $callback) {
             $oImport = new \ImportDocument();
-            $oImport->importDocuments($this->getAction() , $file, $onlyAnalyze = false, $archive = false);
+            $oImport->importDocuments($this->getAction(), $file, $onlyAnalyze = false, $archive = false);
             $err = $oImport->getErrorMessage();
             $this->assertEmpty($err, sprintf("import error [%s] %s", $file, $err));
             /*
@@ -51,7 +53,7 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
              * @var \DocFam $docFam
              */
             $docFam = new_Doc(self::$dbaccess, $famName);
-            $this->assertTrue($docFam->isAlive() , sprintf("Could not find family with name '%s'.", $famName));
+            $this->assertTrue($docFam->isAlive(), sprintf("Could not find family with name '%s'.", $famName));
             /*
              * docfam.param
             */
@@ -64,7 +66,7 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
                     }
                     $vids = join("\n", $vids);
                     $err = $docFam->setParam($attrName, $vids);
-                    $this->assertEmpty($err, sprintf("Error setting param of '%s' with vids = {%s}: %s", $attrName, join(', ', explode("\n", $vids)) , $err));
+                    $this->assertEmpty($err, sprintf("Error setting param of '%s' with vids = {%s}: %s", $attrName, join(', ', explode("\n", $vids)), $err));
                 }
             }
             /*
@@ -79,7 +81,7 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
                     }
                     $vids = join("\n", $vids);
                     $err = $docFam->setDefValue($attrName, $vids);
-                    $this->assertEmpty($err, sprintf("Error setting defval of '%s' with vids = {%s}: %s", $attrName, join(', ', explode("\n", $vids)) , $err));
+                    $this->assertEmpty($err, sprintf("Error setting defval of '%s' with vids = {%s}: %s", $attrName, join(', ', explode("\n", $vids)), $err));
                 }
             }
             /*
@@ -92,7 +94,7 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
          * Import documents
         */
         $oImport = new \ImportDocument();
-        $oImport->importDocuments($this->getAction() , $data['import:documents'], $onlyAnalyze = false, $archive = true);
+        $oImport->importDocuments($this->getAction(), $data['import:documents'], $onlyAnalyze = false, $archive = true);
         $err = $oImport->getErrorMessage();
         $this->assertEmpty($err, sprintf("import error %s", $err));
         /*
@@ -112,7 +114,16 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
                 $docName
             ));
             if (isset($expect['count'])) {
-                $this->assertTrue((count($res) == $expect['count']) , sprintf("Unexpected count (expected %d got %d) from docvaultindex for '%s':\n%s", $expect['count'], count($res) , $docName, $this->dumpDocVaultIndex($res, true)));
+                $this->assertTrue(
+                    (count($res) == $expect['count']),
+                    sprintf(
+                        "Unexpected count (expected %d got %d) from docvaultindex for '%s':\n%s",
+                        $expect['count'],
+                        count($res),
+                        $docName,
+                        $this->dumpDocVaultIndex($res, true)
+                    )
+                );
             }
             if (isset($expect['files'])) {
                 $files = array();
@@ -120,10 +131,28 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
                     $files[] = $row['filename'];
                 }
                 foreach ($expect['files'] as $expectedFile) {
-                    $this->assertContains($expectedFile, $files, sprintf("Missing file '%s' for '%s' in docvaultindex: %s", $expectedFile, $docName, $this->dumpDocVaultIndex($res, true)));
+                    $this->assertContains(
+                        $expectedFile,
+                        $files,
+                        sprintf(
+                            "Missing file '%s' for '%s' in docvaultindex: %s",
+                            $expectedFile,
+                            $docName,
+                            $this->dumpDocVaultIndex($res, true)
+                        )
+                    );
                 }
                 foreach ($files as $foundFile) {
-                    $this->assertContains($foundFile, $expect['files'], sprintf("Found unexpected file '%s' for '%s' in docvaultindex:\n%s", $foundFile, $docName, $this->dumpDocVaultIndex($res, true)));
+                    $this->assertContains(
+                        $foundFile,
+                        $expect['files'],
+                        sprintf(
+                            "Found unexpected file '%s' for '%s' in docvaultindex:\n%s",
+                            $foundFile,
+                            $docName,
+                            $this->dumpDocVaultIndex($res, true)
+                        )
+                    );
                 }
             }
         }
@@ -136,8 +165,7 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
         ob_start();
         try {
             $ret = $vaultAnalyzer->checkDocVaultIndex($report);
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             // Printout buffered progress messages in case of error
             ob_end_flush();
             throw $e;
@@ -155,25 +183,9 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
         $this->assertTrue($ret, sprintf("checkDocVaultIndex reported inconsistencies: %s", var_export(array(
             'missing' => $missing,
             'new' => $new
-        ) , true)));
+        ), true)));
     }
-    
-    public function dumpDocVaultIndex($res, $return = false)
-    {
-        $out = '';
-        $out.= sprintf("docvaultindex:\n");
-        foreach ($res as $row) {
-            $out.= sprintf(" %9d | %32s | %9d | %32s\n", $row['docid'], $row['docname'], $row['vaultid'], $row['filename']);
-        }
-        $out.= sprintf(" (%d rows)\n", count($res));
-        $out.= sprintf("\n");
-        if ($return === true) {
-            return $out;
-        }
-        print $out;
-        return null;
-    }
-    
+
     public function getDocVaultIndex($names = array())
     {
         $res = array();
@@ -189,98 +201,112 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
         simpleQuery(self::$dbaccess, $q, $res, false, false, true);
         return $res;
     }
-    
+
+    public function dumpDocVaultIndex($res, $return = false)
+    {
+        $out = '';
+        $out .= sprintf("docvaultindex:\n");
+        foreach ($res as $row) {
+            $out .= sprintf(" %9d | %32s | %9d | %32s\n", $row['docid'], $row['docname'], $row['vaultid'], $row['filename']);
+        }
+        $out .= sprintf(" (%d rows)\n", count($res));
+        $out .= sprintf("\n");
+        if ($return === true) {
+            return $out;
+        }
+        print $out;
+        return null;
+    }
+
     public function dataDocVaultIndex()
     {
         return array(
             array(
                 array(
                     'import:family' => array(
-                        '././PU_data_dcp_docvaultindex_family_parent.csv' => function ($dbaccess)
-                        {
+                        self::$testDirectory . DIRECTORY_SEPARATOR . 'PU_data_dcp_docvaultindex_family_parent.csv' => function ($dbaccess) {
                             $docFam = new_Doc($dbaccess, 'TST_DOCVAULTINDEX');
                             if (!$docFam->isAlive()) {
                                 return sprintf("Could not find family '%s'.", 'TST_DOCVAULTINDEX');
                             }
-                            $vid = $docFam->vaultRegisterFile('./Images/img_one.png', 'icône TST_DOCVAULTINDEX.png', $info);
+                            $vid = $docFam->vaultRegisterFile(self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png', 'icône TST_DOCVAULTINDEX.png', $info);
                             if (($err = $docFam->changeIcon($vid)) !== '') {
                                 return $err;
                             }
                             return '';
                         }
-                        ,
-                        '././PU_data_dcp_docvaultindex_family_childs.csv' => function ($dbaccess)
-                        {
+                    ,
+                        self::$testDirectory . DIRECTORY_SEPARATOR . 'PU_data_dcp_docvaultindex_family_childs.csv' => function ($dbaccess) {
                             return '';
                         }
-                    ) ,
+                    ),
                     'set' => array(
                         'TST_DOCVAULTINDEX' => array(
                             'param' => array(
                                 'P_S_FILE' => array(
-                                    './Images/img_one.png' => 'file param 1 of 3.png'
-                                ) ,
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'file param 1 of 3.png'
+                                ),
                                 'P_S_IMAGE' => array(
-                                    './Images/img_one.png' => 'image param 1 of 3.png'
-                                ) ,
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'image param 1 of 3.png'
+                                ),
                                 'P_M_FILE' => array(
-                                    './Images/img_one.png' => 'file param 2 of 3.png',
-                                    './Images/img_two.png' => 'file param 3 of 3.png'
-                                ) ,
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'file param 2 of 3.png',
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_two.png' => 'file param 3 of 3.png'
+                                ),
                                 'P_M_IMAGE' => array(
-                                    './Images/img_one.png' => 'image param 2 of 3.png',
-                                    './Images/img_two.png' => 'image param 3 of 3.png'
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'image param 2 of 3.png',
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_two.png' => 'image param 3 of 3.png'
                                 )
-                            ) ,
+                            ),
                             'defval' => array(
                                 'S_FILE' => array(
-                                    './Images/img_one.png' => 'file defval 1 of 3.png'
-                                ) ,
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'file defval 1 of 3.png'
+                                ),
                                 'S_IMAGE' => array(
-                                    './Images/img_one.png' => 'image defval 1 of 3.png'
-                                ) ,
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'image defval 1 of 3.png'
+                                ),
                                 'M_FILE' => array(
-                                    './Images/img_one.png' => 'file defval 2 of 3.png',
-                                    './Images/img_two.png' => 'file defval 3 of 3.png'
-                                ) ,
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'file defval 2 of 3.png',
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_two.png' => 'file defval 3 of 3.png'
+                                ),
                                 'M_IMAGE' => array(
-                                    './Images/img_one.png' => 'image defval 2 of 3.png',
-                                    './Images/img_two.png' => 'image defval 3 of 3.png'
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'image defval 2 of 3.png',
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_two.png' => 'image defval 3 of 3.png'
                                 )
                             )
-                        ) ,
+                        ),
                         'TST_DOCVAULTINDEX_CHILD_2' => array(
                             'param' => array(
                                 'P_S_FILE' => array(
-                                    './Images/img_one.png' => 'overwrite file param 1 of 3 from parent.png'
-                                ) ,
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'overwrite file param 1 of 3 from parent.png'
+                                ),
                                 'P_S_IMAGE' => array(
-                                    './Images/img_one.png' => 'overwrite image param 1 of 3 from parent.png'
-                                ) ,
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'overwrite image param 1 of 3 from parent.png'
+                                ),
                                 'P_S_FILE_2' => array(
-                                    './Images/img_one.png' => 'self file param 1 of 1.png'
-                                ) ,
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'self file param 1 of 1.png'
+                                ),
                                 'P_S_IMAGE_2' => array(
-                                    './Images/img_one.png' => 'self image param 1 of 1.png'
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'self image param 1 of 1.png'
                                 )
-                            ) ,
+                            ),
                             'defval' => array(
                                 'S_FILE' => array(
-                                    './Images/img_one.png' => 'overwrite file defval 1 of 3 from parent.png'
-                                ) ,
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'overwrite file defval 1 of 3 from parent.png'
+                                ),
                                 'S_IMAGE' => array(
-                                    './Images/img_one.png' => 'overwrite image defval 1 of 3 from parent.png'
-                                ) ,
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'overwrite image defval 1 of 3 from parent.png'
+                                ),
                                 'S_FILE_2' => array(
-                                    './Images/img_one.png' => 'self file defval 1 of 1.png'
-                                ) ,
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'self file defval 1 of 1.png'
+                                ),
                                 'S_IMAGE_2' => array(
-                                    './Images/img_one.png' => 'self image defval 1 of 1.png'
+                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'self image defval 1 of 1.png'
                                 )
                             )
                         )
-                    ) ,
-                    'import:documents' => '././PU_data_dcp_docvaultindex_documents.zip',
+                    ),
+                    'import:documents' => self::$testDirectory . DIRECTORY_SEPARATOR . 'PU_data_dcp_docvaultindex_documents.zip',
                     'expect' => array(
                         'TST_DOCVAULTINDEX' => array(
                             'count' => 13,
@@ -299,11 +325,11 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
                                 'image defval 2 of 3.png',
                                 'image defval 3 of 3.png'
                             )
-                        ) ,
+                        ),
                         'TST_DOCVAULTINDEX_CHILD_1' => array(
                             'count' => 0,
                             'files' => array()
-                        ) ,
+                        ),
                         'TST_DOCVAULTINDEX_CHILD_2' => array(
                             'count' => 8,
                             'files' => array(
@@ -316,7 +342,7 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
                                 'self file defval 1 of 1.png',
                                 'self image defval 1 of 1.png'
                             )
-                        ) ,
+                        ),
                         'TST_DOCVAULTINDEX_01' => array(
                             'count' => 7,
                             'files' => array(
@@ -328,7 +354,7 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
                                 'img_two_bis.png',
                                 'img_three_bis.png'
                             )
-                        ) ,
+                        ),
                         'TST_DOCVAULTINDEX_02' => array(
                             'count' => 7,
                             'files' => array(

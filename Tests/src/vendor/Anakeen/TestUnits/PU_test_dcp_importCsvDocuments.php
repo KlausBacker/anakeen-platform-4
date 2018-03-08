@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -26,25 +27,26 @@ class TestImportCsvDocuments extends TestCaseDcp
     {
         $oImport = new \ImportDocument();
         $oImport->setCsvOptions($separator, $enclosure);
-        $oImport->importDocuments(self::getAction() , "./" . $fileName);
+        $oImport->importDocuments(self::getAction(), self::$testDirectory . DIRECTORY_SEPARATOR . $fileName);
         $err = $oImport->getErrorMessage();
         $this->assertEmpty($err, "import family error : $err");
         $f = new_doc('', $famName);
-        $this->assertTrue($f->isAlive() , sprintf("family %s not found", $famName));
-        $this->assertEquals($expected["title"], $f->getTitle() , "incorrect family title");
+        $this->assertTrue($f->isAlive(), sprintf("family %s not found", $famName));
+        $this->assertEquals($expected["title"], $f->getTitle(), "incorrect family title");
         foreach ($expected["alabel"] as $aid => $elabel) {
-            
-            $this->assertEquals($elabel, $f->getLabel($aid) , "incorrect attribute label");
+
+            $this->assertEquals($elabel, $f->getLabel($aid), "incorrect attribute label");
         }
         foreach ($expected["doc"] as $k => $v) {
-            
+
             $d = new_doc('', $v["name"]);
-            $this->assertTrue($d->isAlive() , sprintf("document %s not found", $v["name"]));
+            $this->assertTrue($d->isAlive(), sprintf("document %s not found", $v["name"]));
             foreach ($v["values"] as $aid => $aval) {
-                $this->assertEquals($aval, $d->getRawValue($aid) , sprintf("incorrect attribute [%s] value : %s ", $aid, print_r($d->getValues() , true)));
+                $this->assertEquals($aval, $d->getRawValue($aid), sprintf("incorrect attribute [%s] value : %s ", $aid, print_r($d->getValues(), true)));
             }
         }
     }
+
     /**
      * @param $fileName
      * @param $expectedSeparator
@@ -53,13 +55,13 @@ class TestImportCsvDocuments extends TestCaseDcp
      */
     public function testDetectCsvOptions($fileName, $expectedSeparator, $expectedEnclosure)
     {
-        $oImport = new \importDocumentDescription("./" . $fileName);
+        $oImport = new \importDocumentDescription(self::$testDirectory . DIRECTORY_SEPARATOR . $fileName);
         $options = $oImport->setCsvOptions('auto', 'auto');
-        
+
         $this->assertEquals($expectedSeparator, $options["separator"], "incorrect csv separator");
         $this->assertEquals($expectedEnclosure, $options["enclosure"], "incorrect csv enclosure");
     }
-    
+
     public function dataDetectCsvOptions()
     {
         return array(
@@ -67,37 +69,37 @@ class TestImportCsvDocuments extends TestCaseDcp
                 "PU_data_dcp_goodfamilyforcsvcommadoublequote1.csv",
                 ",",
                 '"'
-            ) ,
+            ),
             array(
                 "PU_data_dcp_goodfamilyforcsvsemicolonsinglequote1.csv",
                 ";",
                 "'"
-            ) ,
+            ),
             array(
                 "PU_data_dcp_goodfamilyforcsvcommadoublequote2.csv",
                 ",",
                 '"'
-            ) ,
+            ),
             array(
                 "PU_data_dcp_goodfamilyforcsvsemicolonsinglequote2.csv",
                 ";",
                 "'"
-            ) ,
+            ),
             array(
                 "PU_data_dcp_goodfamilyforcsvsemicolondoublequote1.csv",
                 ";",
                 '"'
-            ) ,
+            ),
             array(
                 "PU_data_dcp_goodfamilyforcsvsemicolondoublequote2.csv",
                 ";",
                 '"'
-            ) ,
+            ),
             array(
                 "PU_data_dcp_goodfamilyforcsvsemicolonsinglequote2iso.csv",
                 ";",
                 "'"
-            ) ,
+            ),
             array(
                 "PU_data_dcp_goodfamilyforcsvsemicolon.csv",
                 ";",
@@ -105,10 +107,11 @@ class TestImportCsvDocuments extends TestCaseDcp
             )
         );
     }
+
     public function dataImportCsvFamily()
     {
         return array(
-            
+
             array(
                 "file" => "PU_data_dcp_goodfamilyforcsvsemicolon.csv",
                 "separator" => ";",
@@ -120,7 +123,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                     "alabel" => array(
                         "tst_text" => 'Texte "principal"',
                         "tst_date" => "Date, 'principale'"
-                    ) ,
+                    ),
                     "doc" => array(
                         array(
                             "name" => "TST_CVSSEMICOLON1",
@@ -133,7 +136,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                         )
                     )
                 )
-            ) ,
+            ),
             array(
                 "file" => "PU_data_dcp_goodfamilyforcsvcommadoublequote1.csv",
                 "separator" => ",",
@@ -144,7 +147,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                     "alabel" => array(
                         "tst_text" => 'Texte "principal"',
                         "tst_date" => "Date, 'principale'"
-                    ) ,
+                    ),
                     "doc" => array(
                         array(
                             "name" => "TST_CVSCOMMA11",
@@ -154,7 +157,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                                 "tst_coltext" => "Un\nDeux",
                                 "tst_coldate" => "2012-02-17\n2013-06-12"
                             )
-                        ) ,
+                        ),
                         array(
                             "name" => "TST_CVSCOMMA12",
                             "values" => array(
@@ -166,8 +169,8 @@ class TestImportCsvDocuments extends TestCaseDcp
                         )
                     )
                 )
-            ) ,
-            
+            ),
+
             array(
                 "file" => "PU_data_dcp_goodfamilyforcsvcommadoublequote2.csv",
                 "separator" => ",",
@@ -178,7 +181,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                     "alabel" => array(
                         "tst_text" => 'Texte "principal"',
                         "tst_date" => "Date, 'principale'"
-                    ) ,
+                    ),
                     "doc" => array(
                         array(
                             "name" => "TST_CVSCOMMA21",
@@ -188,7 +191,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                                 "tst_coltext" => "Un\nDeux",
                                 "tst_coldate" => "2012-02-17\n2013-06-12"
                             )
-                        ) ,
+                        ),
                         array(
                             "name" => "TST_CVSCOMMA22",
                             "values" => array(
@@ -200,7 +203,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                         )
                     )
                 )
-            ) ,
+            ),
             array(
                 "file" => "PU_data_dcp_goodfamilyforcsvsemicolonsinglequote1.csv",
                 "separator" => ";",
@@ -211,7 +214,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                     "alabel" => array(
                         "tst_text" => 'Texte "principal"',
                         "tst_date" => "Date, 'principale'"
-                    ) ,
+                    ),
                     "doc" => array(
                         array(
                             "name" => "TST_CSVSEMICOLON11",
@@ -221,7 +224,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                                 "tst_coltext" => "Un\nDeux",
                                 "tst_coldate" => "2012-02-17\n2013-06-12"
                             )
-                        ) ,
+                        ),
                         array(
                             "name" => "TST_CSVSEMICOLON12",
                             "values" => array(
@@ -230,7 +233,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                                 "tst_coltext" => "Un\nDeux\nTrois",
                                 "tst_coldate" => "2012-02-18\n2013-10-12\n"
                             )
-                        ) ,
+                        ),
                         array(
                             "name" => "TST_CSVSEMICOLON13",
                             "values" => array(
@@ -242,7 +245,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                         )
                     )
                 )
-            ) ,
+            ),
             array(
                 "file" => "PU_data_dcp_goodfamilyforcsvsemicolonsinglequote2.csv",
                 "separator" => ";",
@@ -253,7 +256,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                     "alabel" => array(
                         "tst_text" => 'Texte "principal"',
                         "tst_date" => "Date, 'principale'"
-                    ) ,
+                    ),
                     "doc" => array(
                         array(
                             "name" => "TST_CSVSEMICOLON21",
@@ -263,7 +266,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                                 "tst_coltext" => "Un\nDeux",
                                 "tst_coldate" => "2012-02-17\n2013-06-12"
                             )
-                        ) ,
+                        ),
                         array(
                             "name" => "TST_CSVSEMICOLON22",
                             "values" => array(
@@ -272,7 +275,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                                 "tst_coltext" => "Un\nDeux\nTrois",
                                 "tst_coldate" => "2012-02-18\n2013-10-12\n"
                             )
-                        ) ,
+                        ),
                         array(
                             "name" => "TST_CSVSEMICOLON23",
                             "values" => array(
@@ -284,7 +287,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                         )
                     )
                 )
-            ) ,
+            ),
             array(
                 "file" => "PU_data_dcp_goodfamilyforcsvsemicolonsinglequote2iso.csv",
                 "separator" => ";",
@@ -295,7 +298,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                     "alabel" => array(
                         "tst_text" => 'Texte "principal"',
                         "tst_date" => "Date, 'principale'"
-                    ) ,
+                    ),
                     "doc" => array(
                         array(
                             "name" => "TST_CSVSEMICOLON51",
@@ -305,7 +308,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                                 "tst_coltext" => "Un\nDeux",
                                 "tst_coldate" => "2012-02-17\n2013-06-12"
                             )
-                        ) ,
+                        ),
                         array(
                             "name" => "TST_CSVSEMICOLON52",
                             "values" => array(
@@ -314,7 +317,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                                 "tst_coltext" => "Un\nDeux\nTrois",
                                 "tst_coldate" => "2012-02-18\n2013-10-12\n"
                             )
-                        ) ,
+                        ),
                         array(
                             "name" => "TST_CSVSEMICOLON53",
                             "values" => array(
@@ -326,7 +329,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                         )
                     )
                 )
-            ) ,
+            ),
             array(
                 "file" => "PU_data_dcp_goodfamilyforcsvsemicolondoublequote1.csv",
                 "separator" => ";",
@@ -337,7 +340,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                     "alabel" => array(
                         "tst_text" => 'Texte "principal"',
                         "tst_date" => "Date, 'principale'"
-                    ) ,
+                    ),
                     "doc" => array(
                         array(
                             "name" => "TST_CSVSEMICOLON31",
@@ -347,7 +350,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                                 "tst_coltext" => "Un\nDeux",
                                 "tst_coldate" => "2012-02-17\n2013-06-12"
                             )
-                        ) ,
+                        ),
                         array(
                             "name" => "TST_CSVSEMICOLON32",
                             "values" => array(
@@ -356,7 +359,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                                 "tst_coltext" => "Un\nDeux\nTrois",
                                 "tst_coldate" => "2012-02-18\n2013-10-12\n"
                             )
-                        ) ,
+                        ),
                         array(
                             "name" => "TST_CSVSEMICOLON33",
                             "values" => array(
@@ -368,7 +371,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                         )
                     )
                 )
-            ) ,
+            ),
             array(
                 "file" => "PU_data_dcp_goodfamilyforcsvsemicolondoublequote2.csv",
                 "separator" => ";",
@@ -379,7 +382,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                     "alabel" => array(
                         "tst_text" => 'Texte "principal"',
                         "tst_date" => "Date, 'principale'"
-                    ) ,
+                    ),
                     "doc" => array(
                         array(
                             "name" => "TST_CSVSEMICOLON41",
@@ -389,7 +392,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                                 "tst_coltext" => "Un\nDeux",
                                 "tst_coldate" => "2012-02-17\n2013-06-12"
                             )
-                        ) ,
+                        ),
                         array(
                             "name" => "TST_CSVSEMICOLON42",
                             "values" => array(
@@ -398,7 +401,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                                 "tst_coltext" => "Un\nDeux\nTrois",
                                 "tst_coldate" => "2012-02-18\n2013-10-12\n"
                             )
-                        ) ,
+                        ),
                         array(
                             "name" => "TST_CSVSEMICOLON43",
                             "values" => array(
@@ -410,7 +413,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                         )
                     )
                 )
-            ) ,
+            ),
             array(
                 "file" => "PU_data_dcp_goodfamilyforcsvcommai.csv",
                 "separator" => ",",
@@ -421,7 +424,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                     "alabel" => array(
                         "tst_text" => 'Texte "principal"',
                         "tst_date" => "Date, 'principale'"
-                    ) ,
+                    ),
                     "doc" => array(
                         array(
                             "name" => "TST_CVSSEMICOMMAI1",
@@ -431,7 +434,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                                 "tst_coltext" => "i\nii\niii\niv",
                                 "tst_coldate" => "2012-02-17\n2013-06-12\n2012-12-17\n2013-06-17"
                             )
-                        ) ,
+                        ),
                         array(
                             "name" => "TST_CVSSEMICOMMAI2",
                             "values" => array(
@@ -443,7 +446,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                         )
                     )
                 )
-            ) ,
+            ),
             array(
                 "file" => "PU_data_dcp_goodfamilyforcsvcommadoublequote2iso.csv",
                 "separator" => "auto",
@@ -454,7 +457,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                     "alabel" => array(
                         "tst_text" => 'Texte "principal"',
                         "tst_date" => "Date, 'principale'"
-                    ) ,
+                    ),
                     "doc" => array(
                         array(
                             "name" => "TST_CVSCOMMA31",
@@ -464,7 +467,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                                 "tst_coltext" => "Un\nDeux",
                                 "tst_coldate" => "2012-02-17\n2013-06-12"
                             )
-                        ) ,
+                        ),
                         array(
                             "name" => "TST_CVSCOMMA32",
                             "values" => array(
@@ -476,8 +479,7 @@ class TestImportCsvDocuments extends TestCaseDcp
                         )
                     )
                 )
-            ) ,
+            ),
         );
     }
 }
-?>

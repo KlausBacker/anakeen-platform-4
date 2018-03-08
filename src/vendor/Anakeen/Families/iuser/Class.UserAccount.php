@@ -19,7 +19,7 @@ use Dcp\AttributeIdentifiers\Iuser as MyAttributes;
 class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
 {
     use TAccount;
-    public $wuser;
+
     public $eviews = array(
         "USERCARD:CHOOSEGROUP"
     );
