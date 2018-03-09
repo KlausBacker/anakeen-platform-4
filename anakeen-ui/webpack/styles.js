@@ -12,4 +12,4 @@
 //
 // For more information refer to: http://docs.ckeditor.com/#!/guide/dev_styles-section-style-rules
 
-window.CKEDITOR.stylesSet.add('default', [])
+window.CKEDITOR.stylesSet.add('default', []);

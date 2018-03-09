@@ -18,3 +18,6 @@ anakeen-ui/src/Apps/DOCUMENT/Layout/prod/
 Tests/src/public/TEST_DOCUMENT_SELENIUM/dist/
 anakeen-ui/src/public/uiAssets/Families/dsearch/
 anakeen-ui/src/public/uiAssets/Families/helppage/
+Tests/src/public/apps/uitest/dist/
+anakeen-ui/src/public/uiAssets/Families/mask/debug/
+anakeen-ui/src/public/uiAssets/Families/mask/prod/
