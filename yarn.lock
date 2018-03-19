@@ -12,6 +12,12 @@
   version "2.43.1"
   resolved "https://registry.yarnpkg.com/@progress/kendo-theme-default/-/kendo-theme-default-2.43.1.tgz#174472a3cbee6997ce48ad191d756e49eb582edb"
 
+"@progress/kendo-ui@^2018.0.0":
+  version "2018.1.226"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2018.1.226.tgz#ae295badb7a9f00aed1d395ff4959d9c6aa2830f"
+  dependencies:
+    jquery "<=3"
+
 "@types/node@*":
   version "8.0.57"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.57.tgz#e5d8b4dc112763e35cfc51988f4f38da3c486d99"
@@ -2959,9 +2965,9 @@ jade@^1.11.0:
     void-elements "~2.0.1"
     with "~4.0.0"
 
-jquery@<3.0.0:
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.2.4.tgz#2c89d6889b5eac522a7eea32c14521559c6cbf02"
+jquery@<=3:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
 jquery@>=1.7, jquery@^3.2.1:
   version "3.2.1"
@@ -3065,12 +3071,6 @@ jstransformer@0.0.2:
   dependencies:
     is-promise "^2.0.0"
     promise "^6.0.1"
-
-kendo-ui-core@^2017.3.927:
-  version "2017.3.927"
-  resolved "https://registry.yarnpkg.com/kendo-ui-core/-/kendo-ui-core-2017.3.927.tgz#0b84ef27ce55ee8ec55d793ee5e25d5dafa2d25c"
-  dependencies:
-    jquery "<3.0.0"
 
 kind-of@^2.0.1:
   version "2.0.1"

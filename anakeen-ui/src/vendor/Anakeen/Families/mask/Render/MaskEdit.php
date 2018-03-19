@@ -13,12 +13,13 @@ class MaskEditRender extends DefaultConfigEditRender
     public function getOptions(\Doc $document)
     {
         $options = parent::getOptions($document);
-        $options->arrayAttribute(myAttributes::msk_t_contain)->disableRowAdd(true);
+        /*$options->arrayAttribute(myAttributes::msk_t_contain)->disableRowAdd(true);
         $options->arrayAttribute(myAttributes::msk_t_contain)->disableRowMove(true);
-        $options->arrayAttribute(myAttributes::msk_t_contain)->disableRowDel(true);
+        $options->arrayAttribute(myAttributes::msk_t_contain)->disableRowDel(true);*/
         return $options;
     }
 
+    /*
     public function getJsReferences(\Doc $document = null)
     {
         $js = parent::getJsReferences();
@@ -26,4 +27,5 @@ class MaskEditRender extends DefaultConfigEditRender
         $js["dduiMask"] = "uiAssets/Families/mask/maskEdit.js?ws=" . $version;
         return $js;
     }
+    */
 }

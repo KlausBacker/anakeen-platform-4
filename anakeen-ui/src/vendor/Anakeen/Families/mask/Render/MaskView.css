@@ -1,0 +1,60 @@
+/* MaskView */
+
+.dcpCustomTemplate--content[data-attrid=msk_famid] {
+    display: inline-block;
+}
+
+.dcpCustomTemplate--content[data-attrid=msk_famid] > .dcpAttribute {
+    margin-bottom: 0;
+    font-size:1.5rem;
+}
+.dcpCustomTemplate--content[data-attrid=msk_famid] > .dcpAttribute .dcpAttribute__value--icon {
+    vertical-align: middle;
+}
+.mask-header {
+    margin:1rem;
+    text-align: center;
+}
+
+.mask-needed-set,
+.mask-visibility-set {
+    background-color: green;
+    color: white;
+}
+.mask-visibility-modified {
+    background-color: #d4d4d4;
+    color: white;
+}
+
+.mask-needed,
+.mask-visibility {
+    padding:0.2rem;
+    white-space: nowrap;
+}
+
+.mask-grid {
+    height: calc(100vh - 200px);
+}
+
+.k-grid .attr-type--tab {
+    background-color: #e7cfff;
+}
+.k-grid .attr-type--frame {
+    background-color: rgba(110, 167, 255, 0.52);
+}
+.k-grid .attr-type--array {
+    background-color: rgba(255, 184, 148, 0.43);
+}
+.k-grid .attr-type--menulist {
+    background-color: #c2ffb9;
+}
+
+.attr-type--menulist .cell--attrid,
+.attr-type--menulist .cell--type {
+    opacity: 0;
+}
+
+.mask-grid td[role=gridcell] .k-i-expand,
+.mask-grid td[role=gridcell] .k-i-collapse {
+    cursor: pointer;
+}

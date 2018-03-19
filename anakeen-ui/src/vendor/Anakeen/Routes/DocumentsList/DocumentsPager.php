@@ -24,7 +24,7 @@ class DocumentsPager extends DocumentList
      */
     protected $_defaultOrder = 'title asc';
 
-    protected $_filter = null;
+    protected $filter = null;
     protected $page = 1;
     protected $collectionId;
     /**
@@ -33,21 +33,16 @@ class DocumentsPager extends DocumentList
     protected $family;
 
 
-    /**
-     * Read a ressource
-     * @param \Slim\Http\request $request
-     * @param \Slim\Http\response $response
-     * @param $args
-     * @return mixed
-     */
-    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
+    protected function initParameters(\Slim\Http\request $request, $args)
     {
+        parent::initParameters($request, $args);
+
         $this->page = intval($args["page"]);
         $this->collectionId = $args["collection"];
-        $return = parent::__invoke($request, $response, $args);
+        $this->filter = $request->getQueryParam("filter");
 
-
-        return $return;
+        $this->orderBy = $request->getQueryParam("orderBy", "title:asc");
+        $this->slice = intval($request->getQueryParam("slice"));
     }
 
     protected function getData()
@@ -94,10 +89,8 @@ class DocumentsPager extends DocumentList
                 $exception->setHttpStatus("400", "Document is not a family or collection");
                 throw $exception;
         }
-        $filter = $this->request->getQueryParam("filter");
-        if (!empty($filter)) {
-            $this->_filter = $filter;
-            $this->_searchDoc->addFilter("title ~* '%s'", preg_quote($filter));
+        if (!empty($this->filter)) {
+            $this->_searchDoc->addFilter("title ~* '%s'", preg_quote($this->filter));
         }
     }
 
@@ -109,7 +102,7 @@ class DocumentsPager extends DocumentList
 
     protected function extractOrderBy()
     {
-        $orderBy = $this->request->getQueryParam("orderBy", "title:asc");
+        $orderBy = $this->orderBy;
         if ($this->family) {
             return DocumentUtils::extractOrderBy($orderBy, $this->family);
         } elseif ($this->collection) {
@@ -123,6 +116,6 @@ class DocumentsPager extends DocumentList
 
     protected function getPaginationState()
     {
-        return ["page" => intval($this->page), "slice" => intval($this->request->getQueryParam("slice")), "total_entries" => $this->_searchDoc->onlyCount()];
+        return ["page" => intval($this->page), "slice" => $this->slice, "total_entries" => $this->_searchDoc->onlyCount()];
     }
 }

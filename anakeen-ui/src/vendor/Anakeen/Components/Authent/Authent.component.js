@@ -87,7 +87,7 @@ export default {
         let currentLanguage = this.defaultLanguage;
         if (this.defaultLanguage === 'auto') {
             let navLanguage = navigator.language || navigator.userLanguage;
-            if (navLanguage === 'fr') {
+            if (navLanguage.substr(0, 2) === 'fr') {
                 currentLanguage = 'fr_FR';
             } else {
                 currentLanguage = 'en_US';

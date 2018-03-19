@@ -1,5 +1,4 @@
 {
-  "accesses": [],
   "routes": {
     "Ui:Authent:Login": {
       "priority": 1,
@@ -9,8 +8,8 @@
       ],
       "pattern": "\/login\/",
       "description": "Login page",
-      "requiredAccesses": [],
-      "authenticated": false
+      "authenticated": false,
+      "requiredAccess": null
     },
     "Ui:Authent:MailPassword": {
       "priority": 1,
@@ -20,7 +19,7 @@
       ],
       "pattern": "\/api\/v2\/authent\/mailPassword\/{userId}",
       "description": "Send email to change password",
-      "requiredAccesses": [],
+      "requiredAccess": null,
       "authenticated": false
     },
     "Ui:Authent:Password": {
@@ -31,9 +30,8 @@
       ],
       "pattern": "\/api\/v2\/authent\/password\/{login}",
       "description": "Change password",
-      "requiredAccesses": [],
+      "requiredAccess": null,
       "authenticated": true
     }
-  },
-  "middlewares": []
+  }
 }
