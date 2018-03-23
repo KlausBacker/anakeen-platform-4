@@ -144,16 +144,16 @@ function seemsODS($filename)
 /**
  * convert ods file in csv file
  * the csv file must be delete by caller after using it
- * @return strint the path to the csv file
+ * @return string the path to the csv file
  */
 function ods2csv($odsfile)
 {
-    $csvfile = uniqid(getTmpDir() . "/csv") . "csv";
-    $cmd = sprintf("%s --api=ods2csv --odsfile=%s --csvfile=%s >/dev/null", getWshCmd(), escapeshellarg($odsfile), escapeshellarg($csvfile));
+    $csvfile = uniqid(\Dcp\Core\ContextManager::getTmpDir() . "/csv") . "csv";
+    $cmd = sprintf("%s --script=ods2csv --odsfile=%s --csvfile=%s >/dev/null", \Anakeen\Script\ShellManager::getAnkCmd(), escapeshellarg($odsfile), escapeshellarg($csvfile));
     system($cmd, $out);
 
     if ($out !== 0) {
-        throw new \Dcp\Core\Exception(sprintf("Cannnot convert to csv file \"%s\"", $odsfile));
+        throw new \Dcp\Core\Exception(sprintf("Cannot convert to csv file \"%s\"", $odsfile));
     }
     return $csvfile;
 }

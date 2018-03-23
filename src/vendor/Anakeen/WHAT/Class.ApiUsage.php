@@ -4,6 +4,9 @@
  * @package FDL
 */
 namespace {
+
+    use Anakeen\Script\ShellManager;
+
     /**
      * Verify arguments for wsh programs
      *
@@ -84,8 +87,8 @@ namespace {
         {
             global $action;
             $this->action = & $action;
-            $this->addHiddenParameter("api", "api file to use");
-            $this->addOptionalParameter('userid', "user system id or login name to execute function - default is (admin)", null, 1);
+            $this->addHiddenParameter("script", "api file to use");
+            $this->addOptionalParameter('login', "user login name to execute function", null, "admin");
             $this->addEmptyParameter('help', "Show usage");
         }
         /**
@@ -308,7 +311,11 @@ namespace {
          */
         protected function getArgumentValue($key, $defaultValue = '')
         {
-            return $this->action->getArgument($key, $defaultValue);
+            $val=ShellManager::getArg($key);
+            if ($val === null) {
+                return $defaultValue;
+            }
+            return $val;
         }
         /**
          * get usage for a specific argument
@@ -500,7 +507,8 @@ namespace {
                 $argsKey[] = $arg["name"];
             }
             if ($this->strict) {
-                foreach ($_GET as $k => $v) {
+                $scriptArgs=ShellManager::getArgs();
+                foreach ($scriptArgs as $k => $v) {
                     if (!in_array($k, $argsKey)) {
                         $error = sprintf("argument '%s' is not defined\n", $k);
                         

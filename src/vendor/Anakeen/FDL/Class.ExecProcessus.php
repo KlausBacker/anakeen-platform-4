@@ -9,6 +9,8 @@
  */
 namespace Dcp\Core;
 
+use Anakeen\Script\ShellManager;
+
 class ExecProcessus extends \Dcp\Family\Document
 {
     private $execuserid;
@@ -70,21 +72,21 @@ class ExecProcessus extends \Dcp\Family\Document
         
         $tp = $this->getArrayRawValues("exec_t_parameters");
         
-        $cmd = getWshCmd(true);
+        $cmd = ShellManager::getAnkCmd(true);
         if ($masteruserid) {
             $fuid = $this->getRawValue("exec_iduser");
-            $fu = getTDoc($this->dbaccess, $fuid);
+            $fu = DocManager::getRawDocument($fuid);
             $wuid = $fu["us_whatid"];
             $this->execuserid = $fuid;
         } else {
             $wuid = $this->userid;
             $this->execuserid = $this->getUserId();
         }
-        $cmd.= " --userid=$wuid";
+        $cmd.= " --login=$wuid";
         if (!$bgapi) {
             $cmd.= sprintf(" --app=%s --action=%s", escapeshellarg($bgapp), escapeshellarg($bgact));
         } else {
-            $cmd.= sprintf(" --api=%s", escapeshellarg($bgapi));
+            $cmd.= sprintf(" --script=%s", escapeshellarg($bgapi));
         }
         
         foreach ($tp as $k => $v) {

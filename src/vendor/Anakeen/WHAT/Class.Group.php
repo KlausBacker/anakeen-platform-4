@@ -186,8 +186,8 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
                     $u->updateMemberOf();
                 }
             } else {
-                $wsh = getWshCmd();
-                $cmd = $wsh . " --api=initViewPrivileges --reset-account=yes";
+                $wsh = \Anakeen\Script\ShellManager::getAnkCmd();
+                $cmd = $wsh . " --script=initViewPrivileges --reset-account=yes";
                 
                 bgexec(array(
                     $cmd

@@ -8,6 +8,13 @@ require __DIR__ . "/../vendor/Anakeen/WHAT/autoload.php";
 register_shutdown_function('handleFatalShutdown');
 set_exception_handler('handleActionException');
 
+if (ActionRouter::inMaintenance()) {
+    $e = new \Anakeen\Router\Exception("Maintenance");
+    $e->setUserMessage("The system is currently unavailable due to maintenance works");
+    $e->setHttpStatus(503);
+    throw $e;
+}
+
 $routeConfig = new \Anakeen\Router\RoutesConfig();
 $routes = $routeConfig->getRoutes();
 $middleWares = $routeConfig->getMiddlewares();

@@ -81,7 +81,7 @@ class Mask extends \Dcp\Family\Base
             return \ErrorCode::getError("MSK0001", $this->name);
         }
         $fam = DocManager::getFamily($famid);
-        if ($fam->doctype !== "C") {
+        if (!$fam || $fam->doctype !== "C") {
             return \ErrorCode::getError("MSK0002", $famid, $this->name);
         }
         $attributes = $fam->getAttributes();

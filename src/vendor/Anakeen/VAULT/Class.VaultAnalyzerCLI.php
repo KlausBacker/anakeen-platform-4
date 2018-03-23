@@ -207,7 +207,7 @@ class VaultAnalyzerCLI
     {
         $report = array();
         if ($vaultAnalyzer->checkDocVaultIndex($report) === false) {
-            throw new VaultAnalyzerCLIException(sprintf("Found inconsistencies in 'docvaultindex': you might need to regenerate docvaultindex with \"./wsh.php --api=refreshVaultIndex\""));
+            throw new VaultAnalyzerCLIException(sprintf("Found inconsistencies in 'docvaultindex': you might need to regenerate docvaultindex with \"./ank.php --script=refreshVaultIndex\""));
         }
     }
 }

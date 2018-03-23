@@ -2,7 +2,6 @@
 
 namespace Dcp\Core\Utils;
 
-use Dcp\DevTools\Template\ApplicationParameter;
 
 class ErrorMessage
 {
@@ -31,5 +30,32 @@ class ErrorMessage
     {
         $error = ["success" => false, "exceptionMessage" => self::getText($htmlMessage, $errId)];
         return json_encode($error);
+    }
+
+    /**
+     * return message according to accept HTTP header
+     *
+     * @param string $errorMessage
+     * @param string $code
+     *
+     * @return string
+     */
+    public static function getError($errorMessage, $code = "")
+    {
+        $accept = $_SERVER['HTTP_ACCEPT'];
+        $useHtml = ((!empty($accept) && preg_match("@\\btext/html\\b@", $accept)));
+
+        if ($useHtml) {
+            return self::getHtml($errorMessage, $code);
+        } else {
+            $useJSON = ((!empty($accept) && preg_match("@\\bapplication/json\\b@", $accept)));
+            if ($useJSON) {
+                header('Content-Type: application/json');
+                return self::getJson($errorMessage, $code);
+            } else {
+                header('Content-Type: text/plain');
+                return self::getText($errorMessage, $code);
+            }
+        }
     }
 }

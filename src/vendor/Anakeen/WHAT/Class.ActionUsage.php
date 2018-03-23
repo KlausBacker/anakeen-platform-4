@@ -3,29 +3,31 @@
  * @author Anakeen
  * @package FDL
 */
+
 /**
  * Verify arguments for action function
  *
  * @brief Verify arguments for action function
  * @class ActionUsage
  * @code
- $usage = new ActionUsage();
- $usage->setDescriptionText("Refresh documents ");
- $usage->addRequiredParameter("famid", "the family filter");
- $usage->addOptionalParameter("revision", "use all revision - default is no", array(
- "yes",
- "no"
- ));
- $usage->addOptionalParameter("save", "use modify default is light", array(
- "complete",
- "light",
- "none"
- ));
- $usage->verify();
+$usage = new ActionUsage();
+ * $usage->setDescriptionText("Refresh documents ");
+ * $usage->addRequiredParameter("famid", "the family filter");
+ * $usage->addOptionalParameter("revision", "use all revision - default is no", array(
+ * "yes",
+ * "no"
+ * ));
+ * $usage->addOptionalParameter("save", "use modify default is light", array(
+ * "complete",
+ * "light",
+ * "none"
+ * ));
+ * $usage->verify();
  * @endcode
  */
 class ActionUsage extends ApiUsage
 {
+    /** @noinspection PhpMissingParentConstructorInspection */
     /**
      * init current action
      *
@@ -44,6 +46,7 @@ class ActionUsage extends ApiUsage
             $this->addHiddenParameter("privateid", "token");
         }
     }
+
     /**
      * @api Get usage for action funtion
      * @return mixed|string
@@ -55,28 +58,36 @@ class ActionUsage extends ApiUsage
         $usage = str_replace('--action=', '--action=' . $this->action->name . ' : ', $usage);
         return $usage;
     }
+
     /**
      * Return value of argument key
-     * @param string $key the identifier
+     *
+     * @param string $key          the identifier
      * @param string $defaultValue value to return if value is empty
+     *
      * @return mixed|string
      */
     protected function getArgumentValue($key, $defaultValue = '')
     {
-        $value = parent::getArgumentValue($key, null);
+        $value = $this->action->getArgument($key, null);
+
         if ($value === null) {
             if (isset($_FILES[$key])) {
                 return $_FILES[$key];
             }
+
+            $value = parent::getArgumentValue($key, null);
         }
         return ($value === null) ? $defaultValue : $value;
     }
 
     /**
      * Restriction callback to verify a file array value
-     * @param string $argVal argument value
-     * @param string $argName argument name
+     *
+     * @param string   $argVal   argument value
+     * @param string   $argName  argument name
      * @param ApiUsage $apiUsage current apiUsage object
+     *
      * @return string
      */
     public static function isFile($argVal, $argName, $apiUsage)

@@ -6,6 +6,8 @@
 
 namespace Dcp\Pu;
 
+use Dcp\Core\DbManager;
+
 require_once 'PU_testcase_dcp.php';
 
 abstract class TestCaseDcpApplication extends TestCaseDcp
@@ -14,15 +16,12 @@ abstract class TestCaseDcpApplication extends TestCaseDcp
     
     protected function tearDown()
     {
-        if (!self::$odb) {
-            self::$odb = new \DbObj(self::$dbaccess);
-        }
-        self::$odb->rollbackPoint('testunit');
+        DbManager::rollbackPoint('testunit');
     }
     
     protected function setUp()
     {
-        self::$odb->savePoint('testunit');
+        DbManager::savePoint('testunit');
     }
     
     public static function setUpBeforeClass()

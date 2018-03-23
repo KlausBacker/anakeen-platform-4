@@ -545,7 +545,7 @@ function getAuthParam($freedomctx = "", $provider = "")
  * @param bool $nice   set to true if want nice mode
  * @param int  $userid the user identifier to send command (if 0 send like admin without specific user parameter)
  * @param bool $sudo   set to true if want to be send with sudo (need /etc/sudoers correctly configured)
- *
+ * @deprecated
  * @return string the command
  */
 function getWshCmd($nice = false, $userid = 0, $sudo = false)
@@ -557,10 +557,11 @@ function getWshCmd($nice = false, $userid = 0, $sudo = false)
     if ($sudo) {
         $wsh .= "sudo ";
     }
-    $wsh .= escapeshellarg(DEFAULT_PUBDIR) . "/wsh.php  ";
+    $wsh .= escapeshellarg(DEFAULT_PUBDIR) . "/ank.php  ";
     $userid = intval($userid);
     if ($userid > 0) {
-        $wsh .= "--userid=$userid ";
+        $u=new \Account("", $userid);
+        $wsh .= sprintf("--login=\"%s\" ", $u->login);
     }
     return $wsh;
 }
