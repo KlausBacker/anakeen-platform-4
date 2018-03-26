@@ -115,7 +115,7 @@ class Layout
     public function __construct($caneva = "", $action = null, $template = "[OUT]")
     {
         $this->initialFile=$caneva;
-        $this->LOG = new Log("", "Layout");
+        $this->LOG = new \Anakeen\Core\Internal\Log("", "Layout");
         if (($template == "[OUT]") && ($caneva != "")) {
             $this->template = sprintf(_("Template [%s] not found"), $caneva);
         } else {

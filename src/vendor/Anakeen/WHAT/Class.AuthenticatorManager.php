@@ -283,7 +283,7 @@ class AuthenticatorManager
         $userAgent = ""
     ) {
         global $_GET;
-        $log = new Log("", "Session", "Authentication");
+        $log = new \Anakeen\Core\Internal\Log("", "Session", "Authentication");
         $facility = constant(\Anakeen\Core\ContextManager::getApplicationParam("AUTHENT_LOGFACILITY", "LOG_AUTH"));
         $log->wlog("S",
             sprintf("[%s] [%s] [%s] [%s] [%s] [%s]", $status, $additionalMessage, $provider, $clientIp, $account,

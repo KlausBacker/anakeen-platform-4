@@ -920,7 +920,7 @@ create sequence SEQ_ID_ACTION;
     /**
      * log with debug level
      *
-     * @see Log
+     * @see \Anakeen\Core\Internal\Log
      *
      * @param string $msg message text
      */
@@ -932,7 +932,7 @@ create sequence SEQ_ID_ACTION;
     /**
      * log with info level
      *
-     * @see Log
+     * @see \Anakeen\Core\Internal\Log
      *
      * @param string $msg message text
      */
@@ -944,7 +944,7 @@ create sequence SEQ_ID_ACTION;
     /**
      * log with warning level
      *
-     * @see Log
+     * @see \Anakeen\Core\Internal\Log
      *
      * @param string $msg message text
      */
@@ -956,7 +956,7 @@ create sequence SEQ_ID_ACTION;
     /**
      * log with error level
      *
-     * @see Log
+     * @see \Anakeen\Core\Internal\Log
      *
      * @param string $msg message text
      */
@@ -968,7 +968,7 @@ create sequence SEQ_ID_ACTION;
     /**
      * log with fatal level
      *
-     * @see Log
+     * @see \Anakeen\Core\Internal\Log
      *
      * @param string $msg message text
      */

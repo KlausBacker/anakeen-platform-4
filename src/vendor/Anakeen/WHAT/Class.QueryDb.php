@@ -95,7 +95,7 @@ class QueryDb
     public function __construct($dbaccess, $class)
     {
         //
-        $this->log = new Log("", "Query", "$class");
+        $this->log = new \Anakeen\Core\Internal\Log("", "Query", "$class");
         $this->basic_elem = new $class($dbaccess);
         $this->dbaccess = $this->basic_elem->dbaccess;
         $this->class = $class;

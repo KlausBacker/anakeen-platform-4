@@ -62,7 +62,7 @@ class OOoLayout extends Layout
     public function __construct($caneva = "", Action & $action = null, Doc & $doc = null)
     {
         $this->initialFile=$caneva;
-        $this->LOG = new Log("", "Layout");
+        $this->LOG = new \Anakeen\Core\Internal\Log("", "Layout");
         $this->doc = $doc;
         $this->template = "";
         $this->action = & $action;

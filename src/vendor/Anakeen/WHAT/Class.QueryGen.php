@@ -71,7 +71,7 @@ class QueryGen
     public function __construct($dbaccess, $class, &$action)
     {
         //
-        $this->log = new Log("", "QueryGen", "$class");
+        $this->log = new \Anakeen\Core\Internal\Log("", "QueryGen", "$class");
         $this->query = new QueryDb($dbaccess, $class);
         
         $this->dbaccess = $dbaccess;

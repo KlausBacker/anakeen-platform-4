@@ -1,18 +1,7 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
-/**
- * Log information class
- *
- * @author Anakeen
- * @version $Id: Class.Log.php,v 1.15 2008/10/31 16:57:18 jerome Exp $
- * @package FDL
- * @subpackage CORE
- */
-/**
- */
+
+namespace Anakeen\Core\Internal;
+
 /**
  * Log manager
  * log message according to CORE_LOGLEVEL parameter
@@ -101,14 +90,14 @@ class Log
      */
     public function debug($string)
     {
-        $this->wlog(Log::DEBUG, $string);
+        $this->wlog(self::DEBUG, $string);
     }
     /**
      * @param string $string message text
      */
     public function callstack($string)
     {
-        $this->wlog(Log::CALLSTACK, $string);
+        $this->wlog(self::CALLSTACK, $string);
     }
     /**
      * log with trace level
@@ -117,7 +106,7 @@ class Log
      */
     public function trace($string)
     {
-        $this->wlog(Log::TRACE, $string);
+        $this->wlog(self::TRACE, $string);
     }
     /**
      * log with info level
@@ -126,7 +115,7 @@ class Log
      */
     public function info($string)
     {
-        $this->wlog(Log::INFO, $string);
+        $this->wlog(self::INFO, $string);
     }
     /**
      * log with warning level
@@ -135,7 +124,7 @@ class Log
      */
     public function warning($string)
     {
-        $this->wlog(Log::WARNING, $string);
+        $this->wlog(self::WARNING, $string);
     }
     /**
      * log with error level
@@ -144,7 +133,7 @@ class Log
      */
     public function error($string)
     {
-        $this->wlog(Log::ERROR, $string);
+        $this->wlog(self::ERROR, $string);
     }
     /**
      * log with fatal level
@@ -153,18 +142,17 @@ class Log
      */
     public function fatal($string)
     {
-        $this->wlog(Log::FATAL, $string);
+        $this->wlog(self::FATAL, $string);
     }
     /**
      * log with deprecated level
      * add callstack
      * @api log with deprecated level
-     * @see Log
      * @param string $string message text
      */
     public function deprecated($string)
     {
-        $this->wlog(Log::DEPRECATED, $string);
+        $this->wlog(self::DEPRECATED, $string);
     }
     /**
      * @param string $logLevel
@@ -279,13 +267,13 @@ class Log
                 fclose($fd);
             } else {
                 switch ($sta) {
-                    case Log::DEBUG:
+                    case self::DEBUG:
                         $pri = LOG_DEBUG;
                         break;
 
-                    case Log::DEPRECATED:
-                        $class = (isset($td[4]["class"])) ? $td[4]["class"] : '';
+                    case self::DEPRECATED:
                         $td = @debug_backtrace(false);
+                        $class = (isset($td[4]["class"])) ? $td[4]["class"] : '';
                         if ($str) {
                             $str.= ' ';
                         }
@@ -293,23 +281,23 @@ class Log
                         $pri = LOG_INFO;
                         break;
 
-                    case Log::INFO:
+                    case self::INFO:
                         $pri = LOG_INFO;
                         break;
 
-                    case Log::WARNING:
+                    case self::WARNING:
                         $pri = LOG_WARNING;
                         break;
 
-                    case Log::ERROR:
+                    case self::ERROR:
                         $pri = LOG_ERR;
                         break;
 
-                    case Log::FATAL:
+                    case self::FATAL:
                         $pri = LOG_ALERT;
                         break;
 
-                    case Log::TRACE:
+                    case self::TRACE:
                         $pri = LOG_DEBUG;
                         break;
 
@@ -317,7 +305,7 @@ class Log
                         $pri = LOG_NOTICE;
                 }
                 if (empty($_SERVER['HTTP_HOST'])) {
-                    error_log(sprintf("%s LOG::$appf %s", date("d/m/Y H:i:s", time()), $str));
+                    error_log(sprintf("%s self::$appf %s", date("d/m/Y H:i:s", time()), $str));
                 }
                 openlog("{$appf}", 0, $facility);
                 syslog($pri, "[{$addr}] " . $str);

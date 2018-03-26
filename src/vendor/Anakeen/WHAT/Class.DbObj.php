@@ -102,7 +102,7 @@ class DbObj
     public $sqlcreate;
     public $sqlinit;
     /**
-     * @var Log DbObj Log Object
+     * @var \Anakeen\Core\Internal\Log DbObj Log Object
      */
     public $log;
     //----------------------------------------------------------------------------
@@ -126,7 +126,7 @@ class DbObj
         $this->dbaccess = $dbaccess;
         $this->init_dbid();
         //global ${$this->oname};
-        $this->log = new Log("", "DbObj", $this->dbtable);
+        $this->log = new \Anakeen\Core\Internal\Log("", "DbObj", $this->dbtable);
 
         if ($this->dbid == 0) {
             $this->dbid = -1;

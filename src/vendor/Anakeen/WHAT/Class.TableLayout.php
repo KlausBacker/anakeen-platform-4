@@ -84,7 +84,7 @@ class TableLayout
     public function __construct(&$lay, $table_name = 'TABLE')
     {
         $this->table_name = $table_name;
-        $this->log = new Log("", "TableLayout", "");
+        $this->log = new \Anakeen\Core\Internal\Log("", "TableLayout", "");
         $this->lay = & $lay;
     }
     //

@@ -6,7 +6,7 @@
 /**
  * regenerate js version file
  *
- * @param string $filename the file which contain new login or ACLs
+ * @param string $filename the file which contain new Anakeen\Core\Internal\Anakeen\Core\Internal\Login or ACLs
  * @author Anakeen
  * @version $Id: refreshjsversion.php,v 1.2 2005/06/10 13:05:18 eric Exp $
  * @package FDL

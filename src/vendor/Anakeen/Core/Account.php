@@ -732,7 +732,7 @@ create sequence seq_id_users start 10;";
                     if ($this->id == 1) {
                         $this->setSupervisorHtpasswd($pass);
                     }
-                    $log = new \Log("", "Session", "Authentication");
+                    $log = new \Anakeen\Core\Internal\Log("", "Session", "Authentication");
                     $facility = constant(\Anakeen\Core\ContextManager::getApplicationParam(
                         "AUTHENT_LOGFACILITY",
                         "LOG_AUTH"

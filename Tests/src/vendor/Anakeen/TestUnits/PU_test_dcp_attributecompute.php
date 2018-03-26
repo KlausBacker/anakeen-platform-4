@@ -41,7 +41,7 @@ class TestAttributeCompute extends TestCaseDcpCommonFamily
         }
         
         $tmpLogFile = tempnam(getTmpDir() , __FUNCTION__);
-        $d->log = new \Log($tmpLogFile, $d->log->application, $d->log->function);
+        $d->log = new \Anakeen\Core\Internal\Log($tmpLogFile, $d->log->application, $d->log->function);
         
         $info = new \storeInfo();
         $err = $d->store($info);

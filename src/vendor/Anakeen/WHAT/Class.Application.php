@@ -150,7 +150,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     public $permission = null; // permission object
     
     /**
-     * @var Log
+     * @var \Anakeen\Core\Internal\Log
      */
     public $log = null;
     public $jsref = array();

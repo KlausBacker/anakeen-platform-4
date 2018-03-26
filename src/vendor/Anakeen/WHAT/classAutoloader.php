@@ -498,7 +498,7 @@ class DirectoriesAutoloader
         }
         if ($err) {
             require_once "WHAT/Class.Log.php";
-            $log = new \Log();
+            $log = new \Anakeen\Core\Internal\Log();
             $log->setLogLevel("WEI");
             $log->error($err);
             throw new DirectoriesAutoloaderException($err);
