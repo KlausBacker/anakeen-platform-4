@@ -5,7 +5,7 @@
 */
 namespace Anakeen\Routes\Authent;
 
-use Dcp\HttpApi\V1\DocManager\DocManager;
+use Dcp\Core\DocManager;
 use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
 

@@ -6,6 +6,7 @@
 namespace Anakeen\Routes\Ui;
 
 use Anakeen\Router\Exception;
+use Anakeen\Routes\Core\ApiMessage;
 use Dcp\Core\DocManager;
 
 /**
@@ -19,17 +20,21 @@ use Dcp\Core\DocManager;
 class DocumentHtml
 {
     protected $viewId = "!defaultConsultation";
-    protected $revision = - 1;
+    protected $revision = -1;
+
     /**
-     * Read a ressource
+     * Send Document Html page
      *
-     * @param string|int $resourceId Resource identifier
      *
-     * @return mixed
+     * @param \Slim\Http\request $request
+     * @param \Slim\Http\response $response
+     * @param array $args
+     * @return \Slim\Http\response
+     * @throws Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $resourceId=$args["docid"];
+        $resourceId = $args["docid"];
 
         if (isset($args["revision"])) {
             $this->revision = $args["revision"];
@@ -41,23 +46,23 @@ class DocumentHtml
             // Special case to load HTML page without documents
             $resourceId = false;
         }
-        return $this->view($resourceId, $this->viewId, $this->revision);
+        $html= $this->view($resourceId, $this->viewId, $this->revision);
+        return $response->write($html);
     }
 
     /**
-     * @param string|bool       $initid
+     * @param string|bool $initid
      * @param string $viewId
-     * @param int    $revision
+     * @param int $revision
      *
      * @return string
      * @throws Exception
-     * @throws \Dcp\HttpApi\V1\DocManager\Exception
      */
-    public function view($initid, $viewId = "!defaultConsultation", $revision = - 1)
+    public function view($initid, $viewId = "!defaultConsultation", $revision = -1)
     {
         if (!is_numeric($revision)) {
             if (!preg_match('/^state:(.+)$/', $revision, $regStates)) {
-                throw new Exception(sprintf(___("Revision \"%s\" must be a number or a state reference", "ddui") , $revision));
+                throw new Exception(sprintf(___("Revision \"%s\" must be a number or a state reference", "ddui"), $revision));
             }
         }
 
@@ -75,38 +80,39 @@ class DocumentHtml
         if ($initid !== false) {
             $doc = DocManager::getDocument($initid);
             if (!$doc) {
-                $e = new Exception(sprintf(___("Document identifier \"%s\"not found", "ddui") , $initid));
+                $e = new Exception(sprintf(___("Document identifier \"%s\"not found", "ddui"), $initid));
                 $e->setHttpStatus("404", "Document not found");
                 throw $e;
             }
-            if ($viewId !== \Dcp\Ui\Crud\View::defaultViewCreationId && $viewId !== \Dcp\Ui\Crud\View::coreViewCreationId) {
+
+            if ($viewId !== DocumentView::defaultViewCreationId && $viewId !== DocumentView::coreViewCreationId) {
                 $err = $doc->control("view");
                 if ($err) {
-                    $e = new Exception(sprintf(___("Access not granted for document #%s", "ddui") , $initid));
+                    $e = new Exception(sprintf(___("Access not granted for document #%s", "ddui"), $initid));
                     $e->setHttpStatus("403", "Forbidden");
                     throw $e;
                 }
             } else {
                 $err = $doc->control("icreate");
                 if ($err) {
-                    $e = new Exception(sprintf(___("Access not granted to create \"%s\" document", "ddui") , $doc->getTitle()));
+                    $e = new Exception(sprintf(___("Access not granted to create \"%s\" document", "ddui"), $doc->getTitle()));
                     $e->setHttpStatus("403", "Forbidden");
                     throw $e;
                 }
             }
             DocManager::cache()->addDocument($doc);
             $otherParameters = $_GET;
-            
+
             unset($otherParameters["initid"]);
-            
+
             if (is_numeric($initid)) {
                 $initid = intval($initid);
             }
             //merge other parameters
             $viewInformation = ["initid" => $initid, "revision" => $revision, "viewId" => $viewId];
-            
+
             $viewInformation = array_merge($viewInformation, $otherParameters);
-            
+
             if (preg_match('/^state:(.+)$/', $revision, $regStates)) {
                 $viewInformation["revision"] = array(
                     "state" => $regStates[1]
@@ -118,16 +124,16 @@ class DocumentHtml
                     throw new Exception("Parameter \"customClientData\" must be json encoded");
                 }
             }
-            
+
             $layout->set("viewInformation", \Dcp\Ui\JsonHandler::encodeForHTML($viewInformation));
         } else {
             $layout->set("viewInformation", \Dcp\Ui\JsonHandler::encodeForHTML(false));
         }
         $layout->set("messages", $this->getWarningMessages());
         $render = new \Dcp\Ui\RenderDefault();
-        
+
         $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
-        
+
         $layout->set("ws", $version);
         $cssRefs = $render->getCssReferences();
         $css = array();
@@ -149,50 +155,37 @@ class DocumentHtml
         $layout->eSetBlockData("JS", $js);
         return $layout->gen();
     }
-    
+
     protected function getWarningMessages()
     {
         global $action;
         $warnings = $action->parent->getWarningMsg();
         $messages = [];
         foreach ($warnings as $warning) {
-            $message = new \Dcp\HttpApi\V1\Api\RecordReturnMessage();
+            $message = new ApiMessage();
             $message->contentText = $warning;
             $message->type = $message::WARNING;
-            
+
             $messages[] = $message;
         }
         return json_encode($messages);
     }
-    
+
     protected static function getBaseUrl()
     {
         // Use protocol relative url
         $url = sprintf("//%s", $_SERVER["SERVER_NAME"]);
         if ($_SERVER["SERVER_PORT"] !== "80") {
-            $url.= sprintf(":%s", $_SERVER["SERVER_PORT"]);
+            $url .= sprintf(":%s", $_SERVER["SERVER_PORT"]);
         }
-        if (preg_match('@^(.*)/api/v1/@', $_SERVER["REQUEST_URI"], $reg)) {
-            $url.= $reg[1];
+        if (preg_match('@^(.*)/api/v2/@', $_SERVER["REQUEST_URI"], $reg)) {
+            $url .= $reg[1];
         } else {
             if (preg_match('@^(.*)/\\?@', $_SERVER["REQUEST_URI"], $reg)) {
-                $url.= $reg[1];
+                $url .= $reg[1];
             }
         }
-        $url.= "/";
+        $url .= "/";
         return $url;
-    }
-    
-    public function getEtagInfo()
-    {
-        if (isset($this->urlParameters["identifier"])) {
-            
-            $id = $this->urlParameters["identifier"];
-            $etag = sprintf("%s : %s : %s", \ApplicationParameterManager::getScopedParameterValue("WVERSION") , \ApplicationParameterManager::getScopedParameterValue("CORE_LANG"), $id);
-            
-            return $etag;
-        }
-        
-        return "";
     }
 }

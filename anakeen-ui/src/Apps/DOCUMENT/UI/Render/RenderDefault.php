@@ -451,7 +451,7 @@ class RenderDefault implements IRenderConfig
     {
         $helpDoc = $this->getDefaultHelpPageDocument($document);
         if ($helpDoc) {
-            \Dcp\HttpApi\V1\DocManager\DocManager::cache()->addDocument($helpDoc);
+            \Dcp\Core\DocManager::cache()->addDocument($helpDoc);
             $attrids = $helpDoc->getMultipleRawValues(\Dcp\AttributeIdentifiers\Helppage::help_sec_key);
             
             foreach ($attrids as $k => $aid) {

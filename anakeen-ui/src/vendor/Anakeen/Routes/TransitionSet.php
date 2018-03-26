@@ -1,6 +1,8 @@
 <?php
+
 namespace Anakeen\Routes\Ui;
 
+use Anakeen\Routes\Core\DocumentApiData;
 use Anakeen\Routes\Core\WorkflowSetState;
 
 /**
@@ -31,7 +33,7 @@ class TransitionSet extends WorkflowSetState
     {
         $info = parent::doRequest($messages);
         $info["labels"] = array(
-            "close" => ___("Close Transition Window", "ddui") ,
+            "close" => ___("Close Transition Window", "ddui"),
             "success" => ___("Transition success", "ddui")
         );
         $info["workflow"] = $this->getWorkflowData();
@@ -49,15 +51,15 @@ class TransitionSet extends WorkflowSetState
 
     protected function getWorkflowDataObject()
     {
-        $workflow = new \Dcp\HttpApi\V1\Crud\Document();
+        $workflow = new DocumentApiData($this->workflow);
 
         $info = array(
             "document.properties",
             "document.properties.family"
         );
 
-        $workflow->setDefaultFields(implode(",", $info));
-        $this->workflowData = $workflow->getInternal($this->workflow);
+        $workflow->setFields($info);
+        $this->workflowData = $workflow->getDocumentData();
         return $workflow;
     }
 }

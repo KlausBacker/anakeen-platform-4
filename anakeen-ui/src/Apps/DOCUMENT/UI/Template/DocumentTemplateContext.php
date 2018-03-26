@@ -6,7 +6,10 @@
 
 namespace Dcp\Ui;
 
-use Dcp\HttpApi\V1\DocManager\DocManager;
+use Anakeen\Routes\Core\DocumentApiData;
+use Dcp\Core\ContextManager;
+use Dcp\Core\DocManager;
+
 class DocumentTemplateContext implements \ArrayAccess
 {
     public $i18n;
@@ -26,19 +29,18 @@ class DocumentTemplateContext implements \ArrayAccess
     protected $docProperties = null;
     protected $docAttributes = null;
     /**
-     * @var \Dcp\HttpApi\V1\Crud\Document
+     * @var DocumentApiData
      */
     protected $_documentCrud = null;
     protected $_documentData = null;
-    
+
     public function __construct(\Doc $doc)
     {
         $this->_document = $doc;
         if ($doc->id > 0) {
             DocManager::cache()->addDocument($doc);
         }
-        $this->i18n = function ($s)
-        {
+        $this->i18n = function ($s) {
             return self::_i18n($s);
         };
     }
@@ -51,9 +53,11 @@ class DocumentTemplateContext implements \ArrayAccess
      */
     protected static function _i18n($s)
     {
-        if (!$s) return '';
+        if (!$s) {
+            return '';
+        }
         if (preg_match("/^([^(::)]+)::(.+)$/", $s, $reg)) {
-            $i18n= ___($reg[2], $reg[1]);
+            $i18n = ___($reg[2], $reg[1]);
             if ($i18n === $reg[1]) {
                 $i18n = _($s);
                 if ($i18n === $s) {
@@ -69,28 +73,25 @@ class DocumentTemplateContext implements \ArrayAccess
      * Retrieve document data from CRUD API
      *
      * @param string $field
-     * @param array  $subFields
+     * @param array $subFields
      *
      * @return array|mixed|null
      */
     protected function _getDocumentData($field, $subFields = array())
     {
-        
+
         if ($this->_documentCrud === null) {
-            $this->_documentCrud = new \Dcp\HttpApi\V1\Crud\Document();
+            $this->_documentCrud = new DocumentApiData($this->_document);
             if (count($subFields) > 0) {
-                
-                $completeFields = array_map(function ($item) use ($field)
-                {
+                $completeFields = array_map(function ($item) use ($field) {
                     return $field . '.' . $item;
-                }
-                , $subFields);
-                $this->_documentCrud->setDefaultFields(implode(',', $completeFields));
+                }, $subFields);
+                $this->_documentCrud->setFields($completeFields);
             } else {
-                $this->_documentCrud->setDefaultFields($field);
+                $this->_documentCrud->setFields([$field]);
             }
-            
-            $this->_documentData = $this->_documentCrud->getInternal($this->_document);
+
+            $this->_documentData = $this->_documentCrud->getDocumentData();
         }
         $fields = explode('.', $field);
         $data = $this->_documentData;
@@ -99,14 +100,13 @@ class DocumentTemplateContext implements \ArrayAccess
             $key = trim($key);
             $data = isset($data[$key]) ? $data[$key] : null;
         }
-        
+
         if ($data === null) {
-            
-            $this->_documentCrud->setDefaultFields($field);
+            $this->_documentCrud->setFields([$field]);
             $moreData = $this->_documentCrud->getInternal($this->_document);
             unset($moreData["document"]["uri"]);
             $this->_documentData = array_merge_recursive($this->_documentData, $moreData);
-            
+
             $data = $this->_documentData;
             foreach ($fields as $key) {
                 $key = trim($key);
@@ -115,6 +115,7 @@ class DocumentTemplateContext implements \ArrayAccess
         }
         return $data;
     }
+
     protected function _getProperties()
     {
         return $this->_getDocumentData("document.properties", array(
@@ -125,7 +126,7 @@ class DocumentTemplateContext implements \ArrayAccess
             "status"
         ));
     }
-    
+
     protected function _getAttributes()
     {
         if ($this->_document->doctype === "C") {
@@ -142,6 +143,7 @@ class DocumentTemplateContext implements \ArrayAccess
         }
         return $ctxData;
     }
+
     /**
      * Keys for mustache
      * @return array
@@ -149,10 +151,11 @@ class DocumentTemplateContext implements \ArrayAccess
     public function document()
     {
         return array(
-            "properties" => $this->_getProperties() ,
+            "properties" => $this->_getProperties(),
             "attributes" => $this->_getAttributes()
         );
     }
+
     /**
      *  Key for mustache
      * @return string
@@ -161,28 +164,29 @@ class DocumentTemplateContext implements \ArrayAccess
     {
         $conf = array(
             "document" => array(
-                "properties" => $this->_getProperties() ,
+                "properties" => $this->_getProperties(),
                 "attributes" => $this->_getAttributes()
-            ) ,
+            ),
             "family" => array(
                 "structure" => $this->_getDocumentStructure()
             )
         );
         return JsonHandler::encodeForHTML($conf);
     }
-    
+
     public function documentId()
     {
-        
+
         return intval($this->_document->initid);
     }
+
     public function userLocale()
     {
         $localeId = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
-        $config = getLocaleConfig($localeId);
+        $config = ContextManager::getLocaleConfig($localeId);
         return $config["culture"];
     }
-    
+
     protected function _getDocumentStructure()
     {
         if ($this->_document->doctype === "C") {
@@ -190,6 +194,7 @@ class DocumentTemplateContext implements \ArrayAccess
         }
         return $this->_getDocumentData("family.structure");
     }
+
     /**
      *
      * Whether a offset exists
@@ -206,6 +211,7 @@ class DocumentTemplateContext implements \ArrayAccess
     {
         return array_key_exists($offset, $this->keys);
     }
+
     /**
      *
      * Offset to retrieve
@@ -223,6 +229,7 @@ class DocumentTemplateContext implements \ArrayAccess
         }
         return $x;
     }
+
     /**
      *
      * Offset to set
@@ -240,6 +247,7 @@ class DocumentTemplateContext implements \ArrayAccess
         $this->keys[$offset] = $value;
         return $this;
     }
+
     /**
      *
      * Offset to unset

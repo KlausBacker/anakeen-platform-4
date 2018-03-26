@@ -6,7 +6,7 @@
 
 namespace Dcp\Ui;
 
-use Dcp\HttpApi\V1\DocManager\DocManager;
+use Dcp\Core\DocManager;
 
 class CommonRenderOptions extends BaseRenderOptions
 {

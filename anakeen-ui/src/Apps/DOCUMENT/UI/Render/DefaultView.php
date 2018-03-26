@@ -7,7 +7,7 @@
 namespace Dcp\Ui;
 
 use Dcp\Core\ContextManager;
-use Dcp\HttpApi\V1\DocManager\DocManager;
+use Dcp\Core\DocManager;
 use \Dcp\AttributeIdentifiers\Cvdoc as CvAttributes;
 
 class DefaultView extends RenderDefault
@@ -306,10 +306,13 @@ class DefaultView extends RenderDefault
      */
     public function addFamilyMenu(\Doc $doc, BarMenu & $menu)
     {
-        include_once ("FDL/popupdocdetail.php");
-        $links = array();
-        addFamilyPopup($links, $doc);
-        $this->addOldMenu($links, $menu);
+        $legacyPopupFile=sprintf("%s/Apps/FDL/popupdocdetail.php", DEFAULT_PUBDIR);
+        if (file_exists($legacyPopupFile)) {
+            include_once($legacyPopupFile);
+            $links = array();
+            addFamilyPopup($links, $doc);
+            $this->addOldMenu($links, $menu);
+        }
     }
     /**
      * Add Menu item defined by attribute family

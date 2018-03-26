@@ -3,7 +3,7 @@
  * @author Anakeen
 */
 
-use Dcp\HttpApi\V1\DocManager\DocManager;
+use Dcp\Core\DocManager;
 
 function view(Action & $action)
 {

@@ -4,7 +4,6 @@ namespace Anakeen\Routes\Ui;
 
 use Anakeen\Router\Exception;
 use Dcp\Core\ContextManager;
-use Dcp\Core\DocManager;
 
 /**
  * Class LockView
@@ -26,7 +25,6 @@ class LockView extends \Anakeen\Routes\Core\DocumentLock
 
     /**
      * Add temporary
-     * @throws \Dcp\HttpApi\V1\Crud\Exception
      * @return mixed
      */
     public function create()
@@ -74,7 +72,7 @@ class LockView extends \Anakeen\Routes\Core\DocumentLock
         /**
          * @var \Dcp\Family\CVDoc $cv
          */
-        $cv = \Dcp\HttpApi\V1\DocManager\DocManager::getDocument($this->_document->cvid);
+        $cv = \Dcp\Core\DocManager::getDocument($this->_document->cvid);
         $cv->set($this->_document);
         $viewInfo = $cv->getView($this->viewId);
         if (!$viewInfo) {
@@ -89,19 +87,5 @@ class LockView extends \Anakeen\Routes\Core\DocumentLock
             throw $exception;
         }
         return $viewInfo["cv_kview"] === "VEDIT";
-    }
-
-    /**
-     * Set the family of the current request
-     *
-     * @param array $array
-     * @throws \Dcp\HttpApi\V1\Crud\Exception
-     */
-    public function setUrlParameters(array $array)
-    {
-        parent::setUrlParameters($array);
-        if (isset($this->urlParameters["viewIdentifier"])) {
-            $this->viewId = $this->urlParameters["viewIdentifier"];
-        }
     }
 }

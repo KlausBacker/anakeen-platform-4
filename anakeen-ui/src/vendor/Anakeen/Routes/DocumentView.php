@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Ui;
 
 use Anakeen\Router\URLUtils;
+use Anakeen\Routes\Core\ApiMessage;
 use Dcp\AttributeIdentifiers\Cvdoc as CvdocAttribute;
 use Dcp\Core\ContextManager;
 use Dcp\Core\DbManager;
@@ -194,9 +195,9 @@ class DocumentView
         }
         $messages = [];
         if ($refreshMsg) {
-            $msg = new \Dcp\HttpApi\V1\Api\RecordReturnMessage();
+            $msg = new ApiMessage();
             $msg->contentHtml = $refreshMsg;
-            $msg->type = \Dcp\HttpApi\V1\Api\RecordReturnMessage::MESSAGE;
+            $msg->type = ApiMessage::MESSAGE;
             $msg->code = "REFRESH";
             $messages[] = $msg;
         }
@@ -298,7 +299,6 @@ class DocumentView
         $config = $this->getRenderConfig($viewId);
         $fields = $this->getFields();
 
-        \Dcp\ConsoleTime::startPartial("View Info");
         $viewInfo = array();
         foreach ($fields as $field) {
             switch ($field) {
@@ -349,9 +349,7 @@ class DocumentView
                     $config->setCustomClientData($this->document, $this->getCustomClientData());
                     break;
             }
-            \Dcp\ConsoleTime::step($field);
         }
-        \Dcp\ConsoleTime::stopPartial();
         return $viewInfo;
     }
 

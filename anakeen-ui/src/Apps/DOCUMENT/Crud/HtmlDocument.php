@@ -5,7 +5,7 @@
 
 namespace Dcp\Ui\Html;
 
-use Dcp\HttpApi\V1\DocManager\DocManager as DocManager;
+use Dcp\Core\DocManager as DocManager;
 use Dcp\HttpApi\V1\Crud\Exception;
 
 class Document extends \Dcp\HttpApi\V1\Crud\Crud

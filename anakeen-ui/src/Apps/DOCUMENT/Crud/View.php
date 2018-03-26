@@ -12,6 +12,11 @@ use Dcp\HttpApi\V1\Crud\DocumentUtils;
 use Dcp\HttpApi\V1\Crud\Exception;
 use Dcp\HttpApi\V1\DocManager\DocManager as DocManager;
 
+/**
+ * Class View
+ * @deprecated
+ * @package Dcp\Ui\Crud
+ */
 class View extends Crud
 {
     
@@ -321,8 +326,7 @@ class View extends Crud
     {
         $config = $this->getRenderConfig($viewId);
         $fields = $this->getFields();
-        
-        \Dcp\ConsoleTime::startPartial("View Info");
+
         $viewInfo = array();
         foreach ($fields as $field) {
             switch ($field) {
