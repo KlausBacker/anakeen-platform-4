@@ -3,7 +3,7 @@
 
 namespace Anakeen\Core;
 
-use Dcp\Core\DbManager;
+use Anakeen\Core\DbManager;
 
 define("GALL_ID", 2);
 define("ANONYMOUS_ID", 3);
@@ -400,7 +400,7 @@ create sequence seq_id_users start 10;";
             if (isset($tdn[$uid])) {
                 return $tdn[$uid];
             }
-            $dbid = \Dcp\Core\DbManager::getDbId();
+            $dbid = \Anakeen\Core\DbManager::getDbId();
             $res = pg_query($dbid, "select firstname, lastname  from users where id=$uid");
             if (pg_num_rows($res) > 0) {
                 $arr = pg_fetch_array($res, 0);

@@ -7,7 +7,7 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Router\Exception;
-use Dcp\Core\DbManager;
+use Anakeen\Core\DbManager;
 
 class Files
 {

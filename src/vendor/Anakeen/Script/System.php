@@ -3,7 +3,7 @@
 namespace Anakeen\Script;
 
 use Anakeen\Core\ContextManager;
-use Dcp\Core\DbManager;
+use Anakeen\Core\DbManager;
 
 class System
 {

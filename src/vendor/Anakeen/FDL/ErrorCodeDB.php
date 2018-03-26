@@ -5,7 +5,7 @@
 */
 namespace {
 
-    use Dcp\Core\DbManager;
+    use Anakeen\Core\DbManager;
 
     /**
      * Errors code used to database query errors

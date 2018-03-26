@@ -3,7 +3,7 @@
 namespace Dcp\Pu;
 
 use Anakeen\Core\ContextManager;
-use Dcp\Core\DbManager;
+use Anakeen\Core\DbManager;
 
 require_once __DIR__ . "/../WHAT/Lib.Prefix.php";
 require_once 'WHAT/autoload.php';

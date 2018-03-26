@@ -13,7 +13,7 @@
 /**
  */
 
-use \Dcp\Core\DbManager;
+use \Anakeen\Core\DbManager;
 use \Anakeen\Core\DocManager;
 
 /**

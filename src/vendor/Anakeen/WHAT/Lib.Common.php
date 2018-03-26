@@ -363,21 +363,21 @@ function logDebugStack($slice = 1, $msg = "")
 }
 
 /**
- * @deprecated use Dcp\Core\DbManager::getDbid()
+ * @deprecated use Anakeen\Core\DbManager::getDbid()
  * @return null|string
  */
 function getDbid()
 {
-    return \Dcp\Core\DbManager::getDbid();
+    return \Anakeen\Core\DbManager::getDbid();
 }
 
 /**
- * @deprecated use Dcp\Core\DbManager::getDbAccess()
+ * @deprecated use Anakeen\Core\DbManager::getDbAccess()
  * @return null|string
  */
 function getDbAccess()
 {
-    return \Dcp\Core\DbManager::getDbAccess();
+    return \Anakeen\Core\DbManager::getDbAccess();
 }
 
 function getDbAccessCore()
@@ -450,7 +450,7 @@ function getServiceName($dbaccess)
 /**
  * send simple query to database
  *
- * @deprecated use \Dcp\Core\DbManager::query
+ * @deprecated use \Anakeen\Core\DbManager::query
  *
  * @param string            $dbaccess     access database coordonates (not used)
  * @param string            $query        sql query
@@ -474,7 +474,7 @@ function simpleQuery(
 ) {
     static $sqlStrict = null;
     try {
-        \Dcp\Core\DbManager::query($query, $result, $singlecolumn, $singleresult);
+        \Anakeen\Core\DbManager::query($query, $result, $singlecolumn, $singleresult);
     } catch (\Dcp\Db\Exception $e) {
         if ($useStrict !== false) {
             throw $e;

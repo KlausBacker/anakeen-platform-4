@@ -263,7 +263,7 @@ class SearchDoc
                         $sql.= sprintf(" and (%sviews && '%s')", $maintabledot, $this->getUserViewVector($userid));
                     }
 
-                    $dbid = \Dcp\Core\DbManager::getDbId();
+                    $dbid = \Anakeen\Core\DbManager::getDbId();
                     $mb = microtime(true);
                     try {
                         simpleQuery($this->dbaccess, $sql, $result, false, true, true);

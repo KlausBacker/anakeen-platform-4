@@ -5,7 +5,7 @@
 */
 
 use \Anakeen\Core\ContextManager;
-use \Dcp\Core\DbManager;
+use \Anakeen\Core\DbManager;
 
 /**
  * Get Title from ids

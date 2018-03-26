@@ -6,7 +6,7 @@ use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use Anakeen\Router\URLUtils;
 use Anakeen\Core\ContextManager;
-use Dcp\Core\DbManager;
+use Anakeen\Core\DbManager;
 use Anakeen\Core\DocManager;
 use Dcp\Core\Settings;
 

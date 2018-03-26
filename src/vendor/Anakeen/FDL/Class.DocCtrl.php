@@ -39,7 +39,7 @@ define("POS_WF", 12); // begin of workflow privilege definition
 // end of privilege is 31 : (coded on 32bits)
 
 
-use \Dcp\Core\DbManager;
+use \Anakeen\Core\DbManager;
 use \Anakeen\Core\DocManager;
 
 /**

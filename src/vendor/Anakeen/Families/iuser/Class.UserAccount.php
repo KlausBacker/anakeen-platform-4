@@ -9,6 +9,7 @@
  */
 namespace Dcp\Core;
 
+use Anakeen\Core\DbManager;
 use Dcp\AttributeIdentifiers\Iuser as MyAttributes;
 
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */

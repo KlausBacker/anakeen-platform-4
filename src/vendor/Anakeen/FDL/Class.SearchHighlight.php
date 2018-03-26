@@ -32,7 +32,7 @@ class SearchHighlight
     
     public function __construct()
     {
-        $this->dbid = \Dcp\Core\DbManager::getDbId();
+        $this->dbid = \Anakeen\Core\DbManager::getDbId();
     }
     
     public function setLimit($limit)

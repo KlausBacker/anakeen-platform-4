@@ -17,7 +17,7 @@
 include_once("FDL/Lib.Util.php");
 
 use Anakeen\Core\DocManager;
-use Dcp\Core\DbManager;
+use Anakeen\Core\DbManager;
 
 //
 // ------------------------------------------------------

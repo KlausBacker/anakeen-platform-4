@@ -6,7 +6,7 @@
 
 namespace Dcp\Pu;
 
-use Dcp\Core\DbManager;
+use Anakeen\Core\DbManager;
 
 require_once 'PU_testcase_dcp_application.php';
 

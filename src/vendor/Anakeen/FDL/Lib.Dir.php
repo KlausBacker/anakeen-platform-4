@@ -1170,7 +1170,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         if ($id == 0) {
             return false;
         }
-        $dbid = \Dcp\Core\DbManager::getDbId();
+        $dbid = \Anakeen\Core\DbManager::getDbId();
         $fromid = false;
         $result = pg_query($dbid, "select id from docfam where id=$id and usedocread=1");
         if (pg_numrows($result) > 0) {

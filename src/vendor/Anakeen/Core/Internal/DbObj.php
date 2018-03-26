@@ -107,7 +107,7 @@ class DbObj
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         if (!$dbaccess) {
-            $dbaccess = \Dcp\Core\DbManager::getDbAccess();
+            $dbaccess = \Anakeen\Core\DbManager::getDbAccess();
         }
         $this->dbaccess = $dbaccess;
         $this->init_dbid();
@@ -684,9 +684,9 @@ class DbObj
     {
         if ($this->dbaccess == "") {
             // don't test if file exist or must be searched in include_path
-            $this->dbaccess = \Dcp\Core\DbManager::getDbAccess();
+            $this->dbaccess = \Anakeen\Core\DbManager::getDbAccess();
         }
-        $this->dbid = \Dcp\Core\DbManager::getDbid();
+        $this->dbid = \Anakeen\Core\DbManager::getDbid();
         if ($this->dbid == 0) {
             error_log(__METHOD__ . "null dbid");
         }

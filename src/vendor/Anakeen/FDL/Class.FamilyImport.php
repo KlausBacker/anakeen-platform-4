@@ -15,7 +15,7 @@
 
 namespace Dcp;
 
-use Dcp\Core\DbManager;
+use Anakeen\Core\DbManager;
 
 class FamilyImport
 {

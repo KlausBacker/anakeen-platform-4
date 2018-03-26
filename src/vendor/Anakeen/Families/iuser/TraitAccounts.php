@@ -8,6 +8,7 @@
  */
 namespace Dcp\Core;
 
+use Anakeen\Core\DbManager;
 trait TAccount
 {
     /**

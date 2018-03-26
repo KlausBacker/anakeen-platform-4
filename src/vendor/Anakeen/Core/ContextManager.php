@@ -370,7 +370,7 @@ class ContextManager
             self::$coreParams = array();
             $tparams = array();
             try {
-                \Dcp\Core\DbManager::query(
+                \Anakeen\Core\DbManager::query(
                     "select name, val from paramv where (type = 'G') or (type='A' and appid = (select id from application where name ='CORE'));",
                     $tparams,
                     false,

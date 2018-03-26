@@ -135,7 +135,7 @@ if ($allrev) {
 }
 if ($filter) {
     // verify validity and prevent hack
-    if (@pg_prepare(\Dcp\Core\DbManager::getDbId(), 'refreshDocument', sprintf("select id from doc%d where %s", $s->fromid, $filter)) == false) {
+    if (@pg_prepare(\Anakeen\Core\DbManager::getDbId(), 'refreshDocument', sprintf("select id from doc%d where %s", $s->fromid, $filter)) == false) {
         $action->exitError(sprintf("filter not valid :%s", pg_last_error()));
     } else {
         $s->addFilter($filter);

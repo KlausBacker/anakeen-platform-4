@@ -7,10 +7,12 @@
  * Detailled search
  */
 namespace Dcp\Core;
+use Anakeen\Core\DbManager;
 
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 class DetailSearch extends \Dcp\Family\Search
 {
+    /**
     /**
      * Last suggestion for constraints
      * @var string

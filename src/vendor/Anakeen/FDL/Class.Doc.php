@@ -42,7 +42,7 @@ define("REGEXPFILE", "([^\|]*)\|([0-9]*)\|?(.*)?");
 define("PREGEXPFILE", "/(?P<mime>[^\|]*)\|(?P<vid>[0-9]*)\|?(?P<name>.*)?/");
 
 
-use \Dcp\Core\DbManager;
+use \Anakeen\Core\DbManager;
 use \Anakeen\Core\ContextManager;
 use \Anakeen\Core\DocManager;
 

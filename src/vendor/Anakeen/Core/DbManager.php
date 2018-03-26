@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\Core;
+namespace Anakeen\Core;
 
 class DbManager
 {

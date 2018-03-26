@@ -549,7 +549,7 @@ class FormatCollection
                     return $this->getFormatDate($doc->cdate, $this->propDateStyle);
                 } else {
                     $sql = sprintf("select cdate from docread where initid=%d and revision = 0", $doc->initid);
-                    \Dcp\Core\DbManager::query($sql, $cdate, true, true);
+                    \Anakeen\Core\DbManager::query($sql, $cdate, true, true);
                     return $this->getFormatDate($cdate, $this->propDateStyle);
                 }
                 // no break
@@ -588,7 +588,7 @@ class FormatCollection
             $ownerId = $doc->owner;
         } else {
             $sql = sprintf("select owner from docread where initid=%d and revision = 0", $doc->initid);
-            \Dcp\Core\DbManager::query($sql, $ownerId, true, true);
+            \Anakeen\Core\DbManager::query($sql, $ownerId, true, true);
         }
         return $this->getAccountData(abs($ownerId), $doc);
     }
@@ -689,7 +689,7 @@ class FormatCollection
     {
         $sql = sprintf("select initid, icon, title from doc128 where us_whatid='%d' and locked != -1", $accountId);
 
-        \Dcp\Core\DbManager::query($sql, $result, false, true);
+        \Anakeen\Core\DbManager::query($sql, $result, false, true);
         if ($result) {
             return array(
                 "id" => intval($result["initid"]) ,

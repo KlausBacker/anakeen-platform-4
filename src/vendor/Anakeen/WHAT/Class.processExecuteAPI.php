@@ -47,7 +47,7 @@ class processExecuteAPI
         self::debug(sprintf("Locking exclusive execution..."));
         $i1 = unpack("i", "PROC") [1];
         $i2 = unpack("i", "EXEC") [1];
-        \Dcp\Core\DbManager::query(sprintf("SELECT pg_try_advisory_lock(%d, %d)", $i1, $i2), $res, true, true);
+        \Anakeen\Core\DbManager::query(sprintf("SELECT pg_try_advisory_lock(%d, %d)", $i1, $i2), $res, true, true);
         if ($res !== 't') {
             $msg = sprintf("A 'processExecute' API script is already running.");
             self::debug($msg);

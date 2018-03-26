@@ -644,11 +644,11 @@ class DirectoriesAutoloader
         include_once("Core/ContextManager.php");
         include_once("Core/DbManager.php");
         $sql = "select * from pg_tables where tablename = 'docfam'";
-        \Dcp\Core\DbManager::query($sql, $exists);
+        \Anakeen\Core\DbManager::query($sql, $exists);
         if (count($exists) > 0) {
             $sql = 'select id, "name" from docfam where name is not null order by id';
             try {
-                \Dcp\Core\DbManager::query($sql, $famNames);
+                \Anakeen\Core\DbManager::query($sql, $famNames);
             } catch (\Dcp\Db\Exception $e) {
                 throw new DirectoriesAutoloaderException('Cannot access family name [' . $e->getMessage() . ']');
             }

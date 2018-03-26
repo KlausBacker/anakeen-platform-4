@@ -121,7 +121,7 @@ class DbObj
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         if (!$dbaccess) {
-            $dbaccess = \Dcp\Core\DbManager::getDbAccess();
+            $dbaccess = \Anakeen\Core\DbManager::getDbAccess();
         }
         $this->dbaccess = $dbaccess;
         $this->init_dbid();
@@ -702,9 +702,9 @@ class DbObj
     {
         if ($this->dbaccess == "") {
             // don't test if file exist or must be searched in include_path
-            $this->dbaccess = \Dcp\Core\DbManager::getDbAccess();
+            $this->dbaccess = \Anakeen\Core\DbManager::getDbAccess();
         }
-        $this->dbid = Dcp\Core\DbManager::getDbid();
+        $this->dbid = Anakeen\Core\DbManager::getDbid();
         if ($this->dbid == 0) {
             error_log(__METHOD__ . "null dbid");
         }
@@ -1018,14 +1018,14 @@ class DbObj
      *
      * @param string $point point identifier
      *
-     * @deprecated use \Dcp\Core\DbManager::savePoint
+     * @deprecated use \Anakeen\Core\DbManager::savePoint
      * @throws \Dcp\Exception
      * @return string error message
      */
     public function savePoint($point)
     {
         try {
-            \Dcp\Core\DbManager::savePoint($point);
+            \Anakeen\Core\DbManager::savePoint($point);
         } catch (\Exception $e) {
             return $e->getMessage();
         }
@@ -1045,7 +1045,7 @@ class DbObj
      *                                    (i.e. in the range [-2147483648, 2147483647]).
      * @param string $exclusiveLockPrefix Lock's prefix string limited up to 4 bytes.
      *
-     * @deprecated use \Dcp\Core\DbManager::lockPoint
+     * @deprecated use \Anakeen\Core\DbManager::lockPoint
      * @see        Dbobj::savePoint()
      * @throws \Dcp\Exception DB0010, DB0011, and DB0012
      * @return string error message
@@ -1053,7 +1053,7 @@ class DbObj
     public function lockPoint($exclusiveLock, $exclusiveLockPrefix = '')
     {
         try {
-            \Dcp\Core\DbManager::lockPoint($exclusiveLock, $exclusiveLockPrefix);
+            \Anakeen\Core\DbManager::lockPoint($exclusiveLock, $exclusiveLockPrefix);
         } catch (\Exception $e) {
             return $e->getMessage();
         }
@@ -1067,14 +1067,14 @@ class DbObj
      *
      * @param bool $useLock set lock (true) or unlock (false)
      *
-     * @deprecated use \Dcp\Core\DbManager::setMasterLock
+     * @deprecated use \Anakeen\Core\DbManager::setMasterLock
      * @see        Dbobj::lockPoint()
      * @return string error message
      */
     public function setMasterLock($useLock)
     {
         try {
-            \Dcp\Core\DbManager::setMasterLock($useLock);
+            \Anakeen\Core\DbManager::setMasterLock($useLock);
         } catch (\Exception $e) {
             return $e->getMessage();
         }
@@ -1086,13 +1086,13 @@ class DbObj
      *
      * @param string $point revert point
      *
-     * @deprecated use \Dcp\Core\DbManager::rollbackPoint
+     * @deprecated use \Anakeen\Core\DbManager::rollbackPoint
      * @return string error message
      */
     public function rollbackPoint($point)
     {
         try {
-            \Dcp\Core\DbManager::rollbackPoint($point);
+            \Anakeen\Core\DbManager::rollbackPoint($point);
         } catch (\Exception $e) {
             return $e->getMessage();
         }
@@ -1104,13 +1104,13 @@ class DbObj
      *
      * @param string $point
      *
-     * @deprecated use \Dcp\Core\DbManager::commitPoint
+     * @deprecated use \Anakeen\Core\DbManager::commitPoint
      * @return string error message
      */
     public function commitPoint($point)
     {
         try {
-            \Dcp\Core\DbManager::commitPoint($point);
+            \Anakeen\Core\DbManager::commitPoint($point);
         } catch (\Exception $e) {
             return $e->getMessage();
         }

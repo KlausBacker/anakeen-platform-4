@@ -2,7 +2,7 @@
 
 namespace Anakeen\Router;
 
-use Dcp\Core\DbManager;
+use Anakeen\Core\DbManager;
 
 /**
  * Class AccessInfo

@@ -109,7 +109,7 @@ create unique index idx_perm on docperm(docid, userid);";
         }
         $userMember = DocPerm::getMemberOfVector($userid, $strict);
         $sql = sprintf("select getaperm('%s',%d) as uperm", $userMember, $profid);
-        \Dcp\Core\DbManager::query($sql, $uperm, true, true);
+        \Anakeen\Core\DbManager::query($sql, $uperm, true, true);
         if ($uperm === false) {
             return 0;
         }
@@ -125,7 +125,7 @@ create unique index idx_perm on docperm(docid, userid);";
         $userMember = DocPerm::getMemberOfVector($userid);
         $sql = sprintf("select getaperm('%s',%d) as uperm", $userMember, $profid);
 
-        \Dcp\Core\DbManager::query($sql, $uperm, true, true);
+        \Anakeen\Core\DbManager::query($sql, $uperm, true, true);
         if ($uperm === false) {
             return 0;
         }
@@ -200,7 +200,7 @@ create unique index idx_perm on docperm(docid, userid);";
     {
         $sql = sprintf("SELECT docid, userid, upacl FROM docperm WHERE docid = %d ORDER BY docid, userid, upacl", $docid);
         $res = array();
-        \Dcp\Core\DbManager::query($sql, $res, false, false);
+        \Anakeen\Core\DbManager::query($sql, $res, false, false);
         return $res;
     }
 }
