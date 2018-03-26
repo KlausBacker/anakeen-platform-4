@@ -7,7 +7,8 @@ use Anakeen\Router\ApiV2Response;
 
 /**
  * Class I18nCatalog
- * @note Used by route : GET /api/v2/i18n/{catalog}
+ *
+ * @note    Used by route : GET /api/v2/i18n/{catalog}
  * @package Anakeen\Routes\Ui
  */
 class I18nCatalog
@@ -18,9 +19,10 @@ class I18nCatalog
     /**
      * Get translation catalog
      *
-     * @param \Slim\Http\request $request
+     * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
-     * @param array $args
+     * @param array               $args
+     *
      * @return mixed
      * @throws Exception
      */
@@ -28,7 +30,7 @@ class I18nCatalog
     {
         $currentLocale = $this->getUserLocale();
         $shortLocale = strtok($currentLocale, '_');
-        $resourceId=$args["catalog"];
+        $resourceId = $args["catalog"];
         if ($resourceId === "_all") {
             $file = sprintf("../locale/%s/js/catalog.js", $shortLocale);
         } else {
@@ -39,12 +41,12 @@ class I18nCatalog
             $exception->setHttpStatus("404", "Catalog file not found");
             throw $exception;
         }
-        $catalog = json_decode(file_get_contents($file) , true);
+        $catalog = json_decode(file_get_contents($file), true);
         $data = array(
-            "locale" => \Dcp\Core\ContextManager::getLocaleConfig($currentLocale) ,
+            "locale" => \Anakeen\Core\ContextManager::getLocaleConfig($currentLocale),
             "catalog" => $catalog
         );
-       $response= ApiV2Response::withEtag($request, $response, $this->getEtagInfo());
+        $response = ApiV2Response::withEtag($request, $response, $this->getEtagInfo());
         return ApiV2Response::withData($response, $data);
     }
 
@@ -64,6 +66,7 @@ class I18nCatalog
         }
         return $this->userLocale;
     }
+
     /**
      * Return etag info
      *
@@ -72,6 +75,6 @@ class I18nCatalog
     public function getEtagInfo()
     {
         $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
-        return $version." ".$this->getUserLocale();
+        return $version . " " . $this->getUserLocale();
     }
 }

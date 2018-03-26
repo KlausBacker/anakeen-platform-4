@@ -6,7 +6,7 @@
 
 namespace Dcp\Ui;
 
-use Dcp\Core\ContextManager;
+use Anakeen\Core\ContextManager;
 
 class DefaultEdit extends RenderDefault
 {

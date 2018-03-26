@@ -5,11 +5,11 @@ namespace Anakeen\Routes\Ui;
 use Anakeen\Router\URLUtils;
 use Anakeen\Routes\Core\ApiMessage;
 use Dcp\AttributeIdentifiers\Cvdoc as CvdocAttribute;
-use Dcp\Core\ContextManager;
-use Dcp\Core\DbManager;
-use Dcp\Core\Settings;
+use Anakeen\Core\ContextManager;
+use Anakeen\Core\DbManager;
+use Anakeen\Core\Settings;
 use Anakeen\Router\Exception;
-use Dcp\Core\DocManager as DocManager;
+use Anakeen\Core\DocManager;
 use Anakeen\Router\ApiV2Response;
 
 /**

@@ -7,8 +7,8 @@
 namespace Dcp\Ui;
 
 use Anakeen\Routes\Core\DocumentApiData;
-use Dcp\Core\ContextManager;
-use Dcp\Core\DocManager;
+use Anakeen\Core\ContextManager;
+use Anakeen\Core\DocManager;
 
 class DocumentTemplateContext implements \ArrayAccess
 {

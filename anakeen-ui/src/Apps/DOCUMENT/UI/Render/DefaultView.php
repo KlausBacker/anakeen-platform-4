@@ -6,8 +6,8 @@
 
 namespace Dcp\Ui;
 
-use Dcp\Core\ContextManager;
-use Dcp\Core\DocManager;
+use Anakeen\Core\ContextManager;
+use Anakeen\Core\DocManager;
 use \Dcp\AttributeIdentifiers\Cvdoc as CvAttributes;
 
 class DefaultView extends RenderDefault

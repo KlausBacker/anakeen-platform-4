@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Ui;
 
 use Anakeen\Router\Exception;
-use Dcp\Core\ContextManager;
+use Anakeen\Core\ContextManager;
 
 /**
  * Class LockView
