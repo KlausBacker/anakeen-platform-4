@@ -335,10 +335,7 @@ namespace Dcp\Style
             if (!is_dir($fullTargetDirname) && (false === mkdir($fullTargetDirname, 0777, true))) {
                 throw new Exception("STY0005", "$fullTargetDirname dir could not be created for file $destFile");
             }
-            $explorerP = getExplorerParamtersName();
-            foreach ($explorerP as $ep) {
-                $action->parent->SetVolatileParam($ep, null);
-            }
+
             $lay = new \Layout("", $action, $template);
             $template = $lay->gen();
             $keyForStyle = preg_replace("/css\//", "", $destFile);

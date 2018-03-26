@@ -131,7 +131,7 @@ class ContextManager
         self::$coreUser = &$account;
         if ($action) {
             self::$coreAction = &$action;
-            self::$coreApplication = $action->parent;
+            self::$coreApplication = & $action->parent;
         }
     }
 
@@ -328,7 +328,7 @@ class ContextManager
      */
     public static function getCurrentApplication()
     {
-        return self::$coreApplication;
+        return self::$coreAction->parent;
     }
 
     /**

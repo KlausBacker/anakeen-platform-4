@@ -6,7 +6,7 @@ namespace Dcp\Family {
 
 namespace Dcp\AttributeIdentifiers {
 	/** Masque de saisie  */
-	class Mask extends 1 {
+	class Mask extends Base {
 		/** [frame] Famille */
 		const msk_fr_rest='msk_fr_rest';
 		/** [docid("FAMILIES")] Famille */

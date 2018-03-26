@@ -1,11 +1,12 @@
 /Tests/autotest/autotest.override.sh
 *~
-*#
+*#*
 /Tests/autotest/outputs/*
 ide/vendor/
 .idea/workspace.xml
 .idea/deployment.xml
 .idea/php.xml
+.idea/dataSources/
 smart-data-engine*app
 .php_cs.cache
 .idea/*.iml"

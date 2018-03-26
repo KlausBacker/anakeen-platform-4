@@ -80,7 +80,7 @@ fi
 echo "Setting DateStyle to match CORE_LCDATE..."
 CURRENT_DATABASE=`PGSERVICE="$core_db" psql -tA -c "SELECT current_database()"`
 CURRENT_DATABASE_QUOTED=$(echo "$CURRENT_DATABASE" | sed -e 's/"/""/g')
-CORE_LCDATE=`"$WIFF_CONTEXT_ROOT/wsh.php" --api=getApplicationParameter --param=CORE_LCDATE| cut -f1 -d" "`
+CORE_LCDATE=`"$WIFF_CONTEXT_ROOT/ank.php" --script=getApplicationParameter --param=CORE_LCDATE| cut -f1 -d" "`
 if [ -z "$CURRENT_DATABASE" ]; then
     echo "Could not get current_database from PGSERVICE=$core_db"
     exit 1
@@ -116,7 +116,7 @@ for SUBDIR in cache/file cache/image session tmp upload; do
 done
 
 if [ "$user_login" != "" ]; then
-  "$WIFF_CONTEXT_ROOT"/wsh.php --api=fdl_resetprofiling --login="$user_login" --password="$user_password"
+  "$WIFF_CONTEXT_ROOT"/ank.php --script=fdl_resetprofiling --login="$user_login" --password="$user_password"
 fi
 
 # vim: set tabstop=8 softtabstop=4 shiftwidth=4 noexpandtab:

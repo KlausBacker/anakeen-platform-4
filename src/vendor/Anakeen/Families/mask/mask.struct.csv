@@ -1,5 +1,5 @@
 // famille mask;;;id;class;name;;;;;;;
-BEGIN;1;Masque de saisie;21;;MASK;;;;;;;
+BEGIN;BASE;Masque de saisie;21;;MASK;;;;;;;
 CLASS;Dcp\Core\Mask;;;;;;;;;;;
 USEFOR;S;;;;;;;;;;;
 SCHAR;S;;;;;;;;;;;

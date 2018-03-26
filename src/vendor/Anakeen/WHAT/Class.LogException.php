@@ -124,16 +124,26 @@ class LogException
         $errorId = uniqid("ANK");
         self::$errId = $errorId;
 
+        $userMsg = "";
         if (is_array($e)) {
             $logMessage = sprintf("%s in %s on line %s", $e["message"], $e["file"], $e["line"]);
             $logMessage .= "\n" . self::getUserInfo();
         } else {
+            if (is_a($e, "\\Anakeen\\Router\\Exception")) {
+                /**
+                 * @var \Anakeen\Router\Exception $e
+                 */
+                $userMsg = $e->getUserMessage();
+            }
             $logMessage = $e->getMessage();
         }
 
         $displayError = ($action && $action->getParam("CORE_DISPLAY_ERROR") === "yes");
 
         if (!$displayError) {
+            if ($userMsg) {
+                return $userMsg;
+            }
             return sprintf("%s.", ___("Whoops, looks like something went wrong", "dcp"));
         } else {
             return $logMessage;

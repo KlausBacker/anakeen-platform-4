@@ -169,8 +169,12 @@ class RouterConfig
      */
     public function getRoutes()
     {
+        $routes = [];
+        foreach ($this->routes as $k => $v) {
+            $routes[$k] = new RouterInfo($v);
+        }
 
-        return $this->routes;
+        return $routes;
     }
 
     /**

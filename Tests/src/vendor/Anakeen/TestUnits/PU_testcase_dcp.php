@@ -1,16 +1,6 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 namespace Dcp\Pu;
-
-/**
- * @author Anakeen
- * @package Dcp\Pu
- */
-
 
 use Dcp\Core\ContextManager;
 use Dcp\Core\DbManager;
@@ -18,6 +8,7 @@ use Dcp\Core\DbManager;
 require_once __DIR__ . "/../WHAT/Lib.Prefix.php";
 require_once 'WHAT/autoload.php';
 include_once("FDL/Class.Doc.php"); // to include some libraries
+
 class TestCaseDcp extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -78,13 +69,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     protected static function beginTransaction()
     {
-        self::$dbaccess = getDbAccess();
-        if (!self::$odb) {
-            self::$odb = new \DbObj(self::$dbaccess);
-        }
-        self::$odb->savePoint('putransaction');
-        // $err = simpleQuery(self::$dbaccess, "begin", $r);
-
+        DbManager::savePoint('putransaction');
     }
 
     /**
@@ -95,9 +80,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
     protected static function rollbackTransaction()
     {
 
-        self::$odb->rollbackPoint('putransaction');
-        //$err = simpleQuery(self::$dbaccess, "rollback", $r);
-
+        DbManager::rollbackPoint('putransaction');
     }
 
     /**
@@ -129,8 +112,12 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         }
         $action = ContextManager::getCurrentAction();
         if (!$action->dbid) {
-            if (!$action->dbid) $action->init_dbid();
-            if (!$action->dbid) error_log(__METHOD__ . "lost action dbid");
+            if (!$action->dbid) {
+                $action->init_dbid();
+                if (!$action->dbid) {
+                    error_log(__METHOD__ . "lost action dbid");
+                }
+            }
             $action->init_dbid();
         }
         return $action;
@@ -142,9 +129,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     protected static function getApplication()
     {
-        global $action;
-        if ($action) return $action->parent;
-        return null;
+        return ContextManager::getCurrentApplication();
     }
 
     /**
@@ -268,9 +253,9 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     public function importCsvData($data)
     {
-        $tmpFile = tempnam(getTmpDir(), "importData");
+        $tmpFile = tempnam(ContextManager::getTmpDir(), "importData");
         if ($tmpFile === false) {
-            throw new \Dcp\Exception(sprintf("Error creating temporary file in '%s'.", getTmpDir()));
+            throw new \Dcp\Exception(sprintf("Error creating temporary file in '%s'.", ContextManager::getTmpDir()));
         }
         $ret = rename($tmpFile, $tmpFile . '.csv');
         if ($ret === false) {

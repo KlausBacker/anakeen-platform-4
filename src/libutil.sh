@@ -151,9 +151,9 @@ function versionCompare {
 }
 
 function getContextRoot {
-    if [ -n "$wpub" -a -f "$wpub/wsh.php" ]; then
+    if [ -n "$wpub" -a -f "$wpub/ank.php" ]; then
 	echo "$wpub"
-    elif [ -n "$WIFF_CONTEXT_ROOT" -a -f "$WIFF_CONTEXT_ROOT/wsh.php" ]; then
+    elif [ -n "$WIFF_CONTEXT_ROOT" -a -f "$WIFF_CONTEXT_ROOT/ank.php" ]; then
 	echo "$WIFF_CONTEXT_ROOT"
     else
 	echo ""

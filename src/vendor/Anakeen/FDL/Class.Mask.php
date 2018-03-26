@@ -73,15 +73,15 @@ class Mask extends \Dcp\Family\Base
      * Verify if family and attributes are coherents
      * @return string error message
      */
-    protected function verifyIntegraty()
+    public function verifyIntegraty()
     {
         $mskAttrids = $this->getMultipleRawValues(myAttr::msk_attrids);
         $famid = $this->getRawValue(myAttr::msk_famid);
         if (!$famid) {
             return \ErrorCode::getError("MSK0001", $this->name);
         }
-        $fam = new_doc($this->dbaccess, $famid);
-        if ($fam->doctype !== "C") {
+        $fam = DocManager::getFamily($famid);
+        if (!$fam || $fam->doctype !== "C") {
             return \ErrorCode::getError("MSK0002", $famid, $this->name);
         }
         $attributes = $fam->getAttributes();

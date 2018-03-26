@@ -1,77 +1,71 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
-namespace Dcp\Utils;
+namespace Anakeen\Script;
 
-interface WStartStdioInterface
-{
-    public function wstart_stdout($msg);
-    public function wstart_stderr($msg);
-}
+use Dcp\Core\ContextManager;
+use Dcp\Core\DbManager;
 
-class WStartException extends \Exception
-{
-};
-
-class WStartDefaultStdio implements WStartStdioInterface
-{
-    public function wstart_stdout($msg)
-    {
-        return;
-    }
-    public function wstart_stderr($msg)
-    {
-        return;
-    }
-}
-
-class WStartInternals
+class System
 {
     /**
-     * @var WStartStdioInterface
+     * @var IStdio
      */
     protected $stdio = null;
     protected $verbose = false;
     protected $contextRoot = false;
-    
-    public function __construct($contextRoot)
+
+    public function __construct()
     {
         $this->setVerbose(false);
-        $this->setStdio(new WStartDefaultStdio());
-        $this->setContextRoot($contextRoot);
+        $this->setStdio(new Stdio());
+        $this->setContextRoot(DEFAULT_PUBDIR);
     }
+
+
+    public function start()
+    {
+        $this->reapplyDatabaseParameters();
+        $this->clearAutoloadCache();
+        $this->imageAndDocsLinks();
+        $this->clearFileCache();
+        $this->refreshJsVersion();
+        $this->resetRouteConfig();
+        $this->style();
+        $this->unStop();
+    }
+
+
     protected function setContextRoot($contextRoot)
     {
         if (!is_string($contextRoot) || strlen($contextRoot) <= 0) {
-            throw new WStartException(sprintf("contextRoot must not be empty."));
+            throw new Exception(sprintf("contextRoot must not be empty."));
         }
         if (!is_dir($contextRoot)) {
-            throw new WStartException(sprintf("contextRoot '%s' is not a directory.", $contextRoot));
+            throw new Exception(sprintf("contextRoot '%s' is not a directory.", $contextRoot));
         }
         if (!is_readable($contextRoot)) {
-            throw new WStartException(sprintf("contextRoot '%s' is not readable.", $contextRoot));
+            throw new Exception(sprintf("contextRoot '%s' is not readable.", $contextRoot));
         }
         if (!is_writable($contextRoot)) {
-            throw new WStartException(sprintf("contextRoot '%s' is not writable.", $contextRoot));
+            throw new Exception(sprintf("contextRoot '%s' is not writable.", $contextRoot));
         }
         if (($realContextRoot = realpath($contextRoot)) === false) {
-            throw new WStartException(sprintf("could not get real path from contextRoot '%s'.", $contextRoot));
+            throw new Exception(sprintf("could not get real path from contextRoot '%s'.", $contextRoot));
         }
         $this->contextRoot = $realContextRoot;
     }
+
     /**
      * Scan given directory and delete dead symlinks (i.e. symlinks pointing to non-existing files)
      *
      * @param string $dir
-     * @throws WStartException
+     *
+     * @throws Exception
      */
-    public function deleteDeadLinks($dir)
+    protected function deleteDeadLinks($dir)
     {
         if (($dh = opendir($dir)) === false) {
-            throw new WStartException(sprintf("Error opening directory '%s'.", $dir));
+            throw new Exception(sprintf("Error opening directory '%s'.", $dir));
         }
         while (($file = readdir($dh)) !== false) {
             if ($file == '.' || $file == '..') {
@@ -94,24 +88,26 @@ class WStartInternals
             $this->verbose(2, sprintf("Deleting link '%s' to non-existing file '%s'.\n", $absLink, $target));
             if (unlink($absLink) === false) {
                 closedir($dh);
-                throw new WStartException(sprintf("Error deleting dead symlink '%s' to '%s'.", $absLink, $target));
+                throw new Exception(sprintf("Error deleting dead symlink '%s' to '%s'.", $absLink, $target));
             }
         }
         closedir($dh);
     }
+
     /**
      * Link files from source dir to destination dir.
      *
      * @param string $sourceDir Source dir from which files are to be linked
-     * @param string $destDir Destination dir to which the symlinks will be created
-     * @param array $linked List of conflicting/duplicates files (i.e. source files with the same name)
-     * @throws WStartException
+     * @param string $destDir   Destination dir to which the symlinks will be created
+     * @param array  $linked    List of conflicting/duplicates files (i.e. source files with the same name)
+     *
+     * @throws Exception
      */
     public function linkFiles($sourceDir, $destDir, &$linked = array())
     {
         $this->verbose(2, sprintf("Processing files from '%s'.\n", $sourceDir));
         if (($dh = opendir($this->publize($sourceDir))) === false) {
-            throw new WStartException(sprintf("Error opening directory '%s'.", $this->publize($sourceDir)));
+            throw new Exception(sprintf("Error opening directory '%s'.", $this->publize($sourceDir)));
         }
         while (($file = readdir($dh)) !== false) {
             if ($file == '.' || $file == '..') {
@@ -135,23 +131,25 @@ class WStartInternals
                 }
                 if (unlink($absLink) === false) {
                     closedir($dh);
-                    throw new WStartException(sprintf("Error removing symlink '%s'.", $absLink));
+                    throw new Exception(sprintf("Error removing symlink '%s'.", $absLink));
                 }
             }
             $this->verbose(2, sprintf("Linking '%s' to '%s'.\n", $relTarget, $absLink));
             if (symlink($relTarget, $absLink) === false) {
                 closedir($dh);
-                throw new WStartException(sprintf("Error symlinking '%s' to '%s'.", $relTarget, $absLink));
+                throw new Exception(sprintf("Error symlinking '%s' to '%s'.", $relTarget, $absLink));
             }
             $linked[$absLink][] = $relTarget;
         }
         closedir($dh);
     }
+
     /**
      * Create a directory if it does not already exists...
      *
      * @param string $dir
-     * @throws WStartException
+     *
+     * @throws Exception
      */
     protected function mkdir($dir)
     {
@@ -159,20 +157,22 @@ class WStartInternals
             return;
         }
         if (mkdir($dir) === false) {
-            throw new WStartException(sprintf("Error creating directory '%s'.", $dir));
+            throw new Exception(sprintf("Error creating directory '%s'.", $dir));
         }
     }
+
     /**
      * Remove files matching the specified regex in the given directory
      *
      * @param $dir
      * @param $regex
-     * @throws WStartException
+     *
+     * @throws Exception
      */
     protected function removeFilesByRegex($dir, $regex)
     {
         if (($dh = opendir($dir)) === false) {
-            throw new WStartException(sprintf("Error opening directory '%s'.", $dir));
+            throw new Exception(sprintf("Error opening directory '%s'.", $dir));
         }
         while (($file = readdir($dh)) !== false) {
             if ($file == '.' || $file == '..') {
@@ -181,7 +181,7 @@ class WStartInternals
             $ret = preg_match($regex, $file);
             if ($ret === false) {
                 closedir($dh);
-                throw new WStartException(sprintf("Malformed regex pattern '%s'.", $regex));
+                throw new Exception(sprintf("Malformed regex pattern '%s'.", $regex));
             }
             if ($ret === 0) {
                 continue;
@@ -189,21 +189,23 @@ class WStartInternals
             $this->verbose(2, sprintf("Removing '%s'.\n", $dir . DIRECTORY_SEPARATOR . $file));
             if (unlink($dir . DIRECTORY_SEPARATOR . $file) == false) {
                 closedir($dh);
-                throw new WStartException(sprintf("Error removing file '%s'.", $file));
+                throw new Exception(sprintf("Error removing file '%s'.", $file));
             }
         }
         closedir($dh);
     }
+
     /**
      * Returns surdirs containing a specific subdir
      *
      * @param $subdir
+     *
      * @return string[] list of dir/subdir relative to contextRoot
      */
     public function getSubDirs($subdir)
     {
         $appImagesDirs = array();
-        if (($dh = opendir($this->contextRoot."/public")) === false) {
+        if (($dh = opendir($this->contextRoot . "/public")) === false) {
             return $appImagesDirs;
         }
         while (($elmt = readdir($dh)) !== false) {
@@ -225,18 +227,22 @@ class WStartInternals
         closedir($dh);
         return $appImagesDirs;
     }
+
     public function getImagesDirs()
     {
         return $this->getSubDirs('Images');
     }
+
     public function getDocsDirs()
     {
         return $this->getSubDirs('Docs');
     }
+
     protected function debug($msg)
     {
         $this->stdio->wstart_stderr($msg);
     }
+
     /**
      * Print a message with the specified verbose level.
      *
@@ -252,8 +258,10 @@ class WStartInternals
             $this->stdio->wstart_stdout($msg);
         }
     }
+
     /**
      * @param int $verbose Verbose level (e.g. 1, 2, etc.)
+     *
      * @return bool
      */
     public function setVerbose($verbose)
@@ -262,20 +270,23 @@ class WStartInternals
         $this->verbose = (int)$verbose;
         return $previous;
     }
+
     /**
      * @param $stdio
-     * @return WStartStdioInterface
-     * @throws WStartException
+     *
+     * @return IStdio
+     * @throws Exception
      */
     public function setStdio($stdio)
     {
-        if (!is_a($stdio, '\Dcp\Utils\WStartStdioInterface')) {
-            throw new WStartException(sprintf("Wrong class for stdioInterface: %s", get_class($stdio)));
+        if (!is_a($stdio, '\Anakeen\Script\IStdio')) {
+            throw new Exception(sprintf("Wrong class for stdioInterface: %s", get_class($stdio)));
         }
         $previous = $this->stdio;
         $this->stdio = $stdio;
         return $previous;
     }
+
     /**
      * Compute absolute path from context's root
      *
@@ -283,15 +294,17 @@ class WStartInternals
      * - If the file is already in a absolute form, then their current absolute form is used.
      *
      * @param $file
+     *
      * @return string
      */
     public function absolutize($file)
     {
         if (substr($file, 0, 1) != '/') {
-            $file = $this->contextRoot . DIRECTORY_SEPARATOR. $file;
+            $file = $this->contextRoot . DIRECTORY_SEPARATOR . $file;
         }
         return $file;
     }
+
     /**
      * Compute absolute path from context's root
      *
@@ -299,15 +312,17 @@ class WStartInternals
      * - If the file is already in a absolute form, then their current absolute form is used.
      *
      * @param $file
+     *
      * @return string
      */
     protected function publize($file)
     {
         if (substr($file, 0, 1) != '/') {
-            $file = $this->contextRoot . DIRECTORY_SEPARATOR . "public". DIRECTORY_SEPARATOR. $file;
+            $file = $this->contextRoot . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . $file;
         }
         return $file;
     }
+
     /**
      * Compute relative path from context's root
      *
@@ -317,8 +332,9 @@ class WStartInternals
      * - If the file is absolute and located outside the context's root, then an exception is thrown.
      *
      * @param $file
+     *
      * @return string
-     * @throws WStartException
+     * @throws Exception
      */
     public function relativize($file)
     {
@@ -335,47 +351,47 @@ class WStartInternals
             }
             return $file;
         }
-        throw new WStartException(sprintf("Could not relativize '%s' to '%s'.", $file, $this->contextRoot));
+        throw new Exception(sprintf("Could not relativize '%s' to '%s'.", $file, $this->contextRoot));
     }
+
     /**
      * @param $file
      * @param $callback
-     * @throws WStartException
+     *
+     * @throws Exception
      */
     public function sedFile($file, $callback)
     {
         if (($perms = fileperms($file)) === false) {
-            throw new WStartException(sprintf("Error reading permissions for '%s'.", $file));
+            throw new Exception(sprintf("Error reading permissions for '%s'.", $file));
         }
         $content = file_get_contents($file);
         if ($content === false) {
-            throw new WStartException(sprintf("Error reading content from '%s'.", $file));
+            throw new Exception(sprintf("Error reading content from '%s'.", $file));
         }
         $content = call_user_func_array($callback, array(
             $content
         ));
-        $tmpFile = tempnam(getTmpDir(), 'sedFile');
+        $tmpFile = tempnam(ContextManager::getTmpDir(), 'sedFile');
         if ($tmpFile === false) {
-            throw new WStartException(sprintf("Error creating temporary file."));
+            throw new Exception(sprintf("Error creating temporary file."));
         }
         if (file_put_contents($tmpFile, $content) === false) {
             unlink($tmpFile);
-            throw new WStartException(sprintf("Error writing content to temporary file '%s'.", $tmpFile));
+            throw new Exception(sprintf("Error writing content to temporary file '%s'.", $tmpFile));
         }
         if (rename($tmpFile, $file) === false) {
             unlink($tmpFile);
-            throw new WStartException(sprintf("Error renaming '%s' to '%s'.", $tmpFile, $file));
+            throw new Exception(sprintf("Error renaming '%s' to '%s'.", $tmpFile, $file));
         }
         /* Replicate original rights with extended rights */
         $perms = $perms & 07777;
         if (chmod($file, $perms) === false) {
-            throw new WStartException(sprintf("Error applying permissions '%o' to '%s'.", $perms, $file));
+            throw new Exception(sprintf("Error applying permissions '%o' to '%s'.", $perms, $file));
         }
     }
-}
 
-class WStart extends WStartInternals
-{
+
     /**
      *
      */
@@ -396,13 +412,14 @@ class WStart extends WStartInternals
         $routeConfig->recordAccesses();
 
         $this->verbose(1, sprintf("[+] Reset cache route configuration file.\n"));
-        $routesConfig=new \Anakeen\Router\RoutesConfig();
+        $routesConfig = new \Anakeen\Router\RoutesConfig();
         $routesConfig->resetCache();
 
         $this->verbose(1, sprintf("[+] Done.\n"));
     }
+
     /**
-     * @throws WStartException
+     * @throws Exception
      */
     public function imageAndDocsLinks()
     {
@@ -427,8 +444,9 @@ class WStart extends WStartInternals
         }
         $this->verbose(1, sprintf("[+] Done.\n"));
     }
+
     /**
-     * @throws WStartException
+     * @throws Exception
      */
     public function clearFileCache()
     {
@@ -437,44 +455,40 @@ class WStart extends WStartInternals
         $this->removeFilesByRegex($cacheDir, '/(?:png|gif|xml|src)$/');
         $this->verbose(1, sprintf("[+] Done.\n"));
     }
+
     /**
-     * @throws WStartException
+     * @throws Exception
      */
     public function refreshJsVersion()
     {
         $this->verbose(1, sprintf("[+] Incrementing WVERSION.\n"));
-        $cmd = sprintf("%s/wsh.php --api=refreshjsversion 2>&1", escapeshellarg($this->contextRoot));
+        $cmd = sprintf("%s/ank.php --script=refreshjsversion 2>&1", escapeshellarg($this->contextRoot));
         exec($cmd, $output, $ret);
         if ($ret !== 0) {
             $this->debug(join("\n", $output) . "\n");
-            throw new WStartException(sprintf("Error executing '%s'.", $cmd));
+            throw new Exception(sprintf("Error executing '%s'.", $cmd));
         }
         $this->verbose(1, sprintf("[+] Done.\n"));
     }
+
+
     /**
-     * @deprecated no use
-     * @throws WStartException
-     */
-    public function configureDbConnect()
-    {
-        return;
-    }
-    /**
-     * @throws WStartException
+     * @throws Exception
      */
     public function style()
     {
         $this->verbose(1, sprintf("[+] Recomputing style assets.\n"));
-        $cmd = sprintf("%s/wsh.php --api=setStyle 2>&1", escapeshellarg($this->contextRoot));
+        $cmd = sprintf("%s/ank.php --script=setStyle 2>&1", escapeshellarg($this->contextRoot));
         exec($cmd, $output, $ret);
         if ($ret !== 0) {
             $this->debug(join("\n", $output) . "\n");
-            throw new WStartException(sprintf("Error executing '%s'.", $cmd));
+            throw new Exception(sprintf("Error executing '%s'.", $cmd));
         }
         $this->verbose(1, sprintf("[+] Done.\n"));
     }
+
     /**
-     * @throws WStartException
+     * @throws Exception
      */
     public function unStop()
     {
@@ -482,33 +496,49 @@ class WStart extends WStartInternals
         $maintenanceFile = $this->absolutize('maintenance.lock');
         if (is_file($maintenanceFile)) {
             if (unlink($maintenanceFile) === false) {
-                throw new WStartException(sprintf("Error removing file '%s'.", $maintenanceFile));
+                throw new Exception(sprintf("Error removing file '%s'.", $maintenanceFile));
             }
         }
         $this->verbose(1, sprintf("[+] Done.\n"));
     }
+
+
+    public function stop()
+    {
+        $this->verbose(1, sprintf("[+] Set maintenance mode.\n"));
+        $maintenanceFile = $this->absolutize('maintenance.lock');
+        if (!is_file($maintenanceFile)) {
+            file_put_contents($maintenanceFile, date("c"));
+            if (!is_file($maintenanceFile)) {
+                throw new Exception(sprintf("Error create file '%s'.", $maintenanceFile));
+            }
+        }
+        $this->verbose(1, sprintf("[+] Http Access Disabled.\n"));
+    }
+
     /**
-     * @throws WStartException
      * @throws \Dcp\Db\Exception
      */
     public function reapplyDatabaseParameters()
     {
         require_once 'WHAT/Lib.Common.php';
         require_once 'WHAT/autoload.php';
-        
+
         $this->verbose(1, sprintf("[+] Reapplying database parameters.\n"));
-        if (($err = simpleQuery('', 'SELECT current_database()', $dbName, true, true, false)) !== '') {
-            throw new WStartException(sprintf("Error getting current database name: %s", $err));
-        }
+
+        DbManager::query('SELECT current_database()', $dbName, true, true);
         $paramList = array(
             'DateStyle' => 'ISO, DMY',
             'standard_conforming_strings' => 'off'
         );
         foreach ($paramList as $paramName => $paramValue) {
-            $sql = sprintf("ALTER DATABASE %s SET %s = %s", pg_escape_identifier($dbName), pg_escape_identifier($paramName), pg_escape_literal($paramValue));
-            if (($err = simpleQuery('', $sql, $res, true, true, false)) !== '') {
-                throw new WStartException(sprintf("Error setting '%s' = '%s' on database '%s': %s", $paramName, $paramValue, $dbName, $err));
-            }
+            $sql = sprintf(
+                "ALTER DATABASE %s SET %s = %s",
+                pg_escape_identifier($dbName),
+                pg_escape_identifier($paramName),
+                pg_escape_literal($paramValue)
+            );
+            DbManager::query($sql, $res, true, true);
         }
         $this->verbose(1, sprintf("[+] Done.\n"));
     }

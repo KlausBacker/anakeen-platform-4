@@ -6,30 +6,30 @@
 /**
  * Main first level function
  *
- * @author Anakeen
- * @version $Id: Lib.Common.php,v 1.50 2008/09/11 14:50:04 eric Exp $
- * @package FDL
+ * @author     Anakeen
+ * @version    $Id: Lib.Common.php,v 1.50 2008/09/11 14:50:04 eric Exp $
+ * @package    FDL
  * @subpackage CORE
  */
 /**
  */
-include_once ("WHAT/Lib.Common.php");
+include_once("WHAT/Lib.Common.php");
 /**
  * @param Authenticator $auth
- * @param Action $action
+ * @param Action        $action
  */
 function getMainAction($auth, &$action)
 {
-    include_once ('Class.Action.php');
-    include_once ('Class.Application.php');
-    include_once ('Class.Session.php');
-    include_once ('Lib.Http.php');
-    include_once ('Lib.Phpini.php');
-    include_once ('Class.Log.php');
-    include_once ('Class.DbObj.php');
-    
+    include_once('Class.Action.php');
+    include_once('Class.Application.php');
+    include_once('Class.Session.php');
+    include_once('Lib.Http.php');
+    include_once('Lib.Phpini.php');
+    include_once('Class.Log.php');
+    include_once('Class.DbObj.php');
+
     $CoreNull = "";
-    
+
     global $_GET;
     $defaultapp = false;
     if (!getHttpVars("app")) {
@@ -43,7 +43,7 @@ function getMainAction($auth, &$action)
             $_GET["action"] = "INVALID";
         }
     }
-    
+
     if (isset($auth->auth_session)) {
         $session = $auth->auth_session;
     } else {
@@ -60,7 +60,7 @@ function getMainAction($auth, &$action)
     }
     $core = new Application();
     $core->Set("CORE", $CoreNull, $session);
-    
+
     if (isset($_SERVER['PHP_AUTH_USER']) && ($core->user->login != $_SERVER['PHP_AUTH_USER'])) {
         // reopen a new session
         $session->Set("");
@@ -69,7 +69,7 @@ function getMainAction($auth, &$action)
     if ($defaultapp && $core->GetParam("CORE_START_APP")) {
         $_GET["app"] = $core->GetParam("CORE_START_APP");
     }
-    
+
     \Dcp\Core\LibPhpini::setCoreApplication($core);
     \Dcp\Core\LibPhpini::applyLimits();
     //$core->SetSession($session);
@@ -79,45 +79,34 @@ function getMainAction($auth, &$action)
     // ----------------------------------------
     // Init Application & Actions Objects
     $appl = new Application();
-    $err = $appl->Set(getHttpVars("app") , $core, $session);
+    $err = $appl->Set(getHttpVars("app"), $core, $session);
     if ($err) {
         print $err;
         exit;
     }
     // ----------------------------------------
-    // test SSL mode needed or not
-    // redirect if needed
-    if ($appl->ssl == "Y") {
-        if ($_SERVER['HTTPS'] != 'on') {
-            // redirect to go to ssl http
-            $sslurl = "https://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'];
-            Header("Location: $sslurl");
-            exit;
-        }
-        
-        $core->SetVolatileParam("CORE_BGCOLOR", $core->GetParam("CORE_SSLBGCOLOR"));
-    }
+
     // -----------------------------------------------
     // now we are in correct protocol (http or https)
     $action = new Action();
-    $action->Set(getHttpVars("action") , $appl);
-    
+    $action->Set(getHttpVars("action"), $appl);
+
     if ($auth) {
         $core_lang = $auth->getSessionVar('CORE_LANG');
         if ($core_lang != '') {
             $action->setParamU('CORE_LANG', $core_lang);
             $auth->setSessionVar('CORE_LANG', '');
         }
-        $action->auth = & $auth;
+        $action->auth = &$auth;
         $core->SetVolatileParam("CORE_BASICAUTH", '&authtype=basic');
     } else {
         $core->SetVolatileParam("CORE_BASICAUTH", '');
     }
-    
+
     initExplorerParam($core);
     // init for gettext
     \Dcp\Core\ContextManager::setLanguage($action->Getparam("CORE_LANG"));
-    
+
     $action->log->debug("gettext init for " . $action->parent->name . $action->Getparam("CORE_LANG"));
 }
 
@@ -126,10 +115,12 @@ function stripUrlSlahes($url)
     $pos = mb_strpos($url, '://');
     return mb_substr($url, 0, $pos + 3) . preg_replace('/\/+/u', '/', mb_substr($url, $pos + 3));
 }
+
 /**
  * init user agent volatile param
+ *
  * @param Application $app
- * @param mixed $defaultValue
+ * @param mixed       $defaultValue
  */
 function initExplorerParam(Application & $app, $defaultValue = false)
 {
@@ -156,8 +147,10 @@ function getExplorerParamtersName()
         "ISCHROME"
     );
 }
+
 /**
  * set volatile patram to detect web user agent
+ *
  * @param Application $app
  */
 function initExplorerWebParam(Application & $app)
@@ -177,7 +170,7 @@ function initExplorerWebParam(Application & $app)
             }
         }
     }
-    
+
     $ISIE6 = false;
     $ISIE7 = false;
     $ISIE8 = false;
@@ -216,7 +209,7 @@ function initExplorerWebParam(Application & $app)
             $ISSAFARI = true;
         }
     }
-    
+
     $app->SetVolatileParam("ISIE", ($app->session->read("navigator") == "EXPLORER"));
     $app->SetVolatileParam("ISIE6", ($ISIE6 === true));
     $app->SetVolatileParam("ISIE7", ($ISIE7 === true));
@@ -227,11 +220,12 @@ function initExplorerWebParam(Application & $app)
     $app->SetVolatileParam("ISSAFARI", ($ISSAFARI === true));
     $app->SetVolatileParam("ISCHROME", ($ISCHROME === true));
 }
+
 /**
  * Set various core URLs params
  *
  * @param Application $core
- * @param Session $session
+ * @param Session     $session
  */
 function initMainVolatileParam(Application & $core, Session & $session = null)
 {
@@ -248,8 +242,9 @@ function _initMainVolatileParamCli(Application & $core)
 
     $core_externurl = ($absindex) ? stripUrlSlahes($absindex) : ".";
     $core_mailaction = $core->getParam("CORE_MAILACTION");
-    $core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction) : ($core_externurl . "?app=FDL&action=OPENDOC&mode=view");
-    
+    $core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction)
+        : ($core_externurl . "?app=FDL&action=OPENDOC&mode=view");
+
     $core->SetVolatileParam("CORE_EXTERNURL", $core_externurl);
     $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
     $core->SetVolatileParam("CORE_ABSURL", $core_externurl); // absolute links
@@ -284,15 +279,17 @@ function _initMainVolatileParamWeb(Application & $core, Session & $session = nul
     }
     $add_args = "";
     if (array_key_exists('authtype', $_GET)) {
-        $add_args.= "&authtype=" . $_GET['authtype'];
+        $add_args .= "&authtype=" . $_GET['authtype'];
     }
     $puburl = stripUrlSlahes($puburl);
     $urlindex = $core->getParam("CORE_URLINDEX");
     $core_externurl = ($urlindex) ? stripUrlSlahes($urlindex) : stripUrlSlahes($puburl . "/");
     $core_mailaction = $core->getParam("CORE_MAILACTION");
-    $core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction) : ($core_externurl . "?app=FDL&action=OPENDOC&mode=view");
-    
-    $sessKey = isset($session->id) ? $session->getUKey(\Dcp\Core\ContextManager::getApplicationParam("WVERSION")) : uniqid(\Dcp\Core\ContextManager::getApplicationParam("WVERSION"));
+    $core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction)
+        : ($core_externurl . "?app=FDL&action=OPENDOC&mode=view");
+
+    $sessKey = isset($session->id) ? $session->getUKey(\Dcp\Core\ContextManager::getApplicationParam("WVERSION"))
+        : uniqid(\Dcp\Core\ContextManager::getApplicationParam("WVERSION"));
     $core->SetVolatileParam("CORE_EXTERNURL", $core_externurl);
     $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
     $core->SetVolatileParam("CORE_ABSURL", stripUrlSlahes($puburl . "/")); // absolute links
@@ -305,9 +302,11 @@ function _initMainVolatileParamWeb(Application & $core, Session & $session = nul
     $core->SetVolatileParam("CORE_ASTANDURL", "$puburl/$indexphp?sole=Y$add_args&"); // absolute links
     $core->SetVolatileParam("CORE_MAILACTIONURL", $core_mailactionurl);
 }
+
 /**
  * execute action
  * app and action http param
+ *
  * @param Action $action
  * @param string $out
  */
@@ -318,7 +317,7 @@ function executeAction(&$action, &$out = null)
         if ($out !== null) {
             $out = $action->execute();
         } else {
-            echo ($action->execute());
+            echo($action->execute());
         }
     } else {
         if ((isset($action->parent)) && ($action->parent->with_frame != "Y")) {
@@ -327,30 +326,30 @@ function executeAction(&$action, &$out = null)
             // achieve action
             $body = ($action->execute());
             // write HTML header
-            $head = new Layout($action->GetLayoutFile("htmltablehead.xml") , $action);
+            $head = new Layout($action->GetLayoutFile("htmltablehead.xml"), $action);
             // copy JS ref & code from action to header
             //$head->jsref = $action->parent->GetJsRef();
             //$head->jscode = $action->parent->GetJsCode();
             $head->set("TITLE", _($action->parent->short_name));
             if ($out !== null) {
                 $out = $head->gen();
-                $out.= $body;
-                $foot = new Layout($action->GetLayoutFile("htmltablefoot.xml") , $action);
-                $out.= $foot->gen();
+                $out .= $body;
+                $foot = new Layout($action->GetLayoutFile("htmltablefoot.xml"), $action);
+                $out .= $foot->gen();
             } else {
-                echo ($head->gen());
+                echo($head->gen());
                 // write HTML body
-                echo ($body);
+                echo($body);
                 // write HTML footer
-                $foot = new Layout($action->GetLayoutFile("htmltablefoot.xml") , $action);
-                echo ($foot->gen());
+                $foot = new Layout($action->GetLayoutFile("htmltablefoot.xml"), $action);
+                echo($foot->gen());
             }
         } else {
             // This document is completed
             if ($out !== null) {
                 $out = $action->execute();
             } else {
-                echo ($action->execute());
+                echo($action->execute());
             }
         }
     }
@@ -366,7 +365,8 @@ function checkWshExecUid($file)
         throw new \Dcp\Exception(sprintf("Error: could not get owner of file '%s'.\n", $file));
     }
     if ($owner !== $uid) {
-        $msg = <<<'EOF'
+        $msg
+            = <<<'EOF'
 Error: current uid %d does not match owner %d of file '%s'.
 
 You might need to either:
@@ -377,14 +377,16 @@ EOF;
         throw new \Dcp\Exception(sprintf($msg, $uid, $owner, $file));
     }
 }
+
 /**
  * @param Exception|Error $e
+ *
  * @throws \Dcp\Core\Exception
  */
 function handleActionException($e)
 {
     global $action;
-    
+
     if (php_sapi_name() !== "cli") {
         if (method_exists($e, "addHttpHeader")) {
             /**
@@ -399,7 +401,7 @@ function handleActionException($e)
             header("HTTP/1.1 500 Dynacase Uncaught Exception");
         }
     }
-    
+
     $displayMsg = \Dcp\Core\LogException::logMessage($e, $errId);
     if (isset($action) && is_a($action, 'Action') && isset($action->parent)) {
         if (php_sapi_name() === 'cli') {
@@ -411,12 +413,23 @@ function handleActionException($e)
         if (php_sapi_name() === 'cli') {
             fwrite(STDERR, sprintf("[%s]: %s\n", $errId, $displayMsg));
         } else {
-            print htmlspecialchars(sprintf("[%s]: %s\n", $errId, $displayMsg));
+            if (is_a($e, "\\Anakeen\\Router\\Exception")) {
+                /**
+                 * @var \Anakeen\Router\Exception $e
+                 */
+                header(sprintf("HTTP/1.0 %d %s", $e->getHttpStatus(), $e->getHttpMessage()));
+            }
+
+            print \Dcp\Core\Utils\ErrorMessage::getError($displayMsg, $errId);
         }
         exit(1);
     }
 }
 
+/**
+ * @deprecated
+ * @return bool
+ */
 function isInteractiveCLI()
 {
     if (php_sapi_name() !== 'cli') {
@@ -428,20 +441,26 @@ function isInteractiveCLI()
     return true;
 }
 
+/**
+ * @deprecated
+ * @param       $errMsg
+ * @param array $expand
+ */
 function _wsh_send_error($errMsg, $expand = array())
 {
     $wshError = new Dcp\WSHMailError($errMsg);
-    $wshError->prefix = sprintf('%s %s ', date('c') , php_uname('n'));
+    $wshError->prefix = sprintf('%s %s ', date('c'), php_uname('n'));
     $wshError->addExpand($expand);
     $wshError->autosend();
 }
+
 /**
  * Handle exceptions by logging errors or by sending mails
  * depending if the program is used in a CLI or not.
- *
+ * @deprecated
  * @param Throwable $e
- * @param bool $callStack If set to false: the error message is minimal.
- * Otherwise the error message is the call stack.
+ * @param bool      $callStack If set to false: the error message is minimal.
+ *                             Otherwise the error message is the call stack.
  */
 function _wsh_exception_handler($e, $callStack = true)
 {
@@ -451,21 +470,21 @@ function _wsh_exception_handler($e, $callStack = true)
     } else {
         $errMsg = $e->getMessage();
     }
-    
+
     if (!isInteractiveCLI()) {
         $expand = array(
             'm' => preg_replace('/^([^\n]*).*/s', '\1', $e->getMessage())
         );
         _wsh_send_error($errMsg, $expand);
     }
-    
+
     exit(255);
 }
 
 function _wsh_shutdown_handler()
 {
     global $argv;
-    
+
     $error = error_get_last();
     if ($error === null) {
         /* No error */
@@ -496,25 +515,27 @@ function _wsh_shutdown_handler()
         default:
             return;
     }
-    
+
     $pid = getmypid();
-    $errMsg = <<<EOF
+    $errMsg
+        = <<<EOF
 $pid> Dynacase $title
 EOF;
-    
+
     if (php_sapi_name() == 'cli' && is_array($argv)) {
-        $errMsg.= sprintf("\n%s> Command line arguments: %s", $pid, join(' ', array_map("escapeshellarg", $argv)));
-        $errMsg.= sprintf("\n%s> error_log: %s", $pid, ini_get('error_log'));
-        $errMsg.= "\n";
+        $errMsg .= sprintf("\n%s> Command line arguments: %s", $pid, join(' ', array_map("escapeshellarg", $argv)));
+        $errMsg .= sprintf("\n%s> error_log: %s", $pid, ini_get('error_log'));
+        $errMsg .= "\n";
     }
-    
-    $errMsg.= <<<EOF
+
+    $errMsg
+        .= <<<EOF
 $pid> Type:    ${error['type']}
 $pid> Message: ${error['message']}
 $pid> File:    ${error['file']}
 $pid> Line:    ${error['line']}
 EOF;
-    
+
     error_log($errMsg);
     if (!isInteractiveCLI()) {
         $expand = array(
@@ -529,8 +550,10 @@ function enable_wsh_safetybelts()
     set_exception_handler("_wsh_exception_handler");
     register_shutdown_function("_wsh_shutdown_handler");
 }
+
 /**
  * @param Throwable $e
+ *
  * @deprecated use Dcp\Core\LogException::formatErrorLogException()
  * @return string
  */
@@ -538,8 +561,9 @@ function formatErrorLogException($e)
 {
     return \Dcp\Core\LogException::formatErrorLogException($e);
 }
+
 /**
- * @param Exception|Error  $e
+ * @param Exception|Error $e
  */
 function errorLogException($e)
 {
@@ -549,9 +573,9 @@ function errorLogException($e)
 function handleFatalShutdown()
 {
     global $action;
-    
+
     $error = error_get_last();
-    
+
     if ($error !== null && $action) {
         if (in_array($error["type"], array(
             E_ERROR,
@@ -565,7 +589,7 @@ function handleFatalShutdown()
             if (!headers_sent()) {
                 header("HTTP/1.1 500 Anakeen Fatal Error");
             }
-            
+
             $displayMsg = \Dcp\Core\LogException::logMessage($error, $errId);
             if ($action) {
                 $action->exitError($displayMsg, false, $errId);
@@ -573,7 +597,6 @@ function handleFatalShutdown()
                 print $displayMsg;
             }
             // Fatal error are already logged by PHP
-            
         }
     }
 }
