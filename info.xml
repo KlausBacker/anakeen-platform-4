@@ -17,25 +17,25 @@
     </pre-install>
     <post-install>
 
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/accountprofil.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/accountprofil.csv  --csv-enclosure='&quot;'">
             <label>Profiling accounts</label>
         </process>
 
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/cvdoc.profil.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/cvdoc.profil.csv  --csv-enclosure='&quot;'">
             <label>Set view control for accounts</label>
         </process>
 
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/helppage/helppage.profil.csv --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/helppage/helppage.profil.csv --csv-enclosure='&quot;'">
             <label>Profiling system families</label>
         </process>
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/dir/dir.profil.csv --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/dir/dir.profil.csv --csv-enclosure='&quot;'">
             <label>Profiling system families</label>
         </process>
-        <process command="./wsh.php --api=importDocuments --file=./vendor/Anakeen/Families/system.profil.csv --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/system.profil.csv --csv-enclosure='&quot;'">
             <label>Profiling system families</label>
         </process>
 
-        <process command="./wsh.php --api=refreshUserAccount">
+        <process command="./ank.php --script=refreshUserAccount">
             <label>Update user account profile</label>
         </process>
         <process command="programs/update_catalog"/>
