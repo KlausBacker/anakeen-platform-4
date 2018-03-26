@@ -70,7 +70,6 @@ class ContextManager
      * @param string        $actionName
      * @param \Session|null $session
      *
-     * @throws Exception
      * @throws \Dcp\Db\Exception
      * @throws \Exception
      */
