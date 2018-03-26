@@ -402,7 +402,7 @@ function handleActionException($e)
         }
     }
 
-    $displayMsg = \Dcp\Core\LogException::logMessage($e, $errId);
+    $displayMsg = \Anakeen\Core\LogException::logMessage($e, $errId);
     if (isset($action) && is_a($action, 'Action') && isset($action->parent)) {
         if (php_sapi_name() === 'cli') {
             fwrite(STDERR, sprintf("[%s]: %s\n", $errId, $displayMsg));
@@ -465,7 +465,7 @@ function _wsh_send_error($errMsg, $expand = array())
 function _wsh_exception_handler($e, $callStack = true)
 {
     if ($callStack === true) {
-        $errMsg = \Dcp\Core\LogException::formatErrorLogException($e);
+        $errMsg = \Anakeen\Core\LogException::formatErrorLogException($e);
         error_log($errMsg);
     } else {
         $errMsg = $e->getMessage();
@@ -554,12 +554,12 @@ function enable_wsh_safetybelts()
 /**
  * @param Throwable $e
  *
- * @deprecated use Dcp\Core\LogException::formatErrorLogException()
+ * @deprecated use Anakeen\Core\LogException::formatErrorLogException()
  * @return string
  */
 function formatErrorLogException($e)
 {
-    return \Dcp\Core\LogException::formatErrorLogException($e);
+    return \Anakeen\Core\LogException::formatErrorLogException($e);
 }
 
 /**
@@ -567,7 +567,7 @@ function formatErrorLogException($e)
  */
 function errorLogException($e)
 {
-    \Dcp\Core\LogException::writeLog($e);
+    \Anakeen\Core\LogException::writeLog($e);
 }
 
 function handleFatalShutdown()
@@ -590,7 +590,7 @@ function handleFatalShutdown()
                 header("HTTP/1.1 500 Anakeen Fatal Error");
             }
 
-            $displayMsg = \Dcp\Core\LogException::logMessage($error, $errId);
+            $displayMsg = \Anakeen\Core\LogException::logMessage($error, $errId);
             if ($action) {
                 $action->exitError($displayMsg, false, $errId);
             } else {

@@ -1,10 +1,11 @@
 <?php
 
-require __DIR__ . '/../vendor/Anakeen/lib/vendor/autoload.php';
+$loader = require __DIR__ . '/../vendor/Anakeen/lib/vendor/autoload.php';
 require __DIR__ . "/../vendor/Anakeen/WHAT/Lib.Prefix.php";
 require __DIR__ . "/../vendor/Anakeen/WHAT/Lib.Main.php";
-require __DIR__ . "/../vendor/Anakeen/WHAT/autoload.php";
+//require __DIR__ . "/../vendor/Anakeen/WHAT/autoload.php";
 
+$loader->addPsr4('Anakeen\\', __DIR__ . '/vendor/Anakeen/');
 register_shutdown_function('handleFatalShutdown');
 set_exception_handler('handleActionException');
 

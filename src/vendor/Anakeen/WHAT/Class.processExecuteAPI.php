@@ -180,7 +180,7 @@ class processExecuteAPI
                     throw new \Exception(sprintf("Process '%s' returned with error (%d): %s", $cmd, $ret, $out));
                 }
             } catch (\Exception $e) {
-                $errMsg = \Dcp\Core\LogException::formatErrorLogException($e);
+                $errMsg = \Anakeen\Core\LogException::formatErrorLogException($e);
 
                 error_log($errMsg);
                 if (!\Anakeen\Script\ShellManager::isInteractiveCLI()) {

@@ -14,7 +14,7 @@ require __DIR__ . '/vendor/Anakeen/WHAT/Lib.Prefix.php';
 // To get global functions like ___
 require __DIR__ . "/vendor/Anakeen/WHAT/Lib.Common.php";
 // Need to load universal autoload also
-require __DIR__ . "/vendor/Anakeen/WHAT/autoload.php";
+//require __DIR__ . "/vendor/Anakeen/WHAT/autoload.php";
 
 $loader->addPsr4('Anakeen\\', __DIR__ . '/vendor/Anakeen/');
 

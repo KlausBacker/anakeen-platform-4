@@ -2,7 +2,7 @@
 
 namespace Dcp\Router;
 
-use Dcp\Core\LogException;
+use Anakeen\Core\LogException;
 use Dcp\Core\Utils\ErrorMessage;
 
 class ErrorHandler
@@ -24,7 +24,7 @@ class ErrorHandler
              */
             return self::getFailApiResponse($request, $response, $exception);
         } else {
-            $exceptionMsg = \Dcp\Core\LogException::logMessage($exception, $errId);
+            $exceptionMsg = \Anakeen\Core\LogException::logMessage($exception, $errId);
             $response = $response->withStatus(500);
             return self::getResponsePage($request, $response, $exceptionMsg, $errId);
         }

@@ -4,7 +4,7 @@
  * @package FDL
 */
 
-namespace Dcp\Core;
+namespace Anakeen\Core;
 
 class LogException
 {

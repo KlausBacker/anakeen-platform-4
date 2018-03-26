@@ -6,6 +6,8 @@
 
 namespace Dcp\Pu;
 
+use Dcp\Core\DbManager;
+
 require_once 'PU_testcase_dcp_application.php';
 
 class TestAccess extends TestCaseDcpApplication
@@ -86,7 +88,7 @@ class TestAccess extends TestCaseDcpApplication
     
     public function prettySqlRelation($title, $sql)
     {
-        $res = pg_query(self::$odb->dbid, $sql);
+        $res = pg_query(DbManager::getDbid(), $sql);
         if ($res === false) {
             return false;
         }

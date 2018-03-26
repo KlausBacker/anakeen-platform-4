@@ -17,12 +17,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      * @var string
      */
     protected static $dbaccess;
-    /**
-     * Dbobj use for transaction
-     *
-     * @var \DbObj
-     */
-    protected static $odb;
+
     /**
      * User keep in cache during the sudo
      *
