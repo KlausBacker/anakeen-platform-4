@@ -393,7 +393,7 @@ class System
 
 
     /**
-     *
+     * @deprecated
      */
     public function clearAutoloadCache()
     {

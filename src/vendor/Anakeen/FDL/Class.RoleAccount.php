@@ -89,8 +89,7 @@ class RoleAccount extends \Dcp\Family\Document
                 $sR->fid = $this->initid;
                 $sR->accounttype = \Anakeen\Core\Account::ROLE_TYPE;
                 $sR->password_new = uniqid("role");
-                /** @noinspection PhpDeprecationInspection */
-                $sR->isgroup = 'N';
+
                 $err = $sR->add();
                 if ($err == "") {
                     $this->setValue("us_whatid", $sR->id);

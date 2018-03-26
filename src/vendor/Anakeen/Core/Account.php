@@ -14,7 +14,7 @@ define("GADMIN_ID", 4);
  *
  * @class Account
  */
-class Account extends \DbObj
+class Account extends Internal\DbObj
 {
     const ANONYMOUS_ID = 3;
     const GALL_ID = 2;
@@ -33,7 +33,6 @@ class Account extends \DbObj
             "login",
             "password",
             "substitute",
-            "isgroup",
             "accounttype",
             "memberof",
             "expires",
@@ -51,11 +50,7 @@ class Account extends \DbObj
     public $firstname;
     public $login;
     public $password;
-    /**
-     * @deprecated use accountType instead
-     * @var string
-     */
-    public $isgroup;
+
     public $expires;
     public $passdelay;
     public $status;
@@ -104,7 +99,6 @@ create table users ( id      int not null,
                         firstname  text,
                         login      text not null,
                         password   text not null,
-                        isgroup    char,
                         substitute      int,
                         accounttype char,
                         memberof   int[],
@@ -128,7 +122,7 @@ create sequence seq_id_users start 10;";
     {
         $login = mb_trim(mb_strtolower($login));
 
-        $query = new QueryDb($this->dbaccess, "Account");
+        $query = new \QueryDb($this->dbaccess, "Account");
         $query->AddQuery("login='" . pg_escape_string($login) . "'");
 
         $list = $query->Query(0, 0, "TABLE");
@@ -259,7 +253,7 @@ create sequence seq_id_users start 10;";
      */
     public function setFid($fid)
     {
-        $query = new QueryDb($this->dbaccess, "Account");
+        $query = new \QueryDb($this->dbaccess, "Account");
         $query->AddQuery(sprintf("fid = %d", $fid));
         $list = $query->Query(0, 0, "TABLE");
         if ($query->nb != 0) {
@@ -291,17 +285,8 @@ create sequence seq_id_users start 10;";
             $this->id = $arr["nextval"];
         }
 
-        if (($this->accounttype == self::GROUP_TYPE) || ($this->accounttype == self::ROLE_TYPE)
-            || ($this->isgroup == "Y")) {
-            if ((!$this->accounttype) && ($this->isgroup == "Y")) {
-                $this->accounttype = self::GROUP_TYPE;
-            }
+        if (($this->accounttype == self::GROUP_TYPE) || ($this->accounttype == self::ROLE_TYPE)) {
             $this->password = '-'; // no passwd for group,role
-            if ($this->accounttype === self::GROUP_TYPE) {
-                $this->isgroup = "Y";
-            }
-        } else {
-            $this->isgroup = "N";
         }
         if (!$this->accounttype) {
             $this->accounttype = self::USER_TYPE;
@@ -326,7 +311,7 @@ create sequence seq_id_users start 10;";
     public function PostInsert()
     {
         //Add default group to user
-        $group = new group($this->dbaccess);
+        $group = new \group($this->dbaccess);
         $group->iduser = $this->id;
         $gid = Account::GALL_ID; //2 = default group
         $group->idgroup = $gid;
@@ -360,7 +345,7 @@ create sequence seq_id_users start 10;";
         include_once("WHAT/Class.Session.php");
         include_once("FDL/Lib.Usercard.php");
         $err = '';
-        $group = new Group($this->dbaccess, $this->id);
+        $group = new \Group($this->dbaccess, $this->id);
         $ugroups = $group->groups;
         // delete reference in group table
         $sql = sprintf("delete from groups where iduser=%d or idgroup=%d", $this->id, $this->id);
@@ -385,7 +370,7 @@ create sequence seq_id_users start 10;";
      */
     public function CheckLogin($login, $unused, $whatid)
     {
-        $query = new QueryDb($this->dbaccess, "Account");
+        $query = new \QueryDb($this->dbaccess, "Account");
 
         $query->basic_elem->sup_where = array(
             "login='" . pg_escape_string($login) . "'"
@@ -682,7 +667,7 @@ create sequence seq_id_users start 10;";
                 /**
                  * @var \Dcp\Family\IUSER $iuser
                  */
-                $iuser = createDoc($dbaccess, $fam);
+                $iuser = DocManager::createDocument($fam);
                 $iuser->SetValue("US_WHATID", $this->id);
                 $iuser->Add();
                 $this->fid = $iuser->id;
@@ -747,7 +732,7 @@ create sequence seq_id_users start 10;";
                     if ($this->id == 1) {
                         $this->setSupervisorHtpasswd($pass);
                     }
-                    $log = new Log("", "Session", "Authentication");
+                    $log = new \Log("", "Session", "Authentication");
                     $facility = constant(\Anakeen\Core\ContextManager::getApplicationParam(
                         "AUTHENT_LOGFACILITY",
                         "LOG_AUTH"
@@ -786,12 +771,14 @@ create sequence seq_id_users start 10;";
                 return $mail;
             }
         } else {
-            $sql = sprintf("with recursive amembers(uid) as (
+            $sql = sprintf(
+                "with recursive amembers(uid) as (
  select iduser, users.login, users.mail from groups,users where idgroup = %d and users.id=groups.iduser
 union
  select iduser, users.login, users.mail from groups,users, amembers where groups.idgroup = amembers.uid and users.id=groups.iduser
 ) select users.firstname, users.lastname, users.mail from amembers, users where users.id=amembers.uid and users.accounttype='U' and users.mail is not null order by users.mail;",
-                $this->id);
+                $this->id
+            );
             DbManager::query($sql, $umail);
             $tMail = array();
             if ($rawmail) {
@@ -811,7 +798,7 @@ union
 
     public function PostInit()
     {
-        $group = new group($this->dbaccess);
+        $group = new \group($this->dbaccess);
 
         $userAdmin = new Account($this->dbaccess);
         // Create admin user
@@ -866,12 +853,12 @@ union
     /**
      * get the first incumbent which has $acl privilege
      *
-     * @param Doc    $doc document to verify
+     * @param \Doc   $doc document to verify
      * @param string $acl document acl name
      *
      * @return string incumbent's name which has privilege
      */
-    public function getIncumbentPrivilege(Doc & $doc, $acl)
+    public function getIncumbentPrivilege(\Doc & $doc, $acl)
     {
         if ($this->id == 1) {
             return '';
@@ -903,7 +890,7 @@ union
      */
     public static function getUserList($qtype = "LIST", $start = 0, $slice = 0, $filteruser = '')
     {
-        $query = new QueryDb("", "Account");
+        $query = new \QueryDb("", "Account");
         $query->order_by = "lastname";
         $query->AddQuery("(accountType='U')");
         if ($filteruser) {
@@ -922,7 +909,7 @@ union
      */
     public static function getGroupList($qtype = "LIST")
     {
-        $query = new QueryDb("", "Account");
+        $query = new \QueryDb("", "Account");
         $query->order_by = "lastname";
         $query->AddQuery("(accountType='G')");
         $l = $query->Query(0, 0, $qtype);
@@ -938,7 +925,7 @@ union
      */
     public static function getRoleList($qtype = "LIST")
     {
-        $query = new QueryDb("", "Account");
+        $query = new \QueryDb("", "Account");
         $query->order_by = "lastname";
         $query->AddQuery("(accountType='R')");
         $l = $query->Query(0, 0, $qtype);
@@ -954,7 +941,7 @@ union
      */
     public static function getUserAndGroupList($qtype = "LIST")
     {
-        $query = new QueryDb("", "Account");
+        $query = new \QueryDb("", "Account");
         $query->AddQuery("(accountType='G' or accountType='U')");
 
         $query->order_by = "accounttype, lastname";
@@ -983,7 +970,7 @@ union
      */
     public function getRUsersList($id, $r = array())
     {
-        $query = new QueryDb($this->dbaccess, "Account");
+        $query = new \QueryDb($this->dbaccess, "Account");
         $list = $query->Query(
             0,
             0,
@@ -1016,7 +1003,7 @@ union
      */
     public function getUsersGroupList($gid, $onlygroup = false)
     {
-        $query = new QueryDb($this->dbaccess, "Account");
+        $query = new \QueryDb($this->dbaccess, "Account");
         $optgroup = '';
         if ($onlygroup) {
             $optgroup = " and users.accounttype='G' ";
@@ -1046,7 +1033,7 @@ union
      */
     private function getUserMembers()
     {
-        $g = new Group($this->dbaccess);
+        $g = new \Group($this->dbaccess);
         $lg = $g->getChildsGroupId($this->id);
         $lg[] = $this->id;
         $cond = getSqlCond($lg, "idgroup", true);
@@ -1225,7 +1212,7 @@ union
      */
     public function isMember($uid)
     {
-        $g = new Group($this->dbaccess);
+        $g = new \Group($this->dbaccess);
         $lg = $g->getChildsGroupId($this->id);
         $lg[] = $this->id;
         $cond = getSqlCond($lg, "idgroup", true);
@@ -1234,7 +1221,7 @@ union
         }
 
         $sql = sprintf(
-            "select users.id from users, groups where %s and (groups.iduser=users.id) and users.id=%d and isgroup != 'Y'",
+            "select users.id from users, groups where %s and (groups.iduser=users.id) and users.id=%d and accounttype != 'G'",
             $cond,
             $uid
         );
@@ -1257,7 +1244,7 @@ union
      */
     public function getGroupUserList($qtype = "LIST", $withgroup = false, $limit = "all")
     {
-        $query = new QueryDb($this->dbaccess, "Account");
+        $query = new \QueryDb($this->dbaccess, "Account");
         $query->order_by = "accounttype desc, lastname";
         $selgroup = "and (accounttype='U')";
         if ($withgroup) {
@@ -1323,7 +1310,7 @@ union
         $forceCreate = false
     ) {
         if ($expireDelay === -1 || $expireDelay === false) {
-            $expireDelay = UserToken::INFINITY;
+            $expireDelay = \UserToken::INFINITY;
         }
         if ($context && (count($context) > 0)) {
             $scontext = serialize($context);
@@ -1337,10 +1324,10 @@ union
         include_once('WHAT/Class.UserToken.php');
         include_once('WHAT/Class.QueryDb.php');
 
-        $expireDate = UserToken::getExpirationDate($expireDelay);
+        $expireDate = \UserToken::getExpirationDate($expireDelay);
         $tu = array();
         if (!$oneshot && !$forceCreate) {
-            $q = new QueryDb($this->dbaccess, "UserToken");
+            $q = new \QueryDb($this->dbaccess, "UserToken");
             $q->addQuery(sprintf("userid=%d", $this->id));
             $q->addQuery(sprintf("expire='%s'", $expireDate));
             if ($scontext) {
@@ -1354,7 +1341,7 @@ union
 
         if ($create) {
             // create one
-            $uk = new UserToken("");
+            $uk = new \UserToken("");
             $uk->userid = $this->id;
             $uk->description = $description;
             $uk->token = $uk->genToken();
@@ -1444,10 +1431,10 @@ union
     public function addRole($idRole)
     {
         if (!$this->isAffected()) {
-            return ErrorCode::getError("ACCT0002", $idRole);
+            return \ErrorCode::getError("ACCT0002", $idRole);
         }
         if ($this->accounttype != self::USER_TYPE) {
-            return ErrorCode::getError("ACCT0003", $idRole, $this->login);
+            return \ErrorCode::getError("ACCT0003", $idRole, $this->login);
         }
         if (!is_numeric($idRole)) {
             DbManager::query(sprintf(
@@ -1459,9 +1446,9 @@ union
             }
         }
         if (!is_numeric($idRole)) {
-            return ErrorCode::getError("ACCT0001", $idRole, $this->login);
+            return \ErrorCode::getError("ACCT0001", $idRole, $this->login);
         }
-        $g = new group($this->dbaccess);
+        $g = new \group($this->dbaccess);
         $g->idgroup = $idRole;
         $g->iduser = $this->id;
         $err = $g->add();
@@ -1482,16 +1469,16 @@ union
     public function setRoles(array $roleIds)
     {
         if (!$this->isAffected()) {
-            return ErrorCode::getError("ACCT0006", implode(',', $roleIds));
+            return \ErrorCode::getError("ACCT0006", implode(',', $roleIds));
         }
 
         if ($this->accounttype == self::ROLE_TYPE) {
-            return ErrorCode::getError("ACCT0007", implode(',', $roleIds), $this->login);
+            return \ErrorCode::getError("ACCT0007", implode(',', $roleIds), $this->login);
         }
         $this->deleteRoles();
         $err = '';
         if ($this->accounttype == self::USER_TYPE || $this->accounttype == self::GROUP_TYPE) {
-            $g = new group($this->dbaccess);
+            $g = new \group($this->dbaccess);
             foreach ($roleIds as $rid) {
                 if (!is_numeric($rid)) {
                     DbManager::query(sprintf(
@@ -1503,7 +1490,7 @@ union
                     }
                 }
                 if (!is_numeric($rid)) {
-                    $err .= ErrorCode::getError("ACCT0008", $rid, $this->login);
+                    $err .= \ErrorCode::getError("ACCT0008", $rid, $this->login);
                 } else {
                     $g->idgroup = $rid;
                     $g->iduser = $this->id;
@@ -1575,10 +1562,10 @@ union
     public function deleteRoles()
     {
         if (!$this->isAffected()) {
-            return ErrorCode::getError("ACCT0004");
+            return \ErrorCode::getError("ACCT0004");
         }
         if ($this->accounttype == self::ROLE_TYPE) {
-            return ErrorCode::getError("ACCT0005", $this->login);
+            return \ErrorCode::getError("ACCT0005", $this->login);
         }
         $sql = sprintf(
             "DELETE FROM groups USING users where groups.iduser=%d and users.id=groups.idgroup and users.accounttype='R'",
@@ -1594,10 +1581,10 @@ union
 
     private function _deleteUserSessions()
     {
-        if (AuthenticatorManager::$session !== null && AuthenticatorManager::$session->userid == $this->id) {
-            AuthenticatorManager::$session->deleteUserSessionsExcept();
+        if (\AuthenticatorManager::$session !== null && \AuthenticatorManager::$session->userid == $this->id) {
+            \AuthenticatorManager::$session->deleteUserSessionsExcept();
         } else {
-            $session = new Session($this->dbaccess);
+            $session = new \Session($this->dbaccess);
             $session->deleteUserSessionsExcept($this->id);
         }
     }
