@@ -149,7 +149,7 @@ class DocumentHistory
                     "revision" => intval($revision->revision),
                     "owner" => array(
                         "id" => $revision->owner,
-                        "title" => \Account::getDisplayName($revision->owner)
+                        "title" => \Anakeen\Core\Account::getDisplayName($revision->owner)
                     ),
                     "state" => array(
                         "reference" => $revision->getState(),

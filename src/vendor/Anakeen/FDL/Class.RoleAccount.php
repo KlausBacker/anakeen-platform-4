@@ -12,7 +12,7 @@ namespace Dcp\Core;
 class RoleAccount extends \Dcp\Family\Document
 {
     /**
-     * @var \Account system role
+     * @var \Anakeen\Core\Account system role
      */
     protected $sysRole = null;
     
@@ -83,11 +83,11 @@ class RoleAccount extends \Dcp\Family\Document
             
             if (!$sR) {
                 // try create it
-                $sR = new \Account();
+                $sR = new \Anakeen\Core\Account();
                 $sR->login = $this->getRawValue('role_login');
                 $sR->lastname = $this->getRawValue('role_name');
                 $sR->fid = $this->initid;
-                $sR->accounttype = \Account::ROLE_TYPE;
+                $sR->accounttype = \Anakeen\Core\Account::ROLE_TYPE;
                 $sR->password_new = uniqid("role");
                 /** @noinspection PhpDeprecationInspection */
                 $sR->isgroup = 'N';
@@ -129,8 +129,10 @@ class RoleAccount extends \Dcp\Family\Document
     }
     /**
      * return system user object conform to whatid
+     *
      * @param bool $nocache
-     * @return \Account|null return null if not found
+     *
+     * @return \Anakeen\Core\Account|null return null if not found
      */
     public function getAccount($nocache = false)
     {
@@ -141,7 +143,7 @@ class RoleAccount extends \Dcp\Family\Document
         if (empty($this->sysRole)) {
             $wid = $this->getRawValue("us_whatid");
             if ($wid > 0) {
-                $this->sysRole = new \Account("", $wid);
+                $this->sysRole = new \Anakeen\Core\Account("", $wid);
             }
         }
         if (!$this->sysRole) {

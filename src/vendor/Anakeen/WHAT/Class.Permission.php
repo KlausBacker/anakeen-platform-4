@@ -115,8 +115,10 @@ create index permission_idx4 on permission(computed);
     }
     /**
      * Gives the list of Permission for a user on an application
-     * @param Account $user
+     *
+     * @param \Anakeen\Core\Account   $user
      * @param Application $app
+     *
      * @return array
      */
     public function ListUserPermissions($user, $app)
@@ -165,7 +167,7 @@ create index permission_idx4 on permission(computed);
         $res = array();
         $i = 0;
         while ($i < $query->nb) {
-            $res[$i] = new Account($this->dbaccess, $list[$i]->id_user);
+            $res[$i] = new \Anakeen\Core\Account($this->dbaccess, $list[$i]->id_user);
             $i++;
         }
         return ($res);
@@ -417,7 +419,7 @@ create index permission_idx4 on permission(computed);
      */
     public function substituteHasPrivilege($idacl)
     {
-        $u = new Account($this->dbaccess, $this->id_user);
+        $u = new \Anakeen\Core\Account($this->dbaccess, $this->id_user);
         $incumbents = $u->getIncumbents();
         foreach ($incumbents as $aIncumbent) {
             $p = new Permission($this->dbaccess, array(

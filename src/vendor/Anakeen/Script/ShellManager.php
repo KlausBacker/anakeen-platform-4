@@ -141,7 +141,7 @@ class ShellManager
 
     public static function initContext($appName = "CORE")
     {
-        $user = new \Account("", \Account::ADMIN_ID);
+        $user = new \Anakeen\Core\Account("", \Anakeen\Core\Account::ADMIN_ID);
         $login = self::getArg("login");
         if ($login) {
             if (!$user->setLoginName($login)) {
@@ -287,7 +287,7 @@ EOF;
         $ash .= escapeshellarg(DEFAULT_PUBDIR) . "/" . self::$programName . " ";
 
         if ($userlogin !== "admin") {
-            $u = new \Account("");
+            $u = new \Anakeen\Core\Account("");
             $u->setLoginName($userlogin);
             if (!$u->isAffected()) {
                 throw new Exception(sprintf("%s : User \"%s\" not found", self::$programName, $userlogin));

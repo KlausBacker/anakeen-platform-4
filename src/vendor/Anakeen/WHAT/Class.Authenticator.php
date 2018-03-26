@@ -111,7 +111,7 @@ abstract class Authenticator
         include_once('FDL/Class.Doc.php');
         include_once('WHAT/Class.User.php');
         
-        $u = new Account();
+        $u = new \Anakeen\Core\Account();
         if ($u->SetLoginName($username)) {
             $dbaccess = getDbAccess();
             $du = new_Doc($dbaccess, $u->fid);

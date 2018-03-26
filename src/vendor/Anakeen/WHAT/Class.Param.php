@@ -200,7 +200,7 @@ class Param extends DbObj
         return ($out);
     }
     
-    public function GetUser($userid = Account::ANONYMOUS_ID, $styleid = "")
+    public function GetUser($userid = \Anakeen\Core\Account::ANONYMOUS_ID, $styleid = "")
     {
         $query = new QueryDb($this->dbaccess, "Param");
         
@@ -235,7 +235,7 @@ class Param extends DbObj
         return ($tlist);
     }
     
-    public function GetUParam($p, $u = Account::ANONYMOUS_ID, $appid = "")
+    public function GetUParam($p, $u = \Anakeen\Core\Account::ANONYMOUS_ID, $appid = "")
     {
         if ($appid == "") {
             $appid = $this->appid;

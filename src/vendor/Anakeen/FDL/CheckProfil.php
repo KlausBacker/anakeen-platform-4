@@ -193,7 +193,7 @@ class CheckProfil extends CheckData
 
             default:
                 if (ctype_digit($reference)) {
-                    $findUser = Account::getDisplayName($reference);
+                    $findUser = \Anakeen\Core\Account::getDisplayName($reference);
                 } else {
                     // search document
                     $tu = getTDoc(getDbAccess(), $reference);

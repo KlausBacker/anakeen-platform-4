@@ -31,7 +31,7 @@ class TestRole extends TestCaseDcpCommonFamily
      */
     public function testRoleByGroup(array $addTo, array $expectedRoles)
     {
-        $u = new \User(self::$dbaccess, "");
+        $u = new \Anakeen\Core\Account(self::$dbaccess, "");
         $u->login = "tst_jd1";
         $u->password_new = 'a';
         $err = $u->add();
@@ -67,7 +67,7 @@ class TestRole extends TestCaseDcpCommonFamily
      */
     public function testDirectRole($login, array $expectedRoles)
     {
-        $u = new \User(self::$dbaccess);
+        $u = new  \Anakeen\Core\Account(self::$dbaccess);
         $u->setLoginName($login);
         $this->assertTrue($u->isAffected() , "cannot find $login user");
         $uRoleIds = $u->getRoles();
@@ -86,7 +86,7 @@ class TestRole extends TestCaseDcpCommonFamily
      */
     public function testRoleMail($roleLogin, $expectRawMail, $expectCompleteMail)
     {
-        $r = new \User(self::$dbaccess);
+        $r = new  \Anakeen\Core\Account(self::$dbaccess);
         $r->setLoginName($roleLogin);
         $this->assertTrue($r->isAffected() , "cannot find $roleLogin role");
         

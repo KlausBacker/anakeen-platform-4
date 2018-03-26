@@ -31,7 +31,7 @@ include_once("FDL/exportfld.php");
  * @param string $eformat X : zip (xml inside), Y: global xml file
  * @param string $eformat X : zip (xml inside), Y: global xml file
  */
-function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $specSearch = null, $outputFile = '', $eformat = "", $wident = 'Y', Fdl_DocumentSelection $aSelection = null, $toDownload = true)
+function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $specSearch = null, $outputFile = '', $eformat = "", $wident = 'Y', $aSelection = null, $toDownload = true)
 {
     setMaxExecutionTimeTo(3600); // 60 minutes
     $dbaccess = $action->dbaccess;
@@ -42,7 +42,6 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $sp
     if (!$eformat) {
         $eformat = strtoupper($action->getArgument("eformat", "X"));
     } // export format
-    $selection = $action->getArgument("selection"); // export selection  object (JSON)
     $log = $action->getArgument("log"); // log file
     $configxml = $action->getArgument("config");
     $exportId = $action->getArgument("exportId"); // export status id
@@ -104,20 +103,6 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $sp
         $s = $specSearch;
         $s->setObjectReturn();
         $s->reset();
-    } elseif ((!$fldid) && ($selection || $aSelection)) {
-        if ($aSelection) {
-            $os = $aSelection;
-        } else {
-            $selection = json_decode($selection);
-            include_once("DATA/Class.DocumentSelection.php");
-            $os = new Fdl_DocumentSelection($selection);
-        }
-        $ids = $os->getIdentificators();
-        $s = new SearchDoc($dbaccess);
-        
-        $s->addFilter(getSqlCond($ids, "id", true));
-        $s->setObjectReturn();
-        $exportname = "selection";
     } else {
         if (!$fldid) {
             exportExit($action, _("no export folder specified"));
@@ -251,7 +236,7 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $sp
 <documents date="%s" author="%s" name="%s">
 
 EOF;
-        $xml_head = sprintf($xml_head, htmlspecialchars(strftime("%FT%T")), htmlspecialchars(Account::getDisplayName($action->user->id)), htmlspecialchars($exportname));
+        $xml_head = sprintf($xml_head, htmlspecialchars(strftime("%FT%T")), htmlspecialchars(\Anakeen\Core\Account::getDisplayName($action->user->id)), htmlspecialchars($exportname));
         $xml_footer = "</documents>";
         
         $ret = fwrite($fh, $xml_head);

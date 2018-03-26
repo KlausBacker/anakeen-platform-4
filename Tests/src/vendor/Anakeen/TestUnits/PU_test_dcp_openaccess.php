@@ -31,7 +31,7 @@ class TestOpenAccess extends TestCaseDcpApplication
      */
     public function testApplicationToken($login, $token, $actionName, $expectedGrant, $error)
     {
-        $user = new \Account();
+        $user = new \Anakeen\Core\Account();
         $user->setLoginName($login);
         $this->assertTrue($user->isAffected() , sprintf("Login %s not found", $login));
         $tokenId = $user->getUserToken($token["expire"], $token["oneshot"], $token["context"], "Tst");

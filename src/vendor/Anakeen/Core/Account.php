@@ -1,25 +1,7 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
-/**
- * Users Definition
- *
- * @author     Anakeen
- * @version    $Id: Class.User.php,v 1.65 2008/08/11 14:14:14 marc Exp $
- * @package    FDL
- * @subpackage CORE
- */
-/**
- */
 
-include_once('Class.DbObj.php');
-include_once('Class.QueryDb.php');
-include_once('Class.Log.php');
-include_once('Class.Application.php');
-include_once('Class.Group.php');
-include_once('WHAT/Lib.Common.php');
+
+namespace Anakeen\Core;
 
 use Dcp\Core\DbManager;
 
@@ -32,7 +14,7 @@ define("GADMIN_ID", 4);
  *
  * @class Account
  */
-class Account extends DbObj
+class Account extends \DbObj
 {
     const ANONYMOUS_ID = 3;
     const GALL_ID = 2;
@@ -240,7 +222,7 @@ create sequence seq_id_users start 10;";
 
         $err = $this->modify();
         if (!$err) {
-            $u = new \Account($this->dbaccess, $this->substitute);
+            $u = new \Anakeen\Core\Account($this->dbaccess, $this->substitute);
             $u->updateMemberOf();
             if ($oldSubstitute) {
                 $u->select($oldSubstitute);
@@ -675,7 +657,7 @@ create sequence seq_id_users start 10;";
             /**
              * @var \Dcp\Family\IUSER $iuser
              */
-            $iuser = Anakeen\Core\DocManager::getDocument($this->fid);
+            $iuser = \Anakeen\Core\DocManager::getDocument($this->fid);
 
             $err = $iuser->RefreshDocUser();
         } //Update from what
@@ -1116,7 +1098,7 @@ union
      * @param int $uid if not set it is the current account object else use another account identifier
      *
      * @return array
-     * @throws Dcp\Exception
+     * @throws \Dcp\Exception
      */
     public function getStrictMemberOf($uid = -1)
     {
@@ -1143,7 +1125,7 @@ union
      * @param bool $updateSubstitute also update substitute by default
      *
      * @return array of memberof identificators
-     * @throws Dcp\Exception
+     * @throws \Dcp\Exception
      */
     public function updateMemberOf($updateSubstitute = true)
     {
@@ -1167,7 +1149,7 @@ union
             'memberof'
         ), true);
         if ($err) {
-            throw new Dcp\Exception($err);
+            throw new \Dcp\Exception($err);
         }
         if ($updateSubstitute && $this->substitute) {
             $u = new Account($this->dbaccess, $this->substitute);
@@ -1350,7 +1332,7 @@ union
         }
 
         if (!$this->isAffected()) {
-            throw new Dcp\Exception(sprintf("User token : account must be affected"));
+            throw new \Dcp\Exception(sprintf("User token : account must be affected"));
         }
         include_once('WHAT/Class.UserToken.php');
         include_once('WHAT/Class.QueryDb.php');
@@ -1379,13 +1361,13 @@ union
             $uk->type = "CORE";
             $uk->expire = $uk->setExpiration($expireDelay);
             if ($uk->expire === false) {
-                throw new Dcp\Exception(sprintf("User token : Invalid date. Expire must be a delay in seconds"));
+                throw new \Dcp\Exception(sprintf("User token : Invalid date. Expire must be a delay in seconds"));
             }
             $uk->expendable = $oneshot;
             $uk->context = $scontext;
             $err = $uk->add();
             if ($err) {
-                throw new Dcp\Exception($err);
+                throw new \Dcp\Exception($err);
             }
             $token = $uk->token;
         } else {
@@ -1398,7 +1380,7 @@ union
      * Set password for the admin account in the `admin' subdir
      *
      * @deprecated use {@link Account::setSupervisorHtpasswd} instead
-     * @see        Account::setSupervisorHtpasswd
+     * @see        \Anakeen\Core\Account::setSupervisorHtpasswd
      *
      * @param string $admin_passwd the password
      *

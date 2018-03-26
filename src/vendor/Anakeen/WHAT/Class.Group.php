@@ -109,12 +109,12 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     public function PostDelete($uid = 0)
     {
         if ($uid) {
-            $u = new Account("", $uid);
+            $u = new \Anakeen\Core\Account("", $uid);
         } else {
-            $u = new Account("", $this->iduser);
+            $u = new \Anakeen\Core\Account("", $this->iduser);
         }
         $u->updateMemberOf();
-        if ($u->accounttype != Account::USER_TYPE) {
+        if ($u->accounttype != \Anakeen\Core\Account::USER_TYPE) {
             // recompute all doc profil
             $this->resetAccountMemberOf();
         } else {
@@ -137,11 +137,11 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     {
         $err = $this->exec_query(sprintf("delete from sessions where userid=%d", $this->iduser));
         //    $this->FreedomCopyGroup();
-        $u = new Account("", $this->iduser);
+        $u = new \Anakeen\Core\Account("", $this->iduser);
         
         $u->updateMemberOf();
         
-        if ($u->accounttype != Account::USER_TYPE) {
+        if ($u->accounttype != \Anakeen\Core\Account::USER_TYPE) {
             // recompute all doc profil
             $this->resetAccountMemberOf();
         } else {
@@ -180,7 +180,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
             
             if ($synchro) {
                 simpleQuery($this->dbaccess, "select * from users order by id", $tusers);
-                $u = new Account($this->dbaccess);
+                $u = new \Anakeen\Core\Account($this->dbaccess);
                 foreach ($tusers as $tu) {
                     $u->affect($tu);
                     $u->updateMemberOf();

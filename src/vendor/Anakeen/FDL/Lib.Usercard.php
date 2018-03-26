@@ -72,7 +72,7 @@ function array_unset(&$t, $vp)
 function refreshOneGroup($gid, $refresh)
 {
     global $_SERVER;
-    $g = new Account("", $gid);
+    $g = new \Anakeen\Core\Account("", $gid);
     if ($g->fid > 0 && $g->accounttype == 'G') {
         $dbaccess = $g->dbaccess;
         /**

@@ -37,7 +37,7 @@ if ($admin_passwd == '') {
 
 $dbaccess = getDbAccess();
 
-$user = new Account($dbaccess, 1);
+$user = new \Anakeen\Core\Account($dbaccess, 1);
 if (!is_object($user) || !$user->isAffected()) {
     print "Could not find user with id '1' (admin).";
     exit(1);

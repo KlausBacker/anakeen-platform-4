@@ -113,7 +113,7 @@ class htmlAuthenticator extends Authenticator
         $session = $this->getAuthSession();
         /* Force removal of username if it already exists on the session */
         $session->register('username', '');
-        $session->setuid(Account::ANONYMOUS_ID);
+        $session->setuid(\Anakeen\Core\Account::ANONYMOUS_ID);
         $args=[];
         if (!isset($args['redirect_uri'])) {
             if (!empty($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] !== "/") {
@@ -238,7 +238,7 @@ class htmlAuthenticator extends Authenticator
             throw new \Dcp\Exception("Missing or empty auth app definition.");
         }
         
-        $account = new Account();
+        $account = new \Anakeen\Core\Account();
         if ($account->setLoginName("anonymous") === false) {
             throw new \Dcp\Exception(sprintf("anonymous account not found."));
         }

@@ -73,7 +73,7 @@ create unique index idx_permext on docpermext(docid, userid,acl);";
         if ($userid == 1) {
             return true;
         }
-        $gids = Account::getUserMemberOf($userid, $strict);
+        $gids = \Anakeen\Core\Account::getUserMemberOf($userid, $strict);
         $gids[] = $userid;
         $sql = sprintf("select * from docpermext where docid=%d and acl='%s' and userid in (%s)", $profid, pg_escape_string($acl), implode(',', $gids));
         simpleQuery('', $sql, $result);
@@ -92,7 +92,7 @@ create unique index idx_permext on docpermext(docid, userid,acl);";
                 return 'green';
             }
         }
-        $mof = Account::getUserMemberOf($accountId);
+        $mof = \Anakeen\Core\Account::getUserMemberOf($accountId);
         if ($mof) {
             foreach ($grants[$docid] as $aGrant) {
                 if ($aGrant["acl"] == $aclName && in_array($aGrant["userid"], $mof)) {

@@ -129,7 +129,7 @@ create sequence SEQ_ID_ACTION;
     /**
      * current user
      *
-     * @var Account
+     * @var \Anakeen\Core\Account
      */
     public $user;
     /**

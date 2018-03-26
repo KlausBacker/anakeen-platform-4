@@ -11,7 +11,7 @@ namespace Dcp\Core;
 trait TAccount
 {
     /**
-     * @var \Account
+     * @var \Anakeen\Core\Account
      */
     public $wuser;
 
@@ -325,7 +325,7 @@ trait TAccount
      */
     public function getDocUser($wid)
     {
-        $u = new \Account("", $wid);
+        $u = new \Anakeen\Core\Account("", $wid);
         if ($u->isAffected()) {
             if ($u->fid > 0) {
                 $du = DocManager::getDocument($u->fid);
@@ -341,8 +341,10 @@ trait TAccount
     }
     /**
      * return system account object conform to whatid
+     *
      * @param bool $nocache set to true if need to reload user object from database
-     * @return \Account|false return false if not found
+     *
+     * @return \Anakeen\Core\Account|false return false if not found
      */
     public function getAccount($nocache = false)
     {
@@ -357,7 +359,7 @@ trait TAccount
         if (!isset($this->wuser)) {
             $wid = $this->getRawValue("us_whatid");
             if ($wid > 0) {
-                $this->wuser = new \Account("", $wid);
+                $this->wuser = new \Anakeen\Core\Account("", $wid);
             }
         }
         if (!isset($this->wuser)) {
@@ -367,8 +369,9 @@ trait TAccount
     }
     /**
      * return what user object conform to whatid
+     *
      * @deprecated use getAccount instead
-     * @return \Account return false if not found
+     * @return \Anakeen\Core\Account return false if not found
      */
     public function getWuser($nocache = false)
     {

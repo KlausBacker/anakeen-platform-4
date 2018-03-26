@@ -44,7 +44,7 @@ class TestImportAccounts extends TestCaseDcpCommonFamily
             $err = $e->getMessage();
         }
         $this->assertEmpty($err, "import error detected $err");
-        $testingAccount = new \Account();
+        $testingAccount = new \Anakeen\Core\Account();
         foreach ($expects as $accountData) {
             $login = $accountData["login"];
             $testingAccount->setLoginName($login);
@@ -87,7 +87,7 @@ class TestImportAccounts extends TestCaseDcpCommonFamily
                 $this->assertEquals(count($accountData["expectedGroups"]), count($groupIds), sprintf("Group count fail %s : %s", $testingAccount->login, print_r($groupIds, true)));
                 foreach ($accountData["expectedGroups"] as $groupRef) {
                     $filteredRoles = array_filter($groupIds, function ($groupId) use ($groupRef) {
-                        $a = new \Account();
+                        $a = new \Anakeen\Core\Account();
                         $a->select($groupId);
                         return ($a->login === strtolower($groupRef));
                     });

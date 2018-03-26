@@ -174,7 +174,7 @@ class DocumentLock
 
                 "lockedBy" => array(
                     "id" => abs($this->_document->locked),
-                    "title" => \Account::getDisplayName(abs($this->_document->locked))
+                    "title" => \Anakeen\Core\Account::getDisplayName(abs($this->_document->locked))
                 ),
                 "isMyLock" => (abs($this->_document->locked) == ContextManager::getCurrentUser()->id),
                 "temporary" => $this->hasTemporaryLock(),

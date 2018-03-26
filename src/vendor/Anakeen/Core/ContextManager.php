@@ -15,7 +15,7 @@ class ContextManager
      */
     protected static $coreAction = null;
     /**
-     * @var \Account
+     * @var \Anakeen\Core\Account
      */
     protected static $coreUser = null;
 
@@ -65,7 +65,7 @@ class ContextManager
     /**
      * Initialise application context
      *
-     * @param \Account      $account
+     * @param \Anakeen\Core\Account    $account
      * @param string        $appName
      * @param string        $actionName
      * @param \Session|null $session
@@ -74,7 +74,7 @@ class ContextManager
      * @throws \Dcp\Db\Exception
      * @throws \Exception
      */
-    public static function initContext(\Account $account, $appName = "CORE", $actionName = "", \Session $session = null)
+    public static function initContext(\Anakeen\Core\Account $account, $appName = "CORE", $actionName = "", \Session $session = null)
     {
         global $action;
         set_include_path(self::getRootDirectory() . PATH_SEPARATOR . get_include_path());
@@ -126,7 +126,7 @@ class ContextManager
         return $actionRoot;
     }
 
-    public static function recordContext(\Account $account, \Action $action = null)
+    public static function recordContext(\Anakeen\Core\Account $account, \Action $action = null)
     {
         self::$coreUser = &$account;
         if ($action) {
@@ -140,7 +140,7 @@ class ContextManager
      * Control user has a good session
      * Complete AuthenticatorManager singleton
      *
-     * @return \Account
+     * @return \Anakeen\Core\Account
      */
     public static function authentUser()
     {
@@ -183,7 +183,7 @@ class ContextManager
             $exception->setUserMessage(___("Access not granted", "ank"));
             throw $exception;
         }
-        $u = new \Account();
+        $u = new \Anakeen\Core\Account();
         $u->setLoginName($_SERVER['PHP_AUTH_USER']);
         return $u;
     }
@@ -267,7 +267,7 @@ class ContextManager
         $core->SetVolatileParam("CORE_MAILACTIONURL", $core_mailactionurl);
     }
 
-    public static function sudo(\Account &$account)
+    public static function sudo(\Anakeen\Core\Account &$account)
     {
         self::$coreAction = self::getCurrentAction();
         if (!self::$coreAction) {
@@ -297,7 +297,7 @@ class ContextManager
     }
 
     /**
-     * @return \Account|null
+     * @return \Anakeen\Core\Account|null
      */
     public static function getCurrentUser()
     {

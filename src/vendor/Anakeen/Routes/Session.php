@@ -46,7 +46,7 @@ class Session
             $e->setHttpStatus('403', 'Forbidden');
             throw $e;
         }
-        $user = new \Account();
+        $user = new \Anakeen\Core\Account();
         $user->setLoginName($login);
         $result = false;
         if ($user->isAffected()) {
@@ -78,7 +78,7 @@ class Session
         $session->set();
         $session->register('username', $login);
         if ($language) {
-            $u = new \Account();
+            $u = new \Anakeen\Core\Account();
             $u->setLoginName($login);
 
             \Anakeen\Core\ContextManager::initContext($u, "CORE", "", \AuthenticatorManager::$session);

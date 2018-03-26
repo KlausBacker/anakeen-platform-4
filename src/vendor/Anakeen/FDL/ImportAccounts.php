@@ -44,7 +44,7 @@ class ImportAccounts
     
     private $needSyncAccounts = false;
     /**
-     * @var \Account
+     * @var \Anakeen\Core\Account
      */
     private $workAccount = null;
     
@@ -59,7 +59,7 @@ class ImportAccounts
         
         try {
             $this->validateShema();
-            $this->workAccount = new \Account();
+            $this->workAccount = new \Anakeen\Core\Account();
             
             if ($this->transactionMode || $this->analyzeOnly) {
                 $this->workAccount->savePoint("AccountsExport");
@@ -393,10 +393,10 @@ class ImportAccounts
     }
     /**
      * @param \DOMElement $node
-     * @param string $tagName "group" or "role"
-     * @param \Account $account
+     * @param string      $tagName "group" or "role"
+     * @param \Anakeen\Core\Account  $account
      */
-    protected function importParent($node, $tagName, \Account $account)
+    protected function importParent($node, $tagName, \Anakeen\Core\Account $account)
     {
         $listNode = $this->xpath->query(sprintf("%ss", $tagName), $node);
         if ($listNode->length > 0) {
@@ -410,9 +410,9 @@ class ImportAccounts
             if ($reset) {
                 $type = "";
                 if ($tagName === "parentGroup") {
-                    $type = \Account::GROUP_TYPE;
+                    $type = \Anakeen\Core\Account::GROUP_TYPE;
                 } elseif ($tagName === "associatedRole") {
-                    $type = \Account::ROLE_TYPE;
+                    $type = \Anakeen\Core\Account::ROLE_TYPE;
                 }
                 $sql = sprintf("delete from groups using users where iduser=%d and users.id=groups.idgroup and users.accounttype= %s", $account->id, pg_escape_literal($type));
                 simpleQuery("", $sql);
@@ -454,7 +454,7 @@ class ImportAccounts
                 $account->synchroAccountDocument();
                 if ($tagName === "parentGroup") {
                     $dl = new \DocumentList();
-                    if ($account->accounttype === \Account::GROUP_TYPE) {
+                    if ($account->accounttype === \Anakeen\Core\Account::GROUP_TYPE) {
                         $needUpdate[] = $account->fid;
                     }
                     $dl->addDocumentIdentifiers($needUpdate);
@@ -495,7 +495,8 @@ class ImportAccounts
      * @param string $tag node tag
      * @param string $defaultFamily default family for account in case of document tag not exists
      * @param array $values system values to update account
-     * @return \Account
+     *
+     * @return \Anakeen\Core\Account
      * @throws Exception
      */
     protected function importAccount($node, $tag, $defaultFamily, array $values)
@@ -510,7 +511,7 @@ class ImportAccounts
         if ($documentNode) {
             $family = $documentNode->getAttribute("family");
         }
-        $account = new \Account();
+        $account = new \Anakeen\Core\Account();
         
         $msg = "";
         if ($values) {
@@ -521,9 +522,9 @@ class ImportAccounts
             // Already exists : update role
         } else {
             if ($tag === "role") {
-                $account->accounttype = \Account::ROLE_TYPE;
+                $account->accounttype = \Anakeen\Core\Account::ROLE_TYPE;
             } elseif ($tag === "group") {
-                $account->accounttype = \Account::GROUP_TYPE;
+                $account->accounttype = \Anakeen\Core\Account::GROUP_TYPE;
             }
             // New account
             $famId = \Anakeen\Core\DocManager::getFamilyIdFromName($family);
@@ -608,7 +609,7 @@ class ImportAccounts
         return $account;
     }
     
-    protected function importXMLDocument(\DOMElement $node, \Account $account)
+    protected function importXMLDocument(\DOMElement $node, \Anakeen\Core\Account $account)
     {
         $node->setAttribute("id", $account->fid);
         $importXml = new importXml();
@@ -717,7 +718,7 @@ class ImportAccounts
         return false;
     }
     /**
-     * @return \Account
+     * @return \Anakeen\Core\Account
      */
     private function getWorkingAccount()
     {

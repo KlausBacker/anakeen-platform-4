@@ -39,7 +39,7 @@ class CoreRouteAccess extends TestCaseRoutes
      */
     public function testGetRouteAccess($uri, $login, $expectedJsonFile)
     {
-        $account=new \Account();
+        $account=new \Anakeen\Core\Account();
         $account->setLoginName($login);
         ContextManager::sudo($account);
         $app = $this->setApiUriEnv($uri);

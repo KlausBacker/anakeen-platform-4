@@ -55,7 +55,7 @@ class TestGroup extends TestCaseDcpCommonFamily
             $newGids[] = $group->getRawValue("us_whatid");
             $groups[$gLogin] = $group;
         }
-        $u = new \Account("", $user->getRawValue("us_whatid"));
+        $u = new \Anakeen\Core\Account("", $user->getRawValue("us_whatid"));
         $this->assertTrue($u->isAffected() , sprintf("cannot find %s account", $user->getRawValue("us_whatid")));
         $gids = $u->getGroupsId();
         
@@ -102,7 +102,7 @@ class TestGroup extends TestCaseDcpCommonFamily
         $err = $doc->store();
         $this->assertEmpty($err, sprintf("cannot store igroup %s", $err));
         
-        $u = new \Account();
+        $u = new \Anakeen\Core\Account();
         $this->assertTrue($u->setLoginName($login) , "system group not found");
         $this->assertEquals($login, $u->login);
         $this->assertEquals($doc->id, $u->fid, "mismatch document igroup reference");
@@ -113,7 +113,8 @@ class TestGroup extends TestCaseDcpCommonFamily
      * @param string $userLogin
      * @param array $groupLogins
      * @---depends testCreateGroup
-     * @return \Account
+     *
+     * @return \Anakeen\Core\Account
      * @dataProvider dataInsertgroupCreate
      */
     public function testInsertInGroup($userLogin, array $groupLogins)
@@ -145,7 +146,7 @@ class TestGroup extends TestCaseDcpCommonFamily
             $group->insertDocument($user->initid);
             $newGids[] = $group->getRawValue("us_whatid");
         }
-        $u = new \Account("", $user->getRawValue("us_whatid"));
+        $u = new \Anakeen\Core\Account("", $user->getRawValue("us_whatid"));
         $this->assertTrue($u->isAffected());
         $gids = $u->getGroupsId();
         
@@ -166,7 +167,7 @@ class TestGroup extends TestCaseDcpCommonFamily
         $err = $doc->store();
         $this->assertNotEmpty($err, sprintf("must be impossible to store igroup"));
         
-        $u = new \Account();
+        $u = new \Anakeen\Core\Account();
         $this->assertTrue($u->setLoginName($login) , "system group not found");
         $this->assertEquals($login, $u->login);
     }
@@ -186,7 +187,7 @@ class TestGroup extends TestCaseDcpCommonFamily
             $this->markTestIncomplete(sprintf("User with id '%s' is not alive.", $userId));
         }
         $userWhatId = $user->getRawValue('us_whatid');
-        $userAccount = new \Account(self::$dbaccess, $userWhatId);
+        $userAccount = new \Anakeen\Core\Account(self::$dbaccess, $userWhatId);
         /**
          * @var \Dcp\Core\GroupAccount $group
          */
@@ -195,7 +196,7 @@ class TestGroup extends TestCaseDcpCommonFamily
             $this->markTestIncomplete(sprintf("Group with id '%s' is not alive.", $groupId));
         }
         $groupWhatId = $group->getRawValue('us_whatid');
-        $groupAccount = new \Account(self::$dbaccess, $groupWhatId);
+        $groupAccount = new \Anakeen\Core\Account(self::$dbaccess, $groupWhatId);
         /**
          * @var \Dcp\Core\UserAccount $insertUser
          */
@@ -204,7 +205,7 @@ class TestGroup extends TestCaseDcpCommonFamily
             $this->markTestIncomplete(sprintf("User with id '%s' is not alive.", $insertUserId));
         }
         $insertUserWhatId = $insertUser->getRawValue('us_whatid');
-        $insertUserAccount = new \Account(self::$dbaccess, $insertUserWhatId);
+        $insertUserAccount = new \Anakeen\Core\Account(self::$dbaccess, $insertUserWhatId);
         /*
          * Setuid to $userId
         */

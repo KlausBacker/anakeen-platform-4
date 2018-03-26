@@ -205,7 +205,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
                 $tgid = array();
                 $tgtitle = array();
                 if (count($g->groups) > 0) {
-                    $gt = new \Account($this->dbaccess);
+                    $gt = new \Anakeen\Core\Account($this->dbaccess);
                     foreach ($g->groups as $gid) {
                         $gt->select($gid);
                         $tgid[] = $gt->fid;
@@ -325,7 +325,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
             $newuser = false;
             $user = $this->getAccount();
             if (!$user) {
-                $user = new \Account(""); // create new user
+                $user = new \Anakeen\Core\Account(""); // create new user
                 $this->wuser = & $user;
                 $newuser = true;
             }
@@ -421,7 +421,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
             }
         }
         $this->setValue("us_roles", $roles);
-        if ($this->getRawValue("us_whatid") == \Account::ANONYMOUS_ID) {
+        if ($this->getRawValue("us_whatid") == \Anakeen\Core\Account::ANONYMOUS_ID) {
             // Anonymous has no password
             $passFrame=$this->getAttribute("us_passwd1");
             if ($passFrame) {
@@ -446,7 +446,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         $allParents = $u->getUserParents();
         $allRoles = $allGroup = array();
         foreach ($allParents as $aParent) {
-            if ($aParent["accounttype"] == \Account::ROLE_TYPE) {
+            if ($aParent["accounttype"] == \Anakeen\Core\Account::ROLE_TYPE) {
                 $allRoles[] = $aParent;
             } else {
                 $allGroup[] = $aParent;

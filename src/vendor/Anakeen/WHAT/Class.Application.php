@@ -133,7 +133,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public $session = null;
     /**
-     * @var Account
+     * @var \Anakeen\Core\Account
      */
     public $user = null;
     /**
@@ -297,7 +297,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         if (is_object($this->session)) {
             if ($this->session->userid != 0) {
                 $this->log->debug("Get user on " . $this->dbaccess);
-                $this->user = new Account($this->dbaccess, $this->session->userid);
+                $this->user = new \Anakeen\Core\Account($this->dbaccess, $this->session->userid);
             } else {
                 $this->log->debug("User not set ");
             }
@@ -849,7 +849,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         if ($this->hasParent()) {
             return $this->parent->isInAdminMode();
         }
-        return $this->adminMode === true || $this->user->id == Account::ADMIN_ID;
+        return $this->adminMode === true || $this->user->id == \Anakeen\Core\Account::ADMIN_ID;
     }
     /**
      * Test permission for current user in current application
@@ -933,7 +933,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             } else {
                 $pstyle = new Param($this->dbaccess, array(
                 "STYLE",
-                Param::PARAM_USER . Account::ANONYMOUS_ID,
+                Param::PARAM_USER . \Anakeen\Core\Account::ANONYMOUS_ID,
                 "1"
             ));
             }
@@ -1394,7 +1394,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                         $this->Add();
                     }
                     $this->param = new Param();
-                    $this->param->SetKey($this->id, isset($this->user->id) ? $this->user->id : Account::ANONYMOUS_ID);
+                    $this->param->SetKey($this->id, isset($this->user->id) ? $this->user->id : \Anakeen\Core\Account::ANONYMOUS_ID);
                 }
             } else {
                 $this->log->info("can't init $name");
@@ -1647,11 +1647,11 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         foreach ($res as $acl) {
             $permission = new Permission($this->dbaccess);
-            if ($permission->Exists(Account::GALL_ID, $this->id, $acl['id'])) {
+            if ($permission->Exists(\Anakeen\Core\Account::GALL_ID, $this->id, $acl['id'])) {
                 continue;
             }
             $permission->Affect(array(
-                'id_user' => Account::GALL_ID,
+                'id_user' => \Anakeen\Core\Account::GALL_ID,
                 'id_application' => $this->id,
                 'id_acl' => $acl['id']
             ));

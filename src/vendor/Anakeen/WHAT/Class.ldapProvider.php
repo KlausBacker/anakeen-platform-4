@@ -49,7 +49,7 @@ class ldapProvider extends Provider
         return false;
     }
     /**
-     * @param User $whatuser
+     * @param \Anakeen\Core\Account $whatuser
      * @param string $username
      * @param string $password
      * @return string error message
@@ -65,7 +65,7 @@ class ldapProvider extends Provider
         $core->session = new Session();
         $action = new Action();
         $action->Set("", $core);
-        $action->user = new Account("", 1); //create user as admin
+        $action->user = new \Anakeen\Core\Account("", 1); //create user as admin
         $whatuser->firstname = '--';
         $whatuser->lastname = '(from ldap) ' . $username;
         $whatuser->login = $username;

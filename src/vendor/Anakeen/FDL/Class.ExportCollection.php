@@ -642,7 +642,7 @@ EOF;
         } else {
             $exportname = sprintf("Custom '\"export");
         }
-        $xml_head = sprintf($xml_head, htmlspecialchars(strftime("%FT%T")), htmlspecialchars(\Account::getDisplayName(getCurrentUser()->id), ENT_QUOTES), htmlspecialchars($exportname, ENT_QUOTES));
+        $xml_head = sprintf($xml_head, htmlspecialchars(strftime("%FT%T")), htmlspecialchars(\Anakeen\Core\Account::getDisplayName(getCurrentUser()->id), ENT_QUOTES), htmlspecialchars($exportname, ENT_QUOTES));
         
         $ret = fwrite($fout, $xml_head);
         if ($ret === false) {

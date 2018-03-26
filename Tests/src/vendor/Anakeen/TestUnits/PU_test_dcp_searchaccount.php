@@ -45,7 +45,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
         
         $lLogin = $this->getAccounlLogin($al);
         /**
-         * @var \Account $account
+         * @var \Anakeen\Core\Account $account
          */
         foreach ($al as $account) {
             $login = $account->login;
@@ -62,7 +62,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
     {
         $logins = array();
         /**
-         * @var \Account $account
+         * @var \Anakeen\Core\Account $account
          */
         foreach ($al as $account) {
             $logins[] = $account->login;
@@ -118,7 +118,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
         
         $expectedAccounts = array_map("mb_strtolower", $expectedAccounts);
         /**
-         * @var \Account $account
+         * @var \Anakeen\Core\Account $account
          */
         $k = 0;
         foreach ($al as $account) {
@@ -145,7 +145,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
         $expectedAccounts = array_map("mb_strtolower", $expectedAccounts);
         $ll = $this->getAccounlLogin($al);
         /**
-         * @var \Account $account
+         * @var \Anakeen\Core\Account $account
          */
         $k = 0;
         foreach ($al as $account) {
@@ -174,7 +174,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
         $expectedAccounts = array_map("mb_strtolower", $expectedAccounts);
         $ll = $this->getAccounlLogin($al);
         /**
-         * @var \Account $account
+         * @var \Anakeen\Core\Account $account
          */
         $k = 0;
         foreach ($al as $account) {

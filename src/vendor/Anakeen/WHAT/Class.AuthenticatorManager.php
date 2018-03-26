@@ -68,7 +68,7 @@ class AuthenticatorManager
                 $auth_user, $http_user_agent);
             // count login failure
             if (\Anakeen\Core\ContextManager::getApplicationParam("AUTHENT_FAILURECOUNT") > 0) {
-                $wu = new Account();
+                $wu = new \Anakeen\Core\Account();
                 if ($wu->SetLoginName(self::$auth->getAuthUser())) {
                     if ($wu->id != 1) {
                         include_once("FDL/freedom_util.php");
@@ -299,7 +299,7 @@ class AuthenticatorManager
     public static function getAccount()
     {
         $login = self::$auth->getAuthUser();
-        $account = new Account();
+        $account = new \Anakeen\Core\Account();
         if ($account->setLoginName($login)) {
             return $account;
         }
@@ -330,7 +330,7 @@ class AuthenticatorManager
     protected static function checkAuthorization()
     {
         $login = AuthenticatorManager::$auth->getAuthUser();
-        $wu = new Account();
+        $wu = new \Anakeen\Core\Account();
         $existu = false;
         if ($wu->SetLoginName($login)) {
             $existu = true;

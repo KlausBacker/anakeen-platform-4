@@ -45,7 +45,7 @@ class TestUser extends TestCaseDcpDocument
         $err = $doc->store();
         $this->assertEmpty($err, sprintf("cannot store iuser %s", $err));
         
-        $u = new \Account();
+        $u = new \Anakeen\Core\Account();
         $this->assertTrue($u->setLoginName($login) , "system user not found");
         $this->assertEquals($login, $u->login);
         $this->assertEquals($doc->id, $u->fid, "mismatch document iuser reference");
@@ -70,7 +70,7 @@ class TestUser extends TestCaseDcpDocument
         $err = $doc->store();
         $this->assertNotEmpty($err, sprintf("must be impossible to store iuser"));
         
-        $u = new \Account();
+        $u = new \Anakeen\Core\Account();
         $this->assertTrue($u->setLoginName($login) , "system user not found");
         $this->assertEquals($login, $u->login);
     }

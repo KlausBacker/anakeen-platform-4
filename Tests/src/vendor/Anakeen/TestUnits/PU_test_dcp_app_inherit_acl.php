@@ -48,7 +48,7 @@ class TestAppInheritAcl extends TestCaseDcpApplication
         $user = new_doc(self::$dbaccess, $userId);
         $this->assertTrue($user->isAlive() , sprintf("Could not get user with id '%s'.", $userId));
         
-        $wuser = new \User(self::$dbaccess, $user->getRawValue('us_whatid'));
+        $wuser = new \Anakeen\Core\Account(self::$dbaccess, $user->getRawValue('us_whatid'));
         $this->assertTrue(is_numeric($wuser->id) , sprintf("Invalid user what id '%s' for user '%s'.", $wuser->id, $userId));
         
         $this->sudo($wuser->login);

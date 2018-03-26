@@ -21,7 +21,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
     /**
      * User keep in cache during the sudo
      *
-     * @var \Account
+     * @var \Anakeen\Core\Account
      */
     protected static $user = null;
     /**
@@ -89,7 +89,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
     {
         $action = ContextManager::getCurrentAction();
         if (!$action) {
-            $u = new \Account();
+            $u = new \Anakeen\Core\Account();
             $u->setLoginName($login);
             \Anakeen\Core\ContextManager::initContext($u);
         }
@@ -154,12 +154,13 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      * use another user
      *
      * @param string $login
-     * @return \Account
+     *
+     * @return \Anakeen\Core\Account
      * @throws \Dcp\Exception
      */
     protected static function sudo($login)
     {
-        $u = new \Account(self::$dbaccess);
+        $u = new \Anakeen\Core\Account(self::$dbaccess);
         if (!$u->setLoginName($login)) {
             throw new \Dcp\Exception("login $login not exist");
         }

@@ -906,7 +906,7 @@ class DocCtrl extends DocLDAP
         $query->AddQuery("docid=" . $pdocid);
         $query->AddQuery(sprintf("(upacl & %d) != 0", 1 << $pos));
         $tperm = $query->Query(0, 0, "TABLE");
-        $u = new Account("");
+        $u = new \Anakeen\Core\Account("");
         $ru = array();
         if ($query->nb > 0) {
             foreach ($tperm as $perm) {
@@ -921,7 +921,7 @@ class DocCtrl extends DocLDAP
             }
             
             foreach ($ru as $k => $v) { // delete groups
-                if ($v["accounttype"] === Account::GROUP_TYPE) {
+                if ($v["accounttype"] === \Anakeen\Core\Account::GROUP_TYPE) {
                     unset($ru[$k]);
                 }
             }

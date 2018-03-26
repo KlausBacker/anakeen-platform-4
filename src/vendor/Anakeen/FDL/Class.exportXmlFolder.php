@@ -16,7 +16,7 @@
 include_once("FDL/import_file.php");
 require_once 'FDL/exportxmlfld.php';
 
-class exportXmlFolder
+class ExportXmlFolder
 {
     const zipFormat = 'X';
     const xmlFormat = 'Y';
@@ -71,7 +71,7 @@ class exportXmlFolder
             } elseif ($this->format == self::zipFormat) {
                 $ext = 'zip';
             }
-            $this->outputFile = uniqid(getTmpDir() . "/export") . ".$ext";
+            $this->outputFile = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/export") . ".$ext";
         } else {
             $this->outputFile = $outputFile;
         }
@@ -116,16 +116,5 @@ class exportXmlFolder
         $this->setOutputFile($outputFile);
         exportxmlfld($action, $folderId, $famid = "", null, $this->outputFile, $this->format, $this->useIdentificator ? 'Y' : 'N');
     }
-    /**
-     *
-     * export documents from selection object
-     * @param Fdl_DocumentSelection $selection
-     * @param string $outputFile
-     */
-    public function exportFromSelection(Fdl_DocumentSelection $selection, $outputFile = '')
-    {
-        global $action;
-        $this->setOutputFile($outputFile);
-        exportxmlfld($action, $folder = 0, $famid = "", null, $this->outputFile, $this->format, $this->useIdentificator ? 'Y' : 'N', $selection);
-    }
+
 }

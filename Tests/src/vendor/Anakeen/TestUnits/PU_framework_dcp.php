@@ -19,7 +19,7 @@ class FrameworkDcp extends \PHPUnit_Framework_TestSuite
         $action = ContextManager::getCurrentAction();
 
         if (!$action) {
-            $u = new \Account();
+            $u = new \Anakeen\Core\Account();
             $u->setLoginName("admin");
             \Anakeen\Core\ContextManager::initContext($u);
         }

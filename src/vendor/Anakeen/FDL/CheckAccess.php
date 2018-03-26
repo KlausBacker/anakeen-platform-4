@@ -86,7 +86,7 @@ class CheckAccess extends CheckData
         if ($this->userId) {
             $findUser = false;
             if (ctype_digit($this->userId)) {
-                $findUser = User::getDisplayName($this->userId);
+                $findUser =  \Anakeen\Core\Account::getDisplayName($this->userId);
             } else {
                 // search document
                 $tu = getTDoc(getDbAccess(), $this->userId);

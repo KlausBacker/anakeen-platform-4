@@ -294,7 +294,7 @@ class SearchDoc
      */
     public static function getUserViewVector($uid)
     {
-        $memberOf = Account::getUserMemberOf($uid);
+        $memberOf = \Anakeen\Core\Account::getUserMemberOf($uid);
         if ($memberOf === null) {
             return '';
         }

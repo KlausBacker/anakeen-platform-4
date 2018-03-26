@@ -1,17 +1,5 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
-/**
- * Account list class
- *
- * @author Anakeen
- * @version $Id:  $
- * @package FDL
- */
-/**
- */
+
 class AccountList implements Iterator, Countable
 {
     /**
@@ -19,7 +7,7 @@ class AccountList implements Iterator, Countable
      */
     private $accountsData = null;
     /**
-     * @var null|Account
+     * @var null|\Anakeen\Core\Account
      */
     private $currentAccount = null;
     private $currentIndex = 0;
@@ -45,7 +33,7 @@ class AccountList implements Iterator, Countable
     private function initSearch()
     {
         $this->currentIndex = 0;
-        $this->currentAccount = new Account();
+        $this->currentAccount = new \Anakeen\Core\Account();
     }
     
     private function getCurrentAccount()
@@ -74,7 +62,7 @@ class AccountList implements Iterator, Countable
         return $this->currentAccount->id;
     }
     /**
-     * @return \Account|null
+     * @return \Anakeen\Core\Account|null
      */
     public function current()
     {

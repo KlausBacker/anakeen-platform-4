@@ -251,7 +251,7 @@ class ExportXmlDocument
                 }
                 // no break
             case 'thesaurus':
-            case 'account':
+            case 'Account32':
             case 'docid':
                 if (!$v) {
                     return sprintf('<%s xsi:nil="true"/>', $attribute->id);

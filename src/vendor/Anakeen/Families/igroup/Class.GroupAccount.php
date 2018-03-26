@@ -160,11 +160,11 @@ class GroupAccount extends \Dcp\Family\Group
         
         $fid = $this->id;
         /**
-         * @var \Account $user
+         * @var \Anakeen\Core\Account $user
          */
         $user = $this->getAccount();
         if (!$user) {
-            $user = new \Account(""); // create new user
+            $user = new \Anakeen\Core\Account(""); // create new user
             $this->wuser = & $user;
         }
         // get system role ids
@@ -459,7 +459,7 @@ class GroupAccount extends \Dcp\Family\Group
                 $tglogin = $tgid = array();
                 if (count($g->groups) > 0) {
                     foreach ($g->groups as $gid) {
-                        $gt = new \Account("", $gid);
+                        $gt = new \Anakeen\Core\Account("", $gid);
                         $tgid[$gid] = $gt->fid;
                         $tglogin[$gid] = $this->getTitle($gt->fid);
                     }
@@ -497,7 +497,7 @@ class GroupAccount extends \Dcp\Family\Group
             $tglogin = '';
             if (count($tu) > 0) {
                 foreach ($tu as $uid => $tvu) {
-                    if ($tvu["accounttype"] == \Account::GROUP_TYPE) {
+                    if ($tvu["accounttype"] == \Anakeen\Core\Account::GROUP_TYPE) {
                         $tgid[$uid] = $tvu["fid"];
                         //	  $tglogin[$uid]=$this->getTitle($tvu["fid"]);
                         $tglogin[$tvu["fid"]] = $tvu["lastname"];

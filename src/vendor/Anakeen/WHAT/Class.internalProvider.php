@@ -20,7 +20,7 @@ class InternalProvider extends Provider
      */
     public function validateCredential($username, $password)
     {
-        $user = new Account();
+        $user = new \Anakeen\Core\Account();
         if ($user->setLoginName($username)) {
             return $user->checkpassword($password);
         }

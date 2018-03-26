@@ -765,11 +765,11 @@ function getDocFromUserId($dbaccess, $userid)
     }
     include_once("FDL/Lib.Dir.php");
     $tdoc = array();
-    $user = new Account("", $userid);
+    $user = new \Anakeen\Core\Account("", $userid);
     if (!$user->isAffected()) {
         return false;
     }
-    if ($user->accounttype == Account::GROUP_TYPE) {
+    if ($user->accounttype == \Anakeen\Core\Account::GROUP_TYPE) {
         $filter = array(
             "us_whatid = '$userid'"
         );

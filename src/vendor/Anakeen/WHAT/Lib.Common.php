@@ -162,7 +162,7 @@ function setMaxExecutionTimeTo($limit)
  */
 function getMailAddr($userid, $full = false)
 {
-    $user = new Account("", $userid);
+    $user = new \Anakeen\Core\Account("", $userid);
 
     if (!$user->isAffected()) {
         return false;
@@ -241,7 +241,7 @@ function getSessionValue($name, $def = "")
  * return current log in user
  *
  * @deprecated use Anakeen\Core\ContextManager::getCurrentUser
- * @return Account
+ * @return \Anakeen\Core\Account
  */
 function getCurrentUser()
 {
@@ -560,7 +560,7 @@ function getWshCmd($nice = false, $userid = 0, $sudo = false)
     $wsh .= escapeshellarg(DEFAULT_PUBDIR) . "/ank.php  ";
     $userid = intval($userid);
     if ($userid > 0) {
-        $u=new \Account("", $userid);
+        $u=new \Anakeen\Core\Account("", $userid);
         $wsh .= sprintf("--login=\"%s\" ", $u->login);
     }
     return $wsh;
@@ -797,7 +797,7 @@ function setSystemLogin($login)
     include_once('Class.Session.php');
 
     if ($login != "") {
-        $action->user = new Account(); //create user
+        $action->user = new \Anakeen\Core\Account(); //create user
         $action->user->setLoginName($login);
     }
 }

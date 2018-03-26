@@ -11,6 +11,8 @@ namespace Dcp\Pu;
  * @package Dcp\Pu
  */
 
+use Anakeen\Core\ContextManager;
+
 require_once 'PU_testcase_dcp.php';
 
 class TestExportXml extends TestCaseDcpCommonFamily
@@ -109,55 +111,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
         }
     }
 
-    /**
-     * @dataProvider dataDocumentFiles
-     */
-    public function testExportSelectionRelation($docName, $attrName, $expectedValue)
-    {
 
-        $dom = $this->getExportedSelectionDom();
-        $this->domTestExportValue($dom, $docName, $attrName, 'name', $expectedValue);
-    }
-
-    /**
-     * @return \DOMDocument
-     */
-    private function getExportedSelectionDom()
-    {
-        if (!$this->dom) {
-            $selNames = array(
-                "TST_REL1",
-                "TST_REL2",
-                "TST_REL3",
-                "TST_REL4"
-            );
-            $config = array();
-            foreach ($selNames as $name) {
-                $id = \Anakeen\Core\DocManager::getIdFromName($name);
-                if ($id) {
-                    $config["selectionItems"][] = $id;
-                }
-            }
-
-            $s = new \Fdl_DocumentSelection($config);
-            //print_r( $s->search());
-            $export = new \exportXmlFolder();
-            try {
-                $export->setOutputFormat(\exportXmlFolder::xmlFormat);
-                $export->useIdentificator(false);
-                $export->exportFromSelection($s);
-                $this->dom = new \DOMDocument();
-                $this->dom->load($export->getOutputFile());
-                @unlink($export->getOutputFile());
-                return $this->dom;
-            } catch (\Exception $e) {
-                print $e->getMessage();
-            }
-            return null;
-        } else {
-            return $this->dom;
-        }
-    }
 
     /**
      * @dataProvider dataValues
@@ -222,8 +176,8 @@ class TestExportXml extends TestCaseDcpCommonFamily
 
         $folderId = "TEXT_FOLDER_EXPORT_IMAGE_XML";
         $famid = "TST_EXPORT_IMAGE_XML";
-        $testFolder = uniqid(getTmpDir() . "/testexportimage");
-        $testExtractFolder = uniqid(getTmpDir() . "/testexportextractimage");
+        $testFolder = uniqid(ContextManager::getTmpDir() . "/testexportimage");
+        $testExtractFolder = uniqid(ContextManager::getTmpDir() . "/testexportextractimage");
         mkdir($testFolder);
         $testarchivefile = $testFolder . "/xml";
         if ($type == "X") {

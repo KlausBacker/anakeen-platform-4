@@ -90,7 +90,7 @@ create unique index idx_perm on docperm(docid, userid);";
             }
             $mof[] = $user->id;
         } else {
-            $mof = Account::getUserMemberOf($uid, $strict);
+            $mof = \Anakeen\Core\Account::getUserMemberOf($uid, $strict);
             $mof[] = $uid;
         }
         return '{' . implode(',', $mof) . '}';

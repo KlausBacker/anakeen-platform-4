@@ -63,7 +63,7 @@ class Dir extends PDir
             }
             
             $home->owner = - $this->userid;
-            $user = new Account("", $this->userid);
+            $user = new \Anakeen\Core\Account("", $this->userid);
             $home->title = $user->firstname . " " . $user->lastname;
             $home->setTitle($home->title);
             $home->icon = 'fldhome.gif';

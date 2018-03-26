@@ -1535,7 +1535,7 @@ create unique index i_docir on doc(initid, revision);";
             );
             return ($err);
         }
-        if ($this->userid == Account::ADMIN_ID) {
+        if ($this->userid == \Anakeen\Core\Account::ADMIN_ID) {
             return "";
         } // admin can do anything but not modify fixed doc
         if ($verifyDomain && ($this->lockdomainid > 0)) {
@@ -1545,7 +1545,7 @@ create unique index i_docir on doc(initid, revision);";
                 return "";
             } // no more test if disableEditControl activated
             if (($this->locked != 0) && (abs($this->locked) != $this->userid)) {
-                $user = new Account("", abs($this->locked));
+                $user = new \Anakeen\Core\Account("", abs($this->locked));
                 if ($this->locked < -1) {
                     $err = sprintf(
                         _("Document %s is in edition by %s."),
@@ -1606,7 +1606,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function canUnLockFile()
     {
-        if ($this->userid == Account::ADMIN_ID) {
+        if ($this->userid == \Anakeen\Core\Account::ADMIN_ID) {
             return "";
         } // admin can do anything
         $err = "";
@@ -5587,7 +5587,7 @@ create unique index i_docir on doc(initid, revision);";
         $h->comment = $comment;
         $h->date = date("d-m-Y H:i:s").substr(microtime(), 1, 8);
         if ($uid > 0) {
-            $u = new Account("", $uid);
+            $u = new \Anakeen\Core\Account("", $uid);
             $h->uid = $u->id;
             $h->uname = sprintf("%s %s", $u->firstname, $u->lastname);
         } else {
@@ -5653,7 +5653,7 @@ create unique index i_docir on doc(initid, revision);";
         $h->comment = $comment;
 
         if ($uid > 0) {
-            $u = new Account("", $uid);
+            $u = new \Anakeen\Core\Account("", $uid);
             $h->uid = $u->id;
             $h->uname = sprintf("%s %s", $u->firstname, $u->lastname);
         } else {
@@ -5805,7 +5805,7 @@ create unique index i_docir on doc(initid, revision);";
         $h->fixed = ($allrevision) ? 'false' : 'true';
         $h->date = date("d-m-Y H:i:s");
         if ($uid > 0) {
-            $u = new Account("", $uid);
+            $u = new \Anakeen\Core\Account("", $uid);
             $h->uid = $u->id;
             $h->uname = sprintf("%s %s", $u->firstname, $u->lastname);
         }
@@ -6907,7 +6907,7 @@ create unique index i_docir on doc(initid, revision);";
             $err = _("Affectation aborded") . "\n" . $err;
         }
         if ($err == "") {
-            $u = new Account("", $userid);
+            $u = new \Anakeen\Core\Account("", $userid);
             if ($u->isAffected()) {
                 if ($err != "") {
                     $err = _("Affectation aborded") . "\n" . $err;
@@ -6975,7 +6975,7 @@ create unique index i_docir on doc(initid, revision);";
         }
 
         if ($err == "") {
-            $u = new Account("", $this->allocated);
+            $u = new \Anakeen\Core\Account("", $this->allocated);
             if ($u->isAffected()) {
                 $err = $this->unlock();
                 if ($err == "") {
@@ -7978,7 +7978,7 @@ create unique index i_docir on doc(initid, revision);";
         if (!$this->isAffected()) {
             return '';
         }
-        if (($this->profid <= 0) || ($this->userid == Account::ADMIN_ID)) {
+        if (($this->profid <= 0) || ($this->userid == \Anakeen\Core\Account::ADMIN_ID)) {
             return ""; // no profil or admin
         }
         $err = $this->controlId($this->profid, $aclname, $strict);
@@ -8020,7 +8020,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         // --------------------------------------------------------------------
         if ($this->IsAffected()) {
-            if (($this->profid <= 0) || ($uid == Account::ADMIN_ID)) {
+            if (($this->profid <= 0) || ($uid == \Anakeen\Core\Account::ADMIN_ID)) {
                 return "";
             } // no profil or admin
             if (!$uid) {
@@ -9073,7 +9073,7 @@ create unique index i_docir on doc(initid, revision);";
         $this->lay->eSet("iconsrc", $this->getIcon());
         $fdoc = $this->getFamilyDocument();
         $this->lay->eSet("ficonsrc", $fdoc->getIcon());
-        $owner = new Account("", abs($this->owner));
+        $owner = new \Anakeen\Core\Account("", abs($this->owner));
         $this->lay->rSet("username", str_replace(array(
             '[',
             ']'
@@ -9088,7 +9088,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->locked == -1) {
             $this->lay->rSet("lockedid", false);
         } else {
-            $user = new Account("", abs($this->locked));
+            $user = new \Anakeen\Core\Account("", abs($this->locked));
             // $this->lay->Set("locked", $user->firstname." ".$user->lastname);
             if ($this->lockdomainid) {
                 $this->lay->eSet("lockdomain", sprintf(
@@ -9191,7 +9191,7 @@ create unique index i_docir on doc(initid, revision);";
             $this->lay->eSet("allocate", _("no allocate"));
             $this->lay->rSet("allocateid", false);
         } else {
-            $user = new Account("", ($this->allocated));
+            $user = new \Anakeen\Core\Account("", ($this->allocated));
             $this->lay->eSet("allocate", $user->firstname . " " . $user->lastname);
             $this->lay->rSet("allocateid", $user->fid);
         }

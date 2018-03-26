@@ -40,11 +40,11 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
      */
     public function testControlIncumbent($login, array $incumbents, array $expectedDocNames)
     {
-        $nu = new \Account();
+        $nu = new \Anakeen\Core\Account();
         $nu->setLoginName($login);
         
         foreach ($incumbents as $aIncumbent) {
-            $u = new \Account();
+            $u = new \Anakeen\Core\Account();
             $u->setLoginName($aIncumbent);
             if (!$u->isAffected()) $this->markTestIncomplete("cannot find $aIncumbent account");
             $err = $u->setSubstitute($nu->id);
@@ -72,7 +72,7 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
     {
         
         foreach ($substituts as $incumbent => $aSubstitute) {
-            $u = new \Account();
+            $u = new \Anakeen\Core\Account();
             $u->setLoginName($incumbent);
             if (!$u->isAffected()) $this->markTestIncomplete("cannot find $incumbent account");
             $err = $u->setSubstitute($aSubstitute);
@@ -101,7 +101,7 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
     {
         
         foreach ($previousSubstitues as $incumbent => $aSubstitute) {
-            $u = new \Account();
+            $u = new \Anakeen\Core\Account();
             $u->setLoginName($incumbent);
             if (!$u->isAffected()) $this->markTestIncomplete("cannot find $incumbent account");
             $err = $u->setSubstitute($aSubstitute);
@@ -114,10 +114,10 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
      */
     public function testControlStrict($login, array $incumbents, array $expectedDocNames)
     {
-        $nu = new \Account();
+        $nu = new \Anakeen\Core\Account();
         $nu->setLoginName($login);
         foreach ($incumbents as $aIncumbent) {
-            $u = new \Account();
+            $u = new \Anakeen\Core\Account();
             $u->setLoginName($aIncumbent);
             if (!$u->isAffected()) $this->markTestIncomplete("cannot find $aIncumbent account");
             $err = $u->setSubstitute($nu->id);

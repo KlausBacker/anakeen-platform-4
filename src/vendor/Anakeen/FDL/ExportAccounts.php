@@ -33,7 +33,7 @@ class ExportAccounts
      */
     protected $xml;
     /**
-     * @var \Account
+     * @var \Anakeen\Core\Account
      */
     private $workAccount;
     
@@ -73,7 +73,7 @@ class ExportAccounts
         if (!$this->search) {
             throw new Exception("ACCT0101");
         }
-        $this->workAccount = new \Account();
+        $this->workAccount = new \Anakeen\Core\Account();
         $this->initXml();
         $this->setSessionMessage(___("Retrieve Account data", "fuserexport"));
         
@@ -86,15 +86,15 @@ class ExportAccounts
                 $k++;
                 $this->setSessionMessage(sprintf(___("Export accounts (%d/%d)", "fuserexport"), $k, $count));
                 switch ($account->accounttype) {
-                    case \Account::USER_TYPE:
+                    case \Anakeen\Core\Account::USER_TYPE:
                         $this->addUserAccount($account);
                         break;
 
-                    case \Account::GROUP_TYPE:
+                    case \Anakeen\Core\Account::GROUP_TYPE:
                         $this->addGroupAccount($account);
                         break;
 
-                    case \Account::ROLE_TYPE:
+                    case \Anakeen\Core\Account::ROLE_TYPE:
                         $this->addRoleAccount($account);
                         break;
 
@@ -332,10 +332,12 @@ class ExportAccounts
     /**
      * Record document to add
      * These record are processed in one time at the end of export
+     *
      * @see addDocumentNodes
-     * @param \Account $user
+     *
+     * @param \Anakeen\Core\Account $user
      */
-    protected function memoDocumentInfo(\Account $user)
+    protected function memoDocumentInfo(\Anakeen\Core\Account $user)
     {
         $this->documentInfo[$user->id] = $user->fid;
     }
@@ -555,10 +557,11 @@ class ExportAccounts
     }
     /**
      * Add nodes for group and role related accounts
-     * @param \Account $user
+     *
+     * @param \Anakeen\Core\Account $user
      * @param \DOMElement $node
      */
-    private function addParentInfo(\Account $user, \DOMElement $node)
+    private function addParentInfo(\Anakeen\Core\Account $user, \DOMElement $node)
     {
         $roles = $user->getRoles();
         $groups = $user->getGroupsId();
@@ -597,10 +600,12 @@ class ExportAccounts
     }
     /**
      * Add User node info
-     * @param \Account $user
+     *
+     * @param \Anakeen\Core\Account $user
+     *
      * @throws \Dcp\Db\Exception
      */
-    protected function addUserAccount(\Account $user)
+    protected function addUserAccount(\Anakeen\Core\Account $user)
     {
         $node = $this->xml->createElement("user");
         
@@ -644,9 +649,10 @@ class ExportAccounts
     }
     /**
      * Add group node info
-     * @param \Account $group
+     *
+     * @param \Anakeen\Core\Account $group
      */
-    protected function addGroupAccount(\Account $group)
+    protected function addGroupAccount(\Anakeen\Core\Account $group)
     {
         if (empty($this->addedIds[$group->id])) {
             $node = $this->xml->createElement("group");
@@ -665,9 +671,10 @@ class ExportAccounts
     }
     /**
      * Add role node info
-     * @param \Account $role
+     *
+     * @param \Anakeen\Core\Account $role
      */
-    protected function addRoleAccount(\Account $role)
+    protected function addRoleAccount(\Anakeen\Core\Account $role)
     {
         if (empty($this->addedIds[$role->id])) {
             $node = $this->xml->createElement("role");

@@ -42,16 +42,16 @@ class AuthenticatorManager extends \AuthenticatorManager
     }
 
     /**
-     * @param \Account $userAccount account identify use for the token
-     * @param array $routes list of routes matches
-     * @param int|\DateTime $expiration if it is a number, is use as a delay in seconds, if it is a DateTime object use as end validity date
-     * @param bool $oneshot if true the token can be used only on time (it is destroyed after use)
-     * @param string $description text description
+     * @param \Anakeen\Core\Account    $userAccount account identify use for the token
+     * @param array         $routes      list of routes matches
+     * @param int|\DateTime $expiration  if it is a number, is use as a delay in seconds, if it is a DateTime object use as end validity date
+     * @param bool          $oneshot     if true the token can be used only on time (it is destroyed after use)
+     * @param string        $description text description
      *
      * @return string   return the token identifier
      * @throws Exception
      */
-    public static function getAuthorizationToken(\Account $userAccount, array $routes, $expiration = -1, $oneshot = false, $description = "")
+    public static function getAuthorizationToken(\Anakeen\Core\Account $userAccount, array $routes, $expiration = -1, $oneshot = false, $description = "")
     {
         if ($expiration === -1) {
             $expiration = \UserToken::INFINITY;

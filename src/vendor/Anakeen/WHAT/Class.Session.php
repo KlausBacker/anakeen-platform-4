@@ -90,11 +90,11 @@ class Session extends DbObj
         }
         
         if ($createNewSession) {
-            $u = new Account();
+            $u = new \Anakeen\Core\Account();
             if ((!empty($_SERVER['PHP_AUTH_USER'])) && $u->SetLoginName($_SERVER['PHP_AUTH_USER'])) {
                 $this->open($u->id);
             } else {
-                $this->open(Account::ANONYMOUS_ID); //anonymous session
+                $this->open(\Anakeen\Core\Account::ANONYMOUS_ID); //anonymous session
             }
         }
 
@@ -218,7 +218,7 @@ class Session extends DbObj
         return $this->status;
     }
     
-    public function open($uid = Account::ANONYMOUS_ID)
+    public function open($uid = \Anakeen\Core\Account::ANONYMOUS_ID)
     {
         $idsess = $this->newId();
         global $_SERVER; // use only cache with HTTP
@@ -384,7 +384,7 @@ class Session extends DbObj
     public function getSessionTTL($default = 0, $ttlParamName = '')
     {
         if ($ttlParamName == '') {
-            if ($this->userid == Account::ANONYMOUS_ID) {
+            if ($this->userid == \Anakeen\Core\Account::ANONYMOUS_ID) {
                 $ttlParamName = 'CORE_GUEST_SESSIONTTL';
             } else {
                 $ttlParamName = 'CORE_SESSIONTTL';
@@ -409,7 +409,7 @@ class Session extends DbObj
     {
         $ttl = $this->getSessionTTL(0, 'CORE_SESSIONTTL');
         if ($ttl > 0) {
-            return $this->exec_query(sprintf("DELETE FROM sessions WHERE userid != %s AND last_seen < timestamp 'now()' - interval '%s seconds'", Account::ANONYMOUS_ID, pg_escape_string($ttl)));
+            return $this->exec_query(sprintf("DELETE FROM sessions WHERE userid != %s AND last_seen < timestamp 'now()' - interval '%s seconds'", \Anakeen\Core\Account::ANONYMOUS_ID, pg_escape_string($ttl)));
         }
         return '';
     }
@@ -418,7 +418,7 @@ class Session extends DbObj
     {
         $ttl = $this->getSessionTTL(0, 'CORE_GUEST_SESSIONTTL');
         if ($ttl > 0) {
-            return $this->exec_query(sprintf("DELETE FROM sessions WHERE userid = %s AND last_seen < timestamp 'now()' - interval '%s seconds'", Account::ANONYMOUS_ID, pg_escape_string($ttl)));
+            return $this->exec_query(sprintf("DELETE FROM sessions WHERE userid = %s AND last_seen < timestamp 'now()' - interval '%s seconds'", \Anakeen\Core\Account::ANONYMOUS_ID, pg_escape_string($ttl)));
         }
         return '';
     }
@@ -459,7 +459,7 @@ class Session extends DbObj
     public function setuid($uid)
     {
         if (!is_int($uid)) {
-            $u = new Account();
+            $u = new \Anakeen\Core\Account();
             if ($u->SetLoginName($uid)) {
                 $uid = $u->id;
             } else {
