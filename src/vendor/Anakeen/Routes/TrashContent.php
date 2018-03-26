@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Router\URLUtils;
-use Dcp\Core\Settings;
+use Anakeen\Core\Settings;
 
 /**
  * Class TrashContent

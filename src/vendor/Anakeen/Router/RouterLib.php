@@ -25,7 +25,7 @@ class RouterLib
             return self::$config;
         }
 
-        $dir = ContextManager::getRootDirectory() . "/" . \Dcp\Core\Settings::RouterConfigDir;
+        $dir = ContextManager::getRootDirectory() . "/" . \Anakeen\Core\Settings::RouterConfigDir;
         if ($handle = opendir($dir)) {
             $config = [];
 

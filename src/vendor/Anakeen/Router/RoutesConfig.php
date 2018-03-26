@@ -30,7 +30,7 @@ class RoutesConfig
         $this->fileCache = sprintf(
             "%s/%s/%s",
             ContextManager::getRootDirectory(),
-            \Dcp\Core\Settings::RouterConfigDir,
+            \Anakeen\Core\Settings::RouterConfigDir,
             self::CACHEFILE
         );
     }

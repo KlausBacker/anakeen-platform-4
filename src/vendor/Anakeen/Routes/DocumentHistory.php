@@ -8,7 +8,7 @@ use Anakeen\Router\URLUtils;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\DocManager;
-use Dcp\Core\Settings;
+use Anakeen\Core\Settings;
 
 /**
  * Class DocumentHistory

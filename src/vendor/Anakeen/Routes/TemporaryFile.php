@@ -5,7 +5,7 @@ namespace Anakeen\Routes\Core;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 
-use Dcp\Core\Settings;
+use Anakeen\Core\Settings;
 use Dcp\VaultManager;
 
 /**

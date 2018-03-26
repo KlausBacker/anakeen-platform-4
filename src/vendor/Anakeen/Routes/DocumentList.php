@@ -2,7 +2,7 @@
 
 namespace Anakeen\Routes\Core;
 
-use Dcp\Core\Settings;
+use Anakeen\Core\Settings;
 use Anakeen\Router\URLUtils;
 use Anakeen\Router\ApiV2Response;
 

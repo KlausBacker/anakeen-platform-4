@@ -415,7 +415,7 @@ function getDbAccessValue($varName)
 {
     $included = false;
 
-    $filename = sprintf("%s/%s", DEFAULT_PUBDIR, \Dcp\Core\Settings::DbAccessFilePath);
+    $filename = sprintf("%s/%s", DEFAULT_PUBDIR, \Anakeen\Core\Settings::DbAccessFilePath);
     if (file_exists($filename)) {
         if (include($filename)) {
             $included = true;

@@ -4,7 +4,7 @@ namespace Anakeen\Routes\Core;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\URLUtils;
 use Anakeen\Core\DocManager;
-use Dcp\Core\Settings;
+use Anakeen\Core\Settings;
 use Anakeen\Router\Exception;
 
 /**

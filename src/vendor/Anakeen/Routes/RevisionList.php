@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Core\DocManager;
-use Dcp\Core\Settings;
+use Anakeen\Core\Settings;
 use Anakeen\Router\URLUtils;
 use Anakeen\Router\Exception;
 

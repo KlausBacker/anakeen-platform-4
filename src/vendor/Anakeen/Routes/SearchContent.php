@@ -5,7 +5,7 @@ namespace Anakeen\Routes\Core;
 use Anakeen\Core\DocManager;
 use Anakeen\Router\URLUtils;
 use Anakeen\Router\Exception;
-use Dcp\Core\Settings;
+use Anakeen\Core\Settings;
 
 /**
  * Class SearchContent
