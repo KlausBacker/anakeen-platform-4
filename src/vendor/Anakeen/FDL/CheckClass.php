@@ -98,7 +98,7 @@ class CheckClass extends CheckData
             }
             if ($this->doc) {
                 if ($this->doc->fromid > 0) {
-                    $fromName = ucwords(strtolower(\Dcp\Core\DocManager::getNameFromId($this->doc->fromid)));
+                    $fromName = ucwords(strtolower(\Anakeen\Core\DocManager::getNameFromId($this->doc->fromid)));
                     if (!$fromName) {
                         $this->addError(ErrorCode::getError('CLASS0007', $this->className, $this->fileName, $this->doc->name));
                         return;

@@ -4,7 +4,7 @@
  * @package FDL
 */
 
-use \Dcp\Core\ContextManager;
+use \Anakeen\Core\ContextManager;
 use \Dcp\Core\DbManager;
 
 /**
@@ -42,7 +42,7 @@ class DocTitle
         $isAdmin = ($uid == 1);
 
         if ($docid && !is_numeric($docid)) {
-            $docid = \Dcp\Core\DocManager::getIdFromName($docid);
+            $docid = \Anakeen\Core\DocManager::getIdFromName($docid);
         }
         if (!$docid) {
             return null;

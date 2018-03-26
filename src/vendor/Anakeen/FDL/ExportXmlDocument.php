@@ -229,7 +229,7 @@ class ExportXmlDocument
                     }
                     $mime = $reg[1];
                     $name = htmlspecialchars($reg[3], ENT_QUOTES);
-                    $base = \Dcp\Core\ContextManager::getApplicationParam("CORE_EXTERNURL");
+                    $base = \Anakeen\Core\ContextManager::getApplicationParam("CORE_EXTERNURL");
                     $href = $base . str_replace('&', '&amp;', $doc->getFileLink($attribute->id));
                     if ($this->exportFiles) {
                         $path = $doc->vault_filename_fromvalue($v, true);
@@ -309,7 +309,7 @@ class ExportXmlDocument
                             $mId = array();
                             $foundName = false;
                             foreach ($tids as $id) {
-                                $lName = \Dcp\Core\DocManager::getNameFromId($id);
+                                $lName = \Anakeen\Core\DocManager::getNameFromId($id);
                                 $mName[] = $lName;
                                 $mId[] = $id;
                                 if ($lName) {

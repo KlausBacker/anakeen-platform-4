@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\Core;
+namespace Anakeen\Core;
 
 use Anakeen\Router\AuthenticatorManager;
 
@@ -414,7 +414,7 @@ class ContextManager
         if (isset($tmp) && !empty($tmp)) {
             return $tmp;
         }
-        $tmp = \Dcp\Core\ContextManager::getApplicationParam('CORE_TMPDIR', $def);
+        $tmp = \Anakeen\Core\ContextManager::getApplicationParam('CORE_TMPDIR', $def);
         if (empty($tmp)) {
             if (empty($def)) {
                 $tmp = './var/tmp';

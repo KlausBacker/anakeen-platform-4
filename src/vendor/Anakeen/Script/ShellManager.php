@@ -149,7 +149,7 @@ class ShellManager
             }
         }
 
-        \Dcp\Core\ContextManager::initContext(
+        \Anakeen\Core\ContextManager::initContext(
             $user,
             $appName,
             ""

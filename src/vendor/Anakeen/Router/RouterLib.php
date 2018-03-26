@@ -2,7 +2,7 @@
 
 namespace Anakeen\Router;
 
-use \Dcp\Core\ContextManager;
+use \Anakeen\Core\ContextManager;
 use \Dcp\Core\Exception;
 
 class RouterLib

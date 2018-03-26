@@ -245,9 +245,9 @@ class AutocompleteLib
 
     public static function getAttr($aid)
     {
-        $r = \Dcp\Core\ContextManager::getApplicationParam($aid);
+        $r = \Anakeen\Core\ContextManager::getApplicationParam($aid);
         if ($r == "") {
-            $r = \Dcp\Core\DocManager::getFamilyIdFromName($aid);
+            $r = \Anakeen\Core\DocManager::getFamilyIdFromName($aid);
         }
 
         return $r;

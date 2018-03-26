@@ -67,7 +67,7 @@ class AuthenticatorManager
                 self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $remote_addr,
                 $auth_user, $http_user_agent);
             // count login failure
-            if (\Dcp\Core\ContextManager::getApplicationParam("AUTHENT_FAILURECOUNT") > 0) {
+            if (\Anakeen\Core\ContextManager::getApplicationParam("AUTHENT_FAILURECOUNT") > 0) {
                 $wu = new Account();
                 if ($wu->SetLoginName(self::$auth->getAuthUser())) {
                     if ($wu->id != 1) {
@@ -267,7 +267,7 @@ class AuthenticatorManager
         //   Header( "WWW-Authenticate: Basic realm=\"WHAT Connection\", stale=FALSE");
         //Header( "WWW-Authenticate: Basic realm=\"WHAT Connection\", stale=true");
         //Header( "HTTP/1.0 401 Unauthorized");
-        header('WWW-Authenticate: Basic realm="' . \Dcp\Core\ContextManager::getApplicationParam("CORE_REALM",
+        header('WWW-Authenticate: Basic realm="' . \Anakeen\Core\ContextManager::getApplicationParam("CORE_REALM",
                 "Anakeen Platform connection") . '"');
         header('HTTP/1.0 401 Unauthorized');
         echo _("Vous devez entrer un nom d'utilisateur valide et un mot de passe correct pour acceder a cette ressource");
@@ -284,7 +284,7 @@ class AuthenticatorManager
     ) {
         global $_GET;
         $log = new Log("", "Session", "Authentication");
-        $facility = constant(\Dcp\Core\ContextManager::getApplicationParam("AUTHENT_LOGFACILITY", "LOG_AUTH"));
+        $facility = constant(\Anakeen\Core\ContextManager::getApplicationParam("AUTHENT_LOGFACILITY", "LOG_AUTH"));
         $log->wlog("S",
             sprintf("[%s] [%s] [%s] [%s] [%s] [%s]", $status, $additionalMessage, $provider, $clientIp, $account,
                 $userAgent), null, $facility);
@@ -293,7 +293,7 @@ class AuthenticatorManager
 
     public static function clearGDocs()
     {
-        \Dcp\Core\DocManager::cache()->clear();
+        \Anakeen\Core\DocManager::cache()->clear();
     }
 
     public static function getAccount()
@@ -431,7 +431,7 @@ class AuthenticatorManager
                 return AuthenticatorManager::AccessAccountHasExpired;
             }
             // check count of login failure
-            $maxfail = \Dcp\Core\ContextManager::getApplicationParam("AUTHENT_FAILURECOUNT");
+            $maxfail = \Anakeen\Core\ContextManager::getApplicationParam("AUTHENT_FAILURECOUNT");
             if ($maxfail > 0 && $du->getRawValue("us_loginfailure", 0) >= $maxfail) {
                 AuthenticatorManager::secureLog("failure", "max connection (" . $maxfail . ") attempts exceeded",
                     AuthenticatorManager::$auth->provider->parms['type'] . "/"

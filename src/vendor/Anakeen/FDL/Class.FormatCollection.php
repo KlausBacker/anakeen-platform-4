@@ -4,7 +4,7 @@
  *
  */
 
-use \Dcp\Core\DocManager;
+use \Anakeen\Core\DocManager;
 
 /**
  * Format document list to be easily used in
@@ -1210,7 +1210,7 @@ class DoubleAttributeValue extends FormatAttributeValue
     public function __construct(NormalAttribute $oa, $v, $decimalSeparator = ',')
     {
         parent::__construct($oa, $v);
-        $lang = \Dcp\Core\ContextManager::getApplicationParam("CORE_LANG");
+        $lang = \Anakeen\Core\ContextManager::getApplicationParam("CORE_LANG");
         if ($lang == "fr_FR") {
             if (is_array($this->displayValue)) {
                 foreach ($this->displayValue as $k => $v) {
@@ -1237,7 +1237,7 @@ class MoneyAttributeValue extends FormatAttributeValue
     {
         parent::__construct($oa, $v);
         
-        $lang = \Dcp\Core\ContextManager::getApplicationParam("CORE_LANG");
+        $lang = \Anakeen\Core\ContextManager::getApplicationParam("CORE_LANG");
         if ($lang == "fr_FR") {
         }
         if (is_array($this->displayValue)) {

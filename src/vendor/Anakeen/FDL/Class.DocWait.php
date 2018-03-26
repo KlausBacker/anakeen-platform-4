@@ -218,7 +218,7 @@ create sequence seq_waittransaction start 1;
             if (!$err) {
                 $info = null;
                 $err = $wdoc->save($info);
-                \Dcp\Core\DocManager::cache()->removeDocumentById($this->refererid);
+                \Anakeen\Core\DocManager::cache()->removeDocumentById($this->refererid);
                 $this->refererDoc=$wdoc;
             }
             if ($err) {

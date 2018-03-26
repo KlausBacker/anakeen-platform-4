@@ -2,7 +2,7 @@
 
 namespace Dcp\Pu;
 
-use Dcp\Core\ContextManager;
+use Anakeen\Core\ContextManager;
 use Dcp\Core\DbManager;
 
 require_once __DIR__ . "/../WHAT/Lib.Prefix.php";
@@ -91,7 +91,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         if (!$action) {
             $u = new \Account();
             $u->setLoginName($login);
-            \Dcp\Core\ContextManager::initContext($u);
+            \Anakeen\Core\ContextManager::initContext($u);
         }
     }
 
@@ -147,7 +147,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     protected static function resetDocumentCache()
     {
-        \Dcp\Core\DocManager::cache()->clear();
+        \Anakeen\Core\DocManager::cache()->clear();
     }
 
     /**

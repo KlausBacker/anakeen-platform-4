@@ -191,15 +191,15 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                 if (is_array($docName)) {
                     $expectDocId2 = array();
                     foreach ($docName as $docName2) {
-                        $expectDocId2[] = $docName2 ? (string)\Dcp\Core\DocManager::getIdFromName($docName2) : null;
+                        $expectDocId2[] = $docName2 ? (string)\Anakeen\Core\DocManager::getIdFromName($docName2) : null;
                     }
                     $expectedDocId[] = $expectDocId2;
                 } else {
-                    $expectedDocId[] = $docName ?  (string)\Dcp\Core\DocManager::getIdFromName($docName) : null;
+                    $expectedDocId[] = $docName ?  (string)\Anakeen\Core\DocManager::getIdFromName($docName) : null;
                 }
             }
         } else {
-            $expectedDocId = $docNames ?  (string)\Dcp\Core\DocManager::getIdFromName($docNames) : null;
+            $expectedDocId = $docNames ?  (string)\Anakeen\Core\DocManager::getIdFromName($docNames) : null;
         }
 
         return $expectedDocId;

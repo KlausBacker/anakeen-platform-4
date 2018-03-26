@@ -148,7 +148,7 @@ function seemsODS($filename)
  */
 function ods2csv($odsfile)
 {
-    $csvfile = uniqid(\Dcp\Core\ContextManager::getTmpDir() . "/csv") . "csv";
+    $csvfile = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/csv") . "csv";
     $cmd = sprintf("%s --script=ods2csv --odsfile=%s --csvfile=%s >/dev/null", \Anakeen\Script\ShellManager::getAnkCmd(), escapeshellarg($odsfile), escapeshellarg($csvfile));
     system($cmd, $out);
 

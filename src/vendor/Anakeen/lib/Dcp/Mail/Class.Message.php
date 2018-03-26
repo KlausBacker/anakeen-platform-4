@@ -6,7 +6,7 @@
 
 namespace Dcp\Mail;
 
-use Dcp\Core\ContextManager;
+use Anakeen\Core\ContextManager;
 
 /**
  * Compose a mail with body and attachments and send it using the SMTP
@@ -350,19 +350,19 @@ class Message
         $mail->Timeout = 10;
         $mail->setLanguage($lcConfig['locale']);
         $mail->isSMTP();
-        $host = \Dcp\Core\ContextManager::getApplicationParam('SMTP_HOST', 'localhost');
-        $port = \Dcp\Core\ContextManager::getApplicationParam('SMTP_PORT', 25);
+        $host = \Anakeen\Core\ContextManager::getApplicationParam('SMTP_HOST', 'localhost');
+        $port = \Anakeen\Core\ContextManager::getApplicationParam('SMTP_PORT', 25);
         $mail->Host = $host;
         $mail->Port = $port;
-        $login = \Dcp\Core\ContextManager::getApplicationParam('SMTP_LOGIN');
+        $login = \Anakeen\Core\ContextManager::getApplicationParam('SMTP_LOGIN');
         if ($login) {
             $mail->SMTPAuth = true;
-            $password = \Dcp\Core\ContextManager::getApplicationParam('SMTP_PASSWORD');
+            $password = \Anakeen\Core\ContextManager::getApplicationParam('SMTP_PASSWORD');
             $mail->Username = $login;
             $mail->Password = $password;
         }
         if (!isset($this->sender)) {
-            $sender = \Dcp\Core\ContextManager::getApplicationParam('SMTP_SENDER', '');
+            $sender = \Anakeen\Core\ContextManager::getApplicationParam('SMTP_SENDER', '');
             if ($sender !== '') {
                 $parsedMail = $this->stringToAddress($sender);
                 if (count($parsedMail) > 0) {

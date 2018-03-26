@@ -56,7 +56,7 @@ class TestSearchFamilies extends TestCaseDcpCommonFamily
             }
             if (abs($propValue) > 0) {
                 if (!is_numeric($expectedValue)) {
-                $propValueName = \Dcp\Core\DocManager::getNameFromId(abs($propValue));
+                $propValueName = \Anakeen\Core\DocManager::getNameFromId(abs($propValue));
                 if ($propValueName != '') {
                     $propValue = $propValueName;
                 }

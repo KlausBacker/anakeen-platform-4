@@ -81,7 +81,7 @@ class FamilyImport
             $tdoc["classname"] = '\\' . $tdoc["classname"];
         }
         if ($tdoc["fromid"] > 0) {
-            $fromName = \Dcp\Core\DocManager::getNameFromId($tdoc["fromid"]);
+            $fromName = \Anakeen\Core\DocManager::getNameFromId($tdoc["fromid"]);
             if ($fromName == '') {
                 throw new \Dcp\Exception("FAM0601", $tdoc["fromid"], $tdoc["name"]);
             }
@@ -298,7 +298,7 @@ class FamilyImport
                             $aformat = $reg[2];
                             if ($atype == "idoc") {
                                 if (!is_numeric($aformat)) {
-                                    $aformat = \Dcp\Core\DocManager::getFamilyIdFromName($aformat);
+                                    $aformat = \Anakeen\Core\DocManager::getFamilyIdFromName($aformat);
                                 }
                             }
                         } else {
@@ -533,7 +533,7 @@ class FamilyImport
         if ($tdoc["fromid"] == 0) {
             $phpAdoc->Set("extend", '');
         } else {
-            $fromName = \Dcp\Core\DocManager::getNameFromId($tdoc["fromid"]);
+            $fromName = \Anakeen\Core\DocManager::getNameFromId($tdoc["fromid"]);
             if ($fromName == '') {
                 throw new \Dcp\Exception("FAM0602", $tdoc["fromid"], $tdoc["name"]);
             }

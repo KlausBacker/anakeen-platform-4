@@ -252,12 +252,12 @@ class MailTemplate extends \Dcp\Family\Document
 
                 case 'P':
                     $aid = strtok($v["tmail_recip"], " ");
-                    if (!\Dcp\Core\ContextManager::getApplicationParam($aid)) {
+                    if (!\Anakeen\Core\ContextManager::getApplicationParam($aid)) {
                         $action->log->error(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                         $doc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                         throw new \Dcp\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                     }
-                    $mail = \Dcp\Core\ContextManager::getApplicationParam($aid);
+                    $mail = \Anakeen\Core\ContextManager::getApplicationParam($aid);
                     break;
 
                 case 'RD':
@@ -324,7 +324,7 @@ class MailTemplate extends \Dcp\Family\Document
             $from = getMailAddr($action->user->id, true);
         }
         if ($from == "") {
-            $from = \Dcp\Core\ContextManager::getApplicationParam('SMTP_FROM');
+            $from = \Anakeen\Core\ContextManager::getApplicationParam('SMTP_FROM');
         }
         if ($from == "") {
             $from = $action->user->login . '@' . (isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "");
@@ -337,7 +337,7 @@ class MailTemplate extends \Dcp\Family\Document
                 return null;
             }
         } //nobody to send data
-        if ($this->sendercopy && \Dcp\Core\ContextManager::getApplicationParam("FDL_BCC") == "yes") {
+        if ($this->sendercopy && \Anakeen\Core\ContextManager::getApplicationParam("FDL_BCC") == "yes") {
             $umail = getMailAddr($this->userid);
             if ($umail != "") {
                 $bcc.= (trim($bcc) == "" ? "" : ",") . $umail;
@@ -565,7 +565,7 @@ class MailTemplate extends \Dcp\Family\Document
                 'CORE_URLINDEX',
                 'CORE_PUBURL'
             ) as $url) {
-                $url = \Dcp\Core\ContextManager::getApplicationParam($url);
+                $url = \Anakeen\Core\ContextManager::getApplicationParam($url);
                 if (strlen($url) <= 0) {
                     continue;
                 }

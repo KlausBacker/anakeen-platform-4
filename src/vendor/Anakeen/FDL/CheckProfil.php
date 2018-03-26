@@ -91,7 +91,7 @@ class CheckProfil extends CheckData
     private function checkUnknow()
     {
         if ($this->prfName) {
-            \Dcp\Core\DocManager::cache()->clear();
+            \Anakeen\Core\DocManager::cache()->clear();
             $this->profil = new_doc(getDbAccess(), $this->prfName);
             if (!$this->profil->isAlive()) {
                 $this->addError(ErrorCode::getError('PRFL0002', $this->prfName));

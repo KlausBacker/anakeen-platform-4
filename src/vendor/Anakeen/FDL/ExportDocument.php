@@ -346,7 +346,7 @@ class ExportDocument
                             $brtid = explode("<BR>", $did);
                             $tnbr = array();
                             foreach ($brtid as $brid) {
-                                $n = \Dcp\Core\DocManager::getNameFromId($brid);
+                                $n = \Anakeen\Core\DocManager::getNameFromId($brid);
                                 if ($n) {
                                     if ($docrevOption === "latest") {
                                         $tnbr[] = $n;
@@ -362,7 +362,7 @@ class ExportDocument
                         }
                         $value = implode("\n", $tn);
                     } else {
-                        $n = \Dcp\Core\DocManager::getNameFromId($value);
+                        $n = \Anakeen\Core\DocManager::getNameFromId($value);
                         if ($n) {
                             if ($docrevOption === "latest") {
                                 $value = $n;
@@ -418,7 +418,7 @@ class ExportDocument
             if ($profid == $doc->id) {
                 $this->exportProfil($fout, $doc->id);
             } elseif ($profid > 0) {
-                $name = \Dcp\Core\DocManager::getNameFromId($profid);
+                $name = \Anakeen\Core\DocManager::getNameFromId($profid);
                 $dname = $doc->name;
                 if (!$dname) {
                     $dname = $doc->id;

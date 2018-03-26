@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Core;
 
 use Dcp\Core\DbManager;
-use Dcp\Core\DocManager;
+use Anakeen\Core\DocManager;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 
@@ -230,7 +230,7 @@ class DocumentData
         $sql = sprintf("select id, revdate, views from docread where id = %d", $id);
 
         DbManager::query($sql, $result, false, true);
-        $user = \Dcp\Core\ContextManager::getCurrentUser();
+        $user = \Anakeen\Core\ContextManager::getCurrentUser();
         $result[] = $user->id;
         $result[] = $user->memberof;
         // Necessary only when use family.structure

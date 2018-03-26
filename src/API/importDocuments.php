@@ -172,7 +172,7 @@ if ($to) {
 
     $from = getMailAddr($action->user->id);
     if ($from == "") {
-        $from = \Dcp\Core\ContextManager::getApplicationParam('SMTP_FROM');
+        $from = \Anakeen\Core\ContextManager::getApplicationParam('SMTP_FROM');
     }
     if ($from == "") {
         $from = $action->user->login . '@' . php_uname('n');

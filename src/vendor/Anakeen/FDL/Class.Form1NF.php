@@ -1262,13 +1262,13 @@ class Form1NF
         try {
             foreach ($this->config as $family) {
                 // load the family object
-                $famId = \Dcp\Core\DocManager::getFamilyIdFromName($family->name);
+                $famId = \Anakeen\Core\DocManager::getFamilyIdFromName($family->name);
                 if ($famId === 0) {
                     // try to lower the name
-                    $famId = \Dcp\Core\DocManager::getFamilyIdFromName(strtolower($family->name));
+                    $famId = \Anakeen\Core\DocManager::getFamilyIdFromName(strtolower($family->name));
                     if ($famId === 0) {
                         // try to upper the name
-                        $famId = \Dcp\Core\DocManager::getFamilyIdFromName(strtoupper($family->name));
+                        $famId = \Anakeen\Core\DocManager::getFamilyIdFromName(strtoupper($family->name));
                         if ($famId === 0) {
                             $this->stdError(_("Could not get family id for '%s'."), $family->name);
                         }

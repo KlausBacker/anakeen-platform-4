@@ -2,8 +2,8 @@
 
 namespace Anakeen\Routes\Core;
 
-use Dcp\Core\ContextManager;
-use Dcp\Core\DocManager;
+use Anakeen\Core\ContextManager;
+use Anakeen\Core\DocManager;
 use Anakeen\Router\URLUtils;
 use Anakeen\Router\Exception;
 use Dcp\Core\Settings;

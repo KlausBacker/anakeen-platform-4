@@ -108,7 +108,7 @@ class processExecuteAPI
             /**
              * @var \Dcp\Family\Exec $exec
              */
-            $exec = Dcp\Core\DocManager::getDocument($exec);
+            $exec = Anakeen\Core\DocManager::getDocument($exec);
         }
         if (!is_object($exec) || !is_a($exec, '\Dcp\Family\Exec') || !$exec->isAlive()) {
             return;
@@ -167,7 +167,7 @@ class processExecuteAPI
         self::debug(__METHOD__ . " " . sprintf("Found %d doctimers.", count($ate)));
         foreach ($ate as $k => $v) {
             try {
-                $tmpfile = tempnam(\Dcp\Core\ContextManager::getTmpDir(), __METHOD__);
+                $tmpfile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), __METHOD__);
                 if ($tmpfile === false) {
                     throw new \Exception("Error: could not create temporary file.");
                 }

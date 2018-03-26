@@ -133,7 +133,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
             );
             $config = array();
             foreach ($selNames as $name) {
-                $id = \Dcp\Core\DocManager::getIdFromName($name);
+                $id = \Anakeen\Core\DocManager::getIdFromName($name);
                 if ($id) {
                     $config["selectionItems"][] = $id;
                 }

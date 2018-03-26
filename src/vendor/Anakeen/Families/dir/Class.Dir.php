@@ -59,7 +59,7 @@ class Dir extends PDir
             $home = createDoc($this->dbaccess, "DIR");
             
             if (!$home) {
-                $action->exitError(sprintf(_("no privilege to create this kind (%d) of document"), \Dcp\Core\DocManager::getFamilyIdFromName("DIR")));
+                $action->exitError(sprintf(_("no privilege to create this kind (%d) of document"), \Anakeen\Core\DocManager::getFamilyIdFromName("DIR")));
             }
             
             $home->owner = - $this->userid;
@@ -72,7 +72,7 @@ class Dir extends PDir
             /** @var DocSearch $privlocked */
             $privlocked = createDoc($this->dbaccess, "SEARCH");
             if (!$privlocked) {
-                $action->exitError(sprintf(_("no privilege to create this kind (%d) of document"), \Dcp\Core\DocManager::getFamilyIdFromName("SEARCH")));
+                $action->exitError(sprintf(_("no privilege to create this kind (%d) of document"), \Anakeen\Core\DocManager::getFamilyIdFromName("SEARCH")));
             }
             
             $privlocked->title = (_("locked document of ") . $home->title);
@@ -81,10 +81,10 @@ class Dir extends PDir
             $home->insertDocument($privlocked->id);
         }
         // add basket in home
-        if (\Dcp\Core\ContextManager::getApplicationParam("FREEDOM_IDBASKET") == "") {
+        if (\Anakeen\Core\ContextManager::getApplicationParam("FREEDOM_IDBASKET") == "") {
             $bas = createDoc($this->dbaccess, "BASKET");
             if (!$bas) {
-                $action->exitError(sprintf(_("no privilege to create this kind (%d) of document"), \Dcp\Core\DocManager::getFamilyIdFromName("BASKET")));
+                $action->exitError(sprintf(_("no privilege to create this kind (%d) of document"), \Anakeen\Core\DocManager::getFamilyIdFromName("BASKET")));
             }
             
             $query = new QueryDb($this->dbaccess, "_BASKET");

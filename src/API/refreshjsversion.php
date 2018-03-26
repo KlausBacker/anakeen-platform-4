@@ -31,6 +31,6 @@ $fj = fopen($cible, "w");
 fputs($fj, $fc);
 fclose($fj);
 
-$action=\Dcp\Core\ContextManager::getCurrentAction();
+$action=\Anakeen\Core\ContextManager::getCurrentAction();
 $action->parent->param->Set("WVERSION", $nv + 1);
 print "$cible [$nv]\n";

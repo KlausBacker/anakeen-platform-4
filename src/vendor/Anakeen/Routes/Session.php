@@ -81,7 +81,7 @@ class Session
             $u = new \Account();
             $u->setLoginName($login);
 
-            \Dcp\Core\ContextManager::initContext($u, "CORE", "", \AuthenticatorManager::$session);
+            \Anakeen\Core\ContextManager::initContext($u, "CORE", "", \AuthenticatorManager::$session);
             \ApplicationParameterManager::setUserParameterValue("CORE", "CORE_LANG", $language);
         }
 

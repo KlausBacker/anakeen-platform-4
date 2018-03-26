@@ -493,8 +493,8 @@ class DocFormFormat
         $lay->set("downloadUrl", "");
         $lay->set("imageUrl", "");
         $lay->set("checkPfc", "");
-        $lay->set("ISIE678", \Dcp\Core\ContextManager::getApplicationParam("ISIE6") || \Dcp\Core\ContextManager::getApplicationParam("ISIE7") || \Dcp\Core\ContextManager::getApplicationParam("ISIE8"));
-        $lay->set("hideInput", \Dcp\Core\ContextManager::getApplicationParam("FDL_OLDFILEINPUTCOMPAT", "no") !== "yes");
+        $lay->set("ISIE678", \Anakeen\Core\ContextManager::getApplicationParam("ISIE6") || \Anakeen\Core\ContextManager::getApplicationParam("ISIE7") || \Anakeen\Core\ContextManager::getApplicationParam("ISIE8"));
+        $lay->set("hideInput", \Anakeen\Core\ContextManager::getApplicationParam("FDL_OLDFILEINPUTCOMPAT", "no") !== "yes");
         if (preg_match(PREGEXPFILE, $value, $reg)) {
             $dbaccess = getDbAccess();
             $vf = newFreeVaultFile($dbaccess);
@@ -547,8 +547,8 @@ class DocFormFormat
         $lay->set("downloadUrl", "");
         $lay->set("checkPfc", "");
         $lay->set("DAV", false);
-        $lay->set("hideInput", \Dcp\Core\ContextManager::getApplicationParam("FDL_OLDFILEINPUTCOMPAT", "no") !== "yes");
-        $lay->set("ISIE678", \Dcp\Core\ContextManager::getApplicationParam("ISIE6") || \Dcp\Core\ContextManager::getApplicationParam("ISIE7") || \Dcp\Core\ContextManager::getApplicationParam("ISIE8"));
+        $lay->set("hideInput", \Anakeen\Core\ContextManager::getApplicationParam("FDL_OLDFILEINPUTCOMPAT", "no") !== "yes");
+        $lay->set("ISIE678", \Anakeen\Core\ContextManager::getApplicationParam("ISIE6") || \Anakeen\Core\ContextManager::getApplicationParam("ISIE7") || \Anakeen\Core\ContextManager::getApplicationParam("ISIE8"));
         if (preg_match(PREGEXPFILE, $value, $reg)) {
             $dbaccess = getDbAccess();
             $vf = newFreeVaultFile($dbaccess);
@@ -558,7 +558,7 @@ class DocFormFormat
             $info = null;
             if ($vf->Show($reg[2], $info) == "") {
                 $vid = $reg[2];
-                $DAV = \Dcp\Core\ContextManager::getApplicationParam("FREEDAV_SERVEUR", false);
+                $DAV = \Anakeen\Core\ContextManager::getApplicationParam("FREEDAV_SERVEUR", false);
                     
                 global $action;
                 if ($DAV) {
@@ -1208,11 +1208,11 @@ class DocFormFormat
                             
                             switch ($sattrid) {
                                 case "B": // baseurl
-                                    $urllink.= \Dcp\Core\ContextManager::getApplicationParam("CORE_BASEURL");
+                                    $urllink.= \Anakeen\Core\ContextManager::getApplicationParam("CORE_BASEURL");
                                     break;
 
                                 case "S": // standurl
-                                    $urllink.= \Dcp\Core\ContextManager::getApplicationParam("CORE_STANDURL");
+                                    $urllink.= \Anakeen\Core\ContextManager::getApplicationParam("CORE_STANDURL");
                                     break;
 
                                 case "K":
@@ -1265,7 +1265,7 @@ class DocFormFormat
                                     $i++;
                                 }
                                 //	  print "attr=$sattrid";
-                                $ovalue = \Dcp\Core\ContextManager::getApplicationParam($sattrid, \Dcp\Core\DocManager::getFamilyIdFromName($sattrid));
+                                $ovalue = \Anakeen\Core\ContextManager::getApplicationParam($sattrid, \Anakeen\Core\DocManager::getFamilyIdFromName($sattrid));
                                 
                                 $urllink.= $ovalue;
                                 

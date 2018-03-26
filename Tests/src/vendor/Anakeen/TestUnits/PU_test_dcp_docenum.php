@@ -190,7 +190,7 @@ class TestDocEnum extends TestCaseDcpCommonFamily
         $this->assertTrue($label !== null, "Enum not inserted");
         
         foreach ($locale as $lang => $localeLabel) {
-            \Dcp\Core\ContextManager::setLanguage($lang);
+            \Anakeen\Core\ContextManager::setLanguage($lang);
             $oa->resetEnum();
             $eLabel = $oa->getEnumLabel($key);
             $this->assertEquals($localeLabel, $eLabel, sprintf("not good %s mabel", $lang));

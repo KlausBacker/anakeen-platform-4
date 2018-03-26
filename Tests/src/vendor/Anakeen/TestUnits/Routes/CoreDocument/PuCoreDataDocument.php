@@ -2,7 +2,7 @@
 
 namespace Anakeen\Pu\Routes;
 
-use Dcp\Core\DocManager;
+use Anakeen\Core\DocManager;
 
 require_once __DIR__ . '/../TestCaseRoutes.php';
 require DEFAULT_PUBDIR . '/vendor/Anakeen/lib/vendor/autoload.php';

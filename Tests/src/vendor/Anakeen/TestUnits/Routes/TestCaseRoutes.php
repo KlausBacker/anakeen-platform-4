@@ -4,8 +4,8 @@ namespace Anakeen\Pu\Routes;
 
 use Anakeen\Router\Exception;
 use Anakeen\Router\URLUtils;
-use Dcp\Core\ContextManager;
-use Dcp\Core\DocManager;
+use Anakeen\Core\ContextManager;
+use Anakeen\Core\DocManager;
 use Slim\Http\Environment;
 use Slim\Http\Request;
 use Slim\Http\RequestBody;

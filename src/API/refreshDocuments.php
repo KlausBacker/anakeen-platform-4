@@ -120,7 +120,7 @@ $s->start = $start;
 if ($docid != '') {
     if (!is_numeric($docid)) {
         $docName = $docid;
-        $docid = \Dcp\Core\DocManager::getIdFromName($docName);
+        $docid = \Anakeen\Core\DocManager::getIdFromName($docName);
         if ($docid === false) {
             $action->exitError(sprintf("document with name '%s' not found", $docName));
         }

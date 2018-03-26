@@ -78,7 +78,7 @@ namespace {
         const CORE0016 = 'Cannot load dbaccess file : %s';
         /**
          * @errorCode DMust call initContext before
-         * @see \Dcp\Core\ContextManager::initContext()
+         * @see \Anakeen\Core\ContextManager::initContext()
          */
         const CORE0017 = "Context not initialized yet";
 

@@ -35,17 +35,17 @@ function initVaultAccess()
 function getOpenTeUrl($context = array())
 {
     global $action;
-    $urlindex = \Dcp\Core\ContextManager::getApplicationParam("TE_URLINDEX");
+    $urlindex = \Anakeen\Core\ContextManager::getApplicationParam("TE_URLINDEX");
     if ($urlindex == "") { //case DAV
-        $au = \Dcp\Core\ContextManager::getApplicationParam("CORE_URLINDEX");
+        $au = \Anakeen\Core\ContextManager::getApplicationParam("CORE_URLINDEX");
         if ($au != "") {
-            $urlindex = \Dcp\Core\ContextManager::getApplicationParam("CORE_URLINDEX");
+            $urlindex = \Anakeen\Core\ContextManager::getApplicationParam("CORE_URLINDEX");
         } else {
-            $scheme = \Dcp\Core\ContextManager::getApplicationParam("CORE_ABSURL");
+            $scheme = \Anakeen\Core\ContextManager::getApplicationParam("CORE_ABSURL");
             if ($scheme == "") {
                 $urlindex = '/freedom/';
             } else {
-                $urlindex = \Dcp\Core\ContextManager::getApplicationParam("CORE_ABSURL");
+                $urlindex = \Anakeen\Core\ContextManager::getApplicationParam("CORE_ABSURL");
             }
         }
     }
@@ -72,7 +72,7 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
 {
     $err = '';
     if (($vidin > 0) && ($vidout > 0)) {
-        $tea = \Dcp\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
+        $tea = \Anakeen\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
         if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             return '';
         }
@@ -89,7 +89,7 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
         
         $urlindex = getOpenTeUrl();
         $callback = $urlindex . "&sole=Y&app=FDL&action=INSERTFILE&engine=$engine&vidin=$vidin&vidout=$vidout&isimage=$isimage&docid=$docid";
-        $ot = new \Dcp\TransformationEngine\Client(\Dcp\Core\ContextManager::getApplicationParam("TE_HOST"), \Dcp\Core\ContextManager::getApplicationParam("TE_PORT"));
+        $ot = new \Dcp\TransformationEngine\Client(\Anakeen\Core\ContextManager::getApplicationParam("TE_HOST"), \Anakeen\Core\ContextManager::getApplicationParam("TE_PORT"));
         $err = $ot->sendTransformation($engine, $vidout, $filename, $callback, $info);
         if ($err == "") {
             $tr = new TaskRequest($dbaccess);
@@ -197,11 +197,11 @@ function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
 {
     $err = '';
     if (($docid > 0) && ($vid > 0)) {
-        $tea = \Dcp\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
+        $tea = \Anakeen\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
         if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             return '';
         }
-        $tea = \Dcp\Core\ContextManager::getApplicationParam("TE_FULLTEXT");
+        $tea = \Anakeen\Core\ContextManager::getApplicationParam("TE_FULLTEXT");
         if ($tea != "yes") {
             return '';
         }
@@ -212,7 +212,7 @@ function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
         $filename = $of->getPath();
         $urlindex = getOpenTeUrl();
         $callback = $urlindex . "&sole=Y&app=FDL&action=SETTXTFILE&docid=$docid&attrid=" . $attrid . "&index=$index";
-        $ot = new \Dcp\TransformationEngine\Client(\Dcp\Core\ContextManager::getApplicationParam("TE_HOST"), \Dcp\Core\ContextManager::getApplicationParam("TE_PORT"));
+        $ot = new \Dcp\TransformationEngine\Client(\Anakeen\Core\ContextManager::getApplicationParam("TE_HOST"), \Anakeen\Core\ContextManager::getApplicationParam("TE_PORT"));
         $err = $ot->sendTransformation('utf8', $vid, $filename, $callback, $info);
         if ($err == "") {
             $tr = new TaskRequest($dbaccess);
@@ -240,12 +240,12 @@ function convertFile($infile, $engine, $outfile, &$info)
     global $action;
     $err = '';
     if (file_exists($infile) && ($engine != "")) {
-        $tea = \Dcp\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
+        $tea = \Anakeen\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
         if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             return _("TE not activated");
         }
         $callback = "";
-        $ot = new \Dcp\TransformationEngine\Client(\Dcp\Core\ContextManager::getApplicationParam("TE_HOST"), \Dcp\Core\ContextManager::getApplicationParam("TE_PORT"));
+        $ot = new \Dcp\TransformationEngine\Client(\Anakeen\Core\ContextManager::getApplicationParam("TE_HOST"), \Anakeen\Core\ContextManager::getApplicationParam("TE_PORT"));
         $vid = '';
         $err = $ot->sendTransformation($engine, $vid, $infile, $callback, $info);
         if ($err == "") {

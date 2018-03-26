@@ -74,7 +74,7 @@ class BasicAuthenticator extends Authenticator
     {
         header('HTTP/1.1 401 Authentication Required');
         header('WWW-Authenticate: Basic realm="' .
-            \Dcp\Core\ContextManager::getApplicationParam(
+            \Anakeen\Core\ContextManager::getApplicationParam(
                 "CORE_REALM",
                 "Anakeen Platform connection"
             )  . '"');
@@ -97,7 +97,7 @@ class BasicAuthenticator extends Authenticator
         setcookie('logout', 'true', 0, "", null, null, true);
         
         if ($redir_uri == '') {
-            $redir_uri = \Dcp\Core\ContextManager::getApplicationParam("CORE_URLINDEX", "/");
+            $redir_uri = \Anakeen\Core\ContextManager::getApplicationParam("CORE_URLINDEX", "/");
         }
         header('Location: ' . $redir_uri);
         return true;

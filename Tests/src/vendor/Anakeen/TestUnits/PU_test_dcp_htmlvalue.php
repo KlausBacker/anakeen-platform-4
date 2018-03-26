@@ -7,7 +7,7 @@
 namespace Dcp\Pu;
 
 use Dcp\ApiUsage\Exception;
-use Dcp\Core\DocManager;
+use Anakeen\Core\DocManager;
 
 /**
  * @author Anakeen

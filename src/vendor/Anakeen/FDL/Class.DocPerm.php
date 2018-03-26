@@ -79,7 +79,7 @@ create unique index idx_perm on docperm(docid, userid);";
     public static function getMemberOfVector($uid = 0, $strict = false)
     {
         if ($uid == 0) {
-            $user=\Dcp\Core\ContextManager::getCurrentUser();
+            $user=\Anakeen\Core\ContextManager::getCurrentUser();
             if (!$user) {
                 throw new \Dcp\Core\Exception("CORE0022");
             }

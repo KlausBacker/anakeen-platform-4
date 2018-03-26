@@ -675,7 +675,7 @@ create sequence seq_id_users start 10;";
             /**
              * @var \Dcp\Family\IUSER $iuser
              */
-            $iuser = Dcp\Core\DocManager::getDocument($this->fid);
+            $iuser = Anakeen\Core\DocManager::getDocument($this->fid);
 
             $err = $iuser->RefreshDocUser();
         } //Update from what
@@ -766,7 +766,7 @@ create sequence seq_id_users start 10;";
                         $this->setSupervisorHtpasswd($pass);
                     }
                     $log = new Log("", "Session", "Authentication");
-                    $facility = constant(\Dcp\Core\ContextManager::getApplicationParam(
+                    $facility = constant(\Anakeen\Core\ContextManager::getApplicationParam(
                         "AUTHENT_LOGFACILITY",
                         "LOG_AUTH"
                     ));

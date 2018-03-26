@@ -233,7 +233,7 @@ class SearchDoc
         /**  @var Dir $fld */
         $fld = new_Doc($this->dbaccess, $this->dirid);
         $userid = $this->userid;
-        if ($fld->fromid != \Dcp\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
+        if ($fld->fromid != \Anakeen\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
             $this->recursiveSearchInit();
             $tqsql = $this->getQueries();
             $this->debuginfo["query"] = $tqsql[0];
@@ -448,7 +448,7 @@ class SearchDoc
         }
         if ($this->fromid) {
             if (!is_numeric($this->fromid)) {
-                $fromid = \Dcp\Core\DocManager::getFamilyIdFromName($this->fromid);
+                $fromid = \Anakeen\Core\DocManager::getFamilyIdFromName($this->fromid);
             } else {
                 if ($this->fromid != - 1) {
                     // test if it is a family
@@ -488,7 +488,7 @@ class SearchDoc
             if ($this->dirid) {
                 // change search mode because ITEM mode not supported for Specailized searches
                 $fld = new_Doc($this->dbaccess, $this->dirid);
-                if ($fld->fromid == \Dcp\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
+                if ($fld->fromid == \Anakeen\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
                     $this->searchmode = "TABLE";
                 }
             }
@@ -839,7 +839,7 @@ class SearchDoc
             }
             if (preg_match('/(\s|^|\()(?P<relname>[a-z0-9_\-]+)\./', $filter, $reg)) {
                 // when use join filter like "zoo_espece.es_classe='Boo'"
-                $famid = \Dcp\Core\DocManager::getFamilyIdFromName($reg['relname']);
+                $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($reg['relname']);
                 if ($famid > 0) {
                     $filter = preg_replace('/(\s|^|\()(?P<relname>[a-z0-9_\-]+)\./', '${1}doc' . $famid . '.', $filter);
                 }
@@ -1326,7 +1326,7 @@ class SearchDoc
         $fromid = $normFromId;
         if (($fromid != "") && (!is_numeric($fromid))) {
             preg_match('/^(?P<sign>-?)(?P<fromid>.+)$/', trim($fromid), $m);
-            $fromid = $m['sign'] . \Dcp\Core\DocManager::getFamilyIdFromName($m['fromid']);
+            $fromid = $m['sign'] . \Anakeen\Core\DocManager::getFamilyIdFromName($m['fromid']);
         }
         if ($this->only && strpos($fromid, '-') !== 0) {
             $fromid = '-' . $fromid;
@@ -1360,7 +1360,7 @@ class SearchDoc
         $maintable = $table; // can use join only on search
         if ($join) {
             if (preg_match('/(?P<attr>[a-z0-9_\-:]+)\s*(?P<operator>=|<|>|<=|>=)\s*(?P<family>[a-z0-9_\-:]+)\((?P<family_attr>[^\)]*)\)/', $join, $reg)) {
-                $joinid = \Dcp\Core\DocManager::getFamilyIdFromName($reg['family']);
+                $joinid = \Anakeen\Core\DocManager::getFamilyIdFromName($reg['family']);
                 $jointable = ($joinid) ? "doc" . $joinid : $reg['family'];
                 
                 $sqlfilters[] = sprintf("%s.%s %s %s.%s", $table, $reg['attr'], $reg['operator'], $jointable, $reg['family_attr']); // "id = dochisto(id)";

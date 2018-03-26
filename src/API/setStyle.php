@@ -8,7 +8,7 @@ $usage = new ApiUsage();
 $usage->setDefinitionText("apply given style - if no style is set then update current style");
 $styFilePath = $usage->addOptionalParameter("style", "path to style file");
 
-$action=\Dcp\Core\ContextManager::getCurrentAction();
+$action=\Anakeen\Core\ContextManager::getCurrentAction();
 if (!$styFilePath) {
     /**
      * @var Action $action

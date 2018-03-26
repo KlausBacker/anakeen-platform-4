@@ -7,7 +7,7 @@ namespace Dcp\Pu;
  * @package Dcp\Pu
  */
 
-use Dcp\Core\ContextManager;
+use Anakeen\Core\ContextManager;
 
 set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__);
 include_once "FDL/Class.Doc.php";
@@ -21,7 +21,7 @@ class FrameworkDcp extends \PHPUnit_Framework_TestSuite
         if (!$action) {
             $u = new \Account();
             $u->setLoginName("admin");
-            \Dcp\Core\ContextManager::initContext($u);
+            \Anakeen\Core\ContextManager::initContext($u);
         }
     }
 

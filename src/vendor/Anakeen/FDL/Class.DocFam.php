@@ -14,7 +14,7 @@
  */
 
 use \Dcp\Core\DbManager;
-use \Dcp\Core\DocManager;
+use \Anakeen\Core\DocManager;
 
 /**
  * @class DocFam
@@ -590,7 +590,7 @@ create unique index idx_idfam on docfam(id);";
     
     private function convertDateToiso(BasicAttribute $oa, &$val)
     {
-        $localeconfig = \Dcp\Core\ContextManager::getLocaleConfig();
+        $localeconfig = \Anakeen\Core\ContextManager::getLocaleConfig();
         if ($localeconfig !== false) {
             if ($oa->type == "date" || $oa->type == "timestamp") {
                 if ($oa->type == "date") {

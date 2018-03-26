@@ -189,7 +189,7 @@ class importSingleDocument
         if (is_numeric($this->famId)) {
             $fromid = $this->famId;
         } else {
-            $fromid = \Dcp\Core\DocManager::getFamilyIdFromName($this->famId);
+            $fromid = \Anakeen\Core\DocManager::getFamilyIdFromName($this->famId);
         }
         if ($fromid == 0) {
             // no need test here it is done by checkDoc class DOC0005 DOC0006
@@ -215,7 +215,7 @@ class importSingleDocument
         } elseif (trim($this->specId) != "") {
             if (!is_numeric(trim($this->specId))) {
                 $tmpDoc->name = trim($this->specId); // logical name
-                $docid = \Dcp\Core\DocManager::getIdFromName($tmpDoc->name, $fromid);
+                $docid = \Anakeen\Core\DocManager::getIdFromName($tmpDoc->name, $fromid);
                 if ($docid > 0) {
                     $tmpDoc->id = $docid;
                     $tmpDoc->initid = $docid;
@@ -237,7 +237,7 @@ class importSingleDocument
         } else {
             if ($this->doc->fromid != $fromid) {
                 $this->tcr["id"] = $this->doc->id;
-                $this->setError("DOC0008", $this->doc->getTitle(), $this->doc->fromname, \Dcp\Core\DocManager::getNameFromId($fromid));
+                $this->setError("DOC0008", $this->doc->getTitle(), $this->doc->fromname, \Anakeen\Core\DocManager::getNameFromId($fromid));
                 return $this;
             }
             if ($this->doc->doctype == 'Z') {
@@ -614,7 +614,7 @@ class importSingleDocument
             }
         }
         if ($this->doc->id) {
-            \Dcp\Core\DocManager::cache()->removeDocumentById($this->doc->id);
+            \Anakeen\Core\DocManager::cache()->removeDocumentById($this->doc->id);
         } // clear cache to clean unused
         return $this;
     }

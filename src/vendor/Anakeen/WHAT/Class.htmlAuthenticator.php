@@ -200,7 +200,7 @@ class htmlAuthenticator extends Authenticator
                 header('Location: ' . $this->getAuthUrl());
                 return true;
             }
-            $redir_uri = \Dcp\Core\ContextManager::getApplicationParam("CORE_BASEURL");
+            $redir_uri = \Anakeen\Core\ContextManager::getApplicationParam("CORE_BASEURL");
         }
         header('Location: ' . $redir_uri);
         return true;

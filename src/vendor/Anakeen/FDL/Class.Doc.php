@@ -43,8 +43,8 @@ define("PREGEXPFILE", "/(?P<mime>[^\|]*)\|(?P<vid>[0-9]*)\|?(?P<name>.*)?/");
 
 
 use \Dcp\Core\DbManager;
-use \Dcp\Core\ContextManager;
-use \Dcp\Core\DocManager;
+use \Anakeen\Core\ContextManager;
+use \Anakeen\Core\DocManager;
 
 /**
  * Document Class
@@ -875,7 +875,7 @@ create unique index i_docir on doc(initid, revision);";
         ), true); // to force also execute sql trigger
         if ($this->doctype != 'C') {
             // set to shared : because comes from createDoc
-            \Dcp\Core\DocManager::cache()->addDocument($this);
+            \Anakeen\Core\DocManager::cache()->addDocument($this);
         }
         if ($this->doctype != "T") {
             $err = $this->PostCreated();
@@ -1397,8 +1397,8 @@ create unique index i_docir on doc(initid, revision);";
         $cdoc->addHistoryEntry(sprintf(_("convertion from %s to %s family"), $f1from, $f2from));
 
         DbManager::commitPoint($point);
-        if (\Dcp\Core\DocManager::cache()->isDocumentIdInCache($this->id)) {
-            \Dcp\Core\DocManager::cache()->addDocument($cdoc);
+        if (\Anakeen\Core\DocManager::cache()->isDocumentIdInCache($this->id)) {
+            \Anakeen\Core\DocManager::cache()->addDocument($cdoc);
         }
 
         return $cdoc;
@@ -5280,7 +5280,7 @@ create unique index i_docir on doc(initid, revision);";
                     }
                 }
                 if ($missingAttrIds) {
-                    $missingValues = Dcp\Core\DocManager::getRawData($this->id, $missingAttrIds, false);
+                    $missingValues = Anakeen\Core\DocManager::getRawData($this->id, $missingAttrIds, false);
                     foreach ($missingValues as $attrid => $value) {
                         $this->$attrid = $value;
                     }
@@ -6004,7 +6004,7 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var WDoc $wdoc
              */
-            $wdoc = Dcp\Core\DocManager::getDocument($this->wid);
+            $wdoc = Anakeen\Core\DocManager::getDocument($this->wid);
             if ($wdoc && $wdoc->isAlive()) {
                 $wdoc->set($this);
                 $waskids = $wdoc->getDocumentWasks($this->state, $control);
@@ -6012,7 +6012,7 @@ create unique index i_docir on doc(initid, revision);";
                     /**
                      * @var \Dcp\Family\Wask $wask
                      */
-                    $wask = Dcp\Core\DocManager::getDocument($waskid);
+                    $wask = Anakeen\Core\DocManager::getDocument($waskid);
                     if ($wask && $wask->isAlive()) {
                         $ut = $this->getUTag("ASK_" . $wask->id, false);
                         if ($ut) {
@@ -6085,7 +6085,7 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * @var WDoc $wdoc
          */
-        $wdoc = Dcp\Core\DocManager::getDocument($this->wid);
+        $wdoc = Anakeen\Core\DocManager::getDocument($this->wid);
         if ($wdoc && $wdoc->isAlive()) {
             $wdoc->set($this);
             foreach ($ldoc as $k => $v) {
@@ -6204,7 +6204,7 @@ create unique index i_docir on doc(initid, revision);";
         $this->postitid = $postitid;
 
         // Remove last revision from cache to have coherent index.
-        \Dcp\Core\DocManager::cache()->removeDocumentById($olddocid);
+        \Anakeen\Core\DocManager::cache()->removeDocumentById($olddocid);
         $err = $this->Add();
         if ($err != "") {
             // restore last revision
@@ -6245,7 +6245,7 @@ create unique index i_docir on doc(initid, revision);";
                      */
                     $revs = $this->getRevisions("TABLE", "ALL");
                     for ($i = $maxrev; $i < count($revs); $i++) {
-                        $d = Dcp\Core\DocManager::getDocumentFromRawDocument($revs[$i]);
+                        $d = Anakeen\Core\DocManager::getDocumentFromRawDocument($revs[$i]);
                         if ($d) {
                             $d->_destroy(true);
                         }
@@ -6315,7 +6315,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         } else {
-            $state = Dcp\Core\DocManager::getDocument($newstateid);
+            $state = Anakeen\Core\DocManager::getDocument($newstateid);
             if (!$state || !$state->isAlive()) {
                 return sprintf(_("invalid freestate document %s"), $newstateid);
             }
@@ -6379,7 +6379,7 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * @var WDoc $wdoc
          */
-        $wdoc = Dcp\Core\DocManager::getDocument($this->wid);
+        $wdoc = Anakeen\Core\DocManager::getDocument($this->wid);
         if (!$wdoc || !$wdoc->isAlive()) {
             return _("assigned workflow is not alive");
         }
@@ -6434,7 +6434,7 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var WDoc $wdoc
              */
-            $wdoc = Dcp\Core\DocManager::getDocument($this->wid);
+            $wdoc = Anakeen\Core\DocManager::getDocument($this->wid);
             if ($wdoc && $wdoc->isAffected()) {
                 return $wdoc->getColor($this->state, $def);
             }
@@ -10626,7 +10626,7 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * @var \Dcp\Family\TIMER $timer
          */
-        $timer = Dcp\Core\DocManager::createTemporaryDocument("TIMER");
+        $timer = Anakeen\Core\DocManager::createTemporaryDocument("TIMER");
         $c = 0;
         $err = $timer->unattachAllDocument($this, $origin, $c);
         if ($err == "" && $c > 0) {

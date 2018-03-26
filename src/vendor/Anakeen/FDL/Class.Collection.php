@@ -315,7 +315,7 @@ class Fdl_Collection extends Fdl_Document
             $tfamids = explode('|', $famid);
             foreach ($tfamids as $fid) {
                 if (!is_numeric($fid)) {
-                    $fid = \Dcp\Core\DocManager::getFamilyIdFromName($fid);
+                    $fid = \Anakeen\Core\DocManager::getFamilyIdFromName($fid);
                 }
                 if ($fid > 0) {
                     $tfid[] = $fid;
@@ -326,7 +326,7 @@ class Fdl_Collection extends Fdl_Document
         }
         if (preg_match('/([\w:]*)\s?strict/', trim($famid), $reg)) {
             if (!is_numeric($reg[1])) {
-                $reg[1] = \Dcp\Core\DocManager::getFamilyIdFromName($reg[1]);
+                $reg[1] = \Anakeen\Core\DocManager::getFamilyIdFromName($reg[1]);
             }
             $famid = '-' . $reg[1];
         }
@@ -457,7 +457,7 @@ class Fdl_Collection extends Fdl_Document
             $content = array();
             $fld = new Dir($this->dbaccess);
             if (!is_numeric($famid)) {
-                $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famid);
+                $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($famid);
             }
             $tfam = $fld->GetChildFam($famid, $controlcreate);
             if (count($tfam) > 0) {

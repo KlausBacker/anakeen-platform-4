@@ -113,7 +113,7 @@ class WDoc extends Doc
         if ($newstate != "") {
             $profid = $this->getRawValue($this->_Aid("_ID", $newstate));
             if (!is_numeric($profid)) {
-                $profid = \Dcp\Core\DocManager::getIdFromName($profid);
+                $profid = \Anakeen\Core\DocManager::getIdFromName($profid);
             }
             if ($profid > 0) {
                 // change only if new profil
@@ -151,7 +151,7 @@ class WDoc extends Doc
                             } else {
                                 $subject = sprintf(_("allocation for %s document"), $this->doc->title);
                                 $commentaction = '';
-                                $err = sendCard(\Dcp\Core\ContextManager::getCurrentAction(), $this->doc->id, $to, "", $subject, "", true, $commentaction, "", "", "htmlnotif");
+                                $err = sendCard(\Anakeen\Core\ContextManager::getCurrentAction(), $this->doc->id, $to, "", $subject, "", true, $commentaction, "", "", "htmlnotif");
                                 if ($err != "") {
                                     addWarningMsg($err);
                                 }
@@ -212,7 +212,7 @@ class WDoc extends Doc
         if ($newstate != "") {
             $cvid = ($this->getRawValue($this->_Aid("_CVID", $newstate)));
             if (!is_numeric($cvid)) {
-                $cvid = \Dcp\Core\DocManager::getIdFromName($cvid);
+                $cvid = \Anakeen\Core\DocManager::getIdFromName($cvid);
             }
             if ($cvid > 0) {
                 // change only if set
@@ -949,7 +949,7 @@ class WDoc extends Doc
                 }
             }
         }
-        $incumbentName = \Dcp\Core\ContextManager::getCurrentUser()->getIncumbentPrivilege($this, $tname);
+        $incumbentName = \Anakeen\Core\ContextManager::getCurrentUser()->getIncumbentPrivilege($this, $tname);
         if ($incumbentName) {
             $revcomment = sprintf(_("(substitute of %s) : "), $incumbentName) . $revcomment;
         }

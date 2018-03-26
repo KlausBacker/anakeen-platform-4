@@ -180,7 +180,7 @@ class importXml
         }
         
         $family = $root->tagName;
-        $famid = \Dcp\Core\DocManager::getFamilyIdFromName($family);
+        $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($family);
         if (!isset($families[$famid])) {
             $families[$famid] = new_doc($dbaccess, $famid);
         }
@@ -234,11 +234,11 @@ class importXml
                                     $names = explode(',', $name);
                                     $lids = array();
                                     foreach ($names as $lname) {
-                                        $lids[] = \Dcp\Core\DocManager::getIdFromName($lname);
+                                        $lids[] = \Anakeen\Core\DocManager::getIdFromName($lname);
                                     }
                                     $id = implode(",", $lids);
                                 } else {
-                                    $id = \Dcp\Core\DocManager::getIdFromName($name);
+                                    $id = \Anakeen\Core\DocManager::getIdFromName($name);
                                 }
                             }
                             if (!$id) {

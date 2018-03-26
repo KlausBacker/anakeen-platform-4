@@ -150,7 +150,7 @@ class TestRoleMove extends TestCaseDcpCommonFamily
                     $user["name"], var_export($currentRoles, true), var_export($user["roles"], true)));
         $groups = $user["groups"];
         $groups = array_map(function ($groupName) use($dbaccess) {
-            return array("name" => $groupName, "id" => \Dcp\Core\DocManager::getIdFromName($groupName));
+            return array("name" => $groupName, "id" => \Anakeen\Core\DocManager::getIdFromName($groupName));
         }, $groups);
         $userGroups = $userDoc->getAllUserGroups();
         foreach ($groups as $currentGroupId) {

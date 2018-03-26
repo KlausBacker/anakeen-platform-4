@@ -2,7 +2,7 @@
 
 namespace Anakeen\Router;
 
-use \Dcp\Core\ContextManager;
+use \Anakeen\Core\ContextManager;
 
 /**
  * Class RoutesConfig

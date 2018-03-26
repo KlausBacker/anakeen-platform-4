@@ -47,7 +47,7 @@ class ParameterManager
     public static function getParameter($name)
     {
         deprecatedFunction();
-        return \Dcp\Core\ContextManager::getApplicationParam($name);
+        return \Anakeen\Core\ContextManager::getApplicationParam($name);
     }
     /**
      * get a specific value for an application

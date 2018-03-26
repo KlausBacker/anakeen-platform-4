@@ -16,7 +16,7 @@ class TestGetEnum extends TestCaseDcpCommonFamily
 {
     public static function getCommonImportFile()
     {
-        \Dcp\Core\ContextManager::setLanguage("fr_FR");
+        \Anakeen\Core\ContextManager::setLanguage("fr_FR");
         return "PU_data_dcp_enumfamily1.ods";
     }
     /**

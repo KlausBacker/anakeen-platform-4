@@ -15,7 +15,7 @@ class TestGetParam extends TestCaseDcp
      */
     public function testGetCoreParamNonExisting($data)
     {
-        $value = \Dcp\Core\ContextManager::getCoreParam($data['name'], $data['def']);
+        $value = \Anakeen\Core\ContextManager::getCoreParam($data['name'], $data['def']);
         
         $sameType = (gettype($value) == gettype($data['expected']));
         $sameValue = ($value == $data['expected']);
@@ -28,7 +28,7 @@ class TestGetParam extends TestCaseDcp
      */
     public function testGetParamNonExisting($data)
     {
-        $value = \Dcp\Core\ContextManager::getApplicationParam($data['name'], $data['def']);
+        $value = \Anakeen\Core\ContextManager::getApplicationParam($data['name'], $data['def']);
         
         $sameType = (gettype($value) == gettype($data['expected']));
         $sameValue = ($value == $data['expected']);
@@ -41,7 +41,7 @@ class TestGetParam extends TestCaseDcp
      */
     public function testGetCoreParamIsSet($data)
     {
-        $value = \Dcp\Core\ContextManager::getCoreParam($data['name'], null);
+        $value = \Anakeen\Core\ContextManager::getCoreParam($data['name'], null);
         
         $this->assertTrue(($value !== null) , "Returned value is not set.");
     }
@@ -50,7 +50,7 @@ class TestGetParam extends TestCaseDcp
      */
     public function testGetParamIsSet($data)
     {
-        $value = \Dcp\Core\ContextManager::getApplicationParam($data['name'], null);
+        $value = \Anakeen\Core\ContextManager::getApplicationParam($data['name'], null);
         
         $this->assertTrue(($value !== null) , "Returned value is not set.");
     }

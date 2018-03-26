@@ -164,7 +164,7 @@ class Fdl_Document
                 if ($this->onlyAttributes === null) {
                     $this->doc->applyMask();
                 }
-                $isoDate = (\Dcp\Core\ContextManager::getApplicationParam("DATA_LCDATE") == 'iso');
+                $isoDate = (\Anakeen\Core\ContextManager::getApplicationParam("DATA_LCDATE") == 'iso');
                 foreach ($nattr as $k => $v) {
                     if ($this->onlyAttributes !== null && (!in_array($v->id, $this->onlyAttributes))) {
                         continue;

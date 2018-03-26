@@ -186,7 +186,7 @@ class DocumentUtils
 
     public static function verifyFamily($famName, \Doc $document)
     {
-        $family = \Dcp\Core\DocManager::getFamily($famName);
+        $family = \Anakeen\Core\DocManager::getFamily($famName);
         if (!$family) {
             $exception = new Exception("ROUTES0105", $famName);
             $exception->setHttpStatus("404", "Family not found");

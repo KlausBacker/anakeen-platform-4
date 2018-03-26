@@ -249,7 +249,7 @@ class ImportAccounts
             /**
              * @var \DocFam $family
              */
-            $family = new_doc("", \Dcp\Core\DocManager::getFamilyIdFromName($familyName));
+            $family = new_doc("", \Anakeen\Core\DocManager::getFamilyIdFromName($familyName));
             if (!$family->isAlive()) {
                 throw new Exception("ACCT0202", $familyName);
             }
@@ -526,7 +526,7 @@ class ImportAccounts
                 $account->accounttype = \Account::GROUP_TYPE;
             }
             // New account
-            $famId = \Dcp\Core\DocManager::getFamilyIdFromName($family);
+            $famId = \Anakeen\Core\DocManager::getFamilyIdFromName($family);
             if (!$famId) {
                 $err = "Not found family $family";
                 $this->addToReport($values["login"], "documentCreation", $err, "", $documentNode);

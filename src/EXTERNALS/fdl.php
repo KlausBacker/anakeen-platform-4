@@ -59,7 +59,7 @@ function linkenum($famid, $attrid)
 {
     
     $dbaccess = getDbAccess();
-    if (!is_numeric($famid)) $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famid);
+    if (!is_numeric($famid)) $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($famid);
     $soc = new_Doc($dbaccess, $famid);
     if ($soc->isAffected()) {
         /**
@@ -315,7 +315,7 @@ function lfamilies($dbaccess, $name = '', $subfam = "")
         $tinter = GetClassesDoc($dbaccess, $action->user->id, 0, "TABLE");
     } else {
         if (!is_numeric($subfam)) {
-            $subfam = \Dcp\Core\DocManager::getFamilyIdFromName($subfam);
+            $subfam = \Anakeen\Core\DocManager::getFamilyIdFromName($subfam);
         }
         $cdoc = new_Doc($dbaccess, $subfam);
         $tinter = $cdoc->GetChildFam();
@@ -363,7 +363,7 @@ function lfamily($dbaccess, $famid, $name = "", $dirid = 0, $filter = array() , 
     
     if (!is_numeric($famid)) {
         $famName = $famid;
-        $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famName);
+        $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($famName);
         if ($famid <= 0) {
             return sprintf(_("family %s not found") , $famName);
         }
@@ -473,7 +473,7 @@ function lfamilyvalues($dbaccess, $famid, $name = "")
     }
     
     if (!is_numeric($famid)) {
-        $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famid);
+        $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($famid);
     }
     $filter = array();
     if ($name != "") {

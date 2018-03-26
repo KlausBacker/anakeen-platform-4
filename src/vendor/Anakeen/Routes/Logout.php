@@ -6,7 +6,7 @@
 
 namespace Anakeen\Routes\Authent;
 
-use Dcp\Core\ContextManager;
+use Anakeen\Core\ContextManager;
 
 /**
  * Class Session

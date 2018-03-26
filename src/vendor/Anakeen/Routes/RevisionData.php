@@ -2,7 +2,7 @@
 
 namespace Anakeen\Routes\Core;
 
-use Dcp\Core\DocManager;
+use Anakeen\Core\DocManager;
 use Anakeen\Router\URLUtils;
 use Dcp\Core\Settings;
 use Anakeen\Router\Exception;

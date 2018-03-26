@@ -2,7 +2,7 @@
 
 namespace Anakeen\App\Core;
 
-use Dcp\Core\ContextManager;
+use Anakeen\Core\ContextManager;
 
 /**
  * Class WelcomePage
@@ -35,7 +35,7 @@ class WelcomePage
         $action->lay->set("thisyear", strftime("%Y", time()));
         $action->lay->set("version", $action->GetParam("VERSION"));
         $action->lay->set("userRealName", $action->user->firstname . " " . $action->user->lastname);
-        $action->lay->set("userDomain", \Dcp\Core\ContextManager::getApplicationParam("CORE_CLIENT"));
+        $action->lay->set("userDomain", \Anakeen\Core\ContextManager::getApplicationParam("CORE_CLIENT"));
         $action->lay->set("isAdmin", (file_exists('admin/index.php') && $action->canExecute("CORE_ADMIN_ROOT", "CORE_ADMIN") === ''));
 
         return $response->write($action->lay->gen());

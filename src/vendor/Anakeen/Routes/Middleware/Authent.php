@@ -5,7 +5,7 @@ namespace Anakeen\Routes\Middleware;
 use Anakeen\Router\Exception;
 use Anakeen\Router\RequiredAccessInfo;
 use Anakeen\Router\RouterLib;
-use Dcp\Core\ContextManager;
+use Anakeen\Core\ContextManager;
 
 class Authent
 {
@@ -30,15 +30,15 @@ class Authent
             return $next($request, $response);
         }
 
-        $user = \Dcp\Core\ContextManager::getCurrentUser();
+        $user = \Anakeen\Core\ContextManager::getCurrentUser();
         if (!$user) {
-            $user = \Dcp\Core\ContextManager::authentUser();
+            $user = \Anakeen\Core\ContextManager::authentUser();
         }
 
         if (!$configInfo->applicationContext) {
             $configInfo->applicationContext = "CORE";
         }
-        \Dcp\Core\ContextManager::initContext(
+        \Anakeen\Core\ContextManager::initContext(
             $user,
             $configInfo->applicationContext,
             "",

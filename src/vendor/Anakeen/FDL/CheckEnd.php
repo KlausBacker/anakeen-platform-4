@@ -325,7 +325,7 @@ class CheckEnd extends CheckData
             if ($oa->docid == $this->doc->id) {
                 $err = (ErrorCode::getError('ATTR1260', $phpLongName, $ctx, $oa->id));
             } else {
-                $err = (ErrorCode::getError('ATTR1266', $phpLongName, $ctx, \Dcp\Core\DocManager::getNameFromId($oa->docid), $oa->id));
+                $err = (ErrorCode::getError('ATTR1266', $phpLongName, $ctx, \Anakeen\Core\DocManager::getNameFromId($oa->docid), $oa->id));
             }
         }
         return $err;

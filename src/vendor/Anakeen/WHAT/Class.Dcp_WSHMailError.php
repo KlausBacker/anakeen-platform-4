@@ -76,7 +76,7 @@ class WSHMailError
      */
     public function autosend()
     {
-        $user = \Dcp\Core\ContextManager::getCurrentUser();
+        $user = \Anakeen\Core\ContextManager::getCurrentUser();
         $from = (!empty($user) ? getMailAddr($user->id) : '');
         if ($from == '') {
             $from = \ApplicationParameterManager::getParameterValue('FDL', 'SMTP_FROM');

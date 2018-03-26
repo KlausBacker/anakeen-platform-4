@@ -111,7 +111,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
 {
     if (($fromid != "") && (!is_numeric($fromid))) {
         preg_match('/^(?P<sign>-?)(?P<fromid>.+)$/', trim($fromid), $m);
-        $fromid = $m['sign'] . \Dcp\Core\DocManager::getFamilyIdFromName($m['fromid']);
+        $fromid = $m['sign'] . \Anakeen\Core\DocManager::getFamilyIdFromName($m['fromid']);
     }
     $table = "doc";
     $qsql = array();
@@ -146,7 +146,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     $maintable = $table; // can use join only on search
     if ($join) {
         if (preg_match('/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/', $join, $reg)) {
-            $joinid = \Dcp\Core\DocManager::getFamilyIdFromName($reg[3]);
+            $joinid = \Anakeen\Core\DocManager::getFamilyIdFromName($reg[3]);
             $jointable = ($joinid) ? "doc" . $joinid : $reg[3];
             
             $sqlfilters[] = sprintf("%s.%s %s %s.%s", $table, $reg[1], $reg[2], $jointable, $reg[4]); // "id = dochisto(id)";
@@ -469,7 +469,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     {
         // query to find child documents
         if (($fromid != "") && (!is_numeric($fromid))) {
-            $fromid = \Dcp\Core\DocManager::getFamilyIdFromName($fromid);
+            $fromid = \Anakeen\Core\DocManager::getFamilyIdFromName($fromid);
         }
         if ($fromid == 0) {
             $fromid = "";
@@ -480,7 +480,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
              */
             $fld = new_Doc($dbaccess, $dirid);
             
-            if ($fld->fromid == \Dcp\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
+            if ($fld->fromid == \Anakeen\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
                 /**
                  * @var \Dcp\Family\SSEARCH $fld
                  */
@@ -808,7 +808,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             $userid = $action->user->id;
         }
         
-        $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famname);
+        $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($famname);
         $fdoc = new_Doc($dbaccess, $famid);
         // searches for all fathers kind
         
@@ -839,7 +839,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             $sqlfilter[] = "title ~* '$name'";
         }
         
-        return internalGetDocCollection($dbaccess, 0, 0, $limit, $sqlfilter, $userid, "TABLE", \Dcp\Core\DocManager::getFamilyIdFromName($famname), false, "title");
+        return internalGetDocCollection($dbaccess, 0, 0, $limit, $sqlfilter, $userid, "TABLE", \Anakeen\Core\DocManager::getFamilyIdFromName($famname), false, "title");
     }
     function sqlval2array($sqlvalue)
     {
@@ -1164,7 +1164,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     function familyNeedDocread($dbaccess, $id)
     {
         if (!is_numeric($id)) {
-            $id = \Dcp\Core\DocManager::getFamilyIdFromName($id);
+            $id = \Anakeen\Core\DocManager::getFamilyIdFromName($id);
         }
         $id = abs(intval($id));
         if ($id == 0) {

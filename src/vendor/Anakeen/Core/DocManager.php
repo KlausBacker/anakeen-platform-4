@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Dcp\Core;
+namespace Anakeen\Core;
 
 class DocManager
 {
     /**
-     * @var \Dcp\Core\DocManager\MemoryCache $localCache
+     * @var \Anakeen\Core\DocManager\MemoryCache $localCache
      */
     protected static $localCache = null;
     protected static $firstgetIdFromName = true;

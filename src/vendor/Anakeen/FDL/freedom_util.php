@@ -16,7 +16,7 @@
 
 include_once("FDL/Lib.Util.php");
 
-use Dcp\Core\DocManager;
+use Anakeen\Core\DocManager;
 use Dcp\Core\DbManager;
 
 //
@@ -296,7 +296,7 @@ function getDocTitle($id, $latest = true)
 {
     $dbaccess = getDbAccess();
     if (!is_numeric($id)) {
-        $id = \Dcp\Core\DocManager::getIdFromName($id);
+        $id = \Anakeen\Core\DocManager::getIdFromName($id);
     }
     if ($id > 0) {
         if (!$latest) {
@@ -341,7 +341,7 @@ function getDocProperties(
 ) {
     $dbaccess = getDbAccess();
     if (!is_numeric($id)) {
-        $id = \Dcp\Core\DocManager::getIdFromName($id);
+        $id = \Anakeen\Core\DocManager::getIdFromName($id);
     }
     if (($id > 0) && count($prop) > 0) {
         $sProps = implode(',', $prop);
@@ -368,7 +368,7 @@ function getDocProperties(
 /**
  * return document table value
  *
- * @deprecated use Dcp\Core\DocManager::getRawDocument(), Dcp\Core\DocManager::getRawData()
+ * @deprecated use Anakeen\Core\DocManager::getRawDocument(), Anakeen\Core\DocManager::getRawData()
  *
  * @param string $dbaccess   database specification
  * @param int    $id         identifier of the object
@@ -384,14 +384,14 @@ function getTDoc($dbaccess, $id, $sqlfilters = array(), $result = array())
     global $SQLDELAY, $SQLDEBUG;
 
     if (!is_numeric($id)) {
-        $id = \Dcp\Core\DocManager::getIdFromName($id);
+        $id = \Anakeen\Core\DocManager::getIdFromName($id);
     }
     if (!($id > 0)) {
         return false;
     }
     $dbid = DbManager::getDbId();
     $table = "doc";
-    $fromid = \Dcp\Core\DocManager::getFromId($id);
+    $fromid = \Anakeen\Core\DocManager::getFromId($id);
     if ($fromid > 0) {
         $table = "doc$fromid";
     } else {
@@ -1072,7 +1072,7 @@ function getRevTDoc($dbaccess, $initid, $rev)
         return false;
     }
     $table = "docread";
-    $fromid = \Dcp\Core\DocManager::getFromId($initid);
+    $fromid = \Anakeen\Core\DocManager::getFromId($initid);
     $sql = sprintf("select fromid from docread where initid=%d and revision=%d", $initid, $rev);
     DbManager::query($sql, $fromid, true, true);
     if ($fromid > 0) {

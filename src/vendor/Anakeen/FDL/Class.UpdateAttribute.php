@@ -56,7 +56,7 @@ class UpdateAttribute
         if ($search) {
             $famName = $search->fromid;
             if (!is_numeric($famName)) {
-                $this->famid = \Dcp\Core\DocManager::getFamilyIdFromName($famName);
+                $this->famid = \Anakeen\Core\DocManager::getFamilyIdFromName($famName);
             } else {
                 $this->famid = $famName;
             }

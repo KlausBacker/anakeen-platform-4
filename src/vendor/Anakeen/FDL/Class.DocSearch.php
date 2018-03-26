@@ -391,7 +391,7 @@ class DocSearch extends PDocSearch
         $only = '';
         if ($this->getRawValue("se_famonly") == "yes") {
             if (!is_numeric($famid)) {
-                $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famid);
+                $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($famid);
             }
             $only = "only";
         }

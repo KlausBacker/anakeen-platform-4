@@ -180,19 +180,19 @@ function getMailAddr($userid, $full = false)
 /**
  * @param string $def
  *
- * @deprecated use \Dcp\Core\ContextManager::getTmpDir()
+ * @deprecated use \Anakeen\Core\ContextManager::getTmpDir()
  * @return string
  */
 function getTmpDir($def = '/tmp')
 {
-    return \Dcp\Core\ContextManager::getTmpDir($def);
+    return \Anakeen\Core\ContextManager::getTmpDir($def);
 }
 
 /**
  * return value of parameters
  *
- * @deprecated  use \Dcp\Core\ContextManager::getApplicationParam
- * @see         \Dcp\Core\ContextManager::getApplicationParam
+ * @deprecated  use \Anakeen\Core\ContextManager::getApplicationParam
+ * @see         \Anakeen\Core\ContextManager::getApplicationParam
  * @brief       must be in core or global type
  *
  * @param string $name param name
@@ -202,13 +202,13 @@ function getTmpDir($def = '/tmp')
  */
 function getParam($name, $def = "")
 {
-    return \Dcp\Core\ContextManager::getApplicationParam($name, $def);
+    return \Anakeen\Core\ContextManager::getApplicationParam($name, $def);
 }
 
 /**
  * return value of a parameter
  *
- * @deprecated use Dcp\Core\ContextManager::getCoreParam
+ * @deprecated use Anakeen\Core\ContextManager::getCoreParam
  * @brief      must be in core or global type
  *
  * @param string $name param name
@@ -218,7 +218,7 @@ function getParam($name, $def = "")
  */
 function getCoreParam($name, $def = "")
 {
-    return \Dcp\Core\ContextManager::getCoreParam($name, $def);
+    return \Anakeen\Core\ContextManager::getCoreParam($name, $def);
 }
 
 /**
@@ -240,12 +240,12 @@ function getSessionValue($name, $def = "")
 /**
  * return current log in user
  *
- * @deprecated use Dcp\Core\ContextManager::getCurrentUser
+ * @deprecated use Anakeen\Core\ContextManager::getCurrentUser
  * @return Account
  */
 function getCurrentUser()
 {
-    return \Dcp\Core\ContextManager::getCurrentUser();
+    return \Anakeen\Core\ContextManager::getCurrentUser();
 }
 
 function getLayoutFile($app, $layfile)
@@ -257,8 +257,8 @@ function getLayoutFile($app, $layfile)
     if (!strstr($layfile, '.')) {
         $layfile .= ".xml";
     }
-    $socStyle = \Dcp\Core\ContextManager::getApplicationParam("CORE_SOCSTYLE");
-    $style = \Dcp\Core\ContextManager::getApplicationParam("STYLE");
+    $socStyle = \Anakeen\Core\ContextManager::getApplicationParam("CORE_SOCSTYLE");
+    $style = \Anakeen\Core\ContextManager::getApplicationParam("STYLE");
     $appDir = $action->parent->rootdir;
 
     if ($socStyle != "") {
@@ -573,7 +573,7 @@ function getWshCmd($nice = false, $userid = 0, $sudo = false)
  */
 function getUserId()
 {
-    $u = \Dcp\Core\ContextManager::getCurrentUser();
+    $u = \Anakeen\Core\ContextManager::getCurrentUser();
     if ($u) {
         return $u->id;
     }
@@ -590,7 +590,7 @@ function getUserId()
  */
 function bgexec($tcmd, &$result, &$err)
 {
-    $foutname = uniqid(\Dcp\Core\ContextManager::getTmpDir() . "/bgexec");
+    $foutname = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/bgexec");
     $fout = fopen($foutname, "w+");
     fwrite($fout, "#!/bin/bash\n");
     foreach ($tcmd as $v) {
@@ -685,7 +685,7 @@ function setMailtoAnchor(
     if ($forcelink == "mailto") {
         $target = $forcelink;
     } else {
-        $target = strtolower(\Dcp\Core\ContextManager::getApplicationParam("CORE_MAIL_LINK", "optimal"));
+        $target = strtolower(\Anakeen\Core\ContextManager::getApplicationParam("CORE_MAIL_LINK", "optimal"));
         if ($target == "optimal") {
             $target = "mailto";
         }
@@ -782,7 +782,7 @@ function WhatInitialisation($session = null)
     $action->Set("", $core);
     // i18n
     $lang = $action->Getparam("CORE_LANG");
-    \Dcp\Core\ContextManager::setLanguage($lang);
+    \Anakeen\Core\ContextManager::setLanguage($lang);
 }
 
 /**
@@ -818,12 +818,12 @@ function getLcdate()
  *
  * @param string $core_lang
  *
- * @deprecated use Dcp\Core\ContextManager::getLocaleConfig
+ * @deprecated use Anakeen\Core\ContextManager::getLocaleConfig
  * @return bool|array
  */
 function getLocaleConfig($core_lang = '')
 {
-    return \Dcp\Core\ContextManager::getLocaleConfig($core_lang);
+    return \Anakeen\Core\ContextManager::getLocaleConfig($core_lang);
 }
 
 function getLocales()
@@ -841,14 +841,14 @@ function getLocales()
 /**
  * use new locale language
  *
- * @deprecated use Dcp\Core\ContextManager::setLanguage
+ * @deprecated use Anakeen\Core\ContextManager::setLanguage
  *
  * @param string $lang like fr_FR, en_US
  *
  */
 function setLanguage($lang)
 {
-    \Dcp\Core\ContextManager::setLanguage($lang);
+    \Anakeen\Core\ContextManager::setLanguage($lang);
 }
 
 // use UTF-8 by default

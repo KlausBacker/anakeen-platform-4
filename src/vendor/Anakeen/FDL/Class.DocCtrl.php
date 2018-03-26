@@ -40,7 +40,7 @@ define("POS_WF", 12); // begin of workflow privilege definition
 
 
 use \Dcp\Core\DbManager;
-use \Dcp\Core\DocManager;
+use \Anakeen\Core\DocManager;
 
 /**
  * Control Access Document Class
@@ -288,7 +288,7 @@ class DocCtrl extends DocLDAP
         $this->profid = $profid;
         if (($profid > 0) && ($profid != $this->id)) {
             // make sure that the profil is activated
-            $pdoc = Dcp\Core\DocManager::getDocument($profid);
+            $pdoc = Anakeen\Core\DocManager::getDocument($profid);
             if ($pdoc && $pdoc->getRawValue("DPDOC_FAMID") > 0) {
                 // dynamic profil
                 $this->dprofid = $profid;
@@ -430,7 +430,7 @@ class DocCtrl extends DocLDAP
         $vupacl = array();
         
         $tVgroup2attrid = array();
-        $pdoc = Dcp\Core\DocManager::getDocument($dprofid);
+        $pdoc = Anakeen\Core\DocManager::getDocument($dprofid);
         if ($pdoc) {
             $pfamid = $pdoc->getRawValue("DPDOC_FAMID");
         }
