@@ -807,7 +807,7 @@ class View extends Crud
     {
         $dataDocument = json_decode($jsonString, true);
         $this->customClientData = isset($dataDocument[self::fieldCustomClientData]) ? $dataDocument[self::fieldCustomClientData] : null;
-        $values = DocumentUtils::analyzeDocumentJSON($jsonString);
+        $values = \Anakeen\Routes\Core\Lib\DocumentUtils::analyzeDocumentJSON($jsonString);
         if (isset($dataDocument["document"]["properties"])) {
             $this->properties = $dataDocument["document"]["properties"];
         }

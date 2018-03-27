@@ -66,7 +66,7 @@ class CreationView extends Crud {
 
     public function analyseJSON($jsonString)
     {
-        $values = DocumentUtils::analyzeDocumentJSON($jsonString);
+        $values = \Anakeen\Routes\Core\Lib\DocumentUtils::analyzeDocumentJSON($jsonString);
         return $values;
     }
 }

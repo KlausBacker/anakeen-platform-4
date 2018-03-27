@@ -6,7 +6,7 @@
 
 namespace Dcp\Ui;
 
-use Anakeen\Routes\Core\DocumentApiData;
+use Anakeen\Routes\Core\Lib\DocumentApiData;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DocManager;
 
@@ -29,7 +29,7 @@ class DocumentTemplateContext implements \ArrayAccess
     protected $docProperties = null;
     protected $docAttributes = null;
     /**
-     * @var DocumentApiData
+     * @var \Anakeen\Routes\Core\Lib\DocumentApiData
      */
     protected $_documentCrud = null;
     protected $_documentData = null;
@@ -81,7 +81,7 @@ class DocumentTemplateContext implements \ArrayAccess
     {
 
         if ($this->_documentCrud === null) {
-            $this->_documentCrud = new DocumentApiData($this->_document);
+            $this->_documentCrud = new \Anakeen\Routes\Core\Lib\DocumentApiData($this->_document);
             if (count($subFields) > 0) {
                 $completeFields = array_map(function ($item) use ($field) {
                     return $field . '.' . $item;

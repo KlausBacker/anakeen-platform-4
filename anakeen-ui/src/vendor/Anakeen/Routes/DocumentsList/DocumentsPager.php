@@ -104,11 +104,11 @@ class DocumentsPager extends DocumentList
     {
         $orderBy = $this->orderBy;
         if ($this->family) {
-            return DocumentUtils::extractOrderBy($orderBy, $this->family);
+            return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, $this->family);
         } elseif ($this->collection) {
             $familyOfCollectionId = $this->collection->getRawValue("se_famid");
             if (isset($familyOfCollectionId)) {
-                return DocumentUtils::extractOrderBy($orderBy, DocManager::getFamily($familyOfCollectionId));
+                return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, DocManager::getFamily($familyOfCollectionId));
             }
         }
         return parent::extractOrderBy();

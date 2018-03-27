@@ -1,7 +1,7 @@
 <?php
 namespace Anakeen\Routes\Ui;
 
-use Anakeen\Routes\Core\DocumentApiData;
+use Anakeen\Routes\Core\Lib\DocumentApiData;
 use Anakeen\Routes\Core\WorkflowState;
 
 /**
@@ -90,7 +90,7 @@ class TransitionView extends WorkflowState
     
     protected function getWorkflowDataObject()
     {
-        $workflow = new DocumentApiData($this->workflow);
+        $workflow = new \Anakeen\Routes\Core\Lib\DocumentApiData($this->workflow);
         
         $info = array(
             "document.properties",

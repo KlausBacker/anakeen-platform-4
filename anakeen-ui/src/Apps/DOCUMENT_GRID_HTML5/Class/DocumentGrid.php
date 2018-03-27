@@ -148,7 +148,7 @@ class DocumentGrid extends DocumentCollection
             if ($this->_collection->getAttributeValue("se_famid")) {
                 $tmpDoc = new_Doc("", $this->_collection->getAttributeValue("se_famid"));
             }
-            return DocumentUtils::getAttributesFields($tmpDoc, $prefix, $fields);
+            return \Anakeen\Routes\Core\Lib\DocumentUtils::getAttributesFields($tmpDoc, $prefix, $fields);
         }
         return array();
     }
@@ -284,7 +284,7 @@ class DocumentGrid extends DocumentCollection
             }
         }
 
-        $resultOrder = DocumentUtils::extractOrderBy($orderBy, $family);
+        $resultOrder = \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, $family);
         return $resultOrder;
     }
 }

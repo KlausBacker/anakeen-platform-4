@@ -105,7 +105,7 @@ class RenderAttributeVisibilities implements \JsonSerializable
      */
     protected function computeVisibility(\BasicAttribute $oa)
     {
-        $this->finalVisibilities[$oa->id] = ComputeVisibility($this->finalVisibilities[$oa->id], $this->finalVisibilities[$oa->fieldSet->id], isset($oa->fieldSet->fieldSet) ? $this->finalVisibilities[$oa->fieldSet->fieldSet->id] : '');
+        $this->finalVisibilities[$oa->id] =  \Anakeen\Core\Utils\MiscDoc::ComputeVisibility($this->finalVisibilities[$oa->id], $this->finalVisibilities[$oa->fieldSet->id], isset($oa->fieldSet->fieldSet) ? $this->finalVisibilities[$oa->fieldSet->fieldSet->id] : '');
     }
     /**
      * (PHP 5 &gt;= 5.4.0)<br/>

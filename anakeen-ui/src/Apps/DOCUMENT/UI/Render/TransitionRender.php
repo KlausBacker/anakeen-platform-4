@@ -13,7 +13,7 @@
 
 namespace Dcp\Ui;
 
-use Anakeen\Routes\Core\DocumentApiData;
+use Anakeen\Routes\Core\Lib\DocumentApiData;
 
 class TransitionRender
 {
@@ -32,7 +32,7 @@ class TransitionRender
      */
     protected $formatCollection;
     /**
-     * @var DocumentApiData
+     * @var \Anakeen\Routes\Core\Lib\DocumentApiData
      */
     protected $crudWorkflow;
 
@@ -55,12 +55,12 @@ class TransitionRender
     /**
      * @param string $key optionnal specific information
      *
-     * @return DocumentApiData
+     * @return \Anakeen\Routes\Core\Lib\DocumentApiData
      */
     public function getViewWorkflow($key = null)
     {
         if ($this->workflowData === null) {
-            $this->crudWorkflow = new DocumentApiData($this->workflow);
+            $this->crudWorkflow = new \Anakeen\Routes\Core\Lib\DocumentApiData($this->workflow);
 
             $info = array(
                 "document.properties",
@@ -122,11 +122,11 @@ class TransitionRender
     }
 
     /**
-     * @param DocumentApiData $document
+     * @param \Anakeen\Routes\Core\Lib\DocumentApiData $document
      * @param \BasicAttribute $attribute
      * @return AttributeInfo
      */
-    protected function getAttributeInfo(DocumentApiData $document, \BasicAttribute $attribute)
+    protected function getAttributeInfo(\Anakeen\Routes\Core\Lib\DocumentApiData $document, \BasicAttribute $attribute)
     {
         if ($this->formatCollection === null) {
             $this->formatCollection = new \FormatCollection($this->workflow);

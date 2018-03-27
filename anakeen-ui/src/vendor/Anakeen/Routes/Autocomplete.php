@@ -3,7 +3,6 @@
 namespace Anakeen\Routes\Ui;
 
 use Anakeen\Router\Exception;
-use Anakeen\Routes\Core\ApiMessage;
 use Dcp\Core\AutocompleteLib;
 use Anakeen\Core\DocManager as DocManager;
 use Anakeen\Router\ApiV2Response;
@@ -19,7 +18,7 @@ class Autocomplete
     protected $attributeId;
     protected $contentParameters;
     /**
-     * @var ApiMessage[]
+     * @var \Anakeen\Routes\Core\Lib\ApiMessage[]
      */
     protected $messages=[];
 
@@ -121,7 +120,7 @@ class Autocomplete
                     throw new Exception(sprintf(___("wrong return type when calling function %s\n%s", "ddui"), $attributeObject->phpfunc, $result));
                 }
                 $err = $result;
-                $message = new ApiMessage();
+                $message = new \Anakeen\Routes\Core\Lib\ApiMessage();
                 $message->contentHtml = $result;
                 $this->messages[]=$message;
             }
@@ -153,8 +152,8 @@ class Autocomplete
                 }
             }
             if (count($return["data"]) === 0) {
-                $message = new ApiMessage();
-                $message->type = ApiMessage::MESSAGE;
+                $message = new \Anakeen\Routes\Core\Lib\ApiMessage();
+                $message->type = \Anakeen\Routes\Core\Lib\ApiMessage::MESSAGE;
 
                 if (!empty($this->contentParameters["filter"]["filters"][0]["value"])) {
                     $message->contentHtml = sprintf(___("No matches \"<i>%s</i>\"", "ddui"), htmlspecialchars($this->contentParameters["filter"]["filters"][0]["value"]));
@@ -164,8 +163,8 @@ class Autocomplete
                 $this->messages[]=$message;
             }
         } catch (Exception $e) {
-            $message = new ApiMessage();
-            $message->type = ApiMessage::ERROR;
+            $message = new \Anakeen\Routes\Core\Lib\ApiMessage();
+            $message->type = \Anakeen\Routes\Core\Lib\ApiMessage::ERROR;
             $message->contentText = $e->getMessage();
             $this->messages[]=$message;
         }

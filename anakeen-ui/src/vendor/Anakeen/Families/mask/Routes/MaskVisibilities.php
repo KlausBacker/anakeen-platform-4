@@ -2,7 +2,7 @@
 
 namespace Anakeen\Routes\Ui\Families\Mask;
 
-use Anakeen\Routes\Core\ApiMessage;
+use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\Core\DocManager;
 use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
@@ -62,7 +62,7 @@ class MaskVisibilities
 
         $integrityMsg = $this->_document->verifyIntegraty();
         if ($integrityMsg) {
-            $msg = new ApiMessage();
+            $msg = new \Anakeen\Routes\Core\Lib\ApiMessage();
             $msg->contentText = $integrityMsg;
             $messages[] = $msg;
         }

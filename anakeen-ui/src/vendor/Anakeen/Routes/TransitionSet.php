@@ -2,7 +2,7 @@
 
 namespace Anakeen\Routes\Ui;
 
-use Anakeen\Routes\Core\DocumentApiData;
+use Anakeen\Routes\Core\Lib\DocumentApiData;
 use Anakeen\Routes\Core\WorkflowSetState;
 
 /**
@@ -25,7 +25,7 @@ class TransitionSet extends WorkflowSetState
 
     /**
      * Change state
-     * @param \Anakeen\Routes\Core\ApiMessage[] $messages
+     * @param \Anakeen\Routes\Core\Lib\ApiMessage[] $messages
      * @return mixed
      * @throws \Anakeen\Router\Exception
      */
@@ -51,7 +51,7 @@ class TransitionSet extends WorkflowSetState
 
     protected function getWorkflowDataObject()
     {
-        $workflow = new DocumentApiData($this->workflow);
+        $workflow = new \Anakeen\Routes\Core\Lib\DocumentApiData($this->workflow);
 
         $info = array(
             "document.properties",

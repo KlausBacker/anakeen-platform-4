@@ -33,7 +33,7 @@ class MailPassword
         $login=$args["userId"];
         // $language=$request->getParam("language");
 
-        $user = new \Account();
+        $user = new \Anakeen\Core\Account();
         $user->setLoginName($login);
 
         if (!$user->isAffected()) {
@@ -60,7 +60,7 @@ class MailPassword
             \Anakeen\Core\ContextManager::initContext($user, "CORE", "", \AuthenticatorManager::$session);
 
             $userDocument=DocManager::getDocument($user->fid);
-            $mailTemplateId=\ApplicationParameterManager::getParameterValue("AUTHENT", "AUTHENT_MAILASKPWD");
+            $mailTemplateId=\Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("AUTHENT", "AUTHENT_MAILASKPWD");
             /**
              * @var \Dcp\Family\Mailtemplate $mailTemplate
              */

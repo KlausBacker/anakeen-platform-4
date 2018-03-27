@@ -2,7 +2,7 @@
 
 namespace Anakeen\Routes\Ui;
 
-class FamilyApiData extends \Anakeen\Routes\Core\DocumentApiData
+class FamilyApiData extends \Anakeen\Routes\Core\Lib\DocumentApiData
 {
     /**
      * Get the attribute info

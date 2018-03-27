@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Ui;
 
 use Anakeen\Router\URLUtils;
-use Anakeen\Routes\Core\ApiMessage;
+use Anakeen\Routes\Core\Lib\ApiMessage;
 use Dcp\AttributeIdentifiers\Cvdoc as CvdocAttribute;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
@@ -195,9 +195,9 @@ class DocumentView
         }
         $messages = [];
         if ($refreshMsg) {
-            $msg = new ApiMessage();
+            $msg = new \Anakeen\Routes\Core\Lib\ApiMessage();
             $msg->contentHtml = $refreshMsg;
-            $msg->type = ApiMessage::MESSAGE;
+            $msg->type = \Anakeen\Routes\Core\Lib\ApiMessage::MESSAGE;
             $msg->code = "REFRESH";
             $messages[] = $msg;
         }
@@ -419,7 +419,7 @@ class DocumentView
      */
     protected function renderDocument($document)
     {
-        $documentData = new \Anakeen\Routes\Core\DocumentApiData($document);
+        $documentData = new \Anakeen\Routes\Core\Lib\DocumentApiData($document);
         $fields = array(
             "document.attributes",
             "document.properties.family",

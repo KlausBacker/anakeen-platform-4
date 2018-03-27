@@ -6,7 +6,7 @@
 namespace Anakeen\Routes\Ui;
 
 use Anakeen\Router\Exception;
-use Anakeen\Routes\Core\ApiMessage;
+use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\Core\DocManager;
 
 /**
@@ -162,7 +162,7 @@ class DocumentHtml
         $warnings = $action->parent->getWarningMsg();
         $messages = [];
         foreach ($warnings as $warning) {
-            $message = new ApiMessage();
+            $message = new \Anakeen\Routes\Core\Lib\ApiMessage();
             $message->contentText = $warning;
             $message->type = $message::WARNING;
 
