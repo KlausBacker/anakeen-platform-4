@@ -104,7 +104,7 @@ class WorkflowTransition extends WorkflowState
         if (empty($askes)) {
             return array();
         }
-        $workflow = new DocumentApiData($this->workflow);
+        $workflow = new \Anakeen\Routes\Core\Lib\DocumentApiData($this->workflow);
 
         $attrData = array();
         foreach ($askes as $ask) {

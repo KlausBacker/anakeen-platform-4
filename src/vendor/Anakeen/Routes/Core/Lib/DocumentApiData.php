@@ -1,6 +1,6 @@
 <?php
 
-namespace Anakeen\Routes\Core;
+namespace Anakeen\Routes\Core\Lib;
 
 use Anakeen\Router\URLUtils;
 use Anakeen\Core\DbManager;
@@ -34,7 +34,7 @@ class DocumentApiData
      */
     protected $request;
     /**
-     * @var Lib\DocumentDataFormatter
+     * @var DocumentDataFormatter
      */
     protected $documentFormater = null;
     /**
@@ -200,7 +200,7 @@ class DocumentApiData
 
     protected function getDocumentDataFormatter()
     {
-        return new Lib\DocumentDataFormatter($this->_document);
+        return new DocumentDataFormatter($this->_document);
     }
 
     /**

@@ -31,7 +31,7 @@ class DocumentData
     protected $valueRender = array();
     protected $propRender = array();
     /**
-     * @var DocumentApiData
+     * @var \Anakeen\Routes\Core\Lib\DocumentApiData
      */
     protected $data;
     /**
@@ -198,7 +198,7 @@ class DocumentData
 
     protected function getDocumentApiData()
     {
-        return new DocumentApiData($this->_document);
+        return new \Anakeen\Routes\Core\Lib\DocumentApiData($this->_document);
     }
 
 
