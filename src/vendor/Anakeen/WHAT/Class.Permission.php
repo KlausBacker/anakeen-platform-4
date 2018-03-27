@@ -123,7 +123,7 @@ create index permission_idx4 on permission(computed);
      */
     public function ListUserPermissions($user, $app)
     {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Permission");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Permission::class);
         $query->basic_elem->sup_where = array(
             "id_user='{$user->id}'",
             "id_application='{$app->id}'"
@@ -140,7 +140,7 @@ create index permission_idx4 on permission(computed);
     // Gives the list of application where a user has permission
     public function ListUserApplications($user)
     {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Permission");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Permission::class);
         $query->basic_elem->sup_where = array(
             "id_user='{$user->id}'"
         );
@@ -158,7 +158,7 @@ create index permission_idx4 on permission(computed);
     
     public function ListApplicationUsers($app)
     {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Permission");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Permission::class);
         $query->basic_elem->sup_where = array(
             "id_application='{$app->id}'"
         );
@@ -175,7 +175,7 @@ create index permission_idx4 on permission(computed);
     
     public function Exists($userid, $applicationid, $aclid = 0)
     {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Permission");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Permission::class);
         $query->basic_elem->sup_where = array(
             "id_application='$applicationid'",
             "id_user='{$userid}'",
@@ -192,7 +192,7 @@ create index permission_idx4 on permission(computed);
     
     public function IsOver($user, $application, $acl)
     {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Permission");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Permission::class);
         $query->basic_elem->sup_where = array(
             "id_application='{$application->id}'",
             "id_user='{$user->id}'"
@@ -207,7 +207,7 @@ create index permission_idx4 on permission(computed);
     
     public function GrantLevel($user, $application)
     {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Permission");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Permission::class);
         $query->basic_elem->sup_where = array(
             "id_application='{$application->id}'",
             "id_user='{$user->id}'"
@@ -222,7 +222,7 @@ create index permission_idx4 on permission(computed);
     
     public function DelAppPerm($id)
     {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Permission");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Permission::class);
         $query->basic_elem->sup_where = array(
             "id_application=$id"
         );
@@ -293,7 +293,7 @@ create index permission_idx4 on permission(computed);
      */
     public function GetComputedPrivileges($uid, $appid)
     {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "permission");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Permission::class);
         $query->basic_elem->sup_where = array(
             "id_application = '" . $appid . "'",
             "id_user = '" . $uid . "'",
@@ -365,7 +365,7 @@ create index permission_idx4 on permission(computed);
             }
         }
         
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Permission");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Permission::class);
         $query->basic_elem->sup_where = array(
             "id_application='{$this->id_application}'",
             "id_user='{$this->id_user}'",

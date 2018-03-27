@@ -261,7 +261,7 @@ create sequence SEQ_ID_ACL;
         //       if (!$find) {
         //         // remove the ACL and all associated permissions
         //         $this->log->info("Removing the {$v->name} ACL");
-        //         $query2 = new \Anakeen\Core\Internal\QueryDb($this->dbaccess,"Permission");
+        //         $query2 = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Permission::class);
         //         $query2->basic_elem->sup_where=array("id_application= {$app->id}",
         //                                              "id_acl = {$v->id}");
         //         $list_perm = $query2->Query();
