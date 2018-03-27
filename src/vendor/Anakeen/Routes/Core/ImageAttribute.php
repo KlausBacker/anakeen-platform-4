@@ -60,7 +60,7 @@ class ImageAttribute extends FileAttribute
         if (file_exists($destination)) {
             $outFile = $destination;
         } else {
-            $outFile = Files::resizeLocalImage($this->fileInfo->path, $destination, $this->size);
+            $outFile = Lib\Files::resizeLocalImage($this->fileInfo->path, $destination, $this->size);
         }
 
         $fileName = sprintf("%s-%s", $this->size, $this->fileInfo->name);

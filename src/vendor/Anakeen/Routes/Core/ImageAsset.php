@@ -39,7 +39,7 @@ class ImageAsset
             $dest = $this->getDestinationCacheImage($this->imageFileName, $this->size);
 
             if (!file_exists($dest)) {
-                $outFile = Files::resizeLocalImage($location, $dest, $this->size);
+                $outFile = Lib\Files::resizeLocalImage($location, $dest, $this->size);
             } else {
                 $outFile = $dest;
             }

@@ -25,7 +25,7 @@ class RecordedImage extends ImageAsset
     protected function getSourceImage()
     {
         $vaultId = $this->imageFileName;
-        $location = \Anakeen\Routes\Core\Files::getVaultPath($vaultId, true);
+        $location = \Anakeen\Routes\Core\Lib\Files::getVaultPath($vaultId, true);
         
         if (!$location || !file_exists($location)) {
             throw new Exception("CRUD0600", $vaultId);
