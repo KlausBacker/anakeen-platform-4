@@ -21,7 +21,7 @@ class AppInfo
     public $version;
     public $override;
     /**
-     * @var ParameterInfo[]
+     * @var \Anakeen\Core\Internal\ParameterInfo[]
      */
     public $parameters = [];
 
@@ -84,7 +84,7 @@ class AppInfo
         $this->application->childof = $this->parentName;
         $this->application->available = 'Y';
 
-        $this->application->param = new \Param();
+        $this->application->param = new \Anakeen\Core\Internal\Param();
         $err = $this->application->add();
 
         if ($err) {
@@ -107,7 +107,7 @@ class AppInfo
     {
         $this->application = $app;
 
-        $this->application->param = new \Param();
+        $this->application->param = new \Anakeen\Core\Internal\Param();
         $this->application->name = $this->name;
         $this->application->short_name = $this->shortName;
         $this->application->description = $this->description;
@@ -149,7 +149,7 @@ class AppInfo
 
         foreach ($this->parameters as $name => $parameter) {
             /**
-             * @var ParameterInfo $parameter
+             * @var \Anakeen\Core\Internal\ParameterInfo $parameter
              */
             $paramDefData = [
                 "val" => $parameter->value,

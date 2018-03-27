@@ -193,7 +193,7 @@ class styleManager
             throw new \Dcp\Style\Exception("STY0002", "Style definition does not contains name");
         }
         
-        $param = new Param();
+        $param = new \Anakeen\Core\Internal\Param();
         
         $styleName = $styleConfig['sty_desc']['name'];
         $style = new Style('', $styleName);
@@ -216,17 +216,17 @@ class styleManager
         }
         // delete previous style parameters
         $this->log("delete previous style parameters");
-        $query = new \Anakeen\Core\Internal\QueryDb("", \Param::class);
-        $query->AddQuery(sprintf("type ~ '^%s'", Param::PARAM_STYLE)); //all of them, regardless of the style they come from
+        $query = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\Param::class);
+        $query->AddQuery(sprintf("type ~ '^%s'", \Anakeen\Core\Internal\Param::PARAM_STYLE)); //all of them, regardless of the style they come from
         $oldParamList = $query->Query();
         if (!empty($oldParamList)) {
             foreach ($oldParamList as $oldParam) {
-                /** @var $oldParam Param */
+                /** @var $oldParam \Anakeen\Core\Internal\Param */
                 $oldParam->delete();
             }
         }
         
-        $paramType = Param::PARAM_STYLE . $styleName;
+        $paramType = \Anakeen\Core\Internal\Param::PARAM_STYLE . $styleName;
         // register color params ($styleConfig['sty_computed_colors'])
         $this->log("register color params");
         $this->logIndent+= 1;

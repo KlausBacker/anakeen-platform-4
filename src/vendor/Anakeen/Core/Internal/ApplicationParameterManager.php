@@ -127,7 +127,7 @@ class ApplicationParameterManager
         if ($action) {
             $parameter = $action->parent->param;
         } else {
-            $parameter = new \Param(getDbAccess());
+            $parameter = new \Anakeen\Core\Internal\Param(getDbAccess());
         }
         
         if ($userId === null) {
@@ -149,7 +149,7 @@ class ApplicationParameterManager
             throw new \Dcp\ApplicationParameterManager\Exception("APM0007", $applicationId, $parameterName, $userId);
         }
         
-        $err = $parameter->set($parameterName, $value, \Param::PARAM_USER . $userId, $applicationId);
+        $err = $parameter->set($parameterName, $value, \Anakeen\Core\Internal\Param::PARAM_USER . $userId, $applicationId);
         if ($err) {
             throw new \Dcp\ApplicationParameterManager\Exception("APM0006", $applicationId, $parameterName, $err);
         }
@@ -206,10 +206,10 @@ class ApplicationParameterManager
         if ($action) {
             $parameter = $action->parent->param;
         } else {
-            $parameter = new \Param(getDbAccess());
+            $parameter = new \Anakeen\Core\Internal\Param(getDbAccess());
         }
         
-        $type = ($isGlobal === "G") ? \Param::PARAM_GLB : \Param::PARAM_APP;
+        $type = ($isGlobal === "G") ? \Anakeen\Core\Internal\Param::PARAM_GLB : \Anakeen\Core\Internal\Param::PARAM_APP;
         
         $err = $parameter->set($parameterName, $value, $type, $applicationId);
         

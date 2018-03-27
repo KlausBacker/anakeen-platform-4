@@ -80,7 +80,7 @@ class ParamDef extends DbObj
      * get Param def object from name
      * @param string $name parameter name
      * @param int $appid application id
-     * @return ParamDef
+     * @return \Anakeen\Core\Internal\ParamDef
      */
     public static function getParamDef($name, $appid = null)
     {

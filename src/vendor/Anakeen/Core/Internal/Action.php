@@ -354,7 +354,7 @@ create sequence SEQ_ID_ACTION;
     /**
      * set a new \value for a user parameter
      *
-     * @see ParameterManager::setUserApplicationParameter
+     * @see \Anakeen\Core\Internal\ParameterManager::setUserApplicationParameter
      *
      * @param string $name parameter key
      * @param string $val  new \value for the parameter

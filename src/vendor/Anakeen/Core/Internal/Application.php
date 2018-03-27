@@ -131,7 +131,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public $style;
     /**
-     * @var \Param
+     * @var \Anakeen\Core\Internal\Param
      */
     public $param;
     /**
@@ -246,7 +246,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         if ($session != "") {
             $this->SetSession($session);
         }
-        $this->param = new \Param($this->dbaccess);
+        $this->param = new \Anakeen\Core\Internal\Param($this->dbaccess);
         $style = false;
         if ($this->session) {
             $style = $this->session->read("userCoreStyle", false);
@@ -915,22 +915,22 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         if ($init == true) {
             if (isset($this->user)) {
-                $pstyle = new \Param($this->dbaccess, array(
+                $pstyle = new \Anakeen\Core\Internal\Param($this->dbaccess, array(
                 "STYLE",
-                \Param::PARAM_USER . $this->user->id,
+                \Anakeen\Core\Internal\Param::PARAM_USER . $this->user->id,
                 "1"
             ));
             } else {
-                $pstyle = new \Param($this->dbaccess, array(
+                $pstyle = new \Anakeen\Core\Internal\Param($this->dbaccess, array(
                 "STYLE",
-                \Param::PARAM_USER . \Anakeen\Core\Account::ANONYMOUS_ID,
+                \Anakeen\Core\Internal\Param::PARAM_USER . \Anakeen\Core\Account::ANONYMOUS_ID,
                 "1"
             ));
             }
             if (!$pstyle->isAffected()) {
-                $pstyle = new \Param($this->dbaccess, array(
+                $pstyle = new \Anakeen\Core\Internal\Param($this->dbaccess, array(
                 "STYLE",
-                \Param::PARAM_APP,
+                \Anakeen\Core\Internal\Param::PARAM_APP,
                 "1"
             ));
             }
@@ -1161,7 +1161,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     }
     /**
      * affect new \value to an application parameter
-     * @see ParameterManager to easily manage application parameters
+     * @see \Anakeen\Core\Internal\ParameterManager to easily manage application parameters
      * @param string $key parameter id
      * @param string|string[] $val parameter value
      */
@@ -1169,26 +1169,26 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         if (is_array($val)) {
             if (isset($val["global"]) && $val["global"] == "Y") {
-                $type = \Param::PARAM_GLB;
+                $type = \Anakeen\Core\Internal\Param::PARAM_GLB;
             } else {
-                $type = \Param::PARAM_APP;
+                $type = \Anakeen\Core\Internal\Param::PARAM_APP;
             }
             $this->param->Set($key, $val["val"], $type, $this->id);
         } else { // old method
-            $this->param->Set($key, $val, \Param::PARAM_APP, $this->id);
+            $this->param->Set($key, $val, \Anakeen\Core\Internal\Param::PARAM_APP, $this->id);
         }
     }
     /**
      * set user parameter for current user
      *
-     * @see ParameterManager to easily manage application parameters
+     * @see \Anakeen\Core\Internal\ParameterManager to easily manage application parameters
      * @param string $key parameter identifier
      * @param string $val value
      * @return string error message
      */
     public function setParamU($key, $val)
     {
-        return $this->param->Set($key, $val, \Param::PARAM_USER . $this->user->id, $this->id);
+        return $this->param->Set($key, $val, \Anakeen\Core\Internal\Param::PARAM_USER . $this->user->id, $this->id);
     }
     /**
      * declare new \application parameter
@@ -1244,9 +1244,9 @@ create sequence SEQ_ID_APPLICATION start 10;
                 // migrate paramv values in case of type changes
                 $newValues = $pdef->getValues();
                 if ($oldValues['isglob'] != $newValues['isglob']) {
-                    $ptype = $oldValues['isglob'] == 'Y' ? \Param::PARAM_GLB : \Param::PARAM_APP;
-                    $ptypeNew = $newValues['isglob'] == 'Y' ? \Param::PARAM_GLB : \Param::PARAM_APP;
-                    $pv = new \Param($this->dbaccess, array(
+                    $ptype = $oldValues['isglob'] == 'Y' ? \Anakeen\Core\Internal\Param::PARAM_GLB : \Anakeen\Core\Internal\Param::PARAM_APP;
+                    $ptypeNew = $newValues['isglob'] == 'Y' ? \Anakeen\Core\Internal\Param::PARAM_GLB : \Anakeen\Core\Internal\Param::PARAM_APP;
+                    $pv = new \Anakeen\Core\Internal\Param($this->dbaccess, array(
                         $pdef->name,
                         $ptype,
                         $pdef->appid
@@ -1381,7 +1381,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                     } else {
                         $this->Add();
                     }
-                    $this->param = new \Param();
+                    $this->param = new \Anakeen\Core\Internal\Param();
                     $this->param->SetKey($this->id, isset($this->user->id) ? $this->user->id : \Anakeen\Core\Account::ANONYMOUS_ID);
                 }
             } else {
@@ -1551,7 +1551,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         
         unset($list);
         // delete params
-        $param = new \Param($this->dbaccess);
+        $param = new \Anakeen\Core\Internal\Param($this->dbaccess);
         $param->DelAll($this->id);
         // delete application
         $err = $this->Delete();

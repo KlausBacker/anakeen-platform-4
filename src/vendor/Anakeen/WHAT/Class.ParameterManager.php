@@ -187,7 +187,7 @@ class ParameterManager
         if ($a) {
             $p = $a->parent->param;
         } else {
-            $p = new Param(getDbAccess());
+            $p = new \Anakeen\Core\Internal\Param(getDbAccess());
         }
         
         $err = $p->set($name, $value, $type, $appId);
@@ -207,7 +207,7 @@ class ParameterManager
         if ($a) {
             $p = $a->parent->param;
         } else {
-            $p = new Param(getDbAccess());
+            $p = new \Anakeen\Core\Internal\Param(getDbAccess());
         }
         
         simpleQuery('', sprintf("select id from users where id=%d and accounttype='U'", $userId), $uid, true, true);

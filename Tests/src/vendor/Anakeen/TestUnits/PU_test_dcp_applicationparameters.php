@@ -72,7 +72,7 @@ class TestApplicationParameters extends TestCaseDcp
     protected function globParamTest(\Anakeen\Core\Internal\Application & $appTest, array $expectedGlob, array $expectedNoGlob)
     {
         foreach ($expectedGlob as $globId) {
-            $p = new \Param(self::$dbaccess, array(
+            $p = new \Anakeen\Core\Internal\Param(self::$dbaccess, array(
                 $globId,
                 PARAM_GLB,
                 $appTest->id
@@ -84,7 +84,7 @@ class TestApplicationParameters extends TestCaseDcp
         }
         
         foreach ($expectedNoGlob as $globId) {
-            $p = new \Param(self::$dbaccess, array(
+            $p = new \Anakeen\Core\Internal\Param(self::$dbaccess, array(
                 $globId,
                 PARAM_APP,
                 $appTest->id

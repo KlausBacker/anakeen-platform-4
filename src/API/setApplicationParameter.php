@@ -29,7 +29,7 @@ if ($parapp != "") {
 }
 
 $dbaccess = \Anakeen\Core\DbManager::getDbAccess();
-$param = new \Anakeen\Core\Internal\QueryDb($dbaccess, \Param::class);
+$param = new \Anakeen\Core\Internal\QueryDb($dbaccess, \Anakeen\Core\Internal\Param::class);
 $param->AddQuery("name='$parname'");
 if ($appid) {
     $param->AddQuery("appid=$appid");
@@ -40,7 +40,7 @@ if ($param->nb == 0) {
 } elseif ($param->nb > 1) {
     printf(_("Attribute %s found is not alone\nMust precise request with appname arguments\n"), $parname);
 } else {
-    /** @var Param $p */
+    /** @var \Anakeen\Core\Internal\Param $p */
     $p = $list[0];
     $p->val = $parval;
     $err = $p->modify();

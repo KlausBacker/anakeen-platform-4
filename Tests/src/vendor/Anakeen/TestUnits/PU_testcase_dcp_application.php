@@ -101,7 +101,7 @@ abstract class TestCaseDcpApplication extends TestCaseDcp
         
         self::$app = new \Anakeen\Core\Internal\Application();
         self::$app->rootdir = $appRoot;
-        self::$app->param = new \Param(self::$dbaccess);
+        self::$app->param = new \Anakeen\Core\Internal\Param(self::$dbaccess);
         self::$app->parent = $myAction->parent;
         self::$app->set($appName, $myAction->parent, $myAction->parent->session, true);
         

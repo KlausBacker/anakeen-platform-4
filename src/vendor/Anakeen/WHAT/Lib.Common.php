@@ -640,7 +640,7 @@ function wbar($reste, $total, $text = "", $fbar = false)
 function getJsVersion()
 {
     include_once("Class.QueryDb.php");
-    $q = new \Anakeen\Core\Internal\QueryDb("", \Param::class);
+    $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\Param::class);
     $q->AddQuery("name='WVERSION'");
     $l = $q->Query(0, 0, "TABLE");
     $nv = 0;
