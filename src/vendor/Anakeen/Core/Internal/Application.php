@@ -127,7 +127,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public $user = null;
     /**
-     * @var \Style
+     * @var \Anakeen\Core\Internal\Style
      */
     public $style;
     /**
@@ -603,7 +603,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         $needparse = $askParse;
         $currentFileRule = $this->style->getRule('css', $ref);
         if (is_array($currentFileRule)) {
-            if (isset($currentFileRule['flags']) && ($currentFileRule['flags'] & \Style::RULE_FLAG_PARSE_ON_RUNTIME)) {
+            if (isset($currentFileRule['flags']) && ($currentFileRule['flags'] & \Anakeen\Core\Internal\Style::RULE_FLAG_PARSE_ON_RUNTIME)) {
                 if (isset($currentFileRule['runtime_parser']) && is_array($currentFileRule['runtime_parser']) && isset($currentFileRule['runtime_parser']['className']) && null !== $currentFileRule['parse_on_runtime']['className']) {
                     throw new \Dcp\Style\Exception("STY0007", 'custom parse_on_runtime class is not supported yet');
                 }
@@ -936,12 +936,12 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
             
             $style = $pstyle->val;
-            $this->style = new \Style($this->dbaccess, $style);
+            $this->style = new \Anakeen\Core\Internal\Style($this->dbaccess, $style);
             
             $this->style->Set($this);
         } else {
             $style = ($useStyle) ? $useStyle : $this->getParam("STYLE");
-            $this->style = new \Style($this->dbaccess, $style);
+            $this->style = new \Anakeen\Core\Internal\Style($this->dbaccess, $style);
             
             $this->style->Set($this);
         }

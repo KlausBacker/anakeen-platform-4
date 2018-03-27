@@ -196,7 +196,7 @@ class styleManager
         $param = new \Anakeen\Core\Internal\Param();
         
         $styleName = $styleConfig['sty_desc']['name'];
-        $style = new Style('', $styleName);
+        $style = new \Anakeen\Core\Internal\Style('', $styleName);
         $style->description = empty($styleConfig['sty_desc']['description']) ? '' : $styleConfig['sty_desc']['description'];
         if (isset($styleConfig['sty_desc']['parsable'])) {
             print "\n[WARNING] use of parsable property on style is deprecated\n\n";
