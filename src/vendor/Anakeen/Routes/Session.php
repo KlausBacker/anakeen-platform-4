@@ -7,7 +7,7 @@
 namespace Anakeen\Routes\Authent;
 
 use Anakeen\Router\Exception;
-use Anakeen\Core\Anakeen\Core\Internal\LogException;
+use Anakeen\Core\LogException;
 use Anakeen\Router\ApiV2Response;
 
 /**

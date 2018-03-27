@@ -167,7 +167,7 @@ class ShellManager
     public static function exceptionHandler($e, $callStack = true)
     {
         if ($callStack === true) {
-            $errMsg = \Anakeen\Core\Anakeen\Core\Internal\LogException::formatErrorLogException($e);
+            $errMsg = \Anakeen\Core\LogException::formatErrorLogException($e);
             error_log($errMsg);
         } else {
             $errMsg = $e->getMessage();

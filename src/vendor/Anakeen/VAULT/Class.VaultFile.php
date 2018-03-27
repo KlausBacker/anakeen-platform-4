@@ -40,7 +40,7 @@ class VaultFile
         }
         $this->idf = $idf;
         $this->name = $vaultname;
-        $this->logger = new Anakeen\Core\Internal\Anakeen\Core\Internal\Log("", "vault", $this->name);
+        $this->logger = new Anakeen\Core\Internal\Log("", "vault", $this->name);
         if ($this->chrono) {
             $this->logger->warning("Running with chrono !!!!");
         }

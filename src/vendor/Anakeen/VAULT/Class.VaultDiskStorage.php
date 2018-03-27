@@ -101,7 +101,7 @@ class VaultDiskStorage extends DbObj
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         DbObj::__construct($dbaccess, $id, $res, $dbid);
-        $this->logger = new Anakeen\Core\Internal\Anakeen\Core\Internal\Log("", "vault", $this->name);
+        $this->logger = new Anakeen\Core\Internal\Log("", "vault", $this->name);
         $this->fs = new VaultDiskFsStorage($this->dbaccess);
     }
     /**
