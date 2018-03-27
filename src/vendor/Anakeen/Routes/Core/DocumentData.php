@@ -76,14 +76,14 @@ class DocumentData
         if (!$this->checkId($this->documentId, $initid)) {
             // Redirect to other url
             $document = DocManager::getDocument($initid, false);
-            $location = DocumentUtils::getURI($document);
+            $location = \Anakeen\Routes\Core\Lib\DocumentUtils::getURI($document);
             return $response->withStatus(307)
                 ->withHeader("location", $location);
         }
 
         $this->setDocument($this->documentId);
         if (isset($args["family"])) {
-            DocumentUtils::verifyFamily($args["family"], $this->_document);
+            \Anakeen\Routes\Core\Lib\DocumentUtils::verifyFamily($args["family"], $this->_document);
         }
 
         $etag = $this->getDocumentEtag($this->_document->id);
@@ -155,7 +155,7 @@ class DocumentData
             $exception = new Exception("ROUTES0102", $ressourceId);
             $exception->setHttpStatus("404", "Document deleted");
             $exception->setUserMessage(sprintf(___("Document \"%s\" is deleted", "ank"), $ressourceId));
-            $location = DocumentUtils::getURI($this->_document);
+            $location = \Anakeen\Routes\Core\Lib\DocumentUtils::getURI($this->_document);
             $exception->setURI($location);
             throw $exception;
         }

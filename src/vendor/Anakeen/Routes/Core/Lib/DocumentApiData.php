@@ -141,7 +141,7 @@ class DocumentApiData
             return array();
         }
 
-        return DocumentUtils::getAttributesFields($this->_document, self::GET_ATTRIBUTE, $this->getFields());
+        return \Anakeen\Routes\Core\Lib\DocumentUtils::getAttributesFields($this->_document, self::GET_ATTRIBUTE, $this->getFields());
     }
 
     /**

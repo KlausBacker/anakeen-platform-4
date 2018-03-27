@@ -58,7 +58,7 @@ class WorkflowStateCollection
         $this->documentId= $args["docid"];
         $this->setDocument($this->documentId);
         if (isset($args["family"])) {
-            DocumentUtils::verifyFamily($args["family"], $this->_document);
+            \Anakeen\Routes\Core\Lib\DocumentUtils::verifyFamily($args["family"], $this->_document);
         }
     }
 
@@ -160,7 +160,7 @@ class WorkflowStateCollection
         if ($this->_document->doctype === "Z") {
             $exception = new Exception("CRUD0219", $resourceId);
             $exception->setHttpStatus("404", "Document deleted");
-            $exception->setURI(DocumentUtils::getURI($this->_document));
+            $exception->setURI(\Anakeen\Routes\Core\Lib\DocumentUtils::getURI($this->_document));
             throw $exception;
         }
         /**

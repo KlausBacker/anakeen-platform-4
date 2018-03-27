@@ -76,7 +76,7 @@ class CollectionDataFormatter
         $this->rootPath = URLUtils::stripUrlSlahes($this->rootPath);
         /* init the standard generator of url (redirect to the documents collection */
         $this->generateUrl = function ($document) {
-            return DocumentUtils::getURI($document, static::APIURL);
+            return \Anakeen\Routes\Core\Lib\DocumentUtils::getURI($document, static::APIURL);
         };
     }
 

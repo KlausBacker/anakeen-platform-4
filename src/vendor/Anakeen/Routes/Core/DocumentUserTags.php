@@ -53,7 +53,7 @@ class DocumentUserTags
 
         $this->setDocument($this->documentId);
         if (isset($args["family"])) {
-            DocumentUtils::verifyFamily($args["family"], $this->_document);
+            \Anakeen\Routes\Core\Lib\DocumentUtils::verifyFamily($args["family"], $this->_document);
         }
         $slice = $request->getQueryParam("slice");
         if ($slice !== null) {
@@ -153,7 +153,7 @@ class DocumentUserTags
         if ($this->_document->doctype === "Z") {
             $exception = new Exception("CRUD0219", $resourceId);
             $exception->setHttpStatus("404", "Document deleted");
-            $exception->setURI(DocumentUtils::getURI($this->_document));
+            $exception->setURI(\Anakeen\Routes\Core\Lib\DocumentUtils::getURI($this->_document));
             throw $exception;
         }
         $err = $this->_document->control("view");

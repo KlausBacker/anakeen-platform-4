@@ -96,13 +96,13 @@ class RevisionList extends DocumentList
         $prefix = self::GET_ATTRIBUTE;
         $fields = $this->getFields();
         if ($this->hasFields(self::GET_ATTRIBUTE) || $this->hasFields(self::GET_ATTRIBUTES)) {
-            return DocumentUtils::getAttributesFields($this->_document, $prefix, $fields);
+            return \Anakeen\Routes\Core\Lib\DocumentUtils::getAttributesFields($this->_document, $prefix, $fields);
         }
         return array();
     }
 
     protected function extractOrderBy()
     {
-        return DocumentUtils::extractOrderBy($this->orderBy, $this->_document);
+        return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($this->orderBy, $this->_document);
     }
 }

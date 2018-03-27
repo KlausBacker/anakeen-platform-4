@@ -1,6 +1,6 @@
 <?php
 
-namespace Anakeen\Routes\Core;
+namespace Anakeen\Routes\Core\Lib;
 
 use Anakeen\Router\Exception;
 use Anakeen\Core\Settings;

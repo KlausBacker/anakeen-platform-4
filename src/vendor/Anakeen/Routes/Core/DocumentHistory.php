@@ -52,7 +52,7 @@ class DocumentHistory
 
         $this->setDocument($this->documentId);
         if (isset($args["family"])) {
-            DocumentUtils::verifyFamily($args["family"], $this->_document);
+            \Anakeen\Routes\Core\Lib\DocumentUtils::verifyFamily($args["family"], $this->_document);
         }
 
 

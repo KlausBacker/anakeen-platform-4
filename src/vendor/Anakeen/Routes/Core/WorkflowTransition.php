@@ -31,7 +31,7 @@ class WorkflowTransition extends WorkflowState
 
 
         if (isset($args["family"])) {
-            DocumentUtils::verifyFamily($args["family"], $this->_document);
+            \Anakeen\Routes\Core\Lib\DocumentUtils::verifyFamily($args["family"], $this->_document);
         }
 
         $err = $this->_document->control("view");

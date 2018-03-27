@@ -117,7 +117,7 @@ class DocumentList
         $prefix = self::GET_ATTRIBUTE;
         $fields = $this->getFields();
         if ($this->hasFields(self::GET_ATTRIBUTE)) {
-            return DocumentUtils::getAttributesFields(null, $prefix, $fields);
+            return \Anakeen\Routes\Core\Lib\DocumentUtils::getAttributesFields(null, $prefix, $fields);
         }
         return array();
     }
@@ -224,7 +224,7 @@ class DocumentList
      */
     protected function extractOrderBy()
     {
-        return DocumentUtils::extractOrderBy($this->orderBy);
+        return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($this->orderBy);
     }
 
     /**
