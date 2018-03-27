@@ -251,7 +251,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
                     $qsql = "select $selectfields from $only $table where $sqlcond ";
                 } else {
-                    $q = new \Anakeen\Core\Internal\QueryDb($dbaccess, "QueryDir");
+                    $q = new \Anakeen\Core\Internal\QueryDb($dbaccess, \QueryDir::class);
                     $q->AddQuery($sqlfld);
                     $tfld = $q->Query(0, 0, "TABLE");
                     if ($q->nb > 0) {
@@ -283,7 +283,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             //-------------------------------------------
             // search familly
             //-------------------------------------------
-            $docsearch = new \Anakeen\Core\Internal\QueryDb($dbaccess, "QueryDir");
+            $docsearch = new \Anakeen\Core\Internal\QueryDb($dbaccess, \QueryDir::class);
             $docsearch->AddQuery("dirid=$dirid");
             $docsearch->AddQuery("qtype = 'M'");
             $ldocsearch = $docsearch->Query(0, 0, "TABLE");
@@ -733,7 +733,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         
         $mc = microtime();
         
-        $q = new \Anakeen\Core\Internal\QueryDb($dbaccess, "QueryDir");
+        $q = new \Anakeen\Core\Internal\QueryDb($dbaccess, \QueryDir::class);
         $q->AddQuery($sqlfld);
         $q->AddQuery("qtype='S'");
         
@@ -916,7 +916,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     function isInDir($dbaccess, $dirid, $docid)
     {
         // return true id docid is in dirid
-        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, "QueryDir");
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \QueryDir::class);
         $query->AddQuery("dirid=" . $dirid);
         $query->AddQuery("childid=" . $docid);
         
@@ -932,7 +932,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     function hasChildFld($dbaccess, $dirid, $issearch = false)
     {
         if ($issearch) {
-            $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, "QueryDir");
+            $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \QueryDir::class);
             $query->AddQuery("qtype='M'");
             $query->AddQuery("dirid=$dirid");
             $list = $query->Query(0, 1, "TABLE");
@@ -955,7 +955,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                 }
             }
         } else {
-            $qfld = new \Anakeen\Core\Internal\QueryDb($dbaccess, "QueryDir");
+            $qfld = new \Anakeen\Core\Internal\QueryDb($dbaccess, \QueryDir::class);
             $qfld->AddQuery("qtype='S'");
             $qfld->AddQuery(sprintf("fld.dirid=%d", $dirid));
             $qfld->AddQuery("doctype='D' or doctype='S'");

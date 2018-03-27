@@ -274,7 +274,7 @@ create index permission_idx4 on permission(computed);
      */
     public function getAllAclForApplication($appid)
     {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "acl");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Acl::class);
         $query->basic_elem->sup_where = array(
             "id_application = '" . $appid . "'"
         );
