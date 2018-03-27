@@ -93,7 +93,7 @@ class DocidRenderConfigView extends \Dcp\Ui\DefaultView
     public function getJsReferences(\Doc $document = null)
     {
 
-        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $jsRef= parent::getJsReferences(
             $document
         );

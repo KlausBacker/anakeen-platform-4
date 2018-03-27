@@ -26,7 +26,7 @@ class ColumnsDefinition extends Crud
         $famId = $this->contentParameters["famId"];
         $attrId = $this->contentParameters["attrid"];
         
-        $userCol = json_decode(\ApplicationParameterManager::getUserParameterValue("DOCUMENT_GRID_HTML5", "DG_USERFAMILYCOLS") , true);
+        $userCol = json_decode(\Anakeen\Core\Internal\ApplicationParameterManager::getUserParameterValue("DOCUMENT_GRID_HTML5", "DG_USERFAMILYCOLS") , true);
         if (!$userCol) {
             $userCol = [];
         }
@@ -36,7 +36,7 @@ class ColumnsDefinition extends Crud
         $userCol[$family->name][] = $attribute->id;
         $userCol[$family->name] = array_unique($userCol[$family->name]);
         
-        \ApplicationParameterManager::setUserParameterValue("DOCUMENT_GRID_HTML5", "DG_USERFAMILYCOLS", json_encode($userCol));
+        \Anakeen\Core\Internal\ApplicationParameterManager::setUserParameterValue("DOCUMENT_GRID_HTML5", "DG_USERFAMILYCOLS", json_encode($userCol));
         
         return ["family" => $famId, "attrid" => $attrId];
     }
@@ -92,7 +92,7 @@ class ColumnsDefinition extends Crud
         $userColumns = [];
         $visibleColumns = [];
         if ($needVisibleColumns) {
-            $userFamPref = json_decode(\ApplicationParameterManager::getUserParameterValue("DOCUMENT_GRID_HTML5", "DG_USERFAMILYCOLS") , true);
+            $userFamPref = json_decode(\Anakeen\Core\Internal\ApplicationParameterManager::getUserParameterValue("DOCUMENT_GRID_HTML5", "DG_USERFAMILYCOLS") , true);
             
             $userAttrids = [];
             if (!empty($userFamPref[$famDef[$this->defaultFamilyId]->name])) {
@@ -192,7 +192,7 @@ class ColumnsDefinition extends Crud
         
         $famId = $this->contentParameters["famId"];
         $attrId = $this->contentParameters["attrid"];
-        $userCol = json_decode(\ApplicationParameterManager::getUserParameterValue("DOCUMENT_GRID_HTML5", "DG_USERFAMILYCOLS") , true);
+        $userCol = json_decode(\Anakeen\Core\Internal\ApplicationParameterManager::getUserParameterValue("DOCUMENT_GRID_HTML5", "DG_USERFAMILYCOLS") , true);
         if (!$userCol) {
             $userCol = [];
         }
@@ -205,7 +205,7 @@ class ColumnsDefinition extends Crud
         unset($famPref[array_search($attribute->id, $famPref) ]);
         $userCol[$family->name] = array_unique(array_values($famPref));
         
-        \ApplicationParameterManager::setUserParameterValue("DOCUMENT_GRID_HTML5", "DG_USERFAMILYCOLS", json_encode($userCol));
+        \Anakeen\Core\Internal\ApplicationParameterManager::setUserParameterValue("DOCUMENT_GRID_HTML5", "DG_USERFAMILYCOLS", json_encode($userCol));
         
         return ["family" => $famId, "attrid" => $attrId];
     }
@@ -276,8 +276,8 @@ class ColumnsDefinition extends Crud
     {
         if (isset($this->urlParameters["identifier"])) {
             $result[] = $this->urlParameters["identifier"];
-            $result[] = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
-            $result[] = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+            $result[] = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
+            $result[] = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
             return implode(",", $result);
         }
         return null;

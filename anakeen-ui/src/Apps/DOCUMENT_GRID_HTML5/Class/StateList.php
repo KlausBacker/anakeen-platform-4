@@ -92,8 +92,8 @@ class StateList extends Crud
     {
         if (isset($this->urlParameters["identifier"])) {
             $result[] = $this->urlParameters["identifier"];
-            $result[] = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
-            $result[] = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+            $result[] = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
+            $result[] = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
             return implode(",", $result);
         }
         return null;

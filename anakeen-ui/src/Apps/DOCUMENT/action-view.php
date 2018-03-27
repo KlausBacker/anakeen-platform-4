@@ -3,7 +3,7 @@
  * @author Anakeen
 */
 
-use Dcp\Core\DocManager;
+use Anakeen\Core\DocManager;
 
 function view(Action & $action)
 {

@@ -2,7 +2,7 @@
 
 namespace Dcp\Ui;
 
-use Dcp\Core\DocManager;
+use Anakeen\Core\DocManager;
 
 class RenderConfigManager
 {
@@ -181,7 +181,7 @@ class RenderConfigManager
     {
         static $renderParameters = null;
         if ($renderParameters === null) {
-            $renderParameters = \ApplicationParameterManager::getParameterValue("DOCUMENT", "RENDER_PARAMETERS");
+            $renderParameters = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("DOCUMENT", "RENDER_PARAMETERS");
             $renderParameters = json_decode($renderParameters, true);
         }
         if (isset($renderParameters["families"][$familyName][$key])) {

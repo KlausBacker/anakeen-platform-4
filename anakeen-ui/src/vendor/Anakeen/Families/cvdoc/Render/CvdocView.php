@@ -73,14 +73,14 @@ HTML
 //    public function getJsReferences(\Doc $document = null)
 //    {
 //        $js = parent::getJsReferences();
-//        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+//        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
 //        $js["dduiCvdoc"] = "DOCUMENT/Layout/Cvdoc/Cvdoc.js?ws=" . $version;
 //        return $js;
 //    }
     public function getCssReferences(\Doc $document = null)
     {
         $css = parent::getCssReferences();
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $css["dduiCvdoc"] = "DOCUMENT/Layout/Cvdoc/Cvdoc.css?ws=" . $version;
         return $css;
     }

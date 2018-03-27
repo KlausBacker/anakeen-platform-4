@@ -7,7 +7,7 @@ namespace Anakeen\Routes\Ui;
 
 use Anakeen\Router\Exception;
 use Anakeen\Routes\Core\ApiMessage;
-use Dcp\Core\DocManager;
+use Anakeen\Core\DocManager;
 
 /**
  * Class DocumentHtml
@@ -66,14 +66,14 @@ class DocumentHtml
             }
         }
 
-        $modeDebug = \ApplicationParameterManager::getParameterValue("DOCUMENT", "MODE_DEBUG");
+        $modeDebug = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("DOCUMENT", "MODE_DEBUG");
         if ($modeDebug !== "FALSE") {
             $layout = new \Layout("DOCUMENT/Layout/debug/view.html");
         } else {
             $layout = new \Layout("DOCUMENT/Layout/prod/view.html");
         }
         $layout->set("BASEURL", self::getBaseUrl());
-        $layout->set("NOTIFICATION_DELAY", \ApplicationParameterManager::getParameterValue("DOCUMENT", "NOTIFICATION_DELAY"));
+        $layout->set("NOTIFICATION_DELAY", \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("DOCUMENT", "NOTIFICATION_DELAY"));
         $layout->set("notificationLabelMore", ___("See more ...", "ddui:notification"));
         $layout->set("notificationTitleMore", ___("Notification", "ddui:notification"));
         $layout->set("messages", "{}");
@@ -132,7 +132,7 @@ class DocumentHtml
         $layout->set("messages", $this->getWarningMessages());
         $render = new \Dcp\Ui\RenderDefault();
 
-        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
 
         $layout->set("ws", $version);
         $cssRefs = $render->getCssReferences();

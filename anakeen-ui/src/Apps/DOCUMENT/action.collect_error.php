@@ -7,7 +7,7 @@
 function collect_error(Action & $action)
 {
     $requestData = json_decode(file_get_contents('php://input') , true);
-    $loggerList = json_decode(ApplicationParameterManager::getParameterValue("DOCUMENT", "LOGGER"));
+    $loggerList = json_decode(\Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("DOCUMENT", "LOGGER"));
     if (json_last_error()) {
         throw new Exception("Unable to decode the log handler list");
     }

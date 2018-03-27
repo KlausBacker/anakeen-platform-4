@@ -182,7 +182,7 @@ class DocumentTemplateContext implements \ArrayAccess
 
     public function userLocale()
     {
-        $localeId = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
+        $localeId = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
         $config = ContextManager::getLocaleConfig($localeId);
         return $config["culture"];
     }

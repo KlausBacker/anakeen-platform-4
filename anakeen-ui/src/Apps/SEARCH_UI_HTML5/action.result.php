@@ -32,7 +32,7 @@ function main(Action &$action){
     $action->lay->set("famid", $idFamily);
     $action->lay->set("id", $id);
     $action->lay->setBlockData("abstract", $arrayOptions);
-    $action->lay->set("WS", \ApplicationParameterManager::getParameterValue("CORE", "WVERSION"));
+    $action->lay->set("WS", \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION"));
 }
 
    

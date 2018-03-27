@@ -22,7 +22,7 @@ class RenderDefault implements IRenderConfig
     
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         return array(
             "bootstrap" => "css/ank/document/bootstrap.css?ws=" . $version,
             "kendo" => "css/ank/document/kendo.css?ws=" . $version,
@@ -39,13 +39,13 @@ class RenderDefault implements IRenderConfig
     {
         $pubExternalPath = "uiAssets/externals";
         $pubInternalPath = "uiAssets/anakeen";
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $jsRef = [
             "jquery"=> UIGetAssetPath::getJSJqueryPath(),
             "kendoui" => UIGetAssetPath::getJSKendoPath()
         ];
 
-        if (\ApplicationParameterManager::getParameterValue("DOCUMENT", "ACTIVATE_LOGGING") === "TRUE") {
+        if (\Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("DOCUMENT", "ACTIVATE_LOGGING") === "TRUE") {
             $jsRef = array_merge($jsRef, [
                 "traceKit" => "$pubExternalPath/traceKit/traceKit.js?ws=" . $version,
                 "traceError" => "$pubInternalPath/dynacaseReport.js?ws=" . $version
@@ -451,7 +451,7 @@ class RenderDefault implements IRenderConfig
     {
         $helpDoc = $this->getDefaultHelpPageDocument($document);
         if ($helpDoc) {
-            \Dcp\Core\DocManager::cache()->addDocument($helpDoc);
+            \Anakeen\Core\DocManager::cache()->addDocument($helpDoc);
             $attrids = $helpDoc->getMultipleRawValues(\Dcp\AttributeIdentifiers\Helppage::help_sec_key);
             
             foreach ($attrids as $k => $aid) {

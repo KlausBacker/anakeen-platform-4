@@ -23,7 +23,7 @@ class MaskEditRender extends DefaultConfigEditRender
     public function getJsReferences(\Doc $document = null)
     {
         $js = parent::getJsReferences();
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js["dduiMask"] = "uiAssets/Families/mask/maskEdit.js?ws=" . $version;
         return $js;
     }

@@ -6,7 +6,7 @@
 
 namespace Dcp\Ui;
 
-use Dcp\Core\DocManager;
+use Anakeen\Core\DocManager;
 
 class CommonRenderOptions extends BaseRenderOptions
 {

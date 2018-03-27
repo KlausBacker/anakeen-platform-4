@@ -5,7 +5,7 @@ namespace Anakeen\Routes\Ui;
 
 use Anakeen\Routes\Core\FamilyDocumentCreation;
 use Anakeen\Router\Exception;
-use Dcp\Core\DocManager as DocManager;
+use Anakeen\Core\DocManager as DocManager;
 
 /**
  * Class CreationView

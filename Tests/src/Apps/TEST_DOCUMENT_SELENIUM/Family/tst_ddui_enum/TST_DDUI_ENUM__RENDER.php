@@ -28,7 +28,7 @@ class EnumRenderConfigEditDefault extends \Dcp\Ui\DefaultEdit
 
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $css = parent::getCssReferences($document);
         $css["tstotherenum"] = "TEST_DOCUMENT_SELENIUM/Layout/testOtherEnum.css?ws=".$version;
         return $css;
@@ -329,7 +329,7 @@ class EnumRenderConfigEditOther extends EnumRenderConfigEdit
 
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $css = parent::getCssReferences($document);
         $css["tsteditverticalenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumvertical.css?ws=".$version;
         return $css;
@@ -355,7 +355,7 @@ class EnumRenderConfigView extends \Dcp\Ui\DefaultView
     }
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $css = parent::getCssReferences($document);
         $css["tstviewenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/testViewEnum.css?ws=".$version;
         $css["tstotherenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/testOtherEnum.css?ws=".$version;
@@ -363,7 +363,7 @@ class EnumRenderConfigView extends \Dcp\Ui\DefaultView
     }
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $jsReferences = parent::getJsReferences($document);
         $jsReferences["tstviewenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/testViewEnum.js?ws=".$version;
         return $jsReferences;

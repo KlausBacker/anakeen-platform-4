@@ -28,7 +28,7 @@ class UIGetAssetPath
 
     public static function isInDebug() {
         if (self::$inDebug === null) {
-            $modeDebug = \ApplicationParameterManager::getParameterValue("DOCUMENT", "MODE_DEBUG");
+            $modeDebug = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("DOCUMENT", "MODE_DEBUG");
             self::$inDebug = $modeDebug !== "FALSE";
         }
         return self::$inDebug;
@@ -52,7 +52,7 @@ class UIGetAssetPath
 
     public static function getWs() {
         if (self::$ws === null) {
-            self::$ws = $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+            self::$ws = $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         }
         return self::$ws;
     }

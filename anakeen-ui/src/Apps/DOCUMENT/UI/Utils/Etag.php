@@ -30,8 +30,8 @@ class Etags
     function generateEtag($etag = "")
     {
         if (!$etag) {
-            $etag = \ApplicationParameterManager::getParameterValue(\ApplicationParameterManager::CURRENT_APPLICATION, "VERSION");
-            $etag .= \ApplicationParameterManager::getParameterValue("CORE", "CORE_LANG");
+            $etag = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue(\Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION, "VERSION");
+            $etag .= \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "CORE_LANG");
         }
         return sha1($etag);
     }

@@ -5,7 +5,7 @@ namespace Anakeen\Routes\Ui;
 use Anakeen\Routes\Core\DocumentUpdateData;
 use Dcp\AttributeIdentifiers\Cvdoc as CvdocAttribute;
 use Anakeen\Router\Exception;
-use Dcp\Core\DocManager as DocManager;
+use Anakeen\Core\DocManager as DocManager;
 use Anakeen\Router\ApiV2Response;
 
 /**

@@ -86,9 +86,9 @@ class I18nCollection extends Crud
     protected function getUserLocale()
     {
         if ($this->userLocale === null) {
-            $this->userLocale = \ApplicationParameterManager::getUserParameterValue("CORE", "CORE_LANG");
+            $this->userLocale = \Anakeen\Core\Internal\ApplicationParameterManager::getUserParameterValue("CORE", "CORE_LANG");
             if (empty($this->userLocale)) {
-                $this->userLocale = \ApplicationParameterManager::getCommonParameterValue("CORE", "CORE_LANG");
+                $this->userLocale = \Anakeen\Core\Internal\ApplicationParameterManager::getCommonParameterValue("CORE", "CORE_LANG");
             }
             if (empty($this->userLocale)) {
                 $this->userLocale = "fr_FR";
@@ -103,7 +103,7 @@ class I18nCollection extends Crud
      */
     public function getEtagInfo()
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         return $version." ".$this->getUserLocale();
     }
 }

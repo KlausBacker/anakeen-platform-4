@@ -5,7 +5,7 @@
 */
 namespace Anakeen\Routes\Authent;
 
-use Dcp\Core\DocManager;
+use Anakeen\Core\DocManager;
 use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
 
@@ -79,7 +79,7 @@ class MailPassword
             $oneshot=true;
             $tokenKey = \Anakeen\Router\AuthenticatorManager::getAuthorizationToken($user, $context, $expire, $oneshot , $description);
 
-            $key["LINK_CHANGE_PASSWORD"]=sprintf("%s/login/?passkey=%s&uid=%s", \ApplicationParameterManager::getScopedParameterValue("CORE_EXTERNURL"),  urlencode($tokenKey), urlencode($user->login));
+            $key["LINK_CHANGE_PASSWORD"]=sprintf("%s/login/?passkey=%s&uid=%s", \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_EXTERNURL"),  urlencode($tokenKey), urlencode($user->login));
             $err=$mailTemplate->sendDocument($userDocument, $key);
             if ($err) {
                  throw new Exception('AUTH0012', $err);

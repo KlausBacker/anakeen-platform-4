@@ -6,7 +6,7 @@
 namespace Dcp\Ui\Crud;
 
 use Dcp\HttpApi\V1\Crud\Exception;
-use Dcp\Core\DocManager as DocManager;
+use Anakeen\Core\DocManager as DocManager;
 
 class ViewCollection extends View
 {

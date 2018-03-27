@@ -42,7 +42,7 @@ class LoadParameters
                 $rules = array_replace_recursive($rules, $currentRule);
             }
 
-            \ApplicationParameterManager::setParameterValue(\ApplicationParameterManager::CURRENT_APPLICATION, "RENDER_PARAMETERS", json_encode($rules));
+            \Anakeen\Core\Internal\ApplicationParameterManager::setParameterValue(\Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION, "RENDER_PARAMETERS", json_encode($rules));
         } else {
             throw new Exception(sprintf("No found directory : %s", $directory));
         }

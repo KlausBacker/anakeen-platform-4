@@ -4,7 +4,7 @@
 namespace Anakeen\Routes\Ui;
 
 use Anakeen\Router\ApiV2Response;
-use Dcp\Core\DocManager as DocManager;
+use Anakeen\Core\DocManager as DocManager;
 
 /**
  * Class SubMenu

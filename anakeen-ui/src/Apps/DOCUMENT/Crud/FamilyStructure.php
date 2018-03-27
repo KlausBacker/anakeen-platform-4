@@ -51,8 +51,8 @@ class FamilyStructure extends \Dcp\HttpApi\V1\Crud\Document
         $sql = sprintf("select revdate from docfam where id = %d", $id);
         simpleQuery(getDbAccess() , $sql, $result, false, true);
         // Necessary only when use family.structure
-        $result[] = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
-        $result[] = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $result[] = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
+        $result[] = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         return join(" ", $result);
     }
     /**

@@ -5,7 +5,7 @@ namespace Anakeen\Routes\Ui;
 use Anakeen\Router\Exception;
 use Anakeen\Routes\Core\ApiMessage;
 use Dcp\Core\AutocompleteLib;
-use Dcp\Core\DocManager as DocManager;
+use Anakeen\Core\DocManager as DocManager;
 use Anakeen\Router\ApiV2Response;
 
 /**

@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Ui\Families\Mask;
 
 use Anakeen\Routes\Core\ApiMessage;
-use Dcp\Core\DocManager;
+use Anakeen\Core\DocManager;
 use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
 

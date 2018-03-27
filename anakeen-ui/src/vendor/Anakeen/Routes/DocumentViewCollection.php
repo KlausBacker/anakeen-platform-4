@@ -5,7 +5,7 @@ namespace Anakeen\Routes\Ui;
 
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
-use Dcp\Core\DocManager as DocManager;
+use Anakeen\Core\DocManager as DocManager;
 
 /**
  * Class DocumentViewCollection
