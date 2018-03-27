@@ -9,6 +9,11 @@ namespace Dcp;
 
 use phpDocumentor\Reflection\Types\Resource;
 
+/**
+ * Class Autoloader
+ * @deprecated
+ * @package Dcp
+ */
 class Autoloader
 {
     private static function getAutoloader()

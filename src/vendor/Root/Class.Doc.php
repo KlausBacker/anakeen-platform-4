@@ -2532,8 +2532,7 @@ create unique index i_docir on doc(initid, revision);";
             $fromid = ($this->doctype == 'C') ? $this->id : $this->fromid;
             $adocClassName = "ADoc" . $fromid;
             $classname = "Doc" . $fromid;
-            $GEN = getGen($this->dbaccess);
-            $includePath = "FDL$GEN/Class.$classname.php";
+            $includePath = "FDLGEN/Class.$classname.php";
             if (stream_resolve_include_path($includePath)) {
                 include_once($includePath);
                 $this->attributes = new $adocClassName();
@@ -2620,7 +2619,8 @@ create unique index i_docir on doc(initid, revision);";
         if (is_array($oas)) {
             foreach ($oas as $k => $v) {
                 if ($oas[$k]) {
-                    $oas[$k]->mvisibility = ComputeVisibility(
+
+                    $oas[$k]->mvisibility =  \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
                         $v->visibility,
                         (empty($v->fieldSet)) ? '' : $v->fieldSet->mvisibility,
                         (!empty($v->fieldSet->fieldSet)) ? $v->fieldSet->fieldSet->mvisibility : ''
@@ -2718,7 +2718,7 @@ create unique index i_docir on doc(initid, revision);";
                         foreach ($tdiff as $k) {
                             $v = $oas[$k];
                             if ($v->type == "frame") {
-                                $oas[$k]->mvisibility = ComputeVisibility(
+                                $oas[$k]->mvisibility =  \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
                                     $v->visibility,
                                     isset($v->fieldSet) ? $v->fieldSet->mvisibility : '',
                                     ''
@@ -2728,7 +2728,7 @@ create unique index i_docir on doc(initid, revision);";
                         foreach ($tdiff as $k) {
                             $v = $oas[$k];
                             if ($v->type == "array") {
-                                $oas[$k]->mvisibility = ComputeVisibility(
+                                $oas[$k]->mvisibility =  \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
                                     $v->visibility,
                                     isset($v->fieldSet) ? $v->fieldSet->mvisibility : '',
                                     isset($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : ''
@@ -2739,7 +2739,7 @@ create unique index i_docir on doc(initid, revision);";
                         foreach ($tdiff as $k) {
                             $v = $oas[$k];
                             if ($v->type != "frame") {
-                                $oas[$k]->mvisibility = ComputeVisibility(
+                                $oas[$k]->mvisibility =  \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
                                     $v->visibility,
                                     isset($v->fieldSet) ? $v->fieldSet->mvisibility : '',
                                     isset($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : ''

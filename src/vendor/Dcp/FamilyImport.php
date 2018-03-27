@@ -16,6 +16,8 @@
 namespace Dcp;
 
 use Anakeen\Core\DbManager;
+use Anakeen\Core\DocManager;
+use Anakeen\Core\Utils\MiscDoc;
 
 class FamilyImport
 {
@@ -67,8 +69,7 @@ class FamilyImport
     protected static function generateFamilyPhpClass($dbaccess, $tdoc)
     {
         global $action;
-        
-        $GEN = getGen($dbaccess);
+
         $phpAdoc = new \Layout("vendor/Anakeen/FDL/Layout/Class.Doc.xml", $action);
         
         if ($tdoc["classname"] == "") { // default classname
@@ -106,9 +107,9 @@ class FamilyImport
             if ($tdoc["classname"] != "Doc" . $tdoc["fromid"]) {
                 $phpAdoc->Set("DocParent", $tdoc["classname"]);
                 $phpAdoc->Set("pinit", $tdoc["classname"]);
-                $phpAdoc->Set("include", "include_once(\"FDL$GEN/Class.Doc" . $tdoc["fromid"] . ".php\");");
+                $phpAdoc->Set("include", "include_once(\"FDLGEN/Class.Doc" . $tdoc["fromid"] . ".php\");");
             } else {
-                $phpAdoc->Set("GEN", $GEN);
+                $phpAdoc->Set("GEN", "GEN");
                 if ($tdoc["name"]) {
                     $phpAdoc->Set("DocParent", '\\Dcp\\Family\\' . ucwords(strtolower($tdoc["fromname"])));
                 } else {
@@ -721,7 +722,7 @@ class FamilyImport
     protected static function createFamilyTable($dbaccess, $docid)
     {
         // create postgres table if new \familly
-        $cdoc = createTmpDoc($dbaccess, $docid, false);
+        $cdoc = DocManager::createTemporaryDocument($docid, false);
         $triggers = $cdoc->sqltrigger(false, true);
         $cdoc->exec_query($triggers, 1);
         // step by step
@@ -747,16 +748,15 @@ class FamilyImport
     
     public static function createDocFile($dbaccess, $tdoc)
     {
-        $GEN = getGen($dbaccess);
         $pubdir = DEFAULT_PUBDIR;
-        $dfile = "$pubdir/FDL$GEN/Class.Doc" . $tdoc["id"] . ".php";
+        $dfile = "$pubdir/FDLGEN/Class.Doc" . $tdoc["id"] . ".php";
         
         $err = self::__phpLintWriteFile($dfile, self::generateFamilyPhpClass($dbaccess, $tdoc));
         if ($err != '') {
             throw new \Dcp\Exception(sprintf("Error generating file '%s': %s", $dfile, $err));
         }
         
-        $attrfile = "$pubdir/FDL$GEN/Class.Attrid" . $tdoc["id"] . ".php";
+        $attrfile = "$pubdir/FDLGEN/Class.Attrid" . $tdoc["id"] . ".php";
         
         $err = self::__phpLintWriteFile($attrfile, self::AttrIdtoPhp($dbaccess, $tdoc));
         if ($err != '') {
@@ -768,7 +768,7 @@ class FamilyImport
     
     public static function activateTrigger($dbaccess, $docid)
     {
-        $cdoc = createTmpDoc($dbaccess, $docid, false);
+        $cdoc = DocManager::createTemporaryDocument($docid, false);
         $cdoc->exec_query($cdoc->sqltrigger(false, true), 1);
         $sqlcmds = explode(";", $cdoc->SqlTrigger());
         //$cdoc = new_Doc($dbacceanss, $docid);
@@ -782,7 +782,7 @@ class FamilyImport
     
     public static function setSqlIndex($dbaccess, $docid)
     {
-        $cdoc = createTmpDoc($dbaccess, $docid, false);
+        $cdoc = DocManager::createTemporaryDocument($docid, false);
         $indexes = $cdoc->GetSqlIndex();
         $msg = '';
         if ($indexes) {
@@ -878,14 +878,14 @@ class FamilyImport
     protected static function completeAttribute($dbaccess, $ta)
     {
         $ta->id = substr($ta->id, 1);
-        $fromid = getFamFromId($dbaccess, $ta->docid);
+        $fromid = MiscDoc::getFamFromId($ta->docid);
         $tfromid[] = $fromid;
-        while ($fromid = getFamFromId($dbaccess, $fromid)) {
+        while ($fromid =  MiscDoc::getFamFromId($fromid)) {
             $tfromid[] = $fromid;
         }
         $tfromid[] = $ta->docid; // itself
         $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocAttr::class);
-        $query->AddQuery(GetSqlCond($tfromid, 'docid'));
+        $query->AddQuery(DbManager::getSqlOrCond($tfromid, 'docid'));
         $query->AddQuery("id='" . pg_escape_string($ta->id) . "'");
         $query->order_by = "docid";
         $tas = $query->Query(0, 0, "TABLE");
@@ -939,7 +939,7 @@ class FamilyImport
                 $pa = [];
             }
             
-            $nextfromid = getFamFromId($dbaccess, $fromid);
+            $nextfromid =  MiscDoc::getFamFromId($fromid);
             if ($nextfromid > 0) {
                 $pa = array_merge(self::getParentAttributes($dbaccess, $nextfromid), $pa);
             }

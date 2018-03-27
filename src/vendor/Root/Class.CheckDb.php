@@ -14,7 +14,7 @@
 /**
  */
 
-class checkDb
+class CheckDb
 {
     /**
      * @var resource $r
@@ -413,8 +413,8 @@ class checkDb
     {
         $cr = array();
         
-        $fam = new_doc('', $famid);
-        if ($fam->isAlive()) {
+        $fam = Anakeen\Core\DocManager::getFamily($famid);
+        if ($fam) {
             $sql = sprintf("select pg_attribute.attname,pg_type.typname FROM pg_attribute, pg_type where pg_type.oid=pg_attribute.atttypid and pg_attribute.attrelid=(SELECT oid from pg_class where relname='doc%d') order by pg_attribute.attname;", $fam->id);
             simpleQuery('', $sql, $res);
             $pgtype = array();
@@ -449,7 +449,7 @@ class checkDb
     {
         
         $d = new Doc();
-        $fam = new_doc('', $famid);
+        $fam = \Anakeen\Core\DocManager::getFamily($famid);
         $sql = sprintf("select column_name from information_schema.columns where table_name = 'doc%d'", $fam->id);
         simpleQuery('', $sql, $res, true);
         
@@ -624,7 +624,7 @@ EOF;
             );
         }
         foreach ($families as $fam) {
-            $doc = new_Doc('', $fam['id']);
+            $doc = Anakeen\Core\DocManager::getFamily( $fam['id']);
             if (!is_object($doc) || !$doc->isAlive()) {
                 continue;
             }
@@ -688,8 +688,7 @@ EOF;
     private function initGlobalParam()
     {
         $result = pg_query($this->r, "SELECT * FROM paramv where  type='G'");
-        if (!$result) {
-        }
+
         $this->tparam = array();
         while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
             $this->tparam[$row["name"]] = $row["val"];

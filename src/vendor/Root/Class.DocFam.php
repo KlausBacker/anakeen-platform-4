@@ -116,8 +116,7 @@ create unique index idx_idfam on docfam(id);";
         $this->doctype = 'C';
         if ($include && ($this->id > 0) && ($this->isAffected())) {
             $adoc = "Doc" . $this->id;
-            $GEN = getGen($dbaccess);
-            if (include_once("FDL$GEN/Class.$adoc.php")) {
+            if (include_once("FDLGEN/Class.$adoc.php")) {
                 $adoc = "ADoc" . $this->id;
                 $this->attributes = new $adoc();
                 $this->attributes->orderAttributes();

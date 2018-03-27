@@ -649,7 +649,7 @@ class ImportDocumentDescription
                     if (isset($tFamIdName)) {
                         $tFamIdName[$this->doc->name] = $this->doc->id;
                     } // refresh getFamIdFromName for multiple family import
-                    $checkCr = checkDb::verifyDbFamily($this->doc->id);
+                    $checkCr = CheckDb::verifyDbFamily($this->doc->id);
                     if (count($checkCr) > 0) {
                         $this->tcr[$this->nLine]["err"].= ErrorCode::getError('ATTR1700', implode(",", $checkCr));
                     } else {

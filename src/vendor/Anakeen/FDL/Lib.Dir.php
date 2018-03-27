@@ -628,8 +628,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     } else {
                         $fromid = abs($fromid);
                         if ($fromid > 0) {
-                            $GEN = getGen($dbaccess);
-                            include_once "FDL$GEN/Class.Doc$fromid.php";
+                            include_once "FDLGEN/Class.Doc$fromid.php";
                         }
                     }
                 }

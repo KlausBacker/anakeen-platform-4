@@ -15,6 +15,8 @@
 
 namespace Dcp;
 
+use Anakeen\Core\Utils\MiscDoc;
+
 class FamilyAbsoluteOrder
 {
     const firstOrder = "::first";
@@ -195,7 +197,8 @@ class FamilyAbsoluteOrder
         if (empty($inherits[$familyId])) {
             $tfromid[] = $familyId;
             $childfamilyId = $familyId;
-            while ($childfamilyId = getFamFromId("", $childfamilyId)) {
+
+            while ($childfamilyId = MiscDoc::getFamFromId( $childfamilyId)) {
                 $tfromid[] = $childfamilyId;
             }
             $inherits[$familyId] = array_reverse($tfromid);

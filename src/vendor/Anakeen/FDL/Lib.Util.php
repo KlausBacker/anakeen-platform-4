@@ -19,15 +19,7 @@ function newFreeVaultFile($dbaccess)
     include_once("VAULT/Class.VaultFile.php");
     return new VaultFile($dbaccess, "FREEDOM");
 }
-/**
- * for FDLGEN directory
- * @param $dbaccess
- * @return string
- */
-function getGen($dbaccess)
-{
-    return "GEN";
-}
+
 /**
  * convert French date to iso8601
  * @param string $fdate DD/MM/YYYY HH:MM:SS (CET)

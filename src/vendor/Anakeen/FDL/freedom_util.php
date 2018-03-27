@@ -244,33 +244,6 @@ function getFromName($dbaccess, $id)
     return $fromname;
 }
 
-/**
- * return from id for family document
- *
- * @param string $dbaccess database specification
- * @param int    $id       identifier of the object
- *
- * @return int false if error occured
- */
-function getFamFromId($dbaccess, $id)
-{
-    if (!($id > 0)) {
-        return false;
-    }
-    if (!is_numeric($id)) {
-        return false;
-    }
-    $dbid = DbManager::getDbId();
-    $fromid = false;
-    $result = pg_query($dbid, "select  fromid from docfam where id=$id;");
-
-    if (pg_num_rows($result) > 0) {
-        $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
-        $fromid = intval($arr["fromid"]);
-    }
-
-    return $fromid;
-}
 
 /**
  * get document title from document identifier
@@ -818,42 +791,7 @@ function isFixedDoc($dbaccess, $id)
 }
 
 
-function ComputeVisibility($vis, $fvis, $ffvis = '')
-{
-    if ($vis == "I") {
-        return $vis;
-    }
-    if ($fvis == "H") {
-        return $fvis;
-    }
-    if (($fvis == "R") && (($vis == "W") || ($vis == "U") || ($vis == "S"))) {
-        return $fvis;
-    }
-    if (($fvis == "R") && ($vis == "O")) {
-        return "H";
-    }
-    if (($fvis == "O") && ($vis == "W")) {
-        return $fvis;
-    }
-    if (($fvis == "S") && (($vis == "W") || ($vis == "O"))) {
-        return $fvis;
-    }
-    if ($fvis == "I") {
-        return $fvis;
-    }
-    if ($fvis == 'U') {
-        if ($ffvis && ($vis == 'W' || $vis == 'O' || $vis == 'S')) {
-            if ($ffvis == 'S') {
-                return 'S';
-            }
-            if ($ffvis == 'R') {
-                return 'R';
-            }
-        }
-    }
 
-    return $vis;
-}
 
 /**
  * return doc array of latest revision of initid
