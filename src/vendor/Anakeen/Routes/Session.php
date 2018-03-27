@@ -82,7 +82,7 @@ class Session
             $u->setLoginName($login);
 
             \Anakeen\Core\ContextManager::initContext($u, "CORE", "", \AuthenticatorManager::$session);
-            \ApplicationParameterManager::setUserParameterValue("CORE", "CORE_LANG", $language);
+            \Anakeen\Core\Internal\ApplicationParameterManager::setUserParameterValue("CORE", "CORE_LANG", $language);
         }
 
         return ApiV2Response::withData($response, ["login" => $login]);

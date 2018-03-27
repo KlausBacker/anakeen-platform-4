@@ -30,7 +30,7 @@ class WSHMailError
     {
         $this->expand = array(
             'h' => php_uname('n'),
-            'c' => \ApplicationParameterManager::getParameterValue('CORE', 'CORE_CLIENT')
+            'c' => \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue('CORE', 'CORE_CLIENT')
         );
         $this->msg = $msg;
         $this->from = '';
@@ -79,20 +79,20 @@ class WSHMailError
         $user = \Anakeen\Core\ContextManager::getCurrentUser();
         $from = (!empty($user) ? getMailAddr($user->id) : '');
         if ($from == '') {
-            $from = \ApplicationParameterManager::getParameterValue('FDL', 'SMTP_FROM');
+            $from = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue('FDL', 'SMTP_FROM');
         }
         if ($from == '') {
             $from = (!empty($user) ? $user->login : 'no-reply') . '@' . php_uname('n');
         }
         $this->from = $from;
 
-        $mailto = trim(\ApplicationParameterManager::getParameterValue('CORE', 'CORE_WSH_MAILTO'));
+        $mailto = trim(\Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue('CORE', 'CORE_WSH_MAILTO'));
         if ($mailto == '') {
             return '';
         }
         $this->mailto = $mailto;
 
-        $subject = \ApplicationParameterManager::getParameterValue('CORE', 'CORE_WSH_MAILSUBJECT');
+        $subject = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue('CORE', 'CORE_WSH_MAILSUBJECT');
         if ($subject == '') {
             $subject = 'Script error';
         }

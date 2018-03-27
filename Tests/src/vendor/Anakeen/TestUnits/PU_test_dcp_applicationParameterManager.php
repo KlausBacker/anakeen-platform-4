@@ -56,7 +56,7 @@ class TestApplicationParameterManeger extends TestCaseDcpApplication
         // add new parameters in current action
         $a->parent->param->SetKey($appTest->id, $a->user->id);
 
-        \ApplicationParameterManager::resetCache();
+        \Anakeen\Core\Internal\ApplicationParameterManager::resetCache();
         return $appTest;
     }
 
@@ -69,7 +69,7 @@ class TestApplicationParameterManeger extends TestCaseDcpApplication
         $this->initTestApplication($parameters);
 
         foreach ($expectedValues as $k => $v) {
-            $this->assertEquals($v, \ApplicationParameterManager::getParameterValue(self::appName, $k), sprintf("wrong value for %s", $k));
+            $this->assertEquals($v, \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue(self::appName, $k), sprintf("wrong value for %s", $k));
         }
     }
 
@@ -81,7 +81,7 @@ class TestApplicationParameterManeger extends TestCaseDcpApplication
 
         $this->initTestApplication($parameters);
 
-        $this->assertEquals(null, \ApplicationParameterManager::getParameterValue(self::appName, "UNKNOWN_OPTION_VALUE"));
+        $this->assertEquals(null, \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue(self::appName, "UNKNOWN_OPTION_VALUE"));
     }
 
     /**
@@ -93,7 +93,7 @@ class TestApplicationParameterManeger extends TestCaseDcpApplication
 
         $this->initTestApplication($parameters);
 
-        \ApplicationParameterManager::setParameterValue(self::appName, "UNKNOWN_OPTION_VALUE", "25");
+        \Anakeen\Core\Internal\ApplicationParameterManager::setParameterValue(self::appName, "UNKNOWN_OPTION_VALUE", "25");
     }
 
     /**
@@ -105,7 +105,7 @@ class TestApplicationParameterManeger extends TestCaseDcpApplication
         $this->initTestApplication($parameters);
 
         foreach ($expectedValues as $k => $v) {
-            $this->assertEquals($v, \ApplicationParameterManager::getScopedParameterValue($k), sprintf("wrong value for %s", $k));
+            $this->assertEquals($v, \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue($k), sprintf("wrong value for %s", $k));
         }
     }
 
@@ -118,7 +118,7 @@ class TestApplicationParameterManeger extends TestCaseDcpApplication
         $this->initTestApplication($parameters);
 
         foreach ($expectedValues as $k => $v) {
-            $this->assertEquals($v, \ApplicationParameterManager::getCommonParameterValue(\ApplicationParameterManager::GLOBAL_PARAMETER, $k), sprintf("wrong value for %s", $k));
+            $this->assertEquals($v, \Anakeen\Core\Internal\ApplicationParameterManager::getCommonParameterValue(\Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER, $k), sprintf("wrong value for %s", $k));
         }
     }
 
@@ -131,10 +131,10 @@ class TestApplicationParameterManeger extends TestCaseDcpApplication
         $this->initTestApplication($parameters);
 
         foreach ($newValues as $k => $v) {
-            \ApplicationParameterManager::setParameterValue(self::appName, $k, $v);
+            \Anakeen\Core\Internal\ApplicationParameterManager::setParameterValue(self::appName, $k, $v);
         }
         foreach ($expectedValues as $k => $v) {
-            $this->assertEquals($v, \ApplicationParameterManager::getParameterValue(self::appName, $k), sprintf("wrong value for %s", $k));
+            $this->assertEquals($v, \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue(self::appName, $k), sprintf("wrong value for %s", $k));
         }
     }
 
@@ -148,10 +148,10 @@ class TestApplicationParameterManeger extends TestCaseDcpApplication
 
         foreach ($newValues as $k => $v) {
 
-            \ApplicationParameterManager::setParameterValue(\ApplicationParameterManager::GLOBAL_PARAMETER, $k, $v);
+            \Anakeen\Core\Internal\ApplicationParameterManager::setParameterValue(\Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER, $k, $v);
         }
         foreach ($expectedValues as $k => $v) {
-            $this->assertEquals($v, \ApplicationParameterManager::getParameterValue(\ApplicationParameterManager::GLOBAL_PARAMETER, $k), sprintf("wrong value for %s", $k));
+            $this->assertEquals($v, \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue(\Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER, $k), sprintf("wrong value for %s", $k));
         }
     }
 
@@ -164,10 +164,10 @@ class TestApplicationParameterManeger extends TestCaseDcpApplication
         $this->initTestApplication($parameters);
 
         foreach ($newValues as $k => $v) {
-            \ApplicationParameterManager::setParameterValue(self::appName, $k, $v);
+            \Anakeen\Core\Internal\ApplicationParameterManager::setParameterValue(self::appName, $k, $v);
         }
         foreach ($expectedValues as $k => $v) {
-            $this->assertEquals($v, \ApplicationParameterManager::getParameterValue(self::appName, $k), sprintf("wrong value for %s", $k));
+            $this->assertEquals($v, \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue(self::appName, $k), sprintf("wrong value for %s", $k));
         }
     }
 
@@ -180,7 +180,7 @@ class TestApplicationParameterManeger extends TestCaseDcpApplication
         $definedParametersKey = array_keys($parameters);
 
         $this->initTestApplication($parameters);
-        $applicationParameters = \ApplicationParameterManager::getParameters(self::appName);
+        $applicationParameters = \Anakeen\Core\Internal\ApplicationParameterManager::getParameters(self::appName);
         $filterFunction = function ($value) use ($applicationParameters) {
             foreach ($applicationParameters as $currentApplicationParameters) {
                 if ($currentApplicationParameters["name"] == $value) {
@@ -199,7 +199,7 @@ class TestApplicationParameterManeger extends TestCaseDcpApplication
     public function testGetParameter($parameters)
     {
         $this->initTestApplication($parameters);
-        $applicationParameter = \ApplicationParameterManager::getParameter(self::appName, "TST_GLOB1");
+        $applicationParameter = \Anakeen\Core\Internal\ApplicationParameterManager::getParameter(self::appName, "TST_GLOB1");
 
         $this->assertEquals("TST_GLOB1", $applicationParameter["name"]);
         $this->assertEquals("Name of the glob", $applicationParameter["descr"]);

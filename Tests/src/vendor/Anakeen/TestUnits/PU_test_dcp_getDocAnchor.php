@@ -33,7 +33,7 @@ class TestGetDocAnchor extends TestCaseDcpCommonFamily
         $action = self::getAction();
         
         foreach ($data['params'] as $param) {
-            \ApplicationParameterManager::setCommonParameterValue($param['app'], $param['name'], $param['value']);
+            \Anakeen\Core\Internal\ApplicationParameterManager::setCommonParameterValue($param['app'], $param['name'], $param['value']);
         }
         initMainVolatileParam($action->parent);
         

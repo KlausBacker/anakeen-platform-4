@@ -234,7 +234,7 @@ class styleManager
             foreach ($colorList as $colorIndex => $color) {
                 $paramName = "COLOR_{$colorClass}{$colorIndex}";
                 // if value is a reference to another parameter
-                $dynamicColorValue = ApplicationParameterManager::getScopedParameterValue($color);
+                $dynamicColorValue = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue($color);
                 if (!empty($dynamicColorValue)) {
                     $this->log("dynamic value " . var_export($dynamicColorValue, true) . " set for $paramName ($color)");
                     $color = $dynamicColorValue;
@@ -251,7 +251,7 @@ class styleManager
         $this->logIndent+= 1;
         foreach ($styleConfig['sty_const'] as $paramName => $paramValue) {
             // if value is a reference to another parameter
-            $dynamicParamValue = ApplicationParameterManager::getScopedParameterValue($paramValue);
+            $dynamicParamValue = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue($paramValue);
             if (!empty($dynamicParamValue)) {
                 $this->log("dynamic value " . var_export($dynamicParamValue, true) . " set for $paramName ($paramValue)");
                 $paramValue = $dynamicParamValue;
@@ -267,7 +267,7 @@ class styleManager
         $this->logIndent+= 1;
         foreach ($styleConfig['sty_local'] as $paramName => $paramValue) {
             // if value is a reference to another parameter
-            $dynamicParamValue = ApplicationParameterManager::getScopedParameterValue($paramValue);
+            $dynamicParamValue = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue($paramValue);
             if (!empty($dynamicParamValue)) {
                 $this->log("dynamic value " . var_export($dynamicParamValue, true) . " used for $paramName ($paramValue)");
                 $paramValue = $dynamicParamValue;
@@ -285,7 +285,7 @@ class styleManager
         if ($err) {
             throw new \Dcp\Style\Exception("STY0003", "error when modifying style");
         }
-        ApplicationParameterManager::setCommonParameterValue("CORE", "STYLE", $styleName);
+        \Anakeen\Core\Internal\ApplicationParameterManager::setCommonParameterValue("CORE", "STYLE", $styleName);
     }
     
     protected function deployStyleFiles(array $rules)

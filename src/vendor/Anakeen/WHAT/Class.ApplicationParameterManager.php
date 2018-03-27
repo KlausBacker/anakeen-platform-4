@@ -8,7 +8,7 @@
  * Set and get application parameters
  * @class ApplicationParameterManager
  *
- * @see ApplicationParameterManager
+ * @see \Anakeen\Core\Internal\ApplicationParameterManager
  *
  */
 class ApplicationParameterManager
@@ -32,7 +32,7 @@ class ApplicationParameterManager
      * Return the value of a user parameter
      *
      * @param string|int|Application $application logical name or id or object of the application, you can use
-     * {@link ApplicationParameterManager::CURRENT_APPLICATION} or {@link ApplicationParameterManager::GLOBAL_PARAMETER}
+     * {@link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      * @param null|int $userId user login or account id, use it if you want the value for another user
      *
@@ -67,7 +67,7 @@ class ApplicationParameterManager
      * Return the default value of a user parameter
      *
      * @param string|int|Application $application logical name or id or object of the application, you can use
-     * { @link ApplicationParameterManager::CURRENT_APPLICATION} or {@link ApplicationParameterManager::GLOBAL_PARAMETER}
+     * { @link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      *
      * @return string the value of a common parameter (USER="Y")
@@ -81,7 +81,7 @@ class ApplicationParameterManager
      *
      *
      * @param string|int|Application $application logical name or id or object of the application, you can use
-     * {@link ApplicationParameterManager::CURRENT_APPLICATION} or {@link ApplicationParameterManager::GLOBAL_PARAMETER}
+     * {@link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      *
      * @return string the value of a common parameter (USER="N")
@@ -111,7 +111,7 @@ class ApplicationParameterManager
      *
      *
      * @param string|int|Application $application logical name or id or object of the application, you can use
-     * { @link ApplicationParameterManager::CURRENT_APPLICATION} or {@link ApplicationParameterManager::GLOBAL_PARAMETER}
+     * { @link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      * @param string $value value of the parameter
      * @param null|int|string $userId user login or account id, use it if you want to set the value for another user
@@ -161,7 +161,7 @@ class ApplicationParameterManager
      * Set the user parameter default value
      *
      * @param string|int|Application $application logical name or id or object of the application, you can use
-     * {@link ApplicationParameterManager::CURRENT_APPLICATION} or {@link ApplicationParameterManager::GLOBAL_PARAMETER}
+     * {@link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      * @param string $value value of the parameter
      *
@@ -177,7 +177,7 @@ class ApplicationParameterManager
      * Set the common parameter default value
      *
      * @param string|int|Application $application logical name or id or object of the application, you can use
-     * { @link ApplicationParameterManager::CURRENT_APPLICATION} or {@link ApplicationParameterManager::GLOBAL_PARAMETER}
+     * { @link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      * @param string $value value of the parameter
      *
@@ -225,7 +225,7 @@ class ApplicationParameterManager
      *
      * @api Get parameter in the database
      * @param string|int|Application $application logical name or id or object of the application, you can use
-     * { @link ApplicationParameterManager::CURRENT_APPLICATION} or {@link ApplicationParameterManager::GLOBAL_PARAMETER}
+     * { @link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      *
      * @return string value of the parameter
@@ -259,7 +259,7 @@ class ApplicationParameterManager
      *
      * @api Set a parameter value
      * @param string|int|Application $application logical name or id or object of the application, you can use
-     * {@link ApplicationParameterManager::CURRENT_APPLICATION} or {@link ApplicationParameterManager::GLOBAL_PARAMETER}
+     * {@link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      * @param string $value value of the parameter
      *
@@ -298,7 +298,7 @@ class ApplicationParameterManager
      * Get a parameter object (object that describe the parameter)
      *
      * @param string|int|Application $application logical name or id or object of the application, you can use
-     * {@link ApplicationParameterManager::CURRENT_APPLICATION} or {@link ApplicationParameterManager::GLOBAL_PARAMETER}
+     * {@link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      *
      * @throws Dcp\ApplicationParameterManager\Exception
@@ -329,7 +329,7 @@ class ApplicationParameterManager
      * Get the parameters objects of an application
      *
      * @param string|int|Application $application logical name or id or object of the application, you can use
-     * {@link ApplicationParameterManager::CURRENT_APPLICATION} or {@link ApplicationParameterManager::GLOBAL_PARAMETER}
+     * {@link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
      *
      * @throws Dcp\ApplicationParameterManager\Exception
      *
@@ -369,14 +369,14 @@ class ApplicationParameterManager
         $applicationName = "";
         $applicationId = "";
         
-        if (empty($parameter) && $application === ApplicationParameterManager::GLOBAL_PARAMETER) {
+        if (empty($parameter) && $application === \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER) {
             throw new \Dcp\ApplicationParameterManager\Exception("APM0010");
-        } elseif ($application === ApplicationParameterManager::GLOBAL_PARAMETER) {
+        } elseif ($application === \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER) {
             $applicationId = self::getGlobalParameterApplicationName($parameter);
             if ($applicationId === false) {
                 throw new \Dcp\ApplicationParameterManager\Exception("APM0002", $parameter);
             }
-        } elseif ($application === ApplicationParameterManager::CURRENT_APPLICATION) {
+        } elseif ($application === \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION) {
             global $action;
             if ($action instanceof Action) {
                 $applicationName = $action->parent->name;

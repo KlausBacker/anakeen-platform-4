@@ -437,7 +437,7 @@ class MailTemplate extends \Dcp\Family\Document
         }
 
         if (self::NOTIFY_SENDMAIL_AUTO === $this->notifySendMail) {
-            $notifySendMail = \ApplicationParameterManager::getParameterValue('CORE', 'CORE_NOTIFY_SENDMAIL');
+            $notifySendMail = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue('CORE', 'CORE_NOTIFY_SENDMAIL');
             if (is_null($notifySendMail)) {
                 $notifySendMail = self::NOTIFY_SENDMAIL_ALWAYS;
             }

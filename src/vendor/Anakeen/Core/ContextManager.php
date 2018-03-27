@@ -362,7 +362,7 @@ class ContextManager
      */
     public static function getCoreParam($name, $def = "")
     {
-        if (($value = \ApplicationParameterManager::_catchDeprecatedGlobalParameter($name)) !== null) {
+        if (($value = \Anakeen\Core\Internal\ApplicationParameterManager::_catchDeprecatedGlobalParameter($name)) !== null) {
             return $value;
         }
         if (empty(self::$coreParams)) {

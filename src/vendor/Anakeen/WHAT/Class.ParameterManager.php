@@ -8,7 +8,7 @@
  * Set and get application parameters
  * @class ParameterManager
  *
- * @see ApplicationParameterManager
+ * @see \Anakeen\Core\Internal\ApplicationParameterManager
  *
  * @deprecated use { @link ApplicationParameterManager } instead
  *

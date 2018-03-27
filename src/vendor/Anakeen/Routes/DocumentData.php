@@ -234,8 +234,8 @@ class DocumentData
         $result[] = $user->id;
         $result[] = $user->memberof;
         // Necessary only when use family.structure
-        $result[] = \ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
-        $result[] = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $result[] = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
+        $result[] = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         return join(" ", $result);
     }
 

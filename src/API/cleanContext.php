@@ -222,7 +222,7 @@ function cleanOldFiles($dir, $maxAge)
  */
 function cleanTmpDoc()
 {
-    $days = \ApplicationParameterManager::getParameterValue('CORE', 'CORE_TMPDOC_MAXAGE');
+    $days = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue('CORE', 'CORE_TMPDOC_MAXAGE');
     if (!is_int($days) && !ctype_digit($days)) {
         $days = 1;
     }

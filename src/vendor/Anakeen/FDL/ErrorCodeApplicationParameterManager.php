@@ -7,7 +7,7 @@ namespace {
     /**
      * ErrorCodeApplicationParameterManager
      *
-     * @see ApplicationParameterManager
+     * @see \Anakeen\Core\Internal\ApplicationParameterManager
      */
     class ErrorCodeAPM
     {

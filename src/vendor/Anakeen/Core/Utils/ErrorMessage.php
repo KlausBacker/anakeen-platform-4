@@ -13,7 +13,7 @@ class ErrorMessage
         $lay->set("error", str_replace("[", "&#x5b;", $htmlMessage));
         $lay->eset("code", $errId ? "[$errId]" : "");
 
-        $lay->set("ico", \ApplicationParameterManager::getScopedParameterValue("DYNACASE_FAVICO"));
+        $lay->set("ico", \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("DYNACASE_FAVICO"));
         return $lay->gen();
     }
 

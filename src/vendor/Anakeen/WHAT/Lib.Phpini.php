@@ -72,7 +72,7 @@ class LibPhpini
             } else {
                 require_once 'Lib.Common.php';
                 require_once 'Class.ApplicationParameterManager.php';
-                $parameterValue = \ApplicationParameterManager::getParameterValue("CORE", $name);
+                $parameterValue = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", $name);
                 return (null === $parameterValue ? $defaultValue : $parameterValue);
             }
         } else {
