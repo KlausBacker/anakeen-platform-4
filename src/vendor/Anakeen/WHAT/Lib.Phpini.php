@@ -5,7 +5,7 @@ namespace Dcp\Core;
 class LibPhpini
 {
     /**
-     * @var \Application
+     * @var \Anakeen\Core\Internal\Application
      */
     public static $coreApplication = null;
 
@@ -17,9 +17,9 @@ class LibPhpini
     }
 
     /**
-     * @param \Application $coreApplication
+     * @param \Anakeen\Core\Internal\Application $coreApplication
      */
-    public static function setCoreApplication(\Application $coreApplication)
+    public static function setCoreApplication(\Anakeen\Core\Internal\Application $coreApplication)
     {
         self::$coreApplication = $coreApplication;
     }

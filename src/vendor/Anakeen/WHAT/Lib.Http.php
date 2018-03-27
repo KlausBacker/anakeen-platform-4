@@ -12,7 +12,7 @@
  * @subpackage CORE
  */
 /**
- * @param \Anakeen\Core\Internal\Action|Application $action
+ * @param \Anakeen\Core\Internal\Action|\Anakeen\Core\Internal\Application $action
  * @param string $appname
  * @param string $actionname
  * @param string $otherurl

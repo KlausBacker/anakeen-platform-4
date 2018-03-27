@@ -58,7 +58,7 @@ function getMainAction($auth, &$action)
             exit;
         };
     }
-    $core = new Application();
+    $core = new \Anakeen\Core\Internal\Application();
     $core->Set("CORE", $CoreNull, $session);
 
     if (isset($_SERVER['PHP_AUTH_USER']) && ($core->user->login != $_SERVER['PHP_AUTH_USER'])) {
@@ -78,7 +78,7 @@ function getMainAction($auth, &$action)
     initMainVolatileParam($core, $session);
     // ----------------------------------------
     // Init Application & Actions Objects
-    $appl = new Application();
+    $appl = new \Anakeen\Core\Internal\Application();
     $err = $appl->Set(getHttpVars("app"), $core, $session);
     if ($err) {
         print $err;
@@ -119,10 +119,10 @@ function stripUrlSlahes($url)
 /**
  * init user agent volatile param
  *
- * @param Application $app
+ * @param \Anakeen\Core\Internal\Application $app
  * @param mixed       $defaultValue
  */
-function initExplorerParam(Application & $app, $defaultValue = false)
+function initExplorerParam(\Anakeen\Core\Internal\Application & $app, $defaultValue = false)
 {
     $explorerP = getExplorerParamtersName();
     foreach ($explorerP as $ep) {
@@ -151,9 +151,9 @@ function getExplorerParamtersName()
 /**
  * set volatile patram to detect web user agent
  *
- * @param Application $app
+ * @param \Anakeen\Core\Internal\Application $app
  */
-function initExplorerWebParam(Application & $app)
+function initExplorerWebParam(\Anakeen\Core\Internal\Application & $app)
 {
     $nav = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
     $pos = strpos($nav, "MSIE");
@@ -224,10 +224,10 @@ function initExplorerWebParam(Application & $app)
 /**
  * Set various core URLs params
  *
- * @param Application $core
+ * @param \Anakeen\Core\Internal\Application $core
  * @param Session     $session
  */
-function initMainVolatileParam(Application & $core, Session & $session = null)
+function initMainVolatileParam(\Anakeen\Core\Internal\Application & $core, Session & $session = null)
 {
     if (php_sapi_name() == 'cli') {
         _initMainVolatileParamCli($core);
@@ -236,7 +236,7 @@ function initMainVolatileParam(Application & $core, Session & $session = null)
     }
 }
 
-function _initMainVolatileParamCli(Application & $core)
+function _initMainVolatileParamCli(\Anakeen\Core\Internal\Application & $core)
 {
     $absindex = $core->GetParam("CORE_URLINDEX");
 
@@ -258,7 +258,7 @@ function _initMainVolatileParamCli(Application & $core)
     $core->SetVolatileParam("CORE_MAILACTIONURL", $core_mailactionurl);
 }
 
-function _initMainVolatileParamWeb(Application & $core, Session & $session = null)
+function _initMainVolatileParamWeb(\Anakeen\Core\Internal\Application & $core, Session & $session = null)
 {
     $indexphp = basename($_SERVER["SCRIPT_NAME"]);
     $pattern = preg_quote($indexphp, "|");

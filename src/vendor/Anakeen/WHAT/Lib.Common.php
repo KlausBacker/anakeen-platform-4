@@ -773,7 +773,7 @@ function WhatInitialisation($session = null)
     include_once('Class.Session.php');
 
     $CoreNull = "";
-    $core = new Application();
+    $core = new \Anakeen\Core\Internal\Application();
     $core->Set("CORE", $CoreNull, $session);
     if (!$session) {
         $core->session = new Session();

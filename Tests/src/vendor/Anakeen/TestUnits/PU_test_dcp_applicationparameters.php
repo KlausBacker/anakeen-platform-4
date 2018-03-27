@@ -17,11 +17,11 @@ class TestApplicationParameters extends TestCaseDcp
     
     const appName = "DCPTEST1";
     /**
-     * @return \Application
+     * @return \Anakeen\Core\Internal\Application
      */
     private function initTestApplication()
     {
-        $appTest = new \Application(self::$dbaccess);
+        $appTest = new \Anakeen\Core\Internal\Application(self::$dbaccess);
         $appTest->name = self::appName;
         $appTest->Add();
         $parent = null;
@@ -69,7 +69,7 @@ class TestApplicationParameters extends TestCaseDcp
     /**
      * @dataProvider dataGlobParameters
      */
-    protected function globParamTest(\Application & $appTest, array $expectedGlob, array $expectedNoGlob)
+    protected function globParamTest(\Anakeen\Core\Internal\Application & $appTest, array $expectedGlob, array $expectedNoGlob)
     {
         foreach ($expectedGlob as $globId) {
             $p = new \Param(self::$dbaccess, array(

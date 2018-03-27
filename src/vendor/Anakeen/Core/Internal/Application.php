@@ -1,22 +1,12 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
+
+namespace Anakeen\Core\Internal;
 /**
  * Application Class
  *
- * @author Anakeen
- * @version $Id: Class.Application.php,v 1.64 2008/08/01 09:03:01 eric Exp $
- * @package FDL
- * @subpackage CORE
- */
-/**
+ * @author Anakee
  */
 
-require_once('WHAT/autoload.php');
-include_once('WHAT/Lib.Http.php');
-include_once('WHAT/Lib.Common.php');
 
 function f_paramglog($var)
 { // filter to select only not global
@@ -125,11 +115,11 @@ create sequence SEQ_ID_APPLICATION start 10;
         )
     );
     /**
-     * @var Application
+     * @var \Anakeen\Core\Internal\Application
      */
     public $parent = null;
     /**
-     * @var Session
+     * @var \Session
      */
     public $session = null;
     /**
@@ -137,15 +127,15 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public $user = null;
     /**
-     * @var Style
+     * @var \Style
      */
     public $style;
     /**
-     * @var Param
+     * @var \Param
      */
     public $param;
     /**
-     * @var Permission
+     * @var \Permission
      */
     public $permission = null; // permission object
     
@@ -182,7 +172,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     /**
      * initialize  Application object
      * @param string $name application name to set
-     * @param Application|string $parent the parent object (generally CORE app) : empty string if no parent
+     * @param \Anakeen\Core\Internal\Application|string $parent the parent object (generally CORE app) : empty string if no parent
      * @param string $session parent session
      * @param bool $autoinit set to true to auto create app if not exists yet
      *
@@ -192,11 +182,11 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @throws \Dcp\Db\Exception
      * @code
      $CoreNull = "";
-     * $core = new Application();
+     * $core = new \Anakeen\Core\Internal\Application();
      * $core->Set("CORE", $CoreNull); // init core application from nothing
-     * $core->session = new Session();
+     * $core->session = new \Session();
      * $core->session->set();
-     * $one = new Application();
+     * $one = new \Anakeen\Core\Internal\Application();
      * $one->set("ONEFAM", $core, $core->session);// init ONEFAM application from CORE
      *
      * @endcode
@@ -206,7 +196,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         $this->log->debug("Entering : Set application to $name");
         
-        $query = new QueryDb($this->dbaccess, "Application");
+        $query = new \QueryDb($this->dbaccess, "Application");
         $query->order_by = "";
         $query->criteria = "name";
         $query->operator = "=";
@@ -237,7 +227,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                     }
                 }
             } else {
-                $e = new Dcp\Core\Exception("CORE0004", $name);
+                $e = new \Dcp\Core\Exception("CORE0004", $name);
                 $e->addHttpHeader('HTTP/1.0 404 Application not found');
                 throw $e;
             }
@@ -256,7 +246,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         if ($session != "") {
             $this->SetSession($session);
         }
-        $this->param = new Param($this->dbaccess);
+        $this->param = new \Param($this->dbaccess);
         $style = false;
         if ($this->session) {
             $style = $this->session->read("userCoreStyle", false);
@@ -277,7 +267,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         $this->param->SetKey($this->id, isset($this->user->id) ? $this->user->id : false, $this->style->name);
         if ($verifyAvailable && $this->available === "N") {
             // error
-            $e = new Dcp\Core\Exception("CORE0007", $name);
+            $e = new \Dcp\Core\Exception("CORE0007", $name);
             $e->addHttpHeader('HTTP/1.0 503 Application unavailable');
             throw $e;
         }
@@ -338,7 +328,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     public function exists($app_name, $id_application = 0)
     {
         $this->log->debug("Exists $app_name ?");
-        $query = new QueryDb($this->dbaccess, "application");
+        $query = new \QueryDb($this->dbaccess, "application");
         $query->order_by = "";
         $query->criteria = "";
         
@@ -477,7 +467,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @param string $packName use it to pack all the ref with the same packName into a single file
      * @param bool $fromAdd (do not use this param) true only if you call it from addRessourceRef function
      *
-     * @return string new location
+     * @return string new \location
      */
     private function getResourceLocation($type, $ref, $needparse, $packName, $fromAdd = false)
     {
@@ -595,7 +585,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @param bool $needparse if true will be parsed by the template engine (false by default)
      * @param string $packName use it to pack all the ref with the same packName into a single file
      *
-     * @throws Dcp\Style\Exception
+     * @throws \Dcp\Style\Exception
      * @return string the path of the added ref or "" if the ref is not valid
      */
     public function addCssRef($ref, $needparse = null, $packName = '')
@@ -613,7 +603,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         $needparse = $askParse;
         $currentFileRule = $this->style->getRule('css', $ref);
         if (is_array($currentFileRule)) {
-            if (isset($currentFileRule['flags']) && ($currentFileRule['flags'] & Style::RULE_FLAG_PARSE_ON_RUNTIME)) {
+            if (isset($currentFileRule['flags']) && ($currentFileRule['flags'] & \Style::RULE_FLAG_PARSE_ON_RUNTIME)) {
                 if (isset($currentFileRule['runtime_parser']) && is_array($currentFileRule['runtime_parser']) && isset($currentFileRule['runtime_parser']['className']) && null !== $currentFileRule['parse_on_runtime']['className']) {
                     throw new \Dcp\Style\Exception("STY0007", 'custom parse_on_runtime class is not supported yet');
                 }
@@ -872,13 +862,13 @@ create sequence SEQ_ID_APPLICATION start 10;
             return true;
         } // admin can do everything
         if ($app_name == "") {
-            $acl = new Acl($this->dbaccess);
+            $acl = new \Acl($this->dbaccess);
             if (!$acl->Set($acl_name, $this->id)) {
                 $this->log->warning("Acl $acl_name not available for App $this->name");
                 return false;
             }
             if (!$this->permission) {
-                $permission = new Permission($this->dbaccess, array(
+                $permission = new \Permission($this->dbaccess, array(
                     $this->user->id,
                     $this->id
                 ));
@@ -900,12 +890,12 @@ create sequence SEQ_ID_APPLICATION start 10;
                 $appid = $app_name;
             }
             
-            $wperm = new Permission($this->dbaccess, array(
+            $wperm = new \Permission($this->dbaccess, array(
                 $this->user->id,
                 $appid
             ));
             if ($wperm->isAffected()) {
-                $acl = new Acl($this->dbaccess);
+                $acl = new \Acl($this->dbaccess);
                 if (!$acl->Set($acl_name, $appid)) {
                     $this->log->warning("Acl $acl_name not available for App $this->name");
                     return false;
@@ -925,39 +915,37 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         if ($init == true) {
             if (isset($this->user)) {
-                $pstyle = new Param($this->dbaccess, array(
+                $pstyle = new \Param($this->dbaccess, array(
                 "STYLE",
-                Param::PARAM_USER . $this->user->id,
+                \Param::PARAM_USER . $this->user->id,
                 "1"
             ));
             } else {
-                $pstyle = new Param($this->dbaccess, array(
+                $pstyle = new \Param($this->dbaccess, array(
                 "STYLE",
-                Param::PARAM_USER . \Anakeen\Core\Account::ANONYMOUS_ID,
+                \Param::PARAM_USER . \Anakeen\Core\Account::ANONYMOUS_ID,
                 "1"
             ));
             }
             if (!$pstyle->isAffected()) {
-                $pstyle = new Param($this->dbaccess, array(
+                $pstyle = new \Param($this->dbaccess, array(
                 "STYLE",
-                Param::PARAM_APP,
+                \Param::PARAM_APP,
                 "1"
             ));
             }
             
             $style = $pstyle->val;
-            $this->style = new Style($this->dbaccess, $style);
+            $this->style = new \Style($this->dbaccess, $style);
             
             $this->style->Set($this);
         } else {
             $style = ($useStyle) ? $useStyle : $this->getParam("STYLE");
-            $this->style = new Style($this->dbaccess, $style);
+            $this->style = new \Style($this->dbaccess, $style);
             
             $this->style->Set($this);
         }
-        if ($style) {
-            //  $this->AddCssRef("css/dcp/system.css");
-        }
+
     }
     
     public function setLayoutVars($lay)
@@ -1056,9 +1044,9 @@ create sequence SEQ_ID_APPLICATION start 10;
      * get image url of an application
      * can also get another image by search in Images general directory
      *
-     * @see Application::getImageLink
+     * @see \Anakeen\Core\Internal\Application::getImageLink
      *
-     * @deprecated use { @link Application::getImageLink } instead
+     * @deprecated use { @link \Anakeen\Core\Internal\Application::getImageLink } instead
      *
      * @param string $img image filename
      * @param bool $detectstyle to use theme image instead of original
@@ -1172,7 +1160,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         return ("");
     }
     /**
-     * affect new value to an application parameter
+     * affect new \value to an application parameter
      * @see ParameterManager to easily manage application parameters
      * @param string $key parameter id
      * @param string|string[] $val parameter value
@@ -1181,13 +1169,13 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         if (is_array($val)) {
             if (isset($val["global"]) && $val["global"] == "Y") {
-                $type = Param::PARAM_GLB;
+                $type = \Param::PARAM_GLB;
             } else {
-                $type = Param::PARAM_APP;
+                $type = \Param::PARAM_APP;
             }
             $this->param->Set($key, $val["val"], $type, $this->id);
         } else { // old method
-            $this->param->Set($key, $val, Param::PARAM_APP, $this->id);
+            $this->param->Set($key, $val, \Param::PARAM_APP, $this->id);
         }
     }
     /**
@@ -1200,21 +1188,21 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function setParamU($key, $val)
     {
-        return $this->param->Set($key, $val, Param::PARAM_USER . $this->user->id, $this->id);
+        return $this->param->Set($key, $val, \Param::PARAM_USER . $this->user->id, $this->id);
     }
     /**
-     * declare new application parameter
+     * declare new \application parameter
      * @param string $key
      * @param array $val
      */
     public function setParamDef($key, $val)
     {
-        // add new param definition
-        $pdef = ParamDef::getParamDef($key, $this->id);
+        // add new \param definition
+        $pdef = \ParamDef::getParamDef($key, $this->id);
         
         $oldValues = array();
         if (!$pdef) {
-            $pdef = new ParamDef($this->dbaccess);
+            $pdef = new \ParamDef($this->dbaccess);
             $pdef->name = $key;
             $pdef->isuser = "N";
             $pdef->isstyle = "N";
@@ -1256,9 +1244,9 @@ create sequence SEQ_ID_APPLICATION start 10;
                 // migrate paramv values in case of type changes
                 $newValues = $pdef->getValues();
                 if ($oldValues['isglob'] != $newValues['isglob']) {
-                    $ptype = $oldValues['isglob'] == 'Y' ? Param::PARAM_GLB : Param::PARAM_APP;
-                    $ptypeNew = $newValues['isglob'] == 'Y' ? Param::PARAM_GLB : Param::PARAM_APP;
-                    $pv = new Param($this->dbaccess, array(
+                    $ptype = $oldValues['isglob'] == 'Y' ? \Param::PARAM_GLB : \Param::PARAM_APP;
+                    $ptypeNew = $newValues['isglob'] == 'Y' ? \Param::PARAM_GLB : \Param::PARAM_APP;
+                    $pv = new \Param($this->dbaccess, array(
                         $pdef->name,
                         $ptype,
                         $pdef->appid
@@ -1323,7 +1311,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 if ($update) {
                     // don't modify old parameters
                     if ($this->param && $this->param->Get($k, null) === null) {
-                        // set only new parameters or static variable like VERSION
+                        // set only new \parameters or static variable like VERSION
                         $this->SetParam($k, $v);
                     }
                 } else {
@@ -1369,7 +1357,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             $action_desc_ini = $action_desc;
             if (sizeof($app_desc) > 0) {
                 if (!$update) {
-                    $this->log->debug("InitApp :  new application ");
+                    $this->log->debug("InitApp :  new \application ");
                 }
                 if ($update) {
                     foreach ($app_desc as $k => $v) {
@@ -1393,7 +1381,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                     } else {
                         $this->Add();
                     }
-                    $this->param = new Param();
+                    $this->param = new \Param();
                     $this->param->SetKey($this->id, isset($this->user->id) ? $this->user->id : \Anakeen\Core\Account::ANONYMOUS_ID);
                 }
             } else {
@@ -1403,7 +1391,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             
             $action_desc = $action_desc_ini;
             // init acl
-            $acl = new Acl($this->dbaccess);
+            $acl = new \Acl($this->dbaccess);
             $acl->Init($this, $app_acl, $update);
             // init actions
             $action = new \Anakeen\Core\Internal\Action($this->dbaccess);
@@ -1473,13 +1461,13 @@ create sequence SEQ_ID_APPLICATION start 10;
             $this->updateChildApplications();
         } else {
             $this->log->info("No {$name}/{$name}.app available");
-            throw new Dcp\Exception("CORE0015", $appFilePath);
+            throw new \Dcp\Exception("CORE0015", $appFilePath);
         }
         return true;
     }
     /**
      * update action/acl/param for application's childs
-     * @throws Dcp\Exception|Exception
+     * @throws \Dcp\Exception|\Exception
      */
     private function updateChildApplications()
     {
@@ -1489,7 +1477,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         foreach ($childIds as $childApp) {
             $childId = $childApp["id"];
             $childName = $childApp["name"];
-            $a = new Application($this->dbaccess, $childId);
+            $a = new \Anakeen\Core\Internal\Application($this->dbaccess, $childId);
             
             if ($a->isAffected()) {
                 try {
@@ -1518,12 +1506,12 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function updateAllApp()
     {
-        $query = new QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \QueryDb($this->dbaccess, $this->dbtable);
         $query->AddQuery("available = 'Y'");
         $allapp = $query->Query();
         
         foreach ($allapp as $app) {
-            $application = new Application($this->dbaccess, $app->id);
+            $application = new \Anakeen\Core\Internal\Application($this->dbaccess, $app->id);
             
             $application->Set($app->name, $this->parent);
             $application->UpdateApp();
@@ -1537,11 +1525,11 @@ create sequence SEQ_ID_APPLICATION start 10;
     public function deleteApp()
     {
         // delete acl
-        $acl = new Acl($this->dbaccess);
+        $acl = new \Acl($this->dbaccess);
         $acl->DelAppAcl($this->id);
         // delete actions
         $this->log->debug("Delete {$this->name}");
-        $query = new QueryDb("", "Action");
+        $query = new \QueryDb("", "Action");
         $query->basic_elem->sup_where = array(
             "id_application = {$this->id}"
         );
@@ -1563,7 +1551,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         
         unset($list);
         // delete params
-        $param = new Param($this->dbaccess);
+        $param = new \Param($this->dbaccess);
         $param->DelAll($this->id);
         // delete application
         $err = $this->Delete();
@@ -1584,20 +1572,20 @@ create sequence SEQ_ID_APPLICATION start 10;
         return _($code);
     }
     /**
-     * Write default ACL when new user is created
+     * Write default ACL when new \user is created
      * @TODO not used - to remove
      * @param int $iduser
      * @throws \Dcp\Db\Exception
      */
     public function updateUserAcl($iduser)
     {
-        $query = new QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \QueryDb($this->dbaccess, $this->dbtable);
         $query->AddQuery("available = 'Y'");
         $allapp = $query->Query();
-        $acl = new Acl($this->dbaccess);
+        $acl = new \Acl($this->dbaccess);
         
         foreach ($allapp as $v) {
-            $permission = new Permission($this->dbaccess);
+            $permission = new \Permission($this->dbaccess);
             $permission->id_user = $iduser;
             $permission->id_application = $v->id;
             
@@ -1618,7 +1606,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function getIdFromName($name)
     {
-        $query = new QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \QueryDb($this->dbaccess, $this->dbtable);
         $query->AddQuery("name = '" . pg_escape_string(trim($name)) . "'");
         $app = $query->Query(0, 0, "TABLE");
         if (is_array($app) && isset($app[0]) && isset($app[0]["id"])) {
@@ -1642,11 +1630,11 @@ create sequence SEQ_ID_APPLICATION start 10;
         $res = array();
         try {
             simpleQuery($this->dbaccess, sprintf("SELECT * FROM acl WHERE id_application = %s AND group_default = 'Y'", $this->id), $res, false, false, true);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
         foreach ($res as $acl) {
-            $permission = new Permission($this->dbaccess);
+            $permission = new \Permission($this->dbaccess);
             if ($permission->Exists(\Anakeen\Core\Account::GALL_ID, $this->id, $acl['id'])) {
                 continue;
             }

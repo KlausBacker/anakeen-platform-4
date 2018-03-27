@@ -434,7 +434,7 @@ namespace {
          *
          * @see ApiUsage::setStrictMode
          *
-         * @deprecated use { @link Application::setStrictMode } instead
+         * @deprecated use { @link \Anakeen\Core\Internal\Application::setStrictMode } instead
          *
          * @param boolean $strict strict mode
          * @brief if false additionnal arguments are ignored, default is true

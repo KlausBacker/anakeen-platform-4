@@ -7,7 +7,7 @@ use Anakeen\Router\AuthenticatorManager;
 class ContextManager
 {
     /**
-     * @var \Application
+     * @var \Anakeen\Core\Internal\Application
      */
     protected static $coreApplication = null;
     /**
@@ -78,7 +78,7 @@ class ContextManager
         global $action;
         set_include_path(self::getRootDirectory() . PATH_SEPARATOR . get_include_path());
 
-        $coreApplication = new \Application();
+        $coreApplication = new \Anakeen\Core\Internal\Application();
         $coreApplication->user = &$account;
         self::$coreUser = &$account;
         $coreApplication->Set("CORE", $CoreNull);
@@ -89,7 +89,7 @@ class ContextManager
 
         self::_initCoreVolatileParam($coreApplication);
         if ($appName && $appName !== "CORE") {
-            $application = new \Application();
+            $application = new \Anakeen\Core\Internal\Application();
             $application->set($appName, $coreApplication);
             self::$coreApplication = $application;
             if (!$actionName) {
@@ -114,7 +114,7 @@ class ContextManager
         self::setLanguage(self::getApplicationParam("CORE_LANG", "fr_FR"));
     }
 
-    protected static function getRootActionName(\Application $application)
+    protected static function getRootActionName(\Anakeen\Core\Internal\Application $application)
     {
         DbManager::query(
             sprintf("select name from action where id_application=%d and root='Y'", $application->id),
@@ -251,7 +251,7 @@ class ContextManager
         return self::$language;
     }
 
-    protected static function _initCoreVolatileParam(\Application &$core)
+    protected static function _initCoreVolatileParam(\Anakeen\Core\Internal\Application &$core)
     {
         $absindex = $core->getParam("CORE_URLINDEX");
         if ($absindex == '') {
@@ -323,7 +323,7 @@ class ContextManager
     }
 
     /**
-     * @return \Application|null
+     * @return \Anakeen\Core\Internal\Application|null
      */
     public static function getCurrentApplication()
     {

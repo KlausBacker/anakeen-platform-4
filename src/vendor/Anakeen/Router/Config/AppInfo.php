@@ -7,7 +7,7 @@ namespace Anakeen\Router;
  *
  * Configuration data for an application
  *
- * @see     \Application
+ * @see \Anakeen\Core\Internal\Application
  * @package Anakeen\Router
  */
 class AppInfo
@@ -26,7 +26,7 @@ class AppInfo
     public $parameters = [];
 
     /**
-     * @var \Application
+     * @var \Anakeen\Core\Internal\Application
      */
     protected $application;
     public $configFile;
@@ -55,7 +55,7 @@ class AppInfo
      */
     public function record()
     {
-        $query = new \QueryDb("", \Application::class);
+        $query = new \QueryDb("", \Anakeen\Core\Internal\Application::class);
         $query->addQuery(sprintf("name = '%s'", pg_escape_string($this->name)));
         $list = $query->Query(0, 1);
 
@@ -75,7 +75,7 @@ class AppInfo
      */
     public function addApplication($fullInit = true)
     {
-        $this->application = new \Application();
+        $this->application = new \Anakeen\Core\Internal\Application();
         $this->application->name = $this->name;
         $this->application->short_name = $this->shortName;
         $this->application->description = $this->description;
@@ -99,11 +99,11 @@ class AppInfo
     /**
      * Update application to database
      *
-     * @param \Application $app
+     * @param \Anakeen\Core\Internal\Application $app
      *
      * @throws Exception
      */
-    protected function updateApplication(\Application $app)
+    protected function updateApplication(\Anakeen\Core\Internal\Application $app)
     {
         $this->application = $app;
 

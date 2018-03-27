@@ -82,7 +82,7 @@ class QueryGen
         $this->app_name = GetHttpVars("sapp", $action->parent->name);
         
         if ($this->action_name != $action->name) {
-            $app = new Application($action->dbaccess);
+            $app = new \Anakeen\Core\Internal\Application($action->dbaccess);
             $app->Set($this->app_name, $action->parent);
             $this->action = new \Anakeen\Core\Internal\Action($action->dbaccess);
             $this->action->Set($this->action_name, $app);

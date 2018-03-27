@@ -1,14 +1,12 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
+
+
+namespace Anakeen\Core\Internal;
 /**
  * Manage application parameters
  * Set and get application parameters
  * @class ApplicationParameterManager
  *
- * @see \Anakeen\Core\Internal\ApplicationParameterManager
  *
  */
 class ApplicationParameterManager
@@ -32,11 +30,11 @@ class ApplicationParameterManager
      * Return the value of a user parameter
      *
      * @param string|int|\Anakeen\Core\Internal\Application $application logical name or id or object of the application, you can use
-     * {@link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
+     * {@link self::CURRENT_APPLICATION} or {@link self::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      * @param null|int $userId user login or account id, use it if you want the value for another user
      *
-     * @throws Dcp\ApplicationParameterManager\Exception
+     * @throws \Dcp\ApplicationParameterManager\Exception
      *
      * @return string|null the value of a user parameter (USER="Y") or if not exist
      */
@@ -59,7 +57,7 @@ class ApplicationParameterManager
             } else {
                 return null;
             }
-        } catch (Dcp\ApplicationParameterManager\Exception $exception) {
+        } catch (\Dcp\ApplicationParameterManager\Exception $exception) {
             return null;
         }
     }
@@ -67,7 +65,7 @@ class ApplicationParameterManager
      * Return the default value of a user parameter
      *
      * @param string|int|\Anakeen\Core\Internal\Application $application logical name or id or object of the application, you can use
-     * { @link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
+     * { @link self::CURRENT_APPLICATION} or {@link self::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      *
      * @return string the value of a common parameter (USER="Y")
@@ -81,7 +79,7 @@ class ApplicationParameterManager
      *
      *
      * @param string|int|\Anakeen\Core\Internal\Application $application logical name or id or object of the application, you can use
-     * {@link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
+     * {@link self::CURRENT_APPLICATION} or {@link self::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      *
      * @return string the value of a common parameter (USER="N")
@@ -102,7 +100,7 @@ class ApplicationParameterManager
             } else {
                 return null;
             }
-        } catch (Dcp\ApplicationParameterManager\Exception $exception) {
+        } catch (\Dcp\ApplicationParameterManager\Exception $exception) {
             return null;
         }
     }
@@ -111,13 +109,13 @@ class ApplicationParameterManager
      *
      *
      * @param string|int|\Anakeen\Core\Internal\Application $application logical name or id or object of the application, you can use
-     * { @link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
+     * { @link self::CURRENT_APPLICATION} or {@link self::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      * @param string $value value of the parameter
      * @param null|int|string $userId user login or account id, use it if you want to set the value for another user
      *
      * @param bool $check
-     * @throws Dcp\ApplicationParameterManager\Exception
+     * @throws \Dcp\ApplicationParameterManager\Exception
      *
      * @return void
      */
@@ -129,7 +127,7 @@ class ApplicationParameterManager
         if ($action) {
             $parameter = $action->parent->param;
         } else {
-            $parameter = new Param(getDbAccess());
+            $parameter = new \Param(getDbAccess());
         }
         
         if ($userId === null) {
@@ -151,7 +149,7 @@ class ApplicationParameterManager
             throw new \Dcp\ApplicationParameterManager\Exception("APM0007", $applicationId, $parameterName, $userId);
         }
         
-        $err = $parameter->set($parameterName, $value, Param::PARAM_USER . $userId, $applicationId);
+        $err = $parameter->set($parameterName, $value, \Param::PARAM_USER . $userId, $applicationId);
         if ($err) {
             throw new \Dcp\ApplicationParameterManager\Exception("APM0006", $applicationId, $parameterName, $err);
         }
@@ -161,11 +159,11 @@ class ApplicationParameterManager
      * Set the user parameter default value
      *
      * @param string|int|\Anakeen\Core\Internal\Application $application logical name or id or object of the application, you can use
-     * {@link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
+     * {@link self::CURRENT_APPLICATION} or {@link self::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      * @param string $value value of the parameter
      *
-     * @throws Dcp\ApplicationParameterManager\Exception
+     * @throws \Dcp\ApplicationParameterManager\Exception
      *
      * @return void
      */
@@ -177,11 +175,11 @@ class ApplicationParameterManager
      * Set the common parameter default value
      *
      * @param string|int|\Anakeen\Core\Internal\Application $application logical name or id or object of the application, you can use
-     * { @link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
+     * { @link self::CURRENT_APPLICATION} or {@link self::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      * @param string $value value of the parameter
      *
-     * @throws Dcp\ApplicationParameterManager\Exception
+     * @throws \Dcp\ApplicationParameterManager\Exception
      *
      * @return void
      */
@@ -208,10 +206,10 @@ class ApplicationParameterManager
         if ($action) {
             $parameter = $action->parent->param;
         } else {
-            $parameter = new Param(getDbAccess());
+            $parameter = new \Param(getDbAccess());
         }
         
-        $type = ($isGlobal === "G") ? Param::PARAM_GLB : Param::PARAM_APP;
+        $type = ($isGlobal === "G") ? \Param::PARAM_GLB : \Param::PARAM_APP;
         
         $err = $parameter->set($parameterName, $value, $type, $applicationId);
         
@@ -225,7 +223,7 @@ class ApplicationParameterManager
      *
      * @api Get parameter in the database
      * @param string|int|\Anakeen\Core\Internal\Application $application logical name or id or object of the application, you can use
-     * { @link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
+     * { @link self::CURRENT_APPLICATION} or {@link self::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      *
      * @return string value of the parameter
@@ -250,7 +248,7 @@ class ApplicationParameterManager
             }
             
             return $return;
-        } catch (Dcp\ApplicationParameterManager\Exception $exception) {
+        } catch (\Dcp\ApplicationParameterManager\Exception $exception) {
             return null;
         }
     }
@@ -259,11 +257,11 @@ class ApplicationParameterManager
      *
      * @api Set a parameter value
      * @param string|int|\Anakeen\Core\Internal\Application $application logical name or id or object of the application, you can use
-     * {@link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
+     * {@link self::CURRENT_APPLICATION} or {@link self::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      * @param string $value value of the parameter
      *
-     * @throws Dcp\ApplicationParameterManager\Exception
+     * @throws \Dcp\ApplicationParameterManager\Exception
      *
      * @return void|string error string or void
      */
@@ -298,10 +296,10 @@ class ApplicationParameterManager
      * Get a parameter object (object that describe the parameter)
      *
      * @param string|int|\Anakeen\Core\Internal\Application $application logical name or id or object of the application, you can use
-     * {@link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
+     * {@link self::CURRENT_APPLICATION} or {@link self::GLOBAL_PARAMETER}
      * @param string $parameterName logical name of the parameter
      *
-     * @throws Dcp\ApplicationParameterManager\Exception
+     * @throws \Dcp\ApplicationParameterManager\Exception
      *
      * @return object the object parameter
      */
@@ -329,9 +327,9 @@ class ApplicationParameterManager
      * Get the parameters objects of an application
      *
      * @param string|int|\Anakeen\Core\Internal\Application $application logical name or id or object of the application, you can use
-     * {@link \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION} or {@link \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER}
+     * {@link self::CURRENT_APPLICATION} or {@link self::GLOBAL_PARAMETER}
      *
-     * @throws Dcp\ApplicationParameterManager\Exception
+     * @throws \Dcp\ApplicationParameterManager\Exception
      *
      * @return object the object parameter
      */
@@ -361,7 +359,7 @@ class ApplicationParameterManager
      * @param string|int|\Anakeen\Core\Internal\Application $application Application
      * @param string $parameter used only in global detection
      *
-     * @throws Dcp\ApplicationParameterManager\Exception
+     * @throws \Dcp\ApplicationParameterManager\Exception
      * @return null|string|array null if not find, string if only id, array if id and name
      */
     private static function getApplicationId($application, $parameter = "")
@@ -369,14 +367,14 @@ class ApplicationParameterManager
         $applicationName = "";
         $applicationId = "";
         
-        if (empty($parameter) && $application === \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER) {
+        if (empty($parameter) && $application === self::GLOBAL_PARAMETER) {
             throw new \Dcp\ApplicationParameterManager\Exception("APM0010");
-        } elseif ($application === \Anakeen\Core\Internal\ApplicationParameterManager::GLOBAL_PARAMETER) {
+        } elseif ($application === self::GLOBAL_PARAMETER) {
             $applicationId = self::getGlobalParameterApplicationName($parameter);
             if ($applicationId === false) {
                 throw new \Dcp\ApplicationParameterManager\Exception("APM0002", $parameter);
             }
-        } elseif ($application === \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION) {
+        } elseif ($application === self::CURRENT_APPLICATION) {
             global $action;
             if ($action instanceof \Anakeen\Core\Internal\Action) {
                 $applicationName = $action->parent->name;

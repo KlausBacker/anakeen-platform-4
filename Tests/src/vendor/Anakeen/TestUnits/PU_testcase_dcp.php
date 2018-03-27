@@ -120,7 +120,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
 
     /**
      * Current application
-     * @return \Application
+     * @return \Anakeen\Core\Internal\Application
      */
     protected static function getApplication()
     {

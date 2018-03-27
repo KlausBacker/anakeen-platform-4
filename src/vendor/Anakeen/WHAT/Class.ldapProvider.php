@@ -60,7 +60,7 @@ class ldapProvider extends Provider
         $err = "";
         
         $CoreNull = "";
-        $core = new Application();
+        $core = new \Anakeen\Core\Internal\Application();
         $core->Set("CORE", $CoreNull);
         $core->session = new Session();
         $action = new \Anakeen\Core\Internal\Action();

@@ -23,7 +23,7 @@ $usage->verify();
 
 $appid = 0;
 if ($parapp != "") {
-    /** @var Application $core */
+    /** @var \Anakeen\Core\Internal\Application $core */
     global $core;
     $appid = $core->GetIdFromName($parapp);
 }

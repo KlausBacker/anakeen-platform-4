@@ -117,7 +117,7 @@ create index permission_idx4 on permission(computed);
      * Gives the list of Permission for a user on an application
      *
      * @param \Anakeen\Core\Account   $user
-     * @param Application $app
+     * @param \Anakeen\Core\Internal\Application $app
      *
      * @return array
      */
@@ -150,7 +150,7 @@ create index permission_idx4 on permission(computed);
         $i = 0;
         while ($i < $query->nb) {
             $this->log->debug("ListUserApplicaion");
-            $res[$i] = new Application($this->dbaccess, $list[$i]->id_application);
+            $res[$i] = new \Anakeen\Core\Internal\Application($this->dbaccess, $list[$i]->id_application);
             $i++;
         }
         return ($res);
@@ -436,7 +436,7 @@ create index permission_idx4 on permission(computed);
     // id_user field must be set before
     public function AddUserPermission($appname, $aclname)
     {
-        $app = new Application($this->dbaccess);
+        $app = new \Anakeen\Core\Internal\Application($this->dbaccess);
         $appid = $app->GetIdFromName($appname);
         if ($appid != 0) {
             $this->id_application = $appid;

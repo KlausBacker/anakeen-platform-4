@@ -572,7 +572,7 @@ class OOoLayout extends Layout
         }
         
         if ($appname != $this->action->parent->name) {
-            $appl = new Application();
+            $appl = new \Anakeen\Core\Internal\Application();
             $appl->Set($appname, $this->action->parent);
         } else {
             $appl = & $this->action->parent;

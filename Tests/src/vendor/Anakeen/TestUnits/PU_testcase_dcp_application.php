@@ -99,7 +99,7 @@ abstract class TestCaseDcpApplication extends TestCaseDcp
         
         $myAction = self::getAction();
         
-        self::$app = new \Application();
+        self::$app = new \Anakeen\Core\Internal\Application();
         self::$app->rootdir = $appRoot;
         self::$app->param = new \Param(self::$dbaccess);
         self::$app->parent = $myAction->parent;

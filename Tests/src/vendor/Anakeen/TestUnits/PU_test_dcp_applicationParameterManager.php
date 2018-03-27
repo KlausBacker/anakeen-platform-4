@@ -36,11 +36,11 @@ class TestApplicationParameterManeger extends TestCaseDcpApplication
 
     /**
      * @param $parameters
-     * @return \Application
+     * @return \Anakeen\Core\Internal\Application
      */
     private function initTestApplication($parameters)
     {
-        $appTest = new \Application(self::$dbaccess);
+        $appTest = new \Anakeen\Core\Internal\Application(self::$dbaccess);
         $appTest->name = self::appName;
         $appTest->childof = 'TST_PARAMETER_MANAGER';
         $err = $appTest->Add();

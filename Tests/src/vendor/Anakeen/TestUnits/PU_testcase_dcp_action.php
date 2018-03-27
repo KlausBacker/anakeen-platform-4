@@ -33,7 +33,7 @@ class TestCaseDcpAction extends TestCaseDcp
         SetHttpVar("app", $appName);
         SetHttpVar("action", $actionName);
         
-        $appCalled = new \Application();
+        $appCalled = new \Anakeen\Core\Internal\Application();
         $appCalled->set($appName, $action->parent,$action->parent->session);
         $appCalled->user=$action->user;
         if ($appCalled->isAffected() ) {

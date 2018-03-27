@@ -710,9 +710,9 @@ class SearchDoc
      * can, be use in loop
      * ::search must be call before
      *
-     * @see Application::getNextDoc
+     * @see \Anakeen\Core\Internal\Application::getNextDoc
      *
-     * @deprecated use { @link Application::getNextDoc } instead
+     * @deprecated use { @link \Anakeen\Core\Internal\Application::getNextDoc } instead
      *
      * @see SearchDoc::search
      *

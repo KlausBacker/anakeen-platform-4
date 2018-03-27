@@ -32,7 +32,7 @@ namespace {
         public $parsable;
         protected $rules;
         /**
-         * @var Application
+         * @var \Anakeen\Core\Internal\Application
          */
         public $parent;
         
