@@ -1,6 +1,6 @@
 <?php
 
-namespace Anakeen\Routes\Core;
+namespace Anakeen\Routes\Core\Lib;
 
 /**
  * Class DocumentDataFormatter

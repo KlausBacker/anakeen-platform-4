@@ -12,7 +12,7 @@ class ApiV2Response
      *
      * @param \Slim\Http\response               $response
      * @param mixed                             $data
-     * @param \Anakeen\Routes\Core\ApiMessage[] $messages
+     * @param \Anakeen\Routes\Core\Lib\ApiMessage[] $messages
      *
      * @return \Slim\Http\response
      */

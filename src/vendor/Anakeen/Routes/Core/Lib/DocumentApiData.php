@@ -34,7 +34,7 @@ class DocumentApiData
      */
     protected $request;
     /**
-     * @var DocumentDataFormatter
+     * @var Lib\DocumentDataFormatter
      */
     protected $documentFormater = null;
     /**
@@ -200,7 +200,7 @@ class DocumentApiData
 
     protected function getDocumentDataFormatter()
     {
-        return new DocumentDataFormatter($this->_document);
+        return new Lib\DocumentDataFormatter($this->_document);
     }
 
     /**

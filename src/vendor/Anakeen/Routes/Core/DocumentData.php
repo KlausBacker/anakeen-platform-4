@@ -39,7 +39,7 @@ class DocumentData
      */
     protected $request;
     /**
-     * @var DocumentDataFormatter
+     * @var Lib\DocumentDataFormatter
      */
     protected $documentFormater = null;
     /**

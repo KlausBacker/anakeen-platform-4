@@ -233,11 +233,11 @@ class DocumentList
      *
      * @param $documentList
      *
-     * @return CollectionDataFormatter
+     * @return Lib\CollectionDataFormatter
      */
     protected function prepareDocumentFormatter($documentList)
     {
-        $documentFormatter = new CollectionDataFormatter($documentList);
+        $documentFormatter = new Lib\CollectionDataFormatter($documentList);
 
         if ($this->hasFields(self::GET_PROPERTIES, true) && !$this->hasFields(self::GET_PROPERTY)) {
             $documentFormatter->useDefaultProperties();

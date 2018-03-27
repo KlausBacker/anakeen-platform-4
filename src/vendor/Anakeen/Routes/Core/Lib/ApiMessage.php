@@ -4,7 +4,7 @@
  * @package FDL
 */
 
-namespace Anakeen\Routes\Core;
+namespace Anakeen\Routes\Core\Lib;
 
 class ApiMessage implements \JsonSerializable
 {

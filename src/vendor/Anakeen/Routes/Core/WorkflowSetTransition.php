@@ -70,9 +70,9 @@ class WorkflowSetTransition extends WorkflowTransition
             throw $exception;
         }
         if ($message) {
-            $msg = new ApiMessage();
+            $msg = new \Anakeen\Routes\Core\Lib\ApiMessage();
             $msg->contentText = $message;
-            $msg->type = ApiMessage::MESSAGE;
+            $msg->type = \Anakeen\Routes\Core\Lib\ApiMessage::MESSAGE;
             $msg->code = "WORKFLOW_TRANSITION";
             $messages[] = $msg;
         }

@@ -94,7 +94,7 @@ class DocumentUpdateData extends DocumentData
             throw $exception;
         }
         if ($info->refresh) {
-            $message = new ApiMessage();
+            $message = new \Anakeen\Routes\Core\Lib\ApiMessage();
             $message->contentText = ___("Document information", "ank");
             $message->contentHtml = $info->refresh;
             $message->type = $message::MESSAGE;
@@ -102,7 +102,7 @@ class DocumentUpdateData extends DocumentData
             $messages[] = $message;
         }
         if ($info->postStore) {
-            $message = new ApiMessage();
+            $message = new \Anakeen\Routes\Core\Lib\ApiMessage();
             $message->contentText = $info->postStore;
             $message->type = $message::MESSAGE;
             $message->code = "store";
