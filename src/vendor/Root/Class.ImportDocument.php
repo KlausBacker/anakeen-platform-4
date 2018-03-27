@@ -100,7 +100,7 @@ class ImportDocument
                 include_once("FDL/import_tar.php");
                 $untardir = getTarExtractDir($action, basename($file));
 
-                $mime =  \Anakeen\Core\FileMime::getSysMimeFile($file, basename($file));
+                $mime =  \Anakeen\Core\Utils\FileMime::getSysMimeFile($file, basename($file));
                 //print_r(array($untardir, $file, $mime));
                 $err = extractTar($file, $untardir, $mime);
                 if ($err !== '') {

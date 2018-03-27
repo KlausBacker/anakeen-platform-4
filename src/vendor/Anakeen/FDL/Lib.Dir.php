@@ -118,7 +118,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             if (isSimpleFilter($sqlfilters) && (familyNeedDocread($dbaccess, $fromid))) {
                 $table = "docread";
                 $fdoc = new_doc($dbaccess, $fromid);
-                $sqlfilters[-4] = GetSqlCond(array_merge(array(
+                $sqlfilters[-4] = \Anakeen\Core\DbManager::getSqlOrCond(array_merge(array(
                     $fromid
                 ), array_keys($fdoc->GetChildFam())), "fromid", true);
             } else {
@@ -224,7 +224,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             }
             
             if (is_array($dirid)) {
-                $sqlfld = GetSqlCond($dirid, "dirid", true);
+                $sqlfld = \Anakeen\Core\DbManager::getSqlOrCond($dirid, "dirid", true);
                 $qsql = "select $selectfields " . "from (select childid from fld where $sqlfld) as fld2 inner join $table on (initid=childid)  " . "where  $sqlcond ";
             } else {
                 $sqlfld = "dirid=$dirid and qtype='S'";
@@ -713,7 +713,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     function getFldDoc($dbaccess, $dirid, $sqlfilters = array(), $limit = 100, $reallylimit = true)
     {
         if (is_array($dirid)) {
-            $sqlfld = GetSqlCond($dirid, "dirid", true);
+            $sqlfld = \Anakeen\Core\DbManager::getSqlOrCond($dirid, "dirid", true);
         } else {
             $sqlfld = "fld.dirid=$dirid";
         }
@@ -1054,7 +1054,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             $defProfFamId = $doc->defProfFamId;
         }
         
-        $cond = GetSqlCond($chdoc, "dpdoc_famid");
+        $cond = \Anakeen\Core\DbManager::getSqlOrCond($chdoc, "dpdoc_famid");
         if ($cond != "") {
             $filter[] = "dpdoc_famid is null or (" . GetSqlCond($chdoc, "dpdoc_famid") . ")";
         } else {

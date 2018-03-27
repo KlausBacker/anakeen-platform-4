@@ -2,7 +2,7 @@
 
 namespace Anakeen\Script;
 
-use Anakeen\Core\FileMime;
+use Anakeen\Core\Utils\FileMime;
 use Slim\Container;
 use Slim\Http\Environment;
 use Slim\Http\Request;

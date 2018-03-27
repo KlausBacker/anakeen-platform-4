@@ -804,7 +804,7 @@ function lmask($dbaccess, $name, $maskfamid = "")
     if ($maskfamid > 0) {
         $mdoc = new_Doc($dbaccess, $maskfamid);
         $chdoc = $mdoc->GetFromDoc();
-        $filter[] = GetSqlCond($chdoc, "msk_famid");
+        $filter[] = \Anakeen\Core\DbManager::getSqlOrCond($chdoc, "msk_famid");
         //    $filter[]="msk_famid='$maskfamid'"; // when workflow will have attribut to say the compatible families
         
     }
@@ -817,7 +817,7 @@ function lcvdoc($dbaccess, $name, $cvfamid = "")
     if ($cvfamid > 0) {
         $mdoc = new_Doc($dbaccess, $cvfamid);
         $chdoc = $mdoc->GetFromDoc();
-        $filter[] = GetSqlCond($chdoc, "cv_famid");
+        $filter[] = \Anakeen\Core\DbManager::getSqlOrCond($chdoc, "cv_famid");
     }
     return lfamily($dbaccess, "CVDOC", $name, 0, $filter);
 }

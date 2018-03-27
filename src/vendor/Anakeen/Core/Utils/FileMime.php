@@ -1,6 +1,6 @@
 <?php
 
-namespace Anakeen\Core;
+namespace Anakeen\Core\Utils;
 
 /**
  * Get Mime type from file

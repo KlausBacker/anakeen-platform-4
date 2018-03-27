@@ -2,7 +2,7 @@
 
 namespace Anakeen\Router;
 
-use Anakeen\Core\FileMime;
+use Anakeen\Core\Utils\FileMime;
 use Anakeen\Router\Exception;
 
 class ApiV2Response

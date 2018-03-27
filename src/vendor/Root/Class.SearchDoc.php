@@ -1345,7 +1345,7 @@ class SearchDoc
                 if (isSimpleFilter($sqlfilters) && (familyNeedDocread($dbaccess, $fromid))) {
                     $table = "docread";
                     $fdoc = new_doc($dbaccess, $fromid);
-                    $sqlfilters[-4] = GetSqlCond(array_merge(array(
+                    $sqlfilters[-4] = \Anakeen\Core\DbManager::getSqlOrCond(array_merge(array(
                         $fromid
                     ), array_keys($fdoc->GetChildFam())), "fromid", true);
                 } else {

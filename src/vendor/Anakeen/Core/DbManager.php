@@ -16,11 +16,11 @@ class DbManager
             return $pgConnection;
         }
 
-        $configFile=ContextManager::getRootDirectory()."/".Settings::DbAccessFilePath;
+        $configFile = ContextManager::getRootDirectory() . "/" . Settings::DbAccessFilePath;
         if (!file_exists($configFile)) {
             throw new \Dcp\Core\Exception("CORE0015", $configFile);
         }
-        $pgservice_core=null;
+        $pgservice_core = null;
         if (!include($configFile)) {
             throw new \Dcp\Core\Exception("CORE0016", $configFile);
         }
@@ -33,8 +33,6 @@ class DbManager
 
         return $pgConnection;
     }
-
-
 
 
     /**
@@ -60,10 +58,12 @@ class DbManager
 
     /**
      * send simple query to database
-     * @param string $query sql query
-     * @param string|bool|array &$result query result
-     * @param bool $singlecolumn set to true if only one field is return
-     * @param bool $singleresult set to true is only one row is expected (return the first row). If is combined with singlecolumn return the value not an array, if no results and $singlecolumn is true then $results is false
+     *
+     * @param string            $query        sql query
+     * @param string|bool|array &$result      query result
+     * @param bool              $singlecolumn set to true if only one field is return
+     * @param bool              $singleresult set to true is only one row is expected (return the first row). If is combined with singlecolumn return the value not an array, if no results and $singlecolumn is true then $results is false
+     *
      * @throws \Dcp\Db\Exception
      * @return void
      */
@@ -94,9 +94,12 @@ class DbManager
             throw new \Dcp\Db\Exception('DB0100', pg_last_error($dbid), $query);
         }
     }
+
     /**
      * set a database transaction save point
+     *
      * @param string $point point identifier
+     *
      * @throws \Dcp\Core\Exception
      * @return void
      */
@@ -157,7 +160,7 @@ class DbManager
             self::query(sprintf('select pg_advisory_lock(0), pg_advisory_unlock(0), pg_advisory_xact_lock(%d,%d);', $exclusiveLock, $prefixLockId));
         }
 
-        self::$lockpoint[$idbid][sprintf("%d-%s", $exclusiveLock, $exclusiveLockPrefix) ] = array(
+        self::$lockpoint[$idbid][sprintf("%d-%s", $exclusiveLock, $exclusiveLockPrefix)] = array(
             $exclusiveLock,
             $prefixLockId
         );
@@ -165,7 +168,9 @@ class DbManager
 
     /**
      * commit transaction save point
+     *
      * @param string $point
+     *
      * @return void
      * @throws \Dcp\Core\Exception
      */
@@ -185,9 +190,12 @@ class DbManager
             throw new \Dcp\Core\Exception(sprintf("cannot commit unsaved point : %s", $point));
         }
     }
+
     /**
      * revert to transaction save point
+     *
      * @param string $point revert point
+     *
      * @return void
      * @throws \Dcp\Core\Exception
      */
@@ -209,11 +217,14 @@ class DbManager
             throw new \Dcp\Core\Exception(sprintf("cannot rollback unsaved point : %s", $point));
         }
     }
+
     /**
      * set a database  master lock
      * the lock is free when explicit call with false parameter.
      * When a master lock is set,
+     *
      * @param bool $useLock set lock (true) or unlock (false)
+     *
      * @return void
      */
     public static function setMasterLock($useLock)
@@ -225,5 +236,33 @@ class DbManager
         }
 
         self::$masterLock = (bool)$useLock;
+    }
+
+    /**
+     * @param array   $values
+     * @param   string $column
+     * @param bool     $integer
+     *
+     * @return string like : mycol in ('a', 'b' , 'c')
+     */
+    public static function getSqlOrCond($values, $column, $integer = false)
+    {
+        $sql_cond = "";
+        if (count($values) > 0) {
+            if ($integer) { // for integer type
+                $sql_cond = "$column in (";
+                $sql_cond .= implode(",", $values);
+                $sql_cond .= ")";
+            } else { // for text type
+                foreach ($values as & $v) {
+                    $v = pg_escape_string($v);
+                }
+                $sql_cond = "$column in ('";
+                $sql_cond .= implode("','", $values);
+                $sql_cond .= "')";
+            }
+        }
+
+        return $sql_cond;
     }
 }

@@ -1035,7 +1035,7 @@ union
         $g = new \Group($this->dbaccess);
         $lg = $g->getChildsGroupId($this->id);
         $lg[] = $this->id;
-        $cond = getSqlCond($lg, "idgroup", true);
+        $cond = \Anakeen\Core\DbManager::getSqlOrCond($lg, "idgroup", true);
         if (!$cond) {
             $cond = "true";
         }
@@ -1214,7 +1214,7 @@ union
         $g = new \Group($this->dbaccess);
         $lg = $g->getChildsGroupId($this->id);
         $lg[] = $this->id;
-        $cond = getSqlCond($lg, "idgroup", true);
+        $cond = \Anakeen\Core\DbManager::getSqlOrCond($lg, "idgroup", true);
         if (!$cond) {
             $cond = "true";
         }

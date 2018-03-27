@@ -1080,7 +1080,7 @@ create unique index i_docir on doc(initid, revision);";
                 return ''; // OK
             } elseif ($cAlive > 1) {
                 // multiple alive already set : need fix it
-                fixMultipleAliveDocument($this);
+                \Anakeen\Core\Utils\MiscDoc::fixMultipleAliveDocument($this);
                 if ($this->isFixed()) { // if locked now ?
                     return ErrorCode::getError('DOC0119', $this->getTitle(), $this->id);
                 }
@@ -1096,7 +1096,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function postUpdate()
     {
-        fixMultipleAliveDocument($this);
+        \Anakeen\Core\Utils\MiscDoc::fixMultipleAliveDocument($this);
 
         if ($this->hasChanged) {
             $this->computeDProfil();
@@ -1140,7 +1140,7 @@ create unique index i_docir on doc(initid, revision);";
             addWarningMsg($err);
             return $err;
         }
-        if (\Anakeen\Core\FileMime::getFileExtension($orifile) != 'odt') {
+        if (\Anakeen\Core\Utils\FileMime::getFileExtension($orifile) != 'odt') {
             $err = sprintf(_("Dynamic template %s not an odt file "), $orifile);
             addWarningMsg($err);
             return $err;
@@ -4766,7 +4766,7 @@ create unique index i_docir on doc(initid, revision);";
                     }
                 }
                 if ($ftitle) {
-                    $ext = \Anakeen\Core\FileMime::getFileExtension($ftitle);
+                    $ext = \Anakeen\Core\Utils\FileMime::getFileExtension($ftitle);
                 }
                 if ($ext == "") {
                     $ext = "nop";
@@ -8441,7 +8441,7 @@ create unique index i_docir on doc(initid, revision);";
 
         $tplfile = $this->getZoneFile($layout);
 
-        $ext = \Anakeen\Core\FileMime::getFileExtension($tplfile);
+        $ext = \Anakeen\Core\Utils\FileMime::getFileExtension($tplfile);
         if (strtolower($ext) == "odt") {
 
             $target = "ooo";

@@ -108,7 +108,10 @@ class CheckWorkflow
     {
         return implode("\n", $this->terr);
     }
-    
+
+    /**
+     * @return array
+     */
     public function getError()
     {
         return $this->terr;
@@ -133,7 +136,7 @@ class CheckWorkflow
     }
     /**
      * verify validity with attributes
-     * @return string
+     * @return string[]
      */
     public function verifyWorkflowComplete()
     {

@@ -51,8 +51,8 @@ class CheckEnd extends CheckData
         $c = count($this->doc->fields) + count($this->doc->sup_fields);
         $ancestor = $this->doc->getFathersDoc();
         $ancestor[] = $this->doc->id;
-        
-        $sql = sprintf("select count(*) from docattr where type != 'frame' and type != 'tab' and type != 'array' and %s", GetSqlCond($ancestor, "docid", true));
+
+        $sql = sprintf("select count(*) from docattr where type != 'frame' and type != 'tab' and type != 'array' and %s",  \Anakeen\Core\DbManager::getSqlOrCond($ancestor, "docid", true));
         simpleQuery('', $sql, $r, true, true);
         $c+= $r;
         return $c;
@@ -80,7 +80,6 @@ class CheckEnd extends CheckData
             } elseif ((!is_a($foa, "FieldSetAttribute")) && ($foa->type != 'array')) {
                 $this->addError(ErrorCode::getError('ATTR0204', $foa->id, $oa->id));
             } else {
-                $type = $oa->type;
                 $ftype = $oa->fieldSet->type;
                 if (($ftype != 'frame') && ($ftype != 'array')) {
                     $this->addError(ErrorCode::getError('ATTR0205', $foa->id, $oa->id));
@@ -289,7 +288,6 @@ class CheckEnd extends CheckData
             } elseif ((!is_a($foa, "FieldSetAttribute")) && ($foa->type != 'array')) {
                 $this->addError(ErrorCode::getError('ATTR0209', $foa->id, $oa->id));
             } else {
-                $type = $oa->type;
                 $ftype = $oa->fieldSet->type;
                 if (($ftype != 'frame') && ($ftype != 'array')) {
                     $this->addError(ErrorCode::getError('ATTR0210', $foa->id, $oa->id));

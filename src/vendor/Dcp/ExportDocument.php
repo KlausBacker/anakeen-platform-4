@@ -169,7 +169,7 @@ class ExportDocument
         // add extended Acls
         if ($doc->extendedAcls) {
             $extAcls = array_keys($doc->extendedAcls);
-            $aclCond = GetSqlCond($extAcls, "acl");
+            $aclCond = \Anakeen\Core\DbManager::getSqlOrCond($extAcls, "acl");
             simpleQuery($dbaccess, sprintf("select * from docpermext where docid=%d and %s order by userid", $doc->profid, $aclCond), $eAcls);
             
             foreach ($eAcls as $kAcl => $aAcl) {

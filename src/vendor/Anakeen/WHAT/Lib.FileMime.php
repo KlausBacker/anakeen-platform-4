@@ -20,7 +20,7 @@
  */
 function getIconMimeArray()
 {
-    return \Anakeen\Core\FileMime::getIconMimeArray();
+    return \Anakeen\Core\Utils\FileMime::getIconMimeArray();
 }
 
 /**
@@ -33,7 +33,7 @@ function getIconMimeArray()
 function getIconMimeFile($sysmime)
 {
 
-    return \Anakeen\Core\FileMime::getIconMimeFile($sysmime);
+    return \Anakeen\Core\Utils\FileMime::getIconMimeFile($sysmime);
 }
 
 /**
@@ -48,7 +48,7 @@ function getIconMimeFile($sysmime)
  */
 function getSysMimeFile($f, $fn = "")
 {
-    return \Anakeen\Core\FileMime::getSysMimeFile($f, $fn);
+    return \Anakeen\Core\Utils\FileMime::getSysMimeFile($f, $fn);
 }
 
 /**
@@ -60,7 +60,7 @@ function getSysMimeFile($f, $fn = "")
  */
 function getTextMimeFile($f, $fn = '')
 {
-    return \Anakeen\Core\FileMime::getTextMimeFile($f, $fn);
+    return \Anakeen\Core\Utils\FileMime::getTextMimeFile($f, $fn);
 }
 
 /**
@@ -74,7 +74,7 @@ function getTextMimeFile($f, $fn = '')
  */
 function getExtension($smime)
 {
-    return \Anakeen\Core\FileMime::getExtension($smime);
+    return \Anakeen\Core\Utils\FileMime::getExtension($smime);
 }
 
 /**
@@ -88,7 +88,7 @@ function getExtension($smime)
  */
 function getFileExtension($filename)
 {
-    return \Anakeen\Core\FileMime::getFileExtension($filename);
+    return \Anakeen\Core\Utils\FileMime::getFileExtension($filename);
 }
 
 /**
@@ -103,7 +103,7 @@ function getFileExtension($filename)
  */
 function getMimeFile($filename, $type = 'sys')
 {
-    return \Anakeen\Core\FileMime::getMimeFile($filename, $type);
+    return \Anakeen\Core\Utils\FileMime::getMimeFile($filename, $type);
 }
 
 /**

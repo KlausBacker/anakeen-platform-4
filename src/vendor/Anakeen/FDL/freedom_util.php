@@ -38,26 +38,14 @@ function GetSqlCond2($Table, $column)
     return $sql_cond;
 }
 
+/**
+ * @deprecated use DbManager::getSqlOrCond
+ * @return string
+ */
 function GetSqlCond($Table, $column, $integer = false)
 // ------------------------------------------------------
 {
-    $sql_cond = "";
-    if (count($Table) > 0) {
-        if ($integer) { // for integer type
-            $sql_cond = "$column in (";
-            $sql_cond .= implode(",", $Table);
-            $sql_cond .= ")";
-        } else { // for text type
-            foreach ($Table as & $v) {
-                $v = pg_escape_string($v);
-            }
-            $sql_cond = "$column in ('";
-            $sql_cond .= implode("','", $Table);
-            $sql_cond .= "')";
-        }
-    }
-
-    return $sql_cond;
+    return DbManager::getSqlOrCond($Table, $column, $integer);
 }
 
 /**
@@ -829,43 +817,6 @@ function isFixedDoc($dbaccess, $id)
     return ($tdoc["locked"] == -1);
 }
 
-/**
- * lock oldest alive revision in case of conflict
- *
- * @param Doc $doc
- */
-function fixMultipleAliveDocument(Doc & $doc)
-{
-    if ($doc->id && $doc->fromid > 0) {
-        DbManager::query(sprintf(
-            "select id from only doc%d where initid=%d and locked != -1 order by id",
-            $doc->fromid,
-            $doc->initid
-        ), $r);
-        array_pop($r); // last stay alive
-        if (count($r) > 0) {
-            $rid = array();
-            foreach ($r as $docInfo) {
-                DbManager::query(sprintf("update doc set locked= -1 where id=%d", $docInfo["id"]));
-                $rid[] = $docInfo["id"];
-                if ($docInfo["id"] == $doc->id) {
-                    $doc->locked = -1;
-                }
-            }
-            $doc->addHistoryEntry(
-                sprintf(_("Fix multiple alive document #%s"), implode(', ', $rid)),
-                DocHisto::WARNING
-            );
-            addWarningMsg(sprintf(_("Fix multiple alive revision for \"%s\""), $doc->getTitle()));
-            global $action;
-            $action->log->warning(sprintf(
-                _("Fix multiple alive document for \"%s\" #%s"),
-                $doc->getTitle(),
-                implode(', ', $rid)
-            ));
-        }
-    }
-}
 
 function ComputeVisibility($vis, $fvis, $ffvis = '')
 {

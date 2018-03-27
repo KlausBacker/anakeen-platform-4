@@ -67,7 +67,7 @@ class TemporaryFile
             throw $newException;
         }
 
-        $iconFile =  \Anakeen\Core\FileMime::getIconMimeFile($info->mime_s);
+        $iconFile =  \Anakeen\Core\Utils\FileMime::getIconMimeFile($info->mime_s);
         $iconSize = 20;
         $thumbSize = 48;
 
@@ -77,7 +77,7 @@ class TemporaryFile
             $thumbnailUrl = sprintf("%simages/recorded/sizes/%s/%s.png", Settings::ApiV2, $thumbSize, $info->id_file);
         }
 
-        $url = sprintf("%sfiles/recorded/temporary/%s.%s", Settings::ApiV2, $info->id_file, \Anakeen\Core\FileMime::getFileExtension($file["name"]));
+        $url = sprintf("%sfiles/recorded/temporary/%s.%s", Settings::ApiV2, $info->id_file, \Anakeen\Core\Utils\FileMime::getFileExtension($file["name"]));
 
         return array(
             "file" => array(
