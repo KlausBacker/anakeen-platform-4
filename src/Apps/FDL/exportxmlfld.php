@@ -17,7 +17,7 @@
 include_once("FDL/exportfld.php");
 /**
  * Exportation as xml of documents from folder or searches
- * @param Action &$action current action
+ * @param \Anakeen\Core\Internal\Action &$action current action
  * @global string $fldid Http var : folder identifier to export
  * @global string $wfile Http var : (Y|N) if Y export attached file export format will be tgz
  * @global string $flat Http var : (Y|N) if Y specid column is set with identifier of document
@@ -31,7 +31,7 @@ include_once("FDL/exportfld.php");
  * @param string $eformat X : zip (xml inside), Y: global xml file
  * @param string $eformat X : zip (xml inside), Y: global xml file
  */
-function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $specSearch = null, $outputFile = '', $eformat = "", $wident = 'Y', $aSelection = null, $toDownload = true)
+function exportxmlfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $famid = "", SearchDoc $specSearch = null, $outputFile = '', $eformat = "", $wident = 'Y', $aSelection = null, $toDownload = true)
 {
     setMaxExecutionTimeTo(3600); // 60 minutes
     $dbaccess = $action->dbaccess;
@@ -289,7 +289,7 @@ EOF;
     }
     recordStatus($action, $exportId, _("Export done"), true);
 }
-function exportExit(Action & $action, $err)
+function exportExit(\Anakeen\Core\Internal\Action & $action, $err)
 {
     $log = $action->getArgument("log");
     if ($log) {

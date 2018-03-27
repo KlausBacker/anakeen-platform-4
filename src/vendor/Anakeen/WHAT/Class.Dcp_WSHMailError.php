@@ -6,7 +6,7 @@ class WSHMailError
 {
     public $expand = array();
     /**
-     * @var \Action
+     * @var \Anakeen\Core\Internal\Action
      */
     public $msg = '';
     public $from = '';

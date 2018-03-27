@@ -14,14 +14,14 @@ class RessourcePacker
     /**
      * Pack JS scripts
      *
-     * @param Action $action The action on which the resulting JS will be added
+     * @param \Anakeen\Core\Internal\Action $action The action on which the resulting JS will be added
      * @param array $static_js List of static JS file to pack
      * @param array $dynamic_js List of dynamic JS file to pack
      *
      * @param string $extraCode add js code before including file
      * @return boolean true
      */
-    public static function pack_js(Action & $action, array & $static_js = array(), array & $dynamic_js = array(), $extraCode = '')
+    public static function pack_js(\Anakeen\Core\Internal\Action & $action, array & $static_js = array(), array & $dynamic_js = array(), $extraCode = '')
     {
         print "//Pack js\n";
         print $extraCode . "\n";
@@ -70,11 +70,11 @@ class RessourcePacker
     /**
      * Pack CSS stylesheets
      *
-     * @param Action $action The action on which the resulting CSS will be added
+     * @param \Anakeen\Core\Internal\Action $action The action on which the resulting CSS will be added
      * @param array $static_css List of static CSS stylesheets to pack
      * @param array $dynamic_css List of dynamic CSS stylesheets to pack
      */
-    public static function pack_css(Action & $action, array $static_css = array(), array $dynamic_css = array())
+    public static function pack_css(\Anakeen\Core\Internal\Action & $action, array $static_css = array(), array $dynamic_css = array())
     {
         foreach ($static_css as $cssfile) {
             if (!is_file($cssfile)) {

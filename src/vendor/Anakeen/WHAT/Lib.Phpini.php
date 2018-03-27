@@ -65,7 +65,7 @@ class LibPhpini
     {
         if (is_null(self::$coreApplication)) {
             global $action;
-            if ($action instanceof \Action &&
+            if ($action instanceof \Anakeen\Core\Internal\Action &&
                 "CORE" === $action->parent->name) {
                 self::$coreApplication = $action->parent;
                 return self::$coreApplication->getParam($name, $defaultValue);

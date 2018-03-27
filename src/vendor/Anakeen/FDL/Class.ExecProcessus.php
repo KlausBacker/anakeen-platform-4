@@ -23,7 +23,7 @@ class ExecProcessus extends \Dcp\Family\Document
     public function bgExecute($comment = "")
     {
         /**
-         * @var \Action $action
+         * @var \Anakeen\Core\Internal\Action $action
          */
         global $action;
         
@@ -174,7 +174,7 @@ class ExecProcessus extends \Dcp\Family\Document
         }
     }
     
-    public function _execute(\Action & $action, $comment = '')
+    public function _execute(\Anakeen\Core\Internal\Action & $action, $comment = '')
     {
         setMaxExecutionTimeTo(3600);
         /*
@@ -200,7 +200,7 @@ class ExecProcessus extends \Dcp\Family\Document
         return $status;
     }
     
-    public function __execute(\Action & $action, $docid, $comment = '')
+    public function __execute(\Anakeen\Core\Internal\Action & $action, $docid, $comment = '')
     {
         $doc = new_Doc($action->dbaccess, $docid);
         /**

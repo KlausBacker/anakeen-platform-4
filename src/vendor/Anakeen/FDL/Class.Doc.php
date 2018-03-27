@@ -7022,7 +7022,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function getIcon($idicon = "", $size = null, $otherId = null)
     {
         /**
-         * @var Action $action
+         * @var \Anakeen\Core\Internal\Action $action
          */
         global $action;
         if ($idicon == "") {
@@ -7336,7 +7336,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function urlWhatEncode($link, $k = -1)
     {
         /**
-         * @var Action $action
+         * @var \Anakeen\Core\Internal\Action $action
          */
         global $action;
 
@@ -7546,7 +7546,7 @@ create unique index i_docir on doc(initid, revision);";
     public function getRssLink()
     {
         /**
-         * @var Action $action
+         * @var \Anakeen\Core\Internal\Action $action
          */
         global $action;
         return sprintf(
@@ -8581,7 +8581,7 @@ create unique index i_docir on doc(initid, revision);";
     public function viewbodycard($target = "_self", $ulink = true, $abstract = false, $onlyopt = false)
     {
         /**
-         * @var Action $action
+         * @var \Anakeen\Core\Internal\Action $action
          */
         global $action;
 
@@ -9503,7 +9503,7 @@ create unique index i_docir on doc(initid, revision);";
             // when modification
 
             /**
-             * @var Action $action
+             * @var \Anakeen\Core\Internal\Action $action
              */
             global $action;
             if (!$this->isAlive()) {
@@ -10036,7 +10036,7 @@ create unique index i_docir on doc(initid, revision);";
     public function getEmblem($size = null)
     {
         /**
-         * @var Action $action
+         * @var \Anakeen\Core\Internal\Action $action
          */
         global $action;
         if ($this->confidential > 0) {
@@ -10954,7 +10954,7 @@ create unique index i_docir on doc(initid, revision);";
     ) {
         include_once('FDL/Lib.Attr.php');
         /**
-         * @var Action $action
+         * @var \Anakeen\Core\Internal\Action $action
          */
         global $action;
         // Strip format strings for non-docid types

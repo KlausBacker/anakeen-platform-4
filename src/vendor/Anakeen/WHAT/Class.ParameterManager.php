@@ -20,7 +20,7 @@ class ParameterManager
 {
     private static $cache = array();
     /**
-     * @return Action|null
+     * @return \Anakeen\Core\Internal\Action|null
      */
     private static function &getAction()
     {

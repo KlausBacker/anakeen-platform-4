@@ -56,10 +56,10 @@ class OOoLayout extends Layout
     /**
      * construct template using an open document text file
      * @param string $caneva open document file of the template
-     * @param Action $action current action
+     * @param \Anakeen\Core\Internal\Action $action current action
      * @param Doc $doc document
      */
-    public function __construct($caneva = "", Action & $action = null, Doc & $doc = null)
+    public function __construct($caneva = "", \Anakeen\Core\Internal\Action & $action = null, Doc & $doc = null)
     {
         $this->initialFile=$caneva;
         $this->LOG = new \Anakeen\Core\Internal\Log("", "Layout");
@@ -579,7 +579,7 @@ class OOoLayout extends Layout
         }
         
         if (($actionname != $this->action->name) || ($OLD_ZONE_ARGS != $ZONE_ARGS)) {
-            $act = new Action();
+            $act = new \Anakeen\Core\Internal\Action();
             $res = '';
             if ($act->Exists($actionname, $appl->id)) {
                 $act->Set($actionname, $appl);

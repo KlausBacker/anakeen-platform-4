@@ -14,7 +14,7 @@ class VaultAnalyzerCLIException extends \Dcp\Exception
 
 class VaultAnalyzerCLI
 {
-    public static function main(\Action & $action)
+    public static function main(\Anakeen\Core\Internal\Action & $action)
     {
         $opts = array();
         $usage = new \ApiUsage($action);

@@ -44,7 +44,7 @@ class TestOpenAccess extends TestCaseDcpApplication
         
         $this->sudo($login);
         
-        $mainAction = new \Action();
+        $mainAction = new \Anakeen\Core\Internal\Action();
         $mainAction->set($actionName, self::$app);
         $mainAction->user = $user;
         $mainAction->auth = $auth;

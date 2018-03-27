@@ -11,7 +11,7 @@ include_once('WHAT/Lib.Main.php');
 class ActionRouter
 {
     /**
-     * @var Action
+     * @var \Anakeen\Core\Internal\Action
      */
     private $action = null;
     

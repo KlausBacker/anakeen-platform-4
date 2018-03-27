@@ -13,7 +13,7 @@ namespace {
     class ErrorCodeCORE
     {
         /**
-         * @errorCode Action::exitError is called
+         * @errorCode \Anakeen\Core\Internal\Action::exitError is called
          */
         const CORE0001 = '%s';
         /**

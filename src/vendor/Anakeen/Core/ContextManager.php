@@ -11,7 +11,7 @@ class ContextManager
      */
     protected static $coreApplication = null;
     /**
-     * @var \Action
+     * @var \Anakeen\Core\Internal\Action
      */
     protected static $coreAction = null;
     /**
@@ -99,8 +99,8 @@ class ContextManager
             self::$coreApplication = $coreApplication;
         }
 
-        self::$coreAction = new \Action();
-        $action = new \Action();
+        self::$coreAction = new \Anakeen\Core\Internal\Action();
+        $action = new \Anakeen\Core\Internal\Action();
         self::$coreAction = &$action;
         if ($actionName) {
             self::$coreAction->Set($actionName, self::$coreApplication);
@@ -125,7 +125,7 @@ class ContextManager
         return $actionRoot;
     }
 
-    public static function recordContext(\Anakeen\Core\Account $account, \Action $action = null)
+    public static function recordContext(\Anakeen\Core\Account $account, \Anakeen\Core\Internal\Action $action = null)
     {
         self::$coreUser = &$account;
         if ($action) {
@@ -308,7 +308,7 @@ class ContextManager
     }
 
     /**
-     * @return \Action|null
+     * @return \Anakeen\Core\Internal\Action|null
      */
     public static function getCurrentAction()
     {

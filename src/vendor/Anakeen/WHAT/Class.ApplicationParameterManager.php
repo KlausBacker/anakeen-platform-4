@@ -378,7 +378,7 @@ class ApplicationParameterManager
             }
         } elseif ($application === \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION) {
             global $action;
-            if ($action instanceof Action) {
+            if ($action instanceof \Anakeen\Core\Internal\Action) {
                 $applicationName = $action->parent->name;
                 $applicationId = $action->parent->id;
             } else {
@@ -437,7 +437,7 @@ class ApplicationParameterManager
     /**
      * Return global action
      *
-     * @return Action|null
+     * @return \Anakeen\Core\Internal\Action|null
      */
     private static function getAction()
     {

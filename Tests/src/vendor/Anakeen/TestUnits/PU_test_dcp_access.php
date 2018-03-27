@@ -62,7 +62,7 @@ class TestAccess extends TestCaseDcpApplication
                 $this->assertTrue(is_numeric($wuser->id) , sprintf("test#%s/check#%s> Invalid user what id '%s' for user '%s'.", $testIdx, $checkIdx, $wuser->id, $check['user']));
                 
                 $this->sudo($wuser->login);
-                // check Action::hasPermission
+                // check \Anakeen\Core\Internal\Action::hasPermission
                 $perm = $myAction->hasPermission($check['acl'], $check['app']);
                 $err = sprintf("test#%s/check#%s> Unexpected permission %s (should be %s) for user %s on acl %s from app %s", $testIdx, $checkIdx, $perm ? 'true' : 'false', $check['permission'] ? 'true' : 'false', $check['user'], $check['acl'], $check['app']);
                 if ($perm != $check['permission']) {
@@ -71,7 +71,7 @@ class TestAccess extends TestCaseDcpApplication
                     $err.= "\n\t" . $this->prettySqlRelation(sprintf("Permission test#%s/check#%s", $testIdx, $checkIdx) , "SELECT u.login AS user, a.name AS app, c.name AS acl, p.id_acl AS permission, p.computed AS computed FROM users AS u, permission AS p, application AS a, acl AS c WHERE u.id = p.id_user AND p.id_application = a.id AND abs(p.id_acl) = c.id AND a.name = 'TST_ACCESS'");
                 }
                 $this->assertTrue($perm == $check['permission'], $err);
-                // check Action::canExecute
+                // check \Anakeen\Core\Internal\Action::canExecute
                 $perm = $myAction->canExecute($check['action'], $check['app']);
                 if ($check['permission']) {
                     $this->assertTrue('' === $perm, sprintf("test#%s/check#%s> Unexpected canExecute %s (should be '') for user %s on action %s from app %s", $testIdx, $checkIdx, var_export($perm, true) , $check['user'], $check['action'], $check['app']));
@@ -167,7 +167,7 @@ class TestAccess extends TestCaseDcpApplication
                                 array(
                                     "user" => "TST_U_HOMER_SIMPSON",
                                     "app" => "TST_ACCESS",
-                                    "acl" => \Action::ACCESS_FREE,
+                                    "acl" => \Anakeen\Core\Internal\Action::ACCESS_FREE,
                                     "action" => "TST_ACCESS_ACTION_FREE",
                                     "permission" => true
                                 ) ,
@@ -189,7 +189,7 @@ class TestAccess extends TestCaseDcpApplication
                                 array(
                                     "user" => "TST_U_MARGE_SIMPSON",
                                     "app" => "TST_ACCESS",
-                                    "acl" => \Action::ACCESS_FREE,
+                                    "acl" => \Anakeen\Core\Internal\Action::ACCESS_FREE,
                                     "action" => "TST_ACCESS_ACTION_FREE",
                                     "permission" => true
                                 ) ,
@@ -211,7 +211,7 @@ class TestAccess extends TestCaseDcpApplication
                                 array(
                                     "user" => "TST_U_BART_SIMPSON",
                                     "app" => "TST_ACCESS",
-                                    "acl" => \Action::ACCESS_FREE,
+                                    "acl" => \Anakeen\Core\Internal\Action::ACCESS_FREE,
                                     "action" => "TST_ACCESS_ACTION_FREE",
                                     "permission" => true
                                 ) ,
@@ -233,7 +233,7 @@ class TestAccess extends TestCaseDcpApplication
                                 array(
                                     "user" => "TST_U_LISA_SIMPSON",
                                     "app" => "TST_ACCESS",
-                                    "acl" => \Action::ACCESS_FREE,
+                                    "acl" => \Anakeen\Core\Internal\Action::ACCESS_FREE,
                                     "action" => "TST_ACCESS_ACTION_FREE",
                                     "permission" => true
                                 ) ,
@@ -255,7 +255,7 @@ class TestAccess extends TestCaseDcpApplication
                                 array(
                                     "user" => "TST_U_MAGGIE_SIMPSON",
                                     "app" => "TST_ACCESS",
-                                    "acl" => \Action::ACCESS_FREE,
+                                    "acl" => \Anakeen\Core\Internal\Action::ACCESS_FREE,
                                     "action" => "TST_ACCESS_ACTION_FREE",
                                     "permission" => true
                                 )
@@ -275,7 +275,7 @@ class TestAccess extends TestCaseDcpApplication
                                 array(
                                     "user" => "TST_U_MAGGIE_SIMPSON",
                                     "app" => "TST_ACCESS",
-                                    "acl" => \Action::ACCESS_FREE,
+                                    "acl" => \Anakeen\Core\Internal\Action::ACCESS_FREE,
                                     "action" => "TST_ACCESS_ACTION_FREE",
                                     "permission" => true
                                 )
@@ -295,7 +295,7 @@ class TestAccess extends TestCaseDcpApplication
                                 array(
                                     "user" => "TST_U_MAGGIE_SIMPSON",
                                     "app" => "TST_ACCESS",
-                                    "acl" => \Action::ACCESS_FREE,
+                                    "acl" => \Anakeen\Core\Internal\Action::ACCESS_FREE,
                                     "action" => "TST_ACCESS_ACTION_FREE",
                                     "permission" => true
                                 )

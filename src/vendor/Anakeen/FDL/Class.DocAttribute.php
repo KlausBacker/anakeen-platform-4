@@ -946,7 +946,7 @@ class NormalAttribute extends BasicAttribute
                 // for dynamic  specification of kind attributes
                 if (!include_once("EXTERNALS/$this->phpfile")) {
                     /**
-                     * @var Action $action
+                     * @var \Anakeen\Core\Internal\Action $action
                      */
                     global $action;
                     $action->exitError(sprintf(_("the external pluggin file %s cannot be read"), $this->phpfile));

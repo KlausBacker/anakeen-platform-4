@@ -130,7 +130,7 @@ class Form1NF
     public $freedom_dbaccess = null;
     /**
      * Action
-     * @var Action
+     * @var \Anakeen\Core\Internal\Action
      */
     public $action = null;
     /**

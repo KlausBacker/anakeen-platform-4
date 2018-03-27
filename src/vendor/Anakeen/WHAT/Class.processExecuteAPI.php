@@ -12,7 +12,7 @@ class processExecuteAPI
 {
     public static $debug = false;
 
-    public static function run(Action & $action)
+    public static function run(\Anakeen\Core\Internal\Action & $action)
     {
         include_once("FDL/Class.DocFam.php");
         include_once("FDL/Class.DocTimer.php");
@@ -42,7 +42,7 @@ class processExecuteAPI
         }
     }
 
-    protected static function lock(Action & $action)
+    protected static function lock(\Anakeen\Core\Internal\Action & $action)
     {
         self::debug(sprintf("Locking exclusive execution..."));
         $i1 = unpack("i", "PROC") [1];
@@ -57,7 +57,7 @@ class processExecuteAPI
         return $res;
     }
 
-    protected static function unlock(Action & $action, $lock)
+    protected static function unlock(\Anakeen\Core\Internal\Action & $action, $lock)
     {
         /* Unlock will be performed when the process exits and the Postgres connection is torn down. */
     }
@@ -82,7 +82,7 @@ class processExecuteAPI
         self::unlock($action, $lock);
     }
 
-    public static function execute_doctimer(Action & $action, $doctimerId)
+    public static function execute_doctimer(\Anakeen\Core\Internal\Action & $action, $doctimerId)
     {
         $dt = new DocTimer($action->dbaccess, $doctimerId);
         $time_start = microtime(true);
@@ -99,10 +99,10 @@ class processExecuteAPI
     }
 
     /**
-     * @param Action                  $action
+     * @param \Anakeen\Core\Internal\Action                  $action
      * @param \Dcp\Family\Exec|string $exec
      */
-    public static function execute_exec(Action & $action, $exec)
+    public static function execute_exec(\Anakeen\Core\Internal\Action & $action, $exec)
     {
         if (is_scalar($exec)) {
             /**
@@ -116,7 +116,7 @@ class processExecuteAPI
         $exec->executeNow();
     }
 
-    public static function verifyExecDocuments(Action & $action)
+    public static function verifyExecDocuments(\Anakeen\Core\Internal\Action & $action)
     {
         // Verify EXEC document
         $now = Doc::getTimeDate();
@@ -158,7 +158,7 @@ class processExecuteAPI
         return;
     }
 
-    public static function verifyTimerDocuments(Action & $action)
+    public static function verifyTimerDocuments(\Anakeen\Core\Internal\Action & $action)
     {
         // Verify EXEC document
         $dt = new DocTimer($action->dbaccess);

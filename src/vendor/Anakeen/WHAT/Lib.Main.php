@@ -16,7 +16,7 @@
 include_once("WHAT/Lib.Common.php");
 /**
  * @param Authenticator $auth
- * @param Action        $action
+ * @param \Anakeen\Core\Internal\Action        $action
  */
 function getMainAction($auth, &$action)
 {
@@ -88,7 +88,7 @@ function getMainAction($auth, &$action)
 
     // -----------------------------------------------
     // now we are in correct protocol (http or https)
-    $action = new Action();
+    $action = new \Anakeen\Core\Internal\Action();
     $action->Set(getHttpVars("action"), $appl);
 
     if ($auth) {
@@ -307,7 +307,7 @@ function _initMainVolatileParamWeb(Application & $core, Session & $session = nul
  * execute action
  * app and action http param
  *
- * @param Action $action
+ * @param \Anakeen\Core\Internal\Action $action
  * @param string $out
  */
 function executeAction(&$action, &$out = null)
@@ -403,7 +403,7 @@ function handleActionException($e)
     }
 
     $displayMsg = \Anakeen\Core\LogException::logMessage($e, $errId);
-    if (isset($action) && is_a($action, 'Action') && isset($action->parent)) {
+    if (isset($action) && is_a($action, '\Anakeen\Core\Internal\Action') && isset($action->parent)) {
         if (php_sapi_name() === 'cli') {
             fwrite(STDERR, sprintf("[%s]: %s\n", $errId, $displayMsg));
         } else {
@@ -426,130 +426,11 @@ function handleActionException($e)
     }
 }
 
-/**
- * @deprecated
- * @return bool
- */
-function isInteractiveCLI()
-{
-    if (php_sapi_name() !== 'cli') {
-        return false;
-    }
-    if (function_exists('posix_isatty')) {
-        return (posix_isatty(STDIN) || posix_isatty(STDOUT) || posix_isatty(STDERR));
-    }
-    return true;
-}
 
-/**
- * @deprecated
- * @param       $errMsg
- * @param array $expand
- */
-function _wsh_send_error($errMsg, $expand = array())
-{
-    $wshError = new Dcp\WSHMailError($errMsg);
-    $wshError->prefix = sprintf('%s %s ', date('c'), php_uname('n'));
-    $wshError->addExpand($expand);
-    $wshError->autosend();
-}
 
-/**
- * Handle exceptions by logging errors or by sending mails
- * depending if the program is used in a CLI or not.
- * @deprecated
- * @param Throwable $e
- * @param bool      $callStack If set to false: the error message is minimal.
- *                             Otherwise the error message is the call stack.
- */
-function _wsh_exception_handler($e, $callStack = true)
-{
-    if ($callStack === true) {
-        $errMsg = \Anakeen\Core\LogException::formatErrorLogException($e);
-        error_log($errMsg);
-    } else {
-        $errMsg = $e->getMessage();
-    }
 
-    if (!isInteractiveCLI()) {
-        $expand = array(
-            'm' => preg_replace('/^([^\n]*).*/s', '\1', $e->getMessage())
-        );
-        _wsh_send_error($errMsg, $expand);
-    }
 
-    exit(255);
-}
 
-function _wsh_shutdown_handler()
-{
-    global $argv;
-
-    $error = error_get_last();
-    if ($error === null) {
-        /* No error */
-        return;
-    }
-    /* Process error */
-    switch ($error["type"]) {
-        case E_ERROR:
-            $title = "Runtime Error";
-            break;
-
-        case E_CORE_ERROR:
-            $title = "Startup Error";
-            break;
-
-        case E_PARSE:
-            $title = "Parse Error";
-            break;
-
-        case E_COMPILE_ERROR:
-            $title = "Compile Error";
-            break;
-
-        case E_RECOVERABLE_ERROR:
-            $title = "Recoverable Error";
-            break;
-
-        default:
-            return;
-    }
-
-    $pid = getmypid();
-    $errMsg
-        = <<<EOF
-$pid> Dynacase $title
-EOF;
-
-    if (php_sapi_name() == 'cli' && is_array($argv)) {
-        $errMsg .= sprintf("\n%s> Command line arguments: %s", $pid, join(' ', array_map("escapeshellarg", $argv)));
-        $errMsg .= sprintf("\n%s> error_log: %s", $pid, ini_get('error_log'));
-        $errMsg .= "\n";
-    }
-
-    $errMsg
-        .= <<<EOF
-$pid> Type:    ${error['type']}
-$pid> Message: ${error['message']}
-$pid> File:    ${error['file']}
-$pid> Line:    ${error['line']}
-EOF;
-
-    error_log($errMsg);
-    if (!isInteractiveCLI()) {
-        $expand = array(
-            'm' => preg_replace('/^([^\n]*).*/s', '\1', $error['message'])
-        );
-        _wsh_send_error($errMsg, $expand);
-    }
-}
-
-function enable_wsh_safetybelts()
-{
-    set_exception_handler("_wsh_exception_handler");
-    register_shutdown_function("_wsh_shutdown_handler");
-}
 
 /**
  * @param Throwable $e

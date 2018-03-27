@@ -21,7 +21,7 @@ define("TARUPLOAD", DEFAULT_PUBDIR . "/var/upload/");
 define("TAREXTRACT", "/extract/");
 define("TARTARS", "/tars/");
 
-function getTarUploadDir(Action & $action)
+function getTarUploadDir(\Anakeen\Core\Internal\Action & $action)
 {
     global $pubdir;
     $dtar = $action->getParam("FREEDOM_UPLOADDIR");
@@ -33,7 +33,7 @@ function getTarUploadDir(Action & $action)
     }
     return $dtar . "/" . $action->user->login . TARTARS;
 }
-function getTarExtractDir(Action & $action, $tar)
+function getTarExtractDir(\Anakeen\Core\Internal\Action & $action, $tar)
 {
     global $pubdir;
     $dtar = $action->getParam("FREEDOM_UPLOADDIR");
@@ -47,7 +47,7 @@ function getTarExtractDir(Action & $action, $tar)
 }
 /**
  * import a directory files
- * @param action $action current action
+ * @param \Anakeen\Core\Internal\Action $action current action
  * @param string $ftar tar file
  */
 function import_tar(&$action, $ftar, $dirid = 0, $famid = 7)
@@ -55,7 +55,7 @@ function import_tar(&$action, $ftar, $dirid = 0, $famid = 7)
 }
 /**
  * import a directory files
- * @param action $action current action
+ * @param \Anakeen\Core\Internal\Action $action current action
  * @param string $ldir local directory path
  * @param int $dirid folder id to add new documents
  * @param int $famid default family for raw files

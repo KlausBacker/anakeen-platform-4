@@ -2120,11 +2120,11 @@ class DocFormFormat
     }
     /**
      * Store autocompletion's parameters in user's session and return the corresponding identifier.
-     * @param Action $action
+     * @param \Anakeen\Core\Internal\Action $action
      * @param array $ac The autocompletion parameters array('phpfile' => $phpfile, 'phpfunc' => $phpfunc, 'label' => $label)
      * @return string the autocompletion Id
      */
-    private function _newAcId(Action $action, $ac)
+    private function _newAcId(\Anakeen\Core\Internal\Action $action, $ac)
     {
         $acId = sha1(serialize($ac));
         $action->Register(sprintf('autocompletion.%s', $acId), $ac);

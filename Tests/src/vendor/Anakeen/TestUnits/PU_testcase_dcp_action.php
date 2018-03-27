@@ -13,7 +13,7 @@ class TestCaseDcpAction extends TestCaseDcp
     /**
      * Action to test initiate by setUpAction
      * 
-     * @var \Action
+     * @var \Anakeen\Core\Internal\Action
      */
     protected $testAction;
     
@@ -37,7 +37,7 @@ class TestCaseDcpAction extends TestCaseDcp
         $appCalled->set($appName, $action->parent,$action->parent->session);
         $appCalled->user=$action->user;
         if ($appCalled->isAffected() ) {
-          $this->testAction = new \Action();
+          $this->testAction = new \Anakeen\Core\Internal\Action();
           $this->testAction->set($actionName, $appCalled);
         }
     }

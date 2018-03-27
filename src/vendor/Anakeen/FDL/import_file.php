@@ -20,7 +20,7 @@ require_once("WHAT/Lib.FileMime.php");
 define("ALTSEPCHAR", ' --- ');
 define("SEPCHAR", ';');
 
-function add_import_file(Action & $action, $fimport, $dirid = 0)
+function add_import_file(\Anakeen\Core\Internal\Action & $action, $fimport, $dirid = 0)
 {
     setMaxExecutionTimeTo(300);
     if ($dirid == 0) {

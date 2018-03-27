@@ -13,9 +13,6 @@
 /**
  */
 
-include_once('Class.Log.php');
-include_once('Class.Action.php');
-include_once('Class.Application.php');
 /**
  *
  * @class Layout
@@ -95,7 +92,7 @@ class Layout
     
     protected $zoneLevel = 0;
     /**
-     * @var Action
+     * @var \Anakeen\Core\Internal\Action
      */
     public $action = null;
     //########################################################################
@@ -109,7 +106,7 @@ class Layout
      *
      *
      * @param string $caneva file path of the template
-     * @param Action $action current action
+     * @param \Anakeen\Core\Internal\Action $action current action
      * @param string $template if no $caneva found or is empty use this template.
      */
     public function __construct($caneva = "", $action = null, $template = "[OUT]")
@@ -375,7 +372,7 @@ class Layout
         }
         
         if (($actionname != $this->action->name) || ($OLD_ZONE_ARGS != $ZONE_ARGS)) {
-            $act = new Action();
+            $act = new \Anakeen\Core\Internal\Action();
             $res = '';
             if ($act->Exists($actionname, $appl->id)) {
                 $act->Set($actionname, $appl);

@@ -28,7 +28,7 @@ class CheckAccess extends CheckData
     private $userId = '';
     /**
      * current action
-     * @var Action
+     * @var \Anakeen\Core\Internal\Action
      */
     private $action = null;
     /**

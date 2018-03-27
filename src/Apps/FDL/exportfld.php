@@ -22,7 +22,7 @@ include_once("FDL/import_file.php");
 /**
  * Exportation of documents from folder or searches
  *
- * @param Action  &$action                     current action
+ * @param \Anakeen\Core\Internal\Action  &$action                     current action
  * @param string  $aflid                       Folder identifier to use if no "id" http vars
  * @param string  $famid                       Family restriction to filter folder content
  * @param string  $outputPath                  where put export, if wfile outputPath is a directory
@@ -40,7 +40,7 @@ include_once("FDL/import_file.php");
  * @global string $selection                   Http var :  JSON document selection object
  * @return void
  */
-function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = "", $exportInvisibleVisibilities = false)
+function exportfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $famid = "", $outputPath = "", $exportInvisibleVisibilities = false)
 {
     $dbaccess = $action->dbaccess;
 
@@ -222,7 +222,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
 }
 
 /**
- * @param Action $action
+ * @param \Anakeen\Core\Internal\Action $action
  * @param        $exportId
  * @param        $msg
  * @param bool   $endStatus
@@ -230,7 +230,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "", $outputPath = ""
  * @see        Dcp\ExportCollection::recordStatus()
  * @deprecated use Dcp\ExportCollection::recordStatus() instead
  */
-function recordStatus(Action & $action, $exportId, $msg, $endStatus = false)
+function recordStatus(\Anakeen\Core\Internal\Action & $action, $exportId, $msg, $endStatus = false)
 {
     $action->register($exportId, array(
         "status" => $msg,

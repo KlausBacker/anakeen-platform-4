@@ -84,7 +84,7 @@ class QueryGen
         if ($this->action_name != $action->name) {
             $app = new Application($action->dbaccess);
             $app->Set($this->app_name, $action->parent);
-            $this->action = new Action($action->dbaccess);
+            $this->action = new \Anakeen\Core\Internal\Action($action->dbaccess);
             $this->action->Set($this->action_name, $app);
         }
         // Init all query params

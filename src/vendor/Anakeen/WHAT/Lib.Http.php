@@ -12,7 +12,7 @@
  * @subpackage CORE
  */
 /**
- * @param Action|Application $action
+ * @param \Anakeen\Core\Internal\Action|Application $action
  * @param string $appname
  * @param string $actionname
  * @param string $otherurl
@@ -86,7 +86,7 @@ function Redirect($action, $appname, $actionname, $otherurl = "", $httpparamredi
     exit;
 }
 
-function RedirectSender(Action & $action)
+function RedirectSender(\Anakeen\Core\Internal\Action & $action)
 {
     global $_SERVER;
 
@@ -107,9 +107,9 @@ function RedirectSender(Action & $action)
  * if in useIndexAsGuest mode
  * redirect with authtication to current url
  * only if it is anonymous also
- * @param Action $action
+ * @param \Anakeen\Core\Internal\Action $action
  */
-function redirectAsGuest(Action & $action)
+function redirectAsGuest(\Anakeen\Core\Internal\Action & $action)
 {
     $guestMode = getDbAccessValue("useIndexAsGuest");
     if ($guestMode) {

@@ -778,7 +778,7 @@ function WhatInitialisation($session = null)
     if (!$session) {
         $core->session = new Session();
     }
-    $action = new Action();
+    $action = new \Anakeen\Core\Internal\Action();
     $action->Set("", $core);
     // i18n
     $lang = $action->Getparam("CORE_LANG");

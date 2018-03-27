@@ -97,7 +97,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
 
     /**
      * Current action
-     * @return \Action
+     * @return \Anakeen\Core\Internal\Action
      */
     protected static function &getAction()
     {

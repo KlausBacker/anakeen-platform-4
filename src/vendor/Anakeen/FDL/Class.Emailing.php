@@ -95,7 +95,7 @@ class Emailing extends \Dcp\Family\Batch
     }
     /**
      * Fusion all document to be printed
-     * @param \Action &$action current action
+     * @param \Anakeen\Core\Internal\Action &$action current action
      * @global uid string Http var : user document id (if not all use rpresent in folder)
      * @templateController
      */
@@ -142,7 +142,7 @@ class Emailing extends \Dcp\Family\Batch
     /**
      * Fusion all document to be displayed
      * idem as fdl_pubprint but without new page
-     * @param \Action &$action current action
+     * @param \Anakeen\Core\Internal\Action &$action current action
      * @global uid string Http var : user document id (if not all use rpresent in folder)
      * @templateController
      */

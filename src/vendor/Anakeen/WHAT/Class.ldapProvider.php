@@ -63,7 +63,7 @@ class ldapProvider extends Provider
         $core = new Application();
         $core->Set("CORE", $CoreNull);
         $core->session = new Session();
-        $action = new Action();
+        $action = new \Anakeen\Core\Internal\Action();
         $action->Set("", $core);
         $action->user = new \Anakeen\Core\Account("", 1); //create user as admin
         $whatuser->firstname = '--';

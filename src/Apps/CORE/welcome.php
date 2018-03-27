@@ -4,7 +4,7 @@
  * @package FDL
 */
 
-function welcome(Action &$action)
+function welcome(\Anakeen\Core\Internal\Action &$action)
 {
     $action->parent->AddCssRef("CORE:welcome.css");
     $action->lay->set("thisyear", strftime("%Y", time()));

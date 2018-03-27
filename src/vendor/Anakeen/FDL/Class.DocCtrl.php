@@ -1197,7 +1197,7 @@ class DocCtrl extends DocLDAP
     public static function canExecute($appname, $actname)
     {
         /**
-         * @var Action $action
+         * @var \Anakeen\Core\Internal\Action $action
          */
         global $action;
         

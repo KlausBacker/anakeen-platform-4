@@ -101,7 +101,7 @@ function getSqlFiles($prefix)
     return $files;
 }
 
-function execSqlFile(Action & $action, $sqlFile)
+function execSqlFile(\Anakeen\Core\Internal\Action & $action, $sqlFile)
 {
     $pgService = getServiceName($action->dbaccess);
     $script = <<<'EOF'
@@ -121,7 +121,7 @@ EOF;
     unlink($tmpScript);
 }
 
-function execSqlFiles(Action & $action, $prefix)
+function execSqlFiles(\Anakeen\Core\Internal\Action & $action, $prefix)
 {
     $sqlFiles = getSqlFiles($prefix);
     $errors = [];
@@ -140,12 +140,12 @@ function execSqlFiles(Action & $action, $prefix)
     }
 }
 
-function fullDbClean(Action & $action)
+function fullDbClean(\Anakeen\Core\Internal\Action & $action)
 {
     execSqlFiles($action, 'cleanFullContext');
 }
 
-function basicDbClean(Action & $action)
+function basicDbClean(\Anakeen\Core\Internal\Action & $action)
 {
     execSqlFiles($action, 'cleanContext');
 }

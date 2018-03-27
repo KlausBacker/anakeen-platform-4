@@ -329,7 +329,7 @@ create unique index idx_idfam on docfam(id);";
     ) {
         // -----------------------------------
         
-        /** @var Action $action */
+        /** @var \Anakeen\Core\Internal\Action $action */
         global $action;
         //Checking if document has acls
         DbManager::query("SELECT count(*) FROM docperm WHERE docid=" . $this->id, $nb_acl, true, true);

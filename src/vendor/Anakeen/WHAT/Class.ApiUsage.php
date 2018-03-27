@@ -65,7 +65,7 @@ namespace {
         /**
          * current action
          *
-         * @var Action
+         * @var \Anakeen\Core\Internal\Action
          */
         protected $action;
         /**

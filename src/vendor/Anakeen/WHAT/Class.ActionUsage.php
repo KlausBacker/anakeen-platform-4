@@ -31,9 +31,9 @@ class ActionUsage extends ApiUsage
     /**
      * init current action
      *
-     * @param Action &$action current action
+     * @param \Anakeen\Core\Internal\Action &$action current action
      */
-    public function __construct(Action & $action)
+    public function __construct(\Anakeen\Core\Internal\Action & $action)
     {
         $this->action = $action;
         $this->setDefinitionText(_($action->short_name));

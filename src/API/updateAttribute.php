@@ -10,7 +10,7 @@
  * @package FDL
  */
 /**
- * @var Action $action
+ * @var \Anakeen\Core\Internal\Action $action
  */
 global $action;
 

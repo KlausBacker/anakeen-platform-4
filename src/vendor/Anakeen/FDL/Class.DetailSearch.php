@@ -1243,7 +1243,7 @@ class DetailSearch extends \Dcp\Family\Search
     public function editdsearch()
     {
         /**
-         * @var \Action $action
+         * @var \Anakeen\Core\Internal\Action $action
          */
         global $action;
         $classid = GetHttpVars("sfamid", 0);

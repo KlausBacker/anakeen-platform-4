@@ -861,7 +861,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function hasPermission($acl_name, $app_name = "", $strict = false)
     {
-        if (Action::ACCESS_FREE == $acl_name) {
+        if (\Anakeen\Core\Internal\Action::ACCESS_FREE == $acl_name) {
             return true;
         }
         if (!isset($this->user) || !is_object($this->user)) {
@@ -1406,7 +1406,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             $acl = new Acl($this->dbaccess);
             $acl->Init($this, $app_acl, $update);
             // init actions
-            $action = new Action($this->dbaccess);
+            $action = new \Anakeen\Core\Internal\Action($this->dbaccess);
             $action->Init($this, $action_desc, $update);
             // init father if has
             if ($this->childof != "") {
@@ -1549,7 +1549,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         
         if ($query->nb > 0) {
             /**
-             * @var Action $v
+             * @var \Anakeen\Core\Internal\Action $v
              */
             foreach ($list as $v) {
                 $this->log->debug(" Delete action {$v->name} ");

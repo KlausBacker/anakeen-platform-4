@@ -11,7 +11,7 @@ $styFilePath = $usage->addOptionalParameter("style", "path to style file");
 $action=\Anakeen\Core\ContextManager::getCurrentAction();
 if (!$styFilePath) {
     /**
-     * @var Action $action
+     * @var \Anakeen\Core\Internal\Action $action
      */
     $defautStyle = $action->getParam("STYLE");
     $styFilePath = sprintf("STYLE/%s/%s.sty", $defautStyle, $defautStyle);
@@ -34,7 +34,7 @@ class styleManager
     protected $verbose = false;
     protected $logIndent = 0;
     protected $styleConfig = array();
-    /** @var Action $action */
+    /** @var \Anakeen\Core\Internal\Action $action */
     protected $action = null;
     
     protected function log($msg)
@@ -44,7 +44,7 @@ class styleManager
         }
     }
     
-    public function __construct(Action $action)
+    public function __construct(\Anakeen\Core\Internal\Action $action)
     {
         $this->action = $action;
     }

@@ -14,7 +14,7 @@
 /**
  */
 
-function systemcss(Action & $action)
+function systemcss(\Anakeen\Core\Internal\Action & $action)
 {
     $file = DEFAULT_PUBDIR . "/css/dcp/main.css";
     

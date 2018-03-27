@@ -249,7 +249,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
     {
         $err = "";
         /**
-         * @var \Action $action
+         * @var \Anakeen\Core\Internal\Action $action
          */
         global $action;
         $ed = floatval($action->getParam("AUTHENT_ACCOUNTEXPIREDELAY"));

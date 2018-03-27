@@ -79,13 +79,13 @@ class ImportDocument
         $this->dirid = $dirid;
     }
     /**
-     * @param Action $action current action
+     * @param \Anakeen\Core\Internal\Action $action current action
      * @param string $file filename path to import
      * @param bool $onlyAnalyze if true only analyze not import really
      * @param bool $archive if true to import file like an standard archive
      * @return array analyze report
      */
-    public function importDocuments(Action & $action, $file, $onlyAnalyze = false, $archive = false)
+    public function importDocuments(\Anakeen\Core\Internal\Action & $action, $file, $onlyAnalyze = false, $archive = false)
     {
         $point = '';
         if ($this->strict) {

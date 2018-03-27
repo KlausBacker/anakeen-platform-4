@@ -25,7 +25,7 @@ function helppageenumlang()
     return 'fr_FR|' . _('french');
 }
 
-function helppage_editsection(Action & $action, $dbaccess, $docid)
+function helppage_editsection(\Anakeen\Core\Internal\Action & $action, $dbaccess, $docid)
 {
     
     include_once ('FDL/editutil.php');
@@ -112,7 +112,7 @@ function helppage_getHelpAttr($famid, $name = "")
     return $tr;
 }
 
-function helppage_edithelp(Action & $action, $dbaccess, $docid)
+function helppage_edithelp(\Anakeen\Core\Internal\Action & $action, $dbaccess, $docid)
 {
     
     include_once ('FDL/editutil.php');

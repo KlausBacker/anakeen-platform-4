@@ -91,7 +91,7 @@ class DocLDAP extends DbObj
     public function SetLdapParam()
     {
         /**
-         * @var Action $action
+         * @var \Anakeen\Core\Internal\Action $action
          */
         global $action;
         $this->serveur = $action->GetParam("LDAP_SERVEUR");
