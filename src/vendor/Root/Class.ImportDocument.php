@@ -181,7 +181,7 @@ class ImportDocument
     }
     public function importSingleFile($file)
     {
-        $if = new importDocumentDescription($file);
+        $if = new ImportDocumentDescription($file);
         $if->setImportDirectory($this->dirid);
         $if->analyzeOnly($this->onlyAnalyze);
         $if->setPolicy($this->policy);

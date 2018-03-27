@@ -1,19 +1,10 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Profil for family document
  *
- * @author Anakeen
- * @version $Id: Class.PFam.php,v 1.6 2008/06/03 12:57:28 eric Exp $
- * @package FDL
- */
-/**
  */
 
-include_once("FDL/Class.Doc.php");
+
 
 class PFam extends Doc
 {

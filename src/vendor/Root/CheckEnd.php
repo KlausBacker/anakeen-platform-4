@@ -15,10 +15,10 @@ class CheckEnd extends CheckData
      */
     protected $doc;
     /**
-     * @var importDocumentDescription
+     * @var ImportDocumentDescription
      */
     protected $importer = null;
-    public function __construct(importDocumentDescription & $importer = null)
+    public function __construct(ImportDocumentDescription & $importer = null)
     {
         $this->importer = $importer;
     }

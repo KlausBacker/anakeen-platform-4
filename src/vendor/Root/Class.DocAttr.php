@@ -1,20 +1,5 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
-/**
- * Generated Header (not documented yet)
- *
- * @author Anakeen
- * @version $Id: Class.DocAttr.php,v 1.24 2007/02/27 10:05:17 eric Exp $
- * @package FDL
- */
-/**
- */
-include_once('Class.DbObj.php');
-include_once('Class.QueryDb.php');
-include_once('Class.Log.php');
+
 /**
  * Database Attribute document
  * @package FDL

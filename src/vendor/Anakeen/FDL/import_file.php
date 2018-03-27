@@ -32,7 +32,7 @@ function add_import_file(\Anakeen\Core\Internal\Action & $action, $fimport, $dir
     $reset = GetHttpVars("reset");
     $comma = GetHttpVars("comma", SEPCHAR);
     
-    $if = new importDocumentDescription($fimport);
+    $if = new ImportDocumentDescription($fimport);
     $if->setImportDirectory($dirid);
     $if->analyzeOnly($analyze);
     $if->setPolicy($policy);

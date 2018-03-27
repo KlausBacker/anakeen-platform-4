@@ -863,7 +863,7 @@ class FamilyImport
         simpleQuery('', $sql, $results);
         foreach ($results as $attr) {
             $attrid = $attr["id"];
-            \importDocumentDescription::recordEnum($famid, $attrid, $attr["phpfunc"], true);
+            \ImportDocumentDescription::recordEnum($famid, $attrid, $attr["phpfunc"], true);
         }
     }
     /**

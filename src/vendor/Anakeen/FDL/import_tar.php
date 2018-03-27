@@ -249,7 +249,7 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
         $nbdoc = 0;
         $tcolorder = array();
         $separator = $enclosure = "auto";
-        importDocumentDescription::detectAutoCsvOptions($fdlcsv, $separator, $enclosure);
+        ImportDocumentDescription::detectAutoCsvOptions($fdlcsv, $separator, $enclosure);
         if ($separator == '') {
             $separator = ';';
         }

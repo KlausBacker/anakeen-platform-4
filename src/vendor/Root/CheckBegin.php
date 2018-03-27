@@ -88,7 +88,7 @@ class CheckBegin extends CheckData
         } elseif (!preg_match('/^[a-z][a-z0-9_]{1,63}$/i', $this->famName)) {
             $this->addError(ErrorCode::getError('FAM0501', $this->famName));
         } else {
-            $f = getTDoc('', $this->famName);
+            $f = \Anakeen\Core\DocManager::getRawDocument($this->famName);
             if ($f && $f["doctype"] != 'C') {
                 $this->addError(ErrorCode::getError('FAM0502', $this->famName, $f["title"]));
             }
@@ -112,13 +112,13 @@ class CheckBegin extends CheckData
             if ($this->famName == $this->parentName) {
                 $this->addError(ErrorCode::getError('FAM0101', $this->famName));
             } else {
-                $p = getTdoc('', $this->parentName);
+                $p = \Anakeen\Core\DocManager::getRawDocument( $this->parentName);
                 if (!$p) {
                     $this->addError(ErrorCode::getError('FAM0100', $this->parentName, $this->famName));
                 } elseif ($p["doctype"] != 'C') {
                     $this->addError(ErrorCode::getError('FAM0104', $this->parentName, $this->famName));
                 } else {
-                    $me = getTdoc('', $this->famName);
+                    $me = \Anakeen\Core\DocManager::getRawDocument( $this->famName);
                     if ($me) {
                         $fromId = $me['fromid'];
                         $fromName = \Anakeen\Core\DocManager::getNameFromId($fromId);

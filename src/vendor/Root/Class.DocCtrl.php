@@ -643,9 +643,9 @@ class DocCtrl extends DocLDAP
     private function getUid($accountReference)
     {
         // Test logical name
-        if (!is_numeric($accountReference) && strpos($accountReference, importDocumentDescription::attributePrefix) !== 0) {
-            if (strpos($accountReference, importDocumentDescription::documentPrefix) === 0) {
-                $accountReference = substr($accountReference, strlen(importDocumentDescription::documentPrefix));
+        if (!is_numeric($accountReference) && strpos($accountReference, ImportDocumentDescription::attributePrefix) !== 0) {
+            if (strpos($accountReference, ImportDocumentDescription::documentPrefix) === 0) {
+                $accountReference = substr($accountReference, strlen(ImportDocumentDescription::documentPrefix));
             }
             $uiid = DocManager::getIdFromName($accountReference);
             if ($uiid) {
@@ -656,9 +656,9 @@ class DocCtrl extends DocLDAP
             }
         }
         // Test  account attribute reference
-        if (!is_numeric($accountReference) && strpos($accountReference, importDocumentDescription::documentPrefix) !== 0) {
-            if (strpos($accountReference, importDocumentDescription::attributePrefix) === 0) {
-                $accountReference = substr($accountReference, strlen(importDocumentDescription::attributePrefix));
+        if (!is_numeric($accountReference) && strpos($accountReference, ImportDocumentDescription::documentPrefix) !== 0) {
+            if (strpos($accountReference, ImportDocumentDescription::attributePrefix) === 0) {
+                $accountReference = substr($accountReference, strlen(ImportDocumentDescription::attributePrefix));
             }
             // logical name
             $vg = new VGroup($this->dbaccess, strtolower($accountReference));
