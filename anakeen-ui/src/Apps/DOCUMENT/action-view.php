@@ -5,7 +5,7 @@
 
 use Anakeen\Core\DocManager;
 
-function view(Action & $action)
+function view(\Anakeen\Core\Internal\Action & $action)
 {
     
     $usage = new ActionUsage($action);

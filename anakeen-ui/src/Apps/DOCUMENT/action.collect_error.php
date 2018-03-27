@@ -4,7 +4,7 @@
  * @package FDL
  */
 
-function collect_error(Action & $action)
+function collect_error(\Anakeen\Core\Internal\Action & $action)
 {
     $requestData = json_decode(file_get_contents('php://input') , true);
     $loggerList = json_decode(\Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("DOCUMENT", "LOGGER"));

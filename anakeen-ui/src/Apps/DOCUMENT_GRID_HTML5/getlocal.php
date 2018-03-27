@@ -3,9 +3,9 @@
 /**
  * Get the local for the js translate system
  *
- * @param ACTION $action
+ * @param \Anakeen\Core\Internal\Action $action
  */
-function getlocal(Action &$action) {
+function getlocal(\Anakeen\Core\Internal\Action &$action) {
 
     $currentLocale = getParam("CORE_LANG", "fr_FR");
 

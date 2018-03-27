@@ -4,7 +4,7 @@ require_once 'FDL/freedom_util.php';
 
 use Dcp\HttpApi\V1\Crud\Exception;
 
-function main(Action &$action){
+function main(\Anakeen\Core\Internal\Action &$action){
 
     $arrayOptions = array();
 

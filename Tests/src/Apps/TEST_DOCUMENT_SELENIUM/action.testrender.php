@@ -1,7 +1,7 @@
 <?php
 
 
-function testRender(Action $action) {
+function testRender(\Anakeen\Core\Internal\Action $action) {
 
     $smartElement = \Dcp\UI\UIGetAssetPath::getSmartElement();
     $ws = \Dcp\UI\UIGetAssetPath::getWs();
