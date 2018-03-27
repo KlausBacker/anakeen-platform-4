@@ -67,6 +67,7 @@ if ($routeReference) {
     if (Anakeen\Script\ShellManager::getArg("list") & $routeReference === true) {
         print "Route List :\n ";
         $routeList = $routeCmd->getRouteList();
+
         ksort($routeList);
         foreach ($routeList as $idRoute => $routerInfo) {
             if (is_array($routerInfo->pattern)) {

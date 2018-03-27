@@ -1,23 +1,10 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Access Control for application
  *
- * @author Anakeen
- * @version $Id: Class.Acl.php,v 1.8 2005/10/27 14:26:05 eric Exp $
- * @package FDL
- * @subpackage CORE
- */
-/**
  */
 
-include_once('Class.DbObj.php');
-include_once('Class.QueryDb.php');
-include_once('Class.Application.php');
-include_once('Class.User.php');
+
 
 class Acl extends DbObj
 {

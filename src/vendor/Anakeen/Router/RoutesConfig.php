@@ -3,6 +3,7 @@
 namespace Anakeen\Router;
 
 use \Anakeen\Core\ContextManager;
+use \Anakeen\Router\Config\RouterInfo;
 
 /**
  * Class RoutesConfig

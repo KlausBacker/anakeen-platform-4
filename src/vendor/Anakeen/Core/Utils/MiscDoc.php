@@ -58,7 +58,7 @@ class MiscDoc {
         return $fromid;
     }
 
-    public static function ComputeVisibility($vis, $fvis, $ffvis = '')
+    public static function computeVisibility($vis, $fvis, $ffvis = '')
     {
         if ($vis == "I") {
             return $vis;
