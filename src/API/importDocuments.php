@@ -16,6 +16,7 @@
 
 global $appl, $action;
 
+include_once("WHAT/Lib.Http.php");
 include_once("FDL/import_file.php");
 
 $usage = new ApiUsage();

@@ -110,7 +110,7 @@ class ExportXmlDocument
                 unset($la[$k]);
             }
         }
-        $option = new \exportOptionAttribute();
+        $option = new \ExportOptionAttribute();
         $option->outFile = $outfile;
         
         foreach ($la as $k => & $v) {

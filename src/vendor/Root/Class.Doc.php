@@ -6,9 +6,6 @@
  * @author Anakeen
  */
 
-include_once("Class.QueryDb.php");
-include_once("Lib.FileMime.php");
-include_once("FDL/freedom_util.php");
 // define constant for search attributes in concordance with the file "init.freedom"
 /**#@+
  * constant for document family identifier in concordance with the file "FDL/init.freedom"
@@ -1211,8 +1208,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function updateRelations($force = false)
     {
-        //    return; // for the moment
-        include_once("FDL/Class.DocRel.php");
         $or = new DocRel($this->dbaccess);
         //    $or->resetRelations('',$this->initid); // not necessary now
         $or->initRelations($this, $force);
@@ -2286,7 +2281,6 @@ create unique index i_docir on doc(initid, revision);";
             return array();
         }
         if (($id != -1) || (!isset($this->childs))) {
-            include_once("FDL/Class.SearchDoc.php");
             if ($id == -1) {
                 $id = $this->id;
             }
@@ -3096,7 +3090,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function convertVaultFile($va, $engine, $isimage = false)
     {
-        include_once("FDL/Lib.Vault.php");
+
         $engine = strtolower($engine);
         $value = '';
         if (is_array($va)) {
@@ -4502,7 +4496,7 @@ create unique index i_docir on doc(initid, revision);";
 
                                     case 'thesaurus':
                                         // reset cache of doccount
-                                        include_once("FDL/Class.DocCount.php");
+
                                         $d = new docCount($this->dbaccess);
                                         $d->famid = $this->fromid;
                                         $d->aid = $attrid;
@@ -4579,7 +4573,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         $err = '';
         if (!empty($this->textsend)) {
-            include_once("FDL/Lib.Vault.php");
+
             foreach ($this->textsend as $k => $v) {
                 $index = $v["index"];
                 if ($index > 0) {
@@ -4933,7 +4927,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function vaultRegisterFile($filename, $ftitle = "", &$info = null)
     {
-        include_once('FDL/Lib.Vault.php');
+
 
         $vaultid = 0;
         $err = vault_store($filename, $vaultid, $ftitle);
@@ -4960,7 +4954,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function setFile($attrid, $filename, $ftitle = "", $index = -1)
     {
-        include_once("FDL/Lib.Vault.php");
+
 
         try {
             $a = $this->getAttribute($attrid);
@@ -5026,7 +5020,7 @@ create unique index i_docir on doc(initid, revision);";
                 $tvid = array();
                 foreach ($filenames as $k => $filename) {
                     if (is_file($filename)) {
-                        include_once("FDL/Lib.Vault.php");
+
 
                         $err = vault_store($filename, $vaultid, $ftitle[$k]);
                         if ($err == "") {
@@ -5620,7 +5614,7 @@ create unique index i_docir on doc(initid, revision);";
             return '';
         }
 
-        include_once("FDL/Class.DocLog.php");
+
         $h = new DocLog($this->dbaccess);
         $h->id = $this->id;
         $h->initid = $this->initid;
@@ -5808,7 +5802,7 @@ create unique index i_docir on doc(initid, revision);";
         if (!$this->initid) {
             return false;
         }
-        include_once("FDL/Class.DocUTag.php");
+
         $docid = ($allrevision) ? $this->initid : $this->id;
         $utag = new DocUTag($this->dbaccess, array(
             $docid,
@@ -5837,7 +5831,7 @@ create unique index i_docir on doc(initid, revision);";
             $uid = $this->userid;
         }
 
-        include_once("FDL/Class.DocUTag.php");
+
         $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocUtag::class);
         $q->addQuery("uid=" . intval($uid));
         if ($tag) {
@@ -5921,7 +5915,7 @@ create unique index i_docir on doc(initid, revision);";
         if (!$this->initid) {
             return "";
         }
-        include_once("FDL/Class.DocUTag.php");
+
         $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocUtag::class);
         $q->Query(
             0,
@@ -5947,7 +5941,7 @@ create unique index i_docir on doc(initid, revision);";
         if (!$this->initid) {
             return [];
         }
-        include_once("FDL/Class.DocUTag.php");
+
         $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocUtag::class);
         if (!$allusers) {
             $q->addQuery("uid=" . intval($this->userid));
@@ -8449,7 +8443,7 @@ create unique index i_docir on doc(initid, revision);";
 
         $ext = \Anakeen\Core\FileMime::getFileExtension($tplfile);
         if (strtolower($ext) == "odt") {
-            include_once('Class.OOoLayout.php');
+
             $target = "ooo";
             $ulink = false;
             $this->lay = new OOoLayout($tplfile, $action, $this);
@@ -9465,7 +9459,7 @@ create unique index i_docir on doc(initid, revision);";
         $abstract = false,
         $onlyopt = false
     ) {
-        include_once("FDL/editutil.php");
+
 
         $docid = $this->id; // document to edit
         // ------------------------------------------------------
@@ -9742,7 +9736,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function editattr($withtd = true)
     {
-        include_once("FDL/editutil.php");
+
         $listattr = $this->GetNormalAttributes();
         // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
         foreach ($listattr as $k => $v) {
@@ -9895,7 +9889,7 @@ create unique index i_docir on doc(initid, revision);";
             return false;
         }
         if (preg_match(PREGEXPFILE, $filesvalue, $reg)) {
-            include_once("FDL/Lib.Vault.php");
+
             $vid = $reg[2];
             $info = vault_properties($vid);
             if (!$info) {
@@ -10631,8 +10625,8 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getAttachedTimers()
     {
-        include_once("Class.QueryDb.php");
-        include_once("Class.DocTimer.php");
+
+
         $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocTimer::class);
         $q->AddQuery("docid=" . $this->initid);
         $q->AddQuery("donedate is null");
@@ -10655,7 +10649,7 @@ create unique index i_docir on doc(initid, revision);";
     public function getDomainIds($user = true, $folderName = false)
     {
         if (file_exists("OFFLINE/Class.DomainManager.php")) {
-            include_once("FDL/Class.SearchDoc.php");
+
             $s = new searchDoc($this->dbaccess, "OFFLINEFOLDER");
             $s->join("id = fld(dirid)");
             $s->addFilter("fld.childid = %d", $this->initid);
@@ -10929,7 +10923,7 @@ create unique index i_docir on doc(initid, revision);";
         $attrId,
         $attrType = ''
     ) {
-        include_once('FDL/Lib.Attr.php');
+
         /**
          * @var \Anakeen\Core\Internal\Action $action
          */

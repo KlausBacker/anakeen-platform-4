@@ -13,9 +13,6 @@
 /**
  */
 
-include_once("Class.DocLDAP.php");
-include_once("FDL/Class.DocPerm.php");
-include_once("FDL/Class.VGroup.php");
 
 define("POS_INIT", 0);
 define("POS_VIEW", 1);
@@ -941,7 +938,6 @@ class DocCtrl extends DocLDAP
     public function recomputeProfiledDocument()
     {
         if ($this->isRealProfile()) {
-            include_once("FDL/Class.SearchDoc.php");
             if ($this->getRawValue("dpdoc_famid") > 0) {
                 // dynamic profil
                 // recompute associated documents

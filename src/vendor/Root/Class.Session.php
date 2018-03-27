@@ -1,18 +1,5 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
- *  * Syntaxe :
- *  ---------
- *     $session = new Session();
-*/
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.38 2009/01/12 15:15:31 jerome Exp $';
-include_once('Class.QueryDb.php');
-include_once('Class.DbObj.php');
-include_once('Class.Log.php');
-include_once('Class.User.php');
-include_once("Class.SessionCache.php");
 
 class Session extends DbObj
 {

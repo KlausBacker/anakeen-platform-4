@@ -1,19 +1,6 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
-/**
- * Generated Header (not documented yet)
- *
- * @author Anakeen
- * @version $Id: Class.PDoc.php,v 1.15 2008/08/05 15:16:58 eric Exp $
- * @package FDL
- */
-/**
- */
 
-include_once("FDL/Class.Doc.php");
+
 
 class PDoc extends Doc
 {

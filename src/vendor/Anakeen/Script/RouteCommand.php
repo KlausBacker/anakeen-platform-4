@@ -21,7 +21,7 @@ class RouteCommand
     }
 
     /**
-     * @return \Anakeen\Router\RouterInfo[]
+     * @return \Anakeen\Router\Config\RouterInfo[]
      */
     public function getRouteList()
     {

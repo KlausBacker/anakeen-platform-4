@@ -138,8 +138,6 @@ class Param extends DbObj
     
     public function Get($name, $def = "")
     {
-        require_once('WHAT/Class.ApplicationParameterManager.php');
-        
         if (($value = \Anakeen\Core\Internal\ApplicationParameterManager::_catchDeprecatedGlobalParameter($name)) !== null) {
             return $value;
         }

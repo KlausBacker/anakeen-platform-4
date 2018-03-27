@@ -3,7 +3,7 @@
  * @author Anakeen
  * @package FDL
 */
-namespace {
+
     /**
      * ErrorCodeApplicationParameterManager
      *
@@ -66,23 +66,5 @@ namespace {
             }
         }
     }
-}
 
-namespace Dcp\ApplicationParameterManager {
-    /**
-     * @errorCode
-     * Account search exception
-     */
-    class Exception extends \Dcp\Exception
-    {
-        /**
-         * for beautifier
-         */
-        private function _bo()
-        {
-            if (true) {
-                $a = 1;
-            }
-        }
-    }
-}
+

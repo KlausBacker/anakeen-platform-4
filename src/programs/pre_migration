@@ -30,7 +30,7 @@ if (!include ($prefix)) {
     print "cannot include file $prefix";
     exit(1);
 }
-require_once 'WHAT/autoload.php';
+require __DIR__ . '/../vendor/Anakeen/autoload.php';
 
 include ("WHAT/Lib.Common.php");
 include ("WHAT/Lib.WCheck.php");

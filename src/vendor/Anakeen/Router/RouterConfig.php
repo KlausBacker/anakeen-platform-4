@@ -2,6 +2,8 @@
 
 namespace Anakeen\Router;
 
+use \Anakeen\Router\Config\AppInfo;
+use \Anakeen\Router\Config\RouterInfo;
 /**
  * Class RouterConfig
  * Extract configuration from config files included in "config" directory
@@ -24,7 +26,7 @@ class RouterConfig
      */
     protected $apps;
     /**
-     * @var AccessInfo[]
+     * @var Config\AccessInfo[]
      */
     protected $accesses;
 
@@ -215,13 +217,13 @@ class RouterConfig
     }
 
     /**
-     * @return AccessInfo[]
+     * @return Config\AccessInfo[]
      */
     public function getAccesses()
     {
         $accessesInfo = [];
         foreach ($this->accesses as $appData) {
-            $accessesInfo[$appData->name] = new AccessInfo($appData);
+            $accessesInfo[$appData->name] = new Config\AccessInfo($appData);
         }
 
         return $accessesInfo;

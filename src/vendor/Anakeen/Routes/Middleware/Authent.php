@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Middleware;
 
 use Anakeen\Router\Exception;
-use Anakeen\Router\RequiredAccessInfo;
+use Anakeen\Router\Config\RequiredAccessInfo;
 use Anakeen\Router\RouterLib;
 use Anakeen\Core\ContextManager;
 

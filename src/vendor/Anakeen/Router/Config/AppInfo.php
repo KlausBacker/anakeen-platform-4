@@ -1,7 +1,7 @@
 <?php
 
-namespace Anakeen\Router;
-
+namespace Anakeen\Router\Config;
+use Anakeen\Router\Exception;
 /**
  * Class AppInfo
  *
@@ -21,7 +21,7 @@ class AppInfo
     public $version;
     public $override;
     /**
-     * @var \Anakeen\Core\Internal\ParameterInfo[]
+     * @var ParameterInfo[]
      */
     public $parameters = [];
 
@@ -149,7 +149,7 @@ class AppInfo
 
         foreach ($this->parameters as $name => $parameter) {
             /**
-             * @var \Anakeen\Core\Internal\ParameterInfo $parameter
+             * @var ParameterInfo $parameter
              */
             $paramDefData = [
                 "val" => $parameter->value,

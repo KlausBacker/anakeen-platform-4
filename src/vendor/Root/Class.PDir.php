@@ -1,19 +1,9 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Profile for folders
  *
- * @author Anakeen
- * @version $Id: Class.PDir.php,v 1.12 2007/10/11 12:35:10 eric Exp $
- * @package FDL
- */
-/**
  */
 
-include_once("FDL/Class.DocCollection.php");
 
 class PDir extends DocCollection
 {

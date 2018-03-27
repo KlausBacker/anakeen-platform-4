@@ -31,7 +31,6 @@ class DbManager
         }
         $pgConnection = sprintf("service='%s'", $pgservice_core);
 
-
         return $pgConnection;
     }
 
