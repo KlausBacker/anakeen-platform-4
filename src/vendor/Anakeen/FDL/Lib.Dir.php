@@ -980,7 +980,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     function GetClassesDoc($dbaccess, $userid, $classid = 0, $qtype = "LIST", $extraFilters = array())
     // --------------------------------------------------------------------
     {
-        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, "DocFam");
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocFam::class);
         
         $query->AddQuery("doctype='C'");
         
@@ -1088,7 +1088,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      */
     function getFamilyCreationIds($dbaccess, $uid, $tfid = array())
     {
-        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, "DocFam");
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocFam::class);
         if (count($tfid) > 0) {
             $query->AddQuery(GetSqlCond($tfid, "id"));
         }
@@ -1144,7 +1144,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      */
     function getVisibleDocsFromIds($dbaccess, $ids, $userid)
     {
-        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, "DocRead");
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocRead::class);
         $query->AddQuery("initid in (" . implode(",", $ids) . ')');
         $query->AddQuery("locked != -1");
         // if ($userid > 1) $query->AddQuery("hasviewprivilege(" . $userid . ",profid)");
