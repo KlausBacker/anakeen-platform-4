@@ -67,7 +67,7 @@ class TestGetParam extends TestCaseDcp
         if ($appName) {
             simpleQuery(self::$dbaccess, sprintf("select id from application where name='%s'", pg_escape_string($appName)) , $appId, true, true);
         }
-        $paramDef = \ParamDef::getParamDef($paramName, $appId);
+        $paramDef = \Anakeen\Core\Internal\ParamDef::getParamDef($paramName, $appId);
         if (empty($expectedProps)) {
             $this->assertEmpty($paramDef, "parameter $paramName must not be found");
         } else {

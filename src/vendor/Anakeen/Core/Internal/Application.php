@@ -1198,11 +1198,11 @@ create sequence SEQ_ID_APPLICATION start 10;
     public function setParamDef($key, $val)
     {
         // add new \param definition
-        $pdef = \ParamDef::getParamDef($key, $this->id);
+        $pdef = \Anakeen\Core\Internal\ParamDef::getParamDef($key, $this->id);
         
         $oldValues = array();
         if (!$pdef) {
-            $pdef = new \ParamDef($this->dbaccess);
+            $pdef = new \Anakeen\Core\Internal\ParamDef($this->dbaccess);
             $pdef->name = $key;
             $pdef->isuser = "N";
             $pdef->isstyle = "N";

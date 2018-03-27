@@ -78,7 +78,7 @@ class TestApplicationParameters extends TestCaseDcp
                 $appTest->id
             ));
             $this->assertTrue($p->isAffected() , sprintf("not paramvalue glob %s", $globId));
-            $pdef = new \ParamDef(self::$dbaccess, $globId);
+            $pdef = new \Anakeen\Core\Internal\ParamDef(self::$dbaccess, $globId);
             $this->assertTrue($pdef->isAffected() , sprintf("not paramdef %s", $globId));
             $this->assertEquals('Y', $pdef->isglob, sprintf("not a paramdef glob %s", $globId));
         }
@@ -90,7 +90,7 @@ class TestApplicationParameters extends TestCaseDcp
                 $appTest->id
             ));
             $this->assertTrue($p->isAffected() , sprintf("not paramvalue app %s", $globId));
-            $pdef = new \ParamDef(self::$dbaccess, $globId);
+            $pdef = new \Anakeen\Core\Internal\ParamDef(self::$dbaccess, $globId);
             $this->assertTrue($pdef->isAffected() , sprintf("not paramdef %s", $globId));
             $this->assertEquals('N', $pdef->isglob, sprintf("not a paramdef app %s", $globId));
         }

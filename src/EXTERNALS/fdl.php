@@ -259,7 +259,7 @@ function tpluser($dbaccess, $type, $famid, $wfamid, $name)
 function getGlobalsParameters($name)
 {
     include_once ("Class.QueryDb.php");
-    $q = new \Anakeen\Core\Internal\QueryDb("", \ParamDef::class);
+    $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\ParamDef::class);
     
     $tr = array();
     $q->AddQuery("isglob = 'Y'");

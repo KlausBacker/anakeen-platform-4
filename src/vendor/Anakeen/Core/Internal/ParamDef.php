@@ -1,44 +1,6 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
-/**
- * Generated Header (not documented yet)
- *
- * @author Anakeen
- * @version $Id: Class.ParamDef.php,v 1.4 2005/10/31 11:52:17 eric Exp $
- * @package FDL
- * @subpackage CORE
- */
-/**
- */
-// ---------------------------------------------------------------------------
-// Param
-// ---------------------------------------------------------------------------
-// Anakeen 2000 - yannick.lebriquer@anakeen.com
-// ---------------------------------------------------------------------------
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or (at
-//  your option) any later version.
-//
-// This program is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-// for more details.
-//
-// You should have received a copy of the GNU General Public License along
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------------------
-//  $Id: Class.ParamDef.php,v 1.4 2005/10/31 11:52:17 eric Exp $
-//
-include_once('Class.Log.php');
-include_once('Class.DbObj.php');
 
-$CLASS_PARAMDEF_PHP = '$Id: Class.ParamDef.php,v 1.4 2005/10/31 11:52:17 eric Exp $';
-
+namespace Anakeen\Core\Internal;
 class ParamDef extends DbObj
 {
     public $fields = array(
@@ -97,7 +59,7 @@ SQL;
             simpleQuery('', $sqlp, $paramDefValues, false, true);
         }
         if (!empty($paramDefValues)) {
-            $d = new ParamDef();
+            $d = new \Anakeen\Core\Internal\ParamDef();
             $d->Affect($paramDefValues);
         }
         return $d;
