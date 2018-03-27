@@ -16,20 +16,7 @@
 
 include_once("FDL/freedom_util.php");
 
-function getFirstDir($dbaccess)
-{
-    // query to find first directories
-    $qsql = "select id from only doc2  where  (doctype='D') order by id LIMIT 1;";
-    
-    $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, "Doc");
-    
-    $tableq = $query->Query(0, 0, "TABLE", $qsql);
-    if ($query->nb > 0) {
-        return $tableq[0]["id"];
-    }
-    
-    return (0);
-}
+
 
 function getChildDir($dbaccess, $userid, $dirid, $notfldsearch = false, $restype = "LIST")
 {
@@ -652,7 +639,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     $usql = isset($tqsql[0]) ? $tqsql[0] : "";
 
                     // @TODO How find correct class
-                    $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, "Doc$fromid");
+                    $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, "\\Doc$fromid");
                 } else {
                     $usql = '(' . implode($tqsql, ") union (") . ')';
                     if ($orderby) {

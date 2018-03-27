@@ -78,7 +78,7 @@ class DocumentUserTags
 
         $info = array();
 
-        $q = new \Anakeen\Core\Internal\QueryDb($this->_document->dbaccess, "docUTag");
+        $q = new \Anakeen\Core\Internal\QueryDb($this->_document->dbaccess, \DocUTag::class);
         $q->addQuery(sprintf("uid=%d", ContextManager::getCurrentUser()->id));
         $q->addQuery(sprintf("initid = %d", $this->_document->initid));
         $q->order_by = "date desc";

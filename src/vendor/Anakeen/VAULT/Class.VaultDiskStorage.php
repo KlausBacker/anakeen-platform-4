@@ -289,7 +289,7 @@ SQL;
             return _("vault file is not initialized");
         }
         $err = '';
-        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "VaultDiskStorage");
+        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \VaultDiskStorage::class);
         $q->AddQuery("teng_id_file=" . $this->id_file);
         $q->AddQuery("teng_lname='" . pg_escape_string($te_name) . "'");
         $tn = $q->Query();
