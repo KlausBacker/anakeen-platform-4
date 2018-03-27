@@ -1698,29 +1698,7 @@ create unique index i_docir on doc(initid, revision);";
         return $famdoc;
     }
 
-    /**
-     * search the first document from its title
-     *
-     * @param string $title the title to search (must be exactly the same title)
-     *
-     * @return int document identifier
-     */
-    public function getFreedomFromTitle($title)
-    {
-        $query = new QueryDb($this->dbaccess, "Doc");
-        $query->basic_elem->sup_where = array(
-            "title='" . $title . "'"
-        );
 
-        $table1 = $query->Query();
-        $id = 0;
-        if ($query->nb > 0) {
-            $id = $table1[0]->id;
-
-            unset($table1);
-        }
-        return $id;
-    }
 
     /**
      * return family parameter
@@ -2343,7 +2321,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function getRevisions($type = "LIST", $limit = 200)
     {
         // Return the document revision
-        $query = new QueryDb($this->dbaccess, strtolower(get_class($this)));
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, strtolower(get_class($this)));
         //$query->AddQuery("revision <= ".$this->revision);
         $query->AddQuery("initid = " . $this->initid);
         $query->order_by = "revision DESC LIMIT $limit";
@@ -2396,7 +2374,7 @@ create unique index i_docir on doc(initid, revision);";
         if (!$fixed) {
             return getLatestDocId($this->dbaccess, $this->initid);
         }
-        $query = new QueryDb($this->dbaccess, strtolower(get_class($this)));
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, strtolower(get_class($this)));
         $query->AddQuery("initid = " . $this->initid);
         if ($fixed) {
             $query->AddQuery("lmodify = 'L'");
@@ -5682,8 +5660,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function getHisto($allrev = false, $code = "", $limit = 0)
     {
-        include_once("Class.QueryDb.php");
-        $q = new QueryDb($this->dbaccess, "dochisto");
+        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocHisto::class);
         if ($allrev) {
             $q->AddQuery("initid=" . $this->initid);
         } else {
@@ -5861,7 +5838,7 @@ create unique index i_docir on doc(initid, revision);";
         }
 
         include_once("FDL/Class.DocUTag.php");
-        $q = new QueryDb($this->dbaccess, "docUTag");
+        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocUtag::class);
         $q->addQuery("uid=" . intval($uid));
         if ($tag) {
             $q->addQuery("tag = '" . pg_escape_string($tag) . "'");
@@ -5945,7 +5922,7 @@ create unique index i_docir on doc(initid, revision);";
             return "";
         }
         include_once("FDL/Class.DocUTag.php");
-        $q = new QueryDb($this->dbaccess, "docUTag");
+        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocUtag::class);
         $q->Query(
             0,
             0,
@@ -5971,7 +5948,7 @@ create unique index i_docir on doc(initid, revision);";
             return [];
         }
         include_once("FDL/Class.DocUTag.php");
-        $q = new QueryDb($this->dbaccess, "docUTag");
+        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocUtag::class);
         if (!$allusers) {
             $q->addQuery("uid=" . intval($this->userid));
         }
@@ -6386,7 +6363,7 @@ create unique index i_docir on doc(initid, revision);";
         try {
             $wdoc->Set($this);
             $err = $wdoc->ChangeState($newstate, $comment, $force, $withcontrol, $wm1, $wm2, $wneed, $wm0, $wm3, $msg);
-        } catch (Dcp\Exception $e) {
+        } catch (\Dcp\Exception $e) {
             $err = sprintf(
                 _("Unexpected transition error on workflow %s [%d] : %s"),
                 $wdoc->title,
@@ -10656,7 +10633,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         include_once("Class.QueryDb.php");
         include_once("Class.DocTimer.php");
-        $q = new QueryDb($this->dbaccess, "doctimer");
+        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocTimer::class);
         $q->AddQuery("docid=" . $this->initid);
         $q->AddQuery("donedate is null");
         $l = $q->Query(0, 0, "TABLE");

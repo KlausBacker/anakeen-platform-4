@@ -216,7 +216,7 @@ class styleManager
         }
         // delete previous style parameters
         $this->log("delete previous style parameters");
-        $query = new QueryDb("", "Param");
+        $query = new \Anakeen\Core\Internal\QueryDb("", \Param::class);
         $query->AddQuery(sprintf("type ~ '^%s'", Param::PARAM_STYLE)); //all of them, regardless of the style they come from
         $oldParamList = $query->Query();
         if (!empty($oldParamList)) {

@@ -36,7 +36,7 @@ if (($docid !== 0) && (!is_numeric($docid))) {
     }
 }
 
-$query = new QueryDb($dbaccess, "DocFam");
+$query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocFam::class);
 $query->AddQuery("doctype='C'");
 $query->order_by = "id";
 

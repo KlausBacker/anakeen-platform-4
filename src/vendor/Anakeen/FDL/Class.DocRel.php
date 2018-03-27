@@ -79,7 +79,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
         if (empty($this->sinitid)) {
             return array();
         }
-        $q = new QueryDb($this->dbaccess, get_class($this));
+        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, get_class($this));
         $q->AddQuery(sprintf("sinitid = %d", $this->sinitid));
         if ($reltype != "") {
             $q->AddQuery("type='$reltype'");
@@ -98,7 +98,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
     public function getIRelations($reltype = "", $doctype = "", $limit = 0)
     {
         include_once("Class.QueryDb.php");
-        $q = new QueryDb($this->dbaccess, get_class($this));
+        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, get_class($this));
         $q->AddQuery("cinitid=" . $this->sinitid);
         if ($reltype != "") {
             $q->AddQuery("type='$reltype'");

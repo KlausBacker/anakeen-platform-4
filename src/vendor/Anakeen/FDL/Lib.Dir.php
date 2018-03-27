@@ -21,7 +21,7 @@ function getFirstDir($dbaccess)
     // query to find first directories
     $qsql = "select id from only doc2  where  (doctype='D') order by id LIMIT 1;";
     
-    $query = new QueryDb($dbaccess, "Doc");
+    $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, "Doc");
     
     $tableq = $query->Query(0, 0, "TABLE", $qsql);
     if ($query->nb > 0) {
@@ -251,7 +251,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
                     $qsql = "select $selectfields from $only $table where $sqlcond ";
                 } else {
-                    $q = new QueryDb($dbaccess, "QueryDir");
+                    $q = new \Anakeen\Core\Internal\QueryDb($dbaccess, "QueryDir");
                     $q->AddQuery($sqlfld);
                     $tfld = $q->Query(0, 0, "TABLE");
                     if ($q->nb > 0) {
@@ -283,7 +283,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             //-------------------------------------------
             // search familly
             //-------------------------------------------
-            $docsearch = new QueryDb($dbaccess, "QueryDir");
+            $docsearch = new \Anakeen\Core\Internal\QueryDb($dbaccess, "QueryDir");
             $docsearch->AddQuery("dirid=$dirid");
             $docsearch->AddQuery("qtype = 'M'");
             $ldocsearch = $docsearch->Query(0, 0, "TABLE");
@@ -381,7 +381,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                 /**
                  * @var int $dirid
                  */
-                $docsearch = new QueryDb($dbaccess, "QueryDir");
+                $docsearch = new \Anakeen\Core\Internal\QueryDb($dbaccess, \QueryDir::class);
                 $docsearch->AddQuery("dirid=$dirid");
                 
                 $docsearch->AddQuery("qtype = 'M'");
@@ -650,7 +650,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             if (count($tqsql) > 0) {
                 if (count($tqsql) == 1) {
                     $usql = isset($tqsql[0]) ? $tqsql[0] : "";
-                    $query = new QueryDb($dbaccess, "Doc$fromid");
+
+                    // @TODO How find correct class
+                    $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, "Doc$fromid");
                 } else {
                     $usql = '(' . implode($tqsql, ") union (") . ')';
                     if ($orderby) {
@@ -658,7 +660,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     } else {
                         $usql.= " LIMIT $slice OFFSET $start;";
                     }
-                    $query = new QueryDb($dbaccess, "Doc");
+                    $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \Doc::class);
                 }
                 if ($returnSqlOnly) {
                     /*
@@ -731,7 +733,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         
         $mc = microtime();
         
-        $q = new QueryDb($dbaccess, "QueryDir");
+        $q = new \Anakeen\Core\Internal\QueryDb($dbaccess, "QueryDir");
         $q->AddQuery($sqlfld);
         $q->AddQuery("qtype='S'");
         
@@ -914,7 +916,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     function isInDir($dbaccess, $dirid, $docid)
     {
         // return true id docid is in dirid
-        $query = new QueryDb($dbaccess, "QueryDir");
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, "QueryDir");
         $query->AddQuery("dirid=" . $dirid);
         $query->AddQuery("childid=" . $docid);
         
@@ -930,7 +932,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     function hasChildFld($dbaccess, $dirid, $issearch = false)
     {
         if ($issearch) {
-            $query = new QueryDb($dbaccess, "QueryDir");
+            $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, "QueryDir");
             $query->AddQuery("qtype='M'");
             $query->AddQuery("dirid=$dirid");
             $list = $query->Query(0, 1, "TABLE");
@@ -953,7 +955,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                 }
             }
         } else {
-            $qfld = new QueryDb($dbaccess, "QueryDir");
+            $qfld = new \Anakeen\Core\Internal\QueryDb($dbaccess, "QueryDir");
             $qfld->AddQuery("qtype='S'");
             $qfld->AddQuery(sprintf("fld.dirid=%d", $dirid));
             $qfld->AddQuery("doctype='D' or doctype='S'");
@@ -978,7 +980,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     function GetClassesDoc($dbaccess, $userid, $classid = 0, $qtype = "LIST", $extraFilters = array())
     // --------------------------------------------------------------------
     {
-        $query = new QueryDb($dbaccess, "DocFam");
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, "DocFam");
         
         $query->AddQuery("doctype='C'");
         
@@ -1086,7 +1088,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      */
     function getFamilyCreationIds($dbaccess, $uid, $tfid = array())
     {
-        $query = new QueryDb($dbaccess, "DocFam");
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, "DocFam");
         if (count($tfid) > 0) {
             $query->AddQuery(GetSqlCond($tfid, "id"));
         }
@@ -1142,7 +1144,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      */
     function getVisibleDocsFromIds($dbaccess, $ids, $userid)
     {
-        $query = new QueryDb($dbaccess, "DocRead");
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, "DocRead");
         $query->AddQuery("initid in (" . implode(",", $ids) . ')');
         $query->AddQuery("locked != -1");
         // if ($userid > 1) $query->AddQuery("hasviewprivilege(" . $userid . ",profid)");

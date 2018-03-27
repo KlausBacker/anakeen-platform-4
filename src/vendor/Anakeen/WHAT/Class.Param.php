@@ -202,7 +202,7 @@ class Param extends DbObj
     
     public function GetUser($userid = \Anakeen\Core\Account::ANONYMOUS_ID, $styleid = "")
     {
-        $query = new QueryDb($this->dbaccess, "Param");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Param");
         
         $tlist = $query->Query(0, 0, "TABLE", "select  distinct on(paramv.name, paramv.appid) paramv.*,  paramdef.descr, paramdef.kind  from paramv, paramdef where paramv.name = paramdef.name and paramdef.isuser='Y' and (" . " (type = '" . self::PARAM_GLB . "') " . " OR (type='" . self::PARAM_APP . "')" . " OR (type='" . self::PARAM_STYLE . $styleid . "' )" . " OR (type='" . self::PARAM_USER . $userid . "' ))" . " order by paramv.name, paramv.appid, paramv.type desc");
         
@@ -216,7 +216,7 @@ class Param extends DbObj
      */
     public function GetStyle($styleid, $onlystyle = false)
     {
-        $query = new QueryDb($this->dbaccess, "Param");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Param");
         if ($onlystyle) {
             $query->AddQuery("type='" . self::PARAM_STYLE . $styleid . "'");
             $tlist = $query->Query(0, 0, "TABLE");
@@ -228,7 +228,7 @@ class Param extends DbObj
     
     public function GetApps()
     {
-        $query = new QueryDb($this->dbaccess, "Param");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Param");
         
         $tlist = $query->Query(0, 0, "TABLE", "select  paramv.*, paramdef.descr, paramdef.kind  from paramv, paramdef where paramv.name = paramdef.name and  (" . " (type = '" . self::PARAM_GLB . "') " . " OR (type='" . self::PARAM_APP . "'))" . " order by paramv.appid, paramv.name, type desc");
         
@@ -241,7 +241,7 @@ class Param extends DbObj
             $appid = $this->appid;
         }
         $req = "select val from paramv where name='" . $p . "' and type='U" . $u . "' and appid=" . $appid . ";";
-        $query = new QueryDb($this->dbaccess, "Param");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Param");
         $tlist = $query->Query(0, 0, "TABLE", $req);
         if ($query->nb != 0) {
             return $tlist[0]["val"];
@@ -251,7 +251,7 @@ class Param extends DbObj
     // delete paramters that cannot be change after initialisation
     public function DelStatic($appid)
     {
-        $query = new QueryDb($this->dbaccess, "Param");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Param");
         $sql = sprintf("select paramv.*  from paramv, paramdef where paramdef.name=paramv.name and paramdef.kind='static' and paramdef.isuser!='Y' and paramv.appid=%d", $appid);
         $list = $query->Query(0, 0, "LIST", $sql);
         
@@ -278,7 +278,7 @@ class Param extends DbObj
     
     public function DelAll($appid = "")
     {
-        $query = new QueryDb($this->dbaccess, "Param");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Param");
         // delete all parameters not used by application
         $query->Query(0, 0, "TABLE", "delete from paramv where appid not in (select id from application) ");
         return;

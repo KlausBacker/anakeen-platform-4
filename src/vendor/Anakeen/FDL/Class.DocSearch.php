@@ -133,7 +133,7 @@ class DocSearch extends PDocSearch
     
     public function GetQueryOld()
     {
-        $query = new QueryDb($this->dbaccess, "QueryDir");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \QueryDir::class);
         $query->AddQuery("dirid=" . $this->id);
         $query->AddQuery("qtype != 'S'");
         $tq = $query->Query(0, 0, "TABLE");

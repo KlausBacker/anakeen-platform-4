@@ -118,7 +118,7 @@ create table doctimer ( id serial,
         include_once("Class.QueryDb.php");
         $docid = intval($this->docid);
         $timerid = intval($this->timerid);
-        $q = new QueryDb($this->dbaccess, $this->dbtable);
+        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $q->addQuery("docid=$docid");
         $q->addQuery("tododate is not null");
         $q->addQuery("timerid=$timerid");
@@ -148,7 +148,7 @@ create table doctimer ( id serial,
             $err.= _("cannot detach : origin id is not set");
         }
         if ($err == "") {
-            $q = new QueryDb($this->dbaccess, $this->dbtable);
+            $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
             $q->addQuery("docid=$docid");
             $q->addQuery("tododate is not null");
             $q->addQuery("originid=$originid");
@@ -172,7 +172,7 @@ create table doctimer ( id serial,
             $err = _("cannot detach : document id is not set");
         }
         if ($err == "") {
-            $q = new QueryDb($this->dbaccess, $this->dbtable);
+            $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
             $q->addQuery("docid=$docid");
             $q->addQuery("tododate is not null");
             $c = $q->count();
@@ -208,7 +208,7 @@ create table doctimer ( id serial,
      */
     public function getActionsToExecute()
     {
-        $q = new QueryDb($this->dbaccess, "DocTimer");
+        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $q->addQuery("tododate is not null");
         $q->addQuery("tododate < now()");
         $timerhourlimit = \Anakeen\Core\ContextManager::getApplicationParam("FDL_TIMERHOURLIMIT", 2);

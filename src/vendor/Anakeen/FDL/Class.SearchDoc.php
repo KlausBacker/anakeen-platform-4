@@ -1452,7 +1452,7 @@ class SearchDoc
                     $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
                     $qsql = "select $selectfields from $only $table where $sqlcond ";
                 } else {
-                    $q = new QueryDb($dbaccess, "QueryDir");
+                    $q = new \Anakeen\Core\Internal\QueryDb($dbaccess, \QueryDir::class);
                     $q->AddQuery($sqlfld);
                     $tfld = $q->Query(0, 0, "TABLE");
                     if ($q->nb > 0) {
@@ -1482,7 +1482,7 @@ class SearchDoc
                 //-------------------------------------------
                 // search familly
                 //-------------------------------------------
-                $docsearch = new QueryDb($dbaccess, "QueryDir");
+                $docsearch = new \Anakeen\Core\Internal\QueryDb($dbaccess, \QueryDir::class);
                 $docsearch->AddQuery("dirid=$dirid");
                 $docsearch->AddQuery("qtype = 'M'");
                 $ldocsearch = $docsearch->Query(0, 0, "TABLE");

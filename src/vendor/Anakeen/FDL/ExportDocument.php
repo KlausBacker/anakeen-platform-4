@@ -120,7 +120,7 @@ class ExportDocument
         }
         
         $dbaccess = getDbAccess();
-        $q = new \QueryDb($dbaccess, "DocPerm");
+        $q = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocPerm::class);
         $q->AddQuery(sprintf("docid=%d", $doc->profid));
         $q->order_by = "userid";
         $acls = $q->Query(0, 0, "TABLE");
@@ -132,7 +132,7 @@ class ExportDocument
                 $uid = $va["userid"];
                 
                 if ($uid >= STARTIDVGROUP) {
-                    $qvg = new \QueryDb($dbaccess, "VGroup");
+                    $qvg = new \Anakeen\Core\Internal\QueryDb($dbaccess, \VGroup::class);
                     $qvg->AddQuery(sprintf("num=%d", $uid));
                     $tvu = $qvg->Query(0, 1, "TABLE");
                     $uid = sprintf("attribute(%s)", $tvu[0]["id"]);
@@ -175,7 +175,7 @@ class ExportDocument
             foreach ($eAcls as $kAcl => $aAcl) {
                 $uid = $aAcl["userid"];
                 if ($uid >= STARTIDVGROUP) {
-                    $qvg = new \QueryDb($dbaccess, "VGroup");
+                    $qvg = new \Anakeen\Core\Internal\QueryDb($dbaccess, \VGroup::class);
                     $qvg->AddQuery(sprintf("num=%d", $uid));
                     $tvu = $qvg->Query(0, 1, "TABLE");
                     $uid = sprintf("attribute(%s)", $tvu[0]["id"]);

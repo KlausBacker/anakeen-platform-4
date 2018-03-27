@@ -28,8 +28,8 @@ if ($parapp != "") {
     $appid = $core->GetIdFromName($parapp);
 }
 
-$dbaccess = getDbAccess();
-$param = new QueryDb($dbaccess, "Param");
+$dbaccess = \Anakeen\Core\DbManager::getDbAccess();
+$param = new \Anakeen\Core\Internal\QueryDb($dbaccess, \Param::class);
 $param->AddQuery("name='$parname'");
 if ($appid) {
     $param->AddQuery("appid=$appid");

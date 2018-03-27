@@ -49,7 +49,7 @@ create unique index idx_docvaultindex on docvaultindex (docid, vaultid);";
     public function getDocIds($vid)
     {
         $t = array();
-        $query = new QueryDb($this->dbaccess, "DocVaultIndex");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->basic_elem->sup_where = array(
             "vaultid = $vid"
         );
@@ -64,7 +64,7 @@ create unique index idx_docvaultindex on docvaultindex (docid, vaultid);";
      */
     public function getDocId($vid)
     {
-        $query = new QueryDb($this->dbaccess, "DocVaultIndex");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->AddQuery("vaultid = $vid");
         $t = $query->Query(0, 1, "TABLE");
         if (is_array($t)) {
@@ -82,7 +82,7 @@ create unique index idx_docvaultindex on docvaultindex (docid, vaultid);";
         if (!$docid) {
             return array();
         }
-        $query = new QueryDb($this->dbaccess, "DocVaultIndex");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->AddQuery("docid = $docid");
         $t = $query->Query(0, 0, "TABLE");
         $tvid = array();

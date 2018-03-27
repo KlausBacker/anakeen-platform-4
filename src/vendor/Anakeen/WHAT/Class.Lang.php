@@ -85,7 +85,7 @@ create index lang_idx1 on lang(idapp, lang, code);
     
     public function Exist($idapp, $code, $lang)
     {
-        $query = new QueryDb($this->dbaccess, "Lang");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Lang");
         $query->basic_elem->sup_where = array(
             "idapp={$idapp}",
             "lang='{$lang}'",
@@ -104,7 +104,7 @@ create index lang_idx1 on lang(idapp, lang, code);
         $this->idapp = $id;
         $this->lang = $lang;
         $this->deflang = $lang;
-        $query = new QueryDb($this->dbaccess, "Lang");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Lang");
         $query->basic_elem->sup_where = array(
             "idapp={$id}",
             "lang='{$deflang}'"
@@ -137,7 +137,7 @@ create index lang_idx1 on lang(idapp, lang, code);
     
     public function Get($idapp, $lang, $code, $args = null)
     {
-        $query = new QueryDb($this->dbaccess, "Lang");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Lang");
         $query->basic_elem->sup_where = array(
             "idapp={$idapp}",
             "lang='{$lang}'",
@@ -178,7 +178,7 @@ create index lang_idx1 on lang(idapp, lang, code);
     
     public function deletecatalog($idapp)
     {
-        $query = new QueryDb($this->dbaccess, "Lang");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Lang");
         $query->basic_elem->sup_where = array(
             "idapp={$idapp}"
         );

@@ -238,7 +238,7 @@ class DocLDAP extends DbObj
             return array();
         }
         include_once("Class.QueryDb.php");
-        $q = new QueryDb($this->dbaccess, "DocAttrLDAP");
+        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocAttrLDAP::class);
 
         $q->AddQuery(getSqlCond($fids, "famid"));
         $q->order_by = "famid,index";

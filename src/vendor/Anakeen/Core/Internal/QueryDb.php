@@ -1,20 +1,11 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
+
+namespace Anakeen\Core\Internal;
 /**
  * Query to Database
  *
- * @author Anakeen
- * @version $Id: Class.QueryDb.php,v 1.16 2008/08/11 10:03:29 eric Exp $
- * @package FDL
- * @subpackage CORE
- */
-/**
  */
 
-include_once('Class.Log.php');
 
 class QueryDb
 {
@@ -201,10 +192,10 @@ class QueryDb
         //	print "$query $res_type $p_query<BR>\n";
         if ($res_type == "ITER") {
             if ($err) {
-                throw new Dcp\Db\Exception("query fail : " . $err);
+                throw new \Dcp\Db\Exception("query fail : " . $err);
             }
             include_once("Class.DbObjectList.php");
-            return new DbObjectList($this->dbaccess, $this->basic_elem->res, $this->class);
+            return new \DbObjectList($this->dbaccess, $this->basic_elem->res, $this->class);
         }
         
         if ($err != "") {
@@ -220,18 +211,9 @@ class QueryDb
             $this->cindex = 0; // current index row
             return $this->basic_elem->res;
         }
-        if ($start >= $this->nb) {
-            $start = 0;
-        }
-        if ($slice == 0) {
-            $slice = $this->nb;
-        }
+
         
-        if (($start + $slice) >= $this->nb) {
-            $end = $this->nb;
-        } else {
-            $end = $start + $slice;
-        }
+
         if ($res_type == "TABLE") {
             $this->list = pg_fetch_all($this->basic_elem->res);
         } else {

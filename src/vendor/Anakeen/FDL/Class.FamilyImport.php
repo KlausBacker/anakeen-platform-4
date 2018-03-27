@@ -125,7 +125,7 @@ class FamilyImport
             $phpAdoc->Set("AParent", "ADoc" . $tdoc["fromid"]);
         }
         $phpAdoc->Set("title", $tdoc["title"]);
-        $query = new \QueryDb($dbaccess, "DocAttr");
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocAttr::class);
         $query->AddQuery("docid=" . $tdoc["id"]);
         $query->order_by = "ordered";
         
@@ -550,7 +550,7 @@ class FamilyImport
             "-"
         ), "_", $tdoc["name"]))));
         
-        $query = new \QueryDb($dbaccess, "DocAttr");
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocAttr::class);
         $query->AddQuery(sprintf("docid=%d", $tdoc["id"]));
         $query->AddQuery(sprintf("id !~ ':'"));
         $query->order_by = "ordered";
@@ -600,7 +600,7 @@ class FamilyImport
         $pgatt = self::getTableColumns($dbaccess, "public", "doc$docid");
         // -----------------------------
         // add column attribute
-        $qattr = new \QueryDb($dbaccess, "DocAttr");
+        $qattr = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocAttr::class);
         $qattr->AddQuery("docid=" . $docid);
         $qattr->AddQuery("type != 'menu'");
         $qattr->AddQuery("type != 'frame'");
@@ -803,7 +803,7 @@ class FamilyImport
     public static function refreshPhpPgDoc($dbaccess, $docid)
     {
         $err = '';
-        $query = new \QueryDb($dbaccess, "DocFam");
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocFam::class);
         $query->AddQuery("doctype='C'");
         $query->AddQuery("id=$docid");
         $table1 = $query->Query(0, 0, "TABLE");
@@ -817,17 +817,12 @@ class FamilyImport
     
     public static function buildFamilyFilesAndTables($dbaccess, $familyData, $interactive = false)
     {
-        $doc = new_Doc($dbaccess);
         $locked = false;
         $savepointed = false;
         try {
-            if (($err = $doc->setMasterLock(true)) !== '') {
-                throw new \Dcp\Core\Exception($err);
-            }
+            DbManager::setMasterLock(true);
             $locked = true;
-            if (($err = $doc->savePoint(__METHOD__)) !== '') {
-                throw new \Dcp\Core\Exception($err);
-            }
+            DbManager::savePoint(__METHOD__);
             $savepointed = true;
             
             $phpfile = self::createDocFile($dbaccess, $familyData);
@@ -843,19 +838,15 @@ class FamilyImport
             self::activateTrigger($dbaccess, $familyData["id"]);
             self::resetSystemEnum($familyData["id"]);
             
-            if (($err = $doc->commitPoint(__METHOD__)) !== '') {
-                throw new \Dcp\Core\Exception($err);
-            }
+            DbManager::commitPoint(__METHOD__);
             $savepointed = false;
-            if (($err = $doc->setMasterLock(false)) !== '') {
-                throw new \Dcp\Core\Exception($err);
-            }
+            DbManager::setMasterLock(false);
         } catch (\Exception $e) {
             if ($savepointed) {
-                $doc->rollbackPoint(__METHOD__);
+                DbManager::rollbackPoint(__METHOD__);
             }
             if ($locked) {
-                $doc->setMasterLock(false);
+                DbManager::setMasterLock(false);
             }
             return $e->getMessage();
         }
@@ -893,7 +884,7 @@ class FamilyImport
             $tfromid[] = $fromid;
         }
         $tfromid[] = $ta->docid; // itself
-        $query = new \QueryDb($dbaccess, "DocAttr");
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocAttr::class);
         $query->AddQuery(GetSqlCond($tfromid, 'docid'));
         $query->AddQuery("id='" . pg_escape_string($ta->id) . "'");
         $query->order_by = "docid";
@@ -940,7 +931,7 @@ class FamilyImport
     protected static function getParentAttributes($dbaccess, $fromid)
     {
         if ($fromid > 0) {
-            $query = new \QueryDb($dbaccess, "DocAttr");
+            $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocAttr::class);
             $query->AddQuery(sprintf("docid=%d", $fromid));
             
             $pa = $query->Query(0, 0, "TABLE");

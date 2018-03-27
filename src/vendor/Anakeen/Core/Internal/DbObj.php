@@ -99,7 +99,7 @@ class DbObj
      *
      * @param string $dbaccess database specification
      * @param string $id       identifier of the object
-     * @param string $res      array of result issue to QueryDb {@link QueryDb::Query()}
+     * @param string $res      array of result issue to QueryDb {@link \Anakeen\Core\Internal\QueryDb::Query()}
      * @param int    $dbid     the database connection resource
      *
      * @throws \Dcp\Core\Exception

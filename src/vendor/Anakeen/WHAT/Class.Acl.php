@@ -56,7 +56,7 @@ create sequence SEQ_ID_ACL;
     
     public function Set($name, $id_app)
     {
-        $query = new QueryDb($this->dbaccess, "Acl");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Acl");
         $query->basic_elem->sup_where = array(
             "name='$name'",
             "id_application=$id_app"
@@ -95,7 +95,7 @@ create sequence SEQ_ID_ACL;
     
     public function Exists($name, $id_app)
     {
-        $query = new QueryDb($this->dbaccess, "Acl");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Acl");
         $query->basic_elem->sup_where = array(
             "name='$name'",
             "id_application=$id_app"
@@ -106,7 +106,7 @@ create sequence SEQ_ID_ACL;
     
     public function DelAppAcl($id)
     {
-        $query = new QueryDb($this->dbaccess, "Acl");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Acl");
         $query->basic_elem->sup_where = array(
             "id_application=$id"
         );
@@ -214,7 +214,7 @@ create sequence SEQ_ID_ACL;
             // for old acl form definition (with grant_level)
             // set default acl for grant level under the default
             if (isset($default_grant_level)) {
-                $query = new QueryDb($this->dbaccess, "Acl");
+                $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Acl");
                 $query->AddQuery("id_application = " . $app->id);
                 $query->AddQuery("grant_level < $default_grant_level");
                 if ($qacl = $query->Query()) {
@@ -261,7 +261,7 @@ create sequence SEQ_ID_ACL;
         //       if (!$find) {
         //         // remove the ACL and all associated permissions
         //         $this->log->info("Removing the {$v->name} ACL");
-        //         $query2 = new QueryDb($this->dbaccess,"Permission");
+        //         $query2 = new \Anakeen\Core\Internal\QueryDb($this->dbaccess,"Permission");
         //         $query2->basic_elem->sup_where=array("id_application= {$app->id}",
         //                                              "id_acl = {$v->id}");
         //         $list_perm = $query2->Query();
@@ -279,7 +279,7 @@ create sequence SEQ_ID_ACL;
     public function getDefaultAcls($idapp)
     {
         $aclids = array();
-        $query = new QueryDb($this->dbaccess, "Acl");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Acl");
         $query->AddQuery("id_application = $idapp");
         $query->AddQuery("group_default = 'Y'");
         if ($qacl = $query->Query()) {
@@ -292,7 +292,7 @@ create sequence SEQ_ID_ACL;
     
     public function getAclApplication($idapp)
     {
-        $query = new QueryDb($this->dbaccess, "Acl");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Acl");
         $query->AddQuery("id_application = $idapp");
         if ($qacl = $query->Query()) {
             return $qacl;

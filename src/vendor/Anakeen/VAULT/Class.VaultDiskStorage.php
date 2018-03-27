@@ -202,7 +202,7 @@ SQL;
     public function ListFiles(&$list)
     {
         // --------------------------------------------------------------------
-        $query = new QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
         $list = $query->Query(0, 0, "TABLE");
         $fc = $query->nb;
         return $fc;
@@ -289,7 +289,7 @@ SQL;
             return _("vault file is not initialized");
         }
         $err = '';
-        $q = new QueryDb($this->dbaccess, "VaultDiskStorage");
+        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "VaultDiskStorage");
         $q->AddQuery("teng_id_file=" . $this->id_file);
         $q->AddQuery("teng_lname='" . pg_escape_string($te_name) . "'");
         $tn = $q->Query();
@@ -323,7 +323,7 @@ SQL;
         // --------------------------------------------------------------------
         $this->id_file = - 1;
         if ($teng_lname != "") {
-            $query = new QueryDb($this->dbaccess, $this->dbtable);
+            $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
             $query->AddQuery(sprintf("teng_id_file = E'%s'::bigint", pg_escape_string($id_file)));
             $query->AddQuery(sprintf("teng_lname = E'%s'", pg_escape_string($teng_lname)));
             

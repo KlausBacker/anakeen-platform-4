@@ -1506,7 +1506,7 @@ class importDocumentDescription
             array_shift($data);
             array_shift($data);
             array_shift($data);
-            $q = new QueryDb("", "Acl");
+            $q = new \Anakeen\Core\Internal\QueryDb("", Acl::class);
             $q->AddQuery("id_application=$idapp");
             $la = $q->Query(0, 0, "TABLE");
             if (!$la) {

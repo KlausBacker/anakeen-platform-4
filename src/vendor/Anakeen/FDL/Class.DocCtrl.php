@@ -332,7 +332,7 @@ class DocCtrl extends DocLDAP
         }
         
         $tVgroup2attrid = array();
-        $query = new QueryDb($this->dbaccess, "DocPermExt");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocPermExt::class);
         $query->AddQuery(sprintf("docid=%d", $dprofid));
         $tacl = $query->Query(0, 0, "TABLE");
         if (!is_array($tacl)) {
@@ -349,7 +349,7 @@ class DocCtrl extends DocLDAP
             }
         }
         if (count($tgnum) > 0) {
-            $query = new QueryDb($this->dbaccess, "VGroup");
+            $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \VGroup::class);
             $query->AddQuery(GetSqlCond($tgnum, "num", true));
             $tg = $query->Query(0, 0, "TABLE");
             if ($query->nb > 0) {
@@ -442,7 +442,7 @@ class DocCtrl extends DocLDAP
                 ));
             }
             
-            $query = new QueryDb($this->dbaccess, "DocPerm");
+            $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocPerm::class);
             $query->AddQuery(sprintf("docid=%d", $pdoc->id));
             $tacl = $query->Query(0, 0, "TABLE");
             if (!is_array($tacl)) {
@@ -456,7 +456,7 @@ class DocCtrl extends DocLDAP
                 }
             }
             if (count($tgnum) > 0) {
-                $query = new QueryDb($this->dbaccess, "VGroup");
+                $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \VGroup::class);
                 $query->AddQuery(GetSqlCond($tgnum, "num", true));
                 $tg = $query->Query(0, 0, "TABLE");
                 if ($query->nb > 0) {
@@ -902,7 +902,7 @@ class DocCtrl extends DocLDAP
             $pdocid = $this->profid;
         }
         
-        $query = new QueryDb($this->dbaccess, "DocPerm");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocPerm::class);
         $query->AddQuery("docid=" . $pdocid);
         $query->AddQuery(sprintf("(upacl & %d) != 0", 1 << $pos));
         $tperm = $query->Query(0, 0, "TABLE");

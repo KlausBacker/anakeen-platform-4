@@ -173,7 +173,7 @@ create sequence SEQ_ID_ACTION;
         $this->script = "";
         $this->layout = "";
         $this->function = "";
-        $query = new \QueryDb($this->dbaccess, "Action");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         if ($name != "") {
             $name = pg_escape_string($name);
             $query->basic_elem->sup_where = array(
@@ -517,7 +517,7 @@ create sequence SEQ_ID_ACTION;
         if ($idapp == '') {
             return false;
         }
-        $query = new \QueryDb($this->dbaccess, "Action");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
 
         if ($id_func != '') {
             $query->AddQuery(sprintf(
@@ -604,7 +604,7 @@ create sequence SEQ_ID_ACTION;
         if ($appid == "") {
             $appid = $this->parent->id;
         }
-        $query = new \QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->AddQuery("name = '$actname'");
         $query->AddQuery("id_application = $appid");
         $q = $query->Query(0, 0, "TABLE");
@@ -846,7 +846,7 @@ create sequence SEQ_ID_ACTION;
         }
         // if update , remove unused actions
         if ($update) {
-            $query = new \QueryDb($this->dbaccess, "Action");
+            $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
             $query->basic_elem->sup_where = array(
                 "id_application = {$app->id}"
             );
@@ -989,7 +989,7 @@ create sequence SEQ_ID_ACTION;
      */
     public function getAvailableApplication()
     {
-        $query = new \QueryDb($this->dbaccess, "Application");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, Application::class);
         $query->basic_elem->sup_where = array(
             "available='Y'",
             "displayable='Y'"
@@ -1005,7 +1005,7 @@ create sequence SEQ_ID_ACTION;
                             //if ($p->id_acl == "") continue;
                             // test if acl of root action is granted
                             // search  acl for root action
-                            $queryact = new \QueryDb($this->dbaccess, "Action");
+                            $queryact = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
                             $queryact->AddQuery("id_application=" . $appli["id"]);
                             $queryact->AddQuery("root='Y'");
                             $listact = $queryact->Query(0, 0, "TABLE");

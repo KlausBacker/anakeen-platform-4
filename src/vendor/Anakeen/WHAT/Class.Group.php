@@ -54,7 +54,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
      */
     public function GetGroups()
     {
-        $query = new QueryDb($this->dbaccess, "Group");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Group");
         
         $query->AddQuery("iduser='{$this->iduser}'");
         $sql = sprintf("SELECT groups.idgroup as gid from groups, users where groups.idgroup=users.id and users.accounttype!='R' and groups.iduser=%d order by accounttype, lastname", $this->iduser);
@@ -282,7 +282,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     private function _initAllGroup()
     {
         if (!isset($this->allgroups)) {
-            $query = new QueryDb($this->dbaccess, "Group");
+            $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Group");
             $list = $query->Query(0, 0, "TABLE", "select * from groups where iduser in (select id from users where accounttype='G')");
             if ($list) {
                 foreach ($list as $v) {

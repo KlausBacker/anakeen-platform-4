@@ -115,7 +115,7 @@ SQL;
     public function SetFreeDir($fs)
     {
         // --------------------------------------------------------------------
-        $query = new QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
         $id_fs = $fs["id_fs"];
         $query->basic_elem->sup_where = array(
             "id_fs=" . $id_fs,
@@ -163,7 +163,7 @@ SQL;
         $err = '';
         foreach ($this->dirsToClose as $dirid) {
             if ($dirid) {
-                $query = new QueryDb($this->dbaccess, $this->dbtable);
+                $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
                 $sql = sprintf("SELECT sum(size) FROM vaultdiskstorage WHERE id_dir=%d", $dirid);
                 $t = $query->Query(0, 0, "TABLE", $sql);
                 if ($query->nb > 0) {
@@ -181,7 +181,7 @@ SQL;
     protected function createDirectory($fs)
     {
         $id_fs = $fs["id_fs"];
-        $query = new QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
         $t = $query->Query(0, 0, "TABLE", "SELECT * from vaultdiskdirstorage where id_fs=" . intval($id_fs) . " order by id_dir desc limit 1");
         $lpath = $t[0]["l_path"];
         $npath = $this->nextdir($lpath);
@@ -227,7 +227,7 @@ SQL;
     public function Exists($path, $id_fs)
     {
         // --------------------------------------------------------------------
-        $query = new QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
         $query->basic_elem->sup_where = array(
             "l_path='" . $path . "'",
             "id_fs=" . $id_fs

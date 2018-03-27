@@ -3,7 +3,6 @@
 
 namespace Anakeen\Core;
 
-use Anakeen\Core\DbManager;
 
 define("GALL_ID", 2);
 define("ANONYMOUS_ID", 3);
@@ -122,7 +121,7 @@ create sequence seq_id_users start 10;";
     {
         $login = mb_trim(mb_strtolower($login));
 
-        $query = new \QueryDb($this->dbaccess, "Account");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->AddQuery("login='" . pg_escape_string($login) . "'");
 
         $list = $query->Query(0, 0, "TABLE");
@@ -253,7 +252,7 @@ create sequence seq_id_users start 10;";
      */
     public function setFid($fid)
     {
-        $query = new \QueryDb($this->dbaccess, "Account");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->AddQuery(sprintf("fid = %d", $fid));
         $list = $query->Query(0, 0, "TABLE");
         if ($query->nb != 0) {
@@ -370,7 +369,7 @@ create sequence seq_id_users start 10;";
      */
     public function CheckLogin($login, $unused, $whatid)
     {
-        $query = new \QueryDb($this->dbaccess, "Account");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
 
         $query->basic_elem->sup_where = array(
             "login='" . pg_escape_string($login) . "'"
@@ -890,7 +889,7 @@ union
      */
     public static function getUserList($qtype = "LIST", $start = 0, $slice = 0, $filteruser = '')
     {
-        $query = new \QueryDb("", "Account");
+        $query = new \Anakeen\Core\Internal\QueryDb("", self::class);
         $query->order_by = "lastname";
         $query->AddQuery("(accountType='U')");
         if ($filteruser) {
@@ -909,7 +908,7 @@ union
      */
     public static function getGroupList($qtype = "LIST")
     {
-        $query = new \QueryDb("", "Account");
+        $query = new \Anakeen\Core\Internal\QueryDb("", self::class);
         $query->order_by = "lastname";
         $query->AddQuery("(accountType='G')");
         $l = $query->Query(0, 0, $qtype);
@@ -925,7 +924,7 @@ union
      */
     public static function getRoleList($qtype = "LIST")
     {
-        $query = new \QueryDb("", "Account");
+        $query = new \Anakeen\Core\Internal\QueryDb("", self::class);
         $query->order_by = "lastname";
         $query->AddQuery("(accountType='R')");
         $l = $query->Query(0, 0, $qtype);
@@ -941,7 +940,7 @@ union
      */
     public static function getUserAndGroupList($qtype = "LIST")
     {
-        $query = new \QueryDb("", "Account");
+        $query = new \Anakeen\Core\Internal\QueryDb("", self::class);
         $query->AddQuery("(accountType='G' or accountType='U')");
 
         $query->order_by = "accounttype, lastname";
@@ -970,7 +969,7 @@ union
      */
     public function getRUsersList($id, $r = array())
     {
-        $query = new \QueryDb($this->dbaccess, "Account");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $list = $query->Query(
             0,
             0,
@@ -1003,7 +1002,7 @@ union
      */
     public function getUsersGroupList($gid, $onlygroup = false)
     {
-        $query = new \QueryDb($this->dbaccess, "Account");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $optgroup = '';
         if ($onlygroup) {
             $optgroup = " and users.accounttype='G' ";
@@ -1244,7 +1243,7 @@ union
      */
     public function getGroupUserList($qtype = "LIST", $withgroup = false, $limit = "all")
     {
-        $query = new \QueryDb($this->dbaccess, "Account");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->order_by = "accounttype desc, lastname";
         $selgroup = "and (accounttype='U')";
         if ($withgroup) {
@@ -1321,13 +1320,11 @@ union
         if (!$this->isAffected()) {
             throw new \Dcp\Exception(sprintf("User token : account must be affected"));
         }
-        include_once('WHAT/Class.UserToken.php');
-        include_once('WHAT/Class.QueryDb.php');
 
         $expireDate = \UserToken::getExpirationDate($expireDelay);
         $tu = array();
         if (!$oneshot && !$forceCreate) {
-            $q = new \QueryDb($this->dbaccess, "UserToken");
+            $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \UserToken::class);
             $q->addQuery(sprintf("userid=%d", $this->id));
             $q->addQuery(sprintf("expire='%s'", $expireDate));
             if ($scontext) {

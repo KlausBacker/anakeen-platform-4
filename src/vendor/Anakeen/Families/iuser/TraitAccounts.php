@@ -9,6 +9,7 @@
 namespace Dcp\Core;
 
 use Anakeen\Core\DbManager;
+use Anakeen\Core\DocManager;
 trait TAccount
 {
     /**
@@ -53,13 +54,13 @@ trait TAccount
      * @return array 2 items $err & $sug for view result of the constraint
      * @throws \Dcp\Db\Exception
      */
-    public function ExistsLogin($login, $unused = 0)
+    public function ExistsLogin($login)
     {
         $sug = array();
         
         $id = $this->getRawValue("US_WHATID");
         
-        $q = new \QueryDb("", "Account");
+        $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Account::class);
         $q->AddQuery(sprintf("login='%s'", pg_escape_string(mb_strtolower($login))));
         if ($id) {
             $q->AddQuery(sprintf("id != %d", $id));
@@ -125,96 +126,7 @@ trait TAccount
         }
         return $sysIds;
     }
-    /**
-     * interface to affect group for an user
-     * @templateController interface to view group tree and select group
-     * @param string $target window target name for hyperlink destination
-     * @param bool $ulink if false hyperlink are not generated
-     * @param bool $abstract if true only abstract attribute are generated
-     */
-    public function ChooseGroup($target = "_self", $ulink = true, $abstract = false)
-    {
-        global $action;
-        
-        $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/mktree.js");
-        $action->parent->addCssRef($action->GetParam("CORE_PUBURL") . "/USERCARD/Layout/choosegroup.css");
-        
-        $err = '';
-        $iduser = $this->getRawValue("US_WHATID");
-        if ($iduser > 0) {
-            $user = $this->getAccount();
-            if (!$user->isAffected()) {
-                return sprintf(_("user #%d does not exist"), $iduser);
-            }
-            $ugroup = $user->GetGroupsId();
-        } else {
-            $ugroup = array(
-                "2"
-            ); // default what group
-        }
-        
-        $tgroup = array();
 
-        $this->lay->set("wid", ($iduser == "") ? "0" : $iduser);
-        
-        $q2 = new \QueryDb("", "Account");
-        $groups = $q2->Query(0, 0, "TABLE", "select users.*, groups.idgroup from users, groups where users.id = groups.iduser and users.accounttype='G'");
-        
-        $q2 = new \QueryDb("", "Account");
-        $mgroups = $q2->Query(0, 0, "TABLE", "select users.* from users where accounttype='G' and id not in (select iduser from groups, users u where groups.idgroup = u.id and u.accounttype='G')");
-        
-        if ($groups) {
-            foreach ($groups as $k => $v) {
-                $v["login"] = htmlspecialchars($v["login"]);
-                $v["firstname"] = htmlspecialchars($v["firstname"]);
-                $v["lastname"] = htmlspecialchars($v["lastname"]);
-                $groupuniq[$v["id"]] = $v;
-                
-                if (in_array($v["id"], $ugroup)) {
-                    $groupuniq[$v["id"]]["checkbox"] = "checked";
-                } else {
-                    $groupuniq[$v["id"]]["checkbox"] = "";
-                }
-            }
-        } else {
-            $groups = array();
-        }
-        
-        $iconGroup = $this->getIcon('', 14);
-        
-        if ($mgroups) {
-            foreach ($mgroups as $k => $v) {
-                $v["login"] = htmlspecialchars($v["login"]);
-                $v["firstname"] = htmlspecialchars($v["firstname"]);
-                $v["lastname"] = htmlspecialchars($v["lastname"]);
-                $cgroup = $this->_getChildsGroup($v["id"], $groups);
-                $tgroup[$k] = $v;
-                $tgroup[$k]["SUBUL"] = $cgroup;
-                $fid = $v["fid"];
-                if ($fid) {
-                    $tdoc = DocManager::getRawDocument($fid);
-                    $icon = $this->getIcon($tdoc["icon"], 14);
-                    $tgroup[$k]["icon"] = $icon;
-                } else {
-                    $tgroup[$k]["icon"] = $iconGroup;
-                }
-                
-                $groupuniq[$v["id"]] = $v;
-                if (in_array($v["id"], $ugroup)) {
-                    $groupuniq[$v["id"]]["checkbox"] = "checked";
-                } else {
-                    $groupuniq[$v["id"]]["checkbox"] = "";
-                }
-            }
-        }
-        $this->lay->setBlockData("LI", $tgroup);
-        uasort($groupuniq, array(
-            get_class($this) ,
-            "_cmpgroup"
-        ));
-        $this->lay->setBlockData("SELECTGROUP", $groupuniq);
-        return $err;
-    }
     /**
      * internal function use for choosegroup
      * use to compute displayed group tree

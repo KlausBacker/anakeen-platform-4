@@ -259,7 +259,7 @@ function tpluser($dbaccess, $type, $famid, $wfamid, $name)
 function getGlobalsParameters($name)
 {
     include_once ("Class.QueryDb.php");
-    $q = new QueryDb("", "ParamDef");
+    $q = new \Anakeen\Core\Internal\QueryDb("", \ParamDef::class);
     
     $tr = array();
     $q->AddQuery("isglob = 'Y'");
@@ -1166,7 +1166,7 @@ function laction($dbaccess, $famid, $name, $type)
  */
 function lapplications($n = "")
 {
-    $q = new QueryDb("", "Application");
+    $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\Application::class);
     
     $tr = array();
     if ($n != "") $q->AddQuery("name ~* '$n'");
@@ -1187,13 +1187,13 @@ function lapplications($n = "")
 function lactions($app, $n = "")
 {
     $tr = array();
-    $q = new QueryDb("", "Application");
+    $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\Application::class );
     $q->AddQuery("name = '$app'");
     $la = $q->Query(0, 0, "TABLE");
     if ($q->nb == 1) {
         $appid = $la[0]["id"];
         if ($appid > 0) {
-            $q = new QueryDb("", "Action");
+            $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\Action::class);
             $q->AddQuery("id_application = $appid");
             if ($n != "") $q->AddQuery("name ~* '$n'");
             $la = $q->Query(0, 0, "TABLE");

@@ -117,7 +117,7 @@ EOF;
     public function Exists($path)
     {
         // --------------------------------------------------------------------
-        $query = new QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
         $query->basic_elem->sup_where = array(
             "r_path=E'" . pg_escape_string($path) . "'"
         );
@@ -260,7 +260,7 @@ SQL;
     public function Show($id_fs, $id_dir, &$f_path)
     {
         // --------------------------------------------------------------------
-        $query = new QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
         $query->basic_elem->sup_where = array(
             sprintf("id_fs=%d", $id_fs)
         );

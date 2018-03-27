@@ -73,7 +73,7 @@ class Session extends DbObj
         $createNewSession = true;
         
         if ($id) {
-            $query = new QueryDb($this->dbaccess, "Session");
+            $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, "Session");
             $query->addQuery("id = '" . pg_escape_string($id) . "'");
             $list = $query->Query(0, 0, "TABLE");
             if ($query->nb != 0) {

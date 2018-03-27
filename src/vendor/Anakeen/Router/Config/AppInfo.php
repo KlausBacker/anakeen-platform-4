@@ -55,7 +55,7 @@ class AppInfo
      */
     public function record()
     {
-        $query = new \QueryDb("", \Anakeen\Core\Internal\Application::class);
+        $query = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\Application::class);
         $query->addQuery(sprintf("name = '%s'", pg_escape_string($this->name)));
         $list = $query->Query(0, 1);
 

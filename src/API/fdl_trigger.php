@@ -35,7 +35,7 @@ if ($dbaccess == "") {
 }
 
 if ($docid != - 1) {
-    $query = new QueryDb($dbaccess, "Doc");
+    $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \Doc::class);
     $query->AddQuery("doctype='C'");
     
     if ($docid > 0) {

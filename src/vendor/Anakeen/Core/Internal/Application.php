@@ -196,7 +196,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         $this->log->debug("Entering : Set application to $name");
         
-        $query = new \QueryDb($this->dbaccess, "Application");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->order_by = "";
         $query->criteria = "name";
         $query->operator = "=";
@@ -328,7 +328,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     public function exists($app_name, $id_application = 0)
     {
         $this->log->debug("Exists $app_name ?");
-        $query = new \QueryDb($this->dbaccess, "application");
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->order_by = "";
         $query->criteria = "";
         
@@ -1506,7 +1506,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function updateAllApp()
     {
-        $query = new \QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->AddQuery("available = 'Y'");
         $allapp = $query->Query();
         
@@ -1529,7 +1529,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         $acl->DelAppAcl($this->id);
         // delete actions
         $this->log->debug("Delete {$this->name}");
-        $query = new \QueryDb("", "Action");
+        $query = new \Anakeen\Core\Internal\QueryDb("", Action::class);
         $query->basic_elem->sup_where = array(
             "id_application = {$this->id}"
         );
@@ -1579,7 +1579,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function updateUserAcl($iduser)
     {
-        $query = new \QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->AddQuery("available = 'Y'");
         $allapp = $query->Query();
         $acl = new \Acl($this->dbaccess);
@@ -1606,7 +1606,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function getIdFromName($name)
     {
-        $query = new \QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->AddQuery("name = '" . pg_escape_string(trim($name)) . "'");
         $app = $query->Query(0, 0, "TABLE");
         if (is_array($app) && isset($app[0]) && isset($app[0]["id"])) {

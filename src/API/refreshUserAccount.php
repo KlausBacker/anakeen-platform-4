@@ -29,7 +29,7 @@ $fbar = $usage->addOptionalParameter("bar", "for progress bar"); // for progress
 $onlygroup = ($usage->addOptionalParameter("onlygroup", "for progress bar") != ""); // for progress bar
 $usage->verify();
 
-$query = new QueryDb("", "Account");
+$query = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Account::class);
 
 if ($whatid > 0) {
     $query->AddQuery("id=$whatid");
