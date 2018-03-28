@@ -6,7 +6,7 @@
 /**
  * Generation of PHP Document classes
  *
- * @author Anakeen
+ * @author  Anakeen
  * @package FDL
  * @subpackage
  */
@@ -17,6 +17,7 @@ namespace Dcp;
 
 use Anakeen\Core\DbManager;
 use Anakeen\Core\DocManager;
+use Anakeen\Core\Settings;
 use Anakeen\Core\Utils\MiscDoc;
 
 class FamilyImport
@@ -56,22 +57,23 @@ class FamilyImport
         }
         return '';
     }
+
     /**
      * Generate Class.Docxxx.php files
      *
-     * @param string $dbaccess database specification
-     * @param array  $tdoc     array of family definition
+     * @param string $genDir output directory
+     * @param array  $tdoc   array of family definition
      *
-     * @return string
+     * @return void
      * @throws Db\Exception
      * @throws Exception
      */
-    protected static function generateFamilyPhpClass($dbaccess, $tdoc)
+    protected static function generateFamilyPhpClass($genDir, $tdoc)
     {
         global $action;
 
-        $phpAdoc = new \Layout("vendor/Anakeen/FDL/Layout/Class.Doc.xml", $action);
-        
+        $phpAdoc = new \Layout("vendor/Anakeen/FDL/Layout/Class.Smart.xml", $action);
+
         if ($tdoc["classname"] == "") { // default classname
             if ($tdoc["fromid"] == 0) {
                 $tdoc["classname"] = '\Dcp\Family\Document';
@@ -90,16 +92,17 @@ class FamilyImport
         } else {
             $tdoc["fromname"] = "Document";
         }
+        $phpAdoc->Set("fromname", $tdoc["fromname"]);
         $phpAdoc->Set("docid", $tdoc["id"]);
         $phpAdoc->Set("include", "");
         $phpAdoc->Set("GEN", "");
         if ($tdoc["fromid"] == 0) {
             $phpAdoc->Set("DocParent", $tdoc["classname"]);
-            $phpAdoc->Set("AParent", "ADoc");
+            $phpAdoc->Set("AParent", '\\' . \ADoc::class);
             $phpAdoc->Set("fromid", "");
             $phpAdoc->Set("pinit", '\DocCtrl');
         } else {
-            $parentFile = sprintf("%s/FDLGEN/Class.Doc%d.php", DEFAULT_PUBDIR, $tdoc["fromid"]);
+            $parentFile = sprintf("%s/%s/SmartStructure/Smart%d.php", DEFAULT_PUBDIR, Settings::DocumentGenDirectory, $tdoc["fromid"]);
             if ((!file_exists($parentFile)) || filesize($parentFile) == 0) {
                 throw new \Dcp\Exception("FAM0600", $parentFile, $tdoc["name"]);
             }
@@ -107,7 +110,7 @@ class FamilyImport
             if ($tdoc["classname"] != "Doc" . $tdoc["fromid"]) {
                 $phpAdoc->Set("DocParent", $tdoc["classname"]);
                 $phpAdoc->Set("pinit", $tdoc["classname"]);
-                $phpAdoc->Set("include", "include_once(\"FDLGEN/Class.Doc" . $tdoc["fromid"] . ".php\");");
+                $phpAdoc->Set("include", sprintf('require_once(__DIR__."/%s.php");', $tdoc["fromname"]));
             } else {
                 $phpAdoc->Set("GEN", "GEN");
                 if ($tdoc["name"]) {
@@ -115,7 +118,6 @@ class FamilyImport
                 } else {
                     $phpAdoc->Set("DocParent", '\\Doc' . $tdoc["fromid"]);
                 }
-                $phpAdoc->Set("FileClassParent", 'Doc' . $tdoc["fromid"]);
                 if (strstr($tdoc["usefor"], 'W')) {
                     $phpAdoc->Set("pinit", '\WDoc');
                 } // special init for workflow
@@ -123,19 +125,19 @@ class FamilyImport
                     $phpAdoc->Set("pinit", '\DocCtrl');
                 }
             }
-            $phpAdoc->Set("AParent", "ADoc" . $tdoc["fromid"]);
+            $phpAdoc->Set("AParent", "ADoc" . $tdoc["fromname"]);
         }
         $phpAdoc->Set("title", $tdoc["title"]);
-        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocAttr::class);
+        $query = new \Anakeen\Core\Internal\QueryDb("", \DocAttr::class);
         $query->AddQuery("docid=" . $tdoc["id"]);
         $query->order_by = "ordered";
-        
+
         $table1 = $query->Query();
-        
+
         $phpAdoc->Set("sattr", "");
-        
+
         $phpAdoc->set("hasattr", false);
-        $pa = self::getParentAttributes($dbaccess, $tdoc["fromid"]);
+        $pa = self::getParentAttributes("", $tdoc["fromid"]);
         $allAttributes = [];
         if ($query->nb > 0) {
             $tmenu = array();
@@ -152,7 +154,7 @@ class FamilyImport
                 $type = trim(strtok($v->type, "("));
                 if ($type === "docid" || $type == "account" || $type == "thesaurus") {
                     $parentDoctitle = "";
-                    if (isset($pa[substr($v->id, 1) ]) && preg_match("/doctitle=([A-Za-z0-9_-]+)/", $pa[substr($v->id, 1) ]["options"], $reg)) {
+                    if (isset($pa[substr($v->id, 1)]) && preg_match("/doctitle=([A-Za-z0-9_-]+)/", $pa[substr($v->id, 1)]["options"], $reg)) {
                         $parentDoctitle = $reg[1];
                     }
                     // add title auto
@@ -187,18 +189,24 @@ class FamilyImport
                     }
                 }
             }
-            $pM = new \parseFamilyMethod();
+            $pM = new \ParseFamilyMethod();
             foreach ($pa as $parentAttr) {
                 $previousOrder = ""; //FamilyAbsoluteOrder::autoOrder;
                 if (preg_match("/relativeOrder=([A-Za-z0-9_:-]+)/", $parentAttr["options"], $reg)) {
                     $previousOrder = strtolower($reg[1]);
                 }
                 if ($parentAttr["id"][0] !== ":") {
-                    $allAttributes[$parentAttr["id"] . "/" . $parentAttr["docid"]] = ["id" => $parentAttr["id"], "parent" => $parentAttr["frameid"], "family" => $parentAttr["docid"], "prev" => $previousOrder, "numOrder" => intval($parentAttr["ordered"]) ];
+                    $allAttributes[$parentAttr["id"] . "/" . $parentAttr["docid"]] = [
+                        "id" => $parentAttr["id"],
+                        "parent" => $parentAttr["frameid"],
+                        "family" => $parentAttr["docid"],
+                        "prev" => $previousOrder,
+                        "numOrder" => intval($parentAttr["ordered"])
+                    ];
                 } else {
                     if (is_numeric($parentAttr["ordered"])) {
                         $pattern = sprintf("/%s\\/([0-9]+)/", substr($parentAttr["id"], 1));
-                        
+
                         foreach ($allAttributes as $ka => $attrData) {
                             if (preg_match($pattern, $ka, $reg)) {
                                 $allAttributes[$ka]["numOrder"] = $parentAttr["ordered"];
@@ -207,14 +215,14 @@ class FamilyImport
                     }
                 }
             }
-            
+
             foreach ($table1 as $k => $v) {
                 $validOrder = true;
                 if ($v->id[0] === ':') {
                     if (!$v->ordered && !$v->frameid) {
                         $validOrder = false;
                     }
-                    $v = self::completeAttribute($dbaccess, $v);
+                    $v = self::completeAttribute("", $v);
                     if (is_numeric($v->ordered)) {
                         $pattern = sprintf("/%s\\/([0-9]+)/", $v->id);
                         foreach ($allAttributes as $ka => $attrData) {
@@ -224,13 +232,19 @@ class FamilyImport
                         }
                     }
                 }
-                
+
                 $previous = ""; //FamilyAbsoluteOrder::autoOrder;
                 if (preg_match("/relativeOrder=([A-Za-z0-9_:-]+)/", $v->options, $reg)) {
                     $previous = strtolower($reg[1]);
                 }
                 if ($validOrder) {
-                    $allAttributes[$v->id . "/" . $v->docid] = ["id" => $v->id, "parent" => $v->frameid, "family" => $v->docid, "prev" => $previous, "numOrder" => intval($v->ordered) ];
+                    $allAttributes[$v->id . "/" . $v->docid] = [
+                        "id" => $v->id,
+                        "parent" => $v->frameid,
+                        "family" => $v->docid,
+                        "prev" => $previous,
+                        "numOrder" => intval($v->ordered)
+                    ];
                 }
                 if ($v->visibility == "F") {
                     $v->type = "frame";
@@ -249,39 +263,39 @@ class FamilyImport
                                 $v->link = "%S%app=FDL&action=FDL_METHOD&id=%I%&method=" . urlencode($v->link);
                             }
                         }
-                        $tmenu[strtolower($v->id) ] = array(
-                            "attrid" => strtolower($v->id) ,
-                            "label" => str_replace("\"", "\\\"", $v->labeltext) ,
-                            "order" => intval($v->ordered) ,
-                            "link" => str_replace("\"", "\\\"", $v->link) ,
+                        $tmenu[strtolower($v->id)] = array(
+                            "attrid" => strtolower($v->id),
+                            "label" => str_replace("\"", "\\\"", $v->labeltext),
+                            "order" => intval($v->ordered),
+                            "link" => str_replace("\"", "\\\"", $v->link),
                             "visibility" => $v->visibility,
-                            "options" => str_replace("\"", "\\\"", $v->options) ,
+                            "options" => str_replace("\"", "\\\"", $v->options),
                             "precond" => self::doubleslash($v->phpfunc)
                         );
                         break;
 
                     case "tab":
                     case "frame": // frame
-                        $tfield[strtolower($v->id) ] = array(
-                            "attrid" => strtolower($v->id) ,
+                        $tfield[strtolower($v->id)] = array(
+                            "attrid" => strtolower($v->id),
                             "visibility" => $v->visibility,
-                            "label" => str_replace("\"", "\\\"", $v->labeltext) ,
+                            "label" => str_replace("\"", "\\\"", $v->labeltext),
                             "usefor" => $v->usefor,
                             "type" => $v->type,
-                            "options" => str_replace("\"", "\\\"", $v->options) ,
+                            "options" => str_replace("\"", "\\\"", $v->options),
                             "frame" => ($v->frameid == "") ? \Adoc::HIDDENFIELD : strtolower($v->frameid)
                         );
                         break;
 
                     case "action": // action
-                        $taction[strtolower($v->id) ] = array(
-                            "attrid" => strtolower($v->id) ,
+                        $taction[strtolower($v->id)] = array(
+                            "attrid" => strtolower($v->id),
                             "visibility" => $v->visibility,
-                            "label" => str_replace("\"", "\\\"", $v->labeltext) ,
-                            "order" => intval($v->ordered) ,
-                            "options" => str_replace("\"", "\\\"", $v->options) ,
+                            "label" => str_replace("\"", "\\\"", $v->labeltext),
+                            "order" => intval($v->ordered),
+                            "options" => str_replace("\"", "\\\"", $v->options),
                             "wapplication" => $v->phpfile,
-                            "waction" => self::doubleslash($v->phpfunc) ,
+                            "waction" => self::doubleslash($v->phpfunc),
                             "precond" => str_replace("\"", "\\\"", $v->phpconstraint)
                         );
                         break;
@@ -293,7 +307,7 @@ class FamilyImport
                         } else {
                             $funcformat = "";
                         }
-                        
+
                         if (preg_match("/([a-z]+)\\([\"'](.*)[\"']\\)/i", $v->type, $reg)) {
                             $atype = $reg[1];
                             $aformat = $reg[2];
@@ -314,20 +328,20 @@ class FamilyImport
                             if (strpos($v->options, "multiple=yes") !== false) {
                                 $repeat = "true";
                             } else {
-                                if (isset($tnormal[strtolower($v->frameid) ])) {
-                                    if (self::getTypeMain($tnormal[strtolower($v->frameid) ]["type"]) == "array") {
+                                if (isset($tnormal[strtolower($v->frameid)])) {
+                                    if (self::getTypeMain($tnormal[strtolower($v->frameid)]["type"]) == "array") {
                                         $repeat = "true";
                                     }
                                 }
-                                
-                                if (($repeat == "false") && isset($pa[strtolower($v->frameid) ])) {
-                                    if (self::getTypeMain($pa[strtolower($v->frameid) ]["type"]) == "array") {
+
+                                if (($repeat == "false") && isset($pa[strtolower($v->frameid)])) {
+                                    if (self::getTypeMain($pa[strtolower($v->frameid)]["type"]) == "array") {
                                         $repeat = "true";
                                     }
                                 }
                             }
                         }
-                        
+
                         $atype = strtolower(trim($atype));
                         // create code for calculated attributes
                         if ((!$v->phpfile) && preg_match('/^(?:(?:[a-z_][a-z0-9_]*\\\\)*[a-z_][a-z0-9_]*)?::[a-z_][a-z0-9_]*\(/i', $v->phpfunc, $reg) && ($v->usefor != 'Q')) {
@@ -342,13 +356,13 @@ class FamilyImport
                                 $oAid = $pM->outputs[0];
                             }
                             $tcattr[] = array(
-                                "callmethod" => self::doubleslash($v->phpfunc) ,
+                                "callmethod" => self::doubleslash($v->phpfunc),
                                 "callattr" => $oAid
                             );
                         }
                         // complete attributes characteristics
                         $v->id = chop(strtolower($v->id));
-                        
+
                         if (!$v->phpconstraint) {
                             if (($atype == "integer") || ($atype == "int")) {
                                 $v->phpconstraint = sprintf("::isInteger(%s)", $v->id);
@@ -362,36 +376,36 @@ class FamilyImport
                                 $options = $v->options;
                                 if ($aformat) {
                                     if ($options) {
-                                        $options.= '|';
+                                        $options .= '|';
                                     }
-                                    $options.= sprintf("family=%s", $aformat);
+                                    $options .= sprintf("family=%s", $aformat);
                                 }
                                 $v->phpfunc = sprintf('fdlGetAccounts(CT,15,"%s"):%s,CT', str_replace('"', '\\"', $options), $v->id);
                             }
                         }
-                        $tnormal[($v->id) ] = array(
-                            "attrid" => ($v->id) ,
-                            "label" => str_replace("\"", "\\\"", $v->labeltext) ,
+                        $tnormal[($v->id)] = array(
+                            "attrid" => ($v->id),
+                            "label" => str_replace("\"", "\\\"", $v->labeltext),
                             "type" => $atype,
-                            "format" => str_replace("\"", "\\\"", $aformat) ,
-                            "eformat" => str_replace("\"", "\\\"", $funcformat) ,
-                            "options" => self::doubleslash($v->options) ,
+                            "format" => str_replace("\"", "\\\"", $aformat),
+                            "eformat" => str_replace("\"", "\\\"", $funcformat),
+                            "options" => self::doubleslash($v->options),
                             //(str_replace("\"", "\\\"", $v->options) ,
-                            "order" => intval($v->ordered) ,
-                            "link" => str_replace("\"", "\\\"", $v->link) ,
+                            "order" => intval($v->ordered),
+                            "link" => str_replace("\"", "\\\"", $v->link),
                             "visibility" => $v->visibility,
                             "needed" => ($v->needed == "Y") ? "true" : "false",
                             "title" => ($v->title == "Y") ? "true" : "false",
                             "repeat" => $repeat,
                             "abstract" => ($v->abstract == "Y") ? "true" : "false",
-                            "frame" => ($v->frameid == "") ? \Adoc::HIDDENFIELD : strtolower($v->frameid) ,
+                            "frame" => ($v->frameid == "") ? \Adoc::HIDDENFIELD : strtolower($v->frameid),
                             "elink" => $v->elink,
                             "phpfile" => $v->phpfile,
-                            "phpfunc" => self::doubleslash(str_replace(", |", ",  |", $v->phpfunc)) ,
-                            "phpconstraint" => str_replace("\"", "\\\"", $v->phpconstraint) ,
+                            "phpfunc" => self::doubleslash(str_replace(", |", ",  |", $v->phpfunc)),
+                            "phpconstraint" => str_replace("\"", "\\\"", $v->phpconstraint),
                             "usefor" => $v->usefor
                         );
-                        
+
                         if (($atype != "array") && ($v->usefor != "Q")) {
                             if ($atype != "array") {
                                 $tattr[$v->id] = array(
@@ -445,13 +459,13 @@ class FamilyImport
             $phpAdoc->SetBlockData("AATTR", $taction);
             $phpAdoc->SetBlockData("NATTR", $tnormal);
             $phpAdoc->SetBlockData("ATTRFIELD", $tattr);
-            
+
             $phpAdoc->set("hasattr", (count($tattr) > 0));
             $phpAdoc->SetBlockData("ACALC", $tcattr);
         } else {
             $phpAdoc->Set("sAbsoluteOrders", "");
         }
-        
+
         $phpAdoc->Set("STARMETHOD", false);
         if ($tdoc["name"] == '') {
             $tdoc["name"] = 'F__' . $tdoc["id"];
@@ -493,7 +507,7 @@ class FamilyImport
                     $innerContents = self::getMethodFileInnerContents($filename);
                     /* Concatenate non-empty method file */
                     if (strlen(trim($innerContents)) > 0) {
-                        $contents.= $innerContents;
+                        $contents .= $innerContents;
                         $hasMethod = true;
                     }
                 }
@@ -511,7 +525,7 @@ class FamilyImport
         } else {
             $phpAdoc->Set("METHODS", "");
         }
-        
+
         if ($cmethod != "") {
             $phpAdoc->Set("METHODS2", $contents2);
             $phpAdoc->Set("STARMETHOD", true);
@@ -524,13 +538,34 @@ class FamilyImport
                 $phpAdoc->Set("DocParent", '\\' . $phpAdoc->Get("docNameIndirect"));
             }
         }
-        return $phpAdoc->gen();
+         $phpAdoc->Set("hasMethods", !empty($tdoc["methods"]));
+
+        $dfiles["/vendor/Anakeen/FDL/Layout/Class.NSSmart.xml"] = sprintf("%s/%s.php", $genDir, $tdoc["name"]);
+        $dfiles["/vendor/Anakeen/FDL/Layout/Class.Doc.xml"] = sprintf("%s/Smart%d.php", $genDir, $tdoc["id"]);
+
+        if (!empty($tdoc["methods"])) {
+            $dfiles["/vendor/Anakeen/FDL/Layout/Class.SmartMethods.xml"] = sprintf("%s/Method.%s.php", $genDir, $tdoc["name"]);
+        }
+
+        foreach ($dfiles as $kFile => $dfile) {
+            $phpAdoc->template = file_get_contents(DEFAULT_PUBDIR . $kFile);
+            $err = self::__phpLintWriteFile($dfile, $phpAdoc->gen());
+            if ($err != '') {
+                throw new \Dcp\Exception(sprintf("Error generating file '%s': %s", $dfile, $err));
+            }
+        }
+
+
+        $err = self::__phpLintWriteFile($dfile, $phpAdoc->gen());
+        if ($err != '') {
+            throw new \Dcp\Exception(sprintf("Error generating file '%s': %s", $dfile, $err));
+        }
     }
-    
+
     protected static function AttrIdToPhp($dbaccess, $tdoc)
     {
         $phpAdoc = new \Layout("vendor/Anakeen/FDL/Layout/Class.Attrid.xml");
-        
+
         if ($tdoc["fromid"] == 0) {
             $phpAdoc->Set("extend", '');
         } else {
@@ -543,20 +578,20 @@ class FamilyImport
                 "-"
             ), "_", $fromName))));
         }
-        
+
         $phpAdoc->Set("fromid", $tdoc["fromid"]);
         $phpAdoc->Set("title", $tdoc["title"]);
         $phpAdoc->Set("className", ucfirst(strtolower(str_replace(array(
             ":",
             "-"
         ), "_", $tdoc["name"]))));
-        
+
         $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocAttr::class);
         $query->AddQuery(sprintf("docid=%d", $tdoc["id"]));
         $query->AddQuery(sprintf("id !~ ':'"));
         $query->order_by = "ordered";
         $attrs = $query->Query(0, 0, "TABLE");
-        
+
         if ($query->nb > 0) {
             $const = array();
             foreach ($attrs as $attr) {
@@ -567,37 +602,37 @@ class FamilyImport
                     "famName" => $tdoc["name"]
                 );
             }
-            
+
             $phpAdoc->SetBlockData("CONST", $const);
         }
-        
+
         return $phpAdoc->gen();
     }
-    
+
     protected static function doubleslash($s)
     {
         $s = str_replace('\\', '\\\\', $s);
         $s = str_replace('"', '\\"', $s);
         return $s;
     }
-    
+
     protected static function pgUpdateFamily($dbaccess, $docid, $docname = "")
     {
         $docname = strtolower($docname);
         $msg = '';
         /* Create family's table if not exists */
         if (!self::tableExists($dbaccess, "public", "doc$docid")) {
-            $msg.= sprintf("Create table 'doc%d'\n", $docid);
+            $msg .= sprintf("Create table 'doc%d'\n", $docid);
             self::createFamilyTable($dbaccess, $docid);
-            
+
             if (self::tableExists($dbaccess, "public", "doc$docid")) {
                 /* Re-create family's view */
                 self::recreateFamilyView($dbaccess, $docname, $docid);
             } else {
-                $msg.= sprintf("Could not create table 'doc%d'.\n", $docid);
+                $msg .= sprintf("Could not create table 'doc%d'.\n", $docid);
             }
         }
-        
+
         $pgatt = self::getTableColumns($dbaccess, "public", "doc$docid");
         // -----------------------------
         // add column attribute
@@ -612,7 +647,7 @@ class FamilyImport
         $qattr->AddQuery("visibility != 'M'");
         $qattr->AddQuery("visibility != 'F'");
         $qattr->AddQuery("usefor != 'Q' or usefor is null");
-        
+
         $oattr = $qattr->Query();
         /**
          * @var \DocAttr[] $tattr
@@ -623,7 +658,7 @@ class FamilyImport
              * @var \DocAttr $attr
              */
             foreach ($oattr as $ka => $attr) {
-                $tattr[strtolower($attr->id) ] = $attr;
+                $tattr[strtolower($attr->id)] = $attr;
                 if ($attr->type == 'file') {
                     $tattr[strtolower($attr->id) . '_txt'] = $attr;
                     $tattr[strtolower($attr->id) . '_vec'] = clone ($attr);
@@ -644,7 +679,7 @@ class FamilyImport
                     }
                 }
             }
-            
+
             $updateView = false;
             foreach ($tattr as $ka => $attr) {
                 $attr->id = chop($attr->id);
@@ -653,7 +688,7 @@ class FamilyImport
                 } // skip array but must be in table to search element in arrays
                 if ($attr->docid == $docid) { // modify my field not inherited fields
                     if (!in_array($ka, $pgatt)) {
-                        $msg.= "add field $ka in table doc" . $docid . "\n";
+                        $msg .= "add field $ka in table doc" . $docid . "\n";
                         $repeat = (strpos($attr->options, "multiple=yes") !== false);
                         if (!$repeat) {
                             $repeat = (isset($tattr[$attr->frameid]) && $tattr[$attr->frameid]->type == "array");
@@ -706,19 +741,33 @@ class FamilyImport
         }
         return $msg;
     }
-    
+
     protected static function tableExists($dbaccess, $schemaName, $tableName)
     {
-        simpleQuery($dbaccess, sprintf("SELECT 'true' FROM information_schema.tables WHERE table_schema = %s AND table_name = %s", pg_escape_literal($schemaName), pg_escape_literal($tableName)), $res, true, true, true);
+        DbManager::query(
+            sprintf("SELECT 'true' FROM information_schema.tables WHERE table_schema = %s AND table_name = %s", pg_escape_literal($schemaName), pg_escape_literal($tableName)),
+            $res,
+            true,
+            true
+        );
         return ($res == 'true');
     }
-    
+
     protected static function viewExists($dbaccess, $schemaName, $viewName)
     {
-        simpleQuery($dbaccess, sprintf("SELECT 'true' FROM information_schema.views WHERE table_schema = %s AND table_name = %s", pg_escape_literal($schemaName), pg_escape_literal($viewName)), $res, true, true, true);
+        DbManager::query(
+            sprintf(
+                "SELECT 'true' FROM information_schema.views WHERE table_schema = %s AND table_name = %s",
+                pg_escape_literal($schemaName),
+                pg_escape_literal($viewName)
+            ),
+            $res,
+            true,
+            true
+        );
         return ($res == 'true');
     }
-    
+
     protected static function createFamilyTable($dbaccess, $docid)
     {
         // create postgres table if new \familly
@@ -729,43 +778,58 @@ class FamilyImport
         $cdoc->Create();
         self::setSqlIndex($dbaccess, $docid);
     }
-    
+
     protected static function recreateFamilyView($dbaccess, $docname, $docid)
     {
         DbManager::query(sprintf("SELECT refreshFamilySchemaViews(%s, %s)", pg_escape_literal($docname), pg_escape_literal(intval($docid))), $res, true, true);
     }
-    
+
     protected static function getTableColumns($dbaccess, $schemaName, $tableName)
     {
-        DbManager::query(sprintf("SELECT column_name FROM information_schema.columns WHERE table_schema = %s AND table_name = %s", pg_escape_literal($schemaName), pg_escape_literal($tableName)), $res, true, false);
+        DbManager::query(sprintf(
+            "SELECT column_name FROM information_schema.columns WHERE table_schema = %s AND table_name = %s",
+            pg_escape_literal($schemaName),
+            pg_escape_literal($tableName)
+        ), $res, true, false);
         return $res;
     }
-    
+
     protected static function alterTableAddColumn($dbaccess, $schemaName, $tableName, $columnName, $columnType)
     {
-        DbManager::query(sprintf("ALTER TABLE %s.%s ADD COLUMN %s %s", pg_escape_identifier($schemaName), pg_escape_identifier($tableName), pg_escape_identifier($columnName), $columnType), $res, true, true);
+        DbManager::query(sprintf(
+            "ALTER TABLE %s.%s ADD COLUMN %s %s",
+            pg_escape_identifier($schemaName),
+            pg_escape_identifier($tableName),
+            pg_escape_identifier($columnName),
+            $columnType
+        ), $res, true, true);
     }
-    
+
     public static function createDocFile($dbaccess, $tdoc)
     {
-        $pubdir = DEFAULT_PUBDIR;
-        $dfile = "$pubdir/FDLGEN/Class.Doc" . $tdoc["id"] . ".php";
-        
-        $err = self::__phpLintWriteFile($dfile, self::generateFamilyPhpClass($dbaccess, $tdoc));
-        if ($err != '') {
-            throw new \Dcp\Exception(sprintf("Error generating file '%s': %s", $dfile, $err));
+        $genDir = sprintf("%s/%s/SmartStructure/", DEFAULT_PUBDIR, Settings::DocumentGenDirectory);
+        $genAttrDir = sprintf("%s/Attributes", $genDir);
+        $dfile = sprintf("%s/%s.php", $genDir, $tdoc["name"]);
+        if (!is_dir($genDir)) {
+            if (!(is_dir(dirname($genDir)))) {
+                mkdir(dirname($genDir));
+            }
+            mkdir($genDir);
+            mkdir($genAttrDir);
         }
-        
-        $attrfile = "$pubdir/FDLGEN/Class.Attrid" . $tdoc["id"] . ".php";
-        
+
+        self::generateFamilyPhpClass($genDir, $tdoc);
+
+        $attrfile = sprintf("%s/%s.php", $genAttrDir, $tdoc["name"]);
+
         $err = self::__phpLintWriteFile($attrfile, self::AttrIdtoPhp($dbaccess, $tdoc));
         if ($err != '') {
             throw new \Dcp\Exception(sprintf("Error generating file '%s': %s", $attrfile, $err));
         }
-        
+
         return $dfile;
     }
-    
+
     public static function activateTrigger($dbaccess, $docid)
     {
         $cdoc = DocManager::createTemporaryDocument($docid, false);
@@ -779,7 +843,7 @@ class FamilyImport
             }
         }
     }
-    
+
     public static function setSqlIndex($dbaccess, $docid)
     {
         $cdoc = DocManager::createTemporaryDocument($docid, false);
@@ -787,11 +851,12 @@ class FamilyImport
         $msg = '';
         if ($indexes) {
             foreach ($indexes as $sqlIndex) {
-                $msg.= $cdoc->exec_query($sqlIndex);
+                $msg .= $cdoc->exec_query($sqlIndex);
             }
         }
         return $msg;
     }
+
     /**
      * refresh PHP Class & Postgres Table Definition
      *
@@ -811,10 +876,10 @@ class FamilyImport
             $v = $table1[0];
             $err = self::buildFamilyFilesAndTables($dbaccess, $v, false);
         }
-        
+
         return $err;
     }
-    
+
     public static function buildFamilyFilesAndTables($dbaccess, $familyData, $interactive = false)
     {
         $locked = false;
@@ -824,7 +889,7 @@ class FamilyImport
             $locked = true;
             DbManager::savePoint(__METHOD__);
             $savepointed = true;
-            
+
             $phpfile = self::createDocFile($dbaccess, $familyData);
             if ($interactive) {
                 print "$phpfile [" . $familyData["title"] . "(" . $familyData["name"] . ")]\n";
@@ -837,7 +902,7 @@ class FamilyImport
             }
             self::activateTrigger($dbaccess, $familyData["id"]);
             self::resetSystemEnum($familyData["id"]);
-            
+
             DbManager::commitPoint(__METHOD__);
             $savepointed = false;
             DbManager::setMasterLock(false);
@@ -852,6 +917,7 @@ class FamilyImport
         }
         return '';
     }
+
     /**
      * reset and record system enum into docenum table
      *
@@ -860,16 +926,17 @@ class FamilyImport
     protected static function resetSystemEnum($famid)
     {
         $sql = sprintf("select * from docattr where docid=%d and type = 'enum' and (phpfile is null or phpfile='-') and options ~ 'system=yes'", $famid);
-        simpleQuery('', $sql, $results);
+        DbManager::query($sql, $results);
         foreach ($results as $attr) {
             $attrid = $attr["id"];
             \ImportDocumentDescription::recordEnum($famid, $attrid, $attr["phpfunc"], true);
         }
     }
+
     /**
      * complete attribute properties from  parent attribute
      *
-     * @param string $dbaccess
+     * @param string   $dbaccess
      * @param \DocAttr $ta
      *
      * @return mixed
@@ -880,7 +947,7 @@ class FamilyImport
         $ta->id = substr($ta->id, 1);
         $fromid = MiscDoc::getFamFromId($ta->docid);
         $tfromid[] = $fromid;
-        while ($fromid =  MiscDoc::getFamFromId($fromid)) {
+        while ($fromid = MiscDoc::getFamFromId($fromid)) {
             $tfromid[] = $fromid;
         }
         $tfromid[] = $ta->docid; // itself
@@ -889,20 +956,20 @@ class FamilyImport
         $query->AddQuery("id='" . pg_escape_string($ta->id) . "'");
         $query->order_by = "docid";
         $tas = $query->Query(0, 0, "TABLE");
-        
+
         if ($query->nb == 0) {
             error_log("MODATTR error for " . $ta->id);
             return $ta;
         } else {
             $tw = $ta;
-            
+
             foreach ($tas as $ta1) {
                 if (preg_match("/(.*)relativeOrder=([A-Za-z0-9_:-]+)(.*)/", $ta->options, $attrReg)) {
                     if (preg_match("/(.*)relativeOrder=([A-Za-z0-9_:-]+)(.*)/", $ta1["options"], $parentReg)) {
                         // Special case to copy parent options when relativeOrder is used
-                        if (($parentReg[1] || $parentReg[3]) && (!$attrReg[1] && ! $attrReg[3])) {
+                        if (($parentReg[1] || $parentReg[3]) && (!$attrReg[1] && !$attrReg[3])) {
                             // Copy on if no explicit option is set
-                            $tw->options=sprintf("%srelativeOrder=%s%s", $parentReg[1], $attrReg[2], $parentReg[3]);
+                            $tw->options = sprintf("%srelativeOrder=%s%s", $parentReg[1], $attrReg[2], $parentReg[3]);
                         }
                     }
                 }
@@ -915,10 +982,11 @@ class FamilyImport
                     } // suppress value
                 }
             }
-            
+
             return $tw;
         }
     }
+
     /**
      * get parent attributes
      *
@@ -933,13 +1001,13 @@ class FamilyImport
         if ($fromid > 0) {
             $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocAttr::class);
             $query->AddQuery(sprintf("docid=%d", $fromid));
-            
+
             $pa = $query->Query(0, 0, "TABLE");
             if (!$pa) {
                 $pa = [];
             }
-            
-            $nextfromid =  MiscDoc::getFamFromId($fromid);
+
+            $nextfromid = MiscDoc::getFamFromId($fromid);
             if ($nextfromid > 0) {
                 $pa = array_merge(self::getParentAttributes($dbaccess, $nextfromid), $pa);
             }
@@ -962,6 +1030,7 @@ class FamilyImport
         }
         return array();
     }
+
     /**
      * Extract the main type and the format from a type string
      *
@@ -987,18 +1056,19 @@ class FamilyImport
             'format' => ''
         );
     }
-    
+
     protected static function getTypeMain($type)
     {
         $p = parseType($type);
         return $p['type'];
     }
-    
+
     protected static function getTypeFormat($type)
     {
         $p = parseType($type);
         return $p['format'];
     }
+
     /**
      * Get the content of a METHOD file without the PHP opening/closing tags and
      * without the @begin-method-ignore/@end-method-ignore sections.
@@ -1013,7 +1083,11 @@ class FamilyImport
         if ($contents === false) {
             return '';
         }
-        $contents = preg_replace('%(?:  //[^\n]*\@begin-method-ignore|  /\*+[^/]*?\@begin-method-ignore)(.*?)(?:  //[^\n]*\@end-method-ignore[^\n]*|  /\*+[^/]*?\@end-method-ignore[^/]*?\*/)%xms', '', $contents);
+        $contents = preg_replace(
+            '%(?:  //[^\n]*\@begin-method-ignore|  /\*+[^/]*?\@begin-method-ignore)(.*?)(?:  //[^\n]*\@end-method-ignore[^\n]*|  /\*+[^/]*?\@end-method-ignore[^/]*?\*/)%xms',
+            '',
+            $contents
+        );
         $contents = str_replace(array(
             "<?php\n",
             "<?php\r\n",

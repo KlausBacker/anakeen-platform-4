@@ -56,7 +56,7 @@ class AutocompleteLib
             '&rparenthesis;',
             '&lparenthesis;'
         ), $phpfunc);
-        $oParse = new \parseFamilyFunction();
+        $oParse = new \ParseFamilyFunction();
         $strucFunc = $oParse->parse($phpfunc);
         if ($strucFunc->getError()) {
             return $strucFunc->getError();

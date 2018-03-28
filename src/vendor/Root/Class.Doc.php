@@ -5297,7 +5297,7 @@ create unique index i_docir on doc(initid, revision);";
         $err = '';
 
         if (self::seemsMethod($method)) {
-            $parseMethod = new parseFamilyMethod();
+            $parseMethod = new ParseFamilyMethod();
             $parseMethod->parse($method);
             $err = $parseMethod->getError();
             if ($err) {

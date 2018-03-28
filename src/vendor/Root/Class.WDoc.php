@@ -13,7 +13,6 @@
 /**
  */
 
-include_once('FDL/Class.Doc.php');
 /**
  * WorkFlow Class
  */
@@ -315,9 +314,7 @@ class WDoc extends Doc
             }
         }
         $ordered = 1000;
-        if (($err = $this->setMasterLock(true)) !== '') {
-            return $err;
-        }
+         \Anakeen\Core\DbManager::setMasterLock(true);
         // delete old attributes before
         $this->exec_query(sprintf("delete from docattr where docid=%d  and options ~ 'autocreated=yes'", intval($cid)));
         $this->getStates();
@@ -779,9 +776,7 @@ class WDoc extends Doc
                 $oattr->Add();
             }
         }
-        if (($err = $this->setMasterLock(false)) !== '') {
-            return $err;
-        }
+        \Anakeen\Core\DbManager::setMasterLock(false);
         return refreshPhpPgDoc($this->dbaccess, $cid);
     }
     /**
@@ -1315,7 +1310,7 @@ class WDoc extends Doc
      * get transition array for the transition between $to and $from states
      * @param string $to first state
      * @param string $from next state
-     * @return array transition array (false if not found)
+     * @return array|false transition array (false if not found)
      */
     public function getTransition($from, $to)
     {

@@ -1032,7 +1032,7 @@ class DetailSearch extends \Dcp\Family\Search
     
     private function getMethodName($methodStr)
     {
-        $parseMethod = new \parseFamilyMethod();
+        $parseMethod = new \ParseFamilyMethod();
         $parseMethod->parse($methodStr);
         $err = $parseMethod->getError();
         if ($err) {

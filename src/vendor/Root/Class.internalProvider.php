@@ -7,7 +7,6 @@
  */
 /**
  */
-include_once("WHAT/Class.Provider.php");
 
 class InternalProvider extends Provider
 {

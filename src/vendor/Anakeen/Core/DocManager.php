@@ -1,7 +1,8 @@
 <?php
 
-
 namespace Anakeen\Core;
+
+use Anakeen\Core\DocManager\Exception;
 
 class DocManager
 {
@@ -270,12 +271,12 @@ class DocManager
         return $doc;
     }
 
-    protected static function requireFamilyClass($familyId)
+    public static function requireFamilyClass($familyId)
     {
         if (!is_numeric($familyId)) {
             throw new Exception("APIDM0102", $familyId);
         }
-        $classFilePath = sprintf("%s/%s/Class.Doc%d.php", DEFAULT_PUBDIR, Settings::DocumentGenDirectory, $familyId);
+        $classFilePath = sprintf("%s/%s/SmartStructure/Smart%d.php", DEFAULT_PUBDIR, Settings::DocumentGenDirectory, $familyId);
         require_once($classFilePath);
     }
 
@@ -621,7 +622,7 @@ class DocManager
             DbManager::query(sprintf("select id from docread where name='%s' and doctype='Z' order by id desc limit 1", pg_escape_string($documentName)), $deletedId, true, true);
 
             if ($deletedId) {
-                $id=intval($deletedId);
+                $id = intval($deletedId);
             }
         }
         return $id;

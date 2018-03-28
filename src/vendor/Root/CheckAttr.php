@@ -519,7 +519,7 @@ SQL;
         if ($phpFunc && $phpFunc != '-' && ($type != "action")) {
             if ($phpFile && $phpFile != '-') {
                 // parse function for input help
-                $oParse = new parseFamilyFunction();
+                $oParse = new ParseFamilyFunction();
                 $strucFunc = $oParse->parse($phpFunc, ($type == 'enum'));
                 if ($strucFunc->getError()) {
                     $this->addError(ErrorCode::getError('ATTR1200', $this->attrid, $strucFunc->getError()));
@@ -561,7 +561,7 @@ SQL;
         if ($this->isModAttr && (!$type)) {
             return;
         } // cannot really test if has not type
-        $oParse = new parseFamilyMethod();
+        $oParse = new ParseFamilyMethod();
         $strucFunc = $oParse->parse($phpFunc, ($type == 'enum'));
         if ($strucFunc->getError()) {
             $this->addError(ErrorCode::getError('ATTR1250', $this->attrid, $strucFunc->getError()));
@@ -581,7 +581,7 @@ SQL;
             if ($this->isModAttr && $constraint == '-') {
                 return;
             }
-            $oParse = new parseFamilyMethod();
+            $oParse = new ParseFamilyMethod();
             $strucFunc = $oParse->parse($constraint, true);
             if ($strucFunc->getError()) {
                 $this->addError(ErrorCode::getError('ATTR1400', $this->attrid, $strucFunc->getError()));

@@ -1,21 +1,10 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * htmlAuthenticator class
  *
  * This class provides methods for HTML form based authentication
  *
- * @author Anakeen
- * @version $Id: Class.htmlAuthenticator.php,v 1.8 2009/01/16 13:33:00 jerome Exp $
- * @package FDL
- * @subpackage
  */
-/**
- */
-include_once('WHAT/Class.Authenticator.php');
 
 class htmlAuthenticator extends Authenticator
 {

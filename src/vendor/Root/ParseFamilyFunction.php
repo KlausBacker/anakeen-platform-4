@@ -4,7 +4,7 @@
  * @package FDL
 */
 
-class parseFamilyFunction
+class ParseFamilyFunction
 {
     public $functionName = '';
     public $appName = '';

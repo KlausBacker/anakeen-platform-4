@@ -1,20 +1,12 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Family Document Class
  *
- * @author Anakeen
- * @version $Id: Class.DocFam.php,v 1.31 2008/09/16 16:09:59 eric Exp $
- * @package FDL
- */
-/**
+ *
  */
 
+
 use \Anakeen\Core\DbManager;
-use \Anakeen\Core\DocManager;
 
 /**
  * @class DocFam
@@ -23,8 +15,9 @@ use \Anakeen\Core\DocManager;
 class DocFam extends PFam
 {
     public $dbtable = "docfam";
-    
-    public $sqlcreate = "
+
+    public $sqlcreate
+        = "
 create table docfam (cprofid int , 
                      dfldid int, 
                      cfldid int, 
@@ -41,29 +34,30 @@ create table docfam (cprofid int ,
                      configuration text) inherits (doc);
 create unique index idx_idfam on docfam(id);";
     public $sqltcreate = array();
-    
+
     public $defDoctype = 'C';
-    
+
     public $defaultview = "FDL:VIEWFAMCARD";
-    
+
     public $attr;
     public $specialmenu = "FDL:POPUPFAMDETAIL";
-    public $addfields = array(
-        "dfldid",
-        "cfldid",
-        "ccvid",
-        "cprofid",
-        "ddocid",
-        "methods",
-        "defval",
-        "param",
-        "genversion",
-        "usedocread",
-        "schar",
-        "maxrev",
-        "tagable",
-        "configuration"
-    );
+    public $addfields
+        = array(
+            "dfldid",
+            "cfldid",
+            "ccvid",
+            "cprofid",
+            "ddocid",
+            "methods",
+            "defval",
+            "param",
+            "genversion",
+            "usedocread",
+            "schar",
+            "maxrev",
+            "tagable",
+            "configuration"
+        );
     public $genversion;
     public $dfldid;
     public $cfldid;
@@ -80,32 +74,33 @@ create unique index idx_idfam on docfam(id);";
     private $_configuration;
     private $_xtdefval; // dynamic used by ::getParams()
     private $_xtparam; // dynamic used by ::getDefValues()
-    private $defaultSortProperties = array(
-        'owner' => array(
-            'sort' => 'no',
-        ) ,
-        'title' => array(
-            'sort' => 'asc',
-        ) ,
-        'revision' => array(
-            'sort' => 'no',
-        ) ,
-        'initid' => array(
-            'sort' => 'desc',
-        ) ,
-        'revdate' => array(
-            'sort' => 'desc',
-        ) ,
-        'state' => array(
-            'sort' => 'asc',
-        )
-    );
+    private $defaultSortProperties
+        = array(
+            'owner' => array(
+                'sort' => 'no',
+            ),
+            'title' => array(
+                'sort' => 'asc',
+            ),
+            'revision' => array(
+                'sort' => 'no',
+            ),
+            'initid' => array(
+                'sort' => 'desc',
+            ),
+            'revdate' => array(
+                'sort' => 'desc',
+            ),
+            'state' => array(
+                'sort' => 'asc',
+            )
+        );
     /**
-     * @var bool bool(true) if object is "fully" instantiated using FDLGEN or bool(false) if object is instantiated
-     * without FDLGEN (e.g. when the family is imported and the FDLGEN is not yet generated).
+     * @var bool bool(true) if object is "fully" instantiated using generated family class or bool(false) if object is instantiated
+     * without generated class (e.g. when the family is imported and the generated class is not yet generated).
      */
-    private $FDLGEN_HasBeenLoaded = false;
-    
+    private $FINALCLASS_HasBeenLoaded = false;
+
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0, $include = true)
     {
         foreach ($this->addfields as $f) {
@@ -115,31 +110,33 @@ create unique index idx_idfam on docfam(id);";
         parent::__construct($dbaccess, $id, $res, $dbid);
         $this->doctype = 'C';
         if ($include && ($this->id > 0) && ($this->isAffected())) {
-            $adoc = "Doc" . $this->id;
-            if (include_once("FDLGEN/Class.$adoc.php")) {
-                $adoc = "ADoc" . $this->id;
+            $attrClassFilePath = sprintf("%s/%s/SmartStructure/%s.php", DEFAULT_PUBDIR, \Anakeen\Core\Settings::DocumentGenDirectory, $this->name);
+            if (include_once($attrClassFilePath)) {
+                $adoc = sprintf("\\Dcp\\Family\\Adoc%s", $this->name);
                 $this->attributes = new $adoc();
                 $this->attributes->orderAttributes();
             } else {
                 throw new Dcp\Exception(sprintf("cannot access attribute definition for %s (#%s) family", $this->name, $this->id));
             }
-            $this->FDLGEN_HasBeenLoaded = true;
+            $this->FINALCLASS_HasBeenLoaded = true;
         }
     }
-    
+
     protected function postAffect(array $data, $more, $reset)
     {
         $this->_xtdefval = null;
         $this->_xtparam = null;
     }
-    
+
     public function preDocDelete()
     {
         return _("cannot delete family");
     }
+
     /**
      * return i18n title for family
      * based on name
+     *
      * @return string
      */
     public function getCustomTitle()
@@ -151,7 +148,7 @@ create unique index idx_idfam on docfam(id);";
         }
         return $this->title;
     }
-    
+
     public static function getLangTitle($values)
     {
         $r = $values["name"] . '#title';
@@ -161,13 +158,13 @@ create unique index idx_idfam on docfam(id);";
         }
         return $values["title"];
     }
-    
+
     public function postStore()
     {
         include_once("FDL/Lib.Attr.php");
         return refreshPhpPgDoc($this->dbaccess, $this->id);
     }
-    
+
     public function preCreated()
     {
         $cdoc = $this->getFamilyDocument();
@@ -192,9 +189,12 @@ create unique index idx_idfam on docfam(id);";
             }
         }
     }
+
     /**
      * update attributes of workflow if needed
+     *
      * @param array $extra
+     *
      * @return string
      */
     public function postImport(array $extra = array())
@@ -219,229 +219,8 @@ create unique index idx_idfam on docfam(id);";
         return $err;
     }
 
-    /**
-     * @templateController default values controller
-     *
-     * @param string $target
-     * @param bool   $ulink
-     * @param bool   $abstract
-     *
-     * @throws \Dcp\Core\Exception
-     * @throws \Dcp\Db\Exception
-     */
-    public function viewDefaultValues(
-    /* @noinspection PhpUnusedParameterInspection */
-    $target = "_self",
-        $ulink = true,
-        $abstract = false
-    ) {
-        $d= DocManager::createDocument($this->id, false);
-        $defValues = $this->getDefValues();
-        $ownDefValues = $this->explodeX($this->defval);
-        $ownParValues = $this->explodeX($this->param);
-        $tDefVal = $tDefPar = array();
-        
-        $tp = $this->getParamAttributes();
-        $pPowns = $this->getOwnParams();
-        foreach ($tp as $aid => & $oa) {
-            if ($oa->type == "array") {
-                continue;
-            }
-            $tDefPar[$aid] = array(
-                "aid" => $aid,
-                "alabel" => $oa->getLabel() ,
-                "defown" => isset($pPowns[$aid]) ? $pPowns[$aid] : null,
-                "definh" => ($this->fromid) ? $this->getFamilyDocument()->getParameterRawValue($aid) : '',
-                "defresult" => $this->getHtmlValue($oa, $this->getFamilyParameterValue($aid))
-            );
-        }
-        $parent = null;
-        if ($this->fromid > 0) {
-            $parent = $this->getFamilyDocument();
-        }
-        foreach ($defValues as $aid => $dv) {
-            $oa = $d->getAttribute($aid);
-            $value = $d->getRawValue($aid);
-            $ownValue = isset($ownDefValues[$aid]) ? $ownDefValues[$aid] : null;
-            
-            if ($oa) {
-                $oa->setVisibility('R');
-                $label = $oa->getLabel();
-                if ($oa->usefor == 'Q') {
-                    $value = $d->getFamilyParameterValue($aid);
-                    if (!empty($ownParValues[$aid])) {
-                        $ownValue = $ownParValues[$aid];
-                    } else {
-                        if ($ownValue) {
-                            $ownValue.= ' <em>(' . _("default value") . ")</em>";
-                        }
-                    }
-                }
-            } else {
-                $label = '-';
-            }
-            $inhValue = '';
-            if ($parent) {
-                if ($oa->usefor == 'Q') {
-                    $inhValue = $parent->getParameterRawValue($aid);
-                } else {
-                    $inhValue = $parent->getDefValue($aid);
-                }
-            }
-            $t = array(
-                "aid" => $aid,
-                "alabel" => $label,
-                "defown" => $ownValue,
-                "definh" => $inhValue,
-                "defresult" => $this->getHtmlValue($oa, $value)
-            );
-            if ($oa && $oa->usefor == 'Q') {
-                $tDefPar[$aid] = $t;
-            } else {
-                $tDefVal[$aid] = $t;
-            }
-        }
-        $this->lay->set("hasAncestor", $this->fromid > 0);
-        $this->lay->set("docid", $this->id);
-        $this->lay->SetBlockData("DEFVAL", $tDefVal);
-        $this->lay->SetBlockData("DEFPAR", $tDefPar);
-        $this->lay->Set("NOVAL", count($tDefVal) == 0);
-        $this->lay->Set("NOPAR", count($tDefPar) == 0);
-        $this->lay->Set("canEdit", $this->canEdit() == "");
-    }
 
-    /**
-     * @templateController special default view for families
-     *
-     * @param string $target
-     * @param bool   $ulink
-     * @param bool   $abstract
-     *
-     * @throws \Dcp\Core\Exception
-     * @throws \Dcp\Db\Exception
-     */
-    public function viewfamcard(
-    /* @noinspection PhpUnusedParameterInspection */
-    $target = "_self",
-        $ulink = true,
-        $abstract = false
-    ) {
-        // -----------------------------------
-        
-        /** @var \Anakeen\Core\Internal\Action $action */
-        global $action;
-        //Checking if document has acls
-        DbManager::query("SELECT count(*) FROM docperm WHERE docid=" . $this->id, $nb_acl, true, true);
-        $this->lay->set("hasAcl", ($nb_acl != "0"));
-        
-        $this->lay->set("modifyacl", ($this->control("modifyacl") == ""));
-        $this->lay->set("canInitProfil", $action->HasPermission("FREEDOM_ADMIN", "FREEDOM"));
-        
-        foreach ($this->fields as $k => $v) {
-            $this->lay->set("$v", $this->$v ? $this->$v : false);
-            switch ($v) {
-                case 'cprofid':
-                    if ($this->$v > 0) {
-                        $tdoc = DocManager::getDocument($this->$v);
-                        
-                        $this->lay->set("cmodifyacl", ($tdoc->control("modifyacl") == ""));
-                        
-                        $this->lay->set("cproftitle", $tdoc->title);
-                        $this->lay->set("cprofdisplay", "");
-                        $hascontrol = ($this->controlUserId($this->$v, $this->userid, "modifyacl") == "");
-                        $this->lay->set("ca_" . $v, $hascontrol);
-                    } else {
-                        $this->lay->set("cprofdisplay", "none");
-                    }
-                    break;
 
-                case 'cfldid':
-                    if ($this->$v > 0) {
-                        $tdoc = DocManager::getDocument($this->$v);
-                        $this->lay->set("cfldtitle", $tdoc->title);
-                        $this->lay->set("cflddisplay", "");
-                    } else {
-                        $this->lay->set("cflddisplay", "none");
-                    }
-                    break;
-
-                case 'dfldid':
-                    if ($this->$v > 0) {
-                        $tdoc = DocManager::getDocument($this->$v);
-                        $this->lay->set("dfldtitle", $tdoc->title);
-                        $this->lay->set("dflddisplay", "");
-                    } else {
-                        $this->lay->set("dflddisplay", "none");
-                    }
-                    break;
-
-                case 'wid':
-                    if ($this->$v > 0) {
-                        /**
-                         * @var WDoc $tdoc
-                         */
-                        $tdoc = DocManager::getDocument($this->$v);
-                        $this->lay->set("wtitle", $tdoc->title);
-                        $this->lay->set("wdisplay", true);
-                        $this->lay->set("wactif", ($tdoc->profid > 0));
-                        $hascontrol = ($tdoc->control("modifyacl") == "");
-                        $this->lay->set("wcontrol", $hascontrol);
-                        $this->lay->set("wedit", ($tdoc->control("edit") == ""));
-                        $states = $tdoc->getStates();
-                        $tstates = array();
-                        $tnoprofilstates = array();
-                        foreach ($states as $st) {
-                            $pid = $tdoc->getStateProfil($st);
-                            if ($pid) {
-                                $pdoc = DocManager::getDocument($pid);
-                                $tstates[$pid]["smodifyacl"] = ($pdoc->control("modifyacl") == "");
-                                $tstates[$pid]["sactif"] = $pdoc->profid;
-                                $tstates[$pid]["pstateid"] = $pid;
-                                $tstates[$pid]["states"][] = _($st);
-                            } else {
-                                $tnoprofilstates[_($st) ] = array(
-                                    "pstateattrid" => $tdoc->getStateProfilAttribute($st) ,
-                                    "states" => _($st)
-                                );
-                            }
-                        }
-                        
-                        $this->lay->set("noprofilstate", implode(", ", array_keys($tnoprofilstates)));
-                        foreach ($tstates as $ka => $va) {
-                            $tstates[$ka]["states"] = implode(", ", $va["states"]);
-                        }
-                        $this->lay->setBlockData("pstate", $tstates);
-                        $this->lay->setBlockData("nopstate", $tnoprofilstates);
-                    } else {
-                        $this->lay->set("wdisplay", false);
-                    }
-                    break;
-
-                case 'ccvid':
-                    if ($this->$v > 0) {
-                        $tdoc = DocManager::getDocument($this->$v);
-                        $this->lay->set("cvtitle", $tdoc->title);
-                        $this->lay->set("cvdisplay", "");
-                    } else {
-                        $this->lay->set("cvdisplay", "none");
-                    }
-                    break;
-
-                case 'maxrev':
-                    if (!$this->maxrev) {
-                        if ($this->schar == 'S') {
-                            $this->lay->set("maxrevision", _("no revisable"));
-                        } else {
-                            $this->lay->set("maxrevision", _("unlimited revisions"));
-                        }
-                    } else {
-                        $this->lay->set("maxrevision", $this->maxrev);
-                    }
-                    
-                    break;
-            }
-        }
-    }
     //~~~~~~~~~~~~~~~~~~~~~~~~~ PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~
 
     /**
@@ -509,8 +288,10 @@ create unique index idx_idfam on docfam(id);";
     {
         return $this->getXValues("param");
     }
+
     /**
      * return own family parameters values - no serach in parent families
+     *
      * @return array string parameter value
      */
     public function getOwnParams()
@@ -530,10 +311,10 @@ create unique index idx_idfam on docfam(id);";
      * @return array|string the list of parameter values
      * @throws \Dcp\Db\Exception
      */
-    public function getParamTValue($idAttr, $def = "", $index = - 1)
+    public function getParamTValue($idAttr, $def = "", $index = -1)
     {
         $t = $this->rawValueToArray($this->getParameterRawValue("$idAttr", $def));
-        if ($index == - 1) {
+        if ($index == -1) {
             return $t;
         }
         if (isset($t[$index])) {
@@ -542,19 +323,21 @@ create unique index idx_idfam on docfam(id);";
             return $def;
         }
     }
+
     /**
      * set family parameter value
      *
-     * @param string $idp parameter identifier
-     * @param string $val value of the parameter
-     * @param bool $check set to false when construct family
+     * @param string $idp   parameter identifier
+     * @param string $val   value of the parameter
+     * @param bool   $check set to false when construct family
+     *
      * @return string error message
      */
     public function setParam($idp, $val, $check = true)
     {
         $this->setChanged();
         $idp = strtolower($idp);
-        
+
         $oa = null;
         if ($check) {
             $oa = $this->getAttribute($idp); // never use getAttribute if not check
@@ -562,7 +345,7 @@ create unique index idx_idfam on docfam(id);";
                 return ErrorCode::getError('DOC0120', $idp, $this->getTitle(), $this->name);
             }
         }
-        
+
         if (is_array($val)) {
             if ($oa && $oa->type == 'htmltext') {
                 $val = $this->arrayToRawValue($val, "\r");
@@ -576,7 +359,7 @@ create unique index idx_idfam on docfam(id);";
                 return $err;
             }
         }
-        
+
         $err = '';
         if ($this->isComplete()) {
             $err = $this->checkSyntax($idp, $val);
@@ -586,7 +369,7 @@ create unique index idx_idfam on docfam(id);";
         }
         return $err;
     }
-    
+
     private function convertDateToiso(BasicAttribute $oa, &$val)
     {
         $localeconfig = \Anakeen\Core\ContextManager::getLocaleConfig();
@@ -597,7 +380,7 @@ create unique index idx_idfam on docfam(id);";
                 } else {
                     $dateFormat = $localeconfig['dateTimeFormat'];
                 }
-                
+
                 $tDates = explode("\n", $val);
                 foreach ($tDates as $k => $date) {
                     $tDates[$k] = stringDateToIso($date, $dateFormat);
@@ -609,17 +392,21 @@ create unique index idx_idfam on docfam(id);";
         }
         return '';
     }
+
     /**
      * Verify is family is under construction
+     *
      * @return bool
      */
     private function isComplete()
     {
         return ($this->attributes && $this->attributes->attr);
     }
+
     /**
      * @param string $aid attribute identifier
      * @param string $val value to test
+     *
      * @return string error message
      */
     private function checkSyntax($aid, $val)
@@ -636,13 +423,13 @@ create unique index idx_idfam on docfam(id);";
         if ($oa->isMultiple()) {
             $val = explode("\n", $val);
         }
-        
+
         if (is_array($val)) {
             $vals = $val;
         } else {
             $vals[] = $val;
         }
-        
+
         foreach ($vals as $ka => $av) {
             if (!self::seemsMethod($av)) {
                 switch ($type) {
@@ -690,7 +477,7 @@ create unique index idx_idfam on docfam(id);";
     public function getDefValue($idp, $def = "")
     {
         $x = $this->getXValue("defval", $idp, $def);
-        
+
         return $x;
     }
 
@@ -705,6 +492,7 @@ create unique index idx_idfam on docfam(id);";
     {
         return $this->getXValues("defval");
     }
+
     /**
      * return own default value not inherit default
      *
@@ -714,12 +502,14 @@ create unique index idx_idfam on docfam(id);";
     {
         return $this->explodeX($this->defval);
     }
+
     /**
      * set family default value
      *
      * @param string $idp parameter identifier
      * @param string $val value of the default
-     * @param bool $check
+     * @param bool   $check
+     *
      * @return string error message
      */
     public function setDefValue($idp, $val, $check = true)
@@ -757,9 +547,9 @@ create unique index idx_idfam on docfam(id);";
         if (!isset($this->$tval)) {
             $this->getXValues($X);
         }
-        
+
         $tval2 = $this->$tval;
-        $v = isset($tval2[strtolower($idp) ]) ? $tval2[strtolower($idp) ] : '';
+        $v = isset($tval2[strtolower($idp)]) ? $tval2[strtolower($idp)] : '';
         if ($v == "-") {
             return $def;
         }
@@ -768,9 +558,12 @@ create unique index idx_idfam on docfam(id);";
         }
         return $def;
     }
+
     /**
      * explode param or defval string
+     *
      * @param string $sx
+     *
      * @return array
      */
     private function explodeX($sx)
@@ -799,11 +592,11 @@ create unique index idx_idfam on docfam(id);";
     {
         $Xval = "_xt$X";
         $defval = $this->$X;
-        
+
         if ($this->$Xval) {
             return $this->$Xval;
         }
-        
+
         $XS[$this->id] = $defval;
         $this->$Xval = array();
         $inhIds = array();
@@ -818,9 +611,9 @@ create unique index idx_idfam on docfam(id);";
         if (!in_array($this->id, $inhIds)) {
             $inhIds[] = $this->id;
         }
-        
+
         $txval = array();
-        
+
         foreach ($inhIds as $famId) {
             $txvalh = $this->explodeX($XS[$famId]);
             foreach ($txvalh as $aid => $dval) {
@@ -834,10 +627,10 @@ create unique index idx_idfam on docfam(id);";
             ));
         }
         $this->$Xval = $txval;
-        
+
         return $this->$Xval;
     }
-    
+
     public function compareXOrder($a1, $a2)
     {
         $oa1 = $this->getAttribute($a1);
@@ -851,12 +644,14 @@ create unique index idx_idfam on docfam(id);";
         }
         return 0;
     }
+
     /**
      * set family default value
      *
-     * @param $X
+     * @param        $X
      * @param string $idp parameter identifier
      * @param string $val value of the default
+     *
      * @return void
      */
     public function setXValue($X, $idp, $val)
@@ -865,12 +660,12 @@ create unique index idx_idfam on docfam(id);";
         if (is_array($val)) {
             $val = $this->arrayToRawValue($val);
         }
-        
+
         $txval = $this->explodeX($this->$X);
-        
-        $txval[strtolower($idp) ] = $val;
+
+        $txval[strtolower($idp)] = $val;
         $this->$tval = $txval;
-        
+
         $tdefattr = array();
         foreach ($txval as $k => $v) {
             if ($k && ($v !== '')) {
@@ -880,26 +675,26 @@ create unique index idx_idfam on docfam(id);";
         $this->$tval = null;
         $this->$X = "[" . implode("][", $tdefattr) . "]";
     }
-    
+
     final public function UpdateVaultIndex()
     {
         /*
          * Skip processing if the family has no attributes
-         * This typically happens when the family is created for the first time at import and FDLGEN is not yet generated
+         * This typically happens when the family is created for the first time at import and final class is not yet generated
         */
-        if ((!$this->FDLGEN_HasBeenLoaded) || (!isset($this->attributes->attr))) {
+        if ((!$this->FINALCLASS_HasBeenLoaded) || (!isset($this->attributes->attr))) {
             return '';
         }
-        
+
         $point = uniqid(__METHOD__);
         DbManager::savePoint($point);
 
 
         $dvi = new DocVaultIndex($this->dbaccess);
         $dvi->DeleteDoc($this->id);
-        
+
         $tvid = \Dcp\Core\vidExtractor\vidExtractor::getVidsFromDocFam($this);
-        
+
         foreach ($tvid as $k => $vid) {
             $dvi->docid = $this->id;
             $dvi->vaultid = $vid;
@@ -909,13 +704,13 @@ create unique index idx_idfam on docfam(id);";
 
         return '';
     }
-    
+
     public function saveVaultFile($vid, $stream)
     {
         $err = '';
         if (is_resource($stream) && get_resource_type($stream) == "stream") {
             $ext = "nop";
-            $filename = uniqid(getTmpDir() . "/_fdl") . ".$ext";
+            $filename = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/_fdl") . ".$ext";
             $tmpstream = fopen($filename, "w");
             while (!feof($stream)) {
                 if (false === fwrite($tmpstream, fread($stream, 4096))) {
@@ -937,6 +732,7 @@ create unique index idx_idfam on docfam(id);";
         }
         return '';
     }
+
     /**
      * read xml configuration file
      */
@@ -972,8 +768,10 @@ create unique index idx_idfam on docfam(id);";
         }
         return $this->_configuration;
     }
+
     /**
      * @param bool $linkInclude if false fdl.xsd is write inside else use an include directive
+     *
      * @return string
      */
     public function getXmlSchema($linkInclude = false)
@@ -995,16 +793,16 @@ create unique index idx_idfam on docfam(id);";
              * @var \DOMNode $node
              */
             foreach ($rootNode->childNodes as $subnode) {
-                $innerXml.= ($xsd->saveXML($subnode));
+                $innerXml .= ($xsd->saveXML($subnode));
             }
-            
+
             $lay->set("includefdlxsd", $innerXml);
         }
-        
+
         $level1 = array();
         $la = $this->getAttributes();
         $tax = array();
-        
+
         foreach ($la as $k => $v) {
             if ((!$v) || ($v->getOption("autotitle") == "yes") || ($v->usefor == 'Q')) {
                 unset($la[$k]);
@@ -1020,15 +818,15 @@ create unique index idx_idfam on docfam(id);";
                 );
             }
         };
-        
+
         $lay->setBlockData("ATTR", $tax);
         $lay->setBlockData("LEVEL1", $level1);
-        
+
         $xsd = new DOMDocument();
         $xsd->preserveWhiteSpace = false;
         $xsd->formatOutput = true;
         $xsd->loadXML($lay->gen());
-        
+
         return ($xsd->saveXML());
     }
     /*
@@ -1050,6 +848,7 @@ create unique index idx_idfam on docfam(id);";
     */
     /**
      * Reset properties configuration
+     *
      * @return \DocFam
      */
     public function resetPropertiesParameters()
@@ -1057,29 +856,33 @@ create unique index idx_idfam on docfam(id);";
         $this->configuration = '';
         return $this;
     }
+
     /**
      * Get a property's parameter's value
+     *
      * @param string $propName The property's name
-     * @param string $pName The parameter's name
+     * @param string $pName    The parameter's name
+     *
      * @return bool|string boolean false on error, string containing the parameter's value
      */
     public function getPropertyParameter($propName, $pName)
     {
         $propName = strtolower($propName);
-        
+
         $confStore = new ConfigurationStore();
         if ($confStore->load($this->configuration) === false) {
             return false;
         }
-        
+
         $class = CheckProp::getParameterClassMap($pName);
         /**
          * @var string $pValue
          */
         $pValue = $confStore->get($class, $propName, $pName);
-        
+
         return $pValue;
     }
+
     /**
      * Set a parameter's value on a property
      *
@@ -1088,32 +891,35 @@ create unique index idx_idfam on docfam(id);";
      * want to make the change persistent.
      *
      * @param string $propName The property's name
-     * @param string $pName The parameter's name
-     * @param string $pValue The parameter's value
+     * @param string $pName    The parameter's name
+     * @param string $pValue   The parameter's value
+     *
      * @return bool boolean false on error, or boolean true on success
      */
     public function setPropertyParameter($propName, $pName, $pValue)
     {
         $propName = strtolower($propName);
-        
+
         $confStore = new ConfigurationStore();
         if ($confStore->load($this->configuration) === false) {
             return false;
         }
-        
+
         $class = CheckProp::getParameterClassMap($pName);
         $confStore->add($class, $propName, $pName, $pValue);
-        
+
         $conf = $confStore->getText();
         if ($conf === false) {
             return false;
         }
-        
+
         $this->configuration = $conf;
         return true;
     }
+
     /**
      * Get sortable properties.
+     *
      * @return array properties' Names with their set of parameters
      */
     public function getSortProperties()
@@ -1143,10 +949,10 @@ create unique index idx_idfam on docfam(id);";
                 $res[$propName] = $params;
             }
         }
-        
+
         return $res;
     }
-    
+
     public function PostUpdate()
     {
         if (($err = $this->updateVaultIndex()) !== '') {
@@ -1154,9 +960,12 @@ create unique index idx_idfam on docfam(id);";
         }
         return parent::PostUpdate();
     }
+
     /**
      * Inhibit search values : no need and must not be use when import family
+     *
      * @param bool $withLocale
+     *
      * @return string
      */
     protected function getExtraSearchableDisplayValues($withLocale = true)

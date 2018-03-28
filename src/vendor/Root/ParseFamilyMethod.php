@@ -4,14 +4,14 @@
  * @package FDL
 */
 
-class parseFamilyMethod extends parseFamilyFunction
+class ParseFamilyMethod extends ParseFamilyFunction
 {
     public $methodName = '';
     public $className = '';
     /**
      * @static
      * @param $methCall
-     * @return parseFamilyMethod
+     * @return ParseFamilyMethod
      */
     public function parse($methCall, $noOut = false)
     {

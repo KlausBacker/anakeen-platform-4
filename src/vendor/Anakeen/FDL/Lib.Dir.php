@@ -628,7 +628,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     } else {
                         $fromid = abs($fromid);
                         if ($fromid > 0) {
-                            include_once "FDLGEN/Class.Doc$fromid.php";
+                            \Anakeen\Core\DocManager::requireFamilyClass($fromid);
                         }
                     }
                 }

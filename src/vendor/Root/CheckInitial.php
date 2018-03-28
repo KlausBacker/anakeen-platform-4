@@ -49,7 +49,7 @@ class CheckInitial extends CheckData
     protected function checkInitialValue()
     {
         if (preg_match('/^[a-z_0-9]*::/i', $this->InitialValue)) {
-            $oParse = new parseFamilyMethod();
+            $oParse = new ParseFamilyMethod();
             $strucFunc = $oParse->parse($this->InitialValue, true);
             if ($err = $strucFunc->getError()) {
                 $this->addError(ErrorCode::getError('INIT0003', $this->InitialName, $this->InitialValue, $this->doc->name, $err));
