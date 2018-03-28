@@ -6,7 +6,7 @@
 
 namespace Anakeen\Ui;
 
-use \Dcp\AttributeIdentifiers\MASK as myAttributes;
+use \SmartStructure\Attributes\Mask as myAttributes;
 
 class MaskEditRender extends DefaultConfigEditRender
 {

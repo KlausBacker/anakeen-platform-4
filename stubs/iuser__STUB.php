@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Iuser extends Document { const familyName="IUSER";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/**   */
 	class Iuser {
 	}

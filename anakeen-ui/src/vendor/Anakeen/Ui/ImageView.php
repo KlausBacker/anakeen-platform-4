@@ -5,7 +5,7 @@
 */
 
 namespace Anakeen\Ui;
-use \Dcp\AttributeIdentifiers\IMAGE as myAttributes;
+use \SmartStructure\Attributes\Image as myAttributes;
 
 class ImageViewRender extends DefaultConfigViewRender
 {

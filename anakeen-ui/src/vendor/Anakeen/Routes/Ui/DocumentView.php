@@ -4,7 +4,7 @@ namespace Anakeen\Routes\Ui;
 
 use Anakeen\Router\URLUtils;
 use Anakeen\Routes\Core\Lib\ApiMessage;
-use Dcp\AttributeIdentifiers\Cvdoc as CvdocAttribute;
+use SmartStructure\Attributes\Cvdoc as CvdocAttribute;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\Settings;

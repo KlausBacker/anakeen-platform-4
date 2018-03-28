@@ -22,7 +22,7 @@ class ThesaurusCriteria
             }
             /** @var \Dcp\Family\Thconcept $thc */
             
-            $th = new_doc("", $thc->getRawValue(Dcp\AttributeIdentifiers\Thconcept::thc_thesaurus));
+            $th = new_doc("", $thc->getRawValue(SmartStructure\Attributes\Thconcept::thc_thesaurus));
             if (!$th->isAlive()) {
                 throw new ThesaurusCriteriaException(sprintf('thesaurus of concept "%s" not found', $thId));
             }

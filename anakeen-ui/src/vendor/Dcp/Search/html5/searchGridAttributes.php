@@ -6,7 +6,7 @@ namespace Dcp\Search\html5;
 
 use Dcp\HttpApi\V1\Crud\DocumentCollection;
 use Dcp\HttpApi\V1\Crud\Exception;
-use Dcp\AttributeIdentifiers\Report;
+use SmartStructure\Attributes\Report;
 
 class searchGridAttributes extends DocumentCollection
 {

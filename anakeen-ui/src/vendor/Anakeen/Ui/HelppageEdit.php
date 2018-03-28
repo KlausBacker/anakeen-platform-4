@@ -6,7 +6,7 @@
 
 namespace Anakeen\Ui;
 
-use Dcp\AttributeIdentifiers\HELPPAGE as myAttributes;
+use SmartStructure\Attributes\HELPPAGE as myAttributes;
 class HelppageEditRender extends \Dcp\Ui\DefaultEdit
 {
     /**

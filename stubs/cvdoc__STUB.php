@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Cvdoc extends \Dcp\Ui\CVDoc { const familyName="CVDOC";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/**   */
 	class Cvdoc {
 		/** [text] Classe de configuration de rendu (HTML5) */

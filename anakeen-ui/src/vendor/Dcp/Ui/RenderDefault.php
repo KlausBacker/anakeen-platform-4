@@ -452,7 +452,7 @@ class RenderDefault implements IRenderConfig
         $helpDoc = $this->getDefaultHelpPageDocument($document);
         if ($helpDoc) {
             \Anakeen\Core\DocManager::cache()->addDocument($helpDoc);
-            $attrids = $helpDoc->getMultipleRawValues(\Dcp\AttributeIdentifiers\Helppage::help_sec_key);
+            $attrids = $helpDoc->getMultipleRawValues(\SmartStructure\Attributes\Helppage::help_sec_key);
             
             foreach ($attrids as $k => $aid) {
                 if ($aid) {

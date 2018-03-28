@@ -6,7 +6,7 @@
 
 namespace Anakeen\Ui;
 
-use \Dcp\AttributeIdentifiers\SSEARCH as myAttributes;
+use \SmartStructure\Attributes\Ssearch as myAttributes;
 
 class SSearchEditRender extends DefaultConfigEditRender
 {

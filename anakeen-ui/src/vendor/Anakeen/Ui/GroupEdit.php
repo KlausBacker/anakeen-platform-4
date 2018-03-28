@@ -5,7 +5,7 @@
 */
 
 namespace Anakeen\Ui;
-use \Dcp\AttributeIdentifiers\GROUP as myAttributes;
+use \SmartStructure\Attributes\GROUP as myAttributes;
 
 class GroupEditRender extends DefaultConfigEditRender
 {

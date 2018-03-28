@@ -5,7 +5,7 @@
 */
 
 namespace Anakeen\Ui;
-use Dcp\AttributeIdentifiers\CVDOC as myAttributes;
+use SmartStructure\Attributes\CVDOC as myAttributes;
 
 class CvdocViewRender extends DefaultConfigViewRender
 {

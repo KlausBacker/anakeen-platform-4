@@ -54,7 +54,7 @@ class ViewCollection extends View
         $info = array();
         foreach ($views as $view) {
             if ($cv->isValidView($view, true)) {
-                $vid = $view[\Dcp\AttributeIdentifiers\Cvdoc::cv_idview];
+                $vid = $view[\SmartStructure\Attributes\Cvdoc::cv_idview];
                 if ($cv->control($vid) == "") {
                     $prop = $this->getViewProperties($cv, $view);
                     $prop["uri"] = $this->getUri($document, $vid);

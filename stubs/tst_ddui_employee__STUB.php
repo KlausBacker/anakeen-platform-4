@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Tst_ddui_employee extends Document { const familyName="TST_DDUI_EMPLOYEE";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Employé  */
 	class Tst_ddui_employee {
 		/** [tab] Identité */

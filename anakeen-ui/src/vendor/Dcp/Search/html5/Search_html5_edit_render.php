@@ -9,7 +9,7 @@
 namespace Dcp\Search\html5;
 
 
-use Dcp\AttributeIdentifiers\Dsearch as myAttr;
+use SmartStructure\Attributes\Dsearch as myAttr;
 use Dcp\Ui\DefaultEdit;
 use dcp\ui\MenuTargetOptions as MenuTargetOptions;
 use dcp\ui\ItemMenu as ItemMenu;

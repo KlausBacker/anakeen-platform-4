@@ -4,7 +4,7 @@
 namespace Dcp\Search\html5;
 
 
-use Dcp\AttributeIdentifiers\Report as myAttr;
+use SmartStructure\Attributes\Report as myAttr;
 use Anakeen\Core\DocManager;
 
 class Report_html5_edit_render extends Search_html5_edit_render

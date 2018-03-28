@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Tst_ddui_docid extends \Dcp\Test\Ddui\TST_DDUI_DOCID { const familyName="TST_DDUI_DOCID";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Test Docid  */
 	class Tst_ddui_docid {
 		/** [frame] Titre */

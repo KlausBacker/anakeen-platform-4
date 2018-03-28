@@ -5,7 +5,7 @@
 */
 
 namespace Anakeen\Ui;
-use Dcp\AttributeIdentifiers\MAILTEMPLATE as myAttributes;
+use SmartStructure\Attributes\Mailtemplate as myAttributes;
 
 class MailtemplateViewRender extends DefaultConfigViewRender
 {

@@ -8,7 +8,7 @@ namespace Dcp\Ui;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DocManager;
-use \Dcp\AttributeIdentifiers\Cvdoc as CvAttributes;
+use \SmartStructure\Attributes\Cvdoc as CvAttributes;
 
 class DefaultView extends RenderDefault
 {

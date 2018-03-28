@@ -6,7 +6,7 @@
 
 namespace Anakeen\Ui;
 
-use \Dcp\AttributeIdentifiers\IUSER as myAttributes;
+use \SmartStructure\Attributes\Iuser as myAttributes;
 
 class IuserEditRender extends DefaultConfigEditRender
 {

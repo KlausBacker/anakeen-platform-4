@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Tst_ddui_alltype extends \Dcp\Test\Ddui\AllType { const familyName="TST_DDUI_ALLTYPE";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Test tout type  */
 	class Tst_ddui_alltype {
 		/** [frame] Titre */

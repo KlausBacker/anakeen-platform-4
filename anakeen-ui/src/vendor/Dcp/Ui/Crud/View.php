@@ -5,7 +5,7 @@
 */
 namespace Dcp\Ui\Crud;
 
-use Dcp\AttributeIdentifiers\Cvdoc as CvdocAttribute;
+use SmartStructure\Attributes\Cvdoc as CvdocAttribute;
 use Dcp\HttpApi\V1\Crud\Crud;
 use Dcp\HttpApi\V1\Crud\Document as DocumentCrud;
 use Dcp\HttpApi\V1\Crud\DocumentUtils;

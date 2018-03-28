@@ -3,7 +3,7 @@
 
 namespace Dcp\Search\html5;
 
-use Dcp\AttributeIdentifiers\Report;
+use SmartStructure\Attributes\Report;
 
 class Report_html5_view_render extends Search_html5_view_render {
 

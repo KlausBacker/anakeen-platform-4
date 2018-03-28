@@ -1,11 +1,8 @@
 <?php
-/*
- * @author Anakeen
- * @package DDUI
-*/
 
 namespace Anakeen\Ui;
-use \Dcp\AttributeIdentifiers\DIR as myAttributes;
+
+use \SmartStructure\Attributes\Dir as myAttributes;
 
 class DirEditRender extends DefaultConfigEditRender
 {

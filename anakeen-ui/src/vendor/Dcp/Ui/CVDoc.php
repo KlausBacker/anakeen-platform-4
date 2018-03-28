@@ -6,7 +6,8 @@
 
 namespace Dcp\Ui;
 
-use \Dcp\AttributeIdentifiers\Cvdoc as MyAttributes;
+use \SmartStructure\Attributes\Cvdoc as MyAttributes;
+
 class CVDoc extends \Dcp\Core\CVDoc
 {
     public static function cvIsA($className, $isA)
@@ -21,25 +22,24 @@ class CVDoc extends \Dcp\Core\CVDoc
                 }
                 if (!\Dcp\Autoloader::classExists($className)) {
                     \Dcp\Autoloader::forceRegenerate();
-                     if (!\Dcp\Autoloader::classExists($className)) {
-                         return sprintf(
-                             ___("Class \"%s\" not exists"), $className
-                         );
-                     }
+                    if (!\Dcp\Autoloader::classExists($className)) {
+                        return sprintf(
+                            ___("Class \"%s\" not exists"), $className
+                        );
+                    }
                 }
-                
+
                 $a = new $className();
                 if (!is_a($a, $isA)) {
-                    return sprintf(___("Class \"%s\" not implement %s") , $className, $isA);
+                    return sprintf(___("Class \"%s\" not implement %s"), $className, $isA);
                 }
-            }
-            catch(\Exception $e) {
-                return sprintf(___("Class \"%s\" problem : %s") , $className, $e->getMessage());
+            } catch (\Exception $e) {
+                return sprintf(___("Class \"%s\" problem : %s"), $className, $e->getMessage());
             }
         }
         return "";
     }
-    
+
     public function preConsultation()
     {
         $err = parent::preConsultation();
@@ -47,25 +47,26 @@ class CVDoc extends \Dcp\Core\CVDoc
         if ($oa) {
             $oa->setOption("rowviewzone", "DOCUMENT:CVDOCUI_ARRAY_VIEW");
         }
-        
+
         $zones = $this->getMultipleRawValues(MyAttributes::cv_zview);
         $renders = $this->getMultipleRawValues(MyAttributes::cv_renderconfigclass);
         foreach ($zones as $k => $zone) {
             if ($zone && $zone !== $this->defaultview && $zone != $this->defaultedit && !$renders[$k]) {
-                $this->setValue(MyAttributes::cv_renderconfigclass, sprintf("<%s>", ___("Ignored HTML5 view", "ddui")) , $k);
+                $this->setValue(MyAttributes::cv_renderconfigclass, sprintf("<%s>", ___("Ignored HTML5 view", "ddui")), $k);
             } elseif ($renders[$k] && !$zone) {
                 if ($renders[$k][0] === "\\") {
                     $renders[$k] = substr($renders[$k], 1);
                 }
                 $renders[$k] = mb_strtolower($renders[$k]);
                 if ($renders[$k] !== "dcp\\ui\\defaultview" && $renders[$k] !== "dcp\\ui\\defaultedit") {
-                    $this->setValue(MyAttributes::cv_zview, sprintf("<%s>", ___("Ignored CORE view", "ddui")) , $k);
+                    $this->setValue(MyAttributes::cv_zview, sprintf("<%s>", ___("Ignored CORE view", "ddui")), $k);
                 }
             }
         }
-        
+
         return $err;
     }
+
     public function preEdition()
     {
         $err = parent::preEdition();
@@ -73,10 +74,10 @@ class CVDoc extends \Dcp\Core\CVDoc
         if ($oa) {
             $oa->setOption("roweditzone", "DOCUMENT:CVDOCUI_ARRAY_VIEW");
         }
-        
+
         return $err;
     }
-    
+
     public function getDisplayableViews($html5mode = false)
     {
         $views = parent::getDisplayableViews();
@@ -87,12 +88,12 @@ class CVDoc extends \Dcp\Core\CVDoc
         }
         return $views;
     }
-    
+
     public function isValidView(array $viewIndo, $html5mode)
     {
         $zone = $viewIndo[MyAttributes::cv_zview];
         $render = $viewIndo[MyAttributes::cv_renderconfigclass];
-        
+
         if ($html5mode) {
             if ($zone && $zone !== $this->defaultview && $zone != $this->defaultedit && !$render) {
                 // No display special CORE zone
