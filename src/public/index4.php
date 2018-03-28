@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/vendor/Anakeen/autoload.php';
+require __DIR__ . '/../vendor/Anakeen/autoload.php';
 require __DIR__ . "/../vendor/Anakeen/WHAT/Lib.Prefix.php";
 require __DIR__ . "/../vendor/Anakeen/WHAT/Lib.Main.php";
 //require __DIR__ . "/../vendor/Anakeen/WHAT/autoload.php";

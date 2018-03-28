@@ -381,12 +381,14 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         /* Try "APP:file.extension" notation */
         if (preg_match('/^(?P<appname>[a-z][a-z0-9_-]*):(?P<filename>.*)$/i', $ref, $m)) {
+
             $location = sprintf('%s/%s/Layout/%s', $this->publicdir, $m['appname'], $m['filename']);
             if (is_file($location)) {
                 return sprintf('%s/Layout/%s', $m['appname'], $m['filename']);
             }
             // Fallback for legacy : return css/js from Apps/Layout
             $location = sprintf('%s/%s/Layout/%s', $this->rootdir, $m['appname'], $m['filename']);
+
             if (is_file($location)) {
                 return sprintf('/assets/%s', urlencode($ref));
             }

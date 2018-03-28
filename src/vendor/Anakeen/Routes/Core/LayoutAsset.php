@@ -37,10 +37,14 @@ class LayoutAsset
         $assetType = $reg[1];
 
         if (preg_match("/([A-Z_0-9-]+):([^:]+):{0,1}[A-Z]{0,1}/", $ref, $reg)) {
-            $lfile = getLayoutFile($reg[1], strtolower($reg[2]));
+            $lfile = getLayoutFile($reg[1], ($reg[2]));
+            if (!file_exists($lfile)) {
+                $lfile = getLayoutFile($reg[1], strtolower($reg[2]));
+            }
+
             if (file_exists($lfile)) {
                 $response->write(file_get_contents($lfile));
-                $response=ApiV2Response::withEtag($request, $response, filemtime($lfile));
+                $response = ApiV2Response::withEtag($request, $response, filemtime($lfile));
             } else {
                 header(sprintf("HTTP/1.1 404 ref [%s] not found", $ref));
                 $response = $response->withStatus(404, sprintf("Ref [%s] not found", $ref));

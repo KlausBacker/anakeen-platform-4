@@ -56,12 +56,7 @@ abstract class Authenticator
             }
             $providerClass = $this->parms{'provider'} . 'Provider';
             
-            $classFile = 'WHAT/Class.' . $providerClass . '.php';
-            $ret = stream_resolve_include_path($classFile);
-            if ($ret === false) {
-                throw new Dcp\Exception(__METHOD__ . " " . "Error: ." . $classFile . " not found");
-            }
-            include_once($classFile);
+
             if (!class_exists($providerClass)) {
                 throw new Dcp\Exception(__METHOD__ . " " . "Error: " . $providerClass . " class not found");
             }

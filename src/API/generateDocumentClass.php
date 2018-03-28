@@ -13,15 +13,8 @@
 // refreah for a classname
 // use this only if you have changed title attributes
 include_once("FDL/Lib.Attr.php");
-include_once("FDL/Class.DocFam.php");
 
 
-
-$dbaccess = $action->dbaccess;
-if ($dbaccess == "") {
-    print "Database not found : appl->dbaccess";
-    exit;
-}
 $usage = new ApiUsage();
 $usage->setDefinitionText("Generate Php Document Classes");
 $docid = $usage->addOptionalParameter("docid", "special docid", null, 0);
@@ -36,7 +29,7 @@ if (($docid !== 0) && (!is_numeric($docid))) {
     }
 }
 
-$query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocFam::class);
+$query = new \Anakeen\Core\Internal\QueryDb("", \DocFam::class);
 $query->AddQuery("doctype='C'");
 $query->order_by = "id";
 
@@ -65,33 +58,33 @@ if ($query->nb > 0) {
             21
         );
         foreach ($tii as $ii) {
-            updateDoc($dbaccess, $tid[$ii]);
+            updateDoc( $tid[$ii]);
             unset($tid[$ii]);
         }
     }
     // workflow at the end
     foreach ($tid as $k => $v) {
         if (strstr($v["usefor"], 'W')) {
-            updateDoc($dbaccess, $v);
+            updateDoc( $v);
             /**
              * @var WDOc $wdoc
              */
-            $wdoc = createDoc($dbaccess, $v["id"]);
+            $wdoc = Anakeen\Core\DocManager::createDocument($v["id"]);
             $wdoc->CreateProfileAttribute(); // add special attribute for workflow
-            \Dcp\FamilyImport::activateTrigger($dbaccess, $v["id"]);
+            \Dcp\FamilyImport::activateTrigger("", $v["id"]);
         }
     }
     foreach ($tid as $k => $v) {
         if (strstr($v["usefor"], 'W') === false) {
-            updateDoc($dbaccess, $v);
+            updateDoc( $v);
         }
     }
 }
-function updateDoc($dbaccess, $v)
+function updateDoc($v)
 {
     require_once 'FDL/Lib.Attr.php';
     try {
-        $err = \Dcp\FamilyImport::buildFamilyFilesAndTables($dbaccess, $v, true);
+        $err = \Dcp\FamilyImport::buildFamilyFilesAndTables("", $v, true);
         if ($err) {
             error_log($err);
         }

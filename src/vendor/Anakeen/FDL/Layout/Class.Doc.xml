@@ -11,9 +11,7 @@ class ADoc[docid] extends [AParent] {
    function __construct () {
       [AParent]::__construct();
 
-     [BLOCK AATTR]
-     $this->attr["[attrid]"]=new ActionAttribute("[attrid]", "[docid]","[label]",[order],"[visibility]","[wapplication]","[waction]","[precond]","[options]","[docName]");    
-     [ENDBLOCK AATTR]
+
      [BLOCK MATTR]
      $this->attr["[attrid]"]=new MenuAttribute("[attrid]", "[docid]","[label]",[order],"[link]","[visibility]","[precond]","[options]","[docName]");    
      [ENDBLOCK MATTR]

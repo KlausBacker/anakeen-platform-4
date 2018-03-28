@@ -17,7 +17,7 @@
  */
 include_once('WHAT/Class.Authenticator.php');
 
-class openAuthenticator extends Authenticator
+class OpenAuthenticator extends Authenticator
 {
     const waitDelayError=1;
     const openAuthorizationScheme = "DcpOpen";

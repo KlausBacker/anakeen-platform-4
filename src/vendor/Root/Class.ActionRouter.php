@@ -1,10 +1,5 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
-require_once('WHAT/autoload.php');
 
 include_once('WHAT/Lib.Main.php');
 

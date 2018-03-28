@@ -70,22 +70,7 @@ class Adoc
         }
         return $tsa;
     }
-    /**
-     * return action attributes
-     *
-     * @return  ActionAttribute[]
-     */
-    public function GetActionAttributes()
-    {
-        $tsa = array();
-        
-        foreach ($this->attr as $k => $v) {
-            if (get_class($v) == "ActionAttribute") {
-                $tsa[$v->id] = $v;
-            }
-        }
-        return $tsa;
-    }
+
     /**
      * return all the family parameters except frame & menu & action
      * @return NormalAttribute[]

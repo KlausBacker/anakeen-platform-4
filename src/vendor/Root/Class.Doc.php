@@ -2814,27 +2814,6 @@ create unique index i_docir on doc(initid, revision);";
         return $tsa;
     }
 
-    /**
-     * return action attributes
-     *
-     * @return  ActionAttribute[]
-     */
-    final public function getActionAttributes()
-    {
-        if (!$this->_maskApplied) {
-            $this->ApplyMask();
-        }
-        $tsa = array();
-        if (isset($this->attributes)) {
-            $at = $this->attributes->GetActionAttributes();
-            foreach ($at as $k => $v) {
-                if ($v->mvisibility != 'H') {
-                    $tsa[$v->id] = $v;
-                }
-            }
-        }
-        return $tsa;
-    }
 
     /**
      * return all the attributes object for abstract
@@ -5832,7 +5811,7 @@ create unique index i_docir on doc(initid, revision);";
         }
 
 
-        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocUtag::class);
+        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocUTag::class);
         $q->addQuery("uid=" . intval($uid));
         if ($tag) {
             $q->addQuery("tag = '" . pg_escape_string($tag) . "'");
@@ -5916,7 +5895,7 @@ create unique index i_docir on doc(initid, revision);";
             return "";
         }
 
-        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocUtag::class);
+        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocUTag::class);
         $q->Query(
             0,
             0,
@@ -5942,7 +5921,7 @@ create unique index i_docir on doc(initid, revision);";
             return [];
         }
 
-        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocUtag::class);
+        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocUTag::class);
         if (!$allusers) {
             $q->addQuery("uid=" . intval($this->userid));
         }

@@ -13,8 +13,7 @@
 /**
  */
 
-include_once("Class.DbObj.php");
-class DocUtag extends DbObj
+class DocUTag extends DbObj
 {
     public $fields = array(
         "id", // doc id
