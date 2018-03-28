@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\UI\Logger\JS;
+namespace Dcp\Ui\Logger\JS;
 
 
 abstract class Logger {

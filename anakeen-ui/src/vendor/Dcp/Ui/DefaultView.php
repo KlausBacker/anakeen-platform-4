@@ -114,7 +114,7 @@ class DefaultView extends RenderDefault
         $menu->appendElement($item);
 
 
-        if (ContextManager::getCurrentUser()->id == \Account::ADMIN_ID) {
+        if (ContextManager::getCurrentUser()->id == \Anakeen\Core\Account::ADMIN_ID) {
             self::appendSystemMenu($document, $menu);
         }
 

@@ -6,7 +6,7 @@
  * Time: 18:12
  */
 
-namespace Dcp\UI\Logger\JS;
+namespace Dcp\Ui\Logger\JS;
 
 
 class Dcp extends Logger {
