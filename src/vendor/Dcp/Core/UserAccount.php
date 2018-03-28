@@ -10,7 +10,7 @@
 namespace Dcp\Core;
 
 use Anakeen\Core\DbManager;
-use Dcp\AttributeIdentifiers\Iuser as MyAttributes;
+use SmartStructure\Attributes\Iuser as MyAttributes;
 
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 

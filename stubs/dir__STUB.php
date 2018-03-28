@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Dir extends \Dir { const familyName="DIR";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Dossier  */
 	class Dir extends Base {
 		/** [longtext] Description */

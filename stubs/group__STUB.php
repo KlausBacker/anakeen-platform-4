@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Group extends \Dcp\Core\AccountCollection { const familyName="GROUP";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Groupe de personnes  */
 	class Group extends Dir {
 		/** [frame] Identification */

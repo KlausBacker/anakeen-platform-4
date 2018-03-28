@@ -16,7 +16,7 @@ namespace Dcp\Core;
 /**
  * Control view Class
  */
-use \Dcp\AttributeIdentifiers\Cvdoc as MyAttributes;
+use \SmartStructure\Attributes\Cvdoc as MyAttributes;
 
 class CVDoc extends \Dcp\Family\Base
 {

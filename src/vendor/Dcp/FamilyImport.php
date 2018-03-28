@@ -820,7 +820,7 @@ class FamilyImport
 
         self::generateFamilyPhpClass($genDir, $tdoc);
 
-        $attrfile = sprintf("%s/%s.php", $genAttrDir, $tdoc["name"]);
+        $attrfile = sprintf("%s/%s.php", $genAttrDir, ucfirst(strtolower($tdoc["name"])));
 
         $err = self::__phpLintWriteFile($attrfile, self::AttrIdtoPhp($dbaccess, $tdoc));
         if ($err != '') {

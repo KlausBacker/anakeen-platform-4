@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Role extends \Dcp\Core\RoleAccount { const familyName="ROLE";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Rôle  */
 	class Role {
 		/** [frame] Identification */

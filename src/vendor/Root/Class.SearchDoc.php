@@ -1290,9 +1290,9 @@ class SearchDoc
              * @var DocSearch $tmps
              */
             $tmps = createTmpDoc($this->dbaccess, "SEARCH");
-            $tmps->setValue(\Dcp\AttributeIdentifiers\Search::se_famid, $this->fromid);
-            $tmps->setValue(\Dcp\AttributeIdentifiers\Search::se_idfld, $this->originalDirId);
-            $tmps->setValue(\Dcp\AttributeIdentifiers\Search::se_latest, "yes");
+            $tmps->setValue(\SmartStructure\Attributes\Search::se_famid, $this->fromid);
+            $tmps->setValue(\SmartStructure\Attributes\Search::se_idfld, $this->originalDirId);
+            $tmps->setValue(\SmartStructure\Attributes\Search::se_latest, "yes");
             $err = $tmps->add();
             if ($err == "") {
                 $tmps->addQuery($tmps->getQuery()); // compute internal sql query

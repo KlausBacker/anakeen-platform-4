@@ -1003,7 +1003,7 @@ function reportChooseColumns(&$action, $id)
     $doc = new_doc("", $id);
     if ($doc->doctype == "C") {
         $doc = createTmpDoc($doc->dbaccess, $id);
-        $doc->setValue(\Dcp\AttributeIdentifiers\Report::se_famid, getHttpVars("_se_famid"));
+        $doc->setValue(\SmartStructure\Attributes\Report::se_famid, getHttpVars("_se_famid"));
     }
     $doc->lay = & $action->lay;
     $doc->reportchoosecolumns();

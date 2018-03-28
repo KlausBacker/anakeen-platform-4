@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Cvdoc extends Base { const familyName="CVDOC";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Contrôle de vues  */
 	class Cvdoc extends Base {
 		/** [longtext] Description */

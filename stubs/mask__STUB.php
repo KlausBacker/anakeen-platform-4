@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Mask extends \Dcp\Core\Mask { const familyName="MASK";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Masque de saisie  */
 	class Mask extends Base {
 		/** [frame] Famille */

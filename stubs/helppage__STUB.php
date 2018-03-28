@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Helppage extends \Dcp\Core\HelpPage { const familyName="HELPPAGE";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Aide en ligne  */
 	class Helppage {
 		/** [frame] Aide */

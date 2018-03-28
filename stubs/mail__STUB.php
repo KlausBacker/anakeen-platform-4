@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Mail extends \Dcp\Core\MailEdit { const familyName="MAIL";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Mail  */
 	class Mail {
 		/** [frame] Adresses */

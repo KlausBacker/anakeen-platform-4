@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Image extends \Dcp\Core\Image { const familyName="IMAGE";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Image  */
 	class Image {
 		/** [frame] image */

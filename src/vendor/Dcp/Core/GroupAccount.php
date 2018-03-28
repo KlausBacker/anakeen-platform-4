@@ -8,7 +8,7 @@
  */
 namespace Dcp\Core;
 
-use Dcp\AttributeIdentifiers\Igroup as MyAttributes;
+use SmartStructure\Attributes\Igroup as MyAttributes;
 
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 

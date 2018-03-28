@@ -10,7 +10,7 @@ namespace Dcp\Family {
 	class Pfam extends \PFam { const familyName="PFAM";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Profil de document  */
 	class Pdoc extends Base {
 		/** [longtext] Description */

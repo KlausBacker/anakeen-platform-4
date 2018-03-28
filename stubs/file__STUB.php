@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class File extends \Dcp\Core\File { const familyName="FILE";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Fichier  */
 	class File {
 		/** [frame] Description */

@@ -9,7 +9,7 @@
  */
 namespace Dcp\Core;
 
-use \Dcp\AttributeIdentifiers\Mask as myAttr;
+use \SmartStructure\Attributes\Mask as myAttr;
 
 class Mask extends \Dcp\Family\Base
 {

@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Sentmessage extends \Dcp\Core\SentEmail { const familyName="SENTMESSAGE";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Message envoyé  */
 	class Sentmessage {
 		/** [frame] Identification */

@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Exec extends \Dcp\Core\ExecProcessus { const familyName="EXEC";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Processus  */
 	class Exec {
 		/** [frame] Identification */

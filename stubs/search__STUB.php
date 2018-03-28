@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Search extends \DocSearch { const familyName="SEARCH";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Recherche  */
 	class Search extends Base {
 		/** [account] Auteur */

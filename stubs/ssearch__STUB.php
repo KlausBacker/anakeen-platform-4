@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Ssearch extends \Dcp\Core\SpecialSearch { const familyName="SSEARCH";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Recherche spécialisée  */
 	class Ssearch extends Search {
 		/** [frame] Fonction */

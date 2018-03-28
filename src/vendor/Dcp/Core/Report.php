@@ -8,7 +8,7 @@
  */
 namespace Dcp\Core;
 
-use \Dcp\AttributeIdentifiers\Report as MyAttributes;
+use \SmartStructure\Attributes\Report as MyAttributes;
 
 class Report extends \Dcp\Family\Dsearch
 {

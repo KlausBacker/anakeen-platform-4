@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Iuser extends \Dcp\Core\UserAccount { const familyName="IUSER";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** utilisateur  */
 	class Iuser {
 		/** [frame] État civil */

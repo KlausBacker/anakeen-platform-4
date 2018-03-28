@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Report extends \Dcp\Core\Report { const familyName="REPORT";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Rapport  */
 	class Report extends Dsearch {
 		/** [tab] Présentation */

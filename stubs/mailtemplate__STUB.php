@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Mailtemplate extends \Dcp\Core\MailTemplate { const familyName="MAILTEMPLATE";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Modèle de mail  */
 	class Mailtemplate {
 		/** [frame] Entête */

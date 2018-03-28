@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Msearch extends \Dcp\Core\GroupedSearch { const familyName="MSEARCH";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Recherche groupée  */
 	class Msearch extends Search {
 		/** [frame] Critère */

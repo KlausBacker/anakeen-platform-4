@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Base extends Document { const familyName="BASE";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** de base  */
 	class Base {
 		/** [frame] Basique */

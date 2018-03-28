@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Dsearch extends \Dcp\Core\DetailSearch { const familyName="DSEARCH";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Recherche détaillée  */
 	class Dsearch extends Search {
 		/** [frame] Conditions */

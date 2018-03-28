@@ -6,6 +6,8 @@ require __DIR__ . '/Ui/PhpLib/vendor/autoload.php';
 
 $loader->addPsr4('Anakeen\\', __DIR__ . '/');
 $loader->addPsr4('Dcp\\', __DIR__ . '/../Dcp/');
+// Load generated SmartStrucure classes
+$loader->addPsr4('SmartStructure\\', __DIR__ . '/../../SmartClasses/SmartStructure/');
 
 spl_autoload_register(function ($classname) {
 

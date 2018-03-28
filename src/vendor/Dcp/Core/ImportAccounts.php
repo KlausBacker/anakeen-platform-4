@@ -591,7 +591,7 @@ class ImportAccounts
                 $err = $account->add();
                 $this->addToReport($account->login, "addAccount", $err, $msg, $uNode);
                 // Connect document and account
-                $newDocAccount->setValue(\Dcp\AttributeIdentifiers\Role::us_whatid, $account->id);
+                $newDocAccount->setValue(\SmartStructure\Attributes\Role::us_whatid, $account->id);
                 $newDocAccount->modify();
                 if ($roleDocumentNode) {
                     $docName = $roleDocumentNode->getAttribute("name");
