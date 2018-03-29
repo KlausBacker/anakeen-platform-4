@@ -441,7 +441,7 @@ SQL;
      */
     public function resetTEFiles()
     {
-        if (\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+        if (\Anakeen\Core\Internal\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             $sql = <<<SQL
 UPDATE %s SET teng_state = %d WHERE teng_id_file = %s
 SQL;

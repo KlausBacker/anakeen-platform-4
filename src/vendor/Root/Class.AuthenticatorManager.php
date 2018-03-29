@@ -146,7 +146,7 @@ class AuthenticatorManager
         }
 
         $authClass = strtolower($authtype) . "Authenticator";
-        if (!\Dcp\Autoloader::classExists($authClass)) {
+        if (!\Anakeen\Core\Internal\Autoloader::classExists($authClass)) {
             throw new \Dcp\Exception(sprintf("Cannot find authenticator '%s'", $authtype));
         }
         return new $authClass($authtype, $provider);

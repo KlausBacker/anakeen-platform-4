@@ -32,7 +32,7 @@ class AuthenticatorManager extends \AuthenticatorManager
 
             default:
                 $authClass = strtolower($authtype) . "Authenticator";
-                if (!\Dcp\Autoloader::classExists($authClass)) {
+                if (!\Anakeen\Core\Internal\Autoloader::classExists($authClass)) {
                     throw new Exception("API0100", $authtype);
                 }
                 $auth = new $authClass($authtype, $provider);

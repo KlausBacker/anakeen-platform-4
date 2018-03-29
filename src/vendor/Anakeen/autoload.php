@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @var Composer\Autoload\ClassLoader $loader
+ */
 $loader = require __DIR__ . '/lib/vendor/autoload.php';
 //@TODO Find Another way to add UI autoload
 require __DIR__ . '/Ui/PhpLib/vendor/autoload.php';
@@ -9,6 +12,9 @@ $loader->addPsr4('Dcp\\', __DIR__ . '/../Dcp/');
 // Load generated SmartStrucure classes
 $loader->addPsr4('SmartStructure\\', __DIR__ . '/../../SmartClasses/SmartStructure/');
 
+
+
+// Add Legacy Autoloader
 spl_autoload_register(function ($classname) {
 
     $classFile=sprintf("%s/../Root/Class.%s.php", __DIR__, $classname);
@@ -27,3 +33,5 @@ spl_autoload_register(function ($classname) {
 
 
 });
+
+\Anakeen\Core\Internal\Autoloader::recordLoader($loader);

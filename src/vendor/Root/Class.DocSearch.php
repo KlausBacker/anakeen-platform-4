@@ -15,7 +15,7 @@
 
 include_once("FDL/Lib.Dir.php");
 
-class DocSearch extends PDocSearch
+class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
 {
     public $defDoctype = 'S';
     public $defaultedit = "FREEDOM:EDITSEARCH";
@@ -34,7 +34,7 @@ class DocSearch extends PDocSearch
     
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
-        PDocSearch::__construct($dbaccess, $id, $res, $dbid);
+        parent::__construct($dbaccess, $id, $res, $dbid);
         if (((!isset($this->fromid))) || ($this->fromid == "")) {
             $this->fromid = FAM_SEARCH;
         }

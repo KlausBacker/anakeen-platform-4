@@ -12,7 +12,7 @@ use \Anakeen\Core\DbManager;
  * @class DocFam
  * @method  createProfileAttribute
  */
-class DocFam extends PFam
+class DocFam extends \Anakeen\SmartStructures\Profiles\PFam
 {
     public $dbtable = "docfam";
 

@@ -423,7 +423,7 @@ class DocHtmlFormat
             if ($fileInfo) {
                 if ($fileInfo->teng_state < 0 || $fileInfo->teng_state > 1) {
                     $htmlval = "";
-                    if (\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+                    if (\Anakeen\Core\Internal\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
                         switch (intval($fileInfo->teng_state)) {
                             case \Dcp\TransformationEngine\Client::error_convert: // convert fail
                                 $textval = _("file conversion failed");
@@ -492,7 +492,7 @@ class DocHtmlFormat
                         } else {
                             $infopdf = new VaultFileInfo();
                             $err = $vf->Show($vid, $infopdf, 'pdf');
-                            if ($err == "" && \Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+                            if ($err == "" && \Anakeen\Core\Internal\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
                                 if ($infopdf->teng_state == \Dcp\TransformationEngine\Client::status_done || $infopdf->teng_state == \Dcp\TransformationEngine\Client::status_waiting || $infopdf->teng_state == \Dcp\TransformationEngine\Client::status_inprogress) {
                                     $imageview = true;
                                     if ($viewfiletype == 'image') {

@@ -73,7 +73,7 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
     $err = '';
     if (($vidin > 0) && ($vidout > 0)) {
         $tea = \Anakeen\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
-        if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+        if ($tea != "yes" || !\Anakeen\Core\Internal\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             return '';
         }
         global $action;
@@ -198,7 +198,7 @@ function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
     $err = '';
     if (($docid > 0) && ($vid > 0)) {
         $tea = \Anakeen\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
-        if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+        if ($tea != "yes" || !\Anakeen\Core\Internal\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             return '';
         }
         $tea = \Anakeen\Core\ContextManager::getApplicationParam("TE_FULLTEXT");
@@ -241,7 +241,7 @@ function convertFile($infile, $engine, $outfile, &$info)
     $err = '';
     if (file_exists($infile) && ($engine != "")) {
         $tea = \Anakeen\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
-        if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+        if ($tea != "yes" || !\Anakeen\Core\Internal\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             return _("TE not activated");
         }
         $callback = "";

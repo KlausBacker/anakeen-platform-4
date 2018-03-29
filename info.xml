@@ -264,7 +264,7 @@
             <label>Import BASE Family</label>
         </process>
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/pdoc/pdoc.struct.csv --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.csv --csv-enclosure='&quot;'">
             <label>Import PROFIL Families</label>
         </process>
         <process
@@ -623,7 +623,7 @@ This can be solved by:<br/>
             <label>Import BASE Family</label>
         </process>
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/pdoc/pdoc.struct.csv --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.csv --csv-enclosure='&quot;'">
             <label>Import PROFIL Families</label>
         </process>
         <process

@@ -1,13 +1,13 @@
 <?php
 namespace Dcp\Family {
 	/** Profil de document  */
-	class Pdoc extends \PDoc { const familyName="PDOC";}
+	class Pdoc extends \Anakeen\SmartStructures\Profiles\PDoc { const familyName="PDOC";}
 	/** Profil de dossier  */
-	class Pdir extends \PDir { const familyName="PDIR";}
+	class Pdir extends \Anakeen\SmartStructures\Profiles\PDir { const familyName="PDIR";}
 	/** Profil de recherche  */
 	class Psearch extends \PDocSearch { const familyName="PSEARCH";}
 	/** Profil de famille  */
-	class Pfam extends \PFam { const familyName="PFAM";}
+	class Pfam extends \Anakeen\SmartStructures\Profiles\PFam { const familyName="PFAM";}
 }
 
 namespace SmartStructure\Attributes {

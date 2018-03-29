@@ -6,7 +6,7 @@
 
 namespace Dcp\Family;
 
-class Document extends \PDoc
+class Document extends \Anakeen\SmartStructures\Profiles\PDoc
 {
     public $defDoctype = 'F';
     public $defClassname = '\Dcp\Family\Document';

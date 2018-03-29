@@ -1,8 +1,8 @@
 <?php
 
+namespace Anakeen\SmartStructures\Profiles;
 
-
-class PDoc extends Doc
+class PDocSearch extends \DocCollection
 {
     // --------------------------------------------------------------------
     //---------------------- OBJECT CONTROL PERMISSION --------------------
@@ -10,19 +10,17 @@ class PDoc extends Doc
         "view",
         "edit",
         "delete",
-        "send",
+        "execute",
         "unlock",
-        "confidential",
-        "wask"
+        "confidential"
     );
     // --------------------------------------------------------------------
-    // ------------
     public $defDoctype = 'P';
-    public $defProfFamId = FAM_ACCESSDOC;
+    public $defProfFamId = FAM_ACCESSSEARCH;
     
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         // don't use Doc constructor because it could call this constructor => infinitive loop
-        DocCtrl::__construct($dbaccess, $id, $res, $dbid);
+        \DocCtrl::__construct($dbaccess, $id, $res, $dbid);
     }
 }

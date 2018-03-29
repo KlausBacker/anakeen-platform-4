@@ -1,7 +1,13 @@
 <?php
+/**
+ * Profile for folders
+ *
+ */
 
 
-class PDocSearch extends DocCollection
+namespace Anakeen\SmartStructures\Profiles;
+
+class PDir extends \DocCollection
 {
     // --------------------------------------------------------------------
     //---------------------- OBJECT CONTROL PERMISSION --------------------
@@ -9,17 +15,19 @@ class PDocSearch extends DocCollection
         "view",
         "edit",
         "delete",
-        "execute",
+        "open",
+        "modify",
+        "send",
         "unlock",
         "confidential"
     );
     // --------------------------------------------------------------------
     public $defDoctype = 'P';
-    public $defProfFamId = FAM_ACCESSSEARCH;
+    public $defProfFamId = FAM_ACCESSDIR;
     
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         // don't use Doc constructor because it could call this constructor => infinitive loop
-        DocCtrl::__construct($dbaccess, $id, $res, $dbid);
+        \DocCtrl::__construct($dbaccess, $id, $res, $dbid);
     }
 }

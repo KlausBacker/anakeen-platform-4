@@ -3007,7 +3007,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function hasWaitingFiles()
     {
-        if (!\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+        if (!\Anakeen\Core\Internal\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             return false;
         }
         $dvi = new DocVaultIndex($this->dbaccess);
@@ -3078,7 +3078,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         $err = '';
         if (ContextManager::getApplicationParam("TE_ACTIVATE") == "yes"
-            && \Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+            && \Anakeen\Core\Internal\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             if (preg_match(PREGEXPFILE, $va, $reg)) {
                 $vidin = $reg[2];
                 $vidout = 0;
