@@ -8,7 +8,7 @@ function exportTestRender(\Anakeen\Core\Internal\Action $action) {
     $outPath=$action->getArgument("output");
 
     /**
-     * @var \Dir $folder
+     * @var \Anakeen\SmartStructures\Dir\Dir $folder
      */
     $folder=\Dcp\HttpApi\V1\DocManager\DocManager::getDocument("SELENIUM_DATA");
     if (! $folder) {
@@ -22,7 +22,7 @@ function exportTestRender(\Anakeen\Core\Internal\Action $action) {
     $folder->clear();
 
     /**
-     * @var \Dir $folder
+     * @var \Anakeen\SmartStructures\Dir\Dir $folder
      */
 
 

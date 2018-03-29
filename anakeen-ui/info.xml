@@ -16,10 +16,8 @@
     </replaces>
     <post-install>
         <process command="programs/record_application DOCUMENT"/>
-        <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/cvdoc/ddui_cvdoc.struct.csv --csv-enclosure='&quot;'">
-            <label>Create Render CV family</label>
-        </process>
+
+
         <process command="./ank.php --system --resetRouteConfig"/>
         <process command="./ank.php --route=Ui:Admin:LoadParameters"/>
 
@@ -35,10 +33,7 @@
     <post-upgrade>
         <process command="programs/ui_setHtmlAuthentMode"/>
         <process command="programs/record_application DOCUMENT"/>
-        <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/cvdoc/ddui_cvdoc.struct.csv --csv-enclosure='&quot;'">
-            <label>Update Render CV family</label>
-        </process>
+
         <process command="./ank.php --route=Ui:Admin:LoadParameters"/>
         <process command="programs/post_migration DOCUMENT">
             <label>Migration</label>
