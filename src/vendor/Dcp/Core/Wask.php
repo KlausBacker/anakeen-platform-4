@@ -9,10 +9,10 @@
  */
 namespace Dcp\Core;
 
-class Wask extends \Dcp\Family\Document
+class Wask extends \SmartStructure\Document
 {
     /**
-     * @var \Dcp\Family\Wask
+     * @var \SmartStructure\Wask
      */
     private $prdoc = null;
     public function postConstructor()

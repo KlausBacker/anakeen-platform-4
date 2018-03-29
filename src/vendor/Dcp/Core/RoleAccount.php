@@ -9,7 +9,7 @@
  */
 namespace Dcp\Core;
 
-class RoleAccount extends \Dcp\Family\Document
+class RoleAccount extends \SmartStructure\Document
 {
     /**
      * @var \Anakeen\Core\Account system role

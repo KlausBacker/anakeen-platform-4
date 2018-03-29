@@ -4,7 +4,7 @@
 namespace Dcp\Pu;
 
 
-class TestAffect1 extends \Dcp\Family\Document
+class TestAffect1 extends \SmartStructure\Document
 {
     protected $one=0;
     protected $two=0;

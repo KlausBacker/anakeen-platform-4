@@ -8,7 +8,7 @@
  */
 namespace Dcp\Core;
 
-class GroupedSearch extends \Dcp\Family\Search
+class GroupedSearch extends \SmartStructure\Search
 {
     public $defaultedit = "FDL:EDITBODYCARD";
     public $defaultview = "FDL:VIEWBODYCARD";
@@ -20,7 +20,7 @@ class GroupedSearch extends \Dcp\Family\Search
         $query = array();
         foreach ($tidsearch as $k => $v) {
             /**
-             * @var \Dcp\Family\Search $doc
+             * @var \SmartStructure\Search $doc
              */
             $doc = new_Doc($this->dbaccess, $v);
             $err = $doc->control("execute");

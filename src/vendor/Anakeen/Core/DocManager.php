@@ -108,20 +108,17 @@ class DocManager
             throw new Exception("APIDM0100", print_r($initid, true));
         }
         // first more quick if alive
-        DbManager::query(sprintf("select id from docread where initid='%d' and locked != -1", $initid), $id, true,
-            true);
+        DbManager::query(sprintf("select id from docread where initid='%d' and locked != -1", $initid), $id, true, true);
         if ($id > 0) {
             return intval($id);
         }
         // second for zombie document
-        DbManager::query(sprintf("select id from docread where initid='%d' order by id desc limit 1", $initid), $id,
-            true, true);
+        DbManager::query(sprintf("select id from docread where initid='%d' order by id desc limit 1", $initid), $id, true, true);
         if ($id > 0) {
             return intval($id);
         }
         // it is not really on initid
-        DbManager::query(sprintf("select id from docread where initid=(select initid from docread where id=%d) and locked != -1",
-            $initid), $id, true, true);
+        DbManager::query(sprintf("select id from docread where initid=(select initid from docread where id=%d) and locked != -1", $initid), $id, true, true);
         if ($id > 0) {
             return intval($id);
         }
@@ -164,8 +161,7 @@ class DocManager
         if (is_numeric($name)) {
             return null;
         }
-        DbManager::query(sprintf("select initid from docread where name='%s' limit 1;", pg_escape_string($name)),
-            $initid, true, true);
+        DbManager::query(sprintf("select initid from docread where name='%s' limit 1;", pg_escape_string($name)), $initid, true, true);
         if ($initid) {
             return intval($initid);
         }
@@ -194,29 +190,27 @@ class DocManager
         }
         if (is_numeric($revision) && $revision >= 0) {
             // first more quick if alive
-            DbManager::query(sprintf("select id from docread where initid='%d' and revision = %d", $initid, $revision),
-                $id, true, true);
+            DbManager::query(sprintf("select id from docread where initid='%d' and revision = %d", $initid, $revision), $id, true, true);
 
             if ($id > 0) {
                 return intval($id);
             }
             // it is not really on initid
-            DbManager::query(sprintf("select id from docread where initid=(select initid from docread where id=%d) and revision = %d",
-                $initid, $revision), $id, true, true);
+            DbManager::query(sprintf("select id from docread where initid=(select initid from docread where id=%d) and revision = %d", $initid, $revision), $id, true, true);
 
             if ($id > 0) {
                 return intval($id);
             }
         } else {
             if (preg_match('/^state:(.+)$/', $revision, $regStates)) {
-                DbManager::query(sprintf("select id from docread where initid='%d' and state = '%s' and locked = -1 order by id desc",
-                    $initid, pg_escape_string($regStates[1])), $id, true, true);
+                DbManager::query(sprintf("select id from docread where initid='%d' and state = '%s' and locked = -1 order by id desc", $initid, pg_escape_string($regStates[1])),
+                    $id, true, true);
                 if ($id > 0) {
                     return intval($id);
                 }
                 // it is not really on initid
-                DbManager::query(sprintf("select id from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc",
-                    $initid, pg_escape_string($regStates[1])), $id, true, true);
+                DbManager::query(sprintf("select id from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc", $initid,
+                    pg_escape_string($regStates[1])), $id, true, true);
 
                 if ($id > 0) {
                     return intval($id);
@@ -694,6 +688,15 @@ class DocManager
         return 0;
     }
 
+    public static function getFamilyClassName($famName)
+    {
+        return "\\SmartStructure\\" . ucwords(strtolower($famName));
+    }
+
+    public static function getAttributesClassName($famName)
+    {
+        return sprintf("\\SmartStructure\\%sAttributeList", ucwords(strtolower($famName)));
+    }
 
     /**
      * Get document fromid
@@ -746,11 +749,10 @@ class DocManager
         $dbid = DbManager::getDbid();
         $fromName = null;
 
-        $result = pg_query($dbid,
-            sprintf("select docfam.name from docfrom, docfam where docfrom.id=%d and docfam.id=docfrom.fromid",
-                $documentId
-            )
-        );
+        $result = pg_query($dbid, sprintf(
+            "select docfam.name from docfrom, docfam where docfrom.id=%d and docfam.id=docfrom.fromid",
+            $documentId
+        ));
         if ($result) {
             if (pg_num_rows($result) > 0) {
                 $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);

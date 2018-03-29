@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Image  */
 	class Image extends \Dcp\Core\Image { const familyName="IMAGE";}
 }

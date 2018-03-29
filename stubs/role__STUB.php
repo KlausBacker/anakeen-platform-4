@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Rôle  */
 	class Role extends \Dcp\Core\RoleAccount { const familyName="ROLE";}
 }

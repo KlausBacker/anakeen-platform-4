@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Message envoyé  */
 	class Sentmessage extends \Dcp\Core\SentEmail { const familyName="SENTMESSAGE";}
 }

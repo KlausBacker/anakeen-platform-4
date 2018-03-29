@@ -12,7 +12,7 @@ use Anakeen\Core\DbManager;
 use Anakeen\Core\DocManager;
 
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-class DetailSearch extends \Dcp\Family\Search
+class DetailSearch extends \SmartStructure\Search
 {
     /**
     /**

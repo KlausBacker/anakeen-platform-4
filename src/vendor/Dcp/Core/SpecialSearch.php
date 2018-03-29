@@ -9,7 +9,7 @@
 
 namespace Dcp\Core;
 
-class SpecialSearch extends \Dcp\Family\Search
+class SpecialSearch extends \SmartStructure\Search
 {
     public $defaultedit = "FDL:EDITBODYCARD";
     public $defaultview = "FDL:VIEWBODYCARD";

@@ -113,7 +113,7 @@ function new_Doc($dbaccess, $id = '', $latest = false)
 {
     $doc = DocManager::getDocument($id, $latest);
     if (!$doc) {
-        $doc = new \Dcp\Family\Document($dbaccess);
+        $doc = new \SmartStructure\Document($dbaccess);
     } else {
         if (count(\Dcp\Core\SharedDocuments::getKeys()) < \Dcp\Core\SharedDocuments::getLimit()) {
             DocManager::cache()->addDocument($doc);

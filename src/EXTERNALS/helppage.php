@@ -33,7 +33,7 @@ function helppage_editsection(\Anakeen\Core\Internal\Action & $action, $dbaccess
     
     $imageFamily = new_Doc("", "IMAGE");
     /**
-     * @var \Dcp\Family\HELPPAGE $doc
+     * @var \SmartStructure\HELPPAGE $doc
      */
     $doc = new_Doc($dbaccess, $docid);
     $action->lay->eset('DOCID', $docid);
@@ -118,7 +118,7 @@ function helppage_edithelp(\Anakeen\Core\Internal\Action & $action, $dbaccess, $
     include_once ('FDL/editutil.php');
     editmode($action);
     /**
-     * @var \Dcp\Family\HELPPAGE $doc
+     * @var \SmartStructure\HELPPAGE $doc
      */
     $doc = new_Doc($dbaccess, $docid);
     $action->lay->eset('DOCID', $docid);

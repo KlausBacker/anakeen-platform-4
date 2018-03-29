@@ -9,7 +9,7 @@
  */
 namespace Dcp\Core;
 
-class BatchDocument extends \Dcp\Family\Portfolio
+class BatchDocument extends \SmartStructure\Portfolio
 {
     public function filterContent()
     {

@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Masque de saisie  */
 	class Mask extends \Dcp\Core\Mask { const familyName="MASK";}
 }

@@ -3,10 +3,8 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Router\Exception;
-use Anakeen\Router\URLUtils;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DocManager;
-use Anakeen\Core\Settings;
 use Anakeen\Router\ApiV2Response;
 
 /**
@@ -215,12 +213,10 @@ class FileAttribute
             throw $exception;
         }
 
-        if ($this->_family && !is_a($this->_document, sprintf("\\Dcp\\Family\\%s", $this->_family->name))) {
+        if ($this->_family && !is_a($this->_document, \Anakeen\Core\DocManager::getFamilyClassName($this->_family->name))) {
             $exception = new Exception("CRUD0220", $resourceId, $this->_family->name);
             $exception->setHttpStatus("404", "Document is not a document of the family " . $this->_family->name);
             throw $exception;
         }
-
-
     }
 }

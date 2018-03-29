@@ -260,7 +260,7 @@
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/base/base.struct.csv --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Base/base.struct.csv --csv-enclosure='&quot;'">
             <label>Import BASE Family</label>
         </process>
         <process
@@ -272,7 +272,7 @@
             <label>Import DIR Family</label>
         </process>
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/dir/dir.data.csv --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dir/dir.data.csv --csv-enclosure='&quot;'">
             <label>Import Root dir</label>
         </process>
 
@@ -618,8 +618,9 @@ This can be solved by:<br/>
         </process>
 
 
+
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/base/base.struct.csv --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Base/base.struct.csv --csv-enclosure='&quot;'">
             <label>Import BASE Family</label>
         </process>
         <process

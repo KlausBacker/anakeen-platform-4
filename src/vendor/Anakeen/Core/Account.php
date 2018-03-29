@@ -639,7 +639,7 @@ create sequence seq_id_users start 10;";
         if ($this->fid <> "") {
             include_once("FDL/freedom_util.php");
             /**
-             * @var \Dcp\Family\IUSER $iuser
+             * @var \SmartStructure\IUSER $iuser
              */
             $iuser = \Anakeen\Core\DocManager::getDocument($this->fid);
 
@@ -664,7 +664,7 @@ create sequence seq_id_users start 10;";
                 //Create a new doc IUSER
 
                 /**
-                 * @var \Dcp\Family\IUSER $iuser
+                 * @var \SmartStructure\IUSER $iuser
                  */
                 $iuser = DocManager::createDocument($fam);
                 $iuser->SetValue("US_WHATID", $this->id);
@@ -676,7 +676,7 @@ create sequence seq_id_users start 10;";
                 $err = $iuser->refreshDocUser();
             } else {
                 /**
-                 * @var \Dcp\Family\IUSER $iuser
+                 * @var \SmartStructure\IUSER $iuser
                  */
                 $iuser = $tdoc[0];
                 $this->fid = $iuser->id;

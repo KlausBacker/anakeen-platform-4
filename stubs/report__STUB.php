@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Rapport  */
 	class Report extends \Dcp\Core\Report { const familyName="REPORT";}
 }

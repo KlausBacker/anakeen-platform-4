@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** de base  */
 	class Base extends Document { const familyName="BASE";}
 }

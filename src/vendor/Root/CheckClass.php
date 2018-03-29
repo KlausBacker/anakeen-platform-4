@@ -95,11 +95,14 @@ class CheckClass extends CheckData
                         $this->addError(ErrorCode::getError('CLASS0007', $this->className, $this->fileName, $this->doc->name));
                         return;
                     }
+
+                    $parentClass = \Anakeen\Core\DocManager::getFamilyClassName($fromName);
                 } else {
-                    $fromName = "Document";
+                        $parentClass = \Anakeen\SmartStructures\Document::class;
                 }
-                
-                $parentClass = '\\Family\\Dcp\\' . $fromName;
+                if (strpos($this->doc->usefor, "P") !== false) {
+                    $parentClass = \Doc::class;
+                }
                 
                 if (!$o->isSubclassOf($parentClass)) {
                     $this->addError(ErrorCode::getError('CLASS0006', $this->className, $this->fileName, $parentClass, $this->doc->name));

@@ -9,7 +9,7 @@
  */
 namespace Dcp\Core;
 
-class MailEdit extends \Dcp\Family\Document
+class MailEdit extends \SmartStructure\Document
 {
     public $defaultedit = "FDL:EDITMAILDOC";
     /**

@@ -8,7 +8,7 @@
  */
 namespace Dcp\Core;
 
-class Timer extends \Dcp\Family\Document
+class Timer extends \SmartStructure\Document
 {
     private $lineActions;
     /**
@@ -71,7 +71,7 @@ class Timer extends \Dcp\Family\Document
     }
     /**
      * unattach timer to a document
-     * @param \Dcp\Family\Timer &$timer the timer document
+     * @param \SmartStructure\Timer &$timer the timer document
      * @param \Doc &$origin the document which comes from the attachement
      * @return string error - empty if no error -
      */
@@ -90,7 +90,7 @@ class Timer extends \Dcp\Family\Document
     }
     /**
      * unattach timer to a document
-     * @param \Dcp\Family\Timer &$timer the timer document
+     * @param \SmartStructure\Timer &$timer the timer document
      * @param \Doc &$origin the document which comes from the attachement
      * @return string error - empty if no error -
      */
@@ -213,7 +213,7 @@ class Timer extends \Dcp\Family\Document
                                 $tva = $this->rawValueToArray(str_replace('<BR>', "\n", $va));
                                 foreach ($tva as $idmail) {
                                     /**
-                                     * @var \Dcp\Family\MAILTEMPLATE $tm
+                                     * @var \SmartStructure\MAILTEMPLATE $tm
                                      */
                                     $tm = new_doc($this->dbaccess, $idmail);
                                     if ($tm->isAlive()) {

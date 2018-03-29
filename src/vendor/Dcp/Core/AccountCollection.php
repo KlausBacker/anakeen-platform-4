@@ -9,7 +9,7 @@
  */
 namespace Dcp\Core;
 
-class AccountCollection extends \Dcp\Family\Dir
+class AccountCollection extends \SmartStructure\Dir
 {
     /*
      * @end-method-ignore
@@ -150,7 +150,7 @@ class AccountCollection extends \Dcp\Family\Dir
         $tpgroup = array();
         $tidpgroup = array();
         /**
-         * @var \Dcp\Family\Group $v
+         * @var \SmartStructure\Group $v
          */
         foreach ($tgroup as $k => $v) {
             $v->RefreshGroup();

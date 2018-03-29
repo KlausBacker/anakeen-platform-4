@@ -8,7 +8,7 @@
  */
 namespace Dcp\Core;
 
-class HelpPage extends \Dcp\Family\Document
+class HelpPage extends \SmartStructure\Document
 {
     /*
      * @end-method-ignore

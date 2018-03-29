@@ -8,7 +8,7 @@
  */
 namespace Dcp\Core;
 
-class File extends \Dcp\Family\Document
+class File extends \SmartStructure\Document
 {
     public function postStore()
     {

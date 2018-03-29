@@ -29,7 +29,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        $d = DocManager::createDocument(\Dcp\Family\Base::familyName);
+        $d = DocManager::createDocument(\SmartStructure\Base::familyName);
         $d->setAttributeValue(\Dcp\AttributeIdentifiers\Base::ba_title, "x1-" . $d->revision);
         $d->store();
         
@@ -39,7 +39,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
             "title" => $d->getTitle()
         );
         
-        $d = DocManager::createDocument(\Dcp\Family\Base::familyName);
+        $d = DocManager::createDocument(\SmartStructure\Base::familyName);
         $d->setAttributeValue(\Dcp\AttributeIdentifiers\Base::ba_title, "x2-" . $d->revision);
         $d->store();
         $d->setLogicalName("TST_X2");
@@ -56,7 +56,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
             "title" => $d->getTitle()
         );
         
-        $d = DocManager::createDocument(\Dcp\Family\Base::familyName);
+        $d = DocManager::createDocument(\SmartStructure\Base::familyName);
         $d->setAttributeValue(\Dcp\AttributeIdentifiers\Base::ba_title, "x3-" . $d->revision);
         $d->store();
         $d->setLogicalName("TST_X3");
@@ -80,7 +80,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
         );
         $d->store();
         
-        $d = DocManager::createDocument(\Dcp\Family\Base::familyName);
+        $d = DocManager::createDocument(\SmartStructure\Base::familyName);
         $d->setAttributeValue(\Dcp\AttributeIdentifiers\Base::ba_title, "x4-" . $d->revision);
         $d->store();
         $d->setLogicalName("TST_X4");
@@ -105,7 +105,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
         $d->store();
         $d->locked = - 1;
         $d->modify(); // close document
-        $dM = DocManager::createDocument(\Dcp\Family\Dir::familyName);
+        $dM = DocManager::createDocument(\SmartStructure\Dir::familyName);
         // need to change its family BASE to DIR
         $dM->initid = $d->initid;
         $dM->name = $d->name;

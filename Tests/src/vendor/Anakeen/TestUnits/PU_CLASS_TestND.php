@@ -7,7 +7,7 @@
 
 namespace Dcp\Pu;
 
-class TestNd extends \Dcp\Family\Document
+class TestNd extends \SmartStructure\Document
 {
     
     public function postCreated()

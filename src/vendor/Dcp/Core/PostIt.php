@@ -8,7 +8,7 @@
  */
 namespace Dcp\Core;
 
-class PostitView extends \Dcp\Family\Document
+class PostitView extends \SmartStructure\Document
 {
     public $defaultview = "FDL:VIEWPOSTIT:T";
     public $defaultedit = "FDL:EDITPOSTIT:T";

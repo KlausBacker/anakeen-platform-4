@@ -1,0 +1,34 @@
+<?php
+
+
+namespace SmartStructure;
+[IF fromid]
+require_once(__DIR__.'/[fromFile].php');[ENDIF fromid]
+
+class [AdocClassName] extends [AParent] {
+    // Family : [title]
+
+   function __construct () {
+      [AParent]::__construct();
+
+
+     [BLOCK MATTR]
+     $this->attr["[attrid]"]=new \MenuAttribute("[attrid]", "[docid]","[label]",[order],"[link]","[visibility]","[precond]","[options]","[docName]");
+     [ENDBLOCK MATTR]
+     [BLOCK FATTR]
+     $this->attr["[attrid]"]=new \FieldSetAttribute("[attrid]", "[docid]","[label]","[visibility]","[usefor]","[type]",$this->attr["[frame]"],"[options]","[docName]");
+     [ENDBLOCK FATTR]
+     [BLOCK NATTR]
+     $this->attr["[attrid]"]=new \NormalAttribute("[attrid]", "[docid]","[label]","[type]","[format]",[repeat],[order],"[link]",
+                                                "[visibility]",[needed],[title],[abstract],
+						$this->attr["[frame]"],"[phpfile]","[phpfunc]","[elink]","[phpconstraint]","[usefor]","[eformat]","[options]","[docName]");
+
+     [ENDBLOCK NATTR]
+		[IF sAbsoluteOrders]
+	 $this->absoluteOrders=[[sAbsoluteOrders]];[ENDIF sAbsoluteOrders]
+     $this->fromids[[docid]]=[docid];
+     $this->fromname='[docName]';
+[BLOCK ATTRFIELD]
+    $this->fields["[attrid]"]="[attrid]";[ENDBLOCK ATTRFIELD]
+   }
+}

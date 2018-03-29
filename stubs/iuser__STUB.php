@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** utilisateur  */
 	class Iuser extends \Dcp\Core\UserAccount { const familyName="IUSER";}
 }

@@ -110,14 +110,14 @@ create unique index idx_idfam on docfam(id);";
         parent::__construct($dbaccess, $id, $res, $dbid);
         $this->doctype = 'C';
         if ($include && ($this->id > 0) && ($this->isAffected())) {
-            $attrClassFilePath = sprintf("%s/%s/SmartStructure/%s.php", DEFAULT_PUBDIR, \Anakeen\Core\Settings::DocumentGenDirectory, $this->name);
-            if (include_once($attrClassFilePath)) {
-                $adoc = sprintf("\\Dcp\\Family\\Adoc%s", $this->name);
+
+
+                $adoc = \Anakeen\Core\DocManager::getAttributesClassName($this->name);
                 $this->attributes = new $adoc();
                 $this->attributes->orderAttributes();
-            } else {
-                throw new Dcp\Exception(sprintf("cannot access attribute definition for %s (#%s) family", $this->name, $this->id));
-            }
+
+                //throw new Dcp\Exception(sprintf("cannot access attribute definition for %s (#%s) family", $this->name, $this->id));
+
             $this->FINALCLASS_HasBeenLoaded = true;
         }
     }

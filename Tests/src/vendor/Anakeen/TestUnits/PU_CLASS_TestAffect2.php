@@ -7,7 +7,7 @@ namespace Dcp\Pu;
  * Class TestAffect1
  * @package Dcp\Pu
  */
-class TestAffect2 extends \Dcp\Family\Tst_Affect1
+class TestAffect2 extends \SmartStructure\Tst_Affect1
 {
 
     protected function preAffect(array & $data, &$more, &$reset) {

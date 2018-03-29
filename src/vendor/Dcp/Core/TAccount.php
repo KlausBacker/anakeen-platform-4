@@ -233,7 +233,7 @@ trait TAccount
      *
      * @param int $wid what identifier
      *
-     * @return \Dcp\Family\Iuser|\Dcp\Family\IGROUP|false the object document (false if not found)
+     * @return \SmartStructure\Iuser|\SmartStructure\IGROUP|false the object document (false if not found)
      * @throws Exception
      */
     public function getDocUser($wid)
@@ -243,7 +243,7 @@ trait TAccount
             if ($u->fid > 0) {
                 $du = DocManager::getDocument($u->fid);
                 /**
-                 * @var \Dcp\Family\Iuser|\Dcp\Family\IGROUP $du
+                 * @var \SmartStructure\Iuser|\SmartStructure\IGROUP $du
                  */
                 if ($du && $du->isAlive()) {
                     return $du;

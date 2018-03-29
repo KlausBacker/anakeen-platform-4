@@ -4,10 +4,10 @@
  * @package FDL
 */
 
-namespace Dcp\Family;
+namespace Anakeen\SmartStructures;
 
 class Document extends \Anakeen\SmartStructures\Profiles\PDoc
 {
     public $defDoctype = 'F';
-    public $defClassname = '\Dcp\Family\Document';
+    public $defClassname = '\\Anakeen\\SmartStructures\\Document';
 }

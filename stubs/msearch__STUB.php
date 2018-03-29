@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Recherche groupée  */
 	class Msearch extends \Dcp\Core\GroupedSearch { const familyName="MSEARCH";}
 }

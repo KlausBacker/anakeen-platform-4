@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Groupe de personnes  */
 	class Group extends \Dcp\Core\AccountCollection { const familyName="GROUP";}
 }

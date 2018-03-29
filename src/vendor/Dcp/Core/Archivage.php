@@ -8,7 +8,7 @@
  */
 namespace Dcp\Core;
 
-class Archiving extends \Dcp\Family\Dir
+class Archiving extends \SmartStructure\Dir
 {
     /**
      * all document's folder are archieved

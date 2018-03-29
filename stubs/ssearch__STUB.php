@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Recherche spécialisée  */
 	class Ssearch extends \Dcp\Core\SpecialSearch { const familyName="SSEARCH";}
 }

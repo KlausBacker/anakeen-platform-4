@@ -106,7 +106,7 @@ class CheckEnd extends CheckData
         foreach ($la as & $oa) {
             if ($oa) {
                 $relativeOrder = $oa->getOption("relativeOrder");
-                if ($relativeOrder && $relativeOrder !== \Dcp\FamilyAbsoluteOrder::firstOrder && $relativeOrder !== \Dcp\FamilyAbsoluteOrder::autoOrder) {
+                if ($relativeOrder && $relativeOrder !== \SmartStructureAbsoluteOrder::firstOrder && $relativeOrder !== \SmartStructureAbsoluteOrder::autoOrder) {
                     if (!$this->doc->getAttribute($relativeOrder)) {
                         $this->addError(ErrorCode::getError('ATTR0212', $oa->id, $relativeOrder));
                     }

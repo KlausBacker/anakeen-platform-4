@@ -5,7 +5,7 @@
 */
 namespace Dcp\Pu;
 
-class TstInvisible extends \Dcp\Family\Document
+class TstInvisible extends \SmartStructure\Document
 {
     public function postImport(array $extra = array())
     {

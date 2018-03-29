@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Profil de document  */
 	class Pdoc extends \Anakeen\SmartStructures\Profiles\PDoc { const familyName="PDOC";}
 	/** Profil de dossier  */

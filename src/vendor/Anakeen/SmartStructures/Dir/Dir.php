@@ -17,7 +17,7 @@
  * Folder document Class
  *
  */
-class Dir extends \Anakeen\SmartStructures\Profiles\Pdir
+class Dir extends \Anakeen\SmartStructures\Profiles\PDir
 {
     public $defDoctype = 'D';
     private $authfam = false;

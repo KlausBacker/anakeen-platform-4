@@ -109,7 +109,7 @@ function lmail($dbaccess, $name)
         $dl = $s->search()->getDocumentList();
         foreach ($dl as $dest) {
             /**
-             * @var \Dcp\Family\IUSER $dest
+             * @var \SmartStructure\IUSER $dest
              */
             $mailTitle = $dest->getMailTitle();
             $mail = $dest->getMail();
@@ -998,7 +998,7 @@ function reportChooseColumns(&$action, $id)
     // $action->lay->set("enclosname", $nom);
     
     /**
-     * @var \Dcp\Family\Report $doc
+     * @var \SmartStructure\Report $doc
      */
     $doc = new_doc("", $id);
     if ($doc->doctype == "C") {
@@ -1392,7 +1392,7 @@ function recipientDocument($dbaccess, $name)
         $dl = $s->search()->getDocumentList();
         foreach ($dl as $dest) {
             /**
-             * @var \Dcp\Family\IUSER $dest
+             * @var \SmartStructure\IUSER $dest
              */
             $mailTitle = $dest->getMailTitle();
             $mail = $dest->getMail();

@@ -76,7 +76,7 @@ function refreshOneGroup($gid, $refresh)
     if ($g->fid > 0 && $g->accounttype == 'G') {
         $dbaccess = $g->dbaccess;
         /**
-         * @var \Dcp\Family\Igroup $doc
+         * @var \SmartStructure\Igroup $doc
          */
         $doc = new_Doc($dbaccess, $g->fid);
         if ($doc->isAlive()) {

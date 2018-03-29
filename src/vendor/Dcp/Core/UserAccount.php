@@ -17,7 +17,7 @@ use SmartStructure\Attributes\Iuser as MyAttributes;
 /**
  * Class UserAccount
  */
-class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
+class UserAccount extends \SmartStructure\Document implements \IMailRecipient
 {
     use TAccount;
 
@@ -146,7 +146,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         $tgid = $this->getMultipleRawValues("US_IDGROUP");
         foreach ($tgid as $gid) {
             /**
-             * @var \Dcp\Family\Igroup $gdoc
+             * @var \SmartStructure\Igroup $gdoc
              */
             $gdoc = DocManager::getDocument($gid);
             if ($gdoc && $gdoc->isAlive()) {
@@ -235,7 +235,7 @@ class UserAccount extends \Dcp\Family\Document implements \IMailRecipient
         $err = '';
         if ($grpid) {
             /**
-             * @var \Dcp\Family\Igroup $grp
+             * @var \SmartStructure\Igroup $grp
              */
             $grp = DocManager::getDocument($grpid);
             if ($grp && $grp->isAlive()) {

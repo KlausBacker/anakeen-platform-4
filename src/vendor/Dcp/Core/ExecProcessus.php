@@ -11,7 +11,7 @@ namespace Dcp\Core;
 
 use Anakeen\Script\ShellManager;
 
-class ExecProcessus extends \Dcp\Family\Document
+class ExecProcessus extends \SmartStructure\Document
 {
     private $execuserid;
     /**
@@ -161,7 +161,7 @@ class ExecProcessus extends \Dcp\Family\Document
         $status = $this->bgExecute(_("dynacase cron try execute"));
         $del = new_Doc($this->dbaccess, $this->getLatestId(false, true));
         /**
-         * @var \Dcp\Family\EXEC $del
+         * @var \SmartStructure\EXEC $del
          */
         $del->clearValue("exec_status");
         $del->clearValue("exec_handnextdate");
@@ -204,7 +204,7 @@ class ExecProcessus extends \Dcp\Family\Document
     {
         $doc = new_Doc($action->dbaccess, $docid);
         /**
-         * @var \Dcp\Family\EXEC $doc
+         * @var \SmartStructure\EXEC $doc
          */
         if ($doc->locked == - 1) { // it is revised document
             $doc = new_Doc($action->dbaccess, $doc->getLatestId());

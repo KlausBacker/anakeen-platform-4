@@ -18,7 +18,7 @@ namespace Dcp\Core;
  */
 use \SmartStructure\Attributes\Cvdoc as MyAttributes;
 
-class CVDoc extends \Dcp\Family\Base
+class CVDoc extends \SmartStructure\Base
 {
     /**
      * CVDoc has its own special access depend on special views

@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Processus  */
 	class Exec extends \Dcp\Core\ExecProcessus { const familyName="EXEC";}
 }

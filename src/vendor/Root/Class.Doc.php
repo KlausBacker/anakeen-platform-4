@@ -2692,11 +2692,11 @@ create unique index i_docir on doc(initid, revision);";
                 $argMid = $mid;
             }
             /**
-             * @var \Dcp\Family\MASK $mdoc
+             * @var \SmartStructure\MASK $mdoc
              */
             $mdoc = DocManager::getDocument($mid);
             if ($mdoc && $mdoc->isAlive()) {
-                if (is_a($mdoc, '\Dcp\Family\Mask')) {
+                if (is_a($mdoc, '\SmartStructure\Mask')) {
                     $maskFam = $mdoc->getRawValue("msk_famid");
                     if (!in_array($maskFam, $this->getFromDoc())) {
                         $err = ErrorCode::getError(
@@ -5961,7 +5961,7 @@ create unique index i_docir on doc(initid, revision);";
                 $waskids = $wdoc->getDocumentWasks($this->state, $control);
                 foreach ($waskids as $k => $waskid) {
                     /**
-                     * @var \Dcp\Family\Wask $wask
+                     * @var \SmartStructure\Wask $wask
                      */
                     $wask = Anakeen\Core\DocManager::getDocument($waskid);
                     if ($wask && $wask->isAlive()) {
@@ -8932,7 +8932,7 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($answers as $ka => $ans) {
             $utags = $this->searchUTags("ASK_" . $ans["waskid"], false, true);
             /**
-             * @var \Dcp\Family\WASK $wask
+             * @var \SmartStructure\WASK $wask
              */
             $wask = DocManager::getDocument($ans["waskid"]);
             $wask->set($this);
@@ -10464,7 +10464,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * attach timer to a document
      *
-     * @param \Dcp\Family\TIMER &$timer   the timer document
+     * @param \SmartStructure\TIMER &$timer   the timer document
      * @param Doc               &$origin  the document which comes from the attachement
      * @param string            $execdate date to execute first action YYYY-MM-DD HH:MM:SS
      *
@@ -10503,7 +10503,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * unattach timer of a document
      *
-     * @param \Dcp\Family\TIMER &$timer the timer document
+     * @param \SmartStructure\TIMER &$timer the timer document
      *
      * @api Unattach timer of a document
      * @return string error - empty if no error -
@@ -10538,7 +10538,7 @@ create unique index i_docir on doc(initid, revision);";
         } else {
             foreach ($tms as $k => $v) {
                 /**
-                 * @var Dcp\Family\Timer $t
+                 * @var SmartStructure\Timer $t
                  */
                 $t = DocManager::getDocument($v["timerid"]);
                 if ($t && $t->isAlive()) {
@@ -10575,7 +10575,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function unattachAllTimers($origin = null)
     {
         /**
-         * @var \Dcp\Family\TIMER $timer
+         * @var \SmartStructure\TIMER $timer
          */
         $timer = Anakeen\Core\DocManager::createTemporaryDocument("TIMER");
         $c = 0;
@@ -10872,7 +10872,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param string $fromid get the helppage for this family id (default is the family of the current document)
      *
-     * @return \Dcp\Family\HELPPAGE the helppage document on success, or a non-alive document if no helppage is associated with the family
+     * @return \SmartStructure\HELPPAGE the helppage document on success, or a non-alive document if no helppage is associated with the family
      */
     public function getHelpPage($fromid = "")
     {

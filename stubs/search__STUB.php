@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Recherche  */
 	class Search extends \DocSearch { const familyName="SEARCH";}
 }

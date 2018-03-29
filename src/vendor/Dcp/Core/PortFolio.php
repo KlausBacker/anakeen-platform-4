@@ -9,7 +9,7 @@
  */
 namespace Dcp\Core;
 
-class PortFolio extends \Dcp\Family\Dir
+class PortFolio extends \SmartStructure\Dir
 {
     /**
      * Call to create default tabs

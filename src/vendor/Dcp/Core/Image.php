@@ -9,7 +9,7 @@
  */
 namespace Dcp\Core;
 
-class Image extends \Dcp\Family\Document
+class Image extends \SmartStructure\Document
 {
     public $defaultview = "FDL:VIEWIMGCARD";
     

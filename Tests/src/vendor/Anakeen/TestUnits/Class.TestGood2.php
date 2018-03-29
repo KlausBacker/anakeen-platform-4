@@ -5,7 +5,7 @@
 */
 
 namespace Tst;
-class Famimp4Plus extends \Dcp\Family\Document
+class Famimp4Plus extends \SmartStructure\Document
 {
     
     public function goodCompute3()

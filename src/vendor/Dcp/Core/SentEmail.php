@@ -8,7 +8,7 @@
  */
 namespace Dcp\Core;
 
-class SentEmail extends \Dcp\Family\Document
+class SentEmail extends \SmartStructure\Document
 {
     public $defaultview = "FDL:VIEWEMESSAGE";
     /**
@@ -29,7 +29,7 @@ class SentEmail extends \Dcp\Family\Document
         $tdir = internalGetDocCollection($this->dbaccess, 0, "0", 1, $filter, 1, "LIST", "IUSER");
         if (count($tdir) == 1) {
             /**
-             * @var \Dcp\Family\Iuser $first
+             * @var \SmartStructure\Iuser $first
              */
             $first = $tdir[0];
             $vphoto = $first->getRawValue("us_photo");

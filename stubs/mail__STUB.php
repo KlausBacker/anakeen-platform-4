@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Mail  */
 	class Mail extends \Dcp\Core\MailEdit { const familyName="MAIL";}
 }

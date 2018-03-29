@@ -469,7 +469,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             
             if ($fld->fromid == \Anakeen\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
                 /**
-                 * @var \Dcp\Family\SSEARCH $fld
+                 * @var \SmartStructure\SSEARCH $fld
                  */
                 return $fld->getDocList($start, $slice, $qtype, $userid);
             }
@@ -623,7 +623,6 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                 }
                 if ($fromid != "") {
                     if ($fromid == - 1) {
-                        include_once "FDL/Class.DocFam.php";
                         $fromid = "Fam";
                     } else {
                         $fromid = abs($fromid);

@@ -7,7 +7,7 @@
 
 function activateTrigger($dbaccess, $docid)
 {
-    Dcp\FamilyImport::activateTrigger($dbaccess, $docid);
+    \Dcp\FamilyImport::activateTrigger($dbaccess, $docid);
 }
 /**
  * refresh PHP Class & Postgres Table Definition
@@ -17,7 +17,7 @@ function activateTrigger($dbaccess, $docid)
  */
 function refreshPhpPgDoc($dbaccess, $docid)
 {
-    return Dcp\FamilyImport::refreshPhpPgDoc($dbaccess, $docid);
+    return \Dcp\FamilyImport::refreshPhpPgDoc($dbaccess, $docid);
 }
 /**
  * Extract the main type and the format from a type string
@@ -28,5 +28,5 @@ function refreshPhpPgDoc($dbaccess, $docid)
  */
 function parseType($type)
 {
-    return Dcp\FamilyImport::parseType($type);
+    return \Dcp\FamilyImport::parseType($type);
 }

@@ -10,7 +10,7 @@ namespace Dcp\Core;
 
 use \SmartStructure\Attributes\Report as MyAttributes;
 
-class Report extends \Dcp\Family\Dsearch
+class Report extends \SmartStructure\Dsearch
 {
     public $defaultedit = "FREEDOM:EDITREPORT";
     public $defaultview = "FREEDOM:VIEWREPORT";
@@ -765,7 +765,7 @@ class Report extends \Dcp\Family\Dsearch
         $fc->setLongtextMultipleBrToCr(" "); // longtext are in a single line if multiple
         $fc->setNc('-');
         $fc->setHookAdvancedStatus(function ($s) {
-            \Dcp\Family\Report::setStatus($s);
+            \SmartStructure\Report::setStatus($s);
         });
         $r = $fc->render();
         $this->setStatus(_("Doing csv render"));

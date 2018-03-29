@@ -5,7 +5,7 @@
 */
 namespace Dcp\Pu;
 
-class TstExportCollection extends \Dcp\Family\Document
+class TstExportCollection extends \SmartStructure\Document
 {
     public function postImport(array $extra = array())
     {

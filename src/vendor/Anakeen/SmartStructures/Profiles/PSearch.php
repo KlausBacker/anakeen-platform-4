@@ -2,7 +2,7 @@
 
 namespace Anakeen\SmartStructures\Profiles;
 
-class PDocSearch extends \DocCollection
+class PSearch extends \DocCollection
 {
     // --------------------------------------------------------------------
     //---------------------- OBJECT CONTROL PERMISSION --------------------

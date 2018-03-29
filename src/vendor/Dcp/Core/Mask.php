@@ -11,7 +11,7 @@ namespace Dcp\Core;
 
 use \SmartStructure\Attributes\Mask as myAttr;
 
-class Mask extends \Dcp\Family\Base
+class Mask extends \SmartStructure\Base
 {
     public $defaultedit = "FREEDOM:EDITMASK";
     public $defaultview = "FREEDOM:VIEWMASK";

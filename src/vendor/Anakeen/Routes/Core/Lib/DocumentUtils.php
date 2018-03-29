@@ -2,6 +2,7 @@
 
 namespace Anakeen\Routes\Core\Lib;
 
+use Anakeen\Core\DocManager;
 use Anakeen\Router\Exception;
 use Anakeen\Core\Settings;
 use Anakeen\Router\URLUtils;
@@ -192,7 +193,7 @@ class DocumentUtils
             $exception->setHttpStatus("404", "Family not found");
             throw $exception;
         }
-        if ($family && !is_a($document, sprintf("\\Dcp\\Family\\%s", $family->name))) {
+        if ($family && !is_a($document, DocManager::getFamilyClassName($family->name))) {
             $exception = new Exception("ROUTES0104", $document->initid, $family->name);
             $exception->setHttpStatus("404", "Document is not a document of the family " . $family->name);
             throw $exception;

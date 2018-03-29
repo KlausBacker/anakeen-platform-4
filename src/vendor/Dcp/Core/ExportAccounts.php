@@ -6,6 +6,8 @@
 
 namespace Dcp\Core;
 
+use Anakeen\Core\DocManager;
+
 class ExportAccounts
 {
     /**
@@ -36,14 +38,14 @@ class ExportAccounts
      * @var \Anakeen\Core\Account
      */
     private $workAccount;
-    
+
     protected $sessionKey = '';
     protected $exportCryptedPassword = false;
     /**
      * @var \DocFam[]
      */
     private $families = array();
-    
+
     const ABORTORDER = "::ABORT::";
     const XSDDIR = "XSD";
     protected $exportGroupParent = false;
@@ -51,20 +53,24 @@ class ExportAccounts
     protected $exportDocument = false;
     protected $exportSchemaDirectory = "";
     protected $aborted = false;
-    
+
     protected $documentInfo = array();
     private $addedIds = array();
     private $schemaWritted = array();
+
     /**
      * Define accounts to exports
+     *
      * @param \SearchAccount $s
      */
     public function setSearchAccount(\SearchAccount $s)
     {
         $this->search = $s;
     }
+
     /**
      * Return account exportation based on SearchAccount object
+     *
      * @return string the XML result
      * @throws Exception
      */
@@ -76,10 +82,10 @@ class ExportAccounts
         $this->workAccount = new \Anakeen\Core\Account();
         $this->initXml();
         $this->setSessionMessage(___("Retrieve Account data", "fuserexport"));
-        
+
         try {
             $accounts = $this->search->search();
-            
+
             $count = $accounts->length;
             $k = 0;
             foreach ($accounts as $account) {
@@ -118,8 +124,10 @@ class ExportAccounts
         $this->setSessionMessage("::END::");
         return $this->xml->saveXML();
     }
+
     /**
      * @param string $exportSchemaDirectory
+     *
      * @throws Exception
      */
     public function setExportSchemaDirectory($exportSchemaDirectory)
@@ -131,11 +139,12 @@ class ExportAccounts
             throw new Exception("ACCT0208", $exportSchemaDirectory);
         }
         $this->exportSchemaDirectory = $exportSchemaDirectory . "/" . self::XSDDIR;
-        
+
         if (!is_dir($this->exportSchemaDirectory)) {
             mkdir($this->exportSchemaDirectory);
         }
     }
+
     /**
      * @param string $sessionKey
      */
@@ -143,6 +152,7 @@ class ExportAccounts
     {
         $this->sessionKey = $sessionKey;
     }
+
     /**
      * Abort current export session
      */
@@ -153,6 +163,7 @@ class ExportAccounts
             $action->session->register($this->sessionKey . "::ABORT", self::ABORTORDER);
         }
     }
+
     /**
      * @return boolean
      */
@@ -160,6 +171,7 @@ class ExportAccounts
     {
         return $this->aborted;
     }
+
     protected function setSessionMessage($text)
     {
         if ($this->sessionKey) {
@@ -172,7 +184,7 @@ class ExportAccounts
             }
         }
     }
-    
+
     public function getSessionMessage()
     {
         if ($this->sessionKey) {
@@ -181,15 +193,17 @@ class ExportAccounts
         }
         return null;
     }
+
     /**
      * Reorder group bu depth to avoid unreferenced groups
+     *
      * @throws \Dcp\Db\Exception
      */
     protected function reorderGroups()
     {
         $xpath = new \DOMXpath($this->xml);
         $groups = $xpath->query('//accounts/groups/group/reference');
-        
+
         $groupLogins = array();
         /**
          * @var \DOMElement $loginNode
@@ -215,11 +229,13 @@ class ExportAccounts
             });
             if ($searchGroups) {
                 // Get tree group information
-                $sql = sprintf("select groups.iduser as groupid, groups.idgroup as parentid, users.login as grouplogin from groups, users where groups.iduser in (%s) and groups.iduser=users.id and users.accounttype='G'", implode(array_map(function ($s) {
-                    return pg_escape_literal($s);
-                }, $searchGroups), ", "));
+                $sql
+                    = sprintf("select groups.iduser as groupid, groups.idgroup as parentid, users.login as grouplogin from groups, users where groups.iduser in (%s) and groups.iduser=users.id and users.accounttype='G'",
+                    implode(array_map(function ($s) {
+                        return pg_escape_literal($s);
+                    }, $searchGroups), ", "));
                 simpleQuery("", $sql, $groupTree);
-                
+
                 if ($groupTree) {
                     foreach ($groupTree as & $groupItem) {
                         $groupItem["groupid"] = intval($groupItem["groupid"]);
@@ -242,7 +258,7 @@ class ExportAccounts
                         }
                         return 0;
                     });
-                    
+
                     foreach ($groupOrdered as $group) {
                         $reference = $group["reference"];
                         /**
@@ -256,7 +272,7 @@ class ExportAccounts
             }
         }
     }
-    
+
     protected function getDepthLevel($groupIdentifier, $tree)
     {
         $parentLevel = 0;
@@ -267,6 +283,7 @@ class ExportAccounts
         }
         return $parentLevel + 1;
     }
+
     /**
      * Remove empty tags
      */
@@ -280,38 +297,47 @@ class ExportAccounts
             $node->parentNode->removeChild($node);
         }
     }
+
     /**
      * Set to true to export crypted password (default is false)
+     *
      * @param bool $exportCryptedPassword
      */
     public function setExportCryptedPassword($exportCryptedPassword)
     {
         $this->exportCryptedPassword = $exportCryptedPassword;
     }
+
     /**
      * Set to true to export parent group definition for user accounts (default is false)
+     *
      * @param bool $exportGroupParent
      */
     public function setExportGroupParent($exportGroupParent)
     {
         $this->exportGroupParent = $exportGroupParent;
     }
+
     /**
      * Set to true to export document information about account (default is false)
+     *
      * @param bool $exportDocument
      */
     public function setExportDocument($exportDocument)
     {
         $this->exportDocument = $exportDocument;
     }
+
     /**
      * Set to true to export relative roles for group and user accounts (default is false)
+     *
      * @param bool $exportRoleParent
      */
     public function setExportRoleParent($exportRoleParent)
     {
         $this->exportRoleParent = $exportRoleParent;
     }
+
     protected function initXml()
     {
         $this->xml = new \DOMDocument("1.0", "utf-8");
@@ -325,10 +351,11 @@ class ExportAccounts
         $this->userRootNode = $this->xml->createElement("users");
         $this->userRootNode = $this->xml->createElement("users");
         $this->rootNode->appendChild($this->userRootNode);
-        
+
         $this->xml->preserveWhiteSpace = false;
         $this->xml->formatOutput = true;
     }
+
     /**
      * Record document to add
      * These record are processed in one time at the end of export
@@ -341,8 +368,10 @@ class ExportAccounts
     {
         $this->documentInfo[$user->id] = $user->fid;
     }
+
     /**
      * Add document node for each recorded account
+     *
      * @throws \Dcp\Exception
      */
     protected function addDocumentNodes()
@@ -356,11 +385,11 @@ class ExportAccounts
                 "fromid"
             ));
         }
-        
+
         $export = new \Dcp\ExportXmlDocument();
         $export->setStructureAttributes(true);
         $export->setIncludeSchemaReference(false);
-        
+
         $docXml = new \DOMDocument("1.0", "utf-8");
         $docXml->preserveWhiteSpace = false;
         $xpath = new \DOMXpath($this->xml);
@@ -369,17 +398,17 @@ class ExportAccounts
         foreach ($s as $doc) {
             $k++;
             $this->setSessionMessage(sprintf(___("Export relative document (%d/%d)", "fuserexport"), $k, $count));
-            
+
             $documentNode = $this->xml->createElement("document");
             $documentNode->setAttribute("family", $doc->fromname);
             $uid = array_search($doc->id, $this->documentInfo);
             $nodes = $xpath->query(sprintf('//*[@id="%d"]', $uid));
-            
+
             $accountNode = $nodes->item(0);
             $accountNode->appendChild($documentNode);
             if ($this->exportDocument) {
                 $export->setDocument($doc);
-                
+
                 $export->setAttributeToExport(array(
                     $doc->fromid => $this->filterAttribute($doc)
                 ));
@@ -388,7 +417,7 @@ class ExportAccounts
                 //$docXml->documentElement->removeAttribute("xsi:noNamespaceSchemaLocation");
                 //$docXml->documentElement->removeAttribute("xmlns:xsi");
                 $docNode = $this->xml->importNode($docXml->documentElement, true);
-                
+
                 $documentNode->appendChild($docNode);
                 if ($this->exportSchemaDirectory) {
                     $this->writeFamilySchema($doc->fromname);
@@ -399,23 +428,23 @@ class ExportAccounts
             $this->writeCommonSchema();
         }
     }
-    
+
     protected function writeCommonSchema()
     {
         copy(sprintf("%s/vendor/Anakeen/FDL/Layout/fdl.xsd", DEFAULT_PUBDIR), sprintf("%s/fdl.xsd", $this->exportSchemaDirectory));
         copy(sprintf("%s/vendor/Anakeen/FDL/Layout/fdloptions.xsd", DEFAULT_PUBDIR), sprintf("%s/fdloptions.xsd", $this->exportSchemaDirectory));
         $this->xml->documentElement->setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
         $this->xml->documentElement->setAttribute("xsi:noNamespaceSchemaLocation", self::XSDDIR . "/accounts.xsd");
-        
+
         $xsd = new \DOMDocument();
         $xsd->load("USERCARD/Layout/accounts.xsd");
         $xpath = new \DOMXPath($xsd);
         $documentTypeNode = $xpath->query('//xs:complexType[@name="documentType"]/xs:sequence')->item(0);
-        
+
         $this->writeFamilySchema("IUSER");
         $this->writeFamilySchema("IGROUP");
         $this->writeFamilySchema("ROLE");
-        
+
         $family = new_doc("", "IUSER");
         $subFams = $family->getChildFam();
         foreach ($subFams as $subFam) {
@@ -431,7 +460,7 @@ class ExportAccounts
         foreach ($subFams as $subFam) {
             $this->writeFamilySchema($subFam["name"]);
         }
-        
+
         foreach ($this->schemaWritted as $familyName => $true) {
             $familyName = strtolower($familyName);
             $node = $xsd->createElement("xs:element");
@@ -439,16 +468,16 @@ class ExportAccounts
             $node->setAttribute("name", $familyName);
             $node->setAttribute("minOccurs", "0");
             $documentTypeNode->appendChild($node);
-            
+
             $node = $xsd->createElement("xs:include");
             $node->setAttribute("schemaLocation", sprintf("%s.xsd", $familyName));
-            
+
             $firstElement = $xpath->query('//xs:element')->item(0);
             $firstElement->parentNode->insertBefore($node, $firstElement);
         }
         file_put_contents(sprintf("%s/accounts.xsd", $this->exportSchemaDirectory), $xsd->saveXML());
     }
-    
+
     protected function writeFamilySchema($familyName)
     {
         if (empty($this->schemaWritted[$familyName])) {
@@ -457,22 +486,25 @@ class ExportAccounts
              */
             $fam = new_doc("", $familyName);
             $output = sprintf("%s/%s.xsd", $this->exportSchemaDirectory, strtolower($fam->name));
-            
+
             file_put_contents($output, $fam->getXmlSchema(true));
             $this->schemaWritted[$familyName] = true;
         }
     }
+
     /**
      * Return only specific document attribute.
      * System attributes are no exported in document node
+     *
      * @param \Doc $doc
+     *
      * @return array
      */
     private function filterAttribute(\Doc $doc)
     {
         $filter = array();
         $excludeFilters = array();
-        if (is_a($doc, "\\Dcp\\Family\\Iuser")) {
+        if (is_a($doc, DocManager::getFamilyClassName("IUSER"))) {
             if (!isset($this->families["IUSER"])) {
                 $this->families["IUSER"] = new_doc("", "IUSER");
             }
@@ -505,7 +537,7 @@ class ExportAccounts
                 "us_loginfailure"
             );
         }
-        if (is_a($doc, "\\Dcp\\Family\\Igroup")) {
+        if (is_a($doc, DocManager::getFamilyClassName("Igroup"))) {
             if (!isset($this->families["IGROUP"])) {
                 $this->families["IGROUP"] = new_doc("", "IGROUP");
             }
@@ -536,7 +568,7 @@ class ExportAccounts
                 "fld_pdirid"
             );
         }
-        if (is_a($doc, "\\Dcp\\Family\\Role")) {
+        if (is_a($doc, DocManager::getFamilyClassName("ROLE"))) {
             if (!isset($this->families["ROLE"])) {
                 $this->families["ROLE"] = new_doc("", "ROLE");
             }
@@ -546,7 +578,7 @@ class ExportAccounts
                 "us_whatid"
             );
         }
-        
+
         $attributes = $doc->getAttributes();
         foreach ($attributes as $oattr) {
             if ($oattr->usefor !== "Q" && !in_array($oattr->id, $excludeFilters) && (!$oattr->isNormal || $oattr->type === "array" || $doc->getRawValue($oattr->id) !== "")) {
@@ -555,17 +587,18 @@ class ExportAccounts
         }
         return $filter;
     }
+
     /**
      * Add nodes for group and role related accounts
      *
      * @param \Anakeen\Core\Account $user
-     * @param \DOMElement $node
+     * @param \DOMElement           $node
      */
     private function addParentInfo(\Anakeen\Core\Account $user, \DOMElement $node)
     {
         $roles = $user->getRoles();
         $groups = $user->getGroupsId();
-        
+
         if (count($roles) > 0) {
             $roleNode = $this->xml->createElement("associatedRoles");
             $roleNode->setAttribute("reset", "false");
@@ -581,7 +614,7 @@ class ExportAccounts
                 $roleNode->appendChild($nodeInfo);
             }
         }
-        
+
         if (count($groups) > 0) {
             $roleNode = $this->xml->createElement("parentGroups");
             $roleNode->setAttribute("reset", "false");
@@ -598,6 +631,7 @@ class ExportAccounts
             }
         }
     }
+
     /**
      * Add User node info
      *
@@ -608,7 +642,7 @@ class ExportAccounts
     protected function addUserAccount(\Anakeen\Core\Account $user)
     {
         $node = $this->xml->createElement("user");
-        
+
         $infos = array(
             "login",
             "firstname",
@@ -625,7 +659,7 @@ class ExportAccounts
         $nodeInfo = $this->xml->createElement("status");
         $nodeInfo->setAttribute("activated", $user->status === "D" ? "false" : "true");
         $node->appendChild($nodeInfo);
-        
+
         if ($user->substitute) {
             simpleQuery("", sprintf("select login from users where id = %d", $user->substitute), $substituteLogin, true, true);
             if ($substituteLogin) {
@@ -639,14 +673,15 @@ class ExportAccounts
             $nodeInfo->setAttribute("crypted", "true");
             $node->appendChild($nodeInfo);
         }
-        
+
         $node->setAttribute("id", $user->id);
         $this->addParentInfo($user, $node);
-        
+
         $this->memoDocumentInfo($user);
-        
+
         $this->userRootNode->appendChild($node);
     }
+
     /**
      * Add group node info
      *
@@ -660,15 +695,16 @@ class ExportAccounts
             $node->appendChild($nodeInfo);
             $nodeInfo = $this->xml->createElement("displayName", htmlspecialchars($group->getAccountName()));
             $node->appendChild($nodeInfo);
-            
+
             $node->setAttribute("id", $group->id);
-            
+
             $this->memoDocumentInfo($group);
             $this->groupRootNode->appendChild($node);
             $this->addedIds[$group->id] = true;
             $this->addParentInfo($group, $node);
         }
     }
+
     /**
      * Add role node info
      *
@@ -684,11 +720,12 @@ class ExportAccounts
             $node->appendChild($nodeInfo);
             $node->setAttribute("id", $role->id);
             $this->memoDocumentInfo($role);
-            
+
             $this->roleRootNode->appendChild($node);
             $this->addedIds[$role->id] = true;
         }
     }
+
     /**
      * Convert a string to an XPath literal
      *
@@ -698,6 +735,7 @@ class ExportAccounts
      * If no apostrophe is found, then quote the string with apostrophes.
      *
      * @param $str
+     *
      * @return string
      */
     protected static function xpathLiteral($str)
@@ -706,9 +744,9 @@ class ExportAccounts
             return "'" . $str . "'";
         } else {
             return "concat(" . str_replace(array(
-                "'',",
-                ",''"
-            ), "", "'" . implode("',\"'\",'", explode("'", $str)) . "'") . ")";
+                    "'',",
+                    ",''"
+                ), "", "'" . implode("',\"'\",'", explode("'", $str)) . "'") . ")";
         }
     }
 }

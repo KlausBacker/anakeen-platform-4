@@ -1,40 +1,14 @@
 <?php
 
 
-namespace Dcp\Family;
+namespace SmartStructure;
 [IF fromid]
-require_once(__DIR__.'/[fromname].php');[ENDIF fromid]
+require_once(__DIR__.'/[fromFile].php');[ENDIF fromid]
 
 [IF hasMethods]
 require_once(__DIR__.'/Method.[docname].php');[ENDIF hasMethods]
 
-class ADoc[docName] extends [AParent] {
-    // Family : [title]
 
-   function __construct () {
-      [AParent]::__construct();
-
-
-     [BLOCK MATTR]
-     $this->attr["[attrid]"]=new \MenuAttribute("[attrid]", "[docid]","[label]",[order],"[link]","[visibility]","[precond]","[options]","[docName]");
-     [ENDBLOCK MATTR]
-     [BLOCK FATTR]
-     $this->attr["[attrid]"]=new \FieldSetAttribute("[attrid]", "[docid]","[label]","[visibility]","[usefor]","[type]",$this->attr["[frame]"],"[options]","[docName]");
-     [ENDBLOCK FATTR]
-     [BLOCK NATTR]
-     $this->attr["[attrid]"]=new \NormalAttribute("[attrid]", "[docid]","[label]","[type]","[format]",[repeat],[order],"[link]",
-                                                "[visibility]",[needed],[title],[abstract],
-						$this->attr["[frame]"],"[phpfile]","[phpfunc]","[elink]","[phpconstraint]","[usefor]","[eformat]","[options]","[docName]");
-
-     [ENDBLOCK NATTR]
-		[IF sAbsoluteOrders]
-	 $this->absoluteOrders=[[sAbsoluteOrders]];[ENDIF sAbsoluteOrders]
-     $this->fromids[[docid]]=[docid];
-     $this->fromname='[docName]';
-[BLOCK ATTRFIELD]
-    $this->fields["[attrid]"]="[attrid]";[ENDBLOCK ATTRFIELD]
-   }
-}
 
 
 class [PHPclassName] extends [DocParent] {
@@ -55,7 +29,7 @@ class [PHPclassName] extends [DocParent] {
 
    function __construct ($dbaccess='', $id='',$res='',$dbid=0) {
         if (empty($this->attributes)) {
-           $this->attributes = new ADoc[docName]();
+           $this->attributes = new [AdocClassName]();
           if (isset($this->attributes->fields))  $this->fields += $this->attributes->fields;
         }
         parent::__construct($dbaccess, intval($id), $res, $dbid);

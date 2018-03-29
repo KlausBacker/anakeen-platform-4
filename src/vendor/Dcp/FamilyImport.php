@@ -76,7 +76,7 @@ class FamilyImport
 
         if ($tdoc["classname"] == "") { // default classname
             if ($tdoc["fromid"] == 0) {
-                $tdoc["classname"] = '\Dcp\Family\Document';
+                $tdoc["classname"] = '\\Anakeen\\SmartStructures\Document';
             } else {
                 $tdoc["classname"] = "Doc" . $tdoc["fromid"];
             }
@@ -89,9 +89,13 @@ class FamilyImport
                 throw new \Dcp\Exception("FAM0601", $tdoc["fromid"], $tdoc["name"]);
             }
             $tdoc["fromname"] = $fromName;
+            $phpAdoc->Set("fromFile", ucfirst(strtolower($fromName)));
         } else {
             $tdoc["fromname"] = "Document";
         }
+
+        $tdoc["docFile"] = ucfirst(strtolower($tdoc["name"]));
+        $phpAdoc->Set("docFile", $tdoc["docFile"]);
         $phpAdoc->Set("fromname", $tdoc["fromname"]);
         $phpAdoc->Set("docid", $tdoc["id"]);
         $phpAdoc->Set("include", "");
@@ -114,7 +118,7 @@ class FamilyImport
             } else {
                 $phpAdoc->Set("GEN", "GEN");
                 if ($tdoc["name"]) {
-                    $phpAdoc->Set("DocParent", '\\Dcp\\Family\\' . ucwords(strtolower($tdoc["fromname"])));
+                    $phpAdoc->Set("DocParent", DocManager::getFamilyClassName($tdoc["fromname"]));
                 } else {
                     $phpAdoc->Set("DocParent", '\\Doc' . $tdoc["fromid"]);
                 }
@@ -125,7 +129,7 @@ class FamilyImport
                     $phpAdoc->Set("pinit", '\DocCtrl');
                 }
             }
-            $phpAdoc->Set("AParent", "ADoc" . $tdoc["fromname"]);
+            $phpAdoc->Set("AParent", DocManager::getAttributesClassName($tdoc["fromname"]));
         }
         $phpAdoc->Set("title", $tdoc["title"]);
         $query = new \Anakeen\Core\Internal\QueryDb("", \DocAttr::class);
@@ -477,10 +481,10 @@ class FamilyImport
                 )
             ));
             $phpAdoc->Set("docName", $tdoc["name"]);
-            $phpAdoc->Set("PHPclassName", sprintf('%s', str_replace(array(
-                ":",
-                "-"
-            ), "_", ucwords(strtolower($tdoc["name"])))));
+
+            $phpAdoc->Set("SmartClass", str_replace("\\", "\\\\", DocManager::getFamilyClassName($tdoc["name"])));
+            $phpAdoc->Set("PHPclassName", self::baseClassName(DocManager::getFamilyClassName($tdoc["name"])));
+            $phpAdoc->Set("AdocClassName", self::baseClassName(DocManager::getAttributesClassName($tdoc["name"])));
         }
         $phpAdoc->Set("docTitle", str_replace('"', '\\"', $tdoc["title"]));
         $phpAdoc->set("HOOKALIAS", "");
@@ -538,9 +542,10 @@ class FamilyImport
                 $phpAdoc->Set("DocParent", '\\' . $phpAdoc->Get("docNameIndirect"));
             }
         }
-         $phpAdoc->Set("hasMethods", !empty($tdoc["methods"]));
+        $phpAdoc->Set("hasMethods", !empty($tdoc["methods"]));
 
-        $dfiles["/vendor/Anakeen/FDL/Layout/Class.NSSmart.xml"] = sprintf("%s/%s.php", $genDir, $tdoc["name"]);
+        $dfiles["/vendor/Anakeen/FDL/Layout/Class.NSSmart.xml"] = sprintf("%s/%s.php", $genDir, $tdoc["docFile"]);
+        $dfiles["/vendor/Anakeen/FDL/Layout/Class.NSSmartAttr.xml"] = sprintf("%s/%sAttributeList.php", $genDir, $tdoc["docFile"]);
         $dfiles["/vendor/Anakeen/FDL/Layout/Class.Doc.xml"] = sprintf("%s/Smart%d.php", $genDir, $tdoc["id"]);
 
         if (!empty($tdoc["methods"])) {
@@ -607,6 +612,12 @@ class FamilyImport
         }
 
         return $phpAdoc->gen();
+    }
+
+    protected static function baseClassName($class)
+    {
+        $part = explode('\\', $class);
+        return array_pop($part);
     }
 
     protected static function doubleslash($s)

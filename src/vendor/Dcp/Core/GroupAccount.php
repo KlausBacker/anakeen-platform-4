@@ -16,7 +16,7 @@ use SmartStructure\Attributes\Igroup as MyAttributes;
  * Class GroupAccount
  *
  */
-class GroupAccount extends \Dcp\Family\Group
+class GroupAccount extends \SmartStructure\Group
 {
     use TAccount;
 
@@ -131,7 +131,7 @@ class GroupAccount extends \Dcp\Family\Group
         $tgid = $this->getMultipleRawValues("GRP_IDPGROUP");
         foreach ($tgid as $gid) {
             /**
-             * @var \Dcp\Family\Igroup $gdoc
+             * @var \SmartStructure\Igroup $gdoc
              */
             $gdoc = DocManager::getDocument($gid);
             if ($gdoc && $gdoc->isAlive()) {
@@ -268,7 +268,7 @@ class GroupAccount extends \Dcp\Family\Group
             $gid = $this->getRawValue("US_WHATID");
             if ($gid > 0) {
                 /**
-                 * @var \Dcp\Family\Iuser $du
+                 * @var \SmartStructure\Iuser $du
                  */
                 $du = DocManager::getDocument($docid);
                 if ($du) {
@@ -311,7 +311,7 @@ class GroupAccount extends \Dcp\Family\Group
             $g = new \Group("");
             foreach ($tdocid as $k => $docid) {
                 /**
-                 * @var \Dcp\Family\Iuser $du
+                 * @var \SmartStructure\Iuser $du
                  */
                 $du = DocManager::getDocument($docid);
                 if ($du) {
@@ -349,7 +349,7 @@ class GroupAccount extends \Dcp\Family\Group
         $gid = $this->getRawValue("US_WHATID");
         if ($gid > 0) {
             /**
-             * @var \Dcp\Family\Iuser $du
+             * @var \SmartStructure\Iuser $du
              */
             $du = DocManager::getDocument($docid);
             if ($du) {

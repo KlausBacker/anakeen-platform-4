@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Aide en ligne  */
 	class Helppage extends \Dcp\Core\HelpPage { const familyName="HELPPAGE";}
 }

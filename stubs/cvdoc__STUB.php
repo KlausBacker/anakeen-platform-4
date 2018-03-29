@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Contrôle de vues  */
 	class Cvdoc extends Base { const familyName="CVDOC";}
 }

@@ -1136,7 +1136,7 @@ class WDoc extends Doc
             $cask = array();
             foreach ($vasks as $askid) {
                 /**
-                 * @var $ask \Dcp\Family\WASK
+                 * @var $ask \SmartStructure\WASK
                  */
                 $ask = new_doc($this->dbaccess, $askid);
                 $ask->set($this->doc);
@@ -1182,7 +1182,7 @@ class WDoc extends Doc
             foreach ($tmtid as $mtid) {
                 $keys = array();
                 /**
-                 * @var $mt \Dcp\Family\MAILTEMPLATE
+                 * @var $mt \SmartStructure\MAILTEMPLATE
                  */
                 $mt = new_doc($this->dbaccess, $mtid);
                 if ($mt->isAlive()) {
@@ -1204,7 +1204,7 @@ class WDoc extends Doc
                 $keys = array();
                 $mt = new_doc($this->dbaccess, $mtid);
                 /**
-                 * @var \Dcp\Family\MAILTEMPLATE $mt
+                 * @var \SmartStructure\MAILTEMPLATE $mt
                  */
                 if ($mt->isAlive()) {
                     $keys["WCOMMENT"] = nl2br($comment);
@@ -1235,7 +1235,7 @@ class WDoc extends Doc
         
         if ($mtid) {
             /**
-             * @var \Dcp\Family\TIMER $mt
+             * @var \SmartStructure\TIMER $mt
              */
             $mt = new_doc($this->dbaccess, $mtid);
             if ($mt->isAlive()) {

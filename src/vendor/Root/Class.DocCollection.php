@@ -534,7 +534,7 @@ class DocCollection extends Doc
                     $sw = createTmpDoc($this->dbaccess, "DSEARCH");
                 }
                 /**
-                 * @var \Dcp\Family\DSEARCH $sw
+                 * @var \SmartStructure\DSEARCH $sw
                  */
                 $sw->setValue("se_famid", $famid);
                 $sql = $sw->getSqlCond($col, $c->operator, $val1, $val2, $err);

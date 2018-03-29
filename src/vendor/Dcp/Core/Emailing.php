@@ -8,7 +8,7 @@
  */
 namespace Dcp\Core;
 
-class Emailing extends \Dcp\Family\Batch
+class Emailing extends \SmartStructure\Batch
 {
     /*
      * @end-method-ignore

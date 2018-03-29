@@ -459,7 +459,7 @@ class ImportAccounts
                     }
                     $dl->addDocumentIdentifiers($needUpdate);
                     /**
-                     * @var \Dcp\Family\Igroup $iGroup
+                     * @var \SmartStructure\Igroup $iGroup
                      */
                     foreach ($dl as $iGroup) {
                         $iGroup->refreshGroup();

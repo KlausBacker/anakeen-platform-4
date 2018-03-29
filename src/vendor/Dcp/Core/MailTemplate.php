@@ -9,7 +9,7 @@
  */
 namespace Dcp\Core;
 
-class MailTemplate extends \Dcp\Family\Document
+class MailTemplate extends \SmartStructure\Document
 {
     /**
      * always show a user notification
@@ -202,7 +202,7 @@ class MailTemplate extends \Dcp\Family\Document
                             $it = new \DocumentList();
                             $it->addDocumentIdentifiers($tvdoc);
                             /**
-                             * @var \Dcp\Family\IUSER|\Dcp\Family\IGROUP|\Dcp\Family\ROLE $aDoc
+                             * @var \SmartStructure\IUSER|\SmartStructure\IGROUP|\SmartStructure\ROLE $aDoc
                              */
                             foreach ($it as $aDoc) {
                                 $umail = '';
@@ -226,7 +226,7 @@ class MailTemplate extends \Dcp\Family\Document
                             } else {
                                 if ($type == "DE") {
                                     /**
-                                     * @var \Dcp\Family\IUSER|\Dcp\Family\IGROUP|\Dcp\Family\ROLE $aDoc
+                                     * @var \SmartStructure\IUSER|\SmartStructure\IGROUP|\SmartStructure\ROLE $aDoc
                                      */
                                     $aDoc = new_Doc("", $vdocid);
                                     $mail = '';

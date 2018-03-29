@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Fichier  */
 	class File extends \Dcp\Core\File { const familyName="FILE";}
 }

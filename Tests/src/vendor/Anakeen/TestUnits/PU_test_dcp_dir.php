@@ -27,7 +27,7 @@ class TestDir extends TestCaseDcpCommonFamily
     public function testClearDir($dirId)
     {
         /**
-         * @var \Dcp\Family\Dir $dir
+         * @var \SmartStructure\Dir $dir
          */
         $dir = new_Doc('', $dirId, true);
         $this->assertTrue($dir->isAlive() , sprintf("Could not get dir with id '%s'.", $dirId));

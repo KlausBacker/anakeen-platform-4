@@ -227,7 +227,7 @@ create table doctimer ( id serial,
     {
         $timer = new_doc($this->dbaccess, $this->timerid);
         /**
-         * @var \Dcp\Family\TIMER $timer
+         * @var \SmartStructure\TIMER $timer
          */
         if (!$timer->isAlive()) {
             return sprintf(_("cannot execute timer : timer %s is not found"), $this->timerid);

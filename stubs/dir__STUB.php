@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Dossier  */
 	class Dir extends \Dir { const familyName="DIR";}
 }
