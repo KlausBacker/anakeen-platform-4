@@ -42,7 +42,6 @@ $class = $usage->addRequiredParameter('class', 'Class name', function ($value, $
     }
     return '';
 });
-$db = $usage->addOptionalParameter('dbcoord', "Database name", null, getDbAccess());
 
 $usage->verify();
 
@@ -50,7 +49,7 @@ $usage->verify();
 /**
  * @var DbObj $o
  */
-$o = new $class($db);
+$o = new $class();
 
 $sql = array();
 $updateExistingTable = \Dcp\Core\PgInformationSchema::tableExists($o->dbaccess, 'public', $o->dbtable);
@@ -83,9 +82,7 @@ if ($updateExistingTable) {
 }
 /* Play SQL commands */
 $point = uniqid(sprintf('%s/%s', $appClass, $class), true);
-if (($err = $o->savePoint($point)) !== '') {
-    $action->exitError($err);
-}
+\Anakeen\Core\DbManager::savePoint($point);
 if ($updateExistingTable) {
     print sprintf("Updating existing table '%s'...\n", $o->dbtable);
     foreach ($sql as $k => $v) {
@@ -98,7 +95,7 @@ if ($updateExistingTable) {
         print "\t--8<--\n";
         print "\t" . str_replace("\n", "\n\t", $v) . "\n";
         print "\t-->8--\n";
-        simpleQuery($o->dbaccess, $v, $res, false, false, true);
+        \Anakeen\Core\DbManager::query($v, $res, false, false);
         print "[+] Done.\n";
     }
 } else {
@@ -106,8 +103,6 @@ if ($updateExistingTable) {
     /* Table does not exists: create it */
     $o->Create();
 }
-if (($err = $o->commitPoint($point)) !== '') {
-    $action->exitError($err);
-}
+\Anakeen\Core\DbManager::commitPoint($point);
 
 print "\nDone.\n";

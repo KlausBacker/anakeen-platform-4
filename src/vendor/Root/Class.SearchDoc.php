@@ -527,7 +527,6 @@ class SearchDoc
      */
     public function getDocumentList()
     {
-        include_once("FDL/Class.DocumentList.php");
         return new DocumentList($this);
     }
     /**
@@ -537,7 +536,7 @@ class SearchDoc
     public function returnsOnly(array $returns)
     {
         if ($this->fromid) {
-            $fdoc = createTmpDoc($this->dbaccess, $this->fromid, false);
+            $fdoc = \Anakeen\Core\DocManager::createTemporaryDocument($this->fromid, false);
             $fields = array_merge($fdoc->fields, $fdoc->sup_fields);
         } else {
             $fdoc = new Doc();
@@ -1018,14 +1017,14 @@ class SearchDoc
                         $filterElement = pg_escape_string(unaccent($filterElement));
                     } else {
                         $to_tsquery = sprintf("to_tsquery('french', E'%s')", pg_escape_string(unaccent($filterElement)));
-                        $dbObj = new DbObj('');
+
                         $point = sprintf('dcp:%s', uniqid(__METHOD__));
-                        $dbObj->savePoint($point);
+                        \Anakeen\Core\DbManager::savePoint($point);
                         try {
-                            simpleQuery('', sprintf("select %s", $to_tsquery), $indexedWord, true, true);
-                            $dbObj->rollbackPoint($point);
+                            \Anakeen\Core\DbManager::query(sprintf("select %s", $to_tsquery), $indexedWord, true, true);
+                            \Anakeen\Core\DbManager::rollbackPoint($point);
                         } catch (Dcp\Db\Exception $e) {
-                            $dbObj->rollbackPoint($point);
+                            \Anakeen\Core\DbManager::rollbackPoint($point);
                             throw new \Dcp\SearchDoc\Exception("SD0007", unaccent($filterElement));
                         }
                         if ($indexedWord) {
@@ -1145,7 +1144,7 @@ class SearchDoc
         if ($limit > 0) {
             $oh->setLimit($limit);
         }
-        simpleQuery($this->dbaccess, sprintf("select svalues from docread where id=%d", $doc->id), $text, true, true);
+        \Anakeen\Core\DbManager::query(sprintf("select svalues from docread where id=%d", $doc->id), $text, true, true);
         
         if ($wordMode) {
             $h = $oh->highlight($text, $this->highlightWords);

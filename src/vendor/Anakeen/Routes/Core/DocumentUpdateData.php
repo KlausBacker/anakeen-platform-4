@@ -5,6 +5,7 @@ namespace Anakeen\Routes\Core;
 use Anakeen\Core\DocManager;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
+use \Anakeen\Core\Internal\StoreInfo;
 
 /**
  * Class DocumentUpdateData
@@ -83,7 +84,7 @@ class DocumentUpdateData extends DocumentData
 
         $this->renameFileNames();
         /**
-         * @var \storeInfo $info
+         * @var StoreInfo $info
          */
         $err = $this->_document->store($info);
         if ($err) {

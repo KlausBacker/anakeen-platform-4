@@ -42,6 +42,7 @@ define("PREGEXPFILE", "/(?P<mime>[^\|]*)\|(?P<vid>[0-9]*)\|?(?P<name>.*)?/");
 use \Anakeen\Core\DbManager;
 use \Anakeen\Core\ContextManager;
 use \Anakeen\Core\DocManager;
+use \Anakeen\Core\Internal\StoreInfo;
 
 /**
  * Document Class
@@ -1452,7 +1453,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @api record new document or update it in database
      *
-     * @param storeInfo $info           refresh and postStore messages
+     * @param StoreInfo $info           refresh and postStore messages
      * @param boolean   $skipConstraint set to true to not test constraints
      *
      * @return string error message
@@ -1460,13 +1461,13 @@ create unique index i_docir on doc(initid, revision);";
     public function store(&$info = null, $skipConstraint = false)
     {
         $constraint = [];
-        $info = new storeInfo();
+        $info = new StoreInfo();
 
         $err = $this->preStore();
         if ($err) {
             $info->preStore = $err;
             $info->error = $err;
-            $info->errorCode = storeInfo::PRESTORE_ERROR;
+            $info->errorCode = StoreInfo::PRESTORE_ERROR;
             return $err;
         }
         if (!$skipConstraint) {
@@ -1483,7 +1484,7 @@ create unique index i_docir on doc(initid, revision);";
                 $info->refresh = $this->refresh();
                 $err = $this->lastRefreshError;
                 if ($err) {
-                    $info->errorCode = storeInfo::UPDATE_ERROR;
+                    $info->errorCode = StoreInfo::UPDATE_ERROR;
                 } else {
                     $info->postStore = $this->postStore();
                     /* @noinspection PhpDeprecationInspection
@@ -1494,7 +1495,7 @@ create unique index i_docir on doc(initid, revision);";
                         //in case of change in postStore
                         $err = $this->modify();
                         if ($err) {
-                            $info->errorCode = storeInfo::UPDATE_ERROR;
+                            $info->errorCode = StoreInfo::UPDATE_ERROR;
                         }
                     }
                     if ($err == "" && (!$create)) {
@@ -1502,10 +1503,10 @@ create unique index i_docir on doc(initid, revision);";
                     }
                 }
             } else {
-                $info->errorCode = storeInfo::CREATE_ERROR;
+                $info->errorCode = StoreInfo::CREATE_ERROR;
             }
         } else {
-            $info->errorCode = storeInfo::CONSTRAINT_ERROR;
+            $info->errorCode = StoreInfo::CONSTRAINT_ERROR;
         }
         $info->constraint = $constraint;
         $info->error = $err;
@@ -10441,7 +10442,7 @@ create unique index i_docir on doc(initid, revision);";
         // Need to lock to avoid constraint errors when concurrent docvaultindex update
         $dvi->DeleteDoc($this->id);
 
-        $tvid = \Dcp\Core\vidExtractor\vidExtractor::getVidsFromDoc($this);
+        $tvid = \Dcp\Core\Utils\VidExtractor::getVidsFromDoc($this);
 
         $vids = array();
         foreach ($tvid as $vid) {

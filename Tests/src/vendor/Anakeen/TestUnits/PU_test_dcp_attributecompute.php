@@ -12,6 +12,7 @@ namespace Dcp\Pu;
 
 require_once 'PU_testcase_dcp_commonfamily.php';
 
+use \Anakeen\Core\Internal\StoreInfo;
 class TestAttributeCompute extends TestCaseDcpCommonFamily
 {
     /**
@@ -43,7 +44,7 @@ class TestAttributeCompute extends TestCaseDcpCommonFamily
         $tmpLogFile = tempnam(getTmpDir() , __FUNCTION__);
         $d->log = new \Anakeen\Core\Internal\Log($tmpLogFile, $d->log->application, $d->log->function);
         
-        $info = new \storeInfo();
+        $info = new StoreInfo();
         $err = $d->store($info);
         
         $log = file_get_contents($tmpLogFile);

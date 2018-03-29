@@ -16,11 +16,6 @@
 /**
  */
 
-include_once('WHAT/Lib.Common.php');
-include_once('WHAT/Class.Authenticator.php');
-include_once('WHAT/Class.Session.php');
-include_once('WHAT/Class.User.php');
-include_once('WHAT/Class.Log.php');
 
 class AuthenticatorManager
 {

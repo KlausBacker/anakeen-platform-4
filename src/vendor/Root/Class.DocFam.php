@@ -693,7 +693,7 @@ create unique index idx_idfam on docfam(id);";
         $dvi = new DocVaultIndex($this->dbaccess);
         $dvi->DeleteDoc($this->id);
 
-        $tvid = \Dcp\Core\vidExtractor\vidExtractor::getVidsFromDocFam($this);
+        $tvid = \Dcp\Core\Utils\VidExtractor::getVidsFromDocFam($this);
 
         foreach ($tvid as $k => $vid) {
             $dvi->docid = $this->id;

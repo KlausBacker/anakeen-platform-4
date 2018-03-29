@@ -4,25 +4,25 @@
  * @package FDL
 */
 
-namespace Dcp\Core\vidExtractor;
+namespace Dcp\Core\Utils;
 
-class Exception extends \Dcp\Exception
-{
-}
+use Anakeen\Core\DocManager;
+use Dcp\Core\Exception;
+
 /**
  * Class vidExtractor
  *
  * Extract VIDs from documents or families (suitable for updating and maintaining the "docvaultindex" table)
  *
- * @package Dcp\Core
  */
-class vidExtractor
+class VidExtractor
 {
     /**
      * Get list of distinct VIDs (files vault identifier) from a "raw" document (i.e. a row from a SQL query resultset)
      *
-     * @param array $raw Raw document
+     * @param array $raw            Raw document
      * @param array $fileAttrIdList List of attribute's name of type 'file' (if null, the list will be dynamically created from $raw['id'])
+     *
      * @return array
      * @throws Exception
      */
@@ -36,7 +36,8 @@ class vidExtractor
                 throw new Exception('VIDEXTRACTOR0002');
             }
             $fileAttrIdList = array();
-            $doc = new_Doc('', $raw['id']);
+
+            $doc = DocManager::getDocument($raw['id']);
             if (!is_object($doc)) {
                 throw new Exception('VIDEXTRACTOR0003', $raw['id']);
             }
@@ -65,10 +66,12 @@ class vidExtractor
         }
         return $vidList;
     }
+
     /**
      * Extract VIDs from a family object
      *
      * @param \DocFam $docfam
+     *
      * @return array
      */
     public static function getVidsFromDocFam(\DocFam & $docfam)
@@ -77,10 +80,7 @@ class vidExtractor
         /*
          * Track files from docfam.param and docfam.defval
         */
-        foreach (array(
-            $docfam->getOwnParams() ,
-            $docfam->getOwnDefValues()
-        ) as $list) {
+        foreach (array($docfam->getOwnParams(), $docfam->getOwnDefValues()) as $list) {
             foreach ($list as $aid => $value) {
                 if (($oattr = $docfam->getAttribute($aid)) === false) {
                     $docfam->log->warning(\ErrorCode::getError('VIDEXTRACTOR0004', $aid, $docfam->name));
@@ -113,10 +113,12 @@ class vidExtractor
         }
         return $vids;
     }
+
     /**
      * Extract VIDs from a document object
      *
      * @param \Doc $doc
+     *
      * @return array
      */
     public static function getVidsFromDoc(\Doc & $doc)
@@ -146,10 +148,12 @@ class vidExtractor
         }
         return $vids;
     }
+
     /**
      * Parse and extract VID from string
      *
      * @param $vid
+     *
      * @return bool
      */
     public static function parseVid($vid)
