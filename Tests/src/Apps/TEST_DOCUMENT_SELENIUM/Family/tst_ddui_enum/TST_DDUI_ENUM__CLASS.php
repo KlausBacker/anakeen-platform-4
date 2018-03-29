@@ -6,7 +6,7 @@
 
 namespace Dcp\Test\Ddui;
 
-class EnumType extends \Dcp\Family\Document
+class EnumType extends \SmartStructure\Document
 {
 
 

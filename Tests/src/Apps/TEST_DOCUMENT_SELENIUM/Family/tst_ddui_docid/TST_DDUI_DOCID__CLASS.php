@@ -8,7 +8,7 @@ namespace Dcp\Test\Ddui;
 
 use \Dcp\AttributeIdentifiers\TST_DDUI_DOCID as TST_DDUI_DOCID_Attributes;
 
-class TST_DDUI_DOCID extends \Dcp\Family\Document
+class TST_DDUI_DOCID extends \SmartStructure\Document
 {
     public function postStore() {
         $this->setValue(TST_DDUI_DOCID_Attributes::test_ddui_docid__histo1, $this->getRawValue(TST_DDUI_DOCID_Attributes::test_ddui_docid__single1, " "));

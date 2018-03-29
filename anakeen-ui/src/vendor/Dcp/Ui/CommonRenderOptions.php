@@ -223,7 +223,7 @@ class CommonRenderOptions extends BaseRenderOptions
     public function setLinkHelp($documentIdentifier)
     {
         $helpDocument=DocManager::getDocument($documentIdentifier);
-        if (!$helpDocument || !is_a($helpDocument, "\\Dcp\\Family\\HelpPage")) {
+        if (!$helpDocument || !is_a($helpDocument, \Anakeen\Core\DocManager::getFamilyClassName("Helppage"))) {
             throw new Exception("UI0208", $helpDocument->fromname);
         }
         DocManager::cache()->addDocument($helpDocument);

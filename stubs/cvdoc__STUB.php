@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/**   */
 	class Cvdoc extends \Dcp\Ui\CVDoc { const familyName="CVDOC";}
 }

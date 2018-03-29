@@ -7,7 +7,7 @@
 namespace Dcp\Test\Ddui;
 
 use \Dcp\AttributeIdentifiers\tst_render as MyAttr;
-class Render extends \Dcp\Family\Document implements \Dcp\Ui\IRenderConfigAccess
+class Render extends \SmartStructure\Document implements \Dcp\Ui\IRenderConfigAccess
 {
     /**
      * @param string $mode

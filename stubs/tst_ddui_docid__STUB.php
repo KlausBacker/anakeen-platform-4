@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Test Docid  */
 	class Tst_ddui_docid extends \Dcp\Test\Ddui\TST_DDUI_DOCID { const familyName="TST_DDUI_DOCID";}
 }

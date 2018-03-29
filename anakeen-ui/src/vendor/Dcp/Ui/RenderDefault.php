@@ -466,7 +466,7 @@ class RenderDefault implements IRenderConfig
      * Return default help document associated with family
      * @param \Doc $document
      *
-     * @return \Dcp\Family\HELPPAGE|null
+     * @return \SmartStructure\HELPPAGE|null
      */
     protected function getDefaultHelpPageDocument(\Doc $document)
     {

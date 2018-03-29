@@ -106,7 +106,7 @@ class DocumentGrid extends DocumentCollection
         $searchDoc = new \SearchDoc("");
         $searchDoc->useCollection($this->_collection->getPropertyValue("id"));
         if ($withCriteria) {
-            if (!is_a($this->_collection, '\Dcp\Family\Ssearch')) {
+            if (!is_a($this->_collection, '\SmartStructure\Ssearch')) {
                 if (isset($this->contentParameters["filters"])) {
                     $this->generateFilters($searchDoc, json_decode($this->contentParameters["filters"], true));
                 }

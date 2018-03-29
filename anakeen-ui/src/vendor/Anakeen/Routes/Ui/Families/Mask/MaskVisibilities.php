@@ -16,7 +16,7 @@ class MaskVisibilities
 {
     protected $documentId;
     /**
-     * @var \Dcp\Family\Mask
+     * @var \SmartStructure\Mask
      */
     protected $_document;
     /**

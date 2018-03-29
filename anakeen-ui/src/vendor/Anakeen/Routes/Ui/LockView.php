@@ -70,7 +70,7 @@ class LockView extends \Anakeen\Routes\Core\DocumentLock
             throw $exception;
         }
         /**
-         * @var \Dcp\Family\CVDoc $cv
+         * @var \SmartStructure\CVDoc $cv
          */
         $cv = \Anakeen\Core\DocManager::getDocument($this->_document->cvid);
         $cv->set($this->_document);

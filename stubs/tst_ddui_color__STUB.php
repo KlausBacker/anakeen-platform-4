@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Color  */
 	class Tst_ddui_color extends Document { const familyName="TST_DDUI_COLOR";}
 }

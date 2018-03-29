@@ -62,7 +62,7 @@ class MailPassword
             $userDocument=DocManager::getDocument($user->fid);
             $mailTemplateId=\Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("AUTHENT", "AUTHENT_MAILASKPWD");
             /**
-             * @var \Dcp\Family\Mailtemplate $mailTemplate
+             * @var \SmartStructure\Mailtemplate $mailTemplate
              */
             $mailTemplate=DocManager::getDocument($mailTemplateId);
             if (!$mailTemplate) {

@@ -20,7 +20,7 @@ class ThesaurusCriteria
             if (!$thc->isAlive()) {
                 throw new ThesaurusCriteriaException(sprintf('thesaurus concept "%s" not found', $thId));
             }
-            /** @var \Dcp\Family\Thconcept $thc */
+            /** @var \SmartStructure\Thconcept $thc */
             
             $th = new_doc("", $thc->getRawValue(SmartStructure\Attributes\Thconcept::thc_thesaurus));
             if (!$th->isAlive()) {
@@ -30,7 +30,7 @@ class ThesaurusCriteria
             $field = null;
             $option = ($criteria->multiplicity == "multiple") ? "multiple=yes" : '';
             $oa = new \NormalAttribute($criteria->id, 1, "label", $criteria->type, "", ($criteria->multiplicity == "multiple") , 1, '', 'W', false, false, false, $field, '', '', '', '', '', '', $option);
-            /** @var \Dcp\Family\Thesaurus $th */
+            /** @var \SmartStructure\Thesaurus $th */
             $sql[] = $th->getSqlFilter($oa, $thId);
         }
         

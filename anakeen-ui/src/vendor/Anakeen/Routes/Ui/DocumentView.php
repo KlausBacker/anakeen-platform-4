@@ -163,7 +163,7 @@ class DocumentView
             "uri" => $this->getUri($creationMode ? $family : $this->document, $this->viewIdentifier)
         );
         /**
-         * @var \Dcp\Family\Cvdoc $controlView
+         * @var \SmartStructure\Cvdoc $controlView
          */
         $controlView = DocManager::getDocument($this->document->cvid);
 
@@ -267,11 +267,11 @@ class DocumentView
     /**
      * Compute properties
      *
-     * @param \Dcp\Family\Cvdoc $controlView
+     * @param \SmartStructure\Cvdoc $controlView
      * @param array $viewInfo
      * @return array
      */
-    protected function getViewProperties(\Dcp\Family\Cvdoc $controlView, array $viewInfo)
+    protected function getViewProperties(\SmartStructure\Cvdoc $controlView, array $viewInfo)
     {
         $viewId = $viewInfo[CvdocAttribute::cv_idview];
         return array(

@@ -50,7 +50,7 @@ class DocumentViewCollection extends DocumentView
         }
         DocManager::cache()->addDocument($cv);
         /**
-         * @var \Dcp\Family\Cvdoc $cv
+         * @var \SmartStructure\Cvdoc $cv
          */
         $cv->set($document);
         $views = $cv->getViews();

@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Test tout type  */
 	class Tst_ddui_alltype extends \Dcp\Test\Ddui\AllType { const familyName="TST_DDUI_ALLTYPE";}
 }

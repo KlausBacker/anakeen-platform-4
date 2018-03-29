@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Test énumérés  */
 	class Tst_ddui_enum extends \Dcp\Test\Ddui\EnumType { const familyName="TST_DDUI_ENUM";}
 }

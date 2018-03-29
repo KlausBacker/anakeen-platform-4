@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Test de rendu de document  */
 	class Tst_render extends \Dcp\Test\Ddui\Render { const familyName="TST_RENDER";}
 }

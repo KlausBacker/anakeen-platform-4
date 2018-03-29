@@ -44,7 +44,7 @@ class searchGridAttributes extends DocumentCollection
             throw $exception;
         }
         $attributes=self::getGridAttributes($searchDocument);
-        if (is_a( $searchDocument, '\Dcp\Family\Report')) {
+        if (is_a( $searchDocument, '\SmartStructure\Report')) {
             $footer=self::getReportFooter($searchDocument);
             $config=self::getReportConfig($searchDocument);
         } else {
@@ -71,7 +71,7 @@ class searchGridAttributes extends DocumentCollection
             throw $exception;
         }
 
-          if (is_a( $searchDocument, '\Dcp\Family\Report')) {
+          if (is_a( $searchDocument, '\SmartStructure\Report')) {
             $attributes=self::getReportAttributes($searchDocument, $_searchfamily);
         } else {
             $attributes=self::getResumeAttributes($_searchfamily);

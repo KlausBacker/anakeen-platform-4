@@ -6,7 +6,7 @@
 
 namespace Dcp\Test\Ddui;
 
-class WflAlltype extends \Dcp\Family\WDoc
+class WflAlltype extends \SmartStructure\WDoc
 {
     public $attrPrefix = "TST";
     public $firstState = self::etat_created;

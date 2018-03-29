@@ -35,7 +35,7 @@ class DocumentViewUpdate extends DocumentView
                 // special controlled view
 
                 /**
-                 * @var \Dcp\Family\Cvdoc $cvdoc
+                 * @var \SmartStructure\Cvdoc $cvdoc
                  */
                 $cvdoc = DocManager::getDocument($document->cvid);
                 $cvdoc->Set($document);

@@ -39,11 +39,11 @@ class RenderConfigManager
             throw new Exception("UI0302", $document->cvid);
         }
         
-        if (!is_a($cvDoc, "\\Dcp\\Family\\CVDoc")) {
+        if (!is_a($cvDoc, \Anakeen\Core\DocManager::getFamilyClassName("Cvdoc"))) {
             throw new Exception("UI0303", $cvDoc->getTitle());
         }
         /**
-         * @var \Dcp\Family\CVDoc $cvDoc
+         * @var \SmartStructure\CVDoc $cvDoc
          */
         $cvDoc->set($document);
         $err = $cvDoc->control($vId); // control special view
@@ -53,7 +53,7 @@ class RenderConfigManager
             throw $e;
         }
         /**
-         * @var \Dcp\Family\CVDoc $cvDoc
+         * @var \SmartStructure\CVDoc $cvDoc
          */
         $vidInfo = $cvDoc->getView($vId);
         if (empty($vidInfo)) {
@@ -105,7 +105,7 @@ class RenderConfigManager
     {
         if ($document->cvid > 0) {
             /**
-             * @var \Dcp\Family\CVDoc $cvDoc
+             * @var \SmartStructure\CVDoc $cvDoc
              */
             $cvDoc = DocManager::getDocument($document->cvid);
             return self::getRenderConfigCv($mode, $cvDoc, $document, $vid);
@@ -244,14 +244,14 @@ class RenderConfigManager
     }
     /**
      * @param string $mode view/edit/create
-     * @param \Dcp\Family\CVDoc $cv
+     * @param \SmartStructure\CVDoc $cv
      * @param \Doc   $document
      * @param string $vid view identifier
      *
      * @return IRenderConfig
      * @throws Exception
      */
-    public static function getRenderConfigCv($mode, \Dcp\Family\CVDoc $cv, \Doc $document, &$vid = '')
+    public static function getRenderConfigCv($mode, \SmartStructure\CVDoc $cv, \Doc $document, &$vid = '')
     {
         $cv->set($document);
         $renderAccessClass = $cv->getRawValue(\SmartStructure\Attributes\Cvdoc::cv_renderaccessclass);
