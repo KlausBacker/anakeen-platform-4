@@ -15,11 +15,17 @@ class Autoloader
         self::$loader = $loader;
     }
 
-    public static function classExists($className)
+    public static function findFile($className)
     {
         if ($className[0] === "\\") {
             $className = substr($className, 1);
         }
-        return (self::$loader->findFile($className)) ? true : false;
+        $findPath = self::$loader->findFile($className);
+        return $findPath;
+    }
+
+    public static function classExists($className)
+    {
+        return (self::findFile($className)) ? true : false;
     }
 }

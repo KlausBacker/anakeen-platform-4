@@ -46,15 +46,7 @@ class CheckClass extends CheckData
     
     protected function getClassFile()
     {
-        $classFile = \Dcp\DirectoriesAutoloader::instance(null, null)->getClassFile($this->className);
-        
-        if ($classFile === null) {
-            \Dcp\DirectoriesAutoloader::instance(null, null)->forceRegenerate($this->className);
-            
-            $classFile = \Dcp\DirectoriesAutoloader::instance(null, null)->getClassFile($this->className);
-        }
-        
-        return $classFile;
+        return \Anakeen\Core\Internal\Autoloader::findFile($this->className);
     }
     /**
      * check if it is a folder
@@ -107,7 +99,7 @@ class CheckClass extends CheckData
                     $fromName = "Document";
                 }
                 
-                $parentClass = '\\Dcp\Family\\' . $fromName;
+                $parentClass = '\\Family\\Dcp\\' . $fromName;
                 
                 if (!$o->isSubclassOf($parentClass)) {
                     $this->addError(ErrorCode::getError('CLASS0006', $this->className, $this->fileName, $parentClass, $this->doc->name));

@@ -13,11 +13,10 @@ $loader->addPsr4('Dcp\\', __DIR__ . '/../Dcp/');
 $loader->addPsr4('SmartStructure\\', __DIR__ . '/../../SmartClasses/SmartStructure/');
 
 
-
 // Add Legacy Autoloader
 spl_autoload_register(function ($classname) {
 
-    $classFile=sprintf("%s/../Root/Class.%s.php", __DIR__, $classname);
+    $classFile = sprintf("%s/../Root/Class.%s.php", __DIR__, $classname);
     if (file_exists($classFile)) {
         error_log("Legacy require $classFile");
         require_once($classFile);
@@ -27,11 +26,9 @@ spl_autoload_register(function ($classname) {
             error_log("Legacy require $classFile");
             require_once($classFile);
         } else {
-             error_log("Legacy not found $classFile");
+            error_log("Legacy not found $classFile");
         }
     }
-
-
 });
 
 \Anakeen\Core\Internal\Autoloader::recordLoader($loader);
