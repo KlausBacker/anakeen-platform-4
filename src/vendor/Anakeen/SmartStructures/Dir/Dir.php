@@ -13,6 +13,8 @@
 /**
  */
 
+namespace Anakeen\SmartStructures\Dir;
+
 /**
  * Folder document Class
  *
@@ -24,7 +26,6 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
     private $norestrict = false;
 
 
-
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         parent::__construct($dbaccess, $id, $res, $dbid);
@@ -32,7 +33,6 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
             $this->fromid = FAM_DIR;
         }
     }
-
 
 
     /**
@@ -73,7 +73,6 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
     }
 
 
-
     /**
      * virtual method use after insert document in folder
      *
@@ -89,7 +88,6 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
     {
         return "";
     }
-
 
 
     /**
@@ -174,7 +172,6 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
     }
 
 
-
     /**
      * Test if current user can add or delete document in this folder
      *
@@ -240,7 +237,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
         }
 
         $doc = new_Doc($this->dbaccess, $docid);
-        $qf = new QueryDir($this->dbaccess);
+        $qf = new \QueryDir($this->dbaccess);
         switch ($mode) {
             case "static":
                 $qf->qtype = 'F'; // fixed document
@@ -275,7 +272,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
             if ($err == "") {
                 AddLogMsg(sprintf(_("Add %s in %s folder"), $doc->title, $this->title));
                 $this->addHistoryEntry(sprintf(_("Document %s inserted"), $doc->title));
-                $doc->addHistoryEntry(sprintf(_("Document inserted in %s folder"), $this->title, DocHisto::INFO, "MOVEADD"));
+                $doc->addHistoryEntry(sprintf(_("Document inserted in %s folder"), $this->title, \DocHisto::INFO, "MOVEADD"));
 
                 $this->addLog('addcontent', array(
                     "insert" => array(
@@ -423,7 +420,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
         }
         $tAddeddocids = array();
         // verify if doc family is autorized
-        $qf = new QueryDir($this->dbaccess);
+        $qf = new \QueryDir($this->dbaccess);
         $tmsg = array();
         foreach ($tdocs as $tdoc) {
             if (!$this->isAuthorized($tdoc["fromid"])) {
@@ -432,7 +429,6 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
             } else {
                 switch ($mode) {
                     case "static":
-
                         $qf->qtype = 'F'; // fixed document
                         $docid = $tdoc["id"];
                         $qf->childid = $tdoc["id"]; // initial doc
@@ -440,7 +436,6 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
 
                     case "latest":
                     default:
-
                         $qf->qtype = 'S'; // single user query
                         $docid = $tdoc["initid"];
                         $qf->childid = $tdoc["initid"]; // initial doc
@@ -459,7 +454,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
                     $insertOne = $qf->Add();
                     if ($insertOne == "") {
                         AddLogMsg(sprintf(_("Add %s in %s folder"), $tdoc["title"], $this->title));
-                        $this->addHistoryEntry(sprintf(_("Document %s inserted"), $tdoc["title"]), DocHisto::INFO, "MODCONTAIN");
+                        $this->addHistoryEntry(sprintf(_("Document %s inserted"), $tdoc["title"]), \DocHisto::INFO, "MODCONTAIN");
 
                         $this->addLog('addcontent', array(
                             "insert" => array(
@@ -527,7 +522,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
         if ($err != "") {
             return $err;
         }
-        $qf = new QueryDir($this->dbaccess);
+        $qf = new \QueryDir($this->dbaccess);
         $qf->qtype = 'S'; // single user query
         $qf->dirid = $this->initid; // the reference folder is the initial id
         $qf->query = "";
@@ -647,7 +642,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
             return $err;
         }
         // search original query
-        $qf = new QueryDir($this->dbaccess, array(
+        $qf = new \QueryDir($this->dbaccess, array(
             $this->initid,
             $docid
         ));
@@ -660,8 +655,11 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
         }
 
         if ($qf->qtype == "M") {
-            $err = sprintf(_("cannot delete link for doc %d in folder %d : the document comes from a user query. Delete initial query if you want delete this document"), $docid,
-                $this->initid);
+            $err = sprintf(
+                _("cannot delete link for doc %d in folder %d : the document comes from a user query. Delete initial query if you want delete this document"),
+                $docid,
+                $this->initid
+            );
         }
 
         if ($err != "") {
@@ -684,8 +682,8 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
                 "title" => $doc->title
             )
         ));
-        $this->addHistoryEntry(sprintf(_("Document %s umounted"), $doc->title), DocHisto::INFO, "MODCONTAIN");
-        $doc->addHistoryEntry(sprintf(_("Document unlinked of %s folder"), $this->title, DocHisto::INFO, "MOVEUNLINK"));
+        $this->addHistoryEntry(sprintf(_("Document %s umounted"), $doc->title), \DocHisto::INFO, "MODCONTAIN");
+        $doc->addHistoryEntry(sprintf(_("Document unlinked of %s folder"), $this->title, \DocHisto::INFO, "MOVEUNLINK"));
         // use post virtual method
         if (!$noprepost) {
             $this->updateFldRelations();
@@ -711,7 +709,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
         $err = $this->canModify();
         if ($err == "") {
             $fromtoid = $this->initid;
-            /** @var Dir $da */
+            /** @var \Anakeen\SmartStructures\Dir\Dir $da */
             $da = new_doc($this->dbaccess, $movetoid);
             if ($da->isAlive()) {
                 if (method_exists($da, "addFile")) {
@@ -769,7 +767,6 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
     }
 
 
-
     public function hasNoRestriction()
     {
         if (!$this->authfam) {
@@ -799,7 +796,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
                 return array();
             }
 
-            $this->norestrict = false;;
+            $this->norestrict = false;
             $tclassdoc = array();
             if ($allbut != "1") {
                 include_once("FDL/Lib.Dir.php");
@@ -972,7 +969,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
         while ($doc = getNextDoc($this->dbaccess, $lpdoc)) {
             $coulddelete = true;
             if ($doc->doctype == 'D') {
-                /** @var Dir $doc */
+                /** @var \Anakeen\SmartStructures\Dir\Dir $doc */
                 $terr = array_merge($terr, $doc->deleteItems());
                 foreach ($terr as $err) {
                     if ($err != "") {
@@ -984,7 +981,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
                 $terr[$doc->id] = $doc->delete();
             }
         }
-        $this->addHistoryEntry(_("Folder cleared"), DocHisto::INFO, "MODCONTAIN");
+        $this->addHistoryEntry(_("Folder cleared"), \DocHisto::INFO, "MODCONTAIN");
         return $terr;
     }
 
@@ -1005,7 +1002,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
         $terr = array();
         $fld = new_doc($this->dbaccess, $indirid);
         if ($fld->doctype == 'D') {
-            /** @var Dir $fld */
+            /** @var \Anakeen\SmartStructures\Dir\Dir $fld */
             $err = $fld->control("modify");
             if ($err == "") {
                 while ($doc = getNextDoc($this->dbaccess, $lpdoc)) {
@@ -1015,7 +1012,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
                         if (is_object($copy)) {
                             $fld->insertDocument($copy->initid);
                             if ($doc->doctype == 'D') {
-                                /** @var Dir $doc */
+                                /** @var \Anakeen\SmartStructures\Dir\Dir $doc */
                                 $terr = array_merge($terr, $doc->copyItems($copy->id));
                             }
                         }
@@ -1071,7 +1068,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
         while ($doc = getNextDoc($this->dbaccess, $lpdoc)) {
             if ($doc->defDoctype == 'D') {
                 /**
-                 * @var Dir $doc
+                 * @var \Anakeen\SmartStructures\Dir\Dir $doc
                  */
                 $terr = array_merge($terr, $doc->reviveItems());
             }

@@ -114,7 +114,7 @@ class PortFolio extends \SmartStructure\Dir
      */
     public function getContent($controlview = true, array $filter = array(), $famid = "", $insertguide = false, $unused = "")
     {
-        $tdoc = \Dir::getContent($controlview, $filter, $famid);
+        $tdoc = $this->getContent($controlview, $filter, $famid);
         if ($insertguide) {
             $todoc = array();
             foreach ($tdoc as $k => $v) {

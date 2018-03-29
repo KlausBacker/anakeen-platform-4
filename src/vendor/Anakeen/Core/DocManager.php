@@ -698,6 +698,12 @@ class DocManager
         return sprintf("\\SmartStructure\\%sAttributeList", ucwords(strtolower($famName)));
     }
 
+
+    public static function getAttributesClassFilename($famName)
+    {
+        return sprintf("%s/%s/SmartStructure/%sAttributeList.php", DEFAULT_PUBDIR, Settings::DocumentGenDirectory, ucwords(strtolower($famName)));
+    }
+
     /**
      * Get document fromid
      *

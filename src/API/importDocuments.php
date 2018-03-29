@@ -99,7 +99,7 @@ $csvEnclosure = $usage->addOptionalParameter("csv-enclosure", "character to encl
         }
     }
     return '';
-}, "");
+}, '"');
 
 $csvLinebreak = $usage->addOptionalParameter("csv-linebreak", "character sequence to be import like CRLF", null, '\n');
 

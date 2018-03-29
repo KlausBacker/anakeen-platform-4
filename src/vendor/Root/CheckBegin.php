@@ -59,13 +59,7 @@ class CheckBegin extends CheckData
     
     private function getClassFile($className)
     {
-        $file= sprintf(DEFAULT_PUBDIR.'/Apps/FDL/Class.%s.php', $className);
-        if (!file_exists($file)) {
-            if (\Anakeen\Core\Internal\Autoloader::classExists($className)) {
-                return \Dcp\DirectoriesAutoloader::instance(null, null)->getClassFile($className);
-            }
-        }
-        return $file;
+        return \Anakeen\Core\Internal\Autoloader::findFile($className);
     }
     private function checkClassFile($phpfile)
     {

@@ -965,7 +965,7 @@ class ImportDocumentDescription
             if ($data[2] != '') { // dirid
                 
                 /**
-                 * @var Dir $dir
+                 * @var \Anakeen\SmartStructures\Dir\Dir $dir
                  */
                 $dir = new_Doc($this->dbaccess, $data[2]);
                 if ($dir->isAlive() && method_exists($dir, "insertDocument")) {
@@ -1257,6 +1257,7 @@ class ImportDocumentDescription
             return;
         }
         $data = array_map("trim", $data);
+
         $check = new CheckClass();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
@@ -1269,6 +1270,7 @@ class ImportDocumentDescription
             return;
         }
         $this->doc->classname = $data[1];
+
     }
     /**
      * analyze METHOD

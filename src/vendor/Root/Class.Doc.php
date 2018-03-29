@@ -2530,12 +2530,8 @@ create unique index i_docir on doc(initid, revision);";
         $aFromName = isset($this->attributes->fromname) ? $this->attributes->fromname : '';
         if ($aFromName != $fromname) {
             // reset when use partial cache
-            $fromid = ($this->doctype == 'C') ? $this->id : $this->fromid;
-            $adocClassName = "ADoc" . $fromid;
-            $classname = "Doc" . $fromid;
-            $includePath = "FDLGEN/Class.$classname.php";
-            if (stream_resolve_include_path($includePath)) {
-                include_once($includePath);
+            $adocClassName=\Anakeen\Core\DocManager::getAttributesClassName($fromname);
+            if (\Anakeen\Core\Internal\Autoloader::classExists($adocClassName)) {
                 $this->attributes = new $adocClassName();
             }
         }
@@ -6541,7 +6537,7 @@ create unique index i_docir on doc(initid, revision);";
         $copy->Modify();
         if ($linkfld && method_exists($copy, "insertFolder")) {
             /**
-             * @var Dir $copy
+             * @var \Anakeen\SmartStructures\Dir\Dir $copy
              */
             $copy->insertFolder($this->initid);
         }
@@ -8092,8 +8088,7 @@ create unique index i_docir on doc(initid, revision);";
             $lay->set("docid", $this->fromid);
             $sql = $lay->gen();
         } else {
-            if ($this->attributes !== null && isset($this->attributes->fromids)
-                && is_array($this->attributes->fromids)) {
+            if ($this->attributes !== null && isset($this->attributes->fromids) && is_array($this->attributes->fromids)) {
                 foreach ($this->attributes->fromids as $k => $v) {
                     $sql .= "create trigger UV{$cid}_$v BEFORE INSERT OR UPDATE ON doc$cid FOR EACH ROW EXECUTE PROCEDURE upval$v();";
                 }

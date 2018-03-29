@@ -459,7 +459,7 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
         $classid = 0;
         if ($dirid > 0) {
             /**
-             * @var Dir $dir
+             * @var \Anakeen\SmartStructures\Dir\Dir $dir
              */
             $dir = new_Doc($this->dbaccess, $dirid);
             if (method_exists($dir, "isAuthorized")) {

@@ -663,7 +663,7 @@ class importSingleDocument
     {
         if ($folderId) {
             /**
-             * @var $dir Dir
+             * @var $dir \Anakeen\SmartStructures\Dir\Dir
              */
             $dir = new_Doc($this->dbaccess, $folderId);
             if ($dir->isAlive()) {

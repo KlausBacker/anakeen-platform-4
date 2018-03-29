@@ -106,7 +106,7 @@ class CheckEnd extends CheckData
         foreach ($la as & $oa) {
             if ($oa) {
                 $relativeOrder = $oa->getOption("relativeOrder");
-                if ($relativeOrder && $relativeOrder !== \SmartStructureAbsoluteOrder::firstOrder && $relativeOrder !== \SmartStructureAbsoluteOrder::autoOrder) {
+                if ($relativeOrder && $relativeOrder !== \Dcp\FamilyAbsoluteOrder::firstOrder && $relativeOrder !== \Dcp\FamilyAbsoluteOrder::autoOrder) {
                     if (!$this->doc->getAttribute($relativeOrder)) {
                         $this->addError(ErrorCode::getError('ATTR0212', $oa->id, $relativeOrder));
                     }
@@ -212,6 +212,7 @@ class CheckEnd extends CheckData
              * @var $oa NormalAttribute
              */
             $oa = $this->doc->getAttribute($attrid);
+
             if (!$oa) {
                 $this->addError(ErrorCode::getError('DFLT0005', $attrid, $this->doc->name));
             } else {

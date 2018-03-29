@@ -71,7 +71,6 @@ create unique index idx_idfam on docfam(id);";
     public $maxrev;
     public $configuration;
     public $tagable;
-    private $_configuration;
     private $_xtdefval; // dynamic used by ::getParams()
     private $_xtparam; // dynamic used by ::getDefValues()
     private $defaultSortProperties
@@ -110,13 +109,19 @@ create unique index idx_idfam on docfam(id);";
         parent::__construct($dbaccess, $id, $res, $dbid);
         $this->doctype = 'C';
         if ($include && ($this->id > 0) && ($this->isAffected())) {
+            $adoc = \Anakeen\Core\DocManager::getAttributesClassName($this->name);
+            if (! \Anakeen\Core\Internal\Autoloader::findFile($adoc)) {
+                // Workaround because autoload has eventually the class in its missing private key
+                $attFileClass=\Anakeen\Core\DocManager::getAttributesClassFilename($this->name);
+                if (file_exists($attFileClass)) {
+                    require_once($attFileClass);
+                } else {
+                    throw new Dcp\Exception(sprintf("cannot access attribute definition for %s (#%s) family", $this->name, $this->id));
+                }
+            }
+            $this->attributes = new $adoc();
+            $this->attributes->orderAttributes();
 
-
-                $adoc = \Anakeen\Core\DocManager::getAttributesClassName($this->name);
-                $this->attributes = new $adoc();
-                $this->attributes->orderAttributes();
-
-                //throw new Dcp\Exception(sprintf("cannot access attribute definition for %s (#%s) family", $this->name, $this->id));
 
             $this->FINALCLASS_HasBeenLoaded = true;
         }
@@ -733,41 +738,6 @@ create unique index idx_idfam on docfam(id);";
         return '';
     }
 
-    /**
-     * read xml configuration file
-     */
-    public function getConfiguration()
-    {
-        if (!$this->_configuration) {
-            if ($this->name) {
-                $dxml = new DomDocument();
-                $famfile = DEFAULT_PUBDIR . sprintf("/families/%s.fam", $this->name);
-                if (!@$dxml->load($famfile)) {
-                    return null;
-                } else {
-                    /** @var stdClass $o */
-                    $o = null;
-                    $properties = $dxml->getElementsByTagName('property');
-                    foreach ($properties as $prop) {
-                        /** @var DOMElement $prop */
-                        $name = $prop->getAttribute('name');
-                        $value = $prop->nodeValue;
-                        $o->properties[$name] = $value;
-                    }
-                    $views = $dxml->getElementsByTagName('view');
-                    foreach ($views as $view) {
-                        /** @var DOMElement $view */
-                        $name = $view->getAttribute('name');
-                        foreach ($view->attributes as $a) {
-                            $o->views[$name][$a->name] = $a->value;
-                        }
-                    }
-                }
-                $this->_configuration = $o;
-            }
-        }
-        return $this->_configuration;
-    }
 
     /**
      * @param bool $linkInclude if false fdl.xsd is write inside else use an include directive

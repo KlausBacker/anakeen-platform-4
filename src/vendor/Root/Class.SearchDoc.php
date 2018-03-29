@@ -230,7 +230,7 @@ class SearchDoc
      */
     public function onlyCount()
     {
-        /**  @var Dir $fld */
+        /**  @var \Anakeen\SmartStructures\Dir\Dir $fld */
         $fld = new_Doc($this->dbaccess, $this->dirid);
         $userid = $this->userid;
         if ($fld->fromid != \Anakeen\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
@@ -1416,7 +1416,7 @@ class SearchDoc
             $fld = new_Doc($dbaccess, $dirid);
             if ($fld->defDoctype != 'S') {
                 /**
-                 * @var Dir $fld
+                 * @var \Anakeen\SmartStructures\Dir\Dir $fld
                  */
                 $hasFilters = false;
                 if ($fld && method_exists($fld, "getSpecificFilters")) {

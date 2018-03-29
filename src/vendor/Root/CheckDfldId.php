@@ -35,7 +35,7 @@ class CheckDfldid extends CheckData
             $d = new_doc('', $this->folderName);
             if (!$d->isAlive()) {
                 $this->addError(ErrorCode::getError('DFLD0001', $this->folderName, $this->doc->name));
-            } elseif (!is_a($d, "Dir")) {
+            } elseif (!is_a($d, \Anakeen\SmartStructures\Dir\Dir::class)) {
                 $this->addError(ErrorCode::getError('DFLD0002', $this->folderName, $this->doc->name));
             }
         }

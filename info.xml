@@ -268,7 +268,7 @@
             <label>Import PROFIL Families</label>
         </process>
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/dir/dir.struct.csv --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dir/dir.struct.csv --csv-enclosure='&quot;'">
             <label>Import DIR Family</label>
         </process>
         <process
@@ -277,103 +277,103 @@
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/mail/mail.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Mail/Mail.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Mail form family</label>
         </process>
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/mailtemplate/mailtemplate.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Mail Template form family</label>
         </process>
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/sentmessage/sentmessage.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Sent message family</label>
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/exec/exec.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Exec/exec.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Processus family</label>
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/helppage/helppage.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Helpage family</label>
         </process>
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/helppage/helppage.param.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.param.csv  --csv-enclosure='&quot;'">
             <label>Config Helpage family</label>
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/cvdoc/cvdoc.init.csv --csv-separator=';' --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.init.csv --csv-separator=';' --csv-enclosure='&quot;'">
             <label>Add config in view control families</label>
         </process>
 
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/mask/mask.struct.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Mask/mask.struct.csv  --csv-enclosure='&quot;'">
             <label>MASK Family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/cvdoc/cvdoc.struct.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.csv  --csv-enclosure='&quot;'">
             <label>CVDOC Family</label>
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/search/search.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Search/search.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Search family</label>
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/msearch/msearch.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Msearch/msearch.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Grouped searches family</label>
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/dsearch/dsearch.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Detailled searches family</label>
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/ssearch/ssearch.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Specialized searches family</label>
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/report/report.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Report/report.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Report family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/image/image.struct.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Image/image.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Image family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/file/file.struct.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/File/file.struct.csv  --csv-enclosure='&quot;'">
             <label>Add File family</label>
         </process>
 
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/iuser/iuser.init.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.init.csv  --csv-enclosure='&quot;'">
             <label>Add IUSER folder</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/iuser/iuser.struct.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.struct.csv  --csv-enclosure='&quot;'">
             <label>Add IUSER family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/group/group.struct.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Group/group.struct.csv  --csv-enclosure='&quot;'">
             <label>Add GROUP family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/igroup/igroup.struct.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.struct.csv  --csv-enclosure='&quot;'">
             <label>Add IGROUP family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/role/role.struct.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Role/role.struct.csv  --csv-enclosure='&quot;'">
             <label>Add ROLE family</label>
         </process>
 
         <process command="./ank.php --script=refreshUserAccount">
             <label>Update user account documents</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/igroup/igroup.init.csv --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.init.csv --csv-enclosure='&quot;'">
             <label>Create system groups</label>
         </process>
 
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/helppage/helppage.data.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.data.csv  --csv-enclosure='&quot;'">
             <label>Help Documents</label>
         </process>
 
@@ -628,85 +628,85 @@ This can be solved by:<br/>
             <label>Import PROFIL Families</label>
         </process>
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/dir/dir.struct.csv --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dir/dir.struct.csv --csv-enclosure='&quot;'">
             <label>Import DIR Family</label>
         </process>
 
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/mail/mail.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Mail form family</label>
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/mailtemplate/mailtemplate.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Mail Template form family</label>
         </process>
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/sentmessage/sentmessage.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Sent message family</label>
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/exec/exec.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Exec/exec.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Processus family</label>
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/helppage/helppage.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Helpage family</label>
         </process>
 
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/mask/mask.struct.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Mask/mask.struct.csv  --csv-enclosure='&quot;'">
             <label>MASK Family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/cvdoc/cvdoc.struct.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.csv  --csv-enclosure='&quot;'">
             <label>CVDOC Family</label>
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/search/search.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Search/search.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Search family</label>
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/msearch/msearch.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Msearch/msearch.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Grouped searches family</label>
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/dsearch/dsearch.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Detailled searches family</label>
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/ssearch/ssearch.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Specialized searches family</label>
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/report/report.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Report/report.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Report family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/image/image.struct.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Image/image.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Image family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/file/file.struct.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/File/file.struct.csv  --csv-enclosure='&quot;'">
             <label>Add File family</label>
         </process>
 
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/iuser/iuser.struct.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.struct.csv  --csv-enclosure='&quot;'">
             <label>Add IUSER family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/group/group.struct.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Group/group.struct.csv  --csv-enclosure='&quot;'">
             <label>Add GROUP family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/igroup/igroup.struct.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.struct.csv  --csv-enclosure='&quot;'">
             <label>Add IGROUP family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Families/role/role.struct.csv  --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Role/role.struct.csv  --csv-enclosure='&quot;'">
             <label>Add ROLE family</label>
         </process>
 

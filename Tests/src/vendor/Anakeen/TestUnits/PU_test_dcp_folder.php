@@ -77,7 +77,7 @@ class TestFolder extends TestCaseDcpCommonFamily
     public function testAddFile($a, $b)
     {
         /**
-         * @var \Dir $da
+         * @var \Anakeen\SmartStructures\Dir\Dir $da
          */
         $da = new_doc(self::$dbaccess, $a, true);
         $db = new_doc(self::$dbaccess, $b, true);
@@ -104,7 +104,7 @@ class TestFolder extends TestCaseDcpCommonFamily
     public function testMoveDocument($a, $b, $c)
     {
         /**
-         * @var \Dir $da
+         * @var \Anakeen\SmartStructures\Dir\Dir $da
          */
         $da = new_doc(self::$dbaccess, $a, true);
         $db = new_doc(self::$dbaccess, $b, true);

@@ -2,27 +2,27 @@
 BEGIN;;Profil de document;3;;PDOC;;;;;;;;;;
 SCHAR;S;;;;;;;;;;;;;;
 USEFOR;SP;;;;;;;;;;;;;;
-CLASS;Anakeen\SmartStructures\Profiles\PDoc;;;;;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\Profiles\PDoc;disableInheritanceCondition;;;;;;;;;;;;;
 ICON;se-pdoc.png;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;
 //;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
-ATTR;FR_BASIC;;Basique;N;N;frame;0;W;;;;;;;
-ATTR;BA_TITLE;FR_BASIC ;Titre;Y;N;text;1;O;Y;;;;;;
-ATTR;PRF_DESC;FR_BASIC ;Description;N;N;longtext;10;W;N;;;;;;
-ATTR;DPDOC_FR_DYN;;Dynamique;N;N;frame;100;W;;;;;;;
-ATTR;DPDOC_FAMID;DPDOC_FR_DYN;Famille (id);N;N;docid;110;H;;;;::getTitle(DPDOC_FAMID):DPDOC_FAM;;;
-ATTR;DPDOC_FAM;DPDOC_FR_DYN;Famille;N;Y;text;120;W;;%S%app=FDL&action=FDL_CARD&id=%DPDOC_FAMID%;fdl.php;lfamilies(D,DPDOC_FAM):DPDOC_FAMID,DPDOC_FAM;;;elabel=famille utilisée pour les profils dynamiques
-ATTR;PRF_ACCESS;;Accessibilités;N;N;action;200;R;;;FREEDOM;FREEDOM_GACCESS;;::controlActifProfil();
-ATTR;PRF_ACTIVATE;;Activer;N;N;action;210;R;;;FREEDOM;MODPROF&profid=%I%&docid=%I%;;::profilIsActivate(false);ltarget=_self
-ATTR;PRF_DESACTIVATE;;Désactiver;N;N;action;220;R;;;FREEDOM;MODPROF&profid=0&docid=%I%;;::profilIsActivate(true);ltarget=_self
-ATTR;PRF_FORCECOMPUTING;;Forcer la propagation du profil;N;N;menu;230;R;;::recomputeProfiledDocument();;::profilIsActivate(true);;;ltarget=_self|ltitle=Force le recalcul des profils des documents associés
+ATTR;FR_BASIC;;Basique;N;N;frame;::auto;W;;;;;;;
+ATTR;BA_TITLE;FR_BASIC ;Titre;Y;N;text;::auto;O;Y;;;;;;
+ATTR;PRF_DESC;FR_BASIC ;Description;N;N;longtext;::auto;W;N;;;;;;
+ATTR;DPDOC_FR_DYN;;Dynamique;N;N;frame;::auto;W;;;;;;;
+ATTR;DPDOC_FAMID;DPDOC_FR_DYN;Famille (id);N;N;docid;::auto;H;;;;::getTitle(DPDOC_FAMID):DPDOC_FAM;;;
+ATTR;DPDOC_FAM;DPDOC_FR_DYN;Famille;N;Y;text;::auto;W;;%S%app=FDL&action=FDL_CARD&id=%DPDOC_FAMID%;fdl.php;lfamilies(D,DPDOC_FAM):DPDOC_FAMID,DPDOC_FAM;;;elabel=famille utilisée pour les profils dynamiques
+ATTR;PRF_ACCESS;;Accessibilités;N;N;action;::auto;R;;;FREEDOM;FREEDOM_GACCESS;;::controlActifProfil();
+ATTR;PRF_ACTIVATE;;Activer;N;N;action;::auto;R;;;FREEDOM;MODPROF&profid=%I%&docid=%I%;;::profilIsActivate(false);ltarget=_self
+ATTR;PRF_DESACTIVATE;;Désactiver;N;N;action;::auto;R;;;FREEDOM;MODPROF&profid=0&docid=%I%;;::profilIsActivate(true);ltarget=_self
+ATTR;PRF_FORCECOMPUTING;;Forcer la propagation du profil;N;N;menu;::auto;R;;::recomputeProfiledDocument();;::profilIsActivate(true);;;ltarget=_self|ltitle=Force le recalcul des profils des documents associés
 END;1;9;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;
 // famille profile dossier;;;;;name;;;;;;;;;;
 BEGIN;PDOC;Profil de dossier;4;;PDIR;;;;;;;;;;
 SCHAR;S;;;;;;;;;;;;;;
 USEFOR;SP;;;;;;;;;;;;;;
-CLASS;Anakeen\SmartStructures\Profiles\PDir;;;;;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\Profiles\PDir;disableInheritanceCondition;;;;;;;;;;;;;
 ICON;se-pdir.png;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;
 END;1;9;;;;;;;;;;;;;
@@ -31,7 +31,7 @@ END;1;9;;;;;;;;;;;;;
 BEGIN;PDOC;Profil de recherche;6;;PSEARCH;;;;;;;;;;
 SCHAR;S;;;;;;;;;;;;;;
 USEFOR;SP;;;;;;;;;;;;;;
-CLASS;Anakeen\SmartStructures\Profiles\PSearch;;;;;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\Profiles\PSearch;disableInheritanceCondition;;;;;;;;;;;;;
 ICON;se-psearch.png;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;
 END;1;9;;;;;;;;;;;;;
@@ -40,7 +40,7 @@ END;1;9;;;;;;;;;;;;;
 BEGIN;PDOC;Profil de famille;23;;PFAM;;;;;;;;;;
 SCHAR;S;;;;;;;;;;;;;;
 USEFOR;SP;;;;;;;;;;;;;;
-CLASS;Anakeen\SmartStructures\Profiles\PFam;;;;;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\Profiles\PFam;disableInheritanceCondition;;;;;;;;;;;;;
 ICON;se-pfam.png;;;;;;;;;;;;;;
 MODATTR;DPDOC_FR_DYN;;;;;;;H;;;;;;;
 ;;;;;;;;;;;;;;;

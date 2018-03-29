@@ -15,19 +15,25 @@ class CheckClass extends CheckData
      */
     protected $fileName;
     /**
-     * @var Doc
+     * @var DocFam
      */
     protected $doc;
+    protected $disableInheritanceCondition = false;
+
     /**
      * @param array $data
-     * @param Doc $doc
+     * @param Doc   $doc
+     *
      * @return CheckClass
      */
     public function check(array $data, &$doc = null)
     {
+        if (isset($data[2]) && $data[2] === "disableInheritanceCondition") {
+            $this->disableInheritanceCondition = true;
+        }
         if (!empty($data[1])) {
             $this->className = $data[1];
-            
+
             $this->doc = $doc;
             $this->checkClassSyntax();
             $this->checkClassFile();
@@ -35,7 +41,7 @@ class CheckClass extends CheckData
         }
         return $this;
     }
-    
+
     protected function checkClassSyntax()
     {
         if (!preg_match('/^[A-Z][A-Z_0-9\\\\]*$/i', $this->className)) {
@@ -43,13 +49,15 @@ class CheckClass extends CheckData
         }
         return false;
     }
-    
+
     protected function getClassFile()
     {
         return \Anakeen\Core\Internal\Autoloader::findFile($this->className);
     }
+
     /**
      * check if it is a folder
+     *
      * @return void
      */
     protected function checkClassFile()
@@ -68,11 +76,13 @@ class CheckClass extends CheckData
             }
         }
     }
+
     /**
      * Check PHP syntax of file (lint)
      *
      * @param string $fileName
-     * @param array $output Error message
+     * @param array  $output Error message
+     *
      * @return bool bool(true) if correct or bool(false) if error
      */
     public static function phpLintFile($fileName, &$output)
@@ -80,7 +90,7 @@ class CheckClass extends CheckData
         exec(sprintf('php -n -l %s 2>&1', escapeshellarg($fileName)), $output, $status);
         return ($status === 0);
     }
-    
+
     protected function checkInherit()
     {
         try {
@@ -98,12 +108,12 @@ class CheckClass extends CheckData
 
                     $parentClass = \Anakeen\Core\DocManager::getFamilyClassName($fromName);
                 } else {
-                        $parentClass = \Anakeen\SmartStructures\Document::class;
+                    $parentClass = \Anakeen\SmartStructures\Document::class;
                 }
-                if (strpos($this->doc->usefor, "P") !== false) {
+                if ($this->disableInheritanceCondition) {
                     $parentClass = \Doc::class;
+
                 }
-                
                 if (!$o->isSubclassOf($parentClass)) {
                     $this->addError(ErrorCode::getError('CLASS0006', $this->className, $this->fileName, $parentClass, $this->doc->name));
                 }

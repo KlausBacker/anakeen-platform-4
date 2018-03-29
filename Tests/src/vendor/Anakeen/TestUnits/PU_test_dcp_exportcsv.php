@@ -141,7 +141,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         SetHttpVar("csv-enclosure", $enclosure);
         SetHttpVar("csv-separator", $separator);
         /**
-         * @var \Dir $tmpFolder
+         * @var \Anakeen\SmartStructures\Dir\Dir $tmpFolder
          */
         $tmpFolder = createTmpDoc(self::$dbaccess, "DIR");
         $err = $tmpFolder->add();

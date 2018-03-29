@@ -7,9 +7,9 @@
 /**
  * Mail template document
  */
-namespace Dcp\Core;
+namespace Anakeen\SmartStructures\Mailtemplate;
 
-class MailTemplate extends \SmartStructure\Document
+class MailTemplate extends \Anakeen\SmartStructures\Document
 {
     /**
      * always show a user notification
@@ -174,9 +174,7 @@ class MailTemplate extends \SmartStructure\Document
                     break;
 
                 case 'DE': // param user relation
-
                 case 'D': // user relations
-
                 case 'WD': // user relations
                     if ($type == 'D' || $type == 'DE') {
                         $udoc = $doc;
@@ -471,7 +469,7 @@ class MailTemplate extends \SmartStructure\Document
         $allowedValues = [self::NOTIFY_SENDMAIL_ALWAYS, self::NOTIFY_SENDMAIL_ERRORS_ONLY, self::NOTIFY_SENDMAIL_NEVER, self::NOTIFY_SENDMAIL_AUTO];
 
         if (!in_array($notifySendMail, $allowedValues)) {
-            throw new Exception("MAIL0001", $notifySendMail, implode("' , '", $allowedValues));
+            throw new \Dcp\Core\Exception("MAIL0001", $notifySendMail, implode("' , '", $allowedValues));
         } else {
             $this->notifySendMail = $notifySendMail;
         }

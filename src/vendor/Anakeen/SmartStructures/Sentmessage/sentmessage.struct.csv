@@ -1,0 +1,35 @@
+;;;;;;;;;;;;;;;
+BEGIN;;Message envoyé;;;SENTMESSAGE;;;;;;;;;;
+TYPE;C;;;;;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\Sentmessage\SentMessage;;;;;;;;;;;;;;
+ICON;sentmessage.png;;;;;;;;;;;;;;
+SCHAR;S;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+USEFOR;S;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
+ATTR;EMSG_FR_IDENT;;Identification;N;N;frame;::auto;R;;;;;;;
+ATTR;EMSG_REFID;EMSG_FR_IDENT;Document référence;;;"docid(""x"")";::auto;R;;;;;;;
+ATTR;EMSG_FROM;EMSG_FR_IDENT;De;;;text;::auto;S;;;;;;;
+ATTR;EMSG_T_RECIPIENT;EMSG_FR_IDENT;Destinataires;;;array;::auto;U;;;;;;;
+ATTR;EMSG_SENDTYPE;EMSG_T_RECIPIENT;Type;;;enum;::auto;S;;;;to|Pour,cc|Copie,bcc|Copie cachée;;;
+ATTR;EMSG_RECIPIENT;EMSG_T_RECIPIENT;Destinataire;;;text;::auto;S;;;;;;;
+ATTR;EMSG_SUBJECT;EMSG_FR_IDENT;Sujet;Y;;text;::auto;S;;;;;;;
+ATTR;EMSG_DATE;EMSG_FR_IDENT;Date;;;"timestamp(""%d %B %Y %H:%S"")";::auto;S;;;;;;;iwidth=64px
+ATTR;EMSG_SIZE;EMSG_FR_IDENT;Taille;;;int;::auto;R;;;;;;;
+ATTR;EMSG_FR_BODIES;;Corps de messages;;;frame;::auto;R;;;;;;;
+ATTR;EMSG_TEXTBODY;EMSG_FR_BODIES;Texte;;;longtext;::auto;R;;;;;;;vlabel=up
+ATTR;EMSG_HTMLBODY;EMSG_FR_BODIES;Texte formaté;;;ifile;::auto;R;;;;;;;vlabel=up
+ATTR;EMSG_T_ATTACH;EMSG_FR_BODIES;Attachements;;;array;::auto;R;;;;;;;
+ATTR;EMSG_ATTACH;EMSG_T_ATTACH;Fichier;;;file;::auto;R;;;;;;;vlabel=none
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+PARAM;EMSG_FR_PARAMETERS;;Paramètres;;;frame;::auto;W;;;;;;;
+PARAM;EMSG_EDITCONTROL;EMSG_FR_PARAMETERS;Force la lecture seule;N;N;enum;::auto;W;;;;lockedit|Droit édit verrouillé,freeedit|Droit édit libre;;;system=yes|bmenu=no
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+END;;;;;;;;;;;;;;;

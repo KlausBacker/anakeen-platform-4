@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** Dossier  */
-	class Dir extends \Dir { const familyName="DIR";}
+	class Dir extends \Anakeen\SmartStructures\Dir\Dir { const familyName="DIR";}
 }
 
 namespace SmartStructure\Attributes {

@@ -7,9 +7,9 @@
  * INterface to send mail
  *
  */
-namespace Dcp\Core;
+namespace Anakeen\SmartStructures\Mail;
 
-class MailEdit extends \SmartStructure\Document
+class MailEdit extends \Anakeen\SmartStructures\Document
 {
     public $defaultedit = "FDL:EDITMAILDOC";
     /**
