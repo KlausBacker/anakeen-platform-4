@@ -7,11 +7,13 @@
  * Method for processes family
  *
  */
-namespace Dcp\Core;
+namespace Anakeen\SmartStructures\Exec;
 
+use Anakeen\Core\ContextManager;
+use Anakeen\Core\DocManager;
 use Anakeen\Script\ShellManager;
 
-class ExecProcessus extends \SmartStructure\Document
+class Exec extends \Anakeen\SmartStructures\Document
 {
     private $execuserid;
     /**
@@ -161,7 +163,7 @@ class ExecProcessus extends \SmartStructure\Document
         $status = $this->bgExecute(_("dynacase cron try execute"));
         $del = new_Doc($this->dbaccess, $this->getLatestId(false, true));
         /**
-         * @var \SmartStructure\EXEC $del
+         * @var Exec $del
          */
         $del->clearValue("exec_status");
         $del->clearValue("exec_handnextdate");
@@ -204,7 +206,7 @@ class ExecProcessus extends \SmartStructure\Document
     {
         $doc = new_Doc($action->dbaccess, $docid);
         /**
-         * @var \SmartStructure\EXEC $doc
+         * @var Exec $doc
          */
         if ($doc->locked == - 1) { // it is revised document
             $doc = new_Doc($action->dbaccess, $doc->getLatestId());
@@ -217,7 +219,7 @@ class ExecProcessus extends \SmartStructure\Document
             "exec_statusdate"
         ), true);
         $cmd = $doc->bgCommand($action->user->id == 1);
-        $f = uniqid(getTmpDir() . "/fexe");
+        $f = uniqid(ContextManager::getTmpDir() . "/fexe");
         $fout = "$f.out";
         $ferr = "$f.err";
         $cmd.= ">$fout 2>$ferr";
@@ -261,7 +263,7 @@ class ExecProcessus extends \SmartStructure\Document
                 $err = $doc->modify();
             }
         } else {
-            $doc->addHistoryEntry($err, DocHisto::ERROR);
+            $doc->addHistoryEntry($err, \DocHisto::ERROR);
         }
         
         if ($err != "") {

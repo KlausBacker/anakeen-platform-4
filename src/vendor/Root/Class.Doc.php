@@ -2777,7 +2777,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param boolean $onlyopt get only optional attributes
      *
-     * @return NormalAttribute[]
+     * @return \NormalAttribute[]
      */
     final public function getNormalAttributes($onlyopt = false)
     {
@@ -3466,7 +3466,7 @@ create unique index i_docir on doc(initid, revision);";
 
     /**
      * called when user edit a document FDL/editcard
-     *
+     * @deprecated
      * @api hook called when compose edit document web interface
      */
     public function preEdition()
@@ -3477,7 +3477,7 @@ create unique index i_docir on doc(initid, revision);";
 
     /**
      * called when user view a document FDL/fdl_card
-     *
+     * @deprecated
      * @api hook called when compose view document web interface
      */
     public function preConsultation()

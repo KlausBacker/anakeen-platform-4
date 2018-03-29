@@ -11,14 +11,14 @@
  */
 /**
  */
-namespace Dcp\Core;
+namespace Anakeen\SmartStructures\Cvdoc;
 
 /**
  * Control view Class
  */
 use \SmartStructure\Attributes\Cvdoc as MyAttributes;
 
-class CVDoc extends \SmartStructure\Base
+class CoreCVDoc extends \SmartStructure\Base
 {
     /**
      * CVDoc has its own special access depend on special views

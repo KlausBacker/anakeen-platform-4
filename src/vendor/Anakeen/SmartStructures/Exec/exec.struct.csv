@@ -1,0 +1,47 @@
+// famille action;;;id;class;name;;;;;;;;;;
+BEGIN;;Processus;37;;EXEC;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\Exec\Exec;;;;;;;;;;;;;;
+USEFOR;S;;;;;;;;;;;;;;
+ICON;se-exec.png;;;;;;;;;;;;;;
+MAXREV;100;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
+ATTR;EXEC_FR_IDENT;;Identification;N;N;frame;::auto;W;;;;;;;
+ATTR;EXEC_IDUSER;EXEC_FR_IDENT  ;Exécutant;N;N;"docid(""IUSER"")";::auto;W;;;;;;;doctitle=EXEC_USER
+ATTR;EXEC_USER;EXEC_FR_IDENT;Exécutant (titre);N;N;text;::auto;H;;;;;;;
+ATTR;EXEC_IDREF;EXEC_FR_IDENT;Issue de;N;N;"docid(""BATCH"")";::auto;R;;;;;;;doctitle=EXEC_REF
+ATTR;EXEC_REF;EXEC_FR_IDENT;Référent (titre);Y;N;text;::auto;H;;;;;;;
+ATTR;EXEC_TITLE;EXEC_FR_IDENT;Titre;Y;N;text;::auto;W;;;;;;;
+ATTR;EXEC_STATUS;EXEC_FR_IDENT;Exécution;N;N;enum;::auto;R;;;;none|Non,progressing|En cours,waiting|En attente;;;system=yes
+ATTR;EXEC_STATUSDATE;EXEC_FR_IDENT;Exécution depuis;N;N;timestamp;::auto;R;;;;;;;
+ATTR;EXEC_FR_BATCH;;Traitement;N;N;frame;::auto;W;;;;;;;
+ATTR;EXEC_APPLICATION;EXEC_FR_BATCH;Application;Y;N;text;::auto;W;N;;fdl.php;lapplications(EXEC_APPLICATION):EXEC_APPLICATION;;;
+ATTR;EXEC_ACTION;EXEC_FR_BATCH;Action;Y;N;text;::auto;W;N;;fdl.php;lactions(EXEC_APPLICATION,EXEC_ACTION):EXEC_ACTION;;;
+ATTR;EXEC_API;EXEC_FR_BATCH;Api;Y;N;text;::auto;W;N;;fdl.php;lapi(EXEC_API):EXEC_API;;;
+ATTR;EXEC_T_PARAMETERS;EXEC_FR_BATCH;Paramètres;N;N;array;::auto;W;;;;;;;
+ATTR;EXEC_IDVAR;EXEC_T_PARAMETERS;Variable;N;N;text;::auto;W;;;;;;;
+ATTR;EXEC_VALUEVAR;EXEC_T_PARAMETERS;Valeur;N;N;text;::auto;W;;;;;;;
+ATTR;EXEC_FR_DATE;;Dates;N;N;frame;::auto;W;;;;;;;
+ATTR;EXEC_PREVDATE;EXEC_FR_DATE;Précédente date d'exécution;N;Y;timestamp;::auto;R;;%S%app=FDL&action=FDL_CARD&id=%I%&latest=P;;::getPrevExecDate();;;ltitle=Voir l'exécution précédente
+ATTR;EXEC_NEXTDATE;EXEC_FR_DATE;Prochaine date d'exécution;N;Y;timestamp;::auto;R;;;;;;;
+ATTR;EXEC_HANDNEXTDATE;EXEC_FR_DATE;À exécuter le;N;N;timestamp;::auto;W;;;;;;::isFutureDate(EXEC_HANDNEXTDATE);
+ATTR;EXEC_PERIODDAY;EXEC_FR_DATE;Période en jours;N;N;int;::auto;W;;;;;;;elabel=à faire tous les n jours|esize=3
+ATTR;EXEC_PERIODHOUR;EXEC_FR_DATE;Période en heures;N;N;int;::auto;W;;;;;;;elabel=à faire tous les n heures|esize=3
+ATTR;EXEC_PERIODMIN;EXEC_FR_DATE;Période en minutes;N;N;int;::auto;W;;;;;;;elabel=à faire tous les n minutes|esize=3
+ATTR;EXEC_PERIODENDDATE;EXEC_FR_DATE;Jusqu'au;N;N;timestamp;::auto;H;;;;;;::isFutureDate(EXEC_PERIODENDDATE);
+ATTR;EXEC_PERIODDAYNUMBER;EXEC_FR_DATE;Jour de la semaine;N;N;enum;::auto;H;;;; |---,1|Lundi,2|Mardi,3|Mercredi,4|Jeudi,5|Vendredi,6|Samedi,7|Dimanche;;;system=yes,bmenu=no
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+ATTR;EXEC_FR_CR;;Compte-rendu;N;N;frame;::auto;W;;;;;;;
+ATTR;EXEC_DATE;EXEC_FR_CR;Date d'exécution;N;N;"timestamp(""%A %d %B %Y %X"")";::auto;R;;;;;;;
+ATTR;EXEC_ELAPSED;EXEC_FR_CR;Durée d'exécution;N;N;"time(""%H:%M:%S"")";::auto;R;;;;;;;
+ATTR;EXEC_STATE;EXEC_FR_CR;Statut;N;N;text;::auto;R;;;;;;;
+ATTR;EXEC_DETAIL;EXEC_FR_CR;Détail;N;N;ifile;::auto;R;;;;;;;
+ATTR;EXEC_DETAILLOG;EXEC_FR_CR;Log;N;N;longtext;::auto;R;;;;;;;
+ATTR;EXEC_BGEXEC;;Exécuter maintenant;N;N;menu;::auto;R;;::bgExecute();;::isLatestExec();;;
+ATTR;EXEC_RESET;;Abandonner l'exécution en cours;N;N;menu;::auto;R;;::resetExecute();;::isInprogress();;;ltarget=_self
+DEFAULT;EXEC_IDUSER;::getUserId();;;;;;;;;;;;;
+DEFAULT;EXEC_USER;::getTitle(EXEC_IDUSER);;;;;;;;;;;;;
+PARAM;EXEC_FR_PARAM;;Paramètre;N;N;frame;::auto;W;;;;;;;
+PARAM;EXEC_IDADMIN;EXEC_FR_PARAM;Administrateur;N;N;"docid(""IUSER"")";::auto;W;N;;;;;;elabel=recevra en copie les couriels des rapports d'exécution
+END;;;;;;;;;;;;;;;

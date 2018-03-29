@@ -303,12 +303,6 @@
             <label>Config Helpage family</label>
         </process>
 
-        <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.init.csv --csv-separator=';' --csv-enclosure='&quot;'">
-            <label>Add config in view control families</label>
-        </process>
-
-
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Mask/mask.struct.csv  --csv-enclosure='&quot;'">
             <label>MASK Family</label>
         </process>

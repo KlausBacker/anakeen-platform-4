@@ -37,7 +37,7 @@ class CheckCfldid extends CheckData
             $d = new_doc('', $this->folderName);
             if (!$d->isAlive()) {
                 $this->addError(ErrorCode::getError('CFLD0001', $this->folderName, $this->doc->name));
-            } elseif (!is_a($d, "DocSearch")) {
+            } elseif (!is_a($d, \Anakeen\SmartStructures\Search\Search::class)) {
                 $this->addError(ErrorCode::getError('CFLD0002', $this->folderName, $this->doc->name));
             }
         }

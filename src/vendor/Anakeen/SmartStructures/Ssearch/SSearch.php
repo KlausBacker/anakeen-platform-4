@@ -7,9 +7,9 @@
  * Special search
  */
 
-namespace Dcp\Core;
+namespace Anakeen\SmartStructures\Ssearch;
 
-class SpecialSearch extends \SmartStructure\Search
+class Ssearch extends \SmartStructure\Search
 {
     public $defaultedit = "FDL:EDITBODYCARD";
     public $defaultview = "FDL:VIEWBODYCARD";

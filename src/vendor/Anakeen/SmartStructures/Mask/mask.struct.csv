@@ -1,6 +1,6 @@
 // famille mask;;;id;class;name;;;;;;;
 BEGIN;BASE;Masque de saisie;21;;MASK;;;;;;;
-CLASS;Dcp\Core\Mask;;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\Mask\Mask;;;;;;;;;;;
 USEFOR;S;;;;;;;;;;;
 SCHAR;S;;;;;;;;;;;
 ICON;se-mask.png;;;;;;;;;;;

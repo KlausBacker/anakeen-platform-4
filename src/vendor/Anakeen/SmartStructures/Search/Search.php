@@ -1,37 +1,31 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Document searches classes
  *
- * @author Anakeen
- * @version $Id: Class.DocSearch.php,v 1.56 2008/11/19 08:47:46 eric Exp $
- * @package FDL
  */
-/**
- */
+
+namespace Anakeen\SmartStructures\Search;
 
 include_once("FDL/Lib.Dir.php");
 
-class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
+class Search extends \Anakeen\SmartStructures\Profiles\PSearch
 {
     public $defDoctype = 'S';
-    public $defaultedit = "FREEDOM:EDITSEARCH";
-    
-    public $tol = array(
-        "and" => "and", #N_("and")
-        "or" => "or"
-    ); #N_("or")
-    
-    
+
+    public $tol
+        = array(
+            "and" => "and", #N_("and")
+            "or" => "or"
+        ); #N_("or")
+
+
     /**
      * max recursive level
+     *
      * @public int
      */
     public $folderRecursiveLevel = 2;
-    
+
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         parent::__construct($dbaccess, $id, $res, $dbid);
@@ -39,7 +33,7 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
             $this->fromid = FAM_SEARCH;
         }
     }
-    
+
     public function preConsultation()
     {
         $famId = $this->getRawValue(\SmartStructure\Attributes\Search::se_famid);
@@ -52,13 +46,15 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
         }
         return '';
     }
-    
+
     public function preCreated()
     {
         return $this->updateSearchAuthor();
     }
+
     /**
      * the author is the current user if not already set
+     *
      * @return string
      */
     public function updateSearchAuthor()
@@ -69,10 +65,13 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
         }
         return $err;
     }
+
     /**
      * to affect a special query to a SEARCH document
      * must be call after the add method When use this method others filter parameters are ignored.
+     *
      * @param string $tquery the sql query
+     *
      * @return string error message (empty if no error)
      */
     public function addStaticQuery($tquery)
@@ -81,7 +80,7 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
         $err = $this->addQuery($tquery);
         return $err;
     }
-    
+
     public function AddQuery($tquery)
     {
         // insert query in search document
@@ -90,19 +89,19 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
         } else {
             $query = $tquery;
         }
-        
+
         if ($query == "") {
             return "";
         }
         if ($this->id == "") {
             return "";
         }
-        
-        $oqd = new QueryDir($this->dbaccess);
+
+        $oqd = new \QueryDir($this->dbaccess);
         $oqd->dirid = $this->id;
         $oqd->qtype = "M"; // multiple
         $oqd->query = $query;
-        
+
         if ($this->id > 0) {
             $this->exec_query("delete from fld where dirid=" . intval($this->id) . " and qtype='M'");
         }
@@ -111,18 +110,21 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
             $this->setValue("SE_SQLSELECT", $query);
             $err = $this->modify();
         }
-        
+
         return $err;
     }
+
     /**
      * Test if current user can add or delete document in this folder
      * always false for a search
+     *
      * @return string error message, if no error empty string
      */
     public function canModify()
     {
         return _("containt of searches cannot be modified");
     }
+
     /**
      * return true if the search has parameters
      */
@@ -130,43 +132,47 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
     {
         return false;
     }
-    
+
     public function GetQueryOld()
     {
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \QueryDir::class);
         $query->AddQuery("dirid=" . $this->id);
         $query->AddQuery("qtype != 'S'");
         $tq = $query->Query(0, 0, "TABLE");
-        
+
         if ($query->nb > 0) {
             return $tq[0]["query"];
         }
         return "";
     }
+
     /**
      * return SQL query(ies) needed to search documents
+     *
      * @return array string
      */
     public function getQuery()
     {
         if (!$this->isStaticSql()) {
-            $query = $this->ComputeQuery($this->getRawValue("se_key"), $this->getRawValue("se_famid"), $this->getRawValue("se_latest"), $this->getRawValue("se_case") == "yes", $this->getRawValue("se_idfld"), $this->getRawValue("se_sublevel") === "", $this->getRawValue("se_case") == "full");
+            $query = $this->ComputeQuery($this->getRawValue("se_key"), $this->getRawValue("se_famid"), $this->getRawValue("se_latest"), $this->getRawValue("se_case") == "yes",
+                $this->getRawValue("se_idfld"), $this->getRawValue("se_sublevel") === "", $this->getRawValue("se_case") == "full");
             // print "<HR>getQuery1:[$query]";
         } else {
             $query[] = $this->getRawValue("SE_SQLSELECT");
             // print "<BR><HR>".$this->getRawValue("se_latest")."/".$this->getRawValue("se_case")."/".$this->getRawValue("se_key");
             //  print "getQuery2:[$query]";
         }
-        
+
         return $query;
     }
+
     /**
      * @param bool $full set to true if wan't use full text indexing
      */
     public function getSqlGeneralFilters($keyword, $latest, $sensitive, $full = false)
     {
         $filters = array();
-        
+
         $acls = $this->getMultipleRawValues("se_acl");
         if ((count($acls) > 0 && ($this->userid != 1))) {
             //      print_r2($acls);
@@ -174,11 +180,11 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
                 $dacl = $this->dacls[$acl];
                 if ($dacl) {
                     $posacl = $dacl["pos"];
-                    $filters[] = sprintf("hasaprivilege('%s', profid, %d)", DocPerm::getMemberOfVector($this->userid), (1 << intval($posacl)));
+                    $filters[] = sprintf("hasaprivilege('%s', profid, %d)", \DocPerm::getMemberOfVector($this->userid), (1 << intval($posacl)));
                 }
             }
         }
-        
+
         if ($latest == "fixed") {
             $filters[] = "locked = -1";
             $filters[] = "lmodify = 'L'";
@@ -188,7 +194,7 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
         if ($latest == "lastfixed") {
             $filters[] = "locked = -1";
         }
-        
+
         if ($this->getRawValue("se_archive") > 0) {
             $filters[] = sprintf("archiveid = %d", $this->getRawValue("se_archive"));
         }
@@ -223,10 +229,10 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
                     if ($ing) {
                         if ($v[strlen($v) - 1] == '"') {
                             $ing = false;
-                            $ckey.= " " . substr($v, 0, -1);
+                            $ckey .= " " . substr($v, 0, -1);
                             $filters[] = sprintf("svalues %s '%s'", $op, pg_escape_string($ckey));
                         } else {
-                            $ckey.= " " . $v;
+                            $ckey .= " " . $v;
                         }
                     } elseif ($v && $v[0] == '"') {
                         if ($v[strlen($v) - 1] == '"') {
@@ -249,12 +255,15 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
         }
         return $filters;
     }
+
     /**
      * return sqlfilters for a simple query in fulltext mode
-     * @param string $keyword the word(s) searched
-     * @param array &$sqlfilters return array of sql conditions
-     * @param string &$sqlorder return sql order by
-     * @param string &$fullkeys return tsearch2 keys for use it in headline sql function
+     *
+     * @param string $keyword     the word(s) searched
+     * @param array  &$sqlfilters return array of sql conditions
+     * @param string &$sqlorder   return sql order by
+     * @param string &$fullkeys   return tsearch2 keys for use it in headline sql function
+     *
      * @return void
      */
     public static function getFullSqlFilters($keyword, &$sqlfilters, &$sqlorder, &$fullkeys)
@@ -273,7 +282,7 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
         }
         $tkeys = array();
         $sqlfilters = array();
-        
+
         $keyword = preg_replace('/\s+(OR)\s+/u', '|', $keyword);
         $keyword = preg_replace('/\s+(AND)\s+/u', ' ', $keyword);
         $tkeys = explode(" ", $keyword);
@@ -297,51 +306,51 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
                     // add more filter for search complete and exact expression
                     if (strstr($key, '|') === false) {
                         $sqlfiltersbrut[] = "svalues ~* E'\\\\y" . pg_escape_string(str_replace(array(
-                            '"',
-                            '&',
-                            '(',
-                            ')'
-                        ), array(
-                            "",
-                            ' ',
-                            '',
-                            ''
-                        ), $key)) . "\\\\y' ";
+                                '"',
+                                '&',
+                                '(',
+                                ')'
+                            ), array(
+                                "",
+                                ' ',
+                                '',
+                                ''
+                            ), $key)) . "\\\\y' ";
                     } else {
                         list($left, $right) = explode("|", $key);
                         if (strstr($left, '"') !== false) {
                             $q1 = "svalues ~* E'\\\\y" . pg_escape_string(str_replace(array(
-                            '"',
-                            '&',
-                            '(',
-                            ')'
-                        ), array(
-                            "",
-                            ' ',
-                            '',
-                            ''
-                        ), $left)) . "\\\\y' ";
+                                    '"',
+                                    '&',
+                                    '(',
+                                    ')'
+                                ), array(
+                                    "",
+                                    ' ',
+                                    '',
+                                    ''
+                                ), $left)) . "\\\\y' ";
                         } else {
                             $q1 = "";
                         }
                         if (strstr($right, '"') !== false) {
                             $q2 = "svalues ~* E'\\\\y" . pg_escape_string(str_replace(array(
-                            '"',
-                            '&',
-                            '(',
-                            ')'
-                        ), array(
-                            "",
-                            ' ',
-                            '',
-                            ''
-                        ), $right)) . "\\\\y' ";
+                                    '"',
+                                    '&',
+                                    '(',
+                                    ')'
+                                ), array(
+                                    "",
+                                    ' ',
+                                    '',
+                                    ''
+                                ), $right)) . "\\\\y' ";
                         } else {
                             $q2 = "";
                         }
                         $q3 = "fulltext @@ to_tsquery('french','" . pg_escape_string(unaccent($left)) . "') ";
                         $q4 = "fulltext @@ to_tsquery('french','" . pg_escape_string(unaccent($right)) . "') ";
-                        
+
                         if ((!$q1) && $q2) {
                             $sqlfiltersbrut[] = "($q4 and $q2) or $q3";
                         } elseif ((!$q2) && $q1) {
@@ -353,7 +362,7 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
                 }
             }
         }
-        
+
         if (count($tsearchkeys) > 0) {
             $fullkeys = '(' . implode(")&(", $tsearchkeys) . ')';
             $fullkeys = unaccent($fullkeys);
@@ -365,8 +374,8 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
         }
         $sqlorder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc", pg_escape_string($fullkeys));
     }
-    
-    public function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
+
+    public function ComputeQuery($keyword = "", $famid = -1, $latest = "yes", $sensitive = false, $dirid = -1, $subfolder = true, $full = false)
     {
         if ($dirid > 0) {
             if ($subfolder) {
@@ -387,7 +396,7 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
             }
         }
         $filters = $this->getSqlGeneralFilters($keyword, $latest, $sensitive, $full);
-        
+
         $only = '';
         if ($this->getRawValue("se_famonly") == "yes") {
             if (!is_numeric($famid)) {
@@ -395,32 +404,38 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
             }
             $only = "only";
         }
-        
+
         $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, false, $latest == "yes", $this->getRawValue("se_trash"), false, $level = 2, $join = '', $only);
-        
+
         return $query;
     }
+
     /**
      * return true if the sqlselect is writted by hand
+     *
      * @return bool
      */
     public function isStaticSql()
     {
-        return ($this->getRawValue("se_static") != "") || (($this->getRawValue("se_latest") == "") && ($this->getRawValue("se_case") == "") && ($this->getRawValue("se_key") == ""));
+        return ($this->getRawValue("se_static") != "")
+            || (($this->getRawValue("se_latest") == "") && ($this->getRawValue("se_case") == "")
+                && ($this->getRawValue("se_key") == ""));
     }
+
     /**
      * return error if query filters are not compatibles
+     *
      * @return string error message , empty if no errors
      */
     public function getSqlParseError()
     {
         return "";
     }
-    
+
     public function preRefresh()
     {
         $err = "";
-        
+
         if (!$this->isStaticSql()) {
             if (!$this->isParameterizable()) {
                 $query = $this->getQuery();
@@ -434,93 +449,14 @@ class DocSearch extends \Anakeen\SmartStructures\Profiles\PDocSearch
         }
         return $err;
     }
-    /**
-     * @templateController
-     * @return string
-     */
-    public function editsearch()
-    {
-        global $action;
-        
-        $rtarget = getHttpVars("rtarget");
-        $this->lay->eset("rtarget", $rtarget);
-        $this->lay->set("restrict", false);
-        $this->lay->set("archive", false);
-        
-        $farch = new_doc($this->dbaccess, "ARCHIVING");
-        if ($farch) {
-            $this->lay->set("archive", ($farch->control("view") == ""));
-        }
-        $this->lay->eset("thekey", $this->getRawValue("se_key"));
-        $dirid = GetHttpVars("dirid"); // to set restriction family
-        $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/edittable.js");
-        $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FREEDOM/Layout/editdsearch.js");
-        $famid = $this->getRawValue("se_famid");
-        $classid = 0;
-        if ($dirid > 0) {
-            /**
-             * @var \Anakeen\SmartStructures\Dir\Dir $dir
-             */
-            $dir = new_Doc($this->dbaccess, $dirid);
-            if (method_exists($dir, "isAuthorized")) {
-                if ($dir->isAuthorized($classid)) {
-                    // verify if classid is possible
-                    if ($dir->hasNoRestriction()) {
-                        $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
-                    } else {
-                        $tclassdoc = $dir->getAuthorizedFamilies();
-                        $this->lay->set("restrict", true);
-                    }
-                } else {
-                    $tclassdoc = $dir->getAuthorizedFamilies();
-                    $first = current($tclassdoc);
-                    $famid = abs($first["id"]);
-                    $this->lay->set("restrict", true);
-                }
-            } else {
-                $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
-            }
-        } else {
-            $tclassdoc = GetClassesDoc($this->dbaccess, $action->user->id, $classid, "TABLE");
-        }
-        
-        $this->lay->eset("selfam", _("no family"));
-        $selectclass = array();
-        foreach ($tclassdoc as $k => $cdoc) {
-            $selectclass[$k]["idcdoc"] = $cdoc["id"];
-            $selectclass[$k]["classname"] = $cdoc["title"];
-            $selectclass[$k]["system_fam"] = (substr($cdoc["usefor"], 0, 1) == 'S') ? true : false;
-            if (abs($cdoc["initid"]) == abs($famid)) {
-                $selectclass[$k]["selected"] = "selected";
-                if ($famid < 0) {
-                    $this->lay->eset("selfam", $cdoc["title"] . " " . !!_("(only)"));
-                } else {
-                    $this->lay->eset("selfam", $cdoc["title"]);
-                }
-            } else {
-                $selectclass[$k]["selected"] = "";
-            }
-        }
-        
-        $this->lay->SetBlockData("SELECTCLASS", $selectclass);
-        $this->lay->set("has_permission_fdl_system", $action->parent->hasPermission('FDL', 'SYSTEM'));
-        $this->lay->set("se_sysfam", ($this->getRawValue('se_sysfam') == 'yes') ? true : false);
-        
-        $this->editattr();
-    }
-    /**
-     * @templateController
-     * @return string
-     */
-    public function editspeedsearch()
-    {
-        return $this->editsearch();
-    }
+
     /**
      * return document includes in search folder
-     * @param bool $controlview if false all document are returned else only visible for current user  document are return
-     * @param array $filter to add list sql filter for selected document
-     * @param int $famid family identifier to restrict search
+     *
+     * @param bool  $controlview if false all document are returned else only visible for current user  document are return
+     * @param array $filter      to add list sql filter for selected document
+     * @param int   $famid       family identifier to restrict search
+     *
      * @return array array of document array
      */
     public function getContent($controlview = true, array $filter = array(), $famid = "", $qtype = "TABLE", $trash = "")
