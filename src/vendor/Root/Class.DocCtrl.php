@@ -138,7 +138,7 @@ class DocCtrl extends DocLDAP
     public $dprofid;
     public $views;
     /**
-     * @var Adoc007
+     * @var \Anakeen\Core\SmartStructure\Attributes
      */
     public $attributes = null;
     public $doctype;

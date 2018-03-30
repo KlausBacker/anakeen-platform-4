@@ -606,7 +606,7 @@ class Doc extends DocCtrl
      */
     public $wdoc = null;
     /**
-     * @var Adoc007
+     * @var \Anakeen\Core\SmartStructure\Attributes
      */
     public $attributes = null;
     public static $sqlindex
