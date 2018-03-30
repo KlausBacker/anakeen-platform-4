@@ -54,7 +54,7 @@ abstract class Authenticator
             if (!array_key_exists('provider', $this->parms)) {
                 throw new Dcp\Exception(__METHOD__ . " " . "Error: provider parm not specified at __construct");
             }
-            $providerClass = $this->parms{'provider'} . 'Provider';
+            $providerClass = ucfirst(strtolower($this->parms['provider'])) . 'Provider';
             
 
             if (!class_exists($providerClass)) {

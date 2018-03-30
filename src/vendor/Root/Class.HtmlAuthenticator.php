@@ -78,7 +78,7 @@ class HtmlAuthenticator extends Authenticator
         return $this->auth_session;
     }
 
-    
+
     public function checkAuthorization($opt)
     {
         if (is_callable(array(
