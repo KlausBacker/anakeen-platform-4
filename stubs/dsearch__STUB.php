@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** Recherche détaillée  */
-	class Dsearch extends \Anakeen\SmartStructures\Dsearch\DSearch { const familyName="DSEARCH";}
+	class Dsearch extends \Anakeen\SmartStructures\Dsearch\DSearchHooks { const familyName="DSEARCH";}
 }
 
 namespace SmartStructure\Attributes {

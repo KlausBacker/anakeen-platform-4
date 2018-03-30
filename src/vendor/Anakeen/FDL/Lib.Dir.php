@@ -469,7 +469,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             
             if ($fld->fromid == \Anakeen\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
                 /**
-                 * @var \SmartStructure\SSEARCH $fld
+                 * @var \SmartStructure\SsearchHooks $fld
                  */
                 return $fld->getDocList($start, $slice, $qtype, $userid);
             }

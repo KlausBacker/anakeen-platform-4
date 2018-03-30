@@ -9,7 +9,7 @@
  */
 namespace Anakeen\SmartStructures\Mail;
 
-class MailEdit extends \Anakeen\SmartStructures\Document
+class MailHooks extends \Anakeen\SmartStructures\Document
 {
     public $defaultedit = "FDL:EDITMAILDOC";
     /**

@@ -9,7 +9,7 @@
 
 namespace Anakeen\SmartStructures\Ssearch;
 
-class Ssearch extends \SmartStructure\Search
+class SSearchHooks extends \SmartStructure\Search
 {
     public $defaultedit = "FDL:EDITBODYCARD";
     public $defaultview = "FDL:VIEWBODYCARD";

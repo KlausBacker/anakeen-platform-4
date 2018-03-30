@@ -13,7 +13,7 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\DocManager;
 use Anakeen\Script\ShellManager;
 
-class Exec extends \Anakeen\SmartStructures\Document
+class ExecHooks extends \Anakeen\SmartStructures\Document
 {
     private $execuserid;
     /**
@@ -163,7 +163,7 @@ class Exec extends \Anakeen\SmartStructures\Document
         $status = $this->bgExecute(_("dynacase cron try execute"));
         $del = new_Doc($this->dbaccess, $this->getLatestId(false, true));
         /**
-         * @var Exec $del
+         * @var ExecHooks $del
          */
         $del->clearValue("exec_status");
         $del->clearValue("exec_handnextdate");
@@ -206,7 +206,7 @@ class Exec extends \Anakeen\SmartStructures\Document
     {
         $doc = new_Doc($action->dbaccess, $docid);
         /**
-         * @var Exec $doc
+         * @var ExecHooks $doc
          */
         if ($doc->locked == - 1) { // it is revised document
             $doc = new_Doc($action->dbaccess, $doc->getLatestId());

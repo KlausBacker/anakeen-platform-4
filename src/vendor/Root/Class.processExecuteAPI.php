@@ -99,18 +99,18 @@ class processExecuteAPI
     }
 
     /**
-     * @param \Anakeen\Core\Internal\Action                  $action
-     * @param \SmartStructure\Exec|string $exec
+     * @param \Anakeen\Core\Internal\Action    $action
+     * @param \SmartStructure\ExecHooks|string $exec
      */
     public static function execute_exec(\Anakeen\Core\Internal\Action & $action, $exec)
     {
         if (is_scalar($exec)) {
             /**
-             * @var \SmartStructure\Exec $exec
+             * @var \SmartStructure\ExecHooks $exec
              */
             $exec = Anakeen\Core\DocManager::getDocument($exec);
         }
-        if (!is_object($exec) || !is_a($exec, '\SmartStructure\Exec') || !$exec->isAlive()) {
+        if (!is_object($exec) || !is_a($exec, '\SmartStructure\ExecHooks') || !$exec->isAlive()) {
             return;
         }
         $exec->executeNow();

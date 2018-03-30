@@ -10,8 +10,7 @@ use Anakeen\Core\DbManager;
 use Anakeen\Core\DocManager;
 use \Dcp\Core\Exception;
 
-/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-class DSearch extends \SmartStructure\Search
+class DSearchHooks extends \SmartStructure\Search
 {
     /**
      * /**

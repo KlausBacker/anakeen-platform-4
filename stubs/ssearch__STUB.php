@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** Recherche spécialisée  */
-	class Ssearch extends \Anakeen\SmartStructures\Ssearch\SSearch { const familyName="SSEARCH";}
+	class SsearchHooks extends \Anakeen\SmartStructures\Ssearch\SsearchHooks { const familyName="SSEARCH";}
 }
 
 namespace SmartStructure\Attributes {

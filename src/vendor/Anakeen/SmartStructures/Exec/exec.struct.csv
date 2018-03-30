@@ -1,6 +1,6 @@
 // famille action;;;id;class;name;;;;;;;;;;
 BEGIN;;Processus;37;;EXEC;;;;;;;;;;
-CLASS;Anakeen\SmartStructures\Exec\Exec;;;;;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\Exec\ExecHooks;;;;;;;;;;;;;;
 USEFOR;S;;;;;;;;;;;;;;
 ICON;se-exec.png;;;;;;;;;;;;;;
 MAXREV;100;;;;;;;;;;;;;;

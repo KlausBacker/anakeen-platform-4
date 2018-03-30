@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** Mail  */
-	class Mail extends \Anakeen\SmartStructures\Mail\MailEdit { const familyName="MAIL";}
+	class Mail extends \Anakeen\SmartStructures\Mail\MailHooks { const familyName="MAIL";}
 }
 
 namespace SmartStructure\Attributes {
