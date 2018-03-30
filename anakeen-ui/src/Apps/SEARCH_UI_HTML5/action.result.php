@@ -1,6 +1,6 @@
 <?php
 
-require_once 'FDL/freedom_util.php';
+require_once 'FDL/LegacyDocManager.php';
 
 use Dcp\HttpApi\V1\Crud\Exception;
 

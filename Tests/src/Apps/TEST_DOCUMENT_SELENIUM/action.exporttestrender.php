@@ -1,7 +1,6 @@
 <?php
 
 
-include_once("FDL/Class.Doc.php");
 include_once("FDL/exportfld.php");
 function exportTestRender(\Anakeen\Core\Internal\Action $action) {
 

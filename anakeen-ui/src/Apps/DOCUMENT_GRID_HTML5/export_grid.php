@@ -1,6 +1,6 @@
 <?php
 
-require_once 'FDL/freedom_util.php';
+require_once 'FDL/LegacyDocManager.php';
 require_once 'DOCUMENT_GRID_HTML5/getdocgridcontent.php';
 
 /**
