@@ -1,6 +1,6 @@
 // famille contrôle de vues;;;id;class;name;;;;;;;;;;
 BEGIN;BASE;Contrôle de vues;28;;CVDOC;;;;;;;;;;
-CLASS;Anakeen\SmartStructures\Cvdoc\CVDoc;;;;;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\Cvdoc\CVDocHooks;;;;;;;;;;;;;;
 SCHAR;S;;;;;;;;;;;;;;
 USEFOR;S;;;;;;;;;;;;;;
 //;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option

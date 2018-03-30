@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** Contrôle de vues  */
-	class Cvdoc extends \Anakeen\SmartStructures\Cvdoc\CVDoc { const familyName="CVDOC";}
+	class Cvdoc extends \Anakeen\SmartStructures\Cvdoc\CVDocHooks { const familyName="CVDOC";}
 }
 
 namespace SmartStructure\Attributes {

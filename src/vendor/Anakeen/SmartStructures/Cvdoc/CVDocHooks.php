@@ -9,7 +9,7 @@ namespace Anakeen\SmartStructures\Cvdoc;
 use Anakeen\Core\Internal\Autoloader;
 use \SmartStructure\Attributes\Cvdoc as MyAttributes;
 
-class CVDoc extends CoreCVDoc
+class CVDocHooks extends CoreCVDoc
 {
     public static function cvIsA($className, $isA)
     {

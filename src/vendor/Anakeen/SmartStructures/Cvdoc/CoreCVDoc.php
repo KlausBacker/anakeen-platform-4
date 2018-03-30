@@ -43,7 +43,7 @@ class CoreCVDoc extends \SmartStructure\Base
      */
     public $doc = null;
     /**
-     * @var CVDoc profil document
+     * @var CVDocHooks profil document
      */
     private $pdoc = null;
     // --------------------------------------------------------------------
