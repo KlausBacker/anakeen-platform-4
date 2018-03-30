@@ -15,7 +15,7 @@
 
 include_once("FDL/import_file.php");
 
-class importSingleDocument
+class ImportSingleDocument
 {
     private $currentAttrid = "";
     protected $dirid = 0;
@@ -160,7 +160,7 @@ class importSingleDocument
      * import a single document from $data
      * import line beginning with  DOC
      * @param array $data
-     * @return importSingleDocument
+     * @return ImportSingleDocument
      */
     public function import(array $data)
     {

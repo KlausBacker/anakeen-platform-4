@@ -275,7 +275,7 @@
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Mail/Mail.struct.csv  --csv-enclosure='&quot;'">
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.csv  --csv-enclosure='&quot;'">
             <label>Add Mail form family</label>
         </process>
         <process

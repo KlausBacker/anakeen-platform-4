@@ -140,7 +140,7 @@ class AccountCollection extends \SmartStructure\Dir
      */
     public function refreshParentGroup()
     {
-        include_once("FDL/freedom_util.php");
+        include_once("FDL/LegacyDocManager.php");
         include_once("FDL/Lib.Dir.php");
         
         $sqlfilters[] = sprintf("in_textlist(grp_idgroup,'%s')", $this->id);

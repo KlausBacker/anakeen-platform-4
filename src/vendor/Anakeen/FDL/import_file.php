@@ -59,7 +59,7 @@ function csvAddDoc($dbaccess, $data, $dirid = 0, $analyze = false, $ldir = '', $
     "title"
 ), $prevalues = array(), $torder = array())
 {
-    $o = new importSingleDocument();
+    $o = new ImportSingleDocument();
     if ($tkey) {
         $o->setKey($tkey);
     }

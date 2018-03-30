@@ -879,7 +879,7 @@ class ImportDocumentDescription
             $torder = $this->colOrders[$fromid];
         }
         // $this->tcr[$this->nLine] = csvAddDoc($this->dbaccess, $data, $this->dirid, $this->analyze, '', $this->policy, $tk, array() , $torder);
-        $oImportDocument = new importSingleDocument();
+        $oImportDocument = new ImportSingleDocument();
         if ($tk) {
             $oImportDocument->setKey($tk);
         }
@@ -1098,7 +1098,7 @@ class ImportDocumentDescription
                 if ($this->doc->dfldid == "") {
                     if (!$this->analyze) {
                         // create auto
-                        include_once("FDL/freedom_util.php");
+                        include_once("FDL/LegacyDocManager.php");
                         $fldid = createAutoFolder($this->doc);
                         $this->tcr[$this->nLine]["msg"].= sprintf(_("create default folder (id [%d])\n"), $fldid);
                     }

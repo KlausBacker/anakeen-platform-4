@@ -7,7 +7,7 @@
  * Function Utilities for freedom
  *
  * @author  Anakeen
- * @version $Id: freedom_util.php,v 1.119 2009/01/20 14:30:39 eric Exp $
+ * @version $Id: LegacyDocManager.php,v 1.119 2009/01/20 14:30:39 eric Exp $
  * @package FDL
  * @subpackage
  */
@@ -113,7 +113,7 @@ function new_Doc($dbaccess, $id = '', $latest = false)
 {
     $doc = DocManager::getDocument($id, $latest);
     if (!$doc) {
-        $doc = new \SmartStructure\Document($dbaccess);
+        $doc = new \Anakeen\SmartStructures\Document($dbaccess);
     } else {
         if (count(\Dcp\Core\SharedDocuments::getKeys()) < \Dcp\Core\SharedDocuments::getLimit()) {
             DocManager::cache()->addDocument($doc);

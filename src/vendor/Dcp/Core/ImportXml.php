@@ -293,7 +293,7 @@ class importXml
             $tdoc[] = implode("\n", $val);
         }
         //$log = csvAddDoc($dbaccess, $tdoc, $importdirid, $analyze, $splitdir, $policy, $tkey, $prevalues, $tord);
-        $o = new \importSingleDocument();
+        $o = new \ImportSingleDocument();
         if ($tkey) {
             $o->setKey($tkey);
         }

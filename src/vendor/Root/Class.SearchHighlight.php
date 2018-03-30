@@ -15,7 +15,7 @@
  */
 
 
-include_once("FDL/freedom_util.php");
+include_once("FDL/LegacyDocManager.php");
 
 class SearchHighlight
 {

@@ -47,7 +47,7 @@ function destroyFamily($dbaccess, $idfam, $force = false)
 {
     global $action;
     
-    $tdoc = getTDoc($dbaccess, $idfam);
+    $tdoc = Anakeen\Core\DocManager::getRawDocument($idfam);
     if ($tdoc) {
         $resid = $tdoc["id"];
         $resname = $tdoc["name"];

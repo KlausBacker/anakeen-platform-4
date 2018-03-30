@@ -66,7 +66,7 @@ class AuthenticatorManager
                 $wu = new \Anakeen\Core\Account();
                 if ($wu->SetLoginName(self::$auth->getAuthUser())) {
                     if ($wu->id != 1) {
-                        include_once("FDL/freedom_util.php");
+                        include_once("FDL/LegacyDocManager.php");
                         /**
                          * @var \SmartStructure\IUSER $du
                          */
@@ -402,7 +402,7 @@ class AuthenticatorManager
         $login = $opt['username'];
         $wu = $opt['dcp_account'];
         if ($wu->id != 1) {
-            include_once("FDL/freedom_util.php");
+            include_once("FDL/LegacyDocManager.php");
             /**
              * @var \SmartStructure\IUSER $du
              */

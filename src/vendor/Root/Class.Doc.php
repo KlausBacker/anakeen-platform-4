@@ -39,6 +39,8 @@ define("REGEXPFILE", "([^\|]*)\|([0-9]*)\|?(.*)?");
 define("PREGEXPFILE", "/(?P<mime>[^\|]*)\|(?P<vid>[0-9]*)\|?(?P<name>.*)?/");
 
 
+require_once "FDL/LegacyDocManager.php";
+
 use \Anakeen\Core\DbManager;
 use \Anakeen\Core\ContextManager;
 use \Anakeen\Core\DocManager;
