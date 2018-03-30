@@ -4,7 +4,7 @@
  * @package FDL
 */
 /**
- * basicAuthenticator class
+ * BasicAuthenticator class
  *
  * This class provides methods for HTTP Basic authentication
  *

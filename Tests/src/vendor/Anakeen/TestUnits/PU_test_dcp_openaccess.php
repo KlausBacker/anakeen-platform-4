@@ -40,7 +40,7 @@ class TestOpenAccess extends TestCaseDcpApplication
         $userToken = new \UserToken("", $tokenId);
         //$mainAction = self::getAction();
         global $action;
-        $auth = new \openAuthenticator("open", "internal");
+        $auth = new \OpenAuthenticator("open", "internal");
         
         $this->sudo($login);
         

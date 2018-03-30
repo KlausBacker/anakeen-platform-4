@@ -22,7 +22,7 @@ class AuthenticatorManager
     const AccessNotAuthorized = 5;
     const NeedAsk = 6;
     /**
-     * @var Authenticator|htmlAuthenticator|openAuthenticator
+     * @var Authenticator|HtmlAuthenticator|OpenAuthenticator
      */
     public static $auth = null;
     public static $provider_errno = 0;
@@ -135,7 +135,7 @@ class AuthenticatorManager
             throw new \Dcp\Exception(sprintf("Invalid authtype '%s'", $authtype));
         }
 
-        $authClass = strtolower($authtype) . "Authenticator";
+        $authClass = ucfirst(strtolower($authtype)) . "Authenticator";
         if (!\Anakeen\Core\Internal\Autoloader::classExists($authClass)) {
             throw new \Dcp\Exception(sprintf("Cannot find authenticator '%s'", $authtype));
         }
@@ -181,9 +181,9 @@ class AuthenticatorManager
             switch ($scheme) {
                 case \Anakeen\Router\TokenAuthenticator::AUTHORIZATION_SCHEME:
                     return "token";
-                case OpenAuthenticator::openAuthorizationScheme:
+                case \OpenAuthenticator::openAuthorizationScheme:
                     return "open";
-                case \basicAuthenticator::basicAuthorizationScheme:
+                case \BasicAuthenticator::basicAuthorizationScheme:
                     return "basic";
                 default:
                     throw new Exception(sprintf("Invalid authorization method \"%s\"", $scheme));

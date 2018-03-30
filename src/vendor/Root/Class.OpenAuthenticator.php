@@ -4,7 +4,7 @@
  * @package FDL
 */
 /**
- * openAuthenticator class
+ * OpenAuthenticator class
  *
  * This class provides methods for private key based authentification
  *

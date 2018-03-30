@@ -134,7 +134,7 @@ create sequence SEQ_ID_ACTION;
      */
     public $url;
     /**
-     * @var \Authenticator|\openAuthenticator
+     * @var \Authenticator|\OpenAuthenticator
      */
     public $auth;
     /**

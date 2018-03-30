@@ -777,7 +777,7 @@ class WDoc extends Doc
             }
         }
         \Anakeen\Core\DbManager::setMasterLock(false);
-        return refreshPhpPgDoc($this->dbaccess, $cid);
+        return \Dcp\FamilyImport::refreshPhpPgDoc($this->dbaccess, $cid);
     }
     /**
      * change state of a document

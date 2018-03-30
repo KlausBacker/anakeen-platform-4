@@ -19,7 +19,7 @@ class AuthenticatorManager extends \AuthenticatorManager
         $auth = null;
         switch ($authtype) {
             case "html":
-                $auth = new \htmlAuthenticator($authtype, $provider);
+                $auth = new \HtmlAuthenticator($authtype, $provider);
                 break;
 
             case "token":
@@ -27,7 +27,7 @@ class AuthenticatorManager extends \AuthenticatorManager
                 break;
 
             case "basic":
-                $auth = new \basicAuthenticator($authtype, $provider);
+                $auth = new \BasicAuthenticator($authtype, $provider);
                 break;
 
             default:

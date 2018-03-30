@@ -1064,13 +1064,13 @@ class FamilyImport
 
     protected static function getTypeMain($type)
     {
-        $p = parseType($type);
+        $p = \Dcp\FamilyImport::parseType($type);
         return $p['type'];
     }
 
     protected static function getTypeFormat($type)
     {
-        $p = parseType($type);
+        $p = \Dcp\FamilyImport::parseType($type);
         return $p['format'];
     }
 

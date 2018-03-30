@@ -166,7 +166,7 @@ create unique index idx_idfam on docfam(id);";
 
     public function postStore()
     {
-        return refreshPhpPgDoc($this->dbaccess, $this->id);
+        return \Dcp\FamilyImport::refreshPhpPgDoc($this->dbaccess, $this->id);
     }
 
     public function preCreated()

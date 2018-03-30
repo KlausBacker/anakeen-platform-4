@@ -10909,7 +10909,7 @@ create unique index i_docir on doc(initid, revision);";
          */
         global $action;
         // Strip format strings for non-docid types
-        $pType = parseType($attrType);
+        $pType = \Dcp\FamilyImport::parseType($attrType);
         if ($pType['type'] != 'docid') {
             $attrType = $pType['type'];
         }

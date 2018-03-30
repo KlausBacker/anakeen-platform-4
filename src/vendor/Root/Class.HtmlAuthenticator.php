@@ -6,13 +6,14 @@
  *
  */
 
-class htmlAuthenticator extends Authenticator
+class HtmlAuthenticator extends Authenticator
 {
     public $auth_session = null;
     /*
      * Store the current authenticating user
     */
     private $username = '';
+
     /**
      **
      **
@@ -34,7 +35,7 @@ class htmlAuthenticator extends Authenticator
         if (!array_key_exists($this->parms['password'], $_POST)) {
             return Authenticator::AUTH_ASK;
         }
-        
+
         $this->username = getHttpVars($this->parms['username']);
         if (is_callable(array(
             $this->provider,
@@ -43,7 +44,7 @@ class htmlAuthenticator extends Authenticator
             if (!$this->provider->validateCredential(getHttpVars($this->parms['username']), getHttpVars($this->parms{'password'}))) {
                 return Authenticator::AUTH_NOK;
             }
-            
+
             if (!$this->freedomUserExists(getHttpVars($this->parms['username']))) {
                 if (!$this->tryInitializeUser(getHttpVars($this->parms['username']))) {
                     return Authenticator::AUTH_NOK;
@@ -53,12 +54,14 @@ class htmlAuthenticator extends Authenticator
             $session->setuid(getHttpVars($this->parms['username']));
             return Authenticator::AUTH_OK;
         }
-        
+
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: " . get_class($this->provider) . " must implement function validateCredential()");
         return Authenticator::AUTH_NOK;
     }
+
     /**
      * retrieve authentication session
+     *
      * @return Session the session object
      */
     public function getAuthSession()
@@ -71,14 +74,11 @@ class htmlAuthenticator extends Authenticator
                 $this->auth_session->Set();
             }
         }
-        
+
         return $this->auth_session;
     }
-    /**
-     **
-     **
-     *
-     */
+
+    
     public function checkAuthorization($opt)
     {
         if (is_callable(array(
@@ -89,33 +89,30 @@ class htmlAuthenticator extends Authenticator
         }
         return true;
     }
-    /**
-     **
-     **
-     *
-     */
+
+
     public function askAuthentication($args)
     {
-        if (empty($args)) {
-            $args = array();
-        }
         $session = $this->getAuthSession();
         /* Force removal of username if it already exists on the session */
         $session->register('username', '');
         $session->setuid(\Anakeen\Core\Account::ANONYMOUS_ID);
-        $args=[];
+        $args = [];
         if (!isset($args['redirect_uri'])) {
             if (!empty($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] !== "/") {
                 $args['redirect_uri'] = $_SERVER['REQUEST_URI'];
             }
         }
-        
+
         header(sprintf('Location: %s', $this->getAuthUrl($args)));
         return true;
     }
+
     /**
      * return url used to connect user
+     *
      * @param array $extendedArg
+     *
      * @throws Dcp\Exception
      * @return string
      */
@@ -124,23 +121,25 @@ class htmlAuthenticator extends Authenticator
         if (empty($this->parms['auth']['app'])) {
             throw new \Dcp\Exception("Missing html/auth/app config.");
         }
-        $hasArgs=false;
+        $hasArgs = false;
         $location = Session::getWebRootPath();
-        $location.= "./login/";
+        $location .= "./login/";
 
         if (!empty($this->parms['auth']['args'])) {
-            $location.= '?' . $this->parms['auth']['args'];
-            $hasArgs=true;
+            $location .= '?' . $this->parms['auth']['args'];
+            $hasArgs = true;
         }
         $sargs = '';
         foreach ($extendedArg as $k => $v) {
-            $sargs.= sprintf("%s%s=%s", $hasArgs?'&':'?', $k, urlencode($v));
-            $hasArgs=true;
+            $sargs .= sprintf("%s%s=%s", $hasArgs ? '&' : '?', $k, urlencode($v));
+            $hasArgs = true;
         }
         return $location . $sargs;
     }
+
     /**
      * ask authentication and redirect
+     *
      * @param string $uri uri to redirect after connection
      */
     public function connectTo($uri)
@@ -149,11 +148,7 @@ class htmlAuthenticator extends Authenticator
         header(sprintf('Location: %s', $location));
         exit(0);
     }
-    /**
-     **
-     **
-     *
-     */
+
     public function getAuthUser()
     {
         $session_auth = $this->getAuthSession();
@@ -163,23 +158,14 @@ class htmlAuthenticator extends Authenticator
         }
         return $this->username;
     }
-    /**
-     **
-     **
-     *
-     */
+
     public function getAuthPw()
     {
         return null;
     }
-    /**
-     **
-     **
-     *
-     */
+
     public function logout($redir_uri = '')
     {
-        include_once('WHAT/Class.Session.php');
         $session_auth = $this->getAuthSession();
         if (array_key_exists(Session::PARAMNAME, $_COOKIE)) {
             $session_auth->close();
@@ -194,47 +180,41 @@ class htmlAuthenticator extends Authenticator
         header('Location: ' . $redir_uri);
         return true;
     }
-    /**
-     **
-     **
-     *
-     */
+
+
     public function setSessionVar($name, $value)
     {
         $session_auth = $this->getAuthSession();
         $session_auth->register($name, $value);
-        
+
         return $session_auth->read($name);
     }
-    /**
-     **
-     **
-     *
-     */
+
+
     public function getSessionVar($name)
     {
         $session_auth = $this->getAuthSession();
         return $session_auth->read($name);
     }
-    
+
     public function logon()
     {
-        
+
         $app = $this->getAuthApp();
         if ($app === false || $app == '') {
             throw new \Dcp\Exception("Missing or empty auth app definition.");
         }
-        
+
         $account = new \Anakeen\Core\Account();
         if ($account->setLoginName("anonymous") === false) {
             throw new \Dcp\Exception(sprintf("anonymous account not found."));
         }
         $actionRouter = new ActionRouter($account);
-        
+
         $allowList = array(
             array(
                 'app' => 'AUTHENT'
-            ) ,
+            ),
             array(
                 'app' => 'CORE',
                 'action' => 'CORE_CSS'
@@ -254,7 +234,7 @@ class htmlAuthenticator extends Authenticator
         if (!$allowed) {
             throw new \Dcp\Exception(sprintf("Unauthorized app '%s' with action '%s' for authentication with '%s'.", $action->parent->name, $action->name, get_class($this)));
         }
-        
+
         $actionRouter->executeAction();
     }
 }

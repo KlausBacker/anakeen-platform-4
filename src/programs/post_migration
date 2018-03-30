@@ -31,8 +31,8 @@ if (!include ($prefix)) {
     exit(1);
 }
 
-require_once 'WHAT/autoload.php';
-include ("WHAT/Lib.Common.php");
+require __DIR__ . "/../vendor/Anakeen/WHAT/Lib.Prefix.php";
+require __DIR__ . '/../vendor/Anakeen/autoload.php';
 include ("WHAT/Lib.WCheck.php");
 
 if ($argc != 2) {

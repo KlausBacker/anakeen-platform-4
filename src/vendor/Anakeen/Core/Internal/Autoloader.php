@@ -26,6 +26,17 @@ class Autoloader
 
     public static function classExists($className)
     {
-        return (self::findFile($className)) ? true : false;
+        $find = (self::findFile($className));
+        if (!$find) {
+            // @todo legacy mode - to be removed
+            $classFile = sprintf("%s/../../../Root/Class.%s.php", __DIR__, $className);
+            error_log($classFile);
+            if (file_exists($classFile)) {
+                return true;
+            }
+        } else {
+            return true;
+        }
+        return false;
     }
 }
