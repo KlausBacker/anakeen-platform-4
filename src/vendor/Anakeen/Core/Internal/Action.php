@@ -270,7 +270,7 @@ create sequence SEQ_ID_ACTION;
      * record a session variable
      *
      * @param  string $k key variable
-     * @param string  $v value to set
+     * @param string|array  $v value to set
      *
      * @return bool return true if ok
      */

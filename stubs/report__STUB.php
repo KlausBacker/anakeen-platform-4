@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** Rapport  */
-	class Report extends \Dcp\Core\Report { const familyName="REPORT";}
+	class Report extends \Anakeen\SmartStructures\Report\ReportHooks { const familyName="REPORT";}
 }
 
 namespace SmartStructure\Attributes {
