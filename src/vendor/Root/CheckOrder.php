@@ -18,10 +18,12 @@ class CheckOrder extends CheckData
      * @var DocFam
      */
     protected $family;
+
     /**
      * @param array $data
-     * @param Doc $doc
-     * @return CheckDoc
+     * @param null  $extra
+     *
+     * @return $this
      */
     public function check(array $data, &$extra = null)
     {
@@ -67,8 +69,8 @@ class CheckOrder extends CheckData
                 $this->addError(ErrorCode::getError('ORDR0001', $this->famName));
             } else {
                 try {
-                    $this->family = new_doc(getDbAccess(), $this->famName);
-                    if (!$this->family->isAlive()) {
+                    $this->family = Anakeen\Core\DocManager::getFamily($this->famName);
+                    if (!$this->family) {
                         $this->addError(ErrorCode::getError('ORDR0002', $this->famName));
                     } else {
                         if ($this->family->doctype != 'C') {

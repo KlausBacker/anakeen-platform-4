@@ -11,8 +11,6 @@
 /**
  */
 // remove all tempory doc and orphelines values
-include_once("FDL/Class.Doc.php");
-include_once("WHAT/Class.SessionUtils.php");
 global $action;
 
 $usage = new ApiUsage();

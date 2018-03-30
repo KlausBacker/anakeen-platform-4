@@ -15,7 +15,6 @@
  */
 /**
  */
-include_once('WHAT/Class.Authenticator.php');
 
 class BasicAuthenticator extends Authenticator
 {

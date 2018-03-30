@@ -16,7 +16,6 @@
 
 function newFreeVaultFile($dbaccess)
 {
-    include_once("VAULT/Class.VaultFile.php");
     return new VaultFile($dbaccess, "FREEDOM");
 }
 

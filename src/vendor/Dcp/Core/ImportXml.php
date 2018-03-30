@@ -17,7 +17,6 @@
 namespace Dcp\Core;
 
 include_once("FDL/import_tar.php");
-include_once('FDL/Class.XMLSplitter.php');
 
 class importXml
 {

@@ -17,7 +17,6 @@
 /**
  */
 
-include_once('Class.DbObj.php');
 
 class UserToken extends DbObj
 {

@@ -14,7 +14,6 @@
 /**
  */
 
-include_once('Class.Layout.php');
 include_once('Lib.FileMime.php');
 /**
  * @class OOoLayout

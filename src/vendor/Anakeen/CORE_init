@@ -71,12 +71,12 @@ if [ "$1" = "I" ] ; then
 
     "$wpub"/programs/core_appinitialize
     "$wpub"/ank.php --script=setSessionHandler --handlerClass=SessionHandler
-    "$wpub"/ank.php --script=updateclass  --class=Application
-    "$wpub"/ank.php --script=updateclass --class=Action
-    "$wpub"/ank.php --script=updateclass --class=Style
-    "$wpub"/ank.php --script=updateclass --class=ParamDef
-    "$wpub"/ank.php --script=updateclass --class=Param
-    "$wpub"/ank.php --script=updateclass --class=User
+    "$wpub"/ank.php --script=updateclass --class='Anakeen\Core\Internal\Application'
+    "$wpub"/ank.php --script=updateclass --class='Anakeen\Core\Internal\Action'
+    "$wpub"/ank.php --script=updateclass --class='Anakeen\Core\Internal\Style'
+    "$wpub"/ank.php --script=updateclass --class='Anakeen\Core\Internal\ParamDef'
+    "$wpub"/ank.php --script=updateclass --class='Anakeen\Core\Internal\Param'
+    "$wpub"/ank.php --script=updateclass --class='Anakeen\Core\Account'
     "$wpub"/ank.php --script=updateclass --class=Group
     "$wpub"/ank.php --script=updateclass --class=Permission
     "$wpub"/ank.php --script=updateclass --class=Acl
@@ -133,7 +133,6 @@ if [ "$1" = "I" ] ; then
         DocHisto \
         DocLog \
         DocEnum \
-        DocWait \
         DocPermExt \
         DocPerm \
         DocRel \

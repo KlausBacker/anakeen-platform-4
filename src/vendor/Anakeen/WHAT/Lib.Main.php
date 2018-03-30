@@ -20,13 +20,6 @@ include_once("WHAT/Lib.Common.php");
  */
 function getMainAction($auth, &$action)
 {
-    include_once('Class.Action.php');
-    include_once('Class.Application.php');
-    include_once('Class.Session.php');
-    include_once('Lib.Http.php');
-    include_once('Lib.Phpini.php');
-    include_once('Class.Log.php');
-    include_once('Class.DbObj.php');
 
     $CoreNull = "";
 

@@ -68,8 +68,6 @@ class OpenAuthenticator extends Authenticator
     
     public static function getLoginFromPrivateKey($privatekey)
     {
-        include_once('WHAT/Class.UserToken.php');
-        include_once('WHAT/Class.User.php');
         
         $token = static::getUserToken($privatekey);
         if ($token === false) {
@@ -150,7 +148,6 @@ class OpenAuthenticator extends Authenticator
     
     public function consumeToken($privatekey)
     {
-        include_once('WHAT/Class.UserToken.php');
         
         $token = new UserToken('', $privatekey);
         if (!is_object($token) || !$token->isAffected()) {

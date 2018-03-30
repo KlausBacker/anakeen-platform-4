@@ -310,7 +310,7 @@ create sequence seq_id_users start 10;";
     public function PostInsert()
     {
         //Add default group to user
-        $group = new \group($this->dbaccess);
+        $group = new \Group($this->dbaccess);
         $group->iduser = $this->id;
         $gid = Account::GALL_ID; //2 = default group
         $group->idgroup = $gid;
@@ -341,7 +341,6 @@ create sequence seq_id_users start 10;";
 
     public function postDelete()
     {
-        include_once("WHAT/Class.Session.php");
         include_once("FDL/Lib.Usercard.php");
         $err = '';
         $group = new \Group($this->dbaccess, $this->id);
@@ -637,7 +636,6 @@ create sequence seq_id_users start 10;";
             return _("no freedom DB access");
         }
         if ($this->fid <> "") {
-            include_once("FDL/freedom_util.php");
             /**
              * @var \SmartStructure\IUSER $iuser
              */
@@ -797,7 +795,7 @@ union
 
     public function PostInit()
     {
-        $group = new \group($this->dbaccess);
+        $group = new \Group($this->dbaccess);
 
         $userAdmin = new Account($this->dbaccess);
         // Create admin user
@@ -1445,7 +1443,7 @@ union
         if (!is_numeric($idRole)) {
             return \ErrorCode::getError("ACCT0001", $idRole, $this->login);
         }
-        $g = new \group($this->dbaccess);
+        $g = new \Group($this->dbaccess);
         $g->idgroup = $idRole;
         $g->iduser = $this->id;
         $err = $g->add();
@@ -1475,7 +1473,7 @@ union
         $this->deleteRoles();
         $err = '';
         if ($this->accounttype == self::USER_TYPE || $this->accounttype == self::GROUP_TYPE) {
-            $g = new \group($this->dbaccess);
+            $g = new \Group($this->dbaccess);
             foreach ($roleIds as $rid) {
                 if (!is_numeric($rid)) {
                     DbManager::query(sprintf(

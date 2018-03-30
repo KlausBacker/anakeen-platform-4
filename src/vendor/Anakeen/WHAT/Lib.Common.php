@@ -639,7 +639,6 @@ function wbar($reste, $total, $text = "", $fbar = false)
 
 function getJsVersion()
 {
-    include_once("Class.QueryDb.php");
     $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\Param::class);
     $q->AddQuery("name='WVERSION'");
     $l = $q->Query(0, 0, "TABLE");
@@ -769,8 +768,6 @@ function seems_utf8($Str)
 function WhatInitialisation($session = null)
 {
     global $action;
-    include_once('Class.User.php');
-    include_once('Class.Session.php');
 
     $CoreNull = "";
     $core = new \Anakeen\Core\Internal\Application();

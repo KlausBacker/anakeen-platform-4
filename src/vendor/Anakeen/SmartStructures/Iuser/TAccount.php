@@ -6,10 +6,16 @@
  * @package Anakeen\Family\Iuser
  * @mixin \Doc
  */
-namespace Dcp\Core;
+namespace Anakeen\SmartStructures\Iuser;
 
 use Anakeen\Core\DbManager;
 use Anakeen\Core\DocManager;
+
+/**
+ * Trait TAccount
+ * @mixin \Doc
+ * @package Anakeen\SmartStructures\Iuser
+ */
 trait TAccount
 {
     /**

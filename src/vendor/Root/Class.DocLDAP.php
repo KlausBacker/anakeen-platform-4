@@ -13,7 +13,6 @@
 /**
  */
 
-include_once("Class.DbObj.php");
 
 class DocLDAP extends DbObj
 {
@@ -232,12 +231,10 @@ class DocLDAP extends DbObj
      */
     public function getMapAttributes()
     {
-        include_once("FDL/Class.DocAttrLDAP.php");
         $fids = $this->GetFromDoc();
         if (!$fids) {
             return array();
         }
-        include_once("Class.QueryDb.php");
         $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocAttrLDAP::class);
 
         $q->AddQuery(getSqlCond($fids, "famid"));

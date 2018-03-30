@@ -23,7 +23,6 @@ define("HISTO_MESSAGE", 4);
 define("HISTO_WARNING", 8);
 define("HISTO_ERROR", 16);
 
-include_once("Class.DbObj.php");
 
 class DocHisto extends DbObj
 {

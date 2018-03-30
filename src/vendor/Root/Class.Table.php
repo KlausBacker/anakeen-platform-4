@@ -14,7 +14,6 @@
 /**
  */
 //
-include_once('Class.Log.php');
 
 $CLASS_TABLE_PHP = "";
 /**

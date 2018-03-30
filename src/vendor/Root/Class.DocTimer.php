@@ -13,7 +13,6 @@
 /**
  */
 
-include_once("Class.DbObj.php");
 class DocTimer extends DbObj
 {
     public $fields = array(
@@ -115,7 +114,6 @@ create table doctimer ( id serial,
     
     public function preInsert()
     {
-        include_once("Class.QueryDb.php");
         $docid = intval($this->docid);
         $timerid = intval($this->timerid);
         $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);

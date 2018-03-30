@@ -1109,7 +1109,7 @@ class ImportDocumentDescription
             } elseif (is_numeric($data[1])) {
                 $fldid = $data[1];
             } else {
-                $fldid = \Anakeen\Core\DocManager::getIdFromName($data[1], 2);
+                $fldid = \Anakeen\Core\DocManager::getIdFromName($data[1]);
             }
             $this->doc->dfldid = $fldid;
             $this->tcr[$this->nLine]["msg"].= sprintf(_("set default folder to '%s'"), $data[1]);
@@ -1172,7 +1172,7 @@ class ImportDocumentDescription
         if (is_numeric($data[1])) {
             $wid = $data[1];
         } else {
-            $wid = \Anakeen\Core\DocManager::getIdFromName($data[1], 20);
+            $wid = \Anakeen\Core\DocManager::getIdFromName($data[1]);
         }
         if ($data[1]) {
             try {

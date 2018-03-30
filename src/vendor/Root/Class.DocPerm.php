@@ -13,7 +13,6 @@
 /**
  */
 
-include_once("Class.DbObj.php");
 /**
  * Managing permissions of documents
  * @package FDL

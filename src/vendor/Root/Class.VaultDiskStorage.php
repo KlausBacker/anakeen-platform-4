@@ -13,10 +13,6 @@
 /**
  */
 
-include_once("VAULT/Class.VaultDiskFsStorage.php");
-include_once("VAULT/Class.VaultDiskFsCache.php");
-include_once("VAULT/Class.VaultDiskDirStorage.php");
-include_once("VAULT/Lib.VaultCommon.php");
 
 class VaultDiskStorage extends DbObj
 {

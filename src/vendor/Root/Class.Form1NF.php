@@ -13,7 +13,6 @@
 /**
  */
 
-include_once("FDL/Class.SearchDoc.php");
 /*
  * foreach($this->doc->fields as $k=>$v) {
                 if (is_numeric($k)) $props[$v] = $this->doc->$v;

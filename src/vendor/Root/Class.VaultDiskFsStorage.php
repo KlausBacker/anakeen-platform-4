@@ -4,7 +4,7 @@
  * @package FDL
 */
 /**
- * @author Anakeen
+ * @author  Anakeen
  * @package FDL
  */
 // ---------------------------------------------------------------
@@ -14,11 +14,10 @@
 //
 //
 // ---------------------------------------------------------------
-include_once("VAULT/Class.VaultDiskFs.php");
 
 class VaultDiskFsStorage extends VaultDiskFs
 {
-    public function __construct($dbaccess, $id_fs = '')
+    public function __construct($dbaccess = '', $id_fs = '')
     {
         $this->specific = "storage";
         parent::__construct($dbaccess, $id_fs);

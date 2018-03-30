@@ -1,5 +1,4 @@
 <?php
-include_once('WHAT/Class.Authenticator.php');
 
 class apacheAuthenticator extends Authenticator
 {

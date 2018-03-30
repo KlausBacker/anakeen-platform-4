@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** Fichier  */
-	class File extends \Dcp\Core\File { const familyName="FILE";}
+	class File extends \Anakeen\SmartStructures\File\FileHooks { const familyName="FILE";}
 }
 
 namespace SmartStructure\Attributes {

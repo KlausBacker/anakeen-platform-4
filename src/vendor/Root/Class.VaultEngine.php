@@ -13,7 +13,6 @@
 /**
  */
 
-include_once("Class.DbObj.php");
 class VaultEngine extends DbObj
 {
     public $fields = array(

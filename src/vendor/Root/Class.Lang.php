@@ -53,9 +53,6 @@
 //
 //
 // ---------------------------------------------------------------
-include_once('Class.DbObj.php');
-include_once('Class.QueryDb.php');
-include_once('Class.Log.php');
 
 class Lang extends DbObj
 {

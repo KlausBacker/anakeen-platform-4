@@ -17,8 +17,6 @@
 global $action;
 // refreah for a classname
 // use this only if you have changed title attributes
-include_once("FDL/Class.Doc.php");
-include_once("FDL/Class.SearchDoc.php");
 function color_failure($msg)
 {
     if ($msg) {

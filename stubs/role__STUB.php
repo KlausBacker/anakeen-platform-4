@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** Rôle  */
-	class Role extends \Dcp\Core\RoleAccount { const familyName="ROLE";}
+	class Role extends \Anakeen\SmartStructures\Role\RoleHooks { const familyName="ROLE";}
 }
 
 namespace SmartStructure\Attributes {

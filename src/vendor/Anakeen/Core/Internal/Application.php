@@ -7,7 +7,6 @@ namespace Anakeen\Core\Internal;
  * @author Anakee
  */
 
-
 function f_paramglog($var)
 { // filter to select only not global
     return (!((isset($var["global"]) && ($var["global"] == 'Y'))));

@@ -219,8 +219,6 @@ class htmlAuthenticator extends Authenticator
     
     public function logon()
     {
-        include_once('WHAT/Class.ActionRouter.php');
-        include_once('WHAT/Class.Account.php');
         
         $app = $this->getAuthApp();
         if ($app === false || $app == '') {

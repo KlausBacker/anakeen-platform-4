@@ -13,7 +13,6 @@
 /**
  */
 
-include_once("Class.DbObj.php");
 class DocAttrLDAP extends DbObj
 {
     public $fields = array(

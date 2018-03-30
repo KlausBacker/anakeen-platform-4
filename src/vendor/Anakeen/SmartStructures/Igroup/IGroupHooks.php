@@ -3,12 +3,16 @@
  * @author Anakeen
  * @package FDL
 */
+
 /**
  * Group account
  */
-namespace Dcp\Core;
 
+namespace Anakeen\SmartStructures\Igroup;
+
+use Anakeen\Core\DocManager;
 use SmartStructure\Attributes\Igroup as MyAttributes;
+use \Dcp\Core\Exception;
 
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 
@@ -16,23 +20,27 @@ use SmartStructure\Attributes\Igroup as MyAttributes;
  * Class GroupAccount
  *
  */
-class GroupAccount extends \SmartStructure\Group
+class IGroupHooks extends \SmartStructure\Group
 {
-    use TAccount;
+    use \Anakeen\SmartStructures\Iuser\TAccount;
 
-    public $cviews = array(
-        "FUSERS:FUSERS_IGROUP"
-    );
-    public $eviews = array(
-        "USERCARD:CHOOSEGROUP"
-    );
-    public $exportLdap = array(
-        // posixGroup
-        "gidNumber" => "GRP_GIDNUMBER",
-        //			"mail" => "GRP_MAIL", // not in schema but used in mailing client application
-        "description" => "GRP_DESC"
-    );
+    public $cviews
+        = array(
+            "FUSERS:FUSERS_IGROUP"
+        );
+    public $eviews
+        = array(
+            "USERCARD:CHOOSEGROUP"
+        );
+    public $exportLdap
+        = array(
+            // posixGroup
+            "gidNumber" => "GRP_GIDNUMBER",
+            //			"mail" => "GRP_MAIL", // not in schema but used in mailing client application
+            "description" => "GRP_DESC"
+        );
     public $ldapobjectclass = "posixGroup";
+
     public function preRefresh()
     {
         //  $err=$this->ComputeGroup();
@@ -48,16 +56,18 @@ class GroupAccount extends \SmartStructure\Group
         } else {
             return _("group has not identificator");
         }
-        
+
         if ($this->getRawValue("grp_isrefreshed") == "0") {
-            $err.= _("this groups must be refreshed");
+            $err .= _("this groups must be refreshed");
         }
         return $err;
     }
+
     public function preUndelete()
     {
         return _("group cannot be revived");
     }
+
     /**
      * test if the document can be set in LDAP
      */
@@ -65,6 +75,7 @@ class GroupAccount extends \SmartStructure\Group
     {
         return true;
     }
+
     /**
      * get LDAP title for group
      */
@@ -72,8 +83,10 @@ class GroupAccount extends \SmartStructure\Group
     {
         return sprintf(_("%s group"), $this->title);
     }
+
     /**
      * get LDAP array of members
+     *
      * @return array
      */
     public function getLDAPMember()
@@ -96,9 +109,11 @@ class GroupAccount extends \SmartStructure\Group
         }
         return $tdn;
     }
+
     /**
      * recompute only parent group
      * call {@see ComputeGroup()}
+     *
      * @apiExpose
      *
      * @return string error message, if no error empty string
@@ -111,8 +126,8 @@ class GroupAccount extends \SmartStructure\Group
         $err = $this->RefreshDocUser();
         //$err.=$this->refreshMembers();
         // refreshGroups(array($this->getRawValue("us_whatid")));
-        $err.= $this->insertGroups();
-        $err.= $this->Modify();
+        $err .= $this->insertGroups();
+        $err .= $this->Modify();
         //AddWarningMsg(sprintf("RefreshGroup %d %s",$this->id, $this->title));
         if ($err == "") {
             refreshGroups(array(
@@ -123,6 +138,7 @@ class GroupAccount extends \SmartStructure\Group
         }
         return $err;
     }
+
     /**
      * Refresh folder parent containt
      */
@@ -139,10 +155,12 @@ class GroupAccount extends \SmartStructure\Group
             }
         }
     }
+
     public function postStore()
     {
         return $this->synchronizeSystemGroup();
     }
+
     /**
      * @deprecated use postStore() instead
      * @return string
@@ -152,12 +170,13 @@ class GroupAccount extends \SmartStructure\Group
         deprecatedFunction();
         return self::postStore();
     }
+
     public function synchronizeSystemGroup()
     {
         $gname = $this->getRawValue("GRP_NAME");
         $login = $this->getRawValue("US_LOGIN");
         $roles = $this->getMultipleRawValues("grp_roles");
-        
+
         $fid = $this->id;
         /**
          * @var \Anakeen\Core\Account $user
@@ -165,7 +184,7 @@ class GroupAccount extends \SmartStructure\Group
         $user = $this->getAccount();
         if (!$user) {
             $user = new \Anakeen\Core\Account(""); // create new user
-            $this->wuser = & $user;
+            $this->wuser = &$user;
         }
         // get system role ids
         $roleIds = $this->getSystemIds($roles);
@@ -204,20 +223,22 @@ class GroupAccount extends \SmartStructure\Group
                     }
                 }
             }
-            
+
             $err = $this->refreshMailMembersOnChange();
         }
-        
+
         if ($err == "") {
             $err = "-";
         } // don't do modify after because it is must be set by USER::setGroups
         return $err;
     }
+
     /**
      * compute the mail of the group
      * concatenation of each user mail and group member mail
      *
      * @param bool $nomail if true no mail will be computed
+     *
      * @return void
      */
     public function setGroupMail($nomail = false)
@@ -231,9 +252,12 @@ class GroupAccount extends \SmartStructure\Group
             $this->clearValue('grp_mail');
         }
     }
+
     /**
      * return concatenation of mail addresses
+     *
      * @param bool $rawmail if true only raw address will be returned else complete address with firstname and lastname are returned
+     *
      * @return string
      */
     public function getMail($rawmail = false)
@@ -244,6 +268,7 @@ class GroupAccount extends \SmartStructure\Group
         }
         return '';
     }
+
     /**
      * update LDAP menbers after imodification of containt
      */
@@ -305,7 +330,7 @@ class GroupAccount extends \SmartStructure\Group
     public function postInsertMultipleDocuments($tdocid)
     {
         $err = "";
-        
+
         $gid = $this->getRawValue("US_WHATID");
         if ($gid > 0) {
             $g = new \Group("");
@@ -328,7 +353,7 @@ class GroupAccount extends \SmartStructure\Group
                     }
                 }
             }
-            
+
             $this->RefreshGroup();
         }
         return $err;
@@ -369,6 +394,7 @@ class GroupAccount extends \SmartStructure\Group
         }
         return $err;
     }
+
     public function postDelete()
     {
         $gAccount = $this->getAccount();
@@ -376,6 +402,7 @@ class GroupAccount extends \SmartStructure\Group
             $gAccount->Delete();
         }
     }
+
     /**
      * (re)insert members of the group in folder from USER databasee
      *
@@ -387,7 +414,7 @@ class GroupAccount extends \SmartStructure\Group
         $err = "";
         // get members
         $tu = $gAccount->GetUsersGroupList($gAccount->id);
-        
+
         if (is_array($tu)) {
             parent::Clear();
             $tfid = array();
@@ -402,12 +429,14 @@ class GroupAccount extends \SmartStructure\Group
         }
         return $err;
     }
+
     /**
      * insert members in a group in folder
      * it does not modify anakeen database (use only when anakeen database if updated)
      * must be use after a group add in anakeen database (use only for optimization in ::setGroups
      *
      * @param int $docid user doc parameter
+     *
      * @return string error message, if no error empty string
      */
     public function insertMember($docid)
@@ -417,15 +446,17 @@ class GroupAccount extends \SmartStructure\Group
         $this->modify(true, array(
             "grp_isrefreshed"
         ), true);
-        
+
         return $err;
     }
+
     /**
      * suppress members of the group in folder
      * it does not modify anakeen database (use only when anakeen database if updated)
      * must be use after a group add in anakeen database (use only for optimization in ::setGroups
      *
      * @param int $docid user doc parameter
+     *
      * @return string error message, if no error empty string
      */
     public function deleteMember($docid)
@@ -435,9 +466,10 @@ class GroupAccount extends \SmartStructure\Group
         $this->modify(true, array(
             "grp_isrefreshed"
         ), true);
-        
+
         return $err;
     }
+
     /**
      * recompute intranet values from USER database
      */
@@ -452,7 +484,7 @@ class GroupAccount extends \SmartStructure\Group
                 $this->setValue("GRP_NAME", $wuser->lastname);
                 //   $this->setValue("US_FNAME",$wuser->firstname);
                 $this->setValue("US_LOGIN", $wuser->login);
-                
+
                 $this->setValue("US_MEID", $this->id);
                 // search group of the group
                 $g = new \Group("", $wid);
@@ -482,17 +514,18 @@ class GroupAccount extends \SmartStructure\Group
         }
         return $err;
     }
+
     /**
      * refresh members of the group from USER database
      */
     public function refreshMembers()
     {
         $err = '';
-        
+
         $wid = $this->getRawValue("us_whatid");
         if ($wid > 0) {
             $u = $this->getAccount(true);
-            
+
             $tu = $u->GetUsersGroupList($wid, true);
             $tglogin = '';
             if (count($tu) > 0) {
@@ -504,18 +537,19 @@ class GroupAccount extends \SmartStructure\Group
                     }
                 }
             }
-            
+
             if (is_array($tglogin)) {
                 uasort($tglogin, "strcasecmp");
                 $this->setValue("GRP_IDGROUP", array_keys($tglogin));
             } else {
                 $this->clearValue("GRP_IDGROUP");
             }
-            
+
             $err = $this->modify();
         }
         return $err;
     }
+
     /**
      * Flush/empty group's content
      */
@@ -525,7 +559,7 @@ class GroupAccount extends \SmartStructure\Group
         $content = $this->getContent(false);
         if (is_array($content)) {
             foreach ($content as $tdoc) {
-                $err.= $this->removeDocument($tdoc['id']);
+                $err .= $this->removeDocument($tdoc['id']);
             }
         }
         return $err;

@@ -17,7 +17,6 @@
  *
 */
 
-include_once("Class.DbObj.php");
 class DocLog extends DbObj
 {
     const LOG_NOTICE = 1;

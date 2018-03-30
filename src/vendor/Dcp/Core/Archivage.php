@@ -56,7 +56,6 @@ class Archiving extends \SmartStructure\Dir
                 $err = $this->modify();
             }
             if (!$err) {
-                include_once("FDL/Class.SearchDoc.php");
                 
                 $s = new \SearchDoc($this->dbaccess);
                 $s->addFilter("archiveid=%d", $this->id);
@@ -90,7 +89,6 @@ class Archiving extends \SmartStructure\Dir
                 $err = $this->modify();
             }
             if (!$err) {
-                include_once("FDL/Class.SearchDoc.php");
                 
                 $s = new \SearchDoc($this->dbaccess);
                 $s->addFilter("archiveid=%d", $this->id);

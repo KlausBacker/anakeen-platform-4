@@ -13,7 +13,6 @@
 /**
  */
 
-include_once("WHAT/Class.Provider.php");
 class ldapProvider extends Provider
 {
     public function validateCredential($username, $password)
@@ -77,8 +76,7 @@ class ldapProvider extends Provider
             $this->errno = 0;
             return sprintf(_("cannot create user %s: %s"), $username, $err);
         }
-        
-        include_once("FDL/Class.DocFam.php");
+
         $dbaccess = getDbAccess();
         $du = new_doc($dbaccess, $whatuser->fid);
         if ($du->isAlive()) {

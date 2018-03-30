@@ -13,7 +13,6 @@
 /**
  */
 
-include_once("WHAT/Class.Provider.php");
 class fileProvider extends Provider
 {
     private function readPwdFile($pwdfile)

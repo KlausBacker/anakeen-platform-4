@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** utilisateur  */
-	class Iuser extends \Dcp\Core\UserAccount { const familyName="IUSER";}
+	class Iuser extends \Anakeen\SmartStructures\Iuser\IUserHooks { const familyName="IUSER";}
 }
 
 namespace SmartStructure\Attributes {

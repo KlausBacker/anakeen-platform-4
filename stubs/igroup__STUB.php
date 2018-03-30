@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** Groupe d'utilisateurs  */
-	class Igroup extends \Dcp\Core\GroupAccount { const familyName="IGROUP";}
+	class Igroup extends \Anakeen\SmartStructures\Igroup\IGroupHooks { const familyName="IGROUP";}
 }
 
 namespace SmartStructure\Attributes {

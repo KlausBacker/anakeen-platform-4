@@ -692,7 +692,7 @@ class DocHtmlFormat
                      * @var DOMElement $item
                      */
                     $item = $theadcells->item($i);
-                    $th = xt_innerXML($item);
+                    $th = DocFormFormat::xt_innerXML($item);
                     $thstyle = $item->getAttribute("style");
                     $thclass = $item->getAttribute("class");
                     if ($thstyle != "") {
@@ -724,7 +724,7 @@ class DocHtmlFormat
                      * @var DOMElement $item
                      */
                     $item = $tbodycells->item($i);
-                    $tr[] = xt_innerXML($item);
+                    $tr[] = DocFormFormat::xt_innerXML($item);
                     $tcellstyle[] = $item->getAttribute("style");
                     $tcellclass[] = $item->getAttribute("class");
                 }

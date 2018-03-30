@@ -1556,7 +1556,7 @@ class DocFormFormat
                      * @var DOMElement $iti
                      */
                     $iti = $theadcells->item($i);
-                    $th = xt_innerXML($iti);
+                    $th = $this->xt_innerXML($iti);
                     $thstyle = $iti->getAttribute("style");
                     $thclass = $iti->getAttribute("class");
                             
@@ -1584,7 +1584,7 @@ class DocFormFormat
                      * @var DOMElement $iti
                      */
                     $iti = $tbodycells->item($i);
-                    $tr[] = xt_innerXML($iti);
+                    $tr[] = $this->xt_innerXML($iti);
                     $tcellstyle[] = $iti->getAttribute("style");
                     $tcellclass[] = $iti->getAttribute("class");
                 }
@@ -1681,6 +1681,21 @@ class DocFormFormat
         } else {
             addWarningMsg(sprintf(_("roweditzone syntax %s is invalid"), $zone));
         }
+    }
+    /**
+     * @param DomElement $node
+     *
+     * @return bool
+     */
+    public static function xt_innerXML(&$node)
+    {
+        if (!$node) {
+            return false;
+        }
+        $document = $node->ownerDocument;
+        $nodeAsString = $document->saveXML($node);
+        preg_match('!\<.*?\>(.*)\</.*?\>!s', $nodeAsString, $match);
+        return $match[1];
     }
     /**
      * @param Doc $doc

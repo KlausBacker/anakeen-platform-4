@@ -1088,35 +1088,4 @@ function getMyProfil($dbaccess, $create = true)
     return $p;
 }
 
-/**
- * @param DomElement $node
- *
- * @return bool
- */
-function xt_innerXML(&$node)
-{
-    if (!$node) {
-        return false;
-    }
-    $document = $node->ownerDocument;
-    $nodeAsString = $document->saveXML($node);
-    preg_match('!\<.*?\>(.*)\</.*?\>!s', $nodeAsString, $match);
-    return $match[1];
-}
 
-/**
- * @param $html
- *
- * @return mixed
- * @deprecated
- */
-function cleanhtml($html)
-{
-    $html = preg_replace("/<\/?span[^>]*>/s", "", $html);
-    $html = preg_replace("/<\/?font[^>]*>/s", "", $html);
-    $html = preg_replace("/<\/?meta[^>]*>/s", "", $html);
-    $html = preg_replace("/<style[^>]*>.*?<\/style>/s", "", $html);
-    $html = preg_replace("/<([^>]*) style=\"[^\"]*\"/s", "<\\1", $html);
-    $html = preg_replace("/<([^>]*) class=\"[^\"]*\"/s", "<\\1", $html);
-    return $html;
-}

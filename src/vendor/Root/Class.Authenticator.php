@@ -103,7 +103,6 @@ abstract class Authenticator
     
     public static function freedomUserExists($username)
     {
-        include_once('FDL/Class.Doc.php');
         include_once('WHAT/Class.User.php');
         
         $u = new \Anakeen\Core\Account();

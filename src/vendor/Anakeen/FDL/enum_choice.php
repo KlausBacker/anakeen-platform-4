@@ -14,8 +14,6 @@
 /**
  */
 
-include_once("FDL/Class.Doc.php");
-include_once("FDL/Class.DocAttr.php");
 
 function enumjschoice(&$action)
 {

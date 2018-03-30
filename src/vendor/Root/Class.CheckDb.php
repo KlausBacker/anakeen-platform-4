@@ -484,7 +484,6 @@ class CheckDb
     public function checkAttributeType()
     {
         $testName = 'attribute type';
-        include_once ("../../../FDL/Class.Doc.php");
         $err = simpleQuery('', "select id from docfam", $families, true);
         
         foreach ($families as $famid) {

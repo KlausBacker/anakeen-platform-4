@@ -14,11 +14,6 @@
 /**
  */
 
-include_once("FDL/Lib.Dir.php");
-include_once("FDL/Lib.Util.php");
-include_once("FDL/Class.DocAttr.php");
-include_once("VAULT/Class.VaultFile.php");
-include_once("FDL/import_file.php");
 /**
  * Exportation of documents from folder or searches
  *

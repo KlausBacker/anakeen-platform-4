@@ -19,7 +19,6 @@
 
 global $action;
 
-include_once('Class.Application.php');
 
 $usage = new ApiUsage();
 
@@ -37,7 +36,7 @@ $class = $usage->addRequiredParameter('class', 'Class name', function ($value, $
     if (!is_scalar($value)) {
         return sprintf("Multiple values for '%s' not allowed.", $name);
     }
-    if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $value)) {
+    if (!preg_match('/^[a-zA-Z_\x7f-\xff][\\\\a-zA-Z0-9_\x7f-\xff]*$/', $value)) {
         return sprintf("Invalid class name '%s' for '%s'.", $value, $name, DIRECTORY_SEPARATOR);
     }
     return '';

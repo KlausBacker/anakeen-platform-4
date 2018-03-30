@@ -13,7 +13,6 @@
 /**
  */
 
-include_once("Class.DbObj.php");
 class TaskRequest extends DbObj
 {
     public $fields = array(

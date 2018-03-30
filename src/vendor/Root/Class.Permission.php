@@ -14,13 +14,6 @@
 /**
  */
 
-include_once('Class.DbObj.php');
-include_once('Class.QueryDb.php');
-include_once('Class.Application.php');
-include_once('Class.Action.php');
-include_once('Class.Acl.php');
-include_once('Class.User.php');
-include_once('Class.Group.php');
 
 class Permission extends DbObj
 {

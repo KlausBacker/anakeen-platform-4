@@ -20,7 +20,6 @@ class Timer extends \SmartStructure\Document
      */
     public function attachDocument(&$doc, $origin, $referenceDate = null)
     {
-        include_once("FDL/Class.DocTimer.php");
         
         $dt = new \DocTimer($this->dbaccess);
         $dt->timerid = $this->id;
@@ -77,7 +76,6 @@ class Timer extends \SmartStructure\Document
      */
     public function unattachAllDocument(&$doc, &$origin = null, &$c = 0)
     {
-        include_once("FDL/Class.DocTimer.php");
         
         $dt = new \DocTimer($this->dbaccess);
         if ($origin) {
@@ -96,7 +94,6 @@ class Timer extends \SmartStructure\Document
      */
     public function unattachDocument(&$doc)
     {
-        include_once("FDL/Class.DocTimer.php");
         
         $dt = new \DocTimer($this->dbaccess);
         $err = $dt->unattachDocument($doc->initid, $this->id);

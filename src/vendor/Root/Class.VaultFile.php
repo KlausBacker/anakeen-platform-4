@@ -13,7 +13,6 @@
 /**
  */
 
-include_once("VAULT/Class.VaultDiskStorage.php");
 
 
 class VaultFile

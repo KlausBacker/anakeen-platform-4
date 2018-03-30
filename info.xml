@@ -237,9 +237,7 @@
         <process command="programs/core_initialize">
             <label lang="en">Initialize system database</label>
         </process>
-        <process command="programs/check_autoloader">
-            <label lang="en">Check autoloader</label>
-        </process>
+
         <process command="programs/record_application CORE I">
             <label lang="en">Record core application in database</label>
         </process>
@@ -709,9 +707,7 @@ This can be solved by:<br/>
             <label lang="en">Migration second level</label>
         </process>
 
-        <process command="programs/check_autoloader">
-            <label lang="en">Check autoloader</label>
-        </process>
+
 
         <process command="programs/update_catalog"/>
     </post-upgrade>

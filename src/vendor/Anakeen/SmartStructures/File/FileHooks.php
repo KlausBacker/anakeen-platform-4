@@ -6,9 +6,9 @@
 /**
  * document to attach file
  */
-namespace Dcp\Core;
+namespace Anakeen\SmartStructures\File;
 
-class File extends \SmartStructure\Document
+class FileHooks extends \Anakeen\SmartStructures\Document
 {
     public function postStore()
     {

@@ -194,7 +194,6 @@ class QueryDb
             if ($err) {
                 throw new \Dcp\Db\Exception("query fail : " . $err);
             }
-            include_once("Class.DbObjectList.php");
             return new \DbObjectList($this->dbaccess, $this->basic_elem->res, $this->class);
         }
         

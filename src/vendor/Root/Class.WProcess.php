@@ -12,7 +12,6 @@
  */
 /**
  */
-include_once("FDL/Class.WDoc.php");
 
 define("wprocess_private", "wprocess_private"); # N_("wprocess_private")
 define("wprocess_public", "wprocess_public"); # N_("wprocess_qualified")

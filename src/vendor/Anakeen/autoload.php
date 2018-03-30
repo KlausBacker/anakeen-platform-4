@@ -5,7 +5,7 @@
  */
 $loader = require __DIR__ . '/lib/vendor/autoload.php';
 //@TODO Find Another way to add UI autoload
-require __DIR__ . '/Ui/PhpLib/vendor/autoload.php';
+//require __DIR__ . '/Ui/PhpLib/vendor/autoload.php';
 
 $loader->addPsr4('Anakeen\\', __DIR__ . '/');
 $loader->addPsr4('Dcp\\', __DIR__ . '/../Dcp/');

@@ -3,37 +3,44 @@
  * @author Anakeen
  * @package FDL
 */
+
 /**
  * User account document
  *
  */
-namespace Dcp\Core;
 
+namespace Anakeen\SmartStructures\Iuser;
+
+use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
+use Anakeen\Core\DocManager;
 use SmartStructure\Attributes\Iuser as MyAttributes;
+use \Dcp\Core\Exception;
 
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 
 /**
  * Class UserAccount
  */
-class UserAccount extends \SmartStructure\Document implements \IMailRecipient
+class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailRecipient
 {
     use TAccount;
 
-    public $eviews = array(
-        "USERCARD:CHOOSEGROUP"
-    );
+    public $eviews
+        = array(
+            "USERCARD:CHOOSEGROUP"
+        );
     public $defaultview = "FDL:VIEWBODYCARD";
     public $defaultedit = "FDL:EDITBODYCARD";
+
     public function preRefresh()
     {
         $err = parent::preRefresh();
-        
+
         if ($this->getRawValue("US_STATUS") == 'D') {
-            $err.= ($err == "" ? "" : "\n") . _("user is deactivated");
+            $err .= ($err == "" ? "" : "\n") . _("user is deactivated");
         }
-        
+
         $iduser = $this->getRawValue("US_WHATID");
         if ($iduser > 0) {
             $user = $this->getAccount();
@@ -64,6 +71,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         $this->updateIncumbents();
         return $err;
     }
+
     public function updateIncumbents()
     {
         $u = $this->getAccount();
@@ -71,6 +79,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
             $this->setValue("us_incumbents", $u->getIncumbents(false));
         }
     }
+
     /**
      * test if the document can be set in LDAP
      */
@@ -78,7 +87,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
     {
         return ($this->getRawValue("US_STATUS") != 'D');
     }
-    
+
     public function preUndelete()
     {
         return _("user cannot be revived");
@@ -92,7 +101,8 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
      */
     public function getUserGroups()
     {
-        DbManager::query(sprintf("SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;", $this->getRawValue("us_whatid")), $groupIds, false, false);
+        DbManager::query(sprintf("SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;", $this->getRawValue("us_whatid")), $groupIds, false,
+            false);
 
         $gids = array();
         foreach ($groupIds as $gid) {
@@ -119,9 +129,9 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
             foreach ($groupIds as $gid) {
                 $gids[$gid["id"]] = $gid["fid"];
             }
-            
+
             foreach ($gids as $systemGid => $docGid) {
-                $pgids+= $this->getAscendantGroup($systemGid);
+                $pgids += $this->getAscendantGroup($systemGid);
             }
             $groupIds = $gids + $pgids;
         }
@@ -138,6 +148,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
     {
         return $this->getAscendantGroup($this->getRawValue("us_whatid"));
     }
+
     /**
      * Refresh folder parent containt
      */
@@ -154,6 +165,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
             }
         }
     }
+
     /**
      * recompute intranet values from USER database
      */
@@ -163,7 +175,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         $wid = $this->getRawValue("us_whatid");
         if ($wid > 0) {
             $wuser = $this->getAccount(true);
-            
+
             if ($wuser->isAffected()) {
                 $this->SetValue(MyAttributes::us_whatid, $wuser->id);
                 $this->SetValue(MyAttributes::us_lname, $wuser->lastname);
@@ -180,11 +192,11 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
                 } else {
                     $this->clearValue(MyAttributes::us_substitute);
                 }
-                
+
                 $rolesIds = $wuser->getRoles(false);
                 $this->clearArrayValues("us_t_roles");
                 $this->SetValue("us_roles", $rolesIds);
-                
+
                 $mail = $wuser->getMail();
                 if (!$mail) {
                     $this->clearValue(MyAttributes::us_extmail);
@@ -193,7 +205,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
                     $this->SetValue(MyAttributes::us_mail, $mail);
                     $this->SetValue(MyAttributes::us_extmail, $mail);
                 }
-                
+
                 if ($wuser->passdelay <> 0) {
                     $this->SetValue(MyAttributes::us_expiresd, strftime("%Y-%m-%d", $wuser->expires));
                     $this->SetValue(MyAttributes::us_expirest, strftime("%H:%M", $wuser->expires));
@@ -223,9 +235,10 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
                 $err = sprintf(_("user %d does not exist"), $wid);
             }
         }
-        
+
         return $err;
     }
+
     /**
      * affect to default group
      */
@@ -244,7 +257,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         }
         return $err;
     }
-    
+
     public function postCreated()
     {
         $err = "";
@@ -257,14 +270,13 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
             $expdate = time() + ($ed * 24 * 3600);
             $err = $this->SetValue("us_accexpiredate", strftime("%Y-%m-%d 00:00:00", $expdate));
             if ($err == '') {
-                $err = $this->modify(true, array(
-                "us_accexpiredate"
-            ), true);
+                $err = $this->modify(true, array("us_accexpiredate"), true);
             }
         }
-        
+
         return $err;
     }
+
     /**
      * update/synchro system user
      */
@@ -276,6 +288,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         }
         return $err;
     }
+
     /**
      * @deprecated use postStore() instead
      * @return string
@@ -285,6 +298,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         deprecatedFunction();
         return self::postStore();
     }
+
     /**
      * Modify system account from document IUSER
      */
@@ -296,7 +310,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         $pwd1 = $this->getRawValue("us_passwd1");
         $pwd2 = $this->getRawValue("us_passwd2");
         $daydelay = $this->getRawValue("us_daydelay");
-        if ($daydelay == - 1) {
+        if ($daydelay == -1) {
             $passdelay = $daydelay;
         } else {
             $passdelay = intval($daydelay) * 3600 * 24;
@@ -306,7 +320,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         $substitute = $this->getRawValue("us_substitute");
         $allRoles = $this->getArrayRawValues("us_t_roles");
         $extmail = $this->getRawValue("us_extmail", " ");
-        
+
         if ($login != "-") {
             // compute expire for epoch
             $expiresd = $this->getRawValue("us_expiresd");
@@ -321,13 +335,13 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
                     $expires = mktime($reg[4], $reg[5], $reg[6], $reg[2], $reg[3], $reg[1]);
                 }
             }
-            
+
             $fid = $this->id;
             $newuser = false;
             $user = $this->getAccount();
             if (!$user) {
                 $user = new \Anakeen\Core\Account(""); // create new user
-                $this->wuser = & $user;
+                $this->wuser = &$user;
                 $newuser = true;
             }
             // get direct system role ids
@@ -342,23 +356,23 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
             if ($substitute) {
                 $substitute = $this->getDocValue($substitute, "us_whatid");
             }
-            $err.= $user->updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail, $roleIds, $substitute);
+            $err .= $user->updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail, $roleIds, $substitute);
             if ($err == "") {
                 if ($user) {
                     $this->setValue(MyAttributes::us_whatid, $user->id);
                     $this->setValue(MyAttributes::us_meid, $this->id);
-                    
+
                     $this->modify(false, array(
                         MyAttributes::us_whatid,
                         MyAttributes::us_meid
                     ));
                     $err = $this->setGroups(); // set groups (add and suppress) may be long
                     if ($newuser) {
-                        $err.= $this->setToDefaultGroup();
+                        $err .= $this->setToDefaultGroup();
                     }
                 }
             }
-            
+
             if ($err == "") {
                 $err = $this->RefreshDocUser(); // refresh from core database
                 //      $this->refreshParentGroup();
@@ -378,24 +392,27 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
                 }
             }
         }
-        
+
         $this->setValue("US_LDAPDN", $this->getLDAPValue("dn", 1));
         return $err;
     }
-    
+
     public function PostDelete()
     {
         parent::PostDelete();
-        
+
         $user = $this->getAccount();
         if ($user) {
             $user->Delete();
         }
     }
+
     /**
      * Do not call ::setGroup if its import
      * called only in initialisation
+     *
      * @param array $extra
+     *
      * @return string|void
      */
     public function preImport(array $extra = array())
@@ -405,11 +422,12 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
             $_POST["gidnew"] = "N";
         }
     }
-    
+
     public function preconsultation()
     {
         $this->refreshRoles();
     }
+
     public function preEdition()
     {
         $allRoles = $this->getArrayRawValues("us_t_roles");
@@ -424,16 +442,17 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         $this->setValue("us_roles", $roles);
         if ($this->getRawValue("us_whatid") == \Anakeen\Core\Account::ANONYMOUS_ID) {
             // Anonymous has no password
-            $passFrame=$this->getAttribute("us_passwd1");
+            $passFrame = $this->getAttribute("us_passwd1");
             if ($passFrame) {
                 $passFrame->setVisibility("H");
             }
-            $passFrame=$this->getAttribute("us_passwd2");
+            $passFrame = $this->getAttribute("us_passwd2");
             if ($passFrame) {
                 $passFrame->setVisibility("H");
             }
         }
     }
+
     /**
      * recompute role attributes from system role
      */
@@ -453,7 +472,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
                 $allGroup[] = $aParent;
             }
         }
-        
+
         $this->clearArrayValues("us_t_roles");
         foreach ($allRoles as $role) {
             if (in_array($role["id"], $directRoleIds)) {
@@ -465,7 +484,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
                     "us_rolegorigin" => $group
                 ));
             }
-            
+
             $rid = $role["id"];
             $tgroup = array();
             foreach ($allGroup as $aGroup) {
@@ -485,9 +504,12 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
             }
         }
     }
+
     /**
      * return main mail address in RFC822 format
+     *
      * @param bool $rawmail if true only system amil address else add also display name
+     *
      * @return string
      */
     public function getMail($rawmail = false)
@@ -498,19 +520,23 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         }
         return '';
     }
+
     /**
      * return main mail address in a user-friendly representation
      * (by default we return the getMail() address, and it's up to the
      * descendant to override it and implement it's own user-friendly
      * representation)
+     *
      * @return string
      */
     public function getMailTitle()
     {
         return $this->getMail();
     }
+
     /**
      * return crypted password
+     *
      * @return string
      */
     public function getCryptPassword()
@@ -521,6 +547,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         }
         return '';
     }
+
     public function constraintPassword($pwd1, $pwd2, $login)
     {
         if ($this->testForcePassword($pwd1)) {
@@ -528,7 +555,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         }
         $sug = array();
         $err = "";
-        
+
         if ($pwd1 <> $pwd2) {
             $err = _("the 2 passwords are not the same");
         } elseif (($pwd1 == "") && ($this->getRawValue("us_whatid") == "")) {
@@ -536,12 +563,13 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
                 $err = _("passwords must not be empty");
             }
         }
-        
+
         return array(
             "err" => $err,
             "sug" => $sug
         );
     }
+
     public function testForcePassword($pwd)
     {
         $minLength = intval(ContextManager::getApplicationParam("AUTHENT_PWDMINLENGTH"));
@@ -549,44 +577,44 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         $minUpperLength = intval(ContextManager::getApplicationParam("AUTHENT_PWDMINUPPERALPHALENGTH"));
         $minLowerLength = intval(ContextManager::getApplicationParam("AUTHENT_PWDMINLOWERALPHALENGTH"));
         $minSymbolLength = intval(ContextManager::getApplicationParam("AUTHENT_PWDMINSYMBOLLENGTH"));
-        
+
         if (preg_match('/[\p{C}]/u', $pwd)) {
             return _("Control characters are not allowed");
         }
-        
+
         $msg = sprintf(_("Your password is not secure."));
         if ($minLength > 0) {
-            $msg.= "\n " . sprintf(_("It must contains at least %d characters (total length)"), $minLength);
+            $msg .= "\n " . sprintf(_("It must contains at least %d characters (total length)"), $minLength);
         }
         if ($minDigitLength + $minUpperLength + $minLowerLength + $minSymbolLength > 0) {
-            $msg.= " " . sprintf(_("with these conditions"));
+            $msg .= " " . sprintf(_("with these conditions"));
         }
         if ($minDigitLength) {
             if ($minDigitLength > 1) {
-                $msg.= "\n  - " . sprintf(_("at least %d digits"), $minDigitLength);
+                $msg .= "\n  - " . sprintf(_("at least %d digits"), $minDigitLength);
             } else {
-                $msg.= "\n  - " . sprintf(_("at least one digit"));
+                $msg .= "\n  - " . sprintf(_("at least one digit"));
             }
         }
         if ($minUpperLength) {
             if ($minUpperLength > 1) {
-                $msg.= "\n  - " . sprintf(_("at least %d uppercase alpha characters"), $minUpperLength);
+                $msg .= "\n  - " . sprintf(_("at least %d uppercase alpha characters"), $minUpperLength);
             } else {
-                $msg.= "\n  - " . sprintf(_("at least one uppercase alpha character"));
+                $msg .= "\n  - " . sprintf(_("at least one uppercase alpha character"));
             }
         }
         if ($minLowerLength) {
             if ($minLowerLength > 1) {
-                $msg.= "\n  - " . sprintf(_("at least %d lowercase alpha characters"), $minLowerLength);
+                $msg .= "\n  - " . sprintf(_("at least %d lowercase alpha characters"), $minLowerLength);
             } else {
-                $msg.= "\n  - " . sprintf(_("at least one lowercase alpha character"));
+                $msg .= "\n  - " . sprintf(_("at least one lowercase alpha character"));
             }
         }
         if ($minSymbolLength) {
             if ($minSymbolLength > 1) {
-                $msg.= "\n  - " . sprintf(_("at least %d symbol characters"), $minSymbolLength);
+                $msg .= "\n  - " . sprintf(_("at least %d symbol characters"), $minSymbolLength);
             } else {
-                $msg.= "\n  - " . sprintf(_("at least one symbol character"));
+                $msg .= "\n  - " . sprintf(_("at least one symbol character"));
             }
         }
         if (mb_strlen($pwd) < $minLength) {
@@ -594,10 +622,10 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
             return nl2br($err . $msg);
         }
         $alphanum = 0;
-        
+
         if ($minDigitLength) {
             preg_match_all('/[0-9]/', $pwd, $matches);
-            $alphanum+= count($matches[0]);
+            $alphanum += count($matches[0]);
             if (count($matches[0]) < $minDigitLength) {
                 $err = _("Not enough digits.") . "\n";
                 return nl2br($err . $msg);
@@ -605,7 +633,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         }
         if ($minUpperLength) {
             preg_match_all('/[\p{Lu}]/u', $pwd, $matches);
-            $alphanum+= count($matches[0]);
+            $alphanum += count($matches[0]);
             if (count($matches[0]) < $minUpperLength) {
                 $err = _("Not enough uppercase characters.") . "\n";
                 return nl2br($err . $msg);
@@ -613,7 +641,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         }
         if ($minLowerLength) {
             preg_match_all('/[\p{Ll}]/u', $pwd, $matches);
-            $alphanum+= count($matches[0]);
+            $alphanum += count($matches[0]);
             if (count($matches[0]) < $minLowerLength) {
                 $err = _("Not enough lowercase characters.") . "\n";
                 return nl2br($err . $msg);
@@ -627,11 +655,14 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         }
         return '';
     }
+
     /**
      * Constraint to verify expiration data
+     *
      * @param $expiresd
      * @param $expirest
      * @param $daydelay
+     *
      * @return array
      */
     public function constraintExpires($expiresd, $expirest, $daydelay)
@@ -641,7 +672,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         if (($expiresd <> "") && ($daydelay == 0)) {
             $err = _("Expiration delay must not be 0 to keep expiration date");
         }
-        
+
         return array(
             "err" => $err,
             "sug" => $sug
@@ -661,22 +692,24 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
     public function editlikeperson($target = "finfo", $ulink = true, $abstract = "Y")
     {
         global $action;
-        
+
         $this->lay = new \Layout(getLayoutFile("FDL", "editbodycard.xml"), $action);
-        
+
         $this->attributes->attr['us_tab_system']->visibility = 'R';
         $this->attributes->attr['us_fr_userchange']->visibility = 'R';
         $this->ApplyMask();
-        
+
         $this->attributes->attr['us_extmail']->mvisibility = 'W';
         $this->attributes->attr['us_extmail']->fieldSet = $this->attributes->attr['us_fr_coord'];
         $this->attributes->attr['us_extmail']->ordered = $this->attributes->attr['us_pphone']->ordered - 1;
         $this->attributes->orderAttributes();
-        
+
         $this->editbodycard($target, $ulink, $abstract);
     }
+
     /**
      * interface to only modify name and password
+     *
      * @templateController
      */
     public function editchangepassword()
@@ -684,15 +717,18 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         $this->viewprop();
         $this->editattr(false);
     }
+
     /**
      * Set/change user password
+     *
      * @param string $password password to crypt
+     *
      * @return string
      */
     public function setPassword($password)
     {
         $idwuser = $this->getRawValue("US_WHATID");
-        
+
         $wuser = $this->getAccount();
         if (!$wuser->isAffected()) {
             return sprintf(_("user #%d does not exist"), $idwuser);
@@ -703,9 +739,10 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         if ($err != "") {
             return $err;
         }
-        
+
         return "";
     }
+
     /**
      * Increase login failure count
      */
@@ -723,8 +760,10 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         }
         return "";
     }
+
     /**
      * Reset login failure count
+     *
      * @apiExpose
      */
     public function resetLoginFailure()
@@ -745,10 +784,13 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         }
         return $err;
     }
+
     /**
      * the incumbent account documents cannot be modified by susbtitutes
+     *
      * @param string $aclname
-     * @param bool $strict
+     * @param bool   $strict
+     *
      * @return string
      */
     public function control($aclname, $strict = false)
@@ -760,6 +802,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
             return parent::control($aclname, $strict);
         }
     }
+
     /**
      * Security menus visibilities
      */
@@ -784,6 +827,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         }
         return MENU_ACTIVE;
     }
+
     public function menuActivateAccount()
     {
         // Do not show the menu if the user has no FUSERS privileges
@@ -805,6 +849,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         }
         return MENU_ACTIVE;
     }
+
     public function menuDeactivateAccount()
     {
         // Do not show the menu if the user has no FUSERS privileges
@@ -826,6 +871,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         }
         return MENU_ACTIVE;
     }
+
     /**
      * Manage account security
      */
@@ -840,6 +886,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         }
         return false;
     }
+
     /**
      * @apiExpose
      * @return string error message
@@ -864,10 +911,12 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         }
         return $err;
     }
+
     public function isAccountInactive()
     {
         return (!$this->isAccountActive());
     }
+
     /**
      * @apiExpose
      * @return string error message
@@ -892,6 +941,7 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         }
         return $err;
     }
+
     public function accountHasExpired()
     {
         if ($this->getRawValue("us_whatid") == 1) {
@@ -910,8 +960,10 @@ class UserAccount extends \SmartStructure\Document implements \IMailRecipient
         }
         return false;
     }
+
     /**
      * return attribute used to filter from keyword
+     *
      * @return string
      */
     public static function getMailAttribute()

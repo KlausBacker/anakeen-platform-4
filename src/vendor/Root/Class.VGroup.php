@@ -13,9 +13,6 @@
 /**
  */
 
-include_once('Class.DbObj.php');
-include_once('Class.QueryDb.php');
-include_once('Class.Log.php');
 define("STARTIDVGROUP", 1000000);
 /**
  * Virtual groups

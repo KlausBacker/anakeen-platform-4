@@ -14,9 +14,6 @@ class processExecuteAPI
 
     public static function run(\Anakeen\Core\Internal\Action & $action)
     {
-        include_once("FDL/Class.DocFam.php");
-        include_once("FDL/Class.DocTimer.php");
-        include_once("FDL/Class.SearchDoc.php");
 
         $usage = new ApiUsage();
         $usage->setDefinitionText("Execute Dynacase Processes when needed");

@@ -8,9 +8,6 @@
  * @package FDL
  */
 // ---------------------------------------------------------------
-include_once("Class.QueryDb.php");
-include_once("Class.DbObj.php");
-include_once("VAULT/Class.VaultDiskDir.php");
 
 class VaultDiskFs extends DbObj
 {
@@ -61,7 +58,7 @@ Deny from all
 
 EOF;
     // --------------------------------------------------------------------
-    public function __construct($dbaccess, $id_fs = '')
+    public function __construct($dbaccess='', $id_fs = '')
     {
         // --------------------------------------------------------------------
         $this->dbtable = sprintf($this->dbtable_tmpl, $this->specific);

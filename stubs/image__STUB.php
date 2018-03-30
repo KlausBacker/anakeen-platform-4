@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** Image  */
-	class Image extends \Dcp\Core\Image { const familyName="IMAGE";}
+	class Image extends \Anakeen\SmartStructures\Image\ImageHooks { const familyName="IMAGE";}
 }
 
 namespace SmartStructure\Attributes {

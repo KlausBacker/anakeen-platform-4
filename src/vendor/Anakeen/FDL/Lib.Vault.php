@@ -14,16 +14,12 @@
 /**
  */
 
-include_once("VAULT/Class.VaultFile.php");
-include_once("VAULT/Class.VaultEngine.php");
-include_once("VAULT/Class.VaultDiskStorage.php");
 
 function initVaultAccess()
 {
     static $FREEDOM_VAULT = false;
     ;
     if (!$FREEDOM_VAULT) {
-        include_once("VAULT/Class.VaultFile.php");
         $dbaccess = getDbAccess();
         $FREEDOM_VAULT = new VaultFile($dbaccess, "FREEDOM");
     }
@@ -77,7 +73,6 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
             return '';
         }
         global $action;
-        include_once("FDL/Class.TaskRequest.php");
         $of = new VaultDiskStorage($dbaccess, $vidin);
         $filename = $of->getPath();
         if (!$of->isAffected()) {
@@ -249,7 +244,6 @@ function convertFile($infile, $engine, $outfile, &$info)
         $vid = '';
         $err = $ot->sendTransformation($engine, $vid, $infile, $callback, $info);
         if ($err == "") {
-            include_once("FDL/Class.TaskRequest.php");
             $dbaccess = getDbAccess();
             $tr = new TaskRequest($dbaccess);
             $tr->tid = $info["tid"];

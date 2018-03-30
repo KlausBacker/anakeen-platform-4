@@ -4,7 +4,7 @@ TYPE;C;;;;;;;;;;;;;;
 DFLDID;FLD_ACCOUNTS;;;;;;;;;;;;;;
 ICON;se-iuser.png;;;;;;;;;;;;;;
 SCHAR;S;;;;;;;;;;;;;;
-CLASS;Dcp\Core\UserAccount;;;;;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\Iuser\IUserHooks;;;;;;;;;;;;;;
 USEFOR;N;;;;;;;;;;;;;;
 //TAG;MAILRECIPIENT;;;;;;;;;;;;;;
 METHOD;;;;;;;;;;;;;;;

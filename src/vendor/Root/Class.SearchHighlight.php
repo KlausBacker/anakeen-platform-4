@@ -14,8 +14,6 @@
 /**
  */
 
-include_once("FDL/Class.SearchDoc.php");
-include_once("FDL/Class.DocSearch.php");
 
 include_once("FDL/freedom_util.php");
 

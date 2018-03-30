@@ -7,9 +7,9 @@
  * Specials methods for Role family
  *
  */
-namespace Dcp\Core;
+namespace Anakeen\SmartStructures\Role;
 
-class RoleAccount extends \SmartStructure\Document
+class RoleHooks extends \Anakeen\SmartStructures\Document
 {
     /**
      * @var \Anakeen\Core\Account system role
