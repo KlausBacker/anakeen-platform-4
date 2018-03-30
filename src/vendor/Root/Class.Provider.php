@@ -14,7 +14,7 @@
  */
 /**
  * Class Provider
- * @method initializeUser
+ * @method initializeUser($a)
  */
 abstract class Provider
 {

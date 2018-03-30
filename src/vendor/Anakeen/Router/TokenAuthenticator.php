@@ -2,7 +2,7 @@
 
 namespace Anakeen\Router;
 
-class TokenAuthenticator extends \OpenAuthenticator
+class TokenAuthenticator extends \Anakeen\Core\Internal\OpenAuthenticator
 {
     const AUTHORIZATION_SCHEME = "Token";
 

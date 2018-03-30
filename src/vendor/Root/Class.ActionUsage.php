@@ -41,7 +41,7 @@ class ActionUsage extends ApiUsage
         $this->addOptionalParameter('action', "action name");
         $this->addHiddenParameter('sole', "display mode (deprecated)");
         $authType = $this->addHiddenParameter('authtype', "authentication type");
-        $this->addHiddenParameter(\OpenAuthenticator::openGetId, "authentication token");
+        $this->addHiddenParameter(\Anakeen\Core\Internal\OpenAuthenticator::openGetId, "authentication token");
         if ("open" === $authType) {
             $this->addHiddenParameter("privateid", "token");
         }

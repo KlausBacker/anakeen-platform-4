@@ -157,7 +157,7 @@ class ContextManager
         $status = AuthenticatorManager::checkAccess(null, !$askAuthent);
 
         switch ($status) {
-            case \Authenticator::AUTH_OK: // it'good, user is authentified
+            case \Anakeen\Core\Internal\Authenticator::AUTH_OK: // it'good, user is authentified
                 break;
 
             default:

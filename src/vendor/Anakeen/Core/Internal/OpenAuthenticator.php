@@ -16,6 +16,7 @@
 /**
  */
 
+namespace Anakeen\Core\Internal;
 class OpenAuthenticator extends Authenticator
 {
     const waitDelayError=1;
@@ -98,7 +99,7 @@ class OpenAuthenticator extends Authenticator
     }
     public static function getUserToken($tokenId)
     {
-        $token = new UserToken('', $tokenId);
+        $token = new \UserToken('', $tokenId);
         if (!is_object($token) || !$token->isAffected()) {
             return false;
         }
@@ -149,7 +150,7 @@ class OpenAuthenticator extends Authenticator
     public function consumeToken($privatekey)
     {
         
-        $token = new UserToken('', $privatekey);
+        $token = new \UserToken('', $privatekey);
         if (!is_object($token) || !$token->isAffected()) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Token '%s' not found.", $privatekey));
             return false;
@@ -225,7 +226,7 @@ class OpenAuthenticator extends Authenticator
     public function getAuthSession()
     {
         if (!$this->auth_session) {
-            $this->auth_session = new Session(Session::PARAMNAME, false);
+            $this->auth_session = new \Session(\Session::PARAMNAME, false);
             
             $this->auth_session->Set();
         }

@@ -6,7 +6,7 @@ class AuthenticatorManager extends \Anakeen\Core\Internal\AuthenticatorManager
 {
     protected static $authType;
 
-    protected static function getAuthenticatorClass($authtype = null, $provider = \Authenticator::nullProvider)
+    protected static function getAuthenticatorClass($authtype = null, $provider = \Anakeen\Core\Internal\Authenticator::nullProvider)
     {
         if (!$authtype) {
             $authtype = self::getAuthType();
@@ -19,7 +19,7 @@ class AuthenticatorManager extends \Anakeen\Core\Internal\AuthenticatorManager
         $auth = null;
         switch ($authtype) {
             case "html":
-                $auth = new \HtmlAuthenticator($authtype, $provider);
+                $auth = new \Anakeen\Core\Internal\HtmlAuthenticator($authtype, $provider);
                 break;
 
             case "token":
@@ -27,7 +27,7 @@ class AuthenticatorManager extends \Anakeen\Core\Internal\AuthenticatorManager
                 break;
 
             case "basic":
-                $auth = new \BasicAuthenticator($authtype, $provider);
+                $auth = new \Anakeen\Core\Internal\BasicAuthenticator($authtype, $provider);
                 break;
 
             default:

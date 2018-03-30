@@ -40,7 +40,7 @@ class TestOpenAccess extends TestCaseDcpApplication
         $userToken = new \UserToken("", $tokenId);
         //$mainAction = self::getAction();
         global $action;
-        $auth = new \OpenAuthenticator("open", "internal");
+        $auth = new \Anakeen\Core\Internal\OpenAuthenticator("open", "internal");
         
         $this->sudo($login);
         

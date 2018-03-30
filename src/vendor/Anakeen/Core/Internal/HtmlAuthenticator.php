@@ -6,6 +6,8 @@
  *
  */
 
+
+namespace Anakeen\Core\Internal;
 class HtmlAuthenticator extends Authenticator
 {
     public $auth_session = null;
@@ -45,7 +47,7 @@ class HtmlAuthenticator extends Authenticator
                 return Authenticator::AUTH_NOK;
             }
 
-            if (!$this->freedomUserExists(getHttpVars($this->parms['username']))) {
+            if (!$this->documentUserExists(getHttpVars($this->parms['username']))) {
                 if (!$this->tryInitializeUser(getHttpVars($this->parms['username']))) {
                     return Authenticator::AUTH_NOK;
                 }
@@ -62,14 +64,14 @@ class HtmlAuthenticator extends Authenticator
     /**
      * retrieve authentication session
      *
-     * @return Session the session object
+     * @return \Session the session object
      */
     public function getAuthSession()
     {
         if (!$this->auth_session) {
-            $this->auth_session = new Session(Session::PARAMNAME);
-            if (array_key_exists(Session::PARAMNAME, $_COOKIE)) {
-                $this->auth_session->Set($_COOKIE[Session::PARAMNAME]);
+            $this->auth_session = new \Session(\Session::PARAMNAME);
+            if (array_key_exists(\Session::PARAMNAME, $_COOKIE)) {
+                $this->auth_session->Set($_COOKIE[\Session::PARAMNAME]);
             } else {
                 $this->auth_session->Set();
             }
@@ -113,7 +115,7 @@ class HtmlAuthenticator extends Authenticator
      *
      * @param array $extendedArg
      *
-     * @throws Dcp\Exception
+     * @throws \Dcp\Exception
      * @return string
      */
     public function getAuthUrl(array $extendedArg = array())
@@ -122,7 +124,7 @@ class HtmlAuthenticator extends Authenticator
             throw new \Dcp\Exception("Missing html/auth/app config.");
         }
         $hasArgs = false;
-        $location = Session::getWebRootPath();
+        $location = \Session::getWebRootPath();
         $location .= "./login/";
 
         if (!empty($this->parms['auth']['args'])) {
@@ -167,7 +169,7 @@ class HtmlAuthenticator extends Authenticator
     public function logout($redir_uri = '')
     {
         $session_auth = $this->getAuthSession();
-        if (array_key_exists(Session::PARAMNAME, $_COOKIE)) {
+        if (array_key_exists(\Session::PARAMNAME, $_COOKIE)) {
             $session_auth->close();
         }
         if ($redir_uri == "") {
@@ -209,7 +211,7 @@ class HtmlAuthenticator extends Authenticator
         if ($account->setLoginName("anonymous") === false) {
             throw new \Dcp\Exception(sprintf("anonymous account not found."));
         }
-        $actionRouter = new ActionRouter($account);
+        $actionRouter = new \ActionRouter($account);
 
         $allowList = array(
             array(

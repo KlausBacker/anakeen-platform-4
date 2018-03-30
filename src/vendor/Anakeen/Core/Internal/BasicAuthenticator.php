@@ -13,12 +13,14 @@
  * @package FDL
  * @subpackage
  */
-/**
- */
+namespace Anakeen\Core\Internal;
 
 class BasicAuthenticator extends Authenticator
 {
     const basicAuthorizationScheme = "Basic";
+    /**
+     * @var \Session
+     */
     protected $auth_session = null;
     public function checkAuthentication()
     {
@@ -52,7 +54,7 @@ class BasicAuthenticator extends Authenticator
             return Authenticator::AUTH_NOK;
         }
 
-        if (!$this->freedomUserExists($_SERVER['PHP_AUTH_USER'])) {
+        if (!$this->documentUserExists($_SERVER['PHP_AUTH_USER'])) {
             if (!$this->tryInitializeUser($_SERVER['PHP_AUTH_USER'])) {
                 return Authenticator::AUTH_NOK;
             }
@@ -121,9 +123,9 @@ class BasicAuthenticator extends Authenticator
         if (!$this->auth_session) {
             $sendCookie=!empty($_SERVER['HTTP_REFERER']);
             // Send cookie if find a referer
-            $this->auth_session = new Session(Session::PARAMNAME, $sendCookie);
-            if (array_key_exists(Session::PARAMNAME, $_COOKIE)) {
-                $this->auth_session->Set($_COOKIE[Session::PARAMNAME]);
+            $this->auth_session = new \Session(\Session::PARAMNAME, $sendCookie);
+            if (array_key_exists(\Session::PARAMNAME, $_COOKIE)) {
+                $this->auth_session->Set($_COOKIE[\Session::PARAMNAME]);
             } else {
                 $this->auth_session->Set();
             }

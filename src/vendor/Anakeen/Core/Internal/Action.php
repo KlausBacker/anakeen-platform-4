@@ -134,7 +134,7 @@ create sequence SEQ_ID_ACTION;
      */
     public $url;
     /**
-     * @var \Authenticator|\OpenAuthenticator
+     * @var \Anakeen\Core\Internal\Authenticator|\Anakeen\Core\Internal\OpenAuthenticator
      */
     public $auth;
     /**

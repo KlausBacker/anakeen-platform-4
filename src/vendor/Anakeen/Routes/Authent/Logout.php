@@ -42,7 +42,7 @@ class Logout
             }
         }
 
-        $data["basicAuthent"]= (get_class(\Anakeen\Core\Internal\AuthenticatorManager::$auth) === \BasicAuthenticator::class);
+        $data["basicAuthent"]= (get_class(\Anakeen\Core\Internal\AuthenticatorManager::$auth) === \Anakeen\Core\Internal\BasicAuthenticator::class);
         if ($data["basicAuthent"]) {
             $response = $response->withStatus(401);
         }

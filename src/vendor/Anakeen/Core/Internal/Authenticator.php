@@ -15,6 +15,7 @@
  */
 /**
  */
+namespace Anakeen\Core\Internal;
 
 abstract class Authenticator
 {
@@ -27,19 +28,19 @@ abstract class Authenticator
     
     const nullProvider = "__for_logout__";
     /**
-     * @var Provider
+     * @var \Provider
      */
     public $provider = null;
-    
+    protected $parms;
+
     public function __construct($authtype, $authprovider)
     {
-        include_once('WHAT/Lib.Common.php');
         
         if ($authtype == "") {
-            throw new Dcp\Exception(__METHOD__ . " " . "Error: authentication mode not set");
+            throw new \Dcp\Exception(__METHOD__ . " " . "Error: authentication mode not set");
         }
         if ($authprovider == "") {
-            throw new Dcp\Exception(__METHOD__ . " " . "Error: authentication provider not set");
+            throw new \Dcp\Exception(__METHOD__ . " " . "Error: authentication provider not set");
         }
         
         $tx = array(
@@ -52,18 +53,18 @@ abstract class Authenticator
             $this->parms = array_merge($tx, $ta, $tp);
             
             if (!array_key_exists('provider', $this->parms)) {
-                throw new Dcp\Exception(__METHOD__ . " " . "Error: provider parm not specified at __construct");
+                throw new \Dcp\Exception(__METHOD__ . " " . "Error: provider parm not specified at __construct");
             }
             $providerClass = ucfirst(strtolower($this->parms['provider'])) . 'Provider';
             
 
             if (!class_exists($providerClass)) {
-                throw new Dcp\Exception(__METHOD__ . " " . "Error: " . $providerClass . " class not found");
+                throw new \Dcp\Exception(__METHOD__ . " " . "Error: " . $providerClass . " class not found");
             }
             //     error_log("Using authentication provider [".$providerClass."]");
             $this->provider = new $providerClass($authprovider, $this->parms);
             if (!is_a($this->provider, \Provider::class)) {
-                throw new Dcp\Exception(__METHOD__ . " " . sprintf("Error: provider with class '%s' does not inherits from class 'Provider'.", $providerClass));
+                throw new \Dcp\Exception(__METHOD__ . " " . sprintf("Error: provider with class '%s' does not inherits from class 'Provider'.", $providerClass));
             }
         } else {
             $this->parms = array_merge($tx, $ta);
@@ -91,7 +92,7 @@ abstract class Authenticator
     {
         $authModeConfig = getDbAccessValue('authentModeConfig');
         if (!is_array($authModeConfig)) {
-            throw new Dcp\Exception('FILE0006');
+            throw new \Dcp\Exception('FILE0006');
         }
         
         if (!array_key_exists(\Anakeen\Core\Internal\AuthenticatorManager::getAuthType(), $authModeConfig)) {
@@ -101,15 +102,13 @@ abstract class Authenticator
         return $authModeConfig[\Anakeen\Core\Internal\AuthenticatorManager::getAuthType() ];
     }
     
-    public static function freedomUserExists($username)
+    public static function documentUserExists($username)
     {
-        include_once('WHAT/Class.User.php');
         
         $u = new \Anakeen\Core\Account();
         if ($u->SetLoginName($username)) {
-            $dbaccess = getDbAccess();
-            $du = new_Doc($dbaccess, $u->fid);
-            if ($du->isAlive()) {
+            $du = \Anakeen\Core\DocManager::getDocument($u->fid);
+            if ($du && $du->isAlive()) {
                 return true;
             }
         }

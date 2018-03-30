@@ -115,10 +115,10 @@ function redirectAsGuest(\Anakeen\Core\Internal\Action & $action)
     if ($guestMode) {
         if ($action->user->id == \Anakeen\Core\Account::ANONYMOUS_ID) {
             /**
-             * @var HtmlAuthenticator $auth
+             * @var \Anakeen\Core\Internal\HtmlAuthenticator $auth
              */
             $auth = \Anakeen\Core\Internal\AuthenticatorManager::$auth;
-            if (is_a($auth, \HtmlAuthenticator::class)) {
+            if (is_a($auth, \Anakeen\Core\Internal\HtmlAuthenticator::class)) {
                 $auth->connectTo($_SERVER['REQUEST_URI']);
             }
         }
