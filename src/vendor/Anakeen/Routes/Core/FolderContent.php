@@ -18,7 +18,7 @@ use Anakeen\Core\Settings;
 class FolderContent extends DocumentList
 {
     /**
-     * @var \Anakeen\SmartStructures\Dir\Dir
+     * @var \Anakeen\SmartStructures\Dir\DirHooks
      */
     protected $_folder = null;
 

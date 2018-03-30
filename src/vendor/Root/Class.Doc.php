@@ -6537,7 +6537,7 @@ create unique index i_docir on doc(initid, revision);";
         $copy->Modify();
         if ($linkfld && method_exists($copy, "insertFolder")) {
             /**
-             * @var \Anakeen\SmartStructures\Dir\Dir $copy
+             * @var \Anakeen\SmartStructures\Dir\DirHooks $copy
              */
             $copy->insertFolder($this->initid);
         }

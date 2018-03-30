@@ -19,7 +19,7 @@ namespace Anakeen\SmartStructures\Dir;
  * Folder document Class
  *
  */
-class Dir extends \Anakeen\SmartStructures\Profiles\PDir
+class DirHooks extends \Anakeen\SmartStructures\Profiles\PDir
 {
     public $defDoctype = 'D';
     private $authfam = false;
@@ -77,7 +77,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
      * virtual method use after insert document in folder
      *
      * @api hook method called after insert document in folder
-     * @see Dir::insertDocument
+     * @see DirHooks::insertDocument
      *
      * @param int  $docid    document identifier to insert
      * @param bool $multiple flag to indicate if the insertion is a part of grouped insertion
@@ -96,8 +96,8 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
      *
      *
      * @api hook method called after insert several documents in folder
-     * @see Dir::insertMultipleDocuments
-     * @see Dir::postInsertDocument
+     * @see DirHooks::insertMultipleDocuments
+     * @see DirHooks::postInsertDocument
      *
      * @param array $tdocid array of document identifier to insert
      *
@@ -113,8 +113,8 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
      * must be redefined to optimize algorithm
      *
      * @api hook method called before insert several documents in folder
-     * @see Dir::preInsertDocument
-     * @see Dir::insertMultipleDocuments
+     * @see DirHooks::preInsertDocument
+     * @see DirHooks::insertMultipleDocuments
      *
      * @param array $tdocid array of document identifier to insert
      *
@@ -194,7 +194,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
      * if mode is static the user see the revision which has been inserted
      *
      * @deprecated use {@link Dir::insertDocument} instead
-     * @see        Dir::insertDocument
+     * @see        DirHooks::insertDocument
      *
      * @param int    $docid         document ident for the insertion
      * @param string $mode          latest|static
@@ -593,7 +593,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
      * remove a document reference from this folder
      *
      * @deprecated use {@link Dir::removeDocument} instead
-     * @see        Dir::removeDocument
+     * @see        DirHooks::removeDocument
      *
      * @param int  $docid     document ident for the deletion
      * @param bool $noprepost if true then the virtuals methods {@link Dir::preUnlinkDoc()} and {@link Dir::postUnlinkDoc()} are not called
@@ -709,7 +709,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
         $err = $this->canModify();
         if ($err == "") {
             $fromtoid = $this->initid;
-            /** @var \Anakeen\SmartStructures\Dir\Dir $da */
+            /** @var \Anakeen\SmartStructures\Dir\DirHooks $da */
             $da = new_doc($this->dbaccess, $movetoid);
             if ($da->isAlive()) {
                 if (method_exists($da, "addFile")) {
@@ -969,7 +969,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
         while ($doc = getNextDoc($this->dbaccess, $lpdoc)) {
             $coulddelete = true;
             if ($doc->doctype == 'D') {
-                /** @var \Anakeen\SmartStructures\Dir\Dir $doc */
+                /** @var \Anakeen\SmartStructures\Dir\DirHooks $doc */
                 $terr = array_merge($terr, $doc->deleteItems());
                 foreach ($terr as $err) {
                     if ($err != "") {
@@ -1002,7 +1002,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
         $terr = array();
         $fld = new_doc($this->dbaccess, $indirid);
         if ($fld->doctype == 'D') {
-            /** @var \Anakeen\SmartStructures\Dir\Dir $fld */
+            /** @var \Anakeen\SmartStructures\Dir\DirHooks $fld */
             $err = $fld->control("modify");
             if ($err == "") {
                 while ($doc = getNextDoc($this->dbaccess, $lpdoc)) {
@@ -1012,7 +1012,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
                         if (is_object($copy)) {
                             $fld->insertDocument($copy->initid);
                             if ($doc->doctype == 'D') {
-                                /** @var \Anakeen\SmartStructures\Dir\Dir $doc */
+                                /** @var \Anakeen\SmartStructures\Dir\DirHooks $doc */
                                 $terr = array_merge($terr, $doc->copyItems($copy->id));
                             }
                         }
@@ -1068,7 +1068,7 @@ class Dir extends \Anakeen\SmartStructures\Profiles\PDir
         while ($doc = getNextDoc($this->dbaccess, $lpdoc)) {
             if ($doc->defDoctype == 'D') {
                 /**
-                 * @var \Anakeen\SmartStructures\Dir\Dir $doc
+                 * @var \Anakeen\SmartStructures\Dir\DirHooks $doc
                  */
                 $terr = array_merge($terr, $doc->reviveItems());
             }

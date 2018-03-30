@@ -193,7 +193,7 @@ class GroupAccount extends \SmartStructure\Group
             $dfldid = $fdoc->dfldid;
             if ($dfldid != "") {
                 /**
-                 * @var \Anakeen\SmartStructures\Dir\Dir $dfld
+                 * @var \Anakeen\SmartStructures\Dir\DirHooks $dfld
                  */
                 $dfld = DocManager::getDocument($dfldid);
                 if ($dfld && $dfld->isAlive()) {

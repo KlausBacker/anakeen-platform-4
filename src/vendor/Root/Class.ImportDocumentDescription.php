@@ -965,7 +965,7 @@ class ImportDocumentDescription
             if ($data[2] != '') { // dirid
                 
                 /**
-                 * @var \Anakeen\SmartStructures\Dir\Dir $dir
+                 * @var \Anakeen\SmartStructures\Dir\DirHooks $dir
                  */
                 $dir = new_Doc($this->dbaccess, $data[2]);
                 if ($dir->isAlive() && method_exists($dir, "insertDocument")) {

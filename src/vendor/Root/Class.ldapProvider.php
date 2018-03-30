@@ -88,7 +88,7 @@ class ldapProvider extends Provider
                 error_log("User $username added (id=" . $du->id . ")");
                 if ($this->parms{'dGroup'} != '') {
                     /**
-                     * @var \Anakeen\SmartStructures\Dir\Dir $gu
+                     * @var \Anakeen\SmartStructures\Dir\DirHooks $gu
                      */
                     $gu = new_Doc($dbaccess, $this->parms{'dGroup'});
                     if ($gu->isAlive()) {

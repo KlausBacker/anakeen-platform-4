@@ -108,7 +108,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
             $dir = null;
             if ($dirid > 0) {
                 /**
-                 * @var \Anakeen\SmartStructures\Dir\Dir $dir
+                 * @var \Anakeen\SmartStructures\Dir\DirHooks $dir
                  */
                 $dir = new_Doc($dbaccess, $dirid);
             }
