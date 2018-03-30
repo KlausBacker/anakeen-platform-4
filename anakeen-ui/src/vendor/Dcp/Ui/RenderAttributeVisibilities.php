@@ -101,9 +101,9 @@ class RenderAttributeVisibilities implements \JsonSerializable
     }
     /**
      * Recompute attribute visibility according to parent visibility
-     * @param \BasicAttribute $oa attribute to recompute
+     * @param \Anakeen\Core\SmartStructure\BasicAttribute $oa attribute to recompute
      */
-    protected function computeVisibility(\BasicAttribute $oa)
+    protected function computeVisibility(\Anakeen\Core\SmartStructure\BasicAttribute $oa)
     {
         $this->finalVisibilities[$oa->id] =  \Anakeen\Core\Utils\MiscDoc::ComputeVisibility($this->finalVisibilities[$oa->id], $this->finalVisibilities[$oa->fieldSet->id], isset($oa->fieldSet->fieldSet) ? $this->finalVisibilities[$oa->fieldSet->fieldSet->id] : '');
     }

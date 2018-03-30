@@ -103,7 +103,7 @@ class MaskVisibilities
                 continue;
             }
             $tmask[$k]["attrid"] = $attr->id;
-            $tmask[$k]["parentId"] = ($attr->fieldSet &&  $attr->fieldSet->id !== \Adoc::HIDDENFIELD )? $attr->fieldSet->id : null;
+            $tmask[$k]["parentId"] = ($attr->fieldSet &&  $attr->fieldSet->id !== \Anakeen\Core\SmartStructures\Attributes::HIDDENFIELD )? $attr->fieldSet->id : null;
 
             if ($attr->type === "menu" || $attr->type === "action") {
                 $hasMenu=true;
@@ -154,7 +154,7 @@ class MaskVisibilities
             ];
         }
 
-        unset($tmask[\Adoc::HIDDENFIELD]);
+        unset($tmask[\Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD]);
 
         return $tmask;
     }

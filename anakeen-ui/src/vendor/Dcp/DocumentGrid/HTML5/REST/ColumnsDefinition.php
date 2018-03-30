@@ -150,7 +150,7 @@ class ColumnsDefinition extends Crud
         }
     }
     
-    protected function getAttributeDef(\BasicAttribute $currentAttribute, \DocFam $family)
+    protected function getAttributeDef(\Anakeen\Core\SmartStructure\BasicAttribute $currentAttribute, \DocFam $family)
     {
         $data = array(
             "id" => $currentAttribute->id,
@@ -246,7 +246,7 @@ class ColumnsDefinition extends Crud
         return isset($sortable[$attrId]);
     }
     
-    public static function isFilterable(\BasicAttribute $attr)
+    public static function isFilterable(\Anakeen\Core\SmartStructure\BasicAttribute $attr)
     {
         $isFilterable = (in_array($attr->type, array(
             "text",

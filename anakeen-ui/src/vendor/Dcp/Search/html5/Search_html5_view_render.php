@@ -152,7 +152,7 @@ class Search_html5_view_render extends \Dcp\Ui\DefaultView {
             else if (($type == "enum")||($type == "enum[]")){
                 $oa = $family->getAttribute($attribute);
                 /**
-                 * @var \NormalAttribute $oa
+                 * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
                  */
                 $key = $oa->getEnumLabel($key);
             }

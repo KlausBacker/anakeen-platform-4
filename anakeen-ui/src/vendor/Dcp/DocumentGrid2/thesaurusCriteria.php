@@ -29,7 +29,7 @@ class ThesaurusCriteria
             
             $field = null;
             $option = ($criteria->multiplicity == "multiple") ? "multiple=yes" : '';
-            $oa = new \NormalAttribute($criteria->id, 1, "label", $criteria->type, "", ($criteria->multiplicity == "multiple") , 1, '', 'W', false, false, false, $field, '', '', '', '', '', '', $option);
+            $oa = new \Anakeen\Core\SmartStructure\NormalAttribute($criteria->id, 1, "label", $criteria->type, "", ($criteria->multiplicity == "multiple") , 1, '', 'W', false, false, false, $field, '', '', '', '', '', '', $option);
             /** @var \SmartStructure\Thesaurus $th */
             $sql[] = $th->getSqlFilter($oa, $thId);
         }

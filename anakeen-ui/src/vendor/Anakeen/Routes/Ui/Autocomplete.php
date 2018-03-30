@@ -78,7 +78,7 @@ class Autocomplete
                 throw new Exception(sprintf(___("Attribute \"%s\" not found ", "ddui"), $attrId));
             }
             /**
-             * @var \NormalAttribute $attributeObject
+             * @var \Anakeen\Core\SmartStructure\NormalAttribute $attributeObject
              */
             $attributeName = $attributeObject->id;
             $famid = $attributeObject->format;
