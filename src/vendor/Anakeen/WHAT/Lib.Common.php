@@ -492,7 +492,7 @@ function simpleQuery(
  */
 function getAuthType($freedomctx = "")
 {
-    return AuthenticatorManager::getAuthType();
+    return \Anakeen\Core\Internal\AuthenticatorManager::getAuthType();
 }
 
 /**
@@ -503,7 +503,7 @@ function getAuthType($freedomctx = "")
  */
 function getAuthProvider($freedomctx = "")
 {
-    return AuthenticatorManager::getAuthProvider();
+    return \Anakeen\Core\Internal\AuthenticatorManager::getAuthProvider();
 }
 
 /**
@@ -514,7 +514,7 @@ function getAuthProvider($freedomctx = "")
  */
 function getAuthProviderList($freedomctx = "")
 {
-    return AuthenticatorManager::getAuthProviderList();
+    return \Anakeen\Core\Internal\AuthenticatorManager::getAuthProviderList();
 }
 
 /**

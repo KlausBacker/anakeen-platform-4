@@ -12,7 +12,7 @@ class TokenAuthenticator extends \OpenAuthenticator
             return $_GET[self::openGetId];
         }
 
-        $hAuthorization = \AuthenticatorManager::getAuthorizationValue();
+        $hAuthorization = \Anakeen\Core\Internal\AuthenticatorManager::getAuthorizationValue();
 
         if (!empty($hAuthorization)) {
             if ($hAuthorization["scheme"] === self::AUTHORIZATION_SCHEME) {

@@ -61,10 +61,10 @@ class VaultManager
      */
     public static function storeTemporaryFile($filepath, $ftitle = "")
     {
-        if (!\AuthenticatorManager::$session || !\AuthenticatorManager::$session->id) {
+        if (!\Anakeen\Core\Internal\AuthenticatorManager::$session || !\Anakeen\Core\Internal\AuthenticatorManager::$session->id) {
             throw new Exception("VAULT0003");
         }
-        $err = self::getVault()->store($filepath, false, $vid, $fsname = '', $te = "", 0, $tmp = \AuthenticatorManager::$session->id);
+        $err = self::getVault()->store($filepath, false, $vid, $fsname = '', $te = "", 0, $tmp = \Anakeen\Core\Internal\AuthenticatorManager::$session->id);
         
         if ($err) {
             throw new Exception("VAULT0002", $err);

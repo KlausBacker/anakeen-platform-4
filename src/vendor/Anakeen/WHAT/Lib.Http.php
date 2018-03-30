@@ -117,7 +117,7 @@ function redirectAsGuest(\Anakeen\Core\Internal\Action & $action)
             /**
              * @var HtmlAuthenticator $auth
              */
-            $auth = AuthenticatorManager::$auth;
+            $auth = \Anakeen\Core\Internal\AuthenticatorManager::$auth;
             if (is_a($auth, \HtmlAuthenticator::class)) {
                 $auth->connectTo($_SERVER['REQUEST_URI']);
             }

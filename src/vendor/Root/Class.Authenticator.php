@@ -62,7 +62,7 @@ abstract class Authenticator
             }
             //     error_log("Using authentication provider [".$providerClass."]");
             $this->provider = new $providerClass($authprovider, $this->parms);
-            if (!is_a($this->provider, 'Provider')) {
+            if (!is_a($this->provider, \Provider::class)) {
                 throw new Dcp\Exception(__METHOD__ . " " . sprintf("Error: provider with class '%s' does not inherits from class 'Provider'.", $providerClass));
             }
         } else {
@@ -94,11 +94,11 @@ abstract class Authenticator
             throw new Dcp\Exception('FILE0006');
         }
         
-        if (!array_key_exists(AuthenticatorManager::getAuthType(), $authModeConfig)) {
+        if (!array_key_exists(\Anakeen\Core\Internal\AuthenticatorManager::getAuthType(), $authModeConfig)) {
             return array();
         }
         
-        return $authModeConfig[AuthenticatorManager::getAuthType() ];
+        return $authModeConfig[\Anakeen\Core\Internal\AuthenticatorManager::getAuthType() ];
     }
     
     public static function freedomUserExists($username)

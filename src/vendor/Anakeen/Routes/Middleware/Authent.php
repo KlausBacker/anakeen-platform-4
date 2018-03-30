@@ -42,7 +42,7 @@ class Authent
             $user,
             $configInfo->applicationContext,
             "",
-            \AuthenticatorManager::$session
+            \Anakeen\Core\Internal\AuthenticatorManager::$session
         );
 
         self::checkRouteAccess($configInfo->requiredAccess);

@@ -2,7 +2,7 @@
 
 namespace Anakeen\Router;
 
-class AuthenticatorManager extends \AuthenticatorManager
+class AuthenticatorManager extends \Anakeen\Core\Internal\AuthenticatorManager
 {
     protected static $authType;
 

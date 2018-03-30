@@ -1576,8 +1576,8 @@ union
 
     private function _deleteUserSessions()
     {
-        if (\AuthenticatorManager::$session !== null && \AuthenticatorManager::$session->userid == $this->id) {
-            \AuthenticatorManager::$session->deleteUserSessionsExcept();
+        if (\Anakeen\Core\Internal\AuthenticatorManager::$session !== null && \Anakeen\Core\Internal\AuthenticatorManager::$session->userid == $this->id) {
+            \Anakeen\Core\Internal\AuthenticatorManager::$session->deleteUserSessionsExcept();
         } else {
             $session = new \Session($this->dbaccess);
             $session->deleteUserSessionsExcept($this->id);
