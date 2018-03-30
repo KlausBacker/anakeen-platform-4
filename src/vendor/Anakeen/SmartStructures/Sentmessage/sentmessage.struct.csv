@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;
 BEGIN;;Message envoyé;;;SENTMESSAGE;;;;;;;;;;
 TYPE;C;;;;;;;;;;;;;;
-CLASS;Anakeen\SmartStructures\Sentmessage\SentMessage;;;;;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\Sentmessage\SentMessage\Hooks;;;;;;;;;;;;;;
 ICON;sentmessage.png;;;;;;;;;;;;;;
 SCHAR;S;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;

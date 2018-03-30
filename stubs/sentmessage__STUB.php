@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** Message envoyé  */
-	class Sentmessage extends \Anakeen\SmartStructures\Sentmessage\SentMessage { const familyName="SENTMESSAGE";}
+	class Sentmessage extends \Anakeen\SmartStructures\Sentmessage\SentMessageHooks { const familyName="SENTMESSAGE";}
 }
 
 namespace SmartStructure\Attributes {

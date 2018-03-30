@@ -1,6 +1,6 @@
 // famille dossier;inherit;;id;class;name;;;;;;;;;;
 BEGIN;;Aide en ligne;;;HELPPAGE;;;;;;;;;;
-CLASS;Anakeen\SmartStructures\Helppage\HelpPage;;;;;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\Helppage\HelpPageHooks;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;
 USEFOR;S;;;;;;;;;;;;;;
 ICON;se-helppage.png;;;;;;;;;;;;;;

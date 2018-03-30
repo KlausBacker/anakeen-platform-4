@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** Modèle de mail  */
-	class Mailtemplate extends \Anakeen\SmartStructures\Mailtemplate\MailTemplate { const familyName="MAILTEMPLATE";}
+	class Mailtemplate extends \Anakeen\SmartStructures\Mailtemplate\MailTemplateHooks { const familyName="MAILTEMPLATE";}
 }
 
 namespace SmartStructure\Attributes {

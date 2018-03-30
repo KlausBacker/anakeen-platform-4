@@ -4,7 +4,7 @@
  */
 namespace Anakeen\SmartStructures\Sentmessage;
 
-class SentMessage extends \Anakeen\SmartStructures\Document
+class SentMessageHooks extends \Anakeen\SmartStructures\Document
 {
 
     /**

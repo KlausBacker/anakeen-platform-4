@@ -1,7 +1,7 @@
 BEGIN;;Modèle de mail;41;;MAILTEMPLATE;;;;;;;;;;
 ;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;
-CLASS;Anakeen\SmartStructures\Mailtemplate\MailTemplate;;;;;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\Mailtemplate\MailTemplateHooks;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;
 USEFOR;S;;;;;;;;;;;;;;
 ICON;se-mailtemplate.png;;;;;;;;;;;;;;

@@ -9,7 +9,7 @@
  */
 namespace Anakeen\SmartStructures\Mailtemplate;
 
-class MailTemplate extends \Anakeen\SmartStructures\Document
+class MailTemplateHooks extends \Anakeen\SmartStructures\Document
 {
     /**
      * always show a user notification
