@@ -19,7 +19,7 @@ namespace Anakeen\SmartStructures\Dir;
  * Folder document Class
  *
  */
-class DirHooks extends \Anakeen\SmartStructures\Profiles\PDir
+class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
 {
     public $defDoctype = 'D';
     private $authfam = false;

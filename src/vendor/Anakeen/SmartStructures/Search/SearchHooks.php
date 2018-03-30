@@ -8,7 +8,7 @@ namespace Anakeen\SmartStructures\Search;
 
 include_once("FDL/Lib.Dir.php");
 
-class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearch
+class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
 {
     public $defDoctype = 'S';
 

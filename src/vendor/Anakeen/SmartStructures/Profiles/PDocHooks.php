@@ -1,13 +1,9 @@
 <?php
-/**
- * Profile for folders
- *
- */
 
 
 namespace Anakeen\SmartStructures\Profiles;
 
-class PDir extends \DocCollection
+class PDocHooks extends \Doc
 {
     // --------------------------------------------------------------------
     //---------------------- OBJECT CONTROL PERMISSION --------------------
@@ -15,15 +11,15 @@ class PDir extends \DocCollection
         "view",
         "edit",
         "delete",
-        "open",
-        "modify",
         "send",
         "unlock",
-        "confidential"
+        "confidential",
+        "wask"
     );
     // --------------------------------------------------------------------
+    // ------------
     public $defDoctype = 'P';
-    public $defProfFamId = FAM_ACCESSDIR;
+    public $defProfFamId = FAM_ACCESSDOC;
     
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {

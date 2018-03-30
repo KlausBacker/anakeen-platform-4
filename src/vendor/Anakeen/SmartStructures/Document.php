@@ -6,7 +6,7 @@
 
 namespace Anakeen\SmartStructures;
 
-class Document extends \Anakeen\SmartStructures\Profiles\PDoc
+class Document extends \Anakeen\SmartStructures\Profiles\PDocHooks
 {
     public $defDoctype = 'F';
     public $defClassname = '\\Anakeen\\SmartStructures\\Document';

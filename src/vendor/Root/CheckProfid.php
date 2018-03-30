@@ -60,7 +60,7 @@ class CheckProfid extends CheckData
     
     private function checkIsAFamilyProfil()
     {
-        if (!is_a($this->profil, Anakeen\SmartStructures\Profiles\PFam::class)) {
+        if (!is_a($this->profil, Anakeen\SmartStructures\Profiles\PFamHooks::class)) {
             $this->addError(ErrorCode::getError('PRFD0002', $this->prfName));
         }
     }

@@ -1,13 +1,13 @@
 <?php
 namespace SmartStructure {
 	/** Profil de document  */
-	class Pdoc extends \Anakeen\SmartStructures\Profiles\PDoc { const familyName="PDOC";}
+	class Pdoc extends \Anakeen\SmartStructures\Profiles\PDocHooks { const familyName="PDOC";}
 	/** Profil de dossier  */
-	class Pdir extends \Anakeen\SmartStructures\Profiles\PDir { const familyName="PDIR";}
+	class Pdir extends \Anakeen\SmartStructures\Profiles\PDirHooks { const familyName="PDIR";}
 	/** Profil de recherche  */
-	class Psearch extends \Anakeen\SmartStructures\Profiles\PSearch { const familyName="PSEARCH";}
+	class Psearch extends \Anakeen\SmartStructures\Profiles\PSearchHooks { const familyName="PSEARCH";}
 	/** Profil de famille  */
-	class Pfam extends \Anakeen\SmartStructures\Profiles\PFam { const familyName="PFAM";}
+	class Pfam extends \Anakeen\SmartStructures\Profiles\PFamHooks { const familyName="PFAM";}
 }
 
 namespace SmartStructure\Attributes {

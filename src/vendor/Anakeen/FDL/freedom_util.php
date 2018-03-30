@@ -1053,7 +1053,7 @@ function createAutoFolder(&$doc)
  * return the profil named "PERSONAL-PROFIL-<$uid>"
  * the document return is a folder profil that can be use also for "normal" documents
  *
- * @return Anakeen\SmartStructures\Profiles\PDir may be return false if no hability to create the document
+ * @return Anakeen\SmartStructures\Profiles\PDirHooks may be return false if no hability to create the document
  */
 function getMyProfil($dbaccess, $create = true)
 {
