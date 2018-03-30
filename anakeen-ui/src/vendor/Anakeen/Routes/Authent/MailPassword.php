@@ -57,7 +57,7 @@ class MailPassword
         }
         $output=[];
         if ($user->isAffected()) {
-            \Anakeen\Core\ContextManager::initContext($user, "CORE", "", \AuthenticatorManager::$session);
+            \Anakeen\Core\ContextManager::initContext($user, "CORE", "", \Anakeen\Core\Internal\AuthenticatorManager::$session);
 
             $userDocument=DocManager::getDocument($user->fid);
             $mailTemplateId=\Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("AUTHENT", "AUTHENT_MAILASKPWD");
