@@ -15,7 +15,7 @@ class AttributeValue
      * @throws AttributeValue\Exception
      * @return array|float|int|null|string
      */
-    public static function getTypedValue(\Doc & $doc, \NormalAttribute & $oAttr)
+    public static function getTypedValue(\Doc & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr)
     {
         if (!isset($doc->attributes->attr[$oAttr->id])) {
             throw new \Dcp\AttributeValue\Exception('VALUE0101', $oAttr->id, $doc->fromname, $doc->getTitle());
@@ -30,7 +30,7 @@ class AttributeValue
         return self::castValue($oAttr->type, $rawValue);
     }
     
-    private static function getMultipleValues(\Doc & $doc, \NormalAttribute & $oAttr)
+    private static function getMultipleValues(\Doc & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr)
     {
         if ($oAttr->isMultipleInArray()) {
             return self::getMultiple2Values($doc, $oAttr);
@@ -51,7 +51,7 @@ class AttributeValue
         return $typedValues;
     }
     
-    private static function getMultiple2Values(\Doc & $doc, \NormalAttribute & $oAttr)
+    private static function getMultiple2Values(\Doc & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr)
     {
         $rawValues = $doc->getMultipleRawValues($oAttr->id);
         $type = $oAttr->type;
@@ -173,7 +173,7 @@ class AttributeValue
         }
         return $typedValue;
     }
-    private static function getArrayValues(\Doc & $doc, \NormalAttribute & $oAttr)
+    private static function getArrayValues(\Doc & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr)
     {
         if ($oAttr->type == "array") {
             $ta = $doc->attributes->getArrayElements($oAttr->id);
@@ -199,7 +199,7 @@ class AttributeValue
         throw new \Dcp\AttributeValue\Exception('VALUE0100', $oAttr->id, $doc->title, $doc->fromname);
     }
     
-    private static function setTypedArrayValue(\Doc & $doc, \NormalAttribute & $oAttr, array $value)
+    private static function setTypedArrayValue(\Doc & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr, array $value)
     {
         $doc->clearArrayValues($oAttr->id);
         foreach ($value as $row) {
@@ -227,7 +227,7 @@ class AttributeValue
      * @see Doc::setAttributeValue()
      * @throws AttributeValue\Exception in case of incompatible value
      */
-    public static function setTypedValue(\Doc & $doc, \NormalAttribute & $oAttr, $value)
+    public static function setTypedValue(\Doc & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr, $value)
     {
         if (!isset($doc->attributes->attr[$oAttr->id])) {
             throw new \Dcp\AttributeValue\Exception('VALUE0004', $oAttr->id, $doc->fromname, $doc->getTitle());

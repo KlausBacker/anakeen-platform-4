@@ -41,7 +41,7 @@ class AutocompleteLib
 
     public static function getResPhpFunc(
         \Doc & $doc,
-        \NormalAttribute & $oattr,
+        \Anakeen\Core\SmartStructure\NormalAttribute & $oattr,
         &$rargids,
         &$tselect,
         &$tval,

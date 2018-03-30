@@ -479,7 +479,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
      * update template with document values
      * @param \Doc $doc
      * @param string $tpl template content
-     * @param \NormalAttribute|bool $oattr
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute|bool $oattr
      * @return string
      */
     private function generateMailInstance(\Doc & $doc, $tpl, $oattr = false)

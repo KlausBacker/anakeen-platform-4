@@ -2782,7 +2782,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param boolean $onlyopt get only optional attributes
      *
-     * @return \NormalAttribute[]
+     * @return \Anakeen\Core\SmartStructure\NormalAttribute[]
      */
     final public function getNormalAttributes($onlyopt = false)
     {
