@@ -55,3 +55,11 @@ deploy:
 	make app
 	php ./anakeen-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w user-interfaces-*app -- --force
 	make clean
+
+quick-deploy:
+	rm -f *app
+	-mkdir -p $(localpub)/webinst
+	rsync --delete -azvr anakeen-ui $(localpub)/webinst/
+	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/webinst/anakeen-ui/build.json $(localpub)/webinst/anakeen-ui/src/Apps/DOCUMENT/DOCUMENT_init.php
+	php ./anakeen-devtool.phar generateWebinst -s $(localpub)/webinst/anakeen-ui/ -o .
+	php ./anakeen-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w user-interfaces-*app -- --force
