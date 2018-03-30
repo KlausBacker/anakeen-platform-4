@@ -1,7 +1,7 @@
 // recherche détaillée;fromid;;id;class;name;;;;;;;;;;
 ;;;;;;;;;;;;;;;
 BEGIN;DSEARCH;Rapport;25;;REPORT;;;;;;;;;;
-CLASS;Dcp\Core\Report;;;;;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\Report\ReportHooks;;;;;;;;;;;;;;
 ICON;se-report.png;;;;;;;;;;;;;;
 METHOD;;;;;;;;;;;;;;;
 RESET;attributes;;;;;;;;;;;;;;

@@ -6,11 +6,11 @@
 /**
  * document to present a report on one family document
  */
-namespace Dcp\Core;
+namespace Anakeen\SmartStructures\Report;
 
 use \SmartStructure\Attributes\Report as MyAttributes;
 
-class Report extends \SmartStructure\Dsearch
+class ReportHooks extends \SmartStructure\Dsearch
 {
     public $defaultedit = "FREEDOM:EDITREPORT";
     public $defaultview = "FREEDOM:VIEWREPORT";
