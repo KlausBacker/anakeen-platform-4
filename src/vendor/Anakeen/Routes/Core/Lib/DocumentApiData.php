@@ -304,12 +304,12 @@ class DocumentApiData
     /**
      * Get the attribute info
      *
-     * @param \BasicAttribute $attribute
+     * @param \Anakeen\Core\SmartStructure\BasicAttribute $attribute
      * @param int             $order
      *
      * @return array
      */
-    public function getAttributeInfo(\BasicAttribute $attribute, $order = 0)
+    public function getAttributeInfo(\Anakeen\Core\SmartStructure\BasicAttribute $attribute, $order = 0)
     {
         $info = array(
             "id" => $attribute->id,
@@ -323,13 +323,13 @@ class DocumentApiData
 
         if (isset($attribute->needed)) {
             /**
-             * @var \NormalAttribute $attribute ;
+             * @var \Anakeen\Core\SmartStructure\NormalAttribute $attribute ;
              */
             $info["needed"] = $attribute->needed;
         }
         if (!empty($attribute->phpfile) && $attribute->type !== "enum") {
             /**
-             * @var \NormalAttribute $attribute ;
+             * @var \Anakeen\Core\SmartStructure\NormalAttribute $attribute ;
              */
             if ((strlen($attribute->phpfile) > 1) && ($attribute->phpfunc)) {
                 $familyParser = new \ParseFamilyFunction();

@@ -446,7 +446,7 @@ class UpdateAttribute
     /**
      * @param $attrid
      * @throws Dcp\Upat\Exception
-     * @return NormalAttribute
+     * @return \Anakeen\Core\SmartStructure\NormalAttribute
      */
     private function getFamilyAttribute($attrid)
     {

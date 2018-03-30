@@ -459,8 +459,8 @@ function getvs(&$t)
 /**
  * use to usort attributes
  *
- * @param BasicAttribute $a
- * @param BasicAttribute $b
+ * @param \Anakeen\Core\SmartStructure\BasicAttribute $a
+ * @param \Anakeen\Core\SmartStructure\BasicAttribute $b
  */
 function tordered($a, $b)
 {

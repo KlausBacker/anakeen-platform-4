@@ -27,7 +27,7 @@ class TestGetEnum extends TestCaseDcpCommonFamily
         $fam = new_doc(self::$dbaccess, $famid);
         $this->assertTrue($fam->isAlive() , sprintf("family %s not found", $famid));
         /**
-         * @var \NormalAttribute $oa
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
          */
         $oa = $fam->getAttribute($attrid);
         $this->assertNotEmpty($oa, sprintf("attribute %s not found", $attrid));
@@ -47,7 +47,7 @@ class TestGetEnum extends TestCaseDcpCommonFamily
         $fam = new_doc(self::$dbaccess, $famid);
         $this->assertTrue($fam->isAlive() , sprintf("family %s not found", $famid));
         /**
-         * @var \NormalAttribute $oa
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
          */
         $oa = $fam->getAttribute($attrid);
         $this->assertNotEmpty($oa, sprintf("attribute %s not found", $attrid));
@@ -68,7 +68,7 @@ class TestGetEnum extends TestCaseDcpCommonFamily
         $fam = new_doc(self::$dbaccess, $famid);
         $this->assertTrue($fam->isAlive() , sprintf("family %s not found", $famid));
         /**
-         * @var \NormalAttribute $oa
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
          */
         $oa = $fam->getAttribute($attrid);
         $this->assertNotEmpty($oa, sprintf("attribute %s not found", $attrid));
@@ -91,7 +91,7 @@ class TestGetEnum extends TestCaseDcpCommonFamily
     {
         /**
          * @var \DocFam $fam
-         * @var \NormalAttribute $attr
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $attr
          */
         foreach ($familyIdList as $familyId) {
             $fam = new_doc(self::$dbaccess, $familyId);
@@ -113,7 +113,7 @@ class TestGetEnum extends TestCaseDcpCommonFamily
     {
         /**
          * @var \DocFam $fam
-         * @var \NormalAttribute $attr
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $attr
          */
         foreach ($addEnums as $familyId => $attrs) {
             $fam = new_doc(self::$dbaccess, $familyId);

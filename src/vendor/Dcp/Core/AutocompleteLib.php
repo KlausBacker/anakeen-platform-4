@@ -11,7 +11,7 @@ class AutocompleteLib
      * @param string           $def
      * @param bool             $whttpvars
      * @param \Doc             $doc
-     * @param \NormalAttribute $oa
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oa
      *
      * @return array|bool|string
      */

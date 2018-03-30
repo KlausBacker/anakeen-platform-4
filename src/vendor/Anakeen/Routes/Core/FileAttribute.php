@@ -153,7 +153,7 @@ class FileAttribute
         return $fileInfo;
     }
 
-    protected function zipFiles(\NormalAttribute $attribute, array $files)
+    protected function zipFiles(\Anakeen\Core\SmartStructure\NormalAttribute $attribute, array $files)
     {
         $tmpZip = tempnam(ContextManager::getTmpDir(), "file" . $this->_document->id . "-") . ".zip";
 

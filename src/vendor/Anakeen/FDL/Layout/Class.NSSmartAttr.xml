@@ -13,13 +13,13 @@ class [AdocClassName] extends [AParent] {
 
 
      [BLOCK MATTR]
-     $this->attr["[attrid]"]=new \MenuAttribute("[attrid]", "[docid]","[label]",[order],"[link]","[visibility]","[precond]","[options]","[docName]");
+     $this->attr["[attrid]"]=new \Anakeen\Core\SmartStructure\MenuAttribute("[attrid]", "[docid]","[label]",[order],"[link]","[visibility]","[precond]","[options]","[docName]");
      [ENDBLOCK MATTR]
      [BLOCK FATTR]
-     $this->attr["[attrid]"]=new \FieldSetAttribute("[attrid]", "[docid]","[label]","[visibility]","[usefor]","[type]",$this->attr["[frame]"],"[options]","[docName]");
+     $this->attr["[attrid]"]=new \Anakeen\Core\SmartStructure\FieldSetAttribute("[attrid]", "[docid]","[label]","[visibility]","[usefor]","[type]",$this->attr["[frame]"],"[options]","[docName]");
      [ENDBLOCK FATTR]
      [BLOCK NATTR]
-     $this->attr["[attrid]"]=new \NormalAttribute("[attrid]", "[docid]","[label]","[type]","[format]",[repeat],[order],"[link]",
+     $this->attr["[attrid]"]=new \Anakeen\Core\SmartStructure\NormalAttribute("[attrid]", "[docid]","[label]","[type]","[format]",[repeat],[order],"[link]",
                                                 "[visibility]",[needed],[title],[abstract],
 						$this->attr["[frame]"],"[phpfile]","[phpfunc]","[elink]","[phpconstraint]","[usefor]","[eformat]","[options]","[docName]");
 

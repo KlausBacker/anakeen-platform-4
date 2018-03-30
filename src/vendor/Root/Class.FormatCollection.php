@@ -418,7 +418,7 @@ class FormatCollection
     }
     /**
      * @param StandardAttributeValue|null $info
-     * @param BasicAttribute|null $oa
+     * @param \Anakeen\Core\SmartStructure\BasicAttribute|null $oa
      * @param Doc $doc
      * @return StandardAttributeValue
      */
@@ -864,7 +864,7 @@ class FormatCollection
         }
         return $t;
     }
-    public function getInfo(NormalAttribute $oa, $value, $doc = null)
+    public function getInfo(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $value, $doc = null)
     {
         $info = null;
         if ($oa->isMultiple()) {
@@ -910,7 +910,7 @@ class FormatCollection
         }
     }
     
-    protected function getSingleInfo(NormalAttribute $oa, $value, $doc = null, $index = - 1)
+    protected function getSingleInfo(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $value, $doc = null, $index = - 1)
     {
         $info = null;
         
@@ -1003,7 +1003,7 @@ class FormatCollection
     }
     /**
      * @param array|stdClass $info
-     * @param NormalAttribute $oAttr
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oAttr
      * @param int $index
      * @param array $configuration
      * @return string
@@ -1072,7 +1072,7 @@ class StandardAttributeValue
     public $value;
     public $displayValue;
     /**
-     * @param NormalAttribute $oa
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oa
      * @param $v
      */
     public function __construct($oa, $v)
@@ -1118,7 +1118,7 @@ class StatePropertyValue
 
 class FormatAttributeValue extends StandardAttributeValue
 {
-    public function __construct(NormalAttribute $oa, $v)
+    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v)
     {
         $this->value = ($v === '') ? null : $v;
         if ($oa->format) {
@@ -1135,7 +1135,7 @@ class TextAttributeValue extends FormatAttributeValue
 
 class LongtextAttributeValue extends FormatAttributeValue
 {
-    public function __construct(NormalAttribute $oa, $v, $multipleLongtextCr = "\n")
+    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, $multipleLongtextCr = "\n")
     {
         if ($oa->inArray()) {
             $v = str_replace("<BR>", $multipleLongtextCr, $v);
@@ -1146,7 +1146,7 @@ class LongtextAttributeValue extends FormatAttributeValue
 
 class IntAttributeValue extends FormatAttributeValue
 {
-    public function __construct(NormalAttribute $oa, $v)
+    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v)
     {
         parent::__construct($oa, $v);
         $this->value = intval($v);
@@ -1165,7 +1165,7 @@ class DateAttributeValue extends StandardAttributeValue
      */
     const isoWTStyle = 'U';
     const frenchStyle = 'F';
-    public function __construct(NormalAttribute $oa, $v, $dateStyle = self::defaultStyle)
+    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, $dateStyle = self::defaultStyle)
     {
         parent::__construct($oa, $v);
         if ($oa->format != "") {
@@ -1197,7 +1197,7 @@ class HtmltextAttributeValue extends StandardAttributeValue
     const isoStyle = 'I';
     const isoWTStyle = 'U';
     const frenchStyle = 'F';
-    public function __construct(NormalAttribute $oa, $v, $stripHtmlTag = false)
+    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, $stripHtmlTag = false)
     {
         parent::__construct($oa, $v);
         if ($stripHtmlTag) {
@@ -1207,7 +1207,7 @@ class HtmltextAttributeValue extends StandardAttributeValue
 }
 class DoubleAttributeValue extends FormatAttributeValue
 {
-    public function __construct(NormalAttribute $oa, $v, $decimalSeparator = ',')
+    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, $decimalSeparator = ',')
     {
         parent::__construct($oa, $v);
         $lang = \Anakeen\Core\ContextManager::getApplicationParam("CORE_LANG");
@@ -1233,7 +1233,7 @@ class DoubleAttributeValue extends FormatAttributeValue
 
 class MoneyAttributeValue extends FormatAttributeValue
 {
-    public function __construct(NormalAttribute $oa, $v)
+    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v)
     {
         parent::__construct($oa, $v);
         
@@ -1267,7 +1267,7 @@ class MoneyAttributeValue extends FormatAttributeValue
 class EnumAttributeValue extends StandardAttributeValue
 {
     public $exists = true;
-    public function __construct(NormalAttribute $oa, $v)
+    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v)
     {
         $this->value = ($v === '') ? null : $v;
         if ($v !== null && $v !== '') {
@@ -1286,7 +1286,7 @@ class FileAttributeValue extends StandardAttributeValue
     public $mime = '';
     public $icon = '';
     
-    public function __construct(NormalAttribute $oa, $v, Doc $doc, $index, $iconMimeSize = 24)
+    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, Doc $doc, $index, $iconMimeSize = 24)
     {
         $this->value = ($v === '') ? null : $v;
         if ($v) {
@@ -1310,7 +1310,7 @@ class FileAttributeValue extends StandardAttributeValue
 class ImageAttributeValue extends FileAttributeValue
 {
     public $thumbnail = '';
-    public function __construct(NormalAttribute $oa, $v, Doc $doc, $index, $thumbnailSize = 48)
+    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, Doc $doc, $index, $thumbnailSize = 48)
     {
         parent::__construct($oa, $v, $doc, $index);
         $fileLink = $doc->getFileLink($oa->id, $index, false, true, $v);
@@ -1346,7 +1346,7 @@ class DocidAttributeValue extends StandardAttributeValue
     public $fromid;
     protected $visible = true;
     
-    public function __construct(NormalAttribute $oa, $v, Doc & $doc, $iconsize = 24, $relationNoAccessText = '')
+    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, Doc & $doc, $iconsize = 24, $relationNoAccessText = '')
     {
         $this->familyRelation = $oa->format;
         $this->value = ($v === '') ? null : $v;
@@ -1409,7 +1409,7 @@ class ThesaurusAttributeValue extends DocidAttributeValue
 {
     public static $thcDoc = null;
     public static $thcDocTitle = array();
-    public function __construct(NormalAttribute $oa, $v, Doc & $doc, $iconsize = 24, $relationNoAccessText = '')
+    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, Doc & $doc, $iconsize = 24, $relationNoAccessText = '')
     {
         parent::__construct($oa, $v, $doc, $iconsize, $relationNoAccessText);
         if ($this->visible) {

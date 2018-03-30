@@ -52,14 +52,14 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
                 $err = _("user has not identificator");
             }
             /**
-             * @var \NormalAttribute $oa
+             * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
              */
             $oa = $this->getAttribute("us_passwd1");
             if ($oa) {
                 $oa->needed = true;
             }
             /**
-             * @var \NormalAttribute $oa
+             * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
              */
             $oa = $this->getAttribute("us_passwd2");
             if ($oa) {

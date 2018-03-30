@@ -41,13 +41,13 @@ class TestAttributeOrder extends TestCaseDcpCommonFamily
         $orders = [];
         $k = 0;
         foreach ($attributes as $attribute) {
-            if ($attribute && $attribute->id !== \Adoc::HIDDENFIELD) {
+            if ($attribute && $attribute->id !== \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD) {
                 $orders[$expectedOrders[$k]] = $attribute->id;
                 $k++;
             }
         }
         /**
-         * @var \BasicAttribute $prevAttr
+         * @var \Anakeen\Core\SmartStructure\BasicAttribute $prevAttr
          */
         $prevAttr = null;
         $k = 0;

@@ -77,7 +77,7 @@ class CheckEnd extends CheckData
             $foa = $oa->fieldSet;
             if (!$foa) {
                 $this->addError(ErrorCode::getError('ATTR0203', $oa->id, $this->doc->name));
-            } elseif ((!is_a($foa, "FieldSetAttribute")) && ($foa->type != 'array')) {
+            } elseif ((!is_a($foa, \Anakeen\Core\SmartStructure\FieldSetAttribute::class)) && ($foa->type != 'array')) {
                 $this->addError(ErrorCode::getError('ATTR0204', $foa->id, $oa->id));
             } else {
                 $ftype = $oa->fieldSet->type;
@@ -93,7 +93,7 @@ class CheckEnd extends CheckData
             if ($foa) {
                 $type = $oa->type;
                 $ftype = $oa->fieldSet->type;
-                if (($type == 'frame') && ($ftype != 'tab') && ($oa->fieldSet->id != Adoc::HIDDENFIELD)) {
+                if (($type == 'frame') && ($ftype != 'tab') && ($oa->fieldSet->id != \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD)) {
                     $this->addError(ErrorCode::getError('ATTR0207', $foa->id, $oa->id));
                 }
             }
@@ -130,9 +130,9 @@ class CheckEnd extends CheckData
     }
     /**
      * check method validity for phpfunc property
-     * @param NormalAttribute $oa
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oa
      */
-    private function checkMethod(NormalAttribute & $oa)
+    private function checkMethod(\Anakeen\Core\SmartStructure\NormalAttribute & $oa)
     {
         $oParse = new ParseFamilyMethod();
         $strucFunc = $oParse->parse($oa->phpfunc);
@@ -162,9 +162,9 @@ class CheckEnd extends CheckData
     /**
      * check method validity for phpfunc property
      *
-     * @param BasicAttribute|MenuAttribute|NormalAttribute $oa
+     * @param \Anakeen\Core\SmartStructure\BasicAttribute|\Anakeen\Core\SmartStructure\MenuAttribute|Anakeen\Core\SmartStructure\NormalAttribute $oa
      */
-    private function checkLinkMethod(BasicAttribute & $oa)
+    private function checkLinkMethod(\Anakeen\Core\SmartStructure\BasicAttribute & $oa)
     {
         if (empty($oa->link)) {
             return;
@@ -209,7 +209,7 @@ class CheckEnd extends CheckData
         $defaults = $this->doc->getOwnDefValues();
         foreach ($defaults as $attrid => $def) {
             /**
-             * @var $oa NormalAttribute
+             * @var $oa \Anakeen\Core\SmartStructure\NormalAttribute
              */
             $oa = $this->doc->getAttribute($attrid);
 
@@ -242,7 +242,7 @@ class CheckEnd extends CheckData
         $parameters = $this->doc->getOwnParams();
         foreach ($parameters as $attrid => $def) {
             /**
-             * @var $oa NormalAttribute
+             * @var $oa \Anakeen\Core\SmartStructure\NormalAttribute
              */
             $oa = false;
             /*
@@ -332,9 +332,9 @@ class CheckEnd extends CheckData
     }
     /**
      * check method validity for constraint property
-     * @param NormalAttribute $oa
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oa
      */
-    private function checkConstraint(NormalAttribute & $oa)
+    private function checkConstraint(\Anakeen\Core\SmartStructure\NormalAttribute & $oa)
     {
         $oParse = new ParseFamilyMethod();
         $strucFunc = $oParse->parse($oa->phpconstraint, true);

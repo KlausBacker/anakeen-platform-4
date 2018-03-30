@@ -209,7 +209,7 @@ class importXml
         
         $msg = '';
         /**
-         * @var \BasicAttribute $v
+         * @var \Anakeen\Core\SmartStructure\BasicAttribute $v
          */
         foreach ($la as $k => & $v) {
             $n = $dom->getElementsByTagName($v->id);

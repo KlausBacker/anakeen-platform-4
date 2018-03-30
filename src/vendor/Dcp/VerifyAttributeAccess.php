@@ -13,10 +13,10 @@ class VerifyAttributeAccess
     /**
      * Verify is attribute has visible access
      * @param \Doc $doc the document to see
-     * @param \BasicAttribute $attribute the attribut to see
+     * @param \Anakeen\Core\SmartStructure\BasicAttribute $attribute the attribut to see
      * @return bool return true if can be viewed
      */
-    public static function isAttributeAccessGranted(\Doc $doc, \BasicAttribute $attribute)
+    public static function isAttributeAccessGranted(\Doc $doc, \Anakeen\Core\SmartStructure\BasicAttribute $attribute)
     {
         $key = sprintf("%0d-%0d-%0d-%s", $doc->fromid, $doc->cvid, $doc->wid, $doc->state);
         

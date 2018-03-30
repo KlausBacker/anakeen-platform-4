@@ -361,7 +361,7 @@ class CheckDb
         return;
     }
     /**
-     * @param NormalAttribute $oa
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oa
      * @param string $pgtype
      * @param string $rtype
      * @return string
@@ -405,11 +405,11 @@ class CheckDb
     /**
      * detected sql type inconsistence with declaration
      * @param $famid
-     * @param NormalAttribute $aoa if wan't test only one attribute
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $aoa if wan't test only one attribute
      * @throws Dcp\Exception
      * @return array empty array if no error, else an item string by error detected
      */
-    public static function verifyDbFamily($famid, NormalAttribute $aoa = null)
+    public static function verifyDbFamily($famid, \Anakeen\Core\SmartStructure\NormalAttribute $aoa = null)
     {
         $cr = array();
         

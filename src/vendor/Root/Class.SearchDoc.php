@@ -1605,7 +1605,7 @@ class SearchDoc
      *
      * @param $fromid
      * @param $column
-     * @return NormalAttribute|bool
+     * @return \Anakeen\Core\SmartStructure\NormalAttribute|bool
      */
     private function _getAttributeFromColumn($fromid, $column)
     {

@@ -220,7 +220,7 @@ class ReportHooks extends \SmartStructure\Dsearch
         return $twoDimStruct->getArray();
     }
 
-    protected function getCellValue(\Doc $doc, \BasicAttribute $oa, $format, $index = -1)
+    protected function getCellValue(\Doc $doc, \Anakeen\Core\SmartStructure\BasicAttribute $oa, $format, $index = -1)
     {
         return $oa->getTextualValue($doc, $index, $format);
     }

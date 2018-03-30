@@ -63,7 +63,7 @@ function linkenum($famid, $attrid)
     $soc = new_Doc($dbaccess, $famid);
     if ($soc->isAffected()) {
         /**
-         * @var NormalAttribute $a
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $a
          */
         $a = $soc->getAttribute($attrid);
         
@@ -702,7 +702,7 @@ function fdlGetEnumValues($famid, $attrid, $val = '')
 {
     $doc = new_doc('', $famid);
     /**
-     * @var NormalAttribute $enumAttribute
+     * @var \Anakeen\Core\SmartStructure\NormalAttribute $enumAttribute
      */
     $enumAttribute = $doc->getAttribute($attrid);
     if (!$enumAttribute) {
@@ -1143,12 +1143,12 @@ function getSortProperties($dbaccess, $famid, $name = "")
     return $ret;
 }
 /**
- * @param NormalAttribute|FieldsetAttribute $oa
+ * @param Anakeen\Core\SmartStructure\NormalAttribute|Anakeen\Core\SmartStructure\FieldsetAttribute $oa
  * @return string
  */
 function _getParentLabel($oa)
 {
-    if ($oa && $oa->fieldSet && $oa->fieldSet->id != Adoc::HIDDENFIELD) {
+    if ($oa && $oa->fieldSet && $oa->fieldSet->id != \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD) {
         return _getParentLabel($oa->fieldSet) . $oa->fieldSet->getLabel() . '/';
     }
     return '';

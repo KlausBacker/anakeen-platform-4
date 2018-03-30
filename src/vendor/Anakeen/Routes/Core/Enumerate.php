@@ -80,7 +80,7 @@ class Enumerate
             throw $exception;
         }
         /**
-         * @var \NormalAttribute $attribute
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $attribute
          */
         $enums = $attribute->getEnumLabel(null, false);
         $info = array(

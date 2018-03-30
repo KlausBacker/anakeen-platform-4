@@ -114,7 +114,7 @@ class ExportXmlDocument
         $option->outFile = $outfile;
         
         foreach ($la as $k => & $v) {
-            if (($v->id != \Adoc::HIDDENFIELD) && ($v->type == 'frame' || $v->type == "tab") && ((!$v->fieldSet) || $v->fieldSet->id == \Adoc::HIDDENFIELD)) {
+            if (($v->id != \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD) && ($v->type == 'frame' || $v->type == "tab") && ((!$v->fieldSet) || $v->fieldSet->id == \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD)) {
                 $level1[] = array(
                     "level" => $this->getStructXmlValue($v)
                 );
@@ -167,12 +167,12 @@ class ExportXmlDocument
     /**
      * export values as xml fragment
      *
-     * @param \NormalAttribute $attribute
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $attribute
      * @param int $indexValue (in case of multiple value)
      *
      * @return string
      */
-    protected function getAttributeXmlValue(\NormalAttribute $attribute, $indexValue)
+    protected function getAttributeXmlValue(\Anakeen\Core\SmartStructure\NormalAttribute $attribute, $indexValue)
     {
         $doc = $this->document;
         if ($this->verifyAttributeAccess && !VerifyAttributeAccess::isAttributeAccessGranted($this->document, $attribute)) {
@@ -334,16 +334,16 @@ class ExportXmlDocument
             }
     }
     
-    protected function getXmlValue(\BasicAttribute $attribute, $indexValue)
+    protected function getXmlValue(\Anakeen\Core\SmartStructure\BasicAttribute $attribute, $indexValue)
     {
         if ($attribute->isNormal === true) {
             /**
-             * @var \NormalAttribute $attribute
+             * @var \Anakeen\Core\SmartStructure\NormalAttribute $attribute
              */
             return $this->getAttributeXmlValue($attribute, $indexValue);
         } else {
             /**
-             * @var \FieldSetAttribute $attribute
+             * @var \Anakeen\Core\SmartStructure\FieldSetAttribute $attribute
              */
             return $this->getStructXmlValue($attribute, $indexValue);
         }
@@ -351,19 +351,19 @@ class ExportXmlDocument
     /**
      * export values as xml fragment
      *
-     * @param \FieldSetAttribute $structAttribute
+     * @param \Anakeen\Core\SmartStructure\FieldSetAttribute $structAttribute
      * @param int $indexValue
      *
      * @return string
      */
-    protected function getStructXmlValue(\FieldSetAttribute $structAttribute, $indexValue = - 1)
+    protected function getStructXmlValue(\Anakeen\Core\SmartStructure\FieldSetAttribute $structAttribute, $indexValue = - 1)
     {
         $doc = $this->document;
         $la = $doc->getAttributes();
         $xmlvalues = array();
         foreach ($la as $k => $v) {
             /**
-             * @var \NormalAttribute $v
+             * @var \Anakeen\Core\SmartStructure\NormalAttribute $v
              */
             if ($v->fieldSet && $v->fieldSet->id == $structAttribute->id && (empty($this->attributeToExport[$doc->fromid]) || in_array($v->id, $this->attributeToExport[$doc->fromid]))) {
                 $value = $this->getXmlValue($v, $indexValue);

@@ -53,7 +53,7 @@ class TestAttributeSlashes extends TestCaseDcpCommonFamily
             $this->assertTrue(is_object($d) , sprintf("cannot create %s document", $this->famName));
         }
         /**
-         * @var \NormalAttribute $oa
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
          */
         $oa = $d->getAttribute($attrid);
         $this->assertNotEmpty($oa, sprintf("attribute %s not found in %s family", $attrid, $this->famName));

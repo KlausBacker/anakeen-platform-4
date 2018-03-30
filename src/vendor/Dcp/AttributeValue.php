@@ -11,7 +11,7 @@ class AttributeValue
     /**
      * return typed value for an document's attribute
      * @param \Doc $doc
-     * @param \NormalAttribute $oAttr
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oAttr
      * @throws AttributeValue\Exception
      * @return array|float|int|null|string
      */
@@ -222,7 +222,7 @@ class AttributeValue
     /**
      * Set a new value to an attribute document
      * @param \Doc $doc
-     * @param \NormalAttribute $oAttr
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oAttr
      * @param mixed $value
      * @see Doc::setAttributeValue()
      * @throws AttributeValue\Exception in case of incompatible value

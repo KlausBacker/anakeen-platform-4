@@ -284,7 +284,7 @@ class DSearchHooks extends \SmartStructure\Search
             if ($type[0] != "generated") {
                 $this->defaultedit = "FDL:EDITBODYCARD";
                 /**
-                 * @var \NormalAttribute $oa
+                 * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
                  */
                 $this->getAttribute('se_t_detail', $oa);
                 $oa->setVisibility('R');
@@ -491,7 +491,7 @@ class DSearchHooks extends \SmartStructure\Search
             $oa = $this->searchfam->getAttribute($col);
         }
         /**
-         * @var \NormalAttribute $oa
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
          */
         if ($oa) {
             $atype = $oa->type;

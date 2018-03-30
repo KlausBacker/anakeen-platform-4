@@ -276,7 +276,7 @@ create unique index i_docenum on docenum(famid, attrid,  key);
             throw new \Dcp\Exception(sprintf("Locale : Enum %s#%s#%s not found", $famId, $attrid, $enumId));
         }
         /**
-         * @var NormalAttribute $oa
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
          */
         $oa->resetEnum();
         //$curLabel = $oa->getEnumLabel($enumId);

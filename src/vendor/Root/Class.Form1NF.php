@@ -2006,7 +2006,7 @@ class Form1NF_Column
         if (!is_object($fieldset)) {
             return;
         }
-        if ($fieldset->id == \Adoc::HIDDENFIELD) {
+        if ($fieldset->id == \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD) {
             return;
         }
         if (empty($this->arrayName) && $fieldset->type == 'array') {

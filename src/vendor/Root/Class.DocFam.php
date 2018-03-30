@@ -374,7 +374,7 @@ create unique index idx_idfam on docfam(id);";
         return $err;
     }
 
-    private function convertDateToiso(BasicAttribute $oa, &$val)
+    private function convertDateToiso(\Anakeen\Core\SmartStructure\BasicAttribute $oa, &$val)
     {
         $localeconfig = \Anakeen\Core\ContextManager::getLocaleConfig();
         if ($localeconfig !== false) {
@@ -416,7 +416,7 @@ create unique index idx_idfam on docfam(id);";
     private function checkSyntax($aid, $val)
     {
         /**
-         * @var NormalAttribute $oa
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
          */
         $oa = $this->getAttribute($aid);
         if (!$oa) {
@@ -778,7 +778,7 @@ create unique index idx_idfam on docfam(id);";
             }
         }
         foreach ($la as $k => $v) {
-            if (($v->id != Adoc::HIDDENFIELD) && ($v->type == 'frame' || $v->type == "tab") && ((!$v->fieldSet) || $v->fieldSet->id == Adoc::HIDDENFIELD)) {
+            if (($v->id != \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD) && ($v->type == 'frame' || $v->type == "tab") && ((!$v->fieldSet) || $v->fieldSet->id == \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD)) {
                 $level1[] = array(
                     "level1name" => $k
                 );

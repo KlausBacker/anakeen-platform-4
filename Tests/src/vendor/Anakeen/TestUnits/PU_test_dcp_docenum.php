@@ -106,7 +106,7 @@ class TestDocEnum extends TestCaseDcpCommonFamily
             \DocEnum::modifyEnum(self::familyName, $attrid, $s);
         }
         /**
-         * @var \NormalAttribute $oa
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
          */
         $oa = $fam->getAttribute($attrid);
         $oa->resetEnum();
@@ -148,7 +148,7 @@ class TestDocEnum extends TestCaseDcpCommonFamily
     {
         $f = new_Doc("", self::familyName);
         /**
-         * @var \NormalAttribute $oa
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
          */
         $oa = $f->getAttribute($attrid);
         $oa->resetEnum();
@@ -182,7 +182,7 @@ class TestDocEnum extends TestCaseDcpCommonFamily
         
         $f = new_Doc("", self::familyName);
         /**
-         * @var \NormalAttribute $oa
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
          */
         $oa = $f->getAttribute($attrid);
         $oa->resetEnum();

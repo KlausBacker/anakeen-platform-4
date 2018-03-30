@@ -689,11 +689,11 @@ class ImportSingleDocument
      * Parse a docid's raw value (single or multiple) for unknown logical names
      *
      * @param Doc $doc
-     * @param NormalAttribute $oattr
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
      * @param string $value docid's raw value
      * @return array List of unknown logical names referenced by the value
      */
-    protected function getUnknownDocIdLogicalNames(Doc & $doc, NormalAttribute & $oattr, $value)
+    protected function getUnknownDocIdLogicalNames(Doc & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oattr, $value)
     {
         $res = array();
         if ($value === ' ') {

@@ -16,7 +16,7 @@ class DocFormFormat
     public $doc = null;
     private $index = - 1;
     /**
-     * @var NormalAttribute
+     * @var \Anakeen\Core\SmartStructure\NormalAttribute
      */
     private $oattr = null;
     /**
@@ -93,7 +93,7 @@ class DocFormFormat
     }
     /**
      * Compose html code to insert input
-     * @param NormalAttribute &$oattr attribute to edit
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute &$oattr attribute to edit
      * @param string $value value of the attribute
      * @param string $index in case of array : row of the array
      * @return mixed|string
@@ -1281,7 +1281,7 @@ class DocFormFormat
     /**
      * @param Layout $lay
      * @param Doc $doc
-     * @param NormalAttribute $oattr
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
      * @param int $row
      */
     public function getLayArray(&$lay, &$doc, &$oattr, $row = - 1)
@@ -1510,7 +1510,7 @@ class DocFormFormat
     /**
      * @param layout $lay
      * @param Doc $doc
-     * @param NormalAttribute $oattr
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
      * @param string $zone
      * @return mixed
      */
@@ -1740,7 +1740,7 @@ class DocFormFormat
      * generate HTML for inline document (not virtual)
      *
      * @param Layout $lay template of html input
-     * @param NormalAttribute $oattr current attribute for input
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr current attribute for input
      * @param string $value value of the attribute to display (generaly the value comes from current document)
      * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
      * @param int $index current row number if it is in array ("" if it is not in array)
@@ -1758,7 +1758,7 @@ class DocFormFormat
      *
      * @param Layout $lay template of html input
      * @param Doc $doc current document in edition
-     * @param NormalAttribute $oattr current attribute for input
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr current attribute for input
      * @param string $value value of the attribute to display (generaly the value comes from current document)
      * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
      * @param int $index current row number if it is in array ("" if it is not in array)
@@ -1795,7 +1795,7 @@ class DocFormFormat
      * generate HTML for date attribute
      *
      * @param Layout $lay template of html input
-     * @param NormalAttribute $oattr current attribute for input
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr current attribute for input
      * @param string $value value of the attribute to display (generaly the value comes from current document)
      * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
      * @param int $index current row number if it is in array ("" if it is not in array)
@@ -1832,7 +1832,7 @@ class DocFormFormat
      *
      * @param Layout $lay template of html input
      * @param Doc $doc current document in edition
-     * @param NormalAttribute $oattr current attribute for input
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr current attribute for input
      * @param string $value value of the attribute to display (generaly the value comes from current document)
      * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
      * @param int $index current row number if it is in array ("" if it is not in array)
@@ -1970,7 +1970,7 @@ class DocFormFormat
      *
      * @param Layout $lay template of html input
      * @param Doc $doc current document in edition
-     * @param NormalAttribute $oattr current attribute for input
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr current attribute for input
      * @param string $value value of the attribute to display (generaly the value comes from current document)
      * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
      * @param int $index current row number if it is in array ("" if it is not in array)
@@ -1996,7 +1996,7 @@ class DocFormFormat
      *
      * @param Layout $lay template of html input
      * @param Doc $doc current document in edition
-     * @param NormalAttribute $oattr current attribute for input
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr current attribute for input
      * @param string $value value of the attribute to display (generaly the value comes from current document)
      * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
      * @param int $index current row number if it is in array ("" if it is not in array)
@@ -2041,13 +2041,13 @@ class DocFormFormat
     /**
      * add button to create/modify document relation
      *
-     * @param \BasicAttribute|\NormalAttribute $oattr
+     * @param \Anakeen\Core\SmartStructure\BasicAttribute|\Anakeen\Core\SmartStructure\NormalAttribute $oattr
      * @param \Doc $doc
      * @param string $attridk id suffix of the <input/> tag
      * @param integer $index
      * @return string
      */
-    private function addDocIdCreate(BasicAttribute & $oattr, Doc & $doc, $attridk, $index)
+    private function addDocIdCreate(\Anakeen\Core\SmartStructure\BasicAttribute & $oattr, Doc & $doc, $attridk, $index)
     {
         if ($oattr->type == "docid" || $oattr->type == "account") {
             $creation = $oattr->getOption("creation");
@@ -2106,7 +2106,7 @@ class DocFormFormat
     /**
      * Sort an enum's (key => label) mapping structure by 'key' or 'label'.
      *
-     * @param array $enumMap an enum mapping structure as returned by NormalAttribute::getEnumLabel() method
+     * @param array $enumMap an enum mapping structure as returned by \Anakeen\Core\SmartStructure\NormalAttribute::getEnumLabel() method
      * @param string $sortBy 'key' to sort by key, 'label' to sort by label
      * @return array the sorted enum's mapping structure
      */

@@ -132,7 +132,7 @@ class DocumentUtils
                 || $currentAttribute->mvisibility === "I") {
                 if ($currentAttribute) {
                     /**
-                     * @var \BasicAttribute $currentAttribute
+                     * @var \Anakeen\Core\SmartStructure\BasicAttribute $currentAttribute
                      */
                     if ($currentAttribute->mvisibility === "I") {
                         throw new Exception("CRUD0508", $currentElement, $currentAttribute->getLabel());

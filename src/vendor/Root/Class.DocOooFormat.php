@@ -16,7 +16,7 @@ class DocOooFormat
     public $doc = null;
     private $index = - 1;
     /**
-     * @var NormalAttribute
+     * @var \Anakeen\Core\SmartStructure\NormalAttribute
      */
     private $oattr = null;
     private $attrid = '';
@@ -36,7 +36,7 @@ class DocOooFormat
         $this->doc = $doc;
     }
     /**
-     * @param NormalAttribute $oattr
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
      * @param string $value
      * @param int $index
      * @return string the formated value

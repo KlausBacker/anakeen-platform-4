@@ -138,7 +138,7 @@ class DocCtrl extends DocLDAP
     public $dprofid;
     public $views;
     /**
-     * @var ADoc
+     * @var Adoc007
      */
     public $attributes = null;
     public $doctype;

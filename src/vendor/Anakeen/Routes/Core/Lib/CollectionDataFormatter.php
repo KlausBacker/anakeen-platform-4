@@ -205,7 +205,7 @@ class CollectionDataFormatter
     protected function attributeHook($info, $attribute, $doc)
     {
         /**
-         * @var \NormalAttribute $attribute
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $attribute
          */
         if ($info === null) {
             if ($attribute->isMultiple()) {

@@ -800,7 +800,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
         // searches for all fathers kind
         
         /**
-         * @var NormalAttribute $a
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $a
          */
         $a = $fdoc->getAttribute($aid);
         if ($a) {

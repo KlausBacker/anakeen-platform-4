@@ -102,7 +102,7 @@ class FamilyImport
         $phpAdoc->Set("GEN", "");
         if ($tdoc["fromid"] == 0) {
             $phpAdoc->Set("DocParent", $tdoc["classname"]);
-            $phpAdoc->Set("AParent", '\\' . \Adoc::class);
+            $phpAdoc->Set("AParent", '\\' . \Anakeen\Core\SmartStructure\Attributes::class);
             $phpAdoc->Set("fromid", "");
             $phpAdoc->Set("pinit", '\DocCtrl');
         } else {
@@ -287,7 +287,7 @@ class FamilyImport
                             "usefor" => $v->usefor,
                             "type" => $v->type,
                             "options" => str_replace("\"", "\\\"", $v->options),
-                            "frame" => ($v->frameid == "") ? \Adoc::HIDDENFIELD : strtolower($v->frameid)
+                            "frame" => ($v->frameid == "") ? \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD : strtolower($v->frameid)
                         );
                         break;
 
@@ -402,7 +402,7 @@ class FamilyImport
                             "title" => ($v->title == "Y") ? "true" : "false",
                             "repeat" => $repeat,
                             "abstract" => ($v->abstract == "Y") ? "true" : "false",
-                            "frame" => ($v->frameid == "") ? \Adoc::HIDDENFIELD : strtolower($v->frameid),
+                            "frame" => ($v->frameid == "") ? \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD : strtolower($v->frameid),
                             "elink" => $v->elink,
                             "phpfile" => $v->phpfile,
                             "phpfunc" => self::doubleslash(str_replace(", |", ",  |", $v->phpfunc)),

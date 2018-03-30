@@ -17,7 +17,7 @@ class DocHtmlFormat
     private $index = - 1;
     private $target = '_self';
     /**
-     * @var NormalAttribute
+     * @var \Anakeen\Core\SmartStructure\NormalAttribute
      */
     private $oattr = null;
     private $attrid = '';
@@ -47,7 +47,7 @@ class DocHtmlFormat
     /**
      * get html fragment for a value of an attribute
      * for multiple values if index >= 0 the value must be the ith value of array values
-     * @param NormalAttribute $oattr
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
      * @param string $value raw value
      * @param string $target
      * @param bool $htmlLink
@@ -820,7 +820,7 @@ class DocHtmlFormat
                     );
                     $tivalue = array();
                     /**
-                     * @var NormalAttribute $va
+                     * @var \Anakeen\Core\SmartStructure\NormalAttribute $va
                      */
                     foreach ($ta as $ka => $va) {
                         if (($va->mvisibility == "H") || ($va->mvisibility == "I") || ($va->mvisibility == "O")) {
