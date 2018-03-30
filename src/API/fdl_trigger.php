@@ -15,7 +15,6 @@
  */
 // refreah for a classname
 // use this only if you have changed title attributes
-include_once("FDL/Lib.Attr.php");
 
 $usage = new ApiUsage();
 

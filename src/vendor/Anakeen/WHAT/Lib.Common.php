@@ -603,39 +603,7 @@ function bgexec($tcmd, &$result, &$err)
     //if (session_id()) @session_start();
 }
 
-function wbartext($text)
-{
-    wbar('-', '-', $text);
-}
 
-function wbar($reste, $total, $text = "", $fbar = false)
-{
-    static $preste, $ptotal;
-    if (!$fbar) {
-        $fbar = GetHttpVars("bar");
-    } // for progress bar
-    if ($fbar) {
-        if ($reste === '-') {
-            $reste = $preste;
-        } else {
-            $preste = $reste;
-        }
-        if ($total === '-') {
-            $total = $ptotal;
-        } else {
-            $ptotal = $total;
-        }
-        if (file_exists("$fbar.lck")) {
-            $wmode = "w";
-            unlink("$fbar.lck");
-        } else {
-            $wmode = "a";
-        }
-        $ffbar = fopen($fbar, $wmode);
-        fputs($ffbar, "$reste/$total/$text\n");
-        fclose($ffbar);
-    }
-}
 
 function getJsVersion()
 {

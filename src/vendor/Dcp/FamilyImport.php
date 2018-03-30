@@ -102,7 +102,7 @@ class FamilyImport
         $phpAdoc->Set("GEN", "");
         if ($tdoc["fromid"] == 0) {
             $phpAdoc->Set("DocParent", $tdoc["classname"]);
-            $phpAdoc->Set("AParent", '\\' . \ADoc::class);
+            $phpAdoc->Set("AParent", '\\' . \Adoc::class);
             $phpAdoc->Set("fromid", "");
             $phpAdoc->Set("pinit", '\DocCtrl');
         } else {
@@ -558,12 +558,6 @@ class FamilyImport
             if ($err != '') {
                 throw new \Dcp\Exception(sprintf("Error generating file '%s': %s", $dfile, $err));
             }
-        }
-
-
-        $err = self::__phpLintWriteFile($dfile, $phpAdoc->gen());
-        if ($err != '') {
-            throw new \Dcp\Exception(sprintf("Error generating file '%s': %s", $dfile, $err));
         }
     }
 

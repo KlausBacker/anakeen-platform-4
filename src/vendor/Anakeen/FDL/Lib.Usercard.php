@@ -81,7 +81,7 @@ function refreshOneGroup($gid, $refresh)
         $doc = new_Doc($dbaccess, $g->fid);
         if ($doc->isAlive()) {
             //if ($_SERVER['HTTP_HOST'] == "") error_log(sprintf("\trefreshing %s\n", $doc->title));
-            wbartext(sprintf(_("refreshing %s"), $doc->title));
+
             if ($refresh) {
                 $doc->refreshMembers();
             }

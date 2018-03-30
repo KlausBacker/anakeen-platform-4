@@ -12,7 +12,6 @@
  */
 global $action;
 
-include_once("FDL/Lib.Attr.php");
 
 $usage = new ApiUsage();
 $usage->setDefinitionText("Delete family document and its documents");

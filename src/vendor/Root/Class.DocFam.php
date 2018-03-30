@@ -166,7 +166,6 @@ create unique index idx_idfam on docfam(id);";
 
     public function postStore()
     {
-        include_once("FDL/Lib.Attr.php");
         return refreshPhpPgDoc($this->dbaccess, $this->id);
     }
 

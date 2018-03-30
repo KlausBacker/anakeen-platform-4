@@ -1,22 +1,12 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Authenticator manager class
  *
  * Manage authentification method (classes)
  *
- * @author  Anakeen
- * @version $Id: Class.Authenticator.php,v 1.6 2009/01/16 13:33:00 jerome Exp $
- * @package FDL
- * @subpackage
- */
-/**
  */
 
-
+include_once("FDL/LegacyDocManager.php");
 class AuthenticatorManager
 {
     /**

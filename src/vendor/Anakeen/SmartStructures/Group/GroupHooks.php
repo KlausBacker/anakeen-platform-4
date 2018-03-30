@@ -7,9 +7,9 @@
  * Specials methods for GROUP family
  *
  */
-namespace Dcp\Core;
+namespace Anakeen\SmartStructures\Group;
 
-class AccountCollection extends \SmartStructure\Dir
+class GroupHooks extends \SmartStructure\Dir
 {
     /*
      * @end-method-ignore
@@ -140,7 +140,6 @@ class AccountCollection extends \SmartStructure\Dir
      */
     public function refreshParentGroup()
     {
-        include_once("FDL/LegacyDocManager.php");
         include_once("FDL/Lib.Dir.php");
         
         $sqlfilters[] = sprintf("in_textlist(grp_idgroup,'%s')", $this->id);

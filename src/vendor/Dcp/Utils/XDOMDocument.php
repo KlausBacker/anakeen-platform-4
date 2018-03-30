@@ -6,24 +6,11 @@
 
 namespace Dcp\Utils;
 
-class XDOMDocumentException extends \Exception
-{
-    public $libXMLErrors = array();
-    
-    public function __construct($message, &$libXMLErrors = array())
-    {
-        $this->message = $message;
-        if (count($libXMLErrors) <= 0) {
-            $libXMLErrors[] = new \libXMLError();
-        }
-        $this->libXMLErrors = $libXMLErrors;
-    }
-}
-
 class XDOMDocument extends \DOMDocument
 {
     public $libXMLErrorIgnoreCodes = array();
     protected static $libXmlIntErr = null;
+
     protected static function enableLibXMLErrors()
     {
         if (self::$libXmlIntErr !== null) {
@@ -32,6 +19,7 @@ class XDOMDocument extends \DOMDocument
         self::$libXmlIntErr = libxml_use_internal_errors(true);
         libxml_clear_errors();
     }
+
     protected static function restoreLibXMLErrors()
     {
         if (self::$libXmlIntErr === null) {
@@ -41,14 +29,17 @@ class XDOMDocument extends \DOMDocument
         libxml_use_internal_errors(self::$libXmlIntErr);
         self::$libXmlIntErr = null;
     }
+
     public function setLibXMLErrorIgnoreCodes($ignoreCodes)
     {
         $this->libXMLErrorIgnoreCodes = $ignoreCodes;
     }
+
     public function getLibXMLErrorIgnoreCodes()
     {
         return $this->libXMLErrorIgnoreCodes;
     }
+
     /**
      * @return \LibXMLError[]
      */
@@ -65,6 +56,7 @@ class XDOMDocument extends \DOMDocument
         unset($libXMLError);
         return $libXMLErrorsFiltered;
     }
+
     public function load($filename, $options = 0, \libXMLError & $error = null)
     {
         self::enableLibXMLErrors();
@@ -89,6 +81,7 @@ class XDOMDocument extends \DOMDocument
         }
         return true;
     }
+
     public function loadXML($source, $options = 0, &$errors = array())
     {
         self::enableLibXMLErrors();
@@ -127,10 +120,12 @@ class XDOMDocument extends \DOMDocument
         }
         return true;
     }
+
     /**
-     * @param string $filename
-     * @param int $options
+     * @param string         $filename
+     * @param int            $options
      * @param \libXMLError[] $errors
+     *
      * @return bool
      * @throws XDOMDocumentException
      */
@@ -158,6 +153,7 @@ class XDOMDocument extends \DOMDocument
         }
         return true;
     }
+
     public function loadHTML($source, $options = 0, &$errors = array())
     {
         self::enableLibXMLErrors();

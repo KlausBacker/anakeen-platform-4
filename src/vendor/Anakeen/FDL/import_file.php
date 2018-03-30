@@ -14,7 +14,6 @@
 /**
  */
 
-include_once("FDL/Lib.Attr.php");
 require_once("WHAT/Lib.FileMime.php");
 
 define("ALTSEPCHAR", ' --- ');

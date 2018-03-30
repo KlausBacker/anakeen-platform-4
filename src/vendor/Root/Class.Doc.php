@@ -2533,7 +2533,10 @@ create unique index i_docir on doc(initid, revision);";
         if ($aFromName != $fromname) {
             // reset when use partial cache
             $adocClassName=\Anakeen\Core\DocManager::getAttributesClassName($fromname);
-            if (\Anakeen\Core\Internal\Autoloader::classExists($adocClassName)) {
+            // Workaround because autoload has eventually the class in its missing private key
+            // Use file_exists instead class_exists
+            $attFileClass=\Anakeen\Core\DocManager::getAttributesClassFilename($this->name);
+            if (file_exists($attFileClass)) {
                 $this->attributes = new $adocClassName();
             }
         }

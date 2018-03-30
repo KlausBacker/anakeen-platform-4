@@ -12,7 +12,6 @@
  */
 // refreah for a classname
 // use this only if you have changed title attributes
-include_once("FDL/Lib.Attr.php");
 
 
 $usage = new ApiUsage();
@@ -58,14 +57,16 @@ if ($query->nb > 0) {
             21
         );
         foreach ($tii as $ii) {
-            updateDoc( $tid[$ii]);
-            unset($tid[$ii]);
+            if (isset($tid[$ii])) {
+                updateDoc($tid[$ii]);
+                unset($tid[$ii]);
+            }
         }
     }
     // workflow at the end
     foreach ($tid as $k => $v) {
         if (strstr($v["usefor"], 'W')) {
-            updateDoc( $v);
+            updateDoc($v);
             /**
              * @var WDOc $wdoc
              */
@@ -76,30 +77,30 @@ if ($query->nb > 0) {
     }
     foreach ($tid as $k => $v) {
         if (strstr($v["usefor"], 'W') === false) {
-            updateDoc( $v);
+            updateDoc($v);
         }
     }
 }
 function updateDoc($v)
 {
-    require_once 'FDL/Lib.Attr.php';
     try {
         $err = \Dcp\FamilyImport::buildFamilyFilesAndTables("", $v, true);
         if ($err) {
             error_log($err);
         }
     } catch (\Dcp\Exception $e) {
-        print $v["id"] . "[" . $v["title"] . "(" . $v["name"] . ")]\n";
+        print "\nERROR:" . $v["id"] . "[" . $v["title"] . "(" . $v["name"] . ")]\n";
         error_log($e->getMessage());
     }
 }
+
 // recursive sort by fromid
 function pushfam($fromid, &$tid, $tfam)
 {
     foreach ($tfam as $k => $v) {
         if ($v["fromid"] == $fromid) {
             $tid[$v["id"]] = $v;
-            
+
             pushfam($v["id"], $tid, $tfam);
         }
     }

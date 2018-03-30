@@ -106,9 +106,7 @@ if ($isSystem) {
         $system->clearFileCache();
     } elseif (Anakeen\Script\ShellManager::getArg("style")) {
         $system->style();
-    } elseif (Anakeen\Script\ShellManager::getArg("resetAutoloader")) {
-        $system->clearAutoloadCache();
-    } else {
+    }  else {
         print Anakeen\Script\ShellManager::getUsage();
         exit(1);
     }

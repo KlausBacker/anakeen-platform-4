@@ -171,8 +171,7 @@ if ($query->nb > 0) {
             $u->modify();
             unset($u);
         }
-        
-        wbar($reste, $card, $title);
+
     }
     
     $doc->exec_query("update doc127 set name='GADMIN'     where us_whatid='4'");

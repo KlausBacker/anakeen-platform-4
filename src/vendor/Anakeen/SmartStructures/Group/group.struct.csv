@@ -3,7 +3,7 @@ BEGIN;DIR;Groupe de personnes;129;;GROUP;;;;;;;;;;
 TYPE;C;;;;;;;;;;;;;;
 SCHAR;S;;;;;;;;;;;;;;
 ICON;se-group.png;;;;;;;;;;;;;;
-CLASS;Dcp\Core\AccountCollection;;;;;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\Group\GroupHooks;;;;;;;;;;;;;;
 METHOD;;;;;;;;;;;;;;;
 USEFOR;S;;;;;;;;;;;;;;
 //;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option

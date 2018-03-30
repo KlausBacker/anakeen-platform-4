@@ -214,6 +214,7 @@ class CheckEnd extends CheckData
             $oa = $this->doc->getAttribute($attrid);
 
             if (!$oa) {
+                print_r($this->doc->attributes);
                 $this->addError(ErrorCode::getError('DFLT0005', $attrid, $this->doc->name));
             } else {
                 $oParse = new ParseFamilyMethod();
