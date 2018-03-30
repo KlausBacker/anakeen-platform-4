@@ -281,7 +281,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                         // $sqlM=$ldocsearch[0]["query"];
                         
                         /**
-                         * @var DocSearch $fld
+                         * @var \Anakeen\SmartStructures\Search\SearchHooks $fld
                          */
                         $fld = new_Doc($dbaccess, $dirid);
                         if ($trash) {
@@ -379,7 +379,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                         case "M": // complex query
                             
                             /**
-                             * @var DocSearch $fld
+                             * @var \Anakeen\SmartStructures\Search\SearchHooks $fld
                              */
                             $fld = new_Doc($dbaccess, $dirid);
                             $tsqlM = $fld->getQuery();

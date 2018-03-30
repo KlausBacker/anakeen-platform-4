@@ -1,29 +1,29 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Detailled search
  */
-namespace Dcp\Core;
+
+namespace Anakeen\SmartStructures\Dsearch;
+
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\DocManager;
+use \Dcp\Core\Exception;
 
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-class DetailSearch extends \SmartStructure\Search
+class DSearch extends \SmartStructure\Search
 {
     /**
-    /**
+     * /**
      * Last suggestion for constraints
+     *
      * @var string
      */
     private $last_sug;
-    
+
     public $defaultedit = "FREEDOM:EDITDSEARCH"; #N_("include") N_("equal") N_("equal") _("not equal") N_("is empty") N_("is not empty") N_("one value equal")
     public $defaultview = "FREEDOM:VIEWDSEARCH"; #N_("not include") N_("begin by") N_("not equal") N_("&gt; or equal") N_("&lt; or equal")  N_("content file word") N_("content file expression")
-    
+
     /**
      * @var \DocFam|null
      */
@@ -45,7 +45,7 @@ class DetailSearch extends \SmartStructure\Search
      * @throws \Dcp\Db\Exception
      * @throws \Exception
      */
-    public function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
+    public function ComputeQuery($keyword = "", $famid = -1, $latest = "yes", $sensitive = false, $dirid = -1, $subfolder = true, $full = false)
     {
         if ($dirid > 0) {
             if ($subfolder) {
@@ -56,13 +56,13 @@ class DetailSearch extends \SmartStructure\Search
         } else {
             $cdirid = 0;
         };
-        
+
         $filters = $this->getSqlGeneralFilters($keyword, $latest, $sensitive);
         $cond = $this->getSqlDetailFilter();
         if ($cond === false) {
             return array(
-            false
-        );
+                false
+            );
         }
         $distinct = false;
         $only = '';
@@ -79,12 +79,12 @@ class DetailSearch extends \SmartStructure\Search
             $only = "only";
         }
         $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getRawValue("se_trash"), false, $level = 2, $join = '', $only);
-        
+
         return $query;
     }
+
     /**
      * Change queries when use filters objects instead of declarative criteria
-     * @see DocSearch#getQuery()
      */
     public function getQuery()
     {
@@ -103,22 +103,23 @@ class DetailSearch extends \SmartStructure\Search
             return parent::getQuery();
         }
     }
-    
+
     public function postStore()
     {
         $err = parent::postStore();
         try {
             $this->getSqlDetailFilter(true);
         } catch (\Exception $e) {
-            $err.= $e->getMessage();
+            $err .= $e->getMessage();
         }
-        $err.= $this->updateFromXmlFilter();
-        $err.= $this->updateXmlFilter();
+        $err .= $this->updateFromXmlFilter();
+        $err .= $this->updateXmlFilter();
         if ((!$err) && ($this->isChanged())) {
             $err = $this->modify();
         }
         return $err;
     }
+
     /**
      * @deprecated use postStore() instead
      * @return string
@@ -128,8 +129,10 @@ class DetailSearch extends \SmartStructure\Search
         deprecatedFunction();
         return self::postStore();
     }
+
     /**
      * update somes attributes from Xml filter
+     *
      * @return string error message
      */
     public function updateFromXmlFilter()
@@ -163,15 +166,17 @@ class DetailSearch extends \SmartStructure\Search
                     }
                     if ($famid) {
                         $err = $this->setValue("se_famid", abs($famid));
-                        $err.= $this->setValue("se_famonly", ($famid > 0) ? "no" : "yes");
+                        $err .= $this->setValue("se_famonly", ($famid > 0) ? "no" : "yes");
                     }
                 }
             }
         }
         return $err;
     }
+
     /**
      * update somes attributes from Xml filter
+     *
      * @return string error message
      */
     public function updateXmlFilter()
@@ -188,17 +193,20 @@ class DetailSearch extends \SmartStructure\Search
             }
             if ($this->getRawValue("se_famid")) {
                 $filterXml = sprintf("<filter><family>%s%s</family>", $this->getRawValue("se_famid"), ($this->getRawValue("se_famonly") == "yes" ? " strict" : ""));
-                
-                $filterXml.= "</filter>";
+
+                $filterXml .= "</filter>";
                 $this->setValue("se_typefilter", "generated"); // only one
                 $this->setValue("se_filter", $filterXml);
             }
         }
         return $err;
     }
+
     /**
      * return a query from on filter object
+     *
      * @param string $xml xml filter object
+     *
      * @return string the query
      */
     public function getSqlXmlFilter($xml)
@@ -208,7 +216,7 @@ class DetailSearch extends \SmartStructure\Search
         $std = $this->simpleXml2StdClass($root);
         $famid = $sql = "";
         $this->object2SqlFilter($std, $famid, $sql);
-        
+
         $filters[] = $sql;
         $cdirid = 0;
         $q = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters);
@@ -216,12 +224,15 @@ class DetailSearch extends \SmartStructure\Search
             $q0 = $q[0]; // need a tempo variable : don't know why
             return ($q0);
         }
-        
+
         return false;
     }
+
     /**
      * cast SimpleXMLElment to stdClass
+     *
      * @param \SimpleXMLElement $xml
+     *
      * @return \stdClass return  object or value if it is a leaf
      */
     public function simpleXml2StdClass(\SimpleXMLElement $xml)
@@ -235,8 +246,8 @@ class DetailSearch extends \SmartStructure\Search
                 if (isset($std->$k)) {
                     if (!is_array($std->$k)) {
                         $std->$k = array(
-                        $std->$k
-                    );
+                            $std->$k
+                        );
                     }
                     array_push($std->$k, $this->simpleXml2StdClass($se));
                 } else {
@@ -249,7 +260,7 @@ class DetailSearch extends \SmartStructure\Search
         }
         return $std;
     }
-    
+
     public function preConsultation()
     {
         $err = parent::preConsultation();
@@ -266,7 +277,7 @@ class DetailSearch extends \SmartStructure\Search
         }
         return '';
     }
-    
+
     public function preEdition()
     {
         if (count($this->getMultipleRawValues("se_filter")) > 0) {
@@ -280,15 +291,17 @@ class DetailSearch extends \SmartStructure\Search
                 $oa->setVisibility('R');
                 $this->getAttribute('se_t_filters', $oa);
                 $oa->setVisibility('W');
-                
+
                 $this->getAttribute('se_filter', $oa);
                 $oa->setVisibility('W');
             }
         }
     }
+
     /**
      * return error if query filters are not compatibles
      * verify parenthesis
+     *
      * @return string error message , empty if no errors
      */
     public function getSqlParseError()
@@ -316,10 +329,12 @@ class DetailSearch extends \SmartStructure\Search
         }
         return $err;
     }
+
     /**
      * Check the given string is a valid timestamp (or date)
      *
      * @param $str
+     *
      * @return string empty string if valid or error message
      */
     private function isValidTimestamp($str)
@@ -334,7 +349,7 @@ class DetailSearch extends \SmartStructure\Search
             return '';
         }
         $this->last_sug = $this->getDate(0, '', '', true);
-        return _("DetailSearch:malformed timestamp").": $str";
+        return _("DetailSearch:malformed timestamp") . ": $str";
     }
 
     /**
@@ -403,6 +418,7 @@ class DetailSearch extends \SmartStructure\Search
             'sug' => isset($this->last_sug) ? $this->last_sug : ''
         );
     }
+
     /**
      * Check for properly balanced conditions' parenthesis
      */
@@ -427,13 +443,14 @@ class DetailSearch extends \SmartStructure\Search
         }
         return $err;
     }
+
     /**
      * Check global coherence of conditions
      */
     public function checkConditions()
     {
         $err = '';
-        $err.= $this->checkConditionsParens();
+        $err .= $this->checkConditionsParens();
         return array(
             'err' => $err,
             'sug' => ''
@@ -470,7 +487,7 @@ class DetailSearch extends \SmartStructure\Search
             $col = "state";
         }
         $atype = '';
-        $oa=null;
+        $oa = null;
         if ($this->searchfam) {
             $oa = $this->searchfam->getAttribute($col);
         }
@@ -496,7 +513,7 @@ class DetailSearch extends \SmartStructure\Search
                         $hms = substr($val, $pos + 1);
                     }
                 }
-                
+
                 $cfgdate = ContextManager::getLocaleConfig();
                 if ($val) {
                     $val = stringDateToIso($val, $cfgdate['dateFormat']);
@@ -504,37 +521,38 @@ class DetailSearch extends \SmartStructure\Search
                 if ($val2) {
                     $val2 = stringDateToIso($val2, $cfgdate['dateFormat']);
                 }
-                
+
                 if (($atype == "timestamp") && ($op == "=")) {
                     $val = trim($val);
                     if (strlen($val) == 10) {
                         if ($hms == '') {
                             $val2 = $val . " 23:59:59";
-                            $val.= " 00:00:00";
+                            $val .= " 00:00:00";
                             $op = "><";
                         } elseif (strlen($hms) == 2) {
                             $val2 = $val . ' ' . $hms . ":59:59";
-                            $val.= ' ' . $hms . ":00:00";
+                            $val .= ' ' . $hms . ":00:00";
                             $op = "><";
                         } elseif (strlen($hms) == 5) {
                             $val2 = $val . ' ' . $hms . ":59";
-                            $val.= ' ' . $hms . ":00";
+                            $val .= ' ' . $hms . ":00";
                             $op = "><";
                         } else {
-                            $val.= ' ' . $hms;
+                            $val .= ' ' . $hms;
                         }
                     }
                 }
-                
-                if ($validateCond && in_array($op, array(
-                    "=",
-                    "!=",
-                    ">",
-                    "<",
-                    ">=",
-                    "<=",
-                    "~y"
-                ))) {
+
+                if ($validateCond
+                    && in_array($op, array(
+                        "=",
+                        "!=",
+                        ">",
+                        "<",
+                        ">=",
+                        "<=",
+                        "~y"
+                    ))) {
                     if (($err = $this->isValidTimestamp($val)) != '') {
                         return '';
                     }
@@ -544,7 +562,6 @@ class DetailSearch extends \SmartStructure\Search
         $cond = '';
         switch ($op) {
             case "is null":
-                
                 switch ($atype) {
                     case "int":
                     case "uid":
@@ -561,7 +578,7 @@ class DetailSearch extends \SmartStructure\Search
                     default:
                         $cond = sprintf(" (%s is null or %s = '') ", $col, $col);
                 }
-                
+
                 break;
 
             case "is not null":
@@ -619,13 +636,13 @@ class DetailSearch extends \SmartStructure\Search
                         }
                         DbManager::query(sprintf("select id from users where firstname ~* '%s' or lastname ~* '%s'", pg_escape_string($val), pg_escape_string($val)), $ids, true);
 
-                            if (count($ids) == 0) {
-                                $cond = "false";
-                            } elseif (count($ids) == 1) {
-                                $cond = " " . $col . " = " . intval($ids[0]) . " ";
-                            } else {
-                                $cond = " " . $col . " in (" . implode(',', $ids) . ") ";
-                            }
+                        if (count($ids) == 0) {
+                            $cond = "false";
+                        } elseif (count($ids) == 1) {
+                            $cond = " " . $col . " = " . intval($ids[0]) . " ";
+                        } else {
+                            $cond = " " . $col . " in (" . implode(',', $ids) . ") ";
+                        }
 
                         break;
 
@@ -721,20 +738,19 @@ class DetailSearch extends \SmartStructure\Search
                 break;
 
             default:
-                
                 switch ($atype) {
                     case "enum":
                         $enum = $oa->getEnum();
                         if (strrpos($val, '.') !== false) {
                             $val = substr($val, strrpos($val, '.') + 1);
                         }
-                        $tkids = array();;
+                        $tkids = array();
                         foreach ($enum as $k => $v) {
                             if (in_array($val, explode(".", $k))) {
                                 $tkids[] = substr($k, strrpos("." . $k, '.'));
                             }
                         }
-                        
+
                         if ($op == '=') {
                             if ($oa->repeat) {
                                 $cond = " " . $col . " ~ E'\\\\y(" . pg_escape_string(implode('|', $tkids)) . ")\\\\y' ";
@@ -756,7 +772,7 @@ class DetailSearch extends \SmartStructure\Search
                             }
                             $cond = sprintf("( (%s is null) or (%s %s %s) )", $col, $col, trim($op), $this->_pg_val($val));
                         }
-                        
+
                         break;
 
                     default:
@@ -776,8 +792,8 @@ class DetailSearch extends \SmartStructure\Search
                         } else {
                             $cond = $cond1;
                         }
-                    }
-            }
+                }
+        }
         if (!$cond) {
             $cond = "true";
         } elseif ($stateCol == "activity") {
@@ -787,7 +803,7 @@ class DetailSearch extends \SmartStructure\Search
         }
         return $cond;
     }
-    
+
     private static function _pg_val($s)
     {
         if (substr($s, 0, 2) == ':@') {
@@ -816,7 +832,7 @@ class DetailSearch extends \SmartStructure\Search
         $tlp = $this->getMultipleRawValues("SE_LEFTP");
         $tlr = $this->getMultipleRawValues("SE_RIGHTP");
         $tols = $this->getMultipleRawValues("SE_OLS");
-        
+
         if ($ol == "") {
             // try in old version
             $ols = $this->getMultipleRawValues("SE_OLS");
@@ -883,7 +899,7 @@ class DetailSearch extends \SmartStructure\Search
                         $cond = $cond1 . " ";
                     }
                     if (isset($tlr[$k]) && $tlr[$k] == "yes") {
-                        $cond.= ')';
+                        $cond .= ')';
                     }
                 } elseif ($cond1 != "") {
                     if (isset($tols[$k]) && $tols[$k] != "" && $ol === "perso") {
@@ -891,18 +907,18 @@ class DetailSearch extends \SmartStructure\Search
                     } else {
                         $ol1 = $ol;
                     }
-                    
+
                     if ($ol1 === "perso") {
                         // workaround if user set global as condition
                         $ol1 = "and";
                     }
                     if (isset($tlp[$k]) && $tlp[$k] == "yes") {
-                        $cond.= $ol1 . ' (' . $cond1 . " ";
+                        $cond .= $ol1 . ' (' . $cond1 . " ";
                     } else {
-                        $cond.= $ol1 . " " . $cond1 . " ";
+                        $cond .= $ol1 . " " . $cond1 . " ";
                     }
                     if (isset($tlr[$k]) && $tlr[$k] == "yes") {
-                        $cond.= ') ';
+                        $cond .= ') ';
                     }
                 }
             }
@@ -912,6 +928,7 @@ class DetailSearch extends \SmartStructure\Search
         }
         return $cond;
     }
+
     /**
      * return true if the search has parameters
      */
@@ -931,6 +948,7 @@ class DetailSearch extends \SmartStructure\Search
         }
         return false;
     }
+
     /**
      * return true if the search need parameters
      */
@@ -959,19 +977,20 @@ class DetailSearch extends \SmartStructure\Search
     public function urlWhatEncodeSpec($l)
     {
         $tkey = $this->getMultipleRawValues("SE_KEYS");
-        
+
         if ((count($tkey) > 1) || (isset($tkey[0]) && $tkey[0] != "")) {
             foreach ($tkey as $k => $v) {
                 if ($v && $v[0] == '?') {
                     if (getHttpVars(substr($v, 1), "-") != "-") {
-                        $l.= '&' . substr($v, 1) . "=" . getHttpVars(substr($v, 1));
+                        $l .= '&' . substr($v, 1) . "=" . getHttpVars(substr($v, 1));
                     }
                 }
             }
         }
-        
+
         return $l;
     }
+
     /**
      * add parameters in title
      */
@@ -1009,14 +1028,17 @@ class DetailSearch extends \SmartStructure\Search
 
     /**
      * return true if the sqlselect is writted by hand
+     *
      * @return bool
      */
     public function isStaticSql()
     {
         return ($this->getRawValue("se_static") != "");
     }
+
     /**
      * return family use for search
+     *
      * @return \Doc
      */
     private function getSearchFamilyDocument()
@@ -1029,7 +1051,6 @@ class DetailSearch extends \SmartStructure\Search
     }
 
 
-    
     private function getMethodName($methodStr)
     {
         $parseMethod = new \ParseFamilyMethod();
@@ -1040,7 +1061,7 @@ class DetailSearch extends \SmartStructure\Search
         }
         return $parseMethod->methodName;
     }
-    
+
     public static function pgRegexpQuote($str)
     {
         /*

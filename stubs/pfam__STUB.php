@@ -5,14 +5,18 @@ namespace SmartStructure {
 	/** Profil de dossier  */
 	class Pdir extends \Anakeen\SmartStructures\Profiles\PDir { const familyName="PDIR";}
 	/** Profil de recherche  */
-	class Psearch extends \PDocSearch { const familyName="PSEARCH";}
+	class Psearch extends \Anakeen\SmartStructures\Profiles\PSearch { const familyName="PSEARCH";}
 	/** Profil de famille  */
 	class Pfam extends \Anakeen\SmartStructures\Profiles\PFam { const familyName="PFAM";}
 }
 
 namespace SmartStructure\Attributes {
 	/** Profil de document  */
-	class Pdoc extends Base {
+	class Pdoc {
+		/** [frame] Basique */
+		const fr_basic='fr_basic';
+		/** [text] Titre */
+		const ba_title='ba_title';
 		/** [longtext] Description */
 		const prf_desc='prf_desc';
 		/** [frame] Dynamique */

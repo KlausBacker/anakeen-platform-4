@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** Processus  */
-	class Exec extends \Dcp\Core\ExecProcessus { const familyName="EXEC";}
+	class Exec extends \Anakeen\SmartStructures\Exec\Exec { const familyName="EXEC";}
 }
 
 namespace SmartStructure\Attributes {

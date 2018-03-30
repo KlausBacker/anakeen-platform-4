@@ -1286,7 +1286,7 @@ class SearchDoc
                 $this->originalDirId = $this->dirid;
             }
             /**
-             * @var DocSearch $tmps
+             * @var \Anakeen\SmartStructures\Search\Search $tmps
              */
             $tmps = createTmpDoc($this->dbaccess, "SEARCH");
             $tmps->setValue(\SmartStructure\Attributes\Search::se_famid, $this->fromid);
@@ -1492,7 +1492,7 @@ class SearchDoc
                             // $sqlM=$ldocsearch[0]["query"];
                             $fld = new_Doc($dbaccess, $dirid);
                             /**
-                             * @var DocSearch $fld
+                             * @var \Anakeen\SmartStructures\Search\Search $fld
                              */
                             if ($trash) {
                                 $fld->setValue("se_trash", $trash);

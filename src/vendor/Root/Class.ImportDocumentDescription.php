@@ -920,7 +920,7 @@ class ImportDocumentDescription
         if ($data[1] != '') {
             $this->tcr[$this->nLine]["id"] = $data[1];
             /**
-             * @var DocSearch $search
+             * @var \Anakeen\SmartStructures\Search\SearchHooks $search
              */
             $search = new_Doc($this->dbaccess, $data[1]);
             if (!$search->isAffected()) {

@@ -2,7 +2,7 @@
 ;;;;;;;;;;;;;;;
 BEGIN;SEARCH;Recherche groupée;31;;MSEARCH;;;;;;;;;;
 ICON;se-msearch.png;;;;;;;;;;;;;;
-CLASS;Dcp\Core\GroupedSearch;;;;;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\Msearch\MSearchHooks;;;;;;;;;;;;;;
 METHOD;;;;;;;;;;;;;;;
 //;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
 ;;;;;;;;;;;;;;;

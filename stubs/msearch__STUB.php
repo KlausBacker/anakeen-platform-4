@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** Recherche groupée  */
-	class Msearch extends \Dcp\Core\GroupedSearch { const familyName="MSEARCH";}
+	class Msearch extends \Anakeen\SmartStructures\Msearch\MSearchHooks { const familyName="MSEARCH";}
 }
 
 namespace SmartStructure\Attributes {

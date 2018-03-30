@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** Aide en ligne  */
-	class Helppage extends \Dcp\Core\HelpPage { const familyName="HELPPAGE";}
+	class Helppage extends \Anakeen\SmartStructures\Helppage\HelpPage { const familyName="HELPPAGE";}
 }
 
 namespace SmartStructure\Attributes {

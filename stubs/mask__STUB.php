@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** Masque de saisie  */
-	class Mask extends \Dcp\Core\Mask { const familyName="MASK";}
+	class Mask extends \Anakeen\SmartStructures\Mask\Mask { const familyName="MASK";}
 }
 
 namespace SmartStructure\Attributes {

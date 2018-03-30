@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** Contrôle de vues  */
-	class Cvdoc extends Base { const familyName="CVDOC";}
+	class Cvdoc extends \Anakeen\SmartStructures\Cvdoc\CVDoc { const familyName="CVDOC";}
 }
 
 namespace SmartStructure\Attributes {
@@ -21,12 +21,10 @@ namespace SmartStructure\Attributes {
 		const cv_lview='cv_lview';
 		/** [enum] Type */
 		const cv_kview='cv_kview';
-		/** [text] Zone (Layout) */
-		const cv_zview='cv_zview';
+		/** [text] Classe de configuration de rendu (HTML5) */
+		const cv_renderconfigclass='cv_renderconfigclass';
 		/** [docid("MASK")] Masque */
 		const cv_mskid='cv_mskid';
-		/** [text] Masque(titre) */
-		const cv_msk='cv_msk';
 		/** [int] Ordre de sélection */
 		const cv_order='cv_order';
 		/** [enum] Affichable */
@@ -39,6 +37,8 @@ namespace SmartStructure\Attributes {
 		const cv_idcview='cv_idcview';
 		/** [text] Création vue */
 		const cv_lcview='cv_lcview';
+		/** [text] Classe d'accès au rendu (HTML5) */
+		const cv_renderaccessclass='cv_renderaccessclass';
 		/** [frame] Profil dynamique */
 		const dpdoc_fr_dyn='dpdoc_fr_dyn';
 		/** [docid("-1")] Famille pour le profil */

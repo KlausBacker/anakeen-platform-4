@@ -8,7 +8,7 @@ namespace Anakeen\SmartStructures\Search;
 
 include_once("FDL/Lib.Dir.php");
 
-class Search extends \Anakeen\SmartStructures\Profiles\PSearch
+class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearch
 {
     public $defDoctype = 'S';
 
@@ -280,7 +280,6 @@ class Search extends \Anakeen\SmartStructures\Profiles\PSearch
         if (function_exists('pspell_new')) {
             $pspell_link = pspell_new("fr", "", "", "utf-8", PSPELL_FAST);
         }
-        $tkeys = array();
         $sqlfilters = array();
 
         $keyword = preg_replace('/\s+(OR)\s+/u', '|', $keyword);

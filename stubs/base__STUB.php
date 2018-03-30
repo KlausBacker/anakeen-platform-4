@@ -1,7 +1,7 @@
 <?php
 namespace SmartStructure {
 	/** de base  */
-	class Base extends \Anakeen\SmartStructures\Document { const familyName="BASE";}
+	class Base extends Document { const familyName="BASE";}
 }
 
 namespace SmartStructure\Attributes {

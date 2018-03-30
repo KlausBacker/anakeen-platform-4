@@ -6,9 +6,9 @@
 /**
  * Grouped searches
  */
-namespace Dcp\Core;
+namespace Anakeen\SmartStructures\MSearch;
 
-class GroupedSearch extends \SmartStructure\Search
+class MSearchHooks extends \SmartStructure\Search
 {
     public $defaultedit = "FDL:EDITBODYCARD";
     public $defaultview = "FDL:VIEWBODYCARD";

@@ -1,7 +1,8 @@
 // famille recherche;;;id;class;name;;;;;;;;;;
 ;;;;;;;;;;;;;;;
-BEGIN;BASE;Recherche;5;DocSearch;SEARCH;;;;;;;;;;
+BEGIN;BASE;Recherche;5;;SEARCH;;;;;;;;;;
 TYPE;C;;;;;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\Search\SearchHooks;disableInheritanceCondition;;;;;;;;;;;;;
 ICON;se-search.png;;;;;;;;;;;;;;
 //;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
 ATTR;SE_AUTHOR;FR_BASIC;Auteur;N;N;account;29;R;;;;;;;
