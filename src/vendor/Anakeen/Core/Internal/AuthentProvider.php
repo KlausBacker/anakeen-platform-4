@@ -12,11 +12,14 @@
  */
 /**
  */
+
+namespace Anakeen\Core\Internal;
+
 /**
  * Class Provider
  * @method initializeUser($a)
  */
-abstract class Provider
+abstract class AuthentProvider
 {
     public $parms;
     public $pname;

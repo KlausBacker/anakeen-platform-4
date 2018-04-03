@@ -12,8 +12,9 @@
  */
 /**
  */
+namespace Anakeen\Core\Internal;
 
-class ldapProvider extends Provider
+class LdapAuthentProvider extends AuthentProvider
 {
     public function validateCredential($username, $password)
     {
@@ -61,7 +62,7 @@ class ldapProvider extends Provider
         $CoreNull = "";
         $core = new \Anakeen\Core\Internal\Application();
         $core->Set("CORE", $CoreNull);
-        $core->session = new Session();
+        $core->session = new \Session();
         $action = new \Anakeen\Core\Internal\Action();
         $action->Set("", $core);
         $action->user = new \Anakeen\Core\Account("", 1); //create user as admin

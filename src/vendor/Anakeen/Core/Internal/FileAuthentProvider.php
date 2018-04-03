@@ -12,8 +12,9 @@
  */
 /**
  */
+namespace Anakeen\Core\Internal;
 
-class fileProvider extends Provider
+class FileProvider extends AuthentProvider
 {
     private function readPwdFile($pwdfile)
     {

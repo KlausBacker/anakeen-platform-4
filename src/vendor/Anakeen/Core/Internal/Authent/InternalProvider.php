@@ -7,8 +7,9 @@
  */
 /**
  */
+namespace Anakeen\Core\Internal\Authent;
 
-class InternalProvider extends Provider
+class InternalProvider extends \Anakeen\Core\Internal\AuthentProvider
 {
     /**
      * checks user login and password

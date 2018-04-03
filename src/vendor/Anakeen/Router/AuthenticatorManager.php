@@ -15,38 +15,42 @@ class AuthenticatorManager extends \Anakeen\Core\Internal\AuthenticatorManager
             throw new Exception(sprintf("Invalid authtype '%s'", $authtype));
         }
 
-
         $auth = null;
-        switch ($authtype) {
-            case "html":
-                $auth = new \Anakeen\Core\Internal\HtmlAuthenticator($authtype, $provider);
-                break;
+        $ta = AuthenticatorManager::getAuthTypeParams();
+        if (!empty($ta["class"])) {
+            $authClass = $ta["class"];
+            if (!\Anakeen\Core\Internal\Autoloader::classExists($authClass)) {
+                throw new Exception("API0100", $authtype);
+            }
+            $auth = new $authClass($authtype, $provider);
+        } else {
+            switch ($authtype) {
+                case "html":
+                    $auth = new \Anakeen\Core\Internal\HtmlAuthenticator($authtype, $provider);
+                    break;
 
-            case "token":
-                $auth = new TokenAuthenticator($authtype, $provider);
-                break;
+                case "token":
+                    $auth = new TokenAuthenticator($authtype, $provider);
+                    break;
 
-            case "basic":
-                $auth = new \Anakeen\Core\Internal\BasicAuthenticator($authtype, $provider);
-                break;
+                case "basic":
+                    $auth = new \Anakeen\Core\Internal\BasicAuthenticator($authtype, $provider);
+                    break;
 
-            default:
-                $authClass = strtolower($authtype) . "Authenticator";
-                if (!\Anakeen\Core\Internal\Autoloader::classExists($authClass)) {
-                    throw new Exception("API0100", $authtype);
-                }
-                $auth = new $authClass($authtype, $provider);
+                default:
+                    throw new Exception("API0109", $authtype);
+            }
         }
 
         return $auth;
     }
 
     /**
-     * @param \Anakeen\Core\Account    $userAccount account identify use for the token
-     * @param array         $routes      list of routes matches
-     * @param int|\DateTime $expiration  if it is a number, is use as a delay in seconds, if it is a DateTime object use as end validity date
-     * @param bool          $oneshot     if true the token can be used only on time (it is destroyed after use)
-     * @param string        $description text description
+     * @param \Anakeen\Core\Account $userAccount account identify use for the token
+     * @param array                 $routes      list of routes matches
+     * @param int|\DateTime         $expiration  if it is a number, is use as a delay in seconds, if it is a DateTime object use as end validity date
+     * @param bool                  $oneshot     if true the token can be used only on time (it is destroyed after use)
+     * @param string                $description text description
      *
      * @return string   return the token identifier
      * @throws Exception

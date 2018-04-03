@@ -28,7 +28,7 @@ abstract class Authenticator
     
     const nullProvider = "__for_logout__";
     /**
-     * @var \Provider
+     * @var \Anakeen\Core\Internal\AuthentProvider
      */
     public $provider = null;
     protected $parms;
@@ -45,25 +45,25 @@ abstract class Authenticator
         
         $tx = array(
             'type' => $authtype,
-            'provider' => $authprovider
+            'AuthentProvider' => $authprovider
         );
-        $ta = self::getAuthTypeParams();
+        $ta = AuthenticatorManager::getAuthTypeParams();
         if ($authprovider != self::nullProvider) {
             $tp = self::getAuthParam($authprovider);
             $this->parms = array_merge($tx, $ta, $tp);
             
-            if (!array_key_exists('provider', $this->parms)) {
+            if (!array_key_exists('AuthentProvider', $this->parms)) {
                 throw new \Dcp\Exception(__METHOD__ . " " . "Error: provider parm not specified at __construct");
             }
-            $providerClass = ucfirst(strtolower($this->parms['provider'])) . 'Provider';
-            
 
-            if (!class_exists($providerClass)) {
-                throw new \Dcp\Exception(__METHOD__ . " " . "Error: " . $providerClass . " class not found");
+            if (empty($tp["class"])) {
+                throw new \Dcp\Exception(__METHOD__ . " " . "Error: \"class\" parameter must be defined in provider config not found");
             }
+            $providerClass = $tp["class"];
+
             //     error_log("Using authentication provider [".$providerClass."]");
             $this->provider = new $providerClass($authprovider, $this->parms);
-            if (!is_a($this->provider, \Provider::class)) {
+            if (!is_a($this->provider, \Anakeen\Core\Internal\AuthentProvider::class)) {
                 throw new \Dcp\Exception(__METHOD__ . " " . sprintf("Error: provider with class '%s' does not inherits from class 'Provider'.", $providerClass));
             }
         } else {
@@ -88,19 +88,7 @@ abstract class Authenticator
         return $authentConfigs[$provider];
     }
     
-    public static function getAuthTypeParams()
-    {
-        $authModeConfig = getDbAccessValue('authentModeConfig');
-        if (!is_array($authModeConfig)) {
-            throw new \Dcp\Exception('FILE0006');
-        }
-        
-        if (!array_key_exists(\Anakeen\Core\Internal\AuthenticatorManager::getAuthType(), $authModeConfig)) {
-            return array();
-        }
-        
-        return $authModeConfig[\Anakeen\Core\Internal\AuthenticatorManager::getAuthType() ];
-    }
+
     
     public static function documentUserExists($username)
     {
