@@ -9,7 +9,6 @@ namespace Dcp\Pu;
  * @author Anakeen
  * @package Dcp\Pu
  */
-require_once 'WHAT/autoload.php';
 class SuiteDcp
 {
     public static function suite()

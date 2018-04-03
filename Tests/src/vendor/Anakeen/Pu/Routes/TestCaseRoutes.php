@@ -10,7 +10,6 @@ use Slim\Http\Environment;
 use Slim\Http\Request;
 use Slim\Http\RequestBody;
 
-require_once 'PU_testcase_dcp_commonfamily.php';
 
 class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
 {

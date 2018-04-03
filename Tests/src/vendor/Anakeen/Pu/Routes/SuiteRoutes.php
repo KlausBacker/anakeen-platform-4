@@ -4,10 +4,6 @@ namespace Anakeen\Pu\Routes;
 
 use Dcp\Pu\FrameworkDcp;
 
-require_once __DIR__ . "/../../WHAT/Lib.Prefix.php";
-require_once 'WHAT/autoload.php';
-
-
 class SuiteRoutes
 {
     const LOGFILE = "/var/tmp/puapi.log";
@@ -24,9 +20,9 @@ class SuiteRoutes
     {
         $suite = new FrameworkDcp();
 
-        $suite->addTestSuite("Anakeen\\Pu\\Routes\\CoreDataDocument");
-        $suite->addTestSuite("Anakeen\\Pu\\Routes\\CoreDataFamilyDocument");
-        $suite->addTestSuite("Anakeen\\Pu\\Routes\\CoreRouteAccess");
+        $suite->addTestSuite(\Anakeen\Pu\Routes\CoreDocument\PuCoreDataDocument::class);
+        $suite->addTestSuite(\Anakeen\Pu\Routes\CoreFamily\PuCoreDataFamilyDocument::class);
+        $suite->addTestSuite(\Anakeen\Pu\Routes\RouteAccess\PuCoreRouteAccess::class);
 
         return $suite;
     }

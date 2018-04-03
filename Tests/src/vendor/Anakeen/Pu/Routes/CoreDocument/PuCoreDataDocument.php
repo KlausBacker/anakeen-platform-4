@@ -1,6 +1,6 @@
 <?php
 
-namespace Anakeen\Pu\Routes;
+namespace Anakeen\Pu\Routes\CoreDocument;
 
 use Anakeen\Core\DocManager;
 
@@ -8,7 +8,7 @@ require_once __DIR__ . '/../TestCaseRoutes.php';
 require DEFAULT_PUBDIR . '/vendor/Anakeen/lib/vendor/autoload.php';
 
 
-class CoreDataDocument extends TestCaseRoutes
+class PuCoreDataDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
 {
     /**
      * import TST_APIBASE family

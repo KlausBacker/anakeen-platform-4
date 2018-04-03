@@ -8,7 +8,6 @@ namespace Dcp\Pu;
 
 use Anakeen\Core\DbManager;
 
-require_once 'PU_testcase_dcp.php';
 
 abstract class TestCaseDcpApplication extends TestCaseDcp
 {

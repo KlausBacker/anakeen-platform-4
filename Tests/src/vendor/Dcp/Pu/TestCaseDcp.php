@@ -5,9 +5,6 @@ namespace Dcp\Pu;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 
-require_once __DIR__ . "/../WHAT/Lib.Prefix.php";
-require_once 'WHAT/autoload.php';
-include_once("FDL/Class.Doc.php"); // to include some libraries
 
 class TestCaseDcp extends \PHPUnit\Framework\TestCase
 {

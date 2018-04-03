@@ -8,14 +8,14 @@ namespace Dcp\Pu;
 
 use Anakeen\Pu\Routes\SuiteRoutes;
 
-require_once __DIR__ . "/../WHAT/Lib.Prefix.php";
+require __DIR__ . '/../autoload.php';
+require __DIR__ . '/../WHAT/Lib.Prefix.php';
 
 set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__);
 
-require_once 'WHAT/autoload.php';
 
 // ...
-class TestSuiteDcp
+class CoreTests
 {
     const LOGFILE = "/var/tmp/pudcp.log";
     const MSGFILE = "/var/tmp/pudcp.msg";

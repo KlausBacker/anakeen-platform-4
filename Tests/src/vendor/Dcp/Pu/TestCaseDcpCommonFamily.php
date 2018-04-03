@@ -13,7 +13,6 @@ namespace Dcp\Pu;
 
 use Anakeen\Core\DbManager;
 
-require_once 'PU_testcase_dcp.php';
 
 class TestCaseDcpCommonFamily extends TestCaseDcp
 {
