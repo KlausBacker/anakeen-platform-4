@@ -959,7 +959,7 @@ class WDoc extends Doc
             
             return $err . $err2;
         }
-        AddLogMsg(sprintf(_("%s new state %s"), $this->doc->title, _($newstate)));
+        \Anakeen\Core\Utils\System::addLogMsg(sprintf(_("%s new state %s"), $this->doc->title, _($newstate)));
         
         $this->doc->enableEditControl();
         // post action

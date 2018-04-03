@@ -13,7 +13,7 @@ namespace Dcp\Pu;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DocManager;
 
-require_once 'PU_testcase_dcp_commonfamily.php';
+//require_once 'PU_testcase_dcp_commonfamily.php';
 
 class TestNewDoc extends TestCaseDcpCommonFamily
 {

@@ -264,7 +264,7 @@ function convertFile($infile, $engine, $outfile, &$info)
         // waiting response
         if ($err == "") {
             $status = "";
-            setMaxExecutionTimeTo(3600);
+            \Anakeen\Core\Utils\System::setMaxExecutionTimeTo(3600);
             while (($status != 'K') && ($status != 'D') && ($err == "")) {
                 $err = $ot->getInfo($tid, $info);
                 $status = $info["status"];

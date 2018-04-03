@@ -6,6 +6,9 @@
 
 namespace Dcp\Core;
 
+use Anakeen\Core\DbManager;
+use Anakeen\Core\DocManager;
+
 include_once("FDL/LegacyDocManager.php");
 
 class ImportAccounts
@@ -31,23 +34,23 @@ class ImportAccounts
      * @var array list all actions done
      */
     protected $report = array();
-    
+
     protected $xsd = "vendor/Anakeen/Xml/accounts.xsd";
-    
+
     protected $familiesXsd = array();
-    
+
     protected $stopOnError = false;
-    
+
     const ABORTORDER = "::ABORT::";
-    
+
     protected $sessionKey = '';
-    
+
     private $needSyncAccounts = false;
     /**
      * @var \Anakeen\Core\Account
      */
     private $workAccount = null;
-    
+
     public function import()
     {
         $this->setSessionMessage(___("Load XML file", "fuserimport"));
@@ -56,22 +59,22 @@ class ImportAccounts
         $this->xml->preserveWhiteSpace = false;
         $this->xml->formatOutput = true;
         $this->xpath = new \DOMXPath($this->xml);
-        
+
         try {
             $this->validateShema();
             $this->workAccount = new \Anakeen\Core\Account();
-            
+
             if ($this->transactionMode || $this->analyzeOnly) {
-                $this->workAccount->savePoint("AccountsExport");
+                DbManager::savePoint("AccountsExport");
                 // Use a master lock because can be numerous accounts to import
-                $this->workAccount->setMasterLock(true);
+                DbManager::setMasterLock(true);
             }
             $this->importRoles();
             $this->importGroups();
             $this->importUsers();
-            
+
             if ($this->transactionMode && !$this->hasErrors() && !$this->analyzeOnly) {
-                $this->workAccount->commitPoint("AccountsExport");
+                DbManager::commitPoint("AccountsExport");
                 if ($this->needSyncAccounts) {
                     $g = new \Group();
                     // send order to recompute memberOf
@@ -93,6 +96,7 @@ class ImportAccounts
         }
         $this->setSessionMessage("::END::");
     }
+
     /**
      * @param string $file XML file path to import
      */
@@ -100,6 +104,7 @@ class ImportAccounts
     {
         $this->file = $file;
     }
+
     /**
      * @param boolean $transactionMode
      */
@@ -107,6 +112,7 @@ class ImportAccounts
     {
         $this->transactionMode = $transactionMode;
     }
+
     /**
      * @param string $sessionKey
      */
@@ -114,6 +120,7 @@ class ImportAccounts
     {
         $this->sessionKey = $sessionKey;
     }
+
     /**
      * @param boolean $stopOnError
      */
@@ -121,6 +128,7 @@ class ImportAccounts
     {
         $this->stopOnError = $stopOnError;
     }
+
     /**
      * Abort current import session
      */
@@ -131,22 +139,23 @@ class ImportAccounts
             $action->session->register($this->sessionKey . "::ABORT", self::ABORTORDER);
         }
     }
+
     protected function setSessionMessage($text)
     {
         if ($this->sessionKey) {
             global $action;
-            
+
             $action->session->register($this->sessionKey, $text);
             $msg = $action->session->read($this->sessionKey . "::ABORT");
             if ($msg === self::ABORTORDER) {
                 $this->stopOnError = false;
                 $action->session->register($this->sessionKey . "::ABORT", "CATCHED");
-                
+
                 throw new Exception("ACCT0204");
             }
         }
     }
-    
+
     public function getSessionMessage()
     {
         if ($this->sessionKey) {
@@ -155,52 +164,54 @@ class ImportAccounts
         }
         return null;
     }
-    
+
     protected function libxml_display_error($error)
     {
         $return = "";
         switch ($error->level) {
             case LIBXML_ERR_WARNING:
-                $return.= "Warning $error->code: ";
+                $return .= "Warning $error->code: ";
                 break;
 
             case LIBXML_ERR_ERROR:
-                $return.= "Error $error->code: ";
+                $return .= "Error $error->code: ";
                 break;
 
             case LIBXML_ERR_FATAL:
-                $return.= "Fatal Error $error->code: ";
+                $return .= "Fatal Error $error->code: ";
                 break;
         }
-        $return.= trim($error->message);
+        $return .= trim($error->message);
         if ($error->file) {
-            $return.= " in $error->file";
+            $return .= " in $error->file";
         }
-        $return.= " on line $error->line\n";
-        
+        $return .= " on line $error->line\n";
+
         return $return;
     }
-    
+
     protected function getXmlError()
     {
         $errors = libxml_get_errors();
         $humanError = "";
         foreach ($errors as $error) {
-            $humanError.= $this->libxml_display_error($error);
+            $humanError .= $this->libxml_display_error($error);
         }
         libxml_clear_errors();
         return $humanError;
     }
+
     /**
      * Validate XML file with accounts schema
      * Document parts are validated by families schemas
+     *
      * @throws Exception
      */
     protected function validateShema()
     {
         libxml_use_internal_errors(true);
         $xmlWithoutDocument = new \DOMDocument();
-        
+
         $xmlWithoutDocument->load($this->file);
         $xmlWithoutDocument->preserveWhiteSpace = false;
         $xpath = new \DOMXPath($xmlWithoutDocument);
@@ -214,8 +225,8 @@ class ImportAccounts
                 $nodeDocument->removeChild($nodeDocument->firstChild);
             }
         }
-        
-        if (!$xmlWithoutDocument->schemaValidate(DEFAULT_PUBDIR."/".$this->xsd)) {
+
+        if (!$xmlWithoutDocument->schemaValidate(DEFAULT_PUBDIR . "/" . $this->xsd)) {
             throw new Exception("ACCT0201", $this->getXmlError());
         }
         // Now validate document part
@@ -230,6 +241,7 @@ class ImportAccounts
         }
         $this->xml->normalize();
     }
+
     /**
      * @param boolean $analyzeOnly
      */
@@ -237,9 +249,12 @@ class ImportAccounts
     {
         $this->analyzeOnly = $analyzeOnly;
     }
+
     /**
      * Return family xsd
+     *
      * @param string $familyName family name
+     *
      * @return string
      * @throws Exception
      */
@@ -249,16 +264,17 @@ class ImportAccounts
             /**
              * @var \DocFam $family
              */
-            $family = new_doc("", \Anakeen\Core\DocManager::getFamilyIdFromName($familyName));
-            if (!$family->isAlive()) {
+
+            $family = DocManager::getFamily($familyName);
+            if (!$family || !$family->isAlive()) {
                 throw new Exception("ACCT0202", $familyName);
             }
             $this->familiesXsd[$familyName] = $family->getXmlSchema();
         }
-        
+
         return $this->familiesXsd[$familyName];
     }
-    
+
     protected function importRoles()
     {
         $roles = $this->xpath->query("/accounts/roles/role");
@@ -268,6 +284,7 @@ class ImportAccounts
             $this->importRole($role);
         }
     }
+
     protected function importGroups()
     {
         $groups = $this->xpath->query("/accounts/groups/group");
@@ -277,18 +294,21 @@ class ImportAccounts
             $this->importGroup($group);
         }
     }
+
     protected function importUsers()
     {
         $users = $this->xpath->query("/accounts/users/user");
-        
+
         $count = $users->length;
         foreach ($users as $k => $user) {
             $this->setSessionMessage(sprintf(___("Import user (%d/%d)", "fuserimport"), $k, $count));
             $this->importUser($user);
         }
     }
+
     /**
      * @param \DOMElement $node
+     *
      * @throws Exception
      */
     protected function importUser($node)
@@ -312,25 +332,24 @@ class ImportAccounts
                 switch ($varId) {
                     case "substitute":
                         $substituteLogin = $nodeInfo->getAttribute("reference");
-                        
+
                         $subs = $this->getWorkingAccount();
                         $subs->setLoginName($substituteLogin);
                         if (!$subs->id) {
                             throw new Exception("ACCT0200", $substituteLogin, $values["login"]);
                         }
-                        
+
                         $values[$varId] = $subs->id;
                         break;
 
                     case "status":
-                        
                         $status = $nodeInfo->getAttribute("activated");
                         if ($status === "true") {
                             $values[$varId] = "A";
                         } elseif ($status === "false") {
                             $values[$varId] = "D";
                         }
-                        
+
                         break;
 
                     case "password":
@@ -366,6 +385,7 @@ class ImportAccounts
         $this->importParent($node, "associatedRole", $account);
         $this->importParent($node, "parentGroup", $account);
     }
+
     /**
      * @param \DOMElement $node
      */
@@ -386,15 +406,16 @@ class ImportAccounts
                 $this->addToReport($values[$varId], "group update", "Reference must not contains uppercase characters", "", $value->item(0));
             }
         }
-        
+
         $account = $this->importAccount($node, "group", "IGROUP", $values);
         $this->importParent($node, "associatedRole", $account);
         $this->importParent($node, "parentGroup", $account);
     }
+
     /**
-     * @param \DOMElement $node
-     * @param string      $tagName "group" or "role"
-     * @param \Anakeen\Core\Account  $account
+     * @param \DOMElement           $node
+     * @param string                $tagName "group" or "role"
+     * @param \Anakeen\Core\Account $account
      */
     protected function importParent($node, $tagName, \Anakeen\Core\Account $account)
     {
@@ -406,7 +427,7 @@ class ImportAccounts
              */
             $listNodeItem = $listNode->item(0);
             $reset = $listNodeItem->getAttribute("reset") === "true";
-            
+
             if ($reset) {
                 $type = "";
                 if ($tagName === "parentGroup") {
@@ -415,7 +436,8 @@ class ImportAccounts
                     $type = \Anakeen\Core\Account::ROLE_TYPE;
                 }
                 $sql = sprintf("delete from groups using users where iduser=%d and users.id=groups.idgroup and users.accounttype= %s", $account->id, pg_escape_literal($type));
-                simpleQuery("", $sql);
+
+                DbManager::query($sql);
                 $this->addToReport($account->login, "reset$tagName", "", "", $listNodeItem);
                 $this->needSyncAccounts = true;
                 $account->updateMemberOf();
@@ -428,14 +450,14 @@ class ImportAccounts
             foreach ($parents as $parentNode) {
                 $parentLogin = $parentNode->getAttribute("reference");
                 $groupAccount = $this->getWorkingAccount();
-                
+
                 if ($groupAccount->setLoginName($parentLogin)) {
                     $group = new \Group();
                     $group->setSyncAccount(false); // No sync for each grou, sync done at the end
                     $group->idgroup = $groupAccount->id;
                     $group->iduser = $account->id;
                     $alreadyExists = ($group->preInsert() === "OK");
-                    
+
                     if (!$alreadyExists) {
                         $err = $group->add();
                         $this->needSyncAccounts = true;
@@ -468,6 +490,7 @@ class ImportAccounts
             }
         }
     }
+
     /**
      * @param \DOMElement $node
      */
@@ -490,11 +513,12 @@ class ImportAccounts
         }
         $this->importAccount($node, "role", "ROLE", $values);
     }
+
     /**
-     * @param \DOMElement $node node to import
-     * @param string $tag node tag
-     * @param string $defaultFamily default family for account in case of document tag not exists
-     * @param array $values system values to update account
+     * @param \DOMElement $node          node to import
+     * @param string      $tag           node tag
+     * @param string      $defaultFamily default family for account in case of document tag not exists
+     * @param array       $values        system values to update account
      *
      * @return \Anakeen\Core\Account
      * @throws Exception
@@ -512,12 +536,12 @@ class ImportAccounts
             $family = $documentNode->getAttribute("family");
         }
         $account = new \Anakeen\Core\Account();
-        
+
         $msg = "";
         if ($values) {
             $msg = ___("Updated values", "dcp:import") . " :\n" . substr(print_r($values, true), 7, -2);
         }
-        
+
         if ($account->setLoginName($values["login"])) {
             // Already exists : update role
         } else {
@@ -533,12 +557,18 @@ class ImportAccounts
                 $this->addToReport($values["login"], "documentCreation", $err, "", $documentNode);
                 $famId = $defaultFamily;
             }
-            $newDocAccount = \createDoc("", $famId);
+            $newDocAccount = DocManager::createDocument($famId);
             if ($newDocAccount) {
                 $err = $newDocAccount->add();
                 if (!$err) {
                     $account->fid = $newDocAccount->id;
-                    $this->addToReport($values["login"], "documentCreation", "", sprintf(___("Family %s", "fusersimport"), $newDocAccount->getFamilyDocument()->getTitle()), $documentNode ? ($documentNode->cloneNode(false)) : null);
+                    $this->addToReport(
+                        $values["login"],
+                        "documentCreation",
+                        "",
+                        sprintf(___("Family %s", "fusersimport"), $newDocAccount->getFamilyDocument()->getTitle()),
+                        $documentNode ? ($documentNode->cloneNode(false)) : null
+                    );
                 } else {
                     $this->addToReport($values["login"], "documentCreation", $err, "", $documentNode);
                 }
@@ -556,11 +586,7 @@ class ImportAccounts
              * @var \DOMElement $uNode
              */
             $uNode = $node->cloneNode(true);
-            foreach (array(
-                "document",
-                "groups",
-                "roles"
-            ) as $delTag) {
+            foreach (["document", "groups", "roles"] as $delTag) {
                 $delNode = $uNode->getElementsByTagName($delTag);
                 if ($delNode->length > 0) {
                     $uNode->removeChild($delNode->item(0));
@@ -569,13 +595,13 @@ class ImportAccounts
             $msg = sprintf(___("Account Type \"%s\""), $tag) . "\n" . $msg;
             if ($account->id > 0) {
                 $err = $account->modify();
-                
+
                 $this->addToReport($account->login, "updateAccount", $err, $msg, $uNode);
                 if ($roleDocumentNode) {
                     $docName = $roleDocumentNode->getAttribute("name");
                     if ($docName) {
-                        $docAccount = \new_doc("", $account->fid);
-                        if (!$docAccount->name) {
+                        $docAccount = DocManager::getDocument($account->fid);
+                        if ($docAccount && !$docAccount->name) {
                             $docAccount->setLogicalName($docName);
                         } else {
                             if ($docAccount->name != $docName) {
@@ -605,32 +631,32 @@ class ImportAccounts
         if ($roleDocumentNode) {
             $this->importXMLDocument($roleDocumentNode, $account);
         }
-        
+
         return $account;
     }
-    
+
     protected function importXMLDocument(\DOMElement $node, \Anakeen\Core\Account $account)
     {
         $node->setAttribute("id", $account->fid);
-        $importXml = new importXml();
+        $importXml = new ImportXml();
         $tmpFile = $this->getTmpFile();
-        
+
         file_put_contents($tmpFile, $this->xml->saveXML($node));
-        
+
         $importXml->importXmlFileDocument($tmpFile, $log);
         $msg = "";
         if ($log["values"]) {
             $msg = ___("Updated values", "dcp:import") . " :\n" . substr(print_r($log["values"], true), 7, -2);
         }
-        
+
         $this->addToReport($account->login, "documentUpdate", $log["err"], $msg, $node);
     }
-    
+
     protected function getTmpFile()
     {
         return \LibSystem::tempnam(null, "importXml");
     }
-    
+
     protected function addToReport($login, $actionType, $error, $msg = "", $node = null)
     {
         switch ($actionType) {
@@ -685,11 +711,11 @@ class ImportAccounts
             default:
                 $msgType = $actionType;
         }
-        
+
         if ($msg) {
-            $msgType.= " : \n" . $msg;
+            $msgType .= " : \n" . $msg;
         }
-        
+
         $this->report[] = array(
             "login" => $login,
             "action" => $actionType,
@@ -697,17 +723,17 @@ class ImportAccounts
             "message" => $msgType,
             "node" => ($node) ? $this->xml->saveXML($node) : ""
         );
-        
+
         if ($error && $this->stopOnError) {
             throw new Exception("ACCT0206");
         }
     }
-    
+
     public function getReport()
     {
         return $this->report;
     }
-    
+
     protected function hasErrors()
     {
         foreach ($this->report as $report) {
@@ -717,6 +743,7 @@ class ImportAccounts
         }
         return false;
     }
+
     /**
      * @return \Anakeen\Core\Account
      */

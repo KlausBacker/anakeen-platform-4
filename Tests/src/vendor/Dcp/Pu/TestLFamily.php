@@ -10,8 +10,8 @@ namespace Dcp\Pu;
  * @package Dcp\Pu
  */
 
-require_once 'PU_testcase_dcp_commonfamily.php';
-require_once 'EXTERNALS/fdl.php';
+//require_once 'PU_testcase_dcp_commonfamily.php';
+//require_once 'EXTERNALS/fdl.php';
 class TestLFamily extends TestCaseDcpCommonFamily
 {
     public static function getCommonImportFile()

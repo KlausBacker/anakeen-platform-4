@@ -6,7 +6,7 @@
 /**
  * Import documents
  *
- * @author Anakeen
+ * @author  Anakeen
  * @package FDL
  * @subpackage
  */
@@ -76,8 +76,10 @@ class ImportDocumentDescription
      */
     private $knownLogicalNames = array();
     private $userIds = [];
+
     /**
      * @param string $importFile
+     *
      * @throws Dcp\Exception
      */
     public function __construct($importFile)
@@ -92,8 +94,9 @@ class ImportDocumentDescription
             throw new Dcp\Exception(sprintf("no import file found : %s", $importFile));
         }
         $this->importFileName = $importFile;
-        $this->dbaccess = getDbAccess();
+        $this->dbaccess = \Anakeen\Core\DbManager::getDbAccess();
     }
+
     /**
      * @param boolean $verifyAttributeAccess
      */
@@ -101,12 +104,12 @@ class ImportDocumentDescription
     {
         $this->verifyAttributeAccess = $verifyAttributeAccess;
     }
-    
+
     public function analyzeOnly($analyze)
     {
         $this->analyze = $analyze;
     }
-    
+
     public function setPolicy($policy)
     {
         if (!$policy) {
@@ -114,17 +117,17 @@ class ImportDocumentDescription
         }
         $this->policy = $policy;
     }
-    
+
     public function setImportDirectory($dirid)
     {
         $this->dirid = $dirid;
     }
-    
+
     public function reinitAttribute($reinit)
     {
         $this->reinit = $reinit;
     }
-    
+
     public function reset($reset)
     {
         if ($reset && !is_array($reset)) {
@@ -134,17 +137,18 @@ class ImportDocumentDescription
         }
         $this->reset = $reset;
     }
+
     public function setComma($comma)
     {
         $this->csvSeparator = $comma;
     }
-    
+
     public function setCsvOptions($csvSeparator = ';', $csvEnclosure = '"', $csvLinebreak = '\n')
     {
         $this->csvSeparator = $csvSeparator;
         $this->csvEnclosure = $csvEnclosure;
         $this->csvLinebreak = $csvLinebreak;
-        
+
         $this->setAutoCsvOptions();
         return array(
             "separator" => $this->csvSeparator,
@@ -152,11 +156,14 @@ class ImportDocumentDescription
             "linebreak" => $this->csvLinebreak
         );
     }
+
     /**
      * Detect csv options - separator and enclosure arguments are modified if set to auto
-     * @param $csvFileName
+     *
+     * @param        $csvFileName
      * @param string &$separator need to set to 'auto' to detect
      * @param string &$enclosure need to set to 'auto' to detect
+     *
      * @return array associaive array "enclosure", "separator" keys
      * @throws Dcp\Exception
      */
@@ -188,7 +195,7 @@ class ImportDocumentDescription
             "enclosure" => $enclosure
         );
     }
-    
+
     protected function setAutoCsvOptions()
     {
         if (!$this->ods2CsvFile) {
@@ -203,16 +210,16 @@ class ImportDocumentDescription
             $this->csvLinebreak = '\n';
         }
     }
+
     public function import()
     {
-        setMaxExecutionTimeTo(300);
-        
+        \Anakeen\Core\Utils\System::setMaxExecutionTimeTo(300);
+
         $this->nbDoc = 0; // number of imported document
-        $this->dbaccess = getDbAccess();
         $this->structAttr = null;
         $this->colOrders = array();
         $this->ods2CsvFile = "";
-        
+
         $this->nLine = 0;
         $this->beginLine = 0;
         $csvLinebreak = $this->csvLinebreak;
@@ -244,8 +251,8 @@ class ImportDocumentDescription
                 }
             }
             $this->nLine++;
-            
-            if (!isUTF8($data)) {
+
+            if (!\Anakeen\Core\Utils\Strings::isUTF8($data)) {
                 $data = array_map("utf8_encode", $data);
             }
             // return structure
@@ -261,7 +268,7 @@ class ImportDocumentDescription
                 "filename" => "",
                 "title" => "",
                 "id" => "",
-                "values" => array() ,
+                "values" => array(),
                 "familyid" => 0,
                 "familyname" => "",
                 "action" => " "
@@ -269,66 +276,64 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["title"] = substr($data[0], 0, 10);
             $data[0] = trim($data[0]);
             switch ($data[0]) {
-                    // -----------------------------------
-                    
+                // -----------------------------------
+
                 case "BEGIN":
                     $this->doBegin($data);
                     break;
-                    // -----------------------------------
-                    
+                // -----------------------------------
+
                 case "END":
-                    
                     $this->doEnd($data);
-                    
+
                     break;
 
                 case "RESET":
                     $this->doReset($data);
                     break;
-                    // -----------------------------------
-                    
+                // -----------------------------------
+
                 case "DOC":
-                    
                     $this->doDoc($data);
                     break;
-                    // -----------------------------------
-                    
+                // -----------------------------------
+
                 case "SEARCH":
                     $this->doSearch($data);
-                    
+
                     break;
-                    // -----------------------------------
-                    
+                // -----------------------------------
+
                 case "TYPE":
                     if (!$this->doc) {
                         break;
                     }
-                    
+
                     $this->doc->doctype = $data[1];
                     $this->tcr[$this->nLine]["msg"] = sprintf(_("set doctype to '%s'"), $data[1]);
                     break;
-                    // -----------------------------------
-                    
+                // -----------------------------------
+
                 case "GENVERSION":
                     if (!$this->doc) {
                         break;
                     }
-                    
+
                     $this->doc->genversion = $data[1];
                     $this->tcr[$this->nLine]["msg"] = sprintf(_("generate version '%s'"), $data[1]);
                     break;
-                    // -----------------------------------
-                    
+                // -----------------------------------
+
                 case "MAXREV":
                     if (!$this->doc) {
                         break;
                     }
-                    
+
                     $this->doc->maxrev = intval($data[1]);
                     $this->tcr[$this->nLine]["msg"] = sprintf(_("max revision '%d'"), $data[1]);
                     break;
-                    // -----------------------------------
-                    
+                // -----------------------------------
+
                 case "ICON": // for family
                     $this->doIcon($data);
                     break;
@@ -361,12 +366,12 @@ class ImportDocumentDescription
                     if (!$this->doc) {
                         break;
                     }
-                    
+
                     $this->doc->schar = $data[1];
                     $this->tcr[$this->nLine]["msg"] = sprintf(_("set special characteristics to '%s'"), $data[1]);
                     break;
-                    // -----------------------------------
-                    
+                // -----------------------------------
+
                 case "CLASS":
                     $this->doClass($data);
                     break;
@@ -379,7 +384,7 @@ class ImportDocumentDescription
                     if (!$this->doc) {
                         break;
                     }
-                    
+
                     $this->doc->usefor = "P";
                     $this->tcr[$this->nLine]["msg"] = sprintf(_("change special use to '%s'"), $this->doc->usefor);
                     break;
@@ -388,7 +393,7 @@ class ImportDocumentDescription
                     if (!$this->doc) {
                         break;
                     }
-                    
+
                     $this->doc->usefor = $data[1];
                     $this->tcr[$this->nLine]["msg"] = sprintf(_("change special use to '%s'"), $this->doc->usefor);
                     break;
@@ -446,7 +451,7 @@ class ImportDocumentDescription
 
                 case "LDAPMAP":
                     $this->doLdapmap($data);
-                    
+
                     break;
 
                 case "PROP":
@@ -458,16 +463,18 @@ class ImportDocumentDescription
                     unset($this->tcr[$this->nLine]);
             }
         }
-        
+
         fclose($this->fdoc);
-        
+
         if ($this->ods2CsvFile) {
             unlink($this->ods2CsvFile);
         } // temporary csvfile
         return $this->tcr;
     }
+
     /**
      * add application tag
+     *
      * @param array $data
      */
     protected function doATag(array $data)
@@ -483,8 +490,10 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
         }
     }
+
     /**
      * analyze BEGIN
+     *
      * @param array $data line of description file
      */
     protected function doBegin(array $data)
@@ -508,13 +517,13 @@ class ImportDocumentDescription
                 } else {
                     $this->doc = new DocFam($this->dbaccess, $data[3], '', 0, false);
                 }
-                
+
                 $this->familyIcon = "";
-                
+
                 if (!$this->doc->isAffected()) {
                     if (!$this->analyze) {
                         $this->doc = new DocFam($this->dbaccess);
-                        
+
                         if (isset($data[3]) && ($data[3] > 0)) {
                             $this->doc->id = $data[3];
                         } // static id
@@ -552,15 +561,15 @@ class ImportDocumentDescription
                 if ($data[4] == "--") {
                     $this->doc->classname = '';
                 }
-                $this->tcr[$this->nLine]["err"].= $check->checkClass($data, $this->doc)->getErrors();
-                
+                $this->tcr[$this->nLine]["err"] .= $check->checkClass($data, $this->doc)->getErrors();
+
                 if ($data[5] && ($data[5] != '-')) {
                     $this->doc->name = $data[5];
                 } // internal name
-                $this->tcr[$this->nLine]["err"].= $err;
-                
+                $this->tcr[$this->nLine]["err"] .= $err;
+
                 if ($this->reinit) {
-                    $this->tcr[$this->nLine]["msg"].= sprintf(_("reinit all attributes"));
+                    $this->tcr[$this->nLine]["msg"] .= sprintf(_("reinit all attributes"));
                     if ($this->analyze) {
                         return;
                     }
@@ -570,7 +579,7 @@ class ImportDocumentDescription
                         $err = $oattr->exec_query(sprintf("delete from docattr where docid=%d", $oattr->docid));
                         // $err .= $oattr->exec_query(sprintf("update docfam set defval=null,param=null  where id=%d",  $oattr->docid));
                     }
-                    $this->tcr[$this->nLine]["err"].= $err;
+                    $this->tcr[$this->nLine]["err"] .= $err;
                 }
                 if ($this->reset) {
                     foreach ($this->reset as $reset) {
@@ -581,17 +590,19 @@ class ImportDocumentDescription
                     }
                 }
             } else {
-                $this->tcr[$this->nLine]["err"].= $err;
+                $this->tcr[$this->nLine]["err"] .= $err;
             }
         } catch (Exception $e) {
-            $this->tcr[$this->nLine]["err"].= $e->getMessage();
+            $this->tcr[$this->nLine]["err"] .= $e->getMessage();
         }
         if ($this->tcr[$this->nLine]["err"]) {
             $this->tcr[$this->nLine]["action"] = "ignored";
         }
     }
+
     /**
      * analyze END
+     *
      * @param array $data line of description file
      */
     protected function doEnd(array $data)
@@ -602,11 +613,11 @@ class ImportDocumentDescription
         // add messages
         $msg = sprintf(_("modify %s family"), $this->doc->title);
         $this->tcr[$this->nLine]["msg"] = $msg;
-        
+
         $ferr = '';
         for ($i = $this->beginLine; $i < $this->nLine; $i++) {
             if (!empty($this->tcr[$i]["err"])) {
-                $ferr.= $this->tcr[$i]["err"];
+                $ferr .= $this->tcr[$i]["err"];
             }
         }
         if ($this->analyze) {
@@ -623,15 +634,15 @@ class ImportDocumentDescription
             $now = gettimeofday();
             $this->doc->revdate = $now['sec'];
             $this->doc->modify();
-            
+
             $check = new CheckEnd($this);
             if ($this->doc->doctype == "C") {
                 global $tFamIdName;
                 $check->checkMaxAttributes($this->doc);
                 $err = $check->getErrors();
-                
+
                 if ($err && $this->analyze) {
-                    $this->tcr[$this->nLine]["msg"].= sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
+                    $this->tcr[$this->nLine]["msg"] .= sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
                     $this->tcr[$this->nLine]["action"] = "warning";
                     return;
                 }
@@ -641,7 +652,7 @@ class ImportDocumentDescription
                     } //special to add calculated attributes
                     $msg = \Dcp\FamilyImport::refreshPhpPgDoc($this->dbaccess, $this->doc->id);
                     if ($msg !== '') {
-                        $this->tcr[$this->nLine]["err"].= $msg;
+                        $this->tcr[$this->nLine]["err"] .= $msg;
                         $this->tcr[$this->nLine]["action"] = "ignored";
                         $this->tcr[$this->beginLine]["action"] = "ignored";
                         return;
@@ -651,7 +662,7 @@ class ImportDocumentDescription
                     } // refresh getFamIdFromName for multiple family import
                     $checkCr = CheckDb::verifyDbFamily($this->doc->id);
                     if (count($checkCr) > 0) {
-                        $this->tcr[$this->nLine]["err"].= ErrorCode::getError('ATTR1700', implode(",", $checkCr));
+                        $this->tcr[$this->nLine]["err"] .= ErrorCode::getError('ATTR1700', implode(",", $checkCr));
                     } else {
                         // Need to update child family in case of new attribute
                         $childsFams = ($this->doc->getChildFam());
@@ -660,38 +671,38 @@ class ImportDocumentDescription
                         }
                     }
                 } else {
-                    $this->tcr[$this->nLine]["err"].= $err;
+                    $this->tcr[$this->nLine]["err"] .= $err;
                 }
             }
-            
+
             if ($this->needCleanParamsAndDefaults) {
                 $this->needCleanParamsAndDefaults = false;
                 $this->cleanDefaultAndParametersValues();
             }
-            
-            $this->tcr[$this->nLine]["err"].= $check->check($data, $this->doc)->getErrors();
+
+            $this->tcr[$this->nLine]["err"] .= $check->check($data, $this->doc)->getErrors();
             if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
-                $this->tcr[$this->nLine]["msg"].= sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
+                $this->tcr[$this->nLine]["msg"] .= sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
                 $this->tcr[$this->nLine]["action"] = "warning";
                 return;
             }
-            
+
             if ((!$this->analyze) && ($this->familyIcon != "")) {
                 $this->doc->changeIcon($this->familyIcon);
             }
-            $this->tcr[$this->nLine]["msg"].= $this->doc->postImport();
+            $this->tcr[$this->nLine]["msg"] .= $this->doc->postImport();
             if (!$this->tcr[$this->nLine]["err"]) {
                 $check->checkMaxAttributes($this->doc);
                 $this->tcr[$this->nLine]["err"] = $check->getErrors();
                 if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
-                    $this->tcr[$this->nLine]["msg"].= sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
+                    $this->tcr[$this->nLine]["msg"] .= sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
                     $this->tcr[$this->nLine]["action"] = "warning";
                     return;
                 }
             }
-            
+
             $this->doc->addHistoryEntry(_("Update by importation"));
-            
+
             $this->nbDoc++;
 
             \Anakeen\Core\DocManager::cache()->removeDocumentById($this->doc->id);
@@ -710,6 +721,7 @@ class ImportDocumentDescription
             }
         }
     }
+
     /**
      * Delete undeclared sql columns
      */
@@ -718,44 +730,46 @@ class ImportDocumentDescription
         if (!$this->doc) {
             return;
         }
-        
+
         $orphanAttributes = CheckDb::getOrphanAttributes($this->doc->id);
         if ($orphanAttributes) {
             $sql = array();
             foreach ($orphanAttributes as $orphanAttrId) {
                 $sql[] = sprintf("alter table doc%d drop column %s cascade; ", $this->doc->id, $orphanAttrId);
-                
-                $this->tcr[$this->nLine]["msg"].= "\nDestroy values for \"$orphanAttrId\".";
+
+                $this->tcr[$this->nLine]["msg"] .= "\nDestroy values for \"$orphanAttrId\".";
             }
             $sql[] = sprintf("create view family.\"%s\" as select * from doc%d", strtolower($this->doc->name), $this->doc->id);
-            
+
             foreach ($sql as $aSql) {
                 simpleQuery('', $aSql);
             }
         }
     }
-    
+
     protected function cleanDefaultAndParametersValues()
     {
         $defs = $this->doc->getOwnDefValues();
         foreach ($defs as $aid => $v) {
             if (!$this->doc->getAttribute($aid)) {
                 $this->doc->setDefValue($aid, '', false);
-                $this->tcr[$this->nLine]["msg"].= "\nClear default value \"$aid\".";
+                $this->tcr[$this->nLine]["msg"] .= "\nClear default value \"$aid\".";
             }
         }
         $defs = $this->doc->getOwnParams();
         foreach ($defs as $aid => $v) {
             if (!$this->doc->getAttribute($aid)) {
                 $this->doc->setParam($aid, '', false);
-                $this->tcr[$this->nLine]["msg"].= "\nClear parameter value \"$aid\".";
+                $this->tcr[$this->nLine]["msg"] .= "\nClear parameter value \"$aid\".";
             }
         }
-        
+
         $this->doc->modify();
     }
+
     /**
      * analyze RESET²
+     *
      * @param array $data line of description file
      */
     protected function doReset(array $data)
@@ -775,39 +789,41 @@ class ImportDocumentDescription
         if (!$this->tcr[$this->nLine]["err"]) {
             switch (strtolower($data[1])) {
                 case 'attributes':
-                    $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("reinit all attributes"));
+                    $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("reinit all attributes"));
                     if ($this->analyze) {
                         return;
                     }
-                    
+
                     $sql = sprintf("delete from docattr where docid=%d", $this->doc->id);
                     simpleQuery($this->dbaccess, $sql);
-                    
+
                     $this->needCleanParamsAndDefaults = true;
                     break;
 
                 case 'default':
-                    $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("Reset defaults values"));
+                    $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("Reset defaults values"));
                     $this->doc->defval = '';
                     break;
 
                 case 'parameters':
-                    $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("Reset parameters values"));
+                    $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("Reset parameters values"));
                     $this->doc->param = '';
                     break;
 
                 case 'enums':
-                    $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("Reset enums definition"));
-                    $sql = sprintf("update docattr set phpfunc=null from docenum where docattr.docid=docenum.famid and docattr.id = docenum.attrid and docattr.type ~ 'enum' and docattr.docid=%d", $this->doc->id);
+                    $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("Reset enums definition"));
+                    $sql
+                        = sprintf("update docattr set phpfunc=null from docenum where docattr.docid=docenum.famid and docattr.id = docenum.attrid and docattr.type ~ 'enum' and docattr.docid=%d",
+                        $this->doc->id);
                     simpleQuery($this->dbaccess, $sql);
                     $sql = sprintf("delete from docenum where famid=%d", $this->doc->id);
                     simpleQuery($this->dbaccess, $sql);
-                    
+
                     break;
 
                 case 'properties':
-                    
-                    $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("reinit all properties"));
+
+                    $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("reinit all properties"));
                     if ($this->analyze) {
                         return;
                     }
@@ -815,7 +831,7 @@ class ImportDocumentDescription
                     break;
 
                 case 'structure':
-                    $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("Reset attribute structure"));
+                    $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("Reset attribute structure"));
                     if ($this->analyze) {
                         return;
                     }
@@ -828,10 +844,12 @@ class ImportDocumentDescription
         } else {
             $this->tcr[$this->nLine]["action"] = "ignored";
         }
-        $this->tcr[$this->nLine]["err"].= $err;
+        $this->tcr[$this->nLine]["err"] .= $err;
     }
+
     /**
      * analyze DOC
+     *
      * @param array $data line of description file
      */
     protected function doDoc(array $data)
@@ -851,10 +869,12 @@ class ImportDocumentDescription
         if ($famName !== false && isset($this->badOrderErrors[$famName])) {
             /* Do not import the document if the ORDER line of its family was erroneous */
             if ($this->analyze) {
-                $this->tcr[$this->nLine]["msg"] = sprintf(_("Cannot import document because the ORDER line for family '%s' is incorrect: %s"), $famName, $this->badOrderErrors[$famName]);
+                $this->tcr[$this->nLine]["msg"] = sprintf(_("Cannot import document because the ORDER line for family '%s' is incorrect: %s"), $famName,
+                    $this->badOrderErrors[$famName]);
                 $this->tcr[$this->nLine]["action"] = "warning";
             } else {
-                $this->tcr[$this->nLine]["msg"] = sprintf(_("Cannot import document because the ORDER line for family '%s' is incorrect: %s"), $famName, $this->badOrderErrors[$famName]);
+                $this->tcr[$this->nLine]["msg"] = sprintf(_("Cannot import document because the ORDER line for family '%s' is incorrect: %s"), $famName,
+                    $this->badOrderErrors[$famName]);
                 $this->tcr[$this->nLine]["action"] = "ignored";
             }
             return;
@@ -865,15 +885,15 @@ class ImportDocumentDescription
         } else {
             $fromid = \Anakeen\Core\DocManager::getFamilyIdFromName($data[1]);
         }
-        
+
         if (isset($this->colKeys[$fromid])) {
             $tk = $this->colKeys[$fromid];
         } else {
             $tk = array(
-            "title"
-        );
+                "title"
+            );
         }
-        
+
         $torder = array();
         if (isset($this->colOrders[$fromid])) {
             $torder = $this->colOrders[$fromid];
@@ -899,9 +919,9 @@ class ImportDocumentDescription
             $this->knownLogicalNames[] = $data[2];
         }
         $oImportDocument->setKnownLogicalNames($this->knownLogicalNames);
-        
+
         $this->tcr[$this->nLine] = $oImportDocument->import($data)->getImportResult();
-        
+
         if ($this->tcr[$this->nLine]["err"] == "") {
             $this->nbDoc++;
         } else {
@@ -910,8 +930,10 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "warning";
         }
     }
+
     /**
      * analyze SEARCH
+     *
      * @param array $data line of description file
      */
     protected function doSearch(array $data)
@@ -944,7 +966,7 @@ class ImportDocumentDescription
             }
             $this->tcr[$this->nLine]["msg"] = sprintf(_("add %s search"), $data[3]);
             $this->tcr[$this->nLine]["action"] = "added";
-            $this->tcr[$this->nLine]["err"].= $err;
+            $this->tcr[$this->nLine]["err"] .= $err;
         }
         if (($err != "") && ($search->id > 0)) { // case only modify
             if ($search->Select($search->id)) {
@@ -955,15 +977,15 @@ class ImportDocumentDescription
             // update title in finish
             $search->title = $data[3];
             $err = $search->modify();
-            $this->tcr[$this->nLine]["err"].= $err;
-            
+            $this->tcr[$this->nLine]["err"] .= $err;
+
             if (($data[4] != "")) { // specific search
                 $err = $search->AddStaticQuery($data[4]);
-                $this->tcr[$this->nLine]["err"].= $err;
+                $this->tcr[$this->nLine]["err"] .= $err;
             }
-            
+
             if ($data[2] != '') { // dirid
-                
+
                 /**
                  * @var \Anakeen\SmartStructures\Dir\DirHooks $dir
                  */
@@ -975,8 +997,10 @@ class ImportDocumentDescription
         }
         $this->nbDoc++;
     }
+
     /**
      * analyze DOCICON
+     *
      * @param array $data line of description file
      */
     protected function doDocIcon(array $data)
@@ -992,8 +1016,10 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
         }
     }
+
     /**
      * analyze DOCATAG
+     *
      * @param array $data line of description file
      */
     protected function doDocAtag(array $data)
@@ -1010,19 +1036,19 @@ class ImportDocumentDescription
             return;
         }
         $idoc = new_doc($this->dbaccess, $data[1]);
-        
+
         $i = 4;
         $tags = [];
         while (!empty($data[$i])) {
             $tags[] = $data[$i];
             $i++;
         }
-        
+
         $tagAction = $data[3];
         if (!$tagAction) {
             $tagAction = "ADD";
         }
-        
+
         if (!$this->analyze) {
             if ($tagAction === "SET") {
                 $idoc->atags = '';
@@ -1058,8 +1084,10 @@ class ImportDocumentDescription
                 break;
         }
     }
+
     /**
      * analyze ICON
+     *
      * @param array $data line of description file
      */
     protected function doIcon(array $data)
@@ -1073,8 +1101,10 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["msg"] = sprintf(_("icon already set. No update allowed"));
         }
     }
+
     /**
      * analyze DFLDID
+     *
      * @param array $data line of description file
      */
     protected function doDfldid(array $data)
@@ -1100,7 +1130,7 @@ class ImportDocumentDescription
                         // create auto
                         include_once("FDL/LegacyDocManager.php");
                         $fldid = createAutoFolder($this->doc);
-                        $this->tcr[$this->nLine]["msg"].= sprintf(_("create default folder (id [%d])\n"), $fldid);
+                        $this->tcr[$this->nLine]["msg"] .= sprintf(_("create default folder (id [%d])\n"), $fldid);
                     }
                 } else {
                     $fldid = $this->doc->dfldid;
@@ -1112,13 +1142,15 @@ class ImportDocumentDescription
                 $fldid = \Anakeen\Core\DocManager::getIdFromName($data[1]);
             }
             $this->doc->dfldid = $fldid;
-            $this->tcr[$this->nLine]["msg"].= sprintf(_("set default folder to '%s'"), $data[1]);
+            $this->tcr[$this->nLine]["msg"] .= sprintf(_("set default folder to '%s'"), $data[1]);
         } else {
             $this->tcr[$this->nLine]["action"] = "ignored";
         }
     }
+
     /**
      * analyze CFLDID
+     *
      * @param array $data line of description file
      */
     protected function doCfldid(array $data)
@@ -1126,7 +1158,7 @@ class ImportDocumentDescription
         if (!$this->doc) {
             return;
         }
-        
+
         $check = new CheckCfldid();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
@@ -1146,8 +1178,10 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
         }
     }
+
     /**
      * analyze WID
+     *
      * @param array $data line of description file
      */
     protected function doWid(array $data)
@@ -1195,12 +1229,14 @@ class ImportDocumentDescription
             }
         } else {
             $this->doc->wid = '';
-            
+
             $this->tcr[$this->nLine]["msg"] = _("unset default workflow");
         }
     }
+
     /**
      * analyze CVID
+     *
      * @param array $data line of description file
      */
     protected function doCvid(array $data)
@@ -1219,13 +1255,13 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
             return;
         }
-        
+
         if (is_numeric($data[1])) {
             $cvid = $data[1];
         } else {
             $cvid = \Anakeen\Core\DocManager::getIdFromName($data[1], 28);
         }
-        
+
         if ($data[1]) {
             try {
                 $cvdoc = new_doc($this->dbaccess, $cvid);
@@ -1243,12 +1279,14 @@ class ImportDocumentDescription
             }
         } else {
             $this->doc->ccvid = '';
-            
+
             $this->tcr[$this->nLine]["msg"] = _("unset default view control");
         }
     }
+
     /**
      * analyze CLASS
+     *
      * @param array $data line of description file
      */
     protected function doClass(array $data)
@@ -1272,8 +1310,10 @@ class ImportDocumentDescription
         $this->doc->classname = $data[1];
 
     }
+
     /**
      * analyze METHOD
+     *
      * @param array $data line of description file
      */
     protected function doMethod(array $data)
@@ -1293,7 +1333,7 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
             return;
         }
-        
+
         if (!isset($data[1])) {
             $aMethod = null;
         } else {
@@ -1306,11 +1346,11 @@ class ImportDocumentDescription
             } else {
                 $method = substr($aMethod, 1);
             }
-            
+
             if ($this->doc->methods == "") {
                 $this->doc->methods = $method;
             } else {
-                $this->doc->methods.= "\n$method";
+                $this->doc->methods .= "\n$method";
                 // not twice
                 $tmeth = explode("\n", $this->doc->methods);
                 $tmeth = array_unique($tmeth);
@@ -1319,14 +1359,14 @@ class ImportDocumentDescription
         } else {
             $this->doc->methods = $aMethod;
         }
-        
+
         $this->tcr[$this->nLine]["msg"] = sprintf(_("change methods to '%s'"), $this->doc->methods);
         if ($this->doc->methods) {
             $tmethods = explode("\n", $this->doc->methods);
             foreach ($tmethods as $method) {
                 $fileMethod = ($method && $method[0] == '*') ? substr($method, 1) : $method;
-                if (!file_exists(sprintf(DEFAULT_PUBDIR."/Apps/FDL/%s", $fileMethod))) {
-                    $this->tcr[$this->nLine]["err"].= sprintf("Method file '%s' not found.", $fileMethod);
+                if (!file_exists(sprintf(DEFAULT_PUBDIR . "/Apps/FDL/%s", $fileMethod))) {
+                    $this->tcr[$this->nLine]["err"] .= sprintf("Method file '%s' not found.", $fileMethod);
                 }
             }
         }
@@ -1334,8 +1374,10 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
         }
     }
+
     /**
      * analyze CPROFID
+     *
      * @param array $data line of description file
      */
     protected function doCprofid(array $data)
@@ -1354,7 +1396,7 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
             return;
         }
-        
+
         if (is_numeric($data[1])) {
             $pid = $data[1];
         } else {
@@ -1363,8 +1405,10 @@ class ImportDocumentDescription
         $this->doc->cprofid = $pid;
         $this->tcr[$this->nLine]["msg"] = sprintf(_("change default creation profile id  to '%s'"), $data[1]);
     }
+
     /**
      * analyze PROFID
+     *
      * @param array $data line of description file
      */
     protected function doProfid(array $data)
@@ -1372,7 +1416,7 @@ class ImportDocumentDescription
         if (!$this->doc) {
             return;
         }
-        
+
         $check = new CheckProfid();
         $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
@@ -1392,8 +1436,10 @@ class ImportDocumentDescription
         $this->doc->setProfil($pid); // change profile
         $this->tcr[$this->nLine]["msg"] = sprintf(_("change profile id  to '%s'"), $data[1]);
     }
+
     /**
      * analyze INITIAL
+     *
      * @param array $data line of description file
      */
     protected function doInitial(array $data)
@@ -1412,7 +1458,7 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
             return;
         }
-        
+
         if (!isset($data[2])) {
             $data[2] = '';
         }
@@ -1430,11 +1476,13 @@ class ImportDocumentDescription
                 $this->doc->setParam($attrid, $newValue, false);
                 $this->tcr[$this->nLine]["msg"] = "reset default parameter";
             }
-            $this->tcr[$this->nLine]["msg"].= sprintf(_("add default value %s %s"), $attrid, $data[2]);
+            $this->tcr[$this->nLine]["msg"] .= sprintf(_("add default value %s %s"), $attrid, $data[2]);
         }
     }
+
     /**
      * analyze DEFAULT
+     *
      * @param array $data line of description file
      */
     protected function doDefault(array $data)
@@ -1453,7 +1501,7 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
             return;
         }
-        
+
         if (!isset($data[2])) {
             $data[2] = '';
         }
@@ -1472,11 +1520,13 @@ class ImportDocumentDescription
                 //$this->doc->setParam($attrid, $defv);
                 //$this->tcr[$this->nLine]["msg"] = "reset default parameter";
             }
-            $this->tcr[$this->nLine]["msg"].= sprintf(_("add default value %s %s"), $attrid, $data[2]);
+            $this->tcr[$this->nLine]["msg"] .= sprintf(_("add default value %s %s"), $attrid, $data[2]);
         }
     }
+
     /**
      * analyze ACCESS
+     *
      * @param array $data line of description file
      */
     protected function doAccess(array $data)
@@ -1518,7 +1568,7 @@ class ImportDocumentDescription
                 foreach ($la as $k => $v) {
                     $tacl[$v["name"]] = $v["id"];
                 }
-                
+
                 $p = new Permission();
                 $p->id_user = $wid;
                 $p->id_application = $idapp;
@@ -1526,7 +1576,7 @@ class ImportDocumentDescription
                     $v = trim($v);
                     if ($v != "") {
                         if ($this->analyze) {
-                            $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("try add acl %s"), $v);
+                            $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("try add acl %s"), $v);
                             $this->tcr[$this->nLine]["action"] = "added";
                             continue;
                         }
@@ -1539,21 +1589,21 @@ class ImportDocumentDescription
                         if (isset($tacl[$v])) {
                             $p->id_acl = $tacl[$v];
                             if ($aclneg) {
-                                $p->id_acl = - $p->id_acl;
+                                $p->id_acl = -$p->id_acl;
                             }
                             $p->deletePermission($p->id_user, $p->id_application, $p->id_acl);
                             $err = $p->Add();
                             if ($err) {
-                                $this->tcr[$this->nLine]["err"].= "\n$err";
+                                $this->tcr[$this->nLine]["err"] .= "\n$err";
                             } else {
                                 if ($aclneg) {
-                                    $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("add negative acl %s"), $v);
+                                    $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("add negative acl %s"), $v);
                                 } else {
-                                    $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("add acl %s"), $v);
+                                    $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("add acl %s"), $v);
                                 }
                             }
                         } else {
-                            $this->tcr[$this->nLine]["err"].= "\n" . sprintf(_("unknow acl %s"), $v);
+                            $this->tcr[$this->nLine]["err"] .= "\n" . sprintf(_("unknow acl %s"), $v);
                         }
                     }
                 }
@@ -1563,8 +1613,10 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
         }
     }
+
     /**
      * analyze TAGABLE
+     *
      * @param array $data tagable parameter
      */
     protected function doTagable(array $data)
@@ -1599,8 +1651,10 @@ class ImportDocumentDescription
         $this->doc->tagable = $data[1] === "no" ? "" : $data[1];
         $this->tcr[$this->nLine]["msg"] = sprintf(_("change tagable parameter to '%s'"), $this->doc->tagable);
     }
+
     /**
      * analyze PROFIL
+     *
      * @param array $data line of description file
      */
     protected function doProfil(array $data)
@@ -1616,13 +1670,13 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
             return;
         }
-        
+
         if (ctype_digit(trim($data[1]))) {
             $pid = trim($data[1]);
         } else {
             $pid = \Anakeen\Core\DocManager::getIdFromName(trim($data[1]));
         }
-        
+
         if (!($pid > 0)) {
             $this->tcr[$this->nLine]["err"] = sprintf(_("profil id unkonow %s"), $data[1]);
         } else {
@@ -1659,35 +1713,35 @@ class ImportDocumentDescription
                         $pdoc->disableEditControl(); // need because new profil is not enable yet
                         $this->tcr[$this->nLine]["err"] = $pdoc->modify();
                     }
-                    
+
                     $defaultUseType = trim($data[2]);
                     $optprof = strtoupper(trim($data[3]));
                     $initialPerms = array();
                     $profilingHasChanged = false;
                     if ($optprof == "RESET") {
                         $pdoc->removeControl();
-                        $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("reset profil %s"), $pid);
+                        $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("reset profil %s"), $pid);
                     } elseif ($optprof == "SET") {
                         $initialPerms = array_merge(DocPerm::getPermsForDoc($pdoc->id), DocPermExt::getPermsForDoc($pdoc->id));
                         $pdoc->removeControl();
-                        $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("set profile %s"), $pid);
+                        $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("set profile %s"), $pid);
                     }
                     $tacls = array_slice($data, 2);
                     foreach ($tacls as $acl) {
                         if (preg_match("/([^=]+)=(.*)/", $acl, $reg)) {
                             $tuid = explode(",", $reg[2]);
                             $aclname = trim($reg[1]);
-                            
+
                             $perr = "";
                             if ($optprof == "DELETE") {
                                 foreach ($tuid as $uid) {
-                                    $perr.= $pdoc->delControl($this->getProfilUid($defaultUseType, $uid), $aclname);
-                                    $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("delete %s for %s"), $aclname, $uid);
+                                    $perr .= $pdoc->delControl($this->getProfilUid($defaultUseType, $uid), $aclname);
+                                    $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("delete %s for %s"), $aclname, $uid);
                                 }
                             } else { // the "ADD" by default
                                 foreach ($tuid as $uid) {
-                                    $perr.= $pdoc->addControl($this->getProfilUid($defaultUseType, $uid), $aclname);
-                                    $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("add %s for %s"), $aclname, $uid);
+                                    $perr .= $pdoc->addControl($this->getProfilUid($defaultUseType, $uid), $aclname);
+                                    $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("add %s for %s"), $aclname, $uid);
                                 }
                             }
                             $this->tcr[$this->nLine]["err"] = $perr;
@@ -1711,7 +1765,7 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
         }
     }
-    
+
     protected function getProfilUid($defaultReferenceType, $reference)
     {
         $reference = trim($reference);
@@ -1733,7 +1787,7 @@ class ImportDocumentDescription
                 return $value;
         }
     }
-    
+
     private function extractAccount($defaultReferenceType, $reference, &$type, &$value)
     {
         if (preg_match('/^attribute\((.*)\)$/', $reference, $reg)) {
@@ -1750,7 +1804,7 @@ class ImportDocumentDescription
             $type = $defaultReferenceType;
         }
     }
-    
+
     protected function getUserId($login)
     {
         $login = mb_strtolower($login);
@@ -1763,8 +1817,10 @@ class ImportDocumentDescription
         }
         return $this->userIds[$login];
     }
+
     /**
      * analyze KEYS
+     *
      * @param array $data line of description file
      */
     protected function doKeys(array $data)
@@ -1785,7 +1841,7 @@ class ImportDocumentDescription
         } else {
             $orfromid = \Anakeen\Core\DocManager::getFamilyIdFromName($data[1]);
         }
-        
+
         $this->colKeys[$orfromid] = getOrder($data);
         if (($this->colKeys[$orfromid][0] == "") || (count($this->colKeys[$orfromid]) == 0)) {
             $this->tcr[$this->nLine]["err"] = sprintf(_("error in import keys : %s"), implode(" - ", $this->colKeys[$orfromid]));
@@ -1795,8 +1851,10 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["msg"] = sprintf(_("new import keys : %s"), implode(" - ", $this->colKeys[$orfromid]));
         }
     }
+
     /**
      * analyze ORDER
+     *
      * @param array $data line of description file
      */
     protected function doOrder(array $data)
@@ -1824,12 +1882,14 @@ class ImportDocumentDescription
         } else {
             $orfromid = \Anakeen\Core\DocManager::getFamilyIdFromName($data[1]);
         }
-        
+
         $this->colOrders[$orfromid] = getOrder($data);
         $this->tcr[$this->nLine]["msg"] = sprintf(_("new column order %s"), implode(" - ", $this->colOrders[$orfromid]));
     }
+
     /**
      * analyze LDAPMAP
+     *
      * @param array $data line of description file
      */
     protected function doLdapmap(array $data)
@@ -1853,13 +1913,13 @@ class ImportDocumentDescription
         } else {
             $oa->ldapname = strtolower(trim($data[2]));
         }
-        
+
         $oa->ldapclass = trim($data[4]);
         $oa->famid = $fid;
         $oa->ldapmap = $data[3];
         $oa->index = $index;
         $oa->ldapname = $aid;
-        
+
         if ($oa->isAffected()) {
             if (!$this->analyze) {
                 $err = $oa->modify();
@@ -1870,19 +1930,22 @@ class ImportDocumentDescription
             if (!$this->analyze) {
                 $err = $oa->add();
             }
-            
+
             $this->tcr[$this->nLine]["msg"] = sprintf(_("LDAP Attribute added to %s %s"), $oa->ldapname, $oa->ldapmap);
             $this->tcr[$this->nLine]["action"] = "added";
         }
-        $this->tcr[$this->nLine]["err"].= $err;
+        $this->tcr[$this->nLine]["err"] .= $err;
         if ($this->tcr[$this->nLine]["err"]) {
             $this->tcr[$this->nLine]["action"] = "ignored";
         }
     }
+
     /**
      * Verify compatibility between 2 type
+     *
      * @param string $curType
      * @param string $newType
+     *
      * @return bool
      */
     protected function isTypeCompatible($curType, $newType)
@@ -1899,12 +1962,14 @@ class ImportDocumentDescription
             "integer" => "int", // old compatibility
             "float" => "double"
             // old compatibility
-            
+
         );
         return isset($tc[$curType]) && ($tc[$curType] == $newType);
     }
+
     /**
      * analyze IATTR
+     *
      * @param array $data line of description file
      */
     protected function doAttr(array $data)
@@ -1923,20 +1988,20 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
             return;
         }
-        
+
         if (!$this->structAttr) {
             $this->structAttr = new StructAttribute();
         }
         $this->structAttr->set($data);
-        
+
         if (trim($data[1]) == '') {
-            $this->tcr[$this->nLine]["err"].= sprintf(_("attr key is empty"));
+            $this->tcr[$this->nLine]["err"] .= sprintf(_("attr key is empty"));
         } else {
             $modattr = ($data[0] == "MODATTR");
             if ($data[0] == "MODATTR") {
                 $this->structAttr->id = ':' . $this->structAttr->id;
             } // to mark the modified
-            $this->tcr[$this->nLine]["msg"].= sprintf(_("update %s attribute"), $this->structAttr->id);
+            $this->tcr[$this->nLine]["msg"] .= sprintf(_("update %s attribute"), $this->structAttr->id);
             if ($this->analyze) {
                 return;
             }
@@ -1944,22 +2009,22 @@ class ImportDocumentDescription
                 $this->doc->id,
                 strtolower($this->structAttr->id)
             ));
-            
+
             if ($oattr->isAffected()) {
                 // modification of type is forbidden
                 $curType = trim(strtok($oattr->type, '('));
                 $newType = trim(strtok($this->structAttr->type, '('));
                 if ($curType != $newType && (!$this->isTypeCompatible($curType, $newType))) {
-                    $this->tcr[$this->nLine]["err"].= sprintf("cannot change attribute %s type definition from %s to %s", $this->structAttr->id, $curType, $newType);
+                    $this->tcr[$this->nLine]["err"] .= sprintf("cannot change attribute %s type definition from %s to %s", $this->structAttr->id, $curType, $newType);
                 }
                 // modification of target is forbidden
                 if (($data[0] == "PARAM") && ($oattr->usefor != 'Q')) {
-                    $this->tcr[$this->nLine]["err"].= sprintf("cannot change attribute declaration to PARAM for %s", $this->structAttr->id);
+                    $this->tcr[$this->nLine]["err"] .= sprintf("cannot change attribute declaration to PARAM for %s", $this->structAttr->id);
                 } elseif (($data[0] == "ATTR") && ($oattr->usefor == 'Q')) {
-                    $this->tcr[$this->nLine]["err"].= sprintf("cannot change attribute declaration to ATTR for %s", $this->structAttr->id);
+                    $this->tcr[$this->nLine]["err"] .= sprintf("cannot change attribute declaration to ATTR for %s", $this->structAttr->id);
                 }
             }
-            
+
             if (!$this->tcr[$this->nLine]["err"]) {
                 if ($data[0] == "PARAM") {
                     $oattr->usefor = 'Q';
@@ -1972,19 +2037,19 @@ class ImportDocumentDescription
                 } // normal
                 $oattr->docid = $this->doc->id;
                 $oattr->id = trim(strtolower($this->structAttr->id));
-                
+
                 $oattr->frameid = trim(strtolower($this->structAttr->setid));
                 $oattr->labeltext = $this->structAttr->label;
-                
+
                 $oattr->title = ($this->structAttr->istitle == "Y") ? "Y" : "N";
-                
+
                 $oattr->abstract = ($this->structAttr->isabstract == "Y") ? "Y" : "N";
                 if ($modattr) {
                     $oattr->abstract = $this->structAttr->isabstract;
                 }
-                
+
                 $oattr->type = trim($this->structAttr->type);
-                
+
                 $oattr->ordered = $this->structAttr->order;
                 $oattr->visibility = $this->structAttr->visibility;
                 $oattr->needed = ($this->structAttr->isneeded == "Y") ? "Y" : "N";
@@ -2009,8 +2074,12 @@ class ImportDocumentDescription
                 } else {
                     $oattr->options = '';
                 }
-                
-                if (((($this->structAttr->phpfile != "") && ($this->structAttr->phpfile != "-")) || (($this->structAttr->type != "enum") && ($this->structAttr->type != "enumlist"))) || ($oattr->phpfunc == "") || (strpos($oattr->options, "system=yes") !== false)) {
+
+                if (((($this->structAttr->phpfile != "") && ($this->structAttr->phpfile != "-"))
+                        || (($this->structAttr->type != "enum")
+                            && ($this->structAttr->type != "enumlist")))
+                    || ($oattr->phpfunc == "")
+                    || (strpos($oattr->options, "system=yes") !== false)) {
                     // don't modify  enum possibilities if exists and non system
                     $oattr->phpfunc = $this->structAttr->phpfunc;
                     if ($oattr->type == "enum") {
@@ -2023,8 +2092,8 @@ class ImportDocumentDescription
                     }
                 }
                 if ($oattr->ordered && !is_numeric($oattr->ordered)) {
-                    $oattr->options.= ($oattr->options) ? "|" : "";
-                    $oattr->options.= sprintf("relativeOrder=%s", $oattr->ordered);
+                    $oattr->options .= ($oattr->options) ? "|" : "";
+                    $oattr->options .= sprintf("relativeOrder=%s", $oattr->ordered);
                     $oattr->ordered = $this->nLine;
                 }
                 if ($oattr->isAffected()) {
@@ -2033,25 +2102,27 @@ class ImportDocumentDescription
                     $err = $oattr->Add();
                 }
                 $this->addImportedAttribute($this->doc->id, $oattr);
-                
-                $this->tcr[$this->nLine]["err"].= $err;
+
+                $this->tcr[$this->nLine]["err"] .= $err;
             }
         }
         if ($this->tcr[$this->nLine]["err"]) {
             $this->tcr[$this->nLine]["action"] = "ignored";
         }
     }
+
     /**
-     * @param int $famid family identifier
-     * @param string $attrid attribute identifier
+     * @param int    $famid   family identifier
+     * @param string $attrid  attribute identifier
      * @param string $phpfunc enum flat description
-     * @param bool $reset set to true to delete old items before recorded
+     * @param bool   $reset   set to true to delete old items before recorded
+     *
      * @return string error message
      */
     public static function recordEnum($famid, $attrid, $phpfunc, $reset = false)
     {
         static $oe = null;
-        
+
         $err = '';
         if ($oe === null) {
             $oe = new DocEnum();
@@ -2065,7 +2136,7 @@ class ImportDocumentDescription
             $sql = sprintf("delete from docenum where famid='%s' and attrid='%s'", pg_escape_string($famid), pg_escape_string($attrid));
             simpleQuery('', $sql);
         }
-        
+
         foreach ($enums as $itemKey => $itemLabel) {
             $oe->label = $itemLabel;
             $oe->eorder++;
@@ -2076,7 +2147,7 @@ class ImportDocumentDescription
                 $oe->parentkey = array_pop($tkeys);
             } else {
                 $oe->key = str_replace("\\.", ".", $itemKey);
-                
+
                 $oe->parentkey = '';
             }
             $err = '';
@@ -2085,13 +2156,15 @@ class ImportDocumentDescription
                 // " skipped [$itemKey]";
             } else {
                 // " added  [$itemKey]";
-                $err.= $oe->add();
+                $err .= $oe->add();
             }
         }
         return $err;
     }
+
     /**
      * analyze IATTR
+     *
      * @param array $data line of description file
      */
     protected function doIattr(array $data)
@@ -2128,14 +2201,14 @@ class ImportDocumentDescription
                     }
                     $this->tcr[$this->nLine]["err"] = $err;
                 }
-                
+
                 if (($err == "") && (strtolower(get_class($fa)) == "fieldsetattribute")) {
                     $frameid = $fa->id;
                     // import attributes included in fieldset
                     foreach ($fi->attributes->attr as $k => $v) {
                         if (strtolower(get_class($v)) == "normalattribute") {
                             if (($v->fieldSet->id == $frameid) || ($v->fieldSet->fieldSet->id == $frameid)) {
-                                $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("copy attribute %s from %s"), $v->id, $data[3]);
+                                $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("copy attribute %s from %s"), $v->id, $data[3]);
                                 $oattri = new DocAttr($this->dbaccess, array(
                                     $fiid,
                                     $v->id
@@ -2152,7 +2225,7 @@ class ImportDocumentDescription
                                         $oattri->id = $v->id;
                                         $err = $oattri->add();
                                     }
-                                    $this->tcr[$this->nLine]["err"].= $err;
+                                    $this->tcr[$this->nLine]["err"] .= $err;
                                 }
                             }
                         }
@@ -2164,8 +2237,10 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
         }
     }
+
     /**
      * analyze PROP
+     *
      * @param array $data line of description file
      */
     protected function doProp($data)
@@ -2181,19 +2256,19 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
             return;
         }
-        
+
         $propName = $check->propName;
         $values = $check->parameters;
-        
+
         if ($this->analyze) {
             return;
         }
-        
+
         foreach ($values as $value) {
             $pName = $value['name'];
             $pValue = $value['value'];
             if (!$this->doc->setPropertyParameter($propName, $pName, $pValue)) {
-                $this->tcr[$this->nLine]["err"].= sprintf(_("error storing configuration property (%s, %s, %s)"), $propName, $pName, $pValue);
+                $this->tcr[$this->nLine]["err"] .= sprintf(_("error storing configuration property (%s, %s, %s)"), $propName, $pName, $pValue);
                 return;
             }
         }
@@ -2201,6 +2276,7 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
         }
     }
+
     protected function addImportedAttribute($famId, DocAttr & $oa)
     {
         if (!isset($this->importedAttribute[$famId])) {
@@ -2208,6 +2284,7 @@ class ImportDocumentDescription
         }
         $this->importedAttribute[$famId][$oa->id] = $oa;
     }
+
     public function getImportedAttribute($famId, $attrId)
     {
         if (isset($this->importedAttribute[$famId][$attrId])) {

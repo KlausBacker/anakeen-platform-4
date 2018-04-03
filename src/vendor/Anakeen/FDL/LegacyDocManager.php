@@ -255,7 +255,6 @@ function getFromName($dbaccess, $id)
  */
 function getDocTitle($id, $latest = true)
 {
-    $dbaccess = getDbAccess();
     if (!is_numeric($id)) {
         $id = \Anakeen\Core\DocManager::getIdFromName($id);
     }
@@ -300,7 +299,6 @@ function getDocProperties(
         "title"
     )
 ) {
-    $dbaccess = getDbAccess();
     if (!is_numeric($id)) {
         $id = \Anakeen\Core\DocManager::getIdFromName($id);
     }
@@ -1089,3 +1087,40 @@ function getMyProfil($dbaccess, $create = true)
 }
 
 
+
+/**
+ * send simple query to database
+ *
+ * @deprecated use \Anakeen\Core\DbManager::query
+ *
+ * @param string            $dbaccess     access database coordonates (not used)
+ * @param string            $query        sql query
+ * @param string|bool|array &$result      query result
+ * @param bool              $singlecolumn set to true if only one field is return
+ * @param bool              $singleresult set to true is only one row is expected (return the first row).
+ *                                        If is combined with singlecolumn return the value not an array,
+ *                                        if no results and $singlecolumn is true then $results is false
+ * @param bool              $useStrict    set to true to force exception or false to force no exception, if null use global parameter
+ *
+ * @throws Dcp\Db\Exception
+ * @return string error message. Empty message if no errors (when strict mode is not enable)
+ */
+function simpleQuery(
+    $dbaccess,
+    $query,
+    &$result = array(),
+    $singlecolumn = false,
+    $singleresult = false,
+    $useStrict = null
+) {
+    static $sqlStrict = null;
+    try {
+        \Anakeen\Core\DbManager::query($query, $result, $singlecolumn, $singleresult);
+    } catch (\Dcp\Db\Exception $e) {
+        if ($useStrict !== false) {
+            throw $e;
+        }
+        return $e->getMessage();
+    }
+    return "";
+}

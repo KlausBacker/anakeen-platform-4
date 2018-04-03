@@ -604,7 +604,7 @@ class OOoLayout extends Layout
      */
     public function set($tag, $val)
     {
-        if (!isUTF8($val)) {
+        if (!\Anakeen\Core\Utils\Strings::isUTF8($val)) {
             $val = utf8_encode($val);
         }
         if (!$this->isXml($val)) {
@@ -1563,13 +1563,13 @@ class OOoLayout extends Layout
                 if (is_array($data)) {
                     foreach ($data as $k => $v) {
                         foreach ($v as $kk => $vk) {
-                            if (!isUTF8($vk)) {
+                            if (!\Anakeen\Core\Utils\Strings::isUTF8($vk)) {
                                 $data[$k][$kk] = utf8_encode($vk);
                             }
                         }
                     }
                 } else {
-                    if (!isUTF8($data)) {
+                    if (!\Anakeen\Core\Utils\Strings::isUTF8($data)) {
                         $data = utf8_encode($data);
                     }
                 }

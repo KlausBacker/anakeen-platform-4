@@ -4,7 +4,8 @@ namespace Anakeen\Core\Utils;
 
 use Anakeen\Core\DbManager;
 
-class MiscDoc {
+class MiscDoc
+{
     public static function fixMultipleAliveDocument(\Doc & $doc)
     {
         if ($doc->id && $doc->fromid > 0) {
@@ -38,7 +39,7 @@ class MiscDoc {
         }
     }
 
-     public static function getFamFromId( $id)
+    public static function getFamFromId($id)
     {
         if (!($id > 0)) {
             return false;

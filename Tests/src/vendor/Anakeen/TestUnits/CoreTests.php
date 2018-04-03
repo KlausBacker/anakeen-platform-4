@@ -6,6 +6,7 @@
 
 namespace Dcp\Pu;
 
+use Anakeen\Core\Utils\Gettext;
 use Anakeen\Pu\Routes\SuiteRoutes;
 
 require __DIR__ . '/../autoload.php';
@@ -28,13 +29,14 @@ class CoreTests
         self::$allInProgress = true;
         $suite = new FrameworkDcp('Project');
 
+        Gettext::___("Hello"); // Include ___
         $suite->addTest((new SuiteRoutes)());
         $suite->addTest(SuiteDcp::suite());
         $suite->addTest(SuiteDcpAttribute::suite());
         $suite->addTest(SuiteDcpUser::suite());
         $suite->addTest(SuiteDcpSecurity::suite());
         // ...
-        printf("\nerror log in %s, messages in %s\n", self::LOGFILE, self::MSGFILE);
+        printf("\nError log in [%s], messages in [%s]\n", self::LOGFILE, self::MSGFILE);
         return $suite;
     }
 

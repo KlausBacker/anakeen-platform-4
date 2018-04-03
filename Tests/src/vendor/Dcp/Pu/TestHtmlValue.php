@@ -13,7 +13,7 @@ use Anakeen\Core\DocManager;
  * @author Anakeen
  * @package Dcp\Pu
  */
-require_once 'PU_testcase_dcp_commonfamily.php';
+//require_once 'PU_testcase_dcp_commonfamily.php';
 
 class TestHtmlValue extends TestCaseDcpCommonFamily
 {

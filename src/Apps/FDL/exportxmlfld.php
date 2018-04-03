@@ -33,7 +33,7 @@ include_once("FDL/exportfld.php");
  */
 function exportxmlfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $famid = "", SearchDoc $specSearch = null, $outputFile = '', $eformat = "", $wident = 'Y', $aSelection = null, $toDownload = true)
 {
-    setMaxExecutionTimeTo(3600); // 60 minutes
+    \Anakeen\Core\Utils\System::setMaxExecutionTimeTo(3600); // 60 minutes
     $dbaccess = $action->dbaccess;
     $fldid = $action->getArgument("id", $aflid);
     $wfile = (substr(strtolower($action->getArgument("wfile", "N")), 0, 1) == "y"); // with files

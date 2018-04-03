@@ -13,7 +13,7 @@ namespace Dcp\Pu;
 
 use Anakeen\Core\ContextManager;
 
-require_once 'PU_testcase_dcp.php';
+//require_once 'PU_testcase_dcp.php';
 
 class TestExportXml extends TestCaseDcpCommonFamily
 {

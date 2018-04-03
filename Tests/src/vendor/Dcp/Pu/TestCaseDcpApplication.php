@@ -8,25 +8,24 @@ namespace Dcp\Pu;
 
 use Anakeen\Core\DbManager;
 
-
 abstract class TestCaseDcpApplication extends TestCaseDcp
 {
     protected static $app;
-    
+
     protected function tearDown()
     {
         DbManager::rollbackPoint('testunit');
     }
-    
+
     protected function setUp()
     {
         DbManager::savePoint('testunit');
     }
-    
+
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        
+
         self::connectUser();
         self::beginTransaction();
         /* configList can be a single app or a list of apps */
@@ -47,11 +46,11 @@ abstract class TestCaseDcpApplication extends TestCaseDcp
             if (!isset($config['appRoot']) || !isset($config['appName'])) {
                 throw new \Exception(sprintf("Missing 'appRoot' or 'appName'."));
             }
-            
+
             self::setIncludePath(ini_get('include_path') . ':' . $config['appRoot']);
-            
+
             self::setUpTestApplication($config['appRoot'], $config['appName']);
-            
+
             if (isset($config['import'])) {
                 if (is_scalar($config['import'])) {
                     $config['import'] = array(
@@ -66,12 +65,13 @@ abstract class TestCaseDcpApplication extends TestCaseDcp
             }
         }
     }
-    
+
     public static function tearDownAfterClass()
     {
         self::rollbackTransaction();
         self::resetIncludePath();
     }
+
     /**
      * Set up a false Action object can be used to execute action
      *
@@ -86,7 +86,7 @@ abstract class TestCaseDcpApplication extends TestCaseDcp
         if (!is_dir($appRoot)) {
             throw new \Exception(sprintf("appRoot '%s' is not a valid directory.", $appRoot));
         }
-        
+
         $fileDotApp = join(DIRECTORY_SEPARATOR, array(
             $appRoot,
             $appName,
@@ -95,19 +95,20 @@ abstract class TestCaseDcpApplication extends TestCaseDcp
         if (!is_file($fileDotApp)) {
             throw new \Exception(sprintf(".app file '%s' not found.", $fileDotApp));
         }
-        
+
         $myAction = self::getAction();
-        
+
         self::$app = new \Anakeen\Core\Internal\Application();
         self::$app->rootdir = $appRoot;
         self::$app->param = new \Anakeen\Core\Internal\Param(self::$dbaccess);
         self::$app->parent = $myAction->parent;
         self::$app->set($appName, $myAction->parent, $myAction->parent->session, true);
-        
+
         if (self::$app->id <= 0) {
             throw new \Exception(sprintf("Error initializing application from '%s'.", $fileDotApp));
         }
     }
+
     /**
      * Config of the application
      *

@@ -6,7 +6,7 @@
 
 namespace Dcp\Pu;
 
-require_once 'PU_testcase_dcp_application.php';
+//require_once 'PU_testcase_dcp_application.php';
 
 class TestAppInheritAcl extends TestCaseDcpApplication
 {

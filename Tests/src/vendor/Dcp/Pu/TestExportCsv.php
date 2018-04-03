@@ -8,7 +8,7 @@ namespace Dcp\Pu;
 
 use Dcp\DirectoriesAutoloaderException;
 
-require_once 'PU_testcase_dcp.php';
+//require_once 'PU_testcase_dcp.php';
 
 class TestExportCsv extends TestCaseDcpCommonFamily
 {

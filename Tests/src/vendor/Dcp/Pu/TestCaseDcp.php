@@ -5,7 +5,6 @@ namespace Dcp\Pu;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 
-
 class TestCaseDcp extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -35,7 +34,6 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
     {
         $this->log(sprintf("========== %s ========", $this->getName()));
         $this->connectUser("admin");
-        \Dcp\Autoloader::resetRegenerate();
 
         $this->beginTransaction();
     }
@@ -51,7 +49,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
 
     public static function log($text)
     {
-        file_put_contents(TestSuiteDcp::LOGFILE, sprintf("[%s] %s\n", date("Y-m-d H:i:s"), $text), FILE_APPEND);
+        file_put_contents(CoreTests::LOGFILE, sprintf("[%s] %s\n", date("Y-m-d H:i:s"), $text), FILE_APPEND);
     }
 
     /**
@@ -94,6 +92,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
 
     /**
      * Current action
+     *
      * @return \Anakeen\Core\Internal\Action
      */
     protected static function &getAction()
@@ -117,6 +116,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
 
     /**
      * Current application
+     *
      * @return \Anakeen\Core\Internal\Application
      */
     protected static function getApplication()
@@ -187,6 +187,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      * Import a file document description
      *
      * @param string|string[] $file file path
+     *
      * @return array
      * @throws \Dcp\Exception
      */
@@ -222,7 +223,9 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
 
     /**
      * Import multiple files specified as a array list
+     *
      * @param array $fileList list of files to import
+     *
      * @return array
      */
     protected static function importDocuments($fileList)
@@ -241,7 +244,9 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
 
     /**
      * Import CSV data
+     *
      * @param string $data CSV data
+     *
      * @throws \Dcp\Exception
      */
     public function importCsvData($data)
@@ -265,6 +270,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
 
     /**
      * Set the include_path INI parameter
+     *
      * @param string $include_path the new include_path to use
      */
     public static function setIncludePath($include_path)
@@ -289,9 +295,10 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      * Mark test as incomplete (skip) if a core param is not equal
      * to the required value.
      *
-     * @param string $paramName the core parameter name
-     * @param string $requiredValue the required value
-     * @param bool $markTestIncomplete automatically calls the markTestIncomplete() method if the value is different
+     * @param string $paramName          the core parameter name
+     * @param string $requiredValue      the required value
+     * @param bool   $markTestIncomplete automatically calls the markTestIncomplete() method if the value is different
+     *
      * @return bool
      */
     public function requiresCoreParamEquals($paramName, $requiredValue, $markTestIncomplete = true)

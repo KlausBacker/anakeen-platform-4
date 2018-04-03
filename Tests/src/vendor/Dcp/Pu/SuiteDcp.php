@@ -61,7 +61,7 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestParameterManager');
         $suite->addTestSuite('Dcp\Pu\TestVaultDiskStorage');
         $suite->addTestSuite('Dcp\Pu\TestAutoloader');
-        $suite->addTestSuite('Dcp\Pu\TestGettext');
+        $suite->addTestSuite('Dcp\Pu\TestGetText');
         $suite->addTestSuite('Dcp\Pu\TestFdlGen');
         $suite->addTestSuite('Dcp\Pu\TestDir');
         $suite->addTestSuite('Dcp\Pu\TestDSearch');

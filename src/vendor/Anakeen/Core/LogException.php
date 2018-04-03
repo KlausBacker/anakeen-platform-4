@@ -6,6 +6,8 @@
 
 namespace Anakeen\Core;
 
+use Anakeen\Core\Utils\Gettext;
+
 class LogException
 {
 
@@ -144,7 +146,7 @@ class LogException
             if ($userMsg) {
                 return $userMsg;
             }
-            return sprintf("%s.", ___("Whoops, looks like something went wrong", "dcp"));
+            return sprintf("%s.", Gettext::___("Whoops, looks like something went wrong", "dcp"));
         } else {
             return $logMessage;
         }

@@ -6,9 +6,9 @@
 /**
  * Import directory with document descriptions
  *
- * @author Anakeen
- * @version $Id: freedom_import_dir.php,v 1.5 2007/01/19 16:23:32 eric Exp $
- * @package FDL
+ * @author     Anakeen
+ * @version    $Id: freedom_import_dir.php,v 1.5 2007/01/19 16:23:32 eric Exp $
+ * @package    FDL
  * @subpackage GED
  */
 /**
@@ -16,19 +16,23 @@
 
 namespace Dcp\Core;
 
+use Anakeen\Core\ContextManager;
+use Anakeen\Core\DbManager;
+
 include_once("FDL/import_tar.php");
 
-class importXml
+class ImportXml
 {
     protected $analyze = false;
     protected $policy = "update";
     protected $dirid = 0;
     protected $verifyAttributeAccess = true;
+
     public function analyzeOnly($analyze)
     {
         $this->analyze = $analyze;
     }
-    
+
     public function setPolicy($policy)
     {
         if (!$policy) {
@@ -36,11 +40,12 @@ class importXml
         }
         $this->policy = $policy;
     }
-    
+
     public function setImportDirectory($dirid)
     {
         $this->dirid = $dirid;
     }
+
     /**
      * @param boolean $verifyAttributeAccess
      */
@@ -48,32 +53,33 @@ class importXml
     {
         $this->verifyAttributeAccess = $verifyAttributeAccess;
     }
+
     /**
      * @param string $xmlFile file path
+     *
      * @return array log infortmations about import
-     * @throws Exception
      * @throws \Dcp\Exception
      */
     public function importSingleXmlFile($xmlFile)
     {
-        $splitdir = uniqid(getTmpDir() . "/xmlsplit");
+        $splitdir = uniqid(ContextManager::getTmpDir() . "/xmlsplit");
         @mkdir($splitdir);
         if (!is_dir($splitdir)) {
             throw new \Dcp\Exception("IMPC0002", $splitdir);
         }
         self::splitXmlDocument($xmlFile, $splitdir);
-        
+
         self::extractFilesFromXmlDirectory($splitdir);
-        
+
         $log = $this->importXmlDirectory($splitdir);
         system(sprintf("/bin/rm -fr %s ", $splitdir));
         // print "look : $splitdir\n";
         return $log;
     }
-    
+
     public function importZipFile($zipFile)
     {
-        $splitdir = uniqid(getTmpDir() . "/xmlsplit");
+        $splitdir = uniqid(ContextManager::getTmpDir() . "/xmlsplit");
         @mkdir($splitdir);
         if (!is_dir($splitdir)) {
             throw new \Dcp\Exception("IMPC0003", $splitdir);
@@ -81,13 +87,13 @@ class importXml
         self::unZipXmlDocument($zipFile, $splitdir);
         //print "Split OK in $splitdir";
         self::extractFilesFromXmlDirectory($splitdir);
-        
+
         $log = $this->importXmlDirectory($splitdir);
         system(sprintf("/bin/rm -fr %s ", $splitdir));
         //print "look : $splitdir\n";
         return $log;
     }
-    
+
     public static function unZipXmlDocument($zipfiles, $splitdir)
     {
         $err = "";
@@ -98,9 +104,12 @@ class importXml
         }
         return $err;
     }
+
     /**
      * read a directory to import all xml files
+     *
      * @param string $splitdir
+     *
      * @return array log info
      */
     public function importXmlDirectory($splitdir)
@@ -123,14 +132,14 @@ class importXml
             }
             closedir($handle);
         }
-        
+
         return $tlog;
     }
-    
+
     public function importXmlFileDocument($xmlfile, &$log)
     {
         static $families = array();
-        $dbaccess = getDbAccess();
+        $dbaccess = DbManager::getDbAccess();
         $log = array(
             "err" => "",
             "msg" => "",
@@ -140,12 +149,12 @@ class importXml
             "filename" => "",
             "title" => "",
             "id" => "",
-            "values" => array() ,
+            "values" => array(),
             "familyid" => 0,
             "familyname" => "",
             "action" => "-"
         );
-        
+
         if (!is_file($xmlfile)) {
             $err = sprintf(_("Xml import file %s not found"), $xmlfile);
             $log["err"] = $err;
@@ -177,14 +186,14 @@ class importXml
                 $v = trim($v);
             }
         }
-        
+
         $family = $root->tagName;
         $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($family);
         if (!isset($families[$famid])) {
-            $families[$famid] = new_doc($dbaccess, $famid);
+            $families[$famid] = \Anakeen\Core\DocManager::getFamily($famid);
         }
         //print("family : $family $id $name $famid\n");
-        
+
         /**
          * @var \DocFam[] $families
          */
@@ -196,9 +205,9 @@ class importXml
             ($id) ? $id : $name,
             ''
         );
-        
+
         $rootAttrs = $root->attributes;
-        
+
         foreach ($rootAttrs as $rname => $ra) {
             $v = $root->getAttribute($rname);
             if ($v) {
@@ -206,7 +215,7 @@ class importXml
                 $tdoc[] = $v;
             }
         }
-        
+
         $msg = '';
         /**
          * @var \Anakeen\Core\SmartStructure\BasicAttribute $v
@@ -246,7 +255,12 @@ class importXml
                                     $afamid = $v->format;
                                     $id = getIdFromTitle($dbaccess, $item->nodeValue, $afamid);
                                     if (!$id) {
-                                        $msg.= sprintf(_("No identifier found for relation '%s' %s in %s file") . "\n", $logicalName ? $logicalName : $item->nodeValue, $v->id, $xmlfile);
+                                        $msg .= sprintf(
+                                            _("No identifier found for relation '%s' %s in %s file") . "\n",
+                                            $logicalName ? $logicalName : $item->nodeValue,
+                                            $v->id,
+                                            $xmlfile
+                                        );
                                     }
                                 }
                             }
@@ -255,9 +269,9 @@ class importXml
                             $id = str_replace(',', '\n', $id);
                             if ($v->inArray()) {
                                 $id = str_replace(array(
-                                '\\n',
-                                "\n",
-                            ), "<BR>", $id);
+                                    '\\n',
+                                    "\n",
+                                ), "<BR>", $id);
                             }
                         }
                         $val[] = $id;
@@ -286,7 +300,7 @@ class importXml
 
                     default:
                         $val[] = $item->nodeValue;
-                    }
+                }
                 //  print $v->id.":".$item->nodeValue."\n";
             }
             $tord[] = $v->id;
@@ -312,29 +326,31 @@ class importXml
                     unset($tfolders[$k]);
                 }
             }
-            
+
             if ($tfolders) {
                 $o->setTargetDirectories($tfolders);
             }
         } elseif (!empty($opt["dirid"])) {
             $o->setTargetDirectory($opt["dirid"]);
         }
-        
+
         $o->import($tdoc);
         $log = $o->getImportResult();
-        
+
         if ($msg) {
-            $log["err"].= "\n" . $msg;
+            $log["err"] .= "\n" . $msg;
             $log["action"] = "ignored";
         }
         return '';
     }
+
     public static function splitXmlDocument($xmlfiles, $splitdir)
     {
         $xs = new \XMLSplitter($splitdir);
         $xs->split($xmlfiles);
         return '';
     }
+
     public static function extractFilesFromXmlDirectory($splitdir)
     {
         if ($handle = opendir($splitdir)) {
@@ -348,6 +364,7 @@ class importXml
             closedir($handle);
         }
     }
+
     protected static function fputsError($fd, $str)
     {
         $len = fputs($fd, $str);
@@ -359,10 +376,13 @@ class importXml
         }
         return $len;
     }
+
     /**
      * extract encoded base 64 file from xml and put it in local media directory
      * the file is rewrite without encoded data and replace by href attribute
+     *
      * @param $file
+     *
      * @throws \Dcp\Exception
      */
     public static function extractFileFromXmlDocument($file)
@@ -511,10 +531,10 @@ class importXml
             throw new \Dcp\Exception("IMPC0011", $file . ".new", $file);
         }
     }
-    
+
     public static function base64Decodefile($filename)
     {
-        $tmpdest = uniqid(getTmpDir() . "/fdlbin");
+        $tmpdest = uniqid(ContextManager::getTmpDir() . "/fdlbin");
         $chunkSize = 1024 * 30;
         $src = fopen($filename, 'rb');
         $dst = fopen($tmpdest, 'wb');

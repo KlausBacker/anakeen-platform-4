@@ -10,8 +10,8 @@
 
 namespace Dcp\Pu;
 
-require_once 'PU_testcase_dcp.php';
-require_once 'Lib.Main.php';
+//require_once 'PU_testcase_dcp.php';
+//require_once 'Lib.Main.php';
 
 class TestVolatileParam extends TestCaseDcp
 {

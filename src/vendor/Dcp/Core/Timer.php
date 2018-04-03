@@ -8,7 +8,7 @@
  */
 namespace Dcp\Core;
 
-class Timer extends \SmartStructure\Document
+class Timer extends \Anakeen\SmartStructures\Document
 {
     private $lineActions;
     /**

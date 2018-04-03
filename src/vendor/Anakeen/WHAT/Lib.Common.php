@@ -20,51 +20,7 @@ function N_($s)
     return ($s);
 }
 
-if (!function_exists('pgettext')) {
-    function pgettext($context, $msgid)
-    {
-        $contextString = "{$context}\004{$msgid}";
-        $translation = _($contextString);
-        if ($translation === $contextString) {
-            return $msgid;
-        } else {
-            return $translation;
-        }
-    }
 
-    function npgettext($context, $msgid, $msgid_plural, $num)
-    {
-        $contextString = "{$context}\004{$msgid}";
-        $contextStringp = "{$context}\004{$msgid_plural}";
-        $translation = ngettext($contextString, $contextStringp, $num);
-        if ($translation === $contextString) {
-            return $msgid;
-        } elseif ($translation === $contextStringp) {
-            return $msgid_plural;
-        } else {
-            return $translation;
-        }
-    }
-}
-// New gettext keyword for regular strings with optional context argument
-function ___($message, $context = "")
-{
-    if ($context != "") {
-        return pgettext($context, $message);
-    } else {
-        return _($message);
-    }
-}
-
-// New gettext keyword for plural strings with optional context argument
-function n___($message, $message_plural, $num, $context = "")
-{
-    if ($context != "") {
-        return npgettext($context, $message, $message_plural, abs($num));
-    } else {
-        return ngettext($message, $message_plural, abs($num));
-    }
-}
 
 // to tag gettext without change text immediatly
 // library of utilies functions
@@ -78,16 +34,13 @@ function print_r2($z, $ret = false)
 
 /**
  * send a message to system log
- *
+ * @deprecated use \Anakeen\Core\Utils\System::addLogMsg
  * @param string $msg message to log
  * @param int    $cut size limit
  */
 function AddLogMsg($msg, $cut = 80)
 {
-    global $action;
-    if (isset($action->parent)) {
-        $action->parent->AddLogMsg($msg, $cut);
-    }
+    \Anakeen\Core\Utils\System::addLogMsg($msg);
 }
 
 /**
@@ -118,38 +71,35 @@ function addWarningMsg($msg)
 
 /**
  * like ucfirst for utf-8
- *
+ * @deprecated use Anakeen\Core\Utils\Strings::mb_ucfirst
  * @param $s
  *
  * @return string
  */
 function mb_ucfirst($s)
 {
-    if ($s) {
-        $s = mb_strtoupper(mb_substr($s, 0, 1, 'UTF-8'), 'UTF-8') . mb_substr($s, 1, mb_strlen($s), 'UTF-8');
-    }
-    return $s;
+    return Anakeen\Core\Utils\Strings::mb_ucfirst($s);
 }
 
+/**
+ * @param $string
+ * @deprecated use Anakeen\Core\Utils\Strings::mb_trim
+ * @return null|string|string[]
+ */
 function mb_trim($string)
 {
-    return preg_replace("/(^\s+)|(\s+$)/us", "", $string);
+    return Anakeen\Core\Utils\Strings::mb_trim($string);
 }
 
 /**
  * increase limit if current limit is lesser than
  *
+ * @deprecated use Anakeen\Core\Utils\System::setMaxExecutionTimeTo
  * @param int $limit new limit in seconds
  */
 function setMaxExecutionTimeTo($limit)
 {
-    $im = intval(ini_get("max_execution_time"));
-    if ($im > 0 && $im < $limit && $limit >= 0) {
-        ini_set("max_execution_time", $limit);
-    }
-    if ($limit <= 0) {
-        ini_set("max_execution_time", 0);
-    }
+    Anakeen\Core\Utils\System::setMaxExecutionTimeTo($limit);
 }
 
 /**
@@ -447,42 +397,6 @@ function getServiceName($dbaccess)
     return '';
 }
 
-/**
- * send simple query to database
- *
- * @deprecated use \Anakeen\Core\DbManager::query
- *
- * @param string            $dbaccess     access database coordonates (not used)
- * @param string            $query        sql query
- * @param string|bool|array &$result      query result
- * @param bool              $singlecolumn set to true if only one field is return
- * @param bool              $singleresult set to true is only one row is expected (return the first row).
- *                                        If is combined with singlecolumn return the value not an array,
- *                                        if no results and $singlecolumn is true then $results is false
- * @param bool              $useStrict    set to true to force exception or false to force no exception, if null use global parameter
- *
- * @throws Dcp\Db\Exception
- * @return string error message. Empty message if no errors (when strict mode is not enable)
- */
-function simpleQuery(
-    $dbaccess,
-    $query,
-    &$result = array(),
-    $singlecolumn = false,
-    $singleresult = false,
-    $useStrict = null
-) {
-    static $sqlStrict = null;
-    try {
-        \Anakeen\Core\DbManager::query($query, $result, $singlecolumn, $singleresult);
-    } catch (\Dcp\Db\Exception $e) {
-        if ($useStrict !== false) {
-            throw $e;
-        }
-        return $e->getMessage();
-    }
-    return "";
-}
 
 
 
@@ -493,7 +407,7 @@ function simpleQuery(
 
 /**
  * get the system user id
- *
+ * @deprecated
  * @return int
  */
 function getUserId()
@@ -508,24 +422,14 @@ function getUserId()
 
 /**
  * exec list of unix command in background
- *
+ * @deprecated
  * @param array $tcmd unix command strings
  * @param       $result
  * @param       $err
  */
 function bgexec($tcmd, &$result, &$err)
 {
-    $foutname = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/bgexec");
-    $fout = fopen($foutname, "w+");
-    fwrite($fout, "#!/bin/bash\n");
-    foreach ($tcmd as $v) {
-        fwrite($fout, "$v\n");
-    }
-    fclose($fout);
-    chmod($foutname, 0700);
-    //  if (session_id()) session_write_close(); // necessary to close if not background cmd
-    exec("exec nohup $foutname > /dev/null 2>&1 &", $result, $err);
-    //if (session_id()) @session_start();
+    \Anakeen\Core\Utils\System::bgexec($tcmd, $result, $err);
 }
 
 
@@ -623,28 +527,24 @@ function setMailtoAnchor(
  * </code>
  *
  * @param mixed $string , or an array from a file() function.
- *
+ * @deprecated use Anakeen\Core\Utils\Strings::isUTF8
  * @return boolean
  */
 function isUTF8($string)
 {
-    if (is_array($string)) {
-        return seems_utf8(implode('', $string));
-    } else {
-        return seems_utf8($string);
-    }
+    return Anakeen\Core\Utils\Strings::isUTF8($string);
 }
 
 /**
  * Returns <kbd>true</kbd> if the string  is encoded in UTF8.
- *
+ * @deprecated use Anakeen\Core\Utils\Strings::seemsUTF8
  * @param mixed $Str string
  *
  * @return boolean
  */
 function seems_utf8($Str)
 {
-    return preg_match('!!u', $Str);
+    return Anakeen\Core\Utils\Strings::seemsUTF8($Str);
 }
 
 /**
@@ -716,6 +616,10 @@ function getLocaleConfig($core_lang = '')
     return \Anakeen\Core\ContextManager::getLocaleConfig($core_lang);
 }
 
+/**
+ * @return array|null
+ * @deprecated
+ */
 function getLocales()
 {
     static $locales = null;

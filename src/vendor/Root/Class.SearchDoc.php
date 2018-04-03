@@ -165,12 +165,12 @@ class SearchDoc
     public function __construct($dbaccess = '', $fromid = 0)
     {
         if ($dbaccess == "") {
-            $dbaccess = getDbAccess();
+            $dbaccess = \Anakeen\Core\DbManager::getDbAccess();
         }
         $this->dbaccess = $dbaccess;
         $this->fromid = trim($fromid);
         $this->setOrder('title');
-        $this->userid = getUserId();
+        $this->userid = \Anakeen\Core\ContextManager::getCurrentUser()->id;
     }
     /**
      * Normalize supported forms of fromid
@@ -197,8 +197,8 @@ class SearchDoc
                 $sign = - 1;
                 $id = abs($id);
             }
-            $fam = new_Doc($this->dbaccess, $id);
-            if ($fam->isAlive() && $fam->defDoctype === 'C') {
+            $fam = Anakeen\Core\DocManager::getFamily($id);
+            if ($fam && $fam->isAlive()) {
                 return $sign * (int)$fam->id;
             }
         } else {
@@ -209,8 +209,8 @@ class SearchDoc
                 $sign = - 1;
                 $id = substr($id, 1);
             }
-            $fam = new_Doc($this->dbaccess, $id);
-            if ($fam->isAlive() && $fam->defDoctype === 'C') {
+            $fam = Anakeen\Core\DocManager::getFamily($id);
+            if ($fam && $fam->isAlive()) {
                 return $sign * (int)$fam->id;
             }
         }
@@ -231,7 +231,7 @@ class SearchDoc
     public function onlyCount()
     {
         /**  @var \Anakeen\SmartStructures\Dir\DirHooks $fld */
-        $fld = new_Doc($this->dbaccess, $this->dirid);
+        $fld = Anakeen\Core\DocManager::getDocument($this->dirid);
         $userid = $this->userid;
         if ($fld->fromid != \Anakeen\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
             $this->recursiveSearchInit();
@@ -266,7 +266,7 @@ class SearchDoc
                     $dbid = \Anakeen\Core\DbManager::getDbId();
                     $mb = microtime(true);
                     try {
-                        simpleQuery($this->dbaccess, $sql, $result, false, true, true);
+                            \Anakeen\Core\DbManager::query($sql, $result, false, true);
                     } catch (\Dcp\Db\Exception $e) {
                         $this->debuginfo["query"] = $sql;
                         $this->debuginfo["error"] = pg_last_error($dbid);
@@ -455,7 +455,7 @@ class SearchDoc
                     if ($this->fromid < - 1) {
                         $this->only = true;
                     }
-                    simpleQuery($this->dbaccess, sprintf("select doctype from docfam where id=%d", abs($this->fromid)), $doctype, true, true);
+                    \Anakeen\Core\DbManager::query(sprintf("select doctype from docfam where id=%d", abs($this->fromid)), $doctype, true, true);
                     if ($doctype != 'C') {
                         $fromid = 0;
                     } else {

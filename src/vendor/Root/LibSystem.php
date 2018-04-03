@@ -1,21 +1,10 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * LibSystem class
  *
  * This class provides methods for querying system informations
  *
- * @author Anakeen
- * @version $Id: Lib.System.php,v 1.4 2009/01/16 13:33:01 jerome Exp $
- * @package FDL
- * @subpackage
  */
-/**
- */
-include_once("Lib.Common.php");
 
 class LibSystem
 {
@@ -107,7 +96,7 @@ class LibSystem
     public static function tempnam($dir, $prefix)
     {
         if ($dir === null || $dir === false) {
-            $dir = getTmpDir();
+            $dir = \Anakeen\Core\ContextManager::getTmpDir();
         }
         return tempnam($dir, $prefix);
     }

@@ -1,8 +1,8 @@
 <?php
 
-
 namespace Anakeen\Core;
 
+use Anakeen\Core\Utils\Strings;
 
 define("GALL_ID", 2);
 define("ANONYMOUS_ID", 3);
@@ -119,7 +119,7 @@ create sequence seq_id_users start 10;";
      */
     public function setLoginName($login)
     {
-        $login = mb_trim(mb_strtolower($login));
+        $login = Strings::mb_trim(mb_strtolower($login));
 
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->AddQuery("login='" . pg_escape_string($login) . "'");

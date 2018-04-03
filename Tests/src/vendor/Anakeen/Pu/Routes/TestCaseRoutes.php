@@ -10,7 +10,6 @@ use Slim\Http\Environment;
 use Slim\Http\Request;
 use Slim\Http\RequestBody;
 
-
 class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
 {
     protected static $importCsvEnclosure = '"';
@@ -71,8 +70,9 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
 
     /**
      * Init Router with uri
+     *
      * @param string $uri like "GET /api/v2/foo?a=3"
-     * @param string   $jsonContent
+     * @param string $jsonContent
      *
      * @return \Slim\App
      * @throws Exception

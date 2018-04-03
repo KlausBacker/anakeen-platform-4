@@ -50,7 +50,7 @@ class ContextManager
         return $lang[$core_lang];
     }
 
-    public function getLocales()
+    public static function getLocales()
     {
         static $locales = null;
 

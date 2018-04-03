@@ -10,15 +10,15 @@ namespace Dcp\Pu;
  * @package Dcp\Pu
  */
 
-require_once 'WHAT/autoload.php';
+//require_once 'WHAT/autoload.php';
 class SuiteDcpAttribute
 {
     public static function suite()
     {
         $suite = new FrameworkDcp('Package');
         
-        $suite->addTestSuite('DCP\PU\TestTypedValue');
-        $suite->addTestSuite('DCP\PU\TestHtmlValue');
+        $suite->addTestSuite('Dcp\Pu\TestTypedValue');
+        $suite->addTestSuite('Dcp\Pu\TestHtmlValue');
         $suite->addTestSuite('Dcp\Pu\TestAddArrayRow');
         $suite->addTestSuite('Dcp\Pu\TestGetResPhpFunc');
         $suite->addTestSuite('Dcp\Pu\TestGetEnum');
@@ -34,10 +34,10 @@ class SuiteDcpAttribute
         $suite->addTestSuite('Dcp\Pu\TestGetSortAttributes');
         $suite->addTestSuite('Dcp\Pu\TestGetSortProperties');
         $suite->addTestSuite('Dcp\Pu\TestLFamily');
-        $suite->addTestSuite('DCP\PU\TestGetDocTitle');
-        $suite->addTestSuite('DCP\PU\TestGetDocAnchor');
+        $suite->addTestSuite('Dcp\Pu\TestGetDocTitle');
+        $suite->addTestSuite('Dcp\Pu\TestGetDocAnchor');
         $suite->addTestSuite('Dcp\Pu\TestGetTextualValue');
-        $suite->addTestSuite('DCP\PU\TestAttributeDoctitle');
+        $suite->addTestSuite('Dcp\Pu\TestAttributeDoctitle');
         // ...
         return $suite;
     }

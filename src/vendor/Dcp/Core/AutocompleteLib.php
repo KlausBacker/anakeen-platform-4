@@ -2,6 +2,8 @@
 
 namespace Dcp\Core;
 
+use Anakeen\Core\Utils\Strings;
+
 class AutocompleteLib
 {
 
@@ -209,7 +211,7 @@ class AutocompleteLib
                     return $err;
                 }
                 foreach ($v as $k2 => $v2) {
-                    if (!seems_utf8($v2)) {
+                    if (!Strings::seemsUTF8($v2)) {
                         $err = \ErrorCode::getError(
                             "INH0002",
                             iconv('ISO-8859-1', "UTF-8//TRANSLIT", $v2),

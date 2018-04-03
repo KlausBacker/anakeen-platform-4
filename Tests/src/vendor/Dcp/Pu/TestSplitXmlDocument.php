@@ -11,7 +11,7 @@ namespace Dcp\Pu;
  * @package Dcp\Pu
  */
 
-require_once 'PU_testcase_dcp.php';
+//require_once 'PU_testcase_dcp.php';
 
 /**
  * Test class for splitXmlDocument() function.
@@ -69,7 +69,7 @@ class TestSplitXmlDocument extends TestCaseDcp
         /* check splitXmlDocument() */
         if (isset($data['expect_error']) && $data['expect_error'] === true) {
             try {
-                \Dcp\Core\importXml::splitXmlDocument($workingXML, $testDir);
+                \Dcp\Core\ImportXml::splitXmlDocument($workingXML, $testDir);
                 $this->assertTrue(false, "XML Error not detected");
             } catch (\Exception $e) {
                 $this->assertNotEmpty($e->getMessage(), sprintf("splitXmlDocument did not returned with an expected error"));
@@ -77,7 +77,7 @@ class TestSplitXmlDocument extends TestCaseDcp
 
             return;
         } else {
-            \Dcp\Core\importXml::splitXmlDocument($workingXML, $testDir);
+            \Dcp\Core\ImportXml::splitXmlDocument($workingXML, $testDir);
         }
 
         if (!isset($data['produces'])) {

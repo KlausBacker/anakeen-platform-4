@@ -85,7 +85,7 @@ class DocumentList implements Iterator, Countable
         $this->getCurrentDoc();
     }
     /**
-     * @return Doc|null
+     * @return void
      */
     public function next()
     {
@@ -145,7 +145,7 @@ class DocumentList implements Iterator, Countable
      */
     public function addDocumentIdentifiers(array $ids, $useInitid = true)
     {
-        $this->search = new SearchDoc(getDbAccess());
+        $this->search = new SearchDoc();
         $this->search->setObjectReturn();
         $this->search->excludeConfidential();
         foreach ($ids as $k => $v) {

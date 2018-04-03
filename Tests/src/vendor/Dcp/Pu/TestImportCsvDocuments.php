@@ -11,7 +11,7 @@ namespace Dcp\Pu;
  * @package Dcp\Pu
  */
 
-require_once 'PU_testcase_dcp.php';
+//require_once 'PU_testcase_dcp.php';
 
 class TestImportCsvDocuments extends TestCaseDcp
 {

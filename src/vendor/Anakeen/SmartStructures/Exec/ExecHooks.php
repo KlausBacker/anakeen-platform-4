@@ -178,7 +178,7 @@ class ExecHooks extends \Anakeen\SmartStructures\Document
     
     public function _execute(\Anakeen\Core\Internal\Action & $action, $comment = '')
     {
-        setMaxExecutionTimeTo(3600);
+        \Anakeen\Core\Utils\System::setMaxExecutionTimeTo(3600);
         /*
         $cmd = getWshCmd(true);
         $cmd.= " --api=fdl_execute";

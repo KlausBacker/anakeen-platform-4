@@ -941,7 +941,7 @@ class DocCtrl extends DocLDAP
             if ($this->getRawValue("dpdoc_famid") > 0) {
                 // dynamic profil
                 // recompute associated documents
-                setMaxExecutionTimeTo(0);
+                \Anakeen\Core\Utils\System::setMaxExecutionTimeTo(0);
                 
                 if (!empty(self::$savepoint[intval($this->dbid) ])) {
                     // when are in transaction must lock complete table to avoid too many locks on each rows

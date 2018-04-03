@@ -546,6 +546,8 @@ class FamilyImport
 
         $dfiles["/vendor/Anakeen/FDL/Layout/Class.NSSmart.xml"] = sprintf("%s/%s.php", $genDir, $tdoc["docFile"]);
         $dfiles["/vendor/Anakeen/FDL/Layout/Class.NSSmartAttr.xml"] = sprintf("%s/%sAttributeList.php", $genDir, $tdoc["docFile"]);
+        $dfiles["/vendor/Anakeen/FDL/Layout/Class.NSSmart.xml"] = DocManager::getDocumentClassFilename($tdoc["docFile"]);
+        $dfiles["/vendor/Anakeen/FDL/Layout/Class.NSSmartAttr.xml"] = DocManager::getAttributesClassFilename($tdoc["docFile"]);
         $dfiles["/vendor/Anakeen/FDL/Layout/Class.Doc.xml"] = sprintf("%s/Smart%d.php", $genDir, $tdoc["id"]);
 
         if (!empty($tdoc["methods"])) {
@@ -835,6 +837,22 @@ class FamilyImport
         return $dfile;
     }
 
+
+    public static function deleteGenFiles($famName)
+    {
+        $files = [
+            \Anakeen\Core\DocManager::getAttributesClassFilename($famName),
+            \Anakeen\Core\DocManager::getDocumentClassFilename($famName)
+        ];
+        foreach ($files as $fdlgen) {
+            if (file_exists($fdlgen) && is_file($fdlgen)) {
+                if (!unlink($fdlgen)) {
+                    throw new Exception("Could not delete file '%s'.", $fdlgen);
+                }
+            }
+        }
+    }
+
     public static function activateTrigger($dbaccess, $docid)
     {
         $cdoc = DocManager::createTemporaryDocument($docid, false);
@@ -903,7 +921,7 @@ class FamilyImport
             if ($interactive) {
                 print $msg;
             } else {
-                AddLogMsg($msg);
+                \Anakeen\Core\Utils\System::addLogMsg($msg);
             }
             self::activateTrigger($dbaccess, $familyData["id"]);
             self::resetSystemEnum($familyData["id"]);

@@ -3,48 +3,59 @@
  * @author Anakeen
  * @package FDL
 */
+
 /**
  * Checking application accesses
+ *
  * @class CheckAccess
  * @brief Check application accesses when importing definition
- * @see ErrorCodeACCS
+ * @see   ErrorCodeACCS
  */
 class CheckAccess extends CheckData
 {
     /**
      * application name
+     *
      * @var string
      */
     private $appName = '';
     /**
      * application identifier
+     *
      * @var int
      */
     private $appId = '';
     /**
      * user identifier
+     *
      * @var string
      */
     private $userId = '';
     /**
      * current action
+     *
      * @var \Anakeen\Core\Internal\Action
      */
     private $action = null;
     /**
      * acl list
+     *
      * @var array
      */
     private $acls = array();
+
     /**
      * @param array $data
+     *
+     * @param null  $action
+     *
      * @return CheckAccess
      */
     public function check(array $data, &$action = null)
     {
         $this->appName = $data[2];
         $this->userId = $data[1];
-        
+
         for ($i = 3; $i < count($data); $i++) {
             if (!empty($data[$i])) {
                 if ($data[$i][0] == '-') {
@@ -54,17 +65,17 @@ class CheckAccess extends CheckData
                 }
             }
         }
-        
+
         $this->action = $action;
         $this->checkAppExists();
         if (!$this->hasErrors()) {
             $this->checkUserExists();
             $this->checkAclsExists();
         }
-        
+
         return $this;
     }
-    
+
     private function checkAppExists()
     {
         if (!$this->appName) {
@@ -80,16 +91,16 @@ class CheckAccess extends CheckData
             }
         }
     }
-    
+
     private function checkUserExists()
     {
         if ($this->userId) {
             $findUser = false;
             if (ctype_digit($this->userId)) {
-                $findUser =  \Anakeen\Core\Account::getDisplayName($this->userId);
+                $findUser = \Anakeen\Core\Account::getDisplayName($this->userId);
             } else {
                 // search document
-                $tu = getTDoc(getDbAccess(), $this->userId);
+                $tu = \Anakeen\Core\DocManager::getRawDocument($this->userId);
                 if ($tu) {
                     $findUser = ($tu["us_whatid"] != '');
                 }
@@ -101,9 +112,10 @@ class CheckAccess extends CheckData
             $this->addError(ErrorCode::getError('ACCS0007'));
         }
     }
+
     private function checkAclsExists()
     {
-        $oAcl = new Acl(getDbAccess());
+        $oAcl = new Acl();
         foreach ($this->acls as $acl) {
             if ($this->checkSyntax($acl)) {
                 if (!$oAcl->Set($acl, $this->appId)) {
@@ -114,8 +126,10 @@ class CheckAccess extends CheckData
             }
         }
     }
+
     /**
      * @param string $acl
+     *
      * @return bool
      */
     private function checkSyntax($acl)

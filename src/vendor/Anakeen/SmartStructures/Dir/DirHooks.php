@@ -270,7 +270,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
 
             $err = $qf->Add();
             if ($err == "") {
-                AddLogMsg(sprintf(_("Add %s in %s folder"), $doc->title, $this->title));
+                \Anakeen\Core\Utils\System::addLogMsg(sprintf(_("Add %s in %s folder"), $doc->title, $this->title));
                 $this->addHistoryEntry(sprintf(_("Document %s inserted"), $doc->title));
                 $doc->addHistoryEntry(sprintf(_("Document inserted in %s folder"), $this->title, \DocHisto::INFO, "MOVEADD"));
 
@@ -453,7 +453,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
                 if ($insertOne == "") {
                     $insertOne = $qf->Add();
                     if ($insertOne == "") {
-                        AddLogMsg(sprintf(_("Add %s in %s folder"), $tdoc["title"], $this->title));
+                        \Anakeen\Core\Utils\System::addLogMsg(sprintf(_("Add %s in %s folder"), $tdoc["title"], $this->title));
                         $this->addHistoryEntry(sprintf(_("Document %s inserted"), $tdoc["title"]), \DocHisto::INFO, "MODCONTAIN");
 
                         $this->addLog('addcontent', array(
@@ -674,7 +674,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             ), true);
         }
 
-        AddLogMsg(sprintf(_("Delete %d in %s folder"), $docid, $this->title));
+        \Anakeen\Core\Utils\System::addLogMsg(sprintf(_("Delete %d in %s folder"), $docid, $this->title));
 
         $this->addLog('delcontent', array(
             "insert" => array(

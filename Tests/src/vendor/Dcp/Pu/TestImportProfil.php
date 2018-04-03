@@ -6,7 +6,7 @@
 
 namespace Dcp\Pu;
 
-require_once 'PU_testcase_dcp_document.php';
+//require_once 'PU_testcase_dcp_document.php';
 
 class TestImportProfil extends TestCaseDcpDocument
 {

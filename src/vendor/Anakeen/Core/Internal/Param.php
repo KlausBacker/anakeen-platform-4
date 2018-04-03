@@ -6,6 +6,8 @@
 namespace Anakeen\Core\Internal;
 
 /** @deprecated use \Anakeen\Core\Internal\Param::PARAM_APP instead */
+use Anakeen\Core\DbManager;
+
 define("PARAM_APP", "A");
 /** @deprecated use \Anakeen\Core\Internal\Param::PARAM_GLB instead */
 define("PARAM_GLB", "G");
@@ -72,7 +74,7 @@ class Param extends DbObj
     public function SetKey($appid, $userid, $styleid = "0")
     {
         $this->appid = $appid;
-        $this->buffer = array_merge($this->buffer, $this->GetAll($appid, $userid, $styleid));
+        $this->buffer = array_merge($this->buffer, $this->getAll($appid, $userid, $styleid));
     }
     
     public function Set($name, $val, $type = self::PARAM_GLB, $appid = '')
@@ -148,7 +150,7 @@ class Param extends DbObj
         }
     }
     
-    public function GetAll($appid = "", $userid, $styleid = "0")
+    public function getAll($appid, $userid, $styleid = "0")
     {
         if ($appid == "") {
             $appid = $this->appid;
@@ -175,7 +177,8 @@ class Param extends DbObj
             } else {
                 $sql = sprintf("SELECT * from paramv where type='G' or (type='A' and appid=%d);", $appid);
             }
-            simpleQuery($this->dbaccess, $sql, $list);
+
+            DbManager::query($sql, $list);
             
             foreach ($list as $v) {
                 $out[$v["name"]] = $v["val"];

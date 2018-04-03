@@ -655,7 +655,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     $usql = preg_replace('/;+\s*$/', '', $usql);
                     return $usql;
                 }
-                $mb = microtime();
+                $mb = microtime(true);
                 $tableq = $query->Query(0, 0, $qtype, $usql);
                 
                 if ($query->nb > 0) {
@@ -665,10 +665,10 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                         $tretdocs = array_merge($tretdocs, $tableq);
                     }
                 }
-                // print "<HR><br><div style=\"border:red 1px inset;background-color:lightyellow;color:black\">".$query->LastQuery; print " - $qtype<B> [".$query->nb.']'.sprintf("%.03fs",microtime_diff(microtime(),$mb))."</B><b style='color:red'>".$query->basic_elem->msg_err."</b></div>";
+
                 if ($query->basic_elem->msg_err != "") {
-                    addLogMsg($query->basic_elem->msg_err, 200);
-                    addLogMsg(array(
+                    \Anakeen\Core\Utils\System::addLogMsg($query->basic_elem->msg_err);
+                    \Anakeen\Core\Utils\System::addLogMsg(array(
                         "query" => $query->LastQuery,
                         "err" => $query->basic_elem->msg_err
                     ));
@@ -678,15 +678,15 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     $debug["count"] = $query->nb;
                     $debug["query"] = $query->LastQuery;
                     $debug["error"] = $query->basic_elem->msg_err;
-                    $debug["delay"] = sprintf("%.03fs", microtime_diff(microtime(), $mb));
+                    $debug["delay"] = sprintf("%.03fs", (microtime(true) - $mb));
                     if (!empty($debug["log"])) {
-                        addLogMsg($query->basic_elem->msg_err, 200);
-                        addLogMsg($debug);
+                        \Anakeen\Core\Utils\System::addLogMsg($query->basic_elem->msg_err, 200);
+                        \Anakeen\Core\Utils\System::addLogMsg($debug);
                     }
                 } elseif ($query->basic_elem->msg_err != "") {
                     $debug["query"] = $query->LastQuery;
                     $debug["error"] = $query->basic_elem->msg_err;
-                    addLogMsg($debug);
+                    \Anakeen\Core\Utils\System::addLogMsg($debug);
                 }
             } else {
                 if ($returnSqlOnly) {
@@ -747,7 +747,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             }
         }
         uasort($t, "sortbytitle");
-        //  print "<HR><br><div style=\"border:red 1px inset;background-color:orange;color:black\">"; print " - getFldDoc $dirid [nbdoc:".count($tfld)."]<B>".microtime_diff(microtime(),$mc)."</B></div>";
+
         return $t;
     }
     function sortbytitle($td1, $td2)

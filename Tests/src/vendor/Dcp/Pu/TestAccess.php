@@ -8,7 +8,7 @@ namespace Dcp\Pu;
 
 use Anakeen\Core\DbManager;
 
-require_once 'PU_testcase_dcp_application.php';
+//require_once 'PU_testcase_dcp_application.php';
 
 class TestAccess extends TestCaseDcpApplication
 {

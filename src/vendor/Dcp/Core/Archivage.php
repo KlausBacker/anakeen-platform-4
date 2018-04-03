@@ -24,8 +24,8 @@ class Archiving extends \SmartStructure\Dir
             $s->orderby = '';
             $s->setObjectReturn();
             $s->search();
-            
-            setMaxExecutionTimeTo(3600);
+
+            \Anakeen\Core\Utils\System::setMaxExecutionTimeTo(3600);
             while ($doc = $s->getNextDoc()) {
                 $doc->disableEditControl();
                 $err.= $doc->archive($this);
@@ -62,8 +62,8 @@ class Archiving extends \SmartStructure\Dir
                 $s->orderby = '';
                 $s->setObjectReturn();
                 $s->search();
-                
-                setMaxExecutionTimeTo(3600);
+
+                \Anakeen\Core\Utils\System::setMaxExecutionTimeTo(3600);
                 while ($doc = $s->getNextDoc()) {
                     $doc->disableEditControl();
                     $err.= $doc->unArchive($this);
@@ -95,8 +95,8 @@ class Archiving extends \SmartStructure\Dir
                 $s->orderby = '';
                 $s->setObjectReturn();
                 $s->search();
-                
-                setMaxExecutionTimeTo(3600);
+
+                \Anakeen\Core\Utils\System::setMaxExecutionTimeTo(3600);
                 $t = "<ol>";
                 while ($doc = $s->getNextDoc()) {
                     if ($doc->doctype != 'C') {

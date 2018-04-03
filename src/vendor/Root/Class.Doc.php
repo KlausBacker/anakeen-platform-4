@@ -873,24 +873,25 @@ create unique index i_docir on doc(initid, revision);";
             "adate",
             "revdate"
         ), true); // to force also execute sql trigger
-        if ($this->doctype != 'C') {
+        if ($this->doctype !== 'C') {
             // set to shared : because comes from createDoc
             \Anakeen\Core\DocManager::cache()->addDocument($this);
-        }
-        if ($this->doctype != "T") {
-            $err = $this->PostCreated();
-            if ($err != "") {
-                AddWarningMsg($err);
+
+            if ($this->doctype !== "T") {
+                $err = $this->PostCreated();
+                if ($err != "") {
+                    AddWarningMsg($err);
+                }
+                $this->sendTextToEngine();
+                if ($this->dprofid > 0) {
+                    $this->setProfil($this->dprofid); // recompute profil if needed
+                    $this->modify(true, array(
+                        "profid"
+                    ), true);
+                }
+                $this->UpdateVaultIndex();
+                $this->updateRelations(true);
             }
-            $this->sendTextToEngine();
-            if ($this->dprofid > 0) {
-                $this->setProfil($this->dprofid); // recompute profil if needed
-                $this->modify(true, array(
-                    "profid"
-                ), true);
-            }
-            $this->UpdateVaultIndex();
-            $this->updateRelations(true);
         }
         $this->hasChanged = false;
     }
@@ -3407,17 +3408,17 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($ltitle as $k => $v) {
             if ($this->getRawValue($v->id) != "") {
                 if ($v->inArray() && ($v->getOption('multiple') == 'yes')) {
-                    $title1 .= mb_trim(str_replace("<BR>", " ", $this->getRawValue($v->id))) . " ";
+                    $title1 .= \Anakeen\Core\Utils\Strings::mb_trim(str_replace("<BR>", " ", $this->getRawValue($v->id))) . " ";
                 } else {
                     $title1 .= $this->getRawValue($v->id) . " ";
                 }
             }
         }
         /* Replace control chars with spaces, and limit title to 256 chars */
-        if (mb_trim($title1) != "") {
-            $this->title = mb_substr(mb_trim(preg_replace('/\p{Cc}/u', ' ', $title1)), 0, 255);
+        if (\Anakeen\Core\Utils\Strings::mb_trim($title1) != "") {
+            $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mb_trim(preg_replace('/\p{Cc}/u', ' ', $title1)), 0, 255);
         }
-        $this->title = mb_substr(mb_trim(preg_replace('/\p{Cc}/u', ' ', $this->getCustomTitle())), 0, 255);
+        $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mb_trim(preg_replace('/\p{Cc}/u', ' ', $this->getCustomTitle())), 0, 255);
     }
 
     /**
@@ -5531,7 +5532,7 @@ create unique index i_docir on doc(initid, revision);";
 
         $h->id = $this->id;
         $h->initid = $this->initid;
-        if (!isUTF8($comment)) {
+        if (!\Anakeen\Core\Utils\Strings::isUTF8($comment)) {
             $comment = utf8_encode($comment);
         }
         $h->comment = $comment;
@@ -5597,7 +5598,7 @@ create unique index i_docir on doc(initid, revision);";
         $h->id = $this->id;
         $h->initid = $this->initid;
         $h->title = $this->title;
-        if (!isUTF8($comment)) {
+        if (!\Anakeen\Core\Utils\Strings::isUTF8($comment)) {
             $comment = utf8_encode($comment);
         }
         $h->comment = $comment;
@@ -8666,7 +8667,7 @@ create unique index i_docir on doc(initid, revision);";
                 $changeframe = false;
                 if ((($v + $nbimg) > 0) || $frametpl) { // one value detected
                     $frames[$k]["frametext"] = ($oaf && $oaf->getOption("vlabel") != "none")
-                        ? mb_ucfirst($this->GetLabel($oaf->id)) : "";
+                        ? \Anakeen\Core\Utils\Strings::mb_ucfirst($this->GetLabel($oaf->id)) : "";
                     $frames[$k]["frameid"] = $oaf->id;
                     $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
 
@@ -8682,7 +8683,7 @@ create unique index i_docir on doc(initid, revision);";
                         $ttabs[$pSet->id] = array(
                             "tabid" => $pSet->id,
                             "tabtitle" => ($pSet->getOption("vlabel") == "none") ? '&nbsp;'
-                                : mb_ucfirst($pSet->getLabel())
+                                : \Anakeen\Core\Utils\Strings::mb_ucfirst($pSet->getLabel())
                         );
                     }
                     $frames[$k]["viewtpl"] = ($frametpl != "");
@@ -8810,7 +8811,7 @@ create unique index i_docir on doc(initid, revision);";
         if ((($v + $nbimg) > 0) || $frametpl) { // // last fieldset
             if ($oaf) {
                 $frames[$k]["frametext"] = ($oaf->getOption("vlabel") != "none")
-                    ? mb_ucfirst($this->GetLabel($currentFrameId)) : "";
+                    ? \Anakeen\Core\Utils\Strings::mb_ucfirst($this->GetLabel($currentFrameId)) : "";
             } else {
                 $frames[$k]["frametext"] = '';
             }
@@ -8833,7 +8834,7 @@ create unique index i_docir on doc(initid, revision);";
                 $frames[$k]["TAB"] = true;
                 $ttabs[$pSet->id] = array(
                     "tabid" => $pSet->id,
-                    "tabtitle" => ($pSet->getOption("vlabel") == "none") ? '&nbsp;' : mb_ucfirst($pSet->getLabel())
+                    "tabtitle" => ($pSet->getOption("vlabel") == "none") ? '&nbsp;' : \Anakeen\Core\Utils\Strings::mb_ucfirst($pSet->getLabel())
                 );
             }
             $frames[$k]["rowspan"] = $v + 1; // for images cell
@@ -9511,7 +9512,7 @@ create unique index i_docir on doc(initid, revision);";
                     if ($oaf->getOption("vlabel") == "none") {
                         $currentFrameText = '';
                     } else {
-                        $currentFrameText = mb_ucfirst($oaf->GetLabel());
+                        $currentFrameText = \Anakeen\Core\Utils\Strings::mb_ucfirst($oaf->GetLabel());
                     }
 
                     $frames[$k]["frametext"] = $currentFrameText;
@@ -9536,7 +9537,7 @@ create unique index i_docir on doc(initid, revision);";
                         $ttabs[$oaf->fieldSet->id] = array(
                             "tabid" => $oaf->fieldSet->id,
                             "tabtitle" => ($oaf->fieldSet->getOption("vlabel") == "none") ? '&nbsp;'
-                                : mb_ucfirst($oaf->fieldSet->getLabel())
+                                : \Anakeen\Core\Utils\Strings::mb_ucfirst($oaf->fieldSet->getLabel())
                         );
                     }
                     $frames[$k]["TABLEVALUE"] = "TABLEVALUE_$k";
@@ -9578,7 +9579,7 @@ create unique index i_docir on doc(initid, revision);";
                     $tableframe[$v]["value"] = chop(htmlentities($value, ENT_COMPAT, "UTF-8"));
                     $label = $listattr[$i]->getLabel();
                     $tableframe[$v]["attrid"] = $listattr[$i]->id;
-                    $tableframe[$v]["name"] = mb_ucfirst($label);
+                    $tableframe[$v]["name"] = \Anakeen\Core\Utils\Strings::mb_ucfirst($label);
 
                     if ($listattr[$i]->needed) {
                         $tableframe[$v]["labelclass"] = "FREEDOMLabelNeeded";
@@ -9588,14 +9589,14 @@ create unique index i_docir on doc(initid, revision);";
                     $tableframe[$v]["aneeded"] = $listattr[$i]->needed;
                     $elabel = $listattr[$i]->getoption("elabel");
                     $elabel = str_replace("'", "&rsquo;", $elabel);
-                    $tableframe[$v]["elabel"] = mb_ucfirst(str_replace('"', "&rquot;", $elabel));
+                    $tableframe[$v]["elabel"] = \Anakeen\Core\Utils\Strings::mb_ucfirst(str_replace('"', "&rquot;", $elabel));
                     $tableframe[$v]["aehelp"] = ($help && $help->isAlive())
                         ? $help->getAttributeHelpUrl($listattr[$i]->id) : false;
                     $tableframe[$v]["aehelpid"] = ($help && $help->isAlive()) ? $help->id : false;
 
                     $tableframe[$v]["multiple"] = ($attr->getOption("multiple") == "yes") ? "true" : "false";
                     $tableframe[$v]["atype"] = $attr->type;
-                    $tableframe[$v]["name"] = mb_ucfirst($label);
+                    $tableframe[$v]["name"] = \Anakeen\Core\Utils\Strings::mb_ucfirst($label);
                     $tableframe[$v]["classback"] = ($attr->usefor == "O") ? "FREEDOMOpt" : "FREEDOMBack1";
 
                     $tableframe[$v]["SINGLEROW"] = true;
@@ -9644,7 +9645,7 @@ create unique index i_docir on doc(initid, revision);";
                 if ($oaf->getOption("vlabel") == "none") {
                     $currentFrameText = '';
                 } else {
-                    $currentFrameText = mb_ucfirst($oaf->GetLabel());
+                    $currentFrameText = \Anakeen\Core\Utils\Strings::mb_ucfirst($oaf->GetLabel());
                 }
                 $frames[$k]["frametext"] = $currentFrameText;
                 $frames[$k]["frameid"] = $oaf->id;
@@ -9669,7 +9670,7 @@ create unique index i_docir on doc(initid, revision);";
                     $ttabs[$currentFrame->fieldSet->id] = array(
                         "tabid" => $currentFrame->fieldSet->id,
                         "tabtitle" => ($currentFrame->fieldSet->getOption("vlabel") == "none") ? '&nbsp;'
-                            : mb_ucfirst($currentFrame->fieldSet->getLabel())
+                            : \Anakeen\Core\Utils\Strings::mb_ucfirst($currentFrame->fieldSet->getLabel())
                     );
                 }
                 $this->lay->SetBlockData($frames[$k]["TABLEVALUE"], $tableframe);
@@ -11134,7 +11135,7 @@ create unique index i_docir on doc(initid, revision);";
             $datesValues = array_unique($datesValues);
             if ($withLocale) {
                 $currentLocale = ContextManager::getApplicationParam("CORE_LANG", "fr_FR");
-                $lang = getLocales();
+                $lang = ContextManager::getLocales();
 
                 $locales = array_keys($lang);
                 // set current at then end to get same locale when function finished

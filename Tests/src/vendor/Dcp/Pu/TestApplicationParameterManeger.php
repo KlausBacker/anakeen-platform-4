@@ -10,8 +10,8 @@ namespace Dcp\Pu;
  * @package Dcp\Pu
  */
 
-require_once 'PU_testcase_dcp.php';
-require_once 'PU_testcase_dcp_application.php';
+//require_once 'PU_testcase_dcp.php';
+//require_once 'PU_testcase_dcp_application.php';
 
 class TestApplicationParameterManeger extends TestCaseDcpApplication
 {

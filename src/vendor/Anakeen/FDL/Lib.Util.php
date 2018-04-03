@@ -126,7 +126,7 @@ function FrenchDateToLocaleDate($fdate, $format = '')
         return "";
     }
     if (empty($format)) {
-        $localeconfig = getLocaleConfig();
+        $localeconfig = \Anakeen\Core\ContextManager::getLocaleConfig();
         if ($localeconfig !== false) {
             if (strlen($fdate) >= 16) {
                 $format = $localeconfig['dateTimeFormat'];
@@ -289,7 +289,7 @@ function stringDateToIso($date, $format = false, $withT = false)
         }
     }
     if (empty($format)) {
-        $localeconfig = getLocaleConfig();
+        $localeconfig = \Anakeen\Core\ContextManager::getLocaleConfig();
         if ($localeconfig !== false) {
             $format = $localeconfig['dateTimeFormat'];
             if (strlen($date) < strlen($format)) {
@@ -498,7 +498,6 @@ function jd2cal($jd, $dformat = '')
         $sc++;
     }
     if ($sc == 60) {
-        $sc = 0;
         $mn++;
     }
     if ($mn == 60) {

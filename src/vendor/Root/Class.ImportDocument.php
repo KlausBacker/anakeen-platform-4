@@ -130,14 +130,14 @@ class ImportDocument
                 $ext = substr($file, strrpos($file, '.') + 1);
                 $this->begtime = Doc::getTimeDate(0, true);
                 if ($ext == "xml") {
-                    $iXml = new \Dcp\Core\importXml();
+                    $iXml = new \Dcp\Core\ImportXml();
                     $iXml->setPolicy($this->policy);
                     $iXml->setImportDirectory($this->dirid);
                     $iXml->setVerifyAttributeAccess($this->verifyAttributeAccess);
                     $iXml->analyzeOnly($this->onlyAnalyze);
                     $this->cr = $iXml->importSingleXmlFile($file);
                 } elseif ($ext == "zip") {
-                    $iXml = new \Dcp\Core\importXml();
+                    $iXml = new \Dcp\Core\ImportXml();
                     $iXml->setPolicy($this->policy);
                     $iXml->setImportDirectory($this->dirid);
                     $iXml->setVerifyAttributeAccess($this->verifyAttributeAccess);
