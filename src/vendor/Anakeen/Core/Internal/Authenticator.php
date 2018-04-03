@@ -47,7 +47,7 @@ abstract class Authenticator
             'type' => $authtype,
             'AuthentProvider' => $authprovider
         );
-        $ta = AuthenticatorManager::getAuthTypeParams();
+        $ta = \Anakeen\Router\AuthenticatorManager::getAuthTypeParams();
         if ($authprovider != self::nullProvider) {
             $tp = self::getAuthParam($authprovider);
             $this->parms = array_merge($tx, $ta, $tp);

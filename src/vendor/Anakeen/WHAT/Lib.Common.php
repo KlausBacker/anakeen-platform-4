@@ -484,87 +484,12 @@ function simpleQuery(
     return "";
 }
 
-/**
- * @param string $freedomctx
- *
- * @deprecated
- * @return string
- */
-function getAuthType($freedomctx = "")
-{
-    return \Anakeen\Core\Internal\AuthenticatorManager::getAuthType();
-}
 
-/**
- * @param string $freedomctx
- *
- * @deprecated
- * @return string
- */
-function getAuthProvider($freedomctx = "")
-{
-    return \Anakeen\Core\Internal\AuthenticatorManager::getAuthProvider();
-}
 
-/**
- * @param string $freedomctx
- *
- * @deprecated
- * @return array
- */
-function getAuthProviderList($freedomctx = "")
-{
-    return \Anakeen\Core\Internal\AuthenticatorManager::getAuthProviderList();
-}
 
-/**
- * @deprecated
- *
- * @param string $freedomctx
- *
- * @return array|mixed
- * @throws \Dcp\Exception
- */
-function getAuthTypeParams($freedomctx = "")
-{
-    return Authenticator::getAuthTypeParams();
-}
 
-/**
- * @deprecated
- */
-function getAuthParam($freedomctx = "", $provider = "")
-{
-    return Authenticator::getAuthParam($provider);
-}
 
-/**
- * return shell commande for wsh
- * depending of database (in case of several instances)
- *
- * @param bool $nice   set to true if want nice mode
- * @param int  $userid the user identifier to send command (if 0 send like admin without specific user parameter)
- * @param bool $sudo   set to true if want to be send with sudo (need /etc/sudoers correctly configured)
- * @deprecated
- * @return string the command
- */
-function getWshCmd($nice = false, $userid = 0, $sudo = false)
-{
-    $wsh = '';
-    if ($nice) {
-        $wsh .= "nice -n +10 ";
-    }
-    if ($sudo) {
-        $wsh .= "sudo ";
-    }
-    $wsh .= escapeshellarg(DEFAULT_PUBDIR) . "/ank.php  ";
-    $userid = intval($userid);
-    if ($userid > 0) {
-        $u=new \Anakeen\Core\Account("", $userid);
-        $wsh .= sprintf("--login=\"%s\" ", $u->login);
-    }
-    return $wsh;
-}
+
 
 /**
  * get the system user id

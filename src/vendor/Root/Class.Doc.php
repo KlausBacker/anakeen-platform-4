@@ -1697,7 +1697,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
 
-
     /**
      * return family parameter
      *
@@ -2401,7 +2400,7 @@ create unique index i_docir on doc(initid, revision);";
         $tversion = array();
         if (isset($this->attributes->attr)) {
             foreach ($this->attributes->attr as $k => $v) {
-                if ((get_class($v) == "NormalAttribute") && ($v->getOption("version") == "yes")) {
+                if ($v->isNormal && ($v->getOption("version") == "yes")) {
                     $tversion[] = $this->getRawValue($v->id);
                 }
             }
@@ -2495,9 +2494,9 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @api get attribute object
      *
-     * @param string         $idAttr  attribute identifier
+     * @param string                                      $idAttr  attribute identifier
      * @param \Anakeen\Core\SmartStructure\BasicAttribute &$oa     object reference use this if want to modify attribute
-     * @param bool           $useMask set to false to not apply mask if needed (quick access mode)
+     * @param bool                                        $useMask set to false to not apply mask if needed (quick access mode)
      *
      * @return \Anakeen\Core\SmartStructure\BasicAttribute|bool|Anakeen\Core\SmartStructure\NormalAttribute
      */
@@ -2532,10 +2531,10 @@ create unique index i_docir on doc(initid, revision);";
         $aFromName = isset($this->attributes->fromname) ? $this->attributes->fromname : '';
         if ($aFromName != $fromname) {
             // reset when use partial cache
-            $adocClassName=\Anakeen\Core\DocManager::getAttributesClassName($fromname);
+            $adocClassName = \Anakeen\Core\DocManager::getAttributesClassName($fromname);
             // Workaround because autoload has eventually the class in its missing private key
             // Use file_exists instead class_exists
-            $attFileClass=\Anakeen\Core\DocManager::getAttributesClassFilename($this->name);
+            $attFileClass = \Anakeen\Core\DocManager::getAttributesClassFilename($this->name);
             if (file_exists($attFileClass)) {
                 $this->attributes = new $adocClassName();
             }
@@ -2622,7 +2621,7 @@ create unique index i_docir on doc(initid, revision);";
             foreach ($oas as $k => $v) {
                 if ($oas[$k]) {
 
-                    $oas[$k]->mvisibility =  \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
+                    $oas[$k]->mvisibility = \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
                         $v->visibility,
                         (empty($v->fieldSet)) ? '' : $v->fieldSet->mvisibility,
                         (!empty($v->fieldSet->fieldSet)) ? $v->fieldSet->fieldSet->mvisibility : ''
@@ -2720,7 +2719,7 @@ create unique index i_docir on doc(initid, revision);";
                         foreach ($tdiff as $k) {
                             $v = $oas[$k];
                             if ($v->type == "frame") {
-                                $oas[$k]->mvisibility =  \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
+                                $oas[$k]->mvisibility = \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
                                     $v->visibility,
                                     isset($v->fieldSet) ? $v->fieldSet->mvisibility : '',
                                     ''
@@ -2730,7 +2729,7 @@ create unique index i_docir on doc(initid, revision);";
                         foreach ($tdiff as $k) {
                             $v = $oas[$k];
                             if ($v->type == "array") {
-                                $oas[$k]->mvisibility =  \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
+                                $oas[$k]->mvisibility = \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
                                     $v->visibility,
                                     isset($v->fieldSet) ? $v->fieldSet->mvisibility : '',
                                     isset($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : ''
@@ -2741,7 +2740,7 @@ create unique index i_docir on doc(initid, revision);";
                         foreach ($tdiff as $k) {
                             $v = $oas[$k];
                             if ($v->type != "frame") {
-                                $oas[$k]->mvisibility =  \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
+                                $oas[$k]->mvisibility = \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
                                     $v->visibility,
                                     isset($v->fieldSet) ? $v->fieldSet->mvisibility : '',
                                     isset($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : ''
@@ -2809,7 +2808,7 @@ create unique index i_docir on doc(initid, revision);";
         $tsa = array();
 
         foreach ($this->attributes->attr as $k => $v) {
-            if (get_class($v) == "FieldSetAttribute") {
+            if (get_class($v) == \Anakeen\Core\SmartStructure\FieldSetAttribute::class) {
                 $tsa[$v->id] = $v;
             }
         }
@@ -2835,7 +2834,7 @@ create unique index i_docir on doc(initid, revision);";
                 /**
                  * @var \Anakeen\Core\SmartStructure\NormalAttribute $v
                  */
-                if ((get_class($v) == "NormalAttribute") && ($v->usefor != 'Q') && ($v->isInAbstract)) {
+                if ($v->isNormal && ($v->usefor != 'Q') && ($v->isInAbstract)) {
                     $tsa[$v->id] = $v;
                 }
             }
@@ -2860,7 +2859,7 @@ create unique index i_docir on doc(initid, revision);";
                 /**
                  * @var \Anakeen\Core\SmartStructure\NormalAttribute $v
                  */
-                if ((get_class($v) == "NormalAttribute") && ($v->isInTitle)) {
+                if ($v->isNormal && ($v->isInTitle)) {
                     $tsa[$v->id] = $v;
                 }
             }
@@ -2920,7 +2919,7 @@ create unique index i_docir on doc(initid, revision);";
         $tsa = array();
 
         foreach ($this->attributes->attr as $k => $v) {
-            if ((get_class($v) == "NormalAttribute") && (!$v->inArray())
+            if ($v->isNormal && (!$v->inArray())
                 && ($v->mvisibility != "I")) { // I means not editable
                 if ((($this->usefor == "Q") && ($v->usefor == "Q"))
                     || (($this->usefor != "Q")
@@ -2968,7 +2967,7 @@ create unique index i_docir on doc(initid, revision);";
         $tsa = array();
 
         foreach ($this->attributes->attr as $k => $v) {
-            if ((get_class($v) == "NormalAttribute") && ($v->usefor != 'Q')
+            if ($v->isNormal && ($v->usefor != 'Q')
                 && ((($v->type == "image") && (!$onlyfile))
                     || ($v->type == "file"))) {
                 $tsa[$v->id] = $v;
@@ -3218,7 +3217,7 @@ create unique index i_docir on doc(initid, revision);";
                 /**
                  * @var \Anakeen\Core\SmartStructure\NormalAttribute $v
                  */
-                if ((get_class($v) == "NormalAttribute") && ($v->needed) && ($v->usefor == 'Q')) {
+                if ($v->isNormal && ($v->needed) && ($v->usefor == 'Q')) {
                     $tsa[$v->id] = $v;
                 }
             }
@@ -3230,7 +3229,7 @@ create unique index i_docir on doc(initid, revision);";
                 /**
                  * @var \Anakeen\Core\SmartStructure\NormalAttribute $v
                  */
-                if ((get_class($v) == "NormalAttribute") && ($v->needed) && ($v->usefor != 'Q')) {
+                if ($v->isNormal && ($v->needed) && ($v->usefor != 'Q')) {
                     $tsa[$v->id] = $v;
                 }
             }
@@ -3319,7 +3318,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             } else {
                 foreach ($this->attributes->attr as $k => $v) {
-                    if (get_class($v) == "NormalAttribute" && $v->usefor != 'Q') {
+                    if ($v->isNormal && $v->usefor != 'Q') {
                         if (($v->type != "array") && ($withfile || (($v->type != "image") && ($v->type != "file")))) {
                             $tsa[$v->id] = $v;
                         }
@@ -3350,7 +3349,7 @@ create unique index i_docir on doc(initid, revision);";
              * @var \Anakeen\Core\SmartStructure\NormalAttribute $v
              */
 
-            if ((get_class($v) == "NormalAttribute")
+            if ($v->isNormal
                 && (($v->mvisibility == "W") || ($v->mvisibility == "O")
                     || ($v->type == "docid"))
                 && ($v->type != "array")) {
@@ -3404,7 +3403,6 @@ create unique index i_docir on doc(initid, revision);";
             return;
         } // no refresh for family  document
         $ltitle = $this->GetTitleAttributes();
-
         $title1 = "";
         foreach ($ltitle as $k => $v) {
             if ($this->getRawValue($v->id) != "") {
@@ -3471,6 +3469,7 @@ create unique index i_docir on doc(initid, revision);";
 
     /**
      * called when user edit a document FDL/editcard
+     *
      * @deprecated
      * @api hook called when compose edit document web interface
      */
@@ -3482,6 +3481,7 @@ create unique index i_docir on doc(initid, revision);";
 
     /**
      * called when user view a document FDL/fdl_card
+     *
      * @deprecated
      * @api hook called when compose view document web interface
      */
@@ -3680,7 +3680,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $def    default value returned if attribute not found or if is empty
      *
      * @code
-    $doc = new_Doc('',7498 );
+     * $doc = new_Doc('',7498 );
      * if ($doc->isAlive()) {
      * $rev = $doc->getPropertyValue('revision');
      * $order = $doc->getRawValue("tst_order");
@@ -4554,7 +4554,6 @@ create unique index i_docir on doc(initid, revision);";
     {
         $err = '';
         if (!empty($this->textsend)) {
-
             foreach ($this->textsend as $k => $v) {
                 $index = $v["index"];
                 if ($index > 0) {
@@ -5001,8 +5000,6 @@ create unique index i_docir on doc(initid, revision);";
                 $tvid = array();
                 foreach ($filenames as $k => $filename) {
                     if (is_file($filename)) {
-
-
                         $err = vault_store($filename, $vaultid, $ftitle[$k]);
                         if ($err == "") {
                             $info = vault_properties($vaultid);
@@ -5378,7 +5375,7 @@ create unique index i_docir on doc(initid, revision);";
             } else {
                 $err = sprintf(_("Method [%s] not exists"), $method);
                 addWarningMsg($err);
-                error_log($err.print_r(getDebugStack(), true));
+                error_log($err . print_r(getDebugStack(), true));
                 return null;
             }
         }
@@ -5538,7 +5535,7 @@ create unique index i_docir on doc(initid, revision);";
             $comment = utf8_encode($comment);
         }
         $h->comment = $comment;
-        $h->date = date("d-m-Y H:i:s").substr(microtime(), 1, 8);
+        $h->date = date("d-m-Y H:i:s") . substr(microtime(), 1, 8);
         if ($uid > 0) {
             $u = new \Anakeen\Core\Account("", $uid);
             $h->uid = $u->id;
@@ -7737,12 +7734,12 @@ create unique index i_docir on doc(initid, revision);";
      * return HTML formated value of an attribute
      *
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
-     * @param string          $value  raw value
-     * @param string          $target html target in case of link
-     * @param bool            $htmllink
-     * @param int             $index
-     * @param bool            $entities
-     * @param bool            $abstract
+     * @param string                                       $value  raw value
+     * @param string                                       $target html target in case of link
+     * @param bool                                         $htmllink
+     * @param int                                          $index
+     * @param bool                                         $entities
+     * @param bool                                         $abstract
      *
      * @return string the formated value
      */
@@ -7867,10 +7864,10 @@ create unique index i_docir on doc(initid, revision);";
      * return open document text format for attribute value
      *
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
-     * @param string          $value
-     * @param string          $target   unused
-     * @param bool            $htmllink unused
-     * @param int             $index    index rank in case of multiple attribute value
+     * @param string                                       $value
+     * @param string                                       $target   unused
+     * @param bool                                         $htmllink unused
+     * @param int                                          $index    index rank in case of multiple attribute value
      *
      * @return string XML fragment
      */
@@ -8423,7 +8420,6 @@ create unique index i_docir on doc(initid, revision);";
 
         $ext = \Anakeen\Core\Utils\FileMime::getFileExtension($tplfile);
         if (strtolower($ext) == "odt") {
-
             $target = "ooo";
             $ulink = false;
             $this->lay = new OOoLayout($tplfile, $action, $this);
@@ -10465,8 +10461,8 @@ create unique index i_docir on doc(initid, revision);";
      * attach timer to a document
      *
      * @param \SmartStructure\TIMER &$timer   the timer document
-     * @param Doc               &$origin  the document which comes from the attachement
-     * @param string            $execdate date to execute first action YYYY-MM-DD HH:MM:SS
+     * @param Doc                   &$origin  the document which comes from the attachement
+     * @param string                $execdate date to execute first action YYYY-MM-DD HH:MM:SS
      *
      * @api Attach timer to a document
      * @return string error - empty if no error -
@@ -11047,9 +11043,9 @@ create unique index i_docir on doc(initid, revision);";
      * known logical names to not report
      *
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
-     * @param string          $avalue              docid's raw value
-     * @param array           $unknownLogicalNames Return list of unknown logical names
-     * @param array           $knownLogicalNames   List of known logical names that should not be reported as unknown in $unknownLogicalNames
+     * @param string                                       $avalue              docid's raw value
+     * @param array                                        $unknownLogicalNames Return list of unknown logical names
+     * @param array                                        $knownLogicalNames   List of known logical names that should not be reported as unknown in $unknownLogicalNames
      *
      * @return int|string The value with logical names replaced by their id
      */

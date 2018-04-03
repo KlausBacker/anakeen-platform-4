@@ -34,7 +34,7 @@ class Logout
         $action = ContextManager::getCurrentAction();
         $action->session->close();
 
-        \Anakeen\Core\Internal\AuthenticatorManager::closeAccess();
+        \Anakeen\Router\AuthenticatorManager::closeAccess();
         $data=[];
         foreach (headers_list() as $header) {
             if (preg_match("/location:\s*(.*)/i", $header, $reg)) {
@@ -42,7 +42,7 @@ class Logout
             }
         }
 
-        $data["basicAuthent"]= (get_class(\Anakeen\Core\Internal\AuthenticatorManager::$auth) === \Anakeen\Core\Internal\BasicAuthenticator::class);
+        $data["basicAuthent"]= (get_class(\Anakeen\Router\AuthenticatorManager::$auth) === \Anakeen\Core\Internal\BasicAuthenticator::class);
         if ($data["basicAuthent"]) {
             $response = $response->withStatus(401);
         }

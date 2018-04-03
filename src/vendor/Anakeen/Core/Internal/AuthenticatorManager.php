@@ -86,7 +86,7 @@ class AuthenticatorManager
             return $ret;
         }
 
-        $login = \Anakeen\Core\Internal\AuthenticatorManager::$auth->getAuthUser();
+        $login = static::$auth->getAuthUser();
         /*
          * All authenticators are not necessarily based on sessions (i.e. 'basic')
         */
@@ -215,7 +215,7 @@ class AuthenticatorManager
             return array();
         }
 
-        return $authModeConfig[\Anakeen\Core\Internal\AuthenticatorManager::getAuthType()];
+        return $authModeConfig[static::getAuthType()];
     }
 
     public static function getAuthorizationValue()
@@ -332,7 +332,7 @@ class AuthenticatorManager
      */
     protected static function checkAuthorization()
     {
-        $login = \Anakeen\Core\Internal\AuthenticatorManager::$auth->getAuthUser();
+        $login = static::$auth->getAuthUser();
         $wu = new \Anakeen\Core\Account();
         $existu = false;
         if ($wu->SetLoginName($login)) {
@@ -340,11 +340,11 @@ class AuthenticatorManager
         }
 
         if (!$existu) {
-            \Anakeen\Core\Internal\AuthenticatorManager::secureLog("failure", "login have no Dynacase account",
-                \Anakeen\Core\Internal\AuthenticatorManager::$auth->provider->parms['type'] . "/"
-                . \Anakeen\Core\Internal\AuthenticatorManager::$auth->provider->parms['AuthentProvider'], $_SERVER["REMOTE_ADDR"], $login,
+            static::secureLog("failure", "login have no Dynacase account",
+                static::$auth->provider->parms['type'] . "/"
+                . static::$auth->provider->parms['AuthentProvider'], $_SERVER["REMOTE_ADDR"], $login,
                 $_SERVER["HTTP_USER_AGENT"]);
-            return \Anakeen\Core\Internal\AuthenticatorManager::AccessHasNoLocalAccount;
+            return static::AccessHasNoLocalAccount;
         }
 
         $protoVersion = self::_getProviderProtocolVersion(self::$auth->provider);
@@ -417,31 +417,31 @@ class AuthenticatorManager
             $du = new_Doc(getDbAccess(), $wu->fid);
             // First check if account is active
             if (!$du->isAccountActive()) {
-                \Anakeen\Core\Internal\AuthenticatorManager::secureLog("failure", "inactive account",
-                    \Anakeen\Core\Internal\AuthenticatorManager::$auth->provider->parms['type'] . "/"
-                    . \Anakeen\Core\Internal\AuthenticatorManager::$auth->provider->parms['AuthentProvider'], $_SERVER["REMOTE_ADDR"], $login,
+                static::secureLog("failure", "inactive account",
+                    static::$auth->provider->parms['type'] . "/"
+                    . static::$auth->provider->parms['AuthentProvider'], $_SERVER["REMOTE_ADDR"], $login,
                     $_SERVER["HTTP_USER_AGENT"]);
-                \Anakeen\Core\Internal\AuthenticatorManager::clearGDocs();
-                return \Anakeen\Core\Internal\AuthenticatorManager::AccessAccountIsNotActive;
+                static::clearGDocs();
+                return static::AccessAccountIsNotActive;
             }
             // check if the account expiration date is elapsed
             if ($du->accountHasExpired()) {
-                \Anakeen\Core\Internal\AuthenticatorManager::secureLog("failure", "account has expired",
-                    \Anakeen\Core\Internal\AuthenticatorManager::$auth->provider->parms['type'] . "/"
-                    . \Anakeen\Core\Internal\AuthenticatorManager::$auth->provider->parms['AuthentProvider'], $_SERVER["REMOTE_ADDR"], $login,
+                static::secureLog("failure", "account has expired",
+                    static::$auth->provider->parms['type'] . "/"
+                    . static::$auth->provider->parms['AuthentProvider'], $_SERVER["REMOTE_ADDR"], $login,
                     $_SERVER["HTTP_USER_AGENT"]);
-                \Anakeen\Core\Internal\AuthenticatorManager::clearGDocs();
-                return \Anakeen\Core\Internal\AuthenticatorManager::AccessAccountHasExpired;
+                static::clearGDocs();
+                return static::AccessAccountHasExpired;
             }
             // check count of login failure
             $maxfail = \Anakeen\Core\ContextManager::getApplicationParam("AUTHENT_FAILURECOUNT");
             if ($maxfail > 0 && $du->getRawValue("us_loginfailure", 0) >= $maxfail) {
-                \Anakeen\Core\Internal\AuthenticatorManager::secureLog("failure", "max connection (" . $maxfail . ") attempts exceeded",
-                    \Anakeen\Core\Internal\AuthenticatorManager::$auth->provider->parms['type'] . "/"
-                    . \Anakeen\Core\Internal\AuthenticatorManager::$auth->provider->parms['AuthentProvider'], $_SERVER["REMOTE_ADDR"], $login,
+                static::secureLog("failure", "max connection (" . $maxfail . ") attempts exceeded",
+                    static::$auth->provider->parms['type'] . "/"
+                    . static::$auth->provider->parms['AuthentProvider'], $_SERVER["REMOTE_ADDR"], $login,
                     $_SERVER["HTTP_USER_AGENT"]);
-                \Anakeen\Core\Internal\AuthenticatorManager::clearGDocs();
-                return \Anakeen\Core\Internal\AuthenticatorManager::AccessMaxLoginFailure;
+                static::clearGDocs();
+                return static::AccessMaxLoginFailure;
             }
             // authen OK, max login failure OK => reset count of login failure
             $du->disableEditControl();
@@ -449,6 +449,6 @@ class AuthenticatorManager
             $du->enableEditControl();
         }
 
-        return \Anakeen\Core\Internal\AuthenticatorManager::AccessOk;
+        return static::AccessOk;
     }
 }

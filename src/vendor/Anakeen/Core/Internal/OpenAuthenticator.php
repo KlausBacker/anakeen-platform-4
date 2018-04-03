@@ -56,7 +56,7 @@ class OpenAuthenticator extends Authenticator
     {
         $tokenId = getHttpVars(self::openGetId, getHttpVars("privateid"));
         if (!$tokenId) {
-            $hAuthorization = \Anakeen\Core\Internal\AuthenticatorManager::getAuthorizationValue();
+            $hAuthorization = \Anakeen\Router\AuthenticatorManager::getAuthorizationValue();
 
             if (!empty($hAuthorization)) {
                 if ($hAuthorization["scheme"] === self::openAuthorizationScheme) {
