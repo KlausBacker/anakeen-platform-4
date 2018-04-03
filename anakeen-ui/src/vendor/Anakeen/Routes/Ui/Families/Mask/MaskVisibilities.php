@@ -94,7 +94,7 @@ class MaskVisibilities
 
         foreach ($tmpdoc->attributes->attr as $k => $attr) {
             /**
-             * @var $attr \NormalAttribute|\ActionAttribute
+             * @var $attr \Anakeen\Core\SmartStructure\NormalAttribute
              */
             if (!$attr->visibility) {
                 continue;
@@ -103,7 +103,7 @@ class MaskVisibilities
                 continue;
             }
             $tmask[$k]["attrid"] = $attr->id;
-            $tmask[$k]["parentId"] = ($attr->fieldSet &&  $attr->fieldSet->id !== \Anakeen\Core\SmartStructures\Attributes::HIDDENFIELD )? $attr->fieldSet->id : null;
+            $tmask[$k]["parentId"] = ($attr->fieldSet &&  $attr->fieldSet->id !== \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD )? $attr->fieldSet->id : null;
 
             if ($attr->type === "menu" || $attr->type === "action") {
                 $hasMenu=true;

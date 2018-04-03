@@ -32,9 +32,9 @@ class I18nCatalog
         $shortLocale = strtok($currentLocale, '_');
         $resourceId = $args["catalog"];
         if ($resourceId === "_all") {
-            $file = sprintf("../locale/%s/js/catalog.js", $shortLocale);
+            $file = sprintf("%s/locale/%s/js/catalog.js", DEFAULT_PUBDIR, $shortLocale);
         } else {
-            $file = sprintf("../locale/%s/js/catalog-%s_%s.js", $shortLocale, $resourceId, $shortLocale);
+            $file = sprintf("%s/locale/%s/js/catalog-%s_%s.js", DEFAULT_PUBDIR, $shortLocale, $resourceId, $shortLocale);
         }
         if (!file_exists($file)) {
             $exception = new Exception("CRUDUI0009", $file);
