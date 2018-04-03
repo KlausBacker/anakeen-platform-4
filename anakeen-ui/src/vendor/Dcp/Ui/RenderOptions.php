@@ -6,6 +6,8 @@
 
 namespace Dcp\Ui;
 
+use Anakeen\Core\Utils\Gettext;
+
 class RenderOptions implements \JsonSerializable
 {
     
@@ -49,11 +51,11 @@ class RenderOptions implements \JsonSerializable
         ));
         $this->setCustomOption("types", array(
             "account" => array(
-                "noAccessText" => ___("Account access deny", 'ddui')
+                "noAccessText" => Gettext::___("Account access deny", 'ddui')
             ) ,
             "date" => array() ,
             "docid" => array(
-                "noAccessText" => ___("Information access deny", 'ddui')
+                "noAccessText" => Gettext::___("Information access deny", 'ddui')
             ) ,
             EnumRenderOptions::type => array(
                 EnumRenderOptions::displayOption => EnumRenderOptions::listDisplay,

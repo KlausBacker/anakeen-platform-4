@@ -5,8 +5,8 @@
 
 namespace Anakeen\Routes\Ui;
 
+use Anakeen\Core\Utils\Gettext;
 use Anakeen\Router\Exception;
-use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\Core\DocManager;
 
 /**
@@ -62,7 +62,7 @@ class DocumentHtml
     {
         if (!is_numeric($revision)) {
             if (!preg_match('/^state:(.+)$/', $revision, $regStates)) {
-                throw new Exception(sprintf(___("Revision \"%s\" must be a number or a state reference", "ddui"), $revision));
+                throw new Exception(sprintf(Gettext::___("Revision \"%s\" must be a number or a state reference", "ddui"), $revision));
             }
         }
 
@@ -74,13 +74,13 @@ class DocumentHtml
         }
         $layout->set("BASEURL", self::getBaseUrl());
         $layout->set("NOTIFICATION_DELAY", \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("DOCUMENT", "NOTIFICATION_DELAY"));
-        $layout->set("notificationLabelMore", ___("See more ...", "ddui:notification"));
-        $layout->set("notificationTitleMore", ___("Notification", "ddui:notification"));
+        $layout->set("notificationLabelMore", Gettext::___("See more ...", "ddui:notification"));
+        $layout->set("notificationTitleMore", Gettext::___("Notification", "ddui:notification"));
         $layout->set("messages", "{}");
         if ($initid !== false) {
             $doc = DocManager::getDocument($initid);
             if (!$doc) {
-                $e = new Exception(sprintf(___("Document identifier \"%s\"not found", "ddui"), $initid));
+                $e = new Exception(sprintf(Gettext::___("Document identifier \"%s\"not found", "ddui"), $initid));
                 $e->setHttpStatus("404", "Document not found");
                 throw $e;
             }
@@ -88,14 +88,14 @@ class DocumentHtml
             if ($viewId !== DocumentView::defaultViewCreationId && $viewId !== DocumentView::coreViewCreationId) {
                 $err = $doc->control("view");
                 if ($err) {
-                    $e = new Exception(sprintf(___("Access not granted for document #%s", "ddui"), $initid));
+                    $e = new Exception(sprintf(Gettext::___("Access not granted for document #%s", "ddui"), $initid));
                     $e->setHttpStatus("403", "Forbidden");
                     throw $e;
                 }
             } else {
                 $err = $doc->control("icreate");
                 if ($err) {
-                    $e = new Exception(sprintf(___("Access not granted to create \"%s\" document", "ddui"), $doc->getTitle()));
+                    $e = new Exception(sprintf(Gettext::___("Access not granted to create \"%s\" document", "ddui"), $doc->getTitle()));
                     $e->setHttpStatus("403", "Forbidden");
                     throw $e;
                 }
