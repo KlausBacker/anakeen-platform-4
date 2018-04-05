@@ -69,7 +69,7 @@ class Crontab
     {
         include_once('WHAT/Lib.System.php');
         
-        $tmp = tempnam(getTmpDir(), 'crontab');
+        $tmp = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'crontab');
         if ($tmp === false) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " Error creating temporary file");
             return false;

@@ -25,7 +25,6 @@ class DbManager
             throw new \Dcp\Core\Exception("CORE0016", $configFile);
         }
 
-
         if (!$pgservice_core) {
             throw new \Dcp\Core\Exception("CORE0016", $configFile);
         }

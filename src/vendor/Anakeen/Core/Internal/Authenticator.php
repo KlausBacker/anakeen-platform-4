@@ -31,7 +31,7 @@ abstract class Authenticator
      * @var \Anakeen\Core\Internal\AuthentProvider
      */
     public $provider = null;
-    protected $parms;
+    public $parms;
 
     public function __construct($authtype, $authprovider)
     {

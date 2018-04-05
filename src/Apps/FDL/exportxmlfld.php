@@ -138,7 +138,7 @@ function exportxmlfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $fa
         exportExit($action, $err);
     }
     
-    $foutdir = uniqid(getTmpDir() . "/exportxml");
+    $foutdir = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/exportxml");
     if (!mkdir($foutdir)) {
         exportExit($action, sprintf("cannot create directory %s", $foutdir));
     }
@@ -207,7 +207,7 @@ function exportxmlfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $fa
         if ($outputFile) {
             $zipfile = $outputFile;
         } else {
-            $zipfile = uniqid(getTmpDir() . "/xml") . ".zip";
+            $zipfile = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/xml") . ".zip";
         }
         system(sprintf("cd %s && zip -r %s -- * > /dev/null", escapeshellarg($foutdir), escapeshellarg($zipfile)), $ret);
         if (is_file($zipfile)) {
@@ -223,7 +223,7 @@ function exportxmlfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $fa
         if ($outputFile) {
             $xmlfile = $outputFile;
         } else {
-            $xmlfile = uniqid(getTmpDir() . "/xml") . ".xml";
+            $xmlfile = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/xml") . ".xml";
         }
         
         $fh = fopen($xmlfile, 'x');

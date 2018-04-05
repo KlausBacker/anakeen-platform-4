@@ -1,6 +1,7 @@
 <?php
 
 namespace Anakeen\Core\Internal;
+
 /**
  * Action class
  *
@@ -151,7 +152,7 @@ create sequence SEQ_ID_ACTION;
      * need set action to execute it
      *
      * @code
-    $core = new \Anakeen\Core\Internal\Application();
+     * $core = new \Anakeen\Core\Internal\Application();
      * $core->Set("CORE", $CoreNull); // init core application from nothing
      * $core->session = new \Session();
      * $core->session->set();
@@ -163,7 +164,7 @@ create sequence SEQ_ID_ACTION;
      *
      * @endcode
      *
-     * @param string      $name   action name reference
+     * @param string                             $name   action name reference
      * @param \Anakeen\Core\Internal\Application $parent application object where action depends
      *
      * @throws \Dcp\Core\Exception if action not exists
@@ -193,7 +194,7 @@ create sequence SEQ_ID_ACTION;
         } else {
             if (empty($name)) {
                 // Accept action without explicit root action
-                $this->name="DEFAULT";
+                $this->name = "DEFAULT";
             } else {
                 $e = new \Dcp\Core\Exception("CORE0005", $name, $parent->name, $parent->id);
                 $e->addHttpHeader('HTTP/1.0 404 Action not found');
@@ -269,8 +270,8 @@ create sequence SEQ_ID_ACTION;
     /**
      * record a session variable
      *
-     * @param  string $k key variable
-     * @param string|array  $v value to set
+     * @param  string      $k key variable
+     * @param string|array $v value to set
      *
      * @return bool return true if ok
      */
@@ -415,7 +416,7 @@ create sequence SEQ_ID_ACTION;
         }
     }
 
-    public function \Anakeen\Core\Utils\System::addWarningMsg($msg)
+    public function addWarningMsg($msg)
     {
         if (isset($this->parent)) {
             $this->parent->AddWarningMsg($msg);
@@ -776,8 +777,8 @@ create sequence SEQ_ID_ACTION;
      * record/update action
      *
      * @param \Anakeen\Core\Internal\Application $app         application
-     * @param array       $action_desc action description
-     * @param bool        $update      set to true if update only
+     * @param array                              $action_desc action description
+     * @param bool                               $update      set to true if update only
      *
      * @return string none
      */

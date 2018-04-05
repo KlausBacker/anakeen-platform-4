@@ -42,8 +42,8 @@ class TestExportCsv extends TestCaseDcpCommonFamily
 
         $folderId = "TEXT_FOLDER_EXPORT_IMAGE";
         $famid = "TST_EXPORT_IMAGE";
-        $testFolder = uniqid(getTmpDir() . "/testexportimage");
-        $testExtractFolder = uniqid(getTmpDir() . "/testexportextractimage");
+        $testFolder = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/testexportimage");
+        $testExtractFolder = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/testexportextractimage");
         SetHttpVar("wfile", "Y");
         SetHttpVar("eformat", "I");
         SetHttpVar("app", "FDL");
@@ -83,7 +83,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         SetHttpVar("csv-enclosure", $enclosure);
         SetHttpVar("csv-separator", $separator);
 
-        $exportOutput = uniqid(getTmpDir() . "/testExport") . ".csv";
+        $exportOutput = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/testExport") . ".csv";
 
         exportfld(self::getAction(), $folderId, 0, $exportOutput);
 
@@ -148,7 +148,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         $err .= $tmpFolder->insertDocument($familyId);
 
         $this->assertEmpty($err, "Error when create family folder");
-        $exportOutput = uniqid(getTmpDir() . "/testExport") . ".csv";
+        $exportOutput = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/testExport") . ".csv";
 
         exportfld(self::getAction(), $tmpFolder->id, 0, $exportOutput);
 
@@ -199,7 +199,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
             throw new \Exception(sprintf("Could not get document with id '%s'.", $data['export:doc']));
         }
         /* fout */
-        $tmpfile = tempnam(getTmpDir(), 'TST_EXPORT_PARAM');
+        $tmpfile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'TST_EXPORT_PARAM');
         if ($tmpfile === false) {
             throw new \Exception(sprintf("Could not create temporary file in '%s'.", getTmpDir()));
         }

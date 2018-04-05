@@ -6,21 +6,20 @@
 /**
  * Util function for update and initialize application
  *
- * @author Anakeen
- * @version $Id: Lib.WCheck.php,v 1.21 2009/01/07 15:35:07 jerome Exp $
- * @package FDL
+ * @author     Anakeen
+ * @version    $Id: Lib.WCheck.php,v 1.21 2009/01/07 15:35:07 jerome Exp $
+ * @package    FDL
  * @subpackage CORE
  */
 /**
  */
 
-include_once("WHAT/Lib.System.php");
 //---------------------------------------------------
 function GetDbVersion($dbid, &$tmachine, $usePreviousVersion = false)
 {
     $tver = array();
     $tmachine = array();
-    
+
     $rq = pg_query($dbid, "select paramv.val, application.name, application.machine from paramv, application  where paramv.name='VERSION' and paramv.appid=application.id");
     if ($rq === false) {
         return $tver;
@@ -30,13 +29,16 @@ function GetDbVersion($dbid, &$tmachine, $usePreviousVersion = false)
         $tver[$row["name"]] = $row["val"];
         $tmachine[$row["name"]] = $row["machine"];
     }
-    
+
     if ($usePreviousVersion) {
         /*
          * Overwrite versions with previous versions (if available)
          * for post migration scripts
         */
-        $rq = pg_query($dbid, "select paramv.val, application.name, application.machine from paramv, application  where paramv.name='PREVIOUS_VERSION' and paramv.appid=application.id");
+        $rq = pg_query(
+            $dbid,
+            "select paramv.val, application.name, application.machine from paramv, application  where paramv.name='PREVIOUS_VERSION' and paramv.appid=application.id"
+        );
         if ($rq === false) {
             return $tver;
         }
@@ -46,9 +48,10 @@ function GetDbVersion($dbid, &$tmachine, $usePreviousVersion = false)
             }
         }
     }
-    
+
     return ($tver);
 }
+
 //---------------------------------------------------
 function GetFileVersion($topdir)
 {
@@ -73,9 +76,12 @@ function GetFileVersion($topdir)
     }
     return ($tver);
 }
+
 /**
  * get iorder value in .app files
+ *
  * @param string $topdir publish directory
+ *
  * @return array of iorder
  */
 function getAppOrder($topdir)
@@ -87,7 +93,7 @@ function getAppOrder($topdir)
             if (@is_file($inifile)) {
                 unset($app_desc);
                 include($inifile);
-                
+
                 if (isset($app_desc)) {
                     if (isset($app_desc["iorder"])) {
                         $tiorder[$file] = $app_desc["iorder"];
@@ -99,9 +105,12 @@ function getAppOrder($topdir)
     }
     return ($tiorder);
 }
+
 /** compare version like 1.2.3-4
+ *
  * @param string $v1 version one
  * @param string $v2 version two
+ *
  * @return int 0 if equal -1 if ($v1<$v2) 1 if ($v2>$1)
  */
 function vercmp($v1, $v2)
@@ -121,7 +130,7 @@ function version2float($ver)
             }
         }
         foreach ($matches as $k => $v) {
-            $sva.= sprintf("%02d", $v);
+            $sva .= sprintf("%02d", $v);
         }
         return floatval($sva);
     }
@@ -131,15 +140,12 @@ function version2float($ver)
 function checkPGConnection()
 {
     $err = '';
-    $dbaccess_core = getDbAccessCore();
-    $pgservice_core = getServiceCore();
-    
+    $dbaccess_core = \Anakeen\Core\DbManager::getDbAccess();
+
     $dbid = @pg_connect($dbaccess_core);
-    
+
     if (!$dbid) {
-        $err = _("cannot access to core database service [service='$pgservice_core']");
-        exec("PGSERVICE=\"$pgservice_core\" psql -c '\q'", $out);
-        $err.= implode(",", $out);
+        $err = sprintf("Cannot access to core database service [%s]", $dbaccess_core);
     } else {
         pg_close($dbid);
     }
@@ -150,21 +156,17 @@ function getCheckApp($pubdir, &$tapp, $usePreviousVersion = false)
 {
     global $_SERVER;
     $err = '';
-    $dbaccess_core = getDbAccessCore();
-    $pgservice_core = getServiceCore();
-    
-    $IP = LibSystem::getHostIPAddress();
+    $dbaccess_core = \Anakeen\Core\DbManager::getDbAccess();
+
     $dbid = @pg_connect($dbaccess_core);
-    
+
     if (!$dbid) {
-        $err = _("cannot access to core database service [service='$pgservice_core']");
-        exec("PGSERVICE=\"$pgservice_core\" psql -c '\q'", $out);
-        $err.= implode(",", $out);
+        $err = sprintf("Cannot access to core database service [%s]", $dbaccess_core);
     } else {
         $tvdb = GetDbVersion($dbid, $tmachine, $usePreviousVersion);
         $tvfile = GetFileVersion("$pubdir");
         pg_close($dbid);
-        
+
         $ta = array_unique(array_merge(array_keys($tvdb), array_keys($tvfile)));
         foreach ($ta as $k => $v) {
             if (!isset($tvfile[$v])) {
@@ -200,17 +202,15 @@ function getCheckApp($pubdir, &$tapp, $usePreviousVersion = false)
 
 function getCheckActions($pubdir, $tapp, &$tact, $usePreviousVersion = false)
 {
-    $wsh = array(); // application update
     $cmd = array(); // pre/post install
     $dump = array();
-    
-    $pgservice_core = getServiceCore();
-    
-    $dbid = @pg_connect("service='$pgservice_core'");
-    
+
+
+    $dbid = \Anakeen\Core\DbManager::getDbid();
+
     $tvdb = GetDbVersion($dbid, $tmachine, $usePreviousVersion);
     $tiorder = getAppOrder($pubdir);
-    
+
     foreach ($tiorder as $k => $v) {
         $tapp[$k]["iorder"] = $v;
     }
@@ -285,24 +285,16 @@ function getCheckActions($pubdir, $tapp, &$tact, $usePreviousVersion = false)
         usort($migr, "cmpmigr");
         $cmd = array_merge($cmd, $migr);
     }
-    
-    $dump[] = "PGSERVICE=\"$pgservice_core\" pg_dump > " . getTmpDir() . "/" . uniqid($pgservice_core);
+
+    //  $dump[] = "PGSERVICE=\"$pgservice_core\" pg_dump > " . \Anakeen\Core\ContextManager::getTmpDir() . "/" . uniqid($pgservice_core);
     //  $dump[] = "/etc/rc.d/init.d/httpd stop";
     $dump[] = "$pubdir/wstop";
     $dump[] = "$pubdir/whattext";
-    
+
     $tact = array_merge($dump, $cmd);
-    
+
     $tact[] = "$pubdir/ank.php --script=cleanContext";
     $tact[] = "$pubdir/wstart";
-    global $_SERVER;
-    if (empty($_GET['httpdrestart']) || ($_GET['httpdrestart'] != 'no')) {
-        if (!empty($_SERVER['HTTP_HOST'])) {
-            $tact[] = "sudo $pubdir/admin/shttpd";
-        } else {
-            $tact[] = "service httpd restart";
-        }
-    }
 }
 
 function cmpapp($a, $b)
@@ -326,10 +318,10 @@ function cmpapp($a, $b)
 
 function cmpmigr($migr_a, $migr_b)
 {
-    $v_a = "";
-    $v_b = "";
+    $v_a = [];
+    $v_b = [];
     preg_match("/_(?:p|post|pre)?migr_(?P<version>[0-9\.]+)$/", $migr_a, $v_a);
     preg_match("/_(?:p|post|pre)?migr_(?P<version>[0-9\.]+)$/", $migr_b, $v_b);
-    
+
     return version_compare($v_a['version'], $v_b['version']);
 }

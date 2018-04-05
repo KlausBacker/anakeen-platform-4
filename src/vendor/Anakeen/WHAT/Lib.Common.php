@@ -13,7 +13,7 @@
  */
 /**
  */
-include_once("Lib.Prefix.php");
+require_once(__DIR__."/../FDL/LegacyDocManager.php");
 
 function N_($s)
 {
@@ -330,12 +330,21 @@ function getDbAccess()
     return \Anakeen\Core\DbManager::getDbAccess();
 }
 
+/**
+ * @return string
+ * @deprecated
+ * @throws \Dcp\Exception
+ */
 function getDbAccessCore()
 {
     return "service='" . getServiceCore() . "'";
 }
 
-
+/**
+ * @deprecated
+ * @return null|string
+ * @throws \Dcp\Exception
+ */
 function getServiceCore()
 {
     static $pg_service = null;

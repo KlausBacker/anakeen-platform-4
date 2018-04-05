@@ -709,12 +709,12 @@ class UpdateAttribute
     public function bgSetValue($attrid, $newValue)
     {
 
-        $tmpThis = tempnam(getTmpDir(), 'uptSetValue');
+        $tmpThis = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'uptSetValue');
         file_put_contents($tmpThis, serialize($this));
-        $tmpArgs = tempnam(getTmpDir(), 'argSetValue');
+        $tmpArgs = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'argSetValue');
         file_put_contents($tmpArgs, serialize(func_get_args()));
         $wsh = ShellManager::getAnkCmd(true, getCurrentUser()->login);
-        $tmpStatus = tempnam(getTmpDir(), 'statusSetValue');
+        $tmpStatus = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'statusSetValue');
         
         $cmd[] = sprintf("$wsh  --script=updateAttribute --objectFile=%s --argsFile=%s --statusFile=%s --method=setValue", escapeshellarg($tmpThis), escapeshellarg($tmpArgs), escapeshellarg($tmpStatus));
         
@@ -731,12 +731,12 @@ class UpdateAttribute
      */
     public function bgAddValue($attrid, $valueToAdd)
     {
-        $tmpThis = tempnam(getTmpDir(), 'uptAddValue');
+        $tmpThis = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'uptAddValue');
         file_put_contents($tmpThis, serialize($this));
-        $tmpArgs = tempnam(getTmpDir(), 'argAddValue');
+        $tmpArgs = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'argAddValue');
         file_put_contents($tmpArgs, serialize(func_get_args()));
         $wsh = ShellManager::getAnkCmd(true, getCurrentUser()->login);
-        $tmpStatus = tempnam(getTmpDir(), 'statusAddValue');
+        $tmpStatus = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'statusAddValue');
         
         $cmd[] = sprintf("$wsh  --script=updateAttribute --objectFile=%s --argsFile=%s --statusFile=%s --method=addValue", escapeshellarg($tmpThis), escapeshellarg($tmpArgs), escapeshellarg($tmpStatus));
         
@@ -753,12 +753,12 @@ class UpdateAttribute
      */
     public function bgRemoveValue($attrid, $valueToRemove)
     {
-        $tmpThis = tempnam(getTmpDir(), 'uptRemoveValue');
+        $tmpThis = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'uptRemoveValue');
         file_put_contents($tmpThis, serialize($this));
-        $tmpArgs = tempnam(getTmpDir(), 'argRemoveValue');
+        $tmpArgs = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'argRemoveValue');
         file_put_contents($tmpArgs, serialize(func_get_args()));
         $wsh = ShellManager::getAnkCmd(true, getCurrentUser()->login);
-        $tmpStatus = tempnam(getTmpDir(), 'statusRemoveValue');
+        $tmpStatus = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'statusRemoveValue');
         
         $cmd[] = sprintf("$wsh  --script=updateAttribute --objectFile=%s --argsFile=%s --statusFile=%s --method=removeValue", escapeshellarg($tmpThis), escapeshellarg($tmpArgs), escapeshellarg($tmpStatus));
         
@@ -776,12 +776,12 @@ class UpdateAttribute
      */
     public function bgReplaceValue($attrid, $oldValue, $newValue)
     {
-        $tmpThis = tempnam(getTmpDir(), 'uptReplValue');
+        $tmpThis = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'uptReplValue');
         file_put_contents($tmpThis, serialize($this));
-        $tmpArgs = tempnam(getTmpDir(), 'argReplValue');
+        $tmpArgs = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'argReplValue');
         file_put_contents($tmpArgs, serialize(func_get_args()));
         $wsh = ShellManager::getAnkCmd(true, getCurrentUser()->login);
-        $tmpStatus = tempnam(getTmpDir(), 'statusReplValue');
+        $tmpStatus = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'statusReplValue');
         
         $cmd[] = sprintf("$wsh  --script=updateAttribute --objectFile=%s --argsFile=%s --statusFile=%s --method=replaceValue", escapeshellarg($tmpThis), escapeshellarg($tmpArgs), escapeshellarg($tmpStatus));
         

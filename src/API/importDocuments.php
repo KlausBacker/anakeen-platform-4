@@ -154,7 +154,7 @@ $cr = $oImport->importDocuments($action, $filename, $analyze != "no", $archive =
 
 $filetmp = false;
 if ((!$logfile) && $to) {
-    $logfile = tempnam(getTmpDir(), 'logimport');
+    $logfile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'logimport');
     $filetmp = true;
 }
 if ($logfile) {

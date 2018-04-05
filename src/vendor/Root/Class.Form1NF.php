@@ -397,7 +397,7 @@ class Form1NF
         try {
             if (!empty($this->params['outputpgservice']) || !empty($this->params['sqllog'])) {
                 if (empty($this->params['sqllog'])) {
-                    $this->sqlPostgresFileName = tempnam(getTmpDir(), 'sqlPostgres.tmp.1nf.');
+                    $this->sqlPostgresFileName = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'sqlPostgres.tmp.1nf.');
                     if ($this->sqlPostgresFileName === false) {
                         $this->stdError(_("Error creating temp file for sql log output."));
                     }
@@ -1536,7 +1536,7 @@ class Form1NF
         try {
             $this->stdInfo(_("Dump pgservice '%s' ..."), $pgservice);
             
-            $tmp_dump = tempnam(getTmpDir(), 'pg_dump.tmp.1nf.');
+            $tmp_dump = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'pg_dump.tmp.1nf.');
             if ($tmp_dump === false) {
                 $this->stdError(_("Error creating temp file for pg_dump output."));
             }

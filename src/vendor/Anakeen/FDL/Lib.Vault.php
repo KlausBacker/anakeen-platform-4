@@ -102,7 +102,7 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
             $err = $tr->Add();
         } else {
             $vf = initVaultAccess();
-            $filename = uniqid(getTmpDir() . "/txt-" . $vidout . '-');
+            $filename = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/txt-" . $vidout . '-');
             file_put_contents($filename, $err);
             //$vf->rename($vidout,"toto.txt");
             $infofile = null;

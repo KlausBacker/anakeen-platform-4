@@ -247,7 +247,7 @@ class ExportCollection
         $exportDoc->setVerifyAttributeAccess($this->verifyAttributeAccess);
         $outDir = '';
         if ($this->exportFiles) {
-            $outDir = tempnam(getTmpDir(), 'exportFolder');
+            $outDir = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'exportFolder');
             if (is_file($outDir)) {
                 unlink($outDir);
             }
@@ -540,7 +540,7 @@ class ExportCollection
     {
         $dl = $this->documentList;
         
-        $foutdir = uniqid(getTmpDir() . "/exportxml");
+        $foutdir = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/exportxml");
         if (!mkdir($foutdir)) {
             throw new Exception("EXPC0006", $foutdir);
         }

@@ -41,7 +41,7 @@ class TestAttributeCompute extends TestCaseDcpCommonFamily
             $d->setValue($k, $v);
         }
         
-        $tmpLogFile = tempnam(getTmpDir() , __FUNCTION__);
+        $tmpLogFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir() , __FUNCTION__);
         $d->log = new \Anakeen\Core\Internal\Log($tmpLogFile, $d->log->application, $d->log->function);
         
         $info = new StoreInfo();

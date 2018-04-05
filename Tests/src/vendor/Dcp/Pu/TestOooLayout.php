@@ -28,8 +28,8 @@ class TestOooLayout extends TestCaseDcpDocument
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        // self::$outputDir = uniqid(getTmpDir() . "/oootest-");
-        self::$outputDir = (getTmpDir() . "/oootest");
+        // self::$outputDir = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/oootest-");
+        self::$outputDir = (\Anakeen\Core\ContextManager::getTmpDir() . "/oootest");
         if (!is_dir(self::$outputDir)) {
             mkdir(self::$outputDir);
         }
@@ -42,7 +42,7 @@ class TestOooLayout extends TestCaseDcpDocument
     public static function tearDownAfterClass()
     {
         self::rollbackTransaction();
-        TestSuiteDcp::addMessage(sprintf("Results for %s in file://%s", __CLASS__, self::$outputDir));
+        CoreTests::addMessage(sprintf("Results for %s in file://%s", __CLASS__, self::$outputDir));
     }
 
     protected function saveFileResult($file, $name)
@@ -90,7 +90,7 @@ class TestOooLayout extends TestCaseDcpDocument
             $file = '';
             try {
                 $file = $instance->viewDoc("DCPTEST:" . $template . ":B");
-            } catch (\Dcp\Layout\exception $e) {
+            } catch (\Dcp\Layout\Exception $e) {
                 $this->fail(sprintf("%s, \n file: %s", $e->getMessage(), $e->getCorruptedFile()));
             }
             $this->assertTrue(file_exists($file), "fail layout $template : $file");

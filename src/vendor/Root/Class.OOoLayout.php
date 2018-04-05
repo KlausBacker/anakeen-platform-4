@@ -366,7 +366,7 @@ class OOoLayout extends Layout
         try {
             $this->XmlLoader(\Dcp\Utils\htmlclean::cleanXMLUTF8($this->template));
         } catch (\Dcp\Utils\XDOMDocumentException $e) {
-            $outfile = uniqid(getTmpDir() . "/oooKo") . '.xml';
+            $outfile = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/oooKo") . '.xml';
             $this->addError("LAY0004", $outfile);
             file_put_contents($outfile, $this->template);
             $this->exitError($outfile);
@@ -377,7 +377,7 @@ class OOoLayout extends Layout
             if (is_array($xmlErr)) $err=sprintf("XML error line %d, column %d,: %s",$xmlErr["line"],$xmlErr["column"], $xmlErr["message"]);
             else $err="";
 
-            $outfile = uniqid(getTmpDir() . "/oooKo") . '.xml';
+            $outfile = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/oooKo") . '.xml';
             $this->addError("LAY0004", $outfile);
             file_put_contents($outfile, $this->template);
             $this->exitError($outfile);
@@ -464,7 +464,7 @@ class OOoLayout extends Layout
             $this->addError("LAY0001", $odtfile);
             $this->exitError();
         }
-        $this->cibledir = uniqid(getTmpDir() . "/odf");
+        $this->cibledir = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/odf");
         
         $cmd = sprintf("unzip %s -d %s 2>&1", escapeshellarg($odtfile), escapeshellarg($this->cibledir));
         if (exec($cmd, $out, $ret) === false) {
@@ -1651,7 +1651,7 @@ class OOoLayout extends Layout
         $ot1 = $ot->item(0);
         $ass = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0", "automatic-styles");
         if ($ass->length <= 0) {
-            $outfile = uniqid(getTmpDir() . "/oooKo") . '.xml';
+            $outfile = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/oooKo") . '.xml';
             file_put_contents($outfile, $this->template);
             $this->addError("LAY0009", $this->file);
             $this->exitError($outfile);
@@ -1979,7 +1979,7 @@ class OOoLayout extends Layout
                 
                 $this->content_template = $this->template;
             } else {
-                $outfile = uniqid(getTmpDir() . "/oooKo") . '.xml';
+                $outfile = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/oooKo") . '.xml';
                 file_put_contents($outfile, $this->template);
                 $this->addError("LAY0004", $this->file);
                 $this->exitError($outfile);
@@ -2021,7 +2021,7 @@ class OOoLayout extends Layout
         $this->genStyle();
         $this->genMeta();
         $this->updateManifest();
-        $outfile = uniqid(getTmpDir() . "/odf") . '.odt';
+        $outfile = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/odf") . '.odt';
         $this->content2odf($outfile);
         
         if (!empty($this->errors)) {
