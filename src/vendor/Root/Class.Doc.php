@@ -1900,7 +1900,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final private function _destroy($nopost)
     {
-        $err = DbObj::delete($nopost);
+        $err = \Anakeen\Core\Internal\DbObj::delete($nopost);
         if ($err == "") {
             $dvi = new DocVaultIndex($this->dbaccess);
             $err = $dvi->DeleteDoc($this->id);
@@ -2561,7 +2561,7 @@ create unique index i_docir on doc(initid, revision);";
             // special controlled view
 
             /**
-             * @var \Dcp\Core\CVDoc $cvdoc
+             * @var \SmartStructure\CVDoc $cvdoc
              */
             $cvdoc = DocManager::getDocument($this->cvid);
             $cvdoc = clone $cvdoc;
@@ -2650,7 +2650,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($mid == Doc::USEMASKCVVIEW || $mid == Doc::USEMASKCVEDIT) {
             if ($this->cvid) {
                 /**
-                 * @var \Dcp\Core\CVDoc $cvdoc
+                 * @var \SmartStructure\CVDoc $cvdoc
                  */
                 $cvdoc = DocManager::getDocument($this->cvid);
                 if ($cvdoc && $cvdoc->isAlive()) {
@@ -9383,7 +9383,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * attach timer to a document
      *
-     * @param \SmartStructure\TIMER &$timer   the timer document
+     * @param \Dcp\Core\Timer &$timer   the timer document
      * @param Doc                   &$origin  the document which comes from the attachement
      * @param string                $execdate date to execute first action YYYY-MM-DD HH:MM:SS
      *
@@ -9422,7 +9422,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * unattach timer of a document
      *
-     * @param \SmartStructure\TIMER &$timer the timer document
+     * @param \Dcp\Core\Timer &$timer the timer document
      *
      * @api Unattach timer of a document
      * @return string error - empty if no error -
@@ -9457,7 +9457,7 @@ create unique index i_docir on doc(initid, revision);";
         } else {
             foreach ($tms as $k => $v) {
                 /**
-                 * @var SmartStructure\Timer $t
+                 * @var \Dcp\Core\Timer $t
                  */
                 $t = DocManager::getDocument($v["timerid"]);
                 if ($t && $t->isAlive()) {
@@ -9494,7 +9494,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function unattachAllTimers($origin = null)
     {
         /**
-         * @var \SmartStructure\TIMER $timer
+         * @var \Dcp\Core\Timer $timer
          */
         $timer = Anakeen\Core\DocManager::createTemporaryDocument("TIMER");
         $c = 0;

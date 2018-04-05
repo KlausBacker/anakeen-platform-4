@@ -5,7 +5,7 @@
 */
 namespace Dcp\Pu;
 
-class TstExportCollection extends \SmartStructure\Document
+class TstExportCollection extends \Anakeen\SmartStructures\Document
 {
     public function postImport(array $extra = array())
     {

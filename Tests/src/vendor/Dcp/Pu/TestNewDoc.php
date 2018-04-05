@@ -30,6 +30,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
     {
         parent::setUpBeforeClass();
         $d = DocManager::createDocument(\SmartStructure\Base::familyName);
+        \SmartStructure\Attributes\Base::ba_title
         $d->setAttributeValue(\Dcp\AttributeIdentifiers\Base::ba_title, "x1-" . $d->revision);
         $d->store();
         

@@ -7,7 +7,7 @@
 
 namespace Dcp\Pu;
 
-class TestNd extends \SmartStructure\Document
+class TestNd extends \Anakeen\SmartStructures\Document
 {
     
     public function postCreated()
