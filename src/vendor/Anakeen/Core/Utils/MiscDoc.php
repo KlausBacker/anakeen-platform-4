@@ -28,7 +28,7 @@ class MiscDoc
                     sprintf(_("Fix multiple alive document #%s"), implode(', ', $rid)),
                     \DocHisto::WARNING
                 );
-                addWarningMsg(sprintf(_("Fix multiple alive revision for \"%s\""), $doc->getTitle()));
+                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Fix multiple alive revision for \"%s\""), $doc->getTitle()));
                 global $action;
                 $action->log->warning(sprintf(
                     _("Fix multiple alive document for \"%s\" #%s"),

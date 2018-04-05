@@ -218,7 +218,7 @@ class ImportDocument
         if ($log) {
             $flog = fopen($log, "w");
             if (!$flog) {
-                addWarningMsg(sprintf(_("cannot write log in %s"), $log));
+                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("cannot write log in %s"), $log));
             } else {
                 global $action;
                 $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "reportImport.xml"), $action);
@@ -314,7 +314,7 @@ class ImportDocument
         if ($log) {
             $flog = fopen($log, "w");
             if (!$flog) {
-                addWarningMsg(sprintf(_("cannot write log in %s"), $log));
+                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("cannot write log in %s"), $log));
             } else {
                 fputs($flog, sprintf("IMPORT BEGIN OK : %s\n", $this->begtime));
                 $countok = 0;

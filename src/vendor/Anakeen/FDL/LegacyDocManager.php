@@ -855,7 +855,7 @@ function getLatestTDoc($dbaccess, $initid, $sqlfilters = array(), $fromid = fals
 
         if ($result && (count($result) > 0)) {
             if (count($result) > 1) {
-                addWarningMsg(sprintf("document %d : multiple alive revision", $initid));
+                \Anakeen\Core\Utils\System::addWarningMsg(sprintf("document %d : multiple alive revision", $initid));
             }
 
             $arr = $result[0];

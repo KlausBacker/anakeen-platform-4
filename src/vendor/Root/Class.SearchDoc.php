@@ -1366,7 +1366,7 @@ class SearchDoc
                 $maintable = $table;
                 $table.= ", " . $jointable;
             } else {
-                addWarningMsg(sprintf(_("search join syntax error : %s"), $join));
+                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("search join syntax error : %s"), $join));
                 return false;
             }
         }

@@ -6,7 +6,7 @@ namespace SmartStructure;
 require_once(__DIR__.'/[fromFile].php');[ENDIF fromid]
 
 [IF hasMethods]
-require_once(__DIR__.'/Method.[docname].php');[ENDIF hasMethods]
+require_once(__DIR__.'/Method.[docName].php');[ENDIF hasMethods]
 
 
 

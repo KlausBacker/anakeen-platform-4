@@ -204,7 +204,7 @@ class IGroupHooks extends \SmartStructure\Group
             //    $this->refreshParentGroup();
             $wrg = $this->RefreshLdapCard();
             if ($wrg) {
-                AddWarningMsg($wrg);
+                \Anakeen\Core\Utils\System::addWarningMsg($wrg);
             }
             // add in default folder root groups : usefull for import
             $tgid = $this->getMultipleRawValues("GRP_IDPGROUP");

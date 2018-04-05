@@ -146,13 +146,13 @@ class WDoc extends Doc
                             include_once("FDL/mailcard.php");
                             $to = trim($this->getDocValue($uid, "us_mail"));
                             if (!$to) {
-                                addWarningMsg(sprintf(_("%s has no email address"), $this->getTitle($uid)));
+                                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("%s has no email address"), $this->getTitle($uid)));
                             } else {
                                 $subject = sprintf(_("allocation for %s document"), $this->doc->title);
                                 $commentaction = '';
                                 $err = sendCard(\Anakeen\Core\ContextManager::getCurrentAction(), $this->doc->id, $to, "", $subject, "", true, $commentaction, "", "", "htmlnotif");
                                 if ($err != "") {
-                                    addWarningMsg($err);
+                                    \Anakeen\Core\Utils\System::addWarningMsg($err);
                                 }
                             }
                         }

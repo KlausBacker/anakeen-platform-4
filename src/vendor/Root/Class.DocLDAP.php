@@ -65,7 +65,7 @@ class DocLDAP extends DbObj
                         $err = $this->createLDAPDc($ds, "people");
                     }
                     if ($err) {
-                        AddWarningMsg($err);
+                        \Anakeen\Core\Utils\System::addWarningMsg($err);
                     }
                     return true;
                 }

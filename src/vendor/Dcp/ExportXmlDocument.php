@@ -289,7 +289,7 @@ class ExportXmlDocument
                                 return sprintf('<%s id="%s" name="%s"%s>%s</%s>', $attribute->id, $docid, $info["name"], $revAttr, $attribute->encodeXml($info["title"]), $attribute->id);
                             } else {
                                 if ($revAttr) {
-                                    addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : importation not support revision links without identifiers"), $doc->getTitle(), $attribute->getLabel()));
+                                    \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : importation not support revision links without identifiers"), $doc->getTitle(), $attribute->getLabel()));
                                 }
                                 return sprintf('<%s name="%s"%s>%s</%s>', $attribute->id, $info["name"], $revAttr, $attribute->encodeXml($info["title"]), $attribute->id);
                             }

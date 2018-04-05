@@ -656,7 +656,7 @@ class DocFormFormat
             ), $value);
             
         if ($error != '') {
-            addWarningMsg(_("Malformed HTML:") . "\n" . $error);
+            \Anakeen\Core\Utils\System::addWarningMsg(_("Malformed HTML:") . "\n" . $error);
         }
         if ($value === false) {
             $value = '';
@@ -1534,11 +1534,11 @@ class DocFormFormat
             if (!file_exists($rowlayfile)) {
                 $lay->template = sprintf(_("cannot open %s layout file"), $rowlayfile);
                 $lay->noparse = true;
-                AddwarningMsg(sprintf(_("cannot open %s layout file"), $rowlayfile));
+                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("cannot open %s layout file"), $rowlayfile));
                 return;
             }
             if (!@$dxml->load($rowlayfile)) {
-                AddwarningMsg(sprintf(_("cannot load xml template : %s"), print_r(libxml_get_last_error(), true)));
+                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("cannot load xml template : %s"), print_r(libxml_get_last_error(), true)));
                 $lay->template = sprintf(_("cannot load xml %s layout file"), $rowlayfile);
                 $lay->noparse = true;
                 return;
@@ -1679,7 +1679,7 @@ class DocFormFormat
                 $lay->set("caption", "");
             }
         } else {
-            addWarningMsg(sprintf(_("roweditzone syntax %s is invalid"), $zone));
+            \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("roweditzone syntax %s is invalid"), $zone));
         }
     }
     /**
@@ -2074,7 +2074,7 @@ class DocFormFormat
                             
                     $jscreate = json_decode($create);
                     if ($jscreate === null) {
-                        addWarningMsg(sprintf("creation option syntax error:%s [%s] ", $oattr->id, $creation));
+                        \Anakeen\Core\Utils\System::addWarningMsg(sprintf("creation option syntax error:%s [%s] ", $oattr->id, $creation));
                     } else {
                         foreach ($jscreate as $k => $v) {
                             $kl = trim(strtolower($k));

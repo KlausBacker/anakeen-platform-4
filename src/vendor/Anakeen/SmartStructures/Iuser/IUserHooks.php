@@ -378,7 +378,7 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
                 //      $this->refreshParentGroup();
                 $errldap = $this->RefreshLdapCard();
                 if ($errldap != "") {
-                    AddWarningMsg($errldap);
+                    \Anakeen\Core\Utils\System::addWarningMsg($errldap);
                 }
             }
         } else {

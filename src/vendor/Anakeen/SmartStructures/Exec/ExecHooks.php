@@ -30,7 +30,7 @@ class ExecHooks extends \Anakeen\SmartStructures\Document
         global $action;
         
         if (!$this->canExecuteAction()) {
-            AddWarningMsg(sprintf(_("Error : need edit privilege to execute")));
+            \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Error : need edit privilege to execute")));
         } else {
             return $this->_execute($action, $comment);
         }
@@ -193,10 +193,10 @@ class ExecHooks extends \Anakeen\SmartStructures\Document
         $time_end = microtime(true);
         $time = $time_end - $time_start;
         if ($status == 0) {
-            AddWarningMsg(sprintf(_("Process %s [%d] executed"), $this->title, $this->id));
+            \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Process %s [%d] executed"), $this->title, $this->id));
             $action->log->info(sprintf(_("Process %s [%d] executed in %.03f seconds"), $this->title, $this->id, $time));
         } else {
-            AddWarningMsg(sprintf(_("Error : Process %s [%d]: status %d"), $this->title, $this->id, $status));
+            \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Error : Process %s [%d]: status %d"), $this->title, $this->id, $status));
             $action->log->error(sprintf(_("Error : Process %s [%d]: status %d in %.03f seconds"), $this->title, $this->id, $status, $time));
         }
         return $status;

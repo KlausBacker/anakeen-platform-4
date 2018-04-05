@@ -12,7 +12,6 @@ class [docNameIndirect] extends [RedirectDocParent] {
 [IF METHODS]
 class [PHPmethodName] extends [ClassDocParent] {
    [METHODS]
-   [HOOKALIAS]
 
 }
 [ENDIF METHODS]

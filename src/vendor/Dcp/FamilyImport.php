@@ -518,9 +518,6 @@ class FamilyImport
             }
         }
         if ($hasMethod) {
-            $dm = new \deprecatedHookManager();
-            $dm->inspectContent("<?php\n" . $contents . "\n?>");
-            $phpAdoc->set("HOOKALIAS", $dm->generateCompatibleMethods());
             $phpAdoc->Set("METHODS", $contents);
             $phpMethodName = sprintf("_Method_%s", $tdoc["name"]);
             $phpAdoc->set("PHPmethodName", $phpMethodName);
@@ -544,8 +541,6 @@ class FamilyImport
         }
         $phpAdoc->Set("hasMethods", !empty($tdoc["methods"]));
 
-        $dfiles["/vendor/Anakeen/FDL/Layout/Class.NSSmart.xml"] = sprintf("%s/%s.php", $genDir, $tdoc["docFile"]);
-        $dfiles["/vendor/Anakeen/FDL/Layout/Class.NSSmartAttr.xml"] = sprintf("%s/%sAttributeList.php", $genDir, $tdoc["docFile"]);
         $dfiles["/vendor/Anakeen/FDL/Layout/Class.NSSmart.xml"] = DocManager::getDocumentClassFilename($tdoc["docFile"]);
         $dfiles["/vendor/Anakeen/FDL/Layout/Class.NSSmartAttr.xml"] = DocManager::getAttributesClassFilename($tdoc["docFile"]);
         $dfiles["/vendor/Anakeen/FDL/Layout/Class.Doc.xml"] = sprintf("%s/Smart%d.php", $genDir, $tdoc["id"]);

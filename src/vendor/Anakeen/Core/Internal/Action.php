@@ -415,7 +415,7 @@ create sequence SEQ_ID_ACTION;
         }
     }
 
-    public function addWarningMsg($msg)
+    public function \Anakeen\Core\Utils\System::addWarningMsg($msg)
     {
         if (isset($this->parent)) {
             $this->parent->AddWarningMsg($msg);

@@ -115,7 +115,7 @@ function AddVaultFile($dbaccess, $path, $analyze, &$vid)
         $err = $vf->Store($path, false, $vid);
     }
     if ($err != "") {
-        AddWarningMsg($err);
+        \Anakeen\Core\Utils\System::addWarningMsg($err);
         return $err;
     } else {
         $base = basename($path);

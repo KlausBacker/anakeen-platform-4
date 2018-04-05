@@ -351,7 +351,7 @@ class ExportDocument
                                     if ($docrevOption === "latest") {
                                         $tnbr[] = $n;
                                     } else {
-                                        addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name"), $doc->getTitle(), $attr->getLabel()));
+                                        \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name"), $doc->getTitle(), $attr->getLabel()));
                                         $tnbr[] = $brid;
                                     }
                                 } else {
@@ -367,7 +367,7 @@ class ExportDocument
                             if ($docrevOption === "latest") {
                                 $value = $n;
                             } else {
-                                addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name"), $doc->getTitle(), $attr->getLabel()));
+                                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name"), $doc->getTitle(), $attr->getLabel()));
                             }
                         }
                     }

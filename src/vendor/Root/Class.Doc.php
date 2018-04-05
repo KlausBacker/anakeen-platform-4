@@ -880,7 +880,7 @@ create unique index i_docir on doc(initid, revision);";
             if ($this->doctype !== "T") {
                 $err = $this->PostCreated();
                 if ($err != "") {
-                    AddWarningMsg($err);
+                    \Anakeen\Core\Utils\System::addWarningMsg($err);
                 }
                 $this->sendTextToEngine();
                 if ($this->dprofid > 0) {
@@ -1141,29 +1141,29 @@ create unique index i_docir on doc(initid, revision);";
         }
         if (!file_exists($orifile)) {
             $err = sprintf(_("Dynamic template %s not found "), $orifile);
-            addWarningMsg($err);
+            \Anakeen\Core\Utils\System::addWarningMsg($err);
             return $err;
         }
         if (\Anakeen\Core\Utils\FileMime::getFileExtension($orifile) != 'odt') {
             $err = sprintf(_("Dynamic template %s not an odt file "), $orifile);
-            addWarningMsg($err);
+            \Anakeen\Core\Utils\System::addWarningMsg($err);
             return $err;
         }
         $outfile = $this->viewDoc($layout . ':B', 'ooo');
         if (!file_exists($outfile)) {
             $err = sprintf(_("viewDoc did not returned a valid file"));
-            addWarningMsg($err);
+            \Anakeen\Core\Utils\System::addWarningMsg($err);
             return $err;
         }
         $fh = fopen($outfile, 'rb');
         if ($fh === false) {
             $err = sprintf(_("Error opening %s file '%s'"), 'outfile', $outfile);
-            addWarningMsg($err);
+            \Anakeen\Core\Utils\System::addWarningMsg($err);
             return $err;
         }
         $err = $this->saveFile($aid, $fh, '', $index);
         if ($err != '') {
-            addWarningMsg($err);
+            \Anakeen\Core\Utils\System::addWarningMsg($err);
             return $err;
         }
         fclose($fh);
@@ -2384,7 +2384,7 @@ create unique index i_docir on doc(initid, revision);";
 
         if ($this->doctype != 'Z') {
             if (count($rev) > 1) {
-                addWarningMsg(sprintf("document %d : multiple alive revision", $this->initid));
+                \Anakeen\Core\Utils\System::addWarningMsg(sprintf("document %d : multiple alive revision", $this->initid));
             }
         }
         return $rev[0]["id"];
@@ -5322,7 +5322,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             } else {
                 $err = sprintf(_("Method [%s] not exists"), $method);
-                addWarningMsg($err);
+                \Anakeen\Core\Utils\System::addWarningMsg($err);
                 error_log($err . print_r(getDebugStack(), true));
                 return null;
             }

@@ -340,11 +340,11 @@ class DocHtmlFormat
                     if (!file_exists($fileInfo->path)) {
                         if (!$vf->storage->fs->isAvailable()) {
                             if (!$this->vaultErrorSent) {
-                                addWarningMsg(sprintf(_("cannot access to vault file system")));
+                                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("cannot access to vault file system")));
                             }
                             $this->vaultErrorSent = true;
                         } else {
-                            addWarningMsg(sprintf(_("file %s not found"), $fileInfo->name));
+                            \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("file %s not found"), $fileInfo->name));
                         }
                     }
                 }
@@ -403,11 +403,11 @@ class DocHtmlFormat
                 if (!file_exists($fileInfo->path)) {
                     if (!$vf->storage->fs->isAvailable()) {
                         if (!$this->vaultErrorSent) {
-                            addWarningMsg(sprintf(_("Cannot access to vault file system")));
+                            \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Cannot access to vault file system")));
                         }
                         $this->vaultErrorSent = true;
                     } else {
-                        addWarningMsg(sprintf(_("file %s not found"), $fileInfo->name));
+                        \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("file %s not found"), $fileInfo->name));
                     }
 
                     $fname .= ' ' . _("(file not found)");
@@ -701,11 +701,11 @@ class DocHtmlFormat
             $rowlayfile = getLayoutFile($reg[1], ($reg[2]));
             if (!file_exists($rowlayfile)) {
                 $htmlval = sprintf(_("cannot open layout file : %s"), $rowlayfile);
-                AddwarningMsg(sprintf(_("cannot open layout file : %s"), $rowlayfile));
+                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("cannot open layout file : %s"), $rowlayfile));
                 return $htmlval;
             }
             if (!@$dxml->load($rowlayfile)) {
-                AddwarningMsg(sprintf(_("cannot load xml template : %s"), print_r(libxml_get_last_error(), true)));
+                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("cannot load xml template : %s"), print_r(libxml_get_last_error(), true)));
                 $htmlval = sprintf(_("cannot load xml layout file : %s"), $rowlayfile);
                 return $htmlval;
             }
@@ -1147,7 +1147,7 @@ class DocHtmlFormat
                 "]"
             ), $avalue);
             if ($error != '') {
-                addWarningMsg(_("Malformed HTML:") . "\n" . $error);
+                \Anakeen\Core\Utils\System::addWarningMsg(_("Malformed HTML:") . "\n" . $error);
             }
             if ($avalue === false) {
                 $avalue = '';

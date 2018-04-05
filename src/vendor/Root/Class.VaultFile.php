@@ -192,7 +192,7 @@ class VaultFile
             ':'
         ), '-', $newname);
             if ($nn != $newname) {
-                addWarningMsg(sprintf(_("Some characters are not authorized for file name %s. They are replaced by -"), $nn));
+                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Some characters are not authorized for file name %s. They are replaced by -"), $nn));
                 $newname = $nn;
             }
         

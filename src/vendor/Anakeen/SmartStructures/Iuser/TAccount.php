@@ -218,7 +218,7 @@ trait TAccount
                     // delete in folder group
                     $gdoc = $this->getDocUser($gid);
                     if (!method_exists($gdoc, "deleteMember")) {
-                        AddWarningMsg("no group $gid/" . $gdoc->id);
+                        \Anakeen\Core\Utils\System::addWarningMsg("no group $gid/" . $gdoc->id);
                     } else {
                         // $gdoc->deleteMember($this->id);
                         $err = $gdoc->removeDocument($this->id);

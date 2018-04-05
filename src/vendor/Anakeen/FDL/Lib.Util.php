@@ -373,11 +373,11 @@ function cal2jd($era, $y, $m, $d, $h, $mn, $s)
         return $nd;
     } else {
         if ($y == 0) {
-            AddWarningMsg("There is no year 0 in the Julian system!");
+            \Anakeen\Core\Utils\System::addWarningMsg("There is no year 0 in the Julian system!");
             return "invalid";
         }
         if ($y == 1582 && $m == 10 && $d > 4 && $d < 15 && $era != "BCE") {
-            AddWarningMsg("The dates 5 through 14 October, 1582, do not exist in the Gregorian system!");
+            \Anakeen\Core\Utils\System::addWarningMsg("The dates 5 through 14 October, 1582, do not exist in the Gregorian system!");
             return "invalid";
         }
         

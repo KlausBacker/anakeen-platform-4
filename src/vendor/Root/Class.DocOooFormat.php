@@ -454,14 +454,14 @@ class DocOooFormat
         }
         $html_body = \Dcp\Utils\htmlclean::normalizeHTMLFragment($html_body, $error);
         if ($error != '') {
-            addWarningMsg(sprintf(_("Malformed HTML in attribute '%s' from document '%s': %s"), $this->oattr->id, $this->doc->title, $error));
+            \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Malformed HTML in attribute '%s' from document '%s': %s"), $this->oattr->id, $this->doc->title, $error));
         }
         if ($html_body === false) {
             return '';
         }
         $xhtml_body = \Dcp\Utils\htmlclean::convertHTMLFragmentToXHTMLDocument($html_body, $error);
         if ($error != '') {
-            addWarningMsg(sprintf(_("Error converting HTML from attribute '%s' from document '%s': %s"), $this->oattr->id, $this->doc->title, $error));
+            \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Error converting HTML from attribute '%s' from document '%s': %s"), $this->oattr->id, $this->doc->title, $error));
         }
         if ($xhtml_body === false) {
             return '';
@@ -483,7 +483,7 @@ class DocOooFormat
             $dom = new \Dcp\Utils\XDOMDocument();
             $dom->loadXML($xhtml_body);
         } catch (Exception $e) {
-            addWarningMsg(sprintf(_("possible incorrect conversion HTML to ODT %s: %s"), $this->doc->title, $e->getMessage()));
+            \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("possible incorrect conversion HTML to ODT %s: %s"), $this->doc->title, $e->getMessage()));
             /*
             print "Exception catched:\n";
             print "Code: ".$e->getCode()."\n";
@@ -520,7 +520,7 @@ class DocOooFormat
             
             $oooval = sprintf('<text:section text:style-name="Sect%s" text:name="Section%s" aid="%s">%s</text:section>', $attrid, $attrid, $attrid, $oooval);
         } else {
-            addWarningMsg(sprintf(_("incorrect conversion HTML to ODT %s"), $this->doc->title));
+            \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("incorrect conversion HTML to ODT %s"), $this->doc->title));
         }
         return $oooval;
     }

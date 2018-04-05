@@ -521,11 +521,11 @@ class NormalAttribute extends BasicAttribute
                         
                         \EnumAttributeTools::flatEnumNotationToEnumArray($this->phpfunc, $this->enum, $this->enumlabel, $br);
                     } else {
-                        AddWarningMsg(sprintf(_("function [%s] not exists"), $this->phpfunc));
+                        \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("function [%s] not exists"), $this->phpfunc));
                         $this->phpfunc = "";
                     }
                 } else {
-                    AddWarningMsg(sprintf(_("invalid syntax for [%s] for enum attribute [%s]"), $this->phpfunc, $this->id));
+                    \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("invalid syntax for [%s] for enum attribute [%s]"), $this->phpfunc, $this->id));
                 }
                 self::_cacheStore(self::_cEnum, array(
                     $this->docid,

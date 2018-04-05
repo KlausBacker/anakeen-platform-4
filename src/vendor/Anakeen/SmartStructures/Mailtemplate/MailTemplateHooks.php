@@ -447,13 +447,13 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
             $doc->addHistoryEntry(sprintf(_("send mail %s with template %s"), $recip, $this->title), \DocHisto::INFO, "SENDMAIL");
             $action->log->info(sprintf(_("Mail %s sent to %s"), $subject, $recip));
             if (self::NOTIFY_SENDMAIL_ALWAYS === $notifySendMail) {
-                addWarningMsg(sprintf(_("send mail %s"), $recip));
+                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("send mail %s"), $recip));
             }
         } else {
             $doc->addHistoryEntry(sprintf(_("cannot send mail %s with template %s : %s"), $recip, $this->title, $err), \DocHisto::ERROR);
             $action->log->error(sprintf(_("cannot send mail %s to %s : %s"), $subject, $recip, $err));
             if (self::NOTIFY_SENDMAIL_ALWAYS === $notifySendMail || self::NOTIFY_SENDMAIL_ERRORS_ONLY === $notifySendMail) {
-                addWarningMsg(sprintf(_("cannot send mail %s"), $err));
+                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("cannot send mail %s"), $err));
             }
         }
         return $err;
