@@ -25,7 +25,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     protected static $include_path = null;
 
-    protected static $testDirectory = __DIR__;
+    protected static $testDataDirectory = __DIR__."/../../Anakeen/TestUnits/Data";
 
     protected static $importCsvEnclosure = "auto";
     protected static $importCsvSeparator = "auto";
@@ -199,12 +199,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
 
         $realfile = $file;
         if (!file_exists($realfile)) {
-            $ext = substr($file, strrpos($file, '.') + 1);
-            if ($ext == "ods" || $ext == "csv") {
-                $realfile = static::$testDirectory . "/" . $file;
-            } else {
-                $realfile = static::$testDirectory . "/Layout/" . $file;
-            }
+                $realfile = static::$testDataDirectory . "/" . $file;
         }
         if (!file_exists($realfile)) {
             throw new \Dcp\Exception(sprintf("File '%s' not found in '%s'.", $file, $realfile));

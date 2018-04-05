@@ -2,8 +2,6 @@
 
 class ErrorCodeRoutes
 {
-
-
     /**
      * @errorCode Cache is corrupted
      */

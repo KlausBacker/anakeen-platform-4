@@ -215,7 +215,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
     {
         return array(
             array(
-                self::$testDirectory . DIRECTORY_SEPARATOR . "PU_dcp_data_exportxmlimage.zip",
+                self::$testDataDirectory . DIRECTORY_SEPARATOR . "PU_dcp_data_exportxmlimage.zip",
                 array(
                     "PU_data_dcp_exportdocimageexample.png",
                     "PU_data_dcp_exportdocimage.ods"
@@ -223,7 +223,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
                 "X"
             ),
             array(
-                self::$testDirectory . DIRECTORY_SEPARATOR . "PU_dcp_data_exportxmlimage.zip",
+                self::$testDataDirectory . DIRECTORY_SEPARATOR . "PU_dcp_data_exportxmlimage.zip",
                 array(
                     "PU_data_dcp_exportdocimageexample.png",
                     "PU_data_dcp_exportdocimage.ods"

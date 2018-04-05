@@ -14,7 +14,7 @@
  */
 
 
-class VaultDiskStorage extends DbObj
+class VaultDiskStorage extends \Anakeen\Core\Internal\DbObj
 {
     public $fields = array(
         "id_file",
@@ -96,14 +96,14 @@ class VaultDiskStorage extends DbObj
     // --------------------------------------------------------------------
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
-        DbObj::__construct($dbaccess, $id, $res, $dbid);
+        parent::__construct($dbaccess, $id, $res, $dbid);
         $this->logger = new Anakeen\Core\Internal\Log("", "vault", $this->name);
         $this->fs = new VaultDiskFsStorage($this->dbaccess);
     }
     /**
      * set fs object
      */
-    public function Complete()
+    public function complete()
     {
         if ($this->storage == 1) {
             if (!$this->fs) {
@@ -116,7 +116,7 @@ class VaultDiskStorage extends DbObj
         }
     }
     
-    public function PreInsert()
+    public function preInsert()
     {
         $this->id_file = $this->getNewVaultId();
         return '';
@@ -239,13 +239,13 @@ SQL;
         $this->id_dir = $id_dir;
         // printf("\nDIR:%s\n", $id_dir);
         $this->public_access = $public_access;
-        $this->name = my_basename($infile);
+        $this->name = self::my_basename($infile);
         if (!$this->seems_utf8($this->name)) {
             $this->name = utf8_encode($this->name);
         }
         
-        $this->mime_t = getTextMimeFile($infile);
-        $this->mime_s = getSysMimeFile($infile, $this->name);
+        $this->mime_t = \Anakeen\Core\Utils\FileMime::getTextMimeFile($infile);
+        $this->mime_s = \Anakeen\Core\Utils\FileMime::getSysMimeFile($infile, $this->name);
         $this->cdate = $this->mdate = $this->adate = date("c", time());
         
         $this->teng_state = '';
@@ -260,7 +260,7 @@ SQL;
         $this->fs->closeCurrentDir();
         $idf = $this->id_file;
         
-        $f = vaultfilename($f_path, $infile, $this->id_file);
+        $f = self::vaultfilename($f_path, $infile, $this->id_file);
         if (!@copy($infile, $f)) {
             // Free entry
             $this->logger->error(sprintf(_("Failed to copy %s to %s"), $infile, $f));
@@ -269,6 +269,10 @@ SQL;
         
         $this->logger->debug("File $infile stored in $f");
         return "";
+    }
+    protected static function vaultfilename($fspath, $name, $id)
+    {
+        return str_replace('//', '/', $fspath . "/" . $id . "." . \Anakeen\Core\Utils\FileMime::getFileExtension($name));
     }
     /**
      * Get the VaultDiskStorage transforming object corresponding to the current object
@@ -326,12 +330,12 @@ SQL;
             $t = $query->Query(0, 0, "TABLE");
             
             if ($query->nb > 0) {
-                DbObj::Select($t[0]["id_file"]);
+                $this->select($t[0]["id_file"]);
             }
         }
         
         if (($this->id_file == - 1) && ($teng_lname == "")) {
-            DbObj::Select($id_file);
+            $this->select($id_file);
         }
         
         if ($this->id_file != - 1) {
@@ -351,7 +355,7 @@ SQL;
             $f_infos->teng_lname = $this->teng_lname;
             $f_infos->teng_vid = $this->teng_id_file;
             $f_infos->teng_comment = $this->teng_comment;
-            $f_infos->path = vaultfilename($f_path, $this->name, $this->id_file);
+            $f_infos->path = self::vaultfilename($f_path, $this->name, $this->id_file);
             
             return '';
         } else {
@@ -363,7 +367,7 @@ SQL;
     {
         $err = '';
         if ($this->id_file != $id_file) {
-            DbObj::Select($id_file);
+            $this->select($id_file);
         }
         if ($this->isAffected()) {
             $this->adate = date("c", time());
@@ -380,7 +384,7 @@ SQL;
     public function getPath()
     {
         $this->fs->Show($this->id_fs, $this->id_dir, $f_path);
-        return vaultfilename($f_path, $this->name, $this->id_file);
+        return self::vaultfilename($f_path, $this->name, $this->id_file);
     }
     // --------------------------------------------------------------------
     public function Destroy($id)
@@ -389,7 +393,7 @@ SQL;
         $msg = $this->Show($id, $inf);
         if ($msg == '') {
             @unlink($inf->path);
-            $msg = $this->fs->DelEntry($this->id_fs, $this->id_dir, $inf->size);
+            $msg = $this->fs->delEntry($this->id_fs, $this->id_dir, $inf->size);
             $this->Delete();
         }
         
@@ -405,10 +409,8 @@ SQL;
              * @var VaultFileInfo $info
              */
             $path = str_replace("//", "/", $info->path);
-            
-            $size = $this->size;
+
             $this->size = filesize($infile);
-            $newsize = $this->size - $size;
             // Verifier s'il y a assez de places ???
             $this->public_access = $public_access;
             
@@ -432,6 +434,15 @@ SQL;
         }
         return $err;
     }
+
+
+    protected static function my_basename($p)
+    {
+        //return basename($p);
+        $r = strrpos($p, "/");
+        return ($r !== false) ? substr($p, $r + 1) : $p;
+    }
+
     /**
      * reset all files product by transform engine
      */
@@ -446,46 +457,4 @@ SQL;
             $this->exec_query($up);
         }
     }
-} // End Class.VaultFileDisk.php
-class VaultFileInfo
-{
-    /**
-     * @var int vault identifier
-     */
-    public $id_file;
-    /**
-     * @var string file basename
-     */
-    public $name;
-    /**
-     * @var int file size in bytes
-     */
-    public $size;
-    public $public_access;
-    public $mime_t;
-    /**
-     * @var string system mime file
-     */
-    public $mime_s;
-    /**
-     * @var string creation date (YYYY-MM-DD HH:MM:SS)
-     */
-    public $cdate;
-    /**
-     * @var string modification date (YYYY-MM-DD HH:MM:SS)
-     */
-    public $mdate;
-    /**
-     * @var string last access date (YYYY-MM-DD HH:MM:SS)
-     */
-    public $adate;
-    public $teng_state;
-    public $teng_lname;
-    public $teng_vid;
-    public $teng_comment;
-    /**
-     * @var string complete path to file
-     */
-    public $path;
-    public $id_tmp;
 }

@@ -30,7 +30,7 @@ class TestImportArchive extends TestCaseDcpCommonFamily
         $oImport = new \ImportDocument();
         $onlyAnalyze = false;
         $archive = true;
-        $oImport->importDocuments($this->getAction(), self::$testDirectory . DIRECTORY_SEPARATOR . $archiveFile, $onlyAnalyze, $archive);
+        $oImport->importDocuments($this->getAction(), self::$testDataDirectory . DIRECTORY_SEPARATOR . $archiveFile, $onlyAnalyze, $archive);
         $err = $oImport->getErrorMessage();
 
         $this->assertEmpty($err, sprintf("import error %s", $err));

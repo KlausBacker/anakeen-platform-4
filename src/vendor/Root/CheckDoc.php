@@ -25,7 +25,7 @@ class CheckDoc extends CheckData
     protected $doc;
     /**
      * @param array $data
-     * @param Doc $doc
+     * @param Doc $extra
      * @return CheckDoc
      */
     public function check(array $data, &$extra = null)
@@ -62,8 +62,8 @@ class CheckDoc extends CheckData
                 $this->addError(ErrorCode::getError('DOC0003', $this->famName, $this->specName));
             } else {
                 try {
-                    $f = new_doc(getDbAccess(), $this->famName);
-                    if (!$f->isAlive()) {
+                    $f = \Anakeen\Core\DocManager::getFamily($this->famName);
+                    if (!$f || !$f->isAlive()) {
                         $this->addError(ErrorCode::getError('DOC0005', $this->famName, $this->specName));
                     } else {
                         if ($f->doctype != 'C') {

@@ -30,11 +30,11 @@ class CoreTests
         $suite = new FrameworkDcp('Project');
 
         Gettext::___("Hello"); // Include ___
-        $suite->addTest((new SuiteRoutes)());
-        $suite->addTest(SuiteDcp::suite());
-        $suite->addTest(SuiteDcpAttribute::suite());
+     /*   $suite->addTest((new SuiteRoutes)());
+     */   $suite->addTest(SuiteDcp::suite());
+     /*   $suite->addTest(SuiteDcpAttribute::suite());
         $suite->addTest(SuiteDcpUser::suite());
-        $suite->addTest(SuiteDcpSecurity::suite());
+        $suite->addTest(SuiteDcpSecurity::suite());*/
         // ...
         printf("\nError log in [%s], messages in [%s]\n", self::LOGFILE, self::MSGFILE);
         return $suite;

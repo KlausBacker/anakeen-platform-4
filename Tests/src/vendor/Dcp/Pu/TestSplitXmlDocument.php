@@ -47,7 +47,7 @@ class TestSplitXmlDocument extends TestCaseDcp
         $testDir = self::$workDir . DIRECTORY_SEPARATOR . self::$runid;
         mkdir($testDir);
 
-        $src = self::$testDirectory . DIRECTORY_SEPARATOR . $data['xml'];
+        $src = self::$testDataDirectory . DIRECTORY_SEPARATOR . $data['xml'];
         $workingXML = $testDir . DIRECTORY_SEPARATOR . basename($data['xml']);
         $ret = copy($src, $workingXML);
         if ($ret === false) {
@@ -132,7 +132,7 @@ class TestSplitXmlDocument extends TestCaseDcp
     /** @noinspection PhpUnusedPrivateMethodInspection */
     private function addBigNode($xml, $args = array())
     {
-        $addNodeData = file_get_contents(self::$testDirectory . DIRECTORY_SEPARATOR . 'Layout' . DIRECTORY_SEPARATOR . 'PU_data_dcp_splitxmldocument_bignode_template.xml');
+        $addNodeData = file_get_contents(self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Layout' . DIRECTORY_SEPARATOR . 'PU_data_dcp_splitxmldocument_bignode_template.xml');
         if ($addNodeData === false) {
             $this->errmsg = sprintf("Could not get content from XML file '%s'.", "PU_data_dcp_splitxmldocument_bignode_template.xml");
             return false;

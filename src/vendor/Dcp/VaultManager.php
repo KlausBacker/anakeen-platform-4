@@ -23,7 +23,7 @@ class VaultManager
      * return various informations for a file stored in VAULT
      * @param int $idfile vault file identifier
      * @param string $teng_name transformation engine name
-     * @return \vaultFileInfo
+     * @return \VaultFileInfo
      */
     public static function getFileInfo($idfile, $teng_name = "")
     {

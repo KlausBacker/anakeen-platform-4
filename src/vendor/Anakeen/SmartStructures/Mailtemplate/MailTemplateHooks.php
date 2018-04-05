@@ -348,7 +348,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
         // add inserted image
         foreach ($this->ifiles as $k => $v) {
             if (file_exists($v)) {
-                $message->addBodyRelatedAttachment(new \Dcp\Mail\RelatedAttachment($v, $k, sprintf("image/%s", fileextension($v)), $k));
+                $message->addBodyRelatedAttachment(new \Dcp\Mail\RelatedAttachment($v, $k, sprintf("image/%s", \Anakeen\Core\Utils\FileMime::getFileExtension($v)), $k));
             }
         }
         //send attachment
@@ -581,16 +581,16 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
         $cid = $src;
 
         if (preg_match("/.*app=FDL.*action=EXPORTFILE.*vid=([0-9]*)/", $src, $reg)) {
-            $info = vault_properties($reg[1]);
+            $info = \Dcp\VaultManager::getFileInfo($reg[1]);
             $src = $info->path;
-            $cid = "cid" . $this->getUniqId() . $reg[1] . '.' . fileextension($info->path);
+            $cid = "cid" . $this->getUniqId() . $reg[1] . '.' . \Anakeen\Core\Utils\FileMime::getFileExtension($info->path);
         } elseif (preg_match('!file/(?P<docid>\d+)/(?P<vid>\d+)/(?P<attrid>[^/]+)/(?P<index>[^/]+)/(?P<fname>[^?]+)!', $src, $reg)) {
-            $info = vault_properties($reg['vid']);
+            $info = \Dcp\VaultManager::getFileInfo($reg['vid']);
             $src = $info->path;
-            $cid = "cid" . $this->getUniqId() . $reg[1] . '.' . fileextension($info->path);
+            $cid = "cid" . $this->getUniqId() . $reg[1] . '.' . \Anakeen\Core\Utils\FileMime::getFileExtension($info->path);
         }
 
-        if (!in_array(strtolower(fileextension($src)), $vext)) {
+        if (!in_array(strtolower(\Anakeen\Core\Utils\FileMime::getFileExtension($src)), $vext)) {
             return "";
         }
 

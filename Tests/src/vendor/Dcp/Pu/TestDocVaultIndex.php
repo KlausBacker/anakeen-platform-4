@@ -224,19 +224,19 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
             array(
                 array(
                     'import:family' => array(
-                        self::$testDirectory . DIRECTORY_SEPARATOR . 'PU_data_dcp_docvaultindex_family_parent.csv' => function ($dbaccess) {
+                        self::$testDataDirectory . DIRECTORY_SEPARATOR . 'PU_data_dcp_docvaultindex_family_parent.csv' => function ($dbaccess) {
                             $docFam = new_Doc($dbaccess, 'TST_DOCVAULTINDEX');
                             if (!$docFam->isAlive()) {
                                 return sprintf("Could not find family '%s'.", 'TST_DOCVAULTINDEX');
                             }
-                            $vid = $docFam->vaultRegisterFile(self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png', 'icône TST_DOCVAULTINDEX.png', $info);
+                            $vid = $docFam->vaultRegisterFile(self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png', 'icône TST_DOCVAULTINDEX.png', $info);
                             if (($err = $docFam->changeIcon($vid)) !== '') {
                                 return $err;
                             }
                             return '';
                         }
                     ,
-                        self::$testDirectory . DIRECTORY_SEPARATOR . 'PU_data_dcp_docvaultindex_family_childs.csv' => function ($dbaccess) {
+                        self::$testDataDirectory . DIRECTORY_SEPARATOR . 'PU_data_dcp_docvaultindex_family_childs.csv' => function ($dbaccess) {
                             return '';
                         }
                     ),
@@ -244,69 +244,69 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
                         'TST_DOCVAULTINDEX' => array(
                             'param' => array(
                                 'P_S_FILE' => array(
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'file param 1 of 3.png'
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'file param 1 of 3.png'
                                 ),
                                 'P_S_IMAGE' => array(
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'image param 1 of 3.png'
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'image param 1 of 3.png'
                                 ),
                                 'P_M_FILE' => array(
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'file param 2 of 3.png',
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_two.png' => 'file param 3 of 3.png'
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'file param 2 of 3.png',
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_two.png' => 'file param 3 of 3.png'
                                 ),
                                 'P_M_IMAGE' => array(
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'image param 2 of 3.png',
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_two.png' => 'image param 3 of 3.png'
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'image param 2 of 3.png',
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_two.png' => 'image param 3 of 3.png'
                                 )
                             ),
                             'defval' => array(
                                 'S_FILE' => array(
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'file defval 1 of 3.png'
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'file defval 1 of 3.png'
                                 ),
                                 'S_IMAGE' => array(
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'image defval 1 of 3.png'
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'image defval 1 of 3.png'
                                 ),
                                 'M_FILE' => array(
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'file defval 2 of 3.png',
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_two.png' => 'file defval 3 of 3.png'
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'file defval 2 of 3.png',
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_two.png' => 'file defval 3 of 3.png'
                                 ),
                                 'M_IMAGE' => array(
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'image defval 2 of 3.png',
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_two.png' => 'image defval 3 of 3.png'
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'image defval 2 of 3.png',
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_two.png' => 'image defval 3 of 3.png'
                                 )
                             )
                         ),
                         'TST_DOCVAULTINDEX_CHILD_2' => array(
                             'param' => array(
                                 'P_S_FILE' => array(
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'overwrite file param 1 of 3 from parent.png'
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'overwrite file param 1 of 3 from parent.png'
                                 ),
                                 'P_S_IMAGE' => array(
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'overwrite image param 1 of 3 from parent.png'
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'overwrite image param 1 of 3 from parent.png'
                                 ),
                                 'P_S_FILE_2' => array(
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'self file param 1 of 1.png'
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'self file param 1 of 1.png'
                                 ),
                                 'P_S_IMAGE_2' => array(
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'self image param 1 of 1.png'
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'self image param 1 of 1.png'
                                 )
                             ),
                             'defval' => array(
                                 'S_FILE' => array(
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'overwrite file defval 1 of 3 from parent.png'
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'overwrite file defval 1 of 3 from parent.png'
                                 ),
                                 'S_IMAGE' => array(
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'overwrite image defval 1 of 3 from parent.png'
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'overwrite image defval 1 of 3 from parent.png'
                                 ),
                                 'S_FILE_2' => array(
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'self file defval 1 of 1.png'
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'self file defval 1 of 1.png'
                                 ),
                                 'S_IMAGE_2' => array(
-                                    self::$testDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'self image defval 1 of 1.png'
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'self image defval 1 of 1.png'
                                 )
                             )
                         )
                     ),
-                    'import:documents' => self::$testDirectory . DIRECTORY_SEPARATOR . 'PU_data_dcp_docvaultindex_documents.zip',
+                    'import:documents' => self::$testDataDirectory . DIRECTORY_SEPARATOR . 'PU_data_dcp_docvaultindex_documents.zip',
                     'expect' => array(
                         'TST_DOCVAULTINDEX' => array(
                             'count' => 13,

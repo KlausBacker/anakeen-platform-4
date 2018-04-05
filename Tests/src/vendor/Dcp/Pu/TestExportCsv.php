@@ -363,7 +363,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
     {
         return array(
             array(
-                self::$testDirectory . DIRECTORY_SEPARATOR . "PU_dcp_data_exportcsvimage.zip",
+                self::$testDataDirectory . DIRECTORY_SEPARATOR . "PU_dcp_data_exportcsvimage.zip",
                 array(
                     "PU_data_dcp_exportdocimageexample.png",
                     "PU_data_dcp_exportdocimage.ods"

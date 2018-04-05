@@ -420,30 +420,6 @@ function handleActionException($e)
 }
 
 
-
-
-
-
-
-/**
- * @param Throwable $e
- *
- * @deprecated use Anakeen\Core\LogException::formatErrorLogException()
- * @return string
- */
-function formatErrorLogException($e)
-{
-    return \Anakeen\Core\LogException::formatErrorLogException($e);
-}
-
-/**
- * @param Exception|Error $e
- */
-function errorLogException($e)
-{
-    \Anakeen\Core\LogException::writeLog($e);
-}
-
 function handleFatalShutdown()
 {
     global $action;

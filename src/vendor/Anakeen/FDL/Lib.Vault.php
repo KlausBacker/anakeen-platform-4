@@ -14,7 +14,10 @@
 /**
  */
 
-
+/**
+ * @deprecated
+ * @return bool|VaultFile
+ */
 function initVaultAccess()
 {
     static $FREEDOM_VAULT = false;
@@ -27,6 +30,7 @@ function initVaultAccess()
 }
 /**
  * get url with open id to use with open authentiication
+ * @deprecated
  */
 function getOpenTeUrl($context = array())
 {
@@ -57,6 +61,7 @@ function getOpenTeUrl($context = array())
 /**
  * Generate a conversion of a file
  * The result is store in vault itself
+ * @deprecated
  * @param string $engine the convert engine identifier (from VaultEngine Class)
  * @param int $vidin vault file identifier (original file)
  * @param int $vidout vault identifier of new stored file
@@ -119,18 +124,18 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
  * return various informations for a file stored in VAULT
  * @param int $idfile vault file identifier
  * @param string $teng_name transformation engine name
+ * @deprecated
  * @return vaultFileInfo
  */
 function vault_properties($idfile, $teng_name = "")
 {
-    $FREEDOM_VAULT = initVaultAccess();
-    $FREEDOM_VAULT->Show($idfile, $info, $teng_name);
-    return $info;
+    \Dcp\VaultManager::getFileInfo($idfile, $teng_name);
 }
 /**
  * return unique name with for a vault file
  * @param int $idfile vault file identifier
  * @param string $teng_name transformation engine name
+ * @deprecated
  * @return string the unique name
  */
 function vault_uniqname($idfile, $teng_name = "")
@@ -155,6 +160,7 @@ function vault_uniqname($idfile, $teng_name = "")
 /**
  * return various informations for a file stored in VAULT
  * @param string $filename
+ * @deprecated
  * @param int &$vid return vaul identifier
  * @return string error message
  */
@@ -170,6 +176,7 @@ function vault_store($filename, &$vid, $ftitle = "")
 /**
  * return context of a file
  * @param int $idfile vault file identifier
+ * @deprecated
  * @return array|false
  */
 function vault_get_content($idfile)
@@ -187,6 +194,7 @@ function vault_get_content($idfile)
 }
 /**
  * send request to have text conversion of file
+ * @deprecated
  */
 function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
 {
@@ -228,6 +236,7 @@ function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
  * @param string  $engine engine name to use
  * @param string  $outfile path where to store new file
  * @param array &$info various informations for convertion process
+ * @deprecated
  * @return string error message
  */
 function convertFile($infile, $engine, $outfile, &$info)

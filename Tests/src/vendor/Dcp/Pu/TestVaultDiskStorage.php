@@ -48,12 +48,12 @@ class TestVaultDiskStorage extends TestCaseDcpCommonFamily
         return array(
             array(
                 array(
-                    "infile" => self::$testDirectory . "/Layout/tst_VaultDiskStorage.odt",
+                    "infile" => self::$testDataDirectory . "/Layout/tst_VaultDiskStorage.odt",
                     "public_access" => false,
                     "expect:success" => true
                 ),
                 array(
-                    "infile" => self::$testDirectory . "/Layout/tst_VaultDiskStorage_non_existing_file.odt",
+                    "infile" => self::$testDataDirectory . "/Layout/tst_VaultDiskStorage_non_existing_file.odt",
                     "public_access" => false,
                     "expect:success" => false
                 )
@@ -87,7 +87,7 @@ class TestVaultDiskStorage extends TestCaseDcpCommonFamily
         return array(
             array(
                 array(
-                    "infile" => self::$testDirectory . "/Layout/tst_VaultDiskStorage.odt"
+                    "infile" => self::$testDataDirectory . "/Layout/tst_VaultDiskStorage.odt"
                 )
             )
         );
@@ -119,7 +119,7 @@ class TestVaultDiskStorage extends TestCaseDcpCommonFamily
         return array(
             array(
                 array(
-                    "infile" => self::$testDirectory . "/Layout/tst_VaultDiskStorage.odt"
+                    "infile" => self::$testDataDirectory . "/Layout/tst_VaultDiskStorage.odt"
                 )
             )
         );
@@ -161,7 +161,7 @@ class TestVaultDiskStorage extends TestCaseDcpCommonFamily
         return array(
             array(
                 array(
-                    "infile" => self::$testDirectory . "/Layout/tst_VaultDiskStorage.odt"
+                    "infile" => self::$testDataDirectory . "/Layout/tst_VaultDiskStorage.odt"
                 )
             )
         );

@@ -679,44 +679,9 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
         );
     }
 
-    /**
-     * @templateController
-     *
-     * @param string $target
-     * @param bool   $ulink
-     * @param string $abstract
-     *
-     * @throws Exception
-     * @throws \Exception
-     */
-    public function editlikeperson($target = "finfo", $ulink = true, $abstract = "Y")
-    {
-        global $action;
 
-        $this->lay = new \Layout(getLayoutFile("FDL", "editbodycard.xml"), $action);
 
-        $this->attributes->attr['us_tab_system']->visibility = 'R';
-        $this->attributes->attr['us_fr_userchange']->visibility = 'R';
-        $this->ApplyMask();
 
-        $this->attributes->attr['us_extmail']->mvisibility = 'W';
-        $this->attributes->attr['us_extmail']->fieldSet = $this->attributes->attr['us_fr_coord'];
-        $this->attributes->attr['us_extmail']->ordered = $this->attributes->attr['us_pphone']->ordered - 1;
-        $this->attributes->orderAttributes();
-
-        $this->editbodycard($target, $ulink, $abstract);
-    }
-
-    /**
-     * interface to only modify name and password
-     *
-     * @templateController
-     */
-    public function editchangepassword()
-    {
-        $this->viewprop();
-        $this->editattr(false);
-    }
 
     /**
      * Set/change user password

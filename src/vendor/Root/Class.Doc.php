@@ -2621,7 +2621,6 @@ create unique index i_docir on doc(initid, revision);";
         if (is_array($oas)) {
             foreach ($oas as $k => $v) {
                 if ($oas[$k]) {
-
                     $oas[$k]->mvisibility = \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
                         $v->visibility,
                         (empty($v->fieldSet)) ? '' : $v->fieldSet->mvisibility,
@@ -3019,7 +3018,7 @@ create unique index i_docir on doc(initid, revision);";
         $sql = sprintf(
             "select id_file from vaultdiskstorage where teng_state=%d and %s limit 1",
             \Dcp\TransformationEngine\Client::status_waiting,
-            getSqlCond($tvid, "id_file", true)
+            DbManager::getSqlOrCond($tvid, "id_file", true)
         );
         DbManager::query($sql, $waiting, true, true);
         return ($waiting != false);
@@ -3083,7 +3082,7 @@ create unique index i_docir on doc(initid, revision);";
             if (preg_match(PREGEXPFILE, $va, $reg)) {
                 $vidin = $reg[2];
                 $vidout = 0;
-                $info = vault_properties($vidin, $engine);
+                $info = \Dcp\VaultManager::getFileInfo($vidin, $engine);
                 // in case of server not reach : try again
                 if (!is_object($info)) {
                     // not found : create it
@@ -3115,7 +3114,7 @@ create unique index i_docir on doc(initid, revision);";
                             error_log($err);
                             return '';
                         }
-                        $info = vault_properties($vidin);
+                        $info = \Dcp\VaultManager::getFileInfo($vidin);
                         if (!$isimage) {
                             unlink($filename);
                             $mime = 'text/plain';
@@ -3136,7 +3135,7 @@ create unique index i_docir on doc(initid, revision);";
                         $this->vidNoSendTextToEngine[$vidout] = true;
                     } else {
                         if ($err == "") {
-                            $info1 = vault_properties($vidin);
+                            $info1 = \Dcp\VaultManager::getFileInfo($vidin);
                             $vidout = $info->id_file;
                             $vf->rename($vidout, sprintf(_("update of %s in progress") . ".%s", $info1->name, $engine));
                             $value = $info->mime_s . '|' . $info->id_file;
@@ -3184,7 +3183,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param bool $viewhidden set to true if need all defined menu (hidden also)
      *
-     * @return MenuAttribute[]
+     * @return \Anakeen\Core\SmartStructure\MenuAttribute[]
      */
     public function getMenuAttributes($viewhidden = false)
     {
@@ -3195,7 +3194,7 @@ create unique index i_docir on doc(initid, revision);";
 
         reset($this->attributes->attr);
         foreach ($this->attributes->attr as $k => $v) {
-            if (((get_class($v) == "MenuAttribute")) && (($v->mvisibility != 'H') || $viewhidden)) {
+            if (((get_class($v) == Anakeen\Core\SmartStructure\MenuAttribute::class)) && (($v->mvisibility != 'H') || $viewhidden)) {
                 $tsa[$v->id] = $v;
             }
         }
@@ -4908,14 +4907,9 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function vaultRegisterFile($filename, $ftitle = "", &$info = null)
     {
+        $vaultid= \Dcp\VaultManager::storeFile($filename, $ftitle);
 
-
-        $vaultid = 0;
-        $err = vault_store($filename, $vaultid, $ftitle);
-        if ($err != '') {
-            throw new \Exception(ErrorCode::getError('FILE0009', $filename, $err));
-        }
-        $info = vault_properties($vaultid);
+        $info = \Dcp\VaultManager::getFileInfo($vaultid);
         if (!is_object($info) || !is_a($info, 'VaultFileInfo')) {
             throw new \Exception(ErrorCode::getError('FILE0010', $filename));
         }
@@ -4935,8 +4929,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function setFile($attrid, $filename, $ftitle = "", $index = -1)
     {
-
-
         try {
             $a = $this->getAttribute($attrid);
             if ($a) {
@@ -4951,7 +4943,7 @@ create unique index i_docir on doc(initid, revision);";
                 $err = sprintf(_("unknow attribute %s"), $attrid);
             }
         } catch (\Exception $e) {
-            errorLogException($e);
+            \Anakeen\Core\LogException::writeLog($e);
             $err = $e->getMessage();
         }
         return $err;
@@ -4976,52 +4968,7 @@ create unique index i_docir on doc(initid, revision);";
         return $this->setFile($attrid, $filename, $ftitle, $index);
     }
 
-    /**
-     * store multiples new files in an file array attribute
-     *
-     * @deprecated use setFile() instead
-     *
-     * @param string       $attrid    identifier of file attribute
-     * @param array        $filenames file path
-     * @param array|string $ftitle    basename of file
-     *
-     * @return string error message, if no error empty string
-     */
-    final public function storeFiles($attrid, $filenames, $ftitle = "")
-    {
-        deprecatedFunction();
-        $err = '';
-        if (!is_array($filenames)) {
-            return _("no files");
-        }
 
-        $a = $this->getAttribute($attrid);
-        if (($a->type == "file") || ($a->type == "image")) {
-            if ($a->inArray()) {
-                $tvid = array();
-                foreach ($filenames as $k => $filename) {
-                    if (is_file($filename)) {
-                        $err = vault_store($filename, $vaultid, $ftitle[$k]);
-                        if ($err == "") {
-                            $info = vault_properties($vaultid);
-                            $mime = $info->mime_s;
-                            if ($ftitle[$k] == "") {
-                                $ftitle[$k] = $info->name;
-                            }
-                            $tvid[] = "$mime|$vaultid|" . $ftitle[$k];
-                        }
-                    }
-                }
-                $this->setValue($attrid, $tvid);
-            } else {
-                $err = sprintf(_("attribute %s is not int a array"), $a->getLabel());
-            }
-        } else {
-            $err = sprintf(_("attribute %s is not a file attribute"), $a->getLabel());
-        }
-
-        return $err;
-    }
 
     /**
      * Duplicate physically all files of documents
@@ -6343,7 +6290,7 @@ create unique index i_docir on doc(initid, revision);";
                 $wdoc->id,
                 $e->getMessage()
             );
-            errorLogException($e);
+            \Anakeen\Core\LogException::writeLog($e);
         }
         return $err;
     }
@@ -7989,7 +7936,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function isAlive()
     {
-        return ((DbObj::isAffected()) && ($this->doctype != 'Z'));
+        return ((\Anakeen\Core\Internal\DbObj::isAffected()) && ($this->doctype != 'Z'));
     }
 
     /**
@@ -8502,6 +8449,7 @@ create unique index i_docir on doc(initid, revision);";
      * default construct layout for view card containt
      *
      * @templateController default controller view
+     * @deprecated
      *
      * @param string $target     window target name for hyperlink destination
      * @param bool   $ulink      if false hyperlink are not generated
@@ -8514,694 +8462,6 @@ create unique index i_docir on doc(initid, revision);";
         $this->viewprop($target, $ulink, $abstract);
     }
 
-    /**
-     * construct layout for view card containt
-     *
-     * @templateController default HTML view controller
-     *
-     * @param string $target   window target name for hyperlink destination
-     * @param bool   $ulink    if false hyperlink are not generated
-     * @param bool   $abstract if true only abstract attribute are generated
-     * @param bool   $onlyopt  if true only optional attributes are displayed
-     *
-     * @throws \Dcp\Exception
-     */
-    public function viewbodycard($target = "_self", $ulink = true, $abstract = false, $onlyopt = false)
-    {
-        /**
-         * @var \Anakeen\Core\Internal\Action $action
-         */
-        global $action;
-
-        $frames = array();
-        if ($abstract) {
-            // only 3 properties for abstract mode
-            $listattr = $this->GetAbstractAttributes();
-        } else {
-            $listattr = $this->GetNormalAttributes($onlyopt);
-        }
-
-        $k = 0; // number of frametext
-        $v = 0; // number of value in one frametext
-        $nbimg = 0; // number of image in one frametext
-        $currentFrameId = "";
-        /**
-         * @var \Anakeen\Core\SmartStructure\FieldSetAttribute
-         */
-        $currentFrame = null;
-        $changeframe = false; // is true when need change frame
-        $tableframe = array();
-        $tableimage = array();
-        $ttabs = array();
-        $frametpl = '';
-
-        $iattr = 0;
-        $onlytab = strtolower(getHttpVars("onlytab"));
-        $tabonfly = false; // I want tab on fly
-        $showonlytab = ($onlytab ? $onlytab : false);
-        if ($onlytab) {
-            $this->addUTag($this->userid, "lasttab", $onlytab);
-        }
-        /**
-         * @var \Anakeen\Core\SmartStructure\NormalAttribute $attr
-         */
-        foreach ($listattr as $i => $attr) {
-            if ($onlytab && ($attr->fieldSet->id != $onlytab && $attr->fieldSet->fieldSet->id != $onlytab)) {
-                continue;
-            }
-
-            $iattr++;
-            $htmlvalue = '';
-            //------------------------------
-            // Compute value element
-            $value = chop($this->getRawValue($i));
-            if (!$attr->fieldSet) {
-                addWarningMsg(sprintf(_("unknow set for attribute %s %s"), $attr->id, $attr->getLabel()));
-                continue;
-            }
-            $frametpl = $attr->fieldSet->getOption("viewtemplate");
-            if ($attr->fieldSet && ($frametpl && $attr->fieldSet->type != "array")) {
-                $goodvalue = false;
-                if ($currentFrameId != $attr->fieldSet->id) {
-                    if (($currentFrameId != "") && ($attr->fieldSet->mvisibility != "H")
-                        && ($attr->fieldSet->mvisibility != "I")) {
-                        $changeframe = true;
-                    }
-                }
-            } else {
-                $goodvalue = ((($value != "") || ($attr->type == "array") || $attr->getOption("showempty"))
-                    && ($attr->mvisibility != "H")
-                    && ($attr->mvisibility != "I")
-                    && ($attr->mvisibility != "O")
-                    && (!$attr->inArray()));
-                if (($attr->type == "array") && (!$attr->getOption("showempty"))) {
-                    if (count($this->getArrayRawValues($attr->id)) == 0) {
-                        $goodvalue = false;
-                    }
-                }
-
-                if ($goodvalue) {
-                    // detect first tab
-                    $toptab = $attr->getTab();
-                    /**
-                     * @var \Anakeen\Core\SmartStructure\FieldSetAttribute $toptab
-                     */
-                    if ($toptab) {
-                        $tabonfly = ($toptab->getOption("viewonfly") == "yes");
-                    }
-                    if ($tabonfly && (!$showonlytab)) {
-                        $ut = $this->getUtag("lasttab");
-                        if ($ut) {
-                            $showonlytab = $ut->comment;
-                        } elseif ($attr->fieldSet->id && $attr->fieldSet->fieldSet) {
-                            $showonlytab = $attr->fieldSet->fieldSet->id;
-                        }
-                    }
-                    $attrInNextTab = ($tabonfly && $toptab && ($toptab->id != $showonlytab));
-                    if (!$attrInNextTab) {
-                        $viewtpl = $attr->getOption("viewtemplate");
-                        if ($viewtpl) {
-                            if ($viewtpl == "none") {
-                                $htmlvalue = '';
-                            } else {
-                                if ($this->getZoneOption($viewtpl) == 'S') {
-                                    $attr->setOption("vlabel", "none");
-                                }
-                                $htmlvalue = sprintf(
-                                    "[ZONE FDL:VIEWTPL?id=%d&famid=%d&target=%s&zone=%s]",
-                                    $this->id,
-                                    $this->fromid,
-                                    $target,
-                                    $viewtpl
-                                );
-                            }
-                        } else {
-                            $htmlvalue = $this->GetHtmlValue($attr, $value, $target, $ulink);
-                        }
-                    } else {
-                        $htmlvalue = false; // display defer
-                    }
-                } else {
-                    $htmlvalue = "";
-                }
-
-                if (($htmlvalue === false) || ($goodvalue)) { // to define when change frame
-                    if ($currentFrameId != $attr->fieldSet->id) {
-                        if (($currentFrameId != "") && ($attr->fieldSet->mvisibility != "H")) {
-                            $changeframe = true;
-                        }
-                    }
-                }
-            }
-            //------------------------------
-            // change frame if needed
-            if ($changeframe) { // to generate  fieldset
-                if ($currentFrameId == '') {
-                    throw new Dcp\Exception('DOC0124', $attr->id);
-                }
-                $oaf = $this->getAttribute($currentFrameId);
-                if (!is_object($oaf)) {
-                    throw new Dcp\Exception('DOC0125', $currentFrameId, $attr->id);
-                }
-                $frametpl = $oaf->getOption("viewtemplate");
-                $changeframe = false;
-                if ((($v + $nbimg) > 0) || $frametpl) { // one value detected
-                    $frames[$k]["frametext"] = ($oaf && $oaf->getOption("vlabel") != "none")
-                        ? \Anakeen\Core\Utils\Strings::mb_ucfirst($this->GetLabel($oaf->id)) : "";
-                    $frames[$k]["frameid"] = $oaf->id;
-                    $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
-
-                    $frames[$k]["tag"] = "";
-                    $frames[$k]["TAB"] = false;
-                    /**
-                     * @var \Anakeen\Core\SmartStructure\FieldSetAttribute $pSet
-                     */
-                    $pSet = $oaf->fieldSet;
-                    if ($pSet && ($pSet->id != "") && ($pSet->id != \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD)) {
-                        $frames[$k]["tag"] = "TAG" . $pSet->id;
-                        $frames[$k]["TAB"] = true;
-                        $ttabs[$pSet->id] = array(
-                            "tabid" => $pSet->id,
-                            "tabtitle" => ($pSet->getOption("vlabel") == "none") ? '&nbsp;'
-                                : \Anakeen\Core\Utils\Strings::mb_ucfirst($pSet->getLabel())
-                        );
-                    }
-                    $frames[$k]["viewtpl"] = ($frametpl != "");
-                    $frames[$k]["zonetpl"] = ($frametpl != "")
-                        ? sprintf(
-                            "[ZONE FDL:VIEWTPL?id=%d&famid=%d&target=%s&zone=%s]",
-                            $this->id,
-                            $this->fromid,
-                            $target,
-                            $frametpl
-                        ) : '';
-
-                    $frames[$k]["rowspan"] = $v + 1; // for images cell
-                    $frames[$k]["TABLEVALUE"] = "TABLEVALUE_$k";
-
-                    $this->lay->SetBlockData($frames[$k]["TABLEVALUE"], $tableframe);
-                    $frames[$k]["IMAGES"] = "IMAGES_$k";
-                    $this->lay->SetBlockData($frames[$k]["IMAGES"], $tableimage);
-                    $frames[$k]["notloaded"] = false;
-                    if ($oaf && $oaf->type == "frame" && (count($tableframe) + count($tableimage)) == 0) {
-                        if (!$frames[$k]["viewtpl"]) {
-                            $frames[$k]["viewtpl"] = true;
-                            $frames[$k]["zonetpl"] = _("Loading...");
-                            $frames[$k]["notloaded"] = true;
-                        }
-                    }
-                    unset($tableframe);
-                    unset($tableimage);
-                    $tableframe = array();
-                    $tableimage = array();
-                    $k++;
-                }
-                $v = 0;
-                $nbimg = 0;
-                $currentFrameId = $attr->fieldSet->id;
-            }
-            if ($htmlvalue === false) {
-                $goodvalue = false;
-                if ($currentFrameId != $attr->fieldSet->id) {
-                    if (($attr->fieldSet->mvisibility != "H") && ($attr->fieldSet->mvisibility != "I")) {
-                        $changeframe = true;
-                        $currentFrameId = $attr->fieldSet->id;
-                        $currentFrame = $attr->fieldSet;
-                        $v++;
-                    }
-                }
-            }
-            //------------------------------
-            // Set the table value elements
-            if ($goodvalue) {
-                switch ($attr->type) {
-                    case "image":
-                        $tableimage[$nbimg]["imgsrc"] = $htmlvalue;
-                        $tableimage[$nbimg]["itarget"] = ($action->Read("navigator", "") == "NETSCAPE") ? "_self"
-                            : "_blank";
-                        $width = $attr->getOption("iwidth", "80px");
-                        $tableimage[$nbimg]["imgwidth"] = $width;
-                        if (strstr($htmlvalue, 'EXPORTFILE')) {
-                            $tableimage[$nbimg]["imgthumbsrc"] = $htmlvalue . "&width=" . intval($width);
-                        } else {
-                            $tableimage[$nbimg]["imgthumbsrc"] = $htmlvalue;
-                        }
-                        break;
-
-                    default:
-                        $tableframe[$v]["nonelabel"] = false;
-                        $tableframe[$v]["normallabel"] = true;
-                        $tableframe[$v]["uplabel"] = false;
-                        $tableframe[$v]["value"] = $htmlvalue;
-                        break;
-                }
-
-                if (($attr->fieldSet->mvisibility != "H") && ($htmlvalue !== "" || $goodvalue)) {
-                    $currentFrameId = $attr->fieldSet->id;
-                    $currentFrame = $attr->fieldSet;
-                }
-                // print name except image (printed otherthere)
-                if ($attr->type != "image") {
-                    $tableframe[$v]["wvalue"] = (($attr->type == "array")
-                        && ($attr->getOption("vlabel") == "up"
-                            || $attr->getOption("vlabel") == "none")) ? "1%" : "30%"; // width
-                    $tableframe[$v]["ndisplay"] = "inline";
-
-                    if ($attr->getOption("vlabel") == "none") {
-                        $tableframe[$v]["nonelabel"] = true;
-                        $tableframe[$v]["normallabel"] = false;
-                    } elseif ($attr->getOption("vlabel") == "up") {
-                        if ($attr->type == "array") { // view like none label
-                            $tableframe[$v]["nonelabel"] = true;
-                            $tableframe[$v]["normallabel"] = false;
-                        } else {
-                            $tableframe[$v]["normallabel"] = false;
-                            $tableframe[$v]["uplabel"] = true;
-                        }
-                    }
-                    $tableframe[$v]["name"] = $this->GetLabel($attr->id);
-                    if (($attr->type == "htmltext") && (count($tableframe) == 1)) {
-                        $keys = array_keys($listattr);
-                        if (isset($keys[$iattr])) {
-                            $na = $listattr[$keys[$iattr]]; // next attribute
-                            if ($na->fieldSet->id != $attr->fieldSet->id) { // only when only one attribute in frame
-                                $tableframe[$v]["ndisplay"] = "none";
-                                $tableframe[$v]["wvalue"] = "1%";
-                            }
-                        }
-                    }
-
-                    $tableframe[$v]["attrid"] = $attr->id;
-                    $tableframe[$v]["atype"] = $attr->type;
-                    $tableframe[$v]["classback"] = ($attr->usefor == "O") ? "FREEDOMOpt" : "FREEDOMBack1";
-                    $v++;
-                } else {
-                    $tableimage[$nbimg]["imgalt"] = $this->GetLabel($attr->id);
-                    $nbimg++;
-                }
-            }
-            if ($currentFrameId == '' && isset($attr->fieldSet->id)) {
-                $currentFrameId = $attr->fieldSet->id;
-            }
-        }
-        $oaf = $this->getAttribute($currentFrameId);
-        if ($oaf) {
-            $frametpl = $oaf->getOption("viewtemplate");
-        }
-        if ((($v + $nbimg) > 0) || $frametpl) { // // last fieldset
-            if ($oaf) {
-                $frames[$k]["frametext"] = ($oaf->getOption("vlabel") != "none")
-                    ? \Anakeen\Core\Utils\Strings::mb_ucfirst($this->GetLabel($currentFrameId)) : "";
-            } else {
-                $frames[$k]["frametext"] = '';
-            }
-            $frames[$k]["frameid"] = $currentFrameId;
-            $frames[$k]["tag"] = "";
-            $frames[$k]["TAB"] = false;
-            $frames[$k]["viewtpl"] = ($frametpl != "");
-            $frames[$k]["zonetpl"] = ($frametpl != "") ? sprintf(
-                "[ZONE FDL:VIEWTPL?id=%d&famid=%d&target=%s&zone=%s]",
-                $this->id,
-                $this->fromid,
-                $target,
-                $frametpl
-            ) : '';
-
-            $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
-            $pSet = (isset($currentFrame->fieldSet) ? $currentFrame->fieldSet : null);
-            if ($pSet !== null && ($pSet->id != "") && ($pSet->id != \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD)) {
-                $frames[$k]["tag"] = "TAG" . $pSet->id;
-                $frames[$k]["TAB"] = true;
-                $ttabs[$pSet->id] = array(
-                    "tabid" => $pSet->id,
-                    "tabtitle" => ($pSet->getOption("vlabel") == "none") ? '&nbsp;' : \Anakeen\Core\Utils\Strings::mb_ucfirst($pSet->getLabel())
-                );
-            }
-            $frames[$k]["rowspan"] = $v + 1; // for images cell
-            $frames[$k]["TABLEVALUE"] = "TABLEVALUE_$k";
-
-            $this->lay->SetBlockData($frames[$k]["TABLEVALUE"], $tableframe);
-
-            $frames[$k]["IMAGES"] = "IMAGES_$k";
-            $this->lay->SetBlockData($frames[$k]["IMAGES"], $tableimage);
-            $frames[$k]["notloaded"] = false;
-            if ($oaf->type == "frame" && (count($tableframe) + count($tableimage)) == 0) {
-                if (!$frames[$k]["viewtpl"]) {
-                    $frames[$k]["viewtpl"] = true;
-                    $frames[$k]["zonetpl"] = _("Loading...");
-                    $frames[$k]["notloaded"] = true;
-                }
-            }
-        }
-        // Out
-        $this->lay->SetBlockData("TABLEBODY", $frames);
-        $this->lay->SetBlockData("TABS", $ttabs);
-        $this->lay->Set("ONETAB", count($ttabs) > 0);
-        $this->lay->Set("NOTAB", ($target == "mail") || $onlytab);
-        $this->lay->Set("docid", $this->id);
-
-        if (count($ttabs) > 0) {
-            $this->lay->Set("firsttab", false);
-            $ut = $this->getUtag("lasttab");
-            if ($ut) {
-                $firstopen = $ut->comment;
-            } // last memo tab
-            else {
-                $firstopen = false;
-            }
-            foreach ($ttabs as $k => $v) {
-                $oa = $this->getAttribute($k);
-                if ($oa->getOption("firstopen") == "yes") {
-                    $this->lay->set("firsttab", $k);
-                }
-                if ($firstopen == $oa->id) {
-                    $this->lay->Set("firsttab", $k);
-                }
-            }
-        }
-    }
-
-    /**
-     * write layout for thumb view
-     *
-     * @templateController controller for thumb view (used in mail link)
-     *
-     * @param string $target
-     * @param bool   $ulink
-     * @param bool   $abstract
-     */
-    public function viewthumbcard($target = "finfo", $ulink = true, $abstract = true)
-    {
-        $this->viewabstractcard($target, $ulink, $abstract);
-        $this->viewprop($target, $ulink, $abstract);
-        $this->lay->set("iconsrc", $this->getIcon());
-        $this->lay->set("TITLE", $this->getHTMLTitle());
-        $state = $this->getState();
-        if ($state != "") {
-            $this->lay->set("state", _($state));
-        } else {
-            $this->lay->set("state", "");
-        }
-    }
-
-    /**
-     *  layout for view answers
-     *
-     * @templateController controller used if use WASK in workflow
-     */
-    public function viewanswers()
-    {
-        $err = '';
-        if (!$this->isAlive()) {
-            $err = (sprintf(_("unknow document reference '%s'"), GetHttpVars("docid")));
-        }
-        if ($err == "") {
-            $err = $this->control("wask");
-        }
-        if ($err) {
-            $this->lay->template = $err;
-            $this->lay->noparse = true;
-            return;
-        }
-
-        $answers = $this->getWasks(false);
-        $tw = array();
-        foreach ($answers as $ka => $ans) {
-            $utags = $this->searchUTags("ASK_" . $ans["waskid"], false, true);
-            /**
-             * @var \SmartStructure\WASK $wask
-             */
-            $wask = DocManager::getDocument($ans["waskid"]);
-            $wask->set($this);
-
-            $taguid = array();
-
-            $t = array();
-            foreach ($utags as $k => $v) {
-                $taguid[] = $v["uid"];
-                $t[$k] = $v;
-                $t[$k]["label"] = $wask->getAskLabel($v["comment"]);
-                $t[$k]["ask"] = $wask->getRawValue("was_ask");
-            }
-
-            uasort($t, array(
-                get_class($this),
-                "_cmpanswers"
-            ));
-            $prevc = '';
-            $odd = 0;
-            foreach ($t as $k => $v) {
-                if ($v["comment"] != $prevc) {
-                    $prevc = $v["comment"];
-                    $odd++;
-                }
-                $t[$k]["class"] = (($odd % 2) == 0) ? "evenanswer" : "oddanswer";
-            }
-            // find user not answered
-            $ru = $wask->getUsersForAcl('answer'); // all users must answered
-            $una = array_diff(array_keys($ru), $taguid);
-
-            $tna = array();
-
-            $tuna = array();
-            foreach ($una as $k => $v) {
-                $tuna[$v] = $ru[$v]["login"];
-            }
-
-            asort($tuna, SORT_STRING);
-            foreach ($tuna as $k => $v) {
-                $tna[] = array(
-                    "login" => $ru[$k]["login"],
-                    "fn" => $ru[$k]["firstname"],
-                    "ln" => $ru[$k]["lastname"]
-                );
-            }
-
-            $this->lay->setBlockData("ANSWERS" . $wask->id, $t);
-            $this->lay->setBlockData("NOTANS" . $wask->id, $tna);
-            $title = $wask->getTitle();
-
-            $this->lay->set("asktitle", $title);
-            $tw[] = array(
-                "waskid" => $wask->id,
-                "nacount" => sprintf(_("number of waiting answers %d"), count($una)),
-                "count" => (count($t) > 1) ? sprintf(_("%d answers"), count($t)) : sprintf(_("%d answer"), count($t)),
-                "ask" => $wask->getRawValue("was_ask")
-            );
-        }
-        $this->lay->setBlockData("WASK", $tw);
-        $this->lay->set("docid", $this->id);
-    }
-
-    /**
-     * to sort answer by response
-     *
-     * @param string[] $a
-     * @param string[] $b
-     *
-     * @return int
-     */
-    public static function _cmpanswers($a, $b)
-    {
-        return strcasecmp($a["comment"] . $a["uname"], $b["comment"] . $b["uname"]);
-    }
-
-    /**
-     * @templateController controller to view document properties
-     * write layout for properties view
-     *
-     * @param string $target
-     * @param bool   $ulink
-     * @param bool   $abstract
-     */
-    public function viewproperties($target = "finfo", $ulink = true, $abstract = true)
-    {
-        global $action;
-        $this->viewprop($target, $ulink, $abstract);
-        $this->lay->eSet("iconsrc", $this->getIcon());
-        $fdoc = $this->getFamilyDocument();
-        $this->lay->eSet("ficonsrc", $fdoc->getIcon());
-        $owner = new \Anakeen\Core\Account("", abs($this->owner));
-        $this->lay->rSet("username", str_replace(array(
-            '[',
-            ']'
-        ), array(
-            '&#91;',
-            '&#93;'
-        ), htmlspecialchars($owner->firstname . " " . $owner->lastname)));
-        $this->lay->rSet("userid", $owner->fid);
-        $this->lay->rSet("lockedby", $this->lay->get("locked"));
-
-        $this->lay->rSet("lockdomain", '');
-        if ($this->locked == -1) {
-            $this->lay->rSet("lockedid", false);
-        } else {
-            $user = new \Anakeen\Core\Account("", abs($this->locked));
-            // $this->lay->Set("locked", $user->firstname." ".$user->lastname);
-            if ($this->lockdomainid) {
-                $this->lay->eSet("lockdomain", sprintf(
-                    _("in domain %s"),
-                    $this->getDocAnchor($this->lockdomainid, '_blank', true, '', false, true, true)
-                ));
-            }
-            $this->lay->rSet("lockedid", $user->fid);
-        }
-        $state = $this->getState();
-        if ($state != "") {
-            if (($this->locked == -1) || ($this->lmodify != 'Y')) {
-                $this->lay->eSet("state", _($state));
-            } else {
-                $this->lay->rSet("state", sprintf(_("current (<em>%s</em>)"), htmlspecialchars(_($state), ENT_QUOTES)));
-            }
-        } else {
-            $this->lay->eset("state", _("no state"));
-        }
-        if (is_numeric($this->state) && ($this->state > 0) && (!$this->wid)) {
-            $this->lay->rSet("freestate", $this->state);
-        } else {
-            $this->lay->rSet("freestate", false);
-        }
-        $this->lay->rSet("setname", (bool)$action->parent->Haspermission("FREEDOM_MASTER", "FREEDOM"));
-        $this->lay->rSet("lname", $this->name);
-        $this->lay->rSet("hasrevision", ($this->revision > 0));
-        $this->lay->eSet("moddate", strftime("%Y-%m-%d %H:%M:%S", $this->revdate));
-        $this->lay->eSet("moddatelabel", _("last modification date"));
-        if ($this->locked == -1) {
-            if ($this->doctype == 'Z') {
-                $this->lay->eSet("moddatelabel", _("suppression date"));
-            } else {
-                $this->lay->eSet("moddatelabel", _("revision date"));
-            }
-        }
-        if (ContextManager::getApplicationParam("CORE_LANG") == "fr_FR") { // date format depend of locale
-            $this->lay->eSet("revdate", strftime("%a %d %b %Y %H:%M", $this->revdate));
-        } else {
-            $this->lay->eSet("revdate", strftime("%x %T", $this->revdate));
-        }
-        $this->lay->eSet("version", $this->version);
-
-        if ((abs($this->profid) > 0) && ($this->profid != $this->id)) {
-            $this->lay->rSet(
-                "profile",
-                $this->getDocAnchor(abs($this->profid), '_blank', true, '', false, 'latest', true)
-            );
-        } else {
-            if ($this->profid == 0) {
-                $this->lay->eSet("profile", _("no access control"));
-            } else {
-                if ($this->dprofid == 0) {
-                    $this->lay->rSet(
-                        "profile",
-                        $this->getDocAnchor(
-                            abs($this->profid),
-                            '_blank',
-                            true,
-                            _("specific control"),
-                            false,
-                            'latest',
-                            true
-                        )
-                    );
-                } else {
-                    $this->lay->rSet("profile", $this->getDocAnchor(
-                        abs($this->dprofid),
-                        '_blank',
-                        true,
-                        _("dynamic control") . " (" . $this->getTitle(abs($this->dprofid)) . ")",
-                        false,
-                        'latest',
-                        true
-                    ));
-                }
-            }
-        }
-        if ($this->cvid == 0) {
-            $this->lay->eSet("cview", _("no view control"));
-        } else {
-            $this->lay->rSet("cview", $this->getDocAnchor($this->cvid, '_blank', true, '', false, 'latest', true));
-        }
-        if ($this->prelid == 0) {
-            $this->lay->eSet("prel", _("no folder"));
-        } else {
-            $this->lay->rSet("prel", $this->getDocAnchor($this->prelid, '_blank', true, '', false, 'latest', true));
-            $fldids = $this->getParentFolderIds();
-            $tfld = array();
-            foreach ($fldids as $fldid) {
-                if ($fldid != $this->prelid) {
-                    $tfld[] = array(
-                        "fld" => $this->getDocAnchor($fldid, '_blank', true, '', false, 'latest', true)
-                    );
-                }
-            }
-            $this->lay->setBlockData("FOLDERS", $tfld);
-        }
-        if ($this->allocated == 0) {
-            $this->lay->eSet("allocate", _("no allocate"));
-            $this->lay->rSet("allocateid", false);
-        } else {
-            $user = new \Anakeen\Core\Account("", ($this->allocated));
-            $this->lay->eSet("allocate", $user->firstname . " " . $user->lastname);
-            $this->lay->rSet("allocateid", $user->fid);
-        }
-
-        $tms = $this->getAttachedTimers();
-
-        $this->lay->rSet("Timers", (count($tms) > 0));
-    }
-
-    /**
-     * @templateController controller for abstract view
-     * write layout for abstract view
-     *
-     * @param string $target
-     * @param bool   $ulink
-     * @param bool   $abstract
-     */
-    public function viewabstractcard(
-        $target = "finfo",
-        $ulink = true,
-        /* @noinspection PhpUnusedParameterInspection */
-        $abstract = false
-    ) {
-        $listattr = $this->GetAbstractAttributes();
-
-        $tableframe = array();
-
-        foreach ($listattr as $i => $attr) {
-            //------------------------------
-            // Compute value elements
-            $value = $this->getRawValue($i);
-
-            if (($attr->mvisibility != "H") && ($attr->mvisibility != "I")) {
-                $dValue = '';
-                switch ($attr->type) {
-                    case "image":
-                        $iValue = $this->GetHtmlValue($listattr[$i], $value, $target, $ulink, -1, true, true);
-                        if ($iValue != "") {
-                            if ($value) {
-                                $dValue = "<img align=\"absbottom\" height=\"30px\" src=\"" . $iValue . "&height=30\">";
-                            } else {
-                                $dValue = "<img align=\"absbottom\" height=\"30px\" src=\"" . $iValue . "\">";
-                            }
-                        }
-                        break;
-
-                    default:
-                        $dValue = $this->getHtmlValue($listattr[$i], $value, $target, $ulink = 1, -1, true, true);
-
-                        break;
-                }
-                if ($dValue !== '') {
-                    $tableframe[] = array(
-                        "name" => $attr->getLabel(),
-                        "aid" => $attr->id,
-                        "value" => $dValue
-                    );
-                }
-            }
-        }
-        $this->lay->SetBlockData("TABLEVALUE", $tableframe);
-    }
 
     /**
      * set V_<attrid> and L_<attrid> keys for current layout
@@ -9418,343 +8678,6 @@ create unique index i_docir on doc(initid, revision);";
         return "";
     }
 
-    /**
-     * value for edit interface
-     *
-     * @templateController default control for HTML form document edition
-     *
-     * @param string $target
-     * @param bool   $ulink
-     * @param bool   $abstract
-     * @param bool   $onlyopt if true only optional attributes are displayed
-     *
-     * @throws \Dcp\Core\Exception
-     */
-    public function editbodycard(
-        $target = "_self",
-        $ulink = true,
-        $abstract = false,
-        $onlyopt = false
-    ) {
-
-
-        $docid = $this->id; // document to edit
-        // ------------------------------------------------------
-        //  new or modify ?
-        if ($docid == 0) {
-            // new document
-            if ($this->fromid > 0) {
-                $cdoc = $this->getFamilyDocument();
-                $this->lay->Set("title", sprintf(_("new %s"), $cdoc->getHtmlTitle()));
-            }
-        } else {
-            // when modification
-
-            /**
-             * @var \Anakeen\Core\Internal\Action $action
-             */
-            global $action;
-            if (!$this->isAlive()) {
-                $action->ExitError(_("document not referenced"));
-            }
-            $this->lay->Set("title", $this->getHtmlTitle());
-        }
-        $this->lay->Set("id", $docid);
-        $this->lay->Set("classid", $this->fromid);
-        // get inline help
-        $help = $this->getHelpPage();
-        // ------------------------------------------------------
-        // Perform SQL search for doc attributes
-        // ------------------------------------------------------
-        $frames = array();
-        $listattr = $this->GetInputAttributes($onlyopt);
-
-        $k = 0; // number of frametext
-        $v = 0; // number of value in one frametext
-        $currentFrameId = "";
-        /**
-         * @var \Anakeen\Core\SmartStructure\NormalAttribute $currentFrame
-         */
-        $currentFrame = null;
-        $changeframe = false;
-        $ih = 0; // index for hidden values
-        $thidden = array();
-        $tableframe = array();
-        $ttabs = array();
-        $frametpl = '';
-        $iattr = 0;
-        foreach ($listattr as $i => $attr) {
-            $iattr++;
-            // Compute value elements
-            if ($docid > 0) {
-                $value = $this->getRawValue($attr->id);
-            } else {
-                $value = $this->getRawValue($attr->id);
-                //	$value = $this->GetValueMethod($this->GetValue($listattr[$i]->id));
-            }
-            if (!$attr->fieldSet) {
-                addWarningMsg(sprintf(_("unknow set for attribute %s %s"), $attr->id, $attr->getLabel()));
-                continue;
-            }
-
-            if ($currentFrameId != $attr->fieldSet->id) {
-                if ($currentFrameId != "") {
-                    $changeframe = true;
-                }
-            }
-            if ($changeframe) { // to generate final frametext
-                $changeframe = false;
-                /**
-                 * @var \Anakeen\Core\SmartStructure\BasicAttribute $oaf
-                 */
-                $oaf = $this->getAttribute($currentFrameId);
-                if ($v > 0 || $frametpl) { // one value detected
-                    if ($oaf->getOption("vlabel") == "none") {
-                        $currentFrameText = '';
-                    } else {
-                        $currentFrameText = \Anakeen\Core\Utils\Strings::mb_ucfirst($oaf->GetLabel());
-                    }
-
-                    $frames[$k]["frametext"] = $currentFrameText;
-                    $frames[$k]["frameid"] = $oaf->id;
-                    $frames[$k]["tag"] = "";
-                    $frames[$k]["TAB"] = false;
-                    $frames[$k]["edittpl"] = ($frametpl != "");
-                    $frames[$k]["zonetpl"] = ($frametpl != "") ? sprintf(
-                        "[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]",
-                        $this->id,
-                        $this->fromid,
-                        $frametpl
-                    ) : '';
-                    $oaf = $this->getAttribute($oaf->id);
-                    $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
-                    $frames[$k]["ehelp"] = ($help && $help->isAlive()) ? $help->getAttributeHelpUrl($oaf->id) : false;
-                    $frames[$k]["ehelpid"] = ($help && $help->isAlive()) ? $help->id : false;
-                    if ($oaf && $oaf->fieldSet && ($oaf->fieldSet->id != "")
-                        && ($oaf->fieldSet->id != \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD)) {
-                        $frames[$k]["tag"] = "TAG" . $oaf->fieldSet->id;
-                        $frames[$k]["TAB"] = true;
-                        $ttabs[$oaf->fieldSet->id] = array(
-                            "tabid" => $oaf->fieldSet->id,
-                            "tabtitle" => ($oaf->fieldSet->getOption("vlabel") == "none") ? '&nbsp;'
-                                : \Anakeen\Core\Utils\Strings::mb_ucfirst($oaf->fieldSet->getLabel())
-                        );
-                    }
-                    $frames[$k]["TABLEVALUE"] = "TABLEVALUE_$k";
-                    $this->lay->SetBlockData($frames[$k]["TABLEVALUE"], $tableframe);
-                    unset($tableframe);
-                    $tableframe = array();
-                    $k++;
-                }
-                $v = 0;
-            }
-
-            $currentFrameId = $listattr[$i]->fieldSet->id;
-            $currentFrame = $attr->fieldSet;
-
-            if ($currentFrame->mvisibility == 'R' || $currentFrame->mvisibility == 'H'
-                || $currentFrame->mvisibility == 'I') {
-                $frametpl = '';
-            } else {
-                $frametpl = $currentFrame->getOption("edittemplate");
-            }
-            if (!$frametpl) {
-                //------------------------------
-                // Set the table value elements
-                if (($listattr[$i]->mvisibility == "H") || ($listattr[$i]->mvisibility == "R")) {
-                    // special case for hidden values
-                    if ($listattr[$i]->type != "array") {
-                        $thidden[$ih]["hname"] = "_" . $listattr[$i]->id;
-                        $thidden[$ih]["hid"] = $listattr[$i]->id;
-                        if (($value == "") && ($this->id == 0)) {
-                            $thidden[$ih]["hvalue"] = GetHttpVars($listattr[$i]->id);
-                        } else {
-                            $thidden[$ih]["hvalue"] = chop(htmlentities($value, ENT_COMPAT, "UTF-8"));
-                        }
-
-                        $thidden[$ih]["inputtype"] = getHtmlInput($this, $listattr[$i], $value, "", "", true);
-                    }
-                    $ih++;
-                } else {
-                    $tableframe[$v]["value"] = chop(htmlentities($value, ENT_COMPAT, "UTF-8"));
-                    $label = $listattr[$i]->getLabel();
-                    $tableframe[$v]["attrid"] = $listattr[$i]->id;
-                    $tableframe[$v]["name"] = \Anakeen\Core\Utils\Strings::mb_ucfirst($label);
-
-                    if ($listattr[$i]->needed) {
-                        $tableframe[$v]["labelclass"] = "FREEDOMLabelNeeded";
-                    } else {
-                        $tableframe[$v]["labelclass"] = "FREEDOMLabel";
-                    }
-                    $tableframe[$v]["aneeded"] = $listattr[$i]->needed;
-                    $elabel = $listattr[$i]->getoption("elabel");
-                    $elabel = str_replace("'", "&rsquo;", $elabel);
-                    $tableframe[$v]["elabel"] = \Anakeen\Core\Utils\Strings::mb_ucfirst(str_replace('"', "&rquot;", $elabel));
-                    $tableframe[$v]["aehelp"] = ($help && $help->isAlive())
-                        ? $help->getAttributeHelpUrl($listattr[$i]->id) : false;
-                    $tableframe[$v]["aehelpid"] = ($help && $help->isAlive()) ? $help->id : false;
-
-                    $tableframe[$v]["multiple"] = ($attr->getOption("multiple") == "yes") ? "true" : "false";
-                    $tableframe[$v]["atype"] = $attr->type;
-                    $tableframe[$v]["name"] = \Anakeen\Core\Utils\Strings::mb_ucfirst($label);
-                    $tableframe[$v]["classback"] = ($attr->usefor == "O") ? "FREEDOMOpt" : "FREEDOMBack1";
-
-                    $tableframe[$v]["SINGLEROW"] = true;
-
-                    $vlabel = $listattr[$i]->getOption("vlabel");
-                    if ((($listattr[$i]->type == "array") && ($vlabel != 'left'))
-                        || (($listattr[$i]->type == "htmltext") && ($vlabel != 'left'))
-                        || ($vlabel == 'up')
-                        || ($vlabel == 'none')) {
-                        $tableframe[$v]["SINGLEROW"] = false;
-                    }
-
-                    $tableframe[$v]["viewlabel"] = (($listattr[$i]->type != "array") && ($vlabel != 'none'));
-                    $edittpl = $listattr[$i]->getOption("edittemplate");
-                    if ($edittpl) {
-                        if ($edittpl == "none") {
-                            unset($tableframe[$v]);
-                        } else {
-                            if ($this->getZoneOption($edittpl) == 'S') {
-                                $tableframe[$v]["SINGLEROW"] = false;
-                                $tableframe[$v]["viewlabel"] = false;
-                            }
-                            $tableframe[$v]["inputtype"] = sprintf(
-                                "[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]",
-                                $this->id,
-                                $this->fromid,
-                                $edittpl
-                            );
-                        }
-                    } else {
-                        $tableframe[$v]["inputtype"] = getHtmlInput($this, $listattr[$i], $value);
-                    }
-                    $v++;
-                }
-            }
-        }
-        // Out
-        if ($currentFrameId != '') {
-            $oaf = $this->getAttribute($currentFrameId);
-            if ($oaf->mvisibility == 'R' || $oaf->mvisibility == 'H' || $oaf->mvisibility == 'I') {
-                $frametpl = '';
-            } else {
-                $frametpl = $oaf->getOption("edittemplate");
-            }
-            if ($v > 0 || $frametpl) { // latest fieldset
-                if ($oaf->getOption("vlabel") == "none") {
-                    $currentFrameText = '';
-                } else {
-                    $currentFrameText = \Anakeen\Core\Utils\Strings::mb_ucfirst($oaf->GetLabel());
-                }
-                $frames[$k]["frametext"] = $currentFrameText;
-                $frames[$k]["frameid"] = $oaf->id;
-                $frames[$k]["TABLEVALUE"] = "TABLEVALUE_$k";
-                $frames[$k]["tag"] = "";
-                $frames[$k]["TAB"] = false;
-                $frames[$k]["edittpl"] = ($frametpl != "");
-                $frames[$k]["zonetpl"] = ($frametpl != "") ? sprintf(
-                    "[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]",
-                    $this->id,
-                    $this->fromid,
-                    $frametpl
-                ) : '';
-                $frames[$k]["ehelp"] = ($help && $help->isAlive()) ? $help->getAttributeHelpUrl($oaf->id) : false;
-                $frames[$k]["ehelpid"] = ($help && $help->isAlive()) ? $help->id : false;
-
-                $oaf = $this->getAttribute($oaf->id);
-                $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
-                if (($currentFrame->fieldSet->id != "") && ($currentFrame->fieldSet->id != \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD)) {
-                    $frames[$k]["tag"] = "TAG" . $currentFrame->fieldSet->id;
-                    $frames[$k]["TAB"] = true;
-                    $ttabs[$currentFrame->fieldSet->id] = array(
-                        "tabid" => $currentFrame->fieldSet->id,
-                        "tabtitle" => ($currentFrame->fieldSet->getOption("vlabel") == "none") ? '&nbsp;'
-                            : \Anakeen\Core\Utils\Strings::mb_ucfirst($currentFrame->fieldSet->getLabel())
-                    );
-                }
-                $this->lay->SetBlockData($frames[$k]["TABLEVALUE"], $tableframe);
-            }
-        }
-        $this->lay->SetBlockData("HIDDENS", $thidden);
-        $this->lay->SetBlockData("TABLEBODY", $frames);
-        $this->lay->SetBlockData("TABS", $ttabs);
-        $this->lay->Set("ONETAB", count($ttabs) > 0);
-        $this->lay->Set("fromid", $this->fromid);
-        $this->lay->Set("docid", $this->id);
-        if (count($ttabs) > 0) {
-            $this->lay->Set("firsttab", false);
-            $ut = $this->getUtag("lasttab");
-            if ($ut) {
-                $firstopen = $ut->comment;
-            } // last memo tab
-            else {
-                $firstopen = false;
-            }
-
-            foreach ($ttabs as $k => $v) {
-                $oa = $this->getAttribute($k);
-                if ($oa->getOption("firstopen") == "yes") {
-                    $this->lay->Set("firsttab", $k);
-                }
-                if ($firstopen == $oa->id) {
-                    $this->lay->Set("firsttab", $k);
-                }
-            }
-        }
-    }
-
-    /**
-     * add V_<<ATTRID> keys for HTML form in current layout
-     * add also L_<ATTRID> for attribute labels
-     * create input fields for attribute document
-     *
-     * @param bool $withtd set to false if don't wan't <TD> tag in the middle bet<een fields and button
-     */
-    final public function editattr($withtd = true)
-    {
-
-        $listattr = $this->GetNormalAttributes();
-        // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
-        foreach ($listattr as $k => $v) {
-            //------------------------------
-            // Set the table value elements
-            $value = chop($this->getRawValue($v->id));
-            if ($v->mvisibility == "R") {
-                $v->mvisibility = "H";
-            } // don't see in edit mode
-            $this->lay->Set("V_" . strtoupper($v->id), getHtmlInput($this, $v, $value, "", "", (!$withtd)));
-            if ($v->needed == "Y") {
-                $this->lay->Set("L_" . strtoupper($v->id), "<B>" . $v->getLabel() . "</B>");
-            } else {
-                $this->lay->Set("L_" . strtoupper($v->id), $v->getLabel());
-            }
-            $this->lay->Set("W_" . strtoupper($v->id), ($v->mvisibility != "H"));
-        }
-
-        $listattr = $this->GetFieldAttributes();
-        // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
-        foreach ($listattr as $k => $v) {
-            $this->lay->Set("L_" . strtoupper($v->id), $v->getLabel());
-        }
-
-        $this->setFamidInLayout();
-    }
-
-    /**
-     * add IDFAM_<famNAme> keys in current layout
-     */
-    final public function setFamidInLayout()
-    {
-        // add IDFAM_ attribute in layout
-        DbManager::query("select id, name from docfam", $famids);
-
-        foreach ($famids as $famid) {
-            $k = $famid["name"];
-            $v = $famid["id"];
-            $this->lay->set("IDFAM_$k", $v);
-        }
-    }
 
     /**
      * get vault file name or server path of filename
@@ -9866,9 +8789,8 @@ create unique index i_docir on doc(initid, revision);";
             return false;
         }
         if (preg_match(PREGEXPFILE, $filesvalue, $reg)) {
-
             $vid = $reg[2];
-            $info = vault_properties($vid);
+            $info = \Dcp\VaultManager::getFileInfo($vid);
             if (!$info) {
                 return false;
             }
@@ -9924,7 +8846,7 @@ create unique index i_docir on doc(initid, revision);";
                 $xml = $exd->getXml();
             }
         } catch (Dcp\Exception $e) {
-            errorLogException($e);
+            \Anakeen\Core\LogException::writeLog($e);
             return $e->getMessage();
         }
         return '';
@@ -10616,93 +9538,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
     /**
-     * get all domains where document is attached by current user
-     *
-     * @param boolean $user       is set to false list all domains (independant of current user)
-     * @param boolean $folderName is set to true append also folder name
-     *
-     * @return array id
-     */
-    public function getDomainIds($user = true, $folderName = false)
-    {
-        if (file_exists("OFFLINE/Class.DomainManager.php")) {
-
-            $s = new searchDoc($this->dbaccess, "OFFLINEFOLDER");
-            $s->join("id = fld(dirid)");
-            $s->addFilter("fld.childid = %d", $this->initid);
-            $uid = $this->getUserId();
-            if ($user) {
-                $s->addFilter("off_user = '%d' or off_user is null", $uid);
-            }
-            $s->overrideViewControl();
-            $t = $s->search();
-            $ids = array();
-            foreach ($t as $v) {
-                $ids[] = $v['off_domain'];
-                if ($folderName && ((!$user) || ($v['off_user'] == $uid))) {
-                    $ids[] = $v["name"];
-                }
-            }
-            return array_unique($ids);
-        }
-        return null;
-    }
-
-    /**
-     * attach lock to specific domain.
-     *
-     * @param int $domainId domain identifier
-     * @param int $userid   system user's id
-     *
-     * @return string error message
-     */
-    public function lockToDomain($domainId, $userid = 0)
-    {
-        if (!$userid) {
-            $userid = $this->userid;
-        }
-
-        if ($domainId != '') {
-            /*
-             * Memorize current core lock and lock document
-            */
-            if ($this->lockdomainid != $domainId) {
-                /*
-                 * Memorize current core lock if lockdomain changes
-                */
-                $this->addUTag(1, 'LOCKTODOMAIN_LOCKED', $this->locked);
-            }
-            $err = $this->lock(false, $userid);
-            if ($err != '') {
-                return $err;
-            }
-        } else {
-            /*
-             * Restore core lock
-            */
-            $tag = $this->getUTag('LOCKTODOMAIN_LOCKED', true, 1);
-            if ($tag !== false) {
-                $this->delUTag(1, 'LOCKTODOMAIN_LOCKED');
-                $this->locked = $tag->comment;
-                $err = $this->modify(true, array(
-                    "locked"
-                ), true);
-                if ($err != '') {
-                    return $err;
-                }
-            }
-        }
-        /*
-         * Set or remove domain's lock
-        */
-        $this->lockdomainid = $domainId;
-        $err = $this->modify(true, array(
-            "lockdomainid"
-        ), true);
-        return $err;
-    }
-
-    /**
      * return folder where document is set into
      *
      * @return array of folder identifiers
@@ -10719,62 +9554,6 @@ create unique index i_docir on doc(initid, revision);";
         return $fldids;
     }
 
-    /**
-     * update Domain list
-     */
-    public function updateDomains()
-    {
-        $domains = $this->getDomainIds(false, true);
-        //delete domain lock if is not in the list
-        $this->domainid = trim($this->arrayToRawValue($domains));
-        if ($this->lockdomainid) {
-            if (!in_array($this->lockdomainid, $domains)) {
-                $this->lockdomainid = '';
-            } else {
-                if ($this->locked > 0) {
-                    DbManager::query(
-                        sprintf("select id from users where id=%d", $this->locked),
-                        $lockUserId,
-                        true,
-                        true
-                    );
-
-                    if ($lockUserId && (!$this->isInDomain(true, $lockUserId))) {
-                        $this->lockdomainid = '';
-                    }
-                }
-            }
-        }
-
-        $this->modify(true, array(
-            "domainid",
-            "lockdomainid"
-        ), true);
-    }
-
-    /**
-     * verify is doc is set in a domain
-     *
-     * @param boolean $user   limit domains where user as set document
-     * @param string  $userId another user's id else current user
-     *
-     * @return bool
-     */
-    public function isInDomain($user = true, $userId = '')
-    {
-        if ($user) {
-            global $action;
-            if (!$userId) {
-                $userId = $action->user->id;
-            }
-            if (preg_match('/_' . $userId . '$/m', $this->domainid)) {
-                return true;
-            }
-            return false;
-        } else {
-            return (!empty($this->domainid));
-        }
-    }
 
     /**
      * Parse a zone string "FOO:BAR[-1]:B:PDF?k1=v1,k2=v2" into an array:
@@ -10869,7 +9648,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param string $fromid get the helppage for this family id (default is the family of the current document)
      *
-     * @return \SmartStructure\HELPPAGE the helppage document on success, or a non-alive document if no helppage is associated with the family
+     * @return \SmartStructure\Helppage the helppage document on success, or a non-alive document if no helppage is associated with the family
      */
     public function getHelpPage($fromid = "")
     {

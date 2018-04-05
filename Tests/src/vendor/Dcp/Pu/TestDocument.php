@@ -372,21 +372,21 @@ class TestDocument extends TestCaseDcpCommonFamily
             array(
                 "TST_STOREFILE_1",
                 "tst_single_file",
-                self::$testDirectory . "/Layout/tst_file.odt",
+                self::$testDataDirectory . "/tst_file.odt",
                 "tst_file_single_file.odt",
                 "-1"
             ),
             array(
                 "TST_STOREFILE_1",
                 "tst_array_file",
-                self::$testDirectory . "/Layout/tst_file.odt",
+                self::$testDataDirectory . "/tst_file.odt",
                 "tst_file_array_file.odt",
                 "3"
             ),
             array(
                 "TST_STOREFILE_1",
                 "tst_multiple_file",
-                self::$testDirectory . "/Layout/tst_file.odt",
+                self::$testDataDirectory . "/tst_file.odt",
                 "tst_file_multiple_file.odt",
                 "3"
             )
@@ -399,21 +399,21 @@ class TestDocument extends TestCaseDcpCommonFamily
             array(
                 "TST_SAVEFILE_1",
                 "tst_single_file",
-                self::$testDirectory . "/Layout/tst_file.odt",
+                self::$testDataDirectory . "/tst_file.odt",
                 "tst_file_single_file.odt",
                 "-1"
             ),
             array(
                 "TST_SAVEFILE_1",
                 "tst_array_file",
-                self::$testDirectory . "/Layout/tst_file.odt",
+                self::$testDataDirectory . "/tst_file.odt",
                 "tst_file_array_file.odt",
                 "3"
             ),
             array(
                 "TST_SAVEFILE_1",
                 "tst_multiple_file",
-                self::$testDirectory . "/Layout/tst_file.odt",
+                self::$testDataDirectory . "/tst_file.odt",
                 "tst_file_multiple_file.odt",
                 "3"
             )
@@ -426,21 +426,21 @@ class TestDocument extends TestCaseDcpCommonFamily
             array(
                 "TST_SETFILE_1",
                 "tst_single_file",
-                self::$testDirectory . "/Layout/tst_file.odt",
+                self::$testDataDirectory . "/tst_file.odt",
                 "tst_file_single_file.odt",
                 "-1"
             ),
             array(
                 "TST_SETFILE_1",
                 "tst_array_file",
-                self::$testDirectory . "/Layout/tst_file.odt",
+                self::$testDataDirectory . "/tst_file.odt",
                 "tst_file_array_file.odt",
                 "3"
             ),
             array(
                 "TST_STOREFILE_1",
                 "tst_multiple_file",
-                self::$testDirectory . "/Layout/tst_file.odt",
+                self::$testDataDirectory . "/tst_file.odt",
                 "tst_file_multiple_file.odt",
                 "3"
             )
@@ -452,21 +452,21 @@ class TestDocument extends TestCaseDcpCommonFamily
         return array(
             array(
                 "TST_VAULTREGISTERFILE_1",
-                self::$testDirectory . "/Layout/tst_file.odt",
+                self::$testDataDirectory . "/tst_file.odt",
                 "",
                 "tst_file.odt",
                 true
             ),
             array(
                 "TST_VAULTREGISTERFILE_1",
-                self::$testDirectory . "/Layout/tst_file.odt",
+                self::$testDataDirectory . "/tst_file.odt",
                 "a new name.odt",
                 "a new name.odt",
                 true
             ),
             array(
                 "TST_VAULTREGISTERFILE_1",
-                self::$testDirectory . "/Layout/this_file_does_not_exists.odt",
+                self::$testDataDirectory . "/Layout/this_file_does_not_exists.odt",
                 "error",
                 "error",
                 false

@@ -3,8 +3,10 @@
  * @author Anakeen
  * @package FDL
 */
+
 /**
  * Get Html Value for document
+ *
  * @class DocHtmlFormat
  *
  */
@@ -14,7 +16,7 @@ class DocHtmlFormat
      * @var Doc
      */
     public $doc = null;
-    private $index = - 1;
+    private $index = -1;
     private $target = '_self';
     /**
      * @var \Anakeen\Core\SmartStructure\NormalAttribute
@@ -23,6 +25,7 @@ class DocHtmlFormat
     private $attrid = '';
     /**
      * format set in type
+     *
      * @var string
      */
     private $cFormat = '';
@@ -44,19 +47,22 @@ class DocHtmlFormat
     {
         $this->doc = $doc;
     }
+
     /**
      * get html fragment for a value of an attribute
      * for multiple values if index >= 0 the value must be the ith value of array values
+     *
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
-     * @param string $value raw value
-     * @param string $target
-     * @param bool $htmlLink
-     * @param int $index
-     * @param bool $useEntities
-     * @param bool $abstractMode
+     * @param string                                       $value raw value
+     * @param string                                       $target
+     * @param bool                                         $htmlLink
+     * @param int                                          $index
+     * @param bool                                         $useEntities
+     * @param bool                                         $abstractMode
+     *
      * @return string the HTML formated value
      */
-    public function getHtmlValue($oattr, $value, $target = "_self", $htmlLink = true, $index = - 1, $useEntities = true, $abstractMode = false)
+    public function getHtmlValue($oattr, $value, $target = "_self", $htmlLink = true, $index = -1, $useEntities = true, $abstractMode = false)
     {
         global $action;
 
@@ -114,9 +120,6 @@ class DocHtmlFormat
                         $htmlval = $this->formatArray($kvalue, $avalue);
                         break;
 
-                    case "doc":
-                        $htmlval = $this->formatDoc($kvalue, $avalue);
-                        break;
 
                     case "account":
                         $htmlval = $this->formatAccount($kvalue, $avalue);
@@ -237,11 +240,11 @@ class DocHtmlFormat
                             }
                             $abegin = "<a target=\"$this->target\"  href=\"";
                             if ($scheme == "") {
-                                $abegin.= $action->GetParam("CORE_URLINDEX", ($action->GetParam("CORE_ABSURL") . "/")) . $ulink;
+                                $abegin .= $action->GetParam("CORE_URLINDEX", ($action->GetParam("CORE_ABSURL") . "/")) . $ulink;
                             } else {
-                                $abegin.= $ulink;
+                                $abegin .= $ulink;
                             }
-                            $abegin.= "\">";
+                            $abegin .= "\">";
                             $aend = "</a>";
                         } else {
                             $ltarget = $this->oattr->getOption("ltarget");
@@ -253,7 +256,7 @@ class DocHtmlFormat
                                 $ititle = str_replace("\"", "'", $ltitle);
                             }
                             $abegin = "<a target=\"$this->target\" title=\"$ititle\" onmousedown=\"document.noselect=true;\" href=\"";
-                            $abegin.= $ulink . "\" ";
+                            $abegin .= $ulink . "\" ";
                             if ($this->htmlLink > 1) {
                                 $scheme = "";
                                 if (preg_match("/^([[:alpha:]]*):(.*)/", $ulink, $reg)) {
@@ -261,12 +264,12 @@ class DocHtmlFormat
                                 }
                                 if (($scheme == "") || ($scheme == "http")) {
                                     if ($scheme == "") {
-                                        $ulink.= "&ulink=1";
+                                        $ulink .= "&ulink=1";
                                     }
-                                    $abegin.= " oncontextmenu=\"popdoc(event,'$ulink');return false;\" ";
+                                    $abegin .= " oncontextmenu=\"popdoc(event,'$ulink');return false;\" ";
                                 }
                             }
-                            $abegin.= ">";
+                            $abegin .= ">";
                             $aend = "</a>";
                         }
                     } else {
@@ -284,10 +287,13 @@ class DocHtmlFormat
 
         return implode("<BR>", $thtmlval);
     }
+
     /**
      * format Default attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
      * @return string HTML value
      */
     public function formatDefault($kvalue, $avalue)
@@ -306,10 +312,13 @@ class DocHtmlFormat
         ), $avalue);
         return $htmlval;
     }
+
     /**
      * format Image attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
      * @return string HTML value
      */
     public function formatImage($kvalue, $avalue)
@@ -318,7 +327,7 @@ class DocHtmlFormat
         if ($this->target == "mail") {
             $htmlval = "cid:" . $this->oattr->id;
             if ($this->index >= 0) {
-                $htmlval.= "+$this->index";
+                $htmlval .= "+$this->index";
             }
         }
         if ($this->target == "te") {
@@ -361,10 +370,13 @@ class DocHtmlFormat
         }
         return $htmlval;
     }
+
     /**
      * format File attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
      * @return string HTML value
      */
     public function formatFile($kvalue, $avalue)
@@ -398,7 +410,7 @@ class DocHtmlFormat
                         addWarningMsg(sprintf(_("file %s not found"), $fileInfo->name));
                     }
 
-                    $fname.= ' ' . _("(file not found)");
+                    $fname .= ' ' . _("(file not found)");
                 }
             } else {
                 $htmlval = _("vault file error");
@@ -414,11 +426,11 @@ class DocHtmlFormat
 
         if ($this->target == "mail") {
             $htmlval = "<a target=\"_blank\" href=\"";
-            $htmlval.= "cid:" . $this->oattr->id;
+            $htmlval .= "cid:" . $this->oattr->id;
             if ($this->index >= 0) {
-                $htmlval.= "+$this->index";
+                $htmlval .= "+$this->index";
             }
-            $htmlval.= "\">" . htmlspecialchars($fname, ENT_QUOTES) . "</a>";
+            $htmlval .= "\">" . htmlspecialchars($fname, ENT_QUOTES) . "</a>";
         } else {
             if ($fileInfo) {
                 if ($fileInfo->teng_state < 0 || $fileInfo->teng_state > 1) {
@@ -459,9 +471,11 @@ class DocHtmlFormat
                         } else {
                             $waiting = "<img class=\"mime\" needresize=1 src=\"Images/bullet_error.png\">";
                         }
-                        $htmlval = sprintf('<a _href_="%s" vid="%d" onclick="popdoc(event,this.getAttribute(\'_href_\')+\'&inline=yes\',\'%s\')">%s %s</a>', $this->doc->getFileLink($this->oattr->id, $this->index), $fileInfo->id_file, str_replace("'", "&rsquo;", _("file status")), $waiting, $textval);
+                        $htmlval = sprintf('<a _href_="%s" vid="%d" onclick="popdoc(event,this.getAttribute(\'_href_\')+\'&inline=yes\',\'%s\')">%s %s</a>',
+                            $this->doc->getFileLink($this->oattr->id, $this->index), $fileInfo->id_file, str_replace("'", "&rsquo;", _("file status")), $waiting, $textval);
                         if ($fileInfo->teng_state < 0) {
-                            $htmlval.= sprintf('<a href="?app=FDL&action=FDL_METHOD&id=%d&method=resetConvertVaultFile(\'%s,%s)"><img class="mime" title="%s" src="%s"></a>', $this->doc->id, $this->oattr->id, $this->index, _("retry file conversion"), "Images/arrow_refresh.png");
+                            $htmlval .= sprintf('<a href="?app=FDL&action=FDL_METHOD&id=%d&method=resetConvertVaultFile(\'%s,%s)"><img class="mime" title="%s" src="%s"></a>',
+                                $this->doc->id, $this->oattr->id, $this->index, _("retry file conversion"), "Images/arrow_refresh.png");
                         }
                     } else {
                         $htmlval = $textval;
@@ -493,7 +507,9 @@ class DocHtmlFormat
                             $infopdf = new VaultFileInfo();
                             $err = $vf->Show($vid, $infopdf, 'pdf');
                             if ($err == "" && \Anakeen\Core\Internal\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
-                                if ($infopdf->teng_state == \Dcp\TransformationEngine\Client::status_done || $infopdf->teng_state == \Dcp\TransformationEngine\Client::status_waiting || $infopdf->teng_state == \Dcp\TransformationEngine\Client::status_inprogress) {
+                                if ($infopdf->teng_state == \Dcp\TransformationEngine\Client::status_done
+                                    || $infopdf->teng_state == \Dcp\TransformationEngine\Client::status_waiting
+                                    || $infopdf->teng_state == \Dcp\TransformationEngine\Client::status_inprogress) {
                                     $imageview = true;
                                     if ($viewfiletype == 'image') {
                                         $viewfiletype = 'png';
@@ -502,7 +518,8 @@ class DocHtmlFormat
                                     }
 
                                     $pages = getPdfNumberOfPages($infopdf->path);
-                                    if ($infopdf->teng_state == \Dcp\TransformationEngine\Client::status_waiting || $infopdf->teng_state == \Dcp\TransformationEngine\Client::status_inprogress) {
+                                    if ($infopdf->teng_state == \Dcp\TransformationEngine\Client::status_waiting
+                                        || $infopdf->teng_state == \Dcp\TransformationEngine\Client::status_inprogress) {
                                         $waiting = true;
                                     }
                                 }
@@ -544,11 +561,12 @@ class DocHtmlFormat
                         $size = self::human_size($fileInfo->size);
                         $utarget = ($action->Read("navigator", "") == "NETSCAPE") ? "_self" : "_blank";
                         $inline = $this->oattr->getOption("inline");
-                        $htmlval = "<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"" . $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes"), $avalue, $fileInfo) . "\">";
+                        $htmlval = "<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\""
+                            . $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes"), $avalue, $fileInfo) . "\">";
                         if ($mimeicon) {
-                            $htmlval.= "<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
+                            $htmlval .= "<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
                         }
-                        $htmlval.= htmlspecialchars($fname, ENT_QUOTES) . "</a>";
+                        $htmlval .= htmlspecialchars($fname, ENT_QUOTES) . "</a>";
                     }
                 } else {
                     $htmlval = $fileInfo->name;
@@ -557,10 +575,13 @@ class DocHtmlFormat
         }
         return $htmlval;
     }
+
     /**
      * format Longtext attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
      * @return string HTML value
      */
     public function formatLongtext($kvalue, $avalue)
@@ -583,10 +604,13 @@ class DocHtmlFormat
         ), $bvalue);
         return $htmlval;
     }
+
     /**
      * format Password attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
      * @return string HTML value
      */
     public function formatPassword($kvalue, $avalue)
@@ -598,10 +622,13 @@ class DocHtmlFormat
         }
         return $htmlval;
     }
+
     /**
      * format Enum attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
      * @return string HTML value
      */
     public function formatEnum($kvalue, $avalue)
@@ -631,10 +658,13 @@ class DocHtmlFormat
         }
         return $htmlval;
     }
+
     /**
      * format Array attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
      * @return string HTML value
      */
     public function formatArray($kvalue, $avalue)
@@ -699,7 +729,7 @@ class DocHtmlFormat
                         $thstyle = "style=\"$thstyle\"";
                     }
                     if ($thclass) {
-                        $thstyle.= ' class="' . $thclass . '"';
+                        $thstyle .= ' class="' . $thclass . '"';
                     }
                     $talabel[] = array(
                         "alabel" => $th,
@@ -768,7 +798,7 @@ class DocHtmlFormat
             }
 
             if ($nbitem > 10) {
-                $caption.= " ($nbitem)";
+                $caption .= " ($nbitem)";
             }
             $lay->set("caption", $caption);
             $htmlval = $lay->gen();
@@ -786,8 +816,8 @@ class DocHtmlFormat
                     continue;
                 }
                 $talabel[] = array(
-                    "alabel" => ucfirst($v->getLabel()) ,
-                    "astyle" => $v->getOption("cellheadstyle") ,
+                    "alabel" => ucfirst($v->getLabel()),
+                    "astyle" => $v->getOption("cellheadstyle"),
                     "cwidth" => $v->getOption("cwidth", "auto")
                 );
                 $tval[$k] = $this->doc->getMultipleRawValues($k);
@@ -800,13 +830,13 @@ class DocHtmlFormat
                 if ($this->oattr->getOption("vlabel") == "up") {
                     $caption = $this->oattr->getLabel();
                     if ($nbitem > 10) {
-                        $caption.= " ($nbitem)";
+                        $caption .= " ($nbitem)";
                     }
                 } else {
                     $caption = "";
                     if ($displayRowCount >= 0 && ($displayRowCount == 0 || $nbitem > $displayRowCount)) {
                         if (count($talabel) > 0) {
-                            $talabel[0]["alabel"].= " ($nbitem)";
+                            $talabel[0]["alabel"] .= " ($nbitem)";
                         }
                     }
                 }
@@ -850,10 +880,10 @@ class DocHtmlFormat
                             "evalue" => $hval,
                             "attrid" => $va->id,
                             "atype" => $va->type,
-                            "tdstyle" => $va->getOption("cellbodystyle") ,
-                            "color" => $va->getOption("color", "inherit") ,
-                            "bgcolor" => $va->getOption("bgcolor", "inherit") ,
-                            "tdclass" => $va->getOption("className", '') ,
+                            "tdstyle" => $va->getOption("cellbodystyle"),
+                            "color" => $va->getOption("color", "inherit"),
+                            "bgcolor" => $va->getOption("bgcolor", "inherit"),
+                            "tdclass" => $va->getOption("className", ''),
                             "align" => $va->getOption("align", "inherit")
                         );
                     }
@@ -868,36 +898,13 @@ class DocHtmlFormat
         }
         return $htmlval;
     }
-    /**
-     * format Doc attribute
-     * @param $kvalue
-     * @param $avalue
-     * @return string HTML value
-     */
-    public function formatDoc($kvalue, $avalue)
-    {
-        $htmlval = "";
-        if ($avalue != "") {
-            if ($kvalue > - 1) {
-                $idocid = $this->doc->getMultipleRawValues($this->cFormat, "", $kvalue);
-            } else {
-                $idocid = $this->doc->getRawValue($this->cFormat);
-            }
 
-            if ($idocid > 0) {
-                //$lay = new Layout("FDL/Layout/viewadoc.xml", $action);
-                //$lay->set("id",$idocid);
-                $idoc = new_Doc($this->doc->dbaccess, $idocid);
-                $htmlval = $idoc->viewDoc("FDL:VIEWTHUMBCARD:T", "finfo");
-                //$htmlval =$lay->gen();
-            }
-        }
-        return $htmlval;
-    }
     /**
      * format Account attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
      * @return string HTML value
      */
     public function formatAccount($kvalue, $avalue)
@@ -907,10 +914,13 @@ class DocHtmlFormat
         }
         return $this->formatDocid($kvalue, $avalue);
     }
+
     /**
      * format Docid attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
      * @return string HTML value
      */
     public function formatDocid($kvalue, $avalue)
@@ -978,10 +988,13 @@ class DocHtmlFormat
         }
         return $htmlval;
     }
+
     /**
      * format Image attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
      * @return string HTML value
      */
     public function formatThesaurus($kvalue, $avalue)
@@ -1020,6 +1033,7 @@ class DocHtmlFormat
         }
         return $htmlval;
     }
+
     /**
      * format Option attribute
      *
@@ -1034,7 +1048,7 @@ class DocHtmlFormat
         $lay = new Layout("FDL/Layout/viewdocoption.xml", $action);
         $htmlval = "";
 
-        if ($kvalue > - 1) {
+        if ($kvalue > -1) {
             $di = $this->doc->getMultipleRawValues($this->oattr->format, "", $kvalue);
         } else {
             $di = $this->doc->getRawValue($this->oattr->format);
@@ -1047,6 +1061,7 @@ class DocHtmlFormat
         }
         return $htmlval;
     }
+
     /**
      * format Money attribute
      *
@@ -1070,6 +1085,7 @@ class DocHtmlFormat
         }
         return $htmlval;
     }
+
     /**
      * format HTML attribute
      *
@@ -1140,8 +1156,10 @@ class DocHtmlFormat
         $htmlval = '<div class="htmltext">' . str_replace("[", "&#x5B;", $avalue) . '</div>';
         return $htmlval;
     }
+
     /**
      * format Date attribute
+     *
      * @param $kvalue
      * @param $avalue
      *
@@ -1163,6 +1181,7 @@ class DocHtmlFormat
         $this->cancelFormat = true;
         return $htmlval;
     }
+
     /**
      * format Time attribute
      *
@@ -1189,6 +1208,7 @@ class DocHtmlFormat
         $this->cancelFormat = true;
         return $htmlval;
     }
+
     /**
      * format TimeStamp attribute
      *
@@ -1213,6 +1233,7 @@ class DocHtmlFormat
         $this->cancelFormat = true;
         return $htmlval;
     }
+
     /**
      * format IFile attribute
      *
@@ -1231,6 +1252,7 @@ class DocHtmlFormat
         $htmlval = $lay->gen();
         return $htmlval;
     }
+
     /**
      * format Color attribute
      *
@@ -1248,6 +1270,7 @@ class DocHtmlFormat
         }
         return $htmlval;
     }
+
     private function rowattrReplace($s, $index)
     {
         if (substr($s, 0, 2) == "L_") {
@@ -1271,10 +1294,12 @@ class DocHtmlFormat
         }
         return $v;
     }
+
     /**
      * Format the given size in human readable SI format (up to terabytes).
      *
      * @param int $size
+     *
      * @return string
      */
     private static function human_size($size)
@@ -1283,11 +1308,13 @@ class DocHtmlFormat
             return sprintf("%d %s", $size, n___("unit:byte", "unit:bytes", abs($size)));
         }
         $size = $size / 1000;
-        foreach (array(
-            _("unit:kB") ,
-            _("unit:MB") ,
-            _("unit:GB")
-        ) as $unit) {
+        foreach (
+            array(
+                _("unit:kB"),
+                _("unit:MB"),
+                _("unit:GB")
+            ) as $unit
+        ) {
             if (abs($size) < 1000) {
                 return sprintf("%3.2f %s", $size, $unit);
             }

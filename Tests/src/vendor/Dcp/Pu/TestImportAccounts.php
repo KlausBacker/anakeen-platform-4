@@ -38,7 +38,7 @@ class TestImportAccounts extends TestCaseDcpCommonFamily
         try {
             $import = new \Dcp\Core\ImportAccounts();
 
-            $import->setFile(sprintf("%s/Layout/%s", self::$testDirectory, $accountFile));
+            $import->setFile(sprintf("%s/Layout/%s", self::$testDataDirectory, $accountFile));
             $import->import();
         } catch (\Exception $e) {
             $err = $e->getMessage();
