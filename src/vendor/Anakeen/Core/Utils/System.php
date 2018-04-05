@@ -35,6 +35,18 @@ class System
             $action->parent->addLogMsg($msg);
         }
     }
+    /**
+     * record warning message to session
+     *
+     * @param string $msg message to log
+     */
+    public static function addWarningMsg($msg)
+    {
+        $action = ContextManager::getCurrentAction();
+        if ($action) {
+            $action->parent->addWarningMsg($msg);
+        }
+    }
 
     /**
      * exec list of unix command in background

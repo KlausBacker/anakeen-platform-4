@@ -29,41 +29,41 @@ class TestExportRevision extends TestCaseDcpCommonFamily
         
         $d1 = new_doc(self::$dbaccess, "TST_EREV1");
         $d1->revise();
-        $d1->setValue(\Dcp\AttributeIdentifiers\tst_export_revision::tst_title, "Référence n°2");
+        $d1->setValue(\SmartStructure\Attributes\tst_export_revision::tst_title, "Référence n°2");
         $d1->store();
         
-        $d4->setValue(\Dcp\AttributeIdentifiers\tst_export_revision::tst_doc_fixed, $d1->id);
+        $d4->setValue(\SmartStructure\Attributes\tst_export_revision::tst_doc_fixed, $d1->id);
         
         $d2 = new_doc(self::$dbaccess, "TST_EREV2");
         $d2->revise();
-        $d2->setValue(\Dcp\AttributeIdentifiers\tst_export_revision::tst_title, "Identifiant n°2");
+        $d2->setValue(\SmartStructure\Attributes\tst_export_revision::tst_title, "Identifiant n°2");
         $d2->store();
         
-        $d6->setValue(\Dcp\AttributeIdentifiers\tst_export_revision::tst_doc_fixed, $d2->id);
-        $d5->setValue(\Dcp\AttributeIdentifiers\tst_export_revision::tst_doc_state, $d2->id);
+        $d6->setValue(\SmartStructure\Attributes\tst_export_revision::tst_doc_fixed, $d2->id);
+        $d5->setValue(\SmartStructure\Attributes\tst_export_revision::tst_doc_state, $d2->id);
         
         $d2->revise();
-        $d2->setValue(\Dcp\AttributeIdentifiers\tst_export_revision::tst_title, "Identifiant n°3");
+        $d2->setValue(\SmartStructure\Attributes\tst_export_revision::tst_title, "Identifiant n°3");
         $d2->store();
         
-        $d5->setValue(\Dcp\AttributeIdentifiers\tst_export_revision::tst_doc_fixed, $d2->id);
+        $d5->setValue(\SmartStructure\Attributes\tst_export_revision::tst_doc_fixed, $d2->id);
         
         $d3 = new_doc(self::$dbaccess, "TST_EREV3");
         $d3->revise();
-        $d5->setValue(\Dcp\AttributeIdentifiers\tst_export_revision::tst_doc_state, $d3->id);
-        $d3->setValue(\Dcp\AttributeIdentifiers\tst_export_revision::tst_title, "Révision n°2");
+        $d5->setValue(\SmartStructure\Attributes\tst_export_revision::tst_doc_state, $d3->id);
+        $d3->setValue(\SmartStructure\Attributes\tst_export_revision::tst_title, "Révision n°2");
         $d3->store();
         $d3->revise();
-        $d3->setValue(\Dcp\AttributeIdentifiers\tst_export_revision::tst_title, "Révision n°3");
+        $d3->setValue(\SmartStructure\Attributes\tst_export_revision::tst_title, "Révision n°3");
         $d3->store();
         
-        $d6->setValue(\Dcp\AttributeIdentifiers\tst_export_revision::tst_doc_state, $d3->id);
+        $d6->setValue(\SmartStructure\Attributes\tst_export_revision::tst_doc_state, $d3->id);
         
         $d3->revise();
-        $d3->setValue(\Dcp\AttributeIdentifiers\tst_export_revision::tst_title, "Révision n°4");
+        $d3->setValue(\SmartStructure\Attributes\tst_export_revision::tst_title, "Révision n°4");
         $d3->store();
         
-        $d6->setValue(\Dcp\AttributeIdentifiers\tst_export_revision::tst_doc_fixed, $d3->id);
+        $d6->setValue(\SmartStructure\Attributes\tst_export_revision::tst_doc_fixed, $d3->id);
         
         $d4->store();
         $d5->store();

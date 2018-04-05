@@ -58,7 +58,7 @@ function deprecatedFunction($msg = '')
 
 /**
  * send a warning msg to the user interface
- *
+ * @deprecated
  * @param string $msg
  */
 function addWarningMsg($msg)
