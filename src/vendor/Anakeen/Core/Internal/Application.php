@@ -1,6 +1,9 @@
 <?php
 
 namespace Anakeen\Core\Internal;
+
+use Anakeen\Core\DbManager;
+
 /**
  * Application Class
  *
@@ -11,30 +14,33 @@ function f_paramglog($var)
 { // filter to select only not global
     return (!((isset($var["global"]) && ($var["global"] == 'Y'))));
 }
+
 /**
  * Application managing
+ *
  * @class Application
  *
  */
 class Application extends DbObj
 {
-    public $fields = array(
-        "id",
-        "name",
-        "short_name",
-        "description",
-        "access_free", //@deprecated
-        "available",
-        "icon",
-        "displayable",
-        "with_frame",
-        "childof",
-        "objectclass", //@deprecated
-        "ssl", //@deprecated
-        "machine", //@deprecated
-        "iorder",
-        "tag"
-    );
+    public $fields
+        = array(
+            "id",
+            "name",
+            "short_name",
+            "description",
+            "access_free", //@deprecated
+            "available",
+            "icon",
+            "displayable",
+            "with_frame",
+            "childof",
+            "objectclass", //@deprecated
+            "ssl", //@deprecated
+            "machine", //@deprecated
+            "iorder",
+            "tag"
+        );
     /**
      * @var int application identifier
      */
@@ -69,16 +75,19 @@ class Application extends DbObj
     public $machine;
     public $iorder;
     public $tag;
-    public $id_fields = array(
-        "id"
-    );
+    public $id_fields
+        = array(
+            "id"
+        );
     public $rootdir = '';
-    public $fulltextfields = array(
-        "name",
-        "short_name",
-        "description"
-    );
-    public $sqlcreate = '
+    public $fulltextfields
+        = array(
+            "name",
+            "short_name",
+            "description"
+        );
+    public $sqlcreate
+        = '
 create table application ( 	id 	int not null,
      		primary key (id),
 			name 	    text not null,
@@ -99,20 +108,22 @@ create index application_idx1 on application(id);
 create index application_idx2 on application(name);
 create sequence SEQ_ID_APPLICATION start 10;
 ';
-    
+
     public $dbtable = "application";
-    
-    public $def = array(
-        "criteria" => "",
-        "order_by" => "name"
-    );
-    
-    public $criterias = array(
-        "name" => array(
-            "libelle" => "Nom",
-            "type" => "TXT"
-        )
-    );
+
+    public $def
+        = array(
+            "criteria" => "",
+            "order_by" => "name"
+        );
+
+    public $criterias
+        = array(
+            "name" => array(
+                "libelle" => "Nom",
+                "type" => "TXT"
+            )
+        );
     /**
      * @var \Anakeen\Core\Internal\Application
      */
@@ -137,7 +148,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @var \Permission
      */
     public $permission = null; // permission object
-    
+
     /**
      * @var \Anakeen\Core\Internal\Log
      */
@@ -147,40 +158,45 @@ create sequence SEQ_ID_APPLICATION start 10;
     public $logmsg = array();
     /**
      * true if application is launched from admin context
+     *
      * @var bool
      */
     protected $adminMode = false;
-    
+
     public $cssref = array();
     public $csscode = array();
     protected $publicdir;
 
     /**
      * Application constructor.
-     * @param string $dbaccess
+     *
+     * @param string          $dbaccess
      * @param string|string[] $id
-     * @param string|array $res
-     * @param int $dbid
+     * @param string|array    $res
+     * @param int             $dbid
      */
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         parent::__construct($dbaccess, $id, $res, $dbid);
-        $this->rootdir = DEFAULT_PUBDIR. "/Apps";
+        $this->rootdir = DEFAULT_PUBDIR . "/Apps";
         $this->publicdir = PUBLIC_DIR;
     }
+
     /**
      * initialize  Application object
-     * @param string $name application name to set
-     * @param \Anakeen\Core\Internal\Application|string $parent the parent object (generally CORE app) : empty string if no parent
-     * @param string $session parent session
-     * @param bool $autoinit set to true to auto create app if not exists yet
      *
-     * @param bool $verifyAvailable set to true to not exit when unavailable action
+     * @param string                                    $name            application name to set
+     * @param \Anakeen\Core\Internal\Application|string $parent          the parent object (generally CORE app) : empty string if no parent
+     * @param string                                    $session         parent session
+     * @param bool                                      $autoinit        set to true to auto create app if not exists yet
+     *
+     * @param bool                                      $verifyAvailable set to true to not exit when unavailable action
+     *
      * @return string error message
      * @throws \Dcp\Core\Exception if application not exists
      * @throws \Dcp\Db\Exception
      * @code
-     $CoreNull = "";
+     * $CoreNull = "";
      * $core = new \Anakeen\Core\Internal\Application();
      * $core->Set("CORE", $CoreNull); // init core application from nothing
      * $core->session = new \Session();
@@ -194,7 +210,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     public function set($name, &$parent, $session = "", $autoinit = false, $verifyAvailable = true)
     {
         $this->log->debug("Entering : Set application to $name");
-        
+
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->order_by = "";
         $query->criteria = "name";
@@ -212,7 +228,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 // Init the database with the app file if it exists
                 $this->InitApp($name);
                 if ($parent != "") {
-                    $this->parent = & $parent;
+                    $this->parent = &$parent;
                     if ($this->name == "") {
                         printf("Application name %s not found", $name);
                         exit;
@@ -231,9 +247,9 @@ create sequence SEQ_ID_APPLICATION start 10;
                 throw $e;
             }
         }
-        
+
         if ($this !== $parent) {
-            $this->parent = & $parent;
+            $this->parent = &$parent;
         }
         if (is_object($this->parent) && isset($this->parent->session)) {
             $this->session = $this->parent->session;
@@ -241,7 +257,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 $this->user = $this->parent->user;
             }
         }
-        
+
         if ($session != "") {
             $this->SetSession($session);
         }
@@ -250,7 +266,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         if ($this->session) {
             $style = $this->session->read("userCoreStyle", false);
         }
-        
+
         if ($style) {
             $this->InitStyle(false, $style);
         } else {
@@ -262,7 +278,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 $this->session->register("userCoreStyle", $pStyle);
             }
         }
-        
+
         $this->param->SetKey($this->id, isset($this->user->id) ? $this->user->id : false, $this->style->name);
         if ($verifyAvailable && $this->available === "N") {
             // error
@@ -274,11 +290,11 @@ create sequence SEQ_ID_APPLICATION start 10;
 
         return '';
     }
-    
+
     public function complete()
     {
     }
-    
+
     public function setSession(&$session)
     {
         $this->session = $session;
@@ -292,7 +308,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
         }
     }
-    
+
     public function preInsert()
     {
         if ($this->Exists($this->name)) {
@@ -307,10 +323,10 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return '';
     }
-    
+
     public function preUpdate()
     {
-        if ($this->dbid == - 1) {
+        if ($this->dbid == -1) {
             return false;
         }
         if ($this->Exists($this->name, $this->id)) {
@@ -318,10 +334,13 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return '';
     }
+
     /**
      * Verify an application name exists
-     * @param string $app_name application reference name
-     * @param int $id_application optional numeric id to verify if not itself
+     *
+     * @param string $app_name       application reference name
+     * @param int    $id_application optional numeric id to verify if not itself
+     *
      * @return bool
      */
     public function exists($app_name, $id_application = 0)
@@ -330,7 +349,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->order_by = "";
         $query->criteria = "";
-        
+
         if ($id_application != '') {
             $query->basic_elem->sup_where = array(
                 "name='$app_name'",
@@ -341,14 +360,17 @@ create sequence SEQ_ID_APPLICATION start 10;
             $query->operator = "=";
             $query->string = "'" . $app_name . "'";
         }
-        
+
         $r = $query->Query(0, 0, "TABLE");
-        
+
         return ($query->nb > 0) ? $r[0]["id"] : false;
     }
+
     /**
      * Strip the pubdir/wpub directory from a file pathname
+     *
      * @param string $pathname the file pathname
+     *
      * @return string file pathname without the root dir
      */
     private function stripRootDir($pathname)
@@ -356,12 +378,15 @@ create sequence SEQ_ID_APPLICATION start 10;
         if (substr($pathname, 0, strlen($this->rootdir)) === $this->rootdir) {
             $pathname = substr($pathname, strlen($this->rootdir) + 1);
         }
-        
+
         return $pathname;
     }
+
     /**
      * Try to resolve a JS/CSS reference to a supported location
+     *
      * @param string $ref the JS/CSS reference
+     *
      * @return string the resolved location of the reference or an empty string on failure
      */
     private function resolveResourceLocation($ref)
@@ -393,10 +418,12 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
         }
         /* Try hardcoded locations */
-        foreach (array(
-            $ref,
-            sprintf("%s/Layout/%s", $this->name, $ref)
-        ) as $filename) {
+        foreach (
+            array(
+                $ref,
+                sprintf("%s/Layout/%s", $this->name, $ref)
+            ) as $filename
+        ) {
             if (is_file(sprintf("%s/%s", $this->rootdir, $filename))) {
                 return $filename;
             }
@@ -406,25 +433,26 @@ create sequence SEQ_ID_APPLICATION start 10;
         if (isset($pUrl['scheme']) || isset($pUrl['query'])) {
             return $ref;
         }
-        
+
         if (is_file($ref)) {
             return $ref;
         }
-        if (is_file($this->publicdir."/".$ref)) {
+        if (is_file($this->publicdir . "/" . $ref)) {
             return $ref;
         }
         /* TODO : update with application log class */
         $this->log->error(__METHOD__ . " Unable to identify the ref $ref");
-        
+
         return '';
     }
+
     /**
      * Add a resource (JS/CSS) to the page
      *
-     * @param string $type 'js' or 'css'
-     * @param string $ref the resource reference
+     * @param string  $type      'js' or 'css'
+     * @param string  $ref       the resource reference
      * @param boolean $needparse should the resource be parsed (default false)
-     * @param string $packName
+     * @param string  $packName
      *
      * @return string resource location
      */
@@ -437,17 +465,17 @@ create sequence SEQ_ID_APPLICATION start 10;
                 return $ret;
             }
         }
-        
+
         $resourceLocation = $this->getResourceLocation($type, $ref, $needparse, $packName, true);
         if (!$resourceLocation) {
             $wng = sprintf(_("Cannot find %s resource file"), $ref);
             $this->addLogMsg($wng);
             $this->log->warning($wng);
-            $resourceLocation=sprintf("Ressource %s not found", $ref);
+            $resourceLocation = sprintf("Ressource %s not found", $ref);
         }
 
         if (strpos($resourceLocation, "?") === false) {
-            $resourceLocation.="?ws=".$this->getParam("WVERSION");
+            $resourceLocation .= "?ws=" . $this->getParam("WVERSION");
         }
         if ($type == 'js') {
             $this->jsref[$resourceLocation] = $resourceLocation;
@@ -456,17 +484,18 @@ create sequence SEQ_ID_APPLICATION start 10;
         } else {
             return '';
         }
-        
+
         return $resourceLocation;
     }
+
     /**
      * Get resourceLocation with cache handling
      *
-     * @param string $type (js|css)
-     * @param string $ref path or URI of the resource
-     * @param bool $needparse need to parse
-     * @param string $packName use it to pack all the ref with the same packName into a single file
-     * @param bool $fromAdd (do not use this param) true only if you call it from addRessourceRef function
+     * @param string $type      (js|css)
+     * @param string $ref       path or URI of the resource
+     * @param bool   $needparse need to parse
+     * @param string $packName  use it to pack all the ref with the same packName into a single file
+     * @param bool   $fromAdd   (do not use this param) true only if you call it from addRessourceRef function
      *
      * @return string new \location
      */
@@ -474,12 +503,13 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         static $firstPack = array();
         $resourceLocation = '';
-        
-        $key = isset($this->session) ? $this->session->getUKey(\Anakeen\Core\ContextManager::getApplicationParam("WVERSION")) : uniqid(\Anakeen\Core\ContextManager::getApplicationParam("WVERSION"));
+
+        $key = isset($this->session) ? $this->session->getUKey(\Anakeen\Core\ContextManager::getApplicationParam("WVERSION"))
+            : uniqid(\Anakeen\Core\ContextManager::getApplicationParam("WVERSION"));
         if ($packName) {
             $resourcePackParseLocation = sprintf("?app=CORE&amp;action=CORE_CSS&amp;type=%s&amp;ukey=%s&amp;pack=%s", $type, $key, $packName);
             $resourcePackNoParseLocation = sprintf("pack.php?type=%s&amp;pack=%s&amp;wv=%s", $type, $packName, \Anakeen\Core\ContextManager::getApplicationParam("WVERSION"));
-            
+
             if (!isset($firstPack[$packName])) {
                 $packSession = array();
                 $firstPack[$packName] = true;
@@ -496,7 +526,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             if ($this->session) {
                 $this->session->Register("RSPACK_" . $packName, $packSession);
             }
-            
+
             if ($needparse) {
                 if ($fromAdd) {
                     if ($type == "js") {
@@ -523,17 +553,18 @@ create sequence SEQ_ID_APPLICATION start 10;
                 $resourceLocation = (strpos($location, '?') !== false) ? $location : $location . '?wv=' . \Anakeen\Core\ContextManager::getApplicationParam("WVERSION");
             }
         }
-        
+
         return $resourceLocation;
     }
+
     /**
      * Get dynacase CSS link
      *
      * @api Get the src of a CSS with dynacase cache
      *
-     * @param string $ref path, or URL, or filename (if in the current application), or APP:filename
-     * @param bool $needparse if true will be parsed by the template engine (false by default)
-     * @param string $packName use it to pack all the ref with the same packName into a single file
+     * @param string $ref       path, or URL, or filename (if in the current application), or APP:filename
+     * @param bool   $needparse if true will be parsed by the template engine (false by default)
+     * @param string $packName  use it to pack all the ref with the same packName into a single file
      *
      * @return string the src of the CSS or "" if non existent ref
      */
@@ -551,14 +582,15 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return $rl;
     }
+
     /**
      * Get dynacase JS link
      *
      * @api Get the src of a JS with dynacase cache
      *
-     * @param string $ref path, or URL, or filename (if in the current application), or APP:filename
-     * @param bool $needparse if true will be parsed by the template engine (false by default)
-     * @param string $packName use it to pack all the ref with the same packName into a single file
+     * @param string $ref       path, or URL, or filename (if in the current application), or APP:filename
+     * @param bool   $needparse if true will be parsed by the template engine (false by default)
+     * @param string $packName  use it to pack all the ref with the same packName into a single file
      *
      * @return string the src of the JS or "" if ref not exists
      */
@@ -575,6 +607,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return $rl;
     }
+
     /**
      * Add a CSS in an action
      *
@@ -582,9 +615,9 @@ create sequence SEQ_ID_APPLICATION start 10;
      *
      * @api Add a CSS in an action
      *
-     * @param string $ref path, or URL, or filename (if in the current application), or APP:filename
-     * @param bool $needparse if true will be parsed by the template engine (false by default)
-     * @param string $packName use it to pack all the ref with the same packName into a single file
+     * @param string $ref       path, or URL, or filename (if in the current application), or APP:filename
+     * @param bool   $needparse if true will be parsed by the template engine (false by default)
+     * @param string $packName  use it to pack all the ref with the same packName into a single file
      *
      * @throws \Dcp\Style\Exception
      * @return string the path of the added ref or "" if the ref is not valid
@@ -592,33 +625,36 @@ create sequence SEQ_ID_APPLICATION start 10;
     public function addCssRef($ref, $needparse = null, $packName = '')
     {
         $styleParseRule = $this->detectCssParse($ref, $needparse);
-        
+
         if (substr($ref, 0, 2) == './') {
             $ref = substr($ref, 2);
         }
         return $this->AddRessourceRef('css', $ref, $styleParseRule, $packName);
     }
-    
+
     private function detectCssParse($ref, $askParse)
     {
         $needparse = $askParse;
         $currentFileRule = $this->style->getRule('css', $ref);
         if (is_array($currentFileRule)) {
             if (isset($currentFileRule['flags']) && ($currentFileRule['flags'] & \Anakeen\Core\Internal\Style::RULE_FLAG_PARSE_ON_RUNTIME)) {
-                if (isset($currentFileRule['runtime_parser']) && is_array($currentFileRule['runtime_parser']) && isset($currentFileRule['runtime_parser']['className']) && null !== $currentFileRule['parse_on_runtime']['className']) {
+                if (isset($currentFileRule['runtime_parser']) && is_array($currentFileRule['runtime_parser']) && isset($currentFileRule['runtime_parser']['className'])
+                    && null !== $currentFileRule['parse_on_runtime']['className']) {
                     throw new \Dcp\Style\Exception("STY0007", 'custom parse_on_runtime class is not supported yet');
                 }
                 $parseOnLoad = true;
                 if ((null !== $needparse) && ($parseOnLoad !== $needparse)) {
-                    $this->log->warning(sprintf("%s was added with needParse to %s but style has a rule saying %s", $ref, var_export($needparse, true), var_export($parseOnLoad, true)));
+                    $this->log->warning(sprintf("%s was added with needParse to %s but style has a rule saying %s", $ref, var_export($needparse, true),
+                        var_export($parseOnLoad, true)));
                 }
                 $needparse = $parseOnLoad;
             }
         }
         $needparse = $needparse ? true : false;
-        
+
         return $needparse;
     }
+
     /**
      * Get the current CSS ref of the current action
      *
@@ -632,6 +668,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             return ($this->cssref);
         }
     }
+
     /**
      * Add a JS in an action
      *
@@ -639,9 +676,9 @@ create sequence SEQ_ID_APPLICATION start 10;
      *
      * @api Add a JS in an action
      *
-     * @param string $ref path to a js, or URL to a js, or js file name (if in the current application), or APP:jsfilename
-     * @param bool $needparse if true will be parsed by the template engine (false by default)
-     * @param string $packName use it to pack all the ref with the same packName into a single file
+     * @param string $ref       path to a js, or URL to a js, or js file name (if in the current application), or APP:jsfilename
+     * @param bool   $needparse if true will be parsed by the template engine (false by default)
+     * @param string $packName  use it to pack all the ref with the same packName into a single file
      *
      * @return string the path of the added ref or "" if the ref is not valid
      */
@@ -652,6 +689,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return $this->AddRessourceRef('js', $ref, $needparse, $packName);
     }
+
     /**
      * Get the js ref array of the current action
      *
@@ -665,6 +703,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             return ($this->jsref);
         }
     }
+
     /**
      * Add a JS code in an action
      * Use this method to add a JS in an action that use the zone [JS:REF] and the template engine
@@ -685,6 +724,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             $this->jscode[] = $code;
         }
     }
+
     /**
      * Get the js code of the current action
      *
@@ -698,6 +738,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             return ($this->jscode);
         }
     }
+
     /**
      * Add a CSS code in an action
      * Use this method to add a CSS in an action that use the zone [CSS:REF] and the template engine
@@ -717,6 +758,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             $this->csscode[] = $code;
         }
     }
+
     /**
      * Get the current CSS code of the current action
      *
@@ -730,12 +772,13 @@ create sequence SEQ_ID_APPLICATION start 10;
             return ($this->csscode);
         }
     }
+
     /**
      * Add message to log (syslog)
      * The message is also displayed in the console of the web interface
      *
      * @param string $code message to add to log
-     * @param int $cut truncate message longer than this length (set to <= 0 to not truncate the message)(default is 0).
+     * @param int    $cut  truncate message longer than this length (set to <= 0 to not truncate the message)(default is 0).
      */
     public function addLogMsg($code, $cut = 0)
     {
@@ -765,10 +808,12 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
         }
     }
+
     /**
      * send a message to the user interface
      *
      * @param string $code message
+     *
      * @return void
      */
     public function addWarningMsg($code)
@@ -789,36 +834,41 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
         }
     }
+
     /**
      * Get log text messages
+     *
      * @return array
      */
     public function getLogMsg()
     {
         return ($this->session ? ($this->session->read("logmsg", array())) : array());
     }
-    
+
     public function clearLogMsg()
     {
         if ($this->session) {
             $this->session->unregister("logmsg");
         }
     }
+
     /**
      * Get warning texts
+     *
      * @return array
      */
     public function getWarningMsg()
     {
         return ($this->session ? ($this->session->read("warningmsg", array())) : array());
     }
-    
+
     public function clearWarningMsg()
     {
         if ($this->session) {
             $this->session->unregister("warningmsg");
         }
     }
+
     /**
      * mark the application as launched from admin context
      *
@@ -832,6 +882,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             $this->adminMode = ($enable ? true : false);
         }
     }
+
     /**
      * @return bool true if application is launched from admin context
      */
@@ -842,12 +893,14 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return $this->adminMode === true || $this->user->id == \Anakeen\Core\Account::ADMIN_ID;
     }
+
     /**
      * Test permission for current user in current application
      *
      * @param string $acl_name acl name to test
      * @param string $app_name application if test for other application
-     * @param bool $strict to not use substitute account information
+     * @param bool   $strict   to not use substitute account information
+     *
      * @return bool true if permission granted
      */
     public function hasPermission($acl_name, $app_name = "", $strict = false)
@@ -879,9 +932,9 @@ create sequence SEQ_ID_APPLICATION start 10;
                         "id_application" => $this->id
                     ));
                 }
-                $this->permission = & $permission;
+                $this->permission = &$permission;
             }
-            
+
             return ($this->permission->HasPrivilege($acl->id, $strict));
         } else {
             // test permission for other application
@@ -890,7 +943,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             } else {
                 $appid = $app_name;
             }
-            
+
             $wperm = new \Permission($this->dbaccess, array(
                 $this->user->id,
                 $appid
@@ -907,9 +960,11 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return false;
     }
+
     /**
      * create style parameters
-     * @param bool $init
+     *
+     * @param bool   $init
      * @param string $useStyle
      */
     public function initStyle($init = true, $useStyle = '')
@@ -917,45 +972,45 @@ create sequence SEQ_ID_APPLICATION start 10;
         if ($init == true) {
             if (isset($this->user)) {
                 $pstyle = new \Anakeen\Core\Internal\Param($this->dbaccess, array(
-                "STYLE",
-                \Anakeen\Core\Internal\Param::PARAM_USER . $this->user->id,
-                "1"
-            ));
+                    "STYLE",
+                    \Anakeen\Core\Internal\Param::PARAM_USER . $this->user->id,
+                    "1"
+                ));
             } else {
                 $pstyle = new \Anakeen\Core\Internal\Param($this->dbaccess, array(
-                "STYLE",
-                \Anakeen\Core\Internal\Param::PARAM_USER . \Anakeen\Core\Account::ANONYMOUS_ID,
-                "1"
-            ));
+                    "STYLE",
+                    \Anakeen\Core\Internal\Param::PARAM_USER . \Anakeen\Core\Account::ANONYMOUS_ID,
+                    "1"
+                ));
             }
             if (!$pstyle->isAffected()) {
                 $pstyle = new \Anakeen\Core\Internal\Param($this->dbaccess, array(
-                "STYLE",
-                \Anakeen\Core\Internal\Param::PARAM_APP,
-                "1"
-            ));
+                    "STYLE",
+                    \Anakeen\Core\Internal\Param::PARAM_APP,
+                    "1"
+                ));
             }
-            
+
             $style = $pstyle->val;
             $this->style = new \Anakeen\Core\Internal\Style($this->dbaccess, $style);
-            
+
             $this->style->Set($this);
         } else {
             $style = ($useStyle) ? $useStyle : $this->getParam("STYLE");
             $this->style = new \Anakeen\Core\Internal\Style($this->dbaccess, $style);
-            
+
             $this->style->Set($this);
         }
 
     }
-    
+
     public function setLayoutVars($lay)
     {
         if ($this->hasParent()) {
             $this->parent->SetLayoutVars($lay);
         }
     }
-    
+
     public function getRootApp()
     {
         if ($this->parent == "") {
@@ -964,26 +1019,30 @@ create sequence SEQ_ID_APPLICATION start 10;
             return ($this->parent->GetRootApp());
         }
     }
-    
+
     public function getImageFile($img)
     {
         return $this->rootdir . "/" . $this->getImageLink($img);
     }
-    
+
     public $noimage = "CORE/Images/core-noimage.png";
+
     /**
      * get image url of an application
      * can also get another image by search in Images general directory
+     *
      * @api get image url of an application
-     * @param string $img image filename
-     * @param bool $detectstyle to use theme image instead of original
-     * @param int $size to use image with another width (in pixel) - null is original size
+     *
+     * @param string $img         image filename
+     * @param bool   $detectstyle to use theme image instead of original
+     * @param int    $size        to use image with another width (in pixel) - null is original size
+     *
      * @return string url to download image
      */
     public function getImageLink($img, $detectstyle = true, $size = null)
     {
         static $cacheImgUrl = array();
-        
+
         $cacheIndex = $img . $size;
         if (isset($cacheImgUrl[$cacheIndex])) {
             return $cacheImgUrl[$cacheIndex];
@@ -1041,17 +1100,19 @@ create sequence SEQ_ID_APPLICATION start 10;
         $this->addLogMsg("No find image \"$img\"");
         return $this->noimage;
     }
+
     /**
      * get image url of an application
      * can also get another image by search in Images general directory
      *
-     * @see \Anakeen\Core\Internal\Application::getImageLink
+     * @see        \Anakeen\Core\Internal\Application::getImageLink
      *
      * @deprecated use { @link \Anakeen\Core\Internal\Application::getImageLink } instead
      *
-     * @param string $img image filename
-     * @param bool $detectstyle to use theme image instead of original
-     * @param int $size to use image with another width (in pixel) - null is original size
+     * @param string $img         image filename
+     * @param bool   $detectstyle to use theme image instead of original
+     * @param int    $size        to use image with another width (in pixel) - null is original size
+     *
      * @return string url to download image
      */
     public function getImageUrl($img, $detectstyle = true, $size = null)
@@ -1059,7 +1120,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         deprecatedFunction();
         return $this->getImageLink($img, $detectstyle, $size);
     }
-    
+
     public function imageFilterColor($image, $fcol, $newcol, $out = null)
     {
         if ($out === null) {
@@ -1071,28 +1132,28 @@ create sequence SEQ_ID_APPLICATION start 10;
         imagegif($im, $out);
         imagedestroy($im);
     }
-    
+
     public function getFilteredImageUrl($imgf)
     {
         $ttf = explode(":", $imgf);
         $img = $ttf[0];
         $filter = $ttf[1];
-        
+
         $url = $this->getImageLink($img);
         if ($url == $this->noimage) {
             return $url;
         }
-        
+
         $tf = explode("|", $filter);
         if (count($tf) != 2) {
             return $url;
         }
-        
+
         $fcol = explode(",", $tf[0]);
         if (count($fcol) != 3) {
             return $url;
         }
-        
+
         if (substr($tf[1], 0, 1) == '#') {
             $col = $tf[1];
         } else {
@@ -1101,25 +1162,28 @@ create sequence SEQ_ID_APPLICATION start 10;
         $ncol[0] = hexdec(substr($col, 1, 2));
         $ncol[1] = hexdec(substr($col, 3, 2));
         $ncol[2] = hexdec(substr($col, 5, 2));
-        
+
         $cdir = 'var/cache/image/';
         $rcdir = $this->rootdir . '/' . $cdir;
         if (!is_dir($rcdir)) {
             mkdir($rcdir);
         }
-        
+
         $uimg = $cdir . $this->name . '-' . $fcol[0] . '.' . $fcol[1] . '.' . $fcol[2] . '_' . $ncol[0] . '.' . $ncol[1] . '.' . $ncol[2] . '.' . $img;
         $cimg = $this->rootdir . '/' . $uimg;
         if (file_exists($cimg)) {
             return $uimg;
         }
-        
+
         $this->ImageFilterColor($this->rootdir . '/' . $url, $fcol, $ncol, $cimg);
         return $uimg;
     }
+
     /**
      * get file path layout from layout name
+     *
      * @param string $layname
+     *
      * @return string file path
      */
     public function getLayoutFile($layname)
@@ -1131,7 +1195,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         if ($file != "") {
             return $file;
         }
-        
+
         $laydir = $this->rootdir . "/" . $this->name . "/Layout/";
         $file = $laydir . $layname; // default file
         if (file_exists($file)) {
@@ -1148,6 +1212,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return ("");
     }
+
     public function OldGetLayoutFile($layname)
     {
         $file = $this->rootdir . "/" . $this->name . "/Layout/" . $layname;
@@ -1160,10 +1225,13 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return ("");
     }
+
     /**
      * affect new \value to an application parameter
+     *
      * @see \Anakeen\Core\Internal\ParameterManager to easily manage application parameters
-     * @param string $key parameter id
+     *
+     * @param string          $key parameter id
      * @param string|string[] $val parameter value
      */
     public function setParam($key, $val)
@@ -1179,28 +1247,33 @@ create sequence SEQ_ID_APPLICATION start 10;
             $this->param->Set($key, $val, \Anakeen\Core\Internal\Param::PARAM_APP, $this->id);
         }
     }
+
     /**
      * set user parameter for current user
      *
      * @see \Anakeen\Core\Internal\ParameterManager to easily manage application parameters
+     *
      * @param string $key parameter identifier
      * @param string $val value
+     *
      * @return string error message
      */
     public function setParamU($key, $val)
     {
         return $this->param->Set($key, $val, \Anakeen\Core\Internal\Param::PARAM_USER . $this->user->id, $this->id);
     }
+
     /**
      * declare new \application parameter
+     *
      * @param string $key
-     * @param array $val
+     * @param array  $val
      */
     public function setParamDef($key, $val)
     {
         // add new \param definition
         $pdef = \Anakeen\Core\Internal\ParamDef::getParamDef($key, $this->id);
-        
+
         $oldValues = array();
         if (!$pdef) {
             $pdef = new \Anakeen\Core\Internal\ParamDef($this->dbaccess);
@@ -1214,7 +1287,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         } else {
             $oldValues = $pdef->getValues();
         }
-        
+
         if (is_array($val)) {
             if (isset($val["kind"])) {
                 $pdef->kind = $val["kind"];
@@ -1238,7 +1311,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 $pdef->isglob = "N";
             }
         }
-        
+
         if ($pdef->appid == $this->id) {
             if ($pdef->isAffected()) {
                 $pdef->Modify();
@@ -1261,6 +1334,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
         }
     }
+
     /**
      * Add temporary parameter to ths application
      * Can be use to transmit global variable or to affect Layout
@@ -1276,10 +1350,13 @@ create sequence SEQ_ID_APPLICATION start 10;
             $this->param->SetVolatile($key, $val);
         }
     }
+
     /**
      * get parameter value
+     *
      * @param string $key
      * @param string $default value if not set
+     *
      * @return string
      */
     public function getParam($key, $default = "")
@@ -1288,7 +1365,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             return ($default);
         }
         $z = $this->param->Get($key, "z");
-        
+
         if ($z === "z") {
             if ($this->hasParent()) {
                 return $this->parent->GetParam($key, $default);
@@ -1298,10 +1375,12 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return ($default);
     }
+
     /**
      * create/update application parameter definition
+     *
      * @param array $tparam all parameter definition
-     * @param bool $update
+     * @param bool  $update
      */
     public function initAllParam($tparam, $update = false)
     {
@@ -1321,8 +1400,10 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
         }
     }
+
     /**
      * get all parameters values indexed by name
+     *
      * @return array all paramters values
      */
     public function getAllParam()
@@ -1332,21 +1413,24 @@ create sequence SEQ_ID_APPLICATION start 10;
             $list2 = $this->parent->GetAllParam();
             $list = array_merge($this->param->buffer, $list2);
         }
-        
+
         return ($list);
     }
+
     /**
      * initialize application description
      * from .app and _init.php configuration files
-     * @param string $name application name reference
-     * @param bool $update set to true when update application
+     *
+     * @param string $name   application name reference
+     * @param bool   $update set to true when update application
+     *
      * @return bool true if init is done, false if error
      */
     public function initApp($name, $update = false)
     {
         $this->log->info("Init : $name");
 
-        $appFilePath=sprintf("%s/%s/%s.app", $this->rootdir, $name, $name);
+        $appFilePath = sprintf("%s/%s/%s.app", $this->rootdir, $name, $name);
         if (file_exists($appFilePath)) {
             global $app_desc, $app_acl, $action_desc;
             // init global array
@@ -1389,7 +1473,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 $this->log->info("can't init $name");
                 return false;
             }
-            
+
             $action_desc = $action_desc_ini;
             // init acl
             $acl = new \Acl($this->dbaccess);
@@ -1401,9 +1485,11 @@ create sequence SEQ_ID_APPLICATION start 10;
             if ($this->childof != "") {
                 // init ACL & ACTION
                 // init acl
-                simpleQuery($this->dbaccess, sprintf("INSERT INTO acl (id,id_application,name,grant_level,description, group_default) SELECT nextval('seq_id_acl') as id, %d as id_application, acl.name, acl.grant_level, acl.description, acl.group_default from acl as acl,application as app where acl.id_application=app.id and app.name='%s' and acl.name NOT IN (SELECT acl.name from acl as acl, application as app  where id_application=app.id and app.name='%s')", $this->id, pg_escape_string($this->childof), pg_escape_string($this->name)));
+                DbManager::query(sprintf("INSERT INTO acl (id,id_application,name,grant_level,description, group_default) SELECT nextval('seq_id_acl') as id, %d as id_application, acl.name, acl.grant_level, acl.description, acl.group_default from acl as acl,application as app where acl.id_application=app.id and app.name='%s' and acl.name NOT IN (SELECT acl.name from acl as acl, application as app  where id_application=app.id and app.name='%s')",
+                    $this->id, pg_escape_string($this->childof), pg_escape_string($this->name)));
                 // init actions
-                simpleQuery($this->dbaccess, sprintf("INSERT INTO action (id, id_application, name, short_name, long_name,script,function,layout,available,acl,grant_level,openaccess,root,icon,toc,father,toc_order) SELECT nextval('seq_id_action') as id, %d as id_application, action.name, action.short_name, action.long_name, action.script, action.function, action.layout, action.available, action.acl, action.grant_level, action.openaccess, action.root, action.icon, action.toc, action.father, action.toc_order from action as action,application as app where action.id_application=app.id and app.name='%s' and action.name NOT IN (SELECT action.name from action as action, application as app  where action.id_application=app.id and app.name='%s')", $this->id, pg_escape_string($this->childof), pg_escape_string($this->name)));
+                DbManager::query(sprintf("INSERT INTO action (id, id_application, name, short_name, long_name,script,function,layout,available,acl,grant_level,openaccess,root,icon,toc,father,toc_order) SELECT nextval('seq_id_action') as id, %d as id_application, action.name, action.short_name, action.long_name, action.script, action.function, action.layout, action.available, action.acl, action.grant_level, action.openaccess, action.root, action.icon, action.toc, action.father, action.toc_order from action as action,application as app where action.id_application=app.id and app.name='%s' and action.name NOT IN (SELECT action.name from action as action, application as app  where action.id_application=app.id and app.name='%s')",
+                    $this->id, pg_escape_string($this->childof), pg_escape_string($this->name)));
                 $this->log->info(sprintf("Update Actions from %s parent", $this->childof));
                 $err = $this->_initACLWithGroupDefault();
                 if ($err != '') {
@@ -1412,7 +1498,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
             //----------------------------------
             // init application constant
-            $initAppFile=sprintf("%s/%s/%s_init.php", $this->rootdir, $name, $name);
+            $initAppFile = sprintf("%s/%s/%s_init.php", $this->rootdir, $name, $name);
             if (file_exists($initAppFile)) {
                 include($initAppFile);
                 if ($update) {
@@ -1447,7 +1533,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 global $app_const;
                 $this->InitAllParam(array_filter($app_const, "f_paramglog"), true);
             }
-            
+
             if ($this->id > 1) {
                 $this->SetParamDef("APPNAME", array(
                     "descr" => "$name application",
@@ -1466,20 +1552,22 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return true;
     }
+
     /**
      * update action/acl/param for application's childs
+     *
      * @throws \Dcp\Exception|\Exception
      */
     private function updateChildApplications()
     {
         $sql = sprintf("select id, name from application where childof ='%s'", pg_escape_string($this->name));
-        
-        simpleQuery($this->dbaccess, $sql, $childIds);
+
+        DbManager::query($sql, $childIds);
         foreach ($childIds as $childApp) {
             $childId = $childApp["id"];
             $childName = $childApp["name"];
             $a = new \Anakeen\Core\Internal\Application($this->dbaccess, $childId);
-            
+
             if ($a->isAffected()) {
                 try {
                     $a->set($childName, $noParent);
@@ -1492,6 +1580,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
         }
     }
+
     /**
      * update application description
      * from .app and _init.php configuration files
@@ -1501,8 +1590,10 @@ create sequence SEQ_ID_APPLICATION start 10;
         $name = $this->name;
         $this->InitApp($name, true);
     }
+
     /**
      * Update All available application
+     *
      * @see updateApp
      */
     public function updateAllApp()
@@ -1510,17 +1601,19 @@ create sequence SEQ_ID_APPLICATION start 10;
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->AddQuery("available = 'Y'");
         $allapp = $query->Query();
-        
+
         foreach ($allapp as $app) {
             $application = new \Anakeen\Core\Internal\Application($this->dbaccess, $app->id);
-            
+
             $application->Set($app->name, $this->parent);
             $application->UpdateApp();
         }
     }
+
     /**
      * delete application
      * database application reference are destroyed but application files are not removed from server
+     *
      * @return string
      */
     public function deleteApp()
@@ -1535,7 +1628,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             "id_application = {$this->id}"
         );
         $list = $query->Query();
-        
+
         if ($query->nb > 0) {
             /**
              * @var \Anakeen\Core\Internal\Action $v
@@ -1549,7 +1642,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
         }
         unset($query);
-        
+
         unset($list);
         // delete params
         $param = new \Anakeen\Core\Internal\Param($this->dbaccess);
@@ -1558,11 +1651,13 @@ create sequence SEQ_ID_APPLICATION start 10;
         $err = $this->Delete();
         return $err;
     }
+
     /**
      * translate text
      * use gettext catalog
      *
      * @param string $code text to translate
+     *
      * @return string
      */
     public static function text($code)
@@ -1572,10 +1667,14 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return _($code);
     }
+
     /**
      * Write default ACL when new \user is created
+     *
      * @TODO not used - to remove
+     *
      * @param int $iduser
+     *
      * @throws \Dcp\Db\Exception
      */
     public function updateUserAcl($iduser)
@@ -1584,14 +1683,14 @@ create sequence SEQ_ID_APPLICATION start 10;
         $query->AddQuery("available = 'Y'");
         $allapp = $query->Query();
         $acl = new \Acl($this->dbaccess);
-        
+
         foreach ($allapp as $v) {
             $permission = new \Permission($this->dbaccess);
             $permission->id_user = $iduser;
             $permission->id_application = $v->id;
-            
+
             $privileges = $acl->getDefaultAcls($v->id);
-            
+
             foreach ($privileges as $aclid) {
                 $permission->id_acl = $aclid;
                 if (($permission->id_acl > 0) && (!$permission->Exists($permission->id_user, $v->id))) {
@@ -1600,9 +1699,12 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
         }
     }
+
     /**
      * return id from name for an application
+     *
      * @param string $name
+     *
      * @return int (0 if not found)
      */
     public function getIdFromName($name)
@@ -1615,14 +1717,17 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         return 0;
     }
+
     /**
      * verify if application object has parent application
+     *
      * @return bool
      */
     public function hasParent()
     {
         return (is_object($this->parent) && ($this->parent !== $this));
     }
+
     /**
      * Initialize ACLs with group_default='Y'
      */
@@ -1630,7 +1735,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         $res = array();
         try {
-            simpleQuery($this->dbaccess, sprintf("SELECT * FROM acl WHERE id_application = %s AND group_default = 'Y'", $this->id), $res, false, false, true);
+            DbManager::query(sprintf("SELECT * FROM acl WHERE id_application = %s AND group_default = 'Y'", $this->id), $res, false, false);
         } catch (\Exception $e) {
             return $e->getMessage();
         }

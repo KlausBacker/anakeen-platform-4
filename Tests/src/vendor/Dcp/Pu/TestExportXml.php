@@ -7,11 +7,12 @@
 namespace Dcp\Pu;
 
 /**
- * @author Anakeen
+ * @author  Anakeen
  * @package Dcp\Pu
  */
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Core\DocManager;
 
 //require_once 'PU_testcase_dcp.php';
 
@@ -106,11 +107,13 @@ class TestExportXml extends TestCaseDcpCommonFamily
             } else {
                 $value = $attr->getAttribute($domAttr);
             }
-            $this->assertTrue($expectedValue[$ka] === $value, sprintf("incorrect value for attribute %s in %s document", $attrName, $docName));
+            $this->assertTrue(
+                $expectedValue[$ka] === $value,
+                sprintf("incorrect value for attribute %s in %s document ([%s] !== [%s])", $attrName, $docName, $expectedValue[$ka], $value)
+            );
             $ka++;
         }
     }
-
 
 
     /**
@@ -156,9 +159,11 @@ class TestExportXml extends TestCaseDcpCommonFamily
 
     /**
      * Test that exported documents have no param columns
+     *
      * @param string $archiveFile
-     * @param $needles
-     * @param $type
+     * @param        $needles
+     * @param        $type
+     *
      * @throws \Dcp\Exception
      * @dataProvider dataExportImage
      */

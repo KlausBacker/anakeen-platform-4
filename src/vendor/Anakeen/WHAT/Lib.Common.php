@@ -91,16 +91,7 @@ function mb_trim($string)
     return Anakeen\Core\Utils\Strings::mb_trim($string);
 }
 
-/**
- * increase limit if current limit is lesser than
- *
- * @deprecated use Anakeen\Core\Utils\System::setMaxExecutionTimeTo
- * @param int $limit new limit in seconds
- */
-function setMaxExecutionTimeTo($limit)
-{
-    Anakeen\Core\Utils\System::setMaxExecutionTimeTo($limit);
-}
+
 
 /**
  * get mail addr of a user

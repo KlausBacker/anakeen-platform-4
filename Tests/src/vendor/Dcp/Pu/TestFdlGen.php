@@ -5,8 +5,11 @@
 */
 
 namespace Dcp\Pu;
+
+use Anakeen\Core\DocManager;
+
 /**
- * @author Anakeen
+ * @author  Anakeen
  * @package Dcp\Pu
  */
 
@@ -16,6 +19,7 @@ class TestFdlGen extends TestCaseDcpCommonFamily
 {
     /**
      * import some documents
+     *
      * @static
      * @return array
      */
@@ -25,20 +29,34 @@ class TestFdlGen extends TestCaseDcpCommonFamily
             "PU_data_dcp_fdlgen.ods"
         );
     }
+
     /**
      * @dataProvider dataFdlGen
+     *
      * @param string $docName
      * @param string $expectValue
+     *
      * @return \Doc
      */
     public function testFdlGen($docId, $attrName, $expectedValue)
     {
         $doc = new_doc(self::$dbaccess, $docId);
-        $this->assertTrue($doc->isAlive() , sprintf("Document with id '%s' is not alive.", $docId));
+        $this->assertTrue($doc->isAlive(), sprintf("Document with id '%s' is not alive.", $docId));
         $value = $doc->getRawValue($attrName);
-        $this->assertEquals($expectedValue, $value, sprintf("Unexpected value '%s' for attribute '%s' (expected value is '%s').\nContent of 'FDLGEN/Class.Doc%d.php' = [[[\n%s\n]]]", $value, $attrName, $expectedValue, $doc->fromid, file_get_contents(sprintf(DEFAULT_PUBDIR.'/FDLGEN/Class.Doc%d.php', $doc->fromid))));
+        $this->assertEquals(
+            $expectedValue,
+            $value,
+            sprintf(
+                "Unexpected value '%s' for attribute '%s' (expected value is '%s').\nContent of 'FDLGEN/Class.Doc%d.php' = [[[\n%s\n]]]",
+                $value,
+                $attrName,
+                $expectedValue,
+                $doc->fromid,
+                file_get_contents(DocManager::getDocumentClassFilename($doc->fromname))
+            )
+        );
     }
-    
+
     public function dataFdlGen()
     {
         return array(
@@ -46,22 +64,22 @@ class TestFdlGen extends TestCaseDcpCommonFamily
                 "FDLGEN_EMPTY_1",
                 "ATTR_1",
                 "GOOD"
-            ) ,
+            ),
             array(
                 "FDLGEN_A_1",
                 "ATTR_1",
                 "A"
-            ) ,
+            ),
             array(
                 "FDLGEN_A_1",
                 "ATTR_2",
                 "AA"
-            ) ,
+            ),
             array(
                 "FDLGEN_A_1",
                 "ATTR_3",
                 "AAA"
-            ) ,
+            ),
             array(
                 "FDLGEN_A_1",
                 "ATTR_4",

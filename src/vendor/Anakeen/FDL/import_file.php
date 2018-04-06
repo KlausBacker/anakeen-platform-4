@@ -21,7 +21,7 @@ define("SEPCHAR", ';');
 
 function add_import_file(\Anakeen\Core\Internal\Action & $action, $fimport, $dirid = 0)
 {
-    setMaxExecutionTimeTo(300);
+    Anakeen\Core\Utils\System::setMaxExecutionTimeTo(300);
     if ($dirid == 0) {
         $dirid = GetHttpVars("dirid", 0); // directory to place imported doc
     }

@@ -6,7 +6,7 @@
 /**
  * Export Document from Folder
  *
- * @author Anakeen
+ * @author  Anakeen
  * @version $Id: exportfld.php,v 1.44 2009/01/12 13:23:11 eric Exp $
  * @package FDL
  * @subpackage
@@ -17,22 +17,34 @@
 include_once("FDL/exportfld.php");
 /**
  * Exportation as xml of documents from folder or searches
- * @param \Anakeen\Core\Internal\Action &$action current action
- * @global string $fldid Http var : folder identifier to export
- * @global string $wfile Http var : (Y|N) if Y export attached file export format will be tgz
- * @global string $flat Http var : (Y|N) if Y specid column is set with identifier of document
- * @global string $eformat Http var :  (X|Y) I:  Y: only one xml, X: zip by document with files
- * @global string $log Http var :  log file output
- * @global string $selection Http var :  JSON document selection object
- * @param string $afldid folder identifier to export
- * @param string $famid restrict to specific family for folder
- * @param SearchDoc $specSearch use this search instead folder
- * @param string $outputFile put result into this file instead download it
- * @param string $eformat X : zip (xml inside), Y: global xml file
- * @param string $eformat X : zip (xml inside), Y: global xml file
+ *
+ * @param \Anakeen\Core\Internal\Action &$action    current action
+ *
+ * @global string                       $fldid      Http var : folder identifier to export
+ * @global string                       $wfile      Http var : (Y|N) if Y export attached file export format will be tgz
+ * @global string                       $flat       Http var : (Y|N) if Y specid column is set with identifier of document
+ * @global string                       $eformat    Http var :  (X|Y) I:  Y: only one xml, X: zip by document with files
+ * @global string                       $log        Http var :  log file output
+ * @global string                       $selection  Http var :  JSON document selection object
+ *
+ * @param string                        $afldid     folder identifier to export
+ * @param string                        $famid      restrict to specific family for folder
+ * @param SearchDoc                     $specSearch use this search instead folder
+ * @param string                        $outputFile put result into this file instead download it
+ * @param string                        $eformat    X : zip (xml inside), Y: global xml file
+ * @param string                        $eformat    X : zip (xml inside), Y: global xml file
  */
-function exportxmlfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $famid = "", SearchDoc $specSearch = null, $outputFile = '', $eformat = "", $wident = 'Y', $aSelection = null, $toDownload = true)
-{
+function exportxmlfld(
+    \Anakeen\Core\Internal\Action & $action,
+    $aflid = "0",
+    $famid = "",
+    SearchDoc $specSearch = null,
+    $outputFile = '',
+    $eformat = "",
+    $wident = 'Y',
+    $aSelection = null,
+    $toDownload = true
+) {
     \Anakeen\Core\Utils\System::setMaxExecutionTimeTo(3600); // 60 minutes
     $dbaccess = $action->dbaccess;
     $fldid = $action->getArgument("id", $aflid);
@@ -62,9 +74,9 @@ function exportxmlfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $fa
         if (!file_exists($configxml)) {
             exportExit($action, sprintf(_("config file %s not found"), $configxml));
         }
-        
+
         $xml = @simplexml_load_file($configxml);
-        
+
         if ($xml === false) {
             exportExit($action, sprintf(_("parse error config file %s : %s"), $configxml, print_r(libxml_get_last_error(), true)));
         }
@@ -83,7 +95,7 @@ function exportxmlfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $fa
             $exportAttribute[$fam->id] = array();
             foreach ($family->attribute as $attribute) {
                 $aid = @current($attribute->attributes()->name);
-                
+
                 if (!$aid) {
                     exportExit($action, sprintf(_("Config file %s : attribute name not set"), $configxml));
                 }
@@ -107,7 +119,7 @@ function exportxmlfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $fa
         if (!$fldid) {
             exportExit($action, _("no export folder specified"));
         }
-        
+
         $fld = new_Doc($dbaccess, $fldid);
         if ($fldid && (!$fld->isAlive())) {
             exportExit($action, sprintf(_("folder/search %s not found"), $fldid));
@@ -127,17 +139,17 @@ function exportxmlfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $fa
         //$tdoc = getChildDoc($dbaccess, $fldid,"0","ALL",array(),$action->user->id,"TABLE",$famid);
         $s = new SearchDoc($dbaccess, $famid);
         $s->setObjectReturn();
-        
+
         $s->dirid = $fld->id;
     }
-    
+
     recordStatus($action, $exportId, _("Retrieve documents from database"));
     $s->search();
     $err = $s->searchError();
     if ($err) {
         exportExit($action, $err);
     }
-    
+
     $foutdir = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/exportxml");
     if (!mkdir($foutdir)) {
         exportExit($action, sprintf("cannot create directory %s", $foutdir));
@@ -149,7 +161,7 @@ function exportxmlfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $fa
     if ($flog && $fld) {
         fputs($flog, sprintf("EXPORT OPTION ID : %s <%s>\n", $fldid, $fld->getTitle()));
     }
-    
+
     $rc = $s->count();
     $c = 0;
     while ($doc = $s->getNextDoc()) {
@@ -173,7 +185,7 @@ function exportxmlfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $fa
             $suffix = sprintf("{%d}.xml", $doc->id);
             $maxBytesLen = MAX_FILENAME_LEN - strlen($suffix);
             $fname = sprintf("%s/%s%s", $foutdir, mb_strcut($ftitle, 0, $maxBytesLen, 'UTF-8'), $suffix);
-            
+
             $err = $doc->exportXml($xml, $wfile, $fname, $wident, $flat, $exportAttribute);
             // file_put_contents($fname,$doc->exportXml($wfile));
             if ($err) {
@@ -196,13 +208,13 @@ function exportxmlfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $fa
             }
         }
     }
-    
+
     if ($flog) {
         fputs($flog, sprintf("EXPORT COUNT OK : %d\n", $count));
         fputs($flog, sprintf("EXPORT END OK : %s\n", Doc::getTimeDate(0, true)));
         fclose($flog);
     }
-    
+
     if ($eformat == "X") {
         if ($outputFile) {
             $zipfile = $outputFile;
@@ -225,20 +237,22 @@ function exportxmlfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $fa
         } else {
             $xmlfile = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/xml") . ".xml";
         }
-        
+
         $fh = fopen($xmlfile, 'x');
         if ($fh === false) {
             exportExit($action, sprintf("%s (Error creating file '%s')", _("Xml file cannot be created"), htmlspecialchars($xmlfile)));
         }
         /* Print XML header */
-        $xml_head = <<<EOF
+        $xml_head
+            = <<<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <documents date="%s" author="%s" name="%s">
 
 EOF;
-        $xml_head = sprintf($xml_head, htmlspecialchars(strftime("%FT%T")), htmlspecialchars(\Anakeen\Core\Account::getDisplayName($action->user->id)), htmlspecialchars($exportname));
+        $xml_head = sprintf($xml_head, htmlspecialchars(strftime("%FT%T")), htmlspecialchars(\Anakeen\Core\Account::getDisplayName($action->user->id)),
+            htmlspecialchars($exportname));
         $xml_footer = "</documents>";
-        
+
         $ret = fwrite($fh, $xml_head);
         if ($ret === false) {
             exportExit($action, sprintf("%s (Error writing to file '%s')", _("Xml file cannot be created"), htmlspecialchars($xmlfile)));
@@ -252,35 +266,35 @@ EOF;
         if ($ret === false) {
             exportExit($action, sprintf("%s (Error chdir to '%s')", _("Xml file cannot be created"), htmlspecialchars($foutdir)));
         }
-        
+
         if ($s->count() > 0) {
             $cmd = sprintf("cat -- *xml | grep -v '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' >> %s", escapeshellarg($xmlfile));
             system($cmd, $ret);
         }
-        
+
         $ret = chdir($cwd);
         if ($ret === false) {
             exportExit($action, sprintf("%s (Error chdir to '%s')", _("Xml file cannot be created"), htmlspecialchars($cwd)));
         }
         /* Print XML footer */
         $ret = fseek($fh, 0, SEEK_END);
-        if ($ret === - 1) {
+        if ($ret === -1) {
             exportExit($action, sprintf("%s (Error fseek '%s')", _("Xml file cannot be created"), htmlspecialchars($xmlfile)));
         }
-        
+
         $ret = fwrite($fh, $xml_footer);
         if ($ret === false) {
             exportExit($action, sprintf("%s (Error writing to file '%s')", _("Xml file cannot be created"), htmlspecialchars($xmlfile)));
         }
         fflush($fh);
         fclose($fh);
-        
+
         if (is_file($xmlfile)) {
             system(sprintf("rm -fr %s", escapeshellarg($foutdir)));
-            
+
             if (!$outputFile) {
                 recordStatus($action, $exportId, _("Export done"), true);
-                
+
                 Http_DownloadFile($xmlfile, "$exportname.xml", "text/xml", false, false, true);
             }
         } else {
@@ -289,6 +303,7 @@ EOF;
     }
     recordStatus($action, $exportId, _("Export done"), true);
 }
+
 function exportExit(\Anakeen\Core\Internal\Action & $action, $err)
 {
     $log = $action->getArgument("log");

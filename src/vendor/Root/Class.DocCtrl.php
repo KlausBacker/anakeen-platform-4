@@ -341,7 +341,7 @@ class DocCtrl extends DocLDAP
         } // no ext acl
         $tgnum = array(); // list of virtual user/group
         foreach ($tacl as $v) {
-            if ($v["userid"] >= STARTIDVGROUP) {
+            if ($v["userid"] >= \VGroup::STARTIDVGROUP) {
                 $tgnum[] = $v["userid"];
             }
         }
@@ -361,7 +361,7 @@ class DocCtrl extends DocLDAP
         }
         $greenUid = array();
         foreach ($tacl as $v) {
-            if ($v["userid"] < STARTIDVGROUP) {
+            if ($v["userid"] < \VGroup::STARTIDVGROUP) {
             } else {
                 $aid = $tVgroup2attrid[$v["userid"]];
                 /**
@@ -448,7 +448,7 @@ class DocCtrl extends DocLDAP
             }
             $tgnum = array(); // list of virtual user/group
             foreach ($tacl as $v) {
-                if ($v["userid"] >= STARTIDVGROUP) {
+                if ($v["userid"] >= \VGroup::STARTIDVGROUP) {
                     $tgnum[] = $v["userid"];
                 }
             }
@@ -474,7 +474,7 @@ class DocCtrl extends DocLDAP
             }
             $greenUid = array();
             foreach ($tacl as $v) {
-                if ($v["userid"] < STARTIDVGROUP) {
+                if ($v["userid"] < \VGroup::STARTIDVGROUP) {
                     $tuid = array(
                         $v["userid"]
                     );

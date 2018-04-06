@@ -13,7 +13,6 @@
 /**
  */
 
-define("STARTIDVGROUP", 1000000);
 /**
  * Virtual groups
  * @package FDL
@@ -21,6 +20,7 @@ define("STARTIDVGROUP", 1000000);
  */
 class VGroup extends DbObj
 {
+    const STARTIDVGROUP=1000000;
     public $fields = array(
         "id",
         "num"

@@ -44,7 +44,7 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestImportProfil');
         $suite->addTestSuite('Dcp\Pu\TestImportCsvDocuments');
         $suite->addTestSuite('Dcp\Pu\TestImportCVDOC');
-     */   $suite->addTestSuite('Dcp\Pu\TestExportXml');
+        $suite->addTestSuite('Dcp\Pu\TestExportXml');
         $suite->addTestSuite('Dcp\Pu\TestExportCollection');
         $suite->addTestSuite('Dcp\Pu\TestExportRevision');
         $suite->addTestSuite('Dcp\Pu\TestGetParam');
@@ -54,12 +54,10 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestParseMethod');
         $suite->addTestSuite('Dcp\Pu\TestExportCsv');
         $suite->addTestSuite('Dcp\Pu\TestMask');
-        $suite->addTestSuite('Dcp\Pu\TestVolatileParam');
         $suite->addTestSuite('Dcp\Pu\TestApplicationParameters');
         $suite->addTestSuite('Dcp\Pu\TestApplicationParameterManeger');
-        $suite->addTestSuite('Dcp\Pu\TestParameterManager');
         $suite->addTestSuite('Dcp\Pu\TestVaultDiskStorage');
-        $suite->addTestSuite('Dcp\Pu\TestAutoloader');
+      */  $suite->addTestSuite('Dcp\Pu\TestAutoloader');
         $suite->addTestSuite('Dcp\Pu\TestGetText');
         $suite->addTestSuite('Dcp\Pu\TestFdlGen');
         $suite->addTestSuite('Dcp\Pu\TestDir');

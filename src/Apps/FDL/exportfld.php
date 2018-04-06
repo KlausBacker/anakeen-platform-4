@@ -120,7 +120,7 @@ function exportfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $famid
         $action->lay->template = json_encode($action->read($exportId));
         return;
     }
-    setMaxExecutionTimeTo(3600);
+    Anakeen\Core\Utils\System::setMaxExecutionTimeTo(3600);
     $exportCollection = new Dcp\ExportCollection();
     $exportCollection->setExportStatusId($exportId);
     $exportCollection->setOutputFormat($eformat);

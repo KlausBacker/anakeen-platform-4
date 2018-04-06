@@ -36,30 +36,20 @@ class TestAutoloader extends TestCaseDcpCommonFamily
     {
         return array(
             array(
-                "Account"
+                '\\SmartStructure\\Tst_goodfamal1'
             ) ,
             array(
-                "Doc"
+                "\\SmartStructure\\Tst_goodfamal2"
             ) ,
             array(
-                "DocHisto"
+                \SmartStructure\Base::class
             ) ,
             array(
-                "_TST_GOODFAMAL1"
+                \SmartStructure\Iuser::class
             ) ,
             array(
-                "_TST_GOODFAMAL2"
-            ) ,
-            array(
-                "_BASE"
-            ) ,
-            array(
-                "_IUSER"
-            ) ,
-            array(
-                "_DIR"
+                \SmartStructure\Dir::class
             )
         );
     }
 }
-?>

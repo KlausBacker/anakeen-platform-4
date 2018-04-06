@@ -6,6 +6,8 @@
 
 namespace Dcp;
 
+use Anakeen\Core\DocManager;
+
 class ExportXmlDocument
 {
     /**
@@ -13,23 +15,26 @@ class ExportXmlDocument
      */
     protected $document = null;
     protected $exportProfil = false;
-    
+
     protected $exportFiles = false;
     protected $exportDocumentNumericIdentiers = false;
     protected $attributeToExport = array();
     protected $includeSchemaReference = false;
     protected $structureAttributes;
-    
+
     protected $verifyAttributeAccess = true;
     protected $writeToFile = false;
+
     /**
      * If true, attribute with "I" visibility are not returned
+     *
      * @param boolean $verifyAttributeAccess
      */
     public function setVerifyAttributeAccess($verifyAttributeAccess)
     {
         $this->verifyAttributeAccess = $verifyAttributeAccess;
     }
+
     /**
      * @param mixed $structureAttributes
      */
@@ -37,6 +42,7 @@ class ExportXmlDocument
     {
         $this->structureAttributes = $structureAttributes;
     }
+
     /**
      * @param array $attributeToExport
      */
@@ -44,6 +50,7 @@ class ExportXmlDocument
     {
         $this->attributeToExport = $attributeToExport;
     }
+
     /**
      * @param boolean $exportDocumentNumericIdentiers
      */
@@ -51,6 +58,7 @@ class ExportXmlDocument
     {
         $this->exportDocumentNumericIdentiers = $exportDocumentNumericIdentiers;
     }
+
     /**
      * @param boolean $exportFiles
      */
@@ -58,6 +66,7 @@ class ExportXmlDocument
     {
         $this->exportFiles = $exportFiles;
     }
+
     /**
      * @param boolean $includeSchemaReference
      */
@@ -65,6 +74,7 @@ class ExportXmlDocument
     {
         $this->includeSchemaReference = $includeSchemaReference;
     }
+
     /**
      * @param \Doc $document
      */
@@ -72,7 +82,7 @@ class ExportXmlDocument
     {
         $this->document = $document;
     }
-    
+
     public function getXml()
     {
         if ($this->exportFiles) {
@@ -80,18 +90,19 @@ class ExportXmlDocument
         }
         return $this->export();
     }
-    
+
     public function writeTo($filePath)
     {
         $this->export($filePath);
     }
+
     protected function export($outfile = "")
     {
         $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/exportxml.xml", DEFAULT_PUBDIR));
         //$lay=&$this->document->lay;
         $lay->set("famname", strtolower($this->document->fromname));
         $lay->set("id", ($this->exportDocumentNumericIdentiers ? $this->document->id : ''));
-        if ($this->document->locked != - 1) {
+        if ($this->document->locked != -1) {
             $lay->set("name", $this->document->name);
         } else {
             $lay->set("name", "");
@@ -104,7 +115,7 @@ class ExportXmlDocument
         $lay->set("flat", (!$this->includeSchemaReference || !$this->structureAttributes));
         $la = $this->document->GetFieldAttributes();
         $level1 = array();
-        
+
         foreach ($la as $k => $v) {
             if ((!$v) || ($v->getOption("autotitle") == "yes") || ($v->usefor == 'Q')) {
                 unset($la[$k]);
@@ -112,9 +123,11 @@ class ExportXmlDocument
         }
         $option = new \ExportOptionAttribute();
         $option->outFile = $outfile;
-        
+
         foreach ($la as $k => & $v) {
-            if (($v->id != \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD) && ($v->type == 'frame' || $v->type == "tab") && ((!$v->fieldSet) || $v->fieldSet->id == \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD)) {
+            if (($v->id != \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD) && ($v->type == 'frame' || $v->type == "tab")
+                && ((!$v->fieldSet)
+                    || $v->fieldSet->id == \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD)) {
                 $level1[] = array(
                     "level" => $this->getStructXmlValue($v)
                 );
@@ -130,12 +143,12 @@ class ExportXmlDocument
                     throw new Exception("EXPC0101", $outfile);
                 }
                 $pos = strpos($xmlcontent, "[FILE64");
-                
+
                 $bpos = 0;
                 while ($pos !== false) {
                     if (fwrite($fo, substr($xmlcontent, $bpos, $pos - $bpos))) {
                         $bpos = strpos($xmlcontent, "]", $pos) + 1;
-                        
+
                         $filepath = substr($xmlcontent, $pos + 8, ($bpos - $pos - 9));
                         /* If you want to encode a large file, you should encode it in chunks that
                                             are a multiple of 57 bytes.  This ensures that the base64 lines line up
@@ -164,11 +177,12 @@ class ExportXmlDocument
         }
         return '';
     }
+
     /**
      * export values as xml fragment
      *
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $attribute
-     * @param int $indexValue (in case of multiple value)
+     * @param int                                          $indexValue (in case of multiple value)
      *
      * @return string
      */
@@ -178,8 +192,8 @@ class ExportXmlDocument
         if ($this->verifyAttributeAccess && !VerifyAttributeAccess::isAttributeAccessGranted($this->document, $attribute)) {
             return sprintf("<%s granted=\"false\"/>", $attribute->id);
         }
-        
-        if ($indexValue > - 1) {
+
+        if ($indexValue > -1) {
             $v = $doc->getMultipleRawValues($attribute->id, null, $indexValue);
         } else {
             $v = $doc->getRawValue($attribute->id, null);
@@ -201,8 +215,6 @@ class ExportXmlDocument
                 $v = stringDateToIso($v);
                 return sprintf("<%s>%s</%s>", $attribute->id, $v, $attribute->id);
             case 'array':
-                $la = $doc->getAttributes();
-                $xmlvalues = array();
                 $av = $doc->getArrayRawValues($attribute->id);
                 $axml = array();
                 foreach ($av as $k => $col) {
@@ -216,11 +228,9 @@ class ExportXmlDocument
                     }
                     $axml[] = sprintf("<%s>%s</%s>", $attribute->id, implode("\n", $xmlvalues), $attribute->id);
                 }
-                $indexValue = - 1; // restore initial index
                 return implode("\n", $axml);
             case 'image':
             case 'file':
-                
                 if (preg_match(PREGEXPFILE, $v, $reg)) {
                     if ($this->exportDocumentNumericIdentiers) {
                         $vid = $reg[2];
@@ -233,12 +243,13 @@ class ExportXmlDocument
                     $href = $base . str_replace('&', '&amp;', $doc->getFileLink($attribute->id));
                     if ($this->exportFiles) {
                         $path = $doc->vault_filename_fromvalue($v, true);
-                        
+
                         if (is_file($path)) {
                             if ($this->writeToFile) {
                                 return sprintf('<%s vid="%s" mime="%s" title="%s">[FILE64:%s]</%s>', $attribute->id, $vid, $mime, $name, $path, $attribute->id);
                             } else {
-                                return sprintf('<%s vid="%s" mime="%s" title="%s">%s</%s>', $attribute->id, $vid, $mime, $name, base64_encode(file_get_contents($path)), $attribute->id);
+                                return sprintf('<%s vid="%s" mime="%s" title="%s">%s</%s>', $attribute->id, $vid, $mime, $name, base64_encode(file_get_contents($path)),
+                                    $attribute->id);
                             }
                         } else {
                             return sprintf('<!-- file not found --><%s vid="%s" mime="%s" title="%s"/>', $attribute->id, $vid, $mime, $name, $attribute->id);
@@ -249,31 +260,31 @@ class ExportXmlDocument
                 } else {
                     return sprintf("<%s>%s</%s>", $attribute->id, $v, $attribute->id);
                 }
-                // no break
+            // no break
             case 'thesaurus':
-            case 'Account32':
+            case 'account':
             case 'docid':
                 if (!$v) {
                     return sprintf('<%s xsi:nil="true"/>', $attribute->id);
                 } else {
-                    $info = getTDoc($doc->dbaccess, $v, array(), array(
+                    $info = DocManager::getRawData($v, array(
                         "title",
                         "name",
                         "id",
                         "revision",
                         "initid",
                         "locked"
-                    ));
-                    
+                    ), false);
+
                     if ($info) {
                         $docid = $info["id"];
                         $docRevOption = $attribute->getOption("docrev", "latest");
                         $latestTitle = ($docRevOption === "latest");
-                        
+
                         $revAttr = "";
                         if ($latestTitle) {
                             $docid = $info["initid"];
-                            if ($info["locked"] == - 1) {
+                            if ($info["locked"] == -1) {
                                 $info["title"] = $doc->getLastTitle($docid);
                             }
                         } elseif ($docRevOption === "fixed") {
@@ -281,15 +292,17 @@ class ExportXmlDocument
                         } elseif (preg_match('/^state\(([^\)]+)\)/', $docRevOption, $matches)) {
                             $revAttr = sprintf(' revision="state:%s" ', htmlspecialchars($matches[1], ENT_QUOTES));
                         }
-                        
+
                         if ($info["name"]) {
                             $info["name"] = htmlspecialchars($info["name"], ENT_QUOTES);
-                            
+
                             if ($this->exportDocumentNumericIdentiers) {
-                                return sprintf('<%s id="%s" name="%s"%s>%s</%s>', $attribute->id, $docid, $info["name"], $revAttr, $attribute->encodeXml($info["title"]), $attribute->id);
+                                return sprintf('<%s id="%s" name="%s"%s>%s</%s>', $attribute->id, $docid, $info["name"], $revAttr, $attribute->encodeXml($info["title"]),
+                                    $attribute->id);
                             } else {
                                 if ($revAttr) {
-                                    \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : importation not support revision links without identifiers"), $doc->getTitle(), $attribute->getLabel()));
+                                    \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : importation not support revision links without identifiers"),
+                                        $doc->getTitle(), $attribute->getLabel()));
                                 }
                                 return sprintf('<%s name="%s"%s>%s</%s>', $attribute->id, $info["name"], $revAttr, $attribute->encodeXml($info["title"]), $attribute->id);
                             }
@@ -328,12 +341,12 @@ class ExportXmlDocument
                         }
                     }
                 }
-                // no break
+            // no break
             default:
                 return sprintf("<%s>%s</%s>", $attribute->id, $attribute->encodeXml($v), $attribute->id);
-            }
+        }
     }
-    
+
     protected function getXmlValue(\Anakeen\Core\SmartStructure\BasicAttribute $attribute, $indexValue)
     {
         if ($attribute->isNormal === true) {
@@ -348,15 +361,16 @@ class ExportXmlDocument
             return $this->getStructXmlValue($attribute, $indexValue);
         }
     }
+
     /**
      * export values as xml fragment
      *
      * @param \Anakeen\Core\SmartStructure\FieldSetAttribute $structAttribute
-     * @param int $indexValue
+     * @param int                                            $indexValue
      *
      * @return string
      */
-    protected function getStructXmlValue(\Anakeen\Core\SmartStructure\FieldSetAttribute $structAttribute, $indexValue = - 1)
+    protected function getStructXmlValue(\Anakeen\Core\SmartStructure\FieldSetAttribute $structAttribute, $indexValue = -1)
     {
         $doc = $this->document;
         $la = $doc->getAttributes();
@@ -365,36 +379,48 @@ class ExportXmlDocument
             /**
              * @var \Anakeen\Core\SmartStructure\NormalAttribute $v
              */
-            if ($v->fieldSet && $v->fieldSet->id == $structAttribute->id && (empty($this->attributeToExport[$doc->fromid]) || in_array($v->id, $this->attributeToExport[$doc->fromid]))) {
+            if ($v->fieldSet && $v->fieldSet->id == $structAttribute->id
+                && (empty($this->attributeToExport[$doc->fromid])
+                    || in_array($v->id, $this->attributeToExport[$doc->fromid]))) {
                 $value = $this->getXmlValue($v, $indexValue);
                 if ($v->type == "htmltext" && $this->exportFiles) {
                     $value = $v->prepareHtmltextForExport($value);
                     if ($this->exportFiles) {
-                        $value = preg_replace_callback('/(&lt;img.*?)src="(((?=.*docid=(.*?)&)(?=.*attrid=(.*?)&)(?=.*index=(-?[0-9]+)))|(file\/(.*?)\/[0-9]+\/(.*?)\/(-?[0-9]+))).*?"/', function ($matches) {
-                            if (isset($matches[7])) {
-                                $docid = $matches[8];
-                                $attrid = $matches[9];
-                                $index = $matches[10] == "-1" ? 0 : $matches[10];
-                            } else {
-                                $docid = $matches[4];
-                                $index = $matches[6] == "-1" ? 0 : $matches[6];
-                                $attrid = $matches[5];
-                            }
-                            $docimg = new_Doc(getDbAccess(), $docid);
-                            $attr = $docimg->getAttribute($attrid);
-                            $tfiles = $docimg->vault_properties($attr);
-                            $f = $tfiles[$index];
-                            $f["name"] = htmlspecialchars($f["name"], ENT_QUOTES);
-                            if (is_file($f["path"])) {
-                                if ($this->writeToFile) {
-                                    return sprintf('%s title="%s" src="data:%s;base64,[FILE64:%s]"', "\n" . $matches[1], unaccent($f["name"]), $f["mime_s"], $f["path"]);
+                        $value = preg_replace_callback(
+                            '/(&lt;img.*?)src="(((?=.*docid=(.*?)&)(?=.*attrid=(.*?)&)(?=.*index=(-?[0-9]+)))|(file\/(.*?)\/[0-9]+\/(.*?)\/(-?[0-9]+))).*?"/',
+                            function ($matches) {
+                                if (isset($matches[7])) {
+                                    $docid = $matches[8];
+                                    $attrid = $matches[9];
+                                    $index = $matches[10] == "-1" ? 0 : $matches[10];
                                 } else {
-                                    return sprintf('%s title="%s" src="data:%s;base64,%s"', "\n" . $matches[1], unaccent($f["name"]), $f["mime_s"], base64_encode(file_get_contents($f["path"])));
+                                    $docid = $matches[4];
+                                    $index = $matches[6] == "-1" ? 0 : $matches[6];
+                                    $attrid = $matches[5];
                                 }
-                            } else {
-                                return sprintf('%s title="%s" src="data:%s;base64,file not found"', "\n" . $matches[1], unaccent($f["name"]), $f["mime_s"]);
-                            }
-                        }, $value);
+                                $docimg = DocManager::getDocument($docid);
+                                $attr = $docimg->getAttribute($attrid);
+                                $tfiles = $docimg->vault_properties($attr);
+                                $f = $tfiles[$index];
+                                $f["name"] = htmlspecialchars($f["name"], ENT_QUOTES);
+                                if (is_file($f["path"])) {
+                                    if ($this->writeToFile) {
+                                        return sprintf('%s title="%s" src="data:%s;base64,[FILE64:%s]"', "\n" . $matches[1], unaccent($f["name"]), $f["mime_s"], $f["path"]);
+                                    } else {
+                                        return sprintf(
+                                            '%s title="%s" src="data:%s;base64,%s"',
+                                            "\n" . $matches[1],
+                                            unaccent($f["name"]),
+                                            $f["mime_s"],
+                                            base64_encode(file_get_contents($f["path"]))
+                                        );
+                                    }
+                                } else {
+                                    return sprintf('%s title="%s" src="data:%s;base64,file not found"', "\n" . $matches[1], unaccent($f["name"]), $f["mime_s"]);
+                                }
+                            },
+                            $value
+                        );
                     }
                 }
                 $xmlvalues[] = $value;

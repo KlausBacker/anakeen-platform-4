@@ -1,19 +1,18 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 namespace Dcp;
+
+use Anakeen\Core\DbManager;
+use Anakeen\Core\DocManager;
 
 class ExportDocument
 {
     const useAclDocumentType = ":useDocument";
     const useAclAccountType = ":useAccount";
-    
+
     protected $alreadyExported = array();
     protected $lattr;
-    protected $prevfromid = - 1;
+    protected $prevfromid = -1;
     protected $familyName = '';
     protected $csvEnclosure = '"';
     protected $csvSeparator = ',';
@@ -22,27 +21,32 @@ class ExportDocument
     protected $attributeGrants = array();
     protected $noAccessText = \FormatCollection::noAccessText;
     protected $exportAccountType = self::useAclAccountType;
-    
+
     private $logicalName = [];
-    
+
     private $logins = [];
+
     /**
      * Use when cannot access attribut value
      * Due to visibility "I"
+     *
      * @param string $noAccessText
      */
     public function setNoAccessText($noAccessText)
     {
         $this->noAccessText = $noAccessText;
     }
+
     /**
      * If true, attribute with "I" visibility are not returned
+     *
      * @param boolean $verifyAttributeAccess
      */
     public function setVerifyAttributeAccess($verifyAttributeAccess)
     {
         $this->verifyAttributeAccess = $verifyAttributeAccess;
     }
+
     /**
      * @param string $encoding
      */
@@ -50,6 +54,7 @@ class ExportDocument
     {
         $this->encoding = $encoding;
     }
+
     /**
      * @param string $csvSeparator
      */
@@ -57,6 +62,7 @@ class ExportDocument
     {
         $this->csvSeparator = $csvSeparator;
     }
+
     /**
      * @param string $csvEnclosure
      */
@@ -64,11 +70,12 @@ class ExportDocument
     {
         $this->csvEnclosure = $csvEnclosure;
     }
-    
+
     public function reset()
     {
         $this->alreadyExported = array();
     }
+
     /**
      * @return array
      */
@@ -83,7 +90,7 @@ class ExportDocument
         }
         return $htmlTransMapping;
     }
-    
+
     protected function getUserLogin($uid)
     {
         if (!isset($this->logins[$uid])) {
@@ -92,6 +99,7 @@ class ExportDocument
         }
         return $this->logins[$uid];
     }
+
     protected function getUserLogicalName($uid)
     {
         if (!isset($this->logicalName[$uid])) {
@@ -100,8 +108,9 @@ class ExportDocument
         }
         return $this->logicalName[$uid];
     }
+
     /**
-     * @param resource $fout
+     * @param resource   $fout
      * @param string|int $docid
      */
     public function exportProfil($fout, $docid)
@@ -118,20 +127,20 @@ class ExportDocument
         } else {
             $name = $doc->id;
         }
-        
-        $dbaccess = getDbAccess();
+
+        $dbaccess = DbManager::getDbAccess();
         $q = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocPerm::class);
         $q->AddQuery(sprintf("docid=%d", $doc->profid));
         $q->order_by = "userid";
         $acls = $q->Query(0, 0, "TABLE");
-        
+
         $tAcls = array();
         if ($acls) {
             foreach ($acls as $va) {
                 $up = $va["upacl"];
                 $uid = $va["userid"];
-                
-                if ($uid >= STARTIDVGROUP) {
+
+                if ($uid >= \VGroup::STARTIDVGROUP) {
                     $qvg = new \Anakeen\Core\Internal\QueryDb($dbaccess, \VGroup::class);
                     $qvg->AddQuery(sprintf("num=%d", $uid));
                     $tvu = $qvg->Query(0, 1, "TABLE");
@@ -171,10 +180,10 @@ class ExportDocument
             $extAcls = array_keys($doc->extendedAcls);
             $aclCond = \Anakeen\Core\DbManager::getSqlOrCond($extAcls, "acl");
             simpleQuery($dbaccess, sprintf("select * from docpermext where docid=%d and %s order by userid", $doc->profid, $aclCond), $eAcls);
-            
+
             foreach ($eAcls as $kAcl => $aAcl) {
                 $uid = $aAcl["userid"];
-                if ($uid >= STARTIDVGROUP) {
+                if ($uid >= \VGroup::STARTIDVGROUP) {
                     $qvg = new \Anakeen\Core\Internal\QueryDb($dbaccess, \VGroup::class);
                     $qvg->AddQuery(sprintf("num=%d", $uid));
                     $tvu = $qvg->Query(0, 1, "TABLE");
@@ -186,7 +195,7 @@ class ExportDocument
                     }
                 }
                 if ($uid) {
-                    $tAcls["e".$kAcl . "-" . $uid] = ["uid" => $uid, "acl" => $aAcl["acl"]];
+                    $tAcls["e" . $kAcl . "-" . $uid] = ["uid" => $uid, "acl" => $aAcl["acl"]];
                 }
             }
         }
@@ -205,6 +214,7 @@ class ExportDocument
             \Dcp\WriteCsv::fput($fout, $data);
         }
     }
+
     /**
      * @deprecated rename to  csvExport
      */
@@ -212,6 +222,7 @@ class ExportDocument
     {
         $this->csvExport($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
     }
+
     public function csvExport(\Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
     {
         if (!$doc->isAffected()) {
@@ -221,11 +232,11 @@ class ExportDocument
             return;
         }
         $this->alreadyExported[] = $doc->id;
-        
+
         \Dcp\WriteCsv::$separator = $this->csvSeparator;
         \Dcp\WriteCsv::$enclosure = $this->csvEnclosure;
         \Dcp\WriteCsv::$encoding = ($wutf8) ? "utf-8" : "iso8859-15";
-        
+
         $efldid = '';
         $dbaccess = $doc->dbaccess;
         if ($this->prevfromid != $doc->fromid) {
@@ -243,7 +254,7 @@ class ExportDocument
             }
             $this->lattr = $adoc->GetExportAttributes($wfile, $nopref);
             $data = array();
-            
+
             if ($eformat == "I") {
                 $data = array(
                     "//FAM",
@@ -277,10 +288,10 @@ class ExportDocument
             $this->prevfromid = $doc->fromid;
         }
         $docName = '';
-        if ($doc->name != "" && $doc->locked != - 1) {
+        if ($doc->name != "" && $doc->locked != -1) {
             $docName = $doc->name;
         } elseif ($wprof) {
-            if ($doc->locked != - 1) {
+            if ($doc->locked != -1) {
                 $err = $doc->setNameAuto(true);
                 $docName = $doc->name;
             }
@@ -302,7 +313,7 @@ class ExportDocument
                 $data[] = $this->noAccessText;
                 continue;
             }
-            
+
             if ($eformat == 'F') {
                 if ($this->csvEnclosure) {
                     $value = str_replace(array(
@@ -351,7 +362,8 @@ class ExportDocument
                                     if ($docrevOption === "latest") {
                                         $tnbr[] = $n;
                                     } else {
-                                        \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name"), $doc->getTitle(), $attr->getLabel()));
+                                        \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name"),
+                                            $doc->getTitle(), $attr->getLabel()));
                                         $tnbr[] = $brid;
                                     }
                                 } else {
@@ -367,7 +379,8 @@ class ExportDocument
                             if ($docrevOption === "latest") {
                                 $value = $n;
                             } else {
-                                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name"), $doc->getTitle(), $attr->getLabel()));
+                                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name"),
+                                    $doc->getTitle(), $attr->getLabel()));
                             }
                         }
                     }
@@ -375,30 +388,38 @@ class ExportDocument
             } elseif ($attr->type == "htmltext") {
                 $value = $attr->prepareHtmltextForExport($value);
                 if ($wfile) {
-                    $value = preg_replace_callback('/(<img.*?src=")(((?=.*docid=(.*?)&)(?=.*attrid=(.*?)&)(?=.*index=(-?[0-9]+)))|(file\/(.*?)\/[0-9]+\/(.*?)\/(-?[0-9]+))).*?"/', function ($matches) use (&$ef) {
-                        if (isset($matches[7])) {
-                            $docid = $matches[8];
-                            $attrid = $matches[9];
-                            $index = $matches[10] == "-1" ? 0 : $matches[10];
-                        } else {
-                            $docid = $matches[4];
-                            $index = $matches[6] == "-1" ? 0 : $matches[6];
-                            $attrid = $matches[5];
-                        }
-                        $doc = \new_Doc(getDbAccess(), $docid);
-                        $attr = $doc->getAttribute($attrid);
-                        $tfiles = $doc->vault_properties($attr);
-                        $f = $tfiles[$index];
-                        
-                        $ldir = $doc->id . '-' . preg_replace('/[^a-zA-Z0-9_.-]/', '_', unaccent($doc->title)) . "_D";
-                        $fname = $ldir . '/' . unaccent($f["name"]);
-                        $ef[$fname] = array(
-                            "path" => $f["path"],
-                            "ldir" => $ldir,
-                            "fname" => unaccent($f["name"])
-                        );
-                        return $matches[1] . "file://" . $fname . '"';
-                    }, $value);
+                    $value = preg_replace_callback(
+                        '/(<img.*?src=")(((?=.*docid=(.*?)&)(?=.*attrid=(.*?)&)(?=.*index=(-?[0-9]+)))|(file\/(.*?)\/[0-9]+\/(.*?)\/(-?[0-9]+))).*?"/',
+                        function ($matches) use (&$ef) {
+                            if (isset($matches[7])) {
+                                $docid = $matches[8];
+                                $attrid = $matches[9];
+                                $index = $matches[10] == "-1" ? 0 : $matches[10];
+                            } else {
+                                $docid = $matches[4];
+                                $index = $matches[6] == "-1" ? 0 : $matches[6];
+                                $attrid = $matches[5];
+                            }
+
+                            $doc = DocManager::getDocument($docid);
+                            if ($doc) {
+                                $attr = $doc->getAttribute($attrid);
+                                $tfiles = $doc->vault_properties($attr);
+                                $f = $tfiles[$index];
+
+                                $ldir = $doc->id . '-' . preg_replace('/[^a-zA-Z0-9_.-]/', '_', unaccent($doc->title)) . "_D";
+                                $fname = $ldir . '/' . unaccent($f["name"]);
+                                $ef[$fname] = array(
+                                    "path" => $f["path"],
+                                    "ldir" => $ldir,
+                                    "fname" => unaccent($f["name"])
+                                );
+                                return $matches[1] . "file://" . $fname . '"';
+                            }
+                            return "";
+                        },
+                        $value
+                    );
                 }
             } else {
                 $trans = $this->getTrans();
@@ -441,8 +462,10 @@ class ExportDocument
             }
         }
     }
+
     /**
      * @param string $exportAccountType
+     *
      * @throws Exception
      */
     public function setExportAccountType($exportAccountType)
