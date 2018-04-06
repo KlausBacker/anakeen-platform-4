@@ -237,7 +237,7 @@ class ImportSingleDocument
 
         if ($tmpDoc->id > 0) {
             $this->doc = \Anakeen\Core\DocManager::getDocument($tmpDoc->id);
-            if (!$this->doc->isAffected()) {
+            if (!$this->doc) {
                 $this->doc = $tmpDoc;
             }
         } else {

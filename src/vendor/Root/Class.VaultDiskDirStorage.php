@@ -36,7 +36,7 @@ class VaultDiskDirStorage extends \Anakeen\Core\Internal\DbObj
     public $dbtable = "vaultdiskdirstorage";
     public $order_by = "";
     public $seq = "seq_id_vaultdiskdirstorage";
-    public $sqlcreate_tmpl = <<<'SQL'
+    public $sqlcreate = <<<'SQL'
 
            create table vaultdiskdirstorage  ( id_dir     int not null,
                                  primary key (id_dir),

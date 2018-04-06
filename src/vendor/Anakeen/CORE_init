@@ -80,7 +80,7 @@ if [ "$1" = "I" ] ; then
     "$wpub"/ank.php --script=updateclass --class=Group
     "$wpub"/ank.php --script=updateclass --class=Permission
     "$wpub"/ank.php --script=updateclass --class=Acl
-    "$wpub"/ank.php --script=updateclass --class=Session
+    "$wpub"/ank.php --script=updateclass --class='Anakeen\Core\Internal\Session'
     "$wpub"/ank.php --script=updateclass --class=UserToken
 
 
