@@ -6,9 +6,6 @@
 
 namespace Dcp\Mail;
 
-class MailAddrParserException extends \Exception
-{
-}
 /**
  * Class MailAddrParser
  *
@@ -51,6 +48,7 @@ class MailAddrParser
     const ST_lookingForAngleMail = 'ST_lookingForAngleMail';
     const ST_lookingForSeparator = 'ST_lookingForSeparator';
     const ST_end = 'ST_end';
+
     /**
      * Set laxist mode and do not throw exceptions. Misunderstood
      * elements will be skipped.
@@ -63,6 +61,7 @@ class MailAddrParser
     {
         $this->lax = ($lax === true);
     }
+
     /**
      * Print debugging information with PHP's error_log()
      *
@@ -74,6 +73,7 @@ class MailAddrParser
     {
         $this->debug = ($debug === true);
     }
+
     /**
      * Set Multi-Byte string encoding.
      *
@@ -85,6 +85,7 @@ class MailAddrParser
     {
         $this->encoding = $encoding;
     }
+
     /**
      * Check if we are after the end of the string.
      *
@@ -94,6 +95,7 @@ class MailAddrParser
     {
         return ($this->p >= mb_strlen($this->s, $this->encoding));
     }
+
     /**
      * Check if next char would be after the end of the string.
      *
@@ -103,6 +105,7 @@ class MailAddrParser
     {
         return (($this->p + 1) >= mb_strlen($this->s, $this->encoding));
     }
+
     /**
      * Peek char at current position
      *
@@ -112,6 +115,7 @@ class MailAddrParser
     {
         return mb_substr($this->s, $this->p, 1, $this->encoding);
     }
+
     /**
      * Advance the position in the string by 1 char.
      */
@@ -119,20 +123,24 @@ class MailAddrParser
     {
         $this->p++;
     }
+
     /**
      * Check if the given char is a space char.
      *
      * @param $c
+     *
      * @return int
      */
     private function isSpace($c)
     {
         return preg_match('/^\s*$/u', $c);
     }
+
     /**
      * Parse the given string and extract \Dcp\Mail\Address objects
      *
      * @param $s
+     *
      * @return \Dcp\Mail\Address[]
      * @throws MailAddrParserException
      */
@@ -164,7 +172,7 @@ class MailAddrParser
             switch ($this->state) {
                 case self::ST_lookingForStartOfMail:
                     if ($this->esc) {
-                        $name.= $c;
+                        $name .= $c;
                         $this->esc = false;
                         $this->next();
                         if ($this->eos()) {
@@ -208,7 +216,7 @@ class MailAddrParser
 
                 case self::ST_inMail:
                     if ($this->esc) {
-                        $name.= $c;
+                        $name .= $c;
                         $this->esc = false;
                     } elseif ($c == '"') {
                         $this->state = self::ST_inQuotedDisplayName;
@@ -217,7 +225,7 @@ class MailAddrParser
                     } elseif ($c == ',' || $this->eosNext()) {
                         if ($c != ',') {
                             // Append the last char and flush the mail
-                            $name.= $c;
+                            $name .= $c;
                         }
                         $mail = trim($name);
                         if ($this->debug) {
@@ -232,7 +240,7 @@ class MailAddrParser
                             $this->state = self::ST_lookingForStartOfMail;
                         }
                     } else {
-                        $name.= $c;
+                        $name .= $c;
                     }
                     $this->next();
                     break;
@@ -240,11 +248,11 @@ class MailAddrParser
                 case self::ST_inQuotedDisplayName:
                     if ($this->esc) {
                         $this->esc = false;
-                        $name.= $c;
+                        $name .= $c;
                     } elseif ($c == '"') {
                         $this->state = self::ST_inMail;
                     } else {
-                        $name.= $c;
+                        $name .= $c;
                     }
                     $this->next();
                     break;
@@ -294,7 +302,7 @@ class MailAddrParser
                             throw new MailAddrParserException(sprintf("Unnexpected char '%s' at position %d: '%s'", $c, $this->p, $s));
                         }
                     } else {
-                        $mail.= $c;
+                        $mail .= $c;
                     }
                     $this->next();
                     break;
@@ -312,3 +320,4 @@ class MailAddrParser
         return $addresses;
     }
 }
+

@@ -15,7 +15,7 @@ class ErrorCodeVAULT
      * @errorCode File cannot be stored to vault
      * @see VaultManager::storeFile
      */
-    const VAULT0001 = 'Cannot store file : %s';
+    const VAULT0001 = 'Cannot store file "%s" : %s';
     /**
      * @errorCode Temporary file cannot be stored to vault
      * @see VaultManager::storeTemporaryFile

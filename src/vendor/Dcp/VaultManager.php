@@ -45,7 +45,7 @@ class VaultManager
     {
         $err = self::getVault()->store($filepath, $public_access, $vid);
         if ($err) {
-            throw new Exception("VAULT0001", $err);
+            throw new Exception("VAULT0001", $filepath, $err);
         }
         if ($ftitle != "") {
             self::getVault()->rename($vid, $ftitle);

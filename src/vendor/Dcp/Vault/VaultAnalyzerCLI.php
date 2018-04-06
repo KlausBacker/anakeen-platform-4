@@ -1,28 +1,19 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 namespace Dcp\Vault;
-
-require_once 'WHAT/Lib.Common.php';
-
-class VaultAnalyzerCLIException extends \Dcp\Exception
-{
-}
 
 class VaultAnalyzerCLI
 {
     public static function main(\Anakeen\Core\Internal\Action & $action)
     {
         $opts = array();
-        $usage = new \ApiUsage($action);
+        $usage = new \ApiUsage();
         $usage->setDefinitionText('Analyze or clean orphan files');
         $usage->setStrictMode(true);
         $opts['analyze'] = ($usage->addEmptyParameter('analyze', 'Analyze orphan files (non-destructive)') !== false);
         $opts['clean'] = ($usage->addEmptyParameter('clean', 'Clean orphan files') !== false);
-        $opts['missing-files'] = ($usage->addEmptyParameter('missing-files', "Use in conjunction with '--analyze' to analyze missing physical files instead of orphan files") !== false);
+        $opts['missing-files'] = ($usage->addEmptyParameter('missing-files', "Use in conjunction with '--analyze' to analyze missing physical files instead of orphan files")
+            !== false);
         $opts['skip-trash'] = ($usage->addEmptyParameter('skip-trash', "Really delete file and do not move them under '<vault_root>/.trash/'  sub-directory") !== false);
         $usage->verify();
         if (!$opts['analyze'] && !$opts['clean']) {
@@ -33,7 +24,7 @@ class VaultAnalyzerCLI
             $usage->exitError("Use either '--analyze' or '--clean', but not both.");
             return;
         }
-        
+
         try {
             if ($opts['analyze']) {
                 if ($opts['missing-files']) {
@@ -50,15 +41,15 @@ class VaultAnalyzerCLI
         }
         return;
     }
-    
+
     public static function main_analyze_orphans()
     {
         $vaultAnalyzer = new VaultAnalyzer();
         self::checkDocVaultIndex($vaultAnalyzer);
-        
+
         printf("* Analyzing... ");
         $report = $vaultAnalyzer->summary();
-        
+
         printf("Done.\n");
         printf("\n");
         printf("Analyze\n");
@@ -70,25 +61,27 @@ class VaultAnalyzerCLI
         printf("\n");
         printf("Used:\n");
         printf("\tcount = %d\n", $report['used']['count']);
-        printf("\tsize  = %d%s (%3.02f%%)\n", $report['used']['size'], ((empty($report['used']['size_pretty'])) ? '' : ' (' . $report['used']['size_pretty'] . ')'), (($report['all']['size'] != 0) ? ((100 * $report['used']['size']) / $report['all']['size']) : '0'));
+        printf("\tsize  = %d%s (%3.02f%%)\n", $report['used']['size'], ((empty($report['used']['size_pretty'])) ? '' : ' (' . $report['used']['size_pretty'] . ')'),
+            (($report['all']['size'] != 0) ? ((100 * $report['used']['size']) / $report['all']['size']) : '0'));
         printf("\n");
         printf("Orphan:\n");
         printf("\tcount = %d\n", $report['orphan']['count']);
-        printf("\tsize  = %d%s (%3.02f%%)\n", $report['orphan']['size'], ((empty($report['orphan']['size_pretty'])) ? '' : ' (' . $report['orphan']['size_pretty'] . ')'), (($report['all']['size'] != 0) ? ((100 * $report['orphan']['size']) / $report['all']['size']) : '0'));
+        printf("\tsize  = %d%s (%3.02f%%)\n", $report['orphan']['size'], ((empty($report['orphan']['size_pretty'])) ? '' : ' (' . $report['orphan']['size_pretty'] . ')'),
+            (($report['all']['size'] != 0) ? ((100 * $report['orphan']['size']) / $report['all']['size']) : '0'));
         printf("\n");
-        
+
         return;
     }
-    
+
     public static function main_clean_orphans($skipTrash = false)
     {
         $vaultAnalyzer = new VaultAnalyzer();
         self::checkDocVaultIndex($vaultAnalyzer);
-        
+
         printf("* Cleanup docvaultindex: ");
         $report = $vaultAnalyzer->cleanDocVaultIndex();
         printf("removed %d entries.\n", $report['count']);
-        
+
         $report = $vaultAnalyzer->analyzeOrphans();
         printf("* Deleting %d orphan files...\n", $report['count']);
         $pom = new \Dcp\ConsoleProgressOMeter();
@@ -138,20 +131,20 @@ class VaultAnalyzerCLI
         $pom->finish();
 
         printf("* Reset sizes...\n");
-        $fs=new \VaultDiskFsStorage(getDbAccess());
+        $fs = new \VaultDiskFsStorage(getDbAccess());
         $fs->recomputeDirectorySize();
 
         printf("\nDone.\n");
         printf("\n");
-        
+
         return;
     }
-    
+
     public static function main_analyze_missing_files()
     {
         $vaultAnalyzer = new vaultAnalyzer();
         self::checkDocVaultIndex($vaultAnalyzer);
-        
+
         printf("* Counting entries: ");
         $report = $vaultAnalyzer->analyzePhysicalFiles();
         printf("found %d entries.\n", $report['count']);
@@ -199,10 +192,10 @@ class VaultAnalyzerCLI
         printf("\twith valid docvaultindex entries = %d\n", count($missing_doc));
         printf("\twithout docvaultindex entries    = %d\n", count($missing_nodoc));
         printf("\n");
-        
+
         return;
     }
-    
+
     protected static function checkDocVaultIndex(VaultAnalyzer & $vaultAnalyzer)
     {
         $report = array();

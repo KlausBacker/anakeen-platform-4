@@ -14,7 +14,7 @@ class SuiteDcp
     public static function suite()
     {
         $suite = new FrameworkDcp('Package');
-     /*   $suite->addTestSuite('Dcp\Pu\TestDocument');
+        $suite->addTestSuite('Dcp\Pu\TestDocument');
         $suite->addTestSuite('Dcp\Pu\TestReviseDocument');
         $suite->addTestSuite('Dcp\Pu\TestNewDoc');
         $suite->addTestSuite('Dcp\Pu\TestMultipleAlive');
@@ -57,7 +57,7 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestApplicationParameters');
         $suite->addTestSuite('Dcp\Pu\TestApplicationParameterManeger');
         $suite->addTestSuite('Dcp\Pu\TestVaultDiskStorage');
-      */  $suite->addTestSuite('Dcp\Pu\TestAutoloader');
+        $suite->addTestSuite('Dcp\Pu\TestAutoloader');
         $suite->addTestSuite('Dcp\Pu\TestGetText');
         $suite->addTestSuite('Dcp\Pu\TestFdlGen');
         $suite->addTestSuite('Dcp\Pu\TestDir');

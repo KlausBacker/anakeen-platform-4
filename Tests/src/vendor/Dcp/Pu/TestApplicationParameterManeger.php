@@ -1,17 +1,6 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 namespace Dcp\Pu;
-/**
- * @author Anakeen
- * @package Dcp\Pu
- */
-
-//require_once 'PU_testcase_dcp.php';
-//require_once 'PU_testcase_dcp_application.php';
 
 class TestApplicationParameterManeger extends TestCaseDcpApplication
 {
@@ -86,7 +75,7 @@ class TestApplicationParameterManeger extends TestCaseDcpApplication
 
     /**
      * @dataProvider dataGetParam
-     * @expectedException Dcp\ApplicationParameterManager\Exception
+     * @expectedException \Dcp\ApplicationParameterManager\Exception
      */
     public function testSetUnknownParam($parameters)
     {
@@ -422,5 +411,3 @@ class TestApplicationParameterManeger extends TestCaseDcpApplication
         );
     }
 }
-
-?>
