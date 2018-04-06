@@ -543,6 +543,9 @@ class ImportDocumentDescription
                     $this->tcr[$this->nLine]["action"] = "updated";
                     $this->tcr[$this->nLine]["msg"] = sprintf(_("update %s family %s"), $data[2], $data[5]);
                 }
+                if ($data[5]) {
+                    \Dcp\FamilyImport::deleteGenFiles($data[5]);
+                }
                 if ($data[1] && ($data[1] != '-')) {
                     if ($data[1] == '--') {
                         $this->doc->fromid = 0;
@@ -634,6 +637,7 @@ class ImportDocumentDescription
             $now = gettimeofday();
             $this->doc->revdate = $now['sec'];
             $this->doc->modify();
+
 
             $check = new CheckEnd($this);
             if ($this->doc->doctype == "C") {
