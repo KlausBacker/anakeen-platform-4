@@ -2202,11 +2202,11 @@ class ImportDocumentDescription
                     $this->tcr[$this->nLine]["err"] = $err;
                 }
 
-                if (($err == "") && (strtolower(get_class($fa)) == "fieldsetattribute")) {
+                if (($err == "") && (strtolower(get_class($fa)) === \Anakeen\Core\SmartStructure\FieldSetAttribute::class)) {
                     $frameid = $fa->id;
                     // import attributes included in fieldset
                     foreach ($fi->attributes->attr as $k => $v) {
-                        if (strtolower(get_class($v)) == "normalattribute") {
+                        if ($v && $v->isNormal) {
                             if (($v->fieldSet->id == $frameid) || ($v->fieldSet->fieldSet->id == $frameid)) {
                                 $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("copy attribute %s from %s"), $v->id, $data[3]);
                                 $oattri = new DocAttr($this->dbaccess, array(

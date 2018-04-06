@@ -82,7 +82,7 @@ class Attributes
         if (isset($this->attr)) {
             reset($this->attr);
             foreach ($this->attr as $k => $v) {
-                if ((get_class($v) == "NormalAttribute") && ($v->usefor == "Q")) {
+                if ($v && $v->isNormal && ($v->usefor === "Q")) {
                     $tsa[$v->id] = $v;
                 }
             }

@@ -166,17 +166,17 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
 
                                 $tr[$index]["familyname"] = $ddoc->fromname;
                                 $tr[$index]["familyid"] = $ddoc->fromid;
-                                $tr[$index]["action"] = N_("to be add");
+                                $tr[$index]["action"] = "To be add";
                                 if (!$analyze) {
                                     $ddoc->Init();
                                     $ddoc->setValue($fattr, $vfid);
                                     $err = $ddoc->Add();
                                     if ($err != "") {
-                                        $tr[$index]["action"] = N_("not added");
+                                        $tr[$index]["action"] = "Not added";
                                         $tr[$index]["err"] = $err;
                                     } else {
                                         $ddoc->addHistoryEntry(sprintf("create by import from archive %s", substr(basename($ldir), 0, -2)));
-                                        $tr[$index]["action"] = N_("added");
+                                        $tr[$index]["action"] = "Added";
                                         $tr[$index]["id"] = $ddoc->id;
                                         $ddoc->postStore();
                                         $ddoc->Modify();
@@ -212,16 +212,16 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                             "anaclass" => "fldclass",
                             "familyid" => $newdir->fromid,
                             "familyname" => $newdir->fromname,
-                            "action" => N_("to be add")
+                            "action" => "To be add"
                         );
                         if (!$analyze) {
                             $newdir->Init();
                             $newdir->setTitle($file);
                             $err = $newdir->Add();
                             if ($err != "") {
-                                $tr[$index]["action"] = N_("not added");
+                                $tr[$index]["action"] = "Not added";
                             } else {
-                                $tr[$index]["action"] = N_("added");
+                                $tr[$index]["action"] = "Added";
                                 $tr[$index]["id"] = $newdir->id;
                                 if ($dirid > 0) {
                                     $dir->insertDocument($newdir->id);

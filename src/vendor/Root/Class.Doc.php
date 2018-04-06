@@ -2834,7 +2834,7 @@ create unique index i_docir on doc(initid, revision);";
                 /**
                  * @var \Anakeen\Core\SmartStructure\NormalAttribute $v
                  */
-                if ($v->isNormal && ($v->usefor != 'Q') && ($v->isInAbstract)) {
+                if (is_object($v) && $v->isNormal && ($v->usefor != 'Q') && ($v->isInAbstract)) {
                     $tsa[$v->id] = $v;
                 }
             }
@@ -2859,7 +2859,7 @@ create unique index i_docir on doc(initid, revision);";
                 /**
                  * @var \Anakeen\Core\SmartStructure\NormalAttribute $v
                  */
-                if ($v->isNormal && ($v->isInTitle)) {
+                if (is_object($v) && $v->isNormal && ($v->isInTitle)) {
                     $tsa[$v->id] = $v;
                 }
             }
@@ -2903,35 +2903,7 @@ create unique index i_docir on doc(initid, revision);";
         return $tsa;
     }
 
-    /**
-     * return all the attributes object for to e use in edition
-     * the attribute can be defined in fathers
-     *
-     * @param bool $onlyopt deprecated arguments
-     *
-     * @return  \Anakeen\Core\SmartStructure\NormalAttribute[]
-     */
-    final public function getInputAttributes($onlyopt = false)
-    {
-        if (!$this->_maskApplied) {
-            $this->ApplyMask();
-        }
-        $tsa = array();
 
-        foreach ($this->attributes->attr as $k => $v) {
-            if ($v->isNormal && (!$v->inArray())
-                && ($v->mvisibility != "I")) { // I means not editable
-                if ((($this->usefor == "Q") && ($v->usefor == "Q"))
-                    || (($this->usefor != "Q")
-                        && ((($v->usefor != "Q")
-                                && (!$onlyopt))
-                            || (($v->usefor == "O") && ($onlyopt))))) {
-                    $tsa[$v->id] = $v;
-                } //special parameters
-            }
-        }
-        return $tsa;
-    }
 
     /**
      * return all the parameters definition for its family
@@ -2967,7 +2939,7 @@ create unique index i_docir on doc(initid, revision);";
         $tsa = array();
 
         foreach ($this->attributes->attr as $k => $v) {
-            if ($v->isNormal && ($v->usefor != 'Q')
+            if (is_object($v) && $v->isNormal && ($v->usefor != 'Q')
                 && ((($v->type == "image") && (!$onlyfile))
                     || ($v->type == "file"))) {
                 $tsa[$v->id] = $v;
@@ -3217,7 +3189,7 @@ create unique index i_docir on doc(initid, revision);";
                 /**
                  * @var \Anakeen\Core\SmartStructure\NormalAttribute $v
                  */
-                if ($v->isNormal && ($v->needed) && ($v->usefor == 'Q')) {
+                if (is_object($v) && $v->isNormal && ($v->needed) && ($v->usefor == 'Q')) {
                     $tsa[$v->id] = $v;
                 }
             }
@@ -3229,7 +3201,7 @@ create unique index i_docir on doc(initid, revision);";
                 /**
                  * @var \Anakeen\Core\SmartStructure\NormalAttribute $v
                  */
-                if ($v->isNormal && ($v->needed) && ($v->usefor != 'Q')) {
+                if (is_object($v) && $v->isNormal && ($v->needed) && ($v->usefor != 'Q')) {
                     $tsa[$v->id] = $v;
                 }
             }
@@ -3318,7 +3290,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             } else {
                 foreach ($this->attributes->attr as $k => $v) {
-                    if ($v->isNormal && $v->usefor != 'Q') {
+                    if (is_object($v) && $v->isNormal && $v->usefor != 'Q') {
                         if (($v->type != "array") && ($withfile || (($v->type != "image") && ($v->type != "file")))) {
                             $tsa[$v->id] = $v;
                         }
@@ -8242,7 +8214,6 @@ create unique index i_docir on doc(initid, revision);";
                                 );
                             }
                         }
-                        //print_r($this->getValues());
                     } else {
                         if ($method) {
                             $this->setValue($aid, $this->GetValueMethod($dval));
@@ -8507,7 +8478,6 @@ create unique index i_docir on doc(initid, revision);";
                                     foreach ($values as $ka => $vaa) {
                                         $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($oa, $vaa), ENT_QUOTES);
                                     }
-                                    //print_r(array($oa->id=>$ovalues));
                                     $tmkeys[$kindex]["V_" . strtoupper($kaid)] = $ovalues;
                                     $oa->setOption("multiple", "yes"); //  needto have values like first level
                                 } else {
@@ -8519,7 +8489,6 @@ create unique index i_docir on doc(initid, revision);";
                                 }
                             }
                         }
-                        //print_r($tmkeys);
                         $this->lay->setRepeatable($tmkeys);
                     } else {
                         $ovalue = $this->GetOOoValue($v, $value);
@@ -8527,7 +8496,6 @@ create unique index i_docir on doc(initid, revision);";
                             $ovalue = str_replace("<text:tab/>", ', ', $ovalue);
                         }
                         $this->lay->Set("V_" . strtoupper($v->id), $ovalue);
-                        // print_r(array("V_".strtoupper($v->id)=>$this->GetOOoValue($v, $value),"raw"=>$value));
                         if ((!$v->inArray()) && ($v->getOption("multiple") == "yes")) {
                             $values = $this->getMultipleRawValues($v->id);
                             $ovalues = array();
@@ -8536,7 +8504,6 @@ create unique index i_docir on doc(initid, revision);";
                                 $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($v, $va), ENT_QUOTES);
                             }
                             $v->setOption("multiple", "yes");
-                            //print_r(array("V_".strtoupper($v->id)=>$ovalues,"raw"=>$values));
                             $this->lay->setColumn("V_" . strtoupper($v->id), $ovalues);
                         }
                     }

@@ -18,16 +18,18 @@ class CheckKeys extends CheckData
      * @var DocFam
      */
     protected $family;
+
     /**
      * @param array $data
-     * @param Doc $doc
-     * @return CheckDoc
+     * @param null  $extra
+     *
+     * @return CheckKeys
      */
     public function check(array $data, &$extra = null)
     {
         $this->famName = (isset($data[1])) ? trim($data[1]) : null;
         $this->attrIds = getOrder($data);
-        
+
         $this->CheckKeysFamily();
         if (!$this->hasErrors()) {
             $this->CheckKeysCount();
@@ -35,12 +37,14 @@ class CheckKeys extends CheckData
         if (!$this->hasErrors()) {
             $this->CheckKeysAttribute();
         }
-        
+
         return $this;
     }
+
     /**
      * check
      * check
+     *
      * @return void
      */
     protected function CheckKeysFamily()
@@ -50,8 +54,8 @@ class CheckKeys extends CheckData
                 $this->addError(ErrorCode::getError('KEYS0001', $this->famName));
             } else {
                 try {
-                    $this->family = new_doc(getDbAccess(), $this->famName);
-                    if (!$this->family->isAlive()) {
+                    $this->family = \Anakeen\Core\DocManager::getDocument($this->famName);
+                    if (!$this->family || !$this->family->isAlive()) {
                         $this->addError(ErrorCode::getError('KEYS0002', $this->famName));
                     } else {
                         if ($this->family->doctype != 'C') {
@@ -71,8 +75,10 @@ class CheckKeys extends CheckData
             $this->addError(ErrorCode::getError('KEYS0006'));
         }
     }
+
     /**
      * check logical name
+     *
      * @return void
      */
     protected function CheckKeysAttribute()
@@ -85,8 +91,10 @@ class CheckKeys extends CheckData
             }
         }
     }
+
     /**
      * check one or two keys
+     *
      * @return void
      */
     protected function CheckKeyscount()
@@ -103,6 +111,7 @@ class CheckKeys extends CheckData
             $this->addError(ErrorCode::getError('KEYS0102', implode(', ', $this->attrIds), $this->family->name));
         }
     }
+
     private function checkName($name)
     {
         if ($name && (!is_numeric($name))) {

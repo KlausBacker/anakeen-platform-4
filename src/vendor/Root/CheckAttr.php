@@ -543,6 +543,7 @@ SQL;
                             }
                         }
                     } catch (Exception $e) {
+                        \Anakeen\Core\LogException::writeLog($e);
                         $this->addError(ErrorCode::getError('ATTR1203', $phpFuncName));
                     }
                 }

@@ -1,17 +1,9 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 namespace Dcp\Pu;
 
-/**
- * @author Anakeen
- * @package Dcp\Pu
- */
-
 //require_once 'PU_testcase_dcp.php';
+use Anakeen\Core\ContextManager;
 
 /**
  * Test class for splitXmlDocument() function.
@@ -99,7 +91,7 @@ class TestSplitXmlDocument extends TestCaseDcp
 
     private static function createWorkDir()
     {
-        $tmpdir = getTmpDir();
+        $tmpdir = ContextManager::getTmpDir();
         if (!is_dir($tmpdir)) {
             throw new \Exception(sprintf("Invalid directory '%s'.", $tmpdir));
         }
@@ -132,7 +124,7 @@ class TestSplitXmlDocument extends TestCaseDcp
     /** @noinspection PhpUnusedPrivateMethodInspection */
     private function addBigNode($xml, $args = array())
     {
-        $addNodeData = file_get_contents(self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Layout' . DIRECTORY_SEPARATOR . 'PU_data_dcp_splitxmldocument_bignode_template.xml');
+        $addNodeData = file_get_contents(self::$testDataDirectory . DIRECTORY_SEPARATOR . 'PU_data_dcp_splitxmldocument_bignode_template.xml');
         if ($addNodeData === false) {
             $this->errmsg = sprintf("Could not get content from XML file '%s'.", "PU_data_dcp_splitxmldocument_bignode_template.xml");
             return false;
@@ -236,7 +228,7 @@ class TestSplitXmlDocument extends TestCaseDcp
             array(
                 array(
                     'description' => 'Small XML file',
-                    'xml' => 'Layout/PU_data_dcp_splitxmldocument.xml',
+                    'xml' => 'PU_data_dcp_splitxmldocument.xml',
                     'produces' => array(
                         '00000PU_DATA_DCP_SPLITXMLDOCUMENT_1.xml',
                         '00001PU_DATA_DCP_SPLITXMLDOCUMENT_2.xml',
@@ -247,7 +239,7 @@ class TestSplitXmlDocument extends TestCaseDcp
             array(
                 array(
                     'description' => 'Big XML file',
-                    'xml' => 'Layout/PU_data_dcp_splitxmldocument.xml',
+                    'xml' => 'PU_data_dcp_splitxmldocument.xml',
                     'xml_alter' => 'addBigNode',
                     'xml_alter_args' => array(
                         'NAME' => 'PU_DATA_DCP_SPLITXMLDOCUMENT_BIGNODE',
@@ -265,7 +257,7 @@ class TestSplitXmlDocument extends TestCaseDcp
             array(
                 array(
                     'description' => 'Invalid root node',
-                    'xml' => 'Layout/PU_data_dcp_splitxmldocument_invalid_root_node.xml',
+                    'xml' => 'PU_data_dcp_splitxmldocument_invalid_root_node.xml',
                     'expect_error' => true
                 )
             )

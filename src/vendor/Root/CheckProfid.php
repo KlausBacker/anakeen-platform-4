@@ -40,19 +40,19 @@ class CheckProfid extends CheckData
     {
         if ($this->prfName) {
             try {
-                $this->profil = new_doc(getDbAccess(), $this->prfName);
+                $this->profil = \Anakeen\Core\DocManager::getDocument($this->prfName);
             } catch (Exception $e) {
                 // due to no test validity of the family now
-                $fam = getTDoc(getDbAccess(), $this->prfName);
+                $fam =  \Anakeen\Core\DocManager::getRawDocument($this->prfName);
                 if (!$fam) {
                     throw $e;
                 }
-                if ($fam["doctype"] == "C") {
+                if ($fam["doctype"] === "C") {
                     $this->profil = new DocFam();
                     $this->profil->affect($fam);
                 }
             }
-            if (!$this->profil->isAlive()) {
+            if (!$this->profil || !$this->profil->isAlive()) {
                 $this->addError(ErrorCode::getError('PRFD0001', $this->prfName));
             }
         }

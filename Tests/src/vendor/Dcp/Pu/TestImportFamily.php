@@ -8,6 +8,11 @@ namespace Dcp\Pu;
 
 //require_once 'PU_testcase_dcp_document.php';
 
+require_once 'TestGlobalFunction.php';
+
+use Anakeen\Core\DocManager;
+use Anakeen\Core\LogException;
+
 class TestImportFamily extends TestCaseDcpDocument
 {
     protected static $outputDir;
@@ -21,6 +26,7 @@ class TestImportFamily extends TestCaseDcpDocument
         try {
             $this->importDocument($familyFile);
         } catch (\Exception $e) {
+            LogException::writeLog($e);
             $err = $e->getMessage();
         }
         $this->assertNotEmpty($err, "no import error detected");
@@ -49,7 +55,8 @@ class TestImportFamily extends TestCaseDcpDocument
             $err = $e->getMessage();
         }
         $this->assertEmpty($err, "import error detected $err");
-        $doc = createDoc("", $familyName);
+
+        $doc = DocManager::createDocument($familyName);
         $this->assertTrue(is_object($doc));
         $err = $doc->store();
         $this->assertEmpty($err, "cannot create good doc");
@@ -225,7 +232,7 @@ class TestImportFamily extends TestCaseDcpDocument
                     "ATTR1209",
                     "is_a",
                     "ATTR1210",
-                    "addLogMsg"
+                    "myGlobalFunc"
                 )
             ),
             // options syntax

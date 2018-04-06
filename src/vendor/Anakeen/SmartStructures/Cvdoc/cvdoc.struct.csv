@@ -12,7 +12,7 @@ ATTR;CV_IDVIEW;CV_T_VIEWS;Identifiant de la vue;N;N;text;::auto;W;;;;;;::isIdVal
 ATTR;CV_LVIEW;CV_T_VIEWS;Label;N;N;text;::auto;W;;;;;;::isLabelValid(CV_LVIEW);
 ATTR;CV_KVIEW;CV_T_VIEWS;Type;N;N;enum;::auto;W;;;-;VCONS|Consultation,VEDIT|Edition;;;system=yes
 ATTR;CV_RENDERCONFIGCLASS;CV_T_VIEWS;Classe de configuration de rendu (HTML5);N;N;text;::auto;W;;;fdl.php;lzone(D,CV_KVIEW,CV_FAMID):CV_ZVIEW;;;"autosuggest=no|showempty=&lt;aucun>"
-ATTR;CV_MSKID;CV_T_VIEWS;Masque;N;N;"docid(""MASK"")";::auto;W;;;;::getTitle(CV_MSKID):CV_MSK;;;"showempty=&lt;aucun>"
+ATTR;CV_MSKID;CV_T_VIEWS;Masque;N;N;"docid(""MASK"")";::auto;W;;;;;;;"showempty=&lt;aucun>"
 ATTR;CV_ORDER;CV_T_VIEWS;Ordre de sélection;N;N;int;::auto;W;N;;;;;;"elabel=ordre d'accès pour le profilage|esize=3|showempty=&lt;aucun>"
 ATTR;CV_DISPLAYED;CV_T_VIEWS;Affichable;N;N;enum;::auto;W;N;;;[bool]no|non,yes|oui;;;system=yes
 ATTR;CV_MENU;CV_T_VIEWS;Menu;N;N;text;::auto;W;N;;;;;;"elabel=nom du sous menu|showempty=&lt;aucun>"

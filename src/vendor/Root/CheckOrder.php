@@ -69,11 +69,11 @@ class CheckOrder extends CheckData
                 $this->addError(ErrorCode::getError('ORDR0001', $this->famName));
             } else {
                 try {
-                    $this->family = Anakeen\Core\DocManager::getFamily($this->famName);
+                    $this->family = Anakeen\Core\DocManager::getDocument($this->famName);
                     if (!$this->family) {
                         $this->addError(ErrorCode::getError('ORDR0002', $this->famName));
                     } else {
-                        if ($this->family->doctype != 'C') {
+                        if ($this->family->doctype !== 'C') {
                             $this->addError(ErrorCode::getError('ORDR0003', $this->famName));
                         } else {
                             $canCreateError = $this->family->control('create');

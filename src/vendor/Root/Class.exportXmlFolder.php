@@ -1,17 +1,9 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Export documents in xml
  *
- * @author Anakeen
- * @package FDL
- * @subpackage
  */
-/**
- */
+
 
 include_once("FDL/import_file.php");
 require_once 'FDL/exportxmlfld.php';
@@ -31,7 +23,7 @@ class ExportXmlFolder
     
     public function __construct()
     {
-        $this->dbaccess = getDbAccess();
+        $this->dbaccess = \Anakeen\Core\DbManager::getDbAccess();
     }
     /**
      * export format xml or zip
@@ -116,5 +108,4 @@ class ExportXmlFolder
         $this->setOutputFile($outputFile);
         exportxmlfld($action, $folderId, $famid = "", null, $this->outputFile, $this->format, $this->useIdentificator ? 'Y' : 'N');
     }
-
 }

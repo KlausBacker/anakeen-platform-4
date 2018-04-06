@@ -214,7 +214,6 @@ class CheckEnd extends CheckData
             $oa = $this->doc->getAttribute($attrid);
 
             if (!$oa) {
-                print_r($this->doc->attributes);
                 $this->addError(ErrorCode::getError('DFLT0005', $attrid, $this->doc->name));
             } else {
                 $oParse = new ParseFamilyMethod();
@@ -287,7 +286,7 @@ class CheckEnd extends CheckData
             $foa = $oa->fieldSet;
             if (!$foa) {
                 $this->addError(ErrorCode::getError('ATTR0208', $oa->id, $this->doc->name));
-            } elseif ((!is_a($foa, "FieldSetAttribute")) && ($foa->type != 'array')) {
+            } elseif ((!is_a($foa, \Anakeen\Core\SmartStructure\FieldSetAttribute::class)) && ($foa->type != 'array')) {
                 $this->addError(ErrorCode::getError('ATTR0209', $foa->id, $oa->id));
             } else {
                 $ftype = $oa->fieldSet->type;

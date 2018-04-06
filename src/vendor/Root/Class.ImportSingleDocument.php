@@ -680,7 +680,7 @@ class ImportSingleDocument
              * @var $dir \Anakeen\SmartStructures\Dir\DirHooks
              */
             $dir = \Anakeen\Core\DocManager::getDocument($folderId);
-            if ($dir->isAlive()) {
+            if ($dir && $dir->isAlive()) {
                 $this->tcr["folderid"] = $dir->id;
                 $this->tcr["foldername"] = dirname($this->importFilePath) . "/" . $dir->title;
                 if (!$this->analyze) {

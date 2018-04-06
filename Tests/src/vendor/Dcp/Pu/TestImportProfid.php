@@ -11,6 +11,7 @@ namespace Dcp\Pu;
 class TestImportProfid extends TestCaseDcpDocument
 {
     protected static $outputDir;
+
     /**
      * @dataProvider dataBadFamilyFiles
      */
@@ -19,19 +20,21 @@ class TestImportProfid extends TestCaseDcpDocument
         $err = '';
         try {
             $this->importDocument($familyFile);
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             $err = $e->getMessage();
         }
         $this->assertNotEmpty($err, "no import error detected");
-        if (!is_array($expectedErrors)) $expectedErrors = array(
-            $expectedErrors
-        );
-        
+        if (!is_array($expectedErrors)) {
+            $expectedErrors = array(
+                $expectedErrors
+            );
+        }
+
         foreach ($expectedErrors as $expectedError) {
             $this->assertContains($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
         }
     }
+
     /**
      * @dataProvider dataGoodFamilyFiles
      */
@@ -40,13 +43,12 @@ class TestImportProfid extends TestCaseDcpDocument
         $err = '';
         try {
             $this->importDocument($familyFile);
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             $err = $e->getMessage();
         }
         $this->assertEmpty($err, sprintf("profid error detected %s", $err));
     }
-    
+
     public function dataBadFamilyFiles()
     {
         return array(
@@ -57,7 +59,7 @@ class TestImportProfid extends TestCaseDcpDocument
                     "PRFD0001",
                     "inconnu"
                 )
-            ) ,
+            ),
             // test unknow profid
             array(
                 "PU_data_dcp_badprofid2.ods",
@@ -68,14 +70,14 @@ class TestImportProfid extends TestCaseDcpDocument
             )
         );
     }
-    
+
     public function dataGoodFamilyFiles()
     {
         return array(
             // test pfam ref
             array(
                 "PU_data_dcp_goodprofid1.ods"
-            ) ,
+            ),
             // test itself ref
             array(
                 "PU_data_dcp_goodprofid2.ods"
@@ -83,4 +85,3 @@ class TestImportProfid extends TestCaseDcpDocument
         );
     }
 }
-?>

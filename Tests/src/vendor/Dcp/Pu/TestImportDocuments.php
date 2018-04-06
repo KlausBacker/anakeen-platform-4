@@ -148,7 +148,7 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
                 )
             ) ,
             array(
-                "file" => "../PU_data_dcp_importdocgood2.zip",
+                "file" => "PU_data_dcp_importdocgood2.zip",
                 array(
                     array(
                         "docName" => "TST_GOOD2",

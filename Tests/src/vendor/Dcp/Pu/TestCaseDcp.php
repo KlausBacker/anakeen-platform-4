@@ -4,6 +4,7 @@ namespace Dcp\Pu;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
+use Anakeen\Core\LogException;
 
 class TestCaseDcp extends \PHPUnit\Framework\TestCase
 {
