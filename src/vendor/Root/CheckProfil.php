@@ -59,8 +59,11 @@ class CheckProfil extends CheckData
         ':useAttribute'
     );
     private $userIds = [];
+
     /**
      * @param array $data
+     * @param null  $extra
+     *
      * @return CheckProfil
      */
     public function check(array $data, &$extra = null)
@@ -92,8 +95,8 @@ class CheckProfil extends CheckData
     {
         if ($this->prfName) {
             \Anakeen\Core\DocManager::cache()->clear();
-            $this->profil = new_doc(getDbAccess(), $this->prfName);
-            if (!$this->profil->isAlive()) {
+            $this->profil = \Anakeen\Core\DocManager::getDocument($this->prfName);
+            if (!$this->profil || !$this->profil->isAlive()) {
                 $this->addError(ErrorCode::getError('PRFL0002', $this->prfName));
             }
         } else {
@@ -104,8 +107,8 @@ class CheckProfil extends CheckData
     private function checkIsACompatibleProfil()
     {
         if ($this->docName) {
-            $doc = new_doc(getDbAccess(), $this->docName);
-            if (!$doc->isAlive()) {
+            $doc =  \Anakeen\Core\DocManager::getDocument($this->docName);
+            if (!$doc || !$doc->isAlive()) {
                 $this->addError(ErrorCode::getError('PRFL0003', $this->docName));
             } else {
                 if ($doc->acls != $this->profil->acls) {
@@ -180,7 +183,7 @@ class CheckProfil extends CheckData
                 break;
 
             case ':useDocument':
-                $tu = getTDoc(getDbAccess(), $value);
+                $tu =  \Anakeen\Core\DocManager::getRawDocument($value);
                 if ($tu) {
                     $findUser = ($tu["us_whatid"] != '');
                 }
@@ -196,7 +199,7 @@ class CheckProfil extends CheckData
                     $findUser = \Anakeen\Core\Account::getDisplayName($reference);
                 } else {
                     // search document
-                    $tu = getTDoc(getDbAccess(), $reference);
+                    $tu = \Anakeen\Core\DocManager::getRawDocument($reference);
                     if ($tu) {
                         $findUser = ($tu["us_whatid"] != '');
                     }
@@ -227,7 +230,7 @@ class CheckProfil extends CheckData
     {
         $login = mb_strtolower($login);
         if (!isset($this->userIds[$login])) {
-            simpleQuery("", sprintf("select login from users where login='%s'", pg_escape_string($login)), $uid, true, true);
+            \Anakeen\Core\DbManager::query(sprintf("select login from users where login='%s'", pg_escape_string($login)), $uid, true, true);
             $this->userIds[$uid] = $uid;
         }
         return $this->userIds[$login];
@@ -236,9 +239,9 @@ class CheckProfil extends CheckData
     {
         $dynName = $this->profil->getRawValue("dpdoc_famid");
         if (!$this->dynDoc) {
-            $this->dynDoc = new_doc(getDbAccess(), $dynName);
+            $this->dynDoc =  \Anakeen\Core\DocManager::getDocument($dynName);
         }
-        if (!$this->dynDoc->isAlive()) {
+        if (!$this->dynDoc || !$this->dynDoc->isAlive()) {
             $this->addError(ErrorCode::getError('PRFL0203', $dynName, $this->prfName));
         } else {
             $aids = array_keys($this->dynDoc->getNormalAttributes());

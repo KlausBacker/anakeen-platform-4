@@ -12,9 +12,6 @@ ATTR;PRF_DESC;FR_BASIC ;Description;N;N;longtext;::auto;W;N;;;;;;
 ATTR;DPDOC_FR_DYN;;Dynamique;N;N;frame;::auto;W;;;;;;;
 ATTR;DPDOC_FAMID;DPDOC_FR_DYN;Famille (id);N;N;docid;::auto;H;;;;::getTitle(DPDOC_FAMID):DPDOC_FAM;;;
 ATTR;DPDOC_FAM;DPDOC_FR_DYN;Famille;N;Y;text;::auto;W;;%S%app=FDL&action=FDL_CARD&id=%DPDOC_FAMID%;fdl.php;lfamilies(D,DPDOC_FAM):DPDOC_FAMID,DPDOC_FAM;;;elabel=famille utilisée pour les profils dynamiques
-ATTR;PRF_ACCESS;;Accessibilités;N;N;action;::auto;R;;;FREEDOM;FREEDOM_GACCESS;;::controlActifProfil();
-ATTR;PRF_ACTIVATE;;Activer;N;N;action;::auto;R;;;FREEDOM;MODPROF&profid=%I%&docid=%I%;;::profilIsActivate(false);ltarget=_self
-ATTR;PRF_DESACTIVATE;;Désactiver;N;N;action;::auto;R;;;FREEDOM;MODPROF&profid=0&docid=%I%;;::profilIsActivate(true);ltarget=_self
 ATTR;PRF_FORCECOMPUTING;;Forcer la propagation du profil;N;N;menu;::auto;R;;::recomputeProfiledDocument();;::profilIsActivate(true);;;ltarget=_self|ltitle=Force le recalcul des profils des documents associés
 END;1;9;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;

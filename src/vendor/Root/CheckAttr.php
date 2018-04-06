@@ -42,7 +42,6 @@ class CheckAttr extends CheckData
         "array",
         "color",
         "menu",
-        "action",
         "docid",
         "htmltext",
         "account"

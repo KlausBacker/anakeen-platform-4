@@ -14,7 +14,7 @@ class SuiteDcp
     public static function suite()
     {
         $suite = new FrameworkDcp('Package');
-        $suite->addTestSuite('Dcp\Pu\TestDocument');
+     /*   $suite->addTestSuite('Dcp\Pu\TestDocument');
         $suite->addTestSuite('Dcp\Pu\TestReviseDocument');
         $suite->addTestSuite('Dcp\Pu\TestNewDoc');
         $suite->addTestSuite('Dcp\Pu\TestMultipleAlive');
@@ -27,7 +27,7 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestSearchDirective');
         $suite->addTestSuite('Dcp\Pu\TestSearchByFolder');
         $suite->addTestSuite('Dcp\Pu\TestSearchHighlight');
-        $suite->addTestSuite('Dcp\Pu\TestSearchJoin');
+     */   $suite->addTestSuite('Dcp\Pu\TestSearchJoin');
         $suite->addTestSuite('Dcp\Pu\TestSearchFamilies');
         $suite->addTestSuite('Dcp\Pu\TestSimpleQuery');
         $suite->addTestSuite('Dcp\Pu\TestProfil');

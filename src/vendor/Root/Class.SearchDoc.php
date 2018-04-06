@@ -433,8 +433,8 @@ class SearchDoc
     public function search()
     {
         if (count($this->filters) > 0 && $this->dirid > 0) {
-            $dir = new_Doc($this->dbaccess, $this->dirid);
-            if (is_object($dir) && $dir->isAlive() && is_a($dir, '\SmartStructure\SsearchHooks')) {
+            $dir = Anakeen\Core\DocManager::getDocument($this->dirid);
+            if ($dir && $dir->isAlive() && is_a($dir, \SmartStructure\Ssearch::class)) {
                 // Searching on a "Specialized search" collection and specifying additional filters is not supported
                 throw new \Dcp\SearchDoc\Exception("SD0008");
             }
@@ -659,9 +659,13 @@ class SearchDoc
     }
     /**
      * use different order , default is title
+     *
      * @api set order to sort results
+     *
      * @param string $order the new order, empty means no order
-     * @param string $orderbyLabel string of comma separated columns names on which the order should be performed on their label instead of their value (e.g. order enum by their label instead of their key)
+     * @param string $orderbyLabel string of comma separated columns names on
+     * which the order should be performed on their label instead of their value (e.g. order enum by their label instead of their key)
+     *
      * @return void
      */
     public function setOrder($order, $orderbyLabel = '')
@@ -1286,7 +1290,7 @@ class SearchDoc
                 $this->originalDirId = $this->dirid;
             }
             /**
-             * @var \Anakeen\SmartStructures\Search\Search $tmps
+             * @var \Anakeen\SmartStructures\Search\SearchHooks $tmps
              */
             $tmps = createTmpDoc($this->dbaccess, "SEARCH");
             $tmps->setValue(\SmartStructure\Attributes\Search::se_famid, $this->fromid);
@@ -1492,7 +1496,7 @@ class SearchDoc
                             // $sqlM=$ldocsearch[0]["query"];
                             $fld = new_Doc($dbaccess, $dirid);
                             /**
-                             * @var \Anakeen\SmartStructures\Search\Search $fld
+                             * @var \Anakeen\SmartStructures\Search\SearchHooks $fld
                              */
                             if ($trash) {
                                 $fld->setValue("se_trash", $trash);

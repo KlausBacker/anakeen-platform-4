@@ -138,7 +138,7 @@ function new_Doc($dbaccess, $id = '', $latest = false)
  * @param bool   $defaultvalues if false not affect default values
  * @param bool   $temporary     if true create document as temporary doc (use Doc::createTmpDoc instead)
  *
- * @return Doc|false may be return false if no hability to create the document
+ * @return \Doc|false may be return false if no hability to create the document
  * @throws \Dcp\Core\Exception
  * @see        createTmpDoc to create temporary/working document
  * @code

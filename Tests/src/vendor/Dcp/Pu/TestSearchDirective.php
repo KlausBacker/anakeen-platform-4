@@ -416,7 +416,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "only" => false
                 ) ,
                 array(
-                    "noViewControl"
+                    "overrideViewControl"
                 ) ,
                 array() ,
                 3 + 4
@@ -427,7 +427,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "only" => true
                 ) ,
                 array(
-                    "noViewControl"
+                    "overrideViewControl"
                 ) ,
                 array() ,
                 3
@@ -438,7 +438,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "only" => false
                 ) ,
                 array(
-                    "noViewControl"
+                    "overrideViewControl"
                 ) ,
                 array(
                     "title <> 'Just to add some SQL conditions in the query...'",
@@ -452,7 +452,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "only" => true
                 ) ,
                 array(
-                    "noViewControl"
+                    "overrideViewControl"
                 ) ,
                 array(
                     "title <> 'Just to add some SQL conditions in the query...'",
@@ -466,7 +466,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "only" => false
                 ) ,
                 array(
-                    "noViewControl"
+                    "overrideViewControl"
                 ) ,
                 array(
                     "a_title <> 'Just to add some SQL conditions in the query...'",
@@ -480,7 +480,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "only" => true
                 ) ,
                 array(
-                    "noViewControl"
+                    "overrideViewControl"
                 ) ,
                 array(
                     "a_title <> 'Just to add some SQL conditions in the query...'",

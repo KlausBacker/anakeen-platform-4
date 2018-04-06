@@ -160,6 +160,7 @@ class ImportDocument
                     "err" => $e->getMessage()
                 )
             );
+            \Anakeen\Core\LogException::writeLog($e);
         }
         
         if ($this->strict) {

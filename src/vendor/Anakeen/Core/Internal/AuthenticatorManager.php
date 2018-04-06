@@ -8,6 +8,7 @@
 
 namespace Anakeen\Core\Internal;
 
+use Anakeen\Core\DocManager;
 use Dcp\Core\Exception;
 
 include_once("FDL/LegacyDocManager.php");
@@ -61,12 +62,11 @@ class AuthenticatorManager
                 $wu = new \Anakeen\Core\Account();
                 if ($wu->SetLoginName(self::$auth->getAuthUser())) {
                     if ($wu->id != 1) {
-                        include_once("FDL/LegacyDocManager.php");
                         /**
                          * @var \SmartStructure\IUSER $du
                          */
-                        $du = new_Doc(getDbAccess(), $wu->fid);
-                        if ($du->isAlive()) {
+                        $du = DocManager::getDocument($wu->fid);
+                        if ($du && $du->isAlive()) {
                             $du->disableEditControl();
                             $du->increaseLoginFailure();
                             $du->enableEditControl();
@@ -96,8 +96,14 @@ class AuthenticatorManager
              * @var self::$session Session
              */
             if (self::$session->read('username') == "") {
-                self::secureLog("failure", "username should exists in session", $authprovider = "",
-                    $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+                self::secureLog(
+                    "failure",
+                    "username should exists in session",
+                    $authprovider = "",
+                    $_SERVER["REMOTE_ADDR"],
+                    $login,
+                    $_SERVER["HTTP_USER_AGENT"]
+                );
                 throw new \Dcp\Exception("Authent Session Error");
             }
         }
@@ -267,11 +273,10 @@ class AuthenticatorManager
      */
     public function authenticate(&$action)
     {
-        //   Header( "WWW-Authenticate: Basic realm=\"WHAT Connection\", stale=FALSE");
-        //Header( "WWW-Authenticate: Basic realm=\"WHAT Connection\", stale=true");
-        //Header( "HTTP/1.0 401 Unauthorized");
-        header('WWW-Authenticate: Basic realm="' . \Anakeen\Core\ContextManager::getApplicationParam("CORE_REALM",
-                "Anakeen Platform connection") . '"');
+        header('WWW-Authenticate: Basic realm="' . \Anakeen\Core\ContextManager::getApplicationParam(
+                "CORE_REALM",
+                "Anakeen Platform connection"
+            ) . '"');
         header('HTTP/1.0 401 Unauthorized');
         echo _("Vous devez entrer un nom d'utilisateur valide et un mot de passe correct pour acceder a cette ressource");
         exit;
@@ -288,9 +293,15 @@ class AuthenticatorManager
         global $_GET;
         $log = new \Anakeen\Core\Internal\Log("", "Session", "Authentication");
         $facility = constant(\Anakeen\Core\ContextManager::getApplicationParam("AUTHENT_LOGFACILITY", "LOG_AUTH"));
-        $log->wlog("S",
-            sprintf("[%s] [%s] [%s] [%s] [%s] [%s]", $status, $additionalMessage, $provider, $clientIp, $account,
-                $userAgent), null, $facility);
+        $log->wlog("S", sprintf(
+            "[%s] [%s] [%s] [%s] [%s] [%s]",
+            $status,
+            $additionalMessage,
+            $provider,
+            $clientIp,
+            $account,
+            $userAgent
+        ), null, $facility);
         return 0;
     }
 
