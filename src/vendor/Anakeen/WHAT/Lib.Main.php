@@ -40,11 +40,11 @@ function getMainAction($auth, &$action)
     if (isset($auth->auth_session)) {
         $session = $auth->auth_session;
     } else {
-        $session = new Session();
-        if (isset($_COOKIE[Session::PARAMNAME])) {
-            $sess_num = $_COOKIE[Session::PARAMNAME];
+        $session = new \Anakeen\Core\Internal\Session();
+        if (isset($_COOKIE[\Anakeen\Core\Internal\Session::PARAMNAME])) {
+            $sess_num = $_COOKIE[\Anakeen\Core\Internal\Session::PARAMNAME];
         } else {
-            $sess_num = GetHttpVars(Session::PARAMNAME);
+            $sess_num = GetHttpVars(\Anakeen\Core\Internal\Session::PARAMNAME);
         } //$_GET["session"];
         if (!$session->Set($sess_num)) {
             print "<strong>:~((</strong>";
@@ -218,9 +218,9 @@ function initExplorerWebParam(\Anakeen\Core\Internal\Application & $app)
  * Set various core URLs params
  *
  * @param \Anakeen\Core\Internal\Application $core
- * @param Session     $session
+ * @param \Anakeen\Core\Internal\Session     $session
  */
-function initMainVolatileParam(\Anakeen\Core\Internal\Application & $core, Session & $session = null)
+function initMainVolatileParam(\Anakeen\Core\Internal\Application & $core, \Anakeen\Core\Internal\Session & $session = null)
 {
     if (php_sapi_name() == 'cli') {
         _initMainVolatileParamCli($core);
@@ -251,7 +251,7 @@ function _initMainVolatileParamCli(\Anakeen\Core\Internal\Application & $core)
     $core->SetVolatileParam("CORE_MAILACTIONURL", $core_mailactionurl);
 }
 
-function _initMainVolatileParamWeb(\Anakeen\Core\Internal\Application & $core, Session & $session = null)
+function _initMainVolatileParamWeb(\Anakeen\Core\Internal\Application & $core, \Anakeen\Core\Internal\Session & $session = null)
 {
     $indexphp = basename($_SERVER["SCRIPT_NAME"]);
     $pattern = preg_quote($indexphp, "|");

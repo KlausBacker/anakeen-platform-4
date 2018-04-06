@@ -74,7 +74,7 @@ class Session
             throw $e;
         }
         $_SERVER['PHP_AUTH_USER'] = $login;
-        $session = new \Session();
+        $session = new \Anakeen\Core\Internal\Session();
         $session->set();
         $session->register('username', $login);
         if ($language) {

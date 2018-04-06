@@ -127,7 +127,7 @@ create sequence SEQ_ID_ACTION;
     /**
      * current session
      *
-     * @var \Session
+     * @var \Anakeen\Core\Internal\Session
      */
     public $session;
     /**
@@ -154,7 +154,7 @@ create sequence SEQ_ID_ACTION;
      * @code
      * $core = new \Anakeen\Core\Internal\Application();
      * $core->Set("CORE", $CoreNull); // init core application from nothing
-     * $core->session = new \Session();
+     * $core->session = new \Anakeen\Core\Internal\Session();
      * $core->session->set();
      * $one = new \Anakeen\Core\Internal\Application();
      * $one->set("ONEFAM", $core, $core->session);// init ONEFAM application from core

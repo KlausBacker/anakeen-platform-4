@@ -516,7 +516,7 @@ function seems_utf8($Str)
  *
  * @deprecated use ContextManager::initContext
  *
- * @param Session $session
+ * @param \Anakeen\Core\Internal\Session $session
  *
  * @throws Exception
  * @throws \Dcp\Core\Exception
@@ -530,7 +530,7 @@ function WhatInitialisation($session = null)
     $core = new \Anakeen\Core\Internal\Application();
     $core->Set("CORE", $CoreNull, $session);
     if (!$session) {
-        $core->session = new Session();
+        $core->session = new \Anakeen\Core\Internal\Session();
     }
     $action = new \Anakeen\Core\Internal\Action();
     $action->Set("", $core);

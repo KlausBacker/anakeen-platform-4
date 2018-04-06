@@ -1,5 +1,6 @@
 <?php
 
+namespace Anakeen\Core\Internal;
 
 class Session extends DbObj
 {
@@ -60,7 +61,7 @@ class Session extends DbObj
         $createNewSession = true;
         
         if ($id) {
-            $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Session::class);
+            $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Anakeen\Core\Internal\Session::class);
             $query->addQuery("id = '" . pg_escape_string($id) . "'");
             $list = $query->Query(0, 0, "TABLE");
             if ($query->nb != 0) {
@@ -179,8 +180,13 @@ class Session extends DbObj
         $this->status = self::SESSION_CT_CLOSE;
         return $this->status;
     }
+
     /**
      * Closes all session
+     *
+     * @param int $uid if set close specific user session
+     *
+     * @return int
      */
     public function closeAll($uid = null)
     {
@@ -192,8 +198,13 @@ class Session extends DbObj
         $this->status = self::SESSION_CT_CLOSE;
         return $this->status;
     }
+
     /**
      * Closes all user's sessions
+     *
+     * @param int $uid if set close specific user session
+     *
+     * @return int|string
      */
     public function closeUsers($uid = - 1)
     {

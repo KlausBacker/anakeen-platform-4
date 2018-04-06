@@ -68,12 +68,12 @@ class ContextManager
      * @param \Anakeen\Core\Account    $account
      * @param string        $appName
      * @param string        $actionName
-     * @param \Session|null $session
+     * @param \Anakeen\Core\Internal\Session|null $session
      *
      * @throws \Dcp\Db\Exception
      * @throws \Exception
      */
-    public static function initContext(\Anakeen\Core\Account $account, $appName = "CORE", $actionName = "", \Session $session = null)
+    public static function initContext(\Anakeen\Core\Account $account, $appName = "CORE", $actionName = "", \Anakeen\Core\Internal\Session $session = null)
     {
         global $action;
         set_include_path(self::getRootDirectory() . PATH_SEPARATOR . get_include_path());
@@ -84,7 +84,7 @@ class ContextManager
         $coreApplication->Set("CORE", $CoreNull);
         $coreApplication->session = $session;
         if (!$coreApplication->session) {
-            $coreApplication->session = new \Session();
+            $coreApplication->session = new \Anakeen\Core\Internal\Session();
         }
 
         self::_initCoreVolatileParam($coreApplication);

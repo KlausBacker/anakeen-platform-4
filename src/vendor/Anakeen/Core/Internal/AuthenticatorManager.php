@@ -16,7 +16,7 @@ include_once("FDL/LegacyDocManager.php");
 class AuthenticatorManager
 {
     /**
-     * @var \Session
+     * @var \Anakeen\Core\Internal\Session
      */
     public static $session = null;
     const AccessBug = -1;

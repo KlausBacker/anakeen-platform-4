@@ -129,7 +129,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public $parent = null;
     /**
-     * @var \Session
+     * @var \Anakeen\Core\Internal\Session
      */
     public $session = null;
     /**
@@ -199,7 +199,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      * $CoreNull = "";
      * $core = new \Anakeen\Core\Internal\Application();
      * $core->Set("CORE", $CoreNull); // init core application from nothing
-     * $core->session = new \Session();
+     * $core->session = new \Anakeen\Core\Internal\Session();
      * $core->session->set();
      * $one = new \Anakeen\Core\Internal\Application();
      * $one->set("ONEFAM", $core, $core->session);// init ONEFAM application from CORE

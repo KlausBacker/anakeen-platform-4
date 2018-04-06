@@ -19,7 +19,7 @@ class BasicAuthenticator extends Authenticator
 {
     const basicAuthorizationScheme = "Basic";
     /**
-     * @var \Session
+     * @var \Anakeen\Core\Internal\Session
      */
     protected $auth_session = null;
     public function checkAuthentication()
@@ -123,9 +123,9 @@ class BasicAuthenticator extends Authenticator
         if (!$this->auth_session) {
             $sendCookie=!empty($_SERVER['HTTP_REFERER']);
             // Send cookie if find a referer
-            $this->auth_session = new \Session(\Session::PARAMNAME, $sendCookie);
-            if (array_key_exists(\Session::PARAMNAME, $_COOKIE)) {
-                $this->auth_session->Set($_COOKIE[\Session::PARAMNAME]);
+            $this->auth_session = new \Anakeen\Core\Internal\Session(\Anakeen\Core\Internal\Session::PARAMNAME, $sendCookie);
+            if (array_key_exists(\Anakeen\Core\Internal\Session::PARAMNAME, $_COOKIE)) {
+                $this->auth_session->Set($_COOKIE[\Anakeen\Core\Internal\Session::PARAMNAME]);
             } else {
                 $this->auth_session->Set();
             }

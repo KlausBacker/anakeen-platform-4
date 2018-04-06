@@ -62,7 +62,7 @@ class LdapAuthentProvider extends AuthentProvider
         $CoreNull = "";
         $core = new \Anakeen\Core\Internal\Application();
         $core->Set("CORE", $CoreNull);
-        $core->session = new \Session();
+        $core->session = new \Anakeen\Core\Internal\Session();
         $action = new \Anakeen\Core\Internal\Action();
         $action->Set("", $core);
         $action->user = new \Anakeen\Core\Account("", 1); //create user as admin

@@ -226,7 +226,7 @@ class OpenAuthenticator extends Authenticator
     public function getAuthSession()
     {
         if (!$this->auth_session) {
-            $this->auth_session = new \Session(\Session::PARAMNAME, false);
+            $this->auth_session = new \Anakeen\Core\Internal\Session(\Anakeen\Core\Internal\Session::PARAMNAME, false);
             
             $this->auth_session->Set();
         }
