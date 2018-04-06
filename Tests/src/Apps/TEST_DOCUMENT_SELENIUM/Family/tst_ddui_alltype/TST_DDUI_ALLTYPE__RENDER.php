@@ -13,7 +13,7 @@
 
 namespace Dcp\Test\Ddui;
 
-use Dcp\AttributeIdentifiers\TST_DDUI_ALLTYPE as myAttributes;
+use SmartStructure\Attributes\TST_DDUI_ALLTYPE as myAttributes;
 
 class AllRenderConfigEdit extends \Dcp\Ui\DefaultEdit
 {

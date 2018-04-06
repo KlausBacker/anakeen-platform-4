@@ -6,7 +6,7 @@
 
 namespace Dcp\Test\DdUi;
 
-use \Dcp\AttributeIdentifiers\Tst_ddui_employee as myAttribute;
+use \SmartStructure\Attributes\Tst_ddui_employee as myAttribute;
 
 class EmployeeEditRender extends \Dcp\Ui\DefaultEdit
 {

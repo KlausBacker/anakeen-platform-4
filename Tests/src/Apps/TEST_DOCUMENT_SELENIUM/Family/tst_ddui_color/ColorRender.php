@@ -6,7 +6,7 @@
 
 namespace Dcp\Test\DdUi;
 
-use \Dcp\AttributeIdentifiers\Tst_ddui_color as myAttribute;
+use \SmartStructure\Attributes\Tst_ddui_color as myAttribute;
 
 class ColorEditRender extends \Dcp\Ui\DefaultEdit
 {

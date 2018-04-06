@@ -6,7 +6,7 @@
 
 namespace Dcp\Test\Ddui;
 
-use Dcp\AttributeIdentifiers\TST_DDUI_ENUM as myAttributes;
+use SmartStructure\Attributes\TST_DDUI_ENUM as myAttributes;
 
 class EnumRenderConfigEditDefault extends \Dcp\Ui\DefaultEdit
 {

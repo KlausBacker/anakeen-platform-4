@@ -6,7 +6,7 @@
 
 namespace Dcp\Test\Ddui;
 
-class EnumType extends \SmartStructure\Document
+class EnumType extends \Anakeen\SmartStructures\Document
 {
 
 

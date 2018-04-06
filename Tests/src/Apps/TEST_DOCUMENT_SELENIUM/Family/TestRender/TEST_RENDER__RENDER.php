@@ -13,7 +13,7 @@
 
 namespace Dcp\Test\Ddui;
 
-use Dcp\AttributeIdentifiers\TST_RENDER as myAttributes;
+use SmartStructure\Attributes\TST_RENDER as myAttributes;
 
 class RenderConfigEdit extends \Dcp\Ui\DefaultEdit
 {

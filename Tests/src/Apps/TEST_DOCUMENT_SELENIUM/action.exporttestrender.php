@@ -12,7 +12,7 @@ function exportTestRender(\Anakeen\Core\Internal\Action $action) {
     $folder=\Dcp\HttpApi\V1\DocManager\DocManager::getDocument("SELENIUM_DATA");
     if (! $folder) {
         $folder= \Dcp\HttpApi\V1\DocManager\DocManager::createDocument("DIR");
-        $folder->setValue(\Dcp\AttributeIdentifiers\Dir::ba_title, "TEST_DDUI_INIT_DATA");
+        $folder->setValue(\SmartStructure\Attributes\Dir::ba_title, "TEST_DDUI_INIT_DATA");
 
         $folder->store();
         $folder->setLogicalName("SELENIUM_DATA");

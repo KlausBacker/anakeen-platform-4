@@ -6,7 +6,7 @@
 
 namespace Dcp\Test\Ddui;
 
-use Dcp\AttributeIdentifiers\TST_DDUI_DOCID as myAttributes;
+use SmartStructure\Attributes\TST_DDUI_DOCID as myAttributes;
 
 class DocidRenderConfigEdit extends \Dcp\Ui\DefaultEdit
 {
