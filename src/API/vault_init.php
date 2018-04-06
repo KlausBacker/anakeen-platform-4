@@ -17,7 +17,7 @@
 
 include_once("FDL/Lib.Util.php");
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 
 $usage->setDefinitionText("Initialisation of the FREEDOM VAULT based on the VAULT/FREEDOM.vault file");
 $dirname = $usage->addOptionalParameter("path", "path to vault", null, DEFAULT_PUBDIR."/vaultfs");

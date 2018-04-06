@@ -14,7 +14,7 @@
 // use this only if you have changed title attributes
 
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("Generate Php Document Classes");
 $docid = $usage->addOptionalParameter("docid", "special docid", null, 0);
 $usage->verify();

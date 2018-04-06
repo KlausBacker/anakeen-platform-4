@@ -15,7 +15,7 @@ class processExecuteAPI
     public static function run(\Anakeen\Core\Internal\Action & $action)
     {
 
-        $usage = new ApiUsage();
+        $usage = new \Anakeen\Script\ApiUsage();
         $usage->setDefinitionText("Execute Dynacase Processes when needed");
         $doctimerId = $usage->addOptionalParameter('doctimer-id', 'Doctimer identifier', null, null);
         $execId = $usage->addOptionalParameter('exec-id', 'Exec identifier', null, null);

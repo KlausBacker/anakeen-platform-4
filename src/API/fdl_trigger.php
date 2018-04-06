@@ -16,7 +16,7 @@
 // refreah for a classname
 // use this only if you have changed title attributes
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 
 $usage->setDefinitionText("Return sql code to inject trigget in base");
 $docid = $usage->addOptionalParameter("docid", "special docid", null, 0);

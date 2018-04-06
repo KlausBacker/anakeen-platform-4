@@ -169,7 +169,7 @@ function ods2content($odsfile, &$content)
     return "";
 }
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 
 $usage->setDefinitionText("Convert OpenDocument Spreadsheet to csv (semicolon)");
 $odsfile = $usage->addRequiredParameter("odsfile", "ods file (input)"); // file ods (input)

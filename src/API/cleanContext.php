@@ -13,7 +13,7 @@
 // remove all tempory doc and orphelines values
 global $action;
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 
 $usage->setDefinitionText("Clean base");
 $real = ($usage->addHiddenParameter("real", "real (yes or no)") == "yes");

@@ -4,7 +4,7 @@
  * @package FDL
 */
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("apply given style - if no style is set then update current style");
 $styFilePath = $usage->addOptionalParameter("style", "path to style file");
 
@@ -130,7 +130,7 @@ class styleManager
             } else {
                 $msg = "$customRulesFilePath is not readable";
             }
-            throw new \Dcp\ApiUsage\Exception("FILE0011", $msg);
+            throw new \Anakeen\Script\UsageException("FILE0011", $msg);
         }
         /** @noinspection PhpIncludeInspection */
         require $customRulesFilePath;

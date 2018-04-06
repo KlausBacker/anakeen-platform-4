@@ -11,7 +11,7 @@
  */
 /**
  */
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 
 $usage->setDefinitionText("set applicative parameter value");
 $parname = $usage->addRequiredParameter("param", "parameter name"); // parameter name

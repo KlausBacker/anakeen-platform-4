@@ -11,6 +11,7 @@ namespace Dcp\Pu;
  * @package Dcp\Pu
  */
 
+use Anakeen\Script\ApiUsage;
 use Anakeen\Script\ShellManager;
 
 //require_once 'PU_testcase_dcp.php';
@@ -32,7 +33,7 @@ class TestUsage extends TestCaseDcp
      */
     public function testTextApiUsage($text)
     {
-        $u = new \ApiUsage();
+        $u = new \Anakeen\Script\ApiUsage();
         $u->setDefinitionText($text);
 
         $this->assertContains($text, $u->getUsage());
@@ -49,7 +50,7 @@ class TestUsage extends TestCaseDcp
     {
         $usage = '';
         try {
-            $u = new \ApiUsage();
+            $u = new \Anakeen\Script\ApiUsage();
             $u->addRequiredParameter($argNeeded, $def);
             $u->verify();
         } catch (\Exception $e) {
@@ -71,10 +72,10 @@ class TestUsage extends TestCaseDcp
         $usage = '';
         $error = '';
         try {
-            $u = new \ApiUsage();
+            $u = new \Anakeen\Script\ApiUsage();
             $u->addRequiredParameter($argNeeded, $def);
             $u->verify(true);
-        } catch (\Dcp\ApiUsage\Exception $e) {
+        } catch (\Anakeen\Script\UsageException $e) {
             $error = $e->getMessage();
             $usage = $e->getUsage();
         }
@@ -105,7 +106,7 @@ class TestUsage extends TestCaseDcp
         $usage = '';
         try {
             ShellManager::recordArgs(["--needed=needed"]);
-            $u = new \ApiUsage();
+            $u = new \Anakeen\Script\ApiUsage();
             $u->addRequiredParameter("needed", "A needed argument", $callback);
             $u->addOptionalParameter("optional", "An optional argument", $callback);
             $u->addHiddenParameter("hidden", "An hidden argument");
@@ -127,7 +128,7 @@ class TestUsage extends TestCaseDcp
         $myvar = "myvariable";
         try {
             ShellManager::recordArgs([sprintf("--%s[]=%s", $myvar, $myvar)]);
-            $u = new \ApiUsage();
+            $u = new \Anakeen\Script\ApiUsage();
             $u->addRequiredParameter($myvar, "A needed argument", $callback);
             $u->verify(true);
         } catch (\Exception $e) {
@@ -148,7 +149,7 @@ class TestUsage extends TestCaseDcp
         $myvar = "myvariable";
         try {
             ShellManager::recordArgs([sprintf("--%s[]=%s", $myvar, $myvar)]);
-            $u = new \ApiUsage();
+            $u = new \Anakeen\Script\ApiUsage();
             $u->addOptionalParameter($myvar, "An optional argument", $callback);
             $u->verify(true);
         } catch (\Exception $e) {
@@ -168,7 +169,7 @@ class TestUsage extends TestCaseDcp
         $usage = '';
         try {
             ShellManager::recordArgs(["--help"]);
-            $u = new \ApiUsage();
+            $u = new \Anakeen\Script\ApiUsage();
             $u->addRequiredParameter("needed", "A needed argument", $callback);
             $u->addOptionalParameter("optional", "An optional argument", $callback);
             $u->addHiddenParameter("hidden", "An hidden argument");
@@ -217,7 +218,7 @@ class TestUsage extends TestCaseDcp
     }
 }
 
-function simpleFunctionUsageCallback($values, $argName, \ApiUsage $apiUsage)
+function simpleFunctionUsageCallback($values, $argName, ApiUsage $apiUsage)
 {
     return TestUsage::usageCallback($values, $argName, $apiUsage);
 }

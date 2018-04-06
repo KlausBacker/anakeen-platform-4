@@ -2,15 +2,13 @@
 
 namespace Anakeen\Script;
 
-use Dcp\Exception;
-
 class ShellManager
 {
     const SCRIPTDIR = "API";
     protected static $opts = [];
     protected static $programName = "ank.php";
 
-    public static function recordArgs(array $argv, $programeName=null)
+    public static function recordArgs(array $argv, $programeName = null)
     {
         if ($programeName) {
             self::$programName = $programeName;
@@ -95,7 +93,7 @@ class ShellManager
             try {
                 require($apifile);
             } /** @noinspection PhpRedundantCatchClauseInspection */
-            catch (\Dcp\ApiUsage\Exception $e) {
+            catch (Exception $e) {
                 switch ($e->getDcpCode()) {
                     case "CORE0002":
                         echo sprintf(_("Error : %s\n"), $e->getDcpMessage());
@@ -255,6 +253,7 @@ EOF;
         $wshError->addExpand($expand);
         $wshError->autosend();
     }
+
     public static function isInteractiveCLI()
     {
         if (php_sapi_name() !== 'cli') {
@@ -265,6 +264,7 @@ EOF;
         }
         return true;
     }
+
     /**
      * return shell commande for ank
      * depending of database (in case of several instances)

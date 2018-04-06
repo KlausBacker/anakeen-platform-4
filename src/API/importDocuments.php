@@ -6,9 +6,9 @@
 /**
  * importation of documents
  *
- * @author Anakeen
- * @version $Id: freedom_import.php,v 1.9 2008/11/13 16:49:16 eric Exp $
- * @package FDL
+ * @author     Anakeen
+ * @version    $Id: freedom_import.php,v 1.9 2008/11/13 16:49:16 eric Exp $
+ * @package    FDL
  * @subpackage WSH
  */
 /**
@@ -19,7 +19,7 @@ global $appl, $action;
 include_once("WHAT/Lib.Http.php");
 include_once("FDL/import_file.php");
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("Import documents from description file");
 $filename = $usage->addRequiredParameter("file", "the description file path");
 $analyze = $usage->addOptionalParameter("analyze", "analyze only", array(
@@ -31,11 +31,13 @@ $archive = $usage->addOptionalParameter("archive", "description file is an stand
     "no"
 ), "no");
 $logfile = $usage->addOptionalParameter("log", "log file output");
-$policy = $usage->addOptionalParameter("policy", "policy import - \n\t\t[update] to auto update same document (the default), \n\t\t[add] to always create new document, \n\t\t[keep] to do nothing if same document already present", array(
-    "update",
-    "add",
-    "keep"
-));
+$policy = $usage->addOptionalParameter("policy",
+    "policy import - \n\t\t[update] to auto update same document (the default), \n\t\t[add] to always create new document, \n\t\t[keep] to do nothing if same document already present",
+    array(
+        "update",
+        "add",
+        "keep"
+    ));
 $htmlmode = $usage->addOptionalParameter("htmlmode", "analyze report mode in html", array(
     "yes",
     "no"
@@ -44,7 +46,7 @@ $reinit = $usage->addOptionalParameter("reinitattr", "reset attribute before imp
     "yes",
     "no"
 ));
-$reset = $usage->addOptionalParameter("reset", "reset options", function ($values, $argName, ApiUsage $apiusage) {
+$reset = $usage->addOptionalParameter("reset", "reset options", function ($values, $argName, \Anakeen\Script\ApiUsage $apiusage) {
     $opt = array(
         "default",
         "parameters",
@@ -53,7 +55,7 @@ $reset = $usage->addOptionalParameter("reset", "reset options", function ($value
         "properties",
         "enums"
     );
-    if ($values === ApiUsage::GET_USAGE) {
+    if ($values === \Anakeen\Script\ApiUsage::GET_USAGE) {
         return sprintf(" [%s] ", implode('|', $opt));
     }
 
@@ -71,8 +73,8 @@ $strict = $usage->addOptionalParameter("strict", "don't import if one error dete
     "no"
 ), "yes");
 
-$csvSeparator = $usage->addOptionalParameter("csv-separator", "character to delimiter fields - generaly a comma", function ($values, $argName, ApiUsage $apiusage) {
-    if ($values === ApiUsage::GET_USAGE) {
+$csvSeparator = $usage->addOptionalParameter("csv-separator", "character to delimiter fields - generaly a comma", function ($values, $argName, \Anakeen\Script\ApiUsage $apiusage) {
+    if ($values === \Anakeen\Script\ApiUsage::GET_USAGE) {
         return sprintf(' use single character or "auto"');
     }
     if (!is_string($values)) {
@@ -86,20 +88,25 @@ $csvSeparator = $usage->addOptionalParameter("csv-separator", "character to deli
     return '';
 }, ";");
 
-$csvEnclosure = $usage->addOptionalParameter("csv-enclosure", "character to enclose fields - generaly double-quote", function ($values, $argName, ApiUsage $apiusage) {
-    if ($values === ApiUsage::GET_USAGE) {
-        return sprintf(' use single character or "auto"');
-    }
-    if (!is_string($values)) {
-        return sprintf("must be a character [%s] ", print_r($values, true));
-    }
-    if ($values != "auto") {
-        if (mb_strlen($values) > 1) {
-            return sprintf("must be a only one character [%s] ", $values);
+$csvEnclosure = $usage->addOptionalParameter(
+    "csv-enclosure",
+    "character to enclose fields - generaly double-quote",
+    function ($values, $argName, \Anakeen\Script\ApiUsage $apiusage) {
+        if ($values === \Anakeen\Script\ApiUsage::GET_USAGE) {
+            return sprintf(' use single character or "auto"');
         }
-    }
-    return '';
-}, '"');
+        if (!is_string($values)) {
+            return sprintf("must be a character [%s] ", print_r($values, true));
+        }
+        if ($values != "auto") {
+            if (mb_strlen($values) > 1) {
+                return sprintf("must be a only one character [%s] ", $values);
+            }
+        }
+        return '';
+    },
+    '"'
+);
 
 $csvLinebreak = $usage->addOptionalParameter("csv-linebreak", "character sequence to be import like CRLF", null, '\n');
 

@@ -21,7 +21,7 @@ if ($dbaccess == "") {
     return;
 }
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 
 $usage->setDefinitionText("Update usercard");
 $whatid = $usage->addOptionalParameter("whatid", "document"); // document

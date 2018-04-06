@@ -9,7 +9,7 @@
  * @subpackage WSH
  */
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("Manage application");
 $appname = $usage->addRequiredParameter("appname", "application name");
 $method = $usage->addOptionalParameter("method", "action to do", array(

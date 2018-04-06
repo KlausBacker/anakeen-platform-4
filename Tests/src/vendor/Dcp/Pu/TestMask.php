@@ -10,7 +10,6 @@
 
 namespace Dcp\Pu;
 
-use Dcp\ApiUsage\Exception;
 
 //require_once 'PU_testcase_dcp_commonfamily.php';
 

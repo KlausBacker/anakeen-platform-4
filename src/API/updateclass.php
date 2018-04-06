@@ -20,7 +20,7 @@
 global $action;
 
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 
 $usage->setDefinitionText("Update the SQL structure of a table of a DbObj Object");
 $appClass = $usage->addOptionalParameter('appc', "application class folder", function ($value, $name) {

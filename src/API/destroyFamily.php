@@ -13,7 +13,7 @@
 global $action;
 
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("Delete family document and its documents");
 $docid = $usage->addRequiredParameter("famid", "special docid");
 $force = $usage->addHiddenParameter("force", "force without transaction");

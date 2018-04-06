@@ -17,22 +17,22 @@
 /**
  * Exportation of documents from folder or searches
  *
- * @param \Anakeen\Core\Internal\Action  &$action                     current action
- * @param string  $aflid                       Folder identifier to use if no "id" http vars
- * @param string  $famid                       Family restriction to filter folder content
- * @param string  $outputPath                  where put export, if wfile outputPath is a directory
- * @param bool    $exportInvisibleVisibilities set to true to export invisible attribute also
+ * @param \Anakeen\Core\Internal\Action &$action                     current action
+ * @param string                        $aflid                       Folder identifier to use if no "id" http vars
+ * @param string                        $famid                       Family restriction to filter folder content
+ * @param string                        $outputPath                  where put export, if wfile outputPath is a directory
+ * @param bool                          $exportInvisibleVisibilities set to true to export invisible attribute also
  *
  * @throws Dcp\Exception
  * @throws Exception
- * @global string $fldid                       Http var : folder identifier to export
- * @global string $wprof                       Http var : (Y|N) if Y export associated profil also
- * @global string $wfile                       Http var : (Y|N) if Y export attached file export format will be tgz
- * @global string $wident                      Http var : (Y|N) if Y specid column is set with identifier of document
- * @global string $wutf8                       Http var : (Y|N) if Y encoding is utf-8 else iso8859-1
- * @global string $wcolumn                     Http var :  if - export preferences are ignored
- * @global string $eformat                     Http var :  (I|R|F) I: for reimport, R: Raw data, F: Formatted data
- * @global string $selection                   Http var :  JSON document selection object
+ * @global string                       $fldid                       Http var : folder identifier to export
+ * @global string                       $wprof                       Http var : (Y|N) if Y export associated profil also
+ * @global string                       $wfile                       Http var : (Y|N) if Y export attached file export format will be tgz
+ * @global string                       $wident                      Http var : (Y|N) if Y specid column is set with identifier of document
+ * @global string                       $wutf8                       Http var : (Y|N) if Y encoding is utf-8 else iso8859-1
+ * @global string                       $wcolumn                     Http var :  if - export preferences are ignored
+ * @global string                       $eformat                     Http var :  (I|R|F) I: for reimport, R: Raw data, F: Formatted data
+ * @global string                       $selection                   Http var :  JSON document selection object
  * @return void
  */
 function exportfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $famid = "", $outputPath = "", $exportInvisibleVisibilities = false)
@@ -80,38 +80,40 @@ function exportfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $famid
         $fldid = $usage->addOptionalParameter("id", "Folder identifier", array(), $aflid);
     }
 
-    $csvSeparator = $usage->addOptionalParameter("csv-separator", "character to delimiter fields - generaly a comma", function ($values, $argName, ApiUsage $apiusage) {
-        if ($values === ApiUsage::GET_USAGE) {
-            return sprintf(' use single character or "auto"');
-        }
-        if (!is_string($values)) {
-            return sprintf("must be a character [%s] ", print_r($values, true));
-        }
-        if ($values != "auto") {
-            if (mb_strlen($values) > 1) {
-                return sprintf("must be a only one character [%s] ", $values);
+    $csvSeparator = $usage->addOptionalParameter("csv-separator", "character to delimiter fields - generaly a comma",
+        function ($values, $argName, \Anakeen\Script\ApiUsage $apiusage) {
+            if ($values === \Anakeen\Script\ApiUsage::GET_USAGE) {
+                return sprintf(' use single character or "auto"');
             }
-            if (mb_strlen($values) === 0) {
-                return sprintf("empty separator is not allowed [%s] ", $values);
+            if (!is_string($values)) {
+                return sprintf("must be a character [%s] ", print_r($values, true));
             }
-        }
-        return '';
-    }, ";");
+            if ($values != "auto") {
+                if (mb_strlen($values) > 1) {
+                    return sprintf("must be a only one character [%s] ", $values);
+                }
+                if (mb_strlen($values) === 0) {
+                    return sprintf("empty separator is not allowed [%s] ", $values);
+                }
+            }
+            return '';
+        }, ";");
 
-    $csvEnclosure = $usage->addOptionalParameter("csv-enclosure", "character to enclose fields - generaly double-quote", function ($values, $argName, ApiUsage $apiusage) {
-        if ($values === ApiUsage::GET_USAGE) {
-            return sprintf(' use single character or "auto"');
-        }
-        if (!is_string($values)) {
-            return sprintf("must be a character [%s] ", print_r($values, true));
-        }
-        if ($values != "auto") {
-            if (mb_strlen($values) > 1) {
-                return sprintf("must be a only one character [%s] ", $values);
+    $csvEnclosure = $usage->addOptionalParameter("csv-enclosure", "character to enclose fields - generaly double-quote",
+        function ($values, $argName, \Anakeen\Script\ApiUsage $apiusage) {
+            if ($values === \Anakeen\Script\ApiUsage::GET_USAGE) {
+                return sprintf(' use single character or "auto"');
             }
-        }
-        return '';
-    }, "");
+            if (!is_string($values)) {
+                return sprintf("must be a character [%s] ", print_r($values, true));
+            }
+            if ($values != "auto") {
+                if (mb_strlen($values) > 1) {
+                    return sprintf("must be a only one character [%s] ", $values);
+                }
+            }
+            return '';
+        }, "");
     $usage->verify();
 
     if ($statusOnly) {
@@ -218,9 +220,9 @@ function exportfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $famid
 
 /**
  * @param \Anakeen\Core\Internal\Action $action
- * @param        $exportId
- * @param        $msg
- * @param bool   $endStatus
+ * @param                               $exportId
+ * @param                               $msg
+ * @param bool                          $endStatus
  *
  * @see        Dcp\ExportCollection::recordStatus()
  * @deprecated use Dcp\ExportCollection::recordStatus() instead

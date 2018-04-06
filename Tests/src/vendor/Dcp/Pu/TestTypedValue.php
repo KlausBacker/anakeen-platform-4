@@ -6,7 +6,6 @@
 
 namespace Dcp\Pu;
 
-use Dcp\ApiUsage\Exception;
 /**
  * @author Anakeen
  * @package Dcp\Pu

@@ -7,7 +7,7 @@ class VaultAnalyzerCLI
     public static function main(\Anakeen\Core\Internal\Action & $action)
     {
         $opts = array();
-        $usage = new \ApiUsage();
+        $usage = new \Anakeen\Script\ApiUsage();
         $usage->setDefinitionText('Analyze or clean orphan files');
         $usage->setStrictMode(true);
         $opts['analyze'] = ($usage->addEmptyParameter('analyze', 'Analyze orphan files (non-destructive)') !== false);

@@ -25,7 +25,7 @@ $usage = new ActionUsage();
  * $usage->verify();
  * @endcode
  */
-class ActionUsage extends ApiUsage
+class ActionUsage extends \Anakeen\Script\ApiUsage
 {
     /** @noinspection PhpMissingParentConstructorInspection */
     /**
@@ -86,7 +86,7 @@ class ActionUsage extends ApiUsage
      *
      * @param string   $argVal   argument value
      * @param string   $argName  argument name
-     * @param ApiUsage $apiUsage current apiUsage object
+     * @param \Anakeen\Script\ApiUsage $apiUsage current apiUsage object
      *
      * @return string
      */

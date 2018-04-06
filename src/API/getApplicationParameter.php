@@ -11,7 +11,7 @@
  */
 /**
  */
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 
 $usage->setDefinitionText("get parameter value");
 $parname = $usage->addOptionalParameter("param", "Parameter name");

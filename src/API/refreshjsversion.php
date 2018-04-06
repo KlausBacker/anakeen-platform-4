@@ -15,7 +15,7 @@
 /**
  */
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("regenerate js version file");
 $usage->verify();
 
