@@ -722,7 +722,7 @@ class DocHtmlFormat
                      * @var DOMElement $item
                      */
                     $item = $theadcells->item($i);
-                    $th = DocFormFormat::xt_innerXML($item);
+                    $th = self::xt_innerXML($item);
                     $thstyle = $item->getAttribute("style");
                     $thclass = $item->getAttribute("class");
                     if ($thstyle != "") {
@@ -754,7 +754,7 @@ class DocHtmlFormat
                      * @var DOMElement $item
                      */
                     $item = $tbodycells->item($i);
-                    $tr[] = DocFormFormat::xt_innerXML($item);
+                    $tr[] = self::xt_innerXML($item);
                     $tcellstyle[] = $item->getAttribute("style");
                     $tcellclass[] = $item->getAttribute("class");
                 }
@@ -897,6 +897,22 @@ class DocHtmlFormat
             }
         }
         return $htmlval;
+    }
+
+    /**
+     * @param DomElement $node
+     *
+     * @return bool
+     */
+    public static function xt_innerXML(&$node)
+    {
+        if (!$node) {
+            return false;
+        }
+        $document = $node->ownerDocument;
+        $nodeAsString = $document->saveXML($node);
+        preg_match('!\<.*?\>(.*)\</.*?\>!s', $nodeAsString, $match);
+        return $match[1];
     }
 
     /**

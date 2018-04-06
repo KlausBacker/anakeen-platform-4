@@ -55,7 +55,7 @@ namespace {
     // New gettext keyword for regular strings with optional context argument
     function ___($message, $context = "")
     {
-        return Anakeen\Core\Utils\Gettext::___($context, $message);
+        return Anakeen\Core\Utils\Gettext::___($message, $context);
     }
 
     // New gettext keyword for plural strings with optional context argument

@@ -233,7 +233,7 @@ class SearchDoc
         /**  @var \Anakeen\SmartStructures\Dir\DirHooks $fld */
         $fld = Anakeen\Core\DocManager::getDocument($this->dirid);
         $userid = $this->userid;
-        if ($fld->fromid != \Anakeen\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
+        if (!$fld || $fld->fromid != \Anakeen\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
             $this->recursiveSearchInit();
             $tqsql = $this->getQueries();
             $this->debuginfo["query"] = $tqsql[0];

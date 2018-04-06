@@ -8126,7 +8126,7 @@ create unique index i_docir on doc(initid, revision);";
 
                 return $this->vault_filename_fromvalue($template, true);
             }
-            return getLayoutFile($reg['app'], ($aid));
+            return \Layout::getLayoutFile($reg['app'], ($aid));
         }
         return null;
     }

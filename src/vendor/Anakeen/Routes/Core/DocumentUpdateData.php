@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Core\DocManager;
+use Anakeen\Core\Utils\Gettext;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use \Anakeen\Core\Internal\StoreInfo;
@@ -109,7 +110,7 @@ class DocumentUpdateData extends DocumentData
             $message->code = "store";
             $messages[] = $message;
         }
-        $this->_document->addHistoryEntry(___("Updated by API", "ank"), \DocHisto::NOTICE, "UPDATE");
+        $this->_document->addHistoryEntry(Gettext::___("Updated by API", "ank"), \DocHisto::NOTICE, "UPDATE");
         DocManager::cache()->addDocument($this->_document);
     }
 

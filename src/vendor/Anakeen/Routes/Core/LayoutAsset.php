@@ -37,9 +37,9 @@ class LayoutAsset
         $assetType = $reg[1];
 
         if (preg_match("/([A-Z_0-9-]+):([^:]+):{0,1}[A-Z]{0,1}/", $ref, $reg)) {
-            $lfile = getLayoutFile($reg[1], ($reg[2]));
+            $lfile = \Layout::getLayoutFile($reg[1], ($reg[2]));
             if (!file_exists($lfile)) {
-                $lfile = getLayoutFile($reg[1], strtolower($reg[2]));
+                $lfile = \Layout::getLayoutFile($reg[1], strtolower($reg[2]));
             }
 
             if (file_exists($lfile)) {

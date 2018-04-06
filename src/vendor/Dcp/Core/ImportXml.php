@@ -194,6 +194,9 @@ class ImportXml
         }
         //print("family : $family $id $name $famid\n");
 
+        if (empty($families[$famid])) {
+            throw new Exception(sprintf('Import file for "%s" : Family "%s" not found', $xmlfile, $family));
+        }
         /**
          * @var \DocFam[] $families
          */

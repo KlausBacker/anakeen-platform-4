@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <documents date="2011-02-22T16:31:55" author="Default Master" name="Porte-document">
-<tst_ooolayout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_ooolayout.xsd"   name="TST_SIMPLEODT" title="Test Ooo Simple" revision="0" modification-date="2011-02-22T09:12:44" version="" state=""> 
+<tst_ooolayout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_ooolayout.xsd"   name="TST_SIMPLEODT" title="Test Ooo Simple" revision="0" modification-date="2011-02-22T09:12:44" version="" state="">
 <frame><tst_title>Test Ooo Simple</tst_title>
 <html_single>&lt;p&gt;Ligne n&amp;deg;1&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Ligne n&amp;deg;2 gras&lt;/strong&gt;&lt;/p&gt;
