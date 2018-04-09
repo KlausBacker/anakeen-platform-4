@@ -11,6 +11,7 @@ use Anakeen\Pu\Routes\SuiteRoutes;
 use Dcp\Pu\FrameworkDcp;
 use Dcp\Pu\SuiteDcp;
 use Dcp\Pu\SuiteDcpAttribute;
+use Dcp\Pu\SuiteDcpSecurity;
 use Dcp\Pu\SuiteDcpUser;
 
 require_once __DIR__ . '/../autoload.php';
@@ -37,8 +38,8 @@ class CoreTests
      //   $suite->addTest((new SuiteRoutes)());
      //   $suite->addTest(SuiteDcp::suite());
       //  $suite->addTest(SuiteDcpAttribute::suite());
-        $suite->addTest(SuiteDcpUser::suite());
-      //  $suite->addTest(SuiteDcpSecurity::suite());
+      //  $suite->addTest(SuiteDcpUser::suite());
+        $suite->addTest(SuiteDcpSecurity::suite());
         // ...
         printf("\nError log in [%s], messages in [%s]\n", self::LOGFILE, self::MSGFILE);
         return $suite;

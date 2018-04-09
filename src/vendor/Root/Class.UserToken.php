@@ -75,7 +75,7 @@ class UserToken extends DbObj
             $this->context = serialize($this->context);
         }
         $this->cdate = date("Y-m-d H:i:s");
-        $this->authorid = getCurrentUser()->id;
+        $this->authorid = \Anakeen\Core\ContextManager::getCurrentUser()->id;
     }
 
     public function setExpiration($expiration = "")
@@ -121,7 +121,7 @@ class UserToken extends DbObj
     public static function deleteExpired()
     {
         $sql = sprintf("DELETE FROM usertoken WHERE expire < now()");
-        simpleQuery('', $sql);
+        \Anakeen\Core\DbManager::query($sql);
     }
 
     public function preUpdate()

@@ -5,18 +5,7 @@ namespace Anakeen\Core\Internal;
 use Anakeen\Core\DbManager;
 
 /**
- * Application Class
- *
- * @author Anakee
- */
-
-function f_paramglog($var)
-{ // filter to select only not global
-    return (!((isset($var["global"]) && ($var["global"] == 'Y'))));
-}
-
-/**
- * Application managing
+ * Application manager
  *
  * @class Application
  *
@@ -405,7 +394,6 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         /* Try "APP:file.extension" notation */
         if (preg_match('/^(?P<appname>[a-z][a-z0-9_-]*):(?P<filename>.*)$/i', $ref, $m)) {
-
             $location = sprintf('%s/%s/Layout/%s', $this->publicdir, $m['appname'], $m['filename']);
             if (is_file($location)) {
                 return sprintf('%s/Layout/%s', $m['appname'], $m['filename']);
@@ -1531,7 +1519,13 @@ create sequence SEQ_ID_APPLICATION start 10;
             if (file_exists($this->rootdir . "/{$this->childof}/{$this->childof}_init.php")) {
                 include("{$this->childof}/{$this->childof}_init.php");
                 global $app_const;
-                $this->InitAllParam(array_filter($app_const, "f_paramglog"), true);
+                $this->InitAllParam(array_filter(
+                    $app_const,
+                    function ($var) {
+                        // filter to select only not global
+                        return (!((isset($var["global"]) && ($var["global"] == 'Y'))));
+                    }
+                ), true);
             }
 
             if ($this->id > 1) {

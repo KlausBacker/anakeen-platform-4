@@ -321,7 +321,7 @@ function getServiceCore()
  * return variable from dbaccess.php
  *
  * @param string $varName
- *
+ * @deprecated
  * @return string|null
  * @throws Dcp\Exception
  */

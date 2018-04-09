@@ -2,6 +2,8 @@
 
 namespace Dcp\Router;
 
+use Anakeen\Core\Utils\Gettext;
+
 class NotHandler
 {
 
@@ -13,7 +15,7 @@ class NotHandler
      */
     public static function NotFound(\Slim\Http\request $request, \Slim\Http\response $response)
     {
-        $args = ["title" => sprintf(___("Page not found", "ank"))];
+        $args = ["title" => sprintf(Gettext::___("Page not found", "ank"))];
         $response = $response->withStatus(404);
         return self::getResponsePage($request, $response, $args, "CORE/Layout/notFound.html");
     }
@@ -29,7 +31,7 @@ class NotHandler
     {
         $args = [
             "title" => sprintf(
-                ___("Method \"%s\" Not Allowed. Must be one of: %s", "ank"),
+                Gettext::___("Method \"%s\" Not Allowed. Must be one of: %s", "ank"),
                 $request->getMethod(),
                 implode(", ", $methods)
             )

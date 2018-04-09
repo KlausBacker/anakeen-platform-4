@@ -7431,7 +7431,6 @@ create unique index i_docir on doc(initid, revision);";
                     );
                 }
                 $a = "<a $ajs target=\"$target\" href=\"$ul\">$title</a>";
-
             }
         } else {
             if (!$title) {
@@ -8352,20 +8351,7 @@ create unique index i_docir on doc(initid, revision);";
         }
     }
 
-    /**
-     * affect a logical name that can be use as unique reference of a document independant of database
-     *
-     * @param string $name  new logical name
-     * @param bool   $reset set to true to accept change
-     *
-     * @deprecated use ::setLogicalName instead
-     * @return string error message if cannot be
-     */
-    public function setLogicalIdentificator($name, $reset = false)
-    {
-        deprecatedFunction();
-        return $this->setLogicalName($name, $reset);
-    }
+
 
     /**
      * Affect a logical name that can be use as unique reference of a document independant of database.
