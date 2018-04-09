@@ -15,9 +15,8 @@
  */
 // refreah for a classname
 // use this only if you have changed title attributes
-include_once("FDL/Lib.Attr.php");
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 
 $usage->setDefinitionText("Return sql code to inject trigget in base");
 $docid = $usage->addOptionalParameter("docid", "special docid", null, 0);
@@ -35,7 +34,7 @@ if ($dbaccess == "") {
 }
 
 if ($docid != - 1) {
-    $query = new QueryDb($dbaccess, "Doc");
+    $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \Doc::class);
     $query->AddQuery("doctype='C'");
     
     if ($docid > 0) {

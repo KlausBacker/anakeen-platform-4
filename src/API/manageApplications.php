@@ -9,7 +9,7 @@
  * @subpackage WSH
  */
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("Manage application");
 $appname = $usage->addRequiredParameter("appname", "application name");
 $method = $usage->addOptionalParameter("method", "action to do", array(
@@ -45,7 +45,7 @@ if (!$legacy && !empty($apps[$appname])) {
             break;
 
         case "delete":
-            $app = new Application();
+            $app = new \Anakeen\Core\Internal\Application();
             $app->set($appname, $Null, null, false);
             if ($app->isAffected()) {
                 $err = $app->DeleteApp();
@@ -68,7 +68,7 @@ if (!$legacy && !empty($apps[$appname])) {
 } else {
     // Legacy Method to declare applications
 
-    $app = new Application();
+    $app = new \Anakeen\Core\Internal\Application();
 
     $Null = "";
 

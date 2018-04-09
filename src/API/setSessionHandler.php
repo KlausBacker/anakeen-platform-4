@@ -4,12 +4,12 @@
  * @package FDL
 */
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("add session handler");
 $handlerName = $usage->addRequiredParameter("handlerClass", "class name of session handler to use - set to SessionHandler to use php system handler");
 $usage->verify();
 /**
- * @var Action $action
+ * @var \Anakeen\Core\Internal\Action $action
  */
 $handlerCode = '';
 if ($handlerName != "SessionHandler") {

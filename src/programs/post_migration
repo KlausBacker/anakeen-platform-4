@@ -25,14 +25,9 @@ if ($WIFF_CONTEXT_ROOT === false) {
 
 set_include_path(get_include_path() . PATH_SEPARATOR . $WIFF_CONTEXT_ROOT . PATH_SEPARATOR . "$WIFF_ROOT/include");
 
-$prefix = $WIFF_CONTEXT_ROOT . "/vendor/Anakeen/WHAT/Lib.Prefix.php";
-if (!include ($prefix)) {
-    print "cannot include file $prefix";
-    exit(1);
-}
 
-require_once 'WHAT/autoload.php';
-include ("WHAT/Lib.Common.php");
+require __DIR__ . "/../vendor/Anakeen/WHAT/Lib.Prefix.php";
+require __DIR__ . '/../vendor/Anakeen/autoload.php';
 include ("WHAT/Lib.WCheck.php");
 
 if ($argc != 2) {

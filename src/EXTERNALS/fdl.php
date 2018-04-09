@@ -59,11 +59,11 @@ function linkenum($famid, $attrid)
 {
     
     $dbaccess = getDbAccess();
-    if (!is_numeric($famid)) $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famid);
+    if (!is_numeric($famid)) $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($famid);
     $soc = new_Doc($dbaccess, $famid);
     if ($soc->isAffected()) {
         /**
-         * @var NormalAttribute $a
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $a
          */
         $a = $soc->getAttribute($attrid);
         
@@ -109,7 +109,7 @@ function lmail($dbaccess, $name)
         $dl = $s->search()->getDocumentList();
         foreach ($dl as $dest) {
             /**
-             * @var \Dcp\Family\IUSER $dest
+             * @var \SmartStructure\IUSER $dest
              */
             $mailTitle = $dest->getMailTitle();
             $mail = $dest->getMail();
@@ -258,8 +258,7 @@ function tpluser($dbaccess, $type, $famid, $wfamid, $name)
 
 function getGlobalsParameters($name)
 {
-    include_once ("Class.QueryDb.php");
-    $q = new QueryDb("", "ParamDef");
+    $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\ParamDef::class);
     
     $tr = array();
     $q->AddQuery("isglob = 'Y'");
@@ -315,7 +314,7 @@ function lfamilies($dbaccess, $name = '', $subfam = "")
         $tinter = GetClassesDoc($dbaccess, $action->user->id, 0, "TABLE");
     } else {
         if (!is_numeric($subfam)) {
-            $subfam = \Dcp\Core\DocManager::getFamilyIdFromName($subfam);
+            $subfam = \Anakeen\Core\DocManager::getFamilyIdFromName($subfam);
         }
         $cdoc = new_Doc($dbaccess, $subfam);
         $tinter = $cdoc->GetChildFam();
@@ -363,7 +362,7 @@ function lfamily($dbaccess, $famid, $name = "", $dirid = 0, $filter = array() , 
     
     if (!is_numeric($famid)) {
         $famName = $famid;
-        $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famName);
+        $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($famName);
         if ($famid <= 0) {
             return sprintf(_("family %s not found") , $famName);
         }
@@ -473,7 +472,7 @@ function lfamilyvalues($dbaccess, $famid, $name = "")
     }
     
     if (!is_numeric($famid)) {
-        $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famid);
+        $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($famid);
     }
     $filter = array();
     if ($name != "") {
@@ -703,7 +702,7 @@ function fdlGetEnumValues($famid, $attrid, $val = '')
 {
     $doc = new_doc('', $famid);
     /**
-     * @var NormalAttribute $enumAttribute
+     * @var \Anakeen\Core\SmartStructure\NormalAttribute $enumAttribute
      */
     $enumAttribute = $doc->getAttribute($attrid);
     if (!$enumAttribute) {
@@ -804,7 +803,7 @@ function lmask($dbaccess, $name, $maskfamid = "")
     if ($maskfamid > 0) {
         $mdoc = new_Doc($dbaccess, $maskfamid);
         $chdoc = $mdoc->GetFromDoc();
-        $filter[] = GetSqlCond($chdoc, "msk_famid");
+        $filter[] = \Anakeen\Core\DbManager::getSqlOrCond($chdoc, "msk_famid");
         //    $filter[]="msk_famid='$maskfamid'"; // when workflow will have attribut to say the compatible families
         
     }
@@ -817,7 +816,7 @@ function lcvdoc($dbaccess, $name, $cvfamid = "")
     if ($cvfamid > 0) {
         $mdoc = new_Doc($dbaccess, $cvfamid);
         $chdoc = $mdoc->GetFromDoc();
-        $filter[] = GetSqlCond($chdoc, "cv_famid");
+        $filter[] = \Anakeen\Core\DbManager::getSqlOrCond($chdoc, "cv_famid");
     }
     return lfamily($dbaccess, "CVDOC", $name, 0, $filter);
 }
@@ -953,7 +952,7 @@ function getReportColumns($dbaccess, $famid, $name = "")
     );
     foreach ($propList as $propName => $propLabel) {
         if (($name == "") || (preg_match("/$pattern/i", $propLabel, $m))) {
-            $propLabel = mb_ucfirst($propLabel);
+            $propLabel = \Anakeen\Core\Utils\Strings::mb_ucfirst($propLabel);
             $tr[] = array(
                 $propLabel,
                 $propName,
@@ -998,12 +997,12 @@ function reportChooseColumns(&$action, $id)
     // $action->lay->set("enclosname", $nom);
     
     /**
-     * @var \Dcp\Family\Report $doc
+     * @var \SmartStructure\Report $doc
      */
     $doc = new_doc("", $id);
     if ($doc->doctype == "C") {
         $doc = createTmpDoc($doc->dbaccess, $id);
-        $doc->setValue(\Dcp\AttributeIdentifiers\Report::se_famid, getHttpVars("_se_famid"));
+        $doc->setValue(\SmartStructure\Attributes\Report::se_famid, getHttpVars("_se_famid"));
     }
     $doc->lay = & $action->lay;
     $doc->reportchoosecolumns();
@@ -1144,12 +1143,12 @@ function getSortProperties($dbaccess, $famid, $name = "")
     return $ret;
 }
 /**
- * @param NormalAttribute|FieldsetAttribute $oa
+ * @param Anakeen\Core\SmartStructure\NormalAttribute|Anakeen\Core\SmartStructure\FieldsetAttribute $oa
  * @return string
  */
 function _getParentLabel($oa)
 {
-    if ($oa && $oa->fieldSet && $oa->fieldSet->id != Adoc::HIDDENFIELD) {
+    if ($oa && $oa->fieldSet && $oa->fieldSet->id != \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD) {
         return _getParentLabel($oa->fieldSet) . $oa->fieldSet->getLabel() . '/';
     }
     return '';
@@ -1166,7 +1165,7 @@ function laction($dbaccess, $famid, $name, $type)
  */
 function lapplications($n = "")
 {
-    $q = new QueryDb("", "Application");
+    $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\Application::class);
     
     $tr = array();
     if ($n != "") $q->AddQuery("name ~* '$n'");
@@ -1187,13 +1186,13 @@ function lapplications($n = "")
 function lactions($app, $n = "")
 {
     $tr = array();
-    $q = new QueryDb("", "Application");
+    $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\Application::class );
     $q->AddQuery("name = '$app'");
     $la = $q->Query(0, 0, "TABLE");
     if ($q->nb == 1) {
         $appid = $la[0]["id"];
         if ($appid > 0) {
-            $q = new QueryDb("", "Action");
+            $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\Action::class);
             $q->AddQuery("id_application = $appid");
             if ($n != "") $q->AddQuery("name ~* '$n'");
             $la = $q->Query(0, 0, "TABLE");
@@ -1392,7 +1391,7 @@ function recipientDocument($dbaccess, $name)
         $dl = $s->search()->getDocumentList();
         foreach ($dl as $dest) {
             /**
-             * @var \Dcp\Family\IUSER $dest
+             * @var \SmartStructure\IUSER $dest
              */
             $mailTitle = $dest->getMailTitle();
             $mail = $dest->getMail();

@@ -12,31 +12,23 @@
  */
 // refreah for a classname
 // use this only if you have changed title attributes
-include_once("FDL/Lib.Attr.php");
-include_once("FDL/Class.DocFam.php");
 
 
-
-$dbaccess = $action->dbaccess;
-if ($dbaccess == "") {
-    print "Database not found : appl->dbaccess";
-    exit;
-}
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("Generate Php Document Classes");
 $docid = $usage->addOptionalParameter("docid", "special docid", null, 0);
 $usage->verify();
 
 if (($docid !== 0) && (!is_numeric($docid))) {
     $odocid = $docid;
-    $docid = \Dcp\Core\DocManager::getFamilyIdFromName($docid);
+    $docid = \Anakeen\Core\DocManager::getFamilyIdFromName($docid);
     if (!$docid) {
         print sprintf(_("family %s not found") . "\n", $odocid);
         exit(1);
     }
 }
 
-$query = new QueryDb($dbaccess, "DocFam");
+$query = new \Anakeen\Core\Internal\QueryDb("", \DocFam::class);
 $query->AddQuery("doctype='C'");
 $query->order_by = "id";
 
@@ -65,48 +57,50 @@ if ($query->nb > 0) {
             21
         );
         foreach ($tii as $ii) {
-            updateDoc($dbaccess, $tid[$ii]);
-            unset($tid[$ii]);
+            if (isset($tid[$ii])) {
+                updateDoc($tid[$ii]);
+                unset($tid[$ii]);
+            }
         }
     }
     // workflow at the end
     foreach ($tid as $k => $v) {
         if (strstr($v["usefor"], 'W')) {
-            updateDoc($dbaccess, $v);
+            updateDoc($v);
             /**
              * @var WDOc $wdoc
              */
-            $wdoc = createDoc($dbaccess, $v["id"]);
+            $wdoc = Anakeen\Core\DocManager::createDocument($v["id"]);
             $wdoc->CreateProfileAttribute(); // add special attribute for workflow
-            \Dcp\FamilyImport::activateTrigger($dbaccess, $v["id"]);
+            \Dcp\FamilyImport::activateTrigger("", $v["id"]);
         }
     }
     foreach ($tid as $k => $v) {
         if (strstr($v["usefor"], 'W') === false) {
-            updateDoc($dbaccess, $v);
+            updateDoc($v);
         }
     }
 }
-function updateDoc($dbaccess, $v)
+function updateDoc($v)
 {
-    require_once 'FDL/Lib.Attr.php';
     try {
-        $err = \Dcp\FamilyImport::buildFamilyFilesAndTables($dbaccess, $v, true);
+        $err = \Dcp\FamilyImport::buildFamilyFilesAndTables("", $v, true);
         if ($err) {
             error_log($err);
         }
     } catch (\Dcp\Exception $e) {
-        print $v["id"] . "[" . $v["title"] . "(" . $v["name"] . ")]\n";
+        print "\nERROR:" . $v["id"] . "[" . $v["title"] . "(" . $v["name"] . ")]\n";
         error_log($e->getMessage());
     }
 }
+
 // recursive sort by fromid
 function pushfam($fromid, &$tid, $tfam)
 {
     foreach ($tfam as $k => $v) {
         if ($v["fromid"] == $fromid) {
             $tid[$v["id"]] = $v;
-            
+
             pushfam($v["id"], $tid, $tfam);
         }
     }

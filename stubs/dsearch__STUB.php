@@ -1,10 +1,10 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Recherche détaillée  */
-	class Dsearch extends \Dcp\Core\DetailSearch { const familyName="DSEARCH";}
+	class Dsearch extends \Anakeen\SmartStructures\Dsearch\DSearchHooks { const familyName="DSEARCH";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Recherche détaillée  */
 	class Dsearch extends Search {
 		/** [frame] Conditions */

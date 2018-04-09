@@ -14,8 +14,6 @@
 /**
  */
 
-include_once("FDL/Class.Doc.php");
-include_once("FDL/Class.DocAttr.php");
 
 function enumjschoice(&$action)
 {
@@ -33,7 +31,7 @@ function enumjschoice(&$action)
  * @param string $def
  * @param bool $whttpvars
  * @param Doc $doc
- * @param NormalAttribute $oa
+ * @param \Anakeen\Core\SmartStructure\NormalAttribute $oa
  *
  * @deprecated see \Dcp\Core\AutocompleteLib
  * @return array|bool|string
@@ -48,7 +46,7 @@ function getFuncVar($n, $def, $whttpvars, &$doc, &$oa)
  */
 function getResPhpFunc(
     Doc & $doc,
-    NormalAttribute & $oattr,
+    \Anakeen\Core\SmartStructure\NormalAttribute & $oattr,
     &$rargids,
     &$tselect,
     &$tval,

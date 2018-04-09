@@ -1,10 +1,10 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** utilisateur  */
-	class Iuser extends \Dcp\Core\UserAccount { const familyName="IUSER";}
+	class Iuser extends \Anakeen\SmartStructures\Iuser\IUserHooks { const familyName="IUSER";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** utilisateur  */
 	class Iuser {
 		/** [frame] État civil */

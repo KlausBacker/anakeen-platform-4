@@ -1,18 +1,22 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Profil de document  */
-	class Pdoc extends \PDoc { const familyName="PDOC";}
+	class Pdoc extends \Anakeen\SmartStructures\Profiles\PDocHooks { const familyName="PDOC";}
 	/** Profil de dossier  */
-	class Pdir extends \PDir { const familyName="PDIR";}
+	class Pdir extends \Anakeen\SmartStructures\Profiles\PDirHooks { const familyName="PDIR";}
 	/** Profil de recherche  */
-	class Psearch extends \PDocSearch { const familyName="PSEARCH";}
+	class Psearch extends \Anakeen\SmartStructures\Profiles\PSearchHooks { const familyName="PSEARCH";}
 	/** Profil de famille  */
-	class Pfam extends \PFam { const familyName="PFAM";}
+	class Pfam extends \Anakeen\SmartStructures\Profiles\PFamHooks { const familyName="PFAM";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Profil de document  */
-	class Pdoc extends Base {
+	class Pdoc {
+		/** [frame] Basique */
+		const fr_basic='fr_basic';
+		/** [text] Titre */
+		const ba_title='ba_title';
 		/** [longtext] Description */
 		const prf_desc='prf_desc';
 		/** [frame] Dynamique */

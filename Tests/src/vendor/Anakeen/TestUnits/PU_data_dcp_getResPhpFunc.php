@@ -30,7 +30,7 @@ function PU_data_dcp_getResPhpFunc_getTitle_title($dbaccess, $title)
 function PU_data_dcp_getResPhpFunc_getTitle_fam_title($dbaccess, $famId, $title)
 {
     if (!is_numeric($famId)) {
-        $famId = \Dcp\Core\DocManager::getIdFromName($famId);
+        $famId = \Anakeen\Core\DocManager::getIdFromName($famId);
     }
     $s = new SearchDoc($dbaccess, $famId);
     $s->setObjectReturn();
@@ -71,7 +71,7 @@ function PU_data_dcp_getResPhpFunc_mirror_args()
 function PU_data_dcp_getResPhpFunc_latin1($a)
 {
     $data = iconv("UTF-8", "ISO-8859-1//TRANSLIT", $a);
-    if (seems_utf8($data)) $data2 = 'utf8';
+    if (\Anakeen\Core\Utils\Strings::seemsUTF8($data)) $data2 = 'utf8';
     else $data2 = 'other';
     return array(
         array(

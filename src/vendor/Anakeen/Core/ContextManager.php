@@ -1,21 +1,21 @@
 <?php
 
-namespace Dcp\Core;
+namespace Anakeen\Core;
 
 use Anakeen\Router\AuthenticatorManager;
 
 class ContextManager
 {
     /**
-     * @var \Application
+     * @var \Anakeen\Core\Internal\Application
      */
     protected static $coreApplication = null;
     /**
-     * @var \Action
+     * @var \Anakeen\Core\Internal\Action
      */
     protected static $coreAction = null;
     /**
-     * @var \Account
+     * @var \Anakeen\Core\Account
      */
     protected static $coreUser = null;
 
@@ -50,7 +50,7 @@ class ContextManager
         return $lang[$core_lang];
     }
 
-    public function getLocales()
+    public static function getLocales()
     {
         static $locales = null;
 
@@ -65,32 +65,31 @@ class ContextManager
     /**
      * Initialise application context
      *
-     * @param \Account      $account
+     * @param \Anakeen\Core\Account    $account
      * @param string        $appName
      * @param string        $actionName
-     * @param \Session|null $session
+     * @param \Anakeen\Core\Internal\Session|null $session
      *
-     * @throws Exception
      * @throws \Dcp\Db\Exception
      * @throws \Exception
      */
-    public static function initContext(\Account $account, $appName = "CORE", $actionName = "", \Session $session = null)
+    public static function initContext(\Anakeen\Core\Account $account, $appName = "CORE", $actionName = "", \Anakeen\Core\Internal\Session $session = null)
     {
         global $action;
         set_include_path(self::getRootDirectory() . PATH_SEPARATOR . get_include_path());
 
-        $coreApplication = new \Application();
+        $coreApplication = new \Anakeen\Core\Internal\Application();
         $coreApplication->user = &$account;
         self::$coreUser = &$account;
         $coreApplication->Set("CORE", $CoreNull);
         $coreApplication->session = $session;
         if (!$coreApplication->session) {
-            $coreApplication->session = new \Session();
+            $coreApplication->session = new \Anakeen\Core\Internal\Session();
         }
 
         self::_initCoreVolatileParam($coreApplication);
         if ($appName && $appName !== "CORE") {
-            $application = new \Application();
+            $application = new \Anakeen\Core\Internal\Application();
             $application->set($appName, $coreApplication);
             self::$coreApplication = $application;
             if (!$actionName) {
@@ -100,8 +99,8 @@ class ContextManager
             self::$coreApplication = $coreApplication;
         }
 
-        self::$coreAction = new \Action();
-        $action = new \Action();
+        self::$coreAction = new \Anakeen\Core\Internal\Action();
+        $action = new \Anakeen\Core\Internal\Action();
         self::$coreAction = &$action;
         if ($actionName) {
             self::$coreAction->Set($actionName, self::$coreApplication);
@@ -115,7 +114,7 @@ class ContextManager
         self::setLanguage(self::getApplicationParam("CORE_LANG", "fr_FR"));
     }
 
-    protected static function getRootActionName(\Application $application)
+    protected static function getRootActionName(\Anakeen\Core\Internal\Application $application)
     {
         DbManager::query(
             sprintf("select name from action where id_application=%d and root='Y'", $application->id),
@@ -126,7 +125,7 @@ class ContextManager
         return $actionRoot;
     }
 
-    public static function recordContext(\Account $account, \Action $action = null)
+    public static function recordContext(\Anakeen\Core\Account $account, \Anakeen\Core\Internal\Action $action = null)
     {
         self::$coreUser = &$account;
         if ($action) {
@@ -140,7 +139,7 @@ class ContextManager
      * Control user has a good session
      * Complete AuthenticatorManager singleton
      *
-     * @return \Account
+     * @return \Anakeen\Core\Account
      */
     public static function authentUser()
     {
@@ -158,7 +157,7 @@ class ContextManager
         $status = AuthenticatorManager::checkAccess(null, !$askAuthent);
 
         switch ($status) {
-            case \Authenticator::AUTH_OK: // it'good, user is authentified
+            case \Anakeen\Core\Internal\Authenticator::AUTH_OK: // it'good, user is authentified
                 break;
 
             default:
@@ -183,7 +182,7 @@ class ContextManager
             $exception->setUserMessage(___("Access not granted", "ank"));
             throw $exception;
         }
-        $u = new \Account();
+        $u = new \Anakeen\Core\Account();
         $u->setLoginName($_SERVER['PHP_AUTH_USER']);
         return $u;
     }
@@ -227,7 +226,7 @@ class ContextManager
         // Reset enum traduction cache
         $a = null;
 
-        $enumAttr = new \NormalAttribute("", "", "", "", "", "", "", "", "", "", "", "", $a, "", "", "");
+        $enumAttr = new \Anakeen\Core\SmartStructure\NormalAttribute("", "", "", "", "", "", "", "", "", "", "", "", $a, "", "", "");
         $enumAttr->resetEnum();
 
         $td = "main-catalog$number";
@@ -252,7 +251,7 @@ class ContextManager
         return self::$language;
     }
 
-    protected static function _initCoreVolatileParam(\Application &$core)
+    protected static function _initCoreVolatileParam(\Anakeen\Core\Internal\Application &$core)
     {
         $absindex = $core->getParam("CORE_URLINDEX");
         if ($absindex == '') {
@@ -267,7 +266,7 @@ class ContextManager
         $core->SetVolatileParam("CORE_MAILACTIONURL", $core_mailactionurl);
     }
 
-    public static function sudo(\Account &$account)
+    public static function sudo(\Anakeen\Core\Account &$account)
     {
         self::$coreAction = self::getCurrentAction();
         if (!self::$coreAction) {
@@ -297,7 +296,7 @@ class ContextManager
     }
 
     /**
-     * @return \Account|null
+     * @return \Anakeen\Core\Account|null
      */
     public static function getCurrentUser()
     {
@@ -309,7 +308,7 @@ class ContextManager
     }
 
     /**
-     * @return \Action|null
+     * @return \Anakeen\Core\Internal\Action|null
      */
     public static function getCurrentAction()
     {
@@ -324,7 +323,7 @@ class ContextManager
     }
 
     /**
-     * @return \Application|null
+     * @return \Anakeen\Core\Internal\Application|null
      */
     public static function getCurrentApplication()
     {
@@ -363,14 +362,14 @@ class ContextManager
      */
     public static function getCoreParam($name, $def = "")
     {
-        if (($value = \ApplicationParameterManager::_catchDeprecatedGlobalParameter($name)) !== null) {
+        if (($value = \Anakeen\Core\Internal\ApplicationParameterManager::_catchDeprecatedGlobalParameter($name)) !== null) {
             return $value;
         }
         if (empty(self::$coreParams)) {
             self::$coreParams = array();
             $tparams = array();
             try {
-                \Dcp\Core\DbManager::query(
+                \Anakeen\Core\DbManager::query(
                     "select name, val from paramv where (type = 'G') or (type='A' and appid = (select id from application where name ='CORE'));",
                     $tparams,
                     false,
@@ -414,7 +413,7 @@ class ContextManager
         if (isset($tmp) && !empty($tmp)) {
             return $tmp;
         }
-        $tmp = \Dcp\Core\ContextManager::getApplicationParam('CORE_TMPDIR', $def);
+        $tmp = \Anakeen\Core\ContextManager::getApplicationParam('CORE_TMPDIR', $def);
         if (empty($tmp)) {
             if (empty($def)) {
                 $tmp = './var/tmp';

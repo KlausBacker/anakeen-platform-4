@@ -12,7 +12,7 @@
  * @subpackage CORE
  */
 /**
- * @param Action|Application $action
+ * @param \Anakeen\Core\Internal\Action|\Anakeen\Core\Internal\Application $action
  * @param string $appname
  * @param string $actionname
  * @param string $otherurl
@@ -76,7 +76,7 @@ function Redirect($action, $appname, $actionname, $otherurl = "", $httpparamredi
     }
     $viewext = isset($_GET["viewext"]) ? $_GET["viewext"] : (isset($_POST["viewext"]) ? $_POST["viewext"] : "");
     if ($viewext === "yes") {
-        if (\Dcp\Autoloader::classExists("Dcp\\ExtUi\\defaultMenu")) {
+        if (\Anakeen\Core\Internal\Autoloader::classExists("Dcp\\ExtUi\\defaultMenu")) {
             /** @noinspection PhpUndefinedNamespaceInspection */
             /** @noinspection PhpUndefinedClassInspection */
             $location = \Dcp\ExtUi\defaultMenu::convertToExtUrl($location);
@@ -86,7 +86,7 @@ function Redirect($action, $appname, $actionname, $otherurl = "", $httpparamredi
     exit;
 }
 
-function RedirectSender(Action & $action)
+function RedirectSender(\Anakeen\Core\Internal\Action & $action)
 {
     global $_SERVER;
 
@@ -107,18 +107,18 @@ function RedirectSender(Action & $action)
  * if in useIndexAsGuest mode
  * redirect with authtication to current url
  * only if it is anonymous also
- * @param Action $action
+ * @param \Anakeen\Core\Internal\Action $action
  */
-function redirectAsGuest(Action & $action)
+function redirectAsGuest(\Anakeen\Core\Internal\Action & $action)
 {
     $guestMode = getDbAccessValue("useIndexAsGuest");
     if ($guestMode) {
-        if ($action->user->id == Account::ANONYMOUS_ID) {
+        if ($action->user->id == \Anakeen\Core\Account::ANONYMOUS_ID) {
             /**
-             * @var htmlAuthenticator $auth
+             * @var \Anakeen\Core\Internal\HtmlAuthenticator $auth
              */
-            $auth = AuthenticatorManager::$auth;
-            if (is_a($auth, "htmlAuthenticator")) {
+            $auth = \Anakeen\Router\AuthenticatorManager::$auth;
+            if (is_a($auth, \Anakeen\Core\Internal\HtmlAuthenticator::class)) {
                 $auth->connectTo($_SERVER['REQUEST_URI']);
             }
         }
@@ -299,36 +299,8 @@ function Http_DownloadFile($filename, $name, $mime_type = '', $inline = false, $
     exit;
 }
 
-function PrintAllHttpVars()
-{ // just to debug
-    global $_GET, $_POST, $ZONE_ARGS;
-    print "<PRE>";
-    if (isset($ZONE_ARGS)) {
-        print_r($ZONE_ARGS);
-    }
-    if (isset($_GET)) {
-        print_r($_GET);
-    }
-    if (isset($_POST)) {
-        print_r($_POST);
-    }
-    print "</PRE>";
-}
 
-function glue_url($parsed)
-{
-    if (!is_array($parsed)) {
-        return false;
-    }
-    $uri = $parsed['scheme'] ? $parsed['scheme'] . ':' . ((strtolower($parsed['scheme']) == 'mailto') ? '' : '//') : '';
-    $uri.= $parsed['user'] ? $parsed['user'] . ($parsed['pass'] ? ':' . $parsed['pass'] : '') . '@' : '';
-    $uri.= $parsed['host'] ? $parsed['host'] : '';
-    $uri.= $parsed['port'] ? ':' . $parsed['port'] : '';
-    $uri.= $parsed['path'] ? $parsed['path'] : '';
-    $uri.= $parsed['query'] ? '?' . $parsed['query'] : '';
-    $uri.= $parsed['fragment'] ? '#' . $parsed['fragment'] : '';
-    return $uri;
-}
+
 /**
  * set in cache one hour
  * @param string $mime

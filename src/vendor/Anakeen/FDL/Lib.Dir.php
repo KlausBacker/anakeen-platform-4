@@ -14,22 +14,9 @@
 /**
  */
 
-include_once("FDL/freedom_util.php");
+include_once("FDL/LegacyDocManager.php");
 
-function getFirstDir($dbaccess)
-{
-    // query to find first directories
-    $qsql = "select id from only doc2  where  (doctype='D') order by id LIMIT 1;";
-    
-    $query = new QueryDb($dbaccess, "Doc");
-    
-    $tableq = $query->Query(0, 0, "TABLE", $qsql);
-    if ($query->nb > 0) {
-        return $tableq[0]["id"];
-    }
-    
-    return (0);
-}
+
 
 function getChildDir($dbaccess, $userid, $dirid, $notfldsearch = false, $restype = "LIST")
 {
@@ -111,7 +98,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
 {
     if (($fromid != "") && (!is_numeric($fromid))) {
         preg_match('/^(?P<sign>-?)(?P<fromid>.+)$/', trim($fromid), $m);
-        $fromid = $m['sign'] . \Dcp\Core\DocManager::getFamilyIdFromName($m['fromid']);
+        $fromid = $m['sign'] . \Anakeen\Core\DocManager::getFamilyIdFromName($m['fromid']);
     }
     $table = "doc";
     $qsql = array();
@@ -131,7 +118,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             if (isSimpleFilter($sqlfilters) && (familyNeedDocread($dbaccess, $fromid))) {
                 $table = "docread";
                 $fdoc = new_doc($dbaccess, $fromid);
-                $sqlfilters[-4] = GetSqlCond(array_merge(array(
+                $sqlfilters[-4] = \Anakeen\Core\DbManager::getSqlOrCond(array_merge(array(
                     $fromid
                 ), array_keys($fdoc->GetChildFam())), "fromid", true);
             } else {
@@ -146,14 +133,14 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     $maintable = $table; // can use join only on search
     if ($join) {
         if (preg_match('/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/', $join, $reg)) {
-            $joinid = \Dcp\Core\DocManager::getFamilyIdFromName($reg[3]);
+            $joinid = \Anakeen\Core\DocManager::getFamilyIdFromName($reg[3]);
             $jointable = ($joinid) ? "doc" . $joinid : $reg[3];
             
             $sqlfilters[] = sprintf("%s.%s %s %s.%s", $table, $reg[1], $reg[2], $jointable, $reg[4]); // "id = dochisto(id)";
             $maintable = $table;
             $table.= ", " . $jointable;
         } else {
-            addWarningMsg(sprintf(_("search join syntax error : %s"), $join));
+            \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("search join syntax error : %s"), $join));
             return false;
         }
     }
@@ -237,7 +224,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             }
             
             if (is_array($dirid)) {
-                $sqlfld = GetSqlCond($dirid, "dirid", true);
+                $sqlfld = \Anakeen\Core\DbManager::getSqlOrCond($dirid, "dirid", true);
                 $qsql = "select $selectfields " . "from (select childid from fld where $sqlfld) as fld2 inner join $table on (initid=childid)  " . "where  $sqlcond ";
             } else {
                 $sqlfld = "dirid=$dirid and qtype='S'";
@@ -251,7 +238,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
                     $qsql = "select $selectfields from $only $table where $sqlcond ";
                 } else {
-                    $q = new QueryDb($dbaccess, "QueryDir");
+                    $q = new \Anakeen\Core\Internal\QueryDb($dbaccess, \QueryDir::class);
                     $q->AddQuery($sqlfld);
                     $tfld = $q->Query(0, 0, "TABLE");
                     if ($q->nb > 0) {
@@ -283,7 +270,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             //-------------------------------------------
             // search familly
             //-------------------------------------------
-            $docsearch = new QueryDb($dbaccess, "QueryDir");
+            $docsearch = new \Anakeen\Core\Internal\QueryDb($dbaccess, \QueryDir::class);
             $docsearch->AddQuery("dirid=$dirid");
             $docsearch->AddQuery("qtype = 'M'");
             $ldocsearch = $docsearch->Query(0, 0, "TABLE");
@@ -294,7 +281,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                         // $sqlM=$ldocsearch[0]["query"];
                         
                         /**
-                         * @var DocSearch $fld
+                         * @var \Anakeen\SmartStructures\Search\SearchHooks $fld
                          */
                         $fld = new_Doc($dbaccess, $dirid);
                         if ($trash) {
@@ -381,7 +368,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                 /**
                  * @var int $dirid
                  */
-                $docsearch = new QueryDb($dbaccess, "QueryDir");
+                $docsearch = new \Anakeen\Core\Internal\QueryDb($dbaccess, \QueryDir::class);
                 $docsearch->AddQuery("dirid=$dirid");
                 
                 $docsearch->AddQuery("qtype = 'M'");
@@ -392,7 +379,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                         case "M": // complex query
                             
                             /**
-                             * @var DocSearch $fld
+                             * @var \Anakeen\SmartStructures\Search\SearchHooks $fld
                              */
                             $fld = new_Doc($dbaccess, $dirid);
                             $tsqlM = $fld->getQuery();
@@ -469,7 +456,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     {
         // query to find child documents
         if (($fromid != "") && (!is_numeric($fromid))) {
-            $fromid = \Dcp\Core\DocManager::getFamilyIdFromName($fromid);
+            $fromid = \Anakeen\Core\DocManager::getFamilyIdFromName($fromid);
         }
         if ($fromid == 0) {
             $fromid = "";
@@ -480,9 +467,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
              */
             $fld = new_Doc($dbaccess, $dirid);
             
-            if ($fld->fromid == \Dcp\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
+            if ($fld->fromid == \Anakeen\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
                 /**
-                 * @var \Dcp\Family\SSEARCH $fld
+                 * @var \SmartStructure\SsearchHooks $fld
                  */
                 return $fld->getDocList($start, $slice, $qtype, $userid);
             }
@@ -636,13 +623,11 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                 }
                 if ($fromid != "") {
                     if ($fromid == - 1) {
-                        include_once "FDL/Class.DocFam.php";
                         $fromid = "Fam";
                     } else {
                         $fromid = abs($fromid);
                         if ($fromid > 0) {
-                            $GEN = getGen($dbaccess);
-                            include_once "FDL$GEN/Class.Doc$fromid.php";
+                            \Anakeen\Core\DocManager::requireFamilyClass($fromid);
                         }
                     }
                 }
@@ -650,7 +635,9 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             if (count($tqsql) > 0) {
                 if (count($tqsql) == 1) {
                     $usql = isset($tqsql[0]) ? $tqsql[0] : "";
-                    $query = new QueryDb($dbaccess, "Doc$fromid");
+
+                    // @TODO How find correct class
+                    $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, "\\Doc$fromid");
                 } else {
                     $usql = '(' . implode($tqsql, ") union (") . ')';
                     if ($orderby) {
@@ -658,7 +645,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     } else {
                         $usql.= " LIMIT $slice OFFSET $start;";
                     }
-                    $query = new QueryDb($dbaccess, "Doc");
+                    $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \Doc::class);
                 }
                 if ($returnSqlOnly) {
                     /*
@@ -668,7 +655,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     $usql = preg_replace('/;+\s*$/', '', $usql);
                     return $usql;
                 }
-                $mb = microtime();
+                $mb = microtime(true);
                 $tableq = $query->Query(0, 0, $qtype, $usql);
                 
                 if ($query->nb > 0) {
@@ -678,10 +665,10 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                         $tretdocs = array_merge($tretdocs, $tableq);
                     }
                 }
-                // print "<HR><br><div style=\"border:red 1px inset;background-color:lightyellow;color:black\">".$query->LastQuery; print " - $qtype<B> [".$query->nb.']'.sprintf("%.03fs",microtime_diff(microtime(),$mb))."</B><b style='color:red'>".$query->basic_elem->msg_err."</b></div>";
+
                 if ($query->basic_elem->msg_err != "") {
-                    addLogMsg($query->basic_elem->msg_err, 200);
-                    addLogMsg(array(
+                    \Anakeen\Core\Utils\System::addLogMsg($query->basic_elem->msg_err);
+                    \Anakeen\Core\Utils\System::addLogMsg(array(
                         "query" => $query->LastQuery,
                         "err" => $query->basic_elem->msg_err
                     ));
@@ -691,15 +678,15 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                     $debug["count"] = $query->nb;
                     $debug["query"] = $query->LastQuery;
                     $debug["error"] = $query->basic_elem->msg_err;
-                    $debug["delay"] = sprintf("%.03fs", microtime_diff(microtime(), $mb));
+                    $debug["delay"] = sprintf("%.03fs", (microtime(true) - $mb));
                     if (!empty($debug["log"])) {
-                        addLogMsg($query->basic_elem->msg_err, 200);
-                        addLogMsg($debug);
+                        \Anakeen\Core\Utils\System::addLogMsg($query->basic_elem->msg_err, 200);
+                        \Anakeen\Core\Utils\System::addLogMsg($debug);
                     }
                 } elseif ($query->basic_elem->msg_err != "") {
                     $debug["query"] = $query->LastQuery;
                     $debug["error"] = $query->basic_elem->msg_err;
-                    addLogMsg($debug);
+                    \Anakeen\Core\Utils\System::addLogMsg($debug);
                 }
             } else {
                 if ($returnSqlOnly) {
@@ -724,14 +711,14 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     function getFldDoc($dbaccess, $dirid, $sqlfilters = array(), $limit = 100, $reallylimit = true)
     {
         if (is_array($dirid)) {
-            $sqlfld = GetSqlCond($dirid, "dirid", true);
+            $sqlfld = \Anakeen\Core\DbManager::getSqlOrCond($dirid, "dirid", true);
         } else {
             $sqlfld = "fld.dirid=$dirid";
         }
         
         $mc = microtime();
         
-        $q = new QueryDb($dbaccess, "QueryDir");
+        $q = new \Anakeen\Core\Internal\QueryDb($dbaccess, \QueryDir::class);
         $q->AddQuery($sqlfld);
         $q->AddQuery("qtype='S'");
         
@@ -760,7 +747,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             }
         }
         uasort($t, "sortbytitle");
-        //  print "<HR><br><div style=\"border:red 1px inset;background-color:orange;color:black\">"; print " - getFldDoc $dirid [nbdoc:".count($tfld)."]<B>".microtime_diff(microtime(),$mc)."</B></div>";
+
         return $t;
     }
     function sortbytitle($td1, $td2)
@@ -808,12 +795,12 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             $userid = $action->user->id;
         }
         
-        $famid = \Dcp\Core\DocManager::getFamilyIdFromName($famname);
+        $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($famname);
         $fdoc = new_Doc($dbaccess, $famid);
         // searches for all fathers kind
         
         /**
-         * @var NormalAttribute $a
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $a
          */
         $a = $fdoc->getAttribute($aid);
         if ($a) {
@@ -839,7 +826,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             $sqlfilter[] = "title ~* '$name'";
         }
         
-        return internalGetDocCollection($dbaccess, 0, 0, $limit, $sqlfilter, $userid, "TABLE", \Dcp\Core\DocManager::getFamilyIdFromName($famname), false, "title");
+        return internalGetDocCollection($dbaccess, 0, 0, $limit, $sqlfilter, $userid, "TABLE", \Anakeen\Core\DocManager::getFamilyIdFromName($famname), false, "title");
     }
     function sqlval2array($sqlvalue)
     {
@@ -914,7 +901,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     function isInDir($dbaccess, $dirid, $docid)
     {
         // return true id docid is in dirid
-        $query = new QueryDb($dbaccess, "QueryDir");
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \QueryDir::class);
         $query->AddQuery("dirid=" . $dirid);
         $query->AddQuery("childid=" . $docid);
         
@@ -930,7 +917,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     function hasChildFld($dbaccess, $dirid, $issearch = false)
     {
         if ($issearch) {
-            $query = new QueryDb($dbaccess, "QueryDir");
+            $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \QueryDir::class);
             $query->AddQuery("qtype='M'");
             $query->AddQuery("dirid=$dirid");
             $list = $query->Query(0, 1, "TABLE");
@@ -953,7 +940,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                 }
             }
         } else {
-            $qfld = new QueryDb($dbaccess, "QueryDir");
+            $qfld = new \Anakeen\Core\Internal\QueryDb($dbaccess, \QueryDir::class);
             $qfld->AddQuery("qtype='S'");
             $qfld->AddQuery(sprintf("fld.dirid=%d", $dirid));
             $qfld->AddQuery("doctype='D' or doctype='S'");
@@ -978,7 +965,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     function GetClassesDoc($dbaccess, $userid, $classid = 0, $qtype = "LIST", $extraFilters = array())
     // --------------------------------------------------------------------
     {
-        $query = new QueryDb($dbaccess, "DocFam");
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocFam::class);
         
         $query->AddQuery("doctype='C'");
         
@@ -1065,7 +1052,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
             $defProfFamId = $doc->defProfFamId;
         }
         
-        $cond = GetSqlCond($chdoc, "dpdoc_famid");
+        $cond = \Anakeen\Core\DbManager::getSqlOrCond($chdoc, "dpdoc_famid");
         if ($cond != "") {
             $filter[] = "dpdoc_famid is null or (" . GetSqlCond($chdoc, "dpdoc_famid") . ")";
         } else {
@@ -1086,7 +1073,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      */
     function getFamilyCreationIds($dbaccess, $uid, $tfid = array())
     {
-        $query = new QueryDb($dbaccess, "DocFam");
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocFam::class);
         if (count($tfid) > 0) {
             $query->AddQuery(GetSqlCond($tfid, "id"));
         }
@@ -1142,7 +1129,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
      */
     function getVisibleDocsFromIds($dbaccess, $ids, $userid)
     {
-        $query = new QueryDb($dbaccess, "DocRead");
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocRead::class);
         $query->AddQuery("initid in (" . implode(",", $ids) . ')');
         $query->AddQuery("locked != -1");
         // if ($userid > 1) $query->AddQuery("hasviewprivilege(" . $userid . ",profid)");
@@ -1164,13 +1151,13 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
     function familyNeedDocread($dbaccess, $id)
     {
         if (!is_numeric($id)) {
-            $id = \Dcp\Core\DocManager::getFamilyIdFromName($id);
+            $id = \Anakeen\Core\DocManager::getFamilyIdFromName($id);
         }
         $id = abs(intval($id));
         if ($id == 0) {
             return false;
         }
-        $dbid = \Dcp\Core\DbManager::getDbId();
+        $dbid = \Anakeen\Core\DbManager::getDbId();
         $fromid = false;
         $result = pg_query($dbid, "select id from docfam where id=$id and usedocread=1");
         if (pg_numrows($result) > 0) {

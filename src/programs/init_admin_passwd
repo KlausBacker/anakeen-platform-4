@@ -19,15 +19,11 @@ if ($WIFF_CONTEXT_ROOT === false) {
 
 set_include_path(get_include_path() . PATH_SEPARATOR . $WIFF_CONTEXT_ROOT . PATH_SEPARATOR . "$WIFF_ROOT/include");
 
-$prefix = $WIFF_CONTEXT_ROOT . "/vendor/Anakeen/WHAT/Lib.Prefix.php";
-if (!include ($prefix)) {
-    print "cannot include file $prefix";
-    exit(1);
-}
+
+require __DIR__ . '/../vendor/Anakeen/autoload.php';
+require __DIR__ . '/../vendor/Anakeen/WHAT/Lib.Prefix.php';
 
 include_once ('lib/Lib.Cli.php');
-include_once ('WHAT/Lib.Common.php');
-include_once ('WHAT/Class.User.php');
 
 $admin_passwd = wiff_getParamValue('core_admin_passwd');
 if ($admin_passwd == '') {
@@ -35,9 +31,8 @@ if ($admin_passwd == '') {
     exit(1);
 }
 
-$dbaccess = getDbAccess();
 
-$user = new Account($dbaccess, 1);
+$user = new \Anakeen\Core\Account("", 1);
 if (!is_object($user) || !$user->isAffected()) {
     print "Could not find user with id '1' (admin).";
     exit(1);

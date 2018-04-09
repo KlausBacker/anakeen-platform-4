@@ -1,10 +1,10 @@
 <?php
 
-namespace Dcp\Core;
+namespace Anakeen\Core;
 
 class Settings
 {
-    const DocumentGenDirectory="FDLGEN";
+    const DocumentGenDirectory="SmartClasses";
     const DbAccessFilePath="config/dbaccess.php";
     const RouterConfigDir="config/routes";
     const MimeConfig="config/mime.conf";

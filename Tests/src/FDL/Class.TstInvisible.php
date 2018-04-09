@@ -5,7 +5,7 @@
 */
 namespace Dcp\Pu;
 
-class TstInvisible extends \Dcp\Family\Document
+class TstInvisible extends \Anakeen\SmartStructures\Document
 {
     public function postImport(array $extra = array())
     {

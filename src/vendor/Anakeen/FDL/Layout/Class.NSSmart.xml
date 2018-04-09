@@ -1,0 +1,51 @@
+<?php
+
+
+namespace SmartStructure;
+[IF fromid]
+require_once(__DIR__.'/[fromFile].php');[ENDIF fromid]
+
+[IF hasMethods]
+require_once(__DIR__.'/Method.[docName].php');[ENDIF hasMethods]
+
+
+
+
+class [PHPclassName] extends [DocParent] {
+   //  family : [title]
+
+   public $dbtable="doc[docid]";
+   public $dbseq="seq_doc[docid]";
+   public $sqlcreate = array("create table doc[docid] ([sattr]) inherits (doc[fromid]);",
+     "create sequence seq_doc[docid] start 1;",
+     "alter TABLE doc[docid] ADD primary key (id);",
+     "select setval('seq_doc[docid]', count(distinct initid)+1, false )  from only doc[docid];");
+   
+
+     public $fromid=[docid];
+     public $fromname='[docName]';
+     public $fromtitle="[docTitle]";
+     const familyName='[docName]';
+
+   function __construct ($dbaccess='', $id='',$res='',$dbid=0) {
+        if (empty($this->attributes)) {
+           $this->attributes = new [AdocClassName]();
+          if (isset($this->attributes->fields))  $this->fields += $this->attributes->fields;
+        }
+        parent::__construct($dbaccess, intval($id), $res, $dbid);
+        $this->postConstructor();
+   }
+
+   function SpecRefreshGen($onlyspec=false) {
+       $err = parent::specRefreshGen();
+[BLOCK ACALC]
+       $err .= ($err!=''?"\n":'') . $this->specRefreshGenAttribute("[callattr]", "[callmethod]");
+[ENDBLOCK ACALC]
+
+       return $err;
+   }
+   
+
+
+}
+

@@ -12,7 +12,7 @@
 
 include_once("FDL/Lib.Util.php");
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("API script to manipulate user crontab");
 $cmd = $usage->addRequiredParameter("cmd", "command to execute", array(
     "list",

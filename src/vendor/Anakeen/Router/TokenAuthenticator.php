@@ -2,7 +2,7 @@
 
 namespace Anakeen\Router;
 
-class TokenAuthenticator extends \OpenAuthenticator
+class TokenAuthenticator extends \Anakeen\Core\Internal\OpenAuthenticator
 {
     const AUTHORIZATION_SCHEME = "Token";
 
@@ -12,7 +12,7 @@ class TokenAuthenticator extends \OpenAuthenticator
             return $_GET[self::openGetId];
         }
 
-        $hAuthorization = \AuthenticatorManager::getAuthorizationValue();
+        $hAuthorization = \Anakeen\Router\AuthenticatorManager::getAuthorizationValue();
 
         if (!empty($hAuthorization)) {
             if ($hAuthorization["scheme"] === self::AUTHORIZATION_SCHEME) {

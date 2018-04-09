@@ -4,7 +4,7 @@
  * @package FDL
 */
 
-namespace Dcp\Core\DocManager;
+namespace Anakeen\Core\DocManager;
 
 class Cache
 {

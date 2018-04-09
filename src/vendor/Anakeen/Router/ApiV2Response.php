@@ -2,7 +2,7 @@
 
 namespace Anakeen\Router;
 
-use Anakeen\Core\FileMime;
+use Anakeen\Core\Utils\FileMime;
 use Anakeen\Router\Exception;
 
 class ApiV2Response
@@ -12,7 +12,7 @@ class ApiV2Response
      *
      * @param \Slim\Http\response               $response
      * @param mixed                             $data
-     * @param \Anakeen\Routes\Core\ApiMessage[] $messages
+     * @param \Anakeen\Routes\Core\Lib\ApiMessage[] $messages
      *
      * @return \Slim\Http\response
      */

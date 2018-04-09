@@ -1,10 +1,10 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Fichier  */
-	class File extends \Dcp\Core\File { const familyName="FILE";}
+	class File extends \Anakeen\SmartStructures\File\FileHooks { const familyName="FILE";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Fichier  */
 	class File {
 		/** [frame] Description */

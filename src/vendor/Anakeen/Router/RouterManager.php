@@ -2,6 +2,7 @@
 
 namespace Anakeen\Router;
 
+use \Anakeen\Router\Config\RouterInfo;
 class RouterManager
 {
     /**

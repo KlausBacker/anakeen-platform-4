@@ -14,15 +14,14 @@
 /**
  */
 
-include_once("FDL/Lib.Attr.php");
 require_once("WHAT/Lib.FileMime.php");
 
 define("ALTSEPCHAR", ' --- ');
 define("SEPCHAR", ';');
 
-function add_import_file(Action & $action, $fimport, $dirid = 0)
+function add_import_file(\Anakeen\Core\Internal\Action & $action, $fimport, $dirid = 0)
 {
-    setMaxExecutionTimeTo(300);
+    Anakeen\Core\Utils\System::setMaxExecutionTimeTo(300);
     if ($dirid == 0) {
         $dirid = GetHttpVars("dirid", 0); // directory to place imported doc
     }
@@ -32,7 +31,7 @@ function add_import_file(Action & $action, $fimport, $dirid = 0)
     $reset = GetHttpVars("reset");
     $comma = GetHttpVars("comma", SEPCHAR);
     
-    $if = new importDocumentDescription($fimport);
+    $if = new ImportDocumentDescription($fimport);
     $if->setImportDirectory($dirid);
     $if->analyzeOnly($analyze);
     $if->setPolicy($policy);
@@ -59,7 +58,7 @@ function csvAddDoc($dbaccess, $data, $dirid = 0, $analyze = false, $ldir = '', $
     "title"
 ), $prevalues = array(), $torder = array())
 {
-    $o = new importSingleDocument();
+    $o = new ImportSingleDocument();
     if ($tkey) {
         $o->setKey($tkey);
     }
@@ -116,7 +115,7 @@ function AddVaultFile($dbaccess, $path, $analyze, &$vid)
         $err = $vf->Store($path, false, $vid);
     }
     if ($err != "") {
-        AddWarningMsg($err);
+        \Anakeen\Core\Utils\System::addWarningMsg($err);
         return $err;
     } else {
         $base = basename($path);
@@ -148,7 +147,7 @@ function seemsODS($filename)
  */
 function ods2csv($odsfile)
 {
-    $csvfile = uniqid(\Dcp\Core\ContextManager::getTmpDir() . "/csv") . "csv";
+    $csvfile = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/csv") . "csv";
     $cmd = sprintf("%s --script=ods2csv --odsfile=%s --csvfile=%s >/dev/null", \Anakeen\Script\ShellManager::getAnkCmd(), escapeshellarg($odsfile), escapeshellarg($csvfile));
     system($cmd, $out);
 

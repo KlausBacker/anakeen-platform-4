@@ -8,12 +8,12 @@
  */
 /**
  */
-include_once (__DIR__."/../vendor/Anakeen/WHAT/Lib.Prefix.php");
-require_once('WHAT/autoload.php');
+require __DIR__ . "/../vendor/Anakeen/WHAT/Lib.Prefix.php";
+require __DIR__ . '/../vendor/Anakeen/autoload.php';
 
 
 $routeConfig = \Anakeen\Router\RouterLib::getRouterConfig();
-$apps=$routeConfig->getApps();
+$apps = $routeConfig->getApps();
 
-$coreApp=$apps["CORE"];
+$coreApp = $apps["CORE"];
 $coreApp->addApplication(false);

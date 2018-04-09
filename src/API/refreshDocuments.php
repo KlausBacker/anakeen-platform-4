@@ -17,8 +17,6 @@
 global $action;
 // refreah for a classname
 // use this only if you have changed title attributes
-include_once("FDL/Class.Doc.php");
-include_once("FDL/Class.SearchDoc.php");
 function color_failure($msg)
 {
     if ($msg) {
@@ -43,11 +41,11 @@ function color_warning($msg)
     return $msg;
 }
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("Refresh documents ");
 $famId = $usage->addRequiredParameter("famid", "the family identifier used to filter");
 $method = $usage->addOptionalParameter("method", "method to use", function ($value) {
-    if ($value === ApiUsage::GET_USAGE) {
+    if ($value === \Anakeen\Script\ApiUsage::GET_USAGE) {
         return '';
     }
     if (!is_string($value)) {
@@ -74,7 +72,7 @@ $save = $usage->addOptionalParameter("save", "store mode", array(
     "none"
 ), "light");
 $statusFile = $usage->addOptionalParameter("status-file", "refresh's status file or '-' for STDOUT", function ($value) {
-    if ($value === ApiUsage::GET_USAGE) {
+    if ($value === \Anakeen\Script\ApiUsage::GET_USAGE) {
         return '';
     }
     if (!is_string($value)) {
@@ -120,7 +118,7 @@ $s->start = $start;
 if ($docid != '') {
     if (!is_numeric($docid)) {
         $docName = $docid;
-        $docid = \Dcp\Core\DocManager::getIdFromName($docName);
+        $docid = \Anakeen\Core\DocManager::getIdFromName($docName);
         if ($docid === false) {
             $action->exitError(sprintf("document with name '%s' not found", $docName));
         }
@@ -135,7 +133,7 @@ if ($allrev) {
 }
 if ($filter) {
     // verify validity and prevent hack
-    if (@pg_prepare(\Dcp\Core\DbManager::getDbId(), 'refreshDocument', sprintf("select id from doc%d where %s", $s->fromid, $filter)) == false) {
+    if (@pg_prepare(\Anakeen\Core\DbManager::getDbId(), 'refreshDocument', sprintf("select id from doc%d where %s", $s->fromid, $filter)) == false) {
         $action->exitError(sprintf("filter not valid :%s", pg_last_error()));
     } else {
         $s->addFilter($filter);

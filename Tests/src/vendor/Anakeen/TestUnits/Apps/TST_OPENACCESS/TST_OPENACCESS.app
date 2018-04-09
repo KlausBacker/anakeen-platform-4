@@ -41,7 +41,7 @@ $action_desc = array(
     array(
         "name" => "TST_OPENACCESS_ACTION_FREE",
         "toc" => "Y",
-        "acl" => Action::ACCESS_FREE,
+        "acl" => \Anakeen\Core\Internal\Action::ACCESS_FREE,
         "short_name" => "Test Access Action Access Free",
     ),
     array(

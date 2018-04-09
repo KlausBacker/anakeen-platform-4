@@ -8,15 +8,15 @@ ini_set("max_execution_time", "0");
 ini_set("memory_limit", -1);
 
 
-$loader = require __DIR__ . '/vendor/Anakeen/lib/vendor/autoload.php';
+require __DIR__ . '/vendor/Anakeen/autoload.php';
 require __DIR__ . '/vendor/Anakeen/WHAT/Lib.Prefix.php';
 
 // To get global functions like ___
 require __DIR__ . "/vendor/Anakeen/WHAT/Lib.Common.php";
 // Need to load universal autoload also
-require __DIR__ . "/vendor/Anakeen/WHAT/autoload.php";
+//require __DIR__ . "/vendor/Anakeen/WHAT/autoload.php";
 
-$loader->addPsr4('Anakeen\\', __DIR__ . '/vendor/Anakeen/');
+
 
 $programName=array_shift($argv);
 Anakeen\Script\ShellManager::recordArgs($argv, $programName);
@@ -67,6 +67,7 @@ if ($routeReference) {
     if (Anakeen\Script\ShellManager::getArg("list") & $routeReference === true) {
         print "Route List :\n ";
         $routeList = $routeCmd->getRouteList();
+
         ksort($routeList);
         foreach ($routeList as $idRoute => $routerInfo) {
             if (is_array($routerInfo->pattern)) {
@@ -105,9 +106,7 @@ if ($isSystem) {
         $system->clearFileCache();
     } elseif (Anakeen\Script\ShellManager::getArg("style")) {
         $system->style();
-    } elseif (Anakeen\Script\ShellManager::getArg("resetAutoloader")) {
-        $system->clearAutoloadCache();
-    } else {
+    }  else {
         print Anakeen\Script\ShellManager::getUsage();
         exit(1);
     }

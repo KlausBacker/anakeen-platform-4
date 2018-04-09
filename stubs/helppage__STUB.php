@@ -1,10 +1,10 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Aide en ligne  */
-	class Helppage extends \Dcp\Core\HelpPage { const familyName="HELPPAGE";}
+	class Helppage extends \Anakeen\SmartStructures\Helppage\HelpPageHooks { const familyName="HELPPAGE";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Aide en ligne  */
 	class Helppage {
 		/** [frame] Aide */

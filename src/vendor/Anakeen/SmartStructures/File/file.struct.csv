@@ -1,0 +1,20 @@
+// famille fichier;;;id;class;name;;;;;;;
+BEGIN;;Fichier;7;;FILE;;;;;;;
+METHOD;;;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\File\FileHooks;;;;;;;;;;;
+SCHAR;R;;;;;;;;;;;
+ICON;se-file.png;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+ATTR;FI_FRDESC;;Description;N;N;frame;;W;;;;
+ATTR;FI_TITLE;FI_FRDESC;titre;Y;N;text;::auto;R;;;;
+ATTR;FI_TITLEW;FI_FRDESC;titre;N;N;text;::auto;O;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+ATTR;FI_FILE;FI_FRDESC;principal;N;Y;file;::auto;W;Y;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+END;-;9;;;;;;;;;;

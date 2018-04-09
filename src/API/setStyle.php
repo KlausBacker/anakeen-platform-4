@@ -4,14 +4,14 @@
  * @package FDL
 */
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("apply given style - if no style is set then update current style");
 $styFilePath = $usage->addOptionalParameter("style", "path to style file");
 
-$action=\Dcp\Core\ContextManager::getCurrentAction();
+$action=\Anakeen\Core\ContextManager::getCurrentAction();
 if (!$styFilePath) {
     /**
-     * @var Action $action
+     * @var \Anakeen\Core\Internal\Action $action
      */
     $defautStyle = $action->getParam("STYLE");
     $styFilePath = sprintf("STYLE/%s/%s.sty", $defautStyle, $defautStyle);
@@ -34,7 +34,7 @@ class styleManager
     protected $verbose = false;
     protected $logIndent = 0;
     protected $styleConfig = array();
-    /** @var Action $action */
+    /** @var \Anakeen\Core\Internal\Action $action */
     protected $action = null;
     
     protected function log($msg)
@@ -44,7 +44,7 @@ class styleManager
         }
     }
     
-    public function __construct(Action $action)
+    public function __construct(\Anakeen\Core\Internal\Action $action)
     {
         $this->action = $action;
     }
@@ -130,7 +130,7 @@ class styleManager
             } else {
                 $msg = "$customRulesFilePath is not readable";
             }
-            throw new \Dcp\ApiUsage\Exception("FILE0011", $msg);
+            throw new \Anakeen\Script\UsageException("FILE0011", $msg);
         }
         /** @noinspection PhpIncludeInspection */
         require $customRulesFilePath;
@@ -193,10 +193,10 @@ class styleManager
             throw new \Dcp\Style\Exception("STY0002", "Style definition does not contains name");
         }
         
-        $param = new Param();
+        $param = new \Anakeen\Core\Internal\Param();
         
         $styleName = $styleConfig['sty_desc']['name'];
-        $style = new Style('', $styleName);
+        $style = new \Anakeen\Core\Internal\Style('', $styleName);
         $style->description = empty($styleConfig['sty_desc']['description']) ? '' : $styleConfig['sty_desc']['description'];
         if (isset($styleConfig['sty_desc']['parsable'])) {
             print "\n[WARNING] use of parsable property on style is deprecated\n\n";
@@ -216,17 +216,17 @@ class styleManager
         }
         // delete previous style parameters
         $this->log("delete previous style parameters");
-        $query = new QueryDb("", "Param");
-        $query->AddQuery(sprintf("type ~ '^%s'", Param::PARAM_STYLE)); //all of them, regardless of the style they come from
+        $query = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\Param::class);
+        $query->AddQuery(sprintf("type ~ '^%s'", \Anakeen\Core\Internal\Param::PARAM_STYLE)); //all of them, regardless of the style they come from
         $oldParamList = $query->Query();
         if (!empty($oldParamList)) {
             foreach ($oldParamList as $oldParam) {
-                /** @var $oldParam Param */
+                /** @var $oldParam \Anakeen\Core\Internal\Param */
                 $oldParam->delete();
             }
         }
         
-        $paramType = Param::PARAM_STYLE . $styleName;
+        $paramType = \Anakeen\Core\Internal\Param::PARAM_STYLE . $styleName;
         // register color params ($styleConfig['sty_computed_colors'])
         $this->log("register color params");
         $this->logIndent+= 1;
@@ -234,7 +234,7 @@ class styleManager
             foreach ($colorList as $colorIndex => $color) {
                 $paramName = "COLOR_{$colorClass}{$colorIndex}";
                 // if value is a reference to another parameter
-                $dynamicColorValue = ApplicationParameterManager::getScopedParameterValue($color);
+                $dynamicColorValue = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue($color);
                 if (!empty($dynamicColorValue)) {
                     $this->log("dynamic value " . var_export($dynamicColorValue, true) . " set for $paramName ($color)");
                     $color = $dynamicColorValue;
@@ -251,7 +251,7 @@ class styleManager
         $this->logIndent+= 1;
         foreach ($styleConfig['sty_const'] as $paramName => $paramValue) {
             // if value is a reference to another parameter
-            $dynamicParamValue = ApplicationParameterManager::getScopedParameterValue($paramValue);
+            $dynamicParamValue = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue($paramValue);
             if (!empty($dynamicParamValue)) {
                 $this->log("dynamic value " . var_export($dynamicParamValue, true) . " set for $paramName ($paramValue)");
                 $paramValue = $dynamicParamValue;
@@ -267,7 +267,7 @@ class styleManager
         $this->logIndent+= 1;
         foreach ($styleConfig['sty_local'] as $paramName => $paramValue) {
             // if value is a reference to another parameter
-            $dynamicParamValue = ApplicationParameterManager::getScopedParameterValue($paramValue);
+            $dynamicParamValue = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue($paramValue);
             if (!empty($dynamicParamValue)) {
                 $this->log("dynamic value " . var_export($dynamicParamValue, true) . " used for $paramName ($paramValue)");
                 $paramValue = $dynamicParamValue;
@@ -285,7 +285,7 @@ class styleManager
         if ($err) {
             throw new \Dcp\Style\Exception("STY0003", "error when modifying style");
         }
-        ApplicationParameterManager::setCommonParameterValue("CORE", "STYLE", $styleName);
+        \Anakeen\Core\Internal\ApplicationParameterManager::setCommonParameterValue("CORE", "STYLE", $styleName);
     }
     
     protected function deployStyleFiles(array $rules)

@@ -21,7 +21,7 @@ if ($dbaccess == "") {
     return;
 }
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 
 $usage->setDefinitionText("Update usercard");
 $whatid = $usage->addOptionalParameter("whatid", "document"); // document
@@ -29,7 +29,7 @@ $fbar = $usage->addOptionalParameter("bar", "for progress bar"); // for progress
 $onlygroup = ($usage->addOptionalParameter("onlygroup", "for progress bar") != ""); // for progress bar
 $usage->verify();
 
-$query = new QueryDb("", "Account");
+$query = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Account::class);
 
 if ($whatid > 0) {
     $query->AddQuery("id=$whatid");
@@ -87,7 +87,7 @@ if ($query->nb > 0) {
         }
         if ($foundoc) {
             /**
-             * @var \Dcp\Family\IUSER|\Dcp\Family\IGROUP $udoc
+             * @var \SmartStructure\IUSER|\SmartStructure\IGROUP $udoc
              */
             if (method_exists($udoc, "RefreshGroup")) {
                 $udoc->RefreshGroup();
@@ -116,14 +116,14 @@ if ($query->nb > 0) {
                 "lower(title) = '" . pg_escape_string($title) . "'"
             );
             }
-            $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", \Dcp\Core\DocManager::getFamilyIdFromName("IUSER"));
+            $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", \Anakeen\Core\DocManager::getFamilyIdFromName("IUSER"));
             if (count($tdoc) > 0) {
                 if (count($tdoc) > 1) {
                     printf(_("find %s more than one, created aborded\n"), $title);
                 } else {
                     $udoc = new_Doc($dbaccess, $tdoc[0]->id);
                     /**
-                     * @var \Dcp\Family\IUSER $udoc
+                     * @var \SmartStructure\IUSER $udoc
                      */
                     $udoc->setValue("US_WHATID", $v["id"]);
                     $udoc->refresh();
@@ -137,7 +137,7 @@ if ($query->nb > 0) {
             } else {
                 // create new card
                 if ($v["accounttype"] === "G") {
-                    $iuser = createDoc($dbaccess, \Dcp\Core\DocManager::getFamilyIdFromName("IGROUP"));
+                    $iuser = createDoc($dbaccess, \Anakeen\Core\DocManager::getFamilyIdFromName("IGROUP"));
                     $iuser->setValue("US_WHATID", $v["id"]);
                     $iuser->Add();
                     $iuser->refresh();
@@ -146,7 +146,7 @@ if ($query->nb > 0) {
                     print "$reste)";
                     printf(_("%s igroup created\n"), $title);
                 } else {
-                    $iuser = createDoc($dbaccess, \Dcp\Core\DocManager::getFamilyIdFromName("IUSER"));
+                    $iuser = createDoc($dbaccess, \Anakeen\Core\DocManager::getFamilyIdFromName("IUSER"));
                     $iuser->setValue("US_WHATID", $v["id"]);
                     $err = $iuser->Add();
                     if ($err == "") {
@@ -166,13 +166,12 @@ if ($query->nb > 0) {
         }
         
         if (($v["fid"] == 0) && ($fid > 0)) {
-            $u = new Account("", $v["id"]);
+            $u = new \Anakeen\Core\Account("", $v["id"]);
             $u->fid = $fid;
             $u->modify();
             unset($u);
         }
-        
-        wbar($reste, $card, $title);
+
     }
     
     $doc->exec_query("update doc127 set name='GADMIN'     where us_whatid='4'");

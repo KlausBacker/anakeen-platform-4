@@ -1,10 +1,10 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Modèle de mail  */
-	class Mailtemplate extends \Dcp\Core\MailTemplate { const familyName="MAILTEMPLATE";}
+	class Mailtemplate extends \Anakeen\SmartStructures\Mailtemplate\MailTemplateHooks { const familyName="MAILTEMPLATE";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Modèle de mail  */
 	class Mailtemplate {
 		/** [frame] Entête */

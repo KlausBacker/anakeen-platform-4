@@ -1,0 +1,29 @@
+BEGIN;;Modèle de mail;41;;MAILTEMPLATE;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+CLASS;Anakeen\SmartStructures\Mailtemplate\MailTemplateHooks;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+USEFOR;S;;;;;;;;;;;;;;
+ICON;se-mailtemplate.png;;;;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
+ATTR;TMAIL_FR;;Entête;N;N;frame;::auto;W;;;;;;;
+ATTR;TMAIL_TITLE;TMAIL_FR;Titre;Y;N;text;::auto;O;Y;;;;;;
+ATTR;TMAIL_FAMILY;TMAIL_FR;Famille;N;N;"docid(""x"")";::auto;W;;;fdl.php;lfamilies(D, CT):TMAIL_FAMILY,CT;;;
+ATTR;TMAIL_WORKFLOW;TMAIL_FR;Famille cycle;N;N;"docid(""x"")";::auto;W;;;fdl.php;lfamilies(D, CT,20):TMAIL_WORKFLOW,CT;;;elabel=famille cycle pour récupérer le commentaire ou les paramètres de transition
+ATTR;TMAIL_T_FROM;TMAIL_FR;Émetteur;N;N;array;::auto;U;;;;;;;
+ATTR;TMAIL_FROMTYPE;TMAIL_T_FROM;type;N;N;enum;::auto;W;;;;F|Adresse fixe,A|Attribut texte,D|Attribut relation,E|Paramètre de famille texte,DE|Paramètre de famille relation,P|Paramètres globaux,WA|Attribut cycle,WD|Relation cycle,WE|Paramètre cycle;;;system=yes|bmenu=no
+ATTR;TMAIL_FROM;TMAIL_T_FROM;De;N;N;text;::auto;W;;;fdl.php;tplmail(D,TMAIL_FROMTYPE,TMAIL_FAMILY,TMAIL_WORKFLOW,TMAIL_FROM):TMAIL_FROM;;;
+ATTR;TMAIL_DEST;TMAIL_FR;Destinataires;N;N;array;::auto;W;;;;;;;
+ATTR;TMAIL_COPYMODE;TMAIL_DEST;-;N;N;enum;::auto;W;;;;to|À,cc|Cc,bcc|Bcc;;;system=yes|bmenu=no
+ATTR;TMAIL_DESTTYPE;TMAIL_DEST;Type;N;N;enum;::auto;W;;;;F|Adresse fixe,A|Attribut texte,D|Attribut relation,E|Paramètre de famille texte,DE|Paramètre de famille relation,P|Paramètres globaux,WA|Attribut cycle,WD|Relation cycle,WE|Paramètre cycle,RD|Document destinataire;;;system=yes|bmenu=no
+ATTR;TMAIL_RECIP;TMAIL_DEST;Destinataire;N;N;text;::auto;W;;;fdl.php;tplmail(D,TMAIL_DESTTYPE,TMAIL_FAMILY,TMAIL_WORKFLOW,TMAIL_RECIP):TMAIL_RECIP;;;
+ATTR;TMAIL_SUBJECT;TMAIL_FR;Sujet;N;Y;text;::auto;W;;;;;;;
+ATTR;TMAIL_FR_CONTENT;;Contenu;N;N;frame;::auto;W;;;;;;;
+ATTR;TMAIL_SAVECOPY;TMAIL_FR_CONTENT;Enregistrer une copie;N;N;enum;::auto;W;;;;no|Pas de copie,yes|Copie sur le serveur;;;eformat=bool|system=yes|bmenu=no|elabel=enregistrer une copie du message sur le serveur lors de l'envoi
+ATTR;TMAIL_ULINK;TMAIL_FR_CONTENT;Avec liens;N;N;enum;::auto;W;;;;no|Sans lien,yes|Avec liens;;;eformat=bool|system=yes|bmenu=no
+ATTR;TMAIL_BODY;TMAIL_FR_CONTENT;Corps;N;N;htmltext;::auto;W;;;;;;;"jsonconf={""addPlugins"": [""docattr""]}|allowedcontent=all"
+ATTR;TMAIL_T_ATTACH;TMAIL_FR_CONTENT;Attachements;N;N;array;::auto;W;;;;;;;
+ATTR;TMAIL_ATTACH;TMAIL_T_ATTACH;Attachement;N;N;text;::auto;W;;;fdl.php;tplmail(D,'G,TMAIL_FAMILY,TMAIL_WORKFLOW,TMAIL_ATTACH):TMAIL_ATTACH;;;
+ATTR;TMAIL_FORMAT;TMAIL_FR_CONTENT;Format;N;N;enum;::auto;H;;;;html|HTML,pdf|PDF,htmlpdf|HTML & PDF;;;system=yes|bmenu=no
+DEFAULT;TMAIL_ULINK;yes;;;;;;;;;;;;;
+END;0;;;;;;;;;;;;;;

@@ -66,8 +66,8 @@ function main($WIFF_CONTEXT_ROOT, &$argv)
 
 function check($WIFF_CONTEXT_ROOT, $paramName)
 {
-    $log = new Log("", "CORE");
-    $paramValue = \Dcp\Core\ContextManager::getCoreParam($paramName, false);
+    $log = new \Anakeen\Core\Internal\Log("", "CORE");
+    $paramValue = \Anakeen\Core\ContextManager::getCoreParam($paramName, false);
     if ($paramValue === false || !pathIsUnderContext($WIFF_CONTEXT_ROOT, $paramValue)) {
         $log->warning(sprintf("Parameter '%s' references a directory outside the context's root: '%s'.", $WIFF_CONTEXT_ROOT, $paramName, $paramValue));
         return false;
@@ -77,18 +77,13 @@ function check($WIFF_CONTEXT_ROOT, $paramName)
 
 function reconfigure($WIFF_CONTEXT_ROOT, $paramName)
 {
-    $log = new Log("", "CORE");
+    $log = new \Anakeen\Core\Internal\Log("", "CORE");
     if (check($WIFF_CONTEXT_ROOT, $paramName) === true) {
         return true;
     }
     $log->warning(sprintf("Restoring default value for parameter '%s'.", $paramName));
-    $err = simpleQuery('', sprintf('UPDATE paramv SET val = %s WHERE name = %s', pg_escape_literal('./var/tmp') , pg_escape_literal($paramName)));
-    if ($err != '') {
-        $msg = sprintf("Error setting '%s' to '%s': %s", $paramName, './var/tmp', $err);
-        printf("%s\n", $msg);
-        $log->warning($msg);
-        return false;
-    }
+     \Anakeen\Core\DbManager::query(sprintf('UPDATE paramv SET val = %s WHERE name = %s', pg_escape_literal('./var/tmp') , pg_escape_literal($paramName)));
+
     return true;
 }
 

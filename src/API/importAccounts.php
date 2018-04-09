@@ -5,10 +5,10 @@
  * @package FDL
 */
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("Import accounts definition");
-$filename = $usage->addRequiredParameter("file", "the input XML file", function ($values, $argName, ApiUsage $apiusage) {
-    if ($values === ApiUsage::GET_USAGE) {
+$filename = $usage->addRequiredParameter("file", "the input XML file", function ($values, $argName, \Anakeen\Script\ApiUsage $apiusage) {
+    if ($values === \Anakeen\Script\ApiUsage::GET_USAGE) {
         return "";
     }
     if (is_file($values) && !is_readable($values)) {
@@ -16,8 +16,8 @@ $filename = $usage->addRequiredParameter("file", "the input XML file", function 
     }
     return '';
 });
-$outfile = $usage->addOptionalParameter("report-file", "the output report file", function ($values, $argName, ApiUsage $apiusage) {
-    if ($values === ApiUsage::GET_USAGE) {
+$outfile = $usage->addOptionalParameter("report-file", "the output report file", function ($values, $argName, \Anakeen\Script\ApiUsage $apiusage) {
+    if ($values === \Anakeen\Script\ApiUsage::GET_USAGE) {
         return "";
     }
     if ($values !== "-" && is_file($values) && !is_writable($values)) {

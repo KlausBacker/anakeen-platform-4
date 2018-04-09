@@ -2,15 +2,13 @@
 
 namespace Anakeen\Script;
 
-use Dcp\Exception;
-
 class ShellManager
 {
     const SCRIPTDIR = "API";
     protected static $opts = [];
     protected static $programName = "ank.php";
 
-    public static function recordArgs(array $argv, $programeName=null)
+    public static function recordArgs(array $argv, $programeName = null)
     {
         if ($programeName) {
             self::$programName = $programeName;
@@ -95,7 +93,7 @@ class ShellManager
             try {
                 require($apifile);
             } /** @noinspection PhpRedundantCatchClauseInspection */
-            catch (\Dcp\ApiUsage\Exception $e) {
+            catch (Exception $e) {
                 switch ($e->getDcpCode()) {
                     case "CORE0002":
                         echo sprintf(_("Error : %s\n"), $e->getDcpMessage());
@@ -141,7 +139,7 @@ class ShellManager
 
     public static function initContext($appName = "CORE")
     {
-        $user = new \Account("", \Account::ADMIN_ID);
+        $user = new \Anakeen\Core\Account("", \Anakeen\Core\Account::ADMIN_ID);
         $login = self::getArg("login");
         if ($login) {
             if (!$user->setLoginName($login)) {
@@ -149,7 +147,7 @@ class ShellManager
             }
         }
 
-        \Dcp\Core\ContextManager::initContext(
+        \Anakeen\Core\ContextManager::initContext(
             $user,
             $appName,
             ""
@@ -167,7 +165,7 @@ class ShellManager
     public static function exceptionHandler($e, $callStack = true)
     {
         if ($callStack === true) {
-            $errMsg = \Dcp\Core\LogException::formatErrorLogException($e);
+            $errMsg = \Anakeen\Core\LogException::formatErrorLogException($e);
             error_log($errMsg);
         } else {
             $errMsg = $e->getMessage();
@@ -255,6 +253,7 @@ EOF;
         $wshError->addExpand($expand);
         $wshError->autosend();
     }
+
     public static function isInteractiveCLI()
     {
         if (php_sapi_name() !== 'cli') {
@@ -265,6 +264,7 @@ EOF;
         }
         return true;
     }
+
     /**
      * return shell commande for ank
      * depending of database (in case of several instances)
@@ -287,7 +287,7 @@ EOF;
         $ash .= escapeshellarg(DEFAULT_PUBDIR) . "/" . self::$programName . " ";
 
         if ($userlogin !== "admin") {
-            $u = new \Account("");
+            $u = new \Anakeen\Core\Account("");
             $u->setLoginName($userlogin);
             if (!$u->isAffected()) {
                 throw new Exception(sprintf("%s : User \"%s\" not found", self::$programName, $userlogin));

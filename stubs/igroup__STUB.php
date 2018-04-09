@@ -1,10 +1,10 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Groupe d'utilisateurs  */
-	class Igroup extends \Dcp\Core\GroupAccount { const familyName="IGROUP";}
+	class Igroup extends \Anakeen\SmartStructures\Igroup\IGroupHooks { const familyName="IGROUP";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Groupe d'utilisateurs  */
 	class Igroup extends Group {
 		/** [frame] Système */

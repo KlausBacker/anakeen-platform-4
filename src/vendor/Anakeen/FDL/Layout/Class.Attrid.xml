@@ -1,15 +1,15 @@
 <?php
 
+namespace SmartStructure\Attributes;
 
-namespace Dcp\AttributeIdentifiers {
 
-      /**
-        * [title]
-        */
-     class [className] [IF extend] extends [extend] [ENDIF extend] {
-        [BLOCK CONST]
-        /** [type] [label] */
-		const [attrid]='[attrid]';
-        [ENDBLOCK CONST]
-     }
-}
+  /**
+	* [title]
+	*/
+ class [className] [IF extend] extends [extend] [ENDIF extend] {
+	[BLOCK CONST]
+	/** [type] [label] */
+	const [attrid]='[attrid]';
+	[ENDBLOCK CONST]
+ }
+

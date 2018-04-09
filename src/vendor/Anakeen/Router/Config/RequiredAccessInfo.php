@@ -1,6 +1,6 @@
 <?php
 
-namespace Anakeen\Router;
+namespace Anakeen\Router\Config;
 
 class RequiredAccessInfo
 {

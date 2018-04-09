@@ -2,8 +2,8 @@
 
 namespace Anakeen\Script;
 
-use Dcp\Core\ContextManager;
-use Dcp\Core\DbManager;
+use Anakeen\Core\ContextManager;
+use Anakeen\Core\DbManager;
 
 class System
 {
@@ -25,7 +25,6 @@ class System
     public function start()
     {
         $this->reapplyDatabaseParameters();
-        $this->clearAutoloadCache();
         $this->imageAndDocsLinks();
         $this->clearFileCache();
         $this->refreshJsVersion();
@@ -392,18 +391,6 @@ class System
     }
 
 
-    /**
-     *
-     */
-    public function clearAutoloadCache()
-    {
-        $this->verbose(1, sprintf("[+] Re-generating class autoloader.\n"));
-        require_once sprintf('%s/vendor/Anakeen/WHAT/classAutoloader.php', $this->contextRoot);
-        \Dcp\Autoloader::forceRegenerate();
-        $this->verbose(1, sprintf("[+] Done.\n"));
-    }
-
-
     public function resetRouteConfig()
     {
         $this->verbose(1, sprintf("[+] Update global route access definition.\n"));
@@ -521,9 +508,6 @@ class System
      */
     public function reapplyDatabaseParameters()
     {
-        require_once 'WHAT/Lib.Common.php';
-        require_once 'WHAT/autoload.php';
-
         $this->verbose(1, sprintf("[+] Reapplying database parameters.\n"));
 
         DbManager::query('SELECT current_database()', $dbName, true, true);

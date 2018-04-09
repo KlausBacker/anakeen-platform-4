@@ -1,15 +1,15 @@
 <?php
 
-namespace Anakeen\Router;
+namespace Anakeen\Router\Config;
 
-use Dcp\Core\DbManager;
+use Anakeen\Core\DbManager;
 
 /**
  * Class AccessInfo
  *
  * Configuration access data for an application
  *
- * @see     \Application
+ * @see \Anakeen\Core\Internal\Application
  * @package Anakeen\Router
  */
 class AccessInfo
@@ -20,7 +20,7 @@ class AccessInfo
     public $applicationContext = "CORE";
 
     /**
-     * @var \Application
+     * @var \Anakeen\Core\Internal\Application
      */
     protected $application;
     /**
@@ -87,7 +87,7 @@ class AccessInfo
     /**
      * Update application to database
      *
-     * @param \Application $app
+     * @param \Anakeen\Core\Internal\Application $app
      *
      * @throws Exception
      */

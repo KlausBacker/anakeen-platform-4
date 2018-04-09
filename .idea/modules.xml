@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Smart Data Engine.iml" filepath="$PROJECT_DIR$/.idea/Smart Data Engine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Ui/.idea/Ui.iml" filepath="$PROJECT_DIR$/../Ui/.idea/Ui.iml" />
     </modules>
   </component>
 </project>

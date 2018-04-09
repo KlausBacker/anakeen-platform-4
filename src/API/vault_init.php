@@ -17,7 +17,7 @@
 
 include_once("FDL/Lib.Util.php");
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 
 $usage->setDefinitionText("Initialisation of the FREEDOM VAULT based on the VAULT/FREEDOM.vault file");
 $dirname = $usage->addOptionalParameter("path", "path to vault", null, DEFAULT_PUBDIR."/vaultfs");
@@ -39,7 +39,7 @@ if (!is_dir($dirname)) {
 if ($err == "") {
     $vf = new VaultFile($dbaccess);
     //  print_r2($vf);
-    $q = new QueryDb($dbaccess, "VaultDiskFsStorage");
+    $q = new \Anakeen\Core\Internal\QueryDb($dbaccess, \VaultDiskFsStorage::class);
     $q->AddQuery("r_path='" . pg_escape_string(trim($dirname)) . "'");
     $l = $q->Query(0, 0, "TABLE");
     if ($q->nb == 0) {

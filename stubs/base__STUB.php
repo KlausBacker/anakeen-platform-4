@@ -1,10 +1,10 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** de base  */
-	class Base extends Document { const familyName="BASE";}
+	class Base extends \Anakeen\SmartStructures\Document { const familyName="BASE";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** de base  */
 	class Base {
 		/** [frame] Basique */

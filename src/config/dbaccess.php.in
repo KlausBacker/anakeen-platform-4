@@ -29,7 +29,9 @@ $authentModeConfig = array(
  * Providers : how username / password tuple is validated
  * ------------------------------------------------------
  */
-$authentProvidersConfig = ["internal" => []];
+$authentProvidersConfig = ["internal" => [
+    "class" => "Anakeen\\Core\\Internal\\Authent\\InternalProvider"
+]];
 $authentProvider = "internal";
 
 

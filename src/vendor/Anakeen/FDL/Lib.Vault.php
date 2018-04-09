@@ -14,16 +14,15 @@
 /**
  */
 
-include_once("VAULT/Class.VaultFile.php");
-include_once("VAULT/Class.VaultEngine.php");
-include_once("VAULT/Class.VaultDiskStorage.php");
-
+/**
+ * @deprecated
+ * @return bool|VaultFile
+ */
 function initVaultAccess()
 {
     static $FREEDOM_VAULT = false;
     ;
     if (!$FREEDOM_VAULT) {
-        include_once("VAULT/Class.VaultFile.php");
         $dbaccess = getDbAccess();
         $FREEDOM_VAULT = new VaultFile($dbaccess, "FREEDOM");
     }
@@ -31,21 +30,22 @@ function initVaultAccess()
 }
 /**
  * get url with open id to use with open authentiication
+ * @deprecated
  */
 function getOpenTeUrl($context = array())
 {
     global $action;
-    $urlindex = \Dcp\Core\ContextManager::getApplicationParam("TE_URLINDEX");
+    $urlindex = \Anakeen\Core\ContextManager::getApplicationParam("TE_URLINDEX");
     if ($urlindex == "") { //case DAV
-        $au = \Dcp\Core\ContextManager::getApplicationParam("CORE_URLINDEX");
+        $au = \Anakeen\Core\ContextManager::getApplicationParam("CORE_URLINDEX");
         if ($au != "") {
-            $urlindex = \Dcp\Core\ContextManager::getApplicationParam("CORE_URLINDEX");
+            $urlindex = \Anakeen\Core\ContextManager::getApplicationParam("CORE_URLINDEX");
         } else {
-            $scheme = \Dcp\Core\ContextManager::getApplicationParam("CORE_ABSURL");
+            $scheme = \Anakeen\Core\ContextManager::getApplicationParam("CORE_ABSURL");
             if ($scheme == "") {
                 $urlindex = '/freedom/';
             } else {
-                $urlindex = \Dcp\Core\ContextManager::getApplicationParam("CORE_ABSURL");
+                $urlindex = \Anakeen\Core\ContextManager::getApplicationParam("CORE_ABSURL");
             }
         }
     }
@@ -61,6 +61,7 @@ function getOpenTeUrl($context = array())
 /**
  * Generate a conversion of a file
  * The result is store in vault itself
+ * @deprecated
  * @param string $engine the convert engine identifier (from VaultEngine Class)
  * @param int $vidin vault file identifier (original file)
  * @param int $vidout vault identifier of new stored file
@@ -72,12 +73,11 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
 {
     $err = '';
     if (($vidin > 0) && ($vidout > 0)) {
-        $tea = \Dcp\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
-        if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+        $tea = \Anakeen\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
+        if ($tea != "yes" || !\Anakeen\Core\Internal\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             return '';
         }
         global $action;
-        include_once("FDL/Class.TaskRequest.php");
         $of = new VaultDiskStorage($dbaccess, $vidin);
         $filename = $of->getPath();
         if (!$of->isAffected()) {
@@ -89,7 +89,7 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
         
         $urlindex = getOpenTeUrl();
         $callback = $urlindex . "&sole=Y&app=FDL&action=INSERTFILE&engine=$engine&vidin=$vidin&vidout=$vidout&isimage=$isimage&docid=$docid";
-        $ot = new \Dcp\TransformationEngine\Client(\Dcp\Core\ContextManager::getApplicationParam("TE_HOST"), \Dcp\Core\ContextManager::getApplicationParam("TE_PORT"));
+        $ot = new \Dcp\TransformationEngine\Client(\Anakeen\Core\ContextManager::getApplicationParam("TE_HOST"), \Anakeen\Core\ContextManager::getApplicationParam("TE_PORT"));
         $err = $ot->sendTransformation($engine, $vidout, $filename, $callback, $info);
         if ($err == "") {
             $tr = new TaskRequest($dbaccess);
@@ -102,7 +102,7 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
             $err = $tr->Add();
         } else {
             $vf = initVaultAccess();
-            $filename = uniqid(getTmpDir() . "/txt-" . $vidout . '-');
+            $filename = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/txt-" . $vidout . '-');
             file_put_contents($filename, $err);
             //$vf->rename($vidout,"toto.txt");
             $infofile = null;
@@ -124,18 +124,18 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
  * return various informations for a file stored in VAULT
  * @param int $idfile vault file identifier
  * @param string $teng_name transformation engine name
+ * @deprecated
  * @return vaultFileInfo
  */
 function vault_properties($idfile, $teng_name = "")
 {
-    $FREEDOM_VAULT = initVaultAccess();
-    $FREEDOM_VAULT->Show($idfile, $info, $teng_name);
-    return $info;
+    \Dcp\VaultManager::getFileInfo($idfile, $teng_name);
 }
 /**
  * return unique name with for a vault file
  * @param int $idfile vault file identifier
  * @param string $teng_name transformation engine name
+ * @deprecated
  * @return string the unique name
  */
 function vault_uniqname($idfile, $teng_name = "")
@@ -160,6 +160,7 @@ function vault_uniqname($idfile, $teng_name = "")
 /**
  * return various informations for a file stored in VAULT
  * @param string $filename
+ * @deprecated
  * @param int &$vid return vaul identifier
  * @return string error message
  */
@@ -175,6 +176,7 @@ function vault_store($filename, &$vid, $ftitle = "")
 /**
  * return context of a file
  * @param int $idfile vault file identifier
+ * @deprecated
  * @return array|false
  */
 function vault_get_content($idfile)
@@ -192,16 +194,17 @@ function vault_get_content($idfile)
 }
 /**
  * send request to have text conversion of file
+ * @deprecated
  */
 function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
 {
     $err = '';
     if (($docid > 0) && ($vid > 0)) {
-        $tea = \Dcp\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
-        if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+        $tea = \Anakeen\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
+        if ($tea != "yes" || !\Anakeen\Core\Internal\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             return '';
         }
-        $tea = \Dcp\Core\ContextManager::getApplicationParam("TE_FULLTEXT");
+        $tea = \Anakeen\Core\ContextManager::getApplicationParam("TE_FULLTEXT");
         if ($tea != "yes") {
             return '';
         }
@@ -212,7 +215,7 @@ function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
         $filename = $of->getPath();
         $urlindex = getOpenTeUrl();
         $callback = $urlindex . "&sole=Y&app=FDL&action=SETTXTFILE&docid=$docid&attrid=" . $attrid . "&index=$index";
-        $ot = new \Dcp\TransformationEngine\Client(\Dcp\Core\ContextManager::getApplicationParam("TE_HOST"), \Dcp\Core\ContextManager::getApplicationParam("TE_PORT"));
+        $ot = new \Dcp\TransformationEngine\Client(\Anakeen\Core\ContextManager::getApplicationParam("TE_HOST"), \Anakeen\Core\ContextManager::getApplicationParam("TE_PORT"));
         $err = $ot->sendTransformation('utf8', $vid, $filename, $callback, $info);
         if ($err == "") {
             $tr = new TaskRequest($dbaccess);
@@ -233,6 +236,7 @@ function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
  * @param string  $engine engine name to use
  * @param string  $outfile path where to store new file
  * @param array &$info various informations for convertion process
+ * @deprecated
  * @return string error message
  */
 function convertFile($infile, $engine, $outfile, &$info)
@@ -240,16 +244,15 @@ function convertFile($infile, $engine, $outfile, &$info)
     global $action;
     $err = '';
     if (file_exists($infile) && ($engine != "")) {
-        $tea = \Dcp\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
-        if ($tea != "yes" || !\Dcp\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+        $tea = \Anakeen\Core\ContextManager::getApplicationParam("TE_ACTIVATE");
+        if ($tea != "yes" || !\Anakeen\Core\Internal\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             return _("TE not activated");
         }
         $callback = "";
-        $ot = new \Dcp\TransformationEngine\Client(\Dcp\Core\ContextManager::getApplicationParam("TE_HOST"), \Dcp\Core\ContextManager::getApplicationParam("TE_PORT"));
+        $ot = new \Dcp\TransformationEngine\Client(\Anakeen\Core\ContextManager::getApplicationParam("TE_HOST"), \Anakeen\Core\ContextManager::getApplicationParam("TE_PORT"));
         $vid = '';
         $err = $ot->sendTransformation($engine, $vid, $infile, $callback, $info);
         if ($err == "") {
-            include_once("FDL/Class.TaskRequest.php");
             $dbaccess = getDbAccess();
             $tr = new TaskRequest($dbaccess);
             $tr->tid = $info["tid"];
@@ -270,7 +273,7 @@ function convertFile($infile, $engine, $outfile, &$info)
         // waiting response
         if ($err == "") {
             $status = "";
-            setMaxExecutionTimeTo(3600);
+            \Anakeen\Core\Utils\System::setMaxExecutionTimeTo(3600);
             while (($status != 'K') && ($status != 'D') && ($err == "")) {
                 $err = $ot->getInfo($tid, $info);
                 $status = $info["status"];

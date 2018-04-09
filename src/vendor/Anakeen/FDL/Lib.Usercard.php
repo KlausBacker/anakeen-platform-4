@@ -72,16 +72,16 @@ function array_unset(&$t, $vp)
 function refreshOneGroup($gid, $refresh)
 {
     global $_SERVER;
-    $g = new Account("", $gid);
+    $g = new \Anakeen\Core\Account("", $gid);
     if ($g->fid > 0 && $g->accounttype == 'G') {
         $dbaccess = $g->dbaccess;
         /**
-         * @var \Dcp\Family\Igroup $doc
+         * @var \SmartStructure\Igroup $doc
          */
         $doc = new_Doc($dbaccess, $g->fid);
         if ($doc->isAlive()) {
             //if ($_SERVER['HTTP_HOST'] == "") error_log(sprintf("\trefreshing %s\n", $doc->title));
-            wbartext(sprintf(_("refreshing %s"), $doc->title));
+
             if ($refresh) {
                 $doc->refreshMembers();
             }

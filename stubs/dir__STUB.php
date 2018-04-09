@@ -1,10 +1,10 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Dossier  */
-	class Dir extends \Dir { const familyName="DIR";}
+	class Dir extends \Anakeen\SmartStructures\Dir\DirHooks { const familyName="DIR";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Dossier  */
 	class Dir extends Base {
 		/** [longtext] Description */

@@ -11,11 +11,11 @@
  */
 /**
  */
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 
 $usage->setDefinitionText("get parameter value");
 $parname = $usage->addOptionalParameter("param", "Parameter name");
 
 $usage->verify();
 
-print \Dcp\Core\ContextManager::getApplicationParam($parname) . "\n";
+print \Anakeen\Core\ContextManager::getApplicationParam($parname) . "\n";

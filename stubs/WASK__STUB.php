@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\Family;
+namespace SmartStructure;
 
 /** Contrôle de vues  */
 class Wask extends Base

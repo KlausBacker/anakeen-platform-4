@@ -1,10 +1,10 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Message envoyé  */
-	class Sentmessage extends \Dcp\Core\SentEmail { const familyName="SENTMESSAGE";}
+	class Sentmessage extends \Anakeen\SmartStructures\Sentmessage\SentMessageHooks { const familyName="SENTMESSAGE";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Message envoyé  */
 	class Sentmessage {
 		/** [frame] Identification */

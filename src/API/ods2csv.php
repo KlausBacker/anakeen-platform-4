@@ -154,7 +154,7 @@ function ods2content($odsfile, &$content)
     if (!file_exists($odsfile)) {
         return "file $odsfile not found";
     }
-    $cibledir = uniqid(getTmpDir() . "/ods");
+    $cibledir = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/ods");
     
     $cmd = sprintf("unzip -j %s content.xml -d %s >/dev/null", escapeshellarg($odsfile), escapeshellarg($cibledir));
     system($cmd);
@@ -169,7 +169,7 @@ function ods2content($odsfile, &$content)
     return "";
 }
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 
 $usage->setDefinitionText("Convert OpenDocument Spreadsheet to csv (semicolon)");
 $odsfile = $usage->addRequiredParameter("odsfile", "ods file (input)"); // file ods (input)

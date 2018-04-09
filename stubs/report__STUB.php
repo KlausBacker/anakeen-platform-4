@@ -1,10 +1,10 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Rapport  */
-	class Report extends \Dcp\Core\Report { const familyName="REPORT";}
+	class Report extends \Anakeen\SmartStructures\Report\ReportHooks { const familyName="REPORT";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Rapport  */
 	class Report extends Dsearch {
 		/** [tab] Présentation */

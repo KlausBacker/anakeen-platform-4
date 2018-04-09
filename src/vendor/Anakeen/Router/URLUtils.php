@@ -7,7 +7,7 @@ class URLUtils
 {
     public static function getBaseURL()
     {
-        $coreURL = \ApplicationParameterManager::getScopedParameterValue("CORE_URLINDEX");
+        $coreURL = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_URLINDEX");
         $components = parse_url($coreURL);
 
         if ($coreURL) {

@@ -6,7 +6,7 @@
 /**
  * regenerate js version file
  *
- * @param string $filename the file which contain new login or ACLs
+ * @param string $filename the file which contain new Anakeen\Core\Internal\Login or ACLs
  * @author Anakeen
  * @version $Id: refreshjsversion.php,v 1.2 2005/06/10 13:05:18 eric Exp $
  * @package FDL
@@ -15,7 +15,7 @@
 /**
  */
 
-$usage = new ApiUsage();
+$usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("regenerate js version file");
 $usage->verify();
 
@@ -31,6 +31,6 @@ $fj = fopen($cible, "w");
 fputs($fj, $fc);
 fclose($fj);
 
-$action=\Dcp\Core\ContextManager::getCurrentAction();
+$action=\Anakeen\Core\ContextManager::getCurrentAction();
 $action->parent->param->Set("WVERSION", $nv + 1);
 print "$cible [$nv]\n";

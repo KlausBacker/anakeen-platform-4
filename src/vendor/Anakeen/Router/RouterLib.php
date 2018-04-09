@@ -2,8 +2,9 @@
 
 namespace Anakeen\Router;
 
-use \Dcp\Core\ContextManager;
+use \Anakeen\Core\ContextManager;
 use \Dcp\Core\Exception;
+use \Anakeen\Router\Config\RouterInfo;
 
 class RouterLib
 {
@@ -25,7 +26,7 @@ class RouterLib
             return self::$config;
         }
 
-        $dir = ContextManager::getRootDirectory() . "/" . \Dcp\Core\Settings::RouterConfigDir;
+        $dir = ContextManager::getRootDirectory() . "/" . \Anakeen\Core\Settings::RouterConfigDir;
         if ($handle = opendir($dir)) {
             $config = [];
 

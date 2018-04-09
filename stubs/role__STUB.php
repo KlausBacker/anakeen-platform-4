@@ -1,10 +1,10 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Rôle  */
-	class Role extends \Dcp\Core\RoleAccount { const familyName="ROLE";}
+	class Role extends \Anakeen\SmartStructures\Role\RoleHooks { const familyName="ROLE";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Rôle  */
 	class Role {
 		/** [frame] Identification */

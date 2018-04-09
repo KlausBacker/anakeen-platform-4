@@ -16,17 +16,10 @@
 include_once("WHAT/Lib.Common.php");
 /**
  * @param Authenticator $auth
- * @param Action        $action
+ * @param \Anakeen\Core\Internal\Action        $action
  */
 function getMainAction($auth, &$action)
 {
-    include_once('Class.Action.php');
-    include_once('Class.Application.php');
-    include_once('Class.Session.php');
-    include_once('Lib.Http.php');
-    include_once('Lib.Phpini.php');
-    include_once('Class.Log.php');
-    include_once('Class.DbObj.php');
 
     $CoreNull = "";
 
@@ -47,18 +40,18 @@ function getMainAction($auth, &$action)
     if (isset($auth->auth_session)) {
         $session = $auth->auth_session;
     } else {
-        $session = new Session();
-        if (isset($_COOKIE[Session::PARAMNAME])) {
-            $sess_num = $_COOKIE[Session::PARAMNAME];
+        $session = new \Anakeen\Core\Internal\Session();
+        if (isset($_COOKIE[\Anakeen\Core\Internal\Session::PARAMNAME])) {
+            $sess_num = $_COOKIE[\Anakeen\Core\Internal\Session::PARAMNAME];
         } else {
-            $sess_num = GetHttpVars(Session::PARAMNAME);
+            $sess_num = GetHttpVars(\Anakeen\Core\Internal\Session::PARAMNAME);
         } //$_GET["session"];
         if (!$session->Set($sess_num)) {
             print "<strong>:~((</strong>";
             exit;
         };
     }
-    $core = new Application();
+    $core = new \Anakeen\Core\Internal\Application();
     $core->Set("CORE", $CoreNull, $session);
 
     if (isset($_SERVER['PHP_AUTH_USER']) && ($core->user->login != $_SERVER['PHP_AUTH_USER'])) {
@@ -78,7 +71,7 @@ function getMainAction($auth, &$action)
     initMainVolatileParam($core, $session);
     // ----------------------------------------
     // Init Application & Actions Objects
-    $appl = new Application();
+    $appl = new \Anakeen\Core\Internal\Application();
     $err = $appl->Set(getHttpVars("app"), $core, $session);
     if ($err) {
         print $err;
@@ -88,7 +81,7 @@ function getMainAction($auth, &$action)
 
     // -----------------------------------------------
     // now we are in correct protocol (http or https)
-    $action = new Action();
+    $action = new \Anakeen\Core\Internal\Action();
     $action->Set(getHttpVars("action"), $appl);
 
     if ($auth) {
@@ -105,7 +98,7 @@ function getMainAction($auth, &$action)
 
     initExplorerParam($core);
     // init for gettext
-    \Dcp\Core\ContextManager::setLanguage($action->Getparam("CORE_LANG"));
+    \Anakeen\Core\ContextManager::setLanguage($action->Getparam("CORE_LANG"));
 
     $action->log->debug("gettext init for " . $action->parent->name . $action->Getparam("CORE_LANG"));
 }
@@ -119,10 +112,10 @@ function stripUrlSlahes($url)
 /**
  * init user agent volatile param
  *
- * @param Application $app
+ * @param \Anakeen\Core\Internal\Application $app
  * @param mixed       $defaultValue
  */
-function initExplorerParam(Application & $app, $defaultValue = false)
+function initExplorerParam(\Anakeen\Core\Internal\Application & $app, $defaultValue = false)
 {
     $explorerP = getExplorerParamtersName();
     foreach ($explorerP as $ep) {
@@ -151,9 +144,9 @@ function getExplorerParamtersName()
 /**
  * set volatile patram to detect web user agent
  *
- * @param Application $app
+ * @param \Anakeen\Core\Internal\Application $app
  */
-function initExplorerWebParam(Application & $app)
+function initExplorerWebParam(\Anakeen\Core\Internal\Application & $app)
 {
     $nav = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
     $pos = strpos($nav, "MSIE");
@@ -224,10 +217,10 @@ function initExplorerWebParam(Application & $app)
 /**
  * Set various core URLs params
  *
- * @param Application $core
- * @param Session     $session
+ * @param \Anakeen\Core\Internal\Application $core
+ * @param \Anakeen\Core\Internal\Session     $session
  */
-function initMainVolatileParam(Application & $core, Session & $session = null)
+function initMainVolatileParam(\Anakeen\Core\Internal\Application & $core, \Anakeen\Core\Internal\Session & $session = null)
 {
     if (php_sapi_name() == 'cli') {
         _initMainVolatileParamCli($core);
@@ -236,7 +229,7 @@ function initMainVolatileParam(Application & $core, Session & $session = null)
     }
 }
 
-function _initMainVolatileParamCli(Application & $core)
+function _initMainVolatileParamCli(\Anakeen\Core\Internal\Application & $core)
 {
     $absindex = $core->GetParam("CORE_URLINDEX");
 
@@ -258,7 +251,7 @@ function _initMainVolatileParamCli(Application & $core)
     $core->SetVolatileParam("CORE_MAILACTIONURL", $core_mailactionurl);
 }
 
-function _initMainVolatileParamWeb(Application & $core, Session & $session = null)
+function _initMainVolatileParamWeb(\Anakeen\Core\Internal\Application & $core, \Anakeen\Core\Internal\Session & $session = null)
 {
     $indexphp = basename($_SERVER["SCRIPT_NAME"]);
     $pattern = preg_quote($indexphp, "|");
@@ -288,8 +281,8 @@ function _initMainVolatileParamWeb(Application & $core, Session & $session = nul
     $core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction)
         : ($core_externurl . "?app=FDL&action=OPENDOC&mode=view");
 
-    $sessKey = isset($session->id) ? $session->getUKey(\Dcp\Core\ContextManager::getApplicationParam("WVERSION"))
-        : uniqid(\Dcp\Core\ContextManager::getApplicationParam("WVERSION"));
+    $sessKey = isset($session->id) ? $session->getUKey(\Anakeen\Core\ContextManager::getApplicationParam("WVERSION"))
+        : uniqid(\Anakeen\Core\ContextManager::getApplicationParam("WVERSION"));
     $core->SetVolatileParam("CORE_EXTERNURL", $core_externurl);
     $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
     $core->SetVolatileParam("CORE_ABSURL", stripUrlSlahes($puburl . "/")); // absolute links
@@ -307,7 +300,7 @@ function _initMainVolatileParamWeb(Application & $core, Session & $session = nul
  * execute action
  * app and action http param
  *
- * @param Action $action
+ * @param \Anakeen\Core\Internal\Action $action
  * @param string $out
  */
 function executeAction(&$action, &$out = null)
@@ -402,8 +395,8 @@ function handleActionException($e)
         }
     }
 
-    $displayMsg = \Dcp\Core\LogException::logMessage($e, $errId);
-    if (isset($action) && is_a($action, 'Action') && isset($action->parent)) {
+    $displayMsg = \Anakeen\Core\LogException::logMessage($e, $errId);
+    if (isset($action) && is_a($action, '\Anakeen\Core\Internal\Action') && isset($action->parent)) {
         if (php_sapi_name() === 'cli') {
             fwrite(STDERR, sprintf("[%s]: %s\n", $errId, $displayMsg));
         } else {
@@ -426,149 +419,6 @@ function handleActionException($e)
     }
 }
 
-/**
- * @deprecated
- * @return bool
- */
-function isInteractiveCLI()
-{
-    if (php_sapi_name() !== 'cli') {
-        return false;
-    }
-    if (function_exists('posix_isatty')) {
-        return (posix_isatty(STDIN) || posix_isatty(STDOUT) || posix_isatty(STDERR));
-    }
-    return true;
-}
-
-/**
- * @deprecated
- * @param       $errMsg
- * @param array $expand
- */
-function _wsh_send_error($errMsg, $expand = array())
-{
-    $wshError = new Dcp\WSHMailError($errMsg);
-    $wshError->prefix = sprintf('%s %s ', date('c'), php_uname('n'));
-    $wshError->addExpand($expand);
-    $wshError->autosend();
-}
-
-/**
- * Handle exceptions by logging errors or by sending mails
- * depending if the program is used in a CLI or not.
- * @deprecated
- * @param Throwable $e
- * @param bool      $callStack If set to false: the error message is minimal.
- *                             Otherwise the error message is the call stack.
- */
-function _wsh_exception_handler($e, $callStack = true)
-{
-    if ($callStack === true) {
-        $errMsg = \Dcp\Core\LogException::formatErrorLogException($e);
-        error_log($errMsg);
-    } else {
-        $errMsg = $e->getMessage();
-    }
-
-    if (!isInteractiveCLI()) {
-        $expand = array(
-            'm' => preg_replace('/^([^\n]*).*/s', '\1', $e->getMessage())
-        );
-        _wsh_send_error($errMsg, $expand);
-    }
-
-    exit(255);
-}
-
-function _wsh_shutdown_handler()
-{
-    global $argv;
-
-    $error = error_get_last();
-    if ($error === null) {
-        /* No error */
-        return;
-    }
-    /* Process error */
-    switch ($error["type"]) {
-        case E_ERROR:
-            $title = "Runtime Error";
-            break;
-
-        case E_CORE_ERROR:
-            $title = "Startup Error";
-            break;
-
-        case E_PARSE:
-            $title = "Parse Error";
-            break;
-
-        case E_COMPILE_ERROR:
-            $title = "Compile Error";
-            break;
-
-        case E_RECOVERABLE_ERROR:
-            $title = "Recoverable Error";
-            break;
-
-        default:
-            return;
-    }
-
-    $pid = getmypid();
-    $errMsg
-        = <<<EOF
-$pid> Dynacase $title
-EOF;
-
-    if (php_sapi_name() == 'cli' && is_array($argv)) {
-        $errMsg .= sprintf("\n%s> Command line arguments: %s", $pid, join(' ', array_map("escapeshellarg", $argv)));
-        $errMsg .= sprintf("\n%s> error_log: %s", $pid, ini_get('error_log'));
-        $errMsg .= "\n";
-    }
-
-    $errMsg
-        .= <<<EOF
-$pid> Type:    ${error['type']}
-$pid> Message: ${error['message']}
-$pid> File:    ${error['file']}
-$pid> Line:    ${error['line']}
-EOF;
-
-    error_log($errMsg);
-    if (!isInteractiveCLI()) {
-        $expand = array(
-            'm' => preg_replace('/^([^\n]*).*/s', '\1', $error['message'])
-        );
-        _wsh_send_error($errMsg, $expand);
-    }
-}
-
-function enable_wsh_safetybelts()
-{
-    set_exception_handler("_wsh_exception_handler");
-    register_shutdown_function("_wsh_shutdown_handler");
-}
-
-/**
- * @param Throwable $e
- *
- * @deprecated use Dcp\Core\LogException::formatErrorLogException()
- * @return string
- */
-function formatErrorLogException($e)
-{
-    return \Dcp\Core\LogException::formatErrorLogException($e);
-}
-
-/**
- * @param Exception|Error $e
- */
-function errorLogException($e)
-{
-    \Dcp\Core\LogException::writeLog($e);
-}
 
 function handleFatalShutdown()
 {
@@ -590,7 +440,7 @@ function handleFatalShutdown()
                 header("HTTP/1.1 500 Anakeen Fatal Error");
             }
 
-            $displayMsg = \Dcp\Core\LogException::logMessage($error, $errId);
+            $displayMsg = \Anakeen\Core\LogException::logMessage($error, $errId);
             if ($action) {
                 $action->exitError($displayMsg, false, $errId);
             } else {

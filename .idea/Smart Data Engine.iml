@@ -2,6 +2,8 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/vendor/Anakeen" isTestSource="false" packagePrefix="Anakeen" />
+      <sourceFolder url="file://$MODULE_DIR$/src/vendor/Dcp" isTestSource="false" packagePrefix="Dcp" />
       <excludeFolder url="file://$MODULE_DIR$/ide/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/ide/vendor/doctrine/annotations" />
       <excludeFolder url="file://$MODULE_DIR$/ide/vendor/doctrine/lexer" />
@@ -23,5 +25,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="Ui" />
   </component>
 </module>

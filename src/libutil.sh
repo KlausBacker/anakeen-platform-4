@@ -166,7 +166,7 @@ function getInstallUtilsLocation {
 	echo ""
 	return
     fi
-    local _LOC="$_CONTEXT_ROOT/vendor/Anakeen/WHAT/Class.InstallUtils.php"
+    local _LOC="$_CONTEXT_ROOT/vendor/Root/Class.InstallUtils.php"
     if [ ! -f "$_LOC" ]; then
 	echo ""
 	return
