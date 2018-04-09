@@ -3,9 +3,9 @@
  * @author Anakeen
 */
 
-use Dcp\HttpApi\V1\DocManager\DocManager;
+use Anakeen\Core\DocManager;
 
-function view(Action & $action)
+function view(\Anakeen\Core\Internal\Action & $action)
 {
     
     $usage = new ActionUsage($action);

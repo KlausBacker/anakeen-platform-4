@@ -5,7 +5,7 @@
 */
 namespace Anakeen\Routes\Authent;
 
-use Dcp\HttpApi\V1\DocManager\DocManager;
+use Anakeen\Core\DocManager;
 use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
 
@@ -33,7 +33,7 @@ class MailPassword
         $login=$args["userId"];
         // $language=$request->getParam("language");
 
-        $user = new \Account();
+        $user = new \Anakeen\Core\Account();
         $user->setLoginName($login);
 
         if (!$user->isAffected()) {
@@ -57,12 +57,12 @@ class MailPassword
         }
         $output=[];
         if ($user->isAffected()) {
-            \Dcp\Core\ContextManager::initContext($user, "CORE", "", \AuthenticatorManager::$session);
+            \Anakeen\Core\ContextManager::initContext($user, "CORE", "", \Anakeen\Core\Internal\AuthenticatorManager::$session);
 
             $userDocument=DocManager::getDocument($user->fid);
-            $mailTemplateId=\ApplicationParameterManager::getParameterValue("AUTHENT", "AUTHENT_MAILASKPWD");
+            $mailTemplateId=\Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("AUTHENT", "AUTHENT_MAILASKPWD");
             /**
-             * @var \Dcp\Family\Mailtemplate $mailTemplate
+             * @var \SmartStructure\Mailtemplate $mailTemplate
              */
             $mailTemplate=DocManager::getDocument($mailTemplateId);
             if (!$mailTemplate) {
@@ -79,7 +79,7 @@ class MailPassword
             $oneshot=true;
             $tokenKey = \Anakeen\Router\AuthenticatorManager::getAuthorizationToken($user, $context, $expire, $oneshot , $description);
 
-            $key["LINK_CHANGE_PASSWORD"]=sprintf("%s/login/?passkey=%s&uid=%s", \ApplicationParameterManager::getScopedParameterValue("CORE_EXTERNURL"),  urlencode($tokenKey), urlencode($user->login));
+            $key["LINK_CHANGE_PASSWORD"]=sprintf("%s/login/?passkey=%s&uid=%s", \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_EXTERNURL"),  urlencode($tokenKey), urlencode($user->login));
             $err=$mailTemplate->sendDocument($userDocument, $key);
             if ($err) {
                  throw new Exception('AUTH0012', $err);

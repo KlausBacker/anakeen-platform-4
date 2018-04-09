@@ -6,7 +6,7 @@
 
 namespace Dcp\Test\Ddui;
 
-class AllType extends \Dcp\Family\Document implements \Dcp\Ui\IRenderConfigAccess
+class AllType extends \Anakeen\SmartStructures\Document implements \Dcp\Ui\IRenderConfigAccess
 {
     /**
      * @param string $mode

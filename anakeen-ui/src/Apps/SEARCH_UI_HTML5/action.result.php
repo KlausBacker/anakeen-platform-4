@@ -1,10 +1,10 @@
 <?php
 
-require_once 'FDL/freedom_util.php';
+require_once 'FDL/LegacyDocManager.php';
 
 use Dcp\HttpApi\V1\Crud\Exception;
 
-function main(Action &$action){
+function main(\Anakeen\Core\Internal\Action &$action){
 
     $arrayOptions = array();
 
@@ -32,7 +32,7 @@ function main(Action &$action){
     $action->lay->set("famid", $idFamily);
     $action->lay->set("id", $id);
     $action->lay->setBlockData("abstract", $arrayOptions);
-    $action->lay->set("WS", \ApplicationParameterManager::getParameterValue("CORE", "WVERSION"));
+    $action->lay->set("WS", \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION"));
 }
 
    

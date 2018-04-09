@@ -1,10 +1,10 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Color  */
 	class Tst_ddui_color extends Document { const familyName="TST_DDUI_COLOR";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Color  */
 	class Tst_ddui_color {
 		/** [frame] Identification */

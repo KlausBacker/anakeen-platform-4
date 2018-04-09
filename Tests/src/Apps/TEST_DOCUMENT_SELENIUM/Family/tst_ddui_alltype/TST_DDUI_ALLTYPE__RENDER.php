@@ -13,7 +13,7 @@
 
 namespace Dcp\Test\Ddui;
 
-use Dcp\AttributeIdentifiers\TST_DDUI_ALLTYPE as myAttributes;
+use SmartStructure\Attributes\TST_DDUI_ALLTYPE as myAttributes;
 
 class AllRenderConfigEdit extends \Dcp\Ui\DefaultEdit
 {
@@ -244,7 +244,7 @@ class AllRenderNotification extends \Dcp\Ui\DefaultView
 
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $jsReferences = parent::getJsReferences($document);
         $jsReferences["tstNotification"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testNotifications.js?ws=" . $version;
         return $jsReferences;
@@ -257,7 +257,7 @@ class AllRenderCssColor extends AllRenderConfigEdit
 
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $cssReferences = parent::getCssReferences($document);
         $cssReferences["tstNotification"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testColor.css?ws=" . $version;
         return $cssReferences;
@@ -403,7 +403,7 @@ class setLinkTarget_self extends AllRenderConfigView
 {
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=" . $version;
         return $js;
@@ -526,7 +526,7 @@ class addButtonEditTarget_self extends \Dcp\Ui\DefaultEdit
 {
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=" . $version;
         return $js;
@@ -534,7 +534,7 @@ class addButtonEditTarget_self extends \Dcp\Ui\DefaultEdit
 
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $cssReferences = parent::getCssReferences($document);
         $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonCSS.css?ws=" . $version;
         return $cssReferences;
@@ -568,7 +568,7 @@ class addButtonEditTarget_dialog extends \Dcp\Ui\DefaultEdit
 {
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=" . $version;
         return $js;
@@ -576,7 +576,7 @@ class addButtonEditTarget_dialog extends \Dcp\Ui\DefaultEdit
 
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $cssReferences = parent::getCssReferences($document);
         $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonCSS.css?ws=" . $version;
         return $cssReferences;
@@ -619,7 +619,7 @@ class addButtonConsTarget_self extends \Dcp\Ui\DefaultView
 {
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=" . $version;
         return $js;
@@ -627,7 +627,7 @@ class addButtonConsTarget_self extends \Dcp\Ui\DefaultView
 
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $cssReferences = parent::getCssReferences($document);
         $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonCSS.css?ws=" . $version;
         return $cssReferences;
@@ -663,7 +663,7 @@ class addButtonConsTarget_dialog extends \Dcp\Ui\DefaultView
 {
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=" . $version;
         return $js;
@@ -671,7 +671,7 @@ class addButtonConsTarget_dialog extends \Dcp\Ui\DefaultView
 
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $cssReferences = parent::getCssReferences($document);
         $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonCSS.css?ws=" . $version;
         return $cssReferences;
@@ -729,7 +729,7 @@ class eventReady extends \Dcp\Ui\DefaultView
 {
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testEventReadyJS.js?ws=" . $version;
         return $js;
@@ -744,7 +744,7 @@ class eventChange extends \Dcp\Ui\DefaultEdit
 {
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testEventChangeJS.js?ws=" . $version;
         return $js;
@@ -758,7 +758,7 @@ class AttributeModel_getValueEdition extends \Dcp\Ui\DefaultEdit
 {
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/AttributeModel_getValueEdition.js?ws=" . $version;
         return $js;
@@ -772,7 +772,7 @@ class AttributeModel_getValueConsultation extends \Dcp\Ui\DefaultView
 {
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/AttributeModel_getValueConsultation.js?ws=" . $version;
         return $js;
@@ -786,7 +786,7 @@ class AttributeModel_setValueEdition extends \Dcp\Ui\DefaultEdit
 {
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/AttributeModel_setValueEdition.js?ws=" . $version;
         return $js;
@@ -800,7 +800,7 @@ class AttributeModel_setValueConsultation extends \Dcp\Ui\DefaultView
 {
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/AttributeModel_setValueConsultation.js?ws=" . $version;
         return $js;
@@ -814,7 +814,7 @@ class DocumentController_getValueEdition extends \Dcp\Ui\DefaultEdit
 {
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/DocumentController_getValueEdition.js?ws=" . $version;
         return $js;
@@ -828,7 +828,7 @@ class DocumentController_getValueConsultation extends \Dcp\Ui\DefaultView
 {
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/DocumentController_getValueConsultation.js?ws=" . $version;
         return $js;
@@ -842,7 +842,7 @@ class DocumentController_setValueEdition extends \Dcp\Ui\DefaultEdit
 {
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/DocumentController_setValueEdition.js?ws=" . $version;
         return $js;
@@ -856,7 +856,7 @@ class DocumentController_setValueConsultation extends \Dcp\Ui\DefaultView
 {
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/DocumentController_setValueConsultation.js?ws=" . $version;
         return $js;
@@ -871,7 +871,7 @@ class setTranslation extends \Dcp\Ui\DefaultEdit
     //vérification lors de la modification de l'attribut
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/setTranslation.js?ws=" . $version;
         return $js;
@@ -920,7 +920,7 @@ class setTemplate extends \Dcp\Ui\DefaultEdit
 
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $cssReferences = parent::getCssReferences($document);
         $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/setTemplate.css?ws=" . $version;
         return $cssReferences;
@@ -928,7 +928,7 @@ class setTemplate extends \Dcp\Ui\DefaultEdit
 
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/setTemplate.js?ws=" . $version;
         return $js;
@@ -968,7 +968,7 @@ class DocumentController_reinitDocument             extends \Dcp\Ui\DefaultEdit
 
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $cssReferences = parent::getCssReferences($document);
         $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/userButton.css?ws=" . $version;
         return $cssReferences;
@@ -976,7 +976,7 @@ class DocumentController_reinitDocument             extends \Dcp\Ui\DefaultEdit
 
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/DocumentController_reinitDocument.js?ws=" . $version;
         return $js;
@@ -1003,7 +1003,7 @@ class DocumentController_fetchDocument              extends \Dcp\Ui\DefaultEdit
 
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $cssReferences = parent::getCssReferences($document);
         $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/userButton.css?ws=" . $version;
         return $cssReferences;
@@ -1011,7 +1011,7 @@ class DocumentController_fetchDocument              extends \Dcp\Ui\DefaultEdit
 
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/DocumentController_fetchDocument.js?ws=" . $version;
         return $js;
@@ -1038,7 +1038,7 @@ class DocumentController_saveDocument               extends \Dcp\Ui\DefaultEdit
 
     public function getCssReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $cssReferences = parent::getCssReferences($document);
         $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/userButton.css?ws=" . $version;
         return $cssReferences;
@@ -1046,7 +1046,7 @@ class DocumentController_saveDocument               extends \Dcp\Ui\DefaultEdit
 
     public function getJsReferences(\Doc $document = null)
     {
-        $version = \ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/DocumentController_saveDocument.js?ws=" . $version;
         return $js;

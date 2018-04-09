@@ -1,12 +1,12 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Test tout type  */
 	class Tst_ddui_alltype extends \Dcp\Test\Ddui\AllType { const familyName="TST_DDUI_ALLTYPE";}
 	/** Cycle Alltype  */
 	class Tst_ddui_w_alltype extends \Dcp\Test\Ddui\WflAlltype { const familyName="TST_DDUI_W_ALLTYPE";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Test tout type  */
 	class Tst_ddui_alltype {
 		/** [frame] Titre */

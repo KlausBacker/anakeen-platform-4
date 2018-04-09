@@ -29,19 +29,7 @@ $action_desc = array(
         "root" => "Y",
         "acl" => "VIEW_RENDER"
     ),
-    array(
-        "name" => "TEMPLATE",
-        "short_name" => N_("ddui:Get some template"),
-        "script" => "action-template.php",
-        "function" => "template"
-    ),
-     array(
-        "name" => "LOAD_RENDERPARAMETERS",
-        "short_name" => N_("ddui:INIT_RENDERPARAMETERS"),
-        "script" => "action.load_renderparameters.php",
-        "function" => "load_renderparameters",
-        "acl" => "ADMIN"
-    ),
+
     array(
         "name" => "COLLECT_ERROR",
         "short_name" => N_("ddui:COLLECT_ERROR"),

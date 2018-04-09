@@ -38,7 +38,7 @@ class Families extends \Dcp\HttpApi\V1\Crud\DocumentCollection {
     public function prepareDocumentList()
     {
         $this->prepareSearchDoc();
-        $this->slice = isset($this->contentParameters["slice"]) ? mb_strtolower($this->contentParameters["slice"]) : \ApplicationParameterManager::getParameterValue("HTTPAPI_V1", "COLLECTION_DEFAULT_SLICE");
+        $this->slice = isset($this->contentParameters["slice"]) ? mb_strtolower($this->contentParameters["slice"]) : \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("HTTPAPI_V1", "COLLECTION_DEFAULT_SLICE");
         if ($this->slice !== "all") {
             $this->slice = intval($this->slice);
         }
@@ -50,7 +50,7 @@ class Families extends \Dcp\HttpApi\V1\Crud\DocumentCollection {
         $this->orderBy = $this->extractOrderBy();
         $this->_searchDoc->setOrder($this->orderBy);
 
-        $param=json_decode(\ApplicationParameterManager::getParameterValue("TEST_DOCUMENT_SELENIUM", "TESTFAMILIES"));
+        $param=json_decode(\Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("TEST_DOCUMENT_SELENIUM", "TESTFAMILIES"));
         if ($param) {
             $this->_searchDoc->addFilter($this->_searchDoc->sqlcond($param,"name" ));
         }

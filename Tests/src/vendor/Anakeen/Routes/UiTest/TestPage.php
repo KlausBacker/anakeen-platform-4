@@ -4,7 +4,7 @@
 namespace Anakeen\Routes\UiTest;
 
 
-use Dcp\Core\ContextManager;
+use Anakeen\Core\ContextManager;
 
 class TestPage
 {

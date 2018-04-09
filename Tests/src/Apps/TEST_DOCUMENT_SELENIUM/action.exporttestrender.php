@@ -1,19 +1,18 @@
 <?php
 
 
-include_once("FDL/Class.Doc.php");
 include_once("FDL/exportfld.php");
-function exportTestRender(Action $action) {
+function exportTestRender(\Anakeen\Core\Internal\Action $action) {
 
     $outPath=$action->getArgument("output");
 
     /**
-     * @var \Dir $folder
+     * @var \Anakeen\SmartStructures\Dir\Dir $folder
      */
     $folder=\Dcp\HttpApi\V1\DocManager\DocManager::getDocument("SELENIUM_DATA");
     if (! $folder) {
         $folder= \Dcp\HttpApi\V1\DocManager\DocManager::createDocument("DIR");
-        $folder->setValue(\Dcp\AttributeIdentifiers\Dir::ba_title, "TEST_DDUI_INIT_DATA");
+        $folder->setValue(\SmartStructure\Attributes\Dir::ba_title, "TEST_DDUI_INIT_DATA");
 
         $folder->store();
         $folder->setLogicalName("SELENIUM_DATA");
@@ -22,7 +21,7 @@ function exportTestRender(Action $action) {
     $folder->clear();
 
     /**
-     * @var \Dir $folder
+     * @var \Anakeen\SmartStructures\Dir\Dir $folder
      */
 
 

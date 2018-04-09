@@ -6,7 +6,7 @@
 
 namespace Dcp\Test\Ddui;
 
-use Dcp\AttributeIdentifiers\TST_DDUI_DOCID as myAttributes;
+use SmartStructure\Attributes\TST_DDUI_DOCID as myAttributes;
 
 class DocidRenderConfigEdit extends \Dcp\Ui\DefaultEdit
 {
@@ -93,7 +93,7 @@ class DocidRenderConfigView extends \Dcp\Ui\DefaultView
     public function getJsReferences(\Doc $document = null)
     {
 
-        $version = \ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $jsRef= parent::getJsReferences(
             $document
         );

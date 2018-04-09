@@ -2,9 +2,9 @@
 /**
  * Return the dataTable translation
  *
- * @param Action $action
+ * @param \Anakeen\Core\Internal\Action $action
  */
-function getdatatablelocal(Action &$action) {
+function getdatatablelocal(\Anakeen\Core\Internal\Action &$action) {
 
     $element=$action->getArgument("element");
     $action->lay->template = sprintf('{

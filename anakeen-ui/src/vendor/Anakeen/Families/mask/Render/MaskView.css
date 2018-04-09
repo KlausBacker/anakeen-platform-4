@@ -36,17 +36,21 @@
     height: calc(100vh - 200px);
 }
 
-.k-grid .attr-type--tab {
+.k-grid .attr-type--tab, .k-grid .attr-type--tab:hover {
     background-color: #e7cfff;
 }
-.k-grid .attr-type--frame {
+.k-grid .attr-type--frame, .k-grid .attr-type--frame:hover {
     background-color: rgba(110, 167, 255, 0.52);
 }
-.k-grid .attr-type--array {
+.k-grid .attr-type--array, .k-grid .attr-type--array:hover {
     background-color: rgba(255, 184, 148, 0.43);
 }
-.k-grid .attr-type--menulist {
+.k-grid .attr-type--menulist,.k-grid .attr-type--menulist:hover {
     background-color: #c2ffb9;
+}
+
+.k-grid tbody tr:hover {
+    outline: solid 1px grey;
 }
 
 .attr-type--menulist .cell--attrid,

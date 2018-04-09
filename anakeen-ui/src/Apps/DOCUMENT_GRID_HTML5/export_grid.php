@@ -1,14 +1,14 @@
 <?php
 
-require_once 'FDL/freedom_util.php';
+require_once 'FDL/LegacyDocManager.php';
 require_once 'DOCUMENT_GRID_HTML5/getdocgridcontent.php';
 
 /**
  * Return the json content for a docGrid
  *
- * @param Action $action
+ * @param \Anakeen\Core\Internal\Action $action
  */
-function export_grid(Action &$action)
+function export_grid(\Anakeen\Core\Internal\Action &$action)
 {
     $usage = new ActionUsage($action);
 
