@@ -602,7 +602,7 @@ class Doc extends DocCtrl
             "FDL:EDITBODYCARD"
         );
     /**
-     * @var WDoc
+     * @var \Anakeen\SmartStructure\Wdoc\WDocHooks
      */
     public $wdoc = null;
     /**
@@ -984,7 +984,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         if ($this->wid > 0) {
             /**
-             * @var WDoc $wdoc
+             * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $wdoc
              */
             $wdoc = DocManager::getDocument($this->wid);
             $this->wdoc = $wdoc;
@@ -2672,7 +2672,7 @@ create unique index i_docir on doc(initid, revision);";
                 // search mask from workflow
 
                 /**
-                 * @var $wdoc WDoc
+                 * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $wdoc
                  */
                 $wdoc = DocManager::getDocument($this->wid);
                 if ($wdoc && $wdoc->isAlive()) {
@@ -5860,116 +5860,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
     /**
-     * get ask for current users
-     *
-     * @param bool $control if false all associated askes else only askes available for current user
-     *
-     * @return array
-     */
-    public function getWasks($control = true)
-    {
-        $t = array();
-        if ($this->wid > 0 && $this->locked == -1 && $this->doctype != 'Z' && $this->state) {
-            /**
-             * @var WDoc $wdoc
-             */
-            $wdoc = Anakeen\Core\DocManager::getDocument($this->wid);
-            if ($wdoc && $wdoc->isAlive()) {
-                $wdoc->set($this);
-                $waskids = $wdoc->getDocumentWasks($this->state, $control);
-                foreach ($waskids as $k => $waskid) {
-                    /**
-                     * @var \SmartStructure\Wask $wask
-                     */
-                    $wask = Anakeen\Core\DocManager::getDocument($waskid);
-                    if ($wask && $wask->isAlive()) {
-                        $ut = $this->getUTag("ASK_" . $wask->id, false);
-                        if ($ut) {
-                            $answer = $ut->comment;
-                        } else {
-                            $answer = "";
-                        }
-                        $t[] = array(
-                            "waskid" => $wask->id,
-                            "ask" => $wask->getRawValue("was_ask"),
-                            "key" => $answer,
-                            "label" => $wask->getAskLabel($answer)
-                        );
-                    }
-                }
-            }
-        }
-        return $t;
-    }
-
-    /**
-     * set a answer for a document for a ask (for current user)
-     *
-     * @param int    $waskid the identifier of wask
-     * @param string $answer new answer response
-     *
-     * @return string error message
-     */
-    public function setWaskAnswer($waskid, $answer)
-    {
-        $err = _("setWaskAnswer::invalid parameters");
-        $waskid = intval($waskid);
-        if ($waskid && $answer) {
-            if (is_array($answer)) {
-                $answer = $this->arrayToRawValue($answer);
-            }
-            $err = $this->addUTag($this->userid, "ASK_" . intval($waskid), $answer, false);
-            return $err;
-        }
-        return $err;
-    }
-
-    /**
-     * all ask are answer ?
-     *
-     * @return bool true if all ask are answer or when has no askes
-     */
-    public function askIsCompleted()
-    {
-        $ans = $this->getWasks();
-        foreach ($ans as $an) {
-            if (!$an["key"]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * return the latest document id in history of a document which has ask
-     *
-     * @return int the identifier
-     */
-    public function getLatestIdWithAsk()
-    {
-        if (!$this->wid) {
-            return false;
-        }
-        $ldoc = $this->GetRevisions("TABLE");
-        /**
-         * @var WDoc $wdoc
-         */
-        $wdoc = Anakeen\Core\DocManager::getDocument($this->wid);
-        if ($wdoc && $wdoc->isAlive()) {
-            $wdoc->set($this);
-            foreach ($ldoc as $k => $v) {
-                $aask = $wdoc->attrPrefix . "_ASKID" . ($v["state"]);
-                if ($v["locked"] == -1 && $wdoc->getRawValue($aask)) {
-                    if ($wdoc->getRawValue($aask)) {
-                        return $v["id"];
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
      * verify if document is really fixed (verify in database)
      *
      * @return bool
@@ -6246,7 +6136,7 @@ create unique index i_docir on doc(initid, revision);";
             return _("document is not controlled by a workflow");
         }
         /**
-         * @var WDoc $wdoc
+         * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $wdoc
          */
         $wdoc = Anakeen\Core\DocManager::getDocument($this->wid);
         if (!$wdoc || !$wdoc->isAlive()) {
@@ -6301,7 +6191,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         if ($this->wid > 0) {
             /**
-             * @var WDoc $wdoc
+             * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $wdoc
              */
             $wdoc = Anakeen\Core\DocManager::getDocument($this->wid);
             if ($wdoc && $wdoc->isAffected()) {
@@ -6329,7 +6219,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         if ($this->wid > 0) {
             /**
-             * @var WDoc $wdoc
+             * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $wdoc
              */
             $wdoc = DocManager::getDocument($this->wid);
             if ($wdoc->isAffected()) {

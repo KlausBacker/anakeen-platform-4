@@ -68,7 +68,7 @@ if ($query->nb > 0) {
         if (strstr($v["usefor"], 'W')) {
             updateDoc($v);
             /**
-             * @var WDOc $wdoc
+             * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $wdoc
              */
             $wdoc = Anakeen\Core\DocManager::createDocument($v["id"]);
             $wdoc->CreateProfileAttribute(); // add special attribute for workflow

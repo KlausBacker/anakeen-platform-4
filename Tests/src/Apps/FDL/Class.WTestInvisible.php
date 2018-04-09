@@ -4,9 +4,9 @@
  * @package FDL
 */
 
-include_once ("FDL/Class.WDoc.php");
 
-Class WTestFourStates extends WDoc
+Class WTestFourStates extends \Anakeen\SmartStructure\Wdoc\WDocHooks
+
 {
     var $attrPrefix = "WINV";
     

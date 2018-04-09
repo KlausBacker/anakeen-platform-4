@@ -4,9 +4,9 @@
  * @package FDL
 */
 
-include_once ("FDL/Class.WDoc.php");
 
-Class WTestM0M3 extends WDoc
+Class WTestM0M3 extends \Anakeen\SmartStructure\Wdoc\WDocHooks
+
 {
     var $attrPrefix = "WAN";
     

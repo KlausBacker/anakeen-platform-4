@@ -34,7 +34,7 @@ class CheckWid extends CheckData
                 $d = new_doc('', $this->folderName);
                 if (!$d->isAlive()) {
                     $this->addError(ErrorCode::getError('WID0001', $this->folderName, $this->doc->name));
-                } elseif (!is_a($d, "WDoc")) {
+                } elseif (!is_a($d, \Anakeen\SmartStructure\Wdoc\WDocHooks::class)) {
                     $this->addError(ErrorCode::getError('WID0002', $this->folderName, $this->doc->name));
                 }
             } catch (Exception $e) {

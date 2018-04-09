@@ -4,9 +4,9 @@
  * @package FDL
 */
 
-include_once ("FDL/Class.WDoc.php");
 
-Class WTestBadImp14 extends WDoc
+Class WTestBadImp14 extends \Anakeen\SmartStructure\Wdoc\WDocHooks
+
 {
     var $attrPrefix = "WTST";
     public $transitions = "must be an array";

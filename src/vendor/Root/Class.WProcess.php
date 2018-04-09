@@ -22,7 +22,8 @@ define("Twprocess_public", "Twprocess_public"); # N_("Twprocess_public")
  * Process Workflow
  *
  */
-class WProcess extends WDoc
+class WProcess extends \Anakeen\SmartStructure\Wdoc\WDocHooks
+
 {
     public $attrPrefix = "PROWF"; // prefix attribute
     public $firstState = wprocess_private;

@@ -4,9 +4,9 @@
  * @package FDL
 */
 
-include_once ("FDL/Class.WDoc.php");
 
-Class WTestBadImp12 extends WDoc
+Class WTestBadImp12 extends \Anakeen\SmartStructure\Wdoc\WDocHooks
+
 {
     var $attrPrefix = "WTST";
     const alive = "alive"; # N_("alive")

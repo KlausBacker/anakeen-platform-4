@@ -4,9 +4,9 @@
  * @package FDL
 */
 
-include_once ("FDL/Class.WDoc.php");
 
-Class WTestBadImp10 extends WDoc
+Class WTestBadImp10 extends \Anakeen\SmartStructure\Wdoc\WDocHooks
+
 {
     var $attrPrefix = "hello world"; // <--- HERE SYNTAX ERROR
     const alive = "alive"; # N_("alive")

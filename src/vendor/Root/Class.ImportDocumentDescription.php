@@ -1218,7 +1218,7 @@ class ImportDocumentDescription
                 if (!$wdoc->isAlive()) {
                     $this->tcr[$this->nLine]["err"] = sprintf(_("WID : workflow '%s' not found"), $data[1]);
                 } else {
-                    if (!is_subclass_of($wdoc, "WDoc")) {
+                    if (!is_subclass_of($wdoc, \Anakeen\SmartStructure\Wdoc\WDocHooks::class)) {
                         $this->tcr[$this->nLine]["err"] = sprintf(_("WID : workflow '%s' is not a workflow"), $data[1]);
                     } else {
                         $this->doc->wid = $wdoc->id;

@@ -4,9 +4,9 @@
  * @package FDL
 */
 
-include_once ("FDL/Class.WDoc.php");
 
-Class WTestSyntax extends WDoc
+Class WTestSyntax extends \Anakeen\SmartStructure\Wdoc\WDocHooks
+
 {
     var $attrPrefix = "WAN"const alive = "alive"; // N_("alive")
     const dead = "dead"; // N_("dead")

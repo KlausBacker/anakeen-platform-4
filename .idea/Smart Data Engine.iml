@@ -26,5 +26,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Ui" />
+    <orderEntry type="module" module-name="Devel" />
   </component>
 </module>

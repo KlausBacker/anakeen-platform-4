@@ -1236,7 +1236,7 @@ function lstates($dbaccess, $wid, $name = "")
     $tr = array();
     if ($doc && method_exists($doc, "getStates")) {
         /**
-         * @var WDoc $doc
+         * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $doc
          */
         $states = $doc->getStates();
         // HERE HERE HERE
@@ -1260,7 +1260,7 @@ function ldocstates($dbaccess, $docid, $name = "")
         $wdoc = new_doc($dbaccess, $doc->wid, false);
         if ($wdoc && method_exists($wdoc, "getStates")) {
             /**
-             * @var WDoc $wdoc
+             * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $wdoc
              */
             $states = $wdoc->getStates();
             // HERE HERE HERE

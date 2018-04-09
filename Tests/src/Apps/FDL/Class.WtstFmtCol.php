@@ -4,9 +4,9 @@
  * @package FDL
 */
 
-include_once ("FDL/Class.WDoc.php");
 
-Class WtstFmtCol extends WDoc
+Class WtstFmtCol extends \Anakeen\SmartStructure\Wdoc\WDocHooks
+
 {
     public $attrPrefix = "WAN";
     

@@ -122,12 +122,6 @@ class FamilyImport
                 } else {
                     $phpAdoc->Set("DocParent", '\\Doc' . $tdoc["fromid"]);
                 }
-                if (strstr($tdoc["usefor"], 'W')) {
-                    $phpAdoc->Set("pinit", '\WDoc');
-                } // special init for workflow
-                else {
-                    $phpAdoc->Set("pinit", '\DocCtrl');
-                }
             }
             $phpAdoc->Set("AParent", DocManager::getAttributesClassName($tdoc["fromname"]));
         }

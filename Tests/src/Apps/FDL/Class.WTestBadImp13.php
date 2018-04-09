@@ -4,7 +4,6 @@
  * @package FDL
 */
 
-include_once ("FDL/Class.WDoc.php");
 
 Class WTestBadImp13 extends Doc
 {

@@ -1,22 +1,12 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Workflow Class Document
  *
- * @author Anakeen
- * @version $Id: Class.WDoc.php,v 1.63 2009/01/08 17:47:07 eric Exp $
- * @package FDL
- */
-/**
  */
 
-/**
- * WorkFlow Class
- */
-class WDoc extends Doc
+namespace Anakeen\SmartStructures\Wdoc;
+
+class WDocHooks extends \Doc
 {
     /**
      * WDoc has its own special access depend on transition
@@ -54,12 +44,12 @@ class WDoc extends Doc
      */
     public $states = null;
     /**
-     * @var WDoc|null
+     * @var WDocHooks|null
      */
     private $pdoc = null;
     /**
      * document instance
-     * @var Doc
+     * @var \Doc
      */
     public $doc = null;
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
@@ -78,15 +68,15 @@ class WDoc extends Doc
             $this->defProfFamId = $this->fromid;
         } // it's a profil itself
         // don't use Doc constructor because it could call this constructor => infinitive loop
-        DocCtrl::__construct($dbaccess, $id, $res, $dbid);
+        \DocCtrl::__construct($dbaccess, $id, $res, $dbid);
     }
     /**
      * affect document instance
-     * @param Doc $doc document to use for workflow
+     * @param \Doc $doc document to use for workflow
      * @param bool $force set to true to force a doc reset
      * @return void
      */
-    public function set(Doc & $doc, $force = false)
+    public function set(\Doc & $doc, $force = false)
     {
         if ((!isset($this->doc)) || ($this->doc->id != $doc->id) || $force) {
             $this->doc = & $doc;
@@ -103,7 +93,7 @@ class WDoc extends Doc
     }
     /**
      * change profil according to state
-     * @param string $newstate new state of document
+     * @param string $newstate new \state of document
      * @return string
      */
     public function changeProfil($newstate)
@@ -115,7 +105,7 @@ class WDoc extends Doc
                 $profid = \Anakeen\Core\DocManager::getIdFromName($profid);
             }
             if ($profid > 0) {
-                // change only if new profil
+                // change only if new \profil
                 $err = $this->doc->setProfil($profid);
             }
         }
@@ -123,7 +113,7 @@ class WDoc extends Doc
     }
     /**
      * change allocate user according to state
-     * @param string $newstate new state of document
+     * @param string $newstate new \state of document
      * @return string
      */
     public function changeAllocateUser($newstate)
@@ -204,7 +194,7 @@ class WDoc extends Doc
     }
     /**
      * change cv according to state
-     * @param string $newstate new state of document
+     * @param string $newstate new \state of document
      */
     public function changeCv($newstate)
     {
@@ -322,7 +312,7 @@ class WDoc extends Doc
             // --------------------------
             // frame
             $aidframe = $this->_Aid("_FR", $state);
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aidframe
             ));
@@ -344,7 +334,7 @@ class WDoc extends Doc
             // --------------------------
             // profil id
             $aidprofilid = $this->_Aid("_ID", $state); //strtolower($this->attrPrefix."_ID".strtoupper($state));
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aidprofilid
             ));
@@ -369,7 +359,7 @@ class WDoc extends Doc
             // mask id
             $aid = $this->_Aid("_MSKID", $state);
             
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
@@ -393,7 +383,7 @@ class WDoc extends Doc
             // --------------------------
             // state color
             $aid = $this->_Aid("_COLOR", $state);
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
@@ -416,7 +406,7 @@ class WDoc extends Doc
             // --------------------------
             // CV link
             $aid = $this->_Aid("_CVID", $state);
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
@@ -441,7 +431,7 @@ class WDoc extends Doc
             // --------------------------
             // Mail template link
             $aid = $this->_Aid("_MTID", $state);
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
@@ -467,7 +457,7 @@ class WDoc extends Doc
             // --------------------------
             //  Timer link
             $aid = $this->_Aid("_TMID", $state);
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
@@ -491,7 +481,7 @@ class WDoc extends Doc
             // --------------------------
             //  Ask link
             $aid = $this->_Aid("_ASKID", $state);
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
@@ -515,7 +505,7 @@ class WDoc extends Doc
             // --------------------------
             // Label action
             $aid = $this->_Aid("_ACTIVITYLABEL", $k);
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
@@ -545,7 +535,7 @@ class WDoc extends Doc
             //  Affected user link
             $aid = $this->_Aid("_T_AFFECT", $state);
             $afaid = $aid;
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
@@ -565,7 +555,7 @@ class WDoc extends Doc
             
             $aid = $this->_Aid("_AFFECTTYPE", $state);
             $aidtype = $aid;
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
@@ -589,7 +579,7 @@ class WDoc extends Doc
             }
             
             $aid = $this->_Aid("_AFFECTREF", $state);
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
@@ -611,7 +601,7 @@ class WDoc extends Doc
             }
             
             $aid = $this->_Aid("_AFFECTLOCK", $state);
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
@@ -632,7 +622,7 @@ class WDoc extends Doc
             }
             
             $aid = $this->_Aid("_AFFECTMAIL", $state);
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
@@ -657,7 +647,7 @@ class WDoc extends Doc
             // --------------------------
             // frame
             $aidframe = $this->_Aid("_TRANS_FR", $k);
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aidframe
             ));
@@ -679,7 +669,7 @@ class WDoc extends Doc
             // --------------------------
             // Mail template link
             $aid = $this->_Aid("_TRANS_MTID", $k);
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
@@ -704,7 +694,7 @@ class WDoc extends Doc
             // --------------------------
             // Timer link
             $aid = $this->_Aid("_TRANS_TMID", $k);
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
@@ -729,7 +719,7 @@ class WDoc extends Doc
             // --------------------------
             // Persistent Attach Timer link
             $aid = $this->_Aid("_TRANS_PA_TMID", $k);
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
@@ -754,7 +744,7 @@ class WDoc extends Doc
             // --------------------------
             // Persistent UnAttach Timer link
             $aid = $this->_Aid("_TRANS_PU_TMID", $k);
-            $oattr = new DocAttr($this->dbaccess, array(
+            $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
@@ -817,7 +807,7 @@ class WDoc extends Doc
         
         if ($this->userid != 1) { // admin can go to any states
             if (!$foundTo) {
-                return (sprintf(_("ChangeState :: the new state '%s' is not known or is not allowed from %s"), _($newstate), _($this->doc->state)));
+                return (sprintf(_("ChangeState :: the new \state '%s' is not known or is not allowed from %s"), _($newstate), _($this->doc->state)));
             }
             if (!$foundFrom) {
                 return (sprintf(_("ChangeState :: the initial state '%s' is not known"), _($this->doc->state)));
@@ -848,7 +838,7 @@ class WDoc extends Doc
             return $err;
         }
         /* Set edition mask from view control if a view control is applied on the document */
-        $this->doc->setMask(Doc::USEMASKCVEDIT);
+        $this->doc->setMask(\Doc::USEMASKCVEDIT);
         
         if ($wm0 && (!empty($tr["m0"]))) {
             // apply first method (condition for the change)
@@ -959,7 +949,7 @@ class WDoc extends Doc
             
             return $err . $err2;
         }
-        \Anakeen\Core\Utils\System::addLogMsg(sprintf(_("%s new state %s"), $this->doc->title, _($newstate)));
+        \Anakeen\Core\Utils\System::addLogMsg(sprintf(_("%s new \state %s"), $this->doc->title, _($newstate)));
         
         $this->doc->enableEditControl();
         // post action
@@ -1121,50 +1111,8 @@ class WDoc extends Doc
         deprecatedFunction();
         return $this->getActivity($state, $def);
     }
-    /**
-     * get askes for a document
-     * searcj all WASK document which current user can see for a specific state
-     * @param string $state the state
-     * @param bool $control set to false to not control ask access
-     * @return string[] texts of action
-     */
-    public function getDocumentWasks($state, $control = true)
-    {
-        $aask = $this->_Aid("_ASKID", $state);
-        $vasks = $this->getMultipleRawValues($aask);
-        if ($control) {
-            $cask = array();
-            foreach ($vasks as $askid) {
-                /**
-                 * @var $ask \SmartStructure\WASK
-                 */
-                $ask = new_doc($this->dbaccess, $askid);
-                $ask->set($this->doc);
-                if ($ask->isAlive() && ($ask->control('answer') == "")) {
-                    $cask[] = $ask->id;
-                }
-            }
-            return $cask;
-        } else {
-            return $vasks;
-        }
-    }
-    /**
-     * verify if askes are defined
-     *
-     * @return bool true if at least one ask is set in workflow
-     */
-    public function hasWasks()
-    {
-        $states = $this->getStates();
-        foreach ($states as $state) {
-            $aask = $this->_Aid("_ASKID", $state);
-            if ($this->getRawValue($aask)) {
-                return true;
-            }
-        }
-        return false;
-    }
+
+
     /**
      * send associated mail of a state
      * @param string $state the state
@@ -1235,7 +1183,7 @@ class WDoc extends Doc
         
         if ($mtid) {
             /**
-             * @var \SmartStructure\TIMER $mt
+             * @var \Dcp\Core\Timer $mt
              */
             $mt = new_doc($this->dbaccess, $mtid);
             if ($mt->isAlive()) {
@@ -1288,7 +1236,7 @@ class WDoc extends Doc
         
         if ($cmd->wid > 0) {
             /**
-             * @var WDoc $wdoc
+             * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $wdoc
              */
             $wdoc = new_Doc($this->dbaccess, $cmd->wid);
             
@@ -1332,7 +1280,7 @@ class WDoc extends Doc
      */
     public function docControl($aclname, $strict = false)
     {
-        return Doc::Control($aclname, $strict);
+        return \Doc::Control($aclname, $strict);
     }
     /**
      * Special control in case of dynamic controlled profil
@@ -1342,7 +1290,7 @@ class WDoc extends Doc
      */
     public function control($aclname, $strict = false)
     {
-        $err = Doc::control($aclname, $strict);
+        $err = \Doc::control($aclname, $strict);
         if ($err == "") {
             return $err;
         } // normal case
