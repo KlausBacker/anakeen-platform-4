@@ -5,8 +5,13 @@
 */
 
 namespace Dcp\Pu;
+
+use Anakeen\Core\DocManager;
+use Anakeen\SmartStructures\Group\GroupHooks;
+use Anakeen\SmartStructures\Iuser\IUserHooks;
+
 /**
- * @author Anakeen
+ * @author  Anakeen
  * @package Dcp\Pu
  */
 //require_once 'PU_testcase_dcp_commonfamily.php';
@@ -19,55 +24,57 @@ class TestGroupAccount extends TestCaseDcpCommonFamily
             'PU_data_dcp_groupaccount.ods'
         );
     }
+
     /**
      * @dataProvider dataClearGroup
+     *
      * @param $groupId
      * @param $expectedContents
      */
     public function testClearGroup($groupId, $expectedContents)
     {
         /**
-         * @var \Dcp\Core\GroupAccount $group
+         * @var GroupHooks $group
          */
-        $group = new_Doc('', $groupId, true);
-        $this->assertTrue($group->isAlive() , sprintf("Could not get group with id '%s'.", $groupId));
+        $group = DocManager::getDocument($groupId, true);
+        $this->assertTrue($group->isAlive(), sprintf("Could not get group with id '%s'.", $groupId));
         $err = $group->Clear();
         $this->assertEmpty($err, sprintf("Clear() on group with id '%s' returned unexpected error message: %s", $groupId, $err));
         foreach ($expectedContents as $expectedContent) {
             $subjectId = $expectedContent['subject'];
-            $subject = new_Doc('', $subjectId, true);
-            $this->assertTrue($subject->isAlive() , sprintf("Expected subject with id '%s' not found.", $subjectId));
+            $subject = DocManager::getDocument($subjectId, true);
+            $this->assertTrue($subject && $subject->isAlive(), sprintf("Expected subject with id '%s' not found.", $subjectId));
             $check = $expectedContent['check'];
             $argv = isset($expectedContent['argv']) ? $expectedContent['argv'] : null;
             switch ($check) {
                 case 'is-empty':
                     /**
-                     * @var \Dcp\Core\GroupAccount $subject
+                     * @var GroupHooks $subject
                      */
-                    $this->assertTrue(is_a($subject, '\Dcp\Core\GroupAccount') , sprintf("Subject with id '%s' is not of expected class '\\Dcp\\Core\\GroupAccount'.", $subjectId));
+                    $this->assertTrue(is_a($subject, GroupHooks::class), sprintf("Subject with id '%s' is not of expected class '\\Dcp\\Core\\GroupAccount'.", $subjectId));
                     $content = $subject->getContent(false);
-                    $this->assertCount(0, $content, sprintf("Unexpected content's count (%s) for subject with id '%s'.", count($content) , $subjectId));
+                    $this->assertCount(0, $content, sprintf("Unexpected content's count (%s) for subject with id '%s'.", count($content), $subjectId));
                     break;
 
                 case 'has-no-parent':
                     /**
-                     * @var \Dcp\Core\UserAccount $subject
+                     * @var IUserHooks $subject
                      */
-                    $this->assertTrue(is_a($subject, 'Dcp\Core\UserAccount') , sprintf("Subject with id '%s' is not of expected class 'Dcp\\Core\\UserAccount'.", $subjectId));
+                    $this->assertTrue(is_a($subject, IUserHooks::class), sprintf("Subject with id '%s' is not of expected class 'Dcp\\Core\\UserAccount'.", $subjectId));
                     $parents = $subject->getAllUserGroups();
-                    $this->assertCount(0, $parents, sprintf("Unexpected parent's count (%s) for subject with id '%s'.", count($parents) , $subjectId));
+                    $this->assertCount(0, $parents, sprintf("Unexpected parent's count (%s) for subject with id '%s'.", count($parents), $subjectId));
                     break;
 
                 case 'has-not-parent':
                     /**
-                     * @var \Dcp\Core\UserAccount $subject
+                     * @var IUserHooks $subject
                      */
-                    $this->assertTrue(is_a($subject, 'Dcp\Core\UserAccount') , sprintf("Subject with id '%s' is not of expected class 'Dcp\\Core\\UserAccount'.", $subjectId));
+                    $this->assertTrue(is_a($subject, IUserHooks::class), sprintf("Subject with id '%s' is not of expected class 'Dcp\\Core\\UserAccount'.", $subjectId));
                     $parents = $subject->getAllUserGroups();
                     $hasNotParent = true;
                     foreach ($parents as $sysId => $docId) {
-                        $group = new_Doc('', $docId, true);
-                        if (!$group->isAlive()) {
+                        $group = DocManager::getDocument($docId, true);
+                        if (!$group) {
                             continue;
                         }
                         if ($group->name == $argv) {
@@ -79,7 +86,7 @@ class TestGroupAccount extends TestCaseDcpCommonFamily
             }
         }
     }
-    
+
     public function dataClearGroup()
     {
         return array(
@@ -89,15 +96,15 @@ class TestGroupAccount extends TestCaseDcpCommonFamily
                     array(
                         'subject' => 'G_FOO',
                         'check' => 'is-empty',
-                    ) ,
+                    ),
                     array(
                         'subject' => 'U_FOO',
                         'check' => 'has-no-parents'
-                    ) ,
+                    ),
                     array(
                         'subject' => 'G_BAR',
                         'check' => 'has-no-parents'
-                    ) ,
+                    ),
                     array(
                         'subject' => 'U_BAR',
                         'check' => 'has-not-parent',

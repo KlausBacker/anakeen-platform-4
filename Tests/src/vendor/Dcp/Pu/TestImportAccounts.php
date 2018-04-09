@@ -1,22 +1,12 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 namespace Dcp\Pu;
-
-/**
- * @author Anakeen
- * @package Dcp\Pu
- */
-
-//require_once 'PU_testcase_dcp_commonfamily.php';
 
 class TestImportAccounts extends TestCaseDcpCommonFamily
 {
     /**
      * import TST_FAMSETVALUE family
+     *
      * @static
      * @return string
      */
@@ -27,8 +17,10 @@ class TestImportAccounts extends TestCaseDcpCommonFamily
 
     /**
      * test import simple document
+     *
      * @dataProvider dataGoodImportAccount
-     * @param $accountFile
+     *
+     * @param       $accountFile
      * @param array $expects
      */
     public function testGoodImportAccount($accountFile, array $expects)
@@ -38,7 +30,7 @@ class TestImportAccounts extends TestCaseDcpCommonFamily
         try {
             $import = new \Dcp\Core\ImportAccounts();
 
-            $import->setFile(sprintf("%s/Layout/%s", self::$testDataDirectory, $accountFile));
+            $import->setFile(sprintf("%s/%s", self::$testDataDirectory, $accountFile));
             $import->import();
         } catch (\Exception $e) {
             $err = $e->getMessage();
@@ -51,7 +43,6 @@ class TestImportAccounts extends TestCaseDcpCommonFamily
 
             $this->assertTrue($testingAccount->isAffected(), "Login $login not found");
             foreach ($accountData["expectValues"] as $aid => $expVal) {
-
                 $this->assertEquals($expVal, $testingAccount->$aid, "Search \"$aid\"." . print_r($testingAccount->getValues(), true));
             }
             if (isset($accountData["docName"])) {

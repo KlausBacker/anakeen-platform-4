@@ -740,7 +740,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '', $only
                 } elseif ($t[$v["childid"]]["archiveid"]) {
                     unset($t[$v["childid"]]);
                 } else {
-                    if ((getCurrentUser()->id != 1) && ($t[$v["childid"]]["uperm"] & (1 << POS_VIEW)) == 0) { // control view
+                    if ((\Anakeen\Core\ContextManager::getCurrentUser()->id != 1) && ($t[$v["childid"]]["uperm"] & (1 << POS_VIEW)) == 0) { // control view
                         unset($t[$v["childid"]]);
                     }
                 }
