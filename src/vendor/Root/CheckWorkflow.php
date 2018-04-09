@@ -16,7 +16,7 @@ class CheckWorkflow
      */
     private $terr = array();
     /**
-     * @var \Anakeen\SmartStructure\Wdoc\WDocHooks
+     * @var \Anakeen\SmartStructures\Wdoc\WDocHooks
      */
     private $wdoc;
     /**
@@ -300,7 +300,7 @@ class CheckWorkflow
                 $class = $this->className;
                 $this->wdoc = new $class();
                 
-                if (!is_a($this->wdoc, \Anakeen\SmartStructure\Wdoc\WDocHooks::class)) {
+                if (!is_a($this->wdoc, \Anakeen\SmartStructures\Wdoc\WDocHooks::class)) {
                     $this->addCodeError('WFL0006', $this->className);
                 }
             }

@@ -5,7 +5,7 @@
 */
 
 
-Class WtstFmtCol extends \Anakeen\SmartStructure\Wdoc\WDocHooks
+Class WtstFmtCol extends \Anakeen\SmartStructures\Wdoc\WDocHooks
 
 {
     public $attrPrefix = "WAN";

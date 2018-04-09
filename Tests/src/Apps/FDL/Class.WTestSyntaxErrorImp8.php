@@ -5,7 +5,7 @@
 */
 
 
-Class WTestSyntax extends \Anakeen\SmartStructure\Wdoc\WDocHooks
+Class WTestSyntax extends \Anakeen\SmartStructures\Wdoc\WDocHooks
 
 {
     var $attrPrefix = "WAN"const alive = "alive"; // N_("alive")

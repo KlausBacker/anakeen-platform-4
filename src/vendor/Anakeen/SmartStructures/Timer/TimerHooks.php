@@ -3,24 +3,31 @@
  * @author Anakeen
  * @package FDL
 */
+
 /**
  * Timer document
  */
-namespace Dcp\Core;
 
-class Timer extends \Anakeen\SmartStructures\Document
+namespace Anakeen\SmartStructures\Timer;
+
+use Anakeen\Core\DocManager;
+
+class TimerHooks extends \Anakeen\SmartStructures\Document
 {
     private $lineActions;
+
     /**
      * attach timer to a document
-     * @param \Doc &$doc the document where timer will be attached
-     * @param \Doc &$origin the document which comes from the attachement
+     *
+     * @param \Doc   &$doc          the document where timer will be attached
+     * @param \Doc   &$origin       the document which comes from the attachement
      * @param string $referenceDate reference date to trigger the actions
+     *
      * @return string error - empty if no error -
      */
     public function attachDocument(&$doc, $origin, $referenceDate = null)
     {
-        
+
         $dt = new \DocTimer($this->dbaccess);
         $dt->timerid = $this->id;
         $dt->docid = $doc->initid;
@@ -34,10 +41,10 @@ class Timer extends \Anakeen\SmartStructures\Document
             $dt->originid = $origin->id;
         }
         $dt->fromid = $doc->fromid;
-        
+
         $dates = $this->getMultipleRawValues("tm_delay");
         $hours = $this->getMultipleRawValues("tm_hdelay");
-        
+
         if ((count($dates) == 0)) {
             $err = sprintf(_("no processes specified in timer %s [%d]"), $this->title, $this->id);
         } else {
@@ -45,20 +52,20 @@ class Timer extends \Anakeen\SmartStructures\Document
             if (count($acts) == 1) {
                 $act = current($acts);
                 $dt->actions = serialize($act["actions"]);
-                
+
                 if ($referenceDate === '') {
                     $dt->tododate = 'infinity';
                 } else {
                     $jdRef = StringDateToJD($referenceDate);
-                    $jdRef+= doubleval($this->getRawValue("tm_refdaydelta"));
-                    $jdRef+= doubleval($this->getRawValue("tm_refhourdelta")) / 24;
+                    $jdRef += doubleval($this->getRawValue("tm_refdaydelta"));
+                    $jdRef += doubleval($this->getRawValue("tm_refhourdelta")) / 24;
                     $deltaReferenceDate = jd2cal($jdRef);
                     $dt->referencedate = $deltaReferenceDate;
-                    
+
                     $day = doubleval($dates[0]);
                     $hour = doubleval($hours[0]);
                     $jdTodo = $jdRef;
-                    $jdTodo+= $day + ($hour / 24);
+                    $jdTodo += $day + ($hour / 24);
                     $dt->tododate = jd2cal($jdTodo);
                 }
                 $err = $dt->Add();
@@ -68,54 +75,63 @@ class Timer extends \Anakeen\SmartStructures\Document
         }
         return $err;
     }
+
     /**
      * unattach timer to a document
-     * @param \SmartStructure\Timer &$timer the timer document
-     * @param \Doc &$origin the document which comes from the attachement
+     *
+     * @param TimerHooks $doc     the timer document
+     * @param \Doc       &$origin the document which comes from the attachement
+     * @param int        $c       count of deletion
+     *
      * @return string error - empty if no error -
+     * @throws \Dcp\Core\Exception
      */
     public function unattachAllDocument(&$doc, &$origin = null, &$c = 0)
     {
-        
+
         $dt = new \DocTimer($this->dbaccess);
         if ($origin) {
             $err = $dt->unattachFromOrigin($doc->initid, $origin->initid, $c);
         } else {
             $err = $dt->unattachAll($doc->initid, $c);
         }
-        
+
         return $err;
     }
+
     /**
      * unattach timer to a document
-     * @param \SmartStructure\Timer &$timer the timer document
-     * @param \Doc &$origin the document which comes from the attachement
+     *
+     * @param TimerHooks &$doc  the timer document
+     *
      * @return string error - empty if no error -
      */
     public function unattachDocument(&$doc)
     {
-        
+
         $dt = new \DocTimer($this->dbaccess);
         $err = $dt->unattachDocument($doc->initid, $this->id);
-        
+
         return $err;
     }
+
     /**
      * get prevision for an activate timer
-     * @param string $adate attach date
+     *
+     * @param string $adate    attach date
      * @param string $tododate todo date may be false if not an already attached timer
-     * @param int $level from level
-     * @param int $maxOccur slice level (since level+maxOccur)
+     * @param int    $level    from level
+     * @param int    $maxOccur slice level (since level+maxOccur)
+     *
      * @return array array of prevision
      */
-    public function getPrevisions($adate, $tododate = false, $level = 0, $maxOccur = 10)
+    public function getPrevisions($adate, $tododate = "", $level = 0, $maxOccur = 10)
     {
         $this->linearizeActions();
-        
+
         $jdnow = StringDateToJD($this->getTimeDate());
         $jdattach = StringDateToJD($adate);
-        $spentDelay = $jdnow - $jdattach;
-        
+
         $first = true;
         $tprev = array();
         $jdstart = $jdattach; //$jdnow-$spentDelay;
@@ -123,15 +139,9 @@ class Timer extends \Anakeen\SmartStructures\Document
         $max = min(($level + $maxOccur), count($this->lineActions));
         for ($clevel = 0; $clevel < $level; $clevel++) {
             $prev[$clevel] = $this->lineActions[$clevel];
-            if ($first && $tododate) { // add delta when timer is modify after attachement
-                /*$jdtodo=StringDateToJD($tododate);
-                $execdate=$jdstart+$prev[$clevel]["delay"];
-                $delta=$jdtodo - $execdate;
-                $first=false;
-                $jdstart += $delta;*/
-            }
+
             $ldelay = $prev[$clevel]["delay"];
-            $jdstart+= $ldelay;
+            $jdstart += $ldelay;
         }
         for ($clevel = $level; $clevel < $max; $clevel++) {
             $tprev[$clevel] = $this->lineActions[$clevel];
@@ -144,18 +154,18 @@ class Timer extends \Anakeen\SmartStructures\Document
                     $execdate = $jdstart + $tprev[$clevel]["delay"];
                     $delta = $jdtodo - $execdate;
                     $first = false;
-                    $jdstart+= $delta;
+                    $jdstart += $delta;
                 }
                 $ldelay = $tprev[$clevel]["delay"];
                 //  print "$clevel)jdstart:$jdstart".jd2cal($jdstart)."[$ldelay] --".jd2cal($jdstart+$ldelay)."--\n";
                 $tprev[$clevel]["execdate"] = jd2cal($jdstart + $ldelay);
                 $tprev[$clevel]["execdelay"] = ($jdstart + $ldelay) - $jdnow;
-                $jdstart+= $ldelay;
+                $jdstart += $ldelay;
             }
         }
         return ($tprev);
     }
-    
+
     private function linearizeActions()
     {
         $this->lineActions = array();
@@ -166,7 +176,7 @@ class Timer extends \Anakeen\SmartStructures\Document
             if ($repeat <= 0) {
                 $repeat = 1;
             }
-            
+
             for ($i = 0; $i < $repeat; $i++) {
                 $this->lineActions[$level] = array(
                     "level" => $level,
@@ -182,22 +192,28 @@ class Timer extends \Anakeen\SmartStructures\Document
         }
         ksort($this->lineActions);
     }
+
     /**
      * execute a level for a document
-     * @param int $level level af action to execute
-     * @param int $docid document to apply action
+     *
+     * @param int  $level level af action to execute
+     * @param int  $docid document to apply action
+     *
+     * @param string $msg output message
+     * @param bool $nextlevel
+     *
      * @return string error - empty if no error -
      */
-    public function executeLevel($level, $docid, &$msg = null, &$nextlevel = true)
+    public function executeLevel($level, $docid, &$msg = "", &$nextlevel = true)
     {
         $msg = '';
         $nextlevel = true;
-        $doc = new_doc($this->dbaccess, $docid, true);
-        if (!$doc->isAlive()) {
+        $doc = DocManager::getDocument($docid, true);
+        if (!$doc || !$doc->isAlive()) {
             return sprintf(_("cannot execute : document %s is not found"), $docid);
         }
         $acts = $this->getPrevisions($this->getTimeDate(), false, $level, 1);
-        
+
         $gerr = "";
         $tmsg = array();
         if (count($acts) > 0) {
@@ -212,8 +228,8 @@ class Timer extends \Anakeen\SmartStructures\Document
                                     /**
                                      * @var \SmartStructure\MAILTEMPLATE $tm
                                      */
-                                    $tm = new_doc($this->dbaccess, $idmail);
-                                    if ($tm->isAlive()) {
+                                    $tm = DocManager::getDocument($idmail);
+                                    if ($tm && $tm->isAlive()) {
                                         $msg = sprintf(_("send mail with template %s [%d]"), $tm->title, $tm->id);
                                         $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s"), $this->title, $level, $msg));
                                         $err = $tm->sendDocument($doc);
@@ -236,10 +252,10 @@ class Timer extends \Anakeen\SmartStructures\Document
                                 $tmsg[] = $msg;
                                 break;
                         }
-                        
+
                         if ($err) {
-                            $gerr.= "$err\n";
-                            $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s"), $this->title, $level, $err), DocHisto::ERROR);
+                            $gerr .= "$err\n";
+                            $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s"), $this->title, $level, $err), \DocHisto::ERROR);
                         }
                     }
                 }
@@ -247,7 +263,7 @@ class Timer extends \Anakeen\SmartStructures\Document
         } else {
             $nextlevel = false; // this is the end level
         }
-        
+
         $msg = implode(".\n", $tmsg);
         return $gerr;
     }

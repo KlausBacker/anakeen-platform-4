@@ -1236,7 +1236,7 @@ class WDocHooks extends \Doc
         
         if ($cmd->wid > 0) {
             /**
-             * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $wdoc
+             * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
             $wdoc = new_Doc($this->dbaccess, $cmd->wid);
             

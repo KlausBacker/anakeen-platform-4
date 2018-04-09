@@ -113,7 +113,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
         $wdoc = null;
         if ($doc->wid) {
             /**
-             * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $wdoc
+             * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
             $wdoc = new_doc($this->dbaccess, $doc->wid);
         }

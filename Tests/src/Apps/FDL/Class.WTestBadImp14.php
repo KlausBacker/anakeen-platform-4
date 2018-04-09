@@ -5,7 +5,7 @@
 */
 
 
-Class WTestBadImp14 extends \Anakeen\SmartStructure\Wdoc\WDocHooks
+Class WTestBadImp14 extends \Anakeen\SmartStructures\Wdoc\WDocHooks
 
 {
     var $attrPrefix = "WTST";

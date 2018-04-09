@@ -602,7 +602,7 @@ class Doc extends DocCtrl
             "FDL:EDITBODYCARD"
         );
     /**
-     * @var \Anakeen\SmartStructure\Wdoc\WDocHooks
+     * @var \Anakeen\SmartStructures\Wdoc\WDocHooks
      */
     public $wdoc = null;
     /**
@@ -984,7 +984,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         if ($this->wid > 0) {
             /**
-             * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $wdoc
+             * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
             $wdoc = DocManager::getDocument($this->wid);
             $this->wdoc = $wdoc;
@@ -2672,7 +2672,7 @@ create unique index i_docir on doc(initid, revision);";
                 // search mask from workflow
 
                 /**
-                 * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $wdoc
+                 * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
                  */
                 $wdoc = DocManager::getDocument($this->wid);
                 if ($wdoc && $wdoc->isAlive()) {
@@ -6136,7 +6136,7 @@ create unique index i_docir on doc(initid, revision);";
             return _("document is not controlled by a workflow");
         }
         /**
-         * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $wdoc
+         * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
          */
         $wdoc = Anakeen\Core\DocManager::getDocument($this->wid);
         if (!$wdoc || !$wdoc->isAlive()) {
@@ -6191,7 +6191,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         if ($this->wid > 0) {
             /**
-             * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $wdoc
+             * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
             $wdoc = Anakeen\Core\DocManager::getDocument($this->wid);
             if ($wdoc && $wdoc->isAffected()) {
@@ -6219,7 +6219,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         if ($this->wid > 0) {
             /**
-             * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $wdoc
+             * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
             $wdoc = DocManager::getDocument($this->wid);
             if ($wdoc->isAffected()) {
@@ -9240,7 +9240,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * attach timer to a document
      *
-     * @param \Dcp\Core\Timer &$timer   the timer document
+     * @param \Anakeen\SmartStructures\Timer\TimerHooks &$timer   the timer document
      * @param Doc                   &$origin  the document which comes from the attachement
      * @param string                $execdate date to execute first action YYYY-MM-DD HH:MM:SS
      *
@@ -9279,7 +9279,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * unattach timer of a document
      *
-     * @param \Dcp\Core\Timer &$timer the timer document
+     * @param \Anakeen\SmartStructures\Timer\TimerHooks &$timer the timer document
      *
      * @api Unattach timer of a document
      * @return string error - empty if no error -
@@ -9314,7 +9314,7 @@ create unique index i_docir on doc(initid, revision);";
         } else {
             foreach ($tms as $k => $v) {
                 /**
-                 * @var \Dcp\Core\Timer $t
+                 * @var \Anakeen\SmartStructures\Timer\TimerHooks $t
                  */
                 $t = DocManager::getDocument($v["timerid"]);
                 if ($t && $t->isAlive()) {
@@ -9351,7 +9351,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function unattachAllTimers($origin = null)
     {
         /**
-         * @var \Dcp\Core\Timer $timer
+         * @var \Anakeen\SmartStructures\Timer\TimerHooks $timer
          */
         $timer = Anakeen\Core\DocManager::createTemporaryDocument("TIMER");
         $c = 0;

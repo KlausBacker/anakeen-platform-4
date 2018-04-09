@@ -7,7 +7,7 @@ use Anakeen\Core\DocManager;
 use Anakeen\Core\Settings;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
-use Anakeen\SmartStructure\Wdoc\WDocHooks;
+use Anakeen\SmartStructures\Wdoc\WDocHooks;
 
 /**
  * Class WorkflowState
@@ -62,7 +62,7 @@ class WorkflowState
         }
 
         /**
-         * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $workflow
+         * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $workflow
          */
         $this->workflow = DocManager::getDocument($this->_document->wid);
         $this->workflow->set($this->_document);

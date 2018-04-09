@@ -22,7 +22,7 @@ define("Twprocess_public", "Twprocess_public"); # N_("Twprocess_public")
  * Process Workflow
  *
  */
-class WProcess extends \Anakeen\SmartStructure\Wdoc\WDocHooks
+class WProcess extends \Anakeen\SmartStructures\Wdoc\WDocHooks
 
 {
     public $attrPrefix = "PROWF"; // prefix attribute

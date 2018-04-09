@@ -5,7 +5,7 @@
 */
 
 
-Class WTestBadImp10 extends \Anakeen\SmartStructure\Wdoc\WDocHooks
+Class WTestBadImp10 extends \Anakeen\SmartStructures\Wdoc\WDocHooks
 
 {
     var $attrPrefix = "hello world"; // <--- HERE SYNTAX ERROR

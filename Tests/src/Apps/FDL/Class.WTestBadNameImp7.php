@@ -5,7 +5,7 @@
 */
 
 
-Class WTestBad extends \Anakeen\SmartStructure\Wdoc\WDocHooks
+Class WTestBad extends \Anakeen\SmartStructures\Wdoc\WDocHooks
 
 {
     var $attrPrefix = "WAN";

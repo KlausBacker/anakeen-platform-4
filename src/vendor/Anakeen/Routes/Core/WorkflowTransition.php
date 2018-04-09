@@ -6,7 +6,7 @@ use Anakeen\Router\URLUtils;
 use Anakeen\Core\DocManager;
 use Anakeen\Core\Settings;
 use Anakeen\Router\Exception;
-use Anakeen\SmartStructure\Wdoc\WDocHooks;
+use Anakeen\SmartStructures\Wdoc\WDocHooks;
 
 /**
  * Class WorkflowTransition
@@ -42,7 +42,7 @@ class WorkflowTransition extends WorkflowState
             throw $exception;
         }
         /**
-         * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $workflow
+         * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $workflow
          */
         $this->workflow = DocManager::getDocument($this->_document->wid);
         $this->workflow->set($this->_document);

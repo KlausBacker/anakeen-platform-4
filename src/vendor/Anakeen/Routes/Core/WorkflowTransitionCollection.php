@@ -28,7 +28,7 @@ class WorkflowTransitionCollection extends WorkflowStateCollection
 
         $transitions = array();
         /**
-         * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $workflow
+         * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $workflow
          */
         $this->workflow = DocManager::getDocument($this->_document->wid);
         $this->workflow->set($this->_document);

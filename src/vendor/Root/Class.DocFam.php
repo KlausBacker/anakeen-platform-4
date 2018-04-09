@@ -209,9 +209,9 @@ create unique index idx_idfam on docfam(id);";
             if ($classw) {
                 $w = new $classw();
                 if ($w) {
-                    if (is_a($w, \Anakeen\SmartStructure\Wdoc\WDocHooks::class)) {
+                    if (is_a($w, \Anakeen\SmartStructures\Wdoc\WDocHooks::class)) {
                         /**
-                         * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $w
+                         * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $w
                          */
                         $err = $w->createProfileAttribute($this->id);
                     }

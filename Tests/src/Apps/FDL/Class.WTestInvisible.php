@@ -5,7 +5,7 @@
 */
 
 
-Class WTestFourStates extends \Anakeen\SmartStructure\Wdoc\WDocHooks
+Class WTestFourStates extends \Anakeen\SmartStructures\Wdoc\WDocHooks
 
 {
     var $attrPrefix = "WINV";
