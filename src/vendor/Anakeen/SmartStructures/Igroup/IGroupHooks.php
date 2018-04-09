@@ -161,15 +161,7 @@ class IGroupHooks extends \SmartStructure\Group
         return $this->synchronizeSystemGroup();
     }
 
-    /**
-     * @deprecated use postStore() instead
-     * @return string
-     */
-    public function postModify()
-    {
-        deprecatedFunction();
-        return self::postStore();
-    }
+
 
     public function synchronizeSystemGroup()
     {

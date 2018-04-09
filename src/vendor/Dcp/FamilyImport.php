@@ -547,7 +547,7 @@ class FamilyImport
             $phpAdoc->template = file_get_contents(DEFAULT_PUBDIR . $kFile);
             $err = self::__phpLintWriteFile($dfile, $phpAdoc->gen());
             if ($err != '') {
-                throw new \Dcp\Exception(sprintf("Error generating file '%s': %s", $dfile, $err));
+                throw new \Dcp\Exception("CORE0023", $dfile, $err);
             }
         }
     }
@@ -820,7 +820,7 @@ class FamilyImport
 
         $err = self::__phpLintWriteFile($attrfile, self::AttrIdtoPhp($dbaccess, $tdoc));
         if ($err != '') {
-            throw new \Dcp\Exception(sprintf("Error generating file '%s': %s", $attrfile, $err));
+            throw new \Dcp\Exception("CORE0024", $attrfile, $err);
         }
 
         return $dfile;

@@ -6,6 +6,9 @@
 
 namespace Anakeen\SmartStructures\Wdoc;
 
+use Anakeen\SmartStructures\Timer\TimerHooks;
+use Dcp\Exception;
+
 class WDocHooks extends \Doc
 {
     /**
@@ -1060,6 +1063,9 @@ class WDocHooks extends \Doc
     {
         if ($this->states === null) {
             $this->states = array();
+            if (! is_array($this->cycle)) {
+                throw new Exception("Workflow Corrupted Cycle");
+            }
             foreach ($this->cycle as $k => $tr) {
                 if (!empty($tr["e1"])) {
                     $this->states[$tr["e1"]] = $tr["e1"];
@@ -1183,7 +1189,7 @@ class WDocHooks extends \Doc
         
         if ($mtid) {
             /**
-             * @var \Dcp\Core\Timer $mt
+             * @var TimerHooks $mt
              */
             $mt = new_doc($this->dbaccess, $mtid);
             if ($mt->isAlive()) {

@@ -31,11 +31,7 @@ class StoreInfo
      * @var string message returned by Doc::postStore
      */
     public $postStore = '';
-    /**
-     * @deprecated use postStore attribute instead
-     * @var string message returned by Doc::postStore
-     */
-    public $postModify = '';
+
     /**
      * @var string message returned by Doc::preStore
      */

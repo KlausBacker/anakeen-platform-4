@@ -98,6 +98,14 @@ namespace {
          * @errorCode The user is not authenticated
          */
         const CORE0022 = "User not authenticated";
+        /**
+         * @errorCode Generate document class syntex error
+         */
+        const CORE0023 = 'Error generating file document class file "%s" : %s';
+        /**
+         * @errorCode Generate document class syntex error
+         */
+        const CORE0024 = 'Error generating file attributes document class file "%s" : %s';
 
     }
 }

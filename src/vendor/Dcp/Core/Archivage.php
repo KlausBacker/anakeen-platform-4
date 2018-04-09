@@ -137,15 +137,7 @@ class Archiving extends \SmartStructure\Dir
         $err.= $this->createProfil();
         return $err;
     }
-    /**
-     * @deprecated use postStore() instead
-     * @return string
-     */
-    public function postModify()
-    {
-        deprecatedFunction();
-        return self::postStore();
-    }
+
     public function preInsertDocument($docid, $multiple = false)
     {
         if ($this->getRawValue("arc_status") != "O") {

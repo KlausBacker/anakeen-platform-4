@@ -1416,40 +1416,7 @@ create unique index i_docir on doc(initid, revision);";
         return $this->canEdit();
     }
 
-    /**
-     * save document if attribute are change
-     * not be use when modify properties
-     * only use with use of setValue.
-     *
-     * @param stdClass $info           refresh and postStore messages
-     * @param boolean  $skipConstraint set to true to not test constraints
-     *
-     * @deprecated use ::store() instead
-     * @return string error message
-     */
-    public function save(&$info = null, $skipConstraint = false)
-    {
-        deprecatedFunction();
-        $err = '';
-        $info = new stdClass();
-        $info->constraint = '';
-        if (!$skipConstraint) {
-            $err = $this->verifyAllConstraints(false, $info->constraint);
-        }
-        if ($err == '') {
-            $info->refresh = $this->refresh();
-            $info->postModify = $this->postStore();
-            if ($this->hasChanged) {
-                //in case of change in postModify
-                $err = $this->modify();
-            }
-            if ($err == "") {
-                $this->addHistoryEntry(_("save document"), DocHisto::INFO, "MODIFY");
-            }
-        }
-        $info->error = $err;
-        return $err;
-    }
+
 
     /**
      * record new document or update
@@ -1490,10 +1457,6 @@ create unique index i_docir on doc(initid, revision);";
                     $info->errorCode = StoreInfo::UPDATE_ERROR;
                 } else {
                     $info->postStore = $this->postStore();
-                    /* @noinspection PhpDeprecationInspection
-                     * compatibility until postModify exists
-                     */
-                    $info->postModify = $info->postStore;
                     if ($this->hasChanged) {
                         //in case of change in postStore
                         $err = $this->modify();
@@ -3401,17 +3364,7 @@ create unique index i_docir on doc(initid, revision);";
     {
     }
 
-    /**
-     * no in postUpdate method :: call this only if real change (values)
-     *
-     * @deprecated hook use {@link Doc::postStore} instead
-     * @see        Doc::postStore
-     * @return string error message
-     */
-    public function postModify()
-    {
-        return "";
-    }
+
 
     /**
      * no in postUpdate method :: call this only if real change (values)

@@ -25,15 +25,7 @@ class GroupHooks extends \SmartStructure\Dir
         $this->refreshParentGroup();
         return $err;
     }
-    /**
-     * @deprecated use postStore() instead
-     * @return string
-     */
-    public function postModify()
-    {
-        deprecatedFunction();
-        return self::postStore();
-    }
+
     /**
      * recompute only parent group
      * @apiExpose

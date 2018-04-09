@@ -4,13 +4,15 @@
  * @package Dcp\Pu
 */
 
-namespace Dcp\Pu;
+namespace Anakeen\TestUnits;
 
 use Anakeen\Core\Utils\Gettext;
 use Anakeen\Pu\Routes\SuiteRoutes;
+use Dcp\Pu\FrameworkDcp;
+use Dcp\Pu\SuiteDcp;
 
-require __DIR__ . '/../autoload.php';
-require __DIR__ . '/../WHAT/Lib.Prefix.php';
+require_once __DIR__ . '/../autoload.php';
+require_once __DIR__ . '/../WHAT/Lib.Prefix.php';
 
 set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__);
 
@@ -30,8 +32,8 @@ class CoreTests
         $suite = new FrameworkDcp('Project');
 
         Gettext::___("Hello"); // Include ___
-     /*   $suite->addTest((new SuiteRoutes)());
-     */   $suite->addTest(SuiteDcp::suite());
+        $suite->addTest((new SuiteRoutes)());
+        $suite->addTest(SuiteDcp::suite());
      /*   $suite->addTest(SuiteDcpAttribute::suite());
         $suite->addTest(SuiteDcpUser::suite());
         $suite->addTest(SuiteDcpSecurity::suite());*/

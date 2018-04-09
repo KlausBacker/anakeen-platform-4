@@ -613,6 +613,7 @@ class ImportDocumentDescription
         if (!$this->doc) {
             return;
         }
+
         // add messages
         $msg = sprintf(_("modify %s family"), $this->doc->title);
         $this->tcr[$this->nLine]["msg"] = $msg;
@@ -646,32 +647,50 @@ class ImportDocumentDescription
                 $err = $check->getErrors();
 
                 if ($err && $this->analyze) {
-                    $this->tcr[$this->nLine]["msg"] .= sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
+                    $this->tcr[$this->nLine]["msg"] .= sprintf(_("Element can't be perfectly analyzed, some error might occurs or be corrected when importing"));
                     $this->tcr[$this->nLine]["action"] = "warning";
                     return;
                 }
                 if ($err == '') {
                     if (strpos($this->doc->usefor, "W") !== false) {
-                        $this->doc->postImport();
-                    } //special to add calculated attributes
-                    $msg = \Dcp\FamilyImport::refreshPhpPgDoc($this->dbaccess, $this->doc->id);
-                    if ($msg !== '') {
-                        $this->tcr[$this->nLine]["err"] .= $msg;
-                        $this->tcr[$this->nLine]["action"] = "ignored";
-                        $this->tcr[$this->beginLine]["action"] = "ignored";
-                        return;
+                        $checkW = new CheckWorkflow($this->doc->classname, $this->doc->name);
+                        $checkCr = $checkW->verifyWorkflowClass();
+                        if (count($checkCr) > 0) {
+                            if (count($checkCr) > 0) {
+                                $err = implode(",", $checkCr);
+                                $this->tcr[$this->nLine]["err"] .= $err;
+                            }
+                        }
+                        if (!$err) {
+                            $this->doc->postImport();
+                        }
                     }
-                    if (isset($tFamIdName)) {
-                        $tFamIdName[$this->doc->name] = $this->doc->id;
-                    } // refresh getFamIdFromName for multiple family import
-                    $checkCr = CheckDb::verifyDbFamily($this->doc->id);
-                    if (count($checkCr) > 0) {
-                        $this->tcr[$this->nLine]["err"] .= ErrorCode::getError('ATTR1700', implode(",", $checkCr));
-                    } else {
-                        // Need to update child family in case of new attribute
-                        $childsFams = ($this->doc->getChildFam());
-                        foreach ($childsFams as $famInfo) {
-                            \Dcp\FamilyImport::createDocFile($this->dbaccess, $famInfo);
+
+                    if (!$err) {
+                        try {
+                            //special to add calculated attributes
+                            $msg = \Dcp\FamilyImport::refreshPhpPgDoc($this->dbaccess, $this->doc->id);
+                            if ($msg !== '') {
+                                $this->tcr[$this->nLine]["err"] .= $msg;
+                                $this->tcr[$this->nLine]["action"] = "ignored";
+                                $this->tcr[$this->beginLine]["action"] = "ignored";
+                                return;
+                            }
+                            if (isset($tFamIdName)) {
+                                $tFamIdName[$this->doc->name] = $this->doc->id;
+                            } // refresh getFamIdFromName for multiple family import
+                            $checkCr = CheckDb::verifyDbFamily($this->doc->id);
+                            if (count($checkCr) > 0) {
+                                $this->tcr[$this->nLine]["err"] .= ErrorCode::getError('ATTR1700', implode(",", $checkCr));
+                            } else {
+                                // Need to update child family in case of new attribute
+                                $childsFams = ($this->doc->getChildFam());
+                                foreach ($childsFams as $famInfo) {
+                                    \Dcp\FamilyImport::createDocFile($this->dbaccess, $famInfo);
+                                }
+                            }
+                        } catch (\Dcp\Exception $e) {
+                            $this->tcr[$this->nLine]["err"] .= $e->getMessage();
                         }
                     }
                 } else {
@@ -694,8 +713,8 @@ class ImportDocumentDescription
             if ((!$this->analyze) && ($this->familyIcon != "")) {
                 $this->doc->changeIcon($this->familyIcon);
             }
-            $this->tcr[$this->nLine]["msg"] .= $this->doc->postImport();
             if (!$this->tcr[$this->nLine]["err"]) {
+                $this->tcr[$this->nLine]["msg"] .= $this->doc->postImport();
                 $check->checkMaxAttributes($this->doc);
                 $this->tcr[$this->nLine]["err"] = $check->getErrors();
                 if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
@@ -746,7 +765,7 @@ class ImportDocumentDescription
             $sql[] = sprintf("create view family.\"%s\" as select * from doc%d", strtolower($this->doc->name), $this->doc->id);
 
             foreach ($sql as $aSql) {
-                simpleQuery('', $aSql);
+                \Anakeen\Core\DbManager::query($aSql);
             }
         }
     }
@@ -799,7 +818,7 @@ class ImportDocumentDescription
                     }
 
                     $sql = sprintf("delete from docattr where docid=%d", $this->doc->id);
-                    simpleQuery($this->dbaccess, $sql);
+                    \Anakeen\Core\DbManager::query($sql);
 
                     $this->needCleanParamsAndDefaults = true;
                     break;
@@ -816,17 +835,17 @@ class ImportDocumentDescription
 
                 case 'enums':
                     $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("Reset enums definition"));
-                    $sql
-                        = sprintf("update docattr set phpfunc=null from docenum where docattr.docid=docenum.famid and docattr.id = docenum.attrid and docattr.type ~ 'enum' and docattr.docid=%d",
-                        $this->doc->id);
-                    simpleQuery($this->dbaccess, $sql);
+                    $sql = sprintf(
+                        "update docattr set phpfunc=null from docenum where docattr.docid=docenum.famid and docattr.id = docenum.attrid and docattr.type ~ 'enum' and docattr.docid=%d",
+                        $this->doc->id
+                    );
+                    \Anakeen\Core\DbManager::query($sql);
                     $sql = sprintf("delete from docenum where famid=%d", $this->doc->id);
-                    simpleQuery($this->dbaccess, $sql);
+                    \Anakeen\Core\DbManager::query($sql);
 
                     break;
 
                 case 'properties':
-
                     $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("reinit all properties"));
                     if ($this->analyze) {
                         return;
@@ -840,7 +859,7 @@ class ImportDocumentDescription
                         return;
                     }
                     $sql = sprintf("delete from docattr where docid=%d", $this->doc->id);
-                    simpleQuery($this->dbaccess, $sql);
+                    \Anakeen\Core\DbManager::query($sql);
                     $this->needCleanStructure = true;
                     $this->needCleanParamsAndDefaults = true;
                     break;
@@ -1263,7 +1282,7 @@ class ImportDocumentDescription
         if (is_numeric($data[1])) {
             $cvid = $data[1];
         } else {
-            $cvid = \Anakeen\Core\DocManager::getIdFromName($data[1], 28);
+            $cvid = \Anakeen\Core\DocManager::getIdFromName($data[1]);
         }
 
         if ($data[1]) {
@@ -1312,7 +1331,6 @@ class ImportDocumentDescription
             return;
         }
         $this->doc->classname = $data[1];
-
     }
 
     /**
@@ -1813,7 +1831,7 @@ class ImportDocumentDescription
     {
         $login = mb_strtolower($login);
         if (!isset($this->userIds[$login])) {
-            simpleQuery("", sprintf("select id from users where login='%s'", pg_escape_string($login)), $uid, true, true);
+            \Anakeen\Core\DbManager::query(sprintf("select id from users where login='%s'", pg_escape_string($login)), $uid, true, true);
             if (!$uid) {
                 throw new \Dcp\Exception("PRFL0204", $login);
             }
@@ -2138,7 +2156,7 @@ class ImportDocumentDescription
         $oe->eorder = 0;
         if ($reset) {
             $sql = sprintf("delete from docenum where famid='%s' and attrid='%s'", pg_escape_string($famid), pg_escape_string($attrid));
-            simpleQuery('', $sql);
+            \Anakeen\Core\DbManager::query($sql);
         }
 
         foreach ($enums as $itemKey => $itemLabel) {
