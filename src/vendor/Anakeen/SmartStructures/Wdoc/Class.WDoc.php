@@ -1288,7 +1288,7 @@ class WDoc extends Doc
         
         if ($cmd->wid > 0) {
             /**
-             * @var $wdoc Wdoc
+             * @var WDoc $wdoc
              */
             $wdoc = new_Doc($this->dbaccess, $cmd->wid);
             

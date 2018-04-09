@@ -16,7 +16,7 @@ class CheckWorkflow
      */
     private $terr = array();
     /**
-     * @var Wdoc
+     * @var WDoc
      */
     private $wdoc;
     /**
