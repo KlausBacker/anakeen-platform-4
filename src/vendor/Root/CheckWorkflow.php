@@ -147,7 +147,7 @@ class CheckWorkflow
         }
         return $this->getError();
     }
-    public function checkActivities()
+    protected function checkActivities()
     {
         $activities = $this->wdoc->stateactivity;
         if (!is_array($activities)) {
@@ -162,8 +162,8 @@ class CheckWorkflow
             }
         }
     }
-    
-    public function checkTransitions()
+
+    protected function checkTransitions()
     {
         $cycle = $this->wdoc->cycle;
         if (!is_array($cycle)) {
@@ -192,8 +192,8 @@ class CheckWorkflow
             }
         }
     }
-    
-    public function checkTransitionModels()
+
+    protected function checkTransitionModels()
     {
         $transitions = $this->wdoc->transitions;
         if (!is_array($transitions)) {
@@ -251,8 +251,8 @@ class CheckWorkflow
             }
         }
     }
-    
-    public function checkAskAttributes()
+
+    protected function checkAskAttributes()
     {
         $transitions = $this->wdoc->transitions;
         if (!is_array($transitions)) {
@@ -265,7 +265,7 @@ class CheckWorkflow
                     if (!is_array($askes)) {
                         $this->addCodeError('WFL0103', $tkey, $this->className);
                     } else {
-                        $wi = createTmpDoc($this->wdoc->dbaccess, $this->familyName);
+                        $wi = \Anakeen\Core\DocManager::createTemporaryDocument($this->familyName);
                         $aids = array_keys($wi->getAttributes());
                         foreach ($askes as $aid) {
                             if (!in_array(strtolower($aid), $aids)) {
@@ -285,8 +285,8 @@ class CheckWorkflow
             $this->addCodeError('WFL0050', $key, $this->className, $limit + 1);
         }
     }
-    
-    public function checkIsAWorkflow()
+
+    protected function checkIsAWorkflow()
     {
         // Sort out the formatting of the filename
         $fileName = realpath($this->getWorkflowClassFile());
@@ -306,8 +306,8 @@ class CheckWorkflow
             }
         }
     }
-    
-    public function checkPrefix()
+
+    protected function checkPrefix()
     {
         if (!$this->wdoc->attrPrefix) {
             $this->addCodeError('WFL0007', $this->className);
@@ -315,8 +315,8 @@ class CheckWorkflow
             $this->addCodeError('WFL0008', $this->className);
         }
     }
-    
-    public function checkClassName()
+
+    protected function checkClassName()
     {
         if (empty($this->className)) {
             $this->addCodeError('WFL0001');
@@ -326,16 +326,16 @@ class CheckWorkflow
             $this->checkFileName();
         }
     }
-    
-    public function checkFileName()
+
+    protected function checkFileName()
     {
         $fileName = $this->getWorkflowClassFile();
         if (!file_exists($fileName)) {
             $this->addCodeError('WFL0005', $fileName, $this->className);
         }
     }
-    
-    public static function checkPhpClass($name)
+
+    protected static function checkPhpClass($name)
     {
         if (preg_match('/^[a-zA-Z_][a-zA-Z0-9_\\\\]+$/', $name)) {
             return true;
@@ -343,19 +343,9 @@ class CheckWorkflow
             return false;
         }
     }
-    
-    public function getWorkflowClassFile()
+
+    protected function getWorkflowClassFile()
     {
-        $classFile = \Dcp\DirectoriesAutoloader::instance(null, null)->getClassFile($this->className);
-        
-        if ($classFile === null) {
-            \Dcp\DirectoriesAutoloader::instance(null, null)->forceRegenerate($this->className);
-            $classFile = \Dcp\DirectoriesAutoloader::instance(null, null)->getClassFile($this->className);
-        }
-        
-        if (!$classFile) {
-            $classFile = sprintf(DEFAULT_PUBDIR."/Apps/FDL/Class.%s.php", $this->className);
-        }
-        return $classFile;
+        return \Anakeen\Core\Internal\Autoloader::findFile($this->className);
     }
 }

@@ -15,9 +15,6 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\DocManager;
 use SmartStructure\Attributes\Iuser as MyAttributes;
-use \Dcp\Core\Exception;
-
-/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 
 /**
  * Class UserAccount
@@ -26,12 +23,6 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
 {
     use TAccount;
 
-    public $eviews
-        = array(
-            "USERCARD:CHOOSEGROUP"
-        );
-    public $defaultview = "FDL:VIEWBODYCARD";
-    public $defaultedit = "FDL:EDITBODYCARD";
 
     public function preRefresh()
     {
@@ -101,8 +92,10 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
      */
     public function getUserGroups()
     {
-        DbManager::query(sprintf("SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;", $this->getRawValue("us_whatid")), $groupIds, false,
-            false);
+        DbManager::query(sprintf(
+            "SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;",
+            $this->getRawValue("us_whatid")
+        ), $groupIds, false, false);
 
         $gids = array();
         foreach ($groupIds as $gid) {
@@ -680,9 +673,6 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
     }
 
 
-
-
-
     /**
      * Set/change user password
      *
@@ -769,8 +759,29 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
     }
 
 
+    public static function parseMail($Email)
+    {
+        $sug = array(); // suggestions
+        $err = "";
 
-
+        if ($Email != "") {
+            if ($Email[0] == "<") {
+                $sug[] = _("<it's a message>");
+            } else {
+                if (preg_match("/^[_\.0-9\/'?$&\+~`%|*a-z=^{}-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,6}$/i", $Email)) {
+                    return true;
+                }
+                $err = _("the email syntax  is like : john.doe@anywhere.org");
+                if (!preg_match("/@/", $Email)) {
+                    $err = _("the email must containt the @ character");
+                }
+            }
+        }
+        return array(
+            "err" => $err,
+            "sug" => $sug
+        );
+    }
 
 
     /**
