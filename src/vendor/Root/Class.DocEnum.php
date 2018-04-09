@@ -3,66 +3,79 @@
  * @author Anakeen
  * @package FDL
 */
+
 /**
  * Document attribute enumerate
+ *
  * @class DocEnum
  */
 
+use Anakeen\Core\DbManager;
+
 class DocEnum extends DbObj
 {
-    public $fields = array(
-        "famid",
-        "attrid",
-        "key",
-        "label",
-        "parentkey",
-        "disabled",
-        "eorder"
-    );
+    public $fields
+        = array(
+            "famid",
+            "attrid",
+            "key",
+            "label",
+            "parentkey",
+            "disabled",
+            "eorder"
+        );
     /**
      * identifier of family of enum
+     *
      * @public int
      */
     public $famid;
     /**
      * identifier of family attribute which used enum
+     *
      * @public text
      */
     public $attrid;
     /**
      * enum value
+     *
      * @public string
      */
     public $key;
     /**
      * default label key
+     *
      * @public string
      */
     public $label;
     /**
      * order to display list enum items
+     *
      * @public string
      */
     public $eorder;
     /**
      * key of parent enum
+     *
      * @public int
      */
     public $parentkey;
-    
-    public $id_fields = array(
-        "famid",
-        "attrid",
-        "key"
-    );
+
+    public $id_fields
+        = array(
+            "famid",
+            "attrid",
+            "key"
+        );
     protected $needChangeOrder = false;
     /**
      * @var bool
      */
     public $disabled;
     public $dbtable = "docenum";
-    
-    public $sqlcreate = '
+
+    public $sqlcreate
+        = '
 create table docenum (
                    famid int not null,
                    attrid text not null,
@@ -74,31 +87,33 @@ create table docenum (
 create index if_docenum on docenum(famid, attrid);
 create unique index i_docenum on docenum(famid, attrid,  key);
 ';
-    
+
     public function postUpdate()
     {
         if ($this->needChangeOrder) {
             $this->shiftOrder($this->eorder);
         }
     }
-    
+
     public function postInsert()
     {
         if ($this->needChangeOrder) {
             $this->shiftOrder($this->eorder);
         }
     }
-    
+
     public function preUpdate()
     {
         $this->consolidateOrder();
         return '';
     }
+
     public function preInsert()
     {
         $this->consolidateOrder();
         return '';
     }
+
     /**
      * get last order
      */
@@ -106,34 +121,39 @@ create unique index i_docenum on docenum(famid, attrid,  key);
     {
         if (empty($this->eorder) || $this->eorder < 0) {
             $sql = sprintf("select max(eorder) from docenum where famid = '%s' and attrid='%s'", pg_escape_string($this->famid), pg_escape_string($this->attrid));
-            simpleQuery($this->dbaccess, $sql, $newOrder, true, true);
+            DbManager::query($sql, $newOrder, true, true);
             if ($newOrder > 0) {
                 $this->eorder = intval($newOrder) + 1;
             }
         }
     }
+
     public function shiftOrder($n)
     {
         if ($n > 0) {
-            $sql = sprintf("update docenum set eorder=eorder + 1 where famid = '%s' and attrid='%s' and key != '%s' and eorder >= %d", pg_escape_string($this->famid), pg_escape_string($this->attrid), pg_escape_string($this->key), $n);
-            simpleQuery($this->dbaccess, $sql);
+            $sql = sprintf("update docenum set eorder=eorder + 1 where famid = '%s' and attrid='%s' and key != '%s' and eorder >= %d", pg_escape_string($this->famid),
+                pg_escape_string($this->attrid), pg_escape_string($this->key), $n);
+            DbManager::query($sql);
             $seqName = uniqid("tmpseqenum");
             $sql = sprintf("create temporary sequence %s;", $seqName);
-            
-            $sql.= sprintf("UPDATE docenum SET eorder = neworder from (SELECT *, nextval('%s') as neworder from (select * from docenum where  famid='%s' and attrid = '%s'  order by eorder) as tmpz) as w where w.famid=docenum.famid and w.attrid=docenum.attrid and docenum.key=w.key;", $seqName, pg_escape_string($this->famid), pg_escape_string($this->attrid));
-            
-            simpleQuery($this->dbaccess, $sql);
+
+            $sql .= sprintf("UPDATE docenum SET eorder = neworder from (SELECT *, nextval('%s') as neworder from (select * from docenum where  famid='%s' and attrid = '%s'  order by eorder) as tmpz) as w where w.famid=docenum.famid and w.attrid=docenum.attrid and docenum.key=w.key;",
+                $seqName, pg_escape_string($this->famid), pg_escape_string($this->attrid));
+
+            DbManager::query($sql);
         }
     }
+
     public function exists()
     {
         if ($this->famid && $this->attrid && $this->key !== null) {
-            simpleQuery($this->dbaccess, sprintf("select true from docenum where famid=%d and attrid='%s' and key='%s'", ($this->famid), pg_escape_string($this->attrid), pg_escape_string($this->key)), $r, true, true);
+            DbManager::query(sprintf("select true from docenum where famid=%d and attrid='%s' and key='%s'", ($this->famid), pg_escape_string($this->attrid),
+                pg_escape_string($this->key)), $r, true, true);
             return $r;
         }
         return false;
     }
-    
+
     public static function getFamilyEnums($famId, $attrid)
     {
         if (!is_numeric($famId)) {
@@ -141,9 +161,10 @@ create unique index i_docenum on docenum(famid, attrid,  key);
         }
         $attrid = strtolower($attrid);
         $sql = sprintf("select * from docenum where famid=%d and attrid='%s' order by eorder", $famId, pg_escape_string($attrid));
-        simpleQuery(getDbAccess(), $sql, $enums);
+        DbManager::query($sql, $enums);
         return $enums;
     }
+
     public static function getDisabledKeys($famId, $attrid)
     {
         if (!is_numeric($famId)) {
@@ -151,18 +172,18 @@ create unique index i_docenum on docenum(famid, attrid,  key);
         }
         $attrid = strtolower($attrid);
         $sql = sprintf("select key from docenum where famid=%d and attrid='%s' and disabled", $famId, pg_escape_string($attrid));
-        
-        simpleQuery(getDbAccess(), $sql, $dKeys, true);
+
+        DbManager::query($sql, $dKeys, true);
         return $dKeys;
     }
-    
+
     protected function setOrder($beforeThan)
     {
         $sql = sprintf("SELECT count(*) FROM docenum WHERE famid = %d AND attrid = '%s'", $this->famid, pg_escape_string($this->attrid));
-        simpleQuery($this->dbaccess, $sql, $count, true, true);
+        DbManager::query($sql, $count, true, true);
         if ($beforeThan !== null) {
             $sql = sprintf("select eorder from docenum where famid=%d and attrid='%s' and key='%s'", $this->famid, pg_escape_string($this->attrid), pg_escape_string($beforeThan));
-            simpleQuery($this->dbaccess, $sql, $beforeOrder, true, true);
+            DbManager::query($sql, $beforeOrder, true, true);
             if ($beforeOrder) {
                 $this->eorder = $beforeOrder;
             } else {
@@ -177,6 +198,7 @@ create unique index i_docenum on docenum(famid, attrid,  key);
             $this->eorder = $count + 1;
         }
     }
+
     public static function addEnum($famId, $attrid, EnumStructure $enumStruct)
     {
         if (!is_numeric($famId)) {
@@ -191,7 +213,7 @@ create unique index i_docenum on docenum(famid, attrid,  key);
         if ($enum->isAffected()) {
             throw new \Dcp\Exception(sprintf("Enum %s#%s#%s already exists", $famId, $attrid, $enumStruct->key));
         }
-        
+
         $enum->famid = $famId;
         $enum->attrid = $attrid;
         $enum->key = $enumStruct->key;
@@ -208,14 +230,14 @@ create unique index i_docenum on docenum(famid, attrid,  key);
         if ($err) {
             throw new \Dcp\Exception(sprintf("Cannot add enum %s#%s#%s : %s", $famId, $attrid, $enumStruct->key, $err));
         }
-        
+
         if ($enumStruct->localeLabel) {
             foreach ($enumStruct->localeLabel as $lLabel) {
                 self::changeLocale($famId, $attrid, $enumStruct->key, $lLabel->lang, $lLabel->label);
             }
         }
     }
-    
+
     public static function modifyEnum($famId, $attrid, EnumStructure $enumStruct)
     {
         if (!is_numeric($famId)) {
@@ -230,7 +252,7 @@ create unique index i_docenum on docenum(famid, attrid,  key);
         if (!$enum->isAffected()) {
             throw new \Dcp\Exception(sprintf("Enum %s#%s#%s not found", $famId, $attrid, $enumStruct->key));
         }
-        
+
         $enum->label = $enumStruct->label;
         $enum->disabled = ($enumStruct->disabled === true);
         if ($enum->eorder != $enumStruct->absoluteOrder) {
@@ -240,7 +262,7 @@ create unique index i_docenum on docenum(famid, attrid,  key);
         if ($enumStruct->orderBeforeThan) {
             $enum->setOrder($enumStruct->orderBeforeThan);
         }
-        
+
         $err = $enum->modify();
         if ($err) {
             throw new \Dcp\Exception(sprintf("Cannot modify enum %s#%s#%s : %s", $famId, $attrid, $enumStruct->key, $err));
@@ -251,20 +273,22 @@ create unique index i_docenum on docenum(famid, attrid,  key);
             }
         }
     }
-    
+
     public static function getMoFilename($famId, $lang)
     {
         $fam = new_Doc("", $famId);
-        
+
         $moFile = sprintf("%s/locale/%s/LC_MESSAGES/customFamily_%s.mo", DEFAULT_PUBDIR, substr($lang, 0, 2), $fam->name);
         return $moFile;
     }
+
     /**
      * @param $famId
      * @param $attrid
      * @param $enumId
      * @param $lang
      * @param $label
+     *
      * @throws Dcp\Exception
      */
     public static function changeLocale($famId, $attrid, $enumId, $lang, $label)
@@ -295,7 +319,7 @@ msgstr ""
             if (file_exists($moFile)) {
                 // Just test mo validity
                 $cmd = sprintf("(msgunfmt %s > %s) 2>&1", escapeshellarg($moFile), escapeshellarg($poFile));
-                
+
                 exec($cmd, $output, $ret);
                 if ($ret) {
                     throw new \Dcp\Exception(sprintf("Locale : Enum %s#%s#%s error : %s", $famId, $attrid, $enumId, implode(',', $output)));
@@ -312,7 +336,7 @@ msgstr ""
             $content = str_replace($match, "#, fuzzy\n$match", $content);
             // delete previous header
             $content = str_replace('msgid ""', "#, fuzzy\nmsgid \"- HEADER DELETION -\"", $content);
-            
+
             file_put_contents($poFile, $msgInit . $msgEntry . "\n\n" . $content);
             $cmd = sprintf("(msguniq --use-first %s | msgfmt - -o %s; rm -f %s) 2>&1", escapeshellarg($poFile), escapeshellarg($moFile), escapeshellarg($poFile));
             exec($cmd, $output, $ret);
@@ -323,6 +347,7 @@ msgstr ""
         }
     }
 }
+
 class EnumStructure
 {
     /**
@@ -335,7 +360,7 @@ class EnumStructure
      */
     public $disabled;
     /**
-     *  @var int enum order
+     * @var int enum order
      *  first order is 1
      * last order is -1 (or 0)
      */
@@ -345,6 +370,7 @@ class EnumStructure
      * @var EnumLocale[]
      */
     public $localeLabel;
+
     public function affect(array $o)
     {
         $this->key = null;
@@ -364,10 +390,12 @@ class EnumStructure
         }
     }
 }
+
 class EnumLocale
 {
     public $lang;
     public $label;
+
     public function __construct($lang, $label)
     {
         $this->lang = $lang;

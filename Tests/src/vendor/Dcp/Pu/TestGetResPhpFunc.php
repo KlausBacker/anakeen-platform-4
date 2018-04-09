@@ -18,7 +18,7 @@ class TestGetResPhpFunc extends TestCaseDcp
     {
         parent::setUpBeforeClass();
         
-        self::addExternals("PU_data_dcp_getResPhpFunc.php");
+        self::addExternals(__DIR__."/../../Anakeen/TestUnits/EXTERNALS/PU_data_dcp_getResPhpFunc.php");
         
         self::connectUser();
         self::beginTransaction();
@@ -44,10 +44,9 @@ class TestGetResPhpFunc extends TestCaseDcp
         return;
     }
     
-    public static function addExternals($file)
+    public static function addExternals($source)
     {
-        $source = __DIR__ . DIRECTORY_SEPARATOR . $file;
-        $destination = DEFAULT_PUBDIR.'/EXTERNALS' . DIRECTORY_SEPARATOR . basename($file);
+        $destination = DEFAULT_PUBDIR.'/EXTERNALS' . DIRECTORY_SEPARATOR . basename($source);
         /* Check that the destination does not already exists */
         if (file_exists($destination)) {
             throw new \Exception(sprintf("External destination file '%s' already exists.", $destination));

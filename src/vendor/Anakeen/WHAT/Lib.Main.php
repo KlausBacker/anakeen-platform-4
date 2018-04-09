@@ -103,6 +103,9 @@ function getMainAction($auth, &$action)
     $action->log->debug("gettext init for " . $action->parent->name . $action->Getparam("CORE_LANG"));
 }
 
+/**
+ * @deprecated
+ */
 function stripUrlSlahes($url)
 {
     $pos = mb_strpos($url, '://');
@@ -114,6 +117,7 @@ function stripUrlSlahes($url)
  *
  * @param \Anakeen\Core\Internal\Application $app
  * @param mixed       $defaultValue
+ * @deprecated
  */
 function initExplorerParam(\Anakeen\Core\Internal\Application & $app, $defaultValue = false)
 {
@@ -126,6 +130,9 @@ function initExplorerParam(\Anakeen\Core\Internal\Application & $app, $defaultVa
     }
 }
 
+/**
+ * @deprecated
+ */
 function getExplorerParamtersName()
 {
     return array(
@@ -144,6 +151,7 @@ function getExplorerParamtersName()
 /**
  * set volatile patram to detect web user agent
  *
+ * @deprecated see Anakeen\Core\Internal\GlobalParametersManager
  * @param \Anakeen\Core\Internal\Application $app
  */
 function initExplorerWebParam(\Anakeen\Core\Internal\Application & $app)
@@ -219,6 +227,7 @@ function initExplorerWebParam(\Anakeen\Core\Internal\Application & $app)
  *
  * @param \Anakeen\Core\Internal\Application $core
  * @param \Anakeen\Core\Internal\Session     $session
+ * @deprecated see Anakeen\Core\Internal\GlobalParametersManager
  */
 function initMainVolatileParam(\Anakeen\Core\Internal\Application & $core, \Anakeen\Core\Internal\Session & $session = null)
 {
@@ -229,28 +238,30 @@ function initMainVolatileParam(\Anakeen\Core\Internal\Application & $core, \Anak
     }
 }
 
+/**
+ * @deprecated see Anakeen\Core\Internal\GlobalParametersManager
+ */
 function _initMainVolatileParamCli(\Anakeen\Core\Internal\Application & $core)
 {
     $absindex = $core->GetParam("CORE_URLINDEX");
 
     $core_externurl = ($absindex) ? stripUrlSlahes($absindex) : ".";
     $core_mailaction = $core->getParam("CORE_MAILACTION");
-    $core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction)
-        : ($core_externurl . "?app=FDL&action=OPENDOC&mode=view");
+    $core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction) : ($core_externurl . "api/v2/documents/%INITID%.html");
 
     $core->SetVolatileParam("CORE_EXTERNURL", $core_externurl);
-    $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
     $core->SetVolatileParam("CORE_ABSURL", $core_externurl); // absolute links
     $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
-    $core->SetVolatileParam("CORE_ROOTURL", "$absindex?sole=R&");
     $core->SetVolatileParam("CORE_BASEURL", "$absindex?sole=A&");
-    $core->SetVolatileParam("CORE_SBASEURL", "$absindex?sole=A&"); // no session
     $core->SetVolatileParam("CORE_STANDURL", "$absindex?sole=Y&");
-    $core->SetVolatileParam("CORE_SSTANDURL", "$absindex?sole=Y&"); // no session
-    $core->SetVolatileParam("CORE_ASTANDURL", "$absindex?sole=Y&"); // absolute links
     $core->SetVolatileParam("CORE_MAILACTIONURL", $core_mailactionurl);
 }
 
+/**
+ * @param \Anakeen\Core\Internal\Application  $core
+ * @param \Anakeen\Core\Internal\Session|null $session
+ * @deprecated see Anakeen\Core\Internal\GlobalParametersManager
+ */
 function _initMainVolatileParamWeb(\Anakeen\Core\Internal\Application & $core, \Anakeen\Core\Internal\Session & $session = null)
 {
     $indexphp = basename($_SERVER["SCRIPT_NAME"]);

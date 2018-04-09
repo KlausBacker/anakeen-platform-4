@@ -10,6 +10,7 @@ use Anakeen\Core\Utils\Gettext;
 use Anakeen\Pu\Routes\SuiteRoutes;
 use Dcp\Pu\FrameworkDcp;
 use Dcp\Pu\SuiteDcp;
+use Dcp\Pu\SuiteDcpAttribute;
 
 require_once __DIR__ . '/../autoload.php';
 require_once __DIR__ . '/../WHAT/Lib.Prefix.php';
@@ -32,11 +33,11 @@ class CoreTests
         $suite = new FrameworkDcp('Project');
 
         Gettext::___("Hello"); // Include ___
-        $suite->addTest((new SuiteRoutes)());
-        $suite->addTest(SuiteDcp::suite());
-     /*   $suite->addTest(SuiteDcpAttribute::suite());
-        $suite->addTest(SuiteDcpUser::suite());
-        $suite->addTest(SuiteDcpSecurity::suite());*/
+     //   $suite->addTest((new SuiteRoutes)());
+     //   $suite->addTest(SuiteDcp::suite());
+        $suite->addTest(SuiteDcpAttribute::suite());
+      //  $suite->addTest(SuiteDcpUser::suite());
+      //  $suite->addTest(SuiteDcpSecurity::suite());
         // ...
         printf("\nError log in [%s], messages in [%s]\n", self::LOGFILE, self::MSGFILE);
         return $suite;

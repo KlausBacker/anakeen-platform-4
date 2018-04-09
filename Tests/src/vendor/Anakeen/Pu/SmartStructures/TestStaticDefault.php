@@ -1,10 +1,8 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
-Class TestStaticDefault
+namespace Anakeen\Pu\SmartStructures;
+
+class TestStaticDefault
 {
     public static function multiAdd()
     {
@@ -19,5 +17,9 @@ Class TestStaticDefault
         
         return implode(':', $tx);
     }
+
+    public static function stringOne() {
+        return "one";
+    }
 }
-?>
+

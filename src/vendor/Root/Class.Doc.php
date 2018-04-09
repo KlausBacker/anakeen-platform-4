@@ -1417,7 +1417,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
 
-
     /**
      * record new document or update
      *
@@ -2867,7 +2866,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
 
-
     /**
      * return all the parameters definition for its family
      * the attribute can be defined in fathers
@@ -3363,7 +3361,6 @@ create unique index i_docir on doc(initid, revision);";
     public function postConstructor()
     {
     }
-
 
 
     /**
@@ -4832,7 +4829,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function vaultRegisterFile($filename, $ftitle = "", &$info = null)
     {
-        $vaultid= \Dcp\VaultManager::storeFile($filename, $ftitle);
+        $vaultid = \Dcp\VaultManager::storeFile($filename, $ftitle);
 
         $info = \Dcp\VaultManager::getFileInfo($vaultid);
         if (!is_object($info) || !is_a($info, 'VaultFileInfo')) {
@@ -4892,7 +4889,6 @@ create unique index i_docir on doc(initid, revision);";
 
         return $this->setFile($attrid, $filename, $ftitle, $index);
     }
-
 
 
     /**
@@ -7409,79 +7405,33 @@ create unique index i_docir on doc(initid, revision);";
                         $ul .= "&amp;app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=$id";
                 }
                 /* Add target's specific elements to base URL */
-                if ($target == "ext") {
-                    //$ec=getSessionValue("ext:targetRelation");
-                    $jslatest = ($latest) ? 'true' : 'false';
-                    $ec = getHttpVars(
-                        "ext:targetRelation",
-                        'Ext.fdl.Document.prototype.publish("opendocument",null,%V%,"view",{latest:' . $jslatest
-                        . '})'
-                    );
-                    if ($ec) {
-                        if (!is_numeric($id)) {
-                            $id = DocManager::getIdFromName($id);
-                        } elseif ($latest) {
-                            $lid = getLatestDocId($this->dbaccess, $id);
-                            if ($lid) {
-                                $id = $lid;
-                            }
-                        }
-                        $ec = str_replace("%V%", $id, $ec);
-                        $ecu = str_replace("'", '"', $ec);
-                        $ajs = "";
-                        if ($viewIcon) {
-                            DbManager::query(
-                                sprintf('select icon from docread where id=%d', $id),
-                                $iconValue,
-                                true,
-                                true
-                            );
-                            $ajs .= sprintf(
-                                'class="relation" style="background-image:url(%s)"',
-                                $this->getIcon($iconValue, 14)
-                            );
-                        }
-                        $afmt = '<a %s '; // Need to cut to avoid PHPStorm warning
-                        $afmt .= "onclick='%s.parent'>%s</a>";
-                        $a = sprintf($afmt, $ajs, $ecu, $title);
-                    } else {
-                        if ($docrev == "latest" || $docrev == "" || !$docrev) {
-                            $ul .= "&amp;latest=Y";
-                        } elseif ($docrev != "fixed") {
-                            // validate that docrev looks like state(xxx)
-                            if (preg_match("/^state\\(([a-zA-Z0-9_:-]+)\\)/", $docrev, $matches)) {
-                                $ul .= "&amp;state=" . $matches[1];
-                            }
-                        }
-                        $a = "<a href=\"$ul\">$title</a>";
-                    }
-                } else {
-                    if (!$specialUl) {
-                        if ($docrev == "latest" || $docrev == "" || !$docrev) {
-                            $ul .= "&amp;latest=Y";
-                        } elseif ($docrev != "fixed") {
-                            // validate that docrev looks like state(xxx)
-                            if (preg_match("/^state\\(([a-zA-Z0-9_:-]+)\\)/", $docrev, $matches)) {
-                                $ul .= "&amp;state=" . $matches[1];
-                            }
-                        }
-                    }
-                    if ($js) {
-                        $ajs = "oncontextmenu=\"popdoc(event,'$ul');return false;\"";
-                    } else {
-                        $ajs = "";
-                    }
 
-                    $ajs .= sprintf(' documentId="%s" ', $id);
-                    if ($viewIcon) {
-                        DbManager::query(sprintf('select icon from docread where id=%d', $id), $iconValue, true, true);
-                        $ajs .= sprintf(
-                            'class="relation" style="background-image:url(%s)"',
-                            $this->getIcon($iconValue, 14)
-                        );
+                if (!$specialUl) {
+                    if ($docrev == "latest" || $docrev == "" || !$docrev) {
+                        $ul .= "&amp;latest=Y";
+                    } elseif ($docrev != "fixed") {
+                        // validate that docrev looks like state(xxx)
+                        if (preg_match("/^state\\(([a-zA-Z0-9_:-]+)\\)/", $docrev, $matches)) {
+                            $ul .= "&amp;state=" . $matches[1];
+                        }
                     }
-                    $a = "<a $ajs target=\"$target\" href=\"$ul\">$title</a>";
                 }
+                if ($js) {
+                    $ajs = "oncontextmenu=\"popdoc(event,'$ul');return false;\"";
+                } else {
+                    $ajs = "";
+                }
+
+                $ajs .= sprintf(' documentId="%s" ', $id);
+                if ($viewIcon) {
+                    DbManager::query(sprintf('select icon from docread where id=%d', $id), $iconValue, true, true);
+                    $ajs .= sprintf(
+                        'class="relation" style="background-image:url(%s)"',
+                        $this->getIcon($iconValue, 14)
+                    );
+                }
+                $a = "<a $ajs target=\"$target\" href=\"$ul\">$title</a>";
+
             }
         } else {
             if (!$title) {
@@ -9194,8 +9144,8 @@ create unique index i_docir on doc(initid, revision);";
      * attach timer to a document
      *
      * @param \Anakeen\SmartStructures\Timer\TimerHooks &$timer   the timer document
-     * @param Doc                   &$origin  the document which comes from the attachement
-     * @param string                $execdate date to execute first action YYYY-MM-DD HH:MM:SS
+     * @param Doc                                       &$origin  the document which comes from the attachement
+     * @param string                                    $execdate date to execute first action YYYY-MM-DD HH:MM:SS
      *
      * @api Attach timer to a document
      * @return string error - empty if no error -

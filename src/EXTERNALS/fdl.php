@@ -6,7 +6,7 @@
 /**
  * Functions used for edition help
  *
- * @author Anakeen
+ * @author  Anakeen
  * @version $Id: FDL_external.php,v 1.71 2009/01/13 09:37:25 eric Exp $
  * @package FDL
  * @subpackage
@@ -14,97 +14,118 @@
 /**
  */
 
-include_once ("FDL/Lib.Dir.php");
+include_once("FDL/Lib.Dir.php");
 
 function vault_filename($th, $fileid)
 {
-    
+
     if (preg_match(PREGEXPFILE, $fileid, $reg)) {
         // reg[1] is mime type
         $vf = newFreeVaultFile($th->dbaccess);
-        if ($vf->Show($reg[2], $info) == "") $fname = $info->name;
-        else $fname = sprintf(_("file %d") , $th->initid);
+        if ($vf->Show($reg[2], $info) == "") {
+            $fname = $info->name;
+        } else {
+            $fname = sprintf(_("file %d"), $th->initid);
+        }
     } else {
-        $fname = sprintf(_("file %d") , $th->initid);
+        $fname = sprintf(_("file %d"), $th->initid);
     }
-    
+
     return array(
         $fname
     );
 }
+
 /**
  * Functions used for edition help
  *
  * @param string $dbaccess database specification
- * @param int $docid identifier document
+ * @param int    $docid    identifier document
+ *
  * @return array first item : the title
  */
 function gettitle($dbaccess, $docid)
 {
-    
+
     $doc = new_Doc($dbaccess, $docid);
-    if ($doc->isAffected()) return array(
-        $doc->title
-    );
+    if ($doc->isAffected()) {
+        return array(
+            $doc->title
+        );
+    }
     return array(
         "?",
         " "
     ); // suppress
-    
+
 }
+
 /**
  * link enum definition from other def
  */
 function linkenum($famid, $attrid)
 {
-    
-    $dbaccess = getDbAccess();
-    if (!is_numeric($famid)) $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($famid);
-    $soc = new_Doc($dbaccess, $famid);
+    $soc = \Anakeen\Core\DocManager::getFamily($famid);
     if ($soc->isAffected()) {
         /**
          * @var \Anakeen\Core\SmartStructure\NormalAttribute $a
          */
         $a = $soc->getAttribute($attrid);
-        
+
         return EnumAttributeTools::getFlatEnumNotation($soc->id, $a->id);
     }
     return "";
 }
+
 /**
  * get mail address from MAILRECIPENT families
+ *
  * @param $dbaccess
  * @param $name
+ *
  * @return array|string
  */
 function lmail($dbaccess, $name)
 {
-    
+
     $tr = array();
     $sf = new SearchDoc($dbaccess, -1);
     $sf->setObjectReturn();
     $sf->overrideViewControl();
     $sf->addFilter("atags ~* 'MAILRECIPIENT'");
     $dlf = $sf->search()->getDocumentList();
-    
-    if ($dlf->count() == 0) return sprintf(_("none families are described to be used as recipient"));
+
+    if ($dlf->count() == 0) {
+        return sprintf(_("none families are described to be used as recipient"));
+    }
     foreach ($dlf as $fam) {
         $cfam = createTmpDoc($dbaccess, $fam->id);
         /**
          * @var IMailRecipient $cfam
          */
-        if (!method_exists($cfam, "getMail")) return sprintf(_("family %s does not implement IMailRecipent - missing getMail method") , $fam->name);
-        if (!method_exists($cfam, "getMailAttribute")) return sprintf(_("family %s does not implement IMailRecipent - missing getMailAttribute method") , $fam->name);
-        if (!method_exists($cfam, "getMailTitle")) return sprintf(_("family %s does not implement IMailRecipient - missing getMailTitle method") , $fam->name);
-        
+        if (!method_exists($cfam, "getMail")) {
+            return sprintf(_("family %s does not implement IMailRecipent - missing getMail method"), $fam->name);
+        }
+        if (!method_exists($cfam, "getMailAttribute")) {
+            return sprintf(_("family %s does not implement IMailRecipent - missing getMailAttribute method"), $fam->name);
+        }
+        if (!method_exists($cfam, "getMailTitle")) {
+            return sprintf(_("family %s does not implement IMailRecipient - missing getMailTitle method"), $fam->name);
+        }
+
         $mailAttr = $cfam->getMailAttribute();
         $s = new SearchDoc($dbaccess, $fam->id);
         $s->setObjectReturn();
         $s->setSlice(100);
-        if ($mailAttr) $s->addFilter("%s is not null", $mailAttr);
+        if ($mailAttr) {
+            $s->addFilter("%s is not null", $mailAttr);
+        }
         if ($name != "") {
-            if ($mailAttr) $s->addFilter("(title ~* '%s') or (%s ~* '%s')", $name, $mailAttr, $name);
-            else $s->addFilter("(title ~* '%s')", $name, $name);
+            if ($mailAttr) {
+                $s->addFilter("(title ~* '%s') or (%s ~* '%s')", $name, $mailAttr, $name);
+            } else {
+                $s->addFilter("(title ~* '%s')", $name, $name);
+            }
         }
         $dl = $s->search()->getDocumentList();
         foreach ($dl as $dest) {
@@ -121,21 +142,20 @@ function lmail($dbaccess, $name)
             if ($usw > 0) {
                 $uid = $dest->id;
                 $type = "link"; //$type="link";  // cause it is a bool
-                
+
             } else {
                 $type = "plain"; //$type="plain";
                 $uid = " ";
             }
             $tr[] = array(
-                xml_entity_encode($mailTitle) ,
+                xml_entity_encode($mailTitle),
                 $mail,
                 $uid,
                 $type
             );
         }
     }
-    usort($tr, function ($a, $b)
-    {
+    usort($tr, function ($a, $b) {
         return strcasecmp($a[0], $b[0]);
     });
     return $tr;
@@ -259,10 +279,12 @@ function tpluser($dbaccess, $type, $famid, $wfamid, $name)
 function getGlobalsParameters($name)
 {
     $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\ParamDef::class);
-    
+
     $tr = array();
     $q->AddQuery("isglob = 'Y'");
-    if ($name) $q->AddQuery("name ~* '" . pg_escape_string($name) . "'");
+    if ($name) {
+        $q->AddQuery("name ~* '" . pg_escape_string($name) . "'");
+    }
     $q->order_by = "name";
     $la = $q->Query(0, 20, "TABLE");
     foreach ($la as $k => $v) {
@@ -274,6 +296,7 @@ function getGlobalsParameters($name)
     }
     return $tr;
 }
+
 /**
  * attribut list to be use in mail template
  */
@@ -291,7 +314,7 @@ function getFamAttribute($dbaccess, $famid, $type = "text", $param = false, $nam
     $pattern_name = preg_quote($name, "/");
     $pattern_type = ($type);
     foreach ($tinter as $k => $v) {
-        if (($name == "") || (preg_match("/$pattern_name/i", $v->getLabel() , $reg)) || (preg_match("/$pattern_name/", $v->id, $reg))) {
+        if (($name == "") || (preg_match("/$pattern_name/i", $v->getLabel(), $reg)) || (preg_match("/$pattern_name/", $v->id, $reg))) {
             preg_match("/$pattern_type/", $v->type, $reg);
             if (($type == "") || ($v->type == $type) || ((strpos($type, '|') > 0) && (preg_match("/$pattern_type/", $v->type, $reg)))) {
                 $r = $v->id . ' (' . $v->getLabel() . ')';
@@ -304,12 +327,13 @@ function getFamAttribute($dbaccess, $famid, $type = "text", $param = false, $nam
     }
     return $tr;
 }
+
 // liste des familles
 function lfamilies($dbaccess, $name = '', $subfam = "")
 {
     //'lsociety(D,US_SOCIETY):US_IDSOCIETY,US_SOCIETY,
     global $action;
-    
+
     if ($subfam == "") {
         $tinter = GetClassesDoc($dbaccess, $action->user->id, 0, "TABLE");
     } else {
@@ -320,9 +344,9 @@ function lfamilies($dbaccess, $name = '', $subfam = "")
         $tinter = $cdoc->GetChildFam();
         $tinter[] = get_object_vars($cdoc);
     }
-    
+
     $tr = array();
-    
+
     $name = strtolower($name);
     // HERE HERE HERE
     $pattern_name = preg_quote($name, "/");
@@ -338,33 +362,35 @@ function lfamilies($dbaccess, $name = '', $subfam = "")
     }
     return $tr;
 }
+
 // liste des documents par familles
 
 /**
  * list of documents of a same family
  *
- * @param string $dbaccess database specification
- * @param string $famid family identifier (if 0 any family). It can be internal name
- * @param string $name string filter on the title
- * @param int $dirid identifier of folder for restriction to a folder tree (deprecated)
- * @param array $filter additionnals SQL filters
- * @param string $idid the document id to use (default: id)
- * @param bool $withDiacritic to search with accent
+ * @param string $dbaccess      database specification
+ * @param string $famid         family identifier (if 0 any family). It can be internal name
+ * @param string $name          string filter on the title
+ * @param int    $dirid         identifier of folder for restriction to a folder tree (deprecated)
+ * @param array  $filter        additionnals SQL filters
+ * @param string $idid          the document id to use (default: id)
+ * @param bool   $withDiacritic to search with accent
+ *
  * @return array/string*3 array of (title, identifier, title)
  */
-function lfamily($dbaccess, $famid, $name = "", $dirid = 0, $filter = array() , $idid = "id", $withDiacritic = false)
+function lfamily($dbaccess, $famid, $name = "", $dirid = 0, $filter = array(), $idid = "id", $withDiacritic = false)
 {
     $only = false;
     if ($famid[0] == '-') {
         $only = true;
         $famid = substr($famid, 1);
     }
-    
+
     if (!is_numeric($famid)) {
         $famName = $famid;
         $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($famName);
         if ($famid <= 0) {
-            return sprintf(_("family %s not found") , $famName);
+            return sprintf(_("family %s not found"), $famName);
         }
     }
     $s = new SearchDoc($dbaccess, $famid); //$famid=-(abs($famid));
@@ -372,17 +398,20 @@ function lfamily($dbaccess, $famid, $name = "", $dirid = 0, $filter = array() , 
         $s->only = true;
     }
     if (!is_array($filter)) {
-        if (trim($filter) != "") $filter = array(
-            $filter
-        );
-        else $filter = array();
+        if (trim($filter) != "") {
+            $filter = array(
+                $filter
+            );
+        } else {
+            $filter = array();
+        }
     }
     if (count($filter) > 0) {
         foreach ($filter as $f) {
             $s->addFilter($f);
         }
     }
-    
+
     if ($name != "" && is_string($name)) {
         if (!$withDiacritic) {
             $name = setDiacriticRules(mb_strtolower($name));
@@ -390,8 +419,10 @@ function lfamily($dbaccess, $famid, $name = "", $dirid = 0, $filter = array() , 
         $s->addFilter("title ~* '%s'", $name);
     }
     $s->setSlice(100);
-    
-    if ($dirid) $s->useCollection($dirid);
+
+    if ($dirid) {
+        $s->useCollection($dirid);
+    }
     $s->returnsOnly(array(
         "title",
         $idid
@@ -400,22 +431,26 @@ function lfamily($dbaccess, $famid, $name = "", $dirid = 0, $filter = array() , 
     if ($s->getError()) {
         return $s->getError();
     }
-    
+
     $tr = array();
-    
+
     foreach ($tinter as $k => $v) {
         $tr[] = array(
-            htmlspecialchars($v["title"]) ,
+            htmlspecialchars($v["title"]),
             $v[$idid],
             $v["title"]
         );
     }
     return $tr;
 }
+
 /**
  * create preg rule to search without diacritic
+ *
  * @see lfamily
+ *
  * @param string $text
+ *
  * @return string rule for preg
  */
 function setDiacriticRules($text)
@@ -435,42 +470,47 @@ function setDiacriticRules($text)
     }
     return $text;
 }
+
 // alias name
 
 /**
  * @deprecated use lfamily instead
- * @param $dbaccess
- * @param $famid
+ *
+ * @param        $dbaccess
+ * @param        $famid
  * @param string $name
- * @param int $dirid
- * @param array $filter
+ * @param int    $dirid
+ * @param array  $filter
  * @param string $idid
+ *
  * @return mixed
  */
-function lfamilly($dbaccess, $famid, $name = "", $dirid = 0, $filter = array() , $idid = "id")
+function lfamilly($dbaccess, $famid, $name = "", $dirid = 0, $filter = array(), $idid = "id")
 {
     return lfamily($dbaccess, $famid, $name, $dirid, $filter, $idid);
 }
+
 /**
  * list of documents of a same family and their specific attributes
  *
  * @param string $dbaccess database specification
- * @param string $famid family identifier (if 0 any family). It can be internal name
- * @param string $name string filter on the title
- * @param string $attrids argument variable of name of attribute to be returned
+ * @param string $famid    family identifier (if 0 any family). It can be internal name
+ * @param string $name     string filter on the title
+ * @param string $attrids  argument variable of name of attribute to be returned
+ *
  * @return array/string*3 array of (title, identifier, attr1, attr2, ...)
  */
 function lfamilyvalues($dbaccess, $famid, $name = "")
 {
     //'lsociety(D,US_SOCIETY):US_IDSOCIETY,US_SOCIETY,
     global $action;
-    
+
     $only = false;
     if ($famid[0] == '-') {
         $only = true;
         $famid = substr($famid, 1);
     }
-    
+
     if (!is_numeric($famid)) {
         $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($famid);
     }
@@ -482,14 +522,18 @@ function lfamilyvalues($dbaccess, $famid, $name = "")
     $attr = array();
     $args = func_get_args();
     foreach ($args as $k => $v) {
-        if ($k > 2) $attr[] = strtolower($v);
+        if ($k > 2) {
+            $attr[] = strtolower($v);
+        }
     }
     //$famid=-(abs($famid));
-    if ($only) $famid = - ($famid);
+    if ($only) {
+        $famid = -($famid);
+    }
     $tinter = internalGetDocCollection($dbaccess, $dirid = 0, 0, 100, $filter, $action->user->id, "TABLE", $famid, false, "title");
-    
+
     $tr = array();
-    
+
     foreach ($tinter as $k => $v) {
         $tr[$k] = array(
             $v["title"]
@@ -500,33 +544,35 @@ function lfamilyvalues($dbaccess, $famid, $name = "")
     }
     return $tr;
 }
+
 /**
  * list of documents of a same family and which are in the $kid category
  *
  * @param string $dbaccess database specification
- * @param string $famname family internal name
- * @param string $aid enum attribute identifier
- * @param string $kid enum key to search
- * @param string $name string filter on the title
- * @param array $filter additionnals SQL filters
+ * @param string $famname  family internal name
+ * @param string $aid      enum attribute identifier
+ * @param string $kid      enum key to search
+ * @param string $name     string filter on the title
+ * @param array  $filter   additionnals SQL filters
+ *
  * @return array/string*3 array of (title, identifier, title)
  */
 function lkfamily($dbaccess, $famname, $aid, $kid, $name, $filter = array())
 {
     //'lsociety(D,US_SOCIETY):US_IDSOCIETY,US_SOCIETY,
     global $action;
-    
+
     if ($name != "") {
         $name = pg_escape_string($name);
         $filter[] = "title ~* '.*$name.*'";
     }
-    
+
     $tinter = getKindDoc($dbaccess, $famname, $aid, $kid, $name, $filter);
-    
+
     $tr = array();
-    
+
     foreach ($tinter as $k => $v) {
-        
+
         $tr[] = array(
             $v["title"],
             $v["id"],
@@ -535,45 +581,59 @@ function lkfamily($dbaccess, $famname, $aid, $kid, $name, $filter = array())
     }
     return $tr;
 }
+
 /**
  * return account documents
+ *
  * @param string $filterName title filter key
- * @param int $limit max account returned
+ * @param int    $limit      max account returned
+ *
  * @return array
  */
 function fdlGetDocuments($families, $filterName = '', $limit = 15, $extraFilter = '')
 {
     $tout = array();
     $famname = explode('|', $families);
-    
+
     foreach ($famname as $famid) {
         if (count($tout) < $limit) {
-            $s = new SearchDoc(getDbAccess() , $famid);
-            if ($filterName) $s->addFilter("title ~* '%s'", $filterName);
-            if ($extraFilter) $s->addFilter($extraFilter);
+            $s = new SearchDoc("", $famid);
+            if ($filterName) {
+                $s->addFilter("title ~* '%s'", $filterName);
+            }
+            if ($extraFilter) {
+                $s->addFilter($extraFilter);
+            }
             $s->setSlice($limit);
             $s->setObjectReturn();
             $s->search();
-            if ($s->getError()) return $s->getError();
-            
+            if ($s->getError()) {
+                return $s->getError();
+            }
+
             while ($doc = $s->getNextDoc()) {
                 $title = $doc->getHTMLTitle();
                 $tout[] = array(
-                    sprintf('<img width="10px" src="%s">%s', $doc->getIcon('', 10) , $title) ,
+                    sprintf('<img width="10px" src="%s">%s', $doc->getIcon('', 10), $title),
                     $doc->initid,
                     $title
                 );
             }
         }
     }
-    if ((count($tout) == 0) && ($filterName != '')) return sprintf(_("no document match '%s'") , $filterName);
+    if ((count($tout) == 0) && ($filterName != '')) {
+        return sprintf(_("no document match '%s'"), $filterName);
+    }
     return $tout;
 }
+
 /**
  * return account list
+ *
  * @param string $filterName filter key
- * @param int $limit max result limit
- * @param string $options option for role or group
+ * @param int    $limit      max result limit
+ * @param string $options    option for role or group
+ *
  * @return array|string
  */
 function fdlGetAccounts($filterName = '', $limit = 15, $options = '')
@@ -588,29 +648,27 @@ function fdlGetAccounts($filterName = '', $limit = 15, $options = '')
     }
     if (preg_match('/role\s*=([^|]*)/', $options, $regRole)) {
         $roles = explode(',', $regRole[1]);
-        
+
         foreach ($roles as $role) {
             try {
                 $s->addRoleFilter($role);
-            }
-            catch(Exception $e) {
+            } catch (Exception $e) {
                 return $e->getMessage();
             }
         }
     }
     if (preg_match('/group\s*=([^|]*)/', $options, $regGroup)) {
         $groups = explode(',', $regGroup[1]);
-        
+
         foreach ($groups as $group) {
             try {
                 $s->addGroupFilter($group);
-            }
-            catch(Exception $e) {
+            } catch (Exception $e) {
                 return $e->getMessage();
             }
         }
     }
-    
+
     if (preg_match('/match\s*=([^|]*)/', $options, $regMatch)) {
         $match = trim($regMatch[1]);
         switch ($match) {
@@ -631,71 +689,87 @@ function fdlGetAccounts($filterName = '', $limit = 15, $options = '')
     } else {
         $s->setTypeFilter($s::userType);
     }
-    
+
     if (preg_match('/family\s*=([^|]*)/', $options, $regMatch)) {
         $match = trim($regMatch[1]);
         $s->filterFamily($match);
     }
     $tr = array();
-    
+
     $condName = "";
     if ($filterName) {
         $tname = explode(' ', $filterName);
         $condmail = '';
-        if ($searchinmail) $condmail = sprintf("|| ' ' || coalesce(mail,'')");
+        if ($searchinmail) {
+            $condmail = sprintf("|| ' ' || coalesce(mail,'')");
+        }
         foreach ($tname as $name) {
-            if ($condName) $condName.= " AND ";
-            $condName.= sprintf("(coalesce(firstname,'') || ' ' || coalesce(lastname,'') %s ~* '%s')", $condmail, pg_escape_string(setDiacriticRules($name)));
+            if ($condName) {
+                $condName .= " AND ";
+            }
+            $condName .= sprintf("(coalesce(firstname,'') || ' ' || coalesce(lastname,'') %s ~* '%s')", $condmail, pg_escape_string(setDiacriticRules($name)));
         }
     }
-    
-    if ($condName) $s->addFilter($condName);
-    if (!$sort) $sort = 'lastname';
+
+    if ($condName) {
+        $s->addFilter($condName);
+    }
+    if (!$sort) {
+        $sort = 'lastname';
+    }
     $s->setOrder($sort);
     $s->overrideViewControl(false);
     $al = $s->search();
     foreach ($al as $account) {
-        
+
         $mail = $account->mail ? (' (' . mb_substr($account->mail, 0, 40) . ')') : '';
         $tr[] = array(
-            htmlspecialchars($account->lastname . " " . $account->firstname . $mail) ,
+            htmlspecialchars($account->lastname . " " . $account->firstname . $mail),
             $account->fid,
             $account->lastname . " " . $account->firstname
         );
     }
-    
+
     return $tr;
 }
+
 /**
  * return list of string for multiple static choice
  *
- * @param string $val filter value - can be empty => see all choices
+ * @param string $val  filter value - can be empty => see all choices
  * @param string $enum possible choices like 'the first|the second|the last'
+ *
  * @return array/string*2 array of (enum, enum)
  */
 function lenum($val, $enum)
 {
     // $enum like 'a|b|c'
     $tenum = explode("|", $enum);
-    
+
     $tr = array();
     // HERE HERE HERE
     $pattern_val = preg_quote($val, "/");
     foreach ($tenum as $k => $v) {
-        
-        if (($val == "") || (preg_match("/$pattern_val/i", $v, $reg))) $tr[] = array(
-            $v,
-            $v
-        );
+
+        if (($val == "") || (preg_match("/$pattern_val/i", $v, $reg))) {
+            $tr[] = array(
+                $v,
+                $v
+            );
+        }
     }
     return $tr;
 }
+
 /**
  * list of enum possibilities
+ *
  * @internal use for enum when eformat=auto
- * @param string $famid family identifier
+ *
+ * @param string $famid  family identifier
  * @param string $attrid enum identifier
- * @param string $val  label filter
+ * @param string $val    label filter
+ *
  * @return array/string*2 array of (enum, enum)
  */
 function fdlGetEnumValues($famid, $attrid, $val = '')
@@ -713,20 +787,22 @@ function fdlGetEnumValues($famid, $attrid, $val = '')
     foreach ($tenumLabel as $key => $label) {
         if (($val == "") || (preg_match("!" . preg_quote($val, "!") . "!iu", $label, $reg))) {
             $tr[] = array(
-                htmlspecialchars($label, ENT_NOQUOTES) ,
+                htmlspecialchars($label, ENT_NOQUOTES),
                 $label,
                 $key
             );
         }
     }
-    
+
     return $tr;
 }
+
 /**
  * return list of string for multiple static choice
  *
- * @param string $val filter value - can be empty => see all choices
+ * @param string $val  filter value - can be empty => see all choices
  * @param string $enum possible choices like 'the first|the second|the last'
+ *
  * @deprecated replaced by fdlGetEnumValues
  * @return array/string*2 array of (enum, enum)
  */
@@ -737,27 +813,27 @@ function lenumvalues($enum, $val = "")
     $val = str_replace(array(
         '&comma;',
         '&point;'
-    ) , array(
+    ), array(
         ',',
         '.'
-    ) , $val);
+    ), $val);
     $val = str_replace(array(
         '&lpar;',
         '&rpar;',
-    ) , array(
+    ), array(
         '(',
         ')'
-    ) , $val);
+    ), $val);
     $enum = str_replace(array(
         '---',
         '&lpar;',
         '&rpar;',
-    ) , array(
+    ), array(
         ',',
         '(',
         ')'
-    ) , $enum);
-    
+    ), $enum);
+
     $tenum = $tenumLabel = array();
     EnumAttributeTools::flatEnumNotationToEnumArray($enum, $tenum, $tenumLabel);
     $tr = array();
@@ -765,19 +841,22 @@ function lenumvalues($enum, $val = "")
         $slabel = str_replace(array(
             '&comma;',
             '&point;'
-        ) , array(
+        ), array(
             ',',
             '.'
-        ) , $label);
-        if (($val == "") || (preg_match("!" . preg_quote($val, "!") . "!i", $slabel, $reg))) $tr[] = array(
-            "$slabel",
-            $slabel,
-            $key
-        );
+        ), $label);
+        if (($val == "") || (preg_match("!" . preg_quote($val, "!") . "!i", $slabel, $reg))) {
+            $tr[] = array(
+                "$slabel",
+                $slabel,
+                $key
+            );
+        }
     }
-    
+
     return $tr;
 }
+
 // liste des profils
 function lprofil($dbaccess, $name, $famid = 0)
 {
@@ -786,29 +865,37 @@ function lprofil($dbaccess, $name, $famid = 0)
     $dirid = 0;
     if ($famid > 0) {
         $fdoc = createTmpDoc($dbaccess, $famid);
-        if ($fdoc->defDoctype == 'D') return lfamily($dbaccess, 4, $name);
-        else if ($fdoc->defDoctype == 'S') return lfamily($dbaccess, 6, $name);
-        else return lfamily($dbaccess, 3, $name, 0, array(
-            "fromid=3"
-        ));
+        if ($fdoc->defDoctype == 'D') {
+            return lfamily($dbaccess, 4, $name);
+        } else {
+            if ($fdoc->defDoctype == 'S') {
+                return lfamily($dbaccess, 6, $name);
+            } else {
+                return lfamily($dbaccess, 3, $name, 0, array(
+                    "fromid=3"
+                ));
+            }
+        }
     }
-    
+
     return lfamily($dbaccess, 3, $name, $dirid);
 }
+
 // liste des masque
 function lmask($dbaccess, $name, $maskfamid = "")
 {
-    
+
     $filter = array();
     if ($maskfamid > 0) {
         $mdoc = new_Doc($dbaccess, $maskfamid);
         $chdoc = $mdoc->GetFromDoc();
         $filter[] = \Anakeen\Core\DbManager::getSqlOrCond($chdoc, "msk_famid");
         //    $filter[]="msk_famid='$maskfamid'"; // when workflow will have attribut to say the compatible families
-        
+
     }
     return lfamily($dbaccess, "MASK", $name, 0, $filter);
 }
+
 // view control list
 function lcvdoc($dbaccess, $name, $cvfamid = "")
 {
@@ -820,6 +907,7 @@ function lcvdoc($dbaccess, $name, $cvfamid = "")
     }
     return lfamily($dbaccess, "CVDOC", $name, 0, $filter);
 }
+
 // mail template list
 function lmailtemplatedoc($dbaccess, $name, $cvfamid = "")
 {
@@ -831,6 +919,7 @@ function lmailtemplatedoc($dbaccess, $name, $cvfamid = "")
     }
     return lfamily($dbaccess, "MAILTEMPLATE", $name, 0, $filter);
 }
+
 // timer list
 function ltimerdoc($dbaccess, $name, $cvfamid = "")
 {
@@ -842,53 +931,62 @@ function ltimerdoc($dbaccess, $name, $cvfamid = "")
     }
     return lfamily($dbaccess, "TIMER", $name, 0, $filter);
 }
+
 /**
  * search list not filters
  */
 function lsearches($dbaccess, $name)
 {
-    
+
     $filter = array(
         "fromid=5 or fromid=16"
     );
     return lfamily($dbaccess, "SEARCH", $name, 0, $filter);
 }
+
 /**
  * tab list not filters
  */
 function ltabs($dbaccess, $name)
 {
-    
+
     $filter = array(
         "fromid=5 or fromid=16"
     );
     $ls = lfamily($dbaccess, "SEARCH", $name, 0, $filter);
-    
+
     $fld = lfamily($dbaccess, "2", $name);
-    
+
     $all = array_merge($ls, $fld);
     return $all;
 }
+
 // liste des zones possibles
 // $tview VCONS|VEDIT
 function lzone_($dbaccess, $tview, $famid = "")
 {
     $tz = array();
-    
+
     $filter = array();
     if ($famid > 0) {
         $fdoc = new_Doc($dbaccess, $famid);
         $cdoc = createDoc($dbaccess, $famid, false);
-        if ($tview == "VEDIT") $tz = $cdoc->eviews;
-        else $tz = $cdoc->cviews;
+        if ($tview == "VEDIT") {
+            $tz = $cdoc->eviews;
+        } else {
+            $tz = $cdoc->cviews;
+        }
         $oz = lzone_($dbaccess, $tview, $fdoc->fromid);
         $tz = array_merge($oz, $tz);
     } else {
         $fdoc = new_Doc($dbaccess);
-        if ($tview == "VEDIT") $tz = $fdoc->eviews;
-        else $tz = $fdoc->cviews;
+        if ($tview == "VEDIT") {
+            $tz = $fdoc->eviews;
+        } else {
+            $tz = $fdoc->cviews;
+        }
     }
-    
+
     return $tz;
 }
 
@@ -903,37 +1001,39 @@ function lzone($dbaccess, $tview, $famid = "")
             $v
         );
     }
-    
+
     return $tr;
 }
 
 function lview($tidview, $tlview)
 {
     $tr = array();
-    
+
     if (is_array($tidview)) {
         foreach ($tidview as $k => $v) {
             $currentViewId = trim($v);
             if ('' !== $currentViewId) {
                 $currentViewlabel = $tlview[$k];
                 $tr[] = array(
-                    htmlspecialchars(sprintf("%s (%s)", $currentViewlabel, $currentViewId)) ,
+                    htmlspecialchars(sprintf("%s (%s)", $currentViewlabel, $currentViewId)),
                     $currentViewId,
                     sprintf("%s (%s)", $currentViewlabel, $currentViewId)
                 );
             }
         }
     }
-    
+
     return $tr;
 }
+
 /**
  * Get columns (attribute ir property) that can be used to present of
  * the report's result
  *
- * @param $dbaccess
- * @param $famid
+ * @param        $dbaccess
+ * @param        $famid
  * @param string $name
+ *
  * @return array
  */
 function getReportColumns($dbaccess, $famid, $name = "")
@@ -943,11 +1043,11 @@ function getReportColumns($dbaccess, $famid, $name = "")
     $pattern = preg_quote($name, "/");
     // Properties
     $propList = array(
-        "title" => _("doctitle") ,
-        "revdate" => _("revdate") ,
-        "revision" => _("revision") ,
-        "owner" => _("owner") ,
-        "state" => _("step") ,
+        "title" => _("doctitle"),
+        "revdate" => _("revdate"),
+        "revision" => _("revision"),
+        "owner" => _("owner"),
+        "state" => _("step"),
         "id" => _("document id")
     );
     foreach ($propList as $propName => $propLabel) {
@@ -968,13 +1068,15 @@ function getReportColumns($dbaccess, $famid, $name = "")
     // Attributes
     $attrList = $doc->getNormalAttributes();
     foreach ($attrList as $attr) {
-        if ($attr->type == "array") continue;
-        if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel() , $m))) {
+        if ($attr->type == "array") {
+            continue;
+        }
+        if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel(), $m))) {
             $html = '<b><i>' . _getParentLabel($attr) . '</i></b><br/><span>&nbsp;&nbsp;' . $attr->getLabel() . '</span>';
             $tr[] = array(
                 $html,
                 $attr->id,
-                $attr->getLabel() ,
+                $attr->getLabel(),
                 ''
             );
             if (in_array($attr->type, $relTypes)) {
@@ -982,7 +1084,7 @@ function getReportColumns($dbaccess, $famid, $name = "")
                 $tr[] = array(
                     $html,
                     $attr->id,
-                    sprintf("%s (%s)", $attr->getLabel() , _("report:docid")) ,
+                    sprintf("%s (%s)", $attr->getLabel(), _("report:docid")),
                     "docid"
                 );
             }
@@ -995,7 +1097,7 @@ function reportChooseColumns(&$action, $id)
 {
     // print "DB=$dbaccess, NOM=$nom ID=$id";
     // $action->lay->set("enclosname", $nom);
-    
+
     /**
      * @var \SmartStructure\Report $doc
      */
@@ -1004,16 +1106,18 @@ function reportChooseColumns(&$action, $id)
         $doc = createTmpDoc($doc->dbaccess, $id);
         $doc->setValue(\SmartStructure\Attributes\Report::se_famid, getHttpVars("_se_famid"));
     }
-    $doc->lay = & $action->lay;
+    $doc->lay = &$action->lay;
     $doc->reportchoosecolumns();
 }
+
 /**
  * Get columns (attribute or property) than can be used to order the
  * report's result.
  *
- * @param $dbaccess
- * @param $famid
+ * @param        $dbaccess
+ * @param        $famid
  * @param string $name
+ *
  * @return array
  */
 function getReportSortableColumns($dbaccess, $famid, $name = "")
@@ -1031,60 +1135,64 @@ function getReportSortableColumns($dbaccess, $famid, $name = "")
     // Attributes
     $attrList = $doc->getSortAttributes();
     foreach ($attrList as $attr) {
-        if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel() , $m))) {
+        if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel(), $m))) {
             $html = '<b><i>' . _getParentLabel($attr) . '</i></b><br/><span>&nbsp;&nbsp;' . $attr->getLabel() . '</span>';
             $tr[] = array(
                 $html,
                 $attr->id,
-                $attr->getLabel() ,
+                $attr->getLabel(),
                 $attr->getOption('sortable')
             );
         }
     }
     return $tr;
 }
+
 // liste des attributs d'une famille
 function getDocAttr($dbaccess, $famid, $name = "")
 {
     return getSortAttr($dbaccess, $famid, $name, false);
 }
+
 // liste des attributs triable d'une famille
 function getSortAttr($dbaccess, $famid, $name = "", $sort = true)
 {
     $docfam = new DocFam($dbaccess, $famid);
     //'lsociety(D,US_SOCIETY):US_IDSOCIETY,US_SOCIETY,
     $doc = createDoc($dbaccess, $famid, false);
-    
+
     $tr = array();
     $pattern_name = preg_quote($name, "/");
-    
+
     if ($sort) {
         $tr = getSortProperties($dbaccess, $famid, $name);
         $tinter = $doc->GetSortAttributes();
     } else {
         $tinter = $doc->GetNormalAttributes();
     }
-    
+
     foreach ($tinter as $k => $v) {
-        if (($name == "") || (preg_match("/$pattern_name/i", $v->getLabel() , $reg))) {
+        if (($name == "") || (preg_match("/$pattern_name/i", $v->getLabel(), $reg))) {
             $dv = '<b><i>' . _getParentLabel($v) . '</i></b><br/><span>&nbsp;&nbsp;' . $v->getLabel() . '</span>';
             $tr[] = array(
                 $dv,
                 $v->id,
-                $v->getLabel() ,
+                $v->getLabel(),
                 $v->getOption('sortable')
             );
         }
     }
-    
+
     return $tr;
 }
+
 /**
  * Get sortable properties with their default sort order
  *
- * @param $dbaccess
- * @param $famid
+ * @param        $dbaccess
+ * @param        $famid
  * @param string $name filter to match the property's label
+ *
  * @return array
  */
 function getSortProperties($dbaccess, $famid, $name = "")
@@ -1097,7 +1205,7 @@ function getSortProperties($dbaccess, $famid, $name = "")
         if ($config['sort'] != 'asc' && $config['sort'] != 'desc') {
             continue;
         }
-        
+
         switch ($propName) {
             case 'state':
                 if ($docfam->wid <= 0) {
@@ -1128,11 +1236,11 @@ function getSortProperties($dbaccess, $famid, $name = "")
                     $label = _($label);
                 }
         }
-        
+
         if ($name != "" && !preg_match("/$pattern/i", $label)) {
             continue;
         }
-        
+
         $ret[] = array(
             $label,
             $propName,
@@ -1142,8 +1250,10 @@ function getSortProperties($dbaccess, $famid, $name = "")
     }
     return $ret;
 }
+
 /**
  * @param Anakeen\Core\SmartStructure\NormalAttribute|Anakeen\Core\SmartStructure\FieldsetAttribute $oa
+ *
  * @return string
  */
 function _getParentLabel($oa)
@@ -1160,15 +1270,18 @@ function laction($dbaccess, $famid, $name, $type)
     $filter[] = "act_type='$type'";
     return lfamily($dbaccess, $famid, $name, 0, $filter);
 }
+
 /**
  * return list of what application
  */
 function lapplications($n = "")
 {
     $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\Application::class);
-    
+
     $tr = array();
-    if ($n != "") $q->AddQuery("name ~* '$n'");
+    if ($n != "") {
+        $q->AddQuery("name ~* '$n'");
+    }
     $la = $q->Query(0, 0, "TABLE");
     if (is_array($la)) {
         foreach ($la as $k => $v) {
@@ -1180,13 +1293,14 @@ function lapplications($n = "")
     }
     return $tr;
 }
+
 /**
  * return list of what action for one application
  */
 function lactions($app, $n = "")
 {
     $tr = array();
-    $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\Application::class );
+    $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\Application::class);
     $q->AddQuery("name = '$app'");
     $la = $q->Query(0, 0, "TABLE");
     if ($q->nb == 1) {
@@ -1194,13 +1308,15 @@ function lactions($app, $n = "")
         if ($appid > 0) {
             $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\Action::class);
             $q->AddQuery("id_application = $appid");
-            if ($n != "") $q->AddQuery("name ~* '$n'");
+            if ($n != "") {
+                $q->AddQuery("name ~* '$n'");
+            }
             $la = $q->Query(0, 0, "TABLE");
-            
+
             if ($q->nb > 0) {
                 foreach ($la as $k => $v) {
                     $tr[] = array(
-                        $v["name"] . ":" . _($v["short_name"]) ,
+                        $v["name"] . ":" . _($v["short_name"]),
                         $v["name"]
                     );
                 }
@@ -1215,16 +1331,18 @@ function lapi($name = "")
     $cmd = sprintf("cd %s/API;ls -1 *.php| cut -f1 -d'.'", escapeshellarg(DEFAULT_PUBDIR));
     $apis = shell_exec($cmd);
     $tapi = explode("\n", $apis);
-    
+
     $tr = array();
     // HERE HERE HERE
     $pattern_name = preg_quote($name, "/");
     foreach ($tapi as $k => $v) {
         $v0 = trim($v);
-        if (($name == "") || (preg_match("/$pattern_name/i", $v0, $reg))) $tr[] = array(
-            $v0,
-            $v0
-        );
+        if (($name == "") || (preg_match("/$pattern_name/i", $v0, $reg))) {
+            $tr[] = array(
+                $v0,
+                $v0
+            );
+        }
     }
     return ($tr);
 }
@@ -1232,7 +1350,7 @@ function lapi($name = "")
 function lstates($dbaccess, $wid, $name = "")
 {
     $doc = createDoc($dbaccess, $wid, false);
-    
+
     $tr = array();
     if ($doc && method_exists($doc, "getStates")) {
         /**
@@ -1242,13 +1360,17 @@ function lstates($dbaccess, $wid, $name = "")
         // HERE HERE HERE
         $pattern_name = preg_quote($name, "/");
         foreach ($states as $k => $v) {
-            if (($name == "") || (preg_match("/$pattern_name/i", $v, $reg))) $tr[] = array(
-                $v . ' (' . _($v) . ')',
-                $v
-            );
+            if (($name == "") || (preg_match("/$pattern_name/i", $v, $reg))) {
+                $tr[] = array(
+                    $v . ' (' . _($v) . ')',
+                    $v
+                );
+            }
         }
-    } else return sprintf(_("need to select workflow"));
-    
+    } else {
+        return sprintf(_("need to select workflow"));
+    }
+
     return $tr;
 }
 
@@ -1266,48 +1388,60 @@ function ldocstates($dbaccess, $docid, $name = "")
             // HERE HERE HERE
             $pattern_name = preg_quote($name, "/");
             foreach ($states as $k => $v) {
-                if (($name == "") || (preg_match("/$pattern_name/i", $v, $reg))) $tr[] = array(
-                    $v . ' (' . _($v) . ')',
-                    $v . ' (' . _($v) . ')'
-                );
+                if (($name == "") || (preg_match("/$pattern_name/i", $v, $reg))) {
+                    $tr[] = array(
+                        $v . ' (' . _($v) . ')',
+                        $v . ' (' . _($v) . ')'
+                    );
+                }
             }
-        } else return sprintf(_("no workflow for this document"));
-    } else return sprintf(_("no workflow for this document"));
+        } else {
+            return sprintf(_("no workflow for this document"));
+        }
+    } else {
+        return sprintf(_("no workflow for this document"));
+    }
     return $tr;
 }
 
 function lmethods($dbaccess, $famid, $name = "")
 {
     $doc = createDoc($dbaccess, $famid, false);
-    
+
     $tr = array();
     if ($doc) {
         $methods = get_class_methods($doc);
         $pattern_name = preg_quote($name, "/");
         foreach ($methods as $k => $v) {
-            if (($name == "") || (preg_match("/$pattern_name/i", $v, $reg))) $tr[] = array(
-                $v,
-                '::' . $v . '()'
-            );
+            if (($name == "") || (preg_match("/$pattern_name/i", $v, $reg))) {
+                $tr[] = array(
+                    $v,
+                    '::' . $v . '()'
+                );
+            }
         }
-    } else return sprintf(_("need to select family"));
-    
+    } else {
+        return sprintf(_("need to select family"));
+    }
+
     return $tr;
 }
+
 /**
  * retrieve information from postgresql database
+ *
  * @param string $dbaccess the database coordonates
- * @param string $table the name of sql table where search data
- * @param string $filter the sql where clause to filter
- * @param string $more dynamic others arg to define column to retrieve
+ * @param string $table    the name of sql table where search data
+ * @param string $filter   the sql where clause to filter
+ * @param string $more     dynamic others arg to define column to retrieve
  */
 function db_query($dbaccess, $table, $filter)
 {
     $conn = pg_connect($dbaccess);
     if (!$conn) {
-        return sprintf(_("connexion to %s has failed") , $dbaccess);
+        return sprintf(_("connexion to %s has failed"), $dbaccess);
     }
-    
+
     $args = func_get_args();
     $cols = array();
     $order = '';
@@ -1317,7 +1451,9 @@ function db_query($dbaccess, $table, $filter)
             if (substr($v, -2) == ":H") {
                 $v = substr($v, 0, -2);
             } else {
-                if (!$order) $order = strtolower($v);
+                if (!$order) {
+                    $order = strtolower($v);
+                }
                 $tdn[] = $k - 3;
             }
             $cols[] = (strtolower($v));
@@ -1329,34 +1465,38 @@ function db_query($dbaccess, $table, $filter)
     if (count($tdn) == 0) {
         return sprintf(_("all columns are hiddens"));
     }
-    
+
     $select = "select " . implode(",", $cols);
     $from = "from " . pg_escape_string($table);
     $orderby = "order by " . ($order);
     foreach ($_POST as $k => $v) {
         if ($k[0] == '_') {
-            $filter = preg_replace('/' . substr($k, 1) . '/i', pg_escape_string(trim(stripslashes($v))) , $filter);
+            $filter = preg_replace('/' . substr($k, 1) . '/i', pg_escape_string(trim(stripslashes($v))), $filter);
         }
     }
-    
+
     $where = "where $filter";
     $limit = "limit 100";
     $sql = $select . ' ' . $from . ' ' . $where . ' ' . $orderby . ' ' . $limit;
     $result = @pg_query($conn, $sql);
     if (!$result) {
-        return sprintf(_("query %s has failed") , $sql);
+        return sprintf(_("query %s has failed"), $sql);
     }
-    
+
     $kr = 0;
     $t = array();
     while ($row = pg_fetch_row($result)) {
         $dn = '';
-        foreach ($tdn as $vi) $dn.= $row[$vi] . ' ';
+        foreach ($tdn as $vi) {
+            $dn .= $row[$vi] . ' ';
+        }
         $t[$kr][] = $dn;
-        foreach ($row as $ki => $vi) $t[$kr][] = $vi;
+        foreach ($row as $ki => $vi) {
+            $t[$kr][] = $vi;
+        }
         $kr++;
     }
-    
+
     return $t;
 }
 
@@ -1368,25 +1508,32 @@ function recipientDocument($dbaccess, $name)
     $sf->overrideViewControl();
     $sf->addFilter("atags ~* E'\\\\yMAILRECIPIENT\\\\y'");
     $dlf = $sf->search()->getDocumentList();
-    
-    if ($dlf->count() == 0) return sprintf(_("none families are described to be used as recipient"));
+
+    if ($dlf->count() == 0) {
+        return sprintf(_("none families are described to be used as recipient"));
+    }
     foreach ($dlf as $fam) {
         $cfam = createTmpDoc($dbaccess, $fam->id);
         /**
          * @var IMailRecipient $cfam
          */
         if (!is_a($cfam, "IMailRecipient")) {
-            return sprintf(_("Family '%s' does not implements IMailRecipient interface.") , $fam->name);
+            return sprintf(_("Family '%s' does not implements IMailRecipient interface."), $fam->name);
         }
-        
+
         $mailAttr = $cfam->getMailAttribute();
         $s = new SearchDoc($dbaccess, $fam->id);
         $s->setObjectReturn();
         $s->setSlice(100);
-        if ($mailAttr) $s->addFilter("%s is not null", $mailAttr);
+        if ($mailAttr) {
+            $s->addFilter("%s is not null", $mailAttr);
+        }
         if ($name != "") {
-            if ($mailAttr) $s->addFilter("(title ~* '%s') or (%s ~* '%s')", $name, $mailAttr, $name);
-            else $s->addFilter("(title ~* '%s')", $name, $name);
+            if ($mailAttr) {
+                $s->addFilter("(title ~* '%s') or (%s ~* '%s')", $name, $mailAttr, $name);
+            } else {
+                $s->addFilter("(title ~* '%s')", $name, $name);
+            }
         }
         $dl = $s->search()->getDocumentList();
         foreach ($dl as $dest) {
@@ -1399,14 +1546,13 @@ function recipientDocument($dbaccess, $name)
                 $mailTitle = $mail;
             }
             $tr[] = array(
-                xml_entity_encode($mailTitle) ,
-                xml_entity_encode(sprintf("%d (%s)", $dest->id, $dest->getTitle())) ,
+                xml_entity_encode($mailTitle),
+                xml_entity_encode(sprintf("%d (%s)", $dest->id, $dest->getTitle())),
                 xml_entity_encode($dest->getTitle())
             );
         }
     }
-    usort($tr, function ($a, $b)
-    {
+    usort($tr, function ($a, $b) {
         return strcasecmp($a[0], $b[0]);
     });
     return $tr;

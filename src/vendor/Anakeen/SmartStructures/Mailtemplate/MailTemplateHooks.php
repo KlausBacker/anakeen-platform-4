@@ -560,8 +560,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
             $chopped_src = '';
             // Detect HTTP URLs pointing to myself
             foreach (array(
-                'CORE_URLINDEX',
-                'CORE_PUBURL'
+                'CORE_URLINDEX'
             ) as $url) {
                 $url = \Anakeen\Core\ContextManager::getApplicationParam($url);
                 if (strlen($url) <= 0) {
