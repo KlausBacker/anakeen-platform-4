@@ -228,7 +228,7 @@ class DefaultView extends RenderDefault
 
         if ($doc->wid > 0 && $doc->locked != -1) {
             /**
-             * @var \WDoc $wdoc
+             * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $wdoc
              */
             $wdoc = DocManager::getDocument($doc->wid, false);
             if (!$doc) {

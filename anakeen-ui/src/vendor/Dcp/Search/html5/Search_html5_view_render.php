@@ -52,7 +52,7 @@ class Search_html5_view_render extends \Dcp\Ui\DefaultView {
         $family=new_doc("", $document->getRawValue("se_famid") );
 
         /**
-         * @var \WDoc $workflow
+         * @var \Anakeen\SmartStructure\Wdoc\WDocHooks $workflow
          */
         $workflow = new_doc("", $document->wid);
 

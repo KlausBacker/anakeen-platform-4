@@ -45,9 +45,9 @@ class TransitionRender
     }
 
     /**
-     * @param \WDoc $workflow
+     * @param \Anakeen\SmartStructure\Wdoc\WDocHooks $workflow
      */
-    public function setWorkflow(\WDoc $workflow)
+    public function setWorkflow(\Anakeen\SmartStructure\Wdoc\WDocHooks $workflow)
     {
         $this->workflow = $workflow;
     }
