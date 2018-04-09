@@ -1,5 +1,5 @@
 // famille cycle;;;id;class;name;;;;;;;;;;
-BEGIN;BASE;Cycle de vie;20;WDoc;WDOC;;;;;;;;;;
+BEGIN;BASE;Cycle de vie;20;;WDOC;;;;;;;;;;
 TYPE;C;;;;;;;;;;;;;;
 ICON;se-wdoc.png;;;;;;;;;;;;;;
 SCHAR;S;;;;;;;;;;;;;;
