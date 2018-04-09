@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Timer extends \Dcp\Core\Timer { const familyName="TIMER";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Minuteur  */
 	class Timer {
 		/** [frame] Identification */

@@ -4,7 +4,7 @@ namespace Dcp\Family {
 	class Wdoc extends \WDoc { const familyName="WDOC";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Cycle de vie  */
 	class Wdoc extends 1 {
 		/** [longtext] description */
