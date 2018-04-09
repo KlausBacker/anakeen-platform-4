@@ -48,16 +48,7 @@ class ExecHooks extends \Anakeen\SmartStructures\Document
         $err = $this->modify();
         return $err;
     }
-    
-    public function isInprogress()
-    {
-        if ($this->canEdit() == "") {
-            if ($this->getRawValue("exec_status") == "progressing") {
-                return MENU_ACTIVE;
-            }
-        }
-        return MENU_INVISIBLE;
-    }
+
     
     public function postStore()
     {
@@ -138,16 +129,7 @@ class ExecHooks extends \Anakeen\SmartStructures\Document
         return '';
     }
     
-    public function isLatestExec()
-    {
-        if ($this->locked == - 1) {
-            return MENU_INVISIBLE;
-        }
-        if (!$this->canExecuteAction()) {
-            return MENU_INACTIVE;
-        }
-        return MENU_ACTIVE;
-    }
+
     
     public function canExecuteAction()
     {

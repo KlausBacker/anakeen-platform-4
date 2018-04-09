@@ -26,13 +26,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
     private $norestrict = false;
 
 
-    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
-    {
-        parent::__construct($dbaccess, $id, $res, $dbid);
-        if ($this->fromid == "") {
-            $this->fromid = FAM_DIR;
-        }
-    }
+
 
 
     /**

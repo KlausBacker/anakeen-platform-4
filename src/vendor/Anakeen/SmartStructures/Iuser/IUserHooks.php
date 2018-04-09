@@ -768,74 +768,10 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
         }
     }
 
-    /**
-     * Security menus visibilities
-     */
-    public function menuResetLoginFailure()
-    {
-        // Do not show the menu if the user has no FUSERS privileges
-        global $action;
-        if (!$action->parent->hasPermission('FUSERS', 'FUSERS')) {
-            return MENU_INVISIBLE;
-        }
-        // Do not show the menu if the user has no edit rights on the document
-        if ($this->canEdit() != '') {
-            return MENU_INVISIBLE;
-        }
-        // Do not show the menu on the 'admin' user
-        if ($this->getRawValue('us_whatid') == 1) {
-            return MENU_INVISIBLE;
-        }
-        // Do not show the menu if the account had no failures
-        if ($this->getRawValue("us_loginfailure") <= 0) {
-            return MENU_INVISIBLE;
-        }
-        return MENU_ACTIVE;
-    }
 
-    public function menuActivateAccount()
-    {
-        // Do not show the menu if the user has no FUSERS privileges
-        global $action;
-        if (!$action->parent->hasPermission('FUSERS', 'FUSERS')) {
-            return MENU_INVISIBLE;
-        }
-        // Do not show the menu if the user has no edit rights on the document
-        if ($this->canEdit() != '') {
-            return MENU_INVISIBLE;
-        }
-        // Do not show the menu on the 'admin' user
-        if ($this->getRawValue('us_whatid') == 1) {
-            return MENU_INVISIBLE;
-        }
-        // Do not show the menu if the account is already active
-        if ($this->getRawValue('us_status', 'A') == 'A') {
-            return MENU_INVISIBLE;
-        }
-        return MENU_ACTIVE;
-    }
 
-    public function menuDeactivateAccount()
-    {
-        // Do not show the menu if the user has no FUSERS privileges
-        global $action;
-        if (!$action->parent->hasPermission('FUSERS', 'FUSERS')) {
-            return MENU_INVISIBLE;
-        }
-        // Do not show the menu if the user has no edit rights on the document
-        if ($this->canEdit() != '') {
-            return MENU_INVISIBLE;
-        }
-        // Do not show the menu on the 'admin' user
-        if ($this->getRawValue('us_whatid') == 1) {
-            return MENU_INVISIBLE;
-        }
-        // Do not show the menu if the account is already inactive
-        if ($this->getRawValue('us_status', 'A') != 'A') {
-            return MENU_INVISIBLE;
-        }
-        return MENU_ACTIVE;
-    }
+
+
 
     /**
      * Manage account security

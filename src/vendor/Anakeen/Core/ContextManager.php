@@ -2,6 +2,7 @@
 
 namespace Anakeen\Core;
 
+use Anakeen\Core\Utils\Gettext;
 use Anakeen\Router\AuthenticatorManager;
 
 class ContextManager
@@ -171,7 +172,7 @@ class ContextManager
 
                 $exception = new \Anakeen\Router\Exception("User must be authenticated");
                 $exception->setHttpStatus("403", "Forbidden");
-                $exception->setUserMessage(___("Access not granted", "ank"));
+                $exception->setUserMessage(Gettext::___("Access not granted", "ank"));
                 throw $exception;
         }
         $_SERVER['PHP_AUTH_USER'] = AuthenticatorManager::$auth->getAuthUser();
@@ -179,7 +180,7 @@ class ContextManager
         if (empty($_SERVER['PHP_AUTH_USER'])) {
             $exception = new \Anakeen\Router\Exception("User must be authenticated");
             $exception->setHttpStatus("403", "Forbidden");
-            $exception->setUserMessage(___("Access not granted", "ank"));
+            $exception->setUserMessage(Gettext::___("Access not granted", "ank"));
             throw $exception;
         }
         $u = new \Anakeen\Core\Account();
