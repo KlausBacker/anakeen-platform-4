@@ -1,12 +1,12 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Cycle de vie  */
-	class Wdoc extends \WDoc { const familyName="WDOC";}
+	class Wdoc extends \Anakeen\SmartStructures\Wdoc\WDocHooks { const familyName="WDOC";}
 }
 
 namespace SmartStructure\Attributes {
 	/** Cycle de vie  */
-	class Wdoc extends 1 {
+	class Wdoc extends Base {
 		/** [longtext] description */
 		const wf_desc='wf_desc';
 		/** [menu] Initialisation */
@@ -21,13 +21,9 @@ namespace SmartStructure\Attributes {
 		const dpdoc_famid='dpdoc_famid';
 		/** [text] Famille (titre) */
 		const dpdoc_fam='dpdoc_fam';
-		/** [action] Voir le graphe */
-		const wf_graph='wf_graph';
 		/** [tab] Étapes */
 		const wf_tab_states='wf_tab_states';
 		/** [tab] Transitions */
 		const wf_tab_transitions='wf_tab_transitions';
-		/** [action] Voir le graphe complet */
-		const wf_graphc='wf_graphc';
 	}
 }

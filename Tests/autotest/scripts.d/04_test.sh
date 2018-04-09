@@ -10,7 +10,7 @@ OUTPUT_DIR="${PWD}/outputs"
 
 (
 	set -x
-	wiff context dynacase exec /bin/sh -c 'cd vendor/Anakeen/TestUnits && phpunit PU_workflow.php --log-junit ../../../phpunit.xml'
+	wiff context dynacase exec /bin/sh -c 'cd vendor/Anakeen/TestUnits && phpunit WorkflowTests.php --log-junit ../../../phpunit.xml'
 )
 RET=$?
 
