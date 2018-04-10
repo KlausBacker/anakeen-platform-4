@@ -60,7 +60,7 @@ class ImportDocumentDescription
     */
     private $fdoc;
     /**
-     * @var DocFam
+     * @var \Anakeen\Core\SmartStructure 
      */
     private $doc;
     /**
@@ -513,16 +513,16 @@ class ImportDocumentDescription
             }
             if ($this->tcr[$this->nLine]["err"] == "") {
                 if (($data[3] == "") || ($data[3] == "-")) {
-                    $this->doc = new DocFam($this->dbaccess, \Anakeen\Core\DocManager::getFamilyIdFromName($data[5]), '', 0, false);
+                    $this->doc = new \Anakeen\Core\SmartStructure($this->dbaccess, \Anakeen\Core\DocManager::getFamilyIdFromName($data[5]), '', 0, false);
                 } else {
-                    $this->doc = new DocFam($this->dbaccess, $data[3], '', 0, false);
+                    $this->doc = new \Anakeen\Core\SmartStructure($this->dbaccess, $data[3], '', 0, false);
                 }
 
                 $this->familyIcon = "";
 
                 if (!$this->doc->isAffected()) {
                     if (!$this->analyze) {
-                        $this->doc = new DocFam($this->dbaccess);
+                        $this->doc = new \Anakeen\Core\SmartStructure($this->dbaccess);
 
                         if (isset($data[3]) && ($data[3] > 0)) {
                             $this->doc->id = $data[3];

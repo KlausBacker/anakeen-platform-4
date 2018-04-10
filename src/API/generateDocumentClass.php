@@ -28,7 +28,7 @@ if (($docid !== 0) && (!is_numeric($docid))) {
     }
 }
 
-$query = new \Anakeen\Core\Internal\QueryDb("", \DocFam::class);
+$query = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\SmartStructure::class);
 $query->AddQuery("doctype='C'");
 $query->order_by = "id";
 

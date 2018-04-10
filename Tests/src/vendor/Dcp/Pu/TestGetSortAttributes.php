@@ -26,7 +26,7 @@ class TestGetSortAttributes extends TestCaseDcpCommonFamily
             $data['famid'] = \Anakeen\Core\DocManager::getIdFromName($data['famid']);
         }
         
-        $famdoc = new \DocFam(self::$dbaccess, $data['famid']);
+        $famdoc = new \Anakeen\Core\SmartStructure(self::$dbaccess, $data['famid']);
         $attributes = $famdoc->getSortAttributes();
         $count = count($attributes);
         $this->assertTrue(($count == $data['expected']['count']) , sprintf("Got %d attributes while expecting %s: %s", $count, $data['expected']['count'], print_r(array_map(function ($e)

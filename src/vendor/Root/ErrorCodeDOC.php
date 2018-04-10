@@ -169,7 +169,7 @@ class ErrorCodeDOC
     const DOC0119 = 'the document "%s" (#%d) became fixed because another revision more recent has been created';
     /**
      * @errorCode when update family parameter
-     * @see DocFam::setParam
+     * @see \Anakeen\Core\SmartStructure::setParam
      */
     const DOC0120 = 'cannot set family parameter "%s". It is not a parameter for "%s" ("%s") family';
     /**
@@ -184,7 +184,7 @@ class ErrorCodeDOC
     const DOC0122 = 'cannot add application tag (document #%d). Application tag must not be empty';
     /**
      * @errorCode when update attribute family default value
-     * @see DocFam::setDefValue
+     * @see \Anakeen\Core\SmartStructure::setDefValue
      */
     const DOC0123 = 'cannot set default value for "%s". It is not an attribute for "%s" ("%s") family';
     /**

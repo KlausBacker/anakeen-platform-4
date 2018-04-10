@@ -6,7 +6,7 @@
 /**
  * Search Document
  *
- * @author Anakeen
+ * @author  Anakeen
  * @version $Id: Class.SearchDoc.php,v 1.8 2008/08/14 14:20:25 eric Exp $
  * @package FDL
  */
@@ -14,20 +14,21 @@
  */
 
 include_once("FDL/Lib.Dir.php");
+
 /**
  * document searches
  * @code
  * $s=new SearchDoc($db,"IUSER");
- $s->setObjectReturn(); // document object returns
- $s->addFilter('us_extmail is not null'); // simple filter
- $s->search(); // send search query
- $c=$s->count();
- print "count $c\n";
- $k=0;
- while ($doc=$s->nextDoc()) {
- // iterate document by document
- print "$k)".$doc->getTitle()."(".$doc->getRawValue("US_MAIL","nomail").")\n";clam
- $k+
+ * $s->setObjectReturn(); // document object returns
+ * $s->addFilter('us_extmail is not null'); // simple filter
+ * $s->search(); // send search query
+ * $c=$s->count();
+ * print "count $c\n";
+ * $k=0;
+ * while ($doc=$s->nextDoc()) {
+ * // iterate document by document
+ * print "$k)".$doc->getTitle()."(".$doc->getRawValue("US_MAIL","nomail").")\n";clam
+ * $k+
  * @endcode
  * @class SearchDoc.
  */
@@ -103,6 +104,7 @@ class SearchDoc
      * @public int
      */
     public $userid = 0;
+    protected $dbaccess;
     /**
      * debug mode : to view query and delay
      * @public bool
@@ -132,7 +134,7 @@ class SearchDoc
      * @private string
      */
     private $mode = "TABLE";
-    private $count = - 1;
+    private $count = -1;
     private $index = 0;
     /**
      * @var bool|array
@@ -151,16 +153,17 @@ class SearchDoc
     /**
      * @var int query number (in ITEM mode)
      */
-    
+
     private $resultQPos = 0;
     protected $originalDirId = 0;
-    
+
     protected $returnsFields = array();
+
     /**
      * initialize with family
      *
-     * @param string $dbaccess database coordinate
-     * @param int|string $fromid family identifier to filter
+     * @param string     $dbaccess database coordinate
+     * @param int|string $fromid   family identifier to filter
      */
     public function __construct($dbaccess = '', $fromid = 0)
     {
@@ -172,6 +175,7 @@ class SearchDoc
         $this->setOrder('title');
         $this->userid = \Anakeen\Core\ContextManager::getCurrentUser()->id;
     }
+
     /**
      * Normalize supported forms of fromid
      *
@@ -194,7 +198,7 @@ class SearchDoc
             $sign = 1;
             if ($id < 0) {
                 // -123 = search on family with id 123 without sub-families
-                $sign = - 1;
+                $sign = -1;
                 $id = abs($id);
             }
             $fam = Anakeen\Core\DocManager::getFamily($id);
@@ -206,7 +210,7 @@ class SearchDoc
             $sign = 1;
             if (substr($id, 0, 1) == '-') {
                 // "-ABC" = search on family with name 123 without sub-families
-                $sign = - 1;
+                $sign = -1;
                 $id = substr($id, 1);
             }
             $fam = Anakeen\Core\DocManager::getFamily($id);
@@ -216,6 +220,7 @@ class SearchDoc
         }
         return false;
     }
+
     /**
      * Count results without returning data.
      *
@@ -252,7 +257,7 @@ class SearchDoc
                         $maintable = '';
                     }
                     $maintabledot = ($maintable) ? $maintable . '.' : '';
-                    
+
                     $mainid = ($maintable) ? "$maintable.id" : "id";
                     $distinct = "";
                     if (preg_match('/^\s*select\s+distinct(\s+|\(.*?\))/iu', $sql, $m)) {
@@ -260,20 +265,20 @@ class SearchDoc
                     }
                     $sql = preg_replace('/^\s*select\s+(.*?)\s+from\s/iu', "select count($distinct$mainid) from ", $sql, 1);
                     if ($userid != 1) {
-                        $sql.= sprintf(" and (%sviews && '%s')", $maintabledot, $this->getUserViewVector($userid));
+                        $sql .= sprintf(" and (%sviews && '%s')", $maintabledot, $this->getUserViewVector($userid));
                     }
 
                     $dbid = \Anakeen\Core\DbManager::getDbId();
                     $mb = microtime(true);
                     try {
-                            \Anakeen\Core\DbManager::query($sql, $result, false, true);
+                        \Anakeen\Core\DbManager::query($sql, $result, false, true);
                     } catch (\Dcp\Db\Exception $e) {
                         $this->debuginfo["query"] = $sql;
                         $this->debuginfo["error"] = pg_last_error($dbid);
-                        $this->count = - 1;
+                        $this->count = -1;
                         throw $e;
                     }
-                    $count+= $result["count"];
+                    $count += $result["count"];
                     $this->debuginfo["query"] = $sql;
                     $this->debuginfo["delay"] = sprintf("%.03fs", microtime(true) - $mb);
                 }
@@ -283,9 +288,10 @@ class SearchDoc
         } else {
             $this->count = count($fld->getContent());
         }
-        
+
         return $this->count;
     }
+
     /**
      * return memberof to be used in profile filters
      * @static
@@ -302,6 +308,7 @@ class SearchDoc
         $memberOf[] = $uid;
         return '{' . implode(',', $memberOf) . '}';
     }
+
     /**
      * return original sql query before test permissions
      *
@@ -310,21 +317,40 @@ class SearchDoc
      */
     public function getOriginalQuery()
     {
-        return _internalGetDocCollection(true, $this->dbaccess, $this->dirid, $this->start, $this->slice, $this->getFilters(), $this->userid, $this->searchmode, $this->fromid, $this->distinct, $this->orderby, $this->latest, $this->trash, $debuginfo, $this->folderRecursiveLevel, $this->join, $this);
+        return _internalGetDocCollection(
+            true,
+            $this->dbaccess,
+            $this->dirid,
+            $this->start,
+            $this->slice,
+            $this->getFilters(),
+            $this->userid,
+            $this->searchmode,
+            $this->fromid,
+            $this->distinct,
+            $this->orderby,
+            $this->latest,
+            $this->trash,
+            $debuginfo,
+            $this->folderRecursiveLevel,
+            $this->join,
+            $this
+        );
     }
+
     /**
      * add join condition
      *
      * @api Add join condition
      * @code
-     $s=new searchDoc();
-     $s->trash='only';
-     $s->join("id = dochisto(id)");
-     $s->addFilter("dochisto.uid = %d",$this->getSystemUserId());
-     // search all document which has been deleted by search DELETE code in history
-     $s->addFilter("dochisto.code = 'DELETE'");
-     $s->distinct=true;
-     $result= $s->search();
+     * $s=new searchDoc();
+     * $s->trash='only';
+     * $s->join("id = dochisto(id)");
+     * $s->addFilter("dochisto.uid = %d",$this->getSystemUserId());
+     * // search all document which has been deleted by search DELETE code in history
+     * $s->addFilter("dochisto.code = 'DELETE'");
+     * $s->distinct=true;
+     * $result= $s->search();
      * @endcode
      * @param string $jointure
      * @throws Dcp\Exception
@@ -339,6 +365,7 @@ class SearchDoc
             throw new \Dcp\SearchDoc\Exception("SD0001", $jointure);
         }
     }
+
     /**
      * count results
      * ::search must be call before
@@ -351,7 +378,7 @@ class SearchDoc
     public function count()
     {
         if ($this->isExecuted()) {
-            if ($this->count == - 1) {
+            if ($this->count == -1) {
                 if ($this->searchmode == "ITEM") {
                     $this->count = $this->countDocs();
                 } else {
@@ -361,6 +388,7 @@ class SearchDoc
         }
         return $this->count;
     }
+
     /**
      * count returned document in sql select ressources
      * @return int
@@ -369,11 +397,12 @@ class SearchDoc
     {
         $n = 0;
         foreach ($this->result as $res) {
-            $n+= pg_num_rows($res);
+            $n += pg_num_rows($res);
         }
         reset($this->result);
         return $n;
     }
+
     /**
      * reset results to use another search
      *
@@ -386,8 +415,9 @@ class SearchDoc
         $this->resultPos = 0;
         $this->resultQPos = 0;
         $this->debuginfo = [];
-        $this->count = - 1;
+        $this->count = -1;
     }
+
     /**
      * reset result offset
      * use it to redo a document's iteration
@@ -398,6 +428,7 @@ class SearchDoc
         $this->resultPos = 0;
         $this->resultQPos = 0;
     }
+
     /**
      * Verify if query is already sended to database
      *
@@ -407,6 +438,7 @@ class SearchDoc
     {
         return ($this->result !== false);
     }
+
     /**
      * Return sql filters used for request
      *
@@ -422,6 +454,7 @@ class SearchDoc
             ), $this->filters);
         }
     }
+
     /**
      * send search
      * the query is sent to database
@@ -450,9 +483,9 @@ class SearchDoc
             if (!is_numeric($this->fromid)) {
                 $fromid = \Anakeen\Core\DocManager::getFamilyIdFromName($this->fromid);
             } else {
-                if ($this->fromid != - 1) {
+                if ($this->fromid != -1) {
                     // test if it is a family
-                    if ($this->fromid < - 1) {
+                    if ($this->fromid < -1) {
                         $this->only = true;
                     }
                     \Anakeen\Core\DbManager::query(sprintf("select doctype from docfam where id=%d", abs($this->fromid)), $doctype, true, true);
@@ -476,7 +509,7 @@ class SearchDoc
                 }
             }
             if ($this->only) {
-                $this->fromid = - (abs($fromid));
+                $this->fromid = -(abs($fromid));
             } else {
                 $this->fromid = $fromid;
             }
@@ -487,15 +520,32 @@ class SearchDoc
         if ($this->mode == "ITEM") {
             if ($this->dirid) {
                 // change search mode because ITEM mode not supported for Specailized searches
-                $fld = new_Doc($this->dbaccess, $this->dirid);
+                $fld = Anakeen\Core\DocManager::getDocument($this->dirid);
                 if ($fld->fromid == \Anakeen\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
                     $this->searchmode = "TABLE";
                 }
             }
         }
         $debuginfo = array();
-        $this->count = - 1;
-        $this->result = internalGetDocCollection($this->dbaccess, $this->dirid, $this->start, $this->slice, $this->getFilters(), $this->userid, $this->searchmode, $this->fromid, $this->distinct, $this->orderby, $this->latest, $this->trash, $debuginfo, $this->folderRecursiveLevel, $this->join, $this);
+        $this->count = -1;
+        $this->result = internalGetDocCollection(
+            $this->dbaccess,
+            $this->dirid,
+            $this->start,
+            $this->slice,
+            $this->getFilters(),
+            $this->userid,
+            $this->searchmode,
+            $this->fromid,
+            $this->distinct,
+            $this->orderby,
+            $this->latest,
+            $this->trash,
+            $debuginfo,
+            $this->folderRecursiveLevel,
+            $this->join,
+            $this
+        );
         if ($this->searchmode == "TABLE") {
             $this->count = count($this->result);
         } // memo cause array is unset by shift
@@ -508,19 +558,20 @@ class SearchDoc
         if ($this->mode == "ITEM") {
             return $this;
         }
-        
+
         return $this->result;
     }
+
     /**
      * return document iterator to be used in loop
      * @code
      *  $s=new \SearchDoc($dbaccess, $famName);
-     $s->setObjectReturn();
-     $s->search();
-     $dl=$s->getDocumentList();
-     foreach ($dl as $docId=>$doc) {
-     print $doc->getTitle();
-     }
+     * $s->setObjectReturn();
+     * $s->search();
+     * $dl=$s->getDocumentList();
+     * foreach ($dl as $docId=>$doc) {
+     * print $doc->getTitle();
+     * }
      * @endcode
      * @api get document iterator
      * @return DocumentList
@@ -529,6 +580,7 @@ class SearchDoc
     {
         return new DocumentList($this);
     }
+
     /**
      * limit query to a subset of somes attributes
      * @param array $returns
@@ -559,19 +611,21 @@ class SearchDoc
             "doctype"
         ), $returns));
     }
+
     public function getReturnsFields()
     {
         if ($this->returnsFields) {
             return $this->returnsFields;
         }
         if ($this->fromid) {
-            $fdoc = createTmpDoc($this->dbaccess, $this->fromid, false);
+            $fdoc = Anakeen\Core\DocManager::createTemporaryDocument($this->fromid, false);
             if ($fdoc->isAlive()) {
                 return array_merge($fdoc->fields, $fdoc->sup_fields);
             }
         }
         return null;
     }
+
     /**
      * return error message
      * @return string empty if no errors
@@ -580,6 +634,7 @@ class SearchDoc
     {
         return $this->getError();
     }
+
     /**
      * Return error message
      * @api get error message
@@ -592,6 +647,7 @@ class SearchDoc
         }
         return "";
     }
+
     /**
      * do the search in debug mode, you can after the search get infrrmation with getDebugIndo()
      * @param boolean $debug set to true search in debug mode
@@ -603,11 +659,12 @@ class SearchDoc
         deprecatedFunction();
         $this->debug = $debug;
     }
+
     /**
      * set recursive mode for folder searches
      * can be use only if collection set if a static folder
      * @param bool $recursiveMode set to true to use search in sub folders when collection is folder
-     * @param int $level Indicate depth to inspect subfolders
+     * @param int  $level         Indicate depth to inspect subfolders
      * @throws Dcp\SearchDoc\Exception
      * @api set recursive mode for folder searches
      * @see SearchDoc::useCollection
@@ -621,6 +678,7 @@ class SearchDoc
         }
         $this->folderRecursiveLevel = $level;
     }
+
     /**
      * return debug info if debug mode enabled
      * @deprecated use getSearchInfo instead
@@ -632,6 +690,7 @@ class SearchDoc
         deprecatedFunction();
         return $this->debuginfo;
     }
+
     /**
      * return informations about query after search has been sent
      * array indexes are : query, err, count, delay
@@ -642,6 +701,7 @@ class SearchDoc
     {
         return $this->debuginfo;
     }
+
     /**
      * set maximum number of document to return
      * @api set maximum number of document to return
@@ -657,14 +717,15 @@ class SearchDoc
         $this->slice = $slice;
         return true;
     }
+
     /**
      * use different order , default is title
      *
      * @api set order to sort results
      *
-     * @param string $order the new order, empty means no order
+     * @param string $order        the new order, empty means no order
      * @param string $orderbyLabel string of comma separated columns names on
-     * which the order should be performed on their label instead of their value (e.g. order enum by their label instead of their key)
+     *                             which the order should be performed on their label instead of their value (e.g. order enum by their label instead of their key)
      *
      * @return void
      */
@@ -675,6 +736,7 @@ class SearchDoc
         /* Rewrite "-<column_name>" to "<column_name> desc" */
         $this->orderby = preg_replace('/(^\s*|,\s*)-([A-Z_0-9]{1,63})\b/i', '$1$2 desc', $this->orderby);
     }
+
     /**
      * use folder or search document to search within it
      * @api use folder or search document
@@ -684,16 +746,17 @@ class SearchDoc
      */
     public function useCollection($dirid)
     {
-        $dir = new_doc($this->dbaccess, $dirid);
-        if ($dir->isAlive()) {
+        $dir = Anakeen\Core\DocManager::getDocument($dirid);
+        if ($dir && $dir->isAlive()) {
             $this->dirid = $dir->initid;
             $this->originalDirId = $this->dirid;
             return true;
         }
         $this->debuginfo["error"] = sprintf(_("collection %s not exists"), $dirid);
-        
+
         return false;
     }
+
     /**
      * set offset where start the result window
      * @api set offset where start the result window
@@ -709,15 +772,16 @@ class SearchDoc
         $this->start = intval($start);
         return true;
     }
+
     /**
      * can, be use in loop
      * ::search must be call before
      *
-     * @see \Anakeen\Core\Internal\Application::getNextDoc
+     * @see        \Anakeen\Core\Internal\Application::getNextDoc
      *
      * @deprecated use { @link \Anakeen\Core\Internal\Application::getNextDoc } instead
      *
-     * @see SearchDoc::search
+     * @see        SearchDoc::search
      *
      * @return Doc|array or null if this is the end
      */
@@ -726,6 +790,7 @@ class SearchDoc
         deprecatedFunction();
         return $this->getNextDoc();
     }
+
     /**
      * can, be use in loop
      * ::search must be call before
@@ -769,6 +834,7 @@ class SearchDoc
             return current(array_slice($this->result, $this->resultPos++, 1));
         }
     }
+
     /**
      * after search return only document identifiers instead of complete document
      * @api get only document identifiers
@@ -791,6 +857,7 @@ class SearchDoc
         }
         return $ids;
     }
+
     /**
      * Return an object document from array of values
      *
@@ -802,19 +869,19 @@ class SearchDoc
         $fromid = $v["fromid"];
         if ($v["doctype"] == "C") {
             if (!isset($this->cacheDocuments["family"])) {
-                $this->cacheDocuments["family"] = new DocFam($this->dbaccess);
+                $this->cacheDocuments["family"] = new \Anakeen\Core\SmartStructure($this->dbaccess);
             }
             $this->cacheDocuments["family"]->Affect($v, true);
             $fromid = "family";
         } else {
             if (!isset($this->cacheDocuments[$fromid])) {
-                $this->cacheDocuments[$fromid] = createDoc($this->dbaccess, $fromid, false, false);
+                $this->cacheDocuments[$fromid] = Anakeen\Core\DocManager::createDocument($fromid, false, false);
                 if (empty($this->cacheDocuments[$fromid])) {
                     throw new Exception(sprintf('Document "%s" has an unknow family "%s"', $v["id"], $fromid));
                 }
             }
         }
-        
+
         $this->cacheDocuments[$fromid]->Affect($v, true);
         $this->cacheDocuments[$fromid]->nocache = true;
         if ((!empty($this->returnsFields))) {
@@ -822,11 +889,12 @@ class SearchDoc
         } // incomplete document
         return $this->cacheDocuments[$fromid];
     }
+
     /**
      * add a condition in filters
      * @api add a new condition in filters
      * @param string $filter the filter string
-     * @param string $args arguments of the filter string (arguments are escaped to avoid sql injection)
+     * @param string $args   arguments of the filter string (arguments are escaped to avoid sql injection)
      * @return void
      */
     public function addFilter($filter, $args = '')
@@ -850,6 +918,7 @@ class SearchDoc
             $this->filters[] = $filter;
         }
     }
+
     /**
      * add global filter based on keyword to match any attribute value
      * available example :
@@ -859,8 +928,8 @@ class SearchDoc
      *   foo OR (bar AND zou) : more complex logical expression
      * @api add global filter based on keyword
      * @param string $keywords
-     * @param bool $useSpell use spell french checker
-     * @param bool $usePartial if true each words are defined as partial characters
+     * @param bool   $useSpell   use spell french checker
+     * @param bool   $usePartial if true each words are defined as partial characters
      * @throws \Dcp\SearchDoc\Exception SD0004 SD0003 SD0002
      */
     public function addGeneralFilter($keywords, $useSpell = false, $usePartial = false)
@@ -872,6 +941,7 @@ class SearchDoc
             $this->addFilter($filter);
         }
     }
+
     /**
      * Verify if $keywords syntax is comptatible with a part of query
      * for the moment verify only parenthesis balancing
@@ -905,6 +975,7 @@ class SearchDoc
         }
         return true;
     }
+
     /**
      * add a order based on keyword
      * consider how often the keyword terms appear in the document
@@ -923,15 +994,16 @@ class SearchDoc
             $this->setOrder($this->pertinenceOrder);
         }
     }
+
     /**
      * get global filter
      * @see SearchDoc::addGeneralFilter
      * @static
      * @param string $keywords
-     * @param bool $useSpell
+     * @param bool   $useSpell
      * @param string $pertinenceOrder return pertinence order
-     * @param string $highlightWords return words to be use by SearchHighlight class
-     * @param bool $usePartial if true each words are defined as partial characters
+     * @param string $highlightWords  return words to be use by SearchHighlight class
+     * @param bool   $usePartial      if true each words are defined as partial characters
      * @return string
      * @throws \Dcp\Lex\LexException
      * @throws \Dcp\SearchDoc\Exception
@@ -947,7 +1019,7 @@ class SearchDoc
         $parenthesis = "";
         $rankElement = "";
         $stringWords = array();
-        
+
         $convertOperatorToTs = function ($operator) {
             if ($operator === "") {
                 return "";
@@ -960,7 +1032,7 @@ class SearchDoc
                 throw new \Dcp\SearchDoc\Exception("SD0002", $operator);
             }
         };
-        
+
         $filterElements = \Dcp\Lex\GeneralFilter::analyze($keywords);
         if ($usePartial) {
             $isOnlyWord = false;
@@ -998,12 +1070,12 @@ class SearchDoc
 
                 case \Dcp\Lex\GeneralFilter::MODE_OPEN_PARENTHESIS:
                     $parenthesis = "(";
-                    $parenthesisBalanced+= 1;
+                    $parenthesisBalanced += 1;
                     break;
 
                 case \Dcp\Lex\GeneralFilter::MODE_CLOSE_PARENTHESIS:
                     $parenthesis = ")";
-                    $parenthesisBalanced-= 1;
+                    $parenthesisBalanced -= 1;
                     break;
 
                 case \Dcp\Lex\GeneralFilter::MODE_WORD:
@@ -1015,7 +1087,7 @@ class SearchDoc
                     if (is_numeric($filterElement)) {
                         $filterElement = sprintf("(%s|-%s)", $filterElement, $filterElement);
                     }
-                    
+
                     $words[] = $filterElement;
                     if ($isOnlyWord) {
                         $filterElement = pg_escape_string(unaccent($filterElement));
@@ -1055,13 +1127,13 @@ class SearchDoc
                     /* Strip non-word chars to prevent errors with to_tsquery() */
                     $rankElement = trim(preg_replace('/[^\w]+/', ' ', $rankElement));
                     $stringWords[] = $rankElement;
-                    
+
                     $filterElement = sprintf("svalues ~* E'%s%s%s'", $begin, pg_escape_string(preg_quote($currentElement["word"])), $end);
                     break;
 
                 case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_END:
                     $rankElement = unaccent($currentElement["word"]);
-                    
+
                     if (!preg_match('/\p{L}|\p{N}/u', mb_substr($rankElement, 0, 1))) {
                         $begin = '[£|\\\\s]';
                     } else {
@@ -1072,7 +1144,7 @@ class SearchDoc
 
                 case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_BEGIN:
                     $rankElement = unaccent($currentElement["word"]);
-                    
+
                     if (!preg_match('/\p{L}|\p{N}/u', mb_substr($rankElement, -1))) {
                         $end = '[£|\\\\s]';
                     } else {
@@ -1091,20 +1163,20 @@ class SearchDoc
             }
             if ($filterElement) {
                 if ($isOnlyWord) {
-                    $filter.= $filter ? $convertOperatorToTs($currentOperator) . $filterElement : $filterElement;
+                    $filter .= $filter ? $convertOperatorToTs($currentOperator) . $filterElement : $filterElement;
                 } else {
-                    $filter.= $filter ? " " . $currentOperator . " " . $filterElement : $filterElement;
+                    $filter .= $filter ? " " . $currentOperator . " " . $filterElement : $filterElement;
                 }
-                $rank.= $rank ? $convertOperatorToTs($currentOperator) . $rankElement : $rankElement;
+                $rank .= $rank ? $convertOperatorToTs($currentOperator) . $rankElement : $rankElement;
                 $filterElement = "";
                 $currentOperator = "and";
             } elseif ($parenthesis) {
                 if ($isOnlyWord) {
-                    $filter.= $filter && $parenthesis === "(" ? $convertOperatorToTs($currentOperator) . $parenthesis : $parenthesis;
+                    $filter .= $filter && $parenthesis === "(" ? $convertOperatorToTs($currentOperator) . $parenthesis : $parenthesis;
                 } else {
-                    $filter.= $filter && $parenthesis === "(" ? " " . $currentOperator . " " . $parenthesis : $parenthesis;
+                    $filter .= $filter && $parenthesis === "(" ? " " . $currentOperator . " " . $parenthesis : $parenthesis;
                 }
-                $rank.= $rank && $parenthesis === "(" ? $convertOperatorToTs($currentOperator) . $parenthesis : $parenthesis;
+                $rank .= $rank && $parenthesis === "(" ? $convertOperatorToTs($currentOperator) . $parenthesis : $parenthesis;
                 $currentOperator = $parenthesis === "(" ? "" : "and";
                 $parenthesis = "";
             }
@@ -1116,21 +1188,22 @@ class SearchDoc
             $filter = str_replace(')(', ')&(', $filter);
             $filter = sprintf("fulltext @@ to_tsquery('french', E'%s')", pg_escape_string($filter));
         }
-        
+
         $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french', E'%s')) desc, id desc", pg_escape_string(preg_replace('/\s+/u', '&', $rank)));
-        
+
         $highlightWords = implode("|", array_merge($words, $stringWords));
-        
+
         return $filter;
     }
+
     /**
      * return a document part where general filter term is found
      *
      * @see SearchDoc::addGeneralFilter
-     * @param Doc $doc document to analyze
+     * @param Doc    $doc      document to analyze
      * @param string $beginTag delimiter begin tag
-     * @param string $endTag delimiter end tag
-     * @param int $limit file size limit to analyze
+     * @param string $endTag   delimiter end tag
+     * @param int    $limit    file size limit to analyze
      * @return mixed
      */
     public function getHighLightText(Doc & $doc, $beginTag = '<b>', $endTag = '</b>', $limit = 200, $wordMode = true)
@@ -1149,15 +1222,16 @@ class SearchDoc
             $oh->setLimit($limit);
         }
         \Anakeen\Core\DbManager::query(sprintf("select svalues from docread where id=%d", $doc->id), $text, true, true);
-        
+
         if ($wordMode) {
             $h = $oh->highlight($text, $this->highlightWords);
         } else {
             $h = $oh->rawHighlight($text, $this->highlightWords);
         }
-        
+
         return $h;
     }
+
     /**
      * detect if word is a word of language
      * if not the near word is set to do an OR condition
@@ -1186,13 +1260,14 @@ class SearchDoc
         }
         return $word;
     }
+
     /**
      * return where condition like : foo in ('x','y','z')
      *
      * @static
-     * @param array $values set of values
-     * @param string $column database column name
-     * @param bool $integer set to true if database column is numeric type
+     * @param array  $values  set of values
+     * @param string $column  database column name
+     * @param bool   $integer set to true if database column is numeric type
      * @return string
      */
     public static function sqlcond(array $values, $column, $integer = false)
@@ -1201,23 +1276,24 @@ class SearchDoc
         if (count($values) > 0) {
             if ($integer) { // for integer type
                 $sql_cond = "$column in (";
-                $sql_cond.= implode(",", $values);
-                $sql_cond.= ")";
+                $sql_cond .= implode(",", $values);
+                $sql_cond .= ")";
             } else { // for text type
                 foreach ($values as & $v) {
                     $v = pg_escape_string($v);
                 }
                 $sql_cond = "$column in ('";
-                $sql_cond.= implode("','", $values);
-                $sql_cond.= "')";
+                $sql_cond .= implode("','", $values);
+                $sql_cond .= "')";
             }
         }
-        
+
         return $sql_cond;
     }
+
     /**
      * no use access view control in filters
-     *  @see SearchDoc::overrideViewControl
+     * @see        SearchDoc::overrideViewControl
      *
      * @deprecated use { @link SearchDoc::overrideViewControl } instead
      * @return void
@@ -1227,6 +1303,7 @@ class SearchDoc
         deprecatedFunction();
         $this->overrideViewControl();
     }
+
     /**
      * no use access view control in filters
      * @api no add view access criteria in final query
@@ -1236,6 +1313,7 @@ class SearchDoc
     {
         $this->userid = 1;
     }
+
     /**
      * the return of ::search will be array of document's object
      *
@@ -1251,11 +1329,12 @@ class SearchDoc
             $this->mode = "TABLE";
         }
     }
-    
+
     public function isObjectReturn()
     {
         return ($this->mode == "ITEM");
     }
+
     /**
      * the return of ::search will be array of values
      * @deprecated use setObjectReturn(false) instead
@@ -1266,6 +1345,7 @@ class SearchDoc
         deprecatedFunction();
         $this->mode = "TABLE";
     }
+
     /**
      * add a filter to not return confidential document if current user cannot see it
      * @api add a filter to not return confidential
@@ -1282,7 +1362,7 @@ class SearchDoc
             $this->excludeFilter = '';
         }
     }
-    
+
     protected function recursiveSearchInit()
     {
         if ($this->recursiveSearch && $this->dirid) {
@@ -1292,7 +1372,7 @@ class SearchDoc
             /**
              * @var \Anakeen\SmartStructures\Search\SearchHooks $tmps
              */
-            $tmps = createTmpDoc($this->dbaccess, "SEARCH");
+            $tmps = Anakeen\Core\DocManager::createTemporaryDocument("SEARCH");
             $tmps->setValue(\SmartStructure\Attributes\Search::se_famid, $this->fromid);
             $tmps->setValue(\SmartStructure\Attributes\Search::se_idfld, $this->originalDirId);
             $tmps->setValue(\SmartStructure\Attributes\Search::se_latest, "yes");
@@ -1305,6 +1385,7 @@ class SearchDoc
             }
         }
     }
+
     /**
      * Get the SQL queries that will be executed by the search() method
      * @return array|bool boolean false on error, or array() of queries on success.
@@ -1320,7 +1401,7 @@ class SearchDoc
         $trash = $this->trash;
         $folderRecursiveLevel = $this->folderRecursiveLevel;
         $join = $this->join;
-        
+
         $normFromId = $this->normalizeFromId($fromid);
         if ($normFromId === false) {
             $this->debuginfo["error"] = sprintf(_("%s is not a family"), $fromid);
@@ -1336,18 +1417,19 @@ class SearchDoc
         }
         $table = "doc";
         $only = "";
-        
-        if ($fromid == - 1) {
+
+        if ($fromid == -1) {
             $table = "docfam";
         } elseif ($fromid < 0) {
             $only = "only";
-            $fromid = - $fromid;
+            $fromid = -$fromid;
             $table = "doc$fromid";
         } else {
             if ($fromid != 0) {
                 if (isSimpleFilter($sqlfilters) && (familyNeedDocread($dbaccess, $fromid))) {
                     $table = "docread";
-                    $fdoc = new_doc($dbaccess, $fromid);
+
+                    $fdoc = Anakeen\Core\DocManager::getFamily($fromid);
                     $sqlfilters[-4] = \Anakeen\Core\DbManager::getSqlOrCond(array_merge(array(
                         $fromid
                     ), array_keys($fdoc->GetChildFam())), "fromid", true);
@@ -1365,17 +1447,17 @@ class SearchDoc
             if (preg_match('/(?P<attr>[a-z0-9_\-:]+)\s*(?P<operator>=|<|>|<=|>=)\s*(?P<family>[a-z0-9_\-:]+)\((?P<family_attr>[^\)]*)\)/', $join, $reg)) {
                 $joinid = \Anakeen\Core\DocManager::getFamilyIdFromName($reg['family']);
                 $jointable = ($joinid) ? "doc" . $joinid : $reg['family'];
-                
+
                 $sqlfilters[] = sprintf("%s.%s %s %s.%s", $table, $reg['attr'], $reg['operator'], $jointable, $reg['family_attr']); // "id = dochisto(id)";
                 $maintable = $table;
-                $table.= ", " . $jointable;
+                $table .= ", " . $jointable;
             } else {
                 \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("search join syntax error : %s"), $join));
                 return false;
             }
         }
         $maintabledot = ($maintable && $dirid == 0) ? $maintable . '.' : '';
-        
+
         if ($distinct) {
             $selectfields = "distinct on ($maintable.initid) $maintable.*";
         } else {
@@ -1388,7 +1470,7 @@ class SearchDoc
         if (count($sqlfilters) > 0) {
             $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
         }
-        
+
         $qsql = '';
         if ($dirid == 0) {
             //-------------------------------------------
@@ -1397,13 +1479,13 @@ class SearchDoc
             if (strpos(implode(",", $sqlfilters), "archiveid") === false) {
                 $sqlfilters[-4] = $maintabledot . "archiveid is null";
             }
-            
+
             if ($trash === "only") {
                 $sqlfilters[-3] = $maintabledot . "doctype = 'Z'";
             } elseif ($trash !== "also") {
                 $sqlfilters[-3] = $maintabledot . "doctype != 'Z'";
             }
-            
+
             if (($latest) && (($trash == "no") || (!$trash))) {
                 $sqlfilters[-1] = $maintabledot . "locked != -1";
             }
@@ -1417,7 +1499,8 @@ class SearchDoc
             //-------------------------------------------
             // in a specific folder
             //-------------------------------------------
-            $fld = new_Doc($dbaccess, $dirid);
+
+            $fld = Anakeen\Core\DocManager::getDocument($dirid);
             if ($fld->defDoctype != 'S') {
                 /**
                  * @var \Anakeen\SmartStructures\Dir\DirHooks $fld
@@ -1443,13 +1526,13 @@ class SearchDoc
                 if (count($sqlfilters) > 0) {
                     $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
                 }
-                
+
                 $sqlfld = "dirid=$dirid and qtype='S'";
                 if ($fromid == 2) {
-                    $sqlfld.= " and doctype='D'";
+                    $sqlfld .= " and doctype='D'";
                 }
                 if ($fromid == 5) {
-                    $sqlfld.= " and doctype='S'";
+                    $sqlfld .= " and doctype='S'";
                 }
                 if ($hasFilters) {
                     $sqlcond = " (" . implode(") and (", $sqlfilters) . ")";
@@ -1494,7 +1577,7 @@ class SearchDoc
                     switch ($ldocsearch[0]["qtype"]) {
                         case "M": // complex query
                             // $sqlM=$ldocsearch[0]["query"];
-                            $fld = new_Doc($dbaccess, $dirid);
+                            $fld = Anakeen\Core\DocManager::getDocument($dirid);
                             /**
                              * @var \Anakeen\SmartStructures\Search\SearchHooks $fld
                              */
@@ -1505,7 +1588,7 @@ class SearchDoc
                             }
                             $fld->folderRecursiveLevel = $folderRecursiveLevel;
                             $tsqlM = $fld->getQuery();
-                            $qsql=[];
+                            $qsql = [];
                             foreach ($tsqlM as $sqlM) {
                                 if ($sqlM != false) {
                                     if (!preg_match("/doctype[ ]*=[ ]*'Z'/", $sqlM, $reg)) {
@@ -1550,6 +1633,7 @@ class SearchDoc
             $qsql
         );
     }
+
     /**
      * Insert an additional relation in the FROM clause of the given query
      * to perform a sort on a label/title instead of a key/id.
@@ -1559,9 +1643,9 @@ class SearchDoc
      * which will be used later when the "ORDER BY" directive will be
      * constructed.
      *
-     * @param int $fromid The identifier of the family which the query is based on
+     * @param int    $fromid The identifier of the family which the query is based on
      * @param string $column The name of the column on which the result is supposed to be be ordered
-     * @param string $sqlM The SQL query in which an additional FROM relation should be injected
+     * @param string $sqlM   The SQL query in which an additional FROM relation should be injected
      * @return string The modified query
      */
     private function injectFromClauseForOrderByLabel($fromid, $column, $sqlM)
@@ -1584,7 +1668,7 @@ class SearchDoc
                 }
                 $map = sprintf('(VALUES %s) AS map_%s(key, label)', join(', ', $mapValues), $attr->id);
                 $where = sprintf("map_%s.key = coalesce(doc%s.%s, '')", $attr->id, $fromid, $attr->id);
-                
+
                 $sqlM = preg_replace('/ where /i', ", $map where ($where) and ", $sqlM);
                 $this->orderby = preg_replace(sprintf('/\b%s\b/', preg_quote($column, "/")), sprintf("map_%s.label", $attr->id), $this->orderby);
                 break;
@@ -1604,6 +1688,7 @@ class SearchDoc
         }
         return $sqlM;
     }
+
     /**
      * Get the NormalAttribute object corresponding to the column of the given family
      *
@@ -1613,8 +1698,8 @@ class SearchDoc
      */
     private function _getAttributeFromColumn($fromid, $column)
     {
-        $fam = new_Doc($this->dbaccess, $fromid);
-        if (!$fam->isAlive()) {
+        $fam = Anakeen\Core\DocManager::getFamily($fromid);
+        if (!$fam) {
             return false;
         }
         $attrList = $fam->getNormalAttributes();

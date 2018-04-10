@@ -90,7 +90,7 @@ class TestGetEnum extends TestCaseDcpCommonFamily
     public function testInheritedGetEnum($familyIdList, $attrId, $expectedEnum)
     {
         /**
-         * @var \DocFam $fam
+         * @var \Anakeen\Core\SmartStructure $fam
          * @var \Anakeen\Core\SmartStructure\NormalAttribute $attr
          */
         foreach ($familyIdList as $familyId) {
@@ -112,7 +112,7 @@ class TestGetEnum extends TestCaseDcpCommonFamily
     public function testInheritedAddEnum($addEnums, $expectedEnums)
     {
         /**
-         * @var \DocFam $fam
+         * @var \Anakeen\Core\SmartStructure $fam
          * @var \Anakeen\Core\SmartStructure\NormalAttribute $attr
          */
         foreach ($addEnums as $familyId => $attrs) {

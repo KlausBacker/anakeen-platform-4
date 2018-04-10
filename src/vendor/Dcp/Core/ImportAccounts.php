@@ -262,7 +262,7 @@ class ImportAccounts
     {
         if (!isset($this->familiesXsd[$familyName])) {
             /**
-             * @var \DocFam $family
+             * @var \Anakeen\Core\SmartStructure $family
              */
 
             $family = DocManager::getFamily($familyName);

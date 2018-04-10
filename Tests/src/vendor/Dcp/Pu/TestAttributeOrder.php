@@ -32,7 +32,7 @@ class TestAttributeOrder extends TestCaseDcpCommonFamily
     public function testOrderAttribute($family, $expectedOrders)
     {
         /**
-         * @var \DocFam $fam
+         * @var \Anakeen\Core\SmartStructure $fam
          */
         $fam = new_doc(self::$dbaccess, $family);
         $this->assertTrue($fam->isAlive() , sprintf("family %s not alive", $family));
@@ -62,7 +62,7 @@ class TestAttributeOrder extends TestCaseDcpCommonFamily
      */
     public function testOptAttribute($family, $expectedOpts) {
         /**
-         * @var \DocFam $fam
+         * @var \Anakeen\Core\SmartStructure $fam
          */
         $fam = new_doc(self::$dbaccess, $family);
         $this->assertTrue($fam->isAlive() , sprintf("family %s not alive", $family));

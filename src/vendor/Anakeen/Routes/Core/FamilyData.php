@@ -14,7 +14,7 @@ use Anakeen\Router\Exception;
 class FamilyData extends DocumentData
 {
     /**
-     * @var \DocFam
+     * @var \Anakeen\Core\SmartStructure 
      */
     protected $_family = null;
     /**

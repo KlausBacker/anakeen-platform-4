@@ -48,7 +48,7 @@ class CheckProfid extends CheckData
                     throw $e;
                 }
                 if ($fam["doctype"] === "C") {
-                    $this->profil = new DocFam();
+                    $this->profil = new \Anakeen\Core\SmartStructure();
                     $this->profil->affect($fam);
                 }
             }

@@ -42,7 +42,7 @@ class ExportAccounts
     protected $sessionKey = '';
     protected $exportCryptedPassword = false;
     /**
-     * @var \DocFam[]
+     * @var \Anakeen\Core\SmartStructure []
      */
     private $families = array();
 
@@ -482,7 +482,7 @@ class ExportAccounts
     {
         if (empty($this->schemaWritted[$familyName])) {
             /**
-             * @var \DocFam $fam
+             * @var \Anakeen\Core\SmartStructure $fam
              */
             $fam = new_doc("", $familyName);
             $output = sprintf("%s/%s.xsd", $this->exportSchemaDirectory, strtolower($fam->name));

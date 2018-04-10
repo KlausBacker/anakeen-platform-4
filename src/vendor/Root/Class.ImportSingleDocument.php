@@ -53,7 +53,7 @@ class ImportSingleDocument
      */
     public $folderId;
     /**
-     * @var DocFam
+     * @var \Anakeen\Core\SmartStructure 
      */
     private $doc;
     /**

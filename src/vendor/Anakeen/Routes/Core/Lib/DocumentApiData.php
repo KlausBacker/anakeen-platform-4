@@ -348,7 +348,7 @@ class DocumentApiData
         if ($attribute->inArray()) {
             if ($this->_document->doctype === "C") {
                 /**
-                 * @var \DocFam $family
+                 * @var \Anakeen\Core\SmartStructure $family
                  */
                 $family = $this->_document;
                 $defaultValue = $family->getDefValue($attribute->id);

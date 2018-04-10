@@ -540,7 +540,7 @@ function getDocObject($dbaccess, $v, $k = 0)
 
     if ($v["doctype"] == "C") {
         if (!isset($_OgetDocObject[$k]["family"])) {
-            $_OgetDocObject[$k]["family"] = new DocFam($dbaccess);
+            $_OgetDocObject[$k]["family"] = new \Anakeen\Core\SmartStructure($dbaccess);
         }
         $_OgetDocObject[$k]["family"]->Affect($v, true);
         $v["fromid"] = "family";

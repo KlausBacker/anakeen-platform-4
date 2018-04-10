@@ -43,7 +43,7 @@ class DocManager
                 self::requireFamilyClass($fromid);
                 $classname = "\\Doc$fromid";
             } elseif ($fromid == -1) {
-                $classname = \DocFam::class;
+                $classname = \Anakeen\Core\SmartStructure::class;
             }
             if ($classname) {
                 /* @var  \Doc $doc */
@@ -65,7 +65,7 @@ class DocManager
      *
      * @throws Exception
      * @api Get document object from identifier
-     * @return \DocFam return null if id not match a family identifier
+     * @return \Anakeen\Core\SmartStructure return null if id not match a family identifier
      */
     public static function getFamily($familyIdentifier, $useCache = true)
     {
@@ -76,13 +76,13 @@ class DocManager
                 $cacheDocument = self::cache()->getDocumentFromCache($id);
                 if ($cacheDocument && $cacheDocument->id == $id) {
                     /**
-                     * @var \DocFam $cacheDocument
+                     * @var \Anakeen\Core\SmartStructure $cacheDocument
                      */
                     return $cacheDocument;
                 }
             }
 
-            $doc = new \DocFam("", $id);
+            $doc = new \Anakeen\Core\SmartStructure("", $id);
 
             if ($useCache && $doc->initid) {
                 self::cache()->addDocument($doc);
@@ -238,7 +238,7 @@ class DocManager
             throw new Exception("APIDM0001", $familyIdentifier);
         }
         /**
-         * @var \DocFam $family
+         * @var \Anakeen\Core\SmartStructure $family
          */
         $family = self::getDocument($famId);
         if ($family === null) {
@@ -290,7 +290,7 @@ class DocManager
     {
         $doc = self::initializeDocument($familyIdentifier);
         /**
-         * @var \DocFam $family
+         * @var \Anakeen\Core\SmartStructure $family
          */
         $family = self::getFamily($doc->fromid);
 
@@ -328,7 +328,7 @@ class DocManager
         $doc->doctype = 'T';
         if ($useDefaultValues) {
             /**
-             * @var \DocFam $family
+             * @var \Anakeen\Core\SmartStructure $family
              */
             $family = self::getDocument($doc->fromid, false);
             $doc->setDefaultValues($family->getDefValues());
@@ -385,7 +385,7 @@ class DocManager
             throw new Exception("APIDM0104", print_r($rawDocument, true));
         }
         if ($rawDocument["doctype"] == "C") {
-            $d = new \DocFam();
+            $d = new \Anakeen\Core\SmartStructure();
         } else {
             if ($rawDocument["fromid"] > 0) {
                 $d = self::initializeDocument($rawDocument["fromid"]);
@@ -760,7 +760,7 @@ class DocManager
         $fromName = null;
 
         $result = pg_query($dbid, sprintf(
-            "select docfam.name from docfrom, docfam where docfrom.id=%d and docfam.id=docfrom.fromid",
+            "select docfam.name from docfrom, \Anakeen\Core\SmartStructure where docfrom.id=%d and docfam.id=docfrom.fromid",
             $documentId
         ));
         if ($result) {

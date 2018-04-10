@@ -24,7 +24,7 @@ class DSearchHooks extends \SmartStructure\Search
     public $defaultview = "FREEDOM:VIEWDSEARCH"; #N_("not include") N_("begin by") N_("not equal") N_("&gt; or equal") N_("&lt; or equal")  N_("content file word") N_("content file expression")
 
     /**
-     * @var \DocFam|null
+     * @var \Anakeen\Core\SmartStructure |null
      */
     protected $searchfam = null;
 

@@ -351,7 +351,7 @@ function lfamilies($dbaccess, $name = '', $subfam = "")
     // HERE HERE HERE
     $pattern_name = preg_quote($name, "/");
     foreach ($tinter as $v) {
-        $ftitle = DocFam::getLangTitle($v);
+        $ftitle = \Anakeen\Core\SmartStructure::getLangTitle($v);
         if (($name == "") || (preg_match("/$pattern_name/i", $ftitle, $reg))) {
             $tr[] = array(
                 $ftitle,
@@ -1157,7 +1157,7 @@ function getDocAttr($dbaccess, $famid, $name = "")
 // liste des attributs triable d'une famille
 function getSortAttr($dbaccess, $famid, $name = "", $sort = true)
 {
-    $docfam = new DocFam($dbaccess, $famid);
+    $docfam = new \Anakeen\Core\SmartStructure($dbaccess, $famid);
     //'lsociety(D,US_SOCIETY):US_IDSOCIETY,US_SOCIETY,
     $doc = createDoc($dbaccess, $famid, false);
 
@@ -1198,7 +1198,7 @@ function getSortAttr($dbaccess, $famid, $name = "", $sort = true)
 function getSortProperties($dbaccess, $famid, $name = "")
 {
     $pattern = preg_quote($name, "/");
-    $docfam = new DocFam($dbaccess, $famid);
+    $docfam = new \Anakeen\Core\SmartStructure($dbaccess, $famid);
     $props = $docfam->getSortProperties();
     $ret = array();
     foreach ($props as $propName => $config) {

@@ -880,7 +880,7 @@ class FamilyImport
     public static function refreshPhpPgDoc($dbaccess, $docid)
     {
         $err = '';
-        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocFam::class);
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \Anakeen\Core\SmartStructure::class);
         $query->AddQuery("doctype='C'");
         $query->AddQuery("id=$docid");
         $table1 = $query->Query(0, 0, "TABLE");

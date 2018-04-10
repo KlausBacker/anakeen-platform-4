@@ -1630,7 +1630,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @deprecated use {@link Doc::getFamilyDocument} instead
      * @see        Doc::getFamilyDocument
-     * @return DocFam
+     * @return \Anakeen\Core\SmartStructure 
      */
     final public function getFamDoc()
     {
@@ -1642,19 +1642,19 @@ create unique index i_docir on doc(initid, revision);";
      * return the family document where the document comes from
      *
      * @api return family odcument
-     * @return DocFam
+     * @return \Anakeen\Core\SmartStructure 
      */
     final public function getFamilyDocument()
     {
         /**
-         * @var DocFam $famdoc
+         * @var \Anakeen\Core\SmartStructure $famdoc
          */
         static $famdoc = null;
         if (($famdoc === null) || ($famdoc->id != $this->fromid)) {
             $famdoc = DocManager::getFamily($this->fromid);
         }
         if (!$famdoc) {
-            $famdoc = new \DocFam();
+            $famdoc = new \Anakeen\Core\SmartStructure();
         }
         return $famdoc;
     }
@@ -7713,7 +7713,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function sqlTrigger($onlydrop = false, $code = false)
     {
-        if (get_class($this) == "DocFam") {
+        if (get_class($this) === \Anakeen\Core\SmartStructure::class) {
             $cid = "fam";
             $famId = $this->id;
         } else {

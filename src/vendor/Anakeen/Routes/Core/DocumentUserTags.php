@@ -25,7 +25,7 @@ class DocumentUserTags
      */
     protected $_document = null;
     /**
-     * @var \DocFam
+     * @var \Anakeen\Core\SmartStructure 
      */
     protected $_family = null;
 

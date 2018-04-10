@@ -764,7 +764,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      * Add message to log (syslog)
      * The message is also displayed in the console of the web interface
      *
-     * @param string $code message to add to log
+     * @param string|string[] $code message to add to log
      * @param int    $cut  truncate message longer than this length (set to <= 0 to not truncate the message)(default is 0).
      */
     public function addLogMsg($code, $cut = 0)

@@ -11,7 +11,7 @@ class CheckEnd extends CheckData
      */
     const maxSqlColumn = 1600;
     /**
-     * @var DocFam
+     * @var \Anakeen\Core\SmartStructure 
      */
     protected $doc;
     /**

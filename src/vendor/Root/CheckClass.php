@@ -15,7 +15,7 @@ class CheckClass extends CheckData
      */
     protected $fileName;
     /**
-     * @var DocFam
+     * @var \Anakeen\Core\SmartStructure 
      */
     protected $doc;
     protected $disableInheritanceCondition = false;
