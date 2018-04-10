@@ -11,8 +11,6 @@
  * constant for document family identifier in concordance with the file "FDL/init.freedom"
  *
  */
-define("FAM_BASE", 1);
-define("FAM_DIR", 2);
 define("FAM_ACCESSDOC", 3);
 define("FAM_ACCESSDIR", 4);
 define("FAM_SEARCH", 5);

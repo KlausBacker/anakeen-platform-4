@@ -29,13 +29,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
      */
     public $folderRecursiveLevel = 2;
 
-    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
-    {
-        parent::__construct($dbaccess, $id, $res, $dbid);
-        if (((!isset($this->fromid))) || ($this->fromid == "")) {
-            $this->fromid = FAM_SEARCH;
-        }
-    }
+
 
     public function preConsultation()
     {
