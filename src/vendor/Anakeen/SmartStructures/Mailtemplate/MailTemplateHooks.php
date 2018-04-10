@@ -9,6 +9,8 @@
  */
 namespace Anakeen\SmartStructures\Mailtemplate;
 
+use Anakeen\Core\ContextManager;
+
 class MailTemplateHooks extends \Anakeen\SmartStructures\Document
 {
     /**
@@ -336,7 +338,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
             }
         } //nobody to send data
         if ($this->sendercopy && \Anakeen\Core\ContextManager::getApplicationParam("FDL_BCC") == "yes") {
-            $umail = getMailAddr($this->userid);
+            $umail = getMailAddr(ContextManager::getCurrentUser()->id);
             if ($umail != "") {
                 $bcc.= (trim($bcc) == "" ? "" : ",") . $umail;
             }

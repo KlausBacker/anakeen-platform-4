@@ -22,11 +22,6 @@ define("MENU_ACTIVE", 1);
 define("MENU_INVISIBLE", 2);
 define("MENU_INACTIVE", 0);
 
-define('POPUP_INACTIVE', 0);
-define('POPUP_ACTIVE', 1);
-define('POPUP_CTRLACTIVE', 3);
-define('POPUP_CTRLINACTIVE', 4);
-define('POPUP_INVISIBLE', 2);
 
 define("DELVALUE", 'DEL??');
 /**#@-*/
@@ -35,7 +30,6 @@ define("DELVALUE", 'DEL??');
  */
 define("MAXGDOCS", 20);
 
-define("REGEXPFILE", "([^\|]*)\|([0-9]*)\|?(.*)?");
 define("PREGEXPFILE", "/(?P<mime>[^\|]*)\|(?P<vid>[0-9]*)\|?(?P<name>.*)?/");
 
 
@@ -49,7 +43,7 @@ use \Anakeen\Core\Internal\StoreInfo;
 /**
  * Document Class
  */
-class Doc extends DocCtrl
+class Doc extends \Anakeen\Core\Internal\DbObj
 {
     const USEMASKCVVIEW = -1;
     const USEMASKCVEDIT = -2;
@@ -575,6 +569,21 @@ class Doc extends DocCtrl
      */
     protected $attrids;
     /**
+     * extend acl definition
+     * used in WDoc and CVDoc
+     * @var array
+     */
+    public $extendedAcls = array();
+    /**
+     * @var int  current user id
+     * @deprecated
+     */
+    public $userid;
+    /**
+ * @var int user permission mask
+ */
+    public $uperm;
+    /**
      * param value cache
      *
      * @var array
@@ -816,6 +825,18 @@ create unique index i_docir on doc(initid, revision);";
      */
     private $_setValueNeedCompleteArray = true;
 
+
+    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
+    {
+        if (!isset($this->attributes->attr)) {
+            if (!isset($this->attributes)) {
+                $this->attributes = new stdClass();
+            }
+            $this->attributes->attr = array();
+        }
+        parent::__construct($dbaccess, $id, $res, $dbid);
+    }
+
     /**
      * display document main properties as string
      *
@@ -884,7 +905,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
                 $this->sendTextToEngine();
                 if ($this->dprofid > 0) {
-                    $this->setProfil($this->dprofid); // recompute profil if needed
+                    $this->accessControl()->setProfil($this->dprofid); // recompute profil if needed
                     $this->modify(true, array(
                         "profid"
                     ), true);
@@ -966,7 +987,7 @@ create unique index i_docir on doc(initid, revision);";
             $this->locked = "0";
         }
         if ($this->owner == "") {
-            $this->owner = $this->userid;
+            $this->owner = ContextManager::getCurrentUser()->id;
         }
         //      if ($this->state == "") $this->state=$this->firstState;
         $this->version = $this->getVersion();
@@ -1103,7 +1124,7 @@ create unique index i_docir on doc(initid, revision);";
         \Anakeen\Core\Utils\MiscDoc::fixMultipleAliveDocument($this);
 
         if ($this->hasChanged) {
-            $this->computeDProfil();
+            $this->accessControl()->computeDProfil();
             if ($this->doctype != 'C') {
                 $this->regenerateTemplates();
                 $this->UpdateVaultIndex();
@@ -1496,7 +1517,7 @@ create unique index i_docir on doc(initid, revision);";
             );
             return ($err);
         }
-        if ($this->userid == \Anakeen\Core\Account::ADMIN_ID) {
+        if (ContextManager::getCurrentUser()->id == \Anakeen\Core\Account::ADMIN_ID) {
             return "";
         } // admin can do anything but not modify fixed doc
         if ($verifyDomain && ($this->lockdomainid > 0)) {
@@ -1505,7 +1526,7 @@ create unique index i_docir on doc(initid, revision);";
             if ($this->withoutControl) {
                 return "";
             } // no more test if disableEditControl activated
-            if (($this->locked != 0) && (abs($this->locked) != $this->userid)) {
+            if (($this->locked != 0) && (abs($this->locked) != ContextManager::getCurrentUser()->id)) {
                 $user = new \Anakeen\Core\Account("", abs($this->locked));
                 if ($this->locked < -1) {
                     $err = sprintf(
@@ -1567,7 +1588,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function canUnLockFile()
     {
-        if ($this->userid == \Anakeen\Core\Account::ADMIN_ID) {
+        if (ContextManager::getCurrentUser()->id == \Anakeen\Core\Account::ADMIN_ID) {
             return "";
         } // admin can do anything
         $err = "";
@@ -1604,11 +1625,11 @@ create unique index i_docir on doc(initid, revision);";
     final public function isLocked($my = false)
     {
         if ($my) {
-            if ($this->userid == 1) {
+            if (ContextManager::getCurrentUser()->id == 1) {
                 if ($this->locked == 1) {
                     return false;
                 }
-            } elseif (abs($this->locked) == $this->userid) {
+            } elseif (abs($this->locked) == ContextManager::getCurrentUser()->id) {
                 return false;
             }
         }
@@ -1622,7 +1643,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function isConfidential()
     {
-        return (($this->confidential > 0) && ($this->controlId($this->profid, 'confidential') != ""));
+        return (($this->confidential > 0) && ($this->accessControl()->controlId($this->profid, 'confidential') != ""));
     }
 
     /**
@@ -1630,7 +1651,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @deprecated use {@link Doc::getFamilyDocument} instead
      * @see        Doc::getFamilyDocument
-     * @return \Anakeen\Core\SmartStructure 
+     * @return \Anakeen\Core\SmartStructure
      */
     final public function getFamDoc()
     {
@@ -1642,7 +1663,7 @@ create unique index i_docir on doc(initid, revision);";
      * return the family document where the document comes from
      *
      * @api return family odcument
-     * @return \Anakeen\Core\SmartStructure 
+     * @return \Anakeen\Core\SmartStructure
      */
     final public function getFamilyDocument()
     {
@@ -2019,7 +2040,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function undelete()
     {
-        if (($this->control('delete') == "") || ($this->userid == 1)) {
+        if (($this->control('delete') == "") || (ContextManager::getCurrentUser()->id == 1)) {
             if (!$this->isAlive()) {
                 $err = $this->preUndelete();
                 if ($err) {
@@ -5244,7 +5265,7 @@ create unique index i_docir on doc(initid, revision);";
             } else {
                 $err = sprintf(_("Method [%s] not exists"), $method);
                 \Anakeen\Core\Utils\System::addWarningMsg($err);
-                error_log($err . print_r(getDebugStack(), true));
+                error_log($err . print_r(\Anakeen\Core\Internal\Debug::getDebugStack(), true));
                 return null;
             }
         }
@@ -5653,7 +5674,7 @@ create unique index i_docir on doc(initid, revision);";
         $docid = ($allrevision) ? $this->initid : $this->id;
         $utag = new DocUTag($this->dbaccess, array(
             $docid,
-            $this->userid,
+            ContextManager::getCurrentUser()->id,
             $tag
         ));
         return $utag->isAffected();
@@ -5675,7 +5696,7 @@ create unique index i_docir on doc(initid, revision);";
             return "";
         }
         if ($uid === null) {
-            $uid = $this->userid;
+            $uid = ContextManager::getCurrentUser()->id;
         }
 
 
@@ -5744,7 +5765,7 @@ create unique index i_docir on doc(initid, revision);";
             return "";
         }
         if (!$uid) {
-            $uid = $this->userid;
+            $uid = ContextManager::getCurrentUser()->id;
         }
         $err = $this->exec_query(sprintf("delete from docutag where initid=%d and uid=%d", $this->initid, $uid));
 
@@ -5791,7 +5812,7 @@ create unique index i_docir on doc(initid, revision);";
 
         $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \DocUTag::class);
         if (!$allusers) {
-            $q->addQuery("uid=" . intval($this->userid));
+            $q->addQuery("uid=" . intval(ContextManager::getCurrentUser()->id));
         }
         if ($tag) {
             $q->addQuery("tag = '" . pg_escape_string($tag) . "'");
@@ -5861,7 +5882,7 @@ create unique index i_docir on doc(initid, revision);";
         $this->locked = -1; // the file is archived
         $this->lmodify = 'N'; // not locally modified
         $this->allocated = 0; // cannot allocated fixed document
-        $this->owner = $this->userid; // rev user
+        $this->owner = ContextManager::getCurrentUser()->id; // rev user
         $this->postitid = 0;
         $date = gettimeofday();
         $this->revdate = $date['sec']; // change rev date
@@ -5927,7 +5948,7 @@ create unique index i_docir on doc(initid, revision);";
 
         $this->refresh(); // to recompute possible dynamic profil variable
         if ($this->dprofid > 0) {
-            $this->setProfil($this->dprofid);
+            $this->accessControl()->setProfil($this->dprofid);
         } // recompute profil if needed
         $err = $this->modify(); // need to applicate SQL triggers
         $this->UpdateVaultIndex();
@@ -6272,7 +6293,7 @@ create unique index i_docir on doc(initid, revision);";
             $copy->dprofid = 0;
         } else {
             $cdoc = $this->getFamilyDocument();
-            $copy->setProfil($cdoc->cprofid);
+            $copy->accessControl()->setProfil($cdoc->cprofid);
         }
 
         $err = $copy->preDuplicate($this);
@@ -6460,7 +6481,7 @@ create unique index i_docir on doc(initid, revision);";
                 $this->archiveid = ""; // set to null
                 $restoreprofil = abs($this->dprofid);
                 $this->dprofid = 0;
-                $err = $this->setProfil($restoreprofil);
+                $err = $this->accessControl()->setProfil($restoreprofil);
                 if (!$err) {
                     $err = $this->modify(true, array(
                         "locked",
@@ -6512,7 +6533,7 @@ create unique index i_docir on doc(initid, revision);";
             if ($err != "") {
                 return $err;
             }
-            $userid = $this->userid;
+            $userid = ContextManager::getCurrentUser()->id;
         } else {
             $this->disableEditControl();
         }
@@ -6639,7 +6660,7 @@ create unique index i_docir on doc(initid, revision);";
                         )
                     ));
 
-                    $this->delUTag($this->userid, "AFFECTED"); // TODO need delete all AFFECTED tag
+                    $this->delUTag(ContextManager::getCurrentUser()->id, "AFFECTED"); // TODO need delete all AFFECTED tag
                     $this->addUTag($userid, "AFFECTED", $comment);
                     if ($autolock) {
                         $err = $this->lock(false, $userid);
@@ -6677,7 +6698,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         $err = $this->canEdit();
         if ($err == "") {
-            if ((!$this->withoutControl) && ($this->userid != $this->allocated)) {
+            if ((!$this->withoutControl) && (ContextManager::getCurrentUser()->id != $this->allocated)) {
                 $err = $this->control("unlock");
             }
         }
@@ -6687,7 +6708,7 @@ create unique index i_docir on doc(initid, revision);";
             if ($u->isAffected()) {
                 $err = $this->unlock();
                 if ($err == "") {
-                    $this->delUTag($this->userid, "AFFECTED"); // TODO need delete all AFFECTED tag
+                    $this->delUTag(ContextManager::getCurrentUser()->id, "AFFECTED"); // TODO need delete all AFFECTED tag
                     if ($revision) {
                         $this->revise(sprintf(_("Unallocated of %s %s : %s"), $u->firstname, $u->lastname, $comment));
                     } else {
@@ -7639,16 +7660,16 @@ create unique index i_docir on doc(initid, revision);";
         if (!$this->isAffected()) {
             return '';
         }
-        if (($this->profid <= 0) || ($this->userid == \Anakeen\Core\Account::ADMIN_ID)) {
+        if (($this->profid <= 0) || (ContextManager::getCurrentUser()->id == \Anakeen\Core\Account::ADMIN_ID)) {
             return ""; // no profil or admin
         }
-        $err = $this->controlId($this->profid, $aclname, $strict);
+        $err = $this->accessControl()->controlId($this->profid, $aclname, $strict);
         if ($err != "") {
             return $this->noPrivilegeMessage($this, $aclname);
         } else {
             // Edit rights on profiles must also be controlled by the 'modifyacl' acl
-            if (($aclname == 'edit' || $aclname == 'delete' || $aclname == 'unlock') && $this->isRealProfile()) {
-                return $this->controlId($this->profid, 'modifyacl', $strict);
+            if (($aclname == 'edit' || $aclname == 'delete' || $aclname == 'unlock') && $this->accessControl()->isRealProfile()) {
+                return $this->accessControl()->controlId($this->profid, 'modifyacl', $strict);
             }
         }
         return '';
@@ -7687,7 +7708,7 @@ create unique index i_docir on doc(initid, revision);";
             if (!$uid) {
                 return _("control :: user identifier is null");
             }
-            return $this->controlUserId($this->profid, $uid, $aclname);
+            return $this->accessControl()->controlUserId($this->profid, $uid, $aclname);
         }
         return "";
     }
@@ -8352,7 +8373,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
 
-
     /**
      * Affect a logical name that can be use as unique reference of a document independant of database.
      *
@@ -8661,7 +8681,7 @@ create unique index i_docir on doc(initid, revision);";
             return $action->parent->getImageLink("revised.png", true, $size);
         } elseif ($this->lockdomainid > 0) {
             if ($this->locked > 0) {
-                if ((abs($this->locked) == $this->userid)) {
+                if ((abs($this->locked) == ContextManager::getCurrentUser()->id)) {
                     return $action->parent->getImageLink("lockorange.png", true, $size);
                 } else {
                     return $action->parent->getImageLink("lockred.png", true, $size);
@@ -8669,9 +8689,9 @@ create unique index i_docir on doc(initid, revision);";
             } else {
                 return $action->parent->getImageLink("lockorange.png", true, $size);
             }
-        } elseif ($this->allocated == $this->userid) {
+        } elseif ($this->allocated == ContextManager::getCurrentUser()->id) {
             return $action->parent->getImageLink("lockblue.png", true, $size);
-        } elseif ((abs($this->locked) == $this->userid)) {
+        } elseif ((abs($this->locked) == ContextManager::getCurrentUser()->id)) {
             return $action->parent->getImageLink("lockgreen.png", true, $size);
         } elseif ($this->locked != 0) {
             return $action->parent->getImageLink("lockred.png", true, $size);
@@ -9721,5 +9741,17 @@ create unique index i_docir on doc(initid, revision);";
     protected function getCustomSearchValues()
     {
         return [];
+    }
+
+    /**
+     * @return \Anakeen\Core\Internal\DocumentAccess
+     */
+    public function accessControl()
+    {
+        static $ac;
+        if (!$ac) {
+            $ac = new \Anakeen\Core\Internal\DocumentAccess();
+        }
+        return $ac->setDocument($this);
     }
 }

@@ -810,7 +810,7 @@ function getFldDoc($dbaccess, $dirid, $sqlfilters = array(), $limit = 100, $real
             } elseif ($t[$v["childid"]]["archiveid"]) {
                 unset($t[$v["childid"]]);
             } else {
-                if ((\Anakeen\Core\ContextManager::getCurrentUser()->id != 1) && ($t[$v["childid"]]["uperm"] & (1 << POS_VIEW)) == 0) { // control view
+                if ((\Anakeen\Core\ContextManager::getCurrentUser()->id != 1) && ($t[$v["childid"]]["uperm"] & (1 << \Anakeen\Core\Internal\DocumentAccess::POS_VIEW)) == 0) { // control view
                     unset($t[$v["childid"]]);
                 }
             }
@@ -1179,7 +1179,7 @@ function getFamilyCreationIds($dbaccess, $uid, $tfid = array())
         $query->AddQuery(GetSqlCond($tfid, "id"));
     }
     if ($uid != 1) {
-        $perm = (2 << (POS_CREATE - 1)) + (2 << (POS_ICREATE - 1));
+        $perm = (2 << (\Anakeen\Core\Internal\DocumentAccess::POS_CREATE - 1)) + (2 << (\Anakeen\Core\Internal\DocumentAccess::POS_ICREATE - 1));
         $query->AddQuery(sprintf("((profid = 0) OR hasaprivilege('%s', profid, %d))", DocPerm::getMemberOfVector($uid), $perm));
     }
     $l = $query->Query(0, 0, "TABLE");

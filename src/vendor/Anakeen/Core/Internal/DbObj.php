@@ -65,8 +65,8 @@ class DbObj
      * @see Affect()
      */
     public $isset = false; // indicate if fields has been affected (call affect methods)
-    public static $savepoint = array();
-    public static $lockpoint = array();
+
+
     public static $sqlStrict = true;
     /**
      * @var string error message

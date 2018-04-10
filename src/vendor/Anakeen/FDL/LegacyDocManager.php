@@ -504,8 +504,7 @@ function controlTdoc(&$tdoc, $aclname)
     static $_ODocCtrol = false;
     static $_memberOf = false; // current user
     if (!$_ODocCtrol) {
-        $cd = new DocCtrl();
-        $_ODocCtrol = $cd;
+        $_ODocCtrol = true;
         $_memberOf = DocPerm::getMemberOfVector();
     }
 
@@ -518,9 +517,9 @@ function controlTdoc(&$tdoc, $aclname)
 
         $tdoc["uperm"] = $uperm;
     }
-    $err = $_ODocCtrol->ControlUp($tdoc["uperm"], $aclname);
 
-    return ($err == "");
+
+    return (\Anakeen\Core\Internal\DocumentAccess::hasControl($tdoc["uperm"], $aclname));
 }
 
 /**
@@ -1045,46 +1044,6 @@ function createAutoFolder(&$doc)
     return $fldid;
 }
 
-/**
- * get personal profil
- *
- * return the profil named "PERSONAL-PROFIL-<$uid>"
- * the document return is a folder profil that can be use also for "normal" documents
- *
- * @return Anakeen\SmartStructures\Profiles\PDirHooks may be return false if no hability to create the document
- */
-function getMyProfil($dbaccess, $create = true)
-{
-    global $action;
-    $uid = $action->user->id;
-    $pname = sprintf("PERSONAL-PROFIL-%d", $uid);
-    $p = new_doc($dbaccess, $pname);
-    if (!$p->isAffected()) {
-        if ($create) {
-            $p = createDoc($dbaccess, "PDIR");
-            if ($p) {
-                $p->name = $pname;
-                $p->setValue(
-                    "ba_title",
-                    sprintf(_("Personal profile for %s %s"), $action->user->firstname, $action->user->lastname)
-                );
-                $p->setValue(
-                    "prf_desc",
-                    sprintf(_("Only %s %s can view and edit"), $action->user->firstname, $action->user->lastname)
-                );
-
-                $err = $p->Add();
-                if ($err == "") {
-                    $err = $p->setControl(); //activate the profile
-                    $p->setProfil($p->id);
-                }
-            }
-        } else {
-            $p = false;
-        }
-    }
-    return $p;
-}
 
 
 

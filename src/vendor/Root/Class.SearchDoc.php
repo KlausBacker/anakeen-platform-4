@@ -1356,7 +1356,7 @@ class SearchDoc
     {
         if ($exclude) {
             if ($this->userid != 1) {
-                $this->excludeFilter = sprintf("confidential is null or hasaprivilege('%s', profid,%d)", DocPerm::getMemberOfVector($this->userid), 1 << POS_CONF);
+                $this->excludeFilter = sprintf("confidential is null or hasaprivilege('%s', profid,%d)", DocPerm::getMemberOfVector($this->userid), 1 << \Anakeen\Core\Internal\DocumentAccess::POS_CONF);
             }
         } else {
             $this->excludeFilter = '';

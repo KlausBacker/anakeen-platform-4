@@ -71,13 +71,7 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
         }
     }
 
-    /**
-     * test if the document can be set in LDAP
-     */
-    public function canUpdateLdapCard()
-    {
-        return ($this->getRawValue("US_STATUS") != 'D');
-    }
+
 
     public function preUndelete()
     {
@@ -368,11 +362,6 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
 
             if ($err == "") {
                 $err = $this->RefreshDocUser(); // refresh from core database
-                //      $this->refreshParentGroup();
-                $errldap = $this->RefreshLdapCard();
-                if ($errldap != "") {
-                    \Anakeen\Core\Utils\System::addWarningMsg($errldap);
-                }
             }
         } else {
             // tranfert extern mail if no login specified yet
@@ -386,13 +375,12 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
             }
         }
 
-        $this->setValue("US_LDAPDN", $this->getLDAPValue("dn", 1));
         return $err;
     }
 
-    public function PostDelete()
+    public function postDelete()
     {
-        parent::PostDelete();
+        parent::postDelete();
 
         $user = $this->getAccount();
         if ($user) {

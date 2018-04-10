@@ -363,9 +363,9 @@ class FamilyImport
 
                         if (!$v->phpconstraint) {
                             if (($atype == "integer") || ($atype == "int")) {
-                                $v->phpconstraint = sprintf("::isInteger(%s)", $v->id);
+                                $v->phpconstraint = sprintf("Anakeen\Core\Utils\Numbers::isInteger(%s)", $v->id);
                             } elseif (($atype == "money") || ($atype == "double")) {
-                                $v->phpconstraint = sprintf("::isFloat(%s)", $v->id);
+                                $v->phpconstraint = sprintf("Anakeen\Core\Utils\Numbers::isFloat(%s)", $v->id);
                             }
                         }
                         if ($atype == "account") {

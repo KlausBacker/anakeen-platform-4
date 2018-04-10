@@ -1,12 +1,9 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 namespace Dcp\Pu;
+
 /**
- * @author Anakeen
+ * @author  Anakeen
  * @package Dcp\Pu
  */
 class SuiteDcp

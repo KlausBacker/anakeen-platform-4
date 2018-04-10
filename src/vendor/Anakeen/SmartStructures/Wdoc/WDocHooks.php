@@ -6,6 +6,7 @@
 
 namespace Anakeen\SmartStructures\Wdoc;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\SmartStructures\Timer\TimerHooks;
 use Dcp\Exception;
 
@@ -71,7 +72,7 @@ class WDocHooks extends \Doc
             $this->defProfFamId = $this->fromid;
         } // it's a profil itself
         // don't use Doc constructor because it could call this constructor => infinitive loop
-        \DocCtrl::__construct($dbaccess, $id, $res, $dbid);
+        \Doc::__construct($dbaccess, $id, $res, $dbid);
     }
     /**
      * affect document instance
@@ -109,7 +110,7 @@ class WDocHooks extends \Doc
             }
             if ($profid > 0) {
                 // change only if new \profil
-                $err = $this->doc->setProfil($profid);
+                $err = $this->doc->accessControl()->setProfil($profid);
             }
         }
         return $err;
@@ -808,7 +809,7 @@ class WDocHooks extends \Doc
             }
         }
         
-        if ($this->userid != 1) { // admin can go to any states
+        if (ContextManager::getCurrentUser()->id != 1) { // admin can go to any states
             if (!$foundTo) {
                 return (sprintf(_("ChangeState :: the new \state '%s' is not known or is not allowed from %s"), _($newstate), _($this->doc->state)));
             }
@@ -820,7 +821,7 @@ class WDocHooks extends \Doc
                 $lockUserAccount = getDocFromUserId($this->dbaccess, $lockUserId);
                 if (is_object($lockUserAccount) && $lockUserAccount->isAlive()) {
                     $lockUserTitle = $lockUserAccount->getTitle();
-                    if ($lockUserId != $this->userid) {
+                    if ($lockUserId != ContextManager::getCurrentUser()->id) {
                         /* The document is locked by another user */
                         if ($this->doc->locked < 0) {
                             /* Currently being edited by another user */
@@ -1031,7 +1032,7 @@ class WDocHooks extends \Doc
         if ($this->doc->locked == - 1) {
             return array();
         } // no next state for revised document
-        if (($this->doc->locked > 0) && ($this->doc->locked != $this->doc->userid)) {
+        if (($this->doc->locked > 0) && ($this->doc->locked != ContextManager::getCurrentUser()->id)) {
             return array();
         } // no next state if locked by another person
         if ((!$noVerifyDomain) && ($this->doc->lockdomainid > 0)) {
@@ -1042,7 +1043,7 @@ class WDocHooks extends \Doc
             $this->doc->state = $this->getFirstState();
         }
         
-        if ($this->userid == 1) {
+        if (ContextManager::getCurrentUser()->id == 1) {
             return $this->getStates();
         } // only admin can go to any states from anystates
         foreach ($this->cycle as $tr) {
@@ -1310,7 +1311,7 @@ class WDocHooks extends \Doc
                 if ($err != "") {
                     return "WDoc::Control:" . $err;
                 } // can't create profil
-                $pdoc->setProfil($this->profid, $this->doc);
+                $pdoc->accessControl()->setProfil($this->profid, $this->doc);
                 
                 $this->pdoc = & $pdoc;
             }

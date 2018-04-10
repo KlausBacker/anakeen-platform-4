@@ -5,11 +5,13 @@
 */
 
 namespace Dcp\Pu;
+
+use Anakeen\Core\ContextManager;
+
 /**
- * @author Anakeen
+ * @author  Anakeen
  * @package Dcp\Pu
  */
-
 //require_once 'PU_testcase_dcp_commonfamily.php';
 
 class TestDocument extends TestCaseDcpCommonFamily
@@ -43,7 +45,7 @@ class TestDocument extends TestCaseDcpCommonFamily
      * @dataProvider logicalName
      * @depends      testAlive
      * @param string $file
-     * @param array $ln
+     * @param array  $ln
      */
     public function testLogicalName($file, array $ln)
     {
@@ -68,7 +70,7 @@ class TestDocument extends TestCaseDcpCommonFamily
                 $d->lock();
                 $slock = $this->_DBGetValue(sprintf("select locked from docread where id=%d", $d->id));
                 $slock = intval($slock);
-                $this->assertEquals($d->userid, $slock, sprintf("document %d not locked", $a));
+                $this->assertEquals(ContextManager::getCurrentUser()->id, $slock, sprintf("document %d not locked", $a));
             } else {
                 $this->markTestIncomplete(sprintf(_('Document %d is locked.'), $a));
             }
@@ -114,10 +116,12 @@ class TestDocument extends TestCaseDcpCommonFamily
 
                 $slock = $this->_DBGetValue(sprintf("select locked from docread where id=%d", $d->id));
                 $slock = intval($slock);
-                if ($d->userid == 1) {
+                if (ContextManager::getCurrentUser()->id == 1) {
                     //$this->markTestIncomplete(sprintf(_('Admin cannot auto lock.')));
 
-                } else $this->assertEquals(-($d->userid), ($slock), sprintf("document %d not locked", $a));
+                } else {
+                    $this->assertEquals(-(ContextManager::getCurrentUser()->id), ($slock), sprintf("document %d not locked", $a));
+                }
             } else {
                 $this->markTestIncomplete(sprintf(_('Document %d is locked.'), $a));
             }
@@ -197,7 +201,9 @@ class TestDocument extends TestCaseDcpCommonFamily
             }
         }
         $nd = createDoc(self::$dbaccess, $familyName, false);
-        if (!$nd) $this->assertFalse($nd, sprintf("cannot create document BASE"));
+        if (!$nd) {
+            $this->assertFalse($nd, sprintf("cannot create document BASE"));
+        }
         $err = $nd->add();
         $this->assertEmpty($err, sprintf("error when create document BASE : %s", $err));
 
@@ -228,7 +234,7 @@ class TestDocument extends TestCaseDcpCommonFamily
      * @param string $attrName
      * @param string $filePathName
      * @param string $fileName
-     * @param int $index
+     * @param int    $index
      */
     public function testStoreFile($docId, $attrName, $filePathName, $fileName, $index = -1)
     {
@@ -248,7 +254,7 @@ class TestDocument extends TestCaseDcpCommonFamily
      * @param string $attrName
      * @param string $filePathName
      * @param string $fileName
-     * @param int $index
+     * @param int    $index
      */
     public function testSaveFile($docId, $attrName, $filePathName, $fileName = '', $index = -1)
     {
@@ -274,7 +280,7 @@ class TestDocument extends TestCaseDcpCommonFamily
      * @param string $attrName
      * @param string $filePathName
      * @param string $fileName
-     * @param int $index
+     * @param int    $index
      */
     public function testSetFile($docId, $attrName, $filePathName, $fileName, $index = -1)
     {

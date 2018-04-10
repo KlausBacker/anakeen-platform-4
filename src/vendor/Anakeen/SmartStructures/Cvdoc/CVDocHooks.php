@@ -37,5 +37,4 @@ class CVDocHooks extends CoreCVDoc
         }
         return "";
     }
-
 }

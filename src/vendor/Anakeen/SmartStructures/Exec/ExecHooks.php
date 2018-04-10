@@ -81,7 +81,7 @@ class ExecHooks extends \Anakeen\SmartStructures\Document
             $wuid = $fu["us_whatid"];
             $this->execuserid = $fuid;
         } else {
-            $wuid = $this->userid;
+            $wuid = ContextManager::getCurrentUser()->id;
             $this->execuserid = $this->getUserId();
         }
         $cmd .= " --login=$wuid";

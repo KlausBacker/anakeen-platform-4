@@ -60,7 +60,7 @@ class ImportDocumentDescription
     */
     private $fdoc;
     /**
-     * @var \Anakeen\Core\SmartStructure 
+     * @var \Anakeen\Core\SmartStructure
      */
     private $doc;
     /**
@@ -1453,9 +1453,9 @@ class ImportDocumentDescription
         if (is_numeric($data[1])) {
             $pid = $data[1];
         } else {
-            $pid = \Anakeen\Core\DocManager::getIdFromName($data[1], 3);
+            $pid = \Anakeen\Core\DocManager::getIdFromName($data[1]);
         }
-        $this->doc->setProfil($pid); // change profile
+        $this->doc->accessControl()->setProfil($pid); // change profile
         $this->tcr[$this->nLine]["msg"] = sprintf(_("change profile id  to '%s'"), $data[1]);
     }
 
@@ -1723,15 +1723,15 @@ class ImportDocumentDescription
                 }
                 if ($fpid != "") {
                     // profil related of other profil
-                    $pdoc->setProfil($fpid);
+                    $pdoc->accessControl()->setProfil($fpid);
                     $this->tcr[$this->nLine]["err"] = $pdoc->modify(false, array(
                         "profid"
                     ), true);
                 } else {
                     // specific profil
                     if ($pdoc->profid != $pid) {
-                        $pdoc->setProfil($pid);
-                        $pdoc->SetControl(false);
+                        $pdoc->accessControl()->setProfil($pid);
+                        $pdoc->accessControl()->setControl(false);
                         $pdoc->disableEditControl(); // need because new profil is not enable yet
                         $this->tcr[$this->nLine]["err"] = $pdoc->modify();
                     }
@@ -1741,11 +1741,11 @@ class ImportDocumentDescription
                     $initialPerms = array();
                     $profilingHasChanged = false;
                     if ($optprof == "RESET") {
-                        $pdoc->removeControl();
+                        $pdoc->accessControl()->removeControl();
                         $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("reset profil %s"), $pid);
                     } elseif ($optprof == "SET") {
                         $initialPerms = array_merge(DocPerm::getPermsForDoc($pdoc->id), DocPermExt::getPermsForDoc($pdoc->id));
-                        $pdoc->removeControl();
+                        $pdoc->accessControl()->removeControl();
                         $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("set profile %s"), $pid);
                     }
                     $tacls = array_slice($data, 2);
@@ -1757,12 +1757,12 @@ class ImportDocumentDescription
                             $perr = "";
                             if ($optprof == "DELETE") {
                                 foreach ($tuid as $uid) {
-                                    $perr .= $pdoc->delControl($this->getProfilUid($defaultUseType, $uid), $aclname);
+                                    $perr .= $pdoc->accessControl()->delControl($this->getProfilUid($defaultUseType, $uid), $aclname);
                                     $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("delete %s for %s"), $aclname, $uid);
                                 }
                             } else { // the "ADD" by default
                                 foreach ($tuid as $uid) {
-                                    $perr .= $pdoc->addControl($this->getProfilUid($defaultUseType, $uid), $aclname);
+                                    $perr .= $pdoc->accessControl()->addControl($this->getProfilUid($defaultUseType, $uid), $aclname);
                                     $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("add %s for %s"), $aclname, $uid);
                                 }
                             }
@@ -1776,7 +1776,7 @@ class ImportDocumentDescription
                     if ($optprof == "RESET" || ($optprof == "SET" && $profilingHasChanged)) {
                         // need reset all documents
                         $pdoc->addHistoryEntry(_('Recomputing profiled documents'), DocHisto::INFO, 'RECOMPUTE_PROFILED_DOCUMENT');
-                        $pdoc->recomputeProfiledDocument();
+                        $pdoc->accessControl()->recomputeProfiledDocument();
                     }
                 }
             } else {

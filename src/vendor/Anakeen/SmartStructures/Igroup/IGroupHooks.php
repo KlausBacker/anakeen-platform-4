@@ -24,28 +24,12 @@ class IGroupHooks extends \SmartStructure\Group
 {
     use \Anakeen\SmartStructures\Iuser\TAccount;
 
-    public $cviews
-        = array(
-            "FUSERS:FUSERS_IGROUP"
-        );
-    public $eviews
-        = array(
-            "USERCARD:CHOOSEGROUP"
-        );
-    public $exportLdap
-        = array(
-            // posixGroup
-            "gidNumber" => "GRP_GIDNUMBER",
-            //			"mail" => "GRP_MAIL", // not in schema but used in mailing client application
-            "description" => "GRP_DESC"
-        );
-    public $ldapobjectclass = "posixGroup";
+
 
     public function preRefresh()
     {
         //  $err=$this->ComputeGroup();
         $err = "";
-        $this->AddParamRefresh("US_WHATID", "GRP_MAIL,US_LOGIN");
         // refresh MEID itself
         $iduser = $this->getRawValue("US_WHATID");
         if ($iduser > 0) {
@@ -68,47 +52,11 @@ class IGroupHooks extends \SmartStructure\Group
         return _("group cannot be revived");
     }
 
-    /**
-     * test if the document can be set in LDAP
-     */
-    public function canUpdateLdapCard()
-    {
-        return true;
-    }
 
-    /**
-     * get LDAP title for group
-     */
-    public function getLDAPTitle()
-    {
-        return sprintf(_("%s group"), $this->title);
-    }
 
-    /**
-     * get LDAP array of members
-     *
-     * @return array
-     */
-    public function getLDAPMember()
-    {
-        $g = $this->getAccount();
-        $members = $g->getAllMembers();
-        $tdn = array();
-        foreach ($members as $k => $v) {
-            $du = DocManager::getRawDocument($v["fid"]);
-            $tdnu = explode("\n", $du["ldapdn"]);
-            if (count($tdnu) > 0) {
-                $dnu = $tdnu[0];
-                if ($dnu) {
-                    $tdn[] = $dnu;
-                }
-            }
-        }
-        if (count($tdn) == 0) {
-            $tdn = "cn=nobody,dc=users," . $this->racine;
-        }
-        return $tdn;
-    }
+
+
+
 
     /**
      * recompute only parent group
@@ -118,7 +66,7 @@ class IGroupHooks extends \SmartStructure\Group
      *
      * @return string error message, if no error empty string
      */
-    public function RefreshGroup()
+    public function refreshGroup()
     {
         //if ($this->norefreshggroup) return '';
         include_once("FDL/Lib.Usercard.php");
@@ -194,10 +142,7 @@ class IGroupHooks extends \SmartStructure\Group
             // get members
             //$this->RefreshGroup(); // in postinsert
             //    $this->refreshParentGroup();
-            $wrg = $this->RefreshLdapCard();
-            if ($wrg) {
-                \Anakeen\Core\Utils\System::addWarningMsg($wrg);
-            }
+
             // add in default folder root groups : usefull for import
             $tgid = $this->getMultipleRawValues("GRP_IDPGROUP");
             $fdoc = $this->getFamilyDocument();
@@ -261,13 +206,6 @@ class IGroupHooks extends \SmartStructure\Group
         return '';
     }
 
-    /**
-     * update LDAP menbers after imodification of containt
-     */
-    public function specPostInsert()
-    {
-        return $this->RefreshLdapCard();
-    }
 
     /**
      * update groups table in USER database

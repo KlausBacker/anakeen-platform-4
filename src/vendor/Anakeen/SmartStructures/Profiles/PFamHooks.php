@@ -21,11 +21,7 @@ class PFamHooks extends \Doc
     public $defDoctype = 'P';
     public $defProfFamId = FAM_ACCESSFAM;
     
-    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
-    {
-        // don't use Doc constructor because it could call this constructor => infinitive loop
-        \DocCtrl::__construct($dbaccess, $id, $res, $dbid);
-    }
+
     
     public function preImport(array $extra = array())
     {

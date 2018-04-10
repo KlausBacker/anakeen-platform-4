@@ -222,7 +222,7 @@ function microtime_diff($a, $b)
 
 /**
  * return call stack
- *
+ * @deprecated
  * @param int $slice last call to not return
  *
  * @return array

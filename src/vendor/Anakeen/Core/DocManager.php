@@ -302,8 +302,8 @@ class DocManager
         }
 
         $doc->wid = $family->wid;
-        $doc->setProfil($family->cprofid); // inherit from its family
-        $doc->setCvid($family->ccvid); // inherit from its family
+        $doc->accessControl()->setProfil($family->cprofid); // inherit from its family
+        $doc->accessControl()->setCvid($family->ccvid); // inherit from its family
         if ($useDefaultValues) {
             $doc->setDefaultValues($family->getDefValues());
         }
