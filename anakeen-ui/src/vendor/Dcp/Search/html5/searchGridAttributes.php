@@ -13,7 +13,7 @@ class searchGridAttributes extends DocumentCollection
     const maxSlice=1000;
     protected $_collection = null;
     /**
-     * @var \DocFam
+     * @var \Anakeen\Core\SmartStructure 
      */
     protected $_searchfamily = null;
 

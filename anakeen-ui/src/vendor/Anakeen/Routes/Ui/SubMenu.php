@@ -14,7 +14,7 @@ use Anakeen\Core\DocManager as DocManager;
 class SubMenu
 {
     /**
-     * @var \DocFam
+     * @var \Anakeen\Core\SmartStructure 
      */
     protected $_family = null;
 

@@ -20,7 +20,7 @@ class MaskVisibilities
      */
     protected $_document;
     /**
-     * @var \DocFam
+     * @var \Anakeen\Core\SmartStructure 
      */
     protected $family;
     protected $callback="callback";

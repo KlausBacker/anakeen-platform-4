@@ -148,7 +148,7 @@ class DocumentView
         $family = null;
         if ($this->viewIdentifier === self::coreViewCreationId || $this->viewIdentifier === self::defaultViewCreationId) {
             /**
-             * @var \DocFam $family
+             * @var \Anakeen\Core\SmartStructure $family
              */
             $family = DocManager::getFamily($this->documentId);
             DocManager::cache()->addDocument($family);

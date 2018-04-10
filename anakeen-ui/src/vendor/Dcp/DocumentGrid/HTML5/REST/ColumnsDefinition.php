@@ -71,7 +71,7 @@ class ColumnsDefinition extends Crud
         
         $needVisibleColumns = ($this->contentParameters["familyColumns"] === "true");
         /**
-         *  @var \DocFam[] $famDef
+         *  @var \Anakeen\Core\SmartStructure [] $famDef
          */
         $famDef = array();
         $displayedColumns = array();
@@ -216,7 +216,7 @@ class ColumnsDefinition extends Crud
      * @param \DocFam[] $famDef
      * @param $this->defaultFamilyId
      *
-     * @return \DocFam
+     * @return \Anakeen\Core\SmartStructure 
      * @throws Exception
      */
     protected function getCurrentFamDoc($currentColumn, &$famDef)
