@@ -32,7 +32,7 @@ class CheckProp extends CheckData
      * Check validity of a PROP import line
      *
      * @param array $data
-     * @param \DocFam $docfam
+     * @param \Anakeen\Core\SmartStructure $docfam
      * @return CheckProp
      */
     public function check(array $data, &$docfam = null)

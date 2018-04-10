@@ -75,7 +75,7 @@ abstract class Authenticator
         if ($provider == "") {
             return array();
         }
-        $authentConfigs = getDbAccessValue('authentProvidersConfig');
+        $authentConfigs = GlobalParametersManager::getDbAccessValue('authentProvidersConfig');
         if (!is_array($authentConfigs)) {
             return array();
         }

@@ -5,18 +5,7 @@ namespace Anakeen\Core\Internal;
 use Anakeen\Core\DbManager;
 
 /**
- * Application Class
- *
- * @author Anakee
- */
-
-function f_paramglog($var)
-{ // filter to select only not global
-    return (!((isset($var["global"]) && ($var["global"] == 'Y'))));
-}
-
-/**
- * Application managing
+ * Application manager
  *
  * @class Application
  *
@@ -405,7 +394,6 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         /* Try "APP:file.extension" notation */
         if (preg_match('/^(?P<appname>[a-z][a-z0-9_-]*):(?P<filename>.*)$/i', $ref, $m)) {
-
             $location = sprintf('%s/%s/Layout/%s', $this->publicdir, $m['appname'], $m['filename']);
             if (is_file($location)) {
                 return sprintf('%s/Layout/%s', $m['appname'], $m['filename']);
@@ -418,12 +406,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
         }
         /* Try hardcoded locations */
-        foreach (
-            array(
-                $ref,
-                sprintf("%s/Layout/%s", $this->name, $ref)
-            ) as $filename
-        ) {
+        foreach (array($ref, sprintf("%s/Layout/%s", $this->name, $ref)) as $filename) {
             if (is_file(sprintf("%s/%s", $this->rootdir, $filename))) {
                 return $filename;
             }
@@ -644,8 +627,12 @@ create sequence SEQ_ID_APPLICATION start 10;
                 }
                 $parseOnLoad = true;
                 if ((null !== $needparse) && ($parseOnLoad !== $needparse)) {
-                    $this->log->warning(sprintf("%s was added with needParse to %s but style has a rule saying %s", $ref, var_export($needparse, true),
-                        var_export($parseOnLoad, true)));
+                    $this->log->warning(sprintf(
+                        "%s was added with needParse to %s but style has a rule saying %s",
+                        $ref,
+                        var_export($needparse, true),
+                        var_export($parseOnLoad, true)
+                    ));
                 }
                 $needparse = $parseOnLoad;
             }
@@ -777,7 +764,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      * Add message to log (syslog)
      * The message is also displayed in the console of the web interface
      *
-     * @param string $code message to add to log
+     * @param string|string[] $code message to add to log
      * @param int    $cut  truncate message longer than this length (set to <= 0 to not truncate the message)(default is 0).
      */
     public function addLogMsg($code, $cut = 0)
@@ -1001,7 +988,6 @@ create sequence SEQ_ID_APPLICATION start 10;
 
             $this->style->Set($this);
         }
-
     }
 
     public function setLayoutVars($lay)
@@ -1121,63 +1107,6 @@ create sequence SEQ_ID_APPLICATION start 10;
         return $this->getImageLink($img, $detectstyle, $size);
     }
 
-    public function imageFilterColor($image, $fcol, $newcol, $out = null)
-    {
-        if ($out === null) {
-            $out = getTmpDir() . "/i.gif";
-        }
-        $im = imagecreatefromgif($image);
-        $idx = imagecolorexact($im, $fcol[0], $fcol[1], $fcol[2]);
-        imagecolorset($im, $idx, $newcol[0], $newcol[1], $newcol[2]);
-        imagegif($im, $out);
-        imagedestroy($im);
-    }
-
-    public function getFilteredImageUrl($imgf)
-    {
-        $ttf = explode(":", $imgf);
-        $img = $ttf[0];
-        $filter = $ttf[1];
-
-        $url = $this->getImageLink($img);
-        if ($url == $this->noimage) {
-            return $url;
-        }
-
-        $tf = explode("|", $filter);
-        if (count($tf) != 2) {
-            return $url;
-        }
-
-        $fcol = explode(",", $tf[0]);
-        if (count($fcol) != 3) {
-            return $url;
-        }
-
-        if (substr($tf[1], 0, 1) == '#') {
-            $col = $tf[1];
-        } else {
-            $col = $this->getParam($tf[1]);
-        }
-        $ncol[0] = hexdec(substr($col, 1, 2));
-        $ncol[1] = hexdec(substr($col, 3, 2));
-        $ncol[2] = hexdec(substr($col, 5, 2));
-
-        $cdir = 'var/cache/image/';
-        $rcdir = $this->rootdir . '/' . $cdir;
-        if (!is_dir($rcdir)) {
-            mkdir($rcdir);
-        }
-
-        $uimg = $cdir . $this->name . '-' . $fcol[0] . '.' . $fcol[1] . '.' . $fcol[2] . '_' . $ncol[0] . '.' . $ncol[1] . '.' . $ncol[2] . '.' . $img;
-        $cimg = $this->rootdir . '/' . $uimg;
-        if (file_exists($cimg)) {
-            return $uimg;
-        }
-
-        $this->ImageFilterColor($this->rootdir . '/' . $url, $fcol, $ncol, $cimg);
-        return $uimg;
-    }
 
     /**
      * get file path layout from layout name
@@ -1485,11 +1414,19 @@ create sequence SEQ_ID_APPLICATION start 10;
             if ($this->childof != "") {
                 // init ACL & ACTION
                 // init acl
-                DbManager::query(sprintf("INSERT INTO acl (id,id_application,name,grant_level,description, group_default) SELECT nextval('seq_id_acl') as id, %d as id_application, acl.name, acl.grant_level, acl.description, acl.group_default from acl as acl,application as app where acl.id_application=app.id and app.name='%s' and acl.name NOT IN (SELECT acl.name from acl as acl, application as app  where id_application=app.id and app.name='%s')",
-                    $this->id, pg_escape_string($this->childof), pg_escape_string($this->name)));
+                DbManager::query(sprintf(
+                    "INSERT INTO acl (id,id_application,name,grant_level,description, group_default) SELECT nextval('seq_id_acl') as id, %d as id_application, acl.name, acl.grant_level, acl.description, acl.group_default from acl as acl,application as app where acl.id_application=app.id and app.name='%s' and acl.name NOT IN (SELECT acl.name from acl as acl, application as app  where id_application=app.id and app.name='%s')",
+                    $this->id,
+                    pg_escape_string($this->childof),
+                    pg_escape_string($this->name)
+                ));
                 // init actions
-                DbManager::query(sprintf("INSERT INTO action (id, id_application, name, short_name, long_name,script,function,layout,available,acl,grant_level,openaccess,root,icon,toc,father,toc_order) SELECT nextval('seq_id_action') as id, %d as id_application, action.name, action.short_name, action.long_name, action.script, action.function, action.layout, action.available, action.acl, action.grant_level, action.openaccess, action.root, action.icon, action.toc, action.father, action.toc_order from action as action,application as app where action.id_application=app.id and app.name='%s' and action.name NOT IN (SELECT action.name from action as action, application as app  where action.id_application=app.id and app.name='%s')",
-                    $this->id, pg_escape_string($this->childof), pg_escape_string($this->name)));
+                DbManager::query(sprintf(
+                    "INSERT INTO action (id, id_application, name, short_name, long_name,script,function,layout,available,acl,grant_level,openaccess,root,icon,toc,father,toc_order) SELECT nextval('seq_id_action') as id, %d as id_application, action.name, action.short_name, action.long_name, action.script, action.function, action.layout, action.available, action.acl, action.grant_level, action.openaccess, action.root, action.icon, action.toc, action.father, action.toc_order from action as action,application as app where action.id_application=app.id and app.name='%s' and action.name NOT IN (SELECT action.name from action as action, application as app  where action.id_application=app.id and app.name='%s')",
+                    $this->id,
+                    pg_escape_string($this->childof),
+                    pg_escape_string($this->name)
+                ));
                 $this->log->info(sprintf("Update Actions from %s parent", $this->childof));
                 $err = $this->_initACLWithGroupDefault();
                 if ($err != '') {
@@ -1531,7 +1468,13 @@ create sequence SEQ_ID_APPLICATION start 10;
             if (file_exists($this->rootdir . "/{$this->childof}/{$this->childof}_init.php")) {
                 include("{$this->childof}/{$this->childof}_init.php");
                 global $app_const;
-                $this->InitAllParam(array_filter($app_const, "f_paramglog"), true);
+                $this->InitAllParam(array_filter(
+                    $app_const,
+                    function ($var) {
+                        // filter to select only not global
+                        return (!((isset($var["global"]) && ($var["global"] == 'Y'))));
+                    }
+                ), true);
             }
 
             if ($this->id > 1) {

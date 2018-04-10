@@ -104,7 +104,7 @@ EOF;
         $s->setObjectReturn(true);
         $s->setOrder('id');
         /**
-         * @var \DocFam[] $iterator
+         * @var \Anakeen\Core\SmartStructure [] $iterator
          */
         $iterator = $this->searchErrors($s);
         foreach ($iterator as $fam) {

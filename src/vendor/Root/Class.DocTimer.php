@@ -85,6 +85,8 @@ class DocTimer extends DbObj
      * @public string $actions
      */
     public $actions;
+    public $originid;
+    public $fromid;
     /**
      * Timer title
      * @public string title
@@ -223,11 +225,11 @@ create table doctimer ( id serial,
     
     public function executeTimerNow()
     {
-        $timer = new_doc($this->dbaccess, $this->timerid);
+        $timer = \Anakeen\Core\DocManager::getDocument($this->timerid);
         /**
-         * @var \SmartStructure\TIMER $timer
+         * @var \Anakeen\SmartStructures\Timer\TimerHooks $timer
          */
-        if (!$timer->isAlive()) {
+        if (!$timer || !$timer->isAlive()) {
             return sprintf(_("cannot execute timer : timer %s is not found"), $this->timerid);
         }
         

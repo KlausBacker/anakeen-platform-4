@@ -21,6 +21,6 @@ class PSearchHooks extends \DocCollection
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         // don't use Doc constructor because it could call this constructor => infinitive loop
-        \DocCtrl::__construct($dbaccess, $id, $res, $dbid);
+        \Doc::__construct($dbaccess, $id, $res, $dbid);
     }
 }

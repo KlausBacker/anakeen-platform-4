@@ -33,7 +33,7 @@ class DocTitle
      */
     public static function getRelationTitle(
         $docid,
-        $latest = true,
+        $latest,
         Doc $doc,
         $docrevOption = "",
         array & $info = array()
@@ -188,7 +188,7 @@ class DocTitle
                 $rid = $relid["rid"];
                 if ($rid && isset($accesses[$rid])) {
                     if ($accesses[$rid]["doctype"] === "C") {
-                        $relationIds[$k]["title"] = DocFam::getLangTitle(array(
+                        $relationIds[$k]["title"] = \Anakeen\Core\SmartStructure::getLangTitle(array(
                             "name" => $accesses[$rid]["name"],
                             "title" => $accesses[$rid]["title"]
                         ));

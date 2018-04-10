@@ -158,7 +158,7 @@ class AuthenticatorManager
      */
     public static function getAuthProvider()
     {
-        $authprovider = getDbAccessValue('authentProvider');
+        $authprovider = GlobalParametersManager::getDbAccessValue('authentProvider');
 
         if ($authprovider == "") {
             $authprovider = "internal";
@@ -201,7 +201,7 @@ class AuthenticatorManager
             }
         }
 
-        $authMode = getDbAccessValue('authentMode');
+        $authMode = GlobalParametersManager::getDbAccessValue('authentMode');
 
         if ($authMode == "") {
             $authMode = "html";
@@ -212,7 +212,7 @@ class AuthenticatorManager
 
     public static function getAuthTypeParams()
     {
-        $authModeConfig = getDbAccessValue('authentModeConfig');
+        $authModeConfig = GlobalParametersManager::getDbAccessValue('authentModeConfig');
         if (!is_array($authModeConfig)) {
             throw new \Dcp\Exception('FILE0006');
         }

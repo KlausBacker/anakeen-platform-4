@@ -15,9 +15,6 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\DocManager;
 use SmartStructure\Attributes\Iuser as MyAttributes;
-use \Dcp\Core\Exception;
-
-/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 
 /**
  * Class UserAccount
@@ -26,12 +23,6 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
 {
     use TAccount;
 
-    public $eviews
-        = array(
-            "USERCARD:CHOOSEGROUP"
-        );
-    public $defaultview = "FDL:VIEWBODYCARD";
-    public $defaultedit = "FDL:EDITBODYCARD";
 
     public function preRefresh()
     {
@@ -80,13 +71,7 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
         }
     }
 
-    /**
-     * test if the document can be set in LDAP
-     */
-    public function canUpdateLdapCard()
-    {
-        return ($this->getRawValue("US_STATUS") != 'D');
-    }
+
 
     public function preUndelete()
     {
@@ -101,8 +86,10 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
      */
     public function getUserGroups()
     {
-        DbManager::query(sprintf("SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;", $this->getRawValue("us_whatid")), $groupIds, false,
-            false);
+        DbManager::query(sprintf(
+            "SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;",
+            $this->getRawValue("us_whatid")
+        ), $groupIds, false, false);
 
         $gids = array();
         foreach ($groupIds as $gid) {
@@ -375,11 +362,6 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
 
             if ($err == "") {
                 $err = $this->RefreshDocUser(); // refresh from core database
-                //      $this->refreshParentGroup();
-                $errldap = $this->RefreshLdapCard();
-                if ($errldap != "") {
-                    \Anakeen\Core\Utils\System::addWarningMsg($errldap);
-                }
             }
         } else {
             // tranfert extern mail if no login specified yet
@@ -393,13 +375,12 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
             }
         }
 
-        $this->setValue("US_LDAPDN", $this->getLDAPValue("dn", 1));
         return $err;
     }
 
-    public function PostDelete()
+    public function postDelete()
     {
-        parent::PostDelete();
+        parent::postDelete();
 
         $user = $this->getAccount();
         if ($user) {
@@ -680,9 +661,6 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
     }
 
 
-
-
-
     /**
      * Set/change user password
      *
@@ -768,74 +746,31 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
         }
     }
 
-    /**
-     * Security menus visibilities
-     */
-    public function menuResetLoginFailure()
+
+    public static function parseMail($Email)
     {
-        // Do not show the menu if the user has no FUSERS privileges
-        global $action;
-        if (!$action->parent->hasPermission('FUSERS', 'FUSERS')) {
-            return MENU_INVISIBLE;
+        $sug = array(); // suggestions
+        $err = "";
+
+        if ($Email != "") {
+            if ($Email[0] == "<") {
+                $sug[] = _("<it's a message>");
+            } else {
+                if (preg_match("/^[_\.0-9\/'?$&\+~`%|*a-z=^{}-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,6}$/i", $Email)) {
+                    return true;
+                }
+                $err = _("the email syntax  is like : john.doe@anywhere.org");
+                if (!preg_match("/@/", $Email)) {
+                    $err = _("the email must containt the @ character");
+                }
+            }
         }
-        // Do not show the menu if the user has no edit rights on the document
-        if ($this->canEdit() != '') {
-            return MENU_INVISIBLE;
-        }
-        // Do not show the menu on the 'admin' user
-        if ($this->getRawValue('us_whatid') == 1) {
-            return MENU_INVISIBLE;
-        }
-        // Do not show the menu if the account had no failures
-        if ($this->getRawValue("us_loginfailure") <= 0) {
-            return MENU_INVISIBLE;
-        }
-        return MENU_ACTIVE;
+        return array(
+            "err" => $err,
+            "sug" => $sug
+        );
     }
 
-    public function menuActivateAccount()
-    {
-        // Do not show the menu if the user has no FUSERS privileges
-        global $action;
-        if (!$action->parent->hasPermission('FUSERS', 'FUSERS')) {
-            return MENU_INVISIBLE;
-        }
-        // Do not show the menu if the user has no edit rights on the document
-        if ($this->canEdit() != '') {
-            return MENU_INVISIBLE;
-        }
-        // Do not show the menu on the 'admin' user
-        if ($this->getRawValue('us_whatid') == 1) {
-            return MENU_INVISIBLE;
-        }
-        // Do not show the menu if the account is already active
-        if ($this->getRawValue('us_status', 'A') == 'A') {
-            return MENU_INVISIBLE;
-        }
-        return MENU_ACTIVE;
-    }
-
-    public function menuDeactivateAccount()
-    {
-        // Do not show the menu if the user has no FUSERS privileges
-        global $action;
-        if (!$action->parent->hasPermission('FUSERS', 'FUSERS')) {
-            return MENU_INVISIBLE;
-        }
-        // Do not show the menu if the user has no edit rights on the document
-        if ($this->canEdit() != '') {
-            return MENU_INVISIBLE;
-        }
-        // Do not show the menu on the 'admin' user
-        if ($this->getRawValue('us_whatid') == 1) {
-            return MENU_INVISIBLE;
-        }
-        // Do not show the menu if the account is already inactive
-        if ($this->getRawValue('us_status', 'A') != 'A') {
-            return MENU_INVISIBLE;
-        }
-        return MENU_ACTIVE;
-    }
 
     /**
      * Manage account security

@@ -16,6 +16,7 @@ namespace Anakeen\SmartStructures\Cvdoc;
 /**
  * Control view Class
  */
+use Anakeen\Core\Internal\DocumentAccess;
 use \SmartStructure\Attributes\Cvdoc as MyAttributes;
 
 class CoreCVDoc extends \SmartStructure\Base
@@ -47,55 +48,20 @@ class CoreCVDoc extends \SmartStructure\Base
      */
     private $pdoc = null;
     // --------------------------------------------------------------------
+
+    /** @noinspection PhpMissingParentConstructorInspection */
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         // first construct acl array
         if (isset($this->fromid)) {
             $this->defProfFamId = $this->fromid;
         } // it's a profil itself
-        // don't use Doc constructor because it could call this constructor => infinitive loop
-        \DocCtrl::__construct($dbaccess, $id, $res, $dbid);
+        // don't use parent constructor because it could call this constructor => infinitive loop
+        \Doc::__construct($dbaccess, $id, $res, $dbid);
         
         $this->setAcls();
     }
-    
-    public function preConsultation()
-    {
-        $err = parent::preConsultation();
-        $this->injectCss();
-        
-        $ids = $this->getMultipleRawValues(MyAttributes::cv_idview);
-        $menus = $this->getMultipleRawValues(MyAttributes::cv_menu);
-        $vLabel = $this->getMultipleRawValues(MyAttributes::cv_lview);
-        foreach ($menus as $k => $menuId) {
-            if ($menuId) {
-                $menuLabel = $this->getLocaleViewMenu($ids[$k]);
-                
-                if ($menuLabel && $menuLabel !== $menuId) {
-                    $this->setValue(MyAttributes::cv_menu, sprintf("%s (%s)", $menuId, $menuLabel), $k);
-                }
-            }
-            $label = $this->getLocaleViewLabel($ids[$k]);
-            if ($vLabel[$k] && $vLabel[$k] !== $label) {
-                $this->setValue(MyAttributes::cv_lview, sprintf("%s (%s)", $vLabel[$k], $label), $k);
-            }
-        }
-        
-        return $err;
-    }
-    
-    public function preEdition()
-    {
-        $err = parent::preEdition();
-        $this->injectCss();
-        return $err;
-    }
-    
-    protected function injectCss()
-    {
-        global $action;
-        $action->parent->addCssRef("FDL/Layout/cvdoc_array_view.css");
-    }
+
     
     protected function postAffect(array $data, $more, $reset)
     {
@@ -144,9 +110,8 @@ class CoreCVDoc extends \SmartStructure\Base
         $err = "";
         $sug = array();
         $this->nbId++;
-        
-        $dc = new \DocCtrl($this->dbaccess);
-        $originals = $dc->dacls;
+
+        $originals = DocumentAccess::$dacls;
         
         if (!preg_match('!^[0-9a-z_-]+$!i', $value)) {
             $err = sprintf(_("You must use only a-z, 0-9, _, - characters : \"%s\""), $value);
@@ -327,7 +292,7 @@ class CoreCVDoc extends \SmartStructure\Base
                     } // can't create profil
                     $pdoc->acls = $this->acls;
                     $pdoc->extendedAcls = $this->extendedAcls;
-                    $pdoc->setProfil($this->profid, $this->doc);
+                    $pdoc->accessControl()->setProfil($this->profid, $this->doc);
                     
                     $this->pdoc = & $pdoc;
                 }
@@ -338,7 +303,7 @@ class CoreCVDoc extends \SmartStructure\Base
         return $err;
     }
     
-    public function Set(&$doc)
+    public function set(\Doc &$doc)
     {
         if (!isset($this->doc)) {
             $this->doc = & $doc;

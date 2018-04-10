@@ -41,11 +41,9 @@ function getOpenTeUrl($context = array())
         if ($au != "") {
             $urlindex = \Anakeen\Core\ContextManager::getApplicationParam("CORE_URLINDEX");
         } else {
-            $scheme = \Anakeen\Core\ContextManager::getApplicationParam("CORE_ABSURL");
+            $scheme = \Anakeen\Core\ContextManager::getApplicationParam("CORE_EXTERNURL");
             if ($scheme == "") {
-                $urlindex = '/freedom/';
-            } else {
-                $urlindex = \Anakeen\Core\ContextManager::getApplicationParam("CORE_ABSURL");
+                throw new \Dcp\Exception("Need configure TE_URLINDEX");
             }
         }
     }
@@ -120,17 +118,7 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
     }
     return $err;
 }
-/**
- * return various informations for a file stored in VAULT
- * @param int $idfile vault file identifier
- * @param string $teng_name transformation engine name
- * @deprecated
- * @return vaultFileInfo
- */
-function vault_properties($idfile, $teng_name = "")
-{
-    \Dcp\VaultManager::getFileInfo($idfile, $teng_name);
-}
+
 /**
  * return unique name with for a vault file
  * @param int $idfile vault file identifier
@@ -138,60 +126,7 @@ function vault_properties($idfile, $teng_name = "")
  * @deprecated
  * @return string the unique name
  */
-function vault_uniqname($idfile, $teng_name = "")
-{
-    $FREEDOM_VAULT = initVaultAccess();
-    $FREEDOM_VAULT->Show($idfile, $info, $teng_name);
-    if ($info->name) {
-        $m2009 = iso8601DateToUnixTs("2009-01-01");
-        $mdate = stringDateToUnixTs($info->mdate);
-        $check = base_convert($mdate - $m2009, 10, 34);
-        $pos = strrpos($info->name, '.');
-        //    $check= md5_file($info->path);
-        if ($pos) {
-            $bpath = substr($info->name, 0, $pos);
-            $extpath = substr($info->name, $pos);
-            $othername = sprintf("%s{%s-%s}%s", $bpath, $check, $info->id_file, $extpath);
-            return $othername;
-        }
-    }
-    return 0;
-}
-/**
- * return various informations for a file stored in VAULT
- * @param string $filename
- * @deprecated
- * @param int &$vid return vaul identifier
- * @return string error message
- */
-function vault_store($filename, &$vid, $ftitle = "")
-{
-    $FREEDOM_VAULT = initVaultAccess();
-    $err = $FREEDOM_VAULT->store($filename, false, $vid);
-    if (($err == "") && ($ftitle != "")) {
-        $FREEDOM_VAULT->rename($vid, $ftitle);
-    }
-    return $err;
-}
-/**
- * return context of a file
- * @param int $idfile vault file identifier
- * @deprecated
- * @return array|false
- */
-function vault_get_content($idfile)
-{
-    $FREEDOM_VAULT = initVaultAccess();
-    $v = new VaultDiskStorage($FREEDOM_VAULT->dbaccess, $idfile);
-    
-    if ($v->isAffected()) {
-        $path = $v->getPath();
-        if (file_exists($path)) {
-            return file_get_contents($path);
-        }
-    }
-    return false;
-}
+
 /**
  * send request to have text conversion of file
  * @deprecated

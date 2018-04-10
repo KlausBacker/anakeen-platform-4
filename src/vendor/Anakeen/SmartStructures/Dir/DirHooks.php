@@ -15,6 +15,8 @@
 
 namespace Anakeen\SmartStructures\Dir;
 
+use Anakeen\Core\ContextManager;
+
 /**
  * Folder document Class
  *
@@ -26,13 +28,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
     private $norestrict = false;
 
 
-    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
-    {
-        parent::__construct($dbaccess, $id, $res, $dbid);
-        if ($this->fromid == "") {
-            $this->fromid = FAM_DIR;
-        }
-    }
+
 
 
     /**
@@ -286,7 +282,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
                         case FAM_ACCESSDOC:
                             $profid = $this->getRawValue("FLD_PDOCID", 0);
                             if ($profid > 0) {
-                                $doc->setProfil($profid);
+                                $doc->accessControl()->setProfil($profid);
                                 $err = $doc->modify(true, array(
                                     "profid",
                                     "dprofid"
@@ -300,7 +296,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
                         case FAM_ACCESSDIR:
                             $profid = $this->getRawValue("FLD_PDIRID", 0);
                             if ($profid > 0) {
-                                $doc->setProfil($profid);
+                                $doc->accessControl()->setProfil($profid);
                                 // copy default privilege if not set
                                 if ($doc->getRawValue("FLD_PDIRID") == "") {
                                     $doc->setValue("FLD_PDIRID", $this->getRawValue("FLD_PDIRID"));
@@ -800,7 +796,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             $tclassdoc = array();
             if ($allbut != "1") {
                 include_once("FDL/Lib.Dir.php");
-                $tallfam = GetClassesDoc($this->dbaccess, $this->userid, $classid, "TABLE");
+                $tallfam = GetClassesDoc($this->dbaccess, ContextManager::getCurrentUser()->id, $classid, "TABLE");
 
                 foreach ($tallfam as $cdoc) {
                     $tclassdoc[$cdoc["id"]] = $cdoc;
@@ -878,7 +874,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
     {
         include_once("FDL/Lib.Dir.php");
         if ($controlview) {
-            $uid = $this->userid;
+            $uid = ContextManager::getCurrentUser()->id;
         } else {
             $uid = 1;
         }

@@ -6,6 +6,9 @@
 
 namespace Anakeen\SmartStructures\Search;
 
+use Anakeen\Core\ContextManager;
+use Anakeen\Core\Internal\DocumentAccess;
+
 include_once("FDL/Lib.Dir.php");
 
 class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
@@ -26,13 +29,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
      */
     public $folderRecursiveLevel = 2;
 
-    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
-    {
-        parent::__construct($dbaccess, $id, $res, $dbid);
-        if (((!isset($this->fromid))) || ($this->fromid == "")) {
-            $this->fromid = FAM_SEARCH;
-        }
-    }
+
 
     public function preConsultation()
     {
@@ -81,7 +78,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
         return $err;
     }
 
-    public function AddQuery($tquery)
+    public function addQuery($tquery)
     {
         // insert query in search document
         if (is_array($tquery)) {
@@ -133,18 +130,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
         return false;
     }
 
-    public function GetQueryOld()
-    {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \QueryDir::class);
-        $query->AddQuery("dirid=" . $this->id);
-        $query->AddQuery("qtype != 'S'");
-        $tq = $query->Query(0, 0, "TABLE");
 
-        if ($query->nb > 0) {
-            return $tq[0]["query"];
-        }
-        return "";
-    }
 
     /**
      * return SQL query(ies) needed to search documents
@@ -174,13 +160,13 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
         $filters = array();
 
         $acls = $this->getMultipleRawValues("se_acl");
-        if ((count($acls) > 0 && ($this->userid != 1))) {
+        if ((count($acls) > 0 && (ContextManager::getCurrentUser()->id != 1))) {
             //      print_r2($acls);
             foreach ($acls as $acl) {
-                $dacl = $this->dacls[$acl];
+                $dacl = DocumentAccess::$dacls[$acl];
                 if ($dacl) {
                     $posacl = $dacl["pos"];
-                    $filters[] = sprintf("hasaprivilege('%s', profid, %d)", \DocPerm::getMemberOfVector($this->userid), (1 << intval($posacl)));
+                    $filters[] = sprintf("hasaprivilege('%s', profid, %d)", \DocPerm::getMemberOfVector(ContextManager::getCurrentUser()->id), (1 << intval($posacl)));
                 }
             }
         }
@@ -374,7 +360,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
         $sqlorder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc", pg_escape_string($fullkeys));
     }
 
-    public function ComputeQuery($keyword = "", $famid = -1, $latest = "yes", $sensitive = false, $dirid = -1, $subfolder = true, $full = false)
+    public function computeQuery($keyword = "", $famid = -1, $latest = "yes", $sensitive = false, $dirid = -1, $subfolder = true, $full = false)
     {
         if ($dirid > 0) {
             if ($subfolder) {
@@ -461,7 +447,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
     public function getContent($controlview = true, array $filter = array(), $famid = "", $qtype = "TABLE", $trash = "")
     {
         if ($controlview) {
-            $uid = $this->userid;
+            $uid = ContextManager::getCurrentUser()->id;
         } else {
             $uid = 1;
         }

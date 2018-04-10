@@ -37,7 +37,7 @@ class TestProfil extends TestCaseDcpCommonFamily
         $this->resetDocumentCache();
         $df = \new_Doc(self::$dbaccess, $docName);
         $this->assertTrue($df->isAlive() , "document $docName is not alive");
-        $df->setProfil($prfName);
+        $df->accessControl()->setProfil($prfName);
         foreach ($aclAttendees as $acl => $expect) {
             $result = ($df->Control($acl) == "");
             if ($expect) {
@@ -56,7 +56,7 @@ class TestProfil extends TestCaseDcpCommonFamily
         
         $df = \new_Doc(self::$dbaccess, $docName);
         $this->assertTrue($df->isAlive() , "document $docName is not alive");
-        $df->setProfil($prfName);
+        $df->accessControl()->setProfil($prfName);
         
         $this->importDocument($newPrfAcl);
         $this->sudo($login);
@@ -82,7 +82,7 @@ class TestProfil extends TestCaseDcpCommonFamily
         
         $df = \new_Doc(self::$dbaccess, $docName);
         $this->assertTrue($df->isAlive() , "document $docName is not alive");
-        $df->setProfil($prfName);
+        $df->accessControl()->setProfil($prfName);
         
         $this->importDocument($newPrfAcl);
         $this->sudo($login);

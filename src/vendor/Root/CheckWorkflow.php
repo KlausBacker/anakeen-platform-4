@@ -3,11 +3,13 @@
  * @author Anakeen
  * @package FDL
 */
+
 /**
  * Verify several point for the integrity of a workflow
+ *
  * @class CheckWorkflow
  * @brief Check worflow definition when importing definition
- * @see ErrorCodeWFL
+ * @see   ErrorCodeWFL
  */
 class CheckWorkflow
 {
@@ -16,7 +18,7 @@ class CheckWorkflow
      */
     private $terr = array();
     /**
-     * @var Wdoc
+     * @var \Anakeen\SmartStructures\Wdoc\WDocHooks
      */
     private $wdoc;
     /**
@@ -42,48 +44,39 @@ class CheckWorkflow
     /**
      * @var array
      */
-    private $transitionModelProperties = array(
-        'm0',
-        'm1',
-        'm2',
-        'm3',
-        'ask',
-        'nr'
-    );
+    private $transitionModelProperties
+        = array(
+            'm0',
+            'm1',
+            'm2',
+            'm3',
+            'ask',
+            'nr'
+        );
     /**
      * @var array
      */
-    private $transitionProperties = array(
-        'e1',
-        'e2',
-        't'
-    );
+    private $transitionProperties
+        = array(
+            'e1',
+            'e2',
+            't'
+        );
+
     /**
      * @param string $className workflow class name
-     * @param string $famName workflow family name
+     * @param string $famName   workflow family name
      */
     public function __construct($className, $famName)
     {
         $this->className = $className;
         $this->familyName = $famName;
     }
-    /**
-     * @param $code
-     * @param $msg
-     * @deprecated use addCoreError instead
-     */
-    private function addError($code, $msg)
-    {
-        if ($msg) {
-            $msg = sprintf("{%s} %s", $code, $msg);
-            if (!in_array($msg, $this->terr)) {
-                $this->terr[] = $msg;
-            }
-        }
-    }
+
     /**
      * short cut to call ErrorCode::getError
-     * @param $code
+     *
+     * @param      $code
      * @param null $args
      */
     private function addCodeError($code, $args = null)
@@ -96,14 +89,14 @@ class CheckWorkflow
             for ($ip = 1; $ip < $nargs; $ip++) {
                 $tArgs[] = func_get_arg($ip);
             }
-            
+
             $msg = call_user_func_array("ErrorCode::getError", $tArgs);
             if (!in_array($msg, $this->terr)) {
                 $this->terr[] = $msg;
             }
         }
     }
-    
+
     public function getErrorMessage()
     {
         return implode("\n", $this->terr);
@@ -116,8 +109,10 @@ class CheckWorkflow
     {
         return $this->terr;
     }
+
     /**
      * verify php workflow class name
+     *
      * @return array
      */
     public function verifyWorkflowClass()
@@ -134,27 +129,30 @@ class CheckWorkflow
         }
         return $this->getError();
     }
+
     /**
      * verify validity with attributes
+     *
      * @return string[]
      */
     public function verifyWorkflowComplete()
     {
         $this->verifyWorkflowClass();
-        
+
         if (!$this->getErrorMessage()) {
             $this->checkAskAttributes();
         }
         return $this->getError();
     }
-    public function checkActivities()
+
+    protected function checkActivities()
     {
         $activities = $this->wdoc->stateactivity;
         if (!is_array($activities)) {
             $this->addCodeError('WFL0051', $this->className);
         } else {
             $states = $this->wdoc->getStates();
-            
+
             foreach ($activities as $state => $label) {
                 if (!in_array($state, $states)) {
                     $this->addCodeError('WFL0052', $state, $label, $this->className);
@@ -162,8 +160,8 @@ class CheckWorkflow
             }
         }
     }
-    
-    public function checkTransitions()
+
+    protected function checkTransitions()
     {
         $cycle = $this->wdoc->cycle;
         if (!is_array($cycle)) {
@@ -192,15 +190,17 @@ class CheckWorkflow
             }
         }
     }
-    
-    public function checkTransitionModels()
+
+    protected function checkTransitionModels()
     {
         $transitions = $this->wdoc->transitions;
         if (!is_array($transitions)) {
             $this->addCodeError('WFL0100', $this->className);
+            return false;
         } else {
-            $columnNumber = count($transitions) * self::numberAttributeTransition + count($this->wdoc->getStates()) * self::numberAttributeState + count($this->wdoc->fields) + count($this->wdoc->sup_fields);
-            
+            $columnNumber = count($transitions) * self::numberAttributeTransition + count($this->wdoc->getStates()) * self::numberAttributeState + count($this->wdoc->fields)
+                + count($this->wdoc->sup_fields);
+
             if ($columnNumber > self::maxSqlColumn) {
                 $this->addCodeError('WFL0102', $this->className, $columnNumber, self::maxSqlColumn);
             }
@@ -211,17 +211,17 @@ class CheckWorkflow
                     continue;
                 }
                 $this->checkTransitionStateKey($tkey);
-                
+
                 $props = array_keys($transition);
                 $diff = array_diff($props, $this->transitionModelProperties);
                 if (count($diff) > 0) {
                     $this->addCodeError('WFL0101', implode(',', $diff), $tkey, $this->className, implode(',', $this->transitionModelProperties));
                 }
-                
+
                 if (isset($transition["ask"]) && (!is_array($transition["ask"]))) {
                     $this->addCodeError('WFL0103', $tkey, $this->className);
                 }
-                
+
                 if (!empty($transition["m0"])) {
                     if (!method_exists($this->wdoc, $transition["m0"])) {
                         $this->addCodeError('WFL0108', $transition["m0"], $tkey, $this->className);
@@ -250,9 +250,10 @@ class CheckWorkflow
                 $index++;
             }
         }
+        return true;
     }
-    
-    public function checkAskAttributes()
+
+    protected function checkAskAttributes()
     {
         $transitions = $this->wdoc->transitions;
         if (!is_array($transitions)) {
@@ -265,7 +266,7 @@ class CheckWorkflow
                     if (!is_array($askes)) {
                         $this->addCodeError('WFL0103', $tkey, $this->className);
                     } else {
-                        $wi = createTmpDoc($this->wdoc->dbaccess, $this->familyName);
+                        $wi = \Anakeen\Core\DocManager::createTemporaryDocument($this->familyName);
                         $aids = array_keys($wi->getAttributes());
                         foreach ($askes as $aid) {
                             if (!in_array(strtolower($aid), $aids)) {
@@ -277,7 +278,7 @@ class CheckWorkflow
             }
         }
     }
-    
+
     private function checkTransitionStateKey($key)
     {
         $limit = 49 - strlen($this->wdoc->attrPrefix);
@@ -285,8 +286,8 @@ class CheckWorkflow
             $this->addCodeError('WFL0050', $key, $this->className, $limit + 1);
         }
     }
-    
-    public function checkIsAWorkflow()
+
+    protected function checkIsAWorkflow()
     {
         // Sort out the formatting of the filename
         $fileName = realpath($this->getWorkflowClassFile());
@@ -299,15 +300,15 @@ class CheckWorkflow
             } else {
                 $class = $this->className;
                 $this->wdoc = new $class();
-                
-                if (!is_a($this->wdoc, "WDoc")) {
+
+                if (!is_a($this->wdoc, \Anakeen\SmartStructures\Wdoc\WDocHooks::class)) {
                     $this->addCodeError('WFL0006', $this->className);
                 }
             }
         }
     }
-    
-    public function checkPrefix()
+
+    protected function checkPrefix()
     {
         if (!$this->wdoc->attrPrefix) {
             $this->addCodeError('WFL0007', $this->className);
@@ -315,8 +316,8 @@ class CheckWorkflow
             $this->addCodeError('WFL0008', $this->className);
         }
     }
-    
-    public function checkClassName()
+
+    protected function checkClassName()
     {
         if (empty($this->className)) {
             $this->addCodeError('WFL0001');
@@ -326,16 +327,16 @@ class CheckWorkflow
             $this->checkFileName();
         }
     }
-    
-    public function checkFileName()
+
+    protected function checkFileName()
     {
         $fileName = $this->getWorkflowClassFile();
         if (!file_exists($fileName)) {
             $this->addCodeError('WFL0005', $fileName, $this->className);
         }
     }
-    
-    public static function checkPhpClass($name)
+
+    protected static function checkPhpClass($name)
     {
         if (preg_match('/^[a-zA-Z_][a-zA-Z0-9_\\\\]+$/', $name)) {
             return true;
@@ -343,19 +344,9 @@ class CheckWorkflow
             return false;
         }
     }
-    
-    public function getWorkflowClassFile()
+
+    protected function getWorkflowClassFile()
     {
-        $classFile = \Dcp\DirectoriesAutoloader::instance(null, null)->getClassFile($this->className);
-        
-        if ($classFile === null) {
-            \Dcp\DirectoriesAutoloader::instance(null, null)->forceRegenerate($this->className);
-            $classFile = \Dcp\DirectoriesAutoloader::instance(null, null)->getClassFile($this->className);
-        }
-        
-        if (!$classFile) {
-            $classFile = sprintf(DEFAULT_PUBDIR."/Apps/FDL/Class.%s.php", $this->className);
-        }
-        return $classFile;
+        return \Anakeen\Core\Internal\Autoloader::findFile($this->className);
     }
 }

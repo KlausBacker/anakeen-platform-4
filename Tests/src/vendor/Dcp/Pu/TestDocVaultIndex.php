@@ -50,7 +50,7 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
         */
         foreach ($data['set'] as $famName => $set) {
             /**
-             * @var \DocFam $docFam
+             * @var \Anakeen\Core\SmartStructure $docFam
              */
             $docFam = new_Doc(self::$dbaccess, $famName);
             $this->assertTrue($docFam->isAlive(), sprintf("Could not find family with name '%s'.", $famName));

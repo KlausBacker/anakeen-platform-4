@@ -312,7 +312,7 @@ class ExportCollection
                 $this->recordStatus(sprintf(_("Record documents %d/%d"), $c, $rc));
                 if ($doc->doctype === "C") {
                     /**
-                     * @var \DocFam $doc
+                     * @var \Anakeen\Core\SmartStructure $doc
                      */
                     $c++;
                     if ($c % 20 == 0) {
@@ -383,9 +383,9 @@ class ExportCollection
      *
      * @see ExportCollection::writeFamilies
      *
-     * @param \DocFam $family
+     * @param \Anakeen\Core\SmartStructure $family
      */
-    protected function csvFamilyExport(\DocFam $family)
+    protected function csvFamilyExport(\Anakeen\Core\SmartStructure $family)
     {
         $wname = "";
         $cvname = "";

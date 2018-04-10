@@ -240,7 +240,7 @@ class DocHtmlFormat
                             }
                             $abegin = "<a target=\"$this->target\"  href=\"";
                             if ($scheme == "") {
-                                $abegin .= $action->GetParam("CORE_URLINDEX", ($action->GetParam("CORE_ABSURL") . "/")) . $ulink;
+                                $abegin .= $action->GetParam("CORE_URLINDEX", ($action->GetParam("CORE_EXTERNURL") . "/")) . $ulink;
                             } else {
                                 $abegin .= $ulink;
                             }

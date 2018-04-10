@@ -222,7 +222,7 @@ function microtime_diff($a, $b)
 
 /**
  * return call stack
- *
+ * @deprecated
  * @param int $slice last call to not return
  *
  * @return array
@@ -321,7 +321,7 @@ function getServiceCore()
  * return variable from dbaccess.php
  *
  * @param string $varName
- *
+ * @deprecated
  * @return string|null
  * @throws Dcp\Exception
  */

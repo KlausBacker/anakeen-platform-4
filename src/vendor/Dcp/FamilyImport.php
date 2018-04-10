@@ -122,12 +122,6 @@ class FamilyImport
                 } else {
                     $phpAdoc->Set("DocParent", '\\Doc' . $tdoc["fromid"]);
                 }
-                if (strstr($tdoc["usefor"], 'W')) {
-                    $phpAdoc->Set("pinit", '\WDoc');
-                } // special init for workflow
-                else {
-                    $phpAdoc->Set("pinit", '\DocCtrl');
-                }
             }
             $phpAdoc->Set("AParent", DocManager::getAttributesClassName($tdoc["fromname"]));
         }
@@ -369,9 +363,9 @@ class FamilyImport
 
                         if (!$v->phpconstraint) {
                             if (($atype == "integer") || ($atype == "int")) {
-                                $v->phpconstraint = sprintf("::isInteger(%s)", $v->id);
+                                $v->phpconstraint = sprintf("Anakeen\Core\Utils\Numbers::isInteger(%s)", $v->id);
                             } elseif (($atype == "money") || ($atype == "double")) {
-                                $v->phpconstraint = sprintf("::isFloat(%s)", $v->id);
+                                $v->phpconstraint = sprintf("Anakeen\Core\Utils\Numbers::isFloat(%s)", $v->id);
                             }
                         }
                         if ($atype == "account") {
@@ -553,7 +547,7 @@ class FamilyImport
             $phpAdoc->template = file_get_contents(DEFAULT_PUBDIR . $kFile);
             $err = self::__phpLintWriteFile($dfile, $phpAdoc->gen());
             if ($err != '') {
-                throw new \Dcp\Exception(sprintf("Error generating file '%s': %s", $dfile, $err));
+                throw new \Dcp\Exception("CORE0023", $dfile, $err);
             }
         }
     }
@@ -826,7 +820,7 @@ class FamilyImport
 
         $err = self::__phpLintWriteFile($attrfile, self::AttrIdtoPhp($dbaccess, $tdoc));
         if ($err != '') {
-            throw new \Dcp\Exception(sprintf("Error generating file '%s': %s", $attrfile, $err));
+            throw new \Dcp\Exception("CORE0024", $attrfile, $err);
         }
 
         return $dfile;
@@ -886,7 +880,7 @@ class FamilyImport
     public static function refreshPhpPgDoc($dbaccess, $docid)
     {
         $err = '';
-        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocFam::class);
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \Anakeen\Core\SmartStructure::class);
         $query->AddQuery("doctype='C'");
         $query->AddQuery("id=$docid");
         $table1 = $query->Query(0, 0, "TABLE");

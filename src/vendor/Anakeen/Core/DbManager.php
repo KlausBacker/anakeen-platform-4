@@ -4,6 +4,7 @@ namespace Anakeen\Core;
 
 class DbManager
 {
+    protected static $inTransition = false;
     protected static $savepoint;
     protected static $masterLock;
     protected static $lockpoint;
@@ -61,7 +62,8 @@ class DbManager
      * @param string            $query        sql query
      * @param string|bool|array &$result      query result
      * @param bool              $singlecolumn set to true if only one field is return
-     * @param bool              $singleresult set to true is only one row is expected (return the first row). If is combined with singlecolumn return the value not an array, if no results and $singlecolumn is true then $results is false
+     * @param bool              $singleresult set to true is only one row is expected (return the first row). If is combined with singlecolumn return the value not an array, if no
+     *                                        results and $singlecolumn is true then $results is false
      *
      * @throws \Dcp\Db\Exception
      * @return void
@@ -111,11 +113,17 @@ class DbManager
                 $point
             );
             self::query("begin");
+            self::$inTransition=true;
         } else {
             self::$savepoint[$idbid][] = $point;
         }
 
         self::query(sprintf('savepoint "%s"', pg_escape_string($point)));
+    }
+
+    public static function inTransition()
+    {
+        return self::$inTransition;
     }
 
     /**
@@ -184,6 +192,7 @@ class DbManager
             self::query(sprintf('release savepoint "%s"', pg_escape_string($point)));
             if (count(self::$savepoint[$idbid]) == 0) {
                 self::query("commit");
+                self::$inTransition=false;
             }
         } else {
             throw new \Dcp\Core\Exception(sprintf("cannot commit unsaved point : %s", $point));
@@ -211,6 +220,7 @@ class DbManager
             self::query(sprintf('rollback to savepoint "%s"', pg_escape_string($point)));
             if (count(self::$savepoint[$idbid]) == 0) {
                 self::query("commit");
+                self::$inTransition=false;
             }
         } else {
             throw new \Dcp\Core\Exception(sprintf("cannot rollback unsaved point : %s", $point));
@@ -238,7 +248,7 @@ class DbManager
     }
 
     /**
-     * @param array   $values
+     * @param array    $values
      * @param   string $column
      * @param bool     $integer
      *

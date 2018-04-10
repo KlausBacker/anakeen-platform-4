@@ -70,11 +70,11 @@ class VidExtractor
     /**
      * Extract VIDs from a family object
      *
-     * @param \DocFam $docfam
+     * @param \Anakeen\Core\SmartStructure $docfam
      *
      * @return array
      */
-    public static function getVidsFromDocFam(\DocFam & $docfam)
+    public static function getVidsFromDocFam(\Anakeen\Core\SmartStructure & $docfam)
     {
         $values = array();
         /*

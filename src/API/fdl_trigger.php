@@ -66,7 +66,7 @@ if ($docid != - 1) {
 }
 
 if (($docid == - 1) || ($docid == 0)) {
-    $doc = new DocFam($dbaccess);
+    $doc = new \Anakeen\Core\SmartStructure($dbaccess);
     
     $doc->doctype = 'C';
     $doc->fromid = 'fam';

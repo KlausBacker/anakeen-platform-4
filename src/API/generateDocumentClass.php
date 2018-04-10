@@ -28,7 +28,7 @@ if (($docid !== 0) && (!is_numeric($docid))) {
     }
 }
 
-$query = new \Anakeen\Core\Internal\QueryDb("", \DocFam::class);
+$query = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\SmartStructure::class);
 $query->AddQuery("doctype='C'");
 $query->order_by = "id";
 
@@ -68,7 +68,7 @@ if ($query->nb > 0) {
         if (strstr($v["usefor"], 'W')) {
             updateDoc($v);
             /**
-             * @var WDOc $wdoc
+             * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
             $wdoc = Anakeen\Core\DocManager::createDocument($v["id"]);
             $wdoc->CreateProfileAttribute(); // add special attribute for workflow

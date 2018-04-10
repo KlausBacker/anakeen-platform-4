@@ -198,7 +198,7 @@ function exportxmlfld(
             if (!isset($xsd[$doc->fromid])) {
 
                 /**
-                 * @var DocFam $fam
+                 * @var \Anakeen\Core\SmartStructure $fam
                  */
                 $fam = new_doc($dbaccess, $doc->fromid);
 

@@ -5,19 +5,13 @@
  *
  */
 
+namespace Anakeen\Core;
 
-use \Anakeen\Core\DbManager;
-
-/**
- * @class DocFam
- * @method  createProfileAttribute
- */
-class DocFam extends \Anakeen\SmartStructures\Profiles\PFamHooks
+class SmartStructure extends \Anakeen\SmartStructures\Profiles\PFamHooks
 {
     public $dbtable = "docfam";
 
-    public $sqlcreate
-        = "
+    public $sqlcreate = "
 create table docfam (cprofid int , 
                      dfldid int, 
                      cfldid int, 
@@ -110,13 +104,13 @@ create unique index idx_idfam on docfam(id);";
         $this->doctype = 'C';
         if ($include && ($this->id > 0) && ($this->isAffected())) {
             $adoc = \Anakeen\Core\DocManager::getAttributesClassName($this->name);
-            if (! \Anakeen\Core\Internal\Autoloader::findFile($adoc)) {
+            if (!\Anakeen\Core\Internal\Autoloader::findFile($adoc)) {
                 // Workaround because autoload has eventually the class in its missing private key
-                $attFileClass=\Anakeen\Core\DocManager::getAttributesClassFilename($this->name);
+                $attFileClass = \Anakeen\Core\DocManager::getAttributesClassFilename($this->name);
                 if (file_exists($attFileClass)) {
                     require_once($attFileClass);
                 } else {
-                    throw new Dcp\Exception(sprintf("cannot access attribute definition for %s (#%s) family", $this->name, $this->id));
+                    throw new \Dcp\Exception(sprintf("cannot access attribute definition for %s (#%s) family", $this->name, $this->id));
                 }
             }
             $this->attributes = new $adoc();
@@ -209,9 +203,9 @@ create unique index idx_idfam on docfam(id);";
             if ($classw) {
                 $w = new $classw();
                 if ($w) {
-                    if (is_a($w, "WDoc")) {
+                    if (is_a($w, \Anakeen\SmartStructures\Wdoc\WDocHooks::class)) {
                         /**
-                         * @var WDoc $w
+                         * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $w
                          */
                         $err = $w->createProfileAttribute($this->id);
                     }
@@ -346,7 +340,7 @@ create unique index idx_idfam on docfam(id);";
         if ($check) {
             $oa = $this->getAttribute($idp); // never use getAttribute if not check
             if (!$oa) {
-                return ErrorCode::getError('DOC0120', $idp, $this->getTitle(), $this->name);
+                return \ErrorCode::getError('DOC0120', $idp, $this->getTitle(), $this->name);
             }
         }
 
@@ -524,7 +518,7 @@ create unique index idx_idfam on docfam(id);";
         if ($check) {
             $oa = $this->getAttribute($idp);
             if (!$oa) {
-                return ErrorCode::getError('DOC0123', $idp, $this->getTitle(), $this->name);
+                return \ErrorCode::getError('DOC0123', $idp, $this->getTitle(), $this->name);
             }
         }
         if (!empty($val) && $oa && ($oa->type == "date" || $oa->type == "timestamp")) {
@@ -680,7 +674,7 @@ create unique index idx_idfam on docfam(id);";
         $this->$X = "[" . implode("][", $tdefattr) . "]";
     }
 
-    final public function UpdateVaultIndex()
+    final public function updateVaultIndex()
     {
         /*
          * Skip processing if the family has no attributes
@@ -694,7 +688,7 @@ create unique index idx_idfam on docfam(id);";
         DbManager::savePoint($point);
 
 
-        $dvi = new DocVaultIndex($this->dbaccess);
+        $dvi = new \DocVaultIndex($this->dbaccess);
         $dvi->DeleteDoc($this->id);
 
         $tvid = \Dcp\Core\Utils\VidExtractor::getVidsFromDocFam($this);
@@ -745,14 +739,14 @@ create unique index idx_idfam on docfam(id);";
      */
     public function getXmlSchema($linkInclude = false)
     {
-        $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/family_schema.xml", DEFAULT_PUBDIR));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/family_schema.xml", DEFAULT_PUBDIR));
         $lay->set("famname", strtolower($this->name));
         $lay->set("famtitle", strtolower($this->getTitle()));
         $lay->set("include", $linkInclude);
         if ($linkInclude) {
             $lay->set("includefdlxsd", "");
         } else {
-            $xsd = new DOMDocument();
+            $xsd = new \DOMDocument();
             $xsd->load(sprintf("%s/vendor/Anakeen/FDL/Layout/fdl.xsd", DEFAULT_PUBDIR));
             $xsd->preserveWhiteSpace = false;
             $xsd->formatOutput = true;
@@ -791,7 +785,7 @@ create unique index idx_idfam on docfam(id);";
         $lay->setBlockData("ATTR", $tax);
         $lay->setBlockData("LEVEL1", $level1);
 
-        $xsd = new DOMDocument();
+        $xsd = new \DOMDocument();
         $xsd->preserveWhiteSpace = false;
         $xsd->formatOutput = true;
         $xsd->loadXML($lay->gen());
@@ -818,7 +812,7 @@ create unique index idx_idfam on docfam(id);";
     /**
      * Reset properties configuration
      *
-     * @return \DocFam
+     * @return \Anakeen\Core\SmartStructure
      */
     public function resetPropertiesParameters()
     {
@@ -838,12 +832,12 @@ create unique index idx_idfam on docfam(id);";
     {
         $propName = strtolower($propName);
 
-        $confStore = new ConfigurationStore();
+        $confStore = new \ConfigurationStore();
         if ($confStore->load($this->configuration) === false) {
             return false;
         }
 
-        $class = CheckProp::getParameterClassMap($pName);
+        $class = \CheckProp::getParameterClassMap($pName);
         /**
          * @var string $pValue
          */
@@ -869,12 +863,12 @@ create unique index idx_idfam on docfam(id);";
     {
         $propName = strtolower($propName);
 
-        $confStore = new ConfigurationStore();
+        $confStore = new \ConfigurationStore();
         if ($confStore->load($this->configuration) === false) {
             return false;
         }
 
-        $class = CheckProp::getParameterClassMap($pName);
+        $class = \CheckProp::getParameterClassMap($pName);
         $confStore->add($class, $propName, $pName, $pValue);
 
         $conf = $confStore->getText();
@@ -902,7 +896,7 @@ create unique index idx_idfam on docfam(id);";
                 $res[$propName] = $params;
             }
         }
-        $confStore = new ConfigurationStore();
+        $confStore = new \ConfigurationStore();
         if ($confStore->load($this->configuration) === false) {
             return $res;
         }
@@ -922,7 +916,7 @@ create unique index idx_idfam on docfam(id);";
         return $res;
     }
 
-    public function PostUpdate()
+    public function postUpdate()
     {
         if (($err = $this->updateVaultIndex()) !== '') {
             return $err;

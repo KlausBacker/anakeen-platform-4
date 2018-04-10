@@ -1,28 +1,9 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
-/**
- * Ooo Layout test
- *
- * @author Anakeen
- *
- * @package Dcp\Pu
- */
-/**
- */
-/**
- */
-/**
- * @begin-method-ignore
- * this part will be deleted when construct document class until end-method-ignore
- */
-class _TST_FAMILYDEFAULT extends Doc
+
+namespace Anakeen\Pu\SmartStructures;
+
+class TestDefaultHooks extends \Anakeen\SmartStructures\Document
 {
-    /**
-     * @end-method-ignore
-     */
     public function isOne()
     {
         return 1;
@@ -59,8 +40,7 @@ class _TST_FAMILYDEFAULT extends Doc
     
     public function searchOnFamily()
     {
-        include_once ("FDL/Class.SearchDoc.php");
-        $s = new SearchDoc($this->dbaccess, "TST_DEFAULTFAMILY1");
+        $s = new \SearchDoc($this->dbaccess, "TST_DEFAULTFAMILY1");
         $s->search();
         return $s->count();
     }
@@ -98,12 +78,4 @@ class _TST_FAMILYDEFAULT extends Doc
         );
         return $t;
     }
-    /**
-     * @begin-method-ignore
-     * this part will be deleted when construct document class until end-method-ignore
-     */
 }
-/**
- * @end-method-ignore
- */
-?>

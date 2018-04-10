@@ -169,7 +169,7 @@ class ErrorCodeDOC
     const DOC0119 = 'the document "%s" (#%d) became fixed because another revision more recent has been created';
     /**
      * @errorCode when update family parameter
-     * @see DocFam::setParam
+     * @see \Anakeen\Core\SmartStructure::setParam
      */
     const DOC0120 = 'cannot set family parameter "%s". It is not a parameter for "%s" ("%s") family';
     /**
@@ -184,7 +184,7 @@ class ErrorCodeDOC
     const DOC0122 = 'cannot add application tag (document #%d). Application tag must not be empty';
     /**
      * @errorCode when update attribute family default value
-     * @see DocFam::setDefValue
+     * @see \Anakeen\Core\SmartStructure::setDefValue
      */
     const DOC0123 = 'cannot set default value for "%s". It is not an attribute for "%s" ("%s") family';
     /**
@@ -204,17 +204,17 @@ class ErrorCodeDOC
     const DOC0126 = 'getCustomSearchValues must return an array of string (found "%s")';
     /**
      * @errorCode Dynamic profil reference an attribute which no refers to any document
-     * @see DocCtrl::computeDProfil
+     * @see \Anakeen\Core\Internal\DocumentAccess::computeDProfil
      */
     const DOC0127 = 'Document with identifier %s not found for attribute %s';
     /**
      * @errorCode Dynamic profil reference an attribute refers to a document. But this document is not an account
-     * @see DocCtrl::computeDProfil
+     * @see \Anakeen\Core\Internal\DocumentAccess::computeDProfil
      */
     const DOC0128 = 'Document with identifier "%s" from attribute "%s" has no property "us_whatid"';
     /**
      * @errorCode Dynamic profil reference an attribute which refers to an incomplete account
-     * @see DocCtrl::computeDProfil
+     * @see \Anakeen\Core\Internal\DocumentAccess::computeDProfil
      */
     const DOC0129 = 'Document with identifier "%s" from attribute "%s" has an empty property "us_whatid"';
     /**

@@ -2,6 +2,8 @@
 
 namespace Anakeen\Core;
 
+use Anakeen\Core\Internal\GlobalParametersManager;
+use Anakeen\Core\Utils\Gettext;
 use Anakeen\Router\AuthenticatorManager;
 
 class ContextManager
@@ -87,7 +89,6 @@ class ContextManager
             $coreApplication->session = new \Anakeen\Core\Internal\Session();
         }
 
-        self::_initCoreVolatileParam($coreApplication);
         if ($appName && $appName !== "CORE") {
             $application = new \Anakeen\Core\Internal\Application();
             $application->set($appName, $coreApplication);
@@ -109,7 +110,7 @@ class ContextManager
             self::$coreAction->session = &self::$coreApplication->session;
         }
         self::$coreAction->user =& $account;
-
+        GlobalParametersManager::initialize();
 
         self::setLanguage(self::getApplicationParam("CORE_LANG", "fr_FR"));
     }
@@ -171,7 +172,7 @@ class ContextManager
 
                 $exception = new \Anakeen\Router\Exception("User must be authenticated");
                 $exception->setHttpStatus("403", "Forbidden");
-                $exception->setUserMessage(___("Access not granted", "ank"));
+                $exception->setUserMessage(Gettext::___("Access not granted", "ank"));
                 throw $exception;
         }
         $_SERVER['PHP_AUTH_USER'] = AuthenticatorManager::$auth->getAuthUser();
@@ -179,7 +180,7 @@ class ContextManager
         if (empty($_SERVER['PHP_AUTH_USER'])) {
             $exception = new \Anakeen\Router\Exception("User must be authenticated");
             $exception->setHttpStatus("403", "Forbidden");
-            $exception->setUserMessage(___("Access not granted", "ank"));
+            $exception->setUserMessage(Gettext::___("Access not granted", "ank"));
             throw $exception;
         }
         $u = new \Anakeen\Core\Account();
@@ -251,21 +252,6 @@ class ContextManager
         return self::$language;
     }
 
-    protected static function _initCoreVolatileParam(\Anakeen\Core\Internal\Application &$core)
-    {
-        $absindex = $core->getParam("CORE_URLINDEX");
-        if ($absindex == '') {
-            $absindex = "./";
-        }
-        $core_externurl = self::stripUrlSlahes($absindex);
-        $core_mailaction = $core->getParam("CORE_MAILACTION");
-        $core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction)
-            : ($core_externurl . "?app=FDL&action=OPENDOC&mode=view");
-
-        $core->SetVolatileParam("CORE_EXTERNURL", $core_externurl);
-        $core->SetVolatileParam("CORE_MAILACTIONURL", $core_mailactionurl);
-    }
-
     public static function sudo(\Anakeen\Core\Account &$account)
     {
         self::$coreAction = self::getCurrentAction();
@@ -282,18 +268,7 @@ class ContextManager
         }
     }
 
-    /**
-     * Delete double slashes in url path
-     *
-     * @param string $url
-     *
-     * @return string
-     */
-    protected static function stripUrlSlahes($url)
-    {
-        $pos = mb_strpos($url, '://');
-        return mb_substr($url, 0, $pos + 3) . preg_replace('/\/+/u', '/', mb_substr($url, $pos + 3));
-    }
+
 
     /**
      * @return \Anakeen\Core\Account|null

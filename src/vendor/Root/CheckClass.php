@@ -15,7 +15,7 @@ class CheckClass extends CheckData
      */
     protected $fileName;
     /**
-     * @var DocFam
+     * @var \Anakeen\Core\SmartStructure 
      */
     protected $doc;
     protected $disableInheritanceCondition = false;
@@ -36,8 +36,9 @@ class CheckClass extends CheckData
 
             $this->doc = $doc;
             $this->checkClassSyntax();
-            $this->checkClassFile();
-            $this->checkInherit();
+            if ($this->checkClassFile()) {
+                $this->checkInherit();
+            }
         }
         return $this;
     }
@@ -58,7 +59,7 @@ class CheckClass extends CheckData
     /**
      * check if it is a folder
      *
-     * @return void
+     * @return bool
      */
     protected function checkClassFile()
     {
@@ -70,11 +71,14 @@ class CheckClass extends CheckData
                 // Get the shell output from the syntax check command
                 if (self::phpLintFile($fileName, $output) === false) {
                     $this->addError(ErrorCode::getError('CLASS0002', $classFile, $this->doc->name, implode("\n", $output)));
+                    return false;
                 }
             } else {
                 $this->addError(ErrorCode::getError('CLASS0003', $this->className, $this->doc->name));
+                    return false;
             }
         }
+        return true;
     }
 
     /**

@@ -6,6 +6,7 @@ use Anakeen\Core\DocManager;
 use Anakeen\Router\URLUtils;
 use Anakeen\Router\Exception;
 use Anakeen\Core\Settings;
+use Anakeen\SmartStructures\Search\SearchHooks;
 
 /**
  * Class SearchContent
@@ -18,7 +19,7 @@ use Anakeen\Core\Settings;
 class SearchContent extends DocumentList
 {
     /**
-     * @var \DocSearch
+     * @var SearchHooks
      */
     protected $_search = null;
 

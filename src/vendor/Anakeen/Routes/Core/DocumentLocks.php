@@ -20,7 +20,7 @@ class DocumentLocks extends DocumentLock
      */
     protected $_document = null;
     /**
-     * @var \DocFam
+     * @var \Anakeen\Core\SmartStructure 
      */
     protected $_family = null;
 

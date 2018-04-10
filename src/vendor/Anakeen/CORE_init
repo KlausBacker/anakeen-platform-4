@@ -129,7 +129,7 @@ if [ "$1" = "I" ] ; then
         DocAttr \
         DocAttrLDAP \
         DocCount \
-        DocFam \
+        "Anakeen\\Core\\SmartStructure" \
         DocHisto \
         DocLog \
         DocEnum \

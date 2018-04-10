@@ -5,6 +5,9 @@
 */
 
 namespace Dcp\Pu;
+
+use Anakeen\Core\SmartStructure;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -104,7 +107,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
     public function testFamilyParamvalueInheritedWithDefaultArg($famid, $default, array $expectedParams)
     {
         /**
-         * @var  \DocFam $d
+         * @var  SmartStructure $d
          */
         $d = new_Doc(self::$dbaccess, $famid);
         $this->assertTrue(is_object($d) , sprintf("cannot get %s family", $famid));

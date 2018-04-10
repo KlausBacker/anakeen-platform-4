@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Core\DocManager;
+use Anakeen\Core\SmartStructure;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 
@@ -15,7 +16,7 @@ use Anakeen\Router\Exception;
 class FamilyDocumentCreation extends DocumentUpdateData
 {
     /**
-     * @var \DocFam
+     * @var \Anakeen\Core\SmartStructure 
      */
     protected $_family = null;
     /**
@@ -44,13 +45,13 @@ class FamilyDocumentCreation extends DocumentUpdateData
 
     /**
      * @param \Slim\Http\request $request
-     * @param \DocFam $family
+     * @param \Anakeen\Core\SmartStructure $family
      * @param array $messages
      * @return \Doc
      * @throws Exception
      * @throws \Dcp\Core\Exception
      */
-    public function create(\Slim\Http\request $request, \DocFam $family, &$messages)
+    public function create(\Slim\Http\request $request, SmartStructure $family, &$messages)
     {
         try {
             $this->_document = DocManager::createDocument($family->id);

@@ -168,7 +168,7 @@ class ExportDocument
                     }
                 }
                 foreach ($doc->acls as $kAcl => $acl) {
-                    $bup = ($doc->ControlUp($up, $acl) == "");
+                    $bup = ($doc->accessControl()->controlUp($up, $acl) == "");
                     if ($uid && $bup) {
                         $tAcls[$kAcl . "-" . $uid] = ["uid" => $uid, "acl" => $acl];
                     }

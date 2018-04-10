@@ -26,7 +26,7 @@ class System
     /**
      * send a message to system log
      *
-     * @param string $msg message to log
+     * @param string|string[] $msg message to log
      */
     public static function addLogMsg($msg)
     {

@@ -16,7 +16,7 @@ ATTR;HELP_T_SECTIONS;HELP_FR_IDENTIFICATION;Rubriques;N;N;array;::auto;W;;;;;;;e
 ATTR;HELP_SEC_ORDER;HELP_T_SECTIONS;Ordre de la rubrique;N;N;int;::auto;W;;;;;;;
 ATTR;HELP_SEC_NAME;HELP_T_SECTIONS;Nom de la rubrique;N;N;text;::auto;W;;;;;;;
 ATTR;HELP_SEC_LANG;HELP_T_SECTIONS;Langue;N;N;enum;::auto;W;;;;;;;
-ATTR;HELP_SEC_KEY;HELP_T_SECTIONS;Clé de la rubrique;N;N;text;::auto;W;;;;;;::isString(HELP_SEC_KEY,[a-zA-Z0-9_]+);
+ATTR;HELP_SEC_KEY;HELP_T_SECTIONS;Clé de la rubrique;N;N;text;::auto;W;;;;;;;
 ATTR;HELP_SEC_TEXT;HELP_T_SECTIONS;Texte;N;N;htmltext;::auto;W;;;;;;;
 ;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;

@@ -6,6 +6,8 @@
 
 namespace Dcp\Pu;
 
+use Anakeen\TestUnits\CoreTests;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu

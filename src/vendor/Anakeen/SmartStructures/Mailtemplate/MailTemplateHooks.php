@@ -9,6 +9,8 @@
  */
 namespace Anakeen\SmartStructures\Mailtemplate;
 
+use Anakeen\Core\ContextManager;
+
 class MailTemplateHooks extends \Anakeen\SmartStructures\Document
 {
     /**
@@ -113,7 +115,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
         $wdoc = null;
         if ($doc->wid) {
             /**
-             * @var \WDoc $wdoc
+             * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
             $wdoc = new_doc($this->dbaccess, $doc->wid);
         }
@@ -336,7 +338,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
             }
         } //nobody to send data
         if ($this->sendercopy && \Anakeen\Core\ContextManager::getApplicationParam("FDL_BCC") == "yes") {
-            $umail = getMailAddr($this->userid);
+            $umail = getMailAddr(ContextManager::getCurrentUser()->id);
             if ($umail != "") {
                 $bcc.= (trim($bcc) == "" ? "" : ",") . $umail;
             }
@@ -560,8 +562,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
             $chopped_src = '';
             // Detect HTTP URLs pointing to myself
             foreach (array(
-                'CORE_URLINDEX',
-                'CORE_PUBURL'
+                'CORE_URLINDEX'
             ) as $url) {
                 $url = \Anakeen\Core\ContextManager::getApplicationParam($url);
                 if (strlen($url) <= 0) {

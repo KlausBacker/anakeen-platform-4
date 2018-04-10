@@ -606,7 +606,7 @@ class CheckDb
 WITH RECURSIVE topfam(id, fromid) AS (
     SELECT id, fromid FROM docfam WHERE fromid = %d
     UNION
-    SELECT docfam.id, docfam.fromid FROM topfam, docfam WHERE docfam.fromid = topfam.id
+    SELECT docfam.id, docfam.fromid FROM topfam, \Anakeen\Core\SmartStructure WHERE docfam.fromid = topfam.id
 )
 SELECT * FROM topfam;
 EOF;

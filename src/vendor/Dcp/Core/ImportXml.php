@@ -198,7 +198,7 @@ class ImportXml
             throw new Exception(sprintf('Import file for "%s" : Family "%s" not found', $xmlfile, $family));
         }
         /**
-         * @var \DocFam[] $families
+         * @var \Anakeen\Core\SmartStructure [] $families
          */
         $la = $families[$famid]->getNormalAttributes();
         $tord = array();

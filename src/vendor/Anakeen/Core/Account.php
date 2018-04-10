@@ -863,7 +863,7 @@ union
         if ($incumbents = $this->getIncumbents()) {
             if ($doc->control($acl, true) != '') {
                 foreach ($incumbents as $aIncumbent) {
-                    $eErr = $doc->controlUserId($doc->profid, $aIncumbent, $acl);
+                    $eErr = $doc->accessControl()->controlUserId($doc->profid, $aIncumbent, $acl);
                     if (!$eErr) {
                         return Account::getDisplayName($aIncumbent);
                     }

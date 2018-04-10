@@ -6,6 +6,8 @@
 
 namespace Dcp;
 
+use Anakeen\Core\DbManager;
+
 class VaultManager
 {
     protected static $vault = null;
@@ -84,7 +86,8 @@ class VaultManager
             $sql = sprintf("update vaultdiskstorage set id_tmp = null where id_tmp is not null and id_file in (%s)", implode(",", array_map(function ($x) {
                 return intval($x);
             }, $vids)));
-            simpleQuery("", $sql);
+
+            DbManager::query($sql);
         }
     }
     /**
@@ -109,8 +112,8 @@ class VaultManager
     public static function destroyTmpFiles($dayInterval = 2)
     {
         $sql = sprintf("select id_file from vaultdiskstorage where id_tmp is not null and id_tmp != '' and cdate < (now() - INTERVAL '%d day');", $dayInterval);
-        
-        simpleQuery("", $sql, $result, true);
+
+        DbManager::query($sql, $result, true);
         foreach ($result as $vid) {
             self::destroyFile($vid);
         }
