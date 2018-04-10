@@ -3,7 +3,6 @@
 namespace Anakeen\Routes\Ui;
 
 use Anakeen\Router\URLUtils;
-use Anakeen\Routes\Core\Lib\ApiMessage;
 use SmartStructure\Attributes\Cvdoc as CvdocAttribute;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
@@ -79,7 +78,6 @@ class DocumentView
      * @param \Slim\Http\response $response
      * @param $args
      * @return mixed
-     * @throws DocManager\Exception
      * @throws Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
@@ -284,7 +282,7 @@ class DocumentView
             self::fieldMenu => $controlView->getLocaleViewMenu($viewId),
             "mask" => array(
                 "id" => intval($viewInfo[CvdocAttribute::cv_mskid]),
-                "title" => $viewInfo[CvdocAttribute::cv_msk]
+                "title" => \DocTitle::getTitle($viewInfo[CvdocAttribute::cv_mskid])
             )
         );
     }
