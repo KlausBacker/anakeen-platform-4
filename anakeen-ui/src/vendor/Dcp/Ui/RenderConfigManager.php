@@ -22,7 +22,7 @@ class RenderConfigManager
         if (empty($vId)) {
             if ($document->doctype === "C") {
                 /**
-                 * @var \DocFam $document
+                 * @var \Anakeen\Core\SmartStructure $document
                  */
                 return self::getFamilyRenderConfig($mode, $document);
             } else {
@@ -216,7 +216,7 @@ class RenderConfigManager
     /**
      * Get render of a family itself
      * @param $mode
-     * @param \DocFam $family
+     * @param \Anakeen\Core\SmartStructure $family
      * @return FamilyView
      */
     protected static function getFamilyRenderConfig($mode, \DocFam $family)

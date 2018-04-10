@@ -11,7 +11,7 @@ interface IRenderTransitionAccess {
      * Get Transition Render object to configure transition render
      *
      * @param string $transitionId transition identifier
-     * @param \WDoc  $workflow workflow document
+     * @param \Anakeen\SmartStructures\Wdoc\WDocHooks  $workflow workflow document
      *
      * @return TransitionRender
      */

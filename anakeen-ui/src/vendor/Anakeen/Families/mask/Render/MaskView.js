@@ -33,7 +33,6 @@ import '@progress/kendo-ui/js/kendo.treelist';
         });
     };
 
-
     window.dcp.document.documentController('addEventListener',
         'ready',
         {

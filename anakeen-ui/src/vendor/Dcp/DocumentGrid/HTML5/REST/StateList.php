@@ -44,7 +44,7 @@ class StateList extends Crud
         $wids[] = $currentFam->wid;
         
         $wDoc = new_Doc('', $currentFam->wid, true);
-        /* @var \WDoc $wDoc */
+        /* @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wDoc */
         if ($wDoc->isAlive()) {
             foreach ($wDoc->getStates() as $currentState) {
                 $currentActivity = $wDoc->getActivity($currentState, false);

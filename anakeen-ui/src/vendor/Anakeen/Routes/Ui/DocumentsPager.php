@@ -28,7 +28,7 @@ class DocumentsPager extends DocumentList
     protected $page = 1;
     protected $collectionId;
     /**
-     * @var \DocFam
+     * @var \Anakeen\Core\SmartStructure 
      */
     protected $family;
 

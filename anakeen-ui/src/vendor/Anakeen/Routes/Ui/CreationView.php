@@ -15,7 +15,7 @@ use Anakeen\Core\DocManager as DocManager;
 class CreationView
 {
     /**
-     * @var \DocFam
+     * @var \Anakeen\Core\SmartStructure 
      */
     protected $_family = null;
 
