@@ -79,7 +79,7 @@ class TimerHooks extends \Anakeen\SmartStructures\Document
     /**
      * unattach timer to a document
      *
-     * @param TimerHooks $doc     the timer document
+     * @param \Doc $doc     the timer document
      * @param \Doc       &$origin the document which comes from the attachement
      * @param int        $c       count of deletion
      *
@@ -102,7 +102,7 @@ class TimerHooks extends \Anakeen\SmartStructures\Document
     /**
      * unattach timer to a document
      *
-     * @param TimerHooks &$doc  the timer document
+     * @param \Doc &$doc  the timer document
      *
      * @return string error - empty if no error -
      */
