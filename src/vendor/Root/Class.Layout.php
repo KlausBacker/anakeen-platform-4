@@ -461,11 +461,7 @@ class Layout
             global $action;
             return $action->parent->getImageLink($matches[1]);
         }, $out);
-        
-        $out = preg_replace_callback('/\[IMGF:([^\]]*)\]/', function ($matches) {
-            global $action;
-            return $action->parent->GetFilteredImageUrl($matches[1]);
-        }, $out);
+
     }
     
     protected function ParseText(&$out)

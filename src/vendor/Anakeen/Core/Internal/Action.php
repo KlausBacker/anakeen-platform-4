@@ -393,13 +393,6 @@ create sequence SEQ_ID_ACTION;
         return '';
     }
 
-    public function getFilteredImageUrl($name)
-    {
-        if (isset($this->parent)) {
-            return ($this->parent->GetFilteredImageUrl($name));
-        }
-        return '';
-    }
 
     public function getImageFile($name)
     {
