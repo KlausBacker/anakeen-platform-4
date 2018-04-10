@@ -1,4 +1,5 @@
-// Prevent the EMFILE too many open file error
+//Prevent the EMFILE too many open file error
+
 const fs = require('fs');
 const gracefulFs = require('graceful-fs');
 gracefulFs.gracefulify(fs);
@@ -6,21 +7,21 @@ gracefulFs.gracefulify(fs);
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const merge = require("webpack-merge");
-const parts = require("./webpack.parts");
+const merge = require('webpack-merge');
+const parts = require('./webpack.parts');
 
 const PATHS = {
-    "mainSmartElement": path.resolve(__dirname, 'anakeen-ui/src/Apps/DOCUMENT/IHM/mainDocument.js'),
-    "smartElementGrid": path.resolve(__dirname, 'anakeen-ui/src/Apps/DOCUMENT_GRID_HTML5/widgets/documentGrid.js'),
-    "smartElement": path.resolve(__dirname, 'anakeen-ui/src/Apps/DOCUMENT/IHM/smartElement.js'),
-    "components": path.resolve(__dirname, 'anakeen-ui/src/vendor/Anakeen/Components/main.js'),
-    "build": path.resolve(__dirname, 'anakeen-ui/src/public/'),
+    mainSmartElement: path.resolve(__dirname, 'anakeen-ui/src/Apps/DOCUMENT/IHM/mainDocument.js'),
+    smartElementGrid: path.resolve(__dirname, 'anakeen-ui/src/Apps/DOCUMENT_GRID_HTML5/widgets/documentGrid.js'),
+    smartElement: path.resolve(__dirname, 'anakeen-ui/src/Apps/DOCUMENT/IHM/smartElement.js'),
+    components: path.resolve(__dirname, 'anakeen-ui/src/vendor/Anakeen/Components/main.js'),
+    build: path.resolve(__dirname, 'anakeen-ui/src/public/'),
 };
 
 const commonConfig = merge([{
-    devtool: "source-map",
+    devtool: 'source-map',
     output: {
-        filename: '[name]-[chunkhash].js'
+        filename: '[name]-[chunkhash].js',
     },
     module: {
         rules: [
@@ -34,9 +35,9 @@ const commonConfig = merge([{
                     loader: 'babel-loader',
                     options: {
                         presets: ['env'],
-                        babelrc: false
-                    }
-                }
+                        babelrc: false,
+                    },
+                },
             },
             {
                 test: /\.vue$/,
@@ -45,38 +46,38 @@ const commonConfig = merge([{
                     options: {
                         extractCSS: true, loaders: {
                             sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
-                            scss: 'vue-style-loader!css-loader!sass-loader'
-                        }
-                    }
-                }
+                            scss: 'vue-style-loader!css-loader!sass-loader',
+                        },
+                    },
+                },
             },
             {
                 test: /\.template.kd$/,
                 include: [path.resolve(__dirname, 'anakeen-ui/src/vendor/Anakeen/Components/')],
-                use: 'raw-loader'
-            }
+                use: 'raw-loader',
+            },
         ],
     },
     plugins: [
         new CopyWebpackPlugin(
             [
-                //dynacase-report
                 {
-                    context: path.resolve(__dirname, "anakeen-ui/src/Apps/DOCUMENT/IHM/"),
-                    from: "dynacaseReport.js",
-                    to: path.resolve(__dirname, 'anakeen-ui/src/public/uiAssets/anakeen/')
-                }
+                    //dynacase-report
+                    context: path.resolve(__dirname, 'anakeen-ui/src/Apps/DOCUMENT/IHM/'),
+                    from: 'dynacaseReport.js',
+                    to: path.resolve(__dirname, 'anakeen-ui/src/public/uiAssets/anakeen/'),
+                },
             ]
-        )
-    ]
-    },
+        ),
+    ],
+},
     parts.cssLoader([
-        /loading\.css/
+        /loading\.css/,
     ]),
     parts.getSmartElementResolve(),
     parts.providePopper(),
     parts.addExternals(),
-    parts.progressBar()
+    parts.progressBar(),
     ]
 );
 
@@ -84,37 +85,37 @@ const productionDocumentConfig = merge([
     {
         entry: {
             //inject promise polyfill
-            'mainSmartElement': ["core-js/es6/promise", PATHS.mainSmartElement]
+            mainSmartElement: ['core-js/es6/promise', PATHS.mainSmartElement],
         },
         output: {
             publicPath: 'uiAssets/anakeen/prod/',
-            path: path.resolve(PATHS.build, 'uiAssets/anakeen/prod/')
-        }
+            path: path.resolve(PATHS.build, 'uiAssets/anakeen/prod/'),
+        },
     },
-    parts.setFreeVariable("process.env.NODE_ENV", "production"),
+    parts.setFreeVariable('process.env.NODE_ENV', 'production'),
     parts.clean(path.resolve(PATHS.build, 'uiAssets/anakeen/prod/')),
     parts.minifyJavaScript(),
     parts.attachRevision(),
     parts.generateHashModuleName(),
     parts.generateNamedChunk(),
     parts.extractAssets({
-        "filename": "documentElements.json",
-        "path": path.resolve(PATHS.build, 'uiAssets/anakeen/prod/')
+        filename: 'documentElements.json',
+        path: path.resolve(PATHS.build, 'uiAssets/anakeen/prod/'),
     }),
-    parts.generateViewHtml('anakeen-ui/src/Apps/DOCUMENT/Layout/prod/')
+    parts.generateViewHtml('anakeen-ui/src/Apps/DOCUMENT/Layout/prod/'),
 ]);
 
 const productionSmartElementConfig = merge([
     {
         entry: {
-            'smartElementGrid': PATHS.smartElementGrid,
-            'smartElement': PATHS.smartElement
+            smartElementGrid: PATHS.smartElementGrid,
+            smartElement: PATHS.smartElement,
         },
         output: {
-            libraryTarget: "umd",
+            libraryTarget: 'umd',
             publicPath: 'uiAssets/widgets/prod/',
-            path: path.resolve(PATHS.build, 'uiAssets/widgets/prod/')
-        }
+            path: path.resolve(PATHS.build, 'uiAssets/widgets/prod/'),
+        },
     },
     parts.clean(path.resolve(PATHS.build, 'uiAssets/widgets/prod/')),
     parts.minifyJavaScript(),
@@ -122,21 +123,21 @@ const productionSmartElementConfig = merge([
     parts.generateHashModuleName(),
     parts.generateNamedChunk(),
     parts.extractAssets({
-        "filename": "smartElement.json",
-        "path": path.resolve(PATHS.build, 'uiAssets/widgets/prod/')
-    })
+        filename: 'smartElement.json',
+        path: path.resolve(PATHS.build, 'uiAssets/widgets/prod/'),
+    }),
 ]);
 
 const productionComponentConfig = merge([
     {
         entry: {
-            'ank-components': PATHS.components
+            'ank-components': PATHS.components,
         },
         output: {
             publicPath: 'components/dist/',
             filename: '[name].js',
-            path: path.resolve(PATHS.build, 'components/dist/')
-        }
+            path: path.resolve(PATHS.build, 'components/dist/'),
+        },
     },
     parts.clean(path.resolve(PATHS.build, 'components/dist/')),
     parts.minifyJavaScript(),
@@ -144,145 +145,147 @@ const productionComponentConfig = merge([
     parts.generateHashModuleName(),
     parts.extractAssets(
         {
-            "filename": "ank-components.json",
-            "path": path.resolve(PATHS.build, 'components/dist/')
+            filename: 'ank-components.json',
+            path: path.resolve(PATHS.build, 'components/dist/'),
         }
-    )
+    ),
 ]);
 
 const debugDocumentConfig = merge([
     {
         entry: {
-            'mainSmartElement': ["core-js/es6/promise", PATHS.mainSmartElement],
+            mainSmartElement: ['core-js/es6/promise', PATHS.mainSmartElement],
         },
         output: {
             publicPath: 'uiAssets/anakeen/debug/',
             filename: '[name].js',
-            path: path.resolve(PATHS.build, 'uiAssets/anakeen/debug/')
-        }
+            path: path.resolve(PATHS.build, 'uiAssets/anakeen/debug/'),
+        },
     },
     parts.generateNamedChunk(),
-    parts.setFreeVariable("process.env.NODE_ENV", "debug"),
+    parts.setFreeVariable('process.env.NODE_ENV', 'debug'),
     parts.generateViewHtml('anakeen-ui/src/Apps/DOCUMENT/Layout/debug/'),
     parts.extractAssets({
-        "filename": "documentElements.json",
-        "path": path.resolve(PATHS.build, 'uiAssets/anakeen/debug/')
+        filename: 'documentElements.json',
+        path: path.resolve(PATHS.build, 'uiAssets/anakeen/debug/'),
     }),
-    parts.clean(path.resolve(PATHS.build, 'uiAssets/anakeen/debug/'))
+    parts.clean(path.resolve(PATHS.build, 'uiAssets/anakeen/debug/')),
 ]);
 
 const debugSmartElementConfig = merge([
     {
         entry: {
-            'smartElementGrid': PATHS.smartElementGrid,
-            'smartElement': PATHS.smartElement
+            smartElementGrid: PATHS.smartElementGrid,
+            smartElement: PATHS.smartElement,
         },
         output: {
-            libraryTarget: "umd",
+            libraryTarget: 'umd',
             publicPath: 'uiAssets/widgets/debug/',
             filename: '[name].js',
-            path: path.resolve(PATHS.build, 'uiAssets/widgets/debug/')
-        }
+            path: path.resolve(PATHS.build, 'uiAssets/widgets/debug/'),
+        },
     },
     parts.generateNamedChunk(),
     parts.extractAssets({
-        "filename": "smartElement.json",
-        "path": path.resolve(PATHS.build, 'uiAssets/widgets/debug/')
+        filename: 'smartElement.json',
+        path: path.resolve(PATHS.build, 'uiAssets/widgets/debug/'),
     }),
-    parts.clean(path.resolve(PATHS.build, 'uiAssets/widgets/debug/'))
+    parts.clean(path.resolve(PATHS.build, 'uiAssets/widgets/debug/')),
 ]);
 
 const debugComponentConfig = merge([
     {
         entry: {
-            'ank-components': PATHS.components
+            'ank-components': PATHS.components,
         },
         output: {
             publicPath: 'components/debug/',
             filename: '[name].js',
-            path: path.resolve(PATHS.build, 'components/debug/')
-        }
+            path: path.resolve(PATHS.build, 'components/debug/'),
+        },
     },
     parts.clean(path.resolve(PATHS.build, 'components/debug/')),
     parts.extractAssets(
         {
-            "filename": "ank-components.json",
-            "path": path.resolve(PATHS.build, 'components/debug/')
+            filename: 'ank-components.json',
+            path: path.resolve(PATHS.build, 'components/debug/'),
         }
-    )
+    ),
 ]);
 
 const devConfig = merge([
     {
         entry: {
-            'mainSmartElement': ["core-js/es6/promise", PATHS.mainSmartElement]
+            mainSmartElement: ['core-js/es6/promise', PATHS.mainSmartElement],
         },
         output: {
             publicPath: 'uiAssets/anakeen/debug/',
             filename: '[name].js',
-            path: path.resolve(PATHS.build, 'uiAssets/anakeen/debug/')
-        }
+            path: path.resolve(PATHS.build, 'uiAssets/anakeen/debug/'),
+        },
     },
-    parts.setFreeVariable("process.env.NODE_ENV", "debug"),
+    parts.setFreeVariable('process.env.NODE_ENV', 'debug'),
     parts.generateViewHtml('anakeen-ui/src/Apps/DOCUMENT/Layout/debug/'),
     parts.devServer(
         {
             host: process.env.HOST,
             port: process.env.PORT,
-            proxy : {
-                "!/uiAssets/anakeen/debug/*.js": {
-                    "target": process.env.PROXY_URL || "http://localhost"
+            proxy: {
+                '!/uiAssets/anakeen/debug/*.js': {
+                    target: process.env.PROXY_URL || 'http://localhost',
                 },
-            }
+            },
         }
-    )
+    ),
 ]);
 
 const devComponentConfig = merge([
     {
         entry: {
-            'ank-components': PATHS.components
+            'ank-components': PATHS.components,
         },
         output: {
             publicPath: 'components/debug/',
             filename: '[name].js',
-            path: path.resolve(PATHS.build, 'components/debug/')
-        }
+            path: path.resolve(PATHS.build, 'components/debug/'),
+        },
     },
-    parts.setFreeVariable("process.env.NODE_ENV", "debug"),
+    parts.setFreeVariable('process.env.NODE_ENV', 'debug'),
     parts.devServer(
         {
             host: process.env.HOST,
             port: process.env.PORT,
-            proxy : {
-                "!/components/debug/*.js": {
-                    "target": process.env.PROXY_URL || "http://localhost"
+            proxy: {
+                '!/components/debug/*.js': {
+                    target: process.env.PROXY_URL || 'http://localhost',
                 },
-            }
+            },
         }
-    )
-])
-
+    ),
+]);
 
 module.exports = env => {
-    if (env === "production") {
+    if (env === 'production') {
         return [
             merge(commonConfig, productionComponentConfig),
             merge(commonConfig, productionSmartElementConfig),
-            merge(commonConfig, productionDocumentConfig)
+            merge(commonConfig, productionDocumentConfig),
         ];
     }
-    if (env === "debug") {
+
+    if (env === 'debug') {
         return [
             merge(commonConfig, debugComponentConfig),
             merge(commonConfig, debugSmartElementConfig),
-            merge(commonConfig, debugDocumentConfig)
+            merge(commonConfig, debugDocumentConfig),
         ];
     }
-    if (env === "componentsDev") {
+
+    if (env === 'componentsDev') {
         return merge(commonConfig, devComponentConfig);
     }
-    if (env === "documentDev") {
+
+    if (env === 'documentDev') {
         return merge(commonConfig, devConfig);
     }
 };

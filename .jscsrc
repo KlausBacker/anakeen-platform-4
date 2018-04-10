@@ -9,5 +9,6 @@
   //"requireDollarBeforejQueryAssignment": true,
   "requireSemicolons": true,
   "maximumLineLength" : 120,
-  "validateIndentation": 4
+  "validateIndentation": 4,
+  "maxErrors": 1000
 }
