@@ -1,10 +1,10 @@
 <?php
-namespace Dcp\Family {
+namespace SmartStructure {
 	/** Minuteur  */
-	class Timer extends \Dcp\Core\Timer { const familyName="TIMER";}
+	class Timer extends \Anakeen\SmartStructures\Timer\TimerHooks { const familyName="TIMER";}
 }
 
-namespace Dcp\AttributeIdentifiers {
+namespace SmartStructure\Attributes {
 	/** Minuteur  */
 	class Timer {
 		/** [frame] Identification */
