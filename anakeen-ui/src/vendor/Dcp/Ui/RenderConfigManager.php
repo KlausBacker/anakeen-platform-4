@@ -219,7 +219,7 @@ class RenderConfigManager
      * @param \Anakeen\Core\SmartStructure $family
      * @return FamilyView
      */
-    protected static function getFamilyRenderConfig($mode, \DocFam $family)
+    protected static function getFamilyRenderConfig($mode, \Anakeen\Core\SmartStructure $family)
     {
         
         return new \Dcp\Ui\FamilyView();

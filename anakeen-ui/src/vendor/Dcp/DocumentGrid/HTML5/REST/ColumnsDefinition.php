@@ -10,6 +10,7 @@ namespace Dcp\DocumentGrid\HTML5\REST;
 
 use Dcp\HttpApi\V1\Crud\Crud;
 use Dcp\HttpApi\V1\DocManager\DocManager;
+use \Dcp\Ui\Exception;
 
 class ColumnsDefinition extends Crud
 {
@@ -150,7 +151,7 @@ class ColumnsDefinition extends Crud
         }
     }
     
-    protected function getAttributeDef(\Anakeen\Core\SmartStructure\BasicAttribute $currentAttribute, \DocFam $family)
+    protected function getAttributeDef(\Anakeen\Core\SmartStructure\BasicAttribute $currentAttribute, \Anakeen\Core\SmartStructure $family)
     {
         $data = array(
             "id" => $currentAttribute->id,
