@@ -15,8 +15,9 @@
  */
 include_once("WHAT/Lib.Common.php");
 /**
- * @param Authenticator $auth
+ * @param \Anakeen\Core\Internal\Authenticator $auth
  * @param \Anakeen\Core\Internal\Action        $action
+ * @deprecated
  */
 function getMainAction($auth, &$action)
 {
@@ -359,107 +360,8 @@ function executeAction(&$action, &$out = null)
     }
 }
 
-function checkWshExecUid($file)
-{
-    $uid = posix_getuid();
-    if ($uid === 0) {
-        throw new \Dcp\Exception(sprintf("Error: this script must NOT be run as root (uid 0).\n"));
-    }
-    if (($owner = fileowner($file)) === false) {
-        throw new \Dcp\Exception(sprintf("Error: could not get owner of file '%s'.\n", $file));
-    }
-    if ($owner !== $uid) {
-        $msg
-            = <<<'EOF'
-Error: current uid %d does not match owner %d of file '%s'.
-
-You might need to either:
-- run the script under the webserver's user;
-- or set proper ownership of context's files to that of the webserver's user.
-
-EOF;
-        throw new \Dcp\Exception(sprintf($msg, $uid, $owner, $file));
-    }
-}
-
-/**
- * @param Exception|Error $e
- *
- * @throws \Dcp\Core\Exception
- */
-function handleActionException($e)
-{
-    global $action;
-
-    if (php_sapi_name() !== "cli") {
-        if (method_exists($e, "addHttpHeader")) {
-            /**
-             * @var \Dcp\Exception $e
-             */
-            if ($e->getHttpHeader()) {
-                header($e->getHttpHeader());
-            } else {
-                header("HTTP/1.1 500 Dynacase Uncaught Exception");
-            }
-        } else {
-            header("HTTP/1.1 500 Dynacase Uncaught Exception");
-        }
-    }
-
-    $displayMsg = \Anakeen\Core\LogException::logMessage($e, $errId);
-    if (isset($action) && is_a($action, '\Anakeen\Core\Internal\Action') && isset($action->parent)) {
-        if (php_sapi_name() === 'cli') {
-            fwrite(STDERR, sprintf("[%s]: %s\n", $errId, $displayMsg));
-        } else {
-            $action->exitError($displayMsg, true, $errId);
-        }
-    } else {
-        if (php_sapi_name() === 'cli') {
-            fwrite(STDERR, sprintf("[%s]: %s\n", $errId, $displayMsg));
-        } else {
-            if (is_a($e, "\\Anakeen\\Router\\Exception")) {
-                /**
-                 * @var \Anakeen\Router\Exception $e
-                 */
-                header(sprintf("HTTP/1.0 %d %s", $e->getHttpStatus(), $e->getHttpMessage()));
-            }
-
-            print \Dcp\Core\Utils\ErrorMessage::getError($displayMsg, $errId);
-        }
-        exit(1);
-    }
-}
 
 
-function handleFatalShutdown()
-{
-    global $action;
 
-    $error = error_get_last();
 
-    if ($error !== null && $action) {
-        if (in_array($error["type"], array(
-            E_ERROR,
-            E_PARSE,
-            E_COMPILE_ERROR,
-            E_CORE_ERROR,
-            E_USER_ERROR,
-            E_RECOVERABLE_ERROR
-        ))) {
-            ob_get_clean();
-            if (!headers_sent()) {
-                header("HTTP/1.1 500 Anakeen Fatal Error");
-            }
 
-            $displayMsg = \Anakeen\Core\LogException::logMessage($error, $errId);
-            if ($action) {
-                $action->exitError($displayMsg, false, $errId);
-            } else {
-                print $displayMsg;
-            }
-            // Fatal error are already logged by PHP
-        }
-    }
-}
-
-set_exception_handler('handleActionException');

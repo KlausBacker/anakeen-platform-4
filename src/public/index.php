@@ -2,13 +2,18 @@
 
 require __DIR__ . '/../vendor/Anakeen/autoload.php';
 require __DIR__ . "/../vendor/Anakeen/WHAT/Lib.Prefix.php";
-require __DIR__ . "/../vendor/Anakeen/WHAT/Lib.Main.php";
-//require __DIR__ . "/../vendor/Anakeen/WHAT/autoload.php";
 
-register_shutdown_function('handleFatalShutdown');
-set_exception_handler('handleActionException');
+// TODO To delete when legacy functions will have disappeared
+require __DIR__ . "/../vendor/Anakeen/WHAT/Lib.Common.php";
 
-if (ActionRouter::inMaintenance()) {
+register_shutdown_function(function () {
+    \Anakeen\Router\FatalHandler::handleFatalShutdown();
+});
+set_exception_handler(function ($e) {
+    \Anakeen\Router\FatalHandler::handleActionException($e);
+});
+
+if (\Anakeen\Core\ContextManager::inMaintenance()) {
     $e = new \Anakeen\Router\Exception("Maintenance");
     $e->setUserMessage("The system is currently unavailable due to maintenance works");
     $e->setHttpStatus(503);

@@ -85,7 +85,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
     public function testDefaultInherited($famid, array $expectedvalues, array $expectedParams)
     {
         /**
-         * @var  \DocFam $d
+         * @var  SmartStructure $d
          */
         $d = new_Doc(self::$dbaccess, $famid);
         $this->assertTrue(is_object($d) , sprintf("cannot get %s family", $famid));

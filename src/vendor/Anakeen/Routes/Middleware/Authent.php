@@ -17,7 +17,7 @@ class Authent
      *
      * @return mixed
      */
-    public static function Authenticate($request, $response, $next, $args = [])
+    public static function authenticate($request, $response, $next, $args = [])
     {
         /**
          * @var \Slim\Route $currentRoute

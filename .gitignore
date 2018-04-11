@@ -7,6 +7,9 @@ ide/vendor/
 .idea/deployment.xml
 .idea/php.xml
 .idea/dataSources/
+.idea/dataSources.local.xml
+.idea/dataSources.xml
+.idea/misc.xml
 smart-data-engine*app
 .php_cs.cache
 .idea/*.iml"

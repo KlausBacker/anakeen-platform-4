@@ -429,4 +429,9 @@ class ContextManager
         */
         return $tmp;
     }
+
+    public static function inMaintenance()
+    {
+        return file_exists(DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . 'maintenance.lock');
+    }
 }

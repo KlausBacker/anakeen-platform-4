@@ -4,6 +4,7 @@ namespace Anakeen\Routes\Core;
 
 use Anakeen\Core\DbManager;
 use Anakeen\Core\DocManager;
+use Anakeen\Core\Utils\Gettext;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 
@@ -148,13 +149,13 @@ class DocumentData
         if (!$this->_document) {
             $exception = new Exception("ROUTES0100", $ressourceId);
             $exception->setHttpStatus("404", "Document not found");
-            $exception->setUserMessage(sprintf(___("Document \"%s\" not found", "ank"), $ressourceId));
+            $exception->setUserMessage(sprintf(Gettext::___("Document \"%s\" not found", "ank"), $ressourceId));
             throw $exception;
         }
         if (!$this->useTrash && $this->_document->doctype === "Z") {
             $exception = new Exception("ROUTES0102", $ressourceId);
             $exception->setHttpStatus("404", "Document deleted");
-            $exception->setUserMessage(sprintf(___("Document \"%s\" is deleted", "ank"), $ressourceId));
+            $exception->setUserMessage(sprintf(Gettext::___("Document \"%s\" is deleted", "ank"), $ressourceId));
             $location = \Anakeen\Routes\Core\Lib\DocumentUtils::getURI($this->_document);
             $exception->setURI($location);
             throw $exception;
