@@ -1,18 +1,8 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 namespace Dcp\Pu;
 
-/**
- * @author  Anakeen
- * @package Dcp\Pu
- */
-
 use Anakeen\Core\DbManager;
-
 
 class TestCaseDcpCommonFamily extends TestCaseDcp
 {

@@ -27,6 +27,10 @@ class ContextManager
     protected static $loader;
     protected static $coreParams;
     protected static $language;
+    /**
+     * @var \Anakeen\Core\Account
+     */
+    protected static $originalUser = null;
 
     /**
      *
@@ -67,9 +71,9 @@ class ContextManager
     /**
      * Initialise application context
      *
-     * @param \Anakeen\Core\Account    $account
-     * @param string        $appName
-     * @param string        $actionName
+     * @param \Anakeen\Core\Account               $account
+     * @param string                              $appName
+     * @param string                              $actionName
      * @param \Anakeen\Core\Internal\Session|null $session
      *
      * @throws \Dcp\Db\Exception
@@ -131,7 +135,7 @@ class ContextManager
         self::$coreUser = &$account;
         if ($action) {
             self::$coreAction = &$action;
-            self::$coreApplication = & $action->parent;
+            self::$coreApplication = &$action->parent;
         }
     }
 
@@ -258,6 +262,9 @@ class ContextManager
         if (!self::$coreAction) {
             throw new \Exception("CORE0017");
         }
+        if (self::$coreUser && !self::$originalUser) {
+            self::$originalUser = self::$coreUser;
+        }
         self::$coreUser = $account;
 
         self::$coreAction->parent->user = &self::$coreUser;
@@ -268,6 +275,12 @@ class ContextManager
         }
     }
 
+    public static function exitSudo()
+    {
+        if (self::$originalUser) {
+            self::sudo(self::$originalUser);
+        }
+    }
 
 
     /**

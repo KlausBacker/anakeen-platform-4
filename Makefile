@@ -6,6 +6,7 @@ app:
 
 
 app-test:
+	cd Tests/src/vendor/Anakeen/TestUnits/lib; composer install
 	php ./anakeen-devtool.phar generateWebinst -s Tests
 	mv Tests/*app .
 
