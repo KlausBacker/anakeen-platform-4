@@ -3,11 +3,6 @@ php_value upload_max_filesize "80M"
 
 php_value session.gc_maxlifetime 2147483647
 
-SetEnv FREEDOM_ACCESS CORE
-
-
-DirectoryIndex index.php
-
 Options -Indexes
 
 <FilesMatch ".php$">
@@ -16,7 +11,4 @@ Options -Indexes
 
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
-
-RewriteCond "%{DOCUMENT_ROOT}%{REQUEST_URI}index.php" "!-f" [OR]
-RewriteCond "%{REQUEST_URI}" "!/$"
-RewriteRule ^ index4.php [QSA,L]
+RewriteRule ^ index.php [QSA,L]

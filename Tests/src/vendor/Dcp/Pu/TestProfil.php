@@ -5,6 +5,9 @@
 */
 
 namespace Dcp\Pu;
+
+use Anakeen\Core\ContextManager;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -46,6 +49,7 @@ class TestProfil extends TestCaseDcpCommonFamily
                 $this->assertFalse($result, "acl $acl is  granted");
             }
         }
+        $this->exitSudo();
     }
     /**
      * @dataProvider dataProfilChange
@@ -57,7 +61,6 @@ class TestProfil extends TestCaseDcpCommonFamily
         $df = \new_Doc(self::$dbaccess, $docName);
         $this->assertTrue($df->isAlive() , "document $docName is not alive");
         $df->accessControl()->setProfil($prfName);
-        
         $this->importDocument($newPrfAcl);
         $this->sudo($login);
         
@@ -72,6 +75,7 @@ class TestProfil extends TestCaseDcpCommonFamily
                 $this->assertFalse($result, "acl $acl is  granted");
             }
         }
+        $this->exitSudo();
     }
     /**
      * @dataProvider dataProfilChange
@@ -98,6 +102,7 @@ class TestProfil extends TestCaseDcpCommonFamily
                 $this->assertFalse($result, "acl $acl is  granted");
             }
         }
+        $this->exitSudo();
     }
     /**
      * @dataProvider dataSearchDocument

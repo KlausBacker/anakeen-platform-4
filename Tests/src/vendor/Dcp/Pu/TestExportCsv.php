@@ -6,6 +6,7 @@
 
 namespace Dcp\Pu;
 
+use Anakeen\Core\ContextManager;
 use Dcp\DirectoriesAutoloaderException;
 
 //require_once 'PU_testcase_dcp.php';
@@ -44,10 +45,11 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         $famid = "TST_EXPORT_IMAGE";
         $testFolder = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/testexportimage");
         $testExtractFolder = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/testexportextractimage");
+
+        $this->clearSetHttpVar();
         SetHttpVar("wfile", "Y");
         SetHttpVar("eformat", "I");
         SetHttpVar("app", "FDL");
-
         exportfld(self::getAction(), $folderId, $famid, $testFolder);
 
         $testarchivefile = $testFolder . "/fdl.zip";
@@ -76,6 +78,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
     {
         include_once 'FDL/exportfld.php';
 
+        $this->clearSetHttpVar();
         SetHttpVar("wfile", "N");
         SetHttpVar("wprof", ($expectedProfil ? "Y" : "N"));
         SetHttpVar("eformat", "I");
@@ -134,6 +137,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
     {
         include_once('FDL/exportfld.php');
 
+        $this->clearSetHttpVar();
         SetHttpVar("wfile", "N");
         SetHttpVar("wprof", "Y");
         SetHttpVar("eformat", "I");
@@ -172,8 +176,9 @@ class TestExportCsv extends TestCaseDcpCommonFamily
             $this->assertTrue(in_array($key, $keys), "Missing key $key see $exportOutput");
         }
         //unlink($exportOutput);
-
     }
+
+
 
     /**
      * Test that exported documents have no param columns
@@ -201,7 +206,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         /* fout */
         $tmpfile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'TST_EXPORT_PARAM');
         if ($tmpfile === false) {
-            throw new \Exception(sprintf("Could not create temporary file in '%s'.", getTmpDir()));
+            throw new \Exception(sprintf("Could not create temporary file in '%s'.", ContextManager::getTmpDir()));
         }
         $fout = fopen($tmpfile, 'w');
         if ($fout === false) {

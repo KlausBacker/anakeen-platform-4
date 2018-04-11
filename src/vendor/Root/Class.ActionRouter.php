@@ -10,7 +10,7 @@ class ActionRouter
      */
     private $action = null;
     
-    public function __construct(\Anakeen\Core\Account & $account, Authenticator & $auth = null)
+    public function __construct(\Anakeen\Core\Account & $account, \Anakeen\Core\Internal\Authenticator & $auth = null)
     {
         global $action;
         $this->action = null;

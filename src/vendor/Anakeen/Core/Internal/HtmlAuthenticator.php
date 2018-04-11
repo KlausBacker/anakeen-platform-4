@@ -126,7 +126,6 @@ class HtmlAuthenticator extends Authenticator
         $hasArgs = false;
         $location = \Anakeen\Core\Internal\Session::getWebRootPath();
         $location .= "./login/";
-
         if (!empty($this->parms['auth']['args'])) {
             $location .= '?' . $this->parms['auth']['args'];
             $hasArgs = true;

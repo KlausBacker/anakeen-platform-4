@@ -36,7 +36,11 @@ class ActionUsage extends \Anakeen\Script\ApiUsage
     public function __construct(\Anakeen\Core\Internal\Action & $action)
     {
         $this->action = $action;
-        $this->setDefinitionText(_($action->short_name));
+        if ($action->short_name) {
+            $this->setDefinitionText = _($action->short_name);
+        } else {
+            $this->setDefinitionText = $action->name;
+        }
         $this->addRequiredParameter('app', "application name");
         $this->addOptionalParameter('action', "action name");
         $this->addHiddenParameter('sole', "display mode (deprecated)");

@@ -47,6 +47,8 @@ class PuCoreRouteAccess extends \Anakeen\Pu\Routes\TestCaseRoutes
         $response = $app->run(true);
         $rawBody = (string)$response->getBody();
         $this->isJSONMatch($rawBody, file_get_contents($expectedJsonFile));
+
+        ContextManager::exitSudo();
     }
 
 

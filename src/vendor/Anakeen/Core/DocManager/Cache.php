@@ -6,6 +6,8 @@
 
 namespace Anakeen\Core\DocManager;
 
+use Anakeen\Core\SmartStructure;
+
 class Cache
 {
     /**
@@ -20,7 +22,7 @@ class Cache
      * @param \Doc $document
      * @throws Exception APIDM0200, APIDM0201
      * @api Record document to local cache
-     * @return \Doc|\DocFam
+     * @return \Doc|SmartStructure
      */
     public static function &addDocument(\Doc & $document)
     {

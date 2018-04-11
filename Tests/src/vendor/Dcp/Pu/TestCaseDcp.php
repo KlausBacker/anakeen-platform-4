@@ -26,7 +26,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     protected static $include_path = null;
 
-    protected static $testDataDirectory = __DIR__."/../../Anakeen/TestUnits/Data";
+    protected static $testDataDirectory = __DIR__ . "/../../Anakeen/TestUnits/Data";
 
     protected static $importCsvEnclosure = "auto";
     protected static $importCsvSeparator = "auto";
@@ -46,11 +46,20 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
 
     public static function setUpBeforeClass()
     {
+        self::clearSetHttpVar();
     }
 
     public static function log($text)
     {
         file_put_contents(CoreTests::LOGFILE, sprintf("[%s] %s\n", date("Y-m-d H:i:s"), $text), FILE_APPEND);
+    }
+
+    protected static function clearSetHttpVar()
+    {
+        // Need to clear eventualily setHttpVar set by previous test
+        global $ZONE_ARGS;
+        $ZONE_ARGS = [];
+        $_GET = [];
     }
 
     /**
@@ -178,10 +187,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     protected static function exitSudo()
     {
-        if (self::$user) {
-            ContextManager::sudo(self::$user);
-            self::$user = null;
-        }
+        ContextManager::exitSudo();
     }
 
     /**
@@ -200,7 +206,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
 
         $realfile = $file;
         if (!file_exists($realfile)) {
-                $realfile = static::$testDataDirectory . "/" . $file;
+            $realfile = static::$testDataDirectory . "/" . $file;
         }
         if (!file_exists($realfile)) {
             throw new \Dcp\Exception(sprintf("File '%s' not found in '%s'.", $file, $realfile));

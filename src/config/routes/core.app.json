@@ -183,7 +183,7 @@
     },
     "routes": {
         "Core:Root": {
-            "priority": 1,
+            "priority": 0,
             "callable": "\\Anakeen\\App\\Core\\WelcomePage",
             "methods": [
                 "get"

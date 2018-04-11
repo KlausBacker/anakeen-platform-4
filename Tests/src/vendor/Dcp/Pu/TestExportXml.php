@@ -172,6 +172,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
         include_once('FDL/exportfld.php');
         include_once('Lib.FileDir.php');
 
+        $this->clearSetHttpVar();
         $oImport = new \ImportDocument();
         $oImport->importDocuments(self::getAction(), $archiveFile, false, true);
         $err = $oImport->getErrorMessage();
