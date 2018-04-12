@@ -26,7 +26,7 @@ class MaskViewRender extends DefaultConfigViewRender
 
 
         $js["dduiMask"] = 'uiAssets/Families/mask/prod/MaskView.js?ws='.$version;
-        if (\Dcp\UI\UIGetAssetPath::isInDebug()) {
+        if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {
             $js["dduiMask"] = 'uiAssets/Families/mask/debug/MaskView.js?ws='.$version;
         }
 

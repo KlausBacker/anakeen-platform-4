@@ -34,10 +34,10 @@ class HelppageViewRender extends \Dcp\Ui\DefaultView
     public function getJsReferences(\Doc $document = null)
     {
         $js = parent::getJsReferences();
-        $ws = \Dcp\UI\UIGetAssetPath::getWs();
+        $ws = \Dcp\Ui\UIGetAssetPath::getWs();
 
         $js["dduiHelppage"] = 'uiAssets/Families/helppage/prod/helppage.js?ws='.$ws;
-        if (\Dcp\UI\UIGetAssetPath::isInDebug()) {
+        if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {
             $js["dduiHelppage"] = 'uiAssets/Families/helppage/debug/helppage.js?ws='.$ws;
         }
 

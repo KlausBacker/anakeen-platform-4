@@ -3,7 +3,6 @@
 
 namespace Anakeen\Routes\UiTest;
 
-
 use Anakeen\Core\ContextManager;
 
 class TestPage
@@ -15,8 +14,8 @@ class TestPage
         $action = ContextManager::getCurrentAction();
         $action->lay = new \Layout($page, $action);
 
-        $action->parent->addJsRef(\Dcp\UI\UIGetAssetPath::getJSJqueryPath());
-        $action->parent->addJsRef(\Dcp\UI\UIGetAssetPath::getJSKendoPath());
+        $action->parent->addJsRef(\Dcp\Ui\UIGetAssetPath::getJSJqueryPath());
+        $action->parent->addJsRef(\Dcp\Ui\UIGetAssetPath::getJSKendoPath());
         $action->parent->addJsRef("components/dist/ank-components.js");
         $action->parent->addJsRef("apps/uitest/dist/TestPage.js");
 

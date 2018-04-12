@@ -11,9 +11,9 @@ const merge = require('webpack-merge');
 const parts = require('./webpack.parts');
 
 const PATHS = {
-    testmain: path.resolve(__dirname, 'Tests/src/Apps/TEST_DOCUMENT_SELENIUM/IHM/testmain.js'),
-    testrender: path.resolve(__dirname, 'Tests/src/Apps/TEST_DOCUMENT_SELENIUM/IHM/testrender.js'),
-    familyTestRender: path.resolve(__dirname, 'Tests/src/Apps/TEST_DOCUMENT_SELENIUM/Family/TestRender/testRender.js'),
+   // testmain: path.resolve(__dirname, 'Tests/src/Apps/TEST_DOCUMENT_SELENIUM/IHM/testmain.js'),
+   // testrender: path.resolve(__dirname, 'Tests/src/Apps/TEST_DOCUMENT_SELENIUM/IHM/testrender.js'),
+    familyTestRender: path.resolve(__dirname, 'Tests/src/vendor/Anakeen/SmartStructures/UiTest/TestRender/testRender.js'),
     build: path.resolve(__dirname, 'Tests/src/public/TEST_DOCUMENT_SELENIUM/dist/'),
     TestPage: path.resolve(__dirname, 'Tests/src/vendor/Anakeen/Routes/UiTest/TestPage.js'),
     TestUiDistPath: path.resolve(__dirname, 'Tests/src/public/apps/uitest/dist/'),
@@ -22,8 +22,8 @@ const PATHS = {
 const commonConfig = merge([{
         devtool: 'source-map',
         entry: {
-            testmain: PATHS.testmain,
-            testrender: PATHS.testrender,
+          //  testmain: PATHS.testmain,
+         //   testrender: PATHS.testrender,
             'family/TestRender': PATHS.familyTestRender,
         },
         output: {

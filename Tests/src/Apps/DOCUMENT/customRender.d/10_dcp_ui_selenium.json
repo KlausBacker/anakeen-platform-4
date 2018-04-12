@@ -1,10 +1,10 @@
 {
     "families": {
         "TST_DDUI_EMPLOYEE": {
-            "renderAccessClass": "Dcp\\Test\\DDUi\\EmployeeAccess"
+            "renderAccessClass": "Anakeen\\SmartStructures\\UiTest\\TstUiEmployee\\Renders\\EmployeeAccess"
         },
         "TST_DDUI_COLOR": {
-            "renderAccessClass": "Dcp\\Test\\DDUi\\ColorAccess"
+            "renderAccessClass": "Anakeen\\SmartStructures\\UiTest\\TstUiEmployee\\Renders\\ColorAccess"
         }
     }
 }

@@ -18,10 +18,10 @@ class Search_html5_view_render extends \Dcp\Ui\DefaultView {
 
         $js = parent::getJsReferences($document);
 
-        $ws = \Dcp\UI\UIGetAssetPath::getWs();
-        $js["smartElementGrid"] = \Dcp\UI\UIGetAssetPath::getJSSmartElementGridPath();
+        $ws = \Dcp\Ui\UIGetAssetPath::getWs();
+        $js["smartElementGrid"] = \Dcp\Ui\UIGetAssetPath::getJSSmartElementGridPath();
         $js["dSearch"] = 'uiAssets/Families/dsearch/prod/dsearch.js?ws='.$ws;
-        if (\Dcp\UI\UIGetAssetPath::isInDebug()) {
+        if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {
             $js["dSearch"] = 'uiAssets/Families/dsearch/debug/dsearch.js?ws='.$ws;
         }
 
