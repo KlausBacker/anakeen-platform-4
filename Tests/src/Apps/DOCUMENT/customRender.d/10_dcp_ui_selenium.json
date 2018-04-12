@@ -4,7 +4,7 @@
             "renderAccessClass": "Anakeen\\SmartStructures\\UiTest\\TstUiEmployee\\Renders\\EmployeeAccess"
         },
         "TST_DDUI_COLOR": {
-            "renderAccessClass": "Anakeen\\SmartStructures\\UiTest\\TstUiEmployee\\Renders\\ColorAccess"
+            "renderAccessClass": "Anakeen\\SmartStructures\\UiTest\\TstUiColor\\Renders\\ColorAccess"
         }
     }
 }
