@@ -11,10 +11,9 @@ stub:
 app-selenium:
 	yarn install
 	yarn buildTest
-	-mkdir -p $(localpub)/selenium/
-	rsync --delete -azvr Tests $(localpub)/selenium/
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/selenium/Tests/build.json $(localpub)/selenium/Tests/src/Apps/TEST_DOCUMENT_SELENIUM/TEST_DOCUMENT_SELENIUM_init.php
-	php ./anakeen-devtool.phar generateWebinst -s $(localpub)/selenium/Tests/ -o .
+	-mkdir -p $(localpub)/testuis/
+	rsync --delete -azvr Tests $(localpub)/testuis/
+	php ./anakeen-devtool.phar generateWebinst -s $(localpub)/testuis/Tests/ -o .
 
 
 deploy-test:

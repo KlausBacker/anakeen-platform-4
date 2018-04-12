@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@" release="@release@" version="@version@" vendor="Anakeen"
         license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
-    <description>Selenium Test for Document Uis</description>
+    <description>Tests for Anakeen Uis</description>
 
     <requires>
         <module name="user-interfaces"/>
