@@ -1,12 +1,12 @@
 
 
 app:
-	cd src/vendor/Anakeen/lib; composer install
+	cd src/vendor/Anakeen/lib; composer install --ignore-platform-reqs
 	php ./anakeen-devtool.phar generateWebinst -s .
 
 
 app-test:
-	cd Tests/src/vendor/Anakeen/TestUnits/lib; composer install
+	cd Tests/src/vendor/Anakeen/TestUnits/lib; composer install --ignore-platform-reqs
 	php ./anakeen-devtool.phar generateWebinst -s Tests
 	mv Tests/*app .
 
