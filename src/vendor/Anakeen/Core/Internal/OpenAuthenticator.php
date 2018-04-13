@@ -1,27 +1,18 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * OpenAuthenticator class
  *
  * This class provides methods for private key based authentification
  *
- * @author Anakeen
- * @version $Id:  $
- * @package FDL
- * @subpackage
- */
-/**
  */
 
 namespace Anakeen\Core\Internal;
+
 class OpenAuthenticator extends Authenticator
 {
     const waitDelayError=1;
-    const openAuthorizationScheme = "DcpOpen";
-    const openGetId = "dcpopen-authorization";
+    const openAuthorizationScheme = "AnkToken";
+    const openGetId = "ank-authorization";
     private $privatelogin = false;
     public $token;
     public $auth_session = null;
@@ -168,8 +159,11 @@ class OpenAuthenticator extends Authenticator
     {
         return true;
     }
+
     /**
      * no ask
+     * @param $args
+     * @return bool
      */
     public function askAuthentication($args)
     {
@@ -190,8 +184,11 @@ class OpenAuthenticator extends Authenticator
     {
         return false;
     }
+
     /**
      * no logout
+     * @param string $redir_uri
+     * @return bool
      */
     public function logout($redir_uri = '')
     {
@@ -199,30 +196,18 @@ class OpenAuthenticator extends Authenticator
         print ___("Authorization Required", "authentOpen");
         return true;
     }
-    /**
-     **
-     **
-     *
-     */
+
     public function setSessionVar($name, $value)
     {
         $session = $this->getAuthSession();
         $session->register($name, $value);
         return $session->read($name);
     }
-    /**
-     **
-     **
-     *
-     */
     public function getSessionVar($name)
     {
         $session = $this->getAuthSession();
         return $session->read($name);
     }
-    /**
-     *
-     */
     public function getAuthSession()
     {
         if (!$this->auth_session) {
