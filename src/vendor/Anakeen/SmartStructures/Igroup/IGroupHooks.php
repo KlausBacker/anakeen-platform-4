@@ -69,7 +69,6 @@ class IGroupHooks extends \SmartStructure\Group
     public function refreshGroup()
     {
         //if ($this->norefreshggroup) return '';
-        include_once("FDL/Lib.Usercard.php");
         //  $err=_GROUP::RefreshGroup();
         $err = $this->RefreshDocUser();
         //$err.=$this->refreshMembers();
@@ -78,7 +77,7 @@ class IGroupHooks extends \SmartStructure\Group
         $err .= $this->Modify();
         //AddWarningMsg(sprintf("RefreshGroup %d %s",$this->id, $this->title));
         if ($err == "") {
-            refreshGroups(array(
+            IgroupLib::refreshGroups(array(
                 $this->getRawValue("us_whatid")
             ), true);
             /*$this->setValue("grp_isrefreshed","1");
@@ -128,7 +127,7 @@ class IGroupHooks extends \SmartStructure\Group
         }
         // get system role ids
         $roleIds = $this->getSystemIds($roles);
-        $err = $user->SetGroups($fid, $gname, $login, $roleIds);
+        $err = $user->setGroups($fid, $gname, $login, $roleIds);
         if ($err == "") {
             $this->setValue(MyAttributes::us_whatid, $user->id);
             $this->setValue(MyAttributes::us_meid, $this->id);
@@ -136,9 +135,7 @@ class IGroupHooks extends \SmartStructure\Group
                 MyAttributes::us_whatid,
                 MyAttributes::us_meid
             ));
-            if ($user) {
-                $this->setGroups();
-            }
+
             // get members
             //$this->RefreshGroup(); // in postinsert
             //    $this->refreshParentGroup();

@@ -353,7 +353,6 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailReci
                         MyAttributes::us_whatid,
                         MyAttributes::us_meid
                     ));
-                    $err = $this->setGroups(); // set groups (add and suppress) may be long
                     if ($newuser) {
                         $err .= $this->setToDefaultGroup();
                     }

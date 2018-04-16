@@ -431,8 +431,8 @@ class ExportAccounts
 
     protected function writeCommonSchema()
     {
-        copy(sprintf("%s/vendor/Anakeen/FDL/Layout/fdl.xsd", DEFAULT_PUBDIR), sprintf("%s/fdl.xsd", $this->exportSchemaDirectory));
-        copy(sprintf("%s/vendor/Anakeen/FDL/Layout/fdloptions.xsd", DEFAULT_PUBDIR), sprintf("%s/fdloptions.xsd", $this->exportSchemaDirectory));
+        copy(sprintf("%s/vendor/Anakeen/Core/Layout/fdl.xsd", DEFAULT_PUBDIR), sprintf("%s/fdl.xsd", $this->exportSchemaDirectory));
+        copy(sprintf("%s/vendor/Anakeen/Core/Layout/fdloptions.xsd", DEFAULT_PUBDIR), sprintf("%s/fdloptions.xsd", $this->exportSchemaDirectory));
         $this->xml->documentElement->setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
         $this->xml->documentElement->setAttribute("xsi:noNamespaceSchemaLocation", self::XSDDIR . "/accounts.xsd");
 

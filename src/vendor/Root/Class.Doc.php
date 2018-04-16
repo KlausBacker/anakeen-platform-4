@@ -7738,7 +7738,7 @@ create unique index i_docir on doc(initid, revision);";
         } // only drop
         if ($code) {
             $files = array();
-            $lay = new Layout("vendor/Anakeen/FDL/Layout/sqltrigger.sql");
+            $lay = new Layout("vendor/Anakeen/Core/Layout/sqltrigger.sql");
             $na = $this->GetNormalAttributes();
             $tvalues = array();
             $tsearch = array();

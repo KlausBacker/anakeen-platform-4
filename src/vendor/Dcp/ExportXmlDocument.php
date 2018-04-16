@@ -98,7 +98,7 @@ class ExportXmlDocument
 
     protected function export($outfile = "")
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/exportxml.xml", DEFAULT_PUBDIR));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/exportxml.xml", DEFAULT_PUBDIR));
         //$lay=&$this->document->lay;
         $lay->set("famname", strtolower($this->document->fromname));
         $lay->set("id", ($this->exportDocumentNumericIdentiers ? $this->document->id : ''));

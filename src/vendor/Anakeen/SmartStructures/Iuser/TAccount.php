@@ -31,7 +31,7 @@ trait TAccount
      * @return array 2 items $err & $sug for view result of the constraint
      * @throws \Dcp\Db\Exception
      */
-    public function ConstraintLogin($login)
+    public function constraintLogin($login)
     {
         $sug = array(
             "-"
@@ -60,7 +60,7 @@ trait TAccount
      * @return array 2 items $err & $sug for view result of the constraint
      * @throws \Dcp\Db\Exception
      */
-    public function ExistsLogin($login)
+    public function existsLogin($login)
     {
         $sug = array();
         
@@ -174,65 +174,7 @@ trait TAccount
     {
         return strcasecmp($a['lastname'], $b['lastname']);
     }
-    /**
-     * affect new groups to the user
-     * @global $gidnew  string Http var : egual Y to say effectif change (to not suppress group if gid not set)
-     * @global $gid string Http var : array of new groups id
-     */
-    public function setGroups()
-    {
-        include_once("FDL/Lib.Usercard.php");
-        
-        global $_POST;
-        $err = '';
-        $gidnew = isset($_POST["gidnew"]) ? $_POST["gidnew"] : '';
-        $tgid = array(); // group ids will be modified
-        if ($gidnew == "Y") {
-            /**
-             * @var int[] $gids
-             */
-            $gids = $_POST["gid"];
-            if ($gids == "") {
-                $gids = array();
-            }
-            
-            $gAccount = $this->getAccount();
-            $rgid = $gAccount->GetGroupsId();
-            if ((count($rgid) != count($gids)) || (count(array_diff($rgid, $gids)) != 0)) {
-                $gdel = array_diff($rgid, $gids);
-                $gadd = array_diff($gids, $rgid);
-                // add group
-                $g = new \Group("", $gAccount->id);
-                foreach ($gadd as $gid) {
-                    $g->iduser = $gAccount->id;
-                    $g->idgroup = $gid;
-                    // insert in folder group
-                    $gdoc = $this->getDocUser($gid);
-                    //  $gdoc->insertMember($this->id);
-                    $err.= $gdoc->insertDocument($this->id); // add in group is set here by postInsert
-                    $tgid[$gid] = $gid;
-                }
-                foreach ($gdel as $gid) {
-                    $g->iduser = $gid;
-                    //$aerr.=$g->SuppressUser($user->id,true);
-                    // delete in folder group
-                    $gdoc = $this->getDocUser($gid);
-                    if (!method_exists($gdoc, "deleteMember")) {
-                        \Anakeen\Core\Utils\System::addWarningMsg("no group $gid/" . $gdoc->id);
-                    } else {
-                        // $gdoc->deleteMember($this->id);
-                        $err = $gdoc->removeDocument($this->id);
-                        $tgid[$gid] = $gid;
-                    }
-                }
-                // $g->FreedomCopyGroup();
-                //if ($user->isgroup=='Y')  $tgid[$user->id]=$user->id;
-            }
-        }
-        // it is now set in bacground
-        //  refreshGroups($tgid,true);
-        return $err;
-    }
+
 
     /**
      * return document objet from what id (user or group)
@@ -240,7 +182,6 @@ trait TAccount
      * @param int $wid what identifier
      *
      * @return \SmartStructure\Iuser|\SmartStructure\IGROUP|false the object document (false if not found)
-     * @throws Exception
      */
     public function getDocUser($wid)
     {

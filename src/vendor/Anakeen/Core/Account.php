@@ -3,6 +3,7 @@
 namespace Anakeen\Core;
 
 use Anakeen\Core\Utils\Strings;
+use Anakeen\SmartStructures\Igroup\IgroupLib;
 
 define("GALL_ID", 2);
 define("ANONYMOUS_ID", 3);
@@ -231,19 +232,6 @@ create sequence seq_id_users start 10;";
     }
 
     /**
-     * affect account from its login
-     *
-     * @param string $login login
-     *
-     * @deprecated use setLoginName instead
-     * @return bool true if ok
-     */
-    public function setLogin($login, $unused = '0')
-    {
-        return $this->setLoginName($login);
-    }
-
-    /**
      * affect account from its document id
      *
      * @param int $fid
@@ -307,7 +295,7 @@ create sequence seq_id_users start 10;";
         return $err;
     }
 
-    public function PostInsert()
+    public function postInsert()
     {
         //Add default group to user
         $group = new \Group($this->dbaccess);
@@ -341,7 +329,6 @@ create sequence seq_id_users start 10;";
 
     public function postDelete()
     {
-        include_once("FDL/Lib.Usercard.php");
         $err = '';
         $group = new \Group($this->dbaccess, $this->id);
         $ugroups = $group->groups;
@@ -349,7 +336,7 @@ create sequence seq_id_users start 10;";
         $sql = sprintf("delete from groups where iduser=%d or idgroup=%d", $this->id, $this->id);
         DbManager::query($sql);
 
-        refreshGroups($ugroups, true);
+        IgroupLib::refreshGroups($ugroups, true);
 
         global $action;
         $action->session->CloseUsers($this->id);
@@ -357,30 +344,6 @@ create sequence seq_id_users start 10;";
         return $err;
     }
 
-    /**
-     * @deprecated use SearchAccount class instead
-     *
-     * @param string $login
-     * @param string $unused
-     * @param int    $whatid
-     *
-     * @return bool
-     */
-    public function CheckLogin($login, $unused, $whatid)
-    {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
-
-        $query->basic_elem->sup_where = array(
-            "login='" . pg_escape_string($login) . "'"
-        );
-
-        $list = $query->Query();
-        if ($query->nb == 0 or ($query->nb == 1 and $list[0]->id == $whatid)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     /**
      * return display name of a user
@@ -447,7 +410,7 @@ create sequence seq_id_users start 10;";
      * @static
      * @see getUidFromFid
      *
-     * @param int $fid
+     * @param int $uid
      *
      * @return int
      */
@@ -460,29 +423,6 @@ create sequence seq_id_users start 10;";
         return $fid;
     }
 
-    /**
-     * update user from IUSER document
-     *
-     * @deprecated replace by updateUser
-     *
-     * @param int    $fid   document id
-     * @param string $login login
-     */
-    public function setUsers(
-        $fid,
-        $lname,
-        $fname,
-        $expires,
-        $passdelay,
-        $login,
-        $status,
-        $pwd1,
-        $pwd2,
-        $unused = '',
-        $extmail = ''
-    ) {
-        return $this->updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail);
-    }
 
     /**
      * update user from IUSER document
@@ -572,6 +512,7 @@ create sequence seq_id_users start 10;";
      * @param string $gname group name
      * @param string $login login
      * @param array  $roles system role ids
+     * @return string error message
      */
     public function setGroups(
         $fid,
@@ -793,7 +734,7 @@ union
         }
     }
 
-    public function PostInit()
+    public function postInit()
     {
         $group = new \Group($this->dbaccess);
 
@@ -961,9 +902,11 @@ union
     /**
      * for group :: get All user & groups ids in all descendant(recursive);
      *
-     * @param int $id group identifier
+     * @param int   $id group identifier
      *
+     * @param array $r
      * @return array of account array
+     * @throws \Dcp\Db\Exception
      */
     public function getRUsersList($id, $r = array())
     {
@@ -995,8 +938,9 @@ union
     /**
      * for group :: get All direct user & groups ids
      *
-     * @param int  $id        group identifier
+     * @param int  $gid       group identifier
      * @param bool $onlygroup set to true if you want only child groups
+     * @return array
      */
     public function getUsersGroupList($gid, $onlygroup = false)
     {
@@ -1174,9 +1118,12 @@ union
      *
      * @static
      *
-     * @param int $uid user identifier
+     * @param int  $uid    user identifier
      *
+     * @param bool $strict if true no use delegation
      * @return array|null
+     * @throws \Dcp\Core\Exception
+     * @throws \Dcp\Exception
      */
     public static function getUserMemberOf($uid, $strict = false)
     {
@@ -1205,7 +1152,10 @@ union
     /**
      * verify if user is member of group (recursive)
      *
+     * @param int $uid user identifier
      * @return bool
+     * @throws \Dcp\Core\Exception
+     * @throws \Dcp\Db\Exception
      */
     public function isMember($uid)
     {
@@ -1532,8 +1482,6 @@ union
 
     /**
      * return direct and indirect role which comes from groups
-     *
-     * @param bool $useSystemId if true return system id else return document ids
      *
      * @return array of users properties
      */

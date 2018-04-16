@@ -15,7 +15,7 @@ class ExportDocument
     protected $prevfromid = -1;
     protected $familyName = '';
     protected $csvEnclosure = '"';
-    protected $csvSeparator = ',';
+    protected $csvSeparator = ';';
     protected $encoding = 'utf-8';
     protected $verifyAttributeAccess = false;
     protected $attributeGrants = array();

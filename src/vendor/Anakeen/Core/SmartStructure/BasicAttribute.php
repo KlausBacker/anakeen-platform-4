@@ -257,7 +257,7 @@ class BasicAttribute
      */
     public function common_getXmlSchema(&$play)
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "infoattribute_schema.xml"));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "infoattribute_schema.xml"));
         $lay->set("aname", $this->id);
         $lay->set("label", $this->encodeXml($this->labelText));
         $lay->set("type", $this->type);

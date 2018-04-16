@@ -222,7 +222,7 @@ class ImportDocument
                 \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("cannot write log in %s"), $log));
             } else {
                 global $action;
-                $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "reportImport.xml"), $action);
+                $lay = new Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "reportImport.xml"), $action);
                 $this->writeHtmlCr($lay);
                 fputs($flog, $lay->gen());
                 fclose($flog);
