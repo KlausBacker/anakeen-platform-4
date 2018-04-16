@@ -10,7 +10,6 @@
  * @package FDL
  */
 
-include_once("FDL/Lib.Dir.php");
 
 use Anakeen\Core\DbManager;
 

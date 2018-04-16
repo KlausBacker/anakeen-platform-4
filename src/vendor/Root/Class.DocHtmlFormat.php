@@ -395,7 +395,6 @@ class DocHtmlFormat
             // reg[1] is mime type
             $vid = $reg[2];
             $mime = $reg[1];
-            include_once("FDL/Lib.Dir.php");
 
             $fileInfo = new VaultFileInfo();
             if ($vf->Show($reg[2], $fileInfo) == "") {

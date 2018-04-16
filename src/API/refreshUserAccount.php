@@ -12,7 +12,6 @@
  */
 // refreah for a classname
 // use this only if you have changed title attributes
-include_once("FDL/Lib.Dir.php");
 
 
 $dbaccess = getDbAccess();
@@ -71,12 +70,12 @@ if ($query->nb > 0) {
                 $filter = array(
                     "us_whatid = '" . $v["id"] . "'"
                 );
-                $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", "IGROUP");
+                $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", "IGROUP");
             } else {
                 $filter = array(
                     "us_whatid = '" . $v["id"] . "'"
                 );
-                $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", "IUSER");
+                $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", "IUSER");
             }
             
             if (count($tdoc) > 0) {
@@ -116,7 +115,7 @@ if ($query->nb > 0) {
                 "lower(title) = '" . pg_escape_string($title) . "'"
             );
             }
-            $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", \Anakeen\Core\DocManager::getFamilyIdFromName("IUSER"));
+            $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", \Anakeen\Core\DocManager::getFamilyIdFromName("IUSER"));
             if (count($tdoc) > 0) {
                 if (count($tdoc) > 1) {
                     printf(_("find %s more than one, created aborded\n"), $title);

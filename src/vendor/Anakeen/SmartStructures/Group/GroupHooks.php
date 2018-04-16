@@ -132,11 +132,10 @@ class GroupHooks extends \SmartStructure\Dir
      */
     public function refreshParentGroup()
     {
-        include_once("FDL/Lib.Dir.php");
         
         $sqlfilters[] = sprintf("in_textlist(grp_idgroup,'%s')", $this->id);
         // $sqlfilters[]="fromid !=".getFamIdFromName($this->dbaccess,"IGROUP");
-        $tgroup = internalGetDocCollection($this->dbaccess, 0, "0", "ALL", $sqlfilters, 1, "LIST", \Anakeen\Core\DocManager::getFamilyIdFromName("GROUP"));
+        $tgroup = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($this->dbaccess, 0, "0", "ALL", $sqlfilters, 1, "LIST", \Anakeen\Core\DocManager::getFamilyIdFromName("GROUP"));
         
         $tpgroup = array();
         $tidpgroup = array();
@@ -157,9 +156,8 @@ class GroupHooks extends \SmartStructure\Dir
      */
     public function refreshMembers()
     {
-        include_once("FDL/Lib.Dir.php");
         // 2)groups
-        $tu = internalGetDocCollection($this->dbaccess, $this->initid, "0", "ALL", array(), 1, "TABLE", "GROUP");
+        $tu = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($this->dbaccess, $this->initid, "0", "ALL", array(), 1, "TABLE", "GROUP");
         $tmemid = array();
         $tmem = array();
         if (count($tu) > 0) {

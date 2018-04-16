@@ -585,7 +585,6 @@ create sequence seq_id_users start 10;";
             $err = $iuser->RefreshDocUser();
         } //Update from what
         else {
-            include_once("FDL/Lib.Dir.php");
             if ($this->famid != "") {
                 $fam = $this->famid;
             } elseif ($this->accounttype == self::GROUP_TYPE) {
@@ -598,7 +597,7 @@ create sequence seq_id_users start 10;";
             $filter = array(
                 "us_whatid = '" . $this->id . "'"
             );
-            $tdoc = internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", $fam);
+            $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", $fam);
             if (count($tdoc) == 0) {
                 //Create a new doc IUSER
 

@@ -14,7 +14,6 @@
 /**
  */
 
-include_once("FDL/Lib.Dir.php");
 
 function vault_filename($th, $fileid)
 {
@@ -335,7 +334,7 @@ function lfamilies($dbaccess, $name = '', $subfam = "")
     global $action;
 
     if ($subfam == "") {
-        $tinter = GetClassesDoc($dbaccess, $action->user->id, 0, "TABLE");
+        $tinter = \Anakeen\SmartStructures\Dir\DirLib::getClassesDoc($dbaccess, $action->user->id, 0, "TABLE");
     } else {
         if (!is_numeric($subfam)) {
             $subfam = \Anakeen\Core\DocManager::getFamilyIdFromName($subfam);
@@ -530,7 +529,7 @@ function lfamilyvalues($dbaccess, $famid, $name = "")
     if ($only) {
         $famid = -($famid);
     }
-    $tinter = internalGetDocCollection($dbaccess, $dirid = 0, 0, 100, $filter, $action->user->id, "TABLE", $famid, false, "title");
+    $tinter = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($dbaccess, $dirid = 0, 0, 100, $filter, $action->user->id, "TABLE", $famid, false, "title");
 
     $tr = array();
 
@@ -545,42 +544,6 @@ function lfamilyvalues($dbaccess, $famid, $name = "")
     return $tr;
 }
 
-/**
- * list of documents of a same family and which are in the $kid category
- *
- * @param string $dbaccess database specification
- * @param string $famname  family internal name
- * @param string $aid      enum attribute identifier
- * @param string $kid      enum key to search
- * @param string $name     string filter on the title
- * @param array  $filter   additionnals SQL filters
- *
- * @return array/string*3 array of (title, identifier, title)
- */
-function lkfamily($dbaccess, $famname, $aid, $kid, $name, $filter = array())
-{
-    //'lsociety(D,US_SOCIETY):US_IDSOCIETY,US_SOCIETY,
-    global $action;
-
-    if ($name != "") {
-        $name = pg_escape_string($name);
-        $filter[] = "title ~* '.*$name.*'";
-    }
-
-    $tinter = getKindDoc($dbaccess, $famname, $aid, $kid, $name, $filter);
-
-    $tr = array();
-
-    foreach ($tinter as $k => $v) {
-
-        $tr[] = array(
-            $v["title"],
-            $v["id"],
-            $v["title"]
-        );
-    }
-    return $tr;
-}
 
 /**
  * return account documents

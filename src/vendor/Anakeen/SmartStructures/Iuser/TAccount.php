@@ -86,12 +86,11 @@ trait TAccount
     public function preCreated()
     {
         if ($this->getRawValue("US_WHATID") != "") {
-            include_once('FDL/Lib.Dir.php');
             
             $filter = array(
                 "us_whatid = '" . intval($this->getRawValue("US_WHATID")) . "'"
             );
-            $tdoc = internalGetDocCollection($this->dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", $this->fromid);
+            $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($this->dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", $this->fromid);
             if (count($tdoc) > 0) {
                 return _("system id already set in database\nThis kind of document can not be duplicated");
             }

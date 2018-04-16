@@ -13,7 +13,8 @@
 /**
  */
 
-include_once("FDL/Lib.Dir.php");
+use \Anakeen\SmartStructures\Dir\DirLib;
+use \Anakeen\SmartStructures\Dir\DirHooks;
 
 /**
  * document searches
@@ -32,6 +33,8 @@ include_once("FDL/Lib.Dir.php");
  * @endcode
  * @class SearchDoc.
  */
+
+
 class SearchDoc
 {
     /**
@@ -235,7 +238,7 @@ class SearchDoc
      */
     public function onlyCount()
     {
-        /**  @var \Anakeen\SmartStructures\Dir\DirHooks $fld */
+        /**  @var DirHooks $fld */
         $fld = Anakeen\Core\DocManager::getDocument($this->dirid);
         $userid = $this->userid;
         if (!$fld || $fld->fromid != \Anakeen\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
@@ -317,7 +320,7 @@ class SearchDoc
      */
     public function getOriginalQuery()
     {
-        return _internalGetDocCollection(
+        return DirLib::_internalGetDocCollection(
             true,
             $this->dbaccess,
             $this->dirid,
@@ -528,7 +531,7 @@ class SearchDoc
         }
         $debuginfo = array();
         $this->count = -1;
-        $this->result = internalGetDocCollection(
+        $this->result = DirLib::internalGetDocCollection(
             $this->dbaccess,
             $this->dirid,
             $this->start,
@@ -1204,7 +1207,9 @@ class SearchDoc
      * @param string $beginTag delimiter begin tag
      * @param string $endTag   delimiter end tag
      * @param int    $limit    file size limit to analyze
+     * @param bool   $wordMode
      * @return mixed
+     * @throws \Dcp\Db\Exception
      */
     public function getHighLightText(Doc & $doc, $beginTag = '<b>', $endTag = '</b>', $limit = 200, $wordMode = true)
     {
@@ -1426,7 +1431,7 @@ class SearchDoc
             $table = "doc$fromid";
         } else {
             if ($fromid != 0) {
-                if (isSimpleFilter($sqlfilters) && (familyNeedDocread($dbaccess, $fromid))) {
+                if (DirLib::isSimpleFilter($sqlfilters) && (DirLib::familyNeedDocread($dbaccess, $fromid))) {
                     $table = "docread";
 
                     $fdoc = Anakeen\Core\DocManager::getFamily($fromid);
@@ -1437,7 +1442,7 @@ class SearchDoc
                     $table = "doc$fromid";
                 }
             } elseif ($fromid == 0) {
-                if (isSimpleFilter($sqlfilters)) {
+                if (DirLib::isSimpleFilter($sqlfilters)) {
                     $table = "docread";
                 }
             }
@@ -1503,7 +1508,7 @@ class SearchDoc
             $fld = Anakeen\Core\DocManager::getDocument($dirid);
             if ($fld->defDoctype != 'S') {
                 /**
-                 * @var \Anakeen\SmartStructures\Dir\DirHooks $fld
+                 * @var DirHooks $fld
                  */
                 $hasFilters = false;
                 if ($fld && method_exists($fld, "getSpecificFilters")) {

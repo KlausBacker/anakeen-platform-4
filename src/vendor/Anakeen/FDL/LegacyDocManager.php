@@ -721,7 +721,6 @@ function getDocFromUserId($dbaccess, $userid)
     if ($userid == "") {
         return false;
     }
-    include_once("FDL/Lib.Dir.php");
     $tdoc = array();
     $user = new \Anakeen\Core\Account("", $userid);
     if (!$user->isAffected()) {
@@ -731,7 +730,7 @@ function getDocFromUserId($dbaccess, $userid)
         $filter = array(
             "us_whatid = '$userid'"
         );
-        $tdoc = internalGetDocCollection(
+        $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection(
             $dbaccess,
             0,
             0,
@@ -745,7 +744,7 @@ function getDocFromUserId($dbaccess, $userid)
         $filter = array(
             "us_whatid = '$userid'"
         );
-        $tdoc = internalGetDocCollection(
+        $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection(
             $dbaccess,
             0,
             0,
