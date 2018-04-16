@@ -789,7 +789,7 @@ class DirLib
                 $t[$k]["title"] = ucfirst(getFamTitle($v));
             }
             usort($t, function ($a, $b) {
-                return strcasecmp(unaccent($a["title"]), unaccent($b["title"]));
+                return strcasecmp(\Anakeen\Core\Utils\Strings::Unaccent($a["title"]), \Anakeen\Core\Utils\Strings::Unaccent($b["title"]));
             });
             return $t;
         } else {

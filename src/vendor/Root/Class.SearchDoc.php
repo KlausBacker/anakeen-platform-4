@@ -991,7 +991,7 @@ class SearchDoc
             $rank = preg_replace('/\s+(OR)\s+/u', '|', $keyword);
             $rank = preg_replace('/\s+(AND)\s+/u', '&', $rank);
             $rank = preg_replace('/\s+/u', '&', $rank);
-            $this->pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french', E'%s')) desc, id desc", pg_escape_string(unaccent($rank)));
+            $this->pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french', E'%s')) desc, id desc", pg_escape_string(\Anakeen\Core\Utils\Strings::Unaccent($rank)));
         }
         if ($this->pertinenceOrder) {
             $this->setOrder($this->pertinenceOrder);
@@ -1086,16 +1086,16 @@ class SearchDoc
                     if ($useSpell) {
                         $filterElement = self::testSpell($currentElement["word"]);
                     }
-                    $rankElement = unaccent($filterElement);
+                    $rankElement = \Anakeen\Core\Utils\Strings::Unaccent($filterElement);
                     if (is_numeric($filterElement)) {
                         $filterElement = sprintf("(%s|-%s)", $filterElement, $filterElement);
                     }
 
                     $words[] = $filterElement;
                     if ($isOnlyWord) {
-                        $filterElement = pg_escape_string(unaccent($filterElement));
+                        $filterElement = pg_escape_string(\Anakeen\Core\Utils\Strings::Unaccent($filterElement));
                     } else {
-                        $to_tsquery = sprintf("to_tsquery('french', E'%s')", pg_escape_string(unaccent($filterElement)));
+                        $to_tsquery = sprintf("to_tsquery('french', E'%s')", pg_escape_string(\Anakeen\Core\Utils\Strings::Unaccent($filterElement)));
 
                         $point = sprintf('dcp:%s', uniqid(__METHOD__));
                         \Anakeen\Core\DbManager::savePoint($point);
@@ -1104,7 +1104,7 @@ class SearchDoc
                             \Anakeen\Core\DbManager::rollbackPoint($point);
                         } catch (Dcp\Db\Exception $e) {
                             \Anakeen\Core\DbManager::rollbackPoint($point);
-                            throw new \Dcp\SearchDoc\Exception("SD0007", unaccent($filterElement));
+                            throw new \Dcp\SearchDoc\Exception("SD0007", \Anakeen\Core\Utils\Strings::Unaccent($filterElement));
                         }
                         if ($indexedWord) {
                             $filterElement = sprintf("(fulltext @@ E'%s')", pg_escape_string($indexedWord));
@@ -1116,7 +1116,7 @@ class SearchDoc
                     break;
 
                 case \Dcp\Lex\GeneralFilter::MODE_STRING:
-                    $rankElement = unaccent($currentElement["word"]);
+                    $rankElement = \Anakeen\Core\Utils\Strings::Unaccent($currentElement["word"]);
                     if (!preg_match('/\p{L}|\p{N}/u', mb_substr($rankElement, 0, 1))) {
                         $begin = '[£|\\\\s]';
                     } else {
@@ -1135,7 +1135,7 @@ class SearchDoc
                     break;
 
                 case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_END:
-                    $rankElement = unaccent($currentElement["word"]);
+                    $rankElement = \Anakeen\Core\Utils\Strings::Unaccent($currentElement["word"]);
 
                     if (!preg_match('/\p{L}|\p{N}/u', mb_substr($rankElement, 0, 1))) {
                         $begin = '[£|\\\\s]';
@@ -1146,7 +1146,7 @@ class SearchDoc
                     break;
 
                 case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_BEGIN:
-                    $rankElement = unaccent($currentElement["word"]);
+                    $rankElement = \Anakeen\Core\Utils\Strings::Unaccent($currentElement["word"]);
 
                     if (!preg_match('/\p{L}|\p{N}/u', mb_substr($rankElement, -1))) {
                         $end = '[£|\\\\s]';
@@ -1157,7 +1157,7 @@ class SearchDoc
                     break;
 
                 case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_BOTH:
-                    $rankElement = unaccent($currentElement["word"]);
+                    $rankElement = \Anakeen\Core\Utils\Strings::Unaccent($currentElement["word"]);
                     if ($usePartial) {
                         $stringWords[] = $currentElement["word"];
                     }
@@ -1256,9 +1256,9 @@ class SearchDoc
                 $suggestions = pspell_suggest($pspell_link, $word);
                 $sug = false;
                 if (isset($suggestions[0])) {
-                    $sug = unaccent($suggestions[0]);
+                    $sug = \Anakeen\Core\Utils\Strings::Unaccent($suggestions[0]);
                 }
-                if ($sug && ($sug != unaccent($word)) && (!strstr($sug, ' '))) {
+                if ($sug && ($sug != \Anakeen\Core\Utils\Strings::Unaccent($word)) && (!strstr($sug, ' '))) {
                     $word = sprintf("(%s|%s)", $word, $sug);
                 }
             }

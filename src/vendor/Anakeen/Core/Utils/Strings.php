@@ -29,6 +29,12 @@ class Strings
         return preg_replace("/(^\s+)|(\s+$)/us", "", $string);
     }
 
+
+    public static function Unaccent($string)
+    {
+        return iconv("UTF-8", "ASCII//TRANSLIT", $string);
+    }
+
     /**
      * Returns <kbd>true</kbd> if the string or array of string is encoded in UTF8.
      *

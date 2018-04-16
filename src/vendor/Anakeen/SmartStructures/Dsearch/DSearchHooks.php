@@ -722,9 +722,9 @@ class DSearchHooks extends \SmartStructure\Search
                         $keyword = trim($val);
                     }
                     if ($op == "@@") {
-                        $cond = " " . $col . '_vec' . " @@ to_tsquery('french','." . pg_escape_string(unaccent(strtolower($keyword))) . "') ";
+                        $cond = " " . $col . '_vec' . " @@ to_tsquery('french','." . pg_escape_string(\Anakeen\Core\Utils\Strings::Unaccent(strtolower($keyword))) . "') ";
                     } elseif ($op == "=@") {
-                        $cond = sprintf("fulltext @@ to_tsquery('french','%s') ", pg_escape_string(unaccent(strtolower($keyword))));
+                        $cond = sprintf("fulltext @@ to_tsquery('french','%s') ", pg_escape_string(\Anakeen\Core\Utils\Strings::Unaccent(strtolower($keyword))));
                     }
                 }
                 break;

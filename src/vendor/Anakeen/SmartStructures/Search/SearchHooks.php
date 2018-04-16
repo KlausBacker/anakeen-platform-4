@@ -282,7 +282,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
                         $suggestions = pspell_suggest($pspell_link, $key);
                         $sug = $suggestions[0];
                         //foreach ($suggestions as $k=>$suggestion) {  echo "$k : $suggestion\n";  }
-                        if ($sug && (unaccent($sug) != $key) && (!strstr($sug, ' '))) {
+                        if ($sug && (\Anakeen\Core\Utils\Strings::Unaccent($sug) != $key) && (!strstr($sug, ' '))) {
                             $tsearchkeys[$k] = "$key|$sug";
                         }
                     }
@@ -333,8 +333,8 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
                         } else {
                             $q2 = "";
                         }
-                        $q3 = "fulltext @@ to_tsquery('french','" . pg_escape_string(unaccent($left)) . "') ";
-                        $q4 = "fulltext @@ to_tsquery('french','" . pg_escape_string(unaccent($right)) . "') ";
+                        $q3 = "fulltext @@ to_tsquery('french','" . pg_escape_string(\Anakeen\Core\Utils\Strings::Unaccent($left)) . "') ";
+                        $q4 = "fulltext @@ to_tsquery('french','" . pg_escape_string(\Anakeen\Core\Utils\Strings::Unaccent($right)) . "') ";
 
                         if ((!$q1) && $q2) {
                             $sqlfiltersbrut[] = "($q4 and $q2) or $q3";
@@ -350,7 +350,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
 
         if (count($tsearchkeys) > 0) {
             $fullkeys = '(' . implode(")&(", $tsearchkeys) . ')';
-            $fullkeys = unaccent($fullkeys);
+            $fullkeys = \Anakeen\Core\Utils\Strings::Unaccent($fullkeys);
             $fullkeys = pg_escape_string($fullkeys);
             $sqlfilters[] = sprintf("fulltext @@ to_tsquery('french','%s') ", pg_escape_string($fullkeys));
         }

@@ -611,15 +611,7 @@ function unaccent_iso8859_1($string)
     return ($string);
 }
 
-function unaccent_utf8($string)
-{
-    return iconv("UTF-8", "ASCII//TRANSLIT", $string);
-}
 
-function unaccent($s)
-{
-    return unaccent_utf8($s);
-}
 /**
  * replace a string separate by $sep
  */

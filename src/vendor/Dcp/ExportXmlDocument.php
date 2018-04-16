@@ -405,18 +405,18 @@ class ExportXmlDocument
                                 $f["name"] = htmlspecialchars($f["name"], ENT_QUOTES);
                                 if (is_file($f["path"])) {
                                     if ($this->writeToFile) {
-                                        return sprintf('%s title="%s" src="data:%s;base64,[FILE64:%s]"', "\n" . $matches[1], unaccent($f["name"]), $f["mime_s"], $f["path"]);
+                                        return sprintf('%s title="%s" src="data:%s;base64,[FILE64:%s]"', "\n" . $matches[1], \Anakeen\Core\Utils\Strings::Unaccent($f["name"]), $f["mime_s"], $f["path"]);
                                     } else {
                                         return sprintf(
                                             '%s title="%s" src="data:%s;base64,%s"',
                                             "\n" . $matches[1],
-                                            unaccent($f["name"]),
+                                            \Anakeen\Core\Utils\Strings::unaccent($f["name"]),
                                             $f["mime_s"],
                                             base64_encode(file_get_contents($f["path"]))
                                         );
                                     }
                                 } else {
-                                    return sprintf('%s title="%s" src="data:%s;base64,file not found"', "\n" . $matches[1], unaccent($f["name"]), $f["mime_s"]);
+                                    return sprintf('%s title="%s" src="data:%s;base64,file not found"', "\n" . $matches[1], \Anakeen\Core\Utils\Strings::Unaccent($f["name"]), $f["mime_s"]);
                                 }
                             },
                             $value
