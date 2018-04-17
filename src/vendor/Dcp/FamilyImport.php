@@ -215,12 +215,20 @@ class FamilyImport
                         "prev" => $previousOrder,
                         "numOrder" => intval($parentAttr["ordered"])
                     ];
-                } else {
+                    if (!$previousOrder) {
+                        // Need to copy child attribute when use absolute orders
+                        $allAttributes[$parentAttr["id"] . "/" . $tdoc["id"]] = $allAttributes[$parentAttr["id"] . "/" . $parentAttr["docid"]];
+                        $allAttributes[$parentAttr["id"] . "/" . $tdoc["id"]]["family"] = $tdoc["id"];
+                    }
                     if (is_numeric($parentAttr["ordered"])) {
                         $pattern = sprintf("/%s\\/([0-9]+)/", substr($parentAttr["id"], 1));
 
                         foreach ($allAttributes as $ka => $attrData) {
                             if (preg_match($pattern, $ka, $reg)) {
+                                // Need to update parent also
+                                if ($parentAttr["frameid"]) {
+                                    $allAttributes[$ka]["parent"] = $parentAttr["frameid"];
+                                }
                                 $allAttributes[$ka]["numOrder"] = $parentAttr["ordered"];
                             }
                         }
@@ -239,6 +247,9 @@ class FamilyImport
                         $pattern = sprintf("/%s\\/([0-9]+)/", $v->id);
                         foreach ($allAttributes as $ka => $attrData) {
                             if (preg_match($pattern, $ka, $reg)) {
+                                if ($v->frameid) {
+                                    $allAttributes[$ka]["parent"] = $v->frameid;
+                                }
                                 $allAttributes[$ka]["numOrder"] = $v->ordered;
                             }
                         }
