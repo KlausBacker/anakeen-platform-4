@@ -2,6 +2,7 @@
 
 namespace Anakeen\Routes\Core;
 
+use Anakeen\Core\Settings;
 use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
 
@@ -15,7 +16,6 @@ use Anakeen\Router\ApiV2Response;
  */
 class LayoutAsset
 {
-
     /**
      * Return js or css from Application layout directory
      *
@@ -36,21 +36,24 @@ class LayoutAsset
         }
         $assetType = $reg[1];
 
-        if (preg_match("/([A-Z_0-9-]+):([^:]+):{0,1}[A-Z]{0,1}/", $ref, $reg)) {
-            $lfile = \Layout::getLayoutFile($reg[1], ($reg[2]));
-            if (!file_exists($lfile)) {
-                $lfile = \Layout::getLayoutFile($reg[1], strtolower($reg[2]));
-            }
 
-            if (file_exists($lfile)) {
-                $response->write(file_get_contents($lfile));
-                $response = ApiV2Response::withEtag($request, $response, filemtime($lfile));
-            } else {
-                header(sprintf("HTTP/1.1 404 ref [%s] not found", $ref));
-                $response = $response->withStatus(404, sprintf("Ref [%s] not found", $ref));
+        $file = $this->getCacheAsset($ref);
+        if (!$file) {
+            $file = $this->getLegacyLayout($ref);
+            if ($file) {
+                $response = ApiV2Response::withEtag($request, $response, filemtime($file));
             }
         } else {
-            throw new Exception(sprintf("Ref \"%s\" not an valid reference", $ref));
+            /*  header_remove("Cache-Control");
+              header_remove("Pragma");
+              header_remove("Expires");*/
+            $response = $response->withHeader("Cache-Control", "private, max-age=86400, stale-while-revalidate=604800");
+        }
+        if (!$file) {
+            header(sprintf("HTTP/1.1 404 ref [%s] not found", $ref));
+            $response = $response->withStatus(404, sprintf("Ref [%s] not found", $ref));
+        } else {
+            $response->write(file_get_contents($file));
         }
 
 
@@ -64,5 +67,31 @@ class LayoutAsset
         }
 
         return $response;
+    }
+
+
+    protected function getCacheAsset($ref)
+    {
+        $assetDir = sprintf("%s/%s/assets/", DEFAULT_PUBDIR, Settings::CacheDir);
+        $file = sprintf("%s/%s", $assetDir, $ref);
+        if (is_link($file)) {
+            return $file;
+        }
+        return null;
+    }
+
+    protected function getLegacyLayout($ref)
+    {
+        if (preg_match("/([A-Z_0-9-]+):([^:]+):{0,1}[A-Z]{0,1}/", $ref, $reg)) {
+            $lfile = \Layout::getLayoutFile($reg[1], ($reg[2]));
+            if (!file_exists($lfile)) {
+                $lfile = \Layout::getLayoutFile($reg[1], strtolower($reg[2]));
+            }
+
+            if (file_exists($lfile)) {
+                return $lfile;
+            }
+        }
+        return null;
     }
 }

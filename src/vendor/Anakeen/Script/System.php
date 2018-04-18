@@ -4,6 +4,7 @@ namespace Anakeen\Script;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
+use Anakeen\Core\Settings;
 
 class System
 {
@@ -438,8 +439,10 @@ class System
     public function clearFileCache()
     {
         $this->verbose(1, sprintf("[+] Clearing cached content.\n"));
-        $cacheDir = $this->absolutize('var' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'image');
+        $cacheDir = $this->absolutize(Settings::CacheDir . 'image');
         $this->removeFilesByRegex($cacheDir, '/(?:png|gif|xml|src)$/');
+        $cacheDir = $this->absolutize(Settings::CacheDir . 'assets');
+        $this->removeFilesByRegex($cacheDir, '/(?:css|js)$/');
         $this->verbose(1, sprintf("[+] Done.\n"));
     }
 

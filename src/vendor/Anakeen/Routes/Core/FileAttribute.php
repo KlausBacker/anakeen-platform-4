@@ -2,6 +2,7 @@
 
 namespace Anakeen\Routes\Core;
 
+use Anakeen\Core\Settings;
 use Anakeen\Router\Exception;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DocManager;
@@ -18,7 +19,7 @@ use Anakeen\Router\ApiV2Response;
  */
 class FileAttribute
 {
-    const CACHEIMGDIR = "var/cache/file/";
+    const CACHEIMGDIR = Settings::CacheDir."file/";
     protected $revision;
 
     private $tmpFlag = "_tmp_";

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome - {{userDomain}}</title>
+    <link rel="icon" href="/favico.ico" />
+    <meta charset='utf-8'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="{{cssRef}}">
+
+    <script>
+        document.addEventListener( 'DOMContentLoaded', function () {
+
+            var el = document.getElementById("logout");
+            el.addEventListener("click", function ()
+            {
+                var httpRequest = new XMLHttpRequest();
+                httpRequest.open('DELETE', 'api/v2/authent/sessions/current', true);
+                httpRequest.onreadystatechange = function ()
+                {
+                    if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                        if (httpRequest.status === 200 || httpRequest.status === 401) {
+                            window.location.href = '/';
+                        } else {
+                            alert('Logout failed.');
+                        }
+                    }
+                };
+                httpRequest.send();
+            });
+        }, false );
+    </script>
+</head>
+<body>
+<section class="left">
+
+    <div class="version">Version : {{version}}</div>
+    <div class="info">
+        <p>Community edition released under GNU Lesser General Public License V3 - LGPLV3. </p>
+        <p> Enterprise edition is built with packages under Anakeen License and maybe supported by Anakeen SAS an
+            Independant Software Vendor Based in Paris, France. </p>
+        <p> Anakeen SAS provides professionnal services, feel free to ask our experts some advices for the success of
+            your business application. </p>
+        <p>Anakeen and the Anakeen’s logo are registred trademarks own by Anakeen SAS.</p>
+    </div>
+
+    <div class="logo">
+        <img class="logo" src="CORE/Images/anakeen-logo.svg"/>
+    </div>
+
+</section>
+
+<section class="right">
+    <div class="top">
+        <p class="welcome">Congratulations ! Anakeen Platform is up and running</p>
+        {{#isAdmin}}<p class="admin"><a href="admin/">Access to Anakeen Admin Center</a></p>{{/isAdmin}}
+        <p class="admin logout" title="Logout"><a id="logout"><i class="material-icons">power_settings_new</i></a></p>
+    </div>
+    <div class="bottom">
+        <p class="product">ANAKEEN PLATFORM</p>
+
+        <p class="summary">LOW-CODE PLATFORM FOR HTML5 BUSINESS APPS</p>
+
+        <p class="description">Build process-based applications<br/> to solve everyday business challenges</p>
+
+    </div>
+</section>
+</body>
+</html>
