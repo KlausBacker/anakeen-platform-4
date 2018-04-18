@@ -28,7 +28,7 @@ class TransitionRender
 
     protected $workflowData;
     /**
-     * @var \FormatCollection
+     * @var \Anakeen\Core\Internal\FormatCollection 
      */
     protected $formatCollection;
     /**
@@ -129,7 +129,7 @@ class TransitionRender
     protected function getAttributeInfo(\Anakeen\Routes\Core\Lib\DocumentApiData $document, \Anakeen\Core\SmartStructure\BasicAttribute $attribute)
     {
         if ($this->formatCollection === null) {
-            $this->formatCollection = new \FormatCollection($this->workflow);
+            $this->formatCollection = new \Anakeen\Core\Internal\FormatCollection($this->workflow);
         }
         $aInfo = new AttributeInfo();
 

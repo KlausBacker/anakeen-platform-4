@@ -19,7 +19,7 @@ class TransitionSet extends WorkflowSetState
      */
     protected $workflow;
     /**
-     * @var \FormatCollection
+     * @var \Anakeen\Core\Internal\FormatCollection 
      */
     protected $formatCollection;
 

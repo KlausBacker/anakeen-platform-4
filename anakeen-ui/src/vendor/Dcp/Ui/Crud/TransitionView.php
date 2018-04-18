@@ -15,7 +15,7 @@ class TransitionView extends \Dcp\HttpApi\V1\Crud\WorkflowState
      */
     protected $workflow;
     /**
-     * @var \FormatCollection
+     * @var \Anakeen\Core\Internal\FormatCollection 
      */
     protected $formatCollection;
     /**
