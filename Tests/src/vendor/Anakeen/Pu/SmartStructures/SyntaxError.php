@@ -5,7 +5,8 @@
 */
 namespace Anakeen\Pu\SmartStructures;
 
-class SyntaxError extends \Doc
+class SyntaxError extends \Anakeen\Core\Internal\SmartElement
+
 {
     $syntaxError = 'here'
 }

@@ -136,7 +136,7 @@ class TestWorflowTransition extends TestCaseDcpCommonFamily
                 WTestM0M3::SB,
                 WTestM0M3::SD,
                 'Texte colonne 1 doit être rempli',
-                function (\Doc & $doc) {
+                function (\Anakeen\Core\Internal\SmartElement & $doc) {
                     $doc->setVAlue('TXT_COLTEXT_1', array(// Missing/empty TST_COLTEXT_1 altogether
 
                     ));
@@ -152,7 +152,7 @@ class TestWorflowTransition extends TestCaseDcpCommonFamily
                 WTestM0M3::SB,
                 WTestM0M3::SD,
                 'Texte colonne 1 doit être rempli',
-                function (\Doc & $doc) {
+                function (\Anakeen\Core\Internal\SmartElement & $doc) {
                     $doc->setValue('TXT_COLTEXT_1', array(
                         '', // First cell is empty
                         'Row 2'
@@ -169,7 +169,7 @@ class TestWorflowTransition extends TestCaseDcpCommonFamily
                 WTestM0M3::SB,
                 WTestM0M3::SD,
                 'Texte colonne 1 doit être rempli',
-                function (\Doc & $doc) {
+                function (\Anakeen\Core\Internal\SmartElement & $doc) {
                     $doc->setValue('TXT_COLTEXT_1', array(
                         'Row 1',
                         ''
@@ -194,7 +194,7 @@ class TestWorflowTransition extends TestCaseDcpCommonFamily
                 WTestM0M3::SB,
                 WTestM0M3::SD,
                 '',
-                function (\Doc & $doc) {
+                function (\Anakeen\Core\Internal\SmartElement & $doc) {
                     /*
                      * Lock document with User #1
                     */
@@ -210,7 +210,7 @@ class TestWorflowTransition extends TestCaseDcpCommonFamily
                     }));
                 }
             ,
-                function (\Doc & $doc, $newState) {
+                function (\Anakeen\Core\Internal\SmartElement & $doc, $newState) {
                     /*
                      * Change state with User #1
                     */
@@ -229,7 +229,7 @@ class TestWorflowTransition extends TestCaseDcpCommonFamily
                 WTestM0M3::SB,
                 WTestM0M3::SD,
                 sprintf(_("Could not perform transition because the document is being edited by '%s'"), 'User #1'),
-                function (\Doc & $doc) {
+                function (\Anakeen\Core\Internal\SmartElement & $doc) {
                     /*
                      * (auto)Lock document with User #1
                     */
@@ -245,7 +245,7 @@ class TestWorflowTransition extends TestCaseDcpCommonFamily
                     }));
                 }
             ,
-                function (\Doc & $doc, $newState) {
+                function (\Anakeen\Core\Internal\SmartElement & $doc, $newState) {
                     /*
                      * Change state with User #2
                     */
@@ -264,7 +264,7 @@ class TestWorflowTransition extends TestCaseDcpCommonFamily
                 WTestM0M3::SB,
                 WTestM0M3::SD,
                 sprintf(_("Could not perform transition because the document is locked by '%s'"), 'User #1'),
-                function (\Doc & $doc) {
+                function (\Anakeen\Core\Internal\SmartElement & $doc) {
                     /*
                      * Lock document with User #1
                     */
@@ -280,7 +280,7 @@ class TestWorflowTransition extends TestCaseDcpCommonFamily
                     }));
                 }
             ,
-                function (\Doc & $doc, $newState) {
+                function (\Anakeen\Core\Internal\SmartElement & $doc, $newState) {
                     /*
                      * Change state with User #2
                     */

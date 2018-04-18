@@ -6,7 +6,8 @@
 
 namespace Anakeen\Pu\SmartStructures;
 
-class WTestBadImp13 extends \Doc
+class WTestBadImp13 extends \Anakeen\Core\Internal\SmartElement
+
 {
     var $attrPrefix = "WTST";
     const alive = "alive"; # N_("alive")

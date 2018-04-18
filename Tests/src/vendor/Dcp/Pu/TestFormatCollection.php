@@ -445,7 +445,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                 "TST_FMTCOL1",
                 function ($info, $doc) {
                     /**
-                     * @var \Doc $doc
+                     * @var \Anakeen\Core\Internal\SmartElement $doc
                      */
                     $info["properties"]["revision"] .= ' (bis)';
                     $info["properties"]["hello"] = 'world - ' . $doc->name;
