@@ -16,7 +16,7 @@ class TestMultipleAlive extends TestCaseDcp
 {
     /**
      * @param string $a
-     * @return \Doc
+     * @return \Anakeen\Core\Internal\SmartElement 
      */
     public function testFixed()
     {

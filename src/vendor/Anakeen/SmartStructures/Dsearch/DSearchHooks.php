@@ -8,6 +8,7 @@ namespace Anakeen\SmartStructures\Dsearch;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\DocManager;
+use Anakeen\SmartStructures\Dir\DirLib;
 use \Dcp\Core\Exception;
 
 class DSearchHooks extends \SmartStructure\Search
@@ -48,7 +49,7 @@ class DSearchHooks extends \SmartStructure\Search
     {
         if ($dirid > 0) {
             if ($subfolder) {
-                $cdirid = getRChildDirId($this->dbaccess, $dirid);
+                $cdirid = DirLib::getRChildDirId($this->dbaccess, $dirid);
             } else {
                 $cdirid = $dirid;
             }
@@ -77,7 +78,7 @@ class DSearchHooks extends \SmartStructure\Search
             }
             $only = "only";
         }
-        $query = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getRawValue("se_trash"), false, $level = 2, $join = '', $only);
+        $query = DirLib::getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getRawValue("se_trash"), false, $level = 2, $join = '', $only);
 
         return $query;
     }
@@ -210,7 +211,7 @@ class DSearchHooks extends \SmartStructure\Search
 
         $filters[] = $sql;
         $cdirid = 0;
-        $q = getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters);
+        $q = DirLib::getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters);
         if (count($q) == 1) {
             $q0 = $q[0]; // need a tempo variable : don't know why
             return ($q0);
@@ -487,8 +488,8 @@ class DSearchHooks extends \SmartStructure\Search
          */
         if ($oa) {
             $atype = $oa->type;
-        } elseif (!empty(\Doc::$infofields[$col])) {
-            $atype = \Doc::$infofields[$col]["type"];
+        } elseif (!empty(\Anakeen\Core\Internal\SmartElement::$infofields[$col])) {
+            $atype = \Anakeen\Core\Internal\SmartElement::$infofields[$col]["type"];
         }
         if (($atype == "date" || $atype == "timestamp")) {
             if ($col == 'revdate') {
@@ -721,9 +722,9 @@ class DSearchHooks extends \SmartStructure\Search
                         $keyword = trim($val);
                     }
                     if ($op == "@@") {
-                        $cond = " " . $col . '_vec' . " @@ to_tsquery('french','." . pg_escape_string(unaccent(strtolower($keyword))) . "') ";
+                        $cond = " " . $col . '_vec' . " @@ to_tsquery('french','." . pg_escape_string(\Anakeen\Core\Utils\Strings::Unaccent(strtolower($keyword))) . "') ";
                     } elseif ($op == "=@") {
-                        $cond = sprintf("fulltext @@ to_tsquery('french','%s') ", pg_escape_string(unaccent(strtolower($keyword))));
+                        $cond = sprintf("fulltext @@ to_tsquery('french','%s') ", pg_escape_string(\Anakeen\Core\Utils\Strings::Unaccent(strtolower($keyword))));
                     }
                 }
                 break;
@@ -1030,7 +1031,7 @@ class DSearchHooks extends \SmartStructure\Search
     /**
      * return family use for search
      *
-     * @return \Doc
+     * @return \Anakeen\Core\Internal\SmartElement 
      */
     private function getSearchFamilyDocument()
     {

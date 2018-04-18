@@ -19,12 +19,12 @@ class Cache
      *
      * Return object itself
      *
-     * @param \Doc $document
+     * @param \Anakeen\Core\Internal\SmartElement $document
      * @throws Exception APIDM0200, APIDM0201
      * @api Record document to local cache
-     * @return \Doc|SmartStructure
+     * @return \Anakeen\Core\Internal\SmartElement |SmartStructure
      */
-    public static function &addDocument(\Doc & $document)
+    public static function &addDocument(\Anakeen\Core\Internal\SmartElement & $document)
     {
         if (empty($document->id)) {
             throw new Exception("APIDM0200");
@@ -80,14 +80,14 @@ class Cache
      * Return null if key not exists in cache.
      *
      * @param string $documentId object key
-     * @return \Doc|null
+     * @return \Anakeen\Core\Internal\SmartElement |null
      */
     public static function getDocumentFromCache($documentId)
     {
         $cachedDocument = self::getLocalCache()->get($documentId);
         if (is_object($cachedDocument)) {
             /**
-             * @var \Doc $cachedDocument
+             * @var \Anakeen\Core\Internal\SmartElement $cachedDocument
              */
             return $cachedDocument;
         }
@@ -98,12 +98,12 @@ class Cache
      *
      * Return removed object itself
      *
-     * @param \Doc $document
+     * @param \Anakeen\Core\Internal\SmartElement $document
      *
      * @api Unset document object from local cache
-     * @return \Doc
+     * @return \Anakeen\Core\Internal\SmartElement 
      */
-    public static function &removeDocument(\Doc & $document)
+    public static function &removeDocument(\Anakeen\Core\Internal\SmartElement & $document)
     {
         self::getLocalCache()->remove($document->id);
 
@@ -129,10 +129,10 @@ class Cache
      *
      * Return true is object is in local cache
      *
-     * @param \Doc $document
+     * @param \Anakeen\Core\Internal\SmartElement $document
      * @return bool
      */
-    public static function isInCache(\Doc & $document)
+    public static function isInCache(\Anakeen\Core\Internal\SmartElement & $document)
     {
         return self::getLocalCache()->isInCache($document->id, $document);
     }

@@ -101,7 +101,7 @@ class SearchHighlight
         } elseif ((strlen($s) / 1024) > $this->limit) {
             $headline = sprintf(_("document too big (%dKo): no highlight"), (strlen($s) / 1024));
         } else {
-            $k = preg_replace('/\s+/u', '&', unaccent($k));
+            $k = preg_replace('/\s+/u', '&', \Anakeen\Core\Utils\Strings::Unaccent($k));
             // print_r("\n============\n\tK=$k\n");
             $s = self::strtr8($s, "£", ",");
             $s = preg_replace('/[ ]+ /u', ' ', $s);
@@ -122,7 +122,7 @@ class SearchHighlight
             $s = preg_replace('/»/u', '"', $s);
             $s = preg_replace('/\p{C}/u', '', $s); // delete control characters
             $s = preg_replace('/\p{S}/u', '', $s); // delete symbol characters
-            $us = unaccent($s);
+            $us = \Anakeen\Core\Utils\Strings::Unaccent($s);
             //print_r("\n\tSL".mb_strlen($s).'=='.mb_strlen($us)."\n");
             //print_r("\n\tS=$s\n");
             //print_r("\n\tUS=$us\n");

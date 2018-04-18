@@ -83,13 +83,13 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
     }
 
     /**
-     * @param \Doc  $doc Document to use for complete mail
+     * @param \Anakeen\Core\Internal\SmartElement  $doc Document to use for complete mail
      * @param array $keys extra keys to complete mail body or subject
      *
      * @return \Dcp\Mail\Message (return null if no recipients)
      * @throws \Dcp\Exception
      */
-    public function getMailMessage(\Doc & $doc, $keys = array())
+    public function getMailMessage(\Anakeen\Core\Internal\SmartElement & $doc, $keys = array())
     {
         global $action;
         $this->keys = $keys;
@@ -269,7 +269,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
                         $recipDocId = $m['id'];
                     }
                     /**
-                     * @var \IMailRecipient|\Doc $recipientDoc
+                     * @var \IMailRecipient|\Anakeen\Core\Internal\SmartElement $recipientDoc
                      */
                     $recipientDoc = new_Doc($this->dbaccess, $recipDocId, true);
                     if (!is_object($recipientDoc) || !$recipientDoc->isAlive()) {
@@ -388,11 +388,11 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
 
     /**
      * send document by email using this template
-     * @param \Doc $doc document to send
+     * @param \Anakeen\Core\Internal\SmartElement $doc document to send
      * @param array $keys extra keys used for template
      * @return string error - empty if no error -
      */
-    public function sendDocument(\Doc & $doc, $keys = array())
+    public function sendDocument(\Anakeen\Core\Internal\SmartElement & $doc, $keys = array())
     {
         global $action;
 
@@ -479,15 +479,15 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
     }
     /**
      * update template with document values
-     * @param \Doc $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      * @param string $tpl template content
      * @param \Anakeen\Core\SmartStructure\NormalAttribute|bool $oattr
      * @return string
      */
-    private function generateMailInstance(\Doc & $doc, $tpl, $oattr = false)
+    private function generateMailInstance(\Anakeen\Core\Internal\SmartElement & $doc, $tpl, $oattr = false)
     {
         global $action;
-        $tpl = str_replace("&#x5B;", "[", $tpl); // replace [ convverted in Doc::setValue()
+        $tpl = str_replace("&#x5B;", "[", $tpl); // replace [ convverted in \Anakeen\Core\Internal\SmartElement::setValue()
         $doc->lay = new \Layout("", $action, $tpl);
 
         $ulink = ($this->getRawValue("tmail_ulink") == "yes");

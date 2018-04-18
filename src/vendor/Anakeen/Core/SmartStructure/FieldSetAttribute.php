@@ -43,7 +43,7 @@ class FieldSetAttribute extends BasicAttribute
      */
     public function getXmlSchema($la)
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "fieldattribute_schema.xml"));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "fieldattribute_schema.xml"));
         $lay->set("aname", $this->id);
         $this->common_getXmlSchema($lay);
         

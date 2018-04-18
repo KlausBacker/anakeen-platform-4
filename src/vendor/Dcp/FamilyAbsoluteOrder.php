@@ -108,10 +108,15 @@ class FamilyAbsoluteOrder
     {
         foreach ($familyAttributes as & $anAttribute) {
             $anAttribute["structLevel"] = self::getStructLevel($anAttribute["id"], $familyAttributes);
-            if ($anAttribute["numOrder"] === 0) {
-                $anAttribute["numOrder"] = self::getNumericOrder($anAttribute["id"], $familyAttributes);
+            if ($anAttribute["numOrder"] === 0 || (is_float($anAttribute["numOrder"]))) {
+                $absOrder = self::getNumericOrder($anAttribute["id"], $familyAttributes);
+                if ($anAttribute["numOrder"] === 0) {
+                    $anAttribute["numOrder"] = $absOrder;
+                } else {
+                    $anAttribute["numOrder"] = min($anAttribute["numOrder"], $absOrder);
+                }
             }
-            $anAttribute["familyLevel"] = self::getFamilyLevel($anAttribute["family"]);
+                $anAttribute["familyLevel"] = self::getFamilyLevel($anAttribute["family"]);
         }
         
         uasort($familyAttributes, function ($a, $b) {
@@ -249,8 +254,6 @@ class FamilyAbsoluteOrder
             if ($attribute["familyLevel"] <= $familyLevel && $attribute["structLevel"] === $structLevel) {
                 if ($attribute["parent"] === $parent) {
                     $previous = $attribute["id"];
-                } else {
-                    $previous = self::autoOrder;
                 }
             }
         }

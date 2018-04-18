@@ -611,7 +611,7 @@ class ExportCollection
         $c = 0;
         $rc = count($dl);
         /**
-         * @var \Doc $doc
+         * @var \Anakeen\Core\Internal\SmartElement $doc
          */
         foreach ($dl as $doc) {
             $c++;

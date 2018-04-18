@@ -1285,13 +1285,13 @@ class Form1NF
                     $family->famAttributes[] = new Form1NF_Column($attribute);
                 }
                 // checks properties
-                $allowedProperties = array_keys(Doc::$infofields);
+                $allowedProperties = array_keys(\Anakeen\Core\Internal\SmartElement::$infofields);
                 foreach ($family->properties as $property) {
                     if (!in_array($property->name, $allowedProperties)) {
                         $this->stdError(_("Property '%s' is not valid (family '%s')."), $property->name, $family->name);
                     }
                     // load correct type
-                    $property->setType(Doc::$infofields[$property->name]['type']);
+                    $property->setType(\Anakeen\Core\Internal\SmartElement::$infofields[$property->name]['type']);
                 }
             }
         } catch (Exception $e) {

@@ -20,12 +20,12 @@ class CheckDoc extends CheckData
      */
     protected $folderId;
     /**
-     * @var Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $doc;
     /**
      * @param array $data
-     * @param Doc $extra
+     * @param \Anakeen\Core\Internal\SmartElement $extra
      * @return CheckDoc
      */
     public function check(array $data, &$extra = null)

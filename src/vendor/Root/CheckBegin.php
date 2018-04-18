@@ -12,12 +12,12 @@ class CheckBegin extends CheckData
     protected $famTitle;
     protected $famName;
     /**
-     * @var Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $doc;
     /**
      * @param array $data
-     * @param Doc $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      * @return CheckBegin
      */
     public function check(array $data, &$doc = null)
@@ -36,7 +36,7 @@ class CheckBegin extends CheckData
     /**
      * check class file when it is a workflow
      * @param array $data
-     * @param Doc $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      * @return CheckBegin
      */
     public function checkClass(array $data, &$doc = null)

@@ -7,7 +7,8 @@
 
 namespace Anakeen\SmartStructures\Profiles;
 
-class PFamHooks extends \Doc
+class PFamHooks extends \Anakeen\Core\Internal\SmartElement
+
 {
     // --------------------------------------------------------------------
     //---------------------- OBJECT CONTROL PERMISSION --------------------

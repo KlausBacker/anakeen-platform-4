@@ -157,7 +157,7 @@ class CheckAttr extends CheckData
      * @return CheckAttr
      */
     /**
-     * @var Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     private $doc = null;
     /**
@@ -203,7 +203,7 @@ class CheckAttr extends CheckData
             if (in_array($this->attrid, $this->postgreSqlWords)) {
                 $this->addError(ErrorCode::getError('ATTR0101', $this->attrid));
             } else {
-                $doc = new Doc();
+                $doc = new \Anakeen\Core\Internal\SmartElement();
                 if (in_array($this->attrid, $doc->fields)) {
                     $this->addError(ErrorCode::getError('ATTR0103', $this->attrid));
                 }

@@ -7,9 +7,9 @@
 namespace Dcp\Pu;
 
 use Anakeen\Core\ContextManager;
-use Dcp\DirectoriesAutoloaderException;
 
-//require_once 'PU_testcase_dcp.php';
+require_once __DIR__ . '/../../Anakeen/WHAT/Lib.Http.php';
+
 
 class TestExportCsv extends TestCaseDcpCommonFamily
 {
@@ -24,7 +24,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
 
     /**
      * Test that exported documents have no param columns
-     * @param array $archiveFile
+     * @param string $archiveFile
      * @param $needles
      * @throws \Dcp\Exception
      * @dataProvider dataExportImage

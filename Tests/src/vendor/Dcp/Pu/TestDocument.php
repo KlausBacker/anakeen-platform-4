@@ -32,7 +32,7 @@ class TestDocument extends TestCaseDcpCommonFamily
     /**
      * @dataProvider provider
      * @param string $a
-     * @return \Doc
+     * @return \Anakeen\Core\Internal\SmartElement 
      */
     public function testAlive($a)
     {
@@ -109,6 +109,7 @@ class TestDocument extends TestCaseDcpCommonFamily
     public function testautoLock($a)
     {
 
+        self::sudo("anonymous");
         $d = new_doc(self::$dbaccess, $a, true);
         if ($d->isAlive()) {
             if ($d->canLock()) {
@@ -128,6 +129,8 @@ class TestDocument extends TestCaseDcpCommonFamily
         } else {
             $this->markTestIncomplete(sprintf(_('Document %d not alive.'), $a));
         }
+
+        self::exitSudo();
     }
 
     /**

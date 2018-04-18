@@ -113,7 +113,7 @@ class DocLDAP extends DbObj
         if ($this->ldapdn == "") {
             return array();
         }
-        return Doc::rawValueToArray($this->ldapdn);
+        return \Anakeen\Core\Internal\SmartElement::rawValueToArray($this->ldapdn);
     }
 
     /**

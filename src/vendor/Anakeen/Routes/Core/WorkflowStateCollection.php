@@ -18,7 +18,7 @@ class WorkflowStateCollection
 {
     protected $baseURL = "documents";
     /**
-     * @var \Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $_document = null;
     /**
@@ -106,7 +106,7 @@ class WorkflowStateCollection
             $states[] = $state;
         }
         /**
-         * @var \Doc $revision
+         * @var \Anakeen\Core\Internal\SmartElement $revision
          */
         
         $info["states"] = $states;

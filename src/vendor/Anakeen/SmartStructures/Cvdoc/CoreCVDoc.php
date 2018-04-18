@@ -40,7 +40,7 @@ class CoreCVDoc extends \SmartStructure\Base
     public $attrPrefix = "CVI"; // prefix attribute
     
     /**
-     * @var \Doc instance document
+     * @var \Anakeen\Core\Internal\SmartElement instance document
      */
     public $doc = null;
     /**
@@ -57,7 +57,7 @@ class CoreCVDoc extends \SmartStructure\Base
             $this->defProfFamId = $this->fromid;
         } // it's a profil itself
         // don't use parent constructor because it could call this constructor => infinitive loop
-        \Doc::__construct($dbaccess, $id, $res, $dbid);
+        \Anakeen\Core\Internal\SmartElement::__construct($dbaccess, $id, $res, $dbid);
         
         $this->setAcls();
     }
@@ -263,7 +263,7 @@ class CoreCVDoc extends \SmartStructure\Base
     
     public function docControl($aclname, $strict = false)
     {
-        return \Doc::control($aclname, $strict);
+        return \Anakeen\Core\Internal\SmartElement::control($aclname, $strict);
     }
     /**
      * Special control in case of dynamic controlled profil
@@ -303,7 +303,7 @@ class CoreCVDoc extends \SmartStructure\Base
         return $err;
     }
     
-    public function set(\Doc &$doc)
+    public function set(\Anakeen\Core\Internal\SmartElement &$doc)
     {
         if (!isset($this->doc)) {
             $this->doc = & $doc;

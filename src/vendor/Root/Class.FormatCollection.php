@@ -175,7 +175,7 @@ class FormatCollection
     const propType = "type";
     /**
      * Applictaion Tags list
-     * @see \Doc::addAtag()
+     * @see \Anakeen\Core\Internal\SmartElement::addAtag()
      */
     const propTags = "tags";
     /**
@@ -224,7 +224,7 @@ class FormatCollection
     
     public static function getAvailableProperties()
     {
-        $keys = array_keys(Doc::$infofields);
+        $keys = array_keys(\Anakeen\Core\Internal\SmartElement::$infofields);
         $keys[] = self::propFamily;
         $keys[] = self::propLastAccessDate;
         $keys[] = self::propLastModificationDate;
@@ -419,10 +419,10 @@ class FormatCollection
     /**
      * @param StandardAttributeValue|null $info
      * @param \Anakeen\Core\SmartStructure\BasicAttribute|null $oa
-     * @param Doc $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      * @return StandardAttributeValue
      */
-    protected function callAttributeRenderHook($info, $oa, \Doc $doc)
+    protected function callAttributeRenderHook($info, $oa, \Anakeen\Core\Internal\SmartElement $doc)
     {
         if ($this->renderAttributeHook) {
             $h = $this->renderAttributeHook;
@@ -432,10 +432,10 @@ class FormatCollection
     }
     /**
      * @param array $info
-     * @param Doc $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      * @return StandardAttributeValue
      */
-    protected function callDocumentRenderHook(array $info, \Doc $doc)
+    protected function callDocumentRenderHook(array $info, \Anakeen\Core\Internal\SmartElement $doc)
     {
         if ($this->renderDocumentHook) {
             $h = $this->renderDocumentHook;
@@ -446,10 +446,10 @@ class FormatCollection
     /**
      * @param StandardAttributeValue|string|null $info
      * @param string $propId
-     * @param Doc $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      * @return StandardAttributeValue
      */
-    protected function callPropertyRenderHook($info, $propId, \Doc $doc)
+    protected function callPropertyRenderHook($info, $propId, \Anakeen\Core\Internal\SmartElement $doc)
     {
         if ($this->renderPropertyHook) {
             $h = $this->renderPropertyHook;
@@ -465,7 +465,7 @@ class FormatCollection
     public function render()
     {
         /**
-         * @var Doc $doc
+         * @var \Anakeen\Core\Internal\SmartElement $doc
          */
         $r = array();
         $kdoc = 0;
@@ -514,7 +514,7 @@ class FormatCollection
         }
         return $r;
     }
-    protected function getPropInfo($propName, Doc $doc)
+    protected function getPropInfo($propName, \Anakeen\Core\Internal\SmartElement $doc)
     {
         switch ($propName) {
             case self::title:
@@ -582,7 +582,7 @@ class FormatCollection
         }
     }
     
-    protected function getCreatedByData(\Doc $doc)
+    protected function getCreatedByData(\Anakeen\Core\Internal\SmartElement $doc)
     {
         if ($doc->revision == 0) {
             $ownerId = $doc->owner;
@@ -593,7 +593,7 @@ class FormatCollection
         return $this->getAccountData(abs($ownerId), $doc);
     }
     
-    protected function getStatusData(\Doc $doc)
+    protected function getStatusData(\Anakeen\Core\Internal\SmartElement $doc)
     {
         if ($doc->doctype == "Z") {
             return "deleted";
@@ -604,7 +604,7 @@ class FormatCollection
         }
     }
     
-    protected function getUsageData(\Doc $doc)
+    protected function getUsageData(\Anakeen\Core\Internal\SmartElement $doc)
     {
         if (strstr($doc->usefor, "S")) {
             return "system";
@@ -612,7 +612,7 @@ class FormatCollection
             return "normal";
         }
     }
-    protected function getTypeData(\Doc $doc)
+    protected function getTypeData(\Anakeen\Core\Internal\SmartElement $doc)
     {
         switch ($doc->defDoctype) {
             case 'F':
@@ -632,7 +632,7 @@ class FormatCollection
         }
     }
     
-    protected function getNoteData(\Doc $doc)
+    protected function getNoteData(\Anakeen\Core\Internal\SmartElement $doc)
     {
         if ($doc->postitid > 0) {
             $note = DocManager::getDocument($doc->postitid);
@@ -648,7 +648,7 @@ class FormatCollection
             );
         }
     }
-    protected function getWorkflowData(\Doc $doc)
+    protected function getWorkflowData(\Anakeen\Core\Internal\SmartElement $doc)
     {
         if ($doc->wid > 0) {
             $workflow = DocManager::getDocument($doc->wid);
@@ -664,7 +664,7 @@ class FormatCollection
             );
         }
     }
-    protected function getApplicationTagsData(\Doc $doc)
+    protected function getApplicationTagsData(\Anakeen\Core\Internal\SmartElement $doc)
     {
         if ($doc->atags) {
             return explode("\n", $doc->atags);
@@ -673,7 +673,7 @@ class FormatCollection
         }
     }
     
-    protected function getAllocatedData(\Doc $doc)
+    protected function getAllocatedData(\Anakeen\Core\Internal\SmartElement $doc)
     {
         if ($doc->allocated > 0) {
             return $this->getAccountData($doc->allocated, $doc);
@@ -685,7 +685,7 @@ class FormatCollection
         }
     }
     
-    protected function getAccountData($accountId, \Doc $doc)
+    protected function getAccountData($accountId, \Anakeen\Core\Internal\SmartElement $doc)
     {
         $sql = sprintf("select initid, icon, title from doc128 where us_whatid='%d' and locked != -1", $accountId);
 
@@ -704,7 +704,7 @@ class FormatCollection
             );
         }
     }
-    protected function getSecurityData(\Doc $doc)
+    protected function getSecurityData(\Anakeen\Core\Internal\SmartElement $doc)
     {
         $info = array();
         if ($doc->locked) {
@@ -767,7 +767,7 @@ class FormatCollection
         return $info;
     }
     
-    protected function getViewControllerData(\Doc $doc)
+    protected function getViewControllerData(\Anakeen\Core\Internal\SmartElement $doc)
     {
         if ($doc->cvid > 0) {
             $cv = DocManager::getDocument($doc->cvid);
@@ -784,7 +784,7 @@ class FormatCollection
             );
         }
     }
-    protected function getRevisionData(\Doc $doc)
+    protected function getRevisionData(\Anakeen\Core\Internal\SmartElement $doc)
     {
         return array(
             "isModified" => ($doc->lmodify == "Y") ,
@@ -794,7 +794,7 @@ class FormatCollection
         );
     }
     
-    protected function getFamilyInfo(\Doc $doc)
+    protected function getFamilyInfo(\Anakeen\Core\Internal\SmartElement $doc)
     {
         $family = $doc->getFamilyDocument();
         return array(
@@ -825,7 +825,7 @@ class FormatCollection
         }
         return stringDateToLocaleDate($v);
     }
-    protected function getState(Doc $doc)
+    protected function getState(\Anakeen\Core\Internal\SmartElement $doc)
     {
         $s = new StatePropertyValue();
         if ($doc->state) {
@@ -870,7 +870,7 @@ class FormatCollection
         if ($oa->isMultiple()) {
             if ($oa->isMultipleInArray()) {
                 // double level multiple
-                $tv = Doc::rawValueToArray($value);
+                $tv = \Anakeen\Core\Internal\SmartElement::rawValueToArray($value);
                 if (count($tv) == 1 && $tv[0] == "\t") {
                     $tv[0] = '';
                 }
@@ -894,7 +894,7 @@ class FormatCollection
                 }
             } else {
                 // single level multiple
-                $tv = Doc::rawValueToArray($value);
+                $tv = \Anakeen\Core\Internal\SmartElement::rawValueToArray($value);
                 if ($oa->inArray() && count($tv) == 1 && $tv[0] == "\t") {
                     $tv[0] = '';
                 }
@@ -1286,7 +1286,7 @@ class FileAttributeValue extends StandardAttributeValue
     public $mime = '';
     public $icon = '';
     
-    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, Doc $doc, $index, $iconMimeSize = 24)
+    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, \Anakeen\Core\Internal\SmartElement $doc, $index, $iconMimeSize = 24)
     {
         $this->value = ($v === '') ? null : $v;
         if ($v) {
@@ -1310,7 +1310,7 @@ class FileAttributeValue extends StandardAttributeValue
 class ImageAttributeValue extends FileAttributeValue
 {
     public $thumbnail = '';
-    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, Doc $doc, $index, $thumbnailSize = 48)
+    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, \Anakeen\Core\Internal\SmartElement $doc, $index, $thumbnailSize = 48)
     {
         parent::__construct($oa, $v, $doc, $index);
         $fileLink = $doc->getFileLink($oa->id, $index, false, true, $v);
@@ -1346,7 +1346,7 @@ class DocidAttributeValue extends StandardAttributeValue
     public $fromid;
     protected $visible = true;
     
-    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, Doc & $doc, $iconsize = 24, $relationNoAccessText = '')
+    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, \Anakeen\Core\Internal\SmartElement & $doc, $iconsize = 24, $relationNoAccessText = '')
     {
         $this->familyRelation = $oa->format;
         $this->value = ($v === '') ? null : $v;
@@ -1409,7 +1409,7 @@ class ThesaurusAttributeValue extends DocidAttributeValue
 {
     public static $thcDoc = null;
     public static $thcDocTitle = array();
-    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, Doc & $doc, $iconsize = 24, $relationNoAccessText = '')
+    public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, \Anakeen\Core\Internal\SmartElement & $doc, $iconsize = 24, $relationNoAccessText = '')
     {
         parent::__construct($oa, $v, $doc, $iconsize, $relationNoAccessText);
         if ($this->visible) {

@@ -27,7 +27,7 @@ class TestAttributeOrder extends TestCaseDcpCommonFamily
     }
     /**
      * @dataProvider dataOrderAttribute
-     * @return \Doc
+     * @return \Anakeen\Core\Internal\SmartElement 
      */
     public function testOrderAttribute($family, $expectedOrders)
     {
@@ -58,7 +58,7 @@ class TestAttributeOrder extends TestCaseDcpCommonFamily
     }
     /**
      * @dataProvider dataOptAttribute
-     * @return \Doc
+     * @return \Anakeen\Core\Internal\SmartElement 
      */
     public function testOptAttribute($family, $expectedOpts) {
         /**

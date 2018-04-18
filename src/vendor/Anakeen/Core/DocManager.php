@@ -23,7 +23,7 @@ class DocManager
      *
      * @throws Exception
      * @api Get document object from identifier
-     * @return \Doc
+     * @return \Anakeen\Core\Internal\SmartElement 
      */
     public static function getDocument($documentIdentifier, $latest = true, $useCache = true)
     {
@@ -46,7 +46,7 @@ class DocManager
                 $classname = \Anakeen\Core\SmartStructure::class;
             }
             if ($classname) {
-                /* @var  \Doc $doc */
+                /* @var  \Anakeen\Core\Internal\SmartElement $doc */
                 $doc = new $classname("", $id);
 
 
@@ -228,7 +228,7 @@ class DocManager
      * @param int|string $familyIdentifier
      *
      * @throws Exception
-     * @return \Doc
+     * @return \Anakeen\Core\Internal\SmartElement 
      */
     public static function initializeDocument($familyIdentifier)
     {
@@ -249,7 +249,7 @@ class DocManager
 
         $classname = "Doc" . $famId;
         self::requireFamilyClass($family->id);
-        /* @var  \Doc $doc */
+        /* @var  \Anakeen\Core\Internal\SmartElement $doc */
         $doc = new $classname();
 
         $doc->revision = "0";
@@ -284,7 +284,7 @@ class DocManager
      * @param bool       $useDefaultValues
      *
      * @throws Exception
-     * @return \Doc
+     * @return \Anakeen\Core\Internal\SmartElement 
      */
     public static function createDocument($familyIdentifier, $control = true, $useDefaultValues = true)
     {
@@ -320,7 +320,7 @@ class DocManager
      * @param int|string $familyIdentifier
      * @param bool       $useDefaultValues
      *
-     * @return \Doc
+     * @return \Anakeen\Core\Internal\SmartElement 
      */
     public static function createTemporaryDocument($familyIdentifier, $useDefaultValues = true)
     {
@@ -377,7 +377,7 @@ class DocManager
      * @param string[] $rawDocument
      *
      * @throws Exception APIDM0104, APIDM0105
-     * @return \Doc
+     * @return \Anakeen\Core\Internal\SmartElement 
      */
     public static function getDocumentFromRawDocument(array $rawDocument)
     {
@@ -402,9 +402,9 @@ class DocManager
      *
      * Retrieve raw title of document directly from database.
      * No use any cache
-     * No use Doc::getCustomTitle(), so dynamic title cannot be get with this method
+     * No use \Anakeen\Core\Internal\SmartElement::getCustomTitle(), so dynamic title cannot be get with this method
      *
-     * @see Doc::getTitle()
+     * @see \Anakeen\Core\Internal\SmartElement::getTitle()
      *
      * @param int|string $documentIdentifier
      * @param bool       $latest
@@ -441,7 +441,7 @@ class DocManager
         $id = self::getIdentifier($documentIdentifier, $latest);
         if ($id > 0) {
             if (count($returnProperties) == 0) {
-                $returnProperties = array_keys(\Doc::$infofields);
+                $returnProperties = array_keys(\Anakeen\Core\Internal\SmartElement::$infofields);
             }
             $sqlSelect = array();
             foreach ($returnProperties as $rProp) {

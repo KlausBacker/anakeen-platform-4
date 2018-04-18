@@ -91,7 +91,7 @@ class TestSearch extends TestCaseDcpCommonFamily
                     $this->assertEmpty($err, "Cannot create data");
                 } else {
                     /**
-                     * @var \Doc $d1
+                     * @var \Anakeen\Core\Internal\SmartElement $d1
                      */
                     if ($title === "__delete__") {
                         $err = $d1->delete();

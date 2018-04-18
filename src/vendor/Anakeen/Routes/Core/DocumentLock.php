@@ -20,7 +20,7 @@ class DocumentLock
 {
     protected $baseURL = "documents";
     /**
-     * @var \Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $_document = null;
     /**

@@ -6,7 +6,7 @@ use Anakeen\Core\DbManager;
 
 class MiscDoc
 {
-    public static function fixMultipleAliveDocument(\Doc & $doc)
+    public static function fixMultipleAliveDocument(\Anakeen\Core\Internal\SmartElement & $doc)
     {
         if ($doc->id && $doc->fromid > 0) {
             DbManager::query(sprintf(

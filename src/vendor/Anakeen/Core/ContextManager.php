@@ -198,6 +198,7 @@ class ContextManager
      * @param string $lang like fr_FR, en_US
      *
      * @throws \Exception
+     * @return string the po header
      */
     public static function setLanguage($lang)
     {
@@ -243,6 +244,9 @@ class ContextManager
         textdomain($td);
         mb_internal_encoding('UTF-8');
         self::$language = $lang;
+
+        // Load globa function ___
+        return Gettext::___("");
     }
 
     /**

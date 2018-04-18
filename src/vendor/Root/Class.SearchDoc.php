@@ -13,7 +13,8 @@
 /**
  */
 
-include_once("FDL/Lib.Dir.php");
+use \Anakeen\SmartStructures\Dir\DirLib;
+use \Anakeen\SmartStructures\Dir\DirHooks;
 
 /**
  * document searches
@@ -32,6 +33,8 @@ include_once("FDL/Lib.Dir.php");
  * @endcode
  * @class SearchDoc.
  */
+
+
 class SearchDoc
 {
     /**
@@ -120,13 +123,13 @@ class SearchDoc
     /**
      *
      * Iterator document
-     * @var Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     private $iDoc = null;
     /**
      *
      * Iterator document
-     * @var Doc[]
+     * @var \Anakeen\Core\Internal\SmartElement []
      */
     private $cacheDocuments = array();
     /**
@@ -235,7 +238,7 @@ class SearchDoc
      */
     public function onlyCount()
     {
-        /**  @var \Anakeen\SmartStructures\Dir\DirHooks $fld */
+        /**  @var DirHooks $fld */
         $fld = Anakeen\Core\DocManager::getDocument($this->dirid);
         $userid = $this->userid;
         if (!$fld || $fld->fromid != \Anakeen\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
@@ -317,7 +320,7 @@ class SearchDoc
      */
     public function getOriginalQuery()
     {
-        return _internalGetDocCollection(
+        return DirLib::_internalGetDocCollection(
             true,
             $this->dbaccess,
             $this->dirid,
@@ -528,7 +531,7 @@ class SearchDoc
         }
         $debuginfo = array();
         $this->count = -1;
-        $this->result = internalGetDocCollection(
+        $this->result = DirLib::internalGetDocCollection(
             $this->dbaccess,
             $this->dirid,
             $this->start,
@@ -591,7 +594,7 @@ class SearchDoc
             $fdoc = \Anakeen\Core\DocManager::createTemporaryDocument($this->fromid, false);
             $fields = array_merge($fdoc->fields, $fdoc->sup_fields);
         } else {
-            $fdoc = new Doc();
+            $fdoc = new \Anakeen\Core\Internal\SmartElement();
             $fields = array_merge($fdoc->fields, $fdoc->sup_fields);
         }
         foreach ($returns as $k => $r) {
@@ -783,7 +786,7 @@ class SearchDoc
      *
      * @see        SearchDoc::search
      *
-     * @return Doc|array or null if this is the end
+     * @return \Anakeen\Core\Internal\SmartElement |array or null if this is the end
      */
     public function nextDoc()
     {
@@ -799,7 +802,7 @@ class SearchDoc
      *
      * @api get next document results
      *
-     * @return Doc|array|bool  false if this is the end
+     * @return \Anakeen\Core\Internal\SmartElement |array|bool  false if this is the end
      */
     public function getNextDoc()
     {
@@ -862,7 +865,7 @@ class SearchDoc
      * Return an object document from array of values
      *
      * @param array $v the values of documents
-     * @return Doc the document object
+     * @return \Anakeen\Core\Internal\SmartElement the document object
      */
     protected function getNextDocument(array $v)
     {
@@ -988,7 +991,7 @@ class SearchDoc
             $rank = preg_replace('/\s+(OR)\s+/u', '|', $keyword);
             $rank = preg_replace('/\s+(AND)\s+/u', '&', $rank);
             $rank = preg_replace('/\s+/u', '&', $rank);
-            $this->pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french', E'%s')) desc, id desc", pg_escape_string(unaccent($rank)));
+            $this->pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french', E'%s')) desc, id desc", pg_escape_string(\Anakeen\Core\Utils\Strings::Unaccent($rank)));
         }
         if ($this->pertinenceOrder) {
             $this->setOrder($this->pertinenceOrder);
@@ -1083,16 +1086,16 @@ class SearchDoc
                     if ($useSpell) {
                         $filterElement = self::testSpell($currentElement["word"]);
                     }
-                    $rankElement = unaccent($filterElement);
+                    $rankElement = \Anakeen\Core\Utils\Strings::Unaccent($filterElement);
                     if (is_numeric($filterElement)) {
                         $filterElement = sprintf("(%s|-%s)", $filterElement, $filterElement);
                     }
 
                     $words[] = $filterElement;
                     if ($isOnlyWord) {
-                        $filterElement = pg_escape_string(unaccent($filterElement));
+                        $filterElement = pg_escape_string(\Anakeen\Core\Utils\Strings::Unaccent($filterElement));
                     } else {
-                        $to_tsquery = sprintf("to_tsquery('french', E'%s')", pg_escape_string(unaccent($filterElement)));
+                        $to_tsquery = sprintf("to_tsquery('french', E'%s')", pg_escape_string(\Anakeen\Core\Utils\Strings::Unaccent($filterElement)));
 
                         $point = sprintf('dcp:%s', uniqid(__METHOD__));
                         \Anakeen\Core\DbManager::savePoint($point);
@@ -1101,7 +1104,7 @@ class SearchDoc
                             \Anakeen\Core\DbManager::rollbackPoint($point);
                         } catch (Dcp\Db\Exception $e) {
                             \Anakeen\Core\DbManager::rollbackPoint($point);
-                            throw new \Dcp\SearchDoc\Exception("SD0007", unaccent($filterElement));
+                            throw new \Dcp\SearchDoc\Exception("SD0007", \Anakeen\Core\Utils\Strings::Unaccent($filterElement));
                         }
                         if ($indexedWord) {
                             $filterElement = sprintf("(fulltext @@ E'%s')", pg_escape_string($indexedWord));
@@ -1113,7 +1116,7 @@ class SearchDoc
                     break;
 
                 case \Dcp\Lex\GeneralFilter::MODE_STRING:
-                    $rankElement = unaccent($currentElement["word"]);
+                    $rankElement = \Anakeen\Core\Utils\Strings::Unaccent($currentElement["word"]);
                     if (!preg_match('/\p{L}|\p{N}/u', mb_substr($rankElement, 0, 1))) {
                         $begin = '[£|\\\\s]';
                     } else {
@@ -1132,7 +1135,7 @@ class SearchDoc
                     break;
 
                 case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_END:
-                    $rankElement = unaccent($currentElement["word"]);
+                    $rankElement = \Anakeen\Core\Utils\Strings::Unaccent($currentElement["word"]);
 
                     if (!preg_match('/\p{L}|\p{N}/u', mb_substr($rankElement, 0, 1))) {
                         $begin = '[£|\\\\s]';
@@ -1143,7 +1146,7 @@ class SearchDoc
                     break;
 
                 case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_BEGIN:
-                    $rankElement = unaccent($currentElement["word"]);
+                    $rankElement = \Anakeen\Core\Utils\Strings::Unaccent($currentElement["word"]);
 
                     if (!preg_match('/\p{L}|\p{N}/u', mb_substr($rankElement, -1))) {
                         $end = '[£|\\\\s]';
@@ -1154,7 +1157,7 @@ class SearchDoc
                     break;
 
                 case \Dcp\Lex\GeneralFilter::MODE_PARTIAL_BOTH:
-                    $rankElement = unaccent($currentElement["word"]);
+                    $rankElement = \Anakeen\Core\Utils\Strings::Unaccent($currentElement["word"]);
                     if ($usePartial) {
                         $stringWords[] = $currentElement["word"];
                     }
@@ -1200,13 +1203,15 @@ class SearchDoc
      * return a document part where general filter term is found
      *
      * @see SearchDoc::addGeneralFilter
-     * @param Doc    $doc      document to analyze
+     * @param \Anakeen\Core\Internal\SmartElement    $doc      document to analyze
      * @param string $beginTag delimiter begin tag
      * @param string $endTag   delimiter end tag
      * @param int    $limit    file size limit to analyze
+     * @param bool   $wordMode
      * @return mixed
+     * @throws \Dcp\Db\Exception
      */
-    public function getHighLightText(Doc & $doc, $beginTag = '<b>', $endTag = '</b>', $limit = 200, $wordMode = true)
+    public function getHighLightText(\Anakeen\Core\Internal\SmartElement & $doc, $beginTag = '<b>', $endTag = '</b>', $limit = 200, $wordMode = true)
     {
         static $oh = null;
         if (!$oh) {
@@ -1251,9 +1256,9 @@ class SearchDoc
                 $suggestions = pspell_suggest($pspell_link, $word);
                 $sug = false;
                 if (isset($suggestions[0])) {
-                    $sug = unaccent($suggestions[0]);
+                    $sug = \Anakeen\Core\Utils\Strings::Unaccent($suggestions[0]);
                 }
-                if ($sug && ($sug != unaccent($word)) && (!strstr($sug, ' '))) {
+                if ($sug && ($sug != \Anakeen\Core\Utils\Strings::Unaccent($word)) && (!strstr($sug, ' '))) {
                     $word = sprintf("(%s|%s)", $word, $sug);
                 }
             }
@@ -1426,7 +1431,7 @@ class SearchDoc
             $table = "doc$fromid";
         } else {
             if ($fromid != 0) {
-                if (isSimpleFilter($sqlfilters) && (familyNeedDocread($dbaccess, $fromid))) {
+                if (DirLib::isSimpleFilter($sqlfilters) && (DirLib::familyNeedDocread($dbaccess, $fromid))) {
                     $table = "docread";
 
                     $fdoc = Anakeen\Core\DocManager::getFamily($fromid);
@@ -1437,7 +1442,7 @@ class SearchDoc
                     $table = "doc$fromid";
                 }
             } elseif ($fromid == 0) {
-                if (isSimpleFilter($sqlfilters)) {
+                if (DirLib::isSimpleFilter($sqlfilters)) {
                     $table = "docread";
                 }
             }
@@ -1503,7 +1508,7 @@ class SearchDoc
             $fld = Anakeen\Core\DocManager::getDocument($dirid);
             if ($fld->defDoctype != 'S') {
                 /**
-                 * @var \Anakeen\SmartStructures\Dir\DirHooks $fld
+                 * @var DirHooks $fld
                  */
                 $hasFilters = false;
                 if ($fld && method_exists($fld, "getSpecificFilters")) {

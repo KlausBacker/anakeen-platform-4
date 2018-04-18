@@ -36,7 +36,7 @@ class TestFdlGen extends TestCaseDcpCommonFamily
      * @param string $docName
      * @param string $expectValue
      *
-     * @return \Doc
+     * @return \Anakeen\Core\Internal\SmartElement 
      */
     public function testFdlGen($docId, $attrName, $expectedValue)
     {

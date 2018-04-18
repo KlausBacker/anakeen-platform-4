@@ -23,7 +23,7 @@ class DocumentData
     const GET_ATTRIBUTE = "document.attributes.";
     const GET_STRUCTURE = "family.structure";
     /**
-     * @var \Doc document instance
+     * @var \Anakeen\Core\Internal\SmartElement document instance
      */
     protected $_document = null;
 
@@ -113,7 +113,7 @@ class DocumentData
             throw $exception;
         }
         if ($this->_document->mid == 0) {
-            $this->_document->applyMask(\Doc::USEMASKCVVIEW);
+            $this->_document->applyMask(\Anakeen\Core\Internal\SmartElement::USEMASKCVVIEW);
         }
         return $this->getDocumentData();
     }
@@ -169,12 +169,12 @@ class DocumentData
      * Get data from document object
      * No access control are done
      *
-     * @param \Doc $document Document
+     * @param \Anakeen\Core\Internal\SmartElement $document Document
      *
      * @throws Exception
      * @return mixed
      */
-    public function getInternal(\Doc $document)
+    public function getInternal(\Anakeen\Core\Internal\SmartElement $document)
     {
         $this->_document = $document;
         return $this->getDocumentData();

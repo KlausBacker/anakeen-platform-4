@@ -13,7 +13,7 @@
 class DocHtmlFormat
 {
     /**
-     * @var Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     public $doc = null;
     private $index = -1;
@@ -38,12 +38,12 @@ class DocHtmlFormat
      */
     private $vaultErrorSent = false;
 
-    public function __construct(Doc & $doc)
+    public function __construct(\Anakeen\Core\Internal\SmartElement & $doc)
     {
         $this->setDoc($doc);
     }
 
-    public function setDoc(Doc & $doc)
+    public function setDoc(\Anakeen\Core\Internal\SmartElement & $doc)
     {
         $this->doc = $doc;
     }
@@ -395,7 +395,6 @@ class DocHtmlFormat
             // reg[1] is mime type
             $vid = $reg[2];
             $mime = $reg[1];
-            include_once("FDL/Lib.Dir.php");
 
             $fileInfo = new VaultFileInfo();
             if ($vf->Show($reg[2], $fileInfo) == "") {

@@ -15,7 +15,7 @@ class ExportDocument
     protected $prevfromid = -1;
     protected $familyName = '';
     protected $csvEnclosure = '"';
-    protected $csvSeparator = ',';
+    protected $csvSeparator = ';';
     protected $encoding = 'utf-8';
     protected $verifyAttributeAccess = false;
     protected $attributeGrants = array();
@@ -218,12 +218,12 @@ class ExportDocument
     /**
      * @deprecated rename to  csvExport
      */
-    public function cvsExport(\Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
+    public function cvsExport(\Anakeen\Core\Internal\SmartElement & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
     {
         $this->csvExport($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
     }
 
-    public function csvExport(\Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
+    public function csvExport(\Anakeen\Core\Internal\SmartElement & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
     {
         if (!$doc->isAffected()) {
             return;
@@ -337,13 +337,13 @@ class ExportDocument
                 $tfiles = $doc->vault_properties($attr);
                 $tf = array();
                 foreach ($tfiles as $f) {
-                    $ldir = $doc->id . '-' . preg_replace('/[^a-zA-Z0-9_.-]/', '_', unaccent($doc->title)) . "_D";
-                    $fname = $ldir . '/' . unaccent($f["name"]);
+                    $ldir = $doc->id . '-' . preg_replace('/[^a-zA-Z0-9_.-]/', '_', \Anakeen\Core\Utils\Strings::Unaccent($doc->title)) . "_D";
+                    $fname = $ldir . '/' . \Anakeen\Core\Utils\Strings::Unaccent($f["name"]);
                     $tf[] = $fname;
                     $ef[$fname] = array(
                         "path" => $f["path"],
                         "ldir" => $ldir,
-                        "fname" => unaccent($f["name"])
+                        "fname" => \Anakeen\Core\Utils\Strings::Unaccent($f["name"])
                     );
                 }
                 $value = implode("\n", $tf);
@@ -407,12 +407,12 @@ class ExportDocument
                                 $tfiles = $doc->vault_properties($attr);
                                 $f = $tfiles[$index];
 
-                                $ldir = $doc->id . '-' . preg_replace('/[^a-zA-Z0-9_.-]/', '_', unaccent($doc->title)) . "_D";
-                                $fname = $ldir . '/' . unaccent($f["name"]);
+                                $ldir = $doc->id . '-' . preg_replace('/[^a-zA-Z0-9_.-]/', '_', \Anakeen\Core\Utils\Strings::Unaccent($doc->title)) . "_D";
+                                $fname = $ldir . '/' . \Anakeen\Core\Utils\Strings::Unaccent($f["name"]);
                                 $ef[$fname] = array(
                                     "path" => $f["path"],
                                     "ldir" => $ldir,
-                                    "fname" => unaccent($f["name"])
+                                    "fname" => \Anakeen\Core\Utils\Strings::Unaccent($f["name"])
                                 );
                                 return $matches[1] . "file://" . $fname . '"';
                             }

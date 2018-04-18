@@ -72,7 +72,7 @@ class FamilyImport
     {
         global $action;
 
-        $phpAdoc = new \Layout("vendor/Anakeen/FDL/Layout/Class.Smart.xml", $action);
+        $phpAdoc = new \Layout("vendor/Anakeen/Core/Layout/Class.Smart.xml", $action);
 
         if ($tdoc["classname"] == "") { // default classname
             if ($tdoc["fromid"] == 0) {
@@ -130,7 +130,7 @@ class FamilyImport
         $query->AddQuery("docid=" . $tdoc["id"]);
         $query->order_by = "ordered";
 
-        $table1 = $query->Query();
+        $docDbAttrs = $query->Query();
 
         $phpAdoc->Set("sattr", "");
 
@@ -148,6 +148,15 @@ class FamilyImport
             /**
              * @var $v \DocAttr
              */
+            /**
+             * @var $v \DocAttr
+             */
+            $table1=[];
+            foreach ($docDbAttrs as $k => $v) {
+                $table1[strtolower($v->id)]=$v;
+            }
+
+
             foreach ($table1 as $k => $v) {
                 $type = trim(strtok($v->type, "("));
                 if ($type === "docid" || $type == "account" || $type == "thesaurus") {
@@ -165,25 +174,30 @@ class FamilyImport
                             $doctitle = $v->id . "_title";
                         }
                         $doctitle = strtolower($doctitle);
-                        $table1[$doctitle] = clone ($v);
-                        $table1[$doctitle]->id = $doctitle;
-                        $table1[$doctitle]->type = "text";
-                        $table1[$doctitle]->visibility = "H";
-                        $table1[$doctitle]->phpfile = "";
-                        if (!preg_match("/docrev=(fixed|state)/", $v->options)) {
-                            $table1[$doctitle]->phpfunc = "::getLastTitle(" . $v->id . ",' )";
-                        } else {
-                            $table1[$doctitle]->phpfunc = "::getTitle(" . $v->id . ",' )";
+
+                        if (!isset($table1[strtolower($doctitle)])) {
+                            $table1[$doctitle] = clone ($v);
+                            $table1[$doctitle]->id = $doctitle;
+                            $table1[$doctitle]->type = "text";
+                            $table1[$doctitle]->visibility = "H";
+                            $table1[$doctitle]->phpfile = "";
+                            $table1[$doctitle]->options = "autotitle=yes|relativeOrder=" . $v->id;
+                            $table1[$doctitle]->title = "N";
+                            $table1[$doctitle]->abstract = "N";
+                            $table1[$doctitle]->needed = "N";
+                            $table1[$doctitle]->usefor = "A";
+                            $table1[$doctitle]->link = "";
+                            $table1[$doctitle]->phpconstraint = "";
+                            $table1[$doctitle]->labeltext = $v->labeltext . ' ' . _("(title)");
+                            $table1[$doctitle]->ordered = $v->ordered + 1;
                         }
-                        $table1[$doctitle]->options = "autotitle=yes|relativeOrder=" . $v->id;
-                        $table1[$doctitle]->title = "N";
-                        $table1[$doctitle]->abstract = "N";
-                        $table1[$doctitle]->needed = "N";
-                        $table1[$doctitle]->usefor = "A";
-                        $table1[$doctitle]->link = "";
-                        $table1[$doctitle]->phpconstraint = "";
-                        $table1[$doctitle]->labeltext = $v->labeltext . ' ' . _("(title)");
-                        $table1[$doctitle]->ordered = $v->ordered + 1;
+                        if (empty($table1[$doctitle]->phpfunc)) {
+                            if (!preg_match("/docrev=(fixed|state)/", $v->options)) {
+                                $table1[$doctitle]->phpfunc = "::getLastTitle(" . $v->id . ",' )";
+                            } else {
+                                $table1[$doctitle]->phpfunc = "::getTitle(" . $v->id . ",' )";
+                            }
+                        }
                     }
                 }
             }
@@ -201,12 +215,20 @@ class FamilyImport
                         "prev" => $previousOrder,
                         "numOrder" => intval($parentAttr["ordered"])
                     ];
-                } else {
+                    if (!$previousOrder) {
+                        // Need to copy child attribute when use absolute orders
+                        $allAttributes[$parentAttr["id"] . "/" . $tdoc["id"]] = $allAttributes[$parentAttr["id"] . "/" . $parentAttr["docid"]];
+                        $allAttributes[$parentAttr["id"] . "/" . $tdoc["id"]]["family"] = $tdoc["id"];
+                    }
                     if (is_numeric($parentAttr["ordered"])) {
                         $pattern = sprintf("/%s\\/([0-9]+)/", substr($parentAttr["id"], 1));
 
                         foreach ($allAttributes as $ka => $attrData) {
                             if (preg_match($pattern, $ka, $reg)) {
+                                // Need to update parent also
+                                if ($parentAttr["frameid"]) {
+                                    $allAttributes[$ka]["parent"] = $parentAttr["frameid"];
+                                }
                                 $allAttributes[$ka]["numOrder"] = $parentAttr["ordered"];
                             }
                         }
@@ -225,6 +247,9 @@ class FamilyImport
                         $pattern = sprintf("/%s\\/([0-9]+)/", $v->id);
                         foreach ($allAttributes as $ka => $attrData) {
                             if (preg_match($pattern, $ka, $reg)) {
+                                if ($v->frameid) {
+                                    $allAttributes[$ka]["parent"] = $v->frameid;
+                                }
                                 $allAttributes[$ka]["numOrder"] = $v->ordered;
                             }
                         }
@@ -535,12 +560,12 @@ class FamilyImport
         }
         $phpAdoc->Set("hasMethods", !empty($tdoc["methods"]));
 
-        $dfiles["/vendor/Anakeen/FDL/Layout/Class.NSSmart.xml"] = DocManager::getDocumentClassFilename($tdoc["docFile"]);
-        $dfiles["/vendor/Anakeen/FDL/Layout/Class.NSSmartAttr.xml"] = DocManager::getAttributesClassFilename($tdoc["docFile"]);
-        $dfiles["/vendor/Anakeen/FDL/Layout/Class.Doc.xml"] = sprintf("%s/Smart%d.php", $genDir, $tdoc["id"]);
+        $dfiles["/vendor/Anakeen/Core/Layout/Class.NSSmart.xml"] = DocManager::getDocumentClassFilename($tdoc["docFile"]);
+        $dfiles["/vendor/Anakeen/Core/Layout/Class.NSSmartAttr.xml"] = DocManager::getAttributesClassFilename($tdoc["docFile"]);
+        $dfiles["/vendor/Anakeen/Core/Layout/Class.Doc.xml"] = sprintf("%s/Smart%d.php", $genDir, $tdoc["id"]);
 
         if (!empty($tdoc["methods"])) {
-            $dfiles["/vendor/Anakeen/FDL/Layout/Class.SmartMethods.xml"] = sprintf("%s/Method.%s.php", $genDir, $tdoc["name"]);
+            $dfiles["/vendor/Anakeen/Core/Layout/Class.SmartMethods.xml"] = sprintf("%s/Method.%s.php", $genDir, $tdoc["name"]);
         }
 
         foreach ($dfiles as $kFile => $dfile) {
@@ -552,9 +577,9 @@ class FamilyImport
         }
     }
 
-    protected static function AttrIdToPhp($dbaccess, $tdoc)
+    protected static function attrIdToPhp($dbaccess, $tdoc)
     {
-        $phpAdoc = new \Layout("vendor/Anakeen/FDL/Layout/Class.Attrid.xml");
+        $phpAdoc = new \Layout("vendor/Anakeen/Core/Layout/Class.Attrid.xml");
 
         if ($tdoc["fromid"] == 0) {
             $phpAdoc->Set("extend", '');

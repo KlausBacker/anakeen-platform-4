@@ -795,8 +795,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             $this->norestrict = false;
             $tclassdoc = array();
             if ($allbut != "1") {
-                include_once("FDL/Lib.Dir.php");
-                $tallfam = GetClassesDoc($this->dbaccess, ContextManager::getCurrentUser()->id, $classid, "TABLE");
+                $tallfam = DirLib::getClassesDoc($this->dbaccess, ContextManager::getCurrentUser()->id, $classid, "TABLE");
 
                 foreach ($tallfam as $cdoc) {
                     $tclassdoc[$cdoc["id"]] = $cdoc;
@@ -872,13 +871,12 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
      */
     public function getContent($controlview = true, array $filter = array(), $famid = "", $qtype = "TABLE", $trash = "")
     {
-        include_once("FDL/Lib.Dir.php");
         if ($controlview) {
             $uid = ContextManager::getCurrentUser()->id;
         } else {
             $uid = 1;
         }
-        $tdoc = internalGetDocCollection($this->dbaccess, $this->initid, 0, "ALL", $filter, $uid, $qtype, $famid, false, "title", true, $trash);
+        $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($this->dbaccess, $this->initid, 0, "ALL", $filter, $uid, $qtype, $famid, false, "title", true, $trash);
         return $tdoc;
     }
 

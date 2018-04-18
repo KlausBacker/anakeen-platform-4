@@ -224,8 +224,8 @@ create unique index idx_idfam on docfam(id);";
     /**
      * return family parameter
      *
-     * @deprecated use {@link Doc::getParameterRawValue} instead
-     * @see        Doc::getParameterRawValue
+     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::getParameterRawValue} instead
+     * @see        \Anakeen\Core\Internal\SmartElement::getParameterRawValue
      *
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
@@ -262,12 +262,12 @@ create unique index idx_idfam on docfam(id);";
     }
 
     /**
-     * use in Doc::getParameterFamilyValue
+     * use in \Anakeen\Core\Internal\SmartElement::getParameterFamilyValue
      *
      * @param string $idp
      * @param string $def
      *
-     * @see Doc::getParameterFamilyValue_
+     * @see \Anakeen\Core\Internal\SmartElement::getParameterFamilyValue_
      * @return bool|string
      * @throws \Dcp\Db\Exception
      */
@@ -739,7 +739,7 @@ create unique index idx_idfam on docfam(id);";
      */
     public function getXmlSchema($linkInclude = false)
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/family_schema.xml", DEFAULT_PUBDIR));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/family_schema.xml", DEFAULT_PUBDIR));
         $lay->set("famname", strtolower($this->name));
         $lay->set("famtitle", strtolower($this->getTitle()));
         $lay->set("include", $linkInclude);
@@ -747,7 +747,7 @@ create unique index idx_idfam on docfam(id);";
             $lay->set("includefdlxsd", "");
         } else {
             $xsd = new \DOMDocument();
-            $xsd->load(sprintf("%s/vendor/Anakeen/FDL/Layout/fdl.xsd", DEFAULT_PUBDIR));
+            $xsd->load(sprintf("%s/vendor/Anakeen/Core/Layout/fdl.xsd", DEFAULT_PUBDIR));
             $xsd->preserveWhiteSpace = false;
             $xsd->formatOutput = true;
             $innerXml = '';
@@ -772,7 +772,9 @@ create unique index idx_idfam on docfam(id);";
             }
         }
         foreach ($la as $k => $v) {
-            if (($v->id != \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD) && ($v->type == 'frame' || $v->type == "tab") && ((!$v->fieldSet) || $v->fieldSet->id == \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD)) {
+            if (($v->id != \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD) &&
+                ($v->type == 'frame' || $v->type == "tab") &&
+                ((!$v->fieldSet) || $v->fieldSet->id == \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD)) {
                 $level1[] = array(
                     "level1name" => $k
                 );

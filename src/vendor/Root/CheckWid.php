@@ -8,12 +8,12 @@ class CheckWid extends CheckData
 {
     protected $folderName;
     /**
-     * @var Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $doc;
     /**
      * @param array $data
-     * @param Doc $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      * @return CheckWid
      */
     public function check(array $data, &$doc = null)

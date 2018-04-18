@@ -18,7 +18,8 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-class __TST_OOOLAYOUT extends Doc
+class __TST_OOOLAYOUT extends \Anakeen\Core\Internal\SmartElement
+
 {
     /**
      * @var OooLayout

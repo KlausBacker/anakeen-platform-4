@@ -117,11 +117,11 @@ class VidExtractor
     /**
      * Extract VIDs from a document object
      *
-     * @param \Doc $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      *
      * @return array
      */
-    public static function getVidsFromDoc(\Doc & $doc)
+    public static function getVidsFromDoc(\Anakeen\Core\Internal\SmartElement & $doc)
     {
         $vids = array();
         $fa = $doc->GetFileAttributes();

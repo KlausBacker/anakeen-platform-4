@@ -43,7 +43,7 @@ function add_import_file(\Anakeen\Core\Internal\Action & $action, $fimport, $dir
 /**
  * Add a document from csv import file
  * @param string $dbaccess database specification
- * @param array $data  data information conform to {@link Doc::GetImportAttributes()}
+ * @param array $data  data information conform to {@link \Anakeen\Core\Internal\SmartElement::GetImportAttributes()}
  * @param int $dirid default folder id to add new document
  * @param bool $analyze true is want just analyze import file (not really import)
  * @param string $ldir path where to search imported files

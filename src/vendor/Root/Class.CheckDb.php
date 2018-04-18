@@ -448,7 +448,7 @@ class CheckDb
     public static function getOrphanAttributes($famid)
     {
         
-        $d = new Doc();
+        $d = new \Anakeen\Core\Internal\SmartElement();
         $fam = \Anakeen\Core\DocManager::getFamily($famid);
         $sql = sprintf("select column_name from information_schema.columns where table_name = 'doc%d'", $fam->id);
         simpleQuery('', $sql, $res, true);
@@ -503,7 +503,6 @@ class CheckDb
     public function checkAttributeOrphan()
     {
         $testName = 'attribute orphan';
-        include_once ("../../../FDL/Class.Doc.php");
         if (($err = $this->computeDropColumns($treeNode)) != '') {
             $this->tout[$testName]['status'] = self::BOF;
             $this->tout[$testName]['msg'] = sprintf("<pre>%s</pre>", htmlspecialchars($err, ENT_QUOTES));

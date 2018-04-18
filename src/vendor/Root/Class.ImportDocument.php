@@ -128,7 +128,7 @@ class ImportDocument
                 }
             } else {
                 $ext = substr($file, strrpos($file, '.') + 1);
-                $this->begtime = Doc::getTimeDate(0, true);
+                $this->begtime = \Anakeen\Core\Internal\SmartElement::getTimeDate(0, true);
                 if ($ext == "xml") {
                     $iXml = new \Dcp\Core\ImportXml();
                     $iXml->setPolicy($this->policy);
@@ -222,7 +222,7 @@ class ImportDocument
                 \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("cannot write log in %s"), $log));
             } else {
                 global $action;
-                $lay = new Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "reportImport.xml"), $action);
+                $lay = new Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "reportImport.xml"), $action);
                 $this->writeHtmlCr($lay);
                 fputs($flog, $lay->gen());
                 fclose($flog);
@@ -346,7 +346,7 @@ class ImportDocument
                 }
                 fputs($flog, sprintf("IMPORT COUNT OK : %d\n", $countok));
                 fputs($flog, sprintf("IMPORT COUNT KO : %d\n", $counterr));
-                fputs($flog, sprintf("IMPORT END OK : %s\n", Doc::getTimeDate(0, true)));
+                fputs($flog, sprintf("IMPORT END OK : %s\n", \Anakeen\Core\Internal\SmartElement::getTimeDate(0, true)));
                 fclose($flog);
             }
         }

@@ -13,7 +13,8 @@
  * @class DocCollection
  * @package FDL
  */
-class DocCollection extends Doc
+class DocCollection extends \Anakeen\Core\Internal\SmartElement
+
 {
     /**
      * conditionnal operator compatibilities

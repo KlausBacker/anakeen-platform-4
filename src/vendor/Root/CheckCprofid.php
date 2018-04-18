@@ -8,7 +8,7 @@ class CheckCprofid extends CheckData
 {
     protected $profilName;
     /**
-     * @var Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $doc;
     
@@ -17,7 +17,7 @@ class CheckCprofid extends CheckData
     );
     /**
      * @param array $data
-     * @param Doc $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      * @return CheckCprofid
      */
     public function check(array $data, &$doc = null)
@@ -37,7 +37,7 @@ class CheckCprofid extends CheckData
             $d = new_doc('', $this->profilName);
             if (!$d->isAlive()) {
                 $this->addError(ErrorCode::getError('CPRF0001', $this->profilName, $this->doc->name));
-            } elseif (!is_a($d, "Doc")) {
+            } elseif (!is_a($d, \Anakeen\Core\Internal\SmartElement::class)) {
                 $this->addError(ErrorCode::getError('CPRF0002', $this->profilName, $this->doc->name));
             }
         }

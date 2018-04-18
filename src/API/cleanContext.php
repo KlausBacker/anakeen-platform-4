@@ -32,7 +32,7 @@ if ($dbaccess == "") {
 }
 
 $duration = intval($action->GetParam("CORE_LOGDURATION", 60)); // default 60 days
-$logdelete = sprintf("DELETE FROM doclog where date < '%s'", Doc::getDate(-($duration)));
+$logdelete = sprintf("DELETE FROM doclog where date < '%s'", \Anakeen\Core\Internal\SmartElement::getDate(-($duration)));
 
 simpleQuery($dbaccess, $logdelete);
 

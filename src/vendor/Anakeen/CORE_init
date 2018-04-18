@@ -96,7 +96,7 @@ if [ "$1" = "I" ] ; then
     fi
 
     for CLASS in \
-        Doc \
+        "Anakeen\\Core\\Internal\\SmartElement"  \
         DocRead \
 	; do
         "$wpub"/ank.php --script=updateclass  --appc=FDL "--class=$CLASS"

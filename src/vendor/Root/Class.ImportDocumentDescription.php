@@ -1704,7 +1704,7 @@ class ImportDocumentDescription
         } else {
             \Anakeen\Core\DocManager::cache()->clear();
             /**
-             * @var \Doc $pdoc
+             * @var \Anakeen\Core\Internal\SmartElement $pdoc
              */
             $pdoc = Anakeen\Core\DocManager::getDocument($pid);
             if ($pdoc && $pdoc->isAlive()) {

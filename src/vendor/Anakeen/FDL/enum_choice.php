@@ -30,7 +30,7 @@ function enumjschoice(&$action)
  * @param string $n
  * @param string $def
  * @param bool $whttpvars
- * @param Doc $doc
+ * @param \Anakeen\Core\Internal\SmartElement $doc
  * @param \Anakeen\Core\SmartStructure\NormalAttribute $oa
  *
  * @deprecated see \Dcp\Core\AutocompleteLib
@@ -45,7 +45,7 @@ function getFuncVar($n, $def, $whttpvars, &$doc, &$oa)
  * @deprecated see \Dcp\Core\AutocompleteLib
  */
 function getResPhpFunc(
-    Doc & $doc,
+    \Anakeen\Core\Internal\SmartElement & $doc,
     \Anakeen\Core\SmartStructure\NormalAttribute & $oattr,
     &$rargids,
     &$tselect,

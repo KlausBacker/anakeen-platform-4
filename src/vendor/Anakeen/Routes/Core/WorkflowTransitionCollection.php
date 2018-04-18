@@ -41,7 +41,7 @@ class WorkflowTransitionCollection extends WorkflowStateCollection
             );
         }
         /**
-         * @var \Doc $revision
+         * @var \Anakeen\Core\Internal\SmartElement $revision
          */
 
         $info["transitions"] = $transitions;

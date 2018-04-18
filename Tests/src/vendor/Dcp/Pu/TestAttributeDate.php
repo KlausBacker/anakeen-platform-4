@@ -59,7 +59,7 @@ class TestAttributeDate extends TestCaseDcpCommonFamily
         $this->verifyHtmlValues($origin, $target, array_keys($expectedValues));
     }
     
-    private function verifyValues(\Doc $test, array $expectedValues)
+    private function verifyValues(\Anakeen\Core\Internal\SmartElement $test, array $expectedValues)
     {
         foreach ($expectedValues as $k => $expectValue) {
             if (is_array($expectValue)) $targetValue = $test->getMultipleRawValues($k);
@@ -68,7 +68,7 @@ class TestAttributeDate extends TestCaseDcpCommonFamily
         }
     }
     
-    private function verifyHtmlValues(\Doc $origin, \Doc $target, array $attributeIds)
+    private function verifyHtmlValues(\Anakeen\Core\Internal\SmartElement $origin, \Anakeen\Core\Internal\SmartElement $target, array $attributeIds)
     {
         foreach ($attributeIds as $attrid) {
             $tv = $origin->getHtmlAttrValue($attrid);

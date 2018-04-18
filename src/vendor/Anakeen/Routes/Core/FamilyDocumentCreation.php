@@ -20,7 +20,7 @@ class FamilyDocumentCreation extends DocumentUpdateData
      */
     protected $_family = null;
     /**
-     * @var \Doc document instance
+     * @var \Anakeen\Core\Internal\SmartElement document instance
      */
     protected $_document = null;
 
@@ -47,7 +47,7 @@ class FamilyDocumentCreation extends DocumentUpdateData
      * @param \Slim\Http\request $request
      * @param \Anakeen\Core\SmartStructure $family
      * @param array $messages
-     * @return \Doc
+     * @return \Anakeen\Core\Internal\SmartElement 
      * @throws Exception
      * @throws \Dcp\Core\Exception
      */

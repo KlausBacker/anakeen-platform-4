@@ -34,7 +34,7 @@ class CoreTests
         self::$allInProgress = true;
         $suite = new FrameworkDcp('Project');
 
-        Gettext::___("Hello"); // Include ___
+        Gettext::___(""); // Include ___
         $suite->addTest((new SuiteRoutes)());
         $suite->addTest(SuiteDcp::suite());
         $suite->addTest(SuiteDcpAttribute::suite());

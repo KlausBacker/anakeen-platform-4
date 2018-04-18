@@ -8,7 +8,7 @@ class CheckReset extends CheckData
 {
     protected $value;
     /**
-     * @var Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $doc;
     
@@ -22,7 +22,7 @@ class CheckReset extends CheckData
     );
     /**
      * @param array $data
-     * @param Doc $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      * @return CheckReset
      */
     public function check(array $data, &$doc = null)

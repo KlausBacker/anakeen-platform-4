@@ -21,7 +21,7 @@ class DocumentApiData
     const GET_ATTRIBUTE = "document.attributes.";
     const GET_STRUCTURE = "family.structure";
     /**
-     * @var \Doc document instance
+     * @var \Anakeen\Core\Internal\SmartElement document instance
      */
     protected $_document = null;
 
@@ -46,9 +46,9 @@ class DocumentApiData
     /**
      * DocumentData constructor.
      *
-     * @param \Doc|null $document
+     * @param \Anakeen\Core\Internal\SmartElement|null $document
      */
-    public function __construct(\Doc $document)
+    public function __construct(\Anakeen\Core\Internal\SmartElement $document)
     {
             $this->_document = $document;
         $this->defaultFields = self::GET_PROPERTIES . "," . self::GET_ATTRIBUTES;
@@ -101,12 +101,12 @@ class DocumentApiData
      * Get data from document object
      * No access control are done
      *
-     * @param \Doc $document Document
+     * @param \Anakeen\Core\Internal\SmartElement $document Document
      *
      * @throws Exception
      * @return mixed
      */
-    public function getInternal(\Doc $document)
+    public function getInternal(\Anakeen\Core\Internal\SmartElement $document)
     {
         $this->_document = $document;
         return $this->getDocumentData();

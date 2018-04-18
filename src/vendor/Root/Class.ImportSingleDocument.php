@@ -483,7 +483,7 @@ class ImportSingleDocument
                         $this->tcr["action"] = "updated"; # N_("updated")
 
                         /**
-                         * @var Doc $doc
+                         * @var \Anakeen\Core\Internal\SmartElement $doc
                          */
                         $doc = $lsdoc[0];
                         if (!$this->analyze) {
@@ -631,7 +631,7 @@ class ImportSingleDocument
         return $this;
     }
 
-    protected function inhibitInvisibleAttributes(Doc $doc)
+    protected function inhibitInvisibleAttributes(\Anakeen\Core\Internal\SmartElement $doc)
     {
         $oas = $doc->getNormalAttributes();
         foreach ($oas as $oa) {
@@ -651,7 +651,7 @@ class ImportSingleDocument
         } else {
             $fileImgAttrid = "img_file";
             /**
-             * @var Doc $imgDoc
+             * @var \Anakeen\Core\Internal\SmartElement $imgDoc
              */
             $imgDoc = \Anakeen\Core\DocManager::createDocument("IMAGE");
 
@@ -703,13 +703,13 @@ class ImportSingleDocument
     /**
      * Parse a docid's raw value (single or multiple) for unknown logical names
      *
-     * @param Doc                                          $doc
+     * @param \Anakeen\Core\Internal\SmartElement                                          $doc
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
      * @param string                                       $value docid's raw value
      *
      * @return array List of unknown logical names referenced by the value
      */
-    protected function getUnknownDocIdLogicalNames(Doc & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oattr, $value)
+    protected function getUnknownDocIdLogicalNames(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oattr, $value)
     {
         $res = array();
         if ($value === ' ') {

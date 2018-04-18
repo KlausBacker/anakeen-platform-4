@@ -187,7 +187,7 @@ class NormalAttribute extends BasicAttribute
      */
     public function common_getXmlSchema(&$play)
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "infoattribute_schema.xml"));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "infoattribute_schema.xml"));
         $lay->set("aname", $this->id);
         $lay->set("label", $this->encodeXml($this->labelText));
         $lay->set("type", $this->type);
@@ -231,7 +231,7 @@ class NormalAttribute extends BasicAttribute
      */
     public function text_getXmlSchema()
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "textattribute_schema.xml"));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "textattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         
         $lay->set("maxlength", false);
@@ -245,7 +245,7 @@ class NormalAttribute extends BasicAttribute
      */
     public function enum_getXmlSchema()
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "enumattribute_schema.xml"));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "enumattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         
         $la = $this->getEnum();
@@ -266,7 +266,7 @@ class NormalAttribute extends BasicAttribute
      */
     public function docid_getXmlSchema()
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "docidattribute_schema.xml"));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "docidattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         
         $lay->set("famid", $this->format);
@@ -279,7 +279,7 @@ class NormalAttribute extends BasicAttribute
      */
     public function date_getXmlSchema()
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "dateattribute_schema.xml"));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "dateattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
@@ -290,7 +290,7 @@ class NormalAttribute extends BasicAttribute
      */
     public function timestamp_getXmlSchema()
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "timestampattribute_schema.xml"));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "timestampattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
@@ -301,7 +301,7 @@ class NormalAttribute extends BasicAttribute
      */
     public function color_getXmlSchema()
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "colorattribute_schema.xml"));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "colorattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
@@ -312,7 +312,7 @@ class NormalAttribute extends BasicAttribute
      */
     public function int_getXmlSchema()
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "intattribute_schema.xml"));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "intattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
@@ -323,7 +323,7 @@ class NormalAttribute extends BasicAttribute
      */
     public function longtext_getXmlSchema()
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "longtextattribute_schema.xml"));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "longtextattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
@@ -334,7 +334,7 @@ class NormalAttribute extends BasicAttribute
      */
     public function float_getXmlSchema()
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "floatattribute_schema.xml"));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "floatattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
@@ -345,7 +345,7 @@ class NormalAttribute extends BasicAttribute
      */
     public function time_getXmlSchema()
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "timeattribute_schema.xml"));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "timeattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
@@ -356,7 +356,7 @@ class NormalAttribute extends BasicAttribute
      */
     public function file_getXmlSchema()
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "fileattribute_schema.xml"));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "fileattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
@@ -368,7 +368,7 @@ class NormalAttribute extends BasicAttribute
      */
     public function array_getXmlSchema(&$la)
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "arrayattribute_schema.xml"));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "arrayattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         $lay->set("minOccurs", "0");
         $lay->set("maxOccurs", "unbounded");
@@ -386,7 +386,7 @@ class NormalAttribute extends BasicAttribute
     /**
      * Get the textual value of an attribute
      *
-     * @param \Doc $doc current Doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc current Doc
      * @param int $index index if multiple
      * @param array $configuration value config array :
      * dateFormat => 'US' 'ISO',
@@ -398,7 +398,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string
      */
-    public function getTextualValue(\Doc $doc, $index = - 1, array $configuration = array())
+    public function getTextualValue(\Anakeen\Core\Internal\SmartElement $doc, $index = - 1, array $configuration = array())
     {
         $decimalSeparator = isset($configuration['decimalSeparator']) ? $configuration['decimalSeparator'] : '.';
         
@@ -439,7 +439,7 @@ class NormalAttribute extends BasicAttribute
         return \FormatCollection::getDisplayValue($info, $this, $index, $configuration);
     }
     
-    public function getNumberValue(\Doc $doc, $index = - 1, $decimalSeparator = ".")
+    public function getNumberValue(\Anakeen\Core\Internal\SmartElement $doc, $index = - 1, $decimalSeparator = ".")
     {
         if ($index >= 0) {
             $numberValue = $doc->getMultipleRawValues($this->id, "", $index);

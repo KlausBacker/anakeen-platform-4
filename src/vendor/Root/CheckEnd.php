@@ -24,7 +24,7 @@ class CheckEnd extends CheckData
     }
     /**
      * @param array $data
-     * @param Doc $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      * @return CheckEnd
      */
     public function check(array $data, &$doc = null)
@@ -59,9 +59,9 @@ class CheckEnd extends CheckData
     }
     /**
      * Verify if max sql column is reached
-     * @param Doc $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      */
-    public function checkMaxAttributes(Doc & $doc)
+    public function checkMaxAttributes(\Anakeen\Core\Internal\SmartElement & $doc)
     {
         $this->doc = $doc;
         $c = $this->getColumnCount();

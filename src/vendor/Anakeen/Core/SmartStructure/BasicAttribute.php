@@ -226,13 +226,13 @@ class BasicAttribute
     /**
      * export values as xml fragment
      *
-     * @param \Doc $doc working doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc working doc
      * @param bool|\exportOptionAttribute $opt
      * @deprecated use \Dcp\ExportXmlDocument class instead
      *
      * @return string
      */
-    public function getXmlValue(\Doc & $doc, $opt = false)
+    public function getXmlValue(\Anakeen\Core\Internal\SmartElement & $doc, $opt = false)
     {
         return sprintf("<!-- no value %s (%s)-->", $this->id, $this->type);
     }
@@ -240,13 +240,13 @@ class BasicAttribute
      * Get human readable textual value
      * Fallback method
      *
-     * @param \Doc $doc current Doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc current Doc
      * @param int $index index if multiple
      * @param array $configuration value
      *
      * @return string
      */
-    public function getTextualValue(\Doc $doc, $index = - 1, array $configuration = array())
+    public function getTextualValue(\Anakeen\Core\Internal\SmartElement $doc, $index = - 1, array $configuration = array())
     {
         return null;
     }
@@ -257,7 +257,7 @@ class BasicAttribute
      */
     public function common_getXmlSchema(&$play)
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/FDL/Layout/%s", DEFAULT_PUBDIR, "infoattribute_schema.xml"));
+        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "infoattribute_schema.xml"));
         $lay->set("aname", $this->id);
         $lay->set("label", $this->encodeXml($this->labelText));
         $lay->set("type", $this->type);

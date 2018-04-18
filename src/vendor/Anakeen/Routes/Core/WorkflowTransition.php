@@ -76,7 +76,7 @@ class WorkflowTransition extends WorkflowState
             }
         }
         /**
-         * @var \Doc $revision
+         * @var \Anakeen\Core\Internal\SmartElement $revision
          */
         $info["transition"] = array(
             "id" => $this->transition,
