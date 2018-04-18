@@ -1194,7 +1194,7 @@ function getSortProperties($dbaccess, $famid, $name = "")
                 break;
 
             default:
-                $label = Doc::$infofields[$propName]['label'];
+                $label = \Anakeen\Core\Internal\SmartElement::$infofields[$propName]['label'];
                 if ($label != '') {
                     $label = _($label);
                 }

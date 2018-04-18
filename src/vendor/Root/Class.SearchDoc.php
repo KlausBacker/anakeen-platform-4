@@ -123,13 +123,13 @@ class SearchDoc
     /**
      *
      * Iterator document
-     * @var Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     private $iDoc = null;
     /**
      *
      * Iterator document
-     * @var Doc[]
+     * @var \Anakeen\Core\Internal\SmartElement []
      */
     private $cacheDocuments = array();
     /**
@@ -594,7 +594,7 @@ class SearchDoc
             $fdoc = \Anakeen\Core\DocManager::createTemporaryDocument($this->fromid, false);
             $fields = array_merge($fdoc->fields, $fdoc->sup_fields);
         } else {
-            $fdoc = new Doc();
+            $fdoc = new \Anakeen\Core\Internal\SmartElement();
             $fields = array_merge($fdoc->fields, $fdoc->sup_fields);
         }
         foreach ($returns as $k => $r) {
@@ -786,7 +786,7 @@ class SearchDoc
      *
      * @see        SearchDoc::search
      *
-     * @return Doc|array or null if this is the end
+     * @return \Anakeen\Core\Internal\SmartElement |array or null if this is the end
      */
     public function nextDoc()
     {
@@ -802,7 +802,7 @@ class SearchDoc
      *
      * @api get next document results
      *
-     * @return Doc|array|bool  false if this is the end
+     * @return \Anakeen\Core\Internal\SmartElement |array|bool  false if this is the end
      */
     public function getNextDoc()
     {
@@ -865,7 +865,7 @@ class SearchDoc
      * Return an object document from array of values
      *
      * @param array $v the values of documents
-     * @return Doc the document object
+     * @return \Anakeen\Core\Internal\SmartElement the document object
      */
     protected function getNextDocument(array $v)
     {
@@ -1203,7 +1203,7 @@ class SearchDoc
      * return a document part where general filter term is found
      *
      * @see SearchDoc::addGeneralFilter
-     * @param Doc    $doc      document to analyze
+     * @param \Anakeen\Core\Internal\SmartElement    $doc      document to analyze
      * @param string $beginTag delimiter begin tag
      * @param string $endTag   delimiter end tag
      * @param int    $limit    file size limit to analyze
@@ -1211,7 +1211,7 @@ class SearchDoc
      * @return mixed
      * @throws \Dcp\Db\Exception
      */
-    public function getHighLightText(Doc & $doc, $beginTag = '<b>', $endTag = '</b>', $limit = 200, $wordMode = true)
+    public function getHighLightText(\Anakeen\Core\Internal\SmartElement & $doc, $beginTag = '<b>', $endTag = '</b>', $limit = 200, $wordMode = true)
     {
         static $oh = null;
         if (!$oh) {

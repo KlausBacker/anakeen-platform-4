@@ -49,7 +49,7 @@ class TestTag extends TestCaseDcpDocument
         $this->sudo($login);
         $df = new_doc(self::$dbaccess, $docName);
         $this->assertTrue($df->isAlive() , "document $docName is not alive");
-        $err = $df->addUTag(\Doc::getSystemUserId() , $tag, $value);
+        $err = $df->addUTag(\Anakeen\Core\Internal\SmartElement::getSystemUserId() , $tag, $value);
         $this->assertEmpty($err, sprintf("utag error"));
         
         $utag = $df->getUTag($tag);
@@ -82,10 +82,10 @@ class TestTag extends TestCaseDcpDocument
         $this->sudo($login);
         $df = new_doc(self::$dbaccess, $docName);
         $this->assertTrue($df->isAlive() , "document $docName is not alive");
-        $err = $df->addUTag(\Doc::getSystemUserId() , $tag, "__first__");
+        $err = $df->addUTag(\Anakeen\Core\Internal\SmartElement::getSystemUserId() , $tag, "__first__");
         $this->assertEmpty($err, sprintf("utag error"));
         
-        $err = $df->addUTag(\Doc::getSystemUserId() , $tag, $value);
+        $err = $df->addUTag(\Anakeen\Core\Internal\SmartElement::getSystemUserId() , $tag, $value);
         $this->assertEmpty($err, sprintf("utag error"));
         
         $utag = $df->getUTag($tag);
@@ -107,7 +107,7 @@ class TestTag extends TestCaseDcpDocument
         $this->sudo($login);
         $df = new_doc(self::$dbaccess, $docName);
         $this->assertTrue($df->isAlive() , "document $docName is not alive");
-        $err = $df->addUTag(\Doc::getSystemUserId() , $tag, $value);
+        $err = $df->addUTag(\Anakeen\Core\Internal\SmartElement::getSystemUserId() , $tag, $value);
         $this->assertEmpty($err, sprintf("utag error"));
         
         $utag = $df->getUTag($tag);
@@ -115,7 +115,7 @@ class TestTag extends TestCaseDcpDocument
         $this->assertTrue($utag !== false, sprintf("utag %s not retrieved", $tag));
         $this->assertEquals($value, $utag->comment);
         
-        $err = $df->delUTag(\Doc::getSystemUserId() , $tag);
+        $err = $df->delUTag(\Anakeen\Core\Internal\SmartElement::getSystemUserId() , $tag);
         $this->assertEmpty($err, sprintf("utag del error"));
         $utag = $df->getUTag($tag);
         
@@ -135,7 +135,7 @@ class TestTag extends TestCaseDcpDocument
         $this->sudo($login);
         $df = new_doc(self::$dbaccess, $docName);
         $this->assertTrue($df->isAlive() , "document $docName is not alive");
-        $err = $df->addUTag(\Doc::getSystemUserId() , $tag, $value);
+        $err = $df->addUTag(\Anakeen\Core\Internal\SmartElement::getSystemUserId() , $tag, $value);
         $this->assertEmpty($err, sprintf("utag error"));
         
         $utag = $df->getUTag($tag);
@@ -143,7 +143,7 @@ class TestTag extends TestCaseDcpDocument
         $this->assertTrue($utag !== false, sprintf("utag %s not retrieved", $tag));
         $this->assertEquals($value, $utag->comment);
         
-        $err = $df->delUTags(\Doc::getSystemUserId());
+        $err = $df->delUTags(\Anakeen\Core\Internal\SmartElement::getSystemUserId());
         $this->assertEmpty($err, sprintf("utag del error"));
         $utag = $df->getUTag($tag);
         

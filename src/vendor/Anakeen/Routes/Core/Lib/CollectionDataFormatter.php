@@ -46,7 +46,7 @@ class CollectionDataFormatter
 
     public function __construct($source)
     {
-        if (is_a($source, "Doc")) {
+        if (is_a($source, \Anakeen\Core\Internal\SmartElement::class)) {
             /* if the $source is a doc, we want to render only one document*/
             $this->formatCollection = new \FormatCollection($source);
             if ($source->mid > 0) {
@@ -82,7 +82,7 @@ class CollectionDataFormatter
 
     /**
      * Add a callable function that generate the document uri propertie
-     * The callable take a Doc $document and return the uri
+     * The callable take a \Anakeen\Core\Internal\SmartElement $document and return the uri
      *
      * @param $callable
      */
@@ -176,14 +176,14 @@ class CollectionDataFormatter
             return $this->attributeHook($info, $attribute, $doc);
         });
         /** Add uri property and suppress state if no state **/
-        $formatCollection->setDocumentRenderHook(function ($values, \Doc $document) {
+        $formatCollection->setDocumentRenderHook(function ($values, \Anakeen\Core\Internal\SmartElement $document) {
             return $this->documentHook($values, $document);
         });
 
         return $formatCollection->render();
     }
 
-    protected function documentHook($values, \Doc $document)
+    protected function documentHook($values, \Anakeen\Core\Internal\SmartElement $document)
     {
         $generateUrl = $this->generateUrl;
         $values["uri"] = $generateUrl($document);

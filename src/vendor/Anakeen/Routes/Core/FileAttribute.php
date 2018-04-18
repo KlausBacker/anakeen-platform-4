@@ -23,7 +23,7 @@ class FileAttribute
 
     private $tmpFlag = "_tmp_";
     /**
-     * @var \Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $_document = null;
     /**

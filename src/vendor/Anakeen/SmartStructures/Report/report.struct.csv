@@ -21,9 +21,9 @@ ATTR;REP_DISPLAYOPTION;REP_TCOLS;Option de présentation;N;N;text;1110;H;;;;;;;
 ATTR;REP_COLORS;REP_TCOLS;Couleur;N;N;color;1120;W;;;;;;;cwidth=110px
 ATTR;REP_FOOTS;REP_TCOLS;Pied de tableau;N;N;enum;1130;W;;;-;NONE| ,SUM|Somme,MOY|Moyenne,CARD|Cardinal;;;system=yes|cwidth=110px
 ATTR;REP_STYLE;REP_FR_PRESENTATION;Style;N;N;enum;1140;W;;;-;standard1|Standard (Thème 1),standard2|Standard (Thème 2),standard3|Standard (Thème 3),reportHBlue|Bleu horizontal,reportVGreen|Vert vertical,reportHYellow|Jaune horizontal,reportHInverse|Inverse vidéo, |Personnalisé...;;;system=yes
-ATTR;REP_COLORHF;REP_FR_PRESENTATION;Couleur entête;N;N;color;1150;W;;;;::nothing(REP_STYLE);;;elabel=couleur du fond pour l'entête et le pied de tableau
-ATTR;REP_COLORODD;REP_FR_PRESENTATION;Couleur impaire;N;N;color;1160;W;;;;::nothing(REP_STYLE);;;elabel=couleur du fond pour les rangées impaires
-ATTR;REP_COLOREVEN;REP_FR_PRESENTATION;Couleur paire;N;N;color;1170;W;;;;::nothing(REP_STYLE);;;elabel=couleur du fond pour les rangées paires
+ATTR;REP_COLORHF;REP_FR_PRESENTATION;Couleur entête;N;N;color;1150;W;;;;;;;elabel=couleur du fond pour l'entête et le pied de tableau
+ATTR;REP_COLORODD;REP_FR_PRESENTATION;Couleur impaire;N;N;color;1160;W;;;;;;;elabel=couleur du fond pour les rangées impaires
+ATTR;REP_COLOREVEN;REP_FR_PRESENTATION;Couleur paire;N;N;color;1170;W;;;;;;;elabel=couleur du fond pour les rangées paires
 ATTR;REP_CSV;;Export CSV;N;N;menu;5;W;;%S%app=FDL&action=REPORT_EXPORT_CSV&id=%I%&displayForm=true;;;;;
 ATTR;REP_IMP; ;Version imprimable;N;N;menu;20;W;;%S%app=FDL&action=IMPCARD&props=N&dochead=N&id=%I%&ulink=N;;;;;barmenu=yes
 PARAM;REP_FR_PARAM;;Paramètres;N;N;frame;100;W;;;;;;;

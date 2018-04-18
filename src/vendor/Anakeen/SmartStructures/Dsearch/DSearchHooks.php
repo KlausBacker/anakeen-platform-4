@@ -488,8 +488,8 @@ class DSearchHooks extends \SmartStructure\Search
          */
         if ($oa) {
             $atype = $oa->type;
-        } elseif (!empty(\Doc::$infofields[$col])) {
-            $atype = \Doc::$infofields[$col]["type"];
+        } elseif (!empty(\Anakeen\Core\Internal\SmartElement::$infofields[$col])) {
+            $atype = \Anakeen\Core\Internal\SmartElement::$infofields[$col]["type"];
         }
         if (($atype == "date" || $atype == "timestamp")) {
             if ($col == 'revdate') {
@@ -1031,7 +1031,7 @@ class DSearchHooks extends \SmartStructure\Search
     /**
      * return family use for search
      *
-     * @return \Doc
+     * @return \Anakeen\Core\Internal\SmartElement 
      */
     private function getSearchFamilyDocument()
     {

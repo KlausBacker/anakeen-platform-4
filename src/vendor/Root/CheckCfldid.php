@@ -8,7 +8,7 @@ class CheckCfldid extends CheckData
 {
     protected $folderName;
     /**
-     * @var Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $doc;
     
@@ -17,7 +17,7 @@ class CheckCfldid extends CheckData
     );
     /**
      * @param array $data
-     * @param Doc $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      * @return CheckCfldid
      */
     public function check(array $data, &$doc = null)

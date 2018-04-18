@@ -18,7 +18,7 @@ class CheckProfid extends CheckData
     private $prfName = '';
     /**
      * profil doccument
-     * @var Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     private $profil = '';
     /**

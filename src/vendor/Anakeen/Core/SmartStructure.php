@@ -224,8 +224,8 @@ create unique index idx_idfam on docfam(id);";
     /**
      * return family parameter
      *
-     * @deprecated use {@link Doc::getParameterRawValue} instead
-     * @see        Doc::getParameterRawValue
+     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::getParameterRawValue} instead
+     * @see        \Anakeen\Core\Internal\SmartElement::getParameterRawValue
      *
      * @param string $idp parameter identifier
      * @param string $def default value if parameter not found or if it is null
@@ -262,12 +262,12 @@ create unique index idx_idfam on docfam(id);";
     }
 
     /**
-     * use in Doc::getParameterFamilyValue
+     * use in \Anakeen\Core\Internal\SmartElement::getParameterFamilyValue
      *
      * @param string $idp
      * @param string $def
      *
-     * @see Doc::getParameterFamilyValue_
+     * @see \Anakeen\Core\Internal\SmartElement::getParameterFamilyValue_
      * @return bool|string
      * @throws \Dcp\Db\Exception
      */

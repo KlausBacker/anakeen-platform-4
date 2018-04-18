@@ -24,21 +24,21 @@ class StoreInfo
      */
     const PRESTORE_ERROR = 5;
     /**
-     * @var string message returned by Doc::refresh
+     * @var string message returned by \Anakeen\Core\Internal\SmartElement::refresh
      */
     public $refresh = '';
     /**
-     * @var string message returned by Doc::postStore
+     * @var string message returned by \Anakeen\Core\Internal\SmartElement::postStore
      */
     public $postStore = '';
 
     /**
-     * @var string message returned by Doc::preStore
+     * @var string message returned by \Anakeen\Core\Internal\SmartElement::preStore
      */
     public $preStore = '';
     /**
      * set of information about constraint test indexed by attribute identifier and rank index if multiple attribute
-     * @var array message returned by Doc::verifyAllConstraints
+     * @var array message returned by \Anakeen\Core\Internal\SmartElement::verifyAllConstraints
      */
     public $constraint = array();
     /**

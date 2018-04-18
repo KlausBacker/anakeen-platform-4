@@ -51,7 +51,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         }
         $index = 0;
         /**
-         * @var \Doc $doc
+         * @var \Anakeen\Core\Internal\SmartElement $doc
          */
         foreach ($dl as $docid => $doc) {
             $this->assertEquals($expectedDocName[$index], $doc->name, print_r($s->getSearchInfo() , true));
@@ -79,7 +79,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         }
         $index = 0;
         /**
-         * @var \Doc $doc
+         * @var \Anakeen\Core\Internal\SmartElement $doc
          */
         foreach ($dl as $docid => $doc) {
             $this->assertEquals($expectedDocName[$index], $doc["name"]);
@@ -108,7 +108,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         
         $index = 0;
         /**
-         * @var \Doc $doc
+         * @var \Anakeen\Core\Internal\SmartElement $doc
          */
         foreach ($dl as $doc) {
             if (!empty($expectedDocName[$index])) {
@@ -138,7 +138,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $this->assertEquals(count($expectedDocName) , $s->count() , "not correct count " . $this->getFilterResult($dl));
         $index = 0;
         /**
-         * @var \Doc $doc
+         * @var \Anakeen\Core\Internal\SmartElement $doc
          */
         foreach ($dl as $doc) {
             $this->assertEquals($expectedDocName[$index], $doc->name);
@@ -776,7 +776,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
     {
         $names = array();
         /**
-         * @var \Doc $doc
+         * @var \Anakeen\Core\Internal\SmartElement $doc
          */
         foreach ($dl as $doc) {
             if (is_array($doc)) {

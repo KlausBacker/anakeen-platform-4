@@ -140,7 +140,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);";
     /**
      * Update document relations
      *
-     * @param Doc  &$doc  document to initialize relations
+     * @param \Anakeen\Core\Internal\SmartElement  &$doc  document to initialize relations
      * @param bool $force if force recomputing
      *
      * @return void
@@ -191,7 +191,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);";
      * copy in db document relations
      *
      * @param array &$tv  array of docid
-     * @param Doc   &$doc document source
+     * @param \Anakeen\Core\Internal\SmartElement   &$doc document source
      *
      * @return void
      */

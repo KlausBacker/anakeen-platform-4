@@ -8,12 +8,12 @@ class CheckMethod extends CheckData
 {
     protected $methodFile;
     /**
-     * @var Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $doc;
     /**
      * @param array $data
-     * @param Doc $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      * @return CheckMethod
      */
     public function check(array $data, &$doc = null)

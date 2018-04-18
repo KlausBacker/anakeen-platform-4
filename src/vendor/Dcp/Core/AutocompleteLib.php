@@ -12,7 +12,7 @@ class AutocompleteLib
      * @param string           $n
      * @param string           $def
      * @param bool             $whttpvars
-     * @param \Doc             $doc
+     * @param \Anakeen\Core\Internal\SmartElement             $doc
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oa
      *
      * @return array|bool|string
@@ -42,7 +42,7 @@ class AutocompleteLib
     }
 
     public static function getResPhpFunc(
-        \Doc & $doc,
+        \Anakeen\Core\Internal\SmartElement & $doc,
         \Anakeen\Core\SmartStructure\NormalAttribute & $oattr,
         &$rargids,
         &$tselect,

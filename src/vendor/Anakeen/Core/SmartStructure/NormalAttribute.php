@@ -386,7 +386,7 @@ class NormalAttribute extends BasicAttribute
     /**
      * Get the textual value of an attribute
      *
-     * @param \Doc $doc current Doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc current Doc
      * @param int $index index if multiple
      * @param array $configuration value config array :
      * dateFormat => 'US' 'ISO',
@@ -398,7 +398,7 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string
      */
-    public function getTextualValue(\Doc $doc, $index = - 1, array $configuration = array())
+    public function getTextualValue(\Anakeen\Core\Internal\SmartElement $doc, $index = - 1, array $configuration = array())
     {
         $decimalSeparator = isset($configuration['decimalSeparator']) ? $configuration['decimalSeparator'] : '.';
         
@@ -439,7 +439,7 @@ class NormalAttribute extends BasicAttribute
         return \FormatCollection::getDisplayValue($info, $this, $index, $configuration);
     }
     
-    public function getNumberValue(\Doc $doc, $index = - 1, $decimalSeparator = ".")
+    public function getNumberValue(\Anakeen\Core\Internal\SmartElement $doc, $index = - 1, $decimalSeparator = ".")
     {
         if ($index >= 0) {
             $numberValue = $doc->getMultipleRawValues($this->id, "", $index);

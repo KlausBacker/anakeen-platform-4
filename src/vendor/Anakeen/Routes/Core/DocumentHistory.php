@@ -20,7 +20,7 @@ class DocumentHistory
 {
     protected $baseURL = "documents";
     /**
-     * @var \Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $_document = null;
     /**
@@ -101,7 +101,7 @@ class DocumentHistory
 
         $revisionHistory = array();
         /**
-         * @var \Doc $revision
+         * @var \Anakeen\Core\Internal\SmartElement $revision
          */
         foreach ($documentList as $revision) {
             $history = $revision->getHisto(false);

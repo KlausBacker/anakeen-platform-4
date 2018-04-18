@@ -116,7 +116,7 @@ class processExecuteAPI
     public static function verifyExecDocuments(\Anakeen\Core\Internal\Action & $action)
     {
         // Verify EXEC document
-        $now = Doc::getTimeDate();
+        $now = \Anakeen\Core\Internal\SmartElement::getTimeDate();
 
         $s = new SearchDoc($action->dbaccess, "EXEC");
         $s->setObjectReturn();

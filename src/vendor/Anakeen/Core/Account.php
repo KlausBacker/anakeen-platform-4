@@ -790,12 +790,12 @@ union
     /**
      * get the first incumbent which has $acl privilege
      *
-     * @param \Doc   $doc document to verify
+     * @param \Anakeen\Core\Internal\SmartElement   $doc document to verify
      * @param string $acl document acl name
      *
      * @return string incumbent's name which has privilege
      */
-    public function getIncumbentPrivilege(\Doc & $doc, $acl)
+    public function getIncumbentPrivilege(\Anakeen\Core\Internal\SmartElement & $doc, $acl)
     {
         if ($this->id == 1) {
             return '';

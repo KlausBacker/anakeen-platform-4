@@ -267,7 +267,7 @@ class ErrorCodeATTR
     const ATTR1211 = 'not enough argument call to use function "%s" (need %d arguments)';
     /**
      * @errorCode  the method use for computed must declarer an existed attribute
-     * @note triggered in Doc::specRefreshGen()
+     * @note triggered in \Anakeen\Core\Internal\SmartElement::specRefreshGen()
      */
     const ATTR1212 = 'unknow output attribut for method "%s" in family "%s"';
     /**

@@ -17,7 +17,7 @@ class DirLib
         static $props = false;
 
         if (!$props) {
-            $d = new \Doc();
+            $d = new \Anakeen\Core\Internal\SmartElement();
             $props = $d->fields;
             $props = array_merge($props, $d->sup_fields);
             $props[] = "fulltext";
@@ -572,7 +572,11 @@ class DirLib
                     if ($fromid == -1) {
                         $docClass = \Anakeen\Core\SmartStructure::class;
                     } else {
-                        $docClass = "\\Doc$fromid";
+                        if (! $fromid) {
+                            $docClass = \Anakeen\Core\Internal\SmartElement::class;
+                        } else {
+                            $docClass = "\\Doc$fromid";
+                        }
                     }
 
                     $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, $docClass);
@@ -583,7 +587,7 @@ class DirLib
                     } else {
                         $usql .= " LIMIT $slice OFFSET $start;";
                     }
-                    $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \Doc::class);
+                    $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \Anakeen\Core\Internal\SmartElement::class);
                 }
                 if ($returnSqlOnly) {
                     /*

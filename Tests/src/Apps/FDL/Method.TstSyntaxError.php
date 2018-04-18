@@ -18,7 +18,8 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-class _TST_SYNTAXERROR extends Doc
+class _TST_SYNTAXERROR extends \Anakeen\Core\Internal\SmartElement
+
 {
     /**
      * @end-method-ignore

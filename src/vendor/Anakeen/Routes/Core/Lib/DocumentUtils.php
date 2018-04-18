@@ -14,7 +14,7 @@ class DocumentUtils
     /**
      * Analyze the list of required attributes
      *
-     * @param \Doc   $currentDoc
+     * @param \Anakeen\Core\Internal\SmartElement   $currentDoc
      * @param string $prefix
      * @param array  $fields
      *
@@ -38,7 +38,7 @@ class DocumentUtils
         if ($currentDoc) {
             $restrictedAttributes = array_map(function ($currentField) use ($prefix, &$currentDoc, &$falseAttribute) {
                 $attributeId = str_replace($prefix, "", $currentField);
-                /* @var \Doc $currentDoc */
+                /* @var \Anakeen\Core\Internal\SmartElement $currentDoc */
                 self::isAttribute($currentDoc, $attributeId);
 
                 return $attributeId;
@@ -75,19 +75,19 @@ class DocumentUtils
      * Analyze the order by
      *
      * @param      $orderBy
-     * @param \Doc $currentDoc
+     * @param \Anakeen\Core\Internal\SmartElement $currentDoc
      *
      * @return string
      * @throws Exception
      */
-    public static function extractOrderBy($orderBy, \Doc $currentDoc = null)
+    public static function extractOrderBy($orderBy, \Anakeen\Core\Internal\SmartElement $currentDoc = null)
     {
         // Explode the string orderBy in an array
         $orderElements = explode(",", $orderBy);
         $result = array();
         $hasId = false;
         // Check for earch element if the property or attributes exist and the order to
-        $propertiesList = array_keys(\Doc::$infofields);
+        $propertiesList = array_keys(\Anakeen\Core\Internal\SmartElement::$infofields);
         foreach ($orderElements as $currentElement) {
             $detectOrder = explode(":", $currentElement);
 
@@ -114,13 +114,13 @@ class DocumentUtils
     /**
      * Check if an attrid is an attribute of the currentDoc
      *
-     * @param \Doc $currentDoc
+     * @param \Anakeen\Core\Internal\SmartElement $currentDoc
      * @param      $currentElement
      *
      * @return bool
      * @throws Exception
      */
-    protected static function isAttribute(\Doc $currentDoc, $currentElement)
+    protected static function isAttribute(\Anakeen\Core\Internal\SmartElement $currentDoc, $currentElement)
     {
         if ($currentDoc) {
             $currentAttribute = $currentDoc->getAttribute($currentElement);
@@ -185,7 +185,7 @@ class DocumentUtils
         return "";
     }
 
-    public static function verifyFamily($famName, \Doc $document)
+    public static function verifyFamily($famName, \Anakeen\Core\Internal\SmartElement $document)
     {
         $family = \Anakeen\Core\DocManager::getFamily($famName);
         if (!$family) {

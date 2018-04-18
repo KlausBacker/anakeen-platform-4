@@ -11,7 +11,7 @@ use Anakeen\Core\DocManager;
 class ExportXmlDocument
 {
     /**
-     * @var \Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $document = null;
     protected $exportProfil = false;
@@ -76,7 +76,7 @@ class ExportXmlDocument
     }
 
     /**
-     * @param \Doc $document
+     * @param \Anakeen\Core\Internal\SmartElement $document
      */
     public function setDocument($document)
     {

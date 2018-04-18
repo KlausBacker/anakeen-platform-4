@@ -29,7 +29,7 @@ class TestDoubleInherit extends TestCaseDcpCommonFamily
      * @dataProvider dataRefresh
      * @param string $docName
      * @param string $expectValue
-     * @return \Doc
+     * @return \Anakeen\Core\Internal\SmartElement 
      */
     public function testRefresh($docName, $expectValue)
     {
@@ -56,7 +56,7 @@ class TestDoubleInherit extends TestCaseDcpCommonFamily
      * @dataProvider dataGetAReference
      * @param string $docName
      * @param string $expectValue
-     * @return \Doc
+     * @return \Anakeen\Core\Internal\SmartElement 
      */
     public function testGetAReference($docName, $expectValue)
     {

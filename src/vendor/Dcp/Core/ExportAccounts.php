@@ -496,11 +496,11 @@ class ExportAccounts
      * Return only specific document attribute.
      * System attributes are no exported in document node
      *
-     * @param \Doc $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      *
      * @return array
      */
-    private function filterAttribute(\Doc $doc)
+    private function filterAttribute(\Anakeen\Core\Internal\SmartElement $doc)
     {
         $filter = array();
         $excludeFilters = array();

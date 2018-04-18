@@ -20,7 +20,7 @@ class WorkflowState
 {
     protected $baseURL = "documents";
     /**
-     * @var \Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $_document = null;
     /**
@@ -101,7 +101,7 @@ class WorkflowState
             $transitionData = null;
         }
         /**
-         * @var \Doc $revision
+         * @var \Anakeen\Core\Internal\SmartElement $revision
          */
 
         $info["state"] = $this->getStateInfo($state);

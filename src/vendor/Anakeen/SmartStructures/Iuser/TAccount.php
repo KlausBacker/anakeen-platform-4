@@ -3,8 +3,6 @@
 /**
  * Intranet User & Group  manipulation
  * Trait TAccountFamily
- * @package Anakeen\Family\Iuser
- * @mixin \Doc
  */
 namespace Anakeen\SmartStructures\Iuser;
 
@@ -13,7 +11,7 @@ use Anakeen\Core\DocManager;
 
 /**
  * Trait TAccount
- * @mixin \Doc
+ * @mixin \Anakeen\Core\Internal\SmartElement
  * @package Anakeen\SmartStructures\Iuser
  */
 trait TAccount
@@ -86,7 +84,6 @@ trait TAccount
     public function preCreated()
     {
         if ($this->getRawValue("US_WHATID") != "") {
-            
             $filter = array(
                 "us_whatid = '" . intval($this->getRawValue("US_WHATID")) . "'"
             );
@@ -226,16 +223,7 @@ trait TAccount
         }
         return $this->wuser;
     }
-    /**
-     * return what user object conform to whatid
-     *
-     * @deprecated use getAccount instead
-     * @return \Anakeen\Core\Account return false if not found
-     */
-    public function getWuser($nocache = false)
-    {
-        return $this->getAccount($nocache);
-    }
+
     /**
      * reset wuser
      */

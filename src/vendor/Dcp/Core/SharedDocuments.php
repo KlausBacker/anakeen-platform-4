@@ -7,6 +7,11 @@
 namespace Dcp\Core;
 
 /**
+ * max cache document
+ */
+define("MAXGDOCS", 20);
+
+/**
  * Manage Shared documents through the global array $gdocs
  * @deprecated use Anakeen\Core\DocManager::cache()
  */
@@ -34,7 +39,7 @@ class SharedDocuments
     /**
      * Retrieve object from key identifier
      * @param string $key document identifier
-     * @return \Doc|null
+     * @return \Anakeen\Core\Internal\SmartElement |null
      */
     public static function &get($key)
     {
@@ -53,7 +58,7 @@ class SharedDocuments
      * Add or update an object
      * @deprecated use Anakeen\Core\DocManager::cache()->addDocument
      * @param string $key object identifier
-     * @param \Doc $item object to add or update
+     * @param \Anakeen\Core\Internal\SmartElement $item object to add or update
      * @param bool $force set to true to add without limits
      * @return bool
      */
@@ -122,7 +127,7 @@ class SharedDocuments
     /**
      * Verify if a key is referenced in cached and object is same as item object
      * @param string $key object identifier
-     * @param \Doc $item object item
+     * @param \Anakeen\Core\Internal\SmartElement $item object item
      * @return bool true if $key and item match
      */
     public static function isShared($key, &$item)

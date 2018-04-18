@@ -9,13 +9,13 @@ class CheckDocATag extends CheckData
     protected $tagAction;
     protected $docid;
     /**
-     * @var Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $doc;
     protected $firstATag = '';
     /**
      * @param array $data
-     * @param Doc $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      * @return CheckDocATag
      */
     public function check(array $data, &$doc = null)

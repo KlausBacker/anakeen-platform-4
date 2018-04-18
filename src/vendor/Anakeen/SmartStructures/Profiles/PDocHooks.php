@@ -3,7 +3,8 @@
 
 namespace Anakeen\SmartStructures\Profiles;
 
-class PDocHooks extends \Doc
+class PDocHooks extends \Anakeen\Core\Internal\SmartElement
+
 {
     // --------------------------------------------------------------------
     //---------------------- OBJECT CONTROL PERMISSION --------------------
@@ -23,7 +24,7 @@ class PDocHooks extends \Doc
     
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
-        // don't use Doc constructor because it could call this constructor => infinitive loop
-        \Doc::__construct($dbaccess, $id, $res, $dbid);
+        // don't use \Anakeen\Core\Internal\SmartElement constructor because it could call this constructor => infinitive loop
+        \Anakeen\Core\Internal\SmartElement::__construct($dbaccess, $id, $res, $dbid);
     }
 }

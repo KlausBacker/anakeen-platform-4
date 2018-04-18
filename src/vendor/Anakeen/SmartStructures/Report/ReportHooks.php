@@ -105,7 +105,7 @@ class ReportHooks extends \SmartStructure\Dsearch
         }
     }
 
-    protected function generatePivotCSV(\SearchDoc $search, array $columns, \Doc $famDoc, $pivotId, $refresh, $separator, $dateFormat, $stripHtmlTags, $renderNumber = "format")
+    protected function generatePivotCSV(\SearchDoc $search, array $columns, \Anakeen\Core\Internal\SmartElement $famDoc, $pivotId, $refresh, $separator, $dateFormat, $stripHtmlTags, $renderNumber = "format")
     {
         $convertFormat = array(
             "dateFormat" => $dateFormat,
@@ -220,7 +220,7 @@ class ReportHooks extends \SmartStructure\Dsearch
         return $twoDimStruct->getArray();
     }
 
-    protected function getCellValue(\Doc $doc, \Anakeen\Core\SmartStructure\BasicAttribute $oa, $format, $index = -1)
+    protected function getCellValue(\Anakeen\Core\Internal\SmartElement $doc, \Anakeen\Core\SmartStructure\BasicAttribute $oa, $format, $index = -1)
     {
         return $oa->getTextualValue($doc, $index, $format);
     }
@@ -230,7 +230,7 @@ class ReportHooks extends \SmartStructure\Dsearch
      *
      * @param \SearchDoc $search  the result of the report
      * @param array      $columns an array of id
-     * @param \Doc       $famDoc  the associated family doc
+     * @param \Anakeen\Core\Internal\SmartElement       $famDoc  the associated family doc
      *
      * @return array
      */
@@ -238,7 +238,7 @@ class ReportHooks extends \SmartStructure\Dsearch
         \SearchDoc $search,
         array $columns,
         array $displayOptions,
-        \Doc $famDoc,
+        \Anakeen\Core\Internal\SmartElement $famDoc,
         $refresh,
         $separator,
         $dateFormat,
@@ -295,8 +295,8 @@ class ReportHooks extends \SmartStructure\Dsearch
         $out = array();
         $line = array();
         foreach ($columns as $kc => $col) {
-            if (isset(\Doc::$infofields[$col]["label"])) {
-                $line[$kc] = _(\Doc::$infofields[$col]["label"]);
+            if (isset(\Anakeen\Core\Internal\SmartElement::$infofields[$col]["label"])) {
+                $line[$kc] = _(\Anakeen\Core\Internal\SmartElement::$infofields[$col]["label"]);
             } else {
                 $line[$kc] = $famDoc->getLabel($col);
                 if ($displayOptions[$kc] == "docid") {
@@ -354,7 +354,7 @@ class ReportHooks extends \SmartStructure\Dsearch
         return $out;
     }
 
-    protected function convertInternalElement($internalName, \Doc $doc)
+    protected function convertInternalElement($internalName, \Anakeen\Core\Internal\SmartElement $doc)
     {
         switch ($internalName) {
             case "revdate":

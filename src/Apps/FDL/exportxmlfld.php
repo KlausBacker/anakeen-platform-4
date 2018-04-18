@@ -63,7 +63,7 @@ function exportxmlfld(
         if (!$flog) {
             exportExit($action, sprintf(_("cannot write log in %s"), $log));
         }
-        fputs($flog, sprintf("EXPORT BEGIN OK : %s\n", Doc::getTimeDate(0, true)));
+        fputs($flog, sprintf("EXPORT BEGIN OK : %s\n", \Anakeen\Core\Internal\SmartElement::getTimeDate(0, true)));
         fputs($flog, sprintf("EXPORT OPTION FLAT : %s\n", ($flat) ? "yes" : "no"));
         fputs($flog, sprintf("EXPORT OPTION WFILE : %s\n", ($wfile) ? "yes" : "no"));
         fputs($flog, sprintf("EXPORT OPTION CONFIG : %s\n", ($configxml) ? "yes" : "no"));
@@ -211,7 +211,7 @@ function exportxmlfld(
 
     if ($flog) {
         fputs($flog, sprintf("EXPORT COUNT OK : %d\n", $count));
-        fputs($flog, sprintf("EXPORT END OK : %s\n", Doc::getTimeDate(0, true)));
+        fputs($flog, sprintf("EXPORT END OK : %s\n", \Anakeen\Core\Internal\SmartElement::getTimeDate(0, true)));
         fclose($flog);
     }
 

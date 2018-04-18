@@ -32,7 +32,7 @@ class TestDocument extends TestCaseDcpCommonFamily
     /**
      * @dataProvider provider
      * @param string $a
-     * @return \Doc
+     * @return \Anakeen\Core\Internal\SmartElement 
      */
     public function testAlive($a)
     {

@@ -12,7 +12,7 @@
 class DocOooFormat
 {
     /**
-     * @var Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     public $doc = null;
     private $index = -1;
@@ -27,12 +27,12 @@ class DocOooFormat
      */
     private $cFormat = '';
 
-    public function __construct(Doc & $doc)
+    public function __construct(\Anakeen\Core\Internal\SmartElement & $doc)
     {
         $this->setDoc($doc);
     }
 
-    public function setDoc(Doc & $doc)
+    public function setDoc(\Anakeen\Core\Internal\SmartElement & $doc)
     {
         $this->doc = $doc;
     }
@@ -458,7 +458,7 @@ class DocOooFormat
     }
 
     /**
-     * function use by Doc::getOOoValue()
+     * function use by \Anakeen\Core\Internal\SmartElement::getOOoValue()
      * use to convert html to xhtml
      * @param string $lt   the < character
      * @param string $tag  the tag name

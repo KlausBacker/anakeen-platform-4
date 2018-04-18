@@ -19,8 +19,8 @@ class TimerHooks extends \Anakeen\SmartStructures\Document
     /**
      * attach timer to a document
      *
-     * @param \Doc   &$doc          the document where timer will be attached
-     * @param \Doc   &$origin       the document which comes from the attachement
+     * @param \Anakeen\Core\Internal\SmartElement   &$doc          the document where timer will be attached
+     * @param \Anakeen\Core\Internal\SmartElement   &$origin       the document which comes from the attachement
      * @param string $referenceDate reference date to trigger the actions
      *
      * @return string error - empty if no error -
@@ -79,8 +79,8 @@ class TimerHooks extends \Anakeen\SmartStructures\Document
     /**
      * unattach timer to a document
      *
-     * @param \Doc $doc     the timer document
-     * @param \Doc       &$origin the document which comes from the attachement
+     * @param \Anakeen\Core\Internal\SmartElement $doc     the timer document
+     * @param \Anakeen\Core\Internal\SmartElement       &$origin the document which comes from the attachement
      * @param int        $c       count of deletion
      *
      * @return string error - empty if no error -
@@ -102,7 +102,7 @@ class TimerHooks extends \Anakeen\SmartStructures\Document
     /**
      * unattach timer to a document
      *
-     * @param \Doc &$doc  the timer document
+     * @param \Anakeen\Core\Internal\SmartElement &$doc  the timer document
      *
      * @return string error - empty if no error -
      */

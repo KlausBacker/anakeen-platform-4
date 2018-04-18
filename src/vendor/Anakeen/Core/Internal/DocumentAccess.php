@@ -92,7 +92,7 @@ class DocumentAccess
 
 
     /**
-     * @var \Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $document;
 
@@ -105,10 +105,10 @@ class DocumentAccess
     }
 
     /**
-     * @param \Doc $document
+     * @param \Anakeen\Core\Internal\SmartElement $document
      * @return DocumentAccess
      */
-    public function setDocument(\Doc $document)
+    public function setDocument(\Anakeen\Core\Internal\SmartElement $document)
     {
         $this->document = $document;
         return $this;
@@ -177,7 +177,7 @@ class DocumentAccess
      * set profil for document
      *
      * @param int  $profid identifier for profil document
-     * @param \Doc $fromdocidvalues
+     * @param \Anakeen\Core\Internal\SmartElement $fromdocidvalues
      *
      * @return string
      * @throws \Dcp\Core\Exception
@@ -325,7 +325,7 @@ class DocumentAccess
      * reset right for dynamic profil
      *
      * @param int  $dprofid         identifier for dynamic profil document
-     * @param \Doc $fromdocidvalues other document to reference dynamic profiling (default itself)
+     * @param \Anakeen\Core\Internal\SmartElement $fromdocidvalues other document to reference dynamic profiling (default itself)
      *
      * @return string error message
      * @throws \Dcp\Core\Exception
@@ -403,7 +403,7 @@ class DocumentAccess
                     $tuid = array();
                     $aid = $tVgroup2attrid[$v["userid"]];
                     /**
-                     * @var \Doc $fromdocidvalues
+                     * @var \Anakeen\Core\Internal\SmartElement $fromdocidvalues
                      */
                     $duid = $fromdocidvalues->getRawValue($aid);
                     if ($duid == "") {
@@ -411,7 +411,7 @@ class DocumentAccess
                     }
                     if ($duid != "") {
                         $duid = str_replace("<BR>", "\n", $duid); // docid multiple
-                        $tduid = \Doc::rawValueToArray($duid);
+                        $tduid = \Anakeen\Core\Internal\SmartElement::rawValueToArray($duid);
                         foreach ($tduid as $duid) {
                             if ($duid > 0) {
                                 $docu = DocManager::getRawDocument(intval($duid));
@@ -479,7 +479,7 @@ class DocumentAccess
      * reset right for dynamic profil
      *
      * @param int  $dprofid         identifier for dynamic profil document
-     * @param \Doc $fromdocidvalues other document to reference dynamic profiling (default itself)
+     * @param \Anakeen\Core\Internal\SmartElement $fromdocidvalues other document to reference dynamic profiling (default itself)
      *
      * @return string error message
      * @throws \Dcp\Db\Exception
@@ -529,7 +529,7 @@ class DocumentAccess
             } else {
                 $aid = $tVgroup2attrid[$v["userid"]];
                 /**
-                 * @var \Doc $fromdocidvalues
+                 * @var \Anakeen\Core\Internal\SmartElement $fromdocidvalues
                  */
                 $duid = $fromdocidvalues->getRawValue($aid);
                 if ($duid == "") {
@@ -537,7 +537,7 @@ class DocumentAccess
                 }
                 if ($duid != "") {
                     $duid = str_replace("<BR>", "\n", $duid); // docid multiple
-                    $tduid = \Doc::rawValueToArray($duid);
+                    $tduid = \Anakeen\Core\Internal\SmartElement::rawValueToArray($duid);
                     foreach ($tduid as $duid) {
                         if ($duid > 0) {
                             $docu = DocManager::getRawDocument(intval($duid)); // not for idoc list for the moment

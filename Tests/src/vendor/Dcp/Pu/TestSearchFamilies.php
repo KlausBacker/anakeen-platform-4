@@ -47,7 +47,7 @@ class TestSearchFamilies extends TestCaseDcpCommonFamily
         
         $doc = $s->getNextDoc();
         /**
-         * @var \Doc $doc
+         * @var \Anakeen\Core\Internal\SmartElement $doc
          */
         foreach ($expectedProperties as $propId => $expectedValue) {
             $propValue = $doc->getPropertyValue($propId);

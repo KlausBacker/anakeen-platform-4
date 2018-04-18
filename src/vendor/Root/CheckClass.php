@@ -22,7 +22,7 @@ class CheckClass extends CheckData
 
     /**
      * @param array $data
-     * @param Doc   $doc
+     * @param \Anakeen\Core\Internal\SmartElement   $doc
      *
      * @return CheckClass
      */
@@ -115,7 +115,7 @@ class CheckClass extends CheckData
                     $parentClass = \Anakeen\SmartStructures\Document::class;
                 }
                 if ($this->disableInheritanceCondition) {
-                    $parentClass = \Doc::class;
+                    $parentClass = \Anakeen\Core\Internal\SmartElement::class;
 
                 }
                 if (!$o->isSubclassOf($parentClass)) {

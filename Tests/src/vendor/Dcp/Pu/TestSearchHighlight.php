@@ -43,7 +43,7 @@ class TestSearchHighlight extends TestCaseDcpCommonFamily
         // print_r($s->getSearchInfo());
         $index = 0;
         /**
-         * @var \Doc $doc
+         * @var \Anakeen\Core\Internal\SmartElement $doc
          */
         foreach ($dl as $doc) {
             

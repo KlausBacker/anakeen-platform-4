@@ -86,7 +86,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
         $expectedAccounts = array_map("mb_strtolower", $expectedAccounts);
         $loginFounds = array();
         /**
-         * @var \Doc $doc
+         * @var \Anakeen\Core\Internal\SmartElement $doc
          */
         foreach ($al as $doc) {
             $login = '';

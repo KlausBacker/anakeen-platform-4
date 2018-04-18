@@ -7,7 +7,8 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-class TST_GETSEARCHMETHODS_OVERRIDE extends Doc
+class TST_GETSEARCHMETHODS_OVERRIDE extends \Anakeen\Core\Internal\SmartElement
+
 {
     /**
      * @end-method-ignore

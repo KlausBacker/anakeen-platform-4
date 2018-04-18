@@ -27,7 +27,7 @@ class PDirHooks extends \DocCollection
     
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
-        // don't use Doc constructor because it could call this constructor => infinitive loop
-        \Doc::__construct($dbaccess, $id, $res, $dbid);
+        // don't use \Anakeen\Core\Internal\SmartElement constructor because it could call this constructor => infinitive loop
+        \Anakeen\Core\Internal\SmartElement::__construct($dbaccess, $id, $res, $dbid);
     }
 }

@@ -218,12 +218,12 @@ class ExportDocument
     /**
      * @deprecated rename to  csvExport
      */
-    public function cvsExport(\Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
+    public function cvsExport(\Anakeen\Core\Internal\SmartElement & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
     {
         $this->csvExport($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
     }
 
-    public function csvExport(\Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
+    public function csvExport(\Anakeen\Core\Internal\SmartElement & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
     {
         if (!$doc->isAffected()) {
             return;

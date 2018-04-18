@@ -13,7 +13,7 @@
 class DocHtmlFormat
 {
     /**
-     * @var Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     public $doc = null;
     private $index = -1;
@@ -38,12 +38,12 @@ class DocHtmlFormat
      */
     private $vaultErrorSent = false;
 
-    public function __construct(Doc & $doc)
+    public function __construct(\Anakeen\Core\Internal\SmartElement & $doc)
     {
         $this->setDoc($doc);
     }
 
-    public function setDoc(Doc & $doc)
+    public function setDoc(\Anakeen\Core\Internal\SmartElement & $doc)
     {
         $this->doc = $doc;
     }

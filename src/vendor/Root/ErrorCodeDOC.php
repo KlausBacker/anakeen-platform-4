@@ -128,43 +128,43 @@ class ErrorCodeDOC
     /**
      * @errorCode
      * update doc error after postStore method
-     * @see Doc::store
+     * @see \Anakeen\Core\Internal\SmartElement::store
      */
     const DOC0112 = 'update error in "%s" document : %s';
     /**
      * @errorCode
      * update doc error after transfert values from old doc
-     * @see Doc::store
+     * @see \Anakeen\Core\Internal\SmartElement::store
      */
     const DOC0113 = 'transfertvalues error in document "%s" update: %s';
     /**
      * @errorCode the attribute must exists to get its value
-     * @see Doc::getAttributeValue
+     * @see \Anakeen\Core\Internal\SmartElement::getAttributeValue
      */
     const DOC0114 = 'attribute "%s" not exists in document "%s" (family "%s") : cannot get its value';
     /**
      * @errorCode the attribute must exists to set its value
-     * @see Doc::setAttributeValue
+     * @see \Anakeen\Core\Internal\SmartElement::setAttributeValue
      */
     const DOC0115 = 'attribute "%s" not exists in document "%s" (family "%s") : cannot set any value';
     /**
      * @errorCode a value cannot be associated to a structured  attribute. It must not be an TAB or FRAME attribute type.
-     * @see Doc::getAttributeValue
+     * @see \Anakeen\Core\Internal\SmartElement::getAttributeValue
      */
     const DOC0116 = 'attribute "%s" is a structured attribute in document "%s" (family "%s") : it cannot has any values';
     /**
      * @errorCode a value cannot be set to a structured  attribute. It must not be an TAB or FRAME attribute type.
-     * @see Doc::setAttributeValue
+     * @see \Anakeen\Core\Internal\SmartElement::setAttributeValue
      */
     const DOC0117 = 'attribute "%s" is a structured attribute in document "%s" (family "%s") : it cannot set values';
     /**
      * @errorCode try to update a document revised
-     * @see Doc::store
+     * @see \Anakeen\Core\Internal\SmartElement::store
      */
     const DOC0118 = 'cannot update fixed document "%s" (#%d)';
     /**
      * @errorCode try to update a document revised
-     * @see Doc::store
+     * @see \Anakeen\Core\Internal\SmartElement::store
      */
     const DOC0119 = 'the document "%s" (#%d) became fixed because another revision more recent has been created';
     /**
@@ -174,12 +174,12 @@ class ErrorCodeDOC
     const DOC0120 = 'cannot set family parameter "%s". It is not a parameter for "%s" ("%s") family';
     /**
      * @errorCode application tag must not contain \n character
-     * @see Doc::addATag
+     * @see \Anakeen\Core\Internal\SmartElement::addATag
      */
     const DOC0121 = 'cannot add application tag "%s" (document #%d). Application tag must not contain \n character';
     /**
      * @errorCode application tag must not be empty
-     * @see Doc::addATag
+     * @see \Anakeen\Core\Internal\SmartElement::addATag
      */
     const DOC0122 = 'cannot add application tag (document #%d). Application tag must not be empty';
     /**
@@ -189,17 +189,17 @@ class ErrorCodeDOC
     const DOC0123 = 'cannot set default value for "%s". It is not an attribute for "%s" ("%s") family';
     /**
      * @errorCode problems with frame's structure
-     * @see Doc::viewbodycard
+     * @see \Anakeen\Core\Internal\SmartElement::viewbodycard
      */
     const DOC0124 = 'changeframe requested but current frame is empty (current attribute is "%s")';
     /**
      * @errorCode problems with frame's structure
-     * @see Doc::viewbodycard
+     * @see \Anakeen\Core\Internal\SmartElement::viewbodycard
      */
     const DOC0125 = 'changeframe requested but current frame "%s" does not exists (current attribute is "%s")';
     /**
      * @errorCode return of customSearchValues hook must be an array
-     * @see Doc::getCustomSearchValues
+     * @see \Anakeen\Core\Internal\SmartElement::getCustomSearchValues
      */
     const DOC0126 = 'getCustomSearchValues must return an array of string (found "%s")';
     /**
@@ -218,8 +218,8 @@ class ErrorCodeDOC
      */
     const DOC0129 = 'Document with identifier "%s" from attribute "%s" has an empty property "us_whatid"';
     /**
-     * @errorCode The requested attribute was not found in Doc::getHtmlAttrValue()
-     * @see Doc::getHtmlAttrValue
+     * @errorCode The requested attribute was not found in \Anakeen\Core\Internal\SmartElement::getHtmlAttrValue()
+     * @see \Anakeen\Core\Internal\SmartElement::getHtmlAttrValue
      */
     const DOC0130 = 'Attribute "%s" not found on document "%s" from family "%s"';
     /**

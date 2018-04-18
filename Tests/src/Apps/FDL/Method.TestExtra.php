@@ -14,7 +14,8 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-class _TEST_EXTRA extends Doc
+class _TEST_EXTRA extends \Anakeen\Core\Internal\SmartElement
+
 {
     /**
      * @end-method-ignore

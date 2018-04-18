@@ -23,12 +23,12 @@ class CheckProfil extends CheckData
     private $docName = '';
     /**
      * profil doccument
-     * @var Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     private $profil = '';
     /**
      * dynamic reference
-     * @var Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     private $dynDoc = null;
     /**

@@ -45,7 +45,7 @@ $table1 = $query->Query(0, 0, "TABLE");
 if ($query->nb > 0) {
     printf("\n%d user to update\n", count($table1));
     $card = count($table1);
-    $doc = new Doc($dbaccess);
+    $doc = new \Anakeen\Core\Internal\SmartElement($dbaccess);
     $reste = $card;
     foreach ($table1 as $k => $v) {
         $fid = 0;

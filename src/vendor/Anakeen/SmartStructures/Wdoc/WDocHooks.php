@@ -10,7 +10,8 @@ use Anakeen\Core\ContextManager;
 use Anakeen\SmartStructures\Timer\TimerHooks;
 use Dcp\Exception;
 
-class WDocHooks extends \Doc
+class WDocHooks extends \Anakeen\Core\Internal\SmartElement
+
 {
     /**
      * WDoc has its own special access depend on transition
@@ -53,7 +54,7 @@ class WDocHooks extends \Doc
     private $pdoc = null;
     /**
      * document instance
-     * @var \Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     public $doc = null;
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
@@ -71,16 +72,16 @@ class WDocHooks extends \Doc
         if (isset($this->fromid)) {
             $this->defProfFamId = $this->fromid;
         } // it's a profil itself
-        // don't use Doc constructor because it could call this constructor => infinitive loop
-        \Doc::__construct($dbaccess, $id, $res, $dbid);
+        // don't use \Anakeen\Core\Internal\SmartElement constructor because it could call this constructor => infinitive loop
+        \Anakeen\Core\Internal\SmartElement::__construct($dbaccess, $id, $res, $dbid);
     }
     /**
      * affect document instance
-     * @param \Doc $doc document to use for workflow
+     * @param \Anakeen\Core\Internal\SmartElement $doc document to use for workflow
      * @param bool $force set to true to force a doc reset
      * @return void
      */
-    public function set(\Doc & $doc, $force = false)
+    public function set(\Anakeen\Core\Internal\SmartElement & $doc, $force = false)
     {
         if ((!isset($this->doc)) || ($this->doc->id != $doc->id) || $force) {
             $this->doc = & $doc;
@@ -842,7 +843,7 @@ class WDocHooks extends \Doc
             return $err;
         }
         /* Set edition mask from view control if a view control is applied on the document */
-        $this->doc->setMask(\Doc::USEMASKCVEDIT);
+        $this->doc->setMask(\Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT);
         
         if ($wm0 && (!empty($tr["m0"]))) {
             // apply first method (condition for the change)
@@ -1282,12 +1283,12 @@ class WDocHooks extends \Doc
      * explicit original doc control
      * @param $aclname
      * @param bool $strict
-     * @see Doc::control()
+     * @see \Anakeen\Core\Internal\SmartElement::control()
      * @return string
      */
     public function docControl($aclname, $strict = false)
     {
-        return \Doc::Control($aclname, $strict);
+        return \Anakeen\Core\Internal\SmartElement::Control($aclname, $strict);
     }
     /**
      * Special control in case of dynamic controlled profil
@@ -1297,7 +1298,7 @@ class WDocHooks extends \Doc
      */
     public function control($aclname, $strict = false)
     {
-        $err = \Doc::control($aclname, $strict);
+        $err = \Anakeen\Core\Internal\SmartElement::control($aclname, $strict);
         if ($err == "") {
             return $err;
         } // normal case

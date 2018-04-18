@@ -94,7 +94,7 @@ function clearCacheDoc($id = 0)
  * @param int|string $id       identifier of the object
  * @param bool       $latest   if true set to latest revision of doc
  *
- * @return Doc object
+ * @return \Anakeen\Core\Internal\SmartElement object
  * @throws DocManager\Exception
  * @throws \Dcp\Core\Exception
  * @deprecated use DocManager::getDocument
@@ -136,9 +136,9 @@ function new_Doc($dbaccess, $id = '', $latest = false)
  * @param string $fromid        identifier of the family document (the number or internal name)
  * @param bool   $control       if false don't control the user hability to create this kind of document
  * @param bool   $defaultvalues if false not affect default values
- * @param bool   $temporary     if true create document as temporary doc (use Doc::createTmpDoc instead)
+ * @param bool   $temporary     if true create document as temporary doc (use \Anakeen\Core\Internal\SmartElement::createTmpDoc instead)
  *
- * @return \Doc|false may be return false if no hability to create the document
+ * @return \Anakeen\Core\Internal\SmartElement |false may be return false if no hability to create the document
  * @throws \Dcp\Core\Exception
  * @see        createTmpDoc to create temporary/working document
  * @code
@@ -178,7 +178,7 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
  * @param string $fromid       identifier of the family document (the number or internal name)
  * @param bool   $defaultvalue set to false to not set default values
  *
- * @return Doc may be return false if no hability to create the document
+ * @return \Anakeen\Core\Internal\SmartElement may be return false if no hability to create the document
  */
 function createTmpDoc($dbaccess, $fromid, $defaultvalue = true)
 {
@@ -491,7 +491,7 @@ function cmp_cvorder3($a, $b)
 /**
  * control privilege for a document in the array form
  * the array must provide from getTdoc
- * the function is equivalent of Doc::Control
+ * the function is equivalent of \Anakeen\Core\Internal\SmartElement::Control
  *
  * @param array  $tdoc    document
  * @param string $aclname identifier of the privilege to test
@@ -530,11 +530,11 @@ function controlTdoc(&$tdoc, $aclname)
  * @param string $dbaccess database specification
  * @param array  $v        values of document
  *
- * @return Doc the document object
+ * @return \Anakeen\Core\Internal\SmartElement the document object
  */
 function getDocObject($dbaccess, $v, $k = 0)
 {
-    /* @var Doc[][] $_OgetDocObject */
+    /* @var \Anakeen\Core\Internal\SmartElement [][] $_OgetDocObject */
     static $_OgetDocObject;
 
     if ($v["doctype"] == "C") {
@@ -557,7 +557,7 @@ function getDocObject($dbaccess, $v, $k = 0)
 /**
  * return the next document in sql select ressources
  * use with "ITEM" type searches direct in QueryDb
- * return Doc the next doc (false if the end)
+ * return \Anakeen\Core\Internal\SmartElement the next doc (false if the end)
  */
 function getNextDbObject($dbaccess, $res)
 {
@@ -571,7 +571,7 @@ function getNextDbObject($dbaccess, $res)
 /**
  * return the next document in sql select ressources
  * use with "ITEM" type searches with getChildDoc
- * return Doc the next doc (false if the end)
+ * return \Anakeen\Core\Internal\SmartElement the next doc (false if the end)
  */
 function getNextDoc($dbaccess, &$tres)
 {
@@ -597,7 +597,7 @@ function getNextDoc($dbaccess, &$tres)
  * count returned document in sql select ressources
  *
  * @param array $tres of ressources
- *                    return Doc the next doc (false if the end)
+ *                    return \Anakeen\Core\Internal\SmartElement the next doc (false if the end)
  */
 function countDocs(&$tres)
 {
@@ -714,7 +714,7 @@ function getNameFromId($dbaccess, $id)
  * @param string $dbaccess database specification
  * @param int    $userid   what user identifier
  *
- * @return Doc|false the user document
+ * @return \Anakeen\Core\Internal\SmartElement |false the user document
  */
 function getDocFromUserId($dbaccess, $userid)
 {
@@ -1018,7 +1018,7 @@ function getLatestRevisionNumber($dbaccess, $initid, $fromid = 0)
 /**
  * Create default folder for a family with default constraint
  *
- * @param Doc $Doc the family object document
+ * @param \Anakeen\Core\Internal\SmartElement $Doc the family object document
  *
  * @return int id of new folder (false if error)
  */

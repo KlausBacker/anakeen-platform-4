@@ -25,7 +25,7 @@ class DocTitle
      *
      * @param int    $docid        relation documentg id
      * @param bool   $latest       true if it is latest
-     * @param Doc    $doc          document where comes from relation
+     * @param \Anakeen\Core\Internal\SmartElement    $doc          document where comes from relation
      * @param string $docrevOption docrev attribute option
      * @param array  $info         more information about document target (revision, initid)
      *
@@ -34,7 +34,7 @@ class DocTitle
     public static function getRelationTitle(
         $docid,
         $latest,
-        Doc $doc,
+        \Anakeen\Core\Internal\SmartElement $doc,
         $docrevOption = "",
         array & $info = array()
     ) {
@@ -81,12 +81,12 @@ class DocTitle
      *
      * @static
      *
-     * @param Doc $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      * @param int $uid user identifier
      *
      * @return void
      */
-    protected static function setRelationCache(Doc $doc, $uid)
+    protected static function setRelationCache(\Anakeen\Core\Internal\SmartElement $doc, $uid)
     {
         $la = $doc->getNormalAttributes();
         $relationIds = array();

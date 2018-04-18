@@ -10,7 +10,7 @@ namespace Anakeen\Routes\Core\Lib;
 class DocumentDataFormatter extends CollectionDataFormatter
 {
 
-    public function __construct(\Doc $document)
+    public function __construct(\Anakeen\Core\Internal\SmartElement $document)
     {
         parent::__construct($document);
     }
