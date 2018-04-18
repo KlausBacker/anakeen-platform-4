@@ -19,7 +19,7 @@ use SmartStructure\Attributes\Iuser as MyAttributes;
 /**
  * Class UserAccount
  */
-class IUserHooks extends \Anakeen\SmartStructures\Document implements \IMailRecipient
+class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\Core\IMailRecipient
 {
     use TAccount;
 
