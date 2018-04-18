@@ -1,52 +1,52 @@
 {
   "families": {
     "HELPPAGE": {
-      "renderAccessClass": "Anakeen\\Ui\\HelppageAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\Helppage\\Render\\HelppageAccess"
     },
     "CVDOC": {
-      "renderAccessClass": "Anakeen\\Ui\\CvdocAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\Cvdoc\\Render\\CvdocAccess"
     },
     "MAILTEMPLATE": {
-      "renderAccessClass": "Anakeen\\Ui\\MailtemplateAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\Mailtemplate\\Render\\MailtemplateAccess"
     },
     "WDOC": {
-      "renderAccessClass": "Anakeen\\Ui\\WdocAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\Wdoc\\Render\\WdocAccess"
     },
     "TIMER": {
-      "renderAccessClass": "Anakeen\\Ui\\TimerAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\Timer\\Render\\TimerAccess"
     },
     "MASK": {
-      "renderAccessClass": "Anakeen\\Ui\\MaskAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\Mask\\Render\\MaskAccess"
     },
     "IGROUP": {
-      "renderAccessClass": "Anakeen\\Ui\\IgroupAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\Igroup\\Render\\IgroupAccess"
     },
     "IUSER": {
-      "renderAccessClass": "Anakeen\\Ui\\IuserAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\Iuser\\Render\\IuserAccess"
     },
     "GROUP": {
-      "renderAccessClass": "Anakeen\\Ui\\GroupAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\Group\\Render\\GroupAccess"
     },
     "SEARCH": {
-      "renderAccessClass": "Anakeen\\Ui\\SearchAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\Search\\Render\\SearchAccess"
     },
     "MSEARCH": {
-      "renderAccessClass": "Anakeen\\Ui\\MSearchAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\MSearch\\Render\\MSearchAccess"
     },
     "SSEARCH": {
-      "renderAccessClass": "Anakeen\\Ui\\SSearchAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\SSearch\\Render\\SSearchAccess"
     },
     "DIR": {
-      "renderAccessClass": "Anakeen\\Ui\\DirAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\Dir\\Render\\DirAccess"
     },
     "EXEC":{
-      "renderAccessClass": "Anakeen\\Ui\\ExecAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\Exec\\Render\\ExecAccess"
     },
     "IMAGE":{
-      "renderAccessClass": "Anakeen\\Ui\\ImageAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\Image\\Render\\ImageAccess"
     },
     "ROLE":{
-      "renderAccessClass": "Anakeen\\Ui\\RoleAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\Role\\Render\\RoleAccess"
     }
   }
 }
