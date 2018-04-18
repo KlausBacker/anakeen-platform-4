@@ -4,6 +4,7 @@ namespace Dcp\Core;
 
 use Anakeen\Core\Utils\Strings;
 
+require_once "WHAT/Lib.Http.php";
 class AutocompleteLib
 {
 
