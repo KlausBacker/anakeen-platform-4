@@ -1,0 +1,9 @@
+@import "../DDUI/dduiAssets/scss/corporate/variables.corporate";
+$font-family-base: $ank-ui-font;
+@import "../../public/uiAssets/externals/KendoUI/scss/variables";
+
+html, body {
+  font-size: 12px;
+  height: 100vh;
+  font-family: $font-family-base;
+}

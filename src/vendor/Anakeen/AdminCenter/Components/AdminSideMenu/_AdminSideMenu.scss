@@ -1,0 +1,48 @@
+.admin-center-side-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 35px;
+  background: #424142;
+  padding: 2rem 0;
+}
+
+.side-menu-bottom-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .anakeen-logo {
+    width: auto;
+    height: 30px;
+  }
+
+  > * + * {
+    margin-top: 2rem;
+  }
+}
+
+.icon-module {
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@media (min-width: 768px) {
+  .admin-center-side-menu {
+    width: 70px;
+  }
+
+  .side-menu-bottom-content {
+    .anakeen-logo {
+      width: auto;
+      height: 65px;
+    }
+
+    .icon-module {
+      font-size: 2.5rem;
+    }
+  }
+}
+

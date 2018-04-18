@@ -1,0 +1,32 @@
+.admin-center-header {
+  display: flex;
+  font-size: 1.1667rem;
+  justify-content: space-between;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.7);
+  padding: .5rem 1rem;
+  background: #424142;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  > * + * {
+    margin-left: 1rem;
+  }
+}
+
+.header-app-title {
+  font-size: 1.33rem;
+  color: white;
+}
+
+.header-admin-logout-button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  .fa {
+    font-size: 2rem;
+  }
+}
