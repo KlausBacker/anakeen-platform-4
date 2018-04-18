@@ -14,7 +14,7 @@ class DocumentTemplateContext implements \ArrayAccess
 {
     public $i18n;
     /**
-     * @var \Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $_document = null;
     /**
@@ -34,7 +34,7 @@ class DocumentTemplateContext implements \ArrayAccess
     protected $_documentCrud = null;
     protected $_documentData = null;
 
-    public function __construct(\Doc $doc)
+    public function __construct(\Anakeen\Core\Internal\SmartElement $doc)
     {
         $this->_document = $doc;
         if ($doc->id > 0) {

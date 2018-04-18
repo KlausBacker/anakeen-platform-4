@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
-<module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@" release="@release@" version="@version@" vendor="Anakeen" license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
-    <description>Selenium Test for Document Uis</description>
+<module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@" release="@release@" version="@version@" vendor="Anakeen"
+        license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
+    <description>Tests for Anakeen Uis</description>
 
     <requires>
         <module name="user-interfaces"/>
@@ -11,68 +12,63 @@
     </replaces>
 
     <post-install>
-        <process command="programs/record_application TEST_DOCUMENT_SELENIUM"/>
         <process command="programs/record_application UITEST"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/TST_DDUI_ALLTYPE__STRUCT.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/TST_DDUI_ALLTYPE__CVDOC.xml"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/TST_DDUI_ALLTYPE__PARAM.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/TST_DDUI_ENUM__STRUCT.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/TST_DDUI_ENUM__CVDOC.xml"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/TST_DDUI_ENUM__PARAM.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TST_DDUI_DOCID__STRUCT.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TST_DDUI_DOCID__CVDOC.xml"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TST_DDUI_DOCID__PARAM.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TST_DDUI_DOCID__DATA.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TST_DDUI_EMPLOYEE__STRUCT.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TST_DDUI_EMPLOYEE__CVDOC.xml"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TST_DDUI_EMPLOYEE__PARAM.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TestRender/TEST_RENDER__STRUCT.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__STRUCT.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__CVDOC.xml"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__PARAM.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__STRUCT.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__CVDOC.xml"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__PARAM.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiDocid/TST_DDUI_DOCID__STRUCT.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiDocid/TST_DDUI_DOCID__CVDOC.xml"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiDocid/TST_DDUI_DOCID__PARAM.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiDocid/TST_DDUI_DOCID__DATA.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEmployee/TST_DDUI_EMPLOYEE__STRUCT.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEmployee/TST_DDUI_EMPLOYEE__CVDOC.xml"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEmployee/TST_DDUI_EMPLOYEE__PARAM.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TestRender/TEST_RENDER__STRUCT.csv"/>
 
 
-        <process
-                command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_color/TST_DDUI_COLOR__STRUCT.csv"/>
-        <process
-                command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_color/TST_DDUI_COLOR__CVDOC.xml"/>
-        <process
-                command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_color/TST_DDUI_COLOR__PARAM.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiColor/TST_DDUI_COLOR__STRUCT.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiColor/TST_DDUI_COLOR__CVDOC.xml"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiColor/TST_DDUI_COLOR__PARAM.csv"/>
 
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_USERS_INIT_DATA.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_INIT_DATA.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_INIT_DATA4.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_USERS_INIT_DATA.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA4.csv"/>
         <process command="./ank.php --route=Ui:Admin:LoadParameters"/>
         <process command="programs/update_catalog"/>
     </post-install>
     <post-upgrade>
-        <process command="programs/record_application TEST_DOCUMENT_SELENIUM"/>
         <process command="programs/record_application UITEST"/>
 
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/TST_DDUI_ALLTYPE__STRUCT.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/TST_DDUI_ALLTYPE__CVDOC.xml"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/TST_DDUI_ALLTYPE__PARAM.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/TST_DDUI_ENUM__STRUCT.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/TST_DDUI_ENUM__CVDOC.xml"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/TST_DDUI_ENUM__PARAM.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TST_DDUI_DOCID__STRUCT.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TST_DDUI_DOCID__CVDOC.xml"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TST_DDUI_DOCID__PARAM.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_docid/TST_DDUI_DOCID__DATA.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TST_DDUI_EMPLOYEE__STRUCT.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TST_DDUI_EMPLOYEE__CVDOC.xml"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__STRUCT.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__CVDOC.xml"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__PARAM.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__STRUCT.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__CVDOC.xml"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__PARAM.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiDocid/TST_DDUI_DOCID__STRUCT.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiDocid/TST_DDUI_DOCID__CVDOC.xml"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiDocid/TST_DDUI_DOCID__PARAM.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiDocid/TST_DDUI_DOCID__DATA.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEmployee/TST_DDUI_EMPLOYEE__STRUCT.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEmployee/TST_DDUI_EMPLOYEE__CVDOC.xml"/>
 
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_employee/TST_DDUI_EMPLOYEE__PARAM.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEmployee/TST_DDUI_EMPLOYEE__PARAM.csv"/>
 
         <process
-                command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_color/TST_DDUI_COLOR__STRUCT.csv"/>
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiColor/TST_DDUI_COLOR__STRUCT.csv"/>
         <process
-                command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_color/TST_DDUI_COLOR__CVDOC.xml"/>
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiColor/TST_DDUI_COLOR__CVDOC.xml"/>
         <process
-                command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_color/TST_DDUI_COLOR__PARAM.csv"/>
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiColor/TST_DDUI_COLOR__PARAM.csv"/>
 
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TestRender/TEST_RENDER__STRUCT.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TestRender/TEST_RENDER__STRUCT.csv"/>
 
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_USERS_INIT_DATA.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_INIT_DATA.csv"/>
-        <process command="./ank.php --script=importDocuments --csv-enclosure='&quot;' --csv-separator=';' --file=./Apps/TEST_DOCUMENT_SELENIUM/Family/TEST_DDUI_INIT_DATA4.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_USERS_INIT_DATA.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA4.csv"/>
         <process command="./ank.php --route=Ui:Admin:LoadParameters"/>
         <process command="programs/update_catalog"/>
     </post-upgrade>

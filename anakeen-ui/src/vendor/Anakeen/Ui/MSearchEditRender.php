@@ -10,7 +10,7 @@ use \SmartStructure\Attributes\Msearch as myAttributes;
 
 class MSearchEditRender extends DefaultConfigEditRender
 {
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
         $options->enum(myAttributes::gui_isrss)->setDisplay('bool');

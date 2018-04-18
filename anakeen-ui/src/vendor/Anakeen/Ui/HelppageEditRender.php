@@ -10,11 +10,11 @@ use SmartStructure\Attributes\HELPPAGE as myAttributes;
 class HelppageEditRender extends \Dcp\Ui\DefaultEdit
 {
     /**
-     * @param \Doc $document Document instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      *
      * @return \Dcp\Ui\RenderOptions
      */
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
 
@@ -67,11 +67,11 @@ HTML
         return $options;
     }
     /**
-     * @param \Doc $document
+     * @param \Anakeen\Core\Internal\SmartElement $document
      *
      * @return RenderAttributeVisibilities new attribute visibilities
      */
-    public function getVisibilities(\Doc $document)
+    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document)
     {
         $visibilities = parent::getVisibilities($document);
         

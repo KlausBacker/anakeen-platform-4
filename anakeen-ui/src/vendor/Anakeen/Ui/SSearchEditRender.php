@@ -10,7 +10,7 @@ use \SmartStructure\Attributes\Ssearch as myAttributes;
 
 class SSearchEditRender extends DefaultConfigEditRender
 {
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
         $options->enum(myAttributes::gui_isrss)->setDisplay('bool');

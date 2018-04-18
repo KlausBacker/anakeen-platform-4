@@ -10,11 +10,11 @@ use SmartStructure\Attributes\Mailtemplate as myAttributes;
 class MailtemplateViewRender extends DefaultConfigViewRender
 {
     /**
-     * @param \Doc $document Document instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      *
      * @return \Dcp\Ui\RenderOptions
      */
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
         $options->commonOption()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);

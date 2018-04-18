@@ -3,21 +3,23 @@
 namespace Dcp\Ui;
 
 use Anakeen\Core\DocManager;
+use Anakeen\SmartStructures\Wdoc\WDocHooks;
 
 class RenderConfigManager
 {
-    
+
     const ViewMode = "view";
     const EditMode = "edit";
     const CreateMode = "create";
+
     /**
-     * @param $mode
-     * @param \Doc $document
+     * @param        $mode
+     * @param \Anakeen\Core\Internal\SmartElement   $document
      * @param string $vId
      * @throws Exception
      * @return IRenderConfig
      */
-    public static function getRenderConfig($mode, \Doc $document, &$vId = '')
+    public static function getRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $document, &$vId = '')
     {
         if (empty($vId)) {
             if ($document->doctype === "C") {
@@ -34,11 +36,11 @@ class RenderConfigManager
             throw new Exception("UI0301", $vId, $document->getTitle());
         }
         $cvDoc = DocManager::getDocument($document->cvid);
-        
+
         if ($cvDoc == null) {
             throw new Exception("UI0302", $document->cvid);
         }
-        
+
         if (!is_a($cvDoc, \Anakeen\Core\DocManager::getFamilyClassName("Cvdoc"))) {
             throw new Exception("UI0303", $cvDoc->getTitle());
         }
@@ -59,16 +61,14 @@ class RenderConfigManager
         if (empty($vidInfo)) {
             throw new Exception("UI0305", $vId, $cvDoc->getTitle());
         }
-        if (!$cvDoc->isValidView($vidInfo, true)) {
-            throw new Exception("UI0308", $vId, $cvDoc->getTitle());
-        }
-        
+
+
         return self::getRenderFromVidinfo($vidInfo, $document);
     }
-    
-    protected static function getRenderFromVidinfo(array $vidInfo, \Doc $document)
+
+    protected static function getRenderFromVidinfo(array $vidInfo, \Anakeen\Core\Internal\SmartElement $document)
     {
-        
+
         $mskId = $vidInfo[\SmartStructure\Attributes\Cvdoc::cv_mskid];
         if ($mskId) {
             $err = $document->setMask($mskId);
@@ -76,7 +76,7 @@ class RenderConfigManager
                 addWarningMsg($err);
             }
         }
-        
+
         $renderClass = isset($vidInfo[\SmartStructure\Attributes\Cvdoc::cv_renderconfigclass]) ? $vidInfo[\SmartStructure\Attributes\Cvdoc::cv_renderconfigclass] : null;
         if ($renderClass) {
             $rc = new $renderClass();
@@ -93,15 +93,16 @@ class RenderConfigManager
             return self::getDefaultFamilyRenderConfig($mode, $document);
         }
     }
+
     /**
      * @param string $mode (view, edit, create)
-     * @param \Doc   $document
-     * @param string $vid view identifier
+     * @param \Anakeen\Core\Internal\SmartElement   $document
+     * @param string $vid  view identifier
      *
      * @return IRenderConfig
      * @throws Exception
      */
-    public static function getDocumentRenderConfig($mode, \Doc $document, &$vid = '')
+    public static function getDocumentRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $document, &$vid = '')
     {
         if ($document->cvid > 0) {
             /**
@@ -110,11 +111,11 @@ class RenderConfigManager
             $cvDoc = DocManager::getDocument($document->cvid);
             return self::getRenderConfigCv($mode, $cvDoc, $document, $vid);
         }
-        
+
         return self::getDefaultFamilyRenderConfig($mode, $document);
     }
-    
-    public static function getParameterRenderConfig($mode, \Doc $document)
+
+    public static function getParameterRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $document)
     {
         $renderAccessClass = self::getRenderParameterAccess($document->fromname);
         if ($renderAccessClass) {
@@ -129,13 +130,13 @@ class RenderConfigManager
         }
         return null;
     }
-    
-    public static function getTransitionRender($transitionId, \WDoc $workflow)
+
+    public static function getTransitionRender($transitionId, WDocHooks $workflow)
     {
         $render = null;
         if (is_a($workflow, 'Dcp\Ui\IRenderTransitionAccess')) {
             /**
-             * @var \WDoc|\Dcp\Ui\IRenderTransitionAccess $workflow
+             * @var WDocHooks|\Dcp\Ui\IRenderTransitionAccess $workflow
              */
             $render = $workflow->getTransitionRender($transitionId, $workflow);
             $render->setWorkflow($workflow);
@@ -147,8 +148,8 @@ class RenderConfigManager
                  */
                 $access = new $renderTransitionClass();
                 $render = $access->getTransitionRender($transitionId, $workflow);
-                if (! $render) {
-                    $render=new TransitionRender();
+                if (!$render) {
+                    $render = new TransitionRender();
                 }
                 $render->setWorkflow($workflow);
             } else {
@@ -156,9 +157,10 @@ class RenderConfigManager
                 $render->setWorkflow($workflow);
             }
         }
-        
+
         return $render;
     }
+
     /**
      * Return render class name defined in RENDER_PARAMETERS application parameter
      * @param string $familyName family name
@@ -169,11 +171,12 @@ class RenderConfigManager
     {
         return self::getRenderParameter($familyName, "renderAccessClass");
     }
+
     /**
      * Return render class name defined in RENDER_PARAMETERS application parameter
      *
      * @param string $familyName family name
-     * @param string $key [renderAccessClass, renderTransitionClass, disableTag, applyRefresh]
+     * @param string $key        [renderAccessClass, renderTransitionClass, disableTag, applyRefresh]
      *
      * @return null|string
      */
@@ -189,14 +192,15 @@ class RenderConfigManager
         }
         return null;
     }
+
     /**
      * Get render designed by document class
-     * @param $mode
-     * @param \Doc $document
+     * @param      $mode
+     * @param \Anakeen\Core\Internal\SmartElement $document
      * @throws Exception
      * @return IRenderConfig
      */
-    public static function getDefaultFamilyRenderConfig($mode, \Doc $document)
+    public static function getDefaultFamilyRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $document)
     {
         $parameterRender = self::getParameterRenderConfig($mode, $document);
         if ($parameterRender) {
@@ -213,17 +217,19 @@ class RenderConfigManager
         }
         return self::getRenderDefaultConfig($mode);
     }
+
     /**
      * Get render of a family itself
-     * @param $mode
+     * @param                              $mode
      * @param \Anakeen\Core\SmartStructure $family
      * @return FamilyView
      */
     protected static function getFamilyRenderConfig($mode, \Anakeen\Core\SmartStructure $family)
     {
-        
+
         return new \Dcp\Ui\FamilyView();
     }
+
     /**
      * @param string $mode
      * @throws Exception
@@ -242,16 +248,17 @@ class RenderConfigManager
                 throw new Exception("UI0300", $mode);
         }
     }
+
     /**
-     * @param string $mode view/edit/create
+     * @param string                $mode view/edit/create
      * @param \SmartStructure\CVDoc $cv
-     * @param \Doc   $document
-     * @param string $vid view identifier
+     * @param \Anakeen\Core\Internal\SmartElement                  $document
+     * @param string                $vid  view identifier
      *
      * @return IRenderConfig
      * @throws Exception
      */
-    public static function getRenderConfigCv($mode, \SmartStructure\CVDoc $cv, \Doc $document, &$vid = '')
+    public static function getRenderConfigCv($mode, \SmartStructure\CVDoc $cv, \Anakeen\Core\Internal\SmartElement $document, &$vid = '')
     {
         $cv->set($document);
         $renderAccessClass = $cv->getRawValue(\SmartStructure\Attributes\Cvdoc::cv_renderaccessclass);
@@ -268,8 +275,8 @@ class RenderConfigManager
                 return $config;
             }
         }
-        $vidInfo = $document->getDefaultView(($mode === "edit" || $mode === "create") , "all");
-        
+        $vidInfo = $document->getDefaultView(($mode === "edit" || $mode === "create"), "all");
+
         if ($vidInfo) {
             // vid already controlled by cv class
             $vid = $vidInfo[\SmartStructure\Attributes\Cvdoc::cv_idview];
@@ -280,15 +287,15 @@ class RenderConfigManager
         } else {
             switch ($mode) {
                 case self::ViewMode:
-                    $document->applyMask(\Doc::USEMASKCVVIEW);
+                    $document->applyMask(\Anakeen\Core\Internal\SmartElement::USEMASKCVVIEW);
                     break;
 
                 case self::EditMode:
-                    $document->applyMask(\Doc::USEMASKCVEDIT);
+                    $document->applyMask(\Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT);
                     break;
 
                 case self::CreateMode:
-                    $document->applyMask(\Doc::USEMASKCVEDIT);
+                    $document->applyMask(\Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT);
                     break;
 
                 default:

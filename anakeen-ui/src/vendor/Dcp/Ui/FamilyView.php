@@ -9,7 +9,7 @@ namespace Dcp\Ui;
 class FamilyView extends RenderDefault
 {
     
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return ___("Family View", "ddui");
     }
@@ -19,10 +19,10 @@ class FamilyView extends RenderDefault
         return IRenderConfig::viewType;
     }
     /**
-     * @param \Doc $document Document object instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      * @return BarMenu Menu configuration
      */
-    public function getMenu(\Doc $document)
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
     {
         $menu = new BarMenu();
         
@@ -36,7 +36,7 @@ class FamilyView extends RenderDefault
         return $menu;
     }
     
-    public function getTemplates(\Doc $document = null)
+    public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $templates = parent::getTemplates($document);
         

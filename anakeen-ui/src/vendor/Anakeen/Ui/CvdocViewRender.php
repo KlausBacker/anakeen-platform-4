@@ -10,11 +10,11 @@ use SmartStructure\Attributes\CVDOC as myAttributes;
 class CvdocViewRender extends DefaultConfigViewRender
 {
     /**
-     * @param \Doc $document Document instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      *
      * @return \Dcp\Ui\RenderOptions
      */
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
         $options->arrayAttribute(myAttributes::cv_t_views)->setTemplate(
@@ -61,7 +61,7 @@ HTML
         );
         return $options;
     }
-    public function getTemplates(\Doc $document = null)
+    public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $templates = parent::getTemplates($document);
         $templates["sections"]["content"] = array(
@@ -70,14 +70,14 @@ HTML
         return $templates;
     }
 //
-//    public function getJsReferences(\Doc $document = null)
+//    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
 //    {
 //        $js = parent::getJsReferences();
 //        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
 //        $js["dduiCvdoc"] = "DOCUMENT/Layout/Cvdoc/Cvdoc.js?ws=" . $version;
 //        return $js;
 //    }
-    public function getCssReferences(\Doc $document = null)
+    public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $css = parent::getCssReferences();
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");

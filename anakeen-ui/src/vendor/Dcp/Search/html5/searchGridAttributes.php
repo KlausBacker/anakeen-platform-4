@@ -62,7 +62,7 @@ class searchGridAttributes extends DocumentCollection
         );
     }
 
-    public static function getGridAttributes(\Doc $searchDocument) {
+    public static function getGridAttributes(\Anakeen\Core\Internal\SmartElement $searchDocument) {
         $_searchfamily=\Dcp\HttpApi\V1\DocManager\DocManager::getFamily($searchDocument->getRawValue(Report::se_famid));
         if (!$_searchfamily) {
             $exception = new Exception("CRUD0103", __METHOD__);
@@ -79,7 +79,7 @@ class searchGridAttributes extends DocumentCollection
         return $attributes;
     }
 
-    protected static function getResumeAttributes(\Doc $document) {
+    protected static function getResumeAttributes(\Anakeen\Core\Internal\SmartElement $document) {
           $return = array();
 
         $return[] = array("id" => "title","withIcon" => "true");
@@ -89,7 +89,7 @@ class searchGridAttributes extends DocumentCollection
         }
         return $return;
     }
-    protected static function getReportAttributes(\Doc $document, \Doc $_searchfamily) {
+    protected static function getReportAttributes(\Anakeen\Core\Internal\SmartElement $document, \Anakeen\Core\Internal\SmartElement $_searchfamily) {
         $return = [];
 
 
@@ -109,11 +109,11 @@ class searchGridAttributes extends DocumentCollection
                     $attrConfig["withIcon"]=true;
                 }
                 $return[]=$attrConfig;
-            } elseif (!empty(\Doc::$infofields[$attrid])) {
+            } elseif (!empty(\Anakeen\Core\Internal\SmartElement::$infofields[$attrid])) {
                  $attrConfig=[
                     "id"=>$attrid,
                     "sortable" => true,
-                    "className"=>sprintf("type--%s attr--%s", \Doc::$infofields[$attrid]["type"], $attrid)];
+                    "className"=>sprintf("type--%s attr--%s", \Anakeen\Core\Internal\SmartElement::$infofields[$attrid]["type"], $attrid)];
                 $return[]=$attrConfig;
             }
 
@@ -128,7 +128,7 @@ class searchGridAttributes extends DocumentCollection
         return $config;
     }
 
-    protected function getReportConfig(\Doc $document) {
+    protected function getReportConfig(\Anakeen\Core\Internal\SmartElement $document) {
         $config=$this->getDefaultConfig();
         $limit=$document->getRawValue(Report::rep_limit);
         if ($limit) {
@@ -136,7 +136,7 @@ class searchGridAttributes extends DocumentCollection
         }
         return $config;
     }
-    protected function getReportFooter(\Doc $document) {
+    protected function getReportFooter(\Anakeen\Core\Internal\SmartElement $document) {
         $return = [];
 
 

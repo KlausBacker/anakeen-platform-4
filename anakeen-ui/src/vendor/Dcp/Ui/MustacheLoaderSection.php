@@ -15,7 +15,7 @@ class MustacheLoaderSection implements \Mustache_Loader
     protected $delimiterStartTag = '[[';
     protected $delimiterEndTag = ']]';
     /***
-     * @var \Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
     */
     protected $document;
     public function __construct(array $tplSectionFile, $delimiterStartTag = '[[', $delimiterEndTag = ']]')
@@ -25,7 +25,7 @@ class MustacheLoaderSection implements \Mustache_Loader
         $this->delimiterEndTag = $delimiterEndTag;
     }
     
-    public function setDocument(\Doc $doc)
+    public function setDocument(\Anakeen\Core\Internal\SmartElement $doc)
     {
         $this->document = $doc;
     }

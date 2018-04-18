@@ -42,7 +42,7 @@ class DocumentViewCollection extends DocumentView
         );
     }
 
-    protected function getViews(\Doc $document)
+    protected function getViews(\Anakeen\Core\Internal\SmartElement $document)
     {
         $cv = DocManager::getDocument($document->cvid);
         if ($cv === null) {

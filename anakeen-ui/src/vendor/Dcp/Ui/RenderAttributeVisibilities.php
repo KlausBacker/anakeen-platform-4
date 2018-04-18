@@ -16,13 +16,13 @@ class RenderAttributeVisibilities implements \JsonSerializable
     const ArrayStaticVisibility = "U";
     const StaticWriteVisibility = "S";
     /**
-     * @var \Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $document;
     
     protected $visibilities = array();
     protected $finalVisibilities = array();
-    public function __construct(\Doc $document)
+    public function __construct(\Anakeen\Core\Internal\SmartElement $document)
     {
         $this->document = $document;
     }

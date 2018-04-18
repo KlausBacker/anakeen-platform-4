@@ -8,7 +8,7 @@ class ReportAccess implements \Dcp\Ui\IRenderConfigAccess
      * @param string $mode
      * @return \Dcp\Ui\IRenderConfig
      */
-    public function getRenderConfig($mode,  \Doc $document)
+    public function getRenderConfig($mode,  \Anakeen\Core\Internal\SmartElement $document)
     {
         switch ($mode) {
             case \Dcp\Ui\RenderConfigManager::CreateMode:

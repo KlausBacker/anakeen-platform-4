@@ -9,12 +9,12 @@ namespace Dcp\Ui;
 class RenderAttributeNeeded implements \JsonSerializable
 {
     /**
-     * @var \Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $document;
     
     protected $needed = array();
-    public function __construct(\Doc $document)
+    public function __construct(\Anakeen\Core\Internal\SmartElement $document)
     {
         $this->document = $document;
         $this->defaultNeeded();

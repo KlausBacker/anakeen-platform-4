@@ -7,28 +7,28 @@ use dcp\ui\ItemMenu as ItemMenu;
 
 class Search_html5_view_render extends \Dcp\Ui\DefaultView {
 
-    public function getTemplates(\Doc $document = null){
+    public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null){
         $templates = parent::getTemplates($document);
         $templates["sections"]["content"]["file"]
             = __DIR__."/searchHTML5_view.mustache";
         return $templates;
     }
 
-    public function getJsReferences(\Doc $document=null){
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document=null){
 
         $js = parent::getJsReferences($document);
 
-        $ws = \Dcp\UI\UIGetAssetPath::getWs();
-        $js["smartElementGrid"] = \Dcp\UI\UIGetAssetPath::getJSSmartElementGridPath();
+        $ws = \Dcp\Ui\UIGetAssetPath::getWs();
+        $js["smartElementGrid"] = \Dcp\Ui\UIGetAssetPath::getJSSmartElementGridPath();
         $js["dSearch"] = 'uiAssets/Families/dsearch/prod/dsearch.js?ws='.$ws;
-        if (\Dcp\UI\UIGetAssetPath::isInDebug()) {
+        if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {
             $js["dSearch"] = 'uiAssets/Families/dsearch/debug/dsearch.js?ws='.$ws;
         }
 
         return $js;
     }
 
-    public function getMenu(\Doc $document){
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document){
         $myMenu=parent::getMenu($document);
         $myItem=new ItemMenu("searchview","");
         $myItem->setTextLabel(___("consult","searchUi"));
@@ -40,7 +40,7 @@ class Search_html5_view_render extends \Dcp\Ui\DefaultView {
       return $myMenu;
     }
 
-    public function  getContextController(\Doc $document){
+    public function  getContextController(\Anakeen\Core\Internal\SmartElement $document){
         $controller = parent::getContextController($document);
 
         $tabConditions = array();

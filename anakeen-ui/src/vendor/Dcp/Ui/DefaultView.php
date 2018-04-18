@@ -14,7 +14,7 @@ use \SmartStructure\Attributes\Cvdoc as CvAttributes;
 class DefaultView extends RenderDefault
 {
 
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return ___("Default View", "ddui");
     }
@@ -26,11 +26,11 @@ class DefaultView extends RenderDefault
 
     /**
      * @param BarMenu $menu
-     * @param \Doc    $document
+     * @param \Anakeen\Core\Internal\SmartElement    $document
      *
      * @return BarMenu
      */
-    protected function setMenuVisibility(BarMenu & $menu, \Doc $document)
+    protected function setMenuVisibility(BarMenu & $menu, \Anakeen\Core\Internal\SmartElement $document)
     {
         // Trash document
         if ($document->doctype === "Z") {
@@ -78,11 +78,11 @@ class DefaultView extends RenderDefault
     }
 
     /**
-     * @param \Doc $document Document object instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      *
      * @return BarMenu Menu configuration
      */
-    public function getMenu(\Doc $document)
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
     {
         $menu = new BarMenu();
 
@@ -130,7 +130,7 @@ class DefaultView extends RenderDefault
 
 
     /**
-     * @param \Doc    $document
+     * @param \Anakeen\Core\Internal\SmartElement    $document
      * @param BarMenu $menu
      */
     public function appendWorkflowMenu($document, $menu)
@@ -164,7 +164,7 @@ class DefaultView extends RenderDefault
     }
 
     /**
-     * @param \Doc    $document
+     * @param \Anakeen\Core\Internal\SmartElement    $document
      * @param Barmenu $menu
      */
     public static function appendSystemMenu($document, $menu)
@@ -208,7 +208,7 @@ class DefaultView extends RenderDefault
         }
     }
 
-    public function getTemplates(\Doc $document = null)
+    public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $templates = parent::getTemplates($document);
         if ($document->locked == -1) {
@@ -220,10 +220,10 @@ class DefaultView extends RenderDefault
     /**
      * Get workflow submenu contents
      *
-     * @param \Doc     $doc
+     * @param \Anakeen\Core\Internal\SmartElement     $doc
      * @param ListMenu $menu
      */
-    protected function getWorkflowMenu(\Doc $doc, ListMenu & $menu)
+    protected function getWorkflowMenu(\Anakeen\Core\Internal\SmartElement $doc, ListMenu & $menu)
     {
 
         if ($doc->wid > 0 && $doc->locked != -1) {
@@ -311,10 +311,10 @@ class DefaultView extends RenderDefault
     /**
      * Add Menu item defined by attribute family
      *
-     * @param \Doc    $doc
+     * @param \Anakeen\Core\Internal\SmartElement    $doc
      * @param BarMenu $menu target menu
      */
-    public function addFamilyMenu(\Doc $doc, BarMenu & $menu)
+    public function addFamilyMenu(\Anakeen\Core\Internal\SmartElement $doc, BarMenu & $menu)
     {
         $legacyPopupFile = sprintf("%s/Apps/FDL/popupdocdetail.php", DEFAULT_PUBDIR);
         if (file_exists($legacyPopupFile)) {
@@ -328,12 +328,12 @@ class DefaultView extends RenderDefault
     /**
      * Add Menu item defined by attribute family
      *
-     * @param \Doc    $doc
+     * @param \Anakeen\Core\Internal\SmartElement    $doc
      * @param BarMenu $menu target menu
      *
      * @throws \Dcp\Ui\Exception
      */
-    protected function addCvMenu(\Doc $doc, BarMenu & $menu)
+    protected function addCvMenu(\Anakeen\Core\Internal\SmartElement $doc, BarMenu & $menu)
     {
         if ($doc->cvid > 0) {
             $cv = DocManager::getDocument($doc->cvid);
@@ -431,11 +431,11 @@ class DefaultView extends RenderDefault
     }
 
     /**
-     * @param \Doc $document Document instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      *
      * @return DocumentTemplateContext get template controller
      */
-    public function getContextController(\Doc $document)
+    public function getContextController(\Anakeen\Core\Internal\SmartElement $document)
     {
         $controller = parent::getContextController($document);
         if ($document->locked == -1) {

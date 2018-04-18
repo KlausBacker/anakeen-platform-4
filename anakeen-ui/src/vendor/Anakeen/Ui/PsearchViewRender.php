@@ -8,7 +8,7 @@ namespace Anakeen\Ui;
 
 class PsearchViewRender extends DefaultConfigViewRender
 {
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
         return $options;

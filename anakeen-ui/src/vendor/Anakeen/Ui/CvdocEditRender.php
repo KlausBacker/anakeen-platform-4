@@ -10,7 +10,7 @@ use SmartStructure\Attributes\CVDOC as myAttributes;
 
 class CvdocEditRender extends DefaultConfigEditRender
 {
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
         $options->arrayAttribute(myAttributes::cv_t_views)->setTemplate(
@@ -61,11 +61,11 @@ HTML
         return $options;
     }
     /**
-     * @param \Doc $document
+     * @param \Anakeen\Core\Internal\SmartElement $document
      *
      * @return \Dcp\Ui\RenderAttributeVisibilities new attribute visibilities
      */
-    public function getVisibilities(\Doc $document)
+    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document)
     {
         $visibilities = parent::getVisibilities($document);
 

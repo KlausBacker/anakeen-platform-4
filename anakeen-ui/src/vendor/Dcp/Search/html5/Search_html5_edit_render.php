@@ -17,12 +17,12 @@ use dcp\ui\ItemMenu as ItemMenu;
 class Search_html5_edit_render extends DefaultEdit
 {
 
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return "Search edit";
     }
 
-    public function getTemplates(\Doc $document = null)
+    public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $templates = parent::getTemplates($document);
         $templates["sections"]["content"]["file"]
@@ -31,22 +31,22 @@ class Search_html5_edit_render extends DefaultEdit
         return $templates;
     }
 
-    public function getJsReferences(\Doc $document = null)
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
 
         $js = parent::getJsReferences($document);
 
-        $ws = \Dcp\UI\UIGetAssetPath::getWs();
-        $js["smartElementGrid"] = \Dcp\UI\UIGetAssetPath::getJSSmartElementGridPath();
+        $ws = \Dcp\Ui\UIGetAssetPath::getWs();
+        $js["smartElementGrid"] = \Dcp\Ui\UIGetAssetPath::getJSSmartElementGridPath();
         $js["dSearch"] = 'uiAssets/Families/dsearch/prod/dsearch.js?ws=' . $ws;
-        if (\Dcp\UI\UIGetAssetPath::isInDebug()) {
+        if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {
             $js["dSearch"] = 'uiAssets/Families/dsearch/debug/dsearch.js?ws=' . $ws;
         }
 
         return $js;
     }
 
-    public function getMenu(\Doc $document)
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
     {
         $myMenu = parent::getMenu($document);
         $myItem = new ItemMenu("view", "");
@@ -57,7 +57,7 @@ class Search_html5_edit_render extends DefaultEdit
         return $myMenu;
     }
 
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
 
@@ -106,7 +106,7 @@ class Search_html5_edit_render extends DefaultEdit
         return $options;
     }
 
-    public function getVisibilities(\Doc $document)
+    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document)
     {
         $visibilities = parent::getVisibilities($document);
 
