@@ -12,7 +12,7 @@ use Dcp\Ui\CreateDocumentOptions;
 
 class IgroupViewRender extends DefaultConfigViewRender
 {
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
         return $options;

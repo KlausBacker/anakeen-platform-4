@@ -14,12 +14,12 @@ class RenderConfigManager
 
     /**
      * @param        $mode
-     * @param \Doc   $document
+     * @param \Anakeen\Core\Internal\SmartElement   $document
      * @param string $vId
      * @throws Exception
      * @return IRenderConfig
      */
-    public static function getRenderConfig($mode, \Doc $document, &$vId = '')
+    public static function getRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $document, &$vId = '')
     {
         if (empty($vId)) {
             if ($document->doctype === "C") {
@@ -66,7 +66,7 @@ class RenderConfigManager
         return self::getRenderFromVidinfo($vidInfo, $document);
     }
 
-    protected static function getRenderFromVidinfo(array $vidInfo, \Doc $document)
+    protected static function getRenderFromVidinfo(array $vidInfo, \Anakeen\Core\Internal\SmartElement $document)
     {
 
         $mskId = $vidInfo[\SmartStructure\Attributes\Cvdoc::cv_mskid];
@@ -96,13 +96,13 @@ class RenderConfigManager
 
     /**
      * @param string $mode (view, edit, create)
-     * @param \Doc   $document
+     * @param \Anakeen\Core\Internal\SmartElement   $document
      * @param string $vid  view identifier
      *
      * @return IRenderConfig
      * @throws Exception
      */
-    public static function getDocumentRenderConfig($mode, \Doc $document, &$vid = '')
+    public static function getDocumentRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $document, &$vid = '')
     {
         if ($document->cvid > 0) {
             /**
@@ -115,7 +115,7 @@ class RenderConfigManager
         return self::getDefaultFamilyRenderConfig($mode, $document);
     }
 
-    public static function getParameterRenderConfig($mode, \Doc $document)
+    public static function getParameterRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $document)
     {
         $renderAccessClass = self::getRenderParameterAccess($document->fromname);
         if ($renderAccessClass) {
@@ -196,11 +196,11 @@ class RenderConfigManager
     /**
      * Get render designed by document class
      * @param      $mode
-     * @param \Doc $document
+     * @param \Anakeen\Core\Internal\SmartElement $document
      * @throws Exception
      * @return IRenderConfig
      */
-    public static function getDefaultFamilyRenderConfig($mode, \Doc $document)
+    public static function getDefaultFamilyRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $document)
     {
         $parameterRender = self::getParameterRenderConfig($mode, $document);
         if ($parameterRender) {
@@ -252,13 +252,13 @@ class RenderConfigManager
     /**
      * @param string                $mode view/edit/create
      * @param \SmartStructure\CVDoc $cv
-     * @param \Doc                  $document
+     * @param \Anakeen\Core\Internal\SmartElement                  $document
      * @param string                $vid  view identifier
      *
      * @return IRenderConfig
      * @throws Exception
      */
-    public static function getRenderConfigCv($mode, \SmartStructure\CVDoc $cv, \Doc $document, &$vid = '')
+    public static function getRenderConfigCv($mode, \SmartStructure\CVDoc $cv, \Anakeen\Core\Internal\SmartElement $document, &$vid = '')
     {
         $cv->set($document);
         $renderAccessClass = $cv->getRawValue(\SmartStructure\Attributes\Cvdoc::cv_renderaccessclass);
@@ -287,15 +287,15 @@ class RenderConfigManager
         } else {
             switch ($mode) {
                 case self::ViewMode:
-                    $document->applyMask(\Doc::USEMASKCVVIEW);
+                    $document->applyMask(\Anakeen\Core\Internal\SmartElement::USEMASKCVVIEW);
                     break;
 
                 case self::EditMode:
-                    $document->applyMask(\Doc::USEMASKCVEDIT);
+                    $document->applyMask(\Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT);
                     break;
 
                 case self::CreateMode:
-                    $document->applyMask(\Doc::USEMASKCVEDIT);
+                    $document->applyMask(\Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT);
                     break;
 
                 default:

@@ -6,7 +6,7 @@ use SmartStructure\Attributes\Tst_ddui_alltype as myAttributes;
 
 class setLinkTarget_self extends AllRenderConfigView
 {
-    public function getJsReferences(\Doc $document = null)
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
@@ -14,7 +14,7 @@ class setLinkTarget_self extends AllRenderConfigView
         return $js;
     }
 
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
 

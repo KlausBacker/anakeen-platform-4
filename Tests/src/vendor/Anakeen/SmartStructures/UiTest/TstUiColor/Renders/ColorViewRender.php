@@ -5,13 +5,13 @@ namespace Anakeen\SmartStructures\UiTest\TstUiColor\Renders;
 class ColorViewRender extends \Dcp\Ui\DefaultView
 {
 
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return __METHOD__;
     }
 
 
-    public function getCssReferences(\Doc $document = null)
+    public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $css = parent::getCssReferences($document);
@@ -19,7 +19,7 @@ class ColorViewRender extends \Dcp\Ui\DefaultView
         return $css;
     }
 
-    public function getJsReferences(\Doc $document = null)
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences($document);

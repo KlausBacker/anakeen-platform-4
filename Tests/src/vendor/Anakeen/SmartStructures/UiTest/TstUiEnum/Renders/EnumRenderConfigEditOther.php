@@ -6,12 +6,12 @@ use SmartStructure\Attributes\Tst_ddui_enum as myAttributes;
 
 class EnumRenderConfigEditOther extends EnumRenderConfigEdit
 {
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return "Enum Edit Other";
     }
 
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
 
@@ -30,7 +30,7 @@ class EnumRenderConfigEditOther extends EnumRenderConfigEdit
         return $options;
     }
 
-    public function getCssReferences(\Doc $document = null)
+    public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $css = parent::getCssReferences($document);

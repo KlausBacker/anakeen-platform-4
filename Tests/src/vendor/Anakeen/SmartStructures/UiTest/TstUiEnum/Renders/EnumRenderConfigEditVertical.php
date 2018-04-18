@@ -6,12 +6,12 @@ use SmartStructure\Attributes\Tst_ddui_enum as myAttributes;
 
 class EnumRenderConfigEditVertical extends EnumRenderConfigEditButtons
 {
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return "Enum Edit Vertical";
     }
     
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
         
@@ -20,7 +20,7 @@ class EnumRenderConfigEditVertical extends EnumRenderConfigEditButtons
         return $options;
     }
 
-    public function getCssReferences(\Doc $document = null)
+    public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $css = parent::getCssReferences($document);
         $css["tstenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumvertical.css";

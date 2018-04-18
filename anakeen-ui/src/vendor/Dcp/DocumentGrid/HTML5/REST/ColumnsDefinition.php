@@ -52,7 +52,7 @@ class ColumnsDefinition extends Crud
      */
     public function read($resourceId)
     {
-        $this->properties = array_filter(\Doc::$infofields, function ($item)
+        $this->properties = array_filter(\Anakeen\Core\Internal\SmartElement::$infofields, function ($item)
         {
             return isset($item["displayable"]) ? $item["displayable"] : false;
         });
@@ -222,7 +222,7 @@ class ColumnsDefinition extends Crud
      */
     protected function getCurrentFamDoc($currentColumn, &$famDef)
     {
-        /* @var \Doc $currentFamDoc */
+        /* @var \Anakeen\Core\Internal\SmartElement $currentFamDoc */
         if (isset($currentColumn["famId"])) {
             if (!isset($famDef[$currentColumn["famId"]])) {
                 $famDef[$currentColumn["famId"]] = new_Doc('', $currentColumn["famId"]);
@@ -241,7 +241,7 @@ class ColumnsDefinition extends Crud
         return $currentFamDoc;
     }
     
-    protected function isSortable(\Doc $tmpDoc, $attrId)
+    protected function isSortable(\Anakeen\Core\Internal\SmartElement $tmpDoc, $attrId)
     {
         $sortable = $tmpDoc->getSortAttributes();
         return isset($sortable[$attrId]);

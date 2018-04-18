@@ -6,10 +6,10 @@ class TstUiAllTypeHooks extends \Anakeen\SmartStructures\Document implements \Dc
 {
     /**
      * @param string $mode
-     * @param \Doc   $document
+     * @param \Anakeen\Core\Internal\SmartElement   $document
      * @return \Dcp\Ui\IRenderConfig
      */
-    public function getRenderConfig($mode, \Doc $document)
+    public function getRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $document)
     {
         if ($mode === \Dcp\Ui\RenderConfigManager::EditMode || $mode === \Dcp\Ui\RenderConfigManager::CreateMode) {
             return new Renders\AllRenderConfigEdit();

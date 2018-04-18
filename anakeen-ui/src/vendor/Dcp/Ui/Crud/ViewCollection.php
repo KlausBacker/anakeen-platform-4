@@ -39,7 +39,7 @@ class ViewCollection extends View
         );
     }
     
-    protected function getViews(\Doc $document)
+    protected function getViews(\Anakeen\Core\Internal\SmartElement $document)
     {
         $cv = DocManager::getDocument($document->cvid);
         if ($cv === null) {

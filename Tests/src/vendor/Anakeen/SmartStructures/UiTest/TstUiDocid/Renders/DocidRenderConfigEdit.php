@@ -10,12 +10,12 @@ use SmartStructure\Attributes\TST_DDUI_DOCID as myAttributes;
 
 class DocidRenderConfigEdit extends \Dcp\Ui\DefaultEdit
 {
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return "Docid Edit";
     }
     
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
 

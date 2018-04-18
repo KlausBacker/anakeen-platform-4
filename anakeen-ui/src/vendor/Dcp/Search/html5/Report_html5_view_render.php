@@ -7,7 +7,7 @@ use SmartStructure\Attributes\Report;
 
 class Report_html5_view_render extends Search_html5_view_render {
 
-    public function getTemplates(\Doc $document = null){
+    public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null){
         $templates = parent::getTemplates($document);
         $templates["sections"]["content"]["file"]
             = __DIR__."/reportHTML5_view.mustache";
@@ -15,7 +15,7 @@ class Report_html5_view_render extends Search_html5_view_render {
     }
 
 
-    public function getMenu(\Doc $document)
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
     {
         $menu= parent::getMenu($document);
 
@@ -33,7 +33,7 @@ class Report_html5_view_render extends Search_html5_view_render {
         return $menu;
     }
 
-    public function getJsReferences(\Doc $document = null)
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $js= parent::getJsReferences($document);
 

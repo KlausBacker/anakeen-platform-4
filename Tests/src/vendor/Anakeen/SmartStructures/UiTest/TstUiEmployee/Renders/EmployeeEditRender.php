@@ -7,17 +7,17 @@ use \SmartStructure\Attributes\Tst_ddui_employee as myAttribute;
 class EmployeeEditRender extends \Dcp\Ui\DefaultEdit
 {
 
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return "Employee edit";
     }
 
     /**
-     * @param \Doc $document Document instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      *
      * @return \Dcp\ui\RenderOptions
      */
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
 

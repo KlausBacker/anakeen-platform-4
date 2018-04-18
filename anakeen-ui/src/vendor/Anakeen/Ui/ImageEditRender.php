@@ -9,7 +9,7 @@ use \SmartStructure\Attributes\IMAGE as myAttributes;
 
 class ImageEditRender extends DefaultConfigEditRender
 {
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
         $options->enum(myAttributes::img_catg)->setDisplay('vertical');

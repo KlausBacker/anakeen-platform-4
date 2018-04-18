@@ -17,7 +17,7 @@ use Dcp\HttpApi\V1\Api\RecordReturnMessage;
 class DocumentGrid extends DocumentCollection
 {
     /**
-     * @var \Doc
+     * @var \Anakeen\Core\Internal\SmartElement 
      */
     protected $_collection = null;
 

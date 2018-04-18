@@ -7,12 +7,12 @@ use SmartStructure\Attributes\Tst_ddui_enum as myAttributes;
 class EnumRenderConfigView extends \Dcp\Ui\DefaultView
 {
     
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return "Enum View";
     }
 
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options= parent::getOptions(
             $document
@@ -21,7 +21,7 @@ class EnumRenderConfigView extends \Dcp\Ui\DefaultView
         $options->document()->setTabPlacement(\Dcp\Ui\DocumentRenderOptions::tabTopProportionalPlacement);
         return $options;
     }
-    public function getCssReferences(\Doc $document = null)
+    public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $css = parent::getCssReferences($document);
@@ -29,7 +29,7 @@ class EnumRenderConfigView extends \Dcp\Ui\DefaultView
         $css["tstotherenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/testOtherEnum.css?ws=".$version;
         return $css;
     }
-    public function getJsReferences(\Doc $document = null)
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $jsReferences = parent::getJsReferences($document);

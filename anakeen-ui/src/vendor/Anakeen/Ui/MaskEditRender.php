@@ -10,7 +10,7 @@ use \SmartStructure\Attributes\Mask as myAttributes;
 
 class MaskEditRender extends DefaultConfigEditRender
 {
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
         /*$options->arrayAttribute(myAttributes::msk_t_contain)->disableRowAdd(true);
@@ -20,7 +20,7 @@ class MaskEditRender extends DefaultConfigEditRender
     }
 
     /*
-    public function getJsReferences(\Doc $document = null)
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $js = parent::getJsReferences();
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");

@@ -10,11 +10,11 @@ use Anakeen\Core\DocManager;
 class Report_html5_edit_render extends Search_html5_edit_render
 {
 
-    public function getLabel(\Doc $document = null) {
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null) {
         return "Report Edit";
     }
 
-    public function setCustomClientData(\Doc $document, $data)
+    public function setCustomClientData(\Anakeen\Core\Internal\SmartElement $document, $data)
     {
         parent::setCustomClientData($document, $data);
         if (!empty($data) && is_array($data)) {
@@ -31,7 +31,7 @@ class Report_html5_edit_render extends Search_html5_edit_render
         }
     }
 
-    public function getTemplates(\Doc $document = null)
+    public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $templates = parent::getTemplates($document);
         $templates["sections"]["content"]["file"]
@@ -39,7 +39,7 @@ class Report_html5_edit_render extends Search_html5_edit_render
         return $templates;
     }
 
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
 
@@ -57,7 +57,7 @@ class Report_html5_edit_render extends Search_html5_edit_render
         return $options;
     }
 
-    public function getVisibilities(\Doc $document)
+    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document)
     {
         $vis= parent::getVisibilities($document);
         $vis->setVisibility(myAttr::rep_style, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);

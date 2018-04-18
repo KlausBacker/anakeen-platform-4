@@ -7,7 +7,7 @@ use SmartStructure\Attributes\Tst_ddui_alltype as myAttributes;
 class DocumentController_fetchDocument extends \Dcp\Ui\DefaultEdit
 {
 
-    public function getCssReferences(\Doc $document = null)
+    public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $cssReferences = parent::getCssReferences($document);
@@ -15,7 +15,7 @@ class DocumentController_fetchDocument extends \Dcp\Ui\DefaultEdit
         return $cssReferences;
     }
 
-    public function getJsReferences(\Doc $document = null)
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences();
@@ -23,7 +23,7 @@ class DocumentController_fetchDocument extends \Dcp\Ui\DefaultEdit
         return $js;
     }
 
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
 

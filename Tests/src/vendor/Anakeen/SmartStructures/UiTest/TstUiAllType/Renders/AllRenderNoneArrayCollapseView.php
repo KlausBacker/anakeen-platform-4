@@ -6,7 +6,7 @@ use SmartStructure\Attributes\Tst_ddui_alltype as myAttributes;
 
 class AllRenderNoneArrayCollapseView extends \Dcp\Ui\DefaultView
 {
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
 

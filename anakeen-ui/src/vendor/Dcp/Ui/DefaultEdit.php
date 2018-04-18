@@ -17,10 +17,10 @@ class DefaultEdit extends RenderDefault
     }
 
     /**
-     * @param \Doc $document Document object instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      * @return BarMenu Menu configuration
      */
-    public function getMenu(\Doc $document)
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
     {
         $menu = new BarMenu();
         $user = ContextManager::getCurrentUser();
@@ -89,7 +89,7 @@ class DefaultEdit extends RenderDefault
     }
 
     /**
-     * @param \Doc             $document
+     * @param \Anakeen\Core\Internal\SmartElement             $document
      * @param Barmenu|ListMenu $menu
      */
     public function appendSaveAndCloseMenu($document, $menu)
@@ -108,7 +108,7 @@ class DefaultEdit extends RenderDefault
 
 
     /**
-     * @param \Doc             $document
+     * @param \Anakeen\Core\Internal\SmartElement             $document
      * @param Barmenu|ListMenu $menu
      */
     public function appendCreateAndCloseMenu($document, $menu)
@@ -123,11 +123,11 @@ class DefaultEdit extends RenderDefault
     }
 
     /**
-     * @param \Doc $document Document instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      *
      * @return RenderOptions
      */
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
         $this->addDocumentHelpLinks($options, $document);

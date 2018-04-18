@@ -10,12 +10,12 @@ use SmartStructure\Attributes\Tst_ddui_enum as myAttributes;
 
 class EnumRenderConfigEditDefault extends \Dcp\Ui\DefaultEdit
 {
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return "Enum Edit Default";
     }
 
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
 
@@ -26,7 +26,7 @@ class EnumRenderConfigEditDefault extends \Dcp\Ui\DefaultEdit
     }
 
 
-    public function getCssReferences(\Doc $document = null)
+    public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $css = parent::getCssReferences($document);
@@ -37,12 +37,12 @@ class EnumRenderConfigEditDefault extends \Dcp\Ui\DefaultEdit
 
 class EnumRenderConfigEdit extends EnumRenderConfigEditDefault
 {
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return "Enum Edit";
     }
     
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
 
@@ -90,12 +90,12 @@ class EnumRenderConfigEdit extends EnumRenderConfigEditDefault
 
 class EnumRenderConfigEditButtons extends EnumRenderConfigEditDefault
 {
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return "Enum Edit Buttons";
     }
     
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
 
@@ -255,12 +255,12 @@ HTML
 
 class EnumRenderConfigEditHorizontal extends EnumRenderConfigEditButtons
 {
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return "Enum Edit Horizontal";
     }
     
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
         
@@ -269,7 +269,7 @@ class EnumRenderConfigEditHorizontal extends EnumRenderConfigEditButtons
         return $options;
     }
     
-    public function getCssReferences(\Doc $document = null)
+    public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $css = parent::getCssReferences($document);
         $css["tstenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumhorizontal.css";
@@ -279,12 +279,12 @@ class EnumRenderConfigEditHorizontal extends EnumRenderConfigEditButtons
 
 class EnumRenderConfigEditVertical extends EnumRenderConfigEditButtons
 {
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return "Enum Edit Vertical";
     }
     
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
         
@@ -293,7 +293,7 @@ class EnumRenderConfigEditVertical extends EnumRenderConfigEditButtons
         return $options;
     }
 
-    public function getCssReferences(\Doc $document = null)
+    public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $css = parent::getCssReferences($document);
         $css["tstenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumvertical.css";
@@ -303,12 +303,12 @@ class EnumRenderConfigEditVertical extends EnumRenderConfigEditButtons
 
 class EnumRenderConfigEditOther extends EnumRenderConfigEdit
 {
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return "Enum Edit Other";
     }
 
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
 
@@ -327,7 +327,7 @@ class EnumRenderConfigEditOther extends EnumRenderConfigEdit
         return $options;
     }
 
-    public function getCssReferences(\Doc $document = null)
+    public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $css = parent::getCssReferences($document);
@@ -339,12 +339,12 @@ class EnumRenderConfigEditOther extends EnumRenderConfigEdit
 class EnumRenderConfigView extends \Dcp\Ui\DefaultView
 {
     
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return "Enum View";
     }
 
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options= parent::getOptions(
             $document
@@ -353,7 +353,7 @@ class EnumRenderConfigView extends \Dcp\Ui\DefaultView
         $options->document()->setTabPlacement(\Dcp\Ui\DocumentRenderOptions::tabTopProportionalPlacement);
         return $options;
     }
-    public function getCssReferences(\Doc $document = null)
+    public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $css = parent::getCssReferences($document);
@@ -361,7 +361,7 @@ class EnumRenderConfigView extends \Dcp\Ui\DefaultView
         $css["tstotherenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/testOtherEnum.css?ws=".$version;
         return $css;
     }
-    public function getJsReferences(\Doc $document = null)
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         $jsReferences = parent::getJsReferences($document);

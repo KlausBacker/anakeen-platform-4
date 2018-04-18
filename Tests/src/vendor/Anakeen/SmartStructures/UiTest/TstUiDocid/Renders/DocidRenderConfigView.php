@@ -11,12 +11,12 @@ use SmartStructure\Attributes\TST_DDUI_DOCID as myAttributes;
 class DocidRenderConfigView extends \Dcp\Ui\DefaultView
 {
     
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return "Docid View";
     }
     
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
         /**
@@ -59,7 +59,7 @@ class DocidRenderConfigView extends \Dcp\Ui\DefaultView
         return $options;
     }
 
-    public function getJsReferences(\Doc $document = null)
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
 
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");

@@ -11,5 +11,5 @@ interface IRenderConfigAccess {
      * @param string $mode
      * @return IRenderConfig
      */
-    public function getRenderConfig($mode, \Doc $document);
+    public function getRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $document);
 }

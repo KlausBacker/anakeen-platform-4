@@ -62,7 +62,7 @@ class DocumentView
     );
     protected $needSendFamilyStructure = false;
     /**
-     * @var \Doc current document
+     * @var \Anakeen\Core\Internal\SmartElement current document
      */
     protected $document = null;
     protected $customClientData = null;
@@ -205,10 +205,10 @@ class DocumentView
     /**
      * Compute abstract standard view
      *
-     * @param \Doc $document
+     * @param \Anakeen\Core\Internal\SmartElement $document
      * @return array
      */
-    protected function getCoreViews(\Doc $document)
+    protected function getCoreViews(\Anakeen\Core\Internal\SmartElement $document)
     {
         $defaultConsultation = array(
             "requestIdentifier" => $this->viewIdentifier,
@@ -353,7 +353,7 @@ class DocumentView
 
     /**
      * @param \Dcp\Ui\IRenderConfig $config
-     * @param \Doc $document
+     * @param \Anakeen\Core\Internal\SmartElement $document
      * @return array|bool
      */
     protected function getStyleData($config, $document)
@@ -374,7 +374,7 @@ class DocumentView
 
     /**
      * @param \Dcp\Ui\IRenderConfig $config
-     * @param \Doc $document
+     * @param \Anakeen\Core\Internal\SmartElement $document
      * @throws Exception
      * @return array|bool
      */
@@ -412,7 +412,7 @@ class DocumentView
     /**
      * Get the document from the standard CRUD
      *
-     * @param \Doc $document
+     * @param \Anakeen\Core\Internal\SmartElement $document
      * @return mixed
      */
     protected function renderDocument($document)
@@ -439,7 +439,7 @@ class DocumentView
      * Get the current document,
      * record to document protected attribute
      * @param $resourceId
-     * @return \Doc
+     * @return \Anakeen\Core\Internal\SmartElement 
      * @throws Exception
      */
     protected function getDocument($resourceId)
@@ -493,12 +493,12 @@ class DocumentView
 
     /**
      * @param \Dcp\Ui\IRenderConfig $config
-     * @param \Doc $document
+     * @param \Anakeen\Core\Internal\SmartElement $document
      *
      * @return string
      * @throws \Dcp\Ui\Exception
      */
-    protected function renderTemplates(\Dcp\Ui\IRenderConfig $config, \Doc $document)
+    protected function renderTemplates(\Dcp\Ui\IRenderConfig $config, \Anakeen\Core\Internal\SmartElement $document)
     {
         $templates = $config->getTemplates($document);
 
@@ -524,7 +524,7 @@ class DocumentView
         return json_decode($mustacheEngine->render($delimiter . $mainTemplate, $docController));
     }
 
-    protected function getUri(\Doc $document, $vid)
+    protected function getUri(\Anakeen\Core\Internal\SmartElement $document, $vid)
     {
         if ($this->revision === -1) {
             return URLUtils::generateURL(sprintf("%s/documents/%s/views/%s", Settings::ApiV2, $document->initid, $vid));
@@ -675,7 +675,7 @@ class DocumentView
         return $etag;
     }
 
-    public static function getDefaultETag(\Doc $document)
+    public static function getDefaultETag(\Anakeen\Core\Internal\SmartElement $document)
     {
         $result = array(
             "id" => $document->id,

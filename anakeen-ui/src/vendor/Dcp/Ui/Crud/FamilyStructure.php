@@ -9,7 +9,7 @@ namespace Dcp\Ui\Crud;
 class FamilyStructure extends \Dcp\HttpApi\V1\Crud\Document
 {
     
-    public function __construct(\Doc $document = null)
+    public function __construct(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         parent::__construct();
         

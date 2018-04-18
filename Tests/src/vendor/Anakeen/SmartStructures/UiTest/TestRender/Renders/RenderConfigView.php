@@ -6,13 +6,13 @@ use SmartStructure\Attributes\Tst_render as myAttributes;
 
 class RenderConfigView extends \Dcp\Ui\DefaultView
 {
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return __METHOD__;
     }
 
 
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
         $options->frame(myAttributes::tst_fr_desc)->setTemplate('{{{attributes.tst_desc.htmlContent}}}')->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
@@ -24,7 +24,7 @@ class RenderConfigView extends \Dcp\Ui\DefaultView
         return $options;
     }
 
-    public function getMenu(\Doc $document)
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
     {
         $menu = parent::getMenu($document);
 
@@ -51,7 +51,7 @@ class RenderConfigView extends \Dcp\Ui\DefaultView
         return $menu;
     }
 
-    public function getJsReferences(\Doc $document = null)
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $js = parent::getJsReferences();
         $js["smartElement"] = \Dcp\Ui\UIGetAssetPath::getJSSmartElementPath();

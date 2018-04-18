@@ -6,7 +6,7 @@ use SmartStructure\Attributes\Tst_ddui_alltype as myAttributes;
 
 class AllRenderAllNeeded extends \Dcp\Ui\DefaultEdit
 {
-    public function getNeeded(\Doc $document)
+    public function getNeeded(\Anakeen\Core\Internal\SmartElement $document)
     {
         $need = parent::getNeeded($document);
         $attrs = $document->getNormalAttributes();

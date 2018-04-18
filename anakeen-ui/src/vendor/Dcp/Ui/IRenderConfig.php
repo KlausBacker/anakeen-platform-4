@@ -11,77 +11,77 @@ interface IRenderConfig {
     const editType = "edit";
     const viewType = "view";
     /**
-     * @param \Doc $document Document object instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      * Get the label of this view
      * @return string the text label
      */
-    public function getLabel(\Doc $document = null);
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null);
     /**
-     * @param \Doc $document Document object instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      * @return string[] list of css url
      */
-    public function getCssReferences(\Doc $document = null);
+    public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null);
     /**
-     * @param \Doc $document Document object instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      * @return string[] list of js url
      */
-    public function getJsReferences(\Doc $document = null);
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null);
     /**
-     * @param \Doc $document Document object instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      * @return array set of indexed template
      */
-    public function getTemplates(\Doc $document = null);
+    public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null);
     /**
-     * @param \Doc $document Document object instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      * @return RenderOptions deafault render configuration options
      */
-    public function getOptions(\Doc $document);
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document);
     /**
-     * @param \Doc $document Document object instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      * @return RenderAttributeVisibilities new attribute visibilities
      */
-    public function getVisibilities(\Doc $document);
+    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document);
     /**
-     * @param \Doc $document Document object instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      * @return RenderAttributeNeeded new mandatory attribute
      */
-    public function getNeeded(\Doc $document);
+    public function getNeeded(\Anakeen\Core\Internal\SmartElement $document);
     /**
-     * @param \Doc $document Document instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      * @return DocumentTemplateContext get template controller
      */
-    public function getContextController(\Doc $document);
+    public function getContextController(\Anakeen\Core\Internal\SmartElement $document);
     /**
      * return "view" or "edit"
      * @return string
      */
     public function getType();
     /**
-     * @param \Doc $document Document object instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      * @return BarMenu Menu configuration
      */
-    public function getMenu(\Doc $document);
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document);
     /**
      * Get custom data to transmit to client document controller
-     * @param \Doc $document Document object instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      * @return mixed
      */
-    public function getCustomServerData(\Doc $document);
+    public function getCustomServerData(\Anakeen\Core\Internal\SmartElement $document);
     /**
      * Retrieve some custom data
-     * @param \Doc $document Document object instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      * @param mixed $data data provided by client
      *
      * @return mixed
      */
-    public function setCustomClientData(\Doc $document, $data);
+    public function setCustomClientData(\Anakeen\Core\Internal\SmartElement $document, $data);
     /**
      * Defined special render etag
      * Return empty string if no special tag, null for always invalid tag
      * Else return a string
-     * @param \Doc $document Document instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      *
      * @return string|null
      */
-    public function getEtag(\Doc $document);
+    public function getEtag(\Anakeen\Core\Internal\SmartElement $document);
 }

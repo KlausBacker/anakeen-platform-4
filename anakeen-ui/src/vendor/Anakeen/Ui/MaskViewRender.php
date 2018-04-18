@@ -9,17 +9,17 @@ namespace Anakeen\Ui;
 class MaskViewRender extends DefaultConfigViewRender
 {
     /**
-     * @param \Doc $document Document instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      *
      * @return \Dcp\Ui\RenderOptions
      */
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
         return $options;
     }
 
-    public function getJsReferences(\Doc $document = null)
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $js = parent::getJsReferences();
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
@@ -34,7 +34,7 @@ class MaskViewRender extends DefaultConfigViewRender
     }
 
 
-    public function getTemplates(\Doc $document = null)
+    public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $templates = parent::getTemplates($document);
         $templates["sections"]["content"] = array(

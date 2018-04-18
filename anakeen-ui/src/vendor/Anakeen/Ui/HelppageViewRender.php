@@ -9,17 +9,17 @@ namespace Anakeen\Ui;
 class HelppageViewRender extends \Dcp\Ui\DefaultView
 {
     /**
-     * @param \Doc $document Document instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      *
      * @return \Dcp\Ui\RenderOptions
      */
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
         
         return $options;
     }
-    public function getTemplates(\Doc $document = null)
+    public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $templates = parent::getTemplates($document);
         $templates["sections"]["content"] = array(
@@ -31,7 +31,7 @@ class HelppageViewRender extends \Dcp\Ui\DefaultView
         return $templates;
     }
     
-    public function getJsReferences(\Doc $document = null)
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $js = parent::getJsReferences();
         $ws = \Dcp\Ui\UIGetAssetPath::getWs();
@@ -43,7 +43,7 @@ class HelppageViewRender extends \Dcp\Ui\DefaultView
 
         return $js;
     }
-    public function getCssReferences(\Doc $document = null)
+    public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $css = parent::getCssReferences();
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
@@ -51,11 +51,11 @@ class HelppageViewRender extends \Dcp\Ui\DefaultView
         return $css;
     }
     /**
-     * @param \Doc $document Document object instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      *
      * @return \Dcp\Ui\BarMenu Menu configuration
      */
-    public function getMenu(\Doc $document)
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
     {
         $menu = parent::getMenu($document);
         $langMenuList = new \Dcp\Ui\ListMenu("helppage-langMenu", ___("Lang", "ddui helppage"));

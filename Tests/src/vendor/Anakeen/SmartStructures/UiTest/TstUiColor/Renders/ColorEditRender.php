@@ -7,12 +7,12 @@ use \SmartStructure\Attributes\Tst_ddui_color as myAttribute;
 class ColorEditRender extends \Dcp\Ui\DefaultEdit
 {
 
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return __METHOD__;
     }
 
-    public function getCssReferences(\Doc $document = null)
+    public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $css = parent::getCssReferences($document);
@@ -20,7 +20,7 @@ class ColorEditRender extends \Dcp\Ui\DefaultEdit
         return $css;
     }
 
-    public function getJsReferences(\Doc $document = null)
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $js = parent::getJsReferences($document);
@@ -28,7 +28,7 @@ class ColorEditRender extends \Dcp\Ui\DefaultEdit
         return $js;
     }
 
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
 

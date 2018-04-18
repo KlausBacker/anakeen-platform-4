@@ -15,12 +15,12 @@ class RenderDefault implements IRenderConfig
     
     protected $customClientData = null;
     
-    public function getLabel(\Doc $document = null)
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return __CLASS__;
     }
     
-    public function getCssReferences(\Doc $document = null)
+    public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         return array(
@@ -30,7 +30,7 @@ class RenderDefault implements IRenderConfig
         );
     }
     
-    public function getJsReferences(\Doc $document = null)
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return array();
     }
@@ -58,7 +58,7 @@ class RenderDefault implements IRenderConfig
         return $jsRef;
     }
     
-    public function getTemplates(\Doc $document = null)
+    public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return array(
             "body" => array(
@@ -215,11 +215,11 @@ class RenderDefault implements IRenderConfig
         );
     }
     /**
-     * @param \Doc $document Document instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      *
      * @return RenderOptions
      */
-    public function getOptions(\Doc $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $opt = new RenderOptions();
         
@@ -282,7 +282,7 @@ class RenderDefault implements IRenderConfig
         return $opt;
     }
     
-    protected function setLinkOption(\Doc $document, RenderOptions & $opt)
+    protected function setLinkOption(\Anakeen\Core\Internal\SmartElement $document, RenderOptions & $opt)
     {
         
         $linkOption = new htmlLinkOptions();
@@ -314,20 +314,20 @@ class RenderDefault implements IRenderConfig
         }
     }
     /**
-     * @param \Doc $document
+     * @param \Anakeen\Core\Internal\SmartElement $document
      *
      * @return RenderAttributeVisibilities new attribute visibilities
      */
-    public function getVisibilities(\Doc $document)
+    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document)
     {
         return new RenderAttributeVisibilities($document);
     }
     /**
-     * @param \Doc $document
+     * @param \Anakeen\Core\Internal\SmartElement $document
      *
      * @return RenderAttributeNeeded new mandatory attributes
      */
-    public function getNeeded(\Doc $document)
+    public function getNeeded(\Anakeen\Core\Internal\SmartElement $document)
     {
         return new RenderAttributeNeeded($document);
     }
@@ -337,27 +337,27 @@ class RenderDefault implements IRenderConfig
         return "abstract";
     }
     /**
-     * @param \Doc $document Document object instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      *
      * @return BarMenu Menu configuration
      */
-    public function getMenu(\Doc $document)
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
     {
         $menu = new BarMenu();
         
         return $menu;
     }
     /**
-     * @param \Doc $document Document instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      *
      * @return DocumentTemplateContext get template controller
      */
-    public function getContextController(\Doc $document)
+    public function getContextController(\Anakeen\Core\Internal\SmartElement $document)
     {
         return new DocumentTemplateContext($document);
     }
     
-    protected function setEmblemMenu(\Doc $document, BarMenu $menu)
+    protected function setEmblemMenu(\Anakeen\Core\Internal\SmartElement $document, BarMenu $menu)
     {
         
         $item = new SeparatorMenu("EmblemLock", "");
@@ -398,11 +398,11 @@ class RenderDefault implements IRenderConfig
     }
     /**
      * Add Help if Help document is associated to family
-     * @param \Doc $doc
+     * @param \Anakeen\Core\Internal\SmartElement $doc
      * @param BarMenu $menu target menu
      * @throws \Dcp\Ui\Exception
      */
-    protected function addHelpMenu(\Doc $doc, BarMenu & $menu)
+    protected function addHelpMenu(\Anakeen\Core\Internal\SmartElement $doc, BarMenu & $menu)
     {
         $helpDoc = $helpDoc = $this->getDefaultHelpPageDocument($doc);
         if ($helpDoc) {
@@ -415,39 +415,39 @@ class RenderDefault implements IRenderConfig
     /**
      * Get custom data to transmit to client document controller
      *
-     * @param \Doc $document Document object instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      *
      * @return mixed
      */
-    public function getCustomServerData(\Doc $document)
+    public function getCustomServerData(\Anakeen\Core\Internal\SmartElement $document)
     {
         return null;
     }
     /**
      * Retrieve some custom data
      *
-     * @param \Doc $document Document object instance
+     * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      * @param mixed $data data provided by client
      *
      * @return mixed
      */
-    public function setCustomClientData(\Doc $document, $data)
+    public function setCustomClientData(\Anakeen\Core\Internal\SmartElement $document, $data)
     {
         $this->customClientData = $data;
     }
     
-    public function getEtag(\Doc $document)
+    public function getEtag(\Anakeen\Core\Internal\SmartElement $document)
     {
         return '';
     }
     /**
      * Add setLinkHelp option to attributes referenced in HELP family related document
      * @param RenderOptions $options
-     * @param \Doc          $document Document instance
+     * @param \Anakeen\Core\Internal\SmartElement          $document Document instance
      *
      * @return $this
      */
-    protected function addDocumentHelpLinks(RenderOptions $options, \Doc $document)
+    protected function addDocumentHelpLinks(RenderOptions $options, \Anakeen\Core\Internal\SmartElement $document)
     {
         $helpDoc = $this->getDefaultHelpPageDocument($document);
         if ($helpDoc) {
@@ -464,11 +464,11 @@ class RenderDefault implements IRenderConfig
     }
     /**
      * Return default help document associated with family
-     * @param \Doc $document
+     * @param \Anakeen\Core\Internal\SmartElement $document
      *
      * @return \SmartStructure\HELPPAGE|null
      */
-    protected function getDefaultHelpPageDocument(\Doc $document)
+    protected function getDefaultHelpPageDocument(\Anakeen\Core\Internal\SmartElement $document)
     {
         $helpDoc = $document->getHelpPage();
         if ($helpDoc && $helpDoc->isAlive()) {
