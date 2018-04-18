@@ -29,6 +29,7 @@ require_once "FDL/LegacyDocManager.php";
 use \Anakeen\Core\DbManager;
 use \Anakeen\Core\ContextManager;
 use \Anakeen\Core\DocManager;
+use Anakeen\Core\Internal\Format\StandardAttributeValue;
 
 class SmartElement extends \Anakeen\Core\Internal\DbObj
 {
@@ -9553,7 +9554,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         $moreSearchValues = [];
 
-        $fmt = new \FormatCollection($this);
+        $fmt = new \Anakeen\Core\Internal\FormatCollection($this);
         $attributes = $this->getNormalAttributes();
         $datesValues = [];
         $oneAttributeAtLeast = false;
@@ -9598,7 +9599,7 @@ create unique index i_docir on doc(initid, revision);";
                     $moreSearchValues[] = strftime("%A %B %Y %m %d", strtotime($date));
                 }
                 /**
-                 * @var \StandardAttributeValue $renderInfo
+                 * @var StandardAttributeValue $renderInfo
                  */
                 foreach ($r[0]["attributes"] as $renderInfo) {
                     if (isset($renderInfo->value) && $renderInfo->displayValue !== $renderInfo->value) {

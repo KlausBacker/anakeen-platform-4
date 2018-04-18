@@ -7,7 +7,11 @@
  * @author Anakeen
  *
  */
+
 namespace Anakeen\Core\SmartStructure;
+
+use Anakeen\Core\DbManager;
+use Anakeen\Core\Internal\Format\DateAttributeValue;
 
 class NormalAttribute extends BasicAttribute
 {
@@ -35,7 +39,7 @@ class NormalAttribute extends BasicAttribute
     public $phpfunc;
     public $elink; // extra link
     public $phpconstraint; // special constraint set
-    
+
     /**
      * @var bool special use for application interface
      */
@@ -62,33 +66,55 @@ class NormalAttribute extends BasicAttribute
     private static $_cache = array();
     protected $originalPhpfile;
     protected $originalPhpfunc;
+
     /**
      * Normal Attribute constructor : non structural attribute
      *
-     * @param int $id id of the attribute
-     * @param int $docid id of the family
-     * @param string $label default translate key
-     * @param string $type kind of attribute
-     * @param string $format format option
-     * @param string $repeat is repeteable attr
-     * @param int $order display order
-     * @param string $link link option
-     * @param string $visibility visibility option
-     * @param bool $needed is mandotary attribute
-     * @param bool $isInTitle is used to compute title
-     * @param bool $isInAbstract is used in abstract view
-     * @param \Anakeen\Core\SmartStructure\FieldSetAttribute &$fieldSet parent attribute
-     * @param string $phpfile php file used with the phpfunc
-     * @param string $phpfunc helpers function
-     * @param string $elink eling option
-     * @param string $phpconstraint class php function
-     * @param string $usefor Attribute or Parameter
-     * @param string $eformat eformat option
-     * @param string $options option string
-     * @param string $docname
+     * @param int                                            $id            id of the attribute
+     * @param int                                            $docid         id of the family
+     * @param string                                         $label         default translate key
+     * @param string                                         $type          kind of attribute
+     * @param string                                         $format        format option
+     * @param string                                         $repeat        is repeteable attr
+     * @param int                                            $order         display order
+     * @param string                                         $link          link option
+     * @param string                                         $visibility    visibility option
+     * @param bool                                           $needed        is mandotary attribute
+     * @param bool                                           $isInTitle     is used to compute title
+     * @param bool                                           $isInAbstract  is used in abstract view
+     * @param \Anakeen\Core\SmartStructure\FieldSetAttribute &$fieldSet     parent attribute
+     * @param string                                         $phpfile       php file used with the phpfunc
+     * @param string                                         $phpfunc       helpers function
+     * @param string                                         $elink         eling option
+     * @param string                                         $phpconstraint class php function
+     * @param string                                         $usefor        Attribute or Parameter
+     * @param string                                         $eformat       eformat option
+     * @param string                                         $options       option string
+     * @param string                                         $docname
      */
-    public function __construct($id, $docid, $label, $type, $format, $repeat, $order, $link, $visibility, $needed, $isInTitle, $isInAbstract, &$fieldSet, $phpfile, $phpfunc, $elink, $phpconstraint = "", $usefor = "", $eformat = "", $options = "", $docname = "")
-    {
+    public function __construct(
+        $id,
+        $docid,
+        $label,
+        $type,
+        $format,
+        $repeat,
+        $order,
+        $link,
+        $visibility,
+        $needed,
+        $isInTitle,
+        $isInAbstract,
+        &$fieldSet,
+        $phpfile,
+        $phpfunc,
+        $elink,
+        $phpconstraint = "",
+        $usefor = "",
+        $eformat = "",
+        $options = "",
+        $docname = ""
+    ) {
         $this->id = $id;
         $this->docid = $docid;
         $this->labelText = $label;
@@ -101,7 +127,7 @@ class NormalAttribute extends BasicAttribute
         $this->needed = $needed;
         $this->isInTitle = $isInTitle;
         $this->isInAbstract = $isInAbstract;
-        $this->fieldSet = & $fieldSet;
+        $this->fieldSet = &$fieldSet;
         $this->phpfile = $phpfile;
         $this->phpfunc = $phpfunc;
         $this->elink = $elink;
@@ -111,6 +137,7 @@ class NormalAttribute extends BasicAttribute
         $this->options = $options;
         $this->docname = $docname;
     }
+
     /**
      * temporary change need
      * @param bool $need true means needed, false not needed
@@ -120,6 +147,7 @@ class NormalAttribute extends BasicAttribute
     {
         $this->needed = $need;
     }
+
     /**
      * Parse htmltext and replace id by logicalname for links
      *
@@ -136,6 +164,7 @@ class NormalAttribute extends BasicAttribute
         }
         return $value;
     }
+
     /**
      * Generate the xml schema fragment
      *
@@ -180,6 +209,7 @@ class NormalAttribute extends BasicAttribute
                 return sprintf("<!-- no Schema %s (type %s)-->", $this->id, $this->type);
         }
     }
+
     /**
      * Generate XML schema layout
      *
@@ -195,7 +225,7 @@ class NormalAttribute extends BasicAttribute
         $lay->set("isTitle", $this->isInTitle);
         $lay->set("phpfile", $this->phpfile);
         $lay->set("phpfunc", $this->phpfunc);
-        
+
         if (($this->type == "enum") && (!$this->phpfile) || ($this->phpfile == "-")) {
             $lay->set("phpfile", false);
             $lay->set("phpfunc", false);
@@ -210,13 +240,13 @@ class NormalAttribute extends BasicAttribute
         foreach ($tops as $k => $v) {
             if ($k) {
                 $t[] = array(
-                "key" => $k,
-                "val" => $this->encodeXml($v)
-            );
+                    "key" => $k,
+                    "val" => $this->encodeXml($v)
+                );
             }
         }
         $lay->setBlockData("options", $t);
-        
+
         $play->set("minOccurs", $this->needed ? "1" : "0");
         $play->set("isnillable", $this->needed ? "false" : "true");
         $play->set("maxOccurs", (($this->getOption('multiple') == 'yes') ? "unbounded" : "1"));
@@ -229,25 +259,26 @@ class NormalAttribute extends BasicAttribute
      *
      * @return string
      */
-    public function text_getXmlSchema()
+    protected function text_getXmlSchema()
     {
         $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "textattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
-        
+
         $lay->set("maxlength", false);
         $lay->set("pattern", false);
         return $lay->gen();
     }
+
     /**
      * enum XML schema
      *
      * @return string
      */
-    public function enum_getXmlSchema()
+    protected function enum_getXmlSchema()
     {
         $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "enumattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
-        
+
         $la = $this->getEnum();
         $te = array();
         foreach ($la as $k => $v) {
@@ -259,114 +290,124 @@ class NormalAttribute extends BasicAttribute
         $lay->setBlockData("enums", $te);
         return $lay->gen();
     }
+
     /**
      * docid XML schema
      *
      * @return string
      */
-    public function docid_getXmlSchema()
+    protected function docid_getXmlSchema()
     {
         $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "docidattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
-        
+
         $lay->set("famid", $this->format);
         return $lay->gen();
     }
+
     /**
      * date XML schema
      *
      * @return string
      */
-    public function date_getXmlSchema()
+    protected function date_getXmlSchema()
     {
         $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "dateattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
+
     /**
      * timeStamp XML schema
      *
      * @return string
      */
-    public function timestamp_getXmlSchema()
+    protected function timestamp_getXmlSchema()
     {
         $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "timestampattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
+
     /**
      * Color XML schema
      *
      * @return string
      */
-    public function color_getXmlSchema()
+    protected function color_getXmlSchema()
     {
         $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "colorattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
+
     /**
      * int XML schema
      *
      * @return string
      */
-    public function int_getXmlSchema()
+    protected function int_getXmlSchema()
     {
         $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "intattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
+
     /**
      * longText XML schema
      *
      * @return string
      */
-    public function longtext_getXmlSchema()
+    protected function longtext_getXmlSchema()
     {
         $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "longtextattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
+
     /**
      * Float XML schema
      *
      * @return string
      */
-    public function float_getXmlSchema()
+    protected function float_getXmlSchema()
     {
         $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "floatattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
+
     /**
      * Time XML schema
      *
      * @return string
      */
-    public function time_getXmlSchema()
+    protected function time_getXmlSchema()
     {
         $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "timeattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
+
     /**
      * File XML schema
      *
      * @return string
      */
-    public function file_getXmlSchema()
+    protected function file_getXmlSchema()
     {
         $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "fileattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
         return $lay->gen();
     }
+
     /**
      * Array XML schema
      * @param BasicAttribute[] &$la
      *
      * @return string
      */
-    public function array_getXmlSchema(&$la)
+    protected function array_getXmlSchema(&$la)
     {
         $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "arrayattribute_schema.xml"));
         $this->common_getXmlSchema($lay);
@@ -383,25 +424,26 @@ class NormalAttribute extends BasicAttribute
         $lay->setBlockData("ATTR", $tax);
         return $lay->gen();
     }
+
     /**
      * Get the textual value of an attribute
      *
-     * @param \Anakeen\Core\Internal\SmartElement $doc current Doc
-     * @param int $index index if multiple
-     * @param array $configuration value config array :
-     * dateFormat => 'US' 'ISO',
-     * decimalSeparator => '.',
-     * longtextMultipleBrToCr => ' '
-     * multipleSeparator => array(0 => 'arrayLine', 1 => 'multiple')
+     * @param \Anakeen\Core\Internal\SmartElement $doc           current Doc
+     * @param int                                 $index         index if multiple
+     * @param array                               $configuration value config array :
+     *                                                           dateFormat => 'US' 'ISO',
+     *                                                           decimalSeparator => '.',
+     *                                                           longtextMultipleBrToCr => ' '
+     *                                                           multipleSeparator => array(0 => 'arrayLine', 1 => 'multiple')
      *
      * (defaultValue : dateFormat : 'US', decimalSeparator : '.', multiple => array(0 => "\n", 1 => ", "))
      *
      * @return string
      */
-    public function getTextualValue(\Anakeen\Core\Internal\SmartElement $doc, $index = - 1, array $configuration = array())
+    public function getTextualValue(\Anakeen\Core\Internal\SmartElement $doc, $index = -1, array $configuration = array())
     {
         $decimalSeparator = isset($configuration['decimalSeparator']) ? $configuration['decimalSeparator'] : '.';
-        
+
         if (in_array($this->type, array(
             "int",
             "double",
@@ -410,22 +452,22 @@ class NormalAttribute extends BasicAttribute
             return $this->getNumberValue($doc, $index, $decimalSeparator);
         }
         $value = $doc->getRawValue($this->id);
-        $fc = new \FormatCollection();
+        $fc = new \Anakeen\Core\Internal\FormatCollection();
         $stripHtmlTags = isset($configuration['stripHtmlTags']) ? $configuration['stripHtmlTags'] : false;
         $fc->stripHtmlTags($stripHtmlTags);
-        
+
         $fc->setDecimalSeparator($decimalSeparator);
-        $fc->setDateStyle(\DateAttributeValue::defaultStyle);
+        $fc->setDateStyle(DateAttributeValue::defaultStyle);
         $dateFormat = isset($configuration['dateFormat']) ? $configuration['dateFormat'] : 'US';
-        
+
         if ($dateFormat == 'US') {
-            $fc->setDateStyle(\DateAttributeValue::isoWTStyle);
+            $fc->setDateStyle(DateAttributeValue::isoWTStyle);
         } elseif ($dateFormat == "ISO") {
-            $fc->setDateStyle(\DateAttributeValue::isoStyle);
+            $fc->setDateStyle(DateAttributeValue::isoStyle);
         } elseif ($dateFormat == 'FR') {
-            $fc->setDateStyle(\DateAttributeValue::frenchStyle);
+            $fc->setDateStyle(DateAttributeValue::frenchStyle);
         } else {
-            $fc->setDateStyle(\DateAttributeValue::defaultStyle);
+            $fc->setDateStyle(DateAttributeValue::defaultStyle);
         }
         if (isset($configuration['longtextMultipleBrToCr'])) {
             $fc->setLongtextMultipleBrToCr($configuration['longtextMultipleBrToCr']);
@@ -436,10 +478,10 @@ class NormalAttribute extends BasicAttribute
         if (empty($info)) {
             return '';
         }
-        return \FormatCollection::getDisplayValue($info, $this, $index, $configuration);
+        return \Anakeen\Core\Internal\FormatCollection::getDisplayValue($info, $this, $index, $configuration);
     }
-    
-    public function getNumberValue(\Anakeen\Core\Internal\SmartElement $doc, $index = - 1, $decimalSeparator = ".")
+
+    public function getNumberValue(\Anakeen\Core\Internal\SmartElement $doc, $index = -1, $decimalSeparator = ".")
     {
         if ($index >= 0) {
             $numberValue = $doc->getMultipleRawValues($this->id, "", $index);
@@ -458,12 +500,13 @@ class NormalAttribute extends BasicAttribute
                 $numberValue = sprintf($this->format, $numberValue);
             }
         }
-        
+
         if (!empty($decimalSeparator)) {
             $numberValue = str_replace(".", $decimalSeparator, $numberValue);
         }
         return $numberValue;
     }
+
     /**
      * to see if an attribute is n item of an array
      *
@@ -473,6 +516,7 @@ class NormalAttribute extends BasicAttribute
     {
         return ($this->fieldSet && $this->fieldSet->type === "array");
     }
+
     /**
      * Return array of enumeration definition
      * the array's keys are the enum key and the values are the labels
@@ -489,7 +533,7 @@ class NormalAttribute extends BasicAttribute
         if ($cached !== null) {
             return $cached;
         }
-        
+
         if (($this->type == "enum") || ($this->type == "enumlist")) {
             // set the enum array
             $this->enum = array();
@@ -518,7 +562,7 @@ class NormalAttribute extends BasicAttribute
                         $this->originalPhpfunc = $this->phpfunc;
                         $this->phpfile = "";
                         $this->phpfunc = call_user_func_array($reg[1], $args);
-                        
+
                         \EnumAttributeTools::flatEnumNotationToEnumArray($this->phpfunc, $this->enum, $this->enumlabel, $br);
                     } else {
                         \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("function [%s] not exists"), $this->phpfunc));
@@ -538,7 +582,7 @@ class NormalAttribute extends BasicAttribute
             } else {
                 // static enum
                 $famId = $this->_getRecursiveParentFamHavingAttribute($this->docid, $this->id);
-                
+
                 $cached = self::_cacheFetch(self::_cEnum, array(
                     $famId,
                     $this->id
@@ -546,11 +590,11 @@ class NormalAttribute extends BasicAttribute
                 if ($cached !== null) {
                     return $cached;
                 }
-                
+
                 $sql = sprintf("select * from docenum where famid=%d and attrid='%s' order by eorder", $famId, pg_escape_string($this->id));
-                
-                simpleQuery('', $sql, $enums);
-                
+
+                DbManager::query($sql, $enums);
+
                 foreach ($enums as $k => $item) {
                     $enums[$k]["keyPath"] = str_replace('.', '\\.', $item["key"]);
                 }
@@ -564,7 +608,7 @@ class NormalAttribute extends BasicAttribute
                         $enumLabel = $item["label"];
                     }
                     if ($item["parentkey"] !== null) {
-                        $this->enum[$this->getCompleteEnumKey($enumKey, $enums) ] = $enumLabel;
+                        $this->enum[$this->getCompleteEnumKey($enumKey, $enums)] = $enumLabel;
                         $enumCompleteLabel = $this->getCompleteEnumlabel($enumKey, $enums, $br);
                         $this->enumlabel[$enumKey] = $enumCompleteLabel;
                     } else {
@@ -590,7 +634,7 @@ class NormalAttribute extends BasicAttribute
         }
         return $this->enum;
     }
-    
+
     private function getCompleteEnumKey($key, array & $enums)
     {
         foreach ($enums as $item) {
@@ -604,6 +648,7 @@ class NormalAttribute extends BasicAttribute
         }
         return '';
     }
+
     private function getCompleteEnumLabel($key, array & $enums, $prefix)
     {
         foreach ($enums as $item) {
@@ -623,6 +668,7 @@ class NormalAttribute extends BasicAttribute
         }
         return '';
     }
+
     /**
      * reset Enum cache
      */
@@ -632,19 +678,20 @@ class NormalAttribute extends BasicAttribute
         self::_cacheFlush(self::_cEnumLabel);
         self::_cacheFlush(self::_cParent);
     }
+
     /**
      * return array of enumeration definition
      * the array'skeys are the enum single key and the values are the complete labels
      *
-     * @param string $enumid the key of enumerate (if no parameter all labels are returned
-     * @param bool $returnDisabled if false disabled enum are not returned
+     * @param string $enumid         the key of enumerate (if no parameter all labels are returned
+     * @param bool   $returnDisabled if false disabled enum are not returned
      * @return array|string|null
      */
     public function getEnumLabel($enumid = null, $returnDisabled = true)
     {
         $implode = false;
         $this->getEnum($returnDisabled);
-        
+
         $cached = self::_cacheFetch(self::_cEnumLabel, array(
             $this->docid,
             $this->id
@@ -679,15 +726,16 @@ class NormalAttribute extends BasicAttribute
                 return (array_key_exists($enumid, $cached)) ? $cached[$enumid] : $enumid;
             }
         }
-        
+
         return null;
     }
+
     /**
      * add new \item in enum list items
      *
      * @param string $dbaccess dbaccess string
-     * @param string $key database key
-     * @param string $label human label
+     * @param string $key      database key
+     * @param string $label    human label
      *
      * @return string error message (empty means ok)
      */
@@ -697,10 +745,10 @@ class NormalAttribute extends BasicAttribute
         if ($key == "") {
             return "";
         }
-        
+
         $famId = $this->docid;
         $attrId = $this->id;
-        
+
         $a = new \DocAttr($dbaccess, array(
             $famId,
             $attrId
@@ -721,7 +769,7 @@ class NormalAttribute extends BasicAttribute
                 $key
             ));
             $this->getEnum();
-            
+
             $key = str_replace(array(
                 '|'
             ), array(
@@ -766,6 +814,7 @@ class NormalAttribute extends BasicAttribute
         }
         return $err;
     }
+
     private function _getRecursiveParentFamHavingAttribute($famId, $attrId)
     {
         $cached = self::_cacheFetch(self::_cParent, array(
@@ -808,7 +857,7 @@ SELECT docid FROM parent_attr WHERE id = '%s' LIMIT 1;
 SQL;
         $sql = sprintf($sql, pg_escape_string($famId), pg_escape_string($attrId));
         $parentFamId = false;
-        simpleQuery('', $sql, $parentFamId, true, true);
+        DbManager::query($sql, $parentFamId, true, true);
         if ($parentFamId !== false) {
             self::_cacheStore(self::_cParent, array(
                 $famId,
@@ -817,6 +866,7 @@ SQL;
         }
         return $parentFamId;
     }
+
     private function _getDocAttrFromParents($dbaccess, $famId, $attrId)
     {
         $parentFamId = $this->_getRecursiveParentFamHavingAttribute($famId, $attrId);
@@ -826,11 +876,12 @@ SQL;
         $a = new \DocAttr($dbaccess, $parentFamId, $attrId);
         return $a;
     }
+
     /**
      * Test if an enum key exists
      *
-     * @param string $key enumKey
-     * @param bool $completeKey if true test complete key with path else without path
+     * @param string $key         enumKey
+     * @param bool   $completeKey if true test complete key with path else without path
      * @return bool
      */
     public function existEnum($key, $completeKey = true)
@@ -838,7 +889,7 @@ SQL;
         if ($key == "") {
             return false;
         }
-        
+
         if ($completeKey) {
             $enumKeys = $this->getEnum();
         } else {
@@ -846,6 +897,7 @@ SQL;
         }
         return isset($enumKeys[$key]);
     }
+
     /**
      * Construct a string key
      *
@@ -861,11 +913,12 @@ SQL;
         }
         return serialize($k);
     }
+
     /**
      * Check if an entry exists for the given key
      *
      * @param string $cacheId cache Id
-     * @param string $k key
+     * @param string $k       key
      * @return bool true if it exists, false if it does not exists
      */
     private static function _cacheExists($cacheId, $k)
@@ -873,12 +926,13 @@ SQL;
         $k = self::_cacheKey($k);
         return isset(self::$_cache[$cacheId][$k]);
     }
+
     /**
      * Add (or update) a key/value
      *
-     * @param string $cacheId cache Id
-     * @param string|string[] $k key
-     * @param mixed $v value
+     * @param string          $cacheId cache Id
+     * @param string|string[] $k       key
+     * @param mixed           $v       value
      * @return bool true on success, false on failure
      */
     private static function _cacheStore($cacheId, $k, $v)
@@ -887,13 +941,14 @@ SQL;
         self::$_cache[$cacheId][$k] = $v;
         return true;
     }
+
     /**
      * Fetch the key's value
      *
-     * @param string $cacheId cache Id
-     * @param string|string[] $k key
-     * @param mixed $onCacheMiss value returned on cache miss (default is null)
-     * @param bool $returnDisabled if false unreturn disabled enums
+     * @param string          $cacheId        cache Id
+     * @param string|string[] $k              key
+     * @param mixed           $onCacheMiss    value returned on cache miss (default is null)
+     * @param bool            $returnDisabled if false unreturn disabled enums
      * @return null|mixed null on failure, mixed value on success
      */
     private static function _cacheFetch($cacheId, $k, $onCacheMiss = null, $returnDisabled = true)
@@ -912,7 +967,7 @@ SQL;
                     return $cached;
                 }
             }
-            
+
             return self::$_cache[$cacheId][$ks];
         }
         return $onCacheMiss;

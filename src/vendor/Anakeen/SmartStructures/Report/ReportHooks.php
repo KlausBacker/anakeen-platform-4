@@ -245,7 +245,7 @@ class ReportHooks extends \SmartStructure\Dsearch
         $stripHtmlFormat = true,
         $renderNumber = "format"
     ) {
-        $fc = new \FormatCollection();
+        $fc = new \Anakeen\Core\Internal\FormatCollection();
         $dl = $search->getDocumentList();
         $fc->useCollection($dl);
 
@@ -311,7 +311,7 @@ class ReportHooks extends \SmartStructure\Dsearch
                 $cellValue = '';
                 if (isset($render["attributes"][$col])) {
                     $oa = $famDoc->getAttribute($col);
-                    $cellValue = \FormatCollection::getDisplayValue($render["attributes"][$col], $oa, -1, array(
+                    $cellValue = \Anakeen\Core\Internal\FormatCollection::getDisplayValue($render["attributes"][$col], $oa, -1, array(
                         'displayDocId' => ($displayOptions[$kc] == "docid"),
                         'stripHtmlTags' => $stripHtmlFormat
                     ));

@@ -4,7 +4,7 @@ namespace Anakeen\Routes\Core\Lib;
 
 /**
  * Class DocumentDataFormatter
- * This class is a facade of FormatCollection (had format for REST collection)
+ * This class is a facade of \Anakeen\Core\Internal\FormatCollection (had format for REST collection)
  *
  */
 class DocumentDataFormatter extends CollectionDataFormatter

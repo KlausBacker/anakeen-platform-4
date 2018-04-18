@@ -19,7 +19,7 @@ class ExportDocument
     protected $encoding = 'utf-8';
     protected $verifyAttributeAccess = false;
     protected $attributeGrants = array();
-    protected $noAccessText = \FormatCollection::noAccessText;
+    protected $noAccessText = \Anakeen\Core\Internal\FormatCollection::noAccessText;
     protected $exportAccountType = self::useAclAccountType;
 
     private $logicalName = [];
