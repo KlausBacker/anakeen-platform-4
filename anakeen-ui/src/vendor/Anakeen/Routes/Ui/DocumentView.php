@@ -14,8 +14,8 @@ use Anakeen\Router\ApiV2Response;
 /**
  * Class DocumentView
  *
- * @note Used by route : GET /api/v2/documents/{docid}/revisions/{revision}/views/{view}
- * @note Used by route : GET /api/v2/documents/{docid}/views/{view}
+ * @note    Used by route : GET /api/v2/documents/{docid}/revisions/{revision}/views/{view}
+ * @note    Used by route : GET /api/v2/documents/{docid}/views/{view}
  * @package Anakeen\Routes\Ui
  */
 class DocumentView
@@ -70,13 +70,13 @@ class DocumentView
     protected $renderVid = '';
 
     protected $documentId;
-    protected $requestFields=[];
+    protected $requestFields = [];
 
     /**
      * Read a resource
-     * @param \Slim\Http\request $request
+     * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
-     * @param $args
+     * @param                     $args
      * @return mixed
      * @throws Exception
      */
@@ -266,7 +266,7 @@ class DocumentView
      * Compute properties
      *
      * @param \SmartStructure\Cvdoc $controlView
-     * @param array $viewInfo
+     * @param array                 $viewInfo
      * @return array
      */
     protected function getViewProperties(\SmartStructure\Cvdoc $controlView, array $viewInfo)
@@ -352,7 +352,7 @@ class DocumentView
     }
 
     /**
-     * @param \Dcp\Ui\IRenderConfig $config
+     * @param \Dcp\Ui\IRenderConfig               $config
      * @param \Anakeen\Core\Internal\SmartElement $document
      * @return array|bool
      */
@@ -373,7 +373,7 @@ class DocumentView
     }
 
     /**
-     * @param \Dcp\Ui\IRenderConfig $config
+     * @param \Dcp\Ui\IRenderConfig               $config
      * @param \Anakeen\Core\Internal\SmartElement $document
      * @throws Exception
      * @return array|bool
@@ -439,7 +439,7 @@ class DocumentView
      * Get the current document,
      * record to document protected attribute
      * @param $resourceId
-     * @return \Anakeen\Core\Internal\SmartElement 
+     * @return \Anakeen\Core\Internal\SmartElement
      * @throws Exception
      */
     protected function getDocument($resourceId)
@@ -492,7 +492,7 @@ class DocumentView
     }
 
     /**
-     * @param \Dcp\Ui\IRenderConfig $config
+     * @param \Dcp\Ui\IRenderConfig               $config
      * @param \Anakeen\Core\Internal\SmartElement $document
      *
      * @return string
@@ -508,7 +508,7 @@ class DocumentView
         $delimiterStartTag = '[[';
         $delimiterEndTag = ']]';
         $option = array(
-            'cache' => DEFAULT_PUBDIR . '/var/cache/mustache',
+            'cache' => DEFAULT_PUBDIR . '/' . Settings::CacheDir . 'mustache',
             'cache_file_mode' => 0600,
             'cache_lambda_templates' => true
         );
@@ -539,13 +539,10 @@ class DocumentView
      *
      * The restrict fields is used for restrict the return of the get request
      *
-     * @throws Exception
      * @return array
      */
     protected function getFields()
     {
-
-
         return $this->requestFields;
     }
 

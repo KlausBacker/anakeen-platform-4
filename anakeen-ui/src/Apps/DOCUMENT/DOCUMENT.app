@@ -20,15 +20,7 @@ $app_acl = array(
 );
 
 $action_desc = array(
-    array(
-        "name" => "VIEW",
-        "short_name" => N_("ddui:Render a document"),
-        "layout" => "view.html",
-        "script" => "action-view.php",
-        "function" => "view",
-        "root" => "Y",
-        "acl" => "VIEW_RENDER"
-    ),
+
 
     array(
         "name" => "COLLECT_ERROR",

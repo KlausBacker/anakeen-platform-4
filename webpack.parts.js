@@ -33,8 +33,8 @@ exports.generateViewHtml = (currentPath, excludeChunks) => ({
     },
     plugins: [
         new HtmlWebpackPlugin({
-            filename: path.resolve(__dirname, currentPath, 'view.html'),
-            template: path.resolve(__dirname, 'anakeen-ui/src/Apps/DOCUMENT/IHM/view.html'),
+            filename: path.resolve(__dirname, currentPath, 'document-view.mustache.html'),
+            template: path.resolve(__dirname, 'anakeen-ui/src/vendor/Anakeen/Routes/Ui/Templates/document-view.mustache.html'),
             excludeChunks
         }),
         new ExtractTextWebpackPlugin('loading.css'),
