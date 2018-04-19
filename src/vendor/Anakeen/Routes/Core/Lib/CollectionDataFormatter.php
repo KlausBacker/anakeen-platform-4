@@ -6,13 +6,17 @@
 
 namespace Anakeen\Routes\Core\Lib;
 
+use Anakeen\Core\Internal\Format\DateAttributeValue;
+use Anakeen\Core\Internal\Format\DocidAttributeValue;
+use Anakeen\Core\Internal\Format\ImageAttributeValue;
+use Anakeen\Core\Internal\Format\StandardAttributeValue;
 use Anakeen\Router\URLUtils;
 use Anakeen\Core\Settings;
 use Anakeen\Router\Exception;
 
 /**
  * Class DocumentFormatter
- * This class is a facade of FormatCollection (had format for REST collection)
+ * This class is a facade of \Anakeen\Core\Internal\FormatCollection (had format for REST collection)
  *
  * @package Dcp\HttpApi\V1\Crud
  */
@@ -28,7 +32,7 @@ class CollectionDataFormatter
             "comment",
             "classname"
         );
-    /* @var \FormatCollection $formatCollection */
+    /* @var \Anakeen\Core\Internal\FormatCollection $formatCollection */
     protected $formatCollection;
     protected $defaultProperties
         = array(
@@ -48,16 +52,16 @@ class CollectionDataFormatter
     {
         if (is_a($source, \Anakeen\Core\Internal\SmartElement::class)) {
             /* if the $source is a doc, we want to render only one document*/
-            $this->formatCollection = new \FormatCollection($source);
+            $this->formatCollection = new \Anakeen\Core\Internal\FormatCollection($source);
             if ($source->mid > 0) {
                 // mask already set no need to set default mask
                 $this->formatCollection->setVerifyAttributeAccess(false);
             }
         } elseif (is_a($source, "DocumentList")) {
-            $this->formatCollection = new \FormatCollection();
+            $this->formatCollection = new \Anakeen\Core\Internal\FormatCollection();
             $this->formatCollection->useCollection($source);
         } elseif (is_a($source, "SearchDoc")) {
-            $this->formatCollection = new \FormatCollection();
+            $this->formatCollection = new \Anakeen\Core\Internal\FormatCollection();
             /* @var \SearchDoc $source */
             $docList = $source->getDocumentList();
             $this->formatCollection->useCollection($docList);
@@ -70,7 +74,7 @@ class CollectionDataFormatter
         $this->formatCollection->setDecimalSeparator('.');
         $this->formatCollection->mimeTypeIconSize = 20;
         $this->formatCollection->useShowEmptyOption = false;
-        $this->formatCollection->setPropDateStyle(\DateAttributeValue::isoStyle);
+        $this->formatCollection->setPropDateStyle(DateAttributeValue::isoStyle);
 
         $this->rootPath = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_URLINDEX") . "/" . static::APIURL;
         $this->rootPath = URLUtils::stripUrlSlahes($this->rootPath);
@@ -130,7 +134,7 @@ class CollectionDataFormatter
      */
     public function addProperty($propertyId)
     {
-        $propertyKeys = \FormatCollection::getAvailableProperties();
+        $propertyKeys = \Anakeen\Core\Internal\FormatCollection::getAvailableProperties();
         /* handle the non standard property all : all the usable properties */
         if ($propertyId === "all") {
             foreach ($propertyKeys as $propertyKey) {
@@ -211,7 +215,7 @@ class CollectionDataFormatter
             if ($attribute->isMultiple()) {
                 $info = array();
             } else {
-                $info = new \StandardAttributeValue($attribute, null);
+                $info = new StandardAttributeValue($attribute, null);
             }
         } elseif ($attribute->type === "docid" || $attribute->type === "account" || $attribute->type === "file"
             || $attribute->type === "image") {
@@ -225,7 +229,7 @@ class CollectionDataFormatter
                         }
                     } else {
                         /**
-                         * @var \DocidAttributeValue|\ImageAttributeValue $oneInfo
+                         * @var DocidAttributeValue|ImageAttributeValue $oneInfo
                          */
                         if (!empty($oneInfo->icon)) {
                             $this->rewriteImageUrl($oneInfo->icon);
@@ -348,7 +352,7 @@ class CollectionDataFormatter
     /**
      * Return the format collection
      *
-     * @return \FormatCollection
+     * @return \Anakeen\Core\Internal\FormatCollection
      */
     public function getFormatCollection()
     {

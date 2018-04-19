@@ -3,6 +3,7 @@
  * @author Anakeen
  * @package FDL
 */
+namespace Anakeen\Core;
 
 interface IMailRecipient
 {

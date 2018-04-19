@@ -2,6 +2,7 @@
 
 namespace Anakeen\App\Core;
 
+use Anakeen\Core\AssetManager;
 use Anakeen\Core\ContextManager;
 
 /**
@@ -15,7 +16,7 @@ class WelcomePage
 {
 
     /**
-     * Return all visible documents
+     * Return Welcome page
      *
      * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
@@ -26,18 +27,18 @@ class WelcomePage
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $page=__DIR__."/welcomePage.layout.html";
-        $action=ContextManager::getCurrentAction();
+        $templateFile=__DIR__."/welcomePage.mustache.html";
 
-        $action->lay=new \Layout($page, $action);
+        $mustache=new \Mustache_Engine();
 
-        $action->parent->AddCssRef("CORE:welcomePage.css");
-        $action->lay->set("thisyear", strftime("%Y", time()));
-        $action->lay->set("version", $action->GetParam("VERSION"));
-        $action->lay->set("userRealName", $action->user->firstname . " " . $action->user->lastname);
-        $action->lay->set("userDomain", \Anakeen\Core\ContextManager::getApplicationParam("CORE_CLIENT"));
-        $action->lay->set("isAdmin", (file_exists('admin/index.php') && $action->canExecute("CORE_ADMIN_ROOT", "CORE_ADMIN") === ''));
+        $data["cssRef"]= AssetManager::getAssetLink(__DIR__."/WelcomePage.css");
+        $data["thisyear"]= strftime("%Y", time());
+        $data["version"]= \Anakeen\Core\ContextManager::getApplicationParam("VERSION");
+        $data["userRealName"]= ContextManager::getCurrentUser()->getAccountName();
+        $data["userDomain"]= \Anakeen\Core\ContextManager::getApplicationParam("CORE_CLIENT");
+        $data["isAdmin"]= false; // @TODO Add test to detect admin center
 
-        return $response->write($action->lay->gen());
+        $out=$mustache->render(file_get_contents($templateFile), $data);
+        return $response->write($out);
     }
 }

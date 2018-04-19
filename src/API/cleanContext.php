@@ -34,7 +34,7 @@ if ($dbaccess == "") {
 $duration = intval($action->GetParam("CORE_LOGDURATION", 60)); // default 60 days
 $logdelete = sprintf("DELETE FROM doclog where date < '%s'", \Anakeen\Core\Internal\SmartElement::getDate(-($duration)));
 
-simpleQuery($dbaccess, $logdelete);
+\Anakeen\Core\DbManager::query($logdelete);
 
 global $_SERVER;
 
@@ -59,7 +59,7 @@ cleanTmpFiles();
 
 function mkTmpScript($script, $prefix)
 {
-    $tmpDir = getTmpDir();
+    $tmpDir = \Anakeen\Core\ContextManager::getTmpDir();
     $tmpScript = tempnam($tmpDir, $prefix);
     if ($tmpScript === false) {
         throw new Exception(sprintf("Error creating temporary file in '%s'.", $tmpDir));
@@ -169,7 +169,7 @@ function cleanTmpFiles()
         return;
     }
     
-    $tmpDir = getTmpDir('');
+    $tmpDir = \Anakeen\Core\ContextManager::getTmpDir('');
     if ($tmpDir == '') {
         echo sprintf("Error: empty directory returned by getTmpDir().");
         return;
@@ -180,7 +180,7 @@ function cleanTmpFiles()
         echo $r;
     }
     //clean mustache cache files
-    $r = cleanOldFiles($pubdir . '/var/cache/mustache', $maxAge);
+    $r = cleanOldFiles($pubdir . '/'. \Anakeen\Core\Settings::CacheDir. 'mustache', $maxAge);
     if ($r) {
         echo $r;
     }
@@ -241,7 +241,8 @@ COMMIT;
 EOF;
     try {
         $sql = sprintf($sql, $days);
-        simpleQuery('', $sql, $res, true, true, true);
+
+        \Anakeen\Core\DbManager::query($sql, $res, true, true, true);
     } catch (\Exception $e) {
         printf("Error: removal of expired temporary documents returned with error: %s\n", $e->getMessage());
     }

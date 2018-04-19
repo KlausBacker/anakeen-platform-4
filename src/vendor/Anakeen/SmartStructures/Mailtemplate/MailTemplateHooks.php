@@ -10,6 +10,7 @@
 namespace Anakeen\SmartStructures\Mailtemplate;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Core\IMailRecipient;
 
 class MailTemplateHooks extends \Anakeen\SmartStructures\Document
 {
@@ -269,7 +270,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
                         $recipDocId = $m['id'];
                     }
                     /**
-                     * @var \IMailRecipient|\Anakeen\Core\Internal\SmartElement $recipientDoc
+                     * @var IMailRecipient|\Anakeen\Core\Internal\SmartElement $recipientDoc
                      */
                     $recipientDoc = new_Doc($this->dbaccess, $recipDocId, true);
                     if (!is_object($recipientDoc) || !$recipientDoc->isAlive()) {
@@ -278,7 +279,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
                         $doc->addHistoryEntry($err);
                         throw new \Dcp\Exception($err);
                     }
-                    if (!is_a($recipientDoc, 'IMailRecipient')) {
+                    if (!is_a($recipientDoc, IMailRecipient::class)) {
                         $err = sprintf(_("Send mail error: recipient document '%s' does not implements IMailRecipient interface."), $recipDocId);
                         $action->log->error($err);
                         $doc->addHistoryEntry($err);

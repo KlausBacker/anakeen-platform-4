@@ -100,7 +100,7 @@ function lmail($dbaccess, $name)
     foreach ($dlf as $fam) {
         $cfam = createTmpDoc($dbaccess, $fam->id);
         /**
-         * @var IMailRecipient $cfam
+         * @var \Anakeen\Core\IMailRecipient $cfam
          */
         if (!method_exists($cfam, "getMail")) {
             return sprintf(_("family %s does not implement IMailRecipent - missing getMail method"), $fam->name);
@@ -1478,9 +1478,9 @@ function recipientDocument($dbaccess, $name)
     foreach ($dlf as $fam) {
         $cfam = createTmpDoc($dbaccess, $fam->id);
         /**
-         * @var IMailRecipient $cfam
+         * @var \Anakeen\Core\IMailRecipient $cfam
          */
-        if (!is_a($cfam, "IMailRecipient")) {
+        if (!is_a($cfam, \Anakeen\Core\IMailRecipient::class)) {
             return sprintf(_("Family '%s' does not implements IMailRecipient interface."), $fam->name);
         }
 

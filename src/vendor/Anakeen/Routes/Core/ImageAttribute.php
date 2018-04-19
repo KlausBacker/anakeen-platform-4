@@ -2,6 +2,7 @@
 
 namespace Anakeen\Routes\Core;
 
+use Anakeen\Core\Settings;
 use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
 
@@ -16,7 +17,7 @@ use Anakeen\Router\ApiV2Response;
  */
 class ImageAttribute extends FileAttribute
 {
-    const CACHEIMGDIR = "var/cache/image/";
+    const CACHEIMGDIR = Settings::CacheDir."image/";
     protected $size;
     protected $imageFileName;
     /**
