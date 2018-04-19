@@ -10,10 +10,10 @@ const merge = require('webpack-merge');
 const parts = require('./webpack.parts');
 
 const PATHS = {
-    familyIHMDsearch: path.resolve(__dirname, 'anakeen-ui/src/vendor/Anakeen/SmartStructures/Dsearch/Render/dsearch.js'),
-    familyIHMHelppage: path.resolve(__dirname, 'anakeen-ui/src/vendor/Anakeen/SmartStructures/Helppage/Render/helppage.js'),
-    familyIHMMask: path.resolve(__dirname, 'anakeen-ui/src/vendor/Anakeen/SmartStructures/Mask/Render/MaskView.js'),
-    build: path.resolve(__dirname, 'anakeen-ui/src/public/uiAssets/Families/'),
+    familyIHMDsearch: path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Dsearch/Render/dsearch.js'),
+    familyIHMHelppage: path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Helppage/Render/helppage.js'),
+    familyIHMMask: path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Mask/Render/MaskView.js'),
+    build: path.resolve(__dirname, '../anakeen-ui/src/public/uiAssets/Families/'),
 };
 
 const commonConfig = merge([{
@@ -28,7 +28,7 @@ const commonConfig = merge([{
                 {
                     test: /\.js$/,
                     include: [
-                        path.resolve(__dirname, 'anakeen-ui/'),
+                        path.resolve(__dirname, '../anakeen-ui/'),
                     ],
                     use: {
                         loader: 'babel-loader',

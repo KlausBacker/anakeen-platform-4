@@ -11,11 +11,11 @@ const merge = require('webpack-merge');
 const parts = require('./webpack.parts');
 
 const PATHS = {
-    mainSmartElement: path.resolve(__dirname, 'anakeen-ui/src/Apps/DOCUMENT/IHM/mainDocument.js'),
-    smartElementGrid: path.resolve(__dirname, 'anakeen-ui/src/Apps/DOCUMENT_GRID_HTML5/widgets/documentGrid.js'),
-    smartElement: path.resolve(__dirname, 'anakeen-ui/src/Apps/DOCUMENT/IHM/smartElement.js'),
-    components: path.resolve(__dirname, 'anakeen-ui/src/vendor/Anakeen/Components/main.js'),
-    build: path.resolve(__dirname, 'anakeen-ui/src/public/'),
+    mainSmartElement: path.resolve(__dirname, '../anakeen-ui/src/Apps/DOCUMENT/IHM/mainDocument.js'),
+    smartElementGrid: path.resolve(__dirname, '../anakeen-ui/src/Apps/DOCUMENT_GRID_HTML5/widgets/documentGrid.js'),
+    smartElement: path.resolve(__dirname, '../anakeen-ui/src/Apps/DOCUMENT/IHM/smartElement.js'),
+    components: path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/Components/main.js'),
+    build: path.resolve(__dirname, '../anakeen-ui/src/public/'),
 };
 
 const commonConfig = merge([{
@@ -28,7 +28,7 @@ const commonConfig = merge([{
             {
                 test: /\.js$/,
                 include: [
-                    path.resolve(__dirname, 'anakeen-ui/'),
+                    path.resolve(__dirname, '../anakeen-ui/'),
                     path.resolve(__dirname, 'node_modules/popper.js/'),
                 ],
                 use: {
@@ -53,7 +53,7 @@ const commonConfig = merge([{
             },
             {
                 test: /\.template.kd$/,
-                include: [path.resolve(__dirname, 'anakeen-ui/src/vendor/Anakeen/Components/')],
+                include: [path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/Components/')],
                 use: 'raw-loader',
             },
         ],
@@ -63,9 +63,9 @@ const commonConfig = merge([{
             [
                 {
                     //dynacase-report
-                    context: path.resolve(__dirname, 'anakeen-ui/src/Apps/DOCUMENT/IHM/'),
+                    context: path.resolve(__dirname, '../anakeen-ui/src/Apps/DOCUMENT/IHM/'),
                     from: 'dynacaseReport.js',
-                    to: path.resolve(__dirname, 'anakeen-ui/src/public/uiAssets/anakeen/'),
+                    to: path.resolve(__dirname, '../anakeen-ui/src/public/uiAssets/anakeen/'),
                 },
             ]
         ),
@@ -102,7 +102,7 @@ const productionDocumentConfig = merge([
         filename: 'documentElements.json',
         path: path.resolve(PATHS.build, 'uiAssets/anakeen/prod/'),
     }),
-    parts.generateViewHtml('anakeen-ui/src/Apps/DOCUMENT/Layout/prod/'),
+    parts.generateViewHtml('../anakeen-ui/src/Apps/DOCUMENT/Layout/prod/'),
 ]);
 
 const productionSmartElementConfig = merge([
@@ -164,7 +164,7 @@ const debugDocumentConfig = merge([
     },
     parts.generateNamedChunk(),
     parts.setFreeVariable('process.env.NODE_ENV', 'debug'),
-    parts.generateViewHtml('anakeen-ui/src/Apps/DOCUMENT/Layout/debug/'),
+    parts.generateViewHtml('../anakeen-ui/src/Apps/DOCUMENT/Layout/debug/'),
     parts.extractAssets({
         filename: 'documentElements.json',
         path: path.resolve(PATHS.build, 'uiAssets/anakeen/debug/'),
@@ -225,7 +225,7 @@ const devConfig = merge([
         },
     },
     parts.setFreeVariable('process.env.NODE_ENV', 'debug'),
-    parts.generateViewHtml('anakeen-ui/src/Apps/DOCUMENT/Layout/debug/'),
+    parts.generateViewHtml('../anakeen-ui/src/Apps/DOCUMENT/Layout/debug/'),
     parts.devServer(
         {
             host: process.env.HOST,
