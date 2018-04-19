@@ -171,6 +171,9 @@ class System
      */
     protected function removeFilesByRegex($dir, $regex)
     {
+        if (! is_dir($dir)) {
+            return;
+        }
         if (($dh = opendir($dir)) === false) {
             throw new Exception(sprintf("Error opening directory '%s'.", $dir));
         }
