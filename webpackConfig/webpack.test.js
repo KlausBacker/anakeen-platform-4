@@ -13,10 +13,10 @@ const parts = require('./webpack.parts');
 const PATHS = {
    // testmain: path.resolve(__dirname, 'Tests/src/Apps/TEST_DOCUMENT_SELENIUM/IHM/testmain.js'),
    // testrender: path.resolve(__dirname, 'Tests/src/Apps/TEST_DOCUMENT_SELENIUM/IHM/testrender.js'),
-    familyTestRender: path.resolve(__dirname, 'Tests/src/vendor/Anakeen/SmartStructures/UiTest/TestRender/testRender.js'),
-    build: path.resolve(__dirname, 'Tests/src/public/TEST_DOCUMENT_SELENIUM/dist/'),
-    TestPage: path.resolve(__dirname, 'Tests/src/vendor/Anakeen/Routes/UiTest/TestPage.js'),
-    TestUiDistPath: path.resolve(__dirname, 'Tests/src/public/apps/uitest/dist/'),
+    familyTestRender: path.resolve(__dirname, '../Tests/src/vendor/Anakeen/SmartStructures/UiTest/TestRender/testRender.js'),
+    build: path.resolve(__dirname, '../Tests/src/public/TEST_DOCUMENT_SELENIUM/dist/'),
+    TestPage: path.resolve(__dirname, '../Tests/src/vendor/Anakeen/Routes/UiTest/TestPage.js'),
+    TestUiDistPath: path.resolve(__dirname, '../Tests/src/public/apps/uitest/dist/'),
 };
 
 const commonConfig = merge([{
@@ -36,7 +36,7 @@ const commonConfig = merge([{
                 {
                     test: /\.js$/,
                     include: [
-                        path.resolve(__dirname, 'Tests/src/Apps/TEST_DOCUMENT_SELENIUM/IHM/'),
+                        path.resolve(__dirname, '../Tests/src/Apps/TEST_DOCUMENT_SELENIUM/IHM/'),
                     ],
                     use: {
                         loader: 'babel-loader',
@@ -67,7 +67,7 @@ const testUiConfig = merge([{
                 {
                     test: /\.js$/,
                     include: [
-                        path.resolve(__dirname, 'Tests/src/vendor/Anakeen/Routes/UiTest/'),
+                        path.resolve(__dirname, '../Tests/src/vendor/Anakeen/Routes/UiTest/'),
                     ],
                     use: {
                         loader: 'babel-loader',
