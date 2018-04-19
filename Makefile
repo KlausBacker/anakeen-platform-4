@@ -13,6 +13,7 @@ app-test:
 	yarn buildTest
 	-mkdir -p $(localpub)/testuis/
 	rsync --delete -azvr Tests $(localpub)/testuis/
+	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(localpub)/testuis/Tests/build.json
 	php ./anakeen-devtool.phar generateWebinst -s $(localpub)/testuis/Tests/ -o .
 
 
