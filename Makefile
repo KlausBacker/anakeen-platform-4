@@ -8,7 +8,7 @@ stub:
 	php ./anakeen-devtool.phar generateStub -s Tests -o ./stubs/
 
 
-app-selenium:
+app-test:
 	yarn install
 	yarn buildTest
 	-mkdir -p $(localpub)/testuis/
@@ -18,7 +18,7 @@ app-selenium:
 
 deploy-test:
 	rm -f *app
-	make app-selenium
+	make app-test
 	php ./anakeen-devtool.phar deploy -u http://admin:anakeen@$(host)/control --port=$(port) -c $(ctx) -w user-interfaces-test*app -- --force
 
 
