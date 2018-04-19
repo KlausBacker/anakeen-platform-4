@@ -5,16 +5,17 @@
 
 namespace Anakeen\Routes\Ui;
 
+use Anakeen\Core\Internal\I18nTemplateContext;
 use Anakeen\Core\Utils\Gettext;
 use Anakeen\Router\Exception;
 use Anakeen\Core\DocManager;
 
 /**
  * Class DocumentHtml
- * @note Used by route : GET /api/v2/documents/{docid}.html
- * @note Used by route : GET /api/v2/documents/{docid}/revisions/{revisions}.html
- * @note Used by route : GET /api/v2/documents/{docid}/views/{view}.html
- * @note Used by route : GET /api/v2/documents/{docid}/revisions/{revisions}/views/{view}.html
+ * @note    Used by route : GET /api/v2/documents/{docid}.html
+ * @note    Used by route : GET /api/v2/documents/{docid}/revisions/{revisions}.html
+ * @note    Used by route : GET /api/v2/documents/{docid}/views/{view}.html
+ * @note    Used by route : GET /api/v2/documents/{docid}/revisions/{revisions}/views/{view}.html
  * @package Anakeen\Routes\Ui
  */
 class DocumentHtml
@@ -26,9 +27,9 @@ class DocumentHtml
      * Send Document Html page
      *
      *
-     * @param \Slim\Http\request $request
+     * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
-     * @param array $args
+     * @param array               $args
      * @return \Slim\Http\response
      * @throws Exception
      */
@@ -46,14 +47,14 @@ class DocumentHtml
             // Special case to load HTML page without documents
             $resourceId = false;
         }
-        $html= $this->view($resourceId, $this->viewId, $this->revision);
+        $html = $this->view($resourceId, $this->viewId, $this->revision);
         return $response->write($html);
     }
 
     /**
      * @param string|bool $initid
-     * @param string $viewId
-     * @param int $revision
+     * @param string      $viewId
+     * @param int         $revision
      *
      * @return string
      * @throws Exception
@@ -68,15 +69,16 @@ class DocumentHtml
 
         $modeDebug = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("DOCUMENT", "MODE_DEBUG");
         if ($modeDebug !== "FALSE") {
-            $layout = new \Layout("DOCUMENT/Layout/debug/view.html");
+            $templateFile = DEFAULT_PUBDIR . "/Apps/DOCUMENT/Layout/debug/document-view.mustache.html";
         } else {
-            $layout = new \Layout("DOCUMENT/Layout/prod/view.html");
+            $templateFile = DEFAULT_PUBDIR . "/Apps/DOCUMENT/Layout/prod/document-view.mustache.html";
         }
-        $layout->set("BASEURL", self::getBaseUrl());
-        $layout->set("NOTIFICATION_DELAY", \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("DOCUMENT", "NOTIFICATION_DELAY"));
-        $layout->set("notificationLabelMore", Gettext::___("See more ...", "ddui:notification"));
-        $layout->set("notificationTitleMore", Gettext::___("Notification", "ddui:notification"));
-        $layout->set("messages", "{}");
+        $data = new I18nTemplateContext();
+        $data["BASEURL"] = self::getBaseUrl();
+        $data["NOTIFICATION_DELAY"] = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("DOCUMENT", "NOTIFICATION_DELAY");
+        $data["notificationLabelMore"] = ___("See more ...", "ddui:notification");
+        $data["notificationTitleMore"] = ___("Notification", "ddui:notification");
+        $data["messages"] = "{}";
         if ($initid !== false) {
             $doc = DocManager::getDocument($initid);
             if (!$doc) {
@@ -125,16 +127,16 @@ class DocumentHtml
                 }
             }
 
-            $layout->set("viewInformation", \Dcp\Ui\JsonHandler::encodeForHTML($viewInformation));
+            $data["viewInformation"] = \Dcp\Ui\JsonHandler::encodeForHTML($viewInformation);
         } else {
-            $layout->set("viewInformation", \Dcp\Ui\JsonHandler::encodeForHTML(false));
+            $data["viewInformation"] = \Dcp\Ui\JsonHandler::encodeForHTML(false);
         }
-        $layout->set("messages", $this->getWarningMessages());
+        $data["messages"] = $this->getWarningMessages();
         $render = new \Dcp\Ui\RenderDefault();
 
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
 
-        $layout->set("ws", $version);
+        $data["ws"] = $version;
         $cssRefs = $render->getCssReferences();
         $css = array();
         foreach ($cssRefs as $key => $path) {
@@ -143,7 +145,7 @@ class DocumentHtml
                 "path" => $path
             );
         }
-        $layout->eSetBlockData("CSS", $css);
+        $data["CSS"] = $css;
         $require = $render->getRequireReference();
         $js = array();
         foreach ($require as $key => $path) {
@@ -152,8 +154,9 @@ class DocumentHtml
                 "path" => $path
             );
         }
-        $layout->eSetBlockData("JS", $js);
-        return $layout->gen();
+        $data["JS"] = $js;
+        $mustache = new \Mustache_Engine();
+        return $mustache->render(file_get_contents($templateFile), $data);
     }
 
     protected function getWarningMessages()

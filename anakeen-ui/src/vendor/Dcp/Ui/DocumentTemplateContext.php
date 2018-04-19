@@ -6,26 +6,19 @@
 
 namespace Dcp\Ui;
 
-use Anakeen\Routes\Core\Lib\DocumentApiData;
-use Anakeen\Core\ContextManager;
 use Anakeen\Core\DocManager;
 
-class DocumentTemplateContext implements \ArrayAccess
+class DocumentTemplateContext extends \Anakeen\Core\Internal\I18nTemplateContext
 {
-    public $i18n;
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     protected $_document = null;
     /**
      * @var string[] list of sub-template path
      */
     protected $templateSection = array();
-    /**
-     * Template extra keys
-     * @var array
-     */
-    protected $keys = array();
+
     protected $docProperties = null;
     protected $docAttributes = null;
     /**
@@ -36,44 +29,20 @@ class DocumentTemplateContext implements \ArrayAccess
 
     public function __construct(\Anakeen\Core\Internal\SmartElement $doc)
     {
+        parent::__construct();
         $this->_document = $doc;
         if ($doc->id > 0) {
             DocManager::cache()->addDocument($doc);
         }
-        $this->i18n = function ($s) {
-            return self::_i18n($s);
-        };
     }
 
-    /**
-     * Translate text using gettext context if exists
-     * @param string $s text to translate
-     *
-     * @return string
-     */
-    protected static function _i18n($s)
-    {
-        if (!$s) {
-            return '';
-        }
-        if (preg_match("/^([^(::)]+)::(.+)$/", $s, $reg)) {
-            $i18n = ___($reg[2], $reg[1]);
-            if ($i18n === $reg[1]) {
-                $i18n = _($s);
-                if ($i18n === $s) {
-                    return $reg[1];
-                }
-            }
-            return $i18n;
-        }
-        return _($s);
-    }
+
 
     /**
      * Retrieve document data from CRUD API
      *
      * @param string $field
-     * @param array $subFields
+     * @param array  $subFields
      *
      * @return array|mixed|null
      */
@@ -180,12 +149,7 @@ class DocumentTemplateContext implements \ArrayAccess
         return intval($this->_document->initid);
     }
 
-    public function userLocale()
-    {
-        $localeId = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
-        $config = ContextManager::getLocaleConfig($localeId);
-        return $config["culture"];
-    }
+
 
     protected function _getDocumentStructure()
     {
@@ -195,71 +159,4 @@ class DocumentTemplateContext implements \ArrayAccess
         return $this->_getDocumentData("family.structure");
     }
 
-    /**
-     *
-     * Whether a offset exists
-     * @link http://php.net/manual/en/arrayaccess.offsetexists.php
-     * @param mixed $offset <p>
-     * An offset to check for.
-     * </p>
-     * @return boolean true on success or false on failure.
-     * </p>
-     * <p>
-     * The return value will be casted to boolean if non-boolean was returned.
-     */
-    public function offsetExists($offset)
-    {
-        return array_key_exists($offset, $this->keys);
-    }
-
-    /**
-     *
-     * Offset to retrieve
-     * @link http://php.net/manual/en/arrayaccess.offsetget.php
-     * @param mixed $offset <p>
-     * The offset to retrieve.
-     * </p>
-     * @return mixed Can return all value types.
-     */
-    public function &offsetGet($offset)
-    {
-        $x = &$this->keys[$offset];
-        if (is_callable($x)) {
-            return call_user_func($x);
-        }
-        return $x;
-    }
-
-    /**
-     *
-     * Offset to set
-     * @link http://php.net/manual/en/arrayaccess.offsetset.php
-     * @param mixed $offset <p>
-     * The offset to assign the value to.
-     * </p>
-     * @param mixed $value <p>
-     * The value to set.
-     * </p>
-     * @return $this
-     */
-    public function offsetSet($offset, $value)
-    {
-        $this->keys[$offset] = $value;
-        return $this;
-    }
-
-    /**
-     *
-     * Offset to unset
-     * @link http://php.net/manual/en/arrayaccess.offsetunset.php
-     * @param mixed $offset <p>
-     * The offset to unset.
-     * </p>
-     * @return $this
-     */
-    public function offsetUnset($offset)
-    {
-        unset($this->keys[$offset]);
-        return $this;
-    }
 }

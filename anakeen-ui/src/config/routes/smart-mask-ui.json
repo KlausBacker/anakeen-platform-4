@@ -1,0 +1,14 @@
+{
+    "routes": {
+        "Ui:Smart:Mask:Visibilities": {
+            "priority": 1,
+            "callable": "\\Anakeen\\SmartStructures\\Mask\\Routes\\MaskVisibilities",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "\/api\/v2\/admin\/mask\/{mask}\/visibilities\/",
+            "description": "Get attribute visibilities for a mask",
+            "requiredAccess": null
+        }
+    }
+}
