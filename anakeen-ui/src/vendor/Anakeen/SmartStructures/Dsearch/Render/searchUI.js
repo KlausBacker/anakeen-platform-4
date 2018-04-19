@@ -112,7 +112,7 @@ import searchAttributes from './searchAttributes';
                     }
                     testWorkflow = findIfWorkflow(myAttributes, $documentController);
                 }).then(function doneFirstSReady() {
-                    $.getJSON("api/v1/search_UI_HTML5/operators/", function requestOperatorsSReady(data) {
+                    $.getJSON("api/v2/smartstructures/dsearch/operators/", function requestOperatorsSReady(data) {
                         myOperators = [];
                         $.each(data.data, function eachDataOperatorsSReady(key, value) {
                             myOperators.push(value);
@@ -1271,7 +1271,7 @@ import searchAttributes from './searchAttributes';
                         }
                         $.ajax({
                             type: "GET",
-                            url: "api/v1/search_UI_HTML5/relations/" + famid + "/" + attrid + "?slice=25&offset=0&keyword=" + filter,
+                            url: "api/v2/smartstructures/dsearch/relations/" + famid + "/" + attrid + "?slice=25&offset=0&keyword=" + filter,
                             dataType: "json",
                             success: function succesRequestRelationsIRelation(result) {
                                 var info = [];

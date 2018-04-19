@@ -583,10 +583,10 @@ import './docGrid.css';
                 filterable: false,
                 criterias: [],
                 temporarySearch: null,
-                gridDataSourceUrl: "api/v1/documentGrid/content/",
-                columnsDefUrl: "api/v1/documentGrid/columnsDefinition/",
+                gridDataSourceUrl: "api/v2/documentGrid/content/",
+                columnsDefUrl: "api/v2/documentGrid/columnsDefinition/",
                 filterEnumContentUrl: "/api/v2/families/<%= famId %>/enumerates/<%= attrId %>",
-                filterStateContentUrl: "/api/v1/documentGrid/states/<%= famId %>/",
+                filterStateContentUrl: "/api/v2/documentGrid/states/<%= famId %>/",
                 columnsUserSelection: false,
                 dataTableOptions: {}
             },

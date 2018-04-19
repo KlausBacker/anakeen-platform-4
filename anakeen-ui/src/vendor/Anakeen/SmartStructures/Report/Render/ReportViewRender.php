@@ -1,25 +1,26 @@
 <?php
 
+namespace Anakeen\SmartStructures\Report\Render;
 
-namespace Dcp\Search\html5;
-
+use Anakeen\SmartStructures\Dsearch\Render\SearchViewRender;
 use SmartStructure\Attributes\Report;
 
-class Report_html5_view_render extends Search_html5_view_render {
+class ReportViewRender extends SearchViewRender
+{
 
-    public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null){
+    public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null)
+    {
         $templates = parent::getTemplates($document);
         $templates["sections"]["content"]["file"]
-            = __DIR__."/reportHTML5_view.mustache";
+            = __DIR__ . "/reportHTML5_view.mustache";
         return $templates;
     }
 
-
     public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
     {
-        $menu= parent::getMenu($document);
+        $menu = parent::getMenu($document);
 
-        $printMenu=$menu->getElement(Report::rep_imp);
+        $printMenu = $menu->getElement(Report::rep_imp);
         if ($printMenu) {
             $printMenu->setTarget("_blank");
         }
@@ -35,7 +36,7 @@ class Report_html5_view_render extends Search_html5_view_render {
 
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-        $js= parent::getJsReferences($document);
+        $js = parent::getJsReferences($document);
 
         return $js;
     }

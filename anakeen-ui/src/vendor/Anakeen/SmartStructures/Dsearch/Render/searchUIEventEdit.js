@@ -94,7 +94,7 @@ import showGrid from './searchUIGrid';
         $dataJSON = $documentController.data("dcpDocumentController")._model.toJSON();
         $.ajax({
             method: "POST",
-            url: "api/v1/search_UI_HTML5/temporaryDoc/" + $documentController.documentController("getProperties").family.name + "/",
+            url: "api/v2/smartstructures/dsearch/temporaryDoc/" + $documentController.documentController("getProperties").family.name + "/",
             data: JSON.stringify($dataJSON),
             dataType: "json",
             contentType: 'application/json; charset=utf-8'

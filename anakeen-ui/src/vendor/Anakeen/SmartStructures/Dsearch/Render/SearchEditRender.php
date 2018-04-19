@@ -6,15 +6,14 @@
  * Time: 09:36
  */
 
-namespace Dcp\Search\html5;
 
+namespace Anakeen\SmartStructures\Dsearch\Render;
 
 use SmartStructure\Attributes\Dsearch as myAttr;
 use Dcp\Ui\DefaultEdit;
-use dcp\ui\MenuTargetOptions as MenuTargetOptions;
-use dcp\ui\ItemMenu as ItemMenu;
+use Dcp\Ui\ItemMenu as ItemMenu;
 
-class Search_html5_edit_render extends DefaultEdit
+class SearchEditRender extends DefaultEdit
 {
 
     public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
@@ -121,5 +120,4 @@ class Search_html5_edit_render extends DefaultEdit
 
         return $visibilities;
     }
-
 }

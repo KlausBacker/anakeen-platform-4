@@ -1,0 +1,44 @@
+{
+    "routes": {
+        "Ui:DocGrid:Content": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\DocumentGrid\\Content",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "/api/v2/documentGrid/content/{collection}",
+            "description": "DocumentGrid content",
+            "requiredAccess": null
+        },
+        "Ui:DocGrid:CreateDocumentGrid": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\DocumentGrid\\CreateDocumentGrid",
+            "methods": [
+                "POST"
+            ],
+            "pattern": "/api/v2/documentGrid/content/",
+            "description": "DocumentGrid temporary collection",
+            "requiredAccess": null
+        },
+        "Ui:DocGrid:ColumnsDefinition": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\DocumentGrid\\ColumnsDefinition",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "/api/v2/documentGrid/columnsDefinition/",
+            "description": "DocumentGrid columns definition",
+            "requiredAccess": null
+        },
+        "Ui:DocGrid:StateList": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\DocumentGrid\\StateList",
+            "methods": [
+                "GET"
+            ],
+            "pattern": "/api/v2/documentGrid/states/{family}/",
+            "description": "DocumentGrid states list",
+            "requiredAccess": null
+        }
+    }
+}

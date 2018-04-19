@@ -11,7 +11,7 @@ export default (searchId, $target) =>
     $target.removeClass("result--on");
     var $table = $('<table class="search-grid table table-stripped table-condensed table-bordered" />');
     $target.append($table);
-    $.getJSON("api/v1/search_UI_HTML5/searchAttributes/" + searchId).done(function displaySearchGrid(response) {
+    $.getJSON("api/v2/smartstructures/dsearch/searchAttributes/" + searchId).done(function displaySearchGrid(response) {
 
         $table.docGrid({
             collection: searchId,
@@ -19,7 +19,7 @@ export default (searchId, $target) =>
                 "defaultFam": response.data.config.family,
                 "columns": response.data.attributes
             },
-            temporarySearch: "api/v1/documentGrid/content/" + searchId,
+            temporarySearch: "api/v2/documentGrid/content/" + searchId,
             filterable: false,
             dataTableOptions: {
                 paging: true,
