@@ -16,7 +16,7 @@ use Anakeen\Router\Exception;
 class FamilyDocumentCreation extends DocumentUpdateData
 {
     /**
-     * @var \Anakeen\Core\SmartStructure 
+     * @var \Anakeen\Core\SmartStructure
      */
     protected $_family = null;
     /**
@@ -39,17 +39,16 @@ class FamilyDocumentCreation extends DocumentUpdateData
         $this->create($request, $this->_family, $messages);
 
         $data = $this->getDocumentData();
-        $response=$response->withStatus(201);
+        $response = $response->withStatus(201);
         return ApiV2Response::withData($response, $data, $messages);
     }
 
     /**
-     * @param \Slim\Http\request $request
+     * @param \Slim\Http\request           $request
      * @param \Anakeen\Core\SmartStructure $family
-     * @param array $messages
-     * @return \Anakeen\Core\Internal\SmartElement 
+     * @param array                        $messages
+     * @return \Anakeen\Core\Internal\SmartElement
      * @throws Exception
-     * @throws \Dcp\Core\Exception
      */
     public function create(\Slim\Http\request $request, SmartStructure $family, &$messages)
     {

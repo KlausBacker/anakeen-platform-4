@@ -23,7 +23,7 @@ class DocManager
      *
      * @throws Exception
      * @api Get document object from identifier
-     * @return \Anakeen\Core\Internal\SmartElement 
+     * @return \Anakeen\Core\Internal\SmartElement
      */
     public static function getDocument($documentIdentifier, $latest = true, $useCache = true)
     {
@@ -228,7 +228,7 @@ class DocManager
      * @param int|string $familyIdentifier
      *
      * @throws Exception
-     * @return \Anakeen\Core\Internal\SmartElement 
+     * @return \Anakeen\Core\Internal\SmartElement
      */
     public static function initializeDocument($familyIdentifier)
     {
@@ -284,7 +284,7 @@ class DocManager
      * @param bool       $useDefaultValues
      *
      * @throws Exception
-     * @return \Anakeen\Core\Internal\SmartElement 
+     * @return \Anakeen\Core\Internal\SmartElement
      */
     public static function createDocument($familyIdentifier, $control = true, $useDefaultValues = true)
     {
@@ -320,7 +320,7 @@ class DocManager
      * @param int|string $familyIdentifier
      * @param bool       $useDefaultValues
      *
-     * @return \Anakeen\Core\Internal\SmartElement 
+     * @return \Anakeen\Core\Internal\SmartElement
      */
     public static function createTemporaryDocument($familyIdentifier, $useDefaultValues = true)
     {
@@ -377,7 +377,7 @@ class DocManager
      * @param string[] $rawDocument
      *
      * @throws Exception APIDM0104, APIDM0105
-     * @return \Anakeen\Core\Internal\SmartElement 
+     * @return \Anakeen\Core\Internal\SmartElement
      */
     public static function getDocumentFromRawDocument(array $rawDocument)
     {
@@ -703,6 +703,7 @@ class DocManager
     {
         return sprintf("%s/%s/SmartStructure/%sAttributeList.php", DEFAULT_PUBDIR, Settings::DocumentGenDirectory, ucwords(strtolower($famName)));
     }
+
     public static function getDocumentClassFilename($famName)
     {
         return sprintf("%s/%s/SmartStructure/%s.php", DEFAULT_PUBDIR, Settings::DocumentGenDirectory, ucwords(strtolower($famName)));
