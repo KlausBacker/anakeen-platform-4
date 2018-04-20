@@ -1,64 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: charles
- * Date: 05/11/15
- * Time: 15:10
- */
 
-namespace Dcp\DocumentGrid\HTML5\REST;
+namespace Anakeen\Routes\DocumentGrid;
 
-use Dcp\HttpApi\V1\Crud\Crud;
-use Dcp\HttpApi\V1\DocManager\DocManager;
-use \Dcp\Ui\Exception;
+use Anakeen\Core\DocManager;
+use Anakeen\Router\ApiV2Response;
+use Anakeen\Router\Exception;
 
-class ColumnsDefinition extends Crud
+class ColumnsDefinition
 {
     protected $properties = [];
     protected $defaultFamilyId = false;
-    /**
-     * Create new ressource
-     *
-     * @return mixed
-     * @throws Exception
-     */
-    public function create()
+
+
+    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $famId = $this->contentParameters["famId"];
-        $attrId = $this->contentParameters["attrid"];
-        
-        $userCol = json_decode(\Anakeen\Core\Internal\ApplicationParameterManager::getUserParameterValue("DOCUMENT_GRID_HTML5", "DG_USERFAMILYCOLS") , true);
-        if (!$userCol) {
-            $userCol = [];
-        }
-        
-        $family = DocManager::getFamily($famId);
-        $attribute = $family->getAttribute($attrId);
-        $userCol[$family->name][] = $attribute->id;
-        $userCol[$family->name] = array_unique($userCol[$family->name]);
-        
-        \Anakeen\Core\Internal\ApplicationParameterManager::setUserParameterValue("DOCUMENT_GRID_HTML5", "DG_USERFAMILYCOLS", json_encode($userCol));
-        
-        return ["family" => $famId, "attrid" => $attrId];
-    }
-    /**
-     * Read a ressource
-     *
-     * @param string|int $resourceId Resource identifier
-     *
-     * @return mixed
-     * @throws Exception
-     * @throws \Exception
-     */
-    public function read($resourceId)
-    {
-        $this->properties = array_filter(\Anakeen\Core\Internal\SmartElement::$infofields, function ($item)
-        {
+        $this->properties = array_filter(\Anakeen\Core\Internal\SmartElement::$infofields, function ($item) {
             return isset($item["displayable"]) ? $item["displayable"] : false;
         });
-        
-        array_walk($this->properties, function (&$value, $key)
-        {
+
+        array_walk($this->properties, function (&$value, $key) {
             $value["id"] = $key;
             $value["type"] = $key;
             $value["label"] = _($value['label']);
@@ -67,21 +27,20 @@ class ColumnsDefinition extends Crud
             }
             return $value;
         });
-        
-        $this->defaultFamilyId = isset($this->contentParameters["famId"]) ? $this->contentParameters["famId"] : false;
-        
-        $needVisibleColumns = ($this->contentParameters["familyColumns"] === "true");
+
+        $this->defaultFamilyId = $request->getQueryParam("famId", false);
+        $needVisibleColumns = ($request->getQueryParam("familyColumns") === "true");
         /**
-         *  @var \Anakeen\Core\SmartStructure [] $famDef
+         * @var \Anakeen\Core\SmartStructure [] $famDef
          */
         $famDef = array();
         $displayedColumns = array();
-        
+
         if ($this->defaultFamilyId !== false) {
-            $famDef[$this->defaultFamilyId] = new_Doc("", $this->defaultFamilyId);
+            $famDef[$this->defaultFamilyId] = DocManager::getFamily($this->defaultFamilyId);
         }
-        
-        $elementsId = isset($this->contentParameters["columns"]) ? $this->contentParameters["columns"] : "";
+
+        $elementsId = $request->getQueryParam("columns", "");
         $elementsId = explode(",", $elementsId);
         foreach ($elementsId as $currentColumn) {
             if (!isset($currentColumn)) {
@@ -89,12 +48,12 @@ class ColumnsDefinition extends Crud
             }
             $displayedColumns[] = $this->getColumnDef($currentColumn, $famDef);
         }
-        
+
         $userColumns = [];
         $visibleColumns = [];
         if ($needVisibleColumns) {
-            $userFamPref = json_decode(\Anakeen\Core\Internal\ApplicationParameterManager::getUserParameterValue("DOCUMENT_GRID_HTML5", "DG_USERFAMILYCOLS") , true);
-            
+            $userFamPref = json_decode(\Anakeen\Core\Internal\ApplicationParameterManager::getUserParameterValue("DOCUMENT_GRID_HTML5", "DG_USERFAMILYCOLS"), true);
+
             $userAttrids = [];
             if (!empty($userFamPref[$famDef[$this->defaultFamilyId]->name])) {
                 $userAttrids = $userFamPref[$famDef[$this->defaultFamilyId]->name];
@@ -103,7 +62,7 @@ class ColumnsDefinition extends Crud
             foreach ($attributes as $attrid => $attrdef) {
                 if ($attrdef->type !== "array" && $attrdef->mvisibility !== "H" && $attrdef->mvisibility !== "I" && $attrdef->mvisibility !== "O") {
                     $attrInfo = $this->getAttributeDef($attrdef, $famDef[$this->defaultFamilyId]);
-                    
+
                     if ($userAttrids && in_array($attrdef->id, $userAttrids)) {
                         $attrInfo["userOrder"] = array_search($attrdef->id, $userAttrids);
                         $userColumns[] = $attrInfo;
@@ -113,19 +72,17 @@ class ColumnsDefinition extends Crud
                 }
             }
         }
-        
-        usort($visibleColumns, function ($a, $b)
-        {
+
+        usort($visibleColumns, function ($a, $b) {
             return strcmp($a["label"], $b["label"]);
         });
-        
-        usort($userColumns, function ($a, $b)
-        {
+
+        usort($userColumns, function ($a, $b) {
             return ($a["userOrder"] > $b["userOrder"]) ? 1 : (($a["userOrder"] > $b["userOrder"]) ? -1 : 0);
         });
-        return ["displayColumns" => $displayedColumns, "userColumns" => $userColumns, "visibleColumns" => $visibleColumns];
+        return ApiV2Response::withData($response, ["displayColumns" => $displayedColumns, "userColumns" => $userColumns, "visibleColumns" => $visibleColumns]);
     }
-    
+
     protected function getColumnDef($columnId, &$famDef)
     {
         if (isset($this->properties[$columnId])) {
@@ -133,12 +90,12 @@ class ColumnsDefinition extends Crud
             if ($columnId == "state") {
                 $currentData["urlSource"] = "?app=DOCUMENT_GRID_HTML5&action=GETSTATES";
                 $currentFamDoc = $this->getCurrentFamDoc($columnId, $famDef);
-                $currentData["urlSource"].= "&famid=" . urlencode($currentFamDoc->name);
+                $currentData["urlSource"] .= "&famid=" . urlencode($currentFamDoc->name);
             }
             return $currentData;
         }
         $currentFamDoc = $this->getCurrentFamDoc($columnId, $famDef);
-        
+
         $currentAttribute = $currentFamDoc->getAttribute($columnId);
         if (is_object($currentAttribute)) {
             return $this->getAttributeDef($currentAttribute, $currentFamDoc);
@@ -150,14 +107,14 @@ class ColumnsDefinition extends Crud
             }
         }
     }
-    
+
     protected function getAttributeDef(\Anakeen\Core\SmartStructure\BasicAttribute $currentAttribute, \Anakeen\Core\SmartStructure $family)
     {
         $data = array(
             "id" => $currentAttribute->id,
             "type" => $currentAttribute->type,
-            "label" => $currentAttribute->getLabel() ,
-            "sortable" => $this->isSortable($family, $currentAttribute->id) ,
+            "label" => $currentAttribute->getLabel(),
+            "sortable" => $this->isSortable($family, $currentAttribute->id),
             "filterable" => $this->isFilterable($currentAttribute)
         );
         if (($data["type"] == "docid" || $data["type"] == "account") && $data["filterable"]) {
@@ -165,59 +122,15 @@ class ColumnsDefinition extends Crud
         }
         return $data;
     }
-    /**
-     * Update the ressource
-     *
-     * @param string|int $resourceId Resource identifier
-     *
-     * @return mixed
-     * @throws Exception
-     */
-    public function update($resourceId)
-    {
-        $exception = new Exception("CRUD0103", __METHOD__);
-        $exception->setHttpStatus("405", "You cannot update the column definition");
-        throw $exception;
-    }
-    /**
-     * Delete ressource
-     *
-     * @param string|int $resourceId Resource identifier
-     *
-     * @return mixed
-     * @throws Exception
-     */
-    public function delete($resourceId)
-    {
-        $this->contentParameters = \Dcp\HttpApi\V1\Api\Router::extractContentParameters("UPDATE", $this);
-        
-        $famId = $this->contentParameters["famId"];
-        $attrId = $this->contentParameters["attrid"];
-        $userCol = json_decode(\Anakeen\Core\Internal\ApplicationParameterManager::getUserParameterValue("DOCUMENT_GRID_HTML5", "DG_USERFAMILYCOLS") , true);
-        if (!$userCol) {
-            $userCol = [];
-        }
-        
-        $family = DocManager::getFamily($famId);
-        $attribute = $family->getAttribute($attrId);
-        
-        $famPref = $userCol[$family->name];
-        
-        unset($famPref[array_search($attribute->id, $famPref) ]);
-        $userCol[$family->name] = array_unique(array_values($famPref));
-        
-        \Anakeen\Core\Internal\ApplicationParameterManager::setUserParameterValue("DOCUMENT_GRID_HTML5", "DG_USERFAMILYCOLS", json_encode($userCol));
-        
-        return ["family" => $famId, "attrid" => $attrId];
-    }
+
     /**
      * Get currentFamDoc
      *
-     * @param $currentColumn
-     * @param \DocFam[] $famDef
-     * @param $this->defaultFamilyId
+     * @param                                $currentColumn
+     * @param \Anakeen\Core\SmartStructure[] $famDef
+     * @param                                $this ->defaultFamilyId
      *
-     * @return \Anakeen\Core\SmartStructure 
+     * @return \Anakeen\Core\SmartStructure
      * @throws Exception
      */
     protected function getCurrentFamDoc($currentColumn, &$famDef)
@@ -225,7 +138,7 @@ class ColumnsDefinition extends Crud
         /* @var \Anakeen\Core\Internal\SmartElement $currentFamDoc */
         if (isset($currentColumn["famId"])) {
             if (!isset($famDef[$currentColumn["famId"]])) {
-                $famDef[$currentColumn["famId"]] = new_Doc('', $currentColumn["famId"]);
+                $famDef[$currentColumn["famId"]] = DocManager::getFamily($currentColumn["famId"]);
             }
             $currentFamDoc = $famDef[$currentColumn["famId"]];
         } else {
@@ -240,28 +153,28 @@ class ColumnsDefinition extends Crud
         }
         return $currentFamDoc;
     }
-    
+
     protected function isSortable(\Anakeen\Core\Internal\SmartElement $tmpDoc, $attrId)
     {
         $sortable = $tmpDoc->getSortAttributes();
         return isset($sortable[$attrId]);
     }
-    
+
     public static function isFilterable(\Anakeen\Core\SmartStructure\BasicAttribute $attr)
     {
         $isFilterable = (in_array($attr->type, array(
-            "text",
-            "longtext",
-            "htmltext",
-            "docid",
-            "enum",
-            "account",
-            "money",
-            "int",
-            "double",
-            "date"
-        )) && $attr->getOption("searchCriteria") != "hidden");
-        
+                "text",
+                "longtext",
+                "htmltext",
+                "docid",
+                "enum",
+                "account",
+                "money",
+                "int",
+                "double",
+                "date"
+            )) && $attr->getOption("searchCriteria") != "hidden");
+
         if ($isFilterable && $attr->isMultiple() && ($attr->type === "money" || $attr->type === "int" || $attr->type === "double" || $attr->type === "date")) {
             // No operators for multiple numeric values
             $isFilterable = false;
@@ -270,17 +183,7 @@ class ColumnsDefinition extends Crud
             $docTitle = $attr->getOption("doctitle");
             $isFilterable = !empty($docTitle);
         }
-        
+
         return $isFilterable;
-    }
-    public function getEtagInfo()
-    {
-        if (isset($this->urlParameters["identifier"])) {
-            $result[] = $this->urlParameters["identifier"];
-            $result[] = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
-            $result[] = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
-            return implode(",", $result);
-        }
-        return null;
     }
 }

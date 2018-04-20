@@ -3,12 +3,12 @@
   {
     "DSEARCH":
     {
-      "renderAccessClass": "SearchUi\\DSearchAccess",
+      "renderAccessClass": "Anakeen\\SmartStructures\\Dsearch\\Render\\DSearchAccess",
       "disableTag" : true
     },
     "REPORT":
     {
-      "renderAccessClass": "SearchUi\\ReportAccess",
+      "renderAccessClass": "Anakeen\\SmartStructures\\Report\\Render\\ReportAccess",
       "disableTag" : true
     }
   }

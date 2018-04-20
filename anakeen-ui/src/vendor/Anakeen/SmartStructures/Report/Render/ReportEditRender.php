@@ -1,16 +1,17 @@
 <?php
 
 
-namespace Dcp\Search\html5;
+namespace Anakeen\SmartStructures\Report\Render;
 
-
+use Anakeen\SmartStructures\Dsearch\Render\SearchEditRender;
 use SmartStructure\Attributes\Report as myAttr;
 use Anakeen\Core\DocManager;
 
-class Report_html5_edit_render extends Search_html5_edit_render
+class ReportEditRender extends SearchEditRender
 {
 
-    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null) {
+    public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
+    {
         return "Report Edit";
     }
 
@@ -35,7 +36,7 @@ class Report_html5_edit_render extends Search_html5_edit_render
     {
         $templates = parent::getTemplates($document);
         $templates["sections"]["content"]["file"]
-            = __DIR__."/reportHTML5_edit.mustache";
+            = __DIR__ . "/reportHTML5_edit.mustache";
         return $templates;
     }
 
@@ -48,18 +49,20 @@ class Report_html5_edit_render extends Search_html5_edit_render
             ->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
         $options->frame(myAttr::se_crit)
             ->setOption("collapse", false)
-           ->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
-        $options->frame(myAttr::rep_fr_presentation)->setResponsiveColumns(array([
-            "number" => 2,
-            "minWidth" => "60rem",
-            "grow" => true
-        ]));
+            ->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
+        $options->frame(myAttr::rep_fr_presentation)->setResponsiveColumns(array(
+            [
+                "number" => 2,
+                "minWidth" => "60rem",
+                "grow" => true
+            ]
+        ));
         return $options;
     }
 
     public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document)
     {
-        $vis= parent::getVisibilities($document);
+        $vis = parent::getVisibilities($document);
         $vis->setVisibility(myAttr::rep_style, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
         $vis->setVisibility(myAttr::rep_coloreven, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
         $vis->setVisibility(myAttr::rep_colorodd, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);

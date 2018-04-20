@@ -1,8 +1,6 @@
 <?php
 
-namespace SearchUI;
-use Dcp\Search\html5\Search_html5_edit_render;
-use Dcp\Search\html5\Search_html5_view_render;
+namespace Anakeen\SmartStructures\Dsearch\Render;
 
 class DSearchAccess implements \Dcp\Ui\IRenderConfigAccess
 {
@@ -10,14 +8,14 @@ class DSearchAccess implements \Dcp\Ui\IRenderConfigAccess
      * @param string $mode
      * @return \Dcp\Ui\IRenderConfig
      */
-    public function getRenderConfig($mode,  \Anakeen\Core\Internal\SmartElement $document)
+    public function getRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $document)
     {
         switch ($mode) {
             case \Dcp\Ui\RenderConfigManager::CreateMode:
             case \Dcp\Ui\RenderConfigManager::EditMode:
-                return new Search_html5_edit_render($this);
+                return new SearchEditRender();
             case \Dcp\Ui\RenderConfigManager::ViewMode:
-                return new Search_html5_view_render($this);
+                return new SearchViewRender();
         }
 
         return null;

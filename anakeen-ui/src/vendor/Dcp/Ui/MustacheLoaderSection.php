@@ -10,40 +10,41 @@ use Mustache_Exception_UnknownTemplateException;
 
 class MustacheLoaderSection implements \Mustache_Loader
 {
-    
+
     protected $templateSection = array();
     protected $delimiterStartTag = '[[';
     protected $delimiterEndTag = ']]';
     /***
-     * @var \Anakeen\Core\Internal\SmartElement 
-    */
+     * @var \Anakeen\Core\Internal\SmartElement
+     */
     protected $document;
+
     public function __construct(array $tplSectionFile, $delimiterStartTag = '[[', $delimiterEndTag = ']]')
     {
         $this->templateSection = $tplSectionFile;
         $this->delimiterStartTag = $delimiterStartTag;
         $this->delimiterEndTag = $delimiterEndTag;
     }
-    
+
     public function setDocument(\Anakeen\Core\Internal\SmartElement $doc)
     {
         $this->document = $doc;
     }
-    
+
     protected function getTemplates($name)
     {
-        
+
         $templateSection = $this->templateSection;
-        
+
         if ($name !== null) {
             $indexes = explode(".", $name);
             foreach ($indexes as $index) {
                 $templateSection = $templateSection[$index];
             }
         }
-        
+
         $this->getTemplatePart($templateSection);
-        
+
         return $templateSection;
     }
 
@@ -61,10 +62,10 @@ class MustacheLoaderSection implements \Mustache_Loader
             return;
         }
         if (!empty($templatePart["file"]) && is_string($templatePart["file"])) {
-            $filePath=$templatePart["file"];
+            $filePath = $templatePart["file"];
             if ($filePath[0] !== "/") {
                 // Use Apps directory for Relative path
-                $filePath=DEFAULT_PUBDIR."/Apps/".$templatePart["file"];
+                $filePath = DEFAULT_PUBDIR . "/Apps/" . $templatePart["file"];
             }
 
             if (!file_exists($filePath)) {
@@ -73,11 +74,12 @@ class MustacheLoaderSection implements \Mustache_Loader
             $templatePart = file_get_contents($filePath);
             return;
         }
-        
+
         foreach ($templatePart as $index => $content) {
             $this->getTemplatePart($templatePart[$index]);
         }
     }
+
     /**
      * Load a Template by name.
      *

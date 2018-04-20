@@ -6,26 +6,25 @@
  * Time: 09:04
  */
 
-namespace Dcp\Search\html5;
+namespace Anakeen\SmartStructures\Dsearch\Routes;
 
-use Dcp\HttpApi\V1\Crud\DocumentCollection;
-use Dcp\HttpApi\V1\Crud\Exception;
+use Anakeen\Router\ApiV2Response;
 
-class operators extends DocumentCollection
+/**
+ * Class Operators
+ * @note    Used by route : GET /api/v2/smartstructures/dsearch/operators/
+ * @package Anakeen\SmartStructures\Dsearch\Routes
+ */
+class Operators
 {
-    
-    protected $_collection = null;
-    
-    public function create()
+    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $exception = new Exception("CRUD0103", __METHOD__);
-        $exception->setHttpStatus("405", "You cannot create");
-        
-        throw $exception;
-    }
-    
-    public function read($resourceId)
-    {
+
+        $etag = $this->getEtagInfo();
+        $response = ApiV2Response::withEtag($request, $response, $etag);
+        if (ApiV2Response::matchEtag($request, $etag)) {
+            return $response;
+        }
         $return = array();
         $arrayTypeArray = array(
             "text[]",
@@ -48,15 +47,14 @@ class operators extends DocumentCollection
             "account[]"
         );
         $doccollection = new \DocCollection();
-        
+
         foreach ($doccollection->top as & $tmptop) {
-            
             $tmpTypedLabel = array();
             $tmpTypedTitle = array();
             $tmpTypeArray = array();
-            $tmpCompatibleTypes = isset($tmptop["type"])?$tmptop["type"]:null;
+            $tmpCompatibleTypes = isset($tmptop["type"]) ? $tmptop["type"] : null;
             $tmpId = array_search($tmptop, $doccollection->top);
-            
+
             if (is_array($tmpCompatibleTypes)) {
                 foreach ($tmpCompatibleTypes as $k => $type) {
                     if ($type == "array") {
@@ -66,7 +64,7 @@ class operators extends DocumentCollection
                     }
                 }
             }
-            
+
             if (!empty($tmptop["sdynlabel"])) {
                 foreach ($tmptop["sdynlabel"] as $k => $label) {
                     $tmpTypedLabel[$k] = _($label);
@@ -82,7 +80,7 @@ class operators extends DocumentCollection
                 }
             }
             $tmpTypeArray = array();
-            
+
             if (!empty($tmptop["slabel"])) {
                 foreach ($tmptop["slabel"] as $k => $label) {
                     $tmpTypedTitle[$k] = _($label);
@@ -97,47 +95,26 @@ class operators extends DocumentCollection
                     }
                 }
             }
-            
+
             if (($tmpId == "=") || ($tmpId == "!=")) {
                 $tmpCompatibleTypes[] = "wid";
             }
-            
+
             $return[] = array(
                 "id" => $tmpId,
-                "title" => _($tmptop["label"]) ,
-                "label" => _($tmptop["dynlabel"]) ,
+                "title" => _($tmptop["label"]),
+                "label" => _($tmptop["dynlabel"]),
                 "typedTitle" => $tmpTypedTitle,
                 "typedLabel" => $tmpTypedLabel,
                 "compatibleTypes" => $tmpCompatibleTypes,
                 "operands" => $tmptop["operand"]
             );
         }
-        
-        return $return;
+
+        return ApiV2Response::withData($response, $return);
     }
-    
-    public function update($resourceId)
-    {
-        $exception = new Exception("CRUD0103", __METHOD__);
-        $exception->setHttpStatus("405", "You cannot update");
-        
-        throw $exception;
-    }
-    
-    public function delete($resourceId)
-    {
-        $exception = new Exception("CRUD0103", __METHOD__);
-        $exception->setHttpStatus("405", "You cannot delete");
-        
-        throw $exception;
-    }
-    
-    protected function prepareSearchDoc()
-    {
-        $this->_searchDoc = new \SearchDoc("", -1);
-        
-        $this->_searchDoc->setObjectReturn();
-    }
+
+
     /**
      * Return etag info
      *
@@ -147,7 +124,7 @@ class operators extends DocumentCollection
     {
         $result[] = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
         $result[] = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
-        
+
         return implode(",", $result);
     }
 }
