@@ -1,0 +1,62 @@
+[
+  {
+    "name": "users",
+    "title": "Users Management",
+    "fa-icon": "users",
+    "order": 0,
+    "props": [],
+    "emit": [],
+    "receive": [],
+    "componentPath": "foo"
+  },
+  {
+    "name": "functionnal",
+    "title": "Functionnal Settings",
+    "fa-icon": "cogs",
+    "order": 0,
+    "props": [],
+    "emit": [],
+    "receive": [],
+    "componentPath": "bar"
+  },
+  {
+    "name": "search",
+    "title": "Search",
+    "fa-icon": "search",
+    "order": 0,
+    "props": [],
+    "emit": [],
+    "receive": [],
+    "componentPath": "foo"
+  },
+  {
+    "name": "translations",
+    "title": "Translations",
+    "fa-icon": "globe",
+    "order": 0,
+    "props": [],
+    "emit": [],
+    "receive": [],
+    "componentPath": "bar"
+  },
+  {
+    "name": "technical",
+    "title": "Technical Settings",
+    "fa-icon": "wrench",
+    "order": 0,
+    "props": [],
+    "emit": [],
+    "receive": [],
+    "componentPath": "foo"
+  },
+  {
+    "name": "system",
+    "title": "System Integration",
+    "fa-icon": "exchange-alt",
+    "order": 0,
+    "props": [],
+    "emit": [],
+    "receive": [],
+    "componentPath": "bar"
+  }
+]

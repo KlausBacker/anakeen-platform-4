@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: aurelien
- * Date: 10/04/18
- * Time: 10:39
- */
 
 namespace Anakeen\Routes\Admin;
 

@@ -21,5 +21,5 @@ export default {
                     throw "An error occured during logout operation";
                 }
             });
-    }
+    },
 };

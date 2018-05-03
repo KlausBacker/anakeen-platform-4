@@ -24,9 +24,21 @@
   }
 }
 
+.side-menu-module-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  > * + * {
+    margin-top: 2rem;
+  }
+}
+
 .icon-module {
   font-size: 2rem;
   color: rgba(255, 255, 255, 0.7);
+  .router-link-active > & {
+    color: white;
+  }
 }
 
 @media (min-width: 768px) {

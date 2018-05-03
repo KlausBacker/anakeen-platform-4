@@ -25,7 +25,7 @@
     },
     "Admin:Modules": {
       "pattern": "/api/v2/admin/modules",
-      "callable": "\\AnakeenRoutes\\Admin\\Modules",
+      "callable": "\\Anakeen\\Routes\\Admin\\Modules",
       "methods": [
         "GET"
       ],

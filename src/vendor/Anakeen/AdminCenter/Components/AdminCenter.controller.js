@@ -1,8 +1,8 @@
 import AdminHeader from './AdminHeader/AdminHeader.vue';
-import AdminSideMenu from './AdminSideMenu/AdminSideMenu.vue';
+import AdminContent from './AdminContent/AdminContent.vue';
 export default {
     components: {
         AdminHeader,
-        AdminSideMenu
+        AdminContent
     }
 };
