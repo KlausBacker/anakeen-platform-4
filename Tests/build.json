@@ -1,7 +1,7 @@
 {
     "moduleName" : "smart-data-engine-test",
-    "version" : "4.0.0",
-    "release" : "0",
+    "version" : "0.0.1",
+    "release" : "alpha",
     "application" : [],
     "includedPath" : ["src/*"],
     "lang" : ["fr","en"],
