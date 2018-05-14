@@ -7093,6 +7093,10 @@ vue-loader@^14.1.1, vue-loader@^14.2.2:
     vue-style-loader "^4.0.1"
     vue-template-es2015-compiler "^1.6.0"
 
+vue-plugin-load-script@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/vue-plugin-load-script/-/vue-plugin-load-script-1.0.1.tgz#ed67ab2e5e6e5b8ef6abe59f6b857534abb1bb14"
+
 vue-router@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.1.tgz#d9b05ad9c7420ba0f626d6500d693e60092cc1e9"

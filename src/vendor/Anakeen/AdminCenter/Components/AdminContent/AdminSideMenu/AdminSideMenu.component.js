@@ -1,6 +1,6 @@
 export default {
     props: {
-        modules: {
+        plugins: {
             type: Array,
             default: () => []
         }

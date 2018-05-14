@@ -1,13 +1,14 @@
 [
   {
-    "name": "users",
+    "name": "users-management",
     "title": "Users Management",
     "fa-icon": "users",
     "order": 0,
     "props": [],
     "emit": [],
     "receive": [],
-    "componentPath": "foo"
+    "componentPath": "/users",
+    "url": "/api/v2/admin/plugin/users"
   },
   {
     "name": "functionnal",
@@ -17,7 +18,7 @@
     "props": [],
     "emit": [],
     "receive": [],
-    "componentPath": "bar"
+    "componentPath": "/functionnalSettings"
   },
   {
     "name": "search",
@@ -27,7 +28,7 @@
     "props": [],
     "emit": [],
     "receive": [],
-    "componentPath": "foo"
+    "componentPath": "/search"
   },
   {
     "name": "translations",
@@ -37,17 +38,18 @@
     "props": [],
     "emit": [],
     "receive": [],
-    "componentPath": "bar"
+    "componentPath": "/translations"
   },
   {
-    "name": "technical",
+    "name": "tech-settings",
     "title": "Technical Settings",
     "fa-icon": "wrench",
     "order": 0,
     "props": [],
     "emit": [],
     "receive": [],
-    "componentPath": "foo"
+    "componentPath": "/technicalSettings",
+    "url": "/api/v2/admin/plugin/settings"
   },
   {
     "name": "system",
@@ -57,6 +59,6 @@
     "props": [],
     "emit": [],
     "receive": [],
-    "componentPath": "bar"
+    "componentPath": "/systemIntegration"
   }
 ]

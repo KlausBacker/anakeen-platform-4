@@ -23,9 +23,18 @@
       "requiredAccess": "admincenter:admin",
       "priority": 0
     },
-    "Admin:Modules": {
-      "pattern": "/api/v2/admin/modules",
-      "callable": "\\Anakeen\\Routes\\Admin\\Modules",
+    "Admin:Plugins": {
+      "pattern": "/api/v2/admin/plugins",
+      "callable": "\\Anakeen\\Routes\\Admin\\Plugins",
+      "methods": [
+        "GET"
+      ],
+      "requiredAccess": "admincenter:admin",
+      "priority": 0
+    },
+    "Admin:Plugin": {
+      "pattern": "/api/v2/admin/plugin/{pluginName}",
+      "callable": "\\Anakeen\\Routes\\Admin\\Plugin",
       "methods": [
         "GET"
       ],

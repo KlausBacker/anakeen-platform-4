@@ -1,6 +1,6 @@
 <template>
     <section class="admin-center-main-content">
-        <admin-side-menu :modules="getModulesList"></admin-side-menu>
+        <admin-side-menu :plugins="getPluginsList"></admin-side-menu>
         <router-view></router-view>
     </section>
 </template>

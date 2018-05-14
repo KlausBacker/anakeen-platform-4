@@ -1,13 +1,13 @@
 <template>
     <div class="admin-center-side-menu">
-        <div class="side-menu-module-list">
-            <router-link v-for="module in modules" :key="module.name" :to="module.componentPath">
-                <i :class="`icon-module fa fa-${module['fa-icon']}`"></i>
+        <div class="side-menu-plugin-list">
+            <router-link v-for="plugin in plugins" :key="plugin.name" :to="plugin.componentPath">
+                <i :class="`icon-plugin fa fa-${plugin['fa-icon']}`"></i>
             </router-link>
         </div>
         <div class="side-menu-bottom-content">
-            <a class="admin-center-icon-module" href="http://docs.anakeen.com" target="_blank">
-                <i class="icon-module fa fa-book"></i>
+            <a class="admin-center-icon-plugin" href="http://docs.anakeen.com" target="_blank">
+                <i class="icon-plugin fa fa-book"></i>
             </a>
             <img class="anakeen-logo" src="/AdminCenter/Images/anakeen_monogramme.svg" alt="Anakeen Logo"/>
         </div>

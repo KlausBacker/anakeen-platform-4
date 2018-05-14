@@ -36,6 +36,7 @@ npm manifest:
       "babel-plugin-transform-es2015-modules-strip": "^0.1.1",
       "babel-preset-env": "^1.6.1",
       "babel-preset-es2015": "^6.24.1",
+      "babel-preset-stage-2": "^6.24.1",
       "clean-webpack-plugin": "^0.1.19",
       "core-js": "^2.5.5",
       "css-loader": "^0.28.11",
@@ -53,6 +54,7 @@ npm manifest:
       "vue": "^2.5.16",
       "vue-gettext": "^2.0.30",
       "vue-loader": "^14.2.2",
+      "vue-plugin-load-script": "^1.0.1",
       "vue-router": "^3.0.1",
       "vue-style-loader": "^4.1.0",
       "vue-template-compiler": "^2.5.16",
@@ -7162,6 +7164,10 @@ Lockfile:
       vue-hot-reload-api "^2.2.0"
       vue-style-loader "^4.0.1"
       vue-template-es2015-compiler "^1.6.0"
+  
+  vue-plugin-load-script@^1.0.1:
+    version "1.0.1"
+    resolved "https://registry.yarnpkg.com/vue-plugin-load-script/-/vue-plugin-load-script-1.0.1.tgz#ed67ab2e5e6e5b8ef6abe59f6b857534abb1bb14"
   
   vue-router@^3.0.1:
     version "3.0.1"

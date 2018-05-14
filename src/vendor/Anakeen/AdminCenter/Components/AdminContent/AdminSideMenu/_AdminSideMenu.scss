@@ -24,7 +24,7 @@
   }
 }
 
-.side-menu-module-list {
+.side-menu-plugin-list {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -33,7 +33,7 @@
   }
 }
 
-.icon-module {
+.icon-plugin {
   font-size: 2rem;
   color: rgba(255, 255, 255, 0.7);
   .router-link-active > & {
@@ -52,7 +52,7 @@
       height: 65px;
     }
 
-    .icon-module {
+    .icon-plugin {
       font-size: 2.5rem;
     }
   }

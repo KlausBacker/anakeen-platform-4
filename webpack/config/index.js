@@ -11,6 +11,7 @@ const parts = require('../parts');
 const BASE_DIR = __PROJECT_ROOT;
 
 const AdminCenterWebpackConfig = require('./adminCenter');
+const AdminPluginsWebpackConfig = require('./adminPlugins');
 
 const commonConfig = merge([
     {
@@ -38,6 +39,9 @@ const commonConfig = merge([
 
 module.exports = env => {
     if (env === 'production' || env === 'debug' || env === 'dev') {
-        return merge(commonConfig, AdminCenterWebpackConfig(env));
+        return [
+            merge(commonConfig, AdminCenterWebpackConfig(env)),
+            merge(commonConfig, AdminPluginsWebpackConfig(env))
+        ];
     }
 };

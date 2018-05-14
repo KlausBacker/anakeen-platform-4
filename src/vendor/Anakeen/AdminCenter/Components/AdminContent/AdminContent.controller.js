@@ -5,12 +5,12 @@ export default {
         AdminSideMenu
     },
     mounted() {
-        this.loadModulesList();
+        this.loadPluginsList();
     },
     computed: {
-        ...mapGetters(['getModulesList'])
+        ...mapGetters(['getPluginsList'])
     },
     methods: {
-        ...mapActions(['loadModulesList'])
+        ...mapActions(['loadPluginsList'])
     }
 };
