@@ -1,3 +1,8 @@
+.admin-center-side-menu-wrapper {
+  height: 100%;
+  display: flex;
+}
+
 .admin-center-side-menu {
   display: flex;
   flex-direction: column;
@@ -7,6 +12,30 @@
   width: 35px;
   background: #424142;
   padding: 2rem 0;
+}
+
+.admin-center-side-submenu {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 10px 0px;
+  width: 200px;
+  background-color: #F2F2F2;
+
+  .admin-center-plugin-title {
+    padding: 0 5px 10px 5px;
+  }
+
+  .admin-center-side-submenu-item {
+    padding: 15px 20px;
+    height: 55px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .admin-center-side-submenu-item--active {
+    background: white;
+  }
 }
 
 .side-menu-bottom-content {

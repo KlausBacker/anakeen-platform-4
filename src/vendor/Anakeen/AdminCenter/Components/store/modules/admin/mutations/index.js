@@ -1,5 +1,5 @@
 import router from '../../../../router';
-import Vue from "vue";
+import { buildVueRoutes } from "../../../../utils/plugins";
 
 export const mutationsType = {
     SET_PLUGINS: 'SET_PLUGINS',
@@ -11,23 +11,7 @@ export default {
         state.plugins = plugins;
     },
     [mutationsType.UPDATE_ROUTER] (state, plugins) {
-        router.addRoutes(plugins.map(plugin => {
-            return {
-                path: plugin.componentPath,
-                component: () => {
-                    return new Promise((resolve, reject) => {
-                        Vue.loadScript(plugin.url)
-                            .then((response) => {
-                                resolve({
-                                    template: `<${plugin.name}></${plugin.name}>`,
-                                });
-                            })
-                            .catch((err) => {
-                                console.error(err);
-                            });
-                    });
-                }
-            };
-        }));
+        const routes = buildVueRoutes(plugins);
+        router.addRoutes(routes);
     }
 };
