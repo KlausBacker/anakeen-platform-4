@@ -4,5 +4,13 @@ export default {
     components: {
         AdminHeader,
         AdminContent
+    },
+    mounted() {
+        this.$("#admin-center-notification").kendoNotification({
+            position: {
+                top: 40,
+                right: 20
+            }
+        });
     }
 };

@@ -12,6 +12,10 @@ export default {
                 }
             });
     },
+    showMessage ({ commit }, message) {
+        const notif = Vue.jQuery("#admin-center-notification").data('kendoNotification');
+        notif.show(message.content, message.type);
+    },
     logout ({ commit }) {
         return Vue.ankApi.delete('authent/sessions/current')
             .then(response => {
