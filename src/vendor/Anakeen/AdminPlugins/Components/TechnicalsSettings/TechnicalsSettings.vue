@@ -7,7 +7,7 @@
 
 <script>
     export default {
-        name: "tech-settings",
+        name: "ank-admin-settings",
         mounted() {
             this.$('#calendar').kendoCalendar();
         }

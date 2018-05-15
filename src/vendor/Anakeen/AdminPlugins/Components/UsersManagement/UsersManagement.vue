@@ -4,7 +4,7 @@
 
 <script>
     export default {
-        name: "users-management"
+        name: "ank-admin-users-manager"
     }
 </script>
 

@@ -1,0 +1,32 @@
+{
+  "ank-admin-users-manager": {
+    "title": "Users Management",
+    "fa-icon": "users",
+    "order": {
+      "position": "first"
+    },
+    "props": [],
+    "emit": [],
+    "receive": [],
+    "componentPath": "/usersManagement",
+    "scriptURL": "/api/v2/admin/plugin/users",
+    "subcomponents": {
+      "ank-admin-users-section": {
+        "title": "Users",
+        "componentPath": "users",
+        "order": {
+          "position": "auto"
+        },
+        "scriptURL": "/api/v2/admin/plugin/users"
+      },
+      "ank-admin-groups-section": {
+        "title": "Groups",
+        "componentPath": "groups",
+        "order": {
+          "position": "auto"
+        },
+        "scriptURL": "/api/v2/admin/plugin/users"
+      }
+    }
+  }
+}
