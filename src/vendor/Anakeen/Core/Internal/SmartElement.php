@@ -3528,31 +3528,7 @@ create unique index i_docir on doc(initid, revision);";
         return "";
     }
 
-    /**
-     * call when doc is being undelete
-     * if return non null string undelete will ne aborted
-     *
-     * @deprecated hook use {@link \Anakeen\Core\Internal\SmartElement:::preUndelete} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::preUndelete
-     * @return string error message, if no error empty string
-     */
-    public function preRevive()
-    {
-        return "";
-    }
 
-    /**
-     * call when doc is revived after resurrection in database
-     * the error message will appeared like message
-     *
-     * @deprecated hook use {@link \Anakeen\Core\Internal\SmartElement:::postUndelete} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::postUndelete
-     * @return string warning message, if no warning empty string
-     */
-    public function postRevive()
-    {
-        return "";
-    }
 
     /**
      * set attribute title value

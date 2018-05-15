@@ -119,6 +119,7 @@ class TestProfil extends TestCaseDcpCommonFamily
         $s->search();
         
         $this->assertEquals($expectNumber, $s->count() , sprintf("query:%s: %s", print_r($s->getSearchInfo() , true) , print_r($this->getViews($famName) , true)));
+        $this->exitSudo();
     }
     /**
      * @dataProvider dataProfilRecomputeProfiledDocuments

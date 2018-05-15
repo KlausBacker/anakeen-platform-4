@@ -78,7 +78,8 @@ class DSearchHooks extends \SmartStructure\Search
             }
             $only = "only";
         }
-        $query = DirLib::getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getRawValue("se_trash"), false, $level = 2, $join = '', $only);
+        $query = DirLib::getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getRawValue("se_trash"), false, $level = 2, $join = '',
+            $only);
 
         return $query;
     }
@@ -119,7 +120,6 @@ class DSearchHooks extends \SmartStructure\Search
         }
         return $err;
     }
-
 
 
     /**
@@ -251,43 +251,6 @@ class DSearchHooks extends \SmartStructure\Search
             }
         }
         return $std;
-    }
-
-    public function preConsultation()
-    {
-        $err = parent::preConsultation();
-        if ($err !== '') {
-            return $err;
-        }
-        if (count($this->getMultipleRawValues("se_filter")) > 0) {
-            if ($this->defaultview == "FREEDOM:VIEWDSEARCH") {
-                $type = $this->getMultipleRawValues("se_typefilter");
-                if ($type[0] != "generated") {
-                    $this->defaultview = "FDL:VIEWBODYCARD";
-                }
-            }
-        }
-        return '';
-    }
-
-    public function preEdition()
-    {
-        if (count($this->getMultipleRawValues("se_filter")) > 0) {
-            $type = $this->getMultipleRawValues("se_typefilter");
-            if ($type[0] != "generated") {
-                $this->defaultedit = "FDL:EDITBODYCARD";
-                /**
-                 * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
-                 */
-                $this->getAttribute('se_t_detail', $oa);
-                $oa->setVisibility('R');
-                $this->getAttribute('se_t_filters', $oa);
-                $oa->setVisibility('W');
-
-                $this->getAttribute('se_filter', $oa);
-                $oa->setVisibility('W');
-            }
-        }
     }
 
     /**
@@ -1031,7 +994,7 @@ class DSearchHooks extends \SmartStructure\Search
     /**
      * return family use for search
      *
-     * @return \Anakeen\Core\Internal\SmartElement 
+     * @return \Anakeen\Core\Internal\SmartElement
      */
     private function getSearchFamilyDocument()
     {

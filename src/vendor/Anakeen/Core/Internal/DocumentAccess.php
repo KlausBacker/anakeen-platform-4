@@ -92,7 +92,7 @@ class DocumentAccess
 
 
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     protected $document;
 
@@ -176,7 +176,7 @@ class DocumentAccess
     /**
      * set profil for document
      *
-     * @param int  $profid identifier for profil document
+     * @param int                                 $profid identifier for profil document
      * @param \Anakeen\Core\Internal\SmartElement $fromdocidvalues
      *
      * @return string
@@ -324,7 +324,7 @@ class DocumentAccess
     /**
      * reset right for dynamic profil
      *
-     * @param int  $dprofid         identifier for dynamic profil document
+     * @param int                                 $dprofid         identifier for dynamic profil document
      * @param \Anakeen\Core\Internal\SmartElement $fromdocidvalues other document to reference dynamic profiling (default itself)
      *
      * @return string error message
@@ -478,7 +478,7 @@ class DocumentAccess
     /**
      * reset right for dynamic profil
      *
-     * @param int  $dprofid         identifier for dynamic profil document
+     * @param int                                 $dprofid         identifier for dynamic profil document
      * @param \Anakeen\Core\Internal\SmartElement $fromdocidvalues other document to reference dynamic profiling (default itself)
      *
      * @return string error message
