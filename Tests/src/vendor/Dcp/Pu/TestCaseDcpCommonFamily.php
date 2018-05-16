@@ -35,7 +35,7 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
 
         self::connectUser();
         self::beginTransaction();
-        \Anakeen\Core\DocManager::cache()->clear();
+        \Anakeen\Core\SEManager::cache()->clear();
 
         $cf = static::getCommonImportFile();
         if ($cf) {

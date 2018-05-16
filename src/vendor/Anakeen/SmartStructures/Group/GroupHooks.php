@@ -135,7 +135,7 @@ class GroupHooks extends \SmartStructure\Dir
         
         $sqlfilters[] = sprintf("in_textlist(grp_idgroup,'%s')", $this->id);
         // $sqlfilters[]="fromid !=".getFamIdFromName($this->dbaccess,"IGROUP");
-        $tgroup = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($this->dbaccess, 0, "0", "ALL", $sqlfilters, 1, "LIST", \Anakeen\Core\DocManager::getFamilyIdFromName("GROUP"));
+        $tgroup = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($this->dbaccess, 0, "0", "ALL", $sqlfilters, 1, "LIST", \Anakeen\Core\SEManager::getFamilyIdFromName("GROUP"));
         
         $tpgroup = array();
         $tidpgroup = array();

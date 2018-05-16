@@ -4,7 +4,7 @@ namespace Anakeen\Core;
 
 use Anakeen\Core\DocManager\Exception;
 
-class DocManager
+class SEManager
 {
     /**
      * @var \Anakeen\Core\DocManager\MemoryCache $localCache

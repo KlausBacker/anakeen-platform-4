@@ -13,7 +13,7 @@ define("MAXGDOCS", 20);
 
 /**
  * Manage Shared documents through the global array $gdocs
- * @deprecated use Anakeen\Core\DocManager::cache()
+ * @deprecated use Anakeen\Core\SEManager::cache()
  */
 class SharedDocuments
 {
@@ -56,7 +56,7 @@ class SharedDocuments
 
     /**
      * Add or update an object
-     * @deprecated use Anakeen\Core\DocManager::cache()->addDocument
+     * @deprecated use Anakeen\Core\SEManager::cache()->addDocument
      * @param string $key object identifier
      * @param \Anakeen\Core\Internal\SmartElement $item object to add or update
      * @param bool $force set to true to add without limits
@@ -69,7 +69,7 @@ class SharedDocuments
             return false;
         }
         if (count($gdocs) < self::$limit || $force === true) {
-            \Anakeen\Core\DocManager::cache()->addDocument($item);
+            \Anakeen\Core\SEManager::cache()->addDocument($item);
             $gdocs[$key] = & $item;
             return true;
         }

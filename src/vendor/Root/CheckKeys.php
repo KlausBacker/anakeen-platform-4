@@ -54,7 +54,7 @@ class CheckKeys extends CheckData
                 $this->addError(ErrorCode::getError('KEYS0001', $this->famName));
             } else {
                 try {
-                    $this->family = \Anakeen\Core\DocManager::getDocument($this->famName);
+                    $this->family = \Anakeen\Core\SEManager::getDocument($this->famName);
                     if (!$this->family || !$this->family->isAlive()) {
                         $this->addError(ErrorCode::getError('KEYS0002', $this->famName));
                     } else {

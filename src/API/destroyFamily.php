@@ -34,7 +34,7 @@ class DestroySmartStructure
 {
     public static function destroyFamily($idfam, $force = false)
     {
-        $tdoc = Anakeen\Core\DocManager::getRawDocument($idfam);
+        $tdoc = Anakeen\Core\SEManager::getRawDocument($idfam);
         if ($tdoc) {
             $resid = $tdoc["id"];
             $resname = $tdoc["name"];

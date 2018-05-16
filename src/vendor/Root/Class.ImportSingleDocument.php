@@ -201,7 +201,7 @@ class ImportSingleDocument
         if (is_numeric($this->famId)) {
             $fromid = $this->famId;
         } else {
-            $fromid = \Anakeen\Core\DocManager::getFamilyIdFromName($this->famId);
+            $fromid = \Anakeen\Core\SEManager::getFamilyIdFromName($this->famId);
         }
         if ($fromid == 0) {
             // no need test here it is done by checkDoc class DOC0005 DOC0006
@@ -209,7 +209,7 @@ class ImportSingleDocument
             $this->tcr["err"] = sprintf(_("Not a family [%s]"), $this->famId);
             return $this;
         }
-        $tmpDoc = \Anakeen\Core\DocManager::createDocument($fromid);
+        $tmpDoc = \Anakeen\Core\SEManager::createDocument($fromid);
         if (!$tmpDoc) {
             // no need test here it is done by checkDoc class DOC0007
             $this->tcr["action"] = "ignored";
@@ -227,7 +227,7 @@ class ImportSingleDocument
         } elseif (trim($this->specId) != "") {
             if (!is_numeric(trim($this->specId))) {
                 $tmpDoc->name = trim($this->specId); // logical name
-                $docid = \Anakeen\Core\DocManager::getIdFromName($tmpDoc->name);
+                $docid = \Anakeen\Core\SEManager::getIdFromName($tmpDoc->name);
                 if ($docid > 0) {
                     $tmpDoc->id = $docid;
                     $tmpDoc->initid = $docid;
@@ -236,7 +236,7 @@ class ImportSingleDocument
         }
 
         if ($tmpDoc->id > 0) {
-            $this->doc = \Anakeen\Core\DocManager::getDocument($tmpDoc->id);
+            $this->doc = \Anakeen\Core\SEManager::getDocument($tmpDoc->id);
             if (!$this->doc) {
                 $this->doc = $tmpDoc;
             }
@@ -249,7 +249,7 @@ class ImportSingleDocument
         } else {
             if ($this->doc->fromid != $fromid) {
                 $this->tcr["id"] = $this->doc->id;
-                $this->setError("DOC0008", $this->doc->getTitle(), $this->doc->fromname, \Anakeen\Core\DocManager::getNameFromId($fromid));
+                $this->setError("DOC0008", $this->doc->getTitle(), $this->doc->fromname, \Anakeen\Core\SEManager::getNameFromId($fromid));
                 return $this;
             }
             if ($this->doc->doctype == 'Z') {
@@ -626,7 +626,7 @@ class ImportSingleDocument
             }
         }
         if ($this->doc->id) {
-            \Anakeen\Core\DocManager::cache()->removeDocumentById($this->doc->id);
+            \Anakeen\Core\SEManager::cache()->removeDocumentById($this->doc->id);
         } // clear cache to clean unused
         return $this;
     }
@@ -653,7 +653,7 @@ class ImportSingleDocument
             /**
              * @var \Anakeen\Core\Internal\SmartElement $imgDoc
              */
-            $imgDoc = \Anakeen\Core\DocManager::createDocument("IMAGE");
+            $imgDoc = \Anakeen\Core\SEManager::createDocument("IMAGE");
 
             if (is_object($imgDoc)) {
                 $imgDoc->setAttributeValue($fileImgAttrid, $vfid);
@@ -679,7 +679,7 @@ class ImportSingleDocument
             /**
              * @var $dir \Anakeen\SmartStructures\Dir\DirHooks
              */
-            $dir = \Anakeen\Core\DocManager::getDocument($folderId);
+            $dir = \Anakeen\Core\SEManager::getDocument($folderId);
             if ($dir && $dir->isAlive()) {
                 $this->tcr["folderid"] = $dir->id;
                 $this->tcr["foldername"] = dirname($this->importFilePath) . "/" . $dir->title;

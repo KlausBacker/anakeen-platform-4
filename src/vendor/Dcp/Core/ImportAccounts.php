@@ -7,7 +7,7 @@
 namespace Dcp\Core;
 
 use Anakeen\Core\DbManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 include_once("FDL/LegacyDocManager.php");
 
@@ -265,7 +265,7 @@ class ImportAccounts
              * @var \Anakeen\Core\SmartStructure $family
              */
 
-            $family = DocManager::getFamily($familyName);
+            $family = SEManager::getFamily($familyName);
             if (!$family || !$family->isAlive()) {
                 throw new Exception("ACCT0202", $familyName);
             }
@@ -551,13 +551,13 @@ class ImportAccounts
                 $account->accounttype = \Anakeen\Core\Account::GROUP_TYPE;
             }
             // New account
-            $famId = \Anakeen\Core\DocManager::getFamilyIdFromName($family);
+            $famId = \Anakeen\Core\SEManager::getFamilyIdFromName($family);
             if (!$famId) {
                 $err = "Not found family $family";
                 $this->addToReport($values["login"], "documentCreation", $err, "", $documentNode);
                 $famId = $defaultFamily;
             }
-            $newDocAccount = DocManager::createDocument($famId);
+            $newDocAccount = SEManager::createDocument($famId);
             if ($newDocAccount) {
                 $err = $newDocAccount->add();
                 if (!$err) {
@@ -600,7 +600,7 @@ class ImportAccounts
                 if ($roleDocumentNode) {
                     $docName = $roleDocumentNode->getAttribute("name");
                     if ($docName) {
-                        $docAccount = DocManager::getDocument($account->fid);
+                        $docAccount = SEManager::getDocument($account->fid);
                         if ($docAccount && !$docAccount->name) {
                             $docAccount->setLogicalName($docName);
                         } else {

@@ -16,7 +16,7 @@
 namespace Dcp;
 
 use Anakeen\Core\DbManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 use Anakeen\Core\Utils\MiscDoc;
 
@@ -84,7 +84,7 @@ class FamilyImport
             $tdoc["classname"] = '\\' . $tdoc["classname"];
         }
         if ($tdoc["fromid"] > 0) {
-            $fromName = \Anakeen\Core\DocManager::getNameFromId($tdoc["fromid"]);
+            $fromName = \Anakeen\Core\SEManager::getNameFromId($tdoc["fromid"]);
             if ($fromName == '') {
                 throw new \Dcp\Exception("FAM0601", $tdoc["fromid"], $tdoc["name"]);
             }
@@ -118,12 +118,12 @@ class FamilyImport
             } else {
                 $phpAdoc->Set("GEN", "GEN");
                 if ($tdoc["name"]) {
-                    $phpAdoc->Set("DocParent", DocManager::getFamilyClassName($tdoc["fromname"]));
+                    $phpAdoc->Set("DocParent", SEManager::getFamilyClassName($tdoc["fromname"]));
                 } else {
                     $phpAdoc->Set("DocParent", '\\Doc' . $tdoc["fromid"]);
                 }
             }
-            $phpAdoc->Set("AParent", DocManager::getAttributesClassName($tdoc["fromname"]));
+            $phpAdoc->Set("AParent", SEManager::getAttributesClassName($tdoc["fromname"]));
         }
         $phpAdoc->Set("title", $tdoc["title"]);
         $query = new \Anakeen\Core\Internal\QueryDb("", \DocAttr::class);
@@ -336,7 +336,7 @@ class FamilyImport
                             $aformat = $reg[2];
                             if ($atype == "idoc") {
                                 if (!is_numeric($aformat)) {
-                                    $aformat = \Anakeen\Core\DocManager::getFamilyIdFromName($aformat);
+                                    $aformat = \Anakeen\Core\SEManager::getFamilyIdFromName($aformat);
                                 }
                             }
                         } else {
@@ -501,9 +501,9 @@ class FamilyImport
             ));
             $phpAdoc->Set("docName", $tdoc["name"]);
 
-            $phpAdoc->Set("SmartClass", str_replace("\\", "\\\\", DocManager::getFamilyClassName($tdoc["name"])));
-            $phpAdoc->Set("PHPclassName", self::baseClassName(DocManager::getFamilyClassName($tdoc["name"])));
-            $phpAdoc->Set("AdocClassName", self::baseClassName(DocManager::getAttributesClassName($tdoc["name"])));
+            $phpAdoc->Set("SmartClass", str_replace("\\", "\\\\", SEManager::getFamilyClassName($tdoc["name"])));
+            $phpAdoc->Set("PHPclassName", self::baseClassName(SEManager::getFamilyClassName($tdoc["name"])));
+            $phpAdoc->Set("AdocClassName", self::baseClassName(SEManager::getAttributesClassName($tdoc["name"])));
         }
         $phpAdoc->Set("docTitle", str_replace('"', '\\"', $tdoc["title"]));
         $phpAdoc->set("HOOKALIAS", "");
@@ -560,8 +560,8 @@ class FamilyImport
         }
         $phpAdoc->Set("hasMethods", !empty($tdoc["methods"]));
 
-        $dfiles["/vendor/Anakeen/Core/Layout/Class.NSSmart.xml"] = DocManager::getDocumentClassFilename($tdoc["docFile"]);
-        $dfiles["/vendor/Anakeen/Core/Layout/Class.NSSmartAttr.xml"] = DocManager::getAttributesClassFilename($tdoc["docFile"]);
+        $dfiles["/vendor/Anakeen/Core/Layout/Class.NSSmart.xml"] = SEManager::getDocumentClassFilename($tdoc["docFile"]);
+        $dfiles["/vendor/Anakeen/Core/Layout/Class.NSSmartAttr.xml"] = SEManager::getAttributesClassFilename($tdoc["docFile"]);
         $dfiles["/vendor/Anakeen/Core/Layout/Class.Doc.xml"] = sprintf("%s/Smart%d.php", $genDir, $tdoc["id"]);
 
         if (!empty($tdoc["methods"])) {
@@ -584,7 +584,7 @@ class FamilyImport
         if ($tdoc["fromid"] == 0) {
             $phpAdoc->Set("extend", '');
         } else {
-            $fromName = \Anakeen\Core\DocManager::getNameFromId($tdoc["fromid"]);
+            $fromName = \Anakeen\Core\SEManager::getNameFromId($tdoc["fromid"]);
             if ($fromName == '') {
                 throw new \Dcp\Exception("FAM0602", $tdoc["fromid"], $tdoc["name"]);
             }
@@ -792,7 +792,7 @@ class FamilyImport
     protected static function createFamilyTable($dbaccess, $docid)
     {
         // create postgres table if new \familly
-        $cdoc = DocManager::createTemporaryDocument($docid, false);
+        $cdoc = SEManager::createTemporaryDocument($docid, false);
         $triggers = $cdoc->sqltrigger(false, true);
         $cdoc->exec_query($triggers, 1);
         // step by step
@@ -855,8 +855,8 @@ class FamilyImport
     public static function deleteGenFiles($famName)
     {
         $files = [
-            \Anakeen\Core\DocManager::getAttributesClassFilename($famName),
-            \Anakeen\Core\DocManager::getDocumentClassFilename($famName)
+            \Anakeen\Core\SEManager::getAttributesClassFilename($famName),
+            \Anakeen\Core\SEManager::getDocumentClassFilename($famName)
         ];
         foreach ($files as $fdlgen) {
             if (file_exists($fdlgen) && is_file($fdlgen)) {
@@ -869,7 +869,7 @@ class FamilyImport
 
     public static function activateTrigger($dbaccess, $docid)
     {
-        $cdoc = DocManager::createTemporaryDocument($docid, false);
+        $cdoc = SEManager::createTemporaryDocument($docid, false);
         $cdoc->exec_query($cdoc->sqltrigger(false, true), 1);
         $sqlcmds = explode(";", $cdoc->SqlTrigger());
         //$cdoc = new_Doc($dbacceanss, $docid);
@@ -883,7 +883,7 @@ class FamilyImport
 
     public static function setSqlIndex($dbaccess, $docid)
     {
-        $cdoc = DocManager::createTemporaryDocument($docid, false);
+        $cdoc = SEManager::createTemporaryDocument($docid, false);
         $indexes = $cdoc->GetSqlIndex();
         $msg = '';
         if ($indexes) {

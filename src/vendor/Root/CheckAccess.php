@@ -100,7 +100,7 @@ class CheckAccess extends CheckData
                 $findUser = \Anakeen\Core\Account::getDisplayName($this->userId);
             } else {
                 // search document
-                $tu = \Anakeen\Core\DocManager::getRawDocument($this->userId);
+                $tu = \Anakeen\Core\SEManager::getRawDocument($this->userId);
                 if ($tu) {
                     $findUser = ($tu["us_whatid"] != '');
                 }

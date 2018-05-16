@@ -32,7 +32,7 @@ class CheckDfldid extends CheckData
     protected function checkFolder()
     {
         if ($this->folderName && $this->folderName != 'auto') {
-            $d = Anakeen\Core\DocManager::getDocument($this->folderName);
+            $d = Anakeen\Core\SEManager::getDocument($this->folderName);
             if (!$d || !$d->isAlive()) {
                 $this->addError(ErrorCode::getError('DFLD0001', $this->folderName, $this->doc->name));
             } elseif (!is_a($d, \Anakeen\SmartStructures\Dir\DirHooks::class)) {

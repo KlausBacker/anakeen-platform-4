@@ -10,7 +10,7 @@ namespace Dcp\Pu;
 
 require_once 'TestGlobalFunction.php';
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\LogException;
 
 class TestImportFamily extends TestCaseDcpDocument
@@ -56,7 +56,7 @@ class TestImportFamily extends TestCaseDcpDocument
         }
         $this->assertEmpty($err, "import error detected $err");
 
-        $doc = DocManager::createDocument($familyName);
+        $doc = SEManager::createDocument($familyName);
         $this->assertTrue(is_object($doc));
         $err = $doc->store();
         $this->assertEmpty($err, "cannot create good doc");

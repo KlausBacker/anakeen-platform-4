@@ -7,7 +7,7 @@ use Anakeen\Router\Exception;
 use Anakeen\Router\URLUtils;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 
 /**
@@ -179,7 +179,7 @@ class DocumentHistory
      */
     protected function setDocument($resourceId)
     {
-        $this->_document = DocManager::getDocument($resourceId);
+        $this->_document = SEManager::getDocument($resourceId);
         if (!$this->_document) {
             $exception = new Exception("CRUD0200", $resourceId);
             $exception->setHttpStatus("404", "Document not found");
@@ -228,7 +228,7 @@ class DocumentHistory
     {
 
         $id = $this->documentId;
-        $id = DocManager::getIdentifier($id, true);
+        $id = SEManager::getIdentifier($id, true);
         $sql = sprintf("select id, date, comment from dochisto where id = %d order by date desc limit 1", $id);
 
         DbManager::query($sql, $result, false, true);

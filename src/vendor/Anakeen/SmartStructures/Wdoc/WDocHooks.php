@@ -107,7 +107,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         if ($newstate != "") {
             $profid = $this->getRawValue($this->_Aid("_ID", $newstate));
             if (!is_numeric($profid)) {
-                $profid = \Anakeen\Core\DocManager::getIdFromName($profid);
+                $profid = \Anakeen\Core\SEManager::getIdFromName($profid);
             }
             if ($profid > 0) {
                 // change only if new \profil
@@ -206,7 +206,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         if ($newstate != "") {
             $cvid = ($this->getRawValue($this->_Aid("_CVID", $newstate)));
             if (!is_numeric($cvid)) {
-                $cvid = \Anakeen\Core\DocManager::getIdFromName($cvid);
+                $cvid = \Anakeen\Core\SEManager::getIdFromName($cvid);
             }
             if ($cvid > 0) {
                 // change only if set

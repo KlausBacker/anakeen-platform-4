@@ -28,7 +28,7 @@ require_once "FDL/LegacyDocManager.php";
 
 use \Anakeen\Core\DbManager;
 use \Anakeen\Core\ContextManager;
-use \Anakeen\Core\DocManager;
+use \Anakeen\Core\SEManager;
 use Anakeen\Core\Internal\Format\StandardAttributeValue;
 
 class SmartElement extends \Anakeen\Core\Internal\DbObj
@@ -884,7 +884,7 @@ create unique index i_docir on doc(initid, revision);";
         ), true); // to force also execute sql trigger
         if ($this->doctype !== 'C') {
             // set to shared : because comes from createDoc
-            \Anakeen\Core\DocManager::cache()->addDocument($this);
+            \Anakeen\Core\SEManager::cache()->addDocument($this);
 
             if ($this->doctype !== "T") {
                 $err = $this->PostCreated();
@@ -995,7 +995,7 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
-            $wdoc = DocManager::getDocument($this->wid);
+            $wdoc = SEManager::getDocument($this->wid);
             $this->wdoc = $wdoc;
             if ($this->wdoc && $this->wdoc->isAlive()) {
                 if ($this->wdoc->doctype != 'W') {
@@ -1346,7 +1346,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function convert($fromid, $prevalues = array())
     {
-        $cdoc = DocManager::createDocument($fromid);
+        $cdoc = SEManager::createDocument($fromid);
 
         if ($this->fromid == $cdoc->fromid) {
             return false;
@@ -1405,8 +1405,8 @@ create unique index i_docir on doc(initid, revision);";
         $cdoc->addHistoryEntry(sprintf(_("convertion from %s to %s family"), $f1from, $f2from));
 
         DbManager::commitPoint($point);
-        if (\Anakeen\Core\DocManager::cache()->isDocumentIdInCache($this->id)) {
-            \Anakeen\Core\DocManager::cache()->addDocument($cdoc);
+        if (\Anakeen\Core\SEManager::cache()->isDocumentIdInCache($this->id)) {
+            \Anakeen\Core\SEManager::cache()->addDocument($cdoc);
         }
 
         return $cdoc;
@@ -1660,7 +1660,7 @@ create unique index i_docir on doc(initid, revision);";
          */
         static $famdoc = null;
         if (($famdoc === null) || ($famdoc->id != $this->fromid)) {
-            $famdoc = DocManager::getFamily($this->fromid);
+            $famdoc = SEManager::getFamily($this->fromid);
         }
         if (!$famdoc) {
             $famdoc = new \Anakeen\Core\SmartStructure();
@@ -2503,10 +2503,10 @@ create unique index i_docir on doc(initid, revision);";
         $aFromName = isset($this->attributes->fromname) ? $this->attributes->fromname : '';
         if ($aFromName != $fromname) {
             // reset when use partial cache
-            $adocClassName = \Anakeen\Core\DocManager::getAttributesClassName($fromname);
+            $adocClassName = \Anakeen\Core\SEManager::getAttributesClassName($fromname);
             // Workaround because autoload has eventually the class in its missing private key
             // Use file_exists instead class_exists
-            $attFileClass = \Anakeen\Core\DocManager::getAttributesClassFilename($this->name);
+            $attFileClass = \Anakeen\Core\SEManager::getAttributesClassFilename($this->name);
             if (file_exists($attFileClass)) {
                 $this->attributes = new $adocClassName();
             }
@@ -2534,7 +2534,7 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var \SmartStructure\CVDoc $cvdoc
              */
-            $cvdoc = DocManager::getDocument($this->cvid);
+            $cvdoc = SEManager::getDocument($this->cvid);
             $cvdoc = clone $cvdoc;
             $cvdoc->set($this);
 
@@ -2606,7 +2606,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         // modify visibilities if needed
         if ((!is_numeric($mid)) && ($mid != "")) {
-            $imid = DocManager::getIdFromName($mid);
+            $imid = SEManager::getIdFromName($mid);
             if (!$imid) {
                 $err = \ErrorCode::getError('DOC1004', $argMid, $this->getTitle());
                 return $err;
@@ -2623,7 +2623,7 @@ create unique index i_docir on doc(initid, revision);";
                 /**
                  * @var \SmartStructure\CVDoc $cvdoc
                  */
-                $cvdoc = DocManager::getDocument($this->cvid);
+                $cvdoc = SEManager::getDocument($this->cvid);
                 if ($cvdoc && $cvdoc->isAlive()) {
                     $cvdoc = clone $cvdoc;
                     $cvdoc->Set($this);
@@ -2645,14 +2645,14 @@ create unique index i_docir on doc(initid, revision);";
                 /**
                  * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
                  */
-                $wdoc = DocManager::getDocument($this->wid);
+                $wdoc = SEManager::getDocument($this->wid);
                 if ($wdoc && $wdoc->isAlive()) {
                     if ($this->id == 0) {
                         $wdoc->set($this);
                     }
                     $mid = $wdoc->getStateMask($this->state);
                     if ((!is_numeric($mid)) && ($mid != "")) {
-                        $mid = DocManager::getIdFromName($mid);
+                        $mid = SEManager::getIdFromName($mid);
                     }
                 }
             }
@@ -2665,7 +2665,7 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var \SmartStructure\MASK $mdoc
              */
-            $mdoc = DocManager::getDocument($mid);
+            $mdoc = SEManager::getDocument($mid);
             if ($mdoc && $mdoc->isAlive()) {
                 if (is_a($mdoc, '\SmartStructure\Mask')) {
                     $maskFam = $mdoc->getRawValue("msk_famid");
@@ -2674,7 +2674,7 @@ create unique index i_docir on doc(initid, revision);";
                             'DOC1002',
                             $argMid,
                             $this->getTitle(),
-                            DocManager::getNameFromId($maskFam)
+                            SEManager::getNameFromId($maskFam)
                         );
                     } else {
                         $tvis = $mdoc->getVisibilities();
@@ -4939,7 +4939,7 @@ create unique index i_docir on doc(initid, revision);";
             if ($docid == "") {
                 return $def;
             }
-            $doc = DocManager::getDocument($docid, $latest);
+            $doc = SEManager::getDocument($docid, $latest);
 
             if (!$doc) {
                 return $def;
@@ -5083,7 +5083,7 @@ create unique index i_docir on doc(initid, revision);";
                     }
                 }
                 if ($missingAttrIds) {
-                    $missingValues = DocManager::getRawData($this->id, $missingAttrIds, false);
+                    $missingValues = SEManager::getRawData($this->id, $missingAttrIds, false);
                     foreach ($missingValues as $attrid => $value) {
                         $this->$attrid = $value;
                     }
@@ -5872,7 +5872,7 @@ create unique index i_docir on doc(initid, revision);";
         $this->postitid = $postitid;
 
         // Remove last revision from cache to have coherent index.
-        \Anakeen\Core\DocManager::cache()->removeDocumentById($olddocid);
+        \Anakeen\Core\SEManager::cache()->removeDocumentById($olddocid);
         $err = $this->Add();
         if ($err != "") {
             // restore last revision
@@ -5913,7 +5913,7 @@ create unique index i_docir on doc(initid, revision);";
                      */
                     $revs = $this->getRevisions("TABLE", "ALL");
                     for ($i = $maxrev; $i < count($revs); $i++) {
-                        $d = DocManager::getDocumentFromRawDocument($revs[$i]);
+                        $d = SEManager::getDocumentFromRawDocument($revs[$i]);
                         if ($d) {
                             $d->_destroy(true);
                         }
@@ -5983,7 +5983,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         } else {
-            $state = DocManager::getDocument($newstateid);
+            $state = SEManager::getDocument($newstateid);
             if (!$state || !$state->isAlive()) {
                 return sprintf(_("invalid freestate document %s"), $newstateid);
             }
@@ -6047,7 +6047,7 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
          */
-        $wdoc = DocManager::getDocument($this->wid);
+        $wdoc = SEManager::getDocument($this->wid);
         if (!$wdoc || !$wdoc->isAlive()) {
             return _("assigned workflow is not alive");
         }
@@ -6102,7 +6102,7 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
-            $wdoc = DocManager::getDocument($this->wid);
+            $wdoc = SEManager::getDocument($this->wid);
             if ($wdoc && $wdoc->isAffected()) {
                 return $wdoc->getColor($this->state, $def);
             }
@@ -6130,7 +6130,7 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
-            $wdoc = DocManager::getDocument($this->wid);
+            $wdoc = SEManager::getDocument($this->wid);
             if ($wdoc->isAffected()) {
                 return $wdoc->getActivity($this->state, $def);
             }
@@ -6205,7 +6205,7 @@ create unique index i_docir on doc(initid, revision);";
             throw new \Dcp\Exception(\ErrorCode::getError('DOC0203'));
         }
         try {
-            $copy = DocManager::createDocument($this->fromid, $control);
+            $copy = SEManager::createDocument($this->fromid, $control);
         } catch (\Dcp\Core\Exception $e) {
             return false;
         }
@@ -6339,7 +6339,7 @@ create unique index i_docir on doc(initid, revision);";
 
     final public function translate($docid, $translate)
     {
-        $doc = DocManager::getDocument($docid);
+        $doc = SEManager::getDocument($docid);
         if ($doc && $doc->isAlive()) {
             foreach ($translate as $afrom => $ato) {
                 $this->setValue($ato, $doc->getRawValue($afrom));
@@ -7327,7 +7327,7 @@ create unique index i_docir on doc(initid, revision);";
                         $mUrl = ContextManager::getApplicationParam("CORE_MAILACTIONURL");
                         if (strstr($mUrl, '%')) {
                             if ($this->id != $id) {
-                                $mDoc = DocManager::getDocument($id);
+                                $mDoc = SEManager::getDocument($id);
                             } else {
                                 $mDoc = $this;
                             }
@@ -8005,7 +8005,7 @@ create unique index i_docir on doc(initid, revision);";
         $tr = array();
 
         if ($this->prelid > 0) {
-            $d = DocManager::getRawData($this->prelid, ["initid", "title", "prelid", "profid"]);
+            $d = SEManager::getRawData($this->prelid, ["initid", "title", "prelid", "profid"]);
             $fini = false;
             while (!$fini) {
                 if ($d) {
@@ -8013,7 +8013,7 @@ create unique index i_docir on doc(initid, revision);";
                         if (!in_array($d["initid"], array_keys($tr))) {
                             $tr[$d["initid"]] = $d["title"];
                             if ($d["prelid"] > 0) {
-                                $d = DocManager::getRawData($d["prelid"], ["initid", "title", "prelid", "profid"]);
+                                $d = SEManager::getRawData($d["prelid"], ["initid", "title", "prelid", "profid"]);
                             } else {
                                 $fini = true;
                             }
@@ -8335,7 +8335,7 @@ create unique index i_docir on doc(initid, revision);";
             ));
         } else {
             // verify not use yet
-            $d = DocManager::getRawDocument($name);
+            $d = SEManager::getRawDocument($name);
 
             if ($d && $d["doctype"] != 'Z') {
                 return sprintf(_("Logical name %s already use in document %s"), $name, $d["title"]);
@@ -8576,7 +8576,7 @@ create unique index i_docir on doc(initid, revision);";
         deprecatedFunction();
         // gettitle(D,SI_IDSOC):SI_SOCIETY,SI_IDSOC
         $this->AddParamRefresh("$nameId", "$nameTitle");
-        $doc = DocManager::getDocument($this->getRawValue($nameId));
+        $doc = SEManager::getDocument($this->getRawValue($nameId));
         if ($doc && $doc->isAlive()) {
             $this->setValue($nameTitle, $doc->title);
         } else {
@@ -8646,7 +8646,7 @@ create unique index i_docir on doc(initid, revision);";
             return implode("\n", $ttitle);
         } else {
             if (!is_numeric($id)) {
-                $id = DocManager::getIdFromName($id);
+                $id = SEManager::getIdFromName($id);
             }
             if ($id > 0) {
                 $title = getDocTitle($id, $latest);
@@ -8810,16 +8810,16 @@ create unique index i_docir on doc(initid, revision);";
     final public function getDocValue($docid, $attrid, $def = " ", $latest = false)
     {
         if ((!is_numeric($docid)) && ($docid != "")) {
-            $docid = DocManager::getIdFromName($docid);
+            $docid = SEManager::getIdFromName($docid);
         }
         if (intval($docid) > 0) {
             if (strpos(':', $attrid) === false) {
                 $attrid = strtolower($attrid);
-                return DocManager::getRawValue($docid, $attrid, $latest);
+                return SEManager::getRawValue($docid, $attrid, $latest);
             } else {
-                $doc = DocManager::getDocument($docid, $latest);
+                $doc = SEManager::getDocument($docid, $latest);
                 if ($doc) {
-                    DocManager::cache()->addDocument($doc);
+                    SEManager::cache()->addDocument($doc);
                     return $doc->getRValue($attrid, $def, $latest);
                 }
             }
@@ -8842,7 +8842,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         if ($docid) {
             $propid = strtolower($propid);
-            $data = DocManager::getRawData($docid, [$propid], $latest);
+            $data = SEManager::getRawData($docid, [$propid], $latest);
             return $data[$propid];
         }
         return "";
@@ -8928,8 +8928,8 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getMyAttribute($idattr)
     {
-        $mydoc = DocManager::getDocument($this->getUserId());
-        DocManager::cache()->addDocument($mydoc);
+        $mydoc = SEManager::getDocument($this->getUserId());
+        SEManager::cache()->addDocument($mydoc);
 
         return $mydoc->getRawValue($idattr);
     }
@@ -9076,7 +9076,7 @@ create unique index i_docir on doc(initid, revision);";
                 /**
                  * @var \Anakeen\SmartStructures\Timer\TimerHooks $t
                  */
-                $t = DocManager::getDocument($v["timerid"]);
+                $t = SEManager::getDocument($v["timerid"]);
                 if ($t && $t->isAlive()) {
                     $dynDateAttr = trim(strtok($t->getRawValue("tm_dyndate"), " "));
                     if ($dynDateAttr) {
@@ -9085,7 +9085,7 @@ create unique index i_docir on doc(initid, revision);";
                         // detect if need reset timer : when date has changed
                         if ($previousExecdate !== false && ($execdate != $previousExecdate)) {
                             if ($v["originid"]) {
-                                $ori = DocManager::getDocument($v["originid"]);
+                                $ori = SEManager::getDocument($v["originid"]);
                             } else {
                                 $ori = null;
                             }
@@ -9113,7 +9113,7 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * @var \Anakeen\SmartStructures\Timer\TimerHooks $timer
          */
-        $timer = DocManager::createTemporaryDocument("TIMER");
+        $timer = SEManager::createTemporaryDocument("TIMER");
         $c = 0;
         $err = $timer->unattachAllDocument($this, $origin, $c);
         if ($err == "" && $c > 0) {
@@ -9280,7 +9280,7 @@ create unique index i_docir on doc(initid, revision);";
             $helpId = $help[0]["id"];
         }
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return DocManager::getDocument($helpId);
+        return SEManager::getDocument($helpId);
     }
 
     /**
@@ -9456,9 +9456,9 @@ create unique index i_docir on doc(initid, revision);";
         if (!is_numeric($avalue)) {
             if ((!strstr($avalue, "<BR>")) && (!strstr($avalue, "\n"))) {
                 if ($oattr->getOption("docrev", "latest") == "latest") {
-                    $res = DocManager::getInitidFromName($avalue);
+                    $res = SEManager::getInitidFromName($avalue);
                 } else {
-                    $res = DocManager::getIdFromName($avalue);
+                    $res = SEManager::getIdFromName($avalue);
                 }
                 if (!$res && !in_array($avalue, $knownLogicalNames)) {
                     $unknownLogicalNames[] = $avalue;
@@ -9473,9 +9473,9 @@ create unique index i_docir on doc(initid, revision);";
                     foreach ($mids as $llname) {
                         if (!is_numeric($llname)) {
                             if ($oattr->getOption("docrev", "latest") == "latest") {
-                                $llid = DocManager::getInitidFromName($llname);
+                                $llid = SEManager::getInitidFromName($llname);
                             } else {
-                                $llid = DocManager::getIdFromName($llname);
+                                $llid = SEManager::getIdFromName($llname);
                             }
                             if (!$llid && !in_array($llname, $knownLogicalNames)) {
                                 $unknownLogicalNames[] = $llname;

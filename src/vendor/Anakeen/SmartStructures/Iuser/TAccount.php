@@ -7,7 +7,7 @@
 namespace Anakeen\SmartStructures\Iuser;
 
 use Anakeen\Core\DbManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 /**
  * Trait TAccount
@@ -142,7 +142,7 @@ trait TAccount
                 $tlay[$k]["SUBUL"] = $this->_getChildsGroup($v["id"], $groups);
                 $fid = $v["fid"];
                 if ($fid) {
-                    $tdoc = DocManager::getRawDocument($fid);
+                    $tdoc = SEManager::getRawDocument($fid);
                     $icon = $this->getIcon($tdoc["icon"]);
                     $tlay[$k]["icon"] = $icon;
                 } else {
@@ -184,7 +184,7 @@ trait TAccount
         $u = new \Anakeen\Core\Account("", $wid);
         if ($u->isAffected()) {
             if ($u->fid > 0) {
-                $du = DocManager::getDocument($u->fid);
+                $du = SEManager::getDocument($u->fid);
                 /**
                  * @var \SmartStructure\Iuser|\SmartStructure\IGROUP $du
                  */

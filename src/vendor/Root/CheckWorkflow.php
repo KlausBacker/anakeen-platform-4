@@ -266,7 +266,7 @@ class CheckWorkflow
                     if (!is_array($askes)) {
                         $this->addCodeError('WFL0103', $tkey, $this->className);
                     } else {
-                        $wi = \Anakeen\Core\DocManager::createTemporaryDocument($this->familyName);
+                        $wi = \Anakeen\Core\SEManager::createTemporaryDocument($this->familyName);
                         $aids = array_keys($wi->getAttributes());
                         foreach ($askes as $aid) {
                             if (!in_array(strtolower($aid), $aids)) {

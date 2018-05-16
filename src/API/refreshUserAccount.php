@@ -54,7 +54,7 @@ if ($query->nb > 0) {
         $foundoc = false;
         $fid = $v["fid"];
         if ($fid > 0) {
-            $udoc = \Anakeen\Core\DocManager::getDocument($fid);
+            $udoc = \Anakeen\Core\SEManager::getDocument($fid);
             $foundoc = $udoc && $udoc->isAlive();
         }
 
@@ -74,7 +74,7 @@ if ($query->nb > 0) {
 
             if (count($tdoc) > 0) {
                 $fid = $tdoc["id"];
-                $udoc = \Anakeen\Core\DocManager::getDocument($fid);
+                $udoc = \Anakeen\Core\SEManager::getDocument($fid);
                 $foundoc = $udoc && $udoc->isAlive();
             }
         }
@@ -109,12 +109,12 @@ if ($query->nb > 0) {
                     "lower(title) = '" . pg_escape_string($title) . "'"
                 );
             }
-            $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection("", 0, 0, "ALL", $filter, 1, "LIST", \Anakeen\Core\DocManager::getFamilyIdFromName("IUSER"));
+            $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection("", 0, 0, "ALL", $filter, 1, "LIST", \Anakeen\Core\SEManager::getFamilyIdFromName("IUSER"));
             if (count($tdoc) > 0) {
                 if (count($tdoc) > 1) {
                     printf(_("find %s more than one, created aborded\n"), $title);
                 } else {
-                    $udoc = \Anakeen\Core\DocManager::getDocument($tdoc[0]->id);
+                    $udoc = \Anakeen\Core\SEManager::getDocument($tdoc[0]->id);
                     /**
                      * @var \SmartStructure\IUSER $udoc
                      */
@@ -130,7 +130,7 @@ if ($query->nb > 0) {
             } else {
                 // create new card
                 if ($v["accounttype"] === "G") {
-                    $iuser = \Anakeen\Core\DocManager::createDocument("IGROUP");
+                    $iuser = \Anakeen\Core\SEManager::createDocument("IGROUP");
                     $iuser->setValue("US_WHATID", $v["id"]);
                     $iuser->Add();
                     $iuser->refresh();
@@ -139,7 +139,7 @@ if ($query->nb > 0) {
                     print "$reste)";
                     printf(_("%s igroup created\n"), $title);
                 } else {
-                    $iuser = \Anakeen\Core\DocManager::createDocument("IUSER");
+                    $iuser = \Anakeen\Core\SEManager::createDocument("IUSER");
                     $iuser->setValue("US_WHATID", $v["id"]);
                     $err = $iuser->Add();
                     if ($err == "") {

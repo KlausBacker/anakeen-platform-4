@@ -9,7 +9,7 @@
  */
 namespace Anakeen\SmartStructures\Mask;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use \SmartStructure\Attributes\Mask as myAttr;
 
 class Mask extends \SmartStructure\Base
@@ -81,7 +81,7 @@ class Mask extends \SmartStructure\Base
         if (!$famid) {
             return \ErrorCode::getError("MSK0001", $this->name);
         }
-        $fam = DocManager::getFamily($famid);
+        $fam = SEManager::getFamily($famid);
         if (!$fam || $fam->doctype !== "C") {
             return \ErrorCode::getError("MSK0002", $famid, $this->name);
         }

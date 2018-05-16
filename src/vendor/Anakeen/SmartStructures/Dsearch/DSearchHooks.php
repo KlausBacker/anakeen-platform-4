@@ -7,7 +7,7 @@ namespace Anakeen\SmartStructures\Dsearch;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\SmartStructures\Dir\DirLib;
 use \Dcp\Core\Exception;
 
@@ -74,7 +74,7 @@ class DSearchHooks extends \SmartStructure\Search
         }
         if ($this->getRawValue("se_famonly") == "yes") {
             if (!is_numeric($famid)) {
-                $famid = DocManager::getFamilyIdFromName($famid);
+                $famid = SEManager::getFamilyIdFromName($famid);
             }
             $only = "only";
         }
@@ -145,7 +145,7 @@ class DSearchHooks extends \SmartStructure\Search
                     if (!is_numeric($std->family)) {
                         if (preg_match("/([\w:]*)\s?(strict)?/", trim($std->family), $reg)) {
                             if (!is_numeric($reg[1])) {
-                                $reg[1] = DocManager::getFamilyIdFromName($reg[1]);
+                                $reg[1] = SEManager::getFamilyIdFromName($reg[1]);
                             }
                             if ($reg[2] == "strict") {
                                 $famid = '-' . $reg[1];
@@ -429,7 +429,7 @@ class DSearchHooks extends \SmartStructure\Search
     public function getSqlCond($col, $op, $val = "", $val2 = "", &$err = "", $validateCond = false)
     {
         if ((!$this->searchfam) || ($this->searchfam->id != $this->getRawValue("se_famid"))) {
-            $this->searchfam = DocManager::getFamily($this->getRawValue("se_famid"));
+            $this->searchfam = SEManager::getFamily($this->getRawValue("se_famid"));
         }
         $col = trim(strtok($col, ' ')); // a col is one word only (prevent injection)
         // because for historic reason revdate is not a date type
@@ -619,7 +619,7 @@ class DSearchHooks extends \SmartStructure\Search
                                     $err = sprintf(_("no compatible type with operator %s"), $op);
                                 } else {
                                     if (!is_numeric($fid)) {
-                                        $fid = DocManager::getFamilyIdFromName($fid);
+                                        $fid = SEManager::getFamilyIdFromName($fid);
                                     }
                                     DbManager::query(sprintf("select id from doc%d where title ~* '%s'", $fid, pg_escape_string($val)), $ids, true);
 
@@ -733,7 +733,7 @@ class DSearchHooks extends \SmartStructure\Search
                     default:
                         if ($atype == "docid") {
                             if (!is_numeric($val)) {
-                                $val = DocManager::getIdFromName($val);
+                                $val = SEManager::getIdFromName($val);
                             }
                         }
                         $cond1 = " " . $col . " " . trim($op) . $this->_pg_val($val) . " ";
@@ -802,7 +802,7 @@ class DSearchHooks extends \SmartStructure\Search
         }
         $cond = "";
         if (!$this->searchfam) {
-            $this->searchfam = DocManager::getFamily($this->getRawValue("se_famid"));
+            $this->searchfam = SEManager::getFamily($this->getRawValue("se_famid"));
         }
         if ((count($taid) > 1) || (count($taid) > 0 && $taid[0] != "")) {
             // special loop for revdate
@@ -1000,7 +1000,7 @@ class DSearchHooks extends \SmartStructure\Search
     {
         static $fam = null;
         if (!$fam) {
-            $fam = DocManager::createTemporaryDocument($this->getRawValue("SE_FAMID", 1));
+            $fam = SEManager::createTemporaryDocument($this->getRawValue("SE_FAMID", 1));
         }
         return $fam;
     }

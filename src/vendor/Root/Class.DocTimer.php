@@ -225,7 +225,7 @@ create table doctimer ( id serial,
     
     public function executeTimerNow()
     {
-        $timer = \Anakeen\Core\DocManager::getDocument($this->timerid);
+        $timer = \Anakeen\Core\SEManager::getDocument($this->timerid);
         /**
          * @var \Anakeen\SmartStructures\Timer\TimerHooks $timer
          */

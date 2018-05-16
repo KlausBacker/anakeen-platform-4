@@ -12,7 +12,7 @@
 namespace Anakeen\SmartStructures\Exec;
 
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Script\ShellManager;
 
 class ExecHooks extends \Anakeen\SmartStructures\Document
@@ -77,7 +77,7 @@ class ExecHooks extends \Anakeen\SmartStructures\Document
         $cmd = ShellManager::getAnkCmd(true);
         if ($masteruserid) {
             $fuid = $this->getRawValue("exec_iduser");
-            $fu = DocManager::getRawDocument($fuid);
+            $fu = SEManager::getRawDocument($fuid);
             $wuid = $fu["us_whatid"];
             $this->execuserid = $fuid;
         } else {

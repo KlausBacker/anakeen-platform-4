@@ -40,10 +40,10 @@ class CheckProfid extends CheckData
     {
         if ($this->prfName) {
             try {
-                $this->profil = \Anakeen\Core\DocManager::getDocument($this->prfName);
+                $this->profil = \Anakeen\Core\SEManager::getDocument($this->prfName);
             } catch (Exception $e) {
                 // due to no test validity of the family now
-                $fam =  \Anakeen\Core\DocManager::getRawDocument($this->prfName);
+                $fam =  \Anakeen\Core\SEManager::getRawDocument($this->prfName);
                 if (!$fam) {
                     throw $e;
                 }

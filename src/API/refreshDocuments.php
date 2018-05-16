@@ -118,7 +118,7 @@ $s->start = $start;
 if ($docid != '') {
     if (!is_numeric($docid)) {
         $docName = $docid;
-        $docid = \Anakeen\Core\DocManager::getIdFromName($docName);
+        $docid = \Anakeen\Core\SEManager::getIdFromName($docName);
         if ($docid === false) {
             $action->exitError(sprintf("document with name '%s' not found", $docName));
         }

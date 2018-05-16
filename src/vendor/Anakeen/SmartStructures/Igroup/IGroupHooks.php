@@ -10,7 +10,7 @@
 
 namespace Anakeen\SmartStructures\Igroup;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use SmartStructure\Attributes\Igroup as MyAttributes;
 use \Dcp\Core\Exception;
 
@@ -96,7 +96,7 @@ class IGroupHooks extends \SmartStructure\Group
             /**
              * @var \SmartStructure\Igroup $gdoc
              */
-            $gdoc = DocManager::getDocument($gid);
+            $gdoc = SEManager::getDocument($gid);
             if ($gdoc && $gdoc->isAlive()) {
                 $gdoc->insertGroups();
             }
@@ -148,7 +148,7 @@ class IGroupHooks extends \SmartStructure\Group
                 /**
                  * @var \Anakeen\SmartStructures\Dir\DirHooks $dfld
                  */
-                $dfld = DocManager::getDocument($dfldid);
+                $dfld = SEManager::getDocument($dfldid);
                 if ($dfld && $dfld->isAlive()) {
                     if (count($tgid) == 0) {
                         $dfld->insertDocument($this->initid);
@@ -222,7 +222,7 @@ class IGroupHooks extends \SmartStructure\Group
                 /**
                  * @var \SmartStructure\Iuser $du
                  */
-                $du = DocManager::getDocument($docid);
+                $du = SEManager::getDocument($docid);
                 if ($du) {
                     $uid = $du->getRawValue("us_whatid");
                     if ($uid > 0) {
@@ -265,7 +265,7 @@ class IGroupHooks extends \SmartStructure\Group
                 /**
                  * @var \SmartStructure\Iuser $du
                  */
-                $du = DocManager::getDocument($docid);
+                $du = SEManager::getDocument($docid);
                 if ($du) {
                     $uid = $du->getRawValue("us_whatid");
                     if ($uid > 0) {
@@ -303,7 +303,7 @@ class IGroupHooks extends \SmartStructure\Group
             /**
              * @var \SmartStructure\Iuser $du
              */
-            $du = DocManager::getDocument($docid);
+            $du = SEManager::getDocument($docid);
             if ($du) {
                 $uid = $du->getRawValue("us_whatid");
                 if ($uid > 0) {

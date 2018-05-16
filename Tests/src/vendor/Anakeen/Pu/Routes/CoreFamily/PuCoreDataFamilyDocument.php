@@ -2,7 +2,7 @@
 
 namespace Anakeen\Pu\Routes\CoreFamily;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 require_once __DIR__ . '/../TestCaseRoutes.php';
 require DEFAULT_PUBDIR . '/vendor/Anakeen/lib/vendor/autoload.php';
@@ -31,7 +31,7 @@ class PuCoreDataFamilyDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
         parent::setUpBeforeClass();
 
 
-        $doc = DocManager::getDocument("TST_F21D1");
+        $doc = SEManager::getDocument("TST_F21D1");
 
         $title = $doc->getTitle();
 

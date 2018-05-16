@@ -13,7 +13,7 @@ namespace Anakeen\SmartStructures\Iuser;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use SmartStructure\Attributes\Iuser as MyAttributes;
 
 /**
@@ -146,7 +146,7 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
             /**
              * @var \SmartStructure\Igroup $gdoc
              */
-            $gdoc = DocManager::getDocument($gid);
+            $gdoc = SEManager::getDocument($gid);
             if ($gdoc && $gdoc->isAlive()) {
                 $gdoc->insertGroups();
             }
@@ -237,7 +237,7 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
             /**
              * @var \SmartStructure\Igroup $grp
              */
-            $grp = DocManager::getDocument($grpid);
+            $grp = SEManager::getDocument($grpid);
             if ($grp && $grp->isAlive()) {
                 $err = $grp->insertDocument($this->initid);
             }

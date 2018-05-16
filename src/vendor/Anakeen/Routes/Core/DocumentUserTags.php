@@ -5,7 +5,7 @@ namespace Anakeen\Routes\Core;
 use Anakeen\Router\URLUtils;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
@@ -143,7 +143,7 @@ class DocumentUserTags
      */
     protected function setDocument($resourceId)
     {
-        $this->_document = DocManager::getDocument($resourceId);
+        $this->_document = SEManager::getDocument($resourceId);
         if (!$this->_document) {
             $exception = new Exception("CRUD0200", $resourceId);
             $exception->setHttpStatus("404", "Document not found");
@@ -193,7 +193,7 @@ class DocumentUserTags
     public function getEtagInfo()
     {
         $id = $this->documentId;
-        $id = DocManager::getIdentifier($id, true);
+        $id = SEManager::getIdentifier($id, true);
         $sql = sprintf("select id, date, comment from docutag where id = %d order by date desc limit 1", $id);
         DbManager::query($sql, $result, false, true);
         $result[] = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");

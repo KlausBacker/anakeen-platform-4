@@ -5,7 +5,7 @@ namespace Anakeen\Pu\Routes;
 use Anakeen\Router\Exception;
 use Anakeen\Router\URLUtils;
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Slim\Http\Environment;
 use Slim\Http\Request;
 use Slim\Http\RequestBody;
@@ -109,7 +109,7 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
     protected static function resetDocumentCache()
     {
         parent::resetDocumentCache();
-        DocManager::cache()->clear();
+        SEManager::cache()->clear();
     }
 
     /**
@@ -173,7 +173,7 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
 
         $expectedResult = str_replace('%baseURL%', URLUtils::getBaseURL(), $expectedResult);
         $expectedResult = str_replace('%userName%', ContextManager::getCurrentUser()->getAccountName(), $expectedResult);
-        $expectedResult = str_replace('%userDocName%', DocManager::getTitle(ContextManager::getCurrentUser()->fid), $expectedResult);
+        $expectedResult = str_replace('%userDocName%', SEManager::getTitle(ContextManager::getCurrentUser()->fid), $expectedResult);
         $expected = json_decode($expectedResult, true);
         $this->assertNotEmpty($expected, sprintf("Fail decode expected json : %s", $expectedResult));
 

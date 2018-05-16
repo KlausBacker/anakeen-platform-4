@@ -105,7 +105,7 @@ class processExecuteAPI
             /**
              * @var \SmartStructure\ExecHooks $exec
              */
-            $exec = Anakeen\Core\DocManager::getDocument($exec);
+            $exec = Anakeen\Core\SEManager::getDocument($exec);
         }
         if (!is_object($exec) || !is_a($exec, '\SmartStructure\ExecHooks') || !$exec->isAlive()) {
             return;

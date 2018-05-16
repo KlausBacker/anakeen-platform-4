@@ -303,7 +303,7 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
                     if (is_numeric($data[1])) {
                         $orfromid = $data[1];
                     } else {
-                        $orfromid = \Anakeen\Core\DocManager::getFamilyIdFromName($data[1]);
+                        $orfromid = \Anakeen\Core\SEManager::getFamilyIdFromName($data[1]);
                     }
 
                     $tcolorder[$orfromid] = getOrder($data);
@@ -314,7 +314,7 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
                     if (is_numeric($data[1])) {
                         $orfromid = $data[1];
                     } else {
-                        $orfromid = \Anakeen\Core\DocManager::getFamilyIdFromName($data[1]);
+                        $orfromid = \Anakeen\Core\SEManager::getFamilyIdFromName($data[1]);
                     }
 
                     $tkeys[$orfromid] = getOrder($data);
@@ -331,7 +331,7 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
                     if (is_numeric($data[1])) {
                         $fromid = $data[1];
                     } else {
-                        $fromid = \Anakeen\Core\DocManager::getFamilyIdFromName($data[1]);
+                        $fromid = \Anakeen\Core\SEManager::getFamilyIdFromName($data[1]);
                     }
                     if (isset($tkeys[$fromid])) {
                         $tk = $tkeys[$fromid];

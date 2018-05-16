@@ -3,7 +3,7 @@ namespace Anakeen\Routes\Core;
 
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\URLUtils;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 use Anakeen\Router\Exception;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
@@ -135,14 +135,14 @@ class WorkflowStateCollection
      */
     protected function setDocument($resourceId)
     {
-        $this->_document = DocManager::getDocument($resourceId);
+        $this->_document = SEManager::getDocument($resourceId);
         if (!$this->_document) {
             $exception = new Exception("CRUD0200", $resourceId);
             $exception->setHttpStatus("404", "Document not found");
             throw $exception;
         }
         
-        if ($this->_family && !is_a($this->_document, \Anakeen\Core\DocManager::getFamilyClassName($this->_family->name))) {
+        if ($this->_family && !is_a($this->_document, \Anakeen\Core\SEManager::getFamilyClassName($this->_family->name))) {
             $exception = new Exception("CRUD0220", $resourceId, $this->_family->name);
             $exception->setHttpStatus("404", "Document is not a document of the family " . $this->_family->name);
             throw $exception;
@@ -167,7 +167,7 @@ class WorkflowStateCollection
         /**
          * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $workflow
          */
-        $this->workflow = DocManager::getDocument($this->_document->wid);
+        $this->workflow = SEManager::getDocument($this->_document->wid);
         $this->workflow->set($this->_document);
     }
     

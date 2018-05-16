@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Router\URLUtils;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
@@ -64,7 +64,7 @@ class WorkflowState
         /**
          * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $workflow
          */
-        $this->workflow = DocManager::getDocument($this->_document->wid);
+        $this->workflow = SEManager::getDocument($this->_document->wid);
         $this->workflow->set($this->_document);
     }
 
@@ -137,7 +137,7 @@ class WorkflowState
      */
     protected function setDocument($resourceId)
     {
-        $this->_document = DocManager::getDocument($resourceId);
+        $this->_document = SEManager::getDocument($resourceId);
         if (!$this->_document) {
             $exception = new Exception("CRUD0200", $resourceId);
             $exception->setHttpStatus("404", "Document not found");

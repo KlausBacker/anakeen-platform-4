@@ -2,7 +2,7 @@
 
 namespace Anakeen\Routes\Core;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Router\URLUtils;
 use Anakeen\Router\Exception;
 use Anakeen\Core\Settings;
@@ -26,7 +26,7 @@ class FamilyDocumentList extends DocumentList
         parent::initParameters($request, $args);
         $famName = $args["family"];
 
-        $this->_family = DocManager::getFamily($famName);
+        $this->_family = SEManager::getFamily($famName);
         if (!$this->_family) {
             $exception = new Exception("ROUTES0105", $famName);
             $exception->setHttpStatus("404", "Family not found");

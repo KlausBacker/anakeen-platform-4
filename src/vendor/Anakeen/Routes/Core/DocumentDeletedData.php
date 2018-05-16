@@ -2,7 +2,7 @@
 
 namespace Anakeen\Routes\Core;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Router\Exception;
 
 /**
@@ -16,7 +16,7 @@ class DocumentDeletedData extends DocumentData
 {
     protected function setDocument($ressourceId)
     {
-        $this->_document = DocManager::getDocument($ressourceId, true);
+        $this->_document = SEManager::getDocument($ressourceId, true);
         if (!$this->_document) {
             $exception = new Exception("ROUTES0100", $ressourceId);
             $exception->setHttpStatus("404", "Document not found");
@@ -30,6 +30,6 @@ class DocumentDeletedData extends DocumentData
             throw $e;
         }
 
-        DocManager::cache()->addDocument($this->_document);
+        SEManager::cache()->addDocument($this->_document);
     }
 }

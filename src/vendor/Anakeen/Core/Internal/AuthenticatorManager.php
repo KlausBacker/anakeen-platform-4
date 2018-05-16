@@ -8,7 +8,7 @@
 
 namespace Anakeen\Core\Internal;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Dcp\Core\Exception;
 
 include_once("FDL/LegacyDocManager.php");
@@ -65,7 +65,7 @@ class AuthenticatorManager
                         /**
                          * @var \SmartStructure\IUSER $du
                          */
-                        $du = DocManager::getDocument($wu->fid);
+                        $du = SEManager::getDocument($wu->fid);
                         if ($du && $du->isAlive()) {
                             $du->disableEditControl();
                             $du->increaseLoginFailure();
@@ -307,7 +307,7 @@ class AuthenticatorManager
 
     public static function clearGDocs()
     {
-        \Anakeen\Core\DocManager::cache()->clear();
+        \Anakeen\Core\SEManager::cache()->clear();
     }
 
     public static function getAccount()

@@ -103,10 +103,10 @@ create unique index idx_idfam on docfam(id);";
         parent::__construct($dbaccess, $id, $res, $dbid);
         $this->doctype = 'C';
         if ($include && ($this->id > 0) && ($this->isAffected())) {
-            $adoc = \Anakeen\Core\DocManager::getAttributesClassName($this->name);
+            $adoc = \Anakeen\Core\SEManager::getAttributesClassName($this->name);
             if (!\Anakeen\Core\Internal\Autoloader::findFile($adoc)) {
                 // Workaround because autoload has eventually the class in its missing private key
-                $attFileClass = \Anakeen\Core\DocManager::getAttributesClassFilename($this->name);
+                $attFileClass = \Anakeen\Core\SEManager::getAttributesClassFilename($this->name);
                 if (file_exists($attFileClass)) {
                     require_once($attFileClass);
                 } else {

@@ -2,7 +2,7 @@
 
 namespace Dcp\Pu;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\Internal\GlobalParametersManager;
 
 class TestGetDocAnchor extends TestCaseDcpCommonFamily
@@ -34,7 +34,7 @@ class TestGetDocAnchor extends TestCaseDcpCommonFamily
         }
         GlobalParametersManager::initialize();
 
-        $doc = DocManager::getDocument($data['doc']);
+        $doc = SEManager::getDocument($data['doc']);
         $this->assertTrue(is_object($doc), sprintf("Could not get document with id '%s'.", $data['doc']));
 
         $data['expected_href'] = str_replace(['%ID%', '%INITID%'], [$doc->id, $doc->initid], $data['expected_href']);

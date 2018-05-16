@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Core\DbManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Gettext;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
@@ -76,7 +76,7 @@ class DocumentData
         $this->initParameters($request, $args);
         if (!$this->checkId($this->documentId, $initid)) {
             // Redirect to other url
-            $document = DocManager::getDocument($initid, false);
+            $document = SEManager::getDocument($initid, false);
             $location = \Anakeen\Routes\Core\Lib\DocumentUtils::getURI($document);
             return $response->withStatus(307)
                 ->withHeader("location", $location);
@@ -145,7 +145,7 @@ class DocumentData
      */
     protected function setDocument($ressourceId)
     {
-        $this->_document = DocManager::getDocument($ressourceId);
+        $this->_document = SEManager::getDocument($ressourceId);
         if (!$this->_document) {
             $exception = new Exception("ROUTES0100", $ressourceId);
             $exception->setHttpStatus("404", "Document not found");
@@ -161,7 +161,7 @@ class DocumentData
             throw $exception;
         }
 
-        DocManager::cache()->addDocument($this->_document);
+        SEManager::cache()->addDocument($this->_document);
     }
 
 
@@ -253,7 +253,7 @@ class DocumentData
     {
         if (is_numeric($identifier)) {
             $identifier = (int)$identifier;
-            $initid = DocManager::getInitIdFromIdOrName($identifier);
+            $initid = SEManager::getInitIdFromIdOrName($identifier);
 
             if ($initid !== 0 && $initid != $identifier) {
                 return false;

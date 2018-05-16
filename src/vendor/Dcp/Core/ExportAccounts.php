@@ -6,7 +6,7 @@
 
 namespace Dcp\Core;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 class ExportAccounts
 {
@@ -504,7 +504,7 @@ class ExportAccounts
     {
         $filter = array();
         $excludeFilters = array();
-        if (is_a($doc, DocManager::getFamilyClassName("IUSER"))) {
+        if (is_a($doc, SEManager::getFamilyClassName("IUSER"))) {
             if (!isset($this->families["IUSER"])) {
                 $this->families["IUSER"] = new_doc("", "IUSER");
             }
@@ -537,7 +537,7 @@ class ExportAccounts
                 "us_loginfailure"
             );
         }
-        if (is_a($doc, DocManager::getFamilyClassName("Igroup"))) {
+        if (is_a($doc, SEManager::getFamilyClassName("Igroup"))) {
             if (!isset($this->families["IGROUP"])) {
                 $this->families["IGROUP"] = new_doc("", "IGROUP");
             }
@@ -568,7 +568,7 @@ class ExportAccounts
                 "fld_pdirid"
             );
         }
-        if (is_a($doc, DocManager::getFamilyClassName("ROLE"))) {
+        if (is_a($doc, SEManager::getFamilyClassName("ROLE"))) {
             if (!isset($this->families["ROLE"])) {
                 $this->families["ROLE"] = new_doc("", "ROLE");
             }

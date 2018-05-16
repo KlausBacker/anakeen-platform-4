@@ -11,7 +11,7 @@ namespace Dcp\Pu;
  */
 
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 //require_once 'PU_testcase_dcp_commonfamily.php';
 
@@ -29,7 +29,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        $d = DocManager::createDocument(\SmartStructure\Base::familyName);
+        $d = SEManager::createDocument(\SmartStructure\Base::familyName);
         $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x1-" . $d->revision);
         $d->store();
         
@@ -39,7 +39,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
             "title" => $d->getTitle()
         );
         
-        $d = DocManager::createDocument(\SmartStructure\Base::familyName);
+        $d = SEManager::createDocument(\SmartStructure\Base::familyName);
         $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x2-" . $d->revision);
         $d->store();
         $d->setLogicalName("TST_X2");
@@ -56,7 +56,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
             "title" => $d->getTitle()
         );
         
-        $d = DocManager::createDocument(\SmartStructure\Base::familyName);
+        $d = SEManager::createDocument(\SmartStructure\Base::familyName);
         $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x3-" . $d->revision);
         $d->store();
         $d->setLogicalName("TST_X3");
@@ -80,7 +80,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
         );
         $d->store();
         
-        $d = DocManager::createDocument(\SmartStructure\Base::familyName);
+        $d = SEManager::createDocument(\SmartStructure\Base::familyName);
         $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x4-" . $d->revision);
         $d->store();
         $d->setLogicalName("TST_X4");
@@ -105,7 +105,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
         $d->store();
         $d->locked = - 1;
         $d->modify(); // close document
-        $dM = DocManager::createDocument(\SmartStructure\Dir::familyName);
+        $dM = SEManager::createDocument(\SmartStructure\Dir::familyName);
         // need to change its family BASE to DIR
         $dM->initid = $d->initid;
         $dM->name = $d->name;
@@ -146,7 +146,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
      */
     public function testSharedNewDoc($docName, $expectedTitle, $someValues)
     {
-        $nd = DocManager::createDocument("TST_ND");
+        $nd = SEManager::createDocument("TST_ND");
         $this->assertEquals("no", $nd->getrawValue("tst_shared"));
         $nd->store();
         $this->assertEquals("yes", $nd->getrawValue("tst_shared"));

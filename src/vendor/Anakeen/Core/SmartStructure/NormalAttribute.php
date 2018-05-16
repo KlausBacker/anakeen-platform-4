@@ -158,7 +158,7 @@ class NormalAttribute extends BasicAttribute
     {
         if ($this->type == "htmltext") {
             $value = preg_replace_callback('/(data-initid=")([0-9]+)/', function ($matches) {
-                $name = \Anakeen\Core\DocManager::getNameFromId($matches[2]);
+                $name = \Anakeen\Core\SEManager::getNameFromId($matches[2]);
                 return $matches[1] . ($name ? $name : $matches[2]);
             }, $value);
         }

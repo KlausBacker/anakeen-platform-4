@@ -5,7 +5,7 @@ namespace Anakeen\Routes\Core;
 use Anakeen\Core\Settings;
 use Anakeen\Router\Exception;
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
 
 /**
@@ -191,15 +191,15 @@ class FileAttribute
     protected function setDocument($resourceId)
     {
         if (isset($this->revision)) {
-            $revisedId = DocManager::getRevisedDocumentId($resourceId, $this->revision);
-            $this->_document = DocManager::getDocument($revisedId, false);
+            $revisedId = SEManager::getRevisedDocumentId($resourceId, $this->revision);
+            $this->_document = SEManager::getDocument($revisedId, false);
             if (!$this->_document) {
                 $exception = new Exception("CRUD0221", $this->revision, $resourceId);
                 $exception->setHttpStatus("404", "Document not found");
                 throw $exception;
             }
         } else {
-            $this->_document = DocManager::getDocument($resourceId);
+            $this->_document = SEManager::getDocument($resourceId);
         }
         if (!$this->_document) {
             $exception = new Exception("CRUD0200", $resourceId);
@@ -214,7 +214,7 @@ class FileAttribute
             throw $exception;
         }
 
-        if ($this->_family && !is_a($this->_document, \Anakeen\Core\DocManager::getFamilyClassName($this->_family->name))) {
+        if ($this->_family && !is_a($this->_document, \Anakeen\Core\SEManager::getFamilyClassName($this->_family->name))) {
             $exception = new Exception("CRUD0220", $resourceId, $this->_family->name);
             $exception->setHttpStatus("404", "Document is not a document of the family " . $this->_family->name);
             throw $exception;

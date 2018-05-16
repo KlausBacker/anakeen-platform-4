@@ -2,7 +2,7 @@
 
 namespace Anakeen\Routes\Core;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Router\URLUtils;
 use Anakeen\Core\Settings;
 use Anakeen\Router\Exception;
@@ -51,8 +51,8 @@ class RevisionData extends DocumentData
      */
     protected function setDocument($ressourceId)
     {
-        $revisedId = DocManager::getRevisedDocumentId($this->documentId, $this->revisionNumber);
-        $this->_document = DocManager::getDocument($revisedId, false);
+        $revisedId = SEManager::getRevisedDocumentId($this->documentId, $this->revisionNumber);
+        $this->_document = SEManager::getDocument($revisedId, false);
         if (!$this->_document) {
             $exception = new Exception("ROUTES0100", $ressourceId);
             $exception->setHttpStatus("404", "Document not found");
@@ -67,6 +67,6 @@ class RevisionData extends DocumentData
             throw $exception;
         }
 
-        DocManager::cache()->addDocument($this->_document);
+        SEManager::cache()->addDocument($this->_document);
     }
 }

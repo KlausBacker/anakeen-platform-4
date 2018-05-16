@@ -19,7 +19,7 @@ class LateNameResolver
 
     private function resolve($value)
     {
-        $id = \Anakeen\Core\DocManager::getIdFromName($value);
+        $id = \Anakeen\Core\SEManager::getIdFromName($value);
         if (is_numeric($id)) {
             return (string)$id;
         }

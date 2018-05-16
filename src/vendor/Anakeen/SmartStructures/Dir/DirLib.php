@@ -3,7 +3,7 @@
 namespace Anakeen\SmartStructures\Dir;
 
 use Anakeen\Core\DbManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 include_once("FDL/LegacyDocManager.php");
 
@@ -69,7 +69,7 @@ class DirLib
     ) {
         if (($fromid != "") && (!is_numeric($fromid))) {
             preg_match('/^(?P<sign>-?)(?P<fromid>.+)$/', trim($fromid), $m);
-            $fromid = $m['sign'] . \Anakeen\Core\DocManager::getFamilyIdFromName($m['fromid']);
+            $fromid = $m['sign'] . \Anakeen\Core\SEManager::getFamilyIdFromName($m['fromid']);
         }
         $table = "doc";
         $qsql = array();
@@ -88,7 +88,7 @@ class DirLib
             if ($fromid != 0) {
                 if (self::isSimpleFilter($sqlfilters) && (self::familyNeedDocread($dbaccess, $fromid))) {
                     $table = "docread";
-                    $fdoc = \Anakeen\Core\DocManager::getFamily($fromid);
+                    $fdoc = \Anakeen\Core\SEManager::getFamily($fromid);
                     $sqlfilters[-4] = \Anakeen\Core\DbManager::getSqlOrCond(array_merge(array(
                         $fromid
                     ), array_keys($fdoc->GetChildFam())), "fromid", true);
@@ -104,7 +104,7 @@ class DirLib
         $maintable = $table; // can use join only on search
         if ($join) {
             if (preg_match('/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/', $join, $reg)) {
-                $joinid = \Anakeen\Core\DocManager::getFamilyIdFromName($reg[3]);
+                $joinid = \Anakeen\Core\SEManager::getFamilyIdFromName($reg[3]);
                 $jointable = ($joinid) ? "doc" . $joinid : $reg[3];
 
                 $sqlfilters[] = sprintf("%s.%s %s %s.%s", $table, $reg[1], $reg[2], $jointable, $reg[4]); // "id = dochisto(id)";
@@ -163,7 +163,7 @@ class DirLib
             //-------------------------------------------
             $fld = null;
             if (!is_array($dirid)) {
-                $fld = DocManager::getDocument($dirid);
+                $fld = SEManager::getDocument($dirid);
             }
             if ((is_array($dirid)) || ($fld && $fld->defDoctype != 'S')) {
                 $hasFilters = false;
@@ -254,7 +254,7 @@ class DirLib
                             /**
                              * @var \Anakeen\SmartStructures\Search\SearchHooks $fld
                              */
-                            $fld = DocManager::getDocument($dirid);
+                            $fld = SEManager::getDocument($dirid);
                             if ($trash) {
                                 $fld->setValue("se_trash", $trash);
                             } else {
@@ -389,7 +389,7 @@ class DirLib
     ) {
         // query to find child documents
         if (($fromid != "") && (!is_numeric($fromid))) {
-            $fromid = \Anakeen\Core\DocManager::getFamilyIdFromName($fromid);
+            $fromid = \Anakeen\Core\SEManager::getFamilyIdFromName($fromid);
         }
         if ($fromid == 0) {
             $fromid = "";
@@ -398,9 +398,9 @@ class DirLib
             /**
              * @var \DocCollection $fld
              */
-            $fld = DocManager::getDocument($dirid);
+            $fld = SEManager::getDocument($dirid);
 
-            if ($fld->fromid == \Anakeen\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
+            if ($fld->fromid == \Anakeen\Core\SEManager::getFamilyIdFromName("SSEARCH")) {
                 /**
                  * @var \Anakeen\SmartStructures\Ssearch\SSearchHooks $fld
                  */
@@ -418,7 +418,7 @@ class DirLib
             } else {
                 if ($fld->getRawValue("se_famid")) {
                     $fromid = $fld->getRawValue("se_famid");
-                    $fdoc = DocManager::getFamily(abs($fromid), true);
+                    $fdoc = SEManager::getFamily(abs($fromid), true);
                     if (!$fdoc || !$fdoc->isAlive()) {
                         throw new \Dcp\Exception(sprintf(_('Family [%s] not found'), abs($fromid)));
                     }
@@ -426,10 +426,10 @@ class DirLib
                 }
             }
         } elseif ($dirid != 0) {
-            $fld = DocManager::getDocument($dirid);
+            $fld = SEManager::getDocument($dirid);
             if (($fld->defDoctype == 'S') && ($fld->getRawValue("se_famid"))) {
                 $fromid = $fld->getRawValue("se_famid");
-                $fdoc = DocManager::getFamily(abs($fromid), true);
+                $fdoc = SEManager::getFamily(abs($fromid), true);
                 if (!$fdoc || !$fdoc->isAlive()) {
                     throw new \Dcp\Exception(sprintf(_('Family [%s] not found'), abs($fromid)));
                 }
@@ -460,7 +460,7 @@ class DirLib
                         if (preg_match('/from\s+docread/', $qsql) || $isgroup) {
                             $fdoc = new \DocRead($dbaccess);
                         } else {
-                            $fdoc = DocManager::createDocument(abs($fromid), false, false);
+                            $fdoc = SEManager::createDocument(abs($fromid), false, false);
                             if ($fdoc === false) {
                                 throw new \Dcp\Exception(sprintf(_('Family [%s] not found'), abs($fromid)));
                             }
@@ -559,7 +559,7 @@ class DirLib
                     } else {
                         $fromid = abs($fromid);
                         if ($fromid > 0) {
-                            \Anakeen\Core\DocManager::requireFamilyClass($fromid);
+                            \Anakeen\Core\SEManager::requireFamilyClass($fromid);
                         }
                     }
                 }
@@ -770,7 +770,7 @@ class DirLib
         if (is_array($classid)) {
             $use = array();
             foreach ($classid as $fid) {
-                $tcdoc = DocManager::getRawDocument($fid);
+                $tcdoc = SEManager::getRawDocument($fid);
                 $use[] = $tcdoc["usefor"];
             }
             $query->AddQuery(DbManager::getSqlOrCond($use, "usefor"));
@@ -813,7 +813,7 @@ class DirLib
     public static function familyNeedDocread($dbaccess, $id)
     {
         if (!is_numeric($id)) {
-            $id = \Anakeen\Core\DocManager::getFamilyIdFromName($id);
+            $id = \Anakeen\Core\SEManager::getFamilyIdFromName($id);
         }
         $id = abs(intval($id));
         if ($id == 0) {

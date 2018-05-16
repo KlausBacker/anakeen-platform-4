@@ -2,7 +2,7 @@
 
 namespace Anakeen\Pu\Routes\CoreDocument;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 require_once __DIR__ . '/../TestCaseRoutes.php';
 require DEFAULT_PUBDIR . '/vendor/Anakeen/lib/vendor/autoload.php';
@@ -31,7 +31,7 @@ class PuCoreDataDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
         parent::setUpBeforeClass();
 
 
-        $doc = DocManager::getDocument("TST_APIDOC13");
+        $doc = SEManager::getDocument("TST_APIDOC13");
 
         $title = $doc->getTitle();
 
@@ -41,12 +41,12 @@ class PuCoreDataDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
         }
 
 
-        $doc = DocManager::getDocument("TST_APIDOC14_DEL");
+        $doc = SEManager::getDocument("TST_APIDOC14_DEL");
         $doc->delete();
-        $doc = DocManager::getDocument("TST_APIDOC15_DEL");
+        $doc = SEManager::getDocument("TST_APIDOC15_DEL");
         $doc->revise();
         $doc->delete();
-        $doc = DocManager::getDocument("TST_APIDOC16_DEL");
+        $doc = SEManager::getDocument("TST_APIDOC16_DEL");
         $doc->delete();
     }
 

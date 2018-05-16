@@ -2,7 +2,7 @@
 
 namespace Anakeen\Core\Internal\Format;
 
-use \Anakeen\Core\DocManager;
+use \Anakeen\Core\SEManager;
 
 class StandardAttributeValue
 {

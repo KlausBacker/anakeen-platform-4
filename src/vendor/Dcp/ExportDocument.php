@@ -3,7 +3,7 @@
 namespace Dcp;
 
 use Anakeen\Core\DbManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 class ExportDocument
 {
@@ -357,7 +357,7 @@ class ExportDocument
                             $brtid = explode("<BR>", $did);
                             $tnbr = array();
                             foreach ($brtid as $brid) {
-                                $n = \Anakeen\Core\DocManager::getNameFromId($brid);
+                                $n = \Anakeen\Core\SEManager::getNameFromId($brid);
                                 if ($n) {
                                     if ($docrevOption === "latest") {
                                         $tnbr[] = $n;
@@ -374,7 +374,7 @@ class ExportDocument
                         }
                         $value = implode("\n", $tn);
                     } else {
-                        $n = \Anakeen\Core\DocManager::getNameFromId($value);
+                        $n = \Anakeen\Core\SEManager::getNameFromId($value);
                         if ($n) {
                             if ($docrevOption === "latest") {
                                 $value = $n;
@@ -401,7 +401,7 @@ class ExportDocument
                                 $attrid = $matches[5];
                             }
 
-                            $doc = DocManager::getDocument($docid);
+                            $doc = SEManager::getDocument($docid);
                             if ($doc) {
                                 $attr = $doc->getAttribute($attrid);
                                 $tfiles = $doc->vault_properties($attr);
@@ -439,7 +439,7 @@ class ExportDocument
             if ($profid == $doc->id) {
                 $this->exportProfil($fout, $doc->id);
             } elseif ($profid > 0) {
-                $name = \Anakeen\Core\DocManager::getNameFromId($profid);
+                $name = \Anakeen\Core\SEManager::getNameFromId($profid);
                 $dname = $doc->name;
                 if (!$dname) {
                     $dname = $doc->id;

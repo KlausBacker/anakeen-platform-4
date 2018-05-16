@@ -12,7 +12,7 @@ namespace Dcp\Pu;
  */
 
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 //require_once 'PU_testcase_dcp.php';
 

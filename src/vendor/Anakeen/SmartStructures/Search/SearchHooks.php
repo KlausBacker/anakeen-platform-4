@@ -385,7 +385,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
         $only = '';
         if ($this->getRawValue("se_famonly") == "yes") {
             if (!is_numeric($famid)) {
-                $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($famid);
+                $famid = \Anakeen\Core\SEManager::getFamilyIdFromName($famid);
             }
             $only = "only";
         }

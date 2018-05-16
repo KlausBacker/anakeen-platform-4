@@ -317,7 +317,7 @@ class SearchAccount
     public function filterFamily($family)
     {
         if (!is_numeric($family)) {
-            $famId = \Anakeen\Core\DocManager::getFamilyIdFromName($family);
+            $famId = \Anakeen\Core\SEManager::getFamilyIdFromName($family);
             if (!$famId) {
                 throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0006", $family));
             }
