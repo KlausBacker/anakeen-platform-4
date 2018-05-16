@@ -1,0 +1,36 @@
+{
+  "accesses": {
+    "admincenter:admin": {
+      "description": "Administrator access"
+    }
+  },
+  "routes": {
+    "Admin:MainPage": {
+      "pattern": "/admin/",
+      "callable": "\\Anakeen\\Routes\\Admin\\MainPage",
+      "methods": [
+        "GET"
+      ],
+      "requiredAccess": "admincenter:admin",
+      "priority": 0
+    },
+    "Admin:User": {
+      "pattern": "/api/v2/admin/user",
+      "callable": "\\Anakeen\\Routes\\Admin\\User",
+      "methods": [
+        "GET"
+      ],
+      "requiredAccess": "admincenter:admin",
+      "priority": 0
+    },
+    "Admin:Plugins": {
+      "pattern": "/api/v2/admin/plugins",
+      "callable": "\\Anakeen\\Routes\\Admin\\Plugins",
+      "methods": [
+        "GET"
+      ],
+      "requiredAccess": "admincenter:admin",
+      "priority": 0
+    }
+  }
+}

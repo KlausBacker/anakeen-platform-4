@@ -1,0 +1,12 @@
+# IntelliJ project files
+.idea
+*.iml
+
+/*.app
+*.webinst
+*~
+*#
+node_modules/
+src/public/AdminCenter/debug/
+src/public/AdminCenter/prod/
+src/vendor/Anakeen/AdminCenter/Layout/adminCenterMainPage.html
