@@ -9,4 +9,4 @@
 node_modules/
 src/public/AdminCenter/debug/
 src/public/AdminCenter/prod/
-src/vendor/Anakeen/AdminPlugins/dist/
+src/vendor/Anakeen/AdminCenter/Layout/adminCenterMainPage.html
