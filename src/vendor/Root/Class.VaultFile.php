@@ -6,15 +6,13 @@
 /**
  * Retrieve and store file in Vault
  *
- * @author Anakeen
+ * @author  Anakeen
  * @version $Id: Class.VaultFile.php,v 1.23 2008/05/27 12:46:06 marc Exp $
  * @package FDL
  */
+
 /**
  */
-
-
-
 class VaultFile
 {
     /**
@@ -24,13 +22,14 @@ class VaultFile
     public $f_mode = 0600;
     public $d_mode = 0700;
     public $type = "fs";
-    
+
     const VAULT_DMODE = 0700;
     /**
      * @var VaultDiskStorage
      */
     public $storage;
-    public function __construct($access, $vaultname = "Sample", $idf = - 1)
+
+    public function __construct($access = "", $vaultname = "Sample", $idf = -1)
     {
         if (!isset($chrono)) {
             $this->chrono = false;
@@ -43,28 +42,27 @@ class VaultFile
         if ($this->chrono) {
             $this->logger->warning("Running with chrono !!!!");
         }
-        $this->dbaccess = $access;
-        
+
         $this->f_mode = 0600;
         $this->d_mode = 0700;
         $this->type = "fs";
         switch ($this->type) {
             case "fs":
                 $this->logger->debug("Set Storage Type to FS");
-                $this->storage = new VaultDiskStorage($access);
+                $this->storage = new VaultDiskStorage();
                 break;
 
             default:
                 // Not implemented yet
-                
+
         }
     }
     // ---------------------------------------------------------
 
     /**
-     * @param int $id_file vault file identifier
-     * @param vaultFileInfo $infos file properties
-     * @param string $teng_lname engine name
+     * @param int           $id_file    vault file identifier
+     * @param vaultFileInfo $infos      file properties
+     * @param string        $teng_lname engine name
      * @return string error message
      */
     public function show($id_file, &$infos, $teng_lname = "")
@@ -82,6 +80,7 @@ class VaultFile
         }
         return ($msg);
     }
+
     /**
      * Set access date to now
      * @param int $id_file vault file identifier
@@ -91,9 +90,10 @@ class VaultFile
     {
         $this->storage->updateAccessDate($id_file);
     }
+
     /**
      * retrieve information from vault id
-     * @param int $id_file
+     * @param int           $id_file
      * @param VaultFileInfo $infos
      * @return string error message
      */
@@ -106,9 +106,9 @@ class VaultFile
         if (isset($info)) {
             unset($infos);
         }
-    
+
         $msg = $this->storage->Show($id_file, $infos);
-    
+
         if ($msg != '') {
             $this->logger->error($msg);
         }
@@ -117,6 +117,7 @@ class VaultFile
         }
         return ($msg);
     }
+
     // ---------------------------------------------------------
     public function store($infile, $public_access, &$id, $fsname = "", $te_name = "", $te_id_file = 0, $tmp = null)
     {
@@ -124,7 +125,7 @@ class VaultFile
         if ($this->chrono) {
             $this->logger->start("Store");
         }
-        $id = - 1;
+        $id = -1;
         if (!file_exists($infile) || !is_readable($infile) || !is_file($infile)) {
             $this->logger->error("Can't access file [" . $infile . "].");
             $msg = _("can't access file");
@@ -144,6 +145,7 @@ class VaultFile
         }
         return ($msg);
     }
+
     // ---------------------------------------------------------
     public function save($infile, $public_access, $id)
     {
@@ -151,17 +153,17 @@ class VaultFile
         if ($this->chrono) {
             $this->logger->start("Save");
         }
-    
+
         if (!is_bool($public_access)) {
             $public_access = false;
             $this->logger->warning("Access mode forced to RESTRICTED for " . $infile . "].");
         }
-    
+
         $msg = $this->storage->Save($infile, $public_access, $id);
         if ($msg) {
             $this->logger->error($msg);
         }
-    
+
         $this->storage->mime_t = getTextMimeFile($infile);
         $this->storage->mime_s = getSysMimeFile($infile, $this->storage->name);
         $msg = $this->storage->Modify();
@@ -170,9 +172,10 @@ class VaultFile
         }
         return ($msg);
     }
+
     /**
      * Modification of properties if file
-     * @param int $id_file vault id
+     * @param int    $id_file vault id
      * @param string $newname new file name
      * @return string error message (empty if no error)
      */
@@ -185,17 +188,17 @@ class VaultFile
         $msg = '';
         if ($newname != "") {
             $nn = str_replace(array(
-            '/',
-            '\\',
-            '?',
-            '*',
-            ':'
-        ), '-', $newname);
+                '/',
+                '\\',
+                '?',
+                '*',
+                ':'
+            ), '-', $newname);
             if ($nn != $newname) {
                 \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Some characters are not authorized for file name %s. They are replaced by -"), $nn));
                 $newname = $nn;
             }
-        
+
             include_once("WHAT/Lib.FileMime.php");
             $infile = $this->storage->getPath();
             $oldname = $this->storage->name;
@@ -227,12 +230,13 @@ class VaultFile
                 $this->logger->error($msg);
             }
         }
-    
+
         if ($this->chrono) {
             $this->logger->end("Rename");
         }
         return ($msg);
     }
+
     // ---------------------------------------------------------
     public function listFiles(&$s)
     {
@@ -246,6 +250,7 @@ class VaultFile
         }
         return '';
     }
+
     // ---------------------------------------------------------
     public function destroy($id)
     {
@@ -253,7 +258,7 @@ class VaultFile
         if ($this->chrono) {
             $this->logger->start("Destroy");
         }
-    
+
         $msg = $this->storage->Destroy($id);
         if ($msg != '') {
             $this->logger->error($msg);

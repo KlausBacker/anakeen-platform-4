@@ -80,7 +80,7 @@ class LogException
 
     protected static function getUserInfo()
     {
-        $u = ContextManager::getCurrentUser();
+        $u = ContextManager::getCurrentUser(true);
         if ($u) {
             return sprintf("User : <%s> \"%s %s\" [%d]", $u->login, $u->firstname, $u->lastname, $u->id);
         }

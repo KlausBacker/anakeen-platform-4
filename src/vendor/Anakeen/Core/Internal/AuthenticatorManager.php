@@ -425,7 +425,7 @@ class AuthenticatorManager
             /**
              * @var \SmartStructure\IUSER $du
              */
-            $du = new_Doc(getDbAccess(), $wu->fid);
+            $du = new_Doc("", $wu->fid);
             // First check if account is active
             if (!$du->isAccountActive()) {
                 static::secureLog("failure", "inactive account",

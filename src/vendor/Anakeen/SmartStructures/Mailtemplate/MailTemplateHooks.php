@@ -339,7 +339,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
             }
         } //nobody to send data
         if ($this->sendercopy && \Anakeen\Core\ContextManager::getApplicationParam("FDL_BCC") == "yes") {
-            $umail = getMailAddr(ContextManager::getCurrentUser()->id);
+            $umail = getMailAddr(ContextManager::getCurrentUser(true)->id);
             if ($umail != "") {
                 $bcc.= (trim($bcc) == "" ? "" : ",") . $umail;
             }

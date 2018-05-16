@@ -27,14 +27,9 @@ $drop = ($trigger == "N");
 $usage->verify();
 
 
-$dbaccess = getDbAccess();
-if ($dbaccess == "") {
-    print "Database not found : appl->dbaccess";
-    exit;
-}
 
 if ($docid != - 1) {
-    $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \Anakeen\Core\Internal\SmartElement::class);
+    $query = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\SmartElement::class);
     $query->AddQuery("doctype='C'");
     
     if ($docid > 0) {
@@ -47,7 +42,7 @@ if ($docid != - 1) {
         $pubdir = DEFAULT_PUBDIR;
         
         foreach ($table1 as $k => $v) {
-            $doc = createDoc($dbaccess, $v["id"]);
+            $doc = createDoc("", $v["id"]);
             
             if ($trig) {
                 print $doc->sqltrigger($drop) . "\n";
@@ -66,7 +61,7 @@ if ($docid != - 1) {
 }
 
 if (($docid == - 1) || ($docid == 0)) {
-    $doc = new \Anakeen\Core\SmartStructure($dbaccess);
+    $doc = new \Anakeen\Core\SmartStructure();
     
     $doc->doctype = 'C';
     $doc->fromid = 'fam';

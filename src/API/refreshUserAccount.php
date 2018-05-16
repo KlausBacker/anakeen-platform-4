@@ -14,12 +14,6 @@
 // use this only if you have changed title attributes
 
 
-$dbaccess = getDbAccess();
-if ($dbaccess == "") {
-    print "Database not found : appl->dbaccess";
-    return;
-}
-
 $usage = new \Anakeen\Script\ApiUsage();
 
 $usage->setDefinitionText("Update usercard");
@@ -45,11 +39,11 @@ $table1 = $query->Query(0, 0, "TABLE");
 if ($query->nb > 0) {
     printf("\n%d user to update\n", count($table1));
     $card = count($table1);
-    $doc = new \Anakeen\Core\Internal\SmartElement($dbaccess);
+    $doc = new \Anakeen\Core\Internal\SmartElement();
     $reste = $card;
     foreach ($table1 as $k => $v) {
         $fid = 0;
-        
+
         $reste--;
         // search already created card
         $title = strtolower($v["lastname"] . " " . $v["firstname"]);
@@ -60,28 +54,28 @@ if ($query->nb > 0) {
         $foundoc = false;
         $fid = $v["fid"];
         if ($fid > 0) {
-            $udoc = new_doc($dbaccess, $fid);
-            $foundoc = $udoc->isAlive();
+            $udoc = \Anakeen\Core\DocManager::getDocument($fid);
+            $foundoc = $udoc && $udoc->isAlive();
         }
-        
+
         if (!$foundoc) {
             // search same doc with us_what id
             if ($v["accounttype"] === "G") {
                 $filter = array(
                     "us_whatid = '" . $v["id"] . "'"
                 );
-                $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", "IGROUP");
+                $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection("", 0, 0, "ALL", $filter, 1, "TABLE", "IGROUP");
             } else {
                 $filter = array(
                     "us_whatid = '" . $v["id"] . "'"
                 );
-                $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", "IUSER");
+                $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection("", 0, 0, "ALL", $filter, 1, "TABLE", "IUSER");
             }
-            
+
             if (count($tdoc) > 0) {
                 $fid = $tdoc["id"];
-                $udoc = new_doc($dbaccess, $fid);
-                $foundoc = $udoc->isAlive();
+                $udoc = \Anakeen\Core\DocManager::getDocument($fid);
+                $foundoc = $udoc && $udoc->isAlive();
             }
         }
         if ($foundoc) {
@@ -108,19 +102,19 @@ if ($query->nb > 0) {
             // search in all usercard same title
             if ($mail != "") {
                 $filter = array(
-                "us_mail = '" . pg_escape_string($mail) . "'"
-            );
+                    "us_mail = '" . pg_escape_string($mail) . "'"
+                );
             } else {
                 $filter = array(
-                "lower(title) = '" . pg_escape_string($title) . "'"
-            );
+                    "lower(title) = '" . pg_escape_string($title) . "'"
+                );
             }
-            $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", \Anakeen\Core\DocManager::getFamilyIdFromName("IUSER"));
+            $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection("", 0, 0, "ALL", $filter, 1, "LIST", \Anakeen\Core\DocManager::getFamilyIdFromName("IUSER"));
             if (count($tdoc) > 0) {
                 if (count($tdoc) > 1) {
                     printf(_("find %s more than one, created aborded\n"), $title);
                 } else {
-                    $udoc = new_Doc($dbaccess, $tdoc[0]->id);
+                    $udoc = \Anakeen\Core\DocManager::getDocument($tdoc[0]->id);
                     /**
                      * @var \SmartStructure\IUSER $udoc
                      */
@@ -136,7 +130,7 @@ if ($query->nb > 0) {
             } else {
                 // create new card
                 if ($v["accounttype"] === "G") {
-                    $iuser = createDoc($dbaccess, \Anakeen\Core\DocManager::getFamilyIdFromName("IGROUP"));
+                    $iuser = \Anakeen\Core\DocManager::createDocument("IGROUP");
                     $iuser->setValue("US_WHATID", $v["id"]);
                     $iuser->Add();
                     $iuser->refresh();
@@ -145,11 +139,11 @@ if ($query->nb > 0) {
                     print "$reste)";
                     printf(_("%s igroup created\n"), $title);
                 } else {
-                    $iuser = createDoc($dbaccess, \Anakeen\Core\DocManager::getFamilyIdFromName("IUSER"));
+                    $iuser = \Anakeen\Core\DocManager::createDocument("IUSER");
                     $iuser->setValue("US_WHATID", $v["id"]);
                     $err = $iuser->Add();
                     if ($err == "") {
-                        //$iuser->refresh();
+                        //$iuser->refresh();"
                         //$iuser->RefreshDocUser();
                         //$iuser->modify();
                         print "$reste)";
@@ -163,16 +157,15 @@ if ($query->nb > 0) {
                 unset($iuser);
             }
         }
-        
+
         if (($v["fid"] == 0) && ($fid > 0)) {
             $u = new \Anakeen\Core\Account("", $v["id"]);
             $u->fid = $fid;
             $u->modify();
             unset($u);
         }
-
     }
-    
+
     $doc->exec_query("update doc127 set name='GADMIN'     where us_whatid='4'");
     $doc->exec_query("update doc127 set name='GDEFAULT'   where us_whatid='2'");
     $doc->exec_query("update doc128 set name='USER_ADMIN' where us_whatid='1'");

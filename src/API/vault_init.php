@@ -25,7 +25,6 @@ $fsname = $usage->addOptionalParameter("name", "Fs name", null, "DEFAULT");
 $size_in_bytes = $usage->addOptionalParameter("size", "Vault size", null, 500 * 1024 * 1024); // 500Mb
 $usage->verify();
 
-$dbaccess = getDbAccess();
 $err = "";
 if (!is_dir($dirname)) {
     if (is_dir(dirname($dirname))) {
@@ -37,9 +36,9 @@ if (!is_dir($dirname)) {
     $err = sprintf(_("cannot create directory %s\nParent directory must be create before"), $dirname);
 }
 if ($err == "") {
-    $vf = new VaultFile($dbaccess);
+    $vf = new VaultFile();
     //  print_r2($vf);
-    $q = new \Anakeen\Core\Internal\QueryDb($dbaccess, \VaultDiskFsStorage::class);
+    $q = new \Anakeen\Core\Internal\QueryDb("", \VaultDiskFsStorage::class);
     $q->AddQuery("r_path='" . pg_escape_string(trim($dirname)) . "'");
     $l = $q->Query(0, 0, "TABLE");
     if ($q->nb == 0) {

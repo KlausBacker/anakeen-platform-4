@@ -78,8 +78,7 @@ class LdapAuthentProvider extends AuthentProvider
             return sprintf(_("cannot create user %s: %s"), $username, $err);
         }
 
-        $dbaccess = getDbAccess();
-        $du = new_doc($dbaccess, $whatuser->fid);
+        $du = new_doc("", $whatuser->fid);
         if ($du->isAlive()) {
             $du->setValue("us_whatid", $whatuser->id);
             $err = $du->modify();
@@ -89,7 +88,7 @@ class LdapAuthentProvider extends AuthentProvider
                     /**
                      * @var \Anakeen\SmartStructures\Dir\DirHooks $gu
                      */
-                    $gu = new_Doc($dbaccess, $this->parms{'dGroup'});
+                    $gu = new_Doc("", $this->parms{'dGroup'});
                     if ($gu->isAlive()) {
                         $errg = $gu->addFile($du->id);
                         if ($errg == "") {

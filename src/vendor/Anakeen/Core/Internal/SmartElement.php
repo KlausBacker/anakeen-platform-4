@@ -3529,7 +3529,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
 
-
     /**
      * set attribute title value
      * the first value of type text use for title will be modify to have the new \title
@@ -4805,8 +4804,8 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Register (store) a file in the vault and return the file's vault's informations
      *
-     * @param string        $filename the file pathname
-     * @param string        $ftitle   override the stored file name or empty string to keep the original file name
+     * @param string         $filename the file pathname
+     * @param string         $ftitle   override the stored file name or empty string to keep the original file name
      * @param \VaultFileInfo $info     the vault's informations for the stored file or null if could not get informations
      *
      * @return string trigram of the file in the vault: "mime_s|id_file|name"
@@ -5084,7 +5083,7 @@ create unique index i_docir on doc(initid, revision);";
                     }
                 }
                 if ($missingAttrIds) {
-                    $missingValues =DocManager::getRawData($this->id, $missingAttrIds, false);
+                    $missingValues = DocManager::getRawData($this->id, $missingAttrIds, false);
                     foreach ($missingValues as $attrid => $value) {
                         $this->$attrid = $value;
                     }
@@ -5376,7 +5375,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function addHistoryEntry($comment = '', $level = \DocHisto::INFO, $code = '', $uid = '')
     {
-        global $action;
         if ($this->id == "") {
             return '';
         }
@@ -5392,12 +5390,11 @@ create unique index i_docir on doc(initid, revision);";
         $h->date = date("d-m-Y H:i:s") . substr(microtime(), 1, 8);
         if ($uid > 0) {
             $u = new \Anakeen\Core\Account("", $uid);
-            $h->uid = $u->id;
-            $h->uname = sprintf("%s %s", $u->firstname, $u->lastname);
         } else {
-            $h->uname = sprintf("%s %s", $action->user->firstname, $action->user->lastname);
-            $h->uid = $action->user->id;
+            $u = ContextManager::getCurrentUser(true);
         }
+        $h->uid = $u->id;
+        $h->uname = sprintf("%s %s", $u->firstname, $u->lastname);
         $h->level = $level;
         $h->code = $code;
 
@@ -5408,25 +5405,6 @@ create unique index i_docir on doc(initid, revision);";
         return $err;
     }
 
-    /**
-     * Add a comment line in history document
-     * note : modify is call automatically
-     *
-     * @param string $comment the comment to add
-     * @param int    $level   level of comment \DocHisto::INFO, \DocHisto::ERROR,
-     *                        \DocHisto::NOTICE \DocHisto::MESSAGE, \DocHisto::WARNING
-     * @param string $code    use when memorize notification
-     * @param string $uid     user identifier : by default its the current user
-     *
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::addHistoryEntry} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::addHistoryEntry
-     * @return string error message
-     */
-    final public function addComment($comment = '', $level = \DocHisto::INFO, $code = '', $uid = '')
-    {
-        deprecatedFunction();
-        return $this->addHistoryEntry($comment, $level, $code, $uid);
-    }
 
     /**
      * Add a log entry line in log document
@@ -5441,11 +5419,9 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function addLog($code = '', $arg = '', $comment = '', $level = '', $uid = '')
     {
-        global $action;
         if (($this->id == "") || ($this->doctype == 'T')) {
             return '';
         }
-
 
         $h = new \DocLog($this->dbaccess);
         $h->id = $this->id;
@@ -5455,15 +5431,14 @@ create unique index i_docir on doc(initid, revision);";
             $comment = utf8_encode($comment);
         }
         $h->comment = $comment;
-
         if ($uid > 0) {
             $u = new \Anakeen\Core\Account("", $uid);
-            $h->uid = $u->id;
-            $h->uname = sprintf("%s %s", $u->firstname, $u->lastname);
         } else {
-            $h->uname = sprintf("%s %s", $action->user->firstname, $action->user->lastname);
-            $h->uid = $action->user->id;
+            $u = ContextManager::getCurrentUser(true);
         }
+        $h->uid = $u->id;
+        $h->uname = sprintf("%s %s", $u->firstname, $u->lastname);
+
         $h->level = $level ? $level : \DocLog::LOG_NOTIFY;
         $h->code = $code;
         if ($arg) {
@@ -5938,7 +5913,7 @@ create unique index i_docir on doc(initid, revision);";
                      */
                     $revs = $this->getRevisions("TABLE", "ALL");
                     for ($i = $maxrev; $i < count($revs); $i++) {
-                        $d =DocManager::getDocumentFromRawDocument($revs[$i]);
+                        $d = DocManager::getDocumentFromRawDocument($revs[$i]);
                         if ($d) {
                             $d->_destroy(true);
                         }
@@ -6008,7 +5983,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         } else {
-            $state =DocManager::getDocument($newstateid);
+            $state = DocManager::getDocument($newstateid);
             if (!$state || !$state->isAlive()) {
                 return sprintf(_("invalid freestate document %s"), $newstateid);
             }
@@ -6072,7 +6047,7 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
          */
-        $wdoc =DocManager::getDocument($this->wid);
+        $wdoc = DocManager::getDocument($this->wid);
         if (!$wdoc || !$wdoc->isAlive()) {
             return _("assigned workflow is not alive");
         }
@@ -6127,7 +6102,7 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
-            $wdoc =DocManager::getDocument($this->wid);
+            $wdoc = DocManager::getDocument($this->wid);
             if ($wdoc && $wdoc->isAffected()) {
                 return $wdoc->getColor($this->state, $def);
             }
@@ -7232,15 +7207,14 @@ create unique index i_docir on doc(initid, revision);";
     }
 
 
-
     /**
      * return an url to download for file attribute
      *
-     * @param string        $attrid     attribute identifier
-     * @param int           $index      set to row rank if it is in array else use -1
-     * @param bool          $cache      set to true if file may be persistent in client cache
-     * @param bool          $inline     set to true if file must be displayed in web browser
-     * @param string        $otherValue use another file value instead of attribute value
+     * @param string         $attrid     attribute identifier
+     * @param int            $index      set to row rank if it is in array else use -1
+     * @param bool           $cache      set to true if file may be persistent in client cache
+     * @param bool           $inline     set to true if file must be displayed in web browser
+     * @param string         $otherValue use another file value instead of attribute value
      * @param \VaultFileInfo $info       extra file info
      *
      * @return string the url anchor
@@ -7574,7 +7548,7 @@ create unique index i_docir on doc(initid, revision);";
      * if the user has no 'view' privilege
      *
      * @param \Anakeen\Core\Internal\SmartElement $doc
-     * @param     $aclname
+     * @param                                     $aclname
      *
      * @return string
      */
@@ -9027,7 +9001,7 @@ create unique index i_docir on doc(initid, revision);";
      * attach timer to a document
      *
      * @param \Anakeen\SmartStructures\Timer\TimerHooks &$timer   the timer document
-     * @param \Anakeen\Core\Internal\SmartElement                                       &$origin  the document which comes from the attachement
+     * @param \Anakeen\Core\Internal\SmartElement       &$origin  the document which comes from the attachement
      * @param string                                    $execdate date to execute first action YYYY-MM-DD HH:MM:SS
      *
      * @api Attach timer to a document
@@ -9139,7 +9113,7 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * @var \Anakeen\SmartStructures\Timer\TimerHooks $timer
          */
-        $timer =DocManager::createTemporaryDocument("TIMER");
+        $timer = DocManager::createTemporaryDocument("TIMER");
         $c = 0;
         $err = $timer->unattachAllDocument($this, $origin, $c);
         if ($err == "" && $c > 0) {

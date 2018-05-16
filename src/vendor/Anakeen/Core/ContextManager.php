@@ -205,7 +205,7 @@ class ContextManager
         $action = self::getCurrentAction();
 
         if (!$lang) {
-            return;
+            return "";
         }
         if ($action) {
             $action->parent->param->SetVolatile("CORE_LANG", $lang);
@@ -260,6 +260,11 @@ class ContextManager
         return self::$language;
     }
 
+    /**
+     * @param Account $account
+     * @return Account previous account login
+     * @throws \Exception
+     */
     public static function sudo(\Anakeen\Core\Account &$account)
     {
         self::$coreAction = self::getCurrentAction();
@@ -269,6 +274,7 @@ class ContextManager
         if (self::$coreUser && !self::$originalUser) {
             self::$originalUser = self::$coreUser;
         }
+        $previousUser = self::$coreUser;
         self::$coreUser = $account;
 
         self::$coreAction->parent->user = &self::$coreUser;
@@ -277,6 +283,7 @@ class ContextManager
         if (self::$coreApplication->parent && self::$coreApplication->parent->id !== self::$coreApplication->id) {
             self::$coreApplication->parent->user = &self::$coreUser;
         }
+        return $previousUser;
     }
 
     public static function exitSudo()
@@ -288,13 +295,18 @@ class ContextManager
 
 
     /**
+     * @param bool $original use origin logged account even sudo is used
      * @return \Anakeen\Core\Account|null
      */
-    public static function getCurrentUser()
+    public static function getCurrentUser(bool $original = false)
     {
         $cAction = self::getCurrentAction();
         if ($cAction) {
-            return self::$coreUser = self::getCurrentAction()->user;
+            self::$coreUser = self::getCurrentAction()->user;
+            if ($original === true && self::$originalUser) {
+                return self::$originalUser;
+            }
+            return self::$coreUser;
         }
         return null;
     }
