@@ -17,8 +17,10 @@ exports.minifyJavaScript = () => ({
     })],
 });
 
-exports.clean = path => ({
-    plugins: [new CleanWebpackPlugin([path])],
+exports.clean = currentPath => ({
+    plugins: [new CleanWebpackPlugin([currentPath], {
+        root: path.resolve(currentPath, '..')
+    })],
 });
 
 exports.generateViewHtml = (currentPath, excludeChunks) => ({
