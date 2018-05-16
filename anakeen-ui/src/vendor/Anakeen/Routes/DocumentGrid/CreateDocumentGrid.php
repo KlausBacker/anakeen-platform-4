@@ -28,7 +28,7 @@ class CreateDocumentGrid extends Crud
             throw $exception;
         }
 
-        $collection= DocManager::getDocument($this->contentParameters["collection"]);
+        $collection= SEManager::getDocument($this->contentParameters["collection"]);
         if (!$collection) {
             throw new Exception(sprintf(___("Collection \"%s\" not found", "docgrid"),$this->contentParameters["collection"] ));
         }

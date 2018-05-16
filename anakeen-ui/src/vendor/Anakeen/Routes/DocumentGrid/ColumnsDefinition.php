@@ -2,7 +2,7 @@
 
 namespace Anakeen\Routes\DocumentGrid;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 
@@ -37,7 +37,7 @@ class ColumnsDefinition
         $displayedColumns = array();
 
         if ($this->defaultFamilyId !== false) {
-            $famDef[$this->defaultFamilyId] = DocManager::getFamily($this->defaultFamilyId);
+            $famDef[$this->defaultFamilyId] = SEManager::getFamily($this->defaultFamilyId);
         }
 
         $elementsId = $request->getQueryParam("columns", "");
@@ -138,7 +138,7 @@ class ColumnsDefinition
         /* @var \Anakeen\Core\Internal\SmartElement $currentFamDoc */
         if (isset($currentColumn["famId"])) {
             if (!isset($famDef[$currentColumn["famId"]])) {
-                $famDef[$currentColumn["famId"]] = DocManager::getFamily($currentColumn["famId"]);
+                $famDef[$currentColumn["famId"]] = SEManager::getFamily($currentColumn["famId"]);
             }
             $currentFamDoc = $famDef[$currentColumn["famId"]];
         } else {

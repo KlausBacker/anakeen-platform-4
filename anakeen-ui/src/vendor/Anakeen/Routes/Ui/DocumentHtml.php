@@ -8,7 +8,7 @@ namespace Anakeen\Routes\Ui;
 use Anakeen\Core\Internal\I18nTemplateContext;
 use Anakeen\Core\Utils\Gettext;
 use Anakeen\Router\Exception;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 /**
  * Class DocumentHtml
@@ -80,7 +80,7 @@ class DocumentHtml
         $data["notificationTitleMore"] = ___("Notification", "ddui:notification");
         $data["messages"] = "{}";
         if ($initid !== false) {
-            $doc = DocManager::getDocument($initid);
+            $doc = SEManager::getDocument($initid);
             if (!$doc) {
                 $e = new Exception(sprintf(Gettext::___("Document identifier \"%s\"not found", "ddui"), $initid));
                 $e->setHttpStatus("404", "Document not found");
@@ -102,7 +102,7 @@ class DocumentHtml
                     throw $e;
                 }
             }
-            DocManager::cache()->addDocument($doc);
+            SEManager::cache()->addDocument($doc);
             $otherParameters = $_GET;
 
             unset($otherParameters["initid"]);

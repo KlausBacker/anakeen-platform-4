@@ -4,26 +4,26 @@
 namespace Anakeen\Routes\Ui;
 
 use Anakeen\Router\ApiV2Response;
-use Anakeen\Core\DocManager as DocManager;
+use Anakeen\Core\SEManager;
 
 /**
  * Class SubMenu
- * @note Used by route : POST /api/v2/documents/{docid}/views/{view}/menus/{menu}
+ * @note    Used by route : POST /api/v2/documents/{docid}/views/{view}/menus/{menu}
  * @package Anakeen\Routes\Ui
  */
 class SubMenu
 {
     /**
-     * @var \Anakeen\Core\SmartStructure 
+     * @var \Anakeen\Core\SmartStructure
      */
     protected $_family = null;
 
 
     /**
      * Get Submenu content
-     * @param \Slim\Http\request $request
+     * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
-     * @param $args
+     * @param                     $args
      * @return \Slim\Http\response
      * @throws \Dcp\Ui\Exception
      */
@@ -37,7 +37,7 @@ class SubMenu
     {
         $renderMode = "view";
 
-        $doc = DocManager::getDocument($documentId);
+        $doc = SEManager::getDocument($documentId);
 
         if (!$doc) {
             throw new \Dcp\Ui\Exception(sprintf(___("Document \"%s\" not found ", "ddui"), $documentId));

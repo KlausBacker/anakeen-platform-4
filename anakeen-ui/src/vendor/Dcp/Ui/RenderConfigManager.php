@@ -2,7 +2,7 @@
 
 namespace Dcp\Ui;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
 
 class RenderConfigManager
@@ -35,13 +35,13 @@ class RenderConfigManager
         if (empty($document->cvid)) {
             throw new Exception("UI0301", $vId, $document->getTitle());
         }
-        $cvDoc = DocManager::getDocument($document->cvid);
+        $cvDoc = SEManager::getDocument($document->cvid);
 
         if ($cvDoc == null) {
             throw new Exception("UI0302", $document->cvid);
         }
 
-        if (!is_a($cvDoc, \Anakeen\Core\DocManager::getFamilyClassName("Cvdoc"))) {
+        if (!is_a($cvDoc, \Anakeen\Core\SEManager::getFamilyClassName("Cvdoc"))) {
             throw new Exception("UI0303", $cvDoc->getTitle());
         }
         /**
@@ -108,7 +108,7 @@ class RenderConfigManager
             /**
              * @var \SmartStructure\CVDoc $cvDoc
              */
-            $cvDoc = DocManager::getDocument($document->cvid);
+            $cvDoc = SEManager::getDocument($document->cvid);
             return self::getRenderConfigCv($mode, $cvDoc, $document, $vid);
         }
 

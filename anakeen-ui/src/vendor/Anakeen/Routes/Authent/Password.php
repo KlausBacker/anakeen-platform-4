@@ -7,7 +7,7 @@
 namespace Anakeen\Routes\Authent;
 
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
 
@@ -45,7 +45,7 @@ class Password
         /**
         * @var \Dcp\Core\UserAccount $udoc
         */
-        $udoc = DocManager::getDocument($currentUser->fid);
+        $udoc = SEManager::getDocument($currentUser->fid);
 
         if ($udoc) {
             $err = $udoc->testForcePassword($password);

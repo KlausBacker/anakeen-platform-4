@@ -6,7 +6,7 @@ use Anakeen\Routes\Core\DocumentList;
 use Anakeen\Routes\Core\DocumentUtils;
 use Anakeen\Core\ContextManager;
 use Anakeen\Router\Exception;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 /**
  * Class DocumentsList
@@ -62,7 +62,7 @@ class DocumentsPager extends DocumentList
     protected function prepareSearchDoc()
     {
         parent::prepareSearchDoc();
-        $doc = DocManager::getDocument($this->collectionId);
+        $doc = SEManager::getDocument($this->collectionId);
         if (!$doc) {
             $exception = new Exception('DOCLIST0001', $this->collectionId);
             $exception->setHttpStatus("404", "Document not found");
@@ -108,7 +108,7 @@ class DocumentsPager extends DocumentList
         } elseif ($this->collection) {
             $familyOfCollectionId = $this->collection->getRawValue("se_famid");
             if (isset($familyOfCollectionId)) {
-                return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, DocManager::getFamily($familyOfCollectionId));
+                return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, SEManager::getFamily($familyOfCollectionId));
             }
         }
         return parent::extractOrderBy();

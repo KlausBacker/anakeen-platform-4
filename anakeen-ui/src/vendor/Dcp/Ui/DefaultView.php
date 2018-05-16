@@ -7,7 +7,7 @@
 namespace Dcp\Ui;
 
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Strings;
 use \SmartStructure\Attributes\Cvdoc as CvAttributes;
 
@@ -230,7 +230,7 @@ class DefaultView extends RenderDefault
             /**
              * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
-            $wdoc = DocManager::getDocument($doc->wid, false);
+            $wdoc = SEManager::getDocument($doc->wid, false);
             if (!$doc) {
                 return;
             }
@@ -336,7 +336,7 @@ class DefaultView extends RenderDefault
     protected function addCvMenu(\Anakeen\Core\Internal\SmartElement $doc, BarMenu & $menu)
     {
         if ($doc->cvid > 0) {
-            $cv = DocManager::getDocument($doc->cvid);
+            $cv = SEManager::getDocument($doc->cvid);
             if (!$cv) {
                 throw new Exception("UI0202", $doc->cvid);
             }

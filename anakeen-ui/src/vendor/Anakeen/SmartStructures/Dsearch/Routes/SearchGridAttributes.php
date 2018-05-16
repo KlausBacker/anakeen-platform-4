@@ -3,7 +3,7 @@
 
 namespace Anakeen\SmartStructures\Dsearch\Routes;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use Anakeen\Routes\DocumentGrid\ColumnsDefinition;
@@ -21,7 +21,7 @@ class SearchGridAttributes
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $searchId=$args["searchId"];
-        $searchDocument = DocManager::getDocument($searchId);
+        $searchDocument = SEManager::getDocument($searchId);
         if (!$searchDocument) {
             $exception = new Exception("CRUD0103", __METHOD__);
             $exception->setHttpStatus("404", "Doc not found");
@@ -29,7 +29,7 @@ class SearchGridAttributes
             throw $exception;
         }
 
-        $this->_searchfamily = DocManager::getFamily($searchDocument->getRawValue(Report::se_famid));
+        $this->_searchfamily = SEManager::getFamily($searchDocument->getRawValue(Report::se_famid));
         if (!$this->_searchfamily) {
             $exception = new Exception("CRUD0103", __METHOD__);
             $exception->setHttpStatus("404", "search family not found");
@@ -57,7 +57,7 @@ class SearchGridAttributes
 
     public static function getGridAttributes(\Anakeen\Core\Internal\SmartElement $searchDocument)
     {
-        $_searchfamily = DocManager::getFamily($searchDocument->getRawValue(Report::se_famid));
+        $_searchfamily = SEManager::getFamily($searchDocument->getRawValue(Report::se_famid));
         if (!$_searchfamily) {
             $exception = new Exception("CRUD0103", __METHOD__);
             $exception->setHttpStatus("404", "search family not found");

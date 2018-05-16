@@ -2,7 +2,7 @@
 
 namespace Anakeen\SmartStructures\Dsearch\Routes;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
 
 class Relations
@@ -25,7 +25,7 @@ class Relations
         $offset=$request->getQueryParam("offset");
         $keyword=$request->getQueryParam("keyword");
 
-        $fdoc = DocManager::getFamily($this->_family);
+        $fdoc = SEManager::getFamily($this->_family);
         foreach ($fdoc->getNormalAttributes() as $myAttribute) {
             if ($myAttribute->id == $this->_attrid) {
                 $s = new \SearchDoc("", $myAttribute->format);
