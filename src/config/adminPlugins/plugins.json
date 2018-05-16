@@ -9,7 +9,7 @@
     "emit": [],
     "receive": [],
     "componentPath": "/usersManagement",
-    "scriptURL": "/api/v2/admin/plugin/users",
+    "scriptURL": "/api/v2/admin/plugin/ankAdminPlugins",
     "subcomponents": {
       "ank-admin-users-section": {
         "title": "Users",
@@ -17,7 +17,7 @@
         "order": {
           "position": "auto"
         },
-        "scriptURL": "/api/v2/admin/plugin/users"
+        "scriptURL": "/api/v2/admin/plugin/ankAdminPlugins"
       },
       "ank-admin-groups-section": {
         "title": "Groups",
@@ -25,7 +25,7 @@
         "order": {
           "position": "auto"
         },
-        "scriptURL": "/api/v2/admin/plugin/users"
+        "scriptURL": "/api/v2/admin/plugin/ankAdminPlugins"
       }
     }
   }

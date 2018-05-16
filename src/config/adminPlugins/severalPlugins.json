@@ -2,6 +2,7 @@
   "ank-admin-search": {
     "title": "Search",
     "fa-icon": "search",
+    "icon": "<i class='fa fa-search'></i>",
     "order": {
       "position": "after",
       "componentName": "ank-admin-users-manager"

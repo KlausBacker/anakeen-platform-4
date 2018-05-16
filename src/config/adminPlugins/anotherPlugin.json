@@ -10,6 +10,6 @@
     "emit": [],
     "receive": [],
     "componentPath": "/settings",
-    "scriptURL": "/api/v2/admin/plugin/settings"
+    "scriptURL": "/api/v2/admin/plugin/ankAdminPlugins"
   }
 }

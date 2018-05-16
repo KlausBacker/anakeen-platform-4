@@ -33,7 +33,7 @@
       "priority": 0
     },
     "Admin:Plugin": {
-      "pattern": "/api/v2/admin/plugin/{pluginName}",
+      "pattern": "/api/v2/admin/plugin/ankAdminPlugins",
       "callable": "\\Anakeen\\Routes\\Admin\\Plugin",
       "methods": [
         "GET"
