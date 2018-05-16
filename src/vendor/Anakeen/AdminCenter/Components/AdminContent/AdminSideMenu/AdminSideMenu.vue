@@ -2,7 +2,7 @@
     <div class="admin-center-side-menu-wrapper">
         <div class="admin-center-side-menu">
             <div class="side-menu-plugin-list">
-                <router-link v-for="plugin in plugins" :key="plugin.name" :to="plugin.componentPath">
+                <router-link v-for="plugin in plugins" :key="plugin.name" :to="plugin.pluginPath">
                     <span class="icon-plugin" v-html="plugin['icon']"></span>
                 </router-link>
             </div>
@@ -17,7 +17,7 @@
             <h4 class="admin-center-plugin-title"><span v-html="currentPlugin['icon']"></span> {{currentPlugin.title}}</h4>
             <div class="admin-center-side-submenu-items">
                 <router-link class="admin-center-side-submenu-item" active-class="admin-center-side-submenu-item--active" v-for="submenu in currentPlugin.subcomponents"
-                    :key="submenu.name" :to="submenu.componentPath" tag="div" exact>
+                             :key="submenu.name" :to="submenu.pluginPath" tag="div" exact>
                     {{submenu.title}}
                 </router-link>
             </div>

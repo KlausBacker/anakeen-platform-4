@@ -13,7 +13,7 @@ export default {
     mounted() {
         this.$router.afterEach((to, from) => {
             const rootPath = (to.matched && to.matched.length) ? to.matched[0].path : to.path;
-            const rootPlugin = this.plugins.find(p => p.componentPath === rootPath);
+            const rootPlugin = this.plugins.find(p => p.pluginPath === rootPath);
             if (rootPlugin) {
                 this.enableSubMenu = (rootPlugin.subcomponents && rootPlugin.subcomponents.length);
             }
@@ -21,7 +21,7 @@ export default {
     },
     computed: {
         currentPlugin() {
-            return this.plugins.find(p => p.componentPath === this.$router.currentRoute.path);
+            return this.plugins.find(p => p.pluginPath === this.$router.currentRoute.path);
         },
     }
 

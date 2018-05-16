@@ -105,7 +105,7 @@ class Plugins
                 } elseif ($position === self::PluginsFirstOrder) {
                     array_unshift($result, $plugin);
                 } elseif ($position === self::PluginsPositionAfter) {
-                    $componentNameRef = $pluginOrder['componentName'];
+                    $componentNameRef = $pluginOrder['pluginName'];
                     if (empty($componentNameRef)) {
                         // TODO throw exception
                     }
@@ -115,7 +115,7 @@ class Plugins
                     }
                     self::insertAfter($result, $componentNameRef, $plugin);
                 } elseif ($position === self::PluginsPositionBefore) {
-                    $componentNameRef = $pluginOrder['componentName'];
+                    $componentNameRef = $pluginOrder['pluginName'];
                     if (empty($componentNameRef)) {
                         // TODO throw exception
                     }
@@ -143,17 +143,17 @@ class Plugins
         return $result;
     }
 
-    protected static function normalizePlugins(array $config, $parentComponentPath = "") {
+    protected static function normalizePlugins(array $config, $parentPluginPath = "") {
         $result = [];
         if (!empty($config)) {
             $plugins = $config;
             foreach ($plugins as $pluginComponentName => $plugin) {
                 $plugin["name"] = $pluginComponentName;
-                if (!empty($parentComponentPath)) {
-                    $plugin["componentPath"] = $parentComponentPath."/".$plugin["componentPath"];
+                if (!empty($parentPluginPath)) {
+                    $plugin["pluginPath"] = $parentPluginPath."/".$plugin["pluginPath"];
                 }
                 if (!empty($plugin['subcomponents'])) {
-                    $plugin['subcomponents'] = self::normalizePlugins($plugin['subcomponents'], $plugin['componentPath']);
+                    $plugin['subcomponents'] = self::normalizePlugins($plugin['subcomponents'], $plugin['pluginPath']);
                 }
                 $result[] = $plugin;
             }

@@ -24,20 +24,23 @@
           "description": "Label used in admin center",
           "type": "string"
         },
-        "componentPath": {
-          "description": "Component path in admin center url",
+        "pluginPath": {
+          "description": "Plugin path in admin center url",
           "type": "string"
         },
         "scriptURL": {
-          "description": "Component source file location",
+          "description": "Plugin source file location",
           "type": "string"
         },
         "icon": {
           "description": "Plugin icon",
           "type": "string"
+        },
+        "pluginTemplate": {
+          "description": ""
         }
       },
-      "required": ["title", "componentPath", "scriptURL"],
+      "required": ["title", "pluginPath", "scriptURL", "pluginTemplate"],
       "additionalProperties": false
     },
     "pluginWithSubLevel": {
@@ -80,7 +83,7 @@
                 "first"
               ]
             },
-            "componentName": {
+            "pluginName": {
               "type": "string"
             }
           },
@@ -98,7 +101,7 @@
               }
             },
             {
-              "required": ["position", "componentName"]
+              "required": ["position", "pluginName"]
             }
           ]
         }
