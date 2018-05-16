@@ -2,7 +2,7 @@
     <div class="admin-center-main">
         <admin-header></admin-header>
         <admin-content></admin-content>
-        <div id="admin-center-notification"></div>
+        <admin-notification></admin-notification>
     </div>
 </template>
 <style>
