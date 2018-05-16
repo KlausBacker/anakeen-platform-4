@@ -233,13 +233,13 @@ class TestProfil extends TestCaseDcpCommonFamily
                 "profil" => "PU_data_dcp_setprofildata.ods",
                 "famName" => "TST_PROFIL",
                 "john",
-                6
+                5
             ) ,
             array(
                 "profil" => "PU_data_dcp_setprofildata.ods",
                 "famName" => "TST_PROFIL",
                 "jane",
-                6
+                5
             )
         );
     }

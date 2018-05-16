@@ -10,6 +10,7 @@
  * @version $Id: Class.SearchDoc.php,v 1.8 2008/08/14 14:20:25 eric Exp $
  * @package FDL
  */
+
 /**
  */
 
@@ -33,8 +34,6 @@ use \Anakeen\SmartStructures\Dir\DirHooks;
  * @endcode
  * @class SearchDoc.
  */
-
-
 class SearchDoc
 {
     /**
@@ -123,7 +122,7 @@ class SearchDoc
     /**
      *
      * Iterator document
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     private $iDoc = null;
     /**
@@ -307,7 +306,7 @@ class SearchDoc
         if ($memberOf === null) {
             return '';
         }
-        $memberOf[] = 0;
+
         $memberOf[] = $uid;
         return '{' . implode(',', $memberOf) . '}';
     }
@@ -1203,11 +1202,11 @@ class SearchDoc
      * return a document part where general filter term is found
      *
      * @see SearchDoc::addGeneralFilter
-     * @param \Anakeen\Core\Internal\SmartElement    $doc      document to analyze
-     * @param string $beginTag delimiter begin tag
-     * @param string $endTag   delimiter end tag
-     * @param int    $limit    file size limit to analyze
-     * @param bool   $wordMode
+     * @param \Anakeen\Core\Internal\SmartElement $doc      document to analyze
+     * @param string                              $beginTag delimiter begin tag
+     * @param string                              $endTag   delimiter end tag
+     * @param int                                 $limit    file size limit to analyze
+     * @param bool                                $wordMode
      * @return mixed
      * @throws \Dcp\Db\Exception
      */
@@ -1341,17 +1340,6 @@ class SearchDoc
     }
 
     /**
-     * the return of ::search will be array of values
-     * @deprecated use setObjectReturn(false) instead
-     * @return void
-     */
-    public function setValueReturn()
-    {
-        deprecatedFunction();
-        $this->mode = "TABLE";
-    }
-
-    /**
      * add a filter to not return confidential document if current user cannot see it
      * @api add a filter to not return confidential
      * @param boolean $exclude set to true to exclude confidential
@@ -1361,7 +1349,11 @@ class SearchDoc
     {
         if ($exclude) {
             if ($this->userid != 1) {
-                $this->excludeFilter = sprintf("confidential is null or hasaprivilege('%s', profid,%d)", DocPerm::getMemberOfVector($this->userid), 1 << \Anakeen\Core\Internal\DocumentAccess::POS_CONF);
+                $this->excludeFilter = sprintf(
+                    "confidential is null or hasaprivilege('%s', profid,%d)",
+                    DocPerm::getMemberOfVector($this->userid),
+                    1 << \Anakeen\Core\Internal\DocumentAccess::POS_CONF
+                );
             }
         } else {
             $this->excludeFilter = '';

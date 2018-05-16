@@ -952,7 +952,7 @@ class TestSearch extends TestCaseDcpCommonFamily
                         array(
                             "sudo" => "anonymous",
                             "search:family" => "TST_SEARCH_NOVIEWCONTROL",
-                            "expect:count" => 4
+                            "expect:count" => 3
                         ),
                         array(
                             "import" => "PU_data_dcp_search.ods",

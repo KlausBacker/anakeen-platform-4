@@ -961,7 +961,7 @@ create unique index i_docir on doc(initid, revision);";
         }
 
         if ($this->profid == "") {
-            $this->views = "{0}";
+            $this->views = "{}";
             $this->profid = "0";
         }
         if ($this->usefor == "") {
@@ -7607,9 +7607,13 @@ create unique index i_docir on doc(initid, revision);";
         if (!$this->isAffected()) {
             return '';
         }
-        if (($this->profid <= 0) || (ContextManager::getCurrentUser()->id == \Anakeen\Core\Account::ADMIN_ID)) {
+        if (ContextManager::getCurrentUser()->id == \Anakeen\Core\Account::ADMIN_ID) {
             return ""; // no profil or admin
         }
+        if ($this->profid <= 0) {
+            return ___("Profil not configured", "ank"); // no profil enabled
+        }
+
         $err = $this->accessControl()->controlId($this->profid, $aclname, $strict);
         if ($err != "") {
             return $this->noPrivilegeMessage($this, $aclname);
