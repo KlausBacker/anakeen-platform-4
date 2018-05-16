@@ -7,7 +7,7 @@
   "license": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack/index.js --env production && webpack --config webpack/index.js --env debug",
+    "build": "webpack --config webpack/index.js --env debug && webpack --config webpack/index.js --env prod",
     "debug": "webpack --config webpack/index.js --env debug",
     "dev": "webpack-dev-server --color --config webpack/index.js --env dev"
   },
@@ -24,6 +24,7 @@
     "clean-webpack-plugin": "^0.1.19",
     "core-js": "^2.5.5",
     "css-loader": "^0.28.11",
+    "document-register-element": "^1.8.1",
     "easygettext": "^2.3.0",
     "es6-promise": "^4.2.4",
     "file-loader": "^1.1.11",
@@ -36,6 +37,7 @@
     "style-loader": "^0.20.3",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "vue": "^2.5.16",
+    "vue-custom-element": "^3.0.6",
     "vue-gettext": "^2.0.30",
     "vue-loader": "^14.2.2",
     "vue-plugin-load-script": "^1.0.1",
