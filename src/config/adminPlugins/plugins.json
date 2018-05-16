@@ -1,13 +1,10 @@
 {
   "ank-admin-users-manager": {
     "title": "Users Management",
-    "fa-icon": "users",
+    "icon": "<i class='fa fa-users'></i>",
     "order": {
       "position": "first"
     },
-    "props": [],
-    "emit": [],
-    "receive": [],
     "componentPath": "/usersManagement",
     "scriptURL": "/api/v2/admin/plugin/ankAdminPlugins",
     "subcomponents": {

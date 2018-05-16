@@ -1,40 +1,31 @@
 {
   "ank-admin-search": {
     "title": "Search",
-    "fa-icon": "search",
-    "icon": "<i class='fa fa-search'></i>",
     "order": {
       "position": "after",
       "componentName": "ank-admin-users-manager"
     },
-    "props": [],
-    "emit": [],
-    "receive": [],
-    "componentPath": "/search"
+    "icon": "<i class='fa fa-search'></i>",
+    "componentPath": "/search",
+    "scriptURL": "/api/v2/admin/plugin/ankAdminPlugins"
   },
   "ank-admin-translations": {
-    "name": "translations",
     "title": "Translations",
-    "fa-icon": "globe",
+    "icon": "<i class='fa fa-globe'></i>",
     "order": {
       "position": "after",
       "componentName": "ank-admin-search"
     },
-    "props": [],
-    "emit": [],
-    "receive": [],
-    "componentPath": "/translations"
+    "componentPath": "/translations",
+    "scriptURL": "/api/v2/admin/plugin/ankAdminPlugins"
   },
   "ank-admin-system-integration": {
-    "name": "system",
     "title": "System Integration",
-    "fa-icon": "sign-in",
+    "icon": "<i class='fa fa-sign-in'></i>",
     "order": {
       "position": "auto"
     },
-    "props": [],
-    "emit": [],
-    "receive": [],
-    "componentPath": "/systemIntegration"
+    "componentPath": "/systemIntegration",
+    "scriptURL": "/api/v2/admin/plugin/ankAdminPlugins"
   }
 }

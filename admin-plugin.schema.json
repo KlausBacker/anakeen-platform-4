@@ -1,0 +1,109 @@
+{
+  "id": "http://www.anakeen.com/entry-schema#",
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "description": "schema for admin plugin configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "patternProperties": {
+    "^([A-Za-z0-9-]+)$": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/pluginOrder"
+        },
+        {
+          "$ref": "#/definitions/pluginWithSubLevel"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "plugin": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "description": "Label used in admin center",
+          "type": "string"
+        },
+        "componentPath": {
+          "description": "Component path in admin center url",
+          "type": "string"
+        },
+        "scriptURL": {
+          "description": "Component source file location",
+          "type": "string"
+        },
+        "icon": {
+          "description": "Plugin icon",
+          "type": "string"
+        }
+      },
+      "required": ["title", "componentPath", "scriptURL"],
+      "additionalProperties": false
+    },
+    "pluginWithSubLevel": {
+      "type": "object",
+      "properties": {
+        "subcomponents": {
+          "type": "object",
+          "patternProperties": {
+            "^([A-Za-z0-9-]+)$": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/pluginOrder"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "pluginOrder": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/plugin"
+        }
+      ],
+      "properties": {
+        "order": {
+          "description": "Plugin position in the admin center",
+          "type": "object",
+          "properties": {
+            "position": {
+              "description": "Type of position",
+              "type": "string",
+              "enum": [
+                "before",
+                "after",
+                "auto",
+                "first"
+              ]
+            },
+            "componentName": {
+              "type": "string"
+            }
+          },
+          "required": ["position"],
+          "additionalProperties": false,
+          "anyOf": [
+            {
+              "not": {
+                "properties": {
+                  "position": {
+                    "enum": ["before", "after"]
+                  }
+                },
+                "required": ["position"]
+              }
+            },
+            {
+              "required": ["position", "componentName"]
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
