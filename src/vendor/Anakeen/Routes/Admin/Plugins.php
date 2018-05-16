@@ -25,30 +25,30 @@ class Plugins
      */
     public function getAdminPluginsConfig() {
         $dir = ContextManager::getRootDirectory() . "/" . self::PluginsConfigDir;
-        if ($handle = opendir($dir)) {
-            $config = [];
+        $config = [];
+        if (file_exists($dir)) {
+            if ($handle = opendir($dir)) {
+                while (false !== ($entry = readdir($handle))) {
+                    if (preg_match("/\\.json$/", $entry)) {
+                        $content = file_get_contents($dir . "/" . $entry);
+                        $conf = json_decode($content, true);
 
-            while (false !== ($entry = readdir($handle))) {
-                if (preg_match("/\\.json$/", $entry)) {
-                    $content = file_get_contents($dir . "/" . $entry);
-                    $conf = json_decode($content, true);
-
-                    if ($conf === null) {
-                        throw new Exception("ADMINPLUGINS0001", $dir . "/" . $entry);
+                        if ($conf === null) {
+                            throw new Exception("ADMINPLUGINS0001", $dir . "/" . $entry);
+                        }
+                        $conf = self::normalizePlugins($conf);
+                        $config = array_merge_recursive($config, $conf);
                     }
-                    $conf = self::normalizePlugins($conf);
-                    $config = array_merge_recursive($config, $conf);
                 }
+                closedir($handle);
+
+                $config = json_decode(json_encode($config), true);
+            } else {
+                throw new Exception("ADMINPLUGINS0002", $dir);
             }
-
-            closedir($handle);
-
-            $config = json_decode(json_encode($config), true);
-
-            return self::sortPlugins($config);
-        } else {
-            throw new Exception("ADMINPLUGINS0002", $dir);
         }
+
+        return self::sortPlugins($config);
     }
 
     protected static function insertBefore(array & $result, $pluginName, $new) {
@@ -107,7 +107,7 @@ class Plugins
                 } elseif ($position === self::PluginsPositionAfter) {
                     $componentNameRef = $pluginOrder['pluginName'];
                     if (empty($componentNameRef)) {
-                        // TODO throw exception
+                        throw new Exception('ADMINPLUGINS0003', $pluginName);
                     }
                     $alreadyAdded = self::getPluginByName($result, $componentNameRef);
                     if (empty($alreadyAdded)) {
@@ -117,7 +117,7 @@ class Plugins
                 } elseif ($position === self::PluginsPositionBefore) {
                     $componentNameRef = $pluginOrder['pluginName'];
                     if (empty($componentNameRef)) {
-                        // TODO throw exception
+                        throw new Exception('ADMINPLUGINS0003', $pluginName);
                     }
                     $alreadyAdded = self::getPluginByName($result, $componentNameRef);
                     if (empty($alreadyAdded)) {
@@ -126,7 +126,7 @@ class Plugins
                     self::insertBefore($result, $componentNameRef, $plugin);
                 }
             } else {
-                // TODO throw exception
+                throw new Exception('ADMINPLUGINS0004', $pluginName);
             }
         }
         return $result;
