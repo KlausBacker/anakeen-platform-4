@@ -76,7 +76,7 @@ class FamilyImport
 
         if ($tdoc["classname"] == "") { // default classname
             if ($tdoc["fromid"] == 0) {
-                $tdoc["classname"] = '\\Anakeen\\SmartStructures\Document';
+                $tdoc["classname"] = '\\' . \Anakeen\SmartStructures\Document::class;
             } else {
                 $tdoc["classname"] = "Doc" . $tdoc["fromid"];
             }
