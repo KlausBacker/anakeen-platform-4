@@ -25,7 +25,7 @@ The structure of the json file must respect the following format :
         }
 }
 ```  
-The format of the json structure is validated by a json schema.
+The format of the json structure is validated by a [json schema](admin-plugin.schema.json).
 
 The `scriptURL` property provides an url to a valid web component.
 
