@@ -16,6 +16,9 @@
 namespace Anakeen\SmartStructures\Dir;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Core\DbManager;
+use Anakeen\Core\SEManager;
+use Anakeen\SmartHooks;
 
 /**
  * Folder document Class
@@ -26,9 +29,6 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
     public $defDoctype = 'D';
     private $authfam = false;
     private $norestrict = false;
-
-
-
 
 
     /**
@@ -183,28 +183,6 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
         return $err;
     }
 
-    /**
-     * add a document reference in this folder
-     *
-     * if mode is latest the user always see latest revision
-     * if mode is static the user see the revision which has been inserted
-     *
-     * @deprecated use {@link Dir::insertDocument} instead
-     * @see        DirHooks::insertDocument
-     *
-     * @param int    $docid         document ident for the insertion
-     * @param string $mode          latest|static
-     * @param bool   $noprepost     if true if the virtuals methods {@link Dir::preInsertDoc()} and {@link Dir::postInsertDoc()} are not called
-     * @param bool   $forcerestrict if true don't test restriction (if have)
-     * @param bool   $nocontrol     if true no test acl "modify"
-     *
-     * @return string error message, if no error empty string
-     */
-    public function AddFile($docid, $mode = "latest", $noprepost = false, $forcerestrict = false, $nocontrol = false)
-    {
-        deprecatedFunction();
-        return $this->insertDocument($docid, $mode, $noprepost, $forcerestrict, $nocontrol);
-    }
 
     /**
      * add a document reference in this folder
@@ -232,7 +210,11 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             }
         }
 
-        $doc = new_Doc($this->dbaccess, $docid);
+        $doc = SEManager::getDocument($docid);
+
+        if (!$doc) {
+            return sprintf(_("Cannot add in %s folder, doc id (%d) unknown"), $this->title, $docid);
+        }
         $qf = new \QueryDir($this->dbaccess);
         switch ($mode) {
             case "static":
@@ -242,9 +224,6 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
 
             case "latest":
             default:
-                if (!$doc->isAffected()) {
-                    return sprintf(_("Cannot add in %s folder, doc id (%d) unknown"), $this->title, $docid);
-                }
                 $qf->qtype = 'S'; // single user query
                 $qf->childid = $doc->initid; // initial doc
                 break;
@@ -337,29 +316,6 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
     }
     // --------------------------------------------------------------------
 
-    /**
-     * insert multiple document reference in this folder
-     *
-     * if mode is latest the user always see latest revision
-     * if mode is static the user see the revision which has been inserted
-     *
-     * @deprecated use {@link Dir::InsertMultipleDocuments} instead
-     * @see        insertMultipleDocuments::InsertMultipleDocuments
-     *
-     * @param         $tdocs
-     * @param string  $mode      latest|static
-     * @param boolean $noprepost not call preInsert and postInsert method (default if false)
-     * @param array   $tinserted
-     * @param array   $twarning
-     *
-     * @internal   param \doc $array array document  for the insertion
-     * @return string error message, if no error empty string
-     */
-    public function InsertMDoc($tdocs, $mode = "latest", $noprepost = false, &$tinserted = array(), &$twarning = array())
-    {
-        deprecatedFunction();
-        return $this->insertMultipleDocuments($tdocs, $mode, $noprepost, $tinserted, $twarning);
-    }
 
     /**
      * insert multiple document reference in this folder
@@ -512,7 +468,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
      *
      * @return string error message, if no error empty string
      */
-    public function QuickInsertMSDocId($tdocids)
+    public function quickInsertMSDocId($tdocids)
     {
         $err = $this->canModify();
         if ($err != "") {
@@ -568,7 +524,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
         // --------------------------------------------------------------------
         $tableid = array();
 
-        $doc = new_Doc($this->dbaccess, $docid);
+        $doc = SEManager::getDocument($docid);
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \QueryDir::class);
         $query->AddQuery("dirid=" . $this->id);
         $query->AddQuery("((childid=$docid) and (qtype='F')) OR ((childid={$doc->initid}) and (qtype='S'))");
@@ -585,23 +541,6 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
     }
     // --------------------------------------------------------------------
 
-    /**
-     * remove a document reference from this folder
-     *
-     * @deprecated use {@link Dir::removeDocument} instead
-     * @see        DirHooks::removeDocument
-     *
-     * @param int  $docid     document ident for the deletion
-     * @param bool $noprepost if true then the virtuals methods {@link Dir::preUnlinkDoc()} and {@link Dir::postUnlinkDoc()} are not called
-     * @param bool $nocontrol if true no test acl "modify"
-     *
-     * @return string error message, if no error empty string
-     */
-    public function DelFile($docid, $noprepost = false, $nocontrol = false)
-    {
-        deprecatedFunction();
-        return $this->removeDocument($docid, $noprepost, $nocontrol);
-    }
 
     /**
      * delete a document reference from this folder
@@ -631,7 +570,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             return $err;
         }
 
-        $doc = new_Doc($this->dbaccess, $docid);
+        $doc = SEManager::getDocument($docid);
         $docid = $doc->initid;
         //if (count($qids) == 0) $err = sprintf(_("cannot delete link : link not found for doc %d in folder %d"),$docid, $this->initid);
         if ($err != "") {
@@ -706,18 +645,18 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
         if ($err == "") {
             $fromtoid = $this->initid;
             /** @var \Anakeen\SmartStructures\Dir\DirHooks $da */
-            $da = new_doc($this->dbaccess, $movetoid);
-            if ($da->isAlive()) {
-                if (method_exists($da, "addFile")) {
+            $da = SEManager::getDocument($movetoid);
+            if ($da && $da->isAlive()) {
+                if (method_exists($da, "insertDocument")) {
                     $err = $da->insertDocument($docid);
                     if ($err == "") {
                         if (($fromtoid) && ($fromtoid != $movetoid)) {
                             if ($this->isAlive()) {
-                                if (method_exists($this, "delFile")) {
+                                if (method_exists($this, "removeDocument")) {
                                     $err = $this->removeDocument($docid);
                                     if ($err == "") {
-                                        $doc = new_doc($this->dbaccess, $docid, true);
-                                        if ($doc->isAlive()) {
+                                        $doc = SEManager::getDocument($docid, true);
+                                        if ($doc && $doc->isAlive()) {
                                             $doc->prelid = $da->initid;
                                             $err = $doc->modify(true, array(
                                                 "prelid"
@@ -730,8 +669,8 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
                             }
                         } else {
                             if ($err == "") {
-                                $doc = new_doc($this->dbaccess, $docid, true);
-                                if ($doc->isAlive()) {
+                                $doc = SEManager::getDocument($docid, true);
+                                if ($doc && $doc->isAlive()) {
                                     $doc->prelid = $da->initid;
                                     $err = $doc->modify(true, array(
                                         "prelid"
@@ -748,19 +687,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
         return $err;
     }
 
-    // --------------------------------------------------------------------
-    public function postStore()
-    {
-        // don't see restriction frame is not needed
-        $allbut = $this->getRawValue("FLD_ALLBUT");
-        $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
 
-        if (($allbut === "0") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
-            $this->clearValue("FLD_ALLBUT");
-            $this->modify();
-        }
-        return "";
-    }
 
 
     public function hasNoRestriction()
@@ -815,7 +742,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             } else {
                 //add families
                 foreach ($tfamid as $k => $famid) {
-                    $tfdoc = getTDoc($this->dbaccess, $famid);
+                    $tfdoc = SEManager::getRawDocument($famid);
                     if ($tfdoc && ((!$verifyCreate) || controlTdoc($tfdoc, 'icreate'))) {
                         $tclassdoc[intval($famid)] = array(
                             "id" => ($tsubfam[$k] == "no") ? (-intval($famid)) : intval($famid),
@@ -876,7 +803,20 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
         } else {
             $uid = 1;
         }
-        $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($this->dbaccess, $this->initid, 0, "ALL", $filter, $uid, $qtype, $famid, false, "title", true, $trash);
+        $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection(
+            $this->dbaccess,
+            $this->initid,
+            0,
+            "ALL",
+            $filter,
+            $uid,
+            $qtype,
+            $famid,
+            false,
+            "title",
+            true,
+            $trash
+        );
         return $tdoc;
     }
 
@@ -921,12 +861,9 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
     {
         $query = sprintf("select childid from fld where dirid=%d and qtype='S'", $this->initid);
         $initids = array();
-        $err = simpleQuery($this->dbaccess, $query, $initids, true, false);
-        if ($err == "") {
-            return $initids;
-        }
+        DbManager::query($query, $initids, true, false);
 
-        return array();
+        return $initids;
     }
 
     /**
@@ -994,7 +931,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
         $lpdoc = $this->getContent(false, $filter, "", "ITEM");
 
         $terr = array();
-        $fld = new_doc($this->dbaccess, $indirid);
+        $fld = SEManager::getDocument($indirid);
         if ($fld->doctype == 'D') {
             /** @var \Anakeen\SmartStructures\Dir\DirHooks $fld */
             $err = $fld->control("modify");
@@ -1069,5 +1006,30 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             $terr[$doc->id] = $doc->undelete();
         }
         return $terr;
+    }
+
+    public function postStore() {
+        $allbut = $this->getRawValue("FLD_ALLBUT");
+            $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
+
+            if (($allbut === "0") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
+                $this->clearValue("FLD_ALLBUT");
+                $this->modify();
+            }
+            return "";
+    }
+
+    public function registerHooks()
+    {
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            $allbut = $this->getRawValue("FLD_ALLBUT");
+            $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
+
+            if (($allbut === "0") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
+                $this->clearValue("FLD_ALLBUT");
+                $this->modify();
+            }
+            return "";
+        });
     }
 }

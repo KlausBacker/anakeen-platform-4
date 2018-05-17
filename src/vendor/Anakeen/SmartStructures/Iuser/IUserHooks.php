@@ -276,15 +276,7 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
         return $err;
     }
 
-    /**
-     * @deprecated use postStore() instead
-     * @return string
-     */
-    public function postModify()
-    {
-        deprecatedFunction();
-        return self::postStore();
-    }
+
 
     /**
      * Modify system account from document IUSER

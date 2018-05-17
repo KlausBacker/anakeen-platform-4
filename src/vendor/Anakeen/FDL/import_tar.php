@@ -170,7 +170,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                                 if (!$analyze) {
                                     $ddoc->Init();
                                     $ddoc->setValue($fattr, $vfid);
-                                    $err = $ddoc->Add();
+                                    $err = $ddoc->store();
                                     if ($err != "") {
                                         $tr[$index]["action"] = "Not added";
                                         $tr[$index]["err"] = $err;
@@ -178,8 +178,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                                         $ddoc->addHistoryEntry(sprintf("create by import from archive %s", substr(basename($ldir), 0, -2)));
                                         $tr[$index]["action"] = "Added";
                                         $tr[$index]["id"] = $ddoc->id;
-                                        $ddoc->postStore();
-                                        $ddoc->Modify();
+
                                         if ($dirid > 0) {
                                             $dir->insertDocument($ddoc->id);
                                         }

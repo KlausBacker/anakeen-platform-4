@@ -30,8 +30,9 @@ use \Anakeen\Core\DbManager;
 use \Anakeen\Core\ContextManager;
 use \Anakeen\Core\SEManager;
 use Anakeen\Core\Internal\Format\StandardAttributeValue;
+use Anakeen\SmartHooks;
 
-class SmartElement extends \Anakeen\Core\Internal\DbObj
+class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
 {
     const USEMASKCVVIEW = -1;
     const USEMASKCVEDIT = -2;
@@ -75,6 +76,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj
      * @var string searchable values
      */
     protected $svalues;
+    public $hooks=null;
     public $sup_fields
         = array(
             "values",
@@ -883,13 +885,19 @@ create unique index i_docir on doc(initid, revision);";
             "revdate"
         ), true); // to force also execute sql trigger
         if ($this->doctype !== 'C') {
-            // set to shared : because comes from createDoc
-            \Anakeen\Core\SEManager::cache()->addDocument($this);
-
             if ($this->doctype !== "T") {
-                $err = $this->PostCreated();
-                if ($err != "") {
-                    \Anakeen\Core\Utils\System::addWarningMsg($err);
+                if ($this->revision == 0) {
+                    $err = $this->postCreated();
+                    if ($err != "") {
+                        \Anakeen\Core\Utils\System::addWarningMsg($err);
+                    }
+                    if ($this->hasChanged) {
+                        //in case of change in postStore
+                        $err = $this->modify();
+                        if ($err) {
+                            \Anakeen\Core\Utils\System::addWarningMsg($err);
+                        }
+                    }
                 }
                 $this->sendTextToEngine();
                 if ($this->dprofid > 0) {
@@ -898,6 +906,8 @@ create unique index i_docir on doc(initid, revision);";
                         "profid"
                     ), true);
                 }
+                $this->modify(true, "", true);
+
                 $this->UpdateVaultIndex();
                 $this->updateRelations(true);
             }
@@ -1465,6 +1475,9 @@ create unique index i_docir on doc(initid, revision);";
                     $info->errorCode = StoreInfo::UPDATE_ERROR;
                 } else {
                     $info->postStore = $this->postStore();
+
+                    $this->getHooks()->trigger(SmartHooks::POSTSTORE);
+
                     if ($this->hasChanged) {
                         //in case of change in postStore
                         $err = $this->modify();
@@ -2102,6 +2115,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function affect($array, $more = false, $reset = true)
     {
         if (is_array($array)) {
+           // $this->getHooks()->resetListeners();
             $this->preAffect($array, $more, $reset);
             if ($more) {
                 $this->resetMoreValues();
@@ -5924,6 +5938,13 @@ create unique index i_docir on doc(initid, revision);";
             if ($msg) {
                 $this->addHistoryEntry($msg, \DocHisto::MESSAGE, "POSTREVISE");
             }
+            if ($this->hasChanged) {
+                //in case of change in postStore
+                $err = $this->modify();
+                if ($err) {
+                    \Anakeen\Core\Utils\System::addWarningMsg($err);
+                }
+            }
         }
 
         return $err;
@@ -9604,5 +9625,22 @@ create unique index i_docir on doc(initid, revision);";
             $ac = new \Anakeen\Core\Internal\DocumentAccess();
         }
         return $ac->setDocument($this);
+    }
+
+    /**
+     * @return \Anakeen\Core\Internal\SmartElementHooks
+     */
+    protected function getHooks()
+    {
+        static $ac;
+        if (!$ac) {
+            $ac = new \Anakeen\Core\Internal\SmartElementHooks();
+        }
+        return $ac->setDocument($this);
+    }
+
+    public function registerHooks()
+    {
+        // Nothing To DO by default
     }
 }

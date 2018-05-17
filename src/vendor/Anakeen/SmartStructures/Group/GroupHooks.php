@@ -9,6 +9,8 @@
  */
 namespace Anakeen\SmartStructures\Group;
 
+use Anakeen\SmartHooks;
+
 class GroupHooks extends \SmartStructure\Dir
 {
     /*
@@ -19,11 +21,23 @@ class GroupHooks extends \SmartStructure\Dir
      *
      * @return string error message, if no error empty string
      */
-    public function postStore()
+
+
+    public function postStore() {$err = $this->SetGroupMail();
+            $this->refreshParentGroup();
+            return $err;
+    }
+
+    public function registerHooks()
     {
-        $err = $this->SetGroupMail();
-        $this->refreshParentGroup();
-        return $err;
+        parent::registerHooks();
+        $this->getHooks()->removeListeners(SmartHooks::POSTSTORE);
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            //* reconstruct mail group & recompute parent group
+            $err = $this->SetGroupMail();
+            $this->refreshParentGroup();
+            return $err;
+        });
     }
 
     /**

@@ -28,7 +28,6 @@ class SEManager
     public static function getDocument($documentIdentifier, $latest = true, $useCache = true)
     {
         $id = self::getIdentifier($documentIdentifier, $latest);
-
         if ($id > 0) {
             if ($useCache && self::cache()->isDocumentIdInCache($id)) {
                 $cacheDocument = self::cache()->getDocumentFromCache($id);

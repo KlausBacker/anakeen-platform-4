@@ -132,10 +132,7 @@ if ($query->nb > 0) {
                 if ($v["accounttype"] === "G") {
                     $iuser = \Anakeen\Core\SEManager::createDocument("IGROUP");
                     $iuser->setValue("US_WHATID", $v["id"]);
-                    $iuser->Add();
-                    $iuser->refresh();
-                    $iuser->postStore();
-                    $iuser->modify();
+                    $iuser->store();
                     print "$reste)";
                     printf(_("%s igroup created\n"), $title);
                 } else {

@@ -90,7 +90,7 @@ class LdapAuthentProvider extends AuthentProvider
                      */
                     $gu = new_Doc("", $this->parms{'dGroup'});
                     if ($gu->isAlive()) {
-                        $errg = $gu->addFile($du->id);
+                        $errg = $gu->insertDocument($du->id);
                         if ($errg == "") {
                             error_log("User $username added to group " . $this->parms{'dGroup'});
                         }

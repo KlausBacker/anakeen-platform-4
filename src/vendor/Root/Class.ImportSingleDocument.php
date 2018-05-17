@@ -589,10 +589,11 @@ class ImportSingleDocument
         }
         if (!$this->analyze) {
             if ($this->doc->isAffected()) {
-                $warnMsg = $this->doc->Refresh();
+                $err=$this->doc->store($info, true);
+                $warnMsg = $info->refresh;
                 $this->tcr["specmsg"] .= (($this->tcr["specmsg"] != '') ? "\n" . $warnMsg : $warnMsg); // compute read attribute
-                $msg .= $this->doc->postStore(); // compute read attribute
-                $err = $this->doc->modify();
+                $msg .= $info->postStore; // compute read attribute
+
                 if ($err == "-") {
                     $err = "";
                 } // not really an error add addfile must be tested after

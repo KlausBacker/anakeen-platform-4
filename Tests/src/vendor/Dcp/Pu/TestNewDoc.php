@@ -5,8 +5,9 @@
 */
 
 namespace Dcp\Pu;
+
 /**
- * @author Anakeen
+ * @author  Anakeen
  * @package Dcp\Pu
  */
 
@@ -17,28 +18,28 @@ use Anakeen\Core\SEManager;
 
 class TestNewDoc extends TestCaseDcpCommonFamily
 {
-    
+
     private static $ids = array();
-    
+
     public static function getCommonImportFile()
     {
         ContextManager::setLanguage("fr_FR");
         return "PU_data_dcp_newdoc.ods";
     }
-    
+
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
         $d = SEManager::createDocument(\SmartStructure\Base::familyName);
         $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x1-" . $d->revision);
         $d->store();
-        
+
         $d->setLogicalName("TST_X1");
         self::$ids[$d->name][$d->revision] = array(
             "id" => $d->id,
             "title" => $d->getTitle()
         );
-        
+
         $d = SEManager::createDocument(\SmartStructure\Base::familyName);
         $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x2-" . $d->revision);
         $d->store();
@@ -48,14 +49,14 @@ class TestNewDoc extends TestCaseDcpCommonFamily
             "title" => $d->getTitle()
         );
         $d->revise();
-        
+
         $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x2-" . $d->revision);
         $d->store();
         self::$ids[$d->name][$d->revision] = array(
             "id" => $d->id,
             "title" => $d->getTitle()
         );
-        
+
         $d = SEManager::createDocument(\SmartStructure\Base::familyName);
         $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x3-" . $d->revision);
         $d->store();
@@ -64,7 +65,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
             "id" => $d->id,
             "title" => $d->getTitle()
         );
-        
+
         $d->revise();
         $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x3-" . $d->revision);
         $d->store();
@@ -79,7 +80,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
             "title" => $d->getTitle()
         );
         $d->store();
-        
+
         $d = SEManager::createDocument(\SmartStructure\Base::familyName);
         $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x4-" . $d->revision);
         $d->store();
@@ -101,9 +102,9 @@ class TestNewDoc extends TestCaseDcpCommonFamily
             "id" => $d->id,
             "title" => $d->getTitle()
         );
-        
+
         $d->store();
-        $d->locked = - 1;
+        $d->locked = -1;
         $d->modify(); // close document
         $dM = SEManager::createDocument(\SmartStructure\Dir::familyName);
         // need to change its family BASE to DIR
@@ -129,64 +130,80 @@ class TestNewDoc extends TestCaseDcpCommonFamily
         // Need to reset cause phpunit reset dbid when clone global objects
         self::resetDocumentCache();
     }
+
     /**
      * @dataProvider dataSimpleNewDoc
      */
     public function testSimpleNewDoc($docName, $expectedTitle)
     {
         $d = new_doc(self::$dbaccess, $docName);
-        $this->assertTrue($d->isAffected() , "document $docName not found");
-        $this->assertTrue($d->isAlive() , "document $docName not last revision\n" . print_r(self::$ids[$docName], true));
-        $this->assertEquals($expectedTitle, $d->getTitle() , "wrong title for $docName\n" . print_r(self::$ids[$docName], true));
+        $this->assertTrue($d->isAffected(), "document $docName not found");
+        $this->assertTrue($d->isAlive(), "document $docName not last revision\n" . print_r(self::$ids[$docName], true));
+        $this->assertEquals($expectedTitle, $d->getTitle(), "wrong title for $docName\n" . print_r(self::$ids[$docName], true));
         // print_r("test".print_r(self::$ids[$docName], true) );
-        
+
     }
+
     /**
      * @dataProvider dataSharedNewDoc
      */
-    public function testSharedNewDoc($docName, $expectedTitle, $someValues)
+    public function testCacheDoc($docName, $expectedTitle, $someValues)
     {
         $nd = SEManager::createDocument("TST_ND");
         $this->assertEquals("no", $nd->getrawValue("tst_shared"));
         $nd->store();
         $this->assertEquals("yes", $nd->getrawValue("tst_shared"));
-        
-        $d1 = new_doc(self::$dbaccess, $docName);
+
+        $nd1=SEManager::getDocument($docName, true, false);
+        // Test auto record setValue in postCreated
+        $this->assertEquals("yes", $nd1->getrawValue("tst_shared"));
+        $this->assertEquals("nd creation", $nd1->getrawValue("tst_data"));
+
+
+        $d1 = SEManager::getDocument($docName, true, false);
+
+        SEManager::cache()->addDocument($d1);
         $this->assertEquals("yes", $d1->getrawValue("tst_shared"));
-        $this->assertTrue($d1->isAffected() , "document $docName not found");
-        $this->assertTrue($d1->isAlive() , "document $docName not last revision");
-        $this->assertEquals($expectedTitle, $d1->getTitle() , "wrong title for $docName");
-        
+        $this->assertTrue($d1->isAffected(), "document $docName not found");
+        $this->assertTrue($d1->isAlive(), "document $docName not last revision");
+        $this->assertEquals($expectedTitle, $d1->getTitle(), "wrong title for $docName");
+
         $d1->setAttributeValue(\SmartStructure\Attributes\Tst_nd::tst_title, $someValues[0]);
-        $d2 = new_doc(self::$dbaccess, $docName);
+
+        $d2 = SEManager::getDocument($docName);
         $this->assertEquals($someValues[0], $d2->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
         $d2->setAttributeValue(\SmartStructure\Attributes\Tst_nd::tst_title, $someValues[1]);
         $this->assertEquals($someValues[1], $d2->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
-        
         $this->assertEquals("yes", $d2->getrawValue("tst_shared"));
+
+
         $d2->revise();
-        
+        $this->assertEquals("nd revision", $d2->getrawValue("tst_data"));
+
         $this->assertEquals("yes", $d2->getrawValue("tst_shared"));
         $d2->setAttributeValue(\SmartStructure\Attributes\Tst_nd::tst_title, $someValues[2]);
-        $d3 = new_doc(self::$dbaccess, $docName);
+
+        $d3 = SEManager::getDocument($docName);
         $this->assertEquals($someValues[2], $d3->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
-        
-        $d4 = new_doc(self::$dbaccess, $d3->initid, true);
-        $this->assertEquals($someValues[2], $d4->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
-        
-        $d5 = new_doc(self::$dbaccess, $d3->initid);
+
+        $d4 = SEManager::getDocument($d3->initid, true, false);
+        $this->assertEquals($someValues[1], $d4->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
+        $this->assertEquals("nd revision", $d4->getrawValue("tst_data"));
+
+        $d5 = SEManager::getDocument($d3->initid, false);
+
+        SEManager::cache()->addDocument($d5);
         $this->assertEquals($someValues[1], $d5->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
         $d5->setAttributeValue(\SmartStructure\Attributes\Tst_nd::tst_title, $someValues[3]);
-        
-        $d6 = new_doc(self::$dbaccess, $d3->initid);
-        
+        $d6 = SEManager::getDocument($d3->initid, false);
         $this->assertEquals($someValues[3], $d6->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
         $this->assertEquals($someValues[3], $d5->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
-        $this->assertEquals($someValues[2], $d4->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
+        $this->assertEquals($someValues[1], $d4->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
         $this->assertEquals($someValues[2], $d3->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
         $this->assertEquals($someValues[2], $d2->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
         $this->assertEquals($someValues[2], $d1->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
     }
+
     /**
      * @dataProvider dataReviseNewDoc
      */
@@ -194,10 +211,11 @@ class TestNewDoc extends TestCaseDcpCommonFamily
     {
         $id = self::$ids[$docName][$revision]["id"];
         $d = new_doc(self::$dbaccess, $id);
-        $this->assertTrue($d->isAffected() , "document $docName not found");
+        $this->assertTrue($d->isAffected(), "document $docName not found");
         $this->assertEquals($d->id, $id, "document $docName (rev $revision) not match id");
-        $this->assertEquals($expectedTitle, $d->getTitle() , "wrong title for $docName");
+        $this->assertEquals($expectedTitle, $d->getTitle(), "wrong title for $docName");
     }
+
     /**
      * @dataProvider dataLatestNewDoc
      */
@@ -205,10 +223,11 @@ class TestNewDoc extends TestCaseDcpCommonFamily
     {
         $id = self::$ids[$docName][$revision]["id"];
         $d = new_doc(self::$dbaccess, $id, true);
-        $this->assertTrue($d->isAffected() , "document $docName not found");
-        $this->assertTrue($d->isAlive() , "document $docName #$id not last revision" . print_r(self::$ids[$docName], true));
-        $this->assertEquals($expectedTitle, $d->getTitle() , "wrong title for $docName");
+        $this->assertTrue($d->isAffected(), "document $docName not found");
+        $this->assertTrue($d->isAlive(), "document $docName #$id not last revision" . print_r(self::$ids[$docName], true));
+        $this->assertEquals($expectedTitle, $d->getTitle(), "wrong title for $docName");
     }
+
     /**
      * @dataProvider dataSimplegetTDoc
      */
@@ -216,36 +235,39 @@ class TestNewDoc extends TestCaseDcpCommonFamily
     {
         $d = getTDoc(self::$dbaccess, $docName);
         foreach ($expectedValues as $attrid => $expectedValue) {
-            $this->assertTrue(isset($d[strtolower($attrid) ]) , sprintf("attribut %s not found", $attrid));
-            $this->assertEquals($expectedValue, $d[strtolower($attrid) ], sprintf("wrong value %s : %s", $attrid, print_r($d, true)));
+            $this->assertTrue(isset($d[strtolower($attrid)]), sprintf("attribut %s not found", $attrid));
+            $this->assertEquals($expectedValue, $d[strtolower($attrid)], sprintf("wrong value %s : %s", $attrid, print_r($d, true)));
         }
         $d = getLatestTDoc(self::$dbaccess, $d["initid"]);
         foreach ($expectedValues as $attrid => $expectedValue) {
-            $this->assertTrue(isset($d[strtolower($attrid) ]) , sprintf("attribut for latest %s not found", $attrid));
-            $this->assertEquals($expectedValue, $d[strtolower($attrid) ], sprintf("wrong value for latest %s : %s", $attrid, print_r($d, true)));
+            $this->assertTrue(isset($d[strtolower($attrid)]), sprintf("attribut for latest %s not found", $attrid));
+            $this->assertEquals($expectedValue, $d[strtolower($attrid)], sprintf("wrong value for latest %s : %s", $attrid, print_r($d, true)));
         }
     }
+
     /**
      * @dataProvider dataGetLatestRevisionNumber
      */
     public function testGetLatestRevisionNumber($docName, $expectedValues)
     {
         $d = getTDoc(self::$dbaccess, $docName);
-        $this->assertEquals($expectedValues, getLatestRevisionNumber(self::$dbaccess, $d["initid"]) , "not good last revision number");
+        $this->assertEquals($expectedValues, getLatestRevisionNumber(self::$dbaccess, $d["initid"]), "not good last revision number");
     }
+
     /**
      * @dataProvider dataGetRevTDoc
      */
     public function testGetRevTDoc($docName, $revision, $expectedValues)
     {
         $d = getTDoc(self::$dbaccess, $docName);
-        
+
         $d = getRevTDoc(self::$dbaccess, $d["initid"], $revision);
         foreach ($expectedValues as $attrid => $expectedValue) {
-            $this->assertTrue(isset($d[strtolower($attrid) ]) , sprintf("attribut for latest %s not found", $attrid));
-            $this->assertEquals($expectedValue, $d[strtolower($attrid) ], sprintf("wrong value for latest %s : %s", $attrid, print_r($d, true)));
+            $this->assertTrue(isset($d[strtolower($attrid)]), sprintf("attribut for latest %s not found", $attrid));
+            $this->assertEquals($expectedValue, $d[strtolower($attrid)], sprintf("wrong value for latest %s : %s", $attrid, print_r($d, true)));
         }
     }
+
     public function dataLatestNewDoc()
     {
         return array(
@@ -253,52 +275,52 @@ class TestNewDoc extends TestCaseDcpCommonFamily
                 "TST_X1",
                 0,
                 "x1-0"
-            ) ,
+            ),
             array(
                 "TST_X2",
                 0,
                 "x2-1"
-            ) ,
+            ),
             array(
                 "TST_X2",
                 1,
                 "x2-1"
-            ) ,
+            ),
             array(
                 "TST_X3",
                 0,
                 "x3-2"
-            ) ,
+            ),
             array(
                 "TST_X3",
                 1,
                 "x3-2"
-            ) ,
+            ),
             array(
                 "TST_X3",
                 2,
                 "x3-2"
-            ) ,
+            ),
             array(
                 "TST_X4",
                 0,
                 "x4M-4"
-            ) ,
+            ),
             array(
                 "TST_X4",
                 1,
                 "x4M-4"
-            ) ,
+            ),
             array(
                 "TST_X4",
                 2,
                 "x4M-4"
-            ) ,
+            ),
             array(
                 "TST_X4",
                 3,
                 "x4M-4"
-            ) ,
+            ),
             array(
                 "TST_X4",
                 4,
@@ -306,7 +328,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
             )
         );
     }
-    
+
     public function dataReviseNewDoc()
     {
         return array(
@@ -314,27 +336,27 @@ class TestNewDoc extends TestCaseDcpCommonFamily
                 "TST_X1",
                 0,
                 "x1-0"
-            ) ,
+            ),
             array(
                 "TST_X2",
                 0,
                 "x2-0"
-            ) ,
+            ),
             array(
                 "TST_X2",
                 1,
                 "x2-1"
-            ) ,
+            ),
             array(
                 "TST_X3",
                 2,
                 "x3-2"
-            ) ,
+            ),
             array(
                 "TST_X4",
                 2,
                 "x4-2"
-            ) ,
+            ),
             array(
                 "TST_X4",
                 3,
@@ -342,28 +364,29 @@ class TestNewDoc extends TestCaseDcpCommonFamily
             )
         );
     }
-    
+
     public function dataGetLatestRevisionNumber()
     {
         return array(
             array(
                 "TST_X1",
                 0
-            ) ,
+            ),
             array(
                 "TST_X2",
                 1
-            ) ,
+            ),
             array(
                 "TST_X3",
                 2
-            ) ,
+            ),
             array(
                 "TST_X4",
                 4
             )
         );
     }
+
     public function dataSimplegetTDoc()
     {
         return array(
@@ -372,19 +395,19 @@ class TestNewDoc extends TestCaseDcpCommonFamily
                 array(
                     "title" => "x1-0"
                 )
-            ) ,
+            ),
             array(
                 "TST_X2",
                 array(
                     "title" => "x2-1"
                 )
-            ) ,
+            ),
             array(
                 "TST_X3",
                 array(
                     "title" => "x3-2"
                 )
-            ) ,
+            ),
             array(
                 "TST_X4",
                 array(
@@ -394,6 +417,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
             )
         );
     }
+
     public function dataGetRevTDoc()
     {
         return array(
@@ -403,21 +427,21 @@ class TestNewDoc extends TestCaseDcpCommonFamily
                 array(
                     "title" => "x1-0"
                 )
-            ) ,
+            ),
             array(
                 "TST_X2",
                 1,
                 array(
                     "title" => "x2-1"
                 )
-            ) ,
+            ),
             array(
                 "TST_X3",
                 2,
                 array(
                     "title" => "x3-2"
                 )
-            ) ,
+            ),
             array(
                 "TST_X4",
                 0,
@@ -425,7 +449,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
                     "title" => "x4-0",
                     "ba_title" => "x4-0"
                 )
-            ) ,
+            ),
             array(
                 "TST_X4",
                 2,
@@ -433,7 +457,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
                     "title" => "x4-2",
                     "ba_title" => "x4-2"
                 )
-            ) ,
+            ),
             array(
                 "TST_X4",
                 3,
@@ -442,7 +466,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
                     "ba_title" => "x4M-3",
                     "fld_allbut" => "1"
                 )
-            ) ,
+            ),
             array(
                 "TST_X4",
                 4,
@@ -454,27 +478,29 @@ class TestNewDoc extends TestCaseDcpCommonFamily
             )
         );
     }
+
     public function dataSimpleNewDoc()
     {
         return array(
             array(
                 "TST_X1",
                 "x1-0"
-            ) ,
+            ),
             array(
                 "TST_X2",
                 "x2-1"
-            ) ,
+            ),
             array(
                 "TST_X3",
                 "x3-2"
-            ) ,
+            ),
             array(
                 "TST_X4",
                 "x4M-4"
             )
         );
     }
+
     public function dataSharedNewDoc()
     {
         return array(

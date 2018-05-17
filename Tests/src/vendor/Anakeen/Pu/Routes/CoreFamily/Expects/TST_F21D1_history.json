@@ -130,6 +130,13 @@
                         "uname": "%userName%",
                         "date": "%isoDate%",
                         "level": "info",
+                        "code": "MODIFY"
+                    },
+                    {
+                        "uid": 1,
+                        "uname": "%userName%",
+                        "date": "%isoDate%",
+                        "level": "info",
                         "code": "CREATE",
                         "comment": "Cr\u00e9ation du document"
                     }

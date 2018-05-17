@@ -10,7 +10,9 @@
 
 namespace Anakeen\SmartStructures\Igroup;
 
+use Anakeen\Core\Internal\Debug;
 use Anakeen\Core\SEManager;
+use Anakeen\SmartHooks;
 use SmartStructure\Attributes\Igroup as MyAttributes;
 use \Dcp\Core\Exception;
 
@@ -23,7 +25,6 @@ use \Dcp\Core\Exception;
 class IGroupHooks extends \SmartStructure\Group
 {
     use \Anakeen\SmartStructures\Iuser\TAccount;
-
 
 
     public function preRefresh()
@@ -51,11 +52,6 @@ class IGroupHooks extends \SmartStructure\Group
     {
         return _("group cannot be revived");
     }
-
-
-
-
-
 
 
     /**
@@ -103,11 +99,21 @@ class IGroupHooks extends \SmartStructure\Group
         }
     }
 
-    public function postStore()
-    {
+
+    public function postStore() {
+
         return $this->synchronizeSystemGroup();
     }
 
+    public function registerHooks()
+    {
+        parent::registerHooks();
+        $this->getHooks()->removeListeners(SmartHooks::POSTSTORE);
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            error_log("registerHooks:IGROUPHOOK");
+            return $this->synchronizeSystemGroup();
+        });
+    }
 
 
     public function synchronizeSystemGroup()
@@ -351,7 +357,7 @@ class IGroupHooks extends \SmartStructure\Group
                     $tfid[] = $v["fid"];
                 }
             }
-            $err = $this->QuickInsertMSDocId($tfid); // without postInsert
+            $err = $this->quickInsertMSDocId($tfid); // without postInsert
             $this->specPostInsert();
         }
         return $err;
