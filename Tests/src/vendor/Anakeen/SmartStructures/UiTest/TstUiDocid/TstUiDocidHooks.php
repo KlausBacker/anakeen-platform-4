@@ -2,13 +2,18 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiDocid;
 
+use Anakeen\SmartHooks;
 use \SmartStructure\Attributes\Tst_ddui_docid as TST_DDUI_DOCID_Attributes;
 
 class TstUiDocidHooks extends \Anakeen\SmartStructures\Document
 {
-    public function postStore()
+
+    public function registerHooks()
     {
-        $this->setValue(TST_DDUI_DOCID_Attributes::test_ddui_docid__histo1, $this->getRawValue(TST_DDUI_DOCID_Attributes::test_ddui_docid__single1, " "));
-        $this->setValue(TST_DDUI_DOCID_Attributes::test_ddui_docid__link_histo, $this->getRawValue(TST_DDUI_DOCID_Attributes::test_ddui_docid__single_link, " "));
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            $this->setValue(TST_DDUI_DOCID_Attributes::test_ddui_docid__histo1, $this->getRawValue(TST_DDUI_DOCID_Attributes::test_ddui_docid__single1, " "));
+            $this->setValue(TST_DDUI_DOCID_Attributes::test_ddui_docid__link_histo, $this->getRawValue(TST_DDUI_DOCID_Attributes::test_ddui_docid__single_link, " "));
+        });
     }
 }
