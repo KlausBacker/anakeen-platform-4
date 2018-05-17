@@ -1,0 +1,18 @@
+{
+  "accesses": {
+    "adminUser:admin": {
+      "description": "Administrator access"
+    }
+  },
+  "routes": {
+    "AdminUser:GroupList": {
+      "pattern": "/api/v2/admin/user/groups/",
+      "callable": "\\Anakeen\\Routes\\Admin\\MainPage",
+      "methods": [
+        "GET"
+      ],
+      "requiredAccess": "adminUser:admin",
+      "priority": 0
+    }
+  }
+}

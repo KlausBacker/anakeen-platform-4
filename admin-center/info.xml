@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<module xmlns="urn:dynacase:webinst:module/1.0"
+        license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0"
+        name="@moduleName@" release="@release@" version="@version@">
+    <description>Admin Center</description>
+
+    <post-install>
+        <process command="programs/update_catalog"/>
+    </post-install>
+    <post-upgrade>
+        <process command="programs/update_catalog"/>
+    </post-upgrade>
+</module>
