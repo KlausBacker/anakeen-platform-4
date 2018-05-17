@@ -14,7 +14,6 @@ const PATHS = {
     mainSmartElement: path.resolve(__dirname, '../anakeen-ui/src/Apps/DOCUMENT/IHM/mainDocument.js'),
     smartElementGrid: path.resolve(__dirname, '../anakeen-ui/src/Apps/DOCUMENT_GRID_HTML5/widgets/documentGrid.js'),
     smartElement: path.resolve(__dirname, '../anakeen-ui/src/Apps/DOCUMENT/IHM/smartElement.js'),
-    components: path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/Components/main.js'),
     build: path.resolve(__dirname, '../anakeen-ui/src/public/'),
 };
 
@@ -128,29 +127,6 @@ const productionSmartElementConfig = merge([
     }),
 ]);
 
-const productionComponentConfig = merge([
-    {
-        entry: {
-            'ank-components': PATHS.components,
-        },
-        output: {
-            publicPath: 'components/dist/',
-            filename: '[name].js',
-            path: path.resolve(PATHS.build, 'components/dist/'),
-        },
-    },
-    parts.clean(path.resolve(PATHS.build, 'components/dist/')),
-    parts.minifyJavaScript(),
-    parts.attachRevision(),
-    parts.generateHashModuleName(),
-    parts.extractAssets(
-        {
-            filename: 'ank-components.json',
-            path: path.resolve(PATHS.build, 'components/dist/'),
-        }
-    ),
-]);
-
 const debugDocumentConfig = merge([
     {
         entry: {
@@ -193,26 +169,6 @@ const debugSmartElementConfig = merge([
     parts.clean(path.resolve(PATHS.build, 'uiAssets/widgets/debug/')),
 ]);
 
-const debugComponentConfig = merge([
-    {
-        entry: {
-            'ank-components': PATHS.components,
-        },
-        output: {
-            publicPath: 'components/debug/',
-            filename: '[name].js',
-            path: path.resolve(PATHS.build, 'components/debug/'),
-        },
-    },
-    parts.clean(path.resolve(PATHS.build, 'components/debug/')),
-    parts.extractAssets(
-        {
-            filename: 'ank-components.json',
-            path: path.resolve(PATHS.build, 'components/debug/'),
-        }
-    ),
-]);
-
 const devConfig = merge([
     {
         entry: {
@@ -239,35 +195,9 @@ const devConfig = merge([
     ),
 ]);
 
-const devComponentConfig = merge([
-    {
-        entry: {
-            'ank-components': PATHS.components,
-        },
-        output: {
-            publicPath: 'components/debug/',
-            filename: '[name].js',
-            path: path.resolve(PATHS.build, 'components/debug/'),
-        },
-    },
-    parts.setFreeVariable('process.env.NODE_ENV', 'debug'),
-    parts.devServer(
-        {
-            host: process.env.HOST,
-            port: process.env.PORT,
-            proxy: {
-                '!/components/debug/*.js': {
-                    target: process.env.PROXY_URL || 'http://localhost',
-                },
-            },
-        }
-    ),
-]);
-
 module.exports = env => {
     if (env === 'production') {
         return [
-            merge(commonConfig, productionComponentConfig),
             merge(commonConfig, productionSmartElementConfig),
             merge(commonConfig, productionDocumentConfig),
         ];
@@ -275,14 +205,9 @@ module.exports = env => {
 
     if (env === 'debug') {
         return [
-            merge(commonConfig, debugComponentConfig),
             merge(commonConfig, debugSmartElementConfig),
             merge(commonConfig, debugDocumentConfig),
         ];
-    }
-
-    if (env === 'componentsDev') {
-        return merge(commonConfig, devComponentConfig);
     }
 
     if (env === 'documentDev') {
