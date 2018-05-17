@@ -5,8 +5,8 @@ const parts = require('../parts');
 
 const BASE_DIR = __PROJECT_ROOT;
 const PATHS = {
-    adminCenter: path.resolve(BASE_DIR, 'src/vendor/Anakeen/AdminCenter/Components/main.js'),
-    build: path.resolve(BASE_DIR, 'src/public'),
+    adminCenter: path.resolve(BASE_DIR, 'admin-center/src/vendor/Anakeen/AdminCenter/Components/main.js'),
+    build: path.resolve(BASE_DIR, 'admin-center/src/public'),
 };
 
 const productionComponentConfig = merge([
@@ -26,8 +26,8 @@ const productionComponentConfig = merge([
     parts.clean(path.resolve(PATHS.build, 'AdminCenter/prod/')),
     parts.generateHashModuleName(),
     parts.generateViewHtml({
-        destination: 'src/vendor/Anakeen/AdminCenter/Layout/adminCenterMainPage.html',
-        template: 'src/vendor/Anakeen/AdminCenter/Components/adminCenterMainPage.ejs',
+        destination: 'admin-center/src/vendor/Anakeen/AdminCenter/Layout/adminCenterMainPage.html',
+        template: 'admin-center/src/vendor/Anakeen/AdminCenter/Components/adminCenterMainPage.ejs',
         env: 'prod'
     }),
     parts.extractAssets(
@@ -54,8 +54,8 @@ const debugComponentConfig = merge([
     parts.setFreeVariable('process.env.NODE_ENV', 'debug'),
     parts.clean(path.resolve(PATHS.build, 'AdminCenter/debug/')),
     parts.generateViewHtml({
-        destination: 'src/vendor/Anakeen/AdminCenter/Layout/adminCenterMainPage.html',
-        template: 'src/vendor/Anakeen/AdminCenter/Components/adminCenterMainPage.ejs',
+        destination: 'admin-center/src/vendor/Anakeen/AdminCenter/Layout/adminCenterMainPage.html',
+        template: 'admin-center/src/vendor/Anakeen/AdminCenter/Components/adminCenterMainPage.ejs',
         env: 'debug'
     }),
     parts.extractAssets(
@@ -92,8 +92,8 @@ const devComponentConfig = merge([
         },
     }),
     parts.generateViewHtml({
-        destination: 'src/vendor/Anakeen/AdminCenter/Layout/adminCenterMainPage.html',
-        template: 'src/vendor/Anakeen/AdminCenter/Components/adminCenterMainPage.ejs',
+        destination: 'admin-center/src/vendor/Anakeen/AdminCenter/Layout/adminCenterMainPage.html',
+        template: 'admin-center/src/vendor/Anakeen/AdminCenter/Components/adminCenterMainPage.ejs',
         env: 'debug'
     }),
 ]);

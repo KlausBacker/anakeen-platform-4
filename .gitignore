@@ -7,6 +7,8 @@
 *~
 *#
 node_modules/
-src/public/AdminCenter/debug/
-src/public/AdminCenter/prod/
-src/vendor/Anakeen/AdminCenter/Layout/adminCenterMainPage.html
+admin-center/src/public/AdminCenter/debug/
+admin-center/src/public/AdminCenter/prod/
+admin-center/src/vendor/Anakeen/AdminCenter/Layout/adminCenterMainPage.html
+localpub/
+Makefile.local
