@@ -10,6 +10,8 @@
 
 namespace Anakeen\SmartStructures\Report;
 
+use Anakeen\Core\Internal\Format\DateAttributeValue;
+use Anakeen\Core\SEManager;
 use \SmartStructure\Attributes\Report as MyAttributes;
 
 class ReportHooks extends \SmartStructure\Dsearch
@@ -49,11 +51,18 @@ class ReportHooks extends \SmartStructure\Dsearch
     /**
      * Generate data struct to csv export of a report
      *
-     * @param boolean $refresh       true to refresh the doc before export
      * @param boolean $isPivotExport if is pivot true
-     * @param string  $pivotElement  id of the pivot element
-     *
+     * @param string  $pivotId
+     * @param string  $separator
+     * @param string  $dateFormat
+     * @param boolean $refresh       true to refresh the doc before export
+     * @param bool    $stripHtmlTags
+     * @param string  $renderNumber
      * @return array
+     * @throws \Anakeen\Core\DocManager\Exception
+     * @throws \Dcp\Db\Exception
+     * @throws \Dcp\Fmtc\Exception
+     * @throws \Dcp\SearchDoc\Exception
      */
     public function generateCSVReportStruct(
         $isPivotExport = false,
@@ -78,7 +87,7 @@ class ReportHooks extends \SmartStructure\Dsearch
         $search->orderby = trim($order . " " . $this->getRawValue("rep_ordersort"));
         $search->setObjectReturn();
         // print_r($search->getSearchInfo());
-        $famDoc = createDoc($this->dbaccess, $famId, false);
+        $famDoc = SEManager::createDocument($famId, false);
         $tcols = $this->getMultipleRawValues("rep_idcols");
         $tcolsOption = $this->getMultipleRawValues("rep_displayoption");
         $searchCols = $tcols;
@@ -105,8 +114,17 @@ class ReportHooks extends \SmartStructure\Dsearch
         }
     }
 
-    protected function generatePivotCSV(\SearchDoc $search, array $columns, \Anakeen\Core\Internal\SmartElement $famDoc, $pivotId, $refresh, $separator, $dateFormat, $stripHtmlTags, $renderNumber = "format")
-    {
+    protected function generatePivotCSV(
+        \SearchDoc $search,
+        array $columns,
+        \Anakeen\Core\Internal\SmartElement $famDoc,
+        $pivotId,
+        $refresh,
+        $separator,
+        $dateFormat,
+        $stripHtmlTags,
+        $renderNumber = "format"
+    ) {
         $convertFormat = array(
             "dateFormat" => $dateFormat,
             'decimalSeparator' => $separator,
@@ -228,11 +246,18 @@ class ReportHooks extends \SmartStructure\Dsearch
     /**
      * Generate a basic CSV export
      *
-     * @param \SearchDoc $search  the result of the report
-     * @param array      $columns an array of id
-     * @param \Anakeen\Core\Internal\SmartElement       $famDoc  the associated family doc
+     * @param \SearchDoc                          $search  the result of the report
+     * @param array                               $columns an array of id
+     * @param array                               $displayOptions
+     * @param \Anakeen\Core\Internal\SmartElement $famDoc  the associated family doc
      *
+     * @param                                     $refresh
+     * @param                                     $separator
+     * @param                                     $dateFormat
+     * @param bool                                $stripHtmlFormat
+     * @param string                              $renderNumber
      * @return array
+     * @throws \Dcp\Fmtc\Exception
      */
     protected function generateBasicCSV(
         \SearchDoc $search,
@@ -260,15 +285,15 @@ class ReportHooks extends \SmartStructure\Dsearch
         $fc->stripHtmlTags($stripHtmlFormat);
         switch ($dateFormat) {
             case 'US':
-                $fc->setDateStyle(\DateAttributeValue::isoWTStyle);
+                $fc->setDateStyle(DateAttributeValue::isoWTStyle);
                 break;
 
             case 'FR':
-                $fc->setDateStyle(\DateAttributeValue::frenchStyle);
+                $fc->setDateStyle(DateAttributeValue::frenchStyle);
                 break;
 
             case 'ISO':
-                $fc->setDateStyle(\DateAttributeValue::isoStyle);
+                $fc->setDateStyle(DateAttributeValue::isoStyle);
                 break;
         }
         $isAttrInArray = array();
@@ -371,6 +396,4 @@ class ReportHooks extends \SmartStructure\Dsearch
                 return $doc->getRawValue($internalName);
         }
     }
-
-
 }
