@@ -3377,14 +3377,7 @@ create unique index i_docir on doc(initid, revision);";
         $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mb_trim(preg_replace('/\p{Cc}/u', ' ', $this->getCustomTitle())), 0, 255);
     }
 
-    /**
-     * call after construct
-     *
-     * @return void
-     */
-    public function postConstructor()
-    {
-    }
+
 
     /**
      * call when doc is being imported before any modification
