@@ -197,8 +197,6 @@ create unique index idx_idfam on docfam(id);";
     /**
      * update attributes of workflow if needed
      *
-     * @param array $extra
-     *
      * @return string
      */
     protected function updateWorkflowAttributes()

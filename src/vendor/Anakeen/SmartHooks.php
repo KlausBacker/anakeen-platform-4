@@ -73,5 +73,20 @@ interface SmartHooks
      */
     const POSTDELETE = "postDelete";
 
+
+    /**
+     * Call when duplicate document
+     * the output message is an error message it stop duplication if is not empty
+     * @see \Anakeen\Core\Internal\SmartElement::duplicate()
+     */
+    const PREDUPLICATE = "preDuplicate";
+
+    /**
+     * Call when duplicate document
+     * the output message will appeared as a information message
+     * @see \Anakeen\Core\Internal\SmartElement::duplicate()
+     */
+    const POSTDUPLICATE= "postDuplicate";
+
     public function registerHooks();
 }

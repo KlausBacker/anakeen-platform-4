@@ -1861,7 +1861,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
 
-
     /**
      * Really delete document from database
      *
@@ -1983,7 +1982,7 @@ create unique index i_docir on doc(initid, revision);";
                 ), true);
                 if ($err == "") {
                     if (!$nopost) {
-                        $msg =  $this->getHooks()->trigger(SmartHooks::POSTDELETE);
+                        $msg = $this->getHooks()->trigger(SmartHooks::POSTDELETE);
                         if ($msg != '') {
                             $this->addHistoryEntry($msg, \DocHisto::MESSAGE);
                         }
@@ -2007,7 +2006,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
 
-
     /**
      * To restore a document which is in the trash
      *
@@ -2019,7 +2017,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         if (($this->control('delete') == "") || (ContextManager::getCurrentUser()->id == 1)) {
             if (!$this->isAlive()) {
-                $err =  $this->getHooks()->trigger(SmartHooks::PREUNDELETE);
+                $err = $this->getHooks()->trigger(SmartHooks::PREUNDELETE);
                 if ($err) {
                     return $err;
                 }
@@ -2045,7 +2043,7 @@ create unique index i_docir on doc(initid, revision);";
                         "name"
                     ), true);
                     $this->addHistoryEntry(_("revival document"), \DocHisto::MESSAGE, "REVIVE");
-                    $msg =  $this->getHooks()->trigger(SmartHooks::POSTUNDELETE);
+                    $msg = $this->getHooks()->trigger(SmartHooks::POSTUNDELETE);
                     if ($msg) {
                         $this->addHistoryEntry($msg, \DocHisto::MESSAGE);
                     }
@@ -6066,7 +6064,7 @@ create unique index i_docir on doc(initid, revision);";
             $copy->accessControl()->setProfil($cdoc->cprofid);
         }
 
-        $err = $copy->preDuplicate($this);
+        $err = $copy->getHooks()->trigger(SmartHooks::PREDUPLICATE, $this);
         if ($err != "") {
             return $err;
         }
@@ -6081,7 +6079,7 @@ create unique index i_docir on doc(initid, revision);";
             $copy->duplicateFiles();
         }
 
-        $msg = $copy->postDuplicate($this);
+        $msg = $copy->getHooks()->trigger(SmartHooks::POSTDUPLICATE);
         if ($msg != "") {
             $copy->addHistoryEntry($msg, \DocHisto::MESSAGE);
         }
@@ -6097,76 +6095,6 @@ create unique index i_docir on doc(initid, revision);";
         return $copy;
     }
 
-    /**
-     * call before copy document
-     * if return error message duplicate is aborted
-     *
-     * @api hook called before duplicate document
-     * @see \Anakeen\Core\Internal\SmartElement::duplicate
-     *
-     * @param \Anakeen\Core\Internal\SmartElement $copyfrom original document
-     *
-     * @return string
-     */
-    public function preDuplicate(
-        & $copyfrom
-    ) {
-        // to be defined in child class
-        return "";
-    }
-
-    /**
-     * call before copy document
-     * if return error message duplicate is aborted
-     *
-     * @deprecated hook use {@link \Anakeen\Core\Internal\SmartElement::preDuplicate} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::preDuplicate
-     *
-     * @param \Anakeen\Core\Internal\SmartElement $copyfrom
-     *
-     * @return string
-     */
-    public function preCopy(
-        & $copyfrom
-    ) {
-        // to be defined in child class
-        return "";
-    }
-
-    /**
-     * call after copy document
-     *
-     * @api hook called after duplicate document
-     * @see \Anakeen\Core\Internal\SmartElement::duplicate
-     *
-     * @param \Anakeen\Core\Internal\SmartElement $copyfrom
-     *
-     * @return string
-     */
-    public function postDuplicate(
-        & $copyfrom
-    ) {
-        // to be defined in child class
-        return "";
-    }
-
-    /**
-     * call after copy document
-     *
-     * @api        hook called after duplicate document
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::postDuplicate} hook instead
-     * @see        \Anakeen\Core\Internal\SmartElement::postDuplicate
-     *
-     * @param \Anakeen\Core\Internal\SmartElement $copyfrom
-     *
-     * @return string
-     */
-    public function postCopy(
-        & $copyfrom
-    ) {
-        // to be defined in child class
-        return "";
-    }
 
     final public function translate($docid, $translate)
     {
