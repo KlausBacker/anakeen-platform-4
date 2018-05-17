@@ -3,7 +3,7 @@
 namespace Anakeen\SmartStructures\Mask\Routes;
 
 use Anakeen\Routes\Core\Lib\ApiMessage;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
 
@@ -53,7 +53,7 @@ class MaskVisibilities
         $data = [];
         $messages = [];
         $famId = $this->_document->getRawValue(\SmartStructure\Attributes\Mask::msk_famid);
-        $this->family = DocManager::getFamily($famId);
+        $this->family = SEManager::getFamily($famId);
         if (!$this->family) {
             $exception = new Exception("CRUD0200", $famId);
             $exception->setHttpStatus("400", "Family not found");
@@ -83,7 +83,7 @@ class MaskVisibilities
         $this->family->applyMask();
         $origattr = $this->family->attributes->attr;
 
-        $tmpdoc = DocManager::createTemporaryDocument($this->family->id);
+        $tmpdoc = SEManager::createTemporaryDocument($this->family->id);
         $tmpdoc->applyMask($this->_document->id);
         // display current values
         $tmask = array();
@@ -173,7 +173,7 @@ class MaskVisibilities
 
     protected function setDocument($resourceId)
     {
-        $this->_document = DocManager::getDocument($resourceId);
+        $this->_document = SEManager::getDocument($resourceId);
         if (!$this->_document || $this->_document->doctype === "Z") {
             $exception = new Exception("CRUD0200", $resourceId);
             $exception->setHttpStatus("404", "Mask not found");

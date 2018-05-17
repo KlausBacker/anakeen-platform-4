@@ -6,7 +6,7 @@
 
 namespace Dcp\Ui;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 class DocumentTemplateContext extends \Anakeen\Core\Internal\I18nTemplateContext
 {
@@ -32,7 +32,7 @@ class DocumentTemplateContext extends \Anakeen\Core\Internal\I18nTemplateContext
         parent::__construct();
         $this->_document = $doc;
         if ($doc->id > 0) {
-            DocManager::cache()->addDocument($doc);
+            SEManager::cache()->addDocument($doc);
         }
     }
 

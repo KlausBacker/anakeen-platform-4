@@ -5,7 +5,7 @@ namespace Anakeen\SmartStructures\Report\Render;
 
 use Anakeen\SmartStructures\Dsearch\Render\SearchEditRender;
 use SmartStructure\Attributes\Report as myAttr;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 class ReportEditRender extends SearchEditRender
 {
@@ -22,8 +22,8 @@ class ReportEditRender extends SearchEditRender
             if (!$document->id) {
                 $family = $data["familyName"];
                 if ($family) {
-                    $document->setValue(myAttr::se_famid, DocManager::getIdFromName($family));
-                    $document->setValue(myAttr::se_fam, DocManager::getTitle($family));
+                    $document->setValue(myAttr::se_famid, SEManager::getIdFromName($family));
+                    $document->setValue(myAttr::se_fam, SEManager::getTitle($family));
                 }
                 if (!empty($data["memo"])) {
                     $document->setValue(myAttr::se_memo, "yes");

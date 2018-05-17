@@ -2,6 +2,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TestRender;
 
+use Anakeen\SmartHooks;
 use \SmartStructure\Attributes\Tst_render as MyAttr;
 
 class TestRenderHooks extends \Anakeen\SmartStructures\Document implements \Dcp\Ui\IRenderConfigAccess
@@ -28,10 +29,14 @@ class TestRenderHooks extends \Anakeen\SmartStructures\Document implements \Dcp\
         return sprintf("%04d %s", $this->getRawValue(MyAttr::tst_ref), $this->getRawValue(MyAttr::tst_title));
     }
 
-    public function postStore()
+
+    public function registerHooks()
     {
-        if (!$this->name) {
-            $this->setLogicalName(sprintf("TST_RENDER_%04d", $this->getRawValue(MyAttr::tst_ref)));
-        }
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            if (!$this->name) {
+                $this->setLogicalName(sprintf("TST_RENDER_%04d", $this->getRawValue(MyAttr::tst_ref)));
+            }
+        });
     }
 }

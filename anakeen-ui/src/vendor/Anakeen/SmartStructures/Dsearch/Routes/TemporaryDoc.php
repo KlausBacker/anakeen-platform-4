@@ -2,7 +2,7 @@
 
 namespace Anakeen\SmartStructures\Dsearch\Routes;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure;
 use Anakeen\Router\Exception;
 use Anakeen\Routes\Core\FamilyDocumentCreation;
@@ -17,7 +17,7 @@ class TemporaryDoc extends FamilyDocumentCreation
     public function create(\Slim\Http\request $request, SmartStructure $family, &$messages)
     {
         try {
-            $this->_document = DocManager::createTemporaryDocument($this->_family->id);
+            $this->_document = SEManager::createTemporaryDocument($this->_family->id);
         } catch (\Anakeen\Core\DocManager\Exception $exception) {
             if ($exception->getDcpCode() === "APIDM0003") {
                 $exception = new Exception("API0204", $this->_family->name);

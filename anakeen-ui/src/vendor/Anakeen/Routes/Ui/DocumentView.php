@@ -8,7 +8,7 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\Settings;
 use Anakeen\Router\Exception;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
 
 /**
@@ -148,8 +148,8 @@ class DocumentView
             /**
              * @var \Anakeen\Core\SmartStructure $family
              */
-            $family = DocManager::getFamily($this->documentId);
-            DocManager::cache()->addDocument($family);
+            $family = SEManager::getFamily($this->documentId);
+            SEManager::cache()->addDocument($family);
             $this->createDocument($this->documentId);
             $creationMode = true;
         } else {
@@ -163,7 +163,7 @@ class DocumentView
         /**
          * @var \SmartStructure\Cvdoc $controlView
          */
-        $controlView = DocManager::getDocument($this->document->cvid);
+        $controlView = SEManager::getDocument($this->document->cvid);
 
         $vid = $this->viewIdentifier;
 
@@ -447,10 +447,10 @@ class DocumentView
         if ($this->document === null) {
             // Do not twice
             if ($this->revision === -1) {
-                $this->document = DocManager::getDocument($resourceId);
+                $this->document = SEManager::getDocument($resourceId);
             } else {
-                $revId = DocManager::getRevisedDocumentId($resourceId, $this->revision);
-                $this->document = DocManager::getDocument($revId, false);
+                $revId = SEManager::getRevisedDocumentId($resourceId, $this->revision);
+                $this->document = SEManager::getDocument($revId, false);
             }
             if ($this->document === null) {
                 $exception = new Exception("CRUD0200", $resourceId);
@@ -458,14 +458,14 @@ class DocumentView
                 throw $exception;
             }
 
-            DocManager::cache()->addDocument($this->document);
+            SEManager::cache()->addDocument($this->document);
         }
         return $this->document;
     }
 
     protected function createDocument($resourceId)
     {
-        $this->document = DocManager::createDocument($resourceId, true, false);
+        $this->document = SEManager::createDocument($resourceId, true, false);
 
         if ($this->document === null) {
             $exception = new Exception("CRUD0200", $resourceId);
@@ -633,7 +633,7 @@ class DocumentView
      */
     protected function getEtagInfo($docid)
     {
-        DocManager::getIdentifier($docid, true);
+        SEManager::getIdentifier($docid, true);
         return $this->extractEtagDocument($docid);
     }
 

@@ -6,6 +6,8 @@
 
 namespace Dcp\Ui;
 
+use Anakeen\Core\ContextManager;
+
 class RenderDefault implements IRenderConfig
 {
     /**
@@ -361,7 +363,7 @@ class RenderDefault implements IRenderConfig
     {
         
         $item = new SeparatorMenu("EmblemLock", "");
-        $item->setHtmlAttribute("class", "menu--left emblem emblem--lock" . ((abs($document->locked) == getCurrentUser()->id) ? " emblem-lock--my" : ""));
+        $item->setHtmlAttribute("class", "menu--left emblem emblem--lock" . ((abs($document->locked) == ContextManager::getCurrentUser()->id) ? " emblem-lock--my" : ""));
         $item->setHtmlLabel('{{#document.properties.security.lock.lockedBy.id}} <span class="dcpDocument__emblem__lock {{#document.properties.security.lock.temporary}} dcpDocument__emblem__lock--temporary {{/document.properties.security.lock.temporary}}fa fa-lock"></span>{{/document.properties.security.lock.lockedBy.id}}');
         
         if ($document->locked == - 1) {
@@ -451,7 +453,7 @@ class RenderDefault implements IRenderConfig
     {
         $helpDoc = $this->getDefaultHelpPageDocument($document);
         if ($helpDoc) {
-            \Anakeen\Core\DocManager::cache()->addDocument($helpDoc);
+            \Anakeen\Core\SEManager::cache()->addDocument($helpDoc);
             $attrids = $helpDoc->getMultipleRawValues(\SmartStructure\Attributes\Helppage::help_sec_key);
             
             foreach ($attrids as $k => $aid) {

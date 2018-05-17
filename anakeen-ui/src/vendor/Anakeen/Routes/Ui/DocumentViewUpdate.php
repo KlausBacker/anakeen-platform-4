@@ -5,7 +5,7 @@ namespace Anakeen\Routes\Ui;
 use Anakeen\Routes\Core\DocumentUpdateData;
 use SmartStructure\Attributes\Cvdoc as CvdocAttribute;
 use Anakeen\Router\Exception;
-use Anakeen\Core\DocManager as DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
 
 /**
@@ -20,7 +20,6 @@ class DocumentViewUpdate extends DocumentView
     {
 
         $resourceId = $args["docid"];
-        $this->request = $request;
         $this->viewIdentifier = $args["view"];
         $this->revision = $args["revision"];
 
@@ -37,7 +36,7 @@ class DocumentViewUpdate extends DocumentView
                 /**
                  * @var \SmartStructure\Cvdoc $cvdoc
                  */
-                $cvdoc = DocManager::getDocument($document->cvid);
+                $cvdoc = SEManager::getDocument($document->cvid);
                 $cvdoc->Set($document);
                 $err = $cvdoc->control($this->viewIdentifier); // control special view
                 if ($err != "") {

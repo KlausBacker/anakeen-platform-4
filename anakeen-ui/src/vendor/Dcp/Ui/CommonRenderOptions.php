@@ -6,7 +6,7 @@
 
 namespace Dcp\Ui;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 class CommonRenderOptions extends BaseRenderOptions
 {
@@ -26,13 +26,13 @@ class CommonRenderOptions extends BaseRenderOptions
     const attributeLabelOption = "attributeLabel";
     const formatOption = "format";
     const helpLinkIdentifierOption = "helpLinkIdentifier";
-    const customWidgetAttributeFunctionOption="customWidgetAttributeFunction";
-    
+    const customWidgetAttributeFunctionOption = "customWidgetAttributeFunction";
+
     const autoPosition = "auto";
     const leftPosition = "left";
     const upPosition = "up";
     const nonePosition = "none";
-    
+
     const topPosition = "top";
     const bottomPosition = "bottom";
     //const leftPosition="left";
@@ -42,6 +42,7 @@ class CommonRenderOptions extends BaseRenderOptions
     const bottomLabelPosition = "bottomLabel";
     const bottomValuePosition = "bottomValue";
     const clickPosition = "click";
+
     /**
      * When value is empty, display text instead
      * The text is in HTML (it is not encoded)
@@ -53,6 +54,7 @@ class CommonRenderOptions extends BaseRenderOptions
     {
         return $this->setOption(self::showEmptyContentOption, $content);
     }
+
     /**
      * Set position label relative to its value
      * @param string $position
@@ -72,6 +74,7 @@ class CommonRenderOptions extends BaseRenderOptions
         }
         return $this->setOption(self::labelPositionOption, $position);
     }
+
     /**
      * Add a html link on value (view mode only)
      * @note use only in view mode
@@ -83,23 +86,25 @@ class CommonRenderOptions extends BaseRenderOptions
         $this->setOption(self::htmlLinkOption, $options);
         return $this;
     }
+
     /**
      * At custom template for an attribute
-     * @param string $htmlText mustache template
-     * @param array $extraKeys extra data for template
+     * @param string $htmlText  mustache template
+     * @param array  $extraKeys extra data for template
      * @return $this
      */
     public function setTemplate($htmlText, array $extraKeys = array())
     {
         $this->setOption(self::templateOption, $htmlText);
         $this->setOption(self::templateKeysOption, $extraKeys);
-        
+
         return $this;
     }
+
     /**
      * Add an html tooltip when input has focus
      * @note use only in edit mode
-     * @param string  $htmlText Html fragment
+     * @param string $htmlText Html fragment
      * @return $this
      */
     public function setInputTooltip($htmlText)
@@ -107,6 +112,7 @@ class CommonRenderOptions extends BaseRenderOptions
         $this->setOption(self::inputHtmlTooltip, $htmlText);
         return $this;
     }
+
     /**
      * Display or not the delete button
      * @note use only in edit mode
@@ -118,10 +124,11 @@ class CommonRenderOptions extends BaseRenderOptions
         $this->setOption(self::displayDeleteButtonOption, (bool)$display);
         return $this;
     }
+
     /**
      * Add an html tooltip on auto complete button
      * @note use only in edit mode
-     * @param string  $htmlText Html fragment
+     * @param string $htmlText Html fragment
      * @return $this
      */
     public function setAutoCompleteHtmlLabel($htmlText)
@@ -129,6 +136,7 @@ class CommonRenderOptions extends BaseRenderOptions
         $this->setOption(self::autoCompleteHtmlLabelOption, $htmlText);
         return $this;
     }
+
     /**
      * Add an html text near the attribute
      *
@@ -171,6 +179,7 @@ class CommonRenderOptions extends BaseRenderOptions
         ));
         return $this;
     }
+
     /**
      * Add a html link on value
      * @param \Dcp\Ui\ButtonOptions $options
@@ -186,6 +195,7 @@ class CommonRenderOptions extends BaseRenderOptions
         $this->setOption(self::buttonsOption, $buttons);
         return $this;
     }
+
     /**
      * Modify default label attribute
      *
@@ -197,6 +207,7 @@ class CommonRenderOptions extends BaseRenderOptions
         $this->setOption(self::attributeLabelOption, $label);
         return $this;
     }
+
     /**
      * Add or modify specific messages for widget
      * @param array $labels
@@ -222,11 +233,11 @@ class CommonRenderOptions extends BaseRenderOptions
      */
     public function setLinkHelp($documentIdentifier)
     {
-        $helpDocument=DocManager::getDocument($documentIdentifier);
-        if (!$helpDocument || !is_a($helpDocument, \Anakeen\Core\DocManager::getFamilyClassName("Helppage"))) {
+        $helpDocument = SEManager::getDocument($documentIdentifier);
+        if (!$helpDocument || !is_a($helpDocument, \Anakeen\Core\SEManager::getFamilyClassName("Helppage"))) {
             throw new Exception("UI0208", $helpDocument->fromname);
         }
-        DocManager::cache()->addDocument($helpDocument);
+        SEManager::cache()->addDocument($helpDocument);
         return $this->setOption(self::helpLinkIdentifierOption, $documentIdentifier);
     }
 
@@ -243,4 +254,3 @@ class CommonRenderOptions extends BaseRenderOptions
         return $this;
     }
 }
-

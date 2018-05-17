@@ -2,7 +2,7 @@
 
 namespace Anakeen\Routes\DocumentGrid;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Router\Exception;
 use Anakeen\Routes\Core\DocumentList;
 
@@ -42,7 +42,7 @@ class Content extends DocumentList
     {
         $collectionId = $args["collection"] ;
 
-        $this->_collection = DocManager::getDocument($collectionId);
+        $this->_collection = SEManager::getDocument($collectionId);
         if (!$this->_collection) {
             $exception = new Exception("CRUD0200", $collectionId);
             $exception->setHttpStatus("404", "Collection not found (CRUD015)");
@@ -101,7 +101,7 @@ class Content extends DocumentList
         if ($this->hasFields(self::GET_ATTRIBUTES) || $this->hasFields(self::GET_ATTRIBUTE)) {
             $tmpDoc = null;
             if ($this->_collection->getAttributeValue("se_famid")) {
-                $tmpDoc = DocManager::getFamily($this->_collection->getAttributeValue("se_famid"));
+                $tmpDoc = SEManager::getFamily($this->_collection->getAttributeValue("se_famid"));
             }
             return \Anakeen\Routes\Core\Lib\DocumentUtils::getAttributesFields($tmpDoc, $prefix, $fields);
         }
@@ -228,7 +228,7 @@ class Content extends DocumentList
         }
         $famid = $this->_collection->getRawValue("se_famid");
         if ($famid) {
-            $family = DocManager::getFamily($famid);
+            $family = SEManager::getFamily($famid);
         } else {
             $family = null;
         }

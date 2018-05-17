@@ -5,27 +5,26 @@ namespace Anakeen\Routes\Ui;
 
 use Anakeen\Routes\Core\FamilyDocumentCreation;
 use Anakeen\Router\Exception;
-use Anakeen\Core\DocManager as DocManager;
+use Anakeen\Core\SEManager;
 
 /**
  * Class CreationView
- * @note Used by route : POST /api/v2/family/{family}/documentsViews/
+ * @note    Used by route : POST /api/v2/family/{family}/documentsViews/
  * @package Anakeen\Routes\Ui
  */
 class CreationView
 {
     /**
-     * @var \Anakeen\Core\SmartStructure 
+     * @var \Anakeen\Core\SmartStructure
      */
     protected $_family = null;
 
     /**
      * Create new document
-     * @param \Slim\Http\request $request
+     * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
-     * @param $args
+     * @param                     $args
      * @return mixed
-     * @throws DocManager\Exception
      * @throws Exception
      * @throws \Dcp\Core\Exception
      */
@@ -33,7 +32,7 @@ class CreationView
     {
         $familyId = $args["family"];
 
-        $this->_family = DocManager::getFamily($familyId);
+        $this->_family = SEManager::getFamily($familyId);
         if (!$this->_family) {
             $exception = new Exception("CRUD0200", $familyId);
             $exception->setHttpStatus("404", "Family not found");
@@ -44,10 +43,10 @@ class CreationView
 
         $view = new DocumentView();
 
-        $args["docid"] =  $document->initid;
+        $args["docid"] = $document->initid;
         $args["view"] = DocumentView::defaultViewEditionId;
-        $response= $view->__invoke($request, $response, $args);
-        $response=$response->withStatus(201);
+        $response = $view->__invoke($request, $response, $args);
+        $response = $response->withStatus(201);
         return $response;
     }
 }

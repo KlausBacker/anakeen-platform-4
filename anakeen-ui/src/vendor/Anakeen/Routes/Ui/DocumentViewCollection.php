@@ -5,11 +5,11 @@ namespace Anakeen\Routes\Ui;
 
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
-use Anakeen\Core\DocManager as DocManager;
+use Anakeen\Core\SEManager;
 
 /**
  * Class DocumentViewCollection
- * @note Used by route : GET /api/v2/documents/{docid}/views/
+ * @note    Used by route : GET /api/v2/documents/{docid}/views/
  * @package Anakeen\Routes\Ui
  */
 class DocumentViewCollection extends DocumentView
@@ -44,11 +44,11 @@ class DocumentViewCollection extends DocumentView
 
     protected function getViews(\Anakeen\Core\Internal\SmartElement $document)
     {
-        $cv = DocManager::getDocument($document->cvid);
+        $cv = SEManager::getDocument($document->cvid);
         if ($cv === null) {
             throw new Exception("CRUDUI0006", $document->cvid, $document->getTitle());
         }
-        DocManager::cache()->addDocument($cv);
+        SEManager::cache()->addDocument($cv);
         /**
          * @var \SmartStructure\Cvdoc $cv
          */
@@ -56,15 +56,13 @@ class DocumentViewCollection extends DocumentView
         $views = $cv->getViews();
         $info = array();
         foreach ($views as $view) {
-            if ($cv->isValidView($view, true)) {
-                $vid = $view[\SmartStructure\Attributes\Cvdoc::cv_idview];
-                if ($cv->control($vid) == "") {
-                    $prop = $this->getViewProperties($cv, $view);
-                    $prop["uri"] = $this->getUri($document, $vid);
-                    $info[] = array(
-                        "properties" => $prop
-                    );
-                }
+            $vid = $view[\SmartStructure\Attributes\Cvdoc::cv_idview];
+            if ($cv->control($vid) == "") {
+                $prop = $this->getViewProperties($cv, $view);
+                $prop["uri"] = $this->getUri($document, $vid);
+                $info[] = array(
+                    "properties" => $prop
+                );
             }
         }
         return $info;

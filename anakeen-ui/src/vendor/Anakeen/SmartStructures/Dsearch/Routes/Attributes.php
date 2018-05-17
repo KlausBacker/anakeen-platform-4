@@ -2,7 +2,7 @@
 
 namespace Anakeen\SmartStructures\Dsearch\Routes;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 
@@ -42,9 +42,9 @@ class Attributes
         );
 
         if ($this->familyname) {
-            $tmpDoc = DocManager::createTemporaryDocument($this->familyname);
+            $tmpDoc = SEManager::createTemporaryDocument($this->familyname);
         } else {
-            $tmpDoc = DocManager::createTemporaryDocument(1);
+            $tmpDoc = SEManager::createTemporaryDocument(1);
         }
         foreach ($internals as $k => $v) {
             if ($k == "revdate") {
@@ -92,7 +92,7 @@ class Attributes
         }
 
         if ($this->familyname) {
-            $fdoc = DocManager::getFamily($this->familyname);
+            $fdoc = SEManager::getFamily($this->familyname);
             if (!$fdoc) {
                 $exception = new Exception("CRUD0103", __METHOD__);
                 $exception->setHttpStatus("404", "Family not found");
@@ -100,7 +100,7 @@ class Attributes
                 throw $exception;
             }
             //Attributs
-            $tmpDoc = DocManager::createTemporaryDocument($this->familyname);
+            $tmpDoc = SEManager::createTemporaryDocument($this->familyname);
             foreach ($fdoc->getNormalAttributes() as $myAttribute) {
                 if ($myAttribute->type == "array" || $myAttribute->type == "password") {
                     continue;

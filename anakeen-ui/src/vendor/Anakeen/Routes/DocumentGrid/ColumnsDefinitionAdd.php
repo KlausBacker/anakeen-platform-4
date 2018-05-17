@@ -2,7 +2,7 @@
 
 namespace Anakeen\Routes\DocumentGrid;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Router\Exception;
 use Anakeen\Routes\Core\DocumentList;
 
@@ -26,7 +26,7 @@ class ColumnsDefinitionAdd
             $userCol = [];
         }
         
-        $family = DocManager::getFamily($famId);
+        $family = SEManager::getFamily($famId);
         $attribute = $family->getAttribute($attrId);
         $userCol[$family->name][] = $attribute->id;
         $userCol[$family->name] = array_unique($userCol[$family->name]);
@@ -56,7 +56,7 @@ class ColumnsDefinitionAdd
             $userCol = [];
         }
 
-        $family = DocManager::getFamily($famId);
+        $family = SEManager::getFamily($famId);
         $attribute = $family->getAttribute($attrId);
 
         $famPref = $userCol[$family->name];
