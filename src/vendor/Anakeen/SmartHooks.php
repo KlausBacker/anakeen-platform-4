@@ -17,6 +17,17 @@ interface SmartHooks
      * @return string error message
      */
     const PRECREATED = "preCreated";
+    /**
+     * call when doc is being imported before any modification
+     * if return non null string import will ne aborted
+     *
+     * @api hook called when import document - before import it
+     *
+     * @param array $extra extra parameters
+     *
+     */
+    const PREIMPORT = "preImport";
+    const POSTIMPORT = "postImport";
 
     public function registerHooks();
 }

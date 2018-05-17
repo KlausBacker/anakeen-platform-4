@@ -3376,23 +3376,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mb_trim(preg_replace('/\p{Cc}/u', ' ', $this->getCustomTitle())), 0, 255);
     }
-
-
-
-    /**
-     * call when doc is being imported before any modification
-     * if return non null string import will ne aborted
-     *
-     * @api hook called when import document - before import it
-     *
-     * @param array $extra extra parameters
-     *
-     * @return string error message, if no error empty string
-     */
-    public function preImport(array $extra = array())
-    {
-        return "";
-    }
+    
 
     /**
      * call when doc is imported after databases modification
@@ -9548,7 +9532,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * @return \Anakeen\Core\Internal\SmartElementHooks
      */
-    protected function getHooks()
+    public function getHooks()
     {
         static $ac;
         if (!$ac) {

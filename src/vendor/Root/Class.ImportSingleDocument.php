@@ -53,7 +53,7 @@ class ImportSingleDocument
      */
     public $folderId;
     /**
-     * @var \Anakeen\Core\SmartStructure 
+     * @var \Anakeen\Core\SmartStructure
      */
     private $doc;
     /**
@@ -390,7 +390,7 @@ class ImportSingleDocument
         }
         if ((!$this->hasError()) && (!$this->analyze)) {
             if (($this->doc->id > 0) || ($this->policy != "update")) {
-                $err = $this->doc->preImport($extra);
+                $err = $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::PREIMPORT, $extra);
                 if ($err) {
                     $this->setError("DOC0104", $this->doc->name, $err);
                 }
@@ -414,7 +414,7 @@ class ImportSingleDocument
                             foreach ($this->preValues as $k => $v) {
                                 $this->doc->setValue($k, $v);
                             }
-                            $err = $this->doc->preImport($extra);
+                            $err = $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::PREIMPORT, $extra);
                             if ($err != "") {
                                 if ($err) {
                                     $this->setError("DOC0105", $this->doc->name, $err);
@@ -454,7 +454,7 @@ class ImportSingleDocument
                                         $this->doc->setValue($k, $v);
                                     }
                                 }
-                                $err = $this->doc->preImport($extra);
+                                $err = $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::PREIMPORT, $extra);
                                 if ($err != "") {
                                     if ($err) {
                                         $this->setError("DOC0106", $this->doc->name, $err);
@@ -487,7 +487,7 @@ class ImportSingleDocument
                          */
                         $doc = $lsdoc[0];
                         if (!$this->analyze) {
-                            $err = $doc->preImport($extra);
+                            $err = $doc->getHooks()->trigger(\Anakeen\SmartHooks::PREIMPORT, $extra);
                             if ($err != "") {
                                 if ($err) {
                                     $this->setError("DOC0109", $this->doc->name, $err);
@@ -563,7 +563,7 @@ class ImportSingleDocument
                             $this->doc->setValue($k, $v);
                         }
                     }
-                    $err = $this->doc->preImport($extra);
+                    $err = $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::PREIMPORT, $extra);
                     if ($err != "") {
                         $this->setError("DOC0111", $this->doc->name, $err);
                         return $this;
@@ -589,7 +589,7 @@ class ImportSingleDocument
         }
         if (!$this->analyze) {
             if ($this->doc->isAffected()) {
-                $err=$this->doc->store($info, true);
+                $err = $this->doc->store($info, true);
                 $warnMsg = $info->refresh;
                 $this->tcr["specmsg"] .= (($this->tcr["specmsg"] != '') ? "\n" . $warnMsg : $warnMsg); // compute read attribute
                 $msg .= $info->postStore; // compute read attribute
@@ -704,7 +704,7 @@ class ImportSingleDocument
     /**
      * Parse a docid's raw value (single or multiple) for unknown logical names
      *
-     * @param \Anakeen\Core\Internal\SmartElement                                          $doc
+     * @param \Anakeen\Core\Internal\SmartElement          $doc
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
      * @param string                                       $value docid's raw value
      *

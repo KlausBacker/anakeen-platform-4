@@ -385,21 +385,7 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
         }
     }
 
-    /**
-     * Do not call ::setGroup if its import
-     * called only in initialisation
-     *
-     * @param array $extra
-     *
-     * @return string|void
-     */
-    public function preImport(array $extra = array())
-    {
-        if ($this->id > 0) {
-            global $_POST;
-            $_POST["gidnew"] = "N";
-        }
-    }
+
 
     public function preconsultation()
     {

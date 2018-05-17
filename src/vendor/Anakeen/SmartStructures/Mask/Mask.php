@@ -43,11 +43,7 @@ class Mask extends \SmartStructure\Base
         );
     }
 
-    /**
-     * reconstruct mail group & recompute parent group
-     *
-     * @return string error message, if no error empty string
-     */
+
     public function registerHooks()
     {
         parent::registerHooks();
@@ -72,14 +68,13 @@ class Mask extends \SmartStructure\Base
             $this->setValue("MSK_VISIBILITIES", $tvis);
 
             return '';
+        })->addListener(SmartHooks::PREIMPORT, function () {
+            return $this->verifyIntegraty();
         });
     }
 
 
-    public function preImport(array $extra = array())
-    {
-        return $this->verifyIntegraty();
-    }
+
 
     public function preRefresh()
     {

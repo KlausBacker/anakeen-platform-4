@@ -53,7 +53,7 @@ class SmartElementHooks
         $this->document->registerHooks();
     }
 
-    public function trigger($hookName)
+    public function trigger($hookName, $data = null)
     {
         if (!isset($this->document->hooks)) {
             $this->document->hooks = [];
@@ -62,7 +62,7 @@ class SmartElementHooks
         $outs = [];
         if (!empty($this->document->hooks[$hookName])) {
             foreach ($this->document->hooks[$hookName] as $ft) {
-                $outs[] = $ft();
+                $outs[] = $ft($data);
             }
         }
         return implode("\n", $outs);

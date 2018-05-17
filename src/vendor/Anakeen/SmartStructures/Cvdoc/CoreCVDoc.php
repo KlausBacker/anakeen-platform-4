@@ -245,12 +245,6 @@ class CoreCVDoc extends \SmartStructure\Base
         }
         return $displayableViews;
     }
-    
-    public function preImport(array $extra = array())
-    {
-        return $this->verifyAllConstraints();
-    }
-    
 
     public function registerHooks()
     {
@@ -263,6 +257,8 @@ class CoreCVDoc extends \SmartStructure\Base
                 }
             }
             $this->setValue("CV_IDVIEW", $ti);
+        })->addListener(SmartHooks::PREIMPORT, function () {
+            return $this->verifyAllConstraints();
         });
     }
 
