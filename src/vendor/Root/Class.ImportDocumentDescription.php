@@ -662,7 +662,7 @@ class ImportDocumentDescription
                             }
                         }
                         if (!$err) {
-                            $this->doc->postImport();
+                            $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::POSTIMPORT);
                         }
                     }
 
@@ -714,7 +714,7 @@ class ImportDocumentDescription
                 $this->doc->changeIcon($this->familyIcon);
             }
             if (!$this->tcr[$this->nLine]["err"]) {
-                $this->tcr[$this->nLine]["msg"] .= $this->doc->postImport();
+                $this->tcr[$this->nLine]["msg"] .=  $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::POSTIMPORT);
                 $check->checkMaxAttributes($this->doc);
                 $this->tcr[$this->nLine]["err"] = $check->getErrors();
                 if ($this->tcr[$this->nLine]["err"] && $this->analyze) {

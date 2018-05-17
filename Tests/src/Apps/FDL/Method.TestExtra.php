@@ -28,13 +28,13 @@ class _TEST_EXTRA extends \Anakeen\Core\Internal\SmartElement
         $this->getHooks()->addListener(\Anakeen\SmartHooks::PREIMPORT, function ($extra) {
             return $this->extraImport($extra);
         })->addListener(\Anakeen\SmartHooks::POSTIMPORT, function ($extra) {
-            $err = parent::postImport($extra);
+
+
+            $err = $this->SetValue("test_extra", json_encode($extra));
             if ($err == "") {
-                $err = $this->SetValue("test_extra", json_encode($extra));
-                if ($err == "") {
-                    $err = $this->store();
-                }
+                $err = $this->store();
             }
+
             return $err;
         });
     }
@@ -48,17 +48,7 @@ class _TEST_EXTRA extends \Anakeen\Core\Internal\SmartElement
         return "";
     }
 
-    public function postImport(array $extra = array())
-    {
-        $err = parent::postImport($extra);
-        if ($err == "") {
-            $err = $this->SetValue("test_extra", json_encode($extra));
-            if ($err == "") {
-                $err = $this->store();
-            }
-        }
-        return $err;
-    }
+
     /**
      * @begin-method-ignore
      * this part will be deleted when construct document class until end-method-ignore

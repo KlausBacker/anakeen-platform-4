@@ -27,6 +27,11 @@ interface SmartHooks
      *
      */
     const PREIMPORT = "preImport";
+    /**
+     *
+     * call when doc is imported after databases modification
+     * the output message will appeared as a information message
+     */
     const POSTIMPORT = "postImport";
 
     public function registerHooks();

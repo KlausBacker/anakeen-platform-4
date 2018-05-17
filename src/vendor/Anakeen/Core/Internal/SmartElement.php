@@ -3377,22 +3377,6 @@ create unique index i_docir on doc(initid, revision);";
         $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mb_trim(preg_replace('/\p{Cc}/u', ' ', $this->getCustomTitle())), 0, 255);
     }
     
-
-    /**
-     * call when doc is imported after databases modification
-     * the error message will appeared like message
-     *
-     * @api hook called when import document - after it is imported
-     *
-     * @param array $extra extra parameters
-     *
-     * @return string warning message, if no warning empty string
-     */
-    public function postImport(array $extra = array())
-    {
-        return "";
-    }
-
     /**
      * call when doc is being revised before new \document is created
      * if return non null string revision will ne aborted

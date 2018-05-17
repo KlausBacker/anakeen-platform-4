@@ -599,7 +599,7 @@ class ImportSingleDocument
                 } // not really an error add addfile must be tested after
                 if ($err == "") {
                     $this->doc->addHistoryEntry(sprintf(_("updated by import")));
-                    $msg .= $this->doc->postImport($extra);
+                    $msg .=  $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::POSTIMPORT, $extra);
                 } else {
                     $this->setError("DOC0112", $this->doc->name, $err);
                 }

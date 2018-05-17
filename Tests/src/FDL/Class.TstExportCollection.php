@@ -5,18 +5,23 @@
 */
 namespace Dcp\Pu;
 
+use Anakeen\SmartHooks;
+
 class TstExportCollection extends \Anakeen\SmartStructures\Document
 {
-    public function postImport(array $extra = array())
+    public function registerHooks()
     {
-        if (!empty($extra["state"])) {
-            return $this->setState($extra["state"]);
-        } else {
-            $this->wid = 0;
-            $this->state = '';
-            $this->modify();
-        }
-        return '';
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTIMPORT, function (array $extra) {
+            if (!empty($extra["state"])) {
+                return $this->setState($extra["state"]);
+            } else {
+                $this->wid = 0;
+                $this->state = '';
+                $this->modify();
+            }
+            return '';
+        });
     }
 }
 

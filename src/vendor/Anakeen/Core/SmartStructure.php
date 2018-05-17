@@ -165,6 +165,8 @@ create unique index idx_idfam on docfam(id);";
         parent::registerHooks();
         $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
             return \Dcp\FamilyImport::refreshPhpPgDoc($this->dbaccess, $this->id);
+        })->addListener(SmartHooks::POSTIMPORT, function () {
+            return $this->updateWorkflowAttributes();
         });
     }
 
@@ -200,7 +202,7 @@ create unique index idx_idfam on docfam(id);";
      *
      * @return string
      */
-    public function postImport(array $extra = array())
+    protected function updateWorkflowAttributes()
     {
         $err = '';
         if (strstr($this->usefor, 'W')) {
