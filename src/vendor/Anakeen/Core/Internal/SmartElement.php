@@ -3376,32 +3376,10 @@ create unique index i_docir on doc(initid, revision);";
         }
         $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mb_trim(preg_replace('/\p{Cc}/u', ' ', $this->getCustomTitle())), 0, 255);
     }
-    
-    /**
-     * call when doc is being revised before new \document is created
-     * if return non null string revision will ne aborted
-     *
-     * @api hook called when revise document - before revise it
-     * @see \Anakeen\Core\Internal\SmartElement::revise
-     * @return string error message, if no error empty string
-     */
-    public function preRevise()
-    {
-        return "";
-    }
 
-    /**
-     * call when doc is revised after new \document is created
-     * the error message will appeared like message
-     *
-     * @api hook called when revise document - after it is revided
-     * @see \Anakeen\Core\Internal\SmartElement::revise
-     * @return string message - message is added to history
-     */
-    public function postRevise()
-    {
-        return "";
-    }
+
+
+
 
     /**
      * call when doc is being undelete
@@ -5700,7 +5678,7 @@ create unique index i_docir on doc(initid, revision);";
             $this->addHistoryEntry($err, \DocHisto::ERROR, "REVERROR");
             return $err;
         }
-        $err = $this->preRevise();
+        $err = $this->getHooks()->trigger(SmartHooks::PREREVISE);
         if ($err) {
             return $err;
         }
@@ -5820,7 +5798,7 @@ create unique index i_docir on doc(initid, revision);";
                     }
                 }
             }
-            $msg = $this->postRevise();
+            $msg = $this->getHooks()->trigger(SmartHooks::POSTREVISE);
             if ($msg) {
                 $this->addHistoryEntry($msg, \DocHisto::MESSAGE, "POSTREVISE");
             }

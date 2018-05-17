@@ -17,6 +17,8 @@ class TestNd extends \Anakeen\SmartStructures\Document
         parent::registerHooks();
         $this->getHooks()->addListener(SmartHooks::POSTCREATED, function () {
             return $this->setShared();
+        })->addListener(SmartHooks::POSTREVISE, function () {
+            return $this->setData();
         });
     }
     protected function setShared()
@@ -26,13 +28,11 @@ class TestNd extends \Anakeen\SmartStructures\Document
         $err.=$this->setValue("tst_data", "nd creation");
         return $err;
     }
-    public function postRevise()
+    protected function setData()
     {
         SEManager::cache()->addDocument($this);
         $err = $this->setValue("tst_shared", \Anakeen\Core\SEManager::cache()->isDocumentIdInCache($this->id) ? "yes" : "no");
         $err.=$this->setValue("tst_data", "nd revision");
         return $err;
     }
-
-
 }

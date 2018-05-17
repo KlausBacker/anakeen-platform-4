@@ -28,11 +28,24 @@ interface SmartHooks
      */
     const PREIMPORT = "preImport";
     /**
-     *
      * call when doc is imported after databases modification
      * the output message will appeared as a information message
      */
     const POSTIMPORT = "postImport";
+
+    /**
+     * Call when revise document
+     * the output message is an error message it stop revision if is not empty
+     * @see \Anakeen\Core\Internal\SmartElement::revise
+     */
+    const PREREVISE = "preRevise";
+
+    /**
+     * Call when revise document
+     * the output message will appeared as a information message
+     * @see \Anakeen\Core\Internal\SmartElement::revise
+     */
+    const POSTREVISE = "postRevise";
 
     public function registerHooks();
 }
