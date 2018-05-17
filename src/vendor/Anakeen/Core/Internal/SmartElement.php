@@ -2089,8 +2089,10 @@ create unique index i_docir on doc(initid, revision);";
     final public function affect($array, $more = false, $reset = true)
     {
         if (is_array($array)) {
-            // $this->getHooks()->resetListeners();
-            $this->preAffect($array, $more, $reset);
+             $this->getHooks()->resetListeners();
+
+            $this->getHooks()->trigger(SmartHooks::PREAFFECT, $array, $more, $reset);
+
             if ($more) {
                 $this->resetMoreValues();
             }
@@ -2131,7 +2133,7 @@ create unique index i_docir on doc(initid, revision);";
                 $this->textsend = array();
             }
             $this->isset = true;
-            $this->postAffect($array, $more, $reset);
+            $this->getHooks()->trigger(SmartHooks::POSTAFFECT, $array, $more, $reset);
         }
     }
 
@@ -2145,33 +2147,6 @@ create unique index i_docir on doc(initid, revision);";
     {
     }
 
-    /**
-     * @see   \Anakeen\Core\Internal\SmartElement::affect()
-     *
-     * @param array $data  data use to affect document values
-     * @param bool  $more  use "values" attribute in case of incomplete data
-     * @param bool  $reset reset all values before set and clean private variables
-     *
-     * @since 3.2.20
-     * @return void
-     */
-    protected function preAffect(array & $data, &$more, &$reset)
-    {
-    }
-
-    /**
-     * @see   \Anakeen\Core\Internal\SmartElement::affect()
-     *
-     * @param array $data  data use to affect document values
-     * @param bool  $more  use "values" attribute in case of incomplete data
-     * @param bool  $reset reset all values before set and clean private variables
-     *
-     * @since 3.2.20
-     * @return void
-     */
-    protected function postAffect(array $data, $more, $reset)
-    {
-    }
 
     /**
      * Set to default values before add new \doc
@@ -6603,18 +6578,6 @@ create unique index i_docir on doc(initid, revision);";
         return '';
     }
 
-    /**
-     * Special Refresh
-     * called when refresh document : when view, modify document - generally when access to the document
-     *
-     * @note       during specRefresh edit control is disabled
-     * @deprecated This hook may be replaced by preRefresh in the the next version.
-     * @see        \Anakeen\Core\Internal\SmartElement::refresh
-     */
-    public function specRefresh()
-    {
-        return '';
-    }
 
     /**
      * post Refresh

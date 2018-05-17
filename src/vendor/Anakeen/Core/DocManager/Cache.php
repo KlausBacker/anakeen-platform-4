@@ -14,6 +14,7 @@ class Cache
      * @var MemoryCache $localCache
      */
     protected static $localCache = null;
+
     /**
      * Set document object to local cache
      *
@@ -33,13 +34,12 @@ class Cache
             if (!self::getLocalCache()->set($document->id, $document)) {
                 throw new Exception("APIDM0201", $document->getTitle(), $document->id);
             }
-            // For legacy compatibility
-            global $gdocs;
-            $gdocs[$document->id] = & $document;
+
         }
-        
+
         return $document;
     }
+
     /**
      * Clear local cache
      *
@@ -52,10 +52,9 @@ class Cache
         if (!self::getLocalCache()->clear()) {
             throw new Exception("APIDM0202");
         }
-        // For legacy compatibility
-        global $gdocs;
-        $gdocs = array();
+
     }
+
     /**
      * Verify if object referenced by key exists
      *
@@ -71,9 +70,10 @@ class Cache
         if (!is_numeric($documentId)) {
             throw new Exception("APIDM0203");
         }
-        
+
         return self::getLocalCache()->exists($documentId);
     }
+
     /**
      * Return object referenced by key exists
      *
@@ -93,6 +93,7 @@ class Cache
         }
         return null;
     }
+
     /**
      * Unset document object from local cache
      *
@@ -101,17 +102,15 @@ class Cache
      * @param \Anakeen\Core\Internal\SmartElement $document
      *
      * @api Unset document object from local cache
-     * @return \Anakeen\Core\Internal\SmartElement 
+     * @return \Anakeen\Core\Internal\SmartElement
      */
     public static function &removeDocument(\Anakeen\Core\Internal\SmartElement & $document)
     {
         self::getLocalCache()->remove($document->id);
 
-        // For legacy compatibility
-        global $gdocs;
-        unset($gdocs[$document->id]);
         return $document;
     }
+
     /**
      * Unset a document's object by its id from local cache
      *
@@ -124,6 +123,7 @@ class Cache
     {
         return self::getLocalCache()->remove($id);
     }
+
     /**
      * Verify if document object is in cache
      *
@@ -136,6 +136,7 @@ class Cache
     {
         return self::getLocalCache()->isInCache($document->id, $document);
     }
+
     /**
      * Get local cache object
      * @return MemoryCache

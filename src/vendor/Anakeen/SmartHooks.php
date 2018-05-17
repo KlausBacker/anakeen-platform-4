@@ -88,5 +88,20 @@ interface SmartHooks
      */
     const POSTDUPLICATE= "postDuplicate";
 
+
+    /**
+     * Call when affect document with data
+     * no output
+     * @see \Anakeen\Core\Internal\SmartElement::affect()
+     */
+    const PREAFFECT = "preAffect";
+
+    /**
+     * Call when affect document with data
+     * no output
+     * @see \Anakeen\Core\Internal\SmartElement::affect()
+     */
+    const POSTAFFECT= "postAffect";
+
     public function registerHooks();
 }
