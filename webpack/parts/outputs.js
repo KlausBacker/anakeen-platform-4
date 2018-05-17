@@ -2,6 +2,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const AssetsWebpackPlugin = require('assets-webpack-plugin');
 const FriendlyErrorWebpackPlugin = require('friendly-errors-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 // const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
 exports.clean = path => ({
@@ -144,22 +145,39 @@ exports.useVueLoader = (exclude) => ({
             {
                 test: /\.vue$/,
                 exclude,
-                use: {
-                    loader: 'vue-loader',
-                    options: {
-                        extractCSS: false,
-                        loaders: {
-                            sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
-                            scss: 'vue-style-loader!css-loader!sass-loader'
-                        }
-                    }
-                }
+                use: 'vue-loader'
             },
             {
                 test: /\.template.kd$/,
                 exclude,
                 use: 'raw-loader'
-            }
+            },
+            {
+                test: /\.sass/,
+                use: [
+                    'vue-style-loader',
+                    'css-loader',
+                    'sass-loader'
+                ]
+            },
+            {
+                test: /\.scss/,
+                use: [
+                    'vue-style-loader',
+                    'css-loader',
+                    'sass-loader'
+                ]
+            },
+            {
+                test: /\.css/,
+                use: [
+                    'vue-style-loader',
+                    'css-loader'
+                ]
+            },
         ]
-    }
+    },
+    plugins: [
+        new VueLoaderPlugin()
+    ]
 });
