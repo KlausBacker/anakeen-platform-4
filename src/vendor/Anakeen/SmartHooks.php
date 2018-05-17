@@ -59,6 +59,19 @@ interface SmartHooks
      * @see \Anakeen\Core\Internal\SmartElement::undelete
      */
     const POSTUNDELETE = "postUndelete";
+    /**
+     * Call when delete document
+     * the output message is an error message it stop restore if is not empty
+     * @see \Anakeen\Core\Internal\SmartElement::delete()
+     */
+    const PREDELETE = "preDelete";
+
+    /**
+     * Call when delete document
+     * the output message will appeared as a information message
+     * @see \Anakeen\Core\Internal\SmartElement::delete
+     */
+    const POSTDELETE = "postDelete";
 
     public function registerHooks();
 }

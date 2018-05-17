@@ -276,6 +276,11 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
             return $this->updateExpireDate();
         })->addListener(SmartHooks::PREUNDELETE, function () {
             return _("user cannot be revived");
+        })->addListener(SmartHooks::POSTDELETE, function () {
+            $user = $this->getAccount();
+            if ($user) {
+                $user->Delete();
+            }
         });
     }
 
@@ -370,18 +375,6 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
 
         return $err;
     }
-
-    public function postDelete()
-    {
-        parent::postDelete();
-
-        $user = $this->getAccount();
-        if ($user) {
-            $user->Delete();
-        }
-    }
-
-
 
     public function preconsultation()
     {

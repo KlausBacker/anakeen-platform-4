@@ -100,6 +100,11 @@ class IGroupHooks extends \SmartStructure\Group
             return $this->synchronizeSystemGroup();
         })->addListener(SmartHooks::PREUNDELETE, function () {
             return _("group cannot be revived");
+        })->addListener(SmartHooks::POSTDELETE, function () {
+            $gAccount = $this->getAccount();
+            if ($gAccount) {
+                $gAccount->Delete();
+            }
         });
     }
 
@@ -316,13 +321,7 @@ class IGroupHooks extends \SmartStructure\Group
         return $err;
     }
 
-    public function postDelete()
-    {
-        $gAccount = $this->getAccount();
-        if ($gAccount) {
-            $gAccount->Delete();
-        }
-    }
+
 
     /**
      * (re)insert members of the group in folder from USER databasee

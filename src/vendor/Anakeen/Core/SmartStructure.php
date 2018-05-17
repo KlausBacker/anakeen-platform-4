@@ -129,11 +129,6 @@ create unique index idx_idfam on docfam(id);";
         $this->_xtparam = null;
     }
 
-    public function preDocDelete()
-    {
-        return _("cannot delete family");
-    }
-
     /**
      * return i18n title for family
      * based on name
@@ -167,10 +162,14 @@ create unique index idx_idfam on docfam(id);";
             return \Dcp\FamilyImport::refreshPhpPgDoc($this->dbaccess, $this->id);
         })->addListener(SmartHooks::POSTIMPORT, function () {
             return $this->updateWorkflowAttributes();
+        })->addListener(SmartHooks::PREDELETE, function () {
+            return _("cannot delete family");
+        })->addListener(SmartHooks::PRECREATED, function () {
+            return $this->resetProperties();
         });
     }
 
-    public function preCreated()
+    protected function resetProperties()
     {
         $cdoc = $this->getFamilyDocument();
         if ($cdoc->isAlive()) {

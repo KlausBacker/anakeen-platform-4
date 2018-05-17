@@ -20,19 +20,11 @@ class RoleHooks extends \Anakeen\SmartStructures\Document
     protected $sysRole = null;
     
 
-    
-    public function PreUpdate()
+    public function preUpdate()
     {
-        parent::PreUpdate();
+        parent::preUpdate();
         if ($this->isChanged()) {
             $this->lowerLogin();
-        }
-    }
-    public function PostDelete()
-    {
-        $role = $this->getAccount();
-        if ($role) {
-            $role->Delete();
         }
     }
 
@@ -76,6 +68,11 @@ class RoleHooks extends \Anakeen\SmartStructures\Document
             return $err;
         })->addListener(SmartHooks::PREUNDELETE, function () {
             return _("role cannot be revived");
+        })->addListener(SmartHooks::POSTDELETE, function () {
+            $role = $this->getAccount();
+            if ($role) {
+                $role->Delete();
+            }
         });
     }
 

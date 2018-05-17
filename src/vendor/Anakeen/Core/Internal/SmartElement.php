@@ -1844,7 +1844,7 @@ create unique index i_docir on doc(initid, revision);";
      * @return string error message, if no error empty string
      * @see    \Anakeen\Core\Internal\SmartElement::Delete()
      */
-    public function preDocDelete()
+    public function controlDeleteAccess()
     {
         if ($this->doctype == 'Z') {
             return _("already deleted");
@@ -1860,21 +1860,7 @@ create unique index i_docir on doc(initid, revision);";
         return $err;
     }
 
-    /**
-     * Really delete document from database
-     *
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::delete} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::delete
-     *
-     * @param bool $nopost set to true if no need tu call postDelete methods
-     *
-     * @return string error message, if no error empty string
-     */
-    final public function reallyDelete($nopost)
-    {
-        deprecatedFunction();
-        return $this->_destroy($nopost);
-    }
+
 
     /**
      * Really delete document from database
@@ -1914,7 +1900,7 @@ create unique index i_docir on doc(initid, revision);";
         $err = '';
         if ($control) {
             // Control if the doc can be deleted
-            $err = $this->PreDocDelete();
+            $err = $this->controlDeleteAccess();
             if ($err != '') {
                 return $err;
             }
@@ -1954,7 +1940,7 @@ create unique index i_docir on doc(initid, revision);";
             }
 
             if (!$nopost) {
-                $err = $this->preDelete();
+                $err = $this->getHooks()->trigger(SmartHooks::PREDELETE);
                 if ($err != '') {
                     return $err;
                 }
@@ -1997,7 +1983,7 @@ create unique index i_docir on doc(initid, revision);";
                 ), true);
                 if ($err == "") {
                     if (!$nopost) {
-                        $msg = $this->postDelete();
+                        $msg =  $this->getHooks()->trigger(SmartHooks::POSTDELETE);
                         if ($msg != '') {
                             $this->addHistoryEntry($msg, \DocHisto::MESSAGE);
                         }
@@ -2020,18 +2006,7 @@ create unique index i_docir on doc(initid, revision);";
         return $err;
     }
 
-    /**
-     * To restore a document which is in the trash
-     *
-     * @see        \Anakeen\Core\Internal\SmartElement::undelete
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::undelete} instead
-     * @return string error message (empty message if no errors);
-     */
-    final public function revive()
-    {
-        deprecatedFunction();
-        return $this->undelete();
-    }
+
 
     /**
      * To restore a document which is in the trash

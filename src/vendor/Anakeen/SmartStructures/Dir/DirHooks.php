@@ -966,7 +966,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
      */
     public function deleteRecursive()
     {
-        $err = $this->predocdelete(); // test before try recursive deletion
+        $err = $this->controlDeleteAccess(); // test before try recursive deletion
         if ($err != "") {
             return $err;
         }
