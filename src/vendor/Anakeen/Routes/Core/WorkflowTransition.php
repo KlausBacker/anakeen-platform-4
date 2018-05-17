@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Router\URLUtils;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 use Anakeen\Router\Exception;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
@@ -44,7 +44,7 @@ class WorkflowTransition extends WorkflowState
         /**
          * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $workflow
          */
-        $this->workflow = DocManager::getDocument($this->_document->wid);
+        $this->workflow = SEManager::getDocument($this->_document->wid);
         $this->workflow->set($this->_document);
     }
 

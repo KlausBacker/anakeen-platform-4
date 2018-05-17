@@ -94,8 +94,8 @@ class CheckProfil extends CheckData
     private function checkUnknow()
     {
         if ($this->prfName) {
-            \Anakeen\Core\DocManager::cache()->clear();
-            $this->profil = \Anakeen\Core\DocManager::getDocument($this->prfName);
+            \Anakeen\Core\SEManager::cache()->clear();
+            $this->profil = \Anakeen\Core\SEManager::getDocument($this->prfName);
             if (!$this->profil || !$this->profil->isAlive()) {
                 $this->addError(ErrorCode::getError('PRFL0002', $this->prfName));
             }
@@ -107,7 +107,7 @@ class CheckProfil extends CheckData
     private function checkIsACompatibleProfil()
     {
         if ($this->docName) {
-            $doc =  \Anakeen\Core\DocManager::getDocument($this->docName);
+            $doc =  \Anakeen\Core\SEManager::getDocument($this->docName);
             if (!$doc || !$doc->isAlive()) {
                 $this->addError(ErrorCode::getError('PRFL0003', $this->docName));
             } else {
@@ -183,7 +183,7 @@ class CheckProfil extends CheckData
                 break;
 
             case ':useDocument':
-                $tu =  \Anakeen\Core\DocManager::getRawDocument($value);
+                $tu =  \Anakeen\Core\SEManager::getRawDocument($value);
                 if ($tu) {
                     $findUser = ($tu["us_whatid"] != '');
                 }
@@ -199,7 +199,7 @@ class CheckProfil extends CheckData
                     $findUser = \Anakeen\Core\Account::getDisplayName($reference);
                 } else {
                     // search document
-                    $tu = \Anakeen\Core\DocManager::getRawDocument($reference);
+                    $tu = \Anakeen\Core\SEManager::getRawDocument($reference);
                     if ($tu) {
                         $findUser = ($tu["us_whatid"] != '');
                     }
@@ -239,7 +239,7 @@ class CheckProfil extends CheckData
     {
         $dynName = $this->profil->getRawValue("dpdoc_famid");
         if (!$this->dynDoc) {
-            $this->dynDoc =  \Anakeen\Core\DocManager::getDocument($dynName);
+            $this->dynDoc =  \Anakeen\Core\SEManager::getDocument($dynName);
         }
         if (!$this->dynDoc || !$this->dynDoc->isAlive()) {
             $this->addError(ErrorCode::getError('PRFL0203', $dynName, $this->prfName));

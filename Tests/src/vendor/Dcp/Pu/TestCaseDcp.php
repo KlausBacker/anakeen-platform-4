@@ -154,7 +154,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     protected static function resetDocumentCache()
     {
-        \Anakeen\Core\DocManager::cache()->clear();
+        \Anakeen\Core\SEManager::cache()->clear();
     }
 
     /**

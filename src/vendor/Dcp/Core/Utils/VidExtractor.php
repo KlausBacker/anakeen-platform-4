@@ -6,7 +6,7 @@
 
 namespace Dcp\Core\Utils;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Dcp\Core\Exception;
 
 /**
@@ -37,7 +37,7 @@ class VidExtractor
             }
             $fileAttrIdList = array();
 
-            $doc = DocManager::getDocument($raw['id']);
+            $doc = SEManager::getDocument($raw['id']);
             if (!is_object($doc)) {
                 throw new Exception('VIDEXTRACTOR0003', $raw['id']);
             }

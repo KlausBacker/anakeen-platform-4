@@ -10,7 +10,7 @@ $loader = require __DIR__ . '/lib/vendor/autoload.php';
 $loader->addPsr4('Anakeen\\', __DIR__ . '/');
 $loader->addPsr4('Dcp\\', __DIR__ . '/../Dcp/');
 // Load generated SmartStrucure classes
-$loader->addPsr4('SmartStructure\\', __DIR__ . '/../../SmartClasses/SmartStructure/');
+$loader->addPsr4('SmartStructure\\', __DIR__ . '/../../'.\Anakeen\Core\Settings::DocumentGenDirectory.'/SmartStructure/');
 
 
 // Add Legacy Autoloader

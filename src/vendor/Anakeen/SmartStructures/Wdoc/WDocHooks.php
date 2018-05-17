@@ -7,6 +7,7 @@
 namespace Anakeen\SmartStructures\Wdoc;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\SmartHooks;
 use Anakeen\SmartStructures\Timer\TimerHooks;
 use Dcp\Exception;
 
@@ -107,7 +108,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         if ($newstate != "") {
             $profid = $this->getRawValue($this->_Aid("_ID", $newstate));
             if (!is_numeric($profid)) {
-                $profid = \Anakeen\Core\DocManager::getIdFromName($profid);
+                $profid = \Anakeen\Core\SEManager::getIdFromName($profid);
             }
             if ($profid > 0) {
                 // change only if new \profil
@@ -206,7 +207,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         if ($newstate != "") {
             $cvid = ($this->getRawValue($this->_Aid("_CVID", $newstate)));
             if (!is_numeric($cvid)) {
-                $cvid = \Anakeen\Core\DocManager::getIdFromName($cvid);
+                $cvid = \Anakeen\Core\SEManager::getIdFromName($cvid);
             }
             if ($cvid > 0) {
                 // change only if set
@@ -1320,26 +1321,33 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         }
         return $err;
     }
-    /**
-     * affect action label
-     */
-    public function postStore()
+
+
+    public function registerHooks()
     {
-        foreach ($this->stateactivity as $k => $v) {
-            $this->setValue($this->_Aid("_ACTIVITYLABEL", $k), $v);
-        }
-        $this->getStates();
-        foreach ($this->states as $k => $state) {
-            $allo = trim($this->getRawValue($this->_Aid("_AFFECTREF", $state)));
-            if (!$allo) {
-                $this->removeArrayRow($this->_Aid("_T_AFFECT", $state), 0);
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            /**
+             * affect action label
+             */
+            foreach ($this->stateactivity as $k => $v) {
+                $this->setValue($this->_Aid("_ACTIVITYLABEL", $k), $v);
             }
-        }
-        
-        if ($this->isChanged()) {
-            $this->modify();
-        }
+            $this->getStates();
+            foreach ($this->states as $k => $state) {
+                $allo = trim($this->getRawValue($this->_Aid("_AFFECTREF", $state)));
+                if (!$allo) {
+                    $this->removeArrayRow($this->_Aid("_T_AFFECT", $state), 0);
+                }
+            }
+
+            if ($this->isChanged()) {
+                $this->modify();
+            }
+        });
     }
+
+
     /**
      * get value of instanced document
      * @param string $attrid attribute identifier

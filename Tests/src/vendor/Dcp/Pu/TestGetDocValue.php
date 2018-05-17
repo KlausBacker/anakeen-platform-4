@@ -31,7 +31,7 @@ class TestGetDocValue extends TestCaseDcpCommonFamily
     {
         $d = createDoc(self::$dbaccess, $this->famName);
         $this->assertTrue(is_object($d) , sprintf("cannot create %s document", $this->famName));
-        $docid = \Anakeen\Core\DocManager::getIdFromName($docName);
+        $docid = \Anakeen\Core\SEManager::getIdFromName($docName);
         $value = $d->getDocValue($docid, $attrid);
         
         $this->assertEquals($expectValue, $value, "getDocValue $attrid wrong value");

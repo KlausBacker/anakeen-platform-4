@@ -4,7 +4,7 @@ namespace Anakeen\Core;
 
 use Anakeen\Core\DocManager\Exception;
 
-class DocManager
+class SEManager
 {
     /**
      * @var \Anakeen\Core\DocManager\MemoryCache $localCache
@@ -28,7 +28,6 @@ class DocManager
     public static function getDocument($documentIdentifier, $latest = true, $useCache = true)
     {
         $id = self::getIdentifier($documentIdentifier, $latest);
-
         if ($id > 0) {
             if ($useCache && self::cache()->isDocumentIdInCache($id)) {
                 $cacheDocument = self::cache()->getDocumentFromCache($id);

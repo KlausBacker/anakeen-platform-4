@@ -6,7 +6,7 @@
 
 namespace Anakeen\Core\Internal;
 
-use \Anakeen\Core\DocManager;
+use \Anakeen\Core\SEManager;
 
 /**
  * Format document list to be easily used in
@@ -658,7 +658,7 @@ class FormatCollection
     protected function getNoteData(\Anakeen\Core\Internal\SmartElement $doc)
     {
         if ($doc->postitid > 0) {
-            $note = DocManager::getDocument($doc->postitid);
+            $note = SEManager::getDocument($doc->postitid);
             return array(
                 "id" => intval($note->initid),
                 "title" => $note->getTitle(),
@@ -675,7 +675,7 @@ class FormatCollection
     protected function getWorkflowData(\Anakeen\Core\Internal\SmartElement $doc)
     {
         if ($doc->wid > 0) {
-            $workflow = DocManager::getDocument($doc->wid);
+            $workflow = SEManager::getDocument($doc->wid);
             return array(
                 "id" => intval($workflow->initid),
                 "title" => $workflow->getTitle(),
@@ -763,7 +763,7 @@ class FormatCollection
                     "title" => $doc->getTitle()
                 );
                 if ($doc->dprofid > 0) {
-                    $profil = DocManager::getDocument($doc->dprofid);
+                    $profil = SEManager::getDocument($doc->dprofid);
                     $info["profil"]["reference"] = array(
                         "id" => intval($profil->initid),
                         "icon" => $profil->getIcon("", $this->familyIconSize),
@@ -773,7 +773,7 @@ class FormatCollection
                     $info["profil"]["type"] = "dynamic";
                 }
             } else {
-                $profil = DocManager::getDocument(abs($doc->profid));
+                $profil = SEManager::getDocument(abs($doc->profid));
                 $info["profil"] = array(
                     "id" => intval($profil->initid),
                     "icon" => $profil->getIcon("", $this->familyIconSize),
@@ -796,7 +796,7 @@ class FormatCollection
     protected function getViewControllerData(\Anakeen\Core\Internal\SmartElement $doc)
     {
         if ($doc->cvid > 0) {
-            $cv = DocManager::getDocument($doc->cvid);
+            $cv = SEManager::getDocument($doc->cvid);
             return array(
                 "id" => intval($cv->initid),
 

@@ -6,7 +6,7 @@
 
 namespace Dcp;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 class ExportXmlDocument
 {
@@ -267,7 +267,7 @@ class ExportXmlDocument
                 if (!$v) {
                     return sprintf('<%s xsi:nil="true"/>', $attribute->id);
                 } else {
-                    $info = DocManager::getRawData($v, array(
+                    $info = SEManager::getRawData($v, array(
                         "title",
                         "name",
                         "id",
@@ -322,7 +322,7 @@ class ExportXmlDocument
                             $mId = array();
                             $foundName = false;
                             foreach ($tids as $id) {
-                                $lName = \Anakeen\Core\DocManager::getNameFromId($id);
+                                $lName = \Anakeen\Core\SEManager::getNameFromId($id);
                                 $mName[] = $lName;
                                 $mId[] = $id;
                                 if ($lName) {
@@ -398,7 +398,7 @@ class ExportXmlDocument
                                     $index = $matches[6] == "-1" ? 0 : $matches[6];
                                     $attrid = $matches[5];
                                 }
-                                $docimg = DocManager::getDocument($docid);
+                                $docimg = SEManager::getDocument($docid);
                                 $attr = $docimg->getAttribute($attrid);
                                 $tfiles = $docimg->vault_properties($attr);
                                 $f = $tfiles[$index];

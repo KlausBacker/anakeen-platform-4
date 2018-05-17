@@ -513,7 +513,7 @@ class ImportDocumentDescription
             }
             if ($this->tcr[$this->nLine]["err"] == "") {
                 if (($data[3] == "") || ($data[3] == "-")) {
-                    $this->doc = new \Anakeen\Core\SmartStructure($this->dbaccess, \Anakeen\Core\DocManager::getFamilyIdFromName($data[5]), '', 0, false);
+                    $this->doc = new \Anakeen\Core\SmartStructure($this->dbaccess, \Anakeen\Core\SEManager::getFamilyIdFromName($data[5]), '', 0, false);
                 } else {
                     $this->doc = new \Anakeen\Core\SmartStructure($this->dbaccess, $data[3], '', 0, false);
                 }
@@ -530,7 +530,7 @@ class ImportDocumentDescription
                         if (is_numeric($data[1])) {
                             $this->doc->fromid = $data[1];
                         } else {
-                            $this->doc->fromid = \Anakeen\Core\DocManager::getFamilyIdFromName($data[1]);
+                            $this->doc->fromid = \Anakeen\Core\SEManager::getFamilyIdFromName($data[1]);
                         }
                         if (isset($data[5])) {
                             $this->doc->name = $data[5];
@@ -552,7 +552,7 @@ class ImportDocumentDescription
                     } elseif (is_numeric($data[1])) {
                         $this->doc->fromid = $data[1];
                     } else {
-                        $this->doc->fromid = \Anakeen\Core\DocManager::getFamilyIdFromName($data[1]);
+                        $this->doc->fromid = \Anakeen\Core\SEManager::getFamilyIdFromName($data[1]);
                     }
                 }
                 if ($data[2] && ($data[2] != '-')) {
@@ -662,7 +662,7 @@ class ImportDocumentDescription
                             }
                         }
                         if (!$err) {
-                            $this->doc->postImport();
+                            $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::POSTIMPORT);
                         }
                     }
 
@@ -714,7 +714,7 @@ class ImportDocumentDescription
                 $this->doc->changeIcon($this->familyIcon);
             }
             if (!$this->tcr[$this->nLine]["err"]) {
-                $this->tcr[$this->nLine]["msg"] .= $this->doc->postImport();
+                $this->tcr[$this->nLine]["msg"] .=  $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::POSTIMPORT);
                 $check->checkMaxAttributes($this->doc);
                 $this->tcr[$this->nLine]["err"] = $check->getErrors();
                 if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
@@ -728,7 +728,7 @@ class ImportDocumentDescription
 
             $this->nbDoc++;
 
-            \Anakeen\Core\DocManager::cache()->removeDocumentById($this->doc->id);
+            \Anakeen\Core\SEManager::cache()->removeDocumentById($this->doc->id);
             if ($this->tcr[$this->nLine]["err"]) {
                 $this->tcr[$this->beginLine]["action"] = "ignored";
                 $this->tcr[$this->nLine]["action"] = "ignored";
@@ -906,7 +906,7 @@ class ImportDocumentDescription
         if (is_numeric($data[1])) {
             $fromid = $data[1];
         } else {
-            $fromid = \Anakeen\Core\DocManager::getFamilyIdFromName($data[1]);
+            $fromid = \Anakeen\Core\SEManager::getFamilyIdFromName($data[1]);
         }
 
         if (isset($this->colKeys[$fromid])) {
@@ -1162,7 +1162,7 @@ class ImportDocumentDescription
             } elseif (is_numeric($data[1])) {
                 $fldid = $data[1];
             } else {
-                $fldid = \Anakeen\Core\DocManager::getIdFromName($data[1]);
+                $fldid = \Anakeen\Core\SEManager::getIdFromName($data[1]);
             }
             $this->doc->dfldid = $fldid;
             $this->tcr[$this->nLine]["msg"] .= sprintf(_("set default folder to '%s'"), $data[1]);
@@ -1193,7 +1193,7 @@ class ImportDocumentDescription
             if (is_numeric($data[1])) {
                 $cfldid = $data[1];
             } else {
-                $cfldid = \Anakeen\Core\DocManager::getIdFromName($data[1]);
+                $cfldid = \Anakeen\Core\SEManager::getIdFromName($data[1]);
             }
             $this->doc->cfldid = $cfldid;
             $this->tcr[$this->nLine]["msg"] = sprintf(_("set primary folder to '%s'"), $data[1]);
@@ -1229,7 +1229,7 @@ class ImportDocumentDescription
         if (is_numeric($data[1])) {
             $wid = $data[1];
         } else {
-            $wid = \Anakeen\Core\DocManager::getIdFromName($data[1]);
+            $wid = \Anakeen\Core\SEManager::getIdFromName($data[1]);
         }
         if ($data[1]) {
             try {
@@ -1282,7 +1282,7 @@ class ImportDocumentDescription
         if (is_numeric($data[1])) {
             $cvid = $data[1];
         } else {
-            $cvid = \Anakeen\Core\DocManager::getIdFromName($data[1]);
+            $cvid = \Anakeen\Core\SEManager::getIdFromName($data[1]);
         }
 
         if ($data[1]) {
@@ -1422,7 +1422,7 @@ class ImportDocumentDescription
         if (is_numeric($data[1])) {
             $pid = $data[1];
         } else {
-            $pid = \Anakeen\Core\DocManager::getIdFromName($data[1], 3);
+            $pid = \Anakeen\Core\SEManager::getIdFromName($data[1], 3);
         }
         $this->doc->cprofid = $pid;
         $this->tcr[$this->nLine]["msg"] = sprintf(_("change default creation profile id  to '%s'"), $data[1]);
@@ -1453,7 +1453,7 @@ class ImportDocumentDescription
         if (is_numeric($data[1])) {
             $pid = $data[1];
         } else {
-            $pid = \Anakeen\Core\DocManager::getIdFromName($data[1]);
+            $pid = \Anakeen\Core\SEManager::getIdFromName($data[1]);
         }
         $this->doc->accessControl()->setProfil($pid); // change profile
         $this->tcr[$this->nLine]["msg"] = sprintf(_("change profile id  to '%s'"), $data[1]);
@@ -1568,8 +1568,8 @@ class ImportDocumentDescription
         if (ctype_digit(trim($data[1]))) {
             $wid = trim($data[1]);
         } else {
-            $pid = \Anakeen\Core\DocManager::getIdFromName(trim($data[1]));
-            $tdoc = \Anakeen\Core\DocManager::getRawData($pid, ["us_whatid"]);
+            $pid = \Anakeen\Core\SEManager::getIdFromName(trim($data[1]));
+            $tdoc = \Anakeen\Core\SEManager::getRawData($pid, ["us_whatid"]);
             $wid = $tdoc["us_whatid"];
         }
         $idapp = $action->parent->GetIdFromName($data[2]);
@@ -1696,17 +1696,17 @@ class ImportDocumentDescription
         if (ctype_digit(trim($data[1]))) {
             $pid = trim($data[1]);
         } else {
-            $pid = \Anakeen\Core\DocManager::getIdFromName(trim($data[1]));
+            $pid = \Anakeen\Core\SEManager::getIdFromName(trim($data[1]));
         }
 
         if (!($pid > 0)) {
             $this->tcr[$this->nLine]["err"] = sprintf(_("profil id unkonow %s"), $data[1]);
         } else {
-            \Anakeen\Core\DocManager::cache()->clear();
+            \Anakeen\Core\SEManager::cache()->clear();
             /**
              * @var \Anakeen\Core\Internal\SmartElement $pdoc
              */
-            $pdoc = Anakeen\Core\DocManager::getDocument($pid);
+            $pdoc = Anakeen\Core\SEManager::getDocument($pid);
             if ($pdoc && $pdoc->isAlive()) {
                 $this->tcr[$this->nLine]["msg"] = sprintf(_("change profil %s"), $data[1]);
                 $this->tcr[$this->nLine]["action"] = "modprofil";
@@ -1719,7 +1719,7 @@ class ImportDocumentDescription
                 }
 
                 if (($fpid != "") && (!is_numeric($fpid))) {
-                    $fpid = \Anakeen\Core\DocManager::getIdFromName($fpid);
+                    $fpid = \Anakeen\Core\SEManager::getIdFromName($fpid);
                 }
                 if ($fpid != "") {
                     // profil related of other profil
@@ -1861,7 +1861,7 @@ class ImportDocumentDescription
         if (is_numeric($data[1])) {
             $orfromid = $data[1];
         } else {
-            $orfromid = \Anakeen\Core\DocManager::getFamilyIdFromName($data[1]);
+            $orfromid = \Anakeen\Core\SEManager::getFamilyIdFromName($data[1]);
         }
 
         $this->colKeys[$orfromid] = getOrder($data);
@@ -1902,7 +1902,7 @@ class ImportDocumentDescription
         if (is_numeric($data[1])) {
             $orfromid = $data[1];
         } else {
-            $orfromid = \Anakeen\Core\DocManager::getFamilyIdFromName($data[1]);
+            $orfromid = \Anakeen\Core\SEManager::getFamilyIdFromName($data[1]);
         }
 
         $this->colOrders[$orfromid] = getOrder($data);
@@ -1920,7 +1920,7 @@ class ImportDocumentDescription
         if (is_numeric($data[1])) {
             $fid = $data[1];
         } else {
-            $fid = \Anakeen\Core\DocManager::getFamilyIdFromName($data[1]);
+            $fid = \Anakeen\Core\SEManager::getFamilyIdFromName($data[1]);
         }
         $aid = (trim($data[2]));
         $index = $data[5];
@@ -2198,7 +2198,7 @@ class ImportDocumentDescription
         $err = '';
         $fiid = $data[3];
         if (!is_numeric($fiid)) {
-            $fiid = \Anakeen\Core\DocManager::getFamilyIdFromName($fiid);
+            $fiid = \Anakeen\Core\SEManager::getFamilyIdFromName($fiid);
         }
         $fi = new_Doc($this->dbaccess, $fiid);
         if ($fi->isAffected()) {

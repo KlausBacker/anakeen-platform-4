@@ -10,6 +10,7 @@
  * @version $Id: Class.SearchDoc.php,v 1.8 2008/08/14 14:20:25 eric Exp $
  * @package FDL
  */
+
 /**
  */
 
@@ -33,8 +34,6 @@ use \Anakeen\SmartStructures\Dir\DirHooks;
  * @endcode
  * @class SearchDoc.
  */
-
-
 class SearchDoc
 {
     /**
@@ -123,7 +122,7 @@ class SearchDoc
     /**
      *
      * Iterator document
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     private $iDoc = null;
     /**
@@ -204,7 +203,7 @@ class SearchDoc
                 $sign = -1;
                 $id = abs($id);
             }
-            $fam = Anakeen\Core\DocManager::getFamily($id);
+            $fam = Anakeen\Core\SEManager::getFamily($id);
             if ($fam && $fam->isAlive()) {
                 return $sign * (int)$fam->id;
             }
@@ -216,7 +215,7 @@ class SearchDoc
                 $sign = -1;
                 $id = substr($id, 1);
             }
-            $fam = Anakeen\Core\DocManager::getFamily($id);
+            $fam = Anakeen\Core\SEManager::getFamily($id);
             if ($fam && $fam->isAlive()) {
                 return $sign * (int)$fam->id;
             }
@@ -239,9 +238,9 @@ class SearchDoc
     public function onlyCount()
     {
         /**  @var DirHooks $fld */
-        $fld = Anakeen\Core\DocManager::getDocument($this->dirid);
+        $fld = Anakeen\Core\SEManager::getDocument($this->dirid);
         $userid = $this->userid;
-        if (!$fld || $fld->fromid != \Anakeen\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
+        if (!$fld || $fld->fromid != \Anakeen\Core\SEManager::getFamilyIdFromName("SSEARCH")) {
             $this->recursiveSearchInit();
             $tqsql = $this->getQueries();
             $this->debuginfo["query"] = $tqsql[0];
@@ -307,7 +306,7 @@ class SearchDoc
         if ($memberOf === null) {
             return '';
         }
-        $memberOf[] = 0;
+
         $memberOf[] = $uid;
         return '{' . implode(',', $memberOf) . '}';
     }
@@ -469,7 +468,7 @@ class SearchDoc
     public function search()
     {
         if (count($this->filters) > 0 && $this->dirid > 0) {
-            $dir = Anakeen\Core\DocManager::getDocument($this->dirid);
+            $dir = Anakeen\Core\SEManager::getDocument($this->dirid);
             if ($dir && $dir->isAlive() && is_a($dir, \SmartStructure\Ssearch::class)) {
                 // Searching on a "Specialized search" collection and specifying additional filters is not supported
                 throw new \Dcp\SearchDoc\Exception("SD0008");
@@ -484,7 +483,7 @@ class SearchDoc
         }
         if ($this->fromid) {
             if (!is_numeric($this->fromid)) {
-                $fromid = \Anakeen\Core\DocManager::getFamilyIdFromName($this->fromid);
+                $fromid = \Anakeen\Core\SEManager::getFamilyIdFromName($this->fromid);
             } else {
                 if ($this->fromid != -1) {
                     // test if it is a family
@@ -523,8 +522,8 @@ class SearchDoc
         if ($this->mode == "ITEM") {
             if ($this->dirid) {
                 // change search mode because ITEM mode not supported for Specailized searches
-                $fld = Anakeen\Core\DocManager::getDocument($this->dirid);
-                if ($fld->fromid == \Anakeen\Core\DocManager::getFamilyIdFromName("SSEARCH")) {
+                $fld = Anakeen\Core\SEManager::getDocument($this->dirid);
+                if ($fld->fromid == \Anakeen\Core\SEManager::getFamilyIdFromName("SSEARCH")) {
                     $this->searchmode = "TABLE";
                 }
             }
@@ -591,7 +590,7 @@ class SearchDoc
     public function returnsOnly(array $returns)
     {
         if ($this->fromid) {
-            $fdoc = \Anakeen\Core\DocManager::createTemporaryDocument($this->fromid, false);
+            $fdoc = \Anakeen\Core\SEManager::createTemporaryDocument($this->fromid, false);
             $fields = array_merge($fdoc->fields, $fdoc->sup_fields);
         } else {
             $fdoc = new \Anakeen\Core\Internal\SmartElement();
@@ -621,7 +620,7 @@ class SearchDoc
             return $this->returnsFields;
         }
         if ($this->fromid) {
-            $fdoc = Anakeen\Core\DocManager::createTemporaryDocument($this->fromid, false);
+            $fdoc = Anakeen\Core\SEManager::createTemporaryDocument($this->fromid, false);
             if ($fdoc->isAlive()) {
                 return array_merge($fdoc->fields, $fdoc->sup_fields);
             }
@@ -749,7 +748,7 @@ class SearchDoc
      */
     public function useCollection($dirid)
     {
-        $dir = Anakeen\Core\DocManager::getDocument($dirid);
+        $dir = Anakeen\Core\SEManager::getDocument($dirid);
         if ($dir && $dir->isAlive()) {
             $this->dirid = $dir->initid;
             $this->originalDirId = $this->dirid;
@@ -878,7 +877,7 @@ class SearchDoc
             $fromid = "family";
         } else {
             if (!isset($this->cacheDocuments[$fromid])) {
-                $this->cacheDocuments[$fromid] = Anakeen\Core\DocManager::createDocument($fromid, false, false);
+                $this->cacheDocuments[$fromid] = Anakeen\Core\SEManager::createDocument($fromid, false, false);
                 if (empty($this->cacheDocuments[$fromid])) {
                     throw new Exception(sprintf('Document "%s" has an unknow family "%s"', $v["id"], $fromid));
                 }
@@ -913,7 +912,7 @@ class SearchDoc
             }
             if (preg_match('/(\s|^|\()(?P<relname>[a-z0-9_\-]+)\./', $filter, $reg)) {
                 // when use join filter like "zoo_espece.es_classe='Boo'"
-                $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($reg['relname']);
+                $famid = \Anakeen\Core\SEManager::getFamilyIdFromName($reg['relname']);
                 if ($famid > 0) {
                     $filter = preg_replace('/(\s|^|\()(?P<relname>[a-z0-9_\-]+)\./', '${1}doc' . $famid . '.', $filter);
                 }
@@ -1203,11 +1202,11 @@ class SearchDoc
      * return a document part where general filter term is found
      *
      * @see SearchDoc::addGeneralFilter
-     * @param \Anakeen\Core\Internal\SmartElement    $doc      document to analyze
-     * @param string $beginTag delimiter begin tag
-     * @param string $endTag   delimiter end tag
-     * @param int    $limit    file size limit to analyze
-     * @param bool   $wordMode
+     * @param \Anakeen\Core\Internal\SmartElement $doc      document to analyze
+     * @param string                              $beginTag delimiter begin tag
+     * @param string                              $endTag   delimiter end tag
+     * @param int                                 $limit    file size limit to analyze
+     * @param bool                                $wordMode
      * @return mixed
      * @throws \Dcp\Db\Exception
      */
@@ -1341,17 +1340,6 @@ class SearchDoc
     }
 
     /**
-     * the return of ::search will be array of values
-     * @deprecated use setObjectReturn(false) instead
-     * @return void
-     */
-    public function setValueReturn()
-    {
-        deprecatedFunction();
-        $this->mode = "TABLE";
-    }
-
-    /**
      * add a filter to not return confidential document if current user cannot see it
      * @api add a filter to not return confidential
      * @param boolean $exclude set to true to exclude confidential
@@ -1361,7 +1349,11 @@ class SearchDoc
     {
         if ($exclude) {
             if ($this->userid != 1) {
-                $this->excludeFilter = sprintf("confidential is null or hasaprivilege('%s', profid,%d)", DocPerm::getMemberOfVector($this->userid), 1 << \Anakeen\Core\Internal\DocumentAccess::POS_CONF);
+                $this->excludeFilter = sprintf(
+                    "confidential is null or hasaprivilege('%s', profid,%d)",
+                    DocPerm::getMemberOfVector($this->userid),
+                    1 << \Anakeen\Core\Internal\DocumentAccess::POS_CONF
+                );
             }
         } else {
             $this->excludeFilter = '';
@@ -1377,7 +1369,7 @@ class SearchDoc
             /**
              * @var \Anakeen\SmartStructures\Search\SearchHooks $tmps
              */
-            $tmps = Anakeen\Core\DocManager::createTemporaryDocument("SEARCH");
+            $tmps = Anakeen\Core\SEManager::createTemporaryDocument("SEARCH");
             $tmps->setValue(\SmartStructure\Attributes\Search::se_famid, $this->fromid);
             $tmps->setValue(\SmartStructure\Attributes\Search::se_idfld, $this->originalDirId);
             $tmps->setValue(\SmartStructure\Attributes\Search::se_latest, "yes");
@@ -1415,7 +1407,7 @@ class SearchDoc
         $fromid = $normFromId;
         if (($fromid != "") && (!is_numeric($fromid))) {
             preg_match('/^(?P<sign>-?)(?P<fromid>.+)$/', trim($fromid), $m);
-            $fromid = $m['sign'] . \Anakeen\Core\DocManager::getFamilyIdFromName($m['fromid']);
+            $fromid = $m['sign'] . \Anakeen\Core\SEManager::getFamilyIdFromName($m['fromid']);
         }
         if ($this->only && strpos($fromid, '-') !== 0) {
             $fromid = '-' . $fromid;
@@ -1434,7 +1426,7 @@ class SearchDoc
                 if (DirLib::isSimpleFilter($sqlfilters) && (DirLib::familyNeedDocread($dbaccess, $fromid))) {
                     $table = "docread";
 
-                    $fdoc = Anakeen\Core\DocManager::getFamily($fromid);
+                    $fdoc = Anakeen\Core\SEManager::getFamily($fromid);
                     $sqlfilters[-4] = \Anakeen\Core\DbManager::getSqlOrCond(array_merge(array(
                         $fromid
                     ), array_keys($fdoc->GetChildFam())), "fromid", true);
@@ -1450,7 +1442,7 @@ class SearchDoc
         $maintable = $table; // can use join only on search
         if ($join) {
             if (preg_match('/(?P<attr>[a-z0-9_\-:]+)\s*(?P<operator>=|<|>|<=|>=)\s*(?P<family>[a-z0-9_\-:]+)\((?P<family_attr>[^\)]*)\)/', $join, $reg)) {
-                $joinid = \Anakeen\Core\DocManager::getFamilyIdFromName($reg['family']);
+                $joinid = \Anakeen\Core\SEManager::getFamilyIdFromName($reg['family']);
                 $jointable = ($joinid) ? "doc" . $joinid : $reg['family'];
 
                 $sqlfilters[] = sprintf("%s.%s %s %s.%s", $table, $reg['attr'], $reg['operator'], $jointable, $reg['family_attr']); // "id = dochisto(id)";
@@ -1505,7 +1497,7 @@ class SearchDoc
             // in a specific folder
             //-------------------------------------------
 
-            $fld = Anakeen\Core\DocManager::getDocument($dirid);
+            $fld = Anakeen\Core\SEManager::getDocument($dirid);
             if ($fld->defDoctype != 'S') {
                 /**
                  * @var DirHooks $fld
@@ -1582,7 +1574,7 @@ class SearchDoc
                     switch ($ldocsearch[0]["qtype"]) {
                         case "M": // complex query
                             // $sqlM=$ldocsearch[0]["query"];
-                            $fld = Anakeen\Core\DocManager::getDocument($dirid);
+                            $fld = Anakeen\Core\SEManager::getDocument($dirid);
                             /**
                              * @var \Anakeen\SmartStructures\Search\SearchHooks $fld
                              */
@@ -1703,7 +1695,7 @@ class SearchDoc
      */
     private function _getAttributeFromColumn($fromid, $column)
     {
-        $fam = Anakeen\Core\DocManager::getFamily($fromid);
+        $fam = Anakeen\Core\SEManager::getFamily($fromid);
         if (!$fam) {
             return false;
         }

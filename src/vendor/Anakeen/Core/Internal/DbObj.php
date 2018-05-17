@@ -323,7 +323,7 @@ class DbObj
     /**
      * @see affect
      */
-    public function Complete()
+    public function complete()
     {
         // This function should be replaced by the Child Class
     }

@@ -36,12 +36,12 @@ class TestGetDocTitle extends TestCaseDcpCommonFamily
             $expectedValues = array();
             $expetedArray = explode(" ", $expectValue);
             foreach ($expetedArray as $expected) {
-                $expectedValues[] = \Anakeen\Core\DocManager::getIdFromName($expected);
+                $expectedValues[] = \Anakeen\Core\SEManager::getIdFromName($expected);
             }
             $expectValue = implode(" ", $expectedValues);
         }
         
-        $value = $d->getTitle(\Anakeen\Core\DocManager::getIdFromName($docName));
+        $value = $d->getTitle(\Anakeen\Core\SEManager::getIdFromName($docName));
         $this->assertEquals($expectValue, $value, "getTitle wrong value");
     }
     

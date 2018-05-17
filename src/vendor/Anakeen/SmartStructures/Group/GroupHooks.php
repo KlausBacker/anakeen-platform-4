@@ -9,21 +9,26 @@
  */
 namespace Anakeen\SmartStructures\Group;
 
+use Anakeen\SmartHooks;
+
 class GroupHooks extends \SmartStructure\Dir
 {
-    /*
-     * @end-method-ignore
-    */
+
     /**
      * reconstruct mail group & recompute parent group
      *
-     * @return string error message, if no error empty string
+     * @return void
      */
-    public function postStore()
+    public function registerHooks()
     {
-        $err = $this->SetGroupMail();
-        $this->refreshParentGroup();
-        return $err;
+        parent::registerHooks();
+        $this->getHooks()->removeListeners(SmartHooks::POSTSTORE);
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            //* reconstruct mail group & recompute parent group
+            $err = $this->SetGroupMail();
+            $this->refreshParentGroup();
+            return $err;
+        });
     }
 
     /**
@@ -135,7 +140,7 @@ class GroupHooks extends \SmartStructure\Dir
         
         $sqlfilters[] = sprintf("in_textlist(grp_idgroup,'%s')", $this->id);
         // $sqlfilters[]="fromid !=".getFamIdFromName($this->dbaccess,"IGROUP");
-        $tgroup = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($this->dbaccess, 0, "0", "ALL", $sqlfilters, 1, "LIST", \Anakeen\Core\DocManager::getFamilyIdFromName("GROUP"));
+        $tgroup = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($this->dbaccess, 0, "0", "ALL", $sqlfilters, 1, "LIST", \Anakeen\Core\SEManager::getFamilyIdFromName("GROUP"));
         
         $tpgroup = array();
         $tidpgroup = array();

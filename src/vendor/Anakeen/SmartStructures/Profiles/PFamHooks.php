@@ -7,6 +7,8 @@
 
 namespace Anakeen\SmartStructures\Profiles;
 
+use Anakeen\SmartHooks;
+
 class PFamHooks extends \Anakeen\Core\Internal\SmartElement
 
 {
@@ -23,12 +25,15 @@ class PFamHooks extends \Anakeen\Core\Internal\SmartElement
     public $defProfFamId = FAM_ACCESSFAM;
     
 
-    
-    public function preImport(array $extra = array())
+    public function registerHooks()
     {
-        if ($this->getRawValue("dpdoc_famid")) {
-            return \ErrorCode::getError('PRFL0202', $this->getRawValue('ba_title'));
-        }
-        return '';
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::PREIMPORT, function () {
+            if ($this->getRawValue("dpdoc_famid")) {
+                return \ErrorCode::getError('PRFL0202', $this->getRawValue('ba_title'));
+            }
+            return '';
+        });
     }
+
 }

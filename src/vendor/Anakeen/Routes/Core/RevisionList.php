@@ -2,7 +2,7 @@
 
 namespace Anakeen\Routes\Core;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 use Anakeen\Router\URLUtils;
 use Anakeen\Router\Exception;
@@ -33,7 +33,7 @@ class RevisionList extends DocumentList
 
         $this->documentId = $args["docid"];
 
-        $this->_document = DocManager::getDocument($this->documentId);
+        $this->_document = SEManager::getDocument($this->documentId);
         if (!$this->_document) {
             $exception = new Exception("CRUD0200", $this->documentId);
             $exception->setHttpStatus("404", "Document not found");

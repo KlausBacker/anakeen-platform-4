@@ -21,7 +21,7 @@ $usage->verify();
 
 if (($docid !== 0) && (!is_numeric($docid))) {
     $odocid = $docid;
-    $docid = \Anakeen\Core\DocManager::getFamilyIdFromName($docid);
+    $docid = \Anakeen\Core\SEManager::getFamilyIdFromName($docid);
     if (!$docid) {
         print sprintf(_("family %s not found") . "\n", $odocid);
         exit(1);
@@ -70,7 +70,7 @@ if ($query->nb > 0) {
             /**
              * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
-            $wdoc = Anakeen\Core\DocManager::createDocument($v["id"]);
+            $wdoc = Anakeen\Core\SEManager::createDocument($v["id"]);
             $wdoc->CreateProfileAttribute(); // add special attribute for workflow
             \Dcp\FamilyImport::activateTrigger("", $v["id"]);
         }

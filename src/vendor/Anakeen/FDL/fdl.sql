@@ -22,7 +22,7 @@ begin
         -- search in end
        if (not rvalue) then	
           wt := E'\n'||arg_v;
-          rvalue := (position(wt in arg_tl) = (char_length(arg_tl)-char_length(arg_v))) and (position(wt in arg_tl) > 0);	
+          rvalue := (position(wt in arg_tl) = (char_length(arg_tl)-char_length(arg_v))) and (position(wt in arg_tl) > 0);
         end if;
      end if;
   end if;
@@ -79,7 +79,7 @@ declare
   uperm int;
 begin
    if (a_profid <= 0) then
-     return -1; -- it is no controlled object
+     return 0; -- it is no controlled object so no access
    end if;
    -- can use intset(userid) instead of ('{'||userid||'}') if intarray module installed
    select into uperm bit_or(upacl) from docperm where docid=a_profid and ('{'||userid||'}')::int[] && a_accounts;

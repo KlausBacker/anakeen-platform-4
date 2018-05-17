@@ -23,7 +23,7 @@ class TestGetSortAttributes extends TestCaseDcpCommonFamily
     public function test_getSortAttributes($data)
     {
         if (!is_numeric($data['famid'])) {
-            $data['famid'] = \Anakeen\Core\DocManager::getIdFromName($data['famid']);
+            $data['famid'] = \Anakeen\Core\SEManager::getIdFromName($data['famid']);
         }
         
         $famdoc = new \Anakeen\Core\SmartStructure(self::$dbaccess, $data['famid']);

@@ -157,7 +157,7 @@ create unique index i_docenum on docenum(famid, attrid,  key);
     public static function getFamilyEnums($famId, $attrid)
     {
         if (!is_numeric($famId)) {
-            $famId = \Anakeen\Core\DocManager::getFamilyIdFromName($famId);
+            $famId = \Anakeen\Core\SEManager::getFamilyIdFromName($famId);
         }
         $attrid = strtolower($attrid);
         $sql = sprintf("select * from docenum where famid=%d and attrid='%s' order by eorder", $famId, pg_escape_string($attrid));
@@ -168,7 +168,7 @@ create unique index i_docenum on docenum(famid, attrid,  key);
     public static function getDisabledKeys($famId, $attrid)
     {
         if (!is_numeric($famId)) {
-            $famId = \Anakeen\Core\DocManager::getFamilyIdFromName($famId);
+            $famId = \Anakeen\Core\SEManager::getFamilyIdFromName($famId);
         }
         $attrid = strtolower($attrid);
         $sql = sprintf("select key from docenum where famid=%d and attrid='%s' and disabled", $famId, pg_escape_string($attrid));
@@ -202,7 +202,7 @@ create unique index i_docenum on docenum(famid, attrid,  key);
     public static function addEnum($famId, $attrid, EnumStructure $enumStruct)
     {
         if (!is_numeric($famId)) {
-            $famId = \Anakeen\Core\DocManager::getFamilyIdFromName($famId);
+            $famId = \Anakeen\Core\SEManager::getFamilyIdFromName($famId);
         }
         $attrid = strtolower($attrid);
         $enum = new DocEnum("", array(
@@ -241,7 +241,7 @@ create unique index i_docenum on docenum(famid, attrid,  key);
     public static function modifyEnum($famId, $attrid, EnumStructure $enumStruct)
     {
         if (!is_numeric($famId)) {
-            $famId = \Anakeen\Core\DocManager::getFamilyIdFromName($famId);
+            $famId = \Anakeen\Core\SEManager::getFamilyIdFromName($famId);
         }
         $attrid = strtolower($attrid);
         $enum = new DocEnum("", array(

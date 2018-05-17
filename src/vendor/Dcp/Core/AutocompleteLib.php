@@ -250,7 +250,7 @@ class AutocompleteLib
     {
         $r = \Anakeen\Core\ContextManager::getApplicationParam($aid);
         if ($r == "") {
-            $r = \Anakeen\Core\DocManager::getFamilyIdFromName($aid);
+            $r = \Anakeen\Core\SEManager::getFamilyIdFromName($aid);
         }
 
         return $r;

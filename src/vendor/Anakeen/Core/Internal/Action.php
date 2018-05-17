@@ -1,6 +1,9 @@
 <?php
 
+
 namespace Anakeen\Core\Internal;
+
+include_once("WHAT/Lib.Http.php");
 
 /**
  * Action class

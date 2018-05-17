@@ -35,11 +35,11 @@ class CheckCvid extends CheckData
     protected function checkCv()
     {
         if ($this->folderName) {
-            $d = \Anakeen\Core\DocManager::getDocument($this->folderName);
+            $d = \Anakeen\Core\SEManager::getDocument($this->folderName);
 
             if (!$d || !$d->isAlive()) {
                 $this->addError(ErrorCode::getError('CVID0001', $this->folderName, $this->doc->name));
-            } elseif (!is_a($d, \Anakeen\Core\DocManager::getFamilyClassName("CVDOC"))) {
+            } elseif (!is_a($d, \Anakeen\Core\SEManager::getFamilyClassName("CVDOC"))) {
                 $this->addError(ErrorCode::getError('CVID0002', $this->folderName, $this->doc->name));
             }
         }

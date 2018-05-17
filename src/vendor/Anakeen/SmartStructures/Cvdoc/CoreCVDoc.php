@@ -17,6 +17,7 @@ namespace Anakeen\SmartStructures\Cvdoc;
  * Control view Class
  */
 use Anakeen\Core\Internal\DocumentAccess;
+use Anakeen\SmartHooks;
 use \SmartStructure\Attributes\Cvdoc as MyAttributes;
 
 class CoreCVDoc extends \SmartStructure\Base
@@ -244,23 +245,23 @@ class CoreCVDoc extends \SmartStructure\Base
         }
         return $displayableViews;
     }
-    
-    public function preImport(array $extra = array())
+
+    public function registerHooks()
     {
-        return $this->verifyAllConstraints();
-    }
-    
-    public function postStore()
-    {
-        $ti = $this->getMultipleRawValues("CV_IDVIEW");
-        foreach ($ti as $k => $v) {
-            if ($v == "") {
-                $ti[$k] = "CV$k";
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            $ti = $this->getMultipleRawValues("CV_IDVIEW");
+            foreach ($ti as $k => $v) {
+                if ($v == "") {
+                    $ti[$k] = "CV$k";
+                }
             }
-        }
-        $this->setValue("CV_IDVIEW", $ti);
+            $this->setValue("CV_IDVIEW", $ti);
+        })->addListener(SmartHooks::PREIMPORT, function () {
+            return $this->verifyAllConstraints();
+        });
     }
-    
+
     public function docControl($aclname, $strict = false)
     {
         return \Anakeen\Core\Internal\SmartElement::control($aclname, $strict);

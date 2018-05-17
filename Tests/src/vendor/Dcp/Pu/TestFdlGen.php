@@ -6,7 +6,7 @@
 
 namespace Dcp\Pu;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 /**
  * @author  Anakeen
@@ -52,7 +52,7 @@ class TestFdlGen extends TestCaseDcpCommonFamily
                 $attrName,
                 $expectedValue,
                 $doc->fromid,
-                file_get_contents(DocManager::getDocumentClassFilename($doc->fromname))
+                file_get_contents(SEManager::getDocumentClassFilename($doc->fromname))
             )
         );
     }

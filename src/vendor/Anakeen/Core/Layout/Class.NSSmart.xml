@@ -33,7 +33,6 @@ class [PHPclassName] extends [DocParent] {
           if (isset($this->attributes->fields))  $this->fields += $this->attributes->fields;
         }
         parent::__construct($dbaccess, intval($id), $res, $dbid);
-        $this->postConstructor();
    }
 
    function SpecRefreshGen($onlyspec=false) {

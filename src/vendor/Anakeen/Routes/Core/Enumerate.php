@@ -8,7 +8,7 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Router\URLUtils;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
@@ -59,7 +59,7 @@ class Enumerate
         $this->enumid=$args["enum"];
         $this->familyName=$args["family"];
 
-        $this->family = DocManager::getFamily($this->familyName);
+        $this->family = SEManager::getFamily($this->familyName);
         if (!$this->family) {
             $exception = new Exception("CRUD0200", $this->familyName);
             $exception->setHttpStatus("404", "Family not found");

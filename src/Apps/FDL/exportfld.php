@@ -138,7 +138,7 @@ function exportfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $famid
         $action->exitError(_("no export folder specified"));
     }
 
-    $fld = Anakeen\Core\DocManager::getDocument($fldid);
+    $fld = Anakeen\Core\SEManager::getDocument($fldid);
     if ($famid == "") {
         $famid = GetHttpVars("famid");
     }

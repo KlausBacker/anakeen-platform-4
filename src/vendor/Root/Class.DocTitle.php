@@ -42,7 +42,7 @@ class DocTitle
         $isAdmin = ($uid == 1);
 
         if ($docid && !is_numeric($docid)) {
-            $docid = \Anakeen\Core\DocManager::getIdFromName($docid);
+            $docid = \Anakeen\Core\SEManager::getIdFromName($docid);
         }
         if (!$docid) {
             return null;

@@ -7,6 +7,8 @@
 
 namespace Anakeen\Core;
 
+use Anakeen\SmartHooks;
+
 class SmartStructure extends \Anakeen\SmartStructures\Profiles\PFamHooks
 {
     public $dbtable = "docfam";
@@ -103,10 +105,10 @@ create unique index idx_idfam on docfam(id);";
         parent::__construct($dbaccess, $id, $res, $dbid);
         $this->doctype = 'C';
         if ($include && ($this->id > 0) && ($this->isAffected())) {
-            $adoc = \Anakeen\Core\DocManager::getAttributesClassName($this->name);
+            $adoc = \Anakeen\Core\SEManager::getAttributesClassName($this->name);
             if (!\Anakeen\Core\Internal\Autoloader::findFile($adoc)) {
                 // Workaround because autoload has eventually the class in its missing private key
-                $attFileClass = \Anakeen\Core\DocManager::getAttributesClassFilename($this->name);
+                $attFileClass = \Anakeen\Core\SEManager::getAttributesClassFilename($this->name);
                 if (file_exists($attFileClass)) {
                     require_once($attFileClass);
                 } else {
@@ -125,11 +127,6 @@ create unique index idx_idfam on docfam(id);";
     {
         $this->_xtdefval = null;
         $this->_xtparam = null;
-    }
-
-    public function preDocDelete()
-    {
-        return _("cannot delete family");
     }
 
     /**
@@ -158,12 +155,21 @@ create unique index idx_idfam on docfam(id);";
         return $values["title"];
     }
 
-    public function postStore()
+    public function registerHooks()
     {
-        return \Dcp\FamilyImport::refreshPhpPgDoc($this->dbaccess, $this->id);
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            return \Dcp\FamilyImport::refreshPhpPgDoc($this->dbaccess, $this->id);
+        })->addListener(SmartHooks::POSTIMPORT, function () {
+            return $this->updateWorkflowAttributes();
+        })->addListener(SmartHooks::PREDELETE, function () {
+            return _("cannot delete family");
+        })->addListener(SmartHooks::PRECREATED, function () {
+            return $this->resetProperties();
+        });
     }
 
-    public function preCreated()
+    protected function resetProperties()
     {
         $cdoc = $this->getFamilyDocument();
         if ($cdoc->isAlive()) {
@@ -191,11 +197,9 @@ create unique index idx_idfam on docfam(id);";
     /**
      * update attributes of workflow if needed
      *
-     * @param array $extra
-     *
      * @return string
      */
-    public function postImport(array $extra = array())
+    protected function updateWorkflowAttributes()
     {
         $err = '';
         if (strstr($this->usefor, 'W')) {

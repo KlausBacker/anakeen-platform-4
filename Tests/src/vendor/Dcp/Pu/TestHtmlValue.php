@@ -6,7 +6,7 @@
 
 namespace Dcp\Pu;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 /**
  * @author Anakeen
@@ -76,7 +76,7 @@ class TestHtmlValue extends TestCaseDcpCommonFamily
     {
 
         $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
-        $d = DocManager::getDocument($docName, true, false);
+        $d = SEManager::getDocument($docName, true, false);
 
         $this->assertTrue($d->isAlive() , sprintf("cannot access %s document", $docName));
         foreach ($setValues as $attrid => $newValue) {

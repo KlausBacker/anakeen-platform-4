@@ -10,7 +10,8 @@
 
 namespace Anakeen\SmartStructures\Igroup;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
+use Anakeen\SmartHooks;
 use SmartStructure\Attributes\Igroup as MyAttributes;
 use \Dcp\Core\Exception;
 
@@ -23,7 +24,6 @@ use \Dcp\Core\Exception;
 class IGroupHooks extends \SmartStructure\Group
 {
     use \Anakeen\SmartStructures\Iuser\TAccount;
-
 
 
     public function preRefresh()
@@ -46,17 +46,6 @@ class IGroupHooks extends \SmartStructure\Group
         }
         return $err;
     }
-
-    public function preUndelete()
-    {
-        return _("group cannot be revived");
-    }
-
-
-
-
-
-
 
     /**
      * recompute only parent group
@@ -96,18 +85,28 @@ class IGroupHooks extends \SmartStructure\Group
             /**
              * @var \SmartStructure\Igroup $gdoc
              */
-            $gdoc = DocManager::getDocument($gid);
+            $gdoc = SEManager::getDocument($gid);
             if ($gdoc && $gdoc->isAlive()) {
                 $gdoc->insertGroups();
             }
         }
     }
 
-    public function postStore()
+    public function registerHooks()
     {
-        return $this->synchronizeSystemGroup();
+        parent::registerHooks();
+        $this->getHooks()->removeListeners(SmartHooks::POSTSTORE);
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            return $this->synchronizeSystemGroup();
+        })->addListener(SmartHooks::PREUNDELETE, function () {
+            return _("group cannot be revived");
+        })->addListener(SmartHooks::POSTDELETE, function () {
+            $gAccount = $this->getAccount();
+            if ($gAccount) {
+                $gAccount->Delete();
+            }
+        });
     }
-
 
 
     public function synchronizeSystemGroup()
@@ -148,7 +147,7 @@ class IGroupHooks extends \SmartStructure\Group
                 /**
                  * @var \Anakeen\SmartStructures\Dir\DirHooks $dfld
                  */
-                $dfld = DocManager::getDocument($dfldid);
+                $dfld = SEManager::getDocument($dfldid);
                 if ($dfld && $dfld->isAlive()) {
                     if (count($tgid) == 0) {
                         $dfld->insertDocument($this->initid);
@@ -222,7 +221,7 @@ class IGroupHooks extends \SmartStructure\Group
                 /**
                  * @var \SmartStructure\Iuser $du
                  */
-                $du = DocManager::getDocument($docid);
+                $du = SEManager::getDocument($docid);
                 if ($du) {
                     $uid = $du->getRawValue("us_whatid");
                     if ($uid > 0) {
@@ -265,7 +264,7 @@ class IGroupHooks extends \SmartStructure\Group
                 /**
                  * @var \SmartStructure\Iuser $du
                  */
-                $du = DocManager::getDocument($docid);
+                $du = SEManager::getDocument($docid);
                 if ($du) {
                     $uid = $du->getRawValue("us_whatid");
                     if ($uid > 0) {
@@ -303,7 +302,7 @@ class IGroupHooks extends \SmartStructure\Group
             /**
              * @var \SmartStructure\Iuser $du
              */
-            $du = DocManager::getDocument($docid);
+            $du = SEManager::getDocument($docid);
             if ($du) {
                 $uid = $du->getRawValue("us_whatid");
                 if ($uid > 0) {
@@ -322,13 +321,7 @@ class IGroupHooks extends \SmartStructure\Group
         return $err;
     }
 
-    public function postDelete()
-    {
-        $gAccount = $this->getAccount();
-        if ($gAccount) {
-            $gAccount->Delete();
-        }
-    }
+
 
     /**
      * (re)insert members of the group in folder from USER databasee
@@ -351,7 +344,7 @@ class IGroupHooks extends \SmartStructure\Group
                     $tfid[] = $v["fid"];
                 }
             }
-            $err = $this->QuickInsertMSDocId($tfid); // without postInsert
+            $err = $this->quickInsertMSDocId($tfid); // without postInsert
             $this->specPostInsert();
         }
         return $err;

@@ -4,7 +4,7 @@ namespace Anakeen\Core\Internal;
 
 use Anakeen\Core\ContextManager;
 use \Anakeen\Core\DbManager;
-use \Anakeen\Core\DocManager;
+use \Anakeen\Core\SEManager;
 
 /**
  * Control Access Document Class
@@ -92,7 +92,7 @@ class DocumentAccess
 
 
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     protected $document;
 
@@ -176,7 +176,7 @@ class DocumentAccess
     /**
      * set profil for document
      *
-     * @param int  $profid identifier for profil document
+     * @param int                                 $profid identifier for profil document
      * @param \Anakeen\Core\Internal\SmartElement $fromdocidvalues
      *
      * @return string
@@ -187,7 +187,7 @@ class DocumentAccess
     {
         $err = '';
         if ($profid && !is_numeric($profid)) {
-            $profid = DocManager::getIdFromName($profid);
+            $profid = SEManager::getIdFromName($profid);
         }
         if (empty($profid)) {
             $profid = 0;
@@ -197,7 +197,7 @@ class DocumentAccess
         $this->document->profid = $profid;
         if (($profid > 0) && ($profid != $this->document->id)) {
             // make sure that the profil is activated
-            $pdoc = \Anakeen\Core\DocManager::getDocument($profid);
+            $pdoc = \Anakeen\Core\SEManager::getDocument($profid);
             if ($pdoc && $pdoc->getRawValue("DPDOC_FAMID") > 0) {
                 // dynamic profil
                 $this->document->dprofid = $profid;
@@ -324,7 +324,7 @@ class DocumentAccess
     /**
      * reset right for dynamic profil
      *
-     * @param int  $dprofid         identifier for dynamic profil document
+     * @param int                                 $dprofid         identifier for dynamic profil document
      * @param \Anakeen\Core\Internal\SmartElement $fromdocidvalues other document to reference dynamic profiling (default itself)
      *
      * @return string error message
@@ -348,7 +348,7 @@ class DocumentAccess
         $vupacl = array();
 
         $tVgroup2attrid = array();
-        $pdoc = \Anakeen\Core\DocManager::getDocument($dprofid);
+        $pdoc = \Anakeen\Core\SEManager::getDocument($dprofid);
         if ($pdoc) {
             $pfamid = $pdoc->getRawValue("DPDOC_FAMID");
         }
@@ -414,7 +414,7 @@ class DocumentAccess
                         $tduid = \Anakeen\Core\Internal\SmartElement::rawValueToArray($duid);
                         foreach ($tduid as $duid) {
                             if ($duid > 0) {
-                                $docu = DocManager::getRawDocument(intval($duid));
+                                $docu = SEManager::getRawDocument(intval($duid));
                                 if (!is_array($docu)) {
                                     // No use exception because document may has been deleted
                                     $errorMessage = \ErrorCode::getError('DOC0127', var_export($duid, true), var_export($aid, true));
@@ -478,7 +478,7 @@ class DocumentAccess
     /**
      * reset right for dynamic profil
      *
-     * @param int  $dprofid         identifier for dynamic profil document
+     * @param int                                 $dprofid         identifier for dynamic profil document
      * @param \Anakeen\Core\Internal\SmartElement $fromdocidvalues other document to reference dynamic profiling (default itself)
      *
      * @return string error message
@@ -540,7 +540,7 @@ class DocumentAccess
                     $tduid = \Anakeen\Core\Internal\SmartElement::rawValueToArray($duid);
                     foreach ($tduid as $duid) {
                         if ($duid > 0) {
-                            $docu = DocManager::getRawDocument(intval($duid)); // not for idoc list for the moment
+                            $docu = SEManager::getRawDocument(intval($duid)); // not for idoc list for the moment
                             $greenUid[$docu["us_whatid"] . $v["acl"]] = array(
                                 "uid" => $docu["us_whatid"],
                                 "acl" => $v["acl"]
@@ -655,7 +655,7 @@ class DocumentAccess
     public function setCvid($cvid)
     {
         if ($cvid && !is_numeric($cvid)) {
-            $cvid = DocManager::getIdFromName($cvid);
+            $cvid = SEManager::getIdFromName($cvid);
         }
         $this->document->cvid = $cvid;
     }
@@ -812,9 +812,9 @@ class DocumentAccess
             if (strpos($accountReference, \ImportDocumentDescription::documentPrefix) === 0) {
                 $accountReference = substr($accountReference, strlen(\ImportDocumentDescription::documentPrefix));
             }
-            $uiid = DocManager::getIdFromName($accountReference);
+            $uiid = SEManager::getIdFromName($accountReference);
             if ($uiid) {
-                $udoc = DocManager::getDocument($uiid);
+                $udoc = SEManager::getDocument($uiid);
                 if ($udoc && $udoc->isAlive()) {
                     $accountReference = $udoc->getRawValue("us_whatid");
                 }
@@ -829,7 +829,7 @@ class DocumentAccess
             $vg = new \VGroup($this->document->dbaccess, strtolower($accountReference));
             if (!$vg->isAffected()) {
                 // try to add
-                $ddoc = DocManager::getFamily($this->document->getRawValue("dpdoc_famid"));
+                $ddoc = SEManager::getFamily($this->document->getRawValue("dpdoc_famid"));
                 $oa = $ddoc->getAttribute($accountReference);
                 if (($oa->type == "docid") || ($oa->type == "account")) {
                     $vg->id = $oa->id;

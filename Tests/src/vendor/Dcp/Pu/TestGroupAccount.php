@@ -6,7 +6,7 @@
 
 namespace Dcp\Pu;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\SmartStructures\Group\GroupHooks;
 use Anakeen\SmartStructures\Iuser\IUserHooks;
 
@@ -36,13 +36,13 @@ class TestGroupAccount extends TestCaseDcpCommonFamily
         /**
          * @var GroupHooks $group
          */
-        $group = DocManager::getDocument($groupId, true);
+        $group = SEManager::getDocument($groupId, true);
         $this->assertTrue($group->isAlive(), sprintf("Could not get group with id '%s'.", $groupId));
         $err = $group->Clear();
         $this->assertEmpty($err, sprintf("Clear() on group with id '%s' returned unexpected error message: %s", $groupId, $err));
         foreach ($expectedContents as $expectedContent) {
             $subjectId = $expectedContent['subject'];
-            $subject = DocManager::getDocument($subjectId, true);
+            $subject = SEManager::getDocument($subjectId, true);
             $this->assertTrue($subject && $subject->isAlive(), sprintf("Expected subject with id '%s' not found.", $subjectId));
             $check = $expectedContent['check'];
             $argv = isset($expectedContent['argv']) ? $expectedContent['argv'] : null;
@@ -73,7 +73,7 @@ class TestGroupAccount extends TestCaseDcpCommonFamily
                     $parents = $subject->getAllUserGroups();
                     $hasNotParent = true;
                     foreach ($parents as $sysId => $docId) {
-                        $group = DocManager::getDocument($docId, true);
+                        $group = SEManager::getDocument($docId, true);
                         if (!$group) {
                             continue;
                         }

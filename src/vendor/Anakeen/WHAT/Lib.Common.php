@@ -178,16 +178,7 @@ function getSessionValue($name, $def = "")
     return null;
 }
 
-/**
- * return current log in user
- *
- * @deprecated use Anakeen\Core\ContextManager::getCurrentUser
- * @return \Anakeen\Core\Account
- */
-function getCurrentUser()
-{
-    return \Anakeen\Core\ContextManager::getCurrentUser();
-}
+
 
 /**
  * @param $app
@@ -267,55 +258,10 @@ function logDebugStack($slice = 1, $msg = "")
     error_log(implode("\n", $errors));
 }
 
-/**
- * @deprecated use Anakeen\Core\DbManager::getDbid()
- * @return null|string
- */
-function getDbid()
-{
-    return \Anakeen\Core\DbManager::getDbid();
-}
 
-/**
- * @deprecated use Anakeen\Core\DbManager::getDbAccess()
- * @return null|string
- */
-function getDbAccess()
-{
-    return \Anakeen\Core\DbManager::getDbAccess();
-}
 
-/**
- * @return string
- * @deprecated
- * @throws \Dcp\Exception
- */
-function getDbAccessCore()
-{
-    return "service='" . getServiceCore() . "'";
-}
 
-/**
- * @deprecated
- * @return null|string
- * @throws \Dcp\Exception
- */
-function getServiceCore()
-{
-    static $pg_service = null;
 
-    if ($pg_service) {
-        return $pg_service;
-    }
-    $pgservice_core = getDbAccessvalue('pgservice_core');
-
-    if ($pgservice_core == "") {
-        error_log("Undefined pgservice_core in dbaccess.php");
-        exit(1);
-    }
-    $pg_service = $pgservice_core;
-    return $pg_service;
-}
 
 /**
  * return variable from dbaccess.php
@@ -347,11 +293,6 @@ function getDbAccessValue($varName)
 }
 
 
-function getDbName($dbaccess)
-{
-    error_log("Deprecated call to getDbName(dbaccess) : use getServiceName(dbaccess)");
-    return getServiceName($dbaccess);
-}
 
 function getServiceName($dbaccess)
 {
@@ -361,28 +302,6 @@ function getServiceName($dbaccess)
     return '';
 }
 
-
-
-
-
-
-
-
-
-/**
- * get the system user id
- * @deprecated
- * @return int
- */
-function getUserId()
-{
-    $u = \Anakeen\Core\ContextManager::getCurrentUser();
-    if ($u) {
-        return $u->id;
-    }
-
-    return 0;
-}
 
 /**
  * exec list of unix command in background

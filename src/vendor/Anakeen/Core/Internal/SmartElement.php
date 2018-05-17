@@ -28,10 +28,11 @@ require_once "FDL/LegacyDocManager.php";
 
 use \Anakeen\Core\DbManager;
 use \Anakeen\Core\ContextManager;
-use \Anakeen\Core\DocManager;
+use \Anakeen\Core\SEManager;
 use Anakeen\Core\Internal\Format\StandardAttributeValue;
+use Anakeen\SmartHooks;
 
-class SmartElement extends \Anakeen\Core\Internal\DbObj
+class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
 {
     const USEMASKCVVIEW = -1;
     const USEMASKCVEDIT = -2;
@@ -75,6 +76,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj
      * @var string searchable values
      */
     protected $svalues;
+    public $hooks = null;
     public $sup_fields
         = array(
             "values",
@@ -836,11 +838,10 @@ create unique index i_docir on doc(initid, revision);";
     }
 
     /**
-     * Increment sequence of family and call to \Anakeen\Core\Internal\SmartElement::PostCreated
-     * send mail if workflow is attached to it
+     * Increment sequence of family and call hooks  SmartHooks::POSTCREATED
+     *
      * affect profil
      *
-     * @see \Anakeen\Core\Internal\SmartElement::PostCreated
      *
      * @return void
      */
@@ -883,13 +884,19 @@ create unique index i_docir on doc(initid, revision);";
             "revdate"
         ), true); // to force also execute sql trigger
         if ($this->doctype !== 'C') {
-            // set to shared : because comes from createDoc
-            \Anakeen\Core\DocManager::cache()->addDocument($this);
-
             if ($this->doctype !== "T") {
-                $err = $this->PostCreated();
-                if ($err != "") {
-                    \Anakeen\Core\Utils\System::addWarningMsg($err);
+                if ($this->revision == 0) {
+                    $err = $this->getHooks()->trigger(SmartHooks::POSTCREATED);
+                    if ($err != "") {
+                        \Anakeen\Core\Utils\System::addWarningMsg($err);
+                    }
+                    if ($this->hasChanged) {
+                        //in case of change in postStore
+                        $err = $this->modify();
+                        if ($err) {
+                            \Anakeen\Core\Utils\System::addWarningMsg($err);
+                        }
+                    }
                 }
                 $this->sendTextToEngine();
                 if ($this->dprofid > 0) {
@@ -898,6 +905,8 @@ create unique index i_docir on doc(initid, revision);";
                         "profid"
                     ), true);
                 }
+                $this->modify(true, "", true);
+
                 $this->UpdateVaultIndex();
                 $this->updateRelations(true);
             }
@@ -930,7 +939,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function preInsert()
     {
-        $err = $this->PreCreated();
+        $err = $this->getHooks()->trigger(SmartHooks::PRECREATED);
         if ($err != "") {
             return $err;
         }
@@ -961,7 +970,7 @@ create unique index i_docir on doc(initid, revision);";
         }
 
         if ($this->profid == "") {
-            $this->views = "{0}";
+            $this->views = "{}";
             $this->profid = "0";
         }
         if ($this->usefor == "") {
@@ -995,7 +1004,7 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
-            $wdoc = DocManager::getDocument($this->wid);
+            $wdoc = SEManager::getDocument($this->wid);
             $this->wdoc = $wdoc;
             if ($this->wdoc && $this->wdoc->isAlive()) {
                 if ($this->wdoc->doctype != 'W') {
@@ -1346,7 +1355,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function convert($fromid, $prevalues = array())
     {
-        $cdoc = DocManager::createDocument($fromid);
+        $cdoc = SEManager::createDocument($fromid);
 
         if ($this->fromid == $cdoc->fromid) {
             return false;
@@ -1405,8 +1414,8 @@ create unique index i_docir on doc(initid, revision);";
         $cdoc->addHistoryEntry(sprintf(_("convertion from %s to %s family"), $f1from, $f2from));
 
         DbManager::commitPoint($point);
-        if (\Anakeen\Core\DocManager::cache()->isDocumentIdInCache($this->id)) {
-            \Anakeen\Core\DocManager::cache()->addDocument($cdoc);
+        if (\Anakeen\Core\SEManager::cache()->isDocumentIdInCache($this->id)) {
+            \Anakeen\Core\SEManager::cache()->addDocument($cdoc);
         }
 
         return $cdoc;
@@ -1441,7 +1450,8 @@ create unique index i_docir on doc(initid, revision);";
         $constraint = [];
         $info = new StoreInfo();
 
-        $err = $this->preStore();
+
+        $err = $this->getHooks()->trigger(SmartHooks::PRESTORE);
         if ($err) {
             $info->preStore = $err;
             $info->error = $err;
@@ -1464,7 +1474,11 @@ create unique index i_docir on doc(initid, revision);";
                 if ($err) {
                     $info->errorCode = StoreInfo::UPDATE_ERROR;
                 } else {
-                    $info->postStore = $this->postStore();
+                    /**
+                     * is not the postUpdate method
+                     */
+                    $info->postStore = $this->getHooks()->trigger(SmartHooks::POSTSTORE);
+
                     if ($this->hasChanged) {
                         //in case of change in postStore
                         $err = $this->modify();
@@ -1660,7 +1674,7 @@ create unique index i_docir on doc(initid, revision);";
          */
         static $famdoc = null;
         if (($famdoc === null) || ($famdoc->id != $this->fromid)) {
-            $famdoc = DocManager::getFamily($this->fromid);
+            $famdoc = SEManager::getFamily($this->fromid);
         }
         if (!$famdoc) {
             $famdoc = new \Anakeen\Core\SmartStructure();
@@ -1830,7 +1844,7 @@ create unique index i_docir on doc(initid, revision);";
      * @return string error message, if no error empty string
      * @see    \Anakeen\Core\Internal\SmartElement::Delete()
      */
-    public function preDocDelete()
+    public function controlDeleteAccess()
     {
         if ($this->doctype == 'Z') {
             return _("already deleted");
@@ -1846,21 +1860,6 @@ create unique index i_docir on doc(initid, revision);";
         return $err;
     }
 
-    /**
-     * Really delete document from database
-     *
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::delete} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::delete
-     *
-     * @param bool $nopost set to true if no need tu call postDelete methods
-     *
-     * @return string error message, if no error empty string
-     */
-    final public function reallyDelete($nopost)
-    {
-        deprecatedFunction();
-        return $this->_destroy($nopost);
-    }
 
     /**
      * Really delete document from database
@@ -1900,7 +1899,7 @@ create unique index i_docir on doc(initid, revision);";
         $err = '';
         if ($control) {
             // Control if the doc can be deleted
-            $err = $this->PreDocDelete();
+            $err = $this->controlDeleteAccess();
             if ($err != '') {
                 return $err;
             }
@@ -1940,7 +1939,7 @@ create unique index i_docir on doc(initid, revision);";
             }
 
             if (!$nopost) {
-                $err = $this->preDelete();
+                $err = $this->getHooks()->trigger(SmartHooks::PREDELETE);
                 if ($err != '') {
                     return $err;
                 }
@@ -1983,7 +1982,7 @@ create unique index i_docir on doc(initid, revision);";
                 ), true);
                 if ($err == "") {
                     if (!$nopost) {
-                        $msg = $this->postDelete();
+                        $msg = $this->getHooks()->trigger(SmartHooks::POSTDELETE);
                         if ($msg != '') {
                             $this->addHistoryEntry($msg, \DocHisto::MESSAGE);
                         }
@@ -2006,18 +2005,6 @@ create unique index i_docir on doc(initid, revision);";
         return $err;
     }
 
-    /**
-     * To restore a document which is in the trash
-     *
-     * @see        \Anakeen\Core\Internal\SmartElement::undelete
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::undelete} instead
-     * @return string error message (empty message if no errors);
-     */
-    final public function revive()
-    {
-        deprecatedFunction();
-        return $this->undelete();
-    }
 
     /**
      * To restore a document which is in the trash
@@ -2030,7 +2017,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         if (($this->control('delete') == "") || (ContextManager::getCurrentUser()->id == 1)) {
             if (!$this->isAlive()) {
-                $err = $this->preUndelete();
+                $err = $this->getHooks()->trigger(SmartHooks::PREUNDELETE);
                 if ($err) {
                     return $err;
                 }
@@ -2056,7 +2043,7 @@ create unique index i_docir on doc(initid, revision);";
                         "name"
                     ), true);
                     $this->addHistoryEntry(_("revival document"), \DocHisto::MESSAGE, "REVIVE");
-                    $msg = $this->postUndelete();
+                    $msg = $this->getHooks()->trigger(SmartHooks::POSTUNDELETE);
                     if ($msg) {
                         $this->addHistoryEntry($msg, \DocHisto::MESSAGE);
                     }
@@ -2102,7 +2089,10 @@ create unique index i_docir on doc(initid, revision);";
     final public function affect($array, $more = false, $reset = true)
     {
         if (is_array($array)) {
-            $this->preAffect($array, $more, $reset);
+             $this->getHooks()->resetListeners();
+
+            $this->getHooks()->trigger(SmartHooks::PREAFFECT, $array, $more, $reset);
+
             if ($more) {
                 $this->resetMoreValues();
             }
@@ -2143,7 +2133,7 @@ create unique index i_docir on doc(initid, revision);";
                 $this->textsend = array();
             }
             $this->isset = true;
-            $this->postAffect($array, $more, $reset);
+            $this->getHooks()->trigger(SmartHooks::POSTAFFECT, $array, $more, $reset);
         }
     }
 
@@ -2157,33 +2147,6 @@ create unique index i_docir on doc(initid, revision);";
     {
     }
 
-    /**
-     * @see   \Anakeen\Core\Internal\SmartElement::affect()
-     *
-     * @param array $data  data use to affect document values
-     * @param bool  $more  use "values" attribute in case of incomplete data
-     * @param bool  $reset reset all values before set and clean private variables
-     *
-     * @since 3.2.20
-     * @return void
-     */
-    protected function preAffect(array & $data, &$more, &$reset)
-    {
-    }
-
-    /**
-     * @see   \Anakeen\Core\Internal\SmartElement::affect()
-     *
-     * @param array $data  data use to affect document values
-     * @param bool  $more  use "values" attribute in case of incomplete data
-     * @param bool  $reset reset all values before set and clean private variables
-     *
-     * @since 3.2.20
-     * @return void
-     */
-    protected function postAffect(array $data, $more, $reset)
-    {
-    }
 
     /**
      * Set to default values before add new \doc
@@ -2503,10 +2466,10 @@ create unique index i_docir on doc(initid, revision);";
         $aFromName = isset($this->attributes->fromname) ? $this->attributes->fromname : '';
         if ($aFromName != $fromname) {
             // reset when use partial cache
-            $adocClassName = \Anakeen\Core\DocManager::getAttributesClassName($fromname);
+            $adocClassName = \Anakeen\Core\SEManager::getAttributesClassName($fromname);
             // Workaround because autoload has eventually the class in its missing private key
             // Use file_exists instead class_exists
-            $attFileClass = \Anakeen\Core\DocManager::getAttributesClassFilename($this->name);
+            $attFileClass = \Anakeen\Core\SEManager::getAttributesClassFilename($this->name);
             if (file_exists($attFileClass)) {
                 $this->attributes = new $adocClassName();
             }
@@ -2534,7 +2497,7 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var \SmartStructure\CVDoc $cvdoc
              */
-            $cvdoc = DocManager::getDocument($this->cvid);
+            $cvdoc = SEManager::getDocument($this->cvid);
             $cvdoc = clone $cvdoc;
             $cvdoc->set($this);
 
@@ -2606,7 +2569,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         // modify visibilities if needed
         if ((!is_numeric($mid)) && ($mid != "")) {
-            $imid = DocManager::getIdFromName($mid);
+            $imid = SEManager::getIdFromName($mid);
             if (!$imid) {
                 $err = \ErrorCode::getError('DOC1004', $argMid, $this->getTitle());
                 return $err;
@@ -2623,7 +2586,7 @@ create unique index i_docir on doc(initid, revision);";
                 /**
                  * @var \SmartStructure\CVDoc $cvdoc
                  */
-                $cvdoc = DocManager::getDocument($this->cvid);
+                $cvdoc = SEManager::getDocument($this->cvid);
                 if ($cvdoc && $cvdoc->isAlive()) {
                     $cvdoc = clone $cvdoc;
                     $cvdoc->Set($this);
@@ -2645,14 +2608,14 @@ create unique index i_docir on doc(initid, revision);";
                 /**
                  * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
                  */
-                $wdoc = DocManager::getDocument($this->wid);
+                $wdoc = SEManager::getDocument($this->wid);
                 if ($wdoc && $wdoc->isAlive()) {
                     if ($this->id == 0) {
                         $wdoc->set($this);
                     }
                     $mid = $wdoc->getStateMask($this->state);
                     if ((!is_numeric($mid)) && ($mid != "")) {
-                        $mid = DocManager::getIdFromName($mid);
+                        $mid = SEManager::getIdFromName($mid);
                     }
                 }
             }
@@ -2665,7 +2628,7 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var \SmartStructure\MASK $mdoc
              */
-            $mdoc = DocManager::getDocument($mid);
+            $mdoc = SEManager::getDocument($mid);
             if ($mdoc && $mdoc->isAlive()) {
                 if (is_a($mdoc, '\SmartStructure\Mask')) {
                     $maskFam = $mdoc->getRawValue("msk_famid");
@@ -2674,7 +2637,7 @@ create unique index i_docir on doc(initid, revision);";
                             'DOC1002',
                             $argMid,
                             $this->getTitle(),
-                            DocManager::getNameFromId($maskFam)
+                            SEManager::getNameFromId($maskFam)
                         );
                     } else {
                         $tvis = $mdoc->getVisibilities();
@@ -3362,197 +3325,6 @@ create unique index i_docir on doc(initid, revision);";
         $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mb_trim(preg_replace('/\p{Cc}/u', ' ', $this->getCustomTitle())), 0, 255);
     }
 
-    /**
-     * call after construct
-     *
-     * @return void
-     */
-    public function postConstructor()
-    {
-    }
-
-
-    /**
-     * no in postUpdate method :: call this only if real change (values)
-     *
-     * @api hook called in ::store()
-     * @return string error message
-     */
-    public function postStore()
-    {
-        // to be defined in child class
-        return "";
-    }
-
-    /**
-     * call in beging store before constraint verification
-     * if error message is returned store is aborted and the message is returned by store method
-     *
-     * @api hook called in \Anakeen\Core\Internal\SmartElement::store()
-     * @see \Anakeen\Core\Internal\SmartElement::store()
-     * @return string error message
-     */
-    public function preStore()
-    {
-        // to be defined in child class
-        return "";
-    }
-
-    /**
-     * called when user edit a document FDL/editcard
-     *
-     * @deprecated
-     * @api hook called when compose edit document web interface
-     */
-    public function preEdition()
-    {
-        // to be defined in child class
-        return "";
-    }
-
-    /**
-     * called when user view a document FDL/fdl_card
-     *
-     * @deprecated
-     * @api hook called when compose view document web interface
-     */
-    public function preConsultation()
-    {
-        // to be defined in child class
-        return "";
-    }
-
-    /**
-     * call in doc::postInsert method
-     *
-     * @api hook called when document is created in database
-     * @return string error message
-     */
-    public function postCreated()
-    {
-        // to be defined in child class
-        return "";
-    }
-
-    /**
-     * call in doc::add method
-     * if return message, creation is aborted
-     *
-     * @api hook called before document is created in database
-     * @return string error message
-     */
-    public function preCreated()
-    {
-        // to be defined in child class
-        return "";
-    }
-
-    /**
-     * call when doc is being imported before any modification
-     * if return non null string import will ne aborted
-     *
-     * @api hook called when import document - before import it
-     *
-     * @param array $extra extra parameters
-     *
-     * @return string error message, if no error empty string
-     */
-    public function preImport(array $extra = array())
-    {
-        return "";
-    }
-
-    /**
-     * call when doc is imported after databases modification
-     * the error message will appeared like message
-     *
-     * @api hook called when import document - after it is imported
-     *
-     * @param array $extra extra parameters
-     *
-     * @return string warning message, if no warning empty string
-     */
-    public function postImport(array $extra = array())
-    {
-        return "";
-    }
-
-    /**
-     * call when doc is being revised before new \document is created
-     * if return non null string revision will ne aborted
-     *
-     * @api hook called when revise document - before revise it
-     * @see \Anakeen\Core\Internal\SmartElement::revise
-     * @return string error message, if no error empty string
-     */
-    public function preRevise()
-    {
-        return "";
-    }
-
-    /**
-     * call when doc is revised after new \document is created
-     * the error message will appeared like message
-     *
-     * @api hook called when revise document - after it is revided
-     * @see \Anakeen\Core\Internal\SmartElement::revise
-     * @return string message - message is added to history
-     */
-    public function postRevise()
-    {
-        return "";
-    }
-
-    /**
-     * call when doc is being undelete
-     * if return non null string undelete will ne aborted
-     *
-     * @api hook called before undelete document
-     * @see \Anakeen\Core\Internal\SmartElement::undelete
-     * @return string error message, if no error empty string
-     */
-    public function preUndelete()
-    {
-        return "";
-    }
-
-    /**
-     * call when doc is revived after resurrection in database
-     * the error message will appeared like message
-     *
-     * @api hook called after undelete document
-     * @return string warning message, if no warning empty string
-     */
-    public function postUndelete()
-    {
-        return "";
-    }
-
-    /**
-     * call when doc is being undelete
-     * if return non null string undelete will ne aborted
-     *
-     * @deprecated hook use {@link \Anakeen\Core\Internal\SmartElement:::preUndelete} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::preUndelete
-     * @return string error message, if no error empty string
-     */
-    public function preRevive()
-    {
-        return "";
-    }
-
-    /**
-     * call when doc is revived after resurrection in database
-     * the error message will appeared like message
-     *
-     * @deprecated hook use {@link \Anakeen\Core\Internal\SmartElement:::postUndelete} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::postUndelete
-     * @return string warning message, if no warning empty string
-     */
-    public function postRevive()
-    {
-        return "";
-    }
 
     /**
      * set attribute title value
@@ -4829,8 +4601,8 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Register (store) a file in the vault and return the file's vault's informations
      *
-     * @param string        $filename the file pathname
-     * @param string        $ftitle   override the stored file name or empty string to keep the original file name
+     * @param string         $filename the file pathname
+     * @param string         $ftitle   override the stored file name or empty string to keep the original file name
      * @param \VaultFileInfo $info     the vault's informations for the stored file or null if could not get informations
      *
      * @return string trigram of the file in the vault: "mime_s|id_file|name"
@@ -4964,7 +4736,7 @@ create unique index i_docir on doc(initid, revision);";
             if ($docid == "") {
                 return $def;
             }
-            $doc = DocManager::getDocument($docid, $latest);
+            $doc = SEManager::getDocument($docid, $latest);
 
             if (!$doc) {
                 return $def;
@@ -5108,7 +4880,7 @@ create unique index i_docir on doc(initid, revision);";
                     }
                 }
                 if ($missingAttrIds) {
-                    $missingValues =DocManager::getRawData($this->id, $missingAttrIds, false);
+                    $missingValues = SEManager::getRawData($this->id, $missingAttrIds, false);
                     foreach ($missingValues as $attrid => $value) {
                         $this->$attrid = $value;
                     }
@@ -5400,7 +5172,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function addHistoryEntry($comment = '', $level = \DocHisto::INFO, $code = '', $uid = '')
     {
-        global $action;
         if ($this->id == "") {
             return '';
         }
@@ -5416,12 +5187,11 @@ create unique index i_docir on doc(initid, revision);";
         $h->date = date("d-m-Y H:i:s") . substr(microtime(), 1, 8);
         if ($uid > 0) {
             $u = new \Anakeen\Core\Account("", $uid);
-            $h->uid = $u->id;
-            $h->uname = sprintf("%s %s", $u->firstname, $u->lastname);
         } else {
-            $h->uname = sprintf("%s %s", $action->user->firstname, $action->user->lastname);
-            $h->uid = $action->user->id;
+            $u = ContextManager::getCurrentUser(true);
         }
+        $h->uid = $u->id;
+        $h->uname = sprintf("%s %s", $u->firstname, $u->lastname);
         $h->level = $level;
         $h->code = $code;
 
@@ -5432,25 +5202,6 @@ create unique index i_docir on doc(initid, revision);";
         return $err;
     }
 
-    /**
-     * Add a comment line in history document
-     * note : modify is call automatically
-     *
-     * @param string $comment the comment to add
-     * @param int    $level   level of comment \DocHisto::INFO, \DocHisto::ERROR,
-     *                        \DocHisto::NOTICE \DocHisto::MESSAGE, \DocHisto::WARNING
-     * @param string $code    use when memorize notification
-     * @param string $uid     user identifier : by default its the current user
-     *
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::addHistoryEntry} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::addHistoryEntry
-     * @return string error message
-     */
-    final public function addComment($comment = '', $level = \DocHisto::INFO, $code = '', $uid = '')
-    {
-        deprecatedFunction();
-        return $this->addHistoryEntry($comment, $level, $code, $uid);
-    }
 
     /**
      * Add a log entry line in log document
@@ -5465,11 +5216,9 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function addLog($code = '', $arg = '', $comment = '', $level = '', $uid = '')
     {
-        global $action;
         if (($this->id == "") || ($this->doctype == 'T')) {
             return '';
         }
-
 
         $h = new \DocLog($this->dbaccess);
         $h->id = $this->id;
@@ -5479,15 +5228,14 @@ create unique index i_docir on doc(initid, revision);";
             $comment = utf8_encode($comment);
         }
         $h->comment = $comment;
-
         if ($uid > 0) {
             $u = new \Anakeen\Core\Account("", $uid);
-            $h->uid = $u->id;
-            $h->uname = sprintf("%s %s", $u->firstname, $u->lastname);
         } else {
-            $h->uname = sprintf("%s %s", $action->user->firstname, $action->user->lastname);
-            $h->uid = $action->user->id;
+            $u = ContextManager::getCurrentUser(true);
         }
+        $h->uid = $u->id;
+        $h->uname = sprintf("%s %s", $u->firstname, $u->lastname);
+
         $h->level = $level ? $level : \DocLog::LOG_NOTIFY;
         $h->code = $code;
         if ($arg) {
@@ -5849,7 +5597,7 @@ create unique index i_docir on doc(initid, revision);";
             $this->addHistoryEntry($err, \DocHisto::ERROR, "REVERROR");
             return $err;
         }
-        $err = $this->preRevise();
+        $err = $this->getHooks()->trigger(SmartHooks::PREREVISE);
         if ($err) {
             return $err;
         }
@@ -5921,7 +5669,7 @@ create unique index i_docir on doc(initid, revision);";
         $this->postitid = $postitid;
 
         // Remove last revision from cache to have coherent index.
-        \Anakeen\Core\DocManager::cache()->removeDocumentById($olddocid);
+        \Anakeen\Core\SEManager::cache()->removeDocumentById($olddocid);
         $err = $this->Add();
         if ($err != "") {
             // restore last revision
@@ -5962,16 +5710,23 @@ create unique index i_docir on doc(initid, revision);";
                      */
                     $revs = $this->getRevisions("TABLE", "ALL");
                     for ($i = $maxrev; $i < count($revs); $i++) {
-                        $d =DocManager::getDocumentFromRawDocument($revs[$i]);
+                        $d = SEManager::getDocumentFromRawDocument($revs[$i]);
                         if ($d) {
                             $d->_destroy(true);
                         }
                     }
                 }
             }
-            $msg = $this->postRevise();
+            $msg = $this->getHooks()->trigger(SmartHooks::POSTREVISE);
             if ($msg) {
                 $this->addHistoryEntry($msg, \DocHisto::MESSAGE, "POSTREVISE");
+            }
+            if ($this->hasChanged) {
+                //in case of change in postStore
+                $err = $this->modify();
+                if ($err) {
+                    \Anakeen\Core\Utils\System::addWarningMsg($err);
+                }
             }
         }
 
@@ -6032,7 +5787,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         } else {
-            $state =DocManager::getDocument($newstateid);
+            $state = SEManager::getDocument($newstateid);
             if (!$state || !$state->isAlive()) {
                 return sprintf(_("invalid freestate document %s"), $newstateid);
             }
@@ -6096,7 +5851,7 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
          */
-        $wdoc =DocManager::getDocument($this->wid);
+        $wdoc = SEManager::getDocument($this->wid);
         if (!$wdoc || !$wdoc->isAlive()) {
             return _("assigned workflow is not alive");
         }
@@ -6151,7 +5906,7 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
-            $wdoc =DocManager::getDocument($this->wid);
+            $wdoc = SEManager::getDocument($this->wid);
             if ($wdoc && $wdoc->isAffected()) {
                 return $wdoc->getColor($this->state, $def);
             }
@@ -6179,7 +5934,7 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
-            $wdoc = DocManager::getDocument($this->wid);
+            $wdoc = SEManager::getDocument($this->wid);
             if ($wdoc->isAffected()) {
                 return $wdoc->getActivity($this->state, $def);
             }
@@ -6254,7 +6009,7 @@ create unique index i_docir on doc(initid, revision);";
             throw new \Dcp\Exception(\ErrorCode::getError('DOC0203'));
         }
         try {
-            $copy = DocManager::createDocument($this->fromid, $control);
+            $copy = SEManager::createDocument($this->fromid, $control);
         } catch (\Dcp\Core\Exception $e) {
             return false;
         }
@@ -6284,7 +6039,7 @@ create unique index i_docir on doc(initid, revision);";
             $copy->accessControl()->setProfil($cdoc->cprofid);
         }
 
-        $err = $copy->preDuplicate($this);
+        $err = $copy->getHooks()->trigger(SmartHooks::PREDUPLICATE, $this);
         if ($err != "") {
             return $err;
         }
@@ -6299,7 +6054,7 @@ create unique index i_docir on doc(initid, revision);";
             $copy->duplicateFiles();
         }
 
-        $msg = $copy->postDuplicate($this);
+        $msg = $copy->getHooks()->trigger(SmartHooks::POSTDUPLICATE);
         if ($msg != "") {
             $copy->addHistoryEntry($msg, \DocHisto::MESSAGE);
         }
@@ -6315,80 +6070,10 @@ create unique index i_docir on doc(initid, revision);";
         return $copy;
     }
 
-    /**
-     * call before copy document
-     * if return error message duplicate is aborted
-     *
-     * @api hook called before duplicate document
-     * @see \Anakeen\Core\Internal\SmartElement::duplicate
-     *
-     * @param \Anakeen\Core\Internal\SmartElement $copyfrom original document
-     *
-     * @return string
-     */
-    public function preDuplicate(
-        & $copyfrom
-    ) {
-        // to be defined in child class
-        return "";
-    }
-
-    /**
-     * call before copy document
-     * if return error message duplicate is aborted
-     *
-     * @deprecated hook use {@link \Anakeen\Core\Internal\SmartElement::preDuplicate} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::preDuplicate
-     *
-     * @param \Anakeen\Core\Internal\SmartElement $copyfrom
-     *
-     * @return string
-     */
-    public function preCopy(
-        & $copyfrom
-    ) {
-        // to be defined in child class
-        return "";
-    }
-
-    /**
-     * call after copy document
-     *
-     * @api hook called after duplicate document
-     * @see \Anakeen\Core\Internal\SmartElement::duplicate
-     *
-     * @param \Anakeen\Core\Internal\SmartElement $copyfrom
-     *
-     * @return string
-     */
-    public function postDuplicate(
-        & $copyfrom
-    ) {
-        // to be defined in child class
-        return "";
-    }
-
-    /**
-     * call after copy document
-     *
-     * @api        hook called after duplicate document
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::postDuplicate} hook instead
-     * @see        \Anakeen\Core\Internal\SmartElement::postDuplicate
-     *
-     * @param \Anakeen\Core\Internal\SmartElement $copyfrom
-     *
-     * @return string
-     */
-    public function postCopy(
-        & $copyfrom
-    ) {
-        // to be defined in child class
-        return "";
-    }
 
     final public function translate($docid, $translate)
     {
-        $doc = DocManager::getDocument($docid);
+        $doc = SEManager::getDocument($docid);
         if ($doc && $doc->isAlive()) {
             foreach ($translate as $afrom => $ato) {
                 $this->setValue($ato, $doc->getRawValue($afrom));
@@ -6893,18 +6578,6 @@ create unique index i_docir on doc(initid, revision);";
         return '';
     }
 
-    /**
-     * Special Refresh
-     * called when refresh document : when view, modify document - generally when access to the document
-     *
-     * @note       during specRefresh edit control is disabled
-     * @deprecated This hook may be replaced by preRefresh in the the next version.
-     * @see        \Anakeen\Core\Internal\SmartElement::refresh
-     */
-    public function specRefresh()
-    {
-        return '';
-    }
 
     /**
      * post Refresh
@@ -7256,15 +6929,14 @@ create unique index i_docir on doc(initid, revision);";
     }
 
 
-
     /**
      * return an url to download for file attribute
      *
-     * @param string        $attrid     attribute identifier
-     * @param int           $index      set to row rank if it is in array else use -1
-     * @param bool          $cache      set to true if file may be persistent in client cache
-     * @param bool          $inline     set to true if file must be displayed in web browser
-     * @param string        $otherValue use another file value instead of attribute value
+     * @param string         $attrid     attribute identifier
+     * @param int            $index      set to row rank if it is in array else use -1
+     * @param bool           $cache      set to true if file may be persistent in client cache
+     * @param bool           $inline     set to true if file must be displayed in web browser
+     * @param string         $otherValue use another file value instead of attribute value
      * @param \VaultFileInfo $info       extra file info
      *
      * @return string the url anchor
@@ -7377,7 +7049,7 @@ create unique index i_docir on doc(initid, revision);";
                         $mUrl = ContextManager::getApplicationParam("CORE_MAILACTIONURL");
                         if (strstr($mUrl, '%')) {
                             if ($this->id != $id) {
-                                $mDoc = DocManager::getDocument($id);
+                                $mDoc = SEManager::getDocument($id);
                             } else {
                                 $mDoc = $this;
                             }
@@ -7598,7 +7270,7 @@ create unique index i_docir on doc(initid, revision);";
      * if the user has no 'view' privilege
      *
      * @param \Anakeen\Core\Internal\SmartElement $doc
-     * @param     $aclname
+     * @param                                     $aclname
      *
      * @return string
      */
@@ -7631,9 +7303,13 @@ create unique index i_docir on doc(initid, revision);";
         if (!$this->isAffected()) {
             return '';
         }
-        if (($this->profid <= 0) || (ContextManager::getCurrentUser()->id == \Anakeen\Core\Account::ADMIN_ID)) {
+        if (ContextManager::getCurrentUser()->id == \Anakeen\Core\Account::ADMIN_ID) {
             return ""; // no profil or admin
         }
+        if ($this->profid <= 0) {
+            return ___("Profil not configured", "ank"); // no profil enabled
+        }
+
         $err = $this->accessControl()->controlId($this->profid, $aclname, $strict);
         if ($err != "") {
             return $this->noPrivilegeMessage($this, $aclname);
@@ -8051,7 +7727,7 @@ create unique index i_docir on doc(initid, revision);";
         $tr = array();
 
         if ($this->prelid > 0) {
-            $d = DocManager::getRawData($this->prelid, ["initid", "title", "prelid", "profid"]);
+            $d = SEManager::getRawData($this->prelid, ["initid", "title", "prelid", "profid"]);
             $fini = false;
             while (!$fini) {
                 if ($d) {
@@ -8059,7 +7735,7 @@ create unique index i_docir on doc(initid, revision);";
                         if (!in_array($d["initid"], array_keys($tr))) {
                             $tr[$d["initid"]] = $d["title"];
                             if ($d["prelid"] > 0) {
-                                $d = DocManager::getRawData($d["prelid"], ["initid", "title", "prelid", "profid"]);
+                                $d = SEManager::getRawData($d["prelid"], ["initid", "title", "prelid", "profid"]);
                             } else {
                                 $fini = true;
                             }
@@ -8381,7 +8057,7 @@ create unique index i_docir on doc(initid, revision);";
             ));
         } else {
             // verify not use yet
-            $d = DocManager::getRawDocument($name);
+            $d = SEManager::getRawDocument($name);
 
             if ($d && $d["doctype"] != 'Z') {
                 return sprintf(_("Logical name %s already use in document %s"), $name, $d["title"]);
@@ -8622,7 +8298,7 @@ create unique index i_docir on doc(initid, revision);";
         deprecatedFunction();
         // gettitle(D,SI_IDSOC):SI_SOCIETY,SI_IDSOC
         $this->AddParamRefresh("$nameId", "$nameTitle");
-        $doc = DocManager::getDocument($this->getRawValue($nameId));
+        $doc = SEManager::getDocument($this->getRawValue($nameId));
         if ($doc && $doc->isAlive()) {
             $this->setValue($nameTitle, $doc->title);
         } else {
@@ -8692,7 +8368,7 @@ create unique index i_docir on doc(initid, revision);";
             return implode("\n", $ttitle);
         } else {
             if (!is_numeric($id)) {
-                $id = DocManager::getIdFromName($id);
+                $id = SEManager::getIdFromName($id);
             }
             if ($id > 0) {
                 $title = getDocTitle($id, $latest);
@@ -8856,16 +8532,16 @@ create unique index i_docir on doc(initid, revision);";
     final public function getDocValue($docid, $attrid, $def = " ", $latest = false)
     {
         if ((!is_numeric($docid)) && ($docid != "")) {
-            $docid = DocManager::getIdFromName($docid);
+            $docid = SEManager::getIdFromName($docid);
         }
         if (intval($docid) > 0) {
             if (strpos(':', $attrid) === false) {
                 $attrid = strtolower($attrid);
-                return DocManager::getRawValue($docid, $attrid, $latest);
+                return SEManager::getRawValue($docid, $attrid, $latest);
             } else {
-                $doc = DocManager::getDocument($docid, $latest);
+                $doc = SEManager::getDocument($docid, $latest);
                 if ($doc) {
-                    DocManager::cache()->addDocument($doc);
+                    SEManager::cache()->addDocument($doc);
                     return $doc->getRValue($attrid, $def, $latest);
                 }
             }
@@ -8888,7 +8564,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         if ($docid) {
             $propid = strtolower($propid);
-            $data = DocManager::getRawData($docid, [$propid], $latest);
+            $data = SEManager::getRawData($docid, [$propid], $latest);
             return $data[$propid];
         }
         return "";
@@ -8974,8 +8650,8 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getMyAttribute($idattr)
     {
-        $mydoc = DocManager::getDocument($this->getUserId());
-        DocManager::cache()->addDocument($mydoc);
+        $mydoc = SEManager::getDocument($this->getUserId());
+        SEManager::cache()->addDocument($mydoc);
 
         return $mydoc->getRawValue($idattr);
     }
@@ -9047,7 +8723,7 @@ create unique index i_docir on doc(initid, revision);";
      * attach timer to a document
      *
      * @param \Anakeen\SmartStructures\Timer\TimerHooks &$timer   the timer document
-     * @param \Anakeen\Core\Internal\SmartElement                                       &$origin  the document which comes from the attachement
+     * @param \Anakeen\Core\Internal\SmartElement       &$origin  the document which comes from the attachement
      * @param string                                    $execdate date to execute first action YYYY-MM-DD HH:MM:SS
      *
      * @api Attach timer to a document
@@ -9122,7 +8798,7 @@ create unique index i_docir on doc(initid, revision);";
                 /**
                  * @var \Anakeen\SmartStructures\Timer\TimerHooks $t
                  */
-                $t = DocManager::getDocument($v["timerid"]);
+                $t = SEManager::getDocument($v["timerid"]);
                 if ($t && $t->isAlive()) {
                     $dynDateAttr = trim(strtok($t->getRawValue("tm_dyndate"), " "));
                     if ($dynDateAttr) {
@@ -9131,7 +8807,7 @@ create unique index i_docir on doc(initid, revision);";
                         // detect if need reset timer : when date has changed
                         if ($previousExecdate !== false && ($execdate != $previousExecdate)) {
                             if ($v["originid"]) {
-                                $ori = DocManager::getDocument($v["originid"]);
+                                $ori = SEManager::getDocument($v["originid"]);
                             } else {
                                 $ori = null;
                             }
@@ -9159,7 +8835,7 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * @var \Anakeen\SmartStructures\Timer\TimerHooks $timer
          */
-        $timer =DocManager::createTemporaryDocument("TIMER");
+        $timer = SEManager::createTemporaryDocument("TIMER");
         $c = 0;
         $err = $timer->unattachAllDocument($this, $origin, $c);
         if ($err == "" && $c > 0) {
@@ -9326,7 +9002,7 @@ create unique index i_docir on doc(initid, revision);";
             $helpId = $help[0]["id"];
         }
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return DocManager::getDocument($helpId);
+        return SEManager::getDocument($helpId);
     }
 
     /**
@@ -9502,9 +9178,9 @@ create unique index i_docir on doc(initid, revision);";
         if (!is_numeric($avalue)) {
             if ((!strstr($avalue, "<BR>")) && (!strstr($avalue, "\n"))) {
                 if ($oattr->getOption("docrev", "latest") == "latest") {
-                    $res = DocManager::getInitidFromName($avalue);
+                    $res = SEManager::getInitidFromName($avalue);
                 } else {
-                    $res = DocManager::getIdFromName($avalue);
+                    $res = SEManager::getIdFromName($avalue);
                 }
                 if (!$res && !in_array($avalue, $knownLogicalNames)) {
                     $unknownLogicalNames[] = $avalue;
@@ -9519,9 +9195,9 @@ create unique index i_docir on doc(initid, revision);";
                     foreach ($mids as $llname) {
                         if (!is_numeric($llname)) {
                             if ($oattr->getOption("docrev", "latest") == "latest") {
-                                $llid = DocManager::getInitidFromName($llname);
+                                $llid = SEManager::getInitidFromName($llname);
                             } else {
-                                $llid = DocManager::getIdFromName($llname);
+                                $llid = SEManager::getIdFromName($llname);
                             }
                             if (!$llid && !in_array($llname, $knownLogicalNames)) {
                                 $unknownLogicalNames[] = $llname;
@@ -9650,5 +9326,22 @@ create unique index i_docir on doc(initid, revision);";
             $ac = new \Anakeen\Core\Internal\DocumentAccess();
         }
         return $ac->setDocument($this);
+    }
+
+    /**
+     * @return \Anakeen\Core\Internal\SmartElementHooks
+     */
+    public function getHooks()
+    {
+        static $ac;
+        if (!$ac) {
+            $ac = new \Anakeen\Core\Internal\SmartElementHooks();
+        }
+        return $ac->setDocument($this);
+    }
+
+    public function registerHooks()
+    {
+        // Nothing To DO by default
     }
 }

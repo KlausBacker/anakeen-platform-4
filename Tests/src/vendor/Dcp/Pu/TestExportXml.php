@@ -12,7 +12,7 @@ namespace Dcp\Pu;
  */
 
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 //require_once 'PU_testcase_dcp.php';
 
@@ -169,7 +169,9 @@ class TestExportXml extends TestCaseDcpCommonFamily
      */
     public function testExportImageXmlZip($archiveFile, $needles, $type)
     {
+
         include_once('FDL/exportfld.php');
+        include_once("WHAT/Lib.Http.php");
         include_once('Lib.FileDir.php');
 
         $this->clearSetHttpVar();

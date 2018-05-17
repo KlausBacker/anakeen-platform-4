@@ -23,8 +23,7 @@ function initVaultAccess()
     static $FREEDOM_VAULT = false;
     ;
     if (!$FREEDOM_VAULT) {
-        $dbaccess = getDbAccess();
-        $FREEDOM_VAULT = new VaultFile($dbaccess, "FREEDOM");
+        $FREEDOM_VAULT = new VaultFile("", "FREEDOM");
     }
     return $FREEDOM_VAULT;
 }
@@ -188,8 +187,7 @@ function convertFile($infile, $engine, $outfile, &$info)
         $vid = '';
         $err = $ot->sendTransformation($engine, $vid, $infile, $callback, $info);
         if ($err == "") {
-            $dbaccess = getDbAccess();
-            $tr = new TaskRequest($dbaccess);
+            $tr = new TaskRequest();
             $tr->tid = $info["tid"];
             $tr->fkey = $vid;
             $tr->status = $info["status"];

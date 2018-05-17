@@ -2,7 +2,7 @@
 
 namespace Anakeen\Routes\Core;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
@@ -29,7 +29,7 @@ class FamilyDocumentCreation extends DocumentUpdateData
     {
         $familyId = $args["family"];
 
-        $this->_family = DocManager::getFamily($familyId);
+        $this->_family = SEManager::getFamily($familyId);
         if (!$this->_family) {
             $exception = new Exception("CRUD0200", $familyId);
             $exception->setHttpStatus("404", "Family not found");
@@ -53,7 +53,7 @@ class FamilyDocumentCreation extends DocumentUpdateData
     public function create(\Slim\Http\request $request, SmartStructure $family, &$messages)
     {
         try {
-            $this->_document = DocManager::createDocument($family->id);
+            $this->_document = SEManager::createDocument($family->id);
         } catch (Exception $exception) {
             if ($exception->getDcpCode() === "APIDM0003") {
                 $exception = new Exception("API0204", $family->name);

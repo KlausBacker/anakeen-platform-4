@@ -62,7 +62,7 @@ class CheckDoc extends CheckData
                 $this->addError(ErrorCode::getError('DOC0003', $this->famName, $this->specName));
             } else {
                 try {
-                    $f = \Anakeen\Core\DocManager::getDocument($this->famName);
+                    $f = \Anakeen\Core\SEManager::getDocument($this->famName);
                     if (!$f || !$f->isAlive()) {
                         $this->addError(ErrorCode::getError('DOC0005', $this->famName, $this->specName));
                     } else {

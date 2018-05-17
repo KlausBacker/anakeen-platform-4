@@ -26,7 +26,7 @@ class CoreTests
     const LOGFILE = "/var/tmp/pudcp.log";
     const MSGFILE = "/var/tmp/pudcp.msg";
 
-    public static $allInProgress = false;
+    public static $allInProgress = true;
 
     public static function suite()
     {

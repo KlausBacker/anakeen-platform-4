@@ -124,7 +124,7 @@ class TestDocument extends TestCaseDcpCommonFamily
                     $this->assertEquals(-(ContextManager::getCurrentUser()->id), ($slock), sprintf("document %d not locked", $a));
                 }
             } else {
-                $this->markTestIncomplete(sprintf(_('Document %d is locked.'), $a));
+                $this->assertEquals(0, $d->locked);
             }
         } else {
             $this->markTestIncomplete(sprintf(_('Document %d not alive.'), $a));

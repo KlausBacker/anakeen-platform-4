@@ -5,6 +5,11 @@
 */
 
 namespace Dcp\Pu;
+
+use Anakeen\Core\SEManager;
+use SmartStructure\Igroup;
+use SmartStructure\Iuser;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -180,28 +185,28 @@ class TestGroup extends TestCaseDcpCommonFamily
     public function test_userInsertDocument($userId, $groupId, $insertUserId)
     {
         /**
-         * @var \Dcp\Core\UserAccount $user
+         * @var Iuser $user
          */
-        $user = new_Doc(self::$dbaccess, $userId, true);
-        if (!$user->isAlive()) {
+        $user = SEManager::getDocument($userId, true);
+        if (!$user || !$user->isAlive()) {
             $this->markTestIncomplete(sprintf("User with id '%s' is not alive.", $userId));
         }
         $userWhatId = $user->getRawValue('us_whatid');
         $userAccount = new \Anakeen\Core\Account(self::$dbaccess, $userWhatId);
         /**
-         * @var \Dcp\Core\GroupAccount $group
+         * @var Igroup $group
          */
-        $group = new_Doc(self::$dbaccess, $groupId, true);
-        if (!$group->isAlive()) {
+        $group = SEManager::getDocument($groupId, true);
+        if (!$group || !$group->isAlive()) {
             $this->markTestIncomplete(sprintf("Group with id '%s' is not alive.", $groupId));
         }
         $groupWhatId = $group->getRawValue('us_whatid');
         $groupAccount = new \Anakeen\Core\Account(self::$dbaccess, $groupWhatId);
         /**
-         * @var \Dcp\Core\UserAccount $insertUser
+         * @var Iuser $insertUser
          */
-        $insertUser = new_Doc(self::$dbaccess, $insertUserId);
-        if (!$insertUser->isAlive()) {
+        $insertUser = SEManager::getDocument($insertUserId);
+        if (!$insertUser || !$insertUser->isAlive()) {
             $this->markTestIncomplete(sprintf("User with id '%s' is not alive.", $insertUserId));
         }
         $insertUserWhatId = $insertUser->getRawValue('us_whatid');
@@ -218,20 +223,27 @@ class TestGroup extends TestCaseDcpCommonFamily
          * Check table groups
         */
         $groupsIdList = $insertUserAccount->getGroupsId();
-        $this->assertTrue(in_array($groupWhatId, $groupsIdList) , sprintf("User with id '%d' has not group with id '%d' as parent.", $insertUserWhatId, $groupWhatId));
-        /*
-         * Check table fld
-        */
-        $fld = $group->getContent();
-        $found = false;
-        foreach ($fld as & $doc) {
-            if ($doc['id'] == $insertUser->id) {
-                $found = true;
-                break;
-            }
+        if ($insertUser->profid  > 0) {
+            $this->assertTrue(in_array($groupWhatId, $groupsIdList), sprintf("User with id '%d' has not group with id '%d' as parent.", $insertUserWhatId, $groupWhatId));
         }
-        unset($doc);
-        $this->assertTrue($found, sprintf("Group with '%d' does not contain inserted user with id '%d'.", $group->id, $insertUser->id));
+        /*
+             * Check table fld
+            */
+        $fld = $group->getContent();
+        if ($insertUser->profid  > 0) {
+
+            $found = false;
+            foreach ($fld as & $doc) {
+                if ($doc['id'] == $insertUser->id) {
+                    $found = true;
+                    break;
+                }
+            }
+            unset($doc);
+            $this->assertTrue($found, sprintf("Group with '%d' does not contain inserted user with id '%d'.", $group->id, $insertUser->id));
+        } else {
+             $this->assertEmpty($fld, "The content must be empty because user profil is not defined");
+        }
         /*
          * Exit sudo
         */

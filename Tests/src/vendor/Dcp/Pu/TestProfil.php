@@ -119,6 +119,7 @@ class TestProfil extends TestCaseDcpCommonFamily
         $s->search();
         
         $this->assertEquals($expectNumber, $s->count() , sprintf("query:%s: %s", print_r($s->getSearchInfo() , true) , print_r($this->getViews($famName) , true)));
+        $this->exitSudo();
     }
     /**
      * @dataProvider dataProfilRecomputeProfiledDocuments
@@ -214,7 +215,7 @@ class TestProfil extends TestCaseDcpCommonFamily
     }
     private function getViews($famid)
     {
-        $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($famid);
+        $famid = \Anakeen\Core\SEManager::getFamilyIdFromName($famid);
         simpleQuery(self::$dbaccess, "select id, name, profid, views from doc$famid", $r);
         return $r;
     }
@@ -232,13 +233,13 @@ class TestProfil extends TestCaseDcpCommonFamily
                 "profil" => "PU_data_dcp_setprofildata.ods",
                 "famName" => "TST_PROFIL",
                 "john",
-                6
+                5
             ) ,
             array(
                 "profil" => "PU_data_dcp_setprofildata.ods",
                 "famName" => "TST_PROFIL",
                 "jane",
-                6
+                5
             )
         );
     }

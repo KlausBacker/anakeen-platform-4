@@ -580,7 +580,7 @@ create sequence seq_id_users start 10;";
             /**
              * @var \SmartStructure\IUSER $iuser
              */
-            $iuser = \Anakeen\Core\DocManager::getDocument($this->fid);
+            $iuser = \Anakeen\Core\SEManager::getDocument($this->fid);
 
             $err = $iuser->RefreshDocUser();
         } //Update from what
@@ -604,7 +604,7 @@ create sequence seq_id_users start 10;";
                 /**
                  * @var \SmartStructure\IUSER $iuser
                  */
-                $iuser = DocManager::createDocument($fam);
+                $iuser = SEManager::createDocument($fam);
                 $iuser->SetValue("US_WHATID", $this->id);
                 $iuser->Add();
                 $this->fid = $iuser->id;

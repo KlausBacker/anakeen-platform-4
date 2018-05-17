@@ -90,7 +90,7 @@ class TestDocRel extends TestCaseDcpCommonFamily
                     if (isset($this->base[$single])) {
                         $tids[] = $this->base[$single];
                     } else {
-                        $tids[] = \Anakeen\Core\DocManager::getIdFromName($single);
+                        $tids[] = \Anakeen\Core\SEManager::getIdFromName($single);
                     }
                 }
                 
@@ -101,7 +101,7 @@ class TestDocRel extends TestCaseDcpCommonFamily
             if (isset($this->base[$val])) {
                 return $this->base[$val];
             } else {
-                return \Anakeen\Core\DocManager::getIdFromName($val);
+                return \Anakeen\Core\SEManager::getIdFromName($val);
             }
         }
     }

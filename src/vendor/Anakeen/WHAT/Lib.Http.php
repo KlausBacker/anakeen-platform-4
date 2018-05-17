@@ -86,44 +86,7 @@ function Redirect($action, $appname, $actionname, $otherurl = "", $httpparamredi
     exit;
 }
 
-function RedirectSender(\Anakeen\Core\Internal\Action & $action)
-{
-    global $_SERVER;
 
-    if ($_SERVER["HTTP_REFERER"] != "") {
-        Header("Location: " . $_SERVER["HTTP_REFERER"]); // return to sender
-        exit;
-    }
-    $referer = GetHttpVars("http_referer");
-    if ($referer != "") {
-        Header("Location: " . $referer); // return to sender
-        exit;
-    }
-
-    $action->exitError(_("no referer url found"));
-    exit;
-}
-/**
- * if in useIndexAsGuest mode
- * redirect with authtication to current url
- * only if it is anonymous also
- * @param \Anakeen\Core\Internal\Action $action
- */
-function redirectAsGuest(\Anakeen\Core\Internal\Action & $action)
-{
-    $guestMode = getDbAccessValue("useIndexAsGuest");
-    if ($guestMode) {
-        if ($action->user->id == \Anakeen\Core\Account::ANONYMOUS_ID) {
-            /**
-             * @var \Anakeen\Core\Internal\HtmlAuthenticator $auth
-             */
-            $auth = \Anakeen\Router\AuthenticatorManager::$auth;
-            if (is_a($auth, \Anakeen\Core\Internal\HtmlAuthenticator::class)) {
-                $auth->connectTo($_SERVER['REQUEST_URI']);
-            }
-        }
-    }
-}
 /**
  * return value of an http parameter
  * @param string $name parameter key
@@ -149,14 +112,6 @@ function getHttpVars($name, $def = "", $scope = "all")
     return ($def);
 }
 
-function GetHttpCookie($name, $def = "")
-{
-    global $_COOKIE;
-    if (isset($_COOKIE[$name])) {
-        return $_COOKIE[$name];
-    }
-    return ($def);
-}
 
 function SetHttpVar($name, $def)
 {
@@ -201,37 +156,7 @@ function GetExt($mime_type)
     }
     return ("");
 }
-/**
- * Send a response with the given data to be downloaded by the client.
- *
- * No output should be generated on stdout after calling this function.
- *
- * @param string $src the data to send to the client
- * @param string $ext the extension of the data (e.g. "pdf", "png", etc.)
- * @param string $name the filename that will be used by the client for saving to a file
- * @param bool $add_ext add the $ext extension to the $name filename (default = TRUE)
- * @param string $mime_type the Content-Type MIME type of the response. If empty, compute MIME type from $ext extension (this is the default behaviour)
- * @return void
- */
-function Http_Download($src, $ext, $name, $add_ext = true, $mime_type = "")
-{
-    if ($mime_type == '') {
-        $mime_type = GetMimeType($ext);
-    }
-    if ($add_ext) {
-        $name = $name . "." . $ext;
-    }
-    $name = str_replace('"', '\\"', $name);
-    $uName = iconv("UTF-8", "ASCII//TRANSLIT", $name);
-    $name = rawurlencode($name);
-    header("Cache-control: private"); // for IE : don't know why !!
-    header('Content-Length: ' . strlen($src));
-    header("Pragma: "); // HTTP 1.0
-    header("Content-Disposition: attachment;filename=\"$uName\";filename*=UTF-8''$name;");
-    header("Content-type: " . $mime_type);
-    header("X-Content-Type-Options: nosniff");
-    echo $src;
-}
+
 /**
  * Send a response with the content of a local file to be downloaded by the client
  *
@@ -300,18 +225,3 @@ function Http_DownloadFile($filename, $name, $mime_type = '', $inline = false, $
 }
 
 
-
-/**
- * set in cache one hour
- * @param string $mime
- */
-function setHeaderCache($mime = "text/css")
-{
-    ini_set('session.cache_limiter', 'none');
-    $duration = 24 * 3600;
-    header("Cache-Control: private, max-age=$duration"); // use cache client (one hour) for speed optimsation
-    header("Expires: " . gmdate("D, d M Y H:i:s T\n", time() + $duration)); // for mozilla
-    header("Pragma: none"); // HTTP 1.0
-    header("Content-type: $mime");
-    header("X-Content-Type-Options: nosniff");
-}

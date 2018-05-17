@@ -16,7 +16,7 @@
 
 include_once("FDL/Lib.Util.php");
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\DbManager;
 
 //
@@ -72,7 +72,7 @@ function notEmpty($a)
 /**
  * clear all cache used by new_doc function
  *
- * @deprecated use DocManager::cache()
+ * @deprecated use SEManager::cache()
  *
  * @param int $id document identifier : limit to destroy cache of only this document
  *
@@ -81,9 +81,9 @@ function notEmpty($a)
 function clearCacheDoc($id = 0)
 {
     if ($id == 0) {
-        DocManager::cache()->clear();
+        SEManager::cache()->clear();
     } else {
-        DocManager::cache()->removeDocumentById($id);
+        SEManager::cache()->removeDocumentById($id);
     }
 }
 
@@ -97,7 +97,7 @@ function clearCacheDoc($id = 0)
  * @return \Anakeen\Core\Internal\SmartElement object
  * @throws DocManager\Exception
  * @throws \Dcp\Core\Exception
- * @deprecated use DocManager::getDocument
+ * @deprecated use SEManager::getDocument
  *
  * @code
  * $myDoc=new_doc("", $myIdentifier);
@@ -111,12 +111,12 @@ function clearCacheDoc($id = 0)
  */
 function new_Doc($dbaccess, $id = '', $latest = false)
 {
-    $doc = DocManager::getDocument($id, $latest);
+    $doc = SEManager::getDocument($id, $latest);
     if (!$doc) {
         $doc = new \Anakeen\SmartStructures\Document($dbaccess);
     } else {
         if (count(\Dcp\Core\SharedDocuments::getKeys()) < \Dcp\Core\SharedDocuments::getLimit()) {
-            DocManager::cache()->addDocument($doc);
+            SEManager::cache()->addDocument($doc);
 
             // var_dump([memory_get_usage(), count(\Dcp\Core\SharedDocuments::getKeys()),  \Dcp\Core\SharedDocuments::getLimit()]);
         }
@@ -130,7 +130,7 @@ function new_Doc($dbaccess, $id = '', $latest = false)
  *
  * the document is set with default values and default profil of the family
  *
- * @deprecated use DocManager::createDocument
+ * @deprecated use SEManager::createDocument
  *
  * @param string $dbaccess      database specification
  * @param string $fromid        identifier of the family document (the number or internal name)
@@ -153,9 +153,9 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
 {
     try {
         if ($temporary) {
-            $doc = DocManager::createTemporaryDocument($fromid, $defaultvalues);
+            $doc = SEManager::createTemporaryDocument($fromid, $defaultvalues);
         } else {
-            $doc = DocManager::createDocument($fromid, $control, $defaultvalues);
+            $doc = SEManager::createDocument($fromid, $control, $defaultvalues);
         }
     } catch (\Dcp\Core\Exception $e) {
         if ($e->getCode() === "APIDM0003") {
@@ -172,7 +172,7 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
  * the document is set with default values and has no profil
  * the create privilege is not tested in this case
  *
- * @deprecated use DocManager::createTemporaryDocument
+ * @deprecated use SEManager::createTemporaryDocument
  *
  * @param string $dbaccess     database specification
  * @param string $fromid       identifier of the family document (the number or internal name)
@@ -193,7 +193,7 @@ function createTmpDoc($dbaccess, $fromid, $defaultvalue = true)
 /**
  * return from id for document (not for family (use @see getFamFromId() instead)
  *
- * @deprecated use DocManager::getFromId(
+ * @deprecated use SEManager::getFromId(
  *
  * @param string $dbaccess database specification
  * @param int    $id       identifier of the object
@@ -209,7 +209,7 @@ function getFromId($dbaccess, $id)
         return false;
     }
 
-    $fromid = DocManager::getFromId($id);
+    $fromid = SEManager::getFromId($id);
     if (!$fromid) {
         return false;
     }
@@ -220,7 +220,7 @@ function getFromId($dbaccess, $id)
 /**
  * return from name for document (not for family (use @see getFamFromId() instead)
  *
- * @deprecated use DocManager::getFromName()
+ * @deprecated use SEManager::getFromName()
  *
  * @param string $dbaccess database specification
  * @param int    $id       identifier of the object
@@ -236,7 +236,7 @@ function getFromName($dbaccess, $id)
         return false;
     }
 
-    $fromname = DocManager::getFromName($id);
+    $fromname = SEManager::getFromName($id);
     if (!$fromname) {
         return false;
     }
@@ -256,7 +256,7 @@ function getFromName($dbaccess, $id)
 function getDocTitle($id, $latest = true)
 {
     if (!is_numeric($id)) {
-        $id = \Anakeen\Core\DocManager::getIdFromName($id);
+        $id = \Anakeen\Core\SEManager::getIdFromName($id);
     }
     if ($id > 0) {
         if (!$latest) {
@@ -300,7 +300,7 @@ function getDocProperties(
     )
 ) {
     if (!is_numeric($id)) {
-        $id = \Anakeen\Core\DocManager::getIdFromName($id);
+        $id = \Anakeen\Core\SEManager::getIdFromName($id);
     }
     if (($id > 0) && count($prop) > 0) {
         $sProps = implode(',', $prop);
@@ -327,7 +327,7 @@ function getDocProperties(
 /**
  * return document table value
  *
- * @deprecated use Anakeen\Core\DocManager::getRawDocument(), Anakeen\Core\DocManager::getRawData()
+ * @deprecated use Anakeen\Core\SEManager::getRawDocument(), Anakeen\Core\SEManager::getRawData()
  *
  * @param string $dbaccess   database specification
  * @param int    $id         identifier of the object
@@ -343,14 +343,14 @@ function getTDoc($dbaccess, $id, $sqlfilters = array(), $result = array())
     global $SQLDELAY, $SQLDEBUG;
 
     if (!is_numeric($id)) {
-        $id = \Anakeen\Core\DocManager::getIdFromName($id);
+        $id = \Anakeen\Core\SEManager::getIdFromName($id);
     }
     if (!($id > 0)) {
         return false;
     }
     $dbid = DbManager::getDbId();
     $table = "doc";
-    $fromid = \Anakeen\Core\DocManager::getFromId($id);
+    $fromid = \Anakeen\Core\SEManager::getFromId($id);
     if ($fromid > 0) {
         $table = "doc$fromid";
     } else {
@@ -525,7 +525,7 @@ function controlTdoc(&$tdoc, $aclname)
 /**
  * get document object from array document values
  *
- * @deprecated use DocManager::getDocumentFromRawDocument
+ * @deprecated use SEManager::getDocumentFromRawDocument
  *
  * @param string $dbaccess database specification
  * @param array  $v        values of document
@@ -612,7 +612,7 @@ function countDocs(&$tres)
 /**
  * return the identifier of a family from internal name
  *
- * @deprecated use DocManager::getFamilyIdFromName
+ * @deprecated use SEManager::getFamilyIdFromName
  *
  * @param string $dbaccess database specification
  * @param string $name     internal family name
@@ -621,7 +621,7 @@ function countDocs(&$tres)
  */
 function getFamIdFromName($dbaccess, $name)
 {
-    return DocManager::getFamilyIdFromName($name);
+    return SEManager::getFamilyIdFromName($name);
 }
 
 /**
@@ -637,7 +637,7 @@ function getFamIdFromName($dbaccess, $name)
 function getIdFromTitle($dbaccess, $title, $famid = "", $only = false)
 {
     if ($famid && (!is_numeric($famid))) {
-        $famid = DocManager::getFamilyIdFromName($famid);
+        $famid = SEManager::getFamilyIdFromName($famid);
     }
     if ($famid > 0) {
         $fromonly = ($only) ? "only" : "";
@@ -659,7 +659,7 @@ function getIdFromTitle($dbaccess, $title, $famid = "", $only = false)
 /**
  * return the latest identifier of a document from its logical name
  *
- * @deprecated use DocManager::getIdFromName
+ * @deprecated use SEManager::getIdFromName
  *
  * @param string $dbaccess database specification
  * @param string $name     logical name
@@ -669,7 +669,7 @@ function getIdFromTitle($dbaccess, $title, $famid = "", $only = false)
 function getIdFromName($dbaccess, $name)
 {
     try {
-        $id = (string)DocManager::getIdFromName($name);
+        $id = (string)SEManager::getIdFromName($name);
         if ($id === "0") {
             $id = false;
         }
@@ -682,7 +682,7 @@ function getIdFromName($dbaccess, $name)
 /**
  * return the initial identifier of a document from its logical name
  *
- * @deprecated use DocManager::getInitIdFromName
+ * @deprecated use SEManager::getInitIdFromName
  *
  * @param string $name
  *
@@ -690,13 +690,13 @@ function getIdFromName($dbaccess, $name)
  */
 function getInitidFromName($name)
 {
-    return DocManager::getInitIdFromName($name);
+    return SEManager::getInitIdFromName($name);
 }
 
 /**
  * return the logical name of a document from its initial identifier
  *
- * @deprecated use DocManager::getNameFromId
+ * @deprecated use SEManager::getNameFromId
  *
  * @param string $dbaccess database specification
  * @param string $id       initial identifier
@@ -705,7 +705,7 @@ function getInitidFromName($name)
  */
 function getNameFromId($dbaccess, $id)
 {
-    return DocManager::getNameFromId($id);
+    return SEManager::getNameFromId($id);
 }
 
 /**
@@ -738,7 +738,7 @@ function getDocFromUserId($dbaccess, $userid)
             $filter,
             1,
             "LIST",
-            DocManager::getFamilyIdFromName("IGROUP")
+            SEManager::getFamilyIdFromName("IGROUP")
         );
     } else {
         $filter = array(
@@ -752,7 +752,7 @@ function getDocFromUserId($dbaccess, $userid)
             $filter,
             1,
             "LIST",
-            DocManager::getFamilyIdFromName("IUSER")
+            SEManager::getFamilyIdFromName("IUSER")
         );
     }
     if (count($tdoc) == 0) {
@@ -778,7 +778,7 @@ function getFamTitle(&$tdoc)
  */
 function isFixedDoc($dbaccess, $id)
 {
-    $tdoc = DocManager::getRawData($id, ["locked"], false, false);
+    $tdoc = SEManager::getRawData($id, ["locked"], false, false);
 
     if (!$tdoc) {
         return null;
@@ -792,7 +792,7 @@ function isFixedDoc($dbaccess, $id)
 /**
  * return doc array of latest revision of initid
  *
- * @deprecated use DocManager::getRawDocument()
+ * @deprecated use SEManager::getRawDocument()
  *
  * @param string $dbaccess   database specification
  * @param string $initid     initial identifier of the  document
@@ -957,7 +957,7 @@ function getRevTDoc($dbaccess, $initid, $rev)
         return false;
     }
     $table = "docread";
-    $fromid = \Anakeen\Core\DocManager::getFromId($initid);
+    $fromid = \Anakeen\Core\SEManager::getFromId($initid);
     $sql = sprintf("select fromid from docread where initid=%d and revision=%d", $initid, $rev);
     DbManager::query($sql, $fromid, true, true);
     if ($fromid > 0) {
@@ -1024,7 +1024,7 @@ function getLatestRevisionNumber($dbaccess, $initid, $fromid = 0)
  */
 function createAutoFolder(&$doc)
 {
-    $dir = createDoc($doc->dbaccess, DocManager::getFamilyIdFromName("DIR"));
+    $dir = createDoc($doc->dbaccess, SEManager::getFamilyIdFromName("DIR"));
     $err = $dir->Add();
     if ($err != "") {
         return false;
@@ -1035,7 +1035,7 @@ function createAutoFolder(&$doc)
     $dir->setValue("FLD_FAM", $doc->title . "\n" . _("folder") . "\n" . _("search"));
     $dir->setValue(
         "FLD_FAMIDS",
-        $doc->id . "\n" . DocManager::getFamilyIdFromName("DIR") . "\n" . DocManager::getFamilyIdFromName("SEARCH")
+        $doc->id . "\n" . SEManager::getFamilyIdFromName("DIR") . "\n" . SEManager::getFamilyIdFromName("SEARCH")
     );
     $dir->setValue("FLD_SUBFAM", "yes\nyes\nyes");
     $dir->Modify();

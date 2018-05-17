@@ -4,7 +4,7 @@ namespace Anakeen\Routes\Core\Lib;
 
 use Anakeen\Router\URLUtils;
 use Anakeen\Core\DbManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 use Anakeen\Router\Exception;
 
@@ -65,7 +65,7 @@ class DocumentApiData
      */
     protected function setDocument($ressourceId)
     {
-        $this->_document = DocManager::getDocument($ressourceId);
+        $this->_document = SEManager::getDocument($ressourceId);
         if (!$this->_document) {
             $exception = new Exception("ROUTES0100", $ressourceId);
             $exception->setHttpStatus("404", "Document not found");
@@ -81,7 +81,7 @@ class DocumentApiData
             throw $exception;
         }
 
-        DocManager::cache()->addDocument($this->_document);
+        SEManager::cache()->addDocument($this->_document);
     }
 
     /**
@@ -433,7 +433,7 @@ class DocumentApiData
     {
         if (is_numeric($identifier)) {
             $identifier = (int)$identifier;
-            $initid = DocManager::getInitIdFromIdOrName($identifier);
+            $initid = SEManager::getInitIdFromIdOrName($identifier);
 
             if ($initid !== 0 && $initid != $identifier) {
                 return false;

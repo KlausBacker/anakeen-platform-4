@@ -10,7 +10,7 @@
 
 namespace Anakeen\SmartStructures\Igroup;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 /**
  * refresh a set of group
@@ -72,7 +72,7 @@ class IgroupLib
              * @var \SmartStructure\Igroup $doc
              */
 
-            $doc = DocManager::getDocument($g->fid);
+            $doc = SEManager::getDocument($g->fid);
             if ($doc && $doc->isAlive()) {
                 if ($refresh) {
                     $doc->refreshMembers();

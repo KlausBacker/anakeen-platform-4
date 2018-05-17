@@ -188,9 +188,9 @@ class ImportXml
         }
 
         $family = $root->tagName;
-        $famid = \Anakeen\Core\DocManager::getFamilyIdFromName($family);
+        $famid = \Anakeen\Core\SEManager::getFamilyIdFromName($family);
         if (!isset($families[$famid])) {
-            $families[$famid] = \Anakeen\Core\DocManager::getFamily($famid);
+            $families[$famid] = \Anakeen\Core\SEManager::getFamily($famid);
         }
         //print("family : $family $id $name $famid\n");
 
@@ -245,11 +245,11 @@ class ImportXml
                                     $names = explode(',', $name);
                                     $lids = array();
                                     foreach ($names as $lname) {
-                                        $lids[] = \Anakeen\Core\DocManager::getIdFromName($lname);
+                                        $lids[] = \Anakeen\Core\SEManager::getIdFromName($lname);
                                     }
                                     $id = implode(",", $lids);
                                 } else {
-                                    $id = \Anakeen\Core\DocManager::getIdFromName($name);
+                                    $id = \Anakeen\Core\SEManager::getIdFromName($name);
                                 }
                             }
                             if (!$id) {

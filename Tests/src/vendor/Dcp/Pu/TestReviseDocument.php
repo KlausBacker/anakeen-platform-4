@@ -11,7 +11,7 @@ namespace Dcp\Pu;
  */
 
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 //require_once 'PU_testcase_dcp_commonfamily.php';
 
@@ -31,7 +31,7 @@ class TestReviseDocument extends TestCaseDcpCommonFamily
      */
     public function testRevision($docName, $revisionsNumber, $expectRevisionNumber, $expectedTitles)
     {
-        $d = DocManager::getDocument($docName);
+        $d = SEManager::getDocument($docName);
         $d->setValue("TST_REV", $d->revision);
         for ($i=0; $i<$revisionsNumber - 1; $i++) {
             $err=$d->revise();
@@ -44,8 +44,8 @@ class TestReviseDocument extends TestCaseDcpCommonFamily
         $this->assertEquals($expectRevisionNumber, count($revisions));
 
         foreach ($expectedTitles as $revisionNumber=>$title) {
-            $id=DocManager::getRevisedDocumentId($d->initid, $revisionNumber);
-            $rev=DocManager::getDocument($id, false);
+            $id=SEManager::getRevisedDocumentId($d->initid, $revisionNumber);
+            $rev=SEManager::getDocument($id, false);
             $this->assertNotEmpty( $rev, "Revision {$d->initid}/$id/$revisionNumber");
             $this->assertEquals( $title, $rev->getTitle());
         }

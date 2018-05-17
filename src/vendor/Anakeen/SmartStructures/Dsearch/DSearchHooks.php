@@ -7,7 +7,8 @@ namespace Anakeen\SmartStructures\Dsearch;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
+use Anakeen\SmartHooks;
 use Anakeen\SmartStructures\Dir\DirLib;
 use \Dcp\Core\Exception;
 
@@ -45,7 +46,7 @@ class DSearchHooks extends \SmartStructure\Search
      * @throws \Dcp\Db\Exception
      * @throws \Exception
      */
-    public function ComputeQuery($keyword = "", $famid = -1, $latest = "yes", $sensitive = false, $dirid = -1, $subfolder = true, $full = false)
+    public function computeQuery($keyword = "", $famid = -1, $latest = "yes", $sensitive = false, $dirid = -1, $subfolder = true, $full = false)
     {
         if ($dirid > 0) {
             if ($subfolder) {
@@ -74,11 +75,12 @@ class DSearchHooks extends \SmartStructure\Search
         }
         if ($this->getRawValue("se_famonly") == "yes") {
             if (!is_numeric($famid)) {
-                $famid = DocManager::getFamilyIdFromName($famid);
+                $famid = SEManager::getFamilyIdFromName($famid);
             }
             $only = "only";
         }
-        $query = DirLib::getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getRawValue("se_trash"), false, $level = 2, $join = '', $only);
+        $query = DirLib::getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getRawValue("se_trash"), false, $level = 2, $join = '',
+            $only);
 
         return $query;
     }
@@ -104,22 +106,24 @@ class DSearchHooks extends \SmartStructure\Search
         }
     }
 
-    public function postStore()
+    public function registerHooks()
     {
-        $err = parent::postStore();
-        try {
-            $this->getSqlDetailFilter(true);
-        } catch (\Exception $e) {
-            $err .= $e->getMessage();
-        }
-        $err .= $this->updateFromXmlFilter();
-        $err .= $this->updateXmlFilter();
-        if ((!$err) && ($this->isChanged())) {
-            $err = $this->modify();
-        }
-        return $err;
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            $err = '';
+            try {
+                $this->getSqlDetailFilter(true);
+            } catch (\Exception $e) {
+                $err = $e->getMessage();
+            }
+            $err .= $this->updateFromXmlFilter();
+            $err .= $this->updateXmlFilter();
+            if ((!$err) && ($this->isChanged())) {
+                $err = $this->modify();
+            }
+            return $err;
+        });
     }
-
 
 
     /**
@@ -145,7 +149,7 @@ class DSearchHooks extends \SmartStructure\Search
                     if (!is_numeric($std->family)) {
                         if (preg_match("/([\w:]*)\s?(strict)?/", trim($std->family), $reg)) {
                             if (!is_numeric($reg[1])) {
-                                $reg[1] = DocManager::getFamilyIdFromName($reg[1]);
+                                $reg[1] = SEManager::getFamilyIdFromName($reg[1]);
                             }
                             if ($reg[2] == "strict") {
                                 $famid = '-' . $reg[1];
@@ -251,43 +255,6 @@ class DSearchHooks extends \SmartStructure\Search
             }
         }
         return $std;
-    }
-
-    public function preConsultation()
-    {
-        $err = parent::preConsultation();
-        if ($err !== '') {
-            return $err;
-        }
-        if (count($this->getMultipleRawValues("se_filter")) > 0) {
-            if ($this->defaultview == "FREEDOM:VIEWDSEARCH") {
-                $type = $this->getMultipleRawValues("se_typefilter");
-                if ($type[0] != "generated") {
-                    $this->defaultview = "FDL:VIEWBODYCARD";
-                }
-            }
-        }
-        return '';
-    }
-
-    public function preEdition()
-    {
-        if (count($this->getMultipleRawValues("se_filter")) > 0) {
-            $type = $this->getMultipleRawValues("se_typefilter");
-            if ($type[0] != "generated") {
-                $this->defaultedit = "FDL:EDITBODYCARD";
-                /**
-                 * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
-                 */
-                $this->getAttribute('se_t_detail', $oa);
-                $oa->setVisibility('R');
-                $this->getAttribute('se_t_filters', $oa);
-                $oa->setVisibility('W');
-
-                $this->getAttribute('se_filter', $oa);
-                $oa->setVisibility('W');
-            }
-        }
     }
 
     /**
@@ -466,7 +433,7 @@ class DSearchHooks extends \SmartStructure\Search
     public function getSqlCond($col, $op, $val = "", $val2 = "", &$err = "", $validateCond = false)
     {
         if ((!$this->searchfam) || ($this->searchfam->id != $this->getRawValue("se_famid"))) {
-            $this->searchfam = DocManager::getFamily($this->getRawValue("se_famid"));
+            $this->searchfam = SEManager::getFamily($this->getRawValue("se_famid"));
         }
         $col = trim(strtok($col, ' ')); // a col is one word only (prevent injection)
         // because for historic reason revdate is not a date type
@@ -584,7 +551,7 @@ class DSearchHooks extends \SmartStructure\Search
                     }
                 }
                 if (trim($val) != "") {
-                    $cond = " " . $col . " " . trim($op) . " " . $this->_pg_val($val) . " ";
+                    $cond = " " . $col . " " . trim($op) . " " . $this->_pgVal($val) . " ";
                 }
                 break;
 
@@ -614,7 +581,7 @@ class DSearchHooks extends \SmartStructure\Search
 
             case "><":
                 if ((trim($val) != "") && (trim($val2) != "")) {
-                    $cond = sprintf("%s >= %s and %s <= %s", $col, $this->_pg_val($val), $col, $this->_pg_val($val2));
+                    $cond = sprintf("%s >= %s and %s <= %s", $col, $this->_pgVal($val), $col, $this->_pgVal($val2));
                 }
                 break;
 
@@ -656,7 +623,7 @@ class DSearchHooks extends \SmartStructure\Search
                                     $err = sprintf(_("no compatible type with operator %s"), $op);
                                 } else {
                                     if (!is_numeric($fid)) {
-                                        $fid = DocManager::getFamilyIdFromName($fid);
+                                        $fid = SEManager::getFamilyIdFromName($fid);
                                     }
                                     DbManager::query(sprintf("select id from doc%d where title ~* '%s'", $fid, pg_escape_string($val)), $ids, true);
 
@@ -762,7 +729,7 @@ class DSearchHooks extends \SmartStructure\Search
                                     return '';
                                 }
                             }
-                            $cond = sprintf("( (%s is null) or (%s %s %s) )", $col, $col, trim($op), $this->_pg_val($val));
+                            $cond = sprintf("( (%s is null) or (%s %s %s) )", $col, $col, trim($op), $this->_pgVal($val));
                         }
 
                         break;
@@ -770,10 +737,10 @@ class DSearchHooks extends \SmartStructure\Search
                     default:
                         if ($atype == "docid") {
                             if (!is_numeric($val)) {
-                                $val = DocManager::getIdFromName($val);
+                                $val = SEManager::getIdFromName($val);
                             }
                         }
-                        $cond1 = " " . $col . " " . trim($op) . $this->_pg_val($val) . " ";
+                        $cond1 = " " . $col . " " . trim($op) . $this->_pgVal($val) . " ";
                         if (($op == '!=') || ($op == '!~*')) {
                             if ($validateCond && $op == '!~*') {
                                 if (($err = $this->isValidPgRegex($val)) != '') {
@@ -796,7 +763,7 @@ class DSearchHooks extends \SmartStructure\Search
         return $cond;
     }
 
-    private static function _pg_val($s)
+    private static function _pgVal($s)
     {
         if (substr($s, 0, 2) == ':@') {
             return " " . trim(strtok(substr($s, 2), " \t")) . " ";
@@ -839,7 +806,7 @@ class DSearchHooks extends \SmartStructure\Search
         }
         $cond = "";
         if (!$this->searchfam) {
-            $this->searchfam = DocManager::getFamily($this->getRawValue("se_famid"));
+            $this->searchfam = SEManager::getFamily($this->getRawValue("se_famid"));
         }
         if ((count($taid) > 1) || (count($taid) > 0 && $taid[0] != "")) {
             // special loop for revdate
@@ -1031,13 +998,13 @@ class DSearchHooks extends \SmartStructure\Search
     /**
      * return family use for search
      *
-     * @return \Anakeen\Core\Internal\SmartElement 
+     * @return \Anakeen\Core\Internal\SmartElement
      */
     private function getSearchFamilyDocument()
     {
         static $fam = null;
         if (!$fam) {
-            $fam = DocManager::createTemporaryDocument($this->getRawValue("SE_FAMID", 1));
+            $fam = SEManager::createTemporaryDocument($this->getRawValue("SE_FAMID", 1));
         }
         return $fam;
     }

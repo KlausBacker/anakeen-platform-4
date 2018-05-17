@@ -95,7 +95,7 @@ abstract class Authenticator
         
         $u = new \Anakeen\Core\Account();
         if ($u->SetLoginName($username)) {
-            $du = \Anakeen\Core\DocManager::getDocument($u->fid);
+            $du = \Anakeen\Core\SEManager::getDocument($u->fid);
             if ($du && $du->isAlive()) {
                 return true;
             }

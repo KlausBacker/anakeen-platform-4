@@ -10,7 +10,7 @@
 
 namespace Anakeen\SmartStructures\Timer;
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
 
 class TimerHooks extends \Anakeen\SmartStructures\Document
 {
@@ -208,7 +208,7 @@ class TimerHooks extends \Anakeen\SmartStructures\Document
     {
         $msg = '';
         $nextlevel = true;
-        $doc = DocManager::getDocument($docid, true);
+        $doc = SEManager::getDocument($docid, true);
         if (!$doc || !$doc->isAlive()) {
             return sprintf(_("cannot execute : document %s is not found"), $docid);
         }
@@ -228,7 +228,7 @@ class TimerHooks extends \Anakeen\SmartStructures\Document
                                     /**
                                      * @var \SmartStructure\MAILTEMPLATE $tm
                                      */
-                                    $tm = DocManager::getDocument($idmail);
+                                    $tm = SEManager::getDocument($idmail);
                                     if ($tm && $tm->isAlive()) {
                                         $msg = sprintf(_("send mail with template %s [%d]"), $tm->title, $tm->id);
                                         $doc->addHistoryEntry(sprintf(_("execute timer %s (level %d) : %s"), $this->title, $level, $msg));

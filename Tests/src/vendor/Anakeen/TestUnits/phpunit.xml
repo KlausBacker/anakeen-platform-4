@@ -1,0 +1,13 @@
+<phpunit bootstrap="BootStrapTests.php"
+         colors="true"
+         backupGlobals="true">
+    <testsuites>
+        <testsuite name="Core">
+            <file>../Pu/Routes/SuiteRoutes.php</file>
+            <file>../../Dcp/Pu/SuiteDcp.php</file>
+            <file>../../Dcp/Pu/SuiteDcpAttribute.php</file>
+            <file>../../Dcp/Pu/SuiteDcpUser.php</file>
+            <file>../../Dcp/Pu/SuiteDcpSecurity.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>

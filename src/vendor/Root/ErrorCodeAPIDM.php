@@ -15,44 +15,44 @@ class ErrorCodeAPIDM
 {
     /**
      * @errorCode The family used to create a document not exists
-     * @see       \Anakeen\Core\DocManager::createDocument
-     * @see       \Anakeen\Core\DocManager::createtemporaryDocument
+     * @see       \Anakeen\Core\SEManager::createDocument
+     * @see       \Anakeen\Core\SEManager::createtemporaryDocument
      */
     const APIDM0001 = 'Family identifier "%s" not exists';
     /**
      * @errorCode The family used to create a document not exists
-     * @see       \Anakeen\Core\DocManager::createDocument
-     * @see       \Anakeen\Core\DocManager::createtemporaryDocument
+     * @see       \Anakeen\Core\SEManager::createDocument
+     * @see       \Anakeen\Core\SEManager::createtemporaryDocument
      */
     const APIDM0002 = 'Family "%s" (#%d) not exists';
     /**
      * @errorCode Acl "create" is needed to create document
-     * @see       \Anakeen\Core\DocManager::createDocument
+     * @see       \Anakeen\Core\SEManager::createDocument
      */
     const APIDM0003 = 'Family "%s" : no permission to create document of its family';
     /**
      * @errorCode The document must be instancied before
-     * @see       \Anakeen\Core\DocManager::getDocumentFromRawDocument
+     * @see       \Anakeen\Core\SEManager::getDocumentFromRawDocument
      */
     const APIDM0004 = 'Convertion aborted : no identificator detected : %s';
     /**
      * @errorCode The document must have a family
-     * @see       \Anakeen\Core\DocManager::getDocumentFromRawDocument
+     * @see       \Anakeen\Core\SEManager::getDocumentFromRawDocument
      */
     const APIDM0005 = 'Convertion aborted : no family detected : %s';
     /**
      * @errorCode Argument must be an integer
-     * @see       \Anakeen\Core\DocManager::getLatestDocId
+     * @see       \Anakeen\Core\SEManager::getLatestDocId
      */
     const APIDM0100 = 'Internal error : id must be numeric "%s"';
     /**
      * @errorCode Argument must be an alphanum
-     * @see       \Anakeen\Core\DocManager::getIdFromName
+     * @see       \Anakeen\Core\SEManager::getIdFromName
      */
     const APIDM0101 = 'Logical name syntax: not alphanum string "%s"';
     /**
      * @errorCode Family idnetifier not an number
-     * @see       \Anakeen\Core\DocManager::requireFamilyClass
+     * @see       \Anakeen\Core\SEManager::requireFamilyClass
      */
     const APIDM0102 = 'Family Identifier "%s" must be a number';
     /**

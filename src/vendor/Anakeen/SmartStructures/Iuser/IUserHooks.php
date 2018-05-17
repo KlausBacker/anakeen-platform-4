@@ -13,7 +13,8 @@ namespace Anakeen\SmartStructures\Iuser;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
-use Anakeen\Core\DocManager;
+use Anakeen\Core\SEManager;
+use Anakeen\SmartHooks;
 use SmartStructure\Attributes\Iuser as MyAttributes;
 
 /**
@@ -69,13 +70,6 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
         if ($u) {
             $this->setValue("us_incumbents", $u->getIncumbents(false));
         }
-    }
-
-
-
-    public function preUndelete()
-    {
-        return _("user cannot be revived");
     }
 
     /**
@@ -146,7 +140,7 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
             /**
              * @var \SmartStructure\Igroup $gdoc
              */
-            $gdoc = DocManager::getDocument($gid);
+            $gdoc = SEManager::getDocument($gid);
             if ($gdoc && $gdoc->isAlive()) {
                 $gdoc->insertGroups();
             }
@@ -237,7 +231,7 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
             /**
              * @var \SmartStructure\Igroup $grp
              */
-            $grp = DocManager::getDocument($grpid);
+            $grp = SEManager::getDocument($grpid);
             if ($grp && $grp->isAlive()) {
                 $err = $grp->insertDocument($this->initid);
             }
@@ -245,7 +239,7 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
         return $err;
     }
 
-    public function postCreated()
+    protected function updateExpireDate()
     {
         $err = "";
         /**
@@ -264,27 +258,32 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
         return $err;
     }
 
-    /**
-     * update/synchro system user
-     */
-    public function postStore()
+    public function registerHooks()
     {
-        $err = $this->synchronizeSystemUser();
-        if (!$err) {
-            $this->refreshRoles();
-        }
-        return $err;
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            /**
+             * update/synchro system user
+             */
+            $err = $this->synchronizeSystemUser();
+            if (!$err) {
+                $this->refreshRoles();
+            }
+            return $err;
+        });
+
+        $this->getHooks()->addListener(SmartHooks::POSTCREATED, function () {
+            return $this->updateExpireDate();
+        })->addListener(SmartHooks::PREUNDELETE, function () {
+            return _("user cannot be revived");
+        })->addListener(SmartHooks::POSTDELETE, function () {
+            $user = $this->getAccount();
+            if ($user) {
+                $user->Delete();
+            }
+        });
     }
 
-    /**
-     * @deprecated use postStore() instead
-     * @return string
-     */
-    public function postModify()
-    {
-        deprecatedFunction();
-        return self::postStore();
-    }
 
     /**
      * Modify system account from document IUSER
@@ -375,32 +374,6 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
         }
 
         return $err;
-    }
-
-    public function postDelete()
-    {
-        parent::postDelete();
-
-        $user = $this->getAccount();
-        if ($user) {
-            $user->Delete();
-        }
-    }
-
-    /**
-     * Do not call ::setGroup if its import
-     * called only in initialisation
-     *
-     * @param array $extra
-     *
-     * @return string|void
-     */
-    public function preImport(array $extra = array())
-    {
-        if ($this->id > 0) {
-            global $_POST;
-            $_POST["gidnew"] = "N";
-        }
     }
 
     public function preconsultation()

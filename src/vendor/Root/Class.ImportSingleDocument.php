@@ -53,7 +53,7 @@ class ImportSingleDocument
      */
     public $folderId;
     /**
-     * @var \Anakeen\Core\SmartStructure 
+     * @var \Anakeen\Core\SmartStructure
      */
     private $doc;
     /**
@@ -201,7 +201,7 @@ class ImportSingleDocument
         if (is_numeric($this->famId)) {
             $fromid = $this->famId;
         } else {
-            $fromid = \Anakeen\Core\DocManager::getFamilyIdFromName($this->famId);
+            $fromid = \Anakeen\Core\SEManager::getFamilyIdFromName($this->famId);
         }
         if ($fromid == 0) {
             // no need test here it is done by checkDoc class DOC0005 DOC0006
@@ -209,7 +209,7 @@ class ImportSingleDocument
             $this->tcr["err"] = sprintf(_("Not a family [%s]"), $this->famId);
             return $this;
         }
-        $tmpDoc = \Anakeen\Core\DocManager::createDocument($fromid);
+        $tmpDoc = \Anakeen\Core\SEManager::createDocument($fromid);
         if (!$tmpDoc) {
             // no need test here it is done by checkDoc class DOC0007
             $this->tcr["action"] = "ignored";
@@ -227,7 +227,7 @@ class ImportSingleDocument
         } elseif (trim($this->specId) != "") {
             if (!is_numeric(trim($this->specId))) {
                 $tmpDoc->name = trim($this->specId); // logical name
-                $docid = \Anakeen\Core\DocManager::getIdFromName($tmpDoc->name);
+                $docid = \Anakeen\Core\SEManager::getIdFromName($tmpDoc->name);
                 if ($docid > 0) {
                     $tmpDoc->id = $docid;
                     $tmpDoc->initid = $docid;
@@ -236,7 +236,7 @@ class ImportSingleDocument
         }
 
         if ($tmpDoc->id > 0) {
-            $this->doc = \Anakeen\Core\DocManager::getDocument($tmpDoc->id);
+            $this->doc = \Anakeen\Core\SEManager::getDocument($tmpDoc->id);
             if (!$this->doc) {
                 $this->doc = $tmpDoc;
             }
@@ -249,7 +249,7 @@ class ImportSingleDocument
         } else {
             if ($this->doc->fromid != $fromid) {
                 $this->tcr["id"] = $this->doc->id;
-                $this->setError("DOC0008", $this->doc->getTitle(), $this->doc->fromname, \Anakeen\Core\DocManager::getNameFromId($fromid));
+                $this->setError("DOC0008", $this->doc->getTitle(), $this->doc->fromname, \Anakeen\Core\SEManager::getNameFromId($fromid));
                 return $this;
             }
             if ($this->doc->doctype == 'Z') {
@@ -390,7 +390,7 @@ class ImportSingleDocument
         }
         if ((!$this->hasError()) && (!$this->analyze)) {
             if (($this->doc->id > 0) || ($this->policy != "update")) {
-                $err = $this->doc->preImport($extra);
+                $err = $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::PREIMPORT, $extra);
                 if ($err) {
                     $this->setError("DOC0104", $this->doc->name, $err);
                 }
@@ -414,7 +414,7 @@ class ImportSingleDocument
                             foreach ($this->preValues as $k => $v) {
                                 $this->doc->setValue($k, $v);
                             }
-                            $err = $this->doc->preImport($extra);
+                            $err = $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::PREIMPORT, $extra);
                             if ($err != "") {
                                 if ($err) {
                                     $this->setError("DOC0105", $this->doc->name, $err);
@@ -454,7 +454,7 @@ class ImportSingleDocument
                                         $this->doc->setValue($k, $v);
                                     }
                                 }
-                                $err = $this->doc->preImport($extra);
+                                $err = $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::PREIMPORT, $extra);
                                 if ($err != "") {
                                     if ($err) {
                                         $this->setError("DOC0106", $this->doc->name, $err);
@@ -487,7 +487,7 @@ class ImportSingleDocument
                          */
                         $doc = $lsdoc[0];
                         if (!$this->analyze) {
-                            $err = $doc->preImport($extra);
+                            $err = $doc->getHooks()->trigger(\Anakeen\SmartHooks::PREIMPORT, $extra);
                             if ($err != "") {
                                 if ($err) {
                                     $this->setError("DOC0109", $this->doc->name, $err);
@@ -563,7 +563,7 @@ class ImportSingleDocument
                             $this->doc->setValue($k, $v);
                         }
                     }
-                    $err = $this->doc->preImport($extra);
+                    $err = $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::PREIMPORT, $extra);
                     if ($err != "") {
                         $this->setError("DOC0111", $this->doc->name, $err);
                         return $this;
@@ -589,16 +589,17 @@ class ImportSingleDocument
         }
         if (!$this->analyze) {
             if ($this->doc->isAffected()) {
-                $warnMsg = $this->doc->Refresh();
+                $err = $this->doc->store($info, true);
+                $warnMsg = $info->refresh;
                 $this->tcr["specmsg"] .= (($this->tcr["specmsg"] != '') ? "\n" . $warnMsg : $warnMsg); // compute read attribute
-                $msg .= $this->doc->postStore(); // compute read attribute
-                $err = $this->doc->modify();
+                $msg .= $info->postStore; // compute read attribute
+
                 if ($err == "-") {
                     $err = "";
                 } // not really an error add addfile must be tested after
                 if ($err == "") {
                     $this->doc->addHistoryEntry(sprintf(_("updated by import")));
-                    $msg .= $this->doc->postImport($extra);
+                    $msg .=  $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::POSTIMPORT, $extra);
                 } else {
                     $this->setError("DOC0112", $this->doc->name, $err);
                 }
@@ -626,7 +627,7 @@ class ImportSingleDocument
             }
         }
         if ($this->doc->id) {
-            \Anakeen\Core\DocManager::cache()->removeDocumentById($this->doc->id);
+            \Anakeen\Core\SEManager::cache()->removeDocumentById($this->doc->id);
         } // clear cache to clean unused
         return $this;
     }
@@ -653,7 +654,7 @@ class ImportSingleDocument
             /**
              * @var \Anakeen\Core\Internal\SmartElement $imgDoc
              */
-            $imgDoc = \Anakeen\Core\DocManager::createDocument("IMAGE");
+            $imgDoc = \Anakeen\Core\SEManager::createDocument("IMAGE");
 
             if (is_object($imgDoc)) {
                 $imgDoc->setAttributeValue($fileImgAttrid, $vfid);
@@ -679,7 +680,7 @@ class ImportSingleDocument
             /**
              * @var $dir \Anakeen\SmartStructures\Dir\DirHooks
              */
-            $dir = \Anakeen\Core\DocManager::getDocument($folderId);
+            $dir = \Anakeen\Core\SEManager::getDocument($folderId);
             if ($dir && $dir->isAlive()) {
                 $this->tcr["folderid"] = $dir->id;
                 $this->tcr["foldername"] = dirname($this->importFilePath) . "/" . $dir->title;
@@ -703,7 +704,7 @@ class ImportSingleDocument
     /**
      * Parse a docid's raw value (single or multiple) for unknown logical names
      *
-     * @param \Anakeen\Core\Internal\SmartElement                                          $doc
+     * @param \Anakeen\Core\Internal\SmartElement          $doc
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
      * @param string                                       $value docid's raw value
      *

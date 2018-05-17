@@ -9,6 +9,9 @@
  */
 namespace Anakeen\SmartStructures\Role;
 
+use Anakeen\Core\DbManager;
+use Anakeen\SmartHooks;
+
 class RoleHooks extends \Anakeen\SmartStructures\Document
 {
     /**
@@ -16,31 +19,15 @@ class RoleHooks extends \Anakeen\SmartStructures\Document
      */
     protected $sysRole = null;
     
-    public function PreCreated()
+
+    public function preUpdate()
     {
-        $this->lowerLogin();
-        $err = $this->userSynchronize();
-        return $err;
-    }
-    
-    public function PreUpdate()
-    {
-        parent::PreUpdate();
+        parent::preUpdate();
         if ($this->isChanged()) {
             $this->lowerLogin();
         }
     }
-    public function PostDelete()
-    {
-        $role = $this->getAccount();
-        if ($role) {
-            $role->Delete();
-        }
-    }
-    public function preUndelete()
-    {
-        return _("role cannot be revived");
-    }
+
     /**
      * return concatenation of mail addresses
      * @param bool $rawmail if true get mail address only else get mail address with name
@@ -61,21 +48,39 @@ class RoleHooks extends \Anakeen\SmartStructures\Document
             $this->setValue("role_login", mb_strtolower($login));
         }
     }
-    /**
-     * synchro with User table
-     *
-     * @return string error message, if no error empty string
-     */
-    public function postStore()
+
+
+    public function registerHooks()
     {
-        $err = $this->userSynchronize();
-        return $err;
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            /**
+             * synchro with User table
+             *
+             * @return string error message, if no error empty string
+             */
+            $err = $this->userSynchronize();
+            return $err;
+        });
+        $this->getHooks()->addListener(SmartHooks::PRECREATED, function () {
+            $this->lowerLogin();
+            $err = $this->userSynchronize();
+            return $err;
+        })->addListener(SmartHooks::PREUNDELETE, function () {
+            return _("role cannot be revived");
+        })->addListener(SmartHooks::POSTDELETE, function () {
+            $role = $this->getAccount();
+            if ($role) {
+                $role->Delete();
+            }
+        });
     }
+
     /**
      * update/create system role from document role
      * @return string error message
      */
-    public function userSynchronize()
+    protected function userSynchronize()
     {
         $err = '';
         if ($this->isAffected()) {
@@ -159,7 +164,7 @@ class RoleHooks extends \Anakeen\SmartStructures\Document
     {
         $err = "";
         $sql = sprintf("select id from users where login = '%s' and id != %d", mb_strtolower(pg_escape_string($login)), $this->getRawValue("us_whatid"));
-        simpleQuery('', $sql, $id, true, true);
+        DbManager::query($sql, $id, true, true);
         
         if ($id) {
             $err = sprintf(_("role %s id is already used"), $login);

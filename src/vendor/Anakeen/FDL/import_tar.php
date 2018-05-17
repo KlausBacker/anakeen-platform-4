@@ -170,7 +170,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                                 if (!$analyze) {
                                     $ddoc->Init();
                                     $ddoc->setValue($fattr, $vfid);
-                                    $err = $ddoc->Add();
+                                    $err = $ddoc->store();
                                     if ($err != "") {
                                         $tr[$index]["action"] = "Not added";
                                         $tr[$index]["err"] = $err;
@@ -178,8 +178,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                                         $ddoc->addHistoryEntry(sprintf("create by import from archive %s", substr(basename($ldir), 0, -2)));
                                         $tr[$index]["action"] = "Added";
                                         $tr[$index]["id"] = $ddoc->id;
-                                        $ddoc->postStore();
-                                        $ddoc->Modify();
+
                                         if ($dirid > 0) {
                                             $dir->insertDocument($ddoc->id);
                                         }
@@ -303,7 +302,7 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
                     if (is_numeric($data[1])) {
                         $orfromid = $data[1];
                     } else {
-                        $orfromid = \Anakeen\Core\DocManager::getFamilyIdFromName($data[1]);
+                        $orfromid = \Anakeen\Core\SEManager::getFamilyIdFromName($data[1]);
                     }
 
                     $tcolorder[$orfromid] = getOrder($data);
@@ -314,7 +313,7 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
                     if (is_numeric($data[1])) {
                         $orfromid = $data[1];
                     } else {
-                        $orfromid = \Anakeen\Core\DocManager::getFamilyIdFromName($data[1]);
+                        $orfromid = \Anakeen\Core\SEManager::getFamilyIdFromName($data[1]);
                     }
 
                     $tkeys[$orfromid] = getOrder($data);
@@ -331,7 +330,7 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
                     if (is_numeric($data[1])) {
                         $fromid = $data[1];
                     } else {
-                        $fromid = \Anakeen\Core\DocManager::getFamilyIdFromName($data[1]);
+                        $fromid = \Anakeen\Core\SEManager::getFamilyIdFromName($data[1]);
                     }
                     if (isset($tkeys[$fromid])) {
                         $tk = $tkeys[$fromid];
