@@ -14,6 +14,7 @@ namespace Anakeen\SmartStructures\Exec;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Script\ShellManager;
+use Anakeen\SmartHooks;
 
 class ExecHooks extends \Anakeen\SmartStructures\Document
 {
@@ -57,10 +58,12 @@ class ExecHooks extends \Anakeen\SmartStructures\Document
         return $err;
     }
 
-
-    public function postStore()
+    public function registerHooks()
     {
-        $this->setValue("exec_nextdate", $this->getNextExecDate());
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            $this->setValue("exec_nextdate", $this->getNextExecDate());
+        });
     }
 
     /**

@@ -20,7 +20,7 @@ class SmartElementHooks
     }
 
     public function addListener($hookName, $ft)
-    {return $this;
+    {
         $this->document->hooks[$hookName][] = $ft;
         return $this;
     }
@@ -56,15 +56,15 @@ class SmartElementHooks
     public function trigger($hookName)
     {
         if (!isset($this->document->hooks)) {
-            $this->document->hooks=[];
+            $this->document->hooks = [];
             $this->initHooks();
         }
-
+        $outs = [];
         if (!empty($this->document->hooks[$hookName])) {
             foreach ($this->document->hooks[$hookName] as $ft) {
-                $ft();
+                $outs[] = $ft();
             }
         }
-        return $this;
+        return implode("\n", $outs);
     }
 }

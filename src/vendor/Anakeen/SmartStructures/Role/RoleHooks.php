@@ -9,6 +9,9 @@
  */
 namespace Anakeen\SmartStructures\Role;
 
+use Anakeen\Core\DbManager;
+use Anakeen\SmartHooks;
+
 class RoleHooks extends \Anakeen\SmartStructures\Document
 {
     /**
@@ -61,21 +64,27 @@ class RoleHooks extends \Anakeen\SmartStructures\Document
             $this->setValue("role_login", mb_strtolower($login));
         }
     }
-    /**
-     * synchro with User table
-     *
-     * @return string error message, if no error empty string
-     */
-    public function postStore()
+
+
+    public function registerHooks()
     {
-        $err = $this->userSynchronize();
-        return $err;
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            /**
+             * synchro with User table
+             *
+             * @return string error message, if no error empty string
+             */
+            $err = $this->userSynchronize();
+            return $err;
+        });
     }
+
     /**
      * update/create system role from document role
      * @return string error message
      */
-    public function userSynchronize()
+    protected function userSynchronize()
     {
         $err = '';
         if ($this->isAffected()) {
@@ -159,7 +168,7 @@ class RoleHooks extends \Anakeen\SmartStructures\Document
     {
         $err = "";
         $sql = sprintf("select id from users where login = '%s' and id != %d", mb_strtolower(pg_escape_string($login)), $this->getRawValue("us_whatid"));
-        simpleQuery('', $sql, $id, true, true);
+        DbManager::query($sql, $id, true, true);
         
         if ($id) {
             $err = sprintf(_("role %s id is already used"), $login);

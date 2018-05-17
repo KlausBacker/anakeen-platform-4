@@ -1008,20 +1008,10 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
         return $terr;
     }
 
-    public function postStore() {
-        $allbut = $this->getRawValue("FLD_ALLBUT");
-            $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
-
-            if (($allbut === "0") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
-                $this->clearValue("FLD_ALLBUT");
-                $this->modify();
-            }
-            return "";
-    }
-
     public function registerHooks()
     {
         $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+             error_log("registerHooks:DIR");
             $allbut = $this->getRawValue("FLD_ALLBUT");
             $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
 

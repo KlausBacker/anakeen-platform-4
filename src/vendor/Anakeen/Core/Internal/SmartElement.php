@@ -76,7 +76,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
      * @var string searchable values
      */
     protected $svalues;
-    public $hooks=null;
+    public $hooks = null;
     public $sup_fields
         = array(
             "values",
@@ -1474,9 +1474,10 @@ create unique index i_docir on doc(initid, revision);";
                 if ($err) {
                     $info->errorCode = StoreInfo::UPDATE_ERROR;
                 } else {
-                    $info->postStore = $this->postStore();
-
-                    $this->getHooks()->trigger(SmartHooks::POSTSTORE);
+                    /**
+                     * is not the postUpdate method
+                     */
+                    $info->postStore = $this->getHooks()->trigger(SmartHooks::POSTSTORE);
 
                     if ($this->hasChanged) {
                         //in case of change in postStore
@@ -2115,7 +2116,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function affect($array, $more = false, $reset = true)
     {
         if (is_array($array)) {
-           // $this->getHooks()->resetListeners();
+            // $this->getHooks()->resetListeners();
             $this->preAffect($array, $more, $reset);
             if ($more) {
                 $this->resetMoreValues();
@@ -3385,18 +3386,6 @@ create unique index i_docir on doc(initid, revision);";
     {
     }
 
-
-    /**
-     * no in postUpdate method :: call this only if real change (values)
-     *
-     * @api hook called in ::store()
-     * @return string error message
-     */
-    public function postStore()
-    {
-        // to be defined in child class
-        return "";
-    }
 
     /**
      * call in beging store before constraint verification

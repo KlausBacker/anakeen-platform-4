@@ -13,21 +13,12 @@ use Anakeen\SmartHooks;
 
 class GroupHooks extends \SmartStructure\Dir
 {
-    /*
-     * @end-method-ignore
-    */
+
     /**
      * reconstruct mail group & recompute parent group
      *
-     * @return string error message, if no error empty string
+     * @return void
      */
-
-
-    public function postStore() {$err = $this->SetGroupMail();
-            $this->refreshParentGroup();
-            return $err;
-    }
-
     public function registerHooks()
     {
         parent::registerHooks();

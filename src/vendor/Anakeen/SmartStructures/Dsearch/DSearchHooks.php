@@ -8,6 +8,7 @@ namespace Anakeen\SmartStructures\Dsearch;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
+use Anakeen\SmartHooks;
 use Anakeen\SmartStructures\Dir\DirLib;
 use \Dcp\Core\Exception;
 
@@ -45,7 +46,7 @@ class DSearchHooks extends \SmartStructure\Search
      * @throws \Dcp\Db\Exception
      * @throws \Exception
      */
-    public function ComputeQuery($keyword = "", $famid = -1, $latest = "yes", $sensitive = false, $dirid = -1, $subfolder = true, $full = false)
+    public function computeQuery($keyword = "", $famid = -1, $latest = "yes", $sensitive = false, $dirid = -1, $subfolder = true, $full = false)
     {
         if ($dirid > 0) {
             if ($subfolder) {
@@ -105,20 +106,23 @@ class DSearchHooks extends \SmartStructure\Search
         }
     }
 
-    public function postStore()
+    public function registerHooks()
     {
-        $err = parent::postStore();
-        try {
-            $this->getSqlDetailFilter(true);
-        } catch (\Exception $e) {
-            $err .= $e->getMessage();
-        }
-        $err .= $this->updateFromXmlFilter();
-        $err .= $this->updateXmlFilter();
-        if ((!$err) && ($this->isChanged())) {
-            $err = $this->modify();
-        }
-        return $err;
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            $err = '';
+            try {
+                $this->getSqlDetailFilter(true);
+            } catch (\Exception $e) {
+                $err = $e->getMessage();
+            }
+            $err .= $this->updateFromXmlFilter();
+            $err .= $this->updateXmlFilter();
+            if ((!$err) && ($this->isChanged())) {
+                $err = $this->modify();
+            }
+            return $err;
+        });
     }
 
 
@@ -547,7 +551,7 @@ class DSearchHooks extends \SmartStructure\Search
                     }
                 }
                 if (trim($val) != "") {
-                    $cond = " " . $col . " " . trim($op) . " " . $this->_pg_val($val) . " ";
+                    $cond = " " . $col . " " . trim($op) . " " . $this->_pgVal($val) . " ";
                 }
                 break;
 
@@ -577,7 +581,7 @@ class DSearchHooks extends \SmartStructure\Search
 
             case "><":
                 if ((trim($val) != "") && (trim($val2) != "")) {
-                    $cond = sprintf("%s >= %s and %s <= %s", $col, $this->_pg_val($val), $col, $this->_pg_val($val2));
+                    $cond = sprintf("%s >= %s and %s <= %s", $col, $this->_pgVal($val), $col, $this->_pgVal($val2));
                 }
                 break;
 
@@ -725,7 +729,7 @@ class DSearchHooks extends \SmartStructure\Search
                                     return '';
                                 }
                             }
-                            $cond = sprintf("( (%s is null) or (%s %s %s) )", $col, $col, trim($op), $this->_pg_val($val));
+                            $cond = sprintf("( (%s is null) or (%s %s %s) )", $col, $col, trim($op), $this->_pgVal($val));
                         }
 
                         break;
@@ -736,7 +740,7 @@ class DSearchHooks extends \SmartStructure\Search
                                 $val = SEManager::getIdFromName($val);
                             }
                         }
-                        $cond1 = " " . $col . " " . trim($op) . $this->_pg_val($val) . " ";
+                        $cond1 = " " . $col . " " . trim($op) . $this->_pgVal($val) . " ";
                         if (($op == '!=') || ($op == '!~*')) {
                             if ($validateCond && $op == '!~*') {
                                 if (($err = $this->isValidPgRegex($val)) != '') {
@@ -759,7 +763,7 @@ class DSearchHooks extends \SmartStructure\Search
         return $cond;
     }
 
-    private static function _pg_val($s)
+    private static function _pgVal($s)
     {
         if (substr($s, 0, 2) == ':@') {
             return " " . trim(strtok(substr($s, 2), " \t")) . " ";

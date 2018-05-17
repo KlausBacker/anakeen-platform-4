@@ -13,7 +13,7 @@ class MSearchHooks extends \SmartStructure\Search
     public $defaultedit = "FDL:EDITBODYCARD";
     public $defaultview = "FDL:VIEWBODYCARD";
     
-    public function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
+    public function computeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
     {
         $tidsearch = $this->getMultipleRawValues("SEG_IDCOND");
         

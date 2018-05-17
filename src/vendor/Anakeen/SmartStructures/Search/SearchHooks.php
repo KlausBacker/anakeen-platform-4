@@ -140,7 +140,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
     public function getQuery()
     {
         if (!$this->isStaticSql()) {
-            $query = $this->ComputeQuery($this->getRawValue("se_key"), $this->getRawValue("se_famid"), $this->getRawValue("se_latest"), $this->getRawValue("se_case") == "yes",
+            $query = $this->computeQuery($this->getRawValue("se_key"), $this->getRawValue("se_famid"), $this->getRawValue("se_latest"), $this->getRawValue("se_case") == "yes",
                 $this->getRawValue("se_idfld"), $this->getRawValue("se_sublevel") === "", $this->getRawValue("se_case") == "full");
             // print "<HR>getQuery1:[$query]";
         } else {

@@ -7,6 +7,8 @@
 
 namespace Anakeen\Core;
 
+use Anakeen\SmartHooks;
+
 class SmartStructure extends \Anakeen\SmartStructures\Profiles\PFamHooks
 {
     public $dbtable = "docfam";
@@ -158,9 +160,12 @@ create unique index idx_idfam on docfam(id);";
         return $values["title"];
     }
 
-    public function postStore()
+    public function registerHooks()
     {
-        return \Dcp\FamilyImport::refreshPhpPgDoc($this->dbaccess, $this->id);
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            return \Dcp\FamilyImport::refreshPhpPgDoc($this->dbaccess, $this->id);
+        });
     }
 
     public function preCreated()

@@ -16,7 +16,7 @@ class SSearchHooks extends \SmartStructure\Search
     /**
      * return sql query to search wanted document
      */
-    public function ComputeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
+    public function computeQuery($keyword = "", $famid = - 1, $latest = "yes", $sensitive = false, $dirid = - 1, $subfolder = true, $full = false)
     {
         return true;
     }

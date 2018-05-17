@@ -14,6 +14,7 @@ namespace Anakeen\SmartStructures\Iuser;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
+use Anakeen\SmartHooks;
 use SmartStructure\Attributes\Iuser as MyAttributes;
 
 /**
@@ -70,7 +71,6 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
             $this->setValue("us_incumbents", $u->getIncumbents(false));
         }
     }
-
 
 
     public function preUndelete()
@@ -264,18 +264,20 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
         return $err;
     }
 
-    /**
-     * update/synchro system user
-     */
-    public function postStore()
+    public function registerHooks()
     {
-        $err = $this->synchronizeSystemUser();
-        if (!$err) {
-            $this->refreshRoles();
-        }
-        return $err;
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            /**
+             * update/synchro system user
+             */
+            $err = $this->synchronizeSystemUser();
+            if (!$err) {
+                $this->refreshRoles();
+            }
+            return $err;
+        });
     }
-
 
 
     /**

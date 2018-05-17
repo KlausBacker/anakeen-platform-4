@@ -99,12 +99,6 @@ class IGroupHooks extends \SmartStructure\Group
         }
     }
 
-
-    public function postStore() {
-
-        return $this->synchronizeSystemGroup();
-    }
-
     public function registerHooks()
     {
         parent::registerHooks();
