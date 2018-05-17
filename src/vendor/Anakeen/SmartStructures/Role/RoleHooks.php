@@ -19,12 +19,7 @@ class RoleHooks extends \Anakeen\SmartStructures\Document
      */
     protected $sysRole = null;
     
-    public function PreCreated()
-    {
-        $this->lowerLogin();
-        $err = $this->userSynchronize();
-        return $err;
-    }
+
     
     public function PreUpdate()
     {
@@ -75,6 +70,11 @@ class RoleHooks extends \Anakeen\SmartStructures\Document
              *
              * @return string error message, if no error empty string
              */
+            $err = $this->userSynchronize();
+            return $err;
+        });
+        $this->getHooks()->addListener(SmartHooks::PRECREATED, function () {
+            $this->lowerLogin();
             $err = $this->userSynchronize();
             return $err;
         });

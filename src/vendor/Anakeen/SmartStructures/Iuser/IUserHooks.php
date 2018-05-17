@@ -245,7 +245,7 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
         return $err;
     }
 
-    public function postCreated()
+    protected function updateExpireDate()
     {
         $err = "";
         /**
@@ -276,6 +276,10 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
                 $this->refreshRoles();
             }
             return $err;
+        });
+
+        $this->getHooks()->addListener(SmartHooks::POSTCREATED, function () {
+            return $this->updateExpireDate();
         });
     }
 

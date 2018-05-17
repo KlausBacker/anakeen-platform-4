@@ -1010,8 +1010,8 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
 
     public function registerHooks()
     {
+        parent::registerHooks();
         $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
-             error_log("registerHooks:DIR");
             $allbut = $this->getRawValue("FLD_ALLBUT");
             $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
 

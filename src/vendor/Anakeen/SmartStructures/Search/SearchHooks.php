@@ -8,8 +8,8 @@ namespace Anakeen\SmartStructures\Search;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\DocumentAccess;
+use Anakeen\SmartHooks;
 use Anakeen\SmartStructures\Dir\DirLib;
-
 
 class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
 {
@@ -30,7 +30,6 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
     public $folderRecursiveLevel = 2;
 
 
-
     public function preConsultation()
     {
         $famId = $this->getRawValue(\SmartStructure\Attributes\Search::se_famid);
@@ -44,9 +43,12 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
         return '';
     }
 
-    public function preCreated()
+    public function registerHooks()
     {
-        return $this->updateSearchAuthor();
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::PRECREATED, function () {
+            return $this->updateSearchAuthor();
+        });
     }
 
     /**
@@ -54,7 +56,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
      *
      * @return string
      */
-    public function updateSearchAuthor()
+    protected function updateSearchAuthor()
     {
         $err = '';
         if (!$this->getRawValue("se_author")) {
@@ -129,7 +131,6 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
     {
         return false;
     }
-
 
 
     /**
@@ -452,7 +453,8 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
             $uid = 1;
         }
         $orderby = $this->getRawValue("se_orderby", "title");
-        $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($this->dbaccess, $this->initid, 0, "ALL", $filter, $uid, "TABLE", $famid, false, $orderby, true, $this->getRawValue("se_trash"));
+        $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($this->dbaccess, $this->initid, 0, "ALL", $filter, $uid, "TABLE", $famid, false, $orderby, true,
+            $this->getRawValue("se_trash"));
         return $tdoc;
     }
 }

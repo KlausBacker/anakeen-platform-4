@@ -838,11 +838,10 @@ create unique index i_docir on doc(initid, revision);";
     }
 
     /**
-     * Increment sequence of family and call to \Anakeen\Core\Internal\SmartElement::PostCreated
-     * send mail if workflow is attached to it
+     * Increment sequence of family and call hooks  SmartHooks::POSTCREATED
+     *
      * affect profil
      *
-     * @see \Anakeen\Core\Internal\SmartElement::PostCreated
      *
      * @return void
      */
@@ -887,7 +886,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->doctype !== 'C') {
             if ($this->doctype !== "T") {
                 if ($this->revision == 0) {
-                    $err = $this->postCreated();
+                    $err = $this->getHooks()->trigger(SmartHooks::POSTCREATED);
                     if ($err != "") {
                         \Anakeen\Core\Utils\System::addWarningMsg($err);
                     }
@@ -940,7 +939,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function preInsert()
     {
-        $err = $this->PreCreated();
+        $err = $this->getHooks()->trigger(SmartHooks::PRECREATED);
         if ($err != "") {
             return $err;
         }
@@ -1451,7 +1450,8 @@ create unique index i_docir on doc(initid, revision);";
         $constraint = [];
         $info = new StoreInfo();
 
-        $err = $this->preStore();
+
+        $err = $this->getHooks()->trigger(SmartHooks::PRESTORE);
         if ($err) {
             $info->preStore = $err;
             $info->error = $err;
@@ -3384,70 +3384,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function postConstructor()
     {
-    }
-
-
-    /**
-     * call in beging store before constraint verification
-     * if error message is returned store is aborted and the message is returned by store method
-     *
-     * @api hook called in \Anakeen\Core\Internal\SmartElement::store()
-     * @see \Anakeen\Core\Internal\SmartElement::store()
-     * @return string error message
-     */
-    public function preStore()
-    {
-        // to be defined in child class
-        return "";
-    }
-
-    /**
-     * called when user edit a document FDL/editcard
-     *
-     * @deprecated
-     * @api hook called when compose edit document web interface
-     */
-    public function preEdition()
-    {
-        // to be defined in child class
-        return "";
-    }
-
-    /**
-     * called when user view a document FDL/fdl_card
-     *
-     * @deprecated
-     * @api hook called when compose view document web interface
-     */
-    public function preConsultation()
-    {
-        // to be defined in child class
-        return "";
-    }
-
-    /**
-     * call in doc::postInsert method
-     *
-     * @api hook called when document is created in database
-     * @return string error message
-     */
-    public function postCreated()
-    {
-        // to be defined in child class
-        return "";
-    }
-
-    /**
-     * call in doc::add method
-     * if return message, creation is aborted
-     *
-     * @api hook called before document is created in database
-     * @return string error message
-     */
-    public function preCreated()
-    {
-        // to be defined in child class
-        return "";
     }
 
     /**
