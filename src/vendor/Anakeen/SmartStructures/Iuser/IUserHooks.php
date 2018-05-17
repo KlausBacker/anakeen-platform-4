@@ -72,12 +72,6 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
         }
     }
 
-
-    public function preUndelete()
-    {
-        return _("user cannot be revived");
-    }
-
     /**
      * get all direct group document identificators of the isuser
      *
@@ -280,6 +274,8 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
 
         $this->getHooks()->addListener(SmartHooks::POSTCREATED, function () {
             return $this->updateExpireDate();
+        })->addListener(SmartHooks::PREUNDELETE, function () {
+            return _("user cannot be revived");
         });
     }
 

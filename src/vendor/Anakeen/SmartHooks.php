@@ -12,8 +12,8 @@ interface SmartHooks
     /**
      * call in SmartElement::Add() method
      * if return message, creation is aborted
-     * @see SmartElement::store()
-     * @notehook called before document is created in database
+     * @see      SmartElement::store()
+     * @note     hook called before document is created in database
      * @return string error message
      */
     const PRECREATED = "preCreated";
@@ -46,6 +46,19 @@ interface SmartHooks
      * @see \Anakeen\Core\Internal\SmartElement::revise
      */
     const POSTREVISE = "postRevise";
+    /**
+     * Call when undelete document
+     * the output message is an error message it stop restore if is not empty
+     * @see \Anakeen\Core\Internal\SmartElement::undelete()
+     */
+    const PREUNDELETE = "preUndelete";
+
+    /**
+     * Call when undelete document
+     * the output message will appeared as a information message
+     * @see \Anakeen\Core\Internal\SmartElement::undelete
+     */
+    const POSTUNDELETE = "postUndelete";
 
     public function registerHooks();
 }

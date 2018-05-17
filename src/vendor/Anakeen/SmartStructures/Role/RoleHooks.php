@@ -35,10 +35,7 @@ class RoleHooks extends \Anakeen\SmartStructures\Document
             $role->Delete();
         }
     }
-    public function preUndelete()
-    {
-        return _("role cannot be revived");
-    }
+
     /**
      * return concatenation of mail addresses
      * @param bool $rawmail if true get mail address only else get mail address with name
@@ -77,6 +74,8 @@ class RoleHooks extends \Anakeen\SmartStructures\Document
             $this->lowerLogin();
             $err = $this->userSynchronize();
             return $err;
+        })->addListener(SmartHooks::PREUNDELETE, function () {
+            return _("role cannot be revived");
         });
     }
 

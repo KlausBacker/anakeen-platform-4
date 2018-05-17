@@ -10,7 +10,6 @@
 
 namespace Anakeen\SmartStructures\Igroup;
 
-use Anakeen\Core\Internal\Debug;
 use Anakeen\Core\SEManager;
 use Anakeen\SmartHooks;
 use SmartStructure\Attributes\Igroup as MyAttributes;
@@ -47,12 +46,6 @@ class IGroupHooks extends \SmartStructure\Group
         }
         return $err;
     }
-
-    public function preUndelete()
-    {
-        return _("group cannot be revived");
-    }
-
 
     /**
      * recompute only parent group
@@ -104,8 +97,9 @@ class IGroupHooks extends \SmartStructure\Group
         parent::registerHooks();
         $this->getHooks()->removeListeners(SmartHooks::POSTSTORE);
         $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
-            error_log("registerHooks:IGROUPHOOK");
             return $this->synchronizeSystemGroup();
+        })->addListener(SmartHooks::PREUNDELETE, function () {
+            return _("group cannot be revived");
         });
     }
 

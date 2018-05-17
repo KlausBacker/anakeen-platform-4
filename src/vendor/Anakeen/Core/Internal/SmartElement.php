@@ -2044,7 +2044,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         if (($this->control('delete') == "") || (ContextManager::getCurrentUser()->id == 1)) {
             if (!$this->isAlive()) {
-                $err = $this->preUndelete();
+                $err =  $this->getHooks()->trigger(SmartHooks::PREUNDELETE);
                 if ($err) {
                     return $err;
                 }
@@ -2070,7 +2070,7 @@ create unique index i_docir on doc(initid, revision);";
                         "name"
                     ), true);
                     $this->addHistoryEntry(_("revival document"), \DocHisto::MESSAGE, "REVIVE");
-                    $msg = $this->postUndelete();
+                    $msg =  $this->getHooks()->trigger(SmartHooks::POSTUNDELETE);
                     if ($msg) {
                         $this->addHistoryEntry($msg, \DocHisto::MESSAGE);
                     }
@@ -3375,35 +3375,6 @@ create unique index i_docir on doc(initid, revision);";
             $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mb_trim(preg_replace('/\p{Cc}/u', ' ', $title1)), 0, 255);
         }
         $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mb_trim(preg_replace('/\p{Cc}/u', ' ', $this->getCustomTitle())), 0, 255);
-    }
-
-
-
-
-
-    /**
-     * call when doc is being undelete
-     * if return non null string undelete will ne aborted
-     *
-     * @api hook called before undelete document
-     * @see \Anakeen\Core\Internal\SmartElement::undelete
-     * @return string error message, if no error empty string
-     */
-    public function preUndelete()
-    {
-        return "";
-    }
-
-    /**
-     * call when doc is revived after resurrection in database
-     * the error message will appeared like message
-     *
-     * @api hook called after undelete document
-     * @return string warning message, if no warning empty string
-     */
-    public function postUndelete()
-    {
-        return "";
     }
 
 
