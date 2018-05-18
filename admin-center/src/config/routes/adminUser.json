@@ -6,8 +6,19 @@
   },
   "routes": {
     "AdminUser:GroupList": {
+      "description": "Get list of group",
       "pattern": "/api/v2/admin/user/groups/",
-      "callable": "\\Anakeen\\Routes\\Admin\\MainPage",
+      "callable": "\\Anakeen\\Routes\\Admin\\User\\Groups",
+      "methods": [
+        "GET"
+      ],
+      "requiredAccess": "adminUser:admin",
+      "priority": 0
+    },
+    "AdminUser:UserList": {
+      "description": "Get list of users",
+      "pattern": "/api/v2/admin/user/users/",
+      "callable": "\\Anakeen\\Routes\\Admin\\User\\Users",
       "methods": [
         "GET"
       ],
