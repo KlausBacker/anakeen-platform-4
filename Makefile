@@ -49,6 +49,10 @@ COMPOSER_BIN=composer
 ##
 ########################################################################################################################
 
+
+$(JS_CONF_PATH)/node_modules:
+	$(YARN_BIN) install
+
 $(JS_CONF_PATH)/yarn.lock: $(JS_CONF_PATH)/package.json
 	$(YARN_BIN) install
 	touch "$@"
@@ -99,8 +103,7 @@ $(LOCALPUB_ANAKEEN_UI_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${ANAKEEN_UI
 	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(LOCALPUB_ANAKEEN_UI_PATH)/build.json $(LOCALPUB_ANAKEEN_UI_PATH)/src/Apps/DOCUMENT/DOCUMENT_init.php
 	$(DEVTOOL_BIN) generateWebinst -s $(LOCALPUB_ANAKEEN_UI_PATH) -o .
 	touch "$@"
-
-app: $(JS_ASSET_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_DDUI_BUILD_PATH) $(JS_FAMILY_BUILD_PATH) $(LOCALPUB_ANAKEEN_UI_PATH) ## build the project
+app: $(JS_CONF_PATH)/node_modules $(JS_ASSET_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_DDUI_BUILD_PATH) $(JS_FAMILY_BUILD_PATH) $(LOCALPUB_ANAKEEN_UI_PATH) ## build the project
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 
 deploy: app ## deploy the project
@@ -165,7 +168,7 @@ app-test: $(TEST_SRC_PATH) $(JS_TEST_BUILD_PATH) ## Build the test package
 	rm -f *app
 	-mkdir -p ${LOCALPUB_TEST_PATH}
 	rsync --delete -azvr $(TEST_SRC_PATH) ${LOCALPUB_TEST_PATH}
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" ${LOCALPUB_TEST_PATH}/Tests/build.json
+	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" ${LOCALPUB_TEST_PATH}/build.json
 	$(DEVTOOL_BIN) generateWebinst -s ${LOCALPUB_TEST_PATH} -o .
 
 deploy-test: app-test ## Deploy the test package
