@@ -111,14 +111,6 @@ deploy: app ## deploy the project
 	$(DEVTOOL_BIN) deploy -u http://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -w user-interfaces-*app -- --force
 	make clean
 
-quick-deploy:
-	rm -f *app
-	-mkdir -p ${LOCALPUB_PATH}/webinst
-	rsync --delete -azvr anakeen-ui ${LOCALPUB_PATH}/webinst/
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" ${LOCALPUB_PATH}/webinst/anakeen-ui/build.json ${LOCALPUB_PATH}/webinst/anakeen-ui/src/Apps/DOCUMENT/DOCUMENT_init.php
-	$(DEVTOOL_BIN) generateWebinst -s ${LOCALPUB_PATH}/webinst/anakeen-ui/ -o .
-	$(DEVTOOL_BIN) deploy -u http://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -w user-interfaces-*app -- --force
-
 ########################################################################################################################
 ##
 ## CLEAN TARGET
@@ -163,7 +155,7 @@ $(JS_TEST_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_TEST_SOURCE_P
 	$(YARN_BIN) buildTest
 	touch "$@"
 
-app-test: $(TEST_SRC_PATH) $(JS_TEST_BUILD_PATH) ## Build the test package
+app-test: $(JS_CONF_PATH)/node_modules $(TEST_SRC_PATH) $(JS_TEST_BUILD_PATH) ## Build the test package
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	rm -f *app
 	-mkdir -p ${LOCALPUB_TEST_PATH}
