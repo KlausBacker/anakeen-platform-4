@@ -60,9 +60,11 @@ class SmartElementHooks
         }
         $outs = [];
         if (!empty($this->document->hooks[$hookName])) {
+            $this->document->disableAccessControl();
             foreach ($this->document->hooks[$hookName] as $ft) {
                 $outs[] = $ft(...$data);
             }
+            $this->document->restoreAccessControl();
         }
         return implode("\n", $outs);
     }

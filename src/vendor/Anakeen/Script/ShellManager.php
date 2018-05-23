@@ -2,6 +2,8 @@
 
 namespace Anakeen\Script;
 
+use Anakeen\Core\Utils\Gettext;
+
 class ShellManager
 {
     const SCRIPTDIR = "API";
@@ -86,7 +88,7 @@ class ShellManager
 
 
         if (!file_exists($apifile)) {
-            throw new Exception(sprintf(___("API file \"%s\" not found", "core"), $apifile));
+            throw new Exception(sprintf(Gettext::___("API file \"%s\" not found", "core"), $apifile));
         } else {
             self::initContext();
             try {

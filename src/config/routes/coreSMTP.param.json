@@ -1,0 +1,48 @@
+{
+    "apps": {
+        "CORE": {
+            "override": "partial",
+            "parameters": {
+                "SMTP_HOST": {
+                    "value": "",
+                    "description": "SMTP hostname",
+                    "access": "admin",
+                    "global": true
+                },
+                "SMTP_PORT": {
+                    "value": 25,
+                    "description": "SMTP Port number",
+                    "access": "admin",
+                    "global": true
+                },
+                "SMTP_LOGIN": {
+                    "value": "",
+                    "description": "SMTP Login",
+                    "access": "admin",
+                    "global": true
+                },
+                "SMTP_PASSWORD": {
+                    "value": "",
+                    "description": "SMTP Password",
+                    "type" : "password",
+                    "global": true,
+                    "access": "admin"
+                }  ,
+                "SMTP_FROM": {
+                    "value": "",
+                    "description": "SMTP From (mail address)",
+                    "type" : "text",
+                    "global": true,
+                    "access": "admin"
+                },
+                "SMTP_SENDER": {
+                    "value": "",
+                    "description": "SMTP Sender (mail address)",
+                    "type" : "text",
+                    "global": true,
+                    "access": "admin"
+                }
+            }
+        }
+    }
+}
