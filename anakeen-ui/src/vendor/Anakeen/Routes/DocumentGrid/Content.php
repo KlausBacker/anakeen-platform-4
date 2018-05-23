@@ -5,6 +5,7 @@ namespace Anakeen\Routes\DocumentGrid;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\Exception;
 use Anakeen\Routes\Core\DocumentList;
+use Anakeen\SmartElementManager;
 
 class Content extends DocumentList
 {
@@ -42,7 +43,7 @@ class Content extends DocumentList
     {
         $collectionId = $args["collection"] ;
 
-        $this->_collection = SEManager::getDocument($collectionId);
+        $this->_collection = SmartElementManager::getDocument($collectionId);
         if (!$this->_collection) {
             $exception = new Exception("CRUD0200", $collectionId);
             $exception->setHttpStatus("404", "Collection not found (CRUD015)");

@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Ui;
 
 use Anakeen\Router\URLUtils;
+use Anakeen\SmartElementManager;
 use SmartStructure\Attributes\Cvdoc as CvdocAttribute;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
@@ -149,7 +150,6 @@ class DocumentView
              * @var \Anakeen\Core\SmartStructure $family
              */
             $family = SEManager::getFamily($this->documentId);
-            SEManager::cache()->addDocument($family);
             $this->createDocument($this->documentId);
             $creationMode = true;
         } else {
@@ -447,10 +447,10 @@ class DocumentView
         if ($this->document === null) {
             // Do not twice
             if ($this->revision === -1) {
-                $this->document = SEManager::getDocument($resourceId);
+                $this->document = SmartElementManager::getDocument($resourceId);
             } else {
                 $revId = SEManager::getRevisedDocumentId($resourceId, $this->revision);
-                $this->document = SEManager::getDocument($revId, false);
+                $this->document = SmartElementManager::getDocument($revId, false);
             }
             if ($this->document === null) {
                 $exception = new Exception("CRUD0200", $resourceId);
@@ -465,7 +465,7 @@ class DocumentView
 
     protected function createDocument($resourceId)
     {
-        $this->document = SEManager::createDocument($resourceId, true, false);
+        $this->document = SmartElementManager::createDocument($resourceId, false);
 
         if ($this->document === null) {
             $exception = new Exception("CRUD0200", $resourceId);

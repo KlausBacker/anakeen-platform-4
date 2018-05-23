@@ -4,7 +4,7 @@
  * @package FDL
 */
 
-namespace Anakeen\Routes\Authent;
+namespace Anakeen\Components\Authent\Routes;
 
 use Anakeen\Core\SEManager;
 use Anakeen\Router\Exception;
@@ -61,7 +61,7 @@ class MailPassword
             \Anakeen\Core\ContextManager::initContext($user, "CORE", "", \Anakeen\Core\Internal\AuthenticatorManager::$session);
 
             $userDocument = SEManager::getDocument($user->fid);
-            $mailTemplateId = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("AUTHENT", "AUTHENT_MAILASKPWD");
+            $mailTemplateId = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("AUTHENT_MAILASKPWD");
             /**
              * @var \SmartStructure\Mailtemplate $mailTemplate
              */

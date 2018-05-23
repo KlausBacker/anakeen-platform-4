@@ -3,7 +3,7 @@
  * @author Anakeen
  * @package FDL
 */
-namespace Anakeen\Routes\Authent;
+namespace Anakeen\Components\Authent\Routes;
 
 /**
  * Main page to login

@@ -3,7 +3,6 @@
 namespace Anakeen\Routes\Ui;
 
 use Anakeen\Routes\Core\DocumentList;
-use Anakeen\Routes\Core\DocumentUtils;
 use Anakeen\Core\ContextManager;
 use Anakeen\Router\Exception;
 use Anakeen\Core\SEManager;

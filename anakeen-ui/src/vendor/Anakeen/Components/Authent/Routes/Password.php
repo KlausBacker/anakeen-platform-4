@@ -4,34 +4,34 @@
  * @package FDL
 */
 
-namespace Anakeen\Routes\Authent;
+namespace Anakeen\Components\Authent\Routes;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
+use SmartStructure\Iuser;
 
 /**
  * Class Password
  * Change user password
- * @note Used by route : PUT /api/v2/authent/password/{login}
+ * @note    Used by route : PUT /api/v2/authent/password/{login}
  * @package Anakeen\Routes\Authent
  */
 class Password
 {
     /**
      * Reset password
-     * @param \Slim\Http\request $request
+     * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
-     * @param $args
+     * @param                     $args
      * @return \Slim\Http\response
      * @throws Exception
-     * @throws \Dcp\Core\Exception
      */
-    public function  __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
+    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $userIdentifier = $args["login"];
-        $password=$request->getParam("password");
+        $password = $request->getParam("password");
 
         $currentUser = ContextManager::getCurrentUser();
 
@@ -43,8 +43,8 @@ class Password
         }
 
         /**
-        * @var \Dcp\Core\UserAccount $udoc
-        */
+         * @var Iuser $udoc
+         */
         $udoc = SEManager::getDocument($currentUser->fid);
 
         if ($udoc) {
