@@ -1,8 +1,8 @@
-import anakeenComponentOptions from '../componentBase';
+import { AnkMixin } from '../AnkVueComponentMixin';
 import DocumentTemplate from './documentItem.template.kd';
 
 export default {
-    mixins: [anakeenComponentOptions],
+    mixins: [AnkMixin],
     props: {
         logoUrl: {
             type: String,

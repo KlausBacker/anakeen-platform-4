@@ -2,7 +2,7 @@
 import contentTemplate from './templates/tab/documentTabsContent.template.kd';
 import headerTemplate from './templates/tab/documentTabsHeader.template.kd';
 import openedTabListItemTemplate from './templates/openedTabList/documentOpenedTabListItem.template.kd';
-import abstractAnakeenComponent from '../componentBase';
+import { AnkMixin } from '../AnkVueComponentMixin';
 import TabModel from './model/tabModel';
 
 const Constants = {
@@ -12,7 +12,7 @@ const Constants = {
     CUSTOM_TAB_ID: 'custom_tab_id',
 };
 export default {
-    mixins: [abstractAnakeenComponent],
+    mixins: [AnkMixin],
     props: {
         closable: {
             type: Boolean,
