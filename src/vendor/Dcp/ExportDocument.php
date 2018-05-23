@@ -402,7 +402,7 @@ class ExportDocument
                             }
 
                             $doc = SEManager::getDocument($docid);
-                            if ($doc) {
+                            if ($doc && $doc->hasPermission("view")) {
                                 $attr = $doc->getAttribute($attrid);
                                 $tfiles = $doc->vault_properties($attr);
                                 $f = $tfiles[$index];

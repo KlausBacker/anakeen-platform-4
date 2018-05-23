@@ -155,7 +155,11 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
         if ($temporary) {
             $doc = SEManager::createTemporaryDocument($fromid, $defaultvalues);
         } else {
-            $doc = SEManager::createDocument($fromid, $control, $defaultvalues);
+            if ($control) {
+                $doc = \Anakeen\SmartElementManager::createDocument($fromid, $defaultvalues);
+            } else {
+                $doc = SEManager::createDocument($fromid, $defaultvalues);
+            }
         }
     } catch (\Dcp\Core\Exception $e) {
         if ($e->getCode() === "APIDM0003") {

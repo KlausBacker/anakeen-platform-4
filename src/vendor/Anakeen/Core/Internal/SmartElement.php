@@ -5965,28 +5965,6 @@ create unique index i_docir on doc(initid, revision);";
         return (empty($stateValue) ? '' : _($stateValue));
     }
 
-    /**
-     * return the copy (duplication) of the document
-     * the copy is created to the database
-     * the profil of the copy is the default profil according to his family
-     * the copy is not locked and if it is related to a workflow, his state is the first state
-     *
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::duplicate} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::duplicate
-     *
-     * @param bool $temporary if true the document create it as temporary document
-     * @param bool $control   if false don't control acl create (generaly use when temporary is true)
-     * @param bool $linkfld   if true and document is a folder then documents included in folder
-     *                        are also inserted in the copy (are not duplicated) just linked
-     * @param bool $copyfile  if true duplicate files of the document
-     *
-     * @return \Anakeen\Core\Internal\SmartElement in case of error return a string that indicate the error
-     */
-    final public function copy($temporary = false, $control = true, $linkfld = false, $copyfile = false)
-    {
-        deprecatedFunction();
-        return $this->duplicate($temporary, $control, $linkfld, $copyfile);
-    }
 
     /**
      * return the copy (duplication) of the document
@@ -6005,13 +5983,21 @@ create unique index i_docir on doc(initid, revision);";
      * @return \Anakeen\Core\Internal\SmartElement |string in case of error return a string that indicate the error
      * @throws \Dcp\Exception
      */
-    final public function duplicate($temporary = false, $control = true, $linkfld = false, $copyfile = false)
+    final public function duplicate($temporary = false, $linkfld = false, $copyfile = false)
     {
         if ($this->fromid == '') {
             throw new \Dcp\Exception(\ErrorCode::getError('DOC0203'));
         }
         try {
-            $copy = SEManager::createDocument($this->fromid, $control);
+            if ($this->withoutControl !== true) {
+                $family = SEManager::getFamily($this->fromid);
+
+                $err = $family->controlAccess('create');
+                if ($err != "") {
+                    throw new \Dcp\Exception("DOC0131", $family->name);
+                }
+            }
+            $copy = SEManager::createDocument($this->fromid);
         } catch (\Dcp\Core\Exception $e) {
             return false;
         }

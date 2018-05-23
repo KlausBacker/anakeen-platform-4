@@ -1,4 +1,5 @@
 <?php
+
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Router\ApiV2Response;
@@ -6,6 +7,7 @@ use Anakeen\Router\URLUtils;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 use Anakeen\Router\Exception;
+use Anakeen\SmartElementManager;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
 
 /**
@@ -18,7 +20,7 @@ class WorkflowStateCollection
 {
     protected $baseURL = "documents";
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     protected $_document = null;
     /**
@@ -26,7 +28,7 @@ class WorkflowStateCollection
      */
     protected $workflow = null;
     /**
-     * @var \Anakeen\Core\SmartStructure 
+     * @var \Anakeen\Core\SmartStructure
      */
     protected $_family = null;
     /**
@@ -56,7 +58,7 @@ class WorkflowStateCollection
     {
         $this->allStates = !empty($request->getQueryParam("allState"));
 
-        $this->documentId= $args["docid"];
+        $this->documentId = $args["docid"];
         $this->setDocument($this->documentId);
         if (isset($args["family"])) {
             \Anakeen\Routes\Core\Lib\DocumentUtils::verifyFamily($args["family"], $this->_document);
@@ -70,14 +72,14 @@ class WorkflowStateCollection
      */
     public function doRequest()
     {
-        
+
         $info = array();
-        
+
         $baseUrl = URLUtils::generateURL(sprintf("%s/%s/workflows/", Settings::ApiV2, $this->baseURL, $this->_document->name ? $this->_document->name : $this->_document->initid));
         $info["uri"] = $baseUrl . "states/";
-        
+
         $states = array();
-        
+
         if ($this->allStates) {
             $wStates = $this->workflow->getStates();
         } else {
@@ -89,30 +91,30 @@ class WorkflowStateCollection
                 $controlTransitionError = $this->workflow->control($transition["id"]);
                 $transitionData = array(
                     "id" => $transition["id"],
-                    "uri" => sprintf("%stransitions/%s", $baseUrl, $transition["id"]) ,
-                    "label" => _($transition["id"]) ,
-                    "error" => $this->getM0($transition, $aState) ,
+                    "uri" => sprintf("%stransitions/%s", $baseUrl, $transition["id"]),
+                    "label" => _($transition["id"]),
+                    "error" => $this->getM0($transition, $aState),
                     "authorized" => empty($controlTransitionError)
                 );
             } else {
                 $transitionData = null;
             }
-            
+
             $state = $this->getStateInfo($aState);
             $state["uri"] = sprintf("%s%s", $info["uri"], $aState);
-            
+
             $state["transition"] = $transitionData;
-            
+
             $states[] = $state;
         }
         /**
          * @var \Anakeen\Core\Internal\SmartElement $revision
          */
-        
+
         $info["states"] = $states;
         return $info;
     }
-    
+
     protected function getM0($tr, $state)
     {
         if ($tr && (!empty($tr["m0"]))) {
@@ -125,7 +127,7 @@ class WorkflowStateCollection
         return null;
     }
 
-    
+
     /**
      * Find the current document and set it in the internal options
      *
@@ -135,13 +137,13 @@ class WorkflowStateCollection
      */
     protected function setDocument($resourceId)
     {
-        $this->_document = SEManager::getDocument($resourceId);
+        $this->_document = SmartElementManager::getDocument($resourceId);
         if (!$this->_document) {
             $exception = new Exception("CRUD0200", $resourceId);
             $exception->setHttpStatus("404", "Document not found");
             throw $exception;
         }
-        
+
         if ($this->_family && !is_a($this->_document, \Anakeen\Core\SEManager::getFamilyClassName($this->_family->name))) {
             $exception = new Exception("CRUD0220", $resourceId, $this->_family->name);
             $exception->setHttpStatus("404", "Document is not a document of the family " . $this->_family->name);
@@ -170,7 +172,7 @@ class WorkflowStateCollection
         $this->workflow = SEManager::getDocument($this->_document->wid);
         $this->workflow->set($this->_document);
     }
-    
+
     protected function getStateInfo($state)
     {
         if (empty($state)) {
@@ -178,9 +180,9 @@ class WorkflowStateCollection
         }
         return array(
             "id" => $state,
-            "label" => _($state) ,
-            "activity" => $this->workflow->getActivity($state) ,
-            "displayValue" => ($this->workflow->getActivity($state)) ? $this->workflow->getActivity($state) : _($state) ,
+            "label" => _($state),
+            "activity" => $this->workflow->getActivity($state),
+            "displayValue" => ($this->workflow->getActivity($state)) ? $this->workflow->getActivity($state) : _($state),
             "color" => $this->workflow->getColor($state)
         );
     }

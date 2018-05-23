@@ -877,7 +877,7 @@ class SearchDoc
             $fromid = "family";
         } else {
             if (!isset($this->cacheDocuments[$fromid])) {
-                $this->cacheDocuments[$fromid] = Anakeen\Core\SEManager::createDocument($fromid, false, false);
+                $this->cacheDocuments[$fromid] = Anakeen\Core\SEManager::createDocument($fromid,  false);
                 if (empty($this->cacheDocuments[$fromid])) {
                     throw new Exception(sprintf('Document "%s" has an unknow family "%s"', $v["id"], $fromid));
                 }

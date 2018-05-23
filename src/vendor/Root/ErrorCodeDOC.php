@@ -223,6 +223,11 @@ class ErrorCodeDOC
      */
     const DOC0130 = 'Attribute "%s" not found on document "%s" from family "%s"';
     /**
+     * @errorCode Create acl not granted to duplication
+     * @see \Anakeen\Core\Internal\SmartElement::duplicate
+     */
+    const DOC0131 = 'Cannot duplicate for familu "%s"';
+    /**
      * @errorCode
      * the document cannot be inserted in folder target
      * @note when DOC has defined a folder target

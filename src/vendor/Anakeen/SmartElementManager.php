@@ -2,7 +2,7 @@
 
 namespace Anakeen;
 
-use Anakeen\Core\DocManager\Exception;
+use Anakeen\Router\Exception;
 use Anakeen\Core\Internal\DocumentAccess;
 
 class SmartElementManager extends \Anakeen\Core\SEManager
@@ -13,9 +13,11 @@ class SmartElementManager extends \Anakeen\Core\SEManager
         $doc = parent::getDocument($documentIdentifier, $latest, $useCache);
         if ($doc) {
             $doc->disableAccessControl(false);
-            $err=$doc->control("view");
+            $err = $doc->control("view");
             if ($err) {
-                throw new Exception($err);
+                $exception = new Exception($err);
+                $exception->setHttpStatus("403", "Forbidden");
+                throw $exception;
             }
         }
         return $doc;
@@ -33,4 +35,15 @@ class SmartElementManager extends \Anakeen\Core\SEManager
     }
 
 
+    public static function createDocument($familyIdentifier, $useDefaultValues = true)
+    {
+        $doc = parent::createDocument($familyIdentifier, $useDefaultValues);
+        $family = $doc->getFamilyDocument();
+        $err = $family->control('create');
+        if ($err != "") {
+            throw new Exception("APIDM0003", $familyIdentifier);
+        }
+        $doc->disableAccessControl(false);
+        return $doc;
+    }
 }

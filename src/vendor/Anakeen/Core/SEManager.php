@@ -129,7 +129,6 @@ class SEManager
      *
      * @param string $name document identificator
      *
-     * @throws Exception
      * @return int|null initial document identifier
      */
     public static function getInitIdFromIdOrName($name)
@@ -152,7 +151,6 @@ class SEManager
      *
      * @param string $name document identificator
      *
-     * @throws Exception
      * @return int|null initial document identifier
      */
     public static function getInitIdFromName($name)
@@ -202,14 +200,30 @@ class SEManager
             }
         } else {
             if (preg_match('/^state:(.+)$/', $revision, $regStates)) {
-                DbManager::query(sprintf("select id from docread where initid='%d' and state = '%s' and locked = -1 order by id desc", $initid, pg_escape_string($regStates[1])),
-                    $id, true, true);
+                DbManager::query(
+                    sprintf(
+                        "select id from docread where initid='%d' and state = '%s' and locked = -1 order by id desc",
+                        $initid,
+                        pg_escape_string($regStates[1])
+                    ),
+                    $id,
+                    true,
+                    true
+                );
                 if ($id > 0) {
                     return intval($id);
                 }
                 // it is not really on initid
-                DbManager::query(sprintf("select id from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc", $initid,
-                    pg_escape_string($regStates[1])), $id, true, true);
+                DbManager::query(
+                    sprintf(
+                        "select id from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc",
+                        $initid,
+                        pg_escape_string($regStates[1])
+                    ),
+                    $id,
+                    true,
+                    true
+                );
 
                 if ($id > 0) {
                     return intval($id);
@@ -279,13 +293,12 @@ class SEManager
      * The document is not yet recorded to database and has no identifier
      *
      * @param int|string $familyIdentifier
-     * @param bool       $control
      * @param bool       $useDefaultValues
      *
      * @throws Exception
      * @return \Anakeen\Core\Internal\SmartElement
      */
-    public static function createDocument($familyIdentifier, $control = true, $useDefaultValues = true)
+    public static function createDocument($familyIdentifier, $useDefaultValues = true)
     {
         $doc = self::initializeDocument($familyIdentifier);
         /**
@@ -293,12 +306,6 @@ class SEManager
          */
         $family = self::getFamily($doc->fromid);
 
-        if ($control) {
-            $err = $family->control('create');
-            if ($err != "") {
-                throw new Exception("APIDM0003", $familyIdentifier);
-            }
-        }
 
         $doc->wid = $family->wid;
         $doc->accessControl()->setProfil($family->cprofid); // inherit from its family
@@ -307,6 +314,8 @@ class SEManager
             $doc->setDefaultValues($family->getDefValues());
         }
         $doc->applyMask();
+
+        $doc->disableAccessControl(true);
         return $doc;
     }
 

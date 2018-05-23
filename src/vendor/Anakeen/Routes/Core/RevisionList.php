@@ -2,10 +2,10 @@
 
 namespace Anakeen\Routes\Core;
 
-use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 use Anakeen\Router\URLUtils;
 use Anakeen\Router\Exception;
+use Anakeen\SmartElementManager;
 
 /**
  * Class DocumentList
@@ -19,7 +19,7 @@ use Anakeen\Router\Exception;
 class RevisionList extends DocumentList
 {
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     protected $_document = null;
     protected $rootLevel = "documents";
@@ -33,7 +33,7 @@ class RevisionList extends DocumentList
 
         $this->documentId = $args["docid"];
 
-        $this->_document = SEManager::getDocument($this->documentId);
+        $this->_document = SmartElementManager::getDocument($this->documentId);
         if (!$this->_document) {
             $exception = new Exception("CRUD0200", $this->documentId);
             $exception->setHttpStatus("404", "Document not found");

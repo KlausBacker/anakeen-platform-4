@@ -7,6 +7,7 @@ use Anakeen\Router\Exception;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
+use Anakeen\SmartElementManager;
 
 /**
  * Class FileAttribute
@@ -19,16 +20,16 @@ use Anakeen\Router\ApiV2Response;
  */
 class FileAttribute
 {
-    const CACHEIMGDIR = Settings::CacheDir."file/";
+    const CACHEIMGDIR = Settings::CacheDir . "file/";
     protected $revision;
 
     private $tmpFlag = "_tmp_";
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     protected $_document = null;
     /**
-     * @var \Anakeen\Core\SmartStructure 
+     * @var \Anakeen\Core\SmartStructure
      */
     protected $_family = null;
     protected $inline = false;
@@ -192,7 +193,7 @@ class FileAttribute
     {
         if (isset($this->revision)) {
             $revisedId = SEManager::getRevisedDocumentId($resourceId, $this->revision);
-            $this->_document = SEManager::getDocument($revisedId, false);
+            $this->_document = SmartElementManager::getDocument($revisedId, false);
             if (!$this->_document) {
                 $exception = new Exception("CRUD0221", $this->revision, $resourceId);
                 $exception->setHttpStatus("404", "Document not found");
