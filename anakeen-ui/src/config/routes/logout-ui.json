@@ -1,0 +1,12 @@
+{
+  "routes": {
+    "Ui:Logout:Logout": {
+      "callable": "\\Anakeen\\Components\\Logout\\Routes\\Logout",
+      "methods": ["DELETE"],
+      "pattern": "/api/v2/logout",
+      "description": "Logout returning user informations",
+      "requiredAccess": null,
+      "authenticated": true
+    }
+  }
+}
