@@ -4,11 +4,14 @@
  * @var Composer\Autoload\ClassLoader $loader
  */
 $loader = require __DIR__ . '/lib/vendor/autoload.php';
-//@TODO Find Another way to add UI autoload
-//require __DIR__ . '/Ui/PhpLib/vendor/autoload.php';
 
 $loader->addPsr4('Anakeen\\', __DIR__ . '/');
-$loader->addPsr4('Dcp\\', __DIR__ . '/../Dcp/');
+//$loader->addPsr4('Dcp\\', __DIR__ . '/../Dcp/');
+
+// Load all namespace from vendor directory
+$loader->addPsr4('', dirname(__DIR__) . '/');
+
+
 // Load generated SmartStrucure classes
 $loader->addPsr4('SmartStructure\\', __DIR__ . '/../../'.\Anakeen\Core\Settings::DocumentGenDirectory.'/SmartStructure/');
 

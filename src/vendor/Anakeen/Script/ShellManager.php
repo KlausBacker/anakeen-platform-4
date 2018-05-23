@@ -72,7 +72,6 @@ class ShellManager
         $lines[] = sprintf("\t--unstop\t\tEnable Http access");
         $lines[] = sprintf("\t--resetRouteConfig\tReload route configuration");
         $lines[] = sprintf("\t--upgradeVersion\tReset WVERSION");
-        $lines[] = sprintf("\t--resetAutoloader\tReset autoload cache");
         $lines[] = sprintf("\t--style\t\t\tReset Css generation");
         $lines[] = sprintf("\t--clearFile\t\tDelete file cache");
         $lines[] = sprintf("--help\t\t\t\tThis usage");

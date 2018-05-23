@@ -71,7 +71,7 @@
             "type": "object",
             "properties": {
                 "priority": {
-                    "description": "Order used in case of multiple matches. The bigger win.",
+                    "description": "Order used in case of multiple matches. The bigger win. (default is zero)",
                     "type": "integer"
                 },
                 "pattern": {
@@ -112,29 +112,6 @@
                         ]
                     },
                     "uniqueItems": true
-                },
-                "requiredAccess": {
-                    "oneOf": [
-                        {
-                            "type": "string",
-                            "minLength": 1
-                        },
-                        {
-                            "type": "null"
-                        },
-                        {
-                            "type": "object",
-                            "patternProperties": {
-                                "^(and)|(or)$": {
-                                    "type": "array",
-                                    "minItems": 2,
-                                    "uniqueItems": true
-                                }
-                            },
-                            "additionalProperties": false
-                        }
-                    ],
-                    "description": "Access right to verify before grant the access"
                 }
             },
             "additionalProperties": false
@@ -226,11 +203,33 @@
                     "enum": [
                         "complete"
                     ]
+                },
+                "requiredAccess": {
+                    "oneOf": [
+                        {
+                            "type": "string",
+                            "minLength": 1
+                        },
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "object",
+                            "patternProperties": {
+                                "^(and)|(or)$": {
+                                    "type": "array",
+                                    "minItems": 2,
+                                    "uniqueItems": true
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    ],
+                    "description": "Access right to verify before grant the access"
                 }
             },
             "required": [
                 "requiredAccess",
-                "priority",
                 "pattern",
                 "methods",
                 "callable"

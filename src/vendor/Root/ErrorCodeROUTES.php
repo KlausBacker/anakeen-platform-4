@@ -156,4 +156,8 @@ class ErrorCodeRoutes
      * @errorCode Override app config : only partial mode
      */
     const ROUTES0135 = 'Config : override app  only partial is allowed. Found "%s"';
+    /**
+     * @errorCode Error in middleware response : the response of callable must be response object
+     */
+    const ROUTES0136 = 'Middleware "%s" : response error "%s" : must return response object';
 }

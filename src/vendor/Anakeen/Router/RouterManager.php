@@ -3,6 +3,7 @@
 namespace Anakeen\Router;
 
 use \Anakeen\Router\Config\RouterInfo;
+
 class RouterManager
 {
     /**
@@ -179,6 +180,13 @@ class RouterManager
 
                                     $response = $callMiddleWare($request, $response, $next, $matches);
 
+                                    if ($response instanceof \Psr\Http\Message\ResponseInterface === false) {
+                                        throw new Exception(
+                                            "ROUTES0136",
+                                            $middleWare->name,
+                                            $middleWare->callable
+                                        );
+                                    }
 
                                     return $response;
                                 });

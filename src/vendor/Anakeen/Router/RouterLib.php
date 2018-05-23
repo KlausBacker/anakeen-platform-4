@@ -63,6 +63,9 @@ class RouterLib
             foreach ($routes as $routeName => $route) {
                 $route["name"] = $routeName;
                 $route["configFile"] = $configFileName;
+                if (! isset($route["priority"])) {
+                    $route["priority"] = 0;
+                }
                 $nr[] = $route;
             }
             $config["routes"] = $nr;
@@ -74,6 +77,9 @@ class RouterLib
             foreach ($middles as $name => $middle) {
                 $middle["name"] = $name;
                 $middle["configFile"] = $configFileName;
+                if (! isset($middle["priority"])) {
+                    $middle["priority"] = 0;
+                }
                 $nr[] = $middle;
             }
             $config["middlewares"] = $nr;
@@ -108,7 +114,7 @@ class RouterLib
 
 
     /**
-     * Get route configuration for a nemed route
+     * Get route configuration for a named route
      *
      * @param string $name route name
      *

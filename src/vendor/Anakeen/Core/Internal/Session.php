@@ -154,13 +154,7 @@ class Session extends DbObj
     }
     public function setCookieSession($id, $ttl = 0)
     {
-        $webRootPath = self::getWebRootPath();
-        if ($webRootPath !== false) {
-            $cookiePath = preg_replace(':/+:', '/', $webRootPath);
-            $this->setcookie($this->name, $id, $ttl, $cookiePath, null, null, true);
-        } else {
-            $this->setcookie($this->name, $id, $ttl, null, null, null, true);
-        }
+        $this->setcookie($this->name, $id, $ttl, '/', null, null, true);
     }
     /**
      * Closes session and removes all datas
@@ -518,12 +512,10 @@ class Session extends DbObj
     
     public function removeSessionFile($sessid = null)
     {
-        include_once('WHAT/Lib.Prefix.php');
-        global $pubdir;
         if ($sessid === null) {
             $sessid = $this->id;
         }
-        $sessionFile = sprintf("%s/var/session/sess_%s", $pubdir, $sessid);
+        $sessionFile = sprintf("%s/var/session/sess_%s", DEFAULT_PUBDIR, $sessid);
         if (file_exists($sessionFile)) {
             unlink($sessionFile);
         }
