@@ -1037,12 +1037,9 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->doctype == 'I') {
             return _("cannot update inconsistent document");
         } // provides from waiting document or searchDOc with setReturns
-        if (!$this->withoutControl) {
-            $err = $this->control("edit");
-            if ($err != "") {
-                return ($err);
-            }
-        }
+
+        $err = $this->controlAccess("edit");
+
         if ($this->locked == -1) {
             $this->lmodify = 'N';
         }
@@ -1283,26 +1280,32 @@ create unique index i_docir on doc(initid, revision);";
     }
 
     /**
-     * disable edit control for setValue/modify/store
+     * disable access control for setValue/modify/store/lock
      * the document can be modified without testing edit acl
      *
-     * @see \Anakeen\Core\Internal\SmartElement::enableEditControl
+     * @see \Anakeen\Core\Internal\SmartElement::restoreAccessControl
      * @api disable edit control for setValue/modify/store
+     * @param bool $disable if false restore control access immediatly
      */
-    final public function disableEditControl()
+    final public function disableAccessControl($disable = true)
     {
-        $this->withoutControlN++;
-        $this->withoutControl = true;
+        if ($disable === true) {
+            $this->withoutControlN++;
+            $this->withoutControl = true;
+        } elseif ($disable === false) {
+            $this->withoutControlN = 0;
+            $this->withoutControl = false;
+        }
     }
 
     /**
      * default edit control enable
-     * restore control which are disabled by disableEditControl
+     * restore control which are disabled by disableAccessControl
      *
-     * @see \Anakeen\Core\Internal\SmartElement::disableEditControl
+     * @see \Anakeen\Core\Internal\SmartElement::disableAccessControl
      * @api default edit control enable
      */
-    final public function enableEditControl()
+    final public function restoreAccessControl()
     {
         $this->withoutControlN--;
         if ($this->withoutControlN <= 0) {
@@ -1527,7 +1530,7 @@ create unique index i_docir on doc(initid, revision);";
         } else {
             if ($this->withoutControl) {
                 return "";
-            } // no more test if disableEditControl activated
+            } // no more test if disableAccessControl activated
             if (($this->locked != 0) && (abs($this->locked) != ContextManager::getCurrentUser()->id)) {
                 $user = new \Anakeen\Core\Account("", abs($this->locked));
                 if ($this->locked < -1) {
@@ -1545,7 +1548,7 @@ create unique index i_docir on doc(initid, revision);";
                     );
                 }
             } else {
-                $err = $this->Control("edit");
+                $err = $this->controlAccess("edit");
             }
         }
         return ($err);
@@ -1855,7 +1858,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->lockdomainid > 0) {
             return sprintf(_("document is booked in domain %s"), $this->getTitle($this->lockdomainid));
         }
-        $err = $this->Control("delete");
+        $err = $this->controlAccess("delete");
 
         return $err;
     }
@@ -2015,7 +2018,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function undelete()
     {
-        if (($this->control('delete') == "") || (ContextManager::getCurrentUser()->id == 1)) {
+        if (($this->controlAccess('delete') == "") || (ContextManager::getCurrentUser()->id == 1)) {
             if (!$this->isAlive()) {
                 $err = $this->getHooks()->trigger(SmartHooks::PREUNDELETE);
                 if ($err) {
@@ -2089,7 +2092,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function affect($array, $more = false, $reset = true)
     {
         if (is_array($array)) {
-             $this->getHooks()->resetListeners();
+            $this->getHooks()->resetListeners();
 
             $this->getHooks()->trigger(SmartHooks::PREAFFECT, $array, $more, $reset);
 
@@ -3885,7 +3888,7 @@ create unique index i_docir on doc(initid, revision);";
         // control edit before set values
         if (!$this->withoutControl) {
             if ($this->id > 0) { // no control yet if no effective doc
-                $err = $this->Control("edit");
+                $err = $this->controlAccess("edit");
                 if ($err != "") {
                     return ($err);
                 }
@@ -5601,12 +5604,11 @@ create unique index i_docir on doc(initid, revision);";
         if ($err) {
             return $err;
         }
-        if (!$this->withoutControl) {
-            $err = $this->Control("edit");
-            if ($err != "") {
-                return ($err);
-            }
+        $err = $this->controlAccess("edit");
+        if ($err != "") {
+            return ($err);
         }
+
         $fdoc = $this->getFamilyDocument();
 
         if ($fdoc->schar == "S") {
@@ -5963,28 +5965,6 @@ create unique index i_docir on doc(initid, revision);";
         return (empty($stateValue) ? '' : _($stateValue));
     }
 
-    /**
-     * return the copy (duplication) of the document
-     * the copy is created to the database
-     * the profil of the copy is the default profil according to his family
-     * the copy is not locked and if it is related to a workflow, his state is the first state
-     *
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::duplicate} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::duplicate
-     *
-     * @param bool $temporary if true the document create it as temporary document
-     * @param bool $control   if false don't control acl create (generaly use when temporary is true)
-     * @param bool $linkfld   if true and document is a folder then documents included in folder
-     *                        are also inserted in the copy (are not duplicated) just linked
-     * @param bool $copyfile  if true duplicate files of the document
-     *
-     * @return \Anakeen\Core\Internal\SmartElement in case of error return a string that indicate the error
-     */
-    final public function copy($temporary = false, $control = true, $linkfld = false, $copyfile = false)
-    {
-        deprecatedFunction();
-        return $this->duplicate($temporary, $control, $linkfld, $copyfile);
-    }
 
     /**
      * return the copy (duplication) of the document
@@ -6003,13 +5983,21 @@ create unique index i_docir on doc(initid, revision);";
      * @return \Anakeen\Core\Internal\SmartElement |string in case of error return a string that indicate the error
      * @throws \Dcp\Exception
      */
-    final public function duplicate($temporary = false, $control = true, $linkfld = false, $copyfile = false)
+    final public function duplicate($temporary = false, $linkfld = false, $copyfile = false)
     {
         if ($this->fromid == '') {
             throw new \Dcp\Exception(\ErrorCode::getError('DOC0203'));
         }
         try {
-            $copy = SEManager::createDocument($this->fromid, $control);
+            if ($this->withoutControl !== true) {
+                $family = SEManager::getFamily($this->fromid);
+
+                $err = $family->controlAccess('create');
+                if ($err != "") {
+                    throw new \Dcp\Exception("DOC0131", $family->name);
+                }
+            }
+            $copy = SEManager::createDocument($this->fromid);
         } catch (\Dcp\Core\Exception $e) {
             return false;
         }
@@ -6095,7 +6083,7 @@ create unique index i_docir on doc(initid, revision);";
             if ($this->doctype == "C") {
                 $err = sprintf("families cannot be archieved");
             } elseif (!$this->withoutControl) {
-                $err = $this->control("edit");
+                $err = $this->controlAccess("edit");
             }
             if ($err == "") {
                 $this->locked = 0;
@@ -6147,7 +6135,7 @@ create unique index i_docir on doc(initid, revision);";
 
         if ($this->archiveid == $archive->id) {
             if (!$this->withoutControl) {
-                $err = $this->control("edit");
+                $err = $this->controlAccess("edit");
             }
             if ($err == "") {
                 $this->locked = 0;
@@ -6208,7 +6196,7 @@ create unique index i_docir on doc(initid, revision);";
             }
             $userid = ContextManager::getCurrentUser()->id;
         } else {
-            $this->disableEditControl();
+            $this->disableAccessControl();
         }
         // test if is not already locked
         if ($auto) {
@@ -6232,7 +6220,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         }
-        $this->enableEditControl();
+        $this->restoreAccessControl();
 
         return $err;
     }
@@ -6372,7 +6360,7 @@ create unique index i_docir on doc(initid, revision);";
         $err = $this->canEdit();
         if ($err == "") {
             if ((!$this->withoutControl) && (ContextManager::getCurrentUser()->id != $this->allocated)) {
-                $err = $this->control("unlock");
+                $err = $this->controlAccess("unlock");
             }
         }
 
@@ -6659,7 +6647,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         $changed = $this->hasChanged;
         if (!$changed) {
-            $this->disableEditControl();
+            $this->disableAccessControl();
         } // disabled control just to refresh
         $msg = $this->preRefresh();
         // if ($this->id == 0) return; // no refresh for no created document
@@ -6669,7 +6657,7 @@ create unique index i_docir on doc(initid, revision);";
             $this->lastRefreshError = $this->modify(); // refresh title
         }
         if (!$changed) {
-            $this->enableEditControl();
+            $this->restoreAccessControl();
         }
         return $msg;
     }
@@ -7303,6 +7291,7 @@ create unique index i_docir on doc(initid, revision);";
         if (!$this->isAffected()) {
             return '';
         }
+
         if (ContextManager::getCurrentUser()->id == \Anakeen\Core\Account::ADMIN_ID) {
             return ""; // no profil or admin
         }
@@ -7322,6 +7311,14 @@ create unique index i_docir on doc(initid, revision);";
         return '';
     }
 
+    private function controlAccess($aclname, $strict = false)
+    {
+        if ($this->withoutControl === true) {
+            return ""; // uncontrolled mode
+        }
+        return $this->control($aclname, $strict);
+    }
+
     /**
      * Control Access privilege for document for current user
      *
@@ -7335,29 +7332,6 @@ create unique index i_docir on doc(initid, revision);";
     public function hasPermission($aclName, $strict = false)
     {
         return ($this->control($aclName, $strict) == "");
-    }
-
-    /**
-     * Control Access privilege for document for other user
-     *
-     * @param int    $uid     user identifier
-     * @param string $aclname identifier of the privilege to test
-     *
-     * @return string empty means access granted else it is an error message (access unavailable)
-     */
-    public function controlUser($uid, $aclname)
-    {
-        // --------------------------------------------------------------------
-        if ($this->IsAffected()) {
-            if (($this->profid <= 0) || ($uid == \Anakeen\Core\Account::ADMIN_ID)) {
-                return "";
-            } // no profil or admin
-            if (!$uid) {
-                return _("control :: user identifier is null");
-            }
-            return $this->accessControl()->controlUserId($this->profid, $uid, $aclname);
-        }
-        return "";
     }
 
     /**

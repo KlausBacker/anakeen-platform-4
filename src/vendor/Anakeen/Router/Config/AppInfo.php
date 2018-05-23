@@ -42,7 +42,14 @@ class AppInfo
             $vars = get_object_vars($data);
 
             foreach ($vars as $k => $v) {
-                $this->$k = $v;
+                if (is_a($v, \stdClass::class)) {
+                    $v= get_object_vars($v);
+                }
+                if (!empty($this->$k) && is_array($this->$k) && is_array($v)) {
+                    $this->$k = array_merge($this->$k, $v);
+                } else {
+                    $this->$k = $v;
+                }
             }
         }
     }

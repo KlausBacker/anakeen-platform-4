@@ -28,13 +28,13 @@ class WorkflowSetState extends WorkflowState
 
     protected function doRequest(&$messages = [])
     {
-        $this->workflow->disableEditControl();
+        $this->workflow->disableAccessControl();
         if (!empty($this->parameters) && is_array($this->parameters)) {
             foreach ($this->parameters as $aid => $value) {
                 $this->workflow->setAttributeValue($aid, $value);
             }
         }
-        $this->workflow->enableEditControl();
+        $this->workflow->restoreAccessControl();
 
         $state = $this->getState();
         if (!$state) {

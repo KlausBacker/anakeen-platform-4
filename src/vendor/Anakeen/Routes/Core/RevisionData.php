@@ -6,6 +6,7 @@ use Anakeen\Core\SEManager;
 use Anakeen\Router\URLUtils;
 use Anakeen\Core\Settings;
 use Anakeen\Router\Exception;
+use Anakeen\SmartElementManager;
 
 /**
  * Class FamilyData
@@ -52,7 +53,7 @@ class RevisionData extends DocumentData
     protected function setDocument($ressourceId)
     {
         $revisedId = SEManager::getRevisedDocumentId($this->documentId, $this->revisionNumber);
-        $this->_document = SEManager::getDocument($revisedId, false);
+        $this->_document = SmartElementManager::getDocument($revisedId, false);
         if (!$this->_document) {
             $exception = new Exception("ROUTES0100", $ressourceId);
             $exception->setHttpStatus("404", "Document not found");

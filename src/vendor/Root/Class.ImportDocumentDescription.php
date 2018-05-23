@@ -1732,7 +1732,7 @@ class ImportDocumentDescription
                     if ($pdoc->profid != $pid) {
                         $pdoc->accessControl()->setProfil($pid);
                         $pdoc->accessControl()->setControl(false);
-                        $pdoc->disableEditControl(); // need because new profil is not enable yet
+                        $pdoc->disableAccessControl(); // need because new profil is not enable yet
                         $this->tcr[$this->nLine]["err"] = $pdoc->modify();
                     }
 

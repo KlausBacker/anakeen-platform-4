@@ -87,7 +87,7 @@ class ReportHooks extends \SmartStructure\Dsearch
         $search->orderby = trim($order . " " . $this->getRawValue("rep_ordersort"));
         $search->setObjectReturn();
         // print_r($search->getSearchInfo());
-        $famDoc = SEManager::createDocument($famId, false);
+        $famDoc = SEManager::createDocument($famId);
         $tcols = $this->getMultipleRawValues("rep_idcols");
         $tcolsOption = $this->getMultipleRawValues("rep_displayoption");
         $searchCols = $tcols;

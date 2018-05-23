@@ -2,10 +2,10 @@
 
 namespace Anakeen\Routes\Core;
 
-use Anakeen\Core\SEManager;
 use Anakeen\Router\URLUtils;
 use Anakeen\Router\Exception;
 use Anakeen\Core\Settings;
+use Anakeen\SmartElementManager;
 use Anakeen\SmartStructures\Search\SearchHooks;
 
 /**
@@ -28,7 +28,7 @@ class SearchContent extends DocumentList
         parent::initParameters($request, $args);
         $folderId = $args["search"];
 
-        $this->_search = SEManager::getDocument($folderId);
+        $this->_search = SmartElementManager::getDocument($folderId);
         if (!$this->_search) {
             $exception = new Exception("ROUTES0105", $folderId);
             $exception->setHttpStatus("404", "Folder not found");

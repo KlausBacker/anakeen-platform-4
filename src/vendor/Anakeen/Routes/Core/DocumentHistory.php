@@ -9,6 +9,7 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
+use Anakeen\SmartElementManager;
 
 /**
  * Class DocumentHistory
@@ -20,11 +21,11 @@ class DocumentHistory
 {
     protected $baseURL = "documents";
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     protected $_document = null;
     /**
-     * @var \Anakeen\Core\SmartStructure 
+     * @var \Anakeen\Core\SmartStructure
      */
     protected $_family = null;
 
@@ -130,7 +131,7 @@ class DocumentHistory
                         $history[$k]["level"] = "notice";
                         break;
                 }
-                $history[$k]["date"][10]='T';
+                $history[$k]["date"][10] = 'T';
             }
             $revisionHistory[] = array(
                 "uri" => URLUtils::generateURL(sprintf(
@@ -179,7 +180,7 @@ class DocumentHistory
      */
     protected function setDocument($resourceId)
     {
-        $this->_document = SEManager::getDocument($resourceId);
+        $this->_document = SmartElementManager::getDocument($resourceId);
         if (!$this->_document) {
             $exception = new Exception("CRUD0200", $resourceId);
             $exception->setHttpStatus("404", "Document not found");
@@ -259,7 +260,7 @@ class DocumentHistory
             $search->setStart($this->offset);
         }
         if ($this->_document->doctype === "Z") {
-            $search->trash='only';
+            $search->trash = 'only';
         }
         $search->setObjectReturn();
         $search->latest = false;

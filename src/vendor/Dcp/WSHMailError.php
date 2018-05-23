@@ -79,7 +79,7 @@ class WSHMailError
         $user = \Anakeen\Core\ContextManager::getCurrentUser();
         $from = (!empty($user) ? getMailAddr($user->id) : '');
         if ($from == '') {
-            $from = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue('FDL', 'SMTP_FROM');
+            $from = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue('CORE', 'SMTP_FROM');
         }
         if ($from == '') {
             $from = (!empty($user) ? $user->login : 'no-reply') . '@' . php_uname('n');

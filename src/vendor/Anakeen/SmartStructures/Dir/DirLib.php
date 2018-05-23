@@ -460,7 +460,7 @@ class DirLib
                         if (preg_match('/from\s+docread/', $qsql) || $isgroup) {
                             $fdoc = new \DocRead($dbaccess);
                         } else {
-                            $fdoc = SEManager::createDocument(abs($fromid), false, false);
+                            $fdoc = SEManager::createDocument(abs($fromid),  false);
                             if ($fdoc === false) {
                                 throw new \Dcp\Exception(sprintf(_('Family [%s] not found'), abs($fromid)));
                             }

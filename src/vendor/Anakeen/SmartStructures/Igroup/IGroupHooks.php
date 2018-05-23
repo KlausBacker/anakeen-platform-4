@@ -233,9 +233,9 @@ class IGroupHooks extends \SmartStructure\Group
                             $err = "";
                         }
                         if ($err == "") {
-                            $du->disableEditControl();
+                            $du->disableAccessControl();
                             $du->RefreshDocUser(); // to refresh group of user attributes
-                            $du->enableEditControl();
+                            $du->restoreAccessControl();
                             $this->RefreshGroup();
                         }
                     }
@@ -272,9 +272,9 @@ class IGroupHooks extends \SmartStructure\Group
                         $g->idgroup = $gid;
                         $err = $g->Add();
                         if ($err == "") {
-                            $du->disableEditControl();
+                            $du->disableAccessControl();
                             $du->RefreshDocUser();
-                            $du->enableEditControl();
+                            $du->restoreAccessControl();
                         }
                     }
                 }
@@ -310,9 +310,9 @@ class IGroupHooks extends \SmartStructure\Group
                     $g->iduser = $gid;
                     $err = $g->SuppressUser($uid);
                     if ($err == "") {
-                        $du->disableEditControl();
+                        $du->disableAccessControl();
                         $du->RefreshDocUser();
-                        $du->enableEditControl();
+                        $du->restoreAccessControl();
                         $this->RefreshGroup();
                     }
                 }

@@ -2,10 +2,10 @@
 
 namespace Anakeen\Routes\Core;
 
-use Anakeen\Core\SEManager;
 use Anakeen\Router\URLUtils;
 use Anakeen\Router\Exception;
 use Anakeen\Core\Settings;
+use Anakeen\SmartElementManager;
 
 /**
  * Class FolderContent
@@ -27,7 +27,7 @@ class FolderContent extends DocumentList
         parent::initParameters($request, $args);
         $folderId = $args["folder"];
 
-        $this->_folder = SEManager::getDocument($folderId);
+        $this->_folder = SmartElementManager::getDocument($folderId);
         if (!$this->_folder) {
             $exception = new Exception("ROUTES0105", $folderId);
             $exception->setHttpStatus("404", "Folder not found");

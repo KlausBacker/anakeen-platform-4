@@ -9,6 +9,7 @@ use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
+use Anakeen\SmartElementManager;
 
 /**
  * Class DocumentUserTag
@@ -21,11 +22,11 @@ class DocumentUserTags
 {
     protected $baseURL = "documents";
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     protected $_document = null;
     /**
-     * @var \Anakeen\Core\SmartStructure 
+     * @var \Anakeen\Core\SmartStructure
      */
     protected $_family = null;
 
@@ -143,7 +144,7 @@ class DocumentUserTags
      */
     protected function setDocument($resourceId)
     {
-        $this->_document = SEManager::getDocument($resourceId);
+        $this->_document = SmartElementManager::getDocument($resourceId);
         if (!$this->_document) {
             $exception = new Exception("CRUD0200", $resourceId);
             $exception->setHttpStatus("404", "Document not found");

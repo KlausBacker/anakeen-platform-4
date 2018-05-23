@@ -56,33 +56,7 @@ class DocumentApiData
 
 
 
-    /**
-     * Find the current document and set it in the internal options
-     *
-     * @param $ressourceId string|int identifier of the document
-     *
-     * @throws Exception
-     */
-    protected function setDocument($ressourceId)
-    {
-        $this->_document = SEManager::getDocument($ressourceId);
-        if (!$this->_document) {
-            $exception = new Exception("ROUTES0100", $ressourceId);
-            $exception->setHttpStatus("404", "Document not found");
-            $exception->setUserMessage(sprintf(___("Document \"%s\" not found", "ank"), $ressourceId));
-            throw $exception;
-        }
-        if ($this->_document->doctype === "Z") {
-            $exception = new Exception("ROUTES0102", $ressourceId);
-            $exception->setHttpStatus("404", "Document deleted");
-            $exception->setUserMessage(sprintf(___("Document \"%s\" is deleted", "ank"), $ressourceId));
-            $location = URLUtils::generateUrl(sprintf("%s/trash/%d", Settings::ApiV2, $this->_document->initid));
-            $exception->setURI($location);
-            throw $exception;
-        }
 
-        SEManager::cache()->addDocument($this->_document);
-    }
 
     /**
      * Initialize the default fields
@@ -427,7 +401,6 @@ class DocumentApiData
      * @param $initid
      *
      * @return bool
-     * @throws \Dcp\Core\Exception
      */
     protected function checkId($identifier, &$initid)
     {

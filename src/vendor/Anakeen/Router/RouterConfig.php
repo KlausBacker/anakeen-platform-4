@@ -192,6 +192,9 @@ class RouterConfig
      */
     public function getApps()
     {
+        /**
+         * @var AppInfo[] $appsInfo
+         */
         $appsInfo = [];
         /**
          * @var AppInfo $appData

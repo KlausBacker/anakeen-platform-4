@@ -7,6 +7,7 @@ use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Gettext;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
+use Anakeen\SmartElementManager;
 
 /**
  * Class DocumentData
@@ -76,7 +77,7 @@ class DocumentData
         $this->initParameters($request, $args);
         if (!$this->checkId($this->documentId, $initid)) {
             // Redirect to other url
-            $document = SEManager::getDocument($initid, false);
+            $document = SmartElementManager::getDocument($initid, false);
             $location = \Anakeen\Routes\Core\Lib\DocumentUtils::getURI($document);
             return $response->withStatus(307)
                 ->withHeader("location", $location);
@@ -145,7 +146,7 @@ class DocumentData
      */
     protected function setDocument($ressourceId)
     {
-        $this->_document = SEManager::getDocument($ressourceId);
+        $this->_document = SmartElementManager::getDocument($ressourceId);
         if (!$this->_document) {
             $exception = new Exception("ROUTES0100", $ressourceId);
             $exception->setHttpStatus("404", "Document not found");

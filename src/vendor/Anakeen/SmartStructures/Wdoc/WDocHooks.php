@@ -902,7 +902,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         $this->doc->state = $newstate;
         $this->changeProfil($newstate);
         $this->changeCv($newstate);
-        $this->doc->disableEditControl();
+        $this->doc->disableAccessControl();
         $err = $this->doc->Modify(); // don't control edit permission
         if ($err != "") {
             return $err;
@@ -946,18 +946,18 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         }
         $err = $this->doc->revise($revcomment);
         if ($err != "") {
-            $this->doc->disableEditControl(); // restore old states
+            $this->doc->disableAccessControl(); // restore old states
             $this->doc->state = $oldstate;
             $this->changeProfil($oldstate);
             $this->changeCv($oldstate);
             $err2 = $this->doc->Modify(); // don't control edit permission
-            $this->doc->enableEditControl();
+            $this->doc->restoreAccessControl();
             
             return $err . $err2;
         }
         \Anakeen\Core\Utils\System::addLogMsg(sprintf(_("%s new \state %s"), $this->doc->title, _($newstate)));
         
-        $this->doc->enableEditControl();
+        $this->doc->restoreAccessControl();
         // post action
         $msg2 = '';
         if ($wm2 && (!empty($tr["m2"]))) {
@@ -987,7 +987,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             "state" => $this->state,
             "message" => $msg2
         ));
-        $this->doc->disableEditControl();
+        $this->doc->disableAccessControl();
         if (!$this->domainid) {
             $this->doc->unlock(false, true);
         }
@@ -1020,7 +1020,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $msg.= "\n";
         }
         $msg.= $msg3;
-        $this->doc->enableEditControl();
+        $this->doc->restoreAccessControl();
         return $err;
     }
     /**
