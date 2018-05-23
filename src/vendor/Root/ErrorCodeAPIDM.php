@@ -56,6 +56,16 @@ class ErrorCodeAPIDM
      */
     const APIDM0102 = 'Family Identifier "%s" must be a number';
     /**
+     * @errorCode Cannot find document id
+     * @see       \Anakeen\Core\SEManager::getDocumentFromRawDocument
+     */
+    const APIDM0104 = 'Document Identifier "%s" not found';
+    /**
+     * @errorCode Cannot construct object from raw value
+     * @see       \Anakeen\Core\SEManager::getDocumentFromRawDocument
+     */
+    const APIDM0105 = 'Cannot initialize documnet : "%s"';
+    /**
      * @errorCode Only affected documents can be set to cache
      * @see       \Anakeen\Core\DocManager\Cache::addDocument
      */
@@ -76,15 +86,10 @@ class ErrorCodeAPIDM
      */
     const APIDM0203 = 'Identifier must be a number';
 
+
     /**
-     * @errorCode
-     * for beautifier
+     * @see       \Anakeen\SmartElementManager::getRawDocument
      */
-    private function _bo()
-    {
-        if (true) {
-            return;
-        }
-    }
+    const APIDM0204 = 'Cannot access to document';
 }
 

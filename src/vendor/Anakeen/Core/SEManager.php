@@ -48,7 +48,7 @@ class SEManager
                 /* @var  \Anakeen\Core\Internal\SmartElement $doc */
                 $doc = new $classname("", $id);
 
-
+                $doc->disableAccessControl();
                 return $doc;
             }
         }

@@ -67,9 +67,9 @@ class AuthenticatorManager
                          */
                         $du = SEManager::getDocument($wu->fid);
                         if ($du && $du->isAlive()) {
-                            $du->disableEditControl();
+                            $du->disableAccessControl();
                             $du->increaseLoginFailure();
-                            $du->enableEditControl();
+                            $du->restoreAccessControl();
                         }
                     }
                 }
@@ -455,9 +455,9 @@ class AuthenticatorManager
                 return static::AccessMaxLoginFailure;
             }
             // authen OK, max login failure OK => reset count of login failure
-            $du->disableEditControl();
+            $du->disableAccessControl();
             $du->resetLoginFailure();
-            $du->enableEditControl();
+            $du->restoreAccessControl();
         }
 
         return static::AccessOk;

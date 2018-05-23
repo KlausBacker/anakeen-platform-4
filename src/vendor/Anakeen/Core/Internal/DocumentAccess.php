@@ -2,6 +2,7 @@
 
 namespace Anakeen\Core\Internal;
 
+use Anakeen\Core\Account;
 use Anakeen\Core\ContextManager;
 use \Anakeen\Core\DbManager;
 use \Anakeen\Core\SEManager;
@@ -663,27 +664,27 @@ class DocumentAccess
     /**
      * use to know if current user has access privilege
      *
-     * @param int    $docid   profil identifier
+     * @param int    $profid  profil identifier
      * @param string $aclname name of the acl (edit, view,...)
      * @param bool   $strict  set to true to not use substitute
      * @return string if empty access granted else error message
      */
-    public function controlId($docid, $aclname, $strict = false)
+    public function controlId($profid, $aclname, $strict = false)
     {
         if ($this->isExtendedAcl($aclname)) {
-            return $this->controlExtId($docid, $aclname, $strict);
+            return $this->controlExtId($profid, $aclname, $strict);
         } else {
             if ($strict) {
-                $uperm = \DocPerm::getUperm($docid, ContextManager::getCurrentUser()->id, $strict);
+                $uperm = \DocPerm::getUperm($profid, ContextManager::getCurrentUser()->id, $strict);
                 return $this->controlUp($uperm, $aclname);
             } else {
-                if ($this->document->profid == $docid) {
+                if ($this->document->profid == $profid) {
                     if (!isset($this->document->uperm)) {
-                        $this->document->uperm = \DocPerm::getUperm($docid, ContextManager::getCurrentUser()->id);
+                        $this->document->uperm = \DocPerm::getUperm($profid, ContextManager::getCurrentUser()->id);
                     }
                     return $this->controlUp($this->document->uperm, $aclname);
                 } else {
-                    $uperm = \DocPerm::getUperm($docid, ContextManager::getCurrentUser()->id);
+                    $uperm = \DocPerm::getUperm($profid, ContextManager::getCurrentUser()->id);
                     return $this->controlUp($uperm, $aclname);
                 }
             }
@@ -693,15 +694,15 @@ class DocumentAccess
     /**
      * use to know if current user has access privilege
      *
-     * @param int    $docid   profil identifier
+     * @param int    $profid  profil identifier
      * @param string $aclname name of the acl (edit, view,...)
      * @param bool   $strict  set to true to not use substitute
      * @return string if empty access granted else error message
      */
-    public function controlExtId($docid, $aclname, $strict = false)
+    public function controlExtId($profid, $aclname, $strict = false)
     {
         $err = '';
-        $grant = \DocPermExt::isGranted(ContextManager::getCurrentUser()->id, $aclname, $docid, $strict);
+        $grant = \DocPermExt::isGranted(ContextManager::getCurrentUser()->id, $aclname, $profid, $strict);
 
         if (!$grant) {
             $err = sprintf(_("no privilege %s for %s [%d]"), $aclname, $this->document->title, $this->document->id);
@@ -712,22 +713,22 @@ class DocumentAccess
     /**
      * use to know if current user has access privilege
      *
-     * @param int    $docid   profil identifier
+     * @param int    $profid  profil identifier
      * @param int    $uid     user identifier
      * @param string $aclname name of the acl (edit, view,...)
      * @return string if empty access granted else error message
      */
-    public function controlUserId($docid, $uid, $aclname)
+    public function controlUserId($profid, $uid, $aclname)
     {
         $perm = new \DocPerm($this->document->dbaccess, array(
-            $docid,
+            $profid,
             $uid
         ));
 
         if ($perm->isAffected()) {
             $uperm = $perm->uperm;
         } else {
-            $uperm = $perm->getUperm($docid, $uid);
+            $uperm = $perm->getUperm($profid, $uid);
         }
 
         return $this->controlUp($uperm, $aclname);
@@ -759,6 +760,26 @@ class DocumentAccess
         } else {
             return null;
         }
+    }
+
+
+    public static function hasProfilControl($profid, $aclname)
+    {
+        static $_memberOf = [];
+
+        $uid = ContextManager::getCurrentUser()->id;
+        if ($uid == Account::ADMIN_ID) {
+            return true;
+        }
+        if ($profid == 0) {
+            return false;
+        }
+        if (empty($_memberOf[$uid])) {
+            $_memberOf[$uid] = \DocPerm::getMemberOfVector();
+        }
+        $sql = sprintf("select getaperm('%s',%d) as uperm", $_memberOf[$uid], $profid);
+        DbManager::query($sql, $uperm, true, true);
+        return self::hasControl($uperm, $aclname);
     }
 
     /**
