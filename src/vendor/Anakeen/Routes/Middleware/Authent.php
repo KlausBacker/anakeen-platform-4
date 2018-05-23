@@ -17,7 +17,7 @@ class Authent
      *
      * @return mixed
      */
-    public static function authenticate($request, $response, $next, $args = [])
+    public static function authenticate(\Slim\Http\request $request, \Slim\Http\response $response, callable $next, array $args = []): \Slim\Http\response
     {
         /**
          * @var \Slim\Route $currentRoute
@@ -46,8 +46,8 @@ class Authent
         );
 
         self::checkRouteAccess($configInfo->requiredAccess);
-
         $response = $next($request, $response);
+
         return $response;
     }
 

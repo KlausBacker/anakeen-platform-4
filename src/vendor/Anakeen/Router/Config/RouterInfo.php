@@ -4,7 +4,7 @@ namespace Anakeen\Router\Config;
 
 class RouterInfo
 {
-    public $priority;
+    public $priority = 0;
     /**
      * @var \Callable
      */
