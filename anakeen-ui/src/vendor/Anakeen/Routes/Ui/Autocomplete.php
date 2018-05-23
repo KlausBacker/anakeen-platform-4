@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Ui;
 
 use Anakeen\Router\Exception;
+use Anakeen\SmartElementManager;
 use Dcp\Core\AutocompleteLib;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
@@ -59,11 +60,7 @@ class Autocomplete
 
             $err = '';
             if ($documentId !== "0") {
-                $doc = SEManager::getDocument($documentId);
-                $err = $doc->control("view");
-                if ($err) {
-                    throw new Exception("Unable to view the document " . $documentId);
-                }
+                $doc = SmartElementManager::getDocument($documentId);
             } else {
                 $fromid = $this->contentParameters["fromid"];
                 $doc = SEManager::getFamily($fromid);

@@ -5,6 +5,7 @@ namespace Anakeen\Routes\Ui;
 
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Core\SEManager;
+use Anakeen\SmartElementManager;
 
 /**
  * Class SubMenu
@@ -37,7 +38,7 @@ class SubMenu
     {
         $renderMode = "view";
 
-        $doc = SEManager::getDocument($documentId);
+        $doc = SmartElementManager::getDocument($documentId);
 
         if (!$doc) {
             throw new \Dcp\Ui\Exception(sprintf(___("Document \"%s\" not found ", "ddui"), $documentId));

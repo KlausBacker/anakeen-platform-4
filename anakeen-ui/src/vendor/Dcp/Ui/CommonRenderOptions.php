@@ -7,6 +7,7 @@
 namespace Dcp\Ui;
 
 use Anakeen\Core\SEManager;
+use Anakeen\SmartElementManager;
 
 class CommonRenderOptions extends BaseRenderOptions
 {
@@ -233,7 +234,7 @@ class CommonRenderOptions extends BaseRenderOptions
      */
     public function setLinkHelp($documentIdentifier)
     {
-        $helpDocument = SEManager::getDocument($documentIdentifier);
+        $helpDocument = SmartElementManager::getDocument($documentIdentifier);
         if (!$helpDocument || !is_a($helpDocument, \Anakeen\Core\SEManager::getFamilyClassName("Helppage"))) {
             throw new Exception("UI0208", $helpDocument->fromname);
         }

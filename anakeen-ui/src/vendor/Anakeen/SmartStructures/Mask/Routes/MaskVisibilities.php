@@ -6,6 +6,7 @@ use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
+use Anakeen\SmartElementManager;
 
 /**
  * Class MaskVisibilities
@@ -173,7 +174,7 @@ class MaskVisibilities
 
     protected function setDocument($resourceId)
     {
-        $this->_document = SEManager::getDocument($resourceId);
+        $this->_document = SmartElementManager::getDocument($resourceId);
         if (!$this->_document || $this->_document->doctype === "Z") {
             $exception = new Exception("CRUD0200", $resourceId);
             $exception->setHttpStatus("404", "Mask not found");
