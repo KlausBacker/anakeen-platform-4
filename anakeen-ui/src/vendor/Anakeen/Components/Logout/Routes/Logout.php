@@ -10,7 +10,7 @@ use Anakeen\Core\ContextManager;
 /**
  * Class Logout
  * Logout with user's informations
- * @note Used by route : DELETE /api/v2/logout
+ * @note Used by route : DELETE /components/logout/logout
  * @package Anakeen\Components\Logout\Routes
  */
 class Logout
