@@ -246,7 +246,7 @@ export default {
     methods: {
 
         selectDocument(document) {
-            this.$emit('document-selected', Object.assign({}, document.properties));
+            this.$emit('sel-selected', Object.assign({}, document.properties));
         },
 
         filterDocumentsList(filterValue) {
