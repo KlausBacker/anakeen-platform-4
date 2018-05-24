@@ -12,10 +12,10 @@
                     "global": true
                 },
                 "CORE_LOGLEVEL": {
-                    "value": "INFO",
+                    "value": "NOTICE",
                     "description": "Minimum Core Log Level !",
                     "access": "admin",
-                    "type": "enum(ERROR|WARNING|INFO|NOTICE|DEBUG)",
+                    "type": "enum(EMERGENCY|ALERT|CRITICAL|ERROR|WARNING|NOTICE|INFO|DEBUG)",
                     "global": true
                 },
                 "CORE_TMPDIR": {

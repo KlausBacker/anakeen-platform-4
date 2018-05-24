@@ -2,8 +2,11 @@
 
 namespace Anakeen;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\ApplicationParameterManager;
 use Anakeen\Core\Internal\LogLineFormatter;
+use Monolog\Formatter\FormatterInterface;
+use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\SyslogHandler;
@@ -22,20 +25,42 @@ class LogManager
      * @var Logger
      */
     protected static $iLogger;
+    protected static $iFormatter;
 
     public static function getLogger()
     {
         if (!self::$iLogger) {
-            self::$iLogger = new Logger(self::channelName);
-
             $sysHandler = new SyslogHandler(self::channelName, LOG_USER, self::getLogLevel());
-            $sysHandler->setFormatter(new LogLineFormatter(self::USER_FORMAT));
+            $sysHandler->setFormatter(self::getFormater());
 
-            $phpErrorHandler= new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, Logger::ERROR);
-            $phpErrorHandler->setFormatter(new LogLineFormatter(self::USER_FORMAT));
-            self::$iLogger = new Logger(self::channelName, [$sysHandler, $phpErrorHandler]);
+            $phpErrorHandler = new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, Logger::ERROR);
+            $phpErrorHandler->setFormatter(self::getFormater());
+            self::$iLogger = new Logger(
+                self::channelName,
+                [$sysHandler, $phpErrorHandler],
+                [
+                    function ($record) {
+                        $record["user"] = ContextManager::getCurrentUser()->login;
+                        return $record;
+                    }
+                ]
+            );
         }
         return self::$iLogger;
+    }
+
+    public static function setFormater(FormatterInterface $formatter)
+    {
+        self::$iFormatter = $formatter;
+        self::$iLogger = null;
+    }
+
+    protected static function getFormater()
+    {
+        if (self::$iFormatter === null) {
+            self::$iFormatter = new LineFormatter(self::USER_FORMAT);
+        }
+        return self::$iFormatter;
     }
 
     /**
