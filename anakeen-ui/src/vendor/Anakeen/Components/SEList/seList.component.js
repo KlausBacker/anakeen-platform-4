@@ -1,5 +1,5 @@
 import { AnkMixin } from '../AnkVueComponentMixin';
-import DocumentTemplate from './documentItem.template.kd';
+import DocumentTemplate from './seListItem.template.kd';
 
 export default {
     mixins: [AnkMixin],
@@ -115,7 +115,6 @@ export default {
                     animation: false,
                     index: 1,
                     change: this.privateScope.onSelectPageSize,
-                    // valueTemplate: '<span class="fa fa-list-ol"></span>',
                     headerTemplate: `<li class="dropdown-header">${this.translations.itemsPerPageLabel}</li>`,
                     template: '<span class="documentsList__documents__pagination__pageSize">#= data.text#</span>',
                 }).data('kendoDropDownList').list.addClass('documentsList__documents__pagination__list');
@@ -171,10 +170,8 @@ export default {
 
             if (this.smartStructureName) {
                 this.setCollection({
-                    id: this.smartStructureName,
-                    initid: this.smartStructureName,
-                    title: this.label,
-                    ref: this.smartStructureName,
+                    title: this.collectionLabel,
+                    name: this.smartStructureName,
                 });
             }
         };

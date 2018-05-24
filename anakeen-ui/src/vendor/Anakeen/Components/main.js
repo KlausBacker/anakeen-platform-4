@@ -42,12 +42,12 @@ Vue.prototype.$kendo = Vue.kendo = kendo;
 // import and register your component(s)
 import Authent from './Authent/Authent.vue';
 import Document from './Document/Document.vue';
-import DocumentList from './DocumentList/documentList.vue';
+import SEList from './SEList/seList.vue';
 import DocumentTabs from './DocumentTabs/documentTabs.vue';
 import AnakeenLoading from './AnakeenLoading/AnakeenLoading.vue';
 
 Vue.customElement('ank-loading', AnakeenLoading);
 Vue.customElement('ank-authent', Authent);
 Vue.customElement('ank-document', Document);
-Vue.customElement('ank-document-list', DocumentList);
+Vue.customElement('ank-se-list', SEList);
 Vue.customElement('ank-document-tabs', DocumentTabs);
