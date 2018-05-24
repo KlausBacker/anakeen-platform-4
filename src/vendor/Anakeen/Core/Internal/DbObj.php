@@ -2,7 +2,6 @@
 
 namespace Anakeen\Core\Internal;
 
-use Anakeen\Core\ContextManager;
 use Anakeen\LogManager;
 
 /**
@@ -209,10 +208,10 @@ class DbObj
 
         $sql = $sql . " " . $wherestr;
 
-        $this->exec_query($sql);
+        $this->query($sql);
 
         if ($this->numrows() > 0) {
-            $res = $this->fetch_array(0);
+            $res = $this->fetchArray(0);
             $this->Affect($res);
         } else {
             return false;
@@ -273,10 +272,10 @@ class DbObj
 
         $sql = "select $sqlselect from $fromstr where $sqlwhere";
 
-        $this->exec_query($sql);
+        $this->query($sql);
 
         if ($this->numrows() > 0) {
-            $res = $this->fetch_array(0);
+            $res = $this->fetchArray(0);
             $this->affect($res, false, $reset);
         } else {
             return false;
@@ -466,7 +465,7 @@ class DbObj
         $valstring = substr($valstring, 0, strlen($valstring) - 1);
         $sql = $sql . $valstring . ")";
         // requery execution
-        $msg_err = $this->exec_query($sql);
+        $msg_err = $this->query($sql);
 
         if ($msg_err != '') {
             return $msg_err;
@@ -535,7 +534,7 @@ class DbObj
             $sql .= " where " . $wstr . ";";
         }
 
-        $msg_err = $this->exec_query($sql);
+        $msg_err = $this->query($sql);
         // sortie
         if ($msg_err != '') {
             return $msg_err;
@@ -575,7 +574,7 @@ class DbObj
         // suppression de l'enregistrement
         $sql = "delete from " . $this->dbtable . " where " . $wherestr . ";";
 
-        $msg_err = $this->exec_query($sql);
+        $msg_err = $this->query($sql);
 
         if ($msg_err != '') {
             return $msg_err;
@@ -644,18 +643,18 @@ class DbObj
             // step by step
             if (is_array($this->sqlcreate)) {
                 foreach ($this->sqlcreate as $k => $sqlquery) {
-                    $msg .= $this->exec_query($sqlquery, 1);
+                    $msg .= $this->query($sqlquery, 1);
                 }
             } else {
                 $sqlcmds = explode(";", $this->sqlcreate);
                 foreach ($sqlcmds as $k => $sqlquery) {
-                    $msg .= $this->exec_query($sqlquery, 1);
+                    $msg .= $this->query($sqlquery, 1);
                 }
             }
             LogManager::debug("DbObj::Create : " . print_r($this->sqlcreate, true));
         }
         if (isset($this->sqlinit)) {
-            $msg = $this->exec_query($this->sqlinit, 1);
+            $msg = $this->query($this->sqlinit, 1);
             LogManager::debug("Init : {$this->sqlinit}");
         }
         if ($msg != '') {
@@ -680,7 +679,7 @@ class DbObj
         }
         $this->dbid = \Anakeen\Core\DbManager::getDbid();
         if ($this->dbid == 0) {
-            error_log(__METHOD__ . "null dbid");
+            LogManager::error(__METHOD__ . "null dbid");
         }
         return $this->dbid;
     }
@@ -762,7 +761,7 @@ class DbObj
      * @throw Dcp\Db\Exception if query fail
      * @return string error message if not strict mode
      */
-    public function exec_query($sql, $lvl = 0, $prepare = false)
+    public function query($sql, $lvl = 0, $prepare = false)
     {
         global $SQLDELAY, $SQLDEBUG;
 
@@ -779,7 +778,7 @@ class DbObj
         if ($prepare) {
             if (pg_send_prepare($this->dbid, '', $sql) === false) {
                 $this->msg_err = \ErrorCode::getError('DB0006', pg_last_error($this->dbid));
-                error_log(__METHOD__ . " " . $this->msg_err);
+                LogManager::error(__METHOD__ . " " . $this->msg_err);
                 return $this->msg_err;
             }
             $this->res = pg_get_result($this->dbid);
@@ -827,7 +826,7 @@ class DbObj
             try {
                 if ($this->tryCreate()) {
                     // redo the query if create table is done
-                    $this->msg_err = $this->exec_query($sql, 1, $prepare);
+                    $this->msg_err = $this->query($sql, 1, $prepare);
                 }
             } catch (\Exception $e) {
                 $this->msg_err = $orierr;
@@ -863,7 +862,7 @@ class DbObj
     /**
      * number of return rows after exec_query
      *
-     * @see exec_query
+     * @see query
      * @return int
      */
     public function numrows()
@@ -875,7 +874,7 @@ class DbObj
         }
     }
 
-    public function fetch_array($c, $type = PGSQL_ASSOC)
+    public function fetchArray($c, $type = PGSQL_ASSOC)
     {
         return (pg_fetch_array($this->res, $c, $type));
     }
@@ -899,6 +898,4 @@ class DbObj
         }
         logDebugStack(2, $err);
     }
-
-
 }

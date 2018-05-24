@@ -67,8 +67,8 @@ create sequence SEQ_ID_ACL;
         if ($this->Exists($this->name, $this->id_application)) {
             return "Acl {$this->name} already exists...";
         }
-        $msg_res = $this->exec_query("select nextval ('seq_id_acl')");
-        $arr = $this->fetch_array(0);
+        $msg_res = $this->query("select nextval ('seq_id_acl')");
+        $arr = $this->fetchArray(0);
         $this->id = $arr["nextval"];
         return '';
     }

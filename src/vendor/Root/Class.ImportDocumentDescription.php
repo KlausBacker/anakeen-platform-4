@@ -579,7 +579,7 @@ class ImportDocumentDescription
                     $oattr = new DocAttr($this->dbaccess);
                     $oattr->docid = intval($this->doc->id);
                     if ($oattr->docid > 0) {
-                        $err = $oattr->exec_query(sprintf("delete from docattr where docid=%d", $oattr->docid));
+                        $err = $oattr->query(sprintf("delete from docattr where docid=%d", $oattr->docid));
                         // $err .= $oattr->exec_query(sprintf("update docfam set defval=null,param=null  where id=%d",  $oattr->docid));
                     }
                     $this->tcr[$this->nLine]["err"] .= $err;

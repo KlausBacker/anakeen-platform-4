@@ -101,7 +101,7 @@ create index permission_idx4 on permission(computed);
     public function postInsert()
     {
         if (!$this->computed) {
-            $this->exec_query(sprintf("delete from permission where  id_application=%d and abs(id_acl)=%d and computed", $this->id_application, abs($this->id_acl)));
+            $this->query(sprintf("delete from permission where  id_application=%d and abs(id_acl)=%d and computed", $this->id_application, abs($this->id_acl)));
         }
         
         return "";
@@ -310,8 +310,8 @@ create index permission_idx4 on permission(computed);
     public function computePerm($uid, $appid, $acl)
     {
         $db = new DbObj($this->dbaccess);
-        $db->exec_query(sprintf("SELECT computePerm(%d, %d, %d)", $uid, $appid, abs($acl)));
-        $perm = $db->fetch_array(0);
+        $db->query(sprintf("SELECT computePerm(%d, %d, %d)", $uid, $appid, abs($acl)));
+        $perm = $db->fetchArray(0);
         return $perm['computeperm'];
     }
     /**
@@ -491,7 +491,7 @@ action.acl = acl.name where ";
         }
         
         if (count($sqlCond) > 0) {
-            return $this->exec_query(sprintf("DELETE FROM permission WHERE ( %s )", join(" AND ", $sqlCond)));
+            return $this->query(sprintf("DELETE FROM permission WHERE ( %s )", join(" AND ", $sqlCond)));
         }
         
         return false;

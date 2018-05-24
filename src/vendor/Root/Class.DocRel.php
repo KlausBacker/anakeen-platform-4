@@ -130,9 +130,9 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);";
         }
         if ($sinitid > 0) {
             if ($type != "") {
-                $this->exec_query("delete from docrel where sinitid=" . $sinitid . " and type='$type'");
+                $this->query("delete from docrel where sinitid=" . $sinitid . " and type='$type'");
             } else {
-                $this->exec_query("delete from docrel where sinitid=" . $sinitid . " and type != 'folder'");
+                $this->query("delete from docrel where sinitid=" . $sinitid . " and type != 'folder'");
             }
         }
     }
@@ -207,7 +207,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);";
                 \Anakeen\Core\DbManager::getSqlOrCond($tv, 'id', true)
             );
 
-            $t = $this->exec_query($sql);
+            $t = $this->query($sql);
             if ($this->numrows() > 0) {
                 $c = 0;
                 $tin = array();

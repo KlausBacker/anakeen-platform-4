@@ -181,7 +181,7 @@ class VaultDiskStorage extends \Anakeen\Core\Internal\DbObj
 SELECT id_file FROM %s WHERE id_file = %d LIMIT 1
 SQL;
             
-            $err = $this->exec_query(sprintf($sql, pg_escape_identifier($this->dbtable), $int));
+            $err = $this->query(sprintf($sql, pg_escape_identifier($this->dbtable), $int));
             if ($err) {
                 throw new \Dcp\Db\Exception("DB0104", $err);
             }
@@ -454,7 +454,7 @@ UPDATE %s SET teng_state = %d WHERE teng_id_file = %s
 SQL;
             
             $up = sprintf($sql, pg_escape_identifier($this->dbtable), pg_escape_literal(\Dcp\TransformationEngine\Client::status_inprogress), pg_escape_literal($this->id_file));
-            $this->exec_query($up);
+            $this->query($up);
         }
     }
 }

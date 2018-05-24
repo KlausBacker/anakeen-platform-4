@@ -48,7 +48,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
         }
         $this->addHistoryEntry(_("Folder cleared"));
         $this->addLog('clearcontent');
-        $err = $this->exec_query(sprintf("delete from fld where dirid=%d", $this->initid));
+        $err = $this->query(sprintf("delete from fld where dirid=%d", $this->initid));
         $this->updateFldRelations();
         return $err;
     }
@@ -497,7 +497,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             return $err;
         }
 
-        $err = $this->exec_Query(sprintf("insert INTO fld (select %d,query,childid,qtype from fld where dirid=%d);", $this->initid, $docid));
+        $err = $this->query(sprintf("insert INTO fld (select %d,query,childid,qtype from fld where dirid=%d);", $this->initid, $docid));
 
         $this->updateFldRelations();
         return $err;

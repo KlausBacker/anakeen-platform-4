@@ -76,7 +76,7 @@ CREATE TRIGGER tfldfrom before insert on fld FOR EACH ROW execute procedure from
     {
         // test if  already exist
         if ($this->qtype != "M") {
-            $err = $this->exec_query(sprintf("select * from fld where dirid=%s and childid=%s", $this->dirid, $this->childid));
+            $err = $this->query(sprintf("select * from fld where dirid=%s and childid=%s", $this->dirid, $this->childid));
             if ($this->numrows() > 0) {
                 return true; // just to say it is not a real error
             }

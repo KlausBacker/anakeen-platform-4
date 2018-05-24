@@ -93,13 +93,13 @@ create unique index idx_docvaultindex on docvaultindex (docid, vaultid);";
     
     public function DeleteDoc($docid)
     {
-        $err = $this->exec_query("delete from " . $this->dbtable . " where docid=" . $docid);
+        $err = $this->query("delete from " . $this->dbtable . " where docid=" . $docid);
         return $err;
     }
     
     public function DeleteVaultId($vid)
     {
-        $err = $this->exec_query("delete from " . $this->dbtable . " where vaultid=" . $vid);
+        $err = $this->query("delete from " . $this->dbtable . " where vaultid=" . $vid);
         return $err;
     }
 }

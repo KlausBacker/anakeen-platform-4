@@ -97,8 +97,8 @@ EOF;
         if ($this->Exists($this->r_path)) {
             return (_("File System already exists"));
         }
-        $this->exec_query(sprintf("select nextval ('%s')", pg_escape_string($this->seq)));
-        $arr = $this->fetch_array(0);
+        $this->query(sprintf("select nextval ('%s')", pg_escape_string($this->seq)));
+        $arr = $this->fetchArray(0);
         $this->id_fs = $arr["nextval"];
         return '';
     }
@@ -180,9 +180,9 @@ SQL;
         }
         
         $sql = sprintf(str_replace(":SQLFSNAME:", $sqlName, $sql), $size);
-        $this->exec_query($sql);
+        $this->query($sql);
         if ($this->numrows() > 0) {
-            $result = $this->fetch_array(0);
+            $result = $this->fetchArray(0);
             if ($result) {
                 $this->affect($result);
                 
@@ -191,9 +191,9 @@ SQL;
         } else {
             // May be a new vault
             $sql = "select * from vaultdiskfsstorage where id_fs not in (select id_fs from vaultdiskdirstorage ) order by id_fs;";
-            $this->exec_query($sql);
+            $this->query($sql);
             if ($this->numrows() > 0) {
-                $result = $this->fetch_array(0);
+                $result = $this->fetchArray(0);
                 if ($result) {
                     $this->affect($result);
                     
@@ -226,9 +226,9 @@ from vaultdiskfsstorage, (
 SQL;
         
         $sql = sprintf($sql, $this->id_fs);
-        $this->exec_query($sql);
+        $this->query($sql);
         if ($this->numrows() > 0) {
-            $result = $this->fetch_array(0);
+            $result = $this->fetchArray(0);
             if ($result) {
                 $this->affect($result);
                 
@@ -241,9 +241,9 @@ SQL;
     public function recomputeDirectorySize()
     {
         $sql = "update vaultdiskdirstorage set size=(select sum(size) from vaultdiskstorage where id_dir=vaultdiskdirstorage.id_dir) where isfull;";
-        $this->exec_query($sql);
+        $this->query($sql);
         $sql = "update vaultdiskdirstorage set size=0 where isfull and size is null;";
-        $this->exec_query($sql);
+        $this->query($sql);
     }
     // --------------------------------------------------------------------
     public function Show($id_fs, $id_dir, &$f_path)

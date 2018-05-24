@@ -64,6 +64,6 @@ create index i_doccount on doccount(famid,aid);
     {
         $sql = sprintf("delete from %s where famid = %s and aid = '%s'", $this->dbtable, $this->famid, pg_escape_string($this->aid));
         
-        return $this->exec_query($sql);
+        return $this->query($sql);
     }
 }

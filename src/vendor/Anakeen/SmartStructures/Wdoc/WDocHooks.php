@@ -312,7 +312,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         $ordered = 1000;
          \Anakeen\Core\DbManager::setMasterLock(true);
         // delete old attributes before
-        $this->exec_query(sprintf("delete from docattr where docid=%d  and options ~ 'autocreated=yes'", intval($cid)));
+        $this->query(sprintf("delete from docattr where docid=%d  and options ~ 'autocreated=yes'", intval($cid)));
         $this->getStates();
         foreach ($this->states as $k => $state) {
             // --------------------------

@@ -188,7 +188,7 @@ class QueryDb
     {
         $query = $this->initQuery($start, $slice, $p_query);
         $this->res_type = $res_type;
-        $err = $this->basic_elem->exec_query($query, 0, true);
+        $err = $this->basic_elem->query($query, 0, true);
         //	print "$query $res_type $p_query<BR>\n";
         if ($res_type == "ITER") {
             if ($err) {
@@ -217,7 +217,7 @@ class QueryDb
             $this->list = pg_fetch_all($this->basic_elem->res);
         } else {
             for ($c = 0; $c < $this->nb; $c++) {
-                $result = $this->basic_elem->fetch_array($c);
+                $result = $this->basic_elem->fetchArray($c);
                 if (($res_type == "LIST") || ($res_type == "LISTC")) {
                     $this->list[$c] = new $this->class($this->dbaccess, "", $result, $this->basic_elem->dbid);
                 } else {
@@ -236,13 +236,13 @@ class QueryDb
     {
         $query = $this->initQuery($start, $slice, "", true);
         $this->res_type = "TABLE";
-        $err = $this->basic_elem->exec_query($query);
+        $err = $this->basic_elem->query($query);
         //	print "$query $res_type $p_query<BR>\n";
         if ($err != "") {
             return ($err);
         }
         
-        $result = $this->basic_elem->fetch_array(0);
+        $result = $this->basic_elem->fetchArray(0);
         return ($result["count"]);
     }
     

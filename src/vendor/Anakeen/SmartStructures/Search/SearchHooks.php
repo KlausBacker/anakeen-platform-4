@@ -102,7 +102,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
         $oqd->query = $query;
 
         if ($this->id > 0) {
-            $this->exec_query("delete from fld where dirid=" . intval($this->id) . " and qtype='M'");
+            $this->query("delete from fld where dirid=" . intval($this->id) . " and qtype='M'");
         }
         $err = $oqd->add();
         if ($err == "") {

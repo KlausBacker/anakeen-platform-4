@@ -185,9 +185,9 @@ class Session extends DbObj
     public function closeAll($uid = null)
     {
         if ($uid === null) {
-            $this->exec_query(sprintf("delete from sessions where name = '%s';", pg_escape_string($this->session_name)));
+            $this->query(sprintf("delete from sessions where name = '%s';", pg_escape_string($this->session_name)));
         } else {
-            $this->exec_query(sprintf("delete from sessions where name = '%s' and userid=%d;", pg_escape_string($this->session_name), $uid));
+            $this->query(sprintf("delete from sessions where name = '%s' and userid=%d;", pg_escape_string($this->session_name), $uid));
         }
         $this->status = self::SESSION_CT_CLOSE;
         return $this->status;
@@ -205,7 +205,7 @@ class Session extends DbObj
         if (!$uid > 0) {
             return '';
         }
-        $this->exec_query("delete from sessions where userid= '" . pg_escape_string($uid) . "'");
+        $this->query("delete from sessions where userid= '" . pg_escape_string($uid) . "'");
         $this->status = self::SESSION_CT_CLOSE;
         return $this->status;
     }
@@ -399,7 +399,7 @@ class Session extends DbObj
     {
         $ttl = $this->getSessionTTL(0, 'CORE_SESSIONTTL');
         if ($ttl > 0) {
-            return $this->exec_query(sprintf("DELETE FROM sessions WHERE userid != %s AND last_seen < timestamp 'now()' - interval '%s seconds'", \Anakeen\Core\Account::ANONYMOUS_ID, pg_escape_string($ttl)));
+            return $this->query(sprintf("DELETE FROM sessions WHERE userid != %s AND last_seen < timestamp 'now()' - interval '%s seconds'", \Anakeen\Core\Account::ANONYMOUS_ID, pg_escape_string($ttl)));
         }
         return '';
     }
@@ -408,7 +408,7 @@ class Session extends DbObj
     {
         $ttl = $this->getSessionTTL(0, 'CORE_GUEST_SESSIONTTL');
         if ($ttl > 0) {
-            return $this->exec_query(sprintf("DELETE FROM sessions WHERE userid = %s AND last_seen < timestamp 'now()' - interval '%s seconds'", \Anakeen\Core\Account::ANONYMOUS_ID, pg_escape_string($ttl)));
+            return $this->query(sprintf("DELETE FROM sessions WHERE userid = %s AND last_seen < timestamp 'now()' - interval '%s seconds'", \Anakeen\Core\Account::ANONYMOUS_ID, pg_escape_string($ttl)));
         }
         return '';
     }
@@ -417,7 +417,7 @@ class Session extends DbObj
     {
         $maxage = \Anakeen\Core\ContextManager::getApplicationParam('CORE_SESSIONMAXAGE', '');
         if ($maxage != '') {
-            return $this->exec_query(sprintf("DELETE FROM sessions WHERE last_seen < timestamp 'now()' - interval '%s'", pg_escape_string($maxage)));
+            return $this->query(sprintf("DELETE FROM sessions WHERE last_seen < timestamp 'now()' - interval '%s'", pg_escape_string($maxage)));
         }
         return '';
     }
@@ -533,7 +533,7 @@ class Session extends DbObj
         if ($exceptSessionId == '') {
             $exceptSessionId = $this->id;
         }
-        return $this->exec_query(sprintf("DELETE FROM sessions WHERE userid = %d AND id != '%s'", $userId, pg_escape_string($exceptSessionId)));
+        return $this->query(sprintf("DELETE FROM sessions WHERE userid = %d AND id != '%s'", $userId, pg_escape_string($exceptSessionId)));
     }
     private function setcookie($name, $value = null, $expire = null, $path = null, $domain = null, $secure = null, $httponly = null)
     {

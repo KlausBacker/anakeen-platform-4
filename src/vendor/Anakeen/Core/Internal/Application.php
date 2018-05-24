@@ -307,8 +307,8 @@ create sequence SEQ_ID_APPLICATION start 10;
         if ($this->name == "CORE") {
             $this->id = 1;
         } else {
-            $this->exec_query("select nextval ('seq_id_application')");
-            $arr = $this->fetch_array(0);
+            $this->query("select nextval ('seq_id_application')");
+            $arr = $this->fetchArray(0);
             $this->id = $arr["nextval"];
         }
         return '';

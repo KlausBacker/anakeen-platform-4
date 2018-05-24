@@ -391,7 +391,7 @@ class DocumentAccess
                 DbManager::lockPoint($this->document->initid, "PERM");
             }
             // Need to lock to avoid constraint errors when concurrent docperm update
-            $this->document->exec_query(sprintf("delete from docperm where docid=%d", $this->document->id));
+            $this->document->query(sprintf("delete from docperm where docid=%d", $this->document->id));
             if ($fromdocidvalues == null) {
                 $fromdocidvalues = &$this->document;
             }
@@ -521,7 +521,7 @@ class DocumentAccess
                 }
             }
         }
-        $this->document->exec_query(sprintf("delete from docpermext where docid=%d", $this->document->id));
+        $this->document->query(sprintf("delete from docpermext where docid=%d", $this->document->id));
         if ($fromdocidvalues == null) {
             $fromdocidvalues = &$this->document;
         }

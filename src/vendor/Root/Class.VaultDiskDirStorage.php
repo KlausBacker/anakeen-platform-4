@@ -207,8 +207,8 @@ SQL;
         if ($this->Exists($this->l_path, $this->id_fs)) {
             return (_("Directory already exists"));
         }
-        $this->exec_query("select nextval ('" . $this->seq . "')");
-        $arr = $this->fetch_array(0);
+        $this->query("select nextval ('" . $this->seq . "')");
+        $arr = $this->fetchArray(0);
         $this->id_dir = $arr["nextval"];
         return '';
     }

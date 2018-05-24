@@ -310,8 +310,8 @@ create sequence SEQ_ID_ACTION;
         if ($this->Exists($this->name, $this->id_application)) {
             return "Action {$this->name} already exists...";
         }
-        $this->exec_query("select nextval ('seq_id_action')");
-        $arr = $this->fetch_array(0);
+        $this->query("select nextval ('seq_id_action')");
+        $arr = $this->fetchArray(0);
         $this->id = $arr["nextval"];
         return '';
     }

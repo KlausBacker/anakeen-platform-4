@@ -1410,10 +1410,10 @@ create unique index i_docir on doc(initid, revision);";
         $err = $cdoc->Modify();
         if ($err == "") {
             if ($this->revision > 0) {
-                $this->exec_query(sprintf("update fld set childid=%d where childid=%d", $cdoc->id, $this->initid));
+                $this->query(sprintf("update fld set childid=%d where childid=%d", $cdoc->id, $this->initid));
             }
         }
-        $this->exec_query(sprintf("update fld set fromid=%d where childid=%d", $cdoc->fromid, $this->initid));
+        $this->query(sprintf("update fld set fromid=%d where childid=%d", $cdoc->fromid, $this->initid));
 
         $cdoc->addHistoryEntry(sprintf(_("convertion from %s to %s family"), $f1from, $f2from));
 
@@ -1857,9 +1857,9 @@ create unique index i_docir on doc(initid, revision);";
             $dvi = new \DocVaultIndex($this->dbaccess);
             $err = $dvi->DeleteDoc($this->id);
             if ($this->name != '') {
-                $this->exec_query(sprintf("delete from docname where name='%s'", pg_escape_string($this->name)));
+                $this->query(sprintf("delete from docname where name='%s'", pg_escape_string($this->name)));
             }
-            $this->exec_query(sprintf("delete from docfrom where id='%s'", pg_escape_string($this->id)));
+            $this->query(sprintf("delete from docfrom where id='%s'", pg_escape_string($this->id)));
         }
         return $err;
     }
@@ -1929,7 +1929,7 @@ create unique index i_docir on doc(initid, revision);";
 
             if ($this->doctype != 'Z') {
                 if ($this->name != "") {
-                    $this->exec_query(sprintf(
+                    $this->query(sprintf(
                         "delete from doc%d where name='%s' and doctype='Z'",
                         $this->fromid,
                         pg_escape_string($this->name)
@@ -5292,14 +5292,14 @@ create unique index i_docir on doc(initid, revision);";
         }
 
         if ($allrevision) {
-            $err = $this->exec_query(sprintf(
+            $err = $this->query(sprintf(
                 "delete from docutag where initid=%d and tag='%s' and uid=%d",
                 $this->initid,
                 pg_escape_string($tag),
                 $uid
             ));
         } else {
-            $err = $this->exec_query(sprintf(
+            $err = $this->query(sprintf(
                 "delete from docutag where id=%d and tag='%s' and uid=%d",
                 $this->id,
                 pg_escape_string($tag),
@@ -5324,7 +5324,7 @@ create unique index i_docir on doc(initid, revision);";
         if (!$uid) {
             $uid = ContextManager::getCurrentUser()->id;
         }
-        $err = $this->exec_query(sprintf("delete from docutag where initid=%d and uid=%d", $this->initid, $uid));
+        $err = $this->query(sprintf("delete from docutag where initid=%d and uid=%d", $this->initid, $uid));
 
         return $err;
     }
@@ -5906,7 +5906,7 @@ create unique index i_docir on doc(initid, revision);";
                         "ARCHIVE"
                     );
                     $this->addLog('archive', $archive->id, sprintf(_("Archiving into %s"), $archive->getTitle()));
-                    $err = $this->exec_query(
+                    $err = $this->query(
                         sprintf(
                             "update doc%d set archiveid=%d, dprofid=-abs(profid), profid=%d where initid=%d and locked = -1",
                             $this->fromid,
@@ -5960,7 +5960,7 @@ create unique index i_docir on doc(initid, revision);";
                         "UNARCHIVE"
                     );
                     $this->addLog('unarchive', $archive->id, sprintf(_("Unarchiving from %s"), $archive->getTitle()));
-                    $err = $this->exec_query(
+                    $err = $this->query(
                         sprintf(
                             "update doc%d set archiveid=null, profid=abs(dprofid), dprofid=null where initid=%d and locked = -1",
                             $this->fromid,

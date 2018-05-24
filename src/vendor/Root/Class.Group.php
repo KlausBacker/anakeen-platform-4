@@ -80,12 +80,12 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
         $err = "";
 
         if (($this->iduser > 0) && ($uid > 0)) {
-            $err = $this->exec_query("delete from groups where idgroup=" . $this->iduser . " and iduser=$uid");
-            $err .= $this->exec_query("delete from sessions where userid=$uid");
+            $err = $this->query("delete from groups where idgroup=" . $this->iduser . " and iduser=$uid");
+            $err .= $this->query("delete from sessions where userid=$uid");
 
             $dbf = $this->dbaccess;
             $g = new Group($dbf);
-            $err .= $g->exec_query("delete from groups where idgroup=" . $this->iduser . " and iduser=$uid");
+            $err .= $g->query("delete from groups where idgroup=" . $this->iduser . " and iduser=$uid");
 
             if (!$nopost) {
                 $this->PostDelete($uid);
@@ -105,7 +105,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     public function preInsert()
     {
         // verify is exists
-        $err = $this->exec_query(sprintf("select * from groups where idgroup=%s and iduser=%s", $this->idgroup, $this->iduser));
+        $err = $this->query(sprintf("select * from groups where idgroup=%s and iduser=%s", $this->idgroup, $this->iduser));
         if ($this->numrows() > 0) {
             $err = "OK"; // just to say it is not a real error
         }
@@ -128,10 +128,10 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
             $g = new Group($dbf);
             $g->iduser = $this->iduser;
             $g->idgroup = $this->idgroup;
-            $err = $g->exec_query("delete from groups where idgroup=" . $this->iduser . " and iduser=" . $u->id);
+            $err = $g->query("delete from groups where idgroup=" . $this->iduser . " and iduser=" . $u->id);
             if ($err == "") {
                 // if it is a user (not a group)
-                $g->exec_query("delete from permission where computed");
+                $g->query("delete from permission where computed");
 
                 $p = new Permission($this->dbaccess);
                 $p->deletePermission($g->iduser, null, null, true);
@@ -141,7 +141,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
 
     public function PostInsert()
     {
-        $err = $this->exec_query(sprintf("delete from sessions where userid=%d", $this->iduser));
+        $err = $this->query(sprintf("delete from sessions where userid=%d", $this->iduser));
         //    $this->FreedomCopyGroup();
         $u = new \Anakeen\Core\Account("", $this->iduser);
 
@@ -158,7 +158,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
             $err = $g->add(true);
             if ($err == "" || $err == "OK") {
                 // if it is a user (not a group)
-                $g->exec_query("delete from permission where computed");
+                $g->query("delete from permission where computed");
 
                 $p = new Permission($this->dbaccess);
                 $p->deletePermission($g->iduser, null, null, true);
@@ -183,8 +183,8 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     public function resetAccountMemberOf($synchro = false)
     {
         if ($this->syncAccount) {
-            $this->exec_query(sprintf("delete from sessions where userid=%d", $this->iduser));
-            $this->exec_query("delete from permission where computed");
+            $this->query(sprintf("delete from sessions where userid=%d", $this->iduser));
+            $this->query("delete from permission where computed");
 
             if ($synchro) {
                 \Anakeen\Core\DbManager::query("select * from users order by id", $tusers);

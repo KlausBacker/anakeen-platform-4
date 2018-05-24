@@ -794,7 +794,7 @@ class FamilyImport
         // create postgres table if new \familly
         $cdoc = SEManager::createTemporaryDocument($docid, false);
         $triggers = $cdoc->sqltrigger(false, true);
-        $cdoc->exec_query($triggers, 1);
+        $cdoc->query($triggers, 1);
         // step by step
         $cdoc->create();
         self::setSqlIndex($dbaccess, $docid);
@@ -870,13 +870,13 @@ class FamilyImport
     public static function activateTrigger($dbaccess, $docid)
     {
         $cdoc = SEManager::createTemporaryDocument($docid, false);
-        $cdoc->exec_query($cdoc->sqltrigger(false, true), 1);
+        $cdoc->query($cdoc->sqltrigger(false, true), 1);
         $sqlcmds = explode(";", $cdoc->SqlTrigger());
         //$cdoc = new_Doc($dbacceanss, $docid);
         //  print $cdoc->SqlTrigger();
         foreach ($sqlcmds as $k => $sqlquery) {
             if ($sqlquery != "") {
-                $cdoc->exec_query($sqlquery, 1);
+                $cdoc->query($sqlquery, 1);
             }
         }
     }
@@ -888,7 +888,7 @@ class FamilyImport
         $msg = '';
         if ($indexes) {
             foreach ($indexes as $sqlIndex) {
-                $msg .= $cdoc->exec_query($sqlIndex);
+                $msg .= $cdoc->query($sqlIndex);
             }
         }
         return $msg;
