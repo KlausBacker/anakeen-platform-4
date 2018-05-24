@@ -138,7 +138,7 @@ if ($query->nb > 0) {
                 } else {
                     $iuser = \Anakeen\Core\SEManager::createDocument("IUSER");
                     $iuser->setValue("US_WHATID", $v["id"]);
-                    $err = $iuser->Add();
+                    $err = $iuser->add();
                     if ($err == "") {
                         //$iuser->refresh();"
                         //$iuser->RefreshDocUser();

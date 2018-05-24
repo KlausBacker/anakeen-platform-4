@@ -12,7 +12,7 @@
  */
 /**
  */
-
+use \Anakeen\LogManager;
 
 class VaultDiskStorage extends \Anakeen\Core\Internal\DbObj
 {
@@ -86,6 +86,7 @@ class VaultDiskStorage extends \Anakeen\Core\Internal\DbObj
     public $teng_comment;
     /**
      * @var \Anakeen\Core\Internal\Log
+     * @deprecated
      */
     protected $logger;
     public $storage = 1;
@@ -97,7 +98,6 @@ class VaultDiskStorage extends \Anakeen\Core\Internal\DbObj
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         parent::__construct($dbaccess, $id, $res, $dbid);
-        $this->logger = new Anakeen\Core\Internal\Log("", "vault", $this->name);
         $this->fs = new VaultDiskFsStorage($this->dbaccess);
     }
     /**
@@ -109,7 +109,7 @@ class VaultDiskStorage extends \Anakeen\Core\Internal\DbObj
             if (!$this->fs) {
                 $this->fs = new VaultDiskFsStorage($this->dbaccess);
             }
-            $this->fs->Select($this->id_fs);
+            $this->fs->select($this->id_fs);
         } else {
             // not implemented
             $this->fs = new VaultDiskFsCache($this->dbaccess, $this->id_fs);
@@ -195,7 +195,7 @@ SQL;
         return $newId;
     }
     // --------------------------------------------------------------------
-    public function ListFiles(&$list)
+    public function listFiles(&$list)
     {
         // --------------------------------------------------------------------
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
@@ -204,7 +204,7 @@ SQL;
         return $fc;
     }
     
-    public function seems_utf8($Str)
+    public function seemsUtf8($Str)
     {
         return preg_match('!!u', $Str);
     }
@@ -218,7 +218,7 @@ SQL;
      * @param int $te_id_file transformation engine file result identifier
      * @return string error message (empty if OK)
      */
-    public function Store($infile, $public_access, &$idf, $fsname = "", $te_lname = "", $te_id_file = 0)
+    public function store($infile, $public_access, &$idf, $fsname = "", $te_lname = "", $te_id_file = 0)
     {
         // --------------------------------------------------------------------
         include_once("WHAT/Lib.FileMime.php");
@@ -232,15 +232,15 @@ SQL;
         $this->size = filesize($infile);
         $msg = $this->fs->SetFreeFs($this->size, $id_fs, $id_dir, $f_path, $fsname);
         if ($msg != '') {
-            $this->logger->error("Can't find free entry in vault. [reason $msg]");
+            LogManager::error("Can't find free entry in vault. [reason $msg]");
             return ($msg);
         }
         $this->id_fs = $id_fs;
         $this->id_dir = $id_dir;
         // printf("\nDIR:%s\n", $id_dir);
         $this->public_access = $public_access;
-        $this->name = self::my_basename($infile);
-        if (!$this->seems_utf8($this->name)) {
+        $this->name = self::myBasename($infile);
+        if (!$this->seemsUtf8($this->name)) {
             $this->name = utf8_encode($this->name);
         }
         
@@ -252,7 +252,7 @@ SQL;
         $this->teng_lname = $te_lname;
         $this->teng_id_file = $te_id_file;
         
-        $msg = $this->Add();
+        $msg = $this->add();
         if ($msg != '') {
             return ($msg);
         }
@@ -263,11 +263,11 @@ SQL;
         $f = self::vaultfilename($f_path, $infile, $this->id_file);
         if (!@copy($infile, $f)) {
             // Free entry
-            $this->logger->error(sprintf(_("Failed to copy %s to %s"), $infile, $f));
+            LogManager::error(sprintf(_("Failed to copy %s to %s"), $infile, $f));
             return (sprintf(_("Failed to copy %s to vault"), $infile));
         }
         
-        $this->logger->debug("File $infile stored in $f");
+        LogManager::debug("File $infile stored in $f");
         return "";
     }
     protected static function vaultfilename($fspath, $name, $id)
@@ -283,7 +283,7 @@ SQL;
      * @deprecated no usage
      * @throws \Dcp\Db\Exception
      */
-    public function GetEngineObject($te_name, &$ngf)
+    public function getEngineObject($te_name, &$ngf)
     {
         if (!$this->isAffected()) {
             return _("vault file is not initialized");
@@ -303,7 +303,7 @@ SQL;
             $ngf->id_fs = $id_fs;
             $ngf->id_dir = $id_dir;
             $ngf->size = 0;
-            $err = $ngf->Add();
+            $err = $ngf->add();
             if ($err) {
                 return $err;
             }
@@ -387,7 +387,7 @@ SQL;
         return self::vaultfilename($f_path, $this->name, $this->id_file);
     }
     // --------------------------------------------------------------------
-    public function Destroy($id)
+    public function destroy($id)
     {
         // --------------------------------------------------------------------
         $msg = $this->Show($id, $inf);
@@ -425,7 +425,7 @@ SQL;
                 $err = sprintf(_("Cannot copy file %s to %s"), $infile, $path);
             } else {
                 $this->fs->select($this->id_fs);
-                $this->logger->debug("File $infile saved in $path");
+                LogManager::debug("File $infile saved in $path");
                 
                 $this->resetTEFiles();
             }
@@ -436,7 +436,7 @@ SQL;
     }
 
 
-    protected static function my_basename($p)
+    protected static function myBasename($p)
     {
         //return basename($p);
         $r = strrpos($p, "/");

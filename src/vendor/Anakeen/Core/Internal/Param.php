@@ -104,7 +104,7 @@ class Param extends DbObj
         if ($paramt->isAffected()) {
             $err = $this->Modify();
         } else {
-            $err = $this->Add();
+            $err = $this->add();
         }
         
         $otype = '';
@@ -183,8 +183,6 @@ class Param extends DbObj
             foreach ($list as $v) {
                 $out[$v["name"]] = $v["val"];
             }
-        } else {
-            $this->log->debug("$appid no constant define for this application");
         }
         return ($out);
     }

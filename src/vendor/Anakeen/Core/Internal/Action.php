@@ -193,7 +193,7 @@ create sequence SEQ_ID_ACTION;
         $query->Query(0, 0, "TABLE");
         if ($query->nb > 0) {
             $this->Affect($query->list[0]);
-            $this->log->debug("Set Action to {$this->name}");
+            // $this->log->debug("Set Action to {$this->name}");
         } else {
             if (empty($name)) {
                 // Accept action without explicit root action
@@ -234,19 +234,8 @@ create sequence SEQ_ID_ACTION;
         // Set the hereurl if possible
         $this->url = $this->GetParam("CORE_BASEURL") . "app=" . $this->parent->name . "&action=" . $this->name;
         // Init a log attribute
-        if ($this->user) {
-            $this->log->loghead = sprintf(
-                "%s %s [%d] - ",
-                $this->user->firstname,
-                $this->user->lastname,
-                $this->user->id
-            );
-        } else {
-            $this->log->loghead = "user not defined - ";
-        }
 
-        $this->log->function = $this->name;
-        $this->log->application = $this->parent->name;
+
         return "";
     }
 
@@ -373,28 +362,7 @@ create sequence SEQ_ID_ACTION;
         return '';
     }
 
-    /**
-     * get image url of an application
-     * shorcut to \Anakeen\Core\Internal\Application::getImageUrl
-     *
-     * @see        \Anakeen\Core\Internal\Application::getImageLink
-     *
-     * @deprecated use { @link \Anakeen\Core\Internal\Application::getImageLink } instead
-     *
-     * @param string $name        image filename
-     * @param bool   $detectstyle to use theme image instead of original
-     * @param int    $size        to use image with another width (in pixel) - null is original size
-     *
-     * @return string url to download image
-     */
-    public function getImageUrl($name, $detectstyle = true, $size = null)
-    {
-        deprecatedFunction();
-        if (isset($this->parent)) {
-            return ($this->parent->getImageLink($name, $detectstyle, $size));
-        }
-        return '';
-    }
+
 
 
     public function getImageFile($name)
@@ -663,10 +631,9 @@ create sequence SEQ_ID_ACTION;
 
         if ($this->id > 0) {
             global $QUERY_STRING;
-            $this->log->info("{$this->parent->name}:{$this->name} [" . substr($QUERY_STRING, 48) . "]");
+            // $this->log->info("{$this->parent->name}:{$this->name} [" . substr($QUERY_STRING, 48) . "]");
         }
 
-        $this->log->push("{$this->parent->name}:{$this->name}");
         $appDir = $this->parent->rootdir;
         if ($this->layout != "") {
             $layout = $this->GetLayoutFile($this->layout);
@@ -685,10 +652,10 @@ create sequence SEQ_ID_ACTION;
                 $call = $this->function;
                 $call($this);
             } else {
-                $this->log->debug("$script does not exist");
+                // $this->log->debug("$script does not exist");
             }
         } else {
-            $this->log->debug("No script provided : No script called");
+            // $this->log->debug("No script provided : No script called");
         }
         // Is there any error messages
         $err = $this->Read($this->parent->name . "_ERROR", "");
@@ -700,7 +667,6 @@ create sequence SEQ_ID_ACTION;
         }
 
         $out = $this->lay->gen();
-        $this->log->pop();
 
         return ($out);
     }
@@ -781,7 +747,7 @@ create sequence SEQ_ID_ACTION;
     public function Init($app, $action_desc, $update = false)
     {
         if (sizeof($action_desc) == 0) {
-            $this->log->info("No action available");
+            // $this->log->info("No action available");
             return ("");
         }
         $father[0] = "";
@@ -833,11 +799,11 @@ create sequence SEQ_ID_ACTION;
 
             $action->father = $father[$action->level];
             if ($action->Exists($node["name"], $app->id)) {
-                $this->log->info("Update Action " . $node["name"]);
+                // $this->log->info("Update Action " . $node["name"]);
                 $action->Modify();
             } else {
-                $action->Add();
-                $this->log->info("Create Action " . $node["name"]);
+                $action->add();
+                // $this->log->info("Create Action " . $node["name"]);
             }
             $father[$action->level + 1] = $action->id;
         }
@@ -862,7 +828,7 @@ create sequence SEQ_ID_ACTION;
                 }
                 if (!$find) {
                     // remove the action
-                    $this->log->info("Delete Action " . $act->name);
+                    // $this->log->info("Delete Action " . $act->name);
                     $act->Delete();
                 }
             }
@@ -905,65 +871,11 @@ create sequence SEQ_ID_ACTION;
         return _($code);
     }
 
-    /**
-     * log with debug level
-     *
-     * @see \Anakeen\Core\Internal\Log
-     *
-     * @param string $msg message text
-     */
-    public function debug($msg)
-    {
-        $this->log->debug($msg);
-    }
 
-    /**
-     * log with info level
-     *
-     * @see \Anakeen\Core\Internal\Log
-     *
-     * @param string $msg message text
-     */
-    public function info($msg)
-    {
-        $this->log->info($msg);
-    }
 
-    /**
-     * log with warning level
-     *
-     * @see \Anakeen\Core\Internal\Log
-     *
-     * @param string $msg message text
-     */
-    public function warning($msg)
-    {
-        $this->log->warning($msg);
-    }
 
-    /**
-     * log with error level
-     *
-     * @see \Anakeen\Core\Internal\Log
-     *
-     * @param string $msg message text
-     */
-    public function error($msg)
-    {
-        $this->log->error($msg);
-    }
 
-    /**
-     * log with fatal level
-     *
-     * @see \Anakeen\Core\Internal\Log
-     *
-     * @param string $msg message text
-     */
-    public function fatal($msg)
-    {
-        $this->log->fatal($msg);
-    }
+
 
     /**
      * verify if an application is really installed in localhost

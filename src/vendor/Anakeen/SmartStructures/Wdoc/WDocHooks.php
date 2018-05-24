@@ -335,7 +335,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
             // --------------------------
             // profil id
@@ -359,7 +359,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
             // --------------------------
             // mask id
@@ -384,7 +384,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
             // --------------------------
             // state color
@@ -407,7 +407,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
             // --------------------------
             // CV link
@@ -432,7 +432,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
             // --------------------------
             // Mail template link
@@ -458,7 +458,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
             // --------------------------
             //  Timer link
@@ -482,7 +482,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
             // --------------------------
             //  Ask link
@@ -506,7 +506,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
             // --------------------------
             // Label action
@@ -535,7 +535,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
             // --------------------------
             //  Affected user link
@@ -556,7 +556,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
             
             $aid = $this->_Aid("_AFFECTTYPE", $state);
@@ -581,7 +581,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
             
             $aid = $this->_Aid("_AFFECTREF", $state);
@@ -603,7 +603,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
             
             $aid = $this->_Aid("_AFFECTLOCK", $state);
@@ -624,7 +624,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
             
             $aid = $this->_Aid("_AFFECTMAIL", $state);
@@ -645,7 +645,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
         }
         
@@ -670,7 +670,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
             // --------------------------
             // Mail template link
@@ -695,7 +695,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
             // --------------------------
             // Timer link
@@ -720,7 +720,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
             // --------------------------
             // Persistent Attach Timer link
@@ -745,7 +745,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
             // --------------------------
             // Persistent UnAttach Timer link
@@ -769,7 +769,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
-                $oattr->Add();
+                $oattr->add();
             }
         }
         \Anakeen\Core\DbManager::setMasterLock(false);
@@ -1108,18 +1108,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         }
         return $def;
     }
-    /**
-     * get action (localized language)
-     * @deprecated use getActivity instead
-     * @param string $state the state
-     * @param string $def default value if not set
-     * @return string the text of action
-     */
-    public function getAction($state, $def = "")
-    {
-        deprecatedFunction();
-        return $this->getActivity($state, $def);
-    }
+
 
 
     /**
@@ -1309,7 +1298,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $pdoc = createDoc($this->dbaccess, $this->fromid, false);
                 $pdoc->doctype = "T"; // temporary
                 //	$pdoc->setValue("DPDOC_FAMID",$this->getRawValue("DPDOC_FAMID"));
-                $err = $pdoc->Add();
+                $err = $pdoc->add();
                 if ($err != "") {
                     return "WDoc::Control:" . $err;
                 } // can't create profil

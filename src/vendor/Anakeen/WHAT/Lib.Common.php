@@ -43,18 +43,7 @@ function AddLogMsg($msg, $cut = 80)
     \Anakeen\Core\Utils\System::addLogMsg($msg);
 }
 
-/**
- * send a message to system log
- *
- * @param string $msg
- */
-function deprecatedFunction($msg = '')
-{
-    global $action;
-    if (isset($action->parent)) {
-        $action->parent->log->deprecated("Deprecated : " . $msg);
-    }
-}
+
 
 /**
  * send a warning msg to the user interface

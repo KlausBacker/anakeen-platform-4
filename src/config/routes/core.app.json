@@ -12,9 +12,10 @@
                     "global": true
                 },
                 "CORE_LOGLEVEL": {
-                    "value": "WEF",
-                    "description": "Core Log Level",
+                    "value": "INFO",
+                    "description": "Minimum Core Log Level !",
                     "access": "admin",
+                    "type": "enum(ERROR|WARNING|INFO|NOTICE|DEBUG)",
                     "global": true
                 },
                 "CORE_TMPDIR": {

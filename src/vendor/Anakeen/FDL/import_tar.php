@@ -216,7 +216,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                         if (!$analyze) {
                             $newdir->Init();
                             $newdir->setTitle($file);
-                            $err = $newdir->Add();
+                            $err = $newdir->add();
                             if ($err != "") {
                                 $tr[$index]["action"] = "Not added";
                             } else {

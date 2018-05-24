@@ -121,21 +121,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
         return '';
     }
 
-    /**
-     * hook method use after insert multiple document in this folder
-     * must be redefined to optimize algorithm
-     *
-     * @deprecated hook use {@Dir::postInsertMultipleDocuments} instead
-     *
-     * @param array $tdocid array of document identifier to insert
-     *
-     * @return string warning message
-     */
-    public function postMInsertDoc($tdocid)
-    {
-        deprecatedFunction("hook");
-        return $this->postInsertMultipleDocuments($tdocid);
-    }
+
 
     /**
      * hook method use after unlink document in folder
@@ -243,7 +229,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
                 return sprintf(_("Cannot add %s in %s folder, restriction set to add this kind of document"), $doc->title, $this->title);
             }
 
-            $err = $qf->Add();
+            $err = $qf->add();
             if ($err == "") {
                 \Anakeen\Core\Utils\System::addLogMsg(sprintf(_("Add %s in %s folder"), $doc->title, $this->title));
                 $this->addHistoryEntry(sprintf(_("Document %s inserted"), $doc->title));
@@ -403,7 +389,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
                 }
 
                 if ($insertOne == "") {
-                    $insertOne = $qf->Add();
+                    $insertOne = $qf->add();
                     if ($insertOne == "") {
                         \Anakeen\Core\Utils\System::addLogMsg(sprintf(_("Add %s in %s folder"), $tdoc["title"], $this->title));
                         $this->addHistoryEntry(sprintf(_("Document %s inserted"), $tdoc["title"]), \DocHisto::INFO, "MODCONTAIN");
@@ -482,7 +468,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             $tcopy[$docid]["childid"] = $docid;
         }
 
-        $err = $qf->Adds($tcopy, true);
+        $err = $qf->adds($tcopy, true);
         $this->updateFldRelations();
 
         return $err;

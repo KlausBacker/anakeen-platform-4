@@ -11,6 +11,10 @@
               <option name="patterns">
                 <list>
                   <Item>
+                    <option name="path" value="../Ui/anakeen-ui/src/config/routes" />
+                    <option name="directory" value="true" />
+                  </Item>
+                  <Item>
                     <option name="path" value="src/config/routes" />
                     <option name="directory" value="true" />
                   </Item>

@@ -3,6 +3,7 @@
 namespace Anakeen\Core\Internal;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\LogManager;
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -86,10 +87,7 @@ class DbObj
     public $debug = false;
     public $sqlcreate;
     public $sqlinit;
-    /**
-     * @var \Anakeen\Core\Internal\Log DbObj Log Object
-     */
-    public $log;
+
     private $selectstring;
     //----------------------------------------------------------------------------
 
@@ -110,9 +108,7 @@ class DbObj
             $dbaccess = \Anakeen\Core\DbManager::getDbAccess();
         }
         $this->dbaccess = $dbaccess;
-        $this->init_dbid();
-        //global ${$this->oname};
-        $this->log = new \Anakeen\Core\Internal\Log("", "DbObj", $this->dbtable);
+        $this->initDbid();
 
         if ($this->dbid == 0) {
             $this->dbid = -1;
@@ -137,7 +133,7 @@ class DbObj
         }
         // select with the id
         if (($id != '') || (is_array($id)) || (!isset($this->id_fields[0]))) {
-            $ret = $this->Select($id);
+            $ret = $this->select($id);
 
             return ($ret);
         }
@@ -157,7 +153,7 @@ class DbObj
      *
      * @return bool|string
      */
-    public function Select($id)
+    public function select($id)
     {
         if (!$id) {
             return false;
@@ -446,7 +442,7 @@ class DbObj
      * @see PreInsert()
      * @see PostInsert()
      */
-    public function Add($nopost = false, $nopre = false)
+    public function add($nopost = false, $nopre = false)
     {
         if ($this->dbid == -1) {
             return false;
@@ -602,7 +598,7 @@ class DbObj
      * @see PreInsert()
      * @see PostInsert()
      */
-    public function Adds(&$tcopy, $nopost = false)
+    public function adds(&$tcopy, $nopost = false)
     {
         if ($this->dbid == -1) {
             return false;
@@ -633,19 +629,15 @@ class DbObj
         return $msg;
     }
 
-    public function lw($prop)
+    private function lw($prop)
     {
         $result = (($prop == '') && ($prop !== 0)) ? "null" : "E'" . pg_escape_string($prop) . "'";
         return $result;
     }
 
-    public function CloseConnect()
-    {
-        pg_close("$this->dbid");
-        return true;
-    }
 
-    public function Create($nopost = false)
+
+    public function create($nopost = false)
     {
         $msg = "";
         if (isset($this->sqlcreate)) {
@@ -660,14 +652,14 @@ class DbObj
                     $msg .= $this->exec_query($sqlquery, 1);
                 }
             }
-            $this->log->debug("DbObj::Create : " . print_r($this->sqlcreate, true));
+            LogManager::debug("DbObj::Create : " . print_r($this->sqlcreate, true));
         }
         if (isset($this->sqlinit)) {
             $msg = $this->exec_query($this->sqlinit, 1);
-            $this->log->debug("Init : {$this->sqlinit}");
+            LogManager::debug("Init : {$this->sqlinit}");
         }
         if ($msg != '') {
-            $this->log->info("DbObj::Create $msg");
+            LogManager::info("DbObj::Create $msg");
             return $msg;
         }
         if (!$nopost) {
@@ -680,7 +672,7 @@ class DbObj
     {
     }
 
-    public function init_dbid()
+    public function initDbid()
     {
         if ($this->dbaccess == "") {
             // don't test if file exist or must be searched in include_path
@@ -725,7 +717,7 @@ class DbObj
         $originError = $this->msg_err;
         switch ($action_needed) {
             case "create":
-                $st = $this->Create();
+                $st = $this->create();
                 if ($st == "") {
                     return true;
                 } else {
@@ -781,8 +773,8 @@ class DbObj
         if ($SQLDEBUG) {
             $sqlt1 = microtime();
         } // to test delay of request
-        $this->init_dbid();
-        $this->log->debug("exec_query : $sql");
+        $this->initDbid();
+        LogManager::debug("exec_query : $sql");
         $this->msg_err = $this->err_code = '';
         if ($prepare) {
             if (pg_send_prepare($this->dbid, '', $sql) === false) {
@@ -842,8 +834,8 @@ class DbObj
             }
         }
         if ($this->msg_err != "") {
-            $this->log->warning("exec_query :" . $sql);
-            $this->log->warning("PostgreSQL Error : " . $this->msg_err);
+            LogManager::warning("exec_query :" . $sql);
+            LogManager::warning("PostgreSQL Error : " . $this->msg_err);
             //trigger_error('<pre>'.$this->msg_err."\n".$sql.'</pre>');
             // throw new Exception($this->msg_err);
             $this->setError($sql);
@@ -861,7 +853,7 @@ class DbObj
                     "\nfrom",
                     "\nwhere"
                 ), $sql),
-                "st" => getDebugStack(1)
+                "st" => Debug::getDebugStack(1)
             );
         }
 
@@ -908,87 +900,5 @@ class DbObj
         logDebugStack(2, $err);
     }
 
-    /**
-     * @deprecated not used now
-     * @return string
-     */
-    public function autoUpdate()
-    {
-        print $this->msg_err;
-        print (" - need update table " . $this->dbtable);
-        $this->log->error("need Update table " . $this->dbtable);
 
-        $this->log->info("Update table " . $this->dbtable);
-        // need to exec altering queries
-        $objupdate = new DbObj($this->dbaccess);
-        // ------------------------------
-        // first : save table to updated
-        $dumpfile = uniqid(ContextManager::getTmpDir() . "/" . $this->dbtable);
-        $err = $objupdate->exec_query("COPY " . $this->dbtable . "  TO '" . $dumpfile . "'");
-        $this->log->info("Dump table " . $this->dbtable . " in " . $dumpfile);
-
-        if ($err != "") {
-            return ($err);
-        }
-        // ------------------------------
-        // second : rename table to save data
-        //$err = $objupdate-> exec_query("CREATE  TABLE ".$this->dbtable."_old ( ) INHERITS (".$this->dbtable.")",1);
-        //$err = $objupdate-> exec_query("COPY ".$this->dbtable."_old FROM '".$dumpfile."'",				1 );
-        $err = $objupdate->exec_query("ALTER TABLE " . $this->dbtable . " RENAME TO " . $this->dbtable . "_old", 1);
-
-        if ($err != "") {
-            return ($err);
-        }
-        // remove index : will be recreated in the following step (create)
-        $this->exec_query("select indexname from pg_indexes where tablename='" . $this->dbtable . "_old'", 1);
-        $nbidx = $this->numrows();
-        for ($c = 0; $c < $nbidx; $c++) {
-            $row = $this->fetch_array($c, PGSQL_ASSOC);
-            $objupdate->exec_query("DROP INDEX " . $row["indexname"], 1);
-        }
-        // --------------------------------------------
-        // third : Create new table with new attributes
-        $this->Create(true);
-        // ---------------------------------------------------
-        // 4th : copy compatible data from old table to new table
-        $first = true;
-        $fields = '';
-        $this->exec_query("SELECT * FROM " . $this->dbtable . "_old");
-        $nbold = $this->numrows();
-        for ($c = 0; $c < $nbold; $c++) {
-            $row = $this->fetch_array($c, PGSQL_ASSOC);
-
-            if ($first) {
-                // compute compatible fields
-                $inter_fields = array_intersect(array_keys($row), $this->fields);
-                reset($this->fields);
-                $fields = "(";
-                foreach ($inter_fields as $k => $v) {
-                    $fields .= $v . ",";
-                }
-                $fields = substr($fields, 0, strlen($fields) - 1); // remove last comma
-                $fields .= ")";
-                $first = false;
-            }
-            // compute compatible values
-            $values = "(";
-            reset($inter_fields);
-            foreach ($inter_fields as $k => $v) {
-                $values .= "E'" . pg_escape_string($row[$v]) . "',";
-            }
-            $values = substr($values, 0, strlen($values) - 1); // remove last comma
-            $values .= ")";
-            // copy compatible values
-            $sqlInsert = sprintf("INSERT INTO %s %s VALUES ", $this->dbtable, $fields, $values);
-            $err = $objupdate->exec_query($sqlInsert, 1);
-            if ($err != "") {
-                return ($err);
-            }
-        }
-        // ---------------------------------------------------
-        // 5th :delete old table (has been saved before - dump file)
-        $err = $objupdate->exec_query("DROP TABLE " . $this->dbtable . "_old", 1);
-
-        return ($err);
-    }
 }

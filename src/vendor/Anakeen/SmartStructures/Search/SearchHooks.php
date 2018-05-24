@@ -60,7 +60,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
     {
         $err = '';
         if (!$this->getRawValue("se_author")) {
-            $err = $this->setValue("se_author", $this->getUserId());
+            $err = $this->setValue("se_author", ContextManager::getCurrentUser()->fid);
         }
         return $err;
     }
@@ -104,7 +104,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
         if ($this->id > 0) {
             $this->exec_query("delete from fld where dirid=" . intval($this->id) . " and qtype='M'");
         }
-        $err = $oqd->Add();
+        $err = $oqd->add();
         if ($err == "") {
             $this->setValue("SE_SQLSELECT", $query);
             $err = $this->modify();

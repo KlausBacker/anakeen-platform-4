@@ -3,6 +3,7 @@
 namespace Anakeen\Core\Internal;
 
 use Anakeen\Core\DbManager;
+use Anakeen\LogManager;
 
 /**
  * Application manager
@@ -198,7 +199,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function set($name, &$parent, $session = "", $autoinit = false, $verifyAvailable = true)
     {
-        $this->log->debug("Entering : Set application to $name");
+        LogManager::debug("Entering : Set application to $name");
 
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->order_by = "";
@@ -208,9 +209,9 @@ create sequence SEQ_ID_APPLICATION start 10;
         $list = $query->Query(0, 0, "TABLE");
         if ($query->nb != 0) {
             $this->affect($list[0]);
-            $this->log->debug("Set application to $name");
+            LogManager::debug("Set application to $name");
             if (!isset($parent)) {
-                $this->log->debug("Parent not set");
+                LogManager::debug("Parent not set");
             }
         } else {
             if ($autoinit) {
@@ -290,10 +291,10 @@ create sequence SEQ_ID_APPLICATION start 10;
         // Set the user if possible
         if (is_object($this->session)) {
             if ($this->session->userid != 0) {
-                $this->log->debug("Get user on " . $this->dbaccess);
+                LogManager::debug("Get user on " . $this->dbaccess);
                 $this->user = new \Anakeen\Core\Account($this->dbaccess, $this->session->userid);
             } else {
-                $this->log->debug("User not set ");
+                LogManager::debug("User not set ");
             }
         }
     }
@@ -334,7 +335,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function exists($app_name, $id_application = 0)
     {
-        $this->log->debug("Exists $app_name ?");
+        LogManager::debug("Exists $app_name ?");
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->order_by = "";
         $query->criteria = "";
@@ -424,7 +425,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             return $ref;
         }
         /* TODO : update with application log class */
-        $this->log->error(__METHOD__ . " Unable to identify the ref $ref");
+        LogManager::error(__METHOD__ . " Unable to identify the ref $ref");
 
         return '';
     }
@@ -453,7 +454,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         if (!$resourceLocation) {
             $wng = sprintf(_("Cannot find %s resource file"), $ref);
             $this->addLogMsg($wng);
-            $this->log->warning($wng);
+            LogManager::warning($wng);
             $resourceLocation = sprintf("Ressource %s not found", $ref);
         }
 
@@ -561,7 +562,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         if (!$rl) {
             $msg = sprintf(_("Cannot find %s resource file"), $ref);
             $this->addLogMsg($msg);
-            $this->log->warning($msg);
+            LogManager::warning($msg);
         }
         return $rl;
     }
@@ -586,7 +587,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         if (!$rl) {
             $msg = sprintf(_("Cannot find %s resource file"), $ref);
             $this->addLogMsg($msg);
-            $this->log->warning($msg);
+            LogManager::warning($msg);
         }
         return $rl;
     }
@@ -627,7 +628,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 }
                 $parseOnLoad = true;
                 if ((null !== $needparse) && ($parseOnLoad !== $needparse)) {
-                    $this->log->warning(sprintf(
+                    LogManager::warning(sprintf(
                         "%s was added with needParse to %s but style has a rule saying %s",
                         $ref,
                         var_export($needparse, true),
@@ -785,11 +786,11 @@ create sequence SEQ_ID_APPLICATION start 10;
                     $logmsg[] = strftime("%H:%M - ") . str_replace("\n", "\\n", (($cut > 0) ? mb_substr($code, 0, $cut) : $code));
                 }
                 $this->session->register("logmsg", $logmsg);
-                $suser = sprintf("%s %s [%d] - ", $this->user->firstname, $this->user->lastname, $this->user->id);
+
                 if (is_array($code)) {
                     $code = print_r($code, true);
                 }
-                $this->log->info($suser . $code);
+                LogManager::info($code);
             } else {
                 error_log($code);
             }
@@ -896,7 +897,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             return true;
         }
         if (!isset($this->user) || !is_object($this->user)) {
-            $this->log->warning("Action {$this->parent->name}:{$this->name} requires authentification");
+            LogManager::warning("Action {$this->parent->name}:{$this->name} requires authentification");
             return false;
         }
         if ($this->user->id == 1) {
@@ -905,7 +906,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         if ($app_name == "") {
             $acl = new \Acl($this->dbaccess);
             if (!$acl->Set($acl_name, $this->id)) {
-                $this->log->warning("Acl $acl_name not available for App $this->name");
+                LogManager::warning("Acl $acl_name not available for App $this->name");
                 return false;
             }
             if (!$this->permission) {
@@ -938,7 +939,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             if ($wperm->isAffected()) {
                 $acl = new \Acl($this->dbaccess);
                 if (!$acl->Set($acl_name, $appid)) {
-                    $this->log->warning("Acl $acl_name not available for App $this->name");
+                    LogManager::warning("Acl $acl_name not available for App $this->name");
                     return false;
                 } else {
                     return ($wperm->HasPrivilege($acl->id, $strict));
@@ -1087,25 +1088,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         return $this->noimage;
     }
 
-    /**
-     * get image url of an application
-     * can also get another image by search in Images general directory
-     *
-     * @see        \Anakeen\Core\Internal\Application::getImageLink
-     *
-     * @deprecated use { @link \Anakeen\Core\Internal\Application::getImageLink } instead
-     *
-     * @param string $img         image filename
-     * @param bool   $detectstyle to use theme image instead of original
-     * @param int    $size        to use image with another width (in pixel) - null is original size
-     *
-     * @return string url to download image
-     */
-    public function getImageUrl($img, $detectstyle = true, $size = null)
-    {
-        deprecatedFunction();
-        return $this->getImageLink($img, $detectstyle, $size);
-    }
+
 
 
     /**
@@ -1259,7 +1242,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                     }
                 }
             } else {
-                $pdef->Add();
+                $pdef->add();
             }
         }
     }
@@ -1357,7 +1340,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      */
     public function initApp($name, $update = false)
     {
-        $this->log->info("Init : $name");
+        LogManager::info("Init : $name");
 
         $appFilePath = sprintf("%s/%s/%s.app", $this->rootdir, $name, $name);
         if (file_exists($appFilePath)) {
@@ -1371,7 +1354,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             $action_desc_ini = $action_desc;
             if (sizeof($app_desc) > 0) {
                 if (!$update) {
-                    $this->log->debug("InitApp :  new \application ");
+                    LogManager::debug("InitApp :  new \application ");
                 }
                 if ($update) {
                     foreach ($app_desc as $k => $v) {
@@ -1393,13 +1376,13 @@ create sequence SEQ_ID_APPLICATION start 10;
                     if ($this->isAffected()) {
                         $this->modify();
                     } else {
-                        $this->Add();
+                        $this->add();
                     }
                     $this->param = new \Anakeen\Core\Internal\Param();
                     $this->param->SetKey($this->id, isset($this->user->id) ? $this->user->id : \Anakeen\Core\Account::ANONYMOUS_ID);
                 }
             } else {
-                $this->log->info("can't init $name");
+                LogManager::info("can't init $name");
                 return false;
             }
 
@@ -1427,7 +1410,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                     pg_escape_string($this->childof),
                     pg_escape_string($this->name)
                 ));
-                $this->log->info(sprintf("Update Actions from %s parent", $this->childof));
+                LogManager::info(sprintf("Update Actions from %s parent", $this->childof));
                 $err = $this->_initACLWithGroupDefault();
                 if ($err != '') {
                     return false;
@@ -1490,7 +1473,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
             $this->updateChildApplications();
         } else {
-            $this->log->info("No {$name}/{$name}.app available");
+            LogManager::info("No {$name}/{$name}.app available");
             throw new \Dcp\Exception("CORE0015", $appFilePath);
         }
         return true;
@@ -1565,7 +1548,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         $acl = new \Acl($this->dbaccess);
         $acl->DelAppAcl($this->id);
         // delete actions
-        $this->log->debug("Delete {$this->name}");
+        LogManager::debug("Delete {$this->name}");
         $query = new \Anakeen\Core\Internal\QueryDb("", Action::class);
         $query->basic_elem->sup_where = array(
             "id_application = {$this->id}"
@@ -1577,7 +1560,7 @@ create sequence SEQ_ID_APPLICATION start 10;
              * @var \Anakeen\Core\Internal\Action $v
              */
             foreach ($list as $v) {
-                $this->log->debug(" Delete action {$v->name} ");
+                LogManager::debug(" Delete action {$v->name} ");
                 $err = $v->Delete();
                 if ($err != '') {
                     return $err;
@@ -1637,7 +1620,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             foreach ($privileges as $aclid) {
                 $permission->id_acl = $aclid;
                 if (($permission->id_acl > 0) && (!$permission->Exists($permission->id_user, $v->id))) {
-                    $permission->Add();
+                    $permission->add();
                 }
             }
         }
@@ -1692,7 +1675,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 'id_application' => $this->id,
                 'id_acl' => $acl['id']
             ));
-            $err = $permission->Add();
+            $err = $permission->add();
             if ($err != '') {
                 return $err;
             }

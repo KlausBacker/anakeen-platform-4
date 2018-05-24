@@ -130,21 +130,7 @@ class ApiUsage
         return $err;
     }
 
-    /**
-     * add textual definition of program
-     *
-     * @see        setDefinitionText
-     *
-     * @param string $text usage text
-     *
-     * @deprecated use { @link \Anakeen\Script\ApiUsage::setDefinitionText } instead
-     * @return void setText
-     */
-    public function setText($text)
-    {
-        deprecatedFunction();
-        $this->setDefinitionText($text);
-    }
+
 
     /**
      * add textual definition of program
@@ -160,23 +146,7 @@ class ApiUsage
         $this->text = $text;
     }
 
-    /**
-     * add hidden argument (private arg not see them in usage)
-     *
-     * @see        \Anakeen\Script\ApiUsage::addHiddenParameter
-     *
-     * @deprecated use { @link \Anakeen\Script\ApiUsage::addHiddenParameter } instead
-     *
-     * @param string $argName       argument name
-     * @param string $argDefinition argument définition
-     *
-     * @return string argument value
-     */
-    public function addHidden($argName, $argDefinition)
-    {
-        deprecatedFunction();
-        return $this->addHiddenParameter($argName, $argDefinition);
-    }
+
 
     /**
      * add hidden argument (private arg not see them in usage)
@@ -197,24 +167,7 @@ class ApiUsage
         return $this->getArgumentValue($argName);
     }
 
-    /**
-     * add needed argument
-     *
-     * @see        \Anakeen\Script\ApiUsage::addRequiredParameter
-     *
-     * @deprecated use { @link \Anakeen\Script\ApiUsage::addRequiredParameter } instead
-     *
-     * @param string $argName       argument name
-     * @param string $argDefinition argument définition
-     * @param array  $restriction   optional enumeration for argument
-     *
-     * @return string argument value
-     */
-    public function addNeeded($argName, $argDefinition, array $restriction = null)
-    {
-        deprecatedFunction();
-        return $this->addRequiredParameter($argName, $argDefinition, $restriction);
-    }
+
 
     /**
      * add needed argument
@@ -238,25 +191,6 @@ class ApiUsage
         return $this->getArgumentValue($argName);
     }
 
-    /**
-     * add optional argument
-     *
-     * @see        \Anakeen\Script\ApiUsage::addOptionParameter
-     *
-     * @deprecated use { @link \Anakeen\Script\ApiUsage::addOptionParameter } instead
-     *
-     * @param string $argName       argument name
-     * @param string $argDefinition argument définition
-     * @param array  $restriction   optional enumeration for argument
-     * @param string $default       default value if no value set
-     *
-     * @return string argument value
-     */
-    public function addOption($argName, $argDefinition, array $restriction = null, $default = null)
-    {
-        deprecatedFunction();
-        return $this->addOptionalParameter($argName, $argDefinition, $restriction, $default);
-    }
 
     /**
      * add optional argument
@@ -281,23 +215,7 @@ class ApiUsage
         return $this->getArgumentValue($argName, $default);
     }
 
-    /**
-     * add empty argument (argument with boolean value)
-     *
-     * @see        \Anakeen\Script\ApiUsage::addEmptyParameter
-     *
-     * @deprecated use { @link \Anakeen\Script\ApiUsage::addEmptyParameter } instead
-     *
-     * @param string $argName       argument name
-     * @param string $argDefinition argument definition
-     *
-     * @return string argument value
-     */
-    public function addEmpty($argName, $argDefinition = "")
-    {
-        deprecatedFunction();
-        return $this->addEmptyParameter($argName, $argDefinition);
-    }
+
 
     /**
      * add empty argument (argument with boolean value)
@@ -454,24 +372,7 @@ class ApiUsage
         return $keys;
     }
 
-    /**
-     * set strict mode
-     *
-     * @see        \Anakeen\Script\ApiUsage::setStrictMode
-     *
-     * @deprecated use { @link \Anakeen\Core\Internal\Application::setStrictMode } instead
-     *
-     * @param boolean $strict strict mode
-     *
-     * @brief      if false additionnal arguments are ignored, default is true
-     *
-     * @return void
-     */
-    public function strict($strict = true)
-    {
-        deprecatedFunction();
-        $this->setStrictMode($strict);
-    }
+
 
     /**
      * set strict mode

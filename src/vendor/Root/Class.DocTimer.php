@@ -251,7 +251,7 @@ create table doctimer ( id serial,
                         $this->result = '';
                         $this->tododate = $act["execdate"];
                         $this->actions = serialize($act["actions"]);
-                        $err = $this->Add();
+                        $err = $this->add();
                     }
                 }
             }

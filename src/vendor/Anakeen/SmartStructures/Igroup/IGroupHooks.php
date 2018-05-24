@@ -228,7 +228,7 @@ class IGroupHooks extends \SmartStructure\Group
                         $g = new \Group("", $uid);
                         $g->iduser = $uid;
                         $g->idgroup = $gid;
-                        $err = $g->Add();
+                        $err = $g->add();
                         if ($err == "OK") {
                             $err = "";
                         }
@@ -270,7 +270,7 @@ class IGroupHooks extends \SmartStructure\Group
                     if ($uid > 0) {
                         $g->iduser = $uid;
                         $g->idgroup = $gid;
-                        $err = $g->Add();
+                        $err = $g->add();
                         if ($err == "") {
                             $du->disableAccessControl();
                             $du->RefreshDocUser();

@@ -32,7 +32,7 @@ class TestApplicationParameterManeger extends TestCaseDcpApplication
         $appTest = new \Anakeen\Core\Internal\Application(self::$dbaccess);
         $appTest->name = self::appName;
         $appTest->childof = 'TST_PARAMETER_MANAGER';
-        $err = $appTest->Add();
+        $err = $appTest->add();
 
         $this->assertEmpty($err, "Cannot create application : $err");
         $parent = null;

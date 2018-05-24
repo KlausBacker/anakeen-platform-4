@@ -19,31 +19,7 @@ function newFreeVaultFile($dbaccess)
     return new VaultFile($dbaccess, "FREEDOM");
 }
 
-/**
- * convert French date to iso8601
- * @param string $fdate DD/MM/YYYY HH:MM:SS (CET)
- * @param string $wtz with timezone add time zone in the end if true
- * @return string date YYYY-MM-DD HH:MM:SS
- * @deprecated use stringDateToIso() instead
- */
-function toIso8601($fdate, $wtz = false)
-{
-    deprecatedFunction();
-    $isoDate = "";
-    $tz = "";
-    if (preg_match("/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s(\d\d)?:?(\d\d)?:?(\d\d)?\s+?(\w+)?$/", $fdate, $reg)) {
-        $isoDate = sprintf("%04d-%02d-%02d %02d:%02d:%02d", $reg[3], $reg[2], $reg[1], $reg[4], $reg[5], $reg[6]);
-        if ($reg[8] != "") {
-            $tz = $reg[7];
-        }
-    }
-    // ISO 8601
-    if ($wtz && $tz) {
-        $isoDate.= " " . $tz;
-    }
-    
-    return $isoDate;
-}
+
 
 function StringDateToJD($sdate)
 {

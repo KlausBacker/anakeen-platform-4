@@ -5,71 +5,76 @@
 */
 
 namespace Dcp\Pu;
+
+use Anakeen\Core\ContextManager;
+
 /**
- * @author Anakeen
+ * @author  Anakeen
  * @package Dcp\Pu
  */
-
 //require_once 'PU_testcase_dcp_document.php';
 
 class TestTag extends TestCaseDcpDocument
 {
     protected static $outputDir;
-    
+
     protected function setUp()
     {
         $err = simpleQuery(self::$dbaccess, "savepoint z", $r);
     }
-    
+
     protected function tearDown()
     {
         $err = simpleQuery(self::$dbaccess, "rollback to savepoint z", $r);
     }
-    
+
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        
+
         self::connectUser();
         self::beginTransaction();
-        
+
         self::importDocument("testTag.ods");
     }
+
     public static function tearDownAfterClass()
     {
         self::rollbackTransaction();
     }
+
     /**
      * @dataProvider dataTags
      */
     public function testAddUTag($docName, $login, $otherLogin, $tag, $value)
     {
         $this->resetDocumentCache();
-        
+
         $this->sudo($login);
         $df = new_doc(self::$dbaccess, $docName);
-        $this->assertTrue($df->isAlive() , "document $docName is not alive");
-        $err = $df->addUTag(\Anakeen\Core\Internal\SmartElement::getSystemUserId() , $tag, $value);
+        $this->assertTrue($df->isAlive(), "document $docName is not alive");
+        $err = $df->addUTag(ContextManager::getCurrentUser()->id, $tag, $value);
         $this->assertEmpty($err, sprintf("utag error"));
-        
+
         $utag = $df->getUTag($tag);
-        
+
         $this->assertTrue($utag !== false, sprintf("utag %s not retrieved", $tag));
         $this->assertEquals($value, $utag->comment);
-        
+
         $this->exitSudo();
         // test it is only for login not aoth people
         $this->sudo($otherLogin);
-        
+
         $this->resetDocumentCache();
         $df = new_doc(self::$dbaccess, $docName);
-        $this->assertTrue($df->isAlive() , "document $docName is not alive");
+        $this->assertTrue($df->isAlive(), "document $docName is not alive");
         $utag = $df->getUTag($tag);
-        
+
         $this->assertTrue($utag === false, sprintf("utag %s of other user is retrieved", $tag));
-        
+
         $this->exitSudo();
     }
+
     /**
      *
      * @dataProvider dataTags
@@ -78,23 +83,24 @@ class TestTag extends TestCaseDcpDocument
     public function testChangeUTag($docName, $login, $otherLogin, $tag, $value)
     {
         $this->resetDocumentCache();
-        
+
         $this->sudo($login);
         $df = new_doc(self::$dbaccess, $docName);
-        $this->assertTrue($df->isAlive() , "document $docName is not alive");
-        $err = $df->addUTag(\Anakeen\Core\Internal\SmartElement::getSystemUserId() , $tag, "__first__");
+        $this->assertTrue($df->isAlive(), "document $docName is not alive");
+        $err = $df->addUTag(ContextManager::getCurrentUser()->id, $tag, "__first__");
         $this->assertEmpty($err, sprintf("utag error"));
-        
-        $err = $df->addUTag(\Anakeen\Core\Internal\SmartElement::getSystemUserId() , $tag, $value);
+
+        $err = $df->addUTag(ContextManager::getCurrentUser()->id, $tag, $value);
         $this->assertEmpty($err, sprintf("utag error"));
-        
+
         $utag = $df->getUTag($tag);
-        
+
         $this->assertTrue($utag !== false, sprintf("utag %s not retrieved", $tag));
         $this->assertEquals($value, $utag->comment);
-        
+
         $this->exitSudo();
     }
+
     /**
      *
      * @dataProvider dataTags
@@ -103,26 +109,27 @@ class TestTag extends TestCaseDcpDocument
     public function testDelUTag($docName, $login, $otherLogin, $tag, $value)
     {
         $this->resetDocumentCache();
-        
+
         $this->sudo($login);
         $df = new_doc(self::$dbaccess, $docName);
-        $this->assertTrue($df->isAlive() , "document $docName is not alive");
-        $err = $df->addUTag(\Anakeen\Core\Internal\SmartElement::getSystemUserId() , $tag, $value);
+        $this->assertTrue($df->isAlive(), "document $docName is not alive");
+        $err = $df->addUTag(ContextManager::getCurrentUser()->id, $tag, $value);
         $this->assertEmpty($err, sprintf("utag error"));
-        
+
         $utag = $df->getUTag($tag);
-        
+
         $this->assertTrue($utag !== false, sprintf("utag %s not retrieved", $tag));
         $this->assertEquals($value, $utag->comment);
-        
-        $err = $df->delUTag(\Anakeen\Core\Internal\SmartElement::getSystemUserId() , $tag);
+
+        $err = $df->delUTag(ContextManager::getCurrentUser()->id, $tag);
         $this->assertEmpty($err, sprintf("utag del error"));
         $utag = $df->getUTag($tag);
-        
+
         $this->assertTrue($utag === false, sprintf("utag %s not deleted", $tag));
-        
+
         $this->exitSudo();
     }
+
     /**
      *
      * @dataProvider dataTags
@@ -131,73 +138,75 @@ class TestTag extends TestCaseDcpDocument
     public function testDelUTags($docName, $login, $otherLogin, $tag, $value)
     {
         $this->resetDocumentCache();
-        
+
         $this->sudo($login);
         $df = new_doc(self::$dbaccess, $docName);
-        $this->assertTrue($df->isAlive() , "document $docName is not alive");
-        $err = $df->addUTag(\Anakeen\Core\Internal\SmartElement::getSystemUserId() , $tag, $value);
+        $this->assertTrue($df->isAlive(), "document $docName is not alive");
+        $err = $df->addUTag(ContextManager::getCurrentUser()->id, $tag, $value);
         $this->assertEmpty($err, sprintf("utag error"));
-        
+
         $utag = $df->getUTag($tag);
-        
+
         $this->assertTrue($utag !== false, sprintf("utag %s not retrieved", $tag));
         $this->assertEquals($value, $utag->comment);
-        
-        $err = $df->delUTags(\Anakeen\Core\Internal\SmartElement::getSystemUserId());
+
+        $err = $df->delUTags(ContextManager::getCurrentUser()->id);
         $this->assertEmpty($err, sprintf("utag del error"));
         $utag = $df->getUTag($tag);
-        
+
         $this->assertTrue($utag === false, sprintf("utag %s not deleted", $tag));
-        
+
         $this->exitSudo();
     }
+
     /**
      * @dataProvider dataATags
      */
     public function testAddATag($docName, array $tags)
     {
         $this->resetDocumentCache();
-        
+
         $df = new_doc(self::$dbaccess, $docName);
-        $this->assertTrue($df->isAlive() , "document $docName is not alive");
+        $this->assertTrue($df->isAlive(), "document $docName is not alive");
         foreach ($tags as $tag) {
             $err = $df->addATag($tag);
             $this->assertEmpty($err, sprintf("utag error"));
         }
-        
+
         foreach ($tags as $tag) {
             $atag = $df->getATag($tag);
-            
+
             $this->assertTrue($atag, sprintf("atag %s not retrieved : \n found [%s]", $tag, $df->atags));
         }
         // test it is only for login not aoth people
         $this->resetDocumentCache();
         $df = new_doc(self::$dbaccess, $docName);
-        $this->assertTrue($df->isAlive() , "document $docName is not alive");
+        $this->assertTrue($df->isAlive(), "document $docName is not alive");
         foreach ($tags as $tag) {
             $atag = $df->getATag($tag);
             $this->assertTrue($atag, sprintf("atag %s from new is not retrieved", $tag));
         }
     }
+
     /**
      * @dataProvider dataDeleteATag
      */
     public function testDeleteATag($docName, array $addTags, array $delTags, array $expectedTags)
     {
         $this->resetDocumentCache();
-        
+
         $df = new_doc(self::$dbaccess, $docName);
-        $this->assertTrue($df->isAlive() , "document $docName is not alive");
+        $this->assertTrue($df->isAlive(), "document $docName is not alive");
         foreach ($addTags as $tag) {
             $err = $df->addATag($tag);
             $this->assertEmpty($err, sprintf("utag error"));
         }
-        
+
         foreach ($addTags as $tag) {
             $atag = $df->getATag($tag);
             $this->assertTrue($atag, sprintf("atag %s not retrieved : \n found [%s]", $tag, $df->atags));
         }
-        
+
         foreach ($delTags as $tag) {
             $err = $df->delATag($tag);
             $this->assertEmpty($err, sprintf("utag delete error : $err"));
@@ -205,37 +214,39 @@ class TestTag extends TestCaseDcpDocument
         // test it is only for login not aoth people
         $this->resetDocumentCache();
         $df = new_doc(self::$dbaccess, $docName);
-        $this->assertTrue($df->isAlive() , "document $docName is not alive");
-        
+        $this->assertTrue($df->isAlive(), "document $docName is not alive");
+
         $nbTags = (!$df->atags) ? 0 : count(explode("\n", $df->atags));
-        $this->assertEquals(count($expectedTags) , $nbTags, sprintf(" found [%s]", $df->atags));
-        
+        $this->assertEquals(count($expectedTags), $nbTags, sprintf(" found [%s]", $df->atags));
+
         foreach ($expectedTags as $tag) {
             $atag = $df->getATag($tag);
             $this->assertTrue($atag, sprintf("atag %s from new is not retrieved", $tag));
         }
     }
+
     /**
      * @dataProvider dataAddAErrorTag
      */
     public function testAddAErrorTag($docName, $tag, $error)
     {
         $this->resetDocumentCache();
-        
+
         $df = new_doc(self::$dbaccess, $docName);
-        $this->assertTrue($df->isAlive() , "document $docName is not alive");
-        
+        $this->assertTrue($df->isAlive(), "document $docName is not alive");
+
         $err = $df->addATag($tag);
         $this->assertContains($error, $err, sprintf("atag error"));
     }
+
     /**
      * @dataProvider dataImportATag
      */
     public function testImportATag($docName, array $expectedTags)
     {
         $df = new_doc(self::$dbaccess, $docName);
-        $this->assertTrue($df->isAlive() , "document $docName is not alive");
-        
+        $this->assertTrue($df->isAlive(), "document $docName is not alive");
+
         foreach ($expectedTags as $tag) {
             $atag = $df->getATag($tag);
             $this->assertTrue($atag, sprintf("atag %s not retrieved : \n found [%s]", $tag, $df->atags));
@@ -244,32 +255,34 @@ class TestTag extends TestCaseDcpDocument
         if ($df->atags) {
             $tags = explode("\n", $df->atags);
         }
-        $this->assertEquals(count($tags) , count($expectedTags) , sprintf("wrong count for [%s]", $df->atags));
+        $this->assertEquals(count($tags), count($expectedTags), sprintf("wrong count for [%s]", $df->atags));
     }
-    
+
     public function dataImportATag()
     {
         return array(
             array(
                 "TST_BASETAG1",
-                ["Red",
-                "Blue"]
-            ) ,
+                [
+                    "Red",
+                    "Blue"
+                ]
+            ),
             array(
                 "TST_BASETAG2",
                 ["Yellow"]
-            ) ,
+            ),
             array(
                 "TST_BASETAG3",
                 ["Green"]
-            ) ,
+            ),
             array(
                 "TST_BASETAG4",
                 []
             )
         );
     }
-    
+
     public function dataAddAErrorTag()
     {
         return array(
@@ -277,7 +290,7 @@ class TestTag extends TestCaseDcpDocument
                 "TST_BASETAG",
                 "MY_TAG\nMY",
                 "DOC0121"
-            ) ,
+            ),
             array(
                 "TST_BASETAG",
                 "",
@@ -285,7 +298,7 @@ class TestTag extends TestCaseDcpDocument
             )
         );
     }
-    
+
     public function dataDeleteATag()
     {
         return array(
@@ -293,37 +306,37 @@ class TestTag extends TestCaseDcpDocument
                 "TST_BASETAG",
                 array(
                     "MY_TAG"
-                ) ,
+                ),
                 array(
                     "MY_TAG"
-                ) ,
+                ),
                 array()
-            ) ,
+            ),
             array(
                 "TST_BASETAG",
                 array(
                     "MY_TAG"
-                ) ,
-                array() ,
+                ),
+                array(),
                 array(
                     "MY_TAG"
                 )
-            ) ,
+            ),
             array(
                 "TST_BASETAG",
                 array(
                     "MY_TAG1",
                     "MY_TAG:2",
                     'MY_TAG$3'
-                ) ,
+                ),
                 array(
                     'MY_TAG$3'
-                ) ,
+                ),
                 array(
                     "MY_TAG1",
                     "MY_TAG:2"
                 )
-            ) ,
+            ),
             array(
                 "TST_BASETAG",
                 array(
@@ -331,16 +344,16 @@ class TestTag extends TestCaseDcpDocument
                     'MY_TAG/2',
                     'MY_TAG^3',
                     '{a:123}'
-                ) ,
+                ),
                 array(
                     'MY_TAG1'
-                ) ,
+                ),
                 array(
                     'MY_TAG/2',
                     'MY_TAG^3',
                     '{a:123}'
                 )
-            ) ,
+            ),
             array(
                 "TST_BASETAG",
                 array(
@@ -348,15 +361,15 @@ class TestTag extends TestCaseDcpDocument
                     'MY_TAG/2',
                     'MY_TAG^3',
                     '{a:123}'
-                ) ,
+                ),
                 array(
                     'MY_TAG/2',
                     'MY_TAG^3',
                     '{a:123}',
                     'MY_TAG1'
-                ) ,
+                ),
                 array()
-            ) ,
+            ),
             array(
                 "TST_BASETAG",
                 array(
@@ -364,16 +377,16 @@ class TestTag extends TestCaseDcpDocument
                     'MY_TAG/2',
                     'MY_TAG^3',
                     '{a:123}'
-                ) ,
+                ),
                 array(
                     'MY_TAG/2',
                     'MY_TAG^3',
                     'MY_TAG1',
-                ) ,
+                ),
                 array(
                     '{a:123}'
                 )
-            ) ,
+            ),
             array(
                 "TST_BASETAG",
                 array(
@@ -381,10 +394,10 @@ class TestTag extends TestCaseDcpDocument
                     'MY_TAG/2',
                     'MY_TAG^3',
                     '{a:123}'
-                ) ,
+                ),
                 array(
                     'MY_TAG/2',
-                ) ,
+                ),
                 array(
                     "MY_TAG1",
                     'MY_TAG^3',
@@ -393,7 +406,7 @@ class TestTag extends TestCaseDcpDocument
             )
         );
     }
-    
+
     public function dataATags()
     {
         return array(
@@ -402,35 +415,35 @@ class TestTag extends TestCaseDcpDocument
                 array(
                     "MY_TAG"
                 )
-            ) ,
+            ),
             array(
                 "TST_BASETAG",
                 array(
                     "MY_TAG",
                     "MY_TAGTWO"
                 )
-            ) ,
+            ),
             array(
                 "TST_BASETAG",
                 array(
                     "MY_TAG",
                     "MY_TAG:a"
                 )
-            ) ,
+            ),
             array(
                 "TST_BASETAG",
                 array(
                     "MY_TAG",
                     "MY_TAG:"
                 )
-            ) ,
+            ),
             array(
                 "TST_BASETAG",
                 array(
                     "MY_TAG:",
                     "MY_TAG"
                 )
-            ) ,
+            ),
             array(
                 "TST_BASETAG",
                 array(
@@ -440,7 +453,7 @@ class TestTag extends TestCaseDcpDocument
             )
         );
     }
-    
+
     public function dataTags()
     {
         return array(
@@ -450,14 +463,14 @@ class TestTag extends TestCaseDcpDocument
                 "jane",
                 "one",
                 "un"
-            ) ,
+            ),
             array(
                 "TST_BASETAG",
                 "jane",
                 "john",
                 "two",
                 "deux"
-            ) ,
+            ),
             array(
                 "TST_BASETAG",
                 "jane",
@@ -468,4 +481,5 @@ class TestTag extends TestCaseDcpDocument
         );
     }
 }
+
 ?>

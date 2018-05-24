@@ -225,8 +225,7 @@ class Session extends DbObj
         $this->id = $idsess;
         $this->userid = $uid;
         $this->last_seen = strftime('%Y-%m-%d %H:%M:%S', time());
-        $this->Add();
-        $this->log->debug("Nouvelle Session : {$this->id}");
+        $this->add();
     }
     // --------------------------------
     // Stocke une variable de session args
@@ -313,7 +312,6 @@ class Session extends DbObj
     // ------------------------------------------------------------------------
     public function newId()
     {
-        $this->log->debug("newId");
         $byteLength = (int)\Anakeen\Core\ContextManager::getApplicationParam('CORE_SESSION_BYTE_LENGTH');
         if ($byteLength < self::SESSION_MIN_BYTE_LENGTH) {
             $byteLength = self::SESSION_MIN_BYTE_LENGTH;

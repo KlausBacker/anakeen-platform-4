@@ -142,7 +142,6 @@ create index permission_idx4 on permission(computed);
         $res = array();
         $i = 0;
         while ($i < $query->nb) {
-            $this->log->debug("ListUserApplicaion");
             $res[$i] = new \Anakeen\Core\Internal\Application($this->dbaccess, $list[$i]->id_application);
             $i++;
         }
@@ -220,7 +219,6 @@ create index permission_idx4 on permission(computed);
             "id_application=$id"
         );
         $list = $query->Query();
-        $this->log->debug("DEL APP PERM");
         if ($query->nb > 0) {
             /**
              * @var Permission $v
@@ -228,8 +226,6 @@ create index permission_idx4 on permission(computed);
             foreach ($list as $v) {
                 $v->Delete();
             }
-        } else {
-            $this->log->debug("NO PERM");
         }
     }
     /**
@@ -437,7 +433,7 @@ create index permission_idx4 on permission(computed);
             $acl = new Acl($this->dbaccess);
             if ($acl->Set($aclname, $this->id_application)) {
                 $this->id_acl = $acl->id;
-                $this->Add();
+                $this->add();
             }
         }
     }

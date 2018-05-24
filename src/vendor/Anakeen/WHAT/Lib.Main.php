@@ -101,7 +101,6 @@ function getMainAction($auth, &$action)
     // init for gettext
     \Anakeen\Core\ContextManager::setLanguage($action->Getparam("CORE_LANG"));
 
-    $action->log->debug("gettext init for " . $action->parent->name . $action->Getparam("CORE_LANG"));
 }
 
 /**

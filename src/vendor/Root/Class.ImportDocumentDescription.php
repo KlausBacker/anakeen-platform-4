@@ -535,7 +535,7 @@ class ImportDocumentDescription
                         if (isset($data[5])) {
                             $this->doc->name = $data[5];
                         } // internal name
-                        $err = $this->doc->Add();
+                        $err = $this->doc->add();
                     }
                     $this->tcr[$this->nLine]["msg"] = sprintf(_("create %s family %s"), $data[2], $data[5]);
                     $this->tcr[$this->nLine]["action"] = "added";
@@ -974,7 +974,7 @@ class ImportDocumentDescription
                     if ($data[1] && is_numeric($data[1])) {
                         $search->id = $data[1]; // static id
                     }
-                    $err = $search->Add();
+                    $err = $search->add();
                     if ($data[1] && !is_numeric($data[1])) {
                         $search->setLogicalName($data[1]);
                     }
@@ -985,14 +985,14 @@ class ImportDocumentDescription
         } else {
             $search = createDoc($this->dbaccess, 5);
             if (!$this->analyze) {
-                $err = $search->Add();
+                $err = $search->add();
             }
             $this->tcr[$this->nLine]["msg"] = sprintf(_("add %s search"), $data[3]);
             $this->tcr[$this->nLine]["action"] = "added";
             $this->tcr[$this->nLine]["err"] .= $err;
         }
         if (($err != "") && ($search->id > 0)) { // case only modify
-            if ($search->Select($search->id)) {
+            if ($search->select($search->id)) {
                 $err = "";
             }
         }
@@ -1614,7 +1614,7 @@ class ImportDocumentDescription
                                 $p->id_acl = -$p->id_acl;
                             }
                             $p->deletePermission($p->id_user, $p->id_application, $p->id_acl);
-                            $err = $p->Add();
+                            $err = $p->add();
                             if ($err) {
                                 $this->tcr[$this->nLine]["err"] .= "\n$err";
                             } else {
@@ -2121,7 +2121,7 @@ class ImportDocumentDescription
                 if ($oattr->isAffected()) {
                     $err = $oattr->Modify();
                 } else {
-                    $err = $oattr->Add();
+                    $err = $oattr->add();
                 }
                 $this->addImportedAttribute($this->doc->id, $oattr);
 

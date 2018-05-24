@@ -14,7 +14,7 @@ class TestApplicationParameters extends TestCaseDcp
     {
         $appTest = new \Anakeen\Core\Internal\Application(self::$dbaccess);
         $appTest->name = self::appName;
-        $appTest->Add();
+        $appTest->add();
         $parent = null;
         $appTest->set(self::appName, $parent);
         return $appTest;

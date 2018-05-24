@@ -796,7 +796,7 @@ class FamilyImport
         $triggers = $cdoc->sqltrigger(false, true);
         $cdoc->exec_query($triggers, 1);
         // step by step
-        $cdoc->Create();
+        $cdoc->create();
         self::setSqlIndex($dbaccess, $docid);
     }
 

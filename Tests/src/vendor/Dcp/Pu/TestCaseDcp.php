@@ -114,12 +114,12 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         $action = ContextManager::getCurrentAction();
         if (!$action->dbid) {
             if (!$action->dbid) {
-                $action->init_dbid();
+                $action->initDbid();
                 if (!$action->dbid) {
                     error_log(__METHOD__ . "lost action dbid");
                 }
             }
-            $action->init_dbid();
+            $action->initDbid();
         }
         return $action;
     }

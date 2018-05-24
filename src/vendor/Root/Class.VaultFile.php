@@ -1,18 +1,11 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Retrieve and store file in Vault
  *
- * @author  Anakeen
- * @version $Id: Class.VaultFile.php,v 1.23 2008/05/27 12:46:06 marc Exp $
- * @package FDL
  */
 
-/**
- */
+use \Anakeen\LogManager;
+
 class VaultFile
 {
     /**
@@ -28,33 +21,24 @@ class VaultFile
      * @var VaultDiskStorage
      */
     public $storage;
+    protected $name;
 
     public function __construct($access = "", $vaultname = "Sample", $idf = -1)
     {
-        if (!isset($chrono)) {
-            $this->chrono = false;
-        } else {
-            $this->chrono = $chrono;
-        }
+
         $this->idf = $idf;
         $this->name = $vaultname;
-        $this->logger = new Anakeen\Core\Internal\Log("", "vault", $this->name);
-        if ($this->chrono) {
-            $this->logger->warning("Running with chrono !!!!");
-        }
 
         $this->f_mode = 0600;
         $this->d_mode = 0700;
         $this->type = "fs";
         switch ($this->type) {
             case "fs":
-                $this->logger->debug("Set Storage Type to FS");
                 $this->storage = new VaultDiskStorage();
                 break;
 
             default:
                 // Not implemented yet
-
         }
     }
     // ---------------------------------------------------------
@@ -67,17 +51,12 @@ class VaultFile
      */
     public function show($id_file, &$infos, $teng_lname = "")
     {
-        // ---------------------------------------------------------
-        if ($this->chrono) {
-            $this->logger->start("Show");
-        }
+
         $msg = $this->storage->Show($id_file, $infos, $teng_lname);
         if ($msg != '') {
-            $this->logger->error(sprintf("File #%s : %s", $id_file, $msg));
+            LogManager::error(sprintf("File #%s : %s", $id_file, $msg));
         }
-        if ($this->chrono) {
-            $this->logger->end("Show");
-        }
+
         return ($msg);
     }
 
@@ -100,9 +79,7 @@ class VaultFile
     public function retrieve($id_file, &$infos)
     {
         // ---------------------------------------------------------
-        if ($this->chrono) {
-            $this->logger->start("Retrieve");
-        }
+
         if (isset($info)) {
             unset($infos);
         }
@@ -110,11 +87,9 @@ class VaultFile
         $msg = $this->storage->Show($id_file, $infos);
 
         if ($msg != '') {
-            $this->logger->error($msg);
+            LogManager::error($msg);
         }
-        if ($this->chrono) {
-            $this->logger->end("Retrieve");
-        }
+
         return ($msg);
     }
 
@@ -122,54 +97,43 @@ class VaultFile
     public function store($infile, $public_access, &$id, $fsname = "", $te_name = "", $te_id_file = 0, $tmp = null)
     {
         // ---------------------------------------------------------
-        if ($this->chrono) {
-            $this->logger->start("Store");
-        }
+
         $id = -1;
         if (!file_exists($infile) || !is_readable($infile) || !is_file($infile)) {
-            $this->logger->error("Can't access file [" . $infile . "].");
+            LogManager::error("Can't access file [" . $infile . "].");
             $msg = _("can't access file");
         } else {
             if (!is_bool($public_access)) {
                 $public_access = false;
-                $this->logger->warning("Access mode forced to RESTRICTED for " . $infile . "].");
+                LogManager::warning("Access mode forced to RESTRICTED for " . $infile . "].");
             }
             $this->storage->id_tmp = $tmp;
-            $msg = $this->storage->Store($infile, $public_access, $id, $fsname, $te_name, $te_id_file);
+            $msg = $this->storage->store($infile, $public_access, $id, $fsname, $te_name, $te_id_file);
             if ($msg) {
-                $this->logger->error($msg);
+                LogManager::error($msg);
             }
         }
-        if ($this->chrono) {
-            $this->logger->end("Store");
-        }
+
         return ($msg);
     }
 
     // ---------------------------------------------------------
     public function save($infile, $public_access, $id)
     {
-        // ---------------------------------------------------------
-        if ($this->chrono) {
-            $this->logger->start("Save");
-        }
-
         if (!is_bool($public_access)) {
             $public_access = false;
-            $this->logger->warning("Access mode forced to RESTRICTED for " . $infile . "].");
+            LogManager::warning("Access mode forced to RESTRICTED for " . $infile . "].");
         }
 
         $msg = $this->storage->Save($infile, $public_access, $id);
         if ($msg) {
-            $this->logger->error($msg);
+            LogManager::error($msg);
         }
 
-        $this->storage->mime_t = getTextMimeFile($infile);
-        $this->storage->mime_s = getSysMimeFile($infile, $this->storage->name);
+        $this->storage->mime_t = \Anakeen\Core\Utils\FileMime::getTextMimeFile($infile);
+        $this->storage->mime_s = \Anakeen\Core\Utils\FileMime::getSysMimeFile($infile, $this->storage->name);
         $msg = $this->storage->Modify();
-        if ($this->chrono) {
-            $this->logger->end("Save");
-        }
+
         return ($msg);
     }
 
@@ -181,10 +145,7 @@ class VaultFile
      */
     public function rename($id_file, $newname)
     {
-        // ---------------------------------------------------------
-        if ($this->chrono) {
-            $this->logger->start("Rename");
-        }
+
         $msg = '';
         if ($newname != "") {
             $nn = str_replace(array(
@@ -204,8 +165,8 @@ class VaultFile
             $oldname = $this->storage->name;
             $this->storage->Show($id_file, $infos);
             $this->storage->name = $newname;
-            $this->storage->mime_t = getTextMimeFile($infile, $this->storage->name);
-            $this->storage->mime_s = getSysMimeFile($infile, $this->storage->name);
+            $this->storage->mime_t = \Anakeen\Core\Utils\FileMime::getTextMimeFile($infile, $this->storage->name);
+            $this->storage->mime_s = \Anakeen\Core\Utils\FileMime::getSysMimeFile($infile, $this->storage->name);
             $msg = $this->storage->Modify();
             if ($msg == "") {
                 $pio = pathinfo($oldname);
@@ -227,44 +188,29 @@ class VaultFile
                 }
             }
             if ($msg) {
-                $this->logger->error($msg);
+                LogManager::error($msg);
             }
         }
 
-        if ($this->chrono) {
-            $this->logger->end("Rename");
-        }
         return ($msg);
     }
 
     // ---------------------------------------------------------
     public function listFiles(&$s)
     {
-        // ---------------------------------------------------------
-        if ($this->chrono) {
-            $this->logger->start("ListFiles");
-        }
-        $this->storage->ListFiles($s);
-        if ($this->chrono) {
-            $this->logger->end("ListFiles");
-        }
+
+        $this->storage->listFiles($s);
+
         return '';
     }
 
     // ---------------------------------------------------------
     public function destroy($id)
     {
-        // ---------------------------------------------------------
-        if ($this->chrono) {
-            $this->logger->start("Destroy");
-        }
 
-        $msg = $this->storage->Destroy($id);
+        $msg = $this->storage->destroy($id);
         if ($msg != '') {
-            $this->logger->error($msg);
-        }
-        if ($this->chrono) {
-            $this->logger->end("Destroy");
+            LogManager::error($msg);
         }
         return $msg;
     }

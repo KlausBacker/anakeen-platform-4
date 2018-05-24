@@ -155,7 +155,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
             $g = new Group($dbf);
             $g->iduser = $this->iduser;
             $g->idgroup = $this->idgroup;
-            $err = $g->Add(true);
+            $err = $g->add(true);
             if ($err == "" || $err == "OK") {
                 // if it is a user (not a group)
                 $g->exec_query("delete from permission where computed");

@@ -1029,7 +1029,7 @@ function getLatestRevisionNumber($dbaccess, $initid, $fromid = 0)
 function createAutoFolder(&$doc)
 {
     $dir = createDoc($doc->dbaccess, SEManager::getFamilyIdFromName("DIR"));
-    $err = $dir->Add();
+    $err = $dir->add();
     if ($err != "") {
         return false;
     }

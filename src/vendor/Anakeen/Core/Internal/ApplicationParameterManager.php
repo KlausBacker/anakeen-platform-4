@@ -5,6 +5,7 @@ namespace Anakeen\Core\Internal;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
+use Anakeen\LogManager;
 
 /**
  * Manage application parameters
@@ -501,12 +502,7 @@ class ApplicationParameterManager
                 break;
         }
         if ($msg !== '') {
-            $action = self::getAction();
-            if (isset($action->log)) {
-                $action->log->deprecated($msg);
-            } else {
-                error_log(__METHOD__ . " " . $msg);
-            }
+            LogManager::warning($msg);
         }
         return $retVal;
     }

@@ -4,13 +4,18 @@
  * @author Anakeen
  * @package FDL
 */
+
 /**
  * Mail template document
  */
+
 namespace Anakeen\SmartStructures\Mailtemplate;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Core\DbManager;
 use Anakeen\Core\IMailRecipient;
+use Anakeen\Core\SEManager;
+use Anakeen\LogManager;
 
 class MailTemplateHooks extends \Anakeen\SmartStructures\Document
 {
@@ -37,6 +42,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
 
     protected $notifySendMail = self::NOTIFY_SENDMAIL_AUTO;
     protected $stopIfNoRecip = false;
+
     public function preEdition()
     {
         global $action;
@@ -45,11 +51,12 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
             $action->parent->AddJsRef(htmlspecialchars("?app=FDL&action=FCKDOCATTR&famid=" . urlencode($mailfamily), ENT_QUOTES));
         }
     }
+
     /**
      * Check if the relation is correct and the attribute does exists
      *
      * @param string $values Relation to check
-     * @param array $doc Field and values of document attributes
+     * @param array  $doc    Field and values of document attributes
      * @return string Error if attribute not found, else empty string
      */
     private function checkAttributeExistsInRelation($values, array $doc)
@@ -72,7 +79,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
             if (!$docids) {
                 return sprintf(_("Send mail error : Relation to attribute %s not found. Relation key %s does'nt link to a document"), $lattrid, $v);
             }
-            $doc = getTDoc($this->dbaccess, array_pop($docids));
+            $doc = SEManager::getRawDocument(array_pop($docids), false);
             if (!$doc) {
                 return sprintf(_("Send mail error : Relation to attribute %s not found. Relation key %s does'nt link to a document"), $lattrid, $v);
             }
@@ -84,8 +91,8 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
     }
 
     /**
-     * @param \Anakeen\Core\Internal\SmartElement  $doc Document to use for complete mail
-     * @param array $keys extra keys to complete mail body or subject
+     * @param \Anakeen\Core\Internal\SmartElement $doc  Document to use for complete mail
+     * @param array                               $keys extra keys to complete mail body or subject
      *
      * @return \Dcp\Mail\Message (return null if no recipients)
      * @throws \Dcp\Exception
@@ -100,16 +107,16 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
         $tdest = $this->getArrayRawValues("tmail_dest");
 
         $dest = array(
-            "to" => array() ,
-            "cc" => array() ,
-            "bcc" => array() ,
+            "to" => array(),
+            "cc" => array(),
+            "bcc" => array(),
             "from" => array()
         );
         $from = trim($this->getRawValue("tmail_from"));
         if ($from) {
             $tdest[] = array(
                 "tmail_copymode" => "from",
-                "tmail_desttype" => $this->getRawValue("tmail_fromtype") ,
+                "tmail_desttype" => $this->getRawValue("tmail_fromtype"),
                 "tmail_recip" => $from
             );
         }
@@ -118,7 +125,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
             /**
              * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
-            $wdoc = new_doc($this->dbaccess, $doc->wid);
+            $wdoc = SEManager::getDocument($doc->wid);
         }
         $udoc = null;
         foreach ($tdest as $k => $v) {
@@ -132,9 +139,9 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
 
                 case 'A': // text attribute
                     $aid = strtok($v["tmail_recip"], " ");
-                    $err = $this->checkAttributeExistsInRelation($aid, getLatestTDoc($this->dbaccess, $doc->initid));
+                    $err = $this->checkAttributeExistsInRelation($aid, SEManager::getRawDocument($doc->initid));
                     if ($err) {
-                        $action->log->error($err);
+                        LogManager::error($err);
                         $doc->addHistoryEntry($err);
                         throw new \Dcp\Exception($err);
                     }
@@ -144,9 +151,9 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
                 case 'WA': // workflow text attribute
                     if ($wdoc) {
                         $aid = strtok($v["tmail_recip"], " ");
-                        $err = $this->checkAttributeExistsInRelation($aid, getLatestTDoc($this->dbaccess, $wdoc->initid));
+                        $err = $this->checkAttributeExistsInRelation($aid, SEManager::getRawDocument($wdoc->initid));
                         if ($err) {
-                            $action->log->error($err);
+                            LogManager::error($err);
                             $wdoc->addHistoryEntry($err);
                             throw new \Dcp\Exception($err);
                         }
@@ -157,7 +164,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
                 case 'E': // text parameter
                     $aid = strtok($v["tmail_recip"], " ");
                     if (!$doc->getAttribute($aid)) {
-                        $action->log->error(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
+                        LogManager::error(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                         $doc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                         throw new \Dcp\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                     }
@@ -168,7 +175,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
                     if ($wdoc) {
                         $aid = strtok($v["tmail_recip"], " ");
                         if (!$wdoc->getAttribute($aid)) {
-                            $action->log->error(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
+                            LogManager::error(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                             $wdoc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                             throw new \Dcp\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                         }
@@ -187,7 +194,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
                     if ($udoc) {
                         $aid = strtok($v["tmail_recip"], " ");
                         if (!$udoc->getAttribute($aid) && !array_key_exists(strtolower($aid), $udoc->getParamAttributes())) {
-                            $action->log->error(sprintf(_("Send mail error : Attribute %s not found"), $aid));
+                            LogManager::error(sprintf(_("Send mail error : Attribute %s not found"), $aid));
                             $doc->addHistoryEntry(sprintf(_("Send mail error : Attribute %s not found"), $aid));
                             throw new \Dcp\Exception(sprintf(_("Send mail error : Attribute %s not found"), $aid));
                         }
@@ -229,7 +236,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
                                     /**
                                      * @var \SmartStructure\IUSER|\SmartStructure\IGROUP|\SmartStructure\ROLE $aDoc
                                      */
-                                    $aDoc = new_Doc("", $vdocid);
+                                    $aDoc = SEManager::getDocument($vdocid);
                                     $mail = '';
                                     if (method_exists($aDoc, "getMail")) {
                                         $mail = $aDoc->getMail();
@@ -254,7 +261,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
                 case 'P':
                     $aid = strtok($v["tmail_recip"], " ");
                     if (!\Anakeen\Core\ContextManager::getApplicationParam($aid)) {
-                        $action->log->error(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
+                        LogManager::error(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                         $doc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                         throw new \Dcp\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                     }
@@ -272,16 +279,16 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
                     /**
                      * @var IMailRecipient|\Anakeen\Core\Internal\SmartElement $recipientDoc
                      */
-                    $recipientDoc = new_Doc($this->dbaccess, $recipDocId, true);
+                    $recipientDoc = SEManager::getDocument($recipDocId, true);
                     if (!is_object($recipientDoc) || !$recipientDoc->isAlive()) {
                         $err = sprintf(_("Send mail error: recipient document '%s' does not exists."), $recipDocId);
-                        $action->log->error($err);
+                        LogManager::error($err);
                         $doc->addHistoryEntry($err);
                         throw new \Dcp\Exception($err);
                     }
                     if (!is_a($recipientDoc, IMailRecipient::class)) {
                         $err = sprintf(_("Send mail error: recipient document '%s' does not implements IMailRecipient interface."), $recipDocId);
-                        $action->log->error($err);
+                        LogManager::error($err);
                         $doc->addHistoryEntry($err);
                         throw new \Dcp\Exception($err);
                     }
@@ -289,13 +296,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
                     break;
             }
             if ($mail) {
-                $dest[$toccbcc][] = str_replace(array(
-                "\n",
-                "\r"
-            ), array(
-                ",",
-                ""
-            ), $mail);
+                $dest[$toccbcc][] = str_replace(array("\n", "\r"), array(",", ""), $mail);
             }
         }
         $subject = $this->generateMailInstance($doc, $this->getRawValue("tmail_subject"));
@@ -310,10 +311,14 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
         ), html_entity_decode($subject, ENT_COMPAT, "UTF-8"));
         $pfout = $this->generateMailInstance($doc, $this->getRawValue("tmail_body"), $this->getAttribute("tmail_body"));
         // delete empty address
-        $dest['to'] = array_filter($dest['to'], create_function('$v', 'return!preg_match("/^\s*$/", $v);'));
-        $dest['cc'] = array_filter($dest['cc'], create_function('$v', 'return!preg_match("/^\s*$/", $v);'));
-        $dest['bcc'] = array_filter($dest['bcc'], create_function('$v', 'return!preg_match("/^\s*$/", $v);'));
-        $dest['from'] = array_filter($dest['from'], create_function('$v', 'return!preg_match("/^\s*$/", $v);'));
+        $ftMatch = function ($v) {
+            return !preg_match("/^\s*$/", $v);
+        };
+
+        $dest['to'] = array_filter($dest['to'], $ftMatch);
+        $dest['cc'] = array_filter($dest['cc'], $ftMatch);
+        $dest['bcc'] = array_filter($dest['bcc'], $ftMatch);
+        $dest['from'] = array_filter($dest['from'], $ftMatch);
 
         $this->addSubstitutes($dest);
 
@@ -332,7 +337,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
         }
 
         if (trim($to . $cc . $bcc) == "") {
-            $action->log->info(sprintf(_("Send mail info : can't send mail %s: no sendee found"), $subject));
+            LogManager::info(sprintf(_("Send mail info : can't send mail %s: no sendee found"), $subject));
             $doc->addHistoryEntry(sprintf(_("Send mail info : can't send mail %s: no sendee found"), $subject), \DocHisto::NOTICE);
             if ($this->stopIfNoRecip) {
                 return null;
@@ -341,7 +346,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
         if ($this->sendercopy && \Anakeen\Core\ContextManager::getApplicationParam("FDL_BCC") == "yes") {
             $umail = getMailAddr(ContextManager::getCurrentUser(true)->id);
             if ($umail != "") {
-                $bcc.= (trim($bcc) == "" ? "" : ",") . $umail;
+                $bcc .= (trim($bcc) == "" ? "" : ",") . $umail;
             }
         }
 
@@ -357,9 +362,9 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
         //send attachment
         $ta = $this->getMultipleRawValues("tmail_attach");
         foreach ($ta as $k => $v) {
-            $err = $this->checkAttributeExistsInRelation(strtok($v, " "), getLatestTDoc($this->dbaccess, $doc->initid));
+            $err = $this->checkAttributeExistsInRelation(strtok($v, " "), SEManager::getRawDocument($doc->initid));
             if ($err) {
-                $action->log->error($err);
+                LogManager::error($err);
                 $doc->addHistoryEntry($err);
                 throw new \Dcp\Exception($err);
             }
@@ -389,14 +394,12 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
 
     /**
      * send document by email using this template
-     * @param \Anakeen\Core\Internal\SmartElement $doc document to send
-     * @param array $keys extra keys used for template
+     * @param \Anakeen\Core\Internal\SmartElement $doc  document to send
+     * @param array                               $keys extra keys used for template
      * @return string error - empty if no error -
      */
     public function sendDocument(\Anakeen\Core\Internal\SmartElement & $doc, $keys = array())
     {
-        global $action;
-
         include_once("FDL/sendmail.php");
         include_once("FDL/Lib.Vault.php");
         $err = '';
@@ -405,14 +408,14 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
         }
 
         try {
-            $this->stopIfNoRecip=true;
+            $this->stopIfNoRecip = true;
             $message = $this->getMailMessage($doc, $keys);
             if (!$message) {
                 return "";
             }
-            $this->stopIfNoRecip=false;
+            $this->stopIfNoRecip = false;
         } catch (\Exception $e) {
-            $this->stopIfNoRecip=false;
+            $this->stopIfNoRecip = false;
             return $e->getMessage();
         }
         $err = $message->send();
@@ -420,21 +423,21 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
         $to = $message->getTo();
         $cc = $message->getCc();
         $bcc = $message->getBCC();
-        $subject=$message->subject;
-        $from=$message->getFrom();
+        $subject = $message->subject;
+        $from = $message->getFrom();
         $savecopy = $this->getRawValue("tmail_savecopy") == "yes";
         if (($err == "") && $savecopy) {
             createSentMessage($to, $from, $cc, $bcc, $subject, $message, $doc);
         }
         $recip = "";
         if ($to) {
-            $recip.= sprintf(_("sendmailto %s"), $to);
+            $recip .= sprintf(_("sendmailto %s"), $to);
         }
         if ($cc) {
-            $recip.= ' ' . sprintf(_("sendmailcc %s"), $cc);
+            $recip .= ' ' . sprintf(_("sendmailcc %s"), $cc);
         }
         if ($bcc) {
-            $recip.= ' ' . sprintf(_("sendmailbcc %s"), $bcc);
+            $recip .= ' ' . sprintf(_("sendmailbcc %s"), $bcc);
         }
 
         if (self::NOTIFY_SENDMAIL_AUTO === $this->notifySendMail) {
@@ -448,19 +451,20 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
 
         if ($err == "") {
             $doc->addHistoryEntry(sprintf(_("send mail %s with template %s"), $recip, $this->title), \DocHisto::INFO, "SENDMAIL");
-            $action->log->info(sprintf(_("Mail %s sent to %s"), $subject, $recip));
+            LogManager::info(sprintf(_("Mail %s sent to %s"), $subject, $recip));
             if (self::NOTIFY_SENDMAIL_ALWAYS === $notifySendMail) {
                 \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("send mail %s"), $recip));
             }
         } else {
             $doc->addHistoryEntry(sprintf(_("cannot send mail %s with template %s : %s"), $recip, $this->title, $err), \DocHisto::ERROR);
-            $action->log->error(sprintf(_("cannot send mail %s to %s : %s"), $subject, $recip, $err));
+            LogManager::error(sprintf(_("cannot send mail %s to %s : %s"), $subject, $recip, $err));
             if (self::NOTIFY_SENDMAIL_ALWAYS === $notifySendMail || self::NOTIFY_SENDMAIL_ERRORS_ONLY === $notifySendMail) {
                 \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("cannot send mail %s"), $err));
             }
         }
         return $err;
     }
+
     /**
      * determine if a notification should be displayed to the user
      *
@@ -478,10 +482,11 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
         }
         return '';
     }
+
     /**
      * update template with document values
-     * @param \Anakeen\Core\Internal\SmartElement $doc
-     * @param string $tpl template content
+     * @param \Anakeen\Core\Internal\SmartElement               $doc
+     * @param string                                            $tpl template content
      * @param \Anakeen\Core\SmartStructure\NormalAttribute|bool $oattr
      * @return string
      */
@@ -510,6 +515,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
         }
         return $body;
     }
+
     /**
      * add substitute account mail addresses
      * @param array $dests
@@ -517,12 +523,12 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
     private function addSubstitutes(array & $dests)
     {
         $sql = "SELECT incumbent.login as inlogin, incumbent.mail as inmail, substitut.firstname || ' ' || substitut.lastname as suname , substitut.mail as sumail from users as incumbent, users as substitut where substitut.id=incumbent.substitute and incumbent.substitute is not null and incumbent.mail is not null and substitut.mail is not null;";
-        simpleQuery($this->dbaccess, $sql, $substituteMails);
+        DbManager::query($sql, $substituteMails);
         foreach (array(
-            "to",
-            "cc",
-            "bcc"
-        ) as $td) {
+                     "to",
+                     "cc",
+                     "bcc"
+                 ) as $td) {
             if (!isset($dests[$td])) {
                 continue;
             }
@@ -546,6 +552,7 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
         }
         return $unid;
     }
+
     private function srcfile($src)
     {
         $vext = array(
@@ -563,8 +570,8 @@ class MailTemplateHooks extends \Anakeen\SmartStructures\Document
             $chopped_src = '';
             // Detect HTTP URLs pointing to myself
             foreach (array(
-                'CORE_URLINDEX'
-            ) as $url) {
+                         'CORE_URLINDEX'
+                     ) as $url) {
                 $url = \Anakeen\Core\ContextManager::getApplicationParam($url);
                 if (strlen($url) <= 0) {
                     continue;

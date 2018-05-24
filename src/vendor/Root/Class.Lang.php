@@ -128,7 +128,7 @@ create index lang_idx1 on lang(idapp, lang, code);
         if ($this->exist($idapp, $code, $lang)) {
             $this->Modify();
         } else {
-            $this->Add();
+            $this->add();
         }
     }
     

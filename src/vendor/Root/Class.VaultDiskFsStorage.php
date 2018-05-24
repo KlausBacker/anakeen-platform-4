@@ -73,7 +73,7 @@ EOF;
         $this->fsname = $fsname;
         $this->max_size = $maxsize;
         $this->r_path = $path;
-        return $this->Add();
+        return $this->add();
     }
     /**
      * verify if fs is availlable (file system is mounted)
