@@ -2,6 +2,7 @@
 namespace Anakeen\Routes\Admin;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Core\Internal\ApplicationParameterManager;
 use Dcp\Core\Exception;
 
 class Plugins
@@ -15,7 +16,6 @@ class Plugins
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-
         $pluginsConfig = $this->getAdminPluginsConfig();
         return $response->withJson($pluginsConfig);
     }
@@ -145,10 +145,15 @@ class Plugins
 
     protected static function normalizePlugins(array $config, $parentPluginPath = "") {
         $result = [];
+        $wsVersion = ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
         if (!empty($config)) {
             $plugins = $config;
             foreach ($plugins as $pluginComponentName => $plugin) {
                 $plugin["name"] = $pluginComponentName;
+                $plugin["scriptURL"] .= "?ws=$wsVersion";
+                if (isset($plugin["debugScriptURL"])) {
+                    $plugin["debugScriptURL"] .= "?ws=$wsVersion";
+                }
                 if (!empty($parentPluginPath)) {
                     $plugin["pluginPath"] = $parentPluginPath."/".$plugin["pluginPath"];
                 }

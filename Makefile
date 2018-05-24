@@ -19,6 +19,7 @@ RELEASE = $(shell cat RELEASE)
 
 ## control conf
 port=80
+CONTROL_PROTOCOL=http
 CONTROL_PORT=$(port)
 CONTROL_USER=admin
 CONTROL_PASSWORD=anakeen
@@ -69,8 +70,8 @@ $(LOCALPUB_ADMIN_CENTER_PATH): $(JS_CONF_PATH)/yarn.lock $(JS_ADMIN_CENTER_PATH)
 app: $(LOCALPUB_ADMIN_CENTER_PATH) $(JS_ADMIN_CENTER_PATH) ## build admin center
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 
-deploy: app
-	${DEVTOOL_BIN} deploy -u http://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -w admin-center*.app -- --force
+deploy: app ## deploy admin center
+	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -w admin-center*.app -- --force
 
 ########################################################################################################################
 ##
