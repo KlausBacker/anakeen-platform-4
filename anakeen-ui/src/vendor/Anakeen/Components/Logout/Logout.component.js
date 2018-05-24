@@ -9,7 +9,7 @@ export default {
     },
 
     methods: {
-        logout($event) {
+        logout() {
             let event = new CustomEvent('beforeLogout', {cancelable: true});
             this.$el.parentNode.dispatchEvent(event);
             if (event.defaultPrevented) {
@@ -18,12 +18,12 @@ export default {
                 this.$http.delete('/api/v2/logout')
                     .then(response => {
                         this.$emit('afterLogout', response.data);
-                        document.location.assign(response.data.location || '/login/');
+                        document.location.assign(response.data.location || '/');
                     })
                     .catch(error => {
                         if (error.status === 401) {
                             this.$emit('afterLogout', error.data);
-                            document.location.assign(error.data.location || '/login/');
+                            document.location.assign(error.data.location || '/');
                         }
                     });
             }
