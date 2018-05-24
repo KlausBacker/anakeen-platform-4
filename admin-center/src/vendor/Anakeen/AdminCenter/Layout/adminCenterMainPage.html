@@ -6,15 +6,17 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Admin Center</title>
-    <link rel="stylesheet" href="/css/ank/document/bootstrap.css">
-    <link rel="stylesheet" href="/css/ank/document/kendo.css">
+    {{#CSS}}
+    <link rel="stylesheet" type="text/css" data-id="{{key}}" href="{{path}}"/>
+    {{/CSS}}
     <link rel="stylesheet" href="/css/ank/admin-center/admin-center.css">
 </head>
 <body>
 
 <div id="admin-center"></div>
 
-<script type="text/javascript" src="/uiAssets/externals/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="/uiAssets/externals/KendoUI/KendoUI.js"></script>
-<script type="text/javascript" src="/AdminCenter/debug/ank-admin-center-components.js"></script></body>
+{{#JS}}
+<script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
+{{/JS}}
+<script type="text/javascript" src="/AdminCenter/prod/ank-admin-center-components-405276d80af995c03c5a.js"></script></body>
 </html>

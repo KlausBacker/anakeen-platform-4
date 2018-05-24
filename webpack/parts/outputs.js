@@ -1,13 +1,17 @@
+const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const AssetsWebpackPlugin = require('assets-webpack-plugin');
 const FriendlyErrorWebpackPlugin = require('friendly-errors-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-// const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
+
 const webpack = require('webpack');
-exports.clean = path => ({
+
+exports.clean = currentPath => ({
     plugins: [
-        new CleanWebpackPlugin([path]),
+        new CleanWebpackPlugin([currentPath], {
+            root: path.resolve(currentPath, '..')
+        }),
     ],
 });
 
@@ -80,34 +84,6 @@ exports.friendlyErrors = () => ({
         new FriendlyErrorWebpackPlugin()
     ]
 });
-
-// exports.extractCss = (({issuer, test, filename}) => {
-//     const rules = [];
-//     const loader = ExtractTextWebpackPlugin
-//         .extract({ use: ['css-loader', 'sass-loader'], fallback: 'style-loader'});
-//     if (Array.isArray(issuer) && Array.isArray(test)) {
-//         issuer.forEach((i, index) => {
-//             rules.push({
-//                 issuer: i,
-//                 test: test[index],
-//                 loader,
-//             });
-//         });
-//     } else {
-//         rules.push({
-//             issuer,
-//             test,
-//             loader,
-//         });
-//     }
-//     return {
-//         module: {
-//             rules,
-//         },
-//         plugins: [
-//             new ExtractTextWebpackPlugin(filename)
-//         ]};
-// });
 
 exports.cssLoader = (filesOutputDir, exclude) => ({
     module: {

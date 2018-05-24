@@ -32,6 +32,10 @@
           "description": "Plugin source file location",
           "type": "string"
         },
+        "debugScriptURL": {
+          "description": "Plugin source file location",
+          "type": "string"
+        },
         "icon": {
           "description": "Plugin icon",
           "type": "string"

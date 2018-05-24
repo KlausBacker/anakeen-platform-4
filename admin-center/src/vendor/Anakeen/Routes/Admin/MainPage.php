@@ -12,7 +12,42 @@ class MainPage
     {
         $page=__DIR__."/../../AdminCenter/Layout/adminCenterMainPage.html";
 
-        return $response->write(file_get_contents($page));
+        if ($request->getQueryParam("debug") === "true") {
+            $page=__DIR__."/../../AdminCenter/Layout/adminCenterMainPage-debug.html";
+        }
+
+        $template = file_get_contents($page);
+
+        $version = \Dcp\Ui\UIGetAssetPath::getWs();
+
+        $data = [
+            "JS" => [
+                ["key" =>"jquery",
+                "path" => '/'.\Dcp\Ui\UIGetAssetPath::getJSJqueryPath()],
+                [
+                    "key" =>"kendo",
+                    "path" => \Dcp\Ui\UIGetAssetPath::getJSKendoPath()
+                ]
+            ],
+            "CSS" => [
+                [
+                    "key" => "bootstrap",
+                    "path" => "/css/ank/document/bootstrap.css?ws=" . $version
+                ],
+                [
+                    "key" => "kendo",
+                    "path" => "/css/ank/document/kendo.css?ws=" . $version
+                ],
+                [
+                    "key" => "admin",
+                    "path" => '/css/ank/admin-center/admin-center.css?ws='.$version
+                ]
+            ]
+        ];
+
+        $mustache = new \Mustache_Engine();
+
+        return $response->write($mustache->render($template, $data));
     }
 
 }

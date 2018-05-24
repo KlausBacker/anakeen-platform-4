@@ -18,7 +18,7 @@ const productionComponentConfig = merge([
         output: {
             publicPath: '/AdminCenter/prod/',
             path: path.resolve(PATHS.build, 'AdminCenter/prod/'),
-            filename: '[name].js'
+            filename: '[name]-[chunkhash].js'
         },
     },
     parts.useVueLoader(/node_modules/),
@@ -54,7 +54,7 @@ const debugComponentConfig = merge([
     parts.setFreeVariable('process.env.NODE_ENV', 'debug'),
     parts.clean(path.resolve(PATHS.build, 'AdminCenter/debug/')),
     parts.generateViewHtml({
-        destination: 'admin-center/src/vendor/Anakeen/AdminCenter/Layout/adminCenterMainPage.html',
+        destination: 'admin-center/src/vendor/Anakeen/AdminCenter/Layout/adminCenterMainPage-debug.html',
         template: 'admin-center/src/vendor/Anakeen/AdminCenter/Components/adminCenterMainPage.ejs',
         env: 'debug'
     }),
@@ -92,14 +92,14 @@ const devComponentConfig = merge([
         },
     }),
     parts.generateViewHtml({
-        destination: 'admin-center/src/vendor/Anakeen/AdminCenter/Layout/adminCenterMainPage.html',
+        destination: 'admin-center/src/vendor/Anakeen/AdminCenter/Layout/adminCenterMainPage-debug.html',
         template: 'admin-center/src/vendor/Anakeen/AdminCenter/Components/adminCenterMainPage.ejs',
         env: 'debug'
     }),
 ]);
 
 module.exports = env => {
-    if (env === 'production') {
+    if (env === 'prod') {
         return productionComponentConfig;
     } else if (env === 'debug') {
         return debugComponentConfig;
