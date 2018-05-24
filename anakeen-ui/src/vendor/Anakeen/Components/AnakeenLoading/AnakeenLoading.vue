@@ -2,7 +2,7 @@
     <div class="dcpLoading--content">
         <div class="dcpLoading--logo black-logo">
             <div class="text-logo">
-                <svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="poweredby" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 600 100" xml:space="preserve">
+                <svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="poweredby" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" height="18px" viewBox="0 0 600 100" xml:space="preserve">
                     <path class="st0" d="M115.5,34.1H99.7v18.5h-2.6V2.2h18.4c5.2,0,9,1.3,11.3,3.8c2.4,2.5,3.6,6.4,3.6,11.7
                         C130.4,28.6,125.4,34.1,115.5,34.1z M99.7,31.6h15.8c8.1,0,12.2-4.7,12.2-14c0-4.4-1-7.7-2.9-9.8c-1.9-2.1-5-3.2-9.3-3.2H99.7V31.6z
                         "></path>

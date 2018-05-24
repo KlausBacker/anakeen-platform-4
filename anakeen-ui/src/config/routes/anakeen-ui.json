@@ -1,15 +1,5 @@
 {
     "routes": {
-        "Ui:Document:Pager": {
-            "priority": 1,
-            "callable": "\\Anakeen\\Routes\\Ui\\DocumentsPager",
-            "methods": [
-                "GET"
-            ],
-            "pattern": "\/api\/v2\/pager\/{collection}\/pages\/{page}",
-            "description": "Document list page by page",
-            "requiredAccess": null
-        },
         "Ui:i18n": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Ui\\I18nCatalog",

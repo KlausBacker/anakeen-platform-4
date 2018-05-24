@@ -1,6 +1,6 @@
 <?php
 
-namespace Anakeen\Routes\Ui;
+namespace Anakeen\Components\SEList\Routes;
 
 use Anakeen\Routes\Core\DocumentList;
 use Anakeen\Core\ContextManager;

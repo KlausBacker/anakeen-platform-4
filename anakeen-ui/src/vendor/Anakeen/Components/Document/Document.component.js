@@ -2,10 +2,10 @@
  * Dynacase document component object ***
  */
 
-import AbstractComponent from '../componentBase';
+import { AnkMixin } from '../AnkVueComponentMixin';
 
 export default {
-    mixins: [AbstractComponent],
+    mixins: [AnkMixin],
     name: 'ank-document',
     data() {
         return {
