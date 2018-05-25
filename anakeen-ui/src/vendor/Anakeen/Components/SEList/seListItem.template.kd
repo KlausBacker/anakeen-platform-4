@@ -1,15 +1,15 @@
-<div class="documentsList__documentCard#if (data.properties.state){# documentsList__documentCard__full#}#">
-    <div class="documentsList__documentCard__body">
-        <div class="documentsList__documentCard__heading">
-            <img class="documentsList__documentCard__heading__content_icon" src="#: properties.icon#"
+<div class="seList__listItem#if (data.properties.state){# seList__listItem__full#}#">
+    <div class="seList__listItem__body">
+        <div class="seList__listItem__heading">
+            <img class="seList__listItem__heading__content_icon" src="#: properties.icon#"
                  alt="#: properties.title# image"/>
             <span>#: properties.title#</span>
         </div>
         # if (data.properties.state) {#
-            <div class="documentsList__documentCard__heading__state">
-                <span class="documentsList__documentCard__heading__state--color"
+            <div class="seList__listItem__heading__state">
+                <span class="seList__listItem__heading__state--color"
                       style="background-color: #= properties.state.color#"></span>
-                <span class="documentsList__documentCard__heading__state--label">
+                <span class="seList__listItem__heading__state--label">
                     #: properties.state.displayValue#
                 </span>
             </div>

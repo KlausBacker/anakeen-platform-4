@@ -6,7 +6,7 @@
       "methods": [
         "GET"
       ],
-      "pattern": "\/api\/v2\/pager\/{collection}\/pages\/{page}",
+      "pattern": "\/components\/selist\/pager\/{collection}\/pages\/{page}",
       "description": "Document list page by page",
       "requiredAccess": null
     }

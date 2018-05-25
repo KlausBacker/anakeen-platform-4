@@ -1,5 +1,5 @@
 import { AnkMixin } from '../AnkVueComponentMixin';
-import DocumentTemplate from './seListItem.template.kd';
+import SeTemplate from './seListItem.template.kd';
 
 export default {
     mixins: [AnkMixin],
@@ -16,7 +16,7 @@ export default {
         },
         contentUrl: {
             type: String,
-            default: 'api/v2/pager/{collection}/pages/{page}',
+            default: 'components/selist/pager/{collection}/pages/{page}',
         },
         order: {
             type: String,
@@ -40,7 +40,6 @@ export default {
                         read: (options) => {
                             if (options.data.collection) {
                                 const params = {
-                                    fields: 'document.properties.state,document.properties.icon',
                                     slice: options.data.take,
                                     orderBy: this.orderBy,
                                 };
@@ -77,9 +76,9 @@ export default {
                 });
                 this.$(this.$refs.listView).kendoListView({
                     dataSource: this.dataSource,
-                    template: this.$kendo.template(DocumentTemplate),
+                    template: this.$kendo.template(SeTemplate),
                     selectable: 'single',
-                    change: this.privateScope.onSelectDocument,
+                    change: this.privateScope.onSelectSe,
                     scrollable: true,
                 });
 
@@ -116,13 +115,13 @@ export default {
                     index: 1,
                     change: this.privateScope.onSelectPageSize,
                     headerTemplate: `<li class="dropdown-header">${this.translations.itemsPerPageLabel}</li>`,
-                    template: '<span class="documentsList__documents__pagination__pageSize">#= data.text#</span>',
-                }).data('kendoDropDownList').list.addClass('documentsList__documents__pagination__list');
+                    template: '<span class="seList__pagination__pageSize">#= data.text#</span>',
+                }).data('kendoDropDownList').list.addClass('seList__pagination__list');
             },
 
             onPagerChange: (e) => {
                 this.dataSource.page(e.index);
-                this.refreshDocumentsList().then().catch((err) => {
+                this.refreshList().then().catch((err) => {
                     console.error(err);
                 });
             },
@@ -145,18 +144,18 @@ export default {
             onSelectPageSize: (e) => {
                 const counter = this.$(this.$refs.pagerCounter).data('kendoDropDownList');
                 const newPageSize = counter.dataItem(e.item).value;
+                this.$emit('list-pagesize-change', newPageSize, this.dataSource.pageSize());
                 this.dataSource.pageSize(newPageSize);
-                this.refreshDocumentsList().then().catch((err) => {
+                this.refreshList().then().catch((err) => {
                     console.error(err);
                 });
             },
 
-            onSelectDocument: (...arg) => {
-                // this.$emit('store-save', {action: 'openDocument', data: document });
+            onSelectSe: (...arg) => {
                 const data = this.dataSource.view();
                 const listView = this.$(this.$refs.listView).data('kendoListView');
                 const selected = this.$.map(listView.select(), item => data[this.$(item).index()]);
-                this.selectDocument(selected[0]);
+                this.selectSe(selected[0]);
             },
         };
     },
@@ -187,8 +186,6 @@ export default {
     data() {
         return {
             collection: null,
-            documents: [],
-            appConfig: null,
             dataSource: null,
             filterInput: '',
             orderBy: this.order,
@@ -215,6 +212,14 @@ export default {
                 },
             ],
         };
+    },
+
+    watch: {
+        filterInput(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.$emit('list-filter-input', newValue, this.$(this.$el).parent()[0]);
+            }
+        },
     },
 
     computed: {
@@ -245,24 +250,24 @@ export default {
 
     methods: {
 
-        selectDocument(document) {
-            this.$emit('sel-selected', Object.assign({}, document.properties));
+        selectSe(se) {
+            this.$emit('sel-selected', Object.assign({}, se.properties));
         },
 
-        filterDocumentsList(filterValue) {
+        filterList(filterValue) {
             this.filterInput = filterValue;
             if (filterValue) {
-                this.refreshDocumentsList().then().catch((err) => {
+                this.refreshList().then().catch((err) => {
                     console.error(err);
                 });
             } else {
-                this.clearDocumentsListFilter();
+                this.clearListFilter();
             }
         },
 
-        clearDocumentsListFilter() {
+        clearListFilter() {
             this.filterInput = '';
-            this.refreshDocumentsList().then().catch((err) => {
+            this.refreshList().then().catch((err) => {
                 console.error(err);
             });
         },
@@ -276,12 +281,12 @@ export default {
             }
 
             this.dataSource.page(1);
-            this.refreshDocumentsList().then().catch((err) => {
+            this.refreshList().then().catch((err) => {
                 console.error(err);
             });
         },
 
-        refreshDocumentsList(opts = {}) {
+        refreshList(opts = {}) {
             return new Promise((resolve, reject) => {
                 if (this.collection && this.dataSource) {
                     this.dataSource.read({ collection: this.collection.initid || this.collection.name })
