@@ -1,154 +1,15 @@
 // BEGIN Variables : to remove when the real variables will be used
-// Base colors
-$blue-darker: #003DB0;
-$blue-dark: #2361DB;
-$blue: #157EFB;
-$blue-light: #00B4FC;
-$blue-lighter: #78D2FE;
-$orange: #FF542C;
-$gray-darker: #353535;
-$gray-dark: #505050;
-$gray: #878787;
-$gray-light: #C8C8C8;
-$gray-light-alt: #DDDDDD;
 $gray-lighter: #F4F4F4;
-$gray-lighter-alt: #F1F1F1;
 $green-light: #8AE234;
 $white: #FFFFFF;
 
-// Colors
-$ank-ui-color-link: $blue-lighter;
-$ank-ui-color-btn-action: $blue;
-$ank-ui-color-btn-creation: $blue-dark;
-$ank-ui-color-selected: $blue-light;
-$ank-ui-color-error: $orange;
-$ank-ui-color-text: $gray-darker;
-$ank-ui-color-text-colored: $white;
-$ank-ui-color-picto: $gray;
-$ank-ui-color-picto-colored: $white;
 $ank-ui-color-hovered: $gray-lighter;
-$ank-ui-color-font-document: $gray-dark;
-$ank-ui-color-font-placeholder: $gray-light;
-
 $ank-ui-color-client: $green-light;
-
-$ank-ui-color-label: #505050;
-$ank-ui-color-btn-click: $blue-darker;
-
-$ank-ui-color-body-background: $gray-lighter-alt;
-$ank-ui-color-frame-background: $white;
-
-$ank-ui-color-font-button: $ank-ui-color-text-colored;
-$ank-ui-color-font-title: $ank-ui-color-text;
-$ank-ui-color-btn-tool-bg: #E4E4E4;
-
-// Icons
-$ank-ui-icon-size: 1.166rem;
-$ank-ui-icon-color: $gray;
-$ank-ui-icon-spacer: 0.583rem;
-
-// Attribute
-$ank-ui-doc-edit-label-padding: 0;
-$ank-ui-doc-edit-attribute-bg: $white;
-$ank-ui-doc-edit-attribute-height: 2.166rem;
-$ank-ui-doc-edit-attribute-color-border: #E6E6E6;
-$ank-ui-doc-edit-attribute-border-radius: 0.33rem;
-$ank-ui-doc-edit-attribute-border: solid $ank-ui-doc-edit-attribute-color-border 0.083rem;
-$ank-ui-doc-edit-attribute-hover-color: #157EFB;
-$ank-ui-doc-edit-attribute-focus-color: #157EFB;
-$ank-ui-doc-edit-attribute-hover-border: solid $ank-ui-doc-edit-attribute-hover-color 0.083rem;
-$ank-ui-doc-edit-attribute-hover-shadow: 0rem 0rem 0.583rem $ank-ui-doc-edit-attribute-hover-color;
-$ank-ui-doc-edit-attribute-focus-shadow: 0rem 0rem 0.583rem $ank-ui-doc-edit-attribute-focus-color;
-$ank-ui-doc-edit-attribute-error-color: $ank-ui-color-error;
-$ank-ui-doc-edit-attribute-error-spacing: 0.166rem;
-$ank-ui-doc-edit-attribute-error-text-color: $white;
-$ank-ui-doc-read-label-padding: 0;
-$ank-ui-doc-read-attribute-height: auto;
-$ank-ui-doc-read-attribute-border: 0.083rem solid #F1EFEF;
-$ank-ui-doc-read-attribute-value-padding: 0 0 0.6666rem 0;
-$ank-ui-doc-read-attribute-link-color: #78D2FE;
-$ank-ui-doc-read-attribute-picto-space: 0.6666rem;
-$ank-ui-input-height: 2.5rem;
-
-// Button 1
-$ank-ui-button1-width: auto;
-$ank-ui-button1-height: 2.5rem;
-$ank-ui-button1-color-background: $ank-ui-color-btn-action;
-$ank-ui-button1-color-text: $ank-ui-color-text-colored;
-$ank-ui-button1-border-radius: 0.166rem;
-$ank-ui-button1-padding: 2.5rem;
-$ank-ui-button1-disabled-color-background: $ank-ui-color-font-placeholder;
-$ank-ui-button1-disabled-color-text: $ank-ui-color-font-document;
-$ank-ui-button1-disabled-hover-color-background: $ank-ui-button1-disabled-color-background;
-$ank-ui-button1-disabled-hover-color-text: $ank-ui-button1-disabled-color-text;
-$ank-ui-button1-disabled-opacity: 0.5;
-$ank-ui-button1-hover-color-background: $ank-ui-color-btn-click;
-$ank-ui-button1-hover-color-text: $ank-ui-color-text-colored;
-$ank-ui-button1-hover-shadow: 0.416rem 0.416rem 1rem 1rem #1508A5 inset;
-
-// Button 2
-$ank-ui-button2-color-text: #157EFB;
-$ank-ui-button2-color-background: #FFFFFF;
-$ank-ui-button2-color-border: #157EFB;
-
-$ank-ui-button2-color-hover-text: #FFFFFF;
-$ank-ui-button2-color-hover-background: #157EFB;
-
-$ank-ui-button2-width: auto;
-$ank-ui-button2-height: 2.5rem;
-$ank-ui-button2-border-radius: 0.166rem;
-$ank-ui-button2-padding: 2.5rem;
-
-$ank-ui-button2-disabled-color-background: #FFFFFF;
-$ank-ui-button2-disabled-color-text: #C8C8C8;
-$ank-ui-button2-disabled-hover-color-background: $ank-ui-button2-disabled-color-background;
-$ank-ui-button2-disabled-hover-color-text: $ank-ui-button2-disabled-color-text;
-$ank-ui-button2-disabled-color-border: #C8C8C8;
-
-// Button 3
-$ank-ui-button3-width: auto;
-$ank-ui-button3-border-radius: O;
-$ank-ui-button3-padding: 2.833rem;
-$ank-ui-button3-color-border: #157EFB;
-$ank-ui-button3-disabled-color-background: #FFFFFF;
-$ank-ui-button3-disabled-color-text: #C8C8C8;
-$ank-ui-button3-disabled-hover-color-background: #FFFFFF;
-$ank-ui-button3-disabled-hover-color-text: #C8C8C8;
-$ank-ui-button3-color-text: #157EFB;
-$ank-ui-button3-color-background: #FFFFFF;
-$ank-ui-button3-color-hover-text: #157EFB;
-$ank-ui-button3-color-hover-background: #FFFFFF;
-
-$ank-ui-font-size: 12px;
-$ank-ui-line-height: 1.2;
-
-$ank-ui-font: 'Roboto-Regular', 'Helvetica', sans-serif;
-$ank-ui-font-base-size: 1rem;
-$ank-ui-title-size: 1rem;
-$ank-ui-title-font-weight: bold;
-$ank-ui-title-font-line-height: 1.333rem;
-$ank-ui-title-font-variant: 'Roboto-Bold';
-$ank-ui-label-font-size: 1rem;
-$ank-ui-label-font-weight: normal;
-$ank-ui-label-font-variant: 'Roboto-Regular';
-$ank-ui-label-font-line-height: 1.333rem;
-$ank-ui-value-font-size: 1rem;
-$ank-ui-value-font-weight: normal;
-$ank-ui-value-font-variant: 'Roboto-Bold';
-$ank-ui-value-font-line-height: 1.333rem;
-$ank-ui-button-font-size: 1rem;
-$ank-ui-button-font-weight: normal;
-$ank-ui-button-font-variant: 'Roboto-Bold';
-$ank-ui-button-font-line-height: 1.333rem;
 // END Variables
 
 #identity {
   #identity-badge {
     background-color: $ank-ui-color-client;
-
-    #identity-badge-extension {
-
-    }
   }
 
   #identity-badge:hover {
@@ -157,6 +18,8 @@ $ank-ui-button-font-line-height: 1.333rem;
 }
 
 #popup {
+  background: $white;
+
   ul {
     .action:hover {
       background-color: $ank-ui-color-hovered;

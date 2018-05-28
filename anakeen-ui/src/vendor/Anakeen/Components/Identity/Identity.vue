@@ -2,7 +2,7 @@
     <div>
         <div id="identity">
             <button id="identity-badge" class="identity-badge" @click="toggleSettingsPopup">
-                <div id="identity-badge-initials" >{{ ' ' + initials }}</div>
+                <div id="identity-badge-initials" >{{ initials }}</div>
                 <i id="identity-badge-icon" class="fa fa-angle-down"></i>
             </button>
             <div id="identity-badge-extension" v-if="large">

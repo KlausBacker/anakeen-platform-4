@@ -33,14 +33,14 @@ export default {
             newPassword: '',
             newPasswordConfirmation: '',
 
-            // Warning messages
+            // Warning messages during email/password change
             emailWarningMessage: '',
             passwordWarningMessage: ''
         }
     },
 
     methods: {
-        // Fetch user's informations from the server
+        // Fetch user's information from the server
         fetchUser() {
             this.$http.get('/components/identity/user')
                 .then(response => {
@@ -84,11 +84,12 @@ export default {
                             this.closePasswordModifierWindow();
                         })
                         .catch(() => {
-                            // Show an error message and remove the loader
+                            // Show a warning message and remove the loader
                             this.passwordWarningMessage = this.translations.serverError;
                             kendo.ui.progress(this.$("#passwordModifier"), false);
                         });
                 } else {
+                    // Show a warning message
                     this.passwordWarningMessage = this.translations.passwordsMismatchMessage;
                 }
             } else {
@@ -115,9 +116,10 @@ export default {
                 // Verify if the input is an email ( [string]@[string].[string] )
                 if (this.newEmail.match(/\S+@\S+\.\S+/)) {
                     kendo.ui.progress(this.$("#emailModifier"), true);
-                    this.$http.put('/components/identity/email', {
-                        email: this.newEmail
-                    })
+                    this.$http.put('/components/identity/email',
+                        {
+                            email: this.newEmail
+                        })
                         .then(response => {
                             this.$emit('emailModified', { email: response.data.email });
 
@@ -128,10 +130,12 @@ export default {
                             this.closeEmailModifierWindow();
                         })
                         .catch(() => {
+                            // Show a warning message and remove the loader
                             this.emailWarningMessage = this.translations.serverError;
                             kendo.ui.progress(this.$("#emailModifier"), false);
                         });
                 } else {
+                    // Show a warning message
                     this.emailWarningMessage = this.translations.emailFormatMessage;
                 }
             } else {
@@ -229,12 +233,13 @@ export default {
                 origin: "bottom left",
                 position: "top left",
                 animation: false,
-                collision: 'flip'
+                collision: 'flip fit'
             });
         }
 
         // Init window to change the user's email (if allowed in the props)
         if (this.emailalterable) {
+            // Function called when th dialog is open and closed
             let resetEmailChangeData = () => {
                 this.newEmail = '';
                 this.emailWarningMessage = '';
@@ -257,6 +262,7 @@ export default {
 
         // Init window to change the user's password (if allowed in the props)
         if (this.passwordalterable) {
+            // Function called when the dialog is open  and closed
             let resetPasswordChangeData = () => {
                 this.newPassword = '';
                 this.newPasswordConfirmation = '';
