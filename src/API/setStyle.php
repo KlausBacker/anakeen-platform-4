@@ -205,7 +205,7 @@ class styleManager
         
         if (!$style->isAffected()) {
             $style->name = $styleName;
-            $err = $style->Add();
+            $err = $style->add();
             if ($err) {
                 throw new \Dcp\Style\Exception("STY0003", "error when registering style");
             }

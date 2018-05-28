@@ -3,6 +3,7 @@
 namespace Anakeen\Core;
 
 use Anakeen\Core\Utils\Strings;
+use Anakeen\LogManager;
 use Anakeen\SmartStructures\Igroup\IgroupLib;
 
 define("GALL_ID", 2);
@@ -487,7 +488,7 @@ create sequence seq_id_users start 10;";
 
         $this->fid = $fid;
         if (!$this->isAffected()) {
-            $err = $this->Add();
+            $err = $this->add();
         } else {
             $err = $this->Modify();
         }
@@ -534,7 +535,7 @@ create sequence seq_id_users start 10;";
         $this->fid = $fid;
         if (!$this->isAffected()) {
             $this->accounttype = self::GROUP_TYPE;
-            $err = $this->Add();
+            $err = $this->add();
         } else {
             $err = $this->Modify();
         }
@@ -606,7 +607,7 @@ create sequence seq_id_users start 10;";
                  */
                 $iuser = SEManager::createDocument($fam);
                 $iuser->SetValue("US_WHATID", $this->id);
-                $iuser->Add();
+                $iuser->add();
                 $this->fid = $iuser->id;
                 $this->modify(true, array(
                     'fid'
@@ -669,15 +670,11 @@ create sequence seq_id_users start 10;";
                     if ($this->id == 1) {
                         $this->setSupervisorHtpasswd($pass);
                     }
-                    $log = new \Anakeen\Core\Internal\Log("", "Session", "Authentication");
-                    $facility = constant(\Anakeen\Core\ContextManager::getApplicationParam(
-                        "AUTHENT_LOGFACILITY",
-                        "LOG_AUTH"
-                    ));
-                    $log->wlog("S", sprintf(
-                        'User %s password crypted with salted SHA256 algorithm.',
+
+                    LogManager::info(sprintf(
+                        'User "%s" password crypted with salted SHA256 algorithm.',
                         $this->login
-                    ), null, $facility);
+                    ));
                 }
             }
         } else {
@@ -744,7 +741,7 @@ union
         $userAdmin->firstname = "Anakeen Platform";
         $userAdmin->password_new = "anakeen";
         $userAdmin->login = "admin";
-        $userAdmin->Add(true);
+        $userAdmin->add(true);
 
         $group->iduser = $userAdmin->id;
 
@@ -756,10 +753,10 @@ union
         $groupAll->firstname = "";
         $groupAll->login = "all";
         $groupAll->accounttype = self::GROUP_TYPE;
-        $groupAll->Add(true);
+        $groupAll->add(true);
 
         $group->idgroup = $groupAll->id;
-        $group->Add(true);
+        $group->add(true);
 
         // Create anonymous user
 
@@ -770,7 +767,7 @@ union
         $anonymousUser->login = "anonymous";
         $anonymousUser->password = "-";
         $anonymousUser->accounttype = self::USER_TYPE;
-        $anonymousUser->Add(true);
+        $anonymousUser->add(true);
 
         // Create admin group
 
@@ -780,10 +777,10 @@ union
         $groupAdmin->firstname = "";
         $groupAdmin->login = "gadmin";
         $groupAdmin->accounttype = self::GROUP_TYPE;
-        $groupAdmin->Add(true);
+        $groupAdmin->add(true);
         $group->idgroup = Account::GALL_ID;
         $group->iduser = Account::GADMIN_ID;
-        $group->Add(true);
+        $group->add(true);
         // Store error messages
     }
 
@@ -1307,21 +1304,7 @@ union
         return $token;
     }
 
-    /**
-     * Set password for the admin account in the `admin' subdir
-     *
-     * @deprecated use {@link Account::setSupervisorHtpasswd} instead
-     * @see        \Anakeen\Core\Account::setSupervisorHtpasswd
-     *
-     * @param string $admin_passwd the password
-     *
-     * @return string error message, emptuy string if no error
-     */
-    public function setAdminHtpasswd($admin_passwd)
-    {
-        deprecatedFunction();
-        return $this->setSupervisorHtpasswd($admin_passwd);
-    }
+
 
     /**
      * Set password for the admin account in the `admin' subdir

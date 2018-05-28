@@ -214,19 +214,7 @@ class SearchAccount
         $this->start = intval($start);
     }
 
-    /**
-     * set if use view control document's privilege to filter account
-     *
-     * @deprecated use {@link SearchAccount::overrideViewControl} instead. Be carefull: this is the opposite!
-     * @see        SearchAccount::overrideViewControl
-     *
-     * @param bool $control
-     */
-    public function useViewControl($control = true)
-    {
-        deprecatedFunction();
-        $this->overrideViewControl(!$control);
-    }
+
 
     /**
      * include accounts the user cannot view
@@ -275,22 +263,7 @@ class SearchAccount
         $this->returnType = $type;
     }
 
-    /**
-     * convert logical name document to login account
-     *
-     * @static
-     * @deprecated use {@link SearchAccount::getLoginFromDocName} instead
-     * @see        SearchAccount::getLoginFromDocName
-     *
-     * @param string $name lolgical name
-     *
-     * @return string login , null if not found
-     */
-    public static function docName2login($name)
-    {
-        deprecatedFunction();
-        return self::getLoginFromDocName($name);
-    }
+
 
     /**
      * get login account from logical name document

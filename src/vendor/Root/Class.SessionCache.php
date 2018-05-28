@@ -39,7 +39,7 @@ class SessionCache extends DbObj
             
             $date = gettimeofday();
             $this->lasttime = $date['sec'];
-            $this->Add();
+            $this->add();
         }
     }
     // modify with current date

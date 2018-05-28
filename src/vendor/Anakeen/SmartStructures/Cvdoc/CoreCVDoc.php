@@ -287,7 +287,7 @@ class CoreCVDoc extends \SmartStructure\Base
                     $pdoc = createDoc($this->dbaccess, $this->fromid, false);
                     $pdoc->doctype = "T"; // temporary
                     //	$pdoc->setValue("DPDOC_FAMID",$this->getRawValue("DPDOC_FAMID"));
-                    $err = $pdoc->Add();
+                    $err = $pdoc->add();
                     if ($err != "") {
                         return "CVDoc::Control:" . $err;
                     } // can't create profil

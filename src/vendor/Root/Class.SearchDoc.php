@@ -650,17 +650,7 @@ class SearchDoc
         return "";
     }
 
-    /**
-     * do the search in debug mode, you can after the search get infrrmation with getDebugIndo()
-     * @param boolean $debug set to true search in debug mode
-     * @deprecated no debug mode setting are necessary
-     * @return void
-     */
-    public function setDebugMode($debug = true)
-    {
-        deprecatedFunction();
-        $this->debug = $debug;
-    }
+
 
     /**
      * set recursive mode for folder searches
@@ -681,17 +671,7 @@ class SearchDoc
         $this->folderRecursiveLevel = $level;
     }
 
-    /**
-     * return debug info if debug mode enabled
-     * @deprecated use getSearchInfo instead
-     *
-     * @return array of info
-     */
-    public function getDebugInfo()
-    {
-        deprecatedFunction();
-        return $this->debuginfo;
-    }
+
 
     /**
      * return informations about query after search has been sent
@@ -775,23 +755,7 @@ class SearchDoc
         return true;
     }
 
-    /**
-     * can, be use in loop
-     * ::search must be call before
-     *
-     * @see        \Anakeen\Core\Internal\Application::getNextDoc
-     *
-     * @deprecated use { @link \Anakeen\Core\Internal\Application::getNextDoc } instead
-     *
-     * @see        SearchDoc::search
-     *
-     * @return \Anakeen\Core\Internal\SmartElement |array or null if this is the end
-     */
-    public function nextDoc()
-    {
-        deprecatedFunction();
-        return $this->getNextDoc();
-    }
+
 
     /**
      * can, be use in loop
@@ -1295,18 +1259,7 @@ class SearchDoc
         return $sql_cond;
     }
 
-    /**
-     * no use access view control in filters
-     * @see        SearchDoc::overrideViewControl
-     *
-     * @deprecated use { @link SearchDoc::overrideViewControl } instead
-     * @return void
-     */
-    public function noViewControl()
-    {
-        deprecatedFunction();
-        $this->overrideViewControl();
-    }
+
 
     /**
      * no use access view control in filters

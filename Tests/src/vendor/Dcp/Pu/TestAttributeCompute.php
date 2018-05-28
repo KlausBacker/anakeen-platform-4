@@ -5,14 +5,19 @@
 */
 
 namespace Dcp\Pu;
+
 /**
- * @author Anakeen
+ * @author  Anakeen
  * @package Dcp\Pu
  */
 
 //require_once 'PU_testcase_dcp_commonfamily.php';
 
 use \Anakeen\Core\Internal\StoreInfo;
+use Anakeen\Core\SEManager;
+use Anakeen\LogManager;
+use Monolog\Handler\StreamHandler;
+
 class TestAttributeCompute extends TestCaseDcpCommonFamily
 {
     /**
@@ -24,8 +29,9 @@ class TestAttributeCompute extends TestCaseDcpCommonFamily
     {
         return "PU_data_dcp_familycomputed.ods";
     }
-    
+
     protected $famName = 'TST_FAMILYCOMPUTED';
+
     /**
      * @dataProvider dataComputedValues
      */
@@ -33,46 +39,50 @@ class TestAttributeCompute extends TestCaseDcpCommonFamily
     {
         static $d = null;
         if ($d === null) {
-            $d = createDoc(self::$dbaccess, $this->famName);
-            $this->assertTrue(is_object($d) , sprintf("cannot create %s document", $this->famName));
+            $d = SEManager::createDocument($this->famName);
+            $this->assertTrue(is_object($d), sprintf("cannot create %s document", $this->famName));
         }
-        
+
         foreach ($inputs as $k => $v) {
             $d->setValue($k, $v);
         }
-        
-        $tmpLogFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir() , __FUNCTION__);
-        $d->log = new \Anakeen\Core\Internal\Log($tmpLogFile, $d->log->application, $d->log->function);
-        
+
+        $tmpLogFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), __FUNCTION__);
+        LogManager::pushHandler(new StreamHandler($tmpLogFile, LogManager::WARNING));
+
+
         $info = new StoreInfo();
         $err = $d->store($info);
-        
+
         $log = file_get_contents($tmpLogFile);
         unlink($tmpLogFile);
-        
+
         $this->assertEmpty($err, sprintf("cannot modify %s document", $this->famName));
         foreach ($expectedvalues as $k => $v) {
-            if (is_array($v)) $value = $d->getMultipleRawValues($k);
-            else $value = $d->getRawValue($k);
+            if (is_array($v)) {
+                $value = $d->getMultipleRawValues($k);
+            } else {
+                $value = $d->getRawValue($k);
+            }
             $this->assertEquals($v, $value, sprintf("error computed %s", $k));
         }
         $this->assertEmpty($info->refresh, sprintf("refresh returned with unexpected error: %s", $info->refresh));
         foreach ($logMatch as $re) {
-            $this->assertTrue(preg_match($re, $log) == 1, sprintf("log did not contained expected message '%s'", $re));
+            $this->assertTrue(preg_match($re, $log) == 1, sprintf("log did not contained expected message '%s' <> '%s'", $re, $log));
         }
-        
+
         return $d;
     }
-    
+
     public function dataComputedValues()
     {
-        
+
         $arg = array(
             array(
                 "x" => 10,
                 "y1" => 123,
                 "z1" => 230
-            ) ,
+            ),
             array(
                 "x" => 80,
                 "y1" => 133,
@@ -91,7 +101,7 @@ class TestAttributeCompute extends TestCaseDcpCommonFamily
                         $y1,
                         $z1
                     )
-                ) ,
+                ),
                 'ouputs' => array(
                     'tst_number1' => $x1 = $x,
                     'tst_number2' => $x2 = $x + 1,
@@ -107,19 +117,19 @@ class TestAttributeCompute extends TestCaseDcpCommonFamily
                     "tst_number11" => array(
                         $y2 = $y1 + 10,
                         $z2 = $z1 + 10
-                    ) ,
+                    ),
                     "tst_number12" => array(
                         $y1 + $y2,
                         $z1 + $z2
-                    ) ,
+                    ),
                     'tst_count' => 2,
                     'tst_vis_i_1' => '',
                     'tst_vis_i_2' => '',
                     'tst_vis_i_3' => ''
-                ) ,
+                ),
                 'logMatch' => array(
-                    '/\[W\].*{ATTR1800} value of attribute "tst_vis_i_1"/',
-                    '/\[W\].*{ATTR1800} value of attribute "tst_vis_i_3"/'
+                    '/WARNING.*{ATTR1800} value of attribute "tst_vis_i_1"/',
+                    '/WARNING.*{ATTR1800} value of attribute "tst_vis_i_3"/'
                 )
             );
         }

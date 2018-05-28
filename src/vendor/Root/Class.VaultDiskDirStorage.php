@@ -121,7 +121,7 @@ SQL;
         if ($query->nb > 0) {
             $needNewOneDir = true;
             foreach ($dirs as $dir) {
-                $this->Select($dir["id_dir"]);
+                $this->select($dir["id_dir"]);
                 
                 $sql = sprintf("SELECT count(*) FROM vaultdiskstorage WHERE id_dir=%d", $this->id_dir);
                 $t = $query->Query(0, 0, "TABLE", $sql);
@@ -188,7 +188,7 @@ SQL;
         $this->l_path = $npath;
         $this->isfull = 'f';
         $this->size = null;
-        $err = $this->Add();
+        $err = $this->add();
         if ($err == "") {
             $dirpath = $rpath . "/" . $npath;
             if (!is_dir($dirpath)) {
@@ -207,8 +207,8 @@ SQL;
         if ($this->Exists($this->l_path, $this->id_fs)) {
             return (_("Directory already exists"));
         }
-        $this->exec_query("select nextval ('" . $this->seq . "')");
-        $arr = $this->fetch_array(0);
+        $this->query("select nextval ('" . $this->seq . "')");
+        $arr = $this->fetchArray(0);
         $this->id_dir = $arr["nextval"];
         return '';
     }

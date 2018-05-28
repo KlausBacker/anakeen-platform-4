@@ -6,6 +6,7 @@ use Anakeen\Core\Account;
 use Anakeen\Core\ContextManager;
 use \Anakeen\Core\DbManager;
 use \Anakeen\Core\SEManager;
+use Anakeen\LogManager;
 
 /**
  * Control Access Document Class
@@ -156,7 +157,7 @@ class DocumentAccess
             $perm->upacl = -2; // all privileges
             if (!$perm->IsAffected()) {
                 // add all privileges to current user
-                $perm->Add();
+                $perm->add();
             } else {
                 $perm->Modify();
             }
@@ -390,7 +391,7 @@ class DocumentAccess
                 DbManager::lockPoint($this->document->initid, "PERM");
             }
             // Need to lock to avoid constraint errors when concurrent docperm update
-            $this->document->exec_query(sprintf("delete from docperm where docid=%d", $this->document->id));
+            $this->document->query(sprintf("delete from docperm where docid=%d", $this->document->id));
             if ($fromdocidvalues == null) {
                 $fromdocidvalues = &$this->document;
             }
@@ -419,16 +420,16 @@ class DocumentAccess
                                 if (!is_array($docu)) {
                                     // No use exception because document may has been deleted
                                     $errorMessage = \ErrorCode::getError('DOC0127', var_export($duid, true), var_export($aid, true));
-                                    $this->document->log->error($errorMessage);
+                                    LogManager::error($errorMessage);
                                     $this->document->addHistoryEntry($errorMessage, \DocHisto::ERROR);
                                 } elseif (!array_key_exists('us_whatid', $docu)) {
                                     $errorMessage = \ErrorCode::getError('DOC0128', var_export($duid, true), var_export($aid, true));
-                                    $this->document->log->error($errorMessage);
+                                    LogManager::error($errorMessage);
                                     $this->document->addHistoryEntry($errorMessage, \DocHisto::ERROR);
                                 } elseif (empty($docu['us_whatid'])) {
                                     // No use exception because account may has been deleted
                                     $errorMessage = \ErrorCode::getError('DOC0129', var_export($duid, true), var_export($aid, true));
-                                    $this->document->log->error($errorMessage);
+                                    LogManager::error($errorMessage);
                                     $this->document->addHistoryEntry($errorMessage, \DocHisto::ERROR);
                                 } else {
                                     $tuid[] = $docu["us_whatid"];
@@ -458,7 +459,7 @@ class DocumentAccess
                         } else {
                             if ($perm->upacl) {
                                 // add if necessary
-                                $err = $perm->Add();
+                                $err = $perm->add();
                             }
                         }
                     }
@@ -520,7 +521,7 @@ class DocumentAccess
                 }
             }
         }
-        $this->document->exec_query(sprintf("delete from docpermext where docid=%d", $this->document->id));
+        $this->document->query(sprintf("delete from docpermext where docid=%d", $this->document->id));
         if ($fromdocidvalues == null) {
             $fromdocidvalues = &$this->document;
         }
@@ -597,7 +598,7 @@ class DocumentAccess
             if ($perm->isAffected()) {
                 $err = $perm->modify();
             } else {
-                $err = $perm->Add();
+                $err = $perm->add();
             }
         }
         $this->setViewProfil();
@@ -854,7 +855,7 @@ class DocumentAccess
                 $oa = $ddoc->getAttribute($accountReference);
                 if (($oa->type == "docid") || ($oa->type == "account")) {
                     $vg->id = $oa->id;
-                    $vg->Add();
+                    $vg->add();
                     $accountReference = $vg->num;
                 }
                 //else : $err = sprintf(_("unknow virtual user identificateur %s") , $uid);

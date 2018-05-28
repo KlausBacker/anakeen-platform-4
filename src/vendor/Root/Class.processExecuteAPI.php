@@ -87,10 +87,10 @@ class processExecuteAPI
         $time_end = microtime(true);
         $time = $time_end - $time_start;
         if ($err) {
-            $action->log->error(sprintf("Error while executing timer %s (%d): %s in %.03f seconds", $dt->title, $dt->id, $err, $time));
+            \Anakeen\LogManager::error(sprintf("Error while executing timer %s (%d): %s in %.03f seconds", $dt->title, $dt->id, $err, $time));
             print sprintf("Error while executing timer %s (%d): %s in %.03f seconds", $dt->title, $dt->id, $err, $time);
         } else {
-            $action->log->info(sprintf("Timer %s (%d) executed in %.03f seconds", $dt->title, $dt->id, $time));
+            \Anakeen\LogManager::info(sprintf("Timer %s (%d) executed in %.03f seconds", $dt->title, $dt->id, $time));
             print sprintf("Timer %s (%d) executed in %.03f seconds", $dt->title, $dt->id, $time);
         }
     }

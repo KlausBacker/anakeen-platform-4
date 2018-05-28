@@ -40,7 +40,7 @@ ATTR;EXEC_DETAIL;EXEC_FR_CR;Détail;N;N;ifile;::auto;R;;;;;;;
 ATTR;EXEC_DETAILLOG;EXEC_FR_CR;Log;N;N;longtext;::auto;R;;;;;;;
 ATTR;EXEC_BGEXEC;;Exécuter maintenant;N;N;menu;::auto;R;;::bgExecute();;::isLatestExec();;;
 ATTR;EXEC_RESET;;Abandonner l'exécution en cours;N;N;menu;::auto;R;;::resetExecute();;::isInprogress();;;ltarget=_self
-DEFAULT;EXEC_IDUSER;::getUserId();;;;;;;;;;;;;
+DEFAULT;EXEC_IDUSER;::getCurrentSmartUserId();;;;;;;;;;;;;
 DEFAULT;EXEC_USER;::getTitle(EXEC_IDUSER);;;;;;;;;;;;;
 PARAM;EXEC_FR_PARAM;;Paramètre;N;N;frame;::auto;W;;;;;;;
 PARAM;EXEC_IDADMIN;EXEC_FR_PARAM;Administrateur;N;N;"docid(""IUSER"")";::auto;W;N;;;;;;elabel=recevra en copie les couriels des rapports d'exécution

@@ -42,10 +42,7 @@ $htmlmode = $usage->addOptionalParameter("htmlmode", "analyze report mode in htm
     "yes",
     "no"
 ), "yes");
-$reinit = $usage->addOptionalParameter("reinitattr", "reset attribute before import family update (deprecated)", array(
-    "yes",
-    "no"
-));
+
 $reset = $usage->addOptionalParameter("reset", "reset options", function ($values, $argName, \Anakeen\Script\ApiUsage $apiusage) {
     $opt = array(
         "default",
@@ -112,10 +109,7 @@ $csvLinebreak = $usage->addOptionalParameter("csv-linebreak", "character sequenc
 
 $usage->verify();
 
-if ($reinit == "yes") {
-    $reset[] = "attributes";
-    $action->log->deprecated("importDocuments :reinitattr option is deprecated, use --reset=attributes");
-}
+
 if (!file_exists($filename)) {
     $action->ExitError(sprintf(_("import file %s not found"), $filename));
 }

@@ -13,6 +13,7 @@ namespace Anakeen\SmartStructures\Exec;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
+use Anakeen\LogManager;
 use Anakeen\Script\ShellManager;
 use Anakeen\SmartHooks;
 
@@ -85,7 +86,7 @@ class ExecHooks extends \Anakeen\SmartStructures\Document
             $this->execuserid = $fuid;
         } else {
             $wuid = ContextManager::getCurrentUser()->id;
-            $this->execuserid = $this->getUserId();
+            $this->execuserid = ContextManager::getCurrentUser()->fid;
         }
         $cmd .= " --login=$wuid";
         if (!$bgapi) {
@@ -100,6 +101,11 @@ class ExecHooks extends \Anakeen\SmartStructures\Document
         }
         return $cmd;
     }
+
+     public static function getCurrentSmartUserId() {
+        return ContextManager::getCurrentUser()->fid;
+     }
+
 
     /**
      * return the document user id for the next execution
@@ -224,10 +230,10 @@ class ExecHooks extends \Anakeen\SmartStructures\Document
         $time = $time_end - $time_start;
         if ($status == 0) {
             \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Process %s [%d] executed"), $this->title, $this->id));
-            $action->log->info(sprintf(_("Process %s [%d] executed in %.03f seconds"), $this->title, $this->id, $time));
+            LogManager::info(sprintf(_("Process %s [%d] executed in %.03f seconds"), $this->title, $this->id, $time));
         } else {
             \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Error : Process %s [%d]: status %d"), $this->title, $this->id, $status));
-            $action->log->error(sprintf(_("Error : Process %s [%d]: status %d in %.03f seconds"), $this->title, $this->id, $status, $time));
+            LogManager::error(sprintf(_("Error : Process %s [%d]: status %d in %.03f seconds"), $this->title, $this->id, $status, $time));
         }
         return $status;
     }

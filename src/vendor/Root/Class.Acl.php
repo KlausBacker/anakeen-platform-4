@@ -4,7 +4,7 @@
  *
  */
 
-
+use \Anakeen\LogManager;
 
 class Acl extends DbObj
 {
@@ -67,8 +67,8 @@ create sequence SEQ_ID_ACL;
         if ($this->Exists($this->name, $this->id_application)) {
             return "Acl {$this->name} already exists...";
         }
-        $msg_res = $this->exec_query("select nextval ('seq_id_acl')");
-        $arr = $this->fetch_array(0);
+        $msg_res = $this->query("select nextval ('seq_id_acl')");
+        $arr = $this->fetchArray(0);
         $this->id = $arr["nextval"];
         return '';
     }
@@ -114,7 +114,7 @@ create sequence SEQ_ID_ACL;
     public function Init($app, $app_acl, $update = false)
     {
         if (sizeof($app_acl) == 0) {
-            $this->log->debug("No acl available");
+            LogManager::debug("No acl available");
             return ("");
         }
         
@@ -164,11 +164,11 @@ create sequence SEQ_ID_ACL;
             }
             
             if ($acl->Exists($acl->name, $acl->id_application)) {
-                $this->log->info("Acl Modify : {$acl->name}, {$acl->description}");
+                LogManager::info("Acl Modify : {$acl->name}, {$acl->description}");
                 $acl->Modify();
             } else {
-                $this->log->info("Acl Add : {$acl->name}, {$acl->description}");
-                $acl->Add();
+                LogManager::info("Acl Add : {$acl->name}, {$acl->description}");
+                $acl->add();
             }
             if (isset($tab["admin"]) && $tab["admin"]) {
                 $permission = new Permission($this->dbaccess);
@@ -176,11 +176,11 @@ create sequence SEQ_ID_ACL;
                 $permission->id_application = $app->id;
                 $permission->id_acl = $acl->id;
                 if ($permission->Exists($permission->id_user, $app->id, $permission->id_acl)) {
-                    $this->log->info("Modify admin permission : {$acl->name}");
+                    LogManager::info("Modify admin permission : {$acl->name}");
                     $permission->Modify();
                 } else {
-                    $this->log->info("Create admin permission : {$acl->name}");
-                    $permission->Add();
+                    LogManager::info("Create admin permission : {$acl->name}");
+                    $permission->add();
                 }
             }
             if ($default_acl) {
@@ -228,7 +228,7 @@ create sequence SEQ_ID_ACL;
                 $permission->id_application = $app->id;
                 $permission->id_acl = $aclid;
                 if (!$permission->Exists($permission->id_user, $app->id, $permission->id_acl)) {
-                    $permission->Add();
+                    $permission->add();
                 }
             }
         }
@@ -247,7 +247,7 @@ create sequence SEQ_ID_ACL;
         //       }
         //       if (!$find) {
         //         // remove the ACL and all associated permissions
-        //         $this->log->info("Removing the {$v->name} ACL");
+        //         LogManager::info("Removing the {$v->name} ACL");
         //         $query2 = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Permission::class);
         //         $query2->basic_elem->sup_where=array("id_application= {$app->id}",
         //                                              "id_acl = {$v->id}");

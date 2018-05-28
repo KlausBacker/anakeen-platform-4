@@ -225,23 +225,7 @@ create unique index idx_idfam on docfam(id);";
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~ PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~
 
-    /**
-     * return family parameter
-     *
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::getParameterRawValue} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::getParameterRawValue
-     *
-     * @param string $idp parameter identifier
-     * @param string $def default value if parameter not found or if it is null
-     *
-     * @return string parameter value
-     * @throws \Dcp\Db\Exception
-     */
-    final public function getParamValue($idp, $def = "")
-    {
-        deprecatedFunction();
-        return $this->getParameterRawValue($idp, $def);
-    }
+
 
     /**
      * return family parameter
@@ -700,7 +684,7 @@ create unique index idx_idfam on docfam(id);";
         foreach ($tvid as $k => $vid) {
             $dvi->docid = $this->id;
             $dvi->vaultid = $vid;
-            $dvi->Add();
+            $dvi->add();
         }
         DbManager::commitPoint($point);
 

@@ -358,7 +358,7 @@ class ImportSingleDocument
                             if (count($unknownLogicalNames) > 0) {
                                 foreach ($unknownLogicalNames as $logicalName) {
                                     $warnMsg = sprintf(_("Unknown logical name '%s' in attribute '%s'."), $logicalName, $attr->id);
-                                    $this->doc->log->warning($warnMsg);
+                                    \Anakeen\LogManager::warning($warnMsg);
                                     $this->tcr['specmsg'] .= (($this->tcr['specmsg'] != '') ? "\n" . $warnMsg : $warnMsg);
                                 }
                             }
@@ -421,7 +421,7 @@ class ImportSingleDocument
                                 }
                                 return $this;
                             }
-                            $err = $this->doc->Add();
+                            $err = $this->doc->add();
 
                             if ($err) {
                                 $this->setError("DOC0107", $this->doc->name, $err);
@@ -462,7 +462,7 @@ class ImportSingleDocument
 
                                     return $this;
                                 }
-                                $err = $this->doc->Add();
+                                $err = $this->doc->add();
 
                                 if ($err) {
                                     $this->setError("DOC0108", $this->doc->name, $err);
@@ -535,7 +535,7 @@ class ImportSingleDocument
                                         $this->doc->setValue($k, $v);
                                     }
                                 }
-                                $err = $this->doc->Add();
+                                $err = $this->doc->add();
                             }
                             $this->tcr["id"] = $this->doc->id;
                             $msg .= $err . sprintf(_("add id [%d] "), $this->doc->id);
@@ -568,7 +568,7 @@ class ImportSingleDocument
                         $this->setError("DOC0111", $this->doc->name, $err);
                         return $this;
                     }
-                    $err = $this->doc->Add();
+                    $err = $this->doc->add();
                     if ($err != "") {
                         $this->setError("DOC0111", $this->doc->name, $err);
                         return $this;

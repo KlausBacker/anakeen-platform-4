@@ -83,7 +83,7 @@ class VidExtractor
         foreach (array($docfam->getOwnParams(), $docfam->getOwnDefValues()) as $list) {
             foreach ($list as $aid => $value) {
                 if (($oattr = $docfam->getAttribute($aid)) === false) {
-                    $docfam->log->warning(\ErrorCode::getError('VIDEXTRACTOR0004', $aid, $docfam->name));
+                    \Anakeen\LogManager::warning(\ErrorCode::getError('VIDEXTRACTOR0004', $aid, $docfam->name));
                     continue;
                 }
                 if ($oattr->type !== 'file' && $oattr->type !== 'image') {

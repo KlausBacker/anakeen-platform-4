@@ -71,7 +71,7 @@ class LdapAuthentProvider extends AuthentProvider
         $whatuser->login = $username;
         $whatuser->password_new = uniqid("ldap");
         $whatuser->famid = "IUSER";
-        $err = $whatuser->Add();
+        $err = $whatuser->add();
         error_log("What user $username added (id=" . $whatuser->id . ")");
         if ($err != "") {
             $this->errno = 0;

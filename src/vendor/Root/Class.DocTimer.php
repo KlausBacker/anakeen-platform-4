@@ -154,7 +154,7 @@ create table doctimer ( id serial,
             $q->addQuery("originid=$originid");
             $c = $q->count();
             
-            $err = $this->exec_query("delete from doctimer where docid=$docid and originid=$originid and tododate is not null");
+            $err = $this->query("delete from doctimer where docid=$docid and originid=$originid and tododate is not null");
         }
         return $err;
     }
@@ -177,7 +177,7 @@ create table doctimer ( id serial,
             $q->addQuery("tododate is not null");
             $c = $q->count();
             
-            $err = $this->exec_query("delete from doctimer where docid=$docid and tododate is not null");
+            $err = $this->query("delete from doctimer where docid=$docid and tododate is not null");
         }
         return $err;
     }
@@ -199,7 +199,7 @@ create table doctimer ( id serial,
             $err = _("cannot detach : timer id is not set");
         }
         if ($err == "") {
-            $err = $this->exec_query("delete from doctimer where docid=$docid and tododate is not null and timerid=$timerid");
+            $err = $this->query("delete from doctimer where docid=$docid and tododate is not null and timerid=$timerid");
         }
         return $err;
     }
@@ -251,7 +251,7 @@ create table doctimer ( id serial,
                         $this->result = '';
                         $this->tododate = $act["execdate"];
                         $this->actions = serialize($act["actions"]);
-                        $err = $this->Add();
+                        $err = $this->add();
                     }
                 }
             }

@@ -68,7 +68,7 @@ class TimerHooks extends \Anakeen\SmartStructures\Document
                     $jdTodo += $day + ($hour / 24);
                     $dt->tododate = jd2cal($jdTodo);
                 }
-                $err = $dt->Add();
+                $err = $dt->add();
             } else {
                 $err = sprintf(_("no level 0 specified in timer %s [%d]"), $this->title, $this->id);
             }

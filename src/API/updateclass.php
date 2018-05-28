@@ -100,7 +100,7 @@ if ($updateExistingTable) {
 } else {
     print sprintf("Creating table '%s'...\n", $o->dbtable);
     /* Table does not exists: create it */
-    $o->Create();
+    $o->create();
 }
 \Anakeen\Core\DbManager::commitPoint($point);
 

@@ -47,7 +47,6 @@ function Redirect($action, $appname, $actionname, $otherurl = "", $httpparamredi
         //    $location .= "&session=".$action->session->id;
     }
 
-    $action->log->debug("Redirect : $location");
 
     if ($httpparamredirect) {
         //add ZONE_ARGS

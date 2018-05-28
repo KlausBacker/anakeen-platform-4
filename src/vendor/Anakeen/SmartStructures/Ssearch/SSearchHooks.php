@@ -9,6 +9,8 @@
 
 namespace Anakeen\SmartStructures\Ssearch;
 
+use Anakeen\Core\ContextManager;
+
 class SSearchHooks extends \SmartStructure\Search
 {
     public $defaultedit = "FDL:EDITBODYCARD";
@@ -32,7 +34,7 @@ class SSearchHooks extends \SmartStructure\Search
             return false;
         }
         if (!$userid) {
-            $userid = $this->getSystemUserId();
+            $userid = ContextManager::getCurrentUser()->id;
         }
         $arg = array(
             $start,

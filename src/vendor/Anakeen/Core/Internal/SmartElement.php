@@ -30,6 +30,7 @@ use \Anakeen\Core\DbManager;
 use \Anakeen\Core\ContextManager;
 use \Anakeen\Core\SEManager;
 use Anakeen\Core\Internal\Format\StandardAttributeValue;
+use Anakeen\LogManager;
 use Anakeen\SmartHooks;
 
 class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
@@ -872,7 +873,7 @@ create unique index i_docir on doc(initid, revision);";
             ));
         }
         unset($this->fields["svalues"]);
-        $this->Select($this->id);
+        $this->select($this->id);
         // set creation date
         $this->cdate = $this->getTimeDate(0, true);
         $this->adate = $this->cdate;
@@ -946,9 +947,9 @@ create unique index i_docir on doc(initid, revision);";
         // compute new \id
         if ($this->id == "") {
             if ($this->doctype == 'T') {
-                $res = pg_query($this->init_dbid(), "select nextval ('seq_id_tdoc')");
+                $res = pg_query($this->initDbid(), "select nextval ('seq_id_tdoc')");
             } else {
-                $res = pg_query($this->init_dbid(), "select nextval ('seq_id_doc')");
+                $res = pg_query($this->initDbid(), "select nextval ('seq_id_doc')");
             }
             $arr = pg_fetch_array($res, 0);
             $this->id = $arr[0];
@@ -1246,10 +1247,10 @@ create unique index i_docir on doc(initid, revision);";
             return 0;
         }
         // cannot use currval if nextval is not use before
-        $res = pg_query($this->init_dbid(), "select nextval ('seq_doc" . $this->fromid . "')");
+        $res = pg_query($this->initDbid(), "select nextval ('seq_doc" . $this->fromid . "')");
         $arr = pg_fetch_array($res, 0);
         $cur = intval($arr[0]) - 1;
-        pg_query($this->init_dbid(), "select setval ('seq_doc" . $this->fromid . "',$cur)");
+        pg_query($this->initDbid(), "select setval ('seq_doc" . $this->fromid . "',$cur)");
 
         return $cur;
     }
@@ -1273,7 +1274,7 @@ create unique index i_docir on doc(initid, revision);";
             return 0;
         }
         // cannot use currval if nextval is not use before
-        $res = pg_query($this->init_dbid(), "select nextval ('seq_doc" . $fromid . "')");
+        $res = pg_query($this->initDbid(), "select nextval ('seq_doc" . $fromid . "')");
         $arr = pg_fetch_array($res, 0);
         $cur = intval($arr[0]);
         return $cur;
@@ -1396,7 +1397,7 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($prevalues as $k => $v) {
             $cdoc->setValue($k, $v);
         }
-        $err = $cdoc->Add(true, true);
+        $err = $cdoc->add(true, true);
         if ($err != "") {
             DbManager::rollbackPoint($point);
             return $err;
@@ -1409,10 +1410,10 @@ create unique index i_docir on doc(initid, revision);";
         $err = $cdoc->Modify();
         if ($err == "") {
             if ($this->revision > 0) {
-                $this->exec_query(sprintf("update fld set childid=%d where childid=%d", $cdoc->id, $this->initid));
+                $this->query(sprintf("update fld set childid=%d where childid=%d", $cdoc->id, $this->initid));
             }
         }
-        $this->exec_query(sprintf("update fld set fromid=%d where childid=%d", $cdoc->fromid, $this->initid));
+        $this->query(sprintf("update fld set fromid=%d where childid=%d", $cdoc->fromid, $this->initid));
 
         $cdoc->addHistoryEntry(sprintf(_("convertion from %s to %s family"), $f1from, $f2from));
 
@@ -1424,18 +1425,7 @@ create unique index i_docir on doc(initid, revision);";
         return $cdoc;
     }
 
-    /**
-     * test if the document can be revised now
-     * it must be locked by the current user
-     *
-     * @deprecated use canEdit instead
-     * @return string empty means user can update else message of the raison
-     */
-    final public function canUpdateDoc()
-    {
-        deprecatedFunction();
-        return $this->canEdit();
-    }
+
 
 
     /**
@@ -1588,7 +1578,7 @@ create unique index i_docir on doc(initid, revision);";
      * test if the document can be unlocked
      *
      * @see \Anakeen\Core\Internal\SmartElement::CanLockFile()
-     * @see \Anakeen\Core\Internal\SmartElement::CanUpdateDoc()
+     * @see \Anakeen\Core\Internal\SmartElement::canEdit()
      * @return string empty means user can update else message of the raison
      */
     final public function canUnLockFile()
@@ -1651,18 +1641,7 @@ create unique index i_docir on doc(initid, revision);";
         return (($this->confidential > 0) && ($this->accessControl()->controlId($this->profid, 'confidential') != ""));
     }
 
-    /**
-     * return the family document where the document comes from
-     *
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::getFamilyDocument} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::getFamilyDocument
-     * @return \Anakeen\Core\SmartStructure
-     */
-    final public function getFamDoc()
-    {
-        deprecatedFunction();
-        return $this->getFamilyDocument();
-    }
+
 
     /**
      * return the family document where the document comes from
@@ -1837,7 +1816,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function deleteTemporary()
     {
         // --------------------------------------------------------------------
-        pg_query($this->init_dbid(), "delete from doc where doctype='T'");
+        pg_query($this->initDbid(), "delete from doc where doctype='T'");
     }
 
     /**
@@ -1878,9 +1857,9 @@ create unique index i_docir on doc(initid, revision);";
             $dvi = new \DocVaultIndex($this->dbaccess);
             $err = $dvi->DeleteDoc($this->id);
             if ($this->name != '') {
-                $this->exec_query(sprintf("delete from docname where name='%s'", pg_escape_string($this->name)));
+                $this->query(sprintf("delete from docname where name='%s'", pg_escape_string($this->name)));
             }
-            $this->exec_query(sprintf("delete from docfrom where id='%s'", pg_escape_string($this->id)));
+            $this->query(sprintf("delete from docfrom where id='%s'", pg_escape_string($this->id)));
         }
         return $err;
     }
@@ -1950,7 +1929,7 @@ create unique index i_docir on doc(initid, revision);";
 
             if ($this->doctype != 'Z') {
                 if ($this->name != "") {
-                    $this->exec_query(sprintf(
+                    $this->query(sprintf(
                         "delete from doc%d where name='%s' and doctype='Z'",
                         $this->fromid,
                         pg_escape_string($this->name)
@@ -2267,21 +2246,7 @@ create unique index i_docir on doc(initid, revision);";
         return $rev;
     }
 
-    /** get Latest Id of document
-     *
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::getLatestId} instead
-     *
-     * @param bool $fixed      if true latest fixed revision
-     * @param bool $forcequery if true force recompute of id (use it in case of modification by another program)
-     *
-     * @see        \Anakeen\Core\Internal\SmartElement::getLatestId
-     * @return int identifier of latest revision
-     */
-    final public function latestId($fixed = false, $forcequery = false)
-    {
-        deprecatedFunction();
-        return $this->getLatestId($fixed, $forcequery);
-    }
+
 
     /** get Latest Id of document
      *
@@ -2366,21 +2331,7 @@ create unique index i_docir on doc(initid, revision);";
         return _("unknow attribute");
     }
 
-    /**
-     * return the property value like id, initid, revision, ...
-     *
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::getPropertyValue} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::getPropertyValue
-     *
-     * @param string $prop property identifier
-     *
-     * @return string false if not an property
-     */
-    final public function getProperty($prop)
-    {
-        deprecatedFunction();
-        return $this->getPropertyValue($prop);
-    }
+
 
     /**
      * return the property value like id, initid, revision, ...
@@ -3483,50 +3434,9 @@ create unique index i_docir on doc(initid, revision);";
         }
     }
 
-    /**
-     * return the value of an attribute document
-     *
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::getRawValue} instead
-     *
-     * @param string $idAttr attribute identifier
-     * @param string $def    default value returned if attribute not found or if is empty
-     *
-     * @see        \Anakeen\Core\Internal\SmartElement::getRawValue
-     * @return string the attribute value
-     */
-    final public function getValue($idAttr, $def = "")
-    {
-        static $first = true;
-        if ($first) {
-            deprecatedFunction();
-            $first = false;
-        }
-        return $this->getRawValue($idAttr, $def);
-    }
 
-    /**
-     * return all values of a multiple value attribute
-     *
-     * the attribute must be in an array or declared with multiple option
-     *
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::getMultipleRawValues} instead
-     *
-     * @param string $idAttr identifier of list attribute
-     * @param string $def    default value returned if attribute not found or if is empty
-     * @param int    $index  the values for $index row (default value -1 means all values)
-     *
-     * @see        \Anakeen\Core\Internal\SmartElement::getMultipleRawValues
-     * @return array the list of attribute values
-     */
-    final public function getTValue($idAttr, $def = "", $index = -1)
-    {
-        static $first = true;
-        if ($first) {
-            deprecatedFunction();
-            $first = false;
-        }
-        return $this->getMultipleRawValues($idAttr, $def, $index);
-    }
+
+
 
     /**
      * return all values of a multiple value attribute
@@ -3579,24 +3489,7 @@ create unique index i_docir on doc(initid, revision);";
         }
     }
 
-    /**
-     * return the array of values for an array attribute
-     *
-     * the attribute must  an array type
-     *
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::getArrayRawValues} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::getArrayRawValues
-     *
-     * @param string $idAttr identifier of array attribute
-     * @param int    $index  the values for $index row (default value -1 means all values)
-     *
-     * @return array all values of array order by rows (return false if not an array attribute)
-     */
-    final public function getAValues($idAttr, $index = -1)
-    {
-        deprecatedFunction();
-        return $this->getArrayRawValues($idAttr, $index);
-    }
+
 
     /**
      * return the array of values for an array attribute
@@ -3848,22 +3741,7 @@ create unique index i_docir on doc(initid, revision);";
         return sprintf(_("%s is not an array attribute"), $idAttr);
     }
 
-    /**
-     * delete all attributes values of an array
-     *
-     * the attribute must be an array type
-     *
-     * @param string $idAttr identifier of array attribute
-     *
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::clearArrayValues} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::clearArrayValues
-     * @return string error message, if no error empty string
-     */
-    final public function deleteArray($idAttr)
-    {
-        deprecatedFunction();
-        return $this->clearArrayValues($idAttr);
-    }
+
 
     /**
      * affect value for $attrid attribute
@@ -4655,25 +4533,6 @@ create unique index i_docir on doc(initid, revision);";
         return $err;
     }
 
-    /**
-     * store new \file in an file attribute
-     *
-     * @deprecated use setFile() instead
-     *
-     * @param string $attrid   identifier of file attribute
-     * @param string $filename file path
-     * @param string $ftitle   basename of file
-     * @param int    $index    only for array values affect value in a specific row
-     *
-     * @return string error message, if no error empty string
-     */
-    final public function storeFile($attrid, $filename, $ftitle = "", $index = -1)
-    {
-        deprecatedFunction();
-
-        return $this->setFile($attrid, $filename, $ftitle, $index);
-    }
-
 
     /**
      * Duplicate physically all files of documents
@@ -4752,22 +4611,7 @@ create unique index i_docir on doc(initid, revision);";
         }
     }
 
-    /**
-     * return the previous value for a attibute set before \Anakeen\Core\Internal\SmartElement::SetValue
-     * can be used in \Anakeen\Core\Internal\SmartElement::postStore generaly
-     *
-     * @deprecated use \Anakeen\Core\Internal\SmartElement::getOldRawvalue
-     * @see        \Anakeen\Core\Internal\SmartElement::getOldRawValue
-     *
-     * @param string $attrid attribute identifier
-     *
-     * @return string the old value (false if not modified before)
-     */
-    final public function getOldValue($attrid)
-    {
-        deprecatedFunction();
-        return $this->getOldRawValue($attrid);
-    }
+
 
     /**
      * return the previous value for a attibute set before \Anakeen\Core\Internal\SmartElement::SetValue
@@ -4789,18 +4633,7 @@ create unique index i_docir on doc(initid, revision);";
         return false;
     }
 
-    /**
-     * return all modified values from last modify
-     *
-     * @deprecated use \Anakeen\Core\Internal\SmartElement::getOldRawValues instead
-     * @see        \Anakeen\Core\Internal\SmartElement::getOldRawValues
-     * @return array indexed by attribute identifier (lowercase)
-     */
-    final public function getOldValues()
-    {
-        deprecatedFunction();
-        return $this->getOldRawValues();
-    }
+
 
     /**
      * return all modified values from last modify
@@ -4841,22 +4674,7 @@ create unique index i_docir on doc(initid, revision);";
         return $this->SetValue($attrid, " ");
     }
 
-    /**
-     * delete a value of an attribute
-     *
-     * @see        \Anakeen\Core\Internal\SmartElement::setValue
-     *
-     * @param string $attrid attribute identifier
-     *
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::clearValue} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::clearValue
-     * @return string error message
-     */
-    final public function deleteValue($attrid)
-    {
-        deprecatedFunction();
-        return $this->clearValue($attrid);
-    }
+
 
     /**
      * add values present in values field
@@ -5198,7 +5016,7 @@ create unique index i_docir on doc(initid, revision);";
         $h->level = $level;
         $h->code = $code;
 
-        $err = $h->Add();
+        $err = $h->add();
         if ($level == \DocHisto::ERROR) {
             error_log(sprintf("document %s [%d] : %s", $this->title, $this->id, $comment));
         }
@@ -5245,7 +5063,7 @@ create unique index i_docir on doc(initid, revision);";
             $h->arg = serialize($arg);
         }
 
-        $err = $h->Add();
+        $err = $h->add();
         return $err;
     }
 
@@ -5392,7 +5210,7 @@ create unique index i_docir on doc(initid, revision);";
         $h->tag = $tag;
         $h->comment = $datas;
 
-        $err = $h->Add();
+        $err = $h->add();
         return $err;
     }
 
@@ -5474,14 +5292,14 @@ create unique index i_docir on doc(initid, revision);";
         }
 
         if ($allrevision) {
-            $err = $this->exec_query(sprintf(
+            $err = $this->query(sprintf(
                 "delete from docutag where initid=%d and tag='%s' and uid=%d",
                 $this->initid,
                 pg_escape_string($tag),
                 $uid
             ));
         } else {
-            $err = $this->exec_query(sprintf(
+            $err = $this->query(sprintf(
                 "delete from docutag where id=%d and tag='%s' and uid=%d",
                 $this->id,
                 pg_escape_string($tag),
@@ -5506,7 +5324,7 @@ create unique index i_docir on doc(initid, revision);";
         if (!$uid) {
             $uid = ContextManager::getCurrentUser()->id;
         }
-        $err = $this->exec_query(sprintf("delete from docutag where initid=%d and uid=%d", $this->initid, $uid));
+        $err = $this->query(sprintf("delete from docutag where initid=%d and uid=%d", $this->initid, $uid));
 
         return $err;
     }
@@ -5672,7 +5490,7 @@ create unique index i_docir on doc(initid, revision);";
 
         // Remove last revision from cache to have coherent index.
         \Anakeen\Core\SEManager::cache()->removeDocumentById($olddocid);
-        $err = $this->Add();
+        $err = $this->add();
         if ($err != "") {
             // restore last revision
             // $this->exec_query("rollback;");
@@ -5735,23 +5553,7 @@ create unique index i_docir on doc(initid, revision);";
         return $err;
     }
 
-    /**
-     * Create a new \revision of a document
-     * the current document is revised (became a fixed document)
-     * a new \revision is created, a new \identifier if set
-     *
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::revise} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::revise
-     *
-     * @param string $comment the comment of the revision
-     *
-     * @return string error text (empty if no error)
-     */
-    final public function addRevision($comment = '')
-    {
-        deprecatedFunction();
-        return $this->revise($comment);
-    }
+
 
     /**
      * Set a free state to the document
@@ -6032,7 +5834,7 @@ create unique index i_docir on doc(initid, revision);";
             return $err;
         }
 
-        $err = $copy->Add();
+        $err = $copy->add();
         if ($err != "") {
             return $err;
         }
@@ -6104,7 +5906,7 @@ create unique index i_docir on doc(initid, revision);";
                         "ARCHIVE"
                     );
                     $this->addLog('archive', $archive->id, sprintf(_("Archiving into %s"), $archive->getTitle()));
-                    $err = $this->exec_query(
+                    $err = $this->query(
                         sprintf(
                             "update doc%d set archiveid=%d, dprofid=-abs(profid), profid=%d where initid=%d and locked = -1",
                             $this->fromid,
@@ -6158,7 +5960,7 @@ create unique index i_docir on doc(initid, revision);";
                         "UNARCHIVE"
                     );
                     $this->addLog('unarchive', $archive->id, sprintf(_("Unarchiving from %s"), $archive->getTitle()));
-                    $err = $this->exec_query(
+                    $err = $this->query(
                         sprintf(
                             "update doc%d set archiveid=null, profid=abs(dprofid), dprofid=null where initid=%d and locked = -1",
                             $this->fromid,
@@ -6612,7 +6414,7 @@ create unique index i_docir on doc(initid, revision);";
             throw new \Dcp\Exception(\ErrorCode::getError('ATTR1212', $callMethod, $this->fromname));
         }
         if ($oAttr->mvisibility == 'I') {
-            $this->log->warning(\ErrorCode::getError('ATTR1800', $oAttr->id, $callMethod));
+            \Anakeen\LogManager::warning(\ErrorCode::getError('ATTR1800', $oAttr->id, $callMethod));
         } else {
             if ($oAttr->inArray()) {
                 $this->completeArrayRow($oAttr->fieldSet->id);
@@ -6865,21 +6667,7 @@ create unique index i_docir on doc(initid, revision);";
         return explode("\n", str_replace("\r", "", $v));
     }
 
-    /**
-     * convert flat attribute value to an array for multiple attributes
-     *
-     * @deprecated use instead {@Doc::rawValueToArray}
-     * @see        \Anakeen\Core\Internal\SmartElement::rawValueToArray
-     *
-     * @param string $v value
-     *
-     * @return array
-     */
-    public static function _val2array($v)
-    {
-        deprecatedFunction();
-        return self::rawValueToArray($v);
-    }
+
 
     /**
      * convert array value to flat attribute value
@@ -6900,21 +6688,7 @@ create unique index i_docir on doc(initid, revision);";
         return implode("\n", $v);
     }
 
-    /**
-     * convert array value to flat attribute value
-     *
-     * @param array  $v
-     * @param string $br
-     *
-     * @deprecated use {@link \Anakeen\Core\Internal\SmartElement::arrayToRawValue} instead
-     * @see        \Anakeen\Core\Internal\SmartElement::arrayToRawValue
-     * @return string
-     */
-    public static function _array2val($v, $br = '<BR>')
-    {
-        deprecatedFunction();
-        return self::arrayToRawValue($v, $br);
-    }
+
 
 
     /**
@@ -7788,14 +7562,13 @@ create unique index i_docir on doc(initid, revision);";
                 if (preg_match('/@templateController\b/', $refMeth->getDocComment())) {
                     $this->$method($target, $ulink, $abstract);
                 } else {
-                    global $action;
                     $syserr = \ErrorCode::getError(
                         "DOC1101",
                         $refMeth->getDeclaringClass()->getName(),
                         $refMeth->getName(),
                         $this
                     );
-                    $action->log->error($syserr);
+                    LogManager::error($syserr);
                     $err = htmlspecialchars(sprintf(_("Layout \"%s\" : Controller not allowed"), $layout), ENT_QUOTES);
                     return $err;
                 }
@@ -8261,27 +8034,7 @@ create unique index i_docir on doc(initid, revision);";
         return $this->title;
     }
 
-    /**
-     * @deprecated not needed until 2.0 version
-     *
-     * @param string $nameId
-     * @param        $nameTitle
-     */
-    final public function refreshDocTitle($nameId, $nameTitle)
-    {
-        deprecatedFunction();
-        // gettitle(D,SI_IDSOC):SI_SOCIETY,SI_IDSOC
-        $this->AddParamRefresh("$nameId", "$nameTitle");
-        $doc = SEManager::getDocument($this->getRawValue($nameId));
-        if ($doc && $doc->isAlive()) {
-            $this->setValue($nameTitle, $doc->title);
-        } else {
-            // suppress
-            if (!$doc->isAffected()) {
-                $this->clearValue($nameId);
-            }
-        }
-    }
+
 
 
     //----------------------------------------------------------------------
@@ -8544,91 +8297,13 @@ create unique index i_docir on doc(initid, revision);";
         return "";
     }
 
-    /**
-     * return the current user display name
-     *
-     * @param bool $withfirst if true compose first below last name
-     *
-     * @return string
-     */
-    public static function getUserName($withfirst = false)
-    {
-        $user = ContextManager::getCurrentUser();
-        if ($withfirst) {
-            return $user->firstname . " " . $user->lastname;
-        }
-        return $user->lastname;
-    }
 
-    /**
-     * return the user document identifier associated to the current account
-     *
-     * @return int
-     */
-    public static function userDocId()
-    {
-        $user = ContextManager::getCurrentUser();
-        if ($user) {
-            return $user->fid;
-        }
-        return 0;
-    }
 
-    /**
-     * alias for \Anakeen\Core\Internal\SmartElement::userDocId
-     *
-     * @searchLabel My user account id
-     * @searchType  account
-     * @searchType  docid("IUSER")
-     *
-     * @return int
-     */
-    public static function getUserId()
-    {
-        return \Anakeen\Core\Internal\SmartElement::userDocId();
-    }
 
-    /**
-     * return system user id
-     *
-     * @deprecated use getSystemUserId instead
-     * @return int
-     */
-    public static function getWhatUserId()
-    {
-        deprecatedFunction();
 
-        return self::getSystemUserId();
-    }
 
-    /**
-     * return system user id
-     *
-     * @searchLabel My system user id
-     * @searchType  uid
-     * @return string the numeric system identifier of user
-     */
-    public static function getSystemUserId()
-    {
-        return ContextManager::getCurrentUser()->id;
-    }
 
-    /**
-     * return a specific attribute of the current user document
-     *
-     * @searchLabel account attribute
-     *
-     * @param string $idattr attribute identifier
-     *
-     * @return int
-     */
-    final public function getMyAttribute($idattr)
-    {
-        $mydoc = SEManager::getDocument($this->getUserId());
-        SEManager::cache()->addDocument($mydoc);
 
-        return $mydoc->getRawValue($idattr);
-    }
 
     /**
      * concatenate and format string
@@ -8681,7 +8356,7 @@ create unique index i_docir on doc(initid, revision);";
             if ($vid > 0) {
                 $dvi->docid = $this->id;
                 $dvi->vaultid = $vid;
-                $dvi->Add();
+                $dvi->add();
                 $vids[] = intval($vid);
             }
         }

@@ -96,7 +96,7 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
             $tr->comment = $info["comment"];
             $tr->uid = $action->user->id;
             $tr->uname = $action->user->firstname . " " . $action->user->lastname;
-            $err = $tr->Add();
+            $err = $tr->add();
         } else {
             $vf = initVaultAccess();
             $filename = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/txt-" . $vidout . '-');
@@ -159,7 +159,7 @@ function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
             $tr->comment = $info["comment"];
             $tr->uid = $action->user->id;
             $tr->uname = $action->user->firstname . " " . $action->user->lastname;
-            $err = $tr->Add();
+            $err = $tr->add();
         }
     }
     return $err;
@@ -194,7 +194,7 @@ function convertFile($infile, $engine, $outfile, &$info)
             $tr->comment = $info["comment"];
             $tr->uid = $action->user->id;
             $tr->uname = $action->user->firstname . " " . $action->user->lastname;
-            $err = $tr->Add();
+            $err = $tr->add();
         }
         $tid = 0;
         if ($err == "") {

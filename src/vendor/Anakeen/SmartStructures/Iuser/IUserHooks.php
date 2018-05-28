@@ -711,7 +711,7 @@ class IUserHooks extends \Anakeen\SmartStructures\Document implements \Anakeen\C
     public function control($aclname, $strict = false)
     {
         $u = $this->getAccount();
-        if ($u && ($u->substitute == $this->getSystemUserId())) {
+        if ($u && ($u->substitute == ContextManager::getCurrentUser()->id)) {
             return parent::control($aclname, true);
         } else {
             return parent::control($aclname, $strict);

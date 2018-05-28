@@ -31,7 +31,7 @@ class TestSetLogicalName extends TestCaseDcpCommonFamily
     public function testExecuteSetLogicalName($oldname, $newname)
     {
         $doc = createDoc(self::$dbaccess, "BASE");
-        $err = $doc->Add();
+        $err = $doc->add();
         $this->assertEmpty($err, sprintf("Error when creating document %s", $err));
         $this->assertTrue($doc->isAlive() , sprintf("document %s not alive", $doc->id));
         
@@ -59,7 +59,7 @@ class TestSetLogicalName extends TestCaseDcpCommonFamily
         $doc = createDoc(self::$dbaccess, "BASE");
         $err = $doc->setLogicalName($logicalName);
         $this->assertEmpty($err, sprintf("Error when setting logical name %s for document %s : %s", $logicalName, $doc->id, $err));
-        $err = $doc->Add();
+        $err = $doc->add();
         $this->assertEmpty($err, sprintf("Error when creating document %s", $err));
         $this->assertTrue($doc->isAlive() , sprintf("document %s not alive", $doc->id));
         
@@ -79,7 +79,7 @@ class TestSetLogicalName extends TestCaseDcpCommonFamily
         $doc1 = createDoc(self::$dbaccess, "BASE");
         $err = $doc1->setLogicalName($oldname);
         $this->assertEmpty($err, sprintf("Error when setting logical name %s for document %s : %s", $oldname, $doc1->id, $err));
-        $err = $doc1->Add();
+        $err = $doc1->add();
         $this->assertEquals($oldname, $doc1->name, sprintf("New logical name is not set to document"));
         $this->assertEmpty($err, sprintf("Error when creating document %s", $err));
         $this->assertTrue($doc1->isAlive() , sprintf("document %s not alive", $doc1->id));
@@ -87,7 +87,7 @@ class TestSetLogicalName extends TestCaseDcpCommonFamily
         $doc2 = createDoc(self::$dbaccess, "BASE");
         $err = $doc2->setLogicalName($oldname);
         $this->assertEmpty($err, sprintf("Error when setting logical name %s for document %s : %s", $oldname, $doc2->id, $err));
-        $err = $doc2->Add();
+        $err = $doc2->add();
         $this->assertNotEmpty($err, sprintf("Need error because duplicate name", $oldname, $doc2->id, $err));
     }
     /**
@@ -101,7 +101,7 @@ class TestSetLogicalName extends TestCaseDcpCommonFamily
         
         $this->assertNotEmpty($err, sprintf("setLogicalName: Need error invalid name", $oldname, $doc1->id, $err));
         
-        $err = $doc1->Add();
+        $err = $doc1->add();
         $this->assertNotEmpty($err, sprintf("Add: Need error invalid name", $oldname, $doc1->id, $err));
     }
     /**
@@ -112,7 +112,7 @@ class TestSetLogicalName extends TestCaseDcpCommonFamily
     public function testRevisedSetLogicalName($oldname, $newname)
     {
         $doc = createDoc(self::$dbaccess, "BASE");
-        $err = $doc->Add();
+        $err = $doc->add();
         
         $idRev0 = $doc->id;
         $this->assertEmpty($err, sprintf("Error when creating document %s", $err));

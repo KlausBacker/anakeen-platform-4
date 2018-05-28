@@ -32,7 +32,7 @@ class TestVaultDiskStorage extends TestCaseDcpCommonFamily
         $id_file = null;
 
         $vds = new \VaultDiskStorage(self::$dbaccess);
-        $err = $vds->Store($data['infile'], $data['public_access'], $id_file);
+        $err = $vds->store($data['infile'], $data['public_access'], $id_file);
         if (!$data['expect:success']) {
             $this->assertNotEmpty($err, sprintf("Store(%s) did not returned with an expected error.", $data['infile']));
             return;
@@ -69,7 +69,7 @@ class TestVaultDiskStorage extends TestCaseDcpCommonFamily
         $id_file = null;
 
         $vds = new \VaultdiskStorage(self::$dbaccess);
-        $err = $vds->Store($data['infile'], false, $id_file);
+        $err = $vds->store($data['infile'], false, $id_file);
         if ($err != '') {
             $this->markTestIncomplete(sprintf("Store(%s) returned with error: %s", $data['infile'], $err));
         }
@@ -101,7 +101,7 @@ class TestVaultDiskStorage extends TestCaseDcpCommonFamily
         $id_file = null;
 
         $vds = new \VaultDiskStorage(self::$dbaccess);
-        $err = $vds->Store($data['infile'], false, $id_file);
+        $err = $vds->store($data['infile'], false, $id_file);
         if ($err != '') {
             $this->markTestIncomplete(sprintf("Store(%s) returned with error: %s", $data['infile'], $err));
         }
@@ -133,7 +133,7 @@ class TestVaultDiskStorage extends TestCaseDcpCommonFamily
         $id_file = null;
 
         $vds = new \VaultDiskStorage(self::$dbaccess);
-        $err = $vds->Store($data['infile'], false, $id_file);
+        $err = $vds->store($data['infile'], false, $id_file);
         if ($err != '') {
             $this->markTestIncomplete(sprintf("Store(%s) returned with error: %s", $err));
         }
@@ -148,7 +148,7 @@ class TestVaultDiskStorage extends TestCaseDcpCommonFamily
             $this->markTestIncomplete(sprintf("Invalid path '%s' for stored file '%s' with id_file '%s'.", $path, $data['infile'], $id_file));
         }
 
-        $err = $vds->Destroy($id_file);
+        $err = $vds->destroy($id_file);
         $this->assertEmpty($err, sprintf("Destroy() returned with error: %s", $err));
         $this->assertFalse(is_file($path), sprintf("File '%s' from id_file %s is still present after Destroy().", $path, $id_file));
 

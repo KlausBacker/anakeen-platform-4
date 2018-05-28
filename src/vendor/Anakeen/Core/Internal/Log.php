@@ -74,7 +74,6 @@ class Log
             $fd = fopen($logfile, "a");
             if (!$fd) {
                 $this->usesyslog = 1;
-                $this->error("Can't access $logfile, using syslog");
             } else {
                 $this->logfile = $logfile;
                 fclose($fd);
@@ -83,77 +82,13 @@ class Log
         $this->application = $application;
         $this->function = $function;
     }
-    /**
-     * log with debug level
-     * @api log with debug level
-     * @param string $string message text
-     */
-    public function debug($string)
-    {
-        $this->wlog(self::DEBUG, $string);
-    }
-    /**
-     * @param string $string message text
-     */
-    public function callstack($string)
-    {
-        $this->wlog(self::CALLSTACK, $string);
-    }
-    /**
-     * log with trace level
-     * @api log with trace level
-     * @param string $string mesage text
-     */
-    public function trace($string)
-    {
-        $this->wlog(self::TRACE, $string);
-    }
-    /**
-     * log with info level
-     * @api log with info level
-     * @param string $string message text
-     */
-    public function info($string)
-    {
-        $this->wlog(self::INFO, $string);
-    }
-    /**
-     * log with warning level
-     * @api log with warning level
-     * @param string $string message text
-     */
-    public function warning($string)
-    {
-        $this->wlog(self::WARNING, $string);
-    }
-    /**
-     * log with error level
-     * @api log with error level
-     * @param string $string message text
-     */
-    public function error($string)
-    {
-        $this->wlog(self::ERROR, $string);
-    }
-    /**
-     * log with fatal level
-     * @api log with fatal level
-     * @param string $string message text
-     */
-    public function fatal($string)
-    {
-        $this->wlog(self::FATAL, $string);
-    }
-    /**
-     * log with deprecated level
-     * add callstack
-     * @api log with deprecated level
-     * @param string $string message text
-     */
-    public function deprecated($string)
-    {
-        $this->wlog(self::DEPRECATED, $string);
-    }
+
+
+
+
+
+
+
     /**
      * @param string $logLevel
      */
@@ -171,71 +106,9 @@ class Log
         }
         return $this->logLevel;
     }
-    /**
-     * to set start time
-     * @param string $text prefix text to set for next tic/end
-     */
-    public function start($text = "")
-    {
-        $deb = gettimeofday();
-        $this->deb = $deb["sec"] + $deb["usec"] / 1000000;
-        $this->tic = $this->deb;
-        $this->ptext = $text; // prefix
-    }
-    /**
-     * log partial time
-     * @see start
-     * @param string $text text to log
-     */
-    public function tic($text)
-    {
-        $tic = gettimeofday();
-        $now = $tic["sec"] + $tic["usec"] / 1000000;
-        $duree = round($now - $this->tic, 3);
-        $this->info("CHRONO-INT [$this->ptext]/[$text] : $duree");
-        $this->tic = $now;
-    }
-    /**
-     * log end time from last start
-     * @param string $text text to log
-     */
-    public function end($text)
-    {
-        $fin = gettimeofday();
-        $this->fin = $fin["sec"] + $fin["usec"] / 1000000;
-        $duree = round($this->fin - $this->deb, 3);
-        $this->info("CHRONO [$this->ptext]/[$text] : $duree");
-    }
+
     
-    public function push($string)
-    {
-        if (is_int(strpos($this->getLogLevel(), "C"))) {
-            global $call_ind, $call_stack, $call_pre, $call_reqid;
-            if (!isset($call_ind)) {
-                $call_ind = 0;
-            }
-            if (!isset($call_pre)) {
-                $call_pre = "-";
-            }
-            if (!isset($call_reqid)) {
-                $call_reqid = rand(1, 100);
-            }
-            $this->callstack("($call_reqid) $call_pre : entering $string");
-            $call_stack[$call_ind] = $string;
-            $call_ind+= 1;
-            $call_pre = $call_pre . "-";
-        }
-    }
-    
-    public function pop()
-    {
-        if (is_int(strpos($this->getLogLevel(), "C"))) {
-            global $call_ind, $call_stack, $call_pre, $call_reqid;
-            $call_pre = substr($call_pre, 0, strlen($call_pre) - 1);
-            $call_ind-= 1;
-            $this->callstack("($call_reqid) $call_pre : exiting  {$call_stack[$call_ind]}");
-        }
-    }
+
     /**
      * main log function
      * @param string $sta log code (one character : IWEFDOT)
