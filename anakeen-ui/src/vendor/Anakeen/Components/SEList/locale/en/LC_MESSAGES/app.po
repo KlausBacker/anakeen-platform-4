@@ -1,38 +1,38 @@
-# English translations for Document-uis package.
-# Copyright (C) 2017 THE Document-uis'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the Document-uis package.
-# Automatically generated, 2017.
+# English translations for anakeen-ui package.
+# Copyright (C) 2018 THE anakeen-ui'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the anakeen-ui package.
+# Automatically generated, 2018.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Document-uis 1.0.0\n"
+"Project-Id-Version: anakeen-ui 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-06 11:06+0100\n"
-"PO-Revision-Date: 2017-12-01 18:36+0100\n"
+"POT-Creation-Date: 2018-05-25 14:41+0200\n"
+"PO-Revision-Date: 2018-05-25 14:41+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=ASCII\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/DocumentList/documentList.controller.js:106
-msgctxt "DocumentList"
+#: anakeen-ui/src/vendor/Anakeen/Components/SEList/seList.component.js:105
+msgctxt "SEList"
 msgid "of"
 msgstr "of"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/DocumentList/documentList.controller.js:225
-msgctxt "DocumentList"
+#: anakeen-ui/src/vendor/Anakeen/Components/SEList/seList.component.js:228
+msgctxt "SEList"
 msgid "Search in : %{collection}"
-msgstr ""
+msgstr "Search in : %{collection}"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/DocumentList/documentList.controller.js:226
-msgctxt "DocumentList"
+#: anakeen-ui/src/vendor/Anakeen/Components/SEList/seList.component.js:229
+msgctxt "SEList"
 msgid "No %{collection} to display"
-msgstr ""
+msgstr "No %{collection} to display"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/DocumentList/documentList.controller.js:231
-msgctxt "DocumentList"
+#: anakeen-ui/src/vendor/Anakeen/Components/SEList/seList.component.js:234
+msgctxt "SEList"
 msgid "Items per page"
 msgstr "Items per page"

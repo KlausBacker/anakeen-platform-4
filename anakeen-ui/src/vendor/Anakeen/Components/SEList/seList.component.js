@@ -102,7 +102,7 @@ export default {
                     info: true,
                     change: this.privateScope.onPagerChange,
                     messages: {
-                        display: `{0} - {1} ${this.$pgettext('DocumentList', 'of')} {2}`,
+                        display: `{0} - {1} ${this.$pgettext('SEList', 'of')} {2}`,
                         empty: this.translations.noDataPagerLabel,
                     },
                 });
@@ -224,13 +224,13 @@ export default {
 
     computed: {
         translations() {
-            const searchTranslated = this.$pgettext('DocumentList', 'Search in : %{collection}');
-            const noDataTranslated = this.$pgettext('DocumentList', 'No %{collection} to display');
+            const searchTranslated = this.$pgettext('SEList', 'Search in : %{collection}');
+            const noDataTranslated = this.$pgettext('SEList', 'No %{collection} to display');
             return {
                 searchPlaceholder: this.$gettextInterpolate(searchTranslated, {
                         collection: this.collectionLabel.toUpperCase(),
                     }),
-                itemsPerPageLabel: this.$pgettext('DocumentList', 'Items per page'),
+                itemsPerPageLabel: this.$pgettext('SEList', 'Items per page'),
                 noDataPagerLabel: this.$gettextInterpolate(noDataTranslated, {
                         collection: this.collectionLabel,
                     }),
