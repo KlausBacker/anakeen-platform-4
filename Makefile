@@ -17,6 +17,7 @@ JS_COMPONENT_SOURCE_PATH=anakeen-ui/src/vendor/Anakeen/Components
 JS_COMPONENT_BUILD_PATH=anakeen-ui/src/public/components
 JS_DDUI_BUILD_PATH=anakeen-ui/src/public/uiAssets
 JS_DDUI_SOURCE_PATH=anakeen-ui/src/Apps/DOCUMENT/IHM/
+JS_ROUTE_SOURCE_PATH=anakeen-ui/src/vendor/Anakeen/Routes/Ui
 JS_FAMILY_BUILD_PATH=anakeen-ui/src/public/uiAssets/Families/
 JS_FAMILY_SOURCE_PATH=anakeen-ui/src/vendor/Anakeen/SmartStructures/
 JS_TEST_BUILD_PATH=Tests/src/public/
@@ -77,7 +78,7 @@ $(JS_ASSET_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${WEBPACK_CONF_PATH} -t
 	$(YARN_BIN) buildAsset
 	touch "$@"
 
-$(JS_DDUI_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_DDUI_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(JS_CONF_PATH)/yarn.lock $(WEBPACK_CONF_PATH)/webpack.config.js $(WEBPACK_CONF_PATH)/webpack.parts.js
+$(JS_DDUI_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_DDUI_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(shell find ${JS_ROUTE_SOURCE_PATH} -type f -name "*.js" -o -name "*.html" -print | sed 's/ /\\ /g') $(JS_CONF_PATH)/yarn.lock $(WEBPACK_CONF_PATH)/webpack.config.js $(WEBPACK_CONF_PATH)/webpack.parts.js
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	make -f pojs.make compile
 	$(YARN_BIN) build
