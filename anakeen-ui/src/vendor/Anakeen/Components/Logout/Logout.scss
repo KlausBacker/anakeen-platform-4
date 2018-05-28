@@ -1,0 +1,17 @@
+.logout-button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  height: auto;
+  cursor: pointer;
+
+  i {
+    font-size: 2rem;
+  }
+
+  img {
+    width: auto;
+    height: 2rem;
+    vertical-align: center;
+  }
+}
