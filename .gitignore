@@ -9,6 +9,6 @@
 node_modules/
 admin-center/src/public/AdminCenter/debug/
 admin-center/src/public/AdminCenter/prod/
-admin-center/src/vendor/Anakeen/AdminCenter/Layout/adminCenterMainPage.html
+admin-center/src/vendor/Anakeen/AdminCenter/Layout/
 localpub/
 Makefile.local

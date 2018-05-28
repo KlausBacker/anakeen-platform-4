@@ -1,6 +1,6 @@
 <?php
 
-namespace Anakeen\Routes\Admin\User;
+namespace Anakeen\Routes\Admin\Account;
 
 
 use Anakeen\Core\DocManager;

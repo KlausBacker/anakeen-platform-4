@@ -8,7 +8,8 @@
   "scripts": {
     "build": "webpack --config webpack/index.js --env debug && webpack --config webpack/index.js --env prod",
     "debug": "webpack --config webpack/index.js --env debug",
-    "dev": "webpack-dev-server --color --config webpack/index.js --env dev"
+    "dev": "webpack-dev-server --color --config webpack/index.js --env dev",
+    "watch": "webpack --config webpack/index.js --env debug --watch"
   },
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.1",
@@ -48,5 +49,10 @@
     "webpack-cli": "^2.0.14",
     "webpack-dev-server": "^3.1.3",
     "webpack-merge": "^4.1.2"
+  },
+  "dependencies": {
+    "@progress/kendo-grid-vue-wrapper": "^2018.2.516",
+    "@progress/kendo-treeview-vue-wrapper": "^2018.2.516",
+    "@progress/kendo-ui": "^2018.2.516"
   }
 }

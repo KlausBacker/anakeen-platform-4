@@ -3,14 +3,11 @@ const fs = require('fs');
 const gracefulFs = require('graceful-fs');
 gracefulFs.gracefulify(fs);
 
-const path = require('path');
-
 const merge = require('webpack-merge');
 const parts = require('../parts');
 
-const BASE_DIR = __PROJECT_ROOT;
-
 const AdminCenterWebpackConfig = require('./adminCenter');
+const userAndGroupConfig = require('./userGroupPlugin');
 
 const commonConfig = merge([
     {
@@ -37,9 +34,8 @@ const commonConfig = merge([
 ]);
 
 module.exports = env => {
-    if (env === 'prod' || env === 'debug' || env === 'dev') {
-        return [
-            merge(commonConfig, AdminCenterWebpackConfig(env))
-        ];
-    }
+    return [
+        merge(commonConfig, AdminCenterWebpackConfig(env)),
+        merge(commonConfig, userAndGroupConfig(env))
+    ];
 };

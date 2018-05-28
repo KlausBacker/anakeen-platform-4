@@ -6,6 +6,7 @@ const PLUGIN_SCHEMA = {
     title: 'title',
     pluginPath: 'pluginPath',
     scriptURL: 'scriptURL',
+    debugScriptURL: 'debugScriptURL',
     subcomponents: 'subcomponents',
     pluginTemplate: 'pluginTemplate'
 };
@@ -38,28 +39,34 @@ export const buildVueRouteObject = (pluginDescription) => ({
 
 export const asyncVueComponent = (pluginDescription) => () => ({
     component: new Promise((resolve, reject) => {
-            if (!pluginDescription[PLUGIN_SCHEMA.scriptURL]) {
-                reject("Invalid component url");
-            } else {
-                Vue.loadScript(pluginDescription[PLUGIN_SCHEMA.scriptURL])
-                    .then(() => {
-                        const componentTemplate = pluginDescription[PLUGIN_SCHEMA.pluginTemplate];
-                        if (!componentTemplate) {
-                            reject(`Component "${pluginDescription[PLUGIN_SCHEMA.name]}" has not a valid template`);
-                        } else {
-                            resolve({
-                                template: componentTemplate,
-                                mounted() {
-                                    attachPluginEvents(this.$el);
-                                }
-                            });
-                        }
-                    })
-                    .catch(err => {
-                        reject(err);
-                    });
-            }
-        })
+        let scriptURL = "";
+        if (process.env.NODE_ENV === "debug" && pluginDescription[PLUGIN_SCHEMA.debugScriptURL]) {
+            scriptURL = pluginDescription[PLUGIN_SCHEMA.debugScriptURL];
+        } else {
+            scriptURL = pluginDescription[PLUGIN_SCHEMA.scriptURL];
+        }
+        if (!scriptURL) {
+            reject("Invalid component url");
+        } else {
+            Vue.loadScript(scriptURL)
+                .then(() => {
+                    const componentTemplate = pluginDescription[PLUGIN_SCHEMA.pluginTemplate];
+                    if (!componentTemplate) {
+                        reject(`Component "${pluginDescription[PLUGIN_SCHEMA.name]}" has not a valid template`);
+                    } else {
+                        resolve({
+                            template: componentTemplate,
+                            mounted() {
+                                attachPluginEvents(this.$el);
+                            }
+                        });
+                    }
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        }
+    })
         .catch(err => {
             store.dispatch('showMessage', {
                 content: {

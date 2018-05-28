@@ -1130,6 +1130,7 @@ var PLUGIN_SCHEMA = {
     title: 'title',
     pluginPath: 'pluginPath',
     scriptURL: 'scriptURL',
+    debugScriptURL: 'debugScriptURL',
     subcomponents: 'subcomponents',
     pluginTemplate: 'pluginTemplate'
 };
@@ -1166,10 +1167,16 @@ var asyncVueComponent = exports.asyncVueComponent = function asyncVueComponent(p
     return function () {
         return {
             component: new Promise(function (resolve, reject) {
-                if (!pluginDescription[PLUGIN_SCHEMA.scriptURL]) {
+                var scriptURL = "";
+                if ("debug" === "debug" && pluginDescription[PLUGIN_SCHEMA.debugScriptURL]) {
+                    scriptURL = pluginDescription[PLUGIN_SCHEMA.debugScriptURL];
+                } else {
+                    scriptURL = pluginDescription[PLUGIN_SCHEMA.scriptURL];
+                }
+                if (!scriptURL) {
                     reject("Invalid component url");
                 } else {
-                    _vue2.default.loadScript(pluginDescription[PLUGIN_SCHEMA.scriptURL]).then(function () {
+                    _vue2.default.loadScript(scriptURL).then(function () {
                         var componentTemplate = pluginDescription[PLUGIN_SCHEMA.pluginTemplate];
                         if (!componentTemplate) {
                             reject('Component "' + pluginDescription[PLUGIN_SCHEMA.name] + '" has not a valid template');
