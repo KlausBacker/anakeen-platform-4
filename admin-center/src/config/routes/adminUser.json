@@ -7,8 +7,8 @@
   "routes": {
     "AdminUser:GroupList": {
       "description": "Get list of group",
-      "pattern": "/api/v2/admin/user/groups/",
-      "callable": "\\Anakeen\\Routes\\Admin\\User\\Groups",
+      "pattern": "/api/v2/admin/account/groups/",
+      "callable": "\\Anakeen\\Routes\\Admin\\Account\\Groups",
       "methods": [
         "GET"
       ],
@@ -17,8 +17,8 @@
     },
     "AdminUser:UserList": {
       "description": "Get list of users",
-      "pattern": "/api/v2/admin/user/users/",
-      "callable": "\\Anakeen\\Routes\\Admin\\User\\Users",
+      "pattern": "/api/v2/admin/account/users/",
+      "callable": "\\Anakeen\\Routes\\Admin\\Account\\Users",
       "methods": [
         "GET"
       ],

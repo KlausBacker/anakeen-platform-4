@@ -6,7 +6,7 @@
  * Time: 15:05
  */
 
-namespace Anakeen\Routes\Admin\User;
+namespace Anakeen\Routes\Admin\Account;
 
 
 use Dcp\Sacc\Exception;
@@ -20,6 +20,7 @@ class Users
      * @throws Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response) {
+        $result = [];
         $filter = $request->getQueryParam("filter");
         $group = $request->getQueryParam("group");
 
@@ -39,6 +40,9 @@ class Users
                 "id" => $currentAccount->fid,
                 "accountId" => $currentAccount->id,
                 "title" => getDocTitle($currentAccount->fid),
+                "mail"=> $currentAccount->mail,
+                "firstname" => $currentAccount->firstname,
+                "lastname" => $currentAccount->lastname
             ];
         }
 

@@ -13,6 +13,28 @@
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.0.2.tgz#d056b68999769728a1cff8d643bc59eb6f0be436"
 
+"@progress/kendo-base-components-vue-wrapper@2018.2.516":
+  version "2018.2.516"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-base-components-vue-wrapper/-/kendo-base-components-vue-wrapper-2018.2.516.tgz#8067bda44a8cfad38466da3e46e68f5583155ebc"
+
+"@progress/kendo-grid-vue-wrapper@^2018.2.516":
+  version "2018.2.516"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-grid-vue-wrapper/-/kendo-grid-vue-wrapper-2018.2.516.tgz#3036f675a1f50257795d536f8b63b2b34dd3f2a0"
+  dependencies:
+    "@progress/kendo-base-components-vue-wrapper" "2018.2.516"
+
+"@progress/kendo-treeview-vue-wrapper@^2018.2.516":
+  version "2018.2.516"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-treeview-vue-wrapper/-/kendo-treeview-vue-wrapper-2018.2.516.tgz#ccf3a21415638112d44359fca6221621928f0abc"
+  dependencies:
+    "@progress/kendo-base-components-vue-wrapper" "2018.2.516"
+
+"@progress/kendo-ui@^2018.2.516":
+  version "2018.2.516"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2018.2.516.tgz#d6058f7f24721bd3d92da2637daf9b1836f7ab8f"
+  dependencies:
+    jquery "<=3"
+
 "@sindresorhus/is@^0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
@@ -3892,6 +3914,10 @@ isurl@^1.0.0-alpha5:
   dependencies:
     has-to-string-tag-x "^1.2.0"
     is-object "^1.0.1"
+
+jquery@<=3:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
 js-base64@^2.1.8, js-base64@^2.1.9:
   version "2.4.3"
