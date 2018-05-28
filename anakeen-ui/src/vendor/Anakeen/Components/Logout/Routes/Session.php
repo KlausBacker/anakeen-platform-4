@@ -8,12 +8,12 @@ namespace Anakeen\Components\Logout\Routes;
 use Anakeen\Core\ContextManager;
 
 /**
- * Class Logout
- * Logout with user's informations
- * @note Used by route : DELETE /components/logout/logout
+ * Class Session
+ * Logout with user information
+ * @note Used by route : DELETE /components/logout/session
  * @package Anakeen\Components\Logout\Routes
  */
-class Logout
+class Session
 {
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {

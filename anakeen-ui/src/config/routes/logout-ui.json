@@ -1,7 +1,7 @@
 {
   "routes": {
     "Ui:Logout:Logout": {
-      "callable": "\\Anakeen\\Components\\Logout\\Routes\\Logout",
+      "callable": "\\Anakeen\\Components\\Logout\\Routes\\Session",
       "methods": ["DELETE"],
       "pattern": "/components/logout/session",
       "description": "Logout returning user informations",
