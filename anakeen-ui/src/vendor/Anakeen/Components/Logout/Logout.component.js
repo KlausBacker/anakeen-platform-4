@@ -15,7 +15,7 @@ export default {
             if (event.defaultPrevented) {
                 this.$emit('logoutCancelled');
             } else {
-                this.$http.delete('/components/logout/logout')
+                this.$http.delete('/components/logout/session')
                     .then(response => {
                         this.$emit('afterLogout', response.data);
                         document.location.assign(response.data.location || '/');
