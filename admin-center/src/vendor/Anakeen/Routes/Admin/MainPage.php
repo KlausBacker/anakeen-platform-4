@@ -27,7 +27,9 @@ class MainPage
                 [
                     "key" =>"kendo",
                     "path" => \Dcp\Ui\UIGetAssetPath::getJSKendoPath()
-                ]
+                ],
+                ["key" =>"ank-components",
+                    "path" => \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath()]
             ],
             "CSS" => [
                 [
