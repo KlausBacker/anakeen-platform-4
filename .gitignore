@@ -21,3 +21,4 @@ anakeen-ui/src/public/uiAssets/Families/helppage/
 Tests/src/public/apps/uitest/dist/
 anakeen-ui/src/public/uiAssets/Families/mask/debug/
 anakeen-ui/src/public/uiAssets/Families/mask/prod/
+Makefile.local
