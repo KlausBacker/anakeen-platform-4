@@ -2,143 +2,199 @@ export default {
     data() {
         return {
             groupTree: new kendo.data.HierarchicalDataSource({
-                data: []
+                transport: {
+                    read: (options) => {
+                        Vue.ankApi.get("admin/account/groups/").then(response => {
+                            if (response.status === 200 && response.statusText === 'OK') {
+                                let data = response.data;
+                                Object.values(data).forEach((currentData) => {
+                                    currentData.items = currentData.items || [];
+                                    currentData.parents.forEach((parentData) => {
+                                        try {
+                                            data[parentData].items = data[parentData].items || [];
+                                            data[parentData].items.push(currentData);
+                                        } catch(e) {
+
+                                        }
+                                    });
+                                });
+                                //Suppress first level elements
+                                Object.values(data).forEach((currentData) => {
+                                    if (currentData.parents.length > 0) {
+                                        delete data[currentData.accountId];
+                                    }
+                                });
+
+                                try {
+                                    //Suppress refs elements and keep only values
+                                    data = Object.values(JSON.parse(JSON.stringify(data)));
+                                } catch (e) {
+                                    data = [];
+                                }
+                                const addUniqId = (currentElement, id = "") => {
+                                    currentElement.hierarchicalId = id ? id+"/"+currentElement.id: currentElement.id;
+                                    if (currentElement.items) {
+                                        currentElement.items.forEach((childrenElement) => {
+                                            addUniqId(childrenElement, currentElement.hierarchicalId);
+                                        })
+                                    }
+                                };
+                                data.forEach(currentGroup => {
+                                    addUniqId(currentGroup);
+                                });
+                                const selectedElement = window.localStorage.getItem("admin.userAndGroup.groupSelected");
+                                const restoreExpandedTree = (data, expanded) => {
+                                    for (let i = 0; i < data.length; i++) {
+                                        if (expanded[data[i].hierarchicalId]) {
+                                            data[i].expanded = true;
+                                        }
+                                        if (data[i].hierarchicalId === selectedElement) {
+                                            data[i].selected = true;
+                                        }
+                                        if (data[i].items && data[i].items.length) {
+                                            restoreExpandedTree(data[i].items, expanded);
+                                        }
+                                    }
+                                };
+                                let expandedElements = window.localStorage.getItem("admin.userAndGroup.expandedElement");
+                                if (expandedElements) {
+                                    try {
+                                        restoreExpandedTree(data, JSON.parse(expandedElements));
+                                    } catch(e) {
+
+                                    }
+                                }
+                                options.success(data);
+                            } else {
+                                throw new Error("Unable to get groups");
+                            }
+                        }).catch((error) => {
+                            console.error("Unable to get group", error);
+                        })
+                    }
+                },
+                schema: {
+                    model: {
+                        id: "hierarchicalId",
+                        children: "items"
+                    }
+                }
             }),
             gridContent: new kendo.data.DataSource({
-                data: []
+                transport: {
+                    read: {
+                        url: '/api/v2/admin/account/users/'
+                    }
+                },
+                schema: {
+                    data: "data",
+                    total: "total",
+                    model: {
+                        id: "id"
+                    }
+                },
+                serverFiltering: true,
+                serverPaging: true,
+                serverSorting: true,
+                pageSize: 10
             })
         };
     },
-    mounted () {
-        this.updateData();
+    mounted() {
+        const treeview = this.$refs.groupTreeView.kendoWidget();
+        treeview.bind("dataBound", () => {
+            const selected = treeview.dataItem(treeview.select());
+            this.updateGridData(selected.login);
+        });
         this.bindSplitter();
     },
-    methods : {
-        bindSplitter: function() {
+    methods: {
+        updateTreeData: function() {
+           this.groupTree.read();
+        },
+        bindSplitter: function () {
             const onContentResize = (part, $split) => {
                 return () => {
-                    window.localStorage.setItem("admin.userAndGroup."+part, Vue.jQuery($split).data("kendoSplitter").size(".k-pane:first"));
+                    window.localStorage.setItem("admin.userAndGroup." + part, Vue.jQuery($split).data("kendoSplitter").size(".k-pane:first"));
                 }
             };
             const sizeContentPart = window.localStorage.getItem("admin.userAndGroup.content") || "200px";
             const sizeCenterPart = window.localStorage.getItem("admin.userAndGroup.center") || "200px";
             Vue.jQuery(this.$refs.contentPart).kendoSplitter({
                 panes: [
-                    { collapsible: true, size: sizeContentPart, min: "200px", resizable: true },
-                    { collapsible: false, resizable: true }
+                    {collapsible: true, size: sizeContentPart, min: "200px", resizable: true},
+                    {collapsible: false, resizable: true}
                 ],
                 resize: onContentResize("content", this.$refs.contentPart)
             });
             Vue.jQuery(this.$refs.centerPart).kendoSplitter({
                 orientation: "vertical",
-                panes : [
-                    { collapsible: true, size: sizeCenterPart, min: "200px", resizable: true },
-                    { collapsible: false, resizable: true }
+                panes: [
+                    {collapsible: true, size: sizeCenterPart, min: "200px", resizable: true},
+                    {collapsible: false, resizable: true}
                 ],
                 resize: onContentResize("center", this.$refs.centerPart)
             })
         },
-        updateData : function() {
-            Vue.ankApi.get("admin/account/groups/").then(response => {
-                if (response.status === 200 && response.statusText === 'OK') {
-                    let data = response.data;
-                    Object.values(data).forEach((currentData) => {
-                        currentData.items = currentData.items || [];
-                        currentData.parents.forEach((parentData) => {
-                            try {
-                                data[parentData].items = data[parentData].items || [];
-                                data[parentData].items.push(currentData);
-                            } catch(e) {
-
-                            }
-                        });
-                    });
-                    //Suppress first level elements
-                    Object.values(data).forEach((currentData) => {
-                        if (currentData.parents.length > 0) {
-                            delete data[currentData.accountId];
-                        }
-                    });
-                    data = Object.values(data);
-                    let expandedElements = window.localStorage.getItem("admin.userAndGroup.expandedElement");
-                    if (expandedElements) {
-                        try {
-                            this.restoreExpandedTree(data, JSON.parse(expandedElements));
-                        } catch(e) {
-
-                        }
-                    }
-                    this.groupTree.data(data);
-                    this.restoreSelectedTreeElement();
-                } else {
-                    throw new Error("Unable to get groups");
-                }
-            }).catch((error) => {
-                console.error("Unable to get group", error);
-            })
+        updateGridData: function (selectedGroupLogin) {
+            this.gridContent.filter({ field: "group", operator: "equal", value: selectedGroupLogin });
         },
-        restoreSelectedTreeElement: function() {
-            const treeview = this.$refs.groupTreeView.kendoWidget();
-            const selectedElement = window.localStorage.getItem("admin.userAndGroup.groupSelected");
-            if (selectedElement) {
-                const getitem = treeview.dataSource.get(selectedElement);
-                const selectitem = treeview.findByUid(getitem.uid);
-                treeview.select(selectitem);
-            }
-        },
-        restoreExpandedTree: function(data, expanded) {
-            for (let i = 0; i < data.length; i++) {
-                if (expanded[data[i].id]) {
-                    data[i].expanded = true;
-                }
-                if (data[i].items && data[i].items.length) {
-                    this.restoreExpandedTree(data[i].items, expanded);
-                }
-            }
-        },
-        updateGridData: function(selectedGroupLogin) {
-            Vue.ankApi.get("admin/account/users/?group="+selectedGroupLogin).then(response => {
-                if (response.status === 200 && response.statusText === 'OK') {
-                    let data = response.data;
-                    try {
-                        data = Object.values(data);
-                    } catch(e) {
-                        data = [];
-                    }
-                    this.gridContent.data(data);
-                } else {
-                    throw new Error("Unable to get groups");
-                }
-            }).catch((error) => {
-                console.error("Unable to get group", error);
-            })
-        },
-        onGroupSelect: function(event) {
+        onGroupSelect: function (event) {
             const selectedElement = event.sender.dataItem(event.sender.select());
-            window.localStorage.setItem("admin.userAndGroup.groupSelected", selectedElement.id);
+            window.localStorage.setItem("admin.userAndGroup.groupSelected", selectedElement.hierarchicalId);
             this.updateGridData(selectedElement.login);
         },
-        registerTreeState: function(event) {
-            const saveTreeView = (function() {
+        registerTreeState: function (event) {
+            const saveTreeView = (function () {
                 const treeview = this.$refs.groupTreeView.kendoWidget();
                 const expandedItemsIds = {};
                 treeview.element.find(".k-item").each(function () {
                     let item = treeview.dataItem(this);
                     if (item.expanded) {
-                        expandedItemsIds[item.id] = true;
+                        expandedItemsIds[item.hierarchicalId] = true;
                     }
                 });
                 window.localStorage.setItem("admin.userAndGroup.expandedElement", JSON.stringify(expandedItemsIds));
             }).bind(this);
             window.setTimeout(saveTreeView, 100);
         },
-        collapseAll: function() {
+        collapseAll: function () {
             const treeview = this.$refs.groupTreeView.kendoWidget();
             treeview.collapse(".k-item");
         },
-        expandAll: function() {
+        expandAll: function () {
             const treeview = this.$refs.groupTreeView.kendoWidget();
             treeview.expand(".k-item");
+        },
+        filterGroup: function(event) {
+            event.preventDefault();
+            const filter = (dataSource, query) => {
+                let hasVisibleChildren = false;
+                const data = dataSource instanceof kendo.data.HierarchicalDataSource && dataSource.data();
+                for (let i = 0; i < data.length; i++) {
+                    let item = data[i];
+                    let text = item.title.toLowerCase();
+                    let itemVisible =
+                        query === true // parent already matches
+                        || query === "" // query is empty
+                        || text.indexOf(query) >= 0; // item text matches query
+
+                    let anyVisibleChildren = filter(item.children, itemVisible || query); // pass true if parent matches
+
+                    hasVisibleChildren = hasVisibleChildren || anyVisibleChildren || itemVisible;
+
+                    item.hidden = !itemVisible && !anyVisibleChildren;
+                }
+
+                if (data) {
+                    // re-apply filter on children
+                    dataSource.filter({ field: "hidden", operator: "neq", value: true });
+                }
+
+                return hasVisibleChildren;
+            };
+            const query = this.$refs.filterTree.value ? this.$refs.filterTree.value.toLowerCase() : "";
+            return filter(this.groupTree, query);
         }
     }
 };

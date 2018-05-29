@@ -13,24 +13,35 @@ use Dcp\Sacc\Exception;
 
 class Users
 {
+    private static $fields = ["login", "lastname", "firstname", "mail"];
+
     /**
      * @param \Slim\Http\request $request
-     * @param \Slim\Http\response $responsz
+     * @param \Slim\Http\response $response
      * @return \Slim\Http\Response
      * @throws Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response) {
         $result = [];
         $filter = $request->getQueryParam("filter");
-        $group = $request->getQueryParam("group");
+        $skip = $request->getQueryParam("skip");
+        $take= $request->getQueryParam("take");
 
         $searchAccount = new \SearchAccount();
         $searchAccount->setTypeFilter(\SearchAccount::userType);
-        if ($group !== null) {
-            $searchAccount->addGroupFilter($group);
+        if (isset($filter)) {
+            foreach ($filter["filters"] as $currentFilter) {
+                if ($currentFilter["field"] === "group") {
+                    $searchAccount->addGroupFilter($currentFilter["value"]);
+                }
+            }
         }
-        if ($filter !== null) {
-            $searchAccount->addFilter("concat_ws(' ', lastname, firstname) ~* '%s' OR login ~* '%s'", preg_quote($filter), preg_quote($filter));
+
+        if ($skip !== null) {
+            $searchAccount->setStart($skip);
+        }
+        if($take !== null) {
+            $searchAccount->setSlice($take);
         }
 
         foreach ($searchAccount->search() as $currentAccount) {
@@ -46,7 +57,11 @@ class Users
             ];
         }
 
-        return $response->withJson($result);
+        return $response->withJson([
+            "total"=> count($result),
+            "data"=> array_values($result),
+            "filter"=>$filter
+        ]);
 
     }
 }
