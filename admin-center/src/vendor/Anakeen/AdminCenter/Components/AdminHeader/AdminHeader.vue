@@ -7,9 +7,7 @@
             <span class="header-admin-user">
                 {{userFullName}}
             </span>
-            <button class="header-admin-logout-button" @click="logout">
-                <i class="fa fa-power-off"></i>
-            </button>
+            <ank-logout></ank-logout>
         </div>
     </header>
 </template>
