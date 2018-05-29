@@ -34,7 +34,7 @@ pojs: $(TEMPLATES)
 
 # Extract gettext strings from templates files and create a POT dictionary template.
 	@if [ "$(GETTEXT_HTML_SOURCES)" != "" ]; then \
-	   gettext-extract --attribute v-translate --quiet --output $@ $(GETTEXT_HTML_SOURCES); \
+	   ./node_modules/.bin/gettext-extract --attribute v-translate --quiet --output $@ $(GETTEXT_HTML_SOURCES); \
 	fi
 
 # Extract gettext strings from JavaScript files.
