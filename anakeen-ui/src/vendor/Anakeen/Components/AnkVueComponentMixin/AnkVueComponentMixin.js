@@ -28,6 +28,17 @@ const sprintf = (str, ...substitutes) => {
     return str.replace(/%s/g, () => substitutes[counter++]);
 };
 
+const getSpecialType = (stringSelector) => {
+    switch (stringSelector) {
+        case 'window':
+            return window;
+        case 'document':
+            return document;
+        default:
+            return stringSelector;
+    }
+};
+
 // Parse full format bind-event prop "my-event: #myElement.other.method, other-event: #myElement.other.method2"
 function analyzeQuickBindingArg(arg) {
     if (typeof arg !== 'string') {
@@ -64,7 +75,8 @@ function analyzeBinding(binding) {
 // Parse action "#myElement.other.method"
 function analyzeAction(eventName, selector, action) {
     try {
-        const elements = this.$(selector);
+        const realSelector = getSpecialType(selector);
+        const elements = this.$(realSelector);
         if (elements && elements.length) {
             this._ank_protected.bindedEvents.push(eventName);
             this.$on(eventName, (...arg) => {
@@ -92,8 +104,7 @@ function analyzeAction(eventName, selector, action) {
     }
 }
 
-export const AnkMixin = {
-
+const AnkMixin = {
     props: {
         bindEvent: {
             type: String,
@@ -162,7 +173,4 @@ export const AnkMixin = {
 
 };
 
-export default function install(Vue, options) {
-    // Install globally on all Vue components, prefer use local Mixin
-    Vue.mixin(Mixin);
-};
+export default AnkMixin;

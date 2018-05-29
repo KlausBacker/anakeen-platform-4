@@ -32,7 +32,6 @@ pojs: $(TEMPLATES)
 # => `mkdir -p /tmpot/`
 	mkdir -p $(dir $@)
 
-
 # Extract gettext strings from templates files and create a POT dictionary template.
 	@if [ "$(GETTEXT_HTML_SOURCES)" != "" ]; then \
 	   gettext-extract --attribute v-translate --quiet --output $@ $(GETTEXT_HTML_SOURCES); \
@@ -41,10 +40,10 @@ pojs: $(TEMPLATES)
 # Extract gettext strings from JavaScript files.
 	@if [ "$(GETTEXT_JS_SOURCES)" != "" ]; then \
 		xgettext --language=JavaScript --keyword=npgettext:1c,2,3 \
-		--from-code=utf-8 --join-existing --no-wrap \
+		--from-code=utf-8 $(XGETTEXT_OPTS) --no-wrap \
 		--package-name=$(shell node -e "console.log(require('./package.json').name);") \
 		--package-version=$(shell node -e "console.log(require('./package.json').version);") \
-		--output $@ $(GETTEXT_JS_SOURCES); \
+		--output="$@"  $(GETTEXT_JS_SOURCES); \
 	fi
 # Generate .po files for each available language and for each component.
 	@if [ -f "$@" ]; then \

@@ -21,9 +21,11 @@ class UIGetAssetPath
 
     protected static $assetPath = 'uiAssets/externals/';
     protected static $widgetPath = 'uiAssets/widgets/';
+    protected static $componentsPath = 'components';
     protected static $inDebug = null;
     protected static $assetPaths = null;
     protected static $widgetPaths = null;
+    protected static $componentsPaths = null;
     protected static $ws = null;
 
     public static function isInDebug() {
@@ -50,6 +52,15 @@ class UIGetAssetPath
         return self::$widgetPaths;
     }
 
+    protected static function getSmartWebComponentsPaths() {
+        if (self::$componentsPaths === null) {
+            $lastPart = self::isInDebug() ? "/debug/" : "/dist/";
+
+            self::$componentsPaths = json_decode(file_get_contents(self::$componentsPath."/".$lastPart."/ank-components.json"), true);
+        }
+        return self::$componentsPaths;
+    }
+
     public static function getWs() {
         if (self::$ws === null) {
             self::$ws = $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
@@ -69,6 +80,11 @@ class UIGetAssetPath
             $asset = self::getAssetsPaths();
             return $asset["KendoUI"]["js"];
         }
+    }
+
+    public static function getSmartWebComponentsPath() {
+        $ankComponentsPath = self::getSmartWebComponentsPaths();
+        return $ankComponentsPath['js'];
     }
 
     public static function getJSSmartElementPath() {
