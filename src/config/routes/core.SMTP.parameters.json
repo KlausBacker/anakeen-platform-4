@@ -1,0 +1,43 @@
+{
+    "parameters": {
+        "SMTP_HOST": {
+            "value": "",
+            "description": "SMTP hostname",
+            "access": "admin",
+            "category": "SMTP"
+        },
+        "SMTP_PORT": {
+            "value": 25,
+            "description": "SMTP Port number",
+            "access": "admin",
+            "category": "SMTP"
+        },
+        "SMTP_LOGIN": {
+            "value": "",
+            "description": "SMTP Login",
+            "access": "admin",
+            "category": "SMTP"
+        },
+        "SMTP_PASSWORD": {
+            "value": "",
+            "description": "SMTP Password",
+            "type": "password",
+            "category": "SMTP",
+            "access": "admin"
+        },
+        "SMTP_FROM": {
+            "value": "",
+            "description": "SMTP From (mail address)",
+            "type": "text",
+            "category": "SMTP",
+            "access": "admin"
+        },
+        "SMTP_SENDER": {
+            "value": "",
+            "description": "SMTP Sender (mail address)",
+            "type": "text",
+            "category": "SMTP",
+            "access": "admin"
+        }
+    }
+}

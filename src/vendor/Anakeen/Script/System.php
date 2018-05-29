@@ -401,6 +401,7 @@ class System
 
         $routeConfig = \Anakeen\Router\RouterLib::getRouterConfig();
         $routeConfig->recordAccesses();
+        $routeConfig->recordParameters();
 
         $this->verbose(1, sprintf("[+] Reset cache route configuration file.\n"));
         $routesConfig = new \Anakeen\Router\RoutesConfig();

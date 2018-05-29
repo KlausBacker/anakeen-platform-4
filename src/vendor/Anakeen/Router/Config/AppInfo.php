@@ -71,6 +71,7 @@ class AppInfo
         } else {
             $this->updateApplication($list[0]);
         }
+
     }
 
     /**
