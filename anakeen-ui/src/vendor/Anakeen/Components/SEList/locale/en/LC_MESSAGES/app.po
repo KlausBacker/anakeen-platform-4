@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anakeen-ui 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-25 14:41+0200\n"
+"POT-Creation-Date: 2018-05-29 10:51+0200\n"
 "PO-Revision-Date: 2018-05-25 14:41+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -22,17 +22,17 @@ msgctxt "SEList"
 msgid "of"
 msgstr "of"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/SEList/seList.component.js:228
+#: anakeen-ui/src/vendor/Anakeen/Components/SEList/seList.component.js:221
 msgctxt "SEList"
 msgid "Search in : %{collection}"
 msgstr "Search in : %{collection}"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/SEList/seList.component.js:229
+#: anakeen-ui/src/vendor/Anakeen/Components/SEList/seList.component.js:222
 msgctxt "SEList"
 msgid "No %{collection} to display"
 msgstr "No %{collection} to display"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/SEList/seList.component.js:234
+#: anakeen-ui/src/vendor/Anakeen/Components/SEList/seList.component.js:227
 msgctxt "SEList"
 msgid "Items per page"
 msgstr "Items per page"
