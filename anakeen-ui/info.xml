@@ -28,7 +28,7 @@
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Components/Authent/AuthentMail.csv"/>
 
 
-        <process command="programs/update_catalog"/>
+        <process command="./ank.php --system --localeGen"/>
     </post-install>
 
     <post-upgrade>
@@ -48,7 +48,7 @@
         <process command="programs/record_application DOCUMENT_GRID_HTML5"/>
         <process command="programs/post_migration DOCUMENT_GRID_HTML5"/>
 
-        <process command="programs/update_catalog"/>
+        <process command="./ank.php --system --localeGen"/>
     </post-upgrade>
 
 </module>
