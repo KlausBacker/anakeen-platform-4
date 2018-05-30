@@ -8,12 +8,12 @@ export default {
             default: false
         },
         // Allow the user to change his email, or not
-        emailalterable: {
+        emailAlterable: {
             type: Boolean,
             default: false
         },
         // Allow the user to change his password, or not
-        passwordalterable: {
+        passwordAlterable: {
             type: Boolean,
             default: false
         }
@@ -42,7 +42,7 @@ export default {
     methods: {
         // Fetch user's information from the server
         fetchUser() {
-            this.$http.get('/components/identity/user')
+            this.$http.get('/api/v2/ui/users/current')
                 .then(response => {
                     this.$emit('userLoaded', response.data);
 
@@ -145,14 +145,14 @@ export default {
 
         // Open or close the popup that allow the user to change his email and/or password
         toggleSettingsPopup() {
-            if (this.emailalterable || this.passwordalterable) {
+            if (this.emailAlterable || this.passwordAlterable) {
                 this.$("#popup").data("kendoPopup").toggle();
             }
         },
 
         // Close the popup that allow the user to change his email and/or password
         closeSettingsPopup() {
-            if (this.emailalterable || this.passwordalterable) {
+            if (this.emailAlterable || this.passwordAlterable) {
                 this.$("#popup").data("kendoPopup").close();
             }
         },
@@ -160,6 +160,30 @@ export default {
         // Open dialog window to change user's email
         openEmailModifierWindow() {
             this.closeSettingsPopup();
+
+            // Init window to change the user's email (if allowed in the props)
+            if (this.emailAlterable) {
+                // Function called when th dialog is open and closed
+                let resetEmailChangeData = () => {
+                    this.newEmail = '';
+                    this.emailWarningMessage = '';
+                };
+
+                let emailWindow = $("#emailModifier");
+                emailWindow.kendoWindow({
+                    draggable: false,
+                    resizable: false,
+                    modal: true,
+                    width: '600px',
+                    title: this.translations.emailChangeAction,
+                    visible: false,
+                    actions: ['Close'],
+                    open: resetEmailChangeData,
+                    close: resetEmailChangeData,
+                    activate: () => { this.$("#emailInput").focus(); }
+                }).data('kendoWindow').center();
+            }
+
             this.$("#emailModifier").data("kendoWindow").open();
         },
 
@@ -171,8 +195,32 @@ export default {
         // Open dialog window to change user's password
         openPasswordModifierWindow() {
             this.closeSettingsPopup();
+
+            // Init window to change the user's password (if allowed in the props)
+            if (this.passwordAlterable) {
+                // Function called when the dialog is open  and closed
+                let resetPasswordChangeData = () => {
+                    this.newPassword = '';
+                    this.newPasswordConfirmation = '';
+                    this.passwordWarningMessage = '';
+                };
+
+                let passwordWindow = this.$("#passwordModifier");
+                passwordWindow.kendoWindow({
+                    draggable: false,
+                    resizable: false,
+                    modal: true,
+                    width: "600px",
+                    title: this.translations.passwordChangeAction,
+                    visible: false,
+                    actions: ['Close'],
+                    open: resetPasswordChangeData,
+                    close: resetPasswordChangeData,
+                    activate: () => { this.$("#passwordInput").focus(); }
+                }).data("kendoWindow").center();
+            }
+
             this.$("#passwordModifier").data("kendoWindow").open();
-            this.$("#passwordInput").focus();
             document.getElementById("passwordInput").focus();
         },
 
@@ -206,15 +254,15 @@ export default {
                 currentEmailLabel: this.$pgettext('Identity', 'Current email'),
                 noEmail: this.$pgettext('Identity', 'No email yet'),
                 newEmailLabel: this.$pgettext('Identity', 'New email'),
-                validateButtonLabel: this.$pgettext('Identity', 'Confirm'),
-                cancelButtonLabel: this.$pgettext('Identity', 'Cancel'),
+                validateEmailButtonLabel: this.$pgettext('Identity', 'Confirm email modification'),
+                cancelEmailButtonLabel: this.$pgettext('Identity', 'Cancel email modification'),
+                validatePasswordButtonLabel: this.$pgettext('Identity', 'Confirm password modification'),
+                cancelPasswordButtonLabel: this.$pgettext('Identity', 'Cancel password modification'),
                 newPasswordLabel: this.$pgettext('Identity', 'New password'),
                 newPasswordConfirmationLabel: this.$pgettext('Identity', 'New password confirmation'),
                 serverError: this.$pgettext('Identity', 'Server error'),
                 passwordsMismatchMessage: this.$pgettext('Identity', 'Confirmation doesn\'t match with the password'),
-                emailFormatMessage: this.$pgettext('Identity', 'Wrong email format'),
-                emailWindowTitle: this.$pgettext('Identity', 'Change email'),
-                passwordWindowTitle: this.$pgettext('Identity', 'Change password'),
+                emailFormatMessage: this.$pgettext('Identity', 'Wrong email format')
             };
         },
 
@@ -227,7 +275,7 @@ export default {
         this.fetchUser();
 
         // Init popup to allow email and/or password modification (if allowed in the props)
-        if (this.emailalterable || this.passwordalterable) {
+        if (this.emailAlterable || this.passwordAlterable) {
             $('#popup').kendoPopup({
                 anchor: this.$('#identity'),
                 origin: "bottom left",
@@ -235,53 +283,6 @@ export default {
                 animation: false,
                 collision: 'flip fit'
             });
-        }
-
-        // Init window to change the user's email (if allowed in the props)
-        if (this.emailalterable) {
-            // Function called when th dialog is open and closed
-            let resetEmailChangeData = () => {
-                this.newEmail = '';
-                this.emailWarningMessage = '';
-            };
-
-            let emailWindow = $("#emailModifier");
-            emailWindow.kendoWindow({
-                draggable: false,
-                resizable: false,
-                modal: true,
-                width: '600px',
-                title: this.translations.emailWindowTitle,
-                visible: false,
-                actions: ['Close'],
-                open: resetEmailChangeData,
-                close: resetEmailChangeData,
-                activate: () => { this.$("#emailInput").focus(); }
-            }).data('kendoWindow').center();
-        }
-
-        // Init window to change the user's password (if allowed in the props)
-        if (this.passwordalterable) {
-            // Function called when the dialog is open  and closed
-            let resetPasswordChangeData = () => {
-                this.newPassword = '';
-                this.newPasswordConfirmation = '';
-                this.passwordWarningMessage = '';
-            };
-
-            let passwordWindow = this.$("#passwordModifier");
-            passwordWindow.kendoWindow({
-                draggable: false,
-                resizable: false,
-                modal: true,
-                width: "600px",
-                title: this.translations.passwordWindowTitle,
-                visible: false,
-                actions: ['Close'],
-                open: resetPasswordChangeData,
-                close: resetPasswordChangeData,
-                activate: () => { this.$("#passwordInput").focus(); }
-            }).data("kendoWindow").center();
         }
     }
 }
