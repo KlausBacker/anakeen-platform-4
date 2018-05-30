@@ -59,6 +59,9 @@ $(JS_ADMIN_CENTER_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${ADMIN_CENTER_S
 	$(YARN_BIN) build
 	touch "$@"
 
+$(NODE_MODULE_PATH):
+	$(YARN_BIN) install
+
 $(LOCALPUB_ADMIN_CENTER_PATH): $(JS_CONF_PATH)/yarn.lock $(JS_ADMIN_CENTER_PATH) $(VERSION_PATH) $(RELEASE_PATH)
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	-mkdir -p $(LOCALPUB_ADMIN_CENTER_PATH)
@@ -67,7 +70,8 @@ $(LOCALPUB_ADMIN_CENTER_PATH): $(JS_CONF_PATH)/yarn.lock $(JS_ADMIN_CENTER_PATH)
 	$(DEVTOOL_BIN) generateWebinst --force -s $(LOCALPUB_ADMIN_CENTER_PATH) -o .
 	touch "$@"
 
-app: $(LOCALPUB_ADMIN_CENTER_PATH) $(JS_ADMIN_CENTER_PATH) ## build admin center
+
+app: $(NODE_MODULE_PATH) $(LOCALPUB_ADMIN_CENTER_PATH) $(JS_ADMIN_CENTER_PATH) ## build admin center
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 
 deploy: app ## deploy admin center
