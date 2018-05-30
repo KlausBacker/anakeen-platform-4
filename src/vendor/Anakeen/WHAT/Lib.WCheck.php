@@ -289,7 +289,7 @@ function getCheckActions($pubdir, $tapp, &$tact, $usePreviousVersion = false)
     //  $dump[] = "PGSERVICE=\"$pgservice_core\" pg_dump > " . \Anakeen\Core\ContextManager::getTmpDir() . "/" . uniqid($pgservice_core);
     //  $dump[] = "/etc/rc.d/init.d/httpd stop";
     $dump[] = "$pubdir/wstop";
-    $dump[] = "$pubdir/whattext";
+    $tact[] = "$pubdir/ank.php --system --localeGen";
 
     $tact = array_merge($dump, $cmd);
 

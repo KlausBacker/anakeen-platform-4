@@ -60,4 +60,6 @@ if (!empty($apps[$appname])) {
             $access->record();
         }
     }
+} else {
+    throw new \Anakeen\Script\Exception(sprintf('App "%s" not found', $appname));
 }

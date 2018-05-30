@@ -105,7 +105,7 @@ class LibSystem
      */
     public static function reloadLocaleCache()
     {
-        exec(sprintf("%s/whattext 2>&1", escapeshellarg(DEFAULT_PUBDIR)), $output, $ret);
+        exec(sprintf("%s/ank.php --system --localeGen 2>&1", escapeshellarg(DEFAULT_PUBDIR)), $output, $ret);
         if ($ret) {
             error_log(implode(",", $output));
         }

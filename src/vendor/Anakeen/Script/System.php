@@ -496,6 +496,19 @@ class System
         $this->verbose(1, sprintf("[+] Done.\n"));
     }
 
+    public function localeGen()
+    {
+        $this->verbose(1, sprintf("[+] Generate locale catalog.\n"));
+        $cmd = sprintf("%s/programs/update_catalog 2>&1", escapeshellarg($this->contextRoot));
+        exec($cmd, $output, $ret);
+        if ($ret !== 0) {
+            $this->debug(join("\n", $output) . "\n");
+            throw new Exception(sprintf("Error executing '%s'.", $cmd));
+        }
+        $this->verbose(1, "\t".implode("\n\t", $output)."\n");
+        $this->verbose(1, sprintf("[+] Done.\n"));
+    }
+
 
     public function stop()
     {
