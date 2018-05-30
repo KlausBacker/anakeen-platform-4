@@ -17,7 +17,8 @@ use Anakeen\Core\IMailRecipient;
 use Anakeen\Core\SEManager;
 use Anakeen\LogManager;
 
-class MailTemplateHooks extends \Anakeen\SmartStructures\Document
+class MailTemplateHooks extends \Anakeen\SmartElement
+
 {
     /**
      * always show a user notification

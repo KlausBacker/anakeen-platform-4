@@ -9,7 +9,8 @@
  */
 namespace Anakeen\SmartStructures\Mail;
 
-class MailHooks extends \Anakeen\SmartStructures\Document
+class MailHooks extends \Anakeen\SmartElement
+
 {
 
 }

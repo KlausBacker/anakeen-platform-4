@@ -2,7 +2,8 @@
 
 namespace Anakeen\Pu\SmartStructures;
 
-class TestDefaultHooks extends \Anakeen\SmartStructures\Document
+class TestDefaultHooks extends \Anakeen\SmartElement
+
 {
     public function isOne()
     {

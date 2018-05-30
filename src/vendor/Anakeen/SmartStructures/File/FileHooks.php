@@ -12,7 +12,8 @@ namespace Anakeen\SmartStructures\File;
 
 use Anakeen\SmartHooks;
 
-class FileHooks extends \Anakeen\SmartStructures\Document
+class FileHooks extends \Anakeen\SmartElement
+
 {
     public function registerHooks()
     {

@@ -7,7 +7,8 @@ namespace Dcp\Pu;
 
 use Anakeen\SmartHooks;
 
-class TstInvisible extends \Anakeen\SmartStructures\Document
+class TstInvisible extends \Anakeen\SmartElement
+
 {
     public function registerHooks()
     {

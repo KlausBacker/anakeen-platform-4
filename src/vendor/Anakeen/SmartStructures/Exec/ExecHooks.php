@@ -17,7 +17,8 @@ use Anakeen\LogManager;
 use Anakeen\Script\ShellManager;
 use Anakeen\SmartHooks;
 
-class ExecHooks extends \Anakeen\SmartStructures\Document
+class ExecHooks extends \Anakeen\SmartElement
+
 {
     private $execuserid;
 
