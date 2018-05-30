@@ -3,17 +3,17 @@
  * @author anakeen
  */
 
-namespace Anakeen\Components\Identity\Routes;
+namespace Anakeen\Routes\Ui;
 
 use Anakeen\Core\ContextManager;
 
 /**
- * Class User
+ * Class CurrentUser
  * Fetch user information from server
- * @note Used by route : GET /components/identity/user
+ * @note Used by route : GET /api/v2/ui/users/current
  * @package Anakeen\Components\Identity\Routes
  */
-class User
+class CurrentUser
 {
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
@@ -26,6 +26,9 @@ class User
         $data["firstName"] = $currentUser->firstname;
         $data["lastName"] = $currentUser->lastname;
         $data["email"] = $currentUser->mail;
+
+        $locale = ContextManager::getLanguage();
+        $data["locale"] = $locale;
 
         return $response->withJson($data);
     }

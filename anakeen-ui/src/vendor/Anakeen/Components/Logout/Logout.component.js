@@ -28,6 +28,13 @@ export default {
                     });
             }
         }
-    }
+    },
 
+    computed: {
+        translations() {
+            return {
+                title: this.$pgettext('Logout', 'Logout')
+            }
+        }
+    }
 }
