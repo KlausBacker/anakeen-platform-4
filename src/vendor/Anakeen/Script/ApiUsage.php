@@ -314,7 +314,7 @@ class ApiUsage
     public function getUsage()
     {
         $usage = $this->text;
-        $usage .= "\nUsage :\n";
+        $usage .= "\nUsage:\n";
         $usage .= $this->getArgumentText($this->needArgs);
         $usage .= "   Options:\n";
         $usage .= $this->getArgumentText($this->optArgs);
