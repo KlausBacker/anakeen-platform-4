@@ -16,6 +16,8 @@ body {
     width:28em;
     box-shadow: 10px 10px 10px 0px #297d2c;
     margin: 1em;
+    display: flex;
+    flex-direction: column;
 }
 
 .systemRight {
@@ -41,3 +43,32 @@ body {
 .documentsList__documents__search > .input-group {
     width: inherit;
 }
+
+.systemLeftUp {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.systemLeftUpRight {
+    margin-right: 5px;
+}
+
+.systemLeftDown {
+    margin-top: 0;
+    margin-bottom: 0;
+    flex: 1;
+}
+
+/*ank-identity {
+    margin: 0;
+    display: inline-block;
+}
+
+ank-logout {
+    display: inline-block;
+    margin-top: 5px;
+    float: right;
+}*/
