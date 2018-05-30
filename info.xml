@@ -29,7 +29,7 @@
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Timer/timer.profil.csv ">
             <label>TIMER Profil</label>
         </process>
-        <process command="programs/update_catalog"/>
+        <process command="./ank.php --system --localeGen"/>
     </post-install>
     <post-upgrade>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.csv ">
@@ -38,6 +38,6 @@
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Timer/timer.struct.csv ">
             <label>TIMER Family</label>
         </process>
-        <process command="programs/update_catalog"/>
+        <process command="./ank.php --system --localeGen"/>
     </post-upgrade>
 </module>

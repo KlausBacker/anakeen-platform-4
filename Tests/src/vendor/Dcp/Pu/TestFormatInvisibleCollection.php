@@ -36,7 +36,7 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
         
-        $fc = new \FormatCollection();
+        $fc = new \Anakeen\Core\Internal\FormatCollection();
         $fc->useCollection($dl);
         $fc->relationNoAccessText = 'no grant';
         $fc->addProperty($fc::propName);
@@ -61,7 +61,7 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
         
-        $fc = new \FormatCollection();
+        $fc = new \Anakeen\Core\Internal\FormatCollection();
         $fc->setVerifyAttributeAccess(false);
         $fc->useCollection($dl);
         $fc->relationNoAccessText = 'no grant';
@@ -256,17 +256,17 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
                     "TST_INVISIBLE_DOC1" => array(
                         4 => "Titre 1", // title
                         5 => "1", // number
-                        6 => \FormatCollection::noAccessText, // text
-                        7 => \FormatCollection::noAccessText, // decimal
-                        8 => \FormatCollection::noAccessText, // longtext
-                        9 => \FormatCollection::noAccessText
+                        6 => \Anakeen\Core\Internal\FormatCollection::noAccessText, // text
+                        7 => \Anakeen\Core\Internal\FormatCollection::noAccessText, // decimal
+                        8 => \Anakeen\Core\Internal\FormatCollection::noAccessText, // longtext
+                        9 => \Anakeen\Core\Internal\FormatCollection::noAccessText
                         // docid
                         
                     ) ,
                     "TST_INVISIBLE_DOC2" => array(
                         4 => "Titre 2",
-                        5 => \FormatCollection::noAccessText,
-                        6 => \FormatCollection::noAccessText,
+                        5 => \Anakeen\Core\Internal\FormatCollection::noAccessText,
+                        6 => \Anakeen\Core\Internal\FormatCollection::noAccessText,
                         7 => "2.2",
                         8 => "Deux long",
                         9 => "TST_INVISIBLE_DOC1"
@@ -274,9 +274,9 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
                     "TST_INVISIBLE_DOC3" => array(
                         4 => "Titre 3",
                         5 => "3", // number
-                        6 => \FormatCollection::noAccessText, // text
-                        7 => \FormatCollection::noAccessText, // decimal
-                        8 => \FormatCollection::noAccessText
+                        6 => \Anakeen\Core\Internal\FormatCollection::noAccessText, // text
+                        7 => \Anakeen\Core\Internal\FormatCollection::noAccessText, // decimal
+                        8 => \Anakeen\Core\Internal\FormatCollection::noAccessText
                         // longtext
                         
                     )
@@ -322,11 +322,11 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
                 "TST_INVISIBLE_DOC1",
                 array(
                     "tst_title" => "Titre 1",
-                    "tst_text" => \FormatCollection::noAccessText,
+                    "tst_text" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
                     "tst_number" => "1",
-                    "tst_longtext" => \FormatCollection::noAccessText,
-                    "tst_decimal" => \FormatCollection::noAccessText,
-                    "tst_docid" => \FormatCollection::noAccessText
+                    "tst_longtext" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
+                    "tst_decimal" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
+                    "tst_docid" => \Anakeen\Core\Internal\FormatCollection::noAccessText
                 )
             ) ,
             array( // MASK TST_INVMASK_E2
@@ -334,8 +334,8 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
                 "TST_INVISIBLE_DOC2",
                 array(
                     "tst_title" => "Titre 2",
-                    "tst_text" => \FormatCollection::noAccessText,
-                    "tst_number" => \FormatCollection::noAccessText,
+                    "tst_text" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
+                    "tst_number" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
                     "tst_longtext" => "Deux long",
                     "tst_decimal" => "2,2"
                 )
@@ -345,10 +345,10 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
                 "TST_INVISIBLE_DOC3",
                 array(
                     "tst_title" => "Titre 3",
-                    "tst_text" => \FormatCollection::noAccessText,
+                    "tst_text" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
                     "tst_number" => "3",
-                    "tst_longtext" => \FormatCollection::noAccessText,
-                    "tst_decimal" => \FormatCollection::noAccessText
+                    "tst_longtext" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
+                    "tst_decimal" => \Anakeen\Core\Internal\FormatCollection::noAccessText
                 )
             ) ,
             array( // MASK TST_INVMASK_E1
@@ -356,10 +356,10 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
                 "TST_INVISIBLE_DOC4",
                 array(
                     "tst_title" => "Titre 4",
-                    "tst_text" => \FormatCollection::noAccessText,
+                    "tst_text" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
                     "tst_number" => "4",
-                    "tst_longtext" => \FormatCollection::noAccessText,
-                    "tst_decimal" => \FormatCollection::noAccessText
+                    "tst_longtext" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
+                    "tst_decimal" => \Anakeen\Core\Internal\FormatCollection::noAccessText
                 )
             ) ,
             array( // MASK TST_INVMASK_E1
@@ -367,10 +367,10 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
                 "TST_INVISIBLE_DOC5",
                 array(
                     "tst_title" => "Titre 5",
-                    "tst_text" => \FormatCollection::noAccessText,
-                    "tst_number" => \FormatCollection::noAccessText,
-                    "tst_longtext" => \FormatCollection::noAccessText,
-                    "tst_decimal" => \FormatCollection::noAccessText
+                    "tst_text" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
+                    "tst_number" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
+                    "tst_longtext" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
+                    "tst_decimal" => \Anakeen\Core\Internal\FormatCollection::noAccessText
                 )
             ) ,
             array( // MASK TST_INVMASK_E2
@@ -378,8 +378,8 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
                 "TST_INVISIBLE_DOC3",
                 array(
                     "tst_title" => "Titre 3",
-                    "tst_text" => \FormatCollection::noAccessText,
-                    "tst_number" => \FormatCollection::noAccessText,
+                    "tst_text" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
+                    "tst_number" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
                     "tst_longtext" => "Trois long",
                     "tst_decimal" => "3,3"
                 )
@@ -389,8 +389,8 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
                 "TST_INVISIBLE_DOC4",
                 array(
                     "tst_title" => "Titre 4",
-                    "tst_text" => \FormatCollection::noAccessText,
-                    "tst_number" => \FormatCollection::noAccessText,
+                    "tst_text" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
+                    "tst_number" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
                     "tst_longtext" => "Quatre long",
                     "tst_decimal" => "4,4"
                 )
@@ -400,10 +400,10 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
                 "TST_INVISIBLE_DOC3",
                 array(
                     "tst_title" => "Titre 3",
-                    "tst_text" => \FormatCollection::noAccessText,
+                    "tst_text" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
                     "tst_number" => "3",
-                    "tst_longtext" => \FormatCollection::noAccessText,
-                    "tst_decimal" => \FormatCollection::noAccessText
+                    "tst_longtext" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
+                    "tst_decimal" => \Anakeen\Core\Internal\FormatCollection::noAccessText
                 )
             ) ,
             array( // MASK TST_INVMASK_E4
@@ -422,10 +422,10 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
                 "TST_INVISIBLE_DOC3",
                 array(
                     "tst_title" => "Titre 3",
-                    "tst_text" => \FormatCollection::noAccessText,
-                    "tst_number" => \FormatCollection::noAccessText,
-                    "tst_longtext" => \FormatCollection::noAccessText,
-                    "tst_decimal" => \FormatCollection::noAccessText
+                    "tst_text" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
+                    "tst_number" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
+                    "tst_longtext" => \Anakeen\Core\Internal\FormatCollection::noAccessText,
+                    "tst_decimal" => \Anakeen\Core\Internal\FormatCollection::noAccessText
                 )
             ) ,
             array( // MASK TST_INVMASK_E4
