@@ -1426,8 +1426,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
 
-
-
     /**
      * record new \document or update
      *
@@ -1467,11 +1465,6 @@ create unique index i_docir on doc(initid, revision);";
                 if ($err) {
                     $info->errorCode = StoreInfo::UPDATE_ERROR;
                 } else {
-                    /**
-                     * is not the postUpdate method
-                     */
-                    $info->postStore = $this->getHooks()->trigger(SmartHooks::POSTSTORE);
-
                     if ($this->hasChanged) {
                         //in case of change in postStore
                         $err = $this->modify();
@@ -1481,6 +1474,18 @@ create unique index i_docir on doc(initid, revision);";
                     }
                     if ($err == "" && (!$create)) {
                         $this->addHistoryEntry(_("save document"), \DocHisto::INFO, "MODIFY");
+                    }
+                    if (!$err) {
+                        /**
+                         * is not the postUpdate method
+                         */
+                        $info->postStore = $this->getHooks()->trigger(SmartHooks::POSTSTORE);
+                        if ($this->hasChanged) {
+                            $err = $this->modify();
+                            if ($err) {
+                                $info->errorCode = StoreInfo::UPDATE_ERROR;
+                            }
+                        }
                     }
                 }
             } else {
@@ -1640,7 +1645,6 @@ create unique index i_docir on doc(initid, revision);";
     {
         return (($this->confidential > 0) && ($this->accessControl()->controlId($this->profid, 'confidential') != ""));
     }
-
 
 
     /**
@@ -2247,7 +2251,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
 
-
     /** get Latest Id of document
      *
      * @api get latest id of document
@@ -2330,7 +2333,6 @@ create unique index i_docir on doc(initid, revision);";
         }
         return _("unknow attribute");
     }
-
 
 
     /**
@@ -3435,9 +3437,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
 
-
-
-
     /**
      * return all values of a multiple value attribute
      *
@@ -3488,7 +3487,6 @@ create unique index i_docir on doc(initid, revision);";
             return $def;
         }
     }
-
 
 
     /**
@@ -3740,7 +3738,6 @@ create unique index i_docir on doc(initid, revision);";
         $this->_setValueNeedCompleteArray = $old_setValueCompleteArrayRow;
         return sprintf(_("%s is not an array attribute"), $idAttr);
     }
-
 
 
     /**
@@ -4612,7 +4609,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
 
-
     /**
      * return the previous value for a attibute set before \Anakeen\Core\Internal\SmartElement::SetValue
      * can be used in \Anakeen\Core\Internal\SmartElement::postModify generaly
@@ -4632,7 +4628,6 @@ create unique index i_docir on doc(initid, revision);";
         }
         return false;
     }
-
 
 
     /**
@@ -4673,7 +4668,6 @@ create unique index i_docir on doc(initid, revision);";
         }
         return $this->SetValue($attrid, " ");
     }
-
 
 
     /**
@@ -5552,7 +5546,6 @@ create unique index i_docir on doc(initid, revision);";
 
         return $err;
     }
-
 
 
     /**
@@ -6668,7 +6661,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
 
-
     /**
      * convert array value to flat attribute value
      *
@@ -6687,8 +6679,6 @@ create unique index i_docir on doc(initid, revision);";
         }
         return implode("\n", $v);
     }
-
-
 
 
     /**
@@ -8296,13 +8286,6 @@ create unique index i_docir on doc(initid, revision);";
         }
         return "";
     }
-
-
-
-
-
-
-
 
 
     /**
