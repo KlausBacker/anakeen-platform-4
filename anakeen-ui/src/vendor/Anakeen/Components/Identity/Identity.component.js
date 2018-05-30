@@ -81,7 +81,7 @@ export default {
 
                             // Remove loader + close dialog
                             kendo.ui.progress(this.$("#passwordModifier"), false);
-                            this.closePasswordModifierWindow();
+                            this.openPasswordModifiedWindow();
                         })
                         .catch(() => {
                             // Show a warning message and remove the loader
@@ -127,7 +127,7 @@ export default {
 
                             // Remove loader and close dialog
                             kendo.ui.progress(this.$("#emailModifier"), false);
-                            this.closeEmailModifierWindow();
+                            this.openEmailModifiedWindow();
                         })
                         .catch(() => {
                             // Show a warning message and remove the loader
@@ -181,15 +181,31 @@ export default {
                     open: resetEmailChangeData,
                     close: resetEmailChangeData,
                     activate: () => { this.$("#emailInput").focus(); }
-                }).data('kendoWindow').center();
+                }).data('kendoWindow').center().open();
             }
-
-            this.$("#emailModifier").data("kendoWindow").open();
         },
 
         // Close dialog window to change user's email
         closeEmailModifierWindow() {
             this.$("#emailModifier").data("kendoWindow").close();
+        },
+
+        // Open dialog to confirm the modification of the email
+        openEmailModifiedWindow() {
+            let dialog = this.$("#emailModifiedWindow");
+            dialog.kendoWindow({
+                width: '250px',
+                title: this.translations.emailChangeSuccessTitle,
+                visible: true,
+                modal: true,
+                action: ['Close'],
+                close: this.closeEmailModifierWindow
+            }).data("kendoWindow").center().open();
+        },
+
+        // Close dialog to confirm the modification of the email
+        closeEmailModifiedWindow() {
+            this.$("#emailModifiedWindow").data("kendoWindow").close();
         },
 
         // Open dialog window to change user's password
@@ -210,7 +226,7 @@ export default {
                     draggable: false,
                     resizable: false,
                     modal: true,
-                    width: "600px",
+                    width: '600px',
                     title: this.translations.passwordChangeAction,
                     visible: false,
                     actions: ['Close'],
@@ -227,6 +243,24 @@ export default {
         // Close dialog window to change user's password
         closePasswordModifierWindow() {
             this.$("#passwordModifier").data("kendoWindow").close();
+        },
+
+        // Open dialog to confirm the modification of the password
+        openPasswordModifiedWindow() {
+            let dialog = this.$("#passwordModifiedWindow");
+            dialog.kendoWindow({
+                width: '250px',
+                title: this.translations.passwordChangeSuccessTitle,
+                visible: true,
+                modal: true,
+                action: ['Close'],
+                close: this.closePasswordModifierWindow
+            }).data("kendoWindow").center().open();
+        },
+
+        // Close dialog to confirm the modification of the password
+        closePasswordModifiedWindow() {
+            this.$("#passwordModifiedWindow").data("kendoWindow").close();
         },
 
         // Reset email modification warning message when a key is pressed, if this key is not enter
@@ -262,7 +296,12 @@ export default {
                 newPasswordConfirmationLabel: this.$pgettext('Identity', 'New password confirmation'),
                 serverError: this.$pgettext('Identity', 'Server error'),
                 passwordsMismatchMessage: this.$pgettext('Identity', 'Confirmation doesn\'t match with the password'),
-                emailFormatMessage: this.$pgettext('Identity', 'Wrong email format')
+                emailFormatMessage: this.$pgettext('Identity', 'Wrong email format'),
+                emailChangeSuccess: this.$pgettext('Identity', 'Email successfully changed'),
+                emailChangeSuccessTitle: this.$pgettext('Identity', 'Email changed'),
+                passwordChangeSuccess: this.$pgettext('Identity', 'Password successfully changed'),
+                passwordChangeSuccessTitle: this.$pgettext('Identity', 'Password changed'),
+                closeButtonLabel: this.$pgettext('Identity', 'Close')
             };
         },
 
