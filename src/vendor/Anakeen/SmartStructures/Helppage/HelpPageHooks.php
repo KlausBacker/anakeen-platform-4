@@ -10,7 +10,8 @@
 
 namespace Anakeen\SmartStructures\Helppage;
 
-class HelpPageHooks extends \Anakeen\SmartStructures\Document
+class HelpPageHooks extends \Anakeen\SmartElement
+
 {
     /**
      *

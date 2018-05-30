@@ -12,7 +12,8 @@ namespace Anakeen\SmartStructures\Timer;
 
 use Anakeen\Core\SEManager;
 
-class TimerHooks extends \Anakeen\SmartStructures\Document
+class TimerHooks extends \Anakeen\SmartElement
+
 {
     private $lineActions;
 

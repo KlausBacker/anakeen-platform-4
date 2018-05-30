@@ -113,7 +113,7 @@ function new_Doc($dbaccess, $id = '', $latest = false)
 {
     $doc = SEManager::getDocument($id, $latest);
     if (!$doc) {
-        $doc = new \Anakeen\SmartStructures\Document($dbaccess);
+        $doc = new \Anakeen\SmartElement($dbaccess);
     } else {
         if (count(\Dcp\Core\SharedDocuments::getKeys()) < \Dcp\Core\SharedDocuments::getLimit()) {
             SEManager::cache()->addDocument($doc);

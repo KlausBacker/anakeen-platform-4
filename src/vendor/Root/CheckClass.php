@@ -112,7 +112,7 @@ class CheckClass extends CheckData
 
                     $parentClass = \Anakeen\Core\SEManager::getFamilyClassName($fromName);
                 } else {
-                    $parentClass = \Anakeen\SmartStructures\Document::class;
+                    $parentClass = \Anakeen\SmartElement::class;
                 }
                 if ($this->disableInheritanceCondition) {
                     $parentClass = \Anakeen\Core\Internal\SmartElement::class;

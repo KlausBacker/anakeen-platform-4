@@ -5,7 +5,8 @@ namespace Dcp\Pu;
 
 use Anakeen\SmartHooks;
 
-class TestAffect1 extends \Anakeen\SmartStructures\Document
+class TestAffect1 extends \Anakeen\SmartElement
+
 {
     protected $one = 0;
     protected $two = 0;

@@ -7,7 +7,8 @@ namespace Dcp\Pu;
 
 use Anakeen\SmartHooks;
 
-class TstExportCollection extends \Anakeen\SmartStructures\Document
+class TstExportCollection extends \Anakeen\SmartElement
+
 {
     public function registerHooks()
     {

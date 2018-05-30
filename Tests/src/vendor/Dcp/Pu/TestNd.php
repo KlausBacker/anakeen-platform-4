@@ -10,7 +10,8 @@ namespace Dcp\Pu;
 use Anakeen\Core\SEManager;
 use Anakeen\SmartHooks;
 
-class TestNd extends \Anakeen\SmartStructures\Document
+class TestNd extends \Anakeen\SmartElement
+
 {
     public function registerHooks()
     {
