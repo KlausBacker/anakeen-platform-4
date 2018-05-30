@@ -7,9 +7,9 @@
 namespace Anakeen\Components\Authent\Routes;
 
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\SEManager;
 use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
+use Anakeen\SmartElementManager;
 use SmartStructure\Iuser;
 
 /**
@@ -45,7 +45,7 @@ class Password
         /**
          * @var Iuser $udoc
          */
-        $udoc = SEManager::getDocument($currentUser->fid);
+        $udoc = SmartElementManager::getDocument($currentUser->fid);
 
         if ($udoc) {
             $err = $udoc->testForcePassword($password);
@@ -60,6 +60,6 @@ class Password
             throw new Exception("AUTH0021", $err);
         }
 
-        return ApiV2Response::withData($response, ["message" => sprintf(___("Password has been reset for \"%s\"", "authent"), $currentUser->getAccountName())]);
+        return ApiV2Response::withData($response, ["message" => sprintf(___("Password has been reseted for \"%s\"", "authent"), $currentUser->getAccountName())]);
     }
 }
