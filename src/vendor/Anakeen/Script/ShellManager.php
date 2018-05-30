@@ -74,6 +74,7 @@ class ShellManager
         $lines[] = sprintf("\t--unstop\t\tEnable Http access");
         $lines[] = sprintf("\t--resetRouteConfig\tReload route configuration");
         $lines[] = sprintf("\t--upgradeVersion\tReset WVERSION");
+        $lines[] = sprintf("\t--localeGen\t\tGenerate locale catalog");
         $lines[] = sprintf("\t--style\t\t\tReset Css generation");
         $lines[] = sprintf("\t--clearFile\t\tDelete file cache");
         $lines[] = sprintf("--help\t\t\t\tThis usage");
@@ -93,25 +94,28 @@ class ShellManager
             self::initContext();
             try {
                 require($apifile);
-            } /** @noinspection PhpRedundantCatchClauseInspection */
-            catch (Exception $e) {
+            } catch (UsageException $e) {
                 switch ($e->getDcpCode()) {
                     case "CORE0002":
-                        echo sprintf(_("Error : %s\n"), $e->getDcpMessage());
+                        fprintf(STDERR, _("Error : %s\n"), $e->getDcpMessage());
                         self::exceptionHandler($e, false);
                         exit(1);
                         break;
 
                     case "CORE0003":
-                        echo sprintf($e->getDcpMessage());
+                        printf($e->getDcpMessage());
                         exit(0);
                         break;
 
                     default:
-                        echo sprintf($e->getDcpMessage());
+                        fprintf(STDERR, "%s\n", $e->getDcpMessage());
                         self::exceptionHandler($e, false);
                         exit(1);
                 }
+            } catch (Exception $e) {
+                fprintf(STDERR, "%s\n", $e->getDcpMessage());
+                self::exceptionHandler($e, false);
+                exit(1);
             } /** @noinspection PhpRedundantCatchClauseInspection */
             catch (\Dcp\Exception $e) {
                 self::exceptionHandler($e);

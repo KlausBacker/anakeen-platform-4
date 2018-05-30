@@ -17,11 +17,10 @@ require __DIR__ . "/vendor/Anakeen/WHAT/Lib.Common.php";
 //require __DIR__ . "/vendor/Anakeen/WHAT/autoload.php";
 
 
-
-$programName=array_shift($argv);
+$programName = array_shift($argv);
 Anakeen\Script\ShellManager::recordArgs($argv, $programName);
 
-if (Anakeen\Script\ShellManager::getArg("help")) {
+if (Anakeen\Script\ShellManager::getArg("help") && !Anakeen\Script\ShellManager::getArg("script")) {
     print Anakeen\Script\ShellManager::getUsage();
     exit(0);
 }
@@ -104,9 +103,11 @@ if ($isSystem) {
         $system->refreshJsVersion();
     } elseif (Anakeen\Script\ShellManager::getArg("clearFile")) {
         $system->clearFileCache();
+    } elseif (Anakeen\Script\ShellManager::getArg("localeGen")) {
+        $system->localeGen();
     } elseif (Anakeen\Script\ShellManager::getArg("style")) {
         $system->style();
-    }  else {
+    } else {
         print Anakeen\Script\ShellManager::getUsage();
         exit(1);
     }

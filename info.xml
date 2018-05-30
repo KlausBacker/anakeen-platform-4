@@ -243,8 +243,7 @@
             <label lang="en">Initialize admin password</label>
         </process>
 
-
-        <process command="programs/update_catalog">
+        <process command="./ank.php --system --localeGen">
             <label lang="en">Generate traduction catalog</label>
         </process>
         <process command="programs/set_param CORE_CLIENT client_name">
@@ -381,7 +380,7 @@
 
         <process command="./ank.php --script=manageContextCrontab --cmd=register --file=vendor/Anakeen/anakeen.cron"/>
 
-        <process command="programs/update_catalog"/>
+        <process command="./ank.php --system --localeGen"/>
     </post-install>
 
     <pre-upgrade>
@@ -703,7 +702,7 @@
         </process>
 
 
-        <process command="programs/update_catalog"/>
+        <process command="./ank.php --system --localeGen"/>
     </post-upgrade>
 
     <post-restore>

@@ -1,0 +1,34 @@
+{
+    "apps": {
+        "TST_PARAMETER_MANAGER": {
+            "version" : "1.0.0",
+            "shortName": "Test Parameters"
+        }
+    },
+
+    "parameters": {
+        "PARENT_USER_GLOBAL_PARAMETER": {
+            "value": "PARENT_USER_GLOBAL_PARAMETER_VALUE",
+            "description": "PARENT_USER_GLOBAL_PARAMETER_DESC",
+            "isUser": true
+        },
+        "PARENT_USER_PARAMETER": {
+            "value": "PARENT_USER_PARAMETER",
+            "description": "PARENT_USER_PARAMETER",
+            "isUser": true,
+            "applicationContext": "TST_PARAMETER_MANAGER"
+        },
+        "PARENT_GLOBAL_PARAMETER": {
+            "value": "PARENT_GLOBAL_PARAMETER",
+            "description": "PARENT_GLOBAL_PARAMETER",
+            "isUser": false
+        },
+        "PARENT_PARAMETER": {
+            "value": "PARENT_PARAMETER",
+            "description": "PARENT_PARAMETER",
+            "isUser": false,
+            "applicationContext": "PARENT_PARAMETER"
+        }
+    }
+
+}

@@ -1,6 +1,6 @@
 <?php
 /**
- * Add, modify or delete WHAT application
+ * Add, modify or delete application
  *
  *
  * @param string $appname internal name of the application
@@ -18,10 +18,7 @@ $method = $usage->addOptionalParameter("method", "action to do", array(
     "reinit",
     "delete"
 ), "init");
-$legacy = $usage->addOptionalParameter("legacy", "legacy mode", array(
-    "no",
-    "yes"
-), "no") === "yes";
+
 
 $usage->verify();
 
@@ -31,9 +28,7 @@ echo " $appname...$method\n";
 $routeConfig = \Anakeen\Router\RouterLib::getRouterConfig();
 $apps = $routeConfig->getApps();
 
-if (!$legacy && !empty($apps[$appname])) {
-    $apps[$appname]->record();
-
+if (!empty($apps[$appname])) {
     switch ($method) {
         case "init":
         case "update":
@@ -41,6 +36,7 @@ if (!$legacy && !empty($apps[$appname])) {
             break;
 
         case "reinit":
+            $apps[$appname]->record();
             // @TODO
             break;
 
@@ -64,47 +60,6 @@ if (!$legacy && !empty($apps[$appname])) {
             $access->record();
         }
     }
-
 } else {
-    // Legacy Method to declare applications
-
-    $app = new \Anakeen\Core\Internal\Application();
-
-    $Null = "";
-
-
-    switch ($method) {
-        case "init":
-            $app->set($appname, $Null, null, true);
-            break;
-
-        case "reinit":
-            $app->set($appname, $Null, null, false, false);
-            $ret = $app->InitApp($appname, false);
-            if ($ret === false) {
-                $action->exitError(sprintf("Error initializing application '%s'.", $appname));
-            }
-            break;
-
-        case "update":
-            // Init if application is not already installed
-            $app->set($appname, $Null, null, true, false);
-            $ret = $app->InitApp($appname, true);
-            if ($ret === false) {
-                $action->exitError(sprintf("Error updating application '%s'.", $appname));
-            }
-            break;
-
-        case "delete":
-            $app->set($appname, $Null, null, false);
-            if ($app->isAffected()) {
-                $err = $app->DeleteApp();
-                if ($err != '') {
-                    $action->exitError($err);
-                }
-            } else {
-                echo "already deleted";
-            }
-            break;
-    }
+    throw new \Anakeen\Script\Exception(sprintf('App "%s" not found', $appname));
 }

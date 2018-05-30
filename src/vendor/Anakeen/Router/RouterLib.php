@@ -27,23 +27,22 @@ class RouterLib
         }
 
         $dir = ContextManager::getRootDirectory() . "/" . \Anakeen\Core\Settings::RouterConfigDir;
-        if ($handle = opendir($dir)) {
-            $config = [];
 
-            while (false !== ($entry = readdir($handle))) {
-                if (preg_match("/\\.json$/", $entry)) {
-                    $content = file_get_contents($dir . "/" . $entry);
+        $configFiles = scandir($dir);
+        if (is_array($configFiles)) {
+            $config = [];
+            foreach ($configFiles as $configFile) {
+                if (preg_match("/\\.json$/", $configFile)) {
+                    $content = file_get_contents($dir . "/" . $configFile);
                     $conf = json_decode($content, true);
 
                     if ($conf === null) {
-                        throw new Exception("CORE0019", $dir . "/" . $entry);
+                        throw new Exception("CORE0019", $dir . "/" . $configFile);
                     }
-                    $conf = self::normalizeConfig($conf, $entry);
+                    $conf = self::normalizeConfig($conf, $configFile);
                     $config = array_merge_recursive($config, $conf);
                 }
             }
-
-            closedir($handle);
 
             $config = json_decode(json_encode($config));
 
@@ -63,7 +62,7 @@ class RouterLib
             foreach ($routes as $routeName => $route) {
                 $route["name"] = $routeName;
                 $route["configFile"] = $configFileName;
-                if (! isset($route["priority"])) {
+                if (!isset($route["priority"])) {
                     $route["priority"] = 0;
                 }
                 $nr[] = $route;
@@ -77,7 +76,7 @@ class RouterLib
             foreach ($middles as $name => $middle) {
                 $middle["name"] = $name;
                 $middle["configFile"] = $configFileName;
-                if (! isset($middle["priority"])) {
+                if (!isset($middle["priority"])) {
                     $middle["priority"] = 0;
                 }
                 $nr[] = $middle;
@@ -107,6 +106,18 @@ class RouterLib
                 $nr[] = $acl;
             }
             $config["accesses"] = $nr;
+        }
+
+
+        if (!empty($config["parameters"])) {
+            $params = $config["parameters"];
+            $nr = [];
+            foreach ($params as $name => $param) {
+                $param["name"] = $name;
+                $param["configFile"] = $configFileName;
+                $nr[] = $param;
+            }
+            $config["parameters"] = $nr;
         }
 
         return $config;
@@ -147,7 +158,7 @@ class RouterLib
         $delimiteur = "@";
         $regExps = [];
         foreach ($parseInfos as $parseInfo) {
-            $regExp = $delimiteur.'^';
+            $regExp = $delimiteur . '^';
             foreach ($parseInfo as $parsePart) {
                 // print_r($parsePart);
                 if (is_string($parsePart)) {
@@ -157,7 +168,7 @@ class RouterLib
                     $regExp .= sprintf("(?P<%s>%s)", $parsePart[0], $parsePart[1]);
                 }
             }
-            $regExp .= '$'.$delimiteur;
+            $regExp .= '$' . $delimiteur;
             $regExps[] = $regExp;
         }
         return $regExps;

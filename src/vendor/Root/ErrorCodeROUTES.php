@@ -127,7 +127,7 @@ class ErrorCodeRoutes
     /**
      * @errorCode Cannot defined same route twice
      */
-    const ROUTES0128 = 'Config : route  "%s" already defined';
+    const ROUTES0128 = 'Config "%s" : route  "%s" already defined in config file "%s"';
     /**
      * @errorCode Cannot defined same route twice
      */
@@ -139,7 +139,7 @@ class ErrorCodeRoutes
     /**
      * @errorCode Current user has no enought privileges to execute route
      */
-    const ROUTES0131 = 'Route access deny : %s';
+    const ROUTES0131 = 'Route "%s" access deny : need "%s" privilege';
     /**
      * @errorCode The requiredAccess defined in route configuration not respect syntax
      */
@@ -151,7 +151,7 @@ class ErrorCodeRoutes
     /**
      * @errorCode Cannot defined same app twice
      */
-    const ROUTES0134 = 'Config : app  "%s" already defined';
+    const ROUTES0134 = 'Config "%s" : app  "%s" already defined in config file "%s"';
     /**
      * @errorCode Override app config : only partial mode
      */
@@ -160,4 +160,12 @@ class ErrorCodeRoutes
      * @errorCode Error in middleware response : the response of callable must be response object
      */
     const ROUTES0136 = 'Middleware "%s" : response error "%s" : must return response object';
+    /**
+     * @errorCode Cannot defined same acl twice
+     */
+    const ROUTES0137 = 'Config "%s" : acl  "%s" already defined in config file "%s"';
+    /**
+     * @errorCode Cannot defined same parameter twice
+     */
+    const ROUTES0138 = 'Config  "%s": parameter  "%s" already defined in config file "%s"';
 }

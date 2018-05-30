@@ -9,7 +9,7 @@
             "type": "object",
             "description": "Route access list",
             "patternProperties": {
-                "^([A-Za-z:0-9-]+)$": {
+                "^([A-Za-z:0-9_-]+)$": {
                     "anyOf": [
                         {
                             "$ref": "#/definitions/routeComplete"
@@ -43,8 +43,18 @@
             "type": "object",
             "description": "Access list",
             "patternProperties": {
-                "^([A-Za-z:]+)$": {
+                "^([A-Za-z0-9:_]+)$": {
                     "$ref": "#/definitions/access"
+                }
+            },
+            "additionalProperties": false
+        },
+        "parameters": {
+            "type": "object",
+            "description": "Parameters list",
+            "patternProperties": {
+                "^([A-Za-z0-9:_]+)$": {
+                    "$ref": "#/definitions/parameter"
                 }
             },
             "additionalProperties": false
@@ -401,9 +411,9 @@
                         "static"
                     ]
                 },
-                "global": {
-                    "description": "Is a global parameter ?",
-                    "type": "boolean"
+                "applicationContext": {
+                    "description": "Application Context",
+                    "type": "string"
                 }
             },
             "required": [

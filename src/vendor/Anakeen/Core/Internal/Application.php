@@ -197,7 +197,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @endcode
      *
      */
-    public function set($name, &$parent, $session = "", $autoinit = false, $verifyAvailable = true)
+    public function set($name, &$parent = null, $session = "", $autoinit = false, $verifyAvailable = true)
     {
         LogManager::debug("Entering : Set application to $name");
 
@@ -238,7 +238,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             }
         }
 
-        if ($this !== $parent) {
+        if ($parent !== null && $this !== $parent) {
             $this->parent = &$parent;
         }
         if (is_object($this->parent) && isset($this->parent->session)) {
@@ -253,21 +253,14 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         $this->param = new \Anakeen\Core\Internal\Param($this->dbaccess);
         $style = false;
-        if ($this->session) {
-            $style = $this->session->read("userCoreStyle", false);
-        }
+
 
         if ($style) {
             $this->InitStyle(false, $style);
         } else {
             $this->InitStyle();
         }
-        if ($this->session) {
-            $pStyle = $this->getParam("STYLE");
-            if ($pStyle) {
-                $this->session->register("userCoreStyle", $pStyle);
-            }
-        }
+
 
         $this->param->SetKey($this->id, isset($this->user->id) ? $this->user->id : false, $this->style->name);
         if ($verifyAvailable && $this->available === "N") {
@@ -1329,212 +1322,12 @@ create sequence SEQ_ID_APPLICATION start 10;
         return ($list);
     }
 
-    /**
-     * initialize application description
-     * from .app and _init.php configuration files
-     *
-     * @param string $name   application name reference
-     * @param bool   $update set to true when update application
-     *
-     * @return bool true if init is done, false if error
-     */
-    public function initApp($name, $update = false)
-    {
-        LogManager::info("Init : $name");
 
-        $appFilePath = sprintf("%s/%s/%s.app", $this->rootdir, $name, $name);
-        if (file_exists($appFilePath)) {
-            global $app_desc, $app_acl, $action_desc;
-            // init global array
-            $app_acl = array();
-            $app_desc = array();
-            $action_desc = array();
 
-            include($appFilePath);
-            $action_desc_ini = $action_desc;
-            if (sizeof($app_desc) > 0) {
-                if (!$update) {
-                    LogManager::debug("InitApp :  new \application ");
-                }
-                if ($update) {
-                    foreach ($app_desc as $k => $v) {
-                        switch ($k) {
-                            case 'displayable':
-                            case 'available':
-                                break;
 
-                            default:
-                                $this->$k = $v;
-                        }
-                    }
-                    $this->Modify();
-                } else {
-                    $this->available = "Y";
-                    foreach ($app_desc as $k => $v) {
-                        $this->$k = $v;
-                    }
-                    if ($this->isAffected()) {
-                        $this->modify();
-                    } else {
-                        $this->add();
-                    }
-                    $this->param = new \Anakeen\Core\Internal\Param();
-                    $this->param->SetKey($this->id, isset($this->user->id) ? $this->user->id : \Anakeen\Core\Account::ANONYMOUS_ID);
-                }
-            } else {
-                LogManager::info("can't init $name");
-                return false;
-            }
 
-            $action_desc = $action_desc_ini;
-            // init acl
-            $acl = new \Acl($this->dbaccess);
-            $acl->Init($this, $app_acl, $update);
-            // init actions
-            $action = new \Anakeen\Core\Internal\Action($this->dbaccess);
-            $action->Init($this, $action_desc, $update);
-            // init father if has
-            if ($this->childof != "") {
-                // init ACL & ACTION
-                // init acl
-                DbManager::query(sprintf(
-                    "INSERT INTO acl (id,id_application,name,grant_level,description, group_default) SELECT nextval('seq_id_acl') as id, %d as id_application, acl.name, acl.grant_level, acl.description, acl.group_default from acl as acl,application as app where acl.id_application=app.id and app.name='%s' and acl.name NOT IN (SELECT acl.name from acl as acl, application as app  where id_application=app.id and app.name='%s')",
-                    $this->id,
-                    pg_escape_string($this->childof),
-                    pg_escape_string($this->name)
-                ));
-                // init actions
-                DbManager::query(sprintf(
-                    "INSERT INTO action (id, id_application, name, short_name, long_name,script,function,layout,available,acl,grant_level,openaccess,root,icon,toc,father,toc_order) SELECT nextval('seq_id_action') as id, %d as id_application, action.name, action.short_name, action.long_name, action.script, action.function, action.layout, action.available, action.acl, action.grant_level, action.openaccess, action.root, action.icon, action.toc, action.father, action.toc_order from action as action,application as app where action.id_application=app.id and app.name='%s' and action.name NOT IN (SELECT action.name from action as action, application as app  where action.id_application=app.id and app.name='%s')",
-                    $this->id,
-                    pg_escape_string($this->childof),
-                    pg_escape_string($this->name)
-                ));
-                LogManager::info(sprintf("Update Actions from %s parent", $this->childof));
-                $err = $this->_initACLWithGroupDefault();
-                if ($err != '') {
-                    return false;
-                }
-            }
-            //----------------------------------
-            // init application constant
-            $initAppFile = sprintf("%s/%s/%s_init.php", $this->rootdir, $name, $name);
-            if (file_exists($initAppFile)) {
-                include($initAppFile);
-                if ($update) {
-                    /* Store previous version for post migration scripts */
-                    global $app_const;
-                    $nextVersion = isset($app_const['VERSION']) ? $app_const['VERSION'] : '';
-                    if ($nextVersion != '') {
-                        $currentVersion = $this->getParam('VERSION', '');
-                        if ($currentVersion != '' && $nextVersion != $currentVersion) {
-                            $this->setParam('PREVIOUS_VERSION', array(
-                                'val' => $currentVersion,
-                                'kind' => 'static'
-                            ));
-                        }
-                    }
-                }
-                if ($this->param) {
-                    // delete paramters that cannot be change after initialisation to be change now
-                    if ($update) {
-                        $this->param->DelStatic($this->id);
-                    }
-                    global $app_const;
-                    if (isset($app_const)) {
-                        $this->InitAllParam($app_const, $update);
-                    }
-                }
-            }
-            //----------------------------------
-            // add init father application constant
-            if (file_exists($this->rootdir . "/{$this->childof}/{$this->childof}_init.php")) {
-                include("{$this->childof}/{$this->childof}_init.php");
-                global $app_const;
-                $this->InitAllParam(array_filter(
-                    $app_const,
-                    function ($var) {
-                        // filter to select only not global
-                        return (!((isset($var["global"]) && ($var["global"] == 'Y'))));
-                    }
-                ), true);
-            }
 
-            if ($this->id > 1) {
-                $this->SetParamDef("APPNAME", array(
-                    "descr" => "$name application",
-                    "val" => $name,
-                    "kind" => "static"
-                )); // use by generic application
-                $this->SetParam("APPNAME", array(
-                    "val" => $name,
-                    "kind" => "static"
-                )); // use by generic application
-            }
-            $this->updateChildApplications();
-        } else {
-            LogManager::info("No {$name}/{$name}.app available");
-            throw new \Dcp\Exception("CORE0015", $appFilePath);
-        }
-        return true;
-    }
 
-    /**
-     * update action/acl/param for application's childs
-     *
-     * @throws \Dcp\Exception|\Exception
-     */
-    private function updateChildApplications()
-    {
-        $sql = sprintf("select id, name from application where childof ='%s'", pg_escape_string($this->name));
-
-        DbManager::query($sql, $childIds);
-        foreach ($childIds as $childApp) {
-            $childId = $childApp["id"];
-            $childName = $childApp["name"];
-            $a = new \Anakeen\Core\Internal\Application($this->dbaccess, $childId);
-
-            if ($a->isAffected()) {
-                try {
-                    $a->set($childName, $noParent);
-                    $a->initApp($childName, true);
-                } catch (\Dcp\Exception $e) {
-                    if ($e->getDcpCode() != "CORE0007") {
-                        throw $e;
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * update application description
-     * from .app and _init.php configuration files
-     */
-    public function updateApp()
-    {
-        $name = $this->name;
-        $this->InitApp($name, true);
-    }
-
-    /**
-     * Update All available application
-     *
-     * @see updateApp
-     */
-    public function updateAllApp()
-    {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
-        $query->AddQuery("available = 'Y'");
-        $allapp = $query->Query();
-
-        foreach ($allapp as $app) {
-            $application = new \Anakeen\Core\Internal\Application($this->dbaccess, $app->id);
-
-            $application->Set($app->name, $this->parent);
-            $application->UpdateApp();
-        }
-    }
 
     /**
      * delete application

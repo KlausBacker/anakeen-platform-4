@@ -1,13 +1,15 @@
 <?php
 
 namespace Anakeen\Router\Config;
+
 use Anakeen\Router\Exception;
+
 /**
  * Class AppInfo
  *
  * Configuration data for an application
  *
- * @see \Anakeen\Core\Internal\Application
+ * @see     \Anakeen\Core\Internal\Application
  * @package Anakeen\Router
  */
 class AppInfo
@@ -43,7 +45,7 @@ class AppInfo
 
             foreach ($vars as $k => $v) {
                 if (is_a($v, \stdClass::class)) {
-                    $v= get_object_vars($v);
+                    $v = get_object_vars($v);
                 }
                 if (!empty($this->$k) && is_array($this->$k) && is_array($v)) {
                     $this->$k = array_merge($this->$k, $v);
@@ -71,6 +73,12 @@ class AppInfo
         } else {
             $this->updateApplication($list[0]);
         }
+
+        $routeConfig = \Anakeen\Router\RouterLib::getRouterConfig();
+        // Record app parameters also
+        $routeConfig->recordParameters($this->name);
+        // Record access definition also
+        $routeConfig->recordAccesses($this->name);
     }
 
     /**
@@ -87,7 +95,7 @@ class AppInfo
         $this->application->short_name = $this->shortName;
         $this->application->description = $this->description;
         $this->application->icon = $this->icon;
-        $this->application->displayable = $this->displayable?"Y":"N";
+        $this->application->displayable = $this->displayable ? "Y" : "N";
         $this->application->childof = $this->parentName;
         $this->application->available = 'Y';
 
@@ -119,7 +127,7 @@ class AppInfo
         $this->application->short_name = $this->shortName;
         $this->application->description = $this->description;
         $this->application->icon = $this->icon;
-        $this->application->displayable = $this->displayable?"Y":"N";
+        $this->application->displayable = $this->displayable ? "Y" : "N";
         $this->application->childof = $this->parentName;
 
         $err = $this->application->modify();

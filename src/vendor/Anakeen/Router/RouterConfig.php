@@ -4,6 +4,7 @@ namespace Anakeen\Router;
 
 use \Anakeen\Router\Config\AppInfo;
 use \Anakeen\Router\Config\RouterInfo;
+
 /**
  * Class RouterConfig
  * Extract configuration from config files included in "config" directory
@@ -29,6 +30,10 @@ class RouterConfig
      * @var Config\AccessInfo[]
      */
     protected $accesses;
+    /**
+     * @var Config\ParameterInfo[]
+     */
+    protected $parameters;
 
     public function __construct(\stdClass $data)
     {
@@ -36,6 +41,7 @@ class RouterConfig
         $this->routes = isset($data->routes) ? $data->routes : [];
         $this->apps = isset($data->apps) ? $data->apps : [];
         $this->accesses = isset($data->accesses) ? $data->accesses : [];
+        $this->parameters = isset($data->parameters) ? $data->parameters : [];
 
         static::sortApps($this->apps);
         static::sortRoutesByPriority($this->routes);
@@ -60,7 +66,7 @@ class RouterConfig
         foreach ($routes as $routeInfo) {
             if (isset($uRoutes[$routeInfo->name])) {
                 if (empty($routeInfo->override)) {
-                    throw new Exception("ROUTES0128", $routeInfo->name);
+                    throw new Exception("ROUTES0128", $routeInfo->configFile, $routeInfo->name, $uRoutes[$routeInfo->name]->configFile);
                 }
                 if ($routeInfo->override === "partial") {
                     $routeInfo->configFile = $uRoutes[$routeInfo->name]->configFile . ', ' . $routeInfo->configFile;
@@ -202,7 +208,7 @@ class RouterConfig
         foreach ($this->apps as $appData) {
             if (isset($appsInfo[$appData->name])) {
                 if (empty($appData->override)) {
-                    throw new Exception("ROUTES0134", $appData->name);
+                    throw new Exception("ROUTES0134", $appData->configFile, $appData->name, $appsInfo[$appData->name]->configFile);
                 }
 
                 if ($appData->override === "partial") {
@@ -224,12 +230,35 @@ class RouterConfig
      */
     public function getAccesses()
     {
+        /**
+         * @var Config\AccessInfo[]
+         */
         $accessesInfo = [];
         foreach ($this->accesses as $appData) {
+            if (isset($accessesInfo[$appData->name])) {
+                throw new Exception("ROUTES0137", $appData->configFile, $appData->name, $accessesInfo[$appData->name]->configFile);
+            }
             $accessesInfo[$appData->name] = new Config\AccessInfo($appData);
         }
 
         return $accessesInfo;
+    }
+
+
+    /**
+     * @return Config\ParameterInfo[]
+     */
+    public function getParameters()
+    {
+        $paramInfo = [];
+        foreach ($this->parameters as $appData) {
+            if (isset($paramInfo[$appData->name])) {
+                throw new Exception("ROUTES0138", $appData->configFile, $appData->name, $paramInfo[$appData->name]->configFile);
+            }
+            $paramInfo[$appData->name] = new Config\ParameterInfo($appData);
+        }
+
+        return $paramInfo;
     }
 
     /**
@@ -240,6 +269,7 @@ class RouterConfig
         $apps = $this->getApps();
         foreach ($apps as $appInfo) {
             $appInfo->record();
+            $this->recordParameters($appInfo->name);
         }
     }
 
@@ -258,6 +288,24 @@ class RouterConfig
         foreach ($accesses as $access) {
             if ($access->applicationContext === $appName) {
                 $access->record();
+            }
+        }
+    }
+
+    /**
+     * Record all application parameeters in database
+     *
+     * @param string $appName if null global parameters are recorded
+     *
+     * @throws Exception
+     * @throws \Dcp\Db\Exception
+     */
+    public function recordParameters($appName = "CORE")
+    {
+        $parameters = $this->getParameters();
+        foreach ($parameters as $param) {
+            if ($param->applicationContext === $appName) {
+                $param->record();
             }
         }
     }

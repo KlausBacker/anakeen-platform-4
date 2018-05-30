@@ -3,6 +3,7 @@
 namespace Anakeen\Router\Config;
 
 use Anakeen\Core\DbManager;
+use Anakeen\Router\Exception;
 
 /**
  * Class AccessInfo
@@ -18,6 +19,7 @@ class AccessInfo
     public $description;
     public $category;
     public $applicationContext = "CORE";
+    public $configFile = "";
 
     /**
      * @var \Anakeen\Core\Internal\Application

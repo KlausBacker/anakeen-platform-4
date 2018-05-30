@@ -102,9 +102,10 @@ class ExecHooks extends \Anakeen\SmartStructures\Document
         return $cmd;
     }
 
-     public static function getCurrentSmartUserId() {
+    public static function getCurrentSmartUserId()
+    {
         return ContextManager::getCurrentUser()->fid;
-     }
+    }
 
 
     /**
