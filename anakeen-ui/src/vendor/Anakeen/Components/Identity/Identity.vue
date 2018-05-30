@@ -37,6 +37,10 @@
                 <button class="btn btn-primary" @click.prevent="modifyUserEmail">{{ translations.validateEmailButtonLabel }}</button>
                 <button class="btn" @click.prevent="closeEmailModifierWindow">{{ translations.cancelEmailButtonLabel }}</button>
             </form>
+            <div id="emailModifiedWindow" style="display: none;">
+                <div class="label">{{ translations.emailChangeSuccess }}</div>
+                <button class="btn btn-primary" @click.prevent="closeEmailModifiedWindow" autofocus>{{ translations.closeButtonLabel }}</button>
+            </div>
         </div>
 
         <div id="passwordModifier" v-if="passwordAlterable" style="display: none;">
@@ -55,6 +59,10 @@
                 <button class="btn btn-primary" @click.prevent="modifyUserPassword">{{ translations.validatePasswordButtonLabel }}</button>
                 <button class="btn" @click.prevent="closePasswordModifierWindow">{{ translations.cancelPasswordButtonLabel }}</button>
             </form>
+            <div id="passwordModifiedWindow" style="display: none;">
+                <div class="label">{{ translations.passwordChangeSuccess }}</div>
+                <button class="btn btn-primary" @click.prevent="closePasswordModifiedWindow" autofocus>{{ translations.closeButtonLabel }}</button>
+            </div>
         </div>
     </div>
 </template>
