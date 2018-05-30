@@ -23,13 +23,17 @@ class TokenAuthenticator extends \Anakeen\Core\Internal\OpenAuthenticator
         return "";
     }
 
+    /**
+     * Verify if UserToken match a recorded route
+     * @param \UserToken $token
+     * @return bool
+     */
     public static function verifyOpenAccess(\UserToken $token)
     {
         if ($token->type !== "ROUTE") {
             return false;
         }
         $rawContext = $token->context;
-
         $allow = false;
         if ($rawContext === null) {
             return false;
@@ -50,7 +54,7 @@ class TokenAuthenticator extends \Anakeen\Core\Internal\OpenAuthenticator
                     if (!empty($rules["pattern"])) {
                         $methodAllowed = false;
                         foreach ($rules["methods"] as $expectedMethod) {
-                            if (strtoupper($expectedMethod) === $requestMethod) {
+                            if ($expectedMethod === "*" || strtoupper($expectedMethod) === $requestMethod) {
                                 $methodAllowed = true;
                                 break;
                             }
@@ -66,7 +70,7 @@ class TokenAuthenticator extends \Anakeen\Core\Internal\OpenAuthenticator
                     }
                 } else {
                     // Simple route
-                    if (preg_match("/^(GET|POST|PUT|DELETE)\\s+(.*)/", $rules, $reg)) {
+                    if (preg_match("/^(GET|POST|PUT|DELETE|\\*)\\s+(.*)/", $rules, $reg)) {
                         $expectedMethod = $reg[1];
                         $routePattern = $reg[2];
                     } else {

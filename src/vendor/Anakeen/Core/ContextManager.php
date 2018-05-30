@@ -173,7 +173,6 @@ class ContextManager
                     $exception->setUserMessage("Could not get authenticator");
                     throw $exception;
                 }
-
                 $exception = new \Anakeen\Router\Exception("User must be authenticated");
                 $exception->setHttpStatus("403", "Forbidden");
                 $exception->setUserMessage(Gettext::___("Access not granted", "ank"));

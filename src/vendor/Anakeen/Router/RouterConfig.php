@@ -66,7 +66,7 @@ class RouterConfig
         foreach ($routes as $routeInfo) {
             if (isset($uRoutes[$routeInfo->name])) {
                 if (empty($routeInfo->override)) {
-                    throw new Exception("ROUTES0128", $routeInfo->name);
+                    throw new Exception("ROUTES0128", $routeInfo->configFile, $routeInfo->name, $uRoutes[$routeInfo->name]->configFile);
                 }
                 if ($routeInfo->override === "partial") {
                     $routeInfo->configFile = $uRoutes[$routeInfo->name]->configFile . ', ' . $routeInfo->configFile;
@@ -303,9 +303,9 @@ class RouterConfig
     public function recordParameters($appName = "CORE")
     {
         $parameters = $this->getParameters();
-        foreach ($parameters as $access) {
-            if ($access->applicationContext === $appName) {
-                $access->record();
+        foreach ($parameters as $param) {
+            if ($param->applicationContext === $appName) {
+                $param->record();
             }
         }
     }

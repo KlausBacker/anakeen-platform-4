@@ -29,16 +29,14 @@ $routeConfig = \Anakeen\Router\RouterLib::getRouterConfig();
 $apps = $routeConfig->getApps();
 
 if (!empty($apps[$appname])) {
-    $apps[$appname]->record();
-
     switch ($method) {
         case "init":
         case "update":
             $apps[$appname]->record();
-            $routeConfig->recordParameters($appname);
             break;
 
         case "reinit":
+            $apps[$appname]->record();
             // @TODO
             break;
 

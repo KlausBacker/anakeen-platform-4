@@ -9,7 +9,7 @@
             "type": "object",
             "description": "Route access list",
             "patternProperties": {
-                "^([A-Za-z:0-9-]+)$": {
+                "^([A-Za-z:0-9_-]+)$": {
                     "anyOf": [
                         {
                             "$ref": "#/definitions/routeComplete"

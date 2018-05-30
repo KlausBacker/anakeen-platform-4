@@ -83,26 +83,27 @@ abstract class TestCaseDcpApplication extends TestCaseDcp
      */
     protected static function setUpTestApplication($appRoot, $appName)
     {
-        if (!is_dir($appRoot)) {
-            throw new \Exception(sprintf("appRoot '%s' is not a valid directory.", $appRoot));
-        }
-
-        $fileDotApp = join(DIRECTORY_SEPARATOR, array(
-            $appRoot,
-            $appName,
-            sprintf("%s.app", $appName)
-        ));
-        if (!is_file($fileDotApp)) {
-            throw new \Exception(sprintf(".app file '%s' not found.", $fileDotApp));
-        }
-
         $myAction = self::getAction();
 
         self::$app = new \Anakeen\Core\Internal\Application();
         self::$app->rootdir = $appRoot;
         self::$app->param = new \Anakeen\Core\Internal\Param(self::$dbaccess);
         self::$app->parent = $myAction->parent;
-        self::$app->set($appName, $myAction->parent, $myAction->parent->session, true);
+
+
+
+        $routeConfig = \Anakeen\Router\RouterLib::getRouterConfig();
+        $apps = $routeConfig->getApps();
+
+        if (!empty($apps[$appName])) {
+            $apps[$appName]->record();
+        } else {
+             throw new \Exception(sprintf("Error record application from '%s'.", $fileDotApp));
+        }
+
+
+        self::$app = new \Anakeen\Core\Internal\Application();
+         self::$app->set($appName, $myAction->parent, $myAction->parent->session);
 
         if (self::$app->id <= 0) {
             throw new \Exception(sprintf("Error initializing application from '%s'.", $fileDotApp));

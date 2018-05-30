@@ -72,6 +72,9 @@ class AppInfo
             $this->updateApplication($list[0]);
         }
 
+        // Record app parameters also
+        $routeConfig = \Anakeen\Router\RouterLib::getRouterConfig();
+        $routeConfig->recordParameters($this->name);
     }
 
     /**

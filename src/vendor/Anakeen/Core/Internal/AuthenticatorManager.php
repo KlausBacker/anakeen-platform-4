@@ -184,7 +184,7 @@ class AuthenticatorManager
             return $_GET['authtype'];
         }
         if (!empty($_GET[\Anakeen\Core\Internal\OpenAuthenticator::openGetId])) {
-            return "open";
+            return "token";
         }
 
         $scheme = self::getAuthorizationScheme();
@@ -192,8 +192,6 @@ class AuthenticatorManager
             switch ($scheme) {
                 case \Anakeen\Router\TokenAuthenticator::AUTHORIZATION_SCHEME:
                     return "token";
-                case \Anakeen\Core\Internal\OpenAuthenticator::openAuthorizationScheme:
-                    return "open";
                 case \Anakeen\Core\Internal\BasicAuthenticator::basicAuthorizationScheme:
                     return "basic";
                 default:
@@ -255,9 +253,14 @@ class AuthenticatorManager
 
         if (method_exists(self::$auth, 'logout')) {
             if (is_object(self::$auth->provider)) {
-                self::secureLog("close", "see you tomorrow",
+                self::secureLog(
+                    "close",
+                    "see you tomorrow",
                     self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['AuthentProvider'],
-                    $_SERVER["REMOTE_ADDR"], self::$auth->getAuthUser(), $_SERVER["HTTP_USER_AGENT"]);
+                    $_SERVER["REMOTE_ADDR"],
+                    self::$auth->getAuthUser(),
+                    $_SERVER["HTTP_USER_AGENT"]
+                );
             } else {
                 self::secureLog("close", "see you tomorrow");
             }
@@ -273,10 +276,7 @@ class AuthenticatorManager
      */
     public function authenticate(&$action)
     {
-        header('WWW-Authenticate: Basic realm="' . \Anakeen\Core\ContextManager::getApplicationParam(
-                "CORE_REALM",
-                "Anakeen Platform connection"
-            ) . '"');
+        header('WWW-Authenticate: Basic realm="' . \Anakeen\Core\ContextManager::getApplicationParam("CORE_REALM", "Anakeen Platform connection") . '"');
         header('HTTP/1.0 401 Unauthorized');
         echo _("Vous devez entrer un nom d'utilisateur valide et un mot de passe correct pour acceder a cette ressource");
         exit;

@@ -8,6 +8,10 @@
 
 namespace Anakeen\Core\Internal;
 
+/**
+ * Class OpenAuthenticator
+ * @package Anakeen\Core\Internal
+ */
 class OpenAuthenticator extends Authenticator
 {
     const waitDelayError=1;
@@ -60,7 +64,6 @@ class OpenAuthenticator extends Authenticator
     
     public static function getLoginFromPrivateKey($privatekey)
     {
-        
         $token = static::getUserToken($privatekey);
         if ($token === false) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Token '%s' not found.", $privatekey));
@@ -85,7 +88,6 @@ class OpenAuthenticator extends Authenticator
             
             return false;
         }
-        
         return $user->login;
     }
     public static function getUserToken($tokenId)

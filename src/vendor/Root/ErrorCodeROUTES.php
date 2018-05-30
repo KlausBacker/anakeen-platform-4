@@ -127,7 +127,7 @@ class ErrorCodeRoutes
     /**
      * @errorCode Cannot defined same route twice
      */
-    const ROUTES0128 = 'Config : route  "%s" already defined';
+    const ROUTES0128 = 'Config "%s" : route  "%s" already defined in config file "%s"';
     /**
      * @errorCode Cannot defined same route twice
      */
@@ -139,7 +139,7 @@ class ErrorCodeRoutes
     /**
      * @errorCode Current user has no enought privileges to execute route
      */
-    const ROUTES0131 = 'Route access deny : %s';
+    const ROUTES0131 = 'Route "%s" access deny : need "%s" privilege';
     /**
      * @errorCode The requiredAccess defined in route configuration not respect syntax
      */
