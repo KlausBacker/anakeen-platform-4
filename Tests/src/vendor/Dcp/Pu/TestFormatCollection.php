@@ -1,10 +1,12 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 namespace Dcp\Pu;
+
+use Anakeen\Core\Internal\Format\DateAttributeValue;
+use Anakeen\Core\Internal\Format\StatePropertyValue;
+use Anakeen\Core\Internal\Format\UnknowAttributeValue;
+use Anakeen\Core\SEManager;
+
 /**
  * @author  Anakeen
  * @package Dcp\Pu
@@ -15,7 +17,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
      * import TST_FMTCOL
      *
      * @static
-     * @return string
+     * @return string[]
      */
     protected static function getCommonImportFile()
     {
@@ -33,13 +35,14 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        $d1 = new_doc(self::$dbaccess, "TST_FMTCOL1");
+
+        $d1 = SEManager::getDocument("TST_FMTCOL1");
         $d1->state = "E1";
         $d1->modify();
-        $d1 = new_doc(self::$dbaccess, "TST_FMTCOL2");
+        $d1 = SEManager::getDocument("TST_FMTCOL2");
         $d1->state = "E2";
         $d1->modify();
-        $d1 = new_doc(self::$dbaccess, "TST_FMTCOL3");
+        $d1 = SEManager::getDocument("TST_FMTCOL3");
         $d1->state = "E3";
         $d1->modify();
     }
@@ -64,14 +67,15 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
     {
         $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
+
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
-        $fc = new \FormatCollection();
+        $fc = new \Anakeen\Core\Internal\FormatCollection();
         $fc->useCollection($dl);
         $fc->relationNoAccessText = 'no grant';
         $fc->addProperty($fc::propName)->addProperty($fc::propUrl);
 
-        $f = new_doc(self::$dbaccess, $this->famName);
+        $f = SEManager::getFamily($this->famName);
         $la = $f->getNormalAttributes();
         foreach ($la as $aid => $oa) {
             if ($oa->type != "array") {
@@ -121,7 +125,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
-        $fc = new \FormatCollection();
+        $fc = new \Anakeen\Core\Internal\FormatCollection();
         $fc->useCollection($dl);
         $fc->addProperty($fc::propName);
         $fc->addAttribute(('tst_x'));
@@ -130,7 +134,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $r = $fc->render();
         $this->assertEquals($s->count(), count($r), "render must have same entry count has collection");
         /**
-         * @var \UnknowAttributeValue $fValue
+         * @var UnknowAttributeValue $fValue
          */
         $fValue = $this->getRenderValue($r, $docName, $attrName);
         $this->assertEquals($nc, $fValue->value);
@@ -144,14 +148,14 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
-        $fc = new \FormatCollection();
+        $fc = new \Anakeen\Core\Internal\FormatCollection();
         $fc->useCollection($dl);
         $fc->addProperty($fc::propName)->addProperty($fc::propState);
 
         $r = $fc->render();
         $this->assertEquals($s->count(), count($r), "render must have same entry count has collection");
         /**
-         * @var \StatePropertyValue $fstate
+         * @var StatePropertyValue $fstate
          */
         $fstate = $this->getRenderProp($r, $docName, $fc::propState);
         $this->assertEquals($expectState, $fstate->reference, "incorrect state reference");
@@ -168,7 +172,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
-        $fc = new \FormatCollection();
+        $fc = new \Anakeen\Core\Internal\FormatCollection();
         $fc->useCollection($dl);
         $fc->addProperty($fc::propName)->addProperty($propertyName);
         $fc->setDateStyle($format);
@@ -188,8 +192,8 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
-        $fc = new \FormatCollection();
-        $fc->setPropDateStyle(\DateAttributeValue::isoWTStyle);
+        $fc = new \Anakeen\Core\Internal\FormatCollection();
+        $fc->setPropDateStyle(DateAttributeValue::isoWTStyle);
         $fc->useCollection($dl);
         $fc->addProperty($fc::propName)->addProperty($propertyName);
 
@@ -199,10 +203,12 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $propertyValue = $this->getRenderProp($r, $docName, $propertyName);
         if (is_array($expectedValue)) {
             foreach ($expectedValue as $infoKey => $expectInfo) {
-
                 if ($expectInfo[0] === "/") {
-                    $this->assertRegExp($expectInfo, (string)$propertyValue[$infoKey],
-                        sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
+                    $this->assertRegExp(
+                        $expectInfo,
+                        (string)$propertyValue[$infoKey],
+                        sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true))
+                    );
                 } else {
                     $this->assertEquals($expectInfo, $propertyValue[$infoKey], sprintf("incorrect property (%s) display value : %s", $propertyName, print_r($propertyValue, true)));
                 }
@@ -223,13 +229,13 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
-        $fc = new \FormatCollection();
+        $fc = new \Anakeen\Core\Internal\FormatCollection();
         $fc->useCollection($dl);
         $fc->setAttributeRenderHook($hook);
         $fc->relationNoAccessText = 'no grant';
         $fc->addProperty($fc::propName)->addProperty($fc::propUrl);
 
-        $f = new_doc(self::$dbaccess, $this->famName);
+        $f = SEManager::getFamily($this->famName);
         $la = $f->getNormalAttributes();
         foreach ($la as $aid => $oa) {
             if ($oa->type != "array") {
@@ -277,7 +283,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
 
-        $fc = new \FormatCollection();
+        $fc = new \Anakeen\Core\Internal\FormatCollection();
         $fc->useCollection($dl);
         $fc->setPropertyRenderHook($hook);
         $fc->addProperty($fc::propName)->addProperty($propertyName);
@@ -298,7 +304,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
 
-        $fc = new \FormatCollection();
+        $fc = new \Anakeen\Core\Internal\FormatCollection();
         $fc->useCollection($dl);
         $fc->setDocumentRenderHook($hook);
         $fc->addProperty($fc::propName)->addProperty("revision");
@@ -357,7 +363,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
             ),
             array(
                 "TST_FMTCOL1",
-                \FormatCollection::propFamily,
+                \Anakeen\Core\Internal\FormatCollection::propFamily,
                 array(
                     "name" => $this->famName,
                     "title" => "Test Format",
@@ -367,7 +373,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
             ),
             array(
                 "TST_FMTCOL1",
-                \FormatCollection::propRevisionData,
+                \Anakeen\Core\Internal\FormatCollection::propRevisionData,
                 array(
                     "id" => '/^[0-9]+$/',
                     "number" => 0
@@ -375,45 +381,45 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
             ),
             array(
                 "TST_FMTCOL1",
-                \FormatCollection::propSecurity,
+                \Anakeen\Core\Internal\FormatCollection::propSecurity,
                 array(
                     "readOnly" => false
                 )
             ),
             array(
                 "TST_FMTCOL1",
-                \FormatCollection::propType,
+                \Anakeen\Core\Internal\FormatCollection::propType,
                 "document"
             ),
             array(
                 "TST_FMTCOL1",
-                \FormatCollection::propUsage,
+                \Anakeen\Core\Internal\FormatCollection::propUsage,
                 "normal"
             ),
             array(
                 "TST_FMTCOL1",
-                \FormatCollection::propNote,
+                \Anakeen\Core\Internal\FormatCollection::propNote,
                 array(
                     "id" => 0
                 )
             ),
             array(
                 "TST_FMTCOL1",
-                \FormatCollection::propViewController,
+                \Anakeen\Core\Internal\FormatCollection::propViewController,
                 array(
                     "id" => 0
                 )
             ),
             array(
                 "TST_FMTCOL1",
-                \FormatCollection::propAffected,
+                \Anakeen\Core\Internal\FormatCollection::propAffected,
                 array(
                     "id" => 0
                 )
             ),
             array(
                 "TST_FMTCOL1",
-                \FormatCollection::propWorkflow,
+                \Anakeen\Core\Internal\FormatCollection::propWorkflow,
                 array(
                     "title" => "Cycle format",
                     "id" => '/^[0-9]+$/',
@@ -422,17 +428,17 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
             ),
             array(
                 "TST_FMTCOL1",
-                \FormatCollection::propCreationDate,
+                \Anakeen\Core\Internal\FormatCollection::propCreationDate,
                 '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/'
             ),
             array(
                 "TST_FMTCOL1",
-                \FormatCollection::propLastModificationDate,
+                \Anakeen\Core\Internal\FormatCollection::propLastModificationDate,
                 '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/'
             ),
             array(
                 "TST_FMTCOL1",
-                \FormatCollection::propLastAccessDate,
+                \Anakeen\Core\Internal\FormatCollection::propLastAccessDate,
                 '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/'
             )
         );
@@ -536,7 +542,6 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                 "tst_doubles",
                 function ($info, $oa) {
                     if ($info) {
-
                         if ($oa->id === "tst_doubles") {
                             foreach ($info as & $oneInfo) {
                                 $oneInfo->value += 10;
@@ -564,60 +569,59 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
 
     public function dataDatePropertyRenderFormatCollection()
     {
-        $a=new \FormatCollection();
         return array(
             array(
                 "TST_FMTCOL1",
                 "adate",
-                \DateAttributeValue::frenchStyle,
+                DateAttributeValue::frenchStyle,
                 '/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/'
             ),
             array(
                 "TST_FMTCOL1",
                 "adate",
-                \DateAttributeValue::isoWTStyle,
+                DateAttributeValue::isoWTStyle,
                 '/^(\d\d\d\d)-(\d\d)-(\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/'
             ),
             array(
                 "TST_FMTCOL1",
                 "adate",
-                \DateAttributeValue::isoStyle,
+                DateAttributeValue::isoStyle,
                 '/^(\d\d\d\d)-(\d\d)-(\d\d)T?(\d\d)?:?(\d\d)?:?(\d\d)?/'
             ),
             array(
                 "TST_FMTCOL2",
                 "cdate",
-                \DateAttributeValue::frenchStyle,
+                DateAttributeValue::frenchStyle,
                 '/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/'
             ),
             array(
                 "TST_FMTCOL2",
                 "cdate",
-                \DateAttributeValue::isoWTStyle,
+                DateAttributeValue::isoWTStyle,
                 '/^(\d\d\d\d)-(\d\d)-(\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/'
             ),
             array(
                 "TST_FMTCOL2",
                 "cdate",
-                \DateAttributeValue::isoStyle,
+                DateAttributeValue::isoStyle,
                 '/^(\d\d\d\d)-(\d\d)-(\d\d)T?(\d\d)?:?(\d\d)?:?(\d\d)?/'
             ),
             array(
                 "TST_FMTCOL3",
                 "revdate",
-                \DateAttributeValue::frenchStyle,
+                DateAttributeValue::frenchStyle,
                 '/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/'
             ),
             array(
                 "TST_FMTCOL3",
                 "revdate",
-                \DateAttributeValue::isoWTStyle,
+                DateAttributeValue::isoWTStyle,
                 '/^(\d\d\d\d)-(\d\d)-(\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/'
             ),
             array(
                 "TST_FMTCOL3",
                 "revdate",
-                \DateAttributeValue::isoStyle,
+                DateAttributeValue::isoStyle,
                 '/^(\d\d\d\d)-(\d\d)-(\d\d)T?(\d\d)?:?(\d\d)?:?(\d\d)?/'
             )
         );
@@ -1028,5 +1032,3 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
         );
     }
 }
-
-?>

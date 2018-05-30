@@ -22,7 +22,7 @@
     </pre-install>
 
     <post-install>
-        <process command="programs/update_catalog"/>
+        <process command="./ank.php --system --localeGen"/>
     </post-install>
 
     <pre-upgrade>
