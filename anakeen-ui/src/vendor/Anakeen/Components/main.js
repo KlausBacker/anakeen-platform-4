@@ -39,6 +39,14 @@ Vue.http = Vue.prototype.$http = axios.create({
 Vue.jQuery = Vue.jquery = Vue.prototype.$ = kendo.jQuery;
 Vue.prototype.$kendo = Vue.kendo = kendo;
 
+// Fetch user language from server
+Vue.http.get('/api/v2/ui/users/current')
+    .then(response => {
+        if (response.data.locale) {
+            Vue.config.language = response.data.locale;
+        }
+    });
+
 // import and register your component(s)
 import Authent from './Authent/Authent.vue';
 import Document from './Document/Document.vue';

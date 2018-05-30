@@ -1,7 +1,35 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: stage
- * Date: 29/05/18
- * Time: 12:06
+ * @author anakeen
  */
+
+namespace Anakeen\Routes\Ui;
+
+use Anakeen\Core\ContextManager;
+
+/**
+ * Class CurrentUser
+ * Fetch user information from server
+ * @note Used by route : GET /api/v2/ui/users/current
+ * @package Anakeen\Components\Identity\Routes
+ */
+class CurrentUser
+{
+    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
+    {
+        $currentUser = ContextManager::getCurrentUser();
+
+        $data = [];
+        $data["login"] = $currentUser->login;
+        $initials = substr($currentUser->firstname, 0, 1).substr($currentUser->lastname, 0, 1);
+        $data["initials"] = $initials;
+        $data["firstName"] = $currentUser->firstname;
+        $data["lastName"] = $currentUser->lastname;
+        $data["email"] = $currentUser->mail;
+
+        $locale = ContextManager::getLanguage();
+        $data["locale"] = $locale;
+
+        return $response->withJson($data);
+    }
+}
