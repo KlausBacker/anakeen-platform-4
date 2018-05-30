@@ -186,7 +186,7 @@ class TestWorflowTransition extends TestCaseDcpCommonFamily
             /*
              * Locked documents
             */
-            array(
+            "lock7062"=>array(
                 /*
                  * Locked by myself: transition is allowed
                 */
@@ -217,7 +217,8 @@ class TestWorflowTransition extends TestCaseDcpCommonFamily
                     $this->sudo('dev_6072_u1');
                     /* Re-fetch document from database */
                     $doc = new_Doc(self::$dbaccess, $doc->id);
-                    $err = $doc->setState($newState);
+                    $err = $doc->setState($newState, "", false, false);
+
                     return $err;
                 }
             ),
