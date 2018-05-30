@@ -903,7 +903,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         $this->changeProfil($newstate);
         $this->changeCv($newstate);
         $this->doc->disableAccessControl();
-        $err = $this->doc->Modify(); // don't control edit permission
+        $err = $this->doc->modify(); // don't control edit permission
         if ($err != "") {
             return $err;
         }

@@ -385,18 +385,17 @@
 
     <pre-upgrade>
 
-        <check type="phpversion" predicate="ge" version="5.4.4">
-            <label lang="en">Minimum PHP version is 5.4.4</label>
+        <check type="phpversion" predicate="ge" version="7.1.0">
+            <label lang="en">Minimum PHP version is 7.1</label>
         </check>
-        <check type="phpversion" predicate="lt" version="7.2.0">
-            <label lang="en">Maximum PHP version is 7.1</label>
+        <check type="phpversion" predicate="lt" version="7.3.0">
+            <label lang="en">Maximum PHP version is 7.2</label>
         </check>
         <check type="pgversion" service="@core_db" predicate="ge" version="9.5.0">
-            <label lang="en">Minimum database version is 9.1</label>
+            <label lang="en">Minimum database version is 9.5</label>
         </check>
-
-        <check type="pgversion" service="@core_db" predicate="lt" version="9.7.0">
-            <label lang="en">Maximum database version is 9.6</label>
+        <check type="pgversion" service="@core_db" predicate="lt" version="11.0.0">
+            <label lang="en">Maximum database version is 10.0</label>
         </check>
 
         <check type="syscommand" command="rm">
