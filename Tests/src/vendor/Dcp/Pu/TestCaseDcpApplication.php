@@ -98,7 +98,7 @@ abstract class TestCaseDcpApplication extends TestCaseDcp
         if (!empty($apps[$appName])) {
             $apps[$appName]->record();
         } else {
-             throw new \Exception(sprintf("Error record application from '%s'.", $fileDotApp));
+             throw new \Exception(sprintf("Error record application from '%s'.", $appName));
         }
 
 
@@ -106,7 +106,7 @@ abstract class TestCaseDcpApplication extends TestCaseDcp
          self::$app->set($appName, $myAction->parent, $myAction->parent->session);
 
         if (self::$app->id <= 0) {
-            throw new \Exception(sprintf("Error initializing application from '%s'.", $fileDotApp));
+            throw new \Exception(sprintf("Error initializing application from '%s'.", $appName));
         }
     }
 
