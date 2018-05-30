@@ -18,23 +18,25 @@ $ank-identity-badge-font-color: #353535;
     min-width: 40px;
     cursor: pointer;
     outline: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     #identity-badge-initials {
-      margin-top: $ank-identity-badge-height / 6;
       line-height: normal;
       font-size: 1.2rem;
       color: $ank-identity-badge-font-color;
     }
 
     #identity-badge-icon {
-      vertical-align: top;
       color: $ank-identity-badge-font-color;
     }
   }
 
   #identity-badge-extension {
     margin-left: 5px;
-    width: 170px;
+    width: fit-content;
     background-color: inherit;
     color: inherit;
 
