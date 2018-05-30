@@ -2,7 +2,8 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiAllType;
 
-class TstUiAllTypeHooks extends \Anakeen\SmartStructures\Document implements \Dcp\Ui\IRenderConfigAccess
+class TstUiAllTypeHooks extends \Anakeen\SmartElement
+ implements \Dcp\Ui\IRenderConfigAccess
 {
     /**
      * @param string $mode

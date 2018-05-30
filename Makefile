@@ -101,7 +101,7 @@ $(LOCALPUB_ANAKEEN_UI_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${ANAKEEN_UI
 	rm -f user-interfaces-*.app
 	-mkdir -p $(LOCALPUB_ANAKEEN_UI_PATH)
 	rsync --delete -azvr $(ANAKEEN_UI_SRC_PATH) $(LOCALPUB_ANAKEEN_UI_PATH)
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(LOCALPUB_ANAKEEN_UI_PATH)/build.json $(LOCALPUB_ANAKEEN_UI_PATH)/src/Apps/DOCUMENT/DOCUMENT_init.php
+	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(LOCALPUB_ANAKEEN_UI_PATH)/build.json
 	$(DEVTOOL_BIN) generateWebinst -s $(LOCALPUB_ANAKEEN_UI_PATH) -o .
 	touch "$@"
 app: $(JS_CONF_PATH)/node_modules $(JS_ASSET_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_DDUI_BUILD_PATH) $(JS_FAMILY_BUILD_PATH) $(LOCALPUB_ANAKEEN_UI_PATH) ## build the project

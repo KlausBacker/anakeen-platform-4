@@ -6,7 +6,8 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiEnum;
 
-class TstUiEnumHooks extends \Anakeen\SmartStructures\Document
+class TstUiEnumHooks extends \Anakeen\SmartElement
+
 {
 
 

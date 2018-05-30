@@ -5,7 +5,8 @@ namespace Anakeen\SmartStructures\UiTest\TstUiDocid;
 use Anakeen\SmartHooks;
 use \SmartStructure\Attributes\Tst_ddui_docid as TST_DDUI_DOCID_Attributes;
 
-class TstUiDocidHooks extends \Anakeen\SmartStructures\Document
+class TstUiDocidHooks extends \Anakeen\SmartElement
+
 {
 
     public function registerHooks()
