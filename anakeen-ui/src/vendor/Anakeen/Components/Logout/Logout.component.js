@@ -13,7 +13,7 @@ export default {
             let event = new CustomEvent('beforeLogout', {cancelable: true});
             this.$el.parentNode.dispatchEvent(event);
             if (event.defaultPrevented) {
-                this.$emit('logoutCancelled');
+                this.$emit('logoutCanceled');
             } else {
                 this.$http.delete('/components/logout/session')
                     .then(response => {

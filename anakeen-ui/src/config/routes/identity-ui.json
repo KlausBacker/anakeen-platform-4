@@ -1,0 +1,20 @@
+{
+  "routes": {
+    "Ui:Identity:User": {
+      "callable": "\\Anakeen\\Components\\Identity\\Routes\\User",
+      "methods": ["GET"],
+      "pattern": "/components/identity/user",
+      "description": "Fetch user's information to display in Identity badge",
+      "requiredAccess": null,
+      "authenticated": true
+    },
+    "Ui:Identity:Email": {
+      "callable": "\\Anakeen\\Components\\Identity\\Routes\\Email",
+      "methods": ["PUT"],
+      "pattern": "/components/identity/email",
+      "description": "Modify user's email",
+      "requiredAccess": null,
+      "authenticated": true
+    }
+  }
+}

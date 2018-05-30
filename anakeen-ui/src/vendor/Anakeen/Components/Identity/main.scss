@@ -1,0 +1,28 @@
+// BEGIN Variables : to remove when the real variables will be used
+$gray-lighter: #F4F4F4;
+$green-light: #8AE234;
+$white: #FFFFFF;
+
+$ank-ui-color-hovered: $gray-lighter;
+$ank-ui-color-client: $green-light;
+// END Variables
+
+#identity {
+  #identity-badge {
+    background-color: $ank-ui-color-client;
+  }
+
+  #identity-badge:hover {
+    background-color: $ank-ui-color-client + #101010;
+  }
+}
+
+#popup {
+  background: $white;
+
+  ul {
+    .action:hover {
+      background-color: $ank-ui-color-hovered;
+    }
+  }
+}
