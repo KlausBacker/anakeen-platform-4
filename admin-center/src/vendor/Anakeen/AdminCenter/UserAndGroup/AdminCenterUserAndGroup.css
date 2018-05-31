@@ -4,10 +4,15 @@ ank-admin-user-group {
 }
 
 ank-admin-user-group .contentPart {
-    height: 100%;
+    height: calc(100% - 1em);
     width: 100%;
 }
 
 ank-admin-user-group .groupTreeView {
     height: calc(100% - 2em);
+}
+
+ank-admin-user-group .groupDoc iframe {
+    height: calc(100% - 1em);
+    width: 100%;
 }

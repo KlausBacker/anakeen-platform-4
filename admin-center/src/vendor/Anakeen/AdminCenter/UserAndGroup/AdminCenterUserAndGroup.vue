@@ -21,12 +21,13 @@
         </div>
         <div ref="centerPart">
             <div ref="documentPart">
-                <ank-smart-element></ank-smart-element>
+                <ank-document ref="groupDoc" class="groupDoc"></ank-document>
             </div>
-            <kendo-grid :data-source="gridContent"
+            <kendo-grid ref="grid"
+                        :data-source="gridContent"
                         :pageable="{'alwaysVisible': true, pageSizes: [10, 20, 100]}"
                         :sortable='true'
-                        :filterable="true"
+                        :filterable="{ extra: false, operators: { string: { contains: 'contains' } } }"
                         :persistSelection="true"
                         :autoBind="false">
                 <kendo-grid-column :selectable="true" width="50px"></kendo-grid-column>

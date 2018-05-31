@@ -29,7 +29,7 @@ class Groups
             /* @var $currentAccount \Anakeen\Core\Account */
             $groups[$currentAccount->id] = [
                 "login"=> $currentAccount->login,
-                "id" => $currentAccount->fid,
+                "documentId" => $currentAccount->fid,
                 "accountId" => $currentAccount->id,
                 "parents" => $currentAccount->getMemberOf(),
                 "title" => getDocTitle($currentAccount->fid),

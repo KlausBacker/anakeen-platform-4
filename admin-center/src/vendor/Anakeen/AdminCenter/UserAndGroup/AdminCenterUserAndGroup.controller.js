@@ -32,7 +32,7 @@ export default {
                                     data = [];
                                 }
                                 const addUniqId = (currentElement, id = "") => {
-                                    currentElement.hierarchicalId = id ? id+"/"+currentElement.id: currentElement.id;
+                                    currentElement.hierarchicalId = id ? id+"/"+currentElement.documentId: currentElement.documentId;
                                     if (currentElement.items) {
                                         currentElement.items.forEach((childrenElement) => {
                                             addUniqId(childrenElement, currentElement.hierarchicalId);
@@ -90,7 +90,13 @@ export default {
                     data: "data",
                     total: "total",
                     model: {
-                        id: "id"
+                        id: "id",
+                        fields: {
+                            login: { type: "string" },
+                            firstname: { type: "string" },
+                            lastname: { type: "string" },
+                            mail: { type: "string" },
+                        }
                     }
                 },
                 serverFiltering: true,
@@ -104,6 +110,7 @@ export default {
         const treeview = this.$refs.groupTreeView.kendoWidget();
         treeview.bind("dataBound", () => {
             const selected = treeview.dataItem(treeview.select());
+            this.updateGroupSelected(selected.documentId);
             this.updateGridData(selected.login);
         });
         this.bindSplitter();
@@ -136,7 +143,13 @@ export default {
                 resize: onContentResize("center", this.$refs.centerPart)
             })
         },
+        updateGroupSelected: function(selectedGroupId) {
+            const groupDoc = this.$refs.groupDoc;
+            groupDoc.initid = selectedGroupId;
+        },
         updateGridData: function (selectedGroupLogin) {
+            const grid = this.$refs.grid.kendoWidget();
+            grid.clearSelection();
             this.gridContent.filter({ field: "group", operator: "equal", value: selectedGroupLogin });
         },
         onGroupSelect: function (event) {
