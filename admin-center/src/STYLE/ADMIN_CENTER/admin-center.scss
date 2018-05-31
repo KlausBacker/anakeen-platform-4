@@ -4,6 +4,8 @@ $font-family-base: $ank-ui-font;
 
 html, body {
   font-size: 12px;
+  width: 100vw;
   height: 100vh;
+  display: flex;
   font-family: $font-family-base;
 }
