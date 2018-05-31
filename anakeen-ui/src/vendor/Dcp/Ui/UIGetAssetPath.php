@@ -83,7 +83,7 @@ class UIGetAssetPath
 
     public static function getSmartWebComponentsPath() {
         $ankComponentsPath = self::getSmartWebComponentsPaths();
-        return "/".$ankComponentsPath["ank-components"]['js'];
+        return $ankComponentsPath["ank-components"]['js'];
     }
 
     public static function getJSSmartElementPath() {

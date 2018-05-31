@@ -84,7 +84,7 @@ const productionComponentConfig = merge([
             'ank-components': PATHS.components,
         },
         output: {
-            publicPath: 'components/dist/',
+            publicPath: '/components/dist/',
             filename: '[name].js',
             path: path.resolve(PATHS.build, 'components/dist/'),
         },
@@ -107,7 +107,7 @@ const debugComponentConfig = merge([
             'ank-components': PATHS.components,
         },
         output: {
-            publicPath: 'components/debug/',
+            publicPath: '/components/debug/',
             filename: '[name].js',
             path: path.resolve(PATHS.build, 'components/debug/'),
         },
@@ -126,7 +126,7 @@ const devComponentConfig = merge([
             'ank-components': PATHS.components,
         },
         output: {
-            publicPath: 'components/debug/',
+            publicPath: '/components/debug/',
             filename: '[name].js',
             path: path.resolve(PATHS.build, 'components/debug/'),
         },
