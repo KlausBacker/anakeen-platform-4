@@ -4,6 +4,10 @@
         name="@moduleName@" release="@release@" version="@version@">
     <description>Admin Center</description>
 
+    <requires>
+        <module name="user-interfaces"/>
+    </requires>
+
     <post-install>
         <process command="programs/update_catalog"/>
     </post-install>
