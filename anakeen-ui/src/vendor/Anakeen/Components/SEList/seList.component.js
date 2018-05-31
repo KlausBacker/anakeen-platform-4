@@ -151,18 +151,20 @@ export default {
             onSelectPageSize: (e) => {
                 const counter = this.$(this.$refs.pagerCounter).data('kendoDropDownList');
                 const newPageSize = counter.dataItem(e.item).value;
-                this.$emit('list-pagesize-change', newPageSize, this.dataSource.pageSize());
+                const customEvent = this.$createComponentEvent('list-pagesize-change',
+                    { detail: [newPageSize, this.dataSource.pageSize()] }, e);
+                this.$emit('list-pagesize-change', customEvent);
                 this.dataSource.pageSize(newPageSize);
                 this.refreshList().then().catch((err) => {
                     console.error(err);
                 });
             },
 
-            onSelectSe: (...arg) => {
+            onSelectSe: (event) => {
                 const data = this.dataSource.view();
                 const listView = this.$(this.$refs.listView).data('kendoListView');
                 const selected = this.$.map(listView.select(), item => data[this.$(item).index()]);
-                this.selectSe(selected[0]);
+                this._selectSe(event, selected[0]);
             },
         };
     },
@@ -221,14 +223,6 @@ export default {
         };
     },
 
-    watch: {
-        filterInput(newValue, oldValue) {
-            if (newValue !== oldValue) {
-                this.$emit('list-filter-input', newValue, this.$(this.$el).parent()[0]);
-            }
-        },
-    },
-
     computed: {
         translations() {
             const searchTranslated = this.$pgettext('SEList', 'Search in : %{collection}');
@@ -257,8 +251,15 @@ export default {
 
     methods: {
 
-        selectSe(se) {
-            this.$emit('sel-selected', Object.assign({}, se.properties));
+        _onFilterInput(event) {
+            const customEvent = this.$createComponentEvent('list-filter-input', { detail: [this.filterInput] }, event);
+            this.$emit('list-filter-input', customEvent);
+        },
+
+        _selectSe(event, se) {
+            const seProperties = Object.assign({}, se.properties);
+            const customEvent = this.$createComponentEvent('se-selected', { detail: [seProperties] }, event);
+            this.$emit('se-selected', customEvent);
         },
 
         filterList(filterValue) {

@@ -18,7 +18,7 @@
                     <div class="input-group">
                         <input type="text"
                                class="form-control seList__search__keyword"
-                               :placeholder="translations.searchPlaceholder" v-model="filterInput" @change="filterList(filterInput)"/>
+                               :placeholder="translations.searchPlaceholder" v-model="filterInput" @change="filterList(filterInput)" @input="_onFilterInput"/>
                         <i class="input-group-addon material-icons seList__search__keyword__remove" @click="clearListFilter">
                             close
                         </i>

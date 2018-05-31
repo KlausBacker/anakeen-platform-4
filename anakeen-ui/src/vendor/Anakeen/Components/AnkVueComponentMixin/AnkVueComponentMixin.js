@@ -1,6 +1,8 @@
 // jscs:disable disallowFunctionDeclarations
-
+import AnkVueEvent from './AnkVueEvent';
 const PUBLIC_METHODS_FIELD = 'publicMethods';
+
+const IGNORED_METHODS_TOKEN = ['_', '$'];
 
 const ERROR_CODES = {
     UICOMPONENT0001: {
@@ -37,6 +39,18 @@ const getSpecialType = (stringSelector) => {
         default:
             return stringSelector;
     }
+};
+
+const isPublicMethod = (methodName) => {
+    let isPublic = true;
+    let i = 0;
+    while (isPublic && i < IGNORED_METHODS_TOKEN.length) {
+        if (methodName.startsWith(IGNORED_METHODS_TOKEN[i++])) {
+            isPublic = false;
+        }
+    }
+
+    return isPublic;
 };
 
 // Parse full format bind-event prop "my-event: #myElement.other.method, other-event: #myElement.other.method2"
@@ -78,8 +92,10 @@ function analyzeAction(eventName, selector, action) {
         const realSelector = getSpecialType(selector);
         const elements = this.$(realSelector);
         if (elements && elements.length) {
+            console.log(elements, eventName);
             this._ank_protected.bindedEvents.push(eventName);
-            this.$on(eventName, (...arg) => {
+            this.$on(eventName, (event) => {
+                const eventArgs = event.detail || [];
                 elements.each((index, elem) => {
                     const actionTokens = action.split('.');
                     if (actionTokens && actionTokens.length) {
@@ -91,7 +107,7 @@ function analyzeAction(eventName, selector, action) {
                             return a[b];
                         }, elem);
                         if (typeof value === 'function') {
-                            value(...arg);
+                            value(...eventArgs);
                         }
                     }
 
@@ -105,6 +121,7 @@ function analyzeAction(eventName, selector, action) {
 }
 
 const AnkMixin = {
+    mixins: [AnkVueEvent],
     props: {
         bindEvent: {
             type: String,
@@ -122,27 +139,29 @@ const AnkMixin = {
             attachPublicMethods: () => {
                 // Attach public methods
                 const _this = this;
-                Object.keys(this.$options.methods).forEach((methodName) => {
-                    if (!methodName.startsWith('$')) {
-                        const method = {
-                            [methodName]: (...args) => {
-                                try {
-                                    const ret = _this[methodName].call(_this, ...args);
-                                    return ret;
-                                } catch (e) {
-                                    throw e;
+                if (this && this.$options && this.$options.methods) {
+                    Object.keys(this.$options.methods).forEach((methodName) => {
+                        if (isPublicMethod(methodName)) {
+                            const method = {
+                                [methodName]: (...args) => {
+                                    try {
+                                        const ret = _this[methodName].call(_this, ...args);
+                                        return ret;
+                                    } catch (e) {
+                                        throw e;
+                                    }
+                                },
+                            };
+                            this.$(this.$el).parent().prop(PUBLIC_METHODS_FIELD, (index, oldPropVal) => {
+                                if (!oldPropVal) {
+                                    return method;
+                                } else {
+                                    return Object.assign({}, oldPropVal, method);
                                 }
-                            },
-                        };
-                        this.$(this.$el).parent().prop(PUBLIC_METHODS_FIELD, (index, oldPropVal) => {
-                            if (!oldPropVal) {
-                                return method;
-                            } else {
-                                return Object.assign({}, oldPropVal, method);
-                            }
-                        });
-                    }
-                });
+                            });
+                        }
+                    });
+                }
             },
 
             bindedEvents: [],

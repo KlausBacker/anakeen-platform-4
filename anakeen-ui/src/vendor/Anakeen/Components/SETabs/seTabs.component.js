@@ -12,6 +12,28 @@ const Constants = {
     LAZY_TAB_ID: 'lazy_tab_id',
     CUSTOM_TAB_ID: 'custom_tab_id',
 };
+
+const noop = () => {};
+
+const camelToKebab = (string) => string.replace('/([a-z])([A-Z])/g', '$1-$2').toLowerCase();
+
+const smartElementEvents = ['beforeRender', 'ready', 'change', 'displayMessage', 'displayError', 'validate',
+    'attributeBeforeRender', 'attributeReady',
+    'attributeHelperSearch', 'attributeHelperResponse', 'attributeHelperSelect',
+    'attributeArrayChange', 'actionClick',
+    'attributeAnchorClick',
+    'beforeClose', 'close',
+    'beforeSave', 'afterSave', 'attributeDownloadFile', 'attributeUploadFile',
+    'beforeDelete', 'afterDelete',
+    'beforeRestore', 'afterRestore',
+    'failTransition', 'successTransition',
+    'beforeDisplayTransition', 'afterDisplayTransition',
+    'beforeTransition', 'beforeTransitionClose',
+    'destroy', 'attributeCreateDialogDocumentBeforeSetFormValues',
+    'attributeCreateDialogDocumentBeforeSetTargetValue', 'attributeCreateDialogDocumentReady',
+    'attributeCreateDialogDocumentBeforeClose', 'attributeCreateDialogDocumentBeforeDestroy',
+];
+
 export default {
     mixins: [AnkMixin],
     props: {
@@ -73,7 +95,7 @@ export default {
             tabslistSource: null,
             newTabConfig: null,
             welcomeTabConfig: null,
-            defaultEmptyImgUrl: 'CORE/Images/anakeenplatform-logo-fondblanc.svg',
+            defaultEmptyImgUrl: '/CORE/Images/anakeenplatform-logo-fondblanc.svg',
         };
     },
 
@@ -331,13 +353,28 @@ export default {
 
             },
 
-            bindDocumentTabEvents: ($doc, index) => {
+            getSEEventHandler: (eventName) => {
+                switch (eventName) {
+                    case 'ready':
+                        return this.privateScope.onDocumentReady;
+                    case 'actionClick':
+                        return this.privateScope.onDocumentActionClick;
+                    case 'afterSave':
+                        return this.privateScope.onDocumentAfterSave;
+                    default:
+                        return noop;
+                }
+            },
+
+            bindDocumentTabEvents: ($doc, tabIndex) => {
                 const documentComponent = $doc;
-                documentComponent.on('ready', e => this.privateScope.onDocumentReady(e, index));
-                documentComponent.on('actionClick', e => this.privateScope.onDocumentActionClick(e, index));
-                documentComponent.on('afterSave', e => this.privateScope.onDocumentAfterSave(e, index));
-                documentComponent.on('afterDelete', e => this.privateScope.onDocumentAfterDelete(e, index));
-                documentComponent.on('successTransition', e => this.privateScope.onSuccessTransition(e, index));
+                smartElementEvents.forEach(eventName => {
+                    documentComponent.on(eventName, e => {
+                        const cb = this.privateScope.getSEEventHandler(eventName);
+                        cb.call(this, e, tabIndex);
+                        this.$emitAnkEvent(`se-${camelToKebab(eventName)}`, e, tabIndex);
+                    });
+                });
             },
 
             onModelAddItem: (event) => {
@@ -549,15 +586,7 @@ export default {
                 tab.set('tabId', e.detail[1].initid);
                 tab.set('data.title', e.detail[1].title);
                 tab.set('data.icon', e.detail[1].icon);
-                this.$emit('document-modified', e.detail);
-            },
-
-            onDocumentAfterDelete: (e, tabPosition) => {
-                this.$emit('document-deleted', e.detail);
-            },
-
-            onSuccessTransition: (e, tabPosition) => {
-                this.$emit('document-success-transition', e.detail);
+                // this.$emit('document-modified', e.detail);
             },
         };
     },
@@ -566,7 +595,7 @@ export default {
         this.$kendo.ui.progress(this.$(this.$refs.tabsWrapper), true);
         const ready = () => {
             this.privateScope.createKendoComponents();
-            this.$emit('document-tabs-ready', this.$el.parentElement);
+            this.$emitAnkEvent('se-tabs-ready');
             this.$kendo.ui.progress(this.$(this.$refs.tabsWrapper), false);
         };
 
@@ -597,7 +626,6 @@ export default {
                 }
 
                 this.selectDocument(document);
-                this.$emit('document-tab-selected', document, this.$http);
             } else {
                 this.selectDocument(index);
             }
@@ -645,6 +673,8 @@ export default {
                     index = 0;
                 }
             }
+
+            this.$emitAnkEvent('se-tab-selected', this.tabModel.get(index), index);
 
             this.tabstrip.select(index);
         },
