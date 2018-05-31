@@ -6,7 +6,7 @@ import { AnkMixin } from '../AnkVueComponentMixin';
 
 export default {
     mixins: [AnkMixin],
-    name: 'ank-document',
+    name: 'ank-smart-element',
     data() {
         return {
             value: {

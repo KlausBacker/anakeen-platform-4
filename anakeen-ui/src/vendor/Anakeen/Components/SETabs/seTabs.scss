@@ -6,7 +6,7 @@
   background-color: #e6e6e6 !important;
   padding: 0;
 
-  &.documentsList__documentsTabs__tabs__paginator__close {
+  &.seTabs__tabs__paginator__close {
     background-color: #969696 !important;
     .k-icon {
       color: #FFFFFF;
@@ -22,33 +22,33 @@
   }
 }
 
-.documentsList__documentsTabs__wrapper {
+.seTabs__wrapper {
   position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
 
-  .documentsList__documentsTabs__tabs__buttons {
+  .seTabs__tabs__buttons {
     display: flex;
     position: relative;
     width: 100%;
 
-    .documentsList__documentsTabs__tabs__custom__slot {
+    .seTabs__tabs__custom__slot {
       z-index: 200;
     }
 
-    .documentsList__documentsTabs__tabs__paginator {
+    .seTabs__tabs__paginator {
       position: absolute;
       right: 0;
       display: flex;
       z-index: 200;
       height: 3.5rem;
       box-shadow: 0px 0px 2px 0px rgb(200, 200, 200);
-      .documentsList__documentsTabs__tabs__paginator__button {
+      .seTabs__tabs__paginator__button {
         @include paginatorButton(3.5rem);
 
-        &.documentsList__documentsTabs__tabs__paginator__dropdown__button {
+        &.seTabs__tabs__paginator__dropdown__button {
           & > .k-dropdown-wrap {
             background: none;
             display: flex;
@@ -80,25 +80,25 @@
     }
   }
 
-  .documentsList__documentsTabs__empty {
+  .seTabs__empty {
     display: flex;
     justify-content: center;
     align-items: center;
     flex: 1;
 
-    .documentsList__documentsTabs__empty__img {
+    .seTabs__empty__img {
       width: 225px;
     }
   }
 
-  .documentsList__documentsTabs__tabs__wrapper {
+  .seTabs__tabs__wrapper {
     position: absolute;
     width: 100%;
     height: 100%;
 
     .k-tabstrip-wrapper {
       height: 100%;
-      .documentsList__documentsTabs__tabs {
+      .seTabs__tabs {
         height: 100%;
 
         & > .k-content {
@@ -107,13 +107,13 @@
           padding: 0;
           border-top: none;
           background-color: #F3F3F3;
-          .documentsList__documentsTabs__tab__content__wrapper {
+          .seTabs__tab__content__wrapper {
             height: 100%;
-            .documentsList__documentsTabs__tab__content--document > iframe {
+            .seTabs__tab__content--se > iframe {
               height: 100%;
             }
 
-            .documentsList__documentsTabs__tab__content--loading > div {
+            .seTabs__tab__content--loading > div {
               height: 100%;
             }
           }
@@ -136,7 +136,7 @@
 
         & > .k-tabstrip-items {
           height: 3.5rem;
-          & > #documentsList__documentsTabs__new__tab__button {
+          & > #seTabs__new__tab__button {
             width: 2.75rem;
             height: 2.35rem;
 
@@ -169,8 +169,8 @@
             border: 1px solid lightgrey;
             border-radius: 0;
 
-            .tab__document__header__content {
-              .tab__document__title {
+            .seTab__header__content {
+              .seTab__title {
                 color: #505050;
               }
             }
@@ -180,12 +180,12 @@
               opacity: 1;
               background-color: #FAFAFA;
               border-bottom-color: transparent;
-              .tab__document__header__content .tab__document__title {
+              .seTab__header__content .seTab__title {
                 font-weight: 700;
                 color: #00b4fc;
               }
 
-              & > .tab__document__header__content > .k-link[data-type=remove] {
+              & > .seTab__header__content > .k-link[data-type=remove] {
                 box-shadow: inset 0 2px 0px 0px #8ae234;
                 .k-icon {
                   color: #ff542c;
@@ -195,8 +195,8 @@
 
             &.k-state-hover {
 
-              & > .k-link > .tab__document__header__content {
-                .tab__document__title {
+              & > .k-link > .seTab__header__content {
+                .seTab__title {
                   color: #00b4fc;
                 }
 
@@ -211,7 +211,7 @@
 
             & > .k-link {
               padding: 0 0 0 1rem;
-              .tab__document__header__content {
+              .seTab__header__content {
                 width: 100%;
                 height: 100%;
                 display: flex;
@@ -221,13 +221,13 @@
                   text-decoration: none;
                 }
 
-                .tab__document__icon {
+                .seTab__icon {
                   width: auto;
                   height: 1.3rem;
                   margin-right: 5px;
                 }
 
-                .tab__document__title {
+                .seTab__title {
                   width: 120px;
                   overflow: hidden;
                   white-space: nowrap;
@@ -256,10 +256,10 @@
   }
 }
 
-.documentsList__documentsTabs__tabsList__list {
+.seTabs__tabsList__list {
   padding: 0;
 
-  .documentsList__documentsTabs__tabsList__list__close__all {
+  .seTabs__tabsList__list__close__all {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -288,32 +288,32 @@
       color: black;
       font-size: 1rem;
 
-      .documentTabs__openedTab__listItem {
+      .seTabs__openedTab__listItem {
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 200px;
         height: 40px;
         position: relative;
-        .documentTabs__openedTab__listItem__heading {
+        .seTabs__openedTab__listItem__heading {
           flex: 1;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
           display: flex;
           align-items: center;
-          .documentTabs__openedTab__listItem__heading--title {
+          .seTabs__openedTab__listItem__heading--title {
             margin-left: .8rem;
             display: flex;
             justify-content: center;
             align-items: center;
           }
-          .documentTabs__openedTab__listItem__heading--icon {
+          .seTabs__openedTab__listItem__heading--icon {
             width: 2rem;
             height: 2rem;
           }
         }
-        .documentTabs__openedTab__listItem__close {
+        .seTabs__openedTab__listItem__close {
           height: 100%;
           padding: 0 .5rem;
           display: flex;

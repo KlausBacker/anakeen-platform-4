@@ -1,0 +1,8 @@
+<a class="seTab__header__content">
+    # if (data.icon) { #
+    <img class="seTab__icon" src="#= icon#" />
+    # } else { #
+    <i class="fa fa-spinner fa-pulse seTab__icon"></i>
+    #}#
+    <span class="seTab__title"># if (data.title) { # #= title# # } else {# Chargement en cours...#}#</span>
+</a>
