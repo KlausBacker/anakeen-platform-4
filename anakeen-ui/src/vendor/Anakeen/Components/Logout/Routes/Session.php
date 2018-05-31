@@ -1,7 +1,4 @@
 <?php
-/**
- * @author Anakeen
- */
 
 namespace Anakeen\Components\Logout\Routes;
 
