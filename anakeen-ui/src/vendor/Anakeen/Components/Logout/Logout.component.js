@@ -10,7 +10,16 @@ export default {
 
     methods: {
         logout() {
-            let event = new CustomEvent('beforeLogout', {cancelable: true});
+            let eventName = 'beforeLogout';
+            let options = { cancelable: true };
+            let event;
+            if (typeof window.CustomEvent === 'function') {
+                event = new CustomEvent(eventName, options);
+            } else {
+                event = document.createEvent('CustomEvent');
+                event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
+            }
+
             this.$el.parentNode.dispatchEvent(event);
             if (event.defaultPrevented) {
                 this.$emit('logoutCanceled');

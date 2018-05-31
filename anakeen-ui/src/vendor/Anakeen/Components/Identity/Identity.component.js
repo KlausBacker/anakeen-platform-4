@@ -56,7 +56,8 @@ export default {
 
         // Send a request to change the password on the server
         modifyUserPassword() {
-            let event = new CustomEvent('beforePasswordChange', {
+            let eventName = 'beforeLogout';
+            let options = {
                 cancelable: true,
                 detail: [{
                     email: this.email,
@@ -64,8 +65,15 @@ export default {
                     initials: this.initials,
                     firstName: this.firstName,
                     lastName: this.lastName
-                }]
-            });
+                }]};
+            let event;
+            if (typeof window.CustomEvent === 'function') {
+                event = new CustomEvent(eventName, options);
+            } else {
+                event = document.createEvent('CustomEvent');
+                event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
+            }
+
             this.$el.parentNode.dispatchEvent(event);
 
             if (!event.defaultPrevented) {
@@ -99,7 +107,8 @@ export default {
 
         // Send a request to change the email on the server
         modifyUserEmail() {
-            let event = new CustomEvent('beforeEmailChange', {
+            let eventName = 'beforeLogout';
+            let options = {
                 cancelable: true,
                 detail: [{
                     currentEmail: this.email,
@@ -108,8 +117,15 @@ export default {
                     initials: this.initials,
                     firstName: this.firstName,
                     lastName: this.lastName
-                }]
-            });
+                }]};
+            let event;
+            if (typeof window.CustomEvent === 'function') {
+                event = new CustomEvent(eventName, options);
+            } else {
+                event = document.createEvent('CustomEvent');
+                event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
+            }
+
             this.$el.parentNode.dispatchEvent(event);
 
             if (!event.defaultPrevented) {

@@ -30,7 +30,7 @@ msgstr "Modifier mon mot de passe"
 #: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:288
 msgctxt "Identity"
 msgid "Current email"
-msgstr "Email actuel"
+msgstr "Adresse email actuel"
 
 #: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:289
 msgctxt "Identity"
