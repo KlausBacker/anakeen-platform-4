@@ -3,11 +3,12 @@ import Vue from 'vue';
 
 export default {
     loadPluginsList ({ commit }) {
-        Vue.ankApi.get('admin/plugins')
+        Vue.ankAdmin.get('plugins')
             .then(response => {
                 if (response.status === 200 && response.statusText === 'OK') {
-                    commit(mutationsType.SET_PLUGINS, response.data);
-                    commit(mutationsType.UPDATE_ROUTER, response.data);
+                    const data = response.data;
+                    commit(mutationsType.SET_PLUGINS, data.plugins);
+                    commit(mutationsType.UPDATE_ROUTER, data.plugins);
                 } else {
                     throw "Unable to get modules list";
                 }
