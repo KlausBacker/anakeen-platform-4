@@ -129,9 +129,9 @@ export default {
                             kendo.ui.progress(this.$("#emailModifier"), false);
                             this.openEmailModifiedWindow();
                         })
-                        .catch(() => {
+                        .catch((error) => {
                             // Show a warning message and remove the loader
-                            this.emailWarningMessage = this.translations.serverError;
+                            this.emailWarningMessage = error.response.data.userMessage; //this.translations.serverError;
                             kendo.ui.progress(this.$("#emailModifier"), false);
                         });
                 } else {

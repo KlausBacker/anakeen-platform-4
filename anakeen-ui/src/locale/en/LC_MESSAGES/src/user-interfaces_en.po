@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-24 14:34+0100\n"
+"POT-Creation-Date: 2018-05-31 15:35+0200\n"
 "PO-Revision-Date: 2017-11-24 13:42+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -262,7 +262,7 @@ msgctxt "UiMenu"
 msgid "Delete"
 msgstr ""
 
-#. _COMMENT: docidWrite.mustache
+#. _COMMENT: enumWrite.mustache
 #. _COMMENT: mustache key
 msgctxt "ddui"
 msgid "Delete : "
@@ -325,6 +325,11 @@ msgstr ""
 msgctxt "ddui"
 msgid "Duplicate selected row"
 msgstr ""
+
+#, php-format
+msgctxt "identityComponent"
+msgid "Email address \"%s\" is not valid"
+msgstr "Email address \"%s\"is not valid"
 
 msgctxt "ddui"
 msgid "Family View"
@@ -402,6 +407,14 @@ msgstr ""
 #. _COMMENT: mustache key
 msgctxt "dsearch"
 msgid "Loading criteria ..."
+msgstr ""
+
+msgctxt "UiMenu"
+msgid "Lock"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Lock document"
 msgstr ""
 
 msgctxt "ddui"
@@ -589,6 +602,14 @@ msgid "Transition success"
 msgstr ""
 
 msgctxt "UiMenu"
+msgid "Unlock"
+msgstr ""
+
+msgctxt "ddui"
+msgid "Unlock document"
+msgstr ""
+
+msgctxt "UiMenu"
 msgid "View current revision"
 msgstr ""
 
@@ -737,5 +758,23 @@ msgstr ""
 #~ msgid "ddui:Autocomplete attributes"
 #~ msgstr "Autocomplete attributes"
 
+#~ msgid "ddui:Click to reload the document"
+#~ msgstr "Click to reload the document"
+
+#~ msgid "ddui:Document Render"
+#~ msgstr "Document Render"
+
 #~ msgid "ddui:Get dynamic sub menu"
 #~ msgstr "Get dynamic sub menu"
+
+#~ msgid "ddui:Get some template"
+#~ msgstr "Get some template"
+
+#~ msgid "ddui:INIT_RENDERPARAMETERS"
+#~ msgstr "Init render parameters"
+
+#~ msgid "ddui:Render a document"
+#~ msgstr "Render a document"
+
+#~ msgid "ddui:Unable to load try again"
+#~ msgstr "Unable to load. Try again"
