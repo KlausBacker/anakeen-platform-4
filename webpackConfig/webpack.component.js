@@ -69,7 +69,7 @@ const commonConfig = merge([{
 const productionComponentConfig = merge([
     {
         entry: {
-            'ank-components': PATHS.components,
+            'ank-components': ['core-js/es6/promise', PATHS.components],
         },
         output: {
             publicPath: '/components/dist/',
@@ -92,7 +92,7 @@ const productionComponentConfig = merge([
 const debugComponentConfig = merge([
     {
         entry: {
-            'ank-components': PATHS.components,
+            'ank-components': ['core-js/es6/promise', PATHS.components],
         },
         output: {
             publicPath: '/components/debug/',
@@ -111,7 +111,7 @@ const debugComponentConfig = merge([
 const devComponentConfig = merge([
     {
         entry: {
-            'ank-components': PATHS.components,
+            'ank-components': ['core-js/es6/promise', PATHS.components],
         },
         output: {
             publicPath: '/components/debug/',
