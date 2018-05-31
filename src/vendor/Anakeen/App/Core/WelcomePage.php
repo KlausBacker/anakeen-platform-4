@@ -36,7 +36,7 @@ class WelcomePage
         $data["version"]= \Anakeen\Core\ContextManager::getApplicationParam("VERSION");
         $data["userRealName"]= ContextManager::getCurrentUser()->getAccountName();
         $data["userDomain"]= \Anakeen\Core\ContextManager::getApplicationParam("CORE_CLIENT");
-        $data["isAdmin"]= false; // @TODO Add test to detect admin center
+        $data["isAdmin"]= is_dir(sprintf("%s/AdminCenter", PUBLIC_DIR)); //Test to detect admin center
 
         $out=$mustache->render(file_get_contents($templateFile), $data);
         return $response->write($out);
