@@ -55,7 +55,6 @@ class UIGetAssetPath
     protected static function getSmartWebComponentsPaths() {
         if (self::$componentsPaths === null) {
             $lastPart = self::isInDebug() ? "/debug/" : "/dist/";
-
             self::$componentsPaths = json_decode(file_get_contents(self::$componentsPath."/".$lastPart."/ank-components.json"), true);
         }
         return self::$componentsPaths;
@@ -70,12 +69,12 @@ class UIGetAssetPath
 
     public static function getJSJqueryPath() {
         $jqueryFileName = self::isInDebug() ? 'jquery.js' : 'jquery.min.js';
-        return self::$assetPath.'/jquery/'.$jqueryFileName.'?ws='.self::getWs();
+        return "/".self::$assetPath.'/jquery/'.$jqueryFileName.'?ws='.self::getWs();
     }
 
     public static function getJSKendoPath() {
         if (self::isInDebug()) {
-            return self::$assetPath.'/KendoUI/KendoUI.js?ws='.self::getWs();
+            return "/".self::$assetPath.'/KendoUI/KendoUI.js?ws='.self::getWs();
         } else {
             $asset = self::getAssetsPaths();
             return $asset["KendoUI"]["js"];
@@ -84,12 +83,11 @@ class UIGetAssetPath
 
     public static function getSmartWebComponentsPath() {
         $ankComponentsPath = self::getSmartWebComponentsPaths();
-        return $ankComponentsPath["ank-components"]['js'];
+        return "/".$ankComponentsPath["ank-components"]['js'];
     }
 
     public static function getJSSmartElementPath() {
         $paths = self::getWidgetPath();
-
         return $paths["smartElement"]["js"];
     }
 
