@@ -54,19 +54,7 @@ const commonConfig = merge([{
                     use: 'raw-loader',
                 },
             ],
-        },
-        plugins: [
-            new CopyWebpackPlugin(
-                [
-                    {
-                        //dynacase-report
-                        context: path.resolve(__dirname, '../anakeen-ui/src/Apps/DOCUMENT/IHM/'),
-                        from: 'dynacaseReport.js',
-                        to: path.resolve(__dirname, '../anakeen-ui/src/public/uiAssets/anakeen/'),
-                    },
-                ]
-            ),
-        ],
+        }
     },
         parts.cssLoader([
             /loading\.css/,
