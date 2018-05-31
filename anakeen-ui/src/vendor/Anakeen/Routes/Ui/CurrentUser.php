@@ -1,11 +1,9 @@
 <?php
-/**
- * @author anakeen
- */
 
 namespace Anakeen\Routes\Ui;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Router\ApiV2Response;
 
 /**
  * Class CurrentUser
@@ -30,6 +28,6 @@ class CurrentUser
         $locale = ContextManager::getLanguage();
         $data["locale"] = $locale;
 
-        return $response->withJson($data);
+        return ApiV2Response::withData($response, $data);
     }
 }

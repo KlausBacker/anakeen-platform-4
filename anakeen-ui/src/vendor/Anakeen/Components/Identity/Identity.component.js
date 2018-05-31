@@ -44,13 +44,13 @@ export default {
         fetchUser() {
             this.$http.get('/api/v2/ui/users/current')
                 .then(response => {
-                    this.$emit('userLoaded', response.data);
+                    this.$emit('userLoaded', response.data.data);
 
-                    this.login = response.data.login;
-                    this.initials = response.data.initials;
-                    this.firstName = response.data.firstName;
-                    this.lastName = response.data.lastName;
-                    this.email = response.data.email;
+                    this.login = response.data.data.login;
+                    this.initials = response.data.data.initials;
+                    this.firstName = response.data.data.firstName;
+                    this.lastName = response.data.data.lastName;
+                    this.email = response.data.data.email;
                 });
         },
 
@@ -58,13 +58,13 @@ export default {
         modifyUserPassword() {
             let event = new CustomEvent('beforePasswordChange', {
                 cancelable: true,
-                detail: {
+                detail: [{
                     email: this.email,
                     login: this.login,
                     initials: this.initials,
                     firstName: this.firstName,
                     lastName: this.lastName
-                }
+                }]
             });
             this.$el.parentNode.dispatchEvent(event);
 
@@ -101,14 +101,14 @@ export default {
         modifyUserEmail() {
             let event = new CustomEvent('beforeEmailChange', {
                 cancelable: true,
-                detail: {
+                detail: [{
                     currentEmail: this.email,
                     newEmail: this.newEmail,
                     login: this.login,
                     initials: this.initials,
                     firstName: this.firstName,
                     lastName: this.lastName
-                }
+                }]
             });
             this.$el.parentNode.dispatchEvent(event);
 
