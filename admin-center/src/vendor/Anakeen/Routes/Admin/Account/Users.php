@@ -9,6 +9,7 @@
 namespace Anakeen\Routes\Admin\Account;
 
 
+use Anakeen\Core\DbManager;
 use Dcp\Sacc\Exception;
 
 class Users
@@ -20,6 +21,7 @@ class Users
      * @param \Slim\Http\response $response
      * @return \Slim\Http\Response
      * @throws Exception
+     * @throws \Dcp\Db\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response) {
         $result = [];
@@ -33,9 +35,16 @@ class Users
             foreach ($filter["filters"] as $currentFilter) {
                 if ($currentFilter["field"] === "group") {
                     $searchAccount->addGroupFilter($currentFilter["value"]);
+                } else {
+                    $searchAccount->addFilter($currentFilter["field"]." ~* '%s'", preg_quote($currentFilter["value"]));
                 }
             }
         }
+
+        //count max result
+
+        $request = $searchAccount->getQuery();
+        DbManager::query("select count(*) from (".$request.") as nbResult;", $nResult, true, true);
 
         if ($skip !== null) {
             $searchAccount->setStart($skip);
@@ -58,9 +67,8 @@ class Users
         }
 
         return $response->withJson([
-            "total"=> count($result),
-            "data"=> array_values($result),
-            "filter"=>$filter
+            "total"=> $nResult,
+            "data"=> array_values($result)
         ]);
 
     }
