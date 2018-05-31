@@ -60,7 +60,7 @@ msgstr "Confirm password modification"
 #: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:294
 msgctxt "Identity"
 msgid "Cancel password modification"
-msgstr "Confirm password modification"
+msgstr "Cancel password modification"
 
 #: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:295
 msgctxt "Identity"

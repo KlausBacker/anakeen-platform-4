@@ -70,7 +70,7 @@ export default {
 
             if (!event.defaultPrevented) {
                 // Verify if password matches confirmation
-                if (this.newPassword === this.newPasswordConfirmation) {
+                if ((this.newPassword === this.newPasswordConfirmation) && (this.newPassword !== '')) {
                     kendo.ui.progress(this.$("#epasswordModifier"), true);
                     this.$http.put('/api/v2/authent/password/' + this.login,
                         {
@@ -307,6 +307,16 @@ export default {
 
         displayName() {
             return this.firstName + ' ' + this.lastName;
+        },
+
+        // Email change validation button enabled only if the input is a correct email adress
+        emailChangeButtonDisabled() {
+            return !this.newEmail.match(/\S+@\S+\.\S+/);
+        },
+
+        // Password change validation button enabled only if the password matches the confirmation
+        passwordChangeButtonDisabled() {
+            return ((this.newPassword !== this.newPasswordConfirmation) || (this.newPassword === ''));
         }
     },
 
