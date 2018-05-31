@@ -4,10 +4,12 @@ export default {
     data() {
         return {
             adminTitle: 'Admin Center',
-            appName: 'Application name',
         };
     },
     computed: {
+        ...mapGetters({
+            appName: 'getAppName'
+        })
     },
     methods: {
         onUserLoaded(event) {
