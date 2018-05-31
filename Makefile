@@ -16,7 +16,7 @@ TEMPLATE_BUILD_PATH=anakeen-ui/src/Apps/DOCUMENT/Layout
 JS_ASSET_PATH=anakeen-ui/src/public/uiAssets/externals/
 JS_COMPONENT_SOURCE_PATH=anakeen-ui/src/vendor/Anakeen/Components
 JS_COMPONENT_BUILD_PATH=anakeen-ui/src/public/components
-JS_DDUI_BUILD_PATH=anakeen-ui/src/public/uiAssets
+JS_DDUI_BUILD_PATH=anakeen-ui/src/public/uiAssets/anakeen/
 JS_DDUI_SOURCE_PATH=anakeen-ui/src/Apps/DOCUMENT/IHM/
 JS_ROUTE_SOURCE_PATH=anakeen-ui/src/vendor/Anakeen/Routes/Ui
 JS_FAMILY_BUILD_PATH=anakeen-ui/src/public/uiAssets/Families/
@@ -106,6 +106,7 @@ $(LOCALPUB_ANAKEEN_UI_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${ANAKEEN_UI
 	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(LOCALPUB_ANAKEEN_UI_PATH)/build.json
 	$(DEVTOOL_BIN) generateWebinst -s $(LOCALPUB_ANAKEEN_UI_PATH) -o .
 	touch "$@"
+
 app: $(JS_CONF_PATH)/node_modules $(JS_ASSET_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_DDUI_BUILD_PATH) $(JS_FAMILY_BUILD_PATH) $(LOCALPUB_ANAKEEN_UI_PATH) ## build the project
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 
