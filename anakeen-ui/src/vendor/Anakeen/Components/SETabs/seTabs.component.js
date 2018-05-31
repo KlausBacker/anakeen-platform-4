@@ -489,6 +489,8 @@ export default {
                     this.tabModel.add(Object.assign({}, { tabId: Constants.NEW_TAB_ID }, this.newTabConfig));
                     this.selectDocument(this.tabModel.size() - 1);
                 }
+
+                this.$emitAnkEvent('tabs-new-tab');
             },
 
             onCloseTabClick: (e) => {
