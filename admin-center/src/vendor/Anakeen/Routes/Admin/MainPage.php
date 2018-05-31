@@ -23,7 +23,7 @@ class MainPage
         $data = [
             "JS" => [
                 ["key" =>"jquery",
-                "path" => '/'.\Dcp\Ui\UIGetAssetPath::getJSJqueryPath()],
+                "path" => \Dcp\Ui\UIGetAssetPath::getJSJqueryPath()],
                 [
                     "key" =>"kendo",
                     "path" => \Dcp\Ui\UIGetAssetPath::getJSKendoPath()
