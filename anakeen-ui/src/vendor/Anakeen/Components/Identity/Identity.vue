@@ -2,7 +2,7 @@
     <div>
         <div id="identity">
             <button id="identity-badge" class="identity-badge" @click="toggleSettingsPopup">
-                <div id="identity-badge-initials" >{{ initials }}</div>
+                <span id="identity-badge-initials" >{{ initials }}</span>
                 <i id="identity-badge-icon" class="fa fa-angle-down" v-if="emailAlterable || passwordAlterable"></i>
             </button>
             <div id="identity-badge-extension" v-if="large">
@@ -29,12 +29,12 @@
                 </div>
                 <div class="form-group">
                     <label class="label" for="emailInput">{{ translations.newEmailLabel + " :" }}</label>
-                    <input id="emailInput" type="text" class="form-control" v-model="newEmail" @keyup="removeEmailWarningMessage($event)"/>
+                    <input id="emailInput" type="text" class="form-control" v-model="newEmail" @keyup="removeEmailWarningMessage"/>
                 </div>
                 <div class="form-group" v-if="emailWarningMessage">
                     <div class="alert alert-warning">{{ emailWarningMessage }}</div>
                 </div>
-                <button class="btn btn-primary" @click.prevent="modifyUserEmail">{{ translations.validateEmailButtonLabel }}</button>
+                <button class="btn btn-primary" @click.prevent="modifyUserEmail" :disabled="emailChangeButtonDisabled">{{ translations.validateEmailButtonLabel }}</button>
                 <button class="btn" @click.prevent="closeEmailModifierWindow">{{ translations.cancelEmailButtonLabel }}</button>
             </form>
             <div id="emailModifiedWindow" style="display: none;">
@@ -47,16 +47,16 @@
             <form>
                 <div class="form-group">
                     <label class="label" for="passwordInput">{{ translations.newPasswordLabel + " :" }}</label>
-                    <input id="passwordInput" type="password" class="form-control" v-model="newPassword" @keyup="removePasswordWarningMessage($event)"/>
+                    <input id="passwordInput" type="password" class="form-control" v-model="newPassword" @keyup="removePasswordWarningMessage"/>
                 </div>
                 <div class="form-group">
                     <label class="label" for="passwordConfirmationInput">{{ translations.newPasswordConfirmationLabel + " :" }}</label>
-                    <input id="passwordConfirmationInput" type="password" class="form-control" v-model="newPasswordConfirmation" @keyup="removePasswordWarningMessage($event)"/>
+                    <input id="passwordConfirmationInput" type="password" class="form-control" v-model="newPasswordConfirmation" @keyup="removePasswordWarningMessage"/>
                 </div>
                 <div class="form-group" v-if="passwordWarningMessage">
                     <div class="alert alert-warning">{{ passwordWarningMessage }}</div>
                 </div>
-                <button class="btn btn-primary" @click.prevent="modifyUserPassword">{{ translations.validatePasswordButtonLabel }}</button>
+                <button class="btn btn-primary" @click.prevent="modifyUserPassword" :disabled="passwordChangeButtonDisabled">{{ translations.validatePasswordButtonLabel }}</button>
                 <button class="btn" @click.prevent="closePasswordModifierWindow">{{ translations.cancelPasswordButtonLabel }}</button>
             </form>
             <div id="passwordModifiedWindow" style="display: none;">

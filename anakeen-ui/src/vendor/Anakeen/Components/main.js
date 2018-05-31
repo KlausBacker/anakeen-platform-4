@@ -42,8 +42,8 @@ Vue.prototype.$kendo = Vue.kendo = kendo;
 // Fetch user language from server
 Vue.http.get('/api/v2/ui/users/current')
     .then(response => {
-        if (response.data.locale) {
-            Vue.config.language = response.data.locale;
+        if (response.data.data.locale) {
+            Vue.config.language = response.data.data.locale;
         }
     });
 

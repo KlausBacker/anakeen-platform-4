@@ -44,13 +44,13 @@ export default {
         fetchUser() {
             this.$http.get('/api/v2/ui/users/current')
                 .then(response => {
-                    this.$emit('userLoaded', response.data);
+                    this.$emit('userLoaded', response.data.data);
 
-                    this.login = response.data.login;
-                    this.initials = response.data.initials;
-                    this.firstName = response.data.firstName;
-                    this.lastName = response.data.lastName;
-                    this.email = response.data.email;
+                    this.login = response.data.data.login;
+                    this.initials = response.data.data.initials;
+                    this.firstName = response.data.data.firstName;
+                    this.lastName = response.data.data.lastName;
+                    this.email = response.data.data.email;
                 });
         },
 
@@ -58,19 +58,19 @@ export default {
         modifyUserPassword() {
             let event = new CustomEvent('beforePasswordChange', {
                 cancelable: true,
-                detail: {
+                detail: [{
                     email: this.email,
                     login: this.login,
                     initials: this.initials,
                     firstName: this.firstName,
                     lastName: this.lastName
-                }
+                }]
             });
             this.$el.parentNode.dispatchEvent(event);
 
             if (!event.defaultPrevented) {
                 // Verify if password matches confirmation
-                if (this.newPassword === this.newPasswordConfirmation) {
+                if ((this.newPassword === this.newPasswordConfirmation) && (this.newPassword !== '')) {
                     kendo.ui.progress(this.$("#epasswordModifier"), true);
                     this.$http.put('/api/v2/authent/password/' + this.login,
                         {
@@ -101,14 +101,14 @@ export default {
         modifyUserEmail() {
             let event = new CustomEvent('beforeEmailChange', {
                 cancelable: true,
-                detail: {
+                detail: [{
                     currentEmail: this.email,
                     newEmail: this.newEmail,
                     login: this.login,
                     initials: this.initials,
                     firstName: this.firstName,
                     lastName: this.lastName
-                }
+                }]
             });
             this.$el.parentNode.dispatchEvent(event);
 
@@ -129,9 +129,9 @@ export default {
                             kendo.ui.progress(this.$("#emailModifier"), false);
                             this.openEmailModifiedWindow();
                         })
-                        .catch(() => {
+                        .catch((error) => {
                             // Show a warning message and remove the loader
-                            this.emailWarningMessage = this.translations.serverError;
+                            this.emailWarningMessage = error.response.data.userMessage; //this.translations.serverError;
                             kendo.ui.progress(this.$("#emailModifier"), false);
                         });
                 } else {
@@ -307,6 +307,16 @@ export default {
 
         displayName() {
             return this.firstName + ' ' + this.lastName;
+        },
+
+        // Email change validation button enabled only if the input is a correct email adress
+        emailChangeButtonDisabled() {
+            return !this.newEmail.match(/\S+@\S+\.\S+/);
+        },
+
+        // Password change validation button enabled only if the password matches the confirmation
+        passwordChangeButtonDisabled() {
+            return ((this.newPassword !== this.newPasswordConfirmation) || (this.newPassword === ''));
         }
     },
 

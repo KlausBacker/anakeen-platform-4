@@ -1,11 +1,6 @@
-<?php /** @noinspection ALL */
-
-/**
- * @author Anakeen
- */
+<?php
 
 namespace Anakeen\Components\Identity\Routes;
-
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Router\Exception;
@@ -22,10 +17,17 @@ class Email
     {
         $newEmail = $request->getParam("email");
 
+        if (!filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
+            $e = new Exception('INVALIDEMAIL');
+            $e->setUserMessage(sprintf(___("Email address \"%s\" is not valid", "identityComponent"), $newEmail));
+
+            throw $e;
+        }
+
         $currentUser = ContextManager::getCurrentUser();
         $currentUser->mail = $newEmail;
 
-        $err= $currentUser->modify();
+        $err = $currentUser->modify();
         if ($err) {
             throw new Exception($err);
         }
