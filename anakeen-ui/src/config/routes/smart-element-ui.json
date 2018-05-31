@@ -1,5 +1,60 @@
 {
+    "apps": {
+        "SMARTELEMENT_UI": {
+            "version": "1.0.0",
+            "shortName": "Smart Element Ui"
+        }
+    },
+    "parameters": {
+        "ACTIVATE_LOGGING": {
+            "value": "TRUE",
+            "description": "Activate logging",
+            "type": "enum(FALSE|TRUE)",
+            "applicationContext": "SMARTELEMENT_UI"
+        },
+        "MODE_DEBUG": {
+            "value": "FALSE",
+            "description": "Debug Mode",
+            "type": "enum(FALSE|TRUE)",
+            "applicationContext": "SMARTELEMENT_UI"
+        },
+        "RENDER_PARAMETERS": {
+            "value": "{}",
+            "description": "Smart Element Render parameters",
+            "type": "json",
+            "applicationContext": "SMARTELEMENT_UI"
+        },
+        "NOTIFICATION_DELAY": {
+            "value": "5000",
+            "description": "Delay notifications display (in ms)",
+            "type": "number",
+            "applicationContext": "SMARTELEMENT_UI"
+        }
+    },
+    "accesses": {
+        "Ui:Admin": {
+            "applicationContext": "SMARTELEMENT_UI",
+            "description": "Admin Access"
+        }
+    },
     "routes": {
+        "Ui:Admin:LoadParameters": {
+            "priority": 1,
+            "callable": "\\Anakeen\\Routes\\Admin\\LoadParameters",
+            "methods": [
+                "POST"
+            ],
+            "pattern": "\/api/v2/admin/ui/loadparameters\/",
+            "description": "Reload ",
+            "authenticated": true,
+            "applicationContext": "SMARTELEMENT_UI",
+            "requiredAccess": {
+                "or": [
+                    "Ui:Admin",
+                    "core:admin"
+                ]
+            }
+        },
         "Ui:i18n": {
             "priority": 1,
             "callable": "\\Anakeen\\Routes\\Ui\\I18nCatalog",

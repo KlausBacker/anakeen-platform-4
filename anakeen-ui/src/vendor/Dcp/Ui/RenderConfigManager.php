@@ -184,7 +184,7 @@ class RenderConfigManager
     {
         static $renderParameters = null;
         if ($renderParameters === null) {
-            $renderParameters = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("DOCUMENT", "RENDER_PARAMETERS");
+            $renderParameters = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("SMARTELEMENT_UI", "RENDER_PARAMETERS");
             $renderParameters = json_decode($renderParameters, true);
         }
         if (isset($renderParameters["families"][$familyName][$key])) {
