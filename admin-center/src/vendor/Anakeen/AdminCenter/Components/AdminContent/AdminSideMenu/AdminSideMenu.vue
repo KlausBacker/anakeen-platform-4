@@ -3,12 +3,12 @@
         <div class="admin-center-side-menu">
             <div class="side-menu-plugin-list">
                 <router-link v-for="plugin in plugins" :key="plugin.name" :to="plugin.pluginPath">
-                    <span class="icon-plugin" v-html="plugin['icon']"></span>
+                    <span class="icon-plugin" :title="plugin.title || 'Admin Plugin'" v-html="plugin['icon']"></span>
                 </router-link>
             </div>
             <div class="side-menu-bottom-content">
                 <a class="admin-center-icon-plugin" href="http://docs.anakeen.com" target="_blank">
-                    <span class="icon-plugin">
+                    <span class="icon-plugin" title="Documentation">
                         <i class="material-icons">book</i>
                     </span>
                 </a>
