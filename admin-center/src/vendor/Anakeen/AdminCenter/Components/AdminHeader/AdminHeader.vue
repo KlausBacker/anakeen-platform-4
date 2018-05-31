@@ -4,9 +4,7 @@
             <span class="header-app-title">{{appName}}</span> <span>-</span> <span class="header-app-title">{{adminTitle}}</span>
         </div>
         <div class="header-content header-right-content">
-            <span class="header-admin-user">
-                {{userFullName}}
-            </span>
+            <ank-identity large="true" @userLoaded="onUserLoaded" email-alterable="true" password-alterable="true"></ank-identity>
             <ank-logout></ank-logout>
         </div>
     </header>

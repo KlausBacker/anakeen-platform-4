@@ -5,6 +5,11 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\ApplicationParameterManager;
 use Dcp\Core\Exception;
 
+/**
+ * Class Plugins
+ * @note    Used by route : GET /admin/plugins
+ * @package Anakeen\Routes\Ui
+ */
 class Plugins
 {
 
@@ -17,7 +22,11 @@ class Plugins
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $pluginsConfig = $this->getAdminPluginsConfig();
-        return $response->withJson($pluginsConfig);
+        $result = [
+            "appName" => ContextManager::getApplicationParam('CORE_CLIENT'),
+            "plugins" => $pluginsConfig
+        ];
+        return $response->withJson($result);
     }
 
     /**
