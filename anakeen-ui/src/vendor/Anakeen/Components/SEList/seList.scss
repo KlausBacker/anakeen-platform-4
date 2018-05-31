@@ -78,10 +78,6 @@
 .seList__search {
   padding: 7px 10px;
 
-  & > .input-group {
-    width: calc(100% + 1rem);
-  }
-
   .seList__search__keyword {
     flex: 1;
   }
