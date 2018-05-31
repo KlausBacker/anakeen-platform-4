@@ -67,7 +67,7 @@ class DocumentHtml
             }
         }
 
-        $modeDebug = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("DOCUMENT", "MODE_DEBUG");
+        $modeDebug = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("SMARTELEMENT_UI", "MODE_DEBUG");
         if ($modeDebug !== "FALSE") {
             $templateFile = DEFAULT_PUBDIR . "/Apps/DOCUMENT/Layout/debug/document-view.mustache.html";
         } else {
@@ -75,7 +75,7 @@ class DocumentHtml
         }
         $data = new I18nTemplateContext();
         $data["BASEURL"] = self::getBaseUrl();
-        $data["NOTIFICATION_DELAY"] = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("DOCUMENT", "NOTIFICATION_DELAY");
+        $data["NOTIFICATION_DELAY"] = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("SMARTELEMENT_UI", "NOTIFICATION_DELAY");
         $data["notificationLabelMore"] = ___("See more ...", "ddui:notification");
         $data["notificationTitleMore"] = ___("Notification", "ddui:notification");
         $data["messages"] = "{}";

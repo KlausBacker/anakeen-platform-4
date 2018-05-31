@@ -30,7 +30,7 @@ class UIGetAssetPath
 
     public static function isInDebug() {
         if (self::$inDebug === null) {
-            $modeDebug = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("DOCUMENT", "MODE_DEBUG");
+            $modeDebug = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("SMARTELEMENT_UI", "MODE_DEBUG");
             self::$inDebug = $modeDebug !== "FALSE";
         }
         return self::$inDebug;

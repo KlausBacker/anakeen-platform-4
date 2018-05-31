@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<module  name="@moduleName@" release="@release@" version="@version@"  vendor="Anakeen"
-         license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
+<module name="@moduleName@" release="@release@" version="@version@" vendor="Anakeen"
+        license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
 
     <description>A4 : Document interfaces</description>
     <requires>
@@ -16,24 +16,22 @@
     </replaces>
     <post-install>
 
-
+        <process command="./ank.php --script=manageApplications --method=init --appname=SMARTELEMENT_UI"/>
         <process command="./ank.php --system --resetRouteConfig"/>
         <process command="./ank.php --route=Ui:Admin:LoadParameters"/>
 
 
         <process command="programs/ui_setHtmlAuthentMode"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Components/Authent/AuthentMail.csv"/>
-
-
         <process command="./ank.php --system --localeGen"/>
     </post-install>
 
     <post-upgrade>
         <process command="programs/ui_setHtmlAuthentMode"/>
-
+        <process command="./ank.php --script=manageApplications --method=update --appname=SMARTELEMENT_UI"/>
+        <process command="./ank.php --system --resetRouteConfig"/>
+        <process command="./ank.php --system --resetRouteConfig"/>
         <process command="./ank.php --route=Ui:Admin:LoadParameters"/>
-
-
         <process command="./ank.php --system --localeGen"/>
     </post-upgrade>
 

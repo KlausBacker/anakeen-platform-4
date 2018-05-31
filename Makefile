@@ -100,7 +100,7 @@ $(LOCALPUB_ANAKEEN_UI_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${ANAKEEN_UI
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	rm -f user-interfaces-*.app
 	-mkdir -p $(LOCALPUB_ANAKEEN_UI_PATH)
-	rsync --delete -azvr $(ANAKEEN_UI_SRC_PATH) $(LOCALPUB_ANAKEEN_UI_PATH)
+	rsync -q --delete -azvr $(ANAKEEN_UI_SRC_PATH) $(LOCALPUB_ANAKEEN_UI_PATH)
 	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(LOCALPUB_ANAKEEN_UI_PATH)/build.json
 	$(DEVTOOL_BIN) generateWebinst -s $(LOCALPUB_ANAKEEN_UI_PATH) -o .
 	touch "$@"
@@ -122,7 +122,6 @@ clean: ## clean the local pub
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	rm -rf ${LOCALPUB_PATH}
 	rm -f *app
-	-rm -rf $(STUB_PATH)
 	make -f pojs.make clean
 
 cleanAll: clean ## clean the local pub and the node_module
@@ -160,7 +159,7 @@ app-test: $(JS_CONF_PATH)/node_modules $(TEST_SRC_PATH) $(JS_TEST_BUILD_PATH) ##
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	rm -f *app
 	-mkdir -p ${LOCALPUB_TEST_PATH}
-	rsync --delete -azvr $(TEST_SRC_PATH) ${LOCALPUB_TEST_PATH}
+	rsync -q --delete -azvr $(TEST_SRC_PATH) ${LOCALPUB_TEST_PATH}
 	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" ${LOCALPUB_TEST_PATH}/build.json
 	$(DEVTOOL_BIN) generateWebinst -s ${LOCALPUB_TEST_PATH} -o .
 

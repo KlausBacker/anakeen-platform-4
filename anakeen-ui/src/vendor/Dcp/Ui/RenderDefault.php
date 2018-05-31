@@ -47,7 +47,7 @@ class RenderDefault implements IRenderConfig
             "kendoui" => UIGetAssetPath::getJSKendoPath()
         ];
 
-        if (\Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("DOCUMENT", "ACTIVATE_LOGGING") === "TRUE") {
+        if (\Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("SMARTELEMENT_UI", "ACTIVATE_LOGGING") === "TRUE") {
             $jsRef = array_merge($jsRef, [
                 "traceKit" => "$pubExternalPath/traceKit/traceKit.js?ws=" . $version,
                 "traceError" => "$pubInternalPath/dynacaseReport.js?ws=" . $version
