@@ -12,6 +12,7 @@ NODE_MODULE_PATH=node_modules
 JS_CONF_PATH=$(MK_DIR)
 WEBPACK_CONF_PATH=webpackConfig/
 PHP_LIB_PATH=anakeen-ui/src/vendor/Anakeen/Ui/PhpLib
+TEMPLATE_BUILD_PATH=anakeen-ui/src/Apps/DOCUMENT/Layout
 JS_ASSET_PATH=anakeen-ui/src/public/uiAssets/externals/
 JS_COMPONENT_SOURCE_PATH=anakeen-ui/src/vendor/Anakeen/Components
 JS_COMPONENT_BUILD_PATH=anakeen-ui/src/public/components
@@ -79,7 +80,7 @@ $(JS_ASSET_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${WEBPACK_CONF_PATH} -t
 	$(YARN_BIN) buildAsset
 	touch "$@"
 
-$(JS_DDUI_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_DDUI_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(JS_CONF_PATH)/yarn.lock $(WEBPACK_CONF_PATH)/webpack.config.js $(WEBPACK_CONF_PATH)/webpack.parts.js
+$(JS_DDUI_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_DDUI_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(shell find ${TEMPLATE_BUILD_PATH} -type f -print | sed 's/ /\\ /g')  $(shell find ${JS_DDUI_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(JS_CONF_PATH)/yarn.lock $(WEBPACK_CONF_PATH)/webpack.config.js $(WEBPACK_CONF_PATH)/webpack.parts.js
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	make -f pojs.make compile
 	$(YARN_BIN) build
