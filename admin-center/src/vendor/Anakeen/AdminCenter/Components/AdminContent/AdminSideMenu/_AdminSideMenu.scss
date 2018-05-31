@@ -8,28 +8,25 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  height: 100%;
-  width: 35px;
   background: #424142;
   padding: 2rem 0;
+  min-width: 3rem;
 }
 
 .admin-center-side-submenu {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  padding: 10px 0px;
-  width: 200px;
+  padding: 0.83rem 0;
   background-color: #F2F2F2;
 
   .admin-center-plugin-title {
-    padding: 0 5px 10px 5px;
+    padding: 0 0.41rem 0.83rem 0.41rem;
   }
 
   .admin-center-side-submenu-item {
-    padding: 15px 20px;
-    height: 55px;
-    font-size: 14px;
+    padding: 1.25rem 1.666rem;
+    height: 4.5rem;
+    font-size: 1.1rem;
     cursor: pointer;
   }
 
@@ -45,7 +42,8 @@
 
   .anakeen-logo {
     width: auto;
-    height: 30px;
+    height: 2.5rem;
+    cursor: pointer;
   }
 
   > * + * {
@@ -56,33 +54,37 @@
 .side-menu-plugin-list {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex: 1;
   > * + * {
     margin-top: 2rem;
   }
 }
 
 .icon-plugin {
+  border-radius: 50%;
+  padding: .6rem .5rem 0rem .5rem;
   font-size: 2rem;
   color: rgba(255, 255, 255, 0.7);
+  transition: background-color ease .2s;
   .router-link-active > & {
     color: white;
   }
+
+  &:hover {
+    background-color: rgba(110, 110, 110, 0.7);
+  }
+
 }
 
 @media (min-width: 768px) {
   .admin-center-side-menu {
-    width: 70px;
+    width: 5.8rem;
   }
 
   .side-menu-bottom-content {
     .anakeen-logo {
       width: auto;
-      height: 65px;
-    }
-
-    .icon-plugin {
-      font-size: 2.5rem;
+      height: 3.5rem;
     }
   }
 }

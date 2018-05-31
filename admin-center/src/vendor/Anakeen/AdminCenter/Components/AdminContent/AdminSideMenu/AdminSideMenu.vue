@@ -8,7 +8,9 @@
             </div>
             <div class="side-menu-bottom-content">
                 <a class="admin-center-icon-plugin" href="http://docs.anakeen.com" target="_blank">
-                    <i class="icon-plugin fa fa-book"></i>
+                    <span class="icon-plugin">
+                        <i class="material-icons">book</i>
+                    </span>
                 </a>
                 <img class="anakeen-logo" src="/AdminCenter/Images/anakeen_monogramme.svg" alt="Anakeen Logo"/>
             </div>
