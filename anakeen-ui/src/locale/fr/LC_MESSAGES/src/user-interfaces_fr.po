@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-31 15:35+0200\n"
-"PO-Revision-Date: 2018-02-06 15:31+0100\n"
+"POT-Creation-Date: 2018-06-01 08:29+0200\n"
+"PO-Revision-Date: 2018-06-01 08:36+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -58,18 +58,6 @@ msgctxt "ddui-file"
 msgid "B"
 msgstr "octets"
 
-msgid "CVDOC_ARRAY_VIEW:display"
-msgstr ""
-
-msgid "CVDOC_ARRAY_VIEW:idview"
-msgstr ""
-
-msgid "CVDOC_ARRAY_VIEW:type"
-msgstr ""
-
-msgid "CVDOC_ARRAY_VIEW:view"
-msgstr ""
-
 msgctxt "UiMenu"
 msgid "Cancel"
 msgstr "Annuler"
@@ -98,18 +86,6 @@ msgstr "Choisissez un fichier"
 msgctxt "ddui-image"
 msgid "Choose image"
 msgstr "Choisissez une image"
-
-#, php-format
-msgid "Class \"%s\" not exists"
-msgstr "La classe \"%s\" n'existe pas"
-
-#, php-format
-msgid "Class \"%s\" not implement %s"
-msgstr "Classe \"%s\" n'implémente pas %s"
-
-#, php-format
-msgid "Class \"%s\" problem : %s"
-msgstr "Classe \"%s\", problème détecté : %s"
 
 msgctxt "ddui-file"
 msgid "Click to upload file"
@@ -250,10 +226,6 @@ msgid "DOCGRIDHTML5: sZeroRecords"
 msgstr "Aucun élément à afficher"
 
 msgctxt "ddui"
-msgid "Default Edit"
-msgstr "Vue de modification par défaut"
-
-msgctxt "ddui"
 msgid "Default View"
 msgstr "Vue de consultation par défault"
 
@@ -261,7 +233,7 @@ msgctxt "UiMenu"
 msgid "Delete"
 msgstr "Supprimer"
 
-#. _COMMENT: enumWrite.mustache
+#. _COMMENT: docidWrite.mustache
 #. _COMMENT: mustache key
 msgctxt "ddui"
 msgid "Delete : "
@@ -384,14 +356,6 @@ msgid "Historic"
 msgstr "Historique"
 
 msgctxt "ddui"
-msgid "Ignored CORE view"
-msgstr "Vue non prise en compte dans les interfaces traditionnelles"
-
-msgctxt "ddui"
-msgid "Ignored HTML5 view"
-msgstr "Vue non prise en compte dans les interfaces HTML5"
-
-msgctxt "ddui"
 msgid "In progress transition"
 msgstr "Transition en cours"
 
@@ -427,11 +391,11 @@ msgstr "Chargement des critères..."
 
 msgctxt "UiMenu"
 msgid "Lock"
-msgstr ""
+msgstr "Verrouiller"
 
 msgctxt "ddui"
 msgid "Lock document"
-msgstr ""
+msgstr "Verrouiller le document"
 
 msgctxt "ddui"
 msgid "Locked by"
@@ -473,7 +437,7 @@ msgstr "Notification"
 
 #, php-format
 msgctxt "authent"
-msgid "Password has been reset for \"%s\""
+msgid "Password has been reseted for \"%s\""
 msgstr "Le mot de passe a été réinitialisé pour \"%s\""
 
 msgctxt "UiMenu"
@@ -487,9 +451,6 @@ msgstr "Propriétés"
 msgctxt "UiMenu"
 msgid "Put document to the trash"
 msgstr "Mettre le document à la poubelle"
-
-msgid "RESULT:ACTION_NAME"
-msgstr ""
 
 msgctxt "ddui"
 msgid "Read only document"
@@ -554,12 +515,6 @@ msgctxt "ddui"
 msgid "Row count limit to {{limit}}"
 msgstr "Le nombre maximum de rangée est de {{limit}}"
 
-msgid "SEARCH_UI_HTML5:Basic ACL"
-msgstr ""
-
-msgid "SEARCH_UI_HTML5:SEARCH_UI_HTML5"
-msgstr ""
-
 msgctxt "UiMenu"
 msgid "Save"
 msgstr "Enregistrer"
@@ -619,11 +574,11 @@ msgstr "Transition réussie"
 
 msgctxt "UiMenu"
 msgid "Unlock"
-msgstr ""
+msgstr "Déverrouiller"
 
 msgctxt "ddui"
 msgid "Unlock document"
-msgstr ""
+msgstr "Déverrouiller le document"
 
 msgctxt "UiMenu"
 msgid "View current revision"
@@ -664,58 +619,10 @@ msgctxt "searchUi"
 msgid "consult"
 msgstr "Lancer la recherche"
 
-msgid "ddui:Admin"
-msgstr "Administration"
-
-msgid "ddui:COLLECT_ERROR"
-msgstr "Récupération des erreurs clients"
-
-msgid "ddui:Click to reload the document"
-msgstr "Cliquez pour recharger le document"
-
-msgid "ddui:Delay notifications display (in ms)"
-msgstr "Delai d'affichage des notifications (en ms)"
-
-msgid "ddui:Document Render"
-msgstr "Affichage d'un document"
-
-msgid "ddui:Document render"
-msgstr "DDUI : Dynacase document UI"
-
-msgid "ddui:Document render long"
-msgstr "Rendu HTML5 en One Page Application"
-
 #. _COMMENT: document__header.mustache
 #. _COMMENT: mustache key
 msgid "ddui:Editing form"
 msgstr "Formulaire en cours de modification"
-
-msgid "ddui:Get some template"
-msgstr "Récupération unitaire de template"
-
-msgid "ddui:INIT_RENDERPARAMETERS"
-msgstr "Paramètres des rendus"
-
-msgid "ddui:Render a document"
-msgstr "Visualiser un document"
-
-msgid "ddui:Unable to load try again"
-msgstr "Impossible de charger le document. Veuillez essayer à nouveau"
-
-msgid "ddui:View documents"
-msgstr "Action vue de document"
-
-msgid "ddui:activate logging"
-msgstr "Activer les logs d'erreur client"
-
-msgid "ddui:debug mode"
-msgstr "Mode debug"
-
-msgid "ddui:logging class"
-msgstr "Classes de log"
-
-msgid "ddui:render parameters"
-msgstr "Paramétrages des rendus"
 
 msgctxt "searchui"
 msgid "doctitle"
@@ -788,11 +695,30 @@ msgstr "{{value}} (autre choix)"
 #~ msgid "Ignored HTML5 view"
 #~ msgstr "Vue non prise en compte dans les interfaces HTML5"
 
+#~ msgctxt "authent"
+#~ msgid "Password has been reset for \"%s\""
+#~ msgstr "Le mot de passe a été réinitialisé pour \"%s\""
+
+#~ msgid "ddui:Admin"
+#~ msgstr "Administration"
+
+#~ msgid "ddui:COLLECT_ERROR"
+#~ msgstr "Récupération des erreurs clients"
+
 #~ msgid "ddui:Click to reload the document"
 #~ msgstr "Cliquez pour recharger le document"
 
+#~ msgid "ddui:Delay notifications display (in ms)"
+#~ msgstr "Delai d'affichage des notifications (en ms)"
+
 #~ msgid "ddui:Document Render"
 #~ msgstr "Affichage d'un document"
+
+#~ msgid "ddui:Document render"
+#~ msgstr "DDUI : Dynacase document UI"
+
+#~ msgid "ddui:Document render long"
+#~ msgstr "Rendu HTML5 en One Page Application"
 
 #~ msgid "ddui:Get some template"
 #~ msgstr "Récupération unitaire de template"
@@ -805,3 +731,18 @@ msgstr "{{value}} (autre choix)"
 
 #~ msgid "ddui:Unable to load try again"
 #~ msgstr "Impossible de charger le document. Veuillez essayer à nouveau"
+
+#~ msgid "ddui:View documents"
+#~ msgstr "Action vue de document"
+
+#~ msgid "ddui:activate logging"
+#~ msgstr "Activer les logs d'erreur client"
+
+#~ msgid "ddui:debug mode"
+#~ msgstr "Mode debug"
+
+#~ msgid "ddui:logging class"
+#~ msgstr "Classes de log"
+
+#~ msgid "ddui:render parameters"
+#~ msgstr "Paramétrages des rendus"

@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ANAKEEEN-UI\n"
+"Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-31 15:35+0200\n"
-"PO-Revision-Date: 2017-11-24 13:42+0100\n"
+"POT-Creation-Date: 2018-06-01 08:29+0200\n"
+"PO-Revision-Date: 2018-06-01 08:42+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
 "Language: en\n"
@@ -59,18 +59,6 @@ msgctxt "ddui-file"
 msgid "B"
 msgstr ""
 
-msgid "CVDOC_ARRAY_VIEW:display"
-msgstr ""
-
-msgid "CVDOC_ARRAY_VIEW:idview"
-msgstr ""
-
-msgid "CVDOC_ARRAY_VIEW:type"
-msgstr ""
-
-msgid "CVDOC_ARRAY_VIEW:view"
-msgstr ""
-
 msgctxt "UiMenu"
 msgid "Cancel"
 msgstr ""
@@ -98,18 +86,6 @@ msgstr ""
 
 msgctxt "ddui-image"
 msgid "Choose image"
-msgstr ""
-
-#, php-format
-msgid "Class \"%s\" not exists"
-msgstr ""
-
-#, php-format
-msgid "Class \"%s\" not implement %s"
-msgstr ""
-
-#, php-format
-msgid "Class \"%s\" problem : %s"
 msgstr ""
 
 msgctxt "ddui-file"
@@ -251,10 +227,6 @@ msgid "DOCGRIDHTML5: sZeroRecords"
 msgstr "No matching records found"
 
 msgctxt "ddui"
-msgid "Default Edit"
-msgstr ""
-
-msgctxt "ddui"
 msgid "Default View"
 msgstr ""
 
@@ -262,7 +234,7 @@ msgctxt "UiMenu"
 msgid "Delete"
 msgstr ""
 
-#. _COMMENT: enumWrite.mustache
+#. _COMMENT: docidWrite.mustache
 #. _COMMENT: mustache key
 msgctxt "ddui"
 msgid "Delete : "
@@ -368,14 +340,6 @@ msgid "Historic"
 msgstr ""
 
 msgctxt "ddui"
-msgid "Ignored CORE view"
-msgstr ""
-
-msgctxt "ddui"
-msgid "Ignored HTML5 view"
-msgstr ""
-
-msgctxt "ddui"
 msgid "In progress transition"
 msgstr ""
 
@@ -457,7 +421,7 @@ msgstr ""
 
 #, php-format
 msgctxt "authent"
-msgid "Password has been reset for \"%s\""
+msgid "Password has been reseted for \"%s\""
 msgstr ""
 
 msgctxt "UiMenu"
@@ -470,9 +434,6 @@ msgstr "Properties"
 
 msgctxt "UiMenu"
 msgid "Put document to the trash"
-msgstr ""
-
-msgid "RESULT:ACTION_NAME"
 msgstr ""
 
 msgctxt "ddui"
@@ -536,12 +497,6 @@ msgstr "Revision created at"
 
 msgctxt "ddui"
 msgid "Row count limit to {{limit}}"
-msgstr ""
-
-msgid "SEARCH_UI_HTML5:Basic ACL"
-msgstr ""
-
-msgid "SEARCH_UI_HTML5:SEARCH_UI_HTML5"
 msgstr ""
 
 msgctxt "UiMenu"
@@ -648,58 +603,10 @@ msgctxt "searchUi"
 msgid "consult"
 msgstr "Launch the research"
 
-msgid "ddui:Admin"
-msgstr "Admin"
-
-msgid "ddui:COLLECT_ERROR"
-msgstr "Collect errors"
-
-msgid "ddui:Click to reload the document"
-msgstr "Click to reload the document"
-
-msgid "ddui:Delay notifications display (in ms)"
-msgstr "Notification display delay (in ms)"
-
-msgid "ddui:Document Render"
-msgstr "Document Render"
-
-msgid "ddui:Document render"
-msgstr "Document render"
-
-msgid "ddui:Document render long"
-msgstr ""
-
 #. _COMMENT: document__header.mustache
 #. _COMMENT: mustache key
 msgid "ddui:Editing form"
 msgstr "Form is modified"
-
-msgid "ddui:Get some template"
-msgstr "Get some template"
-
-msgid "ddui:INIT_RENDERPARAMETERS"
-msgstr "Init render parameters"
-
-msgid "ddui:Render a document"
-msgstr "Render a document"
-
-msgid "ddui:Unable to load try again"
-msgstr "Unable to load. Try again"
-
-msgid "ddui:View documents"
-msgstr "View documents"
-
-msgid "ddui:activate logging"
-msgstr "Activate logging"
-
-msgid "ddui:debug mode"
-msgstr "Debug mode"
-
-msgid "ddui:logging class"
-msgstr "Loggionf class"
-
-msgid "ddui:render parameters"
-msgstr "Render parameters"
 
 msgctxt "searchui"
 msgid "doctitle"
@@ -749,23 +656,23 @@ msgctxt "ddui-enum"
 msgid "{{value}} **"
 msgstr ""
 
-#~ msgid "KITCHEN_SINK:Title"
-#~ msgstr "Kitchen Sink"
+#~ msgid "ddui:Admin"
+#~ msgstr "Admin"
 
-#~ msgid "ddui::Initialisation"
-#~ msgstr "Initialization"
-
-#~ msgid "ddui:Autocomplete attributes"
-#~ msgstr "Autocomplete attributes"
+#~ msgid "ddui:COLLECT_ERROR"
+#~ msgstr "Collect errors"
 
 #~ msgid "ddui:Click to reload the document"
 #~ msgstr "Click to reload the document"
 
+#~ msgid "ddui:Delay notifications display (in ms)"
+#~ msgstr "Notification display delay (in ms)"
+
 #~ msgid "ddui:Document Render"
 #~ msgstr "Document Render"
 
-#~ msgid "ddui:Get dynamic sub menu"
-#~ msgstr "Get dynamic sub menu"
+#~ msgid "ddui:Document render"
+#~ msgstr "Document render"
 
 #~ msgid "ddui:Get some template"
 #~ msgstr "Get some template"
@@ -778,3 +685,18 @@ msgstr ""
 
 #~ msgid "ddui:Unable to load try again"
 #~ msgstr "Unable to load. Try again"
+
+#~ msgid "ddui:View documents"
+#~ msgstr "View documents"
+
+#~ msgid "ddui:activate logging"
+#~ msgstr "Activate logging"
+
+#~ msgid "ddui:debug mode"
+#~ msgstr "Debug mode"
+
+#~ msgid "ddui:logging class"
+#~ msgstr "Loggionf class"
+
+#~ msgid "ddui:render parameters"
+#~ msgstr "Render parameters"

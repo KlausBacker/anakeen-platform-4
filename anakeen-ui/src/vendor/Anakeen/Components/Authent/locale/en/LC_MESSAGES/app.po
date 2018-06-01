@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Document-uis 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-29 17:32+0200\n"
+"POT-Creation-Date: 2018-06-01 08:20+0200\n"
 "PO-Revision-Date: 2017-10-16 13:23+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,27 +17,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Authent/Authent.vue:36
+#: anakeen-ui/src/vendor/Anakeen/Components/Authent/Authent.vue:35
 msgctxt "Authent"
 msgid "Enter identifier or email address :"
 msgstr ""
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Authent/Authent.vue:95
+#: anakeen-ui/src/vendor/Anakeen/Components/Authent/Authent.vue:94
 msgctxt "Authent"
 msgid "Forget password ?"
 msgstr ""
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Authent/Authent.vue:81
+#: anakeen-ui/src/vendor/Anakeen/Components/Authent/Authent.vue:80
 msgctxt "Authent"
 msgid "Go back to home page"
 msgstr ""
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Authent/Authent.vue:92
+#: anakeen-ui/src/vendor/Anakeen/Components/Authent/Authent.vue:91
 msgctxt "Authent"
 msgid "Help"
 msgstr ""
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Authent/Authent.vue:32
+#: anakeen-ui/src/vendor/Anakeen/Components/Authent/Authent.vue:31
 msgctxt "Authent"
 msgid "Help Content"
 msgstr ""
@@ -49,18 +49,18 @@ msgstr ""
 "\n"
 "Mind the case (use of the characters capital letter and small letter) during the fill of your login and password!"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Authent/Authent.vue:7
+#: anakeen-ui/src/vendor/Anakeen/Components/Authent/Authent.vue:6
 msgctxt "Authent"
 msgid "Identifier :"
 msgstr "Username"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Authent/Authent.vue:50
-#: anakeen-ui/src/vendor/Anakeen/Components/Authent/Authent.vue:78
+#: anakeen-ui/src/vendor/Anakeen/Components/Authent/Authent.vue:49
+#: anakeen-ui/src/vendor/Anakeen/Components/Authent/Authent.vue:77
 msgctxt "Authent"
 msgid "Send reset password ask"
 msgstr "Send"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Authent/Authent.vue:26
+#: anakeen-ui/src/vendor/Anakeen/Components/Authent/Authent.vue:25
 msgctxt "Authent"
 msgid "Sign in"
 msgstr "Log in"
