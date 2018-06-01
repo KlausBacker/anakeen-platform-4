@@ -19,7 +19,7 @@ window.dcp.document.documentController("addEventListener", "ready", {
         });
 
         $(window).trigger("resize");
-        $target.height("calc(100vh - " + ($target.offset().top +25) + "px)");
+        $target.height("calc(100vh - " + ($target.offset().top + 3) + "px)");
     }
 });
 
