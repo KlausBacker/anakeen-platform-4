@@ -1,8 +1,10 @@
 <template>
     <div class="seList__wrapper" ref="wrapper">
         <div class="seList" v-show="collection">
-            <div class="seList__logo">
-                <img class="seList__logo__img" :src="logoUrl"/>
+            <div class="seList__header__slot">
+                <slot name="header">
+                    <img class="seList__logo__img" :src="logoUrl"/>
+                </slot>
             </div>
 
             <div class="seList__header__wrapper">

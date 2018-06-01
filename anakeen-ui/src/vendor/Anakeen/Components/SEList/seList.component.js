@@ -6,7 +6,7 @@ export default {
     props: {
         logoUrl: {
             type: String,
-            default: 'CORE/Images/anakeen-logo.svg',
+            default: '/CORE/Images/anakeen-logo.svg',
         },
         smartStructureName: {
             default: '',
@@ -16,7 +16,7 @@ export default {
         },
         contentUrl: {
             type: String,
-            default: 'components/selist/pager/{collection}/pages/{page}',
+            default: '/components/selist/pager/{collection}/pages/{page}',
         },
         order: {
             type: String,
@@ -56,6 +56,13 @@ export default {
                                             params,
                                         })
                                     .then((response) => {
+                                        if (!this.collectionLabel) {
+                                            const apiData = response.data.data;
+                                            if (apiData && apiData.collection && apiData.collection.properties) {
+                                                this.collection.title = apiData.collection.properties.title;
+                                            }
+                                        }
+
                                         options.success(response);
                                     }).catch((response) => {
                                     options.error(response);
