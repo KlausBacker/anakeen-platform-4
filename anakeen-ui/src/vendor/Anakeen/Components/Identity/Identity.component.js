@@ -29,6 +29,7 @@ export default {
             email: '',
 
             // New information to modify on the server
+            oldPassword: '',
             newEmail: '',
             newPassword: '',
             newPasswordConfirmation: '',
@@ -52,6 +53,21 @@ export default {
                     this.lastName = response.data.data.lastName;
                     this.email = response.data.data.email;
                 });
+        },
+
+        // Catch the input event of the ank-authent-password component to update the old password
+        updateOldPassword(event) {
+            this.oldPassword = event.detail[0];
+        },
+
+        // Catch the input event of the ank-authent-password component to update the new password
+        updateNewPassword(event) {
+            this.newPassword = event.detail[0];
+        },
+
+        // Catch the input event of the ank-authent-password component to update the new password confirmation
+        updateNewPasswordConfirmation(event) {
+            this.newPasswordConfirmation = event.detail[0];
         },
 
         // Send a request to change the password on the server
@@ -80,9 +96,11 @@ export default {
                 // Verify if password matches confirmation
                 if ((this.newPassword === this.newPasswordConfirmation) && (this.newPassword !== '')) {
                     kendo.ui.progress(this.$("#epasswordModifier"), true);
-                    this.$http.put('/api/v2/authent/password/' + this.login,
+                    // TODO Change route
+                    this.$http.put('/components/identity/password',
                         {
-                            password: this.newPassword
+                            oldPassword: this.oldPassword,
+                            newPassword: this.newPassword
                         })
                         .then(() => {
                             this.$emit('passwordModified');
@@ -91,9 +109,9 @@ export default {
                             kendo.ui.progress(this.$("#passwordModifier"), false);
                             this.openPasswordModifiedWindow();
                         })
-                        .catch(() => {
+                        .catch((error) => {
                             // Show a warning message and remove the loader
-                            this.passwordWarningMessage = this.translations.serverError;
+                            this.passwordWarningMessage = error.response.data.userMessage;
                             kendo.ui.progress(this.$("#passwordModifier"), false);
                         });
                 } else {
@@ -232,6 +250,7 @@ export default {
             if (this.passwordAlterable) {
                 // Function called when the dialog is open  and closed
                 let resetPasswordChangeData = () => {
+                    this.oldPassword = '';
                     this.newPassword = '';
                     this.newPasswordConfirmation = '';
                     this.passwordWarningMessage = '';
@@ -249,11 +268,8 @@ export default {
                     open: resetPasswordChangeData,
                     close: resetPasswordChangeData,
                     activate: () => { this.$("#passwordInput").focus(); }
-                }).data("kendoWindow").center();
+                }).data("kendoWindow").center().open();
             }
-
-            this.$("#passwordModifier").data("kendoWindow").open();
-            document.getElementById("passwordInput").focus();
         },
 
         // Close dialog window to change user's password
@@ -308,8 +324,12 @@ export default {
                 cancelEmailButtonLabel: this.$pgettext('Identity', 'Cancel email modification'),
                 validatePasswordButtonLabel: this.$pgettext('Identity', 'Confirm password modification'),
                 cancelPasswordButtonLabel: this.$pgettext('Identity', 'Cancel password modification'),
+                oldPasswordLabel: this.$pgettext('Identity', 'Current password'),
+                oldPasswordPlaceholder: this.$pgettext('Identity', 'Your current password'),
                 newPasswordLabel: this.$pgettext('Identity', 'New password'),
+                newPasswordPlaceholder: this.$pgettext('Identity', 'Your new password'),
                 newPasswordConfirmationLabel: this.$pgettext('Identity', 'New password confirmation'),
+                newPasswordConfirmationPlaceholder: this.$pgettext('Identity', 'Confirmation of your new password'),
                 serverError: this.$pgettext('Identity', 'Server error'),
                 passwordsMismatchMessage: this.$pgettext('Identity', 'Confirmation doesn\'t match with the password'),
                 emailFormatMessage: this.$pgettext('Identity', 'Wrong email format'),
@@ -332,7 +352,7 @@ export default {
 
         // Password change validation button enabled only if the password matches the confirmation
         passwordChangeButtonDisabled() {
-            return ((this.newPassword !== this.newPasswordConfirmation) || (this.newPassword === ''));
+            return ((this.newPassword !== this.newPasswordConfirmation) || (this.newPassword === '') || (this.oldPassword === ''));
         }
     },
 
