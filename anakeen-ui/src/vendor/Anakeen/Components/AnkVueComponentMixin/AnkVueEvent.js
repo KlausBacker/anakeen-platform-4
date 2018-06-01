@@ -6,6 +6,10 @@ const getSenderElement = (element) => {
         senderElement = senderElement.parentNode;
     }
 
+    if (!senderElement) {
+        return element;
+    }
+
     return senderElement;
 };
 
@@ -24,7 +28,8 @@ const isEvent = (event, eventName) => {
         return true;
     }
 
-    if (typeof event.type === 'string' && event.type === eventName && event.defaultPrevented && typeof event.preventDefault === 'function') {
+    if (typeof event.type === 'string' && event.type === eventName
+        && event.defaultPrevented && typeof event.preventDefault === 'function') {
         return true;
     }
 
@@ -69,7 +74,7 @@ const AnkVueEventMixin = {
                             if (componentEvent.detail && componentEvent.detail.length) {
                                 componentEvent.detail = componentEvent.detail.concat(others);
                             } else {
-                                componentEvent.detail = [...others]
+                                componentEvent.detail = [...others];
                             }
                         }
                     } else {

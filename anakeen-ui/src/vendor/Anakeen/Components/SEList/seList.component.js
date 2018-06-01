@@ -8,7 +8,7 @@ export default {
             type: String,
             default: '/CORE/Images/anakeen-logo.svg',
         },
-        smartStructureName: {
+        smartCollection: {
             default: '',
         },
         label: {
@@ -33,9 +33,17 @@ export default {
                 label.insertBefore(buttons[1]);
             },
 
+            propageKendoDataSourceEvent: (eventName) => (e) => {
+                const customEvent = this.$createComponentEvent(`se-list-${eventName}`, { detail: [e] });
+                this.$emitAnkEvent(`se-list-${eventName}`, customEvent);
+            },
             initKendo: () => {
                 const _this = this;
                 this.dataSource = new this.$kendo.data.DataSource({
+                    error: this.privateScope.propageKendoDataSourceEvent('error'),
+                    requestStart: this.privateScope.propageKendoDataSourceEvent('request-start'),
+                    requestEnd: this.privateScope.propageKendoDataSourceEvent('request-end'),
+                    change: this.privateScope.propageKendoDataSourceEvent('change'),
                     transport: {
                         read: (options) => {
                             if (options.data.collection) {
@@ -153,7 +161,7 @@ export default {
                 const newPageSize = counter.dataItem(e.item).value;
                 const customEvent = this.$createComponentEvent('list-pagesize-change',
                     { detail: [newPageSize, this.dataSource.pageSize()] }, e);
-                this.$emit('list-pagesize-change', customEvent);
+                this.$emitAnkEvent('list-pagesize-change', customEvent);
                 this.dataSource.pageSize(newPageSize);
                 this.refreshList().then().catch((err) => {
                     console.error(err);
@@ -176,10 +184,10 @@ export default {
             this.privateScope.replaceTopPagerButton();
             this.$kendo.ui.progress(this.$(this.$refs.wrapper), false);
 
-            if (this.smartStructureName) {
+            if (this.smartCollection) {
                 this.setCollection({
                     title: this.collectionLabel,
-                    name: this.smartStructureName,
+                    name: this.smartCollection,
                 });
             }
         };
@@ -253,13 +261,13 @@ export default {
 
         _onFilterInput(event) {
             const customEvent = this.$createComponentEvent('list-filter-input', { detail: [this.filterInput] }, event);
-            this.$emit('list-filter-input', customEvent);
+            this.$emitAnkEvent('list-filter-input', customEvent);
         },
 
         _selectSe(event, se) {
             const seProperties = Object.assign({}, se.properties);
             const customEvent = this.$createComponentEvent('se-selected', { detail: [seProperties] }, event);
-            this.$emit('se-selected', customEvent);
+            this.$emitAnkEvent('se-selected', customEvent);
         },
 
         filterList(filterValue) {
