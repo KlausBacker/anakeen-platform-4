@@ -21,7 +21,7 @@ class Password
         $currentUser = ContextManager::getCurrentUser();
 
         if (!$currentUser->checkpassword($oldPassword)) {
-            $e = new Exception("IDENT0001");
+            $e = new Exception("IDENT0201");
             $e->setUserMessage(___("Wrong password", "identityComponent"));
 
             throw $e;
@@ -30,7 +30,7 @@ class Password
         $currentUser->password_new = $newPassword;
         $err = $currentUser->modify();
         if ($err) {
-            throw new Exception("IDENT0002", $err);
+            throw new Exception("IDENT0202", $err);
         }
 
         return $response;
