@@ -66,7 +66,7 @@ const devComponentConfig = merge([
         port: process.env.PORT,
         proxy: {
             "!/AdminCenter/debug/*.js": {
-                target: process.env.PROXY_URL || 'localhost',
+                target: process.env.PROXY_URL || 'http://localhost',
             }
         },
     })
