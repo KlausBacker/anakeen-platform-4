@@ -55,6 +55,7 @@ import DocumentTabs from './DocumentTabs/documentTabs.vue';
 import AnakeenLoading from './AnakeenLoading/AnakeenLoading.vue';
 import Logout from './Logout/Logout.vue';
 import Identity from './Identity/Identity.vue';
+import AuthentPassword from './Authent/AuthentPassword.vue'
 
 Vue.customElement('ank-loading', AnakeenLoading);
 Vue.customElement('ank-authent', Authent);
@@ -63,3 +64,4 @@ Vue.customElement('ank-se-list', SEList);
 Vue.customElement('ank-document-tabs', DocumentTabs);
 Vue.customElement('ank-logout', Logout);
 Vue.customElement('ank-identity', Identity);
+Vue.customElement('ank-authent-password', AuthentPassword);
