@@ -1,25 +1,38 @@
 .test-document {
 
-    margin: 0 1em 0 0;
-    border: 2px solid #57b75b;
+    margin: 0;
+    border-color: #8ae334;
+    border-width: 2px;
+    border-style: dotted none none none;
     height: calc(100vh - 14em);
-    box-shadow: 10px 10px 10px 0px #297d2c;
     box-sizing: border-box;
-    position:relative;
+    position: relative;
 }
+
 .test-document > iframe {
     height: 100%;
-    width:100%
+    width: 100%
+}
+
+.dcpFrame[data-attrid="tst_fr_desc"] {
+    max-height: 15rem;
+    overflow: auto;
 }
 .dcpFrame[data-attrid="tst_fr_config"] {
-    margin:0;
+    margin: 0;
+    padding: 0;
     background: transparent;
     box-shadow: none;
 }
 
+.dcpFrame[data-attrid="tst_fr_config"] > .dcpFrame__content {
+
+    margin: 0;
+    padding: 0;
+}
 
 .dcpFrame {
-    border:none;
+    border: none;
 }
 
 .dcpDocument__body {

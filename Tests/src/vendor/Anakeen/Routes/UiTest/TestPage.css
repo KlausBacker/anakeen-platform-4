@@ -14,8 +14,8 @@ body {
     flex-grow: 0;
     overflow:auto;
     width:28em;
-    box-shadow: 10px 10px 10px 0px #297d2c;
-    margin: 1em;
+    border-right: solid #8ae334;
+    margin: 0;
     display: flex;
     flex-direction: column;
 }
@@ -50,11 +50,11 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 0.9rem;
+    padding: 0.5rem;
 }
 
 .systemLeftUpRight {
-    margin-right: 0.5rem;
+
 }
 
 .systemLeftDown {
