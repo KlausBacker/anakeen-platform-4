@@ -13,25 +13,25 @@
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.0.2.tgz#d056b68999769728a1cff8d643bc59eb6f0be436"
 
-"@progress/kendo-base-components-vue-wrapper@2018.2.516":
-  version "2018.2.516"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-base-components-vue-wrapper/-/kendo-base-components-vue-wrapper-2018.2.516.tgz#8067bda44a8cfad38466da3e46e68f5583155ebc"
+"@progress/kendo-base-components-vue-wrapper@2018.1.221":
+  version "2018.1.221"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-base-components-vue-wrapper/-/kendo-base-components-vue-wrapper-2018.1.221.tgz#dfc30328dcc9f23509207db666aff76829e340fa"
 
-"@progress/kendo-grid-vue-wrapper@^2018.2.516":
-  version "2018.2.516"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-grid-vue-wrapper/-/kendo-grid-vue-wrapper-2018.2.516.tgz#3036f675a1f50257795d536f8b63b2b34dd3f2a0"
+"@progress/kendo-grid-vue-wrapper@2018.1.226":
+  version "2018.1.221"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-grid-vue-wrapper/-/kendo-grid-vue-wrapper-2018.1.221.tgz#46f8c28a1f06a5b17dbd6075ed672ed55d335ea0"
   dependencies:
-    "@progress/kendo-base-components-vue-wrapper" "2018.2.516"
+    "@progress/kendo-base-components-vue-wrapper" "2018.1.221"
 
-"@progress/kendo-treeview-vue-wrapper@^2018.2.516":
-  version "2018.2.516"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-treeview-vue-wrapper/-/kendo-treeview-vue-wrapper-2018.2.516.tgz#ccf3a21415638112d44359fca6221621928f0abc"
+"@progress/kendo-treeview-vue-wrapper@2018.1.226":
+  version "2018.1.221"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-treeview-vue-wrapper/-/kendo-treeview-vue-wrapper-2018.1.221.tgz#f6c78b053c0a21fd85bd5e438ac7a015121151cb"
   dependencies:
-    "@progress/kendo-base-components-vue-wrapper" "2018.2.516"
+    "@progress/kendo-base-components-vue-wrapper" "2018.1.221"
 
-"@progress/kendo-ui@^2018.2.516":
-  version "2018.2.516"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2018.2.516.tgz#d6058f7f24721bd3d92da2637daf9b1836f7ab8f"
+"@progress/kendo-ui@2018.1.226":
+  version "2018.1.226"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2018.1.226.tgz#ae295badb7a9f00aed1d395ff4959d9c6aa2830f"
   dependencies:
     jquery "<=3"
 
