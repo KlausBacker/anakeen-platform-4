@@ -1,18 +1,35 @@
 ank-admin-user-group {
     width: 100%;
-    height: 100%
+    height: calc(100% - 1em);
 }
 
-ank-admin-user-group .contentPart {
+ank-admin-user-group .accountManager {
     height: calc(100% - 1em);
     width: 100%;
 }
 
-ank-admin-user-group .groupTreeView {
-    height: calc(100% - 2em);
+ank-admin-user-group .accountManager_treeViewPart_wrapper {
+    height: 100%;
+    width: 100%;
 }
 
-ank-admin-user-group .groupDoc iframe {
+ank-admin-user-group .accountManager_treeViewPart_wrapper .accountManager_treeViewPart_wrapper_topPart {
+    height: 5em;
+    width: 100%;
+}
+
+ank-admin-user-group .accountManager_treeViewPart_wrapper .accountManager_treeViewPart_wrapper_content {
+    height: calc(100% - 5em);
+    width: 100%;
+    overflow-y: auto;
+}
+
+ank-admin-user-group .accountManager_contentPart_groupPart ank-document iframe {
     height: calc(100% - 1em);
+    width: 100%;
+}
+
+ank-admin-user-group .accountManager_contentPart_gridPart .k-grid {
+    height: 100%;
     width: 100%;
 }

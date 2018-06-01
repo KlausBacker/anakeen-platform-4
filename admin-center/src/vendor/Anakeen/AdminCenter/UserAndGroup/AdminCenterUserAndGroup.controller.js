@@ -109,9 +109,9 @@ export default {
     mounted() {
         const treeview = this.$refs.groupTreeView.kendoWidget();
         treeview.bind("dataBound", () => {
-            const selected = treeview.dataItem(treeview.select());
-            this.updateGroupSelected(selected.documentId);
-            this.updateGridData(selected.login);
+            const selectedElement = treeview.dataItem(treeview.select());
+            this.updateGroupSelected(selectedElement.documentId);
+            this.updateGridData(selectedElement.login);
         });
         this.bindSplitter();
     },
@@ -155,6 +155,7 @@ export default {
         onGroupSelect: function (event) {
             const selectedElement = event.sender.dataItem(event.sender.select());
             window.localStorage.setItem("admin.userAndGroup.groupSelected", selectedElement.hierarchicalId);
+            this.updateGroupSelected(selectedElement.documentId);
             this.updateGridData(selectedElement.login);
         },
         registerTreeState: function (event) {
