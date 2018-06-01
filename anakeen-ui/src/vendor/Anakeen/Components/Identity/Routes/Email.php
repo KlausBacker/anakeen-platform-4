@@ -18,7 +18,7 @@ class Email
         $newEmail = $request->getParam("email");
 
         if (!filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
-            $e = new Exception('INVALIDEMAIL');
+            $e = new Exception("IDENT0001");
             $e->setUserMessage(sprintf(___("Email address \"%s\" is not valid", "identityComponent"), $newEmail));
 
             throw $e;

@@ -45,14 +45,9 @@
 
         <div id="passwordModifier" v-if="passwordAlterable" style="display: none;">
             <form>
-                <div class="form-group">
-                    <label class="label" for="passwordInput">{{ translations.newPasswordLabel + " :" }}</label>
-                    <input id="passwordInput" type="password" class="form-control" v-model="newPassword" @keyup="removePasswordWarningMessage"/>
-                </div>
-                <div class="form-group">
-                    <label class="label" for="passwordConfirmationInput">{{ translations.newPasswordConfirmationLabel + " :" }}</label>
-                    <input id="passwordConfirmationInput" type="password" class="form-control" v-model="newPasswordConfirmation" @keyup="removePasswordWarningMessage"/>
-                </div>
+                <ank-authent-password id="oldPasswordInput" :label="translations.oldPasswordLabel" :placeholder="translations.oldPasswordPlaceholder" @input.stop="updateOldPassword" @keyup="removePasswordWarningMessage"></ank-authent-password>
+                <ank-authent-password id="passwordInput" :label="translations.newPasswordLabel" :placeholder="translations.newPasswordPlaceholder" @input.stop="updateNewPassword" @keyup="removePasswordWarningMessage"></ank-authent-password>
+                <ank-authent-password id="passwordConfirmationInput" :label="translations.newPasswordConfirmationLabel" :placeholder="translations.newPasswordConfirmationPlaceholder" @input.stop="updateNewPasswordConfirmation" @keyup="removePasswordWarningMessage"></ank-authent-password>
                 <div class="form-group" v-if="passwordWarningMessage">
                     <div class="alert alert-warning">{{ passwordWarningMessage }}</div>
                 </div>

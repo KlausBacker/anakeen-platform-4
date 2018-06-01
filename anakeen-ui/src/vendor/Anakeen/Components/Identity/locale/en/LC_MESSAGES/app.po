@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anakeen-ui 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-30 15:17+0200\n"
+"POT-Creation-Date: 2018-06-01 16:32+0200\n"
 "PO-Revision-Date: 2018-05-29 11:13+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,97 +17,121 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:286
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:316
 msgctxt "Identity"
 msgid "Change email"
 msgstr "Change my email address"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:287
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:317
 msgctxt "Identity"
 msgid "Change password"
 msgstr "Change my password"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:288
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:318
 msgctxt "Identity"
 msgid "Current email"
 msgstr "Current email address"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:289
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:319
 msgctxt "Identity"
 msgid "No email yet"
 msgstr "No email adress yet"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:290
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:320
 msgctxt "Identity"
 msgid "New email"
 msgstr "New email address"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:291
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:321
 msgctxt "Identity"
 msgid "Confirm email modification"
 msgstr "Confirm email address modification"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:292
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:322
 msgctxt "Identity"
 msgid "Cancel email modification"
 msgstr "Cancel email address modification"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:293
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:323
 msgctxt "Identity"
 msgid "Confirm password modification"
 msgstr "Confirm password modification"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:294
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:324
 msgctxt "Identity"
 msgid "Cancel password modification"
 msgstr "Cancel password modification"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:295
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:325
+#, fuzzy
+msgctxt "Identity"
+msgid "Current password"
+msgstr "Current password"
+
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:326
+#, fuzzy
+msgctxt "Identity"
+msgid "Your current password"
+msgstr "Your current password"
+
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:327
 msgctxt "Identity"
 msgid "New password"
 msgstr "New password"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:296
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:328
+#, fuzzy
+msgctxt "Identity"
+msgid "Your new password"
+msgstr "Your new password"
+
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:329
 msgctxt "Identity"
 msgid "New password confirmation"
 msgstr "New password confirmation"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:297
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:330
+#, fuzzy
+msgctxt "Identity"
+msgid "Confirmation of your new password"
+msgstr "Confirmation of your new password"
+
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:331
 msgctxt "Identity"
 msgid "Server error"
 msgstr "Server error"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:298
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:332
 msgctxt "Identity"
 msgid "Confirmation doesn't match with the password"
 msgstr "Confirmation doesn't match with the password"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:299
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:333
 msgctxt "Identity"
 msgid "Wrong email format"
 msgstr "Wrong email address format"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:300
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:334
 msgctxt "Identity"
 msgid "Email successfully changed"
 msgstr "Email address successfully changed"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:301
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:335
 msgctxt "Identity"
 msgid "Email changed"
 msgstr "Email address changed"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:302
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:336
 msgctxt "Identity"
 msgid "Password successfully changed"
 msgstr "Password successfully changed"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:303
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:337
 msgctxt "Identity"
 msgid "Password changed"
 msgstr "Password changed"
 
-#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:304
+#: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:338
 msgctxt "Identity"
 msgid "Close"
 msgstr "Close"

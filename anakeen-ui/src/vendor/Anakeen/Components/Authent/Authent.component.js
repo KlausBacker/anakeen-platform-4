@@ -168,18 +168,6 @@ export default {
 
         $(this.$refs.loginButton).kendoButton();
         $connectForm.on('submit', this.createSession);
-        $(this.$refs.authentComponent).find('.btn-reveal').on('click', function revealPass() {
-            let $pwd = $(this).closest('.input-group-btn').find('input');
-            if ($pwd.attr('type') === 'password') {
-                $pwd.attr('type', 'text');
-                $(this).find('.fa').removeClass('fa-eye').addClass('fa-eye-slash');
-            } else {
-                if ($pwd.attr('type') === 'text') {
-                    $pwd.attr('type', 'password');
-                    $(this).find('.fa').addClass('fa-eye').removeClass('fa-eye-slash');
-                }
-            }
-        });
 
         $(this.$refs.authentLocale).kendoDropDownList({
             change: function changeLocale() {

@@ -7,6 +7,15 @@
       "description": "Modify user's email",
       "requiredAccess": null,
       "authenticated": true
+    },
+
+    "Ui:Identity:Password": {
+      "callable": "\\Anakeen\\Components\\Identity\\Routes\\Password",
+      "methods": ["PUT"],
+      "pattern": "/components/identity/password",
+      "description": "Modify user's passwrod",
+      "requiredAccess": null,
+      "authenticated": true
     }
   }
 }
