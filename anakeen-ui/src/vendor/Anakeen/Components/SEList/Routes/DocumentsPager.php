@@ -2,10 +2,12 @@
 
 namespace Anakeen\Components\SEList\Routes;
 
+use Anakeen\Core\Internal\FormatCollection;
 use Anakeen\Routes\Core\DocumentList;
 use Anakeen\Core\ContextManager;
 use Anakeen\Router\Exception;
 use Anakeen\Core\SEManager;
+use Anakeen\Routes\Core\Lib\DocumentDataFormatter;
 
 /**
  * Class DocumentsList
@@ -26,10 +28,6 @@ class DocumentsPager extends DocumentList
     protected $filter = null;
     protected $page = 1;
     protected $collectionId;
-    /**
-     * @var \Anakeen\Core\SmartStructure 
-     */
-    protected $family;
 
 
     protected function initParameters(\Slim\Http\request $request, $args)
@@ -47,7 +45,8 @@ class DocumentsPager extends DocumentList
     protected function getData()
     {
         $data = parent::getData();
-
+        $df = new DocumentDataFormatter($this->collection);
+        $data["collection"] = $df->format()[0];
         $data["resultMax"] = $this->_searchDoc->onlyCount();
         $data['paginationState'] = $this->getPaginationState();
         $data['user'] = ["id" => intval(ContextManager::getCurrentUser()->id), "fid" => intval(ContextManager::getCurrentUser()->fid)];
@@ -67,20 +66,14 @@ class DocumentsPager extends DocumentList
             $exception->setHttpStatus("404", "Document not found");
             throw $exception;
         }
-        switch ($doc->defDoctype) {
-            case 'C':
-                $this->family = $doc;
 
-                $this->_searchDoc->fromid = $this->family->id;
+        $this->collection = $doc;
+        switch ($this->collection->defDoctype) {
+            case 'C':
+                $this->_searchDoc->fromid = $this->collection->id;
                 break;
             case 'F':
             case 'S':
-                $this->collection = $doc;
-                if (!$this->collection) {
-                    $exception = new Exception("DOCLIST0002", $this->collectionId);
-                    $exception->setHttpStatus("404", "Collection not found");
-                    throw $exception;
-                }
                 $this->_searchDoc->useCollection($this->collection->initid);
                 break;
             default:
@@ -102,9 +95,9 @@ class DocumentsPager extends DocumentList
     protected function extractOrderBy()
     {
         $orderBy = $this->orderBy;
-        if ($this->family) {
-            return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, $this->family);
-        } elseif ($this->collection) {
+        if ($this->collection->defDoctype === 'C') {
+            return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, $this->collection);
+        } elseif ($this->collection->defDoctype === 'F' || $this->collection->defDoctype === 'S') {
             $familyOfCollectionId = $this->collection->getRawValue("se_famid");
             if (isset($familyOfCollectionId)) {
                 return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, SEManager::getFamily($familyOfCollectionId));
