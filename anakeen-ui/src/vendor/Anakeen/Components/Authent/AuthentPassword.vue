@@ -6,11 +6,11 @@
                 <input :id="pwdId" ref="authentPassword"
                        class="authent-pwd form-control"
                        type="password"
-                       @input="changePassword"
+                       @input.stop="changePassword"
                        v-model="value"
                        :placeholder="placeholder"
                        required autocapitalize="off" autocorrect="off"/>
-                <button ref="authentReveal "class="btn btn-reveal btn-secondary" type="button"><i class="fa fa-eye"></i></button>
+                <button ref="authentReveal" class="btn btn-reveal btn-secondary" type="button"><i class="fa fa-eye"></i></button>
             </span>
 
 
