@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
+  <router:routes>
+    <router:route name="Admin:MainPage">
+      <router:pattern>/admin[/]</router:pattern>
+      <router:callable>\Anakeen\Routes\Admin\MainPage</router:callable>
+      <router:method>GET</router:method>
+      <router:requiredAccess>admincenter:admin</router:requiredAccess>
+      <router:priority>0</router:priority>
+    </router:route>
+    <router:route name="Admin:Plugins">
+      <router:pattern>/admin/plugins[/]</router:pattern>
+      <router:callable>\Anakeen\Routes\Admin\Plugins</router:callable>
+      <router:method>GET</router:method>
+      <router:requiredAccess>admincenter:admin</router:requiredAccess>
+      <router:priority>0</router:priority>
+    </router:route>
+  </router:routes>
+  <router:accesses>
+    <router:access name="admincenter:admin">
+      <router:description>Administrator access</router:description>
+    </router:access>
+  </router:accesses>
+</router:config>
