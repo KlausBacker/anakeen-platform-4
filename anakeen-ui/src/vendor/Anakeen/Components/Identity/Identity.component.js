@@ -143,7 +143,6 @@ export default {
                 event = document.createEvent('CustomEvent');
                 event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
             }
-
             this.$el.parentNode.dispatchEvent(event);
 
             if (!event.defaultPrevented) {
@@ -152,7 +151,8 @@ export default {
                     kendo.ui.progress(this.$("#emailModifier"), true);
                     this.$http.put('/components/identity/email',
                         {
-                            email: this.newEmail
+                            email: this.newEmail,
+                            password: this.oldPassword
                         })
                         .then(response => {
                             this.$emit('emailModified', { email: response.data.email });
@@ -165,7 +165,7 @@ export default {
                         })
                         .catch((error) => {
                             // Show a warning message and remove the loader
-                            this.emailWarningMessage = error.response.data.userMessage; //this.translations.serverError;
+                            this.emailWarningMessage = error.response.data.userMessage;
                             kendo.ui.progress(this.$("#emailModifier"), false);
                         });
                 } else {
@@ -199,6 +199,7 @@ export default {
             if (this.emailAlterable) {
                 // Function called when th dialog is open and closed
                 let resetEmailChangeData = () => {
+                    this.oldPassword = '';
                     this.newEmail = '';
                     this.emailWarningMessage = '';
                 };
@@ -320,6 +321,7 @@ export default {
                 currentEmailLabel: this.$pgettext('Identity', 'Current email'),
                 noEmail: this.$pgettext('Identity', 'No email yet'),
                 newEmailLabel: this.$pgettext('Identity', 'New email'),
+                newEmailPlaceholder: this.$pgettext('Identity', 'Your new email address'),
                 validateEmailButtonLabel: this.$pgettext('Identity', 'Confirm email modification'),
                 cancelEmailButtonLabel: this.$pgettext('Identity', 'Cancel email modification'),
                 validatePasswordButtonLabel: this.$pgettext('Identity', 'Confirm password modification'),
