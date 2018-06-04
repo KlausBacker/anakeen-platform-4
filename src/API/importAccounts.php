@@ -34,6 +34,10 @@ $import->setFile($filename);
 $import->setAnalyzeOnly($dry);
 $import->import();
 
+if ($import->hasErrors()) {
+    throw new \Anakeen\Script\Exception(implode("\n", $import->getErrors()));
+}
+
 $ext = substr($outfile, strrpos($outfile, '.') + 1);
 if ($outfile) {
     $report = $import->getReport();

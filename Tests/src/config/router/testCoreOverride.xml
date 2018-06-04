@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
+  <router:apps>
+    <router:app name="CORETEST" override="partial">
+      <router:description>Testing routes and add parameters</router:description>
+      <router:parameters/>
+    </router:app>
+  </router:apps>
+  <router:routes>
+    <router:route name="Core:Test:Routes:Over1" override="partial">
+      <router:priority>10</router:priority>
+      <router:description>Route override</router:description>
+
+    </router:route>
+    <router:route name="Core:Test:Routes:Over2"  override="complete">
+      <router:priority>3</router:priority>
+      <router:callable>\Anakeen\Routes\Tests\TestRouteConfig</router:callable>
+      <router:method>PUT</router:method>
+      <router:pattern>/tests/routes/over2/</router:pattern>
+      <router:requiredAccess/>
+    </router:route>
+  </router:routes>
+</router:config>

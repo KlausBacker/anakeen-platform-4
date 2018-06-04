@@ -6,7 +6,7 @@ class Settings
 {
     const DocumentGenDirectory="var/SmartClasses";
     const DbAccessFilePath="config/dbaccess.php";
-    const RouterConfigDir="config/routes";
+    const RouterConfigDir="config/router";
     const MimeConfig="config/mime.conf";
     const MimeUserConfig="config/mime-user.conf";
     const ApiV2="api/v2/";

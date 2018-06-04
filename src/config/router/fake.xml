@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
+  <router:routes>
+    <router:route name="Core:Debug:Routes">
+      <router:priority>0</router:priority>
+      <router:callable>\Anakeen\Routes\DebugRouteConfig</router:callable>
+      <router:method>any</router:method>
+      <router:pattern>/routes[/]</router:pattern>
+      <router:description>Fake root</router:description>
+      <router:requiredAccess>test1</router:requiredAccess>
+    </router:route>
+    <router:route name="Core:Fake">
+      <router:callable>\Anakeen\Routes\Fake</router:callable>
+      <router:method>any</router:method>
+      <router:pattern>/fake[/{params:.*}]</router:pattern>
+      <router:description>Fake root</router:description>
+      <router:requiredAccess operator="or">
+        <router:access>test1</router:access>
+        <router:access>test2</router:access>
+      </router:requiredAccess>
+    </router:route>
+  </router:routes>
+  <router:middlewares>
+    <router:middleware name="Core:Middleware:FakeV2">
+      <router:priority>10</router:priority>
+      <router:callable>\Anakeen\Routes\Middleware\Log::Write</router:callable>
+      <router:method>any</router:method>
+      <router:pattern>[/{params:.*}]</router:pattern>
+      <router:description>Fake v2</router:description>
+    </router:middleware>
+    <router:middleware name="Core:Middleware:Fake3">
+      <router:priority>11</router:priority>
+      <router:callable>\Anakeen\Routes\Middleware\Fake</router:callable>
+      <router:method>any</router:method>
+      <router:pattern>[/{params:.*}]</router:pattern>
+      <router:description>Fake v3</router:description>
+    </router:middleware>
+  </router:middlewares>
+  <router:accesses>
+    <router:access name="fake:user">
+      <router:applicationContext>UITEST</router:applicationContext>
+      <router:description>Fake Normal Access</router:description>
+    </router:access>
+    <router:access name="fake:admin">
+      <router:description>Fake Administrator Access</router:description>
+    </router:access>
+  </router:accesses>
+</router:config>

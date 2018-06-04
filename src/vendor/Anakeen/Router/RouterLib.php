@@ -32,9 +32,10 @@ class RouterLib
         if (is_array($configFiles)) {
             $config = [];
             foreach ($configFiles as $configFile) {
-                if (preg_match("/\\.json$/", $configFile)) {
+                if (preg_match("/\\.xml/", $configFile)) {
                     $content = file_get_contents($dir . "/" . $configFile);
-                    $conf = json_decode($content, true);
+
+                    $conf = self::xmlDecode($content);
 
                     if ($conf === null) {
                         throw new Exception("CORE0019", $dir . "/" . $configFile);
@@ -51,6 +52,82 @@ class RouterLib
         } else {
             throw new Exception("CORE0020", $dir);
         }
+    }
+
+
+    protected static function xmlDecode($xmlData)
+    {
+        $dom = new \DOMDocument();
+        $dom->loadXML($xmlData);
+
+        $simpleData = simplexml_load_string($xmlData, \SimpleXMLElement::class, 0, "router", true);
+
+        $data = [];
+        foreach (["routes", "apps", "accesses", "middlewares", "parameters"] as $topNode) {
+            $data[$topNode] = self::normalizeData($simpleData[0], $topNode);
+        }
+
+        return $data;
+    }
+
+    protected static function normalizeData(\SimpleXMLElement $data, $tag)
+    {
+        $node = ($data->$tag);
+
+        $rawData = [];
+        foreach ($node as $firstNode) {
+            foreach ($firstNode as $subNode) {
+                $nodeAttrs = $subNode->attributes();
+                $name = "";
+                foreach ($nodeAttrs as $iAttr => $vAttr) {
+                    if ($iAttr === "name") {
+                        $name = (string)$vAttr;
+                    }
+                }
+
+                foreach ($subNode as $tagName => $tagValue) {
+                    $rawValue = get_object_vars($tagValue);
+                    if (count($rawValue) === 0) {
+                        if ($tagName === "method") {
+                            $rawData[$name]["methods"][] = (string)$tagValue;
+                        } elseif ($tagName === "pattern") {
+                            if (isset($rawData[$name]["pattern"])) {
+                                if (! is_array($rawData[$name][$tagName])) {
+                                    $rawData[$name][$tagName] = [$rawData[$name][$tagName]];
+                                }
+                                $rawData[$name][$tagName][] = (string)$tagValue;
+                            } else {
+                                $rawData[$name][$tagName] = (string)$tagValue;
+                            }
+                        } else {
+                            $rawData[$name][$tagName] = (string)$tagValue;
+                            if ($rawData[$name][$tagName] === "true") {
+                                $rawData[$name][$tagName] = true;
+                            } elseif ($rawData[$name][$tagName] === "false") {
+                                $rawData[$name][$tagName] = false;
+                            } elseif (is_numeric($rawData[$name][$tagName])) {
+                                 $rawData[$name][$tagName] = intval($rawData[$name][$tagName]);
+                            }
+                            foreach ($nodeAttrs as $iAttr => $vAttr) {
+                                if ($iAttr !== "name") {
+                                    $rawData[$name][$iAttr] = (string)$vAttr;
+                                }
+                            }
+                        }
+                    } else {
+                        /** @noinspection PhpUndefinedFieldInspection */
+                        $operator = (string)$tagValue->attributes()->operator;
+
+                        if ($operator) {
+                            foreach ($rawValue["access"] as $accessValue) {
+                                $rawData[$name][$tagName][$operator][] = $accessValue;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $rawData;
     }
 
     protected static function normalizeConfig(array $config, $configFileName)
@@ -160,7 +237,6 @@ class RouterLib
         foreach ($parseInfos as $parseInfo) {
             $regExp = $delimiteur . '^';
             foreach ($parseInfo as $parsePart) {
-                // print_r($parsePart);
                 if (is_string($parsePart)) {
                     $regExp .= preg_quote($parsePart, $delimiteur);
                 } elseif (is_array($parsePart)) {

@@ -1,0 +1,342 @@
+<?xml version="1.0"?>
+<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
+  <router:routes>
+    <router:route name="Core:GetDocument">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\DocumentData</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documents/{docid:[^/.]+}[.json]</router:pattern>
+      <router:pattern>/api/v2/families/{family}/documents/{docid:[^/.]+}[.json]</router:pattern>
+      <router:description>Get data for a document</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:ModifyDocument">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\DocumentUpdateData</router:callable>
+      <router:method>PUT</router:method>
+      <router:pattern>/api/v2/documents/{docid:[^/.]+}[.json]</router:pattern>
+      <router:pattern>/api/v2/families/{family}/documents/{docid:[^/.]+}[.json]</router:pattern>
+      <router:description>Modify data for a document</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:CreateDocument">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\FamilyDocumentCreation</router:callable>
+      <router:method>POST</router:method>
+      <router:pattern>/api/v2/families/{family}/documents/</router:pattern>
+      <router:description>Create document of family</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:DeleteDocument">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\DocumentDeleteData</router:callable>
+      <router:method>DELETE</router:method>
+      <router:pattern>/api/v2/documents/{docid:[^/.]+}[.json]</router:pattern>
+      <router:pattern>/api/v2/families/{family}/documents/{docid:[^/.]+}[.json]</router:pattern>
+      <router:description>Delete document (put in trash)</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:LockDocument">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\DocumentLock</router:callable>
+      <router:method>DELETE</router:method>
+      <router:method>GET</router:method>
+      <router:method>POST</router:method>
+      <router:method>PUT</router:method>
+      <router:pattern>/api/v2/documents/{docid}/locks/{lockType:permanent|temporary}</router:pattern>
+      <router:pattern>/api/v2/families/{family}/documents/{docid}/locks/{lockType:permanent|temporary}</router:pattern>
+      <router:description>Lock document</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:Document:Locks">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\DocumentLocks</router:callable>
+      <router:method>GET</router:method>
+      <router:method>DELETE</router:method>
+      <router:pattern>/api/v2/documents/{docid}/locks/</router:pattern>
+      <router:pattern>/api/v2/families/{family}/documents/{docid}/locks/</router:pattern>
+      <router:description>Document locks information</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:DocumentUserTag">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\DocumentUserTag</router:callable>
+      <router:method>DELETE</router:method>
+      <router:method>GET</router:method>
+      <router:method>POST</router:method>
+      <router:method>PUT</router:method>
+      <router:pattern>/api/v2/documents/{docid}/usertags/{tag}</router:pattern>
+      <router:pattern>/api/v2/families/{family}/documents/{docid}/usertags/{tag}</router:pattern>
+      <router:description>User Tag for document</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:DocumentUserTags">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\DocumentUserTags</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documents/{docid}/usertags/</router:pattern>
+      <router:pattern>/api/v2/families/{family}/documents/{docid}/usertags/</router:pattern>
+      <router:description>User Tag for document</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:ListDocuments">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\DocumentList</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documents/</router:pattern>
+      <router:description>List all documents</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:GetFamily">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\FamilyData</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/families/{family:[^/.]+}[.json]</router:pattern>
+      <router:description>Get data for a family</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:ListFamilyDocuments">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\FamilyDocumentList</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/families/{family}/documents/</router:pattern>
+      <router:description>List all documents of a family</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:RevisionData">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\RevisionData</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documents/{docid}/revisions/{revisionNumber:[0-9]+}[.json]</router:pattern>
+      <router:pattern>/api/v2/families/{family}/documents/{docid}/revisions/{revisionNumber:[0-9]+}[.json]</router:pattern>
+      <router:description>Get a specific revision of a document</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:RevisionList">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\RevisionList</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documents/{docid}/revisions/</router:pattern>
+      <router:pattern>/api/v2/families/{family}/documents/{docid}/revisions/</router:pattern>
+      <router:description>Get a revisions of a document</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:GetDeletedDocument">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\DocumentDeletedData</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/trash/{docid:[^/.]+}[.json]</router:pattern>
+      <router:description>Get deleted data for a document</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:Folder:List">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\Folders</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/folders/</router:pattern>
+      <router:description>List all folders</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:Folder:Content">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\FolderContent</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/folders/{folder}/documents/</router:pattern>
+      <router:description>List all documents included in a folder</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:Searches:List">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\Searches</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/searches/</router:pattern>
+      <router:description>List all searches</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:Searches:Content">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\SearchContent</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/searches/{search}/documents/</router:pattern>
+      <router:description>List all documents found in a search</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:UndeleteDocument">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\DocumentUndeleteData</router:callable>
+      <router:method>PUT</router:method>
+      <router:pattern>/api/v2/trash/{docid:[^/.]+}[.json]</router:pattern>
+      <router:description>Undelete document</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:Trash:Content">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\TrashContent</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/trash/</router:pattern>
+      <router:description>Trash content</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:File:OriginalImage">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\ImageAsset</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/images/assets/original/{image}</router:pattern>
+      <router:description>Download file image</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:File:resizeImage">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\ImageAsset</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/images/assets/sizes/{size:[0-9x]+[cfs]?}/{image}</router:pattern>
+      <router:description>Download file image</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:File:fileAttributeImage">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\FileAttribute</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documents/{docid}/files/{attrid}/{index}/{fileName}</router:pattern>
+      <router:description>Download file from document</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:File:revisedFileAttributeImage">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\FileAttribute</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documents/{docid}/revisions/{revision}/files/{attrid}/{index}/{fileName}</router:pattern>
+      <router:description>Download file from document</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:File:ResizeAttributeImage">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\ImageAttribute</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documents/{docid}/images/{attrid}/{index}/sizes/{size:[0-9x]+[cfs]?}[.{extension}]</router:pattern>
+      <router:description>Download file image from document</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:File:ResizeRevisedAttributeImage">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\ImageAttribute</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documents/{docid}/revisions/{revision}/images/{attrid}/{index}/sizes/{size:[0-9x]+[cfs]?}[.{extension}]</router:pattern>
+      <router:description>Download file image from document</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:File:ResizeRecordedImage">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\RecordedImage</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/images/recorded/sizes/{size:[0-9x]+[cfs]?}/{image:[^\.]+}[.{extension}]</router:pattern>
+      <router:description>Download resized file image (temporary file)</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:File:RecordedImage">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\RecordedImage</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/images/recorded/original/{image:[^\.]+}[.{extension}]</router:pattern>
+      <router:description>Download resized file image (temporary file)</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:File:RecordedFile">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\RecordedFile</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/files/recorded/temporary/{file:[0-9]+}[.{extension}]</router:pattern>
+      <router:description>Download temporary file</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:Family:Enum">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\Enumerate</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/families/{family}/enumerates/{enum}</router:pattern>
+      <router:description>Content of the enumerate &lt;attributeIdentifier&gt; of the family &lt;familyId&gt;</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:Workflow:StateList">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\WorkflowStateCollection</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documents/{docid}/workflows/states/</router:pattern>
+      <router:pattern>/api/v2/families/{family}/documents/{docid}/workflows/states/</router:pattern>
+      <router:description>List of availables next states</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:Workflow:State">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\WorkflowState</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documents/{docid}/workflows/states/{state}</router:pattern>
+      <router:pattern>/api/v2/families/{family}/documents/{docid}/workflows/states/{state}</router:pattern>
+      <router:description>Information about a workflow state</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:Workflow:SetState">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\WorkflowSetState</router:callable>
+      <router:method>POST</router:method>
+      <router:pattern>/api/v2/documents/{docid}/workflows/states/{state}</router:pattern>
+      <router:description>Document go to a new state</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:Workflow:TransitionList">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\WorkflowTransitionCollection</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documents/{docid}/workflows/transitions/</router:pattern>
+      <router:pattern>/api/v2/families/{family}/documents/{docid}/workflows/transitions/</router:pattern>
+      <router:description>List available transitions</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:Workflow:Transition">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\WorkflowTransition</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documents/{docid}/workflows/transitions/{transition}</router:pattern>
+      <router:pattern>/api/v2/families/{family}/documents/{docid}/workflows/transitions/{transition}</router:pattern>
+      <router:description>Information about a workflow transition</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:Workflow:SetTransition">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\WorkflowSetTransition</router:callable>
+      <router:method>POST</router:method>
+      <router:pattern>/api/v2/documents/{docid}/workflows/transitions/{transition}</router:pattern>
+      <router:pattern>/api/v2/families/{family}/documents/{docid}/workflows/transitions/{transition}</router:pattern>
+      <router:description>Pass a transition</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:Document:History">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\DocumentHistory</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documents/{docid}/history/</router:pattern>
+      <router:pattern>/api/v2/families/{family}/documents/{docid}/history/</router:pattern>
+      <router:description>Get document history information</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:File:Temporary">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\TemporaryFile</router:callable>
+      <router:method>POST</router:method>
+      <router:pattern>/api/v2/temporaryFiles/</router:pattern>
+      <router:description>Get document history information</router:description>
+      <router:requiredAccess/>
+    </router:route>
+  </router:routes>
+  <router:middlewares>
+    <router:middleware name="Core:Middleware:ApiAuthent">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Middleware\Authent::Authenticate</router:callable>
+      <router:method>ANY</router:method>
+      <router:pattern>[/{args:.*}]</router:pattern>
+      <router:description>Verify authentication</router:description>
+      <router:requiredAccess/>
+    </router:middleware>
+  </router:middlewares>
+  <router:accesses/>
+</router:config>

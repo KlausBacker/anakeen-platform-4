@@ -11,7 +11,7 @@
             "description": "Route config",
             "requiredAccess": null,
             "name": "Core:Test:Routes",
-            "configFile": "testCore.json"
+            "configFile": "testCore.xml"
         },
         "Core:Test:Routes:Over1": {
             "priority": 10,
@@ -23,7 +23,7 @@
             "description": "Route override",
             "requiredAccess": null,
             "name": "Core:Test:Routes:Over1",
-            "configFile": "testCore.json, testCoreOverride.json",
+            "configFile": "testCore.xml, testCoreOverride.xml",
             "override": "partial"
         },
         "Core:Test:Routes:Over2": {
@@ -34,7 +34,7 @@
             ],
             "pattern": "/tests/routes/over2/",
             "requiredAccess": null,
-            "configFile": "testCoreOverride.json",
+            "configFile": "testCoreOverride.xml",
             "override": "complete"
         }
 

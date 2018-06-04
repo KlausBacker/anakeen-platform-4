@@ -1,0 +1,54 @@
+{
+    "routes": {
+        "Core:Debug:Routes": {
+            "override": "partial",
+            "applicationContext": "UITEST",
+            "requiredAccess": {
+                "or": [
+                    "uitest:admin",
+                    "uitest:user"
+                ]
+            }
+        },
+        "Core:Fake": {
+            "override": "partial",
+            "methods": [
+                "get"
+            ],
+            "requiredAccess": {
+                "or": [
+                    "uitest:admin",
+                    "uitest:user"
+                ]
+            }
+        }
+    },
+    "middlewares": {
+        "Core:Middleware:FakeV2": {
+            "priority": 100,
+            "override": "partial"
+        },
+        "Core:Middleware:Fake3": {
+            "priority": 111,
+            "override": "partial"
+        }
+    },
+    "parameters": {
+        "SMTP_HOST3": {
+            "value": "L3",
+            "description": "SMTP3bis hostname",
+            "category": "SMTP"
+        },
+        "SMTP_HOST4": {
+            "value": "L3",
+            "description": "SMTP3 hostname",
+            "category": "SMTP",
+            "applicationContext": "UITEST"
+        },
+        "SMTP_HOST5": {
+            "value": "L5",
+            "description": "SMTP5bis hostname",
+            "category": "SMTP"
+        }
+    }
+}

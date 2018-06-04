@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
+  <router:apps>
+    <router:app name="CORETEST">
+      <router:version>1.0.0</router:version>
+      <router:shortName>Some test routes</router:shortName>
+      <router:description>Testing routes</router:description>
+    </router:app>
+  </router:apps>
+  <router:routes>
+    <router:route name="Core:Test:Routes">
+      <router:priority>0</router:priority>
+      <router:callable>\Anakeen\Routes\Tests\TestRouteConfig</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/tests/routes/</router:pattern>
+      <router:description>Route config</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:Test:RouteSecurit">
+      <router:priority>0</router:priority>
+      <router:callable>\Anakeen\Routes\Tests\TestRouteConfig</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/tests/routes/securit/</router:pattern>
+      <router:description>Route config</router:description>
+      <router:applicationContext>CORETEST</router:applicationContext>
+      <router:requiredAccess>coretest:user</router:requiredAccess>
+    </router:route>
+    <router:route name="Core:Test:RouteVerySecurit">
+      <router:priority>0</router:priority>
+      <router:callable>\Anakeen\Routes\Tests\TestRouteConfig</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/tests/routes/userguest/</router:pattern>
+      <router:description>Route config</router:description>
+      <router:applicationContext>CORETEST</router:applicationContext>
+      <router:requiredAccess operator="and">
+        <router:access>coretest:user</router:access>
+        <router:access>coretest:guest</router:access>
+      </router:requiredAccess>
+    </router:route>
+    <router:route name="Core:Test:RouteForAll">
+      <router:priority>0</router:priority>
+      <router:callable>\Anakeen\Routes\Tests\TestRouteConfig</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/tests/routes/forall/</router:pattern>
+      <router:description>Route config</router:description>
+      <router:applicationContext>CORETEST</router:applicationContext>
+      <router:requiredAccess operator="or">
+        <router:access>coretest:user</router:access>
+        <router:access>coretest:guest</router:access>
+        <router:access>core:admin</router:access>
+      </router:requiredAccess>
+    </router:route>
+    <router:route name="Core:Test:Routes:Over1">
+      <router:priority>0</router:priority>
+      <router:callable>\Anakeen\Routes\Tests\TestRouteConfig</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/tests/routes/over1/</router:pattern>
+      <router:description>Route config</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:Test:Routes:Over2">
+      <router:priority>0</router:priority>
+      <router:callable>\Anakeen\Routes\Tests\TestRouteConfig</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/tests/routes/over2/</router:pattern>
+      <router:description>Route config</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:Test:Global">
+      <router:priority>0</router:priority>
+      <router:callable>\Anakeen\Routes\Tests\TestRouteConfig</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/tests/routes/global/</router:pattern>
+      <router:description>Route config</router:description>
+      <router:requiredAccess>coretest:global</router:requiredAccess>
+    </router:route>
+  </router:routes>
+  <router:accesses>
+    <router:access name="coretest:user">
+      <router:applicationContext>CORETEST</router:applicationContext>
+      <router:description>Normal Access</router:description>
+    </router:access>
+    <router:access name="coretest:admin">
+      <router:applicationContext>CORETEST</router:applicationContext>
+      <router:description>Administrator Access</router:description>
+    </router:access>
+    <router:access name="coretest:guest">
+      <router:applicationContext>CORETEST</router:applicationContext>
+      <router:description>Guest Access</router:description>
+    </router:access>
+    <router:access name="coretest:global">
+      <router:description>Global Access</router:description>
+    </router:access>
+  </router:accesses>
+</router:config>

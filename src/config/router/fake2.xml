@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
+  <router:routes>
+    <router:route name="Core:Debug:Routes">
+      <router:override>partial</router:override>
+      <router:applicationContext>UITEST</router:applicationContext>
+      <router:requiredAccess operator="or">
+        <router:access>uitest:admin</router:access>
+        <router:access>uitest:user</router:access>
+      </router:requiredAccess>
+    </router:route>
+    <router:route name="Core:Fake">
+      <router:override>partial</router:override>
+      <router:method>get</router:method>
+      <router:requiredAccess operator="or">
+        <router:access>uitest:admin</router:access>
+        <router:access>uitest:user</router:access>
+      </router:requiredAccess>
+    </router:route>
+  </router:routes>
+  <router:middlewares>
+    <router:middleware name="Core:Middleware:FakeV2">
+      <router:priority>100</router:priority>
+      <router:override>partial</router:override>
+    </router:middleware>
+    <router:middleware name="Core:Middleware:Fake3">
+      <router:priority>111</router:priority>
+      <router:override>partial</router:override>
+    </router:middleware>
+  </router:middlewares>
+  <router:parameters>
+    <router:parameter name="SMTP_HOST3">
+      <router:value>L3</router:value>
+      <router:description>SMTP3bis hostname</router:description>
+      <router:category>SMTP</router:category>
+    </router:parameter>
+    <router:parameter name="SMTP_HOST4">
+      <router:value>L3</router:value>
+      <router:description>SMTP3 hostname</router:description>
+      <router:category>SMTP</router:category>
+      <router:applicationContext>UITEST</router:applicationContext>
+    </router:parameter>
+    <router:parameter name="SMTP_HOST5">
+      <router:value>L5</router:value>
+      <router:description>SMTP5bis hostname</router:description>
+      <router:category>SMTP</router:category>
+    </router:parameter>
+  </router:parameters>
+</router:config>
