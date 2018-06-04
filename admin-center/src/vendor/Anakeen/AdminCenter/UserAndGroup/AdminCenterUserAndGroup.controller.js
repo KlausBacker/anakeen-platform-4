@@ -13,7 +13,7 @@ export default {
                                         try {
                                             data[parentData].items = data[parentData].items || [];
                                             data[parentData].items.push(currentData);
-                                        } catch(e) {
+                                        } catch (e) {
 
                                         }
                                     });
@@ -32,7 +32,7 @@ export default {
                                     data = [];
                                 }
                                 const addUniqId = (currentElement, id = "") => {
-                                    currentElement.hierarchicalId = id ? id+"/"+currentElement.documentId: currentElement.documentId;
+                                    currentElement.hierarchicalId = id ? id + "/" + currentElement.documentId : currentElement.documentId;
                                     if (currentElement.items) {
                                         currentElement.items.forEach((childrenElement) => {
                                             addUniqId(childrenElement, currentElement.hierarchicalId);
@@ -60,7 +60,7 @@ export default {
                                 if (expandedElements) {
                                     try {
                                         restoreExpandedTree(data, JSON.parse(expandedElements));
-                                    } catch(e) {
+                                    } catch (e) {
 
                                     }
                                 }
@@ -92,10 +92,10 @@ export default {
                     model: {
                         id: "id",
                         fields: {
-                            login: { type: "string" },
-                            firstname: { type: "string" },
-                            lastname: { type: "string" },
-                            mail: { type: "string" },
+                            login: {type: "string"},
+                            firstname: {type: "string"},
+                            lastname: {type: "string"},
+                            mail: {type: "string"},
                         }
                     }
                 },
@@ -103,36 +103,60 @@ export default {
                 serverPaging: true,
                 serverSorting: true,
                 pageSize: 10
-            })
+            }),
+            userModeSelected: false
         };
     },
     mounted() {
-        const treeview = this.$refs.groupTreeView.kendoWidget();
-        treeview.bind("dataBound", () => {
-            const selectedElement = treeview.dataItem(treeview.select());
-            this.updateGroupSelected(selectedElement.documentId);
-            this.updateGridData(selectedElement.login);
-        });
+        this.bindTree();
+        this.bindGrid();
         this.bindSplitter();
     },
     methods: {
-        updateTreeData: function() {
-           this.groupTree.read();
+        updateTreeData: function () {
+            this.groupTree.read();
+        },
+        bindTree: function () {
+            const treeview = this.$refs.groupTreeView.kendoWidget();
+            treeview.bind("dataBound", () => {
+                const selectedElement = treeview.dataItem(treeview.select());
+                if (selectedElement.documentId) {
+                    this.updateGroupSelected(selectedElement.documentId);
+                }
+                this.updateGridData(selectedElement.login);
+            });
+        },
+        bindGrid: function () {
+            const grid = this.$refs.grid.$el;
+            const userDocument = this.$refs.openUser;
+            const toggleUserMode = this.toggleUserMode.bind(this);
+            Vue.jquery(grid).on("click", ".openButton", (event) => {
+                event.preventDefault();
+                console.log(event);
+                const userId = event.currentTarget.dataset["initid"];
+                if (userId) {
+                    userDocument.initid = userId;
+                    toggleUserMode();
+                }
+            });
         },
         bindSplitter: function () {
             const onContentResize = (part, $split) => {
                 return () => {
+                    window.setTimeout(() => {
+                        Vue.jQuery(window).trigger("resize");
+                    }, 100);
                     window.localStorage.setItem("admin.userAndGroup." + part, Vue.jQuery($split).data("kendoSplitter").size(".k-pane:first"));
                 }
             };
             const sizeContentPart = window.localStorage.getItem("admin.userAndGroup.content") || "200px";
             const sizeCenterPart = window.localStorage.getItem("admin.userAndGroup.center") || "200px";
-            Vue.jQuery(this.$refs.contentPart).kendoSplitter({
+            Vue.jQuery(this.$refs.gridAndTreePart).kendoSplitter({
                 panes: [
                     {collapsible: true, size: sizeContentPart, min: "200px", resizable: true},
                     {collapsible: false, resizable: true}
                 ],
-                resize: onContentResize("content", this.$refs.contentPart)
+                resize: onContentResize("content", this.$refs.gridAndTreePart)
             });
             Vue.jQuery(this.$refs.centerPart).kendoSplitter({
                 orientation: "vertical",
@@ -143,14 +167,17 @@ export default {
                 resize: onContentResize("center", this.$refs.centerPart)
             })
         },
-        updateGroupSelected: function(selectedGroupId) {
+        toggleUserMode: function () {
+            this.userModeSelected = !this.userModeSelected;
+        },
+        updateGroupSelected: function (selectedGroupId) {
             const groupDoc = this.$refs.groupDoc;
             groupDoc.initid = selectedGroupId;
         },
         updateGridData: function (selectedGroupLogin) {
             const grid = this.$refs.grid.kendoWidget();
             grid.clearSelection();
-            this.gridContent.filter({ field: "group", operator: "equal", value: selectedGroupLogin });
+            this.gridContent.filter({field: "group", operator: "equal", value: selectedGroupLogin});
         },
         onGroupSelect: function (event) {
             const selectedElement = event.sender.dataItem(event.sender.select());
@@ -180,7 +207,7 @@ export default {
             const treeview = this.$refs.groupTreeView.kendoWidget();
             treeview.expand(".k-item");
         },
-        filterGroup: function(event) {
+        filterGroup: function (event) {
             event.preventDefault();
             const filter = (dataSource, query) => {
                 let hasVisibleChildren = false;
@@ -202,7 +229,7 @@ export default {
 
                 if (data) {
                     // re-apply filter on children
-                    dataSource.filter({ field: "hidden", operator: "neq", value: true });
+                    dataSource.filter({field: "hidden", operator: "neq", value: true});
                 }
 
                 return hasVisibleChildren;

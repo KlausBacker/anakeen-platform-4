@@ -1,12 +1,25 @@
 ank-admin-user-group {
     width: 100%;
-    height: calc(100% - 1em);
+    height: 100%;
 }
 
 ank-admin-user-group .accountManager {
-    height: calc(100% - 1em);
+    height: 100%;
     width: 100%;
 }
+
+ank-admin-user-group .accountManager_wrapper {
+    height: 100%;
+}
+
+ank-admin-user-group .accountManager_gridAndTreePart {
+    height: 100%;
+}
+
+ank-admin-user-group .accountManager_userPart {
+    height: 100%;
+}
+
 
 ank-admin-user-group .accountManager_treeViewPart_wrapper {
     height: 100%;
@@ -14,22 +27,27 @@ ank-admin-user-group .accountManager_treeViewPart_wrapper {
 }
 
 ank-admin-user-group .accountManager_treeViewPart_wrapper .accountManager_treeViewPart_wrapper_topPart {
-    height: 5em;
+    height: 6em;
     width: 100%;
 }
 
+ank-admin-user-group .k-toolbar {
+    /* Magic number to suppress an horizontal scrollbar*/
+    width: calc(100% - 0.17rem);
+}
+
 ank-admin-user-group .accountManager_treeViewPart_wrapper .accountManager_treeViewPart_wrapper_content {
-    height: calc(100% - 5em);
+    height: calc(100% - 6em);
     width: 100%;
     overflow-y: auto;
 }
 
-ank-admin-user-group .accountManager_contentPart_groupPart ank-document iframe {
-    height: calc(100% - 1em);
+ank-admin-user-group .accountManager_contentPart_groupPart ank-document iframe, .accountManager_userPart iframe {
+    height: calc(100% - 3.8rem);
     width: 100%;
 }
 
 ank-admin-user-group .accountManager_contentPart_gridPart .k-grid {
-    height: 100%;
+    height: calc(100% - 3.8rem);
     width: 100%;
 }
