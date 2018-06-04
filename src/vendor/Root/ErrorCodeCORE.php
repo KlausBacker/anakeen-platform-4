@@ -83,9 +83,9 @@ namespace {
         const CORE0017 = "Context not initialized yet";
 
         /**
-         * @errorCode Router File config must be a valid json
+         * @errorCode Router File config must be a valid XML
          */
-        const CORE0019 = "Cannot decode JSON of router config file \"%s\"";
+        const CORE0019 = "Cannot decode XML of router config file \"%s\"";
         /**
          * @errorCode Router Config directory must exists
          */

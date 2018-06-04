@@ -734,7 +734,7 @@ class ImportAccounts
         return $this->report;
     }
 
-    protected function hasErrors()
+    public function hasErrors()
     {
         foreach ($this->report as $report) {
             if ($report["error"]) {
@@ -742,6 +742,17 @@ class ImportAccounts
             }
         }
         return false;
+    }
+
+    public function getErrors()
+    {
+        $errors=[];
+        foreach ($this->report as $report) {
+            if ($report["error"]) {
+                $errors[]=$report["error"];
+            }
+        }
+        return $errors;
     }
 
     /**
