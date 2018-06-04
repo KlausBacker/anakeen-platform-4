@@ -22,7 +22,7 @@ class Password
 
         if (!$currentUser->checkpassword($oldPassword)) {
             $e = new Exception("IDENT0201");
-            $e->setUserMessage(___("Wrong password", "identityComponent"));
+            $e->setUserMessage(___("You entered an invalid current password", "identityComponent"));
 
             throw $e;
         }

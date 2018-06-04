@@ -22,7 +22,7 @@ class Email
 
         if (!$currentUser->checkpassword($password)) {
             $e = new Exception("IDENT0001");
-            $e->setUserMessage(___("Wrong password", "identityComponent"));
+            $e->setUserMessage(___("You entered an invalid password", "identityComponent"));
 
             throw $e;
         }
