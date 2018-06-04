@@ -96,7 +96,6 @@ export default {
                 // Verify if password matches confirmation
                 if ((this.newPassword === this.newPasswordConfirmation) && (this.newPassword !== '')) {
                     kendo.ui.progress(this.$("#epasswordModifier"), true);
-                    // TODO Change route
                     this.$http.put('/components/identity/password',
                         {
                             oldPassword: this.oldPassword,
@@ -200,6 +199,7 @@ export default {
                 // Function called when th dialog is open and closed
                 let resetEmailChangeData = () => {
                     this.oldPassword = '';
+                    document.getElementById('oldPasswordInputEmail').publicMethods.setValue('');
                     this.newEmail = '';
                     this.emailWarningMessage = '';
                 };
@@ -249,12 +249,16 @@ export default {
 
             // Init window to change the user's password (if allowed in the props)
             if (this.passwordAlterable) {
-                // Function called when the dialog is open  and closed
+                // Function called when the dialog is open and closed
                 let resetPasswordChangeData = () => {
                     this.oldPassword = '';
+                    document.getElementById('oldPasswordInput').publicMethods.setValue('');
                     this.newPassword = '';
+                    document.getElementById('passwordInput').publicMethods.setValue('');
                     this.newPasswordConfirmation = '';
+                    document.getElementById('passwordConfirmationInput').publicMethods.setValue('');
                     this.passwordWarningMessage = '';
+                    this.reColorInputs();
                 };
 
                 let passwordWindow = this.$("#passwordModifier");
@@ -306,9 +310,26 @@ export default {
 
         // Reset password modification warning message when a key is pressed, if this key is not enter
         // (Enter shouldn't remove the message because if the user validate a wrong password with enter, the message should appear)
-        removePasswordWarningMessage(event) {
+        updatePasswordChangeForm(event) {
             if (event.key !== 'Enter') {
                 this.passwordWarningMessage = '';
+            }
+            this.reColorInputs();
+        },
+
+        // Re color input borders to show if password and confirmation are different
+        reColorInputs() {
+            if (this.newPassword && this.newPasswordConfirmation) {
+                if (this.newPassword === this.newPasswordConfirmation) {
+                    $("#passwordInput").find(':input').css('border-color', 'green');
+                    $("#passwordConfirmationInput").find(':input').css('border-color', 'green');
+                } else {
+                    $("#passwordInput").find(':input').css('border-color', 'red');
+                    $("#passwordConfirmationInput").find(':input').css('border-color', 'red');
+                }
+            } else {
+                $("#passwordInput").find(':input').css('border-color', '');
+                $("#passwordConfirmationInput").find(':input').css('border-color', '');
             }
         }
     },

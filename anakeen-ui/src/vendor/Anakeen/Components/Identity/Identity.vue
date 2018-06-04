@@ -49,13 +49,13 @@
         <div id="passwordModifier" v-if="passwordAlterable" style="display: none;">
             <form>
                 <div class="form-group">
-                    <ank-authent-password class="first" id="oldPasswordInput" :label="translations.oldPasswordLabel" :placeholder="translations.oldPasswordPlaceholder" @input.stop="updateOldPassword" @keyup="removePasswordWarningMessage"></ank-authent-password>
+                    <ank-authent-password id="oldPasswordInput" :label="translations.oldPasswordLabel" :placeholder="translations.oldPasswordPlaceholder" @input.stop="updateOldPassword" @keyup="updatePasswordChangeForm"></ank-authent-password>
                 </div>
                 <div class="form-group">
-                    <ank-authent-password id="passwordInput" :label="translations.newPasswordLabel" :placeholder="translations.newPasswordPlaceholder" @input.stop="updateNewPassword" @keyup="removePasswordWarningMessage"></ank-authent-password>
+                    <ank-authent-password id="passwordInput" :label="translations.newPasswordLabel" :placeholder="translations.newPasswordPlaceholder" @input.stop="updateNewPassword" @keyup="updatePasswordChangeForm"></ank-authent-password>
                 </div>
                 <div class="form-group">
-                    <ank-authent-password id="passwordConfirmationInput" :label="translations.newPasswordConfirmationLabel" :placeholder="translations.newPasswordConfirmationPlaceholder" @input.stop="updateNewPasswordConfirmation" @keyup="removePasswordWarningMessage"></ank-authent-password>
+                    <ank-authent-password id="passwordConfirmationInput" :label="translations.newPasswordConfirmationLabel" :placeholder="translations.newPasswordConfirmationPlaceholder" @input.stop="updateNewPasswordConfirmation" @keyup="updatePasswordChangeForm"></ank-authent-password>
                 </div>
                 <div class="form-group" v-if="passwordWarningMessage">
                     <div class="alert alert-warning">{{ passwordWarningMessage }}</div>
