@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
+  <router:routes>
+    <router:route name="Ui:CurrentUser">
+      <router:callable>\Anakeen\Routes\Ui\CurrentUser</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/ui/users/current</router:pattern>
+      <router:description>Fetch user information</router:description>
+      <router:requiredAccess/>
+      <router:authenticated>true</router:authenticated>
+    </router:route>
+  </router:routes>
+</router:config>

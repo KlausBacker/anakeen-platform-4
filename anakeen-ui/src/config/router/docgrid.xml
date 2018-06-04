@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
+  <router:routes>
+    <router:route name="Ui:DocGrid:Content">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\DocumentGrid\Content</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documentGrid/content/{collection}</router:pattern>
+      <router:description>DocumentGrid content</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Ui:DocGrid:CreateDocumentGrid">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\DocumentGrid\CreateDocumentGrid</router:callable>
+      <router:method>POST</router:method>
+      <router:pattern>/api/v2/documentGrid/content/</router:pattern>
+      <router:description>DocumentGrid temporary collection</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Ui:DocGrid:ColumnsDefinition">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\DocumentGrid\ColumnsDefinition</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documentGrid/columnsDefinition/</router:pattern>
+      <router:description>DocumentGrid columns definition</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Ui:DocGrid:StateList">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\DocumentGrid\StateList</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documentGrid/states/{family}/</router:pattern>
+      <router:description>DocumentGrid states list</router:description>
+      <router:requiredAccess/>
+    </router:route>
+  </router:routes>
+</router:config>

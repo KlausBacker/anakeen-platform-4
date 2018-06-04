@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
+  <router:routes>
+    <router:route name="Ui:Logout:Logout">
+      <router:callable>\Anakeen\Components\Logout\Routes\Session</router:callable>
+      <router:method>DELETE</router:method>
+      <router:pattern>/components/logout/session</router:pattern>
+      <router:description>Logout returning user informations</router:description>
+      <router:requiredAccess/>
+      <router:authenticated>true</router:authenticated>
+    </router:route>
+  </router:routes>
+</router:config>
