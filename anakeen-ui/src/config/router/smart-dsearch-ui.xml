@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
+  <router:routes>
+    <router:route name="Ui:Smart:Search:Attributes">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\SmartStructures\Dsearch\Routes\Attributes</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/smartstructures/dsearch/attributes/[{family}]</router:pattern>
+      <router:description>Attribute family list</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Ui:Smart:Search:Operators">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\SmartStructures\Dsearch\Routes\Operators</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/smartstructures/dsearch/operators/</router:pattern>
+      <router:description>Operands list</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Ui:Smart:Search:Relations">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\SmartStructures\Dsearch\Routes\Relations</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/smartstructures/dsearch/relations/{family}/{attrid}</router:pattern>
+      <router:description>Operands list</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Ui:Smart:Search:TemporaryDoc">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\SmartStructures\Dsearch\Routes\TemporaryDoc</router:callable>
+      <router:method>POST</router:method>
+      <router:pattern>/api/v2/smartstructures/dsearch/temporaryDoc/{family}/</router:pattern>
+      <router:description>Temporary Doc</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Ui:Smart:Search:GridAttributes">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\SmartStructures\Dsearch\Routes\SearchGridAttributes</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/smartstructures/dsearch/searchAttributes/{searchId}</router:pattern>
+      <router:description>Temporary Doc</router:description>
+      <router:requiredAccess/>
+    </router:route>
+  </router:routes>
+</router:config>
