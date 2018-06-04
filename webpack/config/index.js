@@ -7,7 +7,7 @@ const merge = require('webpack-merge');
 const parts = require('../parts');
 
 const AdminCenterWebpackConfig = require('./adminCenter');
-const userAndGroupConfig = require('./userGroupPlugin');
+const userAndGroupConfig = require('./AccountPlugin');
 
 const commonConfig = merge([
     {

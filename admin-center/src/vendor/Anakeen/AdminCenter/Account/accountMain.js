@@ -8,11 +8,11 @@ import { TreeViewInstaller } from '@progress/kendo-treeview-vue-wrapper';
 import { GridInstaller } from '@progress/kendo-grid-vue-wrapper'
 import { ButtonsInstaller } from '@progress/kendo-buttons-vue-wrapper';
 
-import AdminCenterUserAndGroup from './AdminCenterUserAndGroup.vue';
+import AdminCenterUserAndGroup from './AdminCenterAccount';
 
 Vue.use(VueCustomElement);
 Vue.use(ButtonsInstaller);
 Vue.use(GridInstaller);
 Vue.use(TreeViewInstaller);
 
-Vue.customElement('ank-admin-user-group', AdminCenterUserAndGroup);
+Vue.customElement('ank-admin-account', AdminCenterUserAndGroup);

@@ -6,30 +6,30 @@ export default {
                     read: (options) => {
                         Vue.ankApi.get("admin/account/groups/").then(response => {
                             if (response.status === 200 && response.statusText === 'OK') {
-                                let data = response.data;
-                                Object.values(data).forEach((currentData) => {
+                                let groups = response.data.groups;
+                                Object.values(groups).forEach((currentData) => {
                                     currentData.items = currentData.items || [];
                                     currentData.parents.forEach((parentData) => {
                                         try {
-                                            data[parentData].items = data[parentData].items || [];
-                                            data[parentData].items.push(currentData);
+                                            groups[parentData].items = groups[parentData].items || [];
+                                            groups[parentData].items.push(currentData);
                                         } catch (e) {
 
                                         }
                                     });
                                 });
                                 //Suppress first level elements
-                                Object.values(data).forEach((currentData) => {
+                                Object.values(groups).forEach((currentData) => {
                                     if (currentData.parents.length > 0) {
-                                        delete data[currentData.accountId];
+                                        delete groups[currentData.accountId];
                                     }
                                 });
 
                                 try {
                                     //Suppress refs elements and keep only values
-                                    data = Object.values(JSON.parse(JSON.stringify(data)));
+                                    groups = Object.values(JSON.parse(JSON.stringify(groups)));
                                 } catch (e) {
-                                    data = [];
+                                    groups = [];
                                 }
                                 const addUniqId = (currentElement, id = "") => {
                                     currentElement.hierarchicalId = id ? id + "/" + currentElement.documentId : currentElement.documentId;
@@ -39,13 +39,13 @@ export default {
                                         })
                                     }
                                 };
-                                data.forEach(currentGroup => {
+                                groups.forEach(currentGroup => {
                                     addUniqId(currentGroup);
                                 });
-                                const selectedElement = window.localStorage.getItem("admin.userAndGroup.groupSelected");
+                                const selectedElement = window.localStorage.getItem("admin.account.groupSelected");
                                 const restoreExpandedTree = (data, expanded) => {
                                     for (let i = 0; i < data.length; i++) {
-                                        if (expanded[data[i].hierarchicalId]) {
+                                        if (expanded["#all"] ===true || expanded[data[i].hierarchicalId]) {
                                             data[i].expanded = true;
                                         }
                                         if (data[i].hierarchicalId === selectedElement) {
@@ -56,15 +56,30 @@ export default {
                                         }
                                     }
                                 };
-                                let expandedElements = window.localStorage.getItem("admin.userAndGroup.expandedElement");
+                                let expandedElements = window.localStorage.getItem("admin.account.expandedElement");
                                 if (expandedElements) {
                                     try {
-                                        restoreExpandedTree(data, JSON.parse(expandedElements));
+                                        expandedElements = JSON.parse(expandedElements);
+                                        restoreExpandedTree(groups, expandedElements);
                                     } catch (e) {
 
                                     }
                                 }
-                                options.success(data);
+                                const toDisplay = [
+                                    {
+                                        "login": "@users",
+                                        "documentId": "@users",
+                                        "accountId": "@users",
+                                        "hierarchicalId": "@users",
+                                        "expanded": expandedElements && (expandedElements["#all"] || expandedElements["@users"]),
+                                        "selected": "@users" === selectedElement,
+                                        "parents": [],
+                                        "title": "All users",
+                                        "nbUser": response.data.nbUsers ? response.data.nbUsers : "??",
+                                        "items": groups
+                                    }
+                                ];
+                                options.success(toDisplay);
                             } else {
                                 throw new Error("Unable to get groups");
                             }
@@ -104,53 +119,97 @@ export default {
                 serverSorting: true,
                 pageSize: 10
             }),
-            userModeSelected: false
+            userModeSelected: false,
+            displayGroupDocument: false,
+            options: {}
         };
     },
     mounted() {
+        this.fetchConfig();
         this.bindTree();
         this.bindGrid();
         this.bindSplitter();
     },
     methods: {
-        updateTreeData: function () {
-            this.groupTree.read();
+        fetchConfig: function() {
+            Vue.ankApi.get("admin/account/config/").then(response => {
+                if (response.status === 200 && response.statusText === 'OK') {
+                    this.options = response.data;
+                    this.bindToolbars(response.data);
+                } else {
+                    throw new Error(response);
+                }
+            }).catch((error) => {
+                console.error("Unable to get options", error);
+            });
         },
+        bindToolbars: function(element) {
+            const openDoc = this.$refs.openDoc;
+            const groupToolbar = this.$refs.groupToolbar.kendoWidget();
+            const toggleUserMode = this.toggleUserMode.bind(this);
+            const openInCreation = (event) => {
+                if (event && event.target && event.target[0] && event.target[0].id) {
+                    openDoc.initid = event.target[0].id;
+                    openDoc.viewid = "!defaultCreation";
+                    toggleUserMode();
+                }
+            };
+            groupToolbar.add({
+                type: "splitButton",
+                text: "Create",
+                menuButtons: element.group
+            });
+            groupToolbar.bind("click", openInCreation);
+            const userToolbar = this.$refs.userToolbar.kendoWidget();
+            userToolbar.add({
+                type: "splitButton",
+                text: "Create",
+                menuButtons: element.user
+            });
+            userToolbar.bind("click", openInCreation);
+        },
+        //Bind the tree events
         bindTree: function () {
             const treeview = this.$refs.groupTreeView.kendoWidget();
             treeview.bind("dataBound", () => {
                 const selectedElement = treeview.dataItem(treeview.select());
-                if (selectedElement.documentId) {
-                    this.updateGroupSelected(selectedElement.documentId);
+                if (selectedElement) {
+                    if (selectedElement.documentId) {
+                        this.updateGroupSelected(selectedElement.documentId);
+                    }
+                    if (selectedElement.login) {
+                        this.updateGridData(selectedElement.login);
+                    }
                 }
-                this.updateGridData(selectedElement.login);
             });
         },
+        //Bind the grid events (click to open an user)
         bindGrid: function () {
             const grid = this.$refs.grid.$el;
-            const userDocument = this.$refs.openUser;
+            const openDoc = this.$refs.openDoc;
             const toggleUserMode = this.toggleUserMode.bind(this);
             Vue.jquery(grid).on("click", ".openButton", (event) => {
                 event.preventDefault();
                 console.log(event);
                 const userId = event.currentTarget.dataset["initid"];
                 if (userId) {
-                    userDocument.initid = userId;
+                    openDoc.initid = userId;
                     toggleUserMode();
                 }
             });
         },
+        //Create the splitter system
         bindSplitter: function () {
             const onContentResize = (part, $split) => {
                 return () => {
                     window.setTimeout(() => {
                         Vue.jQuery(window).trigger("resize");
                     }, 100);
-                    window.localStorage.setItem("admin.userAndGroup." + part, Vue.jQuery($split).data("kendoSplitter").size(".k-pane:first"));
+                    window.localStorage.setItem("admin.account." + part, Vue.jQuery($split).data("kendoSplitter").size(".k-pane:first"));
                 }
             };
-            const sizeContentPart = window.localStorage.getItem("admin.userAndGroup.content") || "200px";
-            const sizeCenterPart = window.localStorage.getItem("admin.userAndGroup.center") || "200px";
+            const sizeContentPart = window.localStorage.getItem("admin.account.content") || "200px";
+            const sizeCenterPart = window.localStorage.getItem("admin.account.center") || "200px";
             Vue.jQuery(this.$refs.gridAndTreePart).kendoSplitter({
                 panes: [
                     {collapsible: true, size: sizeContentPart, min: "200px", resizable: true},
@@ -167,24 +226,43 @@ export default {
                 resize: onContentResize("center", this.$refs.centerPart)
             })
         },
+        //Display the user pane
         toggleUserMode: function () {
             this.userModeSelected = !this.userModeSelected;
         },
+        //Manually refresh the tree pane
+        updateTreeData: function () {
+            this.groupTree.read();
+        },
+        //Display the selected group in the ank-document
         updateGroupSelected: function (selectedGroupId) {
             const groupDoc = this.$refs.groupDoc;
-            groupDoc.initid = selectedGroupId;
+            if (selectedGroupId && selectedGroupId !== "@users") {
+                this.displayGroupDocument = true;
+                groupDoc.initid = selectedGroupId;
+                return;
+            }
+            this.displayGroupDocument = false;
         },
+        //Refresh the grid with the new selected group
         updateGridData: function (selectedGroupLogin) {
             const grid = this.$refs.grid.kendoWidget();
             grid.clearSelection();
-            this.gridContent.filter({field: "group", operator: "equal", value: selectedGroupLogin});
+            if (selectedGroupLogin === "@users") {
+                this.gridContent.filter({});
+            } else {
+                this.gridContent.filter({field: "group", operator: "equal", value: selectedGroupLogin});
+            }
+
         },
+        //Update the selected group
         onGroupSelect: function (event) {
             const selectedElement = event.sender.dataItem(event.sender.select());
-            window.localStorage.setItem("admin.userAndGroup.groupSelected", selectedElement.hierarchicalId);
+            window.localStorage.setItem("admin.account.groupSelected", selectedElement.hierarchicalId);
             this.updateGroupSelected(selectedElement.documentId);
             this.updateGridData(selectedElement.login);
         },
+        //Register the leaf open and closed
         registerTreeState: function (event) {
             const saveTreeView = (function () {
                 const treeview = this.$refs.groupTreeView.kendoWidget();
@@ -195,18 +273,21 @@ export default {
                         expandedItemsIds[item.hierarchicalId] = true;
                     }
                 });
-                window.localStorage.setItem("admin.userAndGroup.expandedElement", JSON.stringify(expandedItemsIds));
+                window.localStorage.setItem("admin.account.expandedElement", JSON.stringify(expandedItemsIds));
             }).bind(this);
             window.setTimeout(saveTreeView, 100);
         },
+        //Close all the leafs
         collapseAll: function () {
-            const treeview = this.$refs.groupTreeView.kendoWidget();
-            treeview.collapse(".k-item");
+            window.localStorage.setItem("admin.account.expandedElement", JSON.stringify({"#all": false}));
+            this.updateTreeData();
         },
+        //Expand all the leafs
         expandAll: function () {
-            const treeview = this.$refs.groupTreeView.kendoWidget();
-            treeview.expand(".k-item");
+            window.localStorage.setItem("admin.account.expandedElement", JSON.stringify({"#all": true}));
+            this.updateTreeData();
         },
+        //Disable all the group non selected
         filterGroup: function (event) {
             event.preventDefault();
             const filter = (dataSource, query) => {
