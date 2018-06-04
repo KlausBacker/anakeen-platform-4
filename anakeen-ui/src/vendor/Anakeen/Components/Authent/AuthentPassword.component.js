@@ -1,7 +1,8 @@
-
+import { AnkMixin } from '../AnkVueComponentMixin';
 // noinspection JSUnusedGlobalSymbols
 export default {
     name: 'ank-input-password',
+    mixins: [AnkMixin],
     props: {
         label: {
             type: String,
@@ -54,8 +55,12 @@ export default {
     },
 
     methods: {
-        changePassword() {
+        $changePassword() {
             this.$emit('input', this.value);
+        },
+
+        setValue(value) {
+            this.value = value;
         },
     },
 };

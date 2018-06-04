@@ -29,7 +29,10 @@
                 </div>
                 <div class="form-group">
                     <label class="label" for="emailInput">{{ translations.newEmailLabel + " :" }}</label>
-                    <input id="emailInput" type="text" class="form-control" v-model="newEmail" @keyup="removeEmailWarningMessage"/>
+                    <input id="emailInput" type="text" class="form-control" :placeholder="translations.newEmailPlaceholder" v-model="newEmail" @keyup="removeEmailWarningMessage"/>
+                </div>
+                <div class="form-group">
+                    <ank-authent-password id="oldPasswordInputEmail" :label="translations.oldPasswordLabel" :placeholder="translations.oldPasswordPlaceholder" @input.stop="updateOldPassword" @keyup="removeEmailWarningMessage"></ank-authent-password>
                 </div>
                 <div class="form-group" v-if="emailWarningMessage">
                     <div class="alert alert-warning">{{ emailWarningMessage }}</div>
@@ -45,9 +48,15 @@
 
         <div id="passwordModifier" v-if="passwordAlterable" style="display: none;">
             <form>
-                <ank-authent-password id="oldPasswordInput" :label="translations.oldPasswordLabel" :placeholder="translations.oldPasswordPlaceholder" @input.stop="updateOldPassword" @keyup="removePasswordWarningMessage"></ank-authent-password>
-                <ank-authent-password id="passwordInput" :label="translations.newPasswordLabel" :placeholder="translations.newPasswordPlaceholder" @input.stop="updateNewPassword" @keyup="removePasswordWarningMessage"></ank-authent-password>
-                <ank-authent-password id="passwordConfirmationInput" :label="translations.newPasswordConfirmationLabel" :placeholder="translations.newPasswordConfirmationPlaceholder" @input.stop="updateNewPasswordConfirmation" @keyup="removePasswordWarningMessage"></ank-authent-password>
+                <div class="form-group">
+                    <ank-authent-password id="oldPasswordInput" :label="translations.oldPasswordLabel" :placeholder="translations.oldPasswordPlaceholder" @input.stop="updateOldPassword" @keyup="updatePasswordChangeForm"></ank-authent-password>
+                </div>
+                <div class="form-group">
+                    <ank-authent-password id="passwordInput" :label="translations.newPasswordLabel" :placeholder="translations.newPasswordPlaceholder" @input.stop="updateNewPassword" @keyup="updatePasswordChangeForm"></ank-authent-password>
+                </div>
+                <div class="form-group">
+                    <ank-authent-password id="passwordConfirmationInput" :label="translations.newPasswordConfirmationLabel" :placeholder="translations.newPasswordConfirmationPlaceholder" @input.stop="updateNewPasswordConfirmation" @keyup="updatePasswordChangeForm"></ank-authent-password>
+                </div>
                 <div class="form-group" v-if="passwordWarningMessage">
                     <div class="alert alert-warning">{{ passwordWarningMessage }}</div>
                 </div>

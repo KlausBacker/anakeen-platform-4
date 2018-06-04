@@ -99,6 +99,6 @@
 </template>
 <script src="./Authent.component.js"></script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
+<style lang="scss" scoped>
     @import "./Authent.scss";
 </style>

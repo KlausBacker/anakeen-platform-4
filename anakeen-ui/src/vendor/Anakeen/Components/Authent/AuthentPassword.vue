@@ -6,7 +6,7 @@
                 <input :id="pwdId" ref="authentPassword"
                        class="authent-pwd form-control"
                        type="password"
-                       @input.stop="changePassword"
+                       @input.stop="$changePassword"
                        v-model="value"
                        :placeholder="placeholder"
                        required autocapitalize="off" autocorrect="off"/>

@@ -16,15 +16,24 @@ class Email
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $newEmail = $request->getParam("email");
+        $password = $request->getParam("password");
+
+        $currentUser = ContextManager::getCurrentUser();
+
+        if (!$currentUser->checkpassword($password)) {
+            $e = new Exception("IDENT0001");
+            $e->setUserMessage(___("You entered an invalid password", "identityComponent"));
+
+            throw $e;
+        }
 
         if (!filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
-            $e = new Exception("IDENT0001");
+            $e = new Exception("IDENT0002");
             $e->setUserMessage(sprintf(___("Email address \"%s\" is not valid", "identityComponent"), $newEmail));
 
             throw $e;
         }
 
-        $currentUser = ContextManager::getCurrentUser();
         $currentUser->mail = $newEmail;
 
         $err = $currentUser->modify();
