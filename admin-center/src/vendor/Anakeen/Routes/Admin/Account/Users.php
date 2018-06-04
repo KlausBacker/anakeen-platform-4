@@ -28,10 +28,18 @@ class Users
         $filter = $request->getQueryParam("filter");
         $skip = $request->getQueryParam("skip");
         $take= $request->getQueryParam("take");
+        $sort = $request->getQueryParam("sort");
 
         $searchAccount = new \SearchAccount();
         $searchAccount->setTypeFilter(\SearchAccount::userType);
-        if (isset($filter)) {
+        if ($sort) {
+            $sortString = "";
+            foreach ($sort as $currentSort) {
+                $sortString .= $currentSort["field"]." ".$currentSort["dir"]." ";
+            }
+            $searchAccount->setOrder($sortString);
+        }
+        if ($filter) {
             foreach ($filter["filters"] as $currentFilter) {
                 if ($currentFilter["field"] === "group") {
                     $searchAccount->addGroupFilter($currentFilter["value"]);
