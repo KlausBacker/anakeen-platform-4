@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
+  <router:apps>
+    <router:app name="TST_ACCESS">
+      <router:version>1.0.0</router:version>
+      <router:shortName>Some test routes</router:shortName>
+      <router:description>Testing routes</router:description>
+    </router:app>
+  </router:apps>
+  <router:routes>
+    <router:route name="TST_ACCESS_ACTION_1">
+      <router:priority>0</router:priority>
+      <router:callable>\Anakeen\Routes\Tests\TestRouteConfig</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/tst_access/routes/</router:pattern>
+      <router:description>Route config</router:description>
+      <router:applicationContext>TST_ACCESS</router:applicationContext>
+      <router:requiredAccess>TST_ACCESS_ACL_1</router:requiredAccess>
+    </router:route>
+    <router:route name="TST_ACCESS_ACTION_2">
+      <router:priority>0</router:priority>
+      <router:callable>\Anakeen\Routes\Tests\TestRouteConfig</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/tst_access/routes/securit/</router:pattern>
+      <router:description>Route config</router:description>
+      <router:applicationContext>TST_ACCESS</router:applicationContext>
+      <router:requiredAccess>TST_ACCESS_ACL_2</router:requiredAccess>
+    </router:route>
+    <router:route name="TST_ACCESS_ACTION_FREE">
+      <router:priority>0</router:priority>
+      <router:callable>\Anakeen\Routes\Tests\TestRouteConfig</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/tst_access/routes/userguest/</router:pattern>
+      <router:description>Route config</router:description>
+      <router:applicationContext>TST_ACCESS</router:applicationContext>
+      <router:requiredAccess/>
+    </router:route>
+  </router:routes>
+  <router:accesses>
+    <router:access name="TST_ACCESS_ACL_1">
+      <router:applicationContext>TST_ACCESS</router:applicationContext>
+      <router:description>Normal Access</router:description>
+    </router:access>
+    <router:access name="TST_ACCESS_ACL_2">
+      <router:applicationContext>TST_ACCESS</router:applicationContext>
+      <router:description>Administrator Access</router:description>
+    </router:access>
+  </router:accesses>
+</router:config>
