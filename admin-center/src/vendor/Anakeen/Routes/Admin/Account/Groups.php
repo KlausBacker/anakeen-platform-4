@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Admin\Account;
 
 
-use Anakeen\Core\DocManager;
+use Anakeen\Core\DbManager;
 
 class Groups
 {
@@ -38,7 +38,15 @@ class Groups
             ];
         }
 
-        return $response->withJson($groups);
+        //Compute nb total of users
+        $nbUsers = 0;
+        $searchAccount = new \SearchAccount();
+        $searchAccount->setTypeFilter(\SearchAccount::userType);
+        $request = $searchAccount->getQuery();
+        DbManager::query("select count(*) from (".$request.") as nbResult;", $nbUsers, true, true);
+
+
+        return $response->withJson(["groups"=> $groups, "nbUsers"=> $nbUsers]);
 
     }
 }

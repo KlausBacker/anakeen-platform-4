@@ -1,25 +1,33 @@
 <?xml version="1.0"?>
 <router:config xmlns:router="http://www.anakeen.com/ns/routes/">
   <router:routes>
-    <router:route name="AdminUser:GroupList">
+    <router:route name="AdminAccount:GroupList">
       <router:description>Get list of group</router:description>
       <router:pattern>/api/v2/admin/account/groups/</router:pattern>
       <router:callable>\Anakeen\Routes\Admin\Account\Groups</router:callable>
       <router:method>GET</router:method>
-      <router:requiredAccess>adminUser:admin</router:requiredAccess>
+      <router:requiredAccess>AdminAccount:admin</router:requiredAccess>
       <router:priority>0</router:priority>
     </router:route>
-    <router:route name="AdminUser:UserList">
+    <router:route name="AdminAccount:UserList">
       <router:description>Get list of users</router:description>
       <router:pattern>/api/v2/admin/account/users/</router:pattern>
       <router:callable>\Anakeen\Routes\Admin\Account\Users</router:callable>
       <router:method>GET</router:method>
-      <router:requiredAccess>adminUser:admin</router:requiredAccess>
+      <router:requiredAccess>AdminAccount:admin</router:requiredAccess>
+      <router:priority>0</router:priority>
+    </router:route>
+    <router:route name="AdminAccount:Info">
+      <router:description>Get list of users</router:description>
+      <router:pattern>/api/v2/admin/account/config/</router:pattern>
+      <router:callable>\Anakeen\Routes\Admin\Account\Config</router:callable>
+      <router:method>GET</router:method>
+      <router:requiredAccess>AdminAccount:admin</router:requiredAccess>
       <router:priority>0</router:priority>
     </router:route>
   </router:routes>
   <router:accesses>
-    <router:access name="adminUser:admin">
+    <router:access name="AdminAccount:admin">
       <router:description>Administrator access</router:description>
     </router:access>
   </router:accesses>

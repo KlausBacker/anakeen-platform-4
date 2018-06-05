@@ -30,14 +30,19 @@
                     </div>
                 </div>
                 <div class="accountManager_contentPart" ref="centerPart">
-                    <div class="accountManager_contentPart_groupPart" ref="documentPart">
-                        <kendo-toolbar>
-                            <kendo-toolbar-item type="button" icon="plus-sm"></kendo-toolbar-item>
-                        </kendo-toolbar>
-                        <ank-document ref="groupDoc" ></ank-document>
+                    <div  class="accountManager_contentPart_groupPart" ref="documentPart">
+                        <div v-show="displayGroupDocument" class="accountManager_contentPart_groupPart_wrapper">
+                            <kendo-toolbar ref="groupToolbar">
+                                <kendo-toolbar-item type="button" icon="plus-sm"></kendo-toolbar-item>
+                            </kendo-toolbar>
+                            <ank-document ref="groupDoc" ></ank-document>
+                        </div>
+                        <div v-show="!displayGroupDocument">
+                            No group selected
+                        </div>
                     </div>
                     <div class="accountManager_contentPart_gridPart">
-                        <kendo-toolbar>
+                        <kendo-toolbar ref="userToolbar">
                             <kendo-toolbar-item type="button" icon="plus-sm"></kendo-toolbar-item>
                         </kendo-toolbar>
                         <kendo-grid ref="grid"
@@ -61,12 +66,12 @@
                 <kendo-toolbar>
                     <kendo-toolbar-item type="button" icon="arrow-double-60-left" @click="toggleUserMode"></kendo-toolbar-item>
                 </kendo-toolbar>
-                <ank-document ref="openUser" ></ank-document>
+                <ank-document ref="openDoc" ></ank-document>
             </div>
         </div>
     </div>
 </template>
 <style >
-    @import "./AdminCenterUserAndGroup.css";
+    @import "./AdminCenterAccount.css";
 </style>
-<script src="./AdminCenterUserAndGroup.controller.js"></script>
+<script src="./AdminCenterAccount.controller.js"></script>

@@ -14,7 +14,6 @@ use Dcp\Sacc\Exception;
 
 class Users
 {
-    private static $fields = ["login", "lastname", "firstname", "mail"];
 
     /**
      * @param \Slim\Http\request $request

@@ -1,0 +1,13 @@
+{
+  "userAdmin": {
+    "title": "Account management",
+    "icon": "<i class=\"material-icons\" title=\"account management\">group</i>",
+    "order": {
+      "position": "first"
+    },
+    "pluginPath": "/accountManagement",
+    "debugScriptURL": "/AdminCenter/debug/ank-admin-account.js",
+    "scriptURL": "/AdminCenter/prod/ank-admin-account.js",
+    "pluginTemplate": "<ank-admin-account></ank-admin-account>"
+  }
+}
