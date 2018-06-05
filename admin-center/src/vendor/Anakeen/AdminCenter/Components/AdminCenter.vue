@@ -3,6 +3,7 @@
         <admin-header></admin-header>
         <admin-content></admin-content>
         <admin-notification></admin-notification>
+        <admin-modal></admin-modal>
     </div>
 </template>
 <style>
