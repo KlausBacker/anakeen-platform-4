@@ -3,14 +3,23 @@ import LoadScript from 'vue-plugin-load-script';
 import store from './store';
 import router from './router';
 import AdminCenter from './AdminCenter.vue';
-import httpApi from './utils/apiConf';
-import httpAdmin from './utils/adminConf';
-import httpAxios from './utils/axiosBase';
+import AnkAxios from './utils/axios';
+import { onAuthError, onNetworkError } from "./utils/xhrErrors";
+
+
 
 Vue.use(LoadScript);
-Vue.ankApi = Vue.prototype.$ankApi = httpApi;
-Vue.ankAdmin = Vue.prototype.$ankAdmin = httpAdmin;
-Vue.axios = Vue.prototype.$axios = httpAxios;
+Vue.use(AnkAxios, {
+    onErrorResponse: (error) => {
+        if (error.response === undefined) {
+            onNetworkError();
+        } else if (error.response.status === 403) {
+            onAuthError();
+        }
+        return error;
+    },
+});
+
 Vue.jQuery = Vue.jquery = Vue.prototype.$ = kendo.jQuery;
 Vue.kendo = Vue.prototype.$kendo = kendo;
 

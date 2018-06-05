@@ -18,6 +18,13 @@ const attachPluginEvents = (element) => {
             store.dispatch('showMessage', message);
         }
     });
+
+    element.addEventListener('ank-admin-modal', (event) => {
+        const modalConfig = event.detail && event.detail.length ? event.detail[0] : null;
+        if (modalConfig) {
+            store.dispatch('showModal', modalConfig);
+        }
+    });
 };
 
 export const buildVueRoutes = (plugins) => {
@@ -48,23 +55,28 @@ export const asyncVueComponent = (pluginDescription) => () => ({
         if (!scriptURL) {
             reject("Invalid component url");
         } else {
-            Vue.loadScript(scriptURL)
-                .then(() => {
-                    const componentTemplate = pluginDescription[PLUGIN_SCHEMA.pluginTemplate];
-                    if (!componentTemplate) {
-                        reject(`Component "${pluginDescription[PLUGIN_SCHEMA.name]}" has not a valid template`);
-                    } else {
-                        resolve({
-                            template: componentTemplate,
-                            mounted() {
-                                attachPluginEvents(this.$el);
+            // Test network access to script with axios to handle network errors
+            Vue.axios.get(scriptURL).
+                then(() => {
+                    Vue.loadScript(scriptURL)
+                        .then(() => {
+                            const componentTemplate = pluginDescription[PLUGIN_SCHEMA.pluginTemplate];
+                            if (!componentTemplate) {
+                                reject(`Component "${pluginDescription[PLUGIN_SCHEMA.name]}" has not a valid template`);
+                            } else {
+                                resolve({
+                                    template: componentTemplate,
+                                    mounted() {
+                                        attachPluginEvents(this.$el);
+                                    }
+                                });
                             }
+                        })
+                        .catch(err => {
+                            reject(err);
                         });
-                    }
-                })
-                .catch(err => {
-                    reject(err);
-                });
+                }).catch(reject);
+
         }
     })
         .catch(err => {

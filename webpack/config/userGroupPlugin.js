@@ -21,6 +21,9 @@ const productionComponentConfig = merge([
             path: path.resolve(PATHS.build, 'AdminCenter/prod/'),
             filename: '[name].js'
         },
+        externals: {
+            'vue': 'Vue'
+        }
     },
     parts.useVueLoader(/node_modules/),
     parts.setFreeVariable('process.env.NODE_ENV', 'production'),
@@ -38,6 +41,9 @@ const debugComponentConfig = merge([
             publicPath: '/AdminCenter/debug/',
             filename: '[name].js',
             path: path.resolve(PATHS.build, 'AdminCenter/debug/'),
+        },
+        externals: {
+            'vue': 'Vue'
         }
     },
     parts.useVueLoader(/node_modules/),
@@ -55,6 +61,9 @@ const devComponentConfig = merge([
             publicPath: '/AdminCenter/debug/',
             filename: '[name].js',
             path: path.resolve(PATHS.build, 'AdminCenter/debug/'),
+        },
+        externals: {
+            'vue': 'Vue'
         }
     },
     parts.useVueLoader(/node_modules/),
