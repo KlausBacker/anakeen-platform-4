@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
+    <router:apps>
+        <router:app name="UITEST">
+            <router:version>1.0.0</router:version>
+            <router:shortName>List all ui test pages</router:shortName>
+            <router:description>Interface to view test pages</router:description>
+            <router:icon>apps/uitest/uitest.png</router:icon>
+        </router:app>
+    </router:apps>
+    <router:routes>
+        <router:route name="Ui:Test:Page">
+            <router:priority>1</router:priority>
+            <router:callable>\Anakeen\Routes\UiTest\TestPage</router:callable>
+            <router:method>GET</router:method>
+            <router:pattern>/apps/uitest/</router:pattern>
+            <router:description>Test Ui Page</router:description>
+            <router:applicationContext>UITEST</router:applicationContext>
+            <router:requiredAccess>uitest:user</router:requiredAccess>
+        </router:route>
+        <router:route name="Ui:Test:ExportData">
+            <router:priority>1</router:priority>
+            <router:callable>\Anakeen\Routes\UiTest\ExportData</router:callable>
+            <router:method>GET</router:method>
+            <router:pattern>/api/v2/uitest/data</router:pattern>
+            <router:description>Test Ui Export Test Description</router:description>
+            <router:requiredAccess operator="and">
+                <router:access>uitest:admin</router:access>
+                <router:access>uitest:user</router:access>
+            </router:requiredAccess>
+        </router:route>
+    </router:routes>
+    <router:accesses>
+        <router:access name="uitest:user">
+            <router:applicationContext>UITEST</router:applicationContext>
+            <router:description>Normal Access</router:description>
+        </router:access>
+        <router:access name="uitest:admin">
+            <router:applicationContext>UITEST</router:applicationContext>
+            <router:description>Administrator Access</router:description>
+        </router:access>
+    </router:accesses>
+</router:config>
