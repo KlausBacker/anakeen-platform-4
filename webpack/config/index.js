@@ -8,6 +8,7 @@ const parts = require('../parts');
 
 const AdminCenterWebpackConfig = require('./adminCenter');
 const userAndGroupConfig = require('./AccountPlugin');
+const parameterConfig = require('./ParameterPlugin');
 
 const commonConfig = merge([
     {
@@ -36,6 +37,7 @@ const commonConfig = merge([
 module.exports = env => {
     return [
         merge(commonConfig, AdminCenterWebpackConfig(env)),
-        merge(commonConfig, userAndGroupConfig(env))
+        merge(commonConfig, userAndGroupConfig(env)),
+        merge(commonConfig, parameterConfig(env))
     ];
 };

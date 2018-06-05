@@ -1,0 +1,10 @@
+{
+  "parameterManagement": {
+    "title": "Parameter management",
+    "icon": "<i class=\"material-icons\" title=\"Parameter management\">build</i>",
+    "pluginPath": "/parameterManagement",
+    "debugScriptURL": "/AdminCenter/debug/ank-admin-parameter.js",
+    "scriptURL": "/AdminCenter/prod/ank-admin-parameter.js",
+    "pluginTemplate": "<ank-admin-parameter></ank-admin-parameter>"
+  }
+}
