@@ -18,6 +18,13 @@ const attachPluginEvents = (element) => {
             store.dispatch('showMessage', message);
         }
     });
+
+    element.addEventListener('ank-admin-modal', (event) => {
+        const modalConfig = event.detail && event.detail.length ? event.detail[0] : null;
+        if (modalConfig) {
+            store.dispatch('showModal', modalConfig);
+        }
+    });
 };
 
 export const buildVueRoutes = (plugins) => {
