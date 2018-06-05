@@ -35,7 +35,7 @@ class RouterLib
                 if (preg_match("/\\.xml/", $configFile)) {
                     $content = file_get_contents($dir . "/" . $configFile);
 
-                    $conf = self::xmlDecode($content);
+                    $conf = self::xmlDecode($dir . "/" . $configFile);
 
                     if ($conf === null) {
                         throw new Exception("CORE0019", $dir . "/" . $configFile);
@@ -55,13 +55,17 @@ class RouterLib
     }
 
 
-    protected static function xmlDecode($xmlData)
+    protected static function xmlDecode($configFile)
     {
+        $xmlData = file_get_contents( $configFile);
         $dom = new \DOMDocument();
         $dom->loadXML($xmlData);
 
         $simpleData = simplexml_load_string($xmlData, \SimpleXMLElement::class, 0, "router", true);
 
+        if ($simpleData === false) {
+            throw new \Anakeen\Router\Exception("ROUTER0107", $configFile);
+        }
         $data = [];
         foreach (["routes", "apps", "accesses", "middlewares", "parameters"] as $topNode) {
             $data[$topNode] = self::normalizeData($simpleData[0], $topNode);

@@ -33,5 +33,10 @@ class ErrorCodeRouter
      * @see \Anakeen\Router\AuthenticatorManager::getAuthorizationToken
      */
     const ROUTER0106 = 'User is not valid';
+    /**
+     * @errorCode XML Config file invalid
+     * @see
+     */
+    const ROUTER0107 = 'Invalid XML file "%s"';
 
 }
