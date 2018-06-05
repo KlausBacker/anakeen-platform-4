@@ -43,7 +43,7 @@
                     "number": 0,
                     "createdBy": {
                         "title": "%userDocName%",
-                        "icon": "resizeimg.php?img=CORE%2FImages%2Fse-iuser.png&size=24"
+                        "icon": "/api/v2/images/assets/sizes/24x24c/se-iuser.png"
                     }
                 },
                 "security": {
