@@ -74,12 +74,6 @@
         <check type="syscommand" command="recode">
             <label lang="en">Check "recode". For send pdf email</label>
         </check>
-        <check type="syscommand" command="html2ps">
-            <label lang="en">Check "html2ps". For send pdf email</label>
-        </check>
-        <check type="syscommand" command="ps2pdf">
-            <label lang="en">Check "ps2pdf". For send pdf email</label>
-        </check>
         <check type="syscommand" command="php">
             <label lang="en">Check "php". Core language</label>
         </check>
@@ -426,12 +420,6 @@
         </check>
         <check type="syscommand" command="recode">
             <label lang="en">Check "recode". For send pdf email</label>
-        </check>
-        <check type="syscommand" command="html2ps">
-            <label lang="en">Check "html2ps". For send pdf email</label>
-        </check>
-        <check type="syscommand" command="ps2pdf">
-            <label lang="en">Check "ps2pdf". For send pdf email</label>
         </check>
         <check type="syscommand" command="php">
             <label lang="en">Check "php". Core language</label>
