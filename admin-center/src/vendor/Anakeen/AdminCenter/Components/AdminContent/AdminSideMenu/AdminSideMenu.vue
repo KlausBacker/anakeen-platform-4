@@ -7,11 +7,11 @@
                 </router-link>
             </div>
             <div class="side-menu-bottom-content">
-                <a class="admin-center-icon-plugin" href="http://docs.anakeen.com" target="_blank">
-                    <span class="icon-plugin" title="Documentation">
-                        <i class="material-icons">book</i>
-                    </span>
-                </a>
+                <!--<a class="admin-center-icon-plugin" href="http://docs.anakeen.com" target="_blank">-->
+                    <!--<span class="icon-plugin" title="Documentation">-->
+                        <!--<i class="material-icons">book</i>-->
+                    <!--</span>-->
+                <!--</a>-->
                 <img class="anakeen-logo" src="/AdminCenter/Images/anakeen_monogramme.svg" alt="Anakeen Logo"/>
             </div>
         </div>
