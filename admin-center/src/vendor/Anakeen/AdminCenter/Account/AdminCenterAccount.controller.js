@@ -190,9 +190,9 @@ export default {
             const toggleUserMode = this.toggleUserMode.bind(this);
             Vue.jquery(grid).on("click", ".openButton", (event) => {
                 event.preventDefault();
-                console.log(event);
                 const userId = event.currentTarget.dataset["initid"];
                 if (userId) {
+                    openDoc.viewid = "!defaultConsultation";
                     openDoc.initid = userId;
                     toggleUserMode();
                 }
