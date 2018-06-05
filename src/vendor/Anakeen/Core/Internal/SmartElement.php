@@ -31,6 +31,7 @@ use \Anakeen\Core\ContextManager;
 use \Anakeen\Core\SEManager;
 use Anakeen\Core\Internal\Format\StandardAttributeValue;
 use Anakeen\LogManager;
+use Anakeen\Routes\Core\Lib\CollectionDataFormatter;
 use Anakeen\SmartHooks;
 
 class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
@@ -6206,33 +6207,60 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getIcon($idicon = "", $size = null, $otherId = null)
     {
-        /**
-         * @var \Anakeen\Core\Internal\Action $action
-         */
-        global $action;
+        $apiURL = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_URLINDEX") . "/" . CollectionDataFormatter::APIURL;
+        $efile = null;
+
         if ($idicon == "") {
             $idicon = $this->icon;
         }
-        if ($idicon != "") {
-            if (preg_match(PREGEXPFILE, $idicon, $reg)) {
-                if ($idicon[0] === "!") {
-                    $efile = sprintf(
-                        "file/%s/0/icon/-1/%s?inline=yes&width=%s",
-                        ($otherId == null) ? $this->id : $otherId,
-                        rawurlencode($reg["name"]),
-                        $size
-                    );
-                } elseif ($size) {
-                    $efile = "resizeimg.php?vid=" . $reg["vid"] . "&size=" . $size;
-                } else {
-                    $efile = "FDL/geticon.php?vaultid=" . $reg["vid"] . "&mimetype=" . $reg["mime"];
+        if ($idicon == "") {
+            $idicon = "doc.png";
+        }
+
+        if (preg_match(PREGEXPFILE, $idicon, $reg)) {
+            if ($idicon[0] === "!") {
+                if (!$size) {
+                    $size = "20";
                 }
+                $efile = sprintf(
+                    "%sdocuments/%d/images/%s/-1/sizes/%sx%s.png",
+                    $apiURL,
+                    ($otherId == null) ? $this->id : $otherId,
+                    rawurlencode($reg["name"]),
+                    $size,
+                    $size
+                );
+                return $efile;
+            }
+            if ($size) {
+                $efile = sprintf("%simages/recorded/sizes/%sx%sc/%s",
+                    $apiURL,
+                    $size,
+                    $size,
+                    $reg["vid"]
+                );
             } else {
-                $efile = $action->parent->getImageLink($idicon, true, $size);
+                $efile = sprintf("%simages/recorded/original/%s",
+                    $apiURL,
+                    $reg["vid"]
+                );
             }
             return $efile;
         } else {
-            return $action->parent->getImageLink("doc.png", true, $size);
+            if ($size) {
+                $efile = sprintf("%simages/assets/sizes/%sx%sc/%s",
+                    $apiURL,
+                    $size,
+                    $size,
+                    $idicon
+                );
+            } else {
+                $efile = sprintf("%simages/assets/original/%s",
+                    $apiURL,
+                    $idicon
+                );
+            }
+            return $efile;
         }
     }
 
