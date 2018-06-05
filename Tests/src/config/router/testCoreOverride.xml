@@ -3,14 +3,12 @@
   <router:apps>
     <router:app name="CORETEST" override="partial">
       <router:description>Testing routes and add parameters</router:description>
-      <router:parameters/>
     </router:app>
   </router:apps>
   <router:routes>
     <router:route name="Core:Test:Routes:Over1" override="partial">
       <router:priority>10</router:priority>
       <router:description>Route override</router:description>
-
     </router:route>
     <router:route name="Core:Test:Routes:Over2"  override="complete">
       <router:priority>3</router:priority>

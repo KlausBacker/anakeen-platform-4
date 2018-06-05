@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://www.anakeen.com/ns/routes/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="config" type="rout:configType" xmlns:rout="http://www.anakeen.com/ns/routes/"/>
+    <xs:complexType name="accessType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="category" minOccurs="0"/>
+            <xs:element type="xs:string" name="applicationContext" minOccurs="0"/>
+            <xs:element type="xs:string" name="description"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="middlewaresType">
+        <xs:sequence>
+            <xs:element type="rout:middlewareType" name="middleware" xmlns:rout="http://www.anakeen.com/ns/routes/"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="parameterType">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element type="xs:string" name="value"/>
+            <xs:element type="xs:string" name="description"/>
+            <xs:element type="xs:string" name="access"/>
+            <xs:element type="xs:string" name="category"/>
+            <xs:element name="type">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="password"/>
+                        <xs:enumeration value="text"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="isUser">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="true"/>
+                        <xs:enumeration value="false"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="applicationContext">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="TST_PARAMETER_MANAGER"/>
+                        <xs:enumeration value="PARENT_PARAMETER"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="routesType">
+        <xs:sequence>
+            <xs:element type="rout:routeType" name="route" maxOccurs="unbounded" minOccurs="0" xmlns:rout="http://www.anakeen.com/ns/routes/"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="middlewareType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="priority"/>
+            <xs:element type="xs:string" name="callable"/>
+            <xs:element type="xs:string" name="method"/>
+            <xs:element type="xs:string" name="pattern"/>
+            <xs:element type="xs:string" name="description"/>
+            <xs:element type="xs:string" name="requiredAccess"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name"/>
+    </xs:complexType>
+    <xs:complexType name="appType">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element type="xs:string" name="shortName"/>
+            <xs:element type="xs:string" name="description" minOccurs="0"/>
+            <xs:element type="xs:string" name="version" minOccurs="0"/>
+        </xs:choice>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="override"/>
+    </xs:complexType>
+    <xs:complexType name="appsType">
+        <xs:sequence>
+            <xs:element type="rout:parameterType" name="parameter" maxOccurs="unbounded" minOccurs="0" xmlns:rout="http://www.anakeen.com/ns/routes/"/>
+            <xs:element type="rout:appType" name="app" minOccurs="0" xmlns:rout="http://www.anakeen.com/ns/routes/"/>
+            <xs:element type="rout:routeType" name="route" maxOccurs="unbounded" minOccurs="0" xmlns:rout="http://www.anakeen.com/ns/routes/"/>
+            <xs:element type="rout:accessType" name="access" maxOccurs="unbounded" minOccurs="0" xmlns:rout="http://www.anakeen.com/ns/routes/"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="requiredAccessType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="access" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="operator" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="parametersType">
+        <xs:sequence>
+            <xs:element type="rout:parameterType" name="parameter" maxOccurs="unbounded" minOccurs="0" xmlns:rout="http://www.anakeen.com/ns/routes/"/>
+            <xs:element type="rout:appType" name="app" minOccurs="0" xmlns:rout="http://www.anakeen.com/ns/routes/"/>
+            <xs:element type="rout:routeType" name="route" maxOccurs="unbounded" minOccurs="0" xmlns:rout="http://www.anakeen.com/ns/routes/"/>
+            <xs:element type="rout:accessType" name="access" maxOccurs="unbounded" minOccurs="0" xmlns:rout="http://www.anakeen.com/ns/routes/"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="configType">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element type="rout:routesType" name="routes" xmlns:rout="http://www.anakeen.com/ns/routes/"/>
+            <xs:element type="rout:middlewaresType" name="middlewares" xmlns:rout="http://www.anakeen.com/ns/routes/"/>
+            <xs:element type="rout:accessesType" name="accesses" xmlns:rout="http://www.anakeen.com/ns/routes/"/>
+            <xs:element type="rout:appsType" name="apps" xmlns:rout="http://www.anakeen.com/ns/routes/"/>
+            <xs:element type="rout:parametersType" name="parameters" xmlns:rout="http://www.anakeen.com/ns/routes/"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="routeType">
+        <xs:sequence maxOccurs="unbounded" minOccurs="1">
+            <xs:element type="xs:string" name="priority" minOccurs="0"/>
+            <xs:element type="xs:string" name="callable" minOccurs="1"/>
+            <xs:element name="method" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>HTTP method</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="GET"/>
+                        <xs:enumeration value="POST"/>
+                        <xs:enumeration value="PUT"/>
+                        <xs:enumeration value="PATCH"/>
+                        <xs:enumeration value="OPTIONS"/>
+                        <xs:enumeration value="DELETE"/>
+                        <xs:enumeration value="ANY"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element type="xs:string" name="pattern" maxOccurs="unbounded" minOccurs="1"/>
+            <xs:element type="xs:string" name="description" minOccurs="0"/>
+            <xs:element type="xs:string" name="applicationContext" minOccurs="0"/>
+            <xs:element name="requiredAccess" minOccurs="0">
+                <xs:complexType mixed="true">
+                    <xs:sequence>
+                        <xs:element type="xs:string" name="access" maxOccurs="unbounded" minOccurs="0"/>
+                    </xs:sequence>
+                    <xs:attribute type="xs:string" name="operator"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="authenticated" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="false"/>
+                        <xs:enumeration value="true"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="override"/>
+    </xs:complexType>
+    <xs:complexType name="accessesType">
+        <xs:sequence>
+            <xs:element type="rout:accessType" name="access" maxOccurs="unbounded" minOccurs="0" xmlns:rout="http://www.anakeen.com/ns/routes/"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

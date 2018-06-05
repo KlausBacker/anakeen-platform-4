@@ -11,7 +11,7 @@
     <router:route name="Core:Root">
       <router:priority>0</router:priority>
       <router:callable>\Anakeen\App\Core\WelcomePage</router:callable>
-      <router:method>get</router:method>
+      <router:method>GET</router:method>
       <router:pattern>/</router:pattern>
       <router:description>Welcome Page</router:description>
       <router:requiredAccess/>
@@ -19,7 +19,7 @@
     <router:route name="Core:Welcome">
       <router:priority>1</router:priority>
       <router:callable>\Anakeen\App\Core\WelcomePage</router:callable>
-      <router:method>get</router:method>
+      <router:method>GET</router:method>
       <router:pattern>/welcome</router:pattern>
       <router:description>Welcome Page</router:description>
       <router:requiredAccess/>
@@ -27,7 +27,7 @@
     <router:route name="Core:LayoutAsset">
       <router:priority>1</router:priority>
       <router:callable>\Anakeen\Routes\Core\LayoutAsset</router:callable>
-      <router:method>get</router:method>
+      <router:method>GET</router:method>
       <router:pattern>/assets/{asset}</router:pattern>
       <router:description>Get css/js asset from Layout directory</router:description>
       <router:requiredAccess/>

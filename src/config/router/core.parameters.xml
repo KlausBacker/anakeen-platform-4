@@ -2,7 +2,7 @@
 <router:config xmlns:router="http://www.anakeen.com/ns/routes/">
   <router:parameters>
     <router:parameter name="WVERSION">
-      <router:value></router:value>
+      <router:value/>
       <router:description>Version key</router:description>
       <router:access>readonly</router:access>
     </router:parameter>
@@ -34,7 +34,7 @@
       <router:access>admin</router:access>
     </router:parameter>
     <router:parameter name="CORE_URLINDEX">
-      <router:value></router:value>
+      <router:value/>
       <router:description>Url to reach http server index</router:description>
       <router:access>admin</router:access>
     </router:parameter>
@@ -113,7 +113,7 @@
       <router:access>admin</router:access>
     </router:parameter>
     <router:parameter name="CORE_MAILACTION">
-      <router:value></router:value>
+      <router:value/>
       <router:description>Mail action URL</router:description>
       <router:access>admin</router:access>
     </router:parameter>
@@ -124,7 +124,7 @@
       <router:access>admin</router:access>
     </router:parameter>
     <router:parameter name="CORE_WSH_MAILTO">
-      <router:value></router:value>
+      <router:value/>
       <router:description>WSH error mail recipients (comma-separated list of mail addresses)</router:description>
       <router:access>admin</router:access>
     </router:parameter>
