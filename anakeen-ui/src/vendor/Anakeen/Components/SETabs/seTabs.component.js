@@ -222,7 +222,7 @@ export default {
                 this.tabslist.list.addClass('seTabs__tabsList__list');
                 this.tabslist.list
                     .find('.seTabs__tabsList__list__close__all')
-                    .on('click', this.closeAllDocuments);
+                    .on('click', this.closeAllSE);
             },
 
             sendGetRequest: (url, config, loadingElement) => {
@@ -276,7 +276,7 @@ export default {
                         this.tabModel.add(welcomeTab, this.newLazyTab);
                     }
 
-                    this.selectDocument(0);
+                    this.selectIndex(0);
                 }
 
                 this.privateScope
@@ -345,7 +345,7 @@ export default {
             bindWelcomeTabEvents: ($newTab, index) => {
                 $newTab.on('document-creation', e => this.privateScope.onCreateDocumentClick(e, index));
                 $newTab.on('document-selected', (e) => {
-                    this.setDocument(e.detail[0], index);
+                    this.setSE(e.detail[0], index);
                 });
             },
 
@@ -410,7 +410,7 @@ export default {
                 if (event.items.length === 1) {
                     if (this.$(this.tabstrip.items()[event.index]).hasClass('k-state-active')
                     && !this.tabModel.isEmpty()) {
-                        this.selectDocument(0);
+                        this.selectIndex(0);
                     }
 
                     this.tabstrip.remove(event.index);
@@ -487,7 +487,7 @@ export default {
                 e.stopPropagation();
                 if (this.newTabConfig) {
                     this.tabModel.add(Object.assign({}, { tabId: Constants.NEW_TAB_ID }, this.newTabConfig));
-                    this.selectDocument(this.tabModel.size() - 1);
+                    this.selectIndex(this.tabModel.size() - 1);
                 }
 
                 this.$emitAnkEvent('tabs-new-tab');
@@ -498,16 +498,16 @@ export default {
                 e.stopPropagation();
 
                 const item = this.$(e.target).closest('.k-item');
-                this.closeDocument(item.index());
+                this.closeSE(item.index());
             },
 
             onCreateDocumentClick: (e, index) => {
                 const newId = e.detail[0].initid;
-                this.setDocument({
+                this.setSE({
                     initid: newId,
                     viewid: '!defaultCreation',
                 }, index);
-                this.selectDocument(index);
+                this.selectIndex(index);
             },
 
             onTabstripSelect: (e) => {
@@ -528,14 +528,14 @@ export default {
                 e.sender.list.find('.seTabs__openedTab__listItem__close').on('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    this.closeDocument({
+                    this.closeSE({
                         tabId: $(e.target).closest('.seTabs__openedTab__listItem').data('docid'),
                     });
                 });
             },
 
             onOpenedTabsListItemClick: (e) => {
-                this.selectDocument(e.dataItem.data);
+                this.selectSE(e.dataItem.data);
             },
 
             onDocumentReady: (readyEvent, tabPosition) => {
@@ -578,7 +578,7 @@ export default {
                         e.detail[0].preventDefault();
                         const initid = e.detail[2].options[0];
                         const viewid = e.detail[2].options[1];
-                        this.addDocument({ initid, viewid });
+                        this.addSE({ initid, viewid });
                     }
                 }
             },
@@ -589,6 +589,23 @@ export default {
                 tab.set('data.title', e.detail[1].title);
                 tab.set('data.icon', e.detail[1].icon);
                 // this.$emit('document-modified', e.detail);
+            },
+
+            formatSE: (seConfig) => {
+                let initid = null;
+                let otherProps = {};
+                if (typeof seConfig === 'object') {
+                    initid = seConfig.initid;
+                    otherProps = Object.assign({}, seConfig);
+                } else if (typeof seConfig === 'number' || typeof seConfig === 'string') {
+                    initid = seConfig;
+                }
+
+                if (typeof initid !== 'string' && typeof initid !== 'number') {
+                    throw "Error in the Smart Element format : '" + JSON.stringify(seConfig) + "' must be String|Number or Object with an 'initid' property";
+                }
+
+                return Object.assign({}, otherProps, { initid: initid.toString() });
             },
         };
     },
@@ -609,71 +626,54 @@ export default {
     },
 
     methods: {
-        addDocument(document) {
-            console.log(document);
-            const index = this.tabModel.findIndex(t => t.tabId == document.initid);
+        addSE(seConfig) {
+            const seFormat = this.privateScope.formatSE(seConfig);
+            const index = this.tabModel.findIndex(t => t.tabId === seFormat.initid);
             if (index < 0) {
                 const tabData = {
-                    tabId: document.initid,
+                    tabId: seFormat.initid,
                     headerTemplate,
                     contentTemplate,
-                    data: Object.assign({}, document),
+                    data: Object.assign({}, seFormat),
                 };
                 if (this.privateScope.canUseLazyTab()) {
-                    console.log('USE LAZY LOAD');
+                    // Use preloaded smart element
                     this.privateScope.loadLazyTabDocument(tabData);
                 } else {
-                    console.log("DON'T USE LAZY LOAD");
                     this.tabModel.add(tabData);
                 }
 
-                this.selectDocument(document);
+                this.selectSE(seFormat);
             } else {
-                this.selectDocument(index);
+                this.selectIndex(index);
             }
         },
 
-        setDocument(document, position) {
+        setSE(se, position) {
             if (position === undefined) {
-                this.addDocument(document);
+                this.addSE(se);
             } else {
-                const index = this.tabModel.findIndex(t => t.tabId == document.initid);
+                const seFormat = this.privateScope.formatSE(se);
+                const index = this.tabModel.findIndex(t => t.tabId === seFormat.initid);
                 if (index < 0) {
                     const tabData = {
-                        tabId: document.initid,
+                        tabId: seFormat.initid,
                         headerTemplate,
                         contentTemplate,
-                        data: Object.assign({}, document),
+                        data: Object.assign({}, seFormat),
                     };
                     this.tabModel.replace(position, tabData);
-                    /*if (this.privateScope.canUseLazyTab()) {
-                        console.log('USE LAZY LOAD');
-                        this.tabModel.replace(position, this.tabModel.remove(this.lazyTabIndex));
-                        this.privateScope.loadLazyTabDocument(tabData);
-                        this.selectDocument(document);
-                    } else {
-                        console.log("DON'T USE LAZY LOAD");
-                        this.tabModel.replace(position, tabData);
-                    }*/
-                    this.selectDocument(document);
+                    this.selectSE(seFormat);
                 } else {
-                    this.selectDocument(index);
+                    this.selectIndex(index);
                 }
             }
         },
 
-        selectDocument(documentId) {
-            let index = 0;
-            if (typeof documentId === 'number') {
-                if (documentId >= 0 && documentId < this.tabModel.size()) {
-                    index = documentId;
-                }
-            } else if (typeof documentId === 'object' && documentId !== null
-                && documentId.initid !== undefined) {
-                index = this.tabModel.findIndex(t => t.tabId == documentId.initid);
-                if (index < 0) {
-                    index = 0;
-                }
+        selectIndex(seIndex = 0) {
+            let index = seIndex;
+            if (index < 0) {
+                index = 0;
             }
 
             this.$emitAnkEvent('se-tab-selected', this.tabModel.get(index), index);
@@ -681,11 +681,23 @@ export default {
             this.tabstrip.select(index);
         },
 
-        closeDocument(documentId) {
+        selectSE(seConfig) {
+            const seFormat = this.privateScope.formatSE(seConfig);
+            let index = this.tabModel.findIndex(t => t.tabId === seFormat.initid);
+            if (index < 0) {
+                index = 0;
+            }
+
+            this.$emitAnkEvent('se-tab-selected', this.tabModel.get(index), index);
+
+            this.tabstrip.select(index);
+        },
+
+        closeSE(documentId) {
             this.tabModel.remove(documentId);
         },
 
-        closeAllDocuments() {
+        closeAllSE() {
             this.tabModel.removeAll();
         },
 
@@ -701,7 +713,7 @@ export default {
         addCustomTab(tabConfiguration) {
             if (tabConfiguration.headerTemplate && tabConfiguration.contentTemplate) {
                 this.tabModel.add(Object.assign({}, tabConfiguration, { tabId: Constants.CUSTOM_TAB_ID }));
-                this.selectDocument({ initid: Constants.CUSTOM_TAB_ID });
+                this.selectSE({ initid: Constants.CUSTOM_TAB_ID });
             }
         },
     },
