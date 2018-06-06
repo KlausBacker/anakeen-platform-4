@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<admin:config xmlns:admin="http://www.anakeen.com/ns/admin/">
+    <admin:plugins>
+        <admin:plugin name="userAdmin">
+            <admin:title>Account management</admin:title>
+            <admin:icon><![CDATA[<i class="material-icons" title="account management">group</i>]]></admin:icon>
+            <admin:pluginPath>/accountManagement</admin:pluginPath>
+            <admin:scriptURL>/AdminCenter/prod/ank-admin-account.js</admin:scriptURL>
+            <admin:debugScriptURL>/AdminCenter/debug/ank-admin-account.js</admin:debugScriptURL>
+            <admin:pluginTemplate><![CDATA[<ank-admin-account></ank-admin-account>]]></admin:pluginTemplate>
+            <admin:order position="first"/>
+        </admin:plugin>
+    </admin:plugins>
+</admin:config>

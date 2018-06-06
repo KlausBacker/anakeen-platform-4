@@ -23,6 +23,12 @@
   dependencies:
     "@progress/kendo-base-components-vue-wrapper" "2018.2.516"
 
+"@progress/kendo-dialog-vue-wrapper@^2018.2.516":
+  version "2018.2.516"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-dialog-vue-wrapper/-/kendo-dialog-vue-wrapper-2018.2.516.tgz#28952dd781e1c6c8513106306fab1f891c181fd7"
+  dependencies:
+    "@progress/kendo-base-components-vue-wrapper" "2018.2.516"
+
 "@progress/kendo-grid-vue-wrapper@^2018.2.516":
   version "2018.2.516"
   resolved "https://registry.yarnpkg.com/@progress/kendo-grid-vue-wrapper/-/kendo-grid-vue-wrapper-2018.2.516.tgz#3036f675a1f50257795d536f8b63b2b34dd3f2a0"

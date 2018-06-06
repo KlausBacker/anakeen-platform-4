@@ -1,37 +1,45 @@
-
+import { Dialog } from '@progress/kendo-dialog-vue-wrapper';
 export default {
+    components: {
+        Dialog,
+    },
     data() {
         return {
-            kendoModal: null,
-            config: {
-                width: "450px",
-                buttonLayout: "normal",
-                closable: false,
-                modal: true,
-                visible: false,
-            }
+            title: "",
+            template : "",
+            actions: [],
+            visible: false,
+            modal: true,
+            closable: true,
+            buttonLayout: 'normal',
+            width: "450px",
         };
     },
 
     mounted() {
-        const _this = this;
         this.$store.subscribeAction((action) => {
             if (action.type === 'showModal') {
                 const payload = action.payload;
                 if (payload.actions) {
-                    this.config.actions = payload.actions;
+                    this.actions = payload.actions;
                 }
-                this.kendoModal = this.$(this.$refs.kendoModal)
-                    .kendoDialog(this.config)
-                    .data('kendoDialog');
                 if (payload.template) {
-                    this.kendoModal.content(payload.template);
+                    this.template = payload.template;
                 }
                 if (payload.title) {
-                    this.kendoModal.title(payload.title);
+                    this.title = payload.title;
                 }
-                this.kendoModal.open();
+                this.$forceUpdate();
+                this.$refs.kendoDialog.kendoWidget().open();
             }
         });
+    },
+
+    methods: {
+        getAction(action) {
+            if (typeof action !== 'function') {
+                return () => true;
+            }
+        }
     }
-}
+};

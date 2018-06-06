@@ -6,4 +6,6 @@ class ErrorCodeADMINPLUGINS
     const ADMINPLUGINS0002 = 'Cannot open admin plugins config directory  "%s"';
     const ADMINPLUGINS0003 = 'Incorrect plugin name order for the declaration of plugin "%s"';
     const ADMINPLUGINS0004 = 'Incorrect order position for the declaration of plugin "%s"';
+    const ADMINPLUGINS0005 = 'No base definition of plugin "%s"';
+    const ADMINPLUGINS0006 = 'Multiple definition of plugin "%s" without "override" attribute';
 }

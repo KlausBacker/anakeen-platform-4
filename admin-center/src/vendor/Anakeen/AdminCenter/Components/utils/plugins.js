@@ -1,14 +1,15 @@
 import Vue from 'vue';
 import store from '../store';
 
-const PLUGIN_SCHEMA = {
+export const PLUGIN_SCHEMA = {
     name: 'name',
     title: 'title',
     pluginPath: 'pluginPath',
     scriptURL: 'scriptURL',
     debugScriptURL: 'debugScriptURL',
-    subcomponents: 'subcomponents',
-    pluginTemplate: 'pluginTemplate'
+    subcomponents: 'sublevel',
+    pluginTemplate: 'pluginTemplate',
+    icon: 'icon'
 };
 
 const attachPluginEvents = (element) => {
