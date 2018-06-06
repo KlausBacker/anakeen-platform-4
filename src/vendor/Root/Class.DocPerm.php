@@ -141,7 +141,7 @@ create unique index idx_perm on docperm(docid, userid);";
         if ($this->uperm == 0) {
             $this->uperm = $this->getUperm($this->docid, $this->userid);
         }
-        return ($this->ControlMask($this->uperm, $pos));
+        return ($this->controlMask($this->uperm, $pos));
     }
     // --------------------------------------------------------------------
     
@@ -163,12 +163,12 @@ create unique index idx_perm on docperm(docid, userid);";
     {
         // --------------------------------------------------------------------
         if ($this->isAffected()) {
-            return ($this->ControlMask($this->upacl, $pos));
+            return ($this->controlMask($this->upacl, $pos));
         }
         return false;
     }
     // --------------------------------------------------------------------
-    public function ControlMask($acl, $pos)
+    public static function controlMask($acl, $pos)
     {
         return (($acl & (1 << ($pos))) != 0);
     }

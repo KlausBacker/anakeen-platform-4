@@ -33,8 +33,6 @@ class RouterLib
             $config = [];
             foreach ($configFiles as $configFile) {
                 if (preg_match("/\\.xml/", $configFile)) {
-                    $content = file_get_contents($dir . "/" . $configFile);
-
                     $conf = self::xmlDecode($dir . "/" . $configFile);
 
                     if ($conf === null) {
@@ -57,7 +55,7 @@ class RouterLib
 
     protected static function xmlDecode($configFile)
     {
-        $xmlData = file_get_contents( $configFile);
+        $xmlData = file_get_contents($configFile);
         $dom = new \DOMDocument();
         $dom->loadXML($xmlData);
 
@@ -96,7 +94,7 @@ class RouterLib
                             $rawData[$name]["methods"][] = (string)$tagValue;
                         } elseif ($tagName === "pattern") {
                             if (isset($rawData[$name]["pattern"])) {
-                                if (! is_array($rawData[$name][$tagName])) {
+                                if (!is_array($rawData[$name][$tagName])) {
                                     $rawData[$name][$tagName] = [$rawData[$name][$tagName]];
                                 }
                                 $rawData[$name][$tagName][] = (string)$tagValue;
@@ -110,7 +108,7 @@ class RouterLib
                             } elseif ($rawData[$name][$tagName] === "false") {
                                 $rawData[$name][$tagName] = false;
                             } elseif (is_numeric($rawData[$name][$tagName])) {
-                                 $rawData[$name][$tagName] = intval($rawData[$name][$tagName]);
+                                $rawData[$name][$tagName] = intval($rawData[$name][$tagName]);
                             }
                             foreach ($nodeAttrs as $iAttr => $vAttr) {
                                 if ($iAttr !== "name") {
