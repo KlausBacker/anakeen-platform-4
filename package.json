@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@progress/kendo-buttons-vue-wrapper": "^2018.2.516",
+    "@progress/kendo-dialog-vue-wrapper": "^2018.2.516",
     "@progress/kendo-grid-vue-wrapper": "^2018.2.516",
     "@progress/kendo-treeview-vue-wrapper": "^2018.2.516",
     "@progress/kendo-ui": "2018.1.226",

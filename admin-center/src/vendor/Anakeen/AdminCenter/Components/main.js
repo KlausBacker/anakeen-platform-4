@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import LoadScript from 'vue-plugin-load-script';
+import "@progress/kendo-ui/js/kendo.dialog";
+import { DialogInstaller } from '@progress/kendo-dialog-vue-wrapper';
 import store from './store';
 import router from './router';
 import AdminCenter from './AdminCenter.vue';
@@ -7,7 +9,7 @@ import AnkAxios from './utils/axios';
 import { onAuthError, onNetworkError } from "./utils/xhrErrors";
 
 
-
+Vue.use(DialogInstaller);
 Vue.use(LoadScript);
 Vue.use(AnkAxios, {
     onErrorResponse: (error) => {
