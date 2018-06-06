@@ -2,8 +2,8 @@
     <div class="admin-center-side-menu-wrapper">
         <div class="admin-center-side-menu">
             <div class="side-menu-plugin-list">
-                <router-link v-for="plugin in plugins" :key="plugin.name" :to="plugin.pluginPath">
-                    <span class="icon-plugin" :title="plugin.title || 'Admin Plugin'" v-html="plugin['icon']"></span>
+                <router-link v-for="plugin in plugins" :key="plugin[pluginSchema.name]" :to="plugin[pluginSchema.pluginPath]">
+                    <span class="icon-plugin" :title="plugin[pluginSchema.title] || 'Admin Plugin'" v-html="plugin[pluginSchema.icon]"></span>
                 </router-link>
             </div>
             <div class="side-menu-bottom-content">
@@ -16,10 +16,10 @@
             </div>
         </div>
         <div class="admin-center-side-submenu" v-if="enableSubMenu">
-            <h4 class="admin-center-plugin-title"><span v-html="currentPlugin['icon']"></span> {{currentPlugin.title}}</h4>
+            <h4 class="admin-center-plugin-title"><span v-html="currentPlugin[pluginSchema.icon]"></span> {{currentPlugin[pluginSchema.title]}}</h4>
             <div class="admin-center-side-submenu-items">
-                <router-link class="admin-center-side-submenu-item" active-class="admin-center-side-submenu-item--active" v-for="submenu in currentPlugin.subcomponents"
-                             :key="submenu.name" :to="submenu.pluginPath" tag="div" exact>
+                <router-link class="admin-center-side-submenu-item" active-class="admin-center-side-submenu-item--active" v-for="submenu in currentPlugin[pluginSchema.subcomponents]"
+                             :key="submenu[pluginSchema.name]" :to="submenu[pluginSchema.pluginPath]" tag="div" exact>
                     {{submenu.title}}
                 </router-link>
             </div>

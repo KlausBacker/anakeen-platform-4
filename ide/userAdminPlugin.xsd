@@ -1,0 +1,64 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.anakeen.com/ns/admin/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="config" type="adm:configType" xmlns:adm="http://www.anakeen.com/ns/admin/"/>
+  <xs:complexType name="configType">
+    <xs:sequence>
+      <xs:element type="adm:pluginsType" maxOccurs="1" name="plugins" xmlns:adm="http://www.anakeen.com/ns/admin/"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="pluginsType">
+    <xs:sequence>
+      <xs:element type="adm:pluginType" name="plugin" maxOccurs="unbounded" xmlns:adm="http://www.anakeen.com/ns/admin/"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="basePluginType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="title" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="xs:string" name="icon" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="xs:string" name="pluginPath" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="xs:string" name="scriptURL" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="xs:string" name="debugScriptURL" minOccurs="0" maxOccurs="1"/>
+      <xs:element type="xs:string" name="pluginTemplate" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="xs:integer" name="priority" minOccurs="0" maxOccurs="1" default="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="name" use="required"/>
+    <xs:attribute type="adm:overrideRestriction" name="override" use="optional" xmlns:adm="http://www.anakeen.com/ns/admin/"/>
+  </xs:complexType>
+  <xs:complexType name="pluginType" >
+    <xs:complexContent>
+      <xs:extension base="basePluginType">
+        <xs:sequence>
+          <xs:element type="adm:sublevelType" name="sublevel" minOccurs="0" maxOccurs="1" xmlns:adm="http://www.anakeen.com/ns/admin/"/>
+          <xs:element type="adm:orderType" name="order" minOccurs="0" maxOccurs="1" xmlns:adm="http://www.anakeen.com/ns/admin/"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="orderType">
+    <xs:attribute type="adm:positionRestriction" name="position" xmlns:adm="http://www.anakeen.com/ns/admin/" use="required">
+    </xs:attribute>
+    <xs:attribute type="xs:string" name="pluginName" xmlns:adm="http://www.anakeen.com/ns/admin/">
+    </xs:attribute>
+  </xs:complexType>
+  <xs:simpleType name="positionRestriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="before"/>
+      <xs:enumeration value="after"/>
+      <xs:enumeration value="auto"/>
+      <xs:enumeration value="first"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="sublevelType">
+    <xs:sequence>
+      <xs:element type="adm:basePluginType" name="plugin" xmlns:adm="http://www.anakeen.com/ns/admin/"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="overrideRestriction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="partial"/>
+      <xs:enumeration value="complete"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+
+</xs:schema>
