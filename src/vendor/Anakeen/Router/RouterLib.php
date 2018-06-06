@@ -33,8 +33,6 @@ class RouterLib
             $config = [];
             foreach ($configFiles as $configFile) {
                 if (preg_match("/\\.xml/", $configFile)) {
-                    $content = file_get_contents($dir . "/" . $configFile);
-
                     $conf = self::xmlDecode($dir . "/" . $configFile);
 
                     if ($conf === null) {
@@ -57,7 +55,7 @@ class RouterLib
 
     protected static function xmlDecode($configFile)
     {
-        $xmlData = file_get_contents( $configFile);
+        $xmlData = file_get_contents($configFile);
         $dom = new \DOMDocument();
         $dom->loadXML($xmlData);
 
@@ -90,18 +88,24 @@ class RouterLib
                 }
 
                 foreach ($subNode as $tagName => $tagValue) {
-                    $rawValue = get_object_vars($tagValue);
-                    if (count($rawValue) === 0) {
-                        if ($tagName === "method") {
-                            $rawData[$name]["methods"][] = (string)$tagValue;
-                        } elseif ($tagName === "pattern") {
-                            if (isset($rawData[$name]["pattern"])) {
-                                if (! is_array($rawData[$name][$tagName])) {
-                                    $rawData[$name][$tagName] = [$rawData[$name][$tagName]];
-                                }
-                                $rawData[$name][$tagName][] = (string)$tagValue;
-                            } else {
-                                $rawData[$name][$tagName] = (string)$tagValue;
+                    if ($tagName === "method") {
+                        $rawData[$name]["methods"][] = (string)$tagValue;
+                    } elseif ($tagName === "pattern") {
+                        if (isset($rawData[$name]["pattern"])) {
+                            if (!is_array($rawData[$name][$tagName])) {
+                                $rawData[$name][$tagName] = [$rawData[$name][$tagName]];
+                            }
+                            $rawData[$name][$tagName][] = (string)$tagValue;
+                        } else {
+                            $rawData[$name][$tagName] = (string)$tagValue;
+                        }
+                    } else {
+                        /** @noinspection PhpUndefinedFieldInspection */
+                        $operator = (string)$tagValue->attributes()->operator;
+                        if ($operator) {
+                            /** @noinspection PhpUndefinedFieldInspection */
+                            foreach ($tagValue->access as $accessValue) {
+                                $rawData[$name][$tagName][$operator][] = (string)$accessValue;
                             }
                         } else {
                             $rawData[$name][$tagName] = (string)$tagValue;
@@ -110,21 +114,12 @@ class RouterLib
                             } elseif ($rawData[$name][$tagName] === "false") {
                                 $rawData[$name][$tagName] = false;
                             } elseif (is_numeric($rawData[$name][$tagName])) {
-                                 $rawData[$name][$tagName] = intval($rawData[$name][$tagName]);
+                                $rawData[$name][$tagName] = intval($rawData[$name][$tagName]);
                             }
                             foreach ($nodeAttrs as $iAttr => $vAttr) {
                                 if ($iAttr !== "name") {
                                     $rawData[$name][$iAttr] = (string)$vAttr;
                                 }
-                            }
-                        }
-                    } else {
-                        /** @noinspection PhpUndefinedFieldInspection */
-                        $operator = (string)$tagValue->attributes()->operator;
-
-                        if ($operator) {
-                            foreach ($rawValue["access"] as $accessValue) {
-                                $rawData[$name][$tagName][$operator][] = $accessValue;
                             }
                         }
                     }
