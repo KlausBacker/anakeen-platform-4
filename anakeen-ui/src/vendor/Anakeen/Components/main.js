@@ -49,7 +49,7 @@ Vue.http.get('/api/v2/ui/users/current')
 
 // import and register your component(s)
 import Authent from './Authent/Authent.vue';
-import Document from './Document/Document.vue';
+import Document from './SmartElement/SmartElement.vue';
 import SEList from './SEList/seList.vue';
 import DocumentTabs from './SETabs/seTabs.vue';
 import AnakeenLoading from './AnakeenLoading/AnakeenLoading.vue';
