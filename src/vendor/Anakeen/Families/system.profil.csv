@@ -28,7 +28,6 @@ END;;;;;;;;
 BEGIN;;;;;IUSER;;;
 CPROFID;PRF_IUSER_OWNER;;;;;;;
 PROFID;PRF_ADMIN_CREATION;;;;;;;
-CVID;CV_IUSER_ACCOUNT;;;;;;;
 END;;;;;;;;
 //;;;;;;;;
 BEGIN;;;;;IGROUP;;;

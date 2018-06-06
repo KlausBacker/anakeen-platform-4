@@ -1,43 +1,28 @@
-//FAM;profil de document(PDOC);<specid>;<fldid>;titre;description;family id;famille;;;;;;;;;;;;;;
-ORDER;PDOC;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam;;;;;;;;;;;;;;
-DOC;PDOC;PRF_ADMIN_EDIT;;Administration;lecture seule sauf pour groupe admin;;;;;;;;;;;;;;;;
-DOC;PDOC;PRF_IUSER_OWNER;;Confidentiel;Droit à l'utilisateur de modifier sa propre fiche\nsinon seul les membres du groupe administration peuvent modifier les autres fiches;128;utilisateur;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;
-//FAM;profil de dossier(PDIR);<specid>;<fldid>;titre;description;family id;famille;;;;;;;;;;;;;;
-ORDER;PDIR;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam;;;;;;;;;;;;;;
-DOC;PDIR;PRF_ADMIN_DIR;;Administration dossier;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;
-//FAM;profil de recherche(PSEARCH);<specid>;<fldid>;titre;description;family id;famille;;;;;;;;;;;;;;
-ORDER;PSEARCH;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam;;;;;;;;;;;;;;
-DOC;PSEARCH;PRF_ADMIN_SEARCH;;Administration recherche;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;
-//FAM;profil de famille(PFAM);<specid>;<fldid>;titre;description;family id;famille;;;;;;;;;;;;;;
-ORDER;PFAM;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam;;;;;;;;;;;;;;
-DOC;PFAM;PRF_FAMILY_DEFAULT;;Défaut;protection des familles en lecture seule avec possibilité de création;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;
-#DOC;IGROUP;GDEFAULT;121;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;
-//FAM;profil de famille(PFAM);<specid>;<fldid>;titre;description;family id;famille;;;;;;;;;;;;;;
-ORDER;PFAM;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam;;;;;;;;;;;;;;
-DOC;PFAM;PRF_ADMIN_CREATION;-;Création administrateur;Seul les administrateurs peuvent créer ce type de famille;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;
-//FAM;profil de document(PDOC);<specid>;<fldid>;titre;description;family id;famille;;;;;;;;;;;;;;
-ORDER;PDOC;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam;;;;;;;;;;;;;;
-DOC;PDOC;PRF_IUSER_OWNER;-;Confidentiel;Droit à l'utilisateur de modifier sa propre fiche\nsinon seul les membres du groupe administration peuvent modifier les autres fiches;IUSER;utilisateur;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;
-//FAM;masque de saisie(MASK);<specid>;<fldid>;titre;id familles;familles;attrid;visibilité;obligatoire;;;;;;;;;;;;
-ORDER;MASK;;;ba_title;msk_famid;msk_fam;msk_attrids;msk_visibilities;msk_needeeds;;;;;;;;;;;;
-DOC;MASK;MSK_IUSER_ADMIN;-;Administration;IUSER;utilisateur;us_fr_intranet\nus_login\nus_accexpiredate\nus_t_roles;W\nW\nW\nW;-\n-\n-;;;;;;;;;;;;
-DOC;MASK;MSK_IUSERSUBSTITUTE;;Suppléant;IUSER;Utilisateur;us_fr_ident\nus_fr_substitute\nus_fr_userchange;H\nW\nH;-\n-\n-\n-\n-\n-\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n;;;;;;;;;;;;
-//FAM;contrôle de vues(CVDOC);<specid>;<fldid>;titre;description;family id;famille;vues;id vues;label;type;zone;id masque;masque;ordre;affichable;menu;id création vues par défaut;family id;création vue;famille
-;;;;;;;;;;;;;;;;;;;;;
-#Need to define first here because  they have specific numbers;;;;;;;;;;;;;;;;;;;;;
-ORDER;MASK;;;ba_title;msk_famid;;;;;;;;;;;;;;;;
-DOC;MASK;MSK_IGROUP_RESTRICTION;;Restrictions;IGROUP;;;;;;;;;;;;;;;;
-DOC;MASK;MSK_IUSER_MYACCOUNT;;mon compte;IUSER;;;;;;;;;;;;;;;;
-DOC;MASK;MSK_IGROUP_MEMBERS;;membres;IGROUP;;;;;;;;;;;;;;;;
-DOC;MASK;MSK_IGROUP_ADMIN;;Administration;IGROUP;;;;;;;;;;;;;;;;
-ORDER;CVDOC;;;ba_title;;;;;;;;;;;;;;;;;
-DOC;CVDOC;CV_IUSER_ACCOUNT;;Confidentiel;;;;;;;;;;;;;;;;;
-DOC;CVDOC;PRF_CV_IGROUP;;Administration;;;;;;;;;;;;;;;;;
+//FAM;profil de document(PDOC);<specid>;<fldid>;titre;description;family id;famille
+ORDER;PDOC;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam
+DOC;PDOC;PRF_ADMIN_EDIT;;Administration;lecture seule sauf pour groupe admin;;
+DOC;PDOC;PRF_IUSER_OWNER;;Confidentiel;Droit à l'utilisateur de modifier sa propre fiche\nsinon seul les membres du groupe administration peuvent modifier les autres fiches;128;utilisateur
+;;;;;;;
+//FAM;profil de dossier(PDIR);<specid>;<fldid>;titre;description;family id;famille
+ORDER;PDIR;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam
+DOC;PDIR;PRF_ADMIN_DIR;;Administration dossier;;;
+;;;;;;;
+//FAM;profil de recherche(PSEARCH);<specid>;<fldid>;titre;description;family id;famille
+ORDER;PSEARCH;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam
+DOC;PSEARCH;PRF_ADMIN_SEARCH;;Administration recherche;;;
+;;;;;;;
+//FAM;profil de famille(PFAM);<specid>;<fldid>;titre;description;family id;famille
+ORDER;PFAM;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam
+DOC;PFAM;PRF_FAMILY_DEFAULT;;Défaut;protection des familles en lecture seule avec possibilité de création;;
+;;;;;;;
+//FAM;profil de famille(PFAM);<specid>;<fldid>;titre;description;family id;famille
+ORDER;PFAM;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam
+DOC;PFAM;PRF_ADMIN_CREATION;-;Création administrateur;Seul les administrateurs peuvent créer ce type de famille;;
+;;;;;;;
+//FAM;profil de document(PDOC);<specid>;<fldid>;titre;description;family id;famille
+ORDER;PDOC;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam
+DOC;PDOC;PRF_IUSER_OWNER;-;Confidentiel;Droit à l'utilisateur de modifier sa propre fiche\nsinon seul les membres du groupe administration peuvent modifier les autres fiches;IUSER;utilisateur
+;;;;;;;
+#Need to define first here because  they have specific numbers;;;;;;;
+ORDER;MASK;;;ba_title;msk_famid;;
+DOC;MASK;MSK_IUSER_MYACCOUNT;;mon compte;IUSER;;

@@ -1,45 +1,29 @@
-//FAM;profil de document(PDOC);<specid>;<fldid>;titre;description;family id;famille;;;;;;;;;;;
-ORDER;PDOC;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam;;;;;;;;;;;
-DOC;PDOC;PRF_ADMIN_EDIT;;Administration;lecture seule sauf pour groupe admin;;;;;;;;;;;;;
-PROFIL;PRF_ADMIN_EDIT;;;view=2;edit=4;;;;;;;;;;;;;
-DOC;PDOC;PRF_IUSER_OWNER;;Confidentiel;Droit à l'utilisateur de modifier sa propre fiche\nsinon seul les membres du groupe administration peuvent modifier les autres fiches;128;utilisateur;;;;;;;;;;;
-PROFIL;PRF_IUSER_OWNER;;;view=2;send=2;view=4;edit=4;delete=4;view=us_meid;edit=us_meid;;;;;;;;
-//FAM;profil de dossier(PDIR);<specid>;<fldid>;titre;description;family id;famille;;;;;;;;;;;
-ORDER;PDIR;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam;;;;;;;;;;;
-DOC;PDIR;PRF_ADMIN_DIR;;Administration dossier;;;;;;;;;;;;;;
-PROFIL;PRF_ADMIN_DIR;;;view=2;open=2;edit=4;open=4;modify=4;;;;;;;;;;
-//FAM;profil de recherche(PSEARCH);<specid>;<fldid>;titre;description;family id;famille;;;;;;;;;;;
-ORDER;PSEARCH;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam;;;;;;;;;;;
-DOC;PSEARCH;PRF_ADMIN_SEARCH;;Administration recherche;;;;;;;;;;;;;;
-PROFIL;PRF_ADMIN_SEARCH;;;view=2;execute=2;edit=4;execute=4;;;;;;;;;;;
-//FAM;masque de saisie(MASK);<specid>;<fldid>;titre;id familles;familles;attrid;visibilité;obligatoire;;;;;;;;;
-ORDER;MASK;;;ba_title;msk_famid;msk_fam;msk_attrids;msk_visibilities;msk_needeeds;;;;;;;;;
-DOC;MASK;MSK_IGROUP_RESTRICTION;;Restrictions;IGROUP;Groupe d'utilisateurs;grp_fr_ident\ngrp_fr_intranet\ngrp_fr\nfld_fr_rest\nfld_fr_prof;H\nH\nH\nW\nW;;;;;;;;;;
-DOC;MASK;MSK_IUSER_MYACCOUNT;;mon compte;IUSER;Utilisateur;us_fr_ident\nus_lname\nus_fname\nus_fr_intranet\nus_login\nus_passwd1\nus_passwd2;W\nW\nW\nW\nS\nW\nW;;;;;;;;;;
-DOC;MASK;MSK_IGROUP_MEMBERS;;membres;IGROUP;Groupe d'utilisateurs;grp_fr;R;;;;;;;;;;
-DOC;MASK;MSK_IGROUP_ADMIN;;Administration;IGROUP;Groupe d'utilisateurs;grp_fr_intranet\nus_login;W\nW;;;;;;;;;;
-ORDER;CVDOC;;;ba_title;cv_desc;cv_famid;cv_fam;cv_idview;cv_lview;cv_kview;cv_mskid;cv_displayed;cv_order;cv_menu;cv_idcview;cv_lcview;dpdoc_famid;dpdoc_fam
-DOC;CVDOC;CV_IUSER_ACCOUNT;;Confidentiel;;IUSER;utilisateur;EUSER\nEGROUP\nESUBSTITUTE;Admin edit\nGroupes\nModifier le suppléant;VEDIT\nVEDIT\nVEDIT;MSK_IUSER_ADMIN\n\nMSK_IUSERSUBSTITUTE;no\nyes\nyes;2\n\n;\nCompte\nCompte;EUSER;Admin edit;IUSER;utilisateur
-ORDER;CVDOC;;;ba_title;cv_desc;cv_famid;cv_fam;cv_idview;cv_lview;cv_kview;cv_mskid;cv_displayed;cv_order;cv_menu;cv_idcview;cv_lcview;dpdoc_famid;dpdoc_fam
-DOC;CVDOC;PRF_CV_IGROUP;;Administration;;IGROUP;groupe intranet;ADMIN\nMEMBERS\nCG\nRESTRICT;Administration\nDétail membres\nGroupes\nRestriction;VEDIT\nVCONS\nVEDIT\nVEDIT;MSK_IGROUP_ADMIN\nMSK_IGROUP_MEMBERS\n\nMSK_IGROUP_RESTRICTION;yes\nyes\nyes\nyes;;;ADMIN;administration;;
-;;;;;;;;;;;;;;;;;;
-PROFIL;PRF_CV_IGROUP;;;view=2;MEMBERS=2;edit=4;ADMIN=4;CG=4;RESTRICT=4;;;;;;;;;
-PROFIL;CV_IUSER_ACCOUNT;;;EUSER=GADMIN;EGROUP=GADMIN;viewacl=GADMIN;modifyacl=GADMIN;view=GDEFAULT;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;
-PROFIL;GDEFAULT;PRF_ADMIN_DIR;;;;;;;;;;;;;;;;
-PROFIL;GADMIN;PRF_ADMIN_DIR;;;;;;;;;;;;;;;;
-PROFIL;USER_ADMIN;PRF_IUSER_OWNER;;;;;;;;;;;;;;;;
-PROFIL;USER_GUEST;PRF_IUSER_OWNER;;;;;;;;;;;;;;;;
-PROFIL;FLD_ACCOUNTS;PRF_ADMIN_DIR;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;
-PROFIL;PRF_ADMIN_EDIT;;;view=2;edit=4;;;;;;;;;;;;;
-PROFIL;PRF_IUSER_OWNER;;;view=2;send=2;view=4;edit=4;delete=4;view=us_meid;edit=us_meid;;;;;;;;
-PROFIL;PRF_ADMIN_DIR;;;view=2;open=2;edit=4;open=4;modify=4;;;;;;;;;;
-PROFIL;PRF_ADMIN_SEARCH;;;view=2;execute=2;edit=4;execute=4;;;;;;;;;;;
-PROFIL;PRF_FAMILY_DEFAULT;;;view=2;create=2;icreate=2;edit=4;;;;;;;;;;;
-PROFIL;CV_IUSER_ACCOUNT;;;EUSER=GADMIN;EGROUP=GADMIN;viewacl=GADMIN;modifyacl=GADMIN;view=GDEFAULT;;;;;;;;;;
-PROFIL;PRF_IUSER_OWNER;;;view=GDEFAULT;send=GDEFAULT;view=GADMIN;edit=GADMIN;delete=GADMIN;view=us_meid;edit=us_meid;;;;;;;;
-PROFIL;PRF_ADMIN_CREATION;;;create=GADMIN;icreate=GADMIN;view=GDEFAULT;;;;;;;;;;;;
-PROFIL;PRF_CV_IGROUP;;;view=2;MEMBERS=2;edit=4;ADMIN=4;CG=4;RESTRICT=4;;;;;;;;;
+//FAM;profil de document(PDOC);<specid>;<fldid>;titre;description;family id;famille;;;
+ORDER;PDOC;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam;;;
+DOC;PDOC;PRF_ADMIN_EDIT;;Administration;lecture seule sauf pour groupe admin;;;;;
+PROFIL;PRF_ADMIN_EDIT;;;view=2;edit=4;;;;;
+DOC;PDOC;PRF_IUSER_OWNER;;Confidentiel;Droit à l'utilisateur de modifier sa propre fiche\nsinon seul les membres du groupe administration peuvent modifier les autres fiches;IUSER;utilisateur;;;
+PROFIL;PRF_IUSER_OWNER;;;view=2;send=2;view=4;edit=4;delete=4;view=us_meid;edit=us_meid
+//FAM;profil de dossier(PDIR);<specid>;<fldid>;titre;description;family id;famille;;;
+ORDER;PDIR;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam;;;
+DOC;PDIR;PRF_ADMIN_DIR;;Administration dossier;;;;;;
+PROFIL;PRF_ADMIN_DIR;;;view=2;open=2;edit=4;open=4;modify=4;;
+//FAM;profil de recherche(PSEARCH);<specid>;<fldid>;titre;description;family id;famille;;;
+ORDER;PSEARCH;;;ba_title;prf_desc;dpdoc_famid;dpdoc_fam;;;
+DOC;PSEARCH;PRF_ADMIN_SEARCH;;Administration recherche;;;;;;
+PROFIL;PRF_ADMIN_SEARCH;;;view=2;execute=2;edit=4;execute=4;;;
+;;;;;;;;;;
+PROFIL;GDEFAULT;PRF_ADMIN_DIR;;;;;;;;
+PROFIL;GADMIN;PRF_ADMIN_DIR;;;;;;;;
+PROFIL;USER_ADMIN;PRF_IUSER_OWNER;;;;;;;;
+PROFIL;USER_GUEST;PRF_IUSER_OWNER;;;;;;;;
+PROFIL;FLD_ACCOUNTS;PRF_ADMIN_DIR;;;;;;;;
+;;;;;;;;;;
+PROFIL;PRF_ADMIN_EDIT;;;view=2;edit=4;;;;;
+PROFIL;PRF_IUSER_OWNER;;;view=2;send=2;view=4;edit=4;delete=4;view=us_meid;edit=us_meid
+PROFIL;PRF_ADMIN_DIR;;;view=2;open=2;edit=4;open=4;modify=4;;
+PROFIL;PRF_ADMIN_SEARCH;;;view=2;execute=2;edit=4;execute=4;;;
+PROFIL;PRF_FAMILY_DEFAULT;;;view=2;create=2;icreate=2;edit=4;;;
+PROFIL;CV_IUSER_ACCOUNT;;;EUSER=GADMIN;EGROUP=GADMIN;viewacl=GADMIN;modifyacl=GADMIN;view=GDEFAULT;;
+PROFIL;PRF_IUSER_OWNER;;;view=GDEFAULT;send=GDEFAULT;view=GADMIN;edit=GADMIN;delete=GADMIN;view=us_meid;edit=us_meid
+PROFIL;PRF_ADMIN_CREATION;;;create=GADMIN;icreate=GADMIN;view=GDEFAULT;;;;

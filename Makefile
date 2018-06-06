@@ -1,10 +1,21 @@
+## control conf
 port=80
+CONTROL_PROTOCOL=http
+CONTROL_PORT=$(port)
+CONTROL_USER=admin
+CONTROL_PASSWORD=anakeen
+CONTROL_URL=$(host)/control/
+CONTROL_CONTEXT=$(ctx)
+
+##bin
+DEVTOOL_BIN=php ./anakeen-devtool.phar
+-include Makefile.local
 
 app:
-	php ./anakeen-devtool.phar generateWebinst -s .
+	${DEVTOOL_BIN} generateWebinst -s .
 
 po:
-	php ./anakeen-devtool.phar extractPo -s .
+	${DEVTOOL_BIN} extractPo -s .
 
 deploy:
-	php ./anakeen-devtool.phar deploy -u http://admin:anakeen@$(host)/control/ -c $(ctx) -p $(port) -a -s .
+	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -a -s .
