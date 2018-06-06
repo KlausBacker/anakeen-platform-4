@@ -34,9 +34,15 @@ export default {
             },
 
             propageKendoDataSourceEvent: (eventName) => (e) => {
-                const customEvent = this.$createComponentEvent(`se-list-${eventName}`, { detail: [e] });
-                this.$emitAnkEvent(`se-list-${eventName}`, customEvent);
+                const customEvent = this.$createComponentEvent(`se-list-${eventName}`, { cancelable: true, detail: [e] });
+                const notCancelled = this.$emitAnkEvent(`se-list-${eventName}`, customEvent);
+                if (!notCancelled) {
+                    if (e.preventDefault) {
+                        e.preventDefault();
+                    }
+                }
             },
+
             initKendo: () => {
                 const _this = this;
                 this.dataSource = new this.$kendo.data.DataSource({

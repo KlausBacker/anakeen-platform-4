@@ -78,14 +78,14 @@ const AnkVueEventMixin = {
                             }
                         }
                     } else {
-                        componentEvent = customEvent(eventName, ...args);
+                        componentEvent = createEvent(eventName, { cancelable: true, detail: [...args] });
                     }
 
                     customEmit(this.$el, eventName, componentEvent);
 
                     this.__proto__ && this.__proto__.$emit.call(this, eventName, componentEvent); // eslint-disable-line no-proto
 
-                    // Return if event is cancelled or not
+                    // Return false if event is cancelled (dispatchEvent behavior)
                     return !componentEvent.defaultPrevented;
                 };
     },
