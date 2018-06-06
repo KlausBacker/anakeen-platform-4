@@ -34,7 +34,8 @@ export default {
             },
 
             propageKendoDataSourceEvent: (eventName) => (e) => {
-                const customEvent = this.$createComponentEvent(`se-list-${eventName}`, { cancelable: true, detail: [e] });
+                const customEvent = this.$createComponentEvent(`se-list-${eventName}`,
+                    { cancelable: true, detail: [e] });
                 const notCancelled = this.$emitAnkEvent(`se-list-${eventName}`, customEvent);
                 if (!notCancelled) {
                     if (e.preventDefault) {
@@ -141,7 +142,10 @@ export default {
             },
 
             onPagerChange: (e) => {
+                const oldPage = this.dataSource.page();
                 this.dataSource.page(e.index);
+                const newPage = this.dataSource.page();
+                this.$emitAnkEvent('se-list-page-change', oldPage, newPage);
                 this.refreshList().then().catch((err) => {
                     console.error(err);
                 });
@@ -165,9 +169,9 @@ export default {
             onSelectPageSize: (e) => {
                 const counter = this.$(this.$refs.pagerCounter).data('kendoDropDownList');
                 const newPageSize = counter.dataItem(e.item).value;
-                const customEvent = this.$createComponentEvent('list-pagesize-change',
+                const customEvent = this.$createComponentEvent('se-list-pagesize-change',
                     { detail: [newPageSize, this.dataSource.pageSize()] }, e);
-                this.$emitAnkEvent('list-pagesize-change', customEvent);
+                this.$emitAnkEvent('se-list-pagesize-change', customEvent);
                 this.dataSource.pageSize(newPageSize);
                 this.refreshList().then().catch((err) => {
                     console.error(err);
@@ -266,8 +270,9 @@ export default {
     methods: {
 
         _onFilterInput(event) {
-            const customEvent = this.$createComponentEvent('list-filter-input', { detail: [this.filterInput] }, event);
-            this.$emitAnkEvent('list-filter-input', customEvent);
+            const customEvent = this.$createComponentEvent('se-list-filter-input',
+                { detail: [this.filterInput] }, event);
+            this.$emitAnkEvent('se-list-filter-input', customEvent);
         },
 
         _selectSe(event, se) {
