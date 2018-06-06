@@ -10,6 +10,24 @@
       <router:description>Get data for a document</router:description>
       <router:requiredAccess/>
     </router:route>
+    <router:route name="Core:GetDocumentXML">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\DocumentDataXML</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documents/{docid:[^/.]+}.xml</router:pattern>
+      <router:pattern>/api/v2/families/{family}/documents/{docid:[^/.]+}.xml</router:pattern>
+      <router:description>Get data for a document</router:description>
+      <router:requiredAccess/>
+    </router:route>
+    <router:route name="Core:GetDocumentCSV">
+      <router:priority>1</router:priority>
+      <router:callable>\Anakeen\Routes\Core\DocumentDataCSV</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/api/v2/documents/{docid:[^/.]+}.csv</router:pattern>
+      <router:pattern>/api/v2/families/{family}/documents/{docid:[^/.]+}.csv</router:pattern>
+      <router:description>Get data for a document</router:description>
+      <router:requiredAccess/>
+    </router:route>
     <router:route name="Core:ModifyDocument">
       <router:priority>1</router:priority>
       <router:callable>\Anakeen\Routes\Core\DocumentUpdateData</router:callable>
