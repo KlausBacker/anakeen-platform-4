@@ -13,9 +13,10 @@ const Constants = {
     CUSTOM_TAB_ID: 'custom_tab_id',
 };
 
-const noop = () => {};
+const noop = () => {
+};
 
-const camelToKebab = (string) => string.replace('/([a-z])([A-Z])/g', '$1-$2').toLowerCase();
+const camelToKebab = (string) => string.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 
 const smartElementEvents = ['beforeRender', 'ready', 'change', 'displayMessage', 'displayError', 'validate',
     'attributeBeforeRender', 'attributeReady',
@@ -151,6 +152,13 @@ export default {
 
             return null;
         },
+
+        translations() {
+            return {
+                noSEOpened: this.$pgettext('SETabs', 'No Smart Element opened'),
+                closeAllSE: this.$pgettext('SETabs', 'Close all '),
+            };
+        },
     },
 
     watch: {
@@ -164,6 +172,10 @@ export default {
 
         addable(newValue) {
             this.privateScope.setAddTabButton(newValue);
+        },
+
+        sortable(newValue) {
+            this.privateScope.configureSortable(newValue);
         },
     },
 
@@ -214,9 +226,9 @@ export default {
                     dataBound: this.privateScope.onOpenedTabsListDataBound,
                     autoWidth: true,
                     select: this.privateScope.onOpenedTabsListItemClick,
-                    noDataTemplate: 'Aucun document ouvert',
+                    noDataTemplate: this.translations.noSEOpened,
                     headerTemplate: `<button class="seTabs__tabsList__list__close__all">
-                                        Fermer tous les onglets
+                                        ${this.translations.closeAllSE}
                                      </button>`,
                 });
                 this.tabslist.list.addClass('seTabs__tabsList__list');
@@ -280,6 +292,8 @@ export default {
                 }
 
                 this.privateScope
+                    .configureSortable(this.sortable);
+                this.privateScope
                     .setAddTabButton(this.addable);
             },
 
@@ -301,11 +315,46 @@ export default {
                 return -1;
             },
 
+            configureSortable: (sortable = true) => {
+                if (sortable) {
+                    this.tabstrip.tabGroup.kendoSortable({
+                        filter: 'li.k-item',
+                        axis: 'x',
+                        container: 'ul.k-tabstrip-items',
+                        hint: (element) => $("<div id='hint' class='k-widget k-header k-tabstrip'>" +
+                            "<ul class='k-tabstrip-items k-reset'>" +
+                            "<li class='k-item k-state-active k-tab-on-top'>" +
+                            element.html() +
+                            '</li></ul></div>'),
+
+                        start: (e) => {
+                            this.tabstrip.activateTab(e.item);
+                        },
+
+                        change: (e) => {
+                            const reference = this.tabstrip.tabGroup.children().eq(e.newIndex);
+
+                            if (e.oldIndex < e.newIndex) {
+                                this.tabstrip.insertAfter(e.item, reference);
+                            } else {
+                                this.tabstrip.insertBefore(e.item, reference);
+                            }
+                        },
+                    });
+                } else {
+                    this.tabstrip.tabGroup.kendoSortable({
+                        disabled: 'li.k-item',
+                    });
+                }
+            },
+
             setAddTabButton: (addable = true) => {
                 let newTabButton = this.$('#seTabs__new__tab__button');
                 if (addable) {
                     if (!newTabButton.length) {
-                        newTabButton = this.$('<button id="seTabs__new__tab__button" class="tab__new__button"><i class="material-icons">add</i></button>');
+                        newTabButton = this.$('<button id="seTabs__new__tab__button" class="tab__new__button">' +
+                            '<i class="material-icons">add</i>' +
+                            '</button>');
                         newTabButton.on('click', this.privateScope.onAddTabClick);
                     }
 
@@ -372,7 +421,14 @@ export default {
                     documentComponent.on(eventName, e => {
                         const cb = this.privateScope.getSEEventHandler(eventName);
                         cb.call(this, e, tabIndex);
-                        this.$emitAnkEvent(`se-${camelToKebab(eventName)}`, e, tabIndex);
+                        const notCancelled = this.$emitAnkEvent(`se-${camelToKebab(eventName)}`, e, tabIndex);
+                        if (!notCancelled) {
+                            if (e.detail && e.detail.length) {
+                                if (e.detail[0].cancelable) {
+                                    e.detail[0].preventDefault();
+                                }
+                            }
+                        }
                     });
                 });
             },
@@ -409,7 +465,7 @@ export default {
             onModelRemoveItem: (event, model) => {
                 if (event.items.length === 1) {
                     if (this.$(this.tabstrip.items()[event.index]).hasClass('k-state-active')
-                    && !this.tabModel.isEmpty()) {
+                        && !this.tabModel.isEmpty()) {
                         this.selectIndex(0);
                     }
 
@@ -602,7 +658,9 @@ export default {
                 }
 
                 if (typeof initid !== 'string' && typeof initid !== 'number') {
-                    throw "Error in the Smart Element format : '" + JSON.stringify(seConfig) + "' must be String|Number or Object with an 'initid' property";
+                    throw "Error in the Smart Element format : '" +
+                    JSON.stringify(seConfig) +
+                    "' must be String|Number or Object with an 'initid' property";
                 }
 
                 return Object.assign({}, otherProps, { initid: initid.toString() });
