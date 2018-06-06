@@ -88,18 +88,24 @@ class RouterLib
                 }
 
                 foreach ($subNode as $tagName => $tagValue) {
-                    $rawValue = get_object_vars($tagValue);
-                    if (count($rawValue) === 0) {
-                        if ($tagName === "method") {
-                            $rawData[$name]["methods"][] = (string)$tagValue;
-                        } elseif ($tagName === "pattern") {
-                            if (isset($rawData[$name]["pattern"])) {
-                                if (!is_array($rawData[$name][$tagName])) {
-                                    $rawData[$name][$tagName] = [$rawData[$name][$tagName]];
-                                }
-                                $rawData[$name][$tagName][] = (string)$tagValue;
-                            } else {
-                                $rawData[$name][$tagName] = (string)$tagValue;
+                    if ($tagName === "method") {
+                        $rawData[$name]["methods"][] = (string)$tagValue;
+                    } elseif ($tagName === "pattern") {
+                        if (isset($rawData[$name]["pattern"])) {
+                            if (!is_array($rawData[$name][$tagName])) {
+                                $rawData[$name][$tagName] = [$rawData[$name][$tagName]];
+                            }
+                            $rawData[$name][$tagName][] = (string)$tagValue;
+                        } else {
+                            $rawData[$name][$tagName] = (string)$tagValue;
+                        }
+                    } else {
+                        /** @noinspection PhpUndefinedFieldInspection */
+                        $operator = (string)$tagValue->attributes()->operator;
+                        if ($operator) {
+                            /** @noinspection PhpUndefinedFieldInspection */
+                            foreach ($tagValue->access as $accessValue) {
+                                $rawData[$name][$tagName][$operator][] = (string)$accessValue;
                             }
                         } else {
                             $rawData[$name][$tagName] = (string)$tagValue;
@@ -114,15 +120,6 @@ class RouterLib
                                 if ($iAttr !== "name") {
                                     $rawData[$name][$iAttr] = (string)$vAttr;
                                 }
-                            }
-                        }
-                    } else {
-                        /** @noinspection PhpUndefinedFieldInspection */
-                        $operator = (string)$tagValue->attributes()->operator;
-
-                        if ($operator) {
-                            foreach ($rawValue["access"] as $accessValue) {
-                                $rawData[$name][$tagName][$operator][] = $accessValue;
                             }
                         }
                     }
