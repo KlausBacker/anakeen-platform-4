@@ -2,7 +2,7 @@
     <iframe style="visibility:hidden" ref="iDocument" src="/api/v2/documents/0.html" class="apDocumentWrapper"></iframe>
 </template>
 
-<script src="./Document.component.js" ></script>
+<script src="./SmartElement.component.js" ></script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
@@ -16,5 +16,5 @@
 
 
 <style lang="scss" >
-    @import "./Document.scss";
+    @import "./SmartElement.scss";
 </style>

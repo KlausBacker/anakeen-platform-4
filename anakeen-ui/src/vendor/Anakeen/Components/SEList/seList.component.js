@@ -8,7 +8,7 @@ export default {
             type: String,
             default: '/CORE/Images/anakeen-logo.svg',
         },
-        smartStructureName: {
+        smartCollection: {
             default: '',
         },
         label: {
@@ -33,9 +33,24 @@ export default {
                 label.insertBefore(buttons[1]);
             },
 
+            propageKendoDataSourceEvent: (eventName) => (e) => {
+                const customEvent = this.$createComponentEvent(`se-list-${eventName}`,
+                    { cancelable: true, detail: [e] });
+                const notCancelled = this.$emitAnkEvent(`se-list-${eventName}`, customEvent);
+                if (!notCancelled) {
+                    if (e.preventDefault) {
+                        e.preventDefault();
+                    }
+                }
+            },
+
             initKendo: () => {
                 const _this = this;
                 this.dataSource = new this.$kendo.data.DataSource({
+                    error: this.privateScope.propageKendoDataSourceEvent('error'),
+                    requestStart: this.privateScope.propageKendoDataSourceEvent('request-start'),
+                    requestEnd: this.privateScope.propageKendoDataSourceEvent('request-end'),
+                    change: this.privateScope.propageKendoDataSourceEvent('change'),
                     transport: {
                         read: (options) => {
                             if (options.data.collection) {
@@ -127,7 +142,10 @@ export default {
             },
 
             onPagerChange: (e) => {
+                const oldPage = this.dataSource.page();
                 this.dataSource.page(e.index);
+                const newPage = this.dataSource.page();
+                this.$emitAnkEvent('se-list-page-change', oldPage, newPage);
                 this.refreshList().then().catch((err) => {
                     console.error(err);
                 });
@@ -151,18 +169,20 @@ export default {
             onSelectPageSize: (e) => {
                 const counter = this.$(this.$refs.pagerCounter).data('kendoDropDownList');
                 const newPageSize = counter.dataItem(e.item).value;
-                this.$emit('list-pagesize-change', newPageSize, this.dataSource.pageSize());
+                const customEvent = this.$createComponentEvent('se-list-pagesize-change',
+                    { detail: [newPageSize, this.dataSource.pageSize()] }, e);
+                this.$emitAnkEvent('se-list-pagesize-change', customEvent);
                 this.dataSource.pageSize(newPageSize);
                 this.refreshList().then().catch((err) => {
                     console.error(err);
                 });
             },
 
-            onSelectSe: (...arg) => {
+            onSelectSe: (event) => {
                 const data = this.dataSource.view();
                 const listView = this.$(this.$refs.listView).data('kendoListView');
                 const selected = this.$.map(listView.select(), item => data[this.$(item).index()]);
-                this.selectSe(selected[0]);
+                this._selectSe(event, selected[0]);
             },
         };
     },
@@ -174,10 +194,10 @@ export default {
             this.privateScope.replaceTopPagerButton();
             this.$kendo.ui.progress(this.$(this.$refs.wrapper), false);
 
-            if (this.smartStructureName) {
+            if (this.smartCollection) {
                 this.setCollection({
                     title: this.collectionLabel,
-                    name: this.smartStructureName,
+                    name: this.smartCollection,
                 });
             }
         };
@@ -221,14 +241,6 @@ export default {
         };
     },
 
-    watch: {
-        filterInput(newValue, oldValue) {
-            if (newValue !== oldValue) {
-                this.$emit('list-filter-input', newValue, this.$(this.$el).parent()[0]);
-            }
-        },
-    },
-
     computed: {
         translations() {
             const searchTranslated = this.$pgettext('SEList', 'Search in : %{collection}');
@@ -257,8 +269,16 @@ export default {
 
     methods: {
 
-        selectSe(se) {
-            this.$emit('sel-selected', Object.assign({}, se.properties));
+        _onFilterInput(event) {
+            const customEvent = this.$createComponentEvent('se-list-filter-input',
+                { detail: [this.filterInput] }, event);
+            this.$emitAnkEvent('se-list-filter-input', customEvent);
+        },
+
+        _selectSe(event, se) {
+            const seProperties = Object.assign({}, se.properties);
+            const customEvent = this.$createComponentEvent('se-selected', { detail: [seProperties] }, event);
+            this.$emitAnkEvent('se-selected', customEvent);
         },
 
         filterList(filterValue) {

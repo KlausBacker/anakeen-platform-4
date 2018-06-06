@@ -1,7 +1,8 @@
+// jscs:disable disallowImplicitTypeConversion
 // jscs:disable requirePaddingNewLinesBeforeLineComments
-import contentTemplate from './templates/tab/documentTabsContent.template.kd';
-import headerTemplate from './templates/tab/documentTabsHeader.template.kd';
-import openedTabListItemTemplate from './templates/openedTabList/documentOpenedTabListItem.template.kd';
+import contentTemplate from './templates/tab/seTabsContent.template.kd';
+import headerTemplate from './templates/tab/seTabsHeader.template.kd';
+import openedTabListItemTemplate from './templates/openedTabList/seOpenedTabListItem.template.kd';
 import { AnkMixin } from '../AnkVueComponentMixin';
 import TabModel from './model/tabModel';
 
@@ -11,28 +12,80 @@ const Constants = {
     LAZY_TAB_ID: 'lazy_tab_id',
     CUSTOM_TAB_ID: 'custom_tab_id',
 };
+
+const noop = () => {
+};
+
+const camelToKebab = (string) => string.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+
+const smartElementEvents = ['beforeRender', 'ready', 'change', 'displayMessage', 'displayError', 'validate',
+    'attributeBeforeRender', 'attributeReady',
+    'attributeHelperSearch', 'attributeHelperResponse', 'attributeHelperSelect',
+    'attributeArrayChange', 'actionClick',
+    'attributeAnchorClick',
+    'beforeClose', 'close',
+    'beforeSave', 'afterSave', 'attributeDownloadFile', 'attributeUploadFile',
+    'beforeDelete', 'afterDelete',
+    'beforeRestore', 'afterRestore',
+    'failTransition', 'successTransition',
+    'beforeDisplayTransition', 'afterDisplayTransition',
+    'beforeTransition', 'beforeTransitionClose',
+    'destroy', 'attributeCreateDialogDocumentBeforeSetFormValues',
+    'attributeCreateDialogDocumentBeforeSetTargetValue', 'attributeCreateDialogDocumentReady',
+    'attributeCreateDialogDocumentBeforeClose', 'attributeCreateDialogDocumentBeforeDestroy',
+];
+
 export default {
     mixins: [AnkMixin],
     props: {
+        'header-tab-template': {
+            type: String,
+            default: '',
+        },
+
+        'welcome-tab-template': {
+            type: String,
+            default: '',
+        },
+
+        'custom-tab-template': {
+            type: String,
+            default: '',
+        },
+
+        'se-list': {
+            type: String,
+            default: '[]',
+            validator: (value) => {
+                try {
+                    JSON.parse(value);
+                    return true;
+                } catch (err) {
+                    console.error('"se-list" prop validation failed :', err.toString());
+                    return false;
+                }
+            },
+        },
+
+        'se-css': {
+            type: String,
+            default: '',
+        },
+
         closable: {
             type: Boolean,
             default: true,
         },
 
-        'empty-img': {
-            type: String,
-            default: 'CORE/Images/anakeenplatform-logo-fondblanc.svg',
-        },
-
-        'document-css': {
-            type: String,
-            default: '',
-        },
         addable: {
             type: Boolean,
             default: false,
         },
 
+        sortable: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
@@ -43,16 +96,25 @@ export default {
             tabslistSource: null,
             newTabConfig: null,
             welcomeTabConfig: null,
+            defaultEmptyImgUrl: '/CORE/Images/anakeenplatform-logo-fondblanc.svg',
         };
     },
 
     computed: {
-        emptyState() {
-            if (this.tabModel) {
-                return this.tabModel.isEmpty();
-            } else {
-                return true;
-            }
+        hasWelcomeTab() {
+            return !!(this.welcomeTabTemplate);
+        },
+
+        hasCustomTab() {
+            return !!(this.customTabTemplate);
+        },
+
+        hasContent() {
+            return !!(this.seListProp.length);
+        },
+
+        seListProp() {
+            return JSON.parse(this.seList);
         },
 
         tabstrip() {
@@ -85,10 +147,17 @@ export default {
         lazyTabDocument() {
             const index = this.privateScope.getLazyTabIndex();
             if (index > -1) {
-                return this.$(this.tabstrip.contentElement(index)).find('ank-document');
+                return this.$(this.tabstrip.contentElement(index)).find('ank-smart-element');
             }
 
             return null;
+        },
+
+        translations() {
+            return {
+                noSEOpened: this.$pgettext('SETabs', 'No Smart Element opened'),
+                closeAllSE: this.$pgettext('SETabs', 'Close all '),
+            };
         },
     },
 
@@ -104,9 +173,25 @@ export default {
         addable(newValue) {
             this.privateScope.setAddTabButton(newValue);
         },
+
+        sortable(newValue) {
+            this.privateScope.configureSortable(newValue);
+        },
     },
 
     created() {
+        if (this.hasWelcomeTab) {
+            this.$options.components.welcomeTab = {
+                template: this.welcomeTabTemplate,
+            };
+        }
+
+        if (this.hasCustomTab) {
+            this.$options.components.customTab = {
+                template: this.customTabTemplate,
+            };
+        }
+
         this.privateScope = {
             createKendoComponents: () => {
                 this.privateScope.createKendoTabStrip();
@@ -141,15 +226,15 @@ export default {
                     dataBound: this.privateScope.onOpenedTabsListDataBound,
                     autoWidth: true,
                     select: this.privateScope.onOpenedTabsListItemClick,
-                    noDataTemplate: 'Aucun document ouvert',
-                    headerTemplate: `<button class="documentsList__documentsTabs__tabsList__list__close__all">
-                                        Fermer tous les onglets
+                    noDataTemplate: this.translations.noSEOpened,
+                    headerTemplate: `<button class="seTabs__tabsList__list__close__all">
+                                        ${this.translations.closeAllSE}
                                      </button>`,
                 });
-                this.tabslist.list.addClass('documentsList__documentsTabs__tabsList__list');
+                this.tabslist.list.addClass('seTabs__tabsList__list');
                 this.tabslist.list
-                    .find('.documentsList__documentsTabs__tabsList__list__close__all')
-                    .on('click', this.closeAllDocuments);
+                    .find('.seTabs__tabsList__list__close__all')
+                    .on('click', this.closeAllSE);
             },
 
             sendGetRequest: (url, config, loadingElement) => {
@@ -184,10 +269,10 @@ export default {
                     next.css('right', `${paginatorWidth}px`);
                     // prev.css('right', `${paginatorWidth + nextWidth}px`);
                     marginRight += nextWidth;
-                    this.tabstrip.tabGroup.find('#documentsList__documentsTabs__new__tab__button')
+                    this.tabstrip.tabGroup.find('#seTabs__new__tab__button')
                         .addClass('new__tab__button--sticky');
                 } else {
-                    this.tabstrip.tabGroup.find('#documentsList__documentsTabs__new__tab__button')
+                    this.tabstrip.tabGroup.find('#seTabs__new__tab__button')
                         .removeClass('new__tab__button--sticky');
                 }
 
@@ -203,9 +288,11 @@ export default {
                         this.tabModel.add(welcomeTab, this.newLazyTab);
                     }
 
-                    this.selectDocument(0);
+                    this.selectIndex(0);
                 }
 
+                this.privateScope
+                    .configureSortable(this.sortable);
                 this.privateScope
                     .setAddTabButton(this.addable);
             },
@@ -228,11 +315,46 @@ export default {
                 return -1;
             },
 
+            configureSortable: (sortable = true) => {
+                if (sortable) {
+                    this.tabstrip.tabGroup.kendoSortable({
+                        filter: 'li.k-item',
+                        axis: 'x',
+                        container: 'ul.k-tabstrip-items',
+                        hint: (element) => $("<div id='hint' class='k-widget k-header k-tabstrip'>" +
+                            "<ul class='k-tabstrip-items k-reset'>" +
+                            "<li class='k-item k-state-active k-tab-on-top'>" +
+                            element.html() +
+                            '</li></ul></div>'),
+
+                        start: (e) => {
+                            this.tabstrip.activateTab(e.item);
+                        },
+
+                        change: (e) => {
+                            const reference = this.tabstrip.tabGroup.children().eq(e.newIndex);
+
+                            if (e.oldIndex < e.newIndex) {
+                                this.tabstrip.insertAfter(e.item, reference);
+                            } else {
+                                this.tabstrip.insertBefore(e.item, reference);
+                            }
+                        },
+                    });
+                } else {
+                    this.tabstrip.tabGroup.kendoSortable({
+                        disabled: 'li.k-item',
+                    });
+                }
+            },
+
             setAddTabButton: (addable = true) => {
-                let newTabButton = this.$('#documentsList__documentsTabs__new__tab__button');
+                let newTabButton = this.$('#seTabs__new__tab__button');
                 if (addable) {
                     if (!newTabButton.length) {
-                        newTabButton = this.$('<button id="documentsList__documentsTabs__new__tab__button" class="tab__new__button"><i class="material-icons">add</i></button>');
+                        newTabButton = this.$('<button id="seTabs__new__tab__button" class="tab__new__button">' +
+                            '<i class="material-icons">add</i>' +
+                            '</button>');
                         newTabButton.on('click', this.privateScope.onAddTabClick);
                     }
 
@@ -248,7 +370,7 @@ export default {
                 const $tab = this.$(tab);
                 const closable = forceClose !== undefined ? forceClose : this.closable;
                 if (closable) {
-                    $tab.find('.tab__document__header__content')
+                    $tab.find('.seTab__header__content')
                         .append('<span data-type="remove" class="k-link"><span class="k-icon k-i-x"></span></span>');
                     $tab.on('click', "[data-type='remove']", this.privateScope.onCloseTabClick);
                 } else {
@@ -259,9 +381,9 @@ export default {
 
             loadLazyTabDocument: (data) => {
                 const tab = this.$(this.tabstrip.items()[this.privateScope.getLazyTabIndex()]);
-                tab.find('.tab__document__title').text(data.data.title);
-                tab.find('.tab__document__icon')
-                    .replaceWith(`<img class="tab__document__icon" src="${data.data.icon}" />`);
+                tab.find('.seTab__title').text(data.data.title);
+                tab.find('.seTab__icon')
+                    .replaceWith(`<img class="seTab__icon" src="${data.data.icon}" />`);
                 this.privateScope.onAddDocumentTab(this.privateScope.getLazyTabIndex());
                 this.$(this.tabstrip.items()[this.privateScope.getLazyTabIndex()]).show();
                 this.$(this.lazyTabDocument).prop('documentvalue', JSON.stringify(data.data));
@@ -272,7 +394,7 @@ export default {
             bindWelcomeTabEvents: ($newTab, index) => {
                 $newTab.on('document-creation', e => this.privateScope.onCreateDocumentClick(e, index));
                 $newTab.on('document-selected', (e) => {
-                    this.setDocument(e.detail[0], index);
+                    this.setSE(e.detail[0], index);
                 });
             },
 
@@ -280,13 +402,35 @@ export default {
 
             },
 
-            bindDocumentTabEvents: ($doc, index) => {
+            getSEEventHandler: (eventName) => {
+                switch (eventName) {
+                    case 'ready':
+                        return this.privateScope.onDocumentReady;
+                    case 'actionClick':
+                        return this.privateScope.onDocumentActionClick;
+                    case 'afterSave':
+                        return this.privateScope.onDocumentAfterSave;
+                    default:
+                        return noop;
+                }
+            },
+
+            bindDocumentTabEvents: ($doc, tabIndex) => {
                 const documentComponent = $doc;
-                documentComponent.on('ready', e => this.privateScope.onDocumentReady(e, index));
-                documentComponent.on('actionClick', e => this.privateScope.onDocumentActionClick(e, index));
-                documentComponent.on('afterSave', e => this.privateScope.onDocumentAfterSave(e, index));
-                documentComponent.on('afterDelete', e => this.privateScope.onDocumentAfterDelete(e, index));
-                documentComponent.on('successTransition', e => this.privateScope.onSuccessTransition(e, index));
+                smartElementEvents.forEach(eventName => {
+                    documentComponent.on(eventName, e => {
+                        const cb = this.privateScope.getSEEventHandler(eventName);
+                        cb.call(this, e, tabIndex);
+                        const notCancelled = this.$emitAnkEvent(`se-${camelToKebab(eventName)}`, e, tabIndex);
+                        if (!notCancelled) {
+                            if (e.detail && e.detail.length) {
+                                if (e.detail[0].cancelable) {
+                                    e.detail[0].preventDefault();
+                                }
+                            }
+                        }
+                    });
+                });
             },
 
             onModelAddItem: (event) => {
@@ -321,8 +465,8 @@ export default {
             onModelRemoveItem: (event, model) => {
                 if (event.items.length === 1) {
                     if (this.$(this.tabstrip.items()[event.index]).hasClass('k-state-active')
-                    && !this.tabModel.isEmpty()) {
-                        this.selectDocument(0);
+                        && !this.tabModel.isEmpty()) {
+                        this.selectIndex(0);
                     }
 
                     this.tabstrip.remove(event.index);
@@ -351,11 +495,11 @@ export default {
                 switch (event.field) {
                     case 'data.title':
                         newValue = event.items[0][props[0]][props[1]];
-                        $indexedItem.find('span.tab__document__title').text(newValue);
+                        $indexedItem.find('span.seTab__title').text(newValue);
                         break;
                     case 'data.icon':
                         newValue = event.items[0][props[0]][props[1]];
-                        $indexedItem.find('img.tab__document__icon').prop('src', newValue);
+                        $indexedItem.find('img.seTab__icon').prop('src', newValue);
                         break;
                 }
             },
@@ -383,14 +527,14 @@ export default {
 
             onAddDocumentTab: (index) => {
                 const tabContent = this.tabstrip.contentElement(index);
-                const $doc = this.$(tabContent).find('ank-document');
+                const $doc = this.$(tabContent).find('ank-smart-element');
                 this.privateScope
                     .bindDocumentTabEvents($doc, index);
                 $doc.one('ready', () => {
                     this.$(tabContent)
-                        .find('.documentsList__documentsTabs__tab__content--document').show();
+                        .find('.seTabs__tab__content--se').show();
                     this.$(tabContent)
-                        .find('.documentsList__documentsTabs__tab__content--loading').hide();
+                        .find('.seTabs__tab__content--loading').hide();
                 });
             },
 
@@ -399,8 +543,10 @@ export default {
                 e.stopPropagation();
                 if (this.newTabConfig) {
                     this.tabModel.add(Object.assign({}, { tabId: Constants.NEW_TAB_ID }, this.newTabConfig));
-                    this.selectDocument(this.tabModel.size() - 1);
+                    this.selectIndex(this.tabModel.size() - 1);
                 }
+
+                this.$emitAnkEvent('tabs-new-tab');
             },
 
             onCloseTabClick: (e) => {
@@ -408,16 +554,16 @@ export default {
                 e.stopPropagation();
 
                 const item = this.$(e.target).closest('.k-item');
-                this.closeDocument(item.index());
+                this.closeSE(item.index());
             },
 
             onCreateDocumentClick: (e, index) => {
                 const newId = e.detail[0].initid;
-                this.setDocument({
+                this.setSE({
                     initid: newId,
                     viewid: '!defaultCreation',
                 }, index);
-                this.selectDocument(index);
+                this.selectIndex(index);
             },
 
             onTabstripSelect: (e) => {
@@ -434,18 +580,18 @@ export default {
             },
 
             onOpenedTabsListDataBound: (e) => {
-                e.sender.list.find('.documentTabs__openedTab__listItem__close').off('click');
-                e.sender.list.find('.documentTabs__openedTab__listItem__close').on('click', (e) => {
+                e.sender.list.find('.seTabs__openedTab__listItem__close').off('click');
+                e.sender.list.find('.seTabs__openedTab__listItem__close').on('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    this.closeDocument({
-                        tabId: $(e.target).closest('.documentTabs__openedTab__listItem').data('docid'),
+                    this.closeSE({
+                        tabId: $(e.target).closest('.seTabs__openedTab__listItem').data('docid'),
                     });
                 });
             },
 
             onOpenedTabsListItemClick: (e) => {
-                this.selectDocument(e.dataItem.data);
+                this.selectSE(e.dataItem.data);
             },
 
             onDocumentReady: (readyEvent, tabPosition) => {
@@ -459,19 +605,19 @@ export default {
                 }
 
                 if (this.documentCss) {
-                    $document.prop('publicMethods').injectCSS(this.documentCss);
+                    $document.prop('publicMethods').injectCSS(this.seCss);
                 }
 
                 if (tabPosition !== undefined) {
                     this.$(this.tabstrip.items()[tabPosition])
-                        .find('a.tab__document__header__content')
+                        .find('a.seTab__header__content')
                         .prop('href', readyEvent.detail[1].url);
                     this.$(this.tabstrip.items()[tabPosition])
-                        .find('a.tab__document__header__content .tab__document__title')
+                        .find('a.seTab__header__content .seTab__title')
                         .text(readyEvent.detail[1].title);
                     this.$(this.tabstrip.items()[tabPosition])
-                        .find('a.tab__document__header__content .tab__document__icon')
-                        .replaceWith(`<img class="tab__document__icon" src="${readyEvent.detail[1].icon}" />`);
+                        .find('a.seTab__header__content .seTab__icon')
+                        .replaceWith(`<img class="seTab__icon" src="${readyEvent.detail[1].icon}" />`);
                 }
 
                 const lazyIndex = this.privateScope.getLazyTabIndex();
@@ -488,7 +634,7 @@ export default {
                         e.detail[0].preventDefault();
                         const initid = e.detail[2].options[0];
                         const viewid = e.detail[2].options[1];
-                        this.addDocument({ initid, viewid });
+                        this.addSE({ initid, viewid });
                     }
                 }
             },
@@ -498,15 +644,26 @@ export default {
                 tab.set('tabId', e.detail[1].initid);
                 tab.set('data.title', e.detail[1].title);
                 tab.set('data.icon', e.detail[1].icon);
-                this.$emit('document-modified', e.detail);
+                // this.$emit('document-modified', e.detail);
             },
 
-            onDocumentAfterDelete: (e, tabPosition) => {
-                this.$emit('document-deleted', e.detail);
-            },
+            formatSE: (seConfig) => {
+                let initid = null;
+                let otherProps = {};
+                if (typeof seConfig === 'object') {
+                    initid = seConfig.initid;
+                    otherProps = Object.assign({}, seConfig);
+                } else if (typeof seConfig === 'number' || typeof seConfig === 'string') {
+                    initid = seConfig;
+                }
 
-            onSuccessTransition: (e, tabPosition) => {
-                this.$emit('document-success-transition', e.detail);
+                if (typeof initid !== 'string' && typeof initid !== 'number') {
+                    throw "Error in the Smart Element format : '" +
+                    JSON.stringify(seConfig) +
+                    "' must be String|Number or Object with an 'initid' property";
+                }
+
+                return Object.assign({}, otherProps, { initid: initid.toString() });
             },
         };
     },
@@ -515,7 +672,7 @@ export default {
         this.$kendo.ui.progress(this.$(this.$refs.tabsWrapper), true);
         const ready = () => {
             this.privateScope.createKendoComponents();
-            this.$emit('document-tabs-ready', this.$el.parentElement);
+            this.$emitAnkEvent('se-tabs-ready');
             this.$kendo.ui.progress(this.$(this.$refs.tabsWrapper), false);
         };
 
@@ -527,81 +684,78 @@ export default {
     },
 
     methods: {
-        addDocument(document) {
-            const index = this.tabModel.findIndex(t => t.tabId == document.initid);
+        addSE(seConfig) {
+            const seFormat = this.privateScope.formatSE(seConfig);
+            const index = this.tabModel.findIndex(t => t.tabId === seFormat.initid);
             if (index < 0) {
                 const tabData = {
-                    tabId: document.initid,
+                    tabId: seFormat.initid,
                     headerTemplate,
                     contentTemplate,
-                    data: Object.assign({}, document),
+                    data: Object.assign({}, seFormat),
                 };
                 if (this.privateScope.canUseLazyTab()) {
-                    console.log('USE LAZY LOAD');
+                    // Use preloaded smart element
                     this.privateScope.loadLazyTabDocument(tabData);
                 } else {
-                    console.log("DON'T USE LAZY LOAD");
                     this.tabModel.add(tabData);
                 }
 
-                this.selectDocument(document);
-                this.$emit('document-tab-selected', document, this.$http);
+                this.selectSE(seFormat);
             } else {
-                this.selectDocument(index);
+                this.selectIndex(index);
             }
         },
 
-        setDocument(document, position) {
+        setSE(se, position) {
             if (position === undefined) {
-                this.addDocument(document);
+                this.addSE(se);
             } else {
-                const index = this.tabModel.findIndex(t => t.tabId == document.initid);
+                const seFormat = this.privateScope.formatSE(se);
+                const index = this.tabModel.findIndex(t => t.tabId === seFormat.initid);
                 if (index < 0) {
                     const tabData = {
-                        tabId: document.initid,
+                        tabId: seFormat.initid,
                         headerTemplate,
                         contentTemplate,
-                        data: Object.assign({}, document),
+                        data: Object.assign({}, seFormat),
                     };
                     this.tabModel.replace(position, tabData);
-                    /*if (this.privateScope.canUseLazyTab()) {
-                        console.log('USE LAZY LOAD');
-                        this.tabModel.replace(position, this.tabModel.remove(this.lazyTabIndex));
-                        this.privateScope.loadLazyTabDocument(tabData);
-                        this.selectDocument(document);
-                    } else {
-                        console.log("DON'T USE LAZY LOAD");
-                        this.tabModel.replace(position, tabData);
-                    }*/
-                    this.selectDocument(document);
+                    this.selectSE(seFormat);
                 } else {
-                    this.selectDocument(index);
+                    this.selectIndex(index);
                 }
             }
         },
 
-        selectDocument(documentId) {
-            let index = 0;
-            if (typeof documentId === 'number') {
-                if (documentId >= 0 && documentId < this.tabModel.size()) {
-                    index = documentId;
-                }
-            } else if (typeof documentId === 'object' && documentId !== null
-                && documentId.initid !== undefined) {
-                index = this.tabModel.findIndex(t => t.tabId == documentId.initid);
-                if (index < 0) {
-                    index = 0;
-                }
+        selectIndex(seIndex = 0) {
+            let index = seIndex;
+            if (index < 0) {
+                index = 0;
             }
+
+            this.$emitAnkEvent('se-tab-selected', this.tabModel.get(index), index);
 
             this.tabstrip.select(index);
         },
 
-        closeDocument(documentId) {
+        selectSE(seConfig) {
+            const seFormat = this.privateScope.formatSE(seConfig);
+            let index = this.tabModel.findIndex(t => t.tabId === seFormat.initid);
+            if (index < 0) {
+                index = 0;
+            }
+
+            this.$emitAnkEvent('se-tab-selected', this.tabModel.get(index), index);
+
+            this.tabstrip.select(index);
+        },
+
+        closeSE(documentId) {
             this.tabModel.remove(documentId);
         },
 
-        closeAllDocuments() {
+        closeAllSE() {
             this.tabModel.removeAll();
         },
 
@@ -617,7 +771,7 @@ export default {
         addCustomTab(tabConfiguration) {
             if (tabConfiguration.headerTemplate && tabConfiguration.contentTemplate) {
                 this.tabModel.add(Object.assign({}, tabConfiguration, { tabId: Constants.CUSTOM_TAB_ID }));
-                this.selectDocument({ initid: Constants.CUSTOM_TAB_ID });
+                this.selectSE({ initid: Constants.CUSTOM_TAB_ID });
             }
         },
     },

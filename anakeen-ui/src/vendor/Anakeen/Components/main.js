@@ -5,7 +5,7 @@ const installCE = require('document-register-element/pony');
 
 installCE(window, {
     type: 'auto',
-    noBuiltIn: true
+    noBuiltIn: true,
 });
 
 import VueCustomElement from 'vue-custom-element';
@@ -49,9 +49,9 @@ Vue.http.get('/api/v2/ui/users/current')
 
 // import and register your component(s)
 import Authent from './Authent/Authent.vue';
-import Document from './Document/Document.vue';
+import Document from './SmartElement/SmartElement.vue';
 import SEList from './SEList/seList.vue';
-import DocumentTabs from './DocumentTabs/documentTabs.vue';
+import DocumentTabs from './SETabs/seTabs.vue';
 import AnakeenLoading from './AnakeenLoading/AnakeenLoading.vue';
 import Logout from './Logout/Logout.vue';
 import Identity from './Identity/Identity.vue';
@@ -59,9 +59,9 @@ import AuthentPassword from './Authent/AuthentPassword.vue'
 
 Vue.customElement('ank-loading', AnakeenLoading);
 Vue.customElement('ank-authent', Authent);
-Vue.customElement('ank-document', Document);
+Vue.customElement('ank-smart-element', Document);
 Vue.customElement('ank-se-list', SEList);
-Vue.customElement('ank-document-tabs', DocumentTabs);
+Vue.customElement('ank-se-tabs', DocumentTabs);
 Vue.customElement('ank-logout', Logout);
 Vue.customElement('ank-identity', Identity);
 Vue.customElement('ank-authent-password', AuthentPassword);

@@ -15,17 +15,17 @@
         <ank-identity large="true" email-alterable="true" password-alterable="true"></ank-identity>
         <ank-logout class="systemLeftUpRight"></ank-logout>
     </div>
-    <ank-se-list class="systemLeftDown" id="documentsList"
-                 label="Tests UI" smart-structure-name="TST_RENDER"
+    <ank-se-list class="systemLeftDown" id="seList"
+                 label="Tests UI" smart-collection="TST_RENDER"
                  logo-url="CORE/Images/anakeen-logo.svg"
-                 bind-event="sel-selected: #documentsTabs.publicMethods.addDocument"
+                 bind-event="se-selected: #seTabs.publicMethods.addSE"
     ></ank-se-list>
 </div>
 <div class="systemRight">
-    <ank-document-tabs id="documentsTabs"
-                       bind-event="document-modified: #documentsList.publicMethods.refreshDocumentsList,
-                                      document-deleted: #documentsList.publicMethods.refreshDocumentsList">
-    </ank-document-tabs>
+    <ank-se-tabs id="seTabs"
+                       bind-event="se-after-save: #seList.publicMethods.refreshList,
+                                      se-after-delete: #seList.publicMethods.refreshList">
+    </ank-se-tabs>
 
 </div>
 
