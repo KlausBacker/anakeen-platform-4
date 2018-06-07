@@ -303,13 +303,13 @@ class ExportConfiguration
             }
 
             if ($docattr->needed) {
-                $smartOver->setAttribute("needed", ($docattr->needed === "Y")?"true":"false");
+                $smartOver->setAttribute("needed", ($docattr->needed === "Y") ? "true" : "false");
             }
             if ($docattr->title) {
-                $smartOver->setAttribute("is-title", ($docattr->title === "Y")?"true":"false");
+                $smartOver->setAttribute("is-title", ($docattr->title === "Y") ? "true" : "false");
             }
             if ($docattr->abstract) {
-                $smartOver->setAttribute("is-abstract", ($docattr->abstract === "Y")?"true":"false");
+                $smartOver->setAttribute("is-abstract", ($docattr->abstract === "Y") ? "true" : "false");
             }
             if ($docattr->ordered) {
                 $smartOver->setAttribute("insert-after", $docattr->ordered);
@@ -438,6 +438,10 @@ class ExportConfiguration
                 continue;
             }
 
+            if ($this->isModAttr($attr)) {
+                continue;
+            }
+
             if ($attr->usefor === "Q") {
                 $rootAttr = $smartParameters;
             } else {
@@ -482,9 +486,11 @@ class ExportConfiguration
                      */
                     if ($attr->needed) {
                         $smartAttr->setAttribute("needed", "true");
-                    } if ($attr->isInTitle) {
+                    }
+                    if ($attr->isInTitle) {
                         $smartAttr->setAttribute("is-title", "true");
-                    } if ($attr->isInAbstract) {
+                    }
+                    if ($attr->isInAbstract) {
                         $smartAttr->setAttribute("is-abstract", "true");
                     }
                     if ($type === "docid" || $type === "account") {
@@ -730,6 +736,14 @@ class ExportConfiguration
         $smartAttrreturn = $this->cel("attr-return");
         $smartAttrHook->appendChild($smartAttrreturn);
         return $smartAttrHook;
+    }
+
+    protected function isModAttr(BasicAttribute $attr)
+    {
+        $sql = sprintf("select id from docattr where docid=%d and id =':%s'", $this->sst->id, pg_escape_string($attr->id));
+        DbManager::query($sql, $id, true, true);
+        return $id !== false;
+
     }
 
     private function cel($name)

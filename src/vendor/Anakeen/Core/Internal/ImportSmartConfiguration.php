@@ -45,7 +45,7 @@ class ImportSmartConfiguration
         $configs = $this->getNodes($this->dom->documentElement, "structure-configuration");
         foreach ($configs as $config) {
             $data = $this->importSmartStructureConfig($config);
-            $this->print($data);
+           // $this->print($data);
         }
         return $data;
     }
@@ -63,9 +63,11 @@ class ImportSmartConfiguration
         $data = array_merge($data, $this->extractProps($config));
         $data = array_merge($data, $this->extractAttrs($config));
         $data = array_merge($data, $this->extractParams($config));
+
+        $data = array_merge($data, $this->extractModAttrs($config));
         $data[] = ["END"];
 
-        $this->importSmartData($data);
+          $this->importSmartData($data);
 
 
         return $data;
@@ -77,7 +79,7 @@ class ImportSmartConfiguration
         $import = new \ImportDocumentDescription();
 
         $cr = $import->importData($data);
-        print_r($cr);
+        //print_r($cr);
     }
 
     protected function extractBegin(\DOMElement $config)
@@ -88,7 +90,7 @@ class ImportSmartConfiguration
         // Label
         $data[2] = $config->getAttribute("label");
         // Id not used
-        $data[3] = "";
+        $data[3] = $config->getAttribute("id");
         // Old Class not used
         $data[4] = "";
         // Name
@@ -114,6 +116,49 @@ class ImportSmartConfiguration
                     $data = array_merge($data, $this->extractAttr($attrNode, "PARAM"));
                 }
             }
+        }
+
+        return $data;
+    }
+
+    protected function extractModAttrs(\DOMElement $config)
+    {
+        $data = [];
+        $modAttrs = $this->getNodes($config, "attr-override");
+
+        foreach ($modAttrs as $attrNode) {
+
+            /**
+             * @var \DOMElement $attrNode
+             */
+
+            $attr = new ImportSmartAttr();
+            $attr->id = $attrNode->getAttribute("attr");
+            $attr->label = $attrNode->getAttribute("label");
+            $attr->idfield = $attrNode->getAttribute("fieldset");
+            $attr->visibility = $attrNode->getAttribute("visibility");
+            $attr->link = $attrNode->getAttribute("link");
+            if ($attrNode->getAttribute("needed")) {
+                $attr->need = ($attrNode->getAttribute("needed") === "true") ? "Y" : "N";
+            }
+            if ($attrNode->getAttribute("is-abstract")) {
+                $attr->isAbstract = ($attrNode->getAttribute("is-abstract") === "true") ? "Y" : "N";
+            }
+
+            if ($attrNode->getAttribute("is-title")) {
+                $attr->isTitle = ($attrNode->getAttribute("is-title") === "true") ? "Y" : "N";
+            }
+            $attr->order = $attrNode->getAttribute("insert-after");
+
+            $attr->constraint = $this->extractAttrHooks($attrNode, function (\DOMElement $e) {
+                return $e->getAttribute("type") === "constraint";
+            });
+            $attr->phpfunc = $this->extractAttrHooks($attrNode, function (\DOMElement $e) {
+                return $e->getAttribute("event") === "onPreRefresh";
+            });
+            $attr->option = $this->extractAttrOptions($attrNode);
+
+            $data[] = $attr->getData("MODATTR");
         }
 
         return $data;
@@ -167,6 +212,8 @@ class ImportSmartConfiguration
     protected function extractSingleAttr(\DOMElement $attrNode, $key, $fieldName = "")
     {
         $attr = new ImportSmartAttr();
+        $attr->id = $attrNode->getAttribute("name");
+
         if ($attrNode->tagName === "smart:attr-fieldset") {
             $attr->type = $attrNode->getAttribute("type");
         } else {
@@ -176,7 +223,6 @@ class ImportSmartConfiguration
                 $attr->type .= '("' . $rel . '")';
             }
         }
-        $attr->id = $attrNode->getAttribute("name");
         $attr->label = $attrNode->getAttribute("label");
         $attr->idfield = $fieldName;
         $attr->visibility = $attrNode->getAttribute("visibility");
@@ -299,7 +345,11 @@ class ImportSmartConfiguration
 
         $node = $this->getNode($config, "class");
         if ($node) {
-            $data[] = ["CLASS", $node->nodeValue];
+            $data[] = [
+                "CLASS",
+                $node->nodeValue,
+                ($node->getAttribute("disable-inheritance-condition") === "true")?"disableInheritanceCondition":""
+                ];
         }
         $node = $this->getNode($config, "methods");
         if ($node) {

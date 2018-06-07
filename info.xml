@@ -253,7 +253,7 @@
             <label>Import BASE Family</label>
         </process>
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.csv">
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml">
             <label>Import PROFIL Families</label>
         </process>
         <process
@@ -589,7 +589,7 @@
             <label>Import BASE Family</label>
         </process>
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.csv">
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml">
             <label>Import PROFIL Families</label>
         </process>
         <process
