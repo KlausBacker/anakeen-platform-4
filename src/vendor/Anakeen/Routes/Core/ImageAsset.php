@@ -17,7 +17,8 @@ use Anakeen\Router\ApiV2Response;
  */
 class ImageAsset
 {
-    const CACHEIMGDIR = Settings::CacheDir."image/";
+    const CACHEIMGDIR = Settings::CacheDir . "image/";
+    const DEFAULTIMG = "core-noimage.png";
     protected $size;
     protected $imageFileName;
 
@@ -53,7 +54,7 @@ class ImageAsset
             $outFile = $location;
         }
 
-        $response=ApiV2Response::withEtag($request, $response, filemtime($location));
+        $response = ApiV2Response::withEtag($request, $response, filemtime($location));
         return ApiV2Response::withFile($response, $outFile, "", true);
     }
 
@@ -86,7 +87,11 @@ class ImageAsset
     {
         $location = sprintf("Images/%s", $this->imageFileName);
         if (!file_exists($location)) {
-            throw new Exception("ROUTES0115", $this->imageFileName);
+            // Use Another Default Image
+            $location = sprintf("Images/%s", self::DEFAULTIMG);
+            if (!file_exists($location)) {
+                throw new Exception("ROUTES0115", $location);
+            }
         }
         return $location;
     }
