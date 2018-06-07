@@ -249,7 +249,7 @@
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Base/base.struct.csv">
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Base/base.struct.xml">
             <label>Import BASE Family</label>
         </process>
         <process
@@ -585,7 +585,7 @@
 
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Base/base.struct.csv">
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Base/base.struct.xml">
             <label>Import BASE Family</label>
         </process>
         <process

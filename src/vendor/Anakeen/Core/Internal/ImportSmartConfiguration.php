@@ -47,6 +47,7 @@ class ImportSmartConfiguration
             $data = $this->importSmartStructureConfig($config);
             $this->print($data);
         }
+        return $data;
     }
 
     public function print($data)
@@ -63,7 +64,20 @@ class ImportSmartConfiguration
         $data = array_merge($data, $this->extractAttrs($config));
         $data = array_merge($data, $this->extractParams($config));
         $data[] = ["END"];
+
+        $this->importSmartData($data);
+
+
         return $data;
+    }
+
+
+    protected function importSmartData(array $data)
+    {
+        $import = new \ImportDocumentDescription();
+
+        $cr = $import->importData($data);
+        print_r($cr);
     }
 
     protected function extractBegin(\DOMElement $config)
@@ -88,16 +102,17 @@ class ImportSmartConfiguration
     {
         $data = [];
         $nodeAttributes = $this->getNode($config, "parameters");
-
-        foreach ($nodeAttributes->childNodes as $attrNode) {
-            if (!is_a($attrNode, \DOMElement::class)) {
-                continue;
-            }
-            /**
-             * @var \DOMElement $attrNode
-             */
-            if (preg_match('/smart:attr-/', $attrNode->tagName)) {
-                $data = array_merge($data, $this->extractAttr($attrNode, "PARAM"));
+        if ($nodeAttributes) {
+            foreach ($nodeAttributes->childNodes as $attrNode) {
+                if (!is_a($attrNode, \DOMElement::class)) {
+                    continue;
+                }
+                /**
+                 * @var \DOMElement $attrNode
+                 */
+                if (preg_match('/smart:attr-/', $attrNode->tagName)) {
+                    $data = array_merge($data, $this->extractAttr($attrNode, "PARAM"));
+                }
             }
         }
 
@@ -108,16 +123,17 @@ class ImportSmartConfiguration
     {
         $data = [];
         $nodeAttributes = $this->getNode($config, "attributes");
-
-        foreach ($nodeAttributes->childNodes as $attrNode) {
-            if (!is_a($attrNode, \DOMElement::class)) {
-                continue;
-            }
-            /**
-             * @var \DOMElement $attrNode
-             */
-            if (preg_match('/smart:attr-/', $attrNode->tagName)) {
-                $data = array_merge($data, $this->extractAttr($attrNode, "ATTR"));
+        if ($nodeAttributes) {
+            foreach ($nodeAttributes->childNodes as $attrNode) {
+                if (!is_a($attrNode, \DOMElement::class)) {
+                    continue;
+                }
+                /**
+                 * @var \DOMElement $attrNode
+                 */
+                if (preg_match('/smart:attr-/', $attrNode->tagName)) {
+                    $data = array_merge($data, $this->extractAttr($attrNode, "ATTR"));
+                }
             }
         }
 
@@ -172,7 +188,12 @@ class ImportSmartConfiguration
         if (!$attr->order) {
             $attr->order = "::auto";
         }
-        $attr->constraint = $this->extractAttrConstraint($attrNode);
+        $attr->constraint = $this->extractAttrHooks($attrNode, function (\DOMElement $e) {
+            return $e->getAttribute("type") === "constraint";
+        });
+        $attr->phpfunc = $this->extractAttrHooks($attrNode, function (\DOMElement $e) {
+            return $e->getAttribute("event") === "onPreRefresh";
+        });
         $attr->option = $this->extractAttrOptions($attrNode);
 
         $data = $attr->getData($key);
@@ -181,7 +202,7 @@ class ImportSmartConfiguration
     }
 
 
-    protected function extractAttrConstraint(\DOMElement $attrNode)
+    protected function extractAttrHooks(\DOMElement $attrNode, \Closure $filter)
     {
         $config = $this->getClosest($attrNode, "structure-configuration");
 
@@ -192,27 +213,42 @@ class ImportSmartConfiguration
          * @var \DOMElement $hook
          */
         foreach ($hooks as $hook) {
-            if ($hook->getAttribute("attr") === $attrid &&
-                $hook->getAttribute("type") === "constraint") {
-                $callableNode = $this->getNode($hook, "attr-callable");
-                $method .= $callableNode->getAttribute("function") . "(";
-                $argNodes = $this->getNodes($hook, "attr-argument");
-                $args=[];
-                /**
-                 * @var  \DOMElement $argNode
-                 */
-                foreach ($argNodes as $argNode) {
-                    $type=$argNode->getAttribute("type");
-                    $arg=$argNode->nodeValue;
-                    if ($type === "string") {
-                        // Escape quote
-                        $arg='"'.str_replace('"', '\\"', $arg).'"';
+            if ($hook->getAttribute("attr") === $attrid) {
+                if ($filter($hook)) {
+                    $callableNode = $this->getNode($hook, "attr-callable");
+                    $method .= $callableNode->getAttribute("function") . "(";
+                    $argNodes = $this->getNodes($hook, "attr-argument");
+                    $args = [];
+                    /**
+                     * @var  \DOMElement $argNode
+                     */
+                    foreach ($argNodes as $argNode) {
+                        $type = $argNode->getAttribute("type");
+                        $arg = $argNode->nodeValue;
+                        if ($type === "string") {
+                            // Escape quote
+                            $arg = '"' . str_replace('"', '\\"', $arg) . '"';
+                        }
+                        $args[] = $arg;
                     }
-                    $args[]=$arg;
-                }
-                $method.= implode(",", $args);
+                    $method .= implode(",", $args);
 
-                $method .= ')';
+                    $method .= ')';
+
+
+                    $returnNodes = $this->getNodes($hook, "attr-return");
+                    $returns = [];
+                    /**
+                     * @var  \DOMElement $returnNode
+                     */
+                    foreach ($returnNodes as $returnNode) {
+                        $attrid = $returnNode->getAttribute("attr");
+                        $returns[] = strtolower($attrid);
+                    }
+                    if ($returns) {
+                        $method .= ":" . implode(",", $returns);
+                    }
+                }
             }
         }
         return $method;

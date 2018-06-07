@@ -82,18 +82,20 @@ class ImportDocumentDescription
      *
      * @throws Dcp\Exception
      */
-    public function __construct($importFile)
+    public function __construct($importFile = "")
     {
-        if (seemsODS($importFile)) {
-            $this->ods2CsvFile = ods2csv($importFile);
-            $this->fdoc = fopen($this->ods2CsvFile, "r");
-        } else {
-            $this->fdoc = fopen($importFile, "r");
+        if ($importFile) {
+            if (seemsODS($importFile)) {
+                $this->ods2CsvFile = ods2csv($importFile);
+                $this->fdoc = fopen($this->ods2CsvFile, "r");
+            } else {
+                $this->fdoc = fopen($importFile, "r");
+            }
+            if (!$this->fdoc) {
+                throw new Dcp\Exception(sprintf("no import file found : %s", $importFile));
+            }
+            $this->importFileName = $importFile;
         }
-        if (!$this->fdoc) {
-            throw new Dcp\Exception(sprintf("no import file found : %s", $importFile));
-        }
-        $this->importFileName = $importFile;
         $this->dbaccess = \Anakeen\Core\DbManager::getDbAccess();
     }
 
@@ -227,7 +229,7 @@ class ImportDocumentDescription
         if (!$this->csvSeparator && !$csvLinebreak) {
             $csvLinebreak = '\n';
         }
-        $dataLines=[];
+        $dataLines = [];
 
         while (!feof($this->fdoc)) {
             if (!$this->csvEnclosure) {
@@ -258,7 +260,7 @@ class ImportDocumentDescription
             if (!\Anakeen\Core\Utils\Strings::isUTF8($data)) {
                 $data = array_map("utf8_encode", $data);
             }
-            $dataLines[]=$data;
+            $dataLines[] = $data;
         }
 
         fclose($this->fdoc);
@@ -739,7 +741,7 @@ class ImportDocumentDescription
                 $this->doc->changeIcon($this->familyIcon);
             }
             if (!$this->tcr[$this->nLine]["err"]) {
-                $this->tcr[$this->nLine]["msg"] .=  $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::POSTIMPORT);
+                $this->tcr[$this->nLine]["msg"] .= $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::POSTIMPORT);
                 $check->checkMaxAttributes($this->doc);
                 $this->tcr[$this->nLine]["err"] = $check->getErrors();
                 if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
