@@ -105,7 +105,9 @@ class RouterManager
         self::$app->add(
             function (\Slim\Http\request $request, \Slim\Http\response $response, $next) use ($middleWares, $c) {
 
-                session_cache_limiter('');
+                if (!headers_sent()) {
+                    session_cache_limiter('');
+                }
                 /**
                  * @var \Slim\Route $currentRoute
                  */

@@ -2699,7 +2699,7 @@ create unique index i_docir on doc(initid, revision);";
         $tsa = array();
 
         foreach ($this->attributes->attr as $k => $v) {
-            if (get_class($v) == \Anakeen\Core\SmartStructure\FieldSetAttribute::class) {
+            if (is_object($v) && get_class($v) == \Anakeen\Core\SmartStructure\FieldSetAttribute::class) {
                 $tsa[$v->id] = $v;
             }
         }
