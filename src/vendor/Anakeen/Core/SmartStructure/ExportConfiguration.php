@@ -20,7 +20,7 @@ class ExportConfiguration
 {
     protected $data;
     const NS = "smart";
-    const NSURL = "http://www.anakeen.com/ns/smart/";
+    const NSURL = "http://www.anakeen.com/ns/smart/v1/";
     /**
      * @var SmartStructure|null
      */
@@ -32,6 +32,11 @@ class ExportConfiguration
      */
     protected $fieldSets = [];
 
+    /**
+     * ExportConfiguration constructor.
+     * @param SmartStructure $sst Smart Structure to export
+     * @throws Exception
+     */
     public function __construct(SmartStructure $sst)
     {
 
@@ -49,12 +54,17 @@ class ExportConfiguration
         $this->extractAttr($structConfig);
         $this->extractModAttr($structConfig);
         $this->extractHooks($structConfig);
+        $this->extractAutoComplete($structConfig);
         $this->extractDefaults($structConfig);
         $this->extractEnums($structConfig);
         $this->extractProfil($structConfig);
         $this->extractCv($structConfig);
     }
 
+    /**
+     * Return Xml string for stmart structre configuration
+     * @return string
+     */
     public function toXml()
     {
         return $this->dom->saveXML();
@@ -63,7 +73,6 @@ class ExportConfiguration
     protected function extractCv(\DOMElement $structConfig)
     {
         $access = $this->cel("render");
-        // $accessControl = $this->cel("access-control");
         if ($this->sst->ccvid) {
             $tag = $this->cel("view-control");
             $tag->setAttribute("link", SEManager::getNameFromId($this->sst->ccvid));
@@ -76,8 +85,7 @@ class ExportConfiguration
 
     protected function extractProfil(\DOMElement $structConfig)
     {
-        $access = $this->cel("access");
-        // $accessControl = $this->cel("access-control");
+        $access = $this->cel("accesses");
         if ($this->sst->cprofid) {
             $tag = $this->cel("element-access");
             $tag->setAttribute("link", SEManager::getNameFromId($this->sst->cprofid));
@@ -104,7 +112,7 @@ class ExportConfiguration
 
     protected function setAccess($profid)
     {
-        $accessControl = $this->cel("access-control");
+        $accessControl = $this->cel("access-configuration");
         $profil = SEManager::getDocument($profid);
 
         $accessControl->setAttribute("name", $profil->name);
@@ -218,6 +226,11 @@ class ExportConfiguration
             $tag->nodeValue = SEManager::getNameFromId($this->sst->dfldid);
             $structConfig->appendChild($tag);
         }
+        if ($this->sst->icon) {
+            $tag = $this->cel("icon");
+            $tag->setAttribute("file", $this->sst->icon);
+            $structConfig->appendChild($tag);
+        }
         if ($this->sst->classname) {
             $tag = $this->cel("class");
             $tag->nodeValue = $this->sst->classname;
@@ -288,13 +301,24 @@ class ExportConfiguration
             if ($docattr->visibility) {
                 $smartOver->setAttribute("visibility", $docattr->visibility);
             }
+
             if ($docattr->needed) {
-                $smartOver->setAttribute("needed", $docattr->needed);
+                $smartOver->setAttribute("needed", ($docattr->needed === "Y")?"true":"false");
+            }
+            if ($docattr->title) {
+                $smartOver->setAttribute("is-title", ($docattr->title === "Y")?"true":"false");
+            }
+            if ($docattr->abstract) {
+                $smartOver->setAttribute("is-abstract", ($docattr->abstract === "Y")?"true":"false");
             }
             if ($docattr->ordered) {
                 $smartOver->setAttribute("insert-after", $docattr->ordered);
             }
             if ($docattr->labeltext) {
+                $smartOver->setAttribute("label", $docattr->labeltext);
+            }
+
+            if ($docattr->title) {
                 $smartOver->setAttribute("label", $docattr->labeltext);
             }
             if ($docattr->type) {
@@ -355,6 +379,8 @@ class ExportConfiguration
 
     protected function extractEnums(\DOMElement $structConfig)
     {
+
+        $smartEnums = $this->cel("enumerates");
         $sql = sprintf("select * from docenum where famid=%d order by eorder", $this->sst->id);
         DbManager::query($sql, $enums);
         /**
@@ -390,8 +416,9 @@ class ExportConfiguration
             }
 
             foreach ($enumConfs as $enumConf) {
-                $structConfig->appendChild($enumConf);
+                $smartEnums->appendChild($enumConf);
             }
+            $this->domConfig->appendChild($smartEnums);
         }
     }
 
@@ -447,22 +474,30 @@ class ExportConfiguration
                 if (!empty($attr->link)) {
                     $smartAttr->setAttribute("link", $attr->link);
                 }
-                /**
-                 * @var NormalAttribute $attr ;
-                 */
-                if ($attr->isNormal && $attr->needed) {
-                    $smartAttr->setAttribute("needed", "true");
-                }
-                if ($type === "docid" || $type === "account") {
-                    if ($attr->format) {
-                        $smartAttr->setAttribute("relation", $attr->format);
+
+
+                if ($attr->isNormal) {
+                    /**
+                     * @var NormalAttribute $attr ;
+                     */
+                    if ($attr->needed) {
+                        $smartAttr->setAttribute("needed", "true");
+                    } if ($attr->isInTitle) {
+                        $smartAttr->setAttribute("is-title", "true");
+                    } if ($attr->isInAbstract) {
+                        $smartAttr->setAttribute("is-abstract", "true");
                     }
-                }
-                if ($type === "enum") {
-                    if ($attr->format) {
-                        $smartAttr->setAttribute("relation", $attr->format);
-                    } else {
-                        $smartAttr->setAttribute("relation", sprintf("%s-%s", strtolower($this->sst->name), $attr->id));
+                    if ($type === "docid" || $type === "account") {
+                        if ($attr->format) {
+                            $smartAttr->setAttribute("relation", $attr->format);
+                        }
+                    }
+                    if ($type === "enum") {
+                        if ($attr->format) {
+                            $smartAttr->setAttribute("relation", $attr->format);
+                        } else {
+                            $smartAttr->setAttribute("relation", sprintf("%s-%s", strtolower($this->sst->name), $attr->id));
+                        }
                     }
                 }
 
@@ -497,12 +532,11 @@ class ExportConfiguration
 
     protected function extractHooks(\DOMElement $structConfig)
     {
-        $smartHooks = $this->cel("attr-hooks");
+        $smartHooks = $this->cel("hooks");
 
         /**
          * @var \DOMElement[]
          */
-
         $attrs = $this->sst->getNormalAttributes();
         $this->fieldSets = [];
         foreach ($attrs as $attr) {
@@ -510,46 +544,44 @@ class ExportConfiguration
                 continue;
             }
 
+            /**
+             * @var NormalAttribute $attr ;
+             */
 
-            $smartAttr = null;
-            $attrName = $attr->id;
-            $type = $attr->type;
-            switch ($type) {
-                case "menu":
-                case "action":
-                    break;
-                case "tab":
-                case "frame":
-                case "array":
-                    $smartAttr = $this->cel("attr-fieldset");
-                    $smartAttr->setAttribute("type", $type);
-                    $this->fieldSets[$attrName] = $smartAttr;
-                    break;
-                default:
-                    $smartAttr = $this->cel("attr-" . $type);
+
+            if ($attr->isNormal && $attr->phpconstraint) {
+                $smartHooks->appendChild($this->getConstraint($attr));
             }
 
-            if ($smartAttr) {
-                /**
-                 * @var NormalAttribute $attr ;
-                 */
 
-
-                if ($attr->isNormal && $attr->phpconstraint) {
-                    $smartHooks->appendChild($this->getConstraint($attr));
-                }
-
-
-                if ($attr->isNormal && $attr->phpfunc && (!$attr->phpfile) && $attr->type !== "enum") {
-                    $smartHooks->appendChild($this->getComputeFunc($attr));
-                }
-
-                if ($attr->isNormal && $attr->phpfunc && ($attr->phpfile) && $attr->type !== "enum") {
-                    $structConfig->appendChild($this->getAutocompleteFunc($attr));
-                }
+            if ($attr->isNormal && $attr->phpfunc && (!$attr->phpfile) && $attr->type !== "enum") {
+                $smartHooks->appendChild($this->getComputeFunc($attr));
             }
+
         }
         $structConfig->appendChild($smartHooks);
+    }
+
+
+    protected function extractAutoComplete(\DOMElement $structConfig)
+    {
+        $smartAuto = $this->cel("autocompletion");
+        /**
+         * @var \DOMElement[]
+         */
+        $attrs = $this->sst->getNormalAttributes();
+        $this->fieldSets = [];
+        foreach ($attrs as $attr) {
+            if ($attr->docid !== $this->sst->id) {
+                continue;
+            }
+
+            if ($attr->isNormal && $attr->phpfunc && ($attr->phpfile) && $attr->type !== "enum") {
+                $smartAuto->appendChild($this->getAutocompleteFunc($attr));
+            }
+        }
+
+        $structConfig->appendChild($smartAuto);
     }
 
     protected function setOptions(\DOMElement $smartAttr, array $opts)

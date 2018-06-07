@@ -211,7 +211,8 @@ class ImportDocumentDescription
         }
     }
 
-    public function import()
+
+    public function importCsvFile()
     {
         \Anakeen\Core\Utils\System::setMaxExecutionTimeTo(300);
 
@@ -226,6 +227,8 @@ class ImportDocumentDescription
         if (!$this->csvSeparator && !$csvLinebreak) {
             $csvLinebreak = '\n';
         }
+        $dataLines=[];
+
         while (!feof($this->fdoc)) {
             if (!$this->csvEnclosure) {
                 $buffer = rtrim(fgets($this->fdoc, 16384));
@@ -255,6 +258,33 @@ class ImportDocumentDescription
             if (!\Anakeen\Core\Utils\Strings::isUTF8($data)) {
                 $data = array_map("utf8_encode", $data);
             }
+            $dataLines[]=$data;
+        }
+
+        fclose($this->fdoc);
+
+        $this->importData($dataLines);
+        if ($this->ods2CsvFile) {
+            unlink($this->ods2CsvFile);
+        } // temporary csvfile
+        return $this->tcr;
+    }
+
+    public function importData($datas)
+    {
+        \Anakeen\Core\Utils\System::setMaxExecutionTimeTo(300);
+
+        $this->nbDoc = 0; // number of imported document
+        $this->structAttr = null;
+        $this->colOrders = array();
+        $this->ods2CsvFile = "";
+
+        $this->nLine = 0;
+        $this->beginLine = 0;
+        foreach ($datas as $data) {
+            $this->nLine++;
+
+
             // return structure
             if (count($data) < 1) {
                 continue;
@@ -464,11 +494,6 @@ class ImportDocumentDescription
             }
         }
 
-        fclose($this->fdoc);
-
-        if ($this->ods2CsvFile) {
-            unlink($this->ods2CsvFile);
-        } // temporary csvfile
         return $this->tcr;
     }
 

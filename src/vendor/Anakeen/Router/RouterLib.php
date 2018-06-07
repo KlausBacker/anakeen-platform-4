@@ -56,8 +56,6 @@ class RouterLib
     protected static function xmlDecode($configFile)
     {
         $xmlData = file_get_contents($configFile);
-        $dom = new \DOMDocument();
-        $dom->loadXML($xmlData);
 
         $simpleData = simplexml_load_string($xmlData, \SimpleXMLElement::class, 0, "router", true);
 
