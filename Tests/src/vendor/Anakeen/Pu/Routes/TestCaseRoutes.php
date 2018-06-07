@@ -146,6 +146,20 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
                         . var_export($data[$currentKey], true)
                         . " ] // [expected an iso date YYYY-MM-DDTHH:MM:SS ]"
                     );
+                } elseif (preg_match('{^%regexp%(?P<regexp>.*)$}', $expectedValue, $m) === 1) {
+                    $this->assertRegExp(
+                        $m['regexp'],
+                        $data[$currentKey],
+                        sprintf(
+                            'Wrong value for key "%s.%s" [api result : %s] // [expected (regexp match) : %s].' . "\n"
+                            . 'See file "%s"',
+                            $keys,
+                            $currentKey,
+                            var_export($data[$currentKey], true),
+                            var_export($m['regexp'], true),
+                            $this->jsonResultFile
+                        )
+                    );
                 } else {
                     $this->assertEquals(
                         $expectedValue,

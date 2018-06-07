@@ -46,7 +46,7 @@
                 },
                 "tst_api__money": {
                     "value": 236780,
-                    "displayValue": "236 780,00"
+                    "displayValue": "%regexp%/^236\\s+780,00$/u"
                 },
                 "tst_api__password": {
                     "value": null,
@@ -204,7 +204,7 @@
                 "tst_api__money_array": [
                     {
                         "value": 1000,
-                        "displayValue": "1 000,00"
+                        "displayValue": "%regexp%/^1\\s+000,00$/u"
                     },
                     {
                         "value": 0.5,
