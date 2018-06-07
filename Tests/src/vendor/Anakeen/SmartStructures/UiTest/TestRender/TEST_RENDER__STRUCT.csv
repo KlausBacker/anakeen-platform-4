@@ -1,5 +1,5 @@
 BEGIN;;Test de rendu de document;;;TST_RENDER;;;;;;;;;;;
-ICON;testrender.png;;;;;;;;;;;;;;;
+ICON;se-tst_render.png;;;;;;;;;;;;;;;
 CLASS;Anakeen\SmartStructures\UiTest\TestRender\TestRenderHooks;;;;;;;;;;;;;;;
 RESET;enums;;;;;;;;;;;;;;;
 RESET;structure;;;;;;;;;;;;;;;
