@@ -19,6 +19,11 @@ The docker image is run with:
 - `/autotest/work`: current working directory with a checkout of the source
   code.
 
+You can also run the tests on a specific `git-ref` (e.g. for dichotomy
+bisection testing):
+
+    $ ./Tests/autotest/local-run.sh php71pg96 HEAD^^
+
 ## Setup docker DNS
 
 The autotest requires access to hosts on the `corp.anakeen.com` domain.
@@ -39,6 +44,12 @@ resolve `*.corp.anakeen.com` domains (e.g. `192.168.200.1`):
     DOCKER_OPTS="--dns 192.168.200.1"
     ...
 
+    $ sudo vi /etc/docker/daemon.json
+    {
+      ...,
+      "dns": [ "192.168.200.1" ]
+    }
+
     $ sudo service docker restart
 
 ### Using dynamic dnsmasq resolver (tested on ubuntu 16.04)
@@ -56,6 +67,12 @@ Configure docker's DNS with this address:
     ...
     DOCKER_OPTS="--dns 172.17.0.1"
     ...
+
+    $ sudo vi /etc/docker/daemon.json
+    {
+      ...,
+      "dns": [ "172.17.0.1" ]
+    }
 
     $ sudo service docker restart
 
