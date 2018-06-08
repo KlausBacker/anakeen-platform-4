@@ -57,6 +57,9 @@ import Logout from './Logout/Logout.vue';
 import Identity from './Identity/Identity.vue';
 import AuthentPassword from './Authent/AuthentPassword.vue'
 
+import Dock from './Dock/Dock.vue';
+import DockTab from './Dock/DockTab/DockTab.vue';
+
 Vue.customElement('ank-loading', AnakeenLoading);
 Vue.customElement('ank-authent', Authent);
 Vue.customElement('ank-smart-element', Document);
@@ -65,3 +68,7 @@ Vue.customElement('ank-se-tabs', DocumentTabs);
 Vue.customElement('ank-logout', Logout);
 Vue.customElement('ank-identity', Identity);
 Vue.customElement('ank-authent-password', AuthentPassword);
+
+Vue.prototype.$dockEventBus = new Vue();
+Vue.customElement('ank-dock', Dock);
+Vue.customElement('ank-dock-tab', DockTab);

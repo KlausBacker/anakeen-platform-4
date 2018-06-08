@@ -1,0 +1,89 @@
+$tab-height: 3rem;
+
+// TODO Chang colors
+$background-color: #f9f9f9;
+$background-color-button: #646464;
+$background-color-button-hovered: #777777;
+$background-color-tab: #f3f3f3;
+$button-icon-color: #ffffff;
+$border-color: #a9a9a9;
+$tab-compact-color: #646464;
+$selected-color: #a9a9a9;
+$green-selected: #8ae234;
+
+ank-dock {
+  box-sizing: border-box;
+}
+
+#dock-component {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  height: 100%;
+  width: 100%;
+
+  #dock {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    background-color: $background-color;
+    transition: width 500ms ease-out;
+    box-shadow: 2px 0 5px #aaa;
+
+    #expand-button {
+      height: $tab-height;
+      border-radius: 0;
+      padding: 0;
+      background-color: $background-color-button;
+      color: $button-icon-color;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #expand-button:hover {
+      background-color: $background-color-button-hovered;
+    }
+
+    .dock-tab.selected {
+      background-color: $selected-color;
+      box-shadow: 2.5px 0 0 $green-selected inset;
+    }
+
+    .dock-tab {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      height: $tab-height;
+      background-color: $background-color-tab;
+      border-bottom-color: $border-color;
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+      cursor: pointer;
+
+      .dock-tab-compact {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        color: $tab-compact-color;
+      }
+
+      .dock-tab-expanded {
+        padding-left: 0.5rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  #content {
+    height: 100%;
+    width: 100%
+  }
+}
