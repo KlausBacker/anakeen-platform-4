@@ -63,7 +63,7 @@ $(JS_CONF_PATH)/yarn.lock: $(JS_CONF_PATH)/package.json
 $(PHP_LIB_PATH)/composer.lock: $(PHP_LIB_PATH)/composer.json
 	cd anakeen-ui/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; $(COMPOSER_BIN) install
 
-install: $(JS_CONF_PATH)/yarn.lock $(PHP_LIB_PATH)/composer.lock ## Install deps (js an php)
+install: $(JS_CONF_PATH)/yarn.lock $(PHP_LIB_PATH)/composer.lock ## Install deps (js and php)
 
 stub: ## Generate stubs
 	$(DEVTOOL_BIN) generateStub -s anakeen-ui -o $(STUB_PATH)
@@ -98,7 +98,7 @@ $(JS_FAMILY_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_FAMILY_SOUR
 	$(YARN_BIN) buildFamily
 	touch "$@"
 
-$(LOCALPUB_ANAKEEN_UI_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${ANAKEEN_UI_SRC_PATH} -type f -print | sed 's/ /\\ /g') $(VERSION_PATH) $(RELEASE_PATH) $(PHP_LIB_PATH)/composer.lock $(JS_ASSET_PATH) $(JS_DDUI_BUILD_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_FAMILY_BUILD_PATH)
+$(LOCALPUB_ANAKEEN_UI_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${ANAKEEN_UI_SRC_PATH} -type f ! -path "*/public/components/dist/*" -print | sed 's/ /\\ /g') $(VERSION_PATH) $(RELEASE_PATH) $(PHP_LIB_PATH)/composer.lock $(JS_ASSET_PATH) $(JS_DDUI_BUILD_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_FAMILY_BUILD_PATH)
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	rm -f user-interfaces-*.app
 	-mkdir -p $(LOCALPUB_ANAKEEN_UI_PATH)
