@@ -2,7 +2,7 @@ export default {
     name: "ank-dock-tab",
 
     props: {
-        selected: {
+        selectedTab: {
             type: Boolean,
             default: false
         }
@@ -25,7 +25,7 @@ export default {
                 compact: this.compact,
                 expanded: this.expanded,
                 content: this.content,
-                selected: this.selected
+                selected: this.selectedTab
             });
         }
     },

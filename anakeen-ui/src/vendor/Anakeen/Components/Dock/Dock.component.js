@@ -177,6 +177,32 @@ export default {
         }
     },
 
+    computed: {
+        compactSizeStyle() {
+            if (this.position === 'left' || this.position === 'right') {
+                return 'width: ' + this.compactSize;
+            } else {
+                return 'height: ' + this.compactSize;
+            }
+        },
+
+        expandedSizeStyle() {
+            if (this.position === 'left' || this.position === 'right') {
+                return 'width: calc(' + this.largeSize + '-' + this.compactSize + ')';
+            } else {
+                return 'height: calc(' + this.largeSize + '-' + this.compactSize + ')';
+            }
+        },
+
+        dockSizeStyle() {
+            if (this.position === 'left' || this.position === 'right') {
+                return 'width: ' + this.size;
+            } else {
+                return 'height: ' + this.compactSize;
+            }
+        }
+    },
+
     created() {
         this.$dockEventBus.$on('tabLoaded', (tab) => {
             this.addTab(tab);
