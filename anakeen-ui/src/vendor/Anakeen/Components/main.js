@@ -66,12 +66,12 @@ import DockTab from './Dock/DockTab/DockTab.vue';
 
 Vue.customElement('ank-loading', AnakeenLoading);
 Vue.customElement('ank-authent', Authent);
+Vue.customElement('ank-authent-password', AuthentPassword);
 Vue.customElement('ank-smart-element', Document);
 Vue.customElement('ank-se-list', SEList);
 Vue.customElement('ank-se-tabs', DocumentTabs);
 Vue.customElement('ank-logout', Logout);
 Vue.customElement('ank-identity', Identity);
-Vue.customElement('ank-authent-password', AuthentPassword);
 
 Vue.prototype.$dockEventBus = new Vue();
 Vue.customElement('ank-dock', Dock);
