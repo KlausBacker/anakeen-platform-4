@@ -15,8 +15,8 @@ export default {
             default: 'left'
         },
 
-        // Define if the dock is expansible or not
-        expansible: {
+        // Define if the dock is expandable or not
+        expandable: {
             type: Boolean,
             default: true
         },
@@ -25,21 +25,13 @@ export default {
         // TODO Define default value
         compactSize: {
             type: String,
-            validator(value) {
-                // TODO Validator to verify unit
-                return true
-            },
-            default: '8rem'
+            default: '3rem'
         },
 
         // Size of the dock when it is expanded
         // TODO Define default value
         largeSize: {
             type: String,
-            validator(value) {
-                // TODO Validator to verify unit
-                return true;
-            },
             default: '10rem'
         }
     },
@@ -48,7 +40,7 @@ export default {
         return {
             tabs: [],
             expanded: false,
-            selectedTab: '',
+            selectedTab: '-1',
             size: ''
         }
     },
@@ -101,6 +93,9 @@ export default {
 
         // Remove a tab with its position in the dock
         removeTabWithPosition(position) {
+            if (this.tabs[position].id === this.selectedTab) {
+                this.selectedTab = -1;
+            }
             this.tabs.splice(position, 1);
         },
 
@@ -110,60 +105,67 @@ export default {
 
         // Expand the dock to its large width
         expand() {
-            let eventName = 'beforeDockExpansion';
-            let options = {
-                cancelable: true
-            };
-            let event;
-            if (typeof window.CustomEvent === 'function') {
-                event = new CustomEvent(eventName, options);
-            } else {
-                event = document.createEvent('CustomEvent');
-                event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
-            }
-            this.$el.parentNode.dispatchEvent(event);
+            if (this.expandable) {
+                let eventName = 'beforeDockExpansion';
+                let options = {
+                    cancelable: true
+                };
+                let event;
+                if (typeof window.CustomEvent === 'function') {
+                    event = new CustomEvent(eventName, options);
+                } else {
+                    event = document.createEvent('CustomEvent');
+                    event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
+                }
+                this.$el.parentNode.dispatchEvent(event);
 
-            if (!event.defaultPrevented) {
-                this.expanded = true;
-                this.size = this.largeSize;
-                this.$emit('dockExpanded');
-            } else {
-                this.$emit('dockExpansionCanceled');
+                if (!event.defaultPrevented) {
+                    this.expanded = true;
+                    this.size = this.largeSize;
+                    this.$emit('dockExpanded');
+                } else {
+                    this.$emit('dockExpansionCanceled');
+                }
             }
         },
 
         // Contract the dock to its compact width
         contract() {
-            let eventName = 'beforeDockContraction';
-            let options = {
-                cancelable: true
-            };
-            let event;
-            if (typeof window.CustomEvent === 'function') {
-                event = new CustomEvent(eventName, options);
-            } else {
-                event = document.createEvent('CustomEvent');
-                event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
-            }
-            this.$el.parentNode.dispatchEvent(event);
+            if (this.expandable) {
+                let eventName = 'beforeDockContraction';
+                let options = {
+                    cancelable: true
+                };
+                let event;
+                if (typeof window.CustomEvent === 'function') {
+                    event = new CustomEvent(eventName, options);
+                } else {
+                    event = document.createEvent('CustomEvent');
+                    event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
+                }
+                this.$el.parentNode.dispatchEvent(event);
 
-            if (!event.defaultPrevented) {
-                this.expanded = false;
-                this.size = this.compactSize;
-                this.$emit('dockContracted');
-            } else {
-                this.$emit('dockContractionCanceled');
+                if (!event.defaultPrevented) {
+                    this.expanded = false;
+                    this.size = this.compactSize;
+                    this.$emit('dockContracted');
+                } else {
+                    this.$emit('dockContractionCanceled');
+                }
             }
         },
 
         // Toggle expansion of the dock
         toggleExpansion() {
-            this.expanded ? this.contract() : this.expand();
+            if (this.expandable) {
+                this.expanded ? this.contract() : this.expand();
+            }
         },
 
         selectTab(tabId) {
-            console.log(tabId);
-            this.selectedTab = tabId;
+            if (this.tabs.find(element => { return element.id === tabId }) !== undefined) {
+                this.selectedTab = tabId;
+            }
         },
 
         selected(tab) {

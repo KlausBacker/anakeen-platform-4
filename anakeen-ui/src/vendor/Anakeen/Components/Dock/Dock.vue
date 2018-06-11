@@ -1,7 +1,7 @@
 <template>
     <div id="dock-component">
         <div id="dock" :style="'width:' + size">
-            <button id="expand-button" class="btn" @click="toggleExpansion">
+            <button id="expand-button" class="btn" v-if="expandable" @click="toggleExpansion">
                 <i class="material-icons" v-if="!expanded">keyboard_arrow_right</i>
                 <i class="material-icons" v-else>keyboard_arrow_left</i>
             </button>

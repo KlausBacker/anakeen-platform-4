@@ -35,9 +35,11 @@ export default {
         this.compact = this.$("#compactFragment").html();
         this.expanded = this.$("#expandedFragment").html();
         this.content = this.$("#contentFragment").html();
+
         this.$("#compactFragment").remove();
         this.$("#expandedFragment").remove();
         this.$("#contentFragment").remove();
+
         if (this.compact && this.expanded && this.content) {
             this.emitTab();
         }

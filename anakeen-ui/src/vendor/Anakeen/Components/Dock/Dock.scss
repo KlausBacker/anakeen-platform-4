@@ -84,6 +84,11 @@ ank-dock {
 
   #content {
     height: 100%;
-    width: 100%
+    width: 100%;
+
+    .dock-tab-content {
+      height: 100%;
+      width: 100%;
+    }
   }
 }
