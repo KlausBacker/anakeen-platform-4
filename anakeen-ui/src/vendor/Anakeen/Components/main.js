@@ -41,10 +41,14 @@ Vue.prototype.$kendo = Vue.kendo = kendo;
 
 // Fetch user language from server
 Vue.http.get('/api/v2/ui/users/current')
-    .then(response => {
+    .then(response =>  {
         if (response.data.data.locale) {
-            Vue.config.language = response.data.data.locale;
+            const sanitizedLanguage = response.data.data.locale.split('.');
+            Vue.config.language = sanitizedLanguage[0];
         }
+    })
+    .catch(err => {
+        console.error(err);
     });
 
 // import and register your component(s)
