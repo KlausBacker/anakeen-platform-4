@@ -257,7 +257,7 @@
             <label>Import PROFIL Families</label>
         </process>
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dir/dir.struct.csv">
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dir/dir.struct.xml">
             <label>Import DIR Family</label>
         </process>
         <process
@@ -593,7 +593,7 @@
             <label>Import PROFIL Families</label>
         </process>
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dir/dir.struct.csv">
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dir/dir.struct.xml">
             <label>Import DIR Family</label>
         </process>
 

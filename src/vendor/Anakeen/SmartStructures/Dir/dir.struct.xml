@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+    <smart:structure-configuration name="DIR" id="2" label="Dossier" extends="BASE">
+        <smart:icon file="se-dir.png"/>
+        <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Dir\DirHooks</smart:class>
+        <smart:usefor>F</smart:usefor>
+        <smart:attributes>
+            <smart:attr-fieldset name="fr_basic" extended="true">
+                <smart:attr-longtext name="ba_desc" label="Description" visibility="W" is-abstract="true"/>
+                <smart:attr-color name="gui_color" label="Couleur intercalaire" visibility="O"/>
+                <smart:attr-enum name="gui_isrss" label="Utilisable comme flux RSS" visibility="W" relation="dir-gui_isrss">
+                    <smart:attr-option name="bmenu">no</smart:attr-option>
+                    <smart:attr-option name="system">yes</smart:attr-option>
+                </smart:attr-enum>
+                <smart:attr-enum name="gui_sysrss" label="Flux RSS système" visibility="R" relation="dir-gui_sysrss">
+                    <smart:attr-option name="bmenu">no</smart:attr-option>
+                    <smart:attr-option name="system">yes</smart:attr-option>
+                </smart:attr-enum>
+            </smart:attr-fieldset>
+            <smart:attr-fieldset name="fld_fr_rest" type="frame" label="Restrictions" visibility="R">
+                <smart:attr-enum name="fld_allbut" label="Tout ou rien" visibility="W" relation="dir-fld_allbut">
+                    <smart:attr-option name="system">yes</smart:attr-option>
+                </smart:attr-enum>
+                <smart:attr-fieldset name="fld_tfam" type="array" label="Familles filtrées" visibility="W">
+                    <smart:attr-text name="fld_fam" label="Familles (titre)" visibility="H"/>
+                    <smart:attr-docid name="fld_famids" label="Familles" visibility="W" relation="-1"/>
+                    <smart:attr-enum name="fld_subfam" label="Restriction sous famille" visibility="W" relation="dir-fld_subfam"/>
+                </smart:attr-fieldset>
+            </smart:attr-fieldset>
+            <smart:attr-fieldset name="fld_fr_prof" type="frame" label="Profils par défaut" visibility="R">
+                <smart:attr-text name="fld_pdoc" label="Profil par défaut de document (titre)" visibility="H"/>
+                <smart:attr-docid name="fld_pdocid" label="Profil par défaut de document" visibility="W" relation="PDOC"/>
+                <smart:attr-text name="fld_pdir" label="Profil par défaut de dossier (titre)" visibility="H"/>
+                <smart:attr-docid name="fld_pdirid" label="Profil par défaut de dossier" visibility="W" relation="PDIR"/>
+            </smart:attr-fieldset>
+        </smart:attributes>
+        <smart:parameters/>
+        <smart:hooks>
+            <smart:attr-hook event="onPreRefresh" attr="fld_fam">
+                <smart:attr-callable function="::getTitle"/>
+                <smart:attr-argument type="attribute">fld_famids</smart:attr-argument>
+            </smart:attr-hook>
+            <smart:attr-hook event="onPreRefresh" attr="fld_pdoc">
+                <smart:attr-callable function="::getTitle"/>
+                <smart:attr-argument type="attribute">fld_pdocid</smart:attr-argument>
+            </smart:attr-hook>
+            <smart:attr-hook event="onPreRefresh" attr="fld_pdir">
+                <smart:attr-callable function="::getTitle"/>
+                <smart:attr-argument type="attribute">fld_pdirid</smart:attr-argument>
+                <smart:attr-return attr="FLD_PDIR"/>
+            </smart:attr-hook>
+        </smart:hooks>
+
+        <smart:defaults/>
+        <smart:accesses/>
+    </smart:structure-configuration>
+    <smart:enumerates>
+        <smart:enum-configuration extendable="false" name="dir-fld_allbut">
+            <smart:enum name="0" label="tout sauf"/>
+            <smart:enum name="1" label="seulement"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration extendable="false" name="dir-fld_subfam">
+            <smart:enum name="yes" label="inclure les sous familles"/>
+            <smart:enum name="no" label="ne pas inclure les sous familles"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration extendable="false" name="dir-gui_isrss">
+            <smart:enum name="no" label="non"/>
+            <smart:enum name="yes" label="oui"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+</smart:config>
