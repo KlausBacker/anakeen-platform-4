@@ -13,7 +13,7 @@
 class DocHtmlFormat
 {
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     public $doc = null;
     private $index = -1;
@@ -198,7 +198,12 @@ class DocHtmlFormat
                 } elseif ($htmlval === "\t" && $oattr->inArray() && $showEmpty) {
                     // array with single empty line
                     $htmlval = $showEmpty;
-                } elseif (($this->cFormat != "" && $this->cancelFormat === false) && ($htmlval !== '') && ($atype != "doc") && ($atype != "array") && ($atype != "option")) {
+                } elseif (($this->cFormat != "" && $this->cancelFormat === false) &&
+                    ($htmlval !== '') &&
+                    ($atype != "enum") &&
+                    ($atype != "doc") &&
+                    ($atype != "array") &&
+                    ($atype != "option")) {
                     //printf($htmlval);
                     $htmlval = sprintf($this->cFormat, $htmlval);
                 }

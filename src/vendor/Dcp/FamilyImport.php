@@ -831,6 +831,7 @@ class FamilyImport
         $genDir = sprintf("%s/%s/SmartStructure/", DEFAULT_PUBDIR, Settings::DocumentGenDirectory);
         $genAttrDir = sprintf("%s/Attributes", $genDir);
         $dfile = sprintf("%s/%s.php", $genDir, $tdoc["name"]);
+
         if (!is_dir($genDir)) {
             if (!(is_dir(dirname($genDir)))) {
                 mkdir(dirname($genDir));
@@ -858,6 +859,7 @@ class FamilyImport
             \Anakeen\Core\SEManager::getAttributesClassFilename($famName),
             \Anakeen\Core\SEManager::getDocumentClassFilename($famName)
         ];
+
         foreach ($files as $fdlgen) {
             if (file_exists($fdlgen) && is_file($fdlgen)) {
                 if (!unlink($fdlgen)) {
@@ -938,7 +940,6 @@ class FamilyImport
                 \Anakeen\Core\Utils\System::addLogMsg($msg);
             }
             self::activateTrigger($dbaccess, $familyData["id"]);
-            self::resetSystemEnum($familyData["id"]);
 
             DbManager::commitPoint(__METHOD__);
             $savepointed = false;
@@ -955,20 +956,7 @@ class FamilyImport
         return '';
     }
 
-    /**
-     * reset and record system enum into docenum table
-     *
-     * @param int $famid
-     */
-    protected static function resetSystemEnum($famid)
-    {
-        $sql = sprintf("select * from docattr where docid=%d and type = 'enum' and (phpfile is null or phpfile='-') and options ~ 'system=yes'", $famid);
-        DbManager::query($sql, $results);
-        foreach ($results as $attr) {
-            $attrid = $attr["id"];
-            \ImportDocumentDescription::recordEnum($famid, $attrid, $attr["phpfunc"], true);
-        }
-    }
+
 
     /**
      * complete attribute properties from  parent attribute

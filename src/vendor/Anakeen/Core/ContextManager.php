@@ -233,8 +233,7 @@ class ContextManager
         // Reset enum traduction cache
         $a = null;
 
-        $enumAttr = new \Anakeen\Core\SmartStructure\NormalAttribute("", "", "", "", "", "", "", "", "", "", "", "", $a, "", "", "");
-        $enumAttr->resetEnum();
+        EnumManager::resetEnum();
 
         $td = "main-catalog$number";
 

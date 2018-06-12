@@ -4,6 +4,7 @@ namespace Dcp\Pu;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
+use Anakeen\Core\Internal\ImportSmartConfiguration;
 use Anakeen\TestUnits\CoreTests;
 
 class TestCaseDcp extends \PHPUnit\Framework\TestCase
@@ -221,6 +222,36 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
             throw new \Dcp\Exception($err);
         }
         return $cr;
+    }
+
+
+    /**
+     * Import a file document description
+     *
+     * @param string|string[] $file file path
+     *
+     * @return array
+     * @throws \Dcp\Exception
+     */
+    protected static function importConfiguration($file)
+    {
+        if (is_array($file)) {
+            return self::importDocuments($file);
+        }
+
+        $realfile = $file;
+        if (!file_exists($realfile)) {
+            $realfile = static::$testDataDirectory . "/" . $file;
+        }
+        if (!file_exists($realfile)) {
+            throw new \Dcp\Exception(sprintf("File '%s' not found in '%s'.", $file, $realfile));
+        }
+        $oImport = new ImportSmartConfiguration();
+        $oImport->import($realfile);
+        $err = $oImport->getErrorMessage();
+        if ($err) {
+            throw new \Dcp\Exception($err);
+        }
     }
 
     /**

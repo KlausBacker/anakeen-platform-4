@@ -381,7 +381,16 @@ class ExportConfiguration
     {
 
         $smartEnums = $this->cel("enumerates");
-        $sql = sprintf("select * from docenum where famid=%d order by eorder", $this->sst->id);
+        $attrs = $this->sst->getNormalAttributes();
+        $enumNames = [];
+        foreach ($attrs as $attr) {
+            if ($attr->type === "enum" && $attr->format) {
+                $enumNames[] = $attr->format;
+            }
+        }
+
+
+        $sql = sprintf("select * from docenum where %s order by eorder", DbManager::getSqlOrCond($enumNames, "name"));
         DbManager::query($sql, $enums);
         /**
          * @var \DOMElement[] $enumConfs
@@ -393,25 +402,25 @@ class ExportConfiguration
         $parents = [];
         if ($enums) {
             foreach ($enums as $enum) {
-                $attrid = $enum["attrid"];
-                if (!isset($enumConfs[$attrid])) {
-                    $enumConfs[$attrid] = $this->cel("enum-configuration");
-                    $enumConfs[$attrid]->setAttribute("name", sprintf("%s-%s", strtolower($this->sst->name), $attrid));
+                $enumName = $enum["name"];
+                if (!isset($enumConfs[$enumName])) {
+                    $enumConfs[$enumName] = $this->cel("enum-configuration");
+                    $enumConfs[$enumName]->setAttribute("name", $enumName);
                 }
                 $enumTag = $this->cel("enum");
                 $enumTag->setAttribute("name", $enum["key"]);
                 $enumTag->setAttribute("label", $enum["label"]);
                 if ($enum["parentkey"]) {
                     $parentId = $enum["parentkey"];
-                    if (!isset($parents[$attrid][$parentId])) {
-                        $parents[$attrid][$parentId] = $this->cel("enum");
-                        $parents[$attrid][$parentId]->setAttribute("name", $parentId);
-                        $enumConfs[$attrid]->appendChild($parents[$attrid][$parentId]);
+                    if (!isset($parents[$enumName][$parentId])) {
+                        $parents[$enumName][$parentId] = $this->cel("enum");
+                        $parents[$enumName][$parentId]->setAttribute("name", $parentId);
+                        $enumConfs[$enumName]->appendChild($parents[$enumName][$parentId]);
                     }
-                    $parents[$attrid][$parentId]->appendChild($enumTag);
+                    $parents[$enumName][$parentId]->appendChild($enumTag);
                 } else {
-                    $enumConfs[$attrid]->appendChild($enumTag);
-                    $parents[$attrid][$enum["key"]] = $enumTag;
+                    $enumConfs[$enumName]->appendChild($enumTag);
+                    $parents[$enumName][$enum["key"]] = $enumTag;
                 }
             }
 
@@ -518,7 +527,7 @@ class ExportConfiguration
                         $smartAttrShadow = $this->cel("attr-fieldset");
                         $smartAttrShadow->setAttribute("name", $parentName);
                         $smartAttrShadow->setAttribute("extended", "true");
-                        $this->fieldSets[$attrName] = $smartAttrShadow;
+                        $this->fieldSets[$parentName] = $smartAttrShadow;
                         $rootAttr->appendChild($smartAttrShadow);
                     }
                 } else {
@@ -563,7 +572,6 @@ class ExportConfiguration
             if ($attr->isNormal && $attr->phpfunc && (!$attr->phpfile) && $attr->type !== "enum") {
                 $smartHooks->appendChild($this->getComputeFunc($attr));
             }
-
         }
         $structConfig->appendChild($smartHooks);
     }
@@ -743,7 +751,6 @@ class ExportConfiguration
         $sql = sprintf("select id from docattr where docid=%d and id =':%s'", $this->sst->id, pg_escape_string($attr->id));
         DbManager::query($sql, $id, true, true);
         return $id !== false;
-
     }
 
     private function cel($name)

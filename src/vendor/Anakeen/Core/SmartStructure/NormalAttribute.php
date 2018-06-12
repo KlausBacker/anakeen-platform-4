@@ -10,7 +10,7 @@
 
 namespace Anakeen\Core\SmartStructure;
 
-use Anakeen\Core\DbManager;
+use Anakeen\Core\EnumManager;
 use Anakeen\Core\Internal\Format\DateAttributeValue;
 
 class NormalAttribute extends BasicAttribute
@@ -60,12 +60,9 @@ class NormalAttribute extends BasicAttribute
         0 => "\n",
         1 => ", "
     );
-    /**
-     * @var array
-     */
-    private static $_cache = array();
     protected $originalPhpfile;
     protected $originalPhpfunc;
+    /** @noinspection PhpMissingParentConstructorInspection */
 
     /**
      * Normal Attribute constructor : non structural attribute
@@ -176,35 +173,35 @@ class NormalAttribute extends BasicAttribute
     {
         switch ($this->type) {
             case 'text':
-                return $this->text_getXmlSchema($la);
+                return $this->text_getXmlSchema();
             case 'longtext':
             case 'htmltext':
-                return $this->longtext_getXmlSchema($la);
+                return $this->longtext_getXmlSchema();
             case 'int':
             case 'integer':
-                return $this->int_getXmlSchema($la);
+                return $this->int_getXmlSchema();
             case 'float':
             case 'money':
-                return $this->float_getXmlSchema($la);
+                return $this->float_getXmlSchema();
             case 'image':
             case 'file':
-                return $this->file_getXmlSchema($la);
+                return $this->file_getXmlSchema();
             case 'enum':
-                return $this->enum_getXmlSchema($la);
+                return $this->enum_getXmlSchema();
             case 'thesaurus':
             case 'docid':
             case 'account':
-                return $this->docid_getXmlSchema($la);
+                return $this->docid_getXmlSchema();
             case 'date':
-                return $this->date_getXmlSchema($la);
+                return $this->date_getXmlSchema();
             case 'timestamp':
-                return $this->timestamp_getXmlSchema($la);
+                return $this->timestamp_getXmlSchema();
             case 'time':
-                return $this->time_getXmlSchema($la);
+                return $this->time_getXmlSchema();
             case 'array':
                 return $this->array_getXmlSchema($la);
             case 'color':
-                return $this->color_getXmlSchema($la);
+                return $this->color_getXmlSchema();
             default:
                 return sprintf("<!-- no Schema %s (type %s)-->", $this->id, $this->type);
         }
@@ -526,158 +523,18 @@ class NormalAttribute extends BasicAttribute
      */
     public function getEnum($returnDisabled = true)
     {
-        $cached = self::_cacheFetch(self::_cEnum, array(
-            $this->docid,
-            $this->id
-        ), null, $returnDisabled);
-        if ($cached !== null) {
-            return $cached;
-        }
 
-        if (($this->type == "enum") || ($this->type == "enumlist")) {
-            // set the enum array
-            $this->enum = array();
-            $this->enumlabel = array();
-            $br = $this->docname . '#' . $this->id . '#'; // id i18n prefix
-            if ($this->originalPhpfile && $this->originalPhpfunc) {
-                $this->phpfile = $this->originalPhpfile;
-                $this->phpfunc = $this->originalPhpfunc;
+        $enumItems = EnumManager::getEnums($this->format);
+        $labels = [];
+        foreach ($enumItems as $key => $item) {
+            if (isset($item["path"])) {
+                $key=$item["path"];
             }
-            if (($this->phpfile != "") && ($this->phpfile != "-")) {
-                // for dynamic  specification of kind attributes
-                if (!include_once("EXTERNALS/$this->phpfile")) {
-                    /**
-                     * @var \Anakeen\Core\Internal\Action $action
-                     */
-                    global $action;
-                    $action->exitError(sprintf(_("the external pluggin file %s cannot be read"), $this->phpfile));
-                }
-                if (preg_match('/(.*)\((.*)\)/', $this->phpfunc, $reg)) {
-                    $args = explode(",", $reg[2]);
-                    if (preg_match('/linkenum\((.*),(.*)\)/', $this->phpfunc, $dreg)) {
-                        $br = $dreg[1] . '#' . strtolower($dreg[2]) . '#';
-                    }
-                    if (function_exists($reg[1])) {
-                        $this->originalPhpfile = $this->phpfile;
-                        $this->originalPhpfunc = $this->phpfunc;
-                        $this->phpfile = "";
-                        $this->phpfunc = call_user_func_array($reg[1], $args);
-
-                        \EnumAttributeTools::flatEnumNotationToEnumArray($this->phpfunc, $this->enum, $this->enumlabel, $br);
-                    } else {
-                        \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("function [%s] not exists"), $this->phpfunc));
-                        $this->phpfunc = "";
-                    }
-                } else {
-                    \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("invalid syntax for [%s] for enum attribute [%s]"), $this->phpfunc, $this->id));
-                }
-                self::_cacheStore(self::_cEnum, array(
-                    $this->docid,
-                    $this->id
-                ), $this->enum);
-                self::_cacheStore(self::_cEnumLabel, array(
-                    $this->docid,
-                    $this->id
-                ), $this->enumlabel);
-            } else {
-                // static enum
-                $famId = $this->_getRecursiveParentFamHavingAttribute($this->docid, $this->id);
-
-                $cached = self::_cacheFetch(self::_cEnum, array(
-                    $famId,
-                    $this->id
-                ), null, $returnDisabled);
-                if ($cached !== null) {
-                    return $cached;
-                }
-
-                $sql = sprintf("select * from docenum where famid=%d and attrid='%s' order by eorder", $famId, pg_escape_string($this->id));
-
-                DbManager::query($sql, $enums);
-
-                foreach ($enums as $k => $item) {
-                    $enums[$k]["keyPath"] = str_replace('.', '\\.', $item["key"]);
-                }
-                foreach ($enums as $item) {
-                    $enumKey = $item["key"];
-                    $enumPath = $item["keyPath"];
-                    $translatedEnumValue = _($br . $enumKey);
-                    if ($translatedEnumValue != $br . $enumKey) {
-                        $enumLabel = $translatedEnumValue;
-                    } else {
-                        $enumLabel = $item["label"];
-                    }
-                    if ($item["parentkey"] !== null) {
-                        $this->enum[$this->getCompleteEnumKey($enumKey, $enums)] = $enumLabel;
-                        $enumCompleteLabel = $this->getCompleteEnumlabel($enumKey, $enums, $br);
-                        $this->enumlabel[$enumKey] = $enumCompleteLabel;
-                    } else {
-                        $this->enum[$enumPath] = $enumLabel;
-                        $this->enumlabel[$enumKey] = $enumLabel;
-                    }
-                }
-                self::_cacheStore(self::_cEnum, array(
-                    $famId,
-                    $this->id
-                ), $this->enum);
-                self::_cacheStore(self::_cEnumLabel, array(
-                    $famId,
-                    $this->id
-                ), $this->enumlabel);
-            }
+            $labels[$key] = $item["label"];
         }
-        if (!$returnDisabled) {
-            return self::_cacheFetch(self::_cEnum, array(
-                $this->docid,
-                $this->id
-            ), null, $returnDisabled);
-        }
-        return $this->enum;
+        return $labels;
     }
 
-    private function getCompleteEnumKey($key, array & $enums)
-    {
-        foreach ($enums as $item) {
-            if ($item["key"] === $key) {
-                if ($item["parentkey"] !== null) {
-                    return sprintf("%s.%s", $this->getCompleteEnumKey($item["parentkey"], $enums), $item["keyPath"]);
-                } else {
-                    return $item["keyPath"];
-                }
-            }
-        }
-        return '';
-    }
-
-    private function getCompleteEnumLabel($key, array & $enums, $prefix)
-    {
-        foreach ($enums as $item) {
-            if ($item["key"] === $key) {
-                $translatedEnumValue = _($prefix . $key);
-                if ($translatedEnumValue != $prefix . $key) {
-                    $label = $translatedEnumValue;
-                } else {
-                    $label = $item["label"];
-                }
-                if ($item["parentkey"] !== null) {
-                    return sprintf("%s/%s", $this->getCompleteEnumLabel($item["parentkey"], $enums, $prefix), $label);
-                } else {
-                    return $label;
-                }
-            }
-        }
-        return '';
-    }
-
-    /**
-     * reset Enum cache
-     */
-    public static function resetEnum()
-    {
-        self::_cacheFlush(self::_cEnum);
-        self::_cacheFlush(self::_cEnumLabel);
-        self::_cacheFlush(self::_cParent);
-    }
 
     /**
      * return array of enumeration definition
@@ -689,193 +546,40 @@ class NormalAttribute extends BasicAttribute
      */
     public function getEnumLabel($enumid = null, $returnDisabled = true)
     {
-        $implode = false;
-        $this->getEnum($returnDisabled);
-
-        $cached = self::_cacheFetch(self::_cEnumLabel, array(
-            $this->docid,
-            $this->id
-        ), null, $returnDisabled);
-        if ($cached === null) {
-            $famId = $this->_getRecursiveParentFamHavingAttribute($this->docid, $this->id);
-            if ($famId !== $this->docid) {
-                $cached = self::_cacheFetch(self::_cEnumLabel, array(
-                    $famId,
-                    $this->id
-                ), null, $returnDisabled);
-            }
-        }
-        if ($cached !== null) {
-            if ($enumid === null) {
-                return $cached;
-            }
-            if (strstr($enumid, "\n")) {
-                $enumid = explode("\n", $enumid);
-                $implode = true;
-            }
-            if (is_array($enumid)) {
-                $tv = array();
-                foreach ($enumid as $v) {
-                    $tv[] = (isset($cached[$v])) ? $cached[$v] : $v;
+        if ($enumid !== null) {
+            $item = EnumManager::getEnumItem($this->format, $enumid, $returnDisabled);
+            if ($item) {
+                if (!empty($item["longLabel"])) {
+                    return $item["longLabel"];
                 }
-                if ($implode) {
-                    return implode("\n", $tv);
-                }
-                return $tv;
+                return $item["label"];
             } else {
-                return (array_key_exists($enumid, $cached)) ? $cached[$enumid] : $enumid;
+                return null;
             }
+        } else {
+            $enumItems = EnumManager::getEnums($this->format);
+            $labels = [];
+            foreach ($enumItems as $key => $item) {
+                $labels[$key] = (isset($item["longLabel"]))?$item["longLabel"]:$item["label"];
+            }
+            return $labels;
         }
-
-        return null;
     }
 
     /**
      * add new \item in enum list items
      *
-     * @param string $dbaccess dbaccess string
-     * @param string $key      database key
-     * @param string $label    human label
+     * @param string $key   database key
+     * @param string $label human label
      *
      * @return string error message (empty means ok)
      */
-    public function addEnum($dbaccess, $key, $label)
+    public function addEnum($key, $label)
     {
-        $err = '';
-        if ($key == "") {
-            return "";
-        }
-
-        $famId = $this->docid;
-        $attrId = $this->id;
-
-        $a = new \DocAttr($dbaccess, array(
-            $famId,
-            $attrId
-        ));
-        if (!$a->isAffected()) {
-            /* Search attribute in parents */
-            $a = $this->_getDocAttrFromParents($dbaccess, $famId, $attrId);
-            if ($a === false) {
-                $err = sprintf(_("unknow attribute %s (family %s)"), $attrId, $famId);
-                return $err;
-            }
-        }
-        if ($a->isAffected()) {
-            $famId = $a->docid;
-            $oe = new \DocEnum($dbaccess, array(
-                $famId,
-                $attrId,
-                $key
-            ));
-            $this->getEnum();
-
-            $key = str_replace(array(
-                '|'
-            ), array(
-                '_'
-            ), $key);
-            $label = str_replace(array(
-                '|'
-            ), array(
-                '_'
-            ), $label);
-            if (!$oe->isAffected()) {
-                $oe->attrid = $attrId;
-                $oe->famid = $famId;
-                $oe->key = $key;
-                $oe->label = $label;
-                /* Store enum in database */
-                $err = $oe->add();
-                if ($err == '') {
-                    /* Update cache */
-                    $cachedEnum = self::_cacheFetch(self::_cEnum, array(
-                        $famId,
-                        $this->id
-                    ), array());
-                    $cachedEnumLabel = self::_cacheFetch(self::_cEnumLabel, array(
-                        $famId,
-                        $this->id
-                    ), array());
-                    $cachedEnum[$key] = $label;
-                    $cachedEnumLabel[$key] = $label;
-                    self::_cacheStore(self::_cEnum, array(
-                        $famId,
-                        $this->id
-                    ), $cachedEnum);
-                    self::_cacheStore(self::_cEnumLabel, array(
-                        $famId,
-                        $this->id
-                    ), $cachedEnumLabel);
-                }
-            }
-        } else {
-            $err = sprintf(_("unknow attribute %s (family %s)"), $attrId, $famId);
-        }
-        return $err;
+        return EnumManager::addEnum($this->format, $key, $label);
     }
 
-    private function _getRecursiveParentFamHavingAttribute($famId, $attrId)
-    {
-        $cached = self::_cacheFetch(self::_cParent, array(
-            $famId,
-            $attrId
-        ));
-        if ($cached !== null) {
-            return $cached;
-        }
-        $sql = <<<'SQL'
-WITH RECURSIVE parent_attr(fromid, docid, id) AS (
-    SELECT
-        docfam.fromid,
-        docattr.docid,
-        docattr.id
-    FROM
-        docattr,
-        docfam
-    WHERE
-        docattr.docid = docfam.id
-        AND
-        docattr.docid = %d
 
-    UNION
-
-    SELECT
-        docfam.fromid,
-        docattr.docid,
-        docattr.id
-    FROM
-        docattr,
-        docfam,
-        parent_attr
-    WHERE
-        docattr.docid = parent_attr.fromid
-        AND
-        parent_attr.fromid = docfam.id
-)
-SELECT docid FROM parent_attr WHERE id = '%s' LIMIT 1;
-SQL;
-        $sql = sprintf($sql, pg_escape_string($famId), pg_escape_string($attrId));
-        $parentFamId = false;
-        DbManager::query($sql, $parentFamId, true, true);
-        if ($parentFamId !== false) {
-            self::_cacheStore(self::_cParent, array(
-                $famId,
-                $attrId
-            ), $parentFamId);
-        }
-        return $parentFamId;
-    }
-
-    private function _getDocAttrFromParents($dbaccess, $famId, $attrId)
-    {
-        $parentFamId = $this->_getRecursiveParentFamHavingAttribute($famId, $attrId);
-        if ($parentFamId === false) {
-            return false;
-        }
-        $a = new \DocAttr($dbaccess, $parentFamId, $attrId);
-        return $a;
-    }
 
     /**
      * Test if an enum key exists
@@ -884,108 +588,12 @@ SQL;
      * @param bool   $completeKey if true test complete key with path else without path
      * @return bool
      */
-    public function existEnum($key, $completeKey = true)
+    public function existEnum($key)
     {
         if ($key == "") {
             return false;
         }
 
-        if ($completeKey) {
-            $enumKeys = $this->getEnum();
-        } else {
-            $enumKeys = $this->getEnumLabel();
-        }
-        return isset($enumKeys[$key]);
-    }
-
-    /**
-     * Construct a string key
-     *
-     * @param mixed $k key
-     * @return string
-     */
-    private static function _cacheKey($k)
-    {
-        if (is_scalar($k)) {
-            return $k;
-        } elseif (is_array($k)) {
-            return implode(':', $k);
-        }
-        return serialize($k);
-    }
-
-    /**
-     * Check if an entry exists for the given key
-     *
-     * @param string $cacheId cache Id
-     * @param string $k       key
-     * @return bool true if it exists, false if it does not exists
-     */
-    private static function _cacheExists($cacheId, $k)
-    {
-        $k = self::_cacheKey($k);
-        return isset(self::$_cache[$cacheId][$k]);
-    }
-
-    /**
-     * Add (or update) a key/value
-     *
-     * @param string          $cacheId cache Id
-     * @param string|string[] $k       key
-     * @param mixed           $v       value
-     * @return bool true on success, false on failure
-     */
-    private static function _cacheStore($cacheId, $k, $v)
-    {
-        $k = self::_cacheKey($k);
-        self::$_cache[$cacheId][$k] = $v;
-        return true;
-    }
-
-    /**
-     * Fetch the key's value
-     *
-     * @param string          $cacheId        cache Id
-     * @param string|string[] $k              key
-     * @param mixed           $onCacheMiss    value returned on cache miss (default is null)
-     * @param bool            $returnDisabled if false unreturn disabled enums
-     * @return null|mixed null on failure, mixed value on success
-     */
-    private static function _cacheFetch($cacheId, $k, $onCacheMiss = null, $returnDisabled = true)
-    {
-        if (self::_cacheExists($cacheId, $k)) {
-            $ks = self::_cacheKey($k);
-            if (!$returnDisabled) {
-                $famId = $k[0];
-                $attrid = $k[1];
-                $disabledKeys = \DocEnum::getDisabledKeys($famId, $attrid);
-                if (!empty($disabledKeys)) {
-                    $cached = self::$_cache[$cacheId][$ks];
-                    foreach ($disabledKeys as $dKey) {
-                        unset($cached[$dKey]);
-                    }
-                    return $cached;
-                }
-            }
-
-            return self::$_cache[$cacheId][$ks];
-        }
-        return $onCacheMiss;
-    }
-
-    /**
-     * Flush the cache contents
-     *
-     * @param string|null $cacheId cache Id or null (default) to flush all caches
-     * @return void
-     */
-    private static function _cacheFlush($cacheId = null)
-    {
-        if ($cacheId === null) {
-            self::$_cache = array();
-        } else {
-            self::$_cache[$cacheId] = array();
-        }
+        return EnumManager::getEnumItem($this->format, $key) !== null;
     }
 }
-

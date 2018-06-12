@@ -45,7 +45,7 @@ class ImportSmartConfiguration
         $configs = $this->getNodes($this->dom->documentElement, "structure-configuration");
         foreach ($configs as $config) {
             $data = $this->importSmartStructureConfig($config);
-           // $this->print($data);
+            // $this->print($data);
         }
         return $data;
     }
@@ -65,9 +65,10 @@ class ImportSmartConfiguration
         $data = array_merge($data, $this->extractParams($config));
 
         $data = array_merge($data, $this->extractModAttrs($config));
+        $data = array_merge($data, $this->extractEnumConfig($this->dom->documentElement));
         $data[] = ["END"];
 
-          $this->importSmartData($data);
+        $this->importSmartData($data);
 
 
         return $data;
@@ -185,21 +186,64 @@ class ImportSmartConfiguration
         return $data;
     }
 
+    protected function extractEnumConfig(\DOMElement $attrNode)
+    {
+        $data = [];
+        $enumConfigs = $this->getNodes($attrNode, "enum-configuration");
+
+        foreach ($enumConfigs as $enumConfig) {
+            /**
+             * @var \DOMElement $enumConfig
+             */
+            $data = array_merge($data, $this->extractEnum($enumConfig, $enumConfig->getAttribute("name")));
+        }
+
+        return $data;
+    }
+
+
+    protected function extractEnum(\DOMElement $enumConfig, $enumName, $parentKey = "")
+    {
+        $data = [];
+
+        foreach ($enumConfig->childNodes as $enumNode) {
+            /**
+             * @var \DOMElement $enumNode
+             */
+            if (!is_a($enumNode, \DOMElement::class) || $enumNode->tagName !== "smart:enum") {
+                continue;
+            }
+            $data[] = [
+                0 => "ENUM",
+                "name" => $enumName,
+                "key" => $enumNode->getAttribute("name"),
+                "label" => $enumNode->getAttribute("label"),
+                "parentKey" => $parentKey
+
+            ];
+            $data = array_merge($data, $this->extractEnum($enumNode, $enumName, $enumNode->getAttribute("name")));
+        }
+
+        return $data;
+    }
+
     protected function extractAttr(\DOMElement $attrNode, $key, $fieldName = "")
     {
         $data = [];
         if ($attrNode->tagName === "smart:attr-fieldset") {
-            $data[] = $this->extractSingleAttr($attrNode, $key, $fieldName);
-            $fieldName = $attrNode->getAttribute("name");
-            foreach ($attrNode->childNodes as $childNode) {
-                if (!is_a($childNode, \DOMElement::class)) {
-                    continue;
-                }
-                /**
-                 * @var \DOMElement $childNode
-                 */
-                if (preg_match('/smart:attr-/', $attrNode->tagName)) {
-                    $data = array_merge($data, $this->extractAttr($childNode, $key, $fieldName));
+            if ($attrNode->getAttribute("extended") !== "true") {
+                $data[] = $this->extractSingleAttr($attrNode, $key, $fieldName);
+                $fieldName = $attrNode->getAttribute("name");
+                foreach ($attrNode->childNodes as $childNode) {
+                    if (!is_a($childNode, \DOMElement::class)) {
+                        continue;
+                    }
+                    /**
+                     * @var \DOMElement $childNode
+                     */
+                    if (preg_match('/smart:attr-/', $attrNode->tagName)) {
+                        $data = array_merge($data, $this->extractAttr($childNode, $key, $fieldName));
+                    }
                 }
             }
         } else {
@@ -348,8 +392,8 @@ class ImportSmartConfiguration
             $data[] = [
                 "CLASS",
                 $node->nodeValue,
-                ($node->getAttribute("disable-inheritance-condition") === "true")?"disableInheritanceCondition":""
-                ];
+                ($node->getAttribute("disable-inheritance-condition") === "true") ? "disableInheritanceCondition" : ""
+            ];
         }
         $node = $this->getNode($config, "methods");
         if ($node) {

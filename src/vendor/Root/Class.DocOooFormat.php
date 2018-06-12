@@ -138,8 +138,7 @@ class DocOooFormat
                     break;
             }
 
-            if (($this->cFormat != "") && ($atype != "doc") && ($atype != "array") && ($atype != "option")) {
-                //printf($oooval);
+            if (($this->cFormat != "") && ($atype != "enum") && ($atype != "doc") && ($atype != "array") && ($atype != "option")) {
                 $oooval = sprintf($this->xmlEncode($this->cFormat), $oooval);
             }
 
@@ -416,18 +415,7 @@ class DocOooFormat
             $dom->loadXML($xhtml_body);
         } catch (Exception $e) {
             \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("possible incorrect conversion HTML to ODT %s: %s"), $this->doc->title, $e->getMessage()));
-            /*
-            print "Exception catched:\n";
-            print "Code: ".$e->getCode()."\n";
-            print "Message: ".$e->getMessage()."\n";
-            print  "Line: ".$e->getLine();
-            // error in XML
-            print "\n<br>ERRORXSLT:".$this->doc->id.$this->doc->title."\n";
-            print "\n=========RAWDATA=================\n";
-            print  $avalue;
-            print "\n=========XMLDATA=================\n";
-            print_r2($xmldata);
-            exit;*/
+
 
             $dom = null;
         }

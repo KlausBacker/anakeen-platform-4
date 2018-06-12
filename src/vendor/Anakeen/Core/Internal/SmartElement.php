@@ -3885,7 +3885,7 @@ create unique index i_docir on doc(initid, revision);";
                                             $tenum = $oattr->getEnum();
                                             $keys = array_keys($tenum);
                                             if (!in_array($avalue, $keys)) {
-                                                $oattr->addEnum($this->dbaccess, $avalue, $avalue);
+                                                $oattr->addEnum( $avalue, $avalue);
                                             }
                                         }
                                         break;
