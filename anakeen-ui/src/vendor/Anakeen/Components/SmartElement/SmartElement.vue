@@ -1,5 +1,5 @@
 <template>
-    <iframe style="visibility:hidden" ref="iDocument" src="/api/v2/documents/0.html" class="apDocumentWrapper"></iframe>
+    <iframe style="visibility:hidden" ref="iDocument" :src="initialDocumentUrl" class="apDocumentWrapper"></iframe>
 </template>
 
 <script src="./SmartElement.component.js" ></script>

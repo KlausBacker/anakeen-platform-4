@@ -9,59 +9,59 @@ export default {
     name: 'ank-smart-element',
     data() {
         return {
-            value: {
-                default: () => ({
-                    initid: 0,
-                    viewid: '!defaultConsultation',
-                    revision: -1,
-                    customClientData: null,
-                }),
-            },
+            initialDocumentUrl: '/api/v2/documents/0.html',
         };
     },
 
     props: {
-        documentvalue: {
-            type: [String],
-            default: () => JSON.stringify({
+        seValue: {
+            type: [String, Object],
+            default: () => (JSON.stringify({
                 initid: 0,
-                viewid: '!defaultConsultation',
+                viewId: '!defaultConsultation',
                 revision: -1,
                 customClientData: null,
-            }),
+            })),
             validator: (value) => {
-                try {
-                    return (JSON.parse(value).initid !== undefined);
-                } catch (e) {
-                    return false;
+                if (typeof value === 'string') {
+                    try {
+                        const parsed = JSON.parse(value);
+                        return parsed.initid !== undefined;
+                    } catch (e) {
+                        console.error(e);
+                        return false;
+                    }
                 }
+
+                return true;
             },
         },
-        browserhistory: {
+        browserHistory: {
             default: false,
             type: Boolean,
-        },
-        url: {
-            default: '',
-            type: String,
         },
         initid: {
             type: [Number, String],
             default: 0,
         },
-        customclientdata: {
-            type: [String],
+        customClientData: {
+            type: [String, Object],
             default: null,
             validator: (value) => {
-                try {
-                    JSON.parse(value);
-                    return true;
-                } catch (e) {
-                    return false;
+                if (typeof value === 'string') {
+                    try {
+                        JSON.parse(value);
+                        return true;
+                    } catch (e) {
+                        console.error(e);
+                        return false;
+                    }
                 }
+
+                return true;
             },
         },
-        viewid: {
+        viewId: {
             type: String,
             default: '!defaultConsultation',
         },
@@ -71,59 +71,58 @@ export default {
         },
     },
 
-    updated() {
-        this.fetchDocument(this.getInitialData).then((response) => {
-        }).catch((error) => {
-            console.error(error);
-        });
-    },
-
     computed: {
-        documentValue() {
-            return JSON.parse(this.documentvalue);
-        },
-
-        customClientData() {
-            return JSON.parse(this.customclientdata);
+        parsedSEValue() {
+            if (typeof this.seValue === 'object') {
+                return this.seValue;
+            } else {
+                return JSON.parse(this.seValue);
+            }
         },
 
         getInitialData() {
-            /**
-             * Access to document
-             * Using fetchDocument
-             */
-            // let dUrl = this.url;
             const initialData = {
-                    noRouter: this.browserhistory !== true,
-                };
-
+                noRouter: this.browserHistory !== true,
+            };
 
             /**
              * Prop documentValue are priority on single properties
              */
-            initialData.initid = this.documentValue.initid || this.initid;
-            if (this.documentValue.customClientData || this.customClientData) {
-                initialData.customClientData = this.documentValue.customClientData || this.customClientData;
+            initialData.initid = this.parsedSEValue.initid || this.initid;
+            if (this.parsedSEValue.customClientData || this.customClientData) {
+                initialData.customClientData = this.parsedSEValue.customClientData || this.customClientData;
             }
 
-            if (this.documentValue.revision !== -1) {
-                initialData.revision = this.documentValue.revision;
+            if (this.parsedSEValue.revision !== -1) {
+                initialData.revision = this.parsedSEValue.revision;
             } else if (this.revision !== -1) {
                 initialData.revision = this.revision;
             }
 
-            if (this.documentValue.viewid !== '!defaultConsultation') {
-                initialData.viewId = this.documentValue.viewid;
-            } else if (this.viewid !== '!defaultConsultation') {
-                initialData.viewId = this.viewid;
+            if (this.parsedSEValue.viewId !== '!defaultConsultation') {
+                initialData.viewId = this.parsedSEValue.viewId;
+            } else if (this.viewId !== '!defaultConsultation') {
+                initialData.viewId = this.viewId;
             }
 
             return initialData;
         },
     },
 
-    beforeMount() {
-
+    updated() {
+        if (this.isLoaded()) {
+            this.fetchDocument(this.getInitialData)
+                .catch((error) => {
+                console.error(error);
+            });
+        } else {
+            this.$once('documentLoaded', () => {
+                this.fetchDocument(this.getInitialData)
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            });
+        }
     },
 
     methods: {
@@ -191,7 +190,9 @@ export default {
                     name: 'v-on-dcpready-listen',
                 },
                 (event, documentObject) => {
-                    this.value = documentObject;
+                    if (this.initid && documentObject.initid !== this.initid) {
+                        this.$emit('update:props', documentObject);
+                    }
                 },
             );
         },

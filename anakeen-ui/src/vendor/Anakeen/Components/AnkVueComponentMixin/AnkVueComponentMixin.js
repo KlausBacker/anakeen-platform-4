@@ -165,6 +165,17 @@ const AnkMixin = {
             },
 
             bindedEvents: [],
+
+            listenPropsUpdateRequest: () => {
+                this.$on('update:props', (newProps) => {
+                    Object.keys(this.$options.propsData).forEach(propName => {
+                        if (newProps[propName]) {
+                            const element = this.$(this.$el).parent();
+                            element.prop(propName, newProps[propName]);
+                        }
+                    });
+                });
+            },
         };
     },
 
@@ -174,6 +185,7 @@ const AnkMixin = {
                 this._ank_protected.attachQuickBindingEvents(this.bindEvent);
             }
 
+            this._ank_protected.listenPropsUpdateRequest();
             this._ank_protected.attachPublicMethods();
         };
 

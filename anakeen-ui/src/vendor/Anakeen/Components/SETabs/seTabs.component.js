@@ -390,7 +390,7 @@ export default {
                     .replaceWith(`<img class="seTab__icon" src="${data.data.icon}" />`);
                 this.privateScope.onAddDocumentTab(this.privateScope.getLazyTabIndex());
                 this.$(this.tabstrip.items()[this.privateScope.getLazyTabIndex()]).show();
-                this.$(this.lazyTabDocument).prop('documentvalue', JSON.stringify(data.data));
+                this.$(this.lazyTabDocument).prop('seValue', JSON.stringify(data.data));
                 this.tabModel.get(this.privateScope.getLazyTabIndex()).tabId = data.tabId;
                 this.tabsListSource.add(data);
             },
