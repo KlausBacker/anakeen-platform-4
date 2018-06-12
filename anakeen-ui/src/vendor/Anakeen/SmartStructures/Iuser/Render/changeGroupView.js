@@ -4,14 +4,15 @@ import './changeGroupView.css';
 {
     let groupTreeSource;
     let checkedGroups;
+    let filterTitle = "";
 
     window.dcp.document.documentController('addEventListener',
         'beforeRender',
         {
-            name: 'maskBeforeRender.mask',
+            name: 'changeGroupBeforeRender.changeGroup',
             documentCheck: (documentObject) => {
                 const serverData = window.dcp.document.documentController("getCustomServerData");
-                return documentObject.renderMode === 'edit' && serverData["FAMILY"] === "IUSER";
+                return documentObject.renderMode === 'edit' && serverData["GROUP_ANALYZE"];
             }
         },
         () => {
@@ -97,6 +98,21 @@ import './changeGroupView.css';
                                             }, false);
                                         };
                                         hasChildChecked(groups);
+
+                                        /*const isVisible = (data) => {
+                                            return data.reduce((accumulator, currentData) => {
+                                                if (currentData.items && currentData.items.length) {
+                                                    if (isVisible(currentData.items)) {
+                                                        currentData.hidden = false;
+                                                        return true;
+                                                    }
+                                                }
+                                                currentData.hidden = !(filterTitle === "" || currentData.title.toLowerCase().indexOf(filterTitle) >= 0);
+                                                return accumulator || !currentData.hidden;
+                                            }, false);
+                                        };
+                                        isVisible(groups);*/
+
                                         options.success(groups);
                                     }).catch((error) => {
                                     console.error("Unable to get group", error);
@@ -115,21 +131,28 @@ import './changeGroupView.css';
                 )
             }
         }
-    )
-    ;
+    );
 
     window.dcp.document.documentController('addEventListener',
         'ready',
         {
-            name: 'maskReady.mask',
+            name: 'changeGroupReady.changeGroup',
             documentCheck: (documentObject) => {
                 const serverData = window.dcp.document.documentController("getCustomServerData");
-                return documentObject.renderMode === 'edit' && serverData["FAMILY"] === "IUSER";
+                return documentObject.renderMode === 'edit' && serverData["GROUP_ANALYZE"];
             }
         },
         () => {
             const serverData = window.dcp.document.documentController("getCustomServerData");
             checkedGroups = serverData.groups;
+            let filterTitle = null;
+
+            const updateTreeSource = () => {
+                if (filterTitle) {
+                    return groupTreeSource.filter({field: "title", operator: "contains", value: filterTitle});
+                }
+                groupTreeSource.filter({});
+            };
 
             const getChecked = (checked) => (currentEventNode) => {
                 return function analyzeChecked(dataSource) {
@@ -166,39 +189,14 @@ import './changeGroupView.css';
                     getChecked(checked)(eventNode)(event.sender.dataSource);
                     checkedGroups = checked;
                     window.dcp.document.documentController("addCustomClientData", {parentGroups: checkedGroups});
-                    groupTreeSource.read();
+                    updateTreeSource();
                 }
             });
 
             $("#formFilter").on("submit", (event) => {
                 event.preventDefault();
-                const filter = (dataSource, query) => {
-                    let hasVisibleChildren = false;
-                    const data = dataSource instanceof kendo.data.HierarchicalDataSource && dataSource.data();
-                    for (let i = 0; i < data.length; i++) {
-                        let item = data[i];
-                        let text = item.title.toLowerCase();
-                        let itemVisible =
-                            query === true // parent already matches
-                            || query === "" // query is empty
-                            || text.indexOf(query) >= 0; // item text matches query
-
-                        let anyVisibleChildren = filter(item.children, itemVisible || query); // pass true if parent matches
-
-                        hasVisibleChildren = hasVisibleChildren || anyVisibleChildren || itemVisible;
-
-                        item.hidden = !itemVisible && !anyVisibleChildren;
-                    }
-
-                    if (data) {
-                        // re-apply filter on children
-                        dataSource.filter({field: "hidden", operator: "neq", value: true});
-                    }
-
-                    return hasVisibleChildren;
-                };
-                const query = document.getElementById("filterTree").value ? document.getElementById("filterTree").value.toLowerCase() : "";
-                return filter(groupTreeSource, query);
+                filterTitle = document.getElementById("filterTree").value ? document.getElementById("filterTree").value.toLowerCase() : "";
+                updateTreeSource();
             })
         }
     );

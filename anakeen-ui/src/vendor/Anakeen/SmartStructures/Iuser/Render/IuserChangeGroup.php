@@ -22,7 +22,7 @@ class IuserChangeGroup extends DefaultConfigEditRender
     public function getCustomServerData(\Anakeen\Core\Internal\SmartElement $smartElement)
     {
         $data = parent::getCustomServerData($smartElement);
-        $data["FAMILY"] = "IUSER";
+        $data["GROUP_ANALYZE"] = true;
         $data["groups"] = $this->getAllMyGroups($smartElement);
         return $data;
     }
