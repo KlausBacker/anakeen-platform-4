@@ -53,13 +53,13 @@ Vue.http.get('/api/v2/ui/users/current')
 
 // import and register your component(s)
 import Authent from './Authent/Authent.vue';
+import AuthentPassword from './Authent/AuthentPassword.vue'
 import Document from './SmartElement/SmartElement.vue';
 import SEList from './SEList/seList.vue';
 import DocumentTabs from './SETabs/seTabs.vue';
 import AnakeenLoading from './AnakeenLoading/AnakeenLoading.vue';
 import Logout from './Logout/Logout.vue';
 import Identity from './Identity/Identity.vue';
-import AuthentPassword from './Authent/AuthentPassword.vue'
 
 import Dock from './Dock/Dock.vue';
 import DockTab from './Dock/DockTab/DockTab.vue';
@@ -74,5 +74,5 @@ Vue.customElement('ank-logout', Logout);
 Vue.customElement('ank-identity', Identity);
 
 Vue.prototype.$dockEventBus = new Vue();
-Vue.customElement('ank-dock', Dock);
 Vue.customElement('ank-dock-tab', DockTab);
+Vue.customElement('ank-dock', Dock);

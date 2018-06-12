@@ -110,7 +110,11 @@ export default {
         },
 
         hasContent() {
-            return !!(this.seListProp.length);
+            if (this.tabModel) {
+                return !this.tabModel.isEmpty();
+            } else {
+                return false;
+            }
         },
 
         seListProp() {
