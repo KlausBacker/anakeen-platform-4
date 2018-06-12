@@ -43,8 +43,9 @@ class ImportSmartConfiguration
     protected function importSmartStructureConfigurations()
     {
         $configs = $this->getNodes($this->dom->documentElement, "structure-configuration");
+        $data = [];
         foreach ($configs as $config) {
-            $data = $this->importSmartStructureConfig($config);
+            $data = array_merge($data, $this->importSmartStructureConfig($config));
             // $this->print($data);
         }
         return $data;
@@ -80,7 +81,7 @@ class ImportSmartConfiguration
         $import = new \ImportDocumentDescription();
 
         $cr = $import->importData($data);
-        //print_r($cr);
+        return $cr;
     }
 
     protected function extractBegin(\DOMElement $config)
@@ -195,6 +196,9 @@ class ImportSmartConfiguration
             /**
              * @var \DOMElement $enumConfig
              */
+            if ($enumConfig->getAttribute("extendable") === "false") {
+                $data[] = ["RESET", "enums", $enumConfig->getAttribute("name")];
+            }
             $data = array_merge($data, $this->extractEnum($enumConfig, $enumConfig->getAttribute("name")));
         }
 
@@ -233,17 +237,17 @@ class ImportSmartConfiguration
         if ($attrNode->tagName === "smart:attr-fieldset") {
             if ($attrNode->getAttribute("extended") !== "true") {
                 $data[] = $this->extractSingleAttr($attrNode, $key, $fieldName);
-                $fieldName = $attrNode->getAttribute("name");
-                foreach ($attrNode->childNodes as $childNode) {
-                    if (!is_a($childNode, \DOMElement::class)) {
-                        continue;
-                    }
-                    /**
-                     * @var \DOMElement $childNode
-                     */
-                    if (preg_match('/smart:attr-/', $attrNode->tagName)) {
-                        $data = array_merge($data, $this->extractAttr($childNode, $key, $fieldName));
-                    }
+            }
+            $fieldName = $attrNode->getAttribute("name");
+            foreach ($attrNode->childNodes as $childNode) {
+                if (!is_a($childNode, \DOMElement::class)) {
+                    continue;
+                }
+                /**
+                 * @var \DOMElement $childNode
+                 */
+                if (preg_match('/smart:attr-/', $attrNode->tagName)) {
+                    $data = array_merge($data, $this->extractAttr($childNode, $key, $fieldName));
                 }
             }
         } else {

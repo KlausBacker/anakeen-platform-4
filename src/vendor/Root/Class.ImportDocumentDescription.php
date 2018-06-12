@@ -862,12 +862,8 @@ class ImportDocumentDescription
 
                 case 'enums':
                     $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("Reset enums definition"));
-                    $sql = sprintf(
-                        "update docattr set phpfunc=null from docenum where docattr.docid=docenum.famid and docattr.id = docenum.attrid and docattr.type ~ 'enum' and docattr.docid=%d",
-                        $this->doc->id
-                    );
-                    \Anakeen\Core\DbManager::query($sql);
-                    $sql = sprintf("delete from docenum where famid=%d", $this->doc->id);
+                    $enumName=$data[2];
+                    $sql = sprintf("delete from docenum where name='%s'", $enumName);
                     \Anakeen\Core\DbManager::query($sql);
 
                     break;

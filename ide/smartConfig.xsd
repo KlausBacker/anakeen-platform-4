@@ -80,7 +80,7 @@
             <xs:element type="v1:enumType" name="enum" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
         </xs:choice>
         <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:boolean" name="extendable"/>
+        <xs:attribute type="xs:boolean" name="extendable" default="true"/>
     </xs:complexType>
     <xs:complexType name="attr-standardType" mixed="true">
         <xs:sequence minOccurs="0" maxOccurs="unbounded">

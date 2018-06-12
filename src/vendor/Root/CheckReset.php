@@ -1,17 +1,13 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 class CheckReset extends CheckData
 {
     protected $value;
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     protected $doc;
-    
+
     protected $authorizedKeys = array(
         "attributes",
         "default",
@@ -20,8 +16,9 @@ class CheckReset extends CheckData
         "structure",
         "enums"
     );
+
     /**
-     * @param array $data
+     * @param array                               $data
      * @param \Anakeen\Core\Internal\SmartElement $doc
      * @return CheckReset
      */
@@ -32,6 +29,7 @@ class CheckReset extends CheckData
         $this->checkValue();
         return $this;
     }
+
     /**
      * check reset values
      * @return void
