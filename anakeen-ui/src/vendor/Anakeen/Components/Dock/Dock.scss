@@ -1,6 +1,5 @@
 $tab-height: 3rem;
 
-// TODO Chang colors
 $background-color: #f9f9f9;
 $background-color-button: #646464;
 $background-color-button-hovered: #777777;
@@ -17,7 +16,71 @@ $green-selected: #8ae234;
 
   #dock {
     background-color: $background-color;
-    box-shadow: 2px 0 5px #aaa;
+    z-index: 1;
+    flex-shrink: 0;
+
+    #expand-button {
+      box-shadow: none;
+      transition: width 500ms ease-out;
+    }
+
+    .header-component {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      height: auto;
+      background-color: $background-color-button;
+      color: #ffffff;
+      transition: width 500ms ease-out;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      .header-component-compact {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        padding: .5rem;
+      }
+
+      .header-component-expanded {
+        padding-left: 0.5rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: width 500ms ease-out;
+      }
+    }
+
+    .footer-component {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      height: auto;
+      background-color: $background-color-button;
+      color: #ffffff;
+      transition: width 500ms ease-out;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      .footer-component-compact {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        padding: .5rem;
+      }
+
+      .footer-component-expanded {
+        padding-left: 0.5rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: width 500ms ease-out;
+      }
+    }
 
     #expand-button {
       border-radius: 0;
@@ -41,6 +104,8 @@ $green-selected: #8ae234;
       align-items: center;
       background-color: $background-color-tab;
       cursor: pointer;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       .dock-tab-compact {
         display: flex;
@@ -62,6 +127,7 @@ $green-selected: #8ae234;
   #content {
     height: 100%;
     width: 100%;
+    z-index: 0;
 
     .dock-tab-content {
       height: 100%;
@@ -81,6 +147,7 @@ $green-selected: #8ae234;
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
+    box-shadow: 2px 0 5px #aaa;
     transition: width 500ms ease-out;
 
     #expand-button {
@@ -89,14 +156,25 @@ $green-selected: #8ae234;
 
     .dock-tab {
       height: $tab-height;
-      border-bottom-color: $border-color;
-      border-bottom-width: 1px;
-      border-bottom-style: solid;
+      border-bottom: 1px solid $border-color;
+      transition: width 500ms ease-out;
     }
 
     .dock-tab.selected {
       background-color: $selected-color;
       box-shadow: 2.5px 0 0 $green-selected inset;
+    }
+
+    .footer-component {
+      margin-top: auto;
+    }
+
+    .footer-components {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
     }
   }
 }
@@ -113,6 +191,7 @@ $green-selected: #8ae234;
     justify-content: flex-start;
     align-items: stretch;
     transition: width 500ms ease-out;
+    box-shadow: -2px 0 5px #aaa;
 
     #expand-button {
       height: $tab-height;
@@ -120,14 +199,21 @@ $green-selected: #8ae234;
 
     .dock-tab {
       height: $tab-height;
-      border-bottom-color: $border-color;
-      border-bottom-width: 1px;
-      border-bottom-style: solid;
+      border-bottom: 1px solid $border-color;
+      transition: width 500ms ease-out;
     }
 
     .dock-tab.selected {
       background-color: $selected-color;
       box-shadow: -2.5px 0 0 $green-selected inset;
+    }
+
+    .footer-components {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
     }
   }
 }
@@ -143,6 +229,7 @@ $green-selected: #8ae234;
     flex-direction: row;
     justify-content: flex-start;
     align-items: stretch;
+    box-shadow: 0 2px 5px #aaa;
 
     #expand-button {
       padding-left: 1rem;
@@ -150,15 +237,8 @@ $green-selected: #8ae234;
     }
 
     .dock-tab {
-      width: auto;
-      border-right-color: $border-color;
-      border-right-width: 1px;
-      border-right-style: solid;
-
-      .dock-tab-compact {
-        padding-left: 1rem;
-        padding-right: 1rem;
-      }
+      border-right: 1px solid $border-color;
+      transition: width 500ms ease-out;
 
       .dock-tab-expanded {
         padding-right: 1rem;
@@ -168,6 +248,14 @@ $green-selected: #8ae234;
     .dock-tab.selected {
       background-color: $selected-color;
       box-shadow: 0 2px 0 $green-selected inset;
+    }
+
+    .footer-components {
+      margin-left: auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: stretch;
     }
   }
 }
@@ -183,6 +271,7 @@ $green-selected: #8ae234;
     flex-direction: row;
     justify-content: flex-start;
     align-items: stretch;
+    box-shadow: 0 -2px 5px #aaa;
 
     #expand-button {
       padding-left: 1rem;
@@ -191,9 +280,8 @@ $green-selected: #8ae234;
 
     .dock-tab {
       width: auto;
-      border-right-color: $border-color;
-      border-right-width: 1px;
-      border-right-style: solid;
+      border-right: 1px solid $border-color;
+      transition: width 500ms ease-out;
 
       .dock-tab-expanded {
         padding-right: 1rem;
@@ -203,6 +291,14 @@ $green-selected: #8ae234;
     .dock-tab.selected {
       background-color: $selected-color;
       box-shadow: 0 -2.5px 0 $green-selected inset;
+    }
+
+    .footer-components {
+      margin-left: auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: stretch;
     }
   }
 }
