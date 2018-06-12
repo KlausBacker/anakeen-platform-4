@@ -4,7 +4,7 @@ export default {
     props: {
         title: {
             type: String,
-            default: 'Logout'
+            default: 'Logout',
         },
     },
 
@@ -36,14 +36,14 @@ export default {
                         }
                     });
             }
-        }
+        },
     },
 
     computed: {
         translations() {
             return {
-                title: this.$pgettext('Logout', 'Logout')
-            }
-        }
-    }
-}
+                title: this.$pgettext('Logout', 'Logout'),
+            };
+        },
+    },
+};
