@@ -53,7 +53,6 @@ class IuserChangeGroup extends DefaultConfigEditRender
 
     public function setCustomClientData(\Anakeen\Core\Internal\SmartElement $smartElement, $data)
     {
-        $data = \Dcp\Ui\Utils::getCustomClientData();
         parent::setCustomClientData($smartElement, $data);
         if (isset($data["parentGroups"])) {
             $newGroups = array_keys($data["parentGroups"]);

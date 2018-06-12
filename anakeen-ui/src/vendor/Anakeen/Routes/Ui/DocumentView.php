@@ -131,13 +131,22 @@ class DocumentView
             $this->requestFields = $this->fields;
         }
 
-
         if (!empty($request->getQueryParam("noStructureFamily"))) {
             $this->needSendFamilyStructure = false;
         }
-        if (!empty($request->getQueryParam(self::fieldCustomClientData))) {
+
+        //Add custom client data
+        if ($request->getMethod() === "GET" && !empty($request->getQueryParam(self::fieldCustomClientData))) {
             $this->customClientData = json_decode($request->getQueryParam(self::fieldCustomClientData), true);
         }
+
+        if (in_array($request->getMethod(), ["POST", "PUT"])) {
+            $body = $request->getParsedBody();
+            if (isset($body[self::fieldCustomClientData])) {
+                $this->customClientData = $body[self::fieldCustomClientData];
+            }
+        }
+
     }
 
     protected function doRequest(&$messages = [])
