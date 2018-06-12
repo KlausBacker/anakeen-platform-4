@@ -370,7 +370,7 @@ export default {
 
         // Email change validation button enabled only if the input is a correct email adress
         emailChangeButtonDisabled() {
-            return !this.newEmail.match(/\S+@\S+\.\S+/);
+            return (!this.newEmail.match(/\S+@\S+\.\S+/) || (!this.oldPassword));
         },
 
         // Password change validation button enabled only if the password matches the confirmation

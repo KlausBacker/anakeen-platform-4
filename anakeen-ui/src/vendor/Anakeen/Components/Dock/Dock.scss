@@ -1,0 +1,208 @@
+$tab-height: 3rem;
+
+// TODO Chang colors
+$background-color: #f9f9f9;
+$background-color-button: #646464;
+$background-color-button-hovered: #777777;
+$background-color-tab: #f3f3f3;
+$button-icon-color: #ffffff;
+$border-color: #a9a9a9;
+$tab-compact-color: #646464;
+$selected-color: #a9a9a9;
+$green-selected: #8ae234;
+
+#dock-component {
+  height: 100%;
+  width: 100%;
+
+  #dock {
+    background-color: $background-color;
+    box-shadow: 2px 0 5px #aaa;
+
+    #expand-button {
+      border-radius: 0;
+      padding: 0;
+      background-color: $background-color-button;
+      color: $button-icon-color;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #expand-button:hover {
+      background-color: $background-color-button-hovered;
+    }
+
+    .dock-tab {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      background-color: $background-color-tab;
+      cursor: pointer;
+
+      .dock-tab-compact {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        color: $tab-compact-color;
+      }
+
+      .dock-tab-expanded {
+        padding-left: 0.5rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  #content {
+    height: 100%;
+    width: 100%;
+
+    .dock-tab-content {
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
+
+#dock-component[position="left"] {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  #dock {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    transition: width 500ms ease-out;
+
+    #expand-button {
+      height: $tab-height;
+    }
+
+    .dock-tab {
+      height: $tab-height;
+      border-bottom-color: $border-color;
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+    }
+
+    .dock-tab.selected {
+      background-color: $selected-color;
+      box-shadow: 2.5px 0 0 $green-selected inset;
+    }
+  }
+}
+
+#dock-component[position="right"] {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  #dock {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    transition: width 500ms ease-out;
+
+    #expand-button {
+      height: $tab-height;
+    }
+
+    .dock-tab {
+      height: $tab-height;
+      border-bottom-color: $border-color;
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+    }
+
+    .dock-tab.selected {
+      background-color: $selected-color;
+      box-shadow: -2.5px 0 0 $green-selected inset;
+    }
+  }
+}
+
+#dock-component[position="top"] {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  #dock {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    #expand-button {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .dock-tab {
+      width: auto;
+      border-right-color: $border-color;
+      border-right-width: 1px;
+      border-right-style: solid;
+
+      .dock-tab-compact {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      .dock-tab-expanded {
+        padding-right: 1rem;
+      }
+    }
+
+    .dock-tab.selected {
+      background-color: $selected-color;
+      box-shadow: 0 2px 0 $green-selected inset;
+    }
+  }
+}
+
+#dock-component[position="bottom"] {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  #dock {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    #expand-button {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .dock-tab {
+      width: auto;
+      border-right-color: $border-color;
+      border-right-width: 1px;
+      border-right-style: solid;
+
+      .dock-tab-expanded {
+        padding-right: 1rem;
+      }
+    }
+
+    .dock-tab.selected {
+      background-color: $selected-color;
+      box-shadow: 0 -2.5px 0 $green-selected inset;
+    }
+  }
+}
