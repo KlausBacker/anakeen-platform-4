@@ -106,8 +106,8 @@
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute type="xs:boolean" name="is-abstract"/>
-        <xs:attribute type="xs:boolean" name="is-title"/>
+        <xs:attribute type="xs:boolean" name="is-abstract" default="false"/>
+        <xs:attribute type="xs:boolean" name="is-title" default="false"/>
         <xs:attribute type="xs:string" name="link"/>
         <xs:attribute type="xs:string" name="relation"/>
         <xs:attribute type="xs:string" name="multiple"/>
@@ -162,6 +162,7 @@
             </xs:element>
             <xs:element type="xs:string" name="revisable" minOccurs="0"/>
             <xs:element type="xs:string" name="usefor" minOccurs="0"/>
+            <xs:element type="xs:string" name="tag" minOccurs="0"/>
             <xs:element type="v1:attributesType" name="attributes" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
             <xs:element type="v1:attributesType" name="parameters" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
             <xs:element type="v1:attr-overrideType" name="attr-override" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
@@ -203,6 +204,7 @@
         <xs:simpleContent>
             <xs:extension base="xs:string">
                 <xs:attribute type="xs:string" name="function"/>
+                <xs:attribute type="xs:string" name="external-file"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>

@@ -626,6 +626,9 @@ class ExportConfiguration
         $parseMethod->parse($attr->phpfunc);
 
         $smartAttrCallable->setAttribute("function", $parseMethod->functionName);
+        if ($attr->phpfile) {
+            $smartAttrCallable->setAttribute("external-file", $attr->phpfile);
+        }
 
         $smartAttrHook->appendChild($smartAttrCallable);
         foreach ($parseMethod->inputs as $input) {
