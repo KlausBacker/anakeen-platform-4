@@ -1,0 +1,29 @@
+//FAM;masque de saisie(MASK);<specid>;<fldid>;titre;id familles;familles;attrid;visibilité;obligatoire;;;;;;;;;;;
+ORDER;MASK;;;ba_title;msk_famid;msk_fam;msk_attrids;msk_visibilities;msk_needeeds;;;;;;;;;;;
+DOC;MASK;MSK_IUSER_ADMIN;-;Administration;IUSER;utilisateur;us_fr_intranet\nus_login\nus_accexpiredate\nus_t_roles;W\nW\nW\nW;-\n-\n-;;;;;;;;;;;
+DOC;MASK;MSK_IUSERSUBSTITUTE;;Suppléant;IUSER;Utilisateur;us_fr_ident\nus_fr_substitute\nus_fr_userchange;H\nW\nH;-\n-\n-\n-\n-\n-\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;
+//FAM;Contrôle de vues(CVDOC);<specid>;<fldid>;Titre;Description;Famille (id);Famille;Identifiant de la vue;Label;Type;Classe de configuration de rendu (HTML5);Masque;Ordre de sélection;Affichable;Menu;Id création vues par défaut;Création vue;Classe d'accès au rendu (HTML5);Famille pour le profil;Famille pour le profil (titre)
+ORDER;CVDOC;;;ba_title;cv_desc;cv_famid;cv_fam;cv_idview;cv_lview;cv_kview;cv_renderconfigclass;cv_mskid;cv_order;cv_displayed;cv_menu;cv_idcview;cv_lcview;cv_renderaccessclass;dpdoc_famid;dpdoc_fam
+DOC;CVDOC;CV_IUSER_ACCOUNT;;Confidentiel;;IUSER;Utilisateur;"EUSER
+EGROUP
+ESUBSTITUTE";"Admin edit
+Modification des groupes parents
+Modifier le suppléant";"VEDIT
+VEDIT
+VEDIT";"
+\Anakeen\SmartStructures\Iuser\Render\IuserChangeGroup
+";"MSK_IUSER_ADMIN
+
+MSK_IUSERSUBSTITUTE";"2
+0
+0";"no
+yes
+yes";"
+Compte
+Compte";EUSER;Admin edit (EUSER);;IUSER;Utilisateur
+;;;;;;;;;;;;;;;;;;;;
+//;;;;;;;;;;;;;;;;;;;;
+BEGIN;;;;;IUSER;;;;;;;;;;;;;;;
+CVID;CV_IUSER_ACCOUNT;;;;;;;;;;;;;;;;;;;
+END;;;;;;;;;;;;;;;;;;;;
