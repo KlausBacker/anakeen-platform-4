@@ -242,6 +242,7 @@ export default {
         updateGroupSelected: function (selectedGroupId) {
             const groupDoc = this.$refs.groupDoc;
             if (selectedGroupId && selectedGroupId !== "@users") {
+                this.selectedGroupDocumentId = selectedGroupId;
                 this.displayGroupDocument = true;
                 groupDoc.initid = selectedGroupId;
                 return;
@@ -258,6 +259,13 @@ export default {
                 this.gridContent.filter({field: "group", operator: "equal", value: selectedGroupLogin});
             }
 
+        },
+        //Open group selected in group change mode
+        openChangeGroup: function(event) {
+            const openDoc = this.$refs.openDoc;
+            openDoc.viewid = "changeGroup";
+            openDoc.initid = this.selectedGroupDocumentId;
+            this.toggleUserMode();
         },
         //Update the selected group
         onGroupSelect: function (event) {
