@@ -592,6 +592,9 @@ class ExportConfiguration
 
             if ($attr->isNormal && $attr->phpfunc && ($attr->phpfile) && $attr->type !== "enum") {
                 $smartAuto->appendChild($this->getAutocompleteFunc($attr));
+            } elseif ($attr->isNormal && $attr->properties && $attr->properties->autocomplete) {
+                $smartAuto->appendChild($this->getAutocompleteFunc($attr));
+
             }
         }
 
@@ -622,21 +625,24 @@ class ExportConfiguration
         $smartAttrHook->setAttribute("attr", $attr->id);
         $smartAttrCallable = $this->cel("attr-callable");
 
-        $parseMethod = new \ParseFamilyFunction();
-        $parseMethod->parse($attr->phpfunc);
-
-        $smartAttrCallable->setAttribute("function", $parseMethod->functionName);
-        if ($attr->phpfile) {
-            $smartAttrCallable->setAttribute("external-file", $attr->phpfile);
+        if ($attr->properties->autocomplete) {
+            $parseMethod = new \ParseFamilyMethod();
+            $parseMethod->parse($attr->properties->autocomplete);
+            $smartAttrCallable->setAttribute("function", sprintf("%s::%s", $parseMethod->className, $parseMethod->methodName));
+        } else {
+            $parseMethod = new \ParseFamilyFunction();
+            $parseMethod->parse($attr->phpfunc);
+            $smartAttrCallable->setAttribute("function", $parseMethod->functionName);
+            if ($attr->phpfile) {
+                $smartAttrCallable->setAttribute("external-file", $attr->phpfile);
+            }
         }
 
         $smartAttrHook->appendChild($smartAttrCallable);
         foreach ($parseMethod->inputs as $input) {
             $smartAttrArg = $this->cel("attr-argument");
             $smartAttrArg->setAttribute("type", $input->type === "any" ? "attribute" : "string");
-            if ($input->type === "any") {
-                $input->name = strtolower($input->name);
-            }
+
             $smartAttrArg->nodeValue = $input->name;
             $smartAttrHook->appendChild($smartAttrArg);
         }

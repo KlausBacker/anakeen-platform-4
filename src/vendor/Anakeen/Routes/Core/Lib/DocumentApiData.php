@@ -319,6 +319,19 @@ class DocumentApiData
             }
         }
 
+        if (!empty($attribute->properties->autocomplete)) {
+            $familyParser = new \ParseFamilyMethod();
+            $structureFunction = $familyParser->parse($attribute->properties->autocomplete);
+            foreach ($structureFunction->outputs as $k => $output) {
+                if (substr($output, 0, 2) === "CT") {
+                    unset($structureFunction->outputs[$k]);
+                } else {
+                    $structureFunction->outputs[$k] = strtolower($output);
+                }
+            }
+            $info["helpOutputs"] = $structureFunction->outputs;
+        }
+
         if ($attribute->inArray()) {
             if ($this->_document->doctype === "C") {
                 /**

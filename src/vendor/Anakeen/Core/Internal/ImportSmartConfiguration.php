@@ -4,6 +4,7 @@
 namespace Anakeen\Core\Internal;
 
 use Anakeen\Core\SmartStructure\ExportConfiguration;
+use Dcp\Exception;
 
 class ImportSmartConfiguration
 {
@@ -46,7 +47,7 @@ class ImportSmartConfiguration
         $data = [];
         foreach ($configs as $config) {
             $data = array_merge($data, $this->importSmartStructureConfig($config));
-            $this->print($data);
+            //  $this->print($data);
         }
         return $data;
     }
@@ -71,17 +72,29 @@ class ImportSmartConfiguration
 
         $this->importSmartData($data);
 
+        if ($this->getError()) {
+            throw new Exception($this->getError());
+        }
 
         return $data;
     }
 
+    protected function getError()
+    {
+        foreach ($this->cr as $cr) {
+            if ($cr["err"]) {
+                return $cr["err"];
+            }
+        }
+        return "";
+    }
 
     protected function importSmartData(array $data)
     {
         $import = new \ImportDocumentDescription();
 
-        $cr = $import->importData($data);
-        return $cr;
+        $this->cr = $import->importData($data);
+
     }
 
     protected function extractBegin(\DOMElement $config)
@@ -297,12 +310,11 @@ class ImportSmartConfiguration
             return $e->getAttribute("event") === "onPreRefresh";
         });
 
-        // For compatibility on old autocomplete
-        if (!$attr->phpfunc) {
-            list($attr->phpfunc, $attr->phpfile) = $this->extractAttrAutoComplete($attrNode, function (\DOMElement $e) {
-                return true;
-            });
-        }
+        list($attr->autocomplete, $attr->phpfile) = $this->extractAttrAutoComplete($attrNode, function (\DOMElement $e) {
+            return true;
+        });
+
+
         $attr->option = $this->extractAttrOptions($attrNode);
 
         $data = $attr->getData($key);

@@ -24,7 +24,8 @@ class DocAttr extends DbObj
         "elink",
         "phpconstraint",
         "usefor",
-        "options"
+        "options",
+        "properties"
     );
     
     public $id_fields = array(
@@ -57,6 +58,7 @@ class DocAttr extends DbObj
     public $phpconstraint;
     public $usefor;
     public $options;
+    public $properties;
     
     public $sqlcreate = "
 create table docattr ( id  name,
@@ -75,7 +77,8 @@ create table docattr ( id  name,
                      elink text,
                      phpconstraint text,
                      usefor char DEFAULT 'N',
-                     options text
+                     options text,
+                     properties jsonb
                    );
 create sequence seq_id_docattr start 1000;
 create unique index idx_iddocid on docattr(id, docid);";

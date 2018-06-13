@@ -99,18 +99,19 @@ class NormalAttribute extends BasicAttribute
         $order,
         $link,
         $visibility,
-        $needed,
-        $isInTitle,
-        $isInAbstract,
-        &$fieldSet,
-        $phpfile,
-        $phpfunc,
-        $elink,
+        $needed = false,
+        $isInTitle = false,
+        $isInAbstract = false,
+        &$fieldSet = null,
+        $phpfile = "",
+        $phpfunc = "",
+        $elink = "",
         $phpconstraint = "",
         $usefor = "",
         $eformat = "",
         $options = "",
-        $docname = ""
+        $docname = "",
+    $prop=""
     ) {
         $this->id = $id;
         $this->docid = $docid;
@@ -133,6 +134,10 @@ class NormalAttribute extends BasicAttribute
         $this->repeat = $repeat;
         $this->options = $options;
         $this->docname = $docname;
+        if ($prop) {
+            $prop=str_replace(['\\'], ['\\\\'], $prop);
+            $this->properties=json_decode($prop);
+        }
     }
 
     /**
@@ -528,7 +533,7 @@ class NormalAttribute extends BasicAttribute
         $labels = [];
         foreach ($enumItems as $key => $item) {
             if (isset($item["path"])) {
-                $key=$item["path"];
+                $key = $item["path"];
             }
             $labels[$key] = $item["label"];
         }
@@ -560,7 +565,7 @@ class NormalAttribute extends BasicAttribute
             $enumItems = EnumManager::getEnums($this->format);
             $labels = [];
             foreach ($enumItems as $key => $item) {
-                $labels[$key] = (isset($item["longLabel"]))?$item["longLabel"]:$item["label"];
+                $labels[$key] = (isset($item["longLabel"])) ? $item["longLabel"] : $item["label"];
             }
             return $labels;
         }
@@ -578,7 +583,6 @@ class NormalAttribute extends BasicAttribute
     {
         return EnumManager::addEnum($this->format, $key, $label);
     }
-
 
 
     /**

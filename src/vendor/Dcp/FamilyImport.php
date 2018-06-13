@@ -70,9 +70,7 @@ class FamilyImport
      */
     protected static function generateFamilyPhpClass($genDir, $tdoc)
     {
-        global $action;
-
-        $phpAdoc = new \Layout("vendor/Anakeen/Core/Layout/Class.Smart.xml", $action);
+        $phpAdoc = new \Layout();
 
         if ($tdoc["classname"] == "") { // default classname
             if ($tdoc["fromid"] == 0) {
@@ -187,6 +185,7 @@ class FamilyImport
                             $table1[$doctitle]->needed = "N";
                             $table1[$doctitle]->usefor = "A";
                             $table1[$doctitle]->link = "";
+                            $table1[$doctitle]->props = "";
                             $table1[$doctitle]->phpconstraint = "";
                             $table1[$doctitle]->labeltext = $v->labeltext . ' ' . _("(title)");
                             $table1[$doctitle]->ordered = $v->ordered + 1;
@@ -306,7 +305,8 @@ class FamilyImport
                             "usefor" => $v->usefor,
                             "type" => $v->type,
                             "options" => str_replace("\"", "\\\"", $v->options),
-                            "frame" => ($v->frameid == "") ? \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD : strtolower($v->frameid)
+                            "frame" => ($v->frameid == "") ? \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD : strtolower($v->frameid),
+                            "props" =>  str_replace("\"", "\\\"", $v->properties)
                         );
                         break;
 
@@ -426,7 +426,8 @@ class FamilyImport
                             "phpfile" => $v->phpfile,
                             "phpfunc" => self::doubleslash(str_replace(", |", ",  |", $v->phpfunc)),
                             "phpconstraint" => str_replace("\"", "\\\"", $v->phpconstraint),
-                            "usefor" => $v->usefor
+                            "usefor" => $v->usefor,
+                            "props" => str_replace(['\\',"\""], ['\\', "\\\""], $v->properties)
                         );
 
                         if (($atype != "array") && ($v->usefor != "Q")) {
@@ -571,6 +572,7 @@ class FamilyImport
         foreach ($dfiles as $kFile => $dfile) {
             $phpAdoc->template = file_get_contents(DEFAULT_PUBDIR . $kFile);
             $err = self::__phpLintWriteFile($dfile, $phpAdoc->gen());
+
             if ($err != '') {
                 throw new \Dcp\Exception("CORE0023", $dfile, $err);
             }

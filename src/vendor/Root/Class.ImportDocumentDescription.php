@@ -2126,6 +2126,9 @@ class ImportDocumentDescription
                 }
 
                 $oattr->phpfunc = $this->structAttr->phpfunc;
+                if (!empty($data["props"])) {
+                    $oattr->properties = json_encode($data["props"]);
+                }
 
                 /**
                  * Old Enum declaration
