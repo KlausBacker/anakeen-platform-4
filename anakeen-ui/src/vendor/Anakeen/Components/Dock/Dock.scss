@@ -29,7 +29,7 @@ $green-selected: #8ae234;
       transition: width 500ms ease-out;
     }
 
-    .header-component {
+    .header-tab {
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
@@ -41,7 +41,7 @@ $green-selected: #8ae234;
       overflow: hidden;
       text-overflow: ellipsis;
 
-      .header-component-compact {
+      .header-tab-compact {
         display: flex;
         flex-shrink: 0;
         align-items: center;
@@ -49,7 +49,7 @@ $green-selected: #8ae234;
         padding: .5rem;
       }
 
-      .header-component-expanded {
+      .header-tab-expanded {
         padding-left: 0.5rem;
         white-space: nowrap;
         overflow: hidden;
@@ -58,11 +58,11 @@ $green-selected: #8ae234;
       }
     }
 
-    .header-component.selected {
+    .header-tab.selected {
       background-color: $selected-header-footer-color;
     }
 
-    .footer-component {
+    .footer-tab {
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
@@ -74,7 +74,7 @@ $green-selected: #8ae234;
       overflow: hidden;
       text-overflow: ellipsis;
 
-      .footer-component-compact {
+      .footer-tab-compact {
         display: flex;
         flex-shrink: 0;
         align-items: center;
@@ -82,7 +82,7 @@ $green-selected: #8ae234;
         padding: .5rem;
       }
 
-      .footer-component-expanded {
+      .footer-tab-expanded {
         padding-left: 0.5rem;
         white-space: nowrap;
         overflow: hidden;
@@ -91,7 +91,7 @@ $green-selected: #8ae234;
       }
     }
 
-    .footer-component.selected {
+    .footer-tab.selected {
       background-color: $selected-header-footer-color;
     }
 
@@ -179,7 +179,7 @@ $green-selected: #8ae234;
       transition: width 500ms ease-out;
     }
 
-    .footer-components {
+    .footer-tabs {
       margin-top: auto;
       display: flex;
       flex-direction: column;
@@ -217,7 +217,7 @@ $green-selected: #8ae234;
       transition: width 500ms ease-out;
     }
 
-    .footer-components {
+    .footer-tabs {
       margin-top: auto;
       display: flex;
       flex-direction: column;
@@ -258,7 +258,7 @@ $green-selected: #8ae234;
       }
     }
 
-    .footer-components {
+    .footer-tabs {
       margin-left: auto;
       display: flex;
       flex-direction: row;
@@ -300,7 +300,7 @@ $green-selected: #8ae234;
       }
     }
 
-    .footer-components {
+    .footer-tabs {
       margin-left: auto;
       display: flex;
       flex-direction: row;

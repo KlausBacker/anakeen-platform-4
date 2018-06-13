@@ -14,13 +14,13 @@ export default {
             default: true,
         },
 
-        // Define if the tab is a header component of the dock
+        // Define if the tab is a header tab of the dock
         headerTab: {
             type: Boolean,
             default: false,
         },
 
-        // Define if the tab is a footer component of the dock
+        // Define if the tab is a footer tab of the dock
         footerTab: {
             type: Boolean,
             default: false,

@@ -338,7 +338,7 @@ export default {
                 }
             },
 
-            // Add a header component to the dock (displayed before the expansion button)
+            // Add a header tab to the dock (displayed before the expansion button)
             addHeaderTab(tab, position) {
                 let eventName = 'beforeTabAdd';
                 let options = {
@@ -367,7 +367,7 @@ export default {
                 }
             },
 
-            // Add a footer component to the dock (displayed at the bottom or the right of the dock)
+            // Add a footer tab to the dock (displayed at the bottom or the right of the dock)
             addFooterTab(tab, position) {
                 let eventName = 'beforeTabAdd';
                 let options = {
