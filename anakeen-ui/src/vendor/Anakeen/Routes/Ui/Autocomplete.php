@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Ui;
 
 use Anakeen\Core\Internal\SmartElement;
+use Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod;
 use Anakeen\Core\SmartStructure\NormalAttribute;
 use Anakeen\Router\Exception;
 use Anakeen\SmartAutocompleteRequest;
@@ -11,7 +12,6 @@ use Anakeen\SmartElementManager;
 use Dcp\Core\AutocompleteLib;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
-use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * Class Autocomplete
@@ -89,12 +89,26 @@ class Autocomplete
     protected function defaultAutocomplete(SmartElement $doc, NormalAttribute $attributeObject)
     {
 
-        $parse = new \ParseFamilyMethod();
-        $parse->className=\Anakeen\Core\SmartStructure\Autocomplete\SmartElementList::class;
-        $parse->methodName="getSmartElements";
-        $parse->outputs=[$attributeObject->id];
+        switch ($attributeObject->type) {
+            case "docid":
+                return $this->docidAutocomplete($doc, $attributeObject);
+            case "account":
+                return $this->accountAutocomplete($doc, $attributeObject);
+            default:
+                $response = new SmartAutocompleteResponse();
+                $response->setError(sprintf(___("Incompatible type \"%s\" for autocomplete", "autocomplete"), $attributeObject->type));
+                return $response;
+        }
+    }
 
-        $filter = array(); //no filter by default
+    protected function docidAutocomplete(SmartElement $doc, NormalAttribute $attributeObject)
+    {
+
+        $parse = new ParseFamilyMethod();
+        $parse->className = \Anakeen\Core\SmartStructure\Autocomplete\SmartElementList::class;
+        $parse->methodName = "getSmartElements";
+        $parse->outputs = [$attributeObject->id];
+
         $idType = "initid"; //if there's no docrev option (or it's present but not fixed), use initid to have the latest.
         $docrev = $attributeObject->getOption("docrev", "latest");
         if ($docrev === "fixed") {
@@ -105,27 +119,45 @@ class Autocomplete
             //if not, we'll just ignore the option
             $matches = array();
             if (preg_match('/^state\(([a-zA-Z0-9_:-]+)\)/', $docrev, $matches)) {
-                $filter[] = "state='" . pg_escape_string($matches[1]) . "'";
+                $filter = "state='" . pg_escape_string($matches[1]) . "'";
+                $parse->inputs["filter"] = new \Anakeen\Core\SmartStructure\Callables\InputArgument($filter, "string");
             }
         }
-        //make $filter safe to pass in a string for getResPhpFunc.
-        $serializedFilter = serialize($filter);
-        $smartInput=new Inpu
-        $parse->inputs=
+
+        $parse->inputs["smartstructure"] = new \Anakeen\Core\SmartStructure\Callables\InputArgument($attributeObject->format, "string");
+        if ($idType !== "initid") {
+            $parse->inputs["revised"] = new \Anakeen\Core\SmartStructure\Callables\InputArgument(true, "string");
+        }
 
         return $this->callAutocomplete($parse);
     }
 
+    protected function accountAutocomplete(SmartElement $doc, NormalAttribute $attributeObject)
+    {
+        $parse = new ParseFamilyMethod();
+        $parse->className = \Anakeen\Core\SmartStructure\Autocomplete\AccountList::class;
+        $parse->methodName = "getAccounts";
+        $parse->outputs = [$attributeObject->id];
+
+        $parse->inputs["smartstructure"] = new \Anakeen\Core\SmartStructure\Callables\InputArgument($attributeObject->format, "string");
+
+        $options = $attributeObject->getOptions();
+        foreach ($options as $k => $v) {
+            $parse->inputs[$k] = new \Anakeen\Core\SmartStructure\Callables\InputArgument($v, "string");
+        }
+
+        return $this->callAutocomplete($parse);
+    }
 
     protected function standardAutocomplete(SmartElement $doc, NormalAttribute $attributeObject)
     {
-        $parse = new \ParseFamilyMethod();
+        $parse = new ParseFamilyMethod();
         $parse->parse($attributeObject->properties->autocomplete);
 
         return $this->callAutocomplete($parse);
     }
 
-    protected function callAutocomplete(\ParseFamilyMethod $parse)
+    protected function callAutocomplete(ParseFamilyMethod $parse)
     {
         $return = array(
             "error" => "",
@@ -140,7 +172,7 @@ class Autocomplete
 
             $response = new SmartAutocompleteResponse();
             $response->setOutputs($parse->outputs);
-            $args = [];
+            $args = $this->getArgs($parse);
 
             /**
              * @var SmartAutocompleteResponse $result
@@ -179,6 +211,17 @@ class Autocomplete
         }
 
         return $return["data"];
+    }
+
+    protected function getArgs(ParseFamilyMethod $strucFunc)
+    {
+        $args = [];
+        foreach ($strucFunc->inputs as $k => $inpArg) {
+            if ($inpArg->type === "string") {
+                $args[$k] = $inpArg->name;
+            }
+        }
+        return $args;
     }
 
     protected function legacyAutocomplete(SmartElement $doc, NormalAttribute $attributeObject)
