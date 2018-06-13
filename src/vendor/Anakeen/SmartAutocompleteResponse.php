@@ -18,10 +18,12 @@ class SmartAutocompleteResponse
 
     /**
      * @param string $error
+     * @return SmartAutocompleteResponse
      */
-    public function setError(string $error): void
+    public function setError(string $error): SmartAutocompleteResponse
     {
         $this->error = $error;
+        return $this;
     }
     /**
      * @return array
@@ -33,18 +35,22 @@ class SmartAutocompleteResponse
 
     /**
      * @param array $outputs
+     * @return SmartAutocompleteResponse
      */
-    public function setOutputs(array $outputs): void
+    public function setOutputs(array $outputs): SmartAutocompleteResponse
     {
         $this->outputs = $outputs;
+        return $this;
     }
 
     /**
      * @param array $data
+     * @return SmartAutocompleteResponse
      */
-    public function setData(array $data): void
+    public function setData(array $data): SmartAutocompleteResponse
     {
         $this->data = $data;
+        return $this;
     }
 
     public function getData()
@@ -55,7 +61,8 @@ class SmartAutocompleteResponse
     /**
      * Add a entry in autocomplete list
      * @param string $htmlLabel html label (must be encoded if it is a raw value)
-     * @param array        $data
+     * @param array  $data
+     * @return SmartAutocompleteResponse
      */
     public function appendEntry($htmlLabel, array $data)
     {
@@ -70,5 +77,6 @@ class SmartAutocompleteResponse
             "title" => $htmlLabel,
             "values" => $outputData
         ];
+        return $this;
     }
 }

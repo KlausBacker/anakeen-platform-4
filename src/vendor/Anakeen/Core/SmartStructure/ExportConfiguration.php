@@ -626,11 +626,11 @@ class ExportConfiguration
         $smartAttrCallable = $this->cel("attr-callable");
 
         if ($attr->properties->autocomplete) {
-            $parseMethod = new \ParseFamilyMethod();
+            $parseMethod = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
             $parseMethod->parse($attr->properties->autocomplete);
             $smartAttrCallable->setAttribute("function", sprintf("%s::%s", $parseMethod->className, $parseMethod->methodName));
         } else {
-            $parseMethod = new \ParseFamilyFunction();
+            $parseMethod = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyFunction();
             $parseMethod->parse($attr->phpfunc);
             $smartAttrCallable->setAttribute("function", $parseMethod->functionName);
             if ($attr->phpfile) {
@@ -671,7 +671,7 @@ class ExportConfiguration
     {
         $smartAttrCallable = $this->cel("attr-callable");
 
-        $parseMethod = new \ParseFamilyMethod();
+        $parseMethod = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
         $parseMethod->parse($phpfunc);
 
         $smartAttrCallable->setAttribute("function", $parseMethod->className . "::" . $parseMethod->methodName);
@@ -704,7 +704,7 @@ class ExportConfiguration
         $smartAttrHook->setAttribute("attr", $attrid);
         $smartAttrCallable = $this->cel("attr-callable");
 
-        $parseMethod = new \ParseFamilyMethod();
+        $parseMethod = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
         $parseMethod->parse($phpfunc);
 
         $smartAttrCallable->setAttribute("function", $parseMethod->className . "::" . $parseMethod->methodName);
@@ -734,7 +734,7 @@ class ExportConfiguration
         $smartAttrHook->setAttribute("attr", $attr->id);
         $smartAttrCallable = $this->cel("attr-callable");
 
-        $parseMethod = new \ParseFamilyMethod();
+        $parseMethod = new \Anakeen\Core\martStructure\Callables\ParseFamilyMethod();
         $parseMethod->parse($attr->phpconstraint);
 
         $smartAttrCallable->setAttribute("function", $parseMethod->className . "::" . $parseMethod->methodName);

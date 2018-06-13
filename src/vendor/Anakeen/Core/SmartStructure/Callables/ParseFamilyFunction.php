@@ -1,8 +1,6 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
+
+namespace Anakeen\Core\SmartStructure\Callables;
 
 class ParseFamilyFunction
 {
@@ -12,7 +10,7 @@ class ParseFamilyFunction
     public $inputString = '';
     public $outputString = '';
     /**
-     * @var inputArgument[]
+     * @var InputArgument[]
      */
     public $inputs = array();
     public $outputs = array();
@@ -20,17 +18,17 @@ class ParseFamilyFunction
     protected $firstParenthesis;
     protected $lastParenthesis;
     protected $lastSemiColumn;
-    
+
     public function getError()
     {
         return $this->error;
     }
-    
+
     protected function setError($error)
     {
         return $this->error = $error;
     }
-    
+
     protected function initParse($funcCall)
     {
         $this->funcCall = $funcCall;
@@ -42,30 +40,31 @@ class ParseFamilyFunction
         $this->outputString = '';
         $this->inputString = '';
     }
-    
+
     protected function checkParenthesis()
     {
         if (($this->firstParenthesis === false) || ($this->lastParenthesis === false) || ($this->firstParenthesis >= $this->lastParenthesis)) {
-            $this->setError(ErrorCode::getError('ATTR1201', $this->funcCall));
+            $this->setError(\ErrorCode::getError('ATTR1201', $this->funcCall));
             return false;
         }
-        
+
         if ($this->lastSemiColumn > $this->lastParenthesis) {
             $spaceUntil = $this->lastSemiColumn;
         } else {
             $spaceUntil = strlen($this->funcCall);
         }
-        
+
         for ($i = $this->lastParenthesis + 1; $i < $spaceUntil; $i++) {
             $c = $this->funcCall[$i];
             if ($c != ' ') {
-                $this->setError(ErrorCode::getError('ATTR1201', $this->funcCall));
+                $this->setError(\ErrorCode::getError('ATTR1201', $this->funcCall));
                 return false;
             }
         }
-        
+
         return true;
     }
+
     /**
      * @static
      * @param $methCall
@@ -80,30 +79,30 @@ class ParseFamilyFunction
         } else {
             $appName = '';
         }
-        
+
         if ($this->checkParenthesis()) {
             if ((!$noOut) && ($this->lastSemiColumn < $this->lastParenthesis)) {
-                $this->setError(ErrorCode::getError('ATTR1206', $methCall));
+                $this->setError(\ErrorCode::getError('ATTR1206', $methCall));
             } else {
                 if (!$this->isPHPName($funcName)) {
-                    $this->setError(ErrorCode::getError('ATTR1202', $funcName));
+                    $this->setError(\ErrorCode::getError('ATTR1202', $funcName));
                 } elseif (!preg_match('/^[a-z0-9_]*$/i', $appName)) {
-                    $this->setError(ErrorCode::getError('ATTR1202', $funcName));
+                    $this->setError(\ErrorCode::getError('ATTR1202', $funcName));
                 } else {
                     $this->functionName = $funcName;
                     $this->appName = $appName;
                     $inputString = substr($methCall, $this->firstParenthesis + 1, ($this->lastParenthesis - $this->firstParenthesis - 1));
                     $this->inputString = $inputString;
-                    
+
                     $this->parseArguments();
                     $this->parseOutput();
                 }
             }
         }
-        
+
         return $this;
     }
-    
+
     protected function parseArguments()
     {
         $args = array();
@@ -112,7 +111,7 @@ class ParseFamilyFunction
         $bq = '';
         for ($i = 0; $i < strlen($this->inputString); $i++) {
             $c = $this->inputString[$i];
-            
+
             if ($c == '"') {
                 $this->parseDoubleQuote($i);
             } elseif ($c == "'") {
@@ -125,7 +124,7 @@ class ParseFamilyFunction
             }
         }
     }
-    
+
     protected function parseOutput()
     {
         if ($this->lastSemiColumn > $this->lastParenthesis) {
@@ -136,45 +135,48 @@ class ParseFamilyFunction
             foreach ($this->outputs as & $output) {
                 $output = trim($output);
                 if (!$this->isAlphaNumOutAttribute($output)) {
-                    $this->setError(ErrorCode::getError('ATTR1207', $this->funcCall));
+                    $this->setError(\ErrorCode::getError('ATTR1207', $this->funcCall));
                 }
             }
         }
     }
-    
+
     protected function isAlphaNum($s)
     {
         return preg_match('/^[a-z_][a-z0-9_]*$/i', $s);
     }
-    
+
     protected function isAlphaNumOutAttribute($s)
     {
         return preg_match('/^[a-z_\?][a-z0-9_\[\]]*$/i', $s);
     }
+
     protected function isPHPName($s)
     {
         return preg_match('/^[a-z_][a-z0-9_]*$/i', $s);
     }
+
     protected function isPHPClassName($s)
     {
         return preg_match('/^([a-z_][a-z0-9_]*\\\\)*[a-z_][a-z0-9_]*$/i', $s);
     }
-    
+
     private function gotoNextArgument(&$index)
     {
         for ($i = $index; $i < strlen($this->inputString); $i++) {
             $c = $this->inputString[$i];
-            
+
             if ($c == ',') {
                 break;
             } elseif ($c == " ") {
                 //skip
             } else {
-                $this->setError($this->setError(ErrorCode::getError('ATTR1204', strlen($this->functionName) + 1 + $i, $this->funcCall)));
+                $this->setError($this->setError(\ErrorCode::getError('ATTR1204', strlen($this->functionName) + 1 + $i, $this->funcCall)));
             }
         }
         $index = $i;
     }
+
     /**
      * analyze single misc argument
      * @param int $index index to start analysis string
@@ -185,24 +187,25 @@ class ParseFamilyFunction
         $arg = '';
         for ($i = $index; $i < strlen($this->inputString); $i++) {
             $c = $this->inputString[$i];
-            
+
             if ($c == ',') {
                 break;
             } else {
-                $arg.= $c;
+                $arg .= $c;
             }
         }
         $index = $i;
         $arg = trim($arg);
-        
+
         if (preg_match('/^[a-z_][a-z0-9_]*$/i', $arg)) {
             $type = "any";
         } else {
             $type = "string";
         }
-        
-        $this->inputs[] = new inputArgument($arg, $type);
+
+        $this->inputs[] = new InputArgument($arg, $type);
     }
+
     /**
      * analyze single double quoted text argument
      * @param int $index index to start analysis string
@@ -214,35 +217,35 @@ class ParseFamilyFunction
         $doubleQuoteDetected = false;
         $c = $this->inputString[$index];
         if ($c != '"') {
-            $this->setError($this->setError(ErrorCode::getError('ATTR1204', strlen($this->functionName) + 1 + $index, $this->funcCall)));
+            $this->setError($this->setError(\ErrorCode::getError('ATTR1204', strlen($this->functionName) + 1 + $index, $this->funcCall)));
         }
         for ($i = $index + 1; $i < strlen($this->inputString); $i++) {
             $cp = $c;
             $c = $this->inputString[$i];
-            
+
             if ($c == '"') {
                 if ($cp == '\\') {
                     $arg = substr($arg, 0, -1);
-                    $arg.= $c;
+                    $arg .= $c;
                 } else {
                     $doubleQuoteDetected = true;
                     break;
                 }
             } else {
-                $arg.= $c;
+                $arg .= $c;
             }
         }
         $index = $i;
-        
+
         if (!$doubleQuoteDetected) {
-            $this->setError($this->setError(ErrorCode::getError('ATTR1204', strlen($this->functionName) + 1 + $index, $this->funcCall)));
+            $this->setError($this->setError(\ErrorCode::getError('ATTR1204', strlen($this->functionName) + 1 + $index, $this->funcCall)));
         } else {
             $index++;
             $this->gotoNextArgument($index);
         }
-        $this->inputs[] = new inputArgument($arg, "string");
-        ;
+        $this->inputs[] = new InputArgument($arg, "string");;
     }
+
     /**
      * analyze single simple quoted text argument
      * @param int $index index to start analysis string
@@ -251,27 +254,27 @@ class ParseFamilyFunction
     protected function parseSimpleQuote(&$index)
     {
         $arg = '';
-        
+
         $c = $this->inputString[$index];
         if ($c != "'") {
-            $this->setError($this->setError(ErrorCode::getError('ATTR1205', strlen($this->functionName) + 1 + $index, $this->funcCall)));
+            $this->setError($this->setError(\ErrorCode::getError('ATTR1205', strlen($this->functionName) + 1 + $index, $this->funcCall)));
         }
-        
+
         for ($i = $index + 1; $i < strlen($this->inputString); $i++) {
             $cp = $c;
             $c = $this->inputString[$i];
-            
+
             if ($c == "'") {
                 if ($cp == '\\') {
                     $arg = substr($arg, 0, -1);
-                    $arg.= $c;
+                    $arg .= $c;
                 } else {
-                    $arg.= $c;
+                    $arg .= $c;
                 }
             } elseif ($c == ',') {
                 break;
             } else {
-                $arg.= $c;
+                $arg .= $c;
             }
         }
         $r = strlen($arg) - 1;
@@ -284,8 +287,7 @@ class ParseFamilyFunction
             $arg = substr($arg, 0, $r);
         }
         $index = $i;
-        
-        $this->inputs[] = new inputArgument($arg, "string");
+
+        $this->inputs[] = new InputArgument($arg, "string");
     }
 }
-

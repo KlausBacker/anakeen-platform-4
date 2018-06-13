@@ -10,7 +10,7 @@ use Anakeen\SmartAutocompleteResponse;
 class MailAutoComplete
 {
     /**
-     * get mail address from MAILRECIPENT families
+     * get mail address from MAILRECIPIENT Smart Structures
      *
      *
      * @param SmartAutocompleteRequest  $request
@@ -29,8 +29,7 @@ class MailAutoComplete
         $dlf = $sf->search()->getDocumentList();
 
         if ($dlf->count() == 0) {
-            $response->setError(sprintf(___("none smart structure are described to be used as recipient", "smart mail")));
-            return $response;
+            return $response->setError(sprintf(___("none smart structure are described to be used as recipient", "smart mail")));
         }
         foreach ($dlf as $fam) {
             $cfam = SEManager::createTemporaryDocument($fam->id);
@@ -38,16 +37,13 @@ class MailAutoComplete
              * @var \Anakeen\Core\IMailRecipient $cfam
              */
             if (!method_exists($cfam, "getMail")) {
-                $response->setError(sprintf(___("smart structure %s does not implement IMailRecipent - missing getMail method", "smart mail"), $fam->name));
-                return $response;
+                return $response->setError(sprintf(___("smart structure %s does not implement IMailRecipent - missing getMail method", "smart mail"), $fam->name));
             }
             if (!method_exists($cfam, "getMailAttribute")) {
-                $response->setError(sprintf(___("smart structure %s does not implement IMailRecipent - missing getMailAttribute method", "smart mail"), $fam->name));
-                return $response;
+                return $response->setError(sprintf(___("smart structure %s does not implement IMailRecipent - missing getMailAttribute method", "smart mail"), $fam->name));
             }
             if (!method_exists($cfam, "getMailTitle")) {
-                $response->setError(sprintf(___("smart structure %s does not implement IMailRecipient - missing getMailTitle method", "smart mail"), $fam->name));
-                return $response;
+                return $response->setError(sprintf(___("smart structure %s does not implement IMailRecipient - missing getMailTitle method", "smart mail"), $fam->name));
             }
 
             $mailAttr = $cfam->getMailAttribute();

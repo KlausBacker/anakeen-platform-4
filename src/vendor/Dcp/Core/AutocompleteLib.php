@@ -59,7 +59,7 @@ class AutocompleteLib
             '&rparenthesis;',
             '&lparenthesis;'
         ), $phpfunc);
-        $oParse = new \ParseFamilyFunction();
+        $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyFunction();
         $strucFunc = $oParse->parse($phpfunc);
         if ($strucFunc->getError()) {
             return $strucFunc->getError();

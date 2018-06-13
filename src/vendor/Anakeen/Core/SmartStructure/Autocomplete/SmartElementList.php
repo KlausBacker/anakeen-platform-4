@@ -7,26 +7,29 @@ use Anakeen\SmartAutocompleteResponse;
 
 class SmartElementList
 {
-    protected static $withDiacritic=false;
+    protected static $withDiacritic = false;
 
     /**
-     * list of documents of a same family
+     * list of Smart Element of a same Smart Structure
      *
-     * @param string $dbaccess      database specification
-     * @param string $famid         family identifier (if 0 any family). It can be internal name
-     * @param string $name          string filter on the title
-     * @param int    $dirid         identifier of folder for restriction to a folder tree (deprecated)
-     * @param array  $filter        additionnals SQL filters
-     * @param string $idid          the document id to use (default: id)
-     * @param bool   $withDiacritic to search with accent
      *
-     * @return
+     * @param SmartAutocompleteRequest  $request
+     * @param SmartAutocompleteResponse $response
+     * @param                           $args
+     * @return SmartAutocompleteResponse
+     * @throws \Dcp\Db\Exception
+     * @throws \Dcp\SearchDoc\Exception
      */
-    public static function getSmartElements(SmartAutocompleteRequest $request, SmartAutocompleteResponse $response, $args) :SmartAutocompleteResponse
+    public static function getSmartElements(SmartAutocompleteRequest $request, SmartAutocompleteResponse $response, $args): SmartAutocompleteResponse
     {
         $only = false;
-        $famid=$args["smartstructure"];
-        $name=$request->getFilterValue();
+        $famid = $args["smartstructure"];
+        if (!empty($args["revised"])) {
+            $idid = "id";
+        } else {
+            $idid = "initid";
+        }
+        $name = $request->getFilterValue();
         if ($famid[0] == '-') {
             $only = true;
             $famid = substr($famid, 1);
@@ -36,23 +39,24 @@ class SmartElementList
             $famName = $famid;
             $famid = \Anakeen\Core\SEManager::getFamilyIdFromName($famName);
             if ($famid <= 0) {
-                return sprintf(_("family %s not found"), $famName);
+                return $response->setError(sprintf(___("Smart Structure \"%s\" not found", "autocomplete"), $famName));
             }
         }
-        $s = new \SearchDoc("", $famid); //$famid=-(abs($famid));
+        $s = new \SearchDoc("", $famid);
         if ($only) {
             $s->only = true;
         }
 
-
+        if (! empty($args["filter"])) {
+              $s->addFilter($args["filter"]);
+        }
         if ($name != "" && is_string($name)) {
             if (!self::$withDiacritic) {
-                $name = setDiacriticRules(mb_strtolower($name));
+                $name = self::setDiacriticRules(mb_strtolower($name));
             }
             $s->addFilter("title ~* '%s'", $name);
         }
         $s->setSlice(100);
-
 
         $s->returnsOnly(array(
             "title",
@@ -60,18 +64,47 @@ class SmartElementList
         ));
         $tinter = $s->search();
         if ($s->getError()) {
-            $response->setError($s->getError())
-            return $response;
+            return $response->setError($s->getError());
         }
-
-        $tr = array();
 
         foreach ($tinter as $k => $v) {
-            $response->appendEntry(xml_entity_encode($v["title"]),
-                 [$v[$idid],
-                     $v["title"]]);
-
+            $response->appendEntry(
+                xml_entity_encode($v["title"]),
+                [
+                    [
+                        "value" => $v[$idid],
+                        "displayValue" => $v["title"]
+                    ]
+                ]
+            );
         }
         return $response;
+    }
+
+    /**
+     * create preg rule to search without diacritic
+     *
+     * @see lfamily
+     *
+     * @param string $text
+     *
+     * @return string rule for preg
+     */
+    public static function setDiacriticRules($text)
+    {
+        $dias = array(
+            "a|à|á|â|ã|ä|å",
+            "o|ò|ó|ô|õ|ö|ø",
+            "e|è|é|ê|ë",
+            "c|ç",
+            "i|ì|í|î|ï",
+            "u|ù|ú|û|ü",
+            "y|ÿ",
+            "n|ñ"
+        );
+        foreach ($dias as $dia) {
+            $text = preg_replace("/[" . str_replace("|", "", $dia) . "]/u", "[$dia]", $text);
+        }
+        return $text;
     }
 }

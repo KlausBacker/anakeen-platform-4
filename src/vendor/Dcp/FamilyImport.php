@@ -200,7 +200,7 @@ class FamilyImport
                     }
                 }
             }
-            $pM = new \ParseFamilyMethod();
+            $pM = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
             foreach ($pa as $parentAttr) {
                 $previousOrder = ""; //FamilyAbsoluteOrder::autoOrder;
                 if (preg_match("/relativeOrder=([A-Za-z0-9_:-]+)/", $parentAttr["options"], $reg)) {
@@ -393,19 +393,7 @@ class FamilyImport
                                 $v->phpconstraint = sprintf("Anakeen\Core\Utils\Numbers::isFloat(%s)", $v->id);
                             }
                         }
-                        if ($atype == "account") {
-                            if (!$v->phpfile && !$v->phpfunc) {
-                                $v->phpfile = 'fdl.php';
-                                $options = $v->options;
-                                if ($aformat) {
-                                    if ($options) {
-                                        $options .= '|';
-                                    }
-                                    $options .= sprintf("family=%s", $aformat);
-                                }
-                                $v->phpfunc = sprintf('fdlGetAccounts(CT,15,"%s"):%s,CT', str_replace('"', '\\"', $options), $v->id);
-                            }
-                        }
+
                         $tnormal[($v->id)] = array(
                             "attrid" => ($v->id),
                             "label" => str_replace("\"", "\\\"", $v->labeltext),

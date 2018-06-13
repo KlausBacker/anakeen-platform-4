@@ -527,7 +527,7 @@ SQL;
         if ($phpFunc && $phpFunc != '-' && ($type != "action")) {
             if ($phpFile && $phpFile != '-') {
                 // parse function for input help
-                $oParse = new ParseFamilyFunction();
+                $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyFunction();
                 $strucFunc = $oParse->parse($phpFunc, ($type == 'enum'));
                 if ($strucFunc->getError()) {
                     $this->addError(ErrorCode::getError('ATTR1200', $this->attrid, $strucFunc->getError()));
@@ -570,7 +570,7 @@ SQL;
         if ($this->isModAttr && (!$type)) {
             return;
         } // cannot really test if has not type
-        $oParse = new ParseFamilyMethod();
+        $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
         $strucFunc = $oParse->parse($phpFunc, ($type == 'enum'));
         if ($strucFunc->getError()) {
             $this->addError(ErrorCode::getError('ATTR1250', $this->attrid, $strucFunc->getError()));
@@ -590,7 +590,7 @@ SQL;
             if ($this->isModAttr && $constraint == '-') {
                 return;
             }
-            $oParse = new ParseFamilyMethod();
+            $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
             $strucFunc = $oParse->parse($constraint, true);
             if ($strucFunc->getError()) {
                 $this->addError(ErrorCode::getError('ATTR1400', $this->attrid, $strucFunc->getError()));

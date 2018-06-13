@@ -9,7 +9,7 @@ class SmartAutocompleteRequest
      */
     protected $httpRequest;
     protected $contentParameters;
-    protected $index=-1;
+    protected $index = -1;
 
 
     /**
@@ -26,7 +26,9 @@ class SmartAutocompleteRequest
     public function setHttpRequest(\Slim\Http\request $httpRequest): void
     {
         $this->contentParameters = $httpRequest->getParsedBody();
-        $this->index = $this->contentParameters["index"];
+        if (isset($this->contentParameters["index"])) {
+            $this->index = intval($this->contentParameters["index"]);
+        }
         $this->httpRequest = $httpRequest;
     }
 
@@ -36,5 +38,10 @@ class SmartAutocompleteRequest
             return $this->contentParameters["filter"]["filters"][0]["value"];
         }
         return "";
+    }
+
+    public function getIndex() : int
+    {
+        return $this->index;
     }
 }
