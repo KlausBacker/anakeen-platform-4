@@ -92,7 +92,6 @@ function analyzeAction(eventName, selector, action) {
         const realSelector = getSpecialType(selector);
         const elements = this.$(realSelector);
         if (elements && elements.length) {
-            console.log(elements, eventName);
             this._ank_protected.bindedEvents.push(eventName);
             this.$on(eventName, (event) => {
                 const eventArgs = event.detail || [];
