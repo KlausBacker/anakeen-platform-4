@@ -2,6 +2,7 @@
 
 namespace Dcp\Ui;
 
+use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
 
@@ -208,7 +209,7 @@ class RenderConfigManager
         }
         if (is_a($document, "Dcp\\Ui\\IRenderConfigAccess")) {
             /**
-             * @var IRenderConfigAccess|\Doc $document
+             * @var IRenderConfigAccess|SmartElement $document
              */
             $renderConfig = $document->getRenderConfig($mode, $document);
             if ($renderConfig) {
