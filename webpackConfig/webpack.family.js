@@ -14,6 +14,7 @@ const PATHS = {
     familyIHMHelppage: path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Helppage/Render/helppage.js'),
     familyIHMMask: path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Mask/Render/MaskView.js'),
     familyIHMIuserGroup: path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Iuser/Render/changeGroupView.js'),
+    familyIHMIuserMenu : path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Iuser/Render/addMenu.js'),
     build: path.resolve(__dirname, '../anakeen-ui/src/public/uiAssets/Families/'),
 };
 
@@ -52,12 +53,14 @@ const productionDocumentConfig = merge([
             'dsearch/prod/dsearch': PATHS.familyIHMDsearch,
             'helppage/prod/helppage': PATHS.familyIHMHelppage,
             'mask/prod/MaskView': PATHS.familyIHMMask,
-            'iuser/prod/changeGroup': PATHS.familyIHMIuserGroup
+            'iuser/prod/changeGroup': PATHS.familyIHMIuserGroup,
+            'iuser/prod/addMenu': PATHS.familyIHMIuserMenu,
         },
     },
     parts.clean(path.resolve(PATHS.build, 'dsearch/prod/')),
     parts.clean(path.resolve(PATHS.build, 'helppage/prod/')),
     parts.clean(path.resolve(PATHS.build, 'mask/prod/')),
+    parts.clean(path.resolve(PATHS.build, 'iuser/prod/')),
     parts.minifyJavaScript(),
     parts.attachRevision(),
     parts.generateHashModuleName(),
@@ -70,7 +73,8 @@ const debugDocumentConfig = merge([
             'dsearch/debug/dsearch': PATHS.familyIHMDsearch,
             'helppage/debug/helppage': PATHS.familyIHMHelppage,
             'mask/debug/MaskView': PATHS.familyIHMMask,
-            'iuser/debug/changeGroup': PATHS.familyIHMIuserGroup
+            'iuser/debug/changeGroup': PATHS.familyIHMIuserGroup,
+            'iuser/debug/addMenu': PATHS.familyIHMIuserMenu,
         },
     },
     parts.generateNamedChunk(),
@@ -86,7 +90,8 @@ const devConfig = merge([
             'dsearch/debug/dsearch': PATHS.familyIHMDsearch,
             'helppage/debug/helppage': PATHS.familyIHMHelppage,
             'mask/debug/MaskView': PATHS.familyIHMMask,
-            'iuser/debug/changeGroup': PATHS.familyIHMIuserGroup
+            'iuser/debug/changeGroup': PATHS.familyIHMIuserGroup,
+            'iuser/debug/addMenu': PATHS.familyIHMIuserMenu,
         },
     },
     parts.devServer(

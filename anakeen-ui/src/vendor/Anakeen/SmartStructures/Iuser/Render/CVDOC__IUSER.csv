@@ -19,9 +19,7 @@ MSK_IUSERSUBSTITUTE";"2
 0
 0";"no
 yes
-yes";"
-Compte
-Compte";EUSER;Admin edit (EUSER);;IUSER;Utilisateur
+yes";;EUSER;Admin edit (EUSER);;IUSER;Utilisateur
 ;;;;;;;;;;;;;;;;;;;;
 //;;;;;;;;;;;;;;;;;;;;
 BEGIN;;;;;IUSER;;;;;;;;;;;;;;;

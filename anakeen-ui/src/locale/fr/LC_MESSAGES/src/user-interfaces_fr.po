@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-01 08:29+0200\n"
+"POT-Creation-Date: 2018-06-13 15:53+0200\n"
 "PO-Revision-Date: 2018-06-01 08:36+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
@@ -29,6 +29,13 @@ msgstr "Accès non autorisé pour créer un document \"%s\""
 msgctxt "ddui"
 msgid "Account access deny"
 msgstr "Accès interdit au compte"
+
+msgid "Account management"
+msgstr "Gestion du compte"
+
+msgctxt "iuser_ui"
+msgid "Activate account"
+msgstr "Activation du compte"
 
 msgctxt "ddui"
 msgid "Add a note to the history"
@@ -116,7 +123,7 @@ msgctxt "docgrid"
 msgid "Collection \"%s\" not found"
 msgstr "Collection \"%s\" non trouvée"
 
-#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: searchHTML5_edit.mustache
 #. _COMMENT: mustache key
 msgctxt "dsearch"
 msgid "Conditions"
@@ -224,6 +231,10 @@ msgstr "Rechercher&nbsp;:"
 
 msgid "DOCGRIDHTML5: sZeroRecords"
 msgstr "Aucun élément à afficher"
+
+msgctxt "iuser_ui"
+msgid "Deactivate account"
+msgstr "Désactivation du compte"
 
 msgctxt "ddui"
 msgid "Default View"
@@ -383,7 +394,7 @@ msgctxt "ddui helppage"
 msgid "Lang"
 msgstr "Langue"
 
-#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: searchHTML5_edit.mustache
 #. _COMMENT: mustache key
 msgctxt "dsearch"
 msgid "Loading criteria ..."
@@ -472,6 +483,10 @@ msgctxt "ddui-file"
 msgid "Recording"
 msgstr "Enregistrement"
 
+msgctxt "iuser_ui"
+msgid "Reset login failure"
+msgstr "Réinitialiser les erreurs de login"
+
 msgctxt "UiMenu"
 msgid "Restore"
 msgstr "Restaurer"
@@ -480,7 +495,7 @@ msgctxt "UiMenu"
 msgid "Restore document from the trash"
 msgstr "Retirer le document de la poubelle"
 
-#. _COMMENT: reportHTML5_edit.mustache
+#. _COMMENT: searchHTML5_edit.mustache
 #. _COMMENT: mustache key
 msgctxt "dsearch"
 msgid "Results"
@@ -604,6 +619,14 @@ msgctxt "ddui"
 msgid "Workflow Transition Comment"
 msgstr "Commentaire de transition du cycle de vie"
 
+msgctxt "identityComponent"
+msgid "You entered an invalid current password"
+msgstr "Vous avez entré un mot de passe invalide"
+
+msgctxt "identityComponent"
+msgid "You entered an invalid password"
+msgstr "Vous avez entré un mot de passe invalide"
+
 msgid "activity"
 msgstr "Activité"
 
@@ -673,76 +696,3 @@ msgstr ""
 msgctxt "ddui-enum"
 msgid "{{value}} **"
 msgstr "{{value}} (autre choix)"
-
-#~ msgid "Class \"%s\" not exists"
-#~ msgstr "La classe \"%s\" n'existe pas"
-
-#~ msgid "Class \"%s\" not implement %s"
-#~ msgstr "Classe \"%s\" n'implémente pas %s"
-
-#~ msgid "Class \"%s\" problem : %s"
-#~ msgstr "Classe \"%s\", problème détecté : %s"
-
-#~ msgctxt "ddui"
-#~ msgid "Default Edit"
-#~ msgstr "Vue de modification par défaut"
-
-#~ msgctxt "ddui"
-#~ msgid "Ignored CORE view"
-#~ msgstr "Vue non prise en compte dans les interfaces traditionnelles"
-
-#~ msgctxt "ddui"
-#~ msgid "Ignored HTML5 view"
-#~ msgstr "Vue non prise en compte dans les interfaces HTML5"
-
-#~ msgctxt "authent"
-#~ msgid "Password has been reset for \"%s\""
-#~ msgstr "Le mot de passe a été réinitialisé pour \"%s\""
-
-#~ msgid "ddui:Admin"
-#~ msgstr "Administration"
-
-#~ msgid "ddui:COLLECT_ERROR"
-#~ msgstr "Récupération des erreurs clients"
-
-#~ msgid "ddui:Click to reload the document"
-#~ msgstr "Cliquez pour recharger le document"
-
-#~ msgid "ddui:Delay notifications display (in ms)"
-#~ msgstr "Delai d'affichage des notifications (en ms)"
-
-#~ msgid "ddui:Document Render"
-#~ msgstr "Affichage d'un document"
-
-#~ msgid "ddui:Document render"
-#~ msgstr "DDUI : Dynacase document UI"
-
-#~ msgid "ddui:Document render long"
-#~ msgstr "Rendu HTML5 en One Page Application"
-
-#~ msgid "ddui:Get some template"
-#~ msgstr "Récupération unitaire de template"
-
-#~ msgid "ddui:INIT_RENDERPARAMETERS"
-#~ msgstr "Paramètres des rendus"
-
-#~ msgid "ddui:Render a document"
-#~ msgstr "Visualiser un document"
-
-#~ msgid "ddui:Unable to load try again"
-#~ msgstr "Impossible de charger le document. Veuillez essayer à nouveau"
-
-#~ msgid "ddui:View documents"
-#~ msgstr "Action vue de document"
-
-#~ msgid "ddui:activate logging"
-#~ msgstr "Activer les logs d'erreur client"
-
-#~ msgid "ddui:debug mode"
-#~ msgstr "Mode debug"
-
-#~ msgid "ddui:logging class"
-#~ msgstr "Classes de log"
-
-#~ msgid "ddui:render parameters"
-#~ msgstr "Paramétrages des rendus"
