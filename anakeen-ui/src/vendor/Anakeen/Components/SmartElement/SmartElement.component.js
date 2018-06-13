@@ -177,7 +177,7 @@ export default {
                 // input is an internal vuejs bind
                 if (eventNames.indexOf(key) === -1 && key !== 'documentLoaded' && key !== 'input') {
                     /* eslint-disable no-console */
-                    console.error(`Cannot listen to "${key}". It is not a defined listener for ank-document component`);
+                    console.error(`Cannot listen to "${key}". It is not a defined listener for ank-smart-element component`);
                 }
             });
 
@@ -201,11 +201,11 @@ export default {
             return this.documentWidget.addEventListener(eventType, options, callback);
         },
 
-        fetchDocument(value, options) {
+        fetchSmartElement(value, options) {
             return this.documentWidget.fetchDocument(value, options);
         },
 
-        saveDocument(options) {
+        saveSmartElement(options) {
             return this.documentWidget.saveDocument(options);
         },
 
@@ -233,19 +233,19 @@ export default {
             return this.documentWidget.setValue(attributeId, newValue);
         },
 
-        reinitDocument(values, options) {
+        reinitSmartElement(values, options) {
             return this.documentWidget.reinitDocument(values, options);
         },
 
-        changeStateDocument(parameters, reinitOptions, options) {
+        changeStateSmartElement(parameters, reinitOptions, options) {
             return this.documentWidget.changeStateDocument(parameters, reinitOptions, options);
         },
 
-        deleteDocument(options) {
+        deleteSmartElement(options) {
             return this.documentWidget.deleteDocument(options);
         },
 
-        restoreDocument(options) {
+        restoreSmartElement(options) {
             return this.documentWidget.restoreDocument(options);
         },
 
@@ -345,11 +345,11 @@ export default {
             return this.documentWidget.showAttribute(attributeId);
         },
 
-        maskDocument(message, px) {
+        maskSmartElement(message, px) {
             return this.documentWidget.maskDocument(message, px);
         },
 
-        unmaskDocument(force) {
+        unmaskSmartElement(force) {
             return this.documentWidget.unmaskDocument(force);
         },
 
