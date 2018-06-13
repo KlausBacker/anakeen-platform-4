@@ -111,13 +111,13 @@ export default {
 
     updated() {
         if (this.isLoaded()) {
-            this.fetchDocument(this.getInitialData)
+            this.fetchSmartElement(this.getInitialData)
                 .catch((error) => {
                 console.error(error);
             });
         } else {
             this.$once('documentLoaded', () => {
-                this.fetchDocument(this.getInitialData)
+                this.fetchSmartElement(this.getInitialData)
                     .catch((error) => {
                         console.error(error);
                     });
@@ -372,7 +372,7 @@ export default {
                 if (this.initid !== 0) {
                     this.listenAttributes();
                     $iframe.style.visibility = '';
-                    this.fetchDocument(this.getInitialData);
+                    this.fetchSmartElement(this.getInitialData);
                 } else {
                     this.documentWidget.addEventListener('ready', { once: true },
                         () => {
