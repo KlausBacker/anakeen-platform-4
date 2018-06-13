@@ -2,15 +2,20 @@
 
 namespace Anakeen\Routes\Ui;
 
+use Anakeen\Core\Internal\SmartElement;
+use Anakeen\Core\SmartStructure\NormalAttribute;
 use Anakeen\Router\Exception;
+use Anakeen\SmartAutocompleteRequest;
+use Anakeen\SmartAutocompleteResponse;
 use Anakeen\SmartElementManager;
 use Dcp\Core\AutocompleteLib;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * Class Autocomplete
- * @note Used by route : POST /api/v2/documents/{docid}/autocomplete/{attrid}
+ * @note    Used by route : POST /api/v2/documents/{docid}/autocomplete/{attrid}
  * @package Anakeen\Routes\Ui
  */
 class Autocomplete
@@ -21,20 +26,25 @@ class Autocomplete
     /**
      * @var \Anakeen\Routes\Core\Lib\ApiMessage[]
      */
-    protected $messages=[];
+    protected $messages = [];
+    /**
+     * @var \Slim\Http\request
+     */
+    protected $httpRequest;
 
     /**
      * Use Create but it is a GET
      * But data are requested in a $_POST because they are numerous
-     * @param \Slim\Http\request $request
+     * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
-     * @param $args
+     * @param                     $args
      * @return mixed
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->documentId = $args["docid"];
         $this->attributeId = $args["attrid"];
+        $this->httpRequest = $request;
 
 
         $this->contentParameters = $request->getParsedBody();
@@ -46,37 +56,141 @@ class Autocomplete
 
     protected function autocomplete()
     {
+        $documentId = $this->documentId;
+        $attrId = $this->attributeId;
+
+
+        if ($documentId !== "0") {
+            $doc = SmartElementManager::getDocument($documentId);
+        } else {
+            $fromid = $this->contentParameters["fromid"];
+            $doc = SEManager::getFamily($fromid);
+        }
+
+        if (!$doc) {
+            throw new Exception(sprintf(___("Document \"%s\" not found ", "ddui"), $documentId));
+        }
+
+        $attributeObject = $doc->getAttribute($attrId);
+        if (!$attributeObject) {
+            throw new Exception(sprintf(___("Attribute \"%s\" not found ", "ddui"), $attrId));
+        }
+
+
+        if ($attributeObject->properties->autocomplete) {
+            return $this->standardAutocomplete($doc, $attributeObject);
+        } elseif (!$attributeObject->phpfile) {
+            return $this->defaultAutocomplete($doc, $attributeObject);
+        } else {
+            return $this->legacyAutocomplete($doc, $attributeObject);
+        }
+    }
+
+    protected function defaultAutocomplete(SmartElement $doc, NormalAttribute $attributeObject)
+    {
+
+        $parse = new \ParseFamilyMethod();
+        $parse->className=\Anakeen\Core\SmartStructure\Autocomplete\SmartElementList::class;
+        $parse->methodName="getSmartElements";
+        $parse->outputs=[$attributeObject->id];
+
+        $filter = array(); //no filter by default
+        $idType = "initid"; //if there's no docrev option (or it's present but not fixed), use initid to have the latest.
+        $docrev = $attributeObject->getOption("docrev", "latest");
+        if ($docrev === "fixed") {
+            $idType = "id";
+        } elseif ($docrev !== "latest") {
+            $idType = "id";
+            //if $docrev is neither fixed nor latest it should be state=...
+            //if not, we'll just ignore the option
+            $matches = array();
+            if (preg_match('/^state\(([a-zA-Z0-9_:-]+)\)/', $docrev, $matches)) {
+                $filter[] = "state='" . pg_escape_string($matches[1]) . "'";
+            }
+        }
+        //make $filter safe to pass in a string for getResPhpFunc.
+        $serializedFilter = serialize($filter);
+        $smartInput=new Inpu
+        $parse->inputs=
+
+        return $this->callAutocomplete($parse);
+    }
+
+
+    protected function standardAutocomplete(SmartElement $doc, NormalAttribute $attributeObject)
+    {
+        $parse = new \ParseFamilyMethod();
+        $parse->parse($attributeObject->properties->autocomplete);
+
+        return $this->callAutocomplete($parse);
+    }
+
+    protected function callAutocomplete(\ParseFamilyMethod $parse)
+    {
         $return = array(
-            "success" => true,
+            "error" => "",
+            "data" => array()
+        );
+
+        try {
+            $callable = sprintf("%s::%s", $parse->className, $parse->methodName);
+
+            $request = new SmartAutocompleteRequest();
+            $request->setHttpRequest($this->httpRequest);
+
+            $response = new SmartAutocompleteResponse();
+            $response->setOutputs($parse->outputs);
+            $args = [];
+
+            /**
+             * @var SmartAutocompleteResponse $result
+             */
+            $response = call_user_func($callable, $request, $response, $args);
+            if ($response === null) {
+                throw new Exception("Autocomplete error. Cannot call method :" . $callable);
+            }
+
+            if (!is_a($response, SmartAutocompleteResponse::class)) {
+                throw new Exception("Autocomplete error. Must return SmartAutocompleteResponse object :" . $callable);
+            }
+
+            $return["error"] = $response->getError();
+            $return["data"] = $response->getData();
+            if ($return["error"]) {
+                $message = new \Anakeen\Routes\Core\Lib\ApiMessage();
+                $message->contentHtml = $return["error"];
+                $this->messages[] = $message;
+            } elseif (count($return["data"]) === 0) {
+                $message = new \Anakeen\Routes\Core\Lib\ApiMessage();
+                $message->type = \Anakeen\Routes\Core\Lib\ApiMessage::MESSAGE;
+
+                if (!empty($this->contentParameters["filter"]["filters"][0]["value"])) {
+                    $message->contentHtml = sprintf(___("No matches \"<i>%s</i>\"", "ddui"), htmlspecialchars($this->contentParameters["filter"]["filters"][0]["value"]));
+                } else {
+                    $message->contentText = ___("No result found", "ddui");
+                }
+                $this->messages[] = $message;
+            }
+        } catch (Exception $e) {
+            $message = new \Anakeen\Routes\Core\Lib\ApiMessage();
+            $message->type = \Anakeen\Routes\Core\Lib\ApiMessage::ERROR;
+            $message->contentText = $e->getMessage();
+            $this->messages[] = $message;
+        }
+
+        return $return["data"];
+    }
+
+    protected function legacyAutocomplete(SmartElement $doc, NormalAttribute $attributeObject)
+    {
+        $return = array(
             "error" => array(),
             "data" => array()
         );
 
         try {
-            $documentId = $this->documentId;
-            $attrId = $this->attributeId;
-
+            $err = "";
             $index = $this->contentParameters["index"];
-
-            $err = '';
-            if ($documentId !== "0") {
-                $doc = SmartElementManager::getDocument($documentId);
-            } else {
-                $fromid = $this->contentParameters["fromid"];
-                $doc = SEManager::getFamily($fromid);
-            }
-
-            if (!$doc) {
-                throw new Exception(sprintf(___("Document \"%s\" not found ", "ddui"), $documentId));
-            }
-
-            $attributeObject = $doc->getAttribute($attrId);
-            if (!$attributeObject) {
-                throw new Exception(sprintf(___("Attribute \"%s\" not found ", "ddui"), $attrId));
-            }
-            /**
-             * @var \Anakeen\Core\SmartStructure\NormalAttribute $attributeObject
-             */
             $attributeName = $attributeObject->id;
             $famid = $attributeObject->format;
 
@@ -119,7 +233,7 @@ class Autocomplete
                 $err = $result;
                 $message = new \Anakeen\Routes\Core\Lib\ApiMessage();
                 $message->contentHtml = $result;
-                $this->messages[]=$message;
+                $this->messages[] = $message;
             }
             if (!$err) {
                 foreach ($result as $currentResult) {
@@ -157,13 +271,13 @@ class Autocomplete
                 } else {
                     $message->contentText = ___("No result found", "ddui");
                 }
-                $this->messages[]=$message;
+                $this->messages[] = $message;
             }
         } catch (Exception $e) {
             $message = new \Anakeen\Routes\Core\Lib\ApiMessage();
             $message->type = \Anakeen\Routes\Core\Lib\ApiMessage::ERROR;
             $message->contentText = $e->getMessage();
-            $this->messages[]=$message;
+            $this->messages[] = $message;
         }
 
         return $return["data"];
@@ -171,10 +285,10 @@ class Autocomplete
 
     /**
      * Compatibility function to set in global ZONE_ARGS all values sended in request
-     * @param array $filters
-     * @param array $attributes
+     * @param array  $filters
+     * @param array  $attributes
      * @param string $currentAid
-     * @param int $index
+     * @param int    $index
      */
     protected function compatOriginalFormPost($filters, $attributes, $currentAid, $index)
     {

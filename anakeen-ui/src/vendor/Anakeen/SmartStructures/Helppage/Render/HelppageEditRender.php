@@ -6,7 +6,7 @@
 
 namespace Anakeen\SmartStructures\Helppage\Render;
 
-use SmartStructure\Attributes\HELPPAGE as myAttributes;
+use SmartStructure\Attributes\Helppage as myAttributes;
 class HelppageEditRender extends \Dcp\Ui\DefaultEdit
 {
     /**
