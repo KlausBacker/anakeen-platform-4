@@ -1012,7 +1012,7 @@ class DSearchHooks extends \SmartStructure\Search
 
     private function getMethodName($methodStr)
     {
-        $parseMethod = new \ParseFamilyMethod();
+        $parseMethod = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
         $parseMethod->parse($methodStr);
         $err = $parseMethod->getError();
         if ($err) {

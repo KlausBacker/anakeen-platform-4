@@ -134,7 +134,7 @@ class CheckEnd extends CheckData
      */
     private function checkMethod(\Anakeen\Core\SmartStructure\NormalAttribute & $oa)
     {
-        $oParse = new ParseFamilyMethod();
+        $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
         $strucFunc = $oParse->parse($oa->phpfunc);
         $error = $oParse->getError();
         if ($error) {
@@ -182,7 +182,7 @@ class CheckEnd extends CheckData
             return;
         }
         //og($oa->id. '=>'.$oa->link);
-        $oParse = new ParseFamilyMethod();
+        $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
         $strucLink = $oParse->parse($link);
         $error = $oParse->getError();
         if ($error) {
@@ -216,7 +216,7 @@ class CheckEnd extends CheckData
             if (!$oa) {
                 $this->addError(ErrorCode::getError('DFLT0005', $attrid, $this->doc->name));
             } else {
-                $oParse = new ParseFamilyMethod();
+                $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
                 $strucFunc = $oParse->parse($def);
                 $error = $oParse->getError();
                 if (!$error) {
@@ -264,7 +264,7 @@ class CheckEnd extends CheckData
                     // TODO : cannot test here because DEFAULT set parameters systematicaly
                     // $this->addError(ErrorCode::getError('INIT0006', $attrid, $this->doc->name));
                 } else {
-                    $oParse = new ParseFamilyMethod();
+                    $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
                     $strucFunc = $oParse->parse($def);
                     $error = $oParse->getError();
                     if (!$error) {
@@ -335,7 +335,7 @@ class CheckEnd extends CheckData
      */
     private function checkConstraint(\Anakeen\Core\SmartStructure\NormalAttribute & $oa)
     {
-        $oParse = new ParseFamilyMethod();
+        $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
         $strucFunc = $oParse->parse($oa->phpconstraint, true);
         $error = $oParse->getError();
         if ($error) {

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+  <smart:structure-configuration name="TST_DOCENUM" label="Test DocRel">
+    <smart:usefor>N</smart:usefor>
+    <smart:attributes>
+      <smart:attr-fieldset name="tst_fr_info" type="frame" label="Cadre Html" visibility="W">
+        <smart:attr-text name="tst_title" label="Titre" visibility="W" needed="true" is-title="true"/>
+        <smart:attr-enum name="tst_enum1" label="Enum" visibility="W" relation="TST_DOCENUM-0123"/>
+        <smart:attr-enum name="tst_enuma" label="Enum" visibility="W" relation="TST_DOCENUM-ABCD"/>
+      </smart:attr-fieldset>
+    </smart:attributes>
+    <smart:parameters/>
+    <smart:hooks/>
+    <smart:autocompletion/>
+    <smart:defaults/>
+    <smart:accesses/>
+  </smart:structure-configuration>
+  <smart:enumerates>
+    <smart:enum-configuration name="TST_DOCENUM-0123">
+      <smart:enum name=" " label="nothing"/>
+      <smart:enum name="0" label="zero"/>
+      <smart:enum name="1" label="un"/>
+      <smart:enum name="2" label="deux"/>
+    </smart:enum-configuration>
+    <smart:enum-configuration name="TST_DOCENUM-ABCD">
+      <smart:enum name="a" label="A"/>
+      <smart:enum name="b" label="B">
+        <smart:enum name="b1" label="B1"/>
+        <smart:enum name="b2" label="B2"/>
+      </smart:enum>
+      <smart:enum name="c" label="C"/>
+      <smart:enum name="d" label="D"/>
+    </smart:enum-configuration>
+  </smart:enumerates>
+</smart:config>

@@ -189,7 +189,7 @@ class ImportDocument
         $if->setVerifyAttributeAccess($this->verifyAttributeAccess);
         $if->reset($this->reset);
         $if->setCsvOptions($this->csvSeparator, $this->csvEnclosure, $this->csvLinebreak);
-        return $if->import();
+        return $if->importCsvFile();
     }
     /**
      * return all error message concatenated

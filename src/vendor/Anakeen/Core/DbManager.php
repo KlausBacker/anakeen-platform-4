@@ -272,6 +272,9 @@ class DbManager
             }
         }
 
+        if (!$sql_cond) {
+            $sql_cond="false";
+        }
         return $sql_cond;
     }
 }

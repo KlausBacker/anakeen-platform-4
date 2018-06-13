@@ -82,18 +82,20 @@ class ImportDocumentDescription
      *
      * @throws Dcp\Exception
      */
-    public function __construct($importFile)
+    public function __construct($importFile = "")
     {
-        if (seemsODS($importFile)) {
-            $this->ods2CsvFile = ods2csv($importFile);
-            $this->fdoc = fopen($this->ods2CsvFile, "r");
-        } else {
-            $this->fdoc = fopen($importFile, "r");
+        if ($importFile) {
+            if (seemsODS($importFile)) {
+                $this->ods2CsvFile = ods2csv($importFile);
+                $this->fdoc = fopen($this->ods2CsvFile, "r");
+            } else {
+                $this->fdoc = fopen($importFile, "r");
+            }
+            if (!$this->fdoc) {
+                throw new Dcp\Exception(sprintf("no import file found : %s", $importFile));
+            }
+            $this->importFileName = $importFile;
         }
-        if (!$this->fdoc) {
-            throw new Dcp\Exception(sprintf("no import file found : %s", $importFile));
-        }
-        $this->importFileName = $importFile;
         $this->dbaccess = \Anakeen\Core\DbManager::getDbAccess();
     }
 
@@ -211,7 +213,8 @@ class ImportDocumentDescription
         }
     }
 
-    public function import()
+
+    public function importCsvFile()
     {
         \Anakeen\Core\Utils\System::setMaxExecutionTimeTo(300);
 
@@ -226,6 +229,8 @@ class ImportDocumentDescription
         if (!$this->csvSeparator && !$csvLinebreak) {
             $csvLinebreak = '\n';
         }
+        $dataLines = [];
+
         while (!feof($this->fdoc)) {
             if (!$this->csvEnclosure) {
                 $buffer = rtrim(fgets($this->fdoc, 16384));
@@ -255,6 +260,33 @@ class ImportDocumentDescription
             if (!\Anakeen\Core\Utils\Strings::isUTF8($data)) {
                 $data = array_map("utf8_encode", $data);
             }
+            $dataLines[] = $data;
+        }
+
+        fclose($this->fdoc);
+
+        $this->importData($dataLines);
+        if ($this->ods2CsvFile) {
+            unlink($this->ods2CsvFile);
+        } // temporary csvfile
+        return $this->tcr;
+    }
+
+    public function importData($datas)
+    {
+        \Anakeen\Core\Utils\System::setMaxExecutionTimeTo(300);
+
+        $this->nbDoc = 0; // number of imported document
+        $this->structAttr = null;
+        $this->colOrders = array();
+        $this->ods2CsvFile = "";
+
+        $this->nLine = 0;
+        $this->beginLine = 0;
+        foreach ($datas as $data) {
+            $this->nLine++;
+
+
             // return structure
             if (count($data) < 1) {
                 continue;
@@ -418,9 +450,6 @@ class ImportDocumentDescription
                     $this->doInitial($data);
                     break;
 
-                case "IATTR":
-                    $this->doIattr($data);
-                    break;
 
                 case "PARAM":
                 case "OPTION":
@@ -457,6 +486,9 @@ class ImportDocumentDescription
                 case "PROP":
                     $this->doProp($data);
                     break;
+                case "ENUM":
+                    $this->doEnum($data);
+                    break;
 
                 default:
                     // uninterpreted line
@@ -464,11 +496,6 @@ class ImportDocumentDescription
             }
         }
 
-        fclose($this->fdoc);
-
-        if ($this->ods2CsvFile) {
-            unlink($this->ods2CsvFile);
-        } // temporary csvfile
         return $this->tcr;
     }
 
@@ -714,7 +741,7 @@ class ImportDocumentDescription
                 $this->doc->changeIcon($this->familyIcon);
             }
             if (!$this->tcr[$this->nLine]["err"]) {
-                $this->tcr[$this->nLine]["msg"] .=  $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::POSTIMPORT);
+                $this->tcr[$this->nLine]["msg"] .= $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::POSTIMPORT);
                 $check->checkMaxAttributes($this->doc);
                 $this->tcr[$this->nLine]["err"] = $check->getErrors();
                 if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
@@ -835,12 +862,8 @@ class ImportDocumentDescription
 
                 case 'enums':
                     $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("Reset enums definition"));
-                    $sql = sprintf(
-                        "update docattr set phpfunc=null from docenum where docattr.docid=docenum.famid and docattr.id = docenum.attrid and docattr.type ~ 'enum' and docattr.docid=%d",
-                        $this->doc->id
-                    );
-                    \Anakeen\Core\DbManager::query($sql);
-                    $sql = sprintf("delete from docenum where famid=%d", $this->doc->id);
+                    $enumName=$data[2];
+                    $sql = sprintf("delete from docenum where name='%s'", $enumName);
                     \Anakeen\Core\DbManager::query($sql);
 
                     break;
@@ -892,12 +915,18 @@ class ImportDocumentDescription
         if ($famName !== false && isset($this->badOrderErrors[$famName])) {
             /* Do not import the document if the ORDER line of its family was erroneous */
             if ($this->analyze) {
-                $this->tcr[$this->nLine]["msg"] = sprintf(_("Cannot import document because the ORDER line for family '%s' is incorrect: %s"), $famName,
-                    $this->badOrderErrors[$famName]);
+                $this->tcr[$this->nLine]["msg"] = sprintf(
+                    _("Cannot import document because the ORDER line for family '%s' is incorrect: %s"),
+                    $famName,
+                    $this->badOrderErrors[$famName]
+                );
                 $this->tcr[$this->nLine]["action"] = "warning";
             } else {
-                $this->tcr[$this->nLine]["msg"] = sprintf(_("Cannot import document because the ORDER line for family '%s' is incorrect: %s"), $famName,
-                    $this->badOrderErrors[$famName]);
+                $this->tcr[$this->nLine]["msg"] = sprintf(
+                    _("Cannot import document because the ORDER line for family '%s' is incorrect: %s"),
+                    $famName,
+                    $this->badOrderErrors[$famName]
+                );
                 $this->tcr[$this->nLine]["action"] = "ignored";
             }
             return;
@@ -967,9 +996,9 @@ class ImportDocumentDescription
             /**
              * @var \Anakeen\SmartStructures\Search\SearchHooks $search
              */
-            $search = new_Doc($this->dbaccess, $data[1]);
-            if (!$search->isAffected()) {
-                $search = createDoc($this->dbaccess, 5);
+            $search = \Anakeen\Core\SEManager::getDocument($data[1]);
+            if (!$search || !$search->isAffected()) {
+                $search = \Anakeen\Core\SEManager::createDocument(5);
                 if (!$this->analyze) {
                     if ($data[1] && is_numeric($data[1])) {
                         $search->id = $data[1]; // static id
@@ -983,7 +1012,7 @@ class ImportDocumentDescription
                 $this->tcr[$this->nLine]["action"] = "updated";
             }
         } else {
-            $search = createDoc($this->dbaccess, 5);
+            $search = \Anakeen\Core\SEManager::createDocument(5);
             if (!$this->analyze) {
                 $err = $search->add();
             }
@@ -1012,8 +1041,8 @@ class ImportDocumentDescription
                 /**
                  * @var \Anakeen\SmartStructures\Dir\DirHooks $dir
                  */
-                $dir = new_Doc($this->dbaccess, $data[2]);
-                if ($dir->isAlive() && method_exists($dir, "insertDocument")) {
+                $dir = \Anakeen\Core\SEManager::getDocument($data[2]);
+                if ($dir && $dir->isAlive() && method_exists($dir, "insertDocument")) {
                     $dir->insertDocument($search->id);
                 }
             }
@@ -1028,7 +1057,7 @@ class ImportDocumentDescription
      */
     protected function doDocIcon(array $data)
     {
-        $idoc = new_doc($this->dbaccess, $data[1]);
+        $idoc = \Anakeen\Core\SEManager::getDocument($data[1]);
         if (!$this->analyze) {
             $idoc->changeIcon($data[2]);
         }
@@ -1058,7 +1087,7 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
             return;
         }
-        $idoc = new_doc($this->dbaccess, $data[1]);
+        $idoc = \Anakeen\Core\SEManager::getDocument($data[1]);
 
         $i = 4;
         $tags = [];
@@ -1233,8 +1262,8 @@ class ImportDocumentDescription
         }
         if ($data[1]) {
             try {
-                $wdoc = new_doc($this->dbaccess, $wid);
-                if (!$wdoc->isAlive()) {
+                $wdoc = \Anakeen\Core\SEManager::getDocument($wid);
+                if (!$wdoc || !$wdoc->isAlive()) {
                     $this->tcr[$this->nLine]["err"] = sprintf(_("WID : workflow '%s' not found"), $data[1]);
                 } else {
                     if (!is_subclass_of($wdoc, \Anakeen\SmartStructures\Wdoc\WDocHooks::class)) {
@@ -1287,7 +1316,7 @@ class ImportDocumentDescription
 
         if ($data[1]) {
             try {
-                $cvdoc = new_doc($this->dbaccess, $cvid);
+                $cvdoc = \Anakeen\Core\SEManager::getDocument($cvid);
                 if (!$cvdoc->isAlive()) {
                     $this->tcr[$this->nLine]["err"] = sprintf(_("CVID : view control '%s' not found"), $data[1]);
                 } else {
@@ -1422,7 +1451,7 @@ class ImportDocumentDescription
         if (is_numeric($data[1])) {
             $pid = $data[1];
         } else {
-            $pid = \Anakeen\Core\SEManager::getIdFromName($data[1], 3);
+            $pid = \Anakeen\Core\SEManager::getIdFromName($data[1]);
         }
         $this->doc->cprofid = $pid;
         $this->tcr[$this->nLine]["msg"] = sprintf(_("change default creation profile id  to '%s'"), $data[1]);
@@ -1929,7 +1958,6 @@ class ImportDocumentDescription
             $aid,
             $index
         ));
-        //	print_r2($oa);
         if (substr($data[2], 0, 2) == "::") {
             $oa->ldapname = $data[2];
         } else {
@@ -2070,7 +2098,7 @@ class ImportDocumentDescription
                     $oattr->abstract = $this->structAttr->isabstract;
                 }
 
-                $oattr->type = trim($this->structAttr->type);
+                $oattr->type = trim($this->structAttr->rawType);
 
                 $oattr->ordered = $this->structAttr->order;
                 $oattr->visibility = $this->structAttr->visibility;
@@ -2097,21 +2125,29 @@ class ImportDocumentDescription
                     $oattr->options = '';
                 }
 
-                if (((($this->structAttr->phpfile != "") && ($this->structAttr->phpfile != "-"))
-                        || (($this->structAttr->type != "enum")
-                            && ($this->structAttr->type != "enumlist")))
-                    || ($oattr->phpfunc == "")
-                    || (strpos($oattr->options, "system=yes") !== false)) {
+                $oattr->phpfunc = $this->structAttr->phpfunc;
+                if (!empty($data["props"])) {
+                    $oattr->properties = json_encode($data["props"]);
+                }
+
+                /**
+                 * Old Enum declaration
+                 */
+                if (($this->structAttr->type === "enum" && $this->structAttr->phpfile == "" && $this->structAttr->phpfunc != "")) {
                     // don't modify  enum possibilities if exists and non system
                     $oattr->phpfunc = $this->structAttr->phpfunc;
-                    if ($oattr->type == "enum") {
-                        if (strlen($this->structAttr->phpfile) < 2) {
-                            // don't record if enum comes from function
-                            $reset = (strpos($oattr->options, "system=yes") !== false);
-                            $this->recordEnum($this->doc->id, $oattr->id, $this->structAttr->phpfunc, $reset);
-                            //$oattr->phpfunc = "-";
-                        }
+
+
+                    // don't record if enum comes from function
+                    $reset = (strpos($oattr->options, "system=yes") !== false);
+                    $enumName = $this->structAttr->format;
+
+                    if ($oattr->type && !$enumName) {
+                        $enumName = sprintf("%s-%s", $this->doc->name, $oattr->id);
+                        $oattr->type = sprintf('%s("%s")', $this->structAttr->type, $enumName);
                     }
+                    $this->recordEnum($enumName, $this->structAttr->phpfunc, $reset);
+                    //$oattr->phpfunc = "-";
                 }
                 if ($oattr->ordered && !is_numeric($oattr->ordered)) {
                     $oattr->options .= ($oattr->options) ? "|" : "";
@@ -2134,28 +2170,25 @@ class ImportDocumentDescription
     }
 
     /**
-     * @param int    $famid   family identifier
-     * @param string $attrid  attribute identifier
      * @param string $phpfunc enum flat description
      * @param bool   $reset   set to true to delete old items before recorded
      *
      * @return string error message
      */
-    public static function recordEnum($famid, $attrid, $phpfunc, $reset = false)
+    public static function recordEnum($enumName, $phpfunc, $reset = false)
     {
         static $oe = null;
 
         $err = '';
         if ($oe === null) {
-            $oe = new DocEnum();
+            $oe = new \Anakeen\Core\SmartStructure\DocEnum();
         }
         $enums = array();
         EnumAttributeTools::flatEnumNotationToEnumArray($phpfunc, $enums);
-        $oe->famid = $famid;
-        $oe->attrid = $attrid;
+        $oe->name = $enumName;
         $oe->eorder = 0;
         if ($reset) {
-            $sql = sprintf("delete from docenum where famid='%s' and attrid='%s'", pg_escape_string($famid), pg_escape_string($attrid));
+            $sql = sprintf("delete from docenum where name='%s'", pg_escape_string($enumName));
             \Anakeen\Core\DbManager::query($sql);
         }
 
@@ -2184,81 +2217,6 @@ class ImportDocumentDescription
         return $err;
     }
 
-    /**
-     * analyze IATTR
-     *
-     * @param array $data line of description file
-     */
-    protected function doIattr(array $data)
-    {
-        if (!$this->doc) {
-            return;
-        }
-        // import attribute definition from another family
-        $err = '';
-        $fiid = $data[3];
-        if (!is_numeric($fiid)) {
-            $fiid = \Anakeen\Core\SEManager::getFamilyIdFromName($fiid);
-        }
-        $fi = new_Doc($this->dbaccess, $fiid);
-        if ($fi->isAffected()) {
-            $fa = $fi->getAttribute($data[1]);
-            if ($fa) {
-                $oattri = new DocAttr($this->dbaccess, array(
-                    $fiid,
-                    strtolower($data[1])
-                ));
-                $oattr = new DocAttr($this->dbaccess, array(
-                    $this->doc->id,
-                    strtolower($data[1])
-                ));
-                $oattri->docid = $this->doc->id;
-                $this->tcr[$this->nLine]["msg"] = sprintf(_("copy attribute %s from %s"), $data[1], $data[3]);
-                if (!$this->analyze) {
-                    if ($oattr->isAffected()) {
-                        $err = $oattri->modify();
-                    } else {
-                        $oattri->id = strtolower($data[1]);
-                        $err = $oattri->add();
-                    }
-                    $this->tcr[$this->nLine]["err"] = $err;
-                }
-
-                if (($err == "") && (strtolower(get_class($fa)) === \Anakeen\Core\SmartStructure\FieldSetAttribute::class)) {
-                    $frameid = $fa->id;
-                    // import attributes included in fieldset
-                    foreach ($fi->attributes->attr as $k => $v) {
-                        if ($v && $v->isNormal) {
-                            if (($v->fieldSet->id == $frameid) || ($v->fieldSet->fieldSet->id == $frameid)) {
-                                $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("copy attribute %s from %s"), $v->id, $data[3]);
-                                $oattri = new DocAttr($this->dbaccess, array(
-                                    $fiid,
-                                    $v->id
-                                ));
-                                $oattr = new DocAttr($this->dbaccess, array(
-                                    $this->doc->id,
-                                    $v->id
-                                ));
-                                $oattri->docid = $this->doc->id;
-                                if (!$this->analyze) {
-                                    if ($oattr->isAffected()) {
-                                        $err = $oattri->modify();
-                                    } else {
-                                        $oattri->id = $v->id;
-                                        $err = $oattri->add();
-                                    }
-                                    $this->tcr[$this->nLine]["err"] .= $err;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if ($this->tcr[$this->nLine]["err"]) {
-            $this->tcr[$this->nLine]["action"] = "ignored";
-        }
-    }
 
     /**
      * analyze PROP
@@ -2294,6 +2252,29 @@ class ImportDocumentDescription
                 return;
             }
         }
+        if ($this->tcr[$this->nLine]["err"]) {
+            $this->tcr[$this->nLine]["action"] = "ignored";
+        }
+    }
+
+    protected function doEnum($data)
+    {
+        $enumName = $data["name"];
+        $key = $data["key"];
+        $enum = new \Anakeen\Core\SmartStructure\DocEnum("", [$enumName, $key]);
+
+        $enum->name = $data["name"];
+        $enum->key = $data["key"];
+        $enum->label = $data["label"];
+        $enum->parentkey = $data["parentKey"];
+
+        if ($enum->isAffected()) {
+            $err = $enum->modify();
+        } else {
+            $err = $enum->add();
+        }
+        $this->tcr[$this->nLine]["err"] = $err;
+
         if ($this->tcr[$this->nLine]["err"]) {
             $this->tcr[$this->nLine]["action"] = "ignored";
         }

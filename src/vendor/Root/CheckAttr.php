@@ -3,11 +3,12 @@
  * @author Anakeen
  * @package FDL
 */
+
 /**
  * Checking application accesses
  * @class CheckAttr
  * @brief Check application accesses when importing definition
- * @see ErrorCodeATTR
+ * @see   ErrorCodeATTR
  */
 class CheckAttr extends CheckData
 {
@@ -46,7 +47,7 @@ class CheckAttr extends CheckData
         "htmltext",
         "account"
     );
-    
+
     private $noValueTypes = array(
         "frame",
         "tab",
@@ -63,7 +64,7 @@ class CheckAttr extends CheckData
         'S',
         'U'
     );
-    
+
     private $yesno = array(
         'y',
         'n'
@@ -157,7 +158,7 @@ class CheckAttr extends CheckData
      * @return CheckAttr
      */
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     private $doc = null;
     /**
@@ -165,7 +166,7 @@ class CheckAttr extends CheckData
      * @var bool
      */
     private $isModAttr = false;
-    
+
     public function check(array $data, &$extra = null)
     {
         $this->lineType = $data[0];
@@ -189,6 +190,7 @@ class CheckAttr extends CheckData
         $this->checkOptions();
         return $this;
     }
+
     /**
      * test syntax for document's identifier
      * @return void
@@ -210,6 +212,7 @@ class CheckAttr extends CheckData
             }
         }
     }
+
     /**
      * test syntax for document's identifier
      * @return void
@@ -236,6 +239,7 @@ class CheckAttr extends CheckData
             }
         }
     }
+
     /**
      * test attribute type is a recognized type
      * @return void
@@ -256,38 +260,40 @@ class CheckAttr extends CheckData
             } elseif (!in_array($basicType, $this->types)) {
                 $this->addError(ErrorCode::getError('ATTR0601', $basicType, $this->attrid, implode(', ', $this->types)));
             } else {
-                $format = $this->getFormat();
-                if ($format) {
-                    if (in_array($basicType, array(
-                        'text',
-                        'int',
-                        'double',
-                        'money',
-                        'longtext'
-                    ))) {
-                        $a = @sprintf($format, 123);
-                        if ($a === false) {
-                            $this->addError(ErrorCode::getError('ATTR0603', $format, $this->attrid));
-                        }
-                    }
-                }
                 if ($this->isModAttr) {
                     $this->checkModAttrType();
                 }
             }
         } else {
+            $format = $this->getFormat();
+            if ($format) {
+                if (in_array($type, array(
+                    'text',
+                    'int',
+                    'double',
+                    'money',
+                    'longtext'
+                ))) {
+                    $a = @sprintf($format, 123);
+                    if ($a === false) {
+                        $this->addError(ErrorCode::getError('ATTR0603', $format, $this->attrid));
+                    }
+                }
+            }
+
             if ($this->isModAttr) {
                 $this->checkModAttrType();
             }
         }
     }
+
     /**
      * Verify id modattr of enum if compatible whith origin
      */
     private function checkModAttrType()
     {
         $type = $this->structAttr->type;
-        
+
         $basicType = $this->getType();
         $originAttr = $this->getOriginAttr($this->attrid, $this->doc->fromid, $this->doc->id);
         if ($originAttr) {
@@ -308,7 +314,7 @@ class CheckAttr extends CheckData
             $this->addError(ErrorCode::getError('ATTR0605', $this->attrid, $this->doc->name));
         }
     }
-    
+
     private function getOriginAttr($attrid, $fromid, $docid)
     {
         $sqlPattern = <<< 'SQL'
@@ -320,7 +326,7 @@ class CheckAttr extends CheckData
     ) select id from adocfam
     ) and id='%s' order by docid desc;
 SQL;
-        
+
         $attrid = pg_escape_string($attrid);
         $sql = sprintf($sqlPattern, $docid, $fromid, $attrid);
         simpleQuery('', $sql, $r);
@@ -329,7 +335,7 @@ SQL;
         }
         return null;
     }
-    
+
     private function isCompatibleModType($typeA, $typeB)
     {
         if ($typeA == $typeB) {
@@ -360,6 +366,7 @@ SQL;
         }
         return false;
     }
+
     /**
      * test syntax order
      * must be an integer
@@ -368,7 +375,7 @@ SQL;
     private function checkOrder()
     {
         $order = $this->structAttr->order;
-        
+
         if ($this->isNodeNeedOrder() && empty($order)) {
             $this->addError(ErrorCode::getError('ATTR0702', $this->attrid));
         } elseif ($order) {
@@ -382,6 +389,7 @@ SQL;
             }
         }
     }
+
     /**
      * test syntax order
      * must be an integer
@@ -403,7 +411,7 @@ SQL;
             }
         }
     }
-    
+
     private function checkIsAbstract()
     {
         $isAbstract = strtolower($this->structAttr->isabstract);
@@ -415,7 +423,7 @@ SQL;
             }
         }
     }
-    
+
     private function checkIsTitle()
     {
         $isTitle = strtolower($this->structAttr->istitle);
@@ -427,7 +435,7 @@ SQL;
             }
         }
     }
-    
+
     private function checkIsNeeded()
     {
         $isNeeded = strtolower($this->structAttr->isneeded);
@@ -439,6 +447,7 @@ SQL;
             }
         }
     }
+
     /**
      * @return bool return false if some error detected
      */
@@ -447,7 +456,7 @@ SQL;
         $goodFile = true;
         $phpFile = trim($this->structAttr->phpfile);
         if ($phpFile && $phpFile != '-' && ($this->getType() != "action")) {
-            $phpFile = sprintf(DEFAULT_PUBDIR."/EXTERNALS/%s", $phpFile);
+            $phpFile = sprintf(DEFAULT_PUBDIR . "/EXTERNALS/%s", $phpFile);
             if (!file_exists($phpFile)) {
                 $this->addError(ErrorCode::getError('ATTR1100', $phpFile, $this->attrid));
                 $goodFile = false;
@@ -463,7 +472,7 @@ SQL;
         }
         return $goodFile;
     }
-    
+
     private function checkPhpFunctionOrMethod()
     {
         $phpFunc = trim($this->structAttr->phpfunc);
@@ -479,7 +488,7 @@ SQL;
             }
         }
     }
-    
+
     private function checkEnum()
     {
         $phpFunc = $this->structAttr->phpfunc;
@@ -509,7 +518,7 @@ SQL;
             }
         }
     }
-    
+
     private function checkPhpFunction()
     {
         $phpFunc = trim($this->structAttr->phpfunc);
@@ -518,7 +527,7 @@ SQL;
         if ($phpFunc && $phpFunc != '-' && ($type != "action")) {
             if ($phpFile && $phpFile != '-') {
                 // parse function for input help
-                $oParse = new ParseFamilyFunction();
+                $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyFunction();
                 $strucFunc = $oParse->parse($phpFunc, ($type == 'enum'));
                 if ($strucFunc->getError()) {
                     $this->addError(ErrorCode::getError('ATTR1200', $this->attrid, $strucFunc->getError()));
@@ -530,7 +539,7 @@ SQL;
                             $this->addError(ErrorCode::getError('ATTR1209', $phpFuncName));
                         } else {
                             $targetFile = $refFunc->getFileName();
-                            $realPhpFile = realpath(sprintf(DEFAULT_PUBDIR."/EXTERNALS/%s", $phpFile));
+                            $realPhpFile = realpath(sprintf(DEFAULT_PUBDIR . "/EXTERNALS/%s", $phpFile));
                             if ($targetFile != $realPhpFile) {
                                 if (!$oParse->appName) {
                                     $this->addError(ErrorCode::getError('ATTR1210', $phpFuncName, $realPhpFile));
@@ -552,16 +561,16 @@ SQL;
             }
         }
     }
-    
+
     private function checkPhpMethod()
     {
         $phpFunc = trim($this->structAttr->phpfunc);
         $type = $this->getType();
-        
+
         if ($this->isModAttr && (!$type)) {
             return;
         } // cannot really test if has not type
-        $oParse = new ParseFamilyMethod();
+        $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
         $strucFunc = $oParse->parse($phpFunc, ($type == 'enum'));
         if ($strucFunc->getError()) {
             $this->addError(ErrorCode::getError('ATTR1250', $this->attrid, $strucFunc->getError()));
@@ -573,7 +582,7 @@ SQL;
             }
         }
     }
-    
+
     private function checkPhpConstraint()
     {
         $constraint = trim($this->structAttr->constraint);
@@ -581,7 +590,7 @@ SQL;
             if ($this->isModAttr && $constraint == '-') {
                 return;
             }
-            $oParse = new ParseFamilyMethod();
+            $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
             $strucFunc = $oParse->parse($constraint, true);
             if ($strucFunc->getError()) {
                 $this->addError(ErrorCode::getError('ATTR1400', $this->attrid, $strucFunc->getError()));
@@ -591,7 +600,7 @@ SQL;
             }
         }
     }
-    
+
     private function checkOptions()
     {
         $options = trim($this->structAttr->options);
@@ -612,6 +621,7 @@ SQL;
             }
         }
     }
+
     /**
      * @param string $attrid
      * @return bool
@@ -623,11 +633,11 @@ SQL;
         }
         return false;
     }
-    
+
     private function getType($type = null)
     {
         if ($type === null) {
-            $type = trim($this->structAttr->type);
+            $type = trim($this->structAttr->rawType);
         }
         $rtype = '';
         if (preg_match('/^([a-z]+)\(["\'].+["\']\)$/i', $type, $reg)) {
@@ -637,18 +647,18 @@ SQL;
         }
         return $rtype;
     }
-    
+
     private function getFormat()
     {
-        $type = trim($this->structAttr->type);
+        $type = trim($this->structAttr->rawType);
         $rformat = '';
-        
+
         if (preg_match('/^([a-z]+)\(["\'](.+)["\']\)$/i', $type, $reg)) {
             $rformat = $reg[2];
         }
         return $rformat;
     }
-    
+
     private function isNodeNeedSet()
     {
         if ($this->isModAttr) {
@@ -657,7 +667,7 @@ SQL;
         $type = $this->getType();
         return (($type != "tab") && ($type != "frame") && ($type != "menu") && ($type != "action"));
     }
-    
+
     private function isNodeNeedOrder()
     {
         if ($this->isModAttr) {
@@ -666,7 +676,7 @@ SQL;
         $type = $this->getType();
         return (($type != "tab") && ($type != "frame"));
     }
-    
+
     private function isNodeHasValue()
     {
         $type = $this->getType();
@@ -682,6 +692,7 @@ class StructAttribute
     public $istitle;
     public $isabstract;
     public $type;
+    public $format;
     public $order;
     public $visibility;
     public $isneeded;
@@ -691,6 +702,7 @@ class StructAttribute
     public $elink;
     public $constraint;
     public $options;
+    public $rawType;
     private $dataOrder = array(
         "id",
         "setid",
@@ -708,16 +720,17 @@ class StructAttribute
         "constraint",
         "options"
     );
-    
+
     public function __construct(array $data = array())
     {
         if (count($data) > 0) {
             $this->set($data);
         }
     }
-    
+
     public function set(array $data)
     {
+        $this->format="";
         $cid = 1;
         foreach ($this->dataOrder as $key) {
             if ($key == 'phpfunc') {
@@ -725,6 +738,15 @@ class StructAttribute
             } else {
                 $this->$key = isset($data[$cid]) ? trim($data[$cid]) : '';
             }
+            if ($key == 'type') {
+                $this->rawType=$this->type;
+                $this->type = strtok($this->type, "(");
+                if (preg_match('/^([a-z]+)\(["\'](.+)["\']\)$/i', $this->rawType, $reg)) {
+                    $this->format = $reg[2];
+                }
+            }
+
+
             $cid++;
         }
     }

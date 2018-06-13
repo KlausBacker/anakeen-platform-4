@@ -38,7 +38,7 @@ function add_import_file(\Anakeen\Core\Internal\Action & $action, $fimport, $dir
     $if->reinitAttribute($reinit == "yes");
     $if->reset($reset);
     $if->setComma($comma);
-    return $if->import();
+    return $if->importCsvFile();
 }
 /**
  * Add a document from csv import file

@@ -210,7 +210,9 @@ class ContextManager
             $action->parent->param->SetVolatile("CORE_LANG", $lang);
             $action->parent->setVolatileParam("CORE_LANG", $lang);
         }
-        $lang .= ".UTF-8";
+        if (strpos($lang, ".") === false) {
+            $lang .= ".UTF-8";
+        }
         if (setlocale(LC_MESSAGES, $lang) === false) {
             throw new \Exception(sprintf(\ErrorCodeCORE::CORE0011, $lang));
         }
@@ -231,8 +233,7 @@ class ContextManager
         // Reset enum traduction cache
         $a = null;
 
-        $enumAttr = new \Anakeen\Core\SmartStructure\NormalAttribute("", "", "", "", "", "", "", "", "", "", "", "", $a, "", "", "");
-        $enumAttr->resetEnum();
+        EnumManager::resetEnum();
 
         $td = "main-catalog$number";
 

@@ -29,6 +29,11 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
         return '';
     }
 
+    protected static function getConfigFile()
+    {
+        return '';
+    }
+
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
@@ -47,6 +52,24 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
             foreach ($cf as $f) {
                 try {
                     self::importDocument($f);
+                } catch (\Dcp\Exception $e) {
+                    self::rollbackTransaction();
+                    throw new \Dcp\Exception(sprintf("Exception while importing file '%s': %s", $f, $e->getMessage()));
+                }
+            }
+        }
+
+
+        $cf = static::getConfigFile();
+        if ($cf) {
+            if (!is_array($cf)) {
+                $cf = array(
+                    $cf
+                );
+            }
+            foreach ($cf as $f) {
+                try {
+                    self::importConfiguration($f);
                 } catch (\Dcp\Exception $e) {
                     self::rollbackTransaction();
                     throw new \Dcp\Exception(sprintf("Exception while importing file '%s': %s", $f, $e->getMessage()));

@@ -8,6 +8,8 @@ namespace Dcp\Pu;
 
 //require_once 'PU_testcase_dcp.php';
 
+use Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod;
+
 class TestParseMethod extends TestCaseDcp
 {
     /**
@@ -17,7 +19,7 @@ class TestParseMethod extends TestCaseDcp
     {
         $err = '';
         
-        $oParse = new \parseFamilyMethod();
+        $oParse = new ParseFamilyMethod();
         $struct = $oParse->parse($callName);
         $err = $struct->getError();
         
@@ -48,7 +50,7 @@ class TestParseMethod extends TestCaseDcp
     public function testParseMethodCallErrors($callName, $expectedErrors)
     {
         $err = '';
-        $oParse = new \parseFamilyMethod();
+        $oParse = new ParseFamilyMethod();
         $struct = $oParse->parse($callName);
         $err = $struct->getError();
         

@@ -65,10 +65,12 @@ msgstr "T3"
 msgid "TEST_EXTRA:Extra state not found"
 msgstr "État extra introuvable"
 
-msgid "TST_ENUMFAM1#tst_enum2#0"
+msgctxt "ENUM"
+msgid "TST_012PLUS:0"
 msgstr "Zéfiro"
 
-msgid "TST_ENUMFAM1#tst_enuma#a"
+msgctxt "ENUM"
+msgid "TST_ENUMFAM1-tst_enuma:a"
 msgstr "Lettre A"
 
 #. _COMMENT Sharp Label

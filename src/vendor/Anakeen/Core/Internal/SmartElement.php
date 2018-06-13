@@ -30,6 +30,7 @@ use \Anakeen\Core\DbManager;
 use \Anakeen\Core\ContextManager;
 use \Anakeen\Core\SEManager;
 use Anakeen\Core\Internal\Format\StandardAttributeValue;
+use Anakeen\Core\SmartStructure\Callables\InputArgument;
 use Anakeen\LogManager;
 use Anakeen\Routes\Core\Lib\CollectionDataFormatter;
 use Anakeen\SmartHooks;
@@ -3885,7 +3886,7 @@ create unique index i_docir on doc(initid, revision);";
                                             $tenum = $oattr->getEnum();
                                             $keys = array_keys($tenum);
                                             if (!in_array($avalue, $keys)) {
-                                                $oattr->addEnum($this->dbaccess, $avalue, $avalue);
+                                                $oattr->addEnum( $avalue, $avalue);
                                             }
                                         }
                                         break;
@@ -4762,7 +4763,7 @@ create unique index i_docir on doc(initid, revision);";
         $err = '';
 
         if (self::seemsMethod($method)) {
-            $parseMethod = new \ParseFamilyMethod();
+            $parseMethod = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
             $parseMethod->parse($method);
             $err = $parseMethod->getError();
             if ($err) {
@@ -4787,7 +4788,7 @@ create unique index i_docir on doc(initid, revision);";
 
                     $inputs = array();
                     foreach ($bargs as $extraArg) {
-                        $inputs[] = new \inputArgument($extraArg);
+                        $inputs[] = new InputArgument($extraArg);
                     }
                     $inputs = array_merge($inputs, $parseMethod->inputs);
                     foreach ($inputs as $ki => $input) {

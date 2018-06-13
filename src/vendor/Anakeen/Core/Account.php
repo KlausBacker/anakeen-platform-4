@@ -224,9 +224,10 @@ create sequence seq_id_users start 10;";
                 $u->updateMemberOf();
             }
 
-            global $action;
-            if ($action->user->id == $u->id) {
-                $action->user->revert();
+
+            $cu = ContextManager::getCurrentUser();
+            if ($cu->id == $u->id) {
+                $cu->revert();
             }
         }
         return $err;
@@ -339,7 +340,8 @@ create sequence seq_id_users start 10;";
 
         IgroupLib::refreshGroups($ugroups, true);
 
-        global $action;
+        $action = ContextManager::getCurrentAction();
+
         $action->session->CloseUsers($this->id);
 
         return $err;
@@ -787,8 +789,8 @@ union
     /**
      * get the first incumbent which has $acl privilege
      *
-     * @param \Anakeen\Core\Internal\SmartElement   $doc document to verify
-     * @param string $acl document acl name
+     * @param \Anakeen\Core\Internal\SmartElement $doc document to verify
+     * @param string                              $acl document acl name
      *
      * @return string incumbent's name which has privilege
      */
@@ -1123,12 +1125,12 @@ union
      */
     public static function getUserMemberOf($uid, $strict = false)
     {
-        global $action;
-        if ($action->user->id == $uid) {
+        $cu = ContextManager::getCurrentUser();
+        if ($cu->id == $uid) {
             if ($strict) {
-                $memberOf = $action->user->getStrictMemberOf();
+                $memberOf = $cu->getStrictMemberOf();
             } else {
-                $memberOf = $action->user->getMemberOf();
+                $memberOf = $cu->getMemberOf();
             }
         } else {
             $u = new Account('', $uid);
@@ -1303,7 +1305,6 @@ union
         }
         return $token;
     }
-
 
 
     /**

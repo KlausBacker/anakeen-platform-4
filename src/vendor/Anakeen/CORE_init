@@ -132,7 +132,7 @@ if [ "$1" = "I" ] ; then
         "Anakeen\\Core\\SmartStructure" \
         DocHisto \
         DocLog \
-        DocEnum \
+        "Anakeen\\Core\\SmartStructure\\DocEnum" \
         DocPermExt \
         DocPerm \
         DocRel \

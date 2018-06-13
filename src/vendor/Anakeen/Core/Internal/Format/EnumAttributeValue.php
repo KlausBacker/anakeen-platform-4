@@ -13,7 +13,7 @@ class EnumAttributeValue extends StandardAttributeValue
         $this->value = ($v === '') ? null : $v;
         if ($v !== null && $v !== '') {
             $this->displayValue = $oa->getEnumLabel($v);
-            $this->exists = $oa->existEnum($v, false);
+            $this->exists = $oa->existEnum($v);
         }
     }
 }

@@ -49,7 +49,7 @@ class CheckDefault extends CheckData
     protected function checkDefaultValue()
     {
         if (preg_match('/^[a-z_0-9]*::/i', $this->defaultValue)) {
-            $oParse = new ParseFamilyMethod();
+            $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
             $strucFunc = $oParse->parse($this->defaultValue, true);
             if ($err = $strucFunc->getError()) {
                 $this->addError(ErrorCode::getError('DFLT0003', $this->defaultName, $this->defaultValue, $this->doc->name, $err));

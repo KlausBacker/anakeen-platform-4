@@ -17,7 +17,7 @@ class TestParseFunction extends TestCaseDcp
     {
         $err = '';
         
-        $oParse = new \ParseFamilyFunction();
+        $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyFunction();
         $struct = $oParse->parse($callName);
         $err = $struct->getError();
         
@@ -48,7 +48,7 @@ class TestParseFunction extends TestCaseDcp
     public function testParseFunctionCallErrors($callName, $expectedErrors)
     {
         $err = '';
-        $oParse = new \ParseFamilyFunction();
+        $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyFunction();
         $struct = $oParse->parse($callName);
         $err = $struct->getError();
         

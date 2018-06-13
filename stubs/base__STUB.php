@@ -1,7 +1,10 @@
 <?php
 namespace SmartStructure {
-	/** de base  */
-	class Base extends \Anakeen\SmartStructures\SmartElement { const familyName="BASE";}
+
+    use Anakeen\Core\Internal\SmartElement;
+
+    /** de base  */
+	class Base extends SmartElement { const familyName="BASE";}
 }
 
 namespace SmartStructure\Attributes {

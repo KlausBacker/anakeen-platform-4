@@ -306,7 +306,7 @@ class DocumentApiData
              * @var \Anakeen\Core\SmartStructure\NormalAttribute $attribute ;
              */
             if ((strlen($attribute->phpfile) > 1) && ($attribute->phpfunc)) {
-                $familyParser = new \ParseFamilyFunction();
+                $familyParser = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyFunction();
                 $structureFunction = $familyParser->parse($attribute->phpfunc);
                 foreach ($structureFunction->outputs as $k => $output) {
                     if (substr($output, 0, 2) === "CT") {
@@ -317,6 +317,19 @@ class DocumentApiData
                 }
                 $info["helpOutputs"] = $structureFunction->outputs;
             }
+        }
+
+        if (!empty($attribute->properties->autocomplete)) {
+            $familyParser = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
+            $structureFunction = $familyParser->parse($attribute->properties->autocomplete);
+            foreach ($structureFunction->outputs as $k => $output) {
+                if (substr($output, 0, 2) === "CT") {
+                    unset($structureFunction->outputs[$k]);
+                } else {
+                    $structureFunction->outputs[$k] = strtolower($output);
+                }
+            }
+            $info["helpOutputs"] = $structureFunction->outputs;
         }
 
         if ($attribute->inArray()) {

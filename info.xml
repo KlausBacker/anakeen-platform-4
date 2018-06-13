@@ -249,15 +249,15 @@
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Base/base.struct.csv">
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Base/base.struct.xml">
             <label>Import BASE Family</label>
         </process>
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.csv">
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml">
             <label>Import PROFIL Families</label>
         </process>
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dir/dir.struct.csv">
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dir/dir.struct.xml">
             <label>Import DIR Family</label>
         </process>
         <process
@@ -266,7 +266,7 @@
         </process>
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.csv ">
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.xml ">
             <label>Add Mail form family</label>
         </process>
         <process
@@ -585,21 +585,21 @@
 
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Base/base.struct.csv">
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Base/base.struct.xml">
             <label>Import BASE Family</label>
         </process>
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.csv">
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml">
             <label>Import PROFIL Families</label>
         </process>
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dir/dir.struct.csv">
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dir/dir.struct.xml">
             <label>Import DIR Family</label>
         </process>
 
 
         <process
-                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.csv ">
+                command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.xml ">
             <label>Add Mail form family</label>
         </process>
 

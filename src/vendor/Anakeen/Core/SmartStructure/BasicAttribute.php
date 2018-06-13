@@ -29,6 +29,10 @@ class BasicAttribute
     public $format; // subtypepublic
     public $isNormal = null;
     /**
+     * @var AttributeOptions
+     */
+    public $properties=null;
+    /**
      * @var \Anakeen\Core\SmartStructure\FieldSetAttribute field set object
      */
     public $fieldSet;

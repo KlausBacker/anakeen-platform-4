@@ -70,9 +70,7 @@ class FamilyImport
      */
     protected static function generateFamilyPhpClass($genDir, $tdoc)
     {
-        global $action;
-
-        $phpAdoc = new \Layout("vendor/Anakeen/Core/Layout/Class.Smart.xml", $action);
+        $phpAdoc = new \Layout();
 
         if ($tdoc["classname"] == "") { // default classname
             if ($tdoc["fromid"] == 0) {
@@ -187,6 +185,7 @@ class FamilyImport
                             $table1[$doctitle]->needed = "N";
                             $table1[$doctitle]->usefor = "A";
                             $table1[$doctitle]->link = "";
+                            $table1[$doctitle]->props = "";
                             $table1[$doctitle]->phpconstraint = "";
                             $table1[$doctitle]->labeltext = $v->labeltext . ' ' . _("(title)");
                             $table1[$doctitle]->ordered = $v->ordered + 1;
@@ -201,7 +200,7 @@ class FamilyImport
                     }
                 }
             }
-            $pM = new \ParseFamilyMethod();
+            $pM = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
             foreach ($pa as $parentAttr) {
                 $previousOrder = ""; //FamilyAbsoluteOrder::autoOrder;
                 if (preg_match("/relativeOrder=([A-Za-z0-9_:-]+)/", $parentAttr["options"], $reg)) {
@@ -306,7 +305,8 @@ class FamilyImport
                             "usefor" => $v->usefor,
                             "type" => $v->type,
                             "options" => str_replace("\"", "\\\"", $v->options),
-                            "frame" => ($v->frameid == "") ? \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD : strtolower($v->frameid)
+                            "frame" => ($v->frameid == "") ? \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD : strtolower($v->frameid),
+                            "props" =>  str_replace("\"", "\\\"", $v->properties)
                         );
                         break;
 
@@ -393,19 +393,7 @@ class FamilyImport
                                 $v->phpconstraint = sprintf("Anakeen\Core\Utils\Numbers::isFloat(%s)", $v->id);
                             }
                         }
-                        if ($atype == "account") {
-                            if (!$v->phpfile && !$v->phpfunc) {
-                                $v->phpfile = 'fdl.php';
-                                $options = $v->options;
-                                if ($aformat) {
-                                    if ($options) {
-                                        $options .= '|';
-                                    }
-                                    $options .= sprintf("family=%s", $aformat);
-                                }
-                                $v->phpfunc = sprintf('fdlGetAccounts(CT,15,"%s"):%s,CT', str_replace('"', '\\"', $options), $v->id);
-                            }
-                        }
+
                         $tnormal[($v->id)] = array(
                             "attrid" => ($v->id),
                             "label" => str_replace("\"", "\\\"", $v->labeltext),
@@ -426,7 +414,8 @@ class FamilyImport
                             "phpfile" => $v->phpfile,
                             "phpfunc" => self::doubleslash(str_replace(", |", ",  |", $v->phpfunc)),
                             "phpconstraint" => str_replace("\"", "\\\"", $v->phpconstraint),
-                            "usefor" => $v->usefor
+                            "usefor" => $v->usefor,
+                            "props" => str_replace(['\\',"\""], ['\\', "\\\""], $v->properties)
                         );
 
                         if (($atype != "array") && ($v->usefor != "Q")) {
@@ -571,6 +560,7 @@ class FamilyImport
         foreach ($dfiles as $kFile => $dfile) {
             $phpAdoc->template = file_get_contents(DEFAULT_PUBDIR . $kFile);
             $err = self::__phpLintWriteFile($dfile, $phpAdoc->gen());
+
             if ($err != '') {
                 throw new \Dcp\Exception("CORE0023", $dfile, $err);
             }
@@ -831,6 +821,7 @@ class FamilyImport
         $genDir = sprintf("%s/%s/SmartStructure/", DEFAULT_PUBDIR, Settings::DocumentGenDirectory);
         $genAttrDir = sprintf("%s/Attributes", $genDir);
         $dfile = sprintf("%s/%s.php", $genDir, $tdoc["name"]);
+
         if (!is_dir($genDir)) {
             if (!(is_dir(dirname($genDir)))) {
                 mkdir(dirname($genDir));
@@ -858,6 +849,7 @@ class FamilyImport
             \Anakeen\Core\SEManager::getAttributesClassFilename($famName),
             \Anakeen\Core\SEManager::getDocumentClassFilename($famName)
         ];
+
         foreach ($files as $fdlgen) {
             if (file_exists($fdlgen) && is_file($fdlgen)) {
                 if (!unlink($fdlgen)) {
@@ -938,7 +930,6 @@ class FamilyImport
                 \Anakeen\Core\Utils\System::addLogMsg($msg);
             }
             self::activateTrigger($dbaccess, $familyData["id"]);
-            self::resetSystemEnum($familyData["id"]);
 
             DbManager::commitPoint(__METHOD__);
             $savepointed = false;
@@ -955,20 +946,7 @@ class FamilyImport
         return '';
     }
 
-    /**
-     * reset and record system enum into docenum table
-     *
-     * @param int $famid
-     */
-    protected static function resetSystemEnum($famid)
-    {
-        $sql = sprintf("select * from docattr where docid=%d and type = 'enum' and (phpfile is null or phpfile='-') and options ~ 'system=yes'", $famid);
-        DbManager::query($sql, $results);
-        foreach ($results as $attr) {
-            $attrid = $attr["id"];
-            \ImportDocumentDescription::recordEnum($famid, $attrid, $attr["phpfunc"], true);
-        }
-    }
+
 
     /**
      * complete attribute properties from  parent attribute
