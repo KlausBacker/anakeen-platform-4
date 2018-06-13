@@ -9,5 +9,11 @@
       <router:requiredAccess/>
       <router:authenticated>true</router:authenticated>
     </router:route>
+    <router:route name="Ui:AnkComponents">
+      <router:callable>\Anakeen\Routes\Ui\AnkComponents</router:callable>
+      <router:method>GET</router:method>
+      <router:pattern>/ui/components/ank-components</router:pattern>
+      <router:description>Fetch Anakeen Web Components</router:description>
+    </router:route>
   </router:routes>
 </router:config>

@@ -81,6 +81,24 @@ class UIGetAssetPath
         }
     }
 
+    /**
+     * Add the VERSION query parameter to a custom asset path
+     * @param $assetPath
+     * @return string
+     */
+    public static function getCustomAssetPath($assetPath) {
+        $baseUrl = $assetPath;
+        $parsedQuery = parse_url($baseUrl, PHP_URL_QUERY);
+        if (!empty($parsedQuery)) {
+            $baseUrl .= '&';
+        } else {
+            $baseUrl .= '?';
+        }
+        $baseUrl .= "ws=".self::getWs();
+
+        return $baseUrl;
+    }
+
     public static function getSmartWebComponentsPath() {
         $ankComponentsPath = self::getSmartWebComponentsPaths();
         return $ankComponentsPath["ank-components"]['js'];

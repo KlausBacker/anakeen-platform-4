@@ -110,7 +110,11 @@ export default {
         },
 
         hasContent() {
-            return !!(this.seListProp.length);
+            if (this.tabModel) {
+                return !this.tabModel.isEmpty();
+            } else {
+                return false;
+            }
         },
 
         seListProp() {
@@ -386,7 +390,7 @@ export default {
                     .replaceWith(`<img class="seTab__icon" src="${data.data.icon}" />`);
                 this.privateScope.onAddDocumentTab(this.privateScope.getLazyTabIndex());
                 this.$(this.tabstrip.items()[this.privateScope.getLazyTabIndex()]).show();
-                this.$(this.lazyTabDocument).prop('documentvalue', JSON.stringify(data.data));
+                this.$(this.lazyTabDocument).prop('seValue', JSON.stringify(data.data));
                 this.tabModel.get(this.privateScope.getLazyTabIndex()).tabId = data.tabId;
                 this.tabsListSource.add(data);
             },

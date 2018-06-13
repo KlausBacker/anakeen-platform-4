@@ -41,33 +41,37 @@ Vue.prototype.$kendo = Vue.kendo = kendo;
 
 // Fetch user language from server
 Vue.http.get('/api/v2/ui/users/current')
-    .then(response => {
+    .then(response =>  {
         if (response.data.data.locale) {
-            Vue.config.language = response.data.data.locale;
+            const sanitizedLanguage = response.data.data.locale.split('.');
+            Vue.config.language = sanitizedLanguage[0];
         }
+    })
+    .catch(err => {
+        console.error(err);
     });
 
 // import and register your component(s)
 import Authent from './Authent/Authent.vue';
+import AuthentPassword from './Authent/AuthentPassword.vue';
 import Document from './SmartElement/SmartElement.vue';
 import SEList from './SEList/seList.vue';
 import DocumentTabs from './SETabs/seTabs.vue';
 import AnakeenLoading from './AnakeenLoading/AnakeenLoading.vue';
 import Logout from './Logout/Logout.vue';
 import Identity from './Identity/Identity.vue';
-import AuthentPassword from './Authent/AuthentPassword.vue'
 
 import Dock from './Dock/Dock.vue';
 import DockTab from './Dock/DockTab/DockTab.vue';
 
 Vue.customElement('ank-loading', AnakeenLoading);
 Vue.customElement('ank-authent', Authent);
+Vue.customElement('ank-authent-password', AuthentPassword);
 Vue.customElement('ank-smart-element', Document);
 Vue.customElement('ank-se-list', SEList);
 Vue.customElement('ank-se-tabs', DocumentTabs);
 Vue.customElement('ank-logout', Logout);
 Vue.customElement('ank-identity', Identity);
-Vue.customElement('ank-authent-password', AuthentPassword);
 
 Vue.prototype.$dockEventBus = new Vue();
 Vue.customElement('ank-dock', Dock);

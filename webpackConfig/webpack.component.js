@@ -73,7 +73,7 @@ const productionComponentConfig = merge([
         },
         output: {
             publicPath: '/components/dist/',
-            filename: '[name].js',
+            filename: '[name]-[chunkhash].js',
             path: path.resolve(PATHS.build, 'components/dist/'),
         },
     },

@@ -1,7 +1,7 @@
 import { AnkMixin } from '../AnkVueComponentMixin';
 // noinspection JSUnusedGlobalSymbols
 export default {
-    name: 'ank-input-password',
+    name: 'ank-authent-password',
     mixins: [AnkMixin],
     props: {
         label: {

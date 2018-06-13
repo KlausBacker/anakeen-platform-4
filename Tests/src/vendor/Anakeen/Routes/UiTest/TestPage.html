@@ -5,21 +5,25 @@
     <link rel="icon" type="image/png" href="[appicon]"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base href="../../">
-    [JS:CUSTOMREF]
-    [CSS:CUSTOMREF]
+
+    {{#CSS}}
+    <link rel="stylesheet" type="text/css" data-id="{{key}}" href="{{path}}"/>
+    {{/CSS}}
 
 </head>
 <body>
 <div class="systemLeft">
-    <div class="systemLeftUp">
-        <ank-identity large="true" email-alterable="true" password-alterable="true"></ank-identity>
-        <ank-logout class="systemLeftUpRight"></ank-logout>
-    </div>
     <ank-se-list class="systemLeftDown" id="seList"
                  label="Tests UI" smart-collection="TST_RENDER"
                  logo-url="CORE/Images/anakeen-logo.svg"
                  bind-event="se-selected: #seTabs.publicMethods.addSE"
-    ></ank-se-list>
+    >
+        <div class="systemListSlot" vue-slot="header">
+            <ank-identity large="true" email-alterable="true" password-alterable="true"></ank-identity>
+            <ank-logout class="systemLeftUpRight"></ank-logout>
+        </div>
+
+    </ank-se-list>
 </div>
 <div class="systemRight">
     <ank-se-tabs id="seTabs"
@@ -29,6 +33,9 @@
 
 </div>
 
+{{#JS}}
+<script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
+{{/JS}}
 
 </body>
 </html>

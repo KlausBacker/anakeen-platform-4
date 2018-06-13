@@ -26,7 +26,35 @@ class LoginPage
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $page=__DIR__."/LoginPage.html";
-        $response->write(file_get_contents($page));
-        return $response;
+        $template = file_get_contents($page);
+        $data = [
+            "JS" => [
+                ["key" =>"jquery",
+                    "path" => \Dcp\Ui\UIGetAssetPath::getJSJqueryPath()],
+                [
+                    "key" =>"kendo",
+                    "path" => \Dcp\Ui\UIGetAssetPath::getJSKendoPath()
+                ],
+                ["key" =>"ank-components",
+                    "path" => \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath()]
+            ],
+            "CSS" => [
+                [
+                    "key" => "bootstrap",
+                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/document/bootstrap.css")
+                ],
+                [
+                    "key" => "kendo",
+                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/document/kendo.css")
+                ],
+                [
+                    "key" => "admin",
+                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/document/login.css")
+                ]
+            ]
+        ];
+        $mustache = new \Mustache_Engine();
+
+        return $response->write($mustache->render($template, $data));
     }
 }
