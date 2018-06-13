@@ -2,28 +2,28 @@
 <router:config xmlns:router="http://www.anakeen.com/ns/routes/">
   <router:routes>
     <router:route name="AdminAccount:GroupList">
-      <router:description>Get list of group</router:description>
-      <router:pattern>/api/v2/admin/account/groups/</router:pattern>
+      <router:priority>0</router:priority>
       <router:callable>\Anakeen\Routes\Admin\Account\Groups</router:callable>
       <router:method>GET</router:method>
+      <router:pattern>/api/v2/admin/account/groups/</router:pattern>
+      <router:description>Get list of group</router:description>
       <router:requiredAccess>AdminAccount:admin</router:requiredAccess>
-      <router:priority>0</router:priority>
     </router:route>
     <router:route name="AdminAccount:UserList">
-      <router:description>Get list of users</router:description>
-      <router:pattern>/api/v2/admin/account/users/</router:pattern>
+      <router:priority>0</router:priority>
       <router:callable>\Anakeen\Routes\Admin\Account\Users</router:callable>
       <router:method>GET</router:method>
+      <router:pattern>/api/v2/admin/account/users/</router:pattern>
+      <router:description>Get list of users</router:description>
       <router:requiredAccess>AdminAccount:admin</router:requiredAccess>
-      <router:priority>0</router:priority>
     </router:route>
     <router:route name="AdminAccount:Info">
-      <router:description>Get list of users</router:description>
-      <router:pattern>/api/v2/admin/account/config/</router:pattern>
+      <router:priority>0</router:priority>
       <router:callable>\Anakeen\Routes\Admin\Account\Config</router:callable>
       <router:method>GET</router:method>
+      <router:pattern>/api/v2/admin/account/config/</router:pattern>
+      <router:description>Get list of users</router:description>
       <router:requiredAccess>AdminAccount:admin</router:requiredAccess>
-      <router:priority>0</router:priority>
     </router:route>
   </router:routes>
   <router:accesses>

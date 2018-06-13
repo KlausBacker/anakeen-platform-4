@@ -232,12 +232,17 @@ export default {
         },
         //Manually refresh the tree pane
         updateTreeData: function () {
-            this.groupTree.read();
+            const filterTitle = this.$refs.filterTree.value ? this.$refs.filterTree.value.toLowerCase() : "";
+            if (filterTitle) {
+                return this.groupTree.filter({field: "title", operator: "contains", value: filterTitle});
+            }
+            this.groupTree.filter({});
         },
         //Display the selected group in the ank-document
         updateGroupSelected: function (selectedGroupId) {
             const groupDoc = this.$refs.groupDoc;
             if (selectedGroupId && selectedGroupId !== "@users") {
+                this.selectedGroupDocumentId = selectedGroupId;
                 this.displayGroupDocument = true;
                 groupDoc.initid = selectedGroupId;
                 return;
@@ -254,6 +259,13 @@ export default {
                 this.gridContent.filter({field: "group", operator: "equal", value: selectedGroupLogin});
             }
 
+        },
+        //Open group selected in group change mode
+        openChangeGroup: function(event) {
+            const openDoc = this.$refs.openDoc;
+            openDoc.viewid = "changeGroup";
+            openDoc.initid = this.selectedGroupDocumentId;
+            this.toggleUserMode();
         },
         //Update the selected group
         onGroupSelect: function (event) {
@@ -290,33 +302,7 @@ export default {
         //Disable all the group non selected
         filterGroup: function (event) {
             event.preventDefault();
-            const filter = (dataSource, query) => {
-                let hasVisibleChildren = false;
-                const data = dataSource instanceof kendo.data.HierarchicalDataSource && dataSource.data();
-                for (let i = 0; i < data.length; i++) {
-                    let item = data[i];
-                    let text = item.title.toLowerCase();
-                    let itemVisible =
-                        query === true // parent already matches
-                        || query === "" // query is empty
-                        || text.indexOf(query) >= 0; // item text matches query
-
-                    let anyVisibleChildren = filter(item.children, itemVisible || query); // pass true if parent matches
-
-                    hasVisibleChildren = hasVisibleChildren || anyVisibleChildren || itemVisible;
-
-                    item.hidden = !itemVisible && !anyVisibleChildren;
-                }
-
-                if (data) {
-                    // re-apply filter on children
-                    dataSource.filter({field: "hidden", operator: "neq", value: true});
-                }
-
-                return hasVisibleChildren;
-            };
-            const query = this.$refs.filterTree.value ? this.$refs.filterTree.value.toLowerCase() : "";
-            return filter(this.groupTree, query);
+            this.updateTreeData();
         }
     }
 };

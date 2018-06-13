@@ -31,7 +31,7 @@ class Groups
                 "login"=> $currentAccount->login,
                 "documentId" => $currentAccount->fid,
                 "accountId" => $currentAccount->id,
-                "parents" => $currentAccount->getMemberOf(),
+                "parents" => $currentAccount->getGroupsId(),
                 "title" => getDocTitle($currentAccount->fid),
                 "nbUser" => $nbUser,
                 "items" => []
@@ -44,7 +44,6 @@ class Groups
         $searchAccount->setTypeFilter(\SearchAccount::userType);
         $request = $searchAccount->getQuery();
         DbManager::query("select count(*) from (".$request.") as nbResult;", $nbUsers, true, true);
-
 
         return $response->withJson(["groups"=> $groups, "nbUsers"=> $nbUsers]);
 

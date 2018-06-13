@@ -33,9 +33,9 @@
                     <div  class="accountManager_contentPart_groupPart" ref="documentPart">
                         <div v-show="displayGroupDocument" class="accountManager_contentPart_groupPart_wrapper">
                             <kendo-toolbar ref="groupToolbar">
-                                <kendo-toolbar-item type="button" icon="plus-sm"></kendo-toolbar-item>
+                                <kendo-toolbar-item type="button" text="Change group" @click="openChangeGroup"></kendo-toolbar-item>
                             </kendo-toolbar>
-                            <ank-document ref="groupDoc" ></ank-document>
+                            <ank-smart-element ref="groupDoc" ></ank-smart-element>
                         </div>
                         <div v-show="!displayGroupDocument">
                             No group selected
@@ -66,7 +66,7 @@
                 <kendo-toolbar>
                     <kendo-toolbar-item type="button" icon="arrow-double-60-left" @click="toggleUserMode"></kendo-toolbar-item>
                 </kendo-toolbar>
-                <ank-document ref="openDoc" ></ank-document>
+                <ank-smart-element ref="openDoc" ></ank-smart-element>
             </div>
         </div>
     </div>
