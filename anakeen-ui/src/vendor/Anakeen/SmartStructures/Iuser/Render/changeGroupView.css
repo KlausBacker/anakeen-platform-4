@@ -1,0 +1,7 @@
+#listOfGroups .k-checkbox:checked + .k-checkbox-label:before {
+    background-color: #007bff;
+}
+
+.hasChildChecked {
+    border-bottom: solid 1px #007bff;
+}

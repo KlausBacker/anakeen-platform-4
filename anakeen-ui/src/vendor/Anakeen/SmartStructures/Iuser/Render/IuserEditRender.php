@@ -16,7 +16,7 @@ class IuserEditRender extends DefaultConfigEditRender
         $options = parent::getOptions($document);
         $options->frame(myAttributes::us_fr_security)->setTemplate(
             <<< 'HTML'
-            {{{attributes.us_accexpiredate.label}}} : {{{attributes.us_accexpiredate.htmlContent}}}
+            <span class="us_accexpiredate">{{{attributes.us_accexpiredate.label}}}</span> : {{{attributes.us_accexpiredate.htmlContent}}}
 HTML
         );
         return $options;

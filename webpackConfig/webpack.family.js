@@ -13,6 +13,7 @@ const PATHS = {
     familyIHMDsearch: path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Dsearch/Render/dsearch.js'),
     familyIHMHelppage: path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Helppage/Render/helppage.js'),
     familyIHMMask: path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Mask/Render/MaskView.js'),
+    familyIHMIuserGroup: path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Iuser/Render/changeGroupView.js'),
     build: path.resolve(__dirname, '../anakeen-ui/src/public/uiAssets/Families/'),
 };
 
@@ -51,6 +52,7 @@ const productionDocumentConfig = merge([
             'dsearch/prod/dsearch': PATHS.familyIHMDsearch,
             'helppage/prod/helppage': PATHS.familyIHMHelppage,
             'mask/prod/MaskView': PATHS.familyIHMMask,
+            'iuser/prod/changeGroup': PATHS.familyIHMIuserGroup
         },
     },
     parts.clean(path.resolve(PATHS.build, 'dsearch/prod/')),
@@ -68,12 +70,14 @@ const debugDocumentConfig = merge([
             'dsearch/debug/dsearch': PATHS.familyIHMDsearch,
             'helppage/debug/helppage': PATHS.familyIHMHelppage,
             'mask/debug/MaskView': PATHS.familyIHMMask,
+            'iuser/debug/changeGroup': PATHS.familyIHMIuserGroup
         },
     },
     parts.generateNamedChunk(),
     parts.clean(path.resolve(PATHS.build, 'dsearch/debug/')),
     parts.clean(path.resolve(PATHS.build, 'helppage/debug/')),
     parts.clean(path.resolve(PATHS.build, 'mask/debug/')),
+    parts.clean(path.resolve(PATHS.build, 'iuser/debug/')),
 ]);
 
 const devConfig = merge([
@@ -82,6 +86,7 @@ const devConfig = merge([
             'dsearch/debug/dsearch': PATHS.familyIHMDsearch,
             'helppage/debug/helppage': PATHS.familyIHMHelppage,
             'mask/debug/MaskView': PATHS.familyIHMMask,
+            'iuser/debug/changeGroup': PATHS.familyIHMIuserGroup
         },
     },
     parts.devServer(
@@ -96,6 +101,9 @@ const devConfig = merge([
                     target: process.env.PROXY_URL || 'http://localhost',
                 },
                 '!/uiAssets/Families/mask/debug/*.js': {
+                    target: process.env.PROXY_URL || 'http://localhost',
+                },
+                '!/uiAssets/Families/iuser/debug/*.js': {
                     target: process.env.PROXY_URL || 'http://localhost',
                 },
             },
