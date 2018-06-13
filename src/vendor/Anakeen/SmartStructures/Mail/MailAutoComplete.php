@@ -29,7 +29,8 @@ class MailAutoComplete
         $dlf = $sf->search()->getDocumentList();
 
         if ($dlf->count() == 0) {
-            return sprintf(___("none smart structure are described to be used as recipient", "smart mail"));
+            $response->setError(sprintf(___("none smart structure are described to be used as recipient", "smart mail")));
+            return $response;
         }
         foreach ($dlf as $fam) {
             $cfam = SEManager::createTemporaryDocument($fam->id);
@@ -37,13 +38,16 @@ class MailAutoComplete
              * @var \Anakeen\Core\IMailRecipient $cfam
              */
             if (!method_exists($cfam, "getMail")) {
-                return sprintf(___("smart structure %s does not implement IMailRecipent - missing getMail method", "smart mail"), $fam->name);
+                $response->setError(sprintf(___("smart structure %s does not implement IMailRecipent - missing getMail method", "smart mail"), $fam->name));
+                return $response;
             }
             if (!method_exists($cfam, "getMailAttribute")) {
-                return sprintf(___("smart structure %s does not implement IMailRecipent - missing getMailAttribute method", "smart mail"), $fam->name);
+                $response->setError(sprintf(___("smart structure %s does not implement IMailRecipent - missing getMailAttribute method", "smart mail"), $fam->name));
+                return $response;
             }
             if (!method_exists($cfam, "getMailTitle")) {
-                return sprintf(___("smart structure %s does not implement IMailRecipient - missing getMailTitle method", "smart mail"), $fam->name);
+                $response->setError(sprintf(___("smart structure %s does not implement IMailRecipient - missing getMailTitle method", "smart mail"), $fam->name));
+                return $response;
             }
 
             $mailAttr = $cfam->getMailAttribute();

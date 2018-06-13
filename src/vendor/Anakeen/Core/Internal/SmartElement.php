@@ -30,6 +30,7 @@ use \Anakeen\Core\DbManager;
 use \Anakeen\Core\ContextManager;
 use \Anakeen\Core\SEManager;
 use Anakeen\Core\Internal\Format\StandardAttributeValue;
+use Anakeen\Core\SmartStructure\Callables\InputArgument;
 use Anakeen\LogManager;
 use Anakeen\Routes\Core\Lib\CollectionDataFormatter;
 use Anakeen\SmartHooks;
@@ -4787,7 +4788,7 @@ create unique index i_docir on doc(initid, revision);";
 
                     $inputs = array();
                     foreach ($bargs as $extraArg) {
-                        $inputs[] = new \inputArgument($extraArg);
+                        $inputs[] = new InputArgument($extraArg);
                     }
                     $inputs = array_merge($inputs, $parseMethod->inputs);
                     foreach ($inputs as $ki => $input) {

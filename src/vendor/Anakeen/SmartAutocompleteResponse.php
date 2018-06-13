@@ -5,9 +5,24 @@ namespace Anakeen;
 class SmartAutocompleteResponse
 {
     protected $data = [];
-
+    protected $error="";
     protected $outputs = [];
 
+    /**
+     * @return string
+     */
+    public function getError(): string
+    {
+        return $this->error;
+    }
+
+    /**
+     * @param string $error
+     */
+    public function setError(string $error): void
+    {
+        $this->error = $error;
+    }
     /**
      * @return array
      */

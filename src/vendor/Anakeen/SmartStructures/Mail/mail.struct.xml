@@ -26,8 +26,6 @@
         <smart:autocompletion>
             <smart:attr-autocomplete attr="mail_recip">
                 <smart:attr-callable function="Anakeen\SmartStructures\Mail\MailAutoComplete::getMailAddresses"/>
-                <smart:attr-argument type="attribute">D</smart:attr-argument>
-                <smart:attr-argument type="attribute">mail_recip</smart:attr-argument>
                 <smart:attr-returns>
                     <smart:attr-return attr="MAIL_RECIP"/>
                     <smart:attr-return attr="MAIL_RECIPID"/>
