@@ -8,11 +8,16 @@ $button-icon-color: #ffffff;
 $border-color: #a9a9a9;
 $tab-compact-color: #646464;
 $selected-color: #a9a9a9;
+$selected-header-footer-color: #777777;
 $green-selected: #8ae234;
 
 #dock-component {
   height: 100%;
   width: 100%;
+
+  .selectable {
+    cursor: pointer;
+  }
 
   #dock {
     background-color: $background-color;
@@ -53,6 +58,10 @@ $green-selected: #8ae234;
       }
     }
 
+    .header-component.selected {
+      background-color: $selected-header-footer-color;
+    }
+
     .footer-component {
       display: flex;
       flex-direction: row;
@@ -82,12 +91,15 @@ $green-selected: #8ae234;
       }
     }
 
+    .footer-component.selected {
+      background-color: $selected-header-footer-color;
+    }
+
     #expand-button {
       border-radius: 0;
       padding: 0;
       background-color: $background-color-button;
       color: $button-icon-color;
-      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -103,7 +115,6 @@ $green-selected: #8ae234;
       justify-content: flex-start;
       align-items: center;
       background-color: $background-color-tab;
-      cursor: pointer;
       overflow: hidden;
       text-overflow: ellipsis;
 
@@ -121,6 +132,10 @@ $green-selected: #8ae234;
         overflow: hidden;
         text-overflow: ellipsis;
       }
+    }
+
+    .dock-tab.selected {
+      background-color: $selected-color;
     }
   }
 
@@ -150,6 +165,10 @@ $green-selected: #8ae234;
     box-shadow: 2px 0 5px #aaa;
     transition: width 500ms ease-out;
 
+    .selected {
+      box-shadow: 2.5px 0 0 $green-selected inset;
+    }
+
     #expand-button {
       height: $tab-height;
     }
@@ -158,15 +177,6 @@ $green-selected: #8ae234;
       height: $tab-height;
       border-bottom: 1px solid $border-color;
       transition: width 500ms ease-out;
-    }
-
-    .dock-tab.selected {
-      background-color: $selected-color;
-      box-shadow: 2.5px 0 0 $green-selected inset;
-    }
-
-    .footer-component {
-      margin-top: auto;
     }
 
     .footer-components {
@@ -193,6 +203,10 @@ $green-selected: #8ae234;
     transition: width 500ms ease-out;
     box-shadow: -2px 0 5px #aaa;
 
+    .selected {
+      box-shadow: -2.5px 0 0 $green-selected inset;
+    }
+
     #expand-button {
       height: $tab-height;
     }
@@ -201,11 +215,6 @@ $green-selected: #8ae234;
       height: $tab-height;
       border-bottom: 1px solid $border-color;
       transition: width 500ms ease-out;
-    }
-
-    .dock-tab.selected {
-      background-color: $selected-color;
-      box-shadow: -2.5px 0 0 $green-selected inset;
     }
 
     .footer-components {
@@ -223,6 +232,10 @@ $green-selected: #8ae234;
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
+
+  .selected {
+    box-shadow: 0 2px 0 $green-selected inset;
+  }
 
   #dock {
     display: flex;
@@ -243,11 +256,6 @@ $green-selected: #8ae234;
       .dock-tab-expanded {
         padding-right: 1rem;
       }
-    }
-
-    .dock-tab.selected {
-      background-color: $selected-color;
-      box-shadow: 0 2px 0 $green-selected inset;
     }
 
     .footer-components {
@@ -273,6 +281,10 @@ $green-selected: #8ae234;
     align-items: stretch;
     box-shadow: 0 -2px 5px #aaa;
 
+    .selected {
+      box-shadow: 0 -2.5px 0 $green-selected inset;
+    }
+
     #expand-button {
       padding-left: 1rem;
       padding-right: 1rem;
@@ -286,11 +298,6 @@ $green-selected: #8ae234;
       .dock-tab-expanded {
         padding-right: 1rem;
       }
-    }
-
-    .dock-tab.selected {
-      background-color: $selected-color;
-      box-shadow: 0 -2.5px 0 $green-selected inset;
     }
 
     .footer-components {

@@ -1,13 +1,13 @@
 <template>
     <div>
         <div id="compactFragment">
-            <slot name="compact"><span>[-]</span></slot>
+            <slot name="compact-label"></slot>
         </div>
         <div id="expandedFragment">
-            <slot  name="expanded"><span>[Empty]</span></slot>
+            <slot  name="expanded-label"></slot>
         </div>
         <div id="contentFragment">
-            <slot name="content"><div>[No content]</div></slot>
+            <slot name="content"></slot>
         </div>
     </div>
 </template>

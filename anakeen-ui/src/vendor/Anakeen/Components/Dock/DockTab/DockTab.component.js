@@ -8,14 +8,20 @@ export default {
             default: false,
         },
 
+        // Define if the tab is selectable to display its content, or if it is just a widget
+        selectableTab: {
+            type: Boolean,
+            default: true,
+        },
+
         // Define if the tab is a header component of the dock
-        headerComponent: {
+        headerTab: {
             type: Boolean,
             default: false,
         },
 
         // Define if the tab is a footer component of the dock
-        footerComponent: {
+        footerTab: {
             type: Boolean,
             default: false,
         },
@@ -31,7 +37,7 @@ export default {
     },
 
     methods: {
-        // Send the item to the parent dock with an event
+        // Send the tab to the parent dock with an event
         emitTab() {
             this.$dockEventBus.$emit('tabLoaded', {
                 id: this.id,
@@ -39,24 +45,31 @@ export default {
                 expanded: this.expanded,
                 content: this.content,
                 selected: this.selectedTab,
+                selectable: this.selectableTab,
             });
         },
 
-        // Send the item as a header component to the parent dock with an event
-        emitHeaderComponent() {
-            this.$dockEventBus.$emit('headerComponentLoaded', {
+        // Send the tab as a header tab to the parent dock with an event
+        emitHeaderTab() {
+            this.$dockEventBus.$emit('headerTabLoaded', {
                 id: this.id,
                 compact: this.compact,
                 expanded: this.expanded,
+                content: this.content,
+                selected: this.selectedTab,
+                selectable: this.selectableTab,
             });
         },
 
-        //
-        emitFooterComponent() {
-            this.$dockEventBus.$emit('footerComponentLoaded', {
+        // Send the tab as a header tab to the parent dock with an event
+        emitFooterTab() {
+            this.$dockEventBus.$emit('footerTabLoaded', {
                 id: this.id,
                 compact: this.compact,
                 expanded: this.expanded,
+                content: this.content,
+                selected: this.selected,
+                selectable: this.selectableTab,
             });
         },
     },
@@ -71,11 +84,11 @@ export default {
         this.$('#expandedFragment').remove();
         this.$('#contentFragment').remove();
 
-        if (this.compact && this.expanded && this.content) {
-            if (this.headerComponent) {
-                this.emitHeaderComponent();
-            } else if (this.footerComponent) {
-                this.emitFooterComponent();
+        if (this.compact || this.expanded || this.content) {
+            if (this.headerTab) {
+                this.emitHeaderTab();
+            } else if (this.footerTab) {
+                this.emitFooterTab();
             } else {
                 this.emitTab();
             }
