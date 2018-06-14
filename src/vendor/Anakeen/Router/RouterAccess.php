@@ -50,7 +50,7 @@ class RouterAccess
         }
     }
 
-    protected static function hasPermission($aclName, $appName = "CORE", $forceRecheck = false)
+    public static function hasPermission($aclName, $appName = "CORE", $forceRecheck = false)
     {
         static $first = true;
         static $acl;
