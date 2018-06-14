@@ -149,8 +149,11 @@ export default {
             const toggleUserMode = this.toggleUserMode.bind(this);
             const openInCreation = (event) => {
                 if (event && event.target && event.target[0] && event.target[0].id) {
-                    openDoc.initid = event.target[0].id;
-                    openDoc.viewid = "!defaultCreation";
+                    openDoc.publicMethods.fetchSmartElement({
+                        initid: event.target[0].id,
+                        viewId: "!defaultCreation",
+                        customClientData: {"defaultGroup": this.selectedGroupDocumentId}
+                    });
                     toggleUserMode();
                 }
             };
@@ -192,8 +195,10 @@ export default {
                 event.preventDefault();
                 const userId = event.currentTarget.dataset["initid"];
                 if (userId) {
-                    openDoc.viewid = "!defaultConsultation";
-                    openDoc.initid = userId;
+                    openDoc.publicMethods.fetchSmartElement({
+                        initid: userId,
+                        viewId: "!defaultConsultation"
+                    });
                     toggleUserMode();
                 }
             });
@@ -263,8 +268,10 @@ export default {
         //Open group selected in group change mode
         openChangeGroup: function(event) {
             const openDoc = this.$refs.openDoc;
-            openDoc.viewid = "changeGroup";
-            openDoc.initid = this.selectedGroupDocumentId;
+            openDoc.publicMethods.fetchSmartElement({
+                initid: this.selectedGroupDocumentId,
+                viewId: "changeGroup"
+            });
             this.toggleUserMode();
         },
         //Update the selected group
