@@ -43,6 +43,7 @@
             <xs:enumeration value="R"/>
             <xs:enumeration value="H"/>
             <xs:enumeration value="O"/>
+            <xs:enumeration value="U"/>
         </xs:restriction>
     </xs:simpleType>
 
@@ -80,7 +81,7 @@
             <xs:element type="v1:enumType" name="enum" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
         </xs:choice>
         <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:boolean" name="extendable" default="true"/>
+        <xs:attribute type="xs:boolean" name="extendable" default="false"/>
     </xs:complexType>
     <xs:complexType name="attr-standardType" mixed="true">
         <xs:sequence minOccurs="0" maxOccurs="unbounded">
@@ -141,6 +142,7 @@
         <xs:simpleContent>
             <xs:extension base="xs:string">
                 <xs:attribute type="xs:string" name="type"/>
+                <xs:attribute type="xs:string" name="name"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
@@ -266,6 +268,7 @@
             <xs:element type="v1:attr-standardType" name="attr-password" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
             <xs:element type="v1:attr-standardType" name="attr-text" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
             <xs:element type="v1:attr-standardType" name="attr-longtext" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+            <xs:element type="v1:attr-standardType" name="attr-htmltext" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
             <xs:element type="v1:attr-standardType" name="attr-enum" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
             <xs:element type="v1:attr-standardType" name="attr-docid" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
             <xs:element type="v1:attr-standardType" name="attr-account" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>

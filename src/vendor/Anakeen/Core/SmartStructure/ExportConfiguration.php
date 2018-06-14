@@ -594,7 +594,6 @@ class ExportConfiguration
                 $smartAuto->appendChild($this->getAutocompleteFunc($attr));
             } elseif ($attr->isNormal && $attr->properties && $attr->properties->autocomplete) {
                 $smartAuto->appendChild($this->getAutocompleteFunc($attr));
-
             }
         }
 
@@ -625,7 +624,7 @@ class ExportConfiguration
         $smartAttrHook->setAttribute("attr", $attr->id);
         $smartAttrCallable = $this->cel("attr-callable");
 
-        if ($attr->properties->autocomplete) {
+        if ($attr->properties && $attr->properties->autocomplete) {
             $parseMethod = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
             $parseMethod->parse($attr->properties->autocomplete);
             $smartAttrCallable->setAttribute("function", sprintf("%s::%s", $parseMethod->className, $parseMethod->methodName));
@@ -734,7 +733,7 @@ class ExportConfiguration
         $smartAttrHook->setAttribute("attr", $attr->id);
         $smartAttrCallable = $this->cel("attr-callable");
 
-        $parseMethod = new \Anakeen\Core\martStructure\Callables\ParseFamilyMethod();
+        $parseMethod = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
         $parseMethod->parse($attr->phpconstraint);
 
         $smartAttrCallable->setAttribute("function", $parseMethod->className . "::" . $parseMethod->methodName);

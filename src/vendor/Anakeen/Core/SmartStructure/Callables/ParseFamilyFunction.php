@@ -67,7 +67,8 @@ class ParseFamilyFunction
 
     /**
      * @static
-     * @param $methCall
+     * @param      $methCall
+     * @param bool $noOut
      * @return parseFamilyFunction
      */
     public function parse($methCall, $noOut = false)
@@ -105,10 +106,6 @@ class ParseFamilyFunction
 
     protected function parseArguments()
     {
-        $args = array();
-        $types = array();
-        $ak = 0;
-        $bq = '';
         for ($i = 0; $i < strlen($this->inputString); $i++) {
             $c = $this->inputString[$i];
 
@@ -197,13 +194,24 @@ class ParseFamilyFunction
         $index = $i;
         $arg = trim($arg);
 
+        $key=null;
+        if (preg_match('/^{([a-z_][a-z0-9_]+)}(.*)$/i', $arg, $reg)) {
+            $key = $reg[1];
+            $arg = $reg[2];
+        }
+
         if (preg_match('/^[a-z_][a-z0-9_]*$/i', $arg)) {
             $type = "any";
         } else {
+            $arg=trim($arg, '"');
             $type = "string";
         }
 
-        $this->inputs[] = new InputArgument($arg, $type);
+        if ($key === null) {
+            $this->inputs[] = new InputArgument($arg, $type);
+        } else {
+            $this->inputs[$key] = new InputArgument($arg, $type);
+        }
     }
 
     /**
@@ -243,7 +251,16 @@ class ParseFamilyFunction
             $index++;
             $this->gotoNextArgument($index);
         }
-        $this->inputs[] = new InputArgument($arg, "string");;
+        $key=null;
+        if (preg_match('/^{([a-z_][a-z0-9_]+)}(.*)$/i', $arg, $reg)) {
+            $key = $reg[1];
+            $arg = $reg[2];
+        }
+        if ($key === null) {
+            $this->inputs[] = new InputArgument($arg, "string");
+        } else {
+            $this->inputs[$key] = new InputArgument($arg, "string");
+        }
     }
 
     /**
@@ -287,7 +304,15 @@ class ParseFamilyFunction
             $arg = substr($arg, 0, $r);
         }
         $index = $i;
-
-        $this->inputs[] = new InputArgument($arg, "string");
+        $key=null;
+        if (preg_match('/^{([a-z_][a-z0-9_]+)}(.*)$/i', $arg, $reg)) {
+            $key = $reg[1];
+            $arg = $reg[2];
+        }
+        if ($key === null) {
+            $this->inputs[] = new InputArgument($arg, "string");
+        } else {
+            $this->inputs[$key] = new InputArgument($arg, "string");
+        }
     }
 }

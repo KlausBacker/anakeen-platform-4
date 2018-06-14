@@ -2209,12 +2209,15 @@ create unique index i_docir on doc(initid, revision);";
             if ($id == -1) {
                 $id = $this->id;
             }
+            if ($id == 0) {
+                return array();
+            }
             if (!isset($this->childs)) {
                 $this->childs = array();
             }
 
             $s = new \SearchDoc($this->dbaccess, -1);
-            $s->addFilter("fromid = " . $id);
+            $s->addFilter("fromid = %d", $id);
             $s->overrideViewControl();
             $table1 = $s->search();
             if ($table1) {
@@ -3886,7 +3889,7 @@ create unique index i_docir on doc(initid, revision);";
                                             $tenum = $oattr->getEnum();
                                             $keys = array_keys($tenum);
                                             if (!in_array($avalue, $keys)) {
-                                                $oattr->addEnum( $avalue, $avalue);
+                                                $oattr->addEnum($avalue, $avalue);
                                             }
                                         }
                                         break;

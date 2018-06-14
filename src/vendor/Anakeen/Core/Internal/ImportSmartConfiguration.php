@@ -171,11 +171,15 @@ class ImportSmartConfiguration
             $attr->phpfunc = $this->extractAttrHooks($attrNode, function (\DOMElement $e) {
                 return $e->getAttribute("event") === "onPreRefresh";
             });
-            // For compatibility on old autocomplete
-            if (!$attr->phpfunc) {
-                list($attr->phpfunc, $attr->phpfile) = $this->extractAttrAutoComplete($attrNode, function (\DOMElement $e) {
-                    return true;
-                });
+
+
+            list($attr->autocomplete, $attr->phpfile) = $this->extractAttrAutoComplete($attrNode, function (\DOMElement $e) {
+                return true;
+            });
+            if ($attr->phpfile && ! $attr->phpfunc) {
+                // For compatibility on old autocomplete
+                $attr->phpfunc=$attr->autocomplete;
+                $attr->autocomplete="";
             }
 
 
@@ -217,7 +221,7 @@ class ImportSmartConfiguration
             /**
              * @var \DOMElement $enumConfig
              */
-            if ($enumConfig->getAttribute("extendable") === "false") {
+            if ($enumConfig->getAttribute("extendable") !== "true") {
                 $data[] = ["RESET", "enums", $enumConfig->getAttribute("name")];
             }
             $data = array_merge($data, $this->extractEnum($enumConfig, $enumConfig->getAttribute("name")));
@@ -313,6 +317,11 @@ class ImportSmartConfiguration
         list($attr->autocomplete, $attr->phpfile) = $this->extractAttrAutoComplete($attrNode, function (\DOMElement $e) {
             return true;
         });
+        if ($attr->phpfile && ! $attr->phpfunc) {
+            // For compatibility on old autocomplete
+            $attr->phpfunc=$attr->autocomplete;
+            $attr->autocomplete="";
+        }
 
 
         $attr->option = $this->extractAttrOptions($attrNode);
@@ -509,10 +518,14 @@ class ImportSmartConfiguration
          */
         foreach ($argNodes as $argNode) {
             $type = $argNode->getAttribute("type");
+            $name = $argNode->getAttribute("name");
             $arg = $argNode->nodeValue;
             if ($type === "string") {
                 // Escape quote
                 $arg = '"' . str_replace('"', '\\"', $arg) . '"';
+            }
+            if ($name) {
+                $arg=sprintf("{%s}%s", $name, $arg);
             }
             $args[] = $arg;
         }
