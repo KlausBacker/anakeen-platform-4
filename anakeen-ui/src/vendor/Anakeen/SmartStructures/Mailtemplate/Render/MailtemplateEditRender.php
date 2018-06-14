@@ -14,6 +14,7 @@ class MailtemplateEditRender extends DefaultConfigEditRender
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
+        $options->enum()->useFirstChoice(true);
         $options->enum(myAttributes::tmail_savecopy)->setDisplay('bool');
         $options->enum(myAttributes::tmail_ulink)->setDisplay('bool');
         $options->enum(myAttributes::tmail_savecopy)->displayDeleteButton(false);
@@ -31,6 +32,9 @@ class MailtemplateEditRender extends DefaultConfigEditRender
                 {{{attributes.tmail_savecopy.htmlView}}}
                 {{{attributes.tmail_ulink.htmlView}}}
 HTML
+        );
+        $options->docid(myAttributes::tmail_workflow)->setInputTooltip(
+            ___("Workflow Structure to use revision comment and transition parameters in body message", "mailtemplate")
         );
         return $options;
     }

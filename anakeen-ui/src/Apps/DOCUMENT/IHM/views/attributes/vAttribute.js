@@ -571,6 +571,12 @@ define([
                             error: "Your navigator seems offline, try later"
                         };
                     }
+                    if (response.responseJSON && response.responseJSON.exceptionMessage) {
+                         return ({
+                             success: false,
+                             error: response.responseJSON.exceptionMessage
+                         });
+                    }
                     return ({
                         success: false,
                         error: "Unexpected error: " + response.status + " " + response.statusText
@@ -596,7 +602,13 @@ define([
                         result.error = result.error.join(" ");
                     }
                     //use the success callback because http error are handling by the pipe
-                    success([{"title": "", "error": result.error}]);
+                    success([{
+                        title: "",
+                        message: {
+                                type: "error",
+                                contentHtml: "",
+                                contentText: result.error
+                        }}]);
                 }
             );
         },
