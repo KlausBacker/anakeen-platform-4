@@ -43,7 +43,6 @@
                     </div>
                     <div class="accountManager_contentPart_gridPart">
                         <kendo-toolbar ref="userToolbar">
-                            <kendo-toolbar-item type="button" icon="plus-sm"></kendo-toolbar-item>
                         </kendo-toolbar>
                         <kendo-grid ref="grid"
                                     :data-source="gridContent"

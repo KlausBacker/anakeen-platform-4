@@ -32,7 +32,7 @@ class Config
         $result["user"][] = [
             "id"=> $user->name,
             "text" => $user->getTitle(),
-            "imageUrl" => '/'.$user->getIcon("", 5),
+            "imageUrl" => $user->getIcon("", 15),
             "canCreate" => !$user->control("icreate")
         ];
 
@@ -43,7 +43,7 @@ class Config
         $result["group"][] = [
             "id"=> $group->name,
             "text" => $group->getTitle(),
-            "imageUrl" => '/'.$group->getIcon("", 5),
+            "imageUrl" => $group->getIcon("", 5),
             "canCreate" => !$group->control("icreate")
         ];
 
