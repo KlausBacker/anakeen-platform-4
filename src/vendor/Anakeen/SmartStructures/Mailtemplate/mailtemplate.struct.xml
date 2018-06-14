@@ -10,7 +10,7 @@
                 <smart:attr-docid name="tmail_family" label="Smart Structure" visibility="W" relation="-1"/>
                 <smart:attr-docid name="tmail_workflow" label="Workflow Structure" visibility="W" relation="-1"/>
                 <smart:attr-fieldset name="tmail_t_from" type="array" label="Émetteur" visibility="U">
-                    <smart:attr-enum name="tmail_fromtype" label="type" visibility="W" relation="MAILTEMPLATE-tmail_fromtype"/>
+                    <smart:attr-enum name="tmail_fromtype" label="Type" visibility="W" relation="MAILTEMPLATE-tmail_fromtype"/>
                     <smart:attr-text name="tmail_from" label="De" visibility="W"/>
                 </smart:attr-fieldset>
                 <smart:attr-fieldset name="tmail_dest" type="array" label="Destinataires" visibility="W">

@@ -43,6 +43,7 @@
             <xs:enumeration value="R"/>
             <xs:enumeration value="H"/>
             <xs:enumeration value="O"/>
+            <xs:enumeration value="S"/>
             <xs:enumeration value="U"/>
         </xs:restriction>
     </xs:simpleType>
@@ -102,6 +103,7 @@
                         <li>R : For ReadOnly</li>
                         <li>H : For Hidden</li>
                         <li>O : For WriteOnly</li>
+                        <li>S : For Disable in edition</li>
                     </ul>
                 </xs:documentation>
             </xs:annotation>
@@ -269,6 +271,8 @@
             <xs:element type="v1:attr-standardType" name="attr-text" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
             <xs:element type="v1:attr-standardType" name="attr-longtext" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
             <xs:element type="v1:attr-standardType" name="attr-htmltext" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+            <xs:element type="v1:attr-standardType" name="attr-file" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+            <xs:element type="v1:attr-standardType" name="attr-image" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
             <xs:element type="v1:attr-standardType" name="attr-enum" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
             <xs:element type="v1:attr-standardType" name="attr-docid" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
             <xs:element type="v1:attr-standardType" name="attr-account" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>

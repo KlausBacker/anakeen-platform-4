@@ -267,7 +267,7 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml ">
             <label>Add Mail Template form family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.csv ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml ">
             <label>Add Sent message family</label>
         </process>
 
@@ -576,7 +576,7 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml">
             <label>Add Mail Template form family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.csv ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml ">
             <label>Add Sent message family</label>
         </process>
 
