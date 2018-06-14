@@ -7,7 +7,7 @@ Modifier
 Changer de groupe";"VCONS
 VEDIT
 VEDIT";"
-
+\Anakeen\SmartStructures\Group\Render\GroupEditRender
 \Anakeen\SmartStructures\Group\Render\GroupChangeGroup";"
 
 ";"0
@@ -16,7 +16,7 @@ VEDIT";"
 yes
 no";"
 
-";;;;;
+";default_edit;Modifier (default_edit);;;
 ;;;;;;;;;;;;;;;;;;;;
 //;;;;;;;;;;;;;;;;;;;;
 BEGIN;;;;;IGROUP;;;;;;;;;;;;;;;

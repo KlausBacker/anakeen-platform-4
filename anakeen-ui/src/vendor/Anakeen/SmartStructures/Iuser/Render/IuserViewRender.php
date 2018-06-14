@@ -61,9 +61,9 @@ class IuserViewRender extends DefaultConfigViewRender
         $js = parent::getJsReferences();
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
 
-        $js["dduiMenu"] = '/uiAssets/Families/iuser/prod/addMenu.js?ws=' . $version;
+        $js["dduiMenu"] = '/uiAssets/Families/iuser/prod/iuser.js?ws=' . $version;
         if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {
-            $js["dduiMenu"] = '/uiAssets/Families/iuser/debug/addMenu.js?ws=' . $version;
+            $js["dduiMenu"] = '/uiAssets/Families/iuser/debug/iuser.js?ws=' . $version;
         }
 
         return $js;

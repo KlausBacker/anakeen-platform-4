@@ -99,20 +99,6 @@ import './changeGroupView.css';
                                         };
                                         hasChildChecked(groups);
 
-                                        /*const isVisible = (data) => {
-                                            return data.reduce((accumulator, currentData) => {
-                                                if (currentData.items && currentData.items.length) {
-                                                    if (isVisible(currentData.items)) {
-                                                        currentData.hidden = false;
-                                                        return true;
-                                                    }
-                                                }
-                                                currentData.hidden = !(filterTitle === "" || currentData.title.toLowerCase().indexOf(filterTitle) >= 0);
-                                                return accumulator || !currentData.hidden;
-                                            }, false);
-                                        };
-                                        isVisible(groups);*/
-
                                         options.success(groups);
                                     }).catch((error) => {
                                     console.error("Unable to get group", error);

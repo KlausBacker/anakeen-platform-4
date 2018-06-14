@@ -4,7 +4,7 @@ window.dcp.document.documentController('addEventListener',
         name: 'addmenu',
         documentCheck: (documentObject) => {
             const serverData = window.dcp.document.documentController("getCustomServerData");
-            return documentObject.renderMode === 'view' && serverData["ADD_CUSTOM_MENU"];
+            return documentObject.renderMode === 'view' && serverData && serverData["ADD_CUSTOM_MENU"];
         }
     },
     () => {

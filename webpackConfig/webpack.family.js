@@ -14,7 +14,7 @@ const PATHS = {
     familyIHMHelppage: path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Helppage/Render/helppage.js'),
     familyIHMMask: path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Mask/Render/MaskView.js'),
     familyIHMIuserGroup: path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Iuser/Render/changeGroupView.js'),
-    familyIHMIuserMenu : path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Iuser/Render/addMenu.js'),
+    familyIHMIuser : path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Iuser/Render/mainIuser.js'),
     build: path.resolve(__dirname, '../anakeen-ui/src/public/uiAssets/Families/'),
 };
 
@@ -54,7 +54,7 @@ const productionDocumentConfig = merge([
             'helppage/prod/helppage': PATHS.familyIHMHelppage,
             'mask/prod/MaskView': PATHS.familyIHMMask,
             'iuser/prod/changeGroup': PATHS.familyIHMIuserGroup,
-            'iuser/prod/addMenu': PATHS.familyIHMIuserMenu,
+            'iuser/prod/iuser': PATHS.familyIHMIuser,
         },
     },
     parts.clean(path.resolve(PATHS.build, 'dsearch/prod/')),
@@ -74,7 +74,7 @@ const debugDocumentConfig = merge([
             'helppage/debug/helppage': PATHS.familyIHMHelppage,
             'mask/debug/MaskView': PATHS.familyIHMMask,
             'iuser/debug/changeGroup': PATHS.familyIHMIuserGroup,
-            'iuser/debug/addMenu': PATHS.familyIHMIuserMenu,
+            'iuser/debug/iuser': PATHS.familyIHMIuser,
         },
     },
     parts.generateNamedChunk(),
@@ -91,7 +91,7 @@ const devConfig = merge([
             'helppage/debug/helppage': PATHS.familyIHMHelppage,
             'mask/debug/MaskView': PATHS.familyIHMMask,
             'iuser/debug/changeGroup': PATHS.familyIHMIuserGroup,
-            'iuser/debug/addMenu': PATHS.familyIHMIuserMenu,
+            'iuser/debug/iuser': PATHS.familyIHMIuser,
         },
     },
     parts.devServer(
