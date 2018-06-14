@@ -31,7 +31,7 @@ export default {
         // Size of the dock when it is not expanded
         compactSize: {
             type: String,
-            default: '3.5rem',
+            default: '4.5rem',
         },
 
         // Size of the dock when it is expanded
@@ -49,6 +49,7 @@ export default {
             expandedDock: false,
             selectedTab: '-1',
             size: '',
+            loadedTabs: 0,
         };
     },
 
@@ -218,13 +219,17 @@ export default {
         // Select a tab, to display its content, with its id
         selectTabWithId(tabId) {
             let allTabs = this.headerTabs.concat(this.tabs, this.footerTabs);
+            let actualSelectedTab = allTabs.find(element => element.id === this.selectedTab);
             let newSelectedTab = allTabs.find(element => element.id === tabId);
             if (newSelectedTab !== undefined && newSelectedTab.selectable) {
                 let eventName = 'beforeTabSelection';
                 let options = {
                     cancelable: true,
                     detail: [
-                        newSelectedTab,
+                        {
+                            actualTab: actualSelectedTab,
+                            newTab: newSelectedTab,
+                        },
                     ],
                 };
                 let event;
@@ -239,6 +244,8 @@ export default {
 
                 if (!event.defaultPrevented) {
                     this.selectedTab = newSelectedTab.id;
+                    actualSelectedTab.selected = false;
+                    newSelectedTab.selected = true;
                     this.$emit('tabSelected', newSelectedTab);
                 } else {
                     this.$emit('tabSelectionCanceled');
@@ -435,8 +442,9 @@ export default {
                     _this.$el.parentNode.dispatchEvent(event);
 
                     if (!event.defaultPrevented) {
+                        let removed = currentTabsArea[positionToRemove];
                         currentTabsArea.splice(positionToRemove, 1);
-                        _this.$emit('tabRemoved');
+                        _this.$emit('tabRemoved', removed);
                     } else {
                         _this.$emit('tabRemoveCanceled');
                     }
@@ -475,11 +483,5 @@ export default {
         } else {
             this.size = this.compactSize;
         }
-    },
-
-    mounted() {
-        this.$expectedChildren = this.$('#original-dom').find('ank-dock-tab').length;
-
-        // TODO EMIT DOCK LOADED EVENT WHEN ALL TABS ARE LOADED
     },
 };

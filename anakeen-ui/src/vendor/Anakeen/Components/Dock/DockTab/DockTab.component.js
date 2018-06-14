@@ -8,7 +8,7 @@ export default {
             default: false,
         },
 
-        // Define if the tab is selectable to display its content, or if it is just a widget
+        // Define if the tab is selectable to display its content
         selectableTab: {
             type: Boolean,
             default: true,
