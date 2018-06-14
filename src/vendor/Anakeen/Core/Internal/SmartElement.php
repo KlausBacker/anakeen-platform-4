@@ -6208,7 +6208,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getIcon($idicon = "", $size = null, $otherId = null)
     {
-        $apiURL = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_URLINDEX") . "/" . CollectionDataFormatter::APIURL;
+        $apiURL = '/'.CollectionDataFormatter::APIURL;
         $efile = null;
 
         if ($idicon == "") {
