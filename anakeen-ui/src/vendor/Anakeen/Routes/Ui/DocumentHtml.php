@@ -132,6 +132,7 @@ class DocumentHtml
             $data["viewInformation"] = \Dcp\Ui\JsonHandler::encodeForHTML(false);
         }
         $data["messages"] = $this->getWarningMessages();
+
         $render = new \Dcp\Ui\RenderDefault();
 
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
@@ -171,6 +172,7 @@ class DocumentHtml
 
             $messages[] = $message;
         }
+        $action->parent->clearWarningMsg();
         return json_encode($messages);
     }
 

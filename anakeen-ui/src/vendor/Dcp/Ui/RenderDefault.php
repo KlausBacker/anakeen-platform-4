@@ -93,6 +93,9 @@ class RenderDefault implements IRenderConfig
                 "dynamicMenu" => array(
                     "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/menu/dynamicMenu.mustache"
                 ) ,
+                "callableMenu" => array(
+                    "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/menu/callableMenu.mustache"
+                ) ,
                 "separatorMenu" => array(
                     "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/menu/separatorMenu.mustache"
                 )

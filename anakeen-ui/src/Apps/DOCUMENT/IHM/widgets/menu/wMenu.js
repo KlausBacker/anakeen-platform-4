@@ -4,8 +4,7 @@ define([
     'mustache',
     'dcpDocument/i18n/documentCatalog',
     'dcpDocument/widgets/widget'
-], function wMenu($, _, Mustache, i18n)
-{
+], function wMenu($, _, Mustache, i18n) {
     'use strict';
 
     $.widget("dcp.dcpMenu", {
@@ -15,15 +14,13 @@ define([
         },
 
         kendoMenuWidget: null,
-        _create: function wMenuCreate()
-        {
+        _create: function wMenuCreate() {
             this._tooltips = [];
             this.popupWindows = [];
             this._initStructure();
         },
 
-        _initStructure: function wMenuInitStructure()
-        {
+        _initStructure: function wMenuInitStructure() {
             var $content, $mainElement, scopeWidget = this;
             //InitDom
             $mainElement = $(Mustache.render(this._getTemplate("menu") || "", _.extend({uuid: this.uuid}, this.options)));
@@ -35,10 +32,16 @@ define([
                 openOnClick: true,
                 closeOnClick: true,
 
-                select: function wMenuSelect(event)
-                {
-                    var $menuElement = $(event.item), eventContent, $elementA, href, configMenu, confirmText, confirmOptions,
+                select: function wMenuSelect(event) {
+                    var $menuElement = $(event.item), eventContent, $elementA, href, configMenu, confirmText,
+                        confirmOptions,
                         confirmDcpWindow, target, targetOptions, dcpWindow, $bodyDiv, wFeature = '';
+
+
+                    if ($menuElement.hasClass("menu__element--callable")) {
+                        scopeWidget.callMenu($menuElement);
+                        return;
+                    }
 
                     // Use specific select only for terminal items
                     if (!$menuElement.hasClass("menu__element--item")) {
@@ -64,8 +67,7 @@ define([
                                     htmlMessage: confirmText,
                                     textMessage: ''
                                 },
-                                confirm: function wMenuConfirm()
-                                {
+                                confirm: function wMenuConfirm() {
                                     $elementA.removeClass('menu--confirm');
                                     $elementA.trigger("click");
                                     $elementA.addClass('menu--confirm');
@@ -99,10 +101,10 @@ define([
                                 if ($elementA.attr("href") && $elementA.attr("href").substring(0, 1) === "#") {
                                     href = window.location.protocol +
                                         "//" + window.location.hostname +
-                                        (window.location.port ? ':' + window.location.port: '') +
+                                        (window.location.port ? ':' + window.location.port : '') +
                                         (window.location.pathname ? window.location.pathname : '/') +
                                         (window.location.search ? window.location.search : '')
-                                        +$elementA.attr("href");
+                                        + $elementA.attr("href");
                                 }
 
                                 if (target === "_self") {
@@ -152,8 +154,7 @@ define([
                         }
                     }
                 },
-                deactivate: function wMenuDeactivate(event)
-                {
+                deactivate: function wMenuDeactivate(event) {
                     var $menuElement = $(event.item);
 
                     // Use for reopen for Dynamic menu
@@ -163,8 +164,7 @@ define([
                         $content.data("kendoMenu").open($menuElement);
                     }
                 },
-                open: function wMenuOpen(event)
-                {
+                open: function wMenuOpen(event) {
 
                     var $menuElement = $(event.item);
 
@@ -190,9 +190,8 @@ define([
                                 }
 
                                 // Get subMenu
-                                $.get(menuUrl, function wMenuDone(response)
-                                {
-                                    var data=response.data;
+                                $.get(menuUrl, function wMenuDone(response) {
+                                    var data = response.data;
                                     $menuElement.find(".listmenu__content").html('');
 
                                     scopeWidget._insertMenuContent(
@@ -212,8 +211,7 @@ define([
                                         $content.data("kendoMenu").close($menuElement);
                                     }
 
-                                }).fail(function wMenuFail(data)
-                                {
+                                }).fail(function wMenuFail(data) {
                                     try {
                                         var errorMessage = data.responseText;
                                         $menuElement.find(".listmenu__content").html($('<div/>').text(errorMessage).addClass("menu--error"));
@@ -230,8 +228,7 @@ define([
                         }
                     }
                 },
-                activate: function wMenuActivate(event)
-                {
+                activate: function wMenuActivate(event) {
                     // Correct Kendo position list when scrollbar is displayed
                     var $menuElement = $(event.item);
                     var $container = $menuElement.find(".k-animation-container");
@@ -243,17 +240,16 @@ define([
                     var listLeft = $container.offset().left;
 
                     // The first condition is for iOS because no scroll window exists
-                    if (($("body").width() > bodyWidth  ) || (window.document.documentElement.scrollHeight > window.document.documentElement.clientHeight)) {
+                    if (($("body").width() > bodyWidth) || (window.document.documentElement.scrollHeight > window.document.documentElement.clientHeight)) {
 
                         // If the list menu is out of the body box, need to move it to the right
                         if ((listLeft + listWidth) > bodyWidth) {
-                            $container.css("left", "auto").css("right", (menuLeft - bodyWidth + menuWidth  ) + "px");
+                            $container.css("left", "auto").css("right", (menuLeft - bodyWidth + menuWidth) + "px");
                         }
 
                     }
 
-                    _.delay(function wMenuOpenDelay()
-                    {
+                    _.delay(function wMenuOpenDelay() {
                         // Due to iOs artefact, an resize event is send, so need to inhibated during opening menu
                         scopeWidget.element.data("menu-opening", false);
                     }, 2000);
@@ -261,15 +257,14 @@ define([
             });
 
 
-             this.element.find(".menu--left").last().addClass("menu--lastLeft");
+            this.element.find(".menu--left").last().addClass("menu--lastLeft");
             /**
              * Fix menu when no see header
              */
             $(window).off("scroll.ddui"); // reset
 
             if (this.element.prop("nodeName").toUpperCase() === "NAV") {
-                $(window).on("scroll.ddui", function wMenuScroll()
-                {
+                $(window).on("scroll.ddui", function wMenuScroll() {
                     if ($(window).scrollTop() > $mainElement.position().top) {
                         if (!$mainElement.data("isFixed")) {
                             $mainElement.data("isFixed", "1");
@@ -300,12 +295,41 @@ define([
             $(window).on("resize.dcpMenu", _.debounce(_.bind(this.updateResponsiveMenu, this), 100, false));
         },
 
-        inhibitBarMenu: function wMenuInhibitBarMenu()
-        {
+        callMenu: function callMenu($menuItem) {
+            var scopeWidget = this;
+            var $elementA = $menuItem.find('a');
+
+            $.ajax({
+                dataType: "json",
+                url: $elementA.data("url"),
+                method: $elementA.data("method")
+            }).then(function (data) {
+                _.each(data.messages, function (msg) {
+                    scopeWidget._trigger("showMessage", event, {
+                        title: msg.contentText,
+                        type: msg.type
+                    });
+                });
+
+                if (data.data.needReload === true) {
+                    _.delay(function () {
+                            scopeWidget._trigger("reload", event, {});
+                        },
+                        // wait 1 second to see message before reload
+                        data.messages ? 1000 : 0);
+                }
+            }).catch(function (info) {
+                scopeWidget._trigger("showMessage", event, {
+                    type: "error",
+                    message: info.responseJSON.error || info.responseJSON.exceptionMessage
+                });
+            });
+        },
+
+        inhibitBarMenu: function wMenuInhibitBarMenu() {
             var widgetMenu = this;
             if (!widgetMenu.element.data("menu-opening") && this.element.css("overflow") !== "hidden") {
-                this.element.find("li.k-state-border-down").each(function wMenuInhibitBarMenuClose()
-                {
+                this.element.find("li.k-state-border-down").each(function wMenuInhibitBarMenuClose() {
                     widgetMenu.kendoMenuWidget.close($(this));
                 });
             }
@@ -315,8 +339,7 @@ define([
          * Get scrollbar width by adding a element
          * @returns {number|*}
          */
-        getScrollBarWidth: function wMenugetScrollBarWidth()
-        {
+        getScrollBarWidth: function wMenugetScrollBarWidth() {
             if (!this.scrollBarWidth) {
                 var inner = document.createElement('p');
                 inner.style.width = "100%";
@@ -350,8 +373,7 @@ define([
         /**
          * Move menu to hamburger which can be displayed in same line menu
          */
-        updateResponsiveMenu: function wMenuHideResponsiveMenu()
-        {
+        updateResponsiveMenu: function wMenuHideResponsiveMenu() {
             var barMenu = this.element;
             var $itemMenu = barMenu.find("ul.k-menu > .menu__element:not(.menu--important,.menu_element--hamburger)");
             var $importantItemMenu = barMenu.find("ul.k-menu > .menu__element.menu--important");
@@ -372,8 +394,7 @@ define([
                 return;
             }
             this.inhibitBarMenu();
-            $importantItemMenu.each(function wMenuComputeBarmenuWidth()
-            {
+            $importantItemMenu.each(function wMenuComputeBarmenuWidth() {
                 barmenuWidth -= $(this).outerWidth();
             });
 
@@ -390,8 +411,7 @@ define([
 
             visibleItemCount = $itemMenu.length;
             // Detect free menu available width  and record menu items which not contains to bar menu
-            $itemMenu.each(function wMenuComputeWidth()
-            {
+            $itemMenu.each(function wMenuComputeWidth() {
                 currentWidth += ($(this).outerWidth());
                 if (currentWidth > barmenuWidth) {
                     $(this).data("original-width", $(this).outerWidth());
@@ -413,8 +433,7 @@ define([
             }
 
             // Move each new hidden menu to hamburger
-            _.each(newHiddens.reverse(), function wMenuItemToHamburger(item)
-            {
+            _.each(newHiddens.reverse(), function wMenuItemToHamburger(item) {
                 // Prepend new menu to hamburger
                 if ($hamburger.find("li.k-item").length === 0) {
                     kendoMenu.append($(item), $hamburger);
@@ -427,8 +446,7 @@ define([
                 // May be show hidden menu
                 $hiddenItems = $($hamburger.find("ul").get(0)).find("> li.k-item");
                 hiddenLeft = $hiddenItems.length;
-                $hiddenItems.each(function wMenuItemFromHamburger()
-                {
+                $hiddenItems.each(function wMenuItemFromHamburger() {
                     if (freeWidth > 0) {
                         if (hiddenLeft === 1) {
                             freeWidth += $hamburger.width();
@@ -466,23 +484,20 @@ define([
             barMenu.css("overflow", "").css("max-height", "");
         },
 
-        _insertMenuContent: function wMenuInsertMenuContent(menus, $content, currentWidget, scopeMenu)
-        {
+        _insertMenuContent: function wMenuInsertMenuContent(menus, $content, currentWidget, scopeMenu) {
             var subMenu;
             var hasBeforeContent = false;
             currentWidget = currentWidget || this;
 
             if (scopeMenu) {
                 // Add fake before content if at least one element has before content to align all items
-                _.each(menus, function wMenuInsertMenuContentfake(currentMenu)
-                {
+                _.each(menus, function wMenuInsertMenuContentfake(currentMenu) {
                     if (currentMenu.iconUrl || currentMenu.beforeContent) {
                         hasBeforeContent = true;
                     }
                 });
                 if (hasBeforeContent) {
-                    _.each(menus, function wMenuInsertMenuContentBeforeContent(currentMenu)
-                    {
+                    _.each(menus, function wMenuInsertMenuContentBeforeContent(currentMenu) {
                         if (!currentMenu.iconUrl && !currentMenu.beforeContent) {
                             if (currentMenu.type !== "separatorMenu") {
                                 currentMenu.beforeContent = ' ';
@@ -492,15 +507,13 @@ define([
                 }
             }
 
-            _.each(menus, function wMenuInsertMenuContentSet(currentMenu)
-            {
+            _.each(menus, function wMenuInsertMenuContentSet(currentMenu) {
                 var $currentMenu;
                 if (currentMenu.visibility === "hidden") {
                     return;
                 }
                 currentMenu.htmlAttr = [];
-                _.each(currentMenu.htmlAttributes, function wMenuInsertMenuContentSetHtml(attrValue, attrId)
-                {
+                _.each(currentMenu.htmlAttributes, function wMenuInsertMenuContentSetHtml(attrValue, attrId) {
                     if (attrId === "class") {
                         currentMenu.cssClass = attrValue;
                     } else {
@@ -562,8 +575,7 @@ define([
             });
         },
 
-        _getTemplate: function wMenuTemplate(name)
-        {
+        _getTemplate: function wMenuTemplate(name) {
             if (this.options.templates && this.options.templates.menu && this.options.templates.menu[name]) {
                 return this.options.templates.menu[name];
             }
@@ -573,20 +585,17 @@ define([
             throw new Error("Menu unknown template " + name);
         },
 
-        _destroy: function wMenuDestroy()
-        {
+        _destroy: function wMenuDestroy() {
             var kendoWidget = this.element.find(".menu__content").data("kendoMenu");
             if (kendoWidget) {
                 kendoWidget.destroy();
             }
             $(window).off(".dcpMenu");
-            _.each(this.popupWindows, function wMenuDestroyPopup(pWindow)
-            {
+            _.each(this.popupWindows, function wMenuDestroyPopup(pWindow) {
                 pWindow.destroy();
             });
 
-            _.each(this._tooltips, function wMenuDestroyTooltip(currentTooltip)
-            {
+            _.each(this._tooltips, function wMenuDestroyTooltip(currentTooltip) {
                 currentTooltip.tooltip("dispose");
             });
             this.element.empty();
