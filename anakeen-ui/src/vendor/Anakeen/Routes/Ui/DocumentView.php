@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Ui;
 
 use Anakeen\Router\URLUtils;
+use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\SmartElementManager;
 use SmartStructure\Attributes\Cvdoc as CvdocAttribute;
 use Anakeen\Core\ContextManager;
@@ -146,7 +147,6 @@ class DocumentView
                 $this->customClientData = $body[self::fieldCustomClientData];
             }
         }
-
     }
 
     protected function doRequest(&$messages = [])
@@ -175,8 +175,8 @@ class DocumentView
         $controlView = SEManager::getDocument($this->document->cvid);
 
         $vid = $this->viewIdentifier;
-
-        $info["view"] = $this->getViewInformation($vid);
+        $messages = [];
+        $info["view"] = $this->getViewInformation($vid, $messages);
 
         if ($vid === "") {
             $coreViews = $this->getCoreViews($this->document);
@@ -200,7 +200,7 @@ class DocumentView
                 $info["properties"]["creationView"] = true;
             }
         }
-        $messages = [];
+
         if ($refreshMsg) {
             $msg = new \Anakeen\Routes\Core\Lib\ApiMessage();
             $msg->contentHtml = $refreshMsg;
@@ -298,10 +298,12 @@ class DocumentView
 
     /**
      * @param string $viewId view identifier
+     * @param ApiMessage[]      $messages
      * @return array
      * @throws Exception
+     * @throws \Dcp\Ui\Exception
      */
-    protected function getViewInformation(&$viewId)
+    protected function getViewInformation(&$viewId, &$messages)
     {
         $config = $this->getRenderConfig($viewId);
         $fields = $this->getFields();
@@ -356,6 +358,8 @@ class DocumentView
                     $config->setCustomClientData($this->document, $this->getCustomClientData());
                     break;
             }
+
+            $messages = $this->getMessages($config, $this->document);
         }
         return $viewInfo;
     }
@@ -406,6 +410,19 @@ class DocumentView
         );
     }
 
+
+
+    /**
+     * @param \Dcp\Ui\IRenderConfig               $config
+     * @param \Anakeen\Core\Internal\SmartElement $document
+     * @throws Exception
+     * @return ApiMessage[]
+     */
+    protected function getMessages($config, $document)
+    {
+        $messages = $config->getMessages($document);
+        return $messages;
+    }
     /**
      * Get the current local
      *

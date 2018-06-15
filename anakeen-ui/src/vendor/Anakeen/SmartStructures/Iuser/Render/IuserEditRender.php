@@ -6,6 +6,7 @@
 
 namespace Anakeen\SmartStructures\Iuser\Render;
 
+use Anakeen\Core\Internal\SmartElement;
 use Anakeen\SmartElementManager;
 use Anakeen\Ui\DefaultConfigEditRender;
 use \SmartStructure\Attributes\Iuser as myAttributes;
@@ -16,7 +17,7 @@ class IuserEditRender extends DefaultConfigEditRender
 
     protected $defaultGroup;
 
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(SmartElement $document)
     {
         $options = parent::getOptions($document);
         $options->frame(myAttributes::us_fr_security)->setTemplate(
@@ -28,11 +29,11 @@ HTML
     }
 
     /**
-     * @param \Anakeen\Core\Internal\SmartElement $smartElement
+     * @param SmartElement $smartElement
      * @return \Dcp\Ui\RenderAttributeVisibilities
      * @throws \Dcp\Ui\Exception
      */
-    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $smartElement)
+    public function getVisibilities(SmartElement $smartElement)
     {
         $visibilities = parent::getVisibilities($smartElement);
 
@@ -48,16 +49,18 @@ HTML
         return $visibilities;
     }
 
+
+
     /**
      * Add default group to customServerData on the first
      * Handle setGroup on the second
      *
-     * @param \Anakeen\Core\Internal\SmartElement $smartElement
+     * @param SmartElement $smartElement
      * @param $data
      * @return mixed
      * @throws \Anakeen\Core\DocManager\Exception
      */
-    public function setCustomClientData(\Anakeen\Core\Internal\SmartElement $smartElement, $data)
+    public function setCustomClientData(SmartElement $smartElement, $data)
     {
         if (!$smartElement->getPropertyValue("initid") && isset($data["defaultGroup"])) {
             $this->defaultGroup = $data["defaultGroup"];
@@ -73,21 +76,35 @@ HTML
     /**
      * Display warning message and set default group
      *
-     * @param \Anakeen\Core\Internal\SmartElement $smartElement
+     * @param SmartElement $smartElement
      * @return mixed
      */
-    public function getCustomServerData(\Anakeen\Core\Internal\SmartElement $smartElement)
+    public function getCustomServerData(SmartElement $smartElement)
     {
         $data = parent::getCustomServerData($smartElement);
-        $data["messages"] = $this->getUserMessage($smartElement);
         $data["EDIT_GROUP"] = true;
         if ($this->defaultGroup) {
             $data["defaultGroup"] = $this->defaultGroup;
         }
+        $this->deleteIndirectRoles($smartElement);
         return $data;
     }
 
-    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $smartElement = null)
+    protected function deleteIndirectRoles(SmartElement $iuser)
+    {
+        $allRoles = $iuser->getArrayRawValues("us_t_roles");
+        $iuser->clearArrayValues("us_t_roles");
+        // get direct system role ids
+        $roles = array();
+        foreach ($allRoles as $arole) {
+            if ($arole["us_rolesorigin"] != "group") {
+                $roles[] = $arole["us_roles"];
+            }
+        }
+        $iuser->setValue("us_roles", $roles);
+    }
+
+    public function getJsReferences(SmartElement $smartElement = null)
     {
         $js = parent::getJsReferences();
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
@@ -99,6 +116,14 @@ HTML
 
         return $js;
     }
-
-
+    /**
+     * Add warning messages to display
+     * @param SmartElement $smartElement
+     * @return array
+     */
+    public function getMessages(SmartElement $smartElement)
+    {
+        $messages = parent::getMessages($smartElement);
+        return array_merge($messages, $this->getUserMessages($smartElement));
+    }
 }
