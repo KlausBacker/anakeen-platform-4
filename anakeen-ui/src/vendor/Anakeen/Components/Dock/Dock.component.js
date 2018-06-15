@@ -205,28 +205,29 @@ export default {
 
         // Select a tab, to display its content, with its area (header, tabs or footer) and its position in the area
         selectTab(position, area) {
-            if (area === 'header' && this.headerTabs[position]) {
-                this.selectTabWithId(this.headerTabs[position].id);
-            } else if (area === 'footer' && this.footerTabs[position]) {
-                this.selectTabWithId(this.footerTabs[position].id);
-            } else if (this.tabs[position]) {
-                this.selectTabWithId(this.tabs[position].id);
+            if (position === -1) {
+                this.selectTabWithId(-1);
+            } else {
+                if (area === 'header' && this.headerTabs[position]) {
+                    this.selectTabWithId(this.headerTabs[position].id);
+                } else if (area === 'footer' && this.footerTabs[position]) {
+                    this.selectTabWithId(this.footerTabs[position].id);
+                } else if (this.tabs[position]) {
+                    this.selectTabWithId(this.tabs[position].id);
+                }
             }
         },
 
         // Select a tab, to display its content, with its id
         selectTabWithId(tabId) {
-            let allTabs = this.headerTabs.concat(this.tabs, this.footerTabs);
-            let actualSelectedTab = allTabs.find(element => element.id === this.selectedTab);
-            let newSelectedTab = allTabs.find(element => element.id === tabId);
-            if (newSelectedTab !== undefined && newSelectedTab.selectable) {
+            if (tabId === -1) {
                 let eventName = 'beforeTabSelection';
                 let options = {
                     cancelable: true,
                     detail: [
                         {
                             actualTab: actualSelectedTab,
-                            newTab: newSelectedTab,
+                            newTab: {},
                         },
                     ],
                 };
@@ -241,12 +242,45 @@ export default {
                 this.$el.parentNode.dispatchEvent(event);
 
                 if (!event.defaultPrevented) {
-                    this.selectedTab = newSelectedTab.id;
+                    this.selectedTab = -1;
                     actualSelectedTab.selected = false;
-                    newSelectedTab.selected = true;
-                    this.$emit('tabSelected', newSelectedTab);
+                    this.$emit('tabSelected', {});
                 } else {
                     this.$emit('tabSelectionCanceled');
+                }
+            } else {
+                let allTabs = this.headerTabs.concat(this.tabs, this.footerTabs);
+                let actualSelectedTab = allTabs.find(element => element.id === this.selectedTab);
+                let newSelectedTab = allTabs.find(element => element.id === tabId);
+                if (newSelectedTab !== undefined && newSelectedTab.selectable) {
+                    let eventName = 'beforeTabSelection';
+                    let options = {
+                        cancelable: true,
+                        detail: [
+                            {
+                                actualTab: actualSelectedTab,
+                                newTab: newSelectedTab,
+                            },
+                        ],
+                    };
+                    let event;
+                    if (typeof window.CustomEvent === 'function') {
+                        event = new CustomEvent(eventName, options);
+                    } else {
+                        event = document.createEvent('CustomEvent');
+                        event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
+                    }
+
+                    this.$el.parentNode.dispatchEvent(event);
+
+                    if (!event.defaultPrevented) {
+                        this.selectedTab = newSelectedTab.id;
+                        actualSelectedTab.selected = false;
+                        newSelectedTab.selected = true;
+                        this.$emit('tabSelected', newSelectedTab);
+                    } else {
+                        this.$emit('tabSelectionCanceled');
+                    }
                 }
             }
         },
