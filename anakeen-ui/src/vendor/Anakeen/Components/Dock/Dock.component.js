@@ -116,8 +116,6 @@ export default {
                     detail: [
                         {
                             tab: actualTabsArea[actualPosition],
-                            actualPosition: actualPosition,
-                            newPosition: newPosition,
                         },
                     ],
                 };
@@ -137,7 +135,7 @@ export default {
                     actualTabsArea.splice(actualPosition, 1);
                     newTabsArea.splice(newPosition, 0, tab);
 
-                    this.$emit('tabMoved');
+                    this.$emit('tabMoved', tab);
                 } else {
                     this.$emit('tabMoveCanceled');
                 }
