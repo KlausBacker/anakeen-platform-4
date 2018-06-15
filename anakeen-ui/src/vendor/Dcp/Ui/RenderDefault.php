@@ -14,14 +14,14 @@ class RenderDefault implements IRenderConfig
      * @var bool display or not default system menu
      */
     protected $displayDefaultMenuTooltip = false;
-    
+
     protected $customClientData = null;
-    
+
     public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return __CLASS__;
     }
-    
+
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
@@ -31,19 +31,24 @@ class RenderDefault implements IRenderConfig
             "document" => "css/ank/document/document.css?ws=" . $version
         );
     }
-    
+
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return array();
     }
-    
+
+    public function getMessages(\Anakeen\Core\Internal\SmartElement $document)
+    {
+        return [];
+    }
+
     public function getRequireReference()
     {
         $pubExternalPath = "uiAssets/externals";
         $pubInternalPath = "uiAssets/anakeen";
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
         $jsRef = [
-            "jquery"=> UIGetAssetPath::getJSJqueryPath(),
+            "jquery" => UIGetAssetPath::getJSJqueryPath(),
             "kendoui" => UIGetAssetPath::getJSKendoPath()
         ];
 
@@ -59,166 +64,167 @@ class RenderDefault implements IRenderConfig
         }
         return $jsRef;
     }
-    
+
     public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return array(
             "body" => array(
-                "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/views/document/document.mustache"
-            ) ,
+                "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/document/document.mustache"
+            ),
             "sections" => array(
                 "header" => array(
-                    "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/views/document/document__header.mustache"
-                ) ,
+                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/document/document__header.mustache"
+                ),
                 "menu" => array(
-                    "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/views/document/document__menu.mustache"
-                ) ,
+                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/document/document__menu.mustache"
+                ),
                 "content" => array(
-                    "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/views/document/document__content.mustache"
-                ) ,
+                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/document/document__content.mustache"
+                ),
                 "footer" => array(
-                    "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/views/document/document__footer.mustache"
+                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/document/document__footer.mustache"
                 )
-            ) ,
+            ),
             "menu" => array(
                 "menu" => array(
-                    "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/menu/menu.mustache",
-                ) ,
+                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/menu/menu.mustache",
+                ),
                 "itemMenu" => array(
-                    "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/menu/itemMenu.mustache"
-                ) ,
+                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/menu/itemMenu.mustache"
+                ),
                 "listMenu" => array(
-                    "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/menu/listMenu.mustache"
-                ) ,
+                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/menu/listMenu.mustache"
+                ),
                 "dynamicMenu" => array(
-                    "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/menu/dynamicMenu.mustache"
-                ) ,
+                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/menu/dynamicMenu.mustache"
+                ),
                 "callableMenu" => array(
-                    "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/menu/callableMenu.mustache"
-                ) ,
+                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/menu/callableMenu.mustache"
+                ),
                 "separatorMenu" => array(
-                    "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/menu/separatorMenu.mustache"
+                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/menu/separatorMenu.mustache"
                 )
-            ) ,
+            ),
             "attribute" => array(
                 "simpleWrapper" => array(
-                    "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/views/attributes/singleWrapper.mustache"
-                ) ,
+                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/attributes/singleWrapper.mustache"
+                ),
                 "description" => array(
-                    "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/views/attributes/attributeDescription.mustache"
-                ) ,
-                
+                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/attributes/attributeDescription.mustache"
+                ),
+
                 "default" => array( // use it when no type is defined
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/default/write.mustache"
-                    ) ,
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/default/write.mustache"
+                    ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/default/read.mustache"
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/default/read.mustache"
                     )
-                ) ,
+                ),
                 "label" => array(
-                    "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/label/label.mustache"
-                ) ,
+                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/label/label.mustache"
+                ),
                 "longtext" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"
-                    ) ,
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"
+                    ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/default/read.mustache"
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/default/read.mustache"
                     )
-                ) ,
+                ),
                 "file" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/file/fileWrite.mustache"
-                    ) ,
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/file/fileWrite.mustache"
+                    ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/file/fileRead.mustache"
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/file/fileRead.mustache"
                     )
-                ) ,
+                ),
                 "enum" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/enum/enumWrite.mustache"
-                    ) ,
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/enum/enumWrite.mustache"
+                    ),
                     "writeRadio" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/enum/enumWriteRadio.mustache"
-                    ) ,
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/enum/enumWriteRadio.mustache"
+                    ),
                     "writeToggle" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/enum/enumWriteToggle.mustache"
-                    ) ,
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/enum/enumWriteToggle.mustache"
+                    ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/enum/enumRead.mustache"
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/enum/enumRead.mustache"
                     )
-                ) ,
+                ),
                 "htmltext" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/htmltext/htmltextWrite.mustache"
-                    ) ,
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/htmltext/htmltextWrite.mustache"
+                    ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/htmltext/htmltextRead.mustache"
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/htmltext/htmltextRead.mustache"
                     )
-                ) ,
+                ),
                 "docid" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
-                    ) ,
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
+                    ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/docid/docidRead.mustache"
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/docid/docidRead.mustache"
                     )
-                ) ,
+                ),
                 "account" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
-                    ) ,
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
+                    ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/docid/docidRead.mustache"
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/docid/docidRead.mustache"
                     )
-                ) ,
+                ),
                 "thesaurus" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
-                    ) ,
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
+                    ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/docid/docidRead.mustache"
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/docid/docidRead.mustache"
                     )
-                ) ,
+                ),
                 "image" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/image/imageWrite.mustache"
-                    ) ,
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/image/imageWrite.mustache"
+                    ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/image/imageRead.mustache"
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/image/imageRead.mustache"
                     )
-                ) ,
+                ),
                 "frame" => array(
                     "label" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/views/attributes/frame/label.mustache"
-                    ) ,
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/attributes/frame/label.mustache"
+                    ),
                     "content" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/views/attributes/frame/content.mustache"
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/attributes/frame/content.mustache"
                     )
-                ) ,
+                ),
                 "array" => array(
                     "label" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/array/label.mustache"
-                    ) ,
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/array/label.mustache"
+                    ),
                     "content" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/array/content.mustache"
-                    ) ,
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/array/content.mustache"
+                    ),
                     "line" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/array/line.mustache"
-                    ) ,
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/array/line.mustache"
+                    ),
                     "responsive" => array(
-                        "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/widgets/attributes/array/responsive.mustache"
+                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/array/responsive.mustache"
                     )
                 )
-            ) ,
+            ),
             "window" => array(
                 "confirm" => array(
-                    "file" => DEFAULT_PUBDIR."/Apps/DOCUMENT/IHM/views/window/confirm.mustache"
+                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/window/confirm.mustache"
                 )
             )
         );
     }
+
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      *
@@ -227,44 +233,44 @@ class RenderDefault implements IRenderConfig
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $opt = new RenderOptions();
-        
+
         $opt->setCustomOption("mode", $this->getType());
         $this->setLinkOption($document, $opt);
         $opt->commonOption()->setTranslations(array(
             "closeErrorMessage" => ___("Close message", "ddui")
         ));
         $opt->arrayAttribute()->setTranslations(array(
-            "limitMaxMessage" => ___("Row count limit to {{limit}}", "ddui") ,
+            "limitMaxMessage" => ___("Row count limit to {{limit}}", "ddui"),
             "limitMinMessage" => ___("Min row limit is {{limit}}", "ddui")
         ));
         $opt->image()->setTranslations(array(
-            "dropFileHere" => ___("Drop image here", "ddui-image") ,
-            "tooltipLabel" => ___("Choose image", "ddui-image") ,
-            "downloadLabel" => ___("Download image", "ddui-image") ,
-            "kiloByte" => ___("kB", "ddui-file") ,
-            "recording" => ___("Recording", "ddui-file") ,
-            "transferring" => ___("Transferring", "ddui-file") ,
+            "dropFileHere" => ___("Drop image here", "ddui-image"),
+            "tooltipLabel" => ___("Choose image", "ddui-image"),
+            "downloadLabel" => ___("Download image", "ddui-image"),
+            "kiloByte" => ___("kB", "ddui-file"),
+            "recording" => ___("Recording", "ddui-file"),
+            "transferring" => ___("Transferring", "ddui-file"),
         ));
         $opt->image()->setPlaceHolder(___("Click to upload image", "ddui-image"));
         $opt->file()->setTranslations(array(
-            "dropFileHere" => ___("Drop file here", "ddui-file") ,
-            "tooltipLabel" => ___("Choose file", "ddui-file") ,
-            "downloadLabel" => ___("Download file", "ddui-file") ,
-            "kiloByte" => ___("kB", "ddui-file") ,
-            "byte" => ___("B", "ddui-file") ,
-            "recording" => ___("Recording", "ddui-file") ,
-            "transferring" => ___("Transferring", "ddui-file") ,
+            "dropFileHere" => ___("Drop file here", "ddui-file"),
+            "tooltipLabel" => ___("Choose file", "ddui-file"),
+            "downloadLabel" => ___("Download file", "ddui-file"),
+            "kiloByte" => ___("kB", "ddui-file"),
+            "byte" => ___("B", "ddui-file"),
+            "recording" => ___("Recording", "ddui-file"),
+            "transferring" => ___("Transferring", "ddui-file"),
         ));
         $opt->file()->setPlaceHolder(___("Click to upload file", "ddui-file"));
-        
+
         $opt->enum()->setTranslations(array(
-            "chooseMessage" => ___("Choose", "ddui-enum") ,
-            "invalidEntry" => ___("Invalid entry", "ddui-enum") ,
+            "chooseMessage" => ___("Choose", "ddui-enum"),
+            "invalidEntry" => ___("Invalid entry", "ddui-enum"),
             "invertSelection" => "", //___("Click to answer \"{{displayValue}}\"", "ddui-enum") ,
             "selectMessage" => "", //___("Select {{displayValue}}", "ddui-enum") ,
             "unselectMessage" => "", //___("Unselect {{displayValue}}", "ddui-enum") ,
-            "chooseAnotherChoice" => ___("Choose another choice", "ddui-enum") ,
-            "selectAnotherChoice" => ___("Select alternative choice", "ddui-enum") ,
+            "chooseAnotherChoice" => ___("Choose another choice", "ddui-enum"),
+            "selectAnotherChoice" => ___("Select alternative choice", "ddui-enum"),
             "displayOtherChoice" => ___("{{value}} **", "ddui-enum")
         ));
         $opt->enum()->setPlaceHolder(___("Choose", "ddui-enum"));
@@ -278,18 +284,18 @@ class RenderDefault implements IRenderConfig
             "allSelectedDocument" => ___("No more matching", "ddui-docid")
         ));
         $opt->commonOption()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        
+
         $selectedTab = $document->getUTag("lasttab");
         if ($selectedTab) {
             $opt->document()->setOpenFirstTab($selectedTab->comment);
         }
-        
+
         return $opt;
     }
-    
+
     protected function setLinkOption(\Anakeen\Core\Internal\SmartElement $document, RenderOptions & $opt)
     {
-        
+
         $linkOption = new htmlLinkOptions();
         //$linkOption->title = ___("View {{{displayValue}}}", "ddui");
         $linkOption->target = "_render";
@@ -297,9 +303,9 @@ class RenderDefault implements IRenderConfig
         $opt->docid()->setLink($linkOption);
         $opt->account()->setLink(clone $linkOption);
         $opt->thesaurus()->setLink(clone $linkOption);
-        
+
         $oas = $document->getNormalAttributes();
-        
+
         foreach ($oas as $oa) {
             if ($oa->link) {
                 $link = preg_replace("/%" . ($oa->id) . "%/i", '@@value@@', $oa->link);
@@ -318,6 +324,7 @@ class RenderDefault implements IRenderConfig
             }
         }
     }
+
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document
      *
@@ -327,6 +334,7 @@ class RenderDefault implements IRenderConfig
     {
         return new RenderAttributeVisibilities($document);
     }
+
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document
      *
@@ -336,11 +344,12 @@ class RenderDefault implements IRenderConfig
     {
         return new RenderAttributeNeeded($document);
     }
-    
+
     public function getType()
     {
         return "abstract";
     }
+
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      *
@@ -349,9 +358,10 @@ class RenderDefault implements IRenderConfig
     public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
     {
         $menu = new BarMenu();
-        
+
         return $menu;
     }
+
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      *
@@ -361,33 +371,34 @@ class RenderDefault implements IRenderConfig
     {
         return new DocumentTemplateContext($document);
     }
-    
+
     protected function setEmblemMenu(\Anakeen\Core\Internal\SmartElement $document, BarMenu $menu)
     {
-        
+
         $item = new SeparatorMenu("EmblemLock", "");
         $item->setHtmlAttribute("class", "menu--left emblem emblem--lock" . ((abs($document->locked) == ContextManager::getCurrentUser()->id) ? " emblem-lock--my" : ""));
         $item->setHtmlLabel('{{#document.properties.security.lock.lockedBy.id}} <span class="dcpDocument__emblem__lock {{#document.properties.security.lock.temporary}} dcpDocument__emblem__lock--temporary {{/document.properties.security.lock.temporary}}fa fa-lock"></span>{{/document.properties.security.lock.lockedBy.id}}');
-        
-        if ($document->locked == - 1) {
-            $item->setTooltipLabel(___("Revision", "ddui") , "", false);
+
+        if ($document->locked == -1) {
+            $item->setTooltipLabel(___("Revision", "ddui"), "", false);
             $item->setHtmlLabel('<span class="dcpDocument__emblem__revised fa fa-archive"></span>');
-        } elseif ($document->locked < - 1) {
-            $item->setTooltipLabel(sprintf('%s "<b>{{document.properties.security.lock.lockedBy.title}}</b>" ', htmlspecialchars(___("Modifying by", "ddui") , ENT_QUOTES)) , "", true);
+        } elseif ($document->locked < -1) {
+            $item->setTooltipLabel(sprintf('%s "<b>{{document.properties.security.lock.lockedBy.title}}</b>" ', htmlspecialchars(___("Modifying by", "ddui"), ENT_QUOTES)), "",
+                true);
         } else {
-            $item->setTooltipLabel(sprintf('%s "<b>{{document.properties.security.lock.lockedBy.title}}</b>" ', htmlspecialchars(___("Locked by", "ddui") , ENT_QUOTES)) , "", true);
+            $item->setTooltipLabel(sprintf('%s "<b>{{document.properties.security.lock.lockedBy.title}}</b>" ', htmlspecialchars(___("Locked by", "ddui"), ENT_QUOTES)), "", true);
         }
-        
+
         $item->setImportant(true);
         $menu->appendElement($item);
-        
+
         $item = new SeparatorMenu("EmblemReadOnly", "");
         $item->setHtmlAttribute("class", "menu--left emblem emblem--readonly");
         $item->setHtmlLabel('{{#document.properties.security.readOnly}}<span class="fa-stack fa-lg">
         <i class="fa fa-ban fa-stack-1x fa-rotate-90 text-danger"></i>
         <i class="fa fa-pencil fa-stack-1x"></i>
         </span>{{/document.properties.security.readOnly}}');
-        
+
         $item->setTooltipLabel(___("Read only document", "ddui"));
         $item->setImportant(true);
         $menu->appendElement($item);
@@ -395,16 +406,17 @@ class RenderDefault implements IRenderConfig
             $item = new SeparatorMenu("EmblemConfidential", "");
             $item->setHtmlAttribute("class", "menu--left emblem emblem--confidential");
             $item->setHtmlLabel('<i  class="fa fa-eye-slash"></i>');
-            
+
             $item->setTooltipLabel(___("Confidential document", "ddui"));
             $item->setImportant(true);
             $menu->appendElement($item);
         }
     }
+
     /**
      * Add Help if Help document is associated to family
      * @param \Anakeen\Core\Internal\SmartElement $doc
-     * @param BarMenu $menu target menu
+     * @param BarMenu                             $menu target menu
      * @throws \Dcp\Ui\Exception
      */
     protected function addHelpMenu(\Anakeen\Core\Internal\SmartElement $doc, BarMenu & $menu)
@@ -417,6 +429,7 @@ class RenderDefault implements IRenderConfig
             $menu->appendElement($menuItem);
         }
     }
+
     /**
      * Get custom data to transmit to client document controller
      *
@@ -428,11 +441,12 @@ class RenderDefault implements IRenderConfig
     {
         return null;
     }
+
     /**
      * Retrieve some custom data
      *
      * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
-     * @param mixed $data data provided by client
+     * @param mixed                               $data     data provided by client
      *
      * @return mixed
      */
@@ -440,15 +454,16 @@ class RenderDefault implements IRenderConfig
     {
         $this->customClientData = $data;
     }
-    
+
     public function getEtag(\Anakeen\Core\Internal\SmartElement $document)
     {
         return '';
     }
+
     /**
      * Add setLinkHelp option to attributes referenced in HELP family related document
-     * @param RenderOptions $options
-     * @param \Anakeen\Core\Internal\SmartElement          $document Document instance
+     * @param RenderOptions                       $options
+     * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      *
      * @return $this
      */
@@ -458,7 +473,7 @@ class RenderDefault implements IRenderConfig
         if ($helpDoc) {
             \Anakeen\Core\SEManager::cache()->addDocument($helpDoc);
             $attrids = $helpDoc->getMultipleRawValues(\SmartStructure\Attributes\Helppage::help_sec_key);
-            
+
             foreach ($attrids as $k => $aid) {
                 if ($aid) {
                     $options->commonOption($aid)->setLinkHelp($helpDoc->initid);
@@ -467,6 +482,7 @@ class RenderDefault implements IRenderConfig
         }
         return $this;
     }
+
     /**
      * Return default help document associated with family
      * @param \Anakeen\Core\Internal\SmartElement $document

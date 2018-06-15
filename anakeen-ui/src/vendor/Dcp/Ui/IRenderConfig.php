@@ -6,6 +6,8 @@
 
 namespace Dcp\Ui;
 
+use Anakeen\Routes\Core\Lib\ApiMessage;
+
 interface IRenderConfig {
     
     const editType = "edit";
@@ -84,4 +86,11 @@ interface IRenderConfig {
      * @return string|null
      */
     public function getEtag(\Anakeen\Core\Internal\SmartElement $document);
+    /**
+     * Return some messages to be displayed in user interface
+     * @param \Anakeen\Core\Internal\SmartElement $document Document instance
+     *
+     * @return ApiMessage[]
+     */
+    public function getMessages(\Anakeen\Core\Internal\SmartElement $document);
 }
