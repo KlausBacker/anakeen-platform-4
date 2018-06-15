@@ -411,7 +411,11 @@ define([
                     xhr = {status: 500, statusText: "Internal - No HTTP response"};
                 } else {
                     result = JSON.parse(xhr.responseText);
-                    messages = result.messages;
+                    if (result.message) {
+                        messages.push(result);
+                    } else if (result.messages) {
+                        messages = result.messages;
+                    }
                 }
             } catch (e) {
                 //Unable to parse responseText (error is not in JSON)
@@ -469,7 +473,7 @@ define([
             _.each(parsedReturn.messages, function mDocumentpropagateSynchroErrorMessages(message)
             {
                 switch (message.code) {
-                    case "CRUD0211":// Syntax Error
+                    case "ROUTES0107":// Syntax Error
                         if (message.data && message.data.id) {
                             attrModel = currentModel.get('attributes').get(message.data.id);
                             if (attrModel) {
@@ -490,7 +494,7 @@ define([
                             }
                         }
                         break;
-                    case "CRUD0212": // Constraint Error
+                    case "ROUTES0109": // Constraint Error
                         if (message.data && message.data.constraint) {
                             _.each(message.data.constraint, function mDocumentpropagateSynchroError0212(constraint)
                             {

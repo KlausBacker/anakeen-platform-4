@@ -271,6 +271,12 @@ define([
                     currentWidget.$notification.dcpNotification("show", msg.type, msg);
                 }
             });
+            this._model.listenTo(this._model, "reload", function documentController_triggerReinit()
+            {
+               // currentWidget._initModel(currentWidget._getModelValue());
+               // currentWidget._initView();
+                currentWidget._model.fetchDocument();
+            });
             this._model.listenTo(this._model, "sync", function documentController_triggerSync()
             {
                 currentWidget._initializedModel = true;

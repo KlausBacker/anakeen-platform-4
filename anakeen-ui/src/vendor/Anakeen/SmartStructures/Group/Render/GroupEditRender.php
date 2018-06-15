@@ -1,15 +1,15 @@
 <?php
-/*
- * @author Anakeen
- * @package DDUI
-*/
 
 namespace Anakeen\SmartStructures\Group\Render;
+
+use Anakeen\SmartElementManager;
 use Anakeen\Ui\DefaultConfigEditRender;
-use \SmartStructure\Attributes\GROUP as myAttributes;
+use \SmartStructure\Attributes\Group as myAttributes;
 
 class GroupEditRender extends DefaultConfigEditRender
 {
+    protected $defaultGroup;
+
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
@@ -53,5 +53,4 @@ class GroupEditRender extends DefaultConfigEditRender
 
         return $js;
     }
-
 }

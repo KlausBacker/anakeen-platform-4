@@ -219,9 +219,34 @@ class Autocomplete
         foreach ($strucFunc->inputs as $k => $inpArg) {
             if ($inpArg->type === "string") {
                 $args[$k] = $inpArg->name;
+            } else {
+                $args[$k] = $this->getInputValue($inpArg->name);
             }
         }
         return $args;
+    }
+
+    protected function getInputValue($name)
+    {
+        if (isset($this->contentParameters["index"])) {
+            $index = intval($this->contentParameters["index"]);
+        } else {
+            $index = -1;
+        }
+        $attributes = $this->contentParameters["attributes"];
+        $attrName = strtolower($name);
+        if (isset($attributes[$attrName])) {
+            if ($index < 0) {
+                return $attributes[$attrName]["value"];
+            } else {
+                if (isset($attributes[$attrName][$index])) {
+                    return $attributes[$attrName][$index]["value"];
+                } else {
+                    return $attributes[$attrName]["value"];
+                }
+            }
+        }
+        throw new \Dcp\Exception(sprintf("No find attribute argument \"%s\" for autocomplete", $name));
     }
 
     protected function legacyAutocomplete(SmartElement $doc, NormalAttribute $attributeObject)

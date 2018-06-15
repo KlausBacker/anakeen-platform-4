@@ -13,7 +13,9 @@ define([
         className: "dcpDocument",
 
         events: {
-            "dcpmenuexternallinkselected": "externalLinkSelected"
+            "dcpmenuexternallinkselected": "externalLinkSelected",
+            "dcpmenushowmessage": "showMessage",
+            "dcpmenureload": "reloadDocument"
         },
 
         /**
@@ -43,7 +45,7 @@ define([
             }, this)));
         },
 
-        externalLinkSelected: function vAttributeExternalLinkSelected(event, options)
+        externalLinkSelected: function vMenuExternalLinkSelected(event, options)
         {
             var internalEvent = {
                 prevent: false
@@ -58,6 +60,19 @@ define([
             return this;
         },
 
+        showMessage: function vMenushowMessage(event, options)
+        {
+            options.attrid = this.model.id;
+            this.model.trigger("showMessage", options);
+
+            return this;
+        },
+        reloadDocument: function vMenureloadDocument(event, options)
+        {
+            this.model.trigger("reload", options);
+
+            return this;
+        },
         changeVisibility: function vMenuchangeVisibility(event, data)
         {
             var menuItem = this.menuModel.get(data.id);

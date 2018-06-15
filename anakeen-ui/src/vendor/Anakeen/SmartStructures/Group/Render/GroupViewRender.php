@@ -1,10 +1,7 @@
 <?php
-/*
- * @author Anakeen
- * @package DDUI
-*/
 
 namespace Anakeen\SmartStructures\Group\Render;
+
 use Anakeen\Ui\DefaultConfigViewRender;
 
 class GroupViewRender extends DefaultConfigViewRender
