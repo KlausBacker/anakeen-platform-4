@@ -8,8 +8,6 @@ namespace Anakeen\SmartStructures\Igroup\Render;
 
 use Anakeen\Ui\DefaultConfigEditRender;
 use \SmartStructure\Attributes\Igroup as myAttributes;
-use Dcp\Ui\ButtonOptions;
-use Dcp\Ui\CreateDocumentOptions;
 
 class IgroupEditRender extends DefaultConfigEditRender
 {

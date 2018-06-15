@@ -57,6 +57,7 @@ class FrameRenderOptions extends CommonRenderOptions
      * grow : in leftRight : grow width in last row is missing attributes to complete row
      *     in topBottom : decrease column number if last columns are empty
      * @param array $responsives
+     * @return FrameRenderOptions
      */
     public function setResponsiveColumns(array $responsives)
     {
@@ -75,6 +76,6 @@ class FrameRenderOptions extends CommonRenderOptions
             ];
             $previousMax=empty($responsive["maxWidth"])?null:$responsive["maxWidth"];
         }
-        $this->setOption(self::responsiveColumnsOption, $columns);
+        return $this->setOption(self::responsiveColumnsOption, $columns);
     }
 }

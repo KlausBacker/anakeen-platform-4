@@ -8,6 +8,8 @@ namespace Anakeen\SmartStructures\Iuser\Render;
 
 use Anakeen\Router\Exception;
 use Anakeen\Ui\DefaultConfigViewRender;
+use Dcp\Ui\CommonRenderOptions;
+use SmartStructure\Attributes\Iuser as myAttributes;
 
 class IuserViewRender extends DefaultConfigViewRender
 {
@@ -16,6 +18,27 @@ class IuserViewRender extends DefaultConfigViewRender
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
+
+        $break2 = "50rem";
+        $break3 = "70rem";
+        $options->frame(myAttributes::us_fr_ident)->setResponsiveColumns(
+            [
+                ["number" => 2, "minWidth" => $break2, "maxWidth" => $break3],
+                ["number" => 3, "minWidth" => $break3,  "grow" => false]
+            ]
+        );
+        $options->frame(myAttributes::us_fr_security)->setResponsiveColumns(
+            [
+                ["number" => 2, "minWidth" => $break2]
+            ]
+        );
+        
+        $options->frame(myAttributes::us_fr_intranet)->setResponsiveColumns(
+            [
+                ["number" => 2, "minWidth" => $break3]
+            ]
+        );
+
         return $options;
     }
 
@@ -79,7 +102,8 @@ class IuserViewRender extends DefaultConfigViewRender
         return $data;
     }
 
-    protected function checkMenuAccess(\Anakeen\Core\Internal\SmartElement $smartElement, $menuId) {
+    protected function checkMenuAccess(\Anakeen\Core\Internal\SmartElement $smartElement, $menuId)
+    {
         //Do not show if the right is not ok
         try {
             if (\Anakeen\Router\RouterAccess::hasPermission("admincenter:admin") === false) {
