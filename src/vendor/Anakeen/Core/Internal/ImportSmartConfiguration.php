@@ -55,7 +55,10 @@ class ImportSmartConfiguration
     public function print($data)
     {
         foreach ($data as $line) {
-            printf("%s\n", implode(" - ", $line));
+            foreach ($line as $item) {
+                printf(" - %s", str_replace("\n", " ", print_r($item, true)));
+            }
+            printf("\n");
         }
     }
 
@@ -65,11 +68,12 @@ class ImportSmartConfiguration
         $data = array_merge($data, $this->extractProps($config));
         $data = array_merge($data, $this->extractAttrs($config));
         $data = array_merge($data, $this->extractParams($config));
+        $data = array_merge($data, $this->extractDefaults($config));
 
         $data = array_merge($data, $this->extractModAttrs($config));
         $data = array_merge($data, $this->extractEnumConfig($this->dom->documentElement));
         $data[] = ["END"];
-
+        $this->print($data);
         $this->importSmartData($data);
 
         if ($this->getError()) {
@@ -94,7 +98,6 @@ class ImportSmartConfiguration
         $import = new \ImportDocumentDescription();
 
         $this->cr = $import->importData($data);
-
     }
 
     protected function extractBegin(\DOMElement $config)
@@ -129,6 +132,28 @@ class ImportSmartConfiguration
                  */
                 if (preg_match('/smart:attr-/', $attrNode->tagName)) {
                     $data = array_merge($data, $this->extractAttr($attrNode, "PARAM"));
+                }
+            }
+        }
+
+        return $data;
+    }
+
+
+    protected function extractDefaults(\DOMElement $config)
+    {
+        $data = [];
+        $nodeAttributes = $this->getNode($config, "defaults");
+        if ($nodeAttributes) {
+            foreach ($nodeAttributes->childNodes as $attrNode) {
+                if (!is_a($attrNode, \DOMElement::class)) {
+                    continue;
+                }
+                /**
+                 * @var \DOMElement $attrNode
+                 */
+                if ($attrNode->tagName === "smart:default") {
+                    $data[] = $this->extractDefault($attrNode);
                 }
             }
         }
@@ -176,10 +201,10 @@ class ImportSmartConfiguration
             list($attr->autocomplete, $attr->phpfile) = $this->extractAttrAutoComplete($attrNode, function (\DOMElement $e) {
                 return true;
             });
-            if ($attr->phpfile && ! $attr->phpfunc) {
+            if ($attr->phpfile && !$attr->phpfunc) {
                 // For compatibility on old autocomplete
-                $attr->phpfunc=$attr->autocomplete;
-                $attr->autocomplete="";
+                $attr->phpfunc = $attr->autocomplete;
+                $attr->autocomplete = "";
             }
 
 
@@ -207,6 +232,21 @@ class ImportSmartConfiguration
                     $data = array_merge($data, $this->extractAttr($attrNode, "ATTR"));
                 }
             }
+        }
+
+        return $data;
+    }
+
+
+    protected function extractDefault(\DOMElement $attrNode)
+    {
+        $data = ["DEFAULT"];
+        $nodeValue = trim($attrNode->nodeValue);
+        $data[] = $attrNode->getAttribute("attr");
+        if ($nodeValue) {
+            $data[] = $nodeValue;
+        } else {
+            $data[] = $this->getCallableString($attrNode);
         }
 
         return $data;
@@ -317,10 +357,10 @@ class ImportSmartConfiguration
         list($attr->autocomplete, $attr->phpfile) = $this->extractAttrAutoComplete($attrNode, function (\DOMElement $e) {
             return true;
         });
-        if ($attr->phpfile && ! $attr->phpfunc) {
+        if ($attr->phpfile && !$attr->phpfunc) {
             // For compatibility on old autocomplete
-            $attr->phpfunc=$attr->autocomplete;
-            $attr->autocomplete="";
+            $attr->phpfunc = $attr->autocomplete;
+            $attr->autocomplete = "";
         }
 
 
@@ -525,7 +565,7 @@ class ImportSmartConfiguration
                 $arg = '"' . str_replace('"', '\\"', $arg) . '"';
             }
             if ($name) {
-                $arg=sprintf("{%s}%s", $name, $arg);
+                $arg = sprintf("{%s}%s", $name, $arg);
             }
             $args[] = $arg;
         }
@@ -541,8 +581,11 @@ class ImportSmartConfiguration
          */
         foreach ($returnNodes as $returnNode) {
             $attridreturn = $returnNode->getAttribute("attr");
-            $returns[] = strtolower($attridreturn);
+            if ($attridreturn) {
+                $returns[] = strtolower($attridreturn);
+            }
         }
+
         if ($returns) {
             $method .= ":" . implode(",", $returns);
         }

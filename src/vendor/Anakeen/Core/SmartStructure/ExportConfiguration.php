@@ -507,6 +507,11 @@ class ExportConfiguration
                             $smartAttr->setAttribute("relation", $attr->format);
                         }
                     }
+                    if (in_array($type, ["int","double","money","date", "time", "timestamp"])) {
+                        if ($attr->format) {
+                            $smartAttr->setAttribute("format", $attr->format);
+                        }
+                    }
                     if ($type === "enum") {
                         if ($attr->format) {
                             $smartAttr->setAttribute("relation", $attr->format);
