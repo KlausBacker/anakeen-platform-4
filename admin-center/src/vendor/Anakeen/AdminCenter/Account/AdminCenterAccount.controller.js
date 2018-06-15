@@ -121,6 +121,8 @@ export default {
             }),
             userModeSelected: false,
             displayGroupDocument: false,
+            selectedGroupDocumentId: false,
+            selectedGroupLogin: false,
             options: {}
         };
     },
@@ -129,8 +131,10 @@ export default {
         this.bindTree();
         this.bindGrid();
         this.bindSplitter();
+        this.bindEditDoc();
     },
     methods: {
+        //Get the config of the creation toolbar
         fetchConfig: function() {
             Vue.ankApi.get("admin/account/config/").then(response => {
                 if (response.status === 200 && response.statusText === 'OK') {
@@ -231,6 +235,16 @@ export default {
                 resize: onContentResize("center", this.$refs.centerPart)
             })
         },
+        bindEditDoc: function() {
+            const openDoc = this.$refs.openDoc;
+            openDoc.addEventListener("afterSave", (event) => {
+                if (event && event.detail && event.detail[1] && event.detail[1] && event.detail[1].type && event.detail[1].type === "folder") {
+                    this.updateTreeData();
+                } else {
+                    this.updateGridData();
+                }
+            });
+        },
         //Display the user pane
         toggleUserMode: function () {
             this.userModeSelected = !this.userModeSelected;
@@ -246,6 +260,7 @@ export default {
         //Display the selected group in the ank-document
         updateGroupSelected: function (selectedGroupId) {
             const groupDoc = this.$refs.groupDoc;
+            this.selectedGroupLogin = selectedGroupId || this.selectedGroupLogin;
             if (selectedGroupId && selectedGroupId !== "@users") {
                 this.selectedGroupDocumentId = selectedGroupId;
                 this.displayGroupDocument = true;
@@ -272,6 +287,7 @@ export default {
                 initid: this.selectedGroupDocumentId,
                 viewId: "changeGroup"
             });
+
             this.toggleUserMode();
         },
         //Update the selected group
