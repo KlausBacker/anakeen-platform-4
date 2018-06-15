@@ -73,7 +73,6 @@ class ImportSmartConfiguration
         $data = array_merge($data, $this->extractModAttrs($config));
         $data = array_merge($data, $this->extractEnumConfig($this->dom->documentElement));
         $data[] = ["END"];
-        $this->print($data);
         $this->importSmartData($data);
 
         if ($this->getError()) {

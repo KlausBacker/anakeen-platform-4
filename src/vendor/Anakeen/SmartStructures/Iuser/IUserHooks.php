@@ -20,50 +20,12 @@ use SmartStructure\Attributes\Iuser as MyAttributes;
 /**
  * Class UserAccount
  */
-class IUserHooks extends \Anakeen\SmartElement
- implements \Anakeen\Core\IMailRecipient
+class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRecipient
 {
     use TAccount;
 
 
-    public function preRefresh()
-    {
-        $err = parent::preRefresh();
 
-        if ($this->getRawValue("US_STATUS") == 'D') {
-            $err .= ($err == "" ? "" : "\n") . _("user is deactivated");
-        }
-
-        $iduser = $this->getRawValue("US_WHATID");
-        if ($iduser > 0) {
-            $user = $this->getAccount();
-            if (!$user->isAffected()) {
-                return sprintf(_("user #%d does not exist"), $iduser);
-            }
-        } else {
-            if ($this->getRawValue("us_login") != '-') {
-                $err = _("user has not identificator");
-            }
-            /**
-             * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
-             */
-            $oa = $this->getAttribute("us_passwd1");
-            if ($oa) {
-                $oa->needed = true;
-            }
-            /**
-             * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
-             */
-            $oa = $this->getAttribute("us_passwd2");
-            if ($oa) {
-                $oa->needed = true;
-            }
-            $oa = $this->getAttribute("us_tab_system");
-            $oa->setOption("firstopen", "yes");
-        }
-        $this->updateIncumbents();
-        return $err;
-    }
 
     public function updateIncumbents()
     {
@@ -394,17 +356,7 @@ class IUserHooks extends \Anakeen\SmartElement
             }
         }
         $this->setValue("us_roles", $roles);
-        if ($this->getRawValue("us_whatid") == \Anakeen\Core\Account::ANONYMOUS_ID) {
-            // Anonymous has no password
-            $passFrame = $this->getAttribute("us_passwd1");
-            if ($passFrame) {
-                $passFrame->setVisibility("H");
-            }
-            $passFrame = $this->getAttribute("us_passwd2");
-            if ($passFrame) {
-                $passFrame->setVisibility("H");
-            }
-        }
+
     }
 
     /**
@@ -511,17 +463,10 @@ class IUserHooks extends \Anakeen\SmartElement
         $err = "";
 
         if ($pwd1 <> $pwd2) {
-            $err = _("the 2 passwords are not the same");
-        } elseif (($pwd1 == "") && ($this->getRawValue("us_whatid") == "")) {
-            if ($login != "-") {
-                $err = _("passwords must not be empty");
-            }
+            $err = ___("The 2 passwords are not the same", "smart iuser");
         }
 
-        return array(
-            "err" => $err,
-            "sug" => $sug
-        );
+        return $err;
     }
 
     public function testForcePassword($pwd)
