@@ -39,6 +39,12 @@ export default {
             type: String,
             default: '10rem',
         },
+
+        // Determine if the expanded dock should move the content or superpose it
+        superposeDock: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
@@ -295,6 +301,26 @@ export default {
                 return tab.content;
             } else {
                 return false;
+            }
+        },
+
+        // Add class necessary style to make the dock superpose the content
+        fixedStyle() {
+            if (this.superposeDock) {
+                let style = 'height: auto; width: auto; position: fixed; ';
+                if (this.position === 'left') {
+                    style += 'left: ' + this.compactSize + '; right: 0; top: 0; bottom: 0;';
+                } else if (this.position === 'right') {
+                    style += 'left: 0; right: ' + this.compactSize + '; top: 0; bottom: 0;';
+                } else if (this.position === 'top') {
+                    style += 'left: 0; right: 0; top: ' + this.compactSize + '; bottom: 0;';
+                } else {
+                    style += 'left: 0; right: 0; top: 0; bottom: ' + this.compactSize + ';';
+                }
+
+                return style;
+            } else {
+                return '';
             }
         },
 

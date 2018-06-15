@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div id="content" v-show="contentDisplayed">
+        <div id="content" v-show="contentDisplayed" :style="fixedStyle">
             <div :id="'content.' + tab.id" class="dock-tab-content" v-for="tab in headerTabs" :key="tab.id" v-html="tab.content" v-show="tab.content && (tab.id === selectedTab)"></div>
             <div :id="'content.' + tab.id" class="dock-tab-content" v-for="tab in tabs" :key="tab.id" v-html="tab.content" v-show="tab.content && (tab.id === selectedTab)"></div>
             <div :id="'content.' + tab.id" class="dock-tab-content" v-for="tab in footerTabs" :key="tab.id" v-html="tab.content" v-show="tab.content && (tab.id === selectedTab)"></div>
