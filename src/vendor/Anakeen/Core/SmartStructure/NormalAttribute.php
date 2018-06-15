@@ -111,7 +111,7 @@ class NormalAttribute extends BasicAttribute
         $eformat = "",
         $options = "",
         $docname = "",
-    $prop=""
+        $prop = ""
     ) {
         $this->id = $id;
         $this->docid = $docid;
@@ -135,8 +135,8 @@ class NormalAttribute extends BasicAttribute
         $this->options = $options;
         $this->docname = $docname;
         if ($prop) {
-            $prop=str_replace(['\\'], ['\\\\'], $prop);
-            $this->properties=json_decode($prop);
+            $prop = str_replace(['\\', '\\\\"'], ['\\\\', '\\"'], $prop);
+            $this->properties = json_decode($prop);
         }
     }
 

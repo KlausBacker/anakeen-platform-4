@@ -41,7 +41,7 @@ if ($logfile) {
 
 $oImport = new \Anakeen\Core\Internal\ImportSmartConfiguration();
 $oImport->setOnlyAnalyze($analyze !== "no");
-$cr = $oImport->import($filename);
+$oImport->import($filename);
 
 
 $err = $oImport->getErrorMessage();

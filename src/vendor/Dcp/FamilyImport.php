@@ -149,9 +149,9 @@ class FamilyImport
             /**
              * @var $v \DocAttr
              */
-            $table1=[];
+            $table1 = [];
             foreach ($docDbAttrs as $k => $v) {
-                $table1[strtolower($v->id)]=$v;
+                $table1[strtolower($v->id)] = $v;
             }
 
 
@@ -306,7 +306,7 @@ class FamilyImport
                             "type" => $v->type,
                             "options" => str_replace("\"", "\\\"", $v->options),
                             "frame" => ($v->frameid == "") ? \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD : strtolower($v->frameid),
-                            "props" =>  str_replace("\"", "\\\"", $v->properties)
+                            "props" => str_replace('"', '\\"', str_replace(['\\"'], ['\\\\"'], $v->properties))
                         );
                         break;
 
@@ -415,7 +415,7 @@ class FamilyImport
                             "phpfunc" => self::doubleslash(str_replace(", |", ",  |", $v->phpfunc)),
                             "phpconstraint" => str_replace("\"", "\\\"", $v->phpconstraint),
                             "usefor" => $v->usefor,
-                            "props" => str_replace(['\\',"\""], ['\\', "\\\""], $v->properties)
+                            "props" => str_replace('"', '\\"', str_replace(['\\"'], ['\\\\"'], $v->properties))
                         );
 
                         if (($atype != "array") && ($v->usefor != "Q")) {
@@ -945,7 +945,6 @@ class FamilyImport
         }
         return '';
     }
-
 
 
     /**
