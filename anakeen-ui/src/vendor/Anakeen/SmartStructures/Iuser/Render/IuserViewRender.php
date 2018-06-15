@@ -11,6 +11,8 @@ use Anakeen\Ui\DefaultConfigViewRender;
 
 class IuserViewRender extends DefaultConfigViewRender
 {
+    use IuserMessage;
+
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
@@ -73,6 +75,7 @@ class IuserViewRender extends DefaultConfigViewRender
     {
         $data = parent::getCustomServerData($smartElement);
         $data["ADD_CUSTOM_MENU"] = true;
+        $data["messages"] = $this->getUserMessage($smartElement);
         return $data;
     }
 

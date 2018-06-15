@@ -168,6 +168,9 @@ import './changeGroupView.css';
             $("#listOfGroups").kendoTreeView({
                 checkboxes: true,
                 dataSource: groupTreeSource,
+                select : (event) => {
+                    event.preventDefault();
+                },
                 template: "<span # if(item.hasChildChecked) {# class='hasChildChecked' #}# data-accountId='#= item.accountId #' data-se-id='#= item.documentId #'>#= item.title # (#= item.nbUser #) </span>",
                 check: function onTreeCheck(event) {
                     const eventNode = this.dataItem(event.node);
