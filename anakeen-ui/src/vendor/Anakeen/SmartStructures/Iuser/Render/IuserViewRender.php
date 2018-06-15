@@ -6,16 +6,16 @@
 
 namespace Anakeen\SmartStructures\Iuser\Render;
 
+use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Router\Exception;
 use Anakeen\Ui\DefaultConfigViewRender;
-use Dcp\Ui\CommonRenderOptions;
 use SmartStructure\Attributes\Iuser as myAttributes;
 
 class IuserViewRender extends DefaultConfigViewRender
 {
     use IuserMessage;
 
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(SmartElement $document)
     {
         $options = parent::getOptions($document);
 
@@ -24,7 +24,7 @@ class IuserViewRender extends DefaultConfigViewRender
         $options->frame(myAttributes::us_fr_ident)->setResponsiveColumns(
             [
                 ["number" => 2, "minWidth" => $break2, "maxWidth" => $break3],
-                ["number" => 3, "minWidth" => $break3,  "grow" => false]
+                ["number" => 3, "minWidth" => $break3, "grow" => false]
             ]
         );
         $options->frame(myAttributes::us_fr_security)->setResponsiveColumns(
@@ -32,7 +32,7 @@ class IuserViewRender extends DefaultConfigViewRender
                 ["number" => 2, "minWidth" => $break2]
             ]
         );
-        
+
         $options->frame(myAttributes::us_fr_intranet)->setResponsiveColumns(
             [
                 ["number" => 2, "minWidth" => $break3]
@@ -42,7 +42,7 @@ class IuserViewRender extends DefaultConfigViewRender
         return $options;
     }
 
-    public function getMenu(\Anakeen\Core\Internal\SmartElement $smartElement)
+    public function getMenu(SmartElement $smartElement)
     {
         $menus = parent::getMenu($smartElement);
 
@@ -75,13 +75,12 @@ class IuserViewRender extends DefaultConfigViewRender
 
             $menus->insertAfter("modify", $listMenu);
         } catch (\Exception $e) {
-
         }
 
         return $menus;
     }
 
-    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $smartElement = null)
+    public function getJsReferences(SmartElement $smartElement = null)
     {
         $js = parent::getJsReferences();
         $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
@@ -94,15 +93,15 @@ class IuserViewRender extends DefaultConfigViewRender
         return $js;
     }
 
-    public function getCustomServerData(\Anakeen\Core\Internal\SmartElement $smartElement)
+    public function getCustomServerData(SmartElement $smartElement)
     {
         $data = parent::getCustomServerData($smartElement);
         $data["ADD_CUSTOM_MENU"] = true;
-        $data["messages"] = $this->getUserMessage($smartElement);
+
         return $data;
     }
 
-    protected function checkMenuAccess(\Anakeen\Core\Internal\SmartElement $smartElement, $menuId)
+    protected function checkMenuAccess(SmartElement $smartElement, $menuId)
     {
         //Do not show if the right is not ok
         try {
@@ -130,5 +129,17 @@ class IuserViewRender extends DefaultConfigViewRender
             return true;
         }
         return false;
+    }
+
+    /**
+     * Add warning messages to display
+     *
+     * @param SmartElement $smartElement
+     * @return array
+     */
+    public function getMessages(SmartElement $smartElement)
+    {
+        $messages = parent::getMessages($smartElement);
+        return array_merge($messages, $this->getUserMessages($smartElement));
     }
 }
