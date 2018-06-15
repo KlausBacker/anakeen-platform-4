@@ -8,6 +8,7 @@ namespace Anakeen\Routes\Core\Lib;
 
 class ApiMessage implements \JsonSerializable
 {
+    const SUCCESS = "success";
     const ERROR = "error";
     const MESSAGE = "message";
     const NOTIFICATION = "notification";

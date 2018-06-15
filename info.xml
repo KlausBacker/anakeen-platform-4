@@ -271,7 +271,7 @@
             <label>Add Sent message family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Exec/exec.struct.csv ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Exec/exec.struct.xml ">
             <label>Add Processus family</label>
         </process>
 
@@ -580,7 +580,7 @@
             <label>Add Sent message family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Exec/exec.struct.csv ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Exec/exec.struct.xml ">
             <label>Add Processus family</label>
         </process>
 
