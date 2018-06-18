@@ -5,18 +5,20 @@ export default {
         // Compact badge (just the initials), or large badge (with name and email)
         large: {
             type: Boolean,
-            default: false
+            default: false,
         },
+
         // Allow the user to change his email, or not
         emailAlterable: {
             type: Boolean,
-            default: false
+            default: false,
         },
+
         // Allow the user to change his password, or not
         passwordAlterable: {
             type: Boolean,
-            default: false
-        }
+            default: false,
+        },
     },
 
     data() {
@@ -36,8 +38,8 @@ export default {
 
             // Warning messages during email/password change
             emailWarningMessage: '',
-            passwordWarningMessage: ''
-        }
+            passwordWarningMessage: '',
+        };
     },
 
     methods: {
@@ -75,13 +77,16 @@ export default {
             let eventName = 'beforeLogout';
             let options = {
                 cancelable: true,
-                detail: [{
-                    email: this.email,
-                    login: this.login,
-                    initials: this.initials,
-                    firstName: this.firstName,
-                    lastName: this.lastName
-                }]};
+                detail: [
+                    {
+                        email: this.email,
+                        login: this.login,
+                        initials: this.initials,
+                        firstName: this.firstName,
+                        lastName: this.lastName,
+                    },
+                ],
+            };
             let event;
             if (typeof window.CustomEvent === 'function') {
                 event = new CustomEvent(eventName, options);
@@ -95,23 +100,23 @@ export default {
             if (!event.defaultPrevented) {
                 // Verify if password matches confirmation
                 if ((this.newPassword === this.newPasswordConfirmation) && (this.newPassword !== '')) {
-                    kendo.ui.progress(this.$("#epasswordModifier"), true);
+                    kendo.ui.progress(this.$('#epasswordModifier'), true);
                     this.$http.put('/components/identity/password',
                         {
                             oldPassword: this.oldPassword,
-                            newPassword: this.newPassword
+                            newPassword: this.newPassword,
                         })
                         .then(() => {
                             this.$emit('passwordModified');
 
                             // Remove loader + close dialog
-                            kendo.ui.progress(this.$("#passwordModifier"), false);
+                            kendo.ui.progress(this.$('#passwordModifier'), false);
                             this.openPasswordModifiedWindow();
                         })
                         .catch((error) => {
                             // Show a warning message and remove the loader
                             this.passwordWarningMessage = error.response.data.userMessage;
-                            kendo.ui.progress(this.$("#passwordModifier"), false);
+                            kendo.ui.progress(this.$('#passwordModifier'), false);
                         });
                 } else {
                     // Show a warning message
@@ -127,14 +132,17 @@ export default {
             let eventName = 'beforeLogout';
             let options = {
                 cancelable: true,
-                detail: [{
-                    currentEmail: this.email,
-                    newEmail: this.newEmail,
-                    login: this.login,
-                    initials: this.initials,
-                    firstName: this.firstName,
-                    lastName: this.lastName
-                }]};
+                detail: [
+                    {
+                        currentEmail: this.email,
+                        newEmail: this.newEmail,
+                        login: this.login,
+                        initials: this.initials,
+                        firstName: this.firstName,
+                        lastName: this.lastName,
+                    },
+                ],
+            };
             let event;
             if (typeof window.CustomEvent === 'function') {
                 event = new CustomEvent(eventName, options);
@@ -142,16 +150,17 @@ export default {
                 event = document.createEvent('CustomEvent');
                 event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
             }
+
             this.$el.parentNode.dispatchEvent(event);
 
             if (!event.defaultPrevented) {
                 // Verify if the input is an email ( [string]@[string].[string] )
                 if (this.newEmail.match(/\S+@\S+\.\S+/)) {
-                    kendo.ui.progress(this.$("#emailModifier"), true);
+                    kendo.ui.progress(this.$('#emailModifier'), true);
                     this.$http.put('/components/identity/email',
                         {
                             email: this.newEmail,
-                            password: this.oldPassword
+                            password: this.oldPassword,
                         })
                         .then(response => {
                             this.$emit('emailModified', { email: response.data.email });
@@ -159,13 +168,13 @@ export default {
                             this.email = response.data.email;
 
                             // Remove loader and close dialog
-                            kendo.ui.progress(this.$("#emailModifier"), false);
+                            kendo.ui.progress(this.$('#emailModifier'), false);
                             this.openEmailModifiedWindow();
                         })
                         .catch((error) => {
                             // Show a warning message and remove the loader
                             this.emailWarningMessage = error.response.data.userMessage;
-                            kendo.ui.progress(this.$("#emailModifier"), false);
+                            kendo.ui.progress(this.$('#emailModifier'), false);
                         });
                 } else {
                     // Show a warning message
@@ -179,14 +188,14 @@ export default {
         // Open or close the popup that allow the user to change his email and/or password
         toggleSettingsPopup() {
             if (this.emailAlterable || this.passwordAlterable) {
-                this.$("#popup").data("kendoPopup").toggle();
+                this.$('#popup').data('kendoPopup').toggle();
             }
         },
 
         // Close the popup that allow the user to change his email and/or password
         closeSettingsPopup() {
             if (this.emailAlterable || this.passwordAlterable) {
-                this.$("#popup").data("kendoPopup").close();
+                this.$('#popup').data('kendoPopup').close();
             }
         },
 
@@ -204,8 +213,8 @@ export default {
                     this.emailWarningMessage = '';
                 };
 
-                let emailWindow = $("#emailModifier");
-                emailWindow.kendoWindow({
+                let $emailWindow = $('#emailModifier');
+                $emailWindow.kendoWindow({
                     draggable: false,
                     resizable: false,
                     modal: true,
@@ -215,32 +224,32 @@ export default {
                     actions: ['Close'],
                     open: resetEmailChangeData,
                     close: resetEmailChangeData,
-                    activate: () => { this.$("#emailInput").focus(); }
+                    activate: () => { this.$('#emailInput').focus(); },
                 }).data('kendoWindow').center().open();
             }
         },
 
         // Close dialog window to change user's email
         closeEmailModifierWindow() {
-            this.$("#emailModifier").data("kendoWindow").close();
+            this.$('#emailModifier').data('kendoWindow').close();
         },
 
         // Open dialog to confirm the modification of the email
         openEmailModifiedWindow() {
-            let dialog = this.$("#emailModifiedWindow");
+            let dialog = this.$('#emailModifiedWindow');
             dialog.kendoWindow({
                 width: '250px',
                 title: this.translations.emailChangeSuccessTitle,
                 visible: true,
                 modal: true,
                 action: ['Close'],
-                close: this.closeEmailModifierWindow
-            }).data("kendoWindow").center().open();
+                close: this.closeEmailModifierWindow,
+            }).data('kendoWindow').center().open();
         },
 
         // Close dialog to confirm the modification of the email
         closeEmailModifiedWindow() {
-            this.$("#emailModifiedWindow").data("kendoWindow").close();
+            this.$('#emailModifiedWindow').data('kendoWindow').close();
         },
 
         // Open dialog window to change user's password
@@ -261,7 +270,7 @@ export default {
                     this.reColorInputs();
                 };
 
-                let passwordWindow = this.$("#passwordModifier");
+                let passwordWindow = this.$('#passwordModifier');
                 passwordWindow.kendoWindow({
                     draggable: false,
                     resizable: false,
@@ -272,36 +281,37 @@ export default {
                     actions: ['Close'],
                     open: resetPasswordChangeData,
                     close: resetPasswordChangeData,
-                    activate: () => { this.$("#passwordInput").focus(); }
-                }).data("kendoWindow").center().open();
+                    activate: () => { this.$('#passwordInput').focus(); },
+                }).data('kendoWindow').center().open();
             }
         },
 
         // Close dialog window to change user's password
         closePasswordModifierWindow() {
-            this.$("#passwordModifier").data("kendoWindow").close();
+            this.$('#passwordModifier').data('kendoWindow').close();
         },
 
         // Open dialog to confirm the modification of the password
         openPasswordModifiedWindow() {
-            let dialog = this.$("#passwordModifiedWindow");
+            let dialog = this.$('#passwordModifiedWindow');
             dialog.kendoWindow({
                 width: '250px',
                 title: this.translations.passwordChangeSuccessTitle,
                 visible: true,
                 modal: true,
                 action: ['Close'],
-                close: this.closePasswordModifierWindow
-            }).data("kendoWindow").center().open();
+                close: this.closePasswordModifierWindow,
+            }).data('kendoWindow').center().open();
         },
 
         // Close dialog to confirm the modification of the password
         closePasswordModifiedWindow() {
-            this.$("#passwordModifiedWindow").data("kendoWindow").close();
+            this.$('#passwordModifiedWindow').data('kendoWindow').close();
         },
 
         // Reset email modification warning message when a key is pressed, if this key is not enter
-        // (Enter shouldn't remove the message because if the user validate a wrong email with enter, the message should appear)
+        // (Enter shouldn't remove the message because if the user validate a wrong email with enter,
+        // the message should appear)
         removeEmailWarningMessage(event) {
             if (event.key !== 'Enter') {
                 this.emailWarningMessage = '';
@@ -309,11 +319,13 @@ export default {
         },
 
         // Reset password modification warning message when a key is pressed, if this key is not enter
-        // (Enter shouldn't remove the message because if the user validate a wrong password with enter, the message should appear)
+        // (Enter shouldn't remove the message because if the user validate a wrong password with enter,
+        // the message should appear)
         updatePasswordChangeForm(event) {
             if (event.key !== 'Enter') {
                 this.passwordWarningMessage = '';
             }
+
             this.reColorInputs();
         },
 
@@ -321,17 +333,17 @@ export default {
         reColorInputs() {
             if (this.newPassword && this.newPasswordConfirmation) {
                 if (this.newPassword === this.newPasswordConfirmation) {
-                    $("#passwordInput").find(':input').css('border-color', 'green');
-                    $("#passwordConfirmationInput").find(':input').css('border-color', 'green');
+                    $('#passwordInput').find(':input').css('border-color', 'green');
+                    $('#passwordConfirmationInput').find(':input').css('border-color', 'green');
                 } else {
-                    $("#passwordInput").find(':input').css('border-color', 'red');
-                    $("#passwordConfirmationInput").find(':input').css('border-color', 'red');
+                    $('#passwordInput').find(':input').css('border-color', 'red');
+                    $('#passwordConfirmationInput').find(':input').css('border-color', 'red');
                 }
             } else {
-                $("#passwordInput").find(':input').css('border-color', '');
-                $("#passwordConfirmationInput").find(':input').css('border-color', '');
+                $('#passwordInput').find(':input').css('border-color', '');
+                $('#passwordConfirmationInput').find(':input').css('border-color', '');
             }
-        }
+        },
     },
 
     computed: {
@@ -360,7 +372,7 @@ export default {
                 emailChangeSuccessTitle: this.$pgettext('Identity', 'Email changed'),
                 passwordChangeSuccess: this.$pgettext('Identity', 'Password successfully changed'),
                 passwordChangeSuccessTitle: this.$pgettext('Identity', 'Password changed'),
-                closeButtonLabel: this.$pgettext('Identity', 'Close')
+                closeButtonLabel: this.$pgettext('Identity', 'Close'),
             };
         },
 
@@ -375,8 +387,12 @@ export default {
 
         // Password change validation button enabled only if the password matches the confirmation
         passwordChangeButtonDisabled() {
-            return ((this.newPassword !== this.newPasswordConfirmation) || (this.newPassword === '') || (this.oldPassword === ''));
-        }
+            return (
+                (this.newPassword !== this.newPasswordConfirmation)
+                || (this.newPassword === '')
+                || (this.oldPassword === '')
+            );
+        },
     },
 
     mounted() {
@@ -386,11 +402,11 @@ export default {
         if (this.emailAlterable || this.passwordAlterable) {
             $('#popup').kendoPopup({
                 anchor: this.$('#identity'),
-                origin: "bottom left",
-                position: "top left",
+                origin: 'bottom left',
+                position: 'top left',
                 animation: false,
-                collision: 'flip fit'
+                collision: 'flip fit',
             });
         }
-    }
-}
+    },
+};

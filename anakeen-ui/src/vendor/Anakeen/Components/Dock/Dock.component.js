@@ -1,7 +1,7 @@
-import AnkMixin from "../AnkVueComponentMixin/AnkVueComponentMixin";
+import AnkMixin from '../AnkVueComponentMixin/AnkVueComponentMixin';
 
 export default {
-    name: "ank-dock",
+    name: 'ank-dock',
 
     mixins: [AnkMixin],
 
@@ -12,95 +12,147 @@ export default {
             validator(value) {
                 return ['left', 'right', 'top', 'bottom'].indexOf(value) !== -1;
             },
-            default: 'left'
+
+            default: 'left',
         },
 
         // Define if the dock is expandable or not
         expandable: {
             type: Boolean,
-            default: true
+            default: true,
+        },
+
+        // Define the initial format of the dock (compact or expanded)
+        expanded: {
+            type: Boolean,
+            default: false,
         },
 
         // Size of the dock when it is not expanded
-        // TODO Define default value
         compactSize: {
             type: String,
-            default: '3rem'
+            default: '4.5rem',
         },
 
         // Size of the dock when it is expanded
-        // TODO Define default value
         largeSize: {
             type: String,
-            default: '10rem'
-        }
+            default: '10rem',
+        },
+
+        // Determine if the expanded dock should move the content or superpose it
+        superposeDock: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
         return {
             tabs: [],
-            expanded: false,
+            headerTabs: [],
+            footerTabs: [],
+            expandedDock: false,
             selectedTab: '-1',
-            size: ''
-        }
+            size: '',
+            loadedTabs: 0,
+        };
     },
 
     methods: {
-        // Add a tab and its content
-        addTab(tab) {
-            let eventName = 'beforeTabAdd';
-            let options = {
-                cancelable: true,
-                detail: [tab]};
-            let event;
-            if (typeof window.CustomEvent === 'function') {
-                event = new CustomEvent(eventName, options);
+        // Add a tab, in header, tabs or footer
+        addTab(tab, area, position) {
+            if (tab.hasOwnProperty('compact') && tab.hasOwnProperty('expanded') &&
+                    tab.hasOwnProperty('content') && tab.hasOwnProperty('selectable') &&
+                    tab.hasOwnProperty('selected')) {
+                if (area === 'header') {
+                    this.privateScope.addHeaderTab(tab, position);
+                } else if (area === 'footer') {
+                    this.privateScope.addFooterTab(tab, position);
+                } else {
+                    this.privateScope.addTabToDock(tab, position);
+                }
             } else {
-                event = document.createEvent('CustomEvent');
-                event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
+                console.error('tab should have all required properties to be added ' +
+                    '(compact, expanded, content, selectable, selected');
             }
-            this.$el.parentNode.dispatchEvent(event);
+        },
 
-            if (!event.defaultPrevented) {
-                this.tabs.push(tab);
-                this.$emit('tabAdded', tab);
+        // Remove a tab with its area (header, tabs or footer) and its postion in this area
+        removeTab(position, area) {
+            if (area === 'header') {
+                if (this.headerTabs[position] !== undefined) {
+                    this.privateScope.removeTabWithId(this.headerTabs[position].id);
+                }
+            } else if (area === 'footer') {
+                if (this.footerTabs[position] !== undefined) {
+                    this.privateScope.removeTabWithId(this.footerTabs[position].id);
+                }
             } else {
-                this.$emit('tabAddCanceled');
+                if (this.tabs[position] !== undefined) {
+                    this.privateScope.removeTabWithId(this.tabs[position].id);
+                }
             }
         },
 
-        //
-        addTabWithProperties(compact, expanded, content) {
-            let newTabCompact = $(compact).attr('vue-slot', 'compact');
-            let newTabExpanded = $(expanded).attr('vue-slot', 'expanded');
-            let newTabContent = $(content).attr('vue-slot', 'content');
-
-            let newTab = $("<ank-dock-tab></ank-dock-tab>");
-            newTab.append(newTabCompact);
-            newTab.append(newTabExpanded);
-            newTab.append(newTabContent);
-
-            $("#originalDom").append(newTab);
-        },
-
-        // Remove a tab with its Id
-        removeTabWithId(id) {
-            let positionToRemove = this.tabs.findIndex((element) => {
-                return element.id === id;
-            });
-            this.removeTabWithPosition(positionToRemove);
-        },
-
-        // Remove a tab with its position in the dock
-        removeTabWithPosition(position) {
-            if (this.tabs[position].id === this.selectedTab) {
-                this.selectedTab = -1;
+        // Move a tab from one position to an other
+        moveTab(actualPosition, newPosition, actualArea, newArea) {
+            let actualTabsArea;
+            if (actualArea === 'header') {
+                actualTabsArea = this.headerTabs;
+            } else if (actualArea === 'footer') {
+                actualTabsArea = this.footerTabs;
+            } else {
+                actualTabsArea = this.tabs;
             }
-            this.tabs.splice(position, 1);
+
+            let newTabsArea;
+            if (newArea === 'header') {
+                newTabsArea = this.headerTabs;
+            } else if (newArea === 'footer') {
+                newTabsArea = this.footerTabs;
+            } else {
+                newTabsArea = this.tabs;
+            }
+
+            if (actualTabsArea[actualPosition]) {
+                let eventName = 'beforeTabMove';
+                let options = {
+                    cancelable: true,
+                    detail: [
+                        {
+                            tab: actualTabsArea[actualPosition],
+                        },
+                    ],
+                };
+
+                let event;
+                if (typeof window.CustomEvent === 'function') {
+                    event = new CustomEvent(eventName, options);
+                } else {
+                    event = document.createEvent('CustomEvent');
+                    event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
+                }
+
+                this.$el.parentNode.dispatchEvent(event);
+
+                if (!event.defaultPrevented) {
+                    let tab = actualTabsArea[actualPosition];
+                    actualTabsArea.splice(actualPosition, 1);
+                    newTabsArea.splice(newPosition, 0, tab);
+
+                    this.$emit('tabMoved', tab);
+                } else {
+                    this.$emit('tabMoveCanceled');
+                }
+            }
         },
 
-        moveTab(actualPosition, newPosition) {
-            // TODO
+        // Toggle expansion of the dock
+        toggleExpansion() {
+            if (this.expandable) {
+                this.expandedDock ? this.contract() : this.expand();
+            }
         },
 
         // Expand the dock to its large width
@@ -108,7 +160,7 @@ export default {
             if (this.expandable) {
                 let eventName = 'beforeDockExpansion';
                 let options = {
-                    cancelable: true
+                    cancelable: true,
                 };
                 let event;
                 if (typeof window.CustomEvent === 'function') {
@@ -117,10 +169,11 @@ export default {
                     event = document.createEvent('CustomEvent');
                     event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
                 }
+
                 this.$el.parentNode.dispatchEvent(event);
 
                 if (!event.defaultPrevented) {
-                    this.expanded = true;
+                    this.expandedDock = true;
                     this.size = this.largeSize;
                     this.$emit('dockExpanded');
                 } else {
@@ -134,7 +187,7 @@ export default {
             if (this.expandable) {
                 let eventName = 'beforeDockContraction';
                 let options = {
-                    cancelable: true
+                    cancelable: true,
                 };
                 let event;
                 if (typeof window.CustomEvent === 'function') {
@@ -143,10 +196,11 @@ export default {
                     event = document.createEvent('CustomEvent');
                     event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
                 }
+
                 this.$el.parentNode.dispatchEvent(event);
 
                 if (!event.defaultPrevented) {
-                    this.expanded = false;
+                    this.expandedDock = false;
                     this.size = this.compactSize;
                     this.$emit('dockContracted');
                 } else {
@@ -155,61 +209,337 @@ export default {
             }
         },
 
-        // Toggle expansion of the dock
-        toggleExpansion() {
-            if (this.expandable) {
-                this.expanded ? this.contract() : this.expand();
-            }
-        },
-
-        selectTab(tabId) {
-            if (this.tabs.find(element => { return element.id === tabId }) !== undefined) {
-                this.selectedTab = tabId;
-            }
-        },
-
-        selected(tab) {
-            if (tab.id === this.selectedTab) {
-                return 'selected';
+        // Select a tab, to display its content, with its area (header, tabs or footer) and its position in the area
+        selectTab(position, area) {
+            if (position === -1) {
+                this.selectTabWithId(-1);
             } else {
-                return '';
+                if (area === 'header' && this.headerTabs[position]) {
+                    this.selectTabWithId(this.headerTabs[position].id);
+                } else if (area === 'footer' && this.footerTabs[position]) {
+                    this.selectTabWithId(this.footerTabs[position].id);
+                } else if (this.tabs[position]) {
+                    this.selectTabWithId(this.tabs[position].id);
+                }
             }
-        }
+        },
+
+        // Select a tab, to display its content, with its id
+        selectTabWithId(tabId) {
+            if (tabId === -1) {
+                let eventName = 'beforeTabSelection';
+                let options = {
+                    cancelable: true,
+                    detail: [
+                        {
+                            actualTab: actualSelectedTab,
+                            newTab: {},
+                        },
+                    ],
+                };
+                let event;
+                if (typeof window.CustomEvent === 'function') {
+                    event = new CustomEvent(eventName, options);
+                } else {
+                    event = document.createEvent('CustomEvent');
+                    event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
+                }
+
+                this.$el.parentNode.dispatchEvent(event);
+
+                if (!event.defaultPrevented) {
+                    this.selectedTab = -1;
+                    actualSelectedTab.selected = false;
+                    this.$emit('tabSelected', {});
+                } else {
+                    this.$emit('tabSelectionCanceled');
+                }
+            } else {
+                let allTabs = this.headerTabs.concat(this.tabs, this.footerTabs);
+                let actualSelectedTab = allTabs.find(element => element.id === this.selectedTab);
+                let newSelectedTab = allTabs.find(element => element.id === tabId);
+                if (newSelectedTab !== undefined && newSelectedTab.selectable) {
+                    let eventName = 'beforeTabSelection';
+                    let options = {
+                        cancelable: true,
+                        detail: [
+                            {
+                                actualTab: actualSelectedTab,
+                                newTab: newSelectedTab,
+                            },
+                        ],
+                    };
+                    let event;
+                    if (typeof window.CustomEvent === 'function') {
+                        event = new CustomEvent(eventName, options);
+                    } else {
+                        event = document.createEvent('CustomEvent');
+                        event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
+                    }
+
+                    this.$el.parentNode.dispatchEvent(event);
+
+                    if (!event.defaultPrevented) {
+                        this.selectedTab = newSelectedTab.id;
+                        actualSelectedTab.selected = false;
+                        newSelectedTab.selected = true;
+                        this.$emit('tabSelected', newSelectedTab);
+                    } else {
+                        this.$emit('tabSelectionCanceled');
+                    }
+                }
+            }
+        },
     },
 
     computed: {
-        compactSizeStyle() {
-            if (this.position === 'left' || this.position === 'right') {
-                return 'width: ' + this.compactSize;
+        // Determine if there is content to display (content in the selected tab)
+        contentDisplayed() {
+            let allTabs = this.headerTabs.concat(this.tabs, this.footerTabs);
+            let tab = allTabs.find(element => element.id === this.selectedTab);
+            if (tab) {
+                return tab.content;
             } else {
-                return 'height: ' + this.compactSize;
+                return false;
             }
         },
 
-        expandedSizeStyle() {
-            if (this.position === 'left' || this.position === 'right') {
-                return 'width: calc(' + this.largeSize + '-' + this.compactSize + ')';
+        // Add class necessary style to make the dock superpose the content
+        fixedStyle() {
+            if (this.superposeDock) {
+                let style = 'height: auto; width: auto; position: fixed; ';
+                if (this.position === 'left') {
+                    style += 'left: ' + this.compactSize + '; right: 0; top: 0; bottom: 0;';
+                } else if (this.position === 'right') {
+                    style += 'left: 0; right: ' + this.compactSize + '; top: 0; bottom: 0;';
+                } else if (this.position === 'top') {
+                    style += 'left: 0; right: 0; top: ' + this.compactSize + '; bottom: 0;';
+                } else {
+                    style += 'left: 0; right: 0; top: 0; bottom: ' + this.compactSize + ';';
+                }
+
+                return style;
             } else {
-                return 'height: calc(' + this.largeSize + '-' + this.compactSize + ')';
+                return '';
             }
+        },
+
+        // Calculated sizes of the different parts of the component depending of its position (for style attributes)
+        expandedSizeStyle() {
+            return 'width: calc(' + this.largeSize + ' - ' + this.compactSize + ')';
         },
 
         dockSizeStyle() {
             if (this.position === 'left' || this.position === 'right') {
                 return 'width: ' + this.size;
-            } else {
-                return 'height: ' + this.compactSize;
             }
-        }
+
+            return 'height: ' + this.compactSize;
+        },
+
+        tabSizeStyle() {
+            if (this.expandedDock) {
+                return 'width: ' + this.largeSize;
+            }
+
+            return 'width: ' + this.compactSize;
+        },
+
+        buttonSizeStyle() {
+            if ((this.position === 'left' || this.position === 'right') && (this.expandedDock)) {
+                return 'width: ' + this.largeSize;
+            }
+
+            return 'width: ' + this.compactSize;
+        },
+
+        headerSizeStyle() {
+            if (this.expandedDock || this.position === 'top' || this.position === 'bottom') {
+                return 'width: ' + this.largeSize;
+            }
+
+            return 'width: ' + this.compactSize;
+        },
+
+        footerSizeStyle() {
+            if (!this.expandedDock || this.position === 'top' || this.position === 'bottom') {
+                return 'width: ' + this.compactSize;
+            }
+
+            return 'width: ' + this.largeSize;
+        },
     },
 
     created() {
+        // Private methods
+        let _this = this;
+        this.privateScope = {
+            // Add a tab and its content (tab object, must contain all needed properties)
+            addTabToDock(tab, position) {
+                let eventName = 'beforeTabAdd';
+                let options = {
+                    cancelable: true,
+                    detail: [tab],
+                };
+                let event;
+                if (typeof window.CustomEvent === 'function') {
+                    event = new CustomEvent(eventName, options);
+                } else {
+                    event = document.createEvent('CustomEvent');
+                    event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
+                }
+
+                _this.$el.parentNode.dispatchEvent(event);
+
+                if (!event.defaultPrevented) {
+                    position === undefined ? _this.tabs.push(tab) : _this.tabs.splice(position, 0, tab);
+                    if (tab.selected) {
+                        _this.selectedTab = tab.id;
+                    }
+
+                    _this.$emit('tabAdded', tab);
+                } else {
+                    _this.$emit('tabAddCanceled');
+                }
+            },
+
+            // Add a header tab to the dock (displayed before the expansion button)
+            addHeaderTab(tab, position) {
+                let eventName = 'beforeTabAdd';
+                let options = {
+                    cancelable: true,
+                    detail: [tab],
+                };
+                let event;
+                if (typeof window.CustomEvent === 'function') {
+                    event = new CustomEvent(eventName, options);
+                } else {
+                    event = document.createEvent('CustomEvent');
+                    event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
+                }
+
+                _this.$el.parentNode.dispatchEvent(event);
+
+                if (!event.defaultPrevented) {
+                    position === undefined ? _this.headerTabs.push(tab) : _this.headerTabs.splice(position, 0, tab);
+                    if (tab.selected) {
+                        _this.selectedTab = tab.id;
+                    }
+
+                    _this.$emit('tabAdded', tab);
+                } else {
+                    _this.$emit('tabAddCanceled');
+                }
+            },
+
+            // Add a footer tab to the dock (displayed at the bottom or the right of the dock)
+            addFooterTab(tab, position) {
+                let eventName = 'beforeTabAdd';
+                let options = {
+                    cancelable: true,
+                    detail: [tab],
+                };
+                let event;
+                if (typeof window.CustomEvent === 'function') {
+                    event = new CustomEvent(eventName, options);
+                } else {
+                    event = document.createEvent('CustomEvent');
+                    event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
+                }
+
+                _this.$el.parentNode.dispatchEvent(event);
+
+                if (!event.defaultPrevented) {
+                    position === undefined ? _this.footerTabs.push(tab) : _this.footerTabs.splice(position, 0, tab);
+                    if (tab.selected) {
+                        _this.selectedTab = tab.id;
+                    }
+
+                    _this.$emit('tabAdded', tab);
+                } else {
+                    _this.$emit('tabAddCanceled');
+                }
+            },
+
+            // Remove a tab with its Id
+            removeTabWithId(id) {
+                let currentTabsArea;
+                let positionToRemove;
+
+                let headerIndex = _this.headerTabs.findIndex(element => element.id === id);
+                let tabIndex = _this.tabs.findIndex(element => element.id === id);
+                let footerIndex = _this.footerTabs.findIndex(element => element.id === id);
+
+                if (headerIndex !== -1) {
+                    currentTabsArea = _this.headerTabs;
+                    positionToRemove = headerIndex;
+                } else if (tabIndex !== -1) {
+                    currentTabsArea = _this.tabs;
+                    positionToRemove = tabIndex;
+                } else if (footerIndex !== -1) {
+                    currentTabsArea = _this.footerTabs;
+                    positionToRemove = footerIndex;
+                }
+
+                if (positionToRemove !== undefined) {
+                    let eventName = 'beforeTabRemove';
+                    let options = {
+                        cancelable: true,
+                        detail: [
+                            currentTabsArea[positionToRemove],
+                        ],
+                    };
+                    let event;
+                    if (typeof window.CustomEvent === 'function') {
+                        event = new CustomEvent(eventName, options);
+                    } else {
+                        event = document.createEvent('CustomEvent');
+                        event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
+                    }
+
+                    _this.$el.parentNode.dispatchEvent(event);
+
+                    if (!event.defaultPrevented) {
+                        let removed = currentTabsArea[positionToRemove];
+                        currentTabsArea.splice(positionToRemove, 1);
+                        _this.$emit('tabRemoved', removed);
+                    } else {
+                        _this.$emit('tabRemoveCanceled');
+                    }
+                }
+            },
+
+            // Used to add the class 'selected' to the current selected tab, to highlight it with CSS
+            selectedSelectable(tab) {
+                if (tab.selectable) {
+                    if (tab.id === _this.selectedTab) {
+                        return 'selectable selected';
+                    } else {
+                        return 'selectable';
+                    }
+                }
+
+                return '';
+            },
+        };
+
         this.$dockEventBus.$on('tabLoaded', (tab) => {
-            this.addTab(tab);
-            if (tab.selected) {
-                this.selectedTab = tab.id;
-            }
+            this.privateScope.addTabToDock(tab);
         });
-        this.size = this.compactSize;
-    }
-}
+
+        this.$dockEventBus.$on('headerTabLoaded', (tab) => {
+            this.privateScope.addHeaderTab(tab);
+        });
+
+        this.$dockEventBus.$on('footerTabLoaded', (tab) => {
+            this.privateScope.addFooterTab(tab);
+        });
+
+        this.expandedDock = this.expanded;
+        if (this.expanded) {
+            this.size = this.largeSize;
+        } else {
+            this.size = this.compactSize;
+        }
+    },
+};
