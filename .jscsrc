@@ -1,5 +1,4 @@
 {
-  "disallowAnonymousFunctions": true,
   "disallowEmptyBlocks": true,
   "disallowFunctionDeclarations": true,
   "disallowImplicitTypeConversion": ["numeric", "boolean", "binary", "string"],

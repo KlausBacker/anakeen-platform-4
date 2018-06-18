@@ -153,6 +153,11 @@ export default {
             const toggleUserMode = this.toggleUserMode.bind(this);
             const openInCreation = (event) => {
                 if (event && event.target && event.target[0] && event.target[0].id) {
+                    if (event.target[0].id === "groupCreateToolbar" || event.target[0].id === "userCreateToolbar") {
+                        event.preventDefault();
+                        Vue.jQuery(event.target[0]).parent().data("kendoPopup").open();
+                        return;
+                    }
                     openDoc.publicMethods.fetchSmartElement({
                         initid: event.target[0].id,
                         viewId: "!defaultCreation",
@@ -164,6 +169,7 @@ export default {
             groupToolbar.add({
                 type: "splitButton",
                 text: "Create",
+                id: "groupCreateToolbar",
                 menuButtons: element.group
             });
             groupToolbar.bind("click", openInCreation);
@@ -171,6 +177,7 @@ export default {
             userToolbar.add({
                 type: "splitButton",
                 text: "Create",
+                id: "userCreateToolbar",
                 menuButtons: element.user
             });
             userToolbar.bind("click", openInCreation);
@@ -214,8 +221,9 @@ export default {
                     window.setTimeout(() => {
                         Vue.jQuery(window).trigger("resize");
                     }, 100);
-                    window.localStorage.setItem("admin.account." + part, Vue.jQuery($split).data("kendoSplitter").size(".k-pane:first"));
-                }
+                    window.localStorage.setItem("admin.account." + part, Vue.jQuery($split).data("kendoSplitter")
+                        .size(".k-pane:first"));
+                };
             };
             const sizeContentPart = window.localStorage.getItem("admin.account.content") || "200px";
             const sizeCenterPart = window.localStorage.getItem("admin.account.center") || "200px";
@@ -233,13 +241,14 @@ export default {
                     {collapsible: false, resizable: true}
                 ],
                 resize: onContentResize("center", this.$refs.centerPart)
-            })
+            });
         },
         bindEditDoc: function() {
             const openDoc = this.$refs.openDoc;
             openDoc.addEventListener("afterSave", (event) => {
-                if (event && event.detail && event.detail[1] && event.detail[1] && event.detail[1].type && event.detail[1].type === "folder") {
-                    this.updateTreeData();
+                if (event && event.detail && event.detail[1] &&
+                    event.detail[1] && event.detail[1].type && event.detail[1].type === "folder") {
+                    this.updateTreeData(true);
                 } else {
                     this.updateGridData();
                 }
@@ -250,8 +259,11 @@ export default {
             this.userModeSelected = !this.userModeSelected;
         },
         //Manually refresh the tree pane
-        updateTreeData: function () {
+        updateTreeData: function (force) {
             const filterTitle = this.$refs.filterTree.value ? this.$refs.filterTree.value.toLowerCase() : "";
+            if (force) {
+                this.groupTree.read();
+            }
             if (filterTitle) {
                 return this.groupTree.filter({field: "title", operator: "contains", value: filterTitle});
             }
@@ -325,7 +337,7 @@ export default {
         //Disable all the group non selected
         filterGroup: function (event) {
             event.preventDefault();
-            this.updateTreeData();
+            this.updateTreeData(true);
         }
     }
 };

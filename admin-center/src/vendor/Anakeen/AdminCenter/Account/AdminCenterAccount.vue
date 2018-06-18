@@ -7,7 +7,7 @@
                         <div class="accountManager_treeViewPart_wrapper_topPart">
                             <div class="accountManager_treeViewPart_wrapper_topPart_btnPart">
                                 <kendo-toolbar>
-                                    <kendo-toolbar-item type="button" icon="refresh" @click="updateTreeData"></kendo-toolbar-item>
+                                    <kendo-toolbar-item type="button" icon="refresh" @click="() => updateTreeData(true)"></kendo-toolbar-item>
                                     <kendo-toolbar-item type="button" icon="sort-asc-sm" @click="collapseAll"></kendo-toolbar-item>
                                     <kendo-toolbar-item type="button" icon="sort-desc-sm" @click="expandAll"></kendo-toolbar-item>
                                 </kendo-toolbar>
@@ -38,7 +38,7 @@
                             <ank-smart-element ref="groupDoc" ></ank-smart-element>
                         </div>
                         <div v-show="!displayGroupDocument">
-                            No group selected
+                            <div><img class="anakeen-logo" src="/AdminCenter/Images/anakeen_monogramme.svg" alt="Anakeen Logo"/></div>
                         </div>
                     </div>
                     <div class="accountManager_contentPart_gridPart">
