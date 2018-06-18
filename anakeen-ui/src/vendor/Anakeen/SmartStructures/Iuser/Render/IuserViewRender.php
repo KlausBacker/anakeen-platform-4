@@ -43,8 +43,13 @@ class IuserViewRender extends DefaultConfigViewRender
                 ["number" => 2, "minWidth" => $break3]
             ]
         );
-        $options->arrayAttribute(myAttributes::us_t_roles)->setCollapse(ArrayRenderOptions::collapseNone);
-        $options->arrayAttribute(myAttributes::us_groups)->setCollapse(ArrayRenderOptions::collapseNone);
+        $options->arrayAttribute(myAttributes::us_t_roles)
+            ->setCollapse(ArrayRenderOptions::collapseNone)
+            ->showEmptyContent(xml_entity_encode(___("No roles", "smart iuser")));
+
+        $options->arrayAttribute(myAttributes::us_groups)
+            ->setCollapse(ArrayRenderOptions::collapseNone)
+            ->showEmptyContent(xml_entity_encode(___("No groups", "smart iuser")));
 
         return $options;
     }

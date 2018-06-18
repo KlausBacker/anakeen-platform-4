@@ -35,6 +35,9 @@ class IgroupViewRender extends DefaultConfigViewRender
         )->setCollapse(false)->setLabelPosition(CommonRenderOptions::nonePosition);
 
         $options->frame(myAttributes::grp_fr)->setCollapse(false)->setLabelPosition(CommonRenderOptions::nonePosition);
+        $options->arrayAttribute(myAttributes::grp_roles)->showEmptyContent(
+            xml_entity_encode(___("No roles", "smart igroup"))
+        );
 
 
         return $options;

@@ -26,6 +26,17 @@ class IuserEditRender extends DefaultConfigEditRender
             <span class="us_accexpiredate">{{{attributes.us_accexpiredate.label}}}</span> : {{{attributes.us_accexpiredate.htmlContent}}}
 HTML
         );
+
+        if (!$document->getRawValue(myAttributes::us_login)) {
+            $options->text(myAttributes::us_login)->setInputTooltip(
+                sprintf(___("<p>Set to \"<b>-</b>\" (<i>minus</i>) to explicit create user without login</p>", " smart iuser"))
+            );
+        }
+        if ($document->getRawValue(myAttributes::us_daydelay)) {
+            $options->text(myAttributes::us_daydelay)->setInputTooltip(
+                sprintf(___("<p>Set to \"<b>-1</b>\"  to cancel expiration</p>", " smart iuser"))
+            );
+        }
         return $options;
     }
 
@@ -51,13 +62,12 @@ HTML
     }
 
 
-
     /**
      * Add default group to customServerData on the first
      * Handle setGroup on the second
      *
      * @param SmartElement $userAccount
-     * @param $data
+     * @param              $data
      * @return mixed
      * @throws \Anakeen\Core\DocManager\Exception
      */
@@ -111,11 +121,12 @@ HTML
 
         $js["iuser"] = UIGetAssetPath::getCustomAssetPath('/uiAssets/Families/iuser/prod/iuser.js');
         if (UIGetAssetPath::isInDebug()) {
-            $js["iuser"] =  UIGetAssetPath::getCustomAssetPath('/uiAssets/Families/iuser/debug/iuser.js');
+            $js["iuser"] = UIGetAssetPath::getCustomAssetPath('/uiAssets/Families/iuser/debug/iuser.js');
         }
 
         return $js;
     }
+
     /**
      * Add warning messages to display
      * @param SmartElement $smartElement
