@@ -674,28 +674,13 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
 
     public static function parseMail($Email)
     {
-        $sug = array(); // suggestions
-        $err = "";
-
         if ($Email != "") {
-            if ($Email[0] == "<") {
-                $sug[] = _("<it's a message>");
-            } else {
-                if (preg_match("/^[_\.0-9\/'?$&\+~`%|*a-z=^{}-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,6}$/i", $Email)) {
-                    return true;
-                }
-                $err = _("the email syntax  is like : john.doe@anywhere.org");
-                if (!preg_match("/@/", $Email)) {
-                    $err = _("the email must containt the @ character");
-                }
+            if (!filter_var($Email, FILTER_VALIDATE_EMAIL)) {
+                return ___("The email address is not valid", "smart iuser");
             }
         }
-        return array(
-            "err" => $err,
-            "sug" => $sug
-        );
+        return "";
     }
-
 
     /**
      * Manage account security

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+    <smart:structure-configuration name="IGROUP" id="127" label="Groupe d'utilisateurs" extends="GROUP">
+        <smart:icon file="se-igroup.png"/>
+        <smart:class>Anakeen\SmartStructures\Igroup\IGroupHooks</smart:class>
+        <smart:revisable>false</smart:revisable>
+        <smart:usefor>S</smart:usefor>
+        <smart:attributes>
+            <smart:attr-fieldset name="grp_fr_intranet" type="frame" label="Système" visibility="W">
+                <smart:attr-text name="us_login" label="identifiant" visibility="W" needed="true"/>
+                <smart:attr-int name="us_whatid" label="identifiant système" visibility="R"/>
+                <smart:attr-account name="us_meid" label="groupe id" visibility="H"/>
+                <smart:attr-docid name="grp_roles" label="Rôles associés" visibility="W" relation="ROLE" multiple="true"/>
+            </smart:attr-fieldset>
+        </smart:attributes>
+        <smart:parameters/>
+
+        <smart:hooks>
+            <smart:attr-hook type="constraint" event="onPreStore" attr="us_login">
+                <smart:attr-callable function="::ConstraintLogin"/>
+                <smart:attr-argument type="attribute">us_login</smart:attr-argument>
+                <smart:attr-return/>
+            </smart:attr-hook>
+            <smart:attr-hook type="constraint" event="onPreStore" attr="us_whatid">
+                <smart:attr-callable function="Anakeen\Core\Utils\Numbers::isInteger"/>
+                <smart:attr-argument type="attribute">us_whatid</smart:attr-argument>
+                <smart:attr-return/>
+            </smart:attr-hook>
+        </smart:hooks>
+
+        <smart:defaults>
+            <smart:default attr="fld_allbut">1</smart:default>
+            <smart:default attr="fld_tfam">[{"fld_famids":129,"fld_fam":"groupe"},{"fld_famids":128,"fld_fam":"utilisateur"}]</smart:default>
+            <smart:default attr="fld_famids">127
+                128
+            </smart:default>
+            <smart:default attr="fld_fam">groupe intranet
+                utilisateur
+            </smart:default>
+            <smart:default attr="fld_subfam">yes
+                yes
+            </smart:default>
+            <smart:default attr="grp_hasmail">no</smart:default>
+        </smart:defaults>
+
+    </smart:structure-configuration>
+
+    <smart:enumerates>
+        <smart:enum-configuration name="dir-fld_subfam">
+            <smart:enum name="yes" label="inclure les sous familles"/>
+            <smart:enum name="no" label="ne pas inclure les sous familles"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="GROUP-grp_hasmail">
+            <smart:enum name="yes" label="adresses regroupées"/>
+            <smart:enum name="no" label="sans adresse mail"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="dir-gui_isrss">
+            <smart:enum name="no" label="non"/>
+            <smart:enum name="yes" label="oui"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="GROUP-grp_isrefreshed">
+            <smart:enum name="1" label="oui"/>
+            <smart:enum name="0" label="non"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="dir-fld_allbut">
+            <smart:enum name="0" label="tout sauf"/>
+            <smart:enum name="1" label="seulement"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+</smart:config>

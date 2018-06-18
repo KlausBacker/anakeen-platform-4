@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+    <smart:structure-configuration name="IUSER" id="128" label="Utilisateur">
+        <smart:icon file="se-iuser.png"/>
+        <smart:class>Anakeen\SmartStructures\Iuser\IUserHooks</smart:class>
+        <smart:revisable>false</smart:revisable>
+        <smart:usefor>N</smart:usefor>
+        <!--<smart:tag>MAILRECIPIENT</smart:tag>-->
+        <smart:attributes>
+            <smart:attr-fieldset name="us_fr_ident" type="frame" label="État civil" visibility="W">
+                <smart:attr-text name="us_lname" label="nom" visibility="W" needed="true" is-title="true"/>
+                <smart:attr-text name="us_fname" label="prénom" visibility="W" needed="true" is-title="true"/>
+                <smart:attr-text name="us_mail" label="mail" visibility="R" link="mailto:%US_MAIL%" is-abstract="true"/>
+                <smart:attr-text name="us_extmail" label="mail principal" visibility="O"/>
+            </smart:attr-fieldset>
+            <smart:attr-fieldset name="us_tab_system" type="tab" label="Système" visibility="W">
+                <smart:attr-fieldset name="us_fr_intranet" type="frame" label="Identification intranet" visibility="R">
+                    <smart:attr-account name="us_meid" label="utilisateur id" visibility="H"/>
+                    <smart:attr-text name="us_login" label="login" visibility="R" needed="true"/>
+                    <smart:attr-text name="us_whatid" label="identifiant" visibility="R"/>
+                    <smart:attr-fieldset name="us_t_roles" type="array" label="Rôles" visibility="R">
+                        <smart:attr-account name="us_roles" label="Rôle" visibility="W">
+                            <smart:attr-option name="match">role</smart:attr-option>
+                        </smart:attr-account>
+                        <smart:attr-enum name="us_rolesorigin" label="Origine" visibility="R" relation="IUSER-us_rolesorigin"/>
+                        <smart:attr-account name="us_rolegorigin" label="Groupe" visibility="R" multiple="true">
+                            <smart:attr-option name="match">group</smart:attr-option>
+                        </smart:attr-account>
+                    </smart:attr-fieldset>
+                    <smart:attr-fieldset name="us_groups" type="array" label="groupes d'appartenance" visibility="R">
+                        <smart:attr-text name="us_group" label="groupe (titre)" visibility="H"/>
+                        <smart:attr-account name="us_idgroup" label="Groupe" visibility="W">
+                            <smart:attr-option name="doctitle">us_group</smart:attr-option>
+                            <smart:attr-option name="match">group</smart:attr-option>
+                        </smart:attr-account>
+                    </smart:attr-fieldset>
+                    <smart:attr-int name="us_expires" label="date d'expiration epoch" visibility="H"/>
+                    <smart:attr-int name="us_daydelay" label="délai d'expiration en jours" visibility="H"/>
+                    <smart:attr-date name="us_expiresd" label="date d'expiration" visibility="H"/>
+                    <smart:attr-time name="us_expirest" label="heure d'expiration" visibility="H"/>
+                    <smart:attr-int name="us_passdelay" label="délai d'expiration epoch" visibility="H"/>
+                </smart:attr-fieldset>
+                <smart:attr-fieldset name="us_fr_substitute" type="frame" label="Suppléants" visibility="R">
+                    <smart:attr-account name="us_substitute" label="Suppléant" visibility="W"/>
+                    <smart:attr-account name="us_incumbents" label="Titulaires" visibility="R" multiple="true"/>
+                </smart:attr-fieldset>
+                <smart:attr-fieldset name="us_fr_userchange" type="frame" label="Mot de passe" visibility="W">
+                    <smart:attr-password name="us_passwd1" label="nouveau mot de passe" visibility="O"/>
+                    <smart:attr-password name="us_passwd2" label="confirmation mot de passe" visibility="O"/>
+                </smart:attr-fieldset>
+                <smart:attr-fieldset name="us_fr_security" type="frame" label="Sécurité" visibility="R">
+                    <smart:attr-enum name="us_status" label="état du compte" visibility="R" relation="IUSER-us_status">
+                    </smart:attr-enum>
+                    <smart:attr-int name="us_loginfailure" label="échecs de connexion" visibility="R"/>
+                    <smart:attr-date name="us_accexpiredate" label="Date d'expiration du compte" visibility="R"/>
+                </smart:attr-fieldset>
+            </smart:attr-fieldset>
+            <smart:attr-fieldset name="us_fr_privacy" type="frame" label="confidentialité" visibility="H"/>
+        </smart:attributes>
+
+        <smart:parameters>
+            <smart:attr-fieldset name="us_fr_default" type="frame" label="Paramètre" visibility="W">
+                <smart:attr-account name="us_defaultgroup" label="Groupe par défaut" visibility="W">
+                    <smart:attr-option name="match">group</smart:attr-option>
+                </smart:attr-account>
+            </smart:attr-fieldset>
+        </smart:parameters>
+
+        <smart:hooks>
+            <smart:attr-hook type="constraint" event="onPreStore" attr="us_extmail">
+                <smart:attr-callable function="::parseMail"/>
+                <smart:attr-argument type="attribute">us_extmail</smart:attr-argument>
+                <smart:attr-return/>
+            </smart:attr-hook>
+
+            <smart:attr-hook type="constraint" event="onPreStore" attr="us_login">
+                <smart:attr-callable function="::constraintLogin"/>
+                <smart:attr-argument type="attribute">us_login</smart:attr-argument>
+                <smart:attr-return/>
+            </smart:attr-hook>
+
+            <smart:attr-hook type="constraint" event="onPreStore" attr="us_expiresd">
+                <smart:attr-callable function="::constraintExpires"/>
+                <smart:attr-argument type="attribute">us_expiresd</smart:attr-argument>
+                <smart:attr-argument type="attribute">us_expirest</smart:attr-argument>
+                <smart:attr-argument type="attribute">us_daydelay</smart:attr-argument>
+                <smart:attr-return/>
+            </smart:attr-hook>
+
+            <smart:attr-hook type="constraint" event="onPreStore" attr="us_passwd1">
+                <smart:attr-callable function="::testForcePassword"/>
+                <smart:attr-argument type="attribute">us_passwd1</smart:attr-argument>
+                <smart:attr-return/>
+            </smart:attr-hook>
+
+            <smart:attr-hook type="constraint" event="onPreStore" attr="us_passwd2">
+                <smart:attr-callable function="::ConstraintPassword"/>
+                <smart:attr-argument type="attribute">us_passwd1</smart:attr-argument>
+                <smart:attr-argument type="attribute">us_passwd2</smart:attr-argument>
+                <smart:attr-argument type="attribute">us_login</smart:attr-argument>
+                <smart:attr-return/>
+            </smart:attr-hook>
+
+        </smart:hooks>
+        <smart:autocompletion/>
+        <smart:defaults>
+            <smart:default attr="us_status">A</smart:default>
+            <smart:default attr="us_loginfailure">0</smart:default>
+            <smart:default attr="us_defaultgroup">GDEFAULT</smart:default>
+        </smart:defaults>
+        <smart:accesses/>
+
+    </smart:structure-configuration>
+    <smart:enumerates>
+        <smart:enum-configuration name="IUSER-us_rolesorigin">
+            <smart:enum name="internal" label="Affectation directe"/>
+            <smart:enum name="group" label="Obtenu par"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="IUSER-us_status">
+            <smart:enum name="A" label="Activé"/>
+            <smart:enum name="D" label="Désactivé"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+</smart:config>
