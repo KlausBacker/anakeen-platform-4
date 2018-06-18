@@ -8,6 +8,7 @@ namespace Anakeen\SmartStructures\Igroup\Render;
 
 use Anakeen\Ui\DefaultConfigViewRender;
 use Dcp\Ui\CommonRenderOptions;
+use Dcp\Ui\RenderAttributeVisibilities;
 use \SmartStructure\Attributes\Igroup as myAttributes;
 
 class IgroupViewRender extends DefaultConfigViewRender
@@ -16,13 +17,17 @@ class IgroupViewRender extends DefaultConfigViewRender
     {
         $options = parent::getOptions($document);
         $break2 = "50rem";
-        $break3 = "70rem";
-        $options->frame(myAttributes::grp_fr_ident)->setResponsiveColumns(
-            [
-                ["number" => 2, "minWidth" => $break2, "maxWidth" => $break3],
-                ["number" => 3, "minWidth" => $break3,  "grow" => false]
-            ]
-        )->setCollapse(false)->setLabelPosition(CommonRenderOptions::nonePosition);
+
+        if (strlen($document->getRawValue(myAttributes::grp_mail)) < 200) {
+            // Display 2 columns if mail address size is not too big
+            $options->frame(myAttributes::grp_fr_ident)->setResponsiveColumns(
+                [
+                    ["number" => 2, "minWidth" => $break2]
+                ]
+            );
+        }
+        $options->frame(myAttributes::grp_fr_ident)->setCollapse(false)->setLabelPosition(CommonRenderOptions::nonePosition);
+
         $options->frame(myAttributes::grp_fr_intranet)->setResponsiveColumns(
             [
                 ["number" => 2, "minWidth" => $break2]
@@ -31,6 +36,16 @@ class IgroupViewRender extends DefaultConfigViewRender
 
         $options->frame(myAttributes::grp_fr)->setCollapse(false)->setLabelPosition(CommonRenderOptions::nonePosition);
 
+
         return $options;
+    }
+
+    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document)
+    {
+        $vis = parent::getVisibilities($document);
+        if ($document->getRawValue(myAttributes::grp_mail)) {
+            $vis->setVisibility(myAttributes::grp_hasmail, RenderAttributeVisibilities::HiddenVisibility);
+        }
+        return $vis;
     }
 }

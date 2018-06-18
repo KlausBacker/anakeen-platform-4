@@ -8,8 +8,13 @@ namespace Anakeen\SmartStructures\Iuser\Render;
 
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Router\Exception;
+use Anakeen\Routes\Core\Lib\ApiMessage;
+use Anakeen\Routes\Ui\CallMenuResponse;
 use Anakeen\Ui\DefaultConfigViewRender;
+use Dcp\Ui\ArrayRenderOptions;
+use Dcp\Ui\CallableMenu;
 use SmartStructure\Attributes\Iuser as myAttributes;
+use SmartStructure\Iuser;
 
 class IuserViewRender extends DefaultConfigViewRender
 {
@@ -38,6 +43,8 @@ class IuserViewRender extends DefaultConfigViewRender
                 ["number" => 2, "minWidth" => $break3]
             ]
         );
+        $options->arrayAttribute(myAttributes::us_t_roles)->setCollapse(ArrayRenderOptions::collapseNone);
+        $options->arrayAttribute(myAttributes::us_groups)->setCollapse(ArrayRenderOptions::collapseNone);
 
         return $options;
     }
@@ -54,22 +61,75 @@ class IuserViewRender extends DefaultConfigViewRender
             $listMenu->appendElement($menus->getElement("vid-ESUBSTITUTE"));
             $menus->removeElement("vid-ESUBSTITUTE");
 
-            /* @var $smartElement \SmartStructure\Iuser */
+            /* @var \SmartStructure\Iuser $smartElement */
             if ($this->checkMenuAccess($smartElement, "resetLoginFailure")) {
-                $menu = new \Dcp\UI\ItemMenu("resetLoginFailure", ___("Reset login failure", "iuser_ui"));
-                $menu->setUrl("#action/customIuserMenu:resetLoginFailure");
+                // $menu = new \Dcp\UI\ItemMenu("resetLoginFailure", ___("Reset login failure", "iuser_ui"));
+                //  $menu->setUrl("#action/customIuserMenu:resetLoginFailure");
+
+                $menu = new CallableMenu("resetLoginFailure", ___("Reset login failure", "smart iuser"));
+                $menu->setCallable(function () use ($smartElement): CallMenuResponse {
+                    /* @var \SmartStructure\Iuser $smartElement */
+                    $err = $smartElement->resetLoginFailure();
+                    $msg = new ApiMessage();
+                    if ($err) {
+                        $msg->type = ApiMessage::ERROR;
+                        $msg->contentText = sprintf(___($err, "smart iuser"));
+                    } else {
+                        $msg->type = ApiMessage::SUCCESS;
+                        $msg->contentText = sprintf(___("Login fail count reseted", "smart iuser"));
+                    }
+                    $response = new CallMenuResponse();
+                    $response->setReload(true);
+
+                    return $response->setMessage($msg);
+                });
                 $listMenu->appendElement($menu);
             }
 
             if ($this->checkMenuAccess($smartElement, "activateAccount")) {
-                $menu = new \Dcp\UI\ItemMenu("activateAccount", ___("Activate account", "iuser_ui"));
-                $menu->setUrl("#action/customIuserMenu:activateAccount");
+                // $menu = new \Dcp\UI\ItemMenu("activateAccount", ___("Activate account", "smart iuser"));
+                //  $menu->setUrl("#action/customIuserMenu:activateAccount");
+                $menu = new CallableMenu("activateAccount", ___("Activate account", "smart iuser"));
+                $menu->setCallable(function () use ($smartElement): CallMenuResponse {
+                    /* @var \SmartStructure\Iuser $smartElement */
+                    $err = $smartElement->activateAccount();
+                    $msg = new ApiMessage();
+                    if ($err) {
+                        $msg->type = ApiMessage::ERROR;
+                        $msg->contentText = sprintf(___($err, "smart iuser"));
+                    } else {
+                        $msg->type = ApiMessage::SUCCESS;
+                        $msg->contentText = sprintf(___("Account has been activated", "smart iuser"));
+                    }
+                    $response = new CallMenuResponse();
+                    $response->setReload(true);
+
+                    return $response->setMessage($msg);
+                });
+
                 $listMenu->appendElement($menu);
             }
 
             if ($this->checkMenuAccess($smartElement, "deactivateAccount")) {
-                $menu = new \Dcp\UI\ItemMenu("deactivateAccount", ___("Deactivate account", "iuser_ui"));
-                $menu->setUrl("#action/customIuserMenu:deactivateAccount");
+                // $menu = new \Dcp\UI\ItemMenu("deactivateAccount", ___("Deactivate account", "smart iuser"));
+                // $menu->setUrl("#action/customIuserMenu:deactivateAccount");
+                $menu = new CallableMenu("activateAccount", ___("Deactivate account", "smart iuser"));
+                $menu->setCallable(function () use ($smartElement): CallMenuResponse {
+                    /* @var \SmartStructure\Iuser $smartElement */
+                    $err = $smartElement->deactivateAccount();
+                    $msg = new ApiMessage();
+                    if ($err) {
+                        $msg->type = ApiMessage::ERROR;
+                        $msg->contentText = sprintf(___($err, "smart iuser"));
+                    } else {
+                        $msg->type = ApiMessage::SUCCESS;
+                        $msg->contentText = sprintf(___("Account has been deactivated", "smart iuser"));
+                    }
+                    $response = new CallMenuResponse();
+                    $response->setReload(true);
+
+                    return $response->setMessage($msg);
+                });
                 $listMenu->appendElement($menu);
             }
 
@@ -91,14 +151,6 @@ class IuserViewRender extends DefaultConfigViewRender
         }
 
         return $js;
-    }
-
-    public function getCustomServerData(SmartElement $smartElement)
-    {
-        $data = parent::getCustomServerData($smartElement);
-        $data["ADD_CUSTOM_MENU"] = true;
-
-        return $data;
     }
 
     protected function checkMenuAccess(SmartElement $smartElement, $menuId)
@@ -139,7 +191,14 @@ class IuserViewRender extends DefaultConfigViewRender
      */
     public function getMessages(SmartElement $smartElement)
     {
+        /**
+         * @var Iuser $smartElement
+         */
         $messages = parent::getMessages($smartElement);
-        return array_merge($messages, $this->getUserMessages($smartElement));
+
+        // Update role array to display : can be not up to date if parent group are moved or if they have new roles
+        $smartElement->refreshRoles();
+
+        return array_merge($messages, $this->getAccountMessages($smartElement), $this->getUserMessages($smartElement));
     }
 }

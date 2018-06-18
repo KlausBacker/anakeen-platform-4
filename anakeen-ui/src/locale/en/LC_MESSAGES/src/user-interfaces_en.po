@@ -34,7 +34,7 @@ msgstr ""
 msgid "Account management"
 msgstr ""
 
-msgctxt "iuser_ui"
+msgctxt "smart iuser"
 msgid "Activate account"
 msgstr ""
 
@@ -233,7 +233,7 @@ msgstr "Search:"
 msgid "DOCGRIDHTML5: sZeroRecords"
 msgstr "No matching records found"
 
-msgctxt "iuser_ui"
+msgctxt "smart iuser"
 msgid "Deactivate account"
 msgstr ""
 
@@ -467,7 +467,7 @@ msgctxt "ddui-file"
 msgid "Recording"
 msgstr ""
 
-msgctxt "iuser_ui"
+msgctxt "smart iuser"
 msgid "Reset login failure"
 msgstr ""
 
