@@ -10,7 +10,7 @@ trait IuserMessage
      * Add warning messages to display
      *
      * @param \SmartStructure\Iuser $smartElement
-     * @return array
+     * @return ApiMessage[]
      */
     public function getUserMessages(\Anakeen\Core\Internal\SmartElement $smartElement)
     {
@@ -33,6 +33,25 @@ trait IuserMessage
                 if (!$user->password) {
                     $message[] = new ApiMessage(___("User has no record password. It cannot be connected", "smart iuser"));
                 }
+            }
+        }
+        return $message;
+    }
+
+    /**
+     * @param \SmartStructure\Iuser|\SmartStructure\Igroup|\SmartStructure\Role $smartElement
+     * @return ApiMessage[]
+     */
+    public function getAccountMessages(\Anakeen\Core\Internal\SmartElement $smartElement)
+    {
+        $message = parent::getMessages($smartElement);
+
+        if (!$smartElement->getRawValue("us_whatid")) {
+            $messages[] = new ApiMessage(sprintf(___("This account has no system identifier", "smart iuser")), ApiMessage::WARNING);
+        } else {
+            $account = $smartElement->getAccount();
+            if (!$account) {
+                $messages[] = new ApiMessage(sprintf(___("Account #%d does not exist", "smart iuser"), $smartElement->getRawValue("us_whatid")), ApiMessage::WARNING);
             }
         }
         return $message;

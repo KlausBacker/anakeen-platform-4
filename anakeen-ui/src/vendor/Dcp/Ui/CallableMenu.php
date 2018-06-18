@@ -16,7 +16,7 @@ class CallableMenu extends ElementMenu
      * @var \Closure
      */
     protected $contentDefinition = null;
-    protected $method="POST";
+    protected $method="PUT";
     
     protected $url = '';
     

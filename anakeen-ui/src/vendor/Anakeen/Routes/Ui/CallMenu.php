@@ -47,9 +47,16 @@ class CallMenu
         if (!$doc) {
             throw new \Dcp\Ui\Exception(sprintf(___("Document \"%s\" not found ", "ddui"), $documentId));
         }
-        $err = $doc->control("view");
-        if ($err) {
-            throw new \Dcp\Ui\Exception($err);
+        if ($request->getMethod() === "POST" || $request->getMethod() === "PUT") {
+            $err = $doc->control("edit");
+            if ($err) {
+                throw new \Dcp\Ui\Exception($err);
+            }
+        } elseif ($request->getMethod() === "DELETE") {
+            $err = $doc->control("delete");
+            if ($err) {
+                throw new \Dcp\Ui\Exception($err);
+            }
         }
 
         if ($vId && $vId[0] === "!") {

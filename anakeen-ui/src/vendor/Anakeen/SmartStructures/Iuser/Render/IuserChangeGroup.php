@@ -2,10 +2,11 @@
 
 namespace Anakeen\SmartStructures\Iuser\Render;
 
-use Anakeen\Core\ContextManager;
+use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\SmartElementManager;
 use Anakeen\Ui\DefaultConfigEditRender;
-use \SmartStructure\Attributes\Iuser as myAttributes;
+use Dcp\Ui\UIGetAssetPath;
+//use \SmartStructure\Attributes\Iuser as myAttributes;
 use SmartStructure\Iuser;
 
 class IuserChangeGroup extends DefaultConfigEditRender
@@ -14,7 +15,7 @@ class IuserChangeGroup extends DefaultConfigEditRender
     {
         $templates = parent::getTemplates($smartElement);
         $templates["sections"]["content"] = array(
-            "file" => __DIR__.'/groupModify.mustache'
+            "file" => __DIR__ . '/groupModify.mustache'
         );
         return $templates;
     }
@@ -30,51 +31,56 @@ class IuserChangeGroup extends DefaultConfigEditRender
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $smartElement = null)
     {
         $js = parent::getJsReferences();
-        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
 
-        $js["dduiGroup"] = '/uiAssets/Families/iuser/prod/changeGroup.js?ws='.$version;
+        $js["dduiGroup"] = UIGetAssetPath::getCustomAssetPath('/uiAssets/Families/iuser/prod/changeGroup.js');
         if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {
-            $js["dduiGroup"] = '/uiAssets/Families/iuser/debug/changeGroup.js?ws='.$version;
+            $js["dduiGroup"] = UIGetAssetPath::getCustomAssetPath('/uiAssets/Families/iuser/debug/changeGroup.js');
         }
 
         return $js;
     }
 
-    protected function getAllMyGroups(\Anakeen\Core\Internal\SmartElement $smartElement) {
-        /* @var $smartElement Iuser */
+    protected function getAllMyGroups(\Anakeen\Core\Internal\SmartElement $smartElement)
+    {
+        /* @var Iuser $smartElement */
         $account = $smartElement->getAccount();
-        return array_reduce($account->getGroupsId(), function($accumulator, $currentValue) {
+        return array_reduce($account->getGroupsId(), function ($accumulator, $currentValue) {
             $accumulator[$currentValue] = [
-                "accountId" =>$currentValue
+                "accountId" => $currentValue
             ];
             return $accumulator;
         }, []);
     }
 
-    public function setCustomClientData(\Anakeen\Core\Internal\SmartElement $smartElement, $data)
+    public function getMessages(\Anakeen\Core\Internal\SmartElement $userAccount)
     {
-        parent::setCustomClientData($smartElement, $data);
+        $data=$this->customClientData;
+        $msg=parent::getMessages($userAccount);
         if (isset($data["parentGroups"])) {
             $newGroups = array_keys($data["parentGroups"]);
-            /* @var $smartElement Iuser */
-            $account = $smartElement->getAccount();
+            /* @var Iuser $userAccount  */
+            $account = $userAccount->getAccount();
             $oldGroups = $account->getGroupsId();
             $groupsToAdd = array_diff($newGroups, $oldGroups);
             $groupsToDelete = array_diff($oldGroups, $newGroups);
-            $currentUserSEId = $smartElement->getPropertyValue("initid");
-            array_walk($groupsToDelete, function($currentGroupId) use ($currentUserSEId) {
+            $currentUserSEId = $userAccount->getPropertyValue("initid");
+            array_walk($groupsToDelete, function ($currentGroupId) use ($currentUserSEId) {
                 $group = new \Anakeen\Core\Account("", $currentGroupId);
                 $groupSE = SmartElementManager::getDocument($group->fid);
-                /* @var $groupSE \SmartStructure\Igroup */
+                /* @var \SmartStructure\Igroup $groupSE  */
                 $groupSE->removeDocument($currentUserSEId);
             });
-            array_walk($groupsToAdd, function($currentGroupId) use ($currentUserSEId) {
+            array_walk($groupsToAdd, function ($currentGroupId) use ($currentUserSEId) {
                 $group = new \Anakeen\Core\Account("", $currentGroupId);
                 $groupSE = SmartElementManager::getDocument($group->fid);
-                /* @var $groupSE \SmartStructure\Igroup */
+                /* @var  \SmartStructure\Igroup $groupSE */
                 $groupSE->insertDocument($currentUserSEId);
             });
-        }
-    }
 
+          //  $userAccount->updateFromSystem();
+            $userAccount->store();
+            $msg[]=new ApiMessage(___("Group are be updated", "smart iuser"), ApiMessage::SUCCESS);
+        }
+        return $msg;
+    }
 }

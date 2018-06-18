@@ -22,7 +22,8 @@
       "renderAccessClass": "Anakeen\\SmartStructures\\Igroup\\Render\\IgroupAccess"
     },
     "IUSER": {
-      "renderAccessClass": "Anakeen\\SmartStructures\\Iuser\\Render\\IuserAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\Iuser\\Render\\IuserAccess",
+      "disableEtag":true
     },
     "GROUP": {
       "renderAccessClass": "Anakeen\\SmartStructures\\Group\\Render\\GroupAccess"

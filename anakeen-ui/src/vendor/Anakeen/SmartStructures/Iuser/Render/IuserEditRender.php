@@ -9,6 +9,7 @@ namespace Anakeen\SmartStructures\Iuser\Render;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\SmartElementManager;
 use Anakeen\Ui\DefaultConfigEditRender;
+use Dcp\Ui\UIGetAssetPath;
 use \SmartStructure\Attributes\Iuser as myAttributes;
 
 class IuserEditRender extends DefaultConfigEditRender
@@ -55,20 +56,20 @@ HTML
      * Add default group to customServerData on the first
      * Handle setGroup on the second
      *
-     * @param SmartElement $smartElement
+     * @param SmartElement $userAccount
      * @param $data
      * @return mixed
      * @throws \Anakeen\Core\DocManager\Exception
      */
-    public function setCustomClientData(SmartElement $smartElement, $data)
+    public function setCustomClientData(SmartElement $userAccount, $data)
     {
-        if (!$smartElement->getPropertyValue("initid") && isset($data["defaultGroup"])) {
+        if (!$userAccount->getPropertyValue("initid") && isset($data["defaultGroup"])) {
             $this->defaultGroup = $data["defaultGroup"];
         }
         if (isset($data["setGroup"])) {
             $groupSE = SmartElementManager::getDocument($data["setGroup"]);
             /* @var $groupSE \SmartStructure\Igroup */
-            $groupSE->insertDocument($smartElement->getPropertyValue("initid"));
+            $groupSE->insertDocument($userAccount->getPropertyValue("initid"));
         }
         return $data;
     }
@@ -107,11 +108,10 @@ HTML
     public function getJsReferences(SmartElement $smartElement = null)
     {
         $js = parent::getJsReferences();
-        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
 
-        $js["iuser"] = '/uiAssets/Families/iuser/prod/iuser.js?ws=' . $version;
-        if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {
-            $js["iuser"] = '/uiAssets/Families/iuser/debug/iuser.js?ws=' . $version;
+        $js["iuser"] = UIGetAssetPath::getCustomAssetPath('/uiAssets/Families/iuser/prod/iuser.js');
+        if (UIGetAssetPath::isInDebug()) {
+            $js["iuser"] =  UIGetAssetPath::getCustomAssetPath('/uiAssets/Families/iuser/debug/iuser.js');
         }
 
         return $js;
