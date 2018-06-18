@@ -2,9 +2,109 @@ import '@progress/kendo-ui/js/kendo.treeview';
 import './changeGroupView.css';
 
 {
-    let groupTreeSource;
+    let getGroupTreeSource;
     let checkedGroups;
-    let filterTitle = "";
+
+    const getGroups = () => {
+        return fetch("/api/v2/admin/account/groups/", {
+            credentials: "same-origin"
+        })
+            .then(response => {
+                return response.json();
+            })
+            .then(response => {
+                return response.groups;
+            });
+    };
+
+    const initTreeGroup = (groups) => () => {
+        return new kendo.data.HierarchicalDataSource({
+            filter: {},
+            transport: {
+                read: (options) => {
+                    groups
+                        .then(groups => {
+                            Object.values(groups).forEach((currentData) => {
+                                currentData.expanded = true;
+                                currentData.items = currentData.items || [];
+                                currentData.parents.forEach((parentData) => {
+                                    try {
+                                        groups[parentData].items = groups[parentData].items || [];
+                                        groups[parentData].items.push(currentData);
+                                    } catch (e) {
+
+                                    }
+                                });
+                            });
+                            //Suppress first level elements
+                            Object.values(groups).forEach((currentData) => {
+                                if (currentData.parents.length > 0) {
+                                    delete groups[currentData.accountId];
+                                }
+                            });
+
+                            try {
+                                //Suppress refs elements and keep only values
+                                groups = Object.values(JSON.parse(JSON.stringify(groups)));
+                            } catch (e) {
+                                groups = [];
+                            }
+                            const addUniqId = (currentElement, id = "") => {
+                                currentElement.hierarchicalId = id ? id + "/" + currentElement.documentId : currentElement.documentId;
+                                if (currentElement.items) {
+                                    currentElement.items.forEach((childrenElement) => {
+                                        addUniqId(childrenElement, currentElement.hierarchicalId);
+                                    })
+                                }
+                            };
+                            groups.forEach(currentGroup => {
+                                addUniqId(currentGroup);
+                            });
+                            const restoreCheckedTree = (checked) => {
+                                return function analyzeChecked(data) {
+                                    data.forEach((currentData) => {
+                                        currentData.checked = false;
+                                        if (checked[currentData.accountId]) {
+                                            currentData.checked = true;
+                                        }
+                                        if (currentData.items && currentData.items.length) {
+                                            analyzeChecked(currentData.items);
+                                        }
+                                    });
+                                }
+                            };
+                            if (checkedGroups) {
+                                restoreCheckedTree(checkedGroups)(groups);
+                            }
+                            const hasChildChecked = (data) => {
+                                return data.reduce((accumulator, currentData) => {
+                                    if (currentData.items && currentData.items.length) {
+                                        if (hasChildChecked(currentData.items)) {
+                                            currentData.hasChildChecked = true;
+                                            return true;
+                                        }
+                                    }
+                                    return accumulator || currentData.checked;
+                                }, false);
+                            };
+                            hasChildChecked(groups);
+
+                            options.success(groups);
+                        }).catch((error) => {
+                        console.error("Unable to get group", error);
+                    })
+                }
+            },
+            schema:
+                {
+                    model: {
+                        id: "hierarchicalId",
+                        children:
+                            "items"
+                    }
+                }
+        })
+    };
 
     window.dcp.document.documentController('addEventListener',
         'beforeRender',
@@ -16,105 +116,8 @@ import './changeGroupView.css';
             }
         },
         () => {
-            const getGroups = () => {
-                return fetch("/api/v2/admin/account/groups/", {
-                    credentials: "same-origin"
-                })
-                    .then(response => {
-                        return response.json();
-                    })
-                    .then(response => {
-                        return response.groups;
-                    });
-            };
-            const groups = getGroups();
-            if (!groupTreeSource) {
-                groupTreeSource = new kendo.data.HierarchicalDataSource({
-                        transport: {
-                            read: (options) => {
-                                groups
-                                    .then(groups => {
-                                        Object.values(groups).forEach((currentData) => {
-                                            currentData.expanded = true;
-                                            currentData.items = currentData.items || [];
-                                            currentData.parents.forEach((parentData) => {
-                                                try {
-                                                    groups[parentData].items = groups[parentData].items || [];
-                                                    groups[parentData].items.push(currentData);
-                                                } catch (e) {
-
-                                                }
-                                            });
-                                        });
-                                        //Suppress first level elements
-                                        Object.values(groups).forEach((currentData) => {
-                                            if (currentData.parents.length > 0) {
-                                                delete groups[currentData.accountId];
-                                            }
-                                        });
-
-                                        try {
-                                            //Suppress refs elements and keep only values
-                                            groups = Object.values(JSON.parse(JSON.stringify(groups)));
-                                        } catch (e) {
-                                            groups = [];
-                                        }
-                                        const addUniqId = (currentElement, id = "") => {
-                                            currentElement.hierarchicalId = id ? id + "/" + currentElement.documentId : currentElement.documentId;
-                                            if (currentElement.items) {
-                                                currentElement.items.forEach((childrenElement) => {
-                                                    addUniqId(childrenElement, currentElement.hierarchicalId);
-                                                })
-                                            }
-                                        };
-                                        groups.forEach(currentGroup => {
-                                            addUniqId(currentGroup);
-                                        });
-                                        const restoreCheckedTree = (checked) => {
-                                            return function analyzeChecked(data) {
-                                                data.forEach((currentData) => {
-                                                    currentData.checked = false;
-                                                    if (checked[currentData.accountId]) {
-                                                        currentData.checked = true;
-                                                    }
-                                                    if (currentData.items && currentData.items.length) {
-                                                        analyzeChecked(currentData.items);
-                                                    }
-                                                });
-                                            }
-                                        };
-                                        if (checkedGroups) {
-                                            restoreCheckedTree(checkedGroups)(groups);
-                                        }
-                                        const hasChildChecked = (data) => {
-                                            return data.reduce((accumulator, currentData) => {
-                                                if (currentData.items && currentData.items.length) {
-                                                    if (hasChildChecked(currentData.items)) {
-                                                        currentData.hasChildChecked = true;
-                                                        return true;
-                                                    }
-                                                }
-                                                return accumulator || currentData.checked;
-                                            }, false);
-                                        };
-                                        hasChildChecked(groups);
-
-                                        options.success(groups);
-                                    }).catch((error) => {
-                                    console.error("Unable to get group", error);
-                                })
-                            }
-                        },
-                        schema:
-                            {
-                                model: {
-                                    id: "hierarchicalId",
-                                    children:
-                                        "items"
-                                }
-                            }
-                    }
-                )
+            if (!getGroupTreeSource) {
+                getGroupTreeSource = initTreeGroup(getGroups());
             }
         }
     );
@@ -133,11 +136,21 @@ import './changeGroupView.css';
             checkedGroups = serverData.groups;
             let filterTitle = null;
 
-            const updateTreeSource = () => {
-                if (filterTitle) {
-                    return groupTreeSource.filter({field: "title", operator: "contains", value: filterTitle});
+            const updateTreeSource = (kendoTree) => {
+                return (force = false) => {
+                    let groupTreeSource = kendoTree.dataSource;
+                    const filter =  filterTitle ? {field: "title", operator: "contains", value: filterTitle} : {};
+                    if (force) {
+                        const newTreeSource = getGroupTreeSource();
+                        newTreeSource.read().then(() => {
+                            kendoTree.setDataSource(newTreeSource);
+                            newTreeSource.filter(filter);
+                        });
+
+                    } else {
+                        groupTreeSource.filter(filter);
+                    }
                 }
-                groupTreeSource.filter({});
             };
 
             const getChecked = (checked) => (currentEventNode) => {
@@ -165,10 +178,12 @@ import './changeGroupView.css';
                 };
             };
 
+            let updateListOfGroup;
+
             $("#listOfGroups").kendoTreeView({
                 checkboxes: true,
-                dataSource: groupTreeSource,
-                select : (event) => {
+                dataSource: getGroupTreeSource(),
+                select: (event) => {
                     event.preventDefault();
                 },
                 template: "<span # if(item.hasChildChecked) {# class='hasChildChecked' #}# data-accountId='#= item.accountId #' data-se-id='#= item.documentId #'>#= item.title # (#= item.nbUser #) </span>",
@@ -178,15 +193,19 @@ import './changeGroupView.css';
                     getChecked(checked)(eventNode)(event.sender.dataSource);
                     checkedGroups = checked;
                     window.dcp.document.documentController("addCustomClientData", {parentGroups: checkedGroups});
-                    updateTreeSource();
+                    updateListOfGroup(true);
                 }
             });
 
             $("#formFilter").on("submit", (event) => {
                 event.preventDefault();
                 filterTitle = document.getElementById("filterTree").value ? document.getElementById("filterTree").value.toLowerCase() : "";
-                updateTreeSource();
-            })
+                updateListOfGroup();
+            });
+
+            updateListOfGroup = updateTreeSource($("#listOfGroups").data("kendoTreeView"));
+
+
         }
     );
 }

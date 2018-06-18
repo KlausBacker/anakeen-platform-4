@@ -10,6 +10,11 @@ class GroupEditRender extends DefaultConfigEditRender
 {
     protected $defaultGroup;
 
+    /**
+     * @param \Anakeen\Core\Internal\SmartElement $document
+     * @return \Dcp\Ui\RenderOptions
+     * @throws \Dcp\Ui\Exception
+     */
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
     {
         $options = parent::getOptions($document);
@@ -18,6 +23,12 @@ class GroupEditRender extends DefaultConfigEditRender
         return $options;
     }
 
+    /**
+     * @param \Anakeen\Core\Internal\SmartElement $document
+     * @param mixed $data
+     * @return mixed
+     * @throws \Anakeen\Core\DocManager\Exception
+     */
     public function setCustomClientData(\Anakeen\Core\Internal\SmartElement $document, $data)
     {
         if (!$document->getPropertyValue("initid") && isset($data["defaultGroup"])) {
