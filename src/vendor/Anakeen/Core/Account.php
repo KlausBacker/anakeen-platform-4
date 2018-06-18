@@ -299,13 +299,6 @@ create sequence seq_id_users start 10;";
 
     public function postInsert()
     {
-        //Add default group to user
-        $group = new \Group($this->dbaccess);
-        $group->iduser = $this->id;
-        $gid = Account::GALL_ID; //2 = default group
-        $group->idgroup = $gid;
-        // not added here it is added by freedom (generally)
-        //    if (! $this->fid)   $group->Add();
         $err = $this->synchroAccountDocument();
         return $err;
     }
@@ -490,13 +483,11 @@ create sequence seq_id_users start 10;";
 
         $this->fid = $fid;
         if (!$this->isAffected()) {
-            $err = $this->add();
+            $err = $this->add(true);
         } else {
-            $err = $this->Modify();
+            $err = $this->modify(true);
         }
-        if ($roles != array(
-                -1
-            )) {
+        if ($roles != array(-1)) {
             $err .= $this->setRoles($roles);
         } else {
             $this->updateMemberOf();
@@ -504,6 +495,9 @@ create sequence seq_id_users start 10;";
 
         if ((!$err) && ($substitute > -1)) {
             $err = $this->setSubstitute($substitute);
+        }
+        if (!$err) {
+            $this->synchroAccountDocument();
         }
         return $err;
     }
@@ -526,27 +520,35 @@ create sequence seq_id_users start 10;";
             -1
         )
     ) {
+        $err = "";
         if ($gname != "") {
             $this->lastname = $gname;
         }
         if (($this->login == "") && ($login != "")) {
             $this->login = $login;
         }
+        $isNewUser = !$this->isAffected();
 
         $this->mail = $this->getMail();
         $this->fid = $fid;
-        if (!$this->isAffected()) {
-            $this->accounttype = self::GROUP_TYPE;
-            $err = $this->add();
-        } else {
-            $err = $this->Modify();
+
+        if (!$err) {
+            if ($isNewUser) {
+                $this->accounttype = self::GROUP_TYPE;
+                $err = $this->add(true);
+            } else {
+                $err = $this->Modify(true);
+            }
         }
-        if ($roles != array(
-                -1
-            )) {
-            $err .= $this->setRoles($roles);
+
+        if ($roles != array(-1)) {
+            $err = $this->setRoles($roles);
         } else {
             $this->updateMemberOf();
+        }
+
+        if (!$err) {
+            $this->synchroAccountDocument();
         }
         return $err;
     }
@@ -1422,6 +1424,7 @@ union
                 } else {
                     $g->idgroup = $rid;
                     $g->iduser = $this->id;
+
                     $gerr = $g->add(true);
                     if ($gerr == 'OK') {
                         $gerr = '';

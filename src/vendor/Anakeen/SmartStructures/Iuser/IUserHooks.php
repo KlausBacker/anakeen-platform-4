@@ -16,6 +16,7 @@ use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\SmartHooks;
 use SmartStructure\Attributes\Iuser as MyAttributes;
+use SmartStructure\Iuser;
 
 /**
  * Class UserAccount
@@ -24,14 +25,66 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
 {
     use TAccount;
 
+    public function registerHooks()
+    {
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
 
+            $substitute = $this->getOldRawValue(MyAttributes::us_substitute);
+            /**
+             * update/synchro system user
+             */
+            $err = $this->synchronizeSystemUser();
+            if (!$err) {
+                $this->refreshRoles();
+                $this->updateIncumbents();
+            }
+            if ($substitute) {
+                /**
+                 * @var Iuser $user
+                 */
+                $user = SEManager::getDocument($substitute);
+                if ($user) {
+                    $user->refreshUserData();
+                }
+                $substitute = $this->getRawValue(MyAttributes::us_substitute);
+                if ($substitute) {
+                    $user = SEManager::getDocument($substitute);
+                    if ($user) {
+                        $user->refreshUserData();
+                    }
+                }
+            }
+            return $err;
+        });
 
+        $this->getHooks()->addListener(SmartHooks::POSTCREATED, function () {
+            return $this->updateExpireDate();
+        })->addListener(SmartHooks::PREUNDELETE, function () {
+            return _("user cannot be revived");
+        })->addListener(SmartHooks::POSTDELETE, function () {
+            $user = $this->getAccount();
+            if ($user) {
+                $user->delete();
+            }
+        });
+    }
+
+    /**
+     * Update computed roles and incumbent from database
+     */
+    public function refreshUserData()
+    {
+        $this->refreshRoles();
+        $this->updateIncumbents();
+        $this->modify();
+    }
 
     public function updateIncumbents()
     {
         $u = $this->getAccount();
         if ($u) {
-            $this->setValue("us_incumbents", $u->getIncumbents(false));
+            $this->setValue(MyAttributes::us_incumbents, $u->getIncumbents(false));
         }
     }
 
@@ -221,32 +274,6 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
         return $err;
     }
 
-    public function registerHooks()
-    {
-        parent::registerHooks();
-        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
-            /**
-             * update/synchro system user
-             */
-            $err = $this->synchronizeSystemUser();
-            if (!$err) {
-                $this->refreshRoles();
-            }
-            return $err;
-        });
-
-        $this->getHooks()->addListener(SmartHooks::POSTCREATED, function () {
-            return $this->updateExpireDate();
-        })->addListener(SmartHooks::PREUNDELETE, function () {
-            return _("user cannot be revived");
-        })->addListener(SmartHooks::POSTDELETE, function () {
-            $user = $this->getAccount();
-            if ($user) {
-                $user->Delete();
-            }
-        });
-    }
-
 
     /**
      * Modify system account from document IUSER
@@ -339,25 +366,6 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
         return $err;
     }
 
-    public function preconsultation()
-    {
-        $this->refreshRoles();
-    }
-
-    public function preEdition()
-    {
-        $allRoles = $this->getArrayRawValues("us_t_roles");
-        $this->clearArrayValues("us_t_roles");
-        // get direct system role ids
-        $roles = array();
-        foreach ($allRoles as $arole) {
-            if ($arole["us_rolesorigin"] != "group") {
-                $roles[] = $arole["us_roles"];
-            }
-        }
-        $this->setValue("us_roles", $roles);
-
-    }
 
     /**
      * recompute role attributes from system role
@@ -459,7 +467,6 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
         if ($this->testForcePassword($pwd1)) {
             return '';
         }
-        $sug = array();
         $err = "";
 
         if ($pwd1 <> $pwd2) {

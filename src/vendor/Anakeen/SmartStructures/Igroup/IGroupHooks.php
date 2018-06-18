@@ -25,27 +25,23 @@ class IGroupHooks extends \SmartStructure\Group
 {
     use \Anakeen\SmartStructures\Iuser\TAccount;
 
-
-    public function preRefresh()
+    public function registerHooks()
     {
-        //  $err=$this->ComputeGroup();
-        $err = "";
-        // refresh MEID itself
-        $iduser = $this->getRawValue("US_WHATID");
-        if ($iduser > 0) {
-            $user = $this->getAccount();
-            if (!$user) {
-                return sprintf(_("group #%d does not exist"), $iduser);
+        parent::registerHooks();
+        $this->getHooks()->removeListeners(SmartHooks::POSTSTORE);
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            return $this->synchronizeSystemGroup();
+        })->addListener(SmartHooks::PREUNDELETE, function () {
+            return _("group cannot be revived");
+        })->addListener(SmartHooks::POSTDELETE, function () {
+            $gAccount = $this->getAccount();
+            if ($gAccount) {
+                $gAccount->delete();
             }
-        } else {
-            return _("group has not identificator");
-        }
-
-        if ($this->getRawValue("grp_isrefreshed") == "0") {
-            $err .= _("this groups must be refreshed");
-        }
-        return $err;
+        });
     }
+
+
 
     /**
      * recompute only parent group
@@ -92,25 +88,10 @@ class IGroupHooks extends \SmartStructure\Group
         }
     }
 
-    public function registerHooks()
-    {
-        parent::registerHooks();
-        $this->getHooks()->removeListeners(SmartHooks::POSTSTORE);
-        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
-            return $this->synchronizeSystemGroup();
-        })->addListener(SmartHooks::PREUNDELETE, function () {
-            return _("group cannot be revived");
-        })->addListener(SmartHooks::POSTDELETE, function () {
-            $gAccount = $this->getAccount();
-            if ($gAccount) {
-                $gAccount->Delete();
-            }
-        });
-    }
-
 
     public function synchronizeSystemGroup()
     {
+        SEManager::cache()->addDocument($this);
         $gname = $this->getRawValue("GRP_NAME");
         $login = $this->getRawValue("US_LOGIN");
         $roles = $this->getMultipleRawValues("grp_roles");
@@ -160,9 +141,7 @@ class IGroupHooks extends \SmartStructure\Group
             $err = $this->refreshMailMembersOnChange();
         }
 
-        if ($err == "") {
-            $err = "-";
-        } // don't do modify after because it is must be set by USER::setGroups
+
         return $err;
     }
 
