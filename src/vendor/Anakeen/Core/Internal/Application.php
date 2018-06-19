@@ -1210,6 +1210,9 @@ create sequence SEQ_ID_APPLICATION start 10;
             if (isset($val["descr"])) {
                 $pdef->descr = $val["descr"];
             }
+            if (isset($val["category"])) {
+                $pdef->category = $val["category"];
+            }
             if (isset($val["global"]) && $val["global"] == "Y") {
                 $pdef->isglob = "Y";
             } else {

@@ -73,7 +73,7 @@ class ImportSmartConfiguration
         $data = array_merge($data, $this->extractModAttrs($config));
         $data = array_merge($data, $this->extractEnumConfig($this->dom->documentElement));
         $data[] = ["END"];
-        $this->importSmartData($data);
+        $this->recordSmartData($data);
 
         if ($this->getError()) {
             throw new Exception($this->getError());
@@ -92,7 +92,7 @@ class ImportSmartConfiguration
         return "";
     }
 
-    protected function importSmartData(array $data)
+    protected function recordSmartData(array $data)
     {
         $import = new \ImportDocumentDescription();
 
