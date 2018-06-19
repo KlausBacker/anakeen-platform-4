@@ -213,7 +213,9 @@ export default {
 
                     if (notCanceled) {
                         this.selectedTab = newSelectedTab.id;
-                        actualSelectedTab.selected = false;
+                        if (actualSelectedTab) {
+                            actualSelectedTab.selected = false;
+                        }
                         newSelectedTab.selected = true;
                         this.$emit('tabSelected', newSelectedTab);
                     } else {
