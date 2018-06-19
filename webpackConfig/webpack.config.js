@@ -6,6 +6,7 @@ gracefulFs.gracefulify(fs);
 
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 const merge = require('webpack-merge');
 const parts = require('./webpack.parts');
@@ -58,6 +59,7 @@ const commonConfig = merge([{
         ],
     },
     plugins: [
+        new VueLoaderPlugin(),
         new CopyWebpackPlugin(
             [
                 {

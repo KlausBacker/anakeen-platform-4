@@ -6,6 +6,7 @@ gracefulFs.gracefulify(fs);
 
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 const merge = require('webpack-merge');
 const parts = require('./webpack.parts');
@@ -40,14 +41,18 @@ const commonConfig = merge([{
                     test: /\.vue$/,
                     use: {
                         loader: 'vue-loader',
-                        options: {
-                            extractCSS: true, loaders: {
-                                sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
-                                scss: 'vue-style-loader!css-loader!sass-loader',
-                            },
-                            shadowMode: true,
-                        },
                     },
+                },
+                {
+                    test: /\.(scss|sass)$/,
+                    issuer: /\.vue$/,
+                    use: [
+                        {
+                            loader: 'vue-style-loader',
+                        },
+                        'css-loader',
+                        'sass-loader',
+                    ],
                 },
                 {
                     test: /\.template.kd$/,
@@ -55,7 +60,10 @@ const commonConfig = merge([{
                     use: 'raw-loader',
                 },
             ],
-        }
+        },
+        plugins: [
+            new VueLoaderPlugin(),
+        ],
     },
         parts.cssLoader([
             /loading\.css/,
@@ -137,13 +145,13 @@ const devComponentConfig = merge([
 module.exports = env => {
     if (env === 'production') {
         return [
-            merge(commonConfig, productionComponentConfig)
+            merge(commonConfig, productionComponentConfig),
         ];
     }
 
     if (env === 'debug') {
         return [
-            merge(commonConfig, debugComponentConfig)
+            merge(commonConfig, debugComponentConfig),
         ];
     }
 
