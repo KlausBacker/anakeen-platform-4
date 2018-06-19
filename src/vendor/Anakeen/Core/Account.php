@@ -753,7 +753,7 @@ union
 
         $groupAll = new Account($this->dbaccess);
         $groupAll->id = Account::GALL_ID;
-        $groupAll->lastname = "Utilisateurs";
+        $groupAll->lastname = "Main Group";
         $groupAll->firstname = "";
         $groupAll->login = "all";
         $groupAll->accounttype = self::GROUP_TYPE;
@@ -766,8 +766,8 @@ union
 
         $anonymousUser = new Account($this->dbaccess);
         $anonymousUser->id = Account::ANONYMOUS_ID;
-        $anonymousUser->lastname = "anonymous";
-        $anonymousUser->firstname = "guest";
+        $anonymousUser->lastname = "Anonymous";
+        $anonymousUser->firstname = "Guest";
         $anonymousUser->login = "anonymous";
         $anonymousUser->password = "-";
         $anonymousUser->accounttype = self::USER_TYPE;
@@ -777,7 +777,7 @@ union
 
         $groupAdmin = new Account($this->dbaccess);
         $groupAdmin->id = Account::GADMIN_ID;
-        $groupAdmin->lastname = "Administrateurs";
+        $groupAdmin->lastname = "Administrators";
         $groupAdmin->firstname = "";
         $groupAdmin->login = "gadmin";
         $groupAdmin->accounttype = self::GROUP_TYPE;
