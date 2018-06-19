@@ -242,7 +242,7 @@ class ImportSmartConfiguration
         $data = ["DEFAULT"];
         $nodeValue = trim($attrNode->nodeValue);
         $data[] = $attrNode->getAttribute("attr");
-        if ($nodeValue) {
+        if ($nodeValue !== "") {
             $data[] = $nodeValue;
         } else {
             $data[] = $this->getCallableString($attrNode);
@@ -546,9 +546,12 @@ class ImportSmartConfiguration
      * @param $hook
      * @return string
      */
-    protected function getCallableString($hook): string
+    protected function getCallableString(\DOMElement $hook): string
     {
         $callableNode = $this->getNode($hook, "attr-callable");
+        if (! $callableNode) {
+            throw new Exception(sprintf("Error in callable %s", $hook->getAttribute("attr")));
+        }
         $method = $callableNode->getAttribute("function") . "(";
         $argNodes = $this->getNodes($hook, "attr-argument");
         $args = [];
