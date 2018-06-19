@@ -94,4 +94,8 @@ ank-authent-password {
   margin-left: 1rem;
   margin-top: 0.9rem;
   float: right;
+  cursor:pointer;
+}
+.btn:disabled {
+  cursor: not-allowed;
 }

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: anakeen-ui 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-13 15:53+0200\n"
-"PO-Revision-Date: 2018-05-30 15:19+0200\n"
+"PO-Revision-Date: 2018-06-19 09:54+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: fr\n"
@@ -43,7 +43,6 @@ msgid "New email"
 msgstr "Nouvelle adresse email"
 
 #: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:345
-#, fuzzy
 msgctxt "Identity"
 msgid "Your new email address"
 msgstr "Votre nouvelle addresse email"
@@ -69,13 +68,11 @@ msgid "Cancel password modification"
 msgstr "Annuler la modification du mot de passe"
 
 #: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:350
-#, fuzzy
 msgctxt "Identity"
 msgid "Current password"
 msgstr "Mot de passe actuel"
 
 #: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:351
-#, fuzzy
 msgctxt "Identity"
 msgid "Your current password"
 msgstr "Votre mot de passe actuel"
@@ -86,7 +83,6 @@ msgid "New password"
 msgstr "Nouveau mot de passe"
 
 #: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:353
-#, fuzzy
 msgctxt "Identity"
 msgid "Your new password"
 msgstr "Votre nouveau mot de passe"
@@ -97,7 +93,6 @@ msgid "New password confirmation"
 msgstr "Confirmation du nouveau mot de passe"
 
 #: anakeen-ui/src/vendor/Anakeen/Components/Identity/Identity.component.js:355
-#, fuzzy
 msgctxt "Identity"
 msgid "Confirmation of your new password"
 msgstr "Confirmation de votre nouveau mot de passe"
