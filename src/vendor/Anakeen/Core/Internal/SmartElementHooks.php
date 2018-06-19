@@ -19,7 +19,13 @@ class SmartElementHooks
         return $this;
     }
 
-    public function addListener($hookName, $ft)
+    /**
+     * Add callback to execute when hook is triggered
+     * @param string   $hookName Hook name
+     * @param callable $ft callback
+     * @return $this
+     */
+    public function addListener(string $hookName, callable $ft)
     {
         $this->document->hooks[$hookName][] = $ft;
         return $this;
@@ -27,10 +33,18 @@ class SmartElementHooks
 
     public function getListeners($hookName)
     {
-        return $this;
+        if (isset($this->document->hooks[$hookName])) {
+            return $this->document->hooks[$hookName];
+        }
+        return [];
     }
 
-    public function removeListeners($hookName = null)
+    /**
+     * Remove specific listeners
+     * @param string $hookName hook type to remove
+     * @return $this
+     */
+    public function removeListeners(string $hookName = null)
     {
         if ($hookName === null) {
             $this->document->hooks = [];
@@ -40,9 +54,12 @@ class SmartElementHooks
         return $this;
     }
 
+    /**
+     * Remove all listeners
+     * @return $this
+     */
     public function resetListeners()
     {
-
         $this->document->hooks = null;
         return $this;
     }
@@ -52,7 +69,13 @@ class SmartElementHooks
         $this->document->registerHooks();
     }
 
-    public function trigger($hookName, ...$data)
+    /**
+     * Call all registered callback for the hook name
+     * @param string $hookName
+     * @param mixed  ...$data
+     * @return string
+     */
+    public function trigger(string $hookName, ...$data)
     {
         if (!isset($this->document->hooks)) {
             $this->document->hooks = [];

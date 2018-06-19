@@ -61,7 +61,7 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
         $this->getHooks()->addListener(SmartHooks::POSTCREATED, function () {
             return $this->updateExpireDate();
         })->addListener(SmartHooks::PREUNDELETE, function () {
-            return _("user cannot be revived");
+            return ___("user cannot be revived", "smart iuser");
         })->addListener(SmartHooks::POSTDELETE, function () {
             $user = $this->getAccount();
             if ($user) {
@@ -485,46 +485,46 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
         $minSymbolLength = intval(ContextManager::getApplicationParam("AUTHENT_PWDMINSYMBOLLENGTH"));
 
         if (preg_match('/[\p{C}]/u', $pwd)) {
-            return _("Control characters are not allowed");
+            return ___("Control characters are not allowed", "smart iuser");
         }
 
         $msg = sprintf(_("Your password is not secure."));
         if ($minLength > 0) {
-            $msg .= "\n " . sprintf(_("It must contains at least %d characters (total length)"), $minLength);
+            $msg .= "\n " . sprintf(___("It must contains at least %d characters (total length)", "smart iuser"), $minLength);
         }
         if ($minDigitLength + $minUpperLength + $minLowerLength + $minSymbolLength > 0) {
-            $msg .= " " . sprintf(_("with these conditions"));
+            $msg .= " " . sprintf(___("with these conditions", "smart iuser"));
         }
         if ($minDigitLength) {
             if ($minDigitLength > 1) {
-                $msg .= "\n  - " . sprintf(_("at least %d digits"), $minDigitLength);
+                $msg .= "\n  - " . sprintf(___("at least %d digits", "smart iuser"), $minDigitLength);
             } else {
-                $msg .= "\n  - " . sprintf(_("at least one digit"));
+                $msg .= "\n  - " . sprintf(___("at least one digit", "smart iuser"));
             }
         }
         if ($minUpperLength) {
             if ($minUpperLength > 1) {
-                $msg .= "\n  - " . sprintf(_("at least %d uppercase alpha characters"), $minUpperLength);
+                $msg .= "\n  - " . sprintf(___("at least %d uppercase alpha characters", "smart iuser"), $minUpperLength);
             } else {
-                $msg .= "\n  - " . sprintf(_("at least one uppercase alpha character"));
+                $msg .= "\n  - " . sprintf(___("at least one uppercase alpha character", "smart iuser"));
             }
         }
         if ($minLowerLength) {
             if ($minLowerLength > 1) {
-                $msg .= "\n  - " . sprintf(_("at least %d lowercase alpha characters"), $minLowerLength);
+                $msg .= "\n  - " . sprintf(___("at least %d lowercase alpha characters", "smart iuser"), $minLowerLength);
             } else {
-                $msg .= "\n  - " . sprintf(_("at least one lowercase alpha character"));
+                $msg .= "\n  - " . sprintf(___("at least one lowercase alpha character", "smart iuser"));
             }
         }
         if ($minSymbolLength) {
             if ($minSymbolLength > 1) {
-                $msg .= "\n  - " . sprintf(_("at least %d symbol characters"), $minSymbolLength);
+                $msg .= "\n  - " . sprintf(___("at least %d symbol characters", "smart iuser"), $minSymbolLength);
             } else {
-                $msg .= "\n  - " . sprintf(_("at least one symbol character"));
+                $msg .= "\n  - " . sprintf(___("at least one symbol character", "smart iuser"));
             }
         }
         if (mb_strlen($pwd) < $minLength) {
-            $err = _("Not enough characters.") . "\n";
+            $err = ___("Not enough characters.", "smart iuser") . "\n";
             return nl2br($err . $msg);
         }
         $alphanum = 0;
@@ -533,7 +533,7 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
             preg_match_all('/[0-9]/', $pwd, $matches);
             $alphanum += count($matches[0]);
             if (count($matches[0]) < $minDigitLength) {
-                $err = _("Not enough digits.") . "\n";
+                $err = ___("Not enough digits.", "smart iuser") . "\n";
                 return nl2br($err . $msg);
             }
         }
@@ -541,7 +541,7 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
             preg_match_all('/[\p{Lu}]/u', $pwd, $matches);
             $alphanum += count($matches[0]);
             if (count($matches[0]) < $minUpperLength) {
-                $err = _("Not enough uppercase characters.") . "\n";
+                $err = ___("Not enough uppercase characters.", "smart iuser") . "\n";
                 return nl2br($err . $msg);
             }
         }
@@ -549,13 +549,13 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
             preg_match_all('/[\p{Ll}]/u', $pwd, $matches);
             $alphanum += count($matches[0]);
             if (count($matches[0]) < $minLowerLength) {
-                $err = _("Not enough lowercase characters.") . "\n";
+                $err = ___("Not enough lowercase characters.", "smart iuser") . "\n";
                 return nl2br($err . $msg);
             }
         }
         if ($minSymbolLength) {
             if ((mb_strlen($pwd) - $alphanum) < $minSymbolLength) {
-                $err = _("Not enough special characters.") . "\n";
+                $err = ___("Not enough special characters.", "smart iuser") . "\n";
                 return nl2br($err . $msg);
             }
         }
