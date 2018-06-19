@@ -37,7 +37,7 @@
                             </kendo-toolbar>
                             <ank-smart-element ref="groupDoc" ></ank-smart-element>
                         </div>
-                        <div v-show="!displayGroupDocument">
+                        <div v-show="!displayGroupDocument" class="accountManager_logo">
                             <div><img class="anakeen-logo" src="/AdminCenter/Images/anakeen_monogramme.svg" alt="Anakeen Logo"/></div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                                     :persistSelection="true"
                                     :autoBind="false">
                             <kendo-grid-column :selectable="true" width="50px"></kendo-grid-column>
-                            <kendo-grid-column field="id" template='<a class="btn btn-link material-icons openButton" data-initid="#= id #" href="/api/v2/documents/#= id #.html" >open_in_new</a>' width="50px" title=" " :filterable=false ></kendo-grid-column>
+                            <kendo-grid-column field="id" template='<a class="btn btn-light material-icons openButton" data-initid="#= id #" href="/api/v2/documents/#= id #.html" >open_in_new</a>' width="50px" title=" " :filterable=false ></kendo-grid-column>
                             <kendo-grid-column field="login" title="Login" type="string"></kendo-grid-column>
                             <kendo-grid-column field="firstname" title="First name" type="string"></kendo-grid-column>
                             <kendo-grid-column field="lastname" title="Last name" type="string"></kendo-grid-column>
