@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema elementFormDefault="qualified" targetNamespace="http://www.anakeen.com/ns/smart/v1/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:element name="config" type="v1:configType" xmlns:v1="http://www.anakeen.com/ns/smart/v1/">
+<xs:schema elementFormDefault="qualified" targetNamespace="http://www.anakeen.com/ns/smart/v1/"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:v1="http://www.anakeen.com/ns/smart/v1/">
+    <xs:element name="config" type="v1:configType">
         <xs:annotation>
             <xs:documentation>
                 <h1>Smart Configuration</h1>
@@ -13,7 +15,7 @@
     <xs:complexType name="attr-returnType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="attr"/>
+                <xs:attribute type="v1:attrNameType" name="attr"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
@@ -21,23 +23,32 @@
     <xs:complexType name="attr-overrideType">
         <xs:simpleContent>
             <xs:extension base="v1:attr-standardType" xmlns:v1="http://www.anakeen.com/ns/smart/v1/">
-                <xs:attribute type="xs:string" name="attr"/>
+                <xs:attribute type="v1:attrNameType" name="attr"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
     <xs:complexType name="attr-autocompleteType">
         <xs:sequence>
-            <xs:element type="v1:attr-callableType" name="attr-callable" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-argumentType" name="attr-argument" maxOccurs="unbounded" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-returnsType" name="attr-returns" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+            <xs:element type="v1:attr-callableType" name="attr-callable"/>
+            <xs:element type="v1:attr-argumentType" name="attr-argument" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="v1:attr-returnsType" name="attr-returns" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="xs:string" name="attr"/>
+        <xs:attribute type="v1:attrNameType" name="attr"/>
     </xs:complexType>
+
+    <xs:simpleType name="attrReturnArgType">
+        <xs:annotation>
+            <xs:documentation>Type of argument</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="attribute"/>
+            <xs:enumeration value="string"/>
+        </xs:restriction>
+    </xs:simpleType>
     <xs:simpleType name="visibilityType">
         <xs:annotation>
             <xs:documentation>Deprecated visibilities attributes</xs:documentation>
         </xs:annotation>
-
         <xs:restriction base="xs:string">
             <xs:enumeration value="W"/>
             <xs:enumeration value="R"/>
@@ -59,7 +70,7 @@
 
     <xs:complexType name="enumeratesType">
         <xs:sequence>
-            <xs:element type="v1:enum-configurationType" name="enum-configuration" maxOccurs="unbounded" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+            <xs:element type="v1:enum-configurationType" name="enum-configuration" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="attr-optionType">
@@ -79,24 +90,25 @@
     </xs:complexType>
     <xs:complexType name="enum-configurationType">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-            <xs:element type="v1:enumType" name="enum" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+            <xs:element type="v1:enumType" name="enum"/>
         </xs:choice>
-        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:token" name="name"/>
         <xs:attribute type="xs:boolean" name="extendable" default="false"/>
     </xs:complexType>
     <xs:complexType name="attr-standardType" mixed="true">
         <xs:sequence minOccurs="0" maxOccurs="unbounded">
-            <xs:element type="v1:attr-optionType" name="attr-option" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+            <xs:element type="v1:attr-optionType" name="attr-option"/>
         </xs:sequence>
-        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="v1:attrNameType" name="name" use="required"/>
         <xs:attribute type="xs:string" name="label"/>
         <xs:attribute type="xs:boolean" name="needed"/>
-        <xs:attribute type="visibilityType" name="visibility">
-
+        <xs:attribute type="v1:visibilityType" name="visibility">
             <xs:annotation>
                 <xs:documentation>
-                    <p><b>Deprecated</b>
-                    visibilities attributes</p>
+                    <p>
+                        <b>Deprecated</b>
+                        visibilities attributes
+                    </p>
                     <hr/>
                     <ul>
                         <li>W : For Write</li>
@@ -115,7 +127,11 @@
         <xs:attribute type="xs:string" name="relation"/>
         <xs:attribute type="xs:string" name="multiple"/>
     </xs:complexType>
-
+    <xs:simpleType name="attrNameType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-z][a-z0-9_]+"/>
+        </xs:restriction>
+    </xs:simpleType>
     <xs:complexType name="attr-formatType">
         <xs:simpleContent>
             <xs:extension base="attr-standardType">
@@ -130,18 +146,19 @@
                 <xs:annotation>
                     <xs:documentation>
                         <h1>Smart Structure Configuration</h1>
-                        <p>To configure Smart Structure parts such as attributes, parameters, default values </p>
+                        <p>To configure Smart Structure parts such as attributes, parameters, default values</p>
                     </xs:documentation>
-                </xs:annotation></xs:element>
-            <xs:element type="v1:enumeratesType" name="enumerates" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="v1:enumeratesType" name="enumerates" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="attr-accountType" mixed="true">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-            <xs:element type="v1:attr-standardType" name="attr-text" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-standardType" name="attr-enum" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-standardType" name="attr-docid" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-standardType" name="attr-int" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+            <xs:element type="v1:attr-standardType" name="attr-text"/>
+            <xs:element type="v1:attr-standardType" name="attr-enum"/>
+            <xs:element type="v1:attr-standardType" name="attr-docid"/>
+            <xs:element type="v1:attr-standardType" name="attr-int"/>
         </xs:choice>
         <xs:attribute type="xs:string" name="name"/>
         <xs:attribute type="xs:string" name="label"/>
@@ -152,15 +169,15 @@
     <xs:complexType name="attr-argumentType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="type"/>
+                <xs:attribute type="attrReturnArgType" name="type"/>
                 <xs:attribute type="xs:string" name="name"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
     <xs:complexType name="structure-configurationType">
         <xs:sequence>
-            <xs:element type="xs:string" name="default-folder" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:iconType" name="icon" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+            <xs:element type="xs:string" name="default-folder" minOccurs="0"/>
+            <xs:element type="v1:iconType" name="icon" minOccurs="0"/>
             <xs:element type="v1:classType" name="class" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/">
 
                 <xs:annotation>
@@ -173,15 +190,15 @@
                 </xs:annotation>
 
             </xs:element>
-            <xs:element type="v1:revisable" name="revisable" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+            <xs:element type="v1:revisable" name="revisable" minOccurs="0"/>
             <xs:element type="xs:string" name="usefor" minOccurs="0"/>
             <xs:element type="xs:string" name="tag" minOccurs="0"/>
-            <xs:element type="v1:attributesType" name="attributes" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attributesType" name="parameters" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-overrideType" name="attr-override" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:hooksType" name="hooks" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:autocompletionType" name="autocompletion" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:defaultsType" name="defaults" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+            <xs:element type="v1:attributesType" name="attributes" minOccurs="0"/>
+            <xs:element type="v1:attributesType" name="parameters" minOccurs="0"/>
+            <xs:element type="v1:attr-overrideType" name="attr-override" minOccurs="0"/>
+            <xs:element type="v1:hooksType" name="hooks" minOccurs="0"/>
+            <xs:element type="v1:autocompletionType" name="autocompletion" minOccurs="0"/>
+            <xs:element type="v1:defaultsType" name="defaults" minOccurs="0"/>
 
             <xs:element type="xs:string" name="accesses" minOccurs="0"/>
         </xs:sequence>
@@ -202,18 +219,18 @@
 
     <xs:complexType name="defaultsType">
         <xs:sequence>
-            <xs:element type="v1:defaultType" name="default" maxOccurs="unbounded" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+            <xs:element type="v1:defaultType" name="default" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
 
     <xs:complexType name="defaultType" mixed="true">
         <xs:sequence>
-            <xs:element type="v1:attr-callableType" name="attr-callable" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-argumentType" name="attr-argument" maxOccurs="unbounded" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-returnsType" name="attr-returns" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+            <xs:element type="v1:attr-callableType" name="attr-callable" minOccurs="0"/>
+            <xs:element type="v1:attr-argumentType" name="attr-argument" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="v1:attr-returnsType" name="attr-returns" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="xs:string" name="attr"/>
+        <xs:attribute type="v1:attrNameType" name="attr"/>
     </xs:complexType>
 
     <xs:complexType name="attr-callableType">
@@ -253,57 +270,57 @@
 
     <xs:complexType name="attr-returnsType">
         <xs:sequence>
-            <xs:element type="v1:attr-returnType" name="attr-return" maxOccurs="unbounded" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+            <xs:element type="v1:attr-returnType" name="attr-return" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="autocompletionType">
         <xs:sequence>
-            <xs:element type="v1:attr-autocompleteType" name="attr-autocomplete" maxOccurs="unbounded" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+            <xs:element type="v1:attr-autocompleteType" name="attr-autocomplete" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="attr-hookType">
         <xs:sequence>
-            <xs:element type="v1:attr-callableType" name="attr-callable" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-argumentType" name="attr-argument" minOccurs="0" maxOccurs="unbounded" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-returnType" name="attr-return" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+            <xs:element type="v1:attr-callableType" name="attr-callable"/>
+            <xs:element type="v1:attr-argumentType" name="attr-argument" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element type="v1:attr-returnType" name="attr-return" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="xs:string" name="event"/>
-        <xs:attribute type="xs:string" name="attr"/>
+        <xs:attribute type="v1:attrNameType" name="attr"/>
         <xs:attribute type="xs:string" name="type"/>
     </xs:complexType>
     <xs:complexType name="hooksType">
         <xs:sequence>
-            <xs:element type="v1:attr-hookType" name="attr-hook" maxOccurs="unbounded" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+            <xs:element type="v1:attr-hookType" name="attr-hook" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="attr-fieldsetType" mixed="true">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-            <xs:element type="v1:attr-fieldsetType" name="attr-fieldset" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-standardType" name="attr-text" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-standardType" name="attr-date" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-formatType" name="attr-time" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-formatType" name="attr-int" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-formatType" name="attr-double" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-formatType" name="attr-money" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-standardType" name="attr-color" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-formatType" name="attr-timestamp" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-standardType" name="attr-password" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-formatType" name="attr-text" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-standardType" name="attr-longtext" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-standardType" name="attr-htmltext" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-standardType" name="attr-file" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-standardType" name="attr-image" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-standardType" name="attr-enum" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-standardType" name="attr-docid" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-standardType" name="attr-account" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
-            <xs:element type="v1:attr-optionType" name="attr-option" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+            <xs:element type="v1:attr-fieldsetType" name="attr-fieldset"/>
+            <xs:element type="v1:attr-standardType" name="attr-text"/>
+            <xs:element type="v1:attr-standardType" name="attr-date"/>
+            <xs:element type="v1:attr-formatType" name="attr-time"/>
+            <xs:element type="v1:attr-formatType" name="attr-int"/>
+            <xs:element type="v1:attr-formatType" name="attr-double"/>
+            <xs:element type="v1:attr-formatType" name="attr-money"/>
+            <xs:element type="v1:attr-standardType" name="attr-color"/>
+            <xs:element type="v1:attr-formatType" name="attr-timestamp"/>
+            <xs:element type="v1:attr-standardType" name="attr-password"/>
+            <xs:element type="v1:attr-formatType" name="attr-text"/>
+            <xs:element type="v1:attr-standardType" name="attr-longtext"/>
+            <xs:element type="v1:attr-standardType" name="attr-htmltext"/>
+            <xs:element type="v1:attr-standardType" name="attr-file"/>
+            <xs:element type="v1:attr-standardType" name="attr-image"/>
+            <xs:element type="v1:attr-standardType" name="attr-enum"/>
+            <xs:element type="v1:attr-standardType" name="attr-docid"/>
+            <xs:element type="v1:attr-standardType" name="attr-account"/>
+            <xs:element type="v1:attr-optionType" name="attr-option"/>
         </xs:choice>
-        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="v1:attrNameType" name="name" use="required"/>
         <xs:attribute type="xs:boolean" name="extended"/>
-        <xs:attribute type="v1:fieldsetType" name="type" xmlns:v1="http://www.anakeen.com/ns/smart/v1/"/>
+        <xs:attribute type="v1:fieldsetType" name="type"/>
         <xs:attribute type="xs:string" name="label"/>
-        <xs:attribute type="v1:visibilityType" name="visibility" xmlns:v1="http://www.anakeen.com/ns/smart/v1/" />
+        <xs:attribute type="v1:visibilityType" name="visibility"/>
         <xs:attribute type="xs:string" name="relation"/>
         <xs:attribute type="xs:string" name="multiple"/>
         <xs:attribute type="xs:string" name="is-abstract"/>

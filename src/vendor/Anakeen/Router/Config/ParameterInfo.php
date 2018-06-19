@@ -46,6 +46,7 @@ class ParameterInfo
         $paramDefData = [
             "val" => $this->value,
             "descr" => $this->description,
+            "category" => $this->category,
             "kind" => (!empty($this->access) && ($this->access === "static" || $this->access === "readonly")) ? $this->access
                 : (!empty($this->type) ? $this->type : 'text'),
             "global" => empty($this->global) ? "N" : "Y",

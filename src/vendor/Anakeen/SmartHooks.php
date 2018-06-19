@@ -13,7 +13,7 @@ interface SmartHooks
      * call in SmartElement::Add() method
      * if return message, creation is aborted
      * @see      SmartElement::store()
-     * @note     hook called before document is created in database
+     * @note     hook called before smart element is created in database
      * @return string error message
      */
     const PRECREATED = "preCreated";
@@ -21,7 +21,7 @@ interface SmartHooks
      * call when doc is being imported before any modification
      * if return non null string import will ne aborted
      *
-     * @api hook called when import document - before import it
+     * @api hook called when import smart element - before import it
      *
      * @param array $extra extra parameters
      *
@@ -34,40 +34,40 @@ interface SmartHooks
     const POSTIMPORT = "postImport";
 
     /**
-     * Call when revise document
+     * Call when revise smart element
      * the output message is an error message it stop revision if is not empty
      * @see \Anakeen\Core\Internal\SmartElement::revise
      */
     const PREREVISE = "preRevise";
 
     /**
-     * Call when revise document
+     * Call when revise smart element
      * the output message will appeared as a information message
      * @see \Anakeen\Core\Internal\SmartElement::revise
      */
     const POSTREVISE = "postRevise";
     /**
-     * Call when undelete document
+     * Call when undelete smart element
      * the output message is an error message it stop restore if is not empty
      * @see \Anakeen\Core\Internal\SmartElement::undelete()
      */
     const PREUNDELETE = "preUndelete";
 
     /**
-     * Call when undelete document
+     * Call when undelete smart element
      * the output message will appeared as a information message
      * @see \Anakeen\Core\Internal\SmartElement::undelete
      */
     const POSTUNDELETE = "postUndelete";
     /**
-     * Call when delete document
+     * Call when delete smart element
      * the output message is an error message it stop restore if is not empty
      * @see \Anakeen\Core\Internal\SmartElement::delete()
      */
     const PREDELETE = "preDelete";
 
     /**
-     * Call when delete document
+     * Call when delete smart element
      * the output message will appeared as a information message
      * @see \Anakeen\Core\Internal\SmartElement::delete
      */
@@ -75,14 +75,14 @@ interface SmartHooks
 
 
     /**
-     * Call when duplicate document
+     * Call when duplicate smart element
      * the output message is an error message it stop duplication if is not empty
      * @see \Anakeen\Core\Internal\SmartElement::duplicate()
      */
     const PREDUPLICATE = "preDuplicate";
 
     /**
-     * Call when duplicate document
+     * Call when duplicate smart element
      * the output message will appeared as a information message
      * @see \Anakeen\Core\Internal\SmartElement::duplicate()
      */
@@ -90,15 +90,15 @@ interface SmartHooks
 
 
     /**
-     * Call when affect document with data
-     * no output
+     * Call when affect smart element object with new data 
+     * The object not has new data yet
      * @see \Anakeen\Core\Internal\SmartElement::affect()
      */
     const PREAFFECT = "preAffect";
 
     /**
-     * Call when affect document with data
-     * no output
+     * Call when affect smart element with new data
+     * The data is set in object
      * @see \Anakeen\Core\Internal\SmartElement::affect()
      */
     const POSTAFFECT= "postAffect";

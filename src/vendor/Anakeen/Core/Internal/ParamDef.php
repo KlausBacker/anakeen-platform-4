@@ -12,6 +12,7 @@ class ParamDef extends DbObj
             "isuser",
             "isstyle",
             "isglob",
+            "category",
             "appid",
             "descr",
             "kind"
@@ -22,6 +23,7 @@ class ParamDef extends DbObj
     public $isglob;
     public $appid;
     public $descr;
+    public $category;
     public $kind;
 
     public $id_fields
@@ -40,6 +42,7 @@ class ParamDef extends DbObj
               isstyle   varchar(1),
               isglob   varchar(1),
               appid  int4,
+              category text,
               descr    text,
               kind    text);
       create unique index paramdef_idxna on paramdef(name, appid);
