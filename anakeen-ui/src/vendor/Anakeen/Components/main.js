@@ -52,28 +52,28 @@ Vue.http.get('/api/v2/ui/users/current')
     });
 
 // import and register your component(s)
-import Authent from './Authent/Authent.vue?shadow';
-import AuthentPassword from './Authent/AuthentPassword.vue?shadow';
-import Document from './SmartElement/SmartElement.vue?shadow';
-import SEList from './SEList/seList.vue?shadow';
-import DocumentTabs from './SETabs/seTabs.vue?shadow';
-import AnakeenLoading from './AnakeenLoading/AnakeenLoading.vue?shadow';
-import Logout from './Logout/Logout.vue?shadow';
-import Identity from './Identity/Identity.vue?shadow';
+import Authent from './Authent/Authent.vue';
+import AuthentPassword from './Authent/AuthentPassword.vue';
+import Document from './SmartElement/SmartElement.vue';
+import SEList from './SEList/seList.vue';
+import DocumentTabs from './SETabs/seTabs.vue';
+import AnakeenLoading from './AnakeenLoading/AnakeenLoading.vue';
+import Logout from './Logout/Logout.vue';
+import Identity from './Identity/Identity.vue';
 
-import Dock from './Dock/Dock.vue?shadow';
-import DockTab from './Dock/DockTab/DockTab.vue?shadow';
+import Dock from './Dock/Dock.vue';
+import DockTab from './Dock/DockTab/DockTab.vue';
 import wrap from '@vue/web-component-wrapper';
 
-window.customElements.define('ank-loading', wrap(Vue, AnakeenLoading));
-window.customElements.define('ank-authent', wrap(Vue, Authent));
-window.customElements.define('ank-authent-password', wrap(Vue, AuthentPassword));
-window.customElements.define('ank-smart-element', wrap(Vue, Document));
-window.customElements.define('ank-se-list', wrap(Vue, SEList));
-window.customElements.define('ank-se-tabs', wrap(Vue, DocumentTabs));
-window.customElements.define('ank-logout', wrap(Vue, Logout));
-window.customElements.define('ank-identity', wrap(Vue, Identity));
+Vue.customElement('ank-loading', AnakeenLoading);
+Vue.customElement('ank-authent', Authent);
+Vue.customElement('ank-authent-password', AuthentPassword);
+Vue.customElement('ank-smart-element', Document);
+Vue.customElement('ank-se-list', SEList);
+Vue.customElement('ank-se-tabs', DocumentTabs);
+Vue.customElement('ank-logout', Logout);
+Vue.customElement('ank-identity', Identity);
 
 Vue.prototype.$dockEventBus = new Vue();
-window.customElements.define('ank-dock', wrap(Vue, Dock));
-window.customElements.define('ank-dock-tab', wrap(Vue, DockTab));
+Vue.customElement('ank-dock', Dock);
+Vue.customElement('ank-dock-tab', DockTab);
