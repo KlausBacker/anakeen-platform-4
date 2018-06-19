@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8-bit\n"
 
 msgid "IUSER#title"
-msgstr "Users"
+msgstr "User Account"
 
 #: App/Fusers/account.ods.csv
 msgid "IUSER#us_accexpiredate"
