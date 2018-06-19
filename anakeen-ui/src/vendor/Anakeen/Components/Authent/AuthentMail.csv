@@ -27,4 +27,3 @@ DOC;MAILTEMPLATE;AUTH_TPLMAILASKPWD;;Demande de changement de mot de passe;IUSER
 <p>You can also paste the following string in your browser:</p>
 
 <p>&#x5B;LINK_CHANGE_PASSWORD]</p>";;
-PROFIL;AUTH_TPLMAILASKPWD;PRF_ADMIN_EDIT;;;;;;;;;;;;;;;
