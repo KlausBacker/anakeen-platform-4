@@ -79,15 +79,18 @@ class ImportSmartConfiguration
             $prfDynamic = $config->getAttribute("linked-structure");
             if (!$prfDynamic) {
                 // Explicit deletion
-                $prfDynamic=" ";
+                $prfDynamic = " ";
             }
         } else {
-            $prfDynamic=null;
+            $prfDynamic = null;
         }
         $prfLink = $config->getAttribute("link");
         $prfType = $config->getAttribute("profil-type");
 
-        if ($prfName && $prfLabel && $prfType && !$prfLink) {
+        if ($prfName && $prfLabel && !$prfLink) {
+            if (!$prfType) {
+                $prfType = "PDOC";
+            }
             $data[] = ["ORDER", $prfType, "", "", "ba_title", "dpdoc_famid"];
             $data[] = ["DOC", $prfType, $prfName, "-", $prfLabel, $prfDynamic];
         } elseif ($prfName && $prfLink) {

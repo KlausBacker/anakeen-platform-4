@@ -244,7 +244,7 @@
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
-        <xs:attribute type="v1:logicalNameType" name="profil-type"/>
+        <xs:attribute type="v1:logicalNameType" name="profil-type" default="PDOC"/>
     </xs:complexType>
 
     <xs:complexType name="attr-accountType" mixed="true">
