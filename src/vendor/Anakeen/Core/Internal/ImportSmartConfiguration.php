@@ -53,7 +53,7 @@ class ImportSmartConfiguration
         foreach ($accessConfigs as $config) {
             $data = array_merge($data, $this->importSmartAccessConfig($config));
         }
-        //$this->print($data);
+        $this->print($data);
         $this->recordSmartData($data);
         return $data;
     }
@@ -296,11 +296,15 @@ class ImportSmartConfiguration
     {
         $data = ["DEFAULT"];
         $nodeValue = trim($attrNode->nodeValue);
-        $data[] = $attrNode->getAttribute("attr");
+        $data[1] = $attrNode->getAttribute("attr");
         if ($nodeValue !== "") {
-            $data[] = $nodeValue;
+            $data[2] = $nodeValue;
         } else {
-            $data[] = $this->getCallableString($attrNode);
+            $data[2] = $this->getCallableString($attrNode);
+        }
+        $reset=$attrNode->getAttribute("reset");
+        if ($reset === "true") {
+             $data[3] ="force=yes";
         }
 
         return $data;

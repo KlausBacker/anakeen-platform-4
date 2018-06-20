@@ -13,11 +13,7 @@
     </xs:element>
 
     <xs:complexType name="attr-returnType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
                 <xs:attribute type="v1:attrNameType" name="attr"/>
-            </xs:extension>
-        </xs:simpleContent>
     </xs:complexType>
 
     <xs:complexType name="attr-overrideType">
@@ -49,7 +45,7 @@
         <xs:annotation>
             <xs:documentation>Deprecated visibilities attributes</xs:documentation>
         </xs:annotation>
-        <xs:restriction base="xs:string">
+        <xs:restriction base="xs:token">
             <xs:enumeration value="W"/>
             <xs:enumeration value="R"/>
             <xs:enumeration value="H"/>
@@ -60,7 +56,7 @@
     </xs:simpleType>
 
     <xs:simpleType name="profilPolicyType">
-        <xs:restriction base="xs:string">
+        <xs:restriction base="xs:token">
             <xs:enumeration value="ADD"/>
             <xs:enumeration value="SET"/>
             <xs:enumeration value="RESET"/>
@@ -69,7 +65,7 @@
     </xs:simpleType>
 
     <xs:simpleType name="fieldsetType">
-        <xs:restriction base="xs:string">
+        <xs:restriction base="xs:token">
             <xs:enumeration value="frame"/>
             <xs:enumeration value="tab"/>
             <xs:enumeration value="array"/>
@@ -89,12 +85,10 @@
         </xs:simpleContent>
     </xs:complexType>
     <xs:complexType name="enumType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="name"/>
+
+                <xs:attribute type="xs:token" name="name"/>
                 <xs:attribute type="xs:string" name="label"/>
-            </xs:extension>
-        </xs:simpleContent>
+
     </xs:complexType>
     <xs:complexType name="enum-configurationType">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -358,16 +352,13 @@
             <xs:element type="v1:attr-argumentType" name="attr-argument" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="v1:attr-returnsType" name="attr-returns" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="v1:attrNameType" name="attr"/>
+        <xs:attribute type="v1:attrNameType" name="attr" use="required"/>
+        <xs:attribute type="xs:boolean" name="reset" default="false"/>
     </xs:complexType>
 
     <xs:complexType name="attr-callableType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="function"/>
-                <xs:attribute type="xs:string" name="external-file"/>
-            </xs:extension>
-        </xs:simpleContent>
+        <xs:attribute type="xs:string" name="function"/>
+        <xs:attribute type="xs:string" name="external-file"/>
     </xs:complexType>
 
 

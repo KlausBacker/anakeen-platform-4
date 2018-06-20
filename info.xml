@@ -261,74 +261,74 @@
             <label>Import Root dir</label>
         </process>
 
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.xml ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.xml">
             <label>Add Mail form family</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml">
             <label>Add Mail Template form family</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml">
             <label>Add Sent message family</label>
         </process>
 
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Exec/exec.struct.xml ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Exec/exec.struct.xml">
             <label>Add Processus family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.struct.csv ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml">
             <label>Add Helpage family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.param.csv ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.param.xml">
             <label>Config Helpage family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Mask/mask.struct.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Mask/mask.struct.csv">
             <label>MASK Family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.csv">
             <label>CVDOC Family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Search/search.struct.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Search/search.struct.csv">
             <label>Add Search family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Msearch/msearch.struct.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Msearch/msearch.struct.csv">
             <label>Add Grouped searches family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.csv">
             <label>Add Detailled searches family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.csv">
             <label>Add Specialized searches family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Report/report.struct.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Report/report.struct.csv">
             <label>Add Report family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Image/image.struct.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Image/image.struct.csv">
             <label>Add Image family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/File/file.struct.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/File/file.struct.csv">
             <label>Add File family</label>
         </process>
 
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.init.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.init.csv">
             <label>Add IUSER folder</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml">
             <label>Add IUSER family</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Group/group.struct.xml ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Group/group.struct.xml">
             <label>Add GROUP family</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml">
             <label>Add IGROUP family</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.struct.xml ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.struct.xml">
             <label>Add ROLE family</label>
         </process>
 
@@ -340,7 +340,7 @@
         </process>
 
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.data.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.data.csv">
             <label>Help Documents</label>
         </process>
 
@@ -569,56 +569,56 @@
         </process>
 
 
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.xml ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.xml">
             <label>Add Mail form family</label>
         </process>
 
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml">
             <label>Add Mail Template form family</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml">
             <label>Add Sent message family</label>
         </process>
 
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Exec/exec.struct.xml ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Exec/exec.struct.xml">
             <label>Add Processus family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.struct.csv ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml">
             <label>Add Helpage family</label>
         </process>
 
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Mask/mask.struct.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Mask/mask.struct.csv">
             <label>MASK Family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.csv">
             <label>CVDOC Family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Search/search.struct.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Search/search.struct.csv">
             <label>Add Search family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Msearch/msearch.struct.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Msearch/msearch.struct.csv">
             <label>Add Grouped searches family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.csv">
             <label>Add Detailled searches family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.csv">
             <label>Add Specialized searches family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Report/report.struct.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Report/report.struct.csv">
             <label>Add Report family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Image/image.struct.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Image/image.struct.csv">
             <label>Add Image family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/File/file.struct.csv ">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/File/file.struct.csv">
             <label>Add File family</label>
         </process>
 
@@ -626,13 +626,13 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml">
             <label>Add IUSER family</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Group/group.struct.xml ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Group/group.struct.xml">
             <label>Add GROUP family</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml">
             <label>Add IGROUP family</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.struct.xml ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.struct.xml">
             <label>Add ROLE family</label>
         </process>
 

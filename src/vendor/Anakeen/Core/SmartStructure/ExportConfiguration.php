@@ -151,6 +151,10 @@ class ExportConfiguration
          */
         $elementAccesses = [];
         $accessResults = [];
+        // Add special acls - Always defined in each profil
+        $profil->acls[]="modifyacl";
+        $profil->acls[]="viewacl";
+
         foreach ($profil->acls as $acl) {
             if (isset(DocumentAccess::$dacls[$acl])) {
                 $pos = DocumentAccess::$dacls[$acl]["pos"];
@@ -187,7 +191,6 @@ class ExportConfiguration
             }
             $accessResults[] = $accessResult;
         }
-
         foreach ($accessResults as $result) {
             $acl = $result["acl"];
             if (!isset($elementAccesses[$acl])) {
