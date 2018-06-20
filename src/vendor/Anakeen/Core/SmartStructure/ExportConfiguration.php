@@ -62,7 +62,7 @@ class ExportConfiguration
     }
 
     /**
-     * Return Xml string for stmart structre configuration
+     * Return Xml string for smart structre configuration
      * @return string
      */
     public function toXml()
@@ -87,7 +87,7 @@ class ExportConfiguration
     {
         $access = $this->cel("accesses");
         if ($this->sst->cprofid) {
-            $tag = $this->cel("element-access");
+            $tag = $this->cel("element-access-configuration");
             $tag->setAttribute("link", SEManager::getNameFromId($this->sst->cprofid));
             $access->appendChild($tag);
             $accessControl = $this->setAccess($this->sst->cprofid);
@@ -95,7 +95,7 @@ class ExportConfiguration
         }
 
         if ($this->sst->profid) {
-            $tag = $this->cel("structure-access");
+            $tag = $this->cel("structure-access-configuration");
             $access->appendChild($tag);
             $accessControl = $this->setAccess($this->sst->profid);
             if ($this->sst->profid !== $this->sst->id) {
@@ -117,6 +117,7 @@ class ExportConfiguration
 
         $accessControl->setAttribute("name", $profil->name);
         $accessControl->setAttribute("label", $profil->title);
+        $accessControl->setAttribute("structure-type", $profil->fromname);
         if ($profil->getRawValue("dpdoc_famid")) {
             $accessControl->setAttribute("dynamic", "true");
             $accessControl->setAttribute("linked-structure", SEManager::getNameFromId($profil->getRawValue("dpdoc_famid")));
@@ -194,17 +195,11 @@ class ExportConfiguration
                 $elementAccesses[$acl] = $this->cel("element-access");
                 $elementAccesses[$acl]->setAttribute("access", $acl);
             }
-            $elementAccount = null;
             if (isset($result["login"])) {
-                $elementAccount = $this->cel("account-access");
-                $elementAccount->setAttribute("login", $result["login"]);
+                $elementAccesses[$acl]->setAttribute("login", $result["login"]);
             }
             if (isset($result["attrid"])) {
-                $elementAccount = $this->cel("relation-access");
-                $elementAccount->setAttribute("attr", $result["attrid"]);
-            }
-            if ($elementAccount) {
-                $elementAccesses[$acl]->appendChild($elementAccount);
+                $elementAccesses[$acl]->setAttribute("attr", $result["attrid"]);
             }
         }
 
