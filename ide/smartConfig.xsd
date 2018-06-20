@@ -381,9 +381,12 @@
 
     <xs:complexType name="revisable">
         <xs:simpleContent>
-            <xs:extension base="xs:string">
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="true"/>
+                <xs:enumeration value="false"/>
+                <xs:enumeration value="auto"/>
                 <xs:attribute type="xs:int" name="max"/>
-            </xs:extension>
+            </xs:restriction>
         </xs:simpleContent>
     </xs:complexType>
 

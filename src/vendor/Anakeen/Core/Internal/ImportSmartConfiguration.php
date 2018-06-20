@@ -53,7 +53,7 @@ class ImportSmartConfiguration
         foreach ($accessConfigs as $config) {
             $data = array_merge($data, $this->importSmartAccessConfig($config));
         }
-        $this->print($data);
+       // $this->print($data);
         $this->recordSmartData($data);
         return $data;
     }

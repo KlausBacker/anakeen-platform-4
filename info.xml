@@ -282,7 +282,7 @@
             <label>Config Helpage family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Mask/mask.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.struct.xml">
             <label>MASK Family</label>
         </process>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.csv">
@@ -588,8 +588,7 @@
             <label>Add Helpage family</label>
         </process>
 
-
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Mask/mask.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.struct.xml">
             <label>MASK Family</label>
         </process>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.csv">
@@ -621,7 +620,6 @@
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/File/file.struct.csv">
             <label>Add File family</label>
         </process>
-
 
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml">
             <label>Add IUSER family</label>

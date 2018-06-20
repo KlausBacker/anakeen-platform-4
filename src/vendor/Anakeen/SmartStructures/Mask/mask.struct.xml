@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+    <smart:structure-configuration name="MASK" label="Masque de saisie" extends="BASE">
+        <smart:icon file="se-mask.png"/>
+        <smart:class>Anakeen\SmartStructures\Mask\Mask</smart:class>
+        <smart:revisable>false</smart:revisable>
+        <smart:usefor>S</smart:usefor>
+        <smart:attributes>
+            <smart:attr-fieldset name="msk_fr_rest" type="frame" label="Famille" visibility="W">
+                <smart:attr-docid name="msk_famid" label="Famille" visibility="W" needed="true" relation="-1"/>
+                <smart:attr-text name="msk_fam" label="Famille (titre)" visibility="H" is-title="true"/>
+                <smart:attr-fieldset name="msk_t_contain" type="array" label="Contenu" visibility="W">
+                    <smart:attr-text name="msk_attrids" label="Attrid" visibility="W"/>
+                    <smart:attr-text name="msk_visibilities" label="Visibilité" visibility="W"/>
+                    <smart:attr-text name="msk_needeeds" label="Obligatoire" visibility="W"/>
+                </smart:attr-fieldset>
+            </smart:attr-fieldset>
+        </smart:attributes>
+
+        <smart:hooks>
+            <smart:attr-hook event="onPreRefresh" attr="msk_fam">
+                <smart:attr-callable function="::getTitle"/>
+                <smart:attr-argument type="attribute">msk_famid</smart:attr-argument>
+            </smart:attr-hook>
+        </smart:hooks>
+
+    </smart:structure-configuration>
+</smart:config>
