@@ -40,7 +40,7 @@
             <smart:attr-hook event="onPreRefresh" attr="fld_pdir">
                 <smart:attr-callable function="::getTitle"/>
                 <smart:attr-argument type="attribute">fld_pdirid</smart:attr-argument>
-                <smart:attr-return attr="FLD_PDIR"/>
+                <smart:attr-return attr="fld_pdir"/>
             </smart:attr-hook>
         </smart:hooks>
 

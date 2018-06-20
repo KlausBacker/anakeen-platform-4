@@ -21,11 +21,11 @@
     </xs:complexType>
 
     <xs:complexType name="attr-overrideType">
-        <xs:simpleContent>
-            <xs:extension base="v1:attr-standardType" xmlns:v1="http://www.anakeen.com/ns/smart/v1/">
+        <xs:complexContent>
+            <xs:extension base="v1:attr-standardType">
                 <xs:attribute type="v1:attrNameType" name="attr"/>
             </xs:extension>
-        </xs:simpleContent>
+        </xs:complexContent>
     </xs:complexType>
     <xs:complexType name="attr-autocompleteType">
         <xs:sequence>
@@ -59,6 +59,14 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:simpleType name="profilPolicyType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ADD"/>
+            <xs:enumeration value="SET"/>
+            <xs:enumeration value="RESET"/>
+            <xs:enumeration value="DELETE"/>
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:simpleType name="fieldsetType">
         <xs:restriction base="xs:string">
@@ -124,25 +132,47 @@
         <xs:attribute type="xs:boolean" name="is-abstract" default="false"/>
         <xs:attribute type="xs:boolean" name="is-title" default="false"/>
         <xs:attribute type="xs:string" name="link"/>
-        <xs:attribute type="xs:string" name="relation"/>
         <xs:attribute type="xs:string" name="multiple"/>
     </xs:complexType>
+
     <xs:simpleType name="attrNameType">
         <xs:restriction base="xs:string">
             <xs:pattern value="[a-z][a-z0-9_]+"/>
         </xs:restriction>
     </xs:simpleType>
+
+    <xs:simpleType name="logicalNameType">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[A-Za-z][A-Za-z0-9_]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:complexType name="attr-formatType">
-        <xs:simpleContent>
-            <xs:extension base="attr-standardType">
+        <xs:complexContent>
+            <xs:extension base="v1:attr-standardType">
                 <xs:attribute type="xs:string" name="format"/>
             </xs:extension>
-        </xs:simpleContent>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="attr-relationType">
+        <xs:complexContent>
+            <xs:extension base="v1:attr-standardType">
+                <xs:attribute type="xs:token" name="relation"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="attr-enumType">
+        <xs:complexContent>
+            <xs:extension base="v1:attr-standardType">
+                <xs:attribute type="xs:token" name="relation"/>
+            </xs:extension>
+        </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="configType">
         <xs:sequence>
-            <xs:element type="v1:structure-configurationType" name="structure-configuration" minOccurs="0" maxOccurs="unbounded" xmlns:v1="http://www.anakeen.com/ns/smart/v1/">
+            <xs:element type="v1:structure-configurationType" name="structure-configuration" minOccurs="0" maxOccurs="unbounded">
                 <xs:annotation>
                     <xs:documentation>
                         <h1>Smart Structure Configuration</h1>
@@ -150,9 +180,73 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="v1:enumeratesType" name="enumerates" minOccurs="0"/>
+            <xs:element type="v1:enumeratesType" name="enumerates" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element type="v1:accessConfigurationType" name="access-configuration" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
+
+    <xs:complexType name="accessConfigurationType">
+        <xs:sequence>
+            <xs:element type="v1:accessType" name="element-access" minOccurs="0" maxOccurs="unbounded" xmlns:v1="http://www.anakeen.com/ns/smart/v1/">
+                <xs:annotation>
+                    <xs:documentation>
+                        <h1>Smart Structure Access Configuration</h1>
+                        <p>To configure rights to access to data</p>
+                        <p>Main rights are:
+                            <ul>
+                                <li>view :
+                                    <i>to access to smart element data</i>
+                                </li>
+                                <li>edit :
+                                    <i>to modify to smart element data</i>
+                                </li>
+                                <li>delete :
+                                    <i>to delete the smart element</i>
+                                </li>
+                                <li>create (for PFAM profil) :
+                                    <i>to create a new smart element</i>
+                                </li>
+                                <li>icreate (for PFAM profil) :
+                                    <i>to authorize interactive creation of new smart element</i>
+                                </li>
+                            </ul>
+                        </p>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="v1:logicalNameType" name="name"/>
+        <xs:attribute type="xs:token" name="type"/>
+        <xs:attribute type="xs:string" name="label"/>
+        <xs:attribute type="v1:profilPolicyType" name="policy" default="ADD">
+            <xs:annotation>
+                <xs:documentation>
+                    <p>Policy to use when set profil access</p>
+                    <ul>
+                        <li>ADD (the default): : Add access and update rights only if changed</li>
+                        <li>SET : Add access and update always rights</li>
+                        <li>RESET : Remove all predefined rights to replace them</li>
+                        <li>DELETE : Delete rights</li>
+                    </ul>
+
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="v1:logicalNameType" name="link"/>
+        <xs:attribute type="v1:logicalNameType" name="linked-structure">
+            <xs:annotation>
+                <xs:documentation>
+                    <h1>Dynamic Profil</h1>
+                    <p>Indicate that account attributes of linked structure can be use in acl configuration</p>
+                    <p>If it is set, all smart element linked with its profil are a computed profil. When the right of this profil change, all linked computed profile are reseted.
+                        May take long time to proceed (depends of number of linked profil)
+                    </p>
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="v1:logicalNameType" name="profil-type" default="PDOC"/>
+    </xs:complexType>
+
     <xs:complexType name="attr-accountType" mixed="true">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
             <xs:element type="v1:attr-standardType" name="attr-text"/>
@@ -162,14 +256,14 @@
         </xs:choice>
         <xs:attribute type="xs:string" name="name"/>
         <xs:attribute type="xs:string" name="label"/>
-        <xs:attribute type="xs:string" name="visibility"/>
+        <xs:attribute type="v1:visibilityType" name="visibility"/>
         <xs:attribute type="xs:string" name="extended"/>
         <xs:attribute type="xs:string" name="type"/>
     </xs:complexType>
     <xs:complexType name="attr-argumentType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="attrReturnArgType" name="type"/>
+                <xs:attribute type="v1:attrReturnArgType" name="type"/>
                 <xs:attribute type="xs:string" name="name"/>
             </xs:extension>
         </xs:simpleContent>
@@ -200,9 +294,9 @@
             <xs:element type="v1:autocompletionType" name="autocompletion" minOccurs="0"/>
             <xs:element type="v1:defaultsType" name="defaults" minOccurs="0"/>
 
-            <xs:element type="xs:string" name="accesses" minOccurs="0"/>
+            <xs:element type="v1:accessesType" name="accesses" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="v1:logicalNameType" name="name"/>
         <xs:attribute type="xs:int" name="id"/>
         <xs:attribute type="xs:string" name="label"/>
         <xs:attribute type="xs:string" name="extends"/>
@@ -221,6 +315,40 @@
         <xs:sequence>
             <xs:element type="v1:defaultType" name="default" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="accessesType">
+        <xs:sequence>
+            <xs:element type="v1:accessConfigurationType" name="structure-access-configuration" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        <h1>Access to the smart structure</h1>
+                        <h2>Define also right to create smart element of this structure</h2>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="v1:accessConfigurationType" name="element-access-configuration" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        <h1>Smart Element Access Configuration</h1>
+                        <h2>To configure rights for new Smart Elements of this structure</h2>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="accessType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:token" name="link"/>
+                <xs:attribute type="xs:token" name="login"/>
+                <xs:attribute type="xs:token" name="access"/>
+                <xs:attribute type="v1:attrNameType" name="attr"/>
+                <xs:attribute type="v1:logicalNameType" name="element"/>
+            </xs:extension>
+        </xs:simpleContent>
     </xs:complexType>
 
 
@@ -297,7 +425,6 @@
     <xs:complexType name="attr-fieldsetType" mixed="true">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
             <xs:element type="v1:attr-fieldsetType" name="attr-fieldset"/>
-            <xs:element type="v1:attr-standardType" name="attr-text"/>
             <xs:element type="v1:attr-standardType" name="attr-date"/>
             <xs:element type="v1:attr-formatType" name="attr-time"/>
             <xs:element type="v1:attr-formatType" name="attr-int"/>
@@ -311,9 +438,9 @@
             <xs:element type="v1:attr-standardType" name="attr-htmltext"/>
             <xs:element type="v1:attr-standardType" name="attr-file"/>
             <xs:element type="v1:attr-standardType" name="attr-image"/>
-            <xs:element type="v1:attr-standardType" name="attr-enum"/>
-            <xs:element type="v1:attr-standardType" name="attr-docid"/>
-            <xs:element type="v1:attr-standardType" name="attr-account"/>
+            <xs:element type="v1:attr-enumType" name="attr-enum"/>
+            <xs:element type="v1:attr-relationType" name="attr-docid"/>
+            <xs:element type="v1:attr-relationType" name="attr-account"/>
             <xs:element type="v1:attr-optionType" name="attr-option"/>
         </xs:choice>
         <xs:attribute type="v1:attrNameType" name="name" use="required"/>

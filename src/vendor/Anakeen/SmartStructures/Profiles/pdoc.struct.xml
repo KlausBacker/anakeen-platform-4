@@ -12,7 +12,7 @@
                 <smart:attr-longtext name="prf_desc" label="Description" visibility="W"/>
             </smart:attr-fieldset>
             <smart:attr-fieldset name="dpdoc_fr_dyn" type="frame" label="Dynamique" visibility="W">
-                <smart:attr-docid name="dpdoc_famid" label="Smart Structure" visibility="W" relation="-1"/>
+                <smart:attr-docid name="dpdoc_famid" label="Smart Structure utilisable pour les droits en fonction des attributs &quot;account&quot;" visibility="W" relation="-1"/>
                 <smart:attr-text name="dpdoc_fam" label="Smart Structure (titre)" visibility="H" is-abstract="true"/>
             </smart:attr-fieldset>
         </smart:attributes>

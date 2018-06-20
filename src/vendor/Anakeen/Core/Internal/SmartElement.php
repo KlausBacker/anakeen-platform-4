@@ -3818,7 +3818,7 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         if (($value !== "") && ($value !== null)) {
-            // change only if different
+            // Change only if value is not empty
             if ($oattr === false) {
                 if ($this->id > 0) {
                     return sprintf(

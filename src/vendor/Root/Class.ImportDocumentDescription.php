@@ -862,7 +862,7 @@ class ImportDocumentDescription
 
                 case 'enums':
                     $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("Reset enums definition"));
-                    $enumName=$data[2];
+                    $enumName = $data[2];
                     $sql = sprintf("delete from docenum where name='%s'", $enumName);
                     \Anakeen\Core\DbManager::query($sql);
 
@@ -1021,9 +1021,7 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["err"] .= $err;
         }
         if (($err != "") && ($search->id > 0)) { // case only modify
-            if ($search->select($search->id)) {
-                $err = "";
-            }
+            $search->select($search->id);
         }
         if (!$this->analyze) {
             // update title in finish
@@ -1746,7 +1744,6 @@ class ImportDocumentDescription
                 if (preg_match("/:use/", $fpid)) {
                     $fpid = "";
                 }
-
                 if (($fpid != "") && (!is_numeric($fpid))) {
                     $fpid = \Anakeen\Core\SEManager::getIdFromName($fpid);
                 }

@@ -30,6 +30,19 @@ class TestProfil extends TestCaseDcpCommonFamily
             "PU_data_dcp_profildata.ods"
         );
     }
+
+    /**
+     * import TST_FAMSETVALUE family
+     * @static
+     * @return string
+     */
+    protected static function getConfigFile()
+    {
+        return array(
+            "PU_data_dcp_profildata.xml"
+        );
+    }
+
     /**
      * @dataProvider dataProfilComputing
      */
