@@ -22,7 +22,7 @@
 
     <xs:complexType name="attr-overrideType">
         <xs:complexContent>
-            <xs:extension base="v1:attr-standardType" >
+            <xs:extension base="v1:attr-standardType">
                 <xs:attribute type="v1:attrNameType" name="attr"/>
             </xs:extension>
         </xs:complexContent>
@@ -59,6 +59,14 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:simpleType name="profilPolicyType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ADD"/>
+            <xs:enumeration value="SET"/>
+            <xs:enumeration value="RESET"/>
+            <xs:enumeration value="DELETE"/>
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:simpleType name="fieldsetType">
         <xs:restriction base="xs:string">
@@ -185,13 +193,23 @@
                         <h1>Smart Structure Access Configuration</h1>
                         <p>To configure rights to access to data</p>
                         <p>Main rights are:
-                        <ul>
-                            <li>view : <i>to access to smart element data</i></li>
-                            <li>edit : <i>to modify to smart element data</i></li>
-                            <li>delete : <i>to delete the smart element</i></li>
-                            <li>create (for PFAM profil) : <i>to create a new smart element</i></li>
-                            <li>icreate (for PFAM profil) : <i>to authorize interactive creation of new smart element</i></li>
-                        </ul>
+                            <ul>
+                                <li>view :
+                                    <i>to access to smart element data</i>
+                                </li>
+                                <li>edit :
+                                    <i>to modify to smart element data</i>
+                                </li>
+                                <li>delete :
+                                    <i>to delete the smart element</i>
+                                </li>
+                                <li>create (for PFAM profil) :
+                                    <i>to create a new smart element</i>
+                                </li>
+                                <li>icreate (for PFAM profil) :
+                                    <i>to authorize interactive creation of new smart element</i>
+                                </li>
+                            </ul>
                         </p>
                     </xs:documentation>
                 </xs:annotation>
@@ -200,17 +218,33 @@
         <xs:attribute type="v1:logicalNameType" name="name"/>
         <xs:attribute type="xs:token" name="type"/>
         <xs:attribute type="xs:string" name="label"/>
-        <xs:attribute type="v1:logicalNameType" name="link"/>
-        <xs:attribute type="xs:boolean" name="dynamic">
+        <xs:attribute type="v1:profilPolicyType" name="policy" default="ADD">
             <xs:annotation>
                 <xs:documentation>
-                    <h1>Dynamic Profil</h1>
-                    <p>Indicate that account attributes can be use in configuration</p>
-                    <p>If it is set, all smart element linked with its profil are a computed profil. When the right of this profil change, all linked computed profile are reseted. May take long time to proceed (depends of number of linked profil)</p>
+                    <p>Policy to use when set profil access</p>
+                    <ul>
+                        <li>ADD (the default): : Add access and update rights only if changed</li>
+                        <li>SET : Add access and update always rights</li>
+                        <li>RESET : Remove all predefined rights to replace them</li>
+                        <li>DELETE : Delete rights</li>
+                    </ul>
+
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
-        <xs:attribute type="v1:logicalNameType" name="structure-type"/>
+        <xs:attribute type="v1:logicalNameType" name="link"/>
+        <xs:attribute type="v1:logicalNameType" name="linked-structure">
+            <xs:annotation>
+                <xs:documentation>
+                    <h1>Dynamic Profil</h1>
+                    <p>Indicate that account attributes of linked structure can be use in acl configuration</p>
+                    <p>If it is set, all smart element linked with its profil are a computed profil. When the right of this profil change, all linked computed profile are reseted.
+                        May take long time to proceed (depends of number of linked profil)
+                    </p>
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="v1:logicalNameType" name="profil-type"/>
     </xs:complexType>
 
     <xs:complexType name="attr-accountType" mixed="true">
@@ -222,7 +256,7 @@
         </xs:choice>
         <xs:attribute type="xs:string" name="name"/>
         <xs:attribute type="xs:string" name="label"/>
-        <xs:attribute type="xs:string" name="visibility"/>
+        <xs:attribute type="v1:visibilityType" name="visibility"/>
         <xs:attribute type="xs:string" name="extended"/>
         <xs:attribute type="xs:string" name="type"/>
     </xs:complexType>
@@ -312,6 +346,7 @@
                 <xs:attribute type="xs:token" name="login"/>
                 <xs:attribute type="xs:token" name="access"/>
                 <xs:attribute type="v1:attrNameType" name="attr"/>
+                <xs:attribute type="v1:logicalNameType" name="element"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>

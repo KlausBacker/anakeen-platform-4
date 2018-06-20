@@ -47,8 +47,14 @@ class ImportSmartConfiguration
         $data = [];
         foreach ($configs as $config) {
             $data = array_merge($data, $this->importSmartStructureConfig($config));
-            //  $this->print($data);
         }
+
+        $accessConfigs = $this->getNodes($this->dom->documentElement, "access-configuration");
+        foreach ($accessConfigs as $config) {
+            $data = array_merge($data, $this->importSmartAccessConfig($config));
+        }
+        //$this->print($data);
+        $this->recordSmartData($data);
         return $data;
     }
 
@@ -56,10 +62,57 @@ class ImportSmartConfiguration
     {
         foreach ($data as $line) {
             foreach ($line as $item) {
-                printf(" - %s", str_replace("\n", " ", print_r($item, true)));
+                printf(" , %20s", str_replace("\n", " ", print_r($item, true)));
             }
             printf("\n");
         }
+    }
+
+
+    protected function importSmartAccessConfig(\DOMElement $config)
+    {
+        $data = [];
+        $prfName = $config->getAttribute("name");
+        $prfReset = $config->getAttribute("policy");
+        $prfLabel = $config->getAttribute("label");
+        if ($config->hasAttribute("linked-structure")) {
+            $prfDynamic = $config->getAttribute("linked-structure");
+            if (!$prfDynamic) {
+                // Explicit deletion
+                $prfDynamic=" ";
+            }
+        } else {
+            $prfDynamic=null;
+        }
+        $prfLink = $config->getAttribute("link");
+        $prfType = $config->getAttribute("profil-type");
+
+        if ($prfName && $prfLabel && $prfType && !$prfLink) {
+            $data[] = ["ORDER", $prfType, "", "", "ba_title", "dpdoc_famid"];
+            $data[] = ["DOC", $prfType, $prfName, "-", $prfLabel, $prfDynamic];
+        } elseif ($prfName && $prfLink) {
+            $data[] = ["PROFIL", $prfName, $prfLink];
+        }
+        $accesses = $this->getNodes($config, "element-access");
+        $prfData = [];
+        foreach ($accesses as $access) {
+            /**
+             * @var \DOMElement $access
+             */
+            if ($access->getAttribute("login")) {
+                $prfData[] = sprintf("%s=account(%s)", $access->getAttribute("access"), $access->getAttribute("login"));
+            }
+            if ($access->getAttribute("attr")) {
+                $prfData[] = sprintf("%s=attribute(%s)", $access->getAttribute("access"), $access->getAttribute("attr"));
+            }
+            if ($access->getAttribute("element")) {
+                $prfData[] = sprintf("%s=document(%s)", $access->getAttribute("access"), $access->getAttribute("element"));
+            }
+        }
+        if ($prfData) {
+            $data[] = array_merge(["PROFIL", $prfName, "", $prfReset], $prfData);
+        }
+        return $data;
     }
 
     protected function importSmartStructureConfig(\DOMElement $config)
@@ -73,7 +126,6 @@ class ImportSmartConfiguration
         $data = array_merge($data, $this->extractModAttrs($config));
         $data = array_merge($data, $this->extractEnumConfig($this->dom->documentElement));
         $data[] = ["END"];
-        $this->recordSmartData($data);
 
         if ($this->getError()) {
             throw new Exception($this->getError());
@@ -95,7 +147,7 @@ class ImportSmartConfiguration
     protected function recordSmartData(array $data)
     {
         $import = new \ImportDocumentDescription();
-
+        $import->analyzeOnly($this->onlyAnalyze);
         $this->cr = $import->importData($data);
     }
 
@@ -433,7 +485,6 @@ class ImportSmartConfiguration
             $optRaw[] = sprintf("%s=%s", $optNode->getAttribute("name"), $optNode->nodeValue);
         }
         return implode("|", $optRaw);
-        //return $optData;
     }
 
     protected function extractProps(\DOMElement $config)
@@ -479,6 +530,18 @@ class ImportSmartConfiguration
         if ($node) {
             $data[] = ["TAG", $node->nodeValue];
         }
+
+
+        $node = $this->getNode($config, "structure-access-configuration");
+        if ($node && $node->getAttribute("link")) {
+            $data[] = ["PROFID", $node->getAttribute("link")];
+        }
+
+        $node = $this->getNode($config, "element-access-configuration");
+        if ($node && $node->getAttribute("link")) {
+            $data[] = ["CPROFID", $node->getAttribute("link")];
+        }
+
         return $data;
     }
 
@@ -549,7 +612,7 @@ class ImportSmartConfiguration
     protected function getCallableString(\DOMElement $hook): string
     {
         $callableNode = $this->getNode($hook, "attr-callable");
-        if (! $callableNode) {
+        if (!$callableNode) {
             throw new Exception(sprintf("Error in callable %s", $hook->getAttribute("attr")));
         }
         $method = $callableNode->getAttribute("function") . "(";

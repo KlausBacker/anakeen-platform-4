@@ -117,9 +117,8 @@ class ExportConfiguration
 
         $accessControl->setAttribute("name", $profil->name);
         $accessControl->setAttribute("label", $profil->title);
-        $accessControl->setAttribute("structure-type", $profil->fromname);
+        $accessControl->setAttribute("profil-type", $profil->fromname);
         if ($profil->getRawValue("dpdoc_famid")) {
-            $accessControl->setAttribute("dynamic", "true");
             $accessControl->setAttribute("linked-structure", SEManager::getNameFromId($profil->getRawValue("dpdoc_famid")));
         }
         $sql = sprintf(
