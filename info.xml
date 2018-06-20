@@ -18,14 +18,13 @@
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Profiles/cvdoc.profil.csv  --csv-enclosure='&quot;'">
             <label>Set view control for accounts</label>
         </process>
-
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.profil.csv --csv-enclosure='&quot;'">
             <label>Profiling system families</label>
         </process>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dir/dir.profil.csv --csv-enclosure='&quot;'">
             <label>Profiling system families</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Profiles/system.profil.csv --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/system-profil.xml">
             <label>Profiling system families</label>
         </process>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Profiles/AuthentMailProfil.csv --csv-enclosure='&quot;'">
