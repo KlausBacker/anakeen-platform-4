@@ -1,5 +1,5 @@
 <template>
-    <button id="logout-button" :title="translations.title" class="logout-button" @click="logout"><slot><i class="fa fa-power-off"></i></slot></button>
+    <button id="logout-button" :title="translations.title" class="logout-button" @click="logout"><slot name="content"><i class="fa fa-power-off"></i></slot></button>
 </template>
 
 
