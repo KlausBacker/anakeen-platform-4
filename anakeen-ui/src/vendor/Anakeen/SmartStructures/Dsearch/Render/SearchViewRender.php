@@ -3,7 +3,8 @@
 
 namespace Anakeen\SmartStructures\Dsearch\Render;
 
-use dcp\ui\ItemMenu as ItemMenu;
+use Anakeen\Core\SEManager;
+use Dcp\Ui\ItemMenu as ItemMenu;
 
 class SearchViewRender extends \Dcp\Ui\DefaultView
 {
@@ -18,14 +19,13 @@ class SearchViewRender extends \Dcp\Ui\DefaultView
 
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-
         $js = parent::getJsReferences($document);
 
-        $ws = \Dcp\Ui\UIGetAssetPath::getWs();
         $js["smartElementGrid"] = \Dcp\Ui\UIGetAssetPath::getJSSmartElementGridPath();
-        $js["dSearch"] = 'uiAssets/Families/dsearch/prod/dsearch.js?ws=' . $ws;
+
+        $js["dSearch"] =  \Dcp\Ui\UIGetAssetPath::getCustomAssetPath('uiAssets/Families/dsearch/prod/dsearch.js');
         if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {
-            $js["dSearch"] = 'uiAssets/Families/dsearch/debug/dsearch.js?ws=' . $ws;
+            $js["dSearch"] =  \Dcp\Ui\UIGetAssetPath::getCustomAssetPath('uiAssets/Families/dsearch/debug/dsearch.js?');
         }
 
         return $js;
@@ -34,7 +34,7 @@ class SearchViewRender extends \Dcp\Ui\DefaultView
     public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
     {
         $myMenu = parent::getMenu($document);
-        $myItem = new ItemMenu("searchview", "");
+        $myItem = new ItemMenu("searchview");
         $myItem->setTextLabel(___("consult", "searchUi"));
 
         $myMenu->removeElement("se_open");
@@ -53,13 +53,12 @@ class SearchViewRender extends \Dcp\Ui\DefaultView
         $attributes = $document->getAttributeValue("se_attrids");
         $condition = $document->getAttributeValue("se_ol");
 
-
-        $family = new_doc("", $document->getRawValue("se_famid"));
+        $family =  SEManager::getFamily($document->getRawValue("se_famid"));
 
         /**
          * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $workflow
          */
-        $workflow = new_doc("", $document->wid);
+        $workflow =  SEManager::getDocument( $document->wid);
 
         foreach ($attributes as $index => $attribute) {
             $operand = $document->getAttributeValue("se_ols")[$index];
