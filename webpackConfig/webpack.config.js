@@ -33,10 +33,6 @@ const commonConfig = merge([{
                 ],
                 use: {
                     loader: 'babel-loader',
-                    options: {
-                        presets: ['env'],
-                        babelrc: false,
-                    },
                 },
             },
             {
