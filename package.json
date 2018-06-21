@@ -1,0 +1,19 @@
+{
+  "name": "anakeen-cli",
+  "version": "1.0.0",
+  "description": "The cli tool to init, build and deploy anakeen-platform projects",
+  "main": "index.js",
+  
+  "license": "MIT",
+  "dependencies": {
+    "global": "^4.3.2",
+    "gulp": "^3.9.1",
+    "gulp-add-src": "^1.0.0",
+    "gulp-gzip": "^1.4.2",
+    "gulp-tar": "^2.1.0",
+    "gulp-zip": "^4.1.0",
+    "signale": "^1.2.1",
+    "xml2js": "^0.4.19",
+    "yargs": "^11.0.0"
+  }
+}

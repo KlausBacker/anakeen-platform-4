@@ -1,0 +1,26 @@
+const gulp = require('gulp');
+const tar = require('gulp-tar');
+const zip = require('gulp-zip');
+const addsrc = require('gulp-add-src');
+const { getModuleInfo } = require("../utils/moduleInfo");
+const path = require("path");
+const appConst = require("../utils/appConst");
+
+exports.build = (sourcePath, targetPath) => {
+        return gulp.task('build', async () => {
+                try {
+                        const moduleInfo = await getModuleInfo(sourcePath);
+                        const moduleFileName = `${moduleInfo.moduleInfo.name}-${moduleInfo.moduleInfo.version}-${moduleInfo.moduleInfo.release}`;
+                        const buildPath = moduleInfo.buildInfo.conf.sources[0].source.map(currentSource => {
+                                return path.join(sourcePath, currentSource.$.path, "**");
+                        });
+                        gulp.src(buildPath)
+                                .pipe(tar(moduleFileName))
+                                .pipe(addsrc(path.join(sourcePath, appConst.infoPath)))
+                                .pipe(zip(moduleFileName+ '.app'))
+                                .pipe(gulp.dest(targetPath));
+                } catch (e) {
+                        throw e;
+                }
+        });
+};
