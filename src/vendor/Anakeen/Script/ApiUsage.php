@@ -225,7 +225,7 @@ class ApiUsage
      * @param string $argName       argument name
      * @param string $argDefinition argument definition
      *
-     * @return string argument value
+     * @return bool true is option is set
      */
     public function addEmptyParameter($argName, $argDefinition = "")
     {

@@ -36,6 +36,7 @@ class TestGetResPhpFunc extends TestCaseDcp
     
     public function setUp()
     {
+        $this->logTest();
         return;
     }
     

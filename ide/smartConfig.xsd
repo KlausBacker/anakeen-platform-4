@@ -97,7 +97,7 @@
         <xs:attribute type="xs:token" name="name"/>
         <xs:attribute type="xs:boolean" name="extendable" default="false"/>
     </xs:complexType>
-    <xs:complexType name="attr-standardType" mixed="true">
+    <xs:complexType name="attr-standardType" >
         <xs:sequence minOccurs="0" maxOccurs="unbounded">
             <xs:element type="v1:attr-optionType" name="attr-option"/>
         </xs:sequence>

@@ -31,6 +31,24 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
     private $norestrict = false;
 
 
+    public function registerHooks()
+    {
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            $allbut = $this->getRawValue("FLD_ALLBUT");
+            $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
+
+            if (($allbut === "0") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
+                $this->clearValue("FLD_ALLBUT");
+                $this->modify();
+            }
+            return "";
+        })->addListener(SmartHooks::POSTAFFECT, function () {
+            $this->authfam = false;
+            $this->norestrict = false;
+        });
+    }
+
     /**
      * clear containt of this folder
      *
@@ -120,7 +138,6 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
     {
         return '';
     }
-
 
 
     /**
@@ -674,8 +691,6 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
     }
 
 
-
-
     public function hasNoRestriction()
     {
         if (!$this->authfam) {
@@ -864,11 +879,6 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
         return $this->getContent(true, $filter);
     }
 
-    protected function postAffect(array $data, $more, $reset)
-    {
-        $this->authfam = false;
-        $this->norestrict = false;
-    }
 
     /**
      * delete all document which primary relation is the folder (recurively)
@@ -992,20 +1002,5 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             $terr[$doc->id] = $doc->undelete();
         }
         return $terr;
-    }
-
-    public function registerHooks()
-    {
-        parent::registerHooks();
-        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
-            $allbut = $this->getRawValue("FLD_ALLBUT");
-            $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
-
-            if (($allbut === "0") && ((count($tfamid) == 0) || ((count($tfamid) == 1) && ($tfamid[0] == 0)))) {
-                $this->clearValue("FLD_ALLBUT");
-                $this->modify();
-            }
-            return "";
-        });
     }
 }

@@ -14,6 +14,7 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
 
     protected function setUp()
     {
+        $this->logTest();
         DbManager::savePoint('testunit');
     }
 

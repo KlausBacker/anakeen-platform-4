@@ -34,10 +34,17 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        $this->log(sprintf("========== %s ========", $this->getName()));
+
+        $this->logTest();
+
         $this->connectUser("admin");
 
         $this->beginTransaction();
+    }
+
+    protected function logTest()
+    {
+        self::log(sprintf("========== %s::%s ========", get_class($this), $this->getName()));
     }
 
     protected function tearDown()
@@ -214,7 +221,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         }
         $oImport = new \ImportDocument();
         $oImport->setCsvOptions(static::$importCsvSeparator, static::$importCsvEnclosure);
-        //error_log(__METHOD__."import $realfile");
+
         $oImport->setVerifyAttributeAccess(false);
         $cr = $oImport->importDocuments(self::getAction(), $realfile);
         $err = $oImport->getErrorMessage();
@@ -230,15 +237,10 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      *
      * @param string|string[] $file file path
      *
-     * @return array
      * @throws \Dcp\Exception
      */
     protected static function importConfiguration($file)
     {
-        if (is_array($file)) {
-            return self::importDocuments($file);
-        }
-
         $realfile = $file;
         if (!file_exists($realfile)) {
             $realfile = static::$testDataDirectory . "/" . $file;

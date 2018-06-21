@@ -19,6 +19,7 @@ abstract class TestCaseDcpApplication extends TestCaseDcp
 
     protected function setUp()
     {
+        $this->logTest();
         DbManager::savePoint('testunit');
     }
 

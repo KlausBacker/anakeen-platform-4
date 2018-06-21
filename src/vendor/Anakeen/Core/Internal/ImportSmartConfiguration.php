@@ -12,6 +12,9 @@ class ImportSmartConfiguration
      * @var \DOMDocument $dom ;
      */
     protected $dom;
+    protected $verbose = false;
+
+
     /**
      * @var array report
      */
@@ -40,6 +43,15 @@ class ImportSmartConfiguration
         $this->importSmartStructureConfigurations();
     }
 
+    /**
+     * @param bool $verbose
+     * @return ImportSmartConfiguration
+     */
+    public function setVerbose(bool $verbose)
+    {
+        $this->verbose = $verbose;
+        return $this;
+    }
 
     protected function importSmartStructureConfigurations()
     {
@@ -53,7 +65,9 @@ class ImportSmartConfiguration
         foreach ($accessConfigs as $config) {
             $data = array_merge($data, $this->importSmartAccessConfig($config));
         }
-       // $this->print($data);
+        if ($this->verbose) {
+            $this->print($data);
+        }
         $this->recordSmartData($data);
         return $data;
     }
@@ -62,7 +76,7 @@ class ImportSmartConfiguration
     {
         foreach ($data as $line) {
             foreach ($line as $item) {
-                printf(" , %20s", str_replace("\n", " ", print_r($item, true)));
+                printf(" , %-20s", str_replace("\n", " ", print_r($item, true)));
             }
             printf("\n");
         }
@@ -127,6 +141,7 @@ class ImportSmartConfiguration
         $data = array_merge($data, $this->extractDefaults($config));
 
         $data = array_merge($data, $this->extractModAttrs($config));
+        $data = array_merge($data, $this->extractAloneHooks($config));
         $data = array_merge($data, $this->extractEnumConfig($this->dom->documentElement));
         $data[] = ["END"];
 
@@ -151,6 +166,7 @@ class ImportSmartConfiguration
     {
         $import = new \ImportDocumentDescription();
         $import->analyzeOnly($this->onlyAnalyze);
+
         $this->cr = $import->importData($data);
     }
 
@@ -184,7 +200,7 @@ class ImportSmartConfiguration
                 /**
                  * @var \DOMElement $attrNode
                  */
-                if (preg_match('/smart:attr-/', $attrNode->tagName)) {
+                if (preg_match('/smart:attr-/', $attrNode->tagName) && $attrNode->tagName !== "smart:attr-option") {
                     $data = array_merge($data, $this->extractAttr($attrNode, "PARAM"));
                 }
             }
@@ -212,6 +228,59 @@ class ImportSmartConfiguration
             }
         }
 
+        return $data;
+    }
+
+    protected function extractAloneHooks(\DOMElement $config)
+    {
+        $data = [];
+
+        // Search Constraint and Computed
+        $autocompletes = $this->getNodes($config, "attr-hook");
+        foreach ($autocompletes as $hookNode) {
+            /**
+             * @var \DOMElement $hookNode
+             */
+            if ($hookNode->getAttribute("__used__") === "true") {
+                continue;
+            }
+
+            $attr = new ImportSmartAttr();
+            $attr->id = $hookNode->getAttribute("attr");
+
+
+            if ($hookNode->getAttribute("type") === "constraint") {
+                $attr->constraint = $this->getCallableString($hookNode);
+            }
+            if ($hookNode->getAttribute("event") === "onPreRefresh") {
+                $attr->phpfunc = $this->getCallableString($hookNode);
+            }
+
+            if ($hookNode->getAttribute("event") === "onPreRefresh") {
+                $attr->phpfunc = $this->getCallableString($hookNode);
+            }
+
+            $data[] = $attr->getData("UPDTATTR");
+        }
+
+        // Search Autocomplete
+        $autocompletes = $this->getNodes($config, "attr-autocomplete");
+        foreach ($autocompletes as $autoNode) {
+
+            /**
+             * @var \DOMElement $autoNode
+             */
+            if ($autoNode->getAttribute("__used__") === "true") {
+                continue;
+            }
+
+            $attr = new ImportSmartAttr();
+            $attr->id = $autoNode->getAttribute("attr");
+
+            $attr->autocomplete = $this->getCallableString($autoNode);
+
+            $data[] = $attr->getData("UPDTATTR");
+        }
         return $data;
     }
 
@@ -282,7 +351,7 @@ class ImportSmartConfiguration
                 /**
                  * @var \DOMElement $attrNode
                  */
-                if (preg_match('/smart:attr-/', $attrNode->tagName)) {
+                if (preg_match('/smart:attr-/', $attrNode->tagName) && $attrNode->tagName !== "smart:attr-option") {
                     $data = array_merge($data, $this->extractAttr($attrNode, "ATTR"));
                 }
             }
@@ -302,9 +371,9 @@ class ImportSmartConfiguration
         } else {
             $data[2] = $this->getCallableString($attrNode);
         }
-        $reset=$attrNode->getAttribute("reset");
+        $reset = $attrNode->getAttribute("reset");
         if ($reset === "true") {
-             $data[3] ="force=yes";
+            $data[3] = "force=yes";
         }
 
         return $data;
@@ -369,7 +438,7 @@ class ImportSmartConfiguration
                 /**
                  * @var \DOMElement $childNode
                  */
-                if (preg_match('/smart:attr-/', $attrNode->tagName)) {
+                if (preg_match('/smart:attr-/', $childNode->tagName) && $childNode->tagName !== "smart:attr-option") {
                     $data = array_merge($data, $this->extractAttr($childNode, $key, $fieldName));
                 }
             }
@@ -421,18 +490,14 @@ class ImportSmartConfiguration
             $attr->autocomplete = "";
         }
 
-
         $attr->option = $this->extractAttrOptions($attrNode);
-
         $data = $attr->getData($key);
-
         return $data;
     }
 
     protected function extractAttrAutoComplete(\DOMElement $attrNode, \Closure $filter)
     {
         $config = $this->getClosest($attrNode, "structure-configuration");
-
         $attrid = $attrNode->getAttribute("name");
         $hooks = $this->getNodes($config, "attr-autocomplete");
         $method = "";
@@ -447,6 +512,7 @@ class ImportSmartConfiguration
                     $method = $this->getCallableString($hook);
                     $callable = $this->getNode($hook, "attr-callable");
                     $file = $callable->getAttribute("external-file");
+                    $hook->setAttribute("__used__", true);
                 }
             }
         }
@@ -467,6 +533,8 @@ class ImportSmartConfiguration
             if ($hook->getAttribute("attr") === $attrid) {
                 if ($filter($hook)) {
                     $method = $this->getCallableString($hook);
+                    // Add special attribute in case of hook declaration is outside attr declaration
+                    $hook->setAttribute("__used__", "true");
                 }
             }
         }

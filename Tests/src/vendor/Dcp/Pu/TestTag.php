@@ -1,18 +1,10 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
-
+/**
+ * @author  Anakeen
+ */
 namespace Dcp\Pu;
 
 use Anakeen\Core\ContextManager;
-
-/**
- * @author  Anakeen
- * @package Dcp\Pu
- */
-//require_once 'PU_testcase_dcp_document.php';
 
 class TestTag extends TestCaseDcpDocument
 {
@@ -20,12 +12,13 @@ class TestTag extends TestCaseDcpDocument
 
     protected function setUp()
     {
-        $err = simpleQuery(self::$dbaccess, "savepoint z", $r);
+        $this->logTest();
+        simpleQuery(self::$dbaccess, "savepoint z", $r);
     }
 
     protected function tearDown()
     {
-        $err = simpleQuery(self::$dbaccess, "rollback to savepoint z", $r);
+        simpleQuery(self::$dbaccess, "rollback to savepoint z", $r);
     }
 
     public static function setUpBeforeClass()

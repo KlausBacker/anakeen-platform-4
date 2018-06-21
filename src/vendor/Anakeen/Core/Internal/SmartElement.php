@@ -2126,17 +2126,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
     /**
-     * @see      \Anakeen\Core\Internal\SmartElement::affect()
-     * @final    \Anakeen\Core\Internal\SmartElement::complete()
-     * @access   private
-     * @internal use \Anakeen\Core\Internal\SmartElement::postAffect() instead
-     */
-    public function complete()
-    {
-    }
-
-
-    /**
      * Set to default values before add new \doc
      *
      * @return void
@@ -6237,14 +6226,16 @@ create unique index i_docir on doc(initid, revision);";
                 return $efile;
             }
             if ($size) {
-                $efile = sprintf("%simages/recorded/sizes/%sx%sc/%s",
+                $efile = sprintf(
+                    "%simages/recorded/sizes/%sx%sc/%s",
                     $apiURL,
                     $size,
                     $size,
                     $reg["vid"]
                 );
             } else {
-                $efile = sprintf("%simages/recorded/original/%s",
+                $efile = sprintf(
+                    "%simages/recorded/original/%s",
                     $apiURL,
                     $reg["vid"]
                 );
@@ -6252,14 +6243,16 @@ create unique index i_docir on doc(initid, revision);";
             return $efile;
         } else {
             if ($size) {
-                $efile = sprintf("%simages/assets/sizes/%sx%sc/%s",
+                $efile = sprintf(
+                    "%simages/assets/sizes/%sx%sc/%s",
                     $apiURL,
                     $size,
                     $size,
                     $idicon
                 );
             } else {
-                $efile = sprintf("%simages/assets/original/%s",
+                $efile = sprintf(
+                    "%simages/assets/original/%s",
                     $apiURL,
                     $idicon
                 );

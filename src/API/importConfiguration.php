@@ -13,7 +13,7 @@ $analyze = $usage->addOptionalParameter("analyze", "analyze only", array(
 ), "no");
 
 $logfile = $usage->addOptionalParameter("log", "log file output");
-
+$verbose= $usage->addEmptyParameter("verbose", "Verbose mode");
 
 $usage->verify();
 
@@ -41,10 +41,17 @@ if ($logfile) {
 
 $oImport = new \Anakeen\Core\Internal\ImportSmartConfiguration();
 $oImport->setOnlyAnalyze($analyze !== "no");
-$oImport->import($filename);
+$oImport->setVerbose($verbose);
 
+
+$point = "IMPCFG";
+\Anakeen\Core\DbManager::savePoint($point);
+$oImport->import($filename);
 
 $err = $oImport->getErrorMessage();
 if ($err) {
+    \Anakeen\Core\DbManager::rollbackPoint($point);
     $action->ExitError($err);
+} else {
+    \Anakeen\Core\DbManager::commitPoint($point);
 }

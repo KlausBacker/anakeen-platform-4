@@ -450,9 +450,11 @@ class ImportDocumentDescription
                     $this->doInitial($data);
                     break;
 
+                case "UPDTATTR":
+                    $this->doUpdtattr($data);
+                    break;
 
                 case "PARAM":
-                case "OPTION":
                 case "ATTR":
                 case "MODATTR":
                     $this->doAttr($data);
@@ -2014,12 +2016,57 @@ class ImportDocumentDescription
         return isset($tc[$curType]) && ($tc[$curType] == $newType);
     }
 
+
     /**
-     * analyze IATTR
+     * analyze UPDTATTR
      *
      * @param array $data line of description file
      */
-    protected function doAttr(array $data)
+    protected function doUpdtattr(array $data)
+    {
+        $attrid = $data[1];
+        $oattr = new DocAttr($this->dbaccess, array(
+            $this->doc->id,
+            strtolower($attrid)
+        ));
+        if (!$oattr->isAffected()) {
+            $this->tcr[$this->nLine]["err"] = ErrorCode::getError('ATTR0104', $attrid);
+        }
+
+        if ($this->tcr[$this->nLine]["err"]) {
+            $this->tcr[$this->nLine]["action"] = "ignored";
+            return;
+        }
+        $structAttr=new StructAttribute();
+        $structAttr->set($data);
+        $iAttr = new \Anakeen\Core\Internal\ImportSmartAttr();
+        $iAttr->id = $oattr->id;
+        $iAttr->idfield = $oattr->frameid;
+        $iAttr->label = $oattr->labeltext;
+        $iAttr->isTitle = $oattr->title;
+        $iAttr->isAbstract = $oattr->abstract;
+        $iAttr->type = $oattr->type;
+        $iAttr->order = $oattr->ordered;
+        $iAttr->visibility = $oattr->visibility;
+        $iAttr->need = $oattr->needed;
+        $iAttr->link = $oattr->link;
+        $iAttr->phpfile = $oattr->phpfile;
+        $iAttr->phpfunc = $oattr->phpfunc;
+        $iAttr->elink = $oattr->elink;
+        $iAttr->constraint =($structAttr->constraint)?:'';
+
+
+        $this->doAttr($iAttr->getData("ATTR"), true);
+    }
+
+    /**
+     * analyze ATTR
+     *
+     * @param array $data       line of description file
+     * @param bool  $updateMode true if update mode
+     * @throws \Dcp\Core\Exception
+     */
+    protected function doAttr(array $data, $updateMode = false)
     {
         if (!$this->doc) {
             return;
@@ -2085,8 +2132,12 @@ class ImportDocumentDescription
                 $oattr->docid = $this->doc->id;
                 $oattr->id = trim(strtolower($this->structAttr->id));
 
-                $oattr->frameid = trim(strtolower($this->structAttr->setid));
-                $oattr->labeltext = $this->structAttr->label;
+                if (!$updateMode || !empty($this->structAttr->setid)) {
+                    $oattr->frameid = trim(strtolower($this->structAttr->setid));
+                }
+                if (!$updateMode || !empty($this->structAttr->label)) {
+                    $oattr->labeltext = $this->structAttr->label;
+                }
 
                 $oattr->title = ($this->structAttr->istitle == "Y") ? "Y" : "N";
 
@@ -2095,30 +2146,40 @@ class ImportDocumentDescription
                     $oattr->abstract = $this->structAttr->isabstract;
                 }
 
-                $oattr->type = trim($this->structAttr->rawType);
+                if (!$updateMode || !empty($this->structAttr->rawType)) {
+                    $oattr->type = trim($this->structAttr->rawType);
+                }
 
-                $oattr->ordered = $this->structAttr->order;
-                $oattr->visibility = $this->structAttr->visibility;
+                if (!$updateMode || !empty($this->structAttr->order)) {
+                    $oattr->ordered = $this->structAttr->order;
+                }
+                if (!$updateMode || !empty($this->structAttr->visibility)) {
+                    $oattr->visibility = $this->structAttr->visibility;
+                }
                 $oattr->needed = ($this->structAttr->isneeded == "Y") ? "Y" : "N";
                 if ($modattr) {
                     $oattr->title = $this->structAttr->istitle;
                     $oattr->needed = $this->structAttr->isneeded;
                 }
-                $oattr->link = $this->structAttr->link;
-                $oattr->phpfile = $this->structAttr->phpfile;
+                if (!$updateMode || !empty($this->structAttr->link)) {
+                    $oattr->link = $this->structAttr->link;
+                }
+                if (!$updateMode || !empty($this->structAttr->phpfile)) {
+                    $oattr->phpfile = $this->structAttr->phpfile;
+                }
                 if ($this->structAttr->elink) {
                     $oattr->elink = $this->structAttr->elink;
-                } else {
+                } elseif (!$updateMode) {
                     $oattr->elink = '';
                 }
                 if ($this->structAttr->constraint) {
                     $oattr->phpconstraint = $this->structAttr->constraint;
-                } else {
+                } elseif (!$updateMode) {
                     $oattr->phpconstraint = '';
                 }
                 if ($this->structAttr->options) {
                     $oattr->options = $this->structAttr->options;
-                } else {
+                } elseif (!$updateMode) {
                     $oattr->options = '';
                 }
 
