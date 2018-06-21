@@ -1,12 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: charles
- * Date: 15/04/15
- * Time: 09:36
- */
-
-
 namespace Anakeen\SmartStructures\Dsearch\Render;
 
 use SmartStructure\Attributes\Dsearch as myAttr;
@@ -32,14 +24,12 @@ class SearchEditRender extends DefaultEdit
 
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-
         $js = parent::getJsReferences($document);
 
-        $ws = \Dcp\Ui\UIGetAssetPath::getWs();
         $js["smartElementGrid"] = \Dcp\Ui\UIGetAssetPath::getJSSmartElementGridPath();
-        $js["dSearch"] = 'uiAssets/Families/dsearch/prod/dsearch.js?ws=' . $ws;
+        $js["dSearch"] = \Dcp\Ui\UIGetAssetPath::getCustomAssetPath('uiAssets/Families/dsearch/prod/dsearch.js');
         if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {
-            $js["dSearch"] = 'uiAssets/Families/dsearch/debug/dsearch.js?ws=' . $ws;
+            $js["dSearch"] = \Dcp\Ui\UIGetAssetPath::getCustomAssetPath('uiAssets/Families/dsearch/debug/dsearch.js');
         }
 
         return $js;
