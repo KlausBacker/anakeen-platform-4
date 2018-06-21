@@ -23,6 +23,9 @@
         <process command="programs/ui_setHtmlAuthentMode"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Components/Authent/AuthentMail.csv"/>
         <process command="./ank.php --script=migrationUpdateAccountUI"/>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.constraint.xml">
+            <label>CVDOC Add Render Constraint</label>
+        </process>
         <process command="./ank.php --system --localeGen"/>
     </post-install>
 

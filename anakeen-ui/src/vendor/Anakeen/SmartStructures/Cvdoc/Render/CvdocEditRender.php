@@ -18,6 +18,21 @@ class CvdocEditRender extends DefaultConfigEditRender
         $options->enum(myAttributes::cv_kview)->setDisplay('vertical');
         $options->enum(myAttributes::cv_displayed)->setDisplay('bool');
         $options->enum(myAttributes::cv_displayed)->displayDeleteButton(false);
+        $options->int(myAttributes::cv_order)->setInputTooltip(xml_entity_encode(
+            ___("Order for control access"," smart cvdoc")
+        ));
+        $options->text(myAttributes::cv_menu)->setInputTooltip(xml_entity_encode(
+            ___("Label of menu list"," smart cvdoc")
+        ));
+        $options->docid(myAttributes::dpdoc_famid)->setInputTooltip(xml_entity_encode(
+            ___("Structure used to configure access profil with account attributes"," smart cvdoc")
+        ));
+        $options->text(myAttributes::cv_renderaccessclass)->setInputTooltip(xml_entity_encode(
+            ___("PHP Access render class used to fork the appropriate render config"," smart cvdoc")
+        ));
+        $options->text(myAttributes::cv_renderconfigclass)->setInputTooltip(xml_entity_encode(
+            ___("PHP Config render class used to custom render"," smart cvdoc")
+        ));
         return $options;
     }
 
