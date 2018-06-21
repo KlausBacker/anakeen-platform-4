@@ -79,7 +79,8 @@ const commonConfig = merge([{
 const productionComponentConfig = merge([
     {
         entry: {
-            'ank-components': ['core-js/es6/promise', PATHS.components],
+            'ank-components': [PATHS.components],
+            'ank-components-ie11': ['babel-polyfill', '@webcomponents/webcomponentsjs/webcomponents-bundle.js', PATHS.components]
         },
         output: {
             publicPath: '/components/dist/',
@@ -102,7 +103,8 @@ const productionComponentConfig = merge([
 const debugComponentConfig = merge([
     {
         entry: {
-            'ank-components': ['core-js/es6/promise', PATHS.components],
+            'ank-components': [PATHS.components],
+            'ank-components-ie11': ['babel-polyfill', '@webcomponents/webcomponentsjs/webcomponents-bundle.js', PATHS.components]
         },
         output: {
             publicPath: '/components/debug/',
@@ -121,7 +123,8 @@ const debugComponentConfig = merge([
 const devComponentConfig = merge([
     {
         entry: {
-            'ank-components': ['core-js/es6/promise', PATHS.components],
+            'ank-components': [PATHS.components],
+            'ank-components-ie11': ['babel-polyfill', '@webcomponents/webcomponentsjs/webcomponents-bundle.js', PATHS.components]
         },
         output: {
             publicPath: '/components/debug/',

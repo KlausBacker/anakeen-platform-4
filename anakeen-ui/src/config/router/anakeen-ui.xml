@@ -13,6 +13,7 @@
       <router:callable>\Anakeen\Routes\Ui\AnkComponents</router:callable>
       <router:method>GET</router:method>
       <router:pattern>/ui/components/ank-components</router:pattern>
+      <router:authenticated>false</router:authenticated>
       <router:description>Fetch Anakeen Web Components</router:description>
     </router:route>
   </router:routes>

@@ -99,9 +99,22 @@ class UIGetAssetPath
         return $baseUrl;
     }
 
-    public static function getSmartWebComponentsPath() {
-        $ankComponentsPath = self::getSmartWebComponentsPaths();
-        return $ankComponentsPath["ank-components"]['js'];
+    /**
+     * Return the asset ank web components path. By default, the route path is returned.
+     * @param bool $filepath - if set to true require the real file path of the asset
+     * @param bool $ie11File - if set to true require the old browser version of the asset
+     * @return string - the asset path
+     */
+    public static function getSmartWebComponentsPath($filepath = false, $ie11File = false) {
+        if ($filepath) {
+            $ankComponentsPath = self::getSmartWebComponentsPaths();
+            if ($ie11File) {
+                return $ankComponentsPath["ank-components-ie11"]['js'];
+            }
+            return $ankComponentsPath["ank-components"]['js'];
+        } else {
+            return "/ui/components/ank-components";
+        }
     }
 
     public static function getJSSmartElementPath() {
