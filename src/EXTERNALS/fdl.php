@@ -924,70 +924,9 @@ function ltabs($dbaccess, $name)
     return $all;
 }
 
-// liste des zones possibles
-// $tview VCONS|VEDIT
-function lzone_($dbaccess, $tview, $famid = "")
-{
-    $tz = array();
 
-    $filter = array();
-    if ($famid > 0) {
-        $fdoc = new_Doc($dbaccess, $famid);
-        $cdoc = createDoc($dbaccess, $famid, false);
-        if ($tview == "VEDIT") {
-            $tz = $cdoc->eviews;
-        } else {
-            $tz = $cdoc->cviews;
-        }
-        $oz = lzone_($dbaccess, $tview, $fdoc->fromid);
-        $tz = array_merge($oz, $tz);
-    } else {
-        $fdoc = new_Doc($dbaccess);
-        if ($tview == "VEDIT") {
-            $tz = $fdoc->eviews;
-        } else {
-            $tz = $fdoc->cviews;
-        }
-    }
 
-    return $tz;
-}
 
-function lzone($dbaccess, $tview, $famid = "")
-{
-    $tz = lzone_($dbaccess, $tview, $famid);
-    $tz = array_unique($tz);
-    $tr = array();
-    foreach ($tz as $v) {
-        $tr[] = array(
-            $v,
-            $v
-        );
-    }
-
-    return $tr;
-}
-
-function lview($tidview, $tlview)
-{
-    $tr = array();
-
-    if (is_array($tidview)) {
-        foreach ($tidview as $k => $v) {
-            $currentViewId = trim($v);
-            if ('' !== $currentViewId) {
-                $currentViewlabel = $tlview[$k];
-                $tr[] = array(
-                    htmlspecialchars(sprintf("%s (%s)", $currentViewlabel, $currentViewId)),
-                    $currentViewId,
-                    sprintf("%s (%s)", $currentViewlabel, $currentViewId)
-                );
-            }
-        }
-    }
-
-    return $tr;
-}
 
 /**
  * Get columns (attribute ir property) that can be used to present of

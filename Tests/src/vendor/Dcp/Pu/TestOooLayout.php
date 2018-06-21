@@ -25,6 +25,7 @@ class TestOooLayout extends TestCaseDcpDocument
 
     protected function setUp()
     {
+        $this->logTest();
     }
 
     public static function setUpBeforeClass()

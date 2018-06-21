@@ -29,6 +29,10 @@ class ErrorCodeATTR
      */
     const ATTR0103 = 'attribute identifier "%s" use a property identificator';
     /**
+     * @errorCode  UPDTATTR : Use only if attribute is recorded before
+     */
+    const ATTR0104 = 'Cannot update unknow attribute identifier "%s" ';
+    /**
      * @errorCode  Attribute identicator is limit to 63 alphanum characters
      */
     const ATTR0200 = 'syntax error for structure "%s" attribute "%s"';

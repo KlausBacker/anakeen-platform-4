@@ -7,12 +7,12 @@
 namespace Anakeen\SmartStructures\Wdoc;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Core\SEManager;
 use Anakeen\SmartHooks;
 use Anakeen\SmartStructures\Timer\TimerHooks;
 use Dcp\Exception;
 
 class WDocHooks extends \Anakeen\Core\Internal\SmartElement
-
 {
     /**
      * WDoc has its own special access depend on transition
@@ -25,12 +25,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         "edit",
         "delete"
     );
-    
+
     public $usefor = 'SW';
     public $defDoctype = 'W';
     public $defClassname = 'WDoc';
     public $attrPrefix = "WF"; // prefix attribute
-    
+
     /**
      * state's activities labels
      * @var array
@@ -44,7 +44,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     public $firstState = ""; // first state in workflow
     public $viewnext = "list"; // view interface as select list may be (list|button)
     public $nosave = array(); // states where it is not permitted to save and stay (force next state)
-    
+
     /**
      * @var array
      */
@@ -55,9 +55,10 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     private $pdoc = null;
     /**
      * document instance
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     public $doc = null;
+
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         // first construct acl array
@@ -76,16 +77,17 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         // don't use \Anakeen\Core\Internal\SmartElement constructor because it could call this constructor => infinitive loop
         \Anakeen\Core\Internal\SmartElement::__construct($dbaccess, $id, $res, $dbid);
     }
+
     /**
      * affect document instance
-     * @param \Anakeen\Core\Internal\SmartElement $doc document to use for workflow
-     * @param bool $force set to true to force a doc reset
+     * @param \Anakeen\Core\Internal\SmartElement $doc   document to use for workflow
+     * @param bool                                $force set to true to force a doc reset
      * @return void
      */
     public function set(\Anakeen\Core\Internal\SmartElement & $doc, $force = false)
     {
         if ((!isset($this->doc)) || ($this->doc->id != $doc->id) || $force) {
-            $this->doc = & $doc;
+            $this->doc = &$doc;
             if (($doc->doctype != 'C') && ($doc->state == "")) {
                 $doc->state = $this->getFirstState();
                 $this->changeProfil($doc->state);
@@ -93,10 +95,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
         }
     }
+
     public function getFirstState()
     {
         return $this->firstState;
     }
+
     /**
      * change profil according to state
      * @param string $newstate new \state of document
@@ -106,17 +110,18 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     {
         $err = '';
         if ($newstate != "") {
-            $profid = $this->getRawValue($this->_Aid("_ID", $newstate));
+            $profid = $this->getRawValue($this->_aid("_ID", $newstate));
             if (!is_numeric($profid)) {
                 $profid = \Anakeen\Core\SEManager::getIdFromName($profid);
             }
             if ($profid > 0) {
-                // change only if new \profil
+                // change only if new profil
                 $err = $this->doc->accessControl()->setProfil($profid);
             }
         }
         return $err;
     }
+
     /**
      * change allocate user according to state
      * @param string $newstate new \state of document
@@ -126,7 +131,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     {
         $err = "";
         if ($newstate != "") {
-            $auserref = trim($this->getRawValue($this->_Aid("_AFFECTREF", $newstate)));
+            $auserref = trim($this->getRawValue($this->_aid("_AFFECTREF", $newstate)));
             if ($auserref) {
                 $uid = $this->getAllocatedUser($newstate);
                 $wuid = 0;
@@ -134,10 +139,10 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                     $wuid = $this->getDocValue($uid, "us_whatid");
                 }
                 if ($wuid > 0) {
-                    $lock = (trim($this->getRawValue($this->_Aid("_AFFECTLOCK", $newstate))) == "yes");
+                    $lock = (trim($this->getRawValue($this->_aid("_AFFECTLOCK", $newstate))) == "yes");
                     $err = $this->doc->allocate($wuid, "", false, $lock);
                     if ($err == "") {
-                        $automail = (trim($this->getRawValue($this->_Aid("_AFFECTMAIL", $newstate))) == "yes");
+                        $automail = (trim($this->getRawValue($this->_aid("_AFFECTMAIL", $newstate))) == "yes");
                         if ($automail) {
                             include_once("FDL/mailcard.php");
                             $to = trim($this->getDocValue($uid, "us_mail"));
@@ -160,11 +165,11 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         }
         return $err;
     }
-    
+
     private function getAllocatedUser($newstate)
     {
-        $auserref = trim($this->getRawValue($this->_Aid("_AFFECTREF", $newstate)));
-        $type = trim($this->getRawValue($this->_Aid("_AFFECTTYPE", $newstate)));
+        $auserref = trim($this->getRawValue($this->_aid("_AFFECTREF", $newstate)));
+        $type = trim($this->getRawValue($this->_aid("_AFFECTTYPE", $newstate)));
         if (!$auserref) {
             return false;
         }
@@ -198,6 +203,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         }
         return $uid;
     }
+
     /**
      * change cv according to state
      * @param string $newstate new \state of document
@@ -205,7 +211,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     public function changeCv($newstate)
     {
         if ($newstate != "") {
-            $cvid = ($this->getRawValue($this->_Aid("_CVID", $newstate)));
+            $cvid = ($this->getRawValue($this->_aid("_CVID", $newstate)));
             if (!is_numeric($cvid)) {
                 $cvid = \Anakeen\Core\SEManager::getIdFromName($cvid);
             }
@@ -218,11 +224,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
         }
     }
-    
-    private function _Aid($fix, $state)
+
+    private function _aid($fix, $state)
     {
         return strtolower($this->attrPrefix . $fix . str_replace(":", "_", $state));
     }
+
     /**
      * get the profile id according to state
      * @param string $state
@@ -230,8 +237,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      */
     public function getStateProfil($state)
     {
-        return $this->getRawValue($this->_Aid("_id", $state));
+        return $this->getRawValue($this->_aid("_id", $state));
     }
+
     /**
      * get the attribute id for profile id according to state
      * @param string $state
@@ -239,8 +247,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      */
     public function getStateProfilAttribute($state)
     {
-        return $this->_Aid("_id", $state);
+        return $this->_aid("_id", $state);
     }
+
     /**
      * get the mask id according to state
      * @param string $state
@@ -248,8 +257,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      */
     public function getStateMask($state)
     {
-        return $this->getRawValue($this->_Aid("_mskid", $state));
+        return $this->getRawValue($this->_aid("_mskid", $state));
     }
+
     /**
      * get the view control id according to state
      * @param string $state
@@ -257,8 +267,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      */
     public function getStateViewControl($state)
     {
-        return $this->getRawValue($this->_Aid("_cvid", $state));
+        return $this->getRawValue($this->_aid("_cvid", $state));
     }
+
     /**
      * get the timers ids according to state
      * @param string $state
@@ -266,8 +277,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      */
     public function getStateTimers($state)
     {
-        return $this->getRawValue($this->_Aid("_tmid", $state));
+        return $this->getRawValue($this->_aid("_tmid", $state));
     }
+
     /**
      * get the timers ids according to transition
      * @param string $transName transition name
@@ -275,8 +287,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      */
     public function getTransitionTimers($transName)
     {
-        return array_merge($this->getMultipleRawValues($this->_Aid("_trans_pa_tmid", $transName)), $this->getMultipleRawValues($this->_Aid("_trans_tmid", $transName)));
+        return array_merge($this->getMultipleRawValues($this->_aid("_trans_pa_tmid", $transName)), $this->getMultipleRawValues($this->_aid("_trans_tmid", $transName)));
     }
+
     /**
      * get the mail ids according to transition
      * @param string $transName transition name
@@ -284,8 +297,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      */
     public function getTransitionMailTemplates($transName)
     {
-        return $this->getMultipleRawValues($this->_Aid("_trans_mtid", $transName));
+        return $this->getMultipleRawValues($this->_aid("_trans_mtid", $transName));
     }
+
     /**
      * get the mail templates ids according to state
      * @param string $state
@@ -293,8 +307,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      */
     public function getStateMailTemplate($state)
     {
-        return $this->getMultipleRawValues($this->_Aid("_mtid", $state));
+        return $this->getMultipleRawValues($this->_aid("_mtid", $state));
     }
+
     /**
      * create of parameters attributes of workflow
      * @param int $cid
@@ -310,14 +325,14 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
         }
         $ordered = 1000;
-         \Anakeen\Core\DbManager::setMasterLock(true);
+        \Anakeen\Core\DbManager::setMasterLock(true);
         // delete old attributes before
         $this->query(sprintf("delete from docattr where docid=%d  and options ~ 'autocreated=yes'", intval($cid)));
         $this->getStates();
         foreach ($this->states as $k => $state) {
             // --------------------------
             // frame
-            $aidframe = $this->_Aid("_FR", $state);
+            $aidframe = $this->_aid("_FR", $state);
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aidframe
@@ -339,7 +354,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
             // --------------------------
             // profil id
-            $aidprofilid = $this->_Aid("_ID", $state); //strtolower($this->attrPrefix."_ID".strtoupper($state));
+            $aidprofilid = $this->_aid("_ID", $state); //strtolower($this->attrPrefix."_ID".strtoupper($state));
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aidprofilid
@@ -352,7 +367,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->link = "";
             $oattr->frameid = $aidframe;
             $oattr->options = "autocreated=yes";
-            
+
             $oattr->phpfile = "fdl.php";
             $oattr->phpfunc = "lprofil(D,CT,WF_FAMID):$aidprofilid,CT";
             $oattr->ordered = $ordered++;
@@ -363,8 +378,8 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
             // --------------------------
             // mask id
-            $aid = $this->_Aid("_MSKID", $state);
-            
+            $aid = $this->_aid("_MSKID", $state);
+
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
@@ -388,7 +403,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
             // --------------------------
             // state color
-            $aid = $this->_Aid("_COLOR", $state);
+            $aid = $this->_aid("_COLOR", $state);
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
@@ -411,7 +426,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
             // --------------------------
             // CV link
-            $aid = $this->_Aid("_CVID", $state);
+            $aid = $this->_aid("_CVID", $state);
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
@@ -427,7 +442,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
-            
+
             $oattr->labeltext = sprintf(_("%s cv"), _($state));
             if ($oattr->isAffected()) {
                 $oattr->Modify();
@@ -436,7 +451,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
             // --------------------------
             // Mail template link
-            $aid = $this->_Aid("_MTID", $state);
+            $aid = $this->_aid("_MTID", $state);
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
@@ -450,7 +465,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
             $oattr->options = "multiple=yes|autocreated=yes";
-            
+
             $oattr->elink = '';
             $oattr->options = 'autocreated=yes|multiple=yes|creation={autoclose:"yes",tmail_family:wf_famid,tmail_workflow:fromid}';
             $oattr->ordered = $ordered++;
@@ -462,7 +477,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
             // --------------------------
             //  Timer link
-            $aid = $this->_Aid("_TMID", $state);
+            $aid = $this->_aid("_TMID", $state);
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
@@ -486,7 +501,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
             // --------------------------
             //  Ask link
-            $aid = $this->_Aid("_ASKID", $state);
+            $aid = $this->_aid("_ASKID", $state);
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
@@ -510,13 +525,13 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
             // --------------------------
             // Label action
-            $aid = $this->_Aid("_ACTIVITYLABEL", $k);
+            $aid = $this->_aid("_ACTIVITYLABEL", $k);
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
             $oattr->docid = $cid;
-            
+
             if (!(empty($this->stateactivity[$k]))) {
                 $oattr->visibility = "S";
             } else {
@@ -530,7 +545,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->options = "autocreated=yes";
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
-            
+
             $oattr->labeltext = sprintf(_("%s activity"), _($k));
             if ($oattr->isAffected()) {
                 $oattr->Modify();
@@ -539,7 +554,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
             // --------------------------
             //  Affected user link
-            $aid = $this->_Aid("_T_AFFECT", $state);
+            $aid = $this->_aid("_T_AFFECT", $state);
             $afaid = $aid;
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
@@ -558,8 +573,8 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             } else {
                 $oattr->add();
             }
-            
-            $aid = $this->_Aid("_AFFECTTYPE", $state);
+
+            $aid = $this->_aid("_AFFECTTYPE", $state);
             $aidtype = $aid;
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
@@ -583,8 +598,8 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             } else {
                 $oattr->add();
             }
-            
-            $aid = $this->_Aid("_AFFECTREF", $state);
+
+            $aid = $this->_aid("_AFFECTREF", $state);
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
@@ -605,8 +620,8 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             } else {
                 $oattr->add();
             }
-            
-            $aid = $this->_Aid("_AFFECTLOCK", $state);
+
+            $aid = $this->_aid("_AFFECTLOCK", $state);
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
@@ -626,8 +641,8 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             } else {
                 $oattr->add();
             }
-            
-            $aid = $this->_Aid("_AFFECTMAIL", $state);
+
+            $aid = $this->_aid("_AFFECTMAIL", $state);
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
@@ -648,11 +663,11 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $oattr->add();
             }
         }
-        
+
         foreach ($this->transitions as $k => $trans) {
             // --------------------------
             // frame
-            $aidframe = $this->_Aid("_TRANS_FR", $k);
+            $aidframe = $this->_aid("_TRANS_FR", $k);
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aidframe
@@ -674,7 +689,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
             // --------------------------
             // Mail template link
-            $aid = $this->_Aid("_TRANS_MTID", $k);
+            $aid = $this->_aid("_TRANS_MTID", $k);
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
@@ -690,7 +705,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
             $oattr->options = 'autocreated=yes|multiple=yes|creation={autoclose:"yes",tmail_family:wf_famid,tmail_workflow:fromid}';
-            
+
             $oattr->labeltext = sprintf(_("%s mail template"), _($k));
             if ($oattr->isAffected()) {
                 $oattr->Modify();
@@ -699,7 +714,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
             // --------------------------
             // Timer link
-            $aid = $this->_Aid("_TRANS_TMID", $k);
+            $aid = $this->_aid("_TRANS_TMID", $k);
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
@@ -712,7 +727,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->phpfunc = "ltimerdoc(D,CT,WF_FAMID):$aid,CT";
             $oattr->elink = "";
             $oattr->options = 'autocreated=yes|creation={autoclose:"yes",tm_family:wf_famid,tm_workflow:fromid,tm_title:"' . str_replace(':', ' ', _($k)) . '"}';
-            
+
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
@@ -724,7 +739,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
             // --------------------------
             // Persistent Attach Timer link
-            $aid = $this->_Aid("_TRANS_PA_TMID", $k);
+            $aid = $this->_aid("_TRANS_PA_TMID", $k);
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
@@ -737,7 +752,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->phpfunc = "ltimerdoc(D,CT,WF_FAMID):$aid,CT";
             $oattr->elink = "";
             $oattr->options = 'multiple=yes|autocreated=yes|creation={autoclose:"yes",tm_family:wf_famid,tm_workflow:fromid,tm_title:"' . str_replace(':', ' ', _($k)) . '"}';
-            
+
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
@@ -749,7 +764,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
             // --------------------------
             // Persistent UnAttach Timer link
-            $aid = $this->_Aid("_TRANS_PU_TMID", $k);
+            $aid = $this->_aid("_TRANS_PU_TMID", $k);
             $oattr = new \DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
@@ -775,19 +790,20 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         \Anakeen\Core\DbManager::setMasterLock(false);
         return \Dcp\FamilyImport::refreshPhpPgDoc($this->dbaccess, $cid);
     }
+
     /**
      * change state of a document
      * the method {@link set()} must be call before
-     * @param string $newstate the next state
-     * @param string $addcomment comment to be set in history (describe why change state)
-     * @param bool $force is true when it is the second passage (without interactivity)
-     * @param bool $withcontrol set to false if you want to not verify control permission ot transition
-     * @param bool $wm1 set to false if you want to not apply m1 methods
-     * @param bool $wm2 set to false if you want to not apply m2 methods
-     * @param bool $wneed set to false to not test required attributes
-     * @param bool $wm0 set to false if you want to not apply m0 methods
-     * @param bool $wm3 set to false if you want to not apply m3 methods
-     * @param string $msg return message from m2 or m3 methods
+     * @param string $newstate    the next state
+     * @param string $addcomment  comment to be set in history (describe why change state)
+     * @param bool   $force       is true when it is the second passage (without interactivity)
+     * @param bool   $withcontrol set to false if you want to not verify control permission ot transition
+     * @param bool   $wm1         set to false if you want to not apply m1 methods
+     * @param bool   $wm2         set to false if you want to not apply m2 methods
+     * @param bool   $wneed       set to false to not test required attributes
+     * @param bool   $wm0         set to false if you want to not apply m0 methods
+     * @param bool   $wm3         set to false if you want to not apply m3 methods
+     * @param string $msg         return message from m2 or m3 methods
      * @return string error message, if no error empty string
      */
     public function changeState($newstate, $addcomment = "", $force = false, $withcontrol = true, $wm1 = true, $wm2 = true, $wneed = true, $wm0 = true, $wm3 = true, &$msg = '')
@@ -810,7 +826,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 }
             }
         }
-        
+
         if (ContextManager::getCurrentUser()->id != 1) { // admin can go to any states
             if (!$foundTo) {
                 return (sprintf(_("ChangeState :: the new \state '%s' is not known or is not allowed from %s"), _($newstate), _($this->doc->state)));
@@ -845,13 +861,13 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         }
         /* Set edition mask from view control if a view control is applied on the document */
         $this->doc->setMask(\Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT);
-        
+
         if ($wm0 && (!empty($tr["m0"]))) {
             // apply first method (condition for the change)
             if (!method_exists($this, $tr["m0"])) {
                 return (sprintf(_("the method '%s' is not known for the object class %s"), $tr["m0"], get_class($this)));
             }
-            
+
             $err = call_user_func(array(
                 $this,
                 $tr["m0"]
@@ -861,18 +877,18 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 return (sprintf(_("Error : %s"), $err));
             }
         }
-        
+
         if ($wm1 && (!empty($tr["m1"]))) {
             // apply first method (condition for the change)
             if (!method_exists($this, $tr["m1"])) {
                 return (sprintf(_("the method '%s' is not known for the object class %s"), $tr["m1"], get_class($this)));
             }
-            
+
             $err = call_user_func(array(
                 $this,
                 $tr["m1"]
             ), $newstate, $this->doc->state, $addcomment);
-            
+
             if ($err == "->") {
                 if ($force) {
                     $err = ""; // it is the return of the report
@@ -907,7 +923,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         if ($err != "") {
             return $err;
         }
-        
+
         $revcomment = sprintf(_("change state : %s to %s"), _($oldstate), _($newstate));
         if ($addcomment != "") {
             $this->doc->addHistoryEntry($addcomment);
@@ -923,7 +939,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                         } else {
                             $displayValue = str_replace("\n", ", ", $this->getRawValue($arrayAttribute->id));
                         }
-                        $revcomment.= sprintf("\n-%s : %s", $arrayAttribute->getLabel(), $displayValue);
+                        $revcomment .= sprintf("\n-%s : %s", $arrayAttribute->getLabel(), $displayValue);
                     }
                 } else {
                     $pv = $this->getRawValue($vpid);
@@ -931,11 +947,11 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                         if ($oa->type == "password") {
                             $pv = "*****";
                         }
-                        
+
                         if (is_array($pv)) {
                             $pv = implode(", ", $pv);
                         }
-                        $revcomment.= sprintf("\n-%s : %s", $oa->getLabel(), $pv);
+                        $revcomment .= sprintf("\n-%s : %s", $oa->getLabel(), $pv);
                     }
                 }
             }
@@ -952,11 +968,11 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $this->changeCv($oldstate);
             $err2 = $this->doc->Modify(); // don't control edit permission
             $this->doc->restoreAccessControl();
-            
+
             return $err . $err2;
         }
         \Anakeen\Core\Utils\System::addLogMsg(sprintf(_("%s new \state %s"), $this->doc->title, _($newstate)));
-        
+
         $this->doc->restoreAccessControl();
         // post action
         $msg2 = '';
@@ -968,7 +984,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $this,
                 $tr["m2"]
             ), $newstate, $oldstate, $addcomment);
-            
+
             if ($msg2 == "->") {
                 $msg2 = "";
             } //it is not a real error
@@ -991,9 +1007,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         if (!$this->domainid) {
             $this->doc->unlock(false, true);
         }
-        $msg.= $this->workflowSendMailTemplate($newstate, $addcomment, $tname);
+        $msg .= $this->workflowSendMailTemplate($newstate, $addcomment, $tname);
         $this->workflowAttachTimer($newstate, $tname);
-        $err.= $this->changeAllocateUser($newstate);
+        $err .= $this->changeAllocateUser($newstate);
         // post action
         $msg3 = '';
         if ($wm3 && (!empty($tr["m3"]))) {
@@ -1004,7 +1020,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $this,
                 $tr["m3"]
             ), $newstate, $oldstate, $addcomment);
-            
+
             if ($msg3 == "->") {
                 $msg3 = "";
             } //it is not a real error
@@ -1015,14 +1031,15 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $msg3 = sprintf(_("Warning : %s"), $msg3);
             }
         }
-        $msg.= ($msg && $msg2 ? "\n" : '') . $msg2;
+        $msg .= ($msg && $msg2 ? "\n" : '') . $msg2;
         if ($msg && $msg3) {
-            $msg.= "\n";
+            $msg .= "\n";
         }
-        $msg.= $msg3;
+        $msg .= $msg3;
         $this->doc->restoreAccessControl();
         return $err;
     }
+
     /**
      * return an array of next states availables from current state
      * @param bool $noVerifyDomain set to true if want to get next states when document is locked into a domain
@@ -1031,7 +1048,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     public function getFollowingStates($noVerifyDomain = false)
     {
         // search if following states in concordance with transition array
-        if ($this->doc->locked == - 1) {
+        if ($this->doc->locked == -1) {
             return array();
         } // no next state for revised document
         if (($this->doc->locked > 0) && ($this->doc->locked != ContextManager::getCurrentUser()->id)) {
@@ -1044,7 +1061,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         if ($this->doc->state == "") {
             $this->doc->state = $this->getFirstState();
         }
-        
+
         if (ContextManager::getCurrentUser()->id == 1) {
             return $this->getStates();
         } // only admin can go to any states from anystates
@@ -1058,6 +1075,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         }
         return $fstate;
     }
+
     /**
      * return an array of all states availables for the workflow
      * @return array
@@ -1066,7 +1084,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     {
         if ($this->states === null) {
             $this->states = array();
-            if (! is_array($this->cycle)) {
+            if (!is_array($this->cycle)) {
                 throw new Exception("Workflow Corrupted Cycle");
             }
             foreach ($this->cycle as $k => $tr) {
@@ -1080,28 +1098,30 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         }
         return $this->states;
     }
+
     /**
      * get associated color of a state
      * @param string $state the state
-     * @param string $def default value if not set
+     * @param string $def   default value if not set
      * @return string the color (#RGB)
      */
     public function getColor($state, $def = "")
     {
         //$acolor=$this->attrPrefix."_COLOR".($state);
-        $acolor = $this->_Aid("_COLOR", $state);
+        $acolor = $this->_aid("_COLOR", $state);
         return $this->getRawValue($acolor, $def);
     }
+
     /**
      * get activity (localized language)
      * @param string $state the state
-     * @param string $def default value if not set
+     * @param string $def   default value if not set
      * @return string the text of action
      */
     public function getActivity($state, $def = "")
     {
         //$acolor=$this->attrPrefix."_ACTIVITYLABEL".($state);
-        $acolor = $this->_Aid("_ACTIVITYLABEL", $state);
+        $acolor = $this->_aid("_ACTIVITYLABEL", $state);
         $v = $this->getRawValue($acolor);
         if ($v) {
             return _($v);
@@ -1110,62 +1130,62 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     }
 
 
-
     /**
      * send associated mail of a state
-     * @param string $state the state
+     * @param string $state   the state
      * @param string $comment reason of change state
-     * @param string $tname transition name
+     * @param string $tname   transition name
      * @return string
      */
     public function workflowSendMailTemplate($state, $comment = "", $tname = "")
     {
         $err = '';
-        $tmtid = $this->getMultipleRawValues($this->_Aid("_TRANS_MTID", $tname));
-        
+        $tmtid = $this->getMultipleRawValues($this->_aid("_TRANS_MTID", $tname));
+
         $tr = ($tname) ? $this->transitions[$tname] : null;
         if ($tmtid && (count($tmtid) > 0)) {
             foreach ($tmtid as $mtid) {
                 $keys = array();
                 /**
-                 * @var $mt \SmartStructure\MAILTEMPLATE
+                 * @var \SmartStructure\MAILTEMPLATE $mt
                  */
-                $mt = new_doc($this->dbaccess, $mtid);
-                if ($mt->isAlive()) {
+                $mt = SEManager::getDocument($mtid);
+                if ($mt && $mt->isAlive()) {
                     $keys["WCOMMENT"] = nl2br($comment);
                     if (isset($tr["ask"])) {
                         foreach ($tr["ask"] as $vpid) {
-                            $keys["V_" . strtoupper($vpid) ] = $this->getHtmlAttrValue($vpid);
-                            $keys[strtoupper($vpid) ] = $this->getRawValue($vpid);
+                            $keys["V_" . strtoupper($vpid)] = $this->getHtmlAttrValue($vpid);
+                            $keys[strtoupper($vpid)] = $this->getRawValue($vpid);
                         }
                     }
-                    $err.= $mt->sendDocument($this->doc, $keys);
+                    $err .= $mt->sendDocument($this->doc, $keys);
                 }
             }
         }
-        
-        $tmtid = $this->getMultipleRawValues($this->_Aid("_MTID", $state));
+
+        $tmtid = $this->getMultipleRawValues($this->_aid("_MTID", $state));
         if ($tmtid && (count($tmtid) > 0)) {
             foreach ($tmtid as $mtid) {
                 $keys = array();
-                $mt = new_doc($this->dbaccess, $mtid);
+                $mt = SEManager::getDocument($mtid);
                 /**
                  * @var \SmartStructure\MAILTEMPLATE $mt
                  */
-                if ($mt->isAlive()) {
+                if ($mt && $mt->isAlive()) {
                     $keys["WCOMMENT"] = nl2br($comment);
                     if (isset($tr["ask"])) {
                         foreach ($tr["ask"] as $vpid) {
-                            $keys["V_" . strtoupper($vpid) ] = $this->getHtmlAttrValue($vpid);
-                            $keys[strtoupper($vpid) ] = $this->getRawValue($vpid);
+                            $keys["V_" . strtoupper($vpid)] = $this->getHtmlAttrValue($vpid);
+                            $keys[strtoupper($vpid)] = $this->getRawValue($vpid);
                         }
                     }
-                    $err.= $mt->sendDocument($this->doc, $keys);
+                    $err .= $mt->sendDocument($this->doc, $keys);
                 }
             }
         }
         return $err;
     }
+
     /**
      * attach timer to a document
      * @param string $state the state
@@ -1175,69 +1195,68 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     public function workflowAttachTimer($state, $tname = "")
     {
         $err = '';
-        $mtid = $this->getRawValue($this->_Aid("_TRANS_TMID", $tname));
-        
+        $mtid = $this->getRawValue($this->_aid("_TRANS_TMID", $tname));
+
         $this->doc->unattachAllTimers($this);
-        
+
         if ($mtid) {
             /**
              * @var TimerHooks $mt
              */
-            $mt = new_doc($this->dbaccess, $mtid);
-            if ($mt->isAlive()) {
+            $mt = SEManager::getDocument($mtid);
+            if ($mt && $mt->isAlive()) {
                 $err = $this->doc->attachTimer($mt, $this);
             }
         }
         // unattach persistent
-        $tmtid = $this->getMultipleRawValues($this->_Aid("_TRANS_PU_TMID", $tname));
+        $tmtid = $this->getMultipleRawValues($this->_aid("_TRANS_PU_TMID", $tname));
         if ($tmtid && (count($tmtid) > 0)) {
             foreach ($tmtid as $mtid) {
-                $mt = new_doc($this->dbaccess, $mtid);
-                if ($mt->isAlive()) {
-                    $err.= $this->doc->unattachTimer($mt);
+                $mt = SEManager::getDocument($mtid);
+                if ($mt && $mt->isAlive()) {
+                    $err .= $this->doc->unattachTimer($mt);
                 }
             }
         }
-        
-        $mtid = $this->getRawValue($this->_Aid("_TMID", $state));
+
+        $mtid = $this->getRawValue($this->_aid("_TMID", $state));
         if ($mtid) {
-            $mt = new_doc($this->dbaccess, $mtid);
-            if ($mt->isAlive()) {
-                $err.= $this->doc->attachTimer($mt, $this);
+            $mt = SEManager::getDocument($mtid);
+            if ($mt && $mt->isAlive()) {
+                $err .= $this->doc->attachTimer($mt, $this);
             }
         }
         // attach persistent
-        $tmtid = $this->getMultipleRawValues($this->_Aid("_TRANS_PA_TMID", $tname));
+        $tmtid = $this->getMultipleRawValues($this->_aid("_TRANS_PA_TMID", $tname));
         if ($tmtid && (count($tmtid) > 0)) {
             foreach ($tmtid as $mtid) {
-                $mt = new_doc($this->dbaccess, $mtid);
-                if ($mt->isAlive()) {
-                    $err.= $this->doc->attachTimer($mt);
+                $mt = SEManager::getDocument($mtid);
+                if ($mt && $mt->isAlive()) {
+                    $err .= $this->doc->attachTimer($mt);
                 }
             }
         }
         return $err;
     }
+
     /**
      * to change state of a document from this workflow
-     * @param $docid
-     * @param $newstate
+     * @param        $docid
+     * @param        $newstate
      * @param string $comment
      * @return string
      */
     public function changeStateOfDocid($docid, $newstate, $comment = "")
     {
         $err = '';
-        $cmd = new_Doc($this->dbaccess, $docid);
-        $cmdid = $cmd->getLatestId(); // get the latest
-        $cmd = new_Doc($this->dbaccess, $cmdid);
-        
-        if ($cmd->wid > 0) {
+        $cmd = SEManager::getDocument($docid);
+
+        if ($cmd && $cmd->wid > 0) {
             /**
              * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
-            $wdoc = new_Doc($this->dbaccess, $cmd->wid);
-            
+            $wdoc = SEManager::getDocument($cmd->wid);
+
             if (!$wdoc) {
                 $err = sprintf(_("cannot change state of document #%d to %s"), $cmd->wid, $newstate);
             }
@@ -1252,9 +1271,10 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         }
         return $err;
     }
+
     /**
      * get transition array for the transition between $to and $from states
-     * @param string $to first state
+     * @param string $to   first state
      * @param string $from next state
      * @return array|false transition array (false if not found)
      */
@@ -1269,9 +1289,10 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         }
         return false;
     }
+
     /**
      * explicit original doc control
-     * @param $aclname
+     * @param      $aclname
      * @param bool $strict
      * @see \Anakeen\Core\Internal\SmartElement::control()
      * @return string
@@ -1280,10 +1301,11 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     {
         return \Anakeen\Core\Internal\SmartElement::Control($aclname, $strict);
     }
+
     /**
      * Special control in case of dynamic controlled profil
      * @param string $aclname
-     * @param bool $strict set to true to not use substitute informations
+     * @param bool   $strict set to true to not use substitute informations
      * @return string error message
      */
     public function control($aclname, $strict = false)
@@ -1295,16 +1317,14 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         if ($this->getRawValue("DPDOC_FAMID") > 0) {
             // special control for dynamic users
             if ($this->pdoc === null) {
-                $pdoc = createDoc($this->dbaccess, $this->fromid, false);
-                $pdoc->doctype = "T"; // temporary
-                //	$pdoc->setValue("DPDOC_FAMID",$this->getRawValue("DPDOC_FAMID"));
+                $pdoc = SEManager::createTemporaryDocument($this->fromid);
                 $err = $pdoc->add();
                 if ($err != "") {
                     return "WDoc::Control:" . $err;
                 } // can't create profil
                 $pdoc->accessControl()->setProfil($this->profid, $this->doc);
-                
-                $this->pdoc = & $pdoc;
+
+                $this->pdoc = &$pdoc;
             }
             $err = $this->pdoc->docControl($aclname, $strict);
         }
@@ -1320,13 +1340,13 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
              * affect action label
              */
             foreach ($this->stateactivity as $k => $v) {
-                $this->setValue($this->_Aid("_ACTIVITYLABEL", $k), $v);
+                $this->setValue($this->_aid("_ACTIVITYLABEL", $k), $v);
             }
             $this->getStates();
             foreach ($this->states as $k => $state) {
-                $allo = trim($this->getRawValue($this->_Aid("_AFFECTREF", $state)));
+                $allo = trim($this->getRawValue($this->_aid("_AFFECTREF", $state)));
                 if (!$allo) {
-                    $this->removeArrayRow($this->_Aid("_T_AFFECT", $state), 0);
+                    $this->removeArrayRow($this->_aid("_T_AFFECT", $state), 0);
                 }
             }
 
@@ -1340,7 +1360,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     /**
      * get value of instanced document
      * @param string $attrid attribute identifier
-     * @param bool $def default value if no value
+     * @param bool   $def    default value if no value
      * @return string return the value, false if attribute not exist or document not set
      */
     public function getInstanceValue($attrid, $def = false)

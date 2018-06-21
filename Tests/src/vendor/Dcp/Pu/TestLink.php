@@ -17,8 +17,7 @@ class TestLink extends TestCaseDcpDocument
     
     protected function setUp()
     {
-        // nothing
-        
+        $this->logTest();
     }
     
     protected function tearDown()

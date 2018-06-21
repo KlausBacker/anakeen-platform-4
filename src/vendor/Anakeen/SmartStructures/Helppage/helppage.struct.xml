@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+    <smart:structure-configuration name="HELPPAGE" label="Aide en ligne">
+        <smart:class>Anakeen\SmartStructures\Helppage\HelpPageHooks</smart:class>
+        <smart:usefor>S</smart:usefor>
+
+        <smart:attributes>
+            <smart:attr-fieldset name="help_fr_identification" type="frame" label="Aide" visibility="W">
+                <smart:attr-docid name="help_family" label="Structure" visibility="R" is-abstract="true" relation="-1"/>
+                <smart:attr-fieldset name="help_t_help" type="array" label="Description" visibility="W">
+                    <smart:attr-text name="help_name" label="Libellé" visibility="W"/>
+                    <smart:attr-enum name="help_lang" label="Langue du libellé" visibility="W" relation="helppage-help_lang"/>
+                    <smart:attr-longtext name="help_description" label="Description" visibility="W"/>
+                </smart:attr-fieldset>
+                <smart:attr-fieldset name="help_t_sections" type="array" label="Rubriques" visibility="W">
+                    <smart:attr-int name="help_sec_order" label="Ordre de la rubrique" visibility="W"/>
+                    <smart:attr-text name="help_sec_name" label="Nom de la rubrique" visibility="W"/>
+                    <smart:attr-enum name="help_sec_lang" label="Langue" visibility="W" relation="helppage-help_sec_lang"/>
+                    <smart:attr-text name="help_sec_key" label="Clé de la rubrique" visibility="W"/>
+                    <smart:attr-htmltext name="help_sec_text" label="Texte" visibility="W"/>
+                </smart:attr-fieldset>
+            </smart:attr-fieldset>
+        </smart:attributes>
+
+        <smart:parameters>
+            <smart:attr-fieldset name="help_fr_family" type="frame" label="Paramètres de famille" visibility="W">
+                <smart:attr-fieldset name="help_t_family" type="array" label="Langues" visibility="W">
+                    <smart:attr-text name="help_p_lang_name" label="Libellé de la langue" visibility="W"/>
+                    <smart:attr-text name="help_p_lang_key" label="Langue" visibility="W"/>
+                </smart:attr-fieldset>
+            </smart:attr-fieldset>
+        </smart:parameters>
+    </smart:structure-configuration>
+</smart:config>

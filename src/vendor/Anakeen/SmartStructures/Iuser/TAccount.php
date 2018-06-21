@@ -99,6 +99,7 @@ trait TAccount
      */
     public function preDocDelete()
     {
+        /** @noinspection PhpUndefinedClassInspection */
         $err = parent::preDocDelete();
         if ($err == "") {
             $uid = $this->getRawValue("us_whatid");
@@ -129,47 +130,7 @@ trait TAccount
         return $sysIds;
     }
 
-    /**
-     * internal function use for choosegroup
-     * use to compute displayed group tree
-     */
-    public function _getChildsGroup($id, $groups)
-    {
-        $tlay = array();
-        foreach ($groups as $k => $v) {
-            if ($v["idgroup"] == $id) {
-                $tlay[$k] = $v;
-                $tlay[$k]["SUBUL"] = $this->_getChildsGroup($v["id"], $groups);
-                $fid = $v["fid"];
-                if ($fid) {
-                    $tdoc = SEManager::getRawDocument($fid);
-                    $icon = $this->getIcon($tdoc["icon"]);
-                    $tlay[$k]["icon"] = $icon;
-                } else {
-                    $tlay[$k]["icon"] = "Images/igroup.gif";
-                }
-            }
-        }
-        
-        if (count($tlay) == 0) {
-            return "";
-        }
-        global $action;
-        $lay = new \Layout("USERCARD/Layout/ligroup.xml", $action);
-        uasort($tlay, array(
-            get_class($this) ,
-            "_cmpgroup"
-        ));
-        $lay->setBlockData("LI", $tlay);
-        return $lay->gen();
-    }
-    /**
-     * to sort group by name
-     */
-    public static function _cmpgroup($a, $b)
-    {
-        return strcasecmp($a['lastname'], $b['lastname']);
-    }
+
 
 
     /**
@@ -227,7 +188,7 @@ trait TAccount
     /**
      * reset wuser
      */
-    protected function postAffect(array $data, $more, $reset)
+    protected function resetUserObject()
     {
         if (isset($this->wuser)) {
             $this->wuser=null;

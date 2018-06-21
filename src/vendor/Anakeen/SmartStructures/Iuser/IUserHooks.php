@@ -67,6 +67,8 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
             if ($user) {
                 $user->delete();
             }
+        })->addListener(SmartHooks::POSTAFFECT, function () {
+            $this->resetUserObject();
         });
     }
 

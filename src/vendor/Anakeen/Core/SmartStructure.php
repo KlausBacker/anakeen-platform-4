@@ -123,12 +123,22 @@ create unique index idx_idfam on docfam(id);";
         }
     }
 
-    protected function postAffect(array $data, $more, $reset)
+    public function registerHooks()
     {
-        $this->_xtdefval = null;
-        $this->_xtparam = null;
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            return \Dcp\FamilyImport::refreshPhpPgDoc($this->dbaccess, $this->id);
+        })->addListener(SmartHooks::POSTIMPORT, function () {
+            return $this->updateWorkflowAttributes();
+        })->addListener(SmartHooks::PREDELETE, function () {
+            return _("cannot delete family");
+        })->addListener(SmartHooks::PRECREATED, function () {
+            return $this->resetProperties();
+        })->addListener(SmartHooks::POSTAFFECT, function () {
+            $this->_xtdefval = null;
+            $this->_xtparam = null;
+        });
     }
-
     /**
      * return i18n title for family
      * based on name
@@ -155,19 +165,6 @@ create unique index idx_idfam on docfam(id);";
         return $values["title"];
     }
 
-    public function registerHooks()
-    {
-        parent::registerHooks();
-        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
-            return \Dcp\FamilyImport::refreshPhpPgDoc($this->dbaccess, $this->id);
-        })->addListener(SmartHooks::POSTIMPORT, function () {
-            return $this->updateWorkflowAttributes();
-        })->addListener(SmartHooks::PREDELETE, function () {
-            return _("cannot delete family");
-        })->addListener(SmartHooks::PRECREATED, function () {
-            return $this->resetProperties();
-        });
-    }
 
     protected function resetProperties()
     {

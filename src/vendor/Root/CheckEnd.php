@@ -120,10 +120,10 @@ class CheckEnd extends CheckData
         $this->doc->getAttributes(); // force reattach attributes
         $la = $this->doc->GetNormalAttributes();
         foreach ($la as & $oa) {
-            if (($oa->phpfile == '' || $oa->phpfile == '-') && (preg_match('/^[a-z0-9_]*::/i', $oa->phpfunc))) {
+            if (($oa->phpfile == '' || $oa->phpfile == '-') && (preg_match('/^[a-z0-9_\\\\]*::/i', $oa->phpfunc))) {
                 $this->checkMethod($oa);
             }
-            if (preg_match('/^[a-z0-9_]*::/i', $oa->phpconstraint)) {
+            if (preg_match('/^[a-z0-9_\\\\]*::/i', $oa->phpconstraint)) {
                 $this->checkConstraint($oa);
             }
         }

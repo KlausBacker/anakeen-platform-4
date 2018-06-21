@@ -38,6 +38,8 @@ class IGroupHooks extends \SmartStructure\Group
             if ($gAccount) {
                 $gAccount->delete();
             }
+        })->addListener(SmartHooks::POSTAFFECT, function () {
+            $this->resetUserObject();
         });
     }
 
