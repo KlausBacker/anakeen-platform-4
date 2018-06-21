@@ -1,0 +1,13 @@
+<admin:config xmlns:admin="http://www.anakeen.com/ns/admin/">
+    <admin:plugins>
+        <admin:plugin name="parametersManagement">
+            <admin:title>Parameters management</admin:title>
+            <admin:icon><![CDATA[<i class="material-icons" title="Parameters management">build</i>]]></admin:icon>
+            <admin:pluginPath>/parametersManagement</admin:pluginPath>
+            <admin:scriptURL>/AdminCenter/prod/ank-admin-parameters.js</admin:scriptURL>
+            <admin:debugScriptURL>/AdminCenter/debug/ank-admin-parameters.js</admin:debugScriptURL>
+            <admin:pluginTemplate><![CDATA[<ank-admin-parameters></ank-admin-parameters>]]></admin:pluginTemplate>
+            <admin:order position="after" pluginName="userAdmin"/>
+        </admin:plugin>
+    </admin:plugins>
+</admin:config>
