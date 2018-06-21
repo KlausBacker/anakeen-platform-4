@@ -20,8 +20,11 @@ exports.builder = {
 exports.handler = function (argv) {
     try {
         const task = build(argv.sourceDir, argv.targetDir).tasks.build.fn;
-        task();
-        signale.success("build done");
+        task().then(() => {
+            signale.success("build done");
+        }).catch((e) => {
+            signale.error(e);
+        });
     } catch (e) {
         signale.error(e);
     }
