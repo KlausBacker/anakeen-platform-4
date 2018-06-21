@@ -15,6 +15,7 @@ use Anakeen\Router\ApiV2Response;
 
 /**
  * Class Autocomplete
+ *
  * @note    Used by route : POST /api/v2/documents/{docid}/autocomplete/{attrid}
  * @package Anakeen\Routes\Ui
  */
@@ -35,9 +36,11 @@ class Autocomplete
     /**
      * Use Create but it is a GET
      * But data are requested in a $_POST because they are numerous
+     *
      * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
      * @param                     $args
+     *
      * @return mixed
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
@@ -78,22 +81,21 @@ class Autocomplete
 
 
         if ($attributeObject->properties->autocomplete) {
-            return $this->standardAutocomplete($doc, $attributeObject);
+            return $this->standardAutocomplete($attributeObject);
         } elseif (!$attributeObject->phpfile) {
-            return $this->defaultAutocomplete($doc, $attributeObject);
+            return $this->defaultAutocomplete($attributeObject);
         } else {
             return $this->legacyAutocomplete($doc, $attributeObject);
         }
     }
 
-    protected function defaultAutocomplete(SmartElement $doc, NormalAttribute $attributeObject)
+    protected function defaultAutocomplete(NormalAttribute $attributeObject)
     {
-
         switch ($attributeObject->type) {
             case "docid":
-                return $this->docidAutocomplete($doc, $attributeObject);
+                return $this->docidAutocomplete($attributeObject);
             case "account":
-                return $this->accountAutocomplete($doc, $attributeObject);
+                return $this->accountAutocomplete($attributeObject);
             default:
                 $response = new SmartAutocompleteResponse();
                 $response->setError(sprintf(___("Incompatible type \"%s\" for autocomplete", "autocomplete"), $attributeObject->type));
@@ -101,9 +103,8 @@ class Autocomplete
         }
     }
 
-    protected function docidAutocomplete(SmartElement $doc, NormalAttribute $attributeObject)
+    protected function docidAutocomplete(NormalAttribute $attributeObject)
     {
-
         $parse = new ParseFamilyMethod();
         $parse->className = \Anakeen\Core\SmartStructure\Autocomplete\SmartElementList::class;
         $parse->methodName = "getSmartElements";
@@ -132,7 +133,7 @@ class Autocomplete
         return $this->callAutocomplete($parse);
     }
 
-    protected function accountAutocomplete(SmartElement $doc, NormalAttribute $attributeObject)
+    protected function accountAutocomplete(NormalAttribute $attributeObject)
     {
         $parse = new ParseFamilyMethod();
         $parse->className = \Anakeen\Core\SmartStructure\Autocomplete\AccountList::class;
@@ -149,7 +150,7 @@ class Autocomplete
         return $this->callAutocomplete($parse);
     }
 
-    protected function standardAutocomplete(SmartElement $doc, NormalAttribute $attributeObject)
+    protected function standardAutocomplete(NormalAttribute $attributeObject)
     {
         $parse = new ParseFamilyMethod();
         $parse->parse($attributeObject->properties->autocomplete);
@@ -237,7 +238,26 @@ class Autocomplete
         $attrName = strtolower($name);
         if (isset($attributes[$attrName])) {
             if ($index < 0) {
-                return $attributes[$attrName]["value"];
+                if (is_array($attributes[$attrName])) {
+                    return array_map(function ($data) {
+                        if (array_key_exists("value", $data)) {
+                            return $data["value"];
+                        } else {
+                            if (isset($data[0])) {
+                                return array_map(function ($subdata) {
+                                    if (array_key_exists("value", $subdata)) {
+                                        return $subdata["value"];
+                                    } else {
+                                        return $subdata;
+                                    }
+                                }, $data);
+                            }
+                            return $data;
+                        }
+                    }, $attributes[$attrName]);
+                } else {
+                    return $attributes[$attrName]["value"];
+                }
             } else {
                 if (isset($attributes[$attrName][$index])) {
                     return $attributes[$attrName][$index]["value"];
@@ -353,6 +373,7 @@ class Autocomplete
 
     /**
      * Compatibility function to set in global ZONE_ARGS all values sended in request
+     *
      * @param array  $filters
      * @param array  $attributes
      * @param string $currentAid
