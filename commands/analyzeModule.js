@@ -14,7 +14,6 @@ exports.builder = {
 exports.handler = async (argv) => {
     try {
         const info = await getModuleInfo(argv.sourceDir);
-        console.log(info);
         for(let element in info.moduleInfo) {
             signale.info(element," : ", info.moduleInfo[element]);
         }
