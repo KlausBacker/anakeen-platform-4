@@ -1,5 +1,5 @@
 // jscs:disable disallowFunctionDeclarations
-import AnkVueEvent from './AnkVueEvent';
+import AnkVueEvent, { isEvent } from './AnkVueEvent';
 const PUBLIC_METHODS_FIELD = 'publicMethods';
 
 const IGNORED_METHODS_TOKEN = ['_', '$'];
@@ -93,8 +93,16 @@ function analyzeAction(eventName, selector, action) {
         const elements = this.$(realSelector);
         if (elements && elements.length) {
             this._ank_protected.bindedEvents.push(eventName);
-            this.$on(eventName, (event) => {
-                const eventArgs = event.detail || [];
+            this.$on(eventName, (...emitArgs) => {
+                const possibleEvent = emitArgs[0] || [];
+                let eventArgs = [];
+                if (isEvent(possibleEvent, eventName)) {
+                    eventArgs = possibleEvent.detail || [];
+                    eventArgs = eventArgs.concat(emitArgs.slice(1));
+                } else {
+                    eventArgs = emitArgs;
+                }
+
                 elements.each((index, elem) => {
                     const actionTokens = action.split('.');
                     if (actionTokens && actionTokens.length) {

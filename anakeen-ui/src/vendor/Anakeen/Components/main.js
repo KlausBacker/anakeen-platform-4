@@ -63,7 +63,6 @@ import Identity from './Identity/Identity.vue';
 
 import Dock from './Dock/Dock.vue';
 import DockTab from './Dock/DockTab/DockTab.vue';
-import wrap from '@vue/web-component-wrapper';
 
 Vue.customElement('ank-loading', AnakeenLoading);
 Vue.customElement('ank-authent', Authent);
