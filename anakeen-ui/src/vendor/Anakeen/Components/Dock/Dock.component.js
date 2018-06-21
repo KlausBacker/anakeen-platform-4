@@ -116,27 +116,11 @@ export default {
             }
 
             if (actualTabsArea[actualPosition]) {
-                let eventName = 'beforeTabMove';
-                let options = {
-                    cancelable: true,
-                    detail: [
-                        {
-                            tab: actualTabsArea[actualPosition],
-                        },
-                    ],
-                };
+                let notCanceled = this.$emitAnkEvent('beforeTabMove', {
+                    tab: actualTabsArea[actualPosition],
+                });
 
-                let event;
-                if (typeof window.CustomEvent === 'function') {
-                    event = new CustomEvent(eventName, options);
-                } else {
-                    event = document.createEvent('CustomEvent');
-                    event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
-                }
-
-                this.$el.parentNode.dispatchEvent(event);
-
-                if (!event.defaultPrevented) {
+                if (notCanceled) {
                     let tab = actualTabsArea[actualPosition];
                     actualTabsArea.splice(actualPosition, 1);
                     newTabsArea.splice(newPosition, 0, tab);
@@ -158,21 +142,9 @@ export default {
         // Expand the dock to its large width
         expand() {
             if (this.expandable) {
-                let eventName = 'beforeDockExpansion';
-                let options = {
-                    cancelable: true,
-                };
-                let event;
-                if (typeof window.CustomEvent === 'function') {
-                    event = new CustomEvent(eventName, options);
-                } else {
-                    event = document.createEvent('CustomEvent');
-                    event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
-                }
+                let notCanceled = this.$emitAnkEvent('beforeDockExpansion');
 
-                this.$el.parentNode.dispatchEvent(event);
-
-                if (!event.defaultPrevented) {
+                if (notCanceled) {
                     this.expandedDock = true;
                     this.size = this.largeSize;
                     this.$emit('dockExpanded');
@@ -185,21 +157,9 @@ export default {
         // Contract the dock to its compact width
         contract() {
             if (this.expandable) {
-                let eventName = 'beforeDockContraction';
-                let options = {
-                    cancelable: true,
-                };
-                let event;
-                if (typeof window.CustomEvent === 'function') {
-                    event = new CustomEvent(eventName, options);
-                } else {
-                    event = document.createEvent('CustomEvent');
-                    event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
-                }
+                let notCanceled = this.$emitAnkEvent('beforeDockContraction');
 
-                this.$el.parentNode.dispatchEvent(event);
-
-                if (!event.defaultPrevented) {
+                if (notCanceled) {
                     this.expandedDock = false;
                     this.size = this.compactSize;
                     this.$emit('dockContracted');
@@ -227,27 +187,14 @@ export default {
         // Select a tab, to display its content, with its id
         selectTabWithId(tabId) {
             if (tabId === -1) {
-                let eventName = 'beforeTabSelection';
-                let options = {
-                    cancelable: true,
-                    detail: [
-                        {
-                            actualTab: actualSelectedTab,
-                            newTab: {},
-                        },
-                    ],
-                };
-                let event;
-                if (typeof window.CustomEvent === 'function') {
-                    event = new CustomEvent(eventName, options);
-                } else {
-                    event = document.createEvent('CustomEvent');
-                    event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
-                }
+                let allTabs = this.headerTabs.concat(this.tabs, this.footerTabs);
+                let actualSelectedTab = allTabs.find(element => element.id === this.selectedTab);
+                let notCanceled = this.$emitAnkEvent('beforeTabSelection', {
+                    actualTab: actualSelectedTab,
+                    newTab: {},
+                });
 
-                this.$el.parentNode.dispatchEvent(event);
-
-                if (!event.defaultPrevented) {
+                if (notCanceled) {
                     this.selectedTab = -1;
                     actualSelectedTab.selected = false;
                     this.$emit('tabSelected', {});
@@ -259,29 +206,16 @@ export default {
                 let actualSelectedTab = allTabs.find(element => element.id === this.selectedTab);
                 let newSelectedTab = allTabs.find(element => element.id === tabId);
                 if (newSelectedTab !== undefined && newSelectedTab.selectable) {
-                    let eventName = 'beforeTabSelection';
-                    let options = {
-                        cancelable: true,
-                        detail: [
-                            {
-                                actualTab: actualSelectedTab,
-                                newTab: newSelectedTab,
-                            },
-                        ],
-                    };
-                    let event;
-                    if (typeof window.CustomEvent === 'function') {
-                        event = new CustomEvent(eventName, options);
-                    } else {
-                        event = document.createEvent('CustomEvent');
-                        event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
-                    }
+                    let notCanceled = this.$emitAnkEvent('beforeTabSelection', {
+                        actualTab: actualSelectedTab,
+                        newTab: newSelectedTab,
+                    });
 
-                    this.$el.parentNode.dispatchEvent(event);
-
-                    if (!event.defaultPrevented) {
+                    if (notCanceled) {
                         this.selectedTab = newSelectedTab.id;
-                        actualSelectedTab.selected = false;
+                        if (actualSelectedTab) {
+                            actualSelectedTab.selected = false;
+                        }
                         newSelectedTab.selected = true;
                         this.$emit('tabSelected', newSelectedTab);
                     } else {
@@ -376,22 +310,11 @@ export default {
         this.privateScope = {
             // Add a tab and its content (tab object, must contain all needed properties)
             addTabToDock(tab, position) {
-                let eventName = 'beforeTabAdd';
-                let options = {
-                    cancelable: true,
-                    detail: [tab],
-                };
-                let event;
-                if (typeof window.CustomEvent === 'function') {
-                    event = new CustomEvent(eventName, options);
-                } else {
-                    event = document.createEvent('CustomEvent');
-                    event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
-                }
+                let notCanceled = _this.$emitAnkEvent('beforeTabAdd', {
+                    tab: tab,
+                });
 
-                _this.$el.parentNode.dispatchEvent(event);
-
-                if (!event.defaultPrevented) {
+                if (notCanceled) {
                     position === undefined ? _this.tabs.push(tab) : _this.tabs.splice(position, 0, tab);
                     if (tab.selected) {
                         _this.selectedTab = tab.id;
@@ -405,22 +328,11 @@ export default {
 
             // Add a header tab to the dock (displayed before the expansion button)
             addHeaderTab(tab, position) {
-                let eventName = 'beforeTabAdd';
-                let options = {
-                    cancelable: true,
-                    detail: [tab],
-                };
-                let event;
-                if (typeof window.CustomEvent === 'function') {
-                    event = new CustomEvent(eventName, options);
-                } else {
-                    event = document.createEvent('CustomEvent');
-                    event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
-                }
+                let notCanceled = _this.$emitAnkEvent('beforeTabAdd', {
+                    tab: tab,
+                });
 
-                _this.$el.parentNode.dispatchEvent(event);
-
-                if (!event.defaultPrevented) {
+                if (notCanceled) {
                     position === undefined ? _this.headerTabs.push(tab) : _this.headerTabs.splice(position, 0, tab);
                     if (tab.selected) {
                         _this.selectedTab = tab.id;
@@ -434,22 +346,11 @@ export default {
 
             // Add a footer tab to the dock (displayed at the bottom or the right of the dock)
             addFooterTab(tab, position) {
-                let eventName = 'beforeTabAdd';
-                let options = {
-                    cancelable: true,
-                    detail: [tab],
-                };
-                let event;
-                if (typeof window.CustomEvent === 'function') {
-                    event = new CustomEvent(eventName, options);
-                } else {
-                    event = document.createEvent('CustomEvent');
-                    event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
-                }
+                let notCanceled = _this.$emitAnkEvent('beforeTabAdd', {
+                    tab: tab,
+                });
 
-                _this.$el.parentNode.dispatchEvent(event);
-
-                if (!event.defaultPrevented) {
+                if (notCanceled) {
                     position === undefined ? _this.footerTabs.push(tab) : _this.footerTabs.splice(position, 0, tab);
                     if (tab.selected) {
                         _this.selectedTab = tab.id;
@@ -482,24 +383,11 @@ export default {
                 }
 
                 if (positionToRemove !== undefined) {
-                    let eventName = 'beforeTabRemove';
-                    let options = {
-                        cancelable: true,
-                        detail: [
-                            currentTabsArea[positionToRemove],
-                        ],
-                    };
-                    let event;
-                    if (typeof window.CustomEvent === 'function') {
-                        event = new CustomEvent(eventName, options);
-                    } else {
-                        event = document.createEvent('CustomEvent');
-                        event.initCustomEvent(eventName, options.bubbles, options.cancelable, options.detail);
-                    }
+                    let notCanceled = _this.$emitAnkEvent('beforeTabRemove', {
+                        tab: currentTabsArea[positionToRemove],
+                    });
 
-                    _this.$el.parentNode.dispatchEvent(event);
-
-                    if (!event.defaultPrevented) {
+                    if (notCanceled) {
                         let removed = currentTabsArea[positionToRemove];
                         currentTabsArea.splice(positionToRemove, 1);
                         _this.$emit('tabRemoved', removed);
@@ -541,5 +429,13 @@ export default {
         } else {
             this.size = this.compactSize;
         }
+    },
+
+    mounted() {
+        this.$emitAnkEvent('dockLoaded', {
+            header: this.headerTabs,
+            tabs: this.tabs,
+            footer: this.footerTabs,
+        });
     },
 };
