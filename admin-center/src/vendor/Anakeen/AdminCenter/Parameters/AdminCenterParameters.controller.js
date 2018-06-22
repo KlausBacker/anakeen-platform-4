@@ -1,5 +1,11 @@
+import parameterEditor from './ParameterEditor/ParameterEditor.vue';
+
 export default {
     name: 'admin-center-parameters',
+
+    components: {
+        'ank-parameter-editor': parameterEditor,
+    },
 
     data() {
         return {
@@ -11,14 +17,26 @@ export default {
                 },
             }),
 
-            usersParameters: [],
-
-            researchTerms: '',
+            editedItem: null,
         };
     },
 
     methods: {
         initTreeList() {
+            let toolbarTemplate = `
+                <div class="global-parameters-toolbar">
+                    <button class="btn refresh-btn"><i class="material-icons">refresh</i></button>
+                    <button class="btn expand-btn"><i class="material-icons">expand_more</i></button>
+                    <button class="btn collapse-btn"><i class="material-icons">expand_less</i></button>
+                    <div id="search-input" class="input-group">
+                        <input type="text" class="form-control global-search-input" placeholder="Search...">
+                        <div class="input-group-append">
+                            <button class="btn reset-search-btn" type="button">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
             this.$('#parameters-tree').kendoTreeList({
                 dataSource: this.allParametersDataSource,
                 columns: [
@@ -30,10 +48,11 @@ export default {
                         width: '8%',
                         filterable: false,
                         template: '# if (!data.rowLevel && !data.isStatic && !data.isReadOnly) { #' +
-                        '<button class="btn">Edit</button>' +
+                        '<button class="btn edition-btn">Edit</button>' +
                         '# } #',
                     },
                 ],
+                toolbar: toolbarTemplate,
                 resizable: true,
                 filterable: {
                     extra: false,
@@ -82,64 +101,48 @@ export default {
                     this.addClassToRow(e.sender);
                 },
             })
-                .on('click', '.btn', (e) => {
+                .on('click', '.edition-btn', (e) => {
                     let treeList = $(e.delegateTarget).data('kendoTreeList');
                     let dataItem = treeList.dataItem(e.currentTarget);
 
                     this.openEditor(dataItem);
+                })
+                .on('click', '.refresh-btn', () => this.allParametersDataSource.read())
+                .on('click', '.expand-btn', () => this.expand(true))
+                .on('click', '.collapse-btn', () => this.expand(false))
+                .on('input', '.global-search-input', (e) => this.searchParameters(e.currentTarget.value))
+                .on('click', '.reset-search-btn', () => {
+                    this.$('.global-search-input').val('');
+                    this.searchParameters('');
                 });
         },
 
-        initToolbar() {
-            this.$('#tree-toolbar').kendoToolBar({
-                items: [
-                    {
-                        type: 'button',
-                        icon: 'refresh',
-                        click: () => {
-                            this.allParametersDataSource.read();
-                        },
-                    },
-                    {
-                        type: 'button',
-                        icon: 'sort-desc-sm',
-                        click: () => {
-                            let treeList = $('#parameters-tree').data('kendoTreeList');
-                            let $rows = $('tr.k-treelist-group', treeList.tbody);
-                            $.each($rows, (idx, row) => {
-                                treeList.expand(row);
-                            });
-                            this.addClassToRow()
-                        },
-                    },
-                    {
-                        type: 'button',
-                        icon: 'sort-asc-sm',
-                        click: () => {
-                            let treeList = $('#parameters-tree').data('kendoTreeList');
-                            let $rows = $('tr.k-treelist-group', treeList.tbody);
-                            $.each($rows, (idx, row) => {
-                                treeList.collapse(row);
-                            });
-                        },
-                    },
-                ],
-            });
-        },
-
         openEditor(dataItem) {
-            // TODO Open an editor to alter the parameter
-            console.log('Open data editor');
+            this.editedItem = dataItem;
+            this.$('#edition-window').kendoWindow({
+                modal: true,
+                draggable: false,
+                resizable: false,
+                width: '90%',
+                title: 'Modify parameter',
+                visible: false,
+                actions: ['Close'],
+            }).data('kendoWindow').center().open();
         },
 
-        searchParameters() {
-            // TODO
-            console.log('Search');
-        },
-
-        searchUsersParameters() {
-            // TODO
-            console.log('Search users');
+        searchParameters(researchTerms) {
+            if (researchTerms) {
+                this.allParametersDataSource.filter({
+                    logic: 'or',
+                    filters: [
+                        { field: 'name', operator: 'contains', value: researchTerms },
+                        { field: 'description', operator: 'contains', value: researchTerms },
+                        { field: 'value', operator: 'contains', value: researchTerms },
+                    ],
+                });
+            } else {
+                this.allParametersDataSource.filter({});
+            }
         },
 
         addClassToRow(treeList) {
@@ -155,11 +158,22 @@ export default {
                 });
             }, 0);
         },
+
+        expand(expansion) {
+            let treeList = $('#parameters-tree').data('kendoTreeList');
+            let $rows = $('tr.k-treelist-group', treeList.tbody);
+            $.each($rows, (idx, row) => {
+                if (expansion) {
+                    treeList.expand(row);
+                } else {
+                    treeList.collapse(row);
+                }
+            });
+            this.addClassToRow(treeList);
+        },
     },
 
     mounted() {
         this.initTreeList();
-        this.initToolbar();
-
     },
 };

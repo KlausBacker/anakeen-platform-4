@@ -7,9 +7,19 @@
     justify-content: stretch;
 }
 
-.filter-bar {
-    height: 100%;
-    width: auto;
+.global-parameters-toolbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: stretch;
+}
+
+.global-parameters-toolbar > .btn {
+    margin-right: 0.5rem;
+}
+
+.btn > .material-icons {
+    font-size: 1rem;
 }
 
 .parameter-tree {
@@ -29,55 +39,3 @@
 .grid-level-3 {
     font-weight: bold;
 }
-
-/*.grid-level-1 {*/
-    /*background-color: rgba(0, 0, 0, 0.20);*/
-    /*font-size: 1.5rem;*/
-    /*font-weight: bold;*/
-/*}*/
-
-/*.grid-level-1:hover {*/
-    /*background-color: rgba(0, 0, 0, 0.18);*/
-/*}*/
-
-/*.k-alt.grid-level-1 {*/
-    /*background-color: rgba(0, 0, 0, 0.22);*/
-/*}*/
-
-/*.k-alt.grid-level-1:hover {*/
-    /*background-color: rgba(0, 0, 0, 0.20);*/
-/*}*/
-
-/*.grid-level-2 {*/
-    /*background-color: rgba(0, 0, 0, 0.15);*/
-    /*font-size: 1.3rem;*/
-/*}*/
-
-/*.grid-level-2:hover {*/
-    /*background-color: rgba(0, 0, 0, 0.13);*/
-/*}*/
-
-/*.k-alt.grid-level-2 {*/
-    /*background-color: rgba(0, 0, 0, 0.17);*/
-/*}*/
-
-/*.k-alt.grid-level-2:hover {*/
-    /*background-color: rgba(0, 0, 0, 0.15);*/
-/*}*/
-
-/*.grid-level-3 {*/
-    /*background-color: rgba(0, 0, 0, 0.10);*/
-    /*font-size: 1.1rem;*/
-/*}*/
-
-/*.grid-level-3:hover {*/
-    /*background-color: rgba(0, 0, 0, 0.08);*/
-/*}*/
-
-/*.k-alt.grid-level-3 {*/
-    /*background-color: rgba(0, 0, 0, 0.12);*/
-/*}*/
-
-/*.k-alt.grid-level-3:hover {*/
-    /*background-color: rgba(0, 0, 0, 0.10);*/
-/*}*/
