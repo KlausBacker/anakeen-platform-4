@@ -32,10 +32,10 @@
       "renderAccessClass": "Anakeen\\SmartStructures\\Search\\Render\\SearchAccess"
     },
     "MSEARCH": {
-      "renderAccessClass": "Anakeen\\SmartStructures\\MSearch\\Render\\MSearchAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\Msearch\\Render\\MSearchAccess"
     },
     "SSEARCH": {
-      "renderAccessClass": "Anakeen\\SmartStructures\\SSearch\\Render\\SSearchAccess"
+      "renderAccessClass": "Anakeen\\SmartStructures\\Ssearch\\Render\\SSearchAccess"
     },
     "DIR": {
       "renderAccessClass": "Anakeen\\SmartStructures\\Dir\\Render\\DirAccess"
