@@ -119,7 +119,7 @@
         <smart:element-access access="icreate" login="all"/>
         <smart:element-access access="edit" login="gadmin"/>
     </smart:access-configuration>
-    <smart:access-configuration name="PRF_DOC_SEARCHES" label="Profil document recherche" profil-type="PSEARCH"  linked-structure="SEARCH">
+    <smart:access-configuration name="PRF_DOC_SEARCHES" label="Profil document recherche" profil-type="PSEARCH" linked-structure="SEARCH">
         <smart:element-access access="view" login="all"/>
         <smart:element-access access="execute" login="all"/>
         <smart:element-access access="viewacl" login="gadmin"/>
@@ -141,7 +141,7 @@
         <smart:element-access access="create" login="all"/>
         <smart:element-access access="edit" login="gadmin"/>
     </smart:access-configuration>
-    <smart:access-configuration name="PRF_DOC_MAIL" label="Profil document mail" profil-type="PDOC">
+    <smart:access-configuration name="PRF_DOC_MAIL" label="Profil document mail">
         <smart:element-access access="view" login="all"/>
         <smart:element-access access="edit" login="all"/>
         <smart:element-access access="delete" login="all"/>
@@ -151,7 +151,7 @@
         <smart:element-access access="create" login="all"/>
         <smart:element-access access="edit" login="gadmin"/>
     </smart:access-configuration>
-    <smart:access-configuration name="PRF_DOC_SENTMESSAGE" label="Profil document sentmessage" profil-type="PDOC">
+    <smart:access-configuration name="PRF_DOC_SENTMESSAGE" label="Profil document sentmessage">
         <smart:element-access access="view" login="all"/>
         <smart:element-access access="edit" login="all"/>
         <smart:element-access access="delete" login="all"/>

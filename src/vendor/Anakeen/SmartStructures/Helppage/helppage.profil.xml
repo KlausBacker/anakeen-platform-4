@@ -6,7 +6,7 @@
             <smart:element-access-configuration link="PRF_HELPPAGE"/>
         </smart:accesses>
     </smart:structure-configuration>
-    <smart:access-configuration name="PRF_HELPPAGE" label="Aide en ligne">
+    <smart:access-configuration name="PRF_HELPPAGE" label="Profil des Aide en ligne">
         <smart:element-access access="view" login="all"/>
         <smart:element-access access="edit" login="gadmin"/>
         <smart:element-access access="viewacl" login="gadmin"/>
