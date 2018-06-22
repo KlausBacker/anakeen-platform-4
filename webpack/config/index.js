@@ -8,14 +8,14 @@ const parts = require('../parts');
 
 const AdminCenterWebpackConfig = require('./adminCenter');
 const userAndGroupConfig = require('./AccountPlugin');
-const parameterConfig = require('./ParameterPlugin');
+const parameterConfig = require('./ParametersPlugin');
 
 const commonConfig = merge([
     {
         devtool: 'source-map',
         bail: true,
         output: {
-            filename: '[name]-[chunkhash].js'
+            filename: '[name]-[chunkhash].js',
         },
         module: {
             rules: [
@@ -23,11 +23,11 @@ const commonConfig = merge([
                     test: /\.js$/,
                     exclude: /node_modules/,
                     use: {
-                        loader: 'babel-loader'
-                    }
-                }
-            ]
-        }
+                        loader: 'babel-loader',
+                    },
+                },
+            ],
+        },
     },
     parts.addExternals(),
     parts.progressBar(),
@@ -38,6 +38,6 @@ module.exports = env => {
     return [
         merge(commonConfig, AdminCenterWebpackConfig(env)),
         merge(commonConfig, userAndGroupConfig(env)),
-        merge(commonConfig, parameterConfig(env))
+        merge(commonConfig, parameterConfig(env)),
     ];
 };

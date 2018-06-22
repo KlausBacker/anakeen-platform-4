@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
+    <router:routes>
+        <router:route name="AdminParameters:AllParameters">
+            <router:priority>0</router:priority>
+            <router:callable>\Anakeen\Routes\Admin\Parameters\AllParameters</router:callable>
+            <router:method>GET</router:method>
+            <router:pattern>/api/v2/admin/parameters/</router:pattern>
+            <router:description>Get all gloabl and capsule parameters</router:description>
+            <router:requiredAccess>admincenter:admin</router:requiredAccess>
+        </router:route>
+    </router:routes>
+</router:config>

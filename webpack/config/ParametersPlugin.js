@@ -6,7 +6,7 @@ const parts = require('../parts');
 const BASE_DIR = __PROJECT_ROOT;
 
 const PATHS = {
-    parameter: path.resolve(BASE_DIR, 'admin-center/src/vendor/Anakeen/AdminCenter/Parameter/parameterMain.js'),
+    parameters: path.resolve(BASE_DIR, 'admin-center/src/vendor/Anakeen/AdminCenter/Parameters/parametersMain.js'),
     build: path.resolve(BASE_DIR, 'admin-center/src/public'),
 };
 
@@ -14,7 +14,7 @@ const productionComponentConfig = merge([
     {
         mode: 'production',
         entry: {
-            'ank-admin-parameter': PATHS.parameter,
+            'ank-admin-parameters': PATHS.parameters,
         },
         output: {
             publicPath: '/AdminCenter/prod/',
@@ -35,7 +35,7 @@ const debugComponentConfig = merge([
     {
         mode: 'development',
         entry: {
-            'ank-admin-parameter': PATHS.parameter,
+            'ank-admin-parameters': PATHS.parameters,
         },
         output: {
             publicPath: '/AdminCenter/debug/',
@@ -55,7 +55,7 @@ const devComponentConfig = merge([
     {
         mode: 'development',
         entry: {
-            'ank-admin-parameter': PATHS.parameter
+            'ank-admin-parameters': PATHS.parameters
         },
         output: {
             publicPath: '/AdminCenter/debug/',
