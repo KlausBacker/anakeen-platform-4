@@ -304,10 +304,10 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Report/report.struct.xml">
             <label>Add Report family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Image/image.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Image/image.struct.xml">
             <label>Add Image family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/File/file.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/File/file.struct.xml">
             <label>Add File family</label>
         </process>
 
@@ -610,10 +610,10 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Report/report.struct.xml">
             <label>Add Report family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Image/image.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Image/image.struct.xml">
             <label>Add Image family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/File/file.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/File/file.struct.xml">
             <label>Add File family</label>
         </process>
 

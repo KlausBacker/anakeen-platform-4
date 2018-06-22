@@ -2,8 +2,6 @@
 
 namespace Anakeen\Core\Internal\Format;
 
-use \Anakeen\Core\SEManager;
-
 class FileAttributeValue extends StandardAttributeValue
 {
     public $size = 0;
@@ -13,6 +11,14 @@ class FileAttributeValue extends StandardAttributeValue
     public $mime = '';
     public $icon = '';
 
+    /**
+     * @noinspection PhpMissingParentConstructorInspection
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oa
+     * @param                                              $v
+     * @param \Anakeen\Core\Internal\SmartElement          $doc
+     * @param                                              $index
+     * @param int                                          $iconMimeSize
+     */
     public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, \Anakeen\Core\Internal\SmartElement $doc, $index, $iconMimeSize = 24)
     {
         $this->value = ($v === '') ? null : $v;
@@ -25,7 +31,7 @@ class FileAttributeValue extends StandardAttributeValue
                 $this->mime = $finfo->mime_s;
                 $this->displayValue = $this->fileName;
 
-                $iconFile = getIconMimeFile($this->mime);
+                $iconFile = \Anakeen\Core\Utils\FileMime::getIconMimeFile($this->mime);
                 if ($iconFile) {
                     $this->icon = $doc->getIcon($iconFile, $iconMimeSize);
                 }

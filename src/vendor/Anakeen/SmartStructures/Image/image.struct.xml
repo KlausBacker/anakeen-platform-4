@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+  <smart:structure-configuration name="IMAGE" id="8" label="Image">
+    <smart:icon file="se-image.png"/>
+    <smart:class>Anakeen\SmartStructures\Image\ImageHooks</smart:class>
+    <smart:revisable>auto</smart:revisable>
+    <smart:usefor>N</smart:usefor>
+    <smart:attributes>
+      <smart:attr-fieldset name="img_frfile" type="frame" label="image" visibility="W">
+        <smart:attr-text name="img_title" label="titre" visibility="R" is-title="true"/>
+        <smart:attr-image name="img_file" label="image" visibility="W" needed="true" is-abstract="true">
+          <smart:attr-option name="iwidth">80</smart:attr-option>
+        </smart:attr-image>
+      </smart:attr-fieldset>
+    </smart:attributes>
+    <smart:parameters/>
+    <smart:hooks/>
+    <smart:autocompletion/>
+    <smart:defaults/>
+    <smart:accesses/>
+  </smart:structure-configuration>
+</smart:config>
