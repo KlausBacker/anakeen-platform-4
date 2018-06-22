@@ -13,6 +13,7 @@ class ImportSmartConfiguration
      */
     protected $dom;
     protected $verbose = false;
+    protected $profilElements=[];
 
 
     /**
@@ -65,6 +66,7 @@ class ImportSmartConfiguration
         foreach ($accessConfigs as $config) {
             $data = array_merge($data, $this->importSmartAccessConfig($config));
         }
+        $data=array_merge($this->profilElements, $data);
         if ($this->verbose) {
             $this->print($data);
         }
@@ -105,8 +107,8 @@ class ImportSmartConfiguration
             if (!$prfType) {
                 $prfType = "PDOC";
             }
-            $data[] = ["ORDER", $prfType, "", "", "ba_title", "dpdoc_famid"];
-            $data[] = ["DOC", $prfType, $prfName, "-", $prfLabel, $prfDynamic];
+            $this->profilElements[] = ["ORDER", $prfType, "", "", "ba_title", "dpdoc_famid"];
+            $this->profilElements[] = ["DOC", $prfType, $prfName, "-", $prfLabel, $prfDynamic];
         } elseif ($prfName && $prfLink) {
             $data[] = ["PROFIL", $prfName, $prfLink];
         }

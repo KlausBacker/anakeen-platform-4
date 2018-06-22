@@ -895,17 +895,7 @@ function ltimerdoc($dbaccess, $name, $cvfamid = "")
     return lfamily($dbaccess, "TIMER", $name, 0, $filter);
 }
 
-/**
- * search list not filters
- */
-function lsearches($dbaccess, $name)
-{
 
-    $filter = array(
-        "fromid=5 or fromid=16"
-    );
-    return lfamily($dbaccess, "SEARCH", $name, 0, $filter);
-}
 
 /**
  * tab list not filters

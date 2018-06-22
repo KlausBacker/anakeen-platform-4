@@ -13,13 +13,13 @@
     </xs:element>
 
     <xs:complexType name="attr-returnType">
-                <xs:attribute type="v1:attrNameType" name="attr"/>
+        <xs:attribute type="v1:attrNameType" name="attr"/>
     </xs:complexType>
 
     <xs:complexType name="attr-overrideType">
         <xs:complexContent>
-            <xs:extension base="v1:attr-standardType">
-                <xs:attribute type="v1:attrNameType" name="attr"/>
+            <xs:extension base="v1:attr-propsStandardType">
+                <xs:attribute type="v1:attrNameType" name="attr" use="required"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -86,8 +86,8 @@
     </xs:complexType>
     <xs:complexType name="enumType">
 
-                <xs:attribute type="xs:token" name="name"/>
-                <xs:attribute type="xs:string" name="label"/>
+        <xs:attribute type="xs:token" name="name"/>
+        <xs:attribute type="xs:string" name="label"/>
 
     </xs:complexType>
     <xs:complexType name="enum-configurationType">
@@ -97,11 +97,11 @@
         <xs:attribute type="xs:token" name="name"/>
         <xs:attribute type="xs:boolean" name="extendable" default="false"/>
     </xs:complexType>
-    <xs:complexType name="attr-standardType" >
+
+    <xs:complexType name="attr-propsStandardType">
         <xs:sequence minOccurs="0" maxOccurs="unbounded">
             <xs:element type="v1:attr-optionType" name="attr-option"/>
         </xs:sequence>
-        <xs:attribute type="v1:attrNameType" name="name" use="required"/>
         <xs:attribute type="xs:string" name="label"/>
         <xs:attribute type="xs:boolean" name="needed"/>
         <xs:attribute type="v1:visibilityType" name="visibility">
@@ -122,11 +122,18 @@
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
-
         <xs:attribute type="xs:boolean" name="is-abstract" default="false"/>
         <xs:attribute type="xs:boolean" name="is-title" default="false"/>
         <xs:attribute type="xs:string" name="link"/>
         <xs:attribute type="xs:string" name="multiple"/>
+    </xs:complexType>
+
+    <xs:complexType name="attr-standardType">
+        <xs:complexContent>
+            <xs:extension base="v1:attr-propsStandardType">
+                <xs:attribute type="v1:attrNameType" name="name" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
     </xs:complexType>
 
     <xs:simpleType name="attrNameType">
@@ -278,7 +285,7 @@
                 </xs:annotation>
 
             </xs:element>
-            <xs:element type="v1:revisable" name="revisable" minOccurs="0"/>
+            <xs:element type="v1:revisableType" name="revisable" default="default" minOccurs="0"/>
             <xs:element type="xs:string" name="usefor" minOccurs="0"/>
             <xs:element type="xs:string" name="tag" minOccurs="0"/>
             <xs:element type="v1:attributesType" name="attributes" minOccurs="0"/>
@@ -286,11 +293,13 @@
             <xs:element type="v1:attr-overrideType" name="attr-override" minOccurs="0"/>
             <xs:element type="v1:hooksType" name="hooks" minOccurs="0"/>
             <xs:element type="v1:autocompletionType" name="autocompletion" minOccurs="0"/>
-            <xs:element type="v1:defaultsType" name="defaults" minOccurs="0"> <xs:annotation>
-                <xs:documentation>
-                    <h1>Indicates defaults values used when create new smart element</h1>
-                </xs:documentation>
-            </xs:annotation></xs:element>
+            <xs:element type="v1:defaultsType" name="defaults" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        <h1>Indicates defaults values used when create new smart element</h1>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
 
             <xs:element type="v1:accessesType" name="accesses" minOccurs="0"/>
         </xs:sequence>
@@ -382,15 +391,19 @@
         </xs:simpleContent>
     </xs:complexType>
 
+    <xs:simpleType name="revisableEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="default"/>
+            <xs:enumeration value="false"/>
+            <xs:enumeration value="auto"/>
+        </xs:restriction>
+    </xs:simpleType>
 
-    <xs:complexType name="revisable">
+    <xs:complexType name="revisableType" mixed="true">
         <xs:simpleContent>
-            <xs:restriction base="xs:string">
-                <xs:enumeration value="true"/>
-                <xs:enumeration value="false"/>
-                <xs:enumeration value="auto"/>
-                <xs:attribute type="xs:int" name="max"/>
-            </xs:restriction>
+            <xs:extension base="v1:revisableEnum">
+                <xs:attribute name="max" type="xs:int"/>
+            </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
 
@@ -420,7 +433,7 @@
             <xs:element type="v1:attr-hookType" name="attr-hook" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="attr-fieldsetType" mixed="true">
+    <xs:complexType name="attr-fieldsetType">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
             <xs:element type="v1:attr-fieldsetType" name="attr-fieldset"/>
             <xs:element type="v1:attr-standardType" name="attr-date"/>
@@ -439,6 +452,8 @@
             <xs:element type="v1:attr-enumType" name="attr-enum"/>
             <xs:element type="v1:attr-relationType" name="attr-docid"/>
             <xs:element type="v1:attr-relationType" name="attr-account"/>
+            <xs:element type="v1:attr-standardType" name="attr-xml"/>
+            <xs:element type="v1:attr-standardType" name="attr-json"/>
             <xs:element type="v1:attr-optionType" name="attr-option"/>
         </xs:choice>
         <xs:attribute type="v1:attrNameType" name="name" use="required"/>

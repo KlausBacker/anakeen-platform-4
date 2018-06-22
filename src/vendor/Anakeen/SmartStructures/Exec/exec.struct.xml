@@ -84,7 +84,7 @@
                 <smart:attr-callable function="lapplications" external-file="fdl.php"/>
                 <smart:attr-argument type="attribute">EXEC_APPLICATION</smart:attr-argument>
                 <smart:attr-returns>
-                    <smart:attr-return attr="EXEC_APPLICATION"/>
+                    <smart:attr-return attr="exec_application"/>
                 </smart:attr-returns>
             </smart:attr-autocomplete>
             <smart:attr-autocomplete attr="exec_action">
@@ -92,14 +92,14 @@
                 <smart:attr-argument type="attribute">EXEC_APPLICATION</smart:attr-argument>
                 <smart:attr-argument type="attribute">EXEC_ACTION</smart:attr-argument>
                 <smart:attr-returns>
-                    <smart:attr-return attr="EXEC_ACTION"/>
+                    <smart:attr-return attr="exec_action"/>
                 </smart:attr-returns>
             </smart:attr-autocomplete>
             <smart:attr-autocomplete attr="exec_api">
                 <smart:attr-callable function="lapi" external-file="fdl.php"/>
                 <smart:attr-argument type="attribute">EXEC_API</smart:attr-argument>
                 <smart:attr-returns>
-                    <smart:attr-return attr="EXEC_API"/>
+                    <smart:attr-return attr="exec_api"/>
                 </smart:attr-returns>
             </smart:attr-autocomplete>
         </smart:autocompletion>

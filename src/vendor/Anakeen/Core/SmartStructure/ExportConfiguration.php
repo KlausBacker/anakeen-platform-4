@@ -48,6 +48,9 @@ class ExportConfiguration
 
         $structConfig = $this->cel("structure-configuration");
         $structConfig->setAttribute("name", $this->sst->name);
+        if ($this->sst->id < 1000) {
+             $structConfig->setAttribute("id", $this->sst->id);
+        }
 
         $this->domConfig->appendChild($structConfig);
         $this->extractProps($structConfig);
@@ -381,7 +384,7 @@ class ExportConfiguration
         $attrs = $this->sst->getNormalAttributes();
         $enumNames = [];
         foreach ($attrs as $attr) {
-            if ($attr->type === "enum" && $attr->format) {
+            if ($attr->type === "enum" && $attr->format && $attr->docid == $this->sst->id) {
                 $enumNames[] = $attr->format;
             }
         }

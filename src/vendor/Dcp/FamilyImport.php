@@ -736,6 +736,13 @@ class FamilyImport
                                     $sqltype = " tsvector";
                                     break;
 
+                                case 'xml':
+                                    $sqltype = "xml";
+                                    break;
+
+                                case 'json':
+                                    $sqltype = "jsonb";
+                                    break;
                                 default:
                                     $sqltype = " text";
                             }
