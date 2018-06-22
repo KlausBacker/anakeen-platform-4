@@ -156,7 +156,7 @@ import searchAttributes from './searchAttributes';
                         return document.type === "search";
                     },
                     "attributeCheck": function isFamily(attribute) {
-                        if (attribute.id === "se_fam") {
+                        if (attribute.id === "se_famid") {
                             return true;
                         }
                     }

@@ -236,9 +236,11 @@ class Autocomplete
         }
         $attributes = $this->contentParameters["attributes"];
         $attrName = strtolower($name);
+
         if (isset($attributes[$attrName])) {
             if ($index < 0) {
-                if (is_array($attributes[$attrName])) {
+                if (isset($attributes[$attrName][0])) {
+                    // It is a real multiple values
                     return array_map(function ($data) {
                         if (array_key_exists("value", $data)) {
                             return $data["value"];

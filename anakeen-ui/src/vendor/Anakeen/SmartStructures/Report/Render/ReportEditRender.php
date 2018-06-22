@@ -57,17 +57,10 @@ class ReportEditRender extends SearchEditRender
                 "grow" => true
             ]
         ));
+        $options->int(myAttr::rep_limit)->setInputTooltip(xml_entity_encode(
+           ___("Number maximum of displayed elements", "smart report")
+        ));
         return $options;
     }
 
-    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document)
-    {
-        $vis = parent::getVisibilities($document);
-        $vis->setVisibility(myAttr::rep_style, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
-        $vis->setVisibility(myAttr::rep_coloreven, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
-        $vis->setVisibility(myAttr::rep_colorodd, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
-        $vis->setVisibility(myAttr::rep_colors, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
-        $vis->setVisibility(myAttr::rep_colorhf, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
-        return $vis;
-    }
 }

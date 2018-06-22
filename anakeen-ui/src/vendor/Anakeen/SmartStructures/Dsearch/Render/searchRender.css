@@ -104,7 +104,7 @@
 
 /* hide se_fam @se_crit */
 
-.dcpFrame__content[data-attrid=se_crit] .dcpAttribute[data-attrid=se_fam]{
+.dcpFrame__content[data-attrid=se_crit] .dcpAttribute[data-attrid=se_famid]{
     display: none;
 }
 
