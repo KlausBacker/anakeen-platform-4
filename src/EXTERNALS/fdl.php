@@ -1026,6 +1026,7 @@ function getReportSortableColumns($dbaccess, $famid, $name = "")
     }
     // Attributes
     $attrList = $doc->getSortAttributes();
+
     foreach ($attrList as $attr) {
         if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel(), $m))) {
             $html = '<b><i>' . _getParentLabel($attr) . '</i></b><br/><span>&nbsp;&nbsp;' . $attr->getLabel() . '</span>';

@@ -321,6 +321,7 @@
     <xs:complexType name="defaultsType">
         <xs:sequence>
             <xs:element type="v1:defaultType" name="default" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="v1:defaultType" name="initial" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 

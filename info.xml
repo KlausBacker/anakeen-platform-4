@@ -301,7 +301,7 @@
             <label>Add Specialized searches family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Report/report.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Report/report.struct.xml">
             <label>Add Report family</label>
         </process>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Image/image.struct.csv">
@@ -607,7 +607,7 @@
             <label>Add Specialized searches family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Report/report.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Report/report.struct.xml">
             <label>Add Report family</label>
         </process>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Image/image.struct.csv">

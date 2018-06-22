@@ -13,7 +13,7 @@ class ImportSmartConfiguration
      */
     protected $dom;
     protected $verbose = false;
-    protected $profilElements=[];
+    protected $profilElements = [];
 
 
     /**
@@ -46,6 +46,7 @@ class ImportSmartConfiguration
 
     /**
      * @param bool $verbose
+     *
      * @return ImportSmartConfiguration
      */
     public function setVerbose(bool $verbose)
@@ -62,11 +63,12 @@ class ImportSmartConfiguration
             $data = array_merge($data, $this->importSmartStructureConfig($config));
         }
 
+        $data = array_merge($data, $this->extractEnumConfig($this->dom->documentElement));
         $accessConfigs = $this->getNodes($this->dom->documentElement, "access-configuration");
         foreach ($accessConfigs as $config) {
             $data = array_merge($data, $this->importSmartAccessConfig($config));
         }
-        $data=array_merge($this->profilElements, $data);
+        $data = array_merge($this->profilElements, $data);
         if ($this->verbose) {
             $this->print($data);
         }
@@ -144,7 +146,6 @@ class ImportSmartConfiguration
 
         $data = array_merge($data, $this->extractModAttrs($config));
         $data = array_merge($data, $this->extractAloneHooks($config));
-        $data = array_merge($data, $this->extractEnumConfig($this->dom->documentElement));
         $data[] = ["END"];
 
         if ($this->getError()) {
@@ -225,7 +226,10 @@ class ImportSmartConfiguration
                  * @var \DOMElement $attrNode
                  */
                 if ($attrNode->tagName === "smart:default") {
-                    $data[] = $this->extractDefault($attrNode);
+                    $data[] = $this->extractDefault($attrNode, "DEFAULT");
+                }
+                if ($attrNode->tagName === "smart:initial") {
+                    $data[] = $this->extractDefault($attrNode, "INITIAL");
                 }
             }
         }
@@ -363,9 +367,10 @@ class ImportSmartConfiguration
     }
 
 
-    protected function extractDefault(\DOMElement $attrNode)
+    protected function extractDefault(\DOMElement $attrNode, $key)
     {
-        $data = ["DEFAULT"];
+        $data = [$key];
+
         $nodeValue = trim($attrNode->nodeValue);
         $data[1] = $attrNode->getAttribute("attr");
         if ($nodeValue !== "") {
@@ -514,7 +519,7 @@ class ImportSmartConfiguration
                     $method = $this->getCallableString($hook);
                     $callable = $this->getNode($hook, "attr-callable");
                     $file = $callable->getAttribute("external-file");
-                    $hook->setAttribute("__used__", true);
+                    $hook->setAttribute("__used__", "true");
                 }
             }
         }
@@ -625,6 +630,7 @@ class ImportSmartConfiguration
     /**
      * @param string      $name
      * @param \DOMElement $e
+     *
      * @return \DOMNodeList
      */
     private function getNodes(\DOMElement $e, $name)
@@ -635,6 +641,7 @@ class ImportSmartConfiguration
     /**
      * @param \DOMElement $e
      * @param string      $name
+     *
      * @return \DOMElement
      */
     private function getNode(\DOMElement $e, $name)
@@ -649,6 +656,7 @@ class ImportSmartConfiguration
     /**
      * @param \DOMElement $e
      * @param string      $name
+     *
      * @return \DOMElement
      */
     private function getClosest(\DOMElement $e, $name)
@@ -665,6 +673,7 @@ class ImportSmartConfiguration
 
     /**
      * return all error message concatenated
+     *
      * @return string
      */
     public function getErrorMessage()
@@ -684,6 +693,7 @@ class ImportSmartConfiguration
 
     /**
      * @param $hook
+     *
      * @return string
      */
     protected function getCallableString(\DOMElement $hook): string
