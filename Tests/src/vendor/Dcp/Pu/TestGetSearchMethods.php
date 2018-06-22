@@ -1,12 +1,9 @@
 <?php
-/*
- * @author Anakeen
- * @package Dcp\Pu
-*/
 
 namespace Dcp\Pu;
 
-//require_once 'PU_testcase_dcp_commonfamily.php';
+use Anakeen\Core\SEManager;
+use Anakeen\SmartStructures\Dsearch\DSearchHooks;
 
 class TestGetSearchMethods extends TestCaseDcpCommonFamily
 {
@@ -21,35 +18,35 @@ class TestGetSearchMethods extends TestCaseDcpCommonFamily
             "PU_data_dcp_getSearchMethods.ods"
         );
     }
+
     /**
      * Test getSearchMethods() method
      *
-     * @dataProvider data_getSearchMethods
+     * @dataProvider dataGetSearchMethods
      * @param $famid
      * @param $attrid
      * @param $type
      * @param $hasMethods
-     * @internal param $data
+     * @internal     param $data
      */
-    public function test_getSearchMethods($famid, $attrid, $type, $hasMethods)
+    public function testGetSearchMethods($famid, $attrid, $type, $hasMethods)
     {
-        $tmpDoc = createTmpDoc(self::$dbaccess, $famid);
-        $this->assertTrue(is_object($tmpDoc) , sprintf("Error creating temorary document from family '%s'.", $famid));
-        
+        $tmpDoc = SEManager::createTemporaryDocument($famid);
+        $this->assertTrue(is_object($tmpDoc), sprintf("Error creating temorary document from family '%s'.", $famid));
+
         $methodList = $tmpDoc->getSearchMethods($attrid, $type);
-        $this->assertTrue((count($methodList) > 0) , sprintf("Empty method list for attribute '%s' with type '%s' from family '%s'.", $attrid, $type, $famid));
-        
-        $methodNameList = array_map(function ($elmt)
-        {
+        $this->assertTrue((count($methodList) > 0), sprintf("Empty method list for attribute '%s' with type '%s' from family '%s'.", $attrid, $type, $famid));
+
+        $methodNameList = array_map(function ($elmt) {
             return $elmt['method'];
-        }
-        , $methodList);
-        
+        }, $methodList);
+
         foreach ($hasMethods as $methodName) {
-            $this->assertTrue(in_array($methodName, $methodNameList) , sprintf("Expected method '%s' not found in returned methods (%s)", $methodName, join(', ', $methodNameList)));
+            $this->assertTrue(in_array($methodName, $methodNameList), sprintf("Expected method '%s' not found in returned methods (%s)", $methodName, join(', ', $methodNameList)));
         }
     }
-    public function data_getSearchMethods()
+
+    public function dataGetSearchMethods()
     {
         return array(
             array(
@@ -61,7 +58,7 @@ class TestGetSearchMethods extends TestCaseDcpCommonFamily
                     '::getDate()',
                     '::getDate(1)'
                 )
-            ) ,
+            ),
             array(
                 'TST_GETSEARCHMETHODS',
                 's_timestamp',
@@ -71,7 +68,7 @@ class TestGetSearchMethods extends TestCaseDcpCommonFamily
                     '::getDate()',
                     '::getDate(1)'
                 )
-            ) ,
+            ),
             array(
                 'TST_GETSEARCHMETHODS_OVERRIDE',
                 's_date',
@@ -83,7 +80,7 @@ class TestGetSearchMethods extends TestCaseDcpCommonFamily
                     '::getDate(1)',
                     '::getDate(365)'
                 )
-            ) ,
+            ),
             array(
                 'TST_GETSEARCHMETHODS_OVERRIDE',
                 's_text',
@@ -91,7 +88,7 @@ class TestGetSearchMethods extends TestCaseDcpCommonFamily
                 array(
                     '::getFoo()'
                 )
-            ) ,
+            ),
             array(
                 'TST_GETSEARCHMETHODS_OVERRIDE',
                 's_double',
@@ -102,28 +99,31 @@ class TestGetSearchMethods extends TestCaseDcpCommonFamily
             )
         );
     }
+
     /**
      * Test invalid/non explicitly declared search methods
      *
-     * @dataProvider data_invalidSearchMethod
+     * @dataProvider dataInvalidSearchMethod
      * @param string $dSearchId
      */
-    public function test_invalidSearchMethod($dSearchId)
+    public function testInvalidSearchMethod($dSearchId)
     {
         /**
-         * @var \_DSEARCH $dSearch
+         * @var DSearchHooks $dSearch
          */
-        $dSearch = new_Doc(self::$dbaccess, $dSearchId, true);
-        $this->assertTrue($dSearch->isAlive() , sprintf("dSearch with id '%s' is not alive.", $dSearchId));
+
+        $dSearch = SEManager::getDocument($dSearchId);
+        $this->assertTrue($dSearch->isAlive(), sprintf("dSearch with id '%s' is not alive.", $dSearchId));
         $sql = $dSearch->getSqlDetailFilter();
-        $this->assertTrue(($sql == 'false') , sprintf("getSqlDetailFilter() did not returned (string)'false' (returned value is '%s').", $sql));
+        $this->assertTrue(($sql == 'false'), sprintf("getSqlDetailFilter() did not returned (string)'false' (returned value is '%s').", $sql));
     }
-    public function data_invalidSearchMethod()
+
+    public function dataInvalidSearchMethod()
     {
         return array(
             array(
                 'DSEARCH_TST_GETSEARCHMETHODS_1'
-            ) ,
+            ),
             array(
                 'DSEARCH_TST_GETSEARCHMETHODS_2'
             )

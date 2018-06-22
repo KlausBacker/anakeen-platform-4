@@ -289,7 +289,7 @@
             <label>CVDOC Family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Search/search.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Search/search.struct.xml">
             <label>Add Search family</label>
         </process>
 
@@ -595,7 +595,7 @@
             <label>CVDOC Family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Search/search.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Search/search.struct.xml">
             <label>Add Search family</label>
         </process>
 

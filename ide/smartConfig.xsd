@@ -286,7 +286,11 @@
             <xs:element type="v1:attr-overrideType" name="attr-override" minOccurs="0"/>
             <xs:element type="v1:hooksType" name="hooks" minOccurs="0"/>
             <xs:element type="v1:autocompletionType" name="autocompletion" minOccurs="0"/>
-            <xs:element type="v1:defaultsType" name="defaults" minOccurs="0"/>
+            <xs:element type="v1:defaultsType" name="defaults" minOccurs="0"> <xs:annotation>
+                <xs:documentation>
+                    <h1>Indicates defaults values used when create new smart element</h1>
+                </xs:documentation>
+            </xs:annotation></xs:element>
 
             <xs:element type="v1:accessesType" name="accesses" minOccurs="0"/>
         </xs:sequence>
