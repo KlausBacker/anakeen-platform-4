@@ -48,7 +48,7 @@ class LoginPage
                     "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/document/kendo.css")
                 ],
                 [
-                    "key" => "admin",
+                    "key" => "login",
                     "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/document/login.css")
                 ]
             ]

@@ -6,6 +6,7 @@ gracefulFs.gracefulify(fs);
 
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 const merge = require('webpack-merge');
 const parts = require('./webpack.parts');
@@ -23,6 +24,23 @@ const commonConfig = merge([{
         module: {
             rules: [
                 {
+                    test: /\.vue$/,
+                    use: {
+                        loader: 'vue-loader',
+                    },
+                },
+                {
+                    test: /\.(scss|sass)$/,
+                    issuer: /\.vue$/,
+                    use: [
+                        {
+                            loader: 'vue-style-loader',
+                        },
+                        'css-loader',
+                        'sass-loader',
+                    ],
+                },
+                {
                     test: /\.js$/,
                     include: [
                         path.resolve(__dirname, '../anakeen-ui/'),
@@ -30,22 +48,6 @@ const commonConfig = merge([{
                     ],
                     use: {
                         loader: 'babel-loader',
-                        options: {
-                            presets: ['env'],
-                            babelrc: false,
-                        },
-                    },
-                },
-                {
-                    test: /\.vue$/,
-                    use: {
-                        loader: 'vue-loader',
-                        options: {
-                            extractCSS: true, loaders: {
-                                sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
-                                scss: 'vue-style-loader!css-loader!sass-loader',
-                            },
-                        },
                     },
                 },
                 {
@@ -54,7 +56,15 @@ const commonConfig = merge([{
                     use: 'raw-loader',
                 },
             ],
-        }
+        },
+        plugins: [
+            new VueLoaderPlugin(),
+        ],
+        resolve: {
+            alias: {
+                vue$: 'vue/dist/vue.esm.js',
+            },
+        },
     },
         parts.cssLoader([
             /loading\.css/,
@@ -69,7 +79,8 @@ const commonConfig = merge([{
 const productionComponentConfig = merge([
     {
         entry: {
-            'ank-components': ['core-js/es6/promise', PATHS.components],
+            'ank-components': [PATHS.components],
+            'ank-components-ie11': ['babel-polyfill', '@webcomponents/webcomponentsjs/webcomponents-bundle.js', PATHS.components]
         },
         output: {
             publicPath: '/components/dist/',
@@ -92,7 +103,8 @@ const productionComponentConfig = merge([
 const debugComponentConfig = merge([
     {
         entry: {
-            'ank-components': ['core-js/es6/promise', PATHS.components],
+            'ank-components': [PATHS.components],
+            'ank-components-ie11': ['babel-polyfill', '@webcomponents/webcomponentsjs/webcomponents-bundle.js', PATHS.components]
         },
         output: {
             publicPath: '/components/debug/',
@@ -111,7 +123,8 @@ const debugComponentConfig = merge([
 const devComponentConfig = merge([
     {
         entry: {
-            'ank-components': ['core-js/es6/promise', PATHS.components],
+            'ank-components': [PATHS.components],
+            'ank-components-ie11': ['babel-polyfill', '@webcomponents/webcomponentsjs/webcomponents-bundle.js', PATHS.components]
         },
         output: {
             publicPath: '/components/debug/',
@@ -136,13 +149,13 @@ const devComponentConfig = merge([
 module.exports = env => {
     if (env === 'production') {
         return [
-            merge(commonConfig, productionComponentConfig)
+            merge(commonConfig, productionComponentConfig),
         ];
     }
 
     if (env === 'debug') {
         return [
-            merge(commonConfig, debugComponentConfig)
+            merge(commonConfig, debugComponentConfig),
         ];
     }
 

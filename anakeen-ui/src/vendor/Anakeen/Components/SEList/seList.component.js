@@ -71,11 +71,9 @@ export default {
                                             params,
                                         })
                                     .then((response) => {
-                                        if (!this.collectionLabel) {
-                                            const apiData = response.data.data;
-                                            if (apiData && apiData.collection && apiData.collection.properties) {
-                                                this.collection.title = apiData.collection.properties.title;
-                                            }
+                                        const apiData = response.data.data;
+                                        if (apiData && apiData.collection && apiData.collection.properties) {
+                                            _this.collection = Object.assign({}, _this.collection, apiData.collection.properties);
                                         }
 
                                         options.success(response);

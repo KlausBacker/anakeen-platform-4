@@ -1,5 +1,3 @@
-import customEvent from 'vue-custom-element/src/utils/customEvent';
-
 const getSenderElement = (element) => {
     let senderElement = element;
     while (senderElement && !senderElement.__vue_custom_element__) {
@@ -19,7 +17,7 @@ const DEFAULT_EVENT_PARAMS = {
     detail: [],
 };
 
-const isEvent = (event, eventName) => {
+export const isEvent = (event, eventName) => {
     if (event === undefined || event === null) {
         return false;
     }

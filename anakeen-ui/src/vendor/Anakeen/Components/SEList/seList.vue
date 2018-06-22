@@ -1,6 +1,6 @@
 <template>
     <div class="seList__wrapper" ref="wrapper">
-        <div class="seList" v-show="collection">
+        <div class="seList">
             <div class="seList__header__slot">
                 <slot name="header">
                     <img class="seList__logo__img" :src="logoUrl"/>
