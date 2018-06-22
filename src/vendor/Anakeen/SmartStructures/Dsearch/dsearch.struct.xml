@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+    <smart:structure-configuration name="DSEARCH" id="16" label="Recherche détaillée" extends="SEARCH">
+        <smart:icon file="se-dsearch.png"/>
+        <smart:class>Anakeen\SmartStructures\Dsearch\DSearchHooks</smart:class>
+        <smart:usefor>S</smart:usefor>
+        <smart:attributes>
+            <smart:attr-fieldset name="se_fr_detail" type="frame" label="Conditions" visibility="W">
+                <smart:attr-enum name="se_ol" label="Condition" visibility="W" relation="DSEARCH-se_ol"/>
+                <smart:attr-fieldset name="se_t_detail" type="array" label="Conditions" visibility="W">
+                    <smart:attr-enum name="se_ols" label="Opérateur" visibility="W" relation="DSEARCH-se_ols"/>
+                    <smart:attr-enum name="se_leftp" label="Parenthèse gauche" visibility="W" relation="DSEARCH-se_leftp"/>
+                    <smart:attr-text name="se_attrids" label="Attributs" visibility="W"/>
+                    <smart:attr-text name="se_funcs" label="Fonctions" visibility="W"/>
+                    <smart:attr-text name="se_keys" label="Mot-clefs" visibility="W"/>
+                    <smart:attr-enum name="se_rightp" label="Parenthèse droite" visibility="W" relation="DSEARCH-se_rightp"/>
+                </smart:attr-fieldset>
+                <smart:attr-fieldset name="se_t_filters" type="array" label="Filtres" visibility="R">
+                    <smart:attr-option name="empty">yes</smart:attr-option>
+                    <smart:attr-xml name="se_filter" label="Filtre" visibility="R"/>
+                    <smart:attr-enum name="se_typefilter" label="Type" visibility="R" relation="DSEARCH-se_typefilter"/>
+                </smart:attr-fieldset>
+            </smart:attr-fieldset>
+        </smart:attributes>
+        <smart:parameters/>
+        <smart:hooks>
+            <smart:attr-hook type="constraint" event="onPreStore" attr="se_t_detail">
+                <smart:attr-callable function="::checkConditions"/>
+                <smart:attr-return/>
+            </smart:attr-hook>
+            <smart:attr-hook type="constraint" event="onPreStore" attr="se_keys">
+                <smart:attr-callable function="::isValidCondition"/>
+                <smart:attr-argument type="attribute">se_attrids</smart:attr-argument>
+                <smart:attr-argument type="attribute">se_funcs</smart:attr-argument>
+                <smart:attr-argument type="attribute">se_keys</smart:attr-argument>
+                <smart:attr-return/>
+            </smart:attr-hook>
+        </smart:hooks>
+        <smart:autocompletion/>
+        <smart:defaults>
+            <smart:default attr="se_latest">yes</smart:default>
+        </smart:defaults>
+        <smart:accesses/>
+    </smart:structure-configuration>
+    <smart:enumerates>
+        <smart:enum-configuration name="DSEARCH-se_ol">
+            <smart:enum name="and" label="satisfait toutes les conditions"/>
+            <smart:enum name="or" label="satisfait au moins une condition"/>
+            <smart:enum name="perso" label="personnalisée"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="DSEARCH-se_ols">
+            <smart:enum name="and" label="et"/>
+            <smart:enum name="or" label="ou"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="DSEARCH-se_leftp">
+            <smart:enum name="no" label=""/>
+            <smart:enum name="yes" label="("/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="DSEARCH-se_rightp">
+            <smart:enum name="no" label=""/>
+            <smart:enum name="yes" label=")"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="DSEARCH-se_typefilter">
+            <smart:enum name="specified" label="Spécifié"/>
+            <smart:enum name="generated" label="Généré"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+</smart:config>

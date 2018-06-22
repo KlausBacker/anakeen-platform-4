@@ -4,11 +4,7 @@
 
     <description lang="en">Smart Data Engine</description>
 
-    <replaces>
-        <module name="anakeen-core"/>
-        <module name="dynacase-core"/>
-        <module name="dynacase-httpapi-v1"/>
-    </replaces>
+
 
     <requires>
         <installer version="1.4.0" comp="ge"/>
@@ -293,25 +289,25 @@
             <label>Add Search family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Msearch/msearch.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml">
             <label>Add Grouped searches family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml">
             <label>Add Detailled searches family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml">
             <label>Add Specialized searches family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Report/report.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Report/report.struct.xml">
             <label>Add Report family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Image/image.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Image/image.struct.xml">
             <label>Add Image family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/File/file.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/File/file.struct.xml">
             <label>Add File family</label>
         </process>
 
@@ -599,25 +595,25 @@
             <label>Add Search family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Msearch/msearch.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml">
             <label>Add Grouped searches family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml">
             <label>Add Detailled searches family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml">
             <label>Add Specialized searches family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Report/report.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Report/report.struct.xml">
             <label>Add Report family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Image/image.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Image/image.struct.xml">
             <label>Add Image family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/File/file.struct.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/File/file.struct.xml">
             <label>Add File family</label>
         </process>
 

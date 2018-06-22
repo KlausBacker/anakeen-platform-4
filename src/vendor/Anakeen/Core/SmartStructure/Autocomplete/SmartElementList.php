@@ -22,7 +22,6 @@ class SmartElementList
      */
     public static function getSmartElements(SmartAutocompleteRequest $request, SmartAutocompleteResponse $response, $args): SmartAutocompleteResponse
     {
-        $only = false;
         $famid = $args["smartstructure"];
         if (!empty($args["revised"])) {
             $idid = "id";
@@ -31,7 +30,7 @@ class SmartElementList
         }
         $name = $request->getFilterValue();
         if ($famid[0] == '-') {
-            $only = true;
+            $args["only"] = "true";
             $famid = substr($famid, 1);
         }
 
@@ -42,13 +41,12 @@ class SmartElementList
                 return $response->setError(sprintf(___("Smart Structure \"%s\" not found", "autocomplete"), $famName));
             }
         }
-        $s = new \SearchDoc("", $famid);
-        if ($only) {
-            $s->only = true;
-        }
+        $args["smartstructure"]=$famid;
+        $s = static::getSearchConfig($args);
 
-        if (! empty($args["filter"])) {
-              $s->addFilter($args["filter"]);
+
+        if (!empty($args["filter"])) {
+            $s->addFilter($args["filter"]);
         }
         if ($name != "" && is_string($name)) {
             if (!self::$withDiacritic) {
@@ -81,6 +79,17 @@ class SmartElementList
         return $response;
     }
 
+    protected static function getSearchConfig(array $args)
+    {
+        $famid = $args["smartstructure"];
+        $s = new \SearchDoc("", $famid);
+        if (!empty($args["only"])) {
+            $s->only = true;
+        }
+
+        return $s;
+    }
+
     /**
      * create preg rule to search without diacritic
      *
@@ -90,8 +99,9 @@ class SmartElementList
      *
      * @return string rule for preg
      */
-    public static function setDiacriticRules($text)
-    {
+    public static function setDiacriticRules(
+        $text
+    ) {
         $dias = array(
             "a|à|á|â|ã|ä|å",
             "o|ò|ó|ô|õ|ö|ø",

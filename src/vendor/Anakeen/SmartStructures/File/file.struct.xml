@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+  <smart:structure-configuration name="FILE" id="7" label="Fichier">
+    <smart:icon file="se-file.png"/>
+    <smart:class>Anakeen\SmartStructures\File\FileHooks</smart:class>
+    <smart:revisable>auto</smart:revisable>
+    <smart:usefor>N</smart:usefor>
+    <smart:attributes>
+      <smart:attr-fieldset name="fi_frdesc" type="frame" label="Description" visibility="W">
+        <smart:attr-text name="fi_title" label="titre" visibility="R" is-title="true"/>
+        <smart:attr-text name="fi_titlew" label="titre" visibility="O"/>
+        <smart:attr-file name="fi_file" label="principal" visibility="W" needed="true" is-abstract="true"/>
+      </smart:attr-fieldset>
+    </smart:attributes>
+    <smart:parameters/>
+    <smart:hooks/>
+    <smart:autocompletion/>
+    <smart:defaults/>
+    <smart:accesses/>
+  </smart:structure-configuration>
+</smart:config>

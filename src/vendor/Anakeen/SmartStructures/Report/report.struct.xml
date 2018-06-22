@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+    <smart:structure-configuration name="REPORT" id="25" label="Rapport" extends="DSEARCH">
+        <smart:icon file="se-report.png"/>
+        <smart:class>Anakeen\SmartStructures\Report\ReportHooks</smart:class>
+        <smart:usefor>S</smart:usefor>
+        <smart:attributes>
+            <smart:attr-fieldset name="rep_tab_presentation" type="tab" label="Présentation" visibility="W">
+                <smart:attr-fieldset name="rep_fr_presentation" type="frame" label="Présentation" visibility="W">
+                    <smart:attr-longtext name="rep_caption" label="Description" visibility="W" is-abstract="true"/>
+                    <smart:attr-text name="rep_sort" label="Tri" visibility="W"/>
+                    <smart:attr-text name="rep_idsort" label="Id tri" visibility="H"/>
+                    <smart:attr-enum name="rep_ordersort" label="Ordre" visibility="W" relation="REPORT-rep_ordersort"/>
+                    <smart:attr-int name="rep_limit" label="Limite" visibility="W"/>
+                    <smart:attr-fieldset name="rep_tcols" type="array" label="Colonnes" visibility="W">
+                        <smart:attr-text name="rep_lcols" label="Label" visibility="W"/>
+                        <smart:attr-text name="rep_idcols" label="Id colonnes" visibility="H"/>
+                        <smart:attr-text name="rep_displayoption" label="Option de présentation" visibility="H"/>
+                        <smart:attr-color name="rep_colors" label="Couleur" visibility="W"/>
+                        <smart:attr-enum name="rep_foots" label="Pied de tableau" visibility="W" relation="report-rep_foots"/>
+                    </smart:attr-fieldset>
+
+                </smart:attr-fieldset>
+            </smart:attr-fieldset>
+        </smart:attributes>
+        <smart:parameters>
+            <smart:attr-fieldset name="rep_fr_param" type="frame" label="Paramètres" visibility="W">
+                <smart:attr-htmltext name="rep_noaccesstext" label="Texte à afficher pour les valeurs protégées" visibility="W">
+                    <smart:attr-option name="elabel">Dans la cas où un attribut est protégé (visibilité I)</smart:attr-option>
+                </smart:attr-htmltext>
+                <smart:attr-int name="rep_maxdisplaylimit" label="Limite d'affichage pour le nombre de rangées" visibility="W"/>
+            </smart:attr-fieldset>
+        </smart:parameters>
+        <smart:hooks>
+            <smart:attr-hook type="constraint" event="onPreStore" attr="rep_limit">
+                <smart:attr-callable function="Anakeen\Core\Utils\Numbers::isInteger"/>
+                <smart:attr-argument type="attribute">rep_limit</smart:attr-argument>
+                <smart:attr-return/>
+            </smart:attr-hook>
+        </smart:hooks>
+        <smart:autocompletion>
+            <smart:attr-autocomplete attr="rep_sort">
+                <smart:attr-callable function="Anakeen\SmartStructures\Report\ReportAutocomplete::getReportSortableColumns"/>
+                <smart:attr-argument name="structure" type="attribute">se_famid</smart:attr-argument>
+                <smart:attr-returns>
+                    <smart:attr-return attr="rep_idsort"/>
+                    <smart:attr-return attr="rep_sort"/>
+                    <smart:attr-return attr="rep_ordersort"/>
+                </smart:attr-returns>
+            </smart:attr-autocomplete>
+
+            <smart:attr-autocomplete attr="rep_lcols">
+                <smart:attr-callable function="Anakeen\SmartStructures\Report\ReportAutocomplete::getReportColumns"/>
+                <smart:attr-argument name="structure" type="attribute">SE_FAMID</smart:attr-argument>
+                <smart:attr-returns>
+                    <smart:attr-return attr="rep_idcols"/>
+                    <smart:attr-return attr="rep_lcols"/>
+                    <smart:attr-return attr="rep_displayoption"/>
+                </smart:attr-returns>
+            </smart:attr-autocomplete>
+        </smart:autocompletion>
+        <smart:defaults>
+            <smart:default attr="se_latest">yes</smart:default>
+            <smart:initial attr="rep_noaccesstext">N.C.</smart:initial>
+            <smart:initial attr="rep_maxdisplaylimit">1000</smart:initial>
+        </smart:defaults>
+
+    </smart:structure-configuration>
+    <smart:enumerates>
+        <smart:enum-configuration name="REPORT-rep_ordersort">
+            <smart:enum name="asc" label="ascendant"/>
+            <smart:enum name="desc" label="descendant"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+
+</smart:config>

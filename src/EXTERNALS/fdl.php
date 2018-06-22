@@ -895,17 +895,7 @@ function ltimerdoc($dbaccess, $name, $cvfamid = "")
     return lfamily($dbaccess, "TIMER", $name, 0, $filter);
 }
 
-/**
- * search list not filters
- */
-function lsearches($dbaccess, $name)
-{
 
-    $filter = array(
-        "fromid=5 or fromid=16"
-    );
-    return lfamily($dbaccess, "SEARCH", $name, 0, $filter);
-}
 
 /**
  * tab list not filters
@@ -1036,6 +1026,7 @@ function getReportSortableColumns($dbaccess, $famid, $name = "")
     }
     // Attributes
     $attrList = $doc->getSortAttributes();
+
     foreach ($attrList as $attr) {
         if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel(), $m))) {
             $html = '<b><i>' . _getParentLabel($attr) . '</i></b><br/><span>&nbsp;&nbsp;' . $attr->getLabel() . '</span>';
