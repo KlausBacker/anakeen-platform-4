@@ -1,6 +1,11 @@
 const {build} = require("../tasks/build");
 const signale = require("signale");
 
+signale.config({
+    displayTimestamp: true,
+    displayDate: true
+  });
+
 exports.desc = 'Build the app file';
 exports.builder = {
     sourceDir: {
@@ -19,8 +24,10 @@ exports.builder = {
 
 exports.handler = function (argv) {
     try {
-        const task = build(argv.sourceDir, argv.targetDir).tasks.build.fn;
+        signale.time("build");
+        const task = build({ sourcePath : argv.sourceDir, targetPath :argv.targetDir}).tasks.build.fn;
         task().then(() => {
+            signale.timeEnd("build")
             signale.success("build done");
         }).catch((e) => {
             signale.error(e);

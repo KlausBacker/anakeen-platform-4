@@ -1,12 +1,12 @@
 const gulp = require('gulp');
 const tar = require('gulp-tar');
-const zip = require('gulp-zip');
+const gzip = require('gulp-gzip');
 const addsrc = require('gulp-add-src');
 const { getModuleInfo } = require("../utils/moduleInfo");
 const path = require("path");
 const appConst = require("../utils/appConst");
 
-exports.build = (sourcePath, targetPath) => {
+exports.build = ({sourcePath = '.', targetPath = '.'}) => {
         return gulp.task('build', async () => {
                 try {
                         const moduleInfo = await getModuleInfo(sourcePath);
@@ -17,7 +17,8 @@ exports.build = (sourcePath, targetPath) => {
                         gulp.src(buildPath)
                                 .pipe(tar(moduleFileName))
                                 .pipe(addsrc(path.join(sourcePath, appConst.infoPath)))
-                                .pipe(zip(moduleFileName+ '.app'))
+                                .pipe(tar(moduleFileName))
+                                .pipe(gzip({ extension: 'app' }))
                                 .pipe(gulp.dest(targetPath));
                 } catch (e) {
                         throw e;

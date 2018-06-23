@@ -13,7 +13,7 @@
     "gulp-add-src": "^1.0.0",
     "gulp-gzip": "^1.4.2",
     "gulp-tar": "^2.1.0",
-    "gulp-zip": "^4.1.0",
+    "node-fetch": "^2.1.2",
     "signale": "^1.2.1",
     "xml2js": "^0.4.19",
     "yargs": "^11.0.0"
