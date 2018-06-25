@@ -15,7 +15,8 @@ exports.build = ({sourcePath = '.', targetPath = '.'}) => {
                                 return path.join(sourcePath, currentSource.$.path, "**");
                         });
                         gulp.src(buildPath)
-                                .pipe(tar(moduleFileName))
+                                .pipe(tar("content"))
+                                .pipe(gzip({ extension: 'tar.gz' }))
                                 .pipe(addsrc(path.join(sourcePath, appConst.infoPath)))
                                 .pipe(tar(moduleFileName))
                                 .pipe(gzip({ extension: 'app' }))
