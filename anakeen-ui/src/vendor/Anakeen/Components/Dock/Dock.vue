@@ -1,6 +1,6 @@
 <template>
     <div id="dock-component" :position="position">
-        <div id="dock" :style="dockSizeStyle">
+        <div id="dock" :style="dockSizeStyle" :class="superposeDockClass">
             <div :id="'header.' + tab.id" class="header-tab" :class="privateScope.selectedSelectable(tab)" :style="headerSizeStyle" v-for="tab in headerTabs" :key="tab.id" @click="selectTabWithId(tab.id)">
                 <span :id="'header-compact.' + tab.id" class="header-tab-compact" :style="'width: ' + compactSize" v-html="tab.compact"></span>
                 <span :id="'header-expanded.' + tab.id" class="header-tab-expanded" :style="expandedSizeStyle" v-html="tab.expanded" v-if="expandedDock || position === 'top' || position === 'bottom'"></span>
@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div id="content" v-show="contentDisplayed" :style="fixedStyle">
+        <div id="content" v-show="contentDisplayed" :style="contentMarginStyle">
             <div :id="'content.' + tab.id" class="dock-tab-content" v-for="tab in headerTabs" :key="tab.id" v-html="tab.content" v-show="tab.content && (tab.id === selectedTab)"></div>
             <div :id="'content.' + tab.id" class="dock-tab-content" v-for="tab in tabs" :key="tab.id" v-html="tab.content" v-show="tab.content && (tab.id === selectedTab)"></div>
             <div :id="'content.' + tab.id" class="dock-tab-content" v-for="tab in footerTabs" :key="tab.id" v-html="tab.content" v-show="tab.content && (tab.id === selectedTab)"></div>

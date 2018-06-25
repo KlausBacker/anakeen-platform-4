@@ -19,6 +19,12 @@ $green-selected: #8ae234;
     cursor: pointer;
   }
 
+  .superpose-dock {
+    position: absolute;
+    z-index: 1;
+    height: 100%
+  }
+
   #dock {
     background-color: $background-color;
     z-index: 1;
@@ -155,13 +161,17 @@ $green-selected: #8ae234;
   justify-content: flex-start;
   align-items: stretch;
 
+  .superpose-dock.expanded-dock {
+      box-shadow: 2px 0 5px #aaa;
+  }
+
   #dock {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    box-shadow: 2px 0 5px #aaa;
     transition: width 500ms ease-out;
+    border-right: solid 1px #aaa;
 
     .selected {
       box-shadow: 2.5px 0 0 $green-selected inset;
@@ -169,12 +179,14 @@ $green-selected: #8ae234;
 
     #expand-button {
       height: $tab-height;
+      border-right: solid 1px #aaa;
     }
 
     .dock-tab {
       height: $tab-height;
       border-bottom: 1px solid $border-color;
       transition: width 500ms ease-out;
+      border-right: solid 1px #aaa;
     }
 
     .footer-tabs {
@@ -183,6 +195,11 @@ $green-selected: #8ae234;
       flex-direction: column;
       justify-content: flex-start;
       align-items: stretch;
+      border-right: solid 1px #aaa;
+    }
+
+    .header-tab {
+      border-right: solid 1px #aaa;
     }
   }
 }
@@ -193,13 +210,17 @@ $green-selected: #8ae234;
   justify-content: flex-start;
   align-items: stretch;
 
+  .expanded-dock.superpose-dock {
+    box-shadow: -2px 0 5px #aaa;
+  }
+
   #dock {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
     transition: width 500ms ease-out;
-    box-shadow: -2px 0 5px #aaa;
+    border-left: solid 1px #aaa;
 
     .selected {
       box-shadow: -2.5px 0 0 $green-selected inset;
@@ -235,12 +256,16 @@ $green-selected: #8ae234;
     box-shadow: 0 2px 0 $green-selected inset;
   }
 
+  .superpose-dock {
+    width: 100%;
+  }
+
   #dock {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: stretch;
-    box-shadow: 0 2px 5px #aaa;
+    border-bottom: solid 1px #aaa;
 
     #expand-button {
       padding-left: 1rem;
@@ -272,16 +297,20 @@ $green-selected: #8ae234;
   justify-content: flex-start;
   align-items: stretch;
 
+  .selected {
+    box-shadow: 0 -2.5px 0 $green-selected inset;
+  }
+
+  .superpose-dock {
+    width: 100%;
+  }
+
   #dock {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: stretch;
-    box-shadow: 0 -2px 5px #aaa;
-
-    .selected {
-      box-shadow: 0 -2.5px 0 $green-selected inset;
-    }
+    border-top: solid 1px #aaa;
 
     #expand-button {
       padding-left: 1rem;

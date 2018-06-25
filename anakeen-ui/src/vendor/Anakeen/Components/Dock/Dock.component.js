@@ -45,6 +45,12 @@ export default {
             type: Boolean,
             default: false,
         },
+
+        // Determine if the dock must collapse when a new tab is selected
+        collapseOnTabSelection: {
+            type: Boolean,
+            default: true,
+        },
     },
 
     data() {
@@ -216,7 +222,13 @@ export default {
                         if (actualSelectedTab) {
                             actualSelectedTab.selected = false;
                         }
+
                         newSelectedTab.selected = true;
+
+                        if (this.collapseOnTabSelection) {
+                            this.contract();
+                        }
+
                         this.$emit('tabSelected', newSelectedTab);
                     } else {
                         this.$emit('tabSelectionCanceled');
@@ -235,26 +247,6 @@ export default {
                 return tab.content;
             } else {
                 return false;
-            }
-        },
-
-        // Add class necessary style to make the dock superpose the content
-        fixedStyle() {
-            if (this.superposeDock) {
-                let style = 'height: auto; width: auto; position: fixed; ';
-                if (this.position === 'left') {
-                    style += 'left: ' + this.compactSize + '; right: 0; top: 0; bottom: 0;';
-                } else if (this.position === 'right') {
-                    style += 'left: 0; right: ' + this.compactSize + '; top: 0; bottom: 0;';
-                } else if (this.position === 'top') {
-                    style += 'left: 0; right: 0; top: ' + this.compactSize + '; bottom: 0;';
-                } else {
-                    style += 'left: 0; right: 0; top: 0; bottom: ' + this.compactSize + ';';
-                }
-
-                return style;
-            } else {
-                return '';
             }
         },
 
@@ -301,6 +293,27 @@ export default {
             }
 
             return 'width: ' + this.largeSize;
+        },
+
+        contentMarginStyle() {
+            if (this.superposeDock) {
+                return 'margin-' + this.position + ': ' + this.compactSize + ';';
+            } else {
+                return '';
+            }
+        },
+
+        superposeDockClass() {
+            let classes = '';
+            if (this.superposeDock) {
+                classes += 'superpose-dock ';
+            }
+
+            if (this.expandedDock) {
+                classes += 'expanded-dock ';
+            }
+
+            return classes;
         },
     },
 
