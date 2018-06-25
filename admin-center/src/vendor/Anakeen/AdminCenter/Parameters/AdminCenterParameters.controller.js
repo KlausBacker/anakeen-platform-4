@@ -25,13 +25,13 @@ export default {
         initTreeList() {
             let toolbarTemplate = `
                 <div class="global-parameters-toolbar">
-                    <button class="btn refresh-btn"><i class="material-icons">refresh</i></button>
-                    <button class="btn expand-btn"><i class="material-icons">expand_more</i></button>
-                    <button class="btn collapse-btn"><i class="material-icons">expand_less</i></button>
+                    <button class="btn btn-secondary refresh-btn"><i class="material-icons">refresh</i></button>
+                    <button class="btn btn-secondary expand-btn"><i class="material-icons">expand_more</i></button>
+                    <button class="btn btn-secondary collapse-btn"><i class="material-icons">expand_less</i></button>
                     <div id="search-input" class="input-group">
-                        <input type="text" class="form-control global-search-input" placeholder="Search...">
+                        <input type="text" class="form-control global-search-input" placeholder="Filter parameters...">
                         <div class="input-group-append">
-                            <button class="btn reset-search-btn" type="button">Reset</button>
+                            <button class="btn btn-secondary reset-search-btn" type="button">Reset</button>
                         </div>
                     </div>
                 </div>
@@ -44,50 +44,16 @@ export default {
                     { field: 'description', title: 'Description', width: '50%' },
                     { field: 'value', title: 'Value', width: '10%' },
                     {
-                        title: 'Edition',
                         width: '8%',
                         filterable: false,
                         template: '# if (!data.rowLevel && !data.isStatic && !data.isReadOnly) { #' +
-                        '<button class="btn edition-btn">Edit</button>' +
+                        '<button class="btn btn-secondary edition-btn">Edit</button>' +
                         '# } #',
                     },
                 ],
+                filterable: false,
                 toolbar: toolbarTemplate,
-                resizable: true,
-                filterable: {
-                    extra: false,
-                    messages: {
-                        and: 'and',
-                        or: 'or',
-                        filter: 'Apply filter',
-                        clear: 'Clear filter',
-                        info: 'Filter by: ',
-                        isFalse: 'False',
-                        isTrue: 'True',
-                        selectValue: 'Select category',
-                        cancel: 'Reject',
-                        operator: 'Choose operator',
-                        value: 'Choose value',
-                    },
-                    operators: {
-                        string: {
-                            eq: 'Equal to',
-                            neq: 'Not equal to',
-                            startswith: 'Starts',
-                            endswith: 'Ends',
-                            contains: 'Contains',
-                            doesnotcontain: "Doesn't contain",
-                        },
-                        number: {
-                            eq: 'Equal to',
-                            neq: 'Not equal to',
-                            gt: 'Greater than',
-                            gte: 'Greater than or equal to',
-                            lt: 'Less than',
-                            lte: 'Less than or equal to',
-                        },
-                    },
-                },
+                resizable: false,
 
                 expand: (e) => {
                     this.addClassToRow(e.sender);
@@ -119,15 +85,6 @@ export default {
 
         openEditor(dataItem) {
             this.editedItem = dataItem;
-            this.$('#edition-window').kendoWindow({
-                modal: true,
-                draggable: false,
-                resizable: false,
-                width: '90%',
-                title: 'Modify parameter',
-                visible: false,
-                actions: ['Close'],
-            }).data('kendoWindow').center().open();
         },
 
         searchParameters(researchTerms) {
@@ -175,5 +132,14 @@ export default {
 
     mounted() {
         this.initTreeList();
+        window.addEventListener('resize', () => {
+            let $tree = this.$('#parameters-tree');
+            let kTree = $tree.data('kendoTreeList');
+
+            if (kTree) {
+                $tree.height($(window).height() - $tree.offset().top - 4);
+                kTree.resize();
+            }
+        });
     },
 };

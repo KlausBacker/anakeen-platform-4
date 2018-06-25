@@ -1,11 +1,7 @@
 <template>
     <div id="parameter-plugin" class="parameter-plugin">
         <div id="parameters-tree" class="parameter-tree"></div>
-        <div id="edition-window" style="display: none;">
-            <div v-if="editedItem">
-                <ank-parameter-editor :editedItem="editedItem"></ank-parameter-editor>
-            </div>
-        </div>
+        <ank-parameter-editor :editedItem="editedItem" v-show="false" @closeEditor="editedItem = null"></ank-parameter-editor>
     </div>
 </template>
 
