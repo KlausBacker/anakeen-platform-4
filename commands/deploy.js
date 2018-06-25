@@ -2,6 +2,11 @@ const { deploy } = require("../tasks/deploy");
 const signale = require("signale");
 const { controlArguments } = require("../utils/control");
 
+signale.config({
+    displayTimestamp: true,
+    displayDate: true
+  });
+
 exports.desc = 'Deploy the app file';
 exports.builder = controlArguments({
     appPath: {
@@ -20,14 +25,17 @@ exports.builder = controlArguments({
 
 exports.handler = function (argv) {
     try {
+        signale.time("deploy");
         const task = deploy(argv).tasks.deploy.fn;
         task().then(() => {
+            signale.timeEnd("deploy");
             signale.success("deploy done");
         }).catch((e) => {
+            signale.timeEnd("deploy");
             signale.error(e);
         });
-
     } catch (e) {
+        signale.timeEnd("deploy");
         signale.error(e);
     }
 };

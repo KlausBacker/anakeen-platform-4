@@ -27,12 +27,14 @@ exports.handler = function (argv) {
         signale.time("build");
         const task = build({ sourcePath : argv.sourceDir, targetPath :argv.targetDir}).tasks.build.fn;
         task().then(() => {
-            signale.timeEnd("build")
+            signale.timeEnd("build");
             signale.success("build done");
         }).catch((e) => {
+            signale.timeEnd("build");
             signale.error(e);
         });
     } catch (e) {
+        signale.timeEnd("build");
         signale.error(e);
     }
 };
