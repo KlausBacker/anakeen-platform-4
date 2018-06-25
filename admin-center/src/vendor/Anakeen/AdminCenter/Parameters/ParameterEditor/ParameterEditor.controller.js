@@ -15,9 +15,8 @@ export default {
     },
 
     methods: {
-        formatParameterType(type) {
-            // TODO
-            return type;
+        modifyParameter(type) {
+            // TODO Send request to modify the parameter
         },
     },
 

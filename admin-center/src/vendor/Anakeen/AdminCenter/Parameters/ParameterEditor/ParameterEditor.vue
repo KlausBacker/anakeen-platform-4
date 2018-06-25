@@ -33,7 +33,7 @@
         <div class="form-group row">
             <label for="parameter-value" class="col-sm-2 col-form-label">Actual value : </label>
             <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" id="parameter-value" :value="editedItem.value">
+                <input type="text" readonly class="form-control-plaintext" id="parameter-value" :value="editedItem.value || 'none'">
             </div>
         </div>
         <div class="form-group row">
