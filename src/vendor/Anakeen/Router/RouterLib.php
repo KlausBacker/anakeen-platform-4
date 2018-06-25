@@ -98,9 +98,12 @@ class RouterLib
                             $rawData[$name][$tagName] = (string)$tagValue;
                         }
                     } else {
-                        /** @noinspection PhpUndefinedFieldInspection */
-                        $operator = (string)$tagValue->attributes()->operator;
-                        if ($operator) {
+                        if (!empty($tagValue->access)) {
+                            /** @noinspection PhpUndefinedFieldInspection */
+                            $operator = (string)$tagValue->attributes()->operator;
+                            if (! $operator) {
+                                $operator="and";
+                            }
                             /** @noinspection PhpUndefinedFieldInspection */
                             foreach ($tagValue->access as $accessValue) {
                                 $rawData[$name][$tagName][$operator][] = (string)$accessValue;
