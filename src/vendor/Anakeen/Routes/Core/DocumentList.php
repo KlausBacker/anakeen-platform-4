@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Core\Settings;
+use Anakeen\Router\Exception;
 use Anakeen\Router\URLUtils;
 use Anakeen\Router\ApiV2Response;
 
@@ -70,8 +71,10 @@ class DocumentList
 
         if ($slice) {
             $this->slice = $slice;
-            if ($this->slice !== "all") {
+            if (is_numeric($this->slice)) {
                 $this->slice = intval($this->slice);
+            } elseif ($this->slice === "all") {
+                $this->slice = "ALL";
             }
         }
 
@@ -198,8 +201,9 @@ class DocumentList
     protected function prepareDocumentList()
     {
         $this->prepareSearchDoc();
-        $this->_searchDoc->setSlice($this->slice);
-
+        if (!$this->_searchDoc->setSlice($this->slice)) {
+            throw new Exception("ROUTES0139", $this->slice);
+        }
 
         $this->_searchDoc->setStart($this->offset);
         $this->_searchDoc->setOrder($this->extractOrderBy());

@@ -21,27 +21,15 @@
     </xs:complexType>
 
     <xs:complexType name="parameterType">
-        <xs:choice maxOccurs="unbounded" minOccurs="0">
-            <xs:element type="xs:string" name="value"/>
+        <xs:sequence maxOccurs="unbounded" minOccurs="0">
+            <xs:element type="xs:string" name="category" minOccurs="0"/>
             <xs:element type="xs:string" name="description"/>
-            <xs:element type="xs:string" name="access"/>
-            <xs:element type="xs:string" name="category"/>
-            <xs:element type="xs:string" name="type"/>
-            <xs:element name="isUser">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:enumeration value="true"/>
-                        <xs:enumeration value="false"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-            <xs:element name="applicationContext">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-        </xs:choice>
+            <xs:element type="xs:string" name="value"/>
+            <xs:element type="xs:string" name="type" minOccurs="0" default="text"/>
+            <xs:element type="rout:paramAccessType" name="access" minOccurs="0" default="admin"/>
+            <xs:element type="xs:boolean" name="isUser" default="false" minOccurs="0"/>
+            <xs:element type="xs:string" name="applicationContext" minOccurs="0" />
+        </xs:sequence>
         <xs:attribute type="xs:string" name="name" use="required"/>
     </xs:complexType>
 
@@ -107,6 +95,16 @@
             <xs:element type="rout:parametersType" name="parameters"/>
         </xs:choice>
     </xs:complexType>
+
+
+
+    <xs:simpleType name="paramAccessType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="admin"/>
+            <xs:enumeration value="static"/>
+            <xs:enumeration value="readonly"/>
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:simpleType name="methodType">
         <xs:restriction base="xs:string">
