@@ -1,7 +1,7 @@
 <template>
     <div id="parameter-plugin" class="parameter-plugin">
         <div id="parameters-tree" class="parameter-tree"></div>
-        <ank-parameter-editor :editedItem="editedItem" v-show="false" @closeEditor="editedItem = null"></ank-parameter-editor>
+        <ank-parameter-editor :editedItem="editedItem" v-show="false" @closeEditor="updateAtEditorClose"></ank-parameter-editor>
     </div>
 </template>
 

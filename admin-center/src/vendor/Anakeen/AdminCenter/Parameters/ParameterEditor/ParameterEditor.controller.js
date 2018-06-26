@@ -9,7 +9,7 @@ export default {
     },
 
     data() {
-        //
+        // No data
     },
 
     methods: {
@@ -31,45 +31,56 @@ export default {
 
         closeEditor() {
             this.$('#edition-window').data('kendoWindow').close();
-            this.$emit('closeEditor');
         },
 
         modifyParameter() {
             let newValue = this.$('#parameter-new-value').val();
-            console.log(newValue);
-            Vue.ankApi.put('admin/parameters/' + this.editedItem.name,
+            Vue.ankApi.put('admin/parameters/' + this.editedItem.domainName + '/' + this.editedItem.name + '/',
                 {
                     value: newValue,
                 })
                 .then(() => {
-                    // TODO Display popup
-                    // TODO On 'Ok' close editor
+                    this.$('#confirmation-window').kendoWindow({
+                        modal: true,
+                        draggable: false,
+                        resizable: false,
+                        title: 'Parameter modified',
+                        width: '20%',
+                        visible: false,
+                        actions: [],
+                    }).data('kendoWindow').center().open();
                 })
                 .catch(() => {
-                    // TODO Display popup
+                    this.$('#error-window').kendoWindow({
+                        modal: true,
+                        draggable: false,
+                        resizable: false,
+                        title: 'Error',
+                        width: '20%',
+                        visible: false,
+                        actions: [],
+                    }).data('kendoWindow').center.open();
                 });
+        },
+
+        closeConfirmationAndEditor() {
+            this.$('#confirmation-window').data('kendoWindow').close();
+            this.closeEditor();
+        },
+
+        closeErrorAndEditor() {
+            this.$('#error-window').data('kendoWindow').close();
+            this.closeEditor();
         },
     },
 
     computed: {
-        // Pretty format to display parameter type
-        formatedParameterType() {
-            if (this.editedItem) {
-                let type = this.editedItem.type;
-                if (type.startsWith('enum')) {
-                    return 'Enum';
-                }
-
-                return this.editedItem.type.charAt(0).toUpperCase() + this.editedItem.type.slice(1);
-            }
-
-            return '';
-        },
-
         parameterInputType() {
             let parameterType = this.editedItem.type.toLowerCase();
             if (parameterType === 'text') {
                 return 'text';
+            } else if (parameterType === 'password') {
+                return 'password';
             } else if (parameterType === 'number' || parameterType === 'integer' || parameterType === 'double') {
                 return 'number';
             } else if (parameterType.startsWith('enum')) {
@@ -90,5 +101,18 @@ export default {
     updated() {
         // Show modal
         this.openEditor();
+    },
+
+    mounted() {
+        // When resizing the browser window, resize and center the edition window
+        window.addEventListener('resize', () => {
+            let editionWindow = this.$('#edition-window').data('kendoWindow');
+            if (editionWindow) {
+                editionWindow.setOptions({
+                    width: '60%',
+                });
+                editionWindow.center();
+            }
+        });
     },
 };

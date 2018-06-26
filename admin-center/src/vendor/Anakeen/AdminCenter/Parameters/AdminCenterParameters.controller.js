@@ -25,26 +25,28 @@ export default {
         initTreeList() {
             let toolbarTemplate = `
                 <div class="global-parameters-toolbar">
-                    <button class="btn btn-secondary refresh-btn"><i class="material-icons">refresh</i></button>
-                    <button class="btn btn-secondary expand-btn"><i class="material-icons">expand_more</i></button>
-                    <button class="btn btn-secondary collapse-btn"><i class="material-icons">expand_less</i></button>
+                    <button class="btn btn-secondary toolbar-btn refresh-btn"><i class="material-icons">refresh</i></button>
+                    <button class="btn btn-secondary toolbar-btn expand-btn"><i class="material-icons">expand_more</i></button>
+                    <button class="btn btn-secondary toolbar-btn collapse-btn"><i class="material-icons">expand_less</i></button>
                     <div id="search-input" class="input-group">
                         <input type="text" class="form-control global-search-input" placeholder="Filter parameters...">
-                        <div class="input-group-append">
-                            <button class="btn btn-secondary reset-search-btn" type="button">Reset</button>
-                        </div>
+                        <i class="input-group-addon material-icons reset-search-btn">
+                            close
+                        </i>
                     </div>
                 </div>
             `;
 
+            let headerAttributes = { 'class': 'filterable-header', };// jscs:ignore disallowQuotedKeysInObjects
+
             this.$('#parameters-tree').kendoTreeList({
                 dataSource: this.allParametersDataSource,
                 columns: [
-                    { field: 'name', title: 'Name', width: '40%', },
-                    { field: 'description', title: 'Description', width: '50%' },
-                    { field: 'value', title: 'Value', width: '10%' },
+                    { field: 'name', title: 'Name', headerAttributes: headerAttributes },
+                    { field: 'description', title: 'Description', headerAttributes: headerAttributes },
+                    { field: 'value', title: 'Value', headerAttributes: headerAttributes, },
                     {
-                        width: '8%',
+                        width: '6rem',
                         filterable: false,
                         template: '# if (!data.rowLevel && !data.isStatic && !data.isReadOnly) { #' +
                         '<button class="btn btn-secondary edition-btn">Edit</button>' +
@@ -97,8 +99,17 @@ export default {
                         { field: 'value', operator: 'contains', value: researchTerms },
                     ],
                 });
+
+                // Add icon to show filter effect to the user
+                if (!this.$('.filterable-header').children('.filter-icon').length) {
+                    this.$('.filterable-header')
+                        .append(this.$('<i class="material-icons filter-icon">filter_list</i>'));
+                }
             } else {
                 this.allParametersDataSource.filter({});
+
+                // Remove filter icon when nothing is filtered
+                this.$('.filterable-header').children('.filter-icon').remove();
             }
         },
 
@@ -128,10 +139,19 @@ export default {
             });
             this.addClassToRow(treeList);
         },
+
+        updateAtEditorClose() {
+            setTimeout(() => { this.editedItem = null; }, 300);
+            this.allParametersDataSource.read();
+            this.expand(true);
+        },
     },
 
     mounted() {
         this.initTreeList();
+        this.expand(true);
+
+        // At window resize, resize the tree list to fit the window
         window.addEventListener('resize', () => {
             let $tree = this.$('#parameters-tree');
             let kTree = $tree.data('kendoTreeList');

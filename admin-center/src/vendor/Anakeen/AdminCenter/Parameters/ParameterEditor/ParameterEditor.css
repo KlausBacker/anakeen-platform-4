@@ -1,12 +1,25 @@
-/*label {*/
-    /*font-size: 1.6rem;*/
-/*}*/
+.form-label {
+    font-size: 1.6rem;
+    width: 100%;
+}
 
-/*.form-control-plaintext {*/
-    /*font-size: 1.6rem;*/
-/*}*/
+.description-text {
+    font-size: 1.2rem;
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
 
-/*span.form-text {*/
-    /*font-size: 1.2rem;*/
-    /*margin-left: 1.5rem;*/
-/*}*/
+.value-input {
+    margin-bottom: 1.5rem;
+}
+
+.form-parameter-btn {
+    height: 3.5rem;
+    float: right;
+    margin-left: .5rem;
+}
+
+.information-text {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}

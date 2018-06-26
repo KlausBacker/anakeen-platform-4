@@ -13,7 +13,7 @@
             <router:priority>0</router:priority>
             <router:callable>\Anakeen\Routes\Admin\Parameters\AlterParameter</router:callable>
             <router:method>PUT</router:method>
-            <router:pattern>/api/v2/admin/parameters/{parameter_name}/</router:pattern>
+            <router:pattern>/api/v2/admin/parameters/{domain_name}/{parameter_name}/</router:pattern>
             <router:description>Modify the value of a parameter</router:description>
             <router:requiredAccess>admincenter:admin</router:requiredAccess>
         </router:route>
