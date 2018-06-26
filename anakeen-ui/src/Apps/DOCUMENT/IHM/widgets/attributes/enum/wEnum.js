@@ -1083,8 +1083,9 @@
                 // add "other" input in header list
                 defaultOptions.headerTemplate = $('<div><div class="dcpAttribute__value--enum-other"><div class="input-group dcpAttribute__value--enum-other-content">' +
                     '<input class="form-control" type="text" placeholder="' + scope.options.labels.chooseAnotherChoice + '"/>' +
-                    '<span class="input-group-btn"><button class="btn btn-primary dcpAttribute__value--enum-other-select">' + scope.options.labels.selectAnotherChoice + '</button></span> ' +
-                    '</div></div></div>').html();
+                    '<div class="input-group-append"> <div class="input-group-text">' +
+                    '<button class="btn btn-primary dcpAttribute__value--enum-other-select">' + scope.options.labels.selectAnotherChoice + '</button></div> ' +
+                    '</div></div></div></div>').html();
             }
 
             if (this.options.renderOptions.useSourceUri) {

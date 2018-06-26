@@ -31,7 +31,7 @@ export default {
         let _this = this;
 
         $(this.$refs.authentReveal).on('click', function revealPass() {
-            let $pwd = $(this).closest('.input-group-btn').find('input');
+            let $pwd = $(this).closest('.input-group').find('input');
             if ($pwd.attr('type') === 'password') {
                 $pwd.attr('type', 'text');
                 $(this).find('.fa').removeClass('fa-eye').addClass('fa-eye-slash');
