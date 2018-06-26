@@ -1,33 +1,37 @@
 <?xml version="1.0"?>
 <router:config xmlns:router="http://www.anakeen.com/ns/routes/">
-  <router:apps>
-    <router:app name="TST_PARAMETER_MANAGER">
-      <router:version>1.0.0</router:version>
-      <router:shortName>Test Parameters</router:shortName>
-    </router:app>
-  </router:apps>
-  <router:parameters>
-    <router:parameter name="PARENT_USER_GLOBAL_PARAMETER">
-      <router:value>PARENT_USER_GLOBAL_PARAMETER_VALUE</router:value>
-      <router:description>PARENT_USER_GLOBAL_PARAMETER_DESC</router:description>
-      <router:isUser>true</router:isUser>
-    </router:parameter>
-    <router:parameter name="PARENT_USER_PARAMETER">
-      <router:value>PARENT_USER_PARAMETER</router:value>
-      <router:description>PARENT_USER_PARAMETER</router:description>
-      <router:isUser>true</router:isUser>
-      <router:applicationContext>TST_PARAMETER_MANAGER</router:applicationContext>
-    </router:parameter>
-    <router:parameter name="PARENT_GLOBAL_PARAMETER">
-      <router:value>PARENT_GLOBAL_PARAMETER</router:value>
-      <router:description>PARENT_GLOBAL_PARAMETER</router:description>
-      <router:isUser>false</router:isUser>
-    </router:parameter>
-    <router:parameter name="PARENT_PARAMETER">
-      <router:value>PARENT_PARAMETER</router:value>
-      <router:description>PARENT_PARAMETER</router:description>
-      <router:isUser>false</router:isUser>
-      <router:applicationContext>PARENT_PARAMETER</router:applicationContext>
-    </router:parameter>
-  </router:parameters>
+    <router:apps>
+        <router:app name="TST_PARAMETER_MANAGER">
+            <router:version>1.0.0</router:version>
+            <router:shortName>Test Parameters</router:shortName>
+        </router:app>
+    </router:apps>
+    <router:parameters>
+        <router:parameter name="PARENT_USER_GLOBAL_PARAMETER">
+            <router:category>Test Unit</router:category>
+            <router:description>PARENT_USER_GLOBAL_PARAMETER_DESC</router:description>
+            <router:value>PARENT_USER_GLOBAL_PARAMETER_VALUE</router:value>
+            <router:isUser>true</router:isUser>
+        </router:parameter>
+        <router:parameter name="PARENT_USER_PARAMETER">
+            <router:category>Test Unit</router:category>
+            <router:description>PARENT_USER_PARAMETER</router:description>
+            <router:value>PARENT_USER_PARAMETER</router:value>
+            <router:isUser>true</router:isUser>
+            <router:applicationContext>TST_PARAMETER_MANAGER</router:applicationContext>
+        </router:parameter>
+        <router:parameter name="PARENT_GLOBAL_PARAMETER">
+            <router:category>Test Unit</router:category>
+            <router:description>PARENT_GLOBAL_PARAMETER</router:description>
+            <router:value>PARENT_GLOBAL_PARAMETER</router:value>
+            <router:isUser>false</router:isUser>
+        </router:parameter>
+        <router:parameter name="PARENT_PARAMETER">
+            <router:category>Test Unit</router:category>
+            <router:description>PARENT_PARAMETER</router:description>
+            <router:value>PARENT_PARAMETER</router:value>
+            <router:isUser>false</router:isUser>
+            <router:applicationContext>PARENT_PARAMETER</router:applicationContext>
+        </router:parameter>
+    </router:parameters>
 </router:config>

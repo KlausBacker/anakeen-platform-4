@@ -168,4 +168,8 @@ class ErrorCodeRoutes
      * @errorCode Cannot defined same parameter twice
      */
     const ROUTES0138 = 'Config  "%s": parameter  "%s" already defined in config file "%s"';
+    /**
+     * @errorCode The slice search must be numeric or "all"
+     */
+    const ROUTES0139 = 'Incorrect Slice "%s" in search';
 }
