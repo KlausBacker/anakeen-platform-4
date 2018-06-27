@@ -269,7 +269,6 @@ class RouterConfig
         $apps = $this->getApps();
         foreach ($apps as $appInfo) {
             $appInfo->record();
-            $this->recordParameters($appInfo->name);
         }
     }
 
@@ -293,20 +292,15 @@ class RouterConfig
     }
 
     /**
-     * Record all application parameeters in database
-     *
-     * @param string $appName if null global parameters are recorded
+     * Record all context parameters in database
      *
      * @throws Exception
-     * @throws \Dcp\Db\Exception
      */
-    public function recordParameters($appName = "CORE")
+    public function recordParameters()
     {
         $parameters = $this->getParameters();
         foreach ($parameters as $param) {
-            if ($param->applicationContext === $appName) {
                 $param->record();
-            }
         }
     }
 }

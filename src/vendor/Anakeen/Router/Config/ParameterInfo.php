@@ -2,9 +2,7 @@
 
 namespace Anakeen\Router\Config;
 
-use Anakeen\Core\DbManager;
-use Anakeen\Core\Internal\Application;
-use Anakeen\Router\Exception;
+use Anakeen\Core\Internal\Param;
 
 class ParameterInfo
 {
@@ -13,6 +11,7 @@ class ParameterInfo
     public $description = "";
     public $access;
     public $type = "text";
+    public $domain;
     public $category;
     public $isUser = false;
     public $global = true;
@@ -37,38 +36,33 @@ class ParameterInfo
     /**
      * Record application to database
      *
-     * @throws Exception
-     * @throws \Dcp\Db\Exception
      */
     public function record()
     {
+        $pdef = new \Anakeen\Core\Internal\ParamDef("", $this->name);
 
-        $paramDefData = [
-            "val" => $this->value,
-            "descr" => $this->description,
-            "category" => $this->category,
-            "kind" => (!empty($this->access) && ($this->access === "static" || $this->access === "readonly")) ? $this->access
-                : (!empty($this->type) ? $this->type : 'text'),
-            "global" => empty($this->global) ? "N" : "Y",
-            "user" => empty($this->isUser) ? "N" : "Y"
-        ];
-        $app = new Application();
-        $app->set($this->applicationContext);
-
-        $pdef = \Anakeen\Core\Internal\ParamDef::getParamDef($this->name, $app->id);
-
-
-        $updateMode = ($pdef !== null);
-        $app->setParamDef($this->name, $paramDefData); // update definition
-
+        $updateMode = ($pdef->isAffected());
+        $pdef->descr = $this->description;
+        $pdef->domain = $this->domain;
+        $pdef->category = $this->category;
+        $pdef->kind =  (!empty($this->access) && ($this->access === "static" || $this->access === "readonly")) ? $this->access
+            : (!empty($this->type) ? $this->type : 'text');
+        $pdef->isuser = empty($this->isUser) ? "N" : "Y";
         if ($updateMode) {
-            // don't modify old parameters
+            $pdef->modify();
+        } else {
+            $pdef->add();
+        }
+
+        $pval= new  Param();
+        if ($updateMode) {
+            // don't modify previous parameters configuration
             if ($this->access === "static") {
                 // set only new parameters or static variable like VERSION
-                $app->setParam($this->name, $this->value);
+                $pval->set($this->name, $this->value);
             }
         } else {
-            $app->setParam($this->name, $this->value);
+            $pval->set($this->name, $this->value);
         }
     }
 }

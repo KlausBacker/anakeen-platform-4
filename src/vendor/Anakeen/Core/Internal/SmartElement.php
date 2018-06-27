@@ -2932,7 +2932,7 @@ create unique index i_docir on doc(initid, revision);";
             return "";
         }
         $err = '';
-        if (ContextManager::getApplicationParam("TE_ACTIVATE") == "yes"
+        if (ContextManager::getParameterValue("TE_ACTIVATE") == "yes"
             && \Anakeen\Core\Internal\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             if (preg_match(PREGEXPFILE, $va, $reg)) {
                 $vidin = $reg[2];
@@ -5181,7 +5181,6 @@ create unique index i_docir on doc(initid, revision);";
         }
         $this->delUTag($uid, $tag, $allrevision);
 
-        global $action;
         $h = new \DocUTag($this->dbaccess);
 
         $h->id = $this->id;
@@ -5193,7 +5192,7 @@ create unique index i_docir on doc(initid, revision);";
             $h->uid = $u->id;
             $h->uname = sprintf("%s %s", $u->firstname, $u->lastname);
         }
-        $h->fromuid = $action->user->id;
+        $h->fromuid = ContextManager::getCurrentUser()->id;
 
         $h->tag = $tag;
         $h->comment = $datas;
@@ -6823,7 +6822,7 @@ create unique index i_docir on doc(initid, revision);";
                 switch ($target) {
                     case "mail":
                         $js = false;
-                        $mUrl = ContextManager::getApplicationParam("CORE_MAILACTIONURL");
+                        $mUrl = ContextManager::getParameterValue("CORE_MAILACTIONURL");
                         if (strstr($mUrl, '%')) {
                             if ($this->id != $id) {
                                 $mDoc = SEManager::getDocument($id);
@@ -6833,7 +6832,7 @@ create unique index i_docir on doc(initid, revision);";
                             $ul = htmlspecialchars($mDoc->urlWhatEncode($mUrl));
                             $specialUl = true;
                         } else {
-                            $ul = htmlspecialchars(ContextManager::getApplicationParam("CORE_MAILACTIONURL"));
+                            $ul = htmlspecialchars(ContextManager::getParameterValue("CORE_MAILACTIONURL"));
                             $ul .= "&amp;id=$id";
                         }
                         break;
@@ -7273,7 +7272,7 @@ create unique index i_docir on doc(initid, revision);";
             }
             if (!empty($v["using"])) {
                 if ($v["using"][0] == "@") {
-                    $v["using"] = ContextManager::getApplicationParam(substr($v["using"], 1));
+                    $v["using"] = ContextManager::getParameterValue(substr($v["using"], 1));
                 }
                 $t[] = sprintf("CREATE $unique INDEX %s$id on  doc$id using %s(%s);\n", $k, $v["using"], $v["on"]);
             } else {
@@ -7321,7 +7320,6 @@ create unique index i_docir on doc(initid, revision);";
 
                 return $this->vault_filename_fromvalue($template, true);
             }
-            return \Layout::getLayoutFile($reg['app'], ($aid));
         }
         return null;
     }
@@ -8909,7 +8907,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($oneAttributeAtLeast) {
             $datesValues = array_unique($datesValues);
             if ($withLocale) {
-                $currentLocale = ContextManager::getApplicationParam("CORE_LANG", "fr_FR");
+                $currentLocale = ContextManager::getParameterValue("CORE_LANG", "fr_FR");
                 $lang = ContextManager::getLocales();
 
                 $locales = array_keys($lang);

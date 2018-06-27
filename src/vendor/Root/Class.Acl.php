@@ -10,46 +10,41 @@ class Acl extends DbObj
 {
     public $fields = array(
         "id",
-        "id_application",
         "name",
         "grant_level",
         "description",
         "group_default"
     );
-    
+
     public $id_fields = array(
         "id"
     );
     public $id;
-    public $id_application;
     public $name;
     public $grant_level;
     public $description;
     public $group_default;
     public $dbtable = "acl";
-    
+
     public $sqlcreate = '
 create table acl (id int not null,
-                  id_application int not null,
                   name text not null,
                   grant_level int not null,
                   description text,
                   group_default char);
-create index acl_idx1 on acl(id);
-create index acl_idx2 on acl(id_application);
-create index acl_idx3 on acl(name);
+create unique index acl_idx1 on acl(id);
+create unique index acl_idx3 on acl(name);
 create sequence SEQ_ID_ACL;
                  ';
-    
-    public function Set($name, $id_app)
+
+    public function set($name)
     {
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Acl::class);
         $query->basic_elem->sup_where = array(
-            "name='$name'",
-            "id_application=$id_app"
+            "name='$name'"
         );
         $query->Query(0, 0, "TABLE");
-        
+
         if ($query->nb > 0) {
             $this->Affect($query->list[0]);
         } else {
@@ -57,41 +52,38 @@ create sequence SEQ_ID_ACL;
         }
         return true;
     }
-    
-    public function Complete()
+
+
+    public function preInsert()
     {
-    }
-    
-    public function PreInsert()
-    {
-        if ($this->Exists($this->name, $this->id_application)) {
+        if ($this->Exists($this->name)) {
             return "Acl {$this->name} already exists...";
         }
-        $msg_res = $this->query("select nextval ('seq_id_acl')");
+        $this->query("select nextval ('seq_id_acl')");
         $arr = $this->fetchArray(0);
         $this->id = $arr["nextval"];
         return '';
     }
-    public function PreUpdate()
+
+    public function preUpdate()
     {
-        if ($this->dbid == - 1) {
+        if ($this->dbid == -1) {
             return false;
         }
         return '';
     }
-    
-    public function Exists($name, $id_app)
+
+    public function exists($name)
     {
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Acl::class);
         $query->basic_elem->sup_where = array(
-            "name='$name'",
-            "id_application=$id_app"
+            "name='$name'"
         );
         $query->Query(0, 0, "TABLE");
         return ($query->nb > 0);
     }
-    
-    public function DelAppAcl($id)
+
+    public function delAppAcl($id)
     {
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Acl::class);
         $query->basic_elem->sup_where = array(
@@ -110,14 +102,14 @@ create sequence SEQ_ID_ACL;
         $permission = new Permission($this->dbaccess);
         $permission->DelAppPerm($id);
     }
-    
-    public function Init($app, $app_acl, $update = false)
+
+    public function init($app, $app_acl, $update = false)
     {
         if (sizeof($app_acl) == 0) {
             LogManager::debug("No acl available");
             return ("");
         }
-        
+
         $default_grant_level_found = false; // indicate user default set explicitly
         if (isset($app_acl[0]["grant_level"])) {
             $oldacl = true;
@@ -131,10 +123,9 @@ create sequence SEQ_ID_ACL;
         $smalestgrant = null;
         foreach ($app_acl as $k => $tab) {
             $acl = new Acl($this->dbaccess);
-            if ($acl->Exists($tab["name"], $app->id)) {
-                $acl->Set($tab["name"], $app->id);
+            if ($acl->Exists($tab["name"])) {
+                $acl->Set($tab["name"]);
             }
-            $acl->id_application = $app->id;
             $acl->name = $tab["name"];
             if (isset($tab["description"])) {
                 $acl->description = $tab["description"];
@@ -154,7 +145,7 @@ create sequence SEQ_ID_ACL;
                 $default_acl = true;
             } else {
                 $acl->group_default = "N";
-                
+
                 if ($oldacl) {
                     if ((!$default_grant_level_found) && ((!isset($smalestgrant)) || ($tab["grant_level"] < $smalestgrant)) && (!((isset($tab["admin"]) && $tab["admin"])))) {
                         // default acl admin must be specified explicitly
@@ -162,8 +153,8 @@ create sequence SEQ_ID_ACL;
                     }
                 }
             }
-            
-            if ($acl->Exists($acl->name, $acl->id_application)) {
+
+            if ($acl->exists($acl->name)) {
                 LogManager::info("Acl Modify : {$acl->name}, {$acl->description}");
                 $acl->Modify();
             } else {
@@ -175,7 +166,7 @@ create sequence SEQ_ID_ACL;
                 $permission->id_user = 1;
                 $permission->id_application = $app->id;
                 $permission->id_acl = $acl->id;
-                if ($permission->Exists($permission->id_user, $app->id, $permission->id_acl)) {
+                if ($permission->Exists($permission->id_user, $permission->id_acl)) {
                     LogManager::info("Modify admin permission : {$acl->name}");
                     $permission->Modify();
                 } else {
@@ -195,7 +186,7 @@ create sequence SEQ_ID_ACL;
                 $default_grant_level = $smalestgrant;
             }
         }
-        
+
         if ($oldacl) {
             // ----------------------------------------------
             // for old acl form definition (with grant_level)
@@ -220,14 +211,14 @@ create sequence SEQ_ID_ACL;
             $defaultacl = new Acl($this->dbaccess, $aclid);
             $defaultacl->group_default = "Y";
             $defaultacl->Modify();
-            
+
             if (!$update) {
                 // set default access to 'all' group only
                 $permission = new Permission($this->dbaccess);
                 $permission->id_user = 2;
                 $permission->id_application = $app->id;
                 $permission->id_acl = $aclid;
-                if (!$permission->Exists($permission->id_user, $app->id, $permission->id_acl)) {
+                if (!$permission->exists($permission->id_user, $permission->id_acl)) {
                     $permission->add();
                 }
             }
@@ -262,6 +253,7 @@ create sequence SEQ_ID_ACL;
         //     }
         //   }
     }
+
     // get default ACL for an application
     public function getDefaultAcls($idapp)
     {
@@ -276,7 +268,7 @@ create sequence SEQ_ID_ACL;
         }
         return $aclids;
     }
-    
+
     public function getAclApplication($idapp)
     {
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Acl::class);

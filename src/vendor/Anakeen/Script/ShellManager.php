@@ -142,7 +142,7 @@ class ShellManager
         return $apiList;
     }
 
-    public static function initContext($appName = "CORE")
+    public static function initContext()
     {
         $user = new \Anakeen\Core\Account("", \Anakeen\Core\Account::ADMIN_ID);
         $login = self::getArg("login");
@@ -152,11 +152,7 @@ class ShellManager
             }
         }
 
-        \Anakeen\Core\ContextManager::initContext(
-            $user,
-            $appName,
-            ""
-        );
+        \Anakeen\Core\ContextManager::initContext($user);
     }
 
     /**

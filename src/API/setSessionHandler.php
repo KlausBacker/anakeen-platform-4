@@ -1,8 +1,6 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
+
+use Anakeen\Core\ContextManager;
 
 $usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("add session handler");
@@ -14,7 +12,7 @@ $usage->verify();
 $handlerCode = '';
 if ($handlerName != "SessionHandler") {
     if (!class_exists($handlerName)) {
-        $action->exitError(sprintf("class handler %s not found", $handlerName));
+        ContextManager::exitError(sprintf("class handler %s not found", $handlerName));
     }
     $ref = new ReflectionClass($handlerName);
     $filePath = $ref->getFileName();
@@ -35,7 +33,7 @@ if ($handlerName != "SessionHandler") {
             // PHP 5.3 mode
             $handlerCode = sprintf('<?php require_once("%s");$handler = new %s();session_set_save_handler(array($handler, "open"), array($handler, "close"),array($handler, "read"),array($handler, "write"),array($handler, "destroy"),array($handler, "gc"));register_shutdown_function("session_write_close");', $filePath, $handlerName);
         } else {
-            $action->exitError(sprintf('class "%s" incompatible with session handler', $handlerName));
+            ContextManager::exitError(sprintf('class "%s" incompatible with session handler', $handlerName));
         }
     }
     file_put_contents("config/sessionHandler.php", $handlerCode);

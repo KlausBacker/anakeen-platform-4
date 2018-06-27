@@ -312,7 +312,7 @@ class Session extends DbObj
     // ------------------------------------------------------------------------
     public function newId()
     {
-        $byteLength = (int)\Anakeen\Core\ContextManager::getApplicationParam('CORE_SESSION_BYTE_LENGTH');
+        $byteLength = (int)\Anakeen\Core\ContextManager::getParameterValue('CORE_SESSION_BYTE_LENGTH');
         if ($byteLength < self::SESSION_MIN_BYTE_LENGTH) {
             $byteLength = self::SESSION_MIN_BYTE_LENGTH;
         }
@@ -380,12 +380,12 @@ class Session extends DbObj
                 $ttlParamName = 'CORE_SESSIONTTL';
             }
         }
-        return intval(\Anakeen\Core\ContextManager::getApplicationParam($ttlParamName, $default));
+        return intval(\Anakeen\Core\ContextManager::getParameterValue($ttlParamName, $default));
     }
     
     public function getSessionGcProbability($default = "0.01")
     {
-        return \Anakeen\Core\ContextManager::getApplicationParam("CORE_SESSIONGCPROBABILITY", $default);
+        return \Anakeen\Core\ContextManager::getParameterValue("CORE_SESSIONGCPROBABILITY", $default);
     }
     
     public function touch()
@@ -415,7 +415,7 @@ class Session extends DbObj
     
     public function deleteMaxAgedSessions()
     {
-        $maxage = \Anakeen\Core\ContextManager::getApplicationParam('CORE_SESSIONMAXAGE', '');
+        $maxage = \Anakeen\Core\ContextManager::getParameterValue('CORE_SESSIONMAXAGE', '');
         if ($maxage != '') {
             return $this->query(sprintf("DELETE FROM sessions WHERE last_seen < timestamp 'now()' - interval '%s'", pg_escape_string($maxage)));
         }

@@ -2,20 +2,21 @@
 
 namespace Anakeen\Core;
 
+use Anakeen\Core\Internal\ApplicationParameterManager;
+use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\Internal\GlobalParametersManager;
 use Anakeen\Core\Utils\Gettext;
 use Anakeen\Router\AuthenticatorManager;
 
 class ContextManager
 {
+
+
     /**
-     * @var \Anakeen\Core\Internal\Application
+     * @var \Anakeen\Core\Internal\Session
      */
-    protected static $coreApplication = null;
-    /**
-     * @var \Anakeen\Core\Internal\Action
-     */
-    protected static $coreAction = null;
+    protected static $session;
+
     /**
      * @var \Anakeen\Core\Account
      */
@@ -41,7 +42,7 @@ class ContextManager
     public static function getLocaleConfig($core_lang = '')
     {
         if (empty($core_lang)) {
-            $core_lang = self::getApplicationParam("CORE_LANG", "fr_FR");
+            $core_lang = self::getParameterValue("CORE_LANG", "fr_FR");
         }
         $lng = substr($core_lang, 0, 2);
         if (preg_match('#^[a-z0-9_\.-]+$#i', $core_lang)
@@ -72,71 +73,28 @@ class ContextManager
      * Initialise application context
      *
      * @param \Anakeen\Core\Account               $account
-     * @param string                              $appName
-     * @param string                              $actionName
      * @param \Anakeen\Core\Internal\Session|null $session
      *
      * @throws \Dcp\Db\Exception
      * @throws \Exception
      */
-    public static function initContext(\Anakeen\Core\Account $account, $appName = "CORE", $actionName = "", \Anakeen\Core\Internal\Session $session = null)
+    public static function initContext(\Anakeen\Core\Account $account, \Anakeen\Core\Internal\Session $session = null)
     {
-        global $action;
         set_include_path(self::getRootDirectory() . PATH_SEPARATOR . get_include_path());
 
-        $coreApplication = new \Anakeen\Core\Internal\Application();
-        $coreApplication->user = &$account;
-        self::$coreUser = &$account;
-        $coreApplication->Set("CORE", $CoreNull);
-        $coreApplication->session = $session;
-        if (!$coreApplication->session) {
-            $coreApplication->session = new \Anakeen\Core\Internal\Session();
+
+        if ($session) {
+            self::$session = $session;
+        }
+        if (!self::$session) {
+            self::$session = new \Anakeen\Core\Internal\Session();
         }
 
-        if ($appName && $appName !== "CORE") {
-            $application = new \Anakeen\Core\Internal\Application();
-            $application->set($appName, $coreApplication);
-            self::$coreApplication = $application;
-            if (!$actionName) {
-                $actionName = self::getRootActionName($application);
-            }
-        } else {
-            self::$coreApplication = $coreApplication;
-        }
 
-        self::$coreAction = new \Anakeen\Core\Internal\Action();
-        $action = new \Anakeen\Core\Internal\Action();
-        self::$coreAction = &$action;
-        if ($actionName) {
-            self::$coreAction->Set($actionName, self::$coreApplication);
-        } else {
-            self::$coreAction->parent = self::$coreApplication;
-            self::$coreAction->session = &self::$coreApplication->session;
-        }
-        self::$coreAction->user =& $account;
+        self::$coreUser =& $account;
         GlobalParametersManager::initialize();
 
-        self::setLanguage(self::getApplicationParam("CORE_LANG", "fr_FR"));
-    }
-
-    protected static function getRootActionName(\Anakeen\Core\Internal\Application $application)
-    {
-        DbManager::query(
-            sprintf("select name from action where id_application=%d and root='Y'", $application->id),
-            $actionRoot,
-            true,
-            true
-        );
-        return $actionRoot;
-    }
-
-    public static function recordContext(\Anakeen\Core\Account $account, \Anakeen\Core\Internal\Action $action = null)
-    {
-        self::$coreUser = &$account;
-        if ($action) {
-            self::$coreAction = &$action;
-            self::$coreApplication = &$action->parent;
-        }
+        self::setLanguage(self::getParameterValue("CORE_LANG", "fr_FR"));
     }
 
 
@@ -201,15 +159,12 @@ class ContextManager
      */
     public static function setLanguage($lang)
     {
-        $action = self::getCurrentAction();
-
         if (!$lang) {
             return "";
         }
-        if ($action) {
-            $action->parent->param->SetVolatile("CORE_LANG", $lang);
-            $action->parent->setVolatileParam("CORE_LANG", $lang);
-        }
+
+        ContextParameterManager::setVolatile("CORE_LANG", $lang);
+
         if (strpos($lang, ".") === false) {
             $lang .= ".UTF-8";
         }
@@ -267,8 +222,7 @@ class ContextManager
      */
     public static function sudo(\Anakeen\Core\Account &$account)
     {
-        self::$coreAction = self::getCurrentAction();
-        if (!self::$coreAction) {
+        if (!self::$coreUser) {
             throw new \Exception("CORE0017");
         }
         if (self::$coreUser && !self::$originalUser) {
@@ -277,12 +231,6 @@ class ContextManager
         $previousUser = self::$coreUser;
         self::$coreUser = $account;
 
-        self::$coreAction->parent->user = &self::$coreUser;
-        self::$coreApplication =& self::$coreAction->parent;
-        self::$coreAction->user = &self::$coreUser;
-        if (self::$coreApplication->parent && self::$coreApplication->parent->id !== self::$coreApplication->id) {
-            self::$coreApplication->parent->user = &self::$coreUser;
-        }
         return $previousUser;
     }
 
@@ -300,9 +248,7 @@ class ContextManager
      */
     public static function getCurrentUser(bool $original = false)
     {
-        $cAction = self::getCurrentAction();
-        if ($cAction) {
-            self::$coreUser = self::getCurrentAction()->user;
+        if (self::$coreUser) {
             if ($original === true && self::$originalUser) {
                 return self::$originalUser;
             }
@@ -313,25 +259,65 @@ class ContextManager
 
     /**
      * @return \Anakeen\Core\Internal\Action|null
+     * @deprecated
      */
-    public static function getCurrentAction()
+    protected static function getCurrentAction()
     {
-        if (!self::$coreAction) {
-            global $action;
-            if ($action) {
-                self::$coreAction =& $action;
-                self::$coreApplication =& self::$coreAction->parent;
+        throw new \Exception(__METHOD__);
+    }
+
+
+    /**
+     * @return Internal\Session
+     */
+    public static function getSession()
+    {
+        return self::$session;
+    }
+
+    /**
+     * display error to user and stop execution
+     *
+     * @param string $texterr the error message
+     * @param bool   $exit    if false , no exit are pêrformed
+     * @param string $code    error code (ref to error log)
+     *
+     * @throws \Dcp\Core\Exception
+     * @api abort action execution
+     * @return void
+     */
+    public static function exitError($texterr, $exit = true, $code = "")
+    {
+        if (!empty($_SERVER['HTTP_HOST'])) {
+            $accept = $_SERVER['HTTP_ACCEPT'];
+            $useHtml = ((!empty($accept) && preg_match("@\\btext/html\\b@", $accept)));
+
+            if ($useHtml) {
+                print \Dcp\Core\Utils\ErrorMessage::getHtml($texterr, $code);
+            } else {
+                $useJSON = ((!empty($accept) && preg_match("@\\bapplication/json\\b@", $accept)));
+                if ($useJSON) {
+                    header('Content-Type: application/json');
+                    print \Dcp\Core\Utils\ErrorMessage::getJson($texterr, $code);
+                } else {
+                    header('Content-Type: text/plain');
+                    print \Dcp\Core\Utils\ErrorMessage::getText($texterr, $code);
+                }
             }
+            if ($exit) {
+                exit;
+            }
+        } else {
+            throw new \Dcp\Core\Exception("CORE0001", $texterr);
         }
-        return self::$coreAction;
     }
 
     /**
      * @return \Anakeen\Core\Internal\Application|null
      */
-    public static function getCurrentApplication()
+    protected static function getCurrentApplication()
     {
-        return self::$coreAction->parent;
+        throw new \Exception(__METHOD__);
     }
 
     /**
@@ -344,15 +330,18 @@ class ContextManager
      *
      * @return string
      */
-    public static function getApplicationParam($name, $def = "")
+    public static function getParameterValue($name, $def = "")
     {
-        $action = self::getCurrentAction();
-        if ($action) {
-            return $action->getParam($name, $def);
-        }
-        // if context not yet initialized
-        return self::getCoreParam($name, $def);
+        return ContextParameterManager::getValue($name, $def);
     }
+
+
+    public static function setParameterValue($name, $value)
+    {
+        // if context not yet initialized
+        return ApplicationParameterManager::setParameterValue(self::getCurrentApplication(), $name, $value);
+    }
+
 
     /**
      * return value of a parameter
@@ -417,7 +406,7 @@ class ContextManager
         if (isset($tmp) && !empty($tmp)) {
             return $tmp;
         }
-        $tmp = \Anakeen\Core\ContextManager::getApplicationParam('CORE_TMPDIR', $def);
+        $tmp = \Anakeen\Core\ContextManager::getParameterValue('CORE_TMPDIR', $def);
         if (empty($tmp)) {
             if (empty($def)) {
                 $tmp = './var/tmp';

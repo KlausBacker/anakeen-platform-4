@@ -2,6 +2,8 @@
 
 namespace Anakeen\Router;
 
+use Anakeen\Core\ContextManager;
+
 class FatalHandler
 {
 
@@ -27,7 +29,7 @@ class FatalHandler
 
                 $displayMsg = \Anakeen\Core\LogException::logMessage($error, $errId);
                 if ($action) {
-                    $action->exitError($displayMsg, false, $errId);
+                    ContextManager::exitError($displayMsg, false, $errId);
                 } else {
                     print $displayMsg;
                 }
@@ -65,7 +67,7 @@ class FatalHandler
             if (php_sapi_name() === 'cli') {
                 fwrite(STDERR, sprintf("[%s]: %s\n", $errId, $displayMsg));
             } else {
-                $action->exitError($displayMsg, true, $errId);
+                ContextManager::exitError($displayMsg, true, $errId);
             }
         } else {
             if (php_sapi_name() === 'cli') {

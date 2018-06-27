@@ -2,6 +2,8 @@
 
 namespace Dcp\Core;
 
+use Anakeen\Core\ContextManager;
+
 class LibPhpini
 {
     /**
@@ -72,7 +74,7 @@ class LibPhpini
             } else {
                 require_once 'Lib.Common.php';
                 require_once 'Class.ApplicationParameterManager.php';
-                $parameterValue = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", $name);
+                $parameterValue = ContextManager::getParameterValue($name);
                 return (null === $parameterValue ? $defaultValue : $parameterValue);
             }
         } else {

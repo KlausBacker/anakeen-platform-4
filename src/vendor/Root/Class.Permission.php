@@ -19,14 +19,12 @@ class Permission extends DbObj
 {
     public $fields = array(
         "id_user",
-        "id_application",
         "id_acl",
         "computed"
     );
     
     public $id_fields = array(
         "id_user",
-        "id_application"
     );
     
     public $dbtable = "permission";
@@ -36,11 +34,9 @@ class Permission extends DbObj
     private $gprivileges = false; // privileges array for the group user
     public $sqlcreate = '
 create table permission (id_user int not null,
-                         id_application int not null,
                          id_acl int not null,
                          computed boolean default false);
 create index permission_idx1 on permission(id_user);
-create index permission_idx2 on permission(id_application);
 create index permission_idx3 on permission(id_acl);
 create index permission_idx4 on permission(computed);
                  ';
@@ -65,7 +61,6 @@ create index permission_idx4 on permission(computed);
             if (is_array($id) && $id[0] && $id[1]) {
                 $this->Affect(array(
                     "id_user" => $id[0],
-                    "id_application" => $id[1],
                     "computed" => (!empty($id[2]))
                 ));
                 $this->GetPrivileges(false, $computed);
@@ -92,7 +87,7 @@ create index permission_idx4 on permission(computed);
     public function PreInsert()
     {
         // no duplicate items
-        if ($this->Exists($this->id_user, $this->id_application, $this->id_acl)) {
+        if ($this->Exists($this->id_user, $this->id_acl)) {
             return "Permission ({$this->id_user},{$this->id_application},{$this->id_acl}) already exists...";
         }
         
@@ -165,11 +160,10 @@ create index permission_idx4 on permission(computed);
         return ($res);
     }
     
-    public function Exists($userid, $applicationid, $aclid = 0)
+    public function exists($userid, $aclid = 0)
     {
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Permission::class);
         $query->basic_elem->sup_where = array(
-            "id_application='$applicationid'",
             "id_user='{$userid}'",
             "( computed = FALSE OR computed IS NULL )"
         );
@@ -182,35 +176,7 @@ create index permission_idx4 on permission(computed);
         return ($query->nb > 0);
     }
     
-    public function IsOver($user, $application, $acl)
-    {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Permission::class);
-        $query->basic_elem->sup_where = array(
-            "id_application='{$application->id}'",
-            "id_user='{$user->id}'"
-        );
-        $list = $query->Query();
-        if ($query->nb == 0) {
-            return false;
-        }
-        $aclu = new Acl($this->dbaccess, $list[0]->id_acl);
-        return ($aclu->grant_level >= $acl->grant_level);
-    }
-    
-    public function GrantLevel($user, $application)
-    {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Permission::class);
-        $query->basic_elem->sup_where = array(
-            "id_application='{$application->id}'",
-            "id_user='{$user->id}'"
-        );
-        $list = $query->Query();
-        if ($query->nb == 0) {
-            return (0);
-        }
-        $acl = new Acl($this->dbaccess, $list[0]->id_acl);
-        return ($acl->grant_level);
-    }
+
     
     public function DelAppPerm($id)
     {

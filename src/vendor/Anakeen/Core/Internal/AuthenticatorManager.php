@@ -58,7 +58,7 @@ class AuthenticatorManager
                 self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['AuthentProvider'], $remote_addr,
                 $auth_user, $http_user_agent);
             // count login failure
-            if (\Anakeen\Core\ContextManager::getApplicationParam("AUTHENT_FAILURECOUNT") > 0) {
+            if (\Anakeen\Core\ContextManager::getParameterValue("AUTHENT_FAILURECOUNT") > 0) {
                 $wu = new \Anakeen\Core\Account();
                 if ($wu->SetLoginName(self::$auth->getAuthUser())) {
                     if ($wu->id != 1) {
@@ -276,7 +276,7 @@ class AuthenticatorManager
      */
     public function authenticate(&$action)
     {
-        header('WWW-Authenticate: Basic realm="' . \Anakeen\Core\ContextManager::getApplicationParam("CORE_REALM", "Anakeen Platform connection") . '"');
+        header('WWW-Authenticate: Basic realm="' . \Anakeen\Core\ContextManager::getParameterValue("CORE_REALM", "Anakeen Platform connection") . '"');
         header('HTTP/1.0 401 Unauthorized');
         echo _("Vous devez entrer un nom d'utilisateur valide et un mot de passe correct pour acceder a cette ressource");
         exit;
@@ -292,7 +292,7 @@ class AuthenticatorManager
     ) {
         global $_GET;
         $log = new \Anakeen\Core\Internal\Log("", "Session", "Authentication");
-        $facility = constant(\Anakeen\Core\ContextManager::getApplicationParam("AUTHENT_LOGFACILITY", "LOG_AUTH"));
+        $facility = constant(\Anakeen\Core\ContextManager::getParameterValue("AUTHENT_LOGFACILITY", "LOG_AUTH"));
         $log->wlog("S", sprintf(
             "[%s] [%s] [%s] [%s] [%s] [%s]",
             $status,
@@ -445,7 +445,7 @@ class AuthenticatorManager
                 return static::AccessAccountHasExpired;
             }
             // check count of login failure
-            $maxfail = \Anakeen\Core\ContextManager::getApplicationParam("AUTHENT_FAILURECOUNT");
+            $maxfail = \Anakeen\Core\ContextManager::getParameterValue("AUTHENT_FAILURECOUNT");
             if ($maxfail > 0 && $du->getRawValue("us_loginfailure", 0) >= $maxfail) {
                 static::secureLog("failure", "max connection (" . $maxfail . ") attempts exceeded",
                     static::$auth->provider->parms['type'] . "/"

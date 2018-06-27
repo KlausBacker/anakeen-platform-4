@@ -480,11 +480,11 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
 
     public function testForcePassword($pwd)
     {
-        $minLength = intval(ContextManager::getApplicationParam("AUTHENT_PWDMINLENGTH"));
-        $minDigitLength = intval(ContextManager::getApplicationParam("AUTHENT_PWDMINDIGITLENGTH"));
-        $minUpperLength = intval(ContextManager::getApplicationParam("AUTHENT_PWDMINUPPERALPHALENGTH"));
-        $minLowerLength = intval(ContextManager::getApplicationParam("AUTHENT_PWDMINLOWERALPHALENGTH"));
-        $minSymbolLength = intval(ContextManager::getApplicationParam("AUTHENT_PWDMINSYMBOLLENGTH"));
+        $minLength = intval(ContextManager::getParameterValue("AUTHENT_PWDMINLENGTH"));
+        $minDigitLength = intval(ContextManager::getParameterValue("AUTHENT_PWDMINDIGITLENGTH"));
+        $minUpperLength = intval(ContextManager::getParameterValue("AUTHENT_PWDMINUPPERALPHALENGTH"));
+        $minLowerLength = intval(ContextManager::getParameterValue("AUTHENT_PWDMINLOWERALPHALENGTH"));
+        $minSymbolLength = intval(ContextManager::getParameterValue("AUTHENT_PWDMINSYMBOLLENGTH"));
 
         if (preg_match('/[\p{C}]/u', $pwd)) {
             return ___("Control characters are not allowed", "smart iuser");

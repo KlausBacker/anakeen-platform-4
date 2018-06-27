@@ -100,8 +100,8 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     protected static function connectUser($login = "admin")
     {
-        $action = ContextManager::getCurrentAction();
-        if (!$action) {
+        $user = ContextManager::getCurrentUser();
+        if (!$user) {
             $u = new \Anakeen\Core\Account();
             $u->setLoginName($login);
             \Anakeen\Core\ContextManager::initContext($u);
@@ -338,7 +338,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     public function requiresCoreParamEquals($paramName, $requiredValue, $markTestIncomplete = true)
     {
-        $value = ContextManager::getApplicationParam($paramName, '');
+        $value = ContextManager::getParameterValue($paramName, '');
         if ($value === $requiredValue) {
             return true;
         }

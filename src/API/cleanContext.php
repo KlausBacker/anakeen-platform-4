@@ -11,7 +11,7 @@
 /**
  */
 // remove all tempory doc and orphelines values
-global $action;
+
 
 $usage = new \Anakeen\Script\ApiUsage();
 
@@ -25,13 +25,10 @@ if ($full !== true) {
 
 $usage->verify();
 
-$dbaccess = $action->dbaccess;
-if ($dbaccess == "") {
-    print "Database not found : action->dbaccess";
-    exit;
-}
 
-$duration = intval($action->GetParam("CORE_LOGDURATION", 60)); // default 60 days
+
+// default 60 day
+$duration = intval(\Anakeen\Core\ContextManager::getParameterValue("CORE_LOGDURATION", 60));
 $logdelete = sprintf("DELETE FROM doclog where date < '%s'", \Anakeen\Core\Internal\SmartElement::getDate(-($duration)));
 
 \Anakeen\Core\DbManager::query($logdelete);
@@ -42,20 +39,19 @@ cleanTmpDoc();
 
 if ($real || $full) {
     print "Full clean.\n";
-    fullDbClean($action);
+    fullDbClean();
 } else {
     print "Basic clean.\n";
-    basicDbClean($action);
+    basicDbClean();
 }
 // Cleanup session files
-$core_db = $action->dbaccess;
-$sessionUtils = new SessionUtils($core_db);
+$sessionUtils = new SessionUtils(\Anakeen\Core\DbManager::getDbAccess());
 $sessionUtils->deleteExpiredSessionFiles();
 // Clean token open access
 UserToken::deleteExpired();
 
 cleanTmpFiles();
-\Dcp\VaultManager::destroyTmpFiles($action->GetParam('CORE_TMPDIR_MAXAGE', '2'));
+\Dcp\VaultManager::destroyTmpFiles(\Anakeen\Core\ContextManager::getParameterValue('CORE_TMPDIR_MAXAGE', '2'));
 
 function mkTmpScript($script, $prefix)
 {
@@ -74,7 +70,8 @@ function getSqlFiles($prefix)
 {
     $sqlDir = implode(DIRECTORY_SEPARATOR, array(
         DEFAULT_PUBDIR,
-        'vendor','Anakeen',
+        'vendor',
+        'Anakeen',
         'cleanContext'
     ));
     if (($fh = opendir($sqlDir)) === false) {
@@ -99,15 +96,23 @@ function getSqlFiles($prefix)
     return $files;
 }
 
-function execSqlFile(\Anakeen\Core\Internal\Action & $action, $sqlFile)
+function getServiceName($dbaccess)
 {
-    $pgService = getServiceName($action->dbaccess);
+    if (preg_match("/service='?([a-zA-Z0-9_.-]+)/", $dbaccess, $reg)) {
+        return $reg[1];
+    }
+    return '';
+}
+
+function execSqlFile($sqlFile)
+{
+    $pgService = getServiceName(\Anakeen\Core\DbManager::getDbAccess());
     $script = <<<'EOF'
 #!/bin/bash
 PGSERVICE=%s psql --set ON_ERROR_STOP=1 -c '\timing' -a -f %s 2>&1 | logger -s -t %s
 exit ${PIPESTATUS[0]}
 EOF;
-    $script = sprintf($script, escapeshellarg($pgService), escapeshellarg($sqlFile), escapeshellarg("cleanContext(" . $action->GetParam("CORE_CLIENT") . ")"));
+    $script = sprintf($script, escapeshellarg($pgService), escapeshellarg($sqlFile), escapeshellarg("cleanContext(" . \Anakeen\Core\ContextManager::getParameterValue("CORE_CLIENT") . ")"));
     $tmpScript = mkTmpScript($script, 'basicDbClean');
     $out = array();
     $ret = 0;
@@ -119,14 +124,14 @@ EOF;
     unlink($tmpScript);
 }
 
-function execSqlFiles(\Anakeen\Core\Internal\Action & $action, $prefix)
+function execSqlFiles($prefix)
 {
     $sqlFiles = getSqlFiles($prefix);
     $errors = [];
     foreach ($sqlFiles as $sqlFile) {
         try {
             printf("Executing '%s': ", $sqlFile);
-            execSqlFile($action, $sqlFile);
+            execSqlFile($sqlFile);
             printf("[OK]\n");
         } catch (\Exception $e) {
             printf("[ERROR]\n%s\n", $e->getMessage());
@@ -138,37 +143,35 @@ function execSqlFiles(\Anakeen\Core\Internal\Action & $action, $prefix)
     }
 }
 
-function fullDbClean(\Anakeen\Core\Internal\Action & $action)
+function fullDbClean()
 {
-    execSqlFiles($action, 'cleanFullContext');
+    execSqlFiles('cleanFullContext');
 }
 
-function basicDbClean(\Anakeen\Core\Internal\Action & $action)
+function basicDbClean()
 {
-    execSqlFiles($action, 'cleanContext');
+    execSqlFiles('cleanContext');
 }
 
 function cleanTmpFiles()
 {
-    global $action;
-    global $pubdir;
-    
-    if ($pubdir == '') {
+    if (DEFAULT_PUBDIR == '') {
         echo sprintf("Error: Yikes! we got an empty pubdir?");
         return;
     }
-    
-    $maxAge = $action->GetParam('CORE_TMPDIR_MAXAGE', '');
+
+    $maxAge = \Anakeen\Core\ContextManager::getParameterValue('CORE_TMPDIR_MAXAGE', '');
+
     if ($maxAge == '') {
         echo sprintf("Error: empty CORE_TMPDIR_MAXAGE parameter.");
         return;
     }
-    
+
     if (!is_numeric($maxAge)) {
         echo sprintf("Error: found non-numeric value '%s' for CORE_TMPDIR_MAXAGE.", $maxAge);
         return;
     }
-    
+
     $tmpDir = \Anakeen\Core\ContextManager::getTmpDir('');
     if ($tmpDir == '') {
         echo sprintf("Error: empty directory returned by getTmpDir().");
@@ -180,13 +183,14 @@ function cleanTmpFiles()
         echo $r;
     }
     //clean mustache cache files
-    $r = cleanOldFiles($pubdir . '/'. \Anakeen\Core\Settings::CacheDir. 'mustache', $maxAge);
+    $r = cleanOldFiles(DEFAULT_PUBDIR . '/' . \Anakeen\Core\Settings::CacheDir . 'mustache', $maxAge);
     if ($r) {
         echo $r;
     }
-    
+
     return;
 }
+
 /*
  * Delete files oldre than N days in given directory
 */
@@ -212,19 +216,20 @@ function cleanOldFiles($dir, $maxAge)
     if ($ret != 0) {
         return sprintf("Error: removal of empty temporary directories from '%s' returned with error: %s", $dir, join("\n", $output));
     }
-    
+
     return "";
 }
+
 /**
  * Delete temporary documents that have reached their end-of-life (CORE_TMPDOC_MAXAGE).
  */
 function cleanTmpDoc()
 {
-    $days = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue('CORE', 'CORE_TMPDOC_MAXAGE');
+    $days = \Anakeen\Core\ContextManager::getParameterValue('CORE_TMPDOC_MAXAGE');
     if (!is_int($days) && !ctype_digit($days)) {
         $days = 1;
     }
-    
+
     $sql = <<<'EOF'
 BEGIN;
 
@@ -242,7 +247,7 @@ EOF;
     try {
         $sql = sprintf($sql, $days);
 
-        \Anakeen\Core\DbManager::query($sql, $res, true, true, true);
+        \Anakeen\Core\DbManager::query($sql, $res, true, true);
     } catch (\Exception $e) {
         printf("Error: removal of expired temporary documents returned with error: %s\n", $e->getMessage());
     }

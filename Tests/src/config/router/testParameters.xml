@@ -14,11 +14,12 @@
             <router:isUser>true</router:isUser>
         </router:parameter>
         <router:parameter name="PARENT_USER_PARAMETER">
-            <router:category>Test Unit</router:category>
-            <router:description>PARENT_USER_PARAMETER</router:description>
-            <router:value>PARENT_USER_PARAMETER</router:value>
+            <router:organisation name="Test">
+                <router:category name="Test Unit"/>
+                <router:description>A parameter used for test unit</router:description>
+            </router:organisation>
+            <router:value>Hello</router:value>
             <router:isUser>true</router:isUser>
-            <router:applicationContext>TST_PARAMETER_MANAGER</router:applicationContext>
         </router:parameter>
         <router:parameter name="PARENT_GLOBAL_PARAMETER">
             <router:category>Test Unit</router:category>

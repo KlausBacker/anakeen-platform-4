@@ -149,7 +149,11 @@ create sequence SEQ_ID_ACTION;
      * @var \Layout
      */
     public $lay;
-
+    public function __construct(string $dbaccess = '', string $id = '', string $res = '', int $dbid = 0)
+    {
+        throw new \Exception("NOACT");
+        parent::__construct($dbaccess, $id, $res, $dbid);
+    }
     /**
      * initialize Action object
      * need set action to execute it

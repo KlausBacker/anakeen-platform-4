@@ -14,10 +14,11 @@
 /**
  */
 
-global $appl, $action;
 
 include_once("WHAT/Lib.Http.php");
 include_once("FDL/import_file.php");
+
+use Anakeen\Core\ContextManager;
 
 $usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("Import documents from description file");
@@ -31,13 +32,15 @@ $archive = $usage->addOptionalParameter("archive", "description file is an stand
     "no"
 ), "no");
 $logfile = $usage->addOptionalParameter("log", "log file output");
-$policy = $usage->addOptionalParameter("policy",
+$policy = $usage->addOptionalParameter(
+    "policy",
     "policy import - \n\t\t[update] to auto update same document (the default), \n\t\t[add] to always create new document, \n\t\t[keep] to do nothing if same document already present",
     array(
         "update",
         "add",
         "keep"
-    ));
+    )
+);
 $htmlmode = $usage->addOptionalParameter("htmlmode", "analyze report mode in html", array(
     "yes",
     "no"
@@ -111,19 +114,19 @@ $usage->verify();
 
 
 if (!file_exists($filename)) {
-    $action->ExitError(sprintf(_("import file %s not found"), $filename));
+    ContextManager::exitError(sprintf(_("import file %s not found"), $filename));
 }
 if (!is_file($filename)) {
-    $action->exitError(sprintf(_("import file '%s' is not a valid file"), $filename));
+    ContextManager::exitError(sprintf(_("import file '%s' is not a valid file"), $filename));
 }
 if ($logfile) {
     if (file_exists($logfile) && (!is_writable($logfile))) {
-        $action->ExitError(sprintf(_("log file %s not writable"), $logfile));
+        ContextManager::exitError(sprintf(_("log file %s not writable"), $logfile));
     }
     if (!file_exists($logfile)) {
         $f = @fopen($logfile, 'a');
         if ($f === false) {
-            $action->ExitError(sprintf(_("log file %s not writable"), $logfile));
+            ContextManager::exitError(sprintf(_("log file %s not writable"), $logfile));
         }
         fclose($f);
     }
@@ -133,9 +136,9 @@ setHttpVar('htmlmode', ($htmlmode == "yes") ? 'Y' : 'N');
 $archive = ($archive == "yes");
 
 if ($dirid) {
-    $dir = new_doc("", $dirid);
-    if (!$dir->isAlive()) {
-        $action->exitError(sprintf("folder %s not found (dir option)", $dirid));
+    $dir = Anakeen\Core\SEManager::getDocument($dirid);
+    if (!$dir || !$dir->isAlive()) {
+        ContextManager::exitError(sprintf("folder %s not found (dir option)", $dirid));
     }
     $dirid = $dir->id;
     SetHttpVar("dirid", $dirid);
@@ -174,7 +177,7 @@ if ($to) {
 
     $from = getMailAddr($action->user->id);
     if ($from == "") {
-        $from = \Anakeen\Core\ContextManager::getApplicationParam('SMTP_FROM');
+        $from = \Anakeen\Core\ContextManager::getParameterValue('SMTP_FROM');
     }
     if ($from == "") {
         $from = $action->user->login . '@' . php_uname('n');
@@ -194,5 +197,5 @@ if ($to) {
 }
 $err = $oImport->getErrorMessage();
 if ($err) {
-    $action->ExitError($err);
+    ContextManager::exitError($err);
 }

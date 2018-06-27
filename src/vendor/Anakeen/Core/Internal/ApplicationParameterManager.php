@@ -309,7 +309,7 @@ class ApplicationParameterManager
      */
     public static function getScopedParameterValue($parameter)
     {
-        return \Anakeen\Core\ContextManager::getApplicationParam($parameter);
+        return \Anakeen\Core\ContextManager::getParameterValue($parameter);
     }
 
     /**

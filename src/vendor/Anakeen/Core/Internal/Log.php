@@ -102,7 +102,7 @@ class Log
     public function getLogLevel()
     {
         if ($this->logLevel === null) {
-            $this->logLevel = \Anakeen\Core\ContextManager::getApplicationParam("CORE_LOGLEVEL", "IWEF");
+            $this->logLevel = \Anakeen\Core\ContextManager::getParameterValue("CORE_LOGLEVEL", "IWEF");
         }
         return $this->logLevel;
     }

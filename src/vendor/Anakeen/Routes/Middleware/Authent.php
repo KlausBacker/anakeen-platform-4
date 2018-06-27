@@ -33,13 +33,8 @@ class Authent
             $user = \Anakeen\Core\ContextManager::authentUser();
         }
 
-        if (!$configInfo->applicationContext) {
-            $configInfo->applicationContext = "CORE";
-        }
         \Anakeen\Core\ContextManager::initContext(
             $user,
-            $configInfo->applicationContext,
-            "",
             \Anakeen\Router\AuthenticatorManager::$session
         );
 

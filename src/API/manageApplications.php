@@ -46,7 +46,7 @@ if (!empty($apps[$appname])) {
             if ($app->isAffected()) {
                 $err = $app->DeleteApp();
                 if ($err != '') {
-                    $action->exitError($err);
+                    \Anakeen\Core\ContextManager::exitError($err);
                 }
             } else {
                 echo "already deleted";

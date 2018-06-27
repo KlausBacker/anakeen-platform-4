@@ -112,6 +112,7 @@ create index users_idx2 on users(lastname);
 CREATE UNIQUE INDEX users_login on users (login);
 create sequence seq_id_users start 10;";
 
+
     /**
      * affect account from login name
      *
@@ -333,9 +334,7 @@ create sequence seq_id_users start 10;";
 
         IgroupLib::refreshGroups($ugroups, true);
 
-        $action = ContextManager::getCurrentAction();
-
-        $action->session->CloseUsers($this->id);
+        ContextManager::getSession()->closeUsers($this->id);
 
         return $err;
     }

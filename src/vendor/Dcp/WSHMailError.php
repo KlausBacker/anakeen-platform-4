@@ -2,6 +2,8 @@
 
 namespace Dcp;
 
+use Anakeen\Core\ContextManager;
+
 class WSHMailError
 {
     public $expand = array();
@@ -30,7 +32,7 @@ class WSHMailError
     {
         $this->expand = array(
             'h' => php_uname('n'),
-            'c' => \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue('CORE', 'CORE_CLIENT')
+            'c' => ContextManager::getParameterValue('CORE_CLIENT')
         );
         $this->msg = $msg;
         $this->from = '';
@@ -79,20 +81,20 @@ class WSHMailError
         $user = \Anakeen\Core\ContextManager::getCurrentUser();
         $from = (!empty($user) ? getMailAddr($user->id) : '');
         if ($from == '') {
-            $from = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue('CORE', 'SMTP_FROM');
+            $from = ContextManager::getParameterValue('SMTP_FROM');
         }
         if ($from == '') {
             $from = (!empty($user) ? $user->login : 'no-reply') . '@' . php_uname('n');
         }
         $this->from = $from;
 
-        $mailto = trim(\Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue('CORE', 'CORE_WSH_MAILTO'));
+        $mailto = trim(ContextManager::getParameterValue('CORE_WSH_MAILTO'));
         if ($mailto == '') {
             return '';
         }
         $this->mailto = $mailto;
 
-        $subject = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue('CORE', 'CORE_WSH_MAILSUBJECT');
+        $subject = ContextManager::getParameterValue('CORE_WSH_MAILSUBJECT');
         if ($subject == '') {
             $subject = 'Script error';
         }
@@ -120,12 +122,12 @@ class WSHMailError
     }
 
     /**
-     * @param string $from Sender's email address (e.g. 'john.doe@example.net')
-     * @param string|string[] $mailto Recipient(s) address(es) as a comma-separated list of mail addresses, or and array og mail addresses
-     * @param string $subject Subject
-     * @param string $htmlBody The main body in HTML format
-     * @param string $altTextBody Optional text variant of the main HTML body
-     * @param array[] $attachments Optional attachments
+     * @param string          $from        Sender's email address (e.g. 'john.doe@example.net')
+     * @param string|string[] $mailto      Recipient(s) address(es) as a comma-separated list of mail addresses, or and array og mail addresses
+     * @param string          $subject     Subject
+     * @param string          $htmlBody    The main body in HTML format
+     * @param string          $altTextBody Optional text variant of the main HTML body
+     * @param array[]         $attachments Optional attachments
      *
      * Syntax for `$attachments`:
      *      [

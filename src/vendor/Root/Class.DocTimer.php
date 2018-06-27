@@ -211,7 +211,7 @@ create table doctimer ( id serial,
         $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $q->addQuery("tododate is not null");
         $q->addQuery("tododate < now()");
-        $timerhourlimit = \Anakeen\Core\ContextManager::getApplicationParam("FDL_TIMERHOURLIMIT", 2);
+        $timerhourlimit = \Anakeen\Core\ContextManager::getParameterValue("FDL_TIMERHOURLIMIT", 2);
         if ((int)$timerhourlimit <= 0) {
             $timerhourlimit = 2;
         }

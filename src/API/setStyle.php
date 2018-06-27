@@ -8,12 +8,8 @@ $usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("apply given style - if no style is set then update current style");
 $styFilePath = $usage->addOptionalParameter("style", "path to style file");
 
-$action=\Anakeen\Core\ContextManager::getCurrentAction();
 if (!$styFilePath) {
-    /**
-     * @var \Anakeen\Core\Internal\Action $action
-     */
-    $defautStyle = $action->getParam("STYLE");
+    $defautStyle = \Anakeen\Core\ContextManager::getParameterValue("STYLE");
     $styFilePath = sprintf("STYLE/%s/%s.sty", $defautStyle, $defautStyle);
 }
 $verbose = ('yes' === $usage->addOptionalParameter('verbose', 'verbose', array(
@@ -144,7 +140,9 @@ class styleManager
         
         /** @noinspection PhpIncludeInspection */
         require_once "Lib.Color.php";
-        
+        /**
+         * @var array $sty_const
+         */
         $computedColors = array();
         
         if (empty($styleConfig['sty_colors'])) {

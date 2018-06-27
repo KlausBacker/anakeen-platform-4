@@ -151,7 +151,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                             } else {
                                 $subject = sprintf(_("allocation for %s document"), $this->doc->title);
                                 $commentaction = '';
-                                $err = sendCard(\Anakeen\Core\ContextManager::getCurrentAction(), $this->doc->id, $to, "", $subject, "", true, $commentaction, "", "", "htmlnotif");
+                               // $err = sendCard(\Anakeen\Core\ContextManager::getCurrentAction(), $this->doc->id, $to, "", $subject, "", true, $commentaction, "", "", "htmlnotif");
                                 if ($err != "") {
                                     \Anakeen\Core\Utils\System::addWarningMsg($err);
                                 }

@@ -333,7 +333,7 @@ class Layout
     
     protected function execute($appname, $actionargn)
     {
-        $limit = \Anakeen\Core\ContextManager::getApplicationParam('CORE_LAYOUT_EXECUTE_RECURSION_LIMIT', 30);
+        $limit = \Anakeen\Core\ContextManager::getParameterValue('CORE_LAYOUT_EXECUTE_RECURSION_LIMIT', 30);
         if (is_numeric($limit) && $limit > 0) {
             $loop = $this->getRecursionCount(__CLASS__, __FUNCTION__);
             if ($loop['count'] >= $limit) {
@@ -762,58 +762,5 @@ class Layout
         exit;
     }
 
-    /**
-     * @param $app
-     * @param $layfile
-     *
-     * @return string
-     * @throws Exception
-     */
-    public static function getLayoutFile($app, $layfile)
-    {
-         $action= \Anakeen\Core\ContextManager::getCurrentAction();
-        if (strstr($layfile, '..')) {
-            return "";
-        }
-        if (!strstr($layfile, '.')) {
-            $layfile .= ".xml";
-        }
-        $socStyle = \Anakeen\Core\ContextManager::getApplicationParam("CORE_SOCSTYLE");
-        $style = \Anakeen\Core\ContextManager::getApplicationParam("STYLE");
-        $appDir = $action->parent->rootdir;
 
-        if ($socStyle != "") {
-            $file = $appDir . "/STYLE/$socStyle/Layout/$layfile";
-            if (file_exists($file)) {
-                return ($file);
-            }
-
-            $file = $appDir . "/STYLE/$socStyle/Layout/" . strtolower($layfile);
-            if (file_exists($file)) {
-                return ($file);
-            }
-        } elseif ($style != "") {
-            $file = $appDir . "/STYLE/$style/Layout/$layfile";
-            if (file_exists($file)) {
-                return ($file);
-            }
-
-            $file = $appDir . "/STYLE/$style/Layout/" . strtolower($layfile);
-            if (file_exists($file)) {
-                return ($file);
-            }
-        }
-
-        $file = $appDir . "/$app/Layout/$layfile";
-        if (file_exists($file)) {
-            return ($file);
-        }
-
-        $file = $appDir . "/$app/Layout/" . strtolower($layfile);
-        if (file_exists($file)) {
-            return ($file);
-        }
-
-        throw new Exception(sprintf("Cannot find Layout \"%s:%s\"", $app, $layfile));
-    }
 }

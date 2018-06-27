@@ -55,23 +55,16 @@ class RouterAccess
         static $first = true;
         static $acl;
         static $permission;
-        static $app;
 
-        if ($forceRecheck || $first === true || $permission->id_user !== ContextManager::getCurrentUser()->id || $app->name !== $appName) {
+        if ($forceRecheck || $first === true || $permission->id_user !== ContextManager::getCurrentUser()->id) {
             $first = false;
-            $app = ContextManager::getCurrentApplication();
-            if ($app !== $appName) {
-                $app = new Application();
-                $app->set($appName);
-            }
+
             $acl = new \Acl();
             $permission = new \Permission();
             $permission->id_user = ContextManager::getCurrentUser()->id;
         }
+        $acl->set($aclName);
 
-        if (!$acl->set($aclName, $app->id) && $app->parent && $app->id !== $app->parent->id) {
-            $acl->set($aclName, $app->parent->id);
-        };
         if (!$acl->isAffected()) {
             throw new Exception("ROUTES0133", $aclName);
         }

@@ -122,7 +122,7 @@ function getTmpDir($def = '/tmp')
  * return value of parameters
  *
  * @deprecated  use \Anakeen\Core\ContextManager::getApplicationParam
- * @see         \Anakeen\Core\ContextManager::getApplicationParam
+ * @see         \Anakeen\Core\ContextManager::getParameterValue
  * @brief       must be in core or global type
  *
  * @param string $name param name
@@ -132,7 +132,7 @@ function getTmpDir($def = '/tmp')
  */
 function getParam($name, $def = "")
 {
-    return \Anakeen\Core\ContextManager::getApplicationParam($name, $def);
+    return \Anakeen\Core\ContextManager::getParameterValue($name, $def);
 }
 
 /**
@@ -169,17 +169,7 @@ function getSessionValue($name, $def = "")
 
 
 
-/**
- * @param $app
- * @param $layfile
- * @deprecated
- * @return string
- * @throws Exception
- */
-function getLayoutFile($app, $layfile)
-{
-    return Layout::getLayoutFile($app, $layfile);
-}
+
 
 function microtime_diff($a, $b)
 {
@@ -283,13 +273,7 @@ function getDbAccessValue($varName)
 
 
 
-function getServiceName($dbaccess)
-{
-    if (preg_match("/service='?([a-zA-Z0-9_.-]+)/", $dbaccess, $reg)) {
-        return $reg[1];
-    }
-    return '';
-}
+
 
 
 /**
@@ -353,7 +337,7 @@ function setMailtoAnchor(
     if ($forcelink == "mailto") {
         $target = $forcelink;
     } else {
-        $target = strtolower(\Anakeen\Core\ContextManager::getApplicationParam("CORE_MAIL_LINK", "optimal"));
+        $target = strtolower(\Anakeen\Core\ContextManager::getParameterValue("CORE_MAIL_LINK", "optimal"));
         if ($target == "optimal") {
             $target = "mailto";
         }
