@@ -154,7 +154,7 @@ $oImport->setVerifyAttributeAccess(false);
 if ($dirid) {
     $oImport->setTargetDirectory($dirid);
 }
-$cr = $oImport->importDocuments($action, $filename, $analyze != "no", $archive == "yes");
+$cr = $oImport->importDocuments($filename, $analyze != "no", $archive == "yes");
 
 $filetmp = false;
 if ((!$logfile) && $to) {
@@ -175,12 +175,12 @@ if ($to) {
     $body = new \Dcp\Mail\Body(file_get_contents($logfile), (($htmlmode == 'yes') ? 'text/html' : 'text/plain'));
     $message->setBody($body);
 
-    $from = getMailAddr($action->user->id);
+    $from = getMailAddr(ContextManager::getCurrentUser()->id);
     if ($from == "") {
         $from = \Anakeen\Core\ContextManager::getParameterValue('SMTP_FROM');
     }
     if ($from == "") {
-        $from = $action->user->login . '@' . php_uname('n');
+        $from = ContextManager::getCurrentUser()->login . '@' . php_uname('n');
     }
 
     $subject = sprintf(_("result of import  %s"), basename(GetHttpVars("file")));

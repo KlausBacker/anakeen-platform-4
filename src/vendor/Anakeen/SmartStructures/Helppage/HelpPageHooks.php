@@ -10,6 +10,8 @@
 
 namespace Anakeen\SmartStructures\Helppage;
 
+use Anakeen\Core\ContextManager;
+
 class HelpPageHooks extends \Anakeen\SmartElement
 
 {
@@ -39,14 +41,11 @@ class HelpPageHooks extends \Anakeen\SmartElement
 
     /**
      *
-     * @global  $action
      * @return string
      */
     protected function getUserLang()
     {
-        global $action;
-        $user_lang = $action->getParam('CORE_LANG');
-        return $user_lang;
+        return ContextManager::getParameterValue("CORE_LANG");
     }
 
     /**

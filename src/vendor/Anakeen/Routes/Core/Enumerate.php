@@ -124,7 +124,7 @@ class Enumerate
                 break;
 
             case self::ORDERBYVALUEOPTION:
-                $locale = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue('CORE_LANG');
+                $locale = \Anakeen\Core\ContextManager::getParameterValue('CORE_LANG');
                 $collator = new \Collator($locale);
 
                 usort($enumItems, function ($a, $b) use ($collator) {

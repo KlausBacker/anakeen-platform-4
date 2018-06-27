@@ -6,6 +6,7 @@
 
 namespace Anakeen\Routes\Authent;
 
+use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Router\Exception;
 use Anakeen\Core\LogException;
 use Anakeen\Router\ApiV2Response;
@@ -30,7 +31,6 @@ class Session
      *
      * @return \Slim\Http\response $response
      * @throws Exception
-     * @throws \Dcp\ApplicationParameterManager\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
@@ -81,8 +81,8 @@ class Session
             $u = new \Anakeen\Core\Account();
             $u->setLoginName($login);
 
-            \Anakeen\Core\ContextManager::initContext($u,  \Anakeen\Router\AuthenticatorManager::$session);
-            \Anakeen\Core\Internal\ApplicationParameterManager::setUserParameterValue("CORE", "CORE_LANG", $language);
+            \Anakeen\Core\ContextManager::initContext($u, \Anakeen\Router\AuthenticatorManager::$session);
+            ContextParameterManager::setUserValue("CORE_LANG", $language);
         }
 
         return ApiV2Response::withData($response, ["login" => $login]);

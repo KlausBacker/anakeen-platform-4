@@ -2,14 +2,13 @@
 
 namespace Anakeen\Core;
 
-use Anakeen\Core\Internal\ApplicationParameterManager;
 use Anakeen\Core\Utils\FileMime;
 
 class AssetManager
 {
     public static function getAssetLink($file)
     {
-        $wversion = ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $wversion = ContextManager::getParameterValue("WVERSION");
         if (!is_file($file)) {
             throw new \Dcp\Exception("Asset File $file not found");
         }

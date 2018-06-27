@@ -76,7 +76,7 @@ class CollectionDataFormatter
         $this->formatCollection->useShowEmptyOption = false;
         $this->formatCollection->setPropDateStyle(DateAttributeValue::isoStyle);
 
-        $this->rootPath = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_URLINDEX") . "/" . static::APIURL;
+        $this->rootPath = \Anakeen\Core\ContextManager::getParameterValue("CORE_URLINDEX") . "/" . static::APIURL;
         $this->rootPath = URLUtils::stripUrlSlahes($this->rootPath);
         /* init the standard generator of url (redirect to the documents collection */
         $this->generateUrl = function ($document) {

@@ -35,7 +35,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         include_once 'Lib.FileDir.php';
 
         $oImport = new \ImportDocument();
-        $oImport->importDocuments(self::getAction(), $archiveFile, false, true);
+        $oImport->importDocuments( $archiveFile, false, true);
         $err = $oImport->getErrorMessage();
         if ($err) {
             throw new \Dcp\Exception($err);

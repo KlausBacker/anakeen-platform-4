@@ -79,18 +79,16 @@ class ImportDocument
         $this->dirid = $dirid;
     }
     /**
-     * @param \Anakeen\Core\Internal\Action $action current action
      * @param string $file filename path to import
      * @param bool $onlyAnalyze if true only analyze not import really
      * @param bool $archive if true to import file like an standard archive
      * @return array analyze report
      */
-    public function importDocuments(\Anakeen\Core\Internal\Action & $action, $file, $onlyAnalyze = false, $archive = false)
+    public function importDocuments(string $file, bool $onlyAnalyze = false, bool $archive = false)
     {
         $point = '';
         if ($this->strict) {
             $point = 'dcp:importDocument';
-            //$action->debug=true;
             \Anakeen\Core\DbManager::savePoint($point);
         }
         $this->onlyAnalyze = $onlyAnalyze;
@@ -101,7 +99,6 @@ class ImportDocument
                 $untardir = getTarExtractDir($action, basename($file));
 
                 $mime =  \Anakeen\Core\Utils\FileMime::getSysMimeFile($file, basename($file));
-                //print_r(array($untardir, $file, $mime));
                 $err = extractTar($file, $untardir, $mime);
                 if ($err !== '') {
                     $err = sprintf(_("cannot extract archive %s: status : %s"), $file, $err);

@@ -34,7 +34,7 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
     {
         foreach ($data['import:family'] as $file => $callback) {
             $oImport = new \ImportDocument();
-            $oImport->importDocuments($this->getAction(), $file, $onlyAnalyze = false, $archive = false);
+            $oImport->importDocuments($file, $onlyAnalyze = false, $archive = false);
             $err = $oImport->getErrorMessage();
             $this->assertEmpty($err, sprintf("import error [%s] %s", $file, $err));
             /*
@@ -94,7 +94,7 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
          * Import documents
         */
         $oImport = new \ImportDocument();
-        $oImport->importDocuments($this->getAction(), $data['import:documents'], $onlyAnalyze = false, $archive = true);
+        $oImport->importDocuments($data['import:documents'], $onlyAnalyze = false, $archive = true);
         $err = $oImport->getErrorMessage();
         $this->assertEmpty($err, sprintf("import error %s", $err));
         /*

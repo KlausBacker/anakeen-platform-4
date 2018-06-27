@@ -7,7 +7,7 @@
 namespace Dcp\Pu;
 
 /**
- * @author Anakeen
+ * @author  Anakeen
  * @package Dcp\Pu
  */
 
@@ -27,18 +27,16 @@ class TestImportCsvDocuments extends TestCaseDcp
     {
         $oImport = new \ImportDocument();
         $oImport->setCsvOptions($separator, $enclosure);
-        $oImport->importDocuments(self::getAction(), self::$testDataDirectory . DIRECTORY_SEPARATOR . $fileName);
+        $oImport->importDocuments(self::$testDataDirectory . DIRECTORY_SEPARATOR . $fileName);
         $err = $oImport->getErrorMessage();
         $this->assertEmpty($err, "import family error : $err");
         $f = new_doc('', $famName);
         $this->assertTrue($f->isAlive(), sprintf("family %s not found", $famName));
         $this->assertEquals($expected["title"], $f->getTitle(), "incorrect family title");
         foreach ($expected["alabel"] as $aid => $elabel) {
-
             $this->assertEquals($elabel, $f->getLabel($aid), "incorrect attribute label");
         }
         foreach ($expected["doc"] as $k => $v) {
-
             $d = new_doc('', $v["name"]);
             $this->assertTrue($d->isAlive(), sprintf("document %s not found", $v["name"]));
             foreach ($v["values"] as $aid => $aval) {

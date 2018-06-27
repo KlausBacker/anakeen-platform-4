@@ -118,54 +118,9 @@ function getTmpDir($def = '/tmp')
     return \Anakeen\Core\ContextManager::getTmpDir($def);
 }
 
-/**
- * return value of parameters
- *
- * @deprecated  use \Anakeen\Core\ContextManager::getApplicationParam
- * @see         \Anakeen\Core\ContextManager::getParameterValue
- * @brief       must be in core or global type
- *
- * @param string $name param name
- * @param string $def  default value if value is empty
- *
- * @return string
- */
-function getParam($name, $def = "")
-{
-    return \Anakeen\Core\ContextManager::getParameterValue($name, $def);
-}
 
-/**
- * return value of a parameter
- *
- * @deprecated use Anakeen\Core\ContextManager::getCoreParam
- * @brief      must be in core or global type
- *
- * @param string $name param name
- * @param string $def  default value if value is empty
- *
- * @return string
- */
-function getCoreParam($name, $def = "")
-{
-    return \Anakeen\Core\ContextManager::getCoreParam($name, $def);
-}
 
-/**
- *
- * @param string $name the variable
- * @param string $def  default value if variable is not defined
- *
- * @return mixed
- */
-function getSessionValue($name, $def = "")
-{
-    global $action;
-    if ($action) {
-        return $action->read($name, $def);
-    }
-    return null;
-}
+
 
 
 

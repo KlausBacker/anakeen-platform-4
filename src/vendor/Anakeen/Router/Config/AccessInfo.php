@@ -1,16 +1,11 @@
 <?php
-
 namespace Anakeen\Router\Config;
-
-use Anakeen\Core\DbManager;
-use Anakeen\Router\Exception;
 
 /**
  * Class AccessInfo
  *
- * Configuration access data for an application
+ * Configuration access data for routes
  *
- * @see \Anakeen\Core\Internal\Application
  * @package Anakeen\Router
  */
 class AccessInfo
@@ -22,14 +17,9 @@ class AccessInfo
     public $configFile = "";
 
     /**
-     * @var \Anakeen\Core\Internal\Application
-     */
-    protected $application;
-    /**
      * @var \Acl
      */
     protected $acl;
-    protected $idApplication;
 
     public function __construct($data = null)
     {
@@ -43,22 +33,13 @@ class AccessInfo
     }
 
     /**
-     * Record application to database
+     * Record context accesses
      *
-     * @throws Exception
-     * @throws \Dcp\Db\Exception
      */
     public function record()
     {
-
-        DbManager::query(sprintf("select id from application where name='%s'", pg_escape_string($this->applicationContext)), $this->idApplication, true, true);
-        if (!$this->idApplication) {
-            throw new Exception("ROUTES0127", $this->applicationContext);
-        }
-
         $acl = new \Acl();
-        $acl->set($this->name, $this->idApplication);
-
+        $acl->set($this->name);
 
         if (!$acl->isAffected()) {
             $this->addAccess();
@@ -70,9 +51,6 @@ class AccessInfo
     /**
      * Record new application to database
      *
-     * @param bool $fullInit if false not add parameters
-     *
-     * @throws Exception
      */
     public function addAccess()
     {
@@ -81,22 +59,17 @@ class AccessInfo
         $acl->description = $this->description;
         $acl->grant_level = 1;
         $acl->group_default = 'N';
-        $acl->id_application=$this->idApplication;
 
         $acl->add();
     }
 
     /**
      * Update application to database
-     *
-     * @param \Anakeen\Core\Internal\Application $app
-     *
-     * @throws Exception
+     * @param \Acl $acl
      */
     protected function updateApplication(\Acl $acl)
     {
         $acl->description = $this->description;
         $acl->modify();
     }
-
 }

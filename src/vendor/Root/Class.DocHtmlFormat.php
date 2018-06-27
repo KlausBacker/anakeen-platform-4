@@ -224,17 +224,8 @@ class DocHtmlFormat
                                 $htmlval = '';
                                 $aend = "";
                             } elseif (true || preg_match("/^http:/", $ulink, $reg)) {
-                                $ec = getSessionValue("ext:targetUrl");
-
-                                if ($ec) {
-                                    $ec = str_replace("%V%", $ulink, $ec);
-                                    $ec = str_replace("%L%", $this->oattr->getLabel(), $ec);
-                                    $ecu = str_replace("'", "\\'", $this->doc->urlWhatEncode($ec));
-                                    $abegin = "<a  onclick='parent.$ecu'>";
-                                } else {
-                                    $ltarget = $this->oattr->getOption("ltarget");
-                                    $abegin = "<a target=\"$ltarget\"  href=\"$ulink\">";
-                                }
+                                $ltarget = $this->oattr->getOption("ltarget");
+                                $abegin = "<a target=\"$ltarget\"  href=\"$ulink\">";
 
                                 $aend = "</a>";
                             }

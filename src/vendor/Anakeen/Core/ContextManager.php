@@ -2,7 +2,6 @@
 
 namespace Anakeen\Core;
 
-use Anakeen\Core\Internal\ApplicationParameterManager;
 use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\Internal\GlobalParametersManager;
 use Anakeen\Core\Utils\Gettext;
@@ -338,49 +337,10 @@ class ContextManager
 
     public static function setParameterValue($name, $value)
     {
-        // if context not yet initialized
-        return ApplicationParameterManager::setParameterValue(self::getCurrentApplication(), $name, $value);
+        ContextParameterManager::setValue($name, $value);
     }
 
 
-    /**
-     * return value of a parameter
-     *
-     * @brief must be in core or global type
-     *
-     * @param string $name param name
-     * @param string $def  default value if value is empty
-     *
-     * @return string
-     */
-    public static function getCoreParam($name, $def = "")
-    {
-        if (($value = \Anakeen\Core\Internal\ApplicationParameterManager::_catchDeprecatedGlobalParameter($name)) !== null) {
-            return $value;
-        }
-        if (empty(self::$coreParams)) {
-            self::$coreParams = array();
-            $tparams = array();
-            try {
-                \Anakeen\Core\DbManager::query(
-                    "select name, val from paramv where (type = 'G') or (type='A' and appid = (select id from application where name ='CORE'));",
-                    $tparams,
-                    false,
-                    false
-                );
-
-                foreach ($tparams as $p) {
-                    self::$coreParams[$p['name']] = $p['val'];
-                }
-            } catch (\Dcp\Db\Exception $e) {
-            }
-        }
-        if (array_key_exists($name, self::$coreParams) == false) {
-            error_log(sprintf("parameter %s not found use %s instead", $name, $def));
-            return $def;
-        }
-        return (self::$coreParams[$name] === null) ? $def : self::$coreParams[$name];
-    }
 
     public static function getRootDirectory()
     {

@@ -16,20 +16,9 @@
  */
 
 $usage = new \Anakeen\Script\ApiUsage();
-$usage->setDefinitionText("regenerate js version file");
+$usage->setDefinitionText("Regenerate WVERSION");
 $usage->verify();
 
-$nv = getJsVersion();
-
-$fjs = DEFAULT_PUBDIR . "/Apps/CORE/wversion.js.in";
-
-$fc = file_get_contents($fjs);
-$fc = str_replace("%VERSION%", $nv, $fc);
-
-$cible = DEFAULT_PUBDIR . "/Apps/CORE/wversion.js";
-$fj = fopen($cible, "w");
-fputs($fj, $fc);
-fclose($fj);
-
-\Anakeen\Core\ContextManager::setParameterValue("WVERSION", $nv + 1);
-print "$cible [$nv]\n";
+$nv=uniqid();
+\Anakeen\Core\ContextManager::setParameterValue("WVERSION", $nv);
+print "WVERSION: [$nv]\n";

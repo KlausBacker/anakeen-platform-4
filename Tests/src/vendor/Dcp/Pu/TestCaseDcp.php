@@ -223,7 +223,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         $oImport->setCsvOptions(static::$importCsvSeparator, static::$importCsvEnclosure);
 
         $oImport->setVerifyAttributeAccess(false);
-        $cr = $oImport->importDocuments(self::getAction(), $realfile);
+        $cr = $oImport->importDocuments( $realfile);
         $err = $oImport->getErrorMessage();
         if ($err) {
             throw new \Dcp\Exception($err);

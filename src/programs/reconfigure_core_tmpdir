@@ -67,7 +67,7 @@ function main($WIFF_CONTEXT_ROOT, &$argv)
 function check($WIFF_CONTEXT_ROOT, $paramName)
 {
 
-    $paramValue = \Anakeen\Core\ContextManager::getCoreParam($paramName, false);
+    $paramValue = \Anakeen\Core\ContextManager::getParameterValue($paramName, false);
     if ($paramValue === false || !pathIsUnderContext($WIFF_CONTEXT_ROOT, $paramValue)) {
         \Anakeen\LogManager::warning(sprintf("Parameter '%s' references a directory outside the context's root: '%s'.", $WIFF_CONTEXT_ROOT, $paramName, $paramValue));
         return false;

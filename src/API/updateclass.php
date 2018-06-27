@@ -6,12 +6,12 @@
 /**
  * Update the SQL structure of a table of a DbObj Object
  *
- * @param string $appc the application directory (WHAT, FDL, ...)
- * @param string $class the class name of the DbObj Class
+ * @param string $appc   the application directory (WHAT, FDL, ...)
+ * @param string $class  the class name of the DbObj Class
  * @param string $dbname the SQL database name (anakeen, freedom)
- * @author Anakeen 2002
- * @version $Id: updateclass.php.in,v 1.8 2008/12/31 14:39:35 jerome Exp $
- * @package FDL
+ * @author     Anakeen 2002
+ * @version    $Id: updateclass.php.in,v 1.8 2008/12/31 14:39:35 jerome Exp $
+ * @package    FDL
  * @subpackage CORE
  */
 /**
@@ -44,7 +44,7 @@ $class = $usage->addRequiredParameter('class', 'Class name', function ($value, $
 
 $usage->verify();
 
-
+\Anakeen\Core\Internal\ContextParameterManager::setVolatile('CORE_LOGLEVEL', "WE");
 /**
  * @var DbObj $o
  */
@@ -75,7 +75,8 @@ if ($updateExistingTable) {
         }
     }
     /* Add SQL to load common columns data from old table */
-    $sql[] = sprintf("INSERT INTO public.%s (%s) SELECT %s FROM public.%s", pg_escape_identifier($o->dbtable), implode(", ", array_map('pg_escape_identifier', $commonColumns)), implode(", ", array_map('pg_escape_identifier', $commonColumns)), pg_escape_identifier($oldTableName));
+    $sql[] = sprintf("INSERT INTO public.%s (%s) SELECT %s FROM public.%s", pg_escape_identifier($o->dbtable), implode(", ", array_map('pg_escape_identifier', $commonColumns)),
+        implode(", ", array_map('pg_escape_identifier', $commonColumns)), pg_escape_identifier($oldTableName));
     /* Drop old table */
     $sql[] = sprintf("DROP TABLE public.%s", pg_escape_identifier($oldTableName));
 }

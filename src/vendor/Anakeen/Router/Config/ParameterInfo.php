@@ -45,16 +45,19 @@ class ParameterInfo
         $pdef->descr = $this->description;
         $pdef->domain = $this->domain;
         $pdef->category = $this->category;
-        $pdef->kind =  (!empty($this->access) && ($this->access === "static" || $this->access === "readonly")) ? $this->access
+        $pdef->kind = (!empty($this->access) && ($this->access === "static" || $this->access === "readonly")) ? $this->access
             : (!empty($this->type) ? $this->type : 'text');
         $pdef->isuser = empty($this->isUser) ? "N" : "Y";
         if ($updateMode) {
-            $pdef->modify();
+            $err = $pdef->modify();
         } else {
-            $pdef->add();
+            $err = $pdef->add();
         }
 
-        $pval= new  Param();
+        if ($err) {
+            throw new \Dcp\Exception($err);
+        }
+        $pval = new  Param();
         if ($updateMode) {
             // don't modify previous parameters configuration
             if ($this->access === "static") {

@@ -73,7 +73,6 @@ class LibPhpini
                 return self::$coreApplication->getParam($name, $defaultValue);
             } else {
                 require_once 'Lib.Common.php';
-                require_once 'Class.ApplicationParameterManager.php';
                 $parameterValue = ContextManager::getParameterValue($name);
                 return (null === $parameterValue ? $defaultValue : $parameterValue);
             }

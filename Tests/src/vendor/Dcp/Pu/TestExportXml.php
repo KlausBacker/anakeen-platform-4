@@ -176,7 +176,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
 
         $this->clearSetHttpVar();
         $oImport = new \ImportDocument();
-        $oImport->importDocuments(self::getAction(), $archiveFile, false, true);
+        $oImport->importDocuments( $archiveFile, false, true);
         $err = $oImport->getErrorMessage();
         if ($err) {
             throw new \Dcp\Exception($err);
@@ -195,7 +195,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
         }
         SetHttpVar("wfile", "Y");
 
-        exportxmlfld(self::getAction(), $folderId, $famid, null, $testarchivefile, $type, "Y", null, false);
+        exportxmlfld( $folderId, $famid, null, $testarchivefile, $type, "Y", null, false);
 
         if ($type == "X") {
             $err = extractTar($testarchivefile, $testExtractFolder);

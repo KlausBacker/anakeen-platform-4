@@ -2,6 +2,7 @@
 
 namespace Dcp\Pu;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Internal\GlobalParametersManager;
 
@@ -25,12 +26,11 @@ class TestGetDocAnchor extends TestCaseDcpCommonFamily
      *
      * @param $data
      *
-     * @throws \Dcp\ApplicationParameterManager\Exception
      */
-    public function test_getDocAnchorMail($data)
+    public function testGetDocAnchorMail($data)
     {
         foreach ($data['params'] as $param) {
-            \Anakeen\Core\Internal\ApplicationParameterManager::setCommonParameterValue($param['app'], $param['name'], $param['value']);
+            ContextManager::setParameterValue($param['name'], $param['value']);
         }
         GlobalParametersManager::initialize();
 
@@ -53,12 +53,10 @@ class TestGetDocAnchor extends TestCaseDcpCommonFamily
                     "doc" => "TST_GETDOCANCHOR_1",
                     "params" => array(
                         array(
-                            "app" => "CORE",
                             "name" => "CORE_MAILACTION",
                             "value" => ""
                         ),
                         array(
-                            "app" => "CORE",
                             "name" => "CORE_URLINDEX",
                             "value" => "http://www1.example.net/"
                         )
