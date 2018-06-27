@@ -6,6 +6,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiDocid\Renders;
 
+use Anakeen\Core\ContextManager;
 use SmartStructure\Attributes\TST_DDUI_DOCID as myAttributes;
 
 class DocidRenderConfigView extends \Dcp\Ui\DefaultView
@@ -62,7 +63,7 @@ class DocidRenderConfigView extends \Dcp\Ui\DefaultView
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
 
-        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $version = ContextManager::getParameterValue("WVERSION");
         $jsRef= parent::getJsReferences(
             $document
         );

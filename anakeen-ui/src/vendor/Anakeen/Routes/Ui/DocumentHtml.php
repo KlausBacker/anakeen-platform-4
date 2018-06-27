@@ -5,6 +5,7 @@
 
 namespace Anakeen\Routes\Ui;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\I18nTemplateContext;
 use Anakeen\Core\Utils\Gettext;
 use Anakeen\Router\Exception;
@@ -67,7 +68,7 @@ class DocumentHtml
             }
         }
 
-        $modeDebug = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("SMARTELEMENT_UI", "MODE_DEBUG");
+        $modeDebug = ContextManager::getParameterValue("MODE_DEBUG");
         if ($modeDebug !== "FALSE") {
             $templateFile = DEFAULT_PUBDIR . "/Apps/DOCUMENT/Layout/debug/document-view.mustache.html";
         } else {
@@ -75,7 +76,7 @@ class DocumentHtml
         }
         $data = new I18nTemplateContext();
         $data["BASEURL"] = self::getBaseUrl();
-        $data["NOTIFICATION_DELAY"] = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("SMARTELEMENT_UI", "NOTIFICATION_DELAY");
+        $data["NOTIFICATION_DELAY"] = ContextManager::getParameterValue( "NOTIFICATION_DELAY");
         $data["notificationLabelMore"] = ___("See more ...", "ddui:notification");
         $data["notificationTitleMore"] = ___("Notification", "ddui:notification");
         $data["messages"] = "{}";
@@ -135,7 +136,7 @@ class DocumentHtml
 
         $render = new \Dcp\Ui\RenderDefault();
 
-        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $version = ContextManager::getParameterValue( "WVERSION");
 
         $data["ws"] = $version;
         $cssRefs = $render->getCssReferences();
@@ -162,8 +163,7 @@ class DocumentHtml
 
     protected function getWarningMessages()
     {
-        global $action;
-        $warnings = $action->parent->getWarningMsg();
+        $warnings = []; // @TODO record Warning Msg$action->parent->getWarningMsg();
         $messages = [];
         foreach ($warnings as $warning) {
             $message = new \Anakeen\Routes\Core\Lib\ApiMessage();
@@ -172,7 +172,7 @@ class DocumentHtml
 
             $messages[] = $message;
         }
-        $action->parent->clearWarningMsg();
+        //$action->parent->clearWarningMsg();
         return json_encode($messages);
     }
 

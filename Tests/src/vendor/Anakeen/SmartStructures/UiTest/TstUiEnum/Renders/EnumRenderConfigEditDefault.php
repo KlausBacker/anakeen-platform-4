@@ -2,6 +2,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiEnum\Renders;
 
+use Anakeen\Core\ContextManager;
 use SmartStructure\Attributes\Tst_ddui_enum as myAttributes;
 
 class EnumRenderConfigEditDefault extends \Dcp\Ui\DefaultEdit
@@ -24,7 +25,7 @@ class EnumRenderConfigEditDefault extends \Dcp\Ui\DefaultEdit
 
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $version =  ContextManager::getParameterValue("WVERSION");
         $css = parent::getCssReferences($document);
         $css["tstotherenum"] = "TEST_DOCUMENT_SELENIUM/Layout/testOtherEnum.css?ws=".$version;
         return $css;
