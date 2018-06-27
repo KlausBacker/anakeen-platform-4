@@ -120,10 +120,7 @@ class ErrorCodeRoutes
      * @errorCode Document reference must be an search id
      */
     const ROUTES0126 = 'Document "%s" not a search';
-    /**
-     * @errorCode ApplicationContext of accesses must reference recorded application
-     */
-    const ROUTES0127 = 'Accesses : ApplicationContext  "%s" not found';
+
     /**
      * @errorCode Cannot defined same route twice
      */

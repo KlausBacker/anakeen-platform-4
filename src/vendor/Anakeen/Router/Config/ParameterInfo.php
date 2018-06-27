@@ -14,8 +14,6 @@ class ParameterInfo
     public $domain;
     public $category;
     public $isUser = false;
-    public $global = true;
-    public $applicationContext = "CORE";
     public $configFile = "";
 
     public function __construct($data = null)
@@ -25,9 +23,6 @@ class ParameterInfo
 
             foreach ($vars as $k => $v) {
                 $this->$k = $v;
-            }
-            if ($this->applicationContext !== "CORE") {
-                $this->global = false;
             }
         }
     }

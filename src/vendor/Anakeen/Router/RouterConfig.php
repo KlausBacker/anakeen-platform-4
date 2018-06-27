@@ -281,13 +281,11 @@ class RouterConfig
      * @throws Exception
      * @throws \Dcp\Db\Exception
      */
-    public function recordAccesses($appName = "CORE")
+    public function recordAccesses()
     {
         $accesses = $this->getAccesses();
         foreach ($accesses as $access) {
-            if ($access->applicationContext === $appName) {
                 $access->record();
-            }
         }
     }
 

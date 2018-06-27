@@ -1582,7 +1582,6 @@ class ImportDocumentDescription
      */
     protected function doAccess(array $data)
     {
-        global $action;
         $check = new CheckAccess();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $action)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
@@ -1601,65 +1600,58 @@ class ImportDocumentDescription
             $tdoc = \Anakeen\Core\SEManager::getRawData($pid, ["us_whatid"]);
             $wid = $tdoc["us_whatid"];
         }
-        $idapp = $action->parent->GetIdFromName($data[2]);
-        if ($idapp == 0) {
-            $this->tcr[$this->nLine]["err"] = sprintf(_("%s application not exists"), $data[2]);
-        } else {
-            $this->tcr[$this->nLine]["msg"] = "user #$wid";
-            array_shift($data);
-            array_shift($data);
-            array_shift($data);
-            $q = new \Anakeen\Core\Internal\QueryDb("", Acl::class);
-            $q->AddQuery("id_application=$idapp");
-            $la = $q->Query(0, 0, "TABLE");
-            if (!$la) {
-                $this->tcr[$this->nLine]["err"] = sprintf(_("%s application has no aclss"), $data[2]);
-            } else {
-                $tacl = array();
-                foreach ($la as $k => $v) {
-                    $tacl[$v["name"]] = $v["id"];
-                }
 
-                $p = new Permission();
-                $p->id_user = $wid;
-                $p->id_application = $idapp;
-                foreach ($data as $v) {
-                    $v = trim($v);
-                    if ($v != "") {
-                        if ($this->analyze) {
-                            $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("try add acl %s"), $v);
-                            $this->tcr[$this->nLine]["action"] = "added";
-                            continue;
-                        }
-                        if (substr($v, 0, 1) == '-') {
-                            $aclneg = true;
-                            $v = substr($v, 1);
+        $this->tcr[$this->nLine]["msg"] = "user #$wid";
+        array_shift($data);
+        array_shift($data);
+        array_shift($data);
+
+        $q = new \Anakeen\Core\Internal\QueryDb("", Acl::class);
+        $la = $q->Query(0, 0, "TABLE");
+        $tacl = array();
+        foreach ($la as $k => $v) {
+            $tacl[$v["name"]] = $v["id"];
+        }
+
+        $p = new Permission();
+        $p->id_user = $wid;
+        foreach ($data as $v) {
+            $v = trim($v);
+            if ($v != "") {
+                if ($this->analyze) {
+                    $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("try add acl %s"), $v);
+                    $this->tcr[$this->nLine]["action"] = "added";
+                    continue;
+                }
+                if (substr($v, 0, 1) == '-') {
+                    $aclneg = true;
+                    $v = substr($v, 1);
+                } else {
+                    $aclneg = false;
+                }
+                if (isset($tacl[$v])) {
+                    $p->id_acl = $tacl[$v];
+                    if ($aclneg) {
+                        $p->id_acl = -$p->id_acl;
+                    }
+                    $p->deletePermission($p->id_user, $p->id_acl);
+                    $err = $p->add();
+                    if ($err) {
+                        $this->tcr[$this->nLine]["err"] .= "\n$err";
+                    } else {
+                        if ($aclneg) {
+                            $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("add negative acl %s"), $v);
                         } else {
-                            $aclneg = false;
-                        }
-                        if (isset($tacl[$v])) {
-                            $p->id_acl = $tacl[$v];
-                            if ($aclneg) {
-                                $p->id_acl = -$p->id_acl;
-                            }
-                            $p->deletePermission($p->id_user, $p->id_application, $p->id_acl);
-                            $err = $p->add();
-                            if ($err) {
-                                $this->tcr[$this->nLine]["err"] .= "\n$err";
-                            } else {
-                                if ($aclneg) {
-                                    $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("add negative acl %s"), $v);
-                                } else {
-                                    $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("add acl %s"), $v);
-                                }
-                            }
-                        } else {
-                            $this->tcr[$this->nLine]["err"] .= "\n" . sprintf(_("unknow acl %s"), $v);
+                            $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("add acl %s"), $v);
                         }
                     }
+                } else {
+                    $this->tcr[$this->nLine]["err"] .= "\n" . sprintf(_("unknow acl %s"), $v);
                 }
             }
         }
+
+
         if ($this->tcr[$this->nLine]["err"]) {
             $this->tcr[$this->nLine]["action"] = "ignored";
         }
@@ -2037,7 +2029,7 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
             return;
         }
-        $structAttr=new StructAttribute();
+        $structAttr = new StructAttribute();
         $structAttr->set($data);
         $iAttr = new \Anakeen\Core\Internal\ImportSmartAttr();
         $iAttr->id = $oattr->id;
@@ -2053,7 +2045,7 @@ class ImportDocumentDescription
         $iAttr->phpfile = $oattr->phpfile;
         $iAttr->phpfunc = $oattr->phpfunc;
         $iAttr->elink = $oattr->elink;
-        $iAttr->constraint =($structAttr->constraint)?:'';
+        $iAttr->constraint = ($structAttr->constraint) ?: '';
 
 
         $this->doAttr($iAttr->getData("ATTR"), true);

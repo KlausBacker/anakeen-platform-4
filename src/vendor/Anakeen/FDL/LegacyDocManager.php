@@ -95,7 +95,6 @@ function clearCacheDoc($id = 0)
  * @param bool       $latest   if true set to latest revision of doc
  *
  * @return \Anakeen\Core\Internal\SmartElement object
- * @throws DocManager\Exception
  * @throws \Dcp\Core\Exception
  * @deprecated use SEManager::getDocument
  *
@@ -343,7 +342,6 @@ function getDocProperties(
  */
 function getTDoc($dbaccess, $id, $sqlfilters = array(), $result = array())
 {
-    global $action;
     global $SQLDELAY, $SQLDEBUG;
 
     if (!is_numeric($id)) {
@@ -504,7 +502,6 @@ function cmp_cvorder3($a, $b)
  */
 function controlTdoc(&$tdoc, $aclname)
 {
-    global $action;
     static $_ODocCtrol = false;
     static $_memberOf = false; // current user
     if (!$_ODocCtrol) {
@@ -512,7 +509,7 @@ function controlTdoc(&$tdoc, $aclname)
         $_memberOf = DocPerm::getMemberOfVector();
     }
 
-    if (($tdoc["profid"] <= 0) || ($action->user->id == 1)) {
+    if (($tdoc["profid"] <= 0) || (\Anakeen\Core\ContextManager::getCurrentUser()->id == 1)) {
         return true;
     }
     if (!isset($tdoc["uperm"])) {
@@ -806,7 +803,6 @@ function isFixedDoc($dbaccess, $id)
  */
 function getLatestTDoc($dbaccess, $initid, $sqlfilters = array(), $fromid = false)
 {
-    global $action;
 
     if (!($initid > 0)) {
         return false;
@@ -832,7 +828,7 @@ function getLatestTDoc($dbaccess, $initid, $sqlfilters = array(), $fromid = fals
         $sqlcond = "and (" . implode(") and (", $sqlfilters) . ")";
     }
 
-    $userid = $action->user->id;
+    $userid = \Anakeen\Core\ContextManager::getCurrentUser()->id;
     if ($userid) {
         $userMember = DocPerm::getMemberOfVector();
         $sql = sprintf(
@@ -955,7 +951,6 @@ function getLatestDocId($dbaccess, $initid)
  */
 function getRevTDoc($dbaccess, $initid, $rev)
 {
-    global $action;
 
     if (!($initid > 0)) {
         return false;
@@ -999,7 +994,6 @@ function getRevTDoc($dbaccess, $initid, $rev)
  */
 function getLatestRevisionNumber($dbaccess, $initid, $fromid = 0)
 {
-    global $action;
 
     $initid = intval($initid);
     if (!($initid > 0)) {

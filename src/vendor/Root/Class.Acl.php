@@ -11,7 +11,6 @@ class Acl extends DbObj
     public $fields = array(
         "id",
         "name",
-        "grant_level",
         "description",
         "group_default"
     );
@@ -21,7 +20,6 @@ class Acl extends DbObj
     );
     public $id;
     public $name;
-    public $grant_level;
     public $description;
     public $group_default;
     public $dbtable = "acl";
@@ -29,7 +27,6 @@ class Acl extends DbObj
     public $sqlcreate = '
 create table acl (id int not null,
                   name text not null,
-                  grant_level int not null,
                   description text,
                   group_default char);
 create unique index acl_idx1 on acl(id);
@@ -83,25 +80,7 @@ create sequence SEQ_ID_ACL;
         return ($query->nb > 0);
     }
 
-    public function delAppAcl($id)
-    {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Acl::class);
-        $query->basic_elem->sup_where = array(
-            "id_application=$id"
-        );
-        $list = $query->Query();
-        if ($query->nb > 0) {
-            /**
-             * @var Acl $v
-             */
-            foreach ($list as $v) {
-                $v->Delete();
-            }
-        }
-        // Remove Permission
-        $permission = new Permission($this->dbaccess);
-        $permission->DelAppPerm($id);
-    }
+
 
     public function init($app, $app_acl, $update = false)
     {
@@ -110,13 +89,7 @@ create sequence SEQ_ID_ACL;
             return ("");
         }
 
-        $default_grant_level_found = false; // indicate user default set explicitly
-        if (isset($app_acl[0]["grant_level"])) {
-            $oldacl = true;
-        } // for old ACL description (for compatibility with old application)
-        else {
-            $oldacl = false;
-        }
+
         // read init file
         $default_user_acl = array(); // default acl ids
         $default_acl = false; // to update default acl id
@@ -130,28 +103,12 @@ create sequence SEQ_ID_ACL;
             if (isset($tab["description"])) {
                 $acl->description = $tab["description"];
             }
-            if (isset($tab["grant_level"])) {
-                $acl->grant_level = $tab["grant_level"];
-            } else {
-                $acl->grant_level = 1;
-            }
-            // initialise grant level default
+
             if ((isset($tab["group_default"])) && ($tab["group_default"] == "Y")) {
-                if ($oldacl) {
-                    $default_grant_level = $tab["grant_level"];
-                    $default_grant_level_found = true;
-                }
                 $acl->group_default = "Y";
                 $default_acl = true;
             } else {
                 $acl->group_default = "N";
-
-                if ($oldacl) {
-                    if ((!$default_grant_level_found) && ((!isset($smalestgrant)) || ($tab["grant_level"] < $smalestgrant)) && (!((isset($tab["admin"]) && $tab["admin"])))) {
-                        // default acl admin must be specified explicitly
-                        $smalestgrant = $tab["grant_level"];
-                    }
-                }
             }
 
             if ($acl->exists($acl->name)) {
@@ -179,33 +136,8 @@ create sequence SEQ_ID_ACL;
                 $default_acl = false;
             }
         }
-        // default privilige is the smallest if no definition (for old old application)
-        if (count($default_user_acl) == 0) {
-            if (isset($smalestgrant)) {
-                $default_user_acl[] = $smalestgrant;
-                $default_grant_level = $smalestgrant;
-            }
-        }
 
-        if ($oldacl) {
-            // ----------------------------------------------
-            // for old acl form definition (with grant_level)
-            // set default acl for grant level under the default
-            if (isset($default_grant_level)) {
-                $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Acl::class);
-                $query->AddQuery("id_application = " . $app->id);
-                $query->AddQuery("grant_level < $default_grant_level");
-                if ($qacl = $query->Query()) {
-                    foreach ($qacl as $k2 => $acl) {
-                        if (!in_array($acl->id, $default_user_acl)) {
-                            $default_user_acl[] = $acl->id;
-                        }
-                    }
-                }
-            }
-        }
         // create default permission
-        reset($default_user_acl);
         foreach ($default_user_acl as $ka => $aclid) {
             // set the default user access
             $defaultacl = new Acl($this->dbaccess, $aclid);
@@ -224,58 +156,8 @@ create sequence SEQ_ID_ACL;
             }
         }
         return '';
-        // Remove unused Acl in case of update
-        //   if ($update) {
-        //     $query=new QueryDb($this->dbaccess, \Acl::class);
-        //     $query->basic_elem->sup_where=array ("id_application = {$app->id}");
-        //     $list=$query->Query();
-        //     while (list($k,$v)=each($list)) {
-        //       // Check if the ACL still exists
-        //       $find=FALSE;
-        //       reset($app_acl);
-        //       while ( (list($k2,$v2) = each($app_acl)) && ($find==FALSE) ) {
-        //         $find=( $v2["name"] == $v->name );
-        //       }
-        //       if (!$find) {
-        //         // remove the ACL and all associated permissions
-        //         LogManager::info("Removing the {$v->name} ACL");
-        //         $query2 = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Permission::class);
-        //         $query2->basic_elem->sup_where=array("id_application= {$app->id}",
-        //                                              "id_acl = {$v->id}");
-        //         $list_perm = $query2->Query();
-        //         if ($query2->nb>0) {
-        //           while (list($k2,$p) = each ($list_perm)) {
-        //             $p->Delete();
-        //           }
-        //         }
-        //         $v->Delete();
-        //       }
-        //     }
-        //   }
     }
 
-    // get default ACL for an application
-    public function getDefaultAcls($idapp)
-    {
-        $aclids = array();
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Acl::class);
-        $query->AddQuery("id_application = $idapp");
-        $query->AddQuery("group_default = 'Y'");
-        if ($qacl = $query->Query()) {
-            foreach ($qacl as $k2 => $acl) {
-                $aclids[] = $acl->id;
-            }
-        }
-        return $aclids;
-    }
 
-    public function getAclApplication($idapp)
-    {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Acl::class);
-        $query->AddQuery("id_application = $idapp");
-        if ($qacl = $query->Query()) {
-            return $qacl;
-        }
-        return 0;
-    }
+
 }

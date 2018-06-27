@@ -1896,14 +1896,10 @@ create unique index i_docir on doc(initid, revision);";
         if ($really) {
             if ($this->id != "") {
                 // delete all revision also
-                global $action;
                 global $_SERVER;
-                $appli = $action->parent;
                 $this->addHistoryEntry(
                     sprintf(
-                        _("Destroyed by action %s/%s from %s"),
-                        $appli->name,
-                        $action->name,
+                        ___("Destroyed by route from %s", "sde"),
                         isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 'bash mode'
                     ),
                     \DocHisto::NOTICE
@@ -1946,14 +1942,11 @@ create unique index i_docir on doc(initid, revision);";
                 $this->lmodify = 'D'; // indicate last delete revision
                 $date = gettimeofday();
                 $this->revdate = $date['sec']; // Delete date
-                global $action;
+
                 global $_SERVER;
 
-                $appli = $action->parent;
                 $this->addHistoryEntry(sprintf(
-                    _("delete by action %s/%s from %s"),
-                    $appli->name,
-                    $action->name,
+                    ___("Delete by route from %s", "sde"),
                     isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 'bash mode'
                 ), \DocHisto::NOTICE);
                 $this->addHistoryEntry(_("document deleted"), \DocHisto::MESSAGE, "DELETE");
@@ -3145,8 +3138,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getExportAttributes($withfile = false, $forcedefault = false)
     {
-        global $action;
-
         if ($this->doctype == 'C') {
             $famid = $this->id;
         } else {
@@ -3158,11 +3149,7 @@ create unique index i_docir on doc(initid, revision);";
         $tsa = array();
         if (isset($this->attributes->attr)) {
             $pref = "";
-            if (file_exists(sprintf("%s/Apps/GENERIC/generic_util.php", DEFAULT_PUBDIR))) {
-                include_once("GENERIC/generic_util.php");
-                /** @noinspection PhpUndefinedFunctionInspection */
-                $pref = getFamilyParameter($action, $famid, "FREEDOM_EXPORTCOLS");
-            }
+
             if ((!$forcedefault) && ($pref != "")) {
                 $tpref = explode(";", $pref);
 
@@ -6532,11 +6519,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function urlWhatEncode($link, $k = -1)
     {
-        /**
-         * @var \Anakeen\Core\Internal\Action $action
-         */
-        global $action;
-
         $urllink = "";
         $mi = strlen($link);
         for ($i = 0; $i < $mi; $i++) {
@@ -6556,15 +6538,15 @@ create unique index i_docir on doc(initid, revision);";
                             // special link
                             switch ($link[$i]) {
                                 case "B": // baseurl
-                                    $urllink .= $action->GetParam("CORE_BASEURL", "?");
+                                    $urllink .= ContextManager::getParameterValue("CORE_BASEURL", "?");
                                     break;
 
                                 case "S": // standurl
-                                    $urllink .= $action->GetParam("CORE_STANDURL", "?");
+                                    $urllink .= ContextManager::getParameterValue("CORE_STANDURL", "?");
                                     break;
 
                                 case "U": // extern url
-                                    $urllink .= $action->GetParam("CORE_EXTERNURL");
+                                    $urllink .= ContextManager::getParameterValue("CORE_EXTERNURL");
                                     break;
 
                                 case "I": // id
@@ -6639,7 +6621,7 @@ create unique index i_docir on doc(initid, revision);";
                         $i++;
                     }
                     //	  print "attr=$sattrid";
-                    $ovalue = $action->getParam($sattrid);
+                    $ovalue = ContextManager::getParameterValue($sattrid);
                     $urllink .= rawurlencode($ovalue);
 
                     break;
@@ -7533,8 +7515,6 @@ create unique index i_docir on doc(initid, revision);";
         $abstract = false,
         $changelayout = false
     ) {
-        global $action;
-
         $reg = $this->parseZone($layout);
         if ($reg === false) {
             return htmlspecialchars(sprintf(_("error in pzone format %s"), $layout), ENT_QUOTES);
@@ -8673,18 +8653,13 @@ create unique index i_docir on doc(initid, revision);";
         $attrId,
         $attrType = ''
     ) {
-
-        /**
-         * @var \Anakeen\Core\Internal\Action $action
-         */
-        global $action;
         // Strip format strings for non-docid types
         $pType = \Dcp\FamilyImport::parseType($attrType);
         if ($pType['type'] != 'docid') {
             $attrType = $pType['type'];
         }
 
-        $collator = new \Collator($action->GetParam('CORE_LANG', 'fr_FR'));
+        $collator = new \Collator(ContextManager::getParameterValue('CORE_LANG', 'fr_FR'));
 
         $compatibleMethods = array();
 

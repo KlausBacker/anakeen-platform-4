@@ -1343,7 +1343,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         // delete acl
         $acl = new \Acl($this->dbaccess);
-        $acl->DelAppAcl($this->id);
+        //$acl->DelAppAcl($this->id);
         // delete actions
         LogManager::debug("Delete {$this->name}");
         $query = new \Anakeen\Core\Internal\QueryDb("", Action::class);
@@ -1391,37 +1391,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         return _($code);
     }
 
-    /**
-     * Write default ACL when new \user is created
-     *
-     * @TODO not used - to remove
-     *
-     * @param int $iduser
-     *
-     * @throws \Dcp\Db\Exception
-     */
-    public function updateUserAcl($iduser)
-    {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
-        $query->AddQuery("available = 'Y'");
-        $allapp = $query->Query();
-        $acl = new \Acl($this->dbaccess);
 
-        foreach ($allapp as $v) {
-            $permission = new \Permission($this->dbaccess);
-            $permission->id_user = $iduser;
-            $permission->id_application = $v->id;
-
-            $privileges = $acl->getDefaultAcls($v->id);
-
-            foreach ($privileges as $aclid) {
-                $permission->id_acl = $aclid;
-                if (($permission->id_acl > 0) && (!$permission->Exists($permission->id_user, $v->id))) {
-                    $permission->add();
-                }
-            }
-        }
-    }
 
     /**
      * return id from name for an application
@@ -1451,32 +1421,4 @@ create sequence SEQ_ID_APPLICATION start 10;
         return (is_object($this->parent) && ($this->parent !== $this));
     }
 
-    /**
-     * Initialize ACLs with group_default='Y'
-     */
-    private function _initACLWithGroupDefault()
-    {
-        $res = array();
-        try {
-            DbManager::query(sprintf("SELECT * FROM acl WHERE id_application = %s AND group_default = 'Y'", $this->id), $res, false, false);
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
-        foreach ($res as $acl) {
-            $permission = new \Permission($this->dbaccess);
-            if ($permission->Exists(\Anakeen\Core\Account::GALL_ID, $this->id, $acl['id'])) {
-                continue;
-            }
-            $permission->Affect(array(
-                'id_user' => \Anakeen\Core\Account::GALL_ID,
-                'id_application' => $this->id,
-                'id_acl' => $acl['id']
-            ));
-            $err = $permission->add();
-            if ($err != '') {
-                return $err;
-            }
-        }
-        return '';
-    }
 }

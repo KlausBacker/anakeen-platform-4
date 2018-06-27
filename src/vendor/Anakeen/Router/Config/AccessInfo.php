@@ -13,7 +13,6 @@ class AccessInfo
     public $name;
     public $description;
     public $category;
-    public $applicationContext = "CORE";
     public $configFile = "";
 
     /**
@@ -57,7 +56,6 @@ class AccessInfo
         $acl = new \Acl();
         $acl->name = $this->name;
         $acl->description = $this->description;
-        $acl->grant_level = 1;
         $acl->group_default = 'N';
 
         $acl->add();

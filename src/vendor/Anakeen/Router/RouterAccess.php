@@ -3,13 +3,11 @@
 namespace Anakeen\Router;
 
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\Internal\Application;
 use Anakeen\Router\Config\RequiredAccessInfo;
 use Anakeen\Router\Config\RouterInfo;
 
 class RouterAccess
 {
-
     public static function checkRouteAccess(RouterInfo $routeInfo, $forceRecheck = false)
     {
         $requiredAccess = $routeInfo->requiredAccess;
@@ -18,7 +16,7 @@ class RouterAccess
         }
 
         if (is_string($requiredAccess)) {
-            if (!self::hasPermission($requiredAccess, $routeInfo->applicationContext, $forceRecheck)) {
+            if (!self::hasPermission($requiredAccess, $forceRecheck)) {
                 $e = new Exception("ROUTES0131", $routeInfo->name, $requiredAccess);
                 $e->setHttpStatus(403, "Access Forbidden");
                 throw $e;
@@ -29,7 +27,7 @@ class RouterAccess
              */
             if (!empty($requiredAccess->or) && count($requiredAccess->or) > 1) {
                 foreach ($requiredAccess->or as $aclName) {
-                    if (self::hasPermission($aclName, $routeInfo->applicationContext, $forceRecheck)) {
+                    if (self::hasPermission($aclName, $forceRecheck)) {
                         return;
                     }
                 }
@@ -38,7 +36,7 @@ class RouterAccess
                 throw $e;
             } elseif (!empty($requiredAccess->and) && count($requiredAccess->and) > 1) {
                 foreach ($requiredAccess->and as $aclName) {
-                    if (!self::hasPermission($aclName, $routeInfo->applicationContext, $forceRecheck)) {
+                    if (!self::hasPermission($aclName, $forceRecheck)) {
                         $e = new Exception("ROUTES0131", $routeInfo->name, "AND:" . implode(", ", $requiredAccess->and));
                         $e->setHttpStatus(403, "Access Forbidden");
                         throw $e;
@@ -50,7 +48,7 @@ class RouterAccess
         }
     }
 
-    public static function hasPermission($aclName, $appName = "CORE", $forceRecheck = false)
+    public static function hasPermission($aclName, $forceRecheck = false)
     {
         static $first = true;
         static $acl;
@@ -61,7 +59,6 @@ class RouterAccess
 
             $acl = new \Acl();
             $permission = new \Permission();
-            $permission->id_user = ContextManager::getCurrentUser()->id;
         }
         $acl->set($aclName);
 
@@ -69,10 +66,7 @@ class RouterAccess
             throw new Exception("ROUTES0133", $aclName);
         }
 
-        if ($forceRecheck || $permission->id_application !== $acl->id_application
-            || $permission->id_application !== $app->id
-            || $permission->id_user !== ContextManager::getCurrentUser()->id) {
-            $permission->id_application = $acl->id_application;
+        if ($forceRecheck || $permission->id_user !== ContextManager::getCurrentUser()->id) {
             $permission->id_user = ContextManager::getCurrentUser()->id;
 
             $permission->getPrivileges();
