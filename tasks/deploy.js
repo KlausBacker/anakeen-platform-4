@@ -151,7 +151,7 @@ exports.deploy = ({
           })
           .on("error", error => {
             reject(error);
-          }).end();
+          });
       });
     } catch (e) {
       throw e;

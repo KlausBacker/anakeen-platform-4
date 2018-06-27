@@ -23,7 +23,7 @@ module.exports = asyncCallback => {
             callback();
           })
           .catch(err => {
-            plugin.emit("error", new PluginError(asyncCallback, err));
+            plugin.emit("error", new PluginError("asyncCallback", err));
             callback(err);
           });
       } catch (e) {
