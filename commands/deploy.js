@@ -38,6 +38,7 @@ exports.handler = function(argv) {
       task = buildAndDeploy({ sourcePath: argv.appPath, ...argv }).tasks
         .buildAndDeploy.fn;
     } else {
+      console.log(deploy(argv));
       signale.info("app deploy mode " + argv.appPath);
       task = deploy(argv).tasks.deploy.fn;
     }
