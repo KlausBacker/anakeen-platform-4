@@ -8,7 +8,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "global": "^4.3.2",
+    "find-up": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-gzip": "^1.4.2",
     "gulp-replace": "^1.0.0",
