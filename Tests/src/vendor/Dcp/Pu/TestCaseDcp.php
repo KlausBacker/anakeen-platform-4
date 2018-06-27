@@ -108,39 +108,9 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         }
     }
 
-    /**
-     * Current action
-     *
-     * @return \Anakeen\Core\Internal\Action
-     */
-    protected static function &getAction()
-    {
-        $action = ContextManager::getCurrentAction();
-        if (!$action) {
-            self::connectUser();
-        }
-        $action = ContextManager::getCurrentAction();
-        if (!$action->dbid) {
-            if (!$action->dbid) {
-                $action->initDbid();
-                if (!$action->dbid) {
-                    error_log(__METHOD__ . "lost action dbid");
-                }
-            }
-            $action->initDbid();
-        }
-        return $action;
-    }
 
-    /**
-     * Current application
-     *
-     * @return \Anakeen\Core\Internal\Application
-     */
-    protected static function getApplication()
-    {
-        return ContextManager::getCurrentApplication();
-    }
+
+
 
     /**
      * return a single value from DB

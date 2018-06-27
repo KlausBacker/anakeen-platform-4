@@ -91,14 +91,8 @@ class Layout
     protected $pkey = array();
     
     protected $zoneLevel = 0;
-    /**
-     * @var \Anakeen\Core\Internal\Action
-     */
-    public $action = null;
-    //########################################################################
-    //# Public methods
-    //#
-    //#
+
+
     
     
     /**
@@ -106,10 +100,9 @@ class Layout
      *
      *
      * @param string $caneva file path of the template
-     * @param \Anakeen\Core\Internal\Action $action current action
      * @param string $template if no $caneva found or is empty use this template.
      */
-    public function __construct($caneva = "", $action = null, $template = "[OUT]")
+    public function __construct(string $caneva = "", string $template = "[OUT]")
     {
         $this->initialFile=$caneva;
         $this->LOG = new \Anakeen\Core\Internal\Log("", "Layout");
@@ -118,9 +111,7 @@ class Layout
         } else {
             $this->template = $template;
         }
-        if ($action) {
-            $this->action = & $action;
-        }
+
         $this->generation = "";
         $this->noGoZoneMapping = uniqid($this->noGoZoneMapping);
         $this->escapeBracket = uniqid($this->escapeBracket);
@@ -304,14 +295,9 @@ class Layout
         }, $out);
     }
     
-    protected function ParseZone(&$out)
-    {
-        $out = preg_replace_callback('/\[ZONE\s+([^:]*):([^\]]*)\]/', function ($matches) {
-            return $this->execute($matches[1], $matches[2]);
-        }, $out);
-    }
+
     
-    protected function ParseKey(&$out)
+    protected function parseKey(&$out)
     {
         if (isset($this->rkey)) {
             $out = str_replace($this->pkey, $this->rkey, $out);
@@ -447,22 +433,7 @@ class Layout
         return "";
     }
     
-    protected function ParseRef(&$out)
-    {
-        if (!$this->action) {
-            return;
-        }
-        $out = preg_replace_callback('/\[IMG:([^\|\]]+)\|([0-9]+)\]/', function ($matches) {
-            global $action;
-            return $action->parent->getImageLink($matches[1], true, $matches[2]);
-        }, $out);
-        
-        $out = preg_replace_callback('/\[IMG:([^\]\|]+)\]/', function ($matches) {
-            global $action;
-            return $action->parent->getImageLink($matches[1]);
-        }, $out);
 
-    }
     
     protected function ParseText(&$out)
     {
@@ -645,17 +616,12 @@ class Layout
         $this->ParseBlock($out);
         // Restore rif because parseBlock can change it
         $this->rif = $this->rkey;
-        // Application parameters conditions
-        $this->parseApplicationParameters($out, true);
         
         $this->ParseIf($out);
         // Parse IMG: and LAY: tags
         $this->ParseText($out);
         $this->ParseKey($out);
         // Application parameters values
-        $this->parseApplicationParameters($out, false);
-        $this->ParseRef($out);
-        $this->ParseZone($out);
         $this->ParseJs($out);
         $this->ParseCss($out);
         
@@ -673,35 +639,7 @@ class Layout
 
         return ($out);
     }
-    /**
-     * Use application parameters like keys
-     * @param string $out current template
-     * @param bool $addIf if true replace key with application parameters else use conditions
-     */
-    protected function parseApplicationParameters(&$out, $addIf)
-    {
-        if (is_object($this->action) && (!empty($this->action->parent))) {
-            $keys = $pval = array();
-            $list = $this->action->parent->GetAllParam();
-            if ($addIf) {
-                foreach ($list as $k => $v) {
-                    $this->rif[$k] = !empty($v);
-                }
-            } elseif ($this->zoneLevel === 0) {
-                foreach ($list as $k => $v) {
-                    if ($v === null) {
-                        $v = '';
-                    } elseif (!is_scalar($v)) {
-                        $v = "notScalar";
-                    }
-                    $keys[] = "[$k]";
-                    $pval[] = $v;
-                }
-            }
-            
-            $out = str_replace($keys, $pval, $out);
-        }
-    }
+
     /**
      * Count number of execute() calls on the stack to detect infinite recursive loops
      * @param string $class name to track

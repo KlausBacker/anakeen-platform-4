@@ -12,7 +12,7 @@ class processExecuteAPI
 {
     public static $debug = false;
 
-    public static function run(\Anakeen\Core\Internal\Action & $action)
+    public static function run()
     {
 
         $usage = new \Anakeen\Script\ApiUsage();
@@ -27,19 +27,19 @@ class processExecuteAPI
         }
 
         if ($doctimerId !== null) {
-            self::execute_doctimer($action, $doctimerId);
+            self::execute_doctimer($doctimerId);
         } elseif ($execId !== null) {
-            self::execute_exec($action, $execId);
+            self::execute_exec($execId);
         } else {
             try {
-                self::execute_all($action);
+                self::execute_all();
             } catch (processExecuteAPIAlreadyRunningException $e) {
                 /* Skip execution and silently ignore already running processes */
             }
         }
     }
 
-    protected static function lock(\Anakeen\Core\Internal\Action & $action)
+    protected static function lock()
     {
         self::debug(sprintf("Locking exclusive execution..."));
         $i1 = unpack("i", "PROC") [1];
@@ -54,7 +54,7 @@ class processExecuteAPI
         return $res;
     }
 
-    protected static function unlock(\Anakeen\Core\Internal\Action & $action, $lock)
+    protected static function unlock($lock)
     {
         /* Unlock will be performed when the process exits and the Postgres connection is torn down. */
     }
@@ -66,22 +66,22 @@ class processExecuteAPI
         }
     }
 
-    public static function execute_all($action)
+    public static function execute_all()
     {
-        $lock = self::lock($action);
+        $lock = self::lock();
         try {
-            self::verifyExecDocuments($action);
-            self::verifyTimerDocuments($action);
+            self::verifyExecDocuments();
+            self::verifyTimerDocuments();
         } catch (\Exception $e) {
-            self::unlock($action, $lock);
+            self::unlock($lock);
             throw $e;
         }
-        self::unlock($action, $lock);
+        self::unlock($lock);
     }
 
-    public static function execute_doctimer(\Anakeen\Core\Internal\Action & $action, $doctimerId)
+    public static function execute_doctimer($doctimerId)
     {
-        $dt = new DocTimer($action->dbaccess, $doctimerId);
+        $dt = new DocTimer("", $doctimerId);
         $time_start = microtime(true);
         $err = $dt->executeTimerNow();
         $time_end = microtime(true);
@@ -97,13 +97,13 @@ class processExecuteAPI
 
     /**
      * @param \Anakeen\Core\Internal\Action    $action
-     * @param \SmartStructure\ExecHooks|string $exec
+     * @param \SmartStructure\Exec|string $exec
      */
-    public static function execute_exec(\Anakeen\Core\Internal\Action & $action, $exec)
+    public static function execute_exec($exec)
     {
         if (is_scalar($exec)) {
             /**
-             * @var \SmartStructure\ExecHooks $exec
+             * @var \SmartStructure\Exec $exec
              */
             $exec = Anakeen\Core\SEManager::getDocument($exec);
         }
@@ -113,12 +113,12 @@ class processExecuteAPI
         $exec->executeNow();
     }
 
-    public static function verifyExecDocuments(\Anakeen\Core\Internal\Action & $action)
+    public static function verifyExecDocuments()
     {
         // Verify EXEC document
         $now = \Anakeen\Core\Internal\SmartElement::getTimeDate();
 
-        $s = new SearchDoc($action->dbaccess, "EXEC");
+        $s = new SearchDoc("", "EXEC");
         $s->setObjectReturn();
         $s->addFilter(sprintf("exec_nextdate < %s", pg_escape_literal($now)));
         $s->addFilter("exec_status is null or exec_status = 'none'");
@@ -132,7 +132,7 @@ class processExecuteAPI
             ), true);
         }
 
-        $s = new SearchDoc($action->dbaccess, "EXEC");
+        $s = new SearchDoc("", "EXEC");
         $s->setObjectReturn();
         $s->addFilter(sprintf("exec_nextdate < %s", pg_escape_literal($now)));
         $s->addFilter("exec_status != 'progressing'");
@@ -146,19 +146,19 @@ class processExecuteAPI
 
         while ($de = $s->getNextDoc()) {
             /**
-             * @var \Dcp\Core\ExecProcessus $de
+             * @var \SmartStructure\Exec $de
              */
             self::debug(__METHOD__ . " " . sprintf("Executing document '%s' (%d).", $de->getTitle(), $de->id));
-            self::execute_exec($action, $de);
+            self::execute_exec($de);
         }
         unset($exec);
         return;
     }
 
-    public static function verifyTimerDocuments(\Anakeen\Core\Internal\Action & $action)
+    public static function verifyTimerDocuments()
     {
         // Verify EXEC document
-        $dt = new DocTimer($action->dbaccess);
+        $dt = new DocTimer("");
         $ate = $dt->getActionsToExecute();
 
         self::debug(__METHOD__ . " " . sprintf("Found %d doctimers.", count($ate)));

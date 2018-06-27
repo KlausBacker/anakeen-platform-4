@@ -92,9 +92,8 @@ class ExportXmlFolder
      */
     public function exportFromSearch(SearchDoc & $search, $outputFile = '')
     {
-        global $action;
         $this->setOutputFile($outputFile);
-        exportxmlfld($action, $folder = "0", $famid = "", $search, $this->outputFile, $this->format, $this->useIdentificator ? 'Y' : 'N');
+        exportxmlfld( $folder = "0", $famid = "", $search, $this->outputFile, $this->format, $this->useIdentificator ? 'Y' : 'N');
     }
     /**
      * export documents from search object
@@ -104,8 +103,7 @@ class ExportXmlFolder
      */
     public function exportFromFolder($folderId, $outputFile = '')
     {
-        global $action;
         $this->setOutputFile($outputFile);
-        exportxmlfld($action, $folderId, $famid = "", null, $this->outputFile, $this->format, $this->useIdentificator ? 'Y' : 'N');
+        exportxmlfld( $folderId, $famid = "", null, $this->outputFile, $this->format, $this->useIdentificator ? 'Y' : 'N');
     }
 }

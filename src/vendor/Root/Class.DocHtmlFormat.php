@@ -524,7 +524,7 @@ class DocHtmlFormat
                         if ($imageview && (!$this->abstractMode)) {
                             $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/widgetFile.js");
                             $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/detectPdfPlugin.js");
-                            $lay = new Layout("FDL/Layout/viewfileimage.xml", $action);
+                            $lay = new Layout("FDL/Layout/viewfileimage.xml");
                             $lay->set("docid", $this->doc->id);
                             $lay->set("waiting", ($waiting ? 'true' : 'false'));
                             $lay->set("attrid", $this->oattr->id);
@@ -680,7 +680,7 @@ class DocHtmlFormat
             $displayRowCount = 10;
         }
 
-        $lay = new Layout("FDL/Layout/viewdocarray.xml", $action);
+        $lay = new Layout("FDL/Layout/viewdocarray.xml");
         $lay->set("issort", ($sort == "yes"));
         if (!method_exists($this->doc->attributes, "getArrayElements")) {
             return $htmlval;
@@ -949,7 +949,7 @@ class DocHtmlFormat
     public function formatOption($kvalue, $avalue)
     {
         global $action;
-        $lay = new Layout("FDL/Layout/viewdocoption.xml", $action);
+        $lay = new Layout("FDL/Layout/viewdocoption.xml");
         $htmlval = "";
 
         if ($kvalue > -1) {
@@ -1149,7 +1149,7 @@ class DocHtmlFormat
     public function formatIfile($kvalue, $avalue)
     {
         global $action;
-        $lay = new Layout("FDL/Layout/viewifile.xml", $action);
+        $lay = new Layout("FDL/Layout/viewifile.xml");
         $lay->set("aid", $this->oattr->id);
         $lay->set("id", $this->doc->id);
         $lay->set("iheight", $this->oattr->getOption("height", "200px"));

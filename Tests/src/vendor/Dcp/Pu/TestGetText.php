@@ -50,7 +50,7 @@ class TestGetText extends TestCaseDcp
     public function testTextlayout($text, $lang, $expectedText)
     {
         \Anakeen\Core\ContextManager::setLanguage($lang);
-        $lay = new \Layout("", self::getAction());
+        $lay = new \Layout("");
         $lay->template = $text;
         $genText = $lay->gen();
         

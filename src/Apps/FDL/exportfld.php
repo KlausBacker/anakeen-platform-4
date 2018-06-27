@@ -35,96 +35,33 @@
  * @global string                       $selection                   Http var :  JSON document selection object
  * @return void
  */
-function exportfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $famid = "", $outputPath = "", $exportInvisibleVisibilities = false)
+function exportfld($fldid = "0", $famid = "", $outputPath = "", bool $exportInvisibleVisibilities = false, array $options = [])
 {
-    $dbaccess = $action->dbaccess;
 
-    $usage = new ActionUsage($action);
+    $wprof = !empty($options["wprof"]); // With profile access
+    $wfile = !empty($options["wfile"]); // With file contents
+    $wident = // Profil option type; // With document numeric identifiers
+    $fileEncoding = (!empty($options["code"])) ? $options["code"] : "utf8"; // File encoding
 
-    $wprof = ($usage->addOptionalParameter("wprof", "With profil", array(
-            "Y",
-            "N"
-        ), "N") == "Y");
-    $wfile = ($usage->addOptionalParameter("wfile", "With files", array(
-            "Y",
-            "N"
-        ), "N") == "Y");
-    $wident = ($usage->addOptionalParameter("wident", "With document numeric identifiers", array(
-            "Y",
-            "N"
-        ), "Y") == "Y");
+    // Profil option type
+    $profilType = (!empty($options["wproftype"])) ? $options["wproftype"] : \Dcp\ExportDocument::useAclAccountType;
 
-    $fileEncoding = $usage->addOptionalParameter("code", "File encoding", array(
-        "utf8",
-        "iso8859-15"
-    ), "utf8");
-    $profilType = $usage->addOptionalParameter("wproftype", "Profil option type", array(
-        \Dcp\ExportDocument::useAclAccountType,
-        \Dcp\ExportDocument::useAclDocumentType
-    ), \Dcp\ExportDocument::useAclAccountType);
+
     $wutf8 = ($fileEncoding !== "iso8859-15");
 
-    $nopref = ($usage->addOptionalParameter("wcolumn", "if - export preferences are ignored") == "-"); // no preference read
-    $eformat = $usage->addOptionalParameter("eformat", "Export format", array(
-        "I",
-        "R",
-        "F",
-        "X",
-        "Y"
-    ), "I");
-    $statusOnly = ($usage->addHiddenParameter("statusOnly", "Export progress status") != ""); // export selection  object (JSON)
-    $exportId = $usage->addHiddenParameter("exportId", "Export status id"); // export status id
-    if (!$aflid && !$statusOnly) {
-        $fldid = $usage->addRequiredParameter("id", "Folder identifier");
-    } else {
-        $fldid = $usage->addOptionalParameter("id", "Folder identifier", array(), $aflid);
-    }
+    $nopref = true; // no preference read
+    // Export format "I", "R", "F", "X", "Y"
+    $eformat = (!empty($options["eformat"])) ? $options["eformat"] : "I";
 
-    $csvSeparator = $usage->addOptionalParameter("csv-separator", "character to delimiter fields - generaly a comma",
-        function ($values, $argName, \Anakeen\Script\ApiUsage $apiusage) {
-            if ($values === \Anakeen\Script\ApiUsage::GET_USAGE) {
-                return sprintf(' use single character or "auto"');
-            }
-            if (!is_string($values)) {
-                return sprintf("must be a character [%s] ", print_r($values, true));
-            }
-            if ($values != "auto") {
-                if (mb_strlen($values) > 1) {
-                    return sprintf("must be a only one character [%s] ", $values);
-                }
-                if (mb_strlen($values) === 0) {
-                    return sprintf("empty separator is not allowed [%s] ", $values);
-                }
-            }
-            return '';
-        }, ";");
+    // character to delimiter fields - generaly a comma
+    $csvSeparator = (!empty($options["csv-separator"])) ? $options["csv-separator"] : ";";
 
-    $csvEnclosure = $usage->addOptionalParameter("csv-enclosure", "character to enclose fields - generaly double-quote",
-        function ($values, $argName, \Anakeen\Script\ApiUsage $apiusage) {
-            if ($values === \Anakeen\Script\ApiUsage::GET_USAGE) {
-                return sprintf(' use single character or "auto"');
-            }
-            if (!is_string($values)) {
-                return sprintf("must be a character [%s] ", print_r($values, true));
-            }
-            if ($values != "auto") {
-                if (mb_strlen($values) > 1) {
-                    return sprintf("must be a only one character [%s] ", $values);
-                }
-            }
-            return '';
-        }, "");
-    $usage->verify();
 
-    if ($statusOnly) {
-        header('Content-Type: application/json');
-        $action->lay->noparse = true;
-        $action->lay->template = json_encode($action->read($exportId));
-        return;
-    }
+    $csvEnclosure = (!empty($options["csv-enclosure"])) ? $options["csv-enclosure"] : '"';
+
+
     Anakeen\Core\Utils\System::setMaxExecutionTimeTo(3600);
     $exportCollection = new Dcp\ExportCollection();
-    $exportCollection->setExportStatusId($exportId);
     $exportCollection->setOutputFormat($eformat);
     $exportCollection->setExportProfil($wprof);
     $exportCollection->setExportDocumentNumericIdentiers($wident);
@@ -135,7 +72,7 @@ function exportfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $famid
 
 
     if (!$fldid) {
-        $action->exitError(_("no export folder specified"));
+        \Anakeen\Core\ContextManager::exitError(___("no export folder specified", "sde"));
     }
 
     $fld = Anakeen\Core\SEManager::getDocument($fldid);
@@ -152,7 +89,7 @@ function exportfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $famid
 
     $exportCollection->recordStatus(_("Retrieve documents from database"));
 
-    $s = new SearchDoc($dbaccess, $famid);
+    $s = new SearchDoc("", $famid);
     $s->setObjectReturn(true);
     $s->setOrder("fromid, id");
     $s->useCollection($fld->initid);
@@ -176,14 +113,12 @@ function exportfld(\Anakeen\Core\Internal\Action & $action, $aflid = "0", $famid
     }
 
     if (file_exists($foutname)) {
-        $action->exitError(sprintf("export is not allowed to override existing file %s"), $outputPath);
+        \Anakeen\Core\ContextManager::exitError(sprintf("export is not allowed to override existing file %s"), $outputPath);
     }
 
     $exportCollection->setOutputFilePath($foutname);
     $exportCollection->setCvsSeparator($csvSeparator);
     $exportCollection->setCvsEnclosure($csvEnclosure);
-    $action->setParamU("EXPORT_CSVSEPARATOR", $csvSeparator);
-    $action->setParamU("EXPORT_CSVENCLOSURE", $csvEnclosure);
 
     try {
         $exportCollection->export();

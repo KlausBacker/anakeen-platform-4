@@ -96,7 +96,7 @@ class ImportDocument
         try {
             if ($archive) {
                 include_once("FDL/import_tar.php");
-                $untardir = getTarExtractDir($action, basename($file));
+                $untardir = getTarExtractDir(basename($file));
 
                 $mime =  \Anakeen\Core\Utils\FileMime::getSysMimeFile($file, basename($file));
                 $err = extractTar($file, $untardir, $mime);
@@ -121,7 +121,7 @@ class ImportDocument
                     $simpleFamilyFile = 7; // file
                     $simpleFamilyFolder = 2; // folder
                     $dirid = $this->dirid; // directory to insert imported doc
-                    $this->cr = import_directory($action, $untardir, $dirid, $simpleFamilyFile, $simpleFamilyFolder, $onlycsv, $onlyAnalyze, $this->csvLinebreak);
+                    $this->cr = import_directory( $untardir, $dirid, $simpleFamilyFile, $simpleFamilyFolder, $onlycsv, $onlyAnalyze, $this->csvLinebreak);
                 }
             } else {
                 $ext = substr($file, strrpos($file, '.') + 1);
@@ -219,7 +219,7 @@ class ImportDocument
                 \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("cannot write log in %s"), $log));
             } else {
                 global $action;
-                $lay = new Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "reportImport.xml"), $action);
+                $lay = new Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "reportImport.xml"));
                 $this->writeHtmlCr($lay);
                 fputs($flog, $lay->gen());
                 fclose($flog);

@@ -7302,6 +7302,7 @@ create unique index i_docir on doc(initid, revision);";
 
                 return $this->vault_filename_fromvalue($template, true);
             }
+            return sprintf("%s/Apps/%s/Layout/%s", DEFAULT_PUBDIR, $reg['app'], $aid);
         }
         return null;
     }
@@ -7542,9 +7543,9 @@ create unique index i_docir on doc(initid, revision);";
         if (strtolower($ext) == "odt") {
             $target = "ooo";
             $ulink = false;
-            $this->lay = new \OOoLayout($tplfile, $action, $this);
+            $this->lay = new \OOoLayout($tplfile,  $this);
         } else {
-            $this->lay = new \Layout($tplfile, $action, "");
+            $this->lay = new \Layout($tplfile, "");
         }
         //if (! file_exists($this->lay->file)) return sprintf(_("template file (layout [%s]) not found"), $layout);
         $this->lay->set("_readonly", ($this->Control('edit') != ""));
