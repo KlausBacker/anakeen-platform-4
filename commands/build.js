@@ -8,31 +8,38 @@ signale.config({
 
 exports.desc = 'Build the app file';
 exports.builder = {
-    sourceDir: {
+    sourcePath: {
         defaultDescription: 'path of the info.xml',
         alias: 's',
         default: '.',
         type: 'string'
     },
-    targetDir: {
+    targetPath: {
         defaultDescription: 'target path',
         alias: 't',
         default: '.',
         type: 'string'
+    },
+    autoRelease: {
+        defaultDescription: 'add current timestamp to the release',
+        default: false,
+        type: 'boolean'
     }
 };
 
 exports.handler = function (argv) {
     try {
         signale.time("build");
-        const task = build({ sourcePath : argv.sourceDir, targetPath :argv.targetDir}).tasks.build.fn;
+        const task = build(argv).tasks.build.fn;
         task().then(() => {
-            signale.timeEnd("build")
+            signale.timeEnd("build");
             signale.success("build done");
         }).catch((e) => {
+            signale.timeEnd("build");
             signale.error(e);
         });
     } catch (e) {
+        signale.timeEnd("build");
         signale.error(e);
     }
 };
