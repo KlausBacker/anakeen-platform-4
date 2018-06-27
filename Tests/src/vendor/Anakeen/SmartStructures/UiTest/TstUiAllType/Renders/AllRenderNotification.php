@@ -9,7 +9,7 @@ class AllRenderNotification extends \Dcp\Ui\DefaultView
 
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
         $jsReferences = parent::getJsReferences($document);
         $jsReferences["tstNotification"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testNotifications.js?ws=" . $version;
         return $jsReferences;

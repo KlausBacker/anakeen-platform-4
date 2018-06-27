@@ -15,7 +15,6 @@
         <module name="anakeen-ui"/>
     </replaces>
     <post-install>
-        <process command="./ank.php --script=manageApplications --method=init --appname=SMARTELEMENT_UI"/>
         <process command="./ank.php  --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Iuser/Render/CVDOC__IUSER.csv"/>
         <process command="./ank.php  --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Group/Render/CVDOC__GROUP.csv"/>
         <process command="./ank.php --system --resetRouteConfig"/>
@@ -26,19 +25,16 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.constraint.xml">
             <label>CVDOC Add Render Constraint</label>
         </process>
-        <process command="./ank.php --system --localeGen"/>
     </post-install>
 
     <post-upgrade>
         <process command="./ank.php  --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Iuser/Render/CVDOC__IUSER.csv"/>
         <process command="./ank.php  --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Group/Render/CVDOC__GROUP.csv"/>
         <process command="programs/ui_setHtmlAuthentMode"/>
-        <process command="./ank.php --script=manageApplications --method=update --appname=SMARTELEMENT_UI"/>
         <process command="./ank.php --system --resetRouteConfig"/>
         <process command="./ank.php --system --resetRouteConfig"/>
         <process command="./ank.php --route=Ui:Admin:LoadParameters"/>
         <process command="./ank.php --script=migrationUpdateAccountUI"/>
-        <process command="./ank.php --system --localeGen"/>
     </post-upgrade>
 
 </module>

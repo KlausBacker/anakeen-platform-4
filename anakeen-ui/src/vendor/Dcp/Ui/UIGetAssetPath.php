@@ -64,7 +64,7 @@ class UIGetAssetPath
 
     public static function getWs() {
         if (self::$ws === null) {
-            self::$ws = $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
+            self::$ws = $version = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
         }
         return self::$ws;
     }

@@ -14,7 +14,7 @@ class ColorEditRender extends \Dcp\Ui\DefaultEdit
 
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
         $css = parent::getCssReferences($document);
         $css["tstColor"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_color/color.css?ws=" . $version;
         return $css;
@@ -22,7 +22,7 @@ class ColorEditRender extends \Dcp\Ui\DefaultEdit
 
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
         $js = parent::getJsReferences($document);
         $js["tstColor"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_color/color.js?ws=" . $version;
         return $js;

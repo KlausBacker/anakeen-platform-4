@@ -19,7 +19,7 @@ class ReportViewRender extends SearchViewRender
     public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
     {
         $menu = parent::getMenu($document);
-        
+
         $menu->removeElement("advanced");
         $menu->removeElement("searchview");
 

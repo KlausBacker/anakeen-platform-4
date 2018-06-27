@@ -2,6 +2,7 @@
 
 namespace Anakeen\Routes\Admin;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
 
@@ -42,8 +43,7 @@ class LoadParameters
                 $rules = array_replace_recursive($rules, $currentRule);
             }
 
-            \Anakeen\Core\Internal\ApplicationParameterManager::setParameterValue(
-                \Anakeen\Core\Internal\ApplicationParameterManager::CURRENT_APPLICATION,
+            ContextManager::setParameterValue(
                 "RENDER_PARAMETERS",
                 json_encode($rules)
             );

@@ -55,7 +55,7 @@ class GroupEditRender extends DefaultConfigEditRender
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $smartElement = null)
     {
         $js = parent::getJsReferences();
-        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
 
         $js["iuser"] = '/uiAssets/Families/iuser/prod/iuser.js?ws=' . $version;
         if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {

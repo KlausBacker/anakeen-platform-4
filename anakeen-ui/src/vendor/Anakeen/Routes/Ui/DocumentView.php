@@ -430,7 +430,7 @@ class DocumentView
      */
     protected function getLocaleData()
     {
-        $localeId = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
+        $localeId = \Anakeen\Core\ContextManager::getParameterValue("CORE_LANG");
         $config = ContextManager::getLocaleConfig($localeId);
         return $config;
     }
@@ -728,8 +728,8 @@ class DocumentView
             $result[] = $cvDate;
         }
         // Necessary only when use family.structure
-        $result[] = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
-        $result[] = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $result[] = \Anakeen\Core\ContextManager::getParameterValue("CORE_LANG");
+        $result[] = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
 
         return join(" ", $result);
     }

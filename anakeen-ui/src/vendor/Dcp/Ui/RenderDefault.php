@@ -24,7 +24,7 @@ class RenderDefault implements IRenderConfig
 
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
         return array(
             "bootstrap" => "css/ank/document/bootstrap.css?ws=" . $version,
             "kendo" => "css/ank/document/kendo.css?ws=" . $version,

@@ -9,7 +9,7 @@ class AllRenderCssColor extends AllRenderConfigEdit
 
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
         $cssReferences = parent::getCssReferences($document);
         $cssReferences["tstNotification"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testColor.css?ws=" . $version;
         return $cssReferences;

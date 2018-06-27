@@ -8,7 +8,7 @@ class eventChange extends \Dcp\Ui\DefaultEdit
 {
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testEventChangeJS.js?ws=" . $version;
         return $js;

@@ -57,8 +57,8 @@ class FamilyStructure extends \Anakeen\Routes\Core\DocumentData
 
         DbManager::query($sql, $result, false, true);
         // Necessary only when use family.structure
-        $result[] = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
-        $result[] = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $result[] = \Anakeen\Core\ContextManager::getParameterValue("CORE_LANG");
+        $result[] = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
         return join(" ", $result);
     }
 }

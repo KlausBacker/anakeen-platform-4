@@ -34,7 +34,7 @@ class LoginPage
         $page = __DIR__ . "/LoginPage.html";
         $template = file_get_contents($page);
         $data = [
-            "title" => sprintf(Gettext::___("Connexion to %s", "login"), ContextManager::getParameter("CORE_CLIENT")),
+            "title" => sprintf(Gettext::___("Connexion to %s", "login"), ContextManager::getParameterValue("CORE_CLIENT")),
             "JS" => [
                 [
                     "key" => "jquery",

@@ -74,7 +74,7 @@ class I18nCatalog
      */
     public function getEtagInfo()
     {
-        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
         return $version . " " . $this->getUserLocale();
     }
 }
