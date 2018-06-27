@@ -1,6 +1,7 @@
 const { deploy, buildAndDeploy } = require("../tasks/deploy");
 const signale = require("signale");
 const { controlArguments } = require("../utils/control");
+const fs = require("fs");
 
 signale.config({
   displayTimestamp: true,
@@ -12,9 +13,19 @@ exports.builder = controlArguments({
   appPath: {
     defaultDescription: "application file path",
     alias: "t",
-    demandOption:
-      "You must give the path of .app to deploy or the path of the source for autorelease",
-    type: "string"
+    type: "string",
+    coerce: (arg) => {
+      if (!fs.statSync(arg).isFile()) {
+        throw new Error("Unable to find the file "+ arg);
+      }
+      return arg;
+    }
+  },
+  sourcePath: {
+    defaultDescription: "path of the info.xml for the autorelease mode",
+    alias: "s",
+    type: "string",
+    implies: "autoRelease"
   },
   force: {
     defaultDescription: "destroy already existing deployment",
@@ -25,7 +36,8 @@ exports.builder = controlArguments({
   autoRelease: {
     defaultDescription: "add current timestamp to the release",
     default: false,
-    type: "boolean"
+    type: "boolean",
+    implies: "sourcePath"
   }
 });
 
@@ -35,10 +47,8 @@ exports.handler = function(argv) {
     let task;
     if (argv.autoRelease) {
       signale.info("autorelease mode");
-      task = buildAndDeploy({ sourcePath: argv.appPath, ...argv }).tasks
-        .buildAndDeploy.fn;
+      task = buildAndDeploy(argv).tasks.buildAndDeploy.fn;
     } else {
-      console.log(deploy(argv));
       signale.info("app deploy mode " + argv.appPath);
       task = deploy(argv).tasks.deploy.fn;
     }
