@@ -296,11 +296,16 @@ export default {
         },
 
         contentMarginStyle() {
+            let style = '';
             if (this.superposeDock) {
-                return 'margin-' + this.position + ': ' + this.compactSize + ';';
-            } else {
-                return '';
+                style += 'margin-' + this.position + ': ' + this.compactSize + '; ';
             }
+
+            if (!this.contentDisplayed) {
+                style += 'visibility: hidden; ';
+            }
+
+            return style;
         },
 
         superposeDockClass() {
