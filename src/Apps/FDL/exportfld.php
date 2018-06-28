@@ -17,7 +17,6 @@
 /**
  * Exportation of documents from folder or searches
  *
- * @param \Anakeen\Core\Internal\Action &$action                     current action
  * @param string                        $aflid                       Folder identifier to use if no "id" http vars
  * @param string                        $famid                       Family restriction to filter folder content
  * @param string                        $outputPath                  where put export, if wfile outputPath is a directory
@@ -153,22 +152,7 @@ function exportfld($fldid = "0", $famid = "", $outputPath = "", bool $exportInvi
     }
 }
 
-/**
- * @param \Anakeen\Core\Internal\Action $action
- * @param                               $exportId
- * @param                               $msg
- * @param bool                          $endStatus
- *
- * @see        Dcp\ExportCollection::recordStatus()
- * @deprecated use Dcp\ExportCollection::recordStatus() instead
- */
-function recordStatus(\Anakeen\Core\Internal\Action & $action, $exportId, $msg, $endStatus = false)
-{
-    $action->register($exportId, array(
-        "status" => $msg,
-        "end" => $endStatus
-    ));
-}
+
 
 /**
  * Removes content of the directory (not sub directory)

@@ -57,7 +57,6 @@ class OOoLayout extends Layout
     /**
      * construct template using an open document text file
      * @param string                              $caneva open document file of the template
-     * @param \Anakeen\Core\Internal\Action       $action current action
      * @param \Anakeen\Core\Internal\SmartElement $doc    document
      */
     public function __construct($caneva = "", \Anakeen\Core\Internal\SmartElement & $doc = null)
@@ -66,7 +65,6 @@ class OOoLayout extends Layout
         $this->LOG = new \Anakeen\Core\Internal\Log("", "Layout");
         $this->doc = $doc;
         $this->template = "";
-        $this->action = &$action;
         $this->generation = "";
         $file = $caneva;
         $this->file = "";

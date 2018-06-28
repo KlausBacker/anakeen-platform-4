@@ -96,7 +96,6 @@ class processExecuteAPI
     }
 
     /**
-     * @param \Anakeen\Core\Internal\Action    $action
      * @param \SmartStructure\Exec|string $exec
      */
     public static function execute_exec($exec)

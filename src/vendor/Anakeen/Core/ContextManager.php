@@ -256,15 +256,6 @@ class ContextManager
         return null;
     }
 
-    /**
-     * @return \Anakeen\Core\Internal\Action|null
-     * @deprecated
-     */
-    protected static function getCurrentAction()
-    {
-        throw new \Exception(__METHOD__);
-    }
-
 
     /**
      * @return Internal\Session

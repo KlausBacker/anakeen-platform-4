@@ -1,16 +1,8 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  *  LDAP methods
- *
+ * @deprecated Must be rewrite
  * @author  Anakeen
- * @version $Id: Class.DocLDAP.php,v 1.9 2008/03/10 10:45:52 eric Exp $
- * @package FDL
- */
-/**
  */
 
 
@@ -89,10 +81,7 @@ class DocLDAP extends DbObj
      */
     public function SetLdapParam()
     {
-        /**
-         * @var \Anakeen\Core\Internal\Action $action
-         */
-        global $action;
+
         $this->serveur = $action->GetParam("LDAP_SERVEUR");
         $this->port = $action->GetParam("LDAP_PORT");
         $this->racine = $action->GetParam("LDAP_ROOT");

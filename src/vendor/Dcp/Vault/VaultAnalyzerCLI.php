@@ -4,7 +4,7 @@ namespace Dcp\Vault;
 
 class VaultAnalyzerCLI
 {
-    public static function main(\Anakeen\Core\Internal\Action & $action)
+    public static function main()
     {
         $opts = array();
         $usage = new \Anakeen\Script\ApiUsage();

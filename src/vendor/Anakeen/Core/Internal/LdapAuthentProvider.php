@@ -1,16 +1,8 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * ldap authentication provider
  *
- * @author Anakeen
- * @version $Id:  $
- * @package FDL
- */
-/**
+ * @deprecate Must be rewrite
  */
 namespace Anakeen\Core\Internal;
 
@@ -56,16 +48,11 @@ class LdapAuthentProvider extends AuthentProvider
      */
     public function initializeUser(&$whatuser, $username, $password)
     {
-        global $action;
         $err = "";
+        throw new \Exception(__METHOD__);
         
         $CoreNull = "";
-        $core = new \Anakeen\Core\Internal\Application();
-        $core->Set("CORE", $CoreNull);
-        $core->session = new \Anakeen\Core\Internal\Session();
-        $action = new \Anakeen\Core\Internal\Action();
-        $action->Set("", $core);
-        $action->user = new \Anakeen\Core\Account("", 1); //create user as admin
+        $user = new \Anakeen\Core\Account("", 1); //create user as admin
         $whatuser->firstname = '--';
         $whatuser->lastname = '(from ldap) ' . $username;
         $whatuser->login = $username;

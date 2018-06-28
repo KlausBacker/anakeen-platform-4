@@ -5,7 +5,7 @@ namespace Anakeen\Core\Internal;
 /**
  * Log manager
  * log message according to CORE_LOGLEVEL parameter
- * @class Log
+ * @deprecated
  *
  */
 class Log

@@ -41,12 +41,9 @@ class FatalHandler
     /**
      * @param Exception|\Error $e
      *
-     * @throws \Dcp\Core\Exception
      */
     public static function handleActionException($e)
     {
-        global $action;
-
         if (php_sapi_name() !== "cli") {
             if (method_exists($e, "addHttpHeader")) {
                 /**
@@ -63,26 +60,19 @@ class FatalHandler
         }
 
         $displayMsg = \Anakeen\Core\LogException::logMessage($e, $errId);
-        if (isset($action) && is_a($action, '\Anakeen\Core\Internal\Action') && isset($action->parent)) {
-            if (php_sapi_name() === 'cli') {
-                fwrite(STDERR, sprintf("[%s]: %s\n", $errId, $displayMsg));
-            } else {
-                ContextManager::exitError($displayMsg, true, $errId);
-            }
-        } else {
-            if (php_sapi_name() === 'cli') {
-                fwrite(STDERR, sprintf("[%s]: %s\n", $errId, $displayMsg));
-            } else {
-                if (is_a($e, "\\Anakeen\\Router\\Exception")) {
-                    /**
-                     * @var \Anakeen\Router\Exception $e
-                     */
-                    header(sprintf("HTTP/1.0 %d %s", $e->getHttpStatus(), $e->getHttpMessage()));
-                }
 
-                print \Dcp\Core\Utils\ErrorMessage::getError($displayMsg, $errId);
+        if (php_sapi_name() === 'cli') {
+            fwrite(STDERR, sprintf("[%s]: %s\n", $errId, $displayMsg));
+        } else {
+            if (is_a($e, "\\Anakeen\\Router\\Exception")) {
+                /**
+                 * @var \Anakeen\Router\Exception $e
+                 */
+                header(sprintf("HTTP/1.0 %d %s", $e->getHttpStatus(), $e->getHttpMessage()));
             }
-            exit(1);
+
+            print \Dcp\Core\Utils\ErrorMessage::getError($displayMsg, $errId);
         }
+        exit(1);
     }
 }

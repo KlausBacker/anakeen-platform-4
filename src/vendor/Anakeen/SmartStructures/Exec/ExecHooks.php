@@ -18,7 +18,6 @@ use Anakeen\Script\ShellManager;
 use Anakeen\SmartHooks;
 
 class ExecHooks extends \Anakeen\SmartElement
-
 {
     private $execuserid;
 
@@ -33,15 +32,10 @@ class ExecHooks extends \Anakeen\SmartElement
      */
     public function bgExecute($comment = "")
     {
-        /**
-         * @var \Anakeen\Core\Internal\Action $action
-         */
-        global $action;
-
         if (!$this->canExecuteAction()) {
             \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Error : need edit privilege to execute")));
         } else {
-            return $this->_execute($action, $comment);
+            return $this->_execute($comment);
         }
         return -2;
     }
@@ -70,6 +64,9 @@ class ExecHooks extends \Anakeen\SmartElement
 
     /**
      * return the wsh command which be send
+     * @param bool $masteruserid
+     * @return string
+     * @throws \Anakeen\Script\Exception
      */
     public function bgCommand($masteruserid = false)
     {
@@ -145,8 +142,7 @@ class ExecHooks extends \Anakeen\SmartElement
     {
         if ($this->revision > 0) {
             $pid = $this->getLatestId(true);
-            $td = getTDoc($this->dbaccess, $pid);
-            $ndh = getv($td, "exec_date");
+            $ndh = SEManager::getRawValue($pid, "exec_date", false);
 
             return $ndh;
         }
@@ -199,7 +195,7 @@ class ExecHooks extends \Anakeen\SmartElement
          * Logging in bgexecute
          */
         $status = $this->bgExecute(_("dynacase cron try execute"));
-        $del = new_Doc($this->dbaccess, $this->getLatestId(false, true));
+        $del = SEManager::getDocument($this->getLatestId(false, true), false);
         /**
          * @var ExecHooks $del
          */
@@ -214,7 +210,7 @@ class ExecHooks extends \Anakeen\SmartElement
         }
     }
 
-    public function _execute(\Anakeen\Core\Internal\Action & $action, $comment = '')
+    protected function _execute($comment = '')
     {
         \Anakeen\Core\Utils\System::setMaxExecutionTimeTo(3600);
         /*
@@ -227,7 +223,7 @@ class ExecHooks extends \Anakeen\SmartElement
         */
         $time_start = microtime(true);
         // system($cmd, $status);
-        $status = $this->__execute($action, $this->id, $comment);
+        $status = $this->__execute($this->id, $comment);
         $time_end = microtime(true);
         $time = $time_end - $time_start;
         if ($status == 0) {
@@ -240,15 +236,13 @@ class ExecHooks extends \Anakeen\SmartElement
         return $status;
     }
 
-    public function __execute(\Anakeen\Core\Internal\Action & $action, $docid, $comment = '')
+    protected function __execute($docid, $comment = '')
     {
-        $doc = new_Doc($action->dbaccess, $docid);
+        $doc = SEManager::getDocument($docid);
         /**
          * @var ExecHooks $doc
          */
-        if ($doc->locked == -1) { // it is revised document
-            $doc = new_Doc($action->dbaccess, $doc->getLatestId());
-        }
+
 
         $doc->setValue("exec_status", "progressing");
         $doc->setValue("exec_statusdate", $doc->getTimeDate());
@@ -256,7 +250,7 @@ class ExecHooks extends \Anakeen\SmartElement
             "exec_status",
             "exec_statusdate"
         ), true);
-        $cmd = $doc->bgCommand($action->user->id == 1);
+        $cmd = $doc->bgCommand(ContextManager::getCurrentUser()->id == 1);
         $f = uniqid(ContextManager::getTmpDir() . "/fexe");
         $fout = "$f.out";
         $ferr = "$f.err";

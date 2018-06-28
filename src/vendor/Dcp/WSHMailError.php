@@ -7,9 +7,7 @@ use Anakeen\Core\ContextManager;
 class WSHMailError
 {
     public $expand = array();
-    /**
-     * @var \Anakeen\Core\Internal\Action
-     */
+
     public $msg = '';
     public $from = '';
     public $mailto = '';

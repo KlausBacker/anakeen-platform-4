@@ -316,78 +316,7 @@ class Layout
             // bind_textdomain_codeset("what", 'UTF-8');
         }
     }
-    
-    protected function execute($appname, $actionargn)
-    {
-        $limit = \Anakeen\Core\ContextManager::getParameterValue('CORE_LAYOUT_EXECUTE_RECURSION_LIMIT', 30);
-        if (is_numeric($limit) && $limit > 0) {
-            $loop = $this->getRecursionCount(__CLASS__, __FUNCTION__);
-            if ($loop['count'] >= $limit) {
-                $this->printRecursionCountError(__CLASS__, __FUNCTION__, $loop['count']);
-            }
-        }
-        
-        if ($this->action == "") {
-            return ("Layout not used in a core environment");
-        }
-        
-        $this->zoneLevel++;
-        // analyse action & its args
-        $actionargn = str_replace(":", "--", $actionargn); //For buggy function parse_url in PHP 4.3.1
-        $acturl = parse_url($actionargn);
-        $actionname = $acturl["path"];
-        
-        global $ZONE_ARGS;
-        $OLD_ZONE_ARGS = $ZONE_ARGS;
-        if (isset($acturl["query"])) {
-            $acturl["query"] = str_replace("--", ":", $acturl["query"]); //For buggy function parse_url in PHP 4.3.1
-            $zargs = explode("&", $acturl["query"]);
-            foreach ($zargs as $v) {
-                if (preg_match("/([^=]*)=(.*)/", $v, $regs)) {
-                    // memo zone args for next action execute
-                    $ZONE_ARGS[$regs[1]] = urldecode($regs[2]);
-                }
-            }
-        }
-        
-        if ($appname != $this->action->parent->name) {
-            $appl = new \Anakeen\Core\Internal\Application();
-            $appl->Set($appname, $this->action->parent);
-        } else {
-            $appl = & $this->action->parent;
-        }
-        
-        if (($actionname != $this->action->name) || ($OLD_ZONE_ARGS != $ZONE_ARGS)) {
-            $act = new \Anakeen\Core\Internal\Action();
-            $res = '';
-            if ($act->Exists($actionname, $appl->id)) {
-                $act->Set($actionname, $appl);
-            } else {
-                // it's a no-action zone (no ACL, cannot be call directly by URL)
-                $act->name = $actionname;
-                
-                $res = $act->CompleteSet($appl);
-            }
-            if ($res == "") {
-                $res = $act->execute();
-            }
-            
-            $jsRefs = $act->parent->getJsRef();
-            foreach ($jsRefs as $jsRefe) {
-                $this->action->parent->addJsRef($jsRefe);
-            }
-            $cssRefs = $act->parent->getCssRef();
-            foreach ($cssRefs as $cssRefe) {
-                $this->action->parent->addCssRef($cssRefe);
-            }
-            
-            $ZONE_ARGS = $OLD_ZONE_ARGS; // restore old zone args
-            $this->zoneLevel--;
-            return ($res);
-        } else {
-            return ("Fatal loop : $actionname is called in $actionname");
-        }
-    }
+
     /**
      * add a simple key /value in template
      * the key will be replaced by value when [KEY] is found in template
