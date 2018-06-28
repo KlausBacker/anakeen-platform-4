@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
-  <router:routes>
-    <router:route name="Ui:Identity:Email">
-      <router:callable>\Anakeen\Components\Identity\Routes\Email</router:callable>
-      <router:method>PUT</router:method>
-      <router:pattern>/components/identity/email</router:pattern>
-      <router:description>Modify user's email</router:description>
-      <router:requiredAccess/>
-      <router:authenticated>true</router:authenticated>
-    </router:route>
-  </router:routes>
-</router:config>
+<sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
+  <sde:routes>
+    <sde:route name="Ui:Identity:Email">
+      <sde:callable>\Anakeen\Components\Identity\Routes\Email</sde:callable>
+      <sde:method>PUT</sde:method>
+      <sde:pattern>/components/identity/email</sde:pattern>
+      <sde:description>Modify user's email</sde:description>
+      <sde:requiredAccess/>
+      <sde:authenticated>true</sde:authenticated>
+    </sde:route>
+  </sde:routes>
+</sde:config>

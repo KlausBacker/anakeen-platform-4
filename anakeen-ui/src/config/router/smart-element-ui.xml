@@ -1,203 +1,203 @@
 <?xml version="1.0"?>
-<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
-    <router:apps>
-        <router:app name="SMARTELEMENT_UI">
-            <router:version>1.0.0</router:version>
-            <router:shortName>Smart Element Ui</router:shortName>
-        </router:app>
-    </router:apps>
-    <router:routes>
-        <router:route name="Ui:Admin:LoadParameters">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Admin\LoadParameters</router:callable>
-            <router:method>POST</router:method>
-            <router:pattern>/api/v2/admin/ui/loadparameters/</router:pattern>
-            <router:description>Reload</router:description>
-            <router:applicationContext>SMARTELEMENT_UI</router:applicationContext>
-            <router:requiredAccess operator="or">
-                <router:access>Ui:Admin</router:access>
-                <router:access>core:admin</router:access>
-            </router:requiredAccess>
-            <router:authenticated>true</router:authenticated>
-        </router:route>
-        <router:route name="Ui:i18n">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Ui\I18nCatalog</router:callable>
-            <router:method>GET</router:method>
-            <router:pattern>/api/v2/i18n/{catalog}</router:pattern>
-            <router:description>Get translation catalog</router:description>
-            <router:requiredAccess/>
-        </router:route>
-        <router:route name="Ui:Document:View">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Ui\DocumentView</router:callable>
-            <router:method>GET</router:method>
-            <router:pattern>/api/v2/documents/{docid}/views/{view}</router:pattern>
-            <router:description>Get render view data</router:description>
-            <router:requiredAccess/>
-        </router:route>
-        <router:route name="Ui:Document:Views">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Ui\DocumentViewCollection</router:callable>
-            <router:method>GET</router:method>
-            <router:pattern>/api/v2/documents/{docid}/views/</router:pattern>
-            <router:description>Get render view list</router:description>
-            <router:requiredAccess/>
-        </router:route>
-        <router:route name="Ui:Document:CreationView">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Ui\CreationView</router:callable>
-            <router:method>POST</router:method>
-            <router:pattern>/api/v2/families/{family}/documentsViews/</router:pattern>
-            <router:description>Get render view data</router:description>
-            <router:requiredAccess/>
-        </router:route>
-        <router:route name="Ui:Revision:ViewUpdate">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Ui\DocumentViewUpdate</router:callable>
-            <router:method>PUT</router:method>
-            <router:pattern>/api/v2/documents/{docid}/revisions/{revision:[0-9]+}/views/{view}</router:pattern>
-            <router:description>Modify document data</router:description>
-            <router:requiredAccess/>
-        </router:route>
-        <router:route name="Ui:Document:Delete">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Ui\DocumentViewDelete</router:callable>
-            <router:method>DELETE</router:method>
-            <router:pattern>/api/v2/documents/{docid}/views/{view}</router:pattern>
-            <router:description>Delete document data</router:description>
-            <router:requiredAccess/>
-        </router:route>
-        <router:route name="Ui:Revision:View">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Ui\DocumentView</router:callable>
-            <router:method>GET</router:method>
-            <router:pattern>/api/v2/documents/{docid}/revisions/{revision:[0-9]+}/views/{view}</router:pattern>
-            <router:description>Get render view data</router:description>
-            <router:requiredAccess/>
-        </router:route>
-        <router:route name="Ui:Transition:View">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Ui\TransitionView</router:callable>
-            <router:method>GET</router:method>
-            <router:pattern>/api/v2/documents/{docid}/views/states/{state}</router:pattern>
-            <router:description>Document Workflow Transition View</router:description>
-            <router:requiredAccess/>
-        </router:route>
-        <router:route name="Ui:Transition:Set">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Ui\TransitionSet</router:callable>
-            <router:method>POST</router:method>
-            <router:pattern>/api/v2/documents/{docid}/views/states/{state}</router:pattern>
-            <router:description>Change state for a document</router:description>
-            <router:requiredAccess/>
-        </router:route>
-        <router:route name="Ui:Family:Structure">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Ui\FamilyStructure</router:callable>
-            <router:method>GET</router:method>
-            <router:pattern>/api/v2/families/{family}/views/structure</router:pattern>
-            <router:description>Get attributes structure of family</router:description>
-            <router:requiredAccess/>
-        </router:route>
-        <router:route name="Ui:Document:HtmlPage">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Ui\DocumentHtml</router:callable>
-            <router:method>GET</router:method>
-            <router:pattern>/api/v2/documents/{docid}.html</router:pattern>
-            <router:description>Html page to view document</router:description>
-            <router:requiredAccess/>
-        </router:route>
-        <router:route name="Ui:Revision:HtmlPage">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Ui\DocumentHtml</router:callable>
-            <router:method>GET</router:method>
-            <router:pattern>/api/v2/documents/{docid}/revisions/{revision:[0-9]+}.html</router:pattern>
-            <router:description>Html page to view revision</router:description>
-            <router:requiredAccess/>
-        </router:route>
-        <router:route name="Ui:Document:HtmlViewPage">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Ui\DocumentHtml</router:callable>
-            <router:method>GET</router:method>
-            <router:pattern>/api/v2/documents/{docid}/views/{view}.html</router:pattern>
-            <router:description>Html page to view document with specific view</router:description>
-            <router:requiredAccess/>
-        </router:route>
-        <router:route name="Ui:Revision:HtmlViewPage">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Ui\DocumentHtml</router:callable>
-            <router:method>GET</router:method>
-            <router:pattern>/api/v2/documents/{docid}/revisions/{revision:[0-9]+}/views/{view}.html</router:pattern>
-            <router:description>Html page to view revision with specific view</router:description>
-            <router:requiredAccess/>
-        </router:route>
-        <router:route name="Ui:Document:Lock">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Ui\LockView</router:callable>
-            <router:method>DELETE</router:method>
-            <router:method>GET</router:method>
-            <router:method>POST</router:method>
-            <router:method>PUT</router:method>
-            <router:pattern>/api/v2/documents/{docid}/views/{view}/locks/{lockType:permanent|temporary}</router:pattern>
-            <router:description>Lock document</router:description>
-            <router:requiredAccess/>
-        </router:route>
-        <router:route name="Ui:Document:AutoComplete">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Ui\Autocomplete</router:callable>
-            <router:method>POST</router:method>
-            <router:pattern>/api/v2/documents/{docid}/autocomplete/{attrid}</router:pattern>
-            <router:description>Get Autocomplete suggestion for an attribute</router:description>
-            <router:requiredAccess/>
-        </router:route>
-        <router:route name="Ui:Document:SubMenu">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Ui\SubMenu</router:callable>
-            <router:method>GET</router:method>
-            <router:pattern>/api/v2/documents/{docid}/views/{view}/menus/{menu}</router:pattern>
-            <router:description>Get submenu items</router:description>
-            <router:requiredAccess/>
-        </router:route>
-        <router:route name="Ui:Document:CallMenu">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\Ui\CallMenu</router:callable>
-            <router:method>ANY</router:method>
-            <router:pattern>/api/v2/documents/{docid}/views/{view}/menus/{menu}/call</router:pattern>
-            <router:description>Call callable menu items</router:description>
-            <router:requiredAccess/>
-        </router:route>
-    </router:routes>
-    <router:accesses>
-        <router:access name="Ui:Admin">
-            <router:applicationContext>SMARTELEMENT_UI</router:applicationContext>
-            <router:description>Admin Access</router:description>
-        </router:access>
-    </router:accesses>
-    <router:parameters>
-        <router:parameter name="ACTIVATE_LOGGING">
-            <router:value>TRUE</router:value>
-            <router:description>Activate logging</router:description>
-            <router:type>enum(FALSE|TRUE)</router:type>
-            <router:applicationContext>SMARTELEMENT_UI</router:applicationContext>
-        </router:parameter>
-        <router:parameter name="MODE_DEBUG">
-            <router:value>FALSE</router:value>
-            <router:description>Debug Mode</router:description>
-            <router:type>enum(FALSE|TRUE)</router:type>
-            <router:applicationContext>SMARTELEMENT_UI</router:applicationContext>
-        </router:parameter>
-        <router:parameter name="RENDER_PARAMETERS">
-            <router:value>{}</router:value>
-            <router:description>Smart Element Render parameters</router:description>
-            <router:type>json</router:type>
-            <router:applicationContext>SMARTELEMENT_UI</router:applicationContext>
-        </router:parameter>
-        <router:parameter name="NOTIFICATION_DELAY">
-            <router:value>5000</router:value>
-            <router:description>Delay notifications display (in ms)</router:description>
-            <router:type>number</router:type>
-            <router:applicationContext>SMARTELEMENT_UI</router:applicationContext>
-        </router:parameter>
-    </router:parameters>
-</router:config>
+<sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
+    <sde:apps>
+        <sde:app name="SMARTELEMENT_UI">
+            <sde:version>1.0.0</sde:version>
+            <sde:shortName>Smart Element Ui</sde:shortName>
+        </sde:app>
+    </sde:apps>
+    <sde:routes>
+        <sde:route name="Ui:Admin:LoadParameters">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Admin\LoadParameters</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/admin/ui/loadparameters/</sde:pattern>
+            <sde:description>Reload</sde:description>
+            <sde:applicationContext>SMARTELEMENT_UI</sde:applicationContext>
+            <sde:requiredAccess operator="or">
+                <sde:access>Ui:Admin</sde:access>
+                <sde:access>core:admin</sde:access>
+            </sde:requiredAccess>
+            <sde:authenticated>true</sde:authenticated>
+        </sde:route>
+        <sde:route name="Ui:i18n">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Ui\I18nCatalog</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/i18n/{catalog}</sde:pattern>
+            <sde:description>Get translation catalog</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="Ui:Document:View">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Ui\DocumentView</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/documents/{docid}/views/{view}</sde:pattern>
+            <sde:description>Get render view data</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="Ui:Document:Views">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Ui\DocumentViewCollection</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/documents/{docid}/views/</sde:pattern>
+            <sde:description>Get render view list</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="Ui:Document:CreationView">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Ui\CreationView</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/families/{family}/documentsViews/</sde:pattern>
+            <sde:description>Get render view data</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="Ui:Revision:ViewUpdate">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Ui\DocumentViewUpdate</sde:callable>
+            <sde:method>PUT</sde:method>
+            <sde:pattern>/api/v2/documents/{docid}/revisions/{revision:[0-9]+}/views/{view}</sde:pattern>
+            <sde:description>Modify document data</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="Ui:Document:Delete">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Ui\DocumentViewDelete</sde:callable>
+            <sde:method>DELETE</sde:method>
+            <sde:pattern>/api/v2/documents/{docid}/views/{view}</sde:pattern>
+            <sde:description>Delete document data</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="Ui:Revision:View">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Ui\DocumentView</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/documents/{docid}/revisions/{revision:[0-9]+}/views/{view}</sde:pattern>
+            <sde:description>Get render view data</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="Ui:Transition:View">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Ui\TransitionView</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/documents/{docid}/views/states/{state}</sde:pattern>
+            <sde:description>Document Workflow Transition View</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="Ui:Transition:Set">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Ui\TransitionSet</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/documents/{docid}/views/states/{state}</sde:pattern>
+            <sde:description>Change state for a document</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="Ui:Family:Structure">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Ui\FamilyStructure</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/families/{family}/views/structure</sde:pattern>
+            <sde:description>Get attributes structure of family</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="Ui:Document:HtmlPage">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Ui\DocumentHtml</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/documents/{docid}.html</sde:pattern>
+            <sde:description>Html page to view document</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="Ui:Revision:HtmlPage">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Ui\DocumentHtml</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/documents/{docid}/revisions/{revision:[0-9]+}.html</sde:pattern>
+            <sde:description>Html page to view revision</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="Ui:Document:HtmlViewPage">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Ui\DocumentHtml</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/documents/{docid}/views/{view}.html</sde:pattern>
+            <sde:description>Html page to view document with specific view</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="Ui:Revision:HtmlViewPage">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Ui\DocumentHtml</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/documents/{docid}/revisions/{revision:[0-9]+}/views/{view}.html</sde:pattern>
+            <sde:description>Html page to view revision with specific view</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="Ui:Document:Lock">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Ui\LockView</sde:callable>
+            <sde:method>DELETE</sde:method>
+            <sde:method>GET</sde:method>
+            <sde:method>POST</sde:method>
+            <sde:method>PUT</sde:method>
+            <sde:pattern>/api/v2/documents/{docid}/views/{view}/locks/{lockType:permanent|temporary}</sde:pattern>
+            <sde:description>Lock document</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="Ui:Document:AutoComplete">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Ui\Autocomplete</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/documents/{docid}/autocomplete/{attrid}</sde:pattern>
+            <sde:description>Get Autocomplete suggestion for an attribute</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="Ui:Document:SubMenu">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Ui\SubMenu</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/documents/{docid}/views/{view}/menus/{menu}</sde:pattern>
+            <sde:description>Get submenu items</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="Ui:Document:CallMenu">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\Ui\CallMenu</sde:callable>
+            <sde:method>ANY</sde:method>
+            <sde:pattern>/api/v2/documents/{docid}/views/{view}/menus/{menu}/call</sde:pattern>
+            <sde:description>Call callable menu items</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+    </sde:routes>
+    <sde:accesses>
+        <sde:access name="Ui:Admin">
+            <sde:applicationContext>SMARTELEMENT_UI</sde:applicationContext>
+            <sde:description>Admin Access</sde:description>
+        </sde:access>
+    </sde:accesses>
+    <sde:parameters>
+        <sde:parameter name="ACTIVATE_LOGGING">
+            <sde:value>TRUE</sde:value>
+            <sde:description>Activate logging</sde:description>
+            <sde:type>enum(FALSE|TRUE)</sde:type>
+            <sde:applicationContext>SMARTELEMENT_UI</sde:applicationContext>
+        </sde:parameter>
+        <sde:parameter name="MODE_DEBUG">
+            <sde:value>FALSE</sde:value>
+            <sde:description>Debug Mode</sde:description>
+            <sde:type>enum(FALSE|TRUE)</sde:type>
+            <sde:applicationContext>SMARTELEMENT_UI</sde:applicationContext>
+        </sde:parameter>
+        <sde:parameter name="RENDER_PARAMETERS">
+            <sde:value>{}</sde:value>
+            <sde:description>Smart Element Render parameters</sde:description>
+            <sde:type>json</sde:type>
+            <sde:applicationContext>SMARTELEMENT_UI</sde:applicationContext>
+        </sde:parameter>
+        <sde:parameter name="NOTIFICATION_DELAY">
+            <sde:value>5000</sde:value>
+            <sde:description>Delay notifications display (in ms)</sde:description>
+            <sde:type>number</sde:type>
+            <sde:applicationContext>SMARTELEMENT_UI</sde:applicationContext>
+        </sde:parameter>
+    </sde:parameters>
+</sde:config>
