@@ -2,7 +2,6 @@
 namespace Anakeen\Routes\Admin;
 
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\Internal\ApplicationParameterManager;
 use Dcp\Core\Exception;
 
 /**
@@ -23,7 +22,7 @@ class Plugins
     {
         $pluginsConfig = $this->getAdminPluginsConfig();
         $result = [
-            "appName" => ContextManager::getApplicationParam('CORE_CLIENT'),
+            "appName" => ContextManager::getParameterValue('CORE_CLIENT'),
             "plugins" => $pluginsConfig
         ];
         return $response->withJson($result);
@@ -140,8 +139,7 @@ class Plugins
         }
         return $result;
     }
-
-
+    
     /**
      * Sort plugins considering the order attribute
      * @param array $config plugins to sort
@@ -160,7 +158,7 @@ class Plugins
 
     protected static function normalizeXMLPlugins(\SimpleXMLElement $xmlObject, $parentPluginPath = "") {
         $result = [];
-        $wsVersion = ApplicationParameterManager::getParameterValue("CORE", "WVERSION");
+        $wsVersion = ContextManager::getParameterValue("CORE", "WVERSION");
         if (!empty($xmlObject) && !empty($xmlObject->plugin)) {
             $plugins = $xmlObject->plugin;
             foreach ($plugins as $xmlPlugin) {
@@ -208,16 +206,7 @@ class Plugins
         return $result;
     }
 
-    protected static function setPluginProperty($plugin, $id, $value) {
-        if (isset($value)) {
-            $plugin['$id'] = $value;
-        }
-    }
 
-    protected static function mergeOverrides(array $plugins) {
-        $result = [];
-        return $result;
-    }
 
     protected static function mergePlugins(array $plugins) {
         $result = [];
