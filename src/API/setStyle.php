@@ -237,7 +237,7 @@ class styleManager
                 $this->log("static value " . var_export($paramValue, true) . " set for $paramName ($paramValue)");
             }
             $param->set($paramName, $paramValue, $paramType, 1);
-            \Anakeen\Core\Internal\ContextParameterManager::setVolatile($paramName, $paramValue); //add parameter in session cache
+            \Anakeen\Core\Internal\ContextParameterManager::setVolatile(\Anakeen\Core\Settings::NsSde, $paramName, $paramValue); //add parameter in session cache
         }
         $this->logIndent -= 1;
         // volatile register parsing params ($styleConfig['sty_local'])
@@ -252,7 +252,7 @@ class styleManager
             } else {
                 $this->log("static value " . var_export($paramValue, true) . " used for $paramName ($paramValue)");
             }
-            \Anakeen\Core\Internal\ContextParameterManager::setVolatile($paramName, $paramValue); //add parameter in session cache
+            \Anakeen\Core\Internal\ContextParameterManager::setVolatile(\Anakeen\Core\Settings::NsSde, $paramName, $paramValue); //add parameter in session cache
         }
         $this->logIndent -= 1;
         // apply sty_rules

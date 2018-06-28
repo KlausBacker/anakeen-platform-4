@@ -67,7 +67,7 @@ class TestLink extends TestCaseDcpDocument
         $doc = new_doc(self::$dbaccess, $docName);
         $this->assertTrue($doc->isAlive(), "document $docName is not alive");
         foreach ($params as $k => $v) {
-            ContextParameterManager::setVolatile($k, $v);
+            ContextParameterManager::setVolatile(\Anakeen\Core\Settings::NsSde, $k, $v);
         }
 
         $url = $doc->urlWhatEncode($link);

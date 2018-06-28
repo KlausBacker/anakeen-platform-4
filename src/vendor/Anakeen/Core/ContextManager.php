@@ -74,7 +74,6 @@ class ContextManager
      * @param \Anakeen\Core\Account               $account
      * @param \Anakeen\Core\Internal\Session|null $session
      *
-     * @throws \Dcp\Db\Exception
      * @throws \Exception
      */
     public static function initContext(\Anakeen\Core\Account $account, \Anakeen\Core\Internal\Session $session = null)
@@ -162,7 +161,7 @@ class ContextManager
             return "";
         }
 
-        ContextParameterManager::setVolatile("CORE_LANG", $lang);
+        ContextParameterManager::setVolatile(\Anakeen\Core\Settings::NsSde, "CORE_LANG", $lang);
 
         if (strpos($lang, ".") === false) {
             $lang .= ".UTF-8";
@@ -303,22 +302,22 @@ class ContextManager
     }
 
     /**
-     * return value of an global application parameter
+     * return value of an context application parameter
      *
-     * @brief must be in core or global type
      *
-     * @param string $name param name
+     * @param string $ns parameter namespace
+     * @param string $name parameter name
      * @param string $def  default value if value is empty
      *
      * @return string
      */
-    public static function getParameterValue($name, $def = "")
+    public static function getParameterValue(string $ns, string $name, $def = "")
     {
-        return ContextParameterManager::getValue($name, $def);
+        return ContextParameterManager::getValue($ns, $name, $def);
     }
 
 
-    public static function setParameterValue($ns, $name, $value)
+    public static function setParameterValue(string $ns, string $name, $value)
     {
         ContextParameterManager::setValue($ns, $name, $value);
     }

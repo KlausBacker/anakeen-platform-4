@@ -44,7 +44,7 @@ $class = $usage->addRequiredParameter('class', 'Class name', function ($value, $
 
 $usage->verify();
 
-\Anakeen\Core\Internal\ContextParameterManager::setVolatile('CORE_LOGLEVEL', "WE");
+\Anakeen\Core\Internal\ContextParameterManager::setVolatile(\Anakeen\Core\Settings::NsSde, 'CORE_LOGLEVEL', "WE");
 /**
  * @var DbObj $o
  */

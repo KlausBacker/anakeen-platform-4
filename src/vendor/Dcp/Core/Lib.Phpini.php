@@ -3,6 +3,7 @@
 namespace Dcp\Core;
 
 use Anakeen\Core\Internal\ContextParameterManager;
+use Anakeen\Core\Settings;
 
 class LibPhpini
 {
@@ -56,7 +57,7 @@ class LibPhpini
 
     protected static function getParam($name, $defaultValue)
     {
-        return ContextParameterManager::getValue($name, $defaultValue);
+        return ContextParameterManager::getValue(Settings::NsSde, $name, $defaultValue);
     }
 
     /**
