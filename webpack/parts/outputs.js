@@ -187,6 +187,10 @@ exports.useVueLoader = (exclude) => ({
                     'css-loader'
                 ]
             },
+            {
+                test: /\.svg/,
+                use: 'file-loader',
+            }
         ]
     },
     plugins: [

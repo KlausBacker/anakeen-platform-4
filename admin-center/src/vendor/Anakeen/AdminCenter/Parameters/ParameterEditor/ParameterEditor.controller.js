@@ -1,3 +1,6 @@
+import JSONEditor from 'jsoneditor';
+import 'jsoneditor/dist/jsoneditor.min.css';
+
 export default {
     name: 'ank-parameter-editor',
 
@@ -9,7 +12,10 @@ export default {
     },
 
     data() {
-        // No data
+        return {
+            jsonEditor: {},
+            jsonValue: {},
+        };
     },
 
     methods: {
@@ -26,15 +32,34 @@ export default {
 
                     close: () => this.$emit('closeEditor'),
                 }).data('kendoWindow').center().open();
+
+                if (this.parameterInputType === 'json') {
+                    this.jsonValue = JSON.parse(this.editedItem.value);
+                    let divContainer = document.getElementById('json-parameter-new-value');
+                    this.jsonEditor = new JSONEditor(divContainer, {
+                        search: false,
+                        navigationBar: false,
+                        statusBar: false,
+                        history: false,
+                    }, this.jsonValue);
+                }
             }
         },
 
         closeEditor() {
+            this.jsonEditor.destroy();
             this.$('#edition-window').data('kendoWindow').close();
         },
 
         modifyParameter() {
-            let newValue = this.$('#parameter-new-value').val();
+            let newValue;
+            if (this.parameterInputType === 'json') {
+                // TODO Format Json correctly
+                newValue = this.jsonEditor.get();
+            } else {
+                newValue = this.$('#parameter-new-value').val();
+            }
+
             Vue.ankApi.put('admin/parameters/' + this.editedItem.domainName + '/' + this.editedItem.name + '/',
                 {
                     value: newValue,
@@ -45,7 +70,7 @@ export default {
                         draggable: false,
                         resizable: false,
                         title: 'Parameter modified',
-                        width: '20%',
+                        width: '30%',
                         visible: false,
                         actions: [],
                     }).data('kendoWindow').center().open();
@@ -56,7 +81,7 @@ export default {
                         draggable: false,
                         resizable: false,
                         title: 'Error',
-                        width: '20%',
+                        width: '30%',
                         visible: false,
                         actions: [],
                     }).data('kendoWindow').center.open();
@@ -77,14 +102,12 @@ export default {
     computed: {
         parameterInputType() {
             let parameterType = this.editedItem.type.toLowerCase();
-            if (parameterType === 'text') {
-                return 'text';
-            } else if (parameterType === 'password') {
-                return 'password';
-            } else if (parameterType === 'number' || parameterType === 'integer' || parameterType === 'double') {
+            if (parameterType === 'number' || parameterType === 'integer' || parameterType === 'double') {
                 return 'number';
             } else if (parameterType.startsWith('enum')) {
                 return 'enum';
+            } else {
+                return parameterType;
             }
         },
 

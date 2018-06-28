@@ -18,6 +18,8 @@ export default {
             }),
 
             editedItem: null,
+
+            treeState: [],
         };
     },
 
@@ -59,14 +61,17 @@ export default {
 
                 expand: (e) => {
                     this.addClassToRow(e.sender);
+                    this.saveTreeState();
                 },
 
                 collapse: (e) => {
                     this.addClassToRow(e.sender);
+                    this.saveTreeState();
                 },
 
                 dataBound: (e) => {
                     this.addClassToRow(e.sender);
+                    this.restoreTreeState();
                 },
             })
                 .on('click', '.edition-btn', (e) => {
@@ -128,10 +133,43 @@ export default {
         },
 
         expand(expansion) {
-            let treeList = $('#parameters-tree').data('kendoTreeList');
-            let $rows = $('tr.k-treelist-group', treeList.tbody);
-            $.each($rows, (idx, row) => {
+            let treeList = this.$('#parameters-tree').data('kendoTreeList');
+            let $rows = this.$('tr.k-treelist-group', treeList.tbody);
+            this.$.each($rows, (idx, row) => {
                 if (expansion) {
+                    treeList.expand(row);
+                } else {
+                    treeList.collapse(row);
+                }
+            });
+            this.saveTreeState();
+            this.addClassToRow(treeList);
+        },
+
+        updateAtEditorClose() {
+            setTimeout(() => { this.editedItem = null; }, 300);
+            this.allParametersDataSource.read();
+        },
+
+        saveTreeState() {
+            // setTimeout(function, 0) to add CSS classes when all DOM content has been updated
+            setTimeout(() => {
+                this.treeState = [];
+                let treeList = this.$('#parameters-tree').data('kendoTreeList');
+                let items = treeList.items();
+                items.each((index, item) => {
+                    if ($(item).attr('aria-expanded') === 'true') {
+                        this.treeState.push(index);
+                    }
+                });
+            }, 0);
+        },
+
+        restoreTreeState() {
+            let treeList = this.$('#parameters-tree').data('kendoTreeList');
+            let $rows = this.$('tr', treeList.tbody);
+            this.$.each($rows, (idx, row) => {
+                if (this.treeState.includes(idx)) {
                     treeList.expand(row);
                 } else {
                     treeList.collapse(row);
@@ -139,25 +177,17 @@ export default {
             });
             this.addClassToRow(treeList);
         },
-
-        updateAtEditorClose() {
-            setTimeout(() => { this.editedItem = null; }, 300);
-            this.allParametersDataSource.read();
-            this.expand(true);
-        },
     },
 
     mounted() {
         this.initTreeList();
-        this.expand(true);
 
         // At window resize, resize the tree list to fit the window
         window.addEventListener('resize', () => {
             let $tree = this.$('#parameters-tree');
             let kTree = $tree.data('kendoTreeList');
-
             if (kTree) {
-                $tree.height($(window).height() - $tree.offset().top - 4);
+                $tree.height(this.$(window).height() - $tree.offset().top - 4);
                 kTree.resize();
             }
         });

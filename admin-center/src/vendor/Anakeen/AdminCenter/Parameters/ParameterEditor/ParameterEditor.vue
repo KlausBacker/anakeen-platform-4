@@ -13,7 +13,7 @@
                 <select class="form-control value-input" id="parameter-new-value" :value="editedItem.value" v-else-if="parameterInputType === 'enum'">
                     <option v-for="value in enumPossibleValues">{{ value }}</option>
                 </select>
-                <!-- TODO JSON -->
+                <div id="json-parameter-new-value" v-else-if="parameterInputType === 'json'"></div>
             </div>
             <button class="btn btn-primary form-parameter-btn" @click="modifyParameter">Save new value</button>
             <button class="btn btn-secondary form-parameter-btn" @click="closeEditor">Cancel value modification</button>

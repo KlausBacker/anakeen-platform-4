@@ -21,6 +21,11 @@ const productionComponentConfig = merge([
             path: path.resolve(PATHS.build, 'AdminCenter/prod/'),
             filename: '[name].js'
         },
+        resolve: {
+            alias: {
+                jsoneditor$: 'jsoneditor/dist/jsoneditor-minimalist.js',
+            },
+        },
         externals: {
             'vue': 'Vue'
         }
@@ -42,6 +47,11 @@ const debugComponentConfig = merge([
             filename: '[name].js',
             path: path.resolve(PATHS.build, 'AdminCenter/debug/'),
         },
+        resolve: {
+            alias: {
+                jsoneditor$: 'jsoneditor/dist/jsoneditor-minimalist.js',
+            },
+        },
         externals: {
             'vue': 'Vue'
         }
@@ -61,6 +71,11 @@ const devComponentConfig = merge([
             publicPath: '/AdminCenter/debug/',
             filename: '[name].js',
             path: path.resolve(PATHS.build, 'AdminCenter/debug/'),
+        },
+        resolve: {
+            alias: {
+                jsoneditor$: 'jsoneditor/dist/jsoneditor-minimalist.js',
+            },
         },
         externals: {
             'vue': 'Vue'

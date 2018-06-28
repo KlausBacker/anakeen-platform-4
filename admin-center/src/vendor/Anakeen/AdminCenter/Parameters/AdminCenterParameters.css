@@ -82,6 +82,6 @@
     float: right;
 }
 
-tr {
-    height: 2rem;
+.k-grid tbody tr td {
+    white-space: nowrap;
 }
