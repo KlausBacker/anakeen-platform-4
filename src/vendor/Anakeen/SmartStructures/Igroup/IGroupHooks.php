@@ -402,6 +402,7 @@ class IGroupHooks extends \SmartStructure\Group
                 }
                 $this->setValue("grp_roles", $wuser->getRoles(false));
                 $err = $this->modify(true, array(
+                    "title",
                     "us_whatid",
                     "grp_name",
                     "grp_roles",

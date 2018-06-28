@@ -1,12 +1,5 @@
 <?xml version="1.0"?>
 <router:config xmlns:router="http://www.anakeen.com/ns/routes/">
-  <router:apps>
-    <router:app name="CORE">
-      <router:shortName>Core</router:shortName>
-      <router:description>System application</router:description>
-      <router:version>4.0.0</router:version>
-    </router:app>
-  </router:apps>
   <router:routes>
     <router:route name="Core:Root">
       <router:priority>0</router:priority>

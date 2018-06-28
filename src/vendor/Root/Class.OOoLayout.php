@@ -62,7 +62,6 @@ class OOoLayout extends Layout
     public function __construct($caneva = "", \Anakeen\Core\Internal\SmartElement & $doc = null)
     {
         $this->initialFile = $caneva;
-        $this->LOG = new \Anakeen\Core\Internal\Log("", "Layout");
         $this->doc = $doc;
         $this->template = "";
         $this->generation = "";

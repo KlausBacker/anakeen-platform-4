@@ -222,22 +222,7 @@ class styleManager
         // register color params ($styleConfig['sty_computed_colors'])
         $this->log("register color params");
         $this->logIndent += 1;
-        foreach ($styleConfig['computed_colors'] as $colorClass => $colorList) {
-            foreach ($colorList as $colorIndex => $color) {
-                $paramName = "COLOR_{$colorClass}{$colorIndex}";
-                // if value is a reference to another parameter
 
-                $dynamicColorValue = \Anakeen\Core\ContextManager::getParameterValue($color);
-                if (!empty($dynamicColorValue)) {
-                    $this->log("dynamic value " . var_export($dynamicColorValue, true) . " set for $paramName ($color)");
-                    $color = $dynamicColorValue;
-                } else {
-                    $this->log("static value " . var_export($color, true) . " set for $paramName ($color)");
-                }
-                $param->set($paramName, $color, $paramType, 1);
-                \Anakeen\Core\Internal\ContextParameterManager::setVolatile($paramName, $color); //add parameter in session cache
-            }
-        }
         $this->logIndent -= 1;
         // register other params ($styleConfig['sty_const'])
         $this->log("register other params");

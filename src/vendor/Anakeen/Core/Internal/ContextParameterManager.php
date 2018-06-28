@@ -36,7 +36,13 @@ class ContextParameterManager
     public static function setValue($name, $val, $type = Param::PARAM_GLB)
     {
         $p = new Param("", [$name, $type]);
-        if ($p->isAffected()) {
+
+        if (! $p->isAffected() && $type !== Param::PARAM_GLB) {
+            $p->val = $val;
+            $p->type = $type;
+            $p->name = $name;
+            $p->add();
+        } elseif ($p->isAffected()) {
             $p->val = $val;
             $err = $p->modify();
             if ($err) {

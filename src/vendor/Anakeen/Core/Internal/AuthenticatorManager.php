@@ -9,6 +9,7 @@
 namespace Anakeen\Core\Internal;
 
 use Anakeen\Core\SEManager;
+use Anakeen\LogManager;
 use Dcp\Core\Exception;
 
 include_once("FDL/LegacyDocManager.php");
@@ -290,10 +291,7 @@ class AuthenticatorManager
         $account = "",
         $userAgent = ""
     ) {
-        global $_GET;
-        $log = new \Anakeen\Core\Internal\Log("", "Session", "Authentication");
-        $facility = constant(\Anakeen\Core\ContextManager::getParameterValue("AUTHENT_LOGFACILITY", "LOG_AUTH"));
-        $log->wlog("S", sprintf(
+        $msg = sprintf(
             "[%s] [%s] [%s] [%s] [%s] [%s]",
             $status,
             $additionalMessage,
@@ -301,7 +299,8 @@ class AuthenticatorManager
             $clientIp,
             $account,
             $userAgent
-        ), null, $facility);
+        );
+        LogManager::warning($msg, ["authent" => true]);
         return 0;
     }
 
@@ -389,7 +388,7 @@ class AuthenticatorManager
         if ($authz !== self::AccessOk) {
             return $authz;
         }
-        return self::checkDynacaseAuthorization($opt);
+        return self::checkInternalAuthorization($opt);
     }
 
     /**
@@ -416,16 +415,24 @@ class AuthenticatorManager
      * @throws \Dcp\Exception
      * @return int
      */
-    private static function checkDynacaseAuthorization($opt)
+    private static function checkInternalAuthorization($opt)
     {
         $login = $opt['username'];
         $wu = $opt['dcp_account'];
         if ($wu->id != 1) {
-            include_once("FDL/LegacyDocManager.php");
             /**
              * @var \SmartStructure\IUSER $du
              */
-            $du = new_Doc("", $wu->fid);
+            $du = SEManager::getDocument($wu->fid);
+            if ($du === null) {
+                static::secureLog("failure", "no found account element data",
+                    static::$auth->provider->parms['type'] . "/"
+                    . static::$auth->provider->parms['AuthentProvider'], $_SERVER["REMOTE_ADDR"], $login,
+                    $_SERVER["HTTP_USER_AGENT"]);
+                static::clearGDocs();
+                return static::AccessHasNoLocalAccount;
+            }
+
             // First check if account is active
             if (!$du->isAccountActive()) {
                 static::secureLog("failure", "inactive account",
