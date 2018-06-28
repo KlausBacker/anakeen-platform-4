@@ -13,7 +13,11 @@
                 <select class="form-control value-input" id="parameter-new-value" :value="editedItem.value" v-else-if="parameterInputType === 'enum'">
                     <option v-for="value in enumPossibleValues">{{ value }}</option>
                 </select>
-                <div id="json-parameter-new-value" v-else-if="parameterInputType === 'json'"></div>
+                <div id="json-parameter-new-value" class="json-editor" v-else-if="isJson(editedItem.value)"></div>
+                <div v-else>
+                    <div class="alert alert-warning invalid-json-warning" role="alert">Parameter is not a valid json, please save it as json</div>
+                    <textarea class="form-control" id="parameter-new-value" :value="editedItem.value"></textarea>
+                </div>
             </div>
             <button class="btn btn-primary form-parameter-btn" @click="modifyParameter">Save new value</button>
             <button class="btn btn-secondary form-parameter-btn" @click="closeEditor">Cancel value modification</button>
@@ -21,10 +25,6 @@
         <div id="confirmation-window" v-show="false" @keyup.enter.stop="closeConfirmationAndEditor">
             <div class="information-text">Parameter successfully modified</div>
             <button class="btn btn-primary form-parameter-btn" @click="closeConfirmationAndEditor">Back to parameters</button>
-        </div>
-        <div id="error-window" v-show="false" @keyup.enter.stop="closeErrorAndEditor">
-            <div class="information-text">Parameter hasn't been modified</div>
-            <button class="btn btn-primary form-parameter-btn" @click="closeErrorAndEditor">Back to parameters</button>
         </div>
     </div>
 </template>

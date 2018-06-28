@@ -23,3 +23,8 @@
     font-size: 1.2rem;
     margin-bottom: 1.5rem;
 }
+
+.json-editor {
+    width: 100%;
+    height: 40vh;
+}
