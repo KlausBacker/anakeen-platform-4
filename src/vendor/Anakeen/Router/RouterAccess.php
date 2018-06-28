@@ -14,37 +14,28 @@ class RouterAccess
         if (!$requiredAccess) {
             return;
         }
-
-        if (is_string($requiredAccess)) {
-            if (!self::hasPermission($requiredAccess, $forceRecheck)) {
-                $e = new Exception("ROUTES0131", $routeInfo->name, $requiredAccess);
-                $e->setHttpStatus(403, "Access Forbidden");
-                throw $e;
+        /**
+         * @var RequiredAccessInfo $requiredAccess
+         */
+        if (!empty($requiredAccess->or) && count($requiredAccess->or) > 0) {
+            foreach ($requiredAccess->or as $aclName) {
+                if (self::hasPermission($aclName, $forceRecheck)) {
+                    return;
+                }
+            }
+            $e = new Exception("ROUTES0131", $routeInfo->name, "OR:" . implode(", ", $requiredAccess->or));
+            $e->setHttpStatus(403, "Access Forbidden");
+            throw $e;
+        } elseif (!empty($requiredAccess->and) && count($requiredAccess->and) > 0) {
+            foreach ($requiredAccess->and as $aclName) {
+                if (!self::hasPermission($aclName, $forceRecheck)) {
+                    $e = new Exception("ROUTES0131", $routeInfo->name, "AND:" . implode(", ", $requiredAccess->and));
+                    $e->setHttpStatus(403, "Access Forbidden");
+                    throw $e;
+                }
             }
         } else {
-            /**
-             * @var RequiredAccessInfo $requiredAccess
-             */
-            if (!empty($requiredAccess->or) && count($requiredAccess->or) > 1) {
-                foreach ($requiredAccess->or as $aclName) {
-                    if (self::hasPermission($aclName, $forceRecheck)) {
-                        return;
-                    }
-                }
-                $e = new Exception("ROUTES0131", $routeInfo->name, "OR:" . implode(", ", $requiredAccess->or));
-                $e->setHttpStatus(403, "Access Forbidden");
-                throw $e;
-            } elseif (!empty($requiredAccess->and) && count($requiredAccess->and) > 1) {
-                foreach ($requiredAccess->and as $aclName) {
-                    if (!self::hasPermission($aclName, $forceRecheck)) {
-                        $e = new Exception("ROUTES0131", $routeInfo->name, "AND:" . implode(", ", $requiredAccess->and));
-                        $e->setHttpStatus(403, "Access Forbidden");
-                        throw $e;
-                    }
-                }
-            } else {
-                throw new Exception("ROUTES0132");
-            }
+            throw new Exception("ROUTES0132");
         }
     }
 

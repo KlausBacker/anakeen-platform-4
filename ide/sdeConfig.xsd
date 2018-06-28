@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema elementFormDefault="qualified"
-           targetNamespace="http://www.anakeen.com/ns/routes/"
+           targetNamespace="http://www.anakeen.com/ns/sde/1.0"
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns:rout="http://www.anakeen.com/ns/routes/">
+           xmlns:rout="http://www.anakeen.com/ns/sde/1.0">
     <xs:element name="config" type="rout:configType"/>
 
 
@@ -17,6 +17,7 @@
         <xs:sequence>
             <xs:element type="rout:middlewareType" name="middleware"/>
         </xs:sequence>
+        <xs:attribute type="xs:token" name="namespace" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="parameterType">
@@ -44,6 +45,7 @@
                 <xs:alternative test="@override = 'complete'" type="rout:routeCompleteType"/>
             </xs:element>
         </xs:sequence>
+        <xs:attribute type="xs:token" name="namespace" use="required"/>
     </xs:complexType>
     <xs:complexType name="middlewareType">
         <xs:sequence>
@@ -57,18 +59,25 @@
         <xs:attribute type="xs:string" name="name"/>
     </xs:complexType>
 
+    <xs:complexType name="accessRefType" mixed="true">
+        <xs:attribute type="xs:token" name="ns" use="required"/>
+    </xs:complexType>
 
-    <xs:complexType name="requiredAccessType" mixed="true">
+    <xs:complexType name="requiredAccessType" >
         <xs:sequence>
-            <xs:element type="xs:string" name="access" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="rout:accessRefType" name="access" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="xs:string" name="operator" default="and"/>
     </xs:complexType>
+
     <xs:complexType name="parametersType">
         <xs:sequence>
             <xs:element type="rout:parameterType" name="parameter" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="rout:accessType" name="access" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
+
+        <xs:attribute type="xs:token" name="namespace" use="required"/>
+        <xs:attribute type="xs:token" name="label" />
     </xs:complexType>
     <xs:complexType name="configType">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -143,5 +152,6 @@
         <xs:sequence>
             <xs:element type="rout:accessType" name="access" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
+        <xs:attribute type="xs:token" name="namespace" use="required"/>
     </xs:complexType>
 </xs:schema>
