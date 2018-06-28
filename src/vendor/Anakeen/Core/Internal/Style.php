@@ -1,6 +1,7 @@
 <?php
 
 namespace Anakeen\Core\Internal;
+
 class Style extends DbObj
 {
     const RULE_FLAG_PARSE_ON_RUNTIME = 1;
@@ -21,10 +22,7 @@ class Style extends DbObj
     public $description;
     public $parsable;
     protected $rules;
-    /**
-     * @var \Anakeen\Core\Internal\Application
-     */
-    public $parent;
+
 
     public $sqlcreate
         = "
@@ -65,48 +63,6 @@ class Style extends DbObj
         $this->rules = json_encode($this->_expanded_rules);
     }
 
-    public function set(&$parent)
-    {
-        $this->parent = &$parent;
-    }
-
-    public function getImageUrl($img, $default)
-    {
-        $root = DEFAULT_PUBDIR;
-
-        $socStyle = $this->parent->Getparam("CORE_SOCSTYLE");
-        // first see if i have an society style
-        if (($socStyle != "") && file_exists($root . "/STYLE/" . $socStyle . "/Images/" . $img)) {
-            return ("STYLE/" . $socStyle . "/Images/" . $img);
-        }
-
-        if (file_exists($root . "/STYLE/" . $this->name . "/Images/" . $img)) {
-            return ("STYLE/" . $this->name . "/Images/" . $img);
-        } else {
-            return ($default);
-        }
-    }
-
-    public function getLayoutFile($layname, $default = "")
-    {
-        $root = DEFAULT_PUBDIR;
-
-        $socStyle = $this->parent->Getparam("CORE_SOCSTYLE");
-        // first see if i have an society style
-        if ($socStyle != "") {
-            $file = $root . "/STYLE/" . $socStyle . "/Layout/" . $layname;
-            if (file_exists($file)) {
-                return ($file);
-            }
-        }
-
-        $file = $root . "/STYLE/" . $this->name . "/Layout/" . $layname;
-        if (file_exists($file)) {
-            return ($file);
-        }
-
-        return ($default);
-    }
 
     public function setRules(array $filesDefinition)
     {
@@ -136,5 +92,3 @@ class Style extends DbObj
         return $this->_expanded_rules[$fileType][$file];
     }
 }
-
-

@@ -438,7 +438,6 @@ class OOoLayout extends Layout
     }
 
 
-
     /**
      * replace simple key in xml string
      * @param string|null $out
@@ -684,7 +683,7 @@ class OOoLayout extends Layout
             }
         }
         foreach ($this->added_images as $image) {
-            $mime = getSysMimeFile($this->cibledir . '/' . $image);
+            $mime = \Anakeen\Core\Utils\FileMime::getSysMimeFile($this->cibledir . '/' . $image);
             $new = $manifest->createElement("manifest:file-entry");
             $new->setAttribute("manifest:media-type", $mime);
             $new->setAttribute("manifest:full-path", $image);
@@ -733,8 +732,8 @@ class OOoLayout extends Layout
             if (preg_match('/^file\/([^\/]+)\/([0-9]+)/', $href, $reg)) {
                 $vid = $reg[2];
                 $docid = $reg[1];
-                $docimg = new_doc('', $docid, true);
-                if ($docimg->isAlive()) {
+                $docimg = \Anakeen\Core\SEManager::getDocument($docid, true);
+                if ($docimg && $docimg->isAlive()) {
                     $err = $docimg->control("view");
                     if (!$err) {
                         $fileInfo = \Dcp\VaultManager::getFileInfo($vid);
@@ -749,8 +748,8 @@ class OOoLayout extends Layout
                 $attrid = $reg[2];
                 $index = intval($reg[3]);
 
-                $docimg = new_doc('', $docid, true);
-                if ($docimg->isAlive()) {
+                $docimg = \Anakeen\Core\SEManager::getDocument($docid, true);
+                if ($docimg && $docimg->isAlive()) {
                     $err = $docimg->control("view");
                     if (!$err) {
                         if ($index < 0) {
@@ -958,7 +957,7 @@ class OOoLayout extends Layout
         return $err;
     }
 
-    private function _section_cmp($k1, $k2)
+    private function sectionCmp($k1, $k2)
     {
         if ($k2 > $k1) {
             return 1;
@@ -989,7 +988,7 @@ class OOoLayout extends Layout
         //reorder by depth
         uksort($section, array(
             $this,
-            "_section_cmp"
+            "sectionCmp"
         ));
         foreach ($section as $aSection) {
             /**
@@ -1677,31 +1676,31 @@ class OOoLayout extends Layout
         }
     }
 
-    protected function GenJsRef($useLegacyLog = true)
+    protected function genJsRef($useLegacyLog = true)
     {
         return "";
     }
 
-    public function GenJsCode($showlog, $onlylog = false)
+    public function genJsCode($showlog, $onlylog = false)
     {
         return ("");
     }
 
-    protected function ParseJs(&$out)
+    protected function parseJs(&$out)
     {
     }
 
-    protected function GenCssRef($oldCompatibility = true)
+    protected function genCssRef($oldCompatibility = true)
     {
         return "";
     }
 
-    protected function GenCssCode()
+    protected function genCssCode()
     {
         return ("");
     }
 
-    protected function ParseCss(&$out)
+    protected function parseCss(&$out)
     {
     }
 
@@ -1999,18 +1998,7 @@ class OOoLayout extends Layout
             $this->exitError();
         }
         // if used in an app , set the app params
-        if (is_object($this->action)) {
-            $list = $this->action->parent->GetAllParam();
-            foreach ($list as $k => $v) {
-                $v = str_replace(array(
-                    '<BR>',
-                    '<br>',
-                    '<br/>',
-                    '<br />'
-                ), '<text:line-break/>', $v);
-                $this->set($k, $v);
-            }
-        }
+
         // $this->rif=&$this->rkey;
         // $this->ParseIf($out);
         // Parse IMG: and LAY: tags

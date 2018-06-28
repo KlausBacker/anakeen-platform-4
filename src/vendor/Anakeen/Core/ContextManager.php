@@ -303,14 +303,6 @@ class ContextManager
     }
 
     /**
-     * @return \Anakeen\Core\Internal\Application|null
-     */
-    protected static function getCurrentApplication()
-    {
-        throw new \Exception(__METHOD__);
-    }
-
-    /**
      * return value of an global application parameter
      *
      * @brief must be in core or global type

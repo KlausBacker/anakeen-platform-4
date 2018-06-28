@@ -62,7 +62,7 @@ class TestHelpUsage extends TestCaseDcp
                 "refreshjsversion"
             ),
             array(
-                "setApplicationParameter"
+                "setParameter"
             ),
             array(
                 "updateclass"

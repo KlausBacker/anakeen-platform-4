@@ -6,10 +6,7 @@ use Anakeen\Core\Internal\ContextParameterManager;
 
 class LibPhpini
 {
-    /**
-     * @var \Anakeen\Core\Internal\Application
-     */
-    public static $coreApplication = null;
+
 
     public static function applyLimits()
     {
