@@ -318,9 +318,9 @@ class ContextManager
     }
 
 
-    public static function setParameterValue($name, $value)
+    public static function setParameterValue($ns, $name, $value)
     {
-        ContextParameterManager::setValue($name, $value);
+        ContextParameterManager::setValue($ns, $name, $value);
     }
 
 

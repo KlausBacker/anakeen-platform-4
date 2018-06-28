@@ -33,39 +33,49 @@ class ContextParameterManager
     }
 
 
-    public static function setValue($name, $val, $type = Param::PARAM_GLB)
+    public static function setValue($ns, $name, $val, $type = Param::PARAM_GLB)
     {
-        $p = new Param("", [$name, $type]);
+        $key = $ns . "::" . $name;
+        $p = new Param("", [$key, $type]);
 
-        if (! $p->isAffected() && $type !== Param::PARAM_GLB) {
+        if (!$p->isAffected() && $type !== Param::PARAM_GLB) {
             $p->val = $val;
             $p->type = $type;
-            $p->name = $name;
+            $p->name = $key;
             $p->add();
         } elseif ($p->isAffected()) {
             $p->val = $val;
             $err = $p->modify();
             if ($err) {
-                throw new Exception(sprintf("Cannot modify context parameter %s : %s", $name, $err));
+                throw new Exception(sprintf("Cannot modify context parameter %s : %s", $key, $err));
             }
-            self::$cache[$name]=$val;
+            self::$cache[$key] = $val;
         } else {
-            throw new Exception(sprintf("Unknow context parameter %s", $name));
+            throw new Exception(sprintf("Unknow context parameter %s", $key));
         }
     }
 
-    public static function setUserValue($name, $val, int $accountId = 0)
+    /**
+     * Set value to a user parameter
+     * @param string $ns        parameter namespace
+     * @param string $name      parameter name
+     * @param string $val       new value
+     * @param int    $accountId (user system id)  - 0 means current user id
+     * @throws Exception
+     */
+    public static function setUserValue(string $ns, string $name, $val, int $accountId = 0)
     {
         if ($accountId === 0) {
-            $accountId=ContextManager::getCurrentUser()->id;
+            $accountId = ContextManager::getCurrentUser()->id;
         }
-        self::setValue($name, $val, sprintf("%s%d", Param::PARAM_USER, $accountId));
+        self::setValue($ns, $name, $val, sprintf("%s%d", Param::PARAM_USER, $accountId));
     }
 
-    public static function getValue($name, $def = null)
+    public static function getValue(string $ns, string $name, $def = null)
     {
-        if (isset(self::$volatile[$name])) {
-            return self::$volatile[$name];
+        $key=$ns.'::'.$name;
+        if (isset(self::$volatile[$key])) {
+            return self::$volatile[$key];
         }
 
         $u = ContextManager::getCurrentUser();
@@ -73,21 +83,22 @@ class ContextParameterManager
             if (!self::$cache) {
                 self::initCache();
             }
-            if (isset(self::$cache[$name])) {
-                return self::$cache[$name];
+            if (isset(self::$cache[$key])) {
+                return self::$cache[$key];
             }
         } else {
-            return self::getDbValue($name, $def);
+            return self::getDbValue($key, $def);
         }
         return $def;
     }
 
-    public static function setVolatile($name, $val)
+    public static function setVolatile($ns, $name, $val)
     {
+        $key=$ns.'::'.$name;
         if ($val !== null) {
-            self::$volatile[$name] = $val;
+            self::$volatile[$key] = $val;
         } else {
-            unset(self::$volatile[$name]);
+            unset(self::$volatile[$key]);
         }
     }
 

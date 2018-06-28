@@ -263,7 +263,7 @@ class styleManager
         if ($err) {
             throw new \Dcp\Style\Exception("STY0003", "error when modifying style");
         }
-        \Anakeen\Core\ContextManager::setParameterValue("STYLE", $styleName);
+        \Anakeen\Core\ContextManager::setParameterValue(Anakeen\Core\Settings::NsSde, "STYLE", $styleName);
     }
 
     protected function deployStyleFiles(array $rules)

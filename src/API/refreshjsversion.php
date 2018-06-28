@@ -1,8 +1,4 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * regenerate js version file
  *
@@ -12,13 +8,13 @@
  * @package FDL
  * @subpackage WSH
  */
-/**
- */
+
 
 $usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("Regenerate WVERSION");
 $usage->verify();
 
 $nv=uniqid();
-\Anakeen\Core\ContextManager::setParameterValue("WVERSION", $nv);
+
+\Anakeen\Core\ContextManager::setParameterValue(Anakeen\Core\Settings::NsSde, "WVERSION", $nv);
 print "WVERSION: [$nv]\n";

@@ -7,6 +7,7 @@
 namespace Anakeen\Routes\Authent;
 
 use Anakeen\Core\Internal\ContextParameterManager;
+use Anakeen\Core\Settings;
 use Anakeen\Router\Exception;
 use Anakeen\Core\LogException;
 use Anakeen\Router\ApiV2Response;
@@ -82,7 +83,7 @@ class Session
             $u->setLoginName($login);
 
             \Anakeen\Core\ContextManager::initContext($u, \Anakeen\Router\AuthenticatorManager::$session);
-            ContextParameterManager::setUserValue("CORE_LANG", $language);
+            ContextParameterManager::setUserValue(Settings::NsSde, "CORE_LANG", $language);
         }
 
         return ApiV2Response::withData($response, ["login" => $login]);

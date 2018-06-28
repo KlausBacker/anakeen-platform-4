@@ -30,7 +30,7 @@ class TestGetDocAnchor extends TestCaseDcpCommonFamily
     public function testGetDocAnchorMail($data)
     {
         foreach ($data['params'] as $param) {
-            ContextManager::setParameterValue($param['name'], $param['value']);
+            ContextManager::setParameterValue(\Anakeen\Core\Settings::NsSde, $param['name'], $param['value']);
         }
         GlobalParametersManager::initialize();
 
