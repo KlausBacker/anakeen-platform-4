@@ -3,6 +3,7 @@
  * @author Anakeen
  * @package FDL
 */
+
 /**
  * Group order, all group have one user with same name, and one role with same name
  *
@@ -30,21 +31,21 @@
  */
 
 namespace Dcp\Pu;
+
+use Anakeen\Core\SEManager;
+use Anakeen\Core\SmartStructure;
+
 /**
- * @author Anakeen
+ * @author  Anakeen
  * @package Dcp\Pu
  */
-
-//require_once 'PU_testcase_dcp_commonfamily.php';
-
 class TestRoleMove extends TestCaseDcpCommonFamily
 {
     protected static $outputDir;
 
     /**
      * import TST_FAMSETVALUE family
-     * @static
-     * @return string
+     * @return string[]
      */
     protected static function getCommonImportFile()
     {
@@ -74,9 +75,9 @@ class TestRoleMove extends TestCaseDcpCommonFamily
      */
     public function testAddUserGToGroupA($user)
     {
-        $gUser = new_Doc(self::$dbaccess, "IUSER_G");
-        $aGroup = new_Doc(self::$dbaccess, "GROUP_A");
-        /* @var $aGroup \_IGROUP */
+        $gUser = SEManager::getDocument("IUSER_G");
+        $aGroup = SEManager::getDocument("GROUP_A");
+        /* @var $aGroup \SmartStructure\IGROUP */
         $aGroup->insertDocument($gUser->getPropertyValue("id"));
         $this->analyzeUserGroupAndRole($user);
     }
@@ -86,11 +87,11 @@ class TestRoleMove extends TestCaseDcpCommonFamily
      */
     public function testRemoveUserGFromGroupGAndAddItToGroupE($user, $group)
     {
-        $gUser = new_Doc(self::$dbaccess, "IUSER_G");
-        $eGroup = new_Doc(self::$dbaccess, "GROUP_E");
-        $gGroup = new_Doc(self::$dbaccess, "GROUP_G");
-        /* @var $eGroup \_IGROUP */
-        /* @var $gGroup \_IGROUP */
+        $gUser = SEManager::getDocument("IUSER_G");
+        $eGroup = SEManager::getDocument("GROUP_E");
+        $gGroup = SEManager::getDocument("GROUP_G");
+        /* @var $eGroup \SmartStructure\IGROUP */
+        /* @var $gGroup \SmartStructure\IGROUP */
         $eGroup->insertDocument($gUser->getPropertyValue("id"));
         $gGroup->removeDocument($gUser->getPropertyValue("id"));
         $this->analyzeUserGroupAndRole($user);
@@ -102,10 +103,10 @@ class TestRoleMove extends TestCaseDcpCommonFamily
      */
     public function testAddGroupGToGroupE($user, $group)
     {
-        $eGroup = new_Doc(self::$dbaccess, "GROUP_E");
-        $gGroup = new_Doc(self::$dbaccess, "GROUP_G");
-        /* @var $eGroup \_IGROUP */
-        /* @var $gGroup \_IGROUP */
+        $eGroup = SEManager::getDocument("GROUP_E");
+        $gGroup = SEManager::getDocument("GROUP_G");
+        /* @var $eGroup \SmartStructure\IGROUP */
+        /* @var $gGroup \SmartStructure\IGROUP */
         $eGroup->insertDocument($gGroup->getPropertyValue("id"));
         $eTogGroup = new \Group(self::$dbaccess, array($eGroup->getRawValue("us_whatid")));
         $eTogGroup->resetAccountMemberOf(true);
@@ -118,10 +119,10 @@ class TestRoleMove extends TestCaseDcpCommonFamily
      */
     public function testRemoveCFromA($user, $group)
     {
-        $cGroup = new_Doc(self::$dbaccess, "GROUP_C");
-        $aGroup = new_Doc(self::$dbaccess, "GROUP_A");
-        /* @var $cGroup \_IGROUP */
-        /* @var $aGroup \_IGROUP */
+        $cGroup = SEManager::getDocument("GROUP_C");
+        $aGroup = SEManager::getDocument("GROUP_A");
+        /* @var $cGroup \SmartStructure\IGROUP */
+        /* @var $aGroup \SmartStructure\IGROUP */
         $aGroup->removeDocument($cGroup->getPropertyValue("id"));
         $cInternalGroup = new \Group(self::$dbaccess, array($cGroup->getRawValue("us_whatid")));
         $cInternalGroup->resetAccountMemberOf(true);
@@ -138,18 +139,18 @@ class TestRoleMove extends TestCaseDcpCommonFamily
     protected function analyzeUserGroupAndRole($user)
     {
         $dbaccess = self::$dbaccess;
-        $userDoc = new_doc(self::$dbaccess, $user["name"]);
+        $userDoc = SEManager::getDocument($user["name"]);
         /* @var $userDoc \_IUSER */
         $currentRoles = $userDoc->getAccount()->getAllRoles();
         $currentRoles = array_map(function ($role) {
             return $role["login"];
         }, $currentRoles);
         $this->assertEmpty(array_diff($user["roles"], $currentRoles), sprintf("User %s have not all needed roles (%s instead of %s)",
-                    $user["name"], var_export($currentRoles, true), var_export($user["roles"], true)));
+            $user["name"], var_export($currentRoles, true), var_export($user["roles"], true)));
         $this->assertEmpty(array_diff($currentRoles, $user["roles"]), sprintf("User %s have more than all needed roles (%s instead of %s)",
-                    $user["name"], var_export($currentRoles, true), var_export($user["roles"], true)));
+            $user["name"], var_export($currentRoles, true), var_export($user["roles"], true)));
         $groups = $user["groups"];
-        $groups = array_map(function ($groupName) use($dbaccess) {
+        $groups = array_map(function ($groupName) use ($dbaccess) {
             return array("name" => $groupName, "id" => \Anakeen\Core\SEManager::getIdFromName($groupName));
         }, $groups);
         $userGroups = $userDoc->getAllUserGroups();
@@ -161,25 +162,31 @@ class TestRoleMove extends TestCaseDcpCommonFamily
     /**
      * Analyze a user against the role and users definition
      *
-     * @param  array $user contains "name" user logical name, roles : array of role logical name, users array of user logical name
      * @return void
      */
     protected function analyzeGroupUserAndRole($group)
     {
-        $currentGroup = new_doc(self::$dbaccess, $group["name"]);
-        /* @var $currentGroup \_IGROUP */
+        $currentGroup = SEManager::getDocument($group["name"]);
+        /* @var \SmartStructure\IGROUP $currentGroup */
         $currentRoles = $currentGroup->getAccount()->getAllRoles();
         $currentRoles = array_map(function ($role) {
             return $role["login"];
         }, $currentRoles);
         $this->assertEmpty(array_diff($group["roles"], $currentRoles), sprintf("Group %s have not all needed roles (%s instead of %s)",
-                            $group["name"], var_export($currentRoles, true), var_export($group["roles"], true)));
-        $this->assertEmpty(array_diff($currentRoles, $group["roles"]), sprintf("Group %s have more than all needed roles (%s instead of %s)",
-                            $group["name"], var_export($currentRoles, true), var_export($group["roles"], true)));
+            $group["name"], var_export($currentRoles, true), var_export($group["roles"], true)));
+        $this->assertEmpty(
+            array_diff($currentRoles, $group["roles"]),
+            sprintf(
+                "Group %s have more than all needed roles (%s instead of %s)",
+                $group["name"],
+                var_export($currentRoles, true),
+                var_export($group["roles"], true)
+            )
+        );
         $usersName = $group["users"];
-        /* @var $userDoc \_IUSER */
+        /* @var \SmartStructure\IUSER $userDoc */
         foreach ($usersName as $userName) {
-            $userDoc = new_doc(self::$dbaccess, $userName);
+            $userDoc = SEManager::getDocument($userName);
             $groups = $userDoc->getAllUserGroups();
             $this->assertTrue(in_array($currentGroup->getPropertyValue("id"), $groups), "User $userName should be in {$group['name']}");
         }

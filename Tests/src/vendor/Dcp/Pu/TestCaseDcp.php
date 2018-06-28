@@ -109,9 +109,6 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
     }
 
 
-
-
-
     /**
      * return a single value from DB
      *
@@ -193,7 +190,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         $oImport->setCsvOptions(static::$importCsvSeparator, static::$importCsvEnclosure);
 
         $oImport->setVerifyAttributeAccess(false);
-        $cr = $oImport->importDocuments( $realfile);
+        $cr = $oImport->importDocuments($realfile);
         $err = $oImport->getErrorMessage();
         if ($err) {
             throw new \Dcp\Exception($err);

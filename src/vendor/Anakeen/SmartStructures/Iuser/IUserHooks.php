@@ -730,7 +730,7 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
      */
     public function deactivateAccount()
     {
-        if ($this->canEdit() != '' || !!RouterAccess::hasPermission("core:admin")) {
+        if ($this->canEdit() != '' || !RouterAccess::hasPermission("core:admin")) {
             return ___("Access not granted to deactivate account", "smart iuser");
         }
         // The 'admin' account cannot be deactivated

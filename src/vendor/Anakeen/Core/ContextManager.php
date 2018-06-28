@@ -199,7 +199,7 @@ class ContextManager
         mb_internal_encoding('UTF-8');
         self::$language = $lang;
 
-        // Load globa function ___
+        // Load global function ___
         return Gettext::___("");
     }
 

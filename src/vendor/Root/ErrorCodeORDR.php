@@ -29,7 +29,7 @@ class ErrorCodeORDR
      * @errorCode
      * must have create privilege to import thid kind of document
      */
-    const ORDR0004 = 'insufficient privileges to import ORDER of "%s" family ';
+    const ORDR0004 = 'insufficient privileges for "%s" to import ORDER of "%s" family ';
     /**
      * @errorCode
      * the ORDER cannot be imported because family is not completed

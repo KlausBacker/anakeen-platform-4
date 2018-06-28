@@ -22,7 +22,7 @@ class TestGetDocAnchor extends TestCaseDcpCommonFamily
     }
 
     /**
-     * @dataProvider data_getDocAnchorMail
+     * @dataProvider dataGetDocAnchorMail
      *
      * @param $data
      *
@@ -45,7 +45,7 @@ class TestGetDocAnchor extends TestCaseDcpCommonFamily
         $this->assertTrue($href == $data['expected_href'], sprintf("Unexpected href '%s' (expecting '%s') in anchor '%s'.", $href, $data['expected_href'], $anchor));
     }
 
-    public function data_getDocAnchorMail()
+    public function dataGetDocAnchorMail()
     {
         return array(
             array(

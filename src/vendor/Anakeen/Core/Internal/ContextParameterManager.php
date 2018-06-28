@@ -42,6 +42,7 @@ class ContextParameterManager
             if ($err) {
                 throw new Exception(sprintf("Cannot modify context parameter %s : %s", $name, $err));
             }
+            self::$cache[$name]=$val;
         } else {
             throw new Exception(sprintf("Unknow context parameter %s", $name));
         }
