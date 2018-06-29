@@ -30,7 +30,7 @@ class WSHMailError
     {
         $this->expand = array(
             'h' => php_uname('n'),
-            'c' => ContextManager::getParameterValue('CORE_CLIENT')
+            'c' => ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'CORE_CLIENT')
         );
         $this->msg = $msg;
         $this->from = '';
@@ -79,20 +79,20 @@ class WSHMailError
         $user = \Anakeen\Core\ContextManager::getCurrentUser();
         $from = (!empty($user) ? getMailAddr($user->id) : '');
         if ($from == '') {
-            $from = ContextManager::getParameterValue('SMTP_FROM');
+            $from = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'SMTP_FROM');
         }
         if ($from == '') {
             $from = (!empty($user) ? $user->login : 'no-reply') . '@' . php_uname('n');
         }
         $this->from = $from;
 
-        $mailto = trim(ContextManager::getParameterValue('CORE_WSH_MAILTO'));
+        $mailto = trim(ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'CORE_WSH_MAILTO'));
         if ($mailto == '') {
             return '';
         }
         $this->mailto = $mailto;
 
-        $subject = ContextManager::getParameterValue('CORE_WSH_MAILSUBJECT');
+        $subject = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'CORE_WSH_MAILSUBJECT');
         if ($subject == '') {
             $subject = 'Script error';
         }

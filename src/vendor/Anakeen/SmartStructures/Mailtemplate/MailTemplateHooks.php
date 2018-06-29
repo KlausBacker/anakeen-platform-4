@@ -261,12 +261,12 @@ class MailTemplateHooks extends \Anakeen\SmartElement
 
                 case 'P':
                     $aid = strtok($v["tmail_recip"], " ");
-                    if (!\Anakeen\Core\ContextManager::getParameterValue($aid)) {
+                    if (!\Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $aid)) {
                         LogManager::error(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                         $doc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                         throw new \Dcp\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                     }
-                    $mail = \Anakeen\Core\ContextManager::getParameterValue($aid);
+                    $mail = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $aid);
                     break;
 
                 case 'RD':
@@ -331,7 +331,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
             $from = getMailAddr($action->user->id, true);
         }
         if ($from == "") {
-            $from = \Anakeen\Core\ContextManager::getParameterValue('SMTP_FROM');
+            $from = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'SMTP_FROM');
         }
         if ($from == "") {
             $from = $action->user->login . '@' . (isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "");
@@ -344,7 +344,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                 return null;
             }
         } //nobody to send data
-        if ($this->sendercopy && \Anakeen\Core\ContextManager::getParameterValue("FDL_BCC") == "yes") {
+        if ($this->sendercopy && \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "FDL_BCC") == "yes") {
             $umail = getMailAddr(ContextManager::getCurrentUser(true)->id);
             if ($umail != "") {
                 $bcc .= (trim($bcc) == "" ? "" : ",") . $umail;
@@ -442,7 +442,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
         }
 
         if (self::NOTIFY_SENDMAIL_AUTO === $this->notifySendMail) {
-            $notifySendMail = ContextManager::getParameterValue('CORE_NOTIFY_SENDMAIL');
+            $notifySendMail = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'CORE_NOTIFY_SENDMAIL');
             if (is_null($notifySendMail)) {
                 $notifySendMail = self::NOTIFY_SENDMAIL_ALWAYS;
             }
@@ -573,7 +573,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
             foreach (array(
                          'CORE_URLINDEX'
                      ) as $url) {
-                $url = \Anakeen\Core\ContextManager::getParameterValue($url);
+                $url = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $url);
                 if (strlen($url) <= 0) {
                     continue;
                 }

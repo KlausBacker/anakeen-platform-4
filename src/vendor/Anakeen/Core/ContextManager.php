@@ -41,7 +41,7 @@ class ContextManager
     public static function getLocaleConfig($core_lang = '')
     {
         if (empty($core_lang)) {
-            $core_lang = self::getParameterValue("CORE_LANG", "fr_FR");
+            $core_lang = self::getParameterValue(Settings::NsSde, "CORE_LANG", "fr_FR");
         }
         $lng = substr($core_lang, 0, 2);
         if (preg_match('#^[a-z0-9_\.-]+$#i', $core_lang)
@@ -92,7 +92,7 @@ class ContextManager
         self::$coreUser =& $account;
         GlobalParametersManager::initialize();
 
-        self::setLanguage(self::getParameterValue("CORE_LANG", "fr_FR"));
+        self::setLanguage(self::getParameterValue(Settings::NsSde, "CORE_LANG", "fr_FR"));
     }
 
 
@@ -348,7 +348,7 @@ class ContextManager
         if (isset($tmp) && !empty($tmp)) {
             return $tmp;
         }
-        $tmp = \Anakeen\Core\ContextManager::getParameterValue('CORE_TMPDIR', $def);
+        $tmp = self::getParameterValue(\Anakeen\Core\Settings::NsSde, 'CORE_TMPDIR', $def);
         if (empty($tmp)) {
             if (empty($def)) {
                 $tmp = './var/tmp';

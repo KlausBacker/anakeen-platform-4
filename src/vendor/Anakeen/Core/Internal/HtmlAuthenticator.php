@@ -176,7 +176,7 @@ class HtmlAuthenticator extends Authenticator
                 header('Location: ' . $this->getAuthUrl());
                 return true;
             }
-            $redir_uri = \Anakeen\Core\ContextManager::getParameterValue("CORE_BASEURL");
+            $redir_uri = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_BASEURL");
         }
         header('Location: ' . $redir_uri);
         return true;

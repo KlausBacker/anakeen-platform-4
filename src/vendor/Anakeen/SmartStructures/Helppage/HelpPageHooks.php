@@ -45,7 +45,7 @@ class HelpPageHooks extends \Anakeen\SmartElement
      */
     protected function getUserLang()
     {
-        return ContextManager::getParameterValue("CORE_LANG");
+        return ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG");
     }
 
     /**

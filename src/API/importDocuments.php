@@ -177,7 +177,7 @@ if ($to) {
 
     $from = getMailAddr(ContextManager::getCurrentUser()->id);
     if ($from == "") {
-        $from = \Anakeen\Core\ContextManager::getParameterValue('SMTP_FROM');
+        $from = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'SMTP_FROM');
     }
     if ($from == "") {
         $from = ContextManager::getCurrentUser()->login . '@' . php_uname('n');

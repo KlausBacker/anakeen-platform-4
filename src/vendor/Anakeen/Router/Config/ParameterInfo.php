@@ -37,6 +37,7 @@ class ParameterInfo
         $pdef = new \Anakeen\Core\Internal\ParamDef("", $this->name);
 
         $updateMode = ($pdef->isAffected());
+        $pdef->name = $this->name;
         $pdef->descr = $this->description;
         $pdef->domain = $this->domain;
         $pdef->category = $this->category;
@@ -52,6 +53,7 @@ class ParameterInfo
         if ($err) {
             throw new \Dcp\Exception($err);
         }
+
         $pval = new  Param();
         if ($updateMode) {
             // don't modify previous parameters configuration

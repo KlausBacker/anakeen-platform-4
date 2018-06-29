@@ -128,7 +128,7 @@ class DbObj
         }
         $this->selectstring = substr($this->selectstring, 0, strlen($this->selectstring) - 1);
         if (self::$sqlStrict === null) {
-            self::$sqlStrict = (\Anakeen\Core\ContextManager::getParameterValue('CORE_SQLSTRICT') != 'no');
+            self::$sqlStrict = (\Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'CORE_SQLSTRICT') != 'no');
         }
         // select with the id
         if (($id != '') || (is_array($id)) || (!isset($this->id_fields[0]))) {

@@ -9,7 +9,7 @@ $usage->setDefinitionText("apply given style - if no style is set then update cu
 $styFilePath = $usage->addOptionalParameter("style", "path to style file");
 
 if (!$styFilePath) {
-    $defautStyle = \Anakeen\Core\ContextManager::getParameterValue("STYLE");
+    $defautStyle = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "STYLE");
     $styFilePath = sprintf("STYLE/%s/%s.sty", $defautStyle, $defautStyle);
 }
 $verbose = ('yes' === $usage->addOptionalParameter('verbose', 'verbose', array(
@@ -229,7 +229,7 @@ class styleManager
         $this->logIndent += 1;
         foreach ($styleConfig['sty_const'] as $paramName => $paramValue) {
             // if value is a reference to another parameter
-            $dynamicParamValue = \Anakeen\Core\ContextManager::getParameterValue($paramValue);
+            $dynamicParamValue = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $paramValue);
             if (!empty($dynamicParamValue)) {
                 $this->log("dynamic value " . var_export($dynamicParamValue, true) . " set for $paramName ($paramValue)");
                 $paramValue = $dynamicParamValue;
@@ -245,7 +245,7 @@ class styleManager
         $this->logIndent += 1;
         foreach ($styleConfig['sty_local'] as $paramName => $paramValue) {
             // if value is a reference to another parameter
-            $dynamicParamValue = \Anakeen\Core\ContextManager::getParameterValue($paramValue);
+            $dynamicParamValue = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $paramValue);
             if (!empty($dynamicParamValue)) {
                 $this->log("dynamic value " . var_export($dynamicParamValue, true) . " used for $paramName ($paramValue)");
                 $paramValue = $dynamicParamValue;

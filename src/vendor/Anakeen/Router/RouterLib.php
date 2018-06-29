@@ -117,7 +117,9 @@ class RouterLib
                             }
                             /** @noinspection PhpUndefinedFieldInspection */
                             foreach ($tagValue->access as $accessValue) {
-                                $rawData[$key][$tagName][$operator][] = (string)$accessValue;
+                                $nsa=(string)$accessValue->attributes()->ns;
+                                $aclValue=$nsa."::".(string)$accessValue;
+                                $rawData[$key][$tagName][$operator][] = $aclValue;
                             }
                         } else {
                             $rawData[$key][$tagName] = (string)$tagValue;

@@ -18,4 +18,4 @@ $parname = $usage->addOptionalParameter("param", "Parameter name");
 
 $usage->verify();
 
-print \Anakeen\Core\ContextManager::getParameterValue($parname) . "\n";
+print \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $parname) . "\n";

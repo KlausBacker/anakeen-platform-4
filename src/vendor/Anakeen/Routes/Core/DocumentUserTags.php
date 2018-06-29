@@ -197,7 +197,7 @@ class DocumentUserTags
         $id = SEManager::getIdentifier($id, true);
         $sql = sprintf("select id, date, comment from docutag where id = %d order by date desc limit 1", $id);
         DbManager::query($sql, $result, false, true);
-        $result[] = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
+        $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         return join("", $result);
     }
 }

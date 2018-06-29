@@ -261,7 +261,7 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
     protected function updateExpireDate()
     {
         $err = "";
-        $ed = floatval(ContextManager::getParameterValue("AUTHENT_ACCOUNTEXPIREDELAY"));
+        $ed = floatval(ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "AUTHENT_ACCOUNTEXPIREDELAY"));
         if ($ed > 0) {
             $expdate = time() + ($ed * 24 * 3600);
             $err = $this->SetValue("us_accexpiredate", strftime("%Y-%m-%d 00:00:00", $expdate));
@@ -477,11 +477,11 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
 
     public function testForcePassword($pwd)
     {
-        $minLength = intval(ContextManager::getParameterValue("AUTHENT_PWDMINLENGTH"));
-        $minDigitLength = intval(ContextManager::getParameterValue("AUTHENT_PWDMINDIGITLENGTH"));
-        $minUpperLength = intval(ContextManager::getParameterValue("AUTHENT_PWDMINUPPERALPHALENGTH"));
-        $minLowerLength = intval(ContextManager::getParameterValue("AUTHENT_PWDMINLOWERALPHALENGTH"));
-        $minSymbolLength = intval(ContextManager::getParameterValue("AUTHENT_PWDMINSYMBOLLENGTH"));
+        $minLength = intval(ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "AUTHENT_PWDMINLENGTH"));
+        $minDigitLength = intval(ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "AUTHENT_PWDMINDIGITLENGTH"));
+        $minUpperLength = intval(ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "AUTHENT_PWDMINUPPERALPHALENGTH"));
+        $minLowerLength = intval(ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "AUTHENT_PWDMINLOWERALPHALENGTH"));
+        $minSymbolLength = intval(ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "AUTHENT_PWDMINSYMBOLLENGTH"));
 
         if (preg_match('/[\p{C}]/u', $pwd)) {
             return ___("Control characters are not allowed", "smart iuser");
@@ -702,7 +702,7 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
      */
     public function activateAccount()
     {
-        if ($this->canEdit() != '' || !RouterAccess::hasPermission("core:admin")) {
+        if ($this->canEdit() != '' || !RouterAccess::hasPermission("Core::Admin")) {
             return ___("Access not granted to activate account", "smart iuser");
         }
         // The 'admin' account cannot be deactivated
@@ -730,7 +730,7 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
      */
     public function deactivateAccount()
     {
-        if ($this->canEdit() != '' || !RouterAccess::hasPermission("core:admin")) {
+        if ($this->canEdit() != '' || !RouterAccess::hasPermission("Core::Admin")) {
             return ___("Access not granted to deactivate account", "smart iuser");
         }
         // The 'admin' account cannot be deactivated

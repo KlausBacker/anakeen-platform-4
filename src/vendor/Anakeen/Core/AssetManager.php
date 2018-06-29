@@ -8,7 +8,7 @@ class AssetManager
 {
     public static function getAssetLink($file)
     {
-        $wversion = ContextManager::getParameterValue("WVERSION");
+        $wversion = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         if (!is_file($file)) {
             throw new \Dcp\Exception("Asset File $file not found");
         }

@@ -72,7 +72,7 @@ class LogManager
         static $pLogLevel = null;
 
         if ($pLogLevel === null) {
-            $pLogLevel = ContextManager::getParameterValue("CORE_LOGLEVEL");
+            $pLogLevel = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LOGLEVEL");
         }
         switch ($pLogLevel) {
             case "ERROR":

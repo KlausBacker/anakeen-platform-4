@@ -13,6 +13,8 @@
  */
 class CheckAccess extends CheckData
 {
+    // @var string Namespace
+    protected $ns;
 
     /**
      * user identifier
@@ -38,6 +40,7 @@ class CheckAccess extends CheckData
     public function check(array $data, &$extra = null)
     {
         $this->userId = $data[1];
+        $this->ns = $data[2];
 
         for ($i = 3; $i < count($data); $i++) {
             if (!empty($data[$i])) {
@@ -85,8 +88,9 @@ class CheckAccess extends CheckData
         $oAcl = new Acl();
         foreach ($this->acls as $acl) {
             if ($this->checkSyntax($acl)) {
-                if (!$oAcl->set($acl)) {
-                    $this->addError(ErrorCode::getError('ACCS0002', $acl));
+                $aclKey=$this->ns.'::'.$acl;
+                if (!$oAcl->set($aclKey)) {
+                    $this->addError(ErrorCode::getError('ACCS0002', $aclKey));
                 }
             } else {
                 $this->addError(ErrorCode::getError('ACCS0004', $acl));

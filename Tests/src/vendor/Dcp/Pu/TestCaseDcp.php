@@ -305,7 +305,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     public function requiresCoreParamEquals($paramName, $requiredValue, $markTestIncomplete = true)
     {
-        $value = ContextManager::getParameterValue($paramName, '');
+        $value = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $paramName, '');
         if ($value === $requiredValue) {
             return true;
         }

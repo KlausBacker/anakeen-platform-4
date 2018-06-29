@@ -237,8 +237,8 @@ class DocumentHistory
         $result[] = $user->id;
         $result[] = $user->memberof;
         // Necessary for localized state label
-        $result[] = \Anakeen\Core\ContextManager::getParameterValue("CORE_LANG");
-        $result[] = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
+        $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG");
+        $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         return join("", $result);
     }
 

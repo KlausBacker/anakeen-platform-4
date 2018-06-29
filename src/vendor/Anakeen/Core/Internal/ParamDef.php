@@ -23,17 +23,16 @@ class ParamDef extends DbObj
     public $category;
     public $kind;
 
-    public $id_fields
-        = array(
-            "name"
-        );
+    public $id_fields = array(
+        "name"
+    );
 
     public $dbtable = "paramdef";
 
     public $sqlcreate
         = '
       create table paramdef (
-              name    text,
+              name    text not null,
               isuser   varchar(1),
               domain text,
               category text,
@@ -45,7 +44,7 @@ class ParamDef extends DbObj
     /**
      * get Param def object from name
      *
-     * @param string $name  parameter name
+     * @param string $name parameter name
      *
      * @return \Anakeen\Core\Internal\ParamDef
      */

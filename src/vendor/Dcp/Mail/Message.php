@@ -350,19 +350,19 @@ class Message
         $mail->Timeout = 10;
         $mail->setLanguage($lcConfig['locale']);
         $mail->isSMTP();
-        $host = \Anakeen\Core\ContextManager::getParameterValue('SMTP_HOST', 'localhost');
-        $port = \Anakeen\Core\ContextManager::getParameterValue('SMTP_PORT', 25);
+        $host = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'SMTP_HOST', 'localhost');
+        $port = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'SMTP_PORT', 25);
         $mail->Host = $host;
         $mail->Port = $port;
-        $login = \Anakeen\Core\ContextManager::getParameterValue('SMTP_LOGIN');
+        $login = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'SMTP_LOGIN');
         if ($login) {
             $mail->SMTPAuth = true;
-            $password = \Anakeen\Core\ContextManager::getParameterValue('SMTP_PASSWORD');
+            $password = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'SMTP_PASSWORD');
             $mail->Username = $login;
             $mail->Password = $password;
         }
         if (!isset($this->sender)) {
-            $sender = \Anakeen\Core\ContextManager::getParameterValue('SMTP_SENDER', '');
+            $sender = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'SMTP_SENDER', '');
             if ($sender !== '') {
                 $parsedMail = $this->stringToAddress($sender);
                 if (count($parsedMail) > 0) {
@@ -408,7 +408,7 @@ class Message
             $mail->addBCC($to->address, $to->name);
         }
         $mail->CharSet = "UTF-8";
-        $mail->XMailer = sprintf("Anakeen Platform %s", ContextManager::getParameterValue( 'VERSION'));
+        $mail->XMailer = sprintf("Anakeen Platform %s", ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde,  'VERSION'));
         $mail->MessageID = '<' . strftime("%Y%M%d%H%M%S-", time()) . rand(1, 65535) . "@%s>";
         $mail->MessageID = sprintf('<%s%s@%s>', strftime("%Y%M%d%H%M%S-", time()), rand(1, 65535), $host);
         $mail->Subject = $this->subject;

@@ -1600,6 +1600,7 @@ class ImportDocumentDescription
             $tdoc = \Anakeen\Core\SEManager::getRawData($pid, ["us_whatid"]);
             $wid = $tdoc["us_whatid"];
         }
+        $ns=$data[2];
 
         $this->tcr[$this->nLine]["msg"] = "user #$wid";
         array_shift($data);
@@ -1629,6 +1630,9 @@ class ImportDocumentDescription
                 } else {
                     $aclneg = false;
                 }
+                // Add namespace
+                $v=$ns.'::'.$v;
+
                 if (isset($tacl[$v])) {
                     $p->id_acl = $tacl[$v];
                     if ($aclneg) {

@@ -2925,7 +2925,7 @@ create unique index i_docir on doc(initid, revision);";
             return "";
         }
         $err = '';
-        if (ContextManager::getParameterValue("TE_ACTIVATE") == "yes"
+        if (ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "TE_ACTIVATE") == "yes"
             && \Anakeen\Core\Internal\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             if (preg_match(PREGEXPFILE, $va, $reg)) {
                 $vidin = $reg[2];
@@ -6538,15 +6538,15 @@ create unique index i_docir on doc(initid, revision);";
                             // special link
                             switch ($link[$i]) {
                                 case "B": // baseurl
-                                    $urllink .= ContextManager::getParameterValue("CORE_BASEURL", "?");
+                                    $urllink .= ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_BASEURL", "?");
                                     break;
 
                                 case "S": // standurl
-                                    $urllink .= ContextManager::getParameterValue("CORE_STANDURL", "?");
+                                    $urllink .= ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_STANDURL", "?");
                                     break;
 
                                 case "U": // extern url
-                                    $urllink .= ContextManager::getParameterValue("CORE_EXTERNURL");
+                                    $urllink .= ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_EXTERNURL");
                                     break;
 
                                 case "I": // id
@@ -6621,7 +6621,7 @@ create unique index i_docir on doc(initid, revision);";
                         $i++;
                     }
                     //	  print "attr=$sattrid";
-                    $ovalue = ContextManager::getParameterValue($sattrid);
+                    $ovalue = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $sattrid);
                     $urllink .= rawurlencode($ovalue);
 
                     break;
@@ -6804,7 +6804,7 @@ create unique index i_docir on doc(initid, revision);";
                 switch ($target) {
                     case "mail":
                         $js = false;
-                        $mUrl = ContextManager::getParameterValue("CORE_MAILACTIONURL");
+                        $mUrl = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_MAILACTIONURL");
                         if (strstr($mUrl, '%')) {
                             if ($this->id != $id) {
                                 $mDoc = SEManager::getDocument($id);
@@ -6814,7 +6814,7 @@ create unique index i_docir on doc(initid, revision);";
                             $ul = htmlspecialchars($mDoc->urlWhatEncode($mUrl));
                             $specialUl = true;
                         } else {
-                            $ul = htmlspecialchars(ContextManager::getParameterValue("CORE_MAILACTIONURL"));
+                            $ul = htmlspecialchars(ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_MAILACTIONURL"));
                             $ul .= "&amp;id=$id";
                         }
                         break;
@@ -7254,7 +7254,7 @@ create unique index i_docir on doc(initid, revision);";
             }
             if (!empty($v["using"])) {
                 if ($v["using"][0] == "@") {
-                    $v["using"] = ContextManager::getParameterValue(substr($v["using"], 1));
+                    $v["using"] = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, substr($v["using"], 1));
                 }
                 $t[] = sprintf("CREATE $unique INDEX %s$id on  doc$id using %s(%s);\n", $k, $v["using"], $v["on"]);
             } else {
@@ -8660,7 +8660,7 @@ create unique index i_docir on doc(initid, revision);";
             $attrType = $pType['type'];
         }
 
-        $collator = new \Collator(ContextManager::getParameterValue('CORE_LANG', 'fr_FR'));
+        $collator = new \Collator(ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'CORE_LANG', 'fr_FR'));
 
         $compatibleMethods = array();
 
@@ -8883,7 +8883,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($oneAttributeAtLeast) {
             $datesValues = array_unique($datesValues);
             if ($withLocale) {
-                $currentLocale = ContextManager::getParameterValue("CORE_LANG", "fr_FR");
+                $currentLocale = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG", "fr_FR");
                 $lang = ContextManager::getLocales();
 
                 $locales = array_keys($lang);

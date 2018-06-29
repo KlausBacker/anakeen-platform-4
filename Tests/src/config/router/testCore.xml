@@ -16,7 +16,7 @@
             <sde:pattern>/tests/routes/securit/</sde:pattern>
             <sde:description>Route config</sde:description>
             <sde:requiredAccess>
-                <sde:access ns="CoreTest">coretest:user</sde:access>
+                <sde:access ns="CoreTest">User</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="RouteVerySecurit">
@@ -26,8 +26,8 @@
             <sde:pattern>/tests/routes/userguest/</sde:pattern>
             <sde:description>Route config</sde:description>
             <sde:requiredAccess>
-                <sde:access ns="CoreTest">coretest:user</sde:access>
-                <sde:access ns="CoreTest">coretest:guest</sde:access>
+                <sde:access ns="CoreTest">User</sde:access>
+                <sde:access ns="CoreTest">Guest</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="RouteForAll">
@@ -37,9 +37,9 @@
             <sde:pattern>/tests/routes/forall/</sde:pattern>
             <sde:description>Route config</sde:description>
             <sde:requiredAccess operator="or">
-                <sde:access ns="CoreTest">coretest:user</sde:access>
-                <sde:access ns="CoreTest">coretest:guest</sde:access>
-                <sde:access ns="CoreTest">core:admin</sde:access>
+                <sde:access ns="CoreTest">User</sde:access>
+                <sde:access ns="CoreTest">Guest</sde:access>
+                <sde:access ns="Core">Admin</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="Routes:Over1">
@@ -65,21 +65,21 @@
             <sde:pattern>/tests/routes/global/</sde:pattern>
             <sde:description>Route config</sde:description>
             <sde:requiredAccess>
-                <sde:access ns="CoreTest">coretest:global</sde:access>
+                <sde:access ns="CoreTest">Global</sde:access>
             </sde:requiredAccess>
         </sde:route>
     </sde:routes>
     <sde:accesses namespace="CoreTest">
-        <sde:access name="user">
+        <sde:access name="User">
             <sde:description>Normal Access</sde:description>
         </sde:access>
-        <sde:access name="admin">
+        <sde:access name="Admin">
             <sde:description>Administrator Access</sde:description>
         </sde:access>
-        <sde:access name="guest">
+        <sde:access name="Guest">
             <sde:description>Guest Access</sde:description>
         </sde:access>
-        <sde:access name="global">
+        <sde:access name="Global">
             <sde:description>Global Access</sde:description>
         </sde:access>
     </sde:accesses>
