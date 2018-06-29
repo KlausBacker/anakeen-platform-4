@@ -36,7 +36,7 @@
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_USERS_INIT_DATA.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA4.csv"/>
-        <process command="./ank.php --route=Ui:Admin:LoadParameters"/>
+        <process command="./ank.php --route=Ui::Admin:LoadParameters"/>
         <process command="./ank.php --system --localeGen"/>
     </post-install>
     <post-upgrade>
@@ -69,7 +69,7 @@
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_USERS_INIT_DATA.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA4.csv"/>
-        <process command="./ank.php --route=Ui:Admin:LoadParameters"/>
+        <process command="./ank.php --route=Ui::Admin:LoadParameters"/>
         <process command="./ank.php --system --localeGen"/>
     </post-upgrade>
 </module>

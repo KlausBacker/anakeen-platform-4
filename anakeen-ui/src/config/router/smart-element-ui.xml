@@ -1,26 +1,19 @@
 <?xml version="1.0"?>
 <sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
-    <sde:apps>
-        <sde:app name="SMARTELEMENT_UI">
-            <sde:version>1.0.0</sde:version>
-            <sde:shortName>Smart Element Ui</sde:shortName>
-        </sde:app>
-    </sde:apps>
-    <sde:routes>
-        <sde:route name="Ui:Admin:LoadParameters">
+    <sde:routes namespace="Ui">
+        <sde:route name="Admin:LoadParameters">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Admin\LoadParameters</sde:callable>
             <sde:method>POST</sde:method>
             <sde:pattern>/api/v2/admin/ui/loadparameters/</sde:pattern>
             <sde:description>Reload</sde:description>
-            <sde:applicationContext>SMARTELEMENT_UI</sde:applicationContext>
             <sde:requiredAccess operator="or">
-                <sde:access>Ui:Admin</sde:access>
-                <sde:access>core:admin</sde:access>
+                <sde:access ns="Ui">Admin</sde:access>
+                <sde:access ns="Core">Admin</sde:access>
             </sde:requiredAccess>
             <sde:authenticated>true</sde:authenticated>
         </sde:route>
-        <sde:route name="Ui:i18n">
+        <sde:route name="i18n">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\I18nCatalog</sde:callable>
             <sde:method>GET</sde:method>
@@ -28,7 +21,7 @@
             <sde:description>Get translation catalog</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="Ui:Document:View">
+        <sde:route name="Document:View">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\DocumentView</sde:callable>
             <sde:method>GET</sde:method>
@@ -36,7 +29,7 @@
             <sde:description>Get render view data</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="Ui:Document:Views">
+        <sde:route name="Document:Views">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\DocumentViewCollection</sde:callable>
             <sde:method>GET</sde:method>
@@ -44,7 +37,7 @@
             <sde:description>Get render view list</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="Ui:Document:CreationView">
+        <sde:route name="Document:CreationView">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\CreationView</sde:callable>
             <sde:method>POST</sde:method>
@@ -52,7 +45,7 @@
             <sde:description>Get render view data</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="Ui:Revision:ViewUpdate">
+        <sde:route name="Revision:ViewUpdate">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\DocumentViewUpdate</sde:callable>
             <sde:method>PUT</sde:method>
@@ -60,7 +53,7 @@
             <sde:description>Modify document data</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="Ui:Document:Delete">
+        <sde:route name="Document:Delete">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\DocumentViewDelete</sde:callable>
             <sde:method>DELETE</sde:method>
@@ -68,7 +61,7 @@
             <sde:description>Delete document data</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="Ui:Revision:View">
+        <sde:route name="Revision:View">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\DocumentView</sde:callable>
             <sde:method>GET</sde:method>
@@ -76,7 +69,7 @@
             <sde:description>Get render view data</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="Ui:Transition:View">
+        <sde:route name="Transition:View">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\TransitionView</sde:callable>
             <sde:method>GET</sde:method>
@@ -84,7 +77,7 @@
             <sde:description>Document Workflow Transition View</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="Ui:Transition:Set">
+        <sde:route name="Transition:Set">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\TransitionSet</sde:callable>
             <sde:method>POST</sde:method>
@@ -92,7 +85,7 @@
             <sde:description>Change state for a document</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="Ui:Family:Structure">
+        <sde:route name="Family:Structure">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\FamilyStructure</sde:callable>
             <sde:method>GET</sde:method>
@@ -100,7 +93,7 @@
             <sde:description>Get attributes structure of family</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="Ui:Document:HtmlPage">
+        <sde:route name="Document:HtmlPage">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\DocumentHtml</sde:callable>
             <sde:method>GET</sde:method>
@@ -108,7 +101,7 @@
             <sde:description>Html page to view document</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="Ui:Revision:HtmlPage">
+        <sde:route name="Revision:HtmlPage">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\DocumentHtml</sde:callable>
             <sde:method>GET</sde:method>
@@ -116,7 +109,7 @@
             <sde:description>Html page to view revision</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="Ui:Document:HtmlViewPage">
+        <sde:route name="Document:HtmlViewPage">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\DocumentHtml</sde:callable>
             <sde:method>GET</sde:method>
@@ -124,7 +117,7 @@
             <sde:description>Html page to view document with specific view</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="Ui:Revision:HtmlViewPage">
+        <sde:route name="Revision:HtmlViewPage">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\DocumentHtml</sde:callable>
             <sde:method>GET</sde:method>
@@ -132,7 +125,7 @@
             <sde:description>Html page to view revision with specific view</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="Ui:Document:Lock">
+        <sde:route name="Document:Lock">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\LockView</sde:callable>
             <sde:method>DELETE</sde:method>
@@ -143,7 +136,7 @@
             <sde:description>Lock document</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="Ui:Document:AutoComplete">
+        <sde:route name="Document:AutoComplete">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\Autocomplete</sde:callable>
             <sde:method>POST</sde:method>
@@ -151,7 +144,7 @@
             <sde:description>Get Autocomplete suggestion for an attribute</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="Ui:Document:SubMenu">
+        <sde:route name="Document:SubMenu">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\SubMenu</sde:callable>
             <sde:method>GET</sde:method>
@@ -159,7 +152,7 @@
             <sde:description>Get submenu items</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="Ui:Document:CallMenu">
+        <sde:route name="Document:CallMenu">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\CallMenu</sde:callable>
             <sde:method>ANY</sde:method>
@@ -168,36 +161,31 @@
             <sde:requiredAccess/>
         </sde:route>
     </sde:routes>
-    <sde:accesses>
+    <sde:accesses namespace="Ui">
         <sde:access name="Ui:Admin">
-            <sde:applicationContext>SMARTELEMENT_UI</sde:applicationContext>
             <sde:description>Admin Access</sde:description>
         </sde:access>
     </sde:accesses>
-    <sde:parameters>
+    <sde:parameters namespace="Ui">
         <sde:parameter name="ACTIVATE_LOGGING">
-            <sde:value>TRUE</sde:value>
             <sde:description>Activate logging</sde:description>
+            <sde:value>TRUE</sde:value>
             <sde:type>enum(FALSE|TRUE)</sde:type>
-            <sde:applicationContext>SMARTELEMENT_UI</sde:applicationContext>
         </sde:parameter>
         <sde:parameter name="MODE_DEBUG">
-            <sde:value>FALSE</sde:value>
             <sde:description>Debug Mode</sde:description>
+            <sde:value>FALSE</sde:value>
             <sde:type>enum(FALSE|TRUE)</sde:type>
-            <sde:applicationContext>SMARTELEMENT_UI</sde:applicationContext>
         </sde:parameter>
         <sde:parameter name="RENDER_PARAMETERS">
-            <sde:value>{}</sde:value>
             <sde:description>Smart Element Render parameters</sde:description>
+            <sde:value>{}</sde:value>
             <sde:type>json</sde:type>
-            <sde:applicationContext>SMARTELEMENT_UI</sde:applicationContext>
         </sde:parameter>
         <sde:parameter name="NOTIFICATION_DELAY">
-            <sde:value>5000</sde:value>
             <sde:description>Delay notifications display (in ms)</sde:description>
+            <sde:value>5000</sde:value>
             <sde:type>number</sde:type>
-            <sde:applicationContext>SMARTELEMENT_UI</sde:applicationContext>
         </sde:parameter>
     </sde:parameters>
 </sde:config>

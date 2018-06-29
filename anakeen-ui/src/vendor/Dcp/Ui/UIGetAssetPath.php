@@ -32,7 +32,7 @@ class UIGetAssetPath
 
     public static function isInDebug() {
         if (self::$inDebug === null) {
-            $modeDebug = ContextManager::getParameterValue( "MODE_DEBUG");
+            $modeDebug = ContextManager::getParameterValue("Ui",  "MODE_DEBUG");
             self::$inDebug = $modeDebug !== "FALSE";
         }
         return self::$inDebug;
@@ -64,7 +64,7 @@ class UIGetAssetPath
 
     public static function getWs() {
         if (self::$ws === null) {
-            self::$ws = $version = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
+            self::$ws = $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         }
         return self::$ws;
     }

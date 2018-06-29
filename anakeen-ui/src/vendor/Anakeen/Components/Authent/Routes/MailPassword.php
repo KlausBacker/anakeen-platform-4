@@ -61,7 +61,7 @@ class MailPassword
             \Anakeen\Core\ContextManager::initContext($user, "CORE", "", \Anakeen\Core\Internal\AuthenticatorManager::$session);
 
             $userDocument = SEManager::getDocument($user->fid);
-            $mailTemplateId = \Anakeen\Core\ContextManager::getParameterValue("AUTHENT_MAILASKPWD");
+            $mailTemplateId = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "AUTHENT_MAILASKPWD");
             /**
              * @var \SmartStructure\Mailtemplate $mailTemplate
              */
@@ -84,7 +84,7 @@ class MailPassword
 
             $key["LINK_CHANGE_PASSWORD"] = sprintf(
                 "%s/login/?passkey=%s&uid=%s",
-                \Anakeen\Core\ContextManager::getParameterValue("CORE_EXTERNURL"),
+                \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_EXTERNURL"),
                 urlencode($tokenKey),
                 urlencode($user->login)
             );

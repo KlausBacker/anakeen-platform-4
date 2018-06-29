@@ -63,7 +63,7 @@ class DocidRenderConfigView extends \Dcp\Ui\DefaultView
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
 
-        $version = ContextManager::getParameterValue("WVERSION");
+        $version = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $jsRef= parent::getJsReferences(
             $document
         );

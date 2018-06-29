@@ -8,6 +8,7 @@ use Anakeen\Router\ApiV2Response;
 
 /**
  * Class Autocomplete
+ *
  * @note    Used by route : POST /api/v2/documents/{docid}/autocomplete/{attrid}
  * @package Anakeen\Routes\Ui
  */
@@ -17,9 +18,11 @@ class LoadParameters
 
     /**
      * Reset RENDER_PARAMETERS application parameters
+     *
      * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
      * @param                     $args
+     *
      * @return mixed
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
@@ -43,9 +46,7 @@ class LoadParameters
                 $rules = array_replace_recursive($rules, $currentRule);
             }
 
-            ContextManager::setParameterValue(
-                "RENDER_PARAMETERS",
-                json_encode($rules)
+            ContextManager::setParameterValue("Ui", "RENDER_PARAMETERS", json_encode($rules)
             );
         } else {
             throw new Exception(sprintf("No found directory : %s", $directory));

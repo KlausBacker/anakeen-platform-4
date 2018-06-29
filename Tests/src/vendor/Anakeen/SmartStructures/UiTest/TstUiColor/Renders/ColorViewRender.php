@@ -13,7 +13,7 @@ class ColorViewRender extends \Dcp\Ui\DefaultView
 
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-        $version = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
+        $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $css = parent::getCssReferences($document);
         $css["tstColor"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_color/color.css?ws=" . $version;
         return $css;
@@ -21,7 +21,7 @@ class ColorViewRender extends \Dcp\Ui\DefaultView
 
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-        $version = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
+        $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $js = parent::getJsReferences($document);
         $js["tstColor"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_color/color.js?ws=" . $version;
         return $js;

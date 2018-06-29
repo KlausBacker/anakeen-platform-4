@@ -7,7 +7,9 @@
             <sde:method>GET</sde:method>
             <sde:pattern>/apps/uitest/</sde:pattern>
             <sde:description>Test Ui Page</sde:description>
-            <sde:requiredAccess>uitest:user</sde:requiredAccess>
+            <sde:requiredAccess>
+                <sde:access ns="Uitest">user</sde:access>
+            </sde:requiredAccess>
         </sde:route>
         <sde:route name="ExportData">
             <sde:priority>1</sde:priority>
@@ -15,9 +17,9 @@
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/uitest/data</sde:pattern>
             <sde:description>Test Ui Export Test Description</sde:description>
-            <sde:requiredAccess operator="and">
-                <sde:access ns="uitest">admin</sde:access>
-                <sde:access ns="uitest">user</sde:access>
+            <sde:requiredAccess>
+                <sde:access ns="Uitest">admin</sde:access>
+                <sde:access ns="Uitest">user</sde:access>
             </sde:requiredAccess>
         </sde:route>
     </sde:routes>

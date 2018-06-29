@@ -20,7 +20,7 @@ class MaskViewRender extends DefaultConfigViewRender
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $js = parent::getJsReferences();
-        $version = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
+        $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
 
 
         $js["dduiMask"] = 'uiAssets/Families/mask/prod/MaskView.js?ws='.$version;

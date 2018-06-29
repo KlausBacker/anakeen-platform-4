@@ -9,7 +9,7 @@ class setTemplate extends \Dcp\Ui\DefaultEdit
 
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-        $version = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
+        $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $cssReferences = parent::getCssReferences($document);
         $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/setTemplate.css?ws=" . $version;
         return $cssReferences;
@@ -17,7 +17,7 @@ class setTemplate extends \Dcp\Ui\DefaultEdit
 
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-        $version = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
+        $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $js = parent::getJsReferences();
         $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/setTemplate.js?ws=" . $version;
         return $js;

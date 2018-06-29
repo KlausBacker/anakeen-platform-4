@@ -18,7 +18,7 @@
         <process command="./ank.php  --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Iuser/Render/CVDOC__IUSER.csv"/>
         <process command="./ank.php  --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Group/Render/CVDOC__GROUP.csv"/>
         <process command="./ank.php --system --resetRouteConfig"/>
-        <process command="./ank.php --route=Ui:Admin:LoadParameters"/>
+        <process command="./ank.php --route=Ui::Admin:LoadParameters"/>
         <process command="programs/ui_setHtmlAuthentMode"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Components/Authent/AuthentMail.csv"/>
         <process command="./ank.php --script=migrationUpdateAccountUI"/>
@@ -33,7 +33,7 @@
         <process command="programs/ui_setHtmlAuthentMode"/>
         <process command="./ank.php --system --resetRouteConfig"/>
         <process command="./ank.php --system --resetRouteConfig"/>
-        <process command="./ank.php --route=Ui:Admin:LoadParameters"/>
+        <process command="./ank.php --route=Ui::Admin:LoadParameters"/>
         <process command="./ank.php --script=migrationUpdateAccountUI"/>
     </post-upgrade>
 

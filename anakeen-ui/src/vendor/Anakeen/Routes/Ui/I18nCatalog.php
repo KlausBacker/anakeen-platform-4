@@ -58,7 +58,7 @@ class I18nCatalog
     {
         if ($this->userLocale === null) {
 
-            $this->userLocale = ContextManager::getParameterValue( "CORE_LANG");
+            $this->userLocale = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde,  "CORE_LANG");
 
             if (empty($this->userLocale)) {
                 $this->userLocale = "fr_FR";
@@ -74,7 +74,7 @@ class I18nCatalog
      */
     public function getEtagInfo()
     {
-        $version = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
+        $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         return $version . " " . $this->getUserLocale();
     }
 }

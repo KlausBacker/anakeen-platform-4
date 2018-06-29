@@ -68,7 +68,7 @@ class DocumentHtml
             }
         }
 
-        $modeDebug = ContextManager::getParameterValue("MODE_DEBUG");
+        $modeDebug = ContextManager::getParameterValue("Ui", "MODE_DEBUG");
         if ($modeDebug !== "FALSE") {
             $templateFile = DEFAULT_PUBDIR . "/Apps/DOCUMENT/Layout/debug/document-view.mustache.html";
         } else {
@@ -76,7 +76,7 @@ class DocumentHtml
         }
         $data = new I18nTemplateContext();
         $data["BASEURL"] = self::getBaseUrl();
-        $data["NOTIFICATION_DELAY"] = ContextManager::getParameterValue( "NOTIFICATION_DELAY");
+        $data["NOTIFICATION_DELAY"] = ContextManager::getParameterValue("Ui",  "NOTIFICATION_DELAY");
         $data["notificationLabelMore"] = ___("See more ...", "ddui:notification");
         $data["notificationTitleMore"] = ___("Notification", "ddui:notification");
         $data["messages"] = "{}";
@@ -136,7 +136,7 @@ class DocumentHtml
 
         $render = new \Dcp\Ui\RenderDefault();
 
-        $version = ContextManager::getParameterValue( "WVERSION");
+        $version = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde,  "WVERSION");
 
         $data["ws"] = $version;
         $cssRefs = $render->getCssReferences();

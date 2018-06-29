@@ -49,7 +49,7 @@ class HelppageViewRender extends \Dcp\Ui\DefaultView
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $css = parent::getCssReferences();
-        $version = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
+        $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         //$css["dduiHelppage"] = "uiAssets/Families/helppage/helppage.css?ws=" . $version;
         return $css;
     }

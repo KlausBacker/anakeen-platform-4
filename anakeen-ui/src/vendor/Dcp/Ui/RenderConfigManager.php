@@ -186,7 +186,7 @@ class RenderConfigManager
     {
         static $renderParameters = null;
         if ($renderParameters === null) {
-            $renderParameters = ContextManager::getParameterValue( "RENDER_PARAMETERS");
+            $renderParameters = ContextManager::getParameterValue("Ui",  "RENDER_PARAMETERS");
             $renderParameters = json_decode($renderParameters, true);
         }
         if (isset($renderParameters["families"][$familyName][$key])) {

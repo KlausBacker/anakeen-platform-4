@@ -160,8 +160,8 @@ class Attributes
         if ($familyId) {
             $result[] = $familyId;
         }
-        $result[] = \Anakeen\Core\ContextManager::getParameterValue("CORE_LANG");
-        $result[] = \Anakeen\Core\ContextManager::getParameterValue("WVERSION");
+        $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG");
+        $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
 
         return implode(",", $result);
     }
