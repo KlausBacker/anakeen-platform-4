@@ -1,14 +1,9 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 namespace Dcp\Pu;
 
 use Anakeen\Script\ShellManager;
 
-//require_once 'PU_testcase_dcp.php';
 
 class TestHelpUsage extends TestCaseDcp
 {
@@ -30,9 +25,6 @@ class TestHelpUsage extends TestCaseDcp
     public function dataTextHelpUsage()
     {
         return array(
-            array(
-                "manageApplications"
-            ),
             array(
                 "manageContextCrontab"
             ),
@@ -70,7 +62,7 @@ class TestHelpUsage extends TestCaseDcp
                 "refreshjsversion"
             ),
             array(
-                "setApplicationParameter"
+                "setParameter"
             ),
             array(
                 "updateclass"

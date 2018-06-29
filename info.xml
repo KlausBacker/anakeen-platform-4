@@ -226,9 +226,7 @@
             <label lang="en">Initialize system database</label>
         </process>
 
-        <process command="programs/record_application CORE I">
-            <label lang="en">Record core application in database</label>
-        </process>
+
         <process command="programs/init_admin_passwd">
             <label lang="en">Initialize admin password</label>
         </process>
@@ -545,13 +543,9 @@
         <process command="programs/core_accessUpdate">
             <label lang="en">Resync dbaccess config</label>
         </process>
-        <process command="programs/pre_migration CORE">
-            <label lang="en">Migration first level</label>
-        </process>
+
         <process command="programs/app_post CORE U"/>
-        <process command="programs/record_application CORE U">
-            <label lang="en">Update core application in database</label>
-        </process>
+
 
 
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Base/base.struct.xml">
@@ -629,12 +623,6 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.struct.xml">
             <label>Add ROLE family</label>
         </process>
-
-
-        <process command="programs/post_migration CORE">
-            <label lang="en">Migration second level</label>
-        </process>
-
 
         <process command="./ank.php --system --localeGen"/>
     </post-upgrade>

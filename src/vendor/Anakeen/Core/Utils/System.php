@@ -3,6 +3,7 @@
 namespace Anakeen\Core\Utils;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\LogManager;
 
 class System
 {
@@ -25,15 +26,12 @@ class System
 
     /**
      * send a message to system log
-     *
+     * @deprecated use LogManager
      * @param string|string[] $msg message to log
      */
     public static function addLogMsg($msg)
     {
-        $action = ContextManager::getCurrentAction();
-        if ($action) {
-            $action->parent->addLogMsg($msg);
-        }
+        LogManager::notice($msg);
     }
     /**
      * record warning message to session
@@ -42,10 +40,7 @@ class System
      */
     public static function addWarningMsg($msg)
     {
-        $action = ContextManager::getCurrentAction();
-        if ($action) {
-            $action->parent->addWarningMsg($msg);
-        }
+        LogManager::warning($msg);
     }
 
     /**

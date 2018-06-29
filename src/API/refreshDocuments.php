@@ -1,20 +1,15 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * importation of documents
  *
- * @author Anakeen
- * @version $Id: freedom_import.php,v 1.9 2008/11/13 16:49:16 eric Exp $
- * @package FDL
+ * @author     Anakeen
+ * @version    $Id: freedom_import.php,v 1.9 2008/11/13 16:49:16 eric Exp $
+ * @package    FDL
  * @subpackage WSH
  */
-/**
- */
 
-global $action;
+use Anakeen\Core\ContextManager;
+
 // refreah for a classname
 // use this only if you have changed title attributes
 function color_failure($msg)
@@ -99,12 +94,12 @@ if ($statusFile === '') {
 
 $famtitle = "";
 if ($famId) {
-    $f = new_doc($dbaccess, $famId);
+    $f = \Anakeen\Core\SEManager::getFamily($famId);
     if (!$f->isAlive()) {
-        $action->exitError(sprintf("family %s not exists", $famId));
+        ContextManager::exitError(sprintf("family %s not exists", $famId));
     }
     if ($f->doctype != 'C') {
-        $action->exitError(sprintf("document %s not a family", $famId));
+        ContextManager::exitError(sprintf("document %s not a family", $famId));
     }
     $famId = $f->id;
     $famtitle = $f->getTitle();
@@ -120,7 +115,7 @@ if ($docid != '') {
         $docName = $docid;
         $docid = \Anakeen\Core\SEManager::getIdFromName($docName);
         if ($docid === false) {
-            $action->exitError(sprintf("document with name '%s' not found", $docName));
+            ContextManager::exitError(sprintf("document with name '%s' not found", $docName));
         }
     }
     $s->addFilter('id = %d', $docid);
@@ -134,7 +129,7 @@ if ($allrev) {
 if ($filter) {
     // verify validity and prevent hack
     if (@pg_prepare(\Anakeen\Core\DbManager::getDbId(), 'refreshDocument', sprintf("select id from doc%d where %s", $s->fromid, $filter)) == false) {
-        $action->exitError(sprintf("filter not valid :%s", pg_last_error()));
+        ContextManager::exitError(sprintf("filter not valid :%s", pg_last_error()));
     } else {
         $s->addFilter($filter);
     }
@@ -142,7 +137,7 @@ if ($filter) {
 $s->search();
 
 if ($s->searchError()) {
-    $action->exitError(sprintf("search error : %s", $s->getError()));
+    ContextManager::exitError(sprintf("search error : %s", $s->getError()));
 }
 $targ = array();
 if ($arg != "") {
@@ -163,9 +158,9 @@ while ($doc = $s->getNextDoc()) {
         $exitcode = 1;
         break;
     }
-    
+
     $countProcessed++;
-    
+
     $ret = '';
     $err = '';
     $modified = false;
@@ -178,7 +173,7 @@ while ($doc = $s->getNextDoc()) {
         if ($doc->isChanged()) {
             $olds = $doc->getOldRawValues();
             foreach ($olds as $k => $v) {
-                $smod.= sprintf("\t- %s [%s]:[%s]\n", $k, $v, $doc->getRawValue($k));
+                $smod .= sprintf("\t- %s [%s]:[%s]\n", $k, $v, $doc->getRawValue($k));
             }
             switch ($save) {
                 case "light":
@@ -193,7 +188,7 @@ while ($doc = $s->getNextDoc()) {
             }
         }
     } catch (\Exception $e) {
-        $err.= $e->getMessage();
+        $err .= $e->getMessage();
     }
     $memory = '';
     //$memory= round(memory_get_usage() / 1024)."Ko";
@@ -239,10 +234,10 @@ $writeStatus = function ($statusFile, $status) {
 
 if ($statusFile !== null) {
     $status = '';
-    $status.= sprintf("ALL: %d\n", $countAll);
-    $status.= sprintf("PROCESSED: %d\n", $countProcessed);
-    $status.= sprintf("FAILURE: %d\n", $countFailure);
-    $status.= sprintf("SUCCESS: %d\n", $countSuccess);
+    $status .= sprintf("ALL: %d\n", $countAll);
+    $status .= sprintf("PROCESSED: %d\n", $countProcessed);
+    $status .= sprintf("FAILURE: %d\n", $countFailure);
+    $status .= sprintf("SUCCESS: %d\n", $countSuccess);
     $err = $writeStatus($statusFile, $status);
     if ($err !== '') {
         printf("%s\n", $err);

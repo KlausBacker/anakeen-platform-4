@@ -15,7 +15,7 @@ class TestGetParam extends TestCaseDcp
      */
     public function testGetCoreParamNonExisting($data)
     {
-        $value = \Anakeen\Core\ContextManager::getCoreParam($data['name'], $data['def']);
+        $value = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $data['name'], $data['def']);
         
         $sameType = (gettype($value) == gettype($data['expected']));
         $sameValue = ($value == $data['expected']);
@@ -28,7 +28,7 @@ class TestGetParam extends TestCaseDcp
      */
     public function testGetParamNonExisting($data)
     {
-        $value = \Anakeen\Core\ContextManager::getApplicationParam($data['name'], $data['def']);
+        $value = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $data['name'], $data['def']);
         
         $sameType = (gettype($value) == gettype($data['expected']));
         $sameValue = ($value == $data['expected']);
@@ -41,7 +41,7 @@ class TestGetParam extends TestCaseDcp
      */
     public function testGetCoreParamIsSet($data)
     {
-        $value = \Anakeen\Core\ContextManager::getCoreParam($data['name'], null);
+        $value = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $data['name'], null);
         
         $this->assertTrue(($value !== null) , "Returned value is not set.");
     }
@@ -50,33 +50,11 @@ class TestGetParam extends TestCaseDcp
      */
     public function testGetParamIsSet($data)
     {
-        $value = \Anakeen\Core\ContextManager::getApplicationParam($data['name'], null);
+        $value = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $data['name'], null);
         
         $this->assertTrue(($value !== null) , "Returned value is not set.");
     }
-    /**
-     * @param $paramName
-     * @param $appName
-     * @param $expectedProps
-     * @dataProvider dataGetParamDef
-     */
-    public function testGetParamDef($paramName, $appName, $expectedProps)
-    {
-        
-        $appId = null;
-        if ($appName) {
-            simpleQuery(self::$dbaccess, sprintf("select id from application where name='%s'", pg_escape_string($appName)) , $appId, true, true);
-        }
-        $paramDef = \Anakeen\Core\Internal\ParamDef::getParamDef($paramName, $appId);
-        if (empty($expectedProps)) {
-            $this->assertEmpty($paramDef, "parameter $paramName must not be found");
-        } else {
-            $this->assertNotEmpty($paramDef, "parameter $paramName must be found in app  #$appId");
-            foreach ($expectedProps as $kProp => $vProp) {
-                $this->assertEquals($vProp, $paramDef->$kProp, "wrong property $kProp" . print_r($paramDef->getValues() , true));
-            }
-        }
-    }
+
     
     public function dataGetParamDef()
     {

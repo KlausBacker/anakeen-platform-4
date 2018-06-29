@@ -23,7 +23,6 @@ class TestRouteConfig
             [
                 "routes" => $routeConfig->getRoutes(),
                 "middleware" => $routeConfig->getMiddlewares(),
-                "apps" => $routeConfig->getApps(),
                 "accesses" => $routeConfig->getAccesses()
             ]
         );

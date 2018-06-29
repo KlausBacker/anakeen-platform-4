@@ -30,19 +30,16 @@ class Logout
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-
-        $action = ContextManager::getCurrentAction();
-        $action->session->close();
-
+        ContextManager::getSession()->close();
         \Anakeen\Router\AuthenticatorManager::closeAccess();
-        $data=[];
+        $data = [];
         foreach (headers_list() as $header) {
             if (preg_match("/location:\s*(.*)/i", $header, $reg)) {
-                $data["location"]=$reg[1];
+                $data["location"] = $reg[1];
             }
         }
 
-        $data["basicAuthent"]= (get_class(\Anakeen\Router\AuthenticatorManager::$auth) === \Anakeen\Core\Internal\BasicAuthenticator::class);
+        $data["basicAuthent"] = (get_class(\Anakeen\Router\AuthenticatorManager::$auth) === \Anakeen\Core\Internal\BasicAuthenticator::class);
         if ($data["basicAuthent"]) {
             $response = $response->withStatus(401);
         }

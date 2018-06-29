@@ -18,22 +18,21 @@ $verbose= $usage->addEmptyParameter("verbose", "Verbose mode");
 $usage->verify();
 
 
-$action=\Anakeen\Core\ContextManager::getCurrentAction();
 
 if (!file_exists($filename)) {
-    $action->ExitError(sprintf(_("import file %s not found"), $filename));
+   \Anakeen\Core\ContextManager::exitError(sprintf(_("import file %s not found"), $filename));
 }
 if (!is_file($filename)) {
-    $action->exitError(sprintf(_("import file '%s' is not a valid file"), $filename));
+    \Anakeen\Core\ContextManager::exitError(sprintf(_("import file '%s' is not a valid file"), $filename));
 }
 if ($logfile) {
     if (file_exists($logfile) && (!is_writable($logfile))) {
-        $action->ExitError(sprintf(_("log file %s not writable"), $logfile));
+        \Anakeen\Core\ContextManager::exitError(sprintf(_("log file %s not writable"), $logfile));
     }
     if (!file_exists($logfile)) {
         $f = @fopen($logfile, 'a');
         if ($f === false) {
-            $action->ExitError(sprintf(_("log file %s not writable"), $logfile));
+            \Anakeen\Core\ContextManager::exitError(sprintf(_("log file %s not writable"), $logfile));
         }
         fclose($f);
     }
@@ -51,7 +50,7 @@ $oImport->import($filename);
 $err = $oImport->getErrorMessage();
 if ($err) {
     \Anakeen\Core\DbManager::rollbackPoint($point);
-    $action->ExitError($err);
+    \Anakeen\Core\ContextManager::exitError($err);
 } else {
     \Anakeen\Core\DbManager::commitPoint($point);
 }

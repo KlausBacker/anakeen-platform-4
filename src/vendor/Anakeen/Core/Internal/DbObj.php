@@ -128,7 +128,7 @@ class DbObj
         }
         $this->selectstring = substr($this->selectstring, 0, strlen($this->selectstring) - 1);
         if (self::$sqlStrict === null) {
-            self::$sqlStrict = (\Anakeen\Core\ContextManager::getApplicationParam('CORE_SQLSTRICT') != 'no');
+            self::$sqlStrict = (\Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'CORE_SQLSTRICT') != 'no');
         }
         // select with the id
         if (($id != '') || (is_array($id)) || (!isset($this->id_fields[0]))) {
@@ -635,7 +635,6 @@ class DbObj
     }
 
 
-
     public function create($nopost = false)
     {
         $msg = "";
@@ -784,13 +783,13 @@ class DbObj
             $this->res = pg_get_result($this->dbid);
             $err = pg_result_error($this->res);
             if ($err) {
-                $this->msg_err= \ErrorCode::getError('DB0005', $err);
+                $this->msg_err = \ErrorCode::getError('DB0005', $err);
                 $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
             }
 
             if ($this->msg_err == "") {
                 if (pg_send_execute($this->dbid, '', array()) === false) {
-                    $this->msg_err= \ErrorCode::getError('DB0007', pg_last_error($this->dbid));
+                    $this->msg_err = \ErrorCode::getError('DB0007', pg_last_error($this->dbid));
                     $this->setError($sql);
 
                     return $this->msg_err;
@@ -798,13 +797,13 @@ class DbObj
                 $this->res = pg_get_result($this->dbid);
                 $err = pg_result_error($this->res);
                 if ($err) {
-                    $this->msg_err= \ErrorCode::getError('DB0002', $err);
+                    $this->msg_err = \ErrorCode::getError('DB0002', $err);
                     $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
                 }
             }
         } else {
             if (pg_send_query($this->dbid, $sql) === false) {
-                $this->msg_err= \ErrorCode::getError('DB0008', pg_last_error($this->dbid));
+                $this->msg_err = \ErrorCode::getError('DB0008', pg_last_error($this->dbid));
 
                 $this->setError($sql);
                 return $this->msg_err;
@@ -816,7 +815,7 @@ class DbObj
             } // purge following queries
             $err = pg_result_error($this->res);
             if ($err) {
-                $this->msg_err= \ErrorCode::getError('DB0001', $err);
+                $this->msg_err = \ErrorCode::getError('DB0001', $err);
                 $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
             }
         }
@@ -881,7 +880,7 @@ class DbObj
 
     public function update()
     {
-        $err= \ErrorCode::getError('DB0009', $this->dbtable);
+        $err = \ErrorCode::getError('DB0009', $this->dbtable);
 
         return $err;
     }

@@ -11,4 +11,5 @@ class Settings
     const MimeUserConfig="config/mime-user.conf";
     const ApiV2="api/v2/";
     const CacheDir="var/cache/";
+    const NsSde = "Core";
 }

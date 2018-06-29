@@ -79,18 +79,16 @@ class ImportDocument
         $this->dirid = $dirid;
     }
     /**
-     * @param \Anakeen\Core\Internal\Action $action current action
      * @param string $file filename path to import
      * @param bool $onlyAnalyze if true only analyze not import really
      * @param bool $archive if true to import file like an standard archive
      * @return array analyze report
      */
-    public function importDocuments(\Anakeen\Core\Internal\Action & $action, $file, $onlyAnalyze = false, $archive = false)
+    public function importDocuments(string $file, bool $onlyAnalyze = false, bool $archive = false)
     {
         $point = '';
         if ($this->strict) {
             $point = 'dcp:importDocument';
-            //$action->debug=true;
             \Anakeen\Core\DbManager::savePoint($point);
         }
         $this->onlyAnalyze = $onlyAnalyze;
@@ -98,10 +96,9 @@ class ImportDocument
         try {
             if ($archive) {
                 include_once("FDL/import_tar.php");
-                $untardir = getTarExtractDir($action, basename($file));
+                $untardir = getTarExtractDir(basename($file));
 
                 $mime =  \Anakeen\Core\Utils\FileMime::getSysMimeFile($file, basename($file));
-                //print_r(array($untardir, $file, $mime));
                 $err = extractTar($file, $untardir, $mime);
                 if ($err !== '') {
                     $err = sprintf(_("cannot extract archive %s: status : %s"), $file, $err);
@@ -124,7 +121,7 @@ class ImportDocument
                     $simpleFamilyFile = 7; // file
                     $simpleFamilyFolder = 2; // folder
                     $dirid = $this->dirid; // directory to insert imported doc
-                    $this->cr = import_directory($action, $untardir, $dirid, $simpleFamilyFile, $simpleFamilyFolder, $onlycsv, $onlyAnalyze, $this->csvLinebreak);
+                    $this->cr = import_directory( $untardir, $dirid, $simpleFamilyFile, $simpleFamilyFolder, $onlycsv, $onlyAnalyze, $this->csvLinebreak);
                 }
             } else {
                 $ext = substr($file, strrpos($file, '.') + 1);
@@ -222,7 +219,7 @@ class ImportDocument
                 \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("cannot write log in %s"), $log));
             } else {
                 global $action;
-                $lay = new Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "reportImport.xml"), $action);
+                $lay = new Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "reportImport.xml"));
                 $this->writeHtmlCr($lay);
                 fputs($flog, $lay->gen());
                 fclose($flog);

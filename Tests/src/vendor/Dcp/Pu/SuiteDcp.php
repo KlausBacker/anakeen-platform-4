@@ -51,8 +51,6 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestParseMethod');
         $suite->addTestSuite('Dcp\Pu\TestExportCsv');
         $suite->addTestSuite('Dcp\Pu\TestMask');
-        $suite->addTestSuite('Dcp\Pu\TestApplicationParameters');
-        $suite->addTestSuite('Dcp\Pu\TestApplicationParameterManeger');
         $suite->addTestSuite('Dcp\Pu\TestVaultDiskStorage');
         $suite->addTestSuite('Dcp\Pu\TestAutoloader');
         $suite->addTestSuite('Dcp\Pu\TestGetText');

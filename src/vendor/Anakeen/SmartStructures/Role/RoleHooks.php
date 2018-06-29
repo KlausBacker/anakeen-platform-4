@@ -128,6 +128,7 @@ class RoleHooks extends \Anakeen\SmartElement
                 $this->SetValue("us_whatid", $wuser->id);
                 $this->SetValue("role_login", $wuser->login);
                 $this->SetValue("role_name", $wuser->lastname);
+                $this->refreshTitle();
                 $this->modify(true, "", true);
             }
         }

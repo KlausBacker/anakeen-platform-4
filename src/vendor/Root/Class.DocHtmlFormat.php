@@ -224,17 +224,8 @@ class DocHtmlFormat
                                 $htmlval = '';
                                 $aend = "";
                             } elseif (true || preg_match("/^http:/", $ulink, $reg)) {
-                                $ec = getSessionValue("ext:targetUrl");
-
-                                if ($ec) {
-                                    $ec = str_replace("%V%", $ulink, $ec);
-                                    $ec = str_replace("%L%", $this->oattr->getLabel(), $ec);
-                                    $ecu = str_replace("'", "\\'", $this->doc->urlWhatEncode($ec));
-                                    $abegin = "<a  onclick='parent.$ecu'>";
-                                } else {
-                                    $ltarget = $this->oattr->getOption("ltarget");
-                                    $abegin = "<a target=\"$ltarget\"  href=\"$ulink\">";
-                                }
+                                $ltarget = $this->oattr->getOption("ltarget");
+                                $abegin = "<a target=\"$ltarget\"  href=\"$ulink\">";
 
                                 $aend = "</a>";
                             }
@@ -533,7 +524,7 @@ class DocHtmlFormat
                         if ($imageview && (!$this->abstractMode)) {
                             $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/widgetFile.js");
                             $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/detectPdfPlugin.js");
-                            $lay = new Layout("FDL/Layout/viewfileimage.xml", $action);
+                            $lay = new Layout("FDL/Layout/viewfileimage.xml");
                             $lay->set("docid", $this->doc->id);
                             $lay->set("waiting", ($waiting ? 'true' : 'false'));
                             $lay->set("attrid", $this->oattr->id);
@@ -689,7 +680,7 @@ class DocHtmlFormat
             $displayRowCount = 10;
         }
 
-        $lay = new Layout("FDL/Layout/viewdocarray.xml", $action);
+        $lay = new Layout("FDL/Layout/viewdocarray.xml");
         $lay->set("issort", ($sort == "yes"));
         if (!method_exists($this->doc->attributes, "getArrayElements")) {
             return $htmlval;
@@ -699,207 +690,100 @@ class DocHtmlFormat
         $lay->set("caption", $this->oattr->getLabel());
         $lay->set("aid", $this->oattr->id);
 
-        if (($viewzone != "") && preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/", $viewzone, $reg)) {
-            // detect special row zone
-            $dxml = new DomDocument();
-            $rowlayfile = getLayoutFile($reg[1], ($reg[2]));
-            if (!file_exists($rowlayfile)) {
-                $htmlval = sprintf(_("cannot open layout file : %s"), $rowlayfile);
-                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("cannot open layout file : %s"), $rowlayfile));
-                return $htmlval;
+
+        $ta = $this->doc->attributes->getArrayElements($this->oattr->id);
+        $talabel = array();
+        $tvattr = array();
+
+        $emptyarray = true;
+        $nbitem = 0;
+
+        $tval = array();
+        foreach ($ta as $k => $v) {
+            if (($v->mvisibility == "H") || ($v->mvisibility == "I") || ($v->mvisibility == "O")) {
+                continue;
             }
-            if (!@$dxml->load($rowlayfile)) {
-                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("cannot load xml template : %s"), print_r(libxml_get_last_error(), true)));
-                $htmlval = sprintf(_("cannot load xml layout file : %s"), $rowlayfile);
-                return $htmlval;
+            $talabel[] = array(
+                "alabel" => ucfirst($v->getLabel()),
+                "astyle" => $v->getOption("cellheadstyle"),
+                "cwidth" => $v->getOption("cwidth", "auto")
+            );
+            $tval[$k] = $this->doc->getMultipleRawValues($k);
+            $nbitem = max($nbitem, count($tval[$k]));
+            if ($emptyarray && ($this->doc->getRawValue($k) != "")) {
+                $emptyarray = false;
             }
-            $theads = $dxml->getElementsByTagName('table-head');
-            if ($theads->length > 0) {
-                /**
-                 * @var DOMElement $thead
-                 */
-                $thead = $theads->item(0);
-                $theadcells = $thead->getElementsByTagName('cell');
-                $talabel = array();
-                for ($i = 0; $i < $theadcells->length; $i++) {
-                    /**
-                     * @var DOMElement $item
-                     */
-                    $item = $theadcells->item($i);
-                    $th = self::xt_innerXML($item);
-                    $thstyle = $item->getAttribute("style");
-                    $thclass = $item->getAttribute("class");
-                    if ($thstyle != "") {
-                        $thstyle = "style=\"$thstyle\"";
-                    }
-                    if ($thclass) {
-                        $thstyle .= ' class="' . $thclass . '"';
-                    }
-                    $talabel[] = array(
-                        "alabel" => $th,
-                        "astyle" => $thstyle,
-                        "cwidth" => "auto"
-                    );
+        }
+        if (!$emptyarray) {
+            if ($this->oattr->getOption("vlabel") == "up") {
+                $caption = $this->oattr->getLabel();
+                if ($nbitem > 10) {
+                    $caption .= " ($nbitem)";
                 }
-                $lay->setBlockData("TATTR", $talabel);
-            }
-
-            $tbodies = $dxml->getElementsByTagName('table-body');
-            $tr = $tcellstyle = $tcellclass = array();
-
-            if ($tbodies->length > 0) {
-                /**
-                 * @var DOMElement $tbody
-                 */
-                $tbody = $tbodies->item(0);
-                $tbodycells = $tbody->getElementsByTagName('cell');
-                for ($i = 0; $i < $tbodycells->length; $i++) {
-                    /**
-                     * @var DOMElement $item
-                     */
-                    $item = $tbodycells->item($i);
-                    $tr[] = self::xt_innerXML($item);
-                    $tcellstyle[] = $item->getAttribute("style");
-                    $tcellclass[] = $item->getAttribute("class");
+            } else {
+                $caption = "";
+                if ($displayRowCount >= 0 && ($displayRowCount == 0 || $nbitem > $displayRowCount)) {
+                    if (count($talabel) > 0) {
+                        $talabel[0]["alabel"] .= " ($nbitem)";
+                    }
                 }
             }
-            $ta = $this->doc->attributes->getArrayElements($this->oattr->id);
-            $nbitem = 0;
-            $tval = array();
-            foreach ($ta as $k => $v) {
-                $tval[$k] = $this->doc->getMultipleRawValues($k);
-                $nbitem = max($nbitem, count($tval[$k]));
-                $lay->set("L_" . strtoupper($v->id), $v->getLabel());
-            }
-            // view values
+
+            $lay->setBlockData("TATTR", $talabel);
+            $lay->set("caption", $caption);
             $tvattr = array();
             for ($k = 0; $k < $nbitem; $k++) {
                 $tvattr[] = array(
                     "bevalue" => "bevalue_$k"
                 );
-                reset($ta);
                 $tivalue = array();
-
-                foreach ($tr as $kd => $vd) {
-                    $hval = preg_replace_callback('/\[([^\]]*)\]/', function ($matches) use ($k) {
-                        return $this->rowattrReplace($matches[1], $k);
-                    }, $vd);
+                /**
+                 * @var \Anakeen\Core\SmartStructure\NormalAttribute $va
+                 */
+                foreach ($ta as $ka => $va) {
+                    if (($va->mvisibility == "H") || ($va->mvisibility == "I") || ($va->mvisibility == "O")) {
+                        continue;
+                    }
+                    if (isset($tval[$ka][$k])) {
+                        $hval = $this->doc->getHtmlValue($va, $tval[$ka][$k], $this->target, $this->htmlLink, $k);
+                    } else {
+                        $hval = '';
+                    }
+                    if ($va->type == "image") {
+                        $iwidth = $va->getOption("iwidth", "80px");
+                        if (empty($tval[$ka][$k])) {
+                            $hval = "";
+                        } elseif ($va->link == "") {
+                            if (strstr($hval, '?')) {
+                                $optwidth = "&width=" . intval($iwidth);
+                            } else {
+                                $optwidth = '';
+                            }
+                            $hval = "<a  href=\"$hval\"><img border='0' width=\"$iwidth\" src=\"" . $hval . $optwidth . "\"></a>";
+                        } else {
+                            $hval = preg_replace("/>(.+)</", ">&nbsp;<img class=\"button\" width=\"$iwidth\" src=\"\\1\">&nbsp;<", $hval);
+                        }
+                    }
                     $tivalue[] = array(
                         "evalue" => $hval,
-                        "color" => "inherit",
-                        "tdstyle" => $tcellstyle[$kd],
-                        "tdclass" => $tcellclass[$kd],
-                        "bgcolor" => "inherit",
-                        "align" => "inherit"
+                        "attrid" => $va->id,
+                        "atype" => $va->type,
+                        "tdstyle" => $va->getOption("cellbodystyle"),
+                        "color" => $va->getOption("color", "inherit"),
+                        "bgcolor" => $va->getOption("bgcolor", "inherit"),
+                        "tdclass" => $va->getOption("className", ''),
+                        "align" => $va->getOption("align", "inherit")
                     );
                 }
                 $lay->setBlockData("bevalue_$k", $tivalue);
             }
             $lay->setBlockData("EATTR", $tvattr);
-            $caption = '';
-            if ($this->oattr->getOption("vlabel") == "up") {
-                $caption = $this->oattr->getLabel();
-            }
 
-            if ($nbitem > 10) {
-                $caption .= " ($nbitem)";
-            }
-            $lay->set("caption", $caption);
             $htmlval = $lay->gen();
         } else {
-            $ta = $this->doc->attributes->getArrayElements($this->oattr->id);
-            $talabel = array();
-            $tvattr = array();
-
-            $emptyarray = true;
-            $nbitem = 0;
-
-            $tval = array();
-            foreach ($ta as $k => $v) {
-                if (($v->mvisibility == "H") || ($v->mvisibility == "I") || ($v->mvisibility == "O")) {
-                    continue;
-                }
-                $talabel[] = array(
-                    "alabel" => ucfirst($v->getLabel()),
-                    "astyle" => $v->getOption("cellheadstyle"),
-                    "cwidth" => $v->getOption("cwidth", "auto")
-                );
-                $tval[$k] = $this->doc->getMultipleRawValues($k);
-                $nbitem = max($nbitem, count($tval[$k]));
-                if ($emptyarray && ($this->doc->getRawValue($k) != "")) {
-                    $emptyarray = false;
-                }
-            }
-            if (!$emptyarray) {
-                if ($this->oattr->getOption("vlabel") == "up") {
-                    $caption = $this->oattr->getLabel();
-                    if ($nbitem > 10) {
-                        $caption .= " ($nbitem)";
-                    }
-                } else {
-                    $caption = "";
-                    if ($displayRowCount >= 0 && ($displayRowCount == 0 || $nbitem > $displayRowCount)) {
-                        if (count($talabel) > 0) {
-                            $talabel[0]["alabel"] .= " ($nbitem)";
-                        }
-                    }
-                }
-
-                $lay->setBlockData("TATTR", $talabel);
-                $lay->set("caption", $caption);
-                $tvattr = array();
-                for ($k = 0; $k < $nbitem; $k++) {
-                    $tvattr[] = array(
-                        "bevalue" => "bevalue_$k"
-                    );
-                    $tivalue = array();
-                    /**
-                     * @var \Anakeen\Core\SmartStructure\NormalAttribute $va
-                     */
-                    foreach ($ta as $ka => $va) {
-                        if (($va->mvisibility == "H") || ($va->mvisibility == "I") || ($va->mvisibility == "O")) {
-                            continue;
-                        }
-                        if (isset($tval[$ka][$k])) {
-                            $hval = $this->doc->getHtmlValue($va, $tval[$ka][$k], $this->target, $this->htmlLink, $k);
-                        } else {
-                            $hval = '';
-                        }
-                        if ($va->type == "image") {
-                            $iwidth = $va->getOption("iwidth", "80px");
-                            if (empty($tval[$ka][$k])) {
-                                $hval = "";
-                            } elseif ($va->link == "") {
-                                if (strstr($hval, '?')) {
-                                    $optwidth = "&width=" . intval($iwidth);
-                                } else {
-                                    $optwidth = '';
-                                }
-                                $hval = "<a  href=\"$hval\"><img border='0' width=\"$iwidth\" src=\"" . $hval . $optwidth . "\"></a>";
-                            } else {
-                                $hval = preg_replace("/>(.+)</", ">&nbsp;<img class=\"button\" width=\"$iwidth\" src=\"\\1\">&nbsp;<", $hval);
-                            }
-                        }
-                        $tivalue[] = array(
-                            "evalue" => $hval,
-                            "attrid" => $va->id,
-                            "atype" => $va->type,
-                            "tdstyle" => $va->getOption("cellbodystyle"),
-                            "color" => $va->getOption("color", "inherit"),
-                            "bgcolor" => $va->getOption("bgcolor", "inherit"),
-                            "tdclass" => $va->getOption("className", ''),
-                            "align" => $va->getOption("align", "inherit")
-                        );
-                    }
-                    $lay->setBlockData("bevalue_$k", $tivalue);
-                }
-                $lay->setBlockData("EATTR", $tvattr);
-
-                $htmlval = $lay->gen();
-            } else {
-                $htmlval = "";
-            }
+            $htmlval = "";
         }
+
         return $htmlval;
     }
 
@@ -1065,7 +949,7 @@ class DocHtmlFormat
     public function formatOption($kvalue, $avalue)
     {
         global $action;
-        $lay = new Layout("FDL/Layout/viewdocoption.xml", $action);
+        $lay = new Layout("FDL/Layout/viewdocoption.xml");
         $htmlval = "";
 
         if ($kvalue > -1) {
@@ -1265,7 +1149,7 @@ class DocHtmlFormat
     public function formatIfile($kvalue, $avalue)
     {
         global $action;
-        $lay = new Layout("FDL/Layout/viewifile.xml", $action);
+        $lay = new Layout("FDL/Layout/viewifile.xml");
         $lay->set("aid", $this->oattr->id);
         $lay->set("id", $this->doc->id);
         $lay->set("iheight", $this->oattr->getOption("height", "200px"));

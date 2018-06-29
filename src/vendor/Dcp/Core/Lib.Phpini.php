@@ -2,12 +2,12 @@
 
 namespace Dcp\Core;
 
+use Anakeen\Core\Internal\ContextParameterManager;
+use Anakeen\Core\Settings;
+
 class LibPhpini
 {
-    /**
-     * @var \Anakeen\Core\Internal\Application
-     */
-    public static $coreApplication = null;
+
 
     public static function applyLimits()
     {
@@ -16,13 +16,7 @@ class LibPhpini
         return $limits;
     }
 
-    /**
-     * @param \Anakeen\Core\Internal\Application $coreApplication
-     */
-    public static function setCoreApplication(\Anakeen\Core\Internal\Application $coreApplication)
-    {
-        self::$coreApplication = $coreApplication;
-    }
+
 
     /**
      * Apply a limit to $phpIniValueName value by choosing "best" value between
@@ -47,7 +41,7 @@ class LibPhpini
             $coreLimit = intval(self::getParam($dcpParameterName, $defaultValue));
             $changes["core"] = $coreLimit;
 
-            if (self::return_bytes($phpIniLimit) < $coreLimit * 1024 * 1024) {
+            if (self::returnBytes($phpIniLimit) < $coreLimit * 1024 * 1024) {
                 $changes["best"] = $coreLimit . "M";
                 $changes["success"] = false !==ini_set($phpIniValueName, $coreLimit . "M");
             } else {
@@ -63,21 +57,7 @@ class LibPhpini
 
     protected static function getParam($name, $defaultValue)
     {
-        if (is_null(self::$coreApplication)) {
-            global $action;
-            if ($action instanceof \Anakeen\Core\Internal\Action &&
-                "CORE" === $action->parent->name) {
-                self::$coreApplication = $action->parent;
-                return self::$coreApplication->getParam($name, $defaultValue);
-            } else {
-                require_once 'Lib.Common.php';
-                require_once 'Class.ApplicationParameterManager.php';
-                $parameterValue = \Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("CORE", $name);
-                return (null === $parameterValue ? $defaultValue : $parameterValue);
-            }
-        } else {
-            return self::$coreApplication->getParam($name, $defaultValue);
-        }
+        return ContextParameterManager::getValue(Settings::NsSde, $name, $defaultValue);
     }
 
     /**
@@ -86,7 +66,7 @@ class LibPhpini
      * @param string|int $val the value from php.ini with optional unit)
      * @return int
      */
-    protected static function return_bytes($val)
+    protected static function returnBytes($val)
     {
         $val = trim($val);
         $last = strtolower(substr($val, -1));

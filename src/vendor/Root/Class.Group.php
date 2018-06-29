@@ -134,7 +134,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
                 $g->query("delete from permission where computed");
 
                 $p = new Permission($this->dbaccess);
-                $p->deletePermission($g->iduser, null, null, true);
+                $p->deletePermission($g->iduser, null, true);
             }
         }
     }
@@ -161,7 +161,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
                 $g->query("delete from permission where computed");
 
                 $p = new Permission($this->dbaccess);
-                $p->deletePermission($g->iduser, null, null, true);
+                $p->deletePermission($g->iduser,  null, true);
                 $err = "";
             }
         }

@@ -22,7 +22,7 @@ class ErrorCodeACCS
      * @errorCode
      * acl must be referenced in application
      */
-    const ACCS0002 = 'acl %s not define for %s application, cannot apply acces';
+    const ACCS0002 = 'acl %s not define, cannot apply acces';
     /**
      * @errorCode
      * user must be created before apply access to him

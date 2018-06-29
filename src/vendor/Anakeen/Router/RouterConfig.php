@@ -2,7 +2,6 @@
 
 namespace Anakeen\Router;
 
-use \Anakeen\Router\Config\AppInfo;
 use \Anakeen\Router\Config\RouterInfo;
 
 /**
@@ -23,10 +22,6 @@ class RouterConfig
     protected $middlewares;
 
     /**
-     * @var AppInfo[]
-     */
-    protected $apps;
-    /**
      * @var Config\AccessInfo[]
      */
     protected $accesses;
@@ -39,11 +34,9 @@ class RouterConfig
     {
         $this->middlewares = isset($data->middlewares) ? $data->middlewares : [];
         $this->routes = isset($data->routes) ? $data->routes : [];
-        $this->apps = isset($data->apps) ? $data->apps : [];
         $this->accesses = isset($data->accesses) ? $data->accesses : [];
         $this->parameters = isset($data->parameters) ? $data->parameters : [];
 
-        static::sortApps($this->apps);
         static::sortRoutesByPriority($this->routes);
         $this->uniqueName($this->routes);
         static::sortMiddleByPriority($this->middlewares);
@@ -98,32 +91,6 @@ class RouterConfig
         }
     }
 
-    protected static function sortApps(array &$apps)
-    {
-        usort($apps, function ($a, $b) {
-
-            /**
-             * @var AppInfo $a
-             * @var AppInfo $b
-             */
-
-            if (!empty($a->override) && empty($b->override)) {
-                return 1;
-            }
-            if (!empty($b->override) && empty($a->override)) {
-                return -1;
-            }
-            if (!empty($a->parentName) && empty($b->parentName)) {
-                return 1;
-            }
-            if (!empty($b->parentName) && empty($a->parentName)) {
-                return -1;
-            }
-
-
-            return strcmp($a->name, $b->name);
-        });
-    }
 
     protected static function sortRoutesByPriority(array &$routes)
     {
@@ -193,37 +160,6 @@ class RouterConfig
         return $this->middlewares;
     }
 
-    /**
-     * @return AppInfo[]
-     */
-    public function getApps()
-    {
-        /**
-         * @var AppInfo[] $appsInfo
-         */
-        $appsInfo = [];
-        /**
-         * @var AppInfo $appData
-         */
-        foreach ($this->apps as $appData) {
-            if (isset($appsInfo[$appData->name])) {
-                if (empty($appData->override)) {
-                    throw new Exception("ROUTES0134", $appData->configFile, $appData->name, $appsInfo[$appData->name]->configFile);
-                }
-
-                if ($appData->override === "partial") {
-                    $appData->configFile = $appsInfo[$appData->name]->configFile . ', ' . $appData->configFile;
-                    $appsInfo[$appData->name]->set($appData);
-                } else {
-                    throw new Exception("ROUTES0135", $appData->name);
-                }
-            } else {
-                $appsInfo[$appData->name] = new AppInfo($appData);
-            }
-        }
-
-        return $appsInfo;
-    }
 
     /**
      * @return Config\AccessInfo[]
@@ -262,51 +198,29 @@ class RouterConfig
     }
 
     /**
-     * Record all application configuration in database
-     */
-    public function recordApps()
-    {
-        $apps = $this->getApps();
-        foreach ($apps as $appInfo) {
-            $appInfo->record();
-            $this->recordParameters($appInfo->name);
-        }
-    }
-
-
-    /**
-     * Record all application access in database
+     * Record all access in database
      *
-     * @param string $appName
      *
      * @throws Exception
-     * @throws \Dcp\Db\Exception
      */
-    public function recordAccesses($appName = "CORE")
+    public function recordAccesses()
     {
         $accesses = $this->getAccesses();
         foreach ($accesses as $access) {
-            if ($access->applicationContext === $appName) {
                 $access->record();
-            }
         }
     }
 
     /**
-     * Record all application parameeters in database
-     *
-     * @param string $appName if null global parameters are recorded
+     * Record all context parameters in database
      *
      * @throws Exception
-     * @throws \Dcp\Db\Exception
      */
-    public function recordParameters($appName = "CORE")
+    public function recordParameters()
     {
         $parameters = $this->getParameters();
         foreach ($parameters as $param) {
-            if ($param->applicationContext === $appName) {
                 $param->record();
-            }
         }
     }
 }

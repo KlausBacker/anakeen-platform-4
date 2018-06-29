@@ -1,37 +1,29 @@
 <?xml version="1.0"?>
-<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
-    <router:apps>
-        <router:app name="TST_PARAMETER_MANAGER">
-            <router:version>1.0.0</router:version>
-            <router:shortName>Test Parameters</router:shortName>
-        </router:app>
-    </router:apps>
-    <router:parameters>
-        <router:parameter name="PARENT_USER_GLOBAL_PARAMETER">
-            <router:category>Test Unit</router:category>
-            <router:description>PARENT_USER_GLOBAL_PARAMETER_DESC</router:description>
-            <router:value>PARENT_USER_GLOBAL_PARAMETER_VALUE</router:value>
-            <router:isUser>true</router:isUser>
-        </router:parameter>
-        <router:parameter name="PARENT_USER_PARAMETER">
-            <router:category>Test Unit</router:category>
-            <router:description>PARENT_USER_PARAMETER</router:description>
-            <router:value>PARENT_USER_PARAMETER</router:value>
-            <router:isUser>true</router:isUser>
-            <router:applicationContext>TST_PARAMETER_MANAGER</router:applicationContext>
-        </router:parameter>
-        <router:parameter name="PARENT_GLOBAL_PARAMETER">
-            <router:category>Test Unit</router:category>
-            <router:description>PARENT_GLOBAL_PARAMETER</router:description>
-            <router:value>PARENT_GLOBAL_PARAMETER</router:value>
-            <router:isUser>false</router:isUser>
-        </router:parameter>
-        <router:parameter name="PARENT_PARAMETER">
-            <router:category>Test Unit</router:category>
-            <router:description>PARENT_PARAMETER</router:description>
-            <router:value>PARENT_PARAMETER</router:value>
-            <router:isUser>false</router:isUser>
-            <router:applicationContext>PARENT_PARAMETER</router:applicationContext>
-        </router:parameter>
-    </router:parameters>
-</router:config>
+<sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
+    <sde:parameters namespace="UITEST">
+        <sde:parameter name="PARENT_USER_GLOBAL_PARAMETER">
+            <sde:category>Test Unit</sde:category>
+            <sde:description>PARENT_USER_GLOBAL_PARAMETER_DESC</sde:description>
+            <sde:value>PARENT_USER_GLOBAL_PARAMETER_VALUE</sde:value>
+            <sde:isUser>true</sde:isUser>
+        </sde:parameter>
+        <sde:parameter name="PARENT_USER_PARAMETER">
+            <sde:category>Test Unit</sde:category>
+            <sde:description>PARENT_USER_PARAMETER</sde:description>
+            <sde:value>Hello</sde:value>
+            <sde:isUser>true</sde:isUser>
+        </sde:parameter>
+        <sde:parameter name="PARENT_GLOBAL_PARAMETER">
+            <sde:category>Test Unit</sde:category>
+            <sde:description>PARENT_GLOBAL_PARAMETER</sde:description>
+            <sde:value>PARENT_GLOBAL_PARAMETER</sde:value>
+            <sde:isUser>false</sde:isUser>
+        </sde:parameter>
+        <sde:parameter name="PARENT_PARAMETER">
+            <sde:category>Test Unit</sde:category>
+            <sde:description>PARENT_PARAMETER</sde:description>
+            <sde:value>PARENT_PARAMETER</sde:value>
+            <sde:isUser>false</sde:isUser>
+        </sde:parameter>
+    </sde:parameters>
+</sde:config>

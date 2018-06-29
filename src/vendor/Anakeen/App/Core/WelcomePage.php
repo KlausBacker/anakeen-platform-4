@@ -33,9 +33,9 @@ class WelcomePage
 
         $data["cssRef"]= AssetManager::getAssetLink(__DIR__."/WelcomePage.css");
         $data["thisyear"]= strftime("%Y", time());
-        $data["version"]= \Anakeen\Core\ContextManager::getApplicationParam("VERSION");
+        $data["version"]= \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "VERSION");
         $data["userRealName"]= ContextManager::getCurrentUser()->getAccountName();
-        $data["userDomain"]= \Anakeen\Core\ContextManager::getApplicationParam("CORE_CLIENT");
+        $data["userDomain"]= \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_CLIENT");
         $data["isAdmin"]= is_dir(sprintf("%s/AdminCenter", PUBLIC_DIR)); //Test to detect admin center
 
         $out=$mustache->render(file_get_contents($templateFile), $data);

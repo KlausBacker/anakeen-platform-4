@@ -50,7 +50,7 @@ class I18nTemplateContext implements \ArrayAccess
 
     public function userLocale()
     {
-        $localeId = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
+        $localeId = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG");
         $config = ContextManager::getLocaleConfig($localeId);
         return $config["culture"];
     }

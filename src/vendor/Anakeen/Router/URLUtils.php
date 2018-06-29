@@ -7,7 +7,7 @@ class URLUtils
 {
     public static function getBaseURL()
     {
-        $coreURL = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_URLINDEX");
+        $coreURL = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_URLINDEX");
         $components = parse_url($coreURL);
 
         if ($coreURL) {
@@ -87,6 +87,4 @@ class URLUtils
         $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
         return "$scheme$user$pass$host$port$path$query$fragment";
     }
-
-
 }

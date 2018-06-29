@@ -1,155 +1,155 @@
 <?xml version="1.0"?>
-<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
-    <router:parameters>
-        <router:parameter name="WVERSION">
-            <router:description>Version key</router:description>
-            <router:value/>
-            <router:access>readonly</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_LOGLEVEL">
-            <router:description>Minimum Core Log Level !</router:description>
-            <router:value>NOTICE</router:value>
-            <router:type>enum(EMERGENCY|ALERT|CRITICAL|ERROR|WARNING|NOTICE|INFO|DEBUG)</router:type>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_TMPDIR">
-            <router:category>System</router:category>
-            <router:description>Temporary dir used by applications</router:description>
-            <router:value>./var/tmp</router:value>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_TMPDIR_MAXAGE">
-            <router:category>System</router:category>
-            <router:description>Maximum time (in days) after which the temporary files and directories are deleted</router:description>
-            <router:value>2</router:value>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_TMPDOC_MAXAGE">
-            <router:category>System</router:category>
-            <router:description>Maximum time (in days) after which the temporary documents are deleted</router:description>
-            <router:value>1</router:value>
-            <router:type>integer</router:type>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_CLIENT">
-            <router:description>client name</router:description>
-            <router:value>N O M du C L I E N T</router:value>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_URLINDEX">
-            <router:description>Url to reach http server index</router:description>
-            <router:value/>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="MEMORY_LIMIT">
-            <router:category>System</router:category>
-            <router:description>Memory max by PHP process in Mo</router:description>
-            <router:value>64</router:value>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_REALM">
-            <router:category>Authent</router:category>
-            <router:description>Realm name for http authenticate</router:description>
-            <router:value>Anakeen Platform</router:value>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_LANG">
-            <router:description>user language</router:description>
-            <router:value>fr_FR</router:value>
-            <router:type>enum(fr_FR|en_US)</router:type>
-            <router:isUser>true</router:isUser>
-        </router:parameter>
-        <router:parameter name="CORE_LOGDURATION">
-            <router:category>System</router:category>
-            <router:description>Duration for log conservation (in days)</router:description>
-            <router:value>30</router:value>
-            <router:type>integer</router:type>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_MAIL_LINK">
-            <router:description>produce link for</router:description>
-            <router:value>optimal</router:value>
-            <router:type>enum(optimal|mailto)</router:type>
-            <router:isUser>true</router:isUser>
-        </router:parameter>
-        <router:parameter name="CORE_START_APP">
-            <router:description>Default start application</router:description>
-            <router:value>CORE</router:value>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_SESSIONTTL">
-            <router:category>Authent</router:category>
-            <router:description>Session lifetime (in seconds) - 0 means until web browser quit</router:description>
+<sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
+    <sde:parameters namespace="Core">
+        <sde:parameter name="WVERSION">
+            <sde:description>Version key</sde:description>
+            <sde:value/>
+            <sde:access>readonly</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_LOGLEVEL">
+            <sde:description>Minimum Core Log Level !</sde:description>
+            <sde:value>NOTICE</sde:value>
+            <sde:type>enum(EMERGENCY|ALERT|CRITICAL|ERROR|WARNING|NOTICE|INFO|DEBUG)</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_TMPDIR">
+            <sde:category>System</sde:category>
+            <sde:description>Temporary dir used by applications</sde:description>
+            <sde:value>./var/tmp</sde:value>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_TMPDIR_MAXAGE">
+            <sde:category>System</sde:category>
+            <sde:description>Maximum time (in days) after which the temporary files and directories are deleted</sde:description>
+            <sde:value>2</sde:value>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_TMPDOC_MAXAGE">
+            <sde:category>System</sde:category>
+            <sde:description>Maximum time (in days) after which the temporary documents are deleted</sde:description>
+            <sde:value>1</sde:value>
+            <sde:type>integer</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_CLIENT">
+            <sde:description>client name</sde:description>
+            <sde:value>N O M du C L I E N T</sde:value>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_URLINDEX">
+            <sde:description>Url to reach http server index</sde:description>
+            <sde:value/>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="MEMORY_LIMIT">
+            <sde:category>System</sde:category>
+            <sde:description>Memory max by PHP process in Mo</sde:description>
+            <sde:value>64</sde:value>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_REALM">
+            <sde:category>Authent</sde:category>
+            <sde:description>Realm name for http authenticate</sde:description>
+            <sde:value>Anakeen Platform</sde:value>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_LANG">
+            <sde:description>user language</sde:description>
+            <sde:value>fr_FR</sde:value>
+            <sde:type>enum(fr_FR|en_US)</sde:type>
+            <sde:isUser>true</sde:isUser>
+        </sde:parameter>
+        <sde:parameter name="CORE_LOGDURATION">
+            <sde:category>System</sde:category>
+            <sde:description>Duration for log conservation (in days)</sde:description>
+            <sde:value>30</sde:value>
+            <sde:type>integer</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_MAIL_LINK">
+            <sde:description>produce link for</sde:description>
+            <sde:value>optimal</sde:value>
+            <sde:type>enum(optimal|mailto)</sde:type>
+            <sde:isUser>true</sde:isUser>
+        </sde:parameter>
+        <sde:parameter name="CORE_START_APP">
+            <sde:description>Default start application</sde:description>
+            <sde:value>CORE</sde:value>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_SESSIONTTL">
+            <sde:category>Authent</sde:category>
+            <sde:description>Session lifetime (in seconds) - 0 means until web browser quit</sde:description>
 
-            <router:value>0</router:value>
-             <router:type>integer</router:type>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_GUEST_SESSIONTTL">
-            <router:category>Authent</router:category>
-            <router:description>Probability of running the suppression of unused sessions (expressed as a percentage by a number between 0 and 1)</router:description>
-            <router:value>3600</router:value>
-            <router:type>integer</router:type>
-            <router:access>static</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_SESSIONMAXAGE">
-            <router:category>Authent</router:category>
-            <router:description>Maximum time after which an unused session is eligible for deletion</router:description>
-            <router:value>1 week</router:value>
-            <router:type>enum(1 day|1 week|1 month)</router:type>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_SESSIONGCPROBABILITY">
-            <router:category>Authent</router:category>
-            <router:description>Probability of running the suppression of unused sessions (expressed as a percentage by a number between 0 and 1)</router:description>
-            <router:value>0.01</router:value>
-            <router:type>double</router:type>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_SESSION_BYTE_LENGTH">
-            <router:category>Authent</router:category>
-            <router:description>Session's identifier length in bytes (at least 16 bytes)</router:description>
-            <router:value>16</router:value>
-            <router:type>integer</router:type>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_ALLOW_GUEST">
-            <router:description>Allow guest access</router:description>
-            <router:value>yes</router:value>
-            <router:type>enum(yes|no)</router:type>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_MAILACTION">
-            <router:description>Mail action URL</router:description>
-            <router:value/>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_NOTIFY_SENDMAIL">
-            <router:description>Show a notification when a mail is sent</router:description>
-            <router:value>always</router:value>
-            <router:type>enum(always|errors only|never)</router:type>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_WSH_MAILTO">
-            <router:description>WSH error mail recipients (comma-separated list of mail addresses)</router:description>
-            <router:value/>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_WSH_MAILSUBJECT">
-            <router:description>WSH error mail subject</router:description>
-            <router:value>[%h](%c) Script error: %m</router:value>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="CORE_DISPLAY_ERROR">
-            <router:description>Display errors in request response</router:description>
-            <router:value>no</router:value>
-            <router:type>enum(yes|no)</router:type>
-            <router:access>admin</router:access>
-        </router:parameter>
-        <router:parameter name="STYLE">
-            <router:description>Ui style</router:description>
-            <router:value>NONE</router:value>
-            <router:access>readonly</router:access>
-        </router:parameter>
-    </router:parameters>
-</router:config>
+            <sde:value>0</sde:value>
+             <sde:type>integer</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_GUEST_SESSIONTTL">
+            <sde:category>Authent</sde:category>
+            <sde:description>Probability of running the suppression of unused sessions (expressed as a percentage by a number between 0 and 1)</sde:description>
+            <sde:value>3600</sde:value>
+            <sde:type>integer</sde:type>
+            <sde:access>static</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_SESSIONMAXAGE">
+            <sde:category>Authent</sde:category>
+            <sde:description>Maximum time after which an unused session is eligible for deletion</sde:description>
+            <sde:value>1 week</sde:value>
+            <sde:type>enum(1 day|1 week|1 month)</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_SESSIONGCPROBABILITY">
+            <sde:category>Authent</sde:category>
+            <sde:description>Probability of running the suppression of unused sessions (expressed as a percentage by a number between 0 and 1)</sde:description>
+            <sde:value>0.01</sde:value>
+            <sde:type>double</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_SESSION_BYTE_LENGTH">
+            <sde:category>Authent</sde:category>
+            <sde:description>Session's identifier length in bytes (at least 16 bytes)</sde:description>
+            <sde:value>16</sde:value>
+            <sde:type>integer</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_ALLOW_GUEST">
+            <sde:description>Allow guest access</sde:description>
+            <sde:value>yes</sde:value>
+            <sde:type>enum(yes|no)</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_MAILACTION">
+            <sde:description>Mail action URL</sde:description>
+            <sde:value/>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_NOTIFY_SENDMAIL">
+            <sde:description>Show a notification when a mail is sent</sde:description>
+            <sde:value>always</sde:value>
+            <sde:type>enum(always|errors only|never)</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_WSH_MAILTO">
+            <sde:description>WSH error mail recipients (comma-separated list of mail addresses)</sde:description>
+            <sde:value/>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_WSH_MAILSUBJECT">
+            <sde:description>WSH error mail subject</sde:description>
+            <sde:value>[%h](%c) Script error: %m</sde:value>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_DISPLAY_ERROR">
+            <sde:description>Display errors in request response</sde:description>
+            <sde:value>no</sde:value>
+            <sde:type>enum(yes|no)</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="STYLE">
+            <sde:description>Ui style</sde:description>
+            <sde:value>NONE</sde:value>
+            <sde:access>readonly</sde:access>
+        </sde:parameter>
+    </sde:parameters>
+</sde:config>

@@ -3,8 +3,6 @@
 namespace Anakeen;
 
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\Internal\ApplicationParameterManager;
-use Anakeen\Core\Internal\LogLineFormatter;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\ErrorLogHandler;
@@ -40,7 +38,9 @@ class LogManager
                 [$sysHandler, $phpErrorHandler],
                 [
                     function ($record) {
-                        $record["user"] = ContextManager::getCurrentUser()->login;
+                        if (ContextManager::getCurrentUser()) {
+                            $record["user"] = ContextManager::getCurrentUser()->login;
+                        }
                         return $record;
                     }
                 ]
@@ -72,7 +72,7 @@ class LogManager
         static $pLogLevel = null;
 
         if ($pLogLevel === null) {
-            $pLogLevel = ApplicationParameterManager::getScopedParameterValue("CORE_LOGLEVEL");
+            $pLogLevel = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LOGLEVEL");
         }
         switch ($pLogLevel) {
             case "ERROR":

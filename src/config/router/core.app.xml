@@ -1,42 +1,35 @@
 <?xml version="1.0"?>
-<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
-  <router:apps>
-    <router:app name="CORE">
-      <router:shortName>Core</router:shortName>
-      <router:description>System application</router:description>
-      <router:version>4.0.0</router:version>
-    </router:app>
-  </router:apps>
-  <router:routes>
-    <router:route name="Core:Root">
-      <router:priority>0</router:priority>
-      <router:callable>\Anakeen\App\Core\WelcomePage</router:callable>
-      <router:method>GET</router:method>
-      <router:pattern>/</router:pattern>
-      <router:description>Welcome Page</router:description>
-      <router:requiredAccess/>
-    </router:route>
-    <router:route name="Core:Welcome">
-      <router:priority>1</router:priority>
-      <router:callable>\Anakeen\App\Core\WelcomePage</router:callable>
-      <router:method>GET</router:method>
-      <router:pattern>/welcome</router:pattern>
-      <router:description>Welcome Page</router:description>
-      <router:requiredAccess/>
-    </router:route>
-    <router:route name="Core:LayoutAsset">
-      <router:priority>1</router:priority>
-      <router:callable>\Anakeen\Routes\Core\LayoutAsset</router:callable>
-      <router:method>GET</router:method>
-      <router:pattern>/assets/{asset}</router:pattern>
-      <router:description>Get css/js asset from Layout directory</router:description>
-      <router:requiredAccess/>
-    </router:route>
-  </router:routes>
-  <router:accesses>
-    <router:access name="core:admin">
-      <router:category>System</router:category>
-      <router:description>Admin Access</router:description>
-    </router:access>
-  </router:accesses>
-</router:config>
+<sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
+  <sde:routes namespace="Core">
+    <sde:route name="Root">
+      <sde:priority>0</sde:priority>
+      <sde:callable>\Anakeen\App\Core\WelcomePage</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/</sde:pattern>
+      <sde:description>Welcome Page</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+    <sde:route name="Welcome">
+      <sde:priority>1</sde:priority>
+      <sde:callable>\Anakeen\App\Core\WelcomePage</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/welcome</sde:pattern>
+      <sde:description>Welcome Page</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+    <sde:route name="LayoutAsset">
+      <sde:priority>1</sde:priority>
+      <sde:callable>\Anakeen\Routes\Core\LayoutAsset</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/assets/{asset}</sde:pattern>
+      <sde:description>Get css/js asset from Layout directory</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+  </sde:routes>
+  <sde:accesses namespace="Core">
+    <sde:access name="Admin">
+      <sde:category>System</sde:category>
+      <sde:description>Admin Access</sde:description>
+    </sde:access>
+  </sde:accesses>
+</sde:config>

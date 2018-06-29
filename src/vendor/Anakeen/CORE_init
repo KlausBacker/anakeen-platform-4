@@ -69,13 +69,10 @@ if [ "$1" = "I" ] ; then
 	exit $RET
     fi
 
-    "$wpub"/programs/core_appinitialize
-    "$wpub"/ank.php --script=setSessionHandler --handlerClass=SessionHandler
-    "$wpub"/ank.php --script=updateclass --class='Anakeen\Core\Internal\Application'
-    "$wpub"/ank.php --script=updateclass --class='Anakeen\Core\Internal\Action'
-    "$wpub"/ank.php --script=updateclass --class='Anakeen\Core\Internal\Style'
+    "$wpub"/programs/core_initdb.php
     "$wpub"/ank.php --script=updateclass --class='Anakeen\Core\Internal\ParamDef'
     "$wpub"/ank.php --script=updateclass --class='Anakeen\Core\Internal\Param'
+    "$wpub"/ank.php --script=updateclass --class='Anakeen\Core\Internal\Style'
     "$wpub"/ank.php --script=updateclass --class='Anakeen\Core\Account'
     "$wpub"/ank.php --script=updateclass --class=Group
     "$wpub"/ank.php --script=updateclass --class=Permission
@@ -84,9 +81,10 @@ if [ "$1" = "I" ] ; then
     "$wpub"/ank.php --script=updateclass --class=UserToken
 
 
+    "$wpub"/ank.php --script=setSessionHandler --handlerClass=SessionHandler
+
     
 
-    "$wpub"/ank.php  --script=manageApplications --appname=CORE
     
     OUT=`PGSERVICE="$pgservice_core" psql -c 'CREATE SCHEMA family;' 2> /dev/null`
     RET=$?
@@ -152,13 +150,10 @@ if [ "$1" = "I" ] ; then
 
     "$wpub"/ank.php --script=updateclass  --class=Group
 
-
+    "$wpub"/ank.php --system --resetRouteConfig
 
     "$wpub"/ank.php --script=fdl_trigger --docid=-1 | PGSERVICE="$pgservice_core" psql
     "$wpub"/ank.php --script=fdl_trigger --trigger=Y --docid=-1 | PGSERVICE="$pgservice_core" psql
-    if [ ! -d "$wpub"/FDLGEN ]; then
-        mkdir  "$wpub"/FDLGEN;
-    fi;
 
 fi
 

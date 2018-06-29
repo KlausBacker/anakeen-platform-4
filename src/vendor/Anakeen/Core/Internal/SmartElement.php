@@ -1896,14 +1896,10 @@ create unique index i_docir on doc(initid, revision);";
         if ($really) {
             if ($this->id != "") {
                 // delete all revision also
-                global $action;
                 global $_SERVER;
-                $appli = $action->parent;
                 $this->addHistoryEntry(
                     sprintf(
-                        _("Destroyed by action %s/%s from %s"),
-                        $appli->name,
-                        $action->name,
+                        ___("Destroyed by route from %s", "sde"),
                         isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 'bash mode'
                     ),
                     \DocHisto::NOTICE
@@ -1946,14 +1942,11 @@ create unique index i_docir on doc(initid, revision);";
                 $this->lmodify = 'D'; // indicate last delete revision
                 $date = gettimeofday();
                 $this->revdate = $date['sec']; // Delete date
-                global $action;
+
                 global $_SERVER;
 
-                $appli = $action->parent;
                 $this->addHistoryEntry(sprintf(
-                    _("delete by action %s/%s from %s"),
-                    $appli->name,
-                    $action->name,
+                    ___("Delete by route from %s", "sde"),
                     isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : 'bash mode'
                 ), \DocHisto::NOTICE);
                 $this->addHistoryEntry(_("document deleted"), \DocHisto::MESSAGE, "DELETE");
@@ -2932,7 +2925,7 @@ create unique index i_docir on doc(initid, revision);";
             return "";
         }
         $err = '';
-        if (ContextManager::getApplicationParam("TE_ACTIVATE") == "yes"
+        if (ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "TE_ACTIVATE") == "yes"
             && \Anakeen\Core\Internal\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
             if (preg_match(PREGEXPFILE, $va, $reg)) {
                 $vidin = $reg[2];
@@ -3145,8 +3138,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getExportAttributes($withfile = false, $forcedefault = false)
     {
-        global $action;
-
         if ($this->doctype == 'C') {
             $famid = $this->id;
         } else {
@@ -3158,11 +3149,7 @@ create unique index i_docir on doc(initid, revision);";
         $tsa = array();
         if (isset($this->attributes->attr)) {
             $pref = "";
-            if (file_exists(sprintf("%s/Apps/GENERIC/generic_util.php", DEFAULT_PUBDIR))) {
-                include_once("GENERIC/generic_util.php");
-                /** @noinspection PhpUndefinedFunctionInspection */
-                $pref = getFamilyParameter($action, $famid, "FREEDOM_EXPORTCOLS");
-            }
+
             if ((!$forcedefault) && ($pref != "")) {
                 $tpref = explode(";", $pref);
 
@@ -5181,7 +5168,6 @@ create unique index i_docir on doc(initid, revision);";
         }
         $this->delUTag($uid, $tag, $allrevision);
 
-        global $action;
         $h = new \DocUTag($this->dbaccess);
 
         $h->id = $this->id;
@@ -5193,7 +5179,7 @@ create unique index i_docir on doc(initid, revision);";
             $h->uid = $u->id;
             $h->uname = sprintf("%s %s", $u->firstname, $u->lastname);
         }
-        $h->fromuid = $action->user->id;
+        $h->fromuid = ContextManager::getCurrentUser()->id;
 
         $h->tag = $tag;
         $h->comment = $datas;
@@ -6533,11 +6519,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function urlWhatEncode($link, $k = -1)
     {
-        /**
-         * @var \Anakeen\Core\Internal\Action $action
-         */
-        global $action;
-
         $urllink = "";
         $mi = strlen($link);
         for ($i = 0; $i < $mi; $i++) {
@@ -6557,15 +6538,15 @@ create unique index i_docir on doc(initid, revision);";
                             // special link
                             switch ($link[$i]) {
                                 case "B": // baseurl
-                                    $urllink .= $action->GetParam("CORE_BASEURL", "?");
+                                    $urllink .= ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_BASEURL", "?");
                                     break;
 
                                 case "S": // standurl
-                                    $urllink .= $action->GetParam("CORE_STANDURL", "?");
+                                    $urllink .= ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_STANDURL", "?");
                                     break;
 
                                 case "U": // extern url
-                                    $urllink .= $action->GetParam("CORE_EXTERNURL");
+                                    $urllink .= ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_EXTERNURL");
                                     break;
 
                                 case "I": // id
@@ -6640,7 +6621,7 @@ create unique index i_docir on doc(initid, revision);";
                         $i++;
                     }
                     //	  print "attr=$sattrid";
-                    $ovalue = $action->getParam($sattrid);
+                    $ovalue = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $sattrid);
                     $urllink .= rawurlencode($ovalue);
 
                     break;
@@ -6823,7 +6804,7 @@ create unique index i_docir on doc(initid, revision);";
                 switch ($target) {
                     case "mail":
                         $js = false;
-                        $mUrl = ContextManager::getApplicationParam("CORE_MAILACTIONURL");
+                        $mUrl = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_MAILACTIONURL");
                         if (strstr($mUrl, '%')) {
                             if ($this->id != $id) {
                                 $mDoc = SEManager::getDocument($id);
@@ -6833,7 +6814,7 @@ create unique index i_docir on doc(initid, revision);";
                             $ul = htmlspecialchars($mDoc->urlWhatEncode($mUrl));
                             $specialUl = true;
                         } else {
-                            $ul = htmlspecialchars(ContextManager::getApplicationParam("CORE_MAILACTIONURL"));
+                            $ul = htmlspecialchars(ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_MAILACTIONURL"));
                             $ul .= "&amp;id=$id";
                         }
                         break;
@@ -7273,7 +7254,7 @@ create unique index i_docir on doc(initid, revision);";
             }
             if (!empty($v["using"])) {
                 if ($v["using"][0] == "@") {
-                    $v["using"] = ContextManager::getApplicationParam(substr($v["using"], 1));
+                    $v["using"] = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, substr($v["using"], 1));
                 }
                 $t[] = sprintf("CREATE $unique INDEX %s$id on  doc$id using %s(%s);\n", $k, $v["using"], $v["on"]);
             } else {
@@ -7321,7 +7302,7 @@ create unique index i_docir on doc(initid, revision);";
 
                 return $this->vault_filename_fromvalue($template, true);
             }
-            return \Layout::getLayoutFile($reg['app'], ($aid));
+            return sprintf("%s/Apps/%s/Layout/%s", DEFAULT_PUBDIR, $reg['app'], $aid);
         }
         return null;
     }
@@ -7535,8 +7516,6 @@ create unique index i_docir on doc(initid, revision);";
         $abstract = false,
         $changelayout = false
     ) {
-        global $action;
-
         $reg = $this->parseZone($layout);
         if ($reg === false) {
             return htmlspecialchars(sprintf(_("error in pzone format %s"), $layout), ENT_QUOTES);
@@ -7564,9 +7543,9 @@ create unique index i_docir on doc(initid, revision);";
         if (strtolower($ext) == "odt") {
             $target = "ooo";
             $ulink = false;
-            $this->lay = new \OOoLayout($tplfile, $action, $this);
+            $this->lay = new \OOoLayout($tplfile,  $this);
         } else {
-            $this->lay = new \Layout($tplfile, $action, "");
+            $this->lay = new \Layout($tplfile, "");
         }
         //if (! file_exists($this->lay->file)) return sprintf(_("template file (layout [%s]) not found"), $layout);
         $this->lay->set("_readonly", ($this->Control('edit') != ""));
@@ -8675,18 +8654,13 @@ create unique index i_docir on doc(initid, revision);";
         $attrId,
         $attrType = ''
     ) {
-
-        /**
-         * @var \Anakeen\Core\Internal\Action $action
-         */
-        global $action;
         // Strip format strings for non-docid types
         $pType = \Dcp\FamilyImport::parseType($attrType);
         if ($pType['type'] != 'docid') {
             $attrType = $pType['type'];
         }
 
-        $collator = new \Collator($action->GetParam('CORE_LANG', 'fr_FR'));
+        $collator = new \Collator(ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'CORE_LANG', 'fr_FR'));
 
         $compatibleMethods = array();
 
@@ -8909,7 +8883,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($oneAttributeAtLeast) {
             $datesValues = array_unique($datesValues);
             if ($withLocale) {
-                $currentLocale = ContextManager::getApplicationParam("CORE_LANG", "fr_FR");
+                $currentLocale = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG", "fr_FR");
                 $lang = ContextManager::getLocales();
 
                 $locales = array_keys($lang);

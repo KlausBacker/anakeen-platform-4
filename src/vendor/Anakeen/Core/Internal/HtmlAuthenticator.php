@@ -176,7 +176,7 @@ class HtmlAuthenticator extends Authenticator
                 header('Location: ' . $this->getAuthUrl());
                 return true;
             }
-            $redir_uri = \Anakeen\Core\ContextManager::getApplicationParam("CORE_BASEURL");
+            $redir_uri = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_BASEURL");
         }
         header('Location: ' . $redir_uri);
         return true;
@@ -201,41 +201,7 @@ class HtmlAuthenticator extends Authenticator
     public function logon()
     {
 
-        $app = $this->getAuthApp();
-        if ($app === false || $app == '') {
-            throw new \Dcp\Exception("Missing or empty auth app definition.");
-        }
+        throw new \Exception(__METHOD__);
 
-        $account = new \Anakeen\Core\Account();
-        if ($account->setLoginName("anonymous") === false) {
-            throw new \Dcp\Exception(sprintf("anonymous account not found."));
-        }
-        $actionRouter = new \ActionRouter($account);
-
-        $allowList = array(
-            array(
-                'app' => 'AUTHENT'
-            ),
-            array(
-                'app' => 'CORE',
-                'action' => 'CORE_CSS'
-            )
-        );
-        $action = $actionRouter->getAction();
-        $app = $action->parent;
-        $allowed = false;
-        foreach ($allowList as $allow) {
-            if (isset($allow['app']) && $allow['app'] == $app->name) {
-                if (!isset($allow['action']) || $allow['action'] == $action->name) {
-                    $allowed = true;
-                    break;
-                }
-            }
-        }
-        if (!$allowed) {
-            throw new \Dcp\Exception(sprintf("Unauthorized app '%s' with action '%s' for authentication with '%s'.", $action->parent->name, $action->name, get_class($this)));
-        }
-
-        $actionRouter->executeAction();
     }
 }

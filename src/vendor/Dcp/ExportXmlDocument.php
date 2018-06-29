@@ -239,7 +239,7 @@ class ExportXmlDocument
                     }
                     $mime = $reg[1];
                     $name = htmlspecialchars($reg[3], ENT_QUOTES);
-                    $base = \Anakeen\Core\ContextManager::getApplicationParam("CORE_EXTERNURL");
+                    $base = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_EXTERNURL");
                     $href = $base . str_replace('&', '&amp;', $doc->getFileLink($attribute->id));
                     if ($this->exportFiles) {
                         $path = $doc->vault_filename_fromvalue($v, true);

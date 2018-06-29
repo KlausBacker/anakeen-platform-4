@@ -2,6 +2,8 @@
 
 namespace Anakeen\Script;
 
+use Anakeen\Core\ContextManager;
+
 /**
  * Verify arguments for wsh programs
  *
@@ -57,12 +59,7 @@ class ApiUsage
      * @var array
      */
     private $hiddenArgs = array();
-    /**
-     * current action
-     *
-     * @var \Anakeen\Core\Internal\Action
-     */
-    protected $action;
+
     /**
      * strict mode
      *
@@ -81,8 +78,6 @@ class ApiUsage
      */
     public function __construct()
     {
-        global $action;
-        $this->action = &$action;
         $this->addHiddenParameter("script", "api file to use");
         $this->addOptionalParameter('login', "user login name to execute function", null, "admin");
         $this->addEmptyParameter('help', "Show usage");
@@ -348,7 +343,7 @@ class ApiUsage
                 throw new UsageException("CORE0003", $error, $usage);
             }
             if (!empty($_SERVER['HTTP_HOST'])) {
-                $this->action->exitError($error);
+                ContextManager::exitError($error);
             } else {
                 throw new UsageException("CORE0002", $error, $usage);
             }

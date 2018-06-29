@@ -1164,60 +1164,8 @@ function laction($dbaccess, $famid, $name, $type)
     return lfamily($dbaccess, $famid, $name, 0, $filter);
 }
 
-/**
- * return list of what application
- */
-function lapplications($n = "")
-{
-    $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\Application::class);
 
-    $tr = array();
-    if ($n != "") {
-        $q->AddQuery("name ~* '$n'");
-    }
-    $la = $q->Query(0, 0, "TABLE");
-    if (is_array($la)) {
-        foreach ($la as $k => $v) {
-            $tr[] = array(
-                $v["name"] . ":" . $v["short_name"],
-                $v["name"]
-            );
-        }
-    }
-    return $tr;
-}
 
-/**
- * return list of what action for one application
- */
-function lactions($app, $n = "")
-{
-    $tr = array();
-    $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\Application::class);
-    $q->AddQuery("name = '$app'");
-    $la = $q->Query(0, 0, "TABLE");
-    if ($q->nb == 1) {
-        $appid = $la[0]["id"];
-        if ($appid > 0) {
-            $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\Action::class);
-            $q->AddQuery("id_application = $appid");
-            if ($n != "") {
-                $q->AddQuery("name ~* '$n'");
-            }
-            $la = $q->Query(0, 0, "TABLE");
-
-            if ($q->nb > 0) {
-                foreach ($la as $k => $v) {
-                    $tr[] = array(
-                        $v["name"] . ":" . _($v["short_name"]),
-                        $v["name"]
-                    );
-                }
-            }
-        }
-    }
-    return $tr;
-}
 
 function lapi($name = "")
 {
@@ -1297,101 +1245,7 @@ function ldocstates($dbaccess, $docid, $name = "")
     return $tr;
 }
 
-function lmethods($dbaccess, $famid, $name = "")
-{
-    $doc = createDoc($dbaccess, $famid, false);
 
-    $tr = array();
-    if ($doc) {
-        $methods = get_class_methods($doc);
-        $pattern_name = preg_quote($name, "/");
-        foreach ($methods as $k => $v) {
-            if (($name == "") || (preg_match("/$pattern_name/i", $v, $reg))) {
-                $tr[] = array(
-                    $v,
-                    '::' . $v . '()'
-                );
-            }
-        }
-    } else {
-        return sprintf(_("need to select family"));
-    }
-
-    return $tr;
-}
-
-/**
- * retrieve information from postgresql database
- *
- * @param string $dbaccess the database coordonates
- * @param string $table    the name of sql table where search data
- * @param string $filter   the sql where clause to filter
- * @param string $more     dynamic others arg to define column to retrieve
- */
-function db_query($dbaccess, $table, $filter)
-{
-    $conn = pg_connect($dbaccess);
-    if (!$conn) {
-        return sprintf(_("connexion to %s has failed"), $dbaccess);
-    }
-
-    $args = func_get_args();
-    $cols = array();
-    $order = '';
-    $tdn = array(); // display name
-    foreach ($args as $k => $v) {
-        if ($k > 2) {
-            if (substr($v, -2) == ":H") {
-                $v = substr($v, 0, -2);
-            } else {
-                if (!$order) {
-                    $order = strtolower($v);
-                }
-                $tdn[] = $k - 3;
-            }
-            $cols[] = (strtolower($v));
-        }
-    }
-    if (count($cols) == 0) {
-        return sprintf(_("no columns specified"));
-    }
-    if (count($tdn) == 0) {
-        return sprintf(_("all columns are hiddens"));
-    }
-
-    $select = "select " . implode(",", $cols);
-    $from = "from " . pg_escape_string($table);
-    $orderby = "order by " . ($order);
-    foreach ($_POST as $k => $v) {
-        if ($k[0] == '_') {
-            $filter = preg_replace('/' . substr($k, 1) . '/i', pg_escape_string(trim(stripslashes($v))), $filter);
-        }
-    }
-
-    $where = "where $filter";
-    $limit = "limit 100";
-    $sql = $select . ' ' . $from . ' ' . $where . ' ' . $orderby . ' ' . $limit;
-    $result = @pg_query($conn, $sql);
-    if (!$result) {
-        return sprintf(_("query %s has failed"), $sql);
-    }
-
-    $kr = 0;
-    $t = array();
-    while ($row = pg_fetch_row($result)) {
-        $dn = '';
-        foreach ($tdn as $vi) {
-            $dn .= $row[$vi] . ' ';
-        }
-        $t[$kr][] = $dn;
-        foreach ($row as $ki => $vi) {
-            $t[$kr][] = $vi;
-        }
-        $kr++;
-    }
-
-    return $t;
-}
 
 function recipientDocument($dbaccess, $name)
 {

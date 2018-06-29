@@ -15,6 +15,6 @@
  */
 // refreah for a classname
 // use this only if you have changed title attributes
-global $action;
 
-processExecuteAPI::run($action);
+
+processExecuteAPI::run();

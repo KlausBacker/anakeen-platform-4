@@ -13,30 +13,16 @@
  */
 class CheckAccess extends CheckData
 {
-    /**
-     * application name
-     *
-     * @var string
-     */
-    private $appName = '';
-    /**
-     * application identifier
-     *
-     * @var int
-     */
-    private $appId = '';
+    // @var string Namespace
+    protected $ns;
+
     /**
      * user identifier
      *
      * @var string
      */
     private $userId = '';
-    /**
-     * current action
-     *
-     * @var \Anakeen\Core\Internal\Action
-     */
-    private $action = null;
+
     /**
      * acl list
      *
@@ -47,14 +33,14 @@ class CheckAccess extends CheckData
     /**
      * @param array $data
      *
-     * @param null  $action
      *
+     * @param null  $extra
      * @return CheckAccess
      */
-    public function check(array $data, &$action = null)
+    public function check(array $data, &$extra = null)
     {
-        $this->appName = $data[2];
         $this->userId = $data[1];
+        $this->ns = $data[2];
 
         for ($i = 3; $i < count($data); $i++) {
             if (!empty($data[$i])) {
@@ -66,8 +52,6 @@ class CheckAccess extends CheckData
             }
         }
 
-        $this->action = $action;
-        $this->checkAppExists();
         if (!$this->hasErrors()) {
             $this->checkUserExists();
             $this->checkAclsExists();
@@ -76,21 +60,7 @@ class CheckAccess extends CheckData
         return $this;
     }
 
-    private function checkAppExists()
-    {
-        if (!$this->appName) {
-            $this->addError(ErrorCode::getError('ACCS0006'));
-        } else {
-            if ($this->checkSyntax($this->appName)) {
-                $this->appId = $this->action->parent->GetIdFromName($this->appName);
-                if (!$this->appId) {
-                    $this->addError(ErrorCode::getError('ACCS0001', $this->appName));
-                }
-            } else {
-                $this->addError(ErrorCode::getError('ACCS0005', $this->appName));
-            }
-        }
-    }
+
 
     private function checkUserExists()
     {
@@ -118,8 +88,9 @@ class CheckAccess extends CheckData
         $oAcl = new Acl();
         foreach ($this->acls as $acl) {
             if ($this->checkSyntax($acl)) {
-                if (!$oAcl->Set($acl, $this->appId)) {
-                    $this->addError(ErrorCode::getError('ACCS0002', $acl, $this->appName));
+                $aclKey=$this->ns.'::'.$acl;
+                if (!$oAcl->set($aclKey)) {
+                    $this->addError(ErrorCode::getError('ACCS0002', $aclKey));
                 }
             } else {
                 $this->addError(ErrorCode::getError('ACCS0004', $acl));

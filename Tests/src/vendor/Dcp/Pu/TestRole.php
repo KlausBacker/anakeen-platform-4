@@ -5,20 +5,24 @@
 */
 
 namespace Dcp\Pu;
+
+use Anakeen\Core\DbManager;
+use Anakeen\Core\SEManager;
+
 /**
- * @author Anakeen
+ * @author  Anakeen
  * @package Dcp\Pu
  */
-
 //require_once 'PU_testcase_dcp_commonfamily.php';
 
 class TestRole extends TestCaseDcpCommonFamily
 {
     protected static $outputDir;
+
     /**
      * import TST_FAMSETVALUE family
      * @static
-     * @return string
+     * @return string[]
      */
     protected static function getCommonImportFile()
     {
@@ -26,8 +30,13 @@ class TestRole extends TestCaseDcpCommonFamily
             "PU_data_dcp_role_family.ods"
         );
     }
+
     /**
      * @dataProvider dataRoleByGroup
+     * @param array $addTo
+     * @param array $expectedRoles
+     * @throws \Anakeen\Core\DocManager\Exception
+     * @throws \Dcp\Core\Exception
      */
     public function testRoleByGroup(array $addTo, array $expectedRoles)
     {
@@ -36,14 +45,14 @@ class TestRole extends TestCaseDcpCommonFamily
         $u->password_new = 'a';
         $err = $u->add();
         $this->assertEmpty($err, "cannot create user");
-        $du = new_doc(self::$dbaccess, $u->fid);
-        $this->assertTrue($du->isAlive() , "cannot create user document");
-        
+        $du = SEManager::getDocument($u->fid);
+        $this->assertTrue($du->isAlive(), "cannot create user document");
+
         foreach ($addTo as $aGroupName) {
             /**
-             * @var \_IGROUP $dg
+             * @var \SmartStructure\IGROUP $dg
              */
-            $dg = new_doc(self::$dbaccess, $aGroupName);
+            $dg = SEManager::getDocument($aGroupName);
             $err = $dg->insertDocument($du->id);
             $this->assertEmpty($err, "cannot add user to $aGroupName");
         }
@@ -53,73 +62,91 @@ class TestRole extends TestCaseDcpCommonFamily
         foreach ($uRoles as $aRole) {
             $uRoleLogins[] = $aRole["login"];
         }
-        
+
         foreach ($expectedRoles as $roleLogin) {
-            $this->assertTrue(in_array($roleLogin, $uRoleLogins) , sprintf("role %s must be present", $roleLogin));
+            $this->assertTrue(in_array($roleLogin, $uRoleLogins), sprintf("role %s must be present", $roleLogin));
         }
         foreach ($uRoleLogins as $roleLogin) {
-            $this->assertTrue(in_array($roleLogin, $expectedRoles) , sprintf("role %s must not be present", $roleLogin));
+            $this->assertTrue(in_array($roleLogin, $expectedRoles), sprintf("role %s must not be present", $roleLogin));
         }
     }
+
     /**
      * test from import
      * @dataProvider dataDirectRole
+     * @param       $login
+     * @param array $expectedRoles
+     * @throws \Dcp\Core\Exception
+     * @throws \Dcp\Db\Exception
      */
     public function testDirectRole($login, array $expectedRoles)
     {
         $u = new  \Anakeen\Core\Account(self::$dbaccess);
         $u->setLoginName($login);
-        $this->assertTrue($u->isAffected() , "cannot find $login user");
+        $this->assertTrue($u->isAffected(), "cannot find $login user");
         $uRoleIds = $u->getRoles();
-        simpleQuery(self::$dbaccess, sprintf("select login from users where id in (%s)", implode(',', $uRoleIds)) , $uRoleLogins, true);
-        
+        DbManager::query(sprintf("select login from users where id in (%s)", implode(',', $uRoleIds)), $uRoleLogins, true);
+
         foreach ($expectedRoles as $roleLogin) {
-            $this->assertTrue(in_array($roleLogin, $uRoleLogins) , sprintf("role %s must be present", $roleLogin));
+            $this->assertTrue(in_array($roleLogin, $uRoleLogins), sprintf("role %s must be present", $roleLogin));
         }
         foreach ($uRoleLogins as $roleLogin) {
-            $this->assertTrue(in_array($roleLogin, $expectedRoles) , sprintf("role %s must not be present", $roleLogin));
+            $this->assertTrue(in_array($roleLogin, $expectedRoles), sprintf("role %s must not be present", $roleLogin));
         }
     }
+
     /**
      * test from import
      * @dataProvider dataRoleMail
+     * @param $roleLogin
+     * @param $expectRawMail
+     * @param $expectCompleteMail
+     * @throws \Anakeen\Core\DocManager\Exception
+     * @throws \Dcp\Core\Exception
      */
     public function testRoleMail($roleLogin, $expectRawMail, $expectCompleteMail)
     {
         $r = new  \Anakeen\Core\Account(self::$dbaccess);
         $r->setLoginName($roleLogin);
-        $this->assertTrue($r->isAffected() , "cannot find $roleLogin role");
-        
+        $this->assertTrue($r->isAffected(), "cannot find $roleLogin role");
+
         $rawMail = $r->getMail(true);
         $completeMail = $r->getMail(false);
         $this->assertEquals($expectRawMail, $rawMail, "role raw mail test");
         $this->assertEquals($expectCompleteMail, $completeMail, "role complete mail test");
         /**
-         * @var \_ROLE $dr
+         * @var \SmartStructure\ROLE $dr
          */
-        $dr = new_doc(self::$dbaccess, $r->fid);
-        $this->assertTrue($dr->isAlive() , "cannot find $roleLogin document role");
-        
+        $dr = SEManager::getDocument($r->fid);
+        $this->assertTrue($dr->isAlive(), "cannot find $roleLogin document role");
+
         $rawMail = $dr->getMail(true);
         $completeMail = $dr->getMail(false);
         $this->assertEquals($expectRawMail, $rawMail, "document role raw mail test");
         $this->assertEquals($expectCompleteMail, $completeMail, "document role complete mail test");
     }
+
     /**
      * @dataProvider dataAccessByRole
+     * @param       $docid
+     * @param       $login
+     * @param array $expectedAccesses
+     * @throws \Anakeen\Core\DocManager\Exception
+     * @throws \Dcp\Exception
      */
     public function testAccessByRole($docid, $login, array $expectedAccesses)
     {
         $this->sudo($login);
-        $d = new_doc(self::$dbaccess, $docid);
-        $this->assertTrue($d->isAlive() , "document $docid not found");
-        
+        $d = SEManager::getDocument($docid);
+        $this->assertTrue($d && $d->isAlive(), "document $docid not found");
+
         foreach ($expectedAccesses as $aName => $aAccess) {
             $err = $d->control($aName);
-            $this->assertEquals($aAccess, ($err == "") , "error in access $aName : $err");
+            $this->assertEquals($aAccess, ($err == ""), "error in access $aName : $err");
         }
+        $this->exitSudo();
     }
-    
+
     public function dataAccessByRole()
     {
         return array(
@@ -131,7 +158,7 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => true,
                     "delete" => false
                 )
-            ) ,
+            ),
             array(
                 "docName" => "TST_BASERED1",
                 "login" => "ugreen",
@@ -140,8 +167,8 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => false,
                     "delete" => false
                 )
-            ) ,
-            
+            ),
+
             array(
                 "docName" => "TST_BASERED2",
                 "login" => "ublue",
@@ -150,7 +177,7 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => true,
                     "delete" => false
                 )
-            ) ,
+            ),
             array(
                 "docName" => "TST_BASERED2",
                 "login" => "ugreen",
@@ -159,7 +186,7 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => false,
                     "delete" => false
                 )
-            ) ,
+            ),
             array(
                 "docName" => "TST_BASEBLUE1",
                 "login" => "ublue",
@@ -168,7 +195,7 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => true,
                     "delete" => false
                 )
-            ) ,
+            ),
             array(
                 "docName" => "TST_BASEBLUE1",
                 "login" => "ugreen",
@@ -177,8 +204,8 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => false,
                     "delete" => false
                 )
-            ) ,
-            
+            ),
+
             array(
                 "docName" => "TST_BASEBLUE2",
                 "login" => "ublue",
@@ -187,7 +214,7 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => true,
                     "delete" => false
                 )
-            ) ,
+            ),
             array(
                 "docName" => "TST_BASEBLUE2",
                 "login" => "ugreen",
@@ -196,7 +223,7 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => true,
                     "delete" => false
                 )
-            ) ,
+            ),
             array(
                 "docName" => "TST_BASEYELLOW1",
                 "login" => "ublue",
@@ -205,7 +232,7 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => false,
                     "delete" => false
                 )
-            ) ,
+            ),
             array(
                 "docName" => "TST_BASEYELLOW1",
                 "login" => "ugreen",
@@ -214,8 +241,8 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => false,
                     "delete" => false
                 )
-            ) ,
-            
+            ),
+
             array(
                 "docName" => "TST_BASEYELLOW2",
                 "login" => "ublue",
@@ -224,7 +251,7 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => false,
                     "delete" => false
                 )
-            ) ,
+            ),
             array(
                 "docName" => "TST_BASEYELLOW2",
                 "login" => "ugreen",
@@ -233,7 +260,7 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => true,
                     "delete" => false
                 )
-            ) ,
+            ),
             array(
                 "docName" => "TST_BASEYELLOW2",
                 "login" => "uryellow",
@@ -242,7 +269,7 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => true,
                     "delete" => false
                 )
-            ) ,
+            ),
             array(
                 "docName" => "TST_BASEYELLOW2",
                 "login" => "urgreen",
@@ -251,7 +278,7 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => true,
                     "delete" => false
                 )
-            ) ,
+            ),
             array(
                 "docName" => "TST_BASEYELLOW2",
                 "login" => "uggreen",
@@ -260,8 +287,8 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => true,
                     "delete" => false
                 )
-            ) ,
-            
+            ),
+
             array(
                 "docName" => "TST_BASEGREEN",
                 "login" => "ublue",
@@ -270,7 +297,7 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => false,
                     "delete" => false
                 )
-            ) ,
+            ),
             array(
                 "docName" => "TST_BASEGREEN",
                 "login" => "ugreen",
@@ -279,7 +306,7 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => true,
                     "delete" => false
                 )
-            ) ,
+            ),
             array(
                 "docName" => "TST_BASEGREEN",
                 "login" => "uryellow",
@@ -288,7 +315,7 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => false,
                     "delete" => false
                 )
-            ) ,
+            ),
             array(
                 "docName" => "TST_BASEGREEN",
                 "login" => "urgreen",
@@ -297,7 +324,7 @@ class TestRole extends TestCaseDcpCommonFamily
                     "edit" => false,
                     "delete" => false
                 )
-            ) ,
+            ),
             array(
                 "docName" => "TST_BASEGREEN",
                 "login" => "uggreen",
@@ -309,7 +336,7 @@ class TestRole extends TestCaseDcpCommonFamily
             )
         );
     }
-    
+
     public function dataRoleMail()
     {
         return array(
@@ -317,12 +344,12 @@ class TestRole extends TestCaseDcpCommonFamily
                 "login" => "rblue",
                 "rawMail" => "blue@anakeen.com, green@anakeen.com, green@group.org, green@role.org",
                 "completeMail" => '"John Bleu" <blue@anakeen.com>, "Jane Vert" <green@anakeen.com>, "John Vert" <green@group.org>, "John Blue-Yellow" <green@role.org>'
-            ) ,
+            ),
             array(
                 "login" => "rred",
                 "rawMail" => "blue@anakeen.com",
                 "completeMail" => '"John Bleu" <blue@anakeen.com>'
-            ) ,
+            ),
             array(
                 "login" => "ryellow",
                 "rawMail" => "green@anakeen.com, green@group.org, green@role.org, yellow@role.org",
@@ -330,7 +357,7 @@ class TestRole extends TestCaseDcpCommonFamily
             )
         );
     }
-    
+
     public function dataDirectRole()
     {
         return array(
@@ -339,7 +366,7 @@ class TestRole extends TestCaseDcpCommonFamily
                 "expectRoles" => array(
                     "rblue"
                 )
-            ) ,
+            ),
             array(
                 "login" => "ugreen",
                 "expectRoles" => array(
@@ -349,80 +376,80 @@ class TestRole extends TestCaseDcpCommonFamily
             )
         );
     }
-    
+
     public function dataRoleByGroup()
     {
         return array(
             array(
                 "addTo" => array(
                     "TST_GRPRED"
-                ) ,
+                ),
                 "expectRoles" => array(
                     "rred"
                 )
-            ) ,
+            ),
             array(
                 "addTo" => array(
                     "TST_GRPGREEN"
-                ) ,
+                ),
                 "expectRoles" => array(
                     "rblue",
                     "ryellow"
                 )
-            ) ,
+            ),
             array(
                 "addTo" => array(
                     "TST_GRPYELLOW"
-                ) ,
+                ),
                 "expectRoles" => array(
                     "rred",
                     "ryellow"
                 )
-            ) ,
+            ),
             array(
                 "addTo" => array(
                     "TST_GRPBLUE"
-                ) ,
+                ),
                 "expectRoles" => array(
                     "rred",
                     "rblue"
                 )
-            ) ,
+            ),
             array(
                 "addTo" => array(
                     "TST_GRPBLUE",
                     "TST_GRPRED"
-                ) ,
+                ),
                 "expectRoles" => array(
                     "rred",
                     "rblue"
                 )
-            ) ,
+            ),
             array(
                 "addTo" => array(
                     "TST_GRPBLUE",
                     "TST_GRPGREEN"
-                ) ,
+                ),
                 "expectRoles" => array(
                     "rred",
                     "ryellow",
                     "rblue"
                 )
-            ) ,
+            ),
             array(
                 "addTo" => array(
                     "TST_GRPBLUE",
                     "TST_GRPGREEN",
                     "TST_GRPYELLOW"
-                ) ,
+                ),
                 "expectRoles" => array(
                     "rred",
                     "ryellow",
                     "rblue"
                 )
-            ) ,
+            ),
             array(
-                "addTo" => array() ,
+                "addTo" => array(),
                 "expectRoles" => array()
             )
         );

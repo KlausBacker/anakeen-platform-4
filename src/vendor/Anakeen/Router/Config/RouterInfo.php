@@ -18,7 +18,6 @@ class RouterInfo
      * @var string partial or complete
      */
     public $override;
-    public $applicationContext = "CORE";
     /**
      * @var RequiredAccessInfo
      */

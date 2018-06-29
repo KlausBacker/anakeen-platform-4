@@ -15,7 +15,7 @@ class CheckOrder extends CheckData
      */
     protected $attrIds;
     /**
-     * @var \Anakeen\Core\SmartStructure 
+     * @var \Anakeen\Core\SmartStructure
      */
     protected $family;
 
@@ -29,14 +29,15 @@ class CheckOrder extends CheckData
     {
         $this->famName = isset($data[1]) ? trim($data[1]) : null;
         $this->attrIds = getOrder($data);
-        
+
         $this->CheckOrderFamily();
         if (!$this->hasErrors()) {
             $this->CheckOrderAttribute();
         }
-        
+
         return $this;
     }
+
     /**
      * Get the parsed family name or bool(false) if family name could
      * not be parsed.
@@ -47,6 +48,7 @@ class CheckOrder extends CheckData
     {
         return (isset($this->famName) ? $this->famName : false);
     }
+
     /**
      * Get the parsed attributes ids or bool(false) if attributes ids
      * could not be parsed.
@@ -57,12 +59,13 @@ class CheckOrder extends CheckData
     {
         return (isset($this->attrIds) ? $this->attrIds : false);
     }
+
     /**
      * check
      * check
      * @return void
      */
-    protected function CheckOrderFamily()
+    protected function checkOrderFamily()
     {
         if ($this->famName) {
             if (!$this->checkName($this->famName)) {
@@ -78,7 +81,7 @@ class CheckOrder extends CheckData
                         } else {
                             $canCreateError = $this->family->control('create');
                             if ($canCreateError) {
-                                $this->addError(ErrorCode::getError('ORDR0004', $this->famName));
+                                $this->addError(ErrorCode::getError('ORDR0004', \Anakeen\Core\ContextManager::getCurrentUser()->login, $this->famName));
                             }
                         }
                     }
@@ -90,11 +93,12 @@ class CheckOrder extends CheckData
             $this->addError(ErrorCode::getError('ORDR0006'));
         }
     }
+
     /**
      * check logical name
      * @return void
      */
-    protected function CheckOrderAttribute()
+    protected function checkOrderAttribute()
     {
         if ($this->family) {
             foreach ($this->attrIds as $aid) {
@@ -104,7 +108,7 @@ class CheckOrder extends CheckData
             }
         }
     }
-    
+
     private function checkName($name)
     {
         if ($name && (!is_numeric($name))) {

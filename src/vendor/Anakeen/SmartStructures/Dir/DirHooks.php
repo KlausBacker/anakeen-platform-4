@@ -305,8 +305,6 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             }
 
             if ($err == "") {
-                global $action;
-                $action->AddActionDone("ADDFILE", $this->initid);
 
                 $this->updateFldRelations();
                 // use post virtual method
@@ -627,9 +625,6 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             $this->updateFldRelations();
             $err = $this->postRemoveDocument($docid);
         }
-
-        global $action;
-        $action->AddActionDone("DELFILE", $this->initid);
 
         return $err;
     }

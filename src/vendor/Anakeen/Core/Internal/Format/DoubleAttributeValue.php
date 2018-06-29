@@ -9,7 +9,7 @@ class DoubleAttributeValue extends FormatAttributeValue
     public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, $decimalSeparator = ',')
     {
         parent::__construct($oa, $v);
-        $lang = \Anakeen\Core\ContextManager::getApplicationParam("CORE_LANG");
+        $lang = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG");
         if ($lang == "fr_FR") {
             if (is_array($this->displayValue)) {
                 foreach ($this->displayValue as $k => $v) {

@@ -22,9 +22,6 @@
     </pre-install>
 
     <post-install>
-        <process command="./ank.php --system --localeGen"/>
-
-        <process command="./ank.php --script=manageApplications --method=init --appname=CORETEST" />
     </post-install>
 
     <pre-upgrade>
@@ -37,7 +34,6 @@
     </pre-upgrade>
 
     <post-upgrade>
-        <process command="./ank.php --script=manageApplications --method=update --appname=CORETEST" />
     </post-upgrade>
 
 </module>

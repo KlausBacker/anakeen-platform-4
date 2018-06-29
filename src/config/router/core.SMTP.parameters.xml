@@ -1,44 +1,44 @@
 <?xml version="1.0"?>
-<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
-  <router:parameters>
-    <router:parameter name="SMTP_HOST">
-      <router:value/>
-      <router:description>SMTP hostname</router:description>
-      <router:access>admin</router:access>
-      <router:category>SMTP</router:category>
-    </router:parameter>
-    <router:parameter name="SMTP_PORT">
-      <router:value>25</router:value>
-      <router:description>SMTP Port number</router:description>
-      <router:access>admin</router:access>
-      <router:category>SMTP</router:category>
-    </router:parameter>
-    <router:parameter name="SMTP_LOGIN">
-      <router:value/>
-      <router:description>SMTP Login</router:description>
-      <router:access>admin</router:access>
-      <router:category>SMTP</router:category>
-    </router:parameter>
-    <router:parameter name="SMTP_PASSWORD">
-      <router:value/>
-      <router:description>SMTP Password</router:description>
-      <router:type>password</router:type>
-      <router:category>SMTP</router:category>
-      <router:access>admin</router:access>
-    </router:parameter>
-    <router:parameter name="SMTP_FROM">
-      <router:value/>
-      <router:description>SMTP From (mail address)</router:description>
-      <router:type>text</router:type>
-      <router:category>SMTP</router:category>
-      <router:access>admin</router:access>
-    </router:parameter>
-    <router:parameter name="SMTP_SENDER">
-      <router:value/>
-      <router:description>SMTP Sender (mail address)</router:description>
-      <router:type>text</router:type>
-      <router:category>SMTP</router:category>
-      <router:access>admin</router:access>
-    </router:parameter>
-  </router:parameters>
-</router:config>
+<sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
+  <sde:parameters namespace="Core">
+    <sde:parameter name="SMTP_HOST">
+      <sde:category>SMTP</sde:category>
+      <sde:description>SMTP hostname</sde:description>
+      <sde:value/>
+      <sde:access>admin</sde:access>
+    </sde:parameter>
+    <sde:parameter name="SMTP_PORT">
+      <sde:category>SMTP</sde:category>
+      <sde:description>SMTP Port number</sde:description>
+      <sde:value>25</sde:value>
+      <sde:access>admin</sde:access>
+    </sde:parameter>
+    <sde:parameter name="SMTP_LOGIN">
+      <sde:category>SMTP</sde:category>
+      <sde:description>SMTP Login</sde:description>
+      <sde:value/>
+      <sde:access>admin</sde:access>
+    </sde:parameter>
+    <sde:parameter name="SMTP_PASSWORD">
+      <sde:category>SMTP</sde:category>
+      <sde:description>SMTP Password</sde:description>
+      <sde:value/>
+      <sde:type>password</sde:type>
+      <sde:access>admin</sde:access>
+    </sde:parameter>
+    <sde:parameter name="SMTP_FROM">
+      <sde:category>SMTP</sde:category>
+      <sde:description>SMTP From (mail address)</sde:description>
+      <sde:value/>
+      <sde:type>text</sde:type>
+      <sde:access>admin</sde:access>
+    </sde:parameter>
+    <sde:parameter name="SMTP_SENDER">
+      <sde:category>SMTP</sde:category>
+      <sde:description>SMTP Sender (mail address)</sde:description>
+      <sde:value/>
+      <sde:type>text</sde:type>
+      <sde:access>admin</sde:access>
+    </sde:parameter>
+  </sde:parameters>
+</sde:config>

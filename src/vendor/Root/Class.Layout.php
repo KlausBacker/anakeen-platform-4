@@ -91,14 +91,8 @@ class Layout
     protected $pkey = array();
     
     protected $zoneLevel = 0;
-    /**
-     * @var \Anakeen\Core\Internal\Action
-     */
-    public $action = null;
-    //########################################################################
-    //# Public methods
-    //#
-    //#
+
+
     
     
     /**
@@ -106,21 +100,17 @@ class Layout
      *
      *
      * @param string $caneva file path of the template
-     * @param \Anakeen\Core\Internal\Action $action current action
      * @param string $template if no $caneva found or is empty use this template.
      */
-    public function __construct($caneva = "", $action = null, $template = "[OUT]")
+    public function __construct(string $caneva = "", string $template = "[OUT]")
     {
         $this->initialFile=$caneva;
-        $this->LOG = new \Anakeen\Core\Internal\Log("", "Layout");
         if (($template == "[OUT]") && ($caneva != "")) {
             $this->template = sprintf(_("Template [%s] not found"), $caneva);
         } else {
             $this->template = $template;
         }
-        if ($action) {
-            $this->action = & $action;
-        }
+
         $this->generation = "";
         $this->noGoZoneMapping = uniqid($this->noGoZoneMapping);
         $this->escapeBracket = uniqid($this->escapeBracket);
@@ -304,14 +294,9 @@ class Layout
         }, $out);
     }
     
-    protected function ParseZone(&$out)
-    {
-        $out = preg_replace_callback('/\[ZONE\s+([^:]*):([^\]]*)\]/', function ($matches) {
-            return $this->execute($matches[1], $matches[2]);
-        }, $out);
-    }
+
     
-    protected function ParseKey(&$out)
+    protected function parseKey(&$out)
     {
         if (isset($this->rkey)) {
             $out = str_replace($this->pkey, $this->rkey, $out);
@@ -330,78 +315,7 @@ class Layout
             // bind_textdomain_codeset("what", 'UTF-8');
         }
     }
-    
-    protected function execute($appname, $actionargn)
-    {
-        $limit = \Anakeen\Core\ContextManager::getApplicationParam('CORE_LAYOUT_EXECUTE_RECURSION_LIMIT', 30);
-        if (is_numeric($limit) && $limit > 0) {
-            $loop = $this->getRecursionCount(__CLASS__, __FUNCTION__);
-            if ($loop['count'] >= $limit) {
-                $this->printRecursionCountError(__CLASS__, __FUNCTION__, $loop['count']);
-            }
-        }
-        
-        if ($this->action == "") {
-            return ("Layout not used in a core environment");
-        }
-        
-        $this->zoneLevel++;
-        // analyse action & its args
-        $actionargn = str_replace(":", "--", $actionargn); //For buggy function parse_url in PHP 4.3.1
-        $acturl = parse_url($actionargn);
-        $actionname = $acturl["path"];
-        
-        global $ZONE_ARGS;
-        $OLD_ZONE_ARGS = $ZONE_ARGS;
-        if (isset($acturl["query"])) {
-            $acturl["query"] = str_replace("--", ":", $acturl["query"]); //For buggy function parse_url in PHP 4.3.1
-            $zargs = explode("&", $acturl["query"]);
-            foreach ($zargs as $v) {
-                if (preg_match("/([^=]*)=(.*)/", $v, $regs)) {
-                    // memo zone args for next action execute
-                    $ZONE_ARGS[$regs[1]] = urldecode($regs[2]);
-                }
-            }
-        }
-        
-        if ($appname != $this->action->parent->name) {
-            $appl = new \Anakeen\Core\Internal\Application();
-            $appl->Set($appname, $this->action->parent);
-        } else {
-            $appl = & $this->action->parent;
-        }
-        
-        if (($actionname != $this->action->name) || ($OLD_ZONE_ARGS != $ZONE_ARGS)) {
-            $act = new \Anakeen\Core\Internal\Action();
-            $res = '';
-            if ($act->Exists($actionname, $appl->id)) {
-                $act->Set($actionname, $appl);
-            } else {
-                // it's a no-action zone (no ACL, cannot be call directly by URL)
-                $act->name = $actionname;
-                
-                $res = $act->CompleteSet($appl);
-            }
-            if ($res == "") {
-                $res = $act->execute();
-            }
-            
-            $jsRefs = $act->parent->getJsRef();
-            foreach ($jsRefs as $jsRefe) {
-                $this->action->parent->addJsRef($jsRefe);
-            }
-            $cssRefs = $act->parent->getCssRef();
-            foreach ($cssRefs as $cssRefe) {
-                $this->action->parent->addCssRef($cssRefe);
-            }
-            
-            $ZONE_ARGS = $OLD_ZONE_ARGS; // restore old zone args
-            $this->zoneLevel--;
-            return ($res);
-        } else {
-            return ("Fatal loop : $actionname is called in $actionname");
-        }
-    }
+
     /**
      * add a simple key /value in template
      * the key will be replaced by value when [KEY] is found in template
@@ -447,22 +361,7 @@ class Layout
         return "";
     }
     
-    protected function ParseRef(&$out)
-    {
-        if (!$this->action) {
-            return;
-        }
-        $out = preg_replace_callback('/\[IMG:([^\|\]]+)\|([0-9]+)\]/', function ($matches) {
-            global $action;
-            return $action->parent->getImageLink($matches[1], true, $matches[2]);
-        }, $out);
-        
-        $out = preg_replace_callback('/\[IMG:([^\]\|]+)\]/', function ($matches) {
-            global $action;
-            return $action->parent->getImageLink($matches[1]);
-        }, $out);
 
-    }
     
     protected function ParseText(&$out)
     {
@@ -645,17 +544,12 @@ class Layout
         $this->ParseBlock($out);
         // Restore rif because parseBlock can change it
         $this->rif = $this->rkey;
-        // Application parameters conditions
-        $this->parseApplicationParameters($out, true);
         
         $this->ParseIf($out);
         // Parse IMG: and LAY: tags
         $this->ParseText($out);
         $this->ParseKey($out);
         // Application parameters values
-        $this->parseApplicationParameters($out, false);
-        $this->ParseRef($out);
-        $this->ParseZone($out);
         $this->ParseJs($out);
         $this->ParseCss($out);
         
@@ -673,35 +567,7 @@ class Layout
 
         return ($out);
     }
-    /**
-     * Use application parameters like keys
-     * @param string $out current template
-     * @param bool $addIf if true replace key with application parameters else use conditions
-     */
-    protected function parseApplicationParameters(&$out, $addIf)
-    {
-        if (is_object($this->action) && (!empty($this->action->parent))) {
-            $keys = $pval = array();
-            $list = $this->action->parent->GetAllParam();
-            if ($addIf) {
-                foreach ($list as $k => $v) {
-                    $this->rif[$k] = !empty($v);
-                }
-            } elseif ($this->zoneLevel === 0) {
-                foreach ($list as $k => $v) {
-                    if ($v === null) {
-                        $v = '';
-                    } elseif (!is_scalar($v)) {
-                        $v = "notScalar";
-                    }
-                    $keys[] = "[$k]";
-                    $pval[] = $v;
-                }
-            }
-            
-            $out = str_replace($keys, $pval, $out);
-        }
-    }
+
     /**
      * Count number of execute() calls on the stack to detect infinite recursive loops
      * @param string $class name to track
@@ -762,58 +628,5 @@ class Layout
         exit;
     }
 
-    /**
-     * @param $app
-     * @param $layfile
-     *
-     * @return string
-     * @throws Exception
-     */
-    public static function getLayoutFile($app, $layfile)
-    {
-         $action= \Anakeen\Core\ContextManager::getCurrentAction();
-        if (strstr($layfile, '..')) {
-            return "";
-        }
-        if (!strstr($layfile, '.')) {
-            $layfile .= ".xml";
-        }
-        $socStyle = \Anakeen\Core\ContextManager::getApplicationParam("CORE_SOCSTYLE");
-        $style = \Anakeen\Core\ContextManager::getApplicationParam("STYLE");
-        $appDir = $action->parent->rootdir;
 
-        if ($socStyle != "") {
-            $file = $appDir . "/STYLE/$socStyle/Layout/$layfile";
-            if (file_exists($file)) {
-                return ($file);
-            }
-
-            $file = $appDir . "/STYLE/$socStyle/Layout/" . strtolower($layfile);
-            if (file_exists($file)) {
-                return ($file);
-            }
-        } elseif ($style != "") {
-            $file = $appDir . "/STYLE/$style/Layout/$layfile";
-            if (file_exists($file)) {
-                return ($file);
-            }
-
-            $file = $appDir . "/STYLE/$style/Layout/" . strtolower($layfile);
-            if (file_exists($file)) {
-                return ($file);
-            }
-        }
-
-        $file = $appDir . "/$app/Layout/$layfile";
-        if (file_exists($file)) {
-            return ($file);
-        }
-
-        $file = $appDir . "/$app/Layout/" . strtolower($layfile);
-        if (file_exists($file)) {
-            return ($file);
-        }
-
-        throw new Exception(sprintf("Cannot find Layout \"%s:%s\"", $app, $layfile));
-    }
 }

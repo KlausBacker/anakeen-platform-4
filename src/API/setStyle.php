@@ -8,18 +8,14 @@ $usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("apply given style - if no style is set then update current style");
 $styFilePath = $usage->addOptionalParameter("style", "path to style file");
 
-$action=\Anakeen\Core\ContextManager::getCurrentAction();
 if (!$styFilePath) {
-    /**
-     * @var \Anakeen\Core\Internal\Action $action
-     */
-    $defautStyle = $action->getParam("STYLE");
+    $defautStyle = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "STYLE");
     $styFilePath = sprintf("STYLE/%s/%s.sty", $defautStyle, $defautStyle);
 }
 $verbose = ('yes' === $usage->addOptionalParameter('verbose', 'verbose', array(
-    'yes',
-    'no'
-), 'no'));
+        'yes',
+        'no'
+    ), 'no'));
 $usage->verify();
 
 chdir(DEFAULT_PUBDIR);
@@ -30,31 +26,25 @@ class styleManager
     const DEFAULT_CSS_PARSER_DEPLOY_CLASS = '\Dcp\Style\dcpCssConcatParser';
     const DEFAULT_CSS_PARSER_RUNTIME_CLASS = null;
     const GLOBAL_RULES_DIR_NAME = "global-rules.d";
-    
+
     protected $verbose = false;
     protected $logIndent = 0;
     protected $styleConfig = array();
-    /** @var \Anakeen\Core\Internal\Action $action */
-    protected $action = null;
-    
+
     protected function log($msg)
     {
         if ($this->verbose) {
             print str_repeat("\t", $this->logIndent) . " -- " . $msg . PHP_EOL;
         }
     }
-    
-    public function __construct(\Anakeen\Core\Internal\Action $action)
-    {
-        $this->action = $action;
-    }
-    
+
+
     public function loadStyle($styFilePath)
     {
         $styleDefinition = $this->loadStyleDefinition($styFilePath);
         $this->computeStyleColors($styleDefinition);
     }
-    
+
     protected function loadStyleDefinition($styFilePath)
     {
         $styFilePath = DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . $styFilePath;
@@ -69,7 +59,7 @@ class styleManager
         }
         /** @noinspection PhpIncludeInspection */
         require $styFilePath;
-        
+
         $styleDefinition = array(
             "sty_desc" => empty($sty_desc) ? array() : $sty_desc,
             "sty_const" => empty($sty_const) ? array() : $sty_const,
@@ -77,22 +67,22 @@ class styleManager
             "sty_local" => empty($sty_local) ? array() : $sty_local,
             "sty_rules" => empty($sty_rules) ? array() : $sty_rules
         );
-        
+
         if (!isset($styleDefinition['sty_desc']) || !isset($styleDefinition['sty_desc']['name'])) {
             throw new \Dcp\Style\Exception("STY0002", "Style definition does not contains style name");
         }
         // init with parent style
         if (!empty($sty_inherit)) {
             $this->log("using parent style file: $sty_inherit");
-            $this->logIndent+= 1;
+            $this->logIndent += 1;
             $parentStyleDefinition = $this->loadStyleDefinition($sty_inherit);
             $styleDefinition = array_replace_recursive($parentStyleDefinition, $styleDefinition);
-            $this->logIndent-= 1;
+            $this->logIndent -= 1;
         }
         //load rules (rules.d)
         $customRulesDirPath = dirname($styFilePath) . DIRECTORY_SEPARATOR . self::CUSTOM_RULES_DIR_NAME;
         if (is_dir($customRulesDirPath) && is_readable($customRulesDirPath)) {
-            $customRules = & $styleDefinition['sty_rules'];
+            $customRules = &$styleDefinition['sty_rules'];
             $customRulesFiles = scandir($customRulesDirPath);
             if (false !== $customRulesFiles) {
                 foreach ($customRulesFiles as $customRulesFile) {
@@ -106,7 +96,7 @@ class styleManager
         //load global rules (rules.d)
         $globalRulesDirPath = dirname(dirname($styFilePath)) . DIRECTORY_SEPARATOR . self::GLOBAL_RULES_DIR_NAME;
         if (is_dir($globalRulesDirPath) && is_readable($globalRulesDirPath)) {
-            $globalRules = & $styleDefinition['sty_rules'];
+            $globalRules = &$styleDefinition['sty_rules'];
             $globalRulesFiles = scandir($globalRulesDirPath);
             if (false !== $globalRulesFiles) {
                 foreach ($globalRulesFiles as $globalRulesFile) {
@@ -117,10 +107,10 @@ class styleManager
                 }
             }
         }
-        
+
         return $styleDefinition;
     }
-    
+
     protected function loadCustomRulesFromFile($customRulesFilePath)
     {
         $this->log("load custom rules from $customRulesFilePath");
@@ -136,23 +126,25 @@ class styleManager
         require $customRulesFilePath;
         return empty($sty_rules) ? array() : $sty_rules;
     }
-    
+
     protected function computeStyleColors($styleDefinition)
     {
         $styleConfig = $styleDefinition;
         // compute colors
-        
+
         /** @noinspection PhpIncludeInspection */
         require_once "Lib.Color.php";
-        
+        /**
+         * @var array $sty_const
+         */
         $computedColors = array();
-        
+
         if (empty($styleConfig['sty_colors'])) {
             throw new \Dcp\Style\Exception("STY0002", "Style definition does not contains sty_colors");
         }
-        
+
         $styleBaseColors = $styleConfig['sty_colors'];
-        
+
         $darkStyle = false;
         $whiteHsl = array();
         if (isset($sty_const["COLOR_WHITE"])) {
@@ -176,25 +168,25 @@ class styleManager
             for ($i = 0; $i < 10; $i++) {
                 $currentStepColor = HSL2RGB($baseHue, $baseSaturation, $currentStepLuminance);
                 $computedColors[$colorKey][$i] = $currentStepColor;
-                $currentStepLuminance+= $luminanceStep;
+                $currentStepLuminance += $luminanceStep;
             }
         }
-        
+
         $styleConfig['computed_colors'] = $computedColors;
-        
+
         $this->styleConfig = $styleConfig;
     }
-    
+
     public function applyStyle()
     {
         $styleConfig = $this->styleConfig;
-        
+
         if (empty($styleConfig['sty_desc']) || empty($styleConfig['sty_desc']['name'])) {
             throw new \Dcp\Style\Exception("STY0002", "Style definition does not contains name");
         }
-        
+
         $param = new \Anakeen\Core\Internal\Param();
-        
+
         $styleName = $styleConfig['sty_desc']['name'];
         $style = new \Anakeen\Core\Internal\Style('', $styleName);
         $style->description = empty($styleConfig['sty_desc']['description']) ? '' : $styleConfig['sty_desc']['description'];
@@ -202,7 +194,7 @@ class styleManager
             print "\n[WARNING] use of parsable property on style is deprecated\n\n";
             $style->parsable = (('Y' === $styleConfig['sty_desc']['parsable']) ? 'Y' : 'N');
         }
-        
+
         if (!$style->isAffected()) {
             $style->name = $styleName;
             $err = $style->add();
@@ -225,106 +217,92 @@ class styleManager
                 $oldParam->delete();
             }
         }
-        
+
         $paramType = \Anakeen\Core\Internal\Param::PARAM_STYLE . $styleName;
         // register color params ($styleConfig['sty_computed_colors'])
         $this->log("register color params");
-        $this->logIndent+= 1;
-        foreach ($styleConfig['computed_colors'] as $colorClass => $colorList) {
-            foreach ($colorList as $colorIndex => $color) {
-                $paramName = "COLOR_{$colorClass}{$colorIndex}";
-                // if value is a reference to another parameter
-                $dynamicColorValue = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue($color);
-                if (!empty($dynamicColorValue)) {
-                    $this->log("dynamic value " . var_export($dynamicColorValue, true) . " set for $paramName ($color)");
-                    $color = $dynamicColorValue;
-                } else {
-                    $this->log("static value " . var_export($color, true) . " set for $paramName ($color)");
-                }
-                $param->Set($paramName, $color, $paramType, 1);
-                $this->action->parent->SetVolatileParam($paramName, $color); //add parameter in session cache
-            }
-        }
-        $this->logIndent-= 1;
+        $this->logIndent += 1;
+
+        $this->logIndent -= 1;
         // register other params ($styleConfig['sty_const'])
         $this->log("register other params");
-        $this->logIndent+= 1;
+        $this->logIndent += 1;
         foreach ($styleConfig['sty_const'] as $paramName => $paramValue) {
             // if value is a reference to another parameter
-            $dynamicParamValue = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue($paramValue);
+            $dynamicParamValue = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $paramValue);
             if (!empty($dynamicParamValue)) {
                 $this->log("dynamic value " . var_export($dynamicParamValue, true) . " set for $paramName ($paramValue)");
                 $paramValue = $dynamicParamValue;
             } else {
                 $this->log("static value " . var_export($paramValue, true) . " set for $paramName ($paramValue)");
             }
-            $param->Set($paramName, $paramValue, $paramType, 1);
-            $this->action->parent->SetVolatileParam($paramName, $paramValue); //add parameter in session cache
+            $param->set($paramName, $paramValue, $paramType, 1);
+            \Anakeen\Core\Internal\ContextParameterManager::setVolatile(\Anakeen\Core\Settings::NsSde, $paramName, $paramValue); //add parameter in session cache
         }
-        $this->logIndent-= 1;
+        $this->logIndent -= 1;
         // volatile register parsing params ($styleConfig['sty_local'])
         $this->log("declare volatile params");
-        $this->logIndent+= 1;
+        $this->logIndent += 1;
         foreach ($styleConfig['sty_local'] as $paramName => $paramValue) {
             // if value is a reference to another parameter
-            $dynamicParamValue = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue($paramValue);
+            $dynamicParamValue = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $paramValue);
             if (!empty($dynamicParamValue)) {
                 $this->log("dynamic value " . var_export($dynamicParamValue, true) . " used for $paramName ($paramValue)");
                 $paramValue = $dynamicParamValue;
             } else {
                 $this->log("static value " . var_export($paramValue, true) . " used for $paramName ($paramValue)");
             }
-            $this->action->parent->SetVolatileParam($paramName, $paramValue); //add parameter in session cache
+            \Anakeen\Core\Internal\ContextParameterManager::setVolatile(\Anakeen\Core\Settings::NsSde, $paramName, $paramValue); //add parameter in session cache
         }
-        $this->logIndent-= 1;
+        $this->logIndent -= 1;
         // apply sty_rules
         $this->deployStyleFiles($styleConfig['sty_rules']);
-        
+
         $style->setRules($styleConfig['sty_rules']);
         $err = $style->modify();
         if ($err) {
             throw new \Dcp\Style\Exception("STY0003", "error when modifying style");
         }
-        \Anakeen\Core\Internal\ApplicationParameterManager::setCommonParameterValue("CORE", "STYLE", $styleName);
+        \Anakeen\Core\ContextManager::setParameterValue(Anakeen\Core\Settings::NsSde, "STYLE", $styleName);
     }
-    
+
     protected function deployStyleFiles(array $rules)
     {
         $this->log("deploy style files");
-        $this->logIndent+= 1;
-        
+        $this->logIndent += 1;
+
         $filesDefinition = array();
         $cssRules = empty($rules['css']) ? array() : $rules['css'];
         $filesDefinition['css'] = $this->deployStyleCssFiles($cssRules, 'css');
-        
-        $this->logIndent-= 1;
-        
+
+        $this->logIndent -= 1;
+
         return $filesDefinition;
     }
-    
+
     protected function deployStyleCssFiles(array $cssRules, $targetDirName)
     {
         $this->log("deploy css files");
         $filesDefinition = array();
-        
+
         $pubDir = DEFAULT_PUBDIR;
-        $targetDirName="public".DIRECTORY_SEPARATOR.$targetDirName;
+        $targetDirName = "public" . DIRECTORY_SEPARATOR . $targetDirName;
         $targetDir = $pubDir . DIRECTORY_SEPARATOR . $targetDirName;
         // clean previous files
         $this->deleteDirectory($targetDir);
         mkdir($targetDir);
         // deploy new css files
-        $this->logIndent+= 1;
+        $this->logIndent += 1;
         foreach ($cssRules as $targetFile => $rule) {
             $this->log("processing rules for $targetFile");
             // check src file
             if (empty($rule['src'])) {
                 throw new \Dcp\Style\Exception("STY0002", "rule for $targetFile does not contains src");
             }
-            
+
             $src = $rule['src'];
             $destFile = $targetDirName . DIRECTORY_SEPARATOR . $targetFile;
-            
+
             $deployParserClass = self::DEFAULT_CSS_PARSER_DEPLOY_CLASS;
             $deployParserOptions = array();
             if (!empty($rule['deploy_parser'])) {
@@ -345,11 +323,11 @@ class styleManager
             $parser = new $deployParserClass($src, $deployParserOptions, $this->styleConfig);
             $parser->gen($destFile);
         }
-        $this->logIndent-= 1;
-        
+        $this->logIndent -= 1;
+
         return $filesDefinition;
     }
-    
+
     protected function deleteDirectory($dir)
     {
         if (!file_exists($dir)) {
@@ -369,17 +347,17 @@ class styleManager
                 }
             };
         }
-        
+
         return rmdir($dir);
     }
-    
+
     public function setVerbose($verbose)
     {
         $this->verbose = $verbose;
     }
 }
-/** @global $action Action */
-$sm = new styleManager($action);
+
+$sm = new styleManager();
 $sm->setVerbose($verbose);
 $sm->loadStyle($styFilePath);
 $sm->applyStyle();

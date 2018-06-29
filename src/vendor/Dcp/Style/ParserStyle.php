@@ -3,10 +3,6 @@
 
 namespace Dcp\Style;
 
-class Exception extends \Dcp\Exception
-{
-
-}
 
 
 
@@ -122,7 +118,7 @@ class dcpCssTemplateParser implements ICssParser
             throw new Exception("STY0005", "$fullTargetDirname dir could not be created for file $destFile");
         }
 
-        $lay = new \Layout("", $action, $template);
+        $lay = new \Layout("", $template);
         $template = $lay->gen();
         $keyForStyle = preg_replace("/css\//", "", $destFile);
         if (!isset($this->_styleConfig["sty_rules"]["css"][$keyForStyle]["flags"])

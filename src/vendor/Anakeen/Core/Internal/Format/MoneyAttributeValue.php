@@ -10,7 +10,7 @@ class MoneyAttributeValue extends FormatAttributeValue
     {
         parent::__construct($oa, $v);
 
-        $lang = \Anakeen\Core\ContextManager::getApplicationParam("CORE_LANG");
+        $lang = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG");
         if ($lang == "fr_FR") {
         }
         if (is_array($this->displayValue)) {

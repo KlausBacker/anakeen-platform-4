@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema elementFormDefault="qualified" targetNamespace="http://www.anakeen.com/ns/smart/v1/"
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="http://www.anakeen.com/ns/smart/v1/"
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
            xmlns:v1="http://www.anakeen.com/ns/smart/v1/">
+
     <xs:element name="config" type="v1:configType">
         <xs:annotation>
             <xs:documentation>
@@ -9,7 +11,6 @@
                 <p>To configure Smart Structure and Smart Access</p>
             </xs:documentation>
         </xs:annotation>
-
     </xs:element>
 
     <xs:complexType name="attr-returnType">

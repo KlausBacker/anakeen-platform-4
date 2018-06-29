@@ -25,7 +25,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
     /**
      * Test that exported documents have no param columns
      * @param string $archiveFile
-     * @param $needles
+     * @param        $needles
      * @throws \Dcp\Exception
      * @dataProvider dataExportImage
      */
@@ -35,7 +35,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         include_once 'Lib.FileDir.php';
 
         $oImport = new \ImportDocument();
-        $oImport->importDocuments(self::getAction(), $archiveFile, false, true);
+        $oImport->importDocuments($archiveFile, false, true);
         $err = $oImport->getErrorMessage();
         if ($err) {
             throw new \Dcp\Exception($err);
@@ -47,10 +47,11 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         $testExtractFolder = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/testexportextractimage");
 
         $this->clearSetHttpVar();
-        SetHttpVar("wfile", "Y");
-        SetHttpVar("eformat", "I");
-        SetHttpVar("app", "FDL");
-        exportfld(self::getAction(), $folderId, $famid, $testFolder);
+        $opts= [
+            "wfile"=>true,
+            "eformat"=>"I"
+        ];
+        exportfld($folderId, $famid, $testFolder, false, $opts);
 
         $testarchivefile = $testFolder . "/fdl.zip";
         $err = extractTar($testarchivefile, $testExtractFolder);
@@ -68,10 +69,10 @@ class TestExportCsv extends TestCaseDcpCommonFamily
     /**
      * Test that exported documents have no param columns
      * @param string|int $folderId
-     * @param array $expectDoc
-     * @param string $separator
-     * @param string $enclosure
-     * @param array $expectedProfil
+     * @param array      $expectDoc
+     * @param string     $separator
+     * @param string     $enclosure
+     * @param array      $expectedProfil
      * @dataProvider dataExportFolder
      */
     public function testExportFolder($folderId, array $expectDoc, $separator, $enclosure, array $expectedProfil)
@@ -79,16 +80,18 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         include_once 'FDL/exportfld.php';
 
         $this->clearSetHttpVar();
-        SetHttpVar("wfile", "N");
-        SetHttpVar("wprof", ($expectedProfil ? "Y" : "N"));
-        SetHttpVar("eformat", "I");
-        SetHttpVar("app", "FDL");
-        SetHttpVar("csv-enclosure", $enclosure);
-        SetHttpVar("csv-separator", $separator);
+
+        $opts = [
+            "wfile" => false,
+            "wprof" => ($expectedProfil ? true: false),
+            "eformat" => "I",
+            "csv-enclosure" => $enclosure,
+            "csv-separator" => $separator,
+        ];
 
         $exportOutput = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/testExport") . ".csv";
 
-        exportfld(self::getAction(), $folderId, 0, $exportOutput);
+        exportfld($folderId, 0, $exportOutput, false, $opts);
 
         $this->assertTrue(file_exists($exportOutput), sprintf('Export File "%s" nor create', $exportOutput));
 
@@ -128,9 +131,9 @@ class TestExportCsv extends TestCaseDcpCommonFamily
     /**
      * Test that exported documents have no param columns
      * @param string|int $familyId
-     * @param array $expectData
-     * @param string $separator
-     * @param string $enclosure
+     * @param array      $expectData
+     * @param string     $separator
+     * @param string     $enclosure
      * @dataProvider dataExportFamily
      */
     public function testExportamily($familyId, array $expectData, $separator, $enclosure)
@@ -138,12 +141,13 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         include_once('FDL/exportfld.php');
 
         $this->clearSetHttpVar();
-        SetHttpVar("wfile", "N");
-        SetHttpVar("wprof", "Y");
-        SetHttpVar("eformat", "I");
-        SetHttpVar("app", "FDL");
-        SetHttpVar("csv-enclosure", $enclosure);
-        SetHttpVar("csv-separator", $separator);
+        $opts = [
+            "wfile" => false,
+            "wprof" => true,
+            "eformat" => "I",
+            "csv-enclosure" => $enclosure,
+            "csv-separator" => $separator,
+        ];
         /**
          * @var \Anakeen\SmartStructures\Dir\DirHooks $tmpFolder
          */
@@ -154,7 +158,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         $this->assertEmpty($err, "Error when create family folder");
         $exportOutput = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/testExport") . ".csv";
 
-        exportfld(self::getAction(), $tmpFolder->id, 0, $exportOutput);
+        exportfld($tmpFolder->id, 0, $exportOutput, false, $opts);
 
         $this->assertTrue(file_exists($exportOutput), sprintf('Export File "%s" nor create', $exportOutput));
 
@@ -177,7 +181,6 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         }
         //unlink($exportOutput);
     }
-
 
 
     /**

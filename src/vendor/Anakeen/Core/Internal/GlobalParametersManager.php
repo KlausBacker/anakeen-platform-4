@@ -2,25 +2,25 @@
 
 namespace Anakeen\Core\Internal;
 
-use Anakeen\Core\ContextManager;
+
+use Anakeen\Core\Settings;
 
 class GlobalParametersManager
 {
 
     public static function initialize()
     {
-        $core = ContextManager::getCurrentApplication();
-        $absindex = $core->GetParam("CORE_URLINDEX");
+        $absindex = ContextParameterManager::getValue(Settings::NsSde, "CORE_URLINDEX");
         if ($absindex == '') {
             $absindex = "./";
         }
 
         $core_externurl = ($absindex) ? self::stripUrlSlahes($absindex) : ".";
-        $core_mailaction = $core->getParam("CORE_MAILACTION");
+        $core_mailaction = ContextParameterManager::getValue(Settings::NsSde, "CORE_MAILACTION");
         $core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction) : ($core_externurl . "api/v2/documents/%INITID%.html");
 
-        $core->SetVolatileParam("CORE_EXTERNURL", $core_externurl);
-        $core->SetVolatileParam("CORE_MAILACTIONURL", $core_mailactionurl);
+        ContextParameterManager::setVolatile(\Anakeen\Core\Settings::NsSde, "CORE_EXTERNURL", $core_externurl);
+        ContextParameterManager::setVolatile(\Anakeen\Core\Settings::NsSde, "CORE_MAILACTIONURL", $core_mailactionurl);
     }
 
     /**

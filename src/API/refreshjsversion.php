@@ -1,8 +1,4 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * regenerate js version file
  *
@@ -12,25 +8,13 @@
  * @package FDL
  * @subpackage WSH
  */
-/**
- */
+
 
 $usage = new \Anakeen\Script\ApiUsage();
-$usage->setDefinitionText("regenerate js version file");
+$usage->setDefinitionText("Regenerate WVERSION");
 $usage->verify();
 
-$nv = getJsVersion();
+$nv=uniqid();
 
-$fjs = DEFAULT_PUBDIR . "/Apps/CORE/wversion.js.in";
-
-$fc = file_get_contents($fjs);
-$fc = str_replace("%VERSION%", $nv, $fc);
-
-$cible = DEFAULT_PUBDIR . "/Apps/CORE/wversion.js";
-$fj = fopen($cible, "w");
-fputs($fj, $fc);
-fclose($fj);
-
-$action=\Anakeen\Core\ContextManager::getCurrentAction();
-$action->parent->param->Set("WVERSION", $nv + 1);
-print "$cible [$nv]\n";
+\Anakeen\Core\ContextManager::setParameterValue(Anakeen\Core\Settings::NsSde, "WVERSION", $nv);
+print "WVERSION: [$nv]\n";

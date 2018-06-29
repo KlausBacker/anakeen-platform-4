@@ -19,27 +19,6 @@ require_once("WHAT/Lib.FileMime.php");
 define("ALTSEPCHAR", ' --- ');
 define("SEPCHAR", ';');
 
-function add_import_file(\Anakeen\Core\Internal\Action & $action, $fimport, $dirid = 0)
-{
-    Anakeen\Core\Utils\System::setMaxExecutionTimeTo(300);
-    if ($dirid == 0) {
-        $dirid = GetHttpVars("dirid", 0); // directory to place imported doc
-    }
-    $analyze = (GetHttpVars("analyze", "N") == "Y"); // just analyze
-    $policy = GetHttpVars("policy", "update");
-    $reinit = GetHttpVars("reinitattr");
-    $reset = GetHttpVars("reset");
-    $comma = GetHttpVars("comma", SEPCHAR);
-    
-    $if = new ImportDocumentDescription($fimport);
-    $if->setImportDirectory($dirid);
-    $if->analyzeOnly($analyze);
-    $if->setPolicy($policy);
-    $if->reinitAttribute($reinit == "yes");
-    $if->reset($reset);
-    $if->setComma($comma);
-    return $if->importCsvFile();
-}
 /**
  * Add a document from csv import file
  * @param string $dbaccess database specification

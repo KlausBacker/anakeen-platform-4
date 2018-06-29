@@ -100,47 +100,14 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     protected static function connectUser($login = "admin")
     {
-        $action = ContextManager::getCurrentAction();
-        if (!$action) {
+        $user = ContextManager::getCurrentUser();
+        if (!$user) {
             $u = new \Anakeen\Core\Account();
             $u->setLoginName($login);
             \Anakeen\Core\ContextManager::initContext($u);
         }
     }
 
-    /**
-     * Current action
-     *
-     * @return \Anakeen\Core\Internal\Action
-     */
-    protected static function &getAction()
-    {
-        $action = ContextManager::getCurrentAction();
-        if (!$action) {
-            self::connectUser();
-        }
-        $action = ContextManager::getCurrentAction();
-        if (!$action->dbid) {
-            if (!$action->dbid) {
-                $action->initDbid();
-                if (!$action->dbid) {
-                    error_log(__METHOD__ . "lost action dbid");
-                }
-            }
-            $action->initDbid();
-        }
-        return $action;
-    }
-
-    /**
-     * Current application
-     *
-     * @return \Anakeen\Core\Internal\Application
-     */
-    protected static function getApplication()
-    {
-        return ContextManager::getCurrentApplication();
-    }
 
     /**
      * return a single value from DB
@@ -223,7 +190,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         $oImport->setCsvOptions(static::$importCsvSeparator, static::$importCsvEnclosure);
 
         $oImport->setVerifyAttributeAccess(false);
-        $cr = $oImport->importDocuments(self::getAction(), $realfile);
+        $cr = $oImport->importDocuments($realfile);
         $err = $oImport->getErrorMessage();
         if ($err) {
             throw new \Dcp\Exception($err);
@@ -338,7 +305,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     public function requiresCoreParamEquals($paramName, $requiredValue, $markTestIncomplete = true)
     {
-        $value = ContextManager::getApplicationParam($paramName, '');
+        $value = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $paramName, '');
         if ($value === $requiredValue) {
             return true;
         }

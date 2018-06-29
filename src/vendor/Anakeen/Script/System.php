@@ -30,6 +30,7 @@ class System
         $this->clearFileCache();
         $this->refreshJsVersion();
         $this->resetRouteConfig();
+        $this->localeGen();
         $this->style();
         $this->unStop();
     }

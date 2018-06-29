@@ -1,7 +1,7 @@
 {
     "routes": {
 
-        "Core:Test:Routes": {
+        "CoreTest::Routes": {
             "priority": 0,
             "callable": "\\Anakeen\\Routes\\Tests\\TestRouteConfig",
             "methods": [
@@ -10,10 +10,10 @@
             "pattern": "\/tests\/routes\/",
             "description": "Route config",
             "requiredAccess": null,
-            "name": "Core:Test:Routes",
+            "name": "CoreTest::Routes",
             "configFile": "testCore.xml"
         },
-        "Core:Test:Routes:Over1": {
+        "CoreTest::Routes:Over1": {
             "priority": 10,
             "callable": "\\Anakeen\\Routes\\Tests\\TestRouteConfig",
             "methods": [
@@ -22,11 +22,11 @@
             "pattern": "\/tests\/routes\/over1\/",
             "description": "Route override",
             "requiredAccess": null,
-            "name": "Core:Test:Routes:Over1",
+            "name": "CoreTest::Routes:Over1",
             "configFile": "testCore.xml, testCoreOverride.xml",
             "override": "partial"
         },
-        "Core:Test:Routes:Over2": {
+        "CoreTest::Routes:Over2": {
             "priority": 3,
             "callable": "\\Anakeen\\Routes\\Tests\\TestRouteConfig",
             "methods": [

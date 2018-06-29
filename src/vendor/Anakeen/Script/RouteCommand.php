@@ -123,7 +123,7 @@ class RouteCommand
         }
 
         if (is_callable($callable)) {
-            ShellManager::initContext($route->applicationContext ? $route->applicationContext : "CORE");
+            ShellManager::initContext();
             /**
              * @var Response $routeResponse
              */

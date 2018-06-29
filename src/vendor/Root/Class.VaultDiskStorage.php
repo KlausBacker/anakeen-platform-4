@@ -84,11 +84,7 @@ class VaultDiskStorage extends \Anakeen\Core\Internal\DbObj
     public $teng_lname;
     public $teng_id_file;
     public $teng_comment;
-    /**
-     * @var \Anakeen\Core\Internal\Log
-     * @deprecated
-     */
-    protected $logger;
+
     public $storage = 1;
     /**
      * @var VaultDiskFsStorage

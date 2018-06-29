@@ -1,21 +1,16 @@
 <?xml version="1.0"?>
-<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
-  <router:apps>
-    <router:app name="CORETEST" override="partial">
-      <router:description>Testing routes and add parameters</router:description>
-    </router:app>
-  </router:apps>
-  <router:routes>
-    <router:route name="Core:Test:Routes:Over1" override="partial">
-      <router:priority>10</router:priority>
-      <router:description>Route override</router:description>
-    </router:route>
-    <router:route name="Core:Test:Routes:Over2"  override="complete">
-      <router:priority>3</router:priority>
-      <router:callable>\Anakeen\Routes\Tests\TestRouteConfig</router:callable>
-      <router:method>PUT</router:method>
-      <router:pattern>/tests/routes/over2/</router:pattern>
-      <router:requiredAccess/>
-    </router:route>
-  </router:routes>
-</router:config>
+<sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
+  <sde:routes namespace="CoreTest">
+    <sde:route name="Routes:Over1" override="partial">
+      <sde:priority>10</sde:priority>
+      <sde:description>Route override</sde:description>
+    </sde:route>
+    <sde:route name="Routes:Over2"  override="complete">
+      <sde:priority>3</sde:priority>
+      <sde:callable>\Anakeen\Routes\Tests\TestRouteConfig</sde:callable>
+      <sde:method>PUT</sde:method>
+      <sde:pattern>/tests/routes/over2/</sde:pattern>
+      <sde:requiredAccess/>
+    </sde:route>
+  </sde:routes>
+</sde:config>

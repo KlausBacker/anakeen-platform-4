@@ -16,23 +16,16 @@ $usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("set applicative parameter value");
 $parname = $usage->addRequiredParameter("param", "parameter name"); // parameter name
 $parval = $usage->addOptionalParameter("value", "parameter value to set"); // parameter value (option)
-$paruser =  $usage->addOptionalParameter("userid", "user system id"); // parameter user id (option)
-$parapp = $usage->addOptionalParameter("appname", "Parameter's application's name"); // parameter app name (option)
+$paruser = $usage->addOptionalParameter("userid", "user system id"); // parameter user id (option)
 $usage->verify();
 
 $appid = 0;
-if ($parapp != "") {
-    /** @var \Anakeen\Core\Internal\Application $core */
-    global $core;
-    $appid = $core->GetIdFromName($parapp);
-}
+
 
 $dbaccess = \Anakeen\Core\DbManager::getDbAccess();
 $param = new \Anakeen\Core\Internal\QueryDb($dbaccess, \Anakeen\Core\Internal\Param::class);
-$param->AddQuery("name='$parname'");
-if ($appid) {
-    $param->AddQuery("appid=$appid");
-}
+$param->AddQuery(sprintf("name='%s'", pg_escape_string($parname)));
+
 $list = $param->Query(0, 2);
 if ($param->nb == 0) {
     printf(_("Attribute %s not found\n"), $parname);

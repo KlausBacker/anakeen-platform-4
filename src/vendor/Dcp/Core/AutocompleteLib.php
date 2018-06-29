@@ -248,7 +248,7 @@ class AutocompleteLib
 
     public static function getAttr($aid)
     {
-        $r = \Anakeen\Core\ContextManager::getApplicationParam($aid);
+        $r = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $aid);
         if ($r == "") {
             $r = \Anakeen\Core\SEManager::getFamilyIdFromName($aid);
         }

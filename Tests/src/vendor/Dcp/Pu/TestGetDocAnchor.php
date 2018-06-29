@@ -2,6 +2,7 @@
 
 namespace Dcp\Pu;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Internal\GlobalParametersManager;
 
@@ -21,16 +22,15 @@ class TestGetDocAnchor extends TestCaseDcpCommonFamily
     }
 
     /**
-     * @dataProvider data_getDocAnchorMail
+     * @dataProvider dataGetDocAnchorMail
      *
      * @param $data
      *
-     * @throws \Dcp\ApplicationParameterManager\Exception
      */
-    public function test_getDocAnchorMail($data)
+    public function testGetDocAnchorMail($data)
     {
         foreach ($data['params'] as $param) {
-            \Anakeen\Core\Internal\ApplicationParameterManager::setCommonParameterValue($param['app'], $param['name'], $param['value']);
+            ContextManager::setParameterValue(\Anakeen\Core\Settings::NsSde, $param['name'], $param['value']);
         }
         GlobalParametersManager::initialize();
 
@@ -45,7 +45,7 @@ class TestGetDocAnchor extends TestCaseDcpCommonFamily
         $this->assertTrue($href == $data['expected_href'], sprintf("Unexpected href '%s' (expecting '%s') in anchor '%s'.", $href, $data['expected_href'], $anchor));
     }
 
-    public function data_getDocAnchorMail()
+    public function dataGetDocAnchorMail()
     {
         return array(
             array(
@@ -53,12 +53,10 @@ class TestGetDocAnchor extends TestCaseDcpCommonFamily
                     "doc" => "TST_GETDOCANCHOR_1",
                     "params" => array(
                         array(
-                            "app" => "CORE",
                             "name" => "CORE_MAILACTION",
                             "value" => ""
                         ),
                         array(
-                            "app" => "CORE",
                             "name" => "CORE_URLINDEX",
                             "value" => "http://www1.example.net/"
                         )

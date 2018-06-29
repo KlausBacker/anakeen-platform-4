@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
-<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
-  <router:routes>
-    <router:route name="Core:Authent:Session:Login">
-      <router:priority>1</router:priority>
-      <router:callable>\Anakeen\Routes\Authent\Session</router:callable>
-      <router:method>POST</router:method>
-      <router:pattern>/api/v2/authent/sessions/{login}</router:pattern>
-      <router:description>Create user session</router:description>
-      <router:requiredAccess/>
-      <router:authenticated>false</router:authenticated>
-    </router:route>
-    <router:route name="Core:Authent:Session:Logout">
-      <router:priority>1</router:priority>
-      <router:callable>\Anakeen\Routes\Authent\Logout</router:callable>
-      <router:method>DELETE</router:method>
-      <router:pattern>/api/v2/authent/sessions/current</router:pattern>
-      <router:description>Destroy current user session</router:description>
-      <router:requiredAccess/>
-      <router:authenticated>true</router:authenticated>
-    </router:route>
-  </router:routes>
-</router:config>
+<sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
+  <sde:routes namespace="Core">
+    <sde:route name="Core:Authent:Session:Login">
+      <sde:priority>1</sde:priority>
+      <sde:callable>\Anakeen\Routes\Authent\Session</sde:callable>
+      <sde:method>POST</sde:method>
+      <sde:pattern>/api/v2/authent/sessions/{login}</sde:pattern>
+      <sde:description>Create user session</sde:description>
+      <sde:requiredAccess/>
+      <sde:authenticated>false</sde:authenticated>
+    </sde:route>
+    <sde:route name="Core:Authent:Session:Logout">
+      <sde:priority>1</sde:priority>
+      <sde:callable>\Anakeen\Routes\Authent\Logout</sde:callable>
+      <sde:method>DELETE</sde:method>
+      <sde:pattern>/api/v2/authent/sessions/current</sde:pattern>
+      <sde:description>Destroy current user session</sde:description>
+      <sde:requiredAccess/>
+      <sde:authenticated>true</sde:authenticated>
+    </sde:route>
+  </sde:routes>
+</sde:config>

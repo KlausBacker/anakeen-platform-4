@@ -21,46 +21,21 @@ define("TARUPLOAD", DEFAULT_PUBDIR . "/var/upload/");
 define("TAREXTRACT", "/extract/");
 define("TARTARS", "/tars/");
 
-function getTarUploadDir(\Anakeen\Core\Internal\Action & $action)
+
+
+function getTarExtractDir($tar)
 {
-    global $pubdir;
-    $dtar = $action->getParam("FREEDOM_UPLOADDIR");
-    if (substr($dtar, 0, 1) != '/') {
-        $dtar = $pubdir . '/' . $dtar;
-    }
-    if ($dtar == "") {
-        $dtar = TARUPLOAD;
-    }
-    return $dtar . "/" . $action->user->login . TARTARS;
+
+    $dtar = sprintf("%s/var/upload/", DEFAULT_PUBDIR);
+
+    return $dtar . "/" . \Anakeen\Core\ContextManager::getCurrentUser()->login. TAREXTRACT . $tar . "_D";
 }
 
-function getTarExtractDir(\Anakeen\Core\Internal\Action & $action, $tar)
-{
-    global $pubdir;
-    $dtar = $action->getParam("FREEDOM_UPLOADDIR");
-    if (substr($dtar, 0, 1) != '/') {
-        $dtar = $pubdir . '/' . $dtar;
-    }
-    if ($dtar == "") {
-        $dtar = TARUPLOAD;
-    }
-    return $dtar . "/" . $action->user->login . TAREXTRACT . $tar . "_D";
-}
+
 
 /**
  * import a directory files
  *
- * @param \Anakeen\Core\Internal\Action $action current action
- * @param string                        $ftar   tar file
- */
-function import_tar(&$action, $ftar, $dirid = 0, $famid = 7)
-{
-}
-
-/**
- * import a directory files
- *
- * @param \Anakeen\Core\Internal\Action $action       current action
  * @param string                        $ldir         local directory path
  * @param int                           $dirid        folder id to add new documents
  * @param int                           $famid        default family for raw files
@@ -71,12 +46,12 @@ function import_tar(&$action, $ftar, $dirid = 0, $famid = 7)
  *
  * @return array
  */
-function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, $onlycsv = false, $analyze = false, $csvLinebreak = '\n')
+function import_directory(&$ldir, $dirid = 0, $famid = 7, $dfldid = 2, $onlycsv = false, $analyze = false, $csvLinebreak = '\n')
 {
     // first see if fdl.csv file
     global $importedFiles;
 
-    $dbaccess = $action->dbaccess;
+    $dbaccess = \Anakeen\Core\DbManager::getDbAccess();
     $tr = array();
     if (is_dir($ldir)) {
         if ($handle = opendir($ldir)) {
@@ -98,7 +73,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
             /* This is the correct way to loop over the directory. */
             $defaultdoc = createDoc($dbaccess, $famid);
             if (!$defaultdoc) {
-                $action->AddWarningMsg(sprintf(_("you cannot create this kind [%s] of document"), $famid));
+                \Anakeen\LogManager::warning(sprintf(_("you cannot create this kind [%s] of document"), $famid));
             }
             $fimgattr = null;
             if (($lfamid == 0) && ($famid == 7)) {
@@ -107,7 +82,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
             }
             $newdir = createDoc($dbaccess, $dfldid);
             if (!$newdir) {
-                $action->AddWarningMsg(sprintf(_("you cannot create this kind [%s] of folder"), $dfldid));
+                \Anakeen\LogManager::warning(sprintf(_("you cannot create this kind [%s] of folder"), $dfldid));
             }
             $ffileattr = $defaultdoc->GetFirstFileAttributes();
 
@@ -228,7 +203,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                             }
                         }
                     }
-                    $itr = import_directory($action, $absfile, $newdir->id, $famid, $dfldid, $onlycsv, $analyze);
+                    $itr = import_directory($absfile, $newdir->id, $famid, $dfldid, $onlycsv, $analyze);
                     $tr = array_merge($tr, $itr);
                 }
             }

@@ -20,6 +20,8 @@ class RouterLib
      * @return RouterConfig
      * @throws Exception
      */
+    const NS = "sde";
+
     public static function getRouterConfig()
     {
         if (self::$config) {
@@ -57,13 +59,13 @@ class RouterLib
     {
         $xmlData = file_get_contents($configFile);
 
-        $simpleData = simplexml_load_string($xmlData, \SimpleXMLElement::class, 0, "router", true);
+        $simpleData = simplexml_load_string($xmlData, \SimpleXMLElement::class, 0, self::NS, true);
 
         if ($simpleData === false) {
             throw new \Anakeen\Router\Exception("ROUTER0107", $configFile);
         }
         $data = [];
-        foreach (["routes", "apps", "accesses", "middlewares", "parameters"] as $topNode) {
+        foreach (["routes", "accesses", "middlewares", "parameters"] as $topNode) {
             $data[$topNode] = self::normalizeData($simpleData[0], $topNode);
         }
 
@@ -74,8 +76,16 @@ class RouterLib
     {
         $node = ($data->$tag);
 
+
         $rawData = [];
         foreach ($node as $firstNode) {
+            $nodeAttrs = $firstNode->attributes();
+            $ns = "";
+            foreach ($nodeAttrs as $iAttr => $vAttr) {
+                if ($iAttr === "namespace") {
+                    $ns = (string)$vAttr;
+                }
+            }
             foreach ($firstNode as $subNode) {
                 $nodeAttrs = $subNode->attributes();
                 $name = "";
@@ -84,42 +94,45 @@ class RouterLib
                         $name = (string)$vAttr;
                     }
                 }
+                $key = ($ns) ? ($ns . "::" . $name) : $name;
 
                 foreach ($subNode as $tagName => $tagValue) {
                     if ($tagName === "method") {
-                        $rawData[$name]["methods"][] = (string)$tagValue;
+                        $rawData[$key]["methods"][] = (string)$tagValue;
                     } elseif ($tagName === "pattern") {
-                        if (isset($rawData[$name]["pattern"])) {
-                            if (!is_array($rawData[$name][$tagName])) {
-                                $rawData[$name][$tagName] = [$rawData[$name][$tagName]];
+                        if (isset($rawData[$key]["pattern"])) {
+                            if (!is_array($rawData[$key][$tagName])) {
+                                $rawData[$key][$tagName] = [$rawData[$key][$tagName]];
                             }
-                            $rawData[$name][$tagName][] = (string)$tagValue;
+                            $rawData[$key][$tagName][] = (string)$tagValue;
                         } else {
-                            $rawData[$name][$tagName] = (string)$tagValue;
+                            $rawData[$key][$tagName] = (string)$tagValue;
                         }
                     } else {
                         if (!empty($tagValue->access)) {
                             /** @noinspection PhpUndefinedFieldInspection */
                             $operator = (string)$tagValue->attributes()->operator;
-                            if (! $operator) {
-                                $operator="and";
+                            if (!$operator) {
+                                $operator = "and";
                             }
                             /** @noinspection PhpUndefinedFieldInspection */
                             foreach ($tagValue->access as $accessValue) {
-                                $rawData[$name][$tagName][$operator][] = (string)$accessValue;
+                                $nsa=(string)$accessValue->attributes()->ns;
+                                $aclValue=$nsa."::".(string)$accessValue;
+                                $rawData[$key][$tagName][$operator][] = $aclValue;
                             }
                         } else {
-                            $rawData[$name][$tagName] = (string)$tagValue;
-                            if ($rawData[$name][$tagName] === "true") {
-                                $rawData[$name][$tagName] = true;
-                            } elseif ($rawData[$name][$tagName] === "false") {
-                                $rawData[$name][$tagName] = false;
-                            } elseif (is_numeric($rawData[$name][$tagName])) {
-                                $rawData[$name][$tagName] = intval($rawData[$name][$tagName]);
+                            $rawData[$key][$tagName] = (string)$tagValue;
+                            if ($rawData[$key][$tagName] === "true") {
+                                $rawData[$key][$tagName] = true;
+                            } elseif ($rawData[$key][$tagName] === "false") {
+                                $rawData[$key][$tagName] = false;
+                            } elseif (is_numeric($rawData[$key][$tagName])) {
+                                $rawData[$key][$tagName] = intval($rawData[$key][$tagName]);
                             }
                             foreach ($nodeAttrs as $iAttr => $vAttr) {
                                 if ($iAttr !== "name") {
-                                    $rawData[$name][$iAttr] = (string)$vAttr;
+                                    $rawData[$key][$iAttr] = (string)$vAttr;
                                 }
                             }
                         }
