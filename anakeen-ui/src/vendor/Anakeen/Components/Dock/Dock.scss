@@ -21,13 +21,13 @@ $green-selected: #8ae234;
 
   .superpose-dock {
     position: absolute;
-    z-index: 1;
+    z-index: 2;
     height: 100%
   }
 
   #dock {
     background-color: $background-color;
-    z-index: 1;
+    z-index: 2;
     flex-shrink: 0;
 
     #expand-button {
@@ -162,7 +162,7 @@ $green-selected: #8ae234;
   align-items: stretch;
 
   .superpose-dock.expanded-dock {
-      box-shadow: 2px 0 5px #aaa;
+      box-shadow: 5px 0 20px #aaa;
   }
 
   #dock {
@@ -180,6 +180,8 @@ $green-selected: #8ae234;
     #expand-button {
       height: $tab-height;
       border-right: solid 1px #aaa;
+      border-bottom: none;
+      border-top: none;
     }
 
     .dock-tab {
@@ -198,6 +200,10 @@ $green-selected: #8ae234;
       border-right: solid 1px #aaa;
     }
 
+    .footer-tab {
+      border-right: solid 1px #aaa;
+    }
+
     .header-tab {
       border-right: solid 1px #aaa;
     }
@@ -211,7 +217,7 @@ $green-selected: #8ae234;
   align-items: stretch;
 
   .expanded-dock.superpose-dock {
-    box-shadow: -2px 0 5px #aaa;
+    box-shadow: -5px 0 20px #aaa;
   }
 
   #dock {
