@@ -9,5 +9,13 @@
             <router:description>Get all gloabl and capsule parameters</router:description>
             <router:requiredAccess>admincenter:admin</router:requiredAccess>
         </router:route>
+        <router:route name="AdminParameters:AlterParameter">
+            <router:priority>0</router:priority>
+            <router:callable>\Anakeen\Routes\Admin\Parameters\AlterParameter</router:callable>
+            <router:method>PUT</router:method>
+            <router:pattern>/api/v2/admin/parameters/{domain_name}/{parameter_name}/</router:pattern>
+            <router:description>Modify the value of a parameter</router:description>
+            <router:requiredAccess>admincenter:admin</router:requiredAccess>
+        </router:route>
     </router:routes>
 </router:config>

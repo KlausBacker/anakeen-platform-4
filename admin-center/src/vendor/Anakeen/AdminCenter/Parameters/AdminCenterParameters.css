@@ -1,41 +1,9 @@
 .parameter-plugin {
     height: 100%;
     width: 100%;
+    max-width: 1200px;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     justify-content: stretch;
-}
-
-.global-parameters-toolbar {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: stretch;
-}
-
-.global-parameters-toolbar > .btn {
-    margin-right: 0.5rem;
-}
-
-.btn > .material-icons {
-    font-size: 1rem;
-}
-
-.parameter-tree {
-    height: 100%;
-    width: 100%;
-
-}
-
-.grid-level-1 {
-    font-weight: bold;
-}
-
-.grid-level-2 {
-    font-weight: bold;
-}
-
-.grid-level-3 {
-    font-weight: bold;
 }

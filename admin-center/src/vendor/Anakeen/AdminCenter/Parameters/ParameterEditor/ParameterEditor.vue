@@ -1,54 +1,32 @@
 <template>
-    <form>
-        <div class="form-group row">
-            <label for="parameter-name" class="col-sm-2 col-form-label">Name : </label>
-            <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" id="parameter-name" :value="editedItem.name">
+    <div id="edition-window" v-if="editedItem">
+        <form>
+            <div class="form-group">
+                <label for="parameter-description" class="form-label">Description : </label>
+                <span class="description-text" id="parameter-description">
+                    {{ editedItem.description }}
+                </span>
             </div>
-        </div>
-        <div class="form-group row">
-            <label for="parameter-description" class="col-sm-2 col-form-label">Description : </label>
-            <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" id="parameter-description" :value="editedItem.description">
+            <div class="form-group">
+                <label for="parameter-new-value" class="form-label">Value : </label>
+                <input :type="parameterInputType" class="form-control value-input" id="parameter-new-value" :value="editedItem.value" v-if="parameterInputType === 'text' || parameterInputType === 'number' || parameterInputType === 'password'">
+                <select class="form-control value-input" id="parameter-new-value" :value="editedItem.value" v-else-if="parameterInputType === 'enum'">
+                    <option v-for="value in enumPossibleValues">{{ value }}</option>
+                </select>
+                <div id="json-parameter-new-value" class="json-editor" v-else-if="isJson(editedItem.value)"></div>
+                <div v-else>
+                    <div class="alert alert-warning invalid-json-warning" role="alert">Parameter is not a valid json, please save it as json</div>
+                    <textarea class="form-control" id="parameter-new-value" :value="editedItem.value"></textarea>
+                </div>
             </div>
+            <button class="btn btn-primary form-parameter-btn" @click="modifyParameter">Save new value</button>
+            <button class="btn btn-secondary form-parameter-btn" @click="closeEditor">Cancel value modification</button>
+        </form>
+        <div id="confirmation-window" v-show="false" @keyup.enter.stop="closeConfirmationAndEditor">
+            <div class="information-text">Parameter successfully modified</div>
+            <button class="btn btn-primary form-parameter-btn" @click="closeConfirmationAndEditor">Back to parameters</button>
         </div>
-        <div class="form-group row" v-if="editedItem.domainId !== 1 && editedItem.domainName !== 'CORE'">
-            <label for="parameter-domain" class="col-sm-2 col-form-label">Domain : </label>
-            <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" id="parameter-domain" :value="editedItem.domainName">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="parameter-category" class="col-sm-2 col-form-label">Category : </label>
-            <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" id="parameter-category" :value="editedItem.category">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="parameter-type" class="col-sm-2 col-form-label">Value type : </label>
-            <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" id="parameter-type" :value="formatedParameterType">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="parameter-value" class="col-sm-2 col-form-label">Actual value : </label>
-            <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" id="parameter-value" :value="editedItem.value || 'none'">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="parameter-new-value" class="col-sm-2 col-form-label">New value : </label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="parameter-new-value" :value="editedItem.value" v-if="editedItem.type === 'text'">
-                <input type="number" class="form-control" id="parameter-new-value" :value="editedItem.value" v-else-if="editedItem.type === 'number'">
-                <!-- TODO Difference between Number double integer -->
-                <!-- TODO Enum -->
-                <!-- TODO JSON -->
-            </div>
-        </div>
-        <button class="btn btn-primary">Save new value</button>
-        <button class="btn btn-secondary">Cancel value modification</button>
-    </form>
+    </div>
 </template>
 
 <style scoped>

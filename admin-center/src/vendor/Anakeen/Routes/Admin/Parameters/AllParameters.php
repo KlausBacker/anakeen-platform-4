@@ -14,11 +14,8 @@ class AllParameters
 
             $formatedParameter['name'] = $parameter['name'];
             $formatedParameter['description'] = $parameter['descr'];
-            if (!$parameter['category']) {
-                $formatedParameter['category'] = 'other';
-            } else {
-                $formatedParameter['category'] = $parameter['category'];
-            }
+
+            $formatedParameter['category'] = $parameter['category'];
 
             $formatedParameter['value'] = $parameter['value'];
 
@@ -43,8 +40,20 @@ class AllParameters
         }
     }
 
-    private function formatTreeDataSource($params)
+    private function formatTreeDataSource($parameters)
     {
+        $params = $parameters;
+        uasort($params, function ($a, $b)
+        {
+            if ($a['category'] && !$b['category']) {
+                return -1;
+            } elseif (!$a['category'] && $b['category']) {
+                return 1;
+            } else {
+                return ($a['name'] < $b['name']) ? -1 : 1;
+            }
+        });
+
         $data = [];
         $globalParametersId = 1;
         $domainParametersId = 2;
@@ -61,36 +70,45 @@ class AllParameters
             $param['id'] = $currentId++;
 
             if ($param['isGlobal']) {
-                $currentCategory = $globalCategoriesId[$param['category']];
-                if ($currentCategory === null) {
-                    $newId = $currentId++;
-                    $data[] = ['id' => $newId, 'parentId' => $globalParametersId, 'name' => $param['category'], 'rowLevel' => 2];
-                    $globalCategoriesId[$param['category']] = $newId;
-                    $currentCategory = $newId;
+                if ($param['category']) {
+                    $currentCategory = $globalCategoriesId[$param['category']];
+                    if ($currentCategory === null) {
+                        $newId = $currentId++;
+                        $data[] = ['id' => $newId, 'parentId' => $globalParametersId, 'name' => $param['category'], 'rowLevel' => 2];
+                        $globalCategoriesId[$param['category']] = $newId;
+                        $currentCategory = $newId;
+                    }
+                    $param['parentId'] = $currentCategory;
+                    $data[] = $param;
+                } else {
+                    $param['parentId'] = $globalParametersId;
+                    $data[] = $param;
                 }
 
-                $param['parentId'] = $currentCategory;
-                $data[] = $param;
             } else {
                 $currentDomain = $domainId[$param['domainName']];
                 if ($currentDomain === null) {
                     $newId = $currentId++;
-                    $data[] = [ 'id' => $newId, 'parentId' => $domainParametersId, 'name' => $param['domainName'], 'rowLevel' => 2 ];
+                    $data[] = ['id' => $newId, 'parentId' => $domainParametersId, 'name' => $param['domainName'], 'rowLevel' => 2];
                     $domainId[$param['domainName']] = $newId;
                     $domainCatgoriesId[$param['domainName']] = [];
                     $currentDomain = $newId;
                 }
 
-                $currentCategory = $domainCatgoriesId[$param['domainName']]['category'];
-                if ($currentCategory === null) {
-                    $newId = $currentId++;
-                    $data[] = [ 'id' => $newId, 'parentId' => $currentDomain, 'name' => $param['category'], 'rowLevel' => 3 ];
-                    $domainCatgoriesId[$param['domainName']]['category'] = $newId;
-                    $currentCategory = $newId;
+                if ($param['category']) {
+                    $currentCategory = $domainCatgoriesId[$param['domainName']]['category'];
+                    if ($currentCategory === null) {
+                        $newId = $currentId++;
+                        $data[] = ['id' => $newId, 'parentId' => $currentDomain, 'name' => $param['category'], 'rowLevel' => 3];
+                        $domainCatgoriesId[$param['domainName']]['category'] = $newId;
+                        $currentCategory = $newId;
+                    }
+                    $param['parentId'] = $currentCategory;
+                    $data[] = $param;
+                } else {
+                    $param['parentId'] = $currentDomain;
+                    $data[] = $param;
                 }
-
-                $param['parentId'] = $currentCategory;
-                $data[] = $param;
             }
         }
 
@@ -106,7 +124,7 @@ class AllParameters
         try {
             DbManager::query($sqlRequest, $outputResult);
         } catch (Exception $e) {
-            // TODO Handle exception
+
         }
 
         foreach ($outputResult as $parameter) {
