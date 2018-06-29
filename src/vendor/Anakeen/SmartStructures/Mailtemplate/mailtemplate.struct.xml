@@ -1,78 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
     <smart:structure-configuration name="MAILTEMPLATE" label="Modèle de mail">
         <smart:icon file="se-mailtemplate.png"/>
         <smart:class>Anakeen\SmartStructures\Mailtemplate\MailTemplateHooks</smart:class>
         <smart:usefor>S</smart:usefor>
-        <smart:attributes>
-            <smart:attr-fieldset name="tmail_fr" type="frame" label="Entête" visibility="W">
-                <smart:attr-text name="tmail_title" label="Titre" visibility="O" needed="true" is-title="true"/>
-                <smart:attr-docid name="tmail_family" label="Smart Structure" visibility="W" relation="-1"/>
-                <smart:attr-docid name="tmail_workflow" label="Workflow Structure" visibility="W" relation="-1"/>
-                <smart:attr-fieldset name="tmail_t_from" type="array" label="Émetteur" visibility="U">
-                    <smart:attr-enum name="tmail_fromtype" label="Type" visibility="W" relation="MAILTEMPLATE-tmail_fromtype"/>
-                    <smart:attr-text name="tmail_from" label="De" visibility="W"/>
-                </smart:attr-fieldset>
-                <smart:attr-fieldset name="tmail_dest" type="array" label="Destinataires" visibility="W">
-                    <smart:attr-enum name="tmail_copymode" label="-" visibility="W" relation="MAILTEMPLATE-tmail_copymode"/>
-                    <smart:attr-enum name="tmail_desttype" label="Type" visibility="W" relation="MAILTEMPLATE-tmail_desttype"/>
-                    <smart:attr-text name="tmail_recip" label="Destinataire" visibility="W"/>
-                </smart:attr-fieldset>
-                <smart:attr-text name="tmail_subject" label="Sujet" visibility="W" is-abstract="true"/>
-            </smart:attr-fieldset>
-            <smart:attr-fieldset name="tmail_fr_content" type="frame" label="Contenu" visibility="W">
-                <smart:attr-enum name="tmail_savecopy" label="Enregistrer une copie" visibility="W" relation="MAILTEMPLATE-tmail_savecopy"/>
-                <smart:attr-enum name="tmail_ulink" label="Avec liens" visibility="W" relation="MAILTEMPLATE-tmail_ulink"/>
-                <smart:attr-htmltext name="tmail_body" label="Corps" visibility="W">
-                    <smart:attr-option name="jsonconf">{"addPlugins": ["docattr"]}</smart:attr-option>
-                    <smart:attr-option name="allowedcontent">all</smart:attr-option>
-                </smart:attr-htmltext>
-                <smart:attr-fieldset name="tmail_t_attach" type="array" label="Attachements" visibility="W">
-                    <smart:attr-text name="tmail_attach" label="Attachement" visibility="W"/>
-                </smart:attr-fieldset>
-                <smart:attr-enum name="tmail_format" label="Format" visibility="H" relation="MAILTEMPLATE-tmail_format"/>
-            </smart:attr-fieldset>
-        </smart:attributes>
+        <smart:fields>
+            <smart:field-set name="tmail_fr" type="frame" label="Entête" visibility="W">
+                <smart:field-text name="tmail_title" label="Titre" visibility="O" needed="true" is-title="true"/>
+                <smart:field-docid name="tmail_family" label="Smart Structure" visibility="W" relation="-1"/>
+                <smart:field-docid name="tmail_workflow" label="Workflow Structure" visibility="W" relation="-1"/>
+                <smart:field-set name="tmail_t_from" type="array" label="Émetteur" visibility="U">
+                    <smart:field-enum name="tmail_fromtype" label="Type" visibility="W" relation="MAILTEMPLATE-tmail_fromtype"/>
+                    <smart:field-text name="tmail_from" label="De" visibility="W"/>
+                </smart:field-set>
+                <smart:field-set name="tmail_dest" type="array" label="Destinataires" visibility="W">
+                    <smart:field-enum name="tmail_copymode" label="-" visibility="W" relation="MAILTEMPLATE-tmail_copymode"/>
+                    <smart:field-enum name="tmail_desttype" label="Type" visibility="W" relation="MAILTEMPLATE-tmail_desttype"/>
+                    <smart:field-text name="tmail_recip" label="Destinataire" visibility="W"/>
+                </smart:field-set>
+                <smart:field-text name="tmail_subject" label="Sujet" visibility="W" is-abstract="true"/>
+            </smart:field-set>
+            <smart:field-set name="tmail_fr_content" type="frame" label="Contenu" visibility="W">
+                <smart:field-enum name="tmail_savecopy" label="Enregistrer une copie" visibility="W" relation="MAILTEMPLATE-tmail_savecopy"/>
+                <smart:field-enum name="tmail_ulink" label="Avec liens" visibility="W" relation="MAILTEMPLATE-tmail_ulink"/>
+                <smart:field-htmltext name="tmail_body" label="Corps" visibility="W">
+                    <smart:field-option name="jsonconf">{"addPlugins": ["docattr"]}</smart:field-option>
+                    <smart:field-option name="allowedcontent">all</smart:field-option>
+                </smart:field-htmltext>
+                <smart:field-set name="tmail_t_attach" type="array" label="Attachements" visibility="W">
+                    <smart:field-text name="tmail_attach" label="Attachement" visibility="W"/>
+                </smart:field-set>
+                <smart:field-enum name="tmail_format" label="Format" visibility="H" relation="MAILTEMPLATE-tmail_format"/>
+            </smart:field-set>
+        </smart:fields>
         <smart:parameters/>
         <smart:hooks/>
         <smart:autocompletion>
-            <smart:attr-autocomplete attr="tmail_workflow">
-                <smart:attr-callable function="Anakeen\Core\SmartStructure\Autocomplete\SmartStructureList::getSmartStructures"/>
-                <smart:attr-argument name="subset" type="string">WDOC</smart:attr-argument>
-                <smart:attr-returns>
-                    <smart:attr-return attr="tmail_workflow"/>
-                </smart:attr-returns>
-            </smart:attr-autocomplete>
-            <smart:attr-autocomplete attr="tmail_from">
-                <smart:attr-callable function="Anakeen\SmartStructures\Mailtemplate\MailtemplateAutoComplete::getMailAddresses"/>
-                <smart:attr-argument name="fromtype" type="attribute">TMAIL_FROMTYPE</smart:attr-argument>
-                <smart:attr-argument name="smartstructure" type="attribute">TMAIL_FAMILY</smart:attr-argument>
-                <smart:attr-argument name="workflow" type="attribute">TMAIL_WORKFLOW</smart:attr-argument>
-                <smart:attr-argument name="from" type="attribute">TMAIL_FROM</smart:attr-argument>
-                <smart:attr-returns>
-                    <smart:attr-return attr="tmail_from"/>
-                </smart:attr-returns>
-            </smart:attr-autocomplete>
-            <smart:attr-autocomplete attr="tmail_recip">
-                <smart:attr-callable function="Anakeen\SmartStructures\Mailtemplate\MailtemplateAutoComplete::getMailAddresses"/>
-                <smart:attr-argument name="fromtype" type="attribute">TMAIL_DESTTYPE</smart:attr-argument>
-                <smart:attr-argument name="smartstructure" type="attribute">TMAIL_FAMILY</smart:attr-argument>
-                <smart:attr-argument name="workflow" type="attribute">TMAIL_WORKFLOW</smart:attr-argument>
-                <smart:attr-argument name="from" type="attribute">TMAIL_RECIP</smart:attr-argument>
-                <smart:attr-returns>
-                    <smart:attr-return attr="tmail_recip"/>
-                </smart:attr-returns>
-            </smart:attr-autocomplete>
-            <smart:attr-autocomplete attr="tmail_attach">
-                <smart:attr-callable function="Anakeen\SmartStructures\Mailtemplate\MailtemplateAutoComplete::getMailAddresses"/>
-                <smart:attr-argument name="fromtype" type="string">G</smart:attr-argument>
-                <smart:attr-argument name="smartstructure" type="attribute">TMAIL_FAMILY</smart:attr-argument>
-                <smart:attr-argument name="workflow" type="attribute">TMAIL_WORKFLOW</smart:attr-argument>
-                <smart:attr-argument name="from" type="attribute">TMAIL_ATTACH</smart:attr-argument>
-                <smart:attr-returns>
-                    <smart:attr-return attr="mail_attach"/>
-                </smart:attr-returns>
-            </smart:attr-autocomplete>
+            <smart:field-autocomplete attr="tmail_workflow">
+                <smart:field-callable function="Anakeen\Core\SmartStructure\Autocomplete\SmartStructureList::getSmartStructures"/>
+                <smart:field-argument name="subset" type="string">WDOC</smart:field-argument>
+                <smart:field-returns>
+                    <smart:field-return attr="tmail_workflow"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+            <smart:field-autocomplete attr="tmail_from">
+                <smart:field-callable function="Anakeen\SmartStructures\Mailtemplate\MailtemplateAutoComplete::getMailAddresses"/>
+                <smart:field-argument name="fromtype" type="attribute">TMAIL_FROMTYPE</smart:field-argument>
+                <smart:field-argument name="smartstructure" type="attribute">TMAIL_FAMILY</smart:field-argument>
+                <smart:field-argument name="workflow" type="attribute">TMAIL_WORKFLOW</smart:field-argument>
+                <smart:field-argument name="from" type="attribute">TMAIL_FROM</smart:field-argument>
+                <smart:field-returns>
+                    <smart:field-return attr="tmail_from"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+            <smart:field-autocomplete attr="tmail_recip">
+                <smart:field-callable function="Anakeen\SmartStructures\Mailtemplate\MailtemplateAutoComplete::getMailAddresses"/>
+                <smart:field-argument name="fromtype" type="attribute">TMAIL_DESTTYPE</smart:field-argument>
+                <smart:field-argument name="smartstructure" type="attribute">TMAIL_FAMILY</smart:field-argument>
+                <smart:field-argument name="workflow" type="attribute">TMAIL_WORKFLOW</smart:field-argument>
+                <smart:field-argument name="from" type="attribute">TMAIL_RECIP</smart:field-argument>
+                <smart:field-returns>
+                    <smart:field-return attr="tmail_recip"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+            <smart:field-autocomplete attr="tmail_attach">
+                <smart:field-callable function="Anakeen\SmartStructures\Mailtemplate\MailtemplateAutoComplete::getMailAddresses"/>
+                <smart:field-argument name="fromtype" type="string">G</smart:field-argument>
+                <smart:field-argument name="smartstructure" type="attribute">TMAIL_FAMILY</smart:field-argument>
+                <smart:field-argument name="workflow" type="attribute">TMAIL_WORKFLOW</smart:field-argument>
+                <smart:field-argument name="from" type="attribute">TMAIL_ATTACH</smart:field-argument>
+                <smart:field-returns>
+                    <smart:field-return attr="mail_attach"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
         </smart:autocompletion>
         <smart:defaults>
             <smart:default attr="tmail_ulink">yes</smart:default>

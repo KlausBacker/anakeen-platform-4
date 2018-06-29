@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
     <smart:structure-configuration name="REPORT" id="25" label="Rapport" extends="DSEARCH">
         <smart:icon file="se-report.png"/>
         <smart:class>Anakeen\SmartStructures\Report\ReportHooks</smart:class>
         <smart:usefor>S</smart:usefor>
-        <smart:attributes>
-            <smart:attr-fieldset name="rep_tab_presentation" type="tab" label="Présentation" visibility="W">
-                <smart:attr-fieldset name="rep_fr_presentation" type="frame" label="Présentation" visibility="W">
-                    <smart:attr-longtext name="rep_caption" label="Description" visibility="W" is-abstract="true"/>
-                    <smart:attr-text name="rep_sort" label="Tri" visibility="W"/>
-                    <smart:attr-text name="rep_idsort" label="Id tri" visibility="H"/>
-                    <smart:attr-enum name="rep_ordersort" label="Ordre" visibility="W" relation="REPORT-rep_ordersort"/>
-                    <smart:attr-int name="rep_limit" label="Limite" visibility="W"/>
-                    <smart:attr-fieldset name="rep_tcols" type="array" label="Colonnes" visibility="W">
-                        <smart:attr-text name="rep_lcols" label="Label" visibility="W"/>
-                        <smart:attr-text name="rep_idcols" label="Id colonnes" visibility="H"/>
-                        <smart:attr-text name="rep_displayoption" label="Option de présentation" visibility="H"/>
-                        <smart:attr-color name="rep_colors" label="Couleur" visibility="W"/>
-                        <smart:attr-enum name="rep_foots" label="Pied de tableau" visibility="W" relation="report-rep_foots"/>
-                    </smart:attr-fieldset>
+        <smart:fields>
+            <smart:field-set name="rep_tab_presentation" type="tab" label="Présentation" visibility="W">
+                <smart:field-set name="rep_fr_presentation" type="frame" label="Présentation" visibility="W">
+                    <smart:field-longtext name="rep_caption" label="Description" visibility="W" is-abstract="true"/>
+                    <smart:field-text name="rep_sort" label="Tri" visibility="W"/>
+                    <smart:field-text name="rep_idsort" label="Id tri" visibility="H"/>
+                    <smart:field-enum name="rep_ordersort" label="Ordre" visibility="W" relation="REPORT-rep_ordersort"/>
+                    <smart:field-int name="rep_limit" label="Limite" visibility="W"/>
+                    <smart:field-set name="rep_tcols" type="array" label="Colonnes" visibility="W">
+                        <smart:field-text name="rep_lcols" label="Label" visibility="W"/>
+                        <smart:field-text name="rep_idcols" label="Id colonnes" visibility="H"/>
+                        <smart:field-text name="rep_displayoption" label="Option de présentation" visibility="H"/>
+                        <smart:field-color name="rep_colors" label="Couleur" visibility="W"/>
+                        <smart:field-enum name="rep_foots" label="Pied de tableau" visibility="W" relation="report-rep_foots"/>
+                    </smart:field-set>
 
-                </smart:attr-fieldset>
-            </smart:attr-fieldset>
-        </smart:attributes>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
         <smart:parameters>
-            <smart:attr-fieldset name="rep_fr_param" type="frame" label="Paramètres" visibility="W">
-                <smart:attr-htmltext name="rep_noaccesstext" label="Texte à afficher pour les valeurs protégées" visibility="W">
-                    <smart:attr-option name="elabel">Dans la cas où un attribut est protégé (visibilité I)</smart:attr-option>
-                </smart:attr-htmltext>
-                <smart:attr-int name="rep_maxdisplaylimit" label="Limite d'affichage pour le nombre de rangées" visibility="W"/>
-            </smart:attr-fieldset>
+            <smart:field-set name="rep_fr_param" type="frame" label="Paramètres" visibility="W">
+                <smart:field-htmltext name="rep_noaccesstext" label="Texte à afficher pour les valeurs protégées" visibility="W">
+                    <smart:field-option name="elabel">Dans la cas où un attribut est protégé (visibilité I)</smart:field-option>
+                </smart:field-htmltext>
+                <smart:field-int name="rep_maxdisplaylimit" label="Limite d'affichage pour le nombre de rangées" visibility="W"/>
+            </smart:field-set>
         </smart:parameters>
         <smart:hooks>
-            <smart:attr-hook type="constraint" event="onPreStore" attr="rep_limit">
-                <smart:attr-callable function="Anakeen\Core\Utils\Numbers::isInteger"/>
-                <smart:attr-argument type="attribute">rep_limit</smart:attr-argument>
-                <smart:attr-return/>
-            </smart:attr-hook>
+            <smart:field-hook type="constraint" event="onPreStore" attr="rep_limit">
+                <smart:field-callable function="Anakeen\Core\Utils\Numbers::isInteger"/>
+                <smart:field-argument type="attribute">rep_limit</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
         </smart:hooks>
         <smart:autocompletion>
-            <smart:attr-autocomplete attr="rep_sort">
-                <smart:attr-callable function="Anakeen\SmartStructures\Report\ReportAutocomplete::getReportSortableColumns"/>
-                <smart:attr-argument name="structure" type="attribute">se_famid</smart:attr-argument>
-                <smart:attr-returns>
-                    <smart:attr-return attr="rep_idsort"/>
-                    <smart:attr-return attr="rep_sort"/>
-                    <smart:attr-return attr="rep_ordersort"/>
-                </smart:attr-returns>
-            </smart:attr-autocomplete>
+            <smart:field-autocomplete attr="rep_sort">
+                <smart:field-callable function="Anakeen\SmartStructures\Report\ReportAutocomplete::getReportSortableColumns"/>
+                <smart:field-argument name="structure" type="attribute">se_famid</smart:field-argument>
+                <smart:field-returns>
+                    <smart:field-return attr="rep_idsort"/>
+                    <smart:field-return attr="rep_sort"/>
+                    <smart:field-return attr="rep_ordersort"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
 
-            <smart:attr-autocomplete attr="rep_lcols">
-                <smart:attr-callable function="Anakeen\SmartStructures\Report\ReportAutocomplete::getReportColumns"/>
-                <smart:attr-argument name="structure" type="attribute">SE_FAMID</smart:attr-argument>
-                <smart:attr-returns>
-                    <smart:attr-return attr="rep_idcols"/>
-                    <smart:attr-return attr="rep_lcols"/>
-                    <smart:attr-return attr="rep_displayoption"/>
-                </smart:attr-returns>
-            </smart:attr-autocomplete>
+            <smart:field-autocomplete attr="rep_lcols">
+                <smart:field-callable function="Anakeen\SmartStructures\Report\ReportAutocomplete::getReportColumns"/>
+                <smart:field-argument name="structure" type="attribute">SE_FAMID</smart:field-argument>
+                <smart:field-returns>
+                    <smart:field-return attr="rep_idcols"/>
+                    <smart:field-return attr="rep_lcols"/>
+                    <smart:field-return attr="rep_displayoption"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
         </smart:autocompletion>
         <smart:defaults>
             <smart:default attr="se_latest">yes</smart:default>

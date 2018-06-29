@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
     <smart:structure-configuration name="ROLE" id="130" label="Rôle">
         <smart:icon file="se-role.png"/>
         <smart:class>Anakeen\SmartStructures\Role\RoleHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
-        <smart:attributes>
-            <smart:attr-fieldset name="role_fr_ident" type="frame" label="Identification" visibility="W">
-                <smart:attr-text name="role_login" label="Référence" visibility="R"/>
-                <smart:attr-text name="role_name" label="Libellé" visibility="W" needed="true" is-title="true"/>
-                <smart:attr-int name="us_whatid" label="Identifiant système" visibility="R"/>
-            </smart:attr-fieldset>
-        </smart:attributes>
+        <smart:fields>
+            <smart:field-set name="role_fr_ident" type="frame" label="Identification" visibility="W">
+                <smart:field-text name="role_login" label="Référence" visibility="R"/>
+                <smart:field-text name="role_name" label="Libellé" visibility="W" needed="true" is-title="true"/>
+                <smart:field-int name="us_whatid" label="Identifiant système" visibility="R"/>
+            </smart:field-set>
+        </smart:fields>
         <smart:parameters/>
         <smart:hooks>
-            <smart:attr-hook type="constraint" event="onPreStore" attr="role_login">
-                <smart:attr-callable function="::isUniqueLogin"/>
-                <smart:attr-argument type="attribute">role_login</smart:attr-argument>
-                <smart:attr-return/>
-            </smart:attr-hook>
+            <smart:field-hook type="constraint" event="onPreStore" attr="role_login">
+                <smart:field-callable function="::isUniqueLogin"/>
+                <smart:field-argument type="attribute">role_login</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
         </smart:hooks>
         <smart:autocompletion/>
         <smart:defaults/>

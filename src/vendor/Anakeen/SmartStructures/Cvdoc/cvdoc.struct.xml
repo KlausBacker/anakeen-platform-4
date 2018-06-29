@@ -1,83 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
     <smart:structure-configuration name="CVDOC" id="28" label="Contrôle de vues" extends="BASE">
         <smart:class>Anakeen\SmartStructures\Cvdoc\CVDocHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
-        <smart:attributes>
-            <smart:attr-fieldset name="fr_basic" extended="true">
-                <smart:attr-longtext name="cv_desc" label="Description" visibility="W" is-abstract="true"/>
-                <smart:attr-docid name="cv_famid" label="Structure" visibility="W" relation="-1"/>
-                <smart:attr-text name="cv_fam" label="Famille" visibility="H"  is-title="true"/>
-                <smart:attr-fieldset name="cv_t_views" type="array" label="Vues" visibility="W">
-                    <smart:attr-text name="cv_idview" label="Identifiant de la vue" visibility="W"/>
-                    <smart:attr-text name="cv_lview" label="Label" visibility="W"/>
-                    <smart:attr-enum name="cv_kview" label="Type" visibility="W" relation="CVDOC-cv_kview"/>
-                    <smart:attr-text name="cv_renderconfigclass" label="Classe de configuration de rendu (HTML5)" visibility="W"/>
-                    <smart:attr-docid name="cv_mskid" label="Masque" visibility="W" relation="MASK"/>
-                    <smart:attr-int name="cv_order" label="Ordre de sélection" visibility="W"/>
-                    <smart:attr-enum name="cv_displayed" label="Affichable" visibility="W" relation="CVDOC-cv_displayed"/>
-                    <smart:attr-text name="cv_menu" label="Menu" visibility="W"/>
-                    <smart:attr-option name="empty">yes</smart:attr-option>
-                </smart:attr-fieldset>
-            </smart:attr-fieldset>
-            <smart:attr-fieldset name="cv_fr_default" type="frame" label="Vues par défauts" visibility="W">
-                <smart:attr-text name="cv_idcview" label="Id création vues par défaut" visibility="H"/>
-                <smart:attr-text name="cv_lcview" label="Création vue" visibility="W"/>
-                <smart:attr-text name="cv_renderaccessclass" label="Classe d'accès au rendu" visibility="W"/>
-            </smart:attr-fieldset>
-            <smart:attr-fieldset name="dpdoc_fr_dyn" type="frame" label="Profil dynamique" visibility="W">
-                <smart:attr-docid name="dpdoc_famid" label="Structure pour le profil" visibility="W" relation="-1">
-                    <smart:attr-option name="elabel">famille utilisée pour les profils dynamiques</smart:attr-option>
-                </smart:attr-docid>
-                <smart:attr-text name="dpdoc_fam" label="Structure pour le profil (titre)" visibility="H"/>
-            </smart:attr-fieldset>
-        </smart:attributes>
+        <smart:fields>
+            <smart:field-set name="fr_basic" extended="true">
+                <smart:field-longtext name="cv_desc" label="Description" visibility="W" is-abstract="true"/>
+                <smart:field-docid name="cv_famid" label="Structure" visibility="W" relation="-1"/>
+                <smart:field-text name="cv_fam" label="Famille" visibility="H"  is-title="true"/>
+                <smart:field-set name="cv_t_views" type="array" label="Vues" visibility="W">
+                    <smart:field-text name="cv_idview" label="Identifiant de la vue" visibility="W"/>
+                    <smart:field-text name="cv_lview" label="Label" visibility="W"/>
+                    <smart:field-enum name="cv_kview" label="Type" visibility="W" relation="CVDOC-cv_kview"/>
+                    <smart:field-text name="cv_renderconfigclass" label="Classe de configuration de rendu (HTML5)" visibility="W"/>
+                    <smart:field-docid name="cv_mskid" label="Masque" visibility="W" relation="MASK"/>
+                    <smart:field-int name="cv_order" label="Ordre de sélection" visibility="W"/>
+                    <smart:field-enum name="cv_displayed" label="Affichable" visibility="W" relation="CVDOC-cv_displayed"/>
+                    <smart:field-text name="cv_menu" label="Menu" visibility="W"/>
+                    <smart:field-option name="empty">yes</smart:field-option>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="cv_fr_default" type="frame" label="Vues par défauts" visibility="W">
+                <smart:field-text name="cv_idcview" label="Id création vues par défaut" visibility="H"/>
+                <smart:field-text name="cv_lcview" label="Création vue" visibility="W"/>
+                <smart:field-text name="cv_renderaccessclass" label="Classe d'accès au rendu" visibility="W"/>
+            </smart:field-set>
+            <smart:field-set name="dpdoc_fr_dyn" type="frame" label="Profil dynamique" visibility="W">
+                <smart:field-docid name="dpdoc_famid" label="Structure pour le profil" visibility="W" relation="-1">
+                    <smart:field-option name="elabel">famille utilisée pour les profils dynamiques</smart:field-option>
+                </smart:field-docid>
+                <smart:field-text name="dpdoc_fam" label="Structure pour le profil (titre)" visibility="H"/>
+            </smart:field-set>
+        </smart:fields>
         <smart:parameters/>
         <smart:hooks>
-            <smart:attr-hook event="onPreRefresh" attr="cv_famid">
-                <smart:attr-callable function="::getTitle"/>
-                <smart:attr-argument type="attribute">cv_famid</smart:attr-argument>
-                <smart:attr-return attr="cv_fam"/>
-            </smart:attr-hook>
-            <smart:attr-hook type="constraint" event="onPreStore" attr="cv_idview">
-                <smart:attr-callable function="::isIdValid"/>
-                <smart:attr-argument type="attribute">cv_idview</smart:attr-argument>
-                <smart:attr-return/>
-            </smart:attr-hook>
-            <smart:attr-hook type="constraint" event="onPreStore" attr="cv_lview">
-                <smart:attr-callable function="::isLabelValid"/>
-                <smart:attr-argument type="attribute">cv_lview</smart:attr-argument>
-                <smart:attr-return/>
-            </smart:attr-hook>
+            <smart:field-hook event="onPreRefresh" attr="cv_famid">
+                <smart:field-callable function="::getTitle"/>
+                <smart:field-argument type="attribute">cv_famid</smart:field-argument>
+                <smart:field-return attr="cv_fam"/>
+            </smart:field-hook>
+            <smart:field-hook type="constraint" event="onPreStore" attr="cv_idview">
+                <smart:field-callable function="::isIdValid"/>
+                <smart:field-argument type="attribute">cv_idview</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+            <smart:field-hook type="constraint" event="onPreStore" attr="cv_lview">
+                <smart:field-callable function="::isLabelValid"/>
+                <smart:field-argument type="attribute">cv_lview</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
 
-            <smart:attr-hook event="onPreRefresh" attr="cv_idcview">
-                <smart:attr-callable function="::computeCreationViewLabel"/>
-                <smart:attr-argument type="attribute">cv_idcview</smart:attr-argument>
-                <smart:attr-return attr="cv_lcview"/>
-            </smart:attr-hook>
-            <smart:attr-hook type="constraint" event="onPreStore" attr="cv_lcview">
-                <smart:attr-callable function="::isCreationViewValid"/>
-                <smart:attr-argument type="attribute">cv_idcview</smart:attr-argument>
-                <smart:attr-argument type="attribute">cv_lcview</smart:attr-argument>
-                <smart:attr-argument type="attribute">cv_idview</smart:attr-argument>
-                <smart:attr-return/>
-            </smart:attr-hook>
-            <smart:attr-hook event="onPreRefresh" attr="dpdoc_fam">
-                <smart:attr-callable function="::getTitle"/>
-                <smart:attr-argument type="attribute">dpdoc_famid</smart:attr-argument>
-            </smart:attr-hook>
+            <smart:field-hook event="onPreRefresh" attr="cv_idcview">
+                <smart:field-callable function="::computeCreationViewLabel"/>
+                <smart:field-argument type="attribute">cv_idcview</smart:field-argument>
+                <smart:field-return attr="cv_lcview"/>
+            </smart:field-hook>
+            <smart:field-hook type="constraint" event="onPreStore" attr="cv_lcview">
+                <smart:field-callable function="::isCreationViewValid"/>
+                <smart:field-argument type="attribute">cv_idcview</smart:field-argument>
+                <smart:field-argument type="attribute">cv_lcview</smart:field-argument>
+                <smart:field-argument type="attribute">cv_idview</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+            <smart:field-hook event="onPreRefresh" attr="dpdoc_fam">
+                <smart:field-callable function="::getTitle"/>
+                <smart:field-argument type="attribute">dpdoc_famid</smart:field-argument>
+            </smart:field-hook>
         </smart:hooks>
         <smart:autocompletion>
-            <smart:attr-autocomplete attr="cv_lcview">
-                <smart:attr-callable function="Anakeen\SmartStructures\Cvdoc\CVDocAutocomplete::getViews"/>
-                <smart:attr-argument name="idviews" type="attribute">cv_idview</smart:attr-argument>
-                <smart:attr-argument name="labelviews" type="attribute">cv_lview</smart:attr-argument>
-                <smart:attr-returns>
-                    <smart:attr-return attr="cv_idcview"/>
-                    <smart:attr-return attr="cv_lcview"/>
-                </smart:attr-returns>
-            </smart:attr-autocomplete>
+            <smart:field-autocomplete attr="cv_lcview">
+                <smart:field-callable function="Anakeen\SmartStructures\Cvdoc\CVDocAutocomplete::getViews"/>
+                <smart:field-argument name="idviews" type="attribute">cv_idview</smart:field-argument>
+                <smart:field-argument name="labelviews" type="attribute">cv_lview</smart:field-argument>
+                <smart:field-returns>
+                    <smart:field-return attr="cv_idcview"/>
+                    <smart:field-return attr="cv_lcview"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
         </smart:autocompletion>
         <smart:defaults>
             <smart:default attr="cv_displayed">yes</smart:default>

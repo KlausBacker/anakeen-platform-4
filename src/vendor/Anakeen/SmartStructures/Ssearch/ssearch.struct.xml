@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
     <smart:structure-configuration name="SSEARCH" id="38" label="Recherche spécialisée" extends="SEARCH">
         <smart:icon file="se-ssearch.png"/>
         <smart:class>Anakeen\SmartStructures\Ssearch\SSearchHooks</smart:class>
         <smart:usefor>S</smart:usefor>
-        <smart:attributes>
-            <smart:attr-fieldset name="se_fr_function" type="frame" label="Fonction" visibility="W">
-                <smart:attr-text name="se_phpfile" label="Fichier PHP" visibility="W"/>
-                <smart:attr-text name="se_phpfunc" label="Fonction PHP" visibility="W"/>
-                <smart:attr-text name="se_phparg" label="Argument PHP" visibility="W"/>
-            </smart:attr-fieldset>
-        </smart:attributes>
+        <smart:fields>
+            <smart:field-set name="se_fr_function" type="frame" label="Fonction" visibility="W">
+                <smart:field-text name="se_phpfile" label="Fichier PHP" visibility="W"/>
+                <smart:field-text name="se_phpfunc" label="Fonction PHP" visibility="W"/>
+                <smart:field-text name="se_phparg" label="Argument PHP" visibility="W"/>
+            </smart:field-set>
+        </smart:fields>
         <smart:parameters/>
-        <smart:attr-override attr="se_crit" visibility="H"/>
+        <smart:field-override attr="se_crit" visibility="H"/>
         <smart:hooks/>
         <smart:autocompletion/>
         <smart:defaults>

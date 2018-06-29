@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
   <smart:access-configuration name="TST_DOCPRFBASIC" link="TST_PRFJOHN"/>
   <smart:access-configuration name="TST_PRFDYNUSER" label="Test user dyn 1" profil-type="PDOC" linked-structure="TST_PROFIL">
     <smart:element-access access="view" attr="tst_user"/>

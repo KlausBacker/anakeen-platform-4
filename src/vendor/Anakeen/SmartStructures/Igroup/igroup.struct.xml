@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
     <smart:structure-configuration name="IGROUP" id="127" label="Groupe d'utilisateurs" extends="GROUP">
         <smart:icon file="se-igroup.png"/>
         <smart:class>Anakeen\SmartStructures\Igroup\IGroupHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
-        <smart:attributes>
-            <smart:attr-fieldset name="grp_fr_intranet" type="frame" label="Système" visibility="W">
-                <smart:attr-text name="us_login" label="identifiant" visibility="W" needed="true"/>
-                <smart:attr-int name="us_whatid" label="identifiant système" visibility="R"/>
-                <smart:attr-account name="us_meid" label="groupe id" visibility="H"/>
-                <smart:attr-docid name="grp_roles" label="Rôles associés" visibility="W" relation="ROLE" multiple="true"/>
-            </smart:attr-fieldset>
-        </smart:attributes>
+        <smart:fields>
+            <smart:field-set name="grp_fr_intranet" type="frame" label="Système" visibility="W">
+                <smart:field-text name="us_login" label="identifiant" visibility="W" needed="true"/>
+                <smart:field-int name="us_whatid" label="identifiant système" visibility="R"/>
+                <smart:field-account name="us_meid" label="groupe id" visibility="H"/>
+                <smart:field-docid name="grp_roles" label="Rôles associés" visibility="W" relation="ROLE" multiple="true"/>
+            </smart:field-set>
+        </smart:fields>
         <smart:parameters/>
 
         <smart:hooks>
-            <smart:attr-hook type="constraint" event="onPreStore" attr="us_login">
-                <smart:attr-callable function="::ConstraintLogin"/>
-                <smart:attr-argument type="attribute">us_login</smart:attr-argument>
-                <smart:attr-return/>
-            </smart:attr-hook>
-            <smart:attr-hook type="constraint" event="onPreStore" attr="us_whatid">
-                <smart:attr-callable function="Anakeen\Core\Utils\Numbers::isInteger"/>
-                <smart:attr-argument type="attribute">us_whatid</smart:attr-argument>
-                <smart:attr-return/>
-            </smart:attr-hook>
+            <smart:field-hook type="constraint" event="onPreStore" attr="us_login">
+                <smart:field-callable function="::ConstraintLogin"/>
+                <smart:field-argument type="attribute">us_login</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+            <smart:field-hook type="constraint" event="onPreStore" attr="us_whatid">
+                <smart:field-callable function="Anakeen\Core\Utils\Numbers::isInteger"/>
+                <smart:field-argument type="attribute">us_whatid</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
         </smart:hooks>
 
         <smart:defaults>

@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
     <smart:structure-configuration name="MAIL" label="Mail">
         <smart:icon file="se-mail.png"/>
         <smart:class>Anakeen\SmartStructures\Mail\MailHooks</smart:class>
         <smart:usefor>S</smart:usefor>
-        <smart:attributes>
-            <smart:attr-fieldset name="mail_fr" type="frame" label="Adresses" visibility="W">
-                <smart:attr-text name="mail_from" label="De" visibility="R" is-abstract="true"/>
-                <smart:attr-fieldset name="mail_dest" type="array" label="Destinataires" visibility="W">
-                    <smart:attr-enum name="mail_copymode" visibility="W" is-abstract="true" relation="MAIL-mail_copymode"/>
-                    <smart:attr-docid name="mail_recipid" label="Id destinataire" visibility="H"/>
-                    <smart:attr-text name="mail_recip" label="Destinataire" visibility="W" is-abstract="true"/>
-                    <smart:attr-enum name="mail_sendformat" label="Notif." visibility="W" is-abstract="true" relation="MAIL-mail_sendformat"/>
-                </smart:attr-fieldset>
-                <smart:attr-text name="mail_subject" label="Sujet" visibility="W" is-abstract="true"/>
-                <smart:attr-enum name="mail_savecopy" label="Enregistrer une copie" visibility="W" relation="MAIL-mail_savecopy"/>
-            </smart:attr-fieldset>
-            <smart:attr-fieldset name="mail_fr_cm" type="frame" label="Commentaire" visibility="W">
-                <smart:attr-longtext name="mail_cm" label="Commentaire" visibility="W" is-abstract="true"/>
-                <smart:attr-enum name="mail_format" label="Format" visibility="W" is-abstract="true" relation="MAIL-mail_format"/>
-            </smart:attr-fieldset>
-        </smart:attributes>
+        <smart:fields>
+            <smart:field-set name="mail_fr" type="frame" label="Adresses" visibility="W">
+                <smart:field-text name="mail_from" label="De" visibility="R" is-abstract="true"/>
+                <smart:field-set name="mail_dest" type="array" label="Destinataires" visibility="W">
+                    <smart:field-enum name="mail_copymode" visibility="W" is-abstract="true" relation="MAIL-mail_copymode"/>
+                    <smart:field-docid name="mail_recipid" label="Id destinataire" visibility="H"/>
+                    <smart:field-text name="mail_recip" label="Destinataire" visibility="W" is-abstract="true"/>
+                    <smart:field-enum name="mail_sendformat" label="Notif." visibility="W" is-abstract="true" relation="MAIL-mail_sendformat"/>
+                </smart:field-set>
+                <smart:field-text name="mail_subject" label="Sujet" visibility="W" is-abstract="true"/>
+                <smart:field-enum name="mail_savecopy" label="Enregistrer une copie" visibility="W" relation="MAIL-mail_savecopy"/>
+            </smart:field-set>
+            <smart:field-set name="mail_fr_cm" type="frame" label="Commentaire" visibility="W">
+                <smart:field-longtext name="mail_cm" label="Commentaire" visibility="W" is-abstract="true"/>
+                <smart:field-enum name="mail_format" label="Format" visibility="W" is-abstract="true" relation="MAIL-mail_format"/>
+            </smart:field-set>
+        </smart:fields>
         <smart:parameters/>
         <smart:hooks/>
         <smart:autocompletion>
-            <smart:attr-autocomplete attr="mail_recip">
-                <smart:attr-callable function="Anakeen\SmartStructures\Mail\MailAutoComplete::getMailAddresses"/>
-                <smart:attr-returns>
-                    <smart:attr-return attr="mail_recip"/>
-                    <smart:attr-return attr="mail_recipid"/>
-                    <smart:attr-return attr="mail_sendformat"/>
-                </smart:attr-returns>
-            </smart:attr-autocomplete>
+            <smart:field-autocomplete attr="mail_recip">
+                <smart:field-callable function="Anakeen\SmartStructures\Mail\MailAutoComplete::getMailAddresses"/>
+                <smart:field-returns>
+                    <smart:field-return attr="mail_recip"/>
+                    <smart:field-return attr="mail_recipid"/>
+                    <smart:field-return attr="mail_sendformat"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
         </smart:autocompletion>
         <smart:defaults/>
         <smart:accesses/>

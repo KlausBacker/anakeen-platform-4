@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
 
     <smart:structure-configuration name="PDOC" id="3" label="Profil de document">
         <smart:icon file="se-pdoc.png"/>
         <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Profiles\PDocHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>SP</smart:usefor>
-        <smart:attributes>
-            <smart:attr-fieldset name="fr_basic" type="frame" label="Basique" visibility="W">
-                <smart:attr-text name="ba_title" label="Titre" visibility="O" needed="true" is-title="true"/>
-                <smart:attr-longtext name="prf_desc" label="Description" visibility="W"/>
-            </smart:attr-fieldset>
-            <smart:attr-fieldset name="dpdoc_fr_dyn" type="frame" label="Dynamique" visibility="W">
-                <smart:attr-docid name="dpdoc_famid" label="Smart Structure utilisable pour les droits en fonction des attributs &quot;account&quot;" visibility="W" relation="-1"/>
-                <smart:attr-text name="dpdoc_fam" label="Smart Structure (titre)" visibility="H" is-abstract="true"/>
-            </smart:attr-fieldset>
-        </smart:attributes>
+        <smart:fields>
+            <smart:field-set name="fr_basic" type="frame" label="Basique" visibility="W">
+                <smart:field-text name="ba_title" label="Titre" visibility="O" needed="true" is-title="true"/>
+                <smart:field-longtext name="prf_desc" label="Description" visibility="W"/>
+            </smart:field-set>
+            <smart:field-set name="dpdoc_fr_dyn" type="frame" label="Dynamique" visibility="W">
+                <smart:field-docid name="dpdoc_famid" label="Smart Structure utilisable pour les droits en fonction des attributs &quot;account&quot;" visibility="W" relation="-1"/>
+                <smart:field-text name="dpdoc_fam" label="Smart Structure (titre)" visibility="H" is-abstract="true"/>
+            </smart:field-set>
+        </smart:fields>
         <smart:parameters/>
         <smart:hooks>
-            <smart:attr-hook event="onPreRefresh" attr="dpdoc_fam">
-                <smart:attr-callable function="::getTitle"/>
-                <smart:attr-argument type="attribute">dpdoc_famid</smart:attr-argument>
-            </smart:attr-hook>
+            <smart:field-hook event="onPreRefresh" attr="dpdoc_fam">
+                <smart:field-callable function="::getTitle"/>
+                <smart:field-argument type="attribute">dpdoc_famid</smart:field-argument>
+            </smart:field-hook>
         </smart:hooks>
     </smart:structure-configuration>
 
@@ -44,7 +44,7 @@
         <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Profiles\PFamHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>SP</smart:usefor>
-        <smart:attr-override attr="dpdoc_fr_dyn" visibility="H"/>
+        <smart:field-override attr="dpdoc_fr_dyn" visibility="H"/>
     </smart:structure-configuration>
 
 </smart:config>
