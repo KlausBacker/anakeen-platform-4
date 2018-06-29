@@ -2,6 +2,7 @@
 namespace Anakeen\Routes\Admin;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Core\Settings;
 use Dcp\Core\Exception;
 
 /**
@@ -22,7 +23,7 @@ class Plugins
     {
         $pluginsConfig = $this->getAdminPluginsConfig();
         $result = [
-            "appName" => ContextManager::getParameterValue('CORE_CLIENT'),
+            "appName" => ContextManager::getParameterValue(Settings::NsSde, 'CORE_CLIENT'),
             "plugins" => $pluginsConfig
         ];
         return $response->withJson($result);
@@ -139,7 +140,7 @@ class Plugins
         }
         return $result;
     }
-    
+
     /**
      * Sort plugins considering the order attribute
      * @param array $config plugins to sort
@@ -158,7 +159,7 @@ class Plugins
 
     protected static function normalizeXMLPlugins(\SimpleXMLElement $xmlObject, $parentPluginPath = "") {
         $result = [];
-        $wsVersion = ContextManager::getParameterValue("CORE", "WVERSION");
+        $wsVersion = ContextManager::getParameterValue(Settings::NsSde, "WVERSION");
         if (!empty($xmlObject) && !empty($xmlObject->plugin)) {
             $plugins = $xmlObject->plugin;
             foreach ($plugins as $xmlPlugin) {

@@ -1,21 +1,25 @@
 <?xml version="1.0"?>
-<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
-    <router:routes>
-        <router:route name="AdminParameters:AllParameters">
-            <router:priority>0</router:priority>
-            <router:callable>\Anakeen\Routes\Admin\Parameters\AllParameters</router:callable>
-            <router:method>GET</router:method>
-            <router:pattern>/api/v2/admin/parameters/</router:pattern>
-            <router:description>Get all gloabl and capsule parameters</router:description>
-            <router:requiredAccess>admincenter:admin</router:requiredAccess>
-        </router:route>
-        <router:route name="AdminParameters:AlterParameter">
-            <router:priority>0</router:priority>
-            <router:callable>\Anakeen\Routes\Admin\Parameters\AlterParameter</router:callable>
-            <router:method>PUT</router:method>
-            <router:pattern>/api/v2/admin/parameters/{domain_name}/{parameter_name}/</router:pattern>
-            <router:description>Modify the value of a parameter</router:description>
-            <router:requiredAccess>admincenter:admin</router:requiredAccess>
-        </router:route>
-    </router:routes>
-</router:config>
+<sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
+    <sde:routes  namespace="AdminCenter">
+        <sde:route name="AdminParameters:AllParameters">
+            <sde:priority>0</sde:priority>
+            <sde:callable>\Anakeen\Routes\Admin\Parameters\AllParameters</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/admin/parameters/</sde:pattern>
+            <sde:description>Get all gloabl and capsule parameters</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminParameters:AlterParameter">
+            <sde:priority>0</sde:priority>
+            <sde:callable>\Anakeen\Routes\Admin\Parameters\AlterParameter</sde:callable>
+            <sde:method>PUT</sde:method>
+            <sde:pattern>/api/v2/admin/parameters/{domain_name}/{parameter_name}/</sde:pattern>
+            <sde:description>Modify the value of a parameter</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+    </sde:routes>
+</sde:config>

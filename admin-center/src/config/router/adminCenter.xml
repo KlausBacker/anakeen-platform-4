@@ -1,24 +1,28 @@
 <?xml version="1.0"?>
-<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
-  <router:routes>
-    <router:route name="Admin:MainPage">
-      <router:priority>0</router:priority>
-      <router:callable>\Anakeen\Routes\Admin\MainPage</router:callable>
-      <router:method>GET</router:method>
-      <router:pattern>/admin[/]</router:pattern>
-      <router:requiredAccess>admincenter:admin</router:requiredAccess>
-    </router:route>
-    <router:route name="Admin:Plugins">
-      <router:priority>0</router:priority>
-      <router:callable>\Anakeen\Routes\Admin\Plugins</router:callable>
-      <router:method>GET</router:method>
-      <router:pattern>/admin/plugins[/]</router:pattern>
-      <router:requiredAccess>admincenter:admin</router:requiredAccess>
-    </router:route>
-  </router:routes>
-  <router:accesses>
-    <router:access name="admincenter:admin">
-      <router:description>Administrator access</router:description>
-    </router:access>
-  </router:accesses>
-</router:config>
+<sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
+    <sde:routes namespace="AdminCenter">
+        <sde:route name="Admin:MainPage">
+            <sde:priority>0</sde:priority>
+            <sde:callable>\Anakeen\Routes\Admin\MainPage</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/admin[/]</sde:pattern>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="Admin:Plugins">
+            <sde:priority>0</sde:priority>
+            <sde:callable>\Anakeen\Routes\Admin\Plugins</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/admin/plugins[/]</sde:pattern>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+    </sde:routes>
+    <sde:accesses namespace="AdminCenter">
+        <sde:access name="Admin">
+            <sde:description>Administrator access</sde:description>
+        </sde:access>
+    </sde:accesses>
+</sde:config>

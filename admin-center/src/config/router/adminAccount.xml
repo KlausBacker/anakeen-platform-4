@@ -1,53 +1,65 @@
 <?xml version="1.0"?>
-<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
-    <router:routes>
-        <router:route name="AdminAccount:GroupList">
-            <router:priority>0</router:priority>
-            <router:callable>\Anakeen\Routes\Admin\Account\Groups</router:callable>
-            <router:method>GET</router:method>
-            <router:pattern>/api/v2/admin/account/groups/</router:pattern>
-            <router:description>Get list of group</router:description>
-            <router:requiredAccess>admincenter:admin</router:requiredAccess>
-        </router:route>
-        <router:route name="AdminAccount:UserList">
-            <router:priority>0</router:priority>
-            <router:callable>\Anakeen\Routes\Admin\Account\Users</router:callable>
-            <router:method>GET</router:method>
-            <router:pattern>/api/v2/admin/account/users/</router:pattern>
-            <router:description>Get list of users</router:description>
-            <router:requiredAccess>admincenter:admin</router:requiredAccess>
-        </router:route>
-        <router:route name="AdminAccount:Info">
-            <router:priority>0</router:priority>
-            <router:callable>\Anakeen\Routes\Admin\Account\Config</router:callable>
-            <router:method>GET</router:method>
-            <router:pattern>/api/v2/admin/account/config/</router:pattern>
-            <router:description>Get list of users</router:description>
-            <router:requiredAccess>admincenter:admin</router:requiredAccess>
-        </router:route>
-        <router:route name="AdminAccount:disable">
-            <router:priority>0</router:priority>
-            <router:callable>\Anakeen\Routes\Admin\Account\User\Disable</router:callable>
-            <router:method>POST</router:method>
-            <router:pattern>/api/v2/admin/account/users/{userSmartId}/disable</router:pattern>
-            <router:description>Disable account</router:description>
-            <router:requiredAccess>admincenter:admin</router:requiredAccess>
-        </router:route>
-        <router:route name="AdminAccount:enable">
-            <router:priority>0</router:priority>
-            <router:callable>\Anakeen\Routes\Admin\Account\User\Enable</router:callable>
-            <router:method>POST</router:method>
-            <router:pattern>/api/v2/admin/account/users/{userSmartId}/enable</router:pattern>
-            <router:description>Enable account</router:description>
-            <router:requiredAccess>admincenter:admin</router:requiredAccess>
-        </router:route>
-        <router:route name="AdminAccount:resetLogin">
-            <router:priority>0</router:priority>
-            <router:callable>\Anakeen\Routes\Admin\Account\User\ResetLogin</router:callable>
-            <router:method>POST</router:method>
-            <router:pattern>/api/v2/admin/account/users/{userSmartId}/resetLogin</router:pattern>
-            <router:description>Reset login</router:description>
-            <router:requiredAccess>admincenter:admin</router:requiredAccess>
-        </router:route>
-    </router:routes>
-</router:config>
+<sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
+    <sde:routes namespace="AdminCenter">
+        <sde:route name="AdminAccount:GroupList">
+            <sde:priority>0</sde:priority>
+            <sde:callable>\Anakeen\Routes\Admin\Account\Groups</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/admin/account/groups/</sde:pattern>
+            <sde:description>Get list of group</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminAccount:UserList">
+            <sde:priority>0</sde:priority>
+            <sde:callable>\Anakeen\Routes\Admin\Account\Users</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/admin/account/users/</sde:pattern>
+            <sde:description>Get list of users</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminAccount:Info">
+            <sde:priority>0</sde:priority>
+            <sde:callable>\Anakeen\Routes\Admin\Account\Config</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/admin/account/config/</sde:pattern>
+            <sde:description>Get list of users</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminAccount:disable">
+            <sde:priority>0</sde:priority>
+            <sde:callable>\Anakeen\Routes\Admin\Account\User\Disable</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/admin/account/users/{userSmartId}/disable</sde:pattern>
+            <sde:description>Disable account</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminAccount:enable">
+            <sde:priority>0</sde:priority>
+            <sde:callable>\Anakeen\Routes\Admin\Account\User\Enable</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/admin/account/users/{userSmartId}/enable</sde:pattern>
+            <sde:description>Enable account</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminAccount:resetLogin">
+            <sde:priority>0</sde:priority>
+            <sde:callable>\Anakeen\Routes\Admin\Account\User\ResetLogin</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/admin/account/users/{userSmartId}/resetLogin</sde:pattern>
+            <sde:description>Reset login</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+    </sde:routes>
+</sde:config>
