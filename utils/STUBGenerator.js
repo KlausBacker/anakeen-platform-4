@@ -26,7 +26,7 @@ exports.getSTUBgenerator = async (sourcePath, targetPath) => {
                 resolve("Invalid format");
             } else {
                 // STUB file path
-                var stubFile = dir + "/" + file.substr(0, file.length - 11) + '__STUB.php';
+                var STUBfile = dir + "/" + file.substr(0, file.length - 11) + '__STUB.php';
 
                 // Read and parse file
                 var xmlContent = fs.readFileSync(sourcePath + '/' + file);
@@ -61,7 +61,7 @@ exports.getSTUBgenerator = async (sourcePath, targetPath) => {
                     STUBcontent += '\t}\r\n' +
                         '}\r\n';
 
-                    fs.writeFile(stubFile, STUBcontent, function(err) {
+                    fs.writeFile(STUBfile, STUBcontent, function(err) {
                         if(err) {
                             throw err;
                         }
