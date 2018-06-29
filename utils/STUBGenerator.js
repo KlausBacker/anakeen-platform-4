@@ -42,10 +42,12 @@ exports.getSTUBgenerator = async (sourcePath, targetPath) => {
                     var smartClass = result.config.structureconfiguration[0].class;
                     var attributes = result.config.structureconfiguration[0].attributes;
 
+                    console.log(smartClass);
+
                     var STUBcontent = '<?php\r\n' +
                         'namespace SmartStructure {\r\n' +
                         '\t/** Contrôle de vues  */\r\n' +
-                        '\tclass ' + upperCaseFirstLetter(infos.name) + " extends ${smartClass} { const familyName=\"${infos.name}\";\r\n" +
+                        '\tclass ' + upperCaseFirstLetter(infos.name) + ` extends \\${smartClass} { const familyName=\"${infos.name}\"; }\r\n` +
                         '}\r\n' +
                         '\r\n' +
                         'namespace SmartStructure\\Attributes {\r\n' +
@@ -80,49 +82,49 @@ exports.getSTUBgenerator = async (sourcePath, targetPath) => {
             // [frame] or [type]
             var typeList = ["frame", "array"];
             if(attr.$ && typeList.indexOf(attr.$.type) > 0){
-                listAttr += "\t\t/** [${attr.$.type}] ${attr.$.label} */\r\n";
-                listAttr += "\t\tconst ${attr.$.name}='${attr.$.name}';\r\n";
+                listAttr += `\t\t/** [${attr.$.type}] ${attr.$.label} */\r\n`;
+                listAttr += `\t\tconst ${attr.$.name}='${attr.$.name}';\r\n`;
             }
             // [text]
             if(attr.attrtext){
                 attr.attrtext.forEach(function(text){
-                    listAttr += "\t\t/** [text] ${text.$.label} */\r\n";
-                    listAttr += "\t\tconst ${text.$.name}='${text.$.name}';\r\n";
+                    listAttr += `\t\t/** [text] ${text.$.label} */\r\n`;
+                    listAttr += `\t\tconst ${text.$.name}='${text.$.name}';\r\n`;
                 });
             }
             // [longtext]
             if(attr.attrlongtext){
                 attr.attrlongtext.forEach(function(longtext){
-                    listAttr += "\t\t/** [longtext] ${longtext.$.label} */\r\n";
-                    listAttr += "\t\tconst ${longtext.$.name}='${longtext.$.name}';\r\n";
+                    listAttr += `\t\t/** [longtext] ${longtext.$.label} */\r\n`;
+                    listAttr += `\t\tconst ${longtext.$.name}='${longtext.$.name}';\r\n`;
                 });
             }
             // [docid]
             if(attr.attrdocid){
                 attr.attrdocid.forEach(function(docid){
-                    listAttr += "\t\t/** [docid(\"${docid.$.relation}\")] ${docid.$.label} */\r\n";
-                    listAttr += "\t\tconst ${docid.$.name}='${docid.$.name}';\r\n";
+                    listAttr += `\t\t/** [docid(\"${docid.$.relation}\")] ${docid.$.label} */\r\n`;
+                    listAttr += `\t\tconst ${docid.$.name}='${docid.$.name}';\r\n`;
                 });
             }
             // [enum]
             if(attr.attrenum){
                 attr.attrenum.forEach(function(enuma){
-                    listAttr += "\t\t/** [enum] ${enuma.$.label} */\r\n";
-                    listAttr += "\t\tconst ${enuma.$.name}='${enuma.$.name}';\r\n";
+                    listAttr += `\t\t/** [enum] ${enuma.$.label} */\r\n`;
+                    listAttr += `\t\tconst ${enuma.$.name}='${enuma.$.name}';\r\n`;
                 });
             }
             // [int]
             if(attr.attrint){
                 attr.attrint.forEach(function(inta){
-                    listAttr += "\t\t/** [int] ${inta.$.label} */\r\n";
-                    listAttr += "\t\tconst ${inta.$.name}='${inta.$.name}';\r\n";
+                    listAttr += `\t\t/** [int] ${inta.$.label} */\r\n`;
+                    listAttr += `\t\tconst ${inta.$.name}='${inta.$.name}';\r\n`;
                 });
             }
             // [option]
             if(attr.attroption){
                 attr.attroption.forEach(function(option){
-                    listAttr += "\t\t/** [option] ${option.$.label} */\r\n";
-                    listAttr += "\t\tconst ${option.$.name}='${option.$.name}';\r\n";
+                    listAttr += `\t\t/** [option] ${option.$.label} */\r\n`;
+                    listAttr += `\t\tconst ${option.$.name}='${option.$.name}';\r\n`;
                 });
             }
             return listAttr;
