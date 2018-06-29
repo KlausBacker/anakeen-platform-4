@@ -25,14 +25,18 @@ export default {
         initTreeList() {
             let toolbarTemplate = `
                 <div class="global-parameters-toolbar">
-                    <button class="btn btn-secondary toolbar-btn refresh-btn"><i class="material-icons">refresh</i></button>
-                    <button class="btn btn-secondary toolbar-btn expand-btn"><i class="material-icons">expand_more</i></button>
-                    <button class="btn btn-secondary toolbar-btn collapse-btn"><i class="material-icons">expand_less</i></button>
+                    <button class="btn btn-secondary toolbar-btn refresh-btn">
+                        <i class="material-icons">refresh</i>
+                    </button>
+                    <button class="btn btn-secondary toolbar-btn expand-btn">
+                        <i class="material-icons">expand_more</i>
+                    </button>
+                    <button class="btn btn-secondary toolbar-btn collapse-btn">
+                        <i class="material-icons">expand_less</i>
+                    </button>
                     <div id="search-input" class="input-group">
                         <input type="text" class="form-control global-search-input" placeholder="Filter parameters...">
-                        <i class="input-group-addon material-icons reset-search-btn">
-                            close
-                        </i>
+                        <i class="input-group-addon material-icons reset-search-btn">close</i>
                     </div>
                 </div>
             `;
