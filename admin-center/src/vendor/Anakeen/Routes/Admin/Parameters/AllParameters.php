@@ -12,7 +12,11 @@ class AllParameters
         if ($parameter['usefor'] === 'A' || $parameter['usefor'] === 'G') {
             $formatedParameter = [];
 
-            $formatedParameter['name'] = $parameter['name'];
+            $nsName = explode('::', $parameter['name'], 2);
+
+            $formatedParameter['nameSpace'] = $nsName[0];
+            $formatedParameter['name'] = $nsName[1];
+
             $formatedParameter['description'] = $parameter['descr'];
 
             $formatedParameter['category'] = $parameter['category'];
@@ -21,9 +25,6 @@ class AllParameters
 
             $formatedParameter['isUser'] = ($parameter['isuser'] === 'Y');
             $formatedParameter['isGlobal'] = ($parameter['isglob'] === 'Y');
-
-            $formatedParameter['domainId'] = $parameter['appid'];
-            $formatedParameter['domainName'] = $parameter['domain'];
 
             $formatedParameter['isStatic'] = ($parameter['kind'] === 'static');
             $formatedParameter['isReadOnly'] = ($parameter['kind'] === 'readonly');
@@ -42,6 +43,7 @@ class AllParameters
 
     private function formatTreeDataSource($parameters)
     {
+        // Sort parameters : 1) Categorized / not categorized 2) By alphabetlical order
         $params = $parameters;
         uasort($params, function ($a, $b)
         {
@@ -54,61 +56,43 @@ class AllParameters
             }
         });
 
-        $data = [];
-        $globalParametersId = 1;
-        $domainParametersId = 2;
-        $currentId = 3;
+        // treeData to return
+        $tree = [];
 
-        $data[] = [ 'id' => $globalParametersId, 'parentId' => '', 'name' => 'Global parameters', 'rowLevel' => 1];
-        $data[] = [ 'id' => $domainParametersId, 'parentId' => '', 'name' => 'Domain parameters', 'rowLevel' => 1 ];
+        // Id iterator
+        $currentId = 1;
 
-        $globalCategoriesId = [];
-        $domainId = [];
-        $domainCatgoriesId = [];
+        // Memorize  namespace / catgories id
+        $nameSpaceIds = [];
+        $categoryIds = [];
 
-        foreach ($params as $param) {
+
+        foreach ($params as $param)
+        {
             $param['id'] = $currentId++;
+            $currentNameSpace = $nameSpaceIds[$param['nameSpace']];
+            if ($currentNameSpace === null) {
+                $newId = $currentId++;
+                $data[] = ['id' => $newId, 'parentId' => null, 'name' => $param['nameSpace'], 'rowLevel' => 1];
+                $nameSpaceIds[$param['nameSpace']] = $newId;
+                $categoryIds[$param['nameSpace']] = [];
+                $currentNameSpace = $newId;
+            }
 
-            if ($param['isGlobal']) {
-                if ($param['category']) {
-                    $currentCategory = $globalCategoriesId[$param['category']];
-                    if ($currentCategory === null) {
-                        $newId = $currentId++;
-                        $data[] = ['id' => $newId, 'parentId' => $globalParametersId, 'name' => $param['category'], 'rowLevel' => 2];
-                        $globalCategoriesId[$param['category']] = $newId;
-                        $currentCategory = $newId;
-                    }
-                    $param['parentId'] = $currentCategory;
-                    $data[] = $param;
-                } else {
-                    $param['parentId'] = $globalParametersId;
-                    $data[] = $param;
-                }
-
-            } else {
-                $currentDomain = $domainId[$param['domainName']];
-                if ($currentDomain === null) {
+            if ($param['category']) {
+                $currentCatgory = $categoryIds[$param['nameSpace']][$param['category']];
+                if ($currentCatgory === null) {
                     $newId = $currentId++;
-                    $data[] = ['id' => $newId, 'parentId' => $domainParametersId, 'name' => $param['domainName'], 'rowLevel' => 2];
-                    $domainId[$param['domainName']] = $newId;
-                    $domainCatgoriesId[$param['domainName']] = [];
-                    $currentDomain = $newId;
+                    $data[] = ['id' => $newId, 'parentId' => $currentNameSpace, 'name' => $param['category'], 'rowLevel' => 2];
+                    $categoryIds[$param['nameSpace']][$param['category']] = $newId;
+                    $currentCategory = $newId;
                 }
 
-                if ($param['category']) {
-                    $currentCategory = $domainCatgoriesId[$param['domainName']]['category'];
-                    if ($currentCategory === null) {
-                        $newId = $currentId++;
-                        $data[] = ['id' => $newId, 'parentId' => $currentDomain, 'name' => $param['category'], 'rowLevel' => 3];
-                        $domainCatgoriesId[$param['domainName']]['category'] = $newId;
-                        $currentCategory = $newId;
-                    }
-                    $param['parentId'] = $currentCategory;
-                    $data[] = $param;
-                } else {
-                    $param['parentId'] = $currentDomain;
-                    $data[] = $param;
-                }
+                $param['parentId'] = $currentCategory;
+                $data[] = $param;
+            } else {
+                $param['parentId'] = $currentNameSpace;
+                $data[] = $param;
             }
         }
 
