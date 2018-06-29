@@ -24,7 +24,7 @@ class RenderDefault implements IRenderConfig
 
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         return array(
             "bootstrap" => "css/ank/document/bootstrap.css?ws=" . $version,
             "kendo" => "css/ank/document/kendo.css?ws=" . $version,
@@ -46,13 +46,13 @@ class RenderDefault implements IRenderConfig
     {
         $pubExternalPath = "uiAssets/externals";
         $pubInternalPath = "uiAssets/anakeen";
-        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $jsRef = [
             "jquery" => UIGetAssetPath::getJSJqueryPath(),
             "kendoui" => UIGetAssetPath::getJSKendoPath()
         ];
 
-        if (\Anakeen\Core\Internal\ApplicationParameterManager::getParameterValue("SMARTELEMENT_UI", "ACTIVATE_LOGGING") === "TRUE") {
+        if (ContextManager::getParameterValue("Ui",  "ACTIVATE_LOGGING") === "TRUE") {
             $jsRef = array_merge($jsRef, [
                 "traceKit" => "$pubExternalPath/traceKit/traceKit.js?ws=" . $version,
                 "traceError" => "$pubInternalPath/dynacaseReport.js?ws=" . $version

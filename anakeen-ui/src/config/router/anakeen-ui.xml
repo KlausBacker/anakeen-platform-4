@@ -1,20 +1,20 @@
 <?xml version="1.0"?>
-<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
-  <router:routes>
-    <router:route name="Ui:CurrentUser">
-      <router:callable>\Anakeen\Routes\Ui\CurrentUser</router:callable>
-      <router:method>GET</router:method>
-      <router:pattern>/api/v2/ui/users/current</router:pattern>
-      <router:description>Fetch user information</router:description>
-      <router:requiredAccess/>
-      <router:authenticated>true</router:authenticated>
-    </router:route>
-    <router:route name="Ui:AnkComponents">
-      <router:callable>\Anakeen\Routes\Ui\AnkComponents</router:callable>
-      <router:method>GET</router:method>
-      <router:pattern>/ui/components/ank-components</router:pattern>
-      <router:authenticated>false</router:authenticated>
-      <router:description>Fetch Anakeen Web Components</router:description>
-    </router:route>
-  </router:routes>
-</router:config>
+<sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
+  <sde:routes namespace="Ui">
+    <sde:route name="CurrentUser">
+      <sde:callable>\Anakeen\Routes\Ui\CurrentUser</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/ui/users/current</sde:pattern>
+      <sde:description>Fetch user information</sde:description>
+      <sde:requiredAccess/>
+      <sde:authenticated>true</sde:authenticated>
+    </sde:route>
+    <sde:route name="AnkComponents">
+      <sde:callable>\Anakeen\Routes\Ui\AnkComponents</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/ui/components/ank-components</sde:pattern>
+      <sde:description>Fetch Anakeen Web Components</sde:description>
+      <sde:authenticated>false</sde:authenticated>
+    </sde:route>
+  </sde:routes>
+</sde:config>

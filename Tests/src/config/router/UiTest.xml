@@ -1,43 +1,34 @@
 <?xml version="1.0"?>
-<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
-    <router:apps>
-        <router:app name="UITEST">
-            <router:version>1.0.0</router:version>
-            <router:shortName>List all ui test pages</router:shortName>
-            <router:description>Interface to view test pages</router:description>
-            <router:icon>apps/uitest/uitest.png</router:icon>
-        </router:app>
-    </router:apps>
-    <router:routes>
-        <router:route name="Ui:Test:Page">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\UiTest\TestPage</router:callable>
-            <router:method>GET</router:method>
-            <router:pattern>/apps/uitest/</router:pattern>
-            <router:description>Test Ui Page</router:description>
-            <router:applicationContext>UITEST</router:applicationContext>
-            <router:requiredAccess>uitest:user</router:requiredAccess>
-        </router:route>
-        <router:route name="Ui:Test:ExportData">
-            <router:priority>1</router:priority>
-            <router:callable>\Anakeen\Routes\UiTest\ExportData</router:callable>
-            <router:method>GET</router:method>
-            <router:pattern>/api/v2/uitest/data</router:pattern>
-            <router:description>Test Ui Export Test Description</router:description>
-            <router:requiredAccess operator="and">
-                <router:access>uitest:admin</router:access>
-                <router:access>uitest:user</router:access>
-            </router:requiredAccess>
-        </router:route>
-    </router:routes>
-    <router:accesses>
-        <router:access name="uitest:user">
-            <router:applicationContext>UITEST</router:applicationContext>
-            <router:description>Normal Access</router:description>
-        </router:access>
-        <router:access name="uitest:admin">
-            <router:applicationContext>UITEST</router:applicationContext>
-            <router:description>Administrator Access</router:description>
-        </router:access>
-    </router:accesses>
-</router:config>
+<sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
+    <sde:routes namespace="Uitest">
+        <sde:route name="Page">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\UiTest\TestPage</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/apps/uitest/</sde:pattern>
+            <sde:description>Test Ui Page</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Uitest">user</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="ExportData">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\UiTest\ExportData</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/uitest/data</sde:pattern>
+            <sde:description>Test Ui Export Test Description</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Uitest">admin</sde:access>
+                <sde:access ns="Uitest">user</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+    </sde:routes>
+    <sde:accesses namespace="Uitest">
+        <sde:access name="user">
+            <sde:description>Normal Access</sde:description>
+        </sde:access>
+        <sde:access name="admin">
+            <sde:description>Administrator Access</sde:description>
+        </sde:access>
+    </sde:accesses>
+</sde:config>

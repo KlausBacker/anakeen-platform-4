@@ -161,7 +161,7 @@ class Content extends DocumentList
                                         // "< 2016 same as < 2016-01-01"
                                         $isoDate = sprintf("%04d-%02d-%02d", $reg[1], 1, 1);
                                     } elseif (preg_match("@^[>=<]?\s*([0-9]+)/([0-9]+)/([0-9]+)$@", $currentFilter["value"], $reg)) {
-                                        $lang = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("CORE_LANG");
+                                        $lang = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG");
                                         if ($lang === "en_US") {
                                             $isoDate = sprintf("%04d-%02d-%02d", $reg[3], $reg[1], $reg[2]);
                                         } else {

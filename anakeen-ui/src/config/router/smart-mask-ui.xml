@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<router:config xmlns:router="http://www.anakeen.com/ns/routes/">
-  <router:routes>
-    <router:route name="Ui:Smart:Mask:Visibilities">
-      <router:priority>1</router:priority>
-      <router:callable>\Anakeen\SmartStructures\Mask\Routes\MaskVisibilities</router:callable>
-      <router:method>GET</router:method>
-      <router:pattern>/api/v2/admin/mask/{mask}/visibilities/</router:pattern>
-      <router:description>Get attribute visibilities for a mask</router:description>
-      <router:requiredAccess/>
-    </router:route>
-  </router:routes>
-</router:config>
+<sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
+  <sde:routes>
+    <sde:route name="Ui:Smart:Mask:Visibilities">
+      <sde:priority>1</sde:priority>
+      <sde:callable>\Anakeen\SmartStructures\Mask\Routes\MaskVisibilities</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/admin/mask/{mask}/visibilities/</sde:pattern>
+      <sde:description>Get attribute visibilities for a mask</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+  </sde:routes>
+</sde:config>

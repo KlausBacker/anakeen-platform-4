@@ -2,6 +2,7 @@
 
 namespace Anakeen\Routes\Ui;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
 
@@ -56,10 +57,9 @@ class I18nCatalog
     protected function getUserLocale()
     {
         if ($this->userLocale === null) {
-            $this->userLocale = \Anakeen\Core\Internal\ApplicationParameterManager::getUserParameterValue("CORE", "CORE_LANG");
-            if (empty($this->userLocale)) {
-                $this->userLocale = \Anakeen\Core\Internal\ApplicationParameterManager::getCommonParameterValue("CORE", "CORE_LANG");
-            }
+
+            $this->userLocale = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde,  "CORE_LANG");
+
             if (empty($this->userLocale)) {
                 $this->userLocale = "fr_FR";
             }
@@ -74,7 +74,7 @@ class I18nCatalog
      */
     public function getEtagInfo()
     {
-        $version = \Anakeen\Core\Internal\ApplicationParameterManager::getScopedParameterValue("WVERSION");
+        $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         return $version . " " . $this->getUserLocale();
     }
 }
