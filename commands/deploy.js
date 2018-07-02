@@ -25,7 +25,6 @@ exports.builder = controlArguments({
     defaultDescription: "path of the info.xml for the autorelease mode",
     alias: "s",
     type: "string",
-    implies: "autoRelease",
     coerce: (arg) => {
       if (!fs.statSync(arg).isDirectory()) {
         throw new Error("Unable to find the source directory "+ arg);
@@ -51,8 +50,8 @@ exports.handler = function(argv) {
   try {
     signale.time("deploy");
     let task;
-    if (argv.autoRelease) {
-      signale.info("autorelease mode");
+    if (argv.sourcePath) {
+      signale.info("source mode");
       task = buildAndDeploy(argv).tasks.buildAndDeploy.fn;
     } else {
       signale.info("app deploy mode " + argv.appPath);
