@@ -4,6 +4,7 @@ const appConst = require("./appConst");
 const util = require("util");
 const cp = require('child_process');
 const mustache = require("mustache");
+// const vueExtract = require("easygettext");
 const getTextOptions = '--language={0} -a --sort-output --from-code=utf-8 --no-location --indent --add-comments=_COMMENT --keyword=___:1 --keyword=___:1,2c --keyword=n___:1,2 --keyword=pgettext:1c,2 --keyword=n___:1,2,4c --keyword=npgettext:1,2,4c --keyword="N_"  --keyword="text" -keyword="Text"';
 const fileFormats = {'PHP': '.php', 'JavaScript': '.js', 'Mustache': '.mst', 'Vue': '.vue', 'XML': '.xml'};
 const mustacheTags = ['[[', ']]'];
@@ -17,7 +18,7 @@ exports.getPOExtractor = async (sourcePath, targetPath, format) => {
         // Get list of XML files
         var files = fs.readdirSync(sourcePath);
 
-        function xgettext2PO(poFile, sourceFile, format){
+        function xgettext2PO(poFile, sourceFile, format) {
             return new Promise((resolve) => {
                 var command = "xgettext " + getTextOptions.replace("{0}", format) + " -o " + poFile + ' ' + sourceFile;
                 // console.log(command);
@@ -26,14 +27,14 @@ exports.getPOExtractor = async (sourcePath, targetPath, format) => {
                         console.log(`exec error: ${error}`);
                         throw error;
                     }
-                    console.log(`stdout ${sourceFile}: ${stdout}`);
-                    console.log(`stderr: ${stderr}`);
+                    // console.log(`stdout ${sourceFile}: ${stdout}`);
+                    // console.log(`stderr: ${stderr}`);
                     resolve('Parse done');
                 });
             });
         }
 
-        function mst2PHP(poFile, sourceFile){
+        function mst2PHP(poFile, sourceFile) {
             return new Promise((resolve) => {
                 var keys = [];
                 var mstTemplate = fs.readFileSync(sourceFile, "utf8");
@@ -58,6 +59,27 @@ exports.getPOExtractor = async (sourcePath, targetPath, format) => {
                 });
                 resolve(PHPfile);
             });
+        }
+
+        var vue2PHP = function vue2PHP(poFile, sourceFile) {
+            return new Promise((resolve) => {
+                var command = "node_modules/.bin/gettext-extract --attribute v-translate --quiet --output " + poFile + ' ' + sourceFile;
+                // console.log(command);
+                cp.exec(command, (error, stdout, stderr) => {
+                    if (error) {
+                        console.log(`exec error: ${error}`);
+                        throw error;
+                    }
+                    // console.log(`stdout ${sourceFile}: ${stdout}`);
+                    // console.log(`stderr: ${stderr}`);
+                    resolve('Parse done');
+                });
+            });
+        }
+
+        function xml2PHP(poFile, sourceFile) {
+            // Syntaxe ?
+            // Type de fichiers ? Controle de vue, conf de routeur, etc.
         }
 
         var extractPO = function parseAllFiles(file) {
@@ -87,10 +109,11 @@ exports.getPOExtractor = async (sourcePath, targetPath, format) => {
                         // Extract file to .po
                         var poFilePath = path.join(dir, filename + '.pot');
                         var sourceFilePath = path.join(sourcePath, file);
+                        console.log(format+' '+sourceFilePath);
                         switch(format) {
                             case 'PHP':
                             case 'JavaScript':
-                                xgettext2PO(poFilePath, sourceFilePath, format).then(function(){
+                                xgettext2PO(poFilePath, sourceFilePath, format).then(function() {
                                     resolve('Parse done');
                                 });
                                 break;
@@ -101,13 +124,23 @@ exports.getPOExtractor = async (sourcePath, targetPath, format) => {
                                     });
                                 });
                                 break;
+                            case 'Vue':
+                                vue2PHP(poFilePath, sourceFilePath).then(function() {
+                                    resolve('Parse done');
+                                });
+                            case 'XML':
+                                xml2PHP(poFilePath, sourceFilePath).then(function() {
+                                    resolve('Parse done');
+                                });
                             default:
                                 resolve('Not parsed, format not found.');
-                                break;
                         }
+                    } else {
+                        resolve('Not parsed, format not found');
                     }
+                } else {
+                    resolve('Not parsed, not a valid file');
                 }
-                resolve('Not parsed, not a valid file');
             });
         }
 
@@ -116,8 +149,8 @@ exports.getPOExtractor = async (sourcePath, targetPath, format) => {
 
         return Promise.all(listParsing).then(results => {
             console.log('Finished parsing');
-        return { "extractDir": dir }
-    });
+            return { "extractDir": dir }
+        });
     } else if (!fs.existsSync(sourcePath)) {
         console.log('Source path not found: '+sourcePath);
     } else if (!fs.existsSync(targetPath)) {

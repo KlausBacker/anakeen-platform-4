@@ -21,5 +21,8 @@
     "through2": "^2.0.3",
     "xml2js": "^0.4.19",
     "yargs": "^11.0.0"
+  },
+  "devDependencies": {
+    "easygettext": "^2.5.0"
   }
 }
