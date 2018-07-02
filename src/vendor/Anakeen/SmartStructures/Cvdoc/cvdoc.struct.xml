@@ -35,52 +35,52 @@
         </smart:fields>
         <smart:parameters/>
         <smart:hooks>
-            <smart:field-hook event="onPreRefresh" attr="cv_famid">
+            <smart:field-hook event="onPreRefresh" field="cv_famid">
                 <smart:field-callable function="::getTitle"/>
-                <smart:field-argument type="attribute">cv_famid</smart:field-argument>
-                <smart:field-return attr="cv_fam"/>
+                <smart:field-argument type="field">cv_famid</smart:field-argument>
+                <smart:field-return field="cv_fam"/>
             </smart:field-hook>
-            <smart:field-hook type="constraint" event="onPreStore" attr="cv_idview">
+            <smart:field-hook type="constraint" event="onPreStore" field="cv_idview">
                 <smart:field-callable function="::isIdValid"/>
-                <smart:field-argument type="attribute">cv_idview</smart:field-argument>
+                <smart:field-argument type="field">cv_idview</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
-            <smart:field-hook type="constraint" event="onPreStore" attr="cv_lview">
+            <smart:field-hook type="constraint" event="onPreStore" field="cv_lview">
                 <smart:field-callable function="::isLabelValid"/>
-                <smart:field-argument type="attribute">cv_lview</smart:field-argument>
+                <smart:field-argument type="field">cv_lview</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
 
-            <smart:field-hook event="onPreRefresh" attr="cv_idcview">
+            <smart:field-hook event="onPreRefresh" field="cv_idcview">
                 <smart:field-callable function="::computeCreationViewLabel"/>
-                <smart:field-argument type="attribute">cv_idcview</smart:field-argument>
-                <smart:field-return attr="cv_lcview"/>
+                <smart:field-argument type="field">cv_idcview</smart:field-argument>
+                <smart:field-return field="cv_lcview"/>
             </smart:field-hook>
-            <smart:field-hook type="constraint" event="onPreStore" attr="cv_lcview">
+            <smart:field-hook type="constraint" event="onPreStore" field="cv_lcview">
                 <smart:field-callable function="::isCreationViewValid"/>
-                <smart:field-argument type="attribute">cv_idcview</smart:field-argument>
-                <smart:field-argument type="attribute">cv_lcview</smart:field-argument>
-                <smart:field-argument type="attribute">cv_idview</smart:field-argument>
+                <smart:field-argument type="field">cv_idcview</smart:field-argument>
+                <smart:field-argument type="field">cv_lcview</smart:field-argument>
+                <smart:field-argument type="field">cv_idview</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
-            <smart:field-hook event="onPreRefresh" attr="dpdoc_fam">
+            <smart:field-hook event="onPreRefresh" field="dpdoc_fam">
                 <smart:field-callable function="::getTitle"/>
-                <smart:field-argument type="attribute">dpdoc_famid</smart:field-argument>
+                <smart:field-argument type="field">dpdoc_famid</smart:field-argument>
             </smart:field-hook>
         </smart:hooks>
         <smart:autocompletion>
-            <smart:field-autocomplete attr="cv_lcview">
+            <smart:field-autocomplete field="cv_lcview">
                 <smart:field-callable function="Anakeen\SmartStructures\Cvdoc\CVDocAutocomplete::getViews"/>
-                <smart:field-argument name="idviews" type="attribute">cv_idview</smart:field-argument>
-                <smart:field-argument name="labelviews" type="attribute">cv_lview</smart:field-argument>
+                <smart:field-argument name="idviews" type="field">cv_idview</smart:field-argument>
+                <smart:field-argument name="labelviews" type="field">cv_lview</smart:field-argument>
                 <smart:field-returns>
-                    <smart:field-return attr="cv_idcview"/>
-                    <smart:field-return attr="cv_lcview"/>
+                    <smart:field-return field="cv_idcview"/>
+                    <smart:field-return field="cv_lcview"/>
                 </smart:field-returns>
             </smart:field-autocomplete>
         </smart:autocompletion>
         <smart:defaults>
-            <smart:default attr="cv_displayed">yes</smart:default>
+            <smart:default field="cv_displayed">yes</smart:default>
         </smart:defaults>
     </smart:structure-configuration>
     <smart:enumerates>

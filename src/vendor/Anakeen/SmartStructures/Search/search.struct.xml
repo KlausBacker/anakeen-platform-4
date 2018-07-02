@@ -31,13 +31,13 @@
             </smart:field-set>
         </smart:fields>
         <smart:hooks>
-            <smart:field-hook event="onPreRefresh" attr="se_fam">
+            <smart:field-hook event="onPreRefresh" field="se_fam">
                 <smart:field-callable function="::getTitle"/>
-                <smart:field-argument type="attribute">se_famid</smart:field-argument>
+                <smart:field-argument type="field">se_famid</smart:field-argument>
             </smart:field-hook>
         </smart:hooks>
         <smart:defaults>
-            <smart:default attr="se_latest">yes</smart:default>
+            <smart:default field="se_latest">yes</smart:default>
         </smart:defaults>
     </smart:structure-configuration>
     <smart:enumerates>

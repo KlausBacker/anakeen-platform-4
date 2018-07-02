@@ -20,7 +20,7 @@ class ExportConfiguration
 {
     protected $data;
     const NS = "smart";
-    const NSURL = "http://www.anakeen.com/ns/smart/v1/";
+    const NSURL = "http://www.anakeen.com/ns/smart/1.0";
     /**
      * @var SmartStructure|null
      */
@@ -204,7 +204,7 @@ class ExportConfiguration
                 $elementAccesses[$acl]->setAttribute("login", $result["login"]);
             }
             if (isset($result["attrid"])) {
-                $elementAccesses[$acl]->setAttribute("attr", $result["attrid"]);
+                $elementAccesses[$acl]->setAttribute("field", $result["attrid"]);
             }
         }
 
@@ -290,9 +290,9 @@ class ExportConfiguration
          * @var \DocAttr $docattr
          */
         foreach ($l as $docattr) {
-            $smartOver = $this->cel("attr-override");
+            $smartOver = $this->cel("field-override");
             $attrid = substr($docattr->id, 1);
-            $smartOver->setAttribute("attr", $attrid);
+            $smartOver->setAttribute("field", $attrid);
             $attr = $this->sst->getAttribute($attrid);
             if (!$attr) {
                 throw new Exception("Attr $attrid");
@@ -366,7 +366,7 @@ class ExportConfiguration
                 continue;
             }
             $def = $this->cel("default");
-            $def->setAttribute("attr", $attrid);
+            $def->setAttribute("field", $attrid);
             if (SmartElement::seemsMethod($default)) {
                 $this->insertCallable($def, $default);
             } else {
@@ -433,7 +433,7 @@ class ExportConfiguration
 
     protected function extractAttr(\DOMElement $structConfig)
     {
-        $smartAttributes = $this->cel("attributes");
+        $smartAttributes = $this->cel("fields");
         $smartParameters = $this->cel("parameters");
 
         /**
@@ -467,13 +467,13 @@ class ExportConfiguration
                 case "tab":
                 case "frame":
                 case "array":
-                    $smartAttr = $this->cel("attr-fieldset");
+                    $smartAttr = $this->cel("field-set");
                     $smartAttr->setAttribute("name", $attrName);
                     $smartAttr->setAttribute("type", $type);
                     $this->fieldSets[$attrName] = $smartAttr;
                     break;
                 default:
-                    $smartAttr = $this->cel("attr-" . $type);
+                    $smartAttr = $this->cel("field-" . $type);
                     $smartAttr->setAttribute("name", $attrName);
             }
 
@@ -529,7 +529,7 @@ class ExportConfiguration
                 if ($attr->fieldSet && $attr->fieldSet->id !== Attributes::HIDDENFIELD) {
                     $parentName = $attr->fieldSet->id;
                     if (!isset($this->fieldSets[$parentName])) {
-                        $smartAttrShadow = $this->cel("attr-fieldset");
+                        $smartAttrShadow = $this->cel("field-set");
                         $smartAttrShadow->setAttribute("name", $parentName);
                         $smartAttrShadow->setAttribute("extended", "true");
                         $this->fieldSets[$parentName] = $smartAttrShadow;
@@ -615,7 +615,7 @@ class ExportConfiguration
                     $smartAttr->setAttribute("insert-after", $value);
                 }
             } else {
-                $smartAttrOpt = $this->cel("attr-option");
+                $smartAttrOpt = $this->cel("field-option");
                 $smartAttrOpt->nodeValue = $value;
                 $smartAttrOpt->setAttribute("name", $key);
                 $smartAttr->appendChild($smartAttrOpt);
@@ -625,9 +625,9 @@ class ExportConfiguration
 
     protected function getAutocompleteFunc(NormalAttribute $attr)
     {
-        $smartAttrHook = $this->cel("attr-autocomplete");
-        $smartAttrHook->setAttribute("attr", $attr->id);
-        $smartAttrCallable = $this->cel("attr-callable");
+        $smartAttrHook = $this->cel("field-autocomplete");
+        $smartAttrHook->setAttribute("field", $attr->id);
+        $smartAttrCallable = $this->cel("field-callable");
 
         if ($attr->properties && $attr->properties->autocomplete) {
             $parseMethod = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
@@ -644,17 +644,17 @@ class ExportConfiguration
 
         $smartAttrHook->appendChild($smartAttrCallable);
         foreach ($parseMethod->inputs as $input) {
-            $smartAttrArg = $this->cel("attr-argument");
-            $smartAttrArg->setAttribute("type", $input->type === "any" ? "attribute" : "string");
+            $smartAttrArg = $this->cel("field-argument");
+            $smartAttrArg->setAttribute("type", $input->type === "any" ? "field" : "string");
 
             $smartAttrArg->nodeValue = $input->name;
             $smartAttrHook->appendChild($smartAttrArg);
         }
 
-        $smartAttrreturns = $this->cel("attr-returns");
+        $smartAttrreturns = $this->cel("field-returns");
         foreach ($parseMethod->outputs as $output) {
-            $smartAttrreturn = $this->cel("attr-return");
-            $smartAttrreturn->setAttribute("attr", $output);
+            $smartAttrreturn = $this->cel("field-return");
+            $smartAttrreturn->setAttribute("field", $output);
             $smartAttrreturns->appendChild($smartAttrreturn);
         }
         $smartAttrHook->appendChild($smartAttrreturns);
@@ -664,16 +664,16 @@ class ExportConfiguration
     protected function getComputeFunc(NormalAttribute $attr)
     {
 
-        $smartAttrHook = $this->cel("attr-hook");
+        $smartAttrHook = $this->cel("field-hook");
         $smartAttrHook->setAttribute("event", "onPreRefresh");
-        $smartAttrHook->setAttribute("attr", $attr->id);
+        $smartAttrHook->setAttribute("field", $attr->id);
         $this->insertCallable($smartAttrHook, $attr->phpfunc);
         return $smartAttrHook;
     }
 
     protected function insertCallable(\DOMElement $smartAttrHook, $phpfunc)
     {
-        $smartAttrCallable = $this->cel("attr-callable");
+        $smartAttrCallable = $this->cel("field-callable");
 
         $parseMethod = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
         $parseMethod->parse($phpfunc);
@@ -682,8 +682,8 @@ class ExportConfiguration
 
         $smartAttrHook->appendChild($smartAttrCallable);
         foreach ($parseMethod->inputs as $input) {
-            $smartAttrArg = $this->cel("attr-argument");
-            $smartAttrArg->setAttribute("type", $input->type === "any" ? "attribute" : "string");
+            $smartAttrArg = $this->cel("field-argument");
+            $smartAttrArg->setAttribute("type", $input->type === "any" ? "field" : "string");
             if ($input->type === "any") {
                 $input->name = strtolower($input->name);
             }
@@ -692,9 +692,9 @@ class ExportConfiguration
         }
 
         if ($parseMethod->outputs) {
-            $smartAttrreturn = $this->cel("attr-return");
+            $smartAttrreturn = $this->cel("field-return");
             foreach ($parseMethod->outputs as $output) {
-                $smartAttrreturn->setAttribute("attr", $output);
+                $smartAttrreturn->setAttribute("field", $output);
             }
 
             $smartAttrHook->appendChild($smartAttrreturn);
@@ -703,10 +703,10 @@ class ExportConfiguration
 
     protected function getComputeMethod($attrid, $phpfunc, $eventName)
     {
-        $smartAttrHook = $this->cel("attr-hook");
+        $smartAttrHook = $this->cel("field-hook");
         $smartAttrHook->setAttribute("event", $eventName);
-        $smartAttrHook->setAttribute("attr", $attrid);
-        $smartAttrCallable = $this->cel("attr-callable");
+        $smartAttrHook->setAttribute("field", $attrid);
+        $smartAttrCallable = $this->cel("field-callable");
 
         $parseMethod = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
         $parseMethod->parse($phpfunc);
@@ -715,8 +715,8 @@ class ExportConfiguration
 
         $smartAttrHook->appendChild($smartAttrCallable);
         foreach ($parseMethod->inputs as $input) {
-            $smartAttrArg = $this->cel("attr-argument");
-            $smartAttrArg->setAttribute("type", $input->type === "any" ? "attribute" : "string");
+            $smartAttrArg = $this->cel("field-argument");
+            $smartAttrArg->setAttribute("type", $input->type === "any" ? "field" : "string");
             if ($input->type === "any") {
                 $input->name = strtolower($input->name);
             }
@@ -724,19 +724,19 @@ class ExportConfiguration
             $smartAttrHook->appendChild($smartAttrArg);
         }
 
-        $smartAttrreturn = $this->cel("attr-return");
-        $smartAttrreturn->setAttribute("attr", $attrid);
+        $smartAttrreturn = $this->cel("field-return");
+        $smartAttrreturn->setAttribute("field", $attrid);
         $smartAttrHook->appendChild($smartAttrreturn);
         return $smartAttrHook;
     }
 
     protected function getConstraint(NormalAttribute $attr)
     {
-        $smartAttrHook = $this->cel("attr-hook");
+        $smartAttrHook = $this->cel("field-hook");
         $smartAttrHook->setAttribute("type", "constraint");
         $smartAttrHook->setAttribute("event", "onPreStore");
-        $smartAttrHook->setAttribute("attr", $attr->id);
-        $smartAttrCallable = $this->cel("attr-callable");
+        $smartAttrHook->setAttribute("field", $attr->id);
+        $smartAttrCallable = $this->cel("field-callable");
 
         $parseMethod = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
         $parseMethod->parse($attr->phpconstraint);
@@ -745,8 +745,8 @@ class ExportConfiguration
 
         $smartAttrHook->appendChild($smartAttrCallable);
         foreach ($parseMethod->inputs as $input) {
-            $smartAttrArg = $this->cel("attr-argument");
-            $smartAttrArg->setAttribute("type", $input->type === "any" ? "attribute" : "string");
+            $smartAttrArg = $this->cel("field-argument");
+            $smartAttrArg->setAttribute("type", $input->type === "any" ? "field" : "string");
             if ($input->type === "any") {
                 $input->name = strtolower($input->name);
             }
@@ -754,7 +754,7 @@ class ExportConfiguration
             $smartAttrHook->appendChild($smartAttrArg);
         }
 
-        $smartAttrreturn = $this->cel("attr-return");
+        $smartAttrreturn = $this->cel("field-return");
         $smartAttrHook->appendChild($smartAttrreturn);
         return $smartAttrHook;
     }

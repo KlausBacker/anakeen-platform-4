@@ -24,21 +24,21 @@
         </smart:fields>
         <smart:parameters/>
         <smart:hooks>
-            <smart:field-hook type="constraint" event="onPreStore" attr="se_t_detail">
+            <smart:field-hook type="constraint" event="onPreStore" field="se_t_detail">
                 <smart:field-callable function="::checkConditions"/>
                 <smart:field-return/>
             </smart:field-hook>
-            <smart:field-hook type="constraint" event="onPreStore" attr="se_keys">
+            <smart:field-hook type="constraint" event="onPreStore" field="se_keys">
                 <smart:field-callable function="::isValidCondition"/>
-                <smart:field-argument type="attribute">se_attrids</smart:field-argument>
-                <smart:field-argument type="attribute">se_funcs</smart:field-argument>
-                <smart:field-argument type="attribute">se_keys</smart:field-argument>
+                <smart:field-argument type="field">se_attrids</smart:field-argument>
+                <smart:field-argument type="field">se_funcs</smart:field-argument>
+                <smart:field-argument type="field">se_keys</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
         </smart:hooks>
         <smart:autocompletion/>
         <smart:defaults>
-            <smart:default attr="se_latest">yes</smart:default>
+            <smart:default field="se_latest">yes</smart:default>
         </smart:defaults>
         <smart:accesses/>
     </smart:structure-configuration>

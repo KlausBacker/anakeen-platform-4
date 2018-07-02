@@ -18,9 +18,9 @@
         </smart:fields>
         <smart:parameters/>
         <smart:hooks>
-            <smart:field-hook event="onPreRefresh" attr="dpdoc_fam">
+            <smart:field-hook event="onPreRefresh" field="dpdoc_fam">
                 <smart:field-callable function="::getTitle"/>
-                <smart:field-argument type="attribute">dpdoc_famid</smart:field-argument>
+                <smart:field-argument type="field">dpdoc_famid</smart:field-argument>
             </smart:field-hook>
         </smart:hooks>
     </smart:structure-configuration>
@@ -44,7 +44,7 @@
         <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Profiles\PFamHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>SP</smart:usefor>
-        <smart:field-override attr="dpdoc_fr_dyn" visibility="H"/>
+        <smart:field-override field="dpdoc_fr_dyn" visibility="H"/>
     </smart:structure-configuration>
 
 </smart:config>

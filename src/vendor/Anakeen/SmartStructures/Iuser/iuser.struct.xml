@@ -67,46 +67,46 @@
         </smart:parameters>
 
         <smart:hooks>
-            <smart:field-hook type="constraint" event="onPreStore" attr="us_extmail">
+            <smart:field-hook type="constraint" event="onPreStore" field="us_extmail">
                 <smart:field-callable function="::parseMail"/>
-                <smart:field-argument type="attribute">us_extmail</smart:field-argument>
+                <smart:field-argument type="field">us_extmail</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
 
-            <smart:field-hook type="constraint" event="onPreStore" attr="us_login">
+            <smart:field-hook type="constraint" event="onPreStore" field="us_login">
                 <smart:field-callable function="::constraintLogin"/>
-                <smart:field-argument type="attribute">us_login</smart:field-argument>
+                <smart:field-argument type="field">us_login</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
 
-            <smart:field-hook type="constraint" event="onPreStore" attr="us_expiresd">
+            <smart:field-hook type="constraint" event="onPreStore" field="us_expiresd">
                 <smart:field-callable function="::constraintExpires"/>
-                <smart:field-argument type="attribute">us_expiresd</smart:field-argument>
-                <smart:field-argument type="attribute">us_expirest</smart:field-argument>
-                <smart:field-argument type="attribute">us_daydelay</smart:field-argument>
+                <smart:field-argument type="field">us_expiresd</smart:field-argument>
+                <smart:field-argument type="field">us_expirest</smart:field-argument>
+                <smart:field-argument type="field">us_daydelay</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
 
-            <smart:field-hook type="constraint" event="onPreStore" attr="us_passwd1">
+            <smart:field-hook type="constraint" event="onPreStore" field="us_passwd1">
                 <smart:field-callable function="::testForcePassword"/>
-                <smart:field-argument type="attribute">us_passwd1</smart:field-argument>
+                <smart:field-argument type="field">us_passwd1</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
 
-            <smart:field-hook type="constraint" event="onPreStore" attr="us_passwd2">
+            <smart:field-hook type="constraint" event="onPreStore" field="us_passwd2">
                 <smart:field-callable function="::ConstraintPassword"/>
-                <smart:field-argument type="attribute">us_passwd1</smart:field-argument>
-                <smart:field-argument type="attribute">us_passwd2</smart:field-argument>
-                <smart:field-argument type="attribute">us_login</smart:field-argument>
+                <smart:field-argument type="field">us_passwd1</smart:field-argument>
+                <smart:field-argument type="field">us_passwd2</smart:field-argument>
+                <smart:field-argument type="field">us_login</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
 
         </smart:hooks>
         <smart:autocompletion/>
         <smart:defaults>
-            <smart:default attr="us_status">A</smart:default>
-            <smart:default attr="us_loginfailure">0</smart:default>
-            <smart:default attr="us_defaultgroup">GDEFAULT</smart:default>
+            <smart:default field="us_status">A</smart:default>
+            <smart:default field="us_loginfailure">0</smart:default>
+            <smart:default field="us_defaultgroup">GDEFAULT</smart:default>
         </smart:defaults>
         <smart:accesses/>
 

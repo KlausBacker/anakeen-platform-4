@@ -14,9 +14,9 @@
         </smart:fields>
         <smart:parameters/>
         <smart:hooks>
-            <smart:field-hook type="constraint" event="onPreStore" attr="role_login">
+            <smart:field-hook type="constraint" event="onPreStore" field="role_login">
                 <smart:field-callable function="::isUniqueLogin"/>
-                <smart:field-argument type="attribute">role_login</smart:field-argument>
+                <smart:field-argument type="field">role_login</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
         </smart:hooks>

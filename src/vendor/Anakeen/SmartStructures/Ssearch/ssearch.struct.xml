@@ -12,11 +12,11 @@
             </smart:field-set>
         </smart:fields>
         <smart:parameters/>
-        <smart:field-override attr="se_crit" visibility="H"/>
+        <smart:field-override field="se_crit" visibility="H"/>
         <smart:hooks/>
         <smart:autocompletion/>
         <smart:defaults>
-            <smart:default attr="se_latest">yes</smart:default>
+            <smart:default field="se_latest">yes</smart:default>
         </smart:defaults>
 
     </smart:structure-configuration>

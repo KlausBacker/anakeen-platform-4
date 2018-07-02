@@ -4,13 +4,13 @@
         <smart:icon file="se-helppage.png"/>
 
         <smart:defaults>
-            <smart:default attr="help_lang">fr_FR</smart:default>
-            <smart:default attr="help_sec_lang">fr_FR</smart:default>
-            <smart:default attr="help_p_lang_name">
+            <smart:default field="help_lang">fr_FR</smart:default>
+            <smart:default field="help_sec_lang">fr_FR</smart:default>
+            <smart:default field="help_p_lang_name">
                 <![CDATA[français
 english]]>
             </smart:default>
-            <smart:default attr="help_p_lang_key">
+            <smart:default field="help_p_lang_key">
                 <![CDATA[fr_FR
 en_US]]>
             </smart:default>

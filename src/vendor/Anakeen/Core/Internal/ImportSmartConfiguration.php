@@ -65,6 +65,7 @@ class ImportSmartConfiguration
 
         $data = array_merge($data, $this->extractEnumConfig($this->dom->documentElement));
         $accessConfigs = $this->getNodes($this->dom->documentElement, "access-configuration");
+
         foreach ($accessConfigs as $config) {
             $data = array_merge($data, $this->importSmartAccessConfig($config));
         }
@@ -72,6 +73,7 @@ class ImportSmartConfiguration
         if ($this->verbose) {
             $this->print($data);
         }
+
         $this->recordSmartData($data);
         return $data;
     }
@@ -123,8 +125,8 @@ class ImportSmartConfiguration
             if ($access->getAttribute("login")) {
                 $prfData[] = sprintf("%s=account(%s)", $access->getAttribute("access"), $access->getAttribute("login"));
             }
-            if ($access->getAttribute("attr")) {
-                $prfData[] = sprintf("%s=attribute(%s)", $access->getAttribute("access"), $access->getAttribute("attr"));
+            if ($access->getAttribute("field")) {
+                $prfData[] = sprintf("%s=attribute(%s)", $access->getAttribute("access"), $access->getAttribute("field"));
             }
             if ($access->getAttribute("element")) {
                 $prfData[] = sprintf("%s=document(%s)", $access->getAttribute("access"), $access->getAttribute("element"));
@@ -133,6 +135,7 @@ class ImportSmartConfiguration
         if ($prfData) {
             $data[] = array_merge(["PROFIL", $prfName, "", $prfReset], $prfData);
         }
+
         return $data;
     }
 
@@ -252,7 +255,7 @@ class ImportSmartConfiguration
             }
 
             $attr = new ImportSmartAttr();
-            $attr->id = $hookNode->getAttribute("attr");
+            $attr->id = $hookNode->getAttribute("field");
 
 
             if ($hookNode->getAttribute("type") === "constraint") {
@@ -281,7 +284,7 @@ class ImportSmartConfiguration
             }
 
             $attr = new ImportSmartAttr();
-            $attr->id = $autoNode->getAttribute("attr");
+            $attr->id = $autoNode->getAttribute("field");
 
             $attr->autocomplete = $this->getCallableString($autoNode);
 
@@ -302,7 +305,7 @@ class ImportSmartConfiguration
              */
 
             $attr = new ImportSmartAttr();
-            $attr->id = $attrNode->getAttribute("attr");
+            $attr->id = $attrNode->getAttribute("field");
             $attr->label = $attrNode->getAttribute("label");
             $attr->idfield = $attrNode->getAttribute("fieldset");
             $attr->visibility = $attrNode->getAttribute("visibility");
@@ -372,7 +375,7 @@ class ImportSmartConfiguration
         $data = [$key];
 
         $nodeValue = trim($attrNode->nodeValue);
-        $data[1] = $attrNode->getAttribute("attr");
+        $data[1] = $attrNode->getAttribute("field");
         if ($nodeValue !== "") {
             $data[2] = $nodeValue;
         } else {
@@ -514,7 +517,7 @@ class ImportSmartConfiguration
          * @var \DOMElement $hook
          */
         foreach ($hooks as $hook) {
-            if ($hook->getAttribute("attr") === $attrid) {
+            if ($hook->getAttribute("field") === $attrid) {
                 if ($filter($hook)) {
                     $method = $this->getCallableString($hook);
                     $callable = $this->getNode($hook, "field-callable");
@@ -537,7 +540,7 @@ class ImportSmartConfiguration
          * @var \DOMElement $hook
          */
         foreach ($hooks as $hook) {
-            if ($hook->getAttribute("attr") === $attrid) {
+            if ($hook->getAttribute("field") === $attrid) {
                 if ($filter($hook)) {
                     $method = $this->getCallableString($hook);
                     // Add special attribute in case of hook declaration is outside attr declaration
@@ -700,7 +703,7 @@ class ImportSmartConfiguration
     {
         $callableNode = $this->getNode($hook, "field-callable");
         if (!$callableNode) {
-            throw new Exception(sprintf("Error in callable %s", $hook->getAttribute("attr")));
+            throw new Exception(sprintf("Error in callable %s", $hook->getAttribute("field")));
         }
         $method = $callableNode->getAttribute("function") . "(";
         $argNodes = $this->getNodes($hook, "field-argument");
@@ -732,7 +735,7 @@ class ImportSmartConfiguration
          * @var  \DOMElement $returnNode
          */
         foreach ($returnNodes as $returnNode) {
-            $attridreturn = $returnNode->getAttribute("attr");
+            $attridreturn = $returnNode->getAttribute("field");
             if ($attridreturn) {
                 $returns[] = strtolower($attridreturn);
             }

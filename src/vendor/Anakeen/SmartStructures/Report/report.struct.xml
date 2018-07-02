@@ -32,37 +32,37 @@
             </smart:field-set>
         </smart:parameters>
         <smart:hooks>
-            <smart:field-hook type="constraint" event="onPreStore" attr="rep_limit">
+            <smart:field-hook type="constraint" event="onPreStore" field="rep_limit">
                 <smart:field-callable function="Anakeen\Core\Utils\Numbers::isInteger"/>
-                <smart:field-argument type="attribute">rep_limit</smart:field-argument>
+                <smart:field-argument type="field">rep_limit</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
         </smart:hooks>
         <smart:autocompletion>
-            <smart:field-autocomplete attr="rep_sort">
+            <smart:field-autocomplete field="rep_sort">
                 <smart:field-callable function="Anakeen\SmartStructures\Report\ReportAutocomplete::getReportSortableColumns"/>
-                <smart:field-argument name="structure" type="attribute">se_famid</smart:field-argument>
+                <smart:field-argument name="structure" type="field">se_famid</smart:field-argument>
                 <smart:field-returns>
-                    <smart:field-return attr="rep_idsort"/>
-                    <smart:field-return attr="rep_sort"/>
-                    <smart:field-return attr="rep_ordersort"/>
+                    <smart:field-return field="rep_idsort"/>
+                    <smart:field-return field="rep_sort"/>
+                    <smart:field-return field="rep_ordersort"/>
                 </smart:field-returns>
             </smart:field-autocomplete>
 
-            <smart:field-autocomplete attr="rep_lcols">
+            <smart:field-autocomplete field="rep_lcols">
                 <smart:field-callable function="Anakeen\SmartStructures\Report\ReportAutocomplete::getReportColumns"/>
-                <smart:field-argument name="structure" type="attribute">SE_FAMID</smart:field-argument>
+                <smart:field-argument name="structure" type="field">SE_FAMID</smart:field-argument>
                 <smart:field-returns>
-                    <smart:field-return attr="rep_idcols"/>
-                    <smart:field-return attr="rep_lcols"/>
-                    <smart:field-return attr="rep_displayoption"/>
+                    <smart:field-return field="rep_idcols"/>
+                    <smart:field-return field="rep_lcols"/>
+                    <smart:field-return field="rep_displayoption"/>
                 </smart:field-returns>
             </smart:field-autocomplete>
         </smart:autocompletion>
         <smart:defaults>
-            <smart:default attr="se_latest">yes</smart:default>
-            <smart:initial attr="rep_noaccesstext">N.C.</smart:initial>
-            <smart:initial attr="rep_maxdisplaylimit">1000</smart:initial>
+            <smart:default field="se_latest">yes</smart:default>
+            <smart:initial field="rep_noaccesstext">N.C.</smart:initial>
+            <smart:initial field="rep_maxdisplaylimit">1000</smart:initial>
         </smart:defaults>
 
     </smart:structure-configuration>

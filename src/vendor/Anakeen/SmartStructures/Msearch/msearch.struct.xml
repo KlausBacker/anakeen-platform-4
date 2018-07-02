@@ -15,16 +15,16 @@
         <smart:parameters/>
 
         <smart:autocompletion>
-            <smart:field-autocomplete attr="seg_idcond">
+            <smart:field-autocomplete field="seg_idcond">
                 <smart:field-callable function="Anakeen\SmartStructures\Msearch\MSearchAutocomplete::getSmartSearches" />
                 <smart:field-returns>
-                    <smart:field-return attr="seg_idcond"/>
+                    <smart:field-return field="seg_idcond"/>
                 </smart:field-returns>
             </smart:field-autocomplete>
         </smart:autocompletion>
 
         <smart:defaults>
-            <smart:default attr="se_latest">yes</smart:default>
+            <smart:default field="se_latest">yes</smart:default>
         </smart:defaults>
         <smart:accesses/>
     </smart:structure-configuration>

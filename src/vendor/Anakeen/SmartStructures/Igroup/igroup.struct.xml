@@ -16,31 +16,31 @@
         <smart:parameters/>
 
         <smart:hooks>
-            <smart:field-hook type="constraint" event="onPreStore" attr="us_login">
+            <smart:field-hook type="constraint" event="onPreStore" field="us_login">
                 <smart:field-callable function="::ConstraintLogin"/>
-                <smart:field-argument type="attribute">us_login</smart:field-argument>
+                <smart:field-argument type="field">us_login</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
-            <smart:field-hook type="constraint" event="onPreStore" attr="us_whatid">
+            <smart:field-hook type="constraint" event="onPreStore" field="us_whatid">
                 <smart:field-callable function="Anakeen\Core\Utils\Numbers::isInteger"/>
-                <smart:field-argument type="attribute">us_whatid</smart:field-argument>
+                <smart:field-argument type="field">us_whatid</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
         </smart:hooks>
 
         <smart:defaults>
-            <smart:default attr="fld_allbut">1</smart:default>
-            <smart:default attr="fld_tfam">[{"fld_famids":129,"fld_fam":"groupe"},{"fld_famids":128,"fld_fam":"utilisateur"}]</smart:default>
-            <smart:default attr="fld_famids">127
+            <smart:default field="fld_allbut">1</smart:default>
+            <smart:default field="fld_tfam">[{"fld_famids":129,"fld_fam":"groupe"},{"fld_famids":128,"fld_fam":"utilisateur"}]</smart:default>
+            <smart:default field="fld_famids">127
                 128
             </smart:default>
-            <smart:default attr="fld_fam">groupe intranet
+            <smart:default field="fld_fam">groupe intranet
                 utilisateur
             </smart:default>
-            <smart:default attr="fld_subfam">yes
+            <smart:default field="fld_subfam">yes
                 yes
             </smart:default>
-            <smart:default attr="grp_hasmail">no</smart:default>
+            <smart:default field="grp_hasmail">no</smart:default>
         </smart:defaults>
 
     </smart:structure-configuration>

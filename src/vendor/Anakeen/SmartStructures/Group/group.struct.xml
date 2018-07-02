@@ -31,8 +31,8 @@
         </smart:fields>
 
         <smart:defaults>
-            <smart:default attr="fld_allbut">1</smart:default>
-            <smart:default attr="fld_tfam">[{"fld_famids":129,"fld_fam":"groupe"},{"fld_famids":128,"fld_fam":"utilisateur"}]</smart:default>
+            <smart:default field="fld_allbut">1</smart:default>
+            <smart:default field="fld_tfam">[{"fld_famids":129,"fld_fam":"groupe"},{"fld_famids":128,"fld_fam":"utilisateur"}]</smart:default>
         </smart:defaults>
 
     </smart:structure-configuration>

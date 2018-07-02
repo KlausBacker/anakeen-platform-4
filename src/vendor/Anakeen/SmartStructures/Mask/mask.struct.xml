@@ -18,9 +18,9 @@
         </smart:fields>
 
         <smart:hooks>
-            <smart:field-hook event="onPreRefresh" attr="msk_fam">
+            <smart:field-hook event="onPreRefresh" field="msk_fam">
                 <smart:field-callable function="::getTitle"/>
-                <smart:field-argument type="attribute">msk_famid</smart:field-argument>
+                <smart:field-argument type="field">msk_famid</smart:field-argument>
             </smart:field-hook>
         </smart:hooks>
 

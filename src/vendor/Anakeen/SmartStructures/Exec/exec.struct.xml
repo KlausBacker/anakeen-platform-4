@@ -62,34 +62,34 @@
         </smart:parameters>
         <smart:hooks>
 
-            <smart:field-hook event="onPreRefresh" attr="exec_prevdate">
+            <smart:field-hook event="onPreRefresh" field="exec_prevdate">
                 <smart:field-callable function="::getPrevExecDate"/>
             </smart:field-hook>
 
-            <smart:field-hook type="constraint" event="onPreStore" attr="exec_handnextdate">
+            <smart:field-hook type="constraint" event="onPreStore" field="exec_handnextdate">
                 <smart:field-callable function="::isFutureDate"/>
-                <smart:field-argument type="attribute">exec_handnextdate</smart:field-argument>
+                <smart:field-argument type="field">exec_handnextdate</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
 
-            <smart:field-hook type="constraint" event="onPreStore" attr="exec_periodenddate">
+            <smart:field-hook type="constraint" event="onPreStore" field="exec_periodenddate">
                 <smart:field-callable function="::isFutureDate"/>
-                <smart:field-argument type="attribute">exec_periodenddate</smart:field-argument>
+                <smart:field-argument type="field">exec_periodenddate</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
 
         </smart:hooks>
         <smart:autocompletion>
-            <smart:field-autocomplete attr="exec_api">
+            <smart:field-autocomplete field="exec_api">
                 <smart:field-callable function="lapi" external-file="fdl.php"/>
-                <smart:field-argument type="attribute">EXEC_API</smart:field-argument>
+                <smart:field-argument type="field">EXEC_API</smart:field-argument>
                 <smart:field-returns>
-                    <smart:field-return attr="exec_api"/>
+                    <smart:field-return field="exec_api"/>
                 </smart:field-returns>
             </smart:field-autocomplete>
         </smart:autocompletion>
         <smart:defaults>
-            <smart:default attr="exec_iduser">
+            <smart:default field="exec_iduser">
                 <smart:field-callable function="::getCurrentSmartUserId"/>
             </smart:default>
         </smart:defaults>

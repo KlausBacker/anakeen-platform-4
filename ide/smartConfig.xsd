@@ -14,13 +14,13 @@
     </xs:element>
 
     <xs:complexType name="field-returnType">
-        <xs:attribute type="v1:attrNameType" name="attr"/>
+        <xs:attribute type="v1:attrNameType" name="field"/>
     </xs:complexType>
 
     <xs:complexType name="field-overrideType">
         <xs:complexContent>
             <xs:extension base="v1:field-propsStandardType">
-                <xs:attribute type="v1:attrNameType" name="attr" use="required"/>
+                <xs:attribute type="v1:attrNameType" name="field" use="required"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -30,7 +30,7 @@
             <xs:element type="v1:field-argumentType" name="field-argument" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="v1:field-returnsType" name="field-returns" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="v1:attrNameType" name="attr"/>
+        <xs:attribute type="v1:attrNameType" name="field"/>
     </xs:complexType>
 
     <xs:simpleType name="attrReturnArgType">
@@ -38,7 +38,7 @@
             <xs:documentation>Type of argument</xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string">
-            <xs:enumeration value="attribute"/>
+            <xs:enumeration value="field"/>
             <xs:enumeration value="string"/>
         </xs:restriction>
     </xs:simpleType>
@@ -267,8 +267,8 @@
     <xs:complexType name="field-argumentType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="v1:attrReturnArgType" name="type"/>
-                <xs:attribute type="xs:string" name="name"/>
+                <xs:attribute type="v1:attrReturnArgType" name="type" use="required"/>
+                <xs:attribute type="xs:token" name="name"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
@@ -356,7 +356,7 @@
                 <xs:attribute type="xs:token" name="link"/>
                 <xs:attribute type="xs:token" name="login"/>
                 <xs:attribute type="xs:token" name="access"/>
-                <xs:attribute type="v1:attrNameType" name="attr"/>
+                <xs:attribute type="v1:attrNameType" name="field"/>
                 <xs:attribute type="v1:logicalNameType" name="element"/>
             </xs:extension>
         </xs:simpleContent>
@@ -369,7 +369,7 @@
             <xs:element type="v1:field-argumentType" name="field-argument" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="v1:field-returnsType" name="field-returns" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="v1:attrNameType" name="attr" use="required"/>
+        <xs:attribute type="v1:attrNameType" name="field" use="required"/>
         <xs:attribute type="xs:boolean" name="reset" default="false"/>
     </xs:complexType>
 
@@ -429,7 +429,7 @@
             <xs:element type="v1:field-returnType" name="field-return" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="xs:string" name="event"/>
-        <xs:attribute type="v1:attrNameType" name="attr"/>
+        <xs:attribute type="v1:attrNameType" name="field"/>
         <xs:attribute type="xs:string" name="type"/>
     </xs:complexType>
     <xs:complexType name="hooksType">

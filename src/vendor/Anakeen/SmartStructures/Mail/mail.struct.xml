@@ -24,12 +24,12 @@
         <smart:parameters/>
         <smart:hooks/>
         <smart:autocompletion>
-            <smart:field-autocomplete attr="mail_recip">
+            <smart:field-autocomplete field="mail_recip">
                 <smart:field-callable function="Anakeen\SmartStructures\Mail\MailAutoComplete::getMailAddresses"/>
                 <smart:field-returns>
-                    <smart:field-return attr="mail_recip"/>
-                    <smart:field-return attr="mail_recipid"/>
-                    <smart:field-return attr="mail_sendformat"/>
+                    <smart:field-return field="mail_recip"/>
+                    <smart:field-return field="mail_recipid"/>
+                    <smart:field-return field="mail_sendformat"/>
                 </smart:field-returns>
             </smart:field-autocomplete>
         </smart:autocompletion>

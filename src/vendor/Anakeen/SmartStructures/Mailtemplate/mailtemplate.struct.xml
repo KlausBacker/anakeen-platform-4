@@ -36,46 +36,46 @@
         <smart:parameters/>
         <smart:hooks/>
         <smart:autocompletion>
-            <smart:field-autocomplete attr="tmail_workflow">
+            <smart:field-autocomplete field="tmail_workflow">
                 <smart:field-callable function="Anakeen\Core\SmartStructure\Autocomplete\SmartStructureList::getSmartStructures"/>
                 <smart:field-argument name="subset" type="string">WDOC</smart:field-argument>
                 <smart:field-returns>
-                    <smart:field-return attr="tmail_workflow"/>
+                    <smart:field-return field="tmail_workflow"/>
                 </smart:field-returns>
             </smart:field-autocomplete>
-            <smart:field-autocomplete attr="tmail_from">
+            <smart:field-autocomplete field="tmail_from">
                 <smart:field-callable function="Anakeen\SmartStructures\Mailtemplate\MailtemplateAutoComplete::getMailAddresses"/>
-                <smart:field-argument name="fromtype" type="attribute">TMAIL_FROMTYPE</smart:field-argument>
-                <smart:field-argument name="smartstructure" type="attribute">TMAIL_FAMILY</smart:field-argument>
-                <smart:field-argument name="workflow" type="attribute">TMAIL_WORKFLOW</smart:field-argument>
-                <smart:field-argument name="from" type="attribute">TMAIL_FROM</smart:field-argument>
+                <smart:field-argument name="fromtype" type="field">TMAIL_FROMTYPE</smart:field-argument>
+                <smart:field-argument name="smartstructure" type="field">TMAIL_FAMILY</smart:field-argument>
+                <smart:field-argument name="workflow" type="field">TMAIL_WORKFLOW</smart:field-argument>
+                <smart:field-argument name="from" type="field">TMAIL_FROM</smart:field-argument>
                 <smart:field-returns>
-                    <smart:field-return attr="tmail_from"/>
+                    <smart:field-return field="tmail_from"/>
                 </smart:field-returns>
             </smart:field-autocomplete>
-            <smart:field-autocomplete attr="tmail_recip">
+            <smart:field-autocomplete field="tmail_recip">
                 <smart:field-callable function="Anakeen\SmartStructures\Mailtemplate\MailtemplateAutoComplete::getMailAddresses"/>
-                <smart:field-argument name="fromtype" type="attribute">TMAIL_DESTTYPE</smart:field-argument>
-                <smart:field-argument name="smartstructure" type="attribute">TMAIL_FAMILY</smart:field-argument>
-                <smart:field-argument name="workflow" type="attribute">TMAIL_WORKFLOW</smart:field-argument>
-                <smart:field-argument name="from" type="attribute">TMAIL_RECIP</smart:field-argument>
+                <smart:field-argument name="fromtype" type="field">TMAIL_DESTTYPE</smart:field-argument>
+                <smart:field-argument name="smartstructure" type="field">TMAIL_FAMILY</smart:field-argument>
+                <smart:field-argument name="workflow" type="field">TMAIL_WORKFLOW</smart:field-argument>
+                <smart:field-argument name="from" type="field">TMAIL_RECIP</smart:field-argument>
                 <smart:field-returns>
-                    <smart:field-return attr="tmail_recip"/>
+                    <smart:field-return field="tmail_recip"/>
                 </smart:field-returns>
             </smart:field-autocomplete>
-            <smart:field-autocomplete attr="tmail_attach">
+            <smart:field-autocomplete field="tmail_attach">
                 <smart:field-callable function="Anakeen\SmartStructures\Mailtemplate\MailtemplateAutoComplete::getMailAddresses"/>
                 <smart:field-argument name="fromtype" type="string">G</smart:field-argument>
-                <smart:field-argument name="smartstructure" type="attribute">TMAIL_FAMILY</smart:field-argument>
-                <smart:field-argument name="workflow" type="attribute">TMAIL_WORKFLOW</smart:field-argument>
-                <smart:field-argument name="from" type="attribute">TMAIL_ATTACH</smart:field-argument>
+                <smart:field-argument name="smartstructure" type="field">TMAIL_FAMILY</smart:field-argument>
+                <smart:field-argument name="workflow" type="field">TMAIL_WORKFLOW</smart:field-argument>
+                <smart:field-argument name="from" type="field">TMAIL_ATTACH</smart:field-argument>
                 <smart:field-returns>
-                    <smart:field-return attr="mail_attach"/>
+                    <smart:field-return field="mail_attach"/>
                 </smart:field-returns>
             </smart:field-autocomplete>
         </smart:autocompletion>
         <smart:defaults>
-            <smart:default attr="tmail_ulink">yes</smart:default>
+            <smart:default field="tmail_ulink">yes</smart:default>
         </smart:defaults>
         <smart:accesses/>
     </smart:structure-configuration>
