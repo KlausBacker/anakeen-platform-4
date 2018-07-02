@@ -2044,7 +2044,7 @@ class ImportDocumentDescription
         $iAttr->isAbstract = $oattr->abstract;
         $iAttr->type = $oattr->type;
         $iAttr->order = $oattr->ordered;
-        $iAttr->access = $oattr->access;
+        $iAttr->access = $oattr->accessibility;
         $iAttr->need = $oattr->needed;
         $iAttr->link = $oattr->link;
         $iAttr->phpfile = $oattr->phpfile;
@@ -2151,7 +2151,7 @@ class ImportDocumentDescription
                     $oattr->ordered = $this->structAttr->order;
                 }
                 if (!$updateMode || !empty($this->structAttr->access)) {
-                    $oattr->access = $this->structAttr->access;
+                    $oattr->accessibility = $this->structAttr->access;
                 }
                 $oattr->needed = ($this->structAttr->isneeded == "Y") ? "Y" : "N";
                 if ($modattr) {

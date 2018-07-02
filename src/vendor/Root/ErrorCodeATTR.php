@@ -167,6 +167,10 @@ class ErrorCodeATTR
      */
     const ATTR0802 = 'the U visibility is reserved to array, in attribute "%s"';
     /**
+     * @errorCode  The attribute's access is limited to defined visibilities (Read, Write)
+     */
+    const ATTR0803 = 'the access "%s" in field is incorrect';
+    /**
      * @errorCode  property isNeeded is Y or N
      */
     const ATTR0900 = 'invalid value "%s" for isNeeded in attribute "%s"';

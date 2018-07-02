@@ -18,7 +18,7 @@ class DocAttr extends DbObj
         "abstract",
         "type",
         "ordered",
-        "access", // None, Read, Write, ReadWrite
+        "accessibility", // None, Read, Write, ReadWrite
         "needed",
         "link",
         "phpfile",
@@ -51,7 +51,7 @@ class DocAttr extends DbObj
     public $abstract;
     public $type;
     public $ordered;
-    public $access; // Write Read None
+    public $accessibility; // Write Read None
     public $needed;
     public $link;
     public $phpfile;
@@ -71,7 +71,7 @@ create table docattr ( id  name,
                      abstract  char,
                      type  text,
                      ordered int,
-                     access text not null,
+                     accessibility text not null,
                      needed char,
                      link text,
                      phpfile text,

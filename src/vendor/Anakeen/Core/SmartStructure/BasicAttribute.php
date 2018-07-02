@@ -3,9 +3,13 @@
  * Document Attributes
  *
  */
+
 /**
  */
+
 namespace Anakeen\Core\SmartStructure;
+
+use Dcp\Exception;
 
 /**
  *
@@ -35,7 +39,7 @@ class BasicAttribute
     /**
      * @var AttributeOptions
      */
-    public $properties=null;
+    public $properties = null;
     /**
      * @var \Anakeen\Core\SmartStructure\FieldSetAttribute field set object
      */
@@ -44,6 +48,7 @@ class BasicAttribute
      * @var array
      */
     public $_topt = null;
+
     /**
      * Construct a basic attribute
      *
@@ -57,6 +62,22 @@ class BasicAttribute
         $this->docid = $docid;
         $this->labelText = $label;
     }
+
+    public static function getRawAccess(string $accessibility)
+    {
+        switch ($accessibility) {
+            case "Read":
+                return self::READ_ACCESS;
+            case "Write":
+                return self::WRITE_ACCESS;
+            case "ReadWrite":
+                return self::READWRITE_ACCESS;
+            case "None":
+                return self::NONE_ACCESS;
+        }
+        throw new Exception("ATTR0803", $accessibility);
+    }
+
     /**
      * Return attribute label
      *
@@ -71,10 +92,11 @@ class BasicAttribute
         }
         return $this->labelText;
     }
+
     /**
      * Return value of option $x
      *
-     * @param string $x option name
+     * @param string $x   option name
      * @param string $def default value
      *
      * @return string
@@ -96,10 +118,11 @@ class BasicAttribute
         if ($i != $r) {
             return $i;
         }
-        
+
         $v = (isset($this->_topt[$x]) && $this->_topt[$x] !== '') ? $this->_topt[$x] : $def;
         return $v;
     }
+
     /**
      * Return all value of options
      *
@@ -112,6 +135,7 @@ class BasicAttribute
         }
         return $this->_topt;
     }
+
     /**
      * Temporary change option
      *
@@ -127,15 +151,9 @@ class BasicAttribute
         }
         $this->_topt[$x] = $v;
     }
-    /**
-     * temporary change visibility
-     * @param string $vis new visibility : R|H|W|O|I
-     * @return void
-     */
-    public function setVisibility($vis)
-    {
-        $this->mvisibility = $vis;
-    }
+
+
+
     /**
      * test if attribute is not a auto created attribute
      *
@@ -145,11 +163,12 @@ class BasicAttribute
     {
         return $this->getOption("autocreated") != "yes";
     }
+
     /**
      * Escape value with xml entities
      *
-     * @param string $s value
-     * @param bool $quot to encode also quote "
+     * @param string $s    value
+     * @param bool   $quot to encode also quote "
      * @return string
      */
     public static function encodeXml($s, $quot = false)
@@ -178,6 +197,7 @@ class BasicAttribute
             ), $s);
         }
     }
+
     /**
      * to see if an attribute is n item of an array
      *
@@ -187,6 +207,7 @@ class BasicAttribute
     {
         return false;
     }
+
     /**
      * verify if accept multiple value
      *
@@ -196,6 +217,7 @@ class BasicAttribute
     {
         return ($this->inArray() || ($this->getOption('multiple') === 'yes'));
     }
+
     /**
      * verify if attribute is multiple value and if is also in array multiple^2
      *
@@ -205,6 +227,7 @@ class BasicAttribute
     {
         return ($this->inArray() && ($this->getOption('multiple') === 'yes'));
     }
+
     /**
      * Get tab ancestor
      * false if not found
@@ -221,6 +244,7 @@ class BasicAttribute
         }
         return false;
     }
+
     /**
      * Export values as xml fragment
      *
@@ -231,11 +255,12 @@ class BasicAttribute
     {
         return sprintf("<!-- no Schema %s (%s)-->", $this->id, $this->type);
     }
+
     /**
      * export values as xml fragment
      *
      * @param \Anakeen\Core\Internal\SmartElement $doc working doc
-     * @param bool|\exportOptionAttribute $opt
+     * @param bool|\exportOptionAttribute         $opt
      * @deprecated use \Dcp\ExportXmlDocument class instead
      *
      * @return string
@@ -244,20 +269,22 @@ class BasicAttribute
     {
         return sprintf("<!-- no value %s (%s)-->", $this->id, $this->type);
     }
+
     /**
      * Get human readable textual value
      * Fallback method
      *
-     * @param \Anakeen\Core\Internal\SmartElement $doc current Doc
-     * @param int $index index if multiple
-     * @param array $configuration value
+     * @param \Anakeen\Core\Internal\SmartElement $doc           current Doc
+     * @param int                                 $index         index if multiple
+     * @param array                               $configuration value
      *
      * @return string
      */
-    public function getTextualValue(\Anakeen\Core\Internal\SmartElement $doc, $index = - 1, array $configuration = array())
+    public function getTextualValue(\Anakeen\Core\Internal\SmartElement $doc, $index = -1, array $configuration = array())
     {
         return null;
     }
+
     /**
      * Generate XML schema layout
      *
@@ -269,11 +296,10 @@ class BasicAttribute
         $lay->set("aname", $this->id);
         $lay->set("label", $this->encodeXml($this->labelText));
         $lay->set("type", $this->type);
-        $lay->set("visibility", $this->access);
         $lay->set("isTitle", false);
         $lay->set("phpfile", false);
         $lay->set("phpfunc", false);
-        
+
         $lay->set("computed", false);
         $lay->set("link", '');
         $lay->set("elink", '');
@@ -284,13 +310,13 @@ class BasicAttribute
         foreach ($tops as $k => $v) {
             if ($k) {
                 $t[] = array(
-                "key" => $k,
-                "val" => $this->encodeXml($v)
-            );
+                    "key" => $k,
+                    "val" => $this->encodeXml($v)
+                );
             }
         }
         $lay->setBlockData("options", $t);
-        
+
         $play->set("minOccurs", "0");
         $play->set("isnillable", "true");
         $play->set("maxOccurs", "1");

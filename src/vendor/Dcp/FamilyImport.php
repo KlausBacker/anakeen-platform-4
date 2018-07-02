@@ -288,7 +288,7 @@ class FamilyImport
                             "label" => str_replace("\"", "\\\"", $v->labeltext),
                             "order" => intval($v->ordered),
                             "link" => str_replace("\"", "\\\"", $v->link),
-                            "access" => $v->access,
+                            "access" => BasicAttribute::getRawAccess($v->accessibility),
                             "options" => str_replace("\"", "\\\"", $v->options),
                             "precond" => self::doubleslash($v->phpfunc)
                         );
@@ -298,7 +298,7 @@ class FamilyImport
                     case "frame": // frame
                         $tfield[strtolower($v->id)] = array(
                             "attrid" => strtolower($v->id),
-                            "access" => $v->access,
+                            "access" => BasicAttribute::getRawAccess($v->accessibility),
                             "label" => str_replace("\"", "\\\"", $v->labeltext),
                             "usefor" => $v->usefor,
                             "type" => $v->type,
@@ -391,7 +391,7 @@ class FamilyImport
                             //(str_replace("\"", "\\\"", $v->options) ,
                             "order" => intval($v->ordered),
                             "link" => str_replace("\"", "\\\"", $v->link),
-                            "access" => $v->access,
+                            "access" => BasicAttribute::getRawAccess($v->accessibility),
                             "needed" => ($v->needed == "Y") ? "true" : "false",
                             "title" => ($v->title == "Y") ? "true" : "false",
                             "repeat" => $repeat,

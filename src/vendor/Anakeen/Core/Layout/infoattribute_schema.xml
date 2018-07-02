@@ -1,6 +1,5 @@
                <fdl:label>[label]</fdl:label>         	
-               <fdl:type>[type]</fdl:type>             
-               <fdl:visibility>[visibility]</fdl:visibility>[IF link]
+               <fdl:type>[type]</fdl:type>[IF link]
                <fdl:link href="[link]"/>[ENDIF link][IF elink]
                <fdl:extralink href="[elink]"/>[ENDIF elink][IF isTitle]
                <fdl:title>true</fdl:title>[ENDIF isTitle][IF phpfile][IF phpfunc]

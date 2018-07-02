@@ -340,7 +340,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $aidframe
             ));
             $oattr->docid = $cid;
-            $oattr->access = "ReadWrite";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = "frame";
             $oattr->id = $aidframe;
             $oattr->frameid = "wf_tab_states";
@@ -362,7 +362,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $aidprofilid
             ));
             $oattr->docid = $cid;
-            $oattr->access = "ReadWrite";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("PROFIL")';
             $oattr->id = $aidprofilid;
             $oattr->labeltext = sprintf(_("%s profile"), _($state));
@@ -387,7 +387,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->access = "ReadWrite";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("MASK")';
             $oattr->id = $aid;
             $oattr->labeltext = sprintf(_("%s mask"), _($state));
@@ -411,7 +411,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->access = "ReadWrite";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = "color";
             $oattr->link = "";
             $oattr->phpfile = "";
@@ -434,7 +434,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->access = "ReadWrite";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("CVDOC")';
             $oattr->link = "";
             $oattr->phpfile = "fdl.php";
@@ -459,7 +459,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->access = "ReadWrite";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("MAILTEMPLATE")';
             $oattr->link = "";
             $oattr->phpfile = "fdl.php";
@@ -485,7 +485,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->access = "ReadWrite";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("TIMER")';
             $oattr->link = "";
             $oattr->phpfile = "fdl.php";
@@ -509,7 +509,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->access = "ReadWrite";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("WASK")';
             $oattr->link = "";
             $oattr->phpfile = "";
@@ -535,9 +535,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->docid = $cid;
 
             if (!(empty($this->stateactivity[$k]))) {
-                $oattr->access = "Read";
+                $oattr->accessibility = "Read";
             } else {
-                $oattr->access = "ReadWrite";
+                $oattr->accessibility = "ReadWrite";
             }
             $oattr->type = 'text';
             $oattr->link = "";
@@ -563,7 +563,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->access = "ReadWrite";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'array';
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
@@ -583,7 +583,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->access = "ReadWrite";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'enum';
             $oattr->options = "autocreated=yes|system=yes";
             $oattr->phpfunc = "F|" . _("Utilisateur fixe") .
@@ -607,7 +607,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->access = "ReadWrite";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'text';
             $oattr->link = "";
             $oattr->options = "cwidth=160px|autocreated=yes";
@@ -629,7 +629,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->access = "ReadWrite";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'enum';
             $oattr->link = "";
             $oattr->options = "eformat=bool|autocreated=yes|system=yes";
@@ -650,7 +650,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->access = "ReadWrite";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'enum';
             $oattr->link = "";
             $oattr->options = "eformat=bool|autocreated=yes|system=yes";
@@ -675,7 +675,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $aidframe
             ));
             $oattr->docid = $cid;
-            $oattr->access = "ReadWrite";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = "frame";
             $oattr->id = $aidframe;
             $oattr->frameid = "wf_tab_transitions";
@@ -697,7 +697,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->access = "ReadWrite";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("MAILTEMPLATE")';
             $oattr->link = "";
             $oattr->phpfile = "fdl.php";
@@ -722,7 +722,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->access = "ReadWrite";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("TIMER")';
             $oattr->link = "";
             $oattr->phpfile = "fdl.php";
@@ -747,7 +747,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->access = "ReadWrite";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("TIMER")';
             $oattr->link = "";
             $oattr->phpfile = "fdl.php";
@@ -772,7 +772,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->access = "ReadWrite";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("TIMER")';
             $oattr->link = "";
             $oattr->phpfile = "fdl.php";
