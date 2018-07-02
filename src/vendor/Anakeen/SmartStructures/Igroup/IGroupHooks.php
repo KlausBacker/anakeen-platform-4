@@ -12,7 +12,7 @@ namespace Anakeen\SmartStructures\Igroup;
 
 use Anakeen\Core\SEManager;
 use Anakeen\SmartHooks;
-use SmartStructure\Attributes\Igroup as MyAttributes;
+use SmartStructure\Fields\Igroup as MyAttributes;
 use \Dcp\Core\Exception;
 
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */

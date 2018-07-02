@@ -12,7 +12,7 @@ namespace Anakeen\SmartStructures\Report;
 
 use Anakeen\Core\Internal\Format\DateAttributeValue;
 use Anakeen\Core\SEManager;
-use \SmartStructure\Attributes\Report as MyAttributes;
+use \SmartStructure\Fields\Report as MyAttributes;
 
 class ReportHooks extends \SmartStructure\Dsearch
 {

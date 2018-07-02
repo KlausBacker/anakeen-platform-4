@@ -1323,9 +1323,9 @@ class SearchDoc
              * @var \Anakeen\SmartStructures\Search\SearchHooks $tmps
              */
             $tmps = Anakeen\Core\SEManager::createTemporaryDocument("SEARCH");
-            $tmps->setValue(\SmartStructure\Attributes\Search::se_famid, $this->fromid);
-            $tmps->setValue(\SmartStructure\Attributes\Search::se_idfld, $this->originalDirId);
-            $tmps->setValue(\SmartStructure\Attributes\Search::se_latest, "yes");
+            $tmps->setValue(\SmartStructure\Fields\Search::se_famid, $this->fromid);
+            $tmps->setValue(\SmartStructure\Fields\Search::se_idfld, $this->originalDirId);
+            $tmps->setValue(\SmartStructure\Fields\Search::se_latest, "yes");
             $err = $tmps->add();
             if ($err == "") {
                 $tmps->addQuery($tmps->getQuery()); // compute internal sql query

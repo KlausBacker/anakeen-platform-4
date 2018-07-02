@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartStructure\Attributes;
+namespace SmartStructure\Fields;
 
 
   /**

@@ -16,7 +16,7 @@ use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\RouterAccess;
 use Anakeen\SmartHooks;
-use SmartStructure\Attributes\Iuser as MyAttributes;
+use SmartStructure\Fields\Iuser as MyAttributes;
 use SmartStructure\Iuser;
 
 /**
