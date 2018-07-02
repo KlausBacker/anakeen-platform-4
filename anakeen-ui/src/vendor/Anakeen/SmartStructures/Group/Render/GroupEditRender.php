@@ -4,7 +4,7 @@ namespace Anakeen\SmartStructures\Group\Render;
 
 use Anakeen\SmartElementManager;
 use Anakeen\Ui\DefaultConfigEditRender;
-use \SmartStructure\Attributes\Group as myAttributes;
+use \SmartStructure\Fields\Group as myAttributes;
 
 class GroupEditRender extends DefaultConfigEditRender
 {

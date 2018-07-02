@@ -7,7 +7,7 @@
 namespace Anakeen\SmartStructures\Mailtemplate\Render;
 
 use Anakeen\Ui\DefaultConfigEditRender;
-use SmartStructure\Attributes\Mailtemplate as myAttributes;
+use SmartStructure\Fields\Mailtemplate as myAttributes;
 
 class MailtemplateEditRender extends DefaultConfigEditRender
 {

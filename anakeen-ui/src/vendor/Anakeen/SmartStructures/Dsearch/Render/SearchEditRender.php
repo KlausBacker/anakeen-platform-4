@@ -1,7 +1,7 @@
 <?php
 namespace Anakeen\SmartStructures\Dsearch\Render;
 
-use SmartStructure\Attributes\Dsearch as myAttr;
+use SmartStructure\Fields\Dsearch as myAttr;
 use Dcp\Ui\DefaultEdit;
 use Dcp\Ui\ItemMenu as ItemMenu;
 

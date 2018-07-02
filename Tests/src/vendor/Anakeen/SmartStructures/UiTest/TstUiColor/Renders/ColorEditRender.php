@@ -2,7 +2,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiColor\Renders;
 
-use \SmartStructure\Attributes\Tst_ddui_color as myAttribute;
+use \SmartStructure\Fields\Tst_ddui_color as myAttribute;
 
 class ColorEditRender extends \Dcp\Ui\DefaultEdit
 {

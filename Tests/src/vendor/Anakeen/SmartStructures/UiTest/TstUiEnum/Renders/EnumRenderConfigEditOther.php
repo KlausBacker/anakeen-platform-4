@@ -3,7 +3,7 @@
 namespace Anakeen\SmartStructures\UiTest\TstUiEnum\Renders;
 
 use Anakeen\Core\ContextManager;
-use SmartStructure\Attributes\Tst_ddui_enum as myAttributes;
+use SmartStructure\Fields\Tst_ddui_enum as myAttributes;
 
 class EnumRenderConfigEditOther extends EnumRenderConfigEdit
 {

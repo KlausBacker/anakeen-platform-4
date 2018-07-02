@@ -2,7 +2,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiEnum\Renders;
 
-use SmartStructure\Attributes\Tst_ddui_enum as myAttributes;
+use SmartStructure\Fields\Tst_ddui_enum as myAttributes;
 
 class EnumRenderConfigEditVertical extends EnumRenderConfigEditButtons
 {

@@ -7,7 +7,7 @@
 namespace Anakeen\SmartStructures\UiTest\TstUiDocid\Renders;
 
 use Anakeen\Core\ContextManager;
-use SmartStructure\Attributes\TST_DDUI_DOCID as myAttributes;
+use SmartStructure\Fields\TST_DDUI_DOCID as myAttributes;
 
 class DocidRenderConfigView extends \Dcp\Ui\DefaultView
 {

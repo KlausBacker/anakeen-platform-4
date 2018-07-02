@@ -7,7 +7,7 @@
 namespace Anakeen\SmartStructures\Msearch\Render;
 
 use Anakeen\Ui\DefaultConfigEditRender;
-use \SmartStructure\Attributes\Msearch as myAttributes;
+use \SmartStructure\Fields\Msearch as myAttributes;
 
 class MSearchEditRender extends DefaultConfigEditRender
 {

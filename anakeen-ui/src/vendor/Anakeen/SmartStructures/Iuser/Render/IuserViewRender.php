@@ -13,7 +13,7 @@ use Anakeen\Routes\Ui\CallMenuResponse;
 use Anakeen\Ui\DefaultConfigViewRender;
 use Dcp\Ui\ArrayRenderOptions;
 use Dcp\Ui\CallableMenu;
-use SmartStructure\Attributes\Iuser as myAttributes;
+use SmartStructure\Fields\Iuser as myAttributes;
 use SmartStructure\Iuser;
 
 class IuserViewRender extends DefaultConfigViewRender

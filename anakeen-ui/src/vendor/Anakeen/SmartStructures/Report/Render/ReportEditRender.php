@@ -4,7 +4,7 @@
 namespace Anakeen\SmartStructures\Report\Render;
 
 use Anakeen\SmartStructures\Dsearch\Render\SearchEditRender;
-use SmartStructure\Attributes\Report as myAttr;
+use SmartStructure\Fields\Report as myAttr;
 use Anakeen\Core\SEManager;
 
 class ReportEditRender extends SearchEditRender

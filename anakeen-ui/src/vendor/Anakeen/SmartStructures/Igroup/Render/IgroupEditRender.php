@@ -7,7 +7,7 @@
 namespace Anakeen\SmartStructures\Igroup\Render;
 
 use Anakeen\Ui\DefaultConfigEditRender;
-use \SmartStructure\Attributes\Igroup as myAttributes;
+use \SmartStructure\Fields\Igroup as myAttributes;
 
 class IgroupEditRender extends DefaultConfigEditRender
 {

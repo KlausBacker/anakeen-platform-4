@@ -3,7 +3,7 @@
 namespace Anakeen\SmartStructures\UiTest\TestRender;
 
 use Anakeen\SmartHooks;
-use \SmartStructure\Attributes\Tst_render as MyAttr;
+use \SmartStructure\Fields\Tst_render as MyAttr;
 
 class TestRenderHooks extends \Anakeen\SmartElement implements \Dcp\Ui\IRenderConfigAccess
 {

@@ -7,7 +7,7 @@
 namespace Anakeen\SmartStructures\Cvdoc\Render;
 
 use Anakeen\Ui\DefaultConfigEditRender;
-use SmartStructure\Attributes\Cvdoc as myAttributes;
+use SmartStructure\Fields\Cvdoc as myAttributes;
 
 class CvdocEditRender extends DefaultConfigEditRender
 {

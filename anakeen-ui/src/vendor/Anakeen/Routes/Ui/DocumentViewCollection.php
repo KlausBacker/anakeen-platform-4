@@ -56,7 +56,7 @@ class DocumentViewCollection extends DocumentView
         $views = $cv->getViews();
         $info = array();
         foreach ($views as $view) {
-            $vid = $view[\SmartStructure\Attributes\Cvdoc::cv_idview];
+            $vid = $view[\SmartStructure\Fields\Cvdoc::cv_idview];
             if ($cv->control($vid) == "") {
                 $prop = $this->getViewProperties($cv, $view);
                 $prop["uri"] = $this->getUri($document, $vid);

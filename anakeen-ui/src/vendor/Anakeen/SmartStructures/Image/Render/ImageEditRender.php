@@ -6,7 +6,7 @@
 
 namespace Anakeen\SmartStructures\Image\Render;
 use Anakeen\Ui\DefaultConfigEditRender;
-use \SmartStructure\Attributes\Image as myAttributes;
+use \SmartStructure\Fields\Image as myAttributes;
 
 class ImageEditRender extends DefaultConfigEditRender
 {

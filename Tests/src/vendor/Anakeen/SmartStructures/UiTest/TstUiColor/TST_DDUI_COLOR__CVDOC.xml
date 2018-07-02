@@ -13,7 +13,7 @@
                 <cv_lview>Init</cv_lview>
                 <cv_kview>VCONS</cv_kview>
                 <cv_zview xsi:nil="true"/>
-                <cv_renderconfigclass>Dcp\Test\DdUi\ColorViewRender</cv_renderconfigclass>
+                <cv_renderconfigclass>Anakeen\SmartStructures\UiTest\TstUiColor\Renders\ColorViewRender</cv_renderconfigclass>
                 <cv_mskid xsi:nil="true"/>
                 <cv_msk xsi:nil="true"/>
                 <cv_order xsi:nil="true"/>

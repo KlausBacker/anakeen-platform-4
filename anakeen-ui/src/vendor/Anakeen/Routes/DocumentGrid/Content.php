@@ -214,15 +214,15 @@ class Content extends DocumentList
     protected function extractOrderBy()
     {
         if (empty($this->contentParameters["orderBy"])) {
-            $orderBy = $this->_collection->getRawValue(\SmartStructure\Attributes\Report::rep_idsort);
+            $orderBy = $this->_collection->getRawValue(\SmartStructure\Fields\Report::rep_idsort);
             if (!$orderBy) {
-                $orderBy = $this->_collection->getRawValue(\SmartStructure\Attributes\Dsearch::se_orderby);
+                $orderBy = $this->_collection->getRawValue(\SmartStructure\Fields\Dsearch::se_orderby);
             }
             if (!$orderBy) {
                 $orderBy = "title";
             }
 
-            $orderSens = $this->_collection->getRawValue(\SmartStructure\Attributes\Report::rep_ordersort, "asc");
+            $orderSens = $this->_collection->getRawValue(\SmartStructure\Fields\Report::rep_ordersort, "asc");
             $orderBy .= ":" . $orderSens;
         } else {
             $orderBy = $this->contentParameters["orderBy"];

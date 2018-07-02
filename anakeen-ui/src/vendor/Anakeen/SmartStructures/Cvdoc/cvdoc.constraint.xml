@@ -3,12 +3,12 @@
     <smart:structure-configuration name="CVDOC" >
         <smart:hooks>
 
-            <smart:field-hook type="constraint" event="onPreStore" attr="cv_renderconfigclass">
+            <smart:field-hook type="constraint" event="onPreStore" field="cv_renderconfigclass">
                 <smart:field-callable function="Anakeen\SmartStructures\Cvdoc\CVDocConstraint::isARenderConfig"/>
                 <smart:field-argument type="field">cv_renderconfigclass</smart:field-argument>
             </smart:field-hook>
 
-            <smart:field-hook type="constraint" event="onPreStore" attr="cv_renderaccessclass">
+            <smart:field-hook type="constraint" event="onPreStore" field="cv_renderaccessclass">
                 <smart:field-callable function="Anakeen\SmartStructures\Cvdoc\CVDocConstraint::isARenderAccess"/>
                 <smart:field-argument type="field">cv_renderaccessclass</smart:field-argument>
             </smart:field-hook>

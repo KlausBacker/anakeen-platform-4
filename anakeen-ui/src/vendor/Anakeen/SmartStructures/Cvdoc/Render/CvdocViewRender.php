@@ -4,7 +4,7 @@ namespace Anakeen\SmartStructures\Cvdoc\Render;
 
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Ui\DefaultConfigViewRender;
-use SmartStructure\Attributes\Cvdoc as myAttributes;
+use SmartStructure\Fields\Cvdoc as myAttributes;
 
 class CvdocViewRender extends DefaultConfigViewRender
 {

@@ -71,7 +71,7 @@ class RenderConfigManager
     protected static function getRenderFromVidinfo(array $vidInfo, \Anakeen\Core\Internal\SmartElement $document)
     {
 
-        $mskId = $vidInfo[\SmartStructure\Attributes\Cvdoc::cv_mskid];
+        $mskId = $vidInfo[\SmartStructure\Fields\Cvdoc::cv_mskid];
         if ($mskId) {
             $err = $document->setMask($mskId);
             if ($err) {
@@ -79,7 +79,7 @@ class RenderConfigManager
             }
         }
 
-        $renderClass = isset($vidInfo[\SmartStructure\Attributes\Cvdoc::cv_renderconfigclass]) ? $vidInfo[\SmartStructure\Attributes\Cvdoc::cv_renderconfigclass] : null;
+        $renderClass = isset($vidInfo[\SmartStructure\Fields\Cvdoc::cv_renderconfigclass]) ? $vidInfo[\SmartStructure\Fields\Cvdoc::cv_renderconfigclass] : null;
         if ($renderClass) {
             $rc = new $renderClass();
             if (!is_a($rc, "Dcp\\Ui\\IRenderConfig")) {
@@ -87,7 +87,7 @@ class RenderConfigManager
             }
             return $rc;
         } else {
-            if ($vidInfo[\SmartStructure\Attributes\Cvdoc::cv_kview] === "VCONS") {
+            if ($vidInfo[\SmartStructure\Fields\Cvdoc::cv_kview] === "VCONS") {
                 $mode = self::ViewMode;
             } else {
                 $mode = self::EditMode;
@@ -263,7 +263,7 @@ class RenderConfigManager
     public static function getRenderConfigCv($mode, \SmartStructure\CVDoc $cv, \Anakeen\Core\Internal\SmartElement $document, &$vid = '')
     {
         $cv->set($document);
-        $renderAccessClass = $cv->getRawValue(\SmartStructure\Attributes\Cvdoc::cv_renderaccessclass);
+        $renderAccessClass = $cv->getRawValue(\SmartStructure\Fields\Cvdoc::cv_renderaccessclass);
         if ($renderAccessClass) {
             if ($renderAccessClass[0] !== '\\') {
                 $renderAccessClass = '\\' . $renderAccessClass;
@@ -281,7 +281,7 @@ class RenderConfigManager
 
         if ($vidInfo) {
             // vid already controlled by cv class
-            $vid = $vidInfo[\SmartStructure\Attributes\Cvdoc::cv_idview];
+            $vid = $vidInfo[\SmartStructure\Fields\Cvdoc::cv_idview];
             $rc = self::getRenderFromVidinfo($vidInfo, $document);
             if ($rc) {
                 return $rc;

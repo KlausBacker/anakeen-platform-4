@@ -2,7 +2,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiEmployee\Renders;
 
-use \SmartStructure\Attributes\Tst_ddui_employee as myAttribute;
+use \SmartStructure\Fields\Tst_ddui_employee as myAttribute;
 
 class EmployeeViewRender extends \Dcp\Ui\DefaultView
 {
