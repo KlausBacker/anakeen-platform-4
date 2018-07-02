@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
     <smart:structure-configuration name="CVDOC" >
         <smart:hooks>
 
-            <smart:attr-hook type="constraint" event="onPreStore" attr="cv_renderconfigclass">
-                <smart:attr-callable function="Anakeen\SmartStructures\Cvdoc\CVDocConstraint::isARenderConfig"/>
-                <smart:attr-argument type="attribute">cv_renderconfigclass</smart:attr-argument>
-            </smart:attr-hook>
+            <smart:field-hook type="constraint" event="onPreStore" attr="cv_renderconfigclass">
+                <smart:field-callable function="Anakeen\SmartStructures\Cvdoc\CVDocConstraint::isARenderConfig"/>
+                <smart:field-argument type="field">cv_renderconfigclass</smart:field-argument>
+            </smart:field-hook>
 
-            <smart:attr-hook type="constraint" event="onPreStore" attr="cv_renderaccessclass">
-                <smart:attr-callable function="Anakeen\SmartStructures\Cvdoc\CVDocConstraint::isARenderAccess"/>
-                <smart:attr-argument type="attribute">cv_renderaccessclass</smart:attr-argument>
-            </smart:attr-hook>
+            <smart:field-hook type="constraint" event="onPreStore" attr="cv_renderaccessclass">
+                <smart:field-callable function="Anakeen\SmartStructures\Cvdoc\CVDocConstraint::isARenderAccess"/>
+                <smart:field-argument type="field">cv_renderaccessclass</smart:field-argument>
+            </smart:field-hook>
 
         </smart:hooks>
     </smart:structure-configuration>
