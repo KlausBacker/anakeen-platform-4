@@ -5,4 +5,8 @@ export default {
     name: 'admin-center-parameters',
 
     components: { adminCenterGlobalParameters, adminCenterUserParameters },
+
+    data() {
+        //
+    },
 };
