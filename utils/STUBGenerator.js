@@ -40,9 +40,7 @@ exports.getSTUBgenerator = async (sourcePath, targetPath) => {
 
                     var infos = result.config.structureconfiguration[0].$;
                     var smartClass = result.config.structureconfiguration[0].class;
-                    var attributes = result.config.structureconfiguration[0].attributes;
-
-                    console.log(smartClass);
+                    var fields = result.config.structureconfiguration[0].fields;
 
                     var STUBcontent = '<?php\r\n' +
                         'namespace SmartStructure {\r\n' +
@@ -50,12 +48,12 @@ exports.getSTUBgenerator = async (sourcePath, targetPath) => {
                         '\tclass ' + upperCaseFirstLetter(infos.name) + ` extends \\${smartClass} { const familyName=\"${infos.name}\"; }\r\n` +
                         '}\r\n' +
                         '\r\n' +
-                        'namespace SmartStructure\\Attributes {\r\n' +
+                        'namespace SmartStructure\\Fields {\r\n' +
                         '\t/** Contrôle de vues  */\r\n' +
                         '\tclass ' + upperCaseFirstLetter(infos.name) + ' extends Base {\r\n';
 
-                    attributes.forEach(function(fieldset){
-                        STUBcontent += generateAttributes(fieldset);
+                    fields.forEach(function(fieldset){
+                        STUBcontent += generateFields(fieldset);
                     });
 
                     STUBcontent += '\t}\r\n' +
@@ -72,62 +70,62 @@ exports.getSTUBgenerator = async (sourcePath, targetPath) => {
         });
         };
 
-        var generateAttributes = function(attr) {
-            var listAttr = '';
-            if(attr.attrfieldset){
-                attr.attrfieldset.forEach(function(fieldset){
-                    listAttr += generateAttributes(fieldset);
+        var generateFields = function(field) {
+            var listFields = '';
+            if(field.fieldset){
+                field.fieldset.forEach(function(fs){
+                    listFields += generateFields(fs);
                 });
             }
             // [frame] or [type]
             var typeList = ["frame", "array"];
-            if(attr.$ && typeList.indexOf(attr.$.type) > 0){
-                listAttr += `\t\t/** [${attr.$.type}] ${attr.$.label} */\r\n`;
-                listAttr += `\t\tconst ${attr.$.name}='${attr.$.name}';\r\n`;
+            if(field.$ && typeList.indexOf(field.$.type) > 0){
+                listFields += `\t\t/** [${field.$.type}] ${field.$.label} */\r\n`;
+                listFields += `\t\tconst ${field.$.name}='${field.$.name}';\r\n`;
             }
             // [text]
-            if(attr.attrtext){
-                attr.attrtext.forEach(function(text){
-                    listAttr += `\t\t/** [text] ${text.$.label} */\r\n`;
-                    listAttr += `\t\tconst ${text.$.name}='${text.$.name}';\r\n`;
+            if(field.fieldtext){
+                field.fieldtext.forEach(function(text){
+                    listFields += `\t\t/** [text] ${text.$.label} */\r\n`;
+                    listFields += `\t\tconst ${text.$.name}='${text.$.name}';\r\n`;
                 });
             }
             // [longtext]
-            if(attr.attrlongtext){
-                attr.attrlongtext.forEach(function(longtext){
-                    listAttr += `\t\t/** [longtext] ${longtext.$.label} */\r\n`;
-                    listAttr += `\t\tconst ${longtext.$.name}='${longtext.$.name}';\r\n`;
+            if(field.fieldlongtext){
+                field.fieldlongtext.forEach(function(longtext){
+                    listFields += `\t\t/** [longtext] ${longtext.$.label} */\r\n`;
+                    listFields += `\t\tconst ${longtext.$.name}='${longtext.$.name}';\r\n`;
                 });
             }
             // [docid]
-            if(attr.attrdocid){
-                attr.attrdocid.forEach(function(docid){
-                    listAttr += `\t\t/** [docid(\"${docid.$.relation}\")] ${docid.$.label} */\r\n`;
-                    listAttr += `\t\tconst ${docid.$.name}='${docid.$.name}';\r\n`;
+            if(field.fielddocid){
+                field.fielddocid.forEach(function(docid){
+                    listFields += `\t\t/** [docid(\"${docid.$.relation}\")] ${docid.$.label} */\r\n`;
+                    listFields += `\t\tconst ${docid.$.name}='${docid.$.name}';\r\n`;
                 });
             }
             // [enum]
-            if(attr.attrenum){
-                attr.attrenum.forEach(function(enuma){
-                    listAttr += `\t\t/** [enum] ${enuma.$.label} */\r\n`;
-                    listAttr += `\t\tconst ${enuma.$.name}='${enuma.$.name}';\r\n`;
+            if(field.fieldenum){
+                field.fieldenum.forEach(function(enuma){
+                    listFields += `\t\t/** [enum] ${enuma.$.label} */\r\n`;
+                    listFields += `\t\tconst ${enuma.$.name}='${enuma.$.name}';\r\n`;
                 });
             }
             // [int]
-            if(attr.attrint){
-                attr.attrint.forEach(function(inta){
-                    listAttr += `\t\t/** [int] ${inta.$.label} */\r\n`;
-                    listAttr += `\t\tconst ${inta.$.name}='${inta.$.name}';\r\n`;
+            if(field.fieldint){
+                field.fieldint.forEach(function(inta){
+                    listFields += `\t\t/** [int] ${inta.$.label} */\r\n`;
+                    listFields += `\t\tconst ${inta.$.name}='${inta.$.name}';\r\n`;
                 });
             }
             // [option]
-            if(attr.attroption){
-                attr.attroption.forEach(function(option){
-                    listAttr += `\t\t/** [option] ${option.$.label} */\r\n`;
-                    listAttr += `\t\tconst ${option.$.name}='${option.$.name}';\r\n`;
+            if(field.fieldoption){
+                field.fieldoption.forEach(function(option){
+                    listFields += `\t\t/** [option] ${option.$.label} */\r\n`;
+                    listFields += `\t\tconst ${option.$.name}='${option.$.name}';\r\n`;
                 });
             }
-            return listAttr;
+            return listFields;
         }
 
         var upperCaseFirstLetter = function(str) {
