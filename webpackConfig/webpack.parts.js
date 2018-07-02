@@ -52,7 +52,9 @@ exports.generateViewHtml = (currentPath, excludeChunks) => ({
         }),
 
         // new StyleExtHtmlWebpackPlugin('loading.css'), // Uncompatible with Webpack 4
-        new HtmlWebpackInlineSVGPlugin(),
+        new HtmlWebpackInlineSVGPlugin({
+            runPreEmit: true,
+        }),
     ],
 });
 
