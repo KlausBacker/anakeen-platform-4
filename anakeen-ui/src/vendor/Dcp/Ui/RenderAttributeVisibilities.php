@@ -6,6 +6,9 @@
 
 namespace Dcp\Ui;
 
+use Anakeen\Core\SmartStructure\BasicAttribute;
+use Anakeen\SmartStructures\Dsearch\Routes\Attributes;
+
 class RenderAttributeVisibilities implements \JsonSerializable
 {
     const InvisibleVisibility = "I";
@@ -33,7 +36,7 @@ class RenderAttributeVisibilities implements \JsonSerializable
     public function getVisibilities()
     {
         $this->refreshVisibility();
-        unset($this->finalVisibilities['FIELD_HIDDENS']);
+        unset($this->finalVisibilities[\Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD]);
         return $this->finalVisibilities;
     }
     /**
@@ -76,7 +79,8 @@ class RenderAttributeVisibilities implements \JsonSerializable
             if ($v->usefor === "Q") {
                 continue;
             }
-            $this->finalVisibilities[$v->id] = isset($this->visibilities[$v->id]) ? $this->visibilities[$v->id] : $v->mvisibility;
+
+            $this->finalVisibilities[$v->id] = isset($this->visibilities[$v->id]) ? $this->visibilities[$v->id] : $this->getDefaultVisibility($v);
         }
         
         foreach ($oas as $v) {
@@ -99,6 +103,26 @@ class RenderAttributeVisibilities implements \JsonSerializable
             }
         }
     }
+
+    protected function getDefaultVisibility(BasicAttribute $v) {
+        //$v->mvisibility
+        if ($v->id === \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD) {
+            return self::HiddenVisibility;
+        }
+        switch  ($v->access) {
+            case BasicAttribute::READ_ACCESS:
+                return self::ReadOnlyVisibility;
+            case BasicAttribute::WRITE_ACCESS:
+                return self::WriteOnlyVisibility;
+            case BasicAttribute::READWRITE_ACCESS:
+                return self::ReadWriteVisibility;
+            case BasicAttribute::NONE_ACCESS:
+                return self::HiddenVisibility;
+            default:
+                throw new Exception(sprintf("Wrong attribute access \"%s\" for\"%s\"", $v->access, $v->id));
+        }
+    }
+
     /**
      * Recompute attribute visibility according to parent visibility
      * @param \Anakeen\Core\SmartStructure\BasicAttribute $oa attribute to recompute
@@ -108,7 +132,6 @@ class RenderAttributeVisibilities implements \JsonSerializable
         $this->finalVisibilities[$oa->id] =  \Anakeen\Core\Utils\MiscDoc::ComputeVisibility($this->finalVisibilities[$oa->id], $this->finalVisibilities[$oa->fieldSet->id], isset($oa->fieldSet->fieldSet) ? $this->finalVisibilities[$oa->fieldSet->fieldSet->id] : '');
     }
     /**
-     * (PHP 5 &gt;= 5.4.0)<br/>
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
      * @return mixed data which can be serialized by <b>json_encode</b>,

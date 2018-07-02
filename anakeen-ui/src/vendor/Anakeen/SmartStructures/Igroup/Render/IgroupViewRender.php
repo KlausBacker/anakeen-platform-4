@@ -49,6 +49,8 @@ class IgroupViewRender extends DefaultConfigViewRender
         if ($document->getRawValue(myAttributes::grp_mail)) {
             $vis->setVisibility(myAttributes::grp_hasmail, RenderAttributeVisibilities::HiddenVisibility);
         }
+        $vis->setVisibility(myAttributes::us_meid, RenderAttributeVisibilities::HiddenVisibility);
         return $vis;
     }
+
 }
