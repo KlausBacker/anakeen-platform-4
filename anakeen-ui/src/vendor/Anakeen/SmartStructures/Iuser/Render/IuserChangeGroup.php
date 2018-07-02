@@ -6,7 +6,7 @@ use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\SmartElementManager;
 use Anakeen\Ui\DefaultConfigEditRender;
 use Dcp\Ui\UIGetAssetPath;
-//use \SmartStructure\Attributes\Iuser as myAttributes;
+//use \SmartStructure\Fields\Iuser as myAttributes;
 use SmartStructure\Iuser;
 
 class IuserChangeGroup extends DefaultConfigEditRender

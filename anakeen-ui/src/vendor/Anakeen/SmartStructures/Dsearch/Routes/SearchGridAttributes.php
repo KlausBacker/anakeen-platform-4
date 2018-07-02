@@ -7,7 +7,7 @@ use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use Anakeen\Routes\DocumentGrid\ColumnsDefinition;
-use SmartStructure\Attributes\Report;
+use SmartStructure\Fields\Report;
 
 class SearchGridAttributes
 {

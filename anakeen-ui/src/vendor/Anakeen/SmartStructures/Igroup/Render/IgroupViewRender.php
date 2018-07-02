@@ -9,7 +9,7 @@ namespace Anakeen\SmartStructures\Igroup\Render;
 use Anakeen\Ui\DefaultConfigViewRender;
 use Dcp\Ui\CommonRenderOptions;
 use Dcp\Ui\RenderAttributeVisibilities;
-use \SmartStructure\Attributes\Igroup as myAttributes;
+use \SmartStructure\Fields\Igroup as myAttributes;
 
 class IgroupViewRender extends DefaultConfigViewRender
 {

@@ -3,7 +3,7 @@
 namespace Anakeen\SmartStructures\UiTest\TstUiDocid;
 
 use Anakeen\SmartHooks;
-use \SmartStructure\Attributes\Tst_ddui_docid as TST_DDUI_DOCID_Attributes;
+use \SmartStructure\Fields\Tst_ddui_docid as TST_DDUI_DOCID_Attributes;
 
 class TstUiDocidHooks extends \Anakeen\SmartElement
 

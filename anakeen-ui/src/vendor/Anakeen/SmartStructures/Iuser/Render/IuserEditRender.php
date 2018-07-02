@@ -10,7 +10,7 @@ use Anakeen\Core\Internal\SmartElement;
 use Anakeen\SmartElementManager;
 use Anakeen\Ui\DefaultConfigEditRender;
 use Dcp\Ui\UIGetAssetPath;
-use \SmartStructure\Attributes\Iuser as myAttributes;
+use \SmartStructure\Fields\Iuser as myAttributes;
 
 class IuserEditRender extends DefaultConfigEditRender
 {

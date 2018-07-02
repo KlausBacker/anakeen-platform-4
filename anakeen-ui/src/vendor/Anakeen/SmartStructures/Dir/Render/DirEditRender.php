@@ -3,7 +3,7 @@
 namespace Anakeen\SmartStructures\Dir\Render;
 
 use Anakeen\Ui\DefaultConfigEditRender;
-use \SmartStructure\Attributes\Dir as myAttributes;
+use \SmartStructure\Fields\Dir as myAttributes;
 
 class DirEditRender extends DefaultConfigEditRender
 {

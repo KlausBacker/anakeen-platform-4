@@ -3,7 +3,7 @@
 namespace Anakeen\SmartStructures\Group\Render;
 
 use Anakeen\Ui\DefaultConfigViewRender;
-use \SmartStructure\Attributes\Group as myAttributes;
+use \SmartStructure\Fields\Group as myAttributes;
 
 class GroupViewRender extends DefaultConfigViewRender
 {

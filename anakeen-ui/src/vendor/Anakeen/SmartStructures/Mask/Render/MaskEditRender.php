@@ -7,7 +7,7 @@
 namespace Anakeen\SmartStructures\Mask\Render;
 
 use Anakeen\Ui\DefaultConfigEditRender;
-use \SmartStructure\Attributes\Mask as myAttributes;
+use \SmartStructure\Fields\Mask as myAttributes;
 
 class MaskEditRender extends DefaultConfigEditRender
 {

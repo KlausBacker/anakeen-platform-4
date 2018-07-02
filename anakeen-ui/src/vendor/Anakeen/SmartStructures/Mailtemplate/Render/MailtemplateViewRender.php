@@ -6,7 +6,7 @@
 
 namespace Anakeen\SmartStructures\Mailtemplate\Render;
 use Anakeen\Ui\DefaultConfigViewRender;
-use SmartStructure\Attributes\Mailtemplate as myAttributes;
+use SmartStructure\Fields\Mailtemplate as myAttributes;
 
 class MailtemplateViewRender extends DefaultConfigViewRender
 {

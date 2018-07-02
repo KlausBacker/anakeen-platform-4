@@ -3,7 +3,7 @@
 namespace Anakeen\SmartStructures\Report\Render;
 
 use Anakeen\SmartStructures\Dsearch\Render\SearchViewRender;
-use SmartStructure\Attributes\Report;
+use SmartStructure\Fields\Report;
 
 class ReportViewRender extends SearchViewRender
 {

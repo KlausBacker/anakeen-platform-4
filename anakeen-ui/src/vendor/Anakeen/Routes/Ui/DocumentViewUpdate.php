@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Ui;
 
 use Anakeen\Routes\Core\DocumentUpdateData;
-use SmartStructure\Attributes\Cvdoc as CvdocAttribute;
+use SmartStructure\Fields\Cvdoc as CvdocAttribute;
 use Anakeen\Router\Exception;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;

@@ -53,7 +53,7 @@ class MaskVisibilities
     {
         $data = [];
         $messages = [];
-        $famId = $this->_document->getRawValue(\SmartStructure\Attributes\Mask::msk_famid);
+        $famId = $this->_document->getRawValue(\SmartStructure\Fields\Mask::msk_famid);
         $this->family = SEManager::getFamily($famId);
         if (!$this->family) {
             $exception = new Exception("CRUD0200", $famId);

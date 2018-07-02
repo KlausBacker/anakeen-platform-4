@@ -2,7 +2,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TestRender\Renders;
 
-use SmartStructure\Attributes\Tst_render as myAttributes;
+use SmartStructure\Fields\Tst_render as myAttributes;
 
 class RenderConfigEdit extends \Dcp\Ui\DefaultEdit
 {
