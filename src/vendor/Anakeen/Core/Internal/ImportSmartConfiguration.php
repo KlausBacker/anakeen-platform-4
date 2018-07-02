@@ -308,7 +308,7 @@ class ImportSmartConfiguration
             $attr->id = $attrNode->getAttribute("field");
             $attr->label = $attrNode->getAttribute("label");
             $attr->idfield = $attrNode->getAttribute("fieldset");
-            $attr->visibility = $attrNode->getAttribute("visibility");
+            $attr->access = $attrNode->getAttribute("access");
             $attr->link = $attrNode->getAttribute("link");
             if ($attrNode->getAttribute("needed")) {
                 $attr->need = ($attrNode->getAttribute("needed") === "true") ? "Y" : "N";
@@ -475,7 +475,7 @@ class ImportSmartConfiguration
         }
         $attr->label = $attrNode->getAttribute("label");
         $attr->idfield = $fieldName;
-        $attr->visibility = $attrNode->getAttribute("visibility");
+        $attr->access = $attrNode->getAttribute("access");
         $attr->link = $attrNode->getAttribute("link");
         $attr->need = ($attrNode->getAttribute("needed") === "true") ? "Y" : "N";
         $attr->isAbstract = ($attrNode->getAttribute("is-abstract") === "true") ? "Y" : "N";

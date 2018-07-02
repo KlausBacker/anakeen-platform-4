@@ -3,8 +3,8 @@
     <smart:structure-configuration name="BASE" id="1" label="de base">
         <smart:usefor>S</smart:usefor>
         <smart:fields>
-            <smart:field-set name="fr_basic" type="frame" label="Basique" visibility="W">
-                <smart:field-text name="ba_title" label="Titre" visibility="O" is-title="true" needed="true"/>
+            <smart:field-set name="fr_basic" type="frame" label="Basique" access="ReadWrite">
+                <smart:field-text name="ba_title" label="Titre" access="ReadWrite" is-title="true" needed="true"/>
             </smart:field-set>
         </smart:fields>
     </smart:structure-configuration>

@@ -27,7 +27,7 @@ class FieldSetAttribute extends BasicAttribute
         $this->id = $id;
         $this->docid = $docid;
         $this->labelText = $label;
-        $this->visibility = $visibility;
+        $this->access = $visibility;
         $this->usefor = $usefor;
         $this->type = $type;
         $this->fieldSet = & $fieldSet;

@@ -2474,7 +2474,7 @@ create unique index i_docir on doc(initid, revision);";
             // reinit mask before apply
             foreach ($this->attributes->attr as $k => $v) {
                 if ($this->attributes->attr[$k] !== null) {
-                    $this->attributes->attr[$k]->mvisibility = $v->visibility;
+                    $this->attributes->attr[$k]->mvisibility = $v->access;
                 }
             }
         }
@@ -2499,7 +2499,7 @@ create unique index i_docir on doc(initid, revision);";
             foreach ($oas as $k => $v) {
                 if ($oas[$k]) {
                     $oas[$k]->mvisibility = \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
-                        $v->visibility,
+                        $v->access,
                         (empty($v->fieldSet)) ? '' : $v->fieldSet->mvisibility,
                         (!empty($v->fieldSet->fieldSet)) ? $v->fieldSet->fieldSet->mvisibility : ''
                     );
@@ -2597,7 +2597,7 @@ create unique index i_docir on doc(initid, revision);";
                             $v = $oas[$k];
                             if ($v->type == "frame") {
                                 $oas[$k]->mvisibility = \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
-                                    $v->visibility,
+                                    $v->access,
                                     isset($v->fieldSet) ? $v->fieldSet->mvisibility : '',
                                     ''
                                 );
@@ -2607,7 +2607,7 @@ create unique index i_docir on doc(initid, revision);";
                             $v = $oas[$k];
                             if ($v->type == "array") {
                                 $oas[$k]->mvisibility = \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
-                                    $v->visibility,
+                                    $v->access,
                                     isset($v->fieldSet) ? $v->fieldSet->mvisibility : '',
                                     isset($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : ''
                                 );
@@ -2618,7 +2618,7 @@ create unique index i_docir on doc(initid, revision);";
                             $v = $oas[$k];
                             if ($v->type != "frame") {
                                 $oas[$k]->mvisibility = \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
-                                    $v->visibility,
+                                    $v->access,
                                     isset($v->fieldSet) ? $v->fieldSet->mvisibility : '',
                                     isset($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : ''
                                 );
@@ -3223,7 +3223,7 @@ create unique index i_docir on doc(initid, revision);";
         reset($nattr);
 
         foreach ($nattr as $k => $a) {
-            if ($a->repeat || ($a->visibility == "I") || ($a->visibility == "O") || ($a->type == "longtext")
+            if ($a->repeat || ($a->access == "I") || ($a->access == "O") || ($a->type == "longtext")
                 || ($a->type == "xml")
                 || ($a->type == "htmltext")
                 || ($a->type == "image")
@@ -3274,7 +3274,7 @@ create unique index i_docir on doc(initid, revision);";
         $ltitle = $this->getTitleAttributes();
         $otitle = '';
         foreach ($ltitle as $at) {
-            if (($at->type == 'text') && (($at->visibility == 'W') || ($at->visibility == 'O')) && (!$at->inArray())) {
+            if (($at->type == 'text') && (($at->access == 'W') || ($at->access == 'O')) && (!$at->inArray())) {
                 $otitle = $at;
                 break;
             }

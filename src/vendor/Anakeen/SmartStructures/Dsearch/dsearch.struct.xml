@@ -5,20 +5,20 @@
         <smart:class>Anakeen\SmartStructures\Dsearch\DSearchHooks</smart:class>
         <smart:usefor>S</smart:usefor>
         <smart:fields>
-            <smart:field-set name="se_fr_detail" type="frame" label="Conditions" visibility="W">
-                <smart:field-enum name="se_ol" label="Condition" visibility="W" relation="DSEARCH-se_ol"/>
-                <smart:field-set name="se_t_detail" type="array" label="Conditions" visibility="W">
-                    <smart:field-enum name="se_ols" label="Opérateur" visibility="W" relation="DSEARCH-se_ols"/>
-                    <smart:field-enum name="se_leftp" label="Parenthèse gauche" visibility="W" relation="DSEARCH-se_leftp"/>
-                    <smart:field-text name="se_attrids" label="Attributs" visibility="W"/>
-                    <smart:field-text name="se_funcs" label="Fonctions" visibility="W"/>
-                    <smart:field-text name="se_keys" label="Mot-clefs" visibility="W"/>
-                    <smart:field-enum name="se_rightp" label="Parenthèse droite" visibility="W" relation="DSEARCH-se_rightp"/>
+            <smart:field-set name="se_fr_detail" type="frame" label="Conditions" access="ReadWrite">
+                <smart:field-enum name="se_ol" label="Condition" access="ReadWrite" relation="DSEARCH-se_ol"/>
+                <smart:field-set name="se_t_detail" type="array" label="Conditions" access="ReadWrite">
+                    <smart:field-enum name="se_ols" label="Opérateur" access="ReadWrite" relation="DSEARCH-se_ols"/>
+                    <smart:field-enum name="se_leftp" label="Parenthèse gauche" access="ReadWrite" relation="DSEARCH-se_leftp"/>
+                    <smart:field-text name="se_attrids" label="Attributs" access="ReadWrite"/>
+                    <smart:field-text name="se_funcs" label="Fonctions" access="ReadWrite"/>
+                    <smart:field-text name="se_keys" label="Mot-clefs" access="ReadWrite"/>
+                    <smart:field-enum name="se_rightp" label="Parenthèse droite" access="ReadWrite" relation="DSEARCH-se_rightp"/>
                 </smart:field-set>
-                <smart:field-set name="se_t_filters" type="array" label="Filtres" visibility="R">
+                <smart:field-set name="se_t_filters" type="array" label="Filtres" access="None">
                     <smart:field-option name="empty">yes</smart:field-option>
-                    <smart:field-xml name="se_filter" label="Filtre" visibility="R"/>
-                    <smart:field-enum name="se_typefilter" label="Type" visibility="R" relation="DSEARCH-se_typefilter"/>
+                    <smart:field-xml name="se_filter" label="Filtre" access="None"/>
+                    <smart:field-enum name="se_typefilter" label="Type" access="None" relation="DSEARCH-se_typefilter"/>
                 </smart:field-set>
             </smart:field-set>
         </smart:fields>

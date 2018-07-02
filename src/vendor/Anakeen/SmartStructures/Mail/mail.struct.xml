@@ -5,20 +5,20 @@
         <smart:class>Anakeen\SmartStructures\Mail\MailHooks</smart:class>
         <smart:usefor>S</smart:usefor>
         <smart:fields>
-            <smart:field-set name="mail_fr" type="frame" label="Adresses" visibility="W">
-                <smart:field-text name="mail_from" label="De" visibility="R" is-abstract="true"/>
-                <smart:field-set name="mail_dest" type="array" label="Destinataires" visibility="W">
-                    <smart:field-enum name="mail_copymode" visibility="W" is-abstract="true" relation="MAIL-mail_copymode"/>
-                    <smart:field-docid name="mail_recipid" label="Id destinataire" visibility="H"/>
-                    <smart:field-text name="mail_recip" label="Destinataire" visibility="W" is-abstract="true"/>
-                    <smart:field-enum name="mail_sendformat" label="Notif." visibility="W" is-abstract="true" relation="MAIL-mail_sendformat"/>
+            <smart:field-set name="mail_fr" type="frame" label="Adresses" access="ReadWrite">
+                <smart:field-text name="mail_from" label="De" access="Read" is-abstract="true"/>
+                <smart:field-set name="mail_dest" type="array" label="Destinataires" access="ReadWrite">
+                    <smart:field-enum name="mail_copymode" access="ReadWrite" is-abstract="true" relation="MAIL-mail_copymode"/>
+                    <smart:field-docid name="mail_recipid" label="Id destinataire" access="ReadWrite"/>
+                    <smart:field-text name="mail_recip" label="Destinataire" access="ReadWrite" is-abstract="true"/>
+                    <smart:field-enum name="mail_sendformat" label="Notif." access="ReadWrite" is-abstract="true" relation="MAIL-mail_sendformat"/>
                 </smart:field-set>
-                <smart:field-text name="mail_subject" label="Sujet" visibility="W" is-abstract="true"/>
-                <smart:field-enum name="mail_savecopy" label="Enregistrer une copie" visibility="W" relation="MAIL-mail_savecopy"/>
+                <smart:field-text name="mail_subject" label="Sujet" access="ReadWrite" is-abstract="true"/>
+                <smart:field-enum name="mail_savecopy" label="Enregistrer une copie" access="ReadWrite" relation="MAIL-mail_savecopy"/>
             </smart:field-set>
-            <smart:field-set name="mail_fr_cm" type="frame" label="Commentaire" visibility="W">
-                <smart:field-longtext name="mail_cm" label="Commentaire" visibility="W" is-abstract="true"/>
-                <smart:field-enum name="mail_format" label="Format" visibility="W" is-abstract="true" relation="MAIL-mail_format"/>
+            <smart:field-set name="mail_fr_cm" type="frame" label="Commentaire" access="ReadWrite">
+                <smart:field-longtext name="mail_cm" label="Commentaire" access="ReadWrite" is-abstract="true"/>
+                <smart:field-enum name="mail_format" label="Format" access="ReadWrite" is-abstract="true" relation="MAIL-mail_format"/>
             </smart:field-set>
         </smart:fields>
         <smart:parameters/>

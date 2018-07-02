@@ -5,10 +5,10 @@
         <smart:class>Anakeen\SmartStructures\Msearch\MSearchHooks</smart:class>
         <smart:usefor>S</smart:usefor>
         <smart:fields>
-            <smart:field-set name="se_crit" type="frame" label="Critère" visibility="H"/>
-            <smart:field-set name="se_fr_searches" type="frame" label="Les recherches" visibility="W">
-                <smart:field-set name="seg_t_cond" type="array" label="Ensemble de recherche" visibility="W">
-                    <smart:field-docid name="seg_idcond" label="Recherche" visibility="W" relation="SEARCH"/>
+            <smart:field-set name="se_crit" type="frame" label="Critère" access="None"/>
+            <smart:field-set name="se_fr_searches" type="frame" label="Les recherches" access="ReadWrite">
+                <smart:field-set name="seg_t_cond" type="array" label="Ensemble de recherche" access="ReadWrite">
+                    <smart:field-docid name="seg_idcond" label="Recherche" access="ReadWrite" relation="SEARCH"/>
                 </smart:field-set>
             </smart:field-set>
         </smart:fields>

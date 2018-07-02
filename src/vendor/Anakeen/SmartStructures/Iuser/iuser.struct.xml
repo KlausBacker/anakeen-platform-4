@@ -7,60 +7,59 @@
         <smart:usefor>N</smart:usefor>
         <!--<smart:tag>MAILRECIPIENT</smart:tag>-->
         <smart:fields>
-            <smart:field-set name="us_fr_ident" type="frame" label="État civil" visibility="W">
-                <smart:field-text name="us_lname" label="nom" visibility="W" needed="true" is-title="true"/>
-                <smart:field-text name="us_fname" label="prénom" visibility="W" needed="true" is-title="true"/>
-                <smart:field-text name="us_mail" label="mail" visibility="R" link="mailto:%US_MAIL%" is-abstract="true"/>
-                <smart:field-text name="us_extmail" label="mail principal" visibility="O"/>
+            <smart:field-set name="us_fr_ident" type="frame" label="État civil" access="ReadWrite">
+                <smart:field-text name="us_lname" label="nom" access="ReadWrite" needed="true" is-title="true"/>
+                <smart:field-text name="us_fname" label="prénom" access="ReadWrite" needed="true" is-title="true"/>
+                <smart:field-text name="us_mail" label="mail" access="Read" link="mailto:%US_MAIL%" is-abstract="true"/>
+                <smart:field-text name="us_extmail" label="mail principal" access="ReadWrite"/>
             </smart:field-set>
-            <smart:field-set name="us_tab_system" type="tab" label="Système" visibility="W">
-                <smart:field-set name="us_fr_intranet" type="frame" label="Identification intranet" visibility="R">
-                    <smart:field-account name="us_meid" label="utilisateur id" visibility="H"/>
-                    <smart:field-text name="us_login" label="login" visibility="R" needed="true"/>
-                    <smart:field-text name="us_whatid" label="identifiant" visibility="R"/>
-                    <smart:field-set name="us_t_roles" type="array" label="Rôles" visibility="R">
-                        <smart:field-account name="us_roles" label="Rôle" visibility="W">
+            <smart:field-set name="us_tab_system" type="tab" label="Système" access="ReadWrite">
+                <smart:field-set name="us_fr_intranet" type="frame" label="Identification intranet" access="Read">
+                    <smart:field-account name="us_meid" label="utilisateur id" access="Read"/>
+                    <smart:field-text name="us_login" label="login" access="Read" needed="true"/>
+                    <smart:field-text name="us_whatid" label="identifiant" access="Read"/>
+                    <smart:field-set name="us_t_roles" type="array" label="Rôles" access="Read">
+                        <smart:field-account name="us_roles" label="Rôle" access="ReadWrite">
                             <smart:field-option name="match">role</smart:field-option>
                         </smart:field-account>
-                        <smart:field-enum name="us_rolesorigin" label="Origine" visibility="R" relation="IUSER-us_rolesorigin"/>
-                        <smart:field-account name="us_rolegorigin" label="Groupe" visibility="R" multiple="true">
+                        <smart:field-enum name="us_rolesorigin" label="Origine" access="Read" relation="IUSER-us_rolesorigin"/>
+                        <smart:field-account name="us_rolegorigin" label="Groupe" access="Read" multiple="true">
                             <smart:field-option name="match">group</smart:field-option>
                         </smart:field-account>
                     </smart:field-set>
-                    <smart:field-set name="us_groups" type="array" label="groupes d'appartenance" visibility="R">
-                        <smart:field-text name="us_group" label="groupe (titre)" visibility="H"/>
-                        <smart:field-account name="us_idgroup" label="Groupe" visibility="W">
+                    <smart:field-set name="us_groups" type="array" label="groupes d'appartenance" access="Read">
+                        <smart:field-text name="us_group" label="groupe (titre)" access="Read"/>
+                        <smart:field-account name="us_idgroup" label="Groupe" access="ReadWrite">
                             <smart:field-option name="doctitle">us_group</smart:field-option>
                             <smart:field-option name="match">group</smart:field-option>
                         </smart:field-account>
                     </smart:field-set>
-                    <smart:field-int name="us_expires" label="date d'expiration epoch" visibility="H"/>
-                    <smart:field-int name="us_daydelay" label="délai d'expiration en jours" visibility="H"/>
-                    <smart:field-date name="us_expiresd" label="date d'expiration" visibility="H"/>
-                    <smart:field-time name="us_expirest" label="heure d'expiration" visibility="H"/>
-                    <smart:field-int name="us_passdelay" label="délai d'expiration epoch" visibility="H"/>
+                    <smart:field-int name="us_expires" label="date d'expiration epoch" access="None"/>
+                    <smart:field-int name="us_daydelay" label="délai d'expiration en jours" access="None"/>
+                    <smart:field-date name="us_expiresd" label="date d'expiration" access="None"/>
+                    <smart:field-time name="us_expirest" label="heure d'expiration" access="None"/>
+                    <smart:field-int name="us_passdelay" label="délai d'expiration epoch" access="None"/>
                 </smart:field-set>
-                <smart:field-set name="us_fr_substitute" type="frame" label="Suppléants" visibility="R">
-                    <smart:field-account name="us_substitute" label="Suppléant" visibility="W"/>
-                    <smart:field-account name="us_incumbents" label="Titulaires" visibility="R" multiple="true"/>
+                <smart:field-set name="us_fr_substitute" type="frame" label="Suppléants" access="Read">
+                    <smart:field-account name="us_substitute" label="Suppléant" access="ReadWrite"/>
+                    <smart:field-account name="us_incumbents" label="Titulaires" access="Read" multiple="true"/>
                 </smart:field-set>
-                <smart:field-set name="us_fr_userchange" type="frame" label="Mot de passe" visibility="W">
-                    <smart:field-password name="us_passwd1" label="nouveau mot de passe" visibility="O"/>
-                    <smart:field-password name="us_passwd2" label="confirmation mot de passe" visibility="O"/>
+                <smart:field-set name="us_fr_userchange" type="frame" label="Mot de passe" access="None">
+                    <smart:field-password name="us_passwd1" label="nouveau mot de passe" access="None"/>
+                    <smart:field-password name="us_passwd2" label="confirmation mot de passe" access="None"/>
                 </smart:field-set>
-                <smart:field-set name="us_fr_security" type="frame" label="Sécurité" visibility="R">
-                    <smart:field-enum name="us_status" label="état du compte" visibility="R" relation="IUSER-us_status">
+                <smart:field-set name="us_fr_security" type="frame" label="Sécurité" access="Read">
+                    <smart:field-enum name="us_status" label="état du compte" access="Read" relation="IUSER-us_status">
                     </smart:field-enum>
-                    <smart:field-int name="us_loginfailure" label="échecs de connexion" visibility="R"/>
-                    <smart:field-date name="us_accexpiredate" label="Date d'expiration du compte" visibility="R"/>
+                    <smart:field-int name="us_loginfailure" label="échecs de connexion" access="Read"/>
+                    <smart:field-date name="us_accexpiredate" label="Date d'expiration du compte" access="Read"/>
                 </smart:field-set>
             </smart:field-set>
-            <smart:field-set name="us_fr_privacy" type="frame" label="confidentialité" visibility="H"/>
         </smart:fields>
 
         <smart:parameters>
-            <smart:field-set name="us_fr_default" type="frame" label="Paramètre" visibility="W">
-                <smart:field-account name="us_defaultgroup" label="Groupe par défaut" visibility="W">
+            <smart:field-set name="us_fr_default" type="frame" label="Paramètre" access="ReadWrite">
+                <smart:field-account name="us_defaultgroup" label="Groupe par défaut" access="ReadWrite">
                     <smart:field-option name="match">group</smart:field-option>
                 </smart:field-account>
             </smart:field-set>

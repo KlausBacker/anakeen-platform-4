@@ -278,7 +278,7 @@ class ExportConfiguration
         /**
          * @var \DOMElement[]
          */
-        $q = new QueryDb("", \DocAttr::class);
+        $q = new QueryDb("", DocAttr::class);
         $q->addQuery("id ~ '^:'");
         $q->addQuery(sprintf(" docid=%d", $this->sst->id));
         $l = $q->Query();
@@ -287,7 +287,7 @@ class ExportConfiguration
             return;
         }
         /**
-         * @var \DocAttr $docattr
+         * @var DocAttr $docattr
          */
         foreach ($l as $docattr) {
             $smartOver = $this->cel("field-override");
@@ -481,8 +481,8 @@ class ExportConfiguration
                 if (!empty($attr->labelText)) {
                     $smartAttr->setAttribute("label", $attr->labelText);
                 }
-                if (!empty($attr->visibility)) {
-                    $smartAttr->setAttribute("visibility", $attr->visibility);
+                if (!empty($attr->access)) {
+                    $smartAttr->setAttribute("visibility", $attr->access);
                 }
                 if (!empty($attr->link)) {
                     $smartAttr->setAttribute("link", $attr->link);

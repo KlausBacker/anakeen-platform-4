@@ -42,17 +42,17 @@
             <xs:enumeration value="string"/>
         </xs:restriction>
     </xs:simpleType>
-    <xs:simpleType name="visibilityType">
+
+
+    <xs:simpleType name="fieldAccessType">
         <xs:annotation>
-            <xs:documentation>Deprecated visibilities attributes</xs:documentation>
+            <xs:documentation>Field Access</xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:token">
-            <xs:enumeration value="W"/>
-            <xs:enumeration value="R"/>
-            <xs:enumeration value="H"/>
-            <xs:enumeration value="O"/>
-            <xs:enumeration value="S"/>
-            <xs:enumeration value="U"/>
+            <xs:enumeration value="Write"/>
+            <xs:enumeration value="Read"/>
+            <xs:enumeration value="ReadWrite"/>
+            <xs:enumeration value="None"/>
         </xs:restriction>
     </xs:simpleType>
 
@@ -105,21 +105,18 @@
         </xs:sequence>
         <xs:attribute type="xs:string" name="label"/>
         <xs:attribute type="xs:boolean" name="needed"/>
-        <xs:attribute type="xs:string" name="access"/>
-        <xs:attribute type="v1:visibilityType" name="visibility">
+        <xs:attribute type="v1:fieldAccessType" name="access" >
             <xs:annotation>
                 <xs:documentation>
                     <p>
-                        <b>Deprecated</b>
-                        visibilities attributes
+                        <b>Field Access</b>
                     </p>
                     <hr/>
                     <ul>
-                        <li>W : For Write</li>
-                        <li>R : For ReadOnly</li>
-                        <li>H : For Hidden</li>
-                        <li>O : For WriteOnly</li>
-                        <li>S : For Disable in edition</li>
+                        <li>ReadWrite : For Read Write</li>
+                        <li>Read : For ReadOnly</li>
+                        <li>Write : For Write only</li>
+                        <li>None : For no access</li>
                     </ul>
                 </xs:documentation>
             </xs:annotation>
@@ -259,8 +256,7 @@
         </xs:choice>
         <xs:attribute type="xs:string" name="name"/>
         <xs:attribute type="xs:string" name="label"/>
-        <xs:attribute type="v1:visibilityType" name="visibility"/>
-        <xs:attribute type="xs:string" name="access"/>
+        <xs:attribute type="v1:fieldAccessType" name="access"/>
         <xs:attribute type="xs:string" name="extended"/>
         <xs:attribute type="xs:string" name="type"/>
     </xs:complexType>
@@ -464,8 +460,7 @@
         <xs:attribute type="xs:boolean" name="extended"/>
         <xs:attribute type="v1:fieldsetType" name="type"/>
         <xs:attribute type="xs:string" name="label"/>
-        <xs:attribute type="v1:visibilityType" name="visibility"/>
-        <xs:attribute type="xs:string" name="access"/>
+        <xs:attribute type="v1:fieldAccessType" name="access"/>
         <xs:attribute type="xs:string" name="relation"/>
         <xs:attribute type="xs:string" name="multiple"/>
         <xs:attribute type="xs:string" name="is-abstract"/>

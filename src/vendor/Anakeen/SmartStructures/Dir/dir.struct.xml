@@ -7,24 +7,20 @@
 
         <smart:fields>
             <smart:field-set name="fr_basic" extended="true">
-                <smart:field-longtext name="ba_desc" label="Description" visibility="W" is-abstract="true"/>
-                <smart:field-color name="gui_color" label="Couleur intercalaire" visibility="O"/>
-                <smart:field-enum name="gui_isrss" label="Utilisable comme flux RSS" visibility="W" relation="dir-gui_isrss"/>
-                <smart:field-enum name="gui_sysrss" label="Flux RSS système" visibility="R" relation="dir-gui_sysrss"/>
+                <smart:field-longtext name="ba_desc" label="Description" access="ReadWrite" is-abstract="true"/>
+                <smart:field-color name="gui_color" label="Couleur intercalaire" access="ReadWrite"/>
             </smart:field-set>
-            <smart:field-set name="fld_fr_rest" type="frame" label="Restrictions" visibility="R">
-                <smart:field-enum name="fld_allbut" label="Tout ou rien" visibility="W" relation="dir-fld_allbut"/>
-                <smart:field-set name="fld_tfam" type="array" label="Smart structure autorisées" visibility="W">
-                    <smart:field-text name="fld_fam" label="Smart structure (titre)" visibility="H"/>
-                    <smart:field-docid name="fld_famids" label="Smart structure" visibility="W" relation="-1"/>
-                    <smart:field-enum name="fld_subfam" label="Restriction sous Smart structure" visibility="W" relation="dir-fld_subfam"/>
+            <smart:field-set name="fld_fr_rest" type="frame" label="Restrictions" access="Read">
+                <smart:field-enum name="fld_allbut" label="Tout ou rien" access="ReadWrite" relation="dir-fld_allbut"/>
+                <smart:field-set name="fld_tfam" type="array" label="Smart structure autorisées" access="ReadWrite">
+                    <smart:field-text name="fld_fam" label="Smart structure (titre)" access="Read"/>
+                    <smart:field-docid name="fld_famids" label="Smart structure" access="ReadWrite" relation="-1"/>
+                    <smart:field-enum name="fld_subfam" label="Restriction sous Smart structure" access="ReadWrite" relation="dir-fld_subfam"/>
                 </smart:field-set>
             </smart:field-set>
-            <smart:field-set name="fld_fr_prof" type="frame" label="Profils par défaut" visibility="R">
-                <smart:field-text name="fld_pdoc" label="Profil par défaut de document (titre)" visibility="H"/>
-                <smart:field-docid name="fld_pdocid" label="Profil par défaut de document" visibility="W" relation="PDOC"/>
-                <smart:field-text name="fld_pdir" label="Profil par défaut de dossier (titre)" visibility="H"/>
-                <smart:field-docid name="fld_pdirid" label="Profil par défaut de dossier" visibility="W" relation="PDIR"/>
+            <smart:field-set name="fld_fr_prof" type="frame" label="Profils par défaut" access="Read">
+                <smart:field-docid name="fld_pdocid" label="Profil par défaut de document" access="ReadWrite" relation="PDOC"/>
+                <smart:field-docid name="fld_pdirid" label="Profil par défaut de dossier" access="ReadWrite" relation="PDIR"/>
             </smart:field-set>
         </smart:fields>
 
@@ -32,15 +28,6 @@
             <smart:field-hook event="onPreRefresh" field="fld_fam">
                 <smart:field-callable function="::getTitle"/>
                 <smart:field-argument type="field">fld_famids</smart:field-argument>
-            </smart:field-hook>
-            <smart:field-hook event="onPreRefresh" field="fld_pdoc">
-                <smart:field-callable function="::getTitle"/>
-                <smart:field-argument type="field">fld_pdocid</smart:field-argument>
-            </smart:field-hook>
-            <smart:field-hook event="onPreRefresh" field="fld_pdir">
-                <smart:field-callable function="::getTitle"/>
-                <smart:field-argument type="field">fld_pdirid</smart:field-argument>
-                <smart:field-return field="fld_pdir"/>
             </smart:field-hook>
         </smart:hooks>
 

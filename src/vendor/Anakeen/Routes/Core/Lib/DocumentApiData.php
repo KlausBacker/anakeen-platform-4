@@ -287,7 +287,7 @@ class DocumentApiData
     {
         $info = array(
             "id" => $attribute->id,
-            "visibility" => ($attribute->mvisibility) ? $attribute->mvisibility : $attribute->visibility,
+            "visibility" => ($attribute->mvisibility) ? $attribute->mvisibility : $attribute->access,
             "label" => $attribute->getLabel(),
             "type" => $attribute->type,
             "logicalOrder" => $order,

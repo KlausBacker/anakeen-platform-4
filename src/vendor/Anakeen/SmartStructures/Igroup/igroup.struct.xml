@@ -6,11 +6,11 @@
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
         <smart:fields>
-            <smart:field-set name="grp_fr_intranet" type="frame" label="Système" visibility="W">
-                <smart:field-text name="us_login" label="identifiant" visibility="W" needed="true"/>
-                <smart:field-int name="us_whatid" label="identifiant système" visibility="R"/>
-                <smart:field-account name="us_meid" label="groupe id" visibility="H"/>
-                <smart:field-docid name="grp_roles" label="Rôles associés" visibility="W" relation="ROLE" multiple="true"/>
+            <smart:field-set name="grp_fr_intranet" type="frame" label="Système" access="ReadWrite">
+                <smart:field-text name="us_login" label="identifiant" access="ReadWrite" needed="true"/>
+                <smart:field-int name="us_whatid" label="identifiant système" access="Read"/>
+                <smart:field-account name="us_meid" label="groupe id" access="Read"/>
+                <smart:field-docid name="grp_roles" label="Rôles associés" access="ReadWrite" relation="ROLE" multiple="true"/>
             </smart:field-set>
         </smart:fields>
         <smart:parameters/>
@@ -30,15 +30,16 @@
 
         <smart:defaults>
             <smart:default field="fld_allbut">1</smart:default>
-            <smart:default field="fld_tfam">[{"fld_famids":129,"fld_fam":"groupe"},{"fld_famids":128,"fld_fam":"utilisateur"}]</smart:default>
-            <smart:default field="fld_famids">127
-                128
+            <smart:default field="fld_tfam"><![CDATA[[{"fld_famids":129,"fld_fam":"groupe"},{"fld_famids":128,"fld_fam":"utilisateur"}]
+]]></smart:default>
+            <smart:default field="fld_famids"><![CDATA[[127
+                128]]>
             </smart:default>
-            <smart:default field="fld_fam">groupe intranet
-                utilisateur
+            <smart:default field="fld_fam"><![CDATA[[groupe intranet
+                utilisateur]]>
             </smart:default>
-            <smart:default field="fld_subfam">yes
-                yes
+            <smart:default field="fld_subfam"><![CDATA[[yes
+                yes]]>
             </smart:default>
             <smart:default field="grp_hasmail">no</smart:default>
         </smart:defaults>

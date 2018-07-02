@@ -16,10 +16,14 @@ namespace Anakeen\Core\SmartStructure;
 class BasicAttribute
 {
     const hiddenFieldId = \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD;
+    const NONE_ACCESS = 0;
+    const READ_ACCESS = 1;
+    const WRITE_ACCESS = 2;
+    const READWRITE_ACCESS = 3;
     public $id;
     public $docid;
     public $labelText;
-    public $visibility; // W, R, H, O, M, I
+    public $access; // Write, Read, None
     public $mvisibility; ///mask visibility
     public $options;
     public $docname;
@@ -265,7 +269,7 @@ class BasicAttribute
         $lay->set("aname", $this->id);
         $lay->set("label", $this->encodeXml($this->labelText));
         $lay->set("type", $this->type);
-        $lay->set("visibility", $this->visibility);
+        $lay->set("visibility", $this->access);
         $lay->set("isTitle", false);
         $lay->set("phpfile", false);
         $lay->set("phpfunc", false);

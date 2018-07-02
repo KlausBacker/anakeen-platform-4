@@ -15,6 +15,8 @@
 
 include_once("FDL/import_file.php");
 
+use \Anakeen\Core\SmartStructure\DocAttr;
+
 class ImportDocumentDescription
 {
     const attributePrefix = ":ATTR:";
@@ -35,7 +37,7 @@ class ImportDocumentDescription
     /* Store erroneous family's ORDER line to prevent import of document from that family */
     private $badOrderErrors = array();
     /**
-     * @var bool verify attribute access (visibility "I")
+     * @var bool verify attribute access
      */
     private $verifyAttributeAccess = true;
     /**
@@ -963,7 +965,6 @@ class ImportDocumentDescription
         $oImportDocument->analyzeOnly($this->analyze);
         $oImportDocument->setPolicy($this->policy);
         $oImportDocument->setTargetDirectory($this->dirid);
-        $oImportDocument->setVerifyAttributeAccess($this->verifyAttributeAccess);
         /**
          * Append current document's logical name to list of known logical names
          * and configure the importer to use this list to check for unknown
@@ -2043,7 +2044,7 @@ class ImportDocumentDescription
         $iAttr->isAbstract = $oattr->abstract;
         $iAttr->type = $oattr->type;
         $iAttr->order = $oattr->ordered;
-        $iAttr->visibility = $oattr->visibility;
+        $iAttr->access = $oattr->access;
         $iAttr->need = $oattr->needed;
         $iAttr->link = $oattr->link;
         $iAttr->phpfile = $oattr->phpfile;
@@ -2149,8 +2150,8 @@ class ImportDocumentDescription
                 if (!$updateMode || !empty($this->structAttr->order)) {
                     $oattr->ordered = $this->structAttr->order;
                 }
-                if (!$updateMode || !empty($this->structAttr->visibility)) {
-                    $oattr->visibility = $this->structAttr->visibility;
+                if (!$updateMode || !empty($this->structAttr->access)) {
+                    $oattr->access = $this->structAttr->access;
                 }
                 $oattr->needed = ($this->structAttr->isneeded == "Y") ? "Y" : "N";
                 if ($modattr) {

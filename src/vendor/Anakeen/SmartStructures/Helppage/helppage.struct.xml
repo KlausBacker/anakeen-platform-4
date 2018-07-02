@@ -5,28 +5,28 @@
         <smart:usefor>S</smart:usefor>
 
         <smart:fields>
-            <smart:field-set name="help_fr_identification" type="frame" label="Aide" visibility="W">
-                <smart:field-docid name="help_family" label="Structure" visibility="R" is-abstract="true" relation="-1"/>
-                <smart:field-set name="help_t_help" type="array" label="Description" visibility="W">
-                    <smart:field-text name="help_name" label="Libellé" visibility="W"/>
-                    <smart:field-enum name="help_lang" label="Langue du libellé" visibility="W" relation="helppage-help_lang"/>
-                    <smart:field-longtext name="help_description" label="Description" visibility="W"/>
+            <smart:field-set name="help_fr_identification" type="frame" label="Aide" access="ReadWrite">
+                <smart:field-docid name="help_family" label="Structure" access="Read" is-abstract="true" relation="-1"/>
+                <smart:field-set name="help_t_help" type="array" label="Description" access="ReadWrite">
+                    <smart:field-text name="help_name" label="Libellé" access="ReadWrite"/>
+                    <smart:field-enum name="help_lang" label="Langue du libellé" access="ReadWrite" relation="helppage-help_lang"/>
+                    <smart:field-longtext name="help_description" label="Description" access="ReadWrite"/>
                 </smart:field-set>
-                <smart:field-set name="help_t_sections" type="array" label="Rubriques" visibility="W">
-                    <smart:field-int name="help_sec_order" label="Ordre de la rubrique" visibility="W"/>
-                    <smart:field-text name="help_sec_name" label="Nom de la rubrique" visibility="W"/>
-                    <smart:field-enum name="help_sec_lang" label="Langue" visibility="W" relation="helppage-help_sec_lang"/>
-                    <smart:field-text name="help_sec_key" label="Clé de la rubrique" visibility="W"/>
-                    <smart:field-htmltext name="help_sec_text" label="Texte" visibility="W"/>
+                <smart:field-set name="help_t_sections" type="array" label="Rubriques" access="ReadWrite">
+                    <smart:field-int name="help_sec_order" label="Ordre de la rubrique" access="ReadWrite"/>
+                    <smart:field-text name="help_sec_name" label="Nom de la rubrique" access="ReadWrite"/>
+                    <smart:field-enum name="help_sec_lang" label="Langue" access="ReadWrite" relation="helppage-help_sec_lang"/>
+                    <smart:field-text name="help_sec_key" label="Clé de la rubrique" access="ReadWrite"/>
+                    <smart:field-htmltext name="help_sec_text" label="Texte" access="ReadWrite"/>
                 </smart:field-set>
             </smart:field-set>
         </smart:fields>
 
         <smart:parameters>
-            <smart:field-set name="help_fr_family" type="frame" label="Paramètres de famille" visibility="W">
-                <smart:field-set name="help_t_family" type="array" label="Langues" visibility="W">
-                    <smart:field-text name="help_p_lang_name" label="Libellé de la langue" visibility="W"/>
-                    <smart:field-text name="help_p_lang_key" label="Langue" visibility="W"/>
+            <smart:field-set name="help_fr_family" type="frame" label="Paramètres de famille" access="ReadWrite">
+                <smart:field-set name="help_t_family" type="array" label="Langues" access="ReadWrite">
+                    <smart:field-text name="help_p_lang_name" label="Libellé de la langue" access="ReadWrite"/>
+                    <smart:field-text name="help_p_lang_key" label="Langue" access="ReadWrite"/>
                 </smart:field-set>
             </smart:field-set>
         </smart:parameters>

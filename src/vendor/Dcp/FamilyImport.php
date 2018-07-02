@@ -18,7 +18,10 @@ namespace Dcp;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
+use Anakeen\Core\SmartStructure\BasicAttribute;
+use Anakeen\Core\SmartStructure\DocAttr;
 use Anakeen\Core\Utils\MiscDoc;
+use Anakeen\LogManager;
 
 class FamilyImport
 {
@@ -124,7 +127,7 @@ class FamilyImport
             $phpAdoc->Set("AParent", SEManager::getAttributesClassName($tdoc["fromname"]));
         }
         $phpAdoc->Set("title", $tdoc["title"]);
-        $query = new \Anakeen\Core\Internal\QueryDb("", \DocAttr::class);
+        $query = new \Anakeen\Core\Internal\QueryDb("", DocAttr::class);
         $query->AddQuery("docid=" . $tdoc["id"]);
         $query->order_by = "ordered";
 
@@ -144,10 +147,10 @@ class FamilyImport
             $tcattr = array();
             $taction = array();
             /**
-             * @var $v \DocAttr
+             * @var $v DocAttr
              */
             /**
-             * @var $v \DocAttr
+             * @var $v DocAttr
              */
             $table1 = [];
             foreach ($docDbAttrs as $k => $v) {
@@ -177,7 +180,7 @@ class FamilyImport
                             $table1[$doctitle] = clone ($v);
                             $table1[$doctitle]->id = $doctitle;
                             $table1[$doctitle]->type = "text";
-                            $table1[$doctitle]->visibility = "H";
+                            $table1[$doctitle]->access = BasicAttribute::READ_ACCESS;
                             $table1[$doctitle]->phpfile = "";
                             $table1[$doctitle]->options = "autotitle=yes|relativeOrder=" . $v->id;
                             $table1[$doctitle]->title = "N";
@@ -268,12 +271,7 @@ class FamilyImport
                         "numOrder" => intval($v->ordered)
                     ];
                 }
-                if ($v->visibility == "F") {
-                    $v->type = "frame";
-                } // old notation compliant
-                elseif ($v->visibility == "M") {
-                    $v->type = "menu";
-                } // old notation compliant
+
                 if ($v->type == "integer") {
                     $v->type = "int";
                 } // old notation compliant
@@ -290,7 +288,7 @@ class FamilyImport
                             "label" => str_replace("\"", "\\\"", $v->labeltext),
                             "order" => intval($v->ordered),
                             "link" => str_replace("\"", "\\\"", $v->link),
-                            "visibility" => $v->visibility,
+                            "access" => $v->access,
                             "options" => str_replace("\"", "\\\"", $v->options),
                             "precond" => self::doubleslash($v->phpfunc)
                         );
@@ -300,7 +298,7 @@ class FamilyImport
                     case "frame": // frame
                         $tfield[strtolower($v->id)] = array(
                             "attrid" => strtolower($v->id),
-                            "visibility" => $v->visibility,
+                            "access" => $v->access,
                             "label" => str_replace("\"", "\\\"", $v->labeltext),
                             "usefor" => $v->usefor,
                             "type" => $v->type,
@@ -310,18 +308,7 @@ class FamilyImport
                         );
                         break;
 
-                    case "action": // action
-                        $taction[strtolower($v->id)] = array(
-                            "attrid" => strtolower($v->id),
-                            "visibility" => $v->visibility,
-                            "label" => str_replace("\"", "\\\"", $v->labeltext),
-                            "order" => intval($v->ordered),
-                            "options" => str_replace("\"", "\\\"", $v->options),
-                            "wapplication" => $v->phpfile,
-                            "waction" => self::doubleslash($v->phpfunc),
-                            "precond" => str_replace("\"", "\\\"", $v->phpconstraint)
-                        );
-                        break;
+
 
                     default: // normal
                         if (preg_match('/^\[([a-z=0-9]+)\](.*)/', $v->phpfunc, $reg)) {
@@ -404,7 +391,7 @@ class FamilyImport
                             //(str_replace("\"", "\\\"", $v->options) ,
                             "order" => intval($v->ordered),
                             "link" => str_replace("\"", "\\\"", $v->link),
-                            "visibility" => $v->visibility,
+                            "access" => $v->access,
                             "needed" => ($v->needed == "Y") ? "true" : "false",
                             "title" => ($v->title == "Y") ? "true" : "false",
                             "repeat" => $repeat,
@@ -591,7 +578,7 @@ class FamilyImport
             "-"
         ), "_", $tdoc["name"]))));
 
-        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocAttr::class);
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, DocAttr::class);
         $query->AddQuery(sprintf("docid=%d", $tdoc["id"]));
         $query->AddQuery(sprintf("id !~ ':'"));
         $query->order_by = "ordered";
@@ -647,7 +634,7 @@ class FamilyImport
         $pgatt = self::getTableColumns($dbaccess, "public", "doc$docid");
         // -----------------------------
         // add column attribute
-        $qattr = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocAttr::class);
+        $qattr = new \Anakeen\Core\Internal\QueryDb($dbaccess, DocAttr::class);
         $qattr->AddQuery("docid=" . $docid);
         $qattr->AddQuery("type != 'menu'");
         $qattr->AddQuery("type != 'frame'");
@@ -655,18 +642,17 @@ class FamilyImport
         $qattr->AddQuery("type != 'action'");
         $qattr->AddQuery("id !~ '^:'");
         //  $qattr->AddQuery("type !~ '^array'"); // must be visible to know for child attributes
-        $qattr->AddQuery("visibility != 'M'");
-        $qattr->AddQuery("visibility != 'F'");
+
         $qattr->AddQuery("usefor != 'Q' or usefor is null");
 
         $oattr = $qattr->Query();
         /**
-         * @var \DocAttr[] $tattr
+         * @var DocAttr[] $tattr
          */
         $tattr = array();
         if ($qattr->nb > 0) {
             /**
-             * @var \DocAttr $attr
+             * @var DocAttr $attr
              */
             foreach ($oattr as $ka => $attr) {
                 $tattr[strtolower($attr->id)] = $attr;
@@ -934,7 +920,7 @@ class FamilyImport
             if ($interactive) {
                 print $msg;
             } else {
-                \Anakeen\Core\Utils\System::addLogMsg($msg);
+                LogManager::notice($msg);
             }
             self::activateTrigger($dbaccess, $familyData["id"]);
 
@@ -958,7 +944,7 @@ class FamilyImport
      * complete attribute properties from  parent attribute
      *
      * @param string   $dbaccess
-     * @param \DocAttr $ta
+     * @param DocAttr $ta
      *
      * @return mixed
      * @throws Db\Exception
@@ -972,7 +958,7 @@ class FamilyImport
             $tfromid[] = $fromid;
         }
         $tfromid[] = $ta->docid; // itself
-        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocAttr::class);
+        $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, DocAttr::class);
         $query->AddQuery(DbManager::getSqlOrCond($tfromid, 'docid'));
         $query->AddQuery("id='" . pg_escape_string($ta->id) . "'");
         $query->order_by = "docid";
@@ -1020,7 +1006,7 @@ class FamilyImport
     protected static function getParentAttributes($dbaccess, $fromid)
     {
         if ($fromid > 0) {
-            $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, \DocAttr::class);
+            $query = new \Anakeen\Core\Internal\QueryDb($dbaccess, DocAttr::class);
             $query->AddQuery(sprintf("docid=%d", $fromid));
 
             $pa = $query->Query(0, 0, "TABLE");

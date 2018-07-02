@@ -121,7 +121,7 @@ class NormalAttribute extends BasicAttribute
         $this->eformat = $eformat;
         $this->ordered = $order;
         $this->link = $link;
-        $this->visibility = $visibility;
+        $this->access = $visibility;
         $this->needed = $needed;
         $this->isInTitle = $isInTitle;
         $this->isInAbstract = $isInAbstract;
@@ -223,7 +223,7 @@ class NormalAttribute extends BasicAttribute
         $lay->set("aname", $this->id);
         $lay->set("label", $this->encodeXml($this->labelText));
         $lay->set("type", $this->type);
-        $lay->set("visibility", $this->visibility);
+        $lay->set("visibility", $this->access);
         $lay->set("isTitle", $this->isInTitle);
         $lay->set("phpfile", $this->phpfile);
         $lay->set("phpfunc", $this->phpfunc);

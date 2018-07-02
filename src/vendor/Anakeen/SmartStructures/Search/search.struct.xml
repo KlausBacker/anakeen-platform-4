@@ -6,35 +6,27 @@
         <smart:usefor>S</smart:usefor>
         <smart:fields>
             <smart:field-set name="fr_basic" extended="true">
-                <smart:field-account name="se_author" label="Auteur" visibility="R"/>
-                <smart:field-color name="gui_color" label="Couleur intercalaire" visibility="O"/>
-                <smart:field-enum name="gui_isrss" label="Utilisable comme flux RSS" visibility="W" relation="SEARCH-noyes"/>
-                <smart:field-enum name="gui_sysrss" label="Flux RSS système" visibility="R" relation="SEARCH-noyes"/>
-                <smart:field-enum name="se_memo" label="À utiliser dans les menus" visibility="W" relation="SEARCH-noyes"/>
+                <smart:field-account name="se_author" label="Auteur" access="Read"/>
             </smart:field-set>
-            <smart:field-set name="se_crit" type="frame" label="Critère" visibility="W">
-                <smart:field-text name="se_key" label="Mot-clef" visibility="W" is-abstract="true"/>
-                <smart:field-enum name="se_latest" label="Révision" visibility="W" relation="SEARCH-se_latest"/>
-                <smart:field-enum name="se_case" label="Mode" visibility="W" relation="SEARCH-se_case"/>
-                <smart:field-text name="se_fam" label="Structure" visibility="H" is-abstract="true"/>
-                <smart:field-docid name="se_famid" label="Structure d'appartenance" relation="-1" visibility="W"/>
-                <smart:field-docid name="se_idfld" label="À partir du dossier" visibility="H"/>
-                <smart:field-enum name="se_trash" label="Dans la poubelle" visibility="W" relation="SEARCH-se_trash"/>
-                <smart:field-enum name="se_sysfam" label="Inclure les données système" visibility="W" relation="SEARCH-noyes"/>
-                <smart:field-int name="se_sublevel" label="Profondeur de recherche" visibility="H"/>
-                <smart:field-text name="se_sqlselect" label="Requête sql" visibility="H"/>
-                <smart:field-docid name="se_idcfld" label="Dossier père courant" visibility="R"/>
-                <smart:field-text name="se_orderby" label="Trié par" visibility="R"/>
-                <smart:field-enum name="se_famonly" label="Sans sous famille" visibility="W" relation="SEARCH-se_famonly"/>
-                <smart:field-enum name="se_acl" label="Document" visibility="W" relation="SEARCH-se_acl" multiple="true"/>
-                <smart:field-text name="se_static" label="Requête statique" visibility="H"/>
+            <smart:field-set name="se_crit" type="frame" label="Critère" access="ReadWrite">
+                <smart:field-text name="se_key" label="Mot-clef" access="ReadWrite" is-abstract="true"/>
+                <smart:field-enum name="se_latest" label="Révision" access="ReadWrite" relation="SEARCH-se_latest"/>
+                <smart:field-enum name="se_case" label="Mode" access="ReadWrite" relation="SEARCH-se_case"/>
+                <smart:field-docid name="se_famid" label="Structure d'appartenance" relation="-1" access="ReadWrite"/>
+                <smart:field-docid name="se_idfld" label="À partir du dossier" access="Read"/>
+                <smart:field-enum name="se_trash" label="Dans la poubelle" access="ReadWrite" relation="SEARCH-se_trash"/>
+                <smart:field-enum name="se_sysfam" label="Inclure les données système" access="ReadWrite" relation="SEARCH-noyes"/>
+                <smart:field-int name="se_sublevel" label="Profondeur de recherche" access="Read"/>
+                <smart:field-text name="se_sqlselect" label="Requête sql" access="None"/>
+                <smart:field-docid name="se_idcfld" label="Dossier père courant" access="Read"/>
+                <smart:field-text name="se_orderby" label="Trié par" access="Read"/>
+                <smart:field-enum name="se_famonly" label="Sans sous famille" access="ReadWrite" relation="SEARCH-se_famonly"/>
+                <smart:field-enum name="se_acl" label="Document" access="ReadWrite" relation="SEARCH-se_acl" multiple="true"/>
+                <smart:field-text name="se_static" label="Requête statique" access="Read"/>
             </smart:field-set>
         </smart:fields>
         <smart:hooks>
-            <smart:field-hook event="onPreRefresh" field="se_fam">
-                <smart:field-callable function="::getTitle"/>
-                <smart:field-argument type="field">se_famid</smart:field-argument>
-            </smart:field-hook>
+
         </smart:hooks>
         <smart:defaults>
             <smart:default field="se_latest">yes</smart:default>

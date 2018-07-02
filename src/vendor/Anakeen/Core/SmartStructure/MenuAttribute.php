@@ -13,7 +13,7 @@ class MenuAttribute extends BasicAttribute
         $this->labelText = $label;
         $this->ordered = $order;
         $this->link = $link;
-        $this->visibility = $visibility;
+        $this->access = $visibility;
         $this->options = $options;
         $this->precond = $precond;
         $this->type = "menu";

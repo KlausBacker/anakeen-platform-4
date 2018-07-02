@@ -6,56 +6,54 @@
         <smart:revisable max="100">default</smart:revisable>
         <smart:usefor>S</smart:usefor>
         <smart:fields>
-            <smart:field-set name="exec_fr_ident" type="frame" label="Identification" visibility="W">
-                <smart:field-docid name="exec_iduser" label="Exécutant" visibility="W" relation="IUSER">
+            <smart:field-set name="exec_fr_ident" type="frame" label="Identification" access="ReadWrite">
+                <smart:field-docid name="exec_iduser" label="Exécutant" access="ReadWrite" relation="IUSER">
                 </smart:field-docid>
-                <smart:field-docid name="exec_idref" label="Issue de" visibility="R" relation="BATCH"/>
-                <smart:field-text name="exec_title" label="Titre" visibility="W" is-title="true"/>
-                <smart:field-enum name="exec_status" label="Exécution" visibility="R" relation="EXEC-exec_status"/>
-                <smart:field-timestamp name="exec_statusdate" label="Exécution depuis" visibility="R"/>
+                <smart:field-docid name="exec_idref" label="Issue de" access="Read" relation="BATCH"/>
+                <smart:field-text name="exec_title" label="Titre" access="ReadWrite" is-title="true"/>
+                <smart:field-enum name="exec_status" label="Exécution" access="Read" relation="EXEC-exec_status"/>
+                <smart:field-timestamp name="exec_statusdate" label="Exécution depuis" access="Read"/>
             </smart:field-set>
-            <smart:field-set name="exec_fr_batch" type="frame" label="Traitement" visibility="W">
-                <smart:field-text name="exec_application" label="Application" visibility="W" is-title="true"/>
-                <smart:field-text name="exec_action" label="Action" visibility="W" is-title="true"/>
-                <smart:field-text name="exec_api" label="Api" visibility="W" is-title="true"/>
-                <smart:field-set name="exec_t_parameters" type="array" label="Paramètres" visibility="W">
-                    <smart:field-text name="exec_idvar" label="Variable" visibility="W"/>
-                    <smart:field-text name="exec_valuevar" label="Valeur" visibility="W"/>
+            <smart:field-set name="exec_fr_batch" type="frame" label="Traitement" access="ReadWrite">
+                <smart:field-text name="exec_application" label="Application" access="ReadWrite" is-title="true"/>
+                <smart:field-text name="exec_action" label="Action" access="ReadWrite" is-title="true"/>
+                <smart:field-text name="exec_api" label="Api" access="ReadWrite" is-title="true"/>
+                <smart:field-set name="exec_t_parameters" type="array" label="Paramètres" access="ReadWrite">
+                    <smart:field-text name="exec_idvar" label="Variable" access="ReadWrite"/>
+                    <smart:field-text name="exec_valuevar" label="Valeur" access="ReadWrite"/>
                 </smart:field-set>
             </smart:field-set>
-            <smart:field-set name="exec_fr_date" type="frame" label="Dates" visibility="W">
-                <smart:field-timestamp name="exec_prevdate" label="Précédente date d'exécution" visibility="R"
+            <smart:field-set name="exec_fr_date" type="frame" label="Dates" access="ReadWrite">
+                <smart:field-timestamp name="exec_prevdate" label="Précédente date d'exécution" access="Read"
                                       is-abstract="true">
                     <smart:field-option name="ltitle">Voir l'exécution précédente</smart:field-option>
                 </smart:field-timestamp>
-                <smart:field-timestamp name="exec_nextdate" label="Prochaine date d'exécution" visibility="R" is-abstract="true"/>
-                <smart:field-timestamp name="exec_handnextdate" label="À exécuter le" visibility="W"/>
-                <smart:field-int name="exec_periodday" label="Période en jours" visibility="W">
+                <smart:field-timestamp name="exec_nextdate" label="Prochaine date d'exécution" access="Read" is-abstract="true"/>
+                <smart:field-timestamp name="exec_handnextdate" label="À exécuter le" access="ReadWrite"/>
+                <smart:field-int name="exec_periodday" label="Période en jours" access="ReadWrite">
                     <smart:field-option name="elabel">à faire tous les n jours</smart:field-option>
                     <smart:field-option name="esize">3</smart:field-option>
                 </smart:field-int>
-                <smart:field-int name="exec_periodhour" label="Période en heures" visibility="W">
+                <smart:field-int name="exec_periodhour" label="Période en heures" access="ReadWrite">
                     <smart:field-option name="elabel">à faire tous les n heures</smart:field-option>
                     <smart:field-option name="esize">3</smart:field-option>
                 </smart:field-int>
-                <smart:field-int name="exec_periodmin" label="Période en minutes" visibility="W">
+                <smart:field-int name="exec_periodmin" label="Période en minutes" access="ReadWrite">
                     <smart:field-option name="elabel">à faire tous les n minutes</smart:field-option>
                     <smart:field-option name="esize">3</smart:field-option>
                 </smart:field-int>
-                <smart:field-timestamp name="exec_periodenddate" label="Jusqu'au" visibility="H"/>
-                <smart:field-enum name="exec_perioddaynumber" label="Jour de la semaine" visibility="H" relation="EXEC-exec_perioddaynumber"/>
             </smart:field-set>
-            <smart:field-set name="exec_fr_cr" type="frame" label="Compte-rendu" visibility="W">
-                <smart:field-timestamp name="exec_date" label="Date d'exécution" visibility="R" format="%A %d %B %Y %X"/>
-                <smart:field-time name="exec_elapsed" label="Durée d'exécution" visibility="R" format="%H:%M:%S"/>
-                <smart:field-text name="exec_state" label="Statut" visibility="R"/>
-                <smart:field-file name="exec_detail" label="Détail" visibility="R"/>
-                <smart:field-longtext name="exec_detaillog" label="Log" visibility="R"/>
+            <smart:field-set name="exec_fr_cr" type="frame" label="Compte-rendu" access="ReadWrite">
+                <smart:field-timestamp name="exec_date" label="Date d'exécution" access="Read" format="%A %d %B %Y %X"/>
+                <smart:field-time name="exec_elapsed" label="Durée d'exécution" access="Read" format="%H:%M:%S"/>
+                <smart:field-text name="exec_state" label="Statut" access="Read"/>
+                <smart:field-file name="exec_detail" label="Détail" access="Read"/>
+                <smart:field-longtext name="exec_detaillog" label="Log" access="Read"/>
             </smart:field-set>
         </smart:fields>
         <smart:parameters>
-            <smart:field-set name="exec_fr_param" type="frame" label="Paramètre" visibility="W">
-                <smart:field-docid name="exec_idadmin" label="Administrateur" visibility="W" relation="IUSER">
+            <smart:field-set name="exec_fr_param" type="frame" label="Paramètre" access="ReadWrite">
+                <smart:field-docid name="exec_idadmin" label="Administrateur" access="ReadWrite" relation="IUSER">
                     <smart:field-option name="elabel">recevra en copie les couriels des rapports d'exécution</smart:field-option>
                 </smart:field-docid>
             </smart:field-set>
@@ -72,11 +70,7 @@
                 <smart:field-return/>
             </smart:field-hook>
 
-            <smart:field-hook type="constraint" event="onPreStore" field="exec_periodenddate">
-                <smart:field-callable function="::isFutureDate"/>
-                <smart:field-argument type="field">exec_periodenddate</smart:field-argument>
-                <smart:field-return/>
-            </smart:field-hook>
+
 
         </smart:hooks>
         <smart:autocompletion>
@@ -101,15 +95,6 @@
             <smart:enum name="progressing" label="En cours"/>
             <smart:enum name="waiting" label="En attente"/>
         </smart:enum-configuration>
-        <smart:enum-configuration name="EXEC-exec_perioddaynumber">
-            <smart:enum name=" " label="---"/>
-            <smart:enum name="1" label="Lundi"/>
-            <smart:enum name="2" label="Mardi"/>
-            <smart:enum name="3" label="Mercredi"/>
-            <smart:enum name="4" label="Jeudi"/>
-            <smart:enum name="5" label="Vendredi"/>
-            <smart:enum name="6" label="Samedi"/>
-            <smart:enum name="7" label="Dimanche"/>
-        </smart:enum-configuration>
+
     </smart:enumerates>
 </smart:config>

@@ -24,10 +24,7 @@ class ImportSingleDocument
     protected $policy = 'add';
     protected $orders = array();
     protected $preValues = array();
-    /**
-     * @var bool verify attribute access (visibility "I")
-     */
-    protected $verifyAttributeAccess = true;
+
     /**
      * @var array folder id where insert the new document
      */
@@ -81,13 +78,7 @@ class ImportSingleDocument
         $this->preValues = $preValues;
     }
 
-    /**
-     * @param boolean $verifyAttributeAccess
-     */
-    public function setVerifyAttributeAccess($verifyAttributeAccess)
-    {
-        $this->verifyAttributeAccess = $verifyAttributeAccess;
-    }
+
 
     public function setTargetDirectory($dirid)
     {
@@ -273,9 +264,7 @@ class ImportSingleDocument
         if ($this->hasError()) {
             return $this;
         }
-        if (!$this->verifyAttributeAccess) {
-            $this->inhibitInvisibleAttributes($this->doc);
-        }
+
         if (count($this->orders) == 0) {
             $lattr = $this->doc->GetImportAttributes();
             $this->orders = array_keys($lattr);
@@ -632,15 +621,6 @@ class ImportSingleDocument
         return $this;
     }
 
-    protected function inhibitInvisibleAttributes(\Anakeen\Core\Internal\SmartElement $doc)
-    {
-        $oas = $doc->getNormalAttributes();
-        foreach ($oas as $oa) {
-            if ($oa->mvisibility === "I") {
-                $oa->setVisibility("H");
-            }
-        }
-    }
 
     public function importHtmltextFiles($matches)
     {

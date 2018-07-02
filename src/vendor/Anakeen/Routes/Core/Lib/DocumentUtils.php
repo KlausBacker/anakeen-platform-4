@@ -128,8 +128,7 @@ class DocumentUtils
                 || $currentAttribute->type === "array"
                 || $currentAttribute->type === "tab"
                 || $currentAttribute->type === "menu"
-                || $currentAttribute->usefor === "Q"
-                || $currentAttribute->mvisibility === "I") {
+                || $currentAttribute->usefor === "Q") {
                 if ($currentAttribute) {
                     /**
                      * @var \Anakeen\Core\SmartStructure\BasicAttribute $currentAttribute

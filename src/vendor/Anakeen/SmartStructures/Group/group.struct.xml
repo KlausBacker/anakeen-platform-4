@@ -6,24 +6,24 @@
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
         <smart:fields>
-            <smart:field-set name="fr_basic" type="frame" label="basique" visibility="H">
-                <smart:field-text name="ba_title" label="titre" visibility="H"/>
+            <smart:field-set name="fr_basic" type="frame" label="basique" access="None">
+                <smart:field-text name="ba_title" label="titre" access="None"/>
             </smart:field-set>
-            <smart:field-set name="fld_fr_rest" type="frame" label="Restrictions" visibility="H"/>
-            <smart:field-set name="fld_fr_prof" type="frame" label="Profils par défaut" visibility="H"/>
-            <smart:field-set name="grp_fr_ident" type="frame" label="Identification" visibility="W">
-                <smart:field-text name="grp_name" label="nom" visibility="W" needed="true" is-title="true"/>
-                <smart:field-text name="grp_mail" label="mail" visibility="R" link="mailto:%GRP_MAIL%" is-abstract="true"/>
-                <smart:field-enum name="grp_hasmail" label="sans adresse mail de groupe" visibility="W" is-abstract="true" relation="GROUP-grp_hasmail"/>
+            <smart:field-set name="fld_fr_rest" type="frame" label="Restrictions"  access="None"/>
+            <smart:field-set name="fld_fr_prof" type="frame" label="Profils par défaut" access="None"/>
+            <smart:field-set name="grp_fr_ident" type="frame" label="Identification" access="ReadWrite">
+                <smart:field-text name="grp_name" label="nom" access="ReadWrite" needed="true" is-title="true"/>
+                <smart:field-text name="grp_mail" label="mail" access="Read" link="mailto:%GRP_MAIL%" is-abstract="true"/>
+                <smart:field-enum name="grp_hasmail" label="sans adresse mail de groupe" access="ReadWrite" is-abstract="true" relation="GROUP-grp_hasmail"/>
             </smart:field-set>
-            <smart:field-set name="grp_fr" type="frame" label="Groupes" visibility="W">
-                <smart:field-account name="grp_idgroup" label="sous groupes" visibility="R" multiple="true">
+            <smart:field-set name="grp_fr" type="frame" label="Groupes" access="ReadWrite">
+                <smart:field-account name="grp_idgroup" label="sous groupes" access="Read" multiple="true">
                     <smart:field-option name="showempty">Aucun sous groupe</smart:field-option>
                 </smart:field-account>
-                <smart:field-account name="grp_idpgroup" label="groupes parents" visibility="R" multiple="true">
+                <smart:field-account name="grp_idpgroup" label="groupes parents" access="Read" multiple="true">
                     <smart:field-option name="showempty">Aucun groupe parent</smart:field-option>
                 </smart:field-account>
-                <smart:field-enum name="grp_isrefreshed" label="est rafraîchi" visibility="H" relation="GROUP-grp_isrefreshed">
+                <smart:field-enum name="grp_isrefreshed" label="est rafraîchi"  access="Read" relation="GROUP-grp_isrefreshed">
                     <smart:field-option name="system">yes</smart:field-option>
                     <smart:field-option name="bmenu">no</smart:field-option>
                 </smart:field-enum>

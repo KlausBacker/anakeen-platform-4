@@ -305,7 +305,6 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             }
 
             if ($err == "") {
-
                 $this->updateFldRelations();
                 // use post virtual method
                 if (!$noprepost) {
@@ -706,7 +705,6 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
     {
         if (!$this->authfam) {
             $tfamid = $this->getMultipleRawValues("FLD_FAMIDS");
-            $tfam = $this->getMultipleRawValues("FLD_FAM");
             $tsubfam = $this->getMultipleRawValues("FLD_SUBFAM");
             $allbut = $this->getRawValue("FLD_ALLBUT");
 
@@ -742,7 +740,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
                     if ($tfdoc && ((!$verifyCreate) || controlTdoc($tfdoc, 'icreate'))) {
                         $tclassdoc[intval($famid)] = array(
                             "id" => ($tsubfam[$k] == "no") ? (-intval($famid)) : intval($famid),
-                            "title" => $tfam[$k]
+                            "title" => $this->getTitle($famid)
                         );
                     }
                     if ($tsubfam[$k] != "no") {

@@ -6,40 +6,33 @@
         <smart:usefor>S</smart:usefor>
         <smart:fields>
             <smart:field-set name="fr_basic" extended="true">
-                <smart:field-longtext name="cv_desc" label="Description" visibility="W" is-abstract="true"/>
-                <smart:field-docid name="cv_famid" label="Structure" visibility="W" relation="-1"/>
-                <smart:field-text name="cv_fam" label="Famille" visibility="H"  is-title="true"/>
-                <smart:field-set name="cv_t_views" type="array" label="Vues" visibility="W">
-                    <smart:field-text name="cv_idview" label="Identifiant de la vue" visibility="W"/>
-                    <smart:field-text name="cv_lview" label="Label" visibility="W"/>
-                    <smart:field-enum name="cv_kview" label="Type" visibility="W" relation="CVDOC-cv_kview"/>
-                    <smart:field-text name="cv_renderconfigclass" label="Classe de configuration de rendu (HTML5)" visibility="W"/>
-                    <smart:field-docid name="cv_mskid" label="Masque" visibility="W" relation="MASK"/>
-                    <smart:field-int name="cv_order" label="Ordre de sélection" visibility="W"/>
-                    <smart:field-enum name="cv_displayed" label="Affichable" visibility="W" relation="CVDOC-cv_displayed"/>
-                    <smart:field-text name="cv_menu" label="Menu" visibility="W"/>
+                <smart:field-longtext name="cv_desc" label="Description" access="ReadWrite" is-abstract="true"/>
+                <smart:field-docid name="cv_famid" label="Structure" access="ReadWrite" relation="-1"/>
+                <smart:field-set name="cv_t_views" type="array" label="Vues" access="ReadWrite">
+                    <smart:field-text name="cv_idview" label="Identifiant de la vue" access="ReadWrite"/>
+                    <smart:field-text name="cv_lview" label="Label" access="ReadWrite"/>
+                    <smart:field-enum name="cv_kview" label="Type" access="ReadWrite" relation="CVDOC-cv_kview"/>
+                    <smart:field-text name="cv_renderconfigclass" label="Classe de configuration de rendu (HTML5)" access="ReadWrite"/>
+                    <smart:field-docid name="cv_mskid" label="Masque" access="ReadWrite" relation="MASK"/>
+                    <smart:field-int name="cv_order" label="Ordre de sélection" access="ReadWrite"/>
+                    <smart:field-enum name="cv_displayed" label="Affichable" access="ReadWrite" relation="CVDOC-cv_displayed"/>
+                    <smart:field-text name="cv_menu" label="Menu" access="ReadWrite"/>
                     <smart:field-option name="empty">yes</smart:field-option>
                 </smart:field-set>
             </smart:field-set>
-            <smart:field-set name="cv_fr_default" type="frame" label="Vues par défauts" visibility="W">
-                <smart:field-text name="cv_idcview" label="Id création vues par défaut" visibility="H"/>
-                <smart:field-text name="cv_lcview" label="Création vue" visibility="W"/>
-                <smart:field-text name="cv_renderaccessclass" label="Classe d'accès au rendu" visibility="W"/>
+            <smart:field-set name="cv_fr_default" type="frame" label="Vues par défauts" access="ReadWrite">
+                <smart:field-text name="cv_idcview" label="Id création vues par défaut" access="ReadWrite"/>
+                <smart:field-text name="cv_lcview" label="Création vue" access="ReadWrite"/>
+                <smart:field-text name="cv_renderaccessclass" label="Classe d'accès au rendu" access="ReadWrite"/>
             </smart:field-set>
-            <smart:field-set name="dpdoc_fr_dyn" type="frame" label="Profil dynamique" visibility="W">
-                <smart:field-docid name="dpdoc_famid" label="Structure pour le profil" visibility="W" relation="-1">
+            <smart:field-set name="dpdoc_fr_dyn" type="frame" label="Profil dynamique" access="ReadWrite">
+                <smart:field-docid name="dpdoc_famid" label="Structure pour le profil" access="ReadWrite" relation="-1">
                     <smart:field-option name="elabel">famille utilisée pour les profils dynamiques</smart:field-option>
                 </smart:field-docid>
-                <smart:field-text name="dpdoc_fam" label="Structure pour le profil (titre)" visibility="H"/>
             </smart:field-set>
         </smart:fields>
         <smart:parameters/>
         <smart:hooks>
-            <smart:field-hook event="onPreRefresh" field="cv_famid">
-                <smart:field-callable function="::getTitle"/>
-                <smart:field-argument type="field">cv_famid</smart:field-argument>
-                <smart:field-return field="cv_fam"/>
-            </smart:field-hook>
             <smart:field-hook type="constraint" event="onPreStore" field="cv_idview">
                 <smart:field-callable function="::isIdValid"/>
                 <smart:field-argument type="field">cv_idview</smart:field-argument>
@@ -63,10 +56,7 @@
                 <smart:field-argument type="field">cv_idview</smart:field-argument>
                 <smart:field-return/>
             </smart:field-hook>
-            <smart:field-hook event="onPreRefresh" field="dpdoc_fam">
-                <smart:field-callable function="::getTitle"/>
-                <smart:field-argument type="field">dpdoc_famid</smart:field-argument>
-            </smart:field-hook>
+
         </smart:hooks>
         <smart:autocompletion>
             <smart:field-autocomplete field="cv_lcview">
