@@ -25,7 +25,13 @@ exports.builder = controlArguments({
     defaultDescription: "path of the info.xml for the autorelease mode",
     alias: "s",
     type: "string",
-    implies: "autoRelease"
+    implies: "autoRelease",
+    coerce: (arg) => {
+      if (!fs.statSync(arg).isDirectory()) {
+        throw new Error("Unable to find the source directory "+ arg);
+      }
+      return arg;
+    }
   },
   force: {
     defaultDescription: "destroy already existing deployment",
