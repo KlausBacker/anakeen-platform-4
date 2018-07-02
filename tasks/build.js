@@ -19,7 +19,7 @@ const buildPipe = (exports.buildPipe = async ({
   const moduleFileName = `${moduleInfo.moduleInfo.name}-${
     moduleInfo.moduleInfo.version
   }-${release}`;
-  const buildPath = moduleInfo.buildInfo.conf.sources[0].source.map(
+  const buildPath = moduleInfo.buildInfo.config.sources[0].source.map(
     currentSource => {
       return path.join(sourcePath, currentSource.$.path, "**");
     }

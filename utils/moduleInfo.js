@@ -16,15 +16,19 @@ exports.getModuleInfo = async sourcePath => {
           { encoding: "utf8" },
           (err, content) => {
             if (err) reject(err);
-            xml2js.parseString(content, (err, data) => {
-              if (err) reject(err);
-              const result = {};
-              result.name = data.module.$.name;
-              result.version = data.module.$.version;
-              result.release = data.module.$.release;
-              result.description = data.module.description.join(" ");
-              resolve(result);
-            });
+            xml2js.parseString(
+              content,
+              { tagNameProcessors: [xml2js.processors.stripPrefix] },
+              (err, data) => {
+                if (err) reject(err);
+                const result = {};
+                result.name = data.module.$.name;
+                result.version = data.module.$.version;
+                result.release = data.module.$.release;
+                result.description = data.module.description.join(" ");
+                resolve(result);
+              }
+            );
           }
         );
       }),
@@ -34,10 +38,14 @@ exports.getModuleInfo = async sourcePath => {
           { encoding: "utf8" },
           (err, content) => {
             if (err) reject(err);
-            xml2js.parseString(content, (err, data) => {
-              if (err) reject(err);
-              resolve(data);
-            });
+            xml2js.parseString(
+              content,
+              { tagNameProcessors: [xml2js.processors.stripPrefix] },
+              (err, data) => {
+                if (err) reject(err);
+                resolve(data);
+              }
+            );
           }
         );
       })

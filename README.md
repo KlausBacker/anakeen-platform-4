@@ -18,7 +18,7 @@ Pour commencer un nouveau projet avec anakeen-cli, la démarche est simple.
 
 * Créer le répertoire
 * Faire un npm init dans le répertoire
-* lancer le npm install du module ```npm install git+ssh://git@gitlab.anakeen.com:charles.bonnissent/anakeen-cli#master```
+* lancer le npm install du module ```npm install git+ssh://git@gitlab.anakeen.com:Anakeen/Platform-4/anakeen-cli.git#master```
 * ensuite les commandes sont accessibles de deux manières :
  * via un outil en cli ```npx anakeen-cli```
  * via des tâches gulp en créant un fichier ```gulpfile.js``` et ajouter les tâches dans ce fichier
