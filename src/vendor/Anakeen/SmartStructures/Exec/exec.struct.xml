@@ -1,96 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
     <smart:structure-configuration name="EXEC" label="Processus">
         <smart:icon file="se-exec.png"/>
         <smart:class>Anakeen\SmartStructures\Exec\ExecHooks</smart:class>
         <smart:revisable max="100">default</smart:revisable>
         <smart:usefor>S</smart:usefor>
-        <smart:attributes>
-            <smart:attr-fieldset name="exec_fr_ident" type="frame" label="Identification" visibility="W">
-                <smart:attr-docid name="exec_iduser" label="Exécutant" visibility="W" relation="IUSER">
-                </smart:attr-docid>
-                <smart:attr-docid name="exec_idref" label="Issue de" visibility="R" relation="BATCH"/>
-                <smart:attr-text name="exec_title" label="Titre" visibility="W" is-title="true"/>
-                <smart:attr-enum name="exec_status" label="Exécution" visibility="R" relation="EXEC-exec_status"/>
-                <smart:attr-timestamp name="exec_statusdate" label="Exécution depuis" visibility="R"/>
-            </smart:attr-fieldset>
-            <smart:attr-fieldset name="exec_fr_batch" type="frame" label="Traitement" visibility="W">
-                <smart:attr-text name="exec_application" label="Application" visibility="W" is-title="true"/>
-                <smart:attr-text name="exec_action" label="Action" visibility="W" is-title="true"/>
-                <smart:attr-text name="exec_api" label="Api" visibility="W" is-title="true"/>
-                <smart:attr-fieldset name="exec_t_parameters" type="array" label="Paramètres" visibility="W">
-                    <smart:attr-text name="exec_idvar" label="Variable" visibility="W"/>
-                    <smart:attr-text name="exec_valuevar" label="Valeur" visibility="W"/>
-                </smart:attr-fieldset>
-            </smart:attr-fieldset>
-            <smart:attr-fieldset name="exec_fr_date" type="frame" label="Dates" visibility="W">
-                <smart:attr-timestamp name="exec_prevdate" label="Précédente date d'exécution" visibility="R"
+        <smart:fields>
+            <smart:field-set name="exec_fr_ident" type="frame" label="Identification" visibility="W">
+                <smart:field-docid name="exec_iduser" label="Exécutant" visibility="W" relation="IUSER">
+                </smart:field-docid>
+                <smart:field-docid name="exec_idref" label="Issue de" visibility="R" relation="BATCH"/>
+                <smart:field-text name="exec_title" label="Titre" visibility="W" is-title="true"/>
+                <smart:field-enum name="exec_status" label="Exécution" visibility="R" relation="EXEC-exec_status"/>
+                <smart:field-timestamp name="exec_statusdate" label="Exécution depuis" visibility="R"/>
+            </smart:field-set>
+            <smart:field-set name="exec_fr_batch" type="frame" label="Traitement" visibility="W">
+                <smart:field-text name="exec_application" label="Application" visibility="W" is-title="true"/>
+                <smart:field-text name="exec_action" label="Action" visibility="W" is-title="true"/>
+                <smart:field-text name="exec_api" label="Api" visibility="W" is-title="true"/>
+                <smart:field-set name="exec_t_parameters" type="array" label="Paramètres" visibility="W">
+                    <smart:field-text name="exec_idvar" label="Variable" visibility="W"/>
+                    <smart:field-text name="exec_valuevar" label="Valeur" visibility="W"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="exec_fr_date" type="frame" label="Dates" visibility="W">
+                <smart:field-timestamp name="exec_prevdate" label="Précédente date d'exécution" visibility="R"
                                       is-abstract="true">
-                    <smart:attr-option name="ltitle">Voir l'exécution précédente</smart:attr-option>
-                </smart:attr-timestamp>
-                <smart:attr-timestamp name="exec_nextdate" label="Prochaine date d'exécution" visibility="R" is-abstract="true"/>
-                <smart:attr-timestamp name="exec_handnextdate" label="À exécuter le" visibility="W"/>
-                <smart:attr-int name="exec_periodday" label="Période en jours" visibility="W">
-                    <smart:attr-option name="elabel">à faire tous les n jours</smart:attr-option>
-                    <smart:attr-option name="esize">3</smart:attr-option>
-                </smart:attr-int>
-                <smart:attr-int name="exec_periodhour" label="Période en heures" visibility="W">
-                    <smart:attr-option name="elabel">à faire tous les n heures</smart:attr-option>
-                    <smart:attr-option name="esize">3</smart:attr-option>
-                </smart:attr-int>
-                <smart:attr-int name="exec_periodmin" label="Période en minutes" visibility="W">
-                    <smart:attr-option name="elabel">à faire tous les n minutes</smart:attr-option>
-                    <smart:attr-option name="esize">3</smart:attr-option>
-                </smart:attr-int>
-                <smart:attr-timestamp name="exec_periodenddate" label="Jusqu'au" visibility="H"/>
-                <smart:attr-enum name="exec_perioddaynumber" label="Jour de la semaine" visibility="H" relation="EXEC-exec_perioddaynumber"/>
-            </smart:attr-fieldset>
-            <smart:attr-fieldset name="exec_fr_cr" type="frame" label="Compte-rendu" visibility="W">
-                <smart:attr-timestamp name="exec_date" label="Date d'exécution" visibility="R" format="%A %d %B %Y %X"/>
-                <smart:attr-time name="exec_elapsed" label="Durée d'exécution" visibility="R" format="%H:%M:%S"/>
-                <smart:attr-text name="exec_state" label="Statut" visibility="R"/>
-                <smart:attr-file name="exec_detail" label="Détail" visibility="R"/>
-                <smart:attr-longtext name="exec_detaillog" label="Log" visibility="R"/>
-            </smart:attr-fieldset>
-        </smart:attributes>
+                    <smart:field-option name="ltitle">Voir l'exécution précédente</smart:field-option>
+                </smart:field-timestamp>
+                <smart:field-timestamp name="exec_nextdate" label="Prochaine date d'exécution" visibility="R" is-abstract="true"/>
+                <smart:field-timestamp name="exec_handnextdate" label="À exécuter le" visibility="W"/>
+                <smart:field-int name="exec_periodday" label="Période en jours" visibility="W">
+                    <smart:field-option name="elabel">à faire tous les n jours</smart:field-option>
+                    <smart:field-option name="esize">3</smart:field-option>
+                </smart:field-int>
+                <smart:field-int name="exec_periodhour" label="Période en heures" visibility="W">
+                    <smart:field-option name="elabel">à faire tous les n heures</smart:field-option>
+                    <smart:field-option name="esize">3</smart:field-option>
+                </smart:field-int>
+                <smart:field-int name="exec_periodmin" label="Période en minutes" visibility="W">
+                    <smart:field-option name="elabel">à faire tous les n minutes</smart:field-option>
+                    <smart:field-option name="esize">3</smart:field-option>
+                </smart:field-int>
+                <smart:field-timestamp name="exec_periodenddate" label="Jusqu'au" visibility="H"/>
+                <smart:field-enum name="exec_perioddaynumber" label="Jour de la semaine" visibility="H" relation="EXEC-exec_perioddaynumber"/>
+            </smart:field-set>
+            <smart:field-set name="exec_fr_cr" type="frame" label="Compte-rendu" visibility="W">
+                <smart:field-timestamp name="exec_date" label="Date d'exécution" visibility="R" format="%A %d %B %Y %X"/>
+                <smart:field-time name="exec_elapsed" label="Durée d'exécution" visibility="R" format="%H:%M:%S"/>
+                <smart:field-text name="exec_state" label="Statut" visibility="R"/>
+                <smart:field-file name="exec_detail" label="Détail" visibility="R"/>
+                <smart:field-longtext name="exec_detaillog" label="Log" visibility="R"/>
+            </smart:field-set>
+        </smart:fields>
         <smart:parameters>
-            <smart:attr-fieldset name="exec_fr_param" type="frame" label="Paramètre" visibility="W">
-                <smart:attr-docid name="exec_idadmin" label="Administrateur" visibility="W" relation="IUSER">
-                    <smart:attr-option name="elabel">recevra en copie les couriels des rapports d'exécution</smart:attr-option>
-                </smart:attr-docid>
-            </smart:attr-fieldset>
+            <smart:field-set name="exec_fr_param" type="frame" label="Paramètre" visibility="W">
+                <smart:field-docid name="exec_idadmin" label="Administrateur" visibility="W" relation="IUSER">
+                    <smart:field-option name="elabel">recevra en copie les couriels des rapports d'exécution</smart:field-option>
+                </smart:field-docid>
+            </smart:field-set>
         </smart:parameters>
         <smart:hooks>
 
-            <smart:attr-hook event="onPreRefresh" attr="exec_prevdate">
-                <smart:attr-callable function="::getPrevExecDate"/>
-            </smart:attr-hook>
+            <smart:field-hook event="onPreRefresh" field="exec_prevdate">
+                <smart:field-callable function="::getPrevExecDate"/>
+            </smart:field-hook>
 
-            <smart:attr-hook type="constraint" event="onPreStore" attr="exec_handnextdate">
-                <smart:attr-callable function="::isFutureDate"/>
-                <smart:attr-argument type="attribute">exec_handnextdate</smart:attr-argument>
-                <smart:attr-return/>
-            </smart:attr-hook>
+            <smart:field-hook type="constraint" event="onPreStore" field="exec_handnextdate">
+                <smart:field-callable function="::isFutureDate"/>
+                <smart:field-argument type="field">exec_handnextdate</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
 
-            <smart:attr-hook type="constraint" event="onPreStore" attr="exec_periodenddate">
-                <smart:attr-callable function="::isFutureDate"/>
-                <smart:attr-argument type="attribute">exec_periodenddate</smart:attr-argument>
-                <smart:attr-return/>
-            </smart:attr-hook>
+            <smart:field-hook type="constraint" event="onPreStore" field="exec_periodenddate">
+                <smart:field-callable function="::isFutureDate"/>
+                <smart:field-argument type="field">exec_periodenddate</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
 
         </smart:hooks>
         <smart:autocompletion>
-            <smart:attr-autocomplete attr="exec_api">
-                <smart:attr-callable function="lapi" external-file="fdl.php"/>
-                <smart:attr-argument type="attribute">EXEC_API</smart:attr-argument>
-                <smart:attr-returns>
-                    <smart:attr-return attr="exec_api"/>
-                </smart:attr-returns>
-            </smart:attr-autocomplete>
+            <smart:field-autocomplete field="exec_api">
+                <smart:field-callable function="lapi" external-file="fdl.php"/>
+                <smart:field-argument type="field">EXEC_API</smart:field-argument>
+                <smart:field-returns>
+                    <smart:field-return field="exec_api"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
         </smart:autocompletion>
         <smart:defaults>
-            <smart:default attr="exec_iduser">
-                <smart:attr-callable function="::getCurrentSmartUserId"/>
+            <smart:default field="exec_iduser">
+                <smart:field-callable function="::getCurrentSmartUserId"/>
             </smart:default>
         </smart:defaults>
         <smart:accesses/>

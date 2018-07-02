@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
     <smart:structure-configuration name="SEARCH" id="5" label="Recherche" extends="BASE">
         <smart:icon file="se-search.png"/>
         <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Search\SearchHooks</smart:class>
         <smart:usefor>S</smart:usefor>
-        <smart:attributes>
-            <smart:attr-fieldset name="fr_basic" extended="true">
-                <smart:attr-account name="se_author" label="Auteur" visibility="R"/>
-                <smart:attr-color name="gui_color" label="Couleur intercalaire" visibility="O"/>
-                <smart:attr-enum name="gui_isrss" label="Utilisable comme flux RSS" visibility="W" relation="SEARCH-noyes"/>
-                <smart:attr-enum name="gui_sysrss" label="Flux RSS système" visibility="R" relation="SEARCH-noyes"/>
-                <smart:attr-enum name="se_memo" label="À utiliser dans les menus" visibility="W" relation="SEARCH-noyes"/>
-            </smart:attr-fieldset>
-            <smart:attr-fieldset name="se_crit" type="frame" label="Critère" visibility="W">
-                <smart:attr-text name="se_key" label="Mot-clef" visibility="W" is-abstract="true"/>
-                <smart:attr-enum name="se_latest" label="Révision" visibility="W" relation="SEARCH-se_latest"/>
-                <smart:attr-enum name="se_case" label="Mode" visibility="W" relation="SEARCH-se_case"/>
-                <smart:attr-text name="se_fam" label="Structure" visibility="H" is-abstract="true"/>
-                <smart:attr-docid name="se_famid" label="Structure d'appartenance" relation="-1" visibility="W"/>
-                <smart:attr-docid name="se_idfld" label="À partir du dossier" visibility="H"/>
-                <smart:attr-enum name="se_trash" label="Dans la poubelle" visibility="W" relation="SEARCH-se_trash"/>
-                <smart:attr-enum name="se_sysfam" label="Inclure les données système" visibility="W" relation="SEARCH-noyes"/>
-                <smart:attr-int name="se_sublevel" label="Profondeur de recherche" visibility="H"/>
-                <smart:attr-text name="se_sqlselect" label="Requête sql" visibility="H"/>
-                <smart:attr-docid name="se_idcfld" label="Dossier père courant" visibility="R"/>
-                <smart:attr-text name="se_orderby" label="Trié par" visibility="R"/>
-                <smart:attr-enum name="se_famonly" label="Sans sous famille" visibility="W" relation="SEARCH-se_famonly"/>
-                <smart:attr-enum name="se_acl" label="Document" visibility="W" relation="SEARCH-se_acl" multiple="true"/>
-                <smart:attr-text name="se_static" label="Requête statique" visibility="H"/>
-            </smart:attr-fieldset>
-        </smart:attributes>
+        <smart:fields>
+            <smart:field-set name="fr_basic" extended="true">
+                <smart:field-account name="se_author" label="Auteur" visibility="R"/>
+                <smart:field-color name="gui_color" label="Couleur intercalaire" visibility="O"/>
+                <smart:field-enum name="gui_isrss" label="Utilisable comme flux RSS" visibility="W" relation="SEARCH-noyes"/>
+                <smart:field-enum name="gui_sysrss" label="Flux RSS système" visibility="R" relation="SEARCH-noyes"/>
+                <smart:field-enum name="se_memo" label="À utiliser dans les menus" visibility="W" relation="SEARCH-noyes"/>
+            </smart:field-set>
+            <smart:field-set name="se_crit" type="frame" label="Critère" visibility="W">
+                <smart:field-text name="se_key" label="Mot-clef" visibility="W" is-abstract="true"/>
+                <smart:field-enum name="se_latest" label="Révision" visibility="W" relation="SEARCH-se_latest"/>
+                <smart:field-enum name="se_case" label="Mode" visibility="W" relation="SEARCH-se_case"/>
+                <smart:field-text name="se_fam" label="Structure" visibility="H" is-abstract="true"/>
+                <smart:field-docid name="se_famid" label="Structure d'appartenance" relation="-1" visibility="W"/>
+                <smart:field-docid name="se_idfld" label="À partir du dossier" visibility="H"/>
+                <smart:field-enum name="se_trash" label="Dans la poubelle" visibility="W" relation="SEARCH-se_trash"/>
+                <smart:field-enum name="se_sysfam" label="Inclure les données système" visibility="W" relation="SEARCH-noyes"/>
+                <smart:field-int name="se_sublevel" label="Profondeur de recherche" visibility="H"/>
+                <smart:field-text name="se_sqlselect" label="Requête sql" visibility="H"/>
+                <smart:field-docid name="se_idcfld" label="Dossier père courant" visibility="R"/>
+                <smart:field-text name="se_orderby" label="Trié par" visibility="R"/>
+                <smart:field-enum name="se_famonly" label="Sans sous famille" visibility="W" relation="SEARCH-se_famonly"/>
+                <smart:field-enum name="se_acl" label="Document" visibility="W" relation="SEARCH-se_acl" multiple="true"/>
+                <smart:field-text name="se_static" label="Requête statique" visibility="H"/>
+            </smart:field-set>
+        </smart:fields>
         <smart:hooks>
-            <smart:attr-hook event="onPreRefresh" attr="se_fam">
-                <smart:attr-callable function="::getTitle"/>
-                <smart:attr-argument type="attribute">se_famid</smart:attr-argument>
-            </smart:attr-hook>
+            <smart:field-hook event="onPreRefresh" field="se_fam">
+                <smart:field-callable function="::getTitle"/>
+                <smart:field-argument type="field">se_famid</smart:field-argument>
+            </smart:field-hook>
         </smart:hooks>
         <smart:defaults>
-            <smart:default attr="se_latest">yes</smart:default>
+            <smart:default field="se_latest">yes</smart:default>
         </smart:defaults>
     </smart:structure-configuration>
     <smart:enumerates>

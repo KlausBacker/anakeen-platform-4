@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema elementFormDefault="qualified"
-           targetNamespace="http://www.anakeen.com/ns/smart/v1/"
+           targetNamespace="http://www.anakeen.com/ns/smart/1.0"
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns:v1="http://www.anakeen.com/ns/smart/v1/">
+           xmlns:v1="http://www.anakeen.com/ns/smart/1.0">
 
     <xs:element name="config" type="v1:configType">
         <xs:annotation>
@@ -13,24 +13,24 @@
         </xs:annotation>
     </xs:element>
 
-    <xs:complexType name="attr-returnType">
-        <xs:attribute type="v1:attrNameType" name="attr"/>
+    <xs:complexType name="field-returnType">
+        <xs:attribute type="v1:attrNameType" name="field"/>
     </xs:complexType>
 
-    <xs:complexType name="attr-overrideType">
+    <xs:complexType name="field-overrideType">
         <xs:complexContent>
-            <xs:extension base="v1:attr-propsStandardType">
-                <xs:attribute type="v1:attrNameType" name="attr" use="required"/>
+            <xs:extension base="v1:field-propsStandardType">
+                <xs:attribute type="v1:attrNameType" name="field" use="required"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-    <xs:complexType name="attr-autocompleteType">
+    <xs:complexType name="field-autocompleteType">
         <xs:sequence>
-            <xs:element type="v1:attr-callableType" name="attr-callable"/>
-            <xs:element type="v1:attr-argumentType" name="attr-argument" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element type="v1:attr-returnsType" name="attr-returns" minOccurs="0"/>
+            <xs:element type="v1:field-callableType" name="field-callable"/>
+            <xs:element type="v1:field-argumentType" name="field-argument" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="v1:field-returnsType" name="field-returns" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="v1:attrNameType" name="attr"/>
+        <xs:attribute type="v1:attrNameType" name="field"/>
     </xs:complexType>
 
     <xs:simpleType name="attrReturnArgType">
@@ -38,7 +38,7 @@
             <xs:documentation>Type of argument</xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string">
-            <xs:enumeration value="attribute"/>
+            <xs:enumeration value="field"/>
             <xs:enumeration value="string"/>
         </xs:restriction>
     </xs:simpleType>
@@ -78,7 +78,7 @@
             <xs:element type="v1:enum-configurationType" name="enum-configuration" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="attr-optionType">
+    <xs:complexType name="field-optionType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
                 <xs:attribute type="xs:string" name="name"/>
@@ -99,12 +99,13 @@
         <xs:attribute type="xs:boolean" name="extendable" default="false"/>
     </xs:complexType>
 
-    <xs:complexType name="attr-propsStandardType">
+    <xs:complexType name="field-propsStandardType">
         <xs:sequence minOccurs="0" maxOccurs="unbounded">
-            <xs:element type="v1:attr-optionType" name="attr-option"/>
+            <xs:element type="v1:field-optionType" name="field-option"/>
         </xs:sequence>
         <xs:attribute type="xs:string" name="label"/>
         <xs:attribute type="xs:boolean" name="needed"/>
+        <xs:attribute type="xs:string" name="access"/>
         <xs:attribute type="v1:visibilityType" name="visibility">
             <xs:annotation>
                 <xs:documentation>
@@ -129,9 +130,9 @@
         <xs:attribute type="xs:string" name="multiple"/>
     </xs:complexType>
 
-    <xs:complexType name="attr-standardType">
+    <xs:complexType name="field-standardType">
         <xs:complexContent>
-            <xs:extension base="v1:attr-propsStandardType">
+            <xs:extension base="v1:field-propsStandardType">
                 <xs:attribute type="v1:attrNameType" name="name" use="required"/>
             </xs:extension>
         </xs:complexContent>
@@ -149,24 +150,24 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:complexType name="attr-formatType">
+    <xs:complexType name="field-formatType">
         <xs:complexContent>
-            <xs:extension base="v1:attr-standardType">
+            <xs:extension base="v1:field-standardType">
                 <xs:attribute type="xs:string" name="format"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:complexType name="attr-relationType">
+    <xs:complexType name="field-relationType">
         <xs:complexContent>
-            <xs:extension base="v1:attr-standardType">
+            <xs:extension base="v1:field-standardType">
                 <xs:attribute type="xs:token" name="relation"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-    <xs:complexType name="attr-enumType">
+    <xs:complexType name="field-enumType">
         <xs:complexContent>
-            <xs:extension base="v1:attr-standardType">
+            <xs:extension base="v1:field-standardType">
                 <xs:attribute type="xs:token" name="relation"/>
             </xs:extension>
         </xs:complexContent>
@@ -189,7 +190,7 @@
 
     <xs:complexType name="accessConfigurationType">
         <xs:sequence>
-            <xs:element type="v1:accessType" name="element-access" minOccurs="0" maxOccurs="unbounded" xmlns:v1="http://www.anakeen.com/ns/smart/v1/">
+            <xs:element type="v1:accessType" name="element-access" minOccurs="0" maxOccurs="unbounded" >
                 <xs:annotation>
                     <xs:documentation>
                         <h1>Smart Structure Access Configuration</h1>
@@ -249,24 +250,25 @@
         <xs:attribute type="v1:logicalNameType" name="profil-type" default="PDOC"/>
     </xs:complexType>
 
-    <xs:complexType name="attr-accountType" mixed="true">
+    <xs:complexType name="field-accountType" mixed="true">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-            <xs:element type="v1:attr-standardType" name="attr-text"/>
-            <xs:element type="v1:attr-standardType" name="attr-enum"/>
-            <xs:element type="v1:attr-standardType" name="attr-docid"/>
-            <xs:element type="v1:attr-standardType" name="attr-int"/>
+            <xs:element type="v1:field-standardType" name="field-text"/>
+            <xs:element type="v1:field-standardType" name="field-enum"/>
+            <xs:element type="v1:field-standardType" name="field-docid"/>
+            <xs:element type="v1:field-standardType" name="field-int"/>
         </xs:choice>
         <xs:attribute type="xs:string" name="name"/>
         <xs:attribute type="xs:string" name="label"/>
         <xs:attribute type="v1:visibilityType" name="visibility"/>
+        <xs:attribute type="xs:string" name="access"/>
         <xs:attribute type="xs:string" name="extended"/>
         <xs:attribute type="xs:string" name="type"/>
     </xs:complexType>
-    <xs:complexType name="attr-argumentType">
+    <xs:complexType name="field-argumentType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="v1:attrReturnArgType" name="type"/>
-                <xs:attribute type="xs:string" name="name"/>
+                <xs:attribute type="v1:attrReturnArgType" name="type" use="required"/>
+                <xs:attribute type="xs:token" name="name"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
@@ -274,7 +276,7 @@
         <xs:sequence>
             <xs:element type="xs:string" name="default-folder" minOccurs="0"/>
             <xs:element type="v1:iconType" name="icon" minOccurs="0"/>
-            <xs:element type="v1:classType" name="class" minOccurs="0" xmlns:v1="http://www.anakeen.com/ns/smart/v1/">
+            <xs:element type="v1:classType" name="class" minOccurs="0" >
 
                 <xs:annotation>
                     <xs:documentation>
@@ -289,9 +291,9 @@
             <xs:element type="v1:revisableType" name="revisable" default="default" minOccurs="0"/>
             <xs:element type="xs:string" name="usefor" minOccurs="0"/>
             <xs:element type="xs:string" name="tag" minOccurs="0"/>
-            <xs:element type="v1:attributesType" name="attributes" minOccurs="0"/>
+            <xs:element type="v1:attributesType" name="fields" minOccurs="0"/>
             <xs:element type="v1:attributesType" name="parameters" minOccurs="0"/>
-            <xs:element type="v1:attr-overrideType" name="attr-override" minOccurs="0"/>
+            <xs:element type="v1:field-overrideType" name="field-override" minOccurs="0"/>
             <xs:element type="v1:hooksType" name="hooks" minOccurs="0"/>
             <xs:element type="v1:autocompletionType" name="autocompletion" minOccurs="0"/>
             <xs:element type="v1:defaultsType" name="defaults" minOccurs="0">
@@ -311,7 +313,7 @@
     </xs:complexType>
     <xs:complexType name="attributesType">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-            <xs:element type="v1:attr-fieldsetType" name="attr-fieldset" xmlns:v1="http://www.anakeen.com/ns/smart/v1/">
+            <xs:element type="v1:field-setType" name="field-set" >
                 <xs:annotation>
                     <xs:documentation>Smart Fieldset of attributes</xs:documentation>
                 </xs:annotation>
@@ -354,7 +356,7 @@
                 <xs:attribute type="xs:token" name="link"/>
                 <xs:attribute type="xs:token" name="login"/>
                 <xs:attribute type="xs:token" name="access"/>
-                <xs:attribute type="v1:attrNameType" name="attr"/>
+                <xs:attribute type="v1:attrNameType" name="field"/>
                 <xs:attribute type="v1:logicalNameType" name="element"/>
             </xs:extension>
         </xs:simpleContent>
@@ -363,15 +365,15 @@
 
     <xs:complexType name="defaultType" mixed="true">
         <xs:sequence>
-            <xs:element type="v1:attr-callableType" name="attr-callable" minOccurs="0"/>
-            <xs:element type="v1:attr-argumentType" name="attr-argument" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element type="v1:attr-returnsType" name="attr-returns" minOccurs="0"/>
+            <xs:element type="v1:field-callableType" name="field-callable" minOccurs="0"/>
+            <xs:element type="v1:field-argumentType" name="field-argument" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="v1:field-returnsType" name="field-returns" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="v1:attrNameType" name="attr" use="required"/>
+        <xs:attribute type="v1:attrNameType" name="field" use="required"/>
         <xs:attribute type="xs:boolean" name="reset" default="false"/>
     </xs:complexType>
 
-    <xs:complexType name="attr-callableType">
+    <xs:complexType name="field-callableType">
         <xs:attribute type="xs:string" name="function"/>
         <xs:attribute type="xs:string" name="external-file"/>
     </xs:complexType>
@@ -409,60 +411,61 @@
         </xs:simpleContent>
     </xs:complexType>
 
-    <xs:complexType name="attr-returnsType">
+    <xs:complexType name="field-returnsType">
         <xs:sequence>
-            <xs:element type="v1:attr-returnType" name="attr-return" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="v1:field-returnType" name="field-return" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="autocompletionType">
         <xs:sequence>
-            <xs:element type="v1:attr-autocompleteType" name="attr-autocomplete" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="v1:field-autocompleteType" name="field-autocomplete" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="attr-hookType">
+    <xs:complexType name="field-hookType">
         <xs:sequence>
-            <xs:element type="v1:attr-callableType" name="attr-callable"/>
-            <xs:element type="v1:attr-argumentType" name="attr-argument" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element type="v1:attr-returnType" name="attr-return" minOccurs="0"/>
+            <xs:element type="v1:field-callableType" name="field-callable"/>
+            <xs:element type="v1:field-argumentType" name="field-argument" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element type="v1:field-returnType" name="field-return" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="xs:string" name="event"/>
-        <xs:attribute type="v1:attrNameType" name="attr"/>
+        <xs:attribute type="v1:attrNameType" name="field"/>
         <xs:attribute type="xs:string" name="type"/>
     </xs:complexType>
     <xs:complexType name="hooksType">
         <xs:sequence>
-            <xs:element type="v1:attr-hookType" name="attr-hook" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="v1:field-hookType" name="field-hook" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="attr-fieldsetType">
+    <xs:complexType name="field-setType">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-            <xs:element type="v1:attr-fieldsetType" name="attr-fieldset"/>
-            <xs:element type="v1:attr-standardType" name="attr-date"/>
-            <xs:element type="v1:attr-formatType" name="attr-time"/>
-            <xs:element type="v1:attr-formatType" name="attr-int"/>
-            <xs:element type="v1:attr-formatType" name="attr-double"/>
-            <xs:element type="v1:attr-formatType" name="attr-money"/>
-            <xs:element type="v1:attr-standardType" name="attr-color"/>
-            <xs:element type="v1:attr-formatType" name="attr-timestamp"/>
-            <xs:element type="v1:attr-standardType" name="attr-password"/>
-            <xs:element type="v1:attr-formatType" name="attr-text"/>
-            <xs:element type="v1:attr-standardType" name="attr-longtext"/>
-            <xs:element type="v1:attr-standardType" name="attr-htmltext"/>
-            <xs:element type="v1:attr-standardType" name="attr-file"/>
-            <xs:element type="v1:attr-standardType" name="attr-image"/>
-            <xs:element type="v1:attr-enumType" name="attr-enum"/>
-            <xs:element type="v1:attr-relationType" name="attr-docid"/>
-            <xs:element type="v1:attr-relationType" name="attr-account"/>
-            <xs:element type="v1:attr-standardType" name="attr-xml"/>
-            <xs:element type="v1:attr-standardType" name="attr-json"/>
-            <xs:element type="v1:attr-optionType" name="attr-option"/>
+            <xs:element type="v1:field-setType" name="field-set"/>
+            <xs:element type="v1:field-standardType" name="field-date"/>
+            <xs:element type="v1:field-formatType" name="field-time"/>
+            <xs:element type="v1:field-formatType" name="field-int"/>
+            <xs:element type="v1:field-formatType" name="field-double"/>
+            <xs:element type="v1:field-formatType" name="field-money"/>
+            <xs:element type="v1:field-standardType" name="field-color"/>
+            <xs:element type="v1:field-formatType" name="field-timestamp"/>
+            <xs:element type="v1:field-standardType" name="field-password"/>
+            <xs:element type="v1:field-formatType" name="field-text"/>
+            <xs:element type="v1:field-standardType" name="field-longtext"/>
+            <xs:element type="v1:field-standardType" name="field-htmltext"/>
+            <xs:element type="v1:field-standardType" name="field-file"/>
+            <xs:element type="v1:field-standardType" name="field-image"/>
+            <xs:element type="v1:field-enumType" name="field-enum"/>
+            <xs:element type="v1:field-relationType" name="field-docid"/>
+            <xs:element type="v1:field-relationType" name="field-account"/>
+            <xs:element type="v1:field-standardType" name="field-xml"/>
+            <xs:element type="v1:field-standardType" name="field-json"/>
+            <xs:element type="v1:field-optionType" name="field-option"/>
         </xs:choice>
         <xs:attribute type="v1:attrNameType" name="name" use="required"/>
         <xs:attribute type="xs:boolean" name="extended"/>
         <xs:attribute type="v1:fieldsetType" name="type"/>
         <xs:attribute type="xs:string" name="label"/>
         <xs:attribute type="v1:visibilityType" name="visibility"/>
+        <xs:attribute type="xs:string" name="access"/>
         <xs:attribute type="xs:string" name="relation"/>
         <xs:attribute type="xs:string" name="multiple"/>
         <xs:attribute type="xs:string" name="is-abstract"/>

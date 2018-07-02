@@ -65,6 +65,7 @@ class ImportSmartConfiguration
 
         $data = array_merge($data, $this->extractEnumConfig($this->dom->documentElement));
         $accessConfigs = $this->getNodes($this->dom->documentElement, "access-configuration");
+
         foreach ($accessConfigs as $config) {
             $data = array_merge($data, $this->importSmartAccessConfig($config));
         }
@@ -72,6 +73,7 @@ class ImportSmartConfiguration
         if ($this->verbose) {
             $this->print($data);
         }
+
         $this->recordSmartData($data);
         return $data;
     }
@@ -123,8 +125,8 @@ class ImportSmartConfiguration
             if ($access->getAttribute("login")) {
                 $prfData[] = sprintf("%s=account(%s)", $access->getAttribute("access"), $access->getAttribute("login"));
             }
-            if ($access->getAttribute("attr")) {
-                $prfData[] = sprintf("%s=attribute(%s)", $access->getAttribute("access"), $access->getAttribute("attr"));
+            if ($access->getAttribute("field")) {
+                $prfData[] = sprintf("%s=attribute(%s)", $access->getAttribute("access"), $access->getAttribute("field"));
             }
             if ($access->getAttribute("element")) {
                 $prfData[] = sprintf("%s=document(%s)", $access->getAttribute("access"), $access->getAttribute("element"));
@@ -133,6 +135,7 @@ class ImportSmartConfiguration
         if ($prfData) {
             $data[] = array_merge(["PROFIL", $prfName, "", $prfReset], $prfData);
         }
+
         return $data;
     }
 
@@ -203,7 +206,7 @@ class ImportSmartConfiguration
                 /**
                  * @var \DOMElement $attrNode
                  */
-                if (preg_match('/smart:attr-/', $attrNode->tagName) && $attrNode->tagName !== "smart:attr-option") {
+                if (preg_match('/smart:field-/', $attrNode->tagName) && $attrNode->tagName !== "smart:field-option") {
                     $data = array_merge($data, $this->extractAttr($attrNode, "PARAM"));
                 }
             }
@@ -242,7 +245,7 @@ class ImportSmartConfiguration
         $data = [];
 
         // Search Constraint and Computed
-        $autocompletes = $this->getNodes($config, "attr-hook");
+        $autocompletes = $this->getNodes($config, "field-hook");
         foreach ($autocompletes as $hookNode) {
             /**
              * @var \DOMElement $hookNode
@@ -252,7 +255,7 @@ class ImportSmartConfiguration
             }
 
             $attr = new ImportSmartAttr();
-            $attr->id = $hookNode->getAttribute("attr");
+            $attr->id = $hookNode->getAttribute("field");
 
 
             if ($hookNode->getAttribute("type") === "constraint") {
@@ -270,7 +273,7 @@ class ImportSmartConfiguration
         }
 
         // Search Autocomplete
-        $autocompletes = $this->getNodes($config, "attr-autocomplete");
+        $autocompletes = $this->getNodes($config, "field-autocomplete");
         foreach ($autocompletes as $autoNode) {
 
             /**
@@ -281,7 +284,7 @@ class ImportSmartConfiguration
             }
 
             $attr = new ImportSmartAttr();
-            $attr->id = $autoNode->getAttribute("attr");
+            $attr->id = $autoNode->getAttribute("field");
 
             $attr->autocomplete = $this->getCallableString($autoNode);
 
@@ -293,7 +296,7 @@ class ImportSmartConfiguration
     protected function extractModAttrs(\DOMElement $config)
     {
         $data = [];
-        $modAttrs = $this->getNodes($config, "attr-override");
+        $modAttrs = $this->getNodes($config, "field-override");
 
         foreach ($modAttrs as $attrNode) {
 
@@ -302,7 +305,7 @@ class ImportSmartConfiguration
              */
 
             $attr = new ImportSmartAttr();
-            $attr->id = $attrNode->getAttribute("attr");
+            $attr->id = $attrNode->getAttribute("field");
             $attr->label = $attrNode->getAttribute("label");
             $attr->idfield = $attrNode->getAttribute("fieldset");
             $attr->visibility = $attrNode->getAttribute("visibility");
@@ -348,7 +351,7 @@ class ImportSmartConfiguration
     protected function extractAttrs(\DOMElement $config)
     {
         $data = [];
-        $nodeAttributes = $this->getNode($config, "attributes");
+        $nodeAttributes = $this->getNode($config, "fields");
         if ($nodeAttributes) {
             foreach ($nodeAttributes->childNodes as $attrNode) {
                 if (!is_a($attrNode, \DOMElement::class)) {
@@ -357,7 +360,7 @@ class ImportSmartConfiguration
                 /**
                  * @var \DOMElement $attrNode
                  */
-                if (preg_match('/smart:attr-/', $attrNode->tagName) && $attrNode->tagName !== "smart:attr-option") {
+                if (preg_match('/smart:field-/', $attrNode->tagName) && $attrNode->tagName !== "smart:field-option") {
                     $data = array_merge($data, $this->extractAttr($attrNode, "ATTR"));
                 }
             }
@@ -372,7 +375,7 @@ class ImportSmartConfiguration
         $data = [$key];
 
         $nodeValue = trim($attrNode->nodeValue);
-        $data[1] = $attrNode->getAttribute("attr");
+        $data[1] = $attrNode->getAttribute("field");
         if ($nodeValue !== "") {
             $data[2] = $nodeValue;
         } else {
@@ -433,7 +436,7 @@ class ImportSmartConfiguration
     protected function extractAttr(\DOMElement $attrNode, $key, $fieldName = "")
     {
         $data = [];
-        if ($attrNode->tagName === "smart:attr-fieldset") {
+        if ($attrNode->tagName === "smart:field-set") {
             if ($attrNode->getAttribute("extended") !== "true") {
                 $data[] = $this->extractSingleAttr($attrNode, $key, $fieldName);
             }
@@ -445,7 +448,7 @@ class ImportSmartConfiguration
                 /**
                  * @var \DOMElement $childNode
                  */
-                if (preg_match('/smart:attr-/', $childNode->tagName) && $childNode->tagName !== "smart:attr-option") {
+                if (preg_match('/smart:field-/', $childNode->tagName) && $childNode->tagName !== "smart:field-option") {
                     $data = array_merge($data, $this->extractAttr($childNode, $key, $fieldName));
                 }
             }
@@ -461,10 +464,10 @@ class ImportSmartConfiguration
         $attr = new ImportSmartAttr();
         $attr->id = $attrNode->getAttribute("name");
 
-        if ($attrNode->tagName === "smart:attr-fieldset") {
+        if ($attrNode->tagName === "smart:field-set") {
             $attr->type = $attrNode->getAttribute("type");
         } else {
-            $attr->type = substr($attrNode->tagName, strlen("smart:attr-"));
+            $attr->type = substr($attrNode->tagName, strlen("smart:field-"));
             $rel = $attrNode->getAttribute("relation");
             if ($rel) {
                 $attr->type .= '("' . $rel . '")';
@@ -506,7 +509,7 @@ class ImportSmartConfiguration
     {
         $config = $this->getClosest($attrNode, "structure-configuration");
         $attrid = $attrNode->getAttribute("name");
-        $hooks = $this->getNodes($config, "attr-autocomplete");
+        $hooks = $this->getNodes($config, "field-autocomplete");
         $method = "";
         $file = "";
 
@@ -514,10 +517,10 @@ class ImportSmartConfiguration
          * @var \DOMElement $hook
          */
         foreach ($hooks as $hook) {
-            if ($hook->getAttribute("attr") === $attrid) {
+            if ($hook->getAttribute("field") === $attrid) {
                 if ($filter($hook)) {
                     $method = $this->getCallableString($hook);
-                    $callable = $this->getNode($hook, "attr-callable");
+                    $callable = $this->getNode($hook, "field-callable");
                     $file = $callable->getAttribute("external-file");
                     $hook->setAttribute("__used__", "true");
                 }
@@ -531,13 +534,13 @@ class ImportSmartConfiguration
         $config = $this->getClosest($attrNode, "structure-configuration");
 
         $attrid = $attrNode->getAttribute("name");
-        $hooks = $this->getNodes($config, "attr-hook");
+        $hooks = $this->getNodes($config, "field-hook");
         $method = "";
         /**
          * @var \DOMElement $hook
          */
         foreach ($hooks as $hook) {
-            if ($hook->getAttribute("attr") === $attrid) {
+            if ($hook->getAttribute("field") === $attrid) {
                 if ($filter($hook)) {
                     $method = $this->getCallableString($hook);
                     // Add special attribute in case of hook declaration is outside attr declaration
@@ -559,7 +562,7 @@ class ImportSmartConfiguration
             /**
              * @var \DOMElement $optNode
              */
-            if (!is_a($optNode, \DOMElement::class) || $optNode->tagName !== "smart:attr-option") {
+            if (!is_a($optNode, \DOMElement::class) || $optNode->tagName !== "smart:field-option") {
                 continue;
             }
             $optData[$optNode->getAttribute("name")] = $optNode->getAttribute("name");
@@ -698,12 +701,12 @@ class ImportSmartConfiguration
      */
     protected function getCallableString(\DOMElement $hook): string
     {
-        $callableNode = $this->getNode($hook, "attr-callable");
+        $callableNode = $this->getNode($hook, "field-callable");
         if (!$callableNode) {
-            throw new Exception(sprintf("Error in callable %s", $hook->getAttribute("attr")));
+            throw new Exception(sprintf("Error in callable %s", $hook->getAttribute("field")));
         }
         $method = $callableNode->getAttribute("function") . "(";
-        $argNodes = $this->getNodes($hook, "attr-argument");
+        $argNodes = $this->getNodes($hook, "field-argument");
         $args = [];
         /**
          * @var  \DOMElement $argNode
@@ -726,13 +729,13 @@ class ImportSmartConfiguration
         $method .= ')';
 
 
-        $returnNodes = $this->getNodes($hook, "attr-return");
+        $returnNodes = $this->getNodes($hook, "field-return");
         $returns = [];
         /**
          * @var  \DOMElement $returnNode
          */
         foreach ($returnNodes as $returnNode) {
-            $attridreturn = $returnNode->getAttribute("attr");
+            $attridreturn = $returnNode->getAttribute("field");
             if ($attridreturn) {
                 $returns[] = strtolower($attridreturn);
             }

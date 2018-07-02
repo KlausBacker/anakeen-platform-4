@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
     <smart:structure-configuration name="MSEARCH" id="31" label="Recherche groupée" extends="SEARCH">
         <smart:icon file="se-msearch.png"/>
         <smart:class>Anakeen\SmartStructures\Msearch\MSearchHooks</smart:class>
         <smart:usefor>S</smart:usefor>
-        <smart:attributes>
-            <smart:attr-fieldset name="se_crit" type="frame" label="Critère" visibility="H"/>
-            <smart:attr-fieldset name="se_fr_searches" type="frame" label="Les recherches" visibility="W">
-                <smart:attr-fieldset name="seg_t_cond" type="array" label="Ensemble de recherche" visibility="W">
-                    <smart:attr-docid name="seg_idcond" label="Recherche" visibility="W" relation="SEARCH"/>
-                </smart:attr-fieldset>
-            </smart:attr-fieldset>
-        </smart:attributes>
+        <smart:fields>
+            <smart:field-set name="se_crit" type="frame" label="Critère" visibility="H"/>
+            <smart:field-set name="se_fr_searches" type="frame" label="Les recherches" visibility="W">
+                <smart:field-set name="seg_t_cond" type="array" label="Ensemble de recherche" visibility="W">
+                    <smart:field-docid name="seg_idcond" label="Recherche" visibility="W" relation="SEARCH"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
         <smart:parameters/>
 
         <smart:autocompletion>
-            <smart:attr-autocomplete attr="seg_idcond">
-                <smart:attr-callable function="Anakeen\SmartStructures\Msearch\MSearchAutocomplete::getSmartSearches" />
-                <smart:attr-returns>
-                    <smart:attr-return attr="seg_idcond"/>
-                </smart:attr-returns>
-            </smart:attr-autocomplete>
+            <smart:field-autocomplete field="seg_idcond">
+                <smart:field-callable function="Anakeen\SmartStructures\Msearch\MSearchAutocomplete::getSmartSearches" />
+                <smart:field-returns>
+                    <smart:field-return field="seg_idcond"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
         </smart:autocompletion>
 
         <smart:defaults>
-            <smart:default attr="se_latest">yes</smart:default>
+            <smart:default field="se_latest">yes</smart:default>
         </smart:defaults>
         <smart:accesses/>
     </smart:structure-configuration>

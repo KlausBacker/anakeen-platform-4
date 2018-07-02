@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
     <smart:structure-configuration name="SENTMESSAGE" label="Message envoyé">
         <smart:icon file="sentmessage.png"/>
         <smart:class>Anakeen\SmartStructures\Sentmessage\SentMessageHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
-        <smart:attributes>
-            <smart:attr-fieldset name="emsg_fr_ident" type="frame" label="Identification" visibility="R">
-                <smart:attr-docid name="emsg_refid" label="Document référence" visibility="R" relation="x"/>
-                <smart:attr-text name="emsg_from" label="De" visibility="S"/>
-                <smart:attr-fieldset name="emsg_t_recipient" type="array" label="Destinataires" visibility="U">
-                    <smart:attr-enum name="emsg_sendtype" label="Type" visibility="S" relation="SENTMESSAGE-emsg_sendtype"/>
-                    <smart:attr-text name="emsg_recipient" label="Destinataire" visibility="S"/>
-                </smart:attr-fieldset>
-                <smart:attr-text name="emsg_subject" label="Sujet" visibility="S" is-title="true"/>
-                <smart:attr-timestamp name="emsg_date" label="Date" visibility="S"/>
-                <smart:attr-int name="emsg_size" label="Taille" visibility="R"/>
-            </smart:attr-fieldset>
-            <smart:attr-fieldset name="emsg_fr_bodies" type="frame" label="Corps de messages" visibility="R">
-                <smart:attr-longtext name="emsg_textbody" label="Texte" visibility="R"/>
-                <smart:attr-file name="emsg_htmlbody" label="Texte formaté" visibility="R"/>
-                <smart:attr-fieldset name="emsg_t_attach" type="array" label="Attachements" visibility="R">
-                    <smart:attr-file name="emsg_attach" label="Fichier" visibility="R"/>
-                </smart:attr-fieldset>
-            </smart:attr-fieldset>
-        </smart:attributes>
+        <smart:fields>
+            <smart:field-set name="emsg_fr_ident" type="frame" label="Identification" visibility="R">
+                <smart:field-docid name="emsg_refid" label="Document référence" visibility="R" relation="x"/>
+                <smart:field-text name="emsg_from" label="De" visibility="S"/>
+                <smart:field-set name="emsg_t_recipient" type="array" label="Destinataires" visibility="U">
+                    <smart:field-enum name="emsg_sendtype" label="Type" visibility="S" relation="SENTMESSAGE-emsg_sendtype"/>
+                    <smart:field-text name="emsg_recipient" label="Destinataire" visibility="S"/>
+                </smart:field-set>
+                <smart:field-text name="emsg_subject" label="Sujet" visibility="S" is-title="true"/>
+                <smart:field-timestamp name="emsg_date" label="Date" visibility="S"/>
+                <smart:field-int name="emsg_size" label="Taille" visibility="R"/>
+            </smart:field-set>
+            <smart:field-set name="emsg_fr_bodies" type="frame" label="Corps de messages" visibility="R">
+                <smart:field-longtext name="emsg_textbody" label="Texte" visibility="R"/>
+                <smart:field-file name="emsg_htmlbody" label="Texte formaté" visibility="R"/>
+                <smart:field-set name="emsg_t_attach" type="array" label="Attachements" visibility="R">
+                    <smart:field-file name="emsg_attach" label="Fichier" visibility="R"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
         <smart:parameters>
-            <smart:attr-fieldset name="emsg_fr_parameters" type="frame" label="Paramètres" visibility="W">
-                <smart:attr-enum name="emsg_editcontrol" label="Force la lecture seule" visibility="W" relation="SENTMESSAGE-emsg_editcontrol"/>
-            </smart:attr-fieldset>
+            <smart:field-set name="emsg_fr_parameters" type="frame" label="Paramètres" visibility="W">
+                <smart:field-enum name="emsg_editcontrol" label="Force la lecture seule" visibility="W" relation="SENTMESSAGE-emsg_editcontrol"/>
+            </smart:field-set>
         </smart:parameters>
         <smart:autocompletion/>
         <smart:defaults/>

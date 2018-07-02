@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
     <smart:structure-configuration name="BASE" id="1" label="de base">
         <smart:usefor>S</smart:usefor>
-        <smart:attributes>
-            <smart:attr-fieldset name="fr_basic" type="frame" label="Basique" visibility="W">
-                <smart:attr-text name="ba_title" label="Titre" visibility="O" is-title="true" needed="true"/>
-            </smart:attr-fieldset>
-        </smart:attributes>
+        <smart:fields>
+            <smart:field-set name="fr_basic" type="frame" label="Basique" visibility="W">
+                <smart:field-text name="ba_title" label="Titre" visibility="O" is-title="true" needed="true"/>
+            </smart:field-set>
+        </smart:fields>
     </smart:structure-configuration>
 </smart:config>

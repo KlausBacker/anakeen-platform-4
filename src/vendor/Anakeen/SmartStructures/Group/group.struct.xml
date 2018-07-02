@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/v1/">
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
     <smart:structure-configuration name="GROUP" id="129" label="Groupe de personnes" extends="DIR">
         <smart:icon file="se-group.png"/>
         <smart:class>Anakeen\SmartStructures\Group\GroupHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
-        <smart:attributes>
-            <smart:attr-fieldset name="fr_basic" type="frame" label="basique" visibility="H">
-                <smart:attr-text name="ba_title" label="titre" visibility="H"/>
-            </smart:attr-fieldset>
-            <smart:attr-fieldset name="fld_fr_rest" type="frame" label="Restrictions" visibility="H"/>
-            <smart:attr-fieldset name="fld_fr_prof" type="frame" label="Profils par défaut" visibility="H"/>
-            <smart:attr-fieldset name="grp_fr_ident" type="frame" label="Identification" visibility="W">
-                <smart:attr-text name="grp_name" label="nom" visibility="W" needed="true" is-title="true"/>
-                <smart:attr-text name="grp_mail" label="mail" visibility="R" link="mailto:%GRP_MAIL%" is-abstract="true"/>
-                <smart:attr-enum name="grp_hasmail" label="sans adresse mail de groupe" visibility="W" is-abstract="true" relation="GROUP-grp_hasmail"/>
-            </smart:attr-fieldset>
-            <smart:attr-fieldset name="grp_fr" type="frame" label="Groupes" visibility="W">
-                <smart:attr-account name="grp_idgroup" label="sous groupes" visibility="R" multiple="true">
-                    <smart:attr-option name="showempty">Aucun sous groupe</smart:attr-option>
-                </smart:attr-account>
-                <smart:attr-account name="grp_idpgroup" label="groupes parents" visibility="R" multiple="true">
-                    <smart:attr-option name="showempty">Aucun groupe parent</smart:attr-option>
-                </smart:attr-account>
-                <smart:attr-enum name="grp_isrefreshed" label="est rafraîchi" visibility="H" relation="GROUP-grp_isrefreshed">
-                    <smart:attr-option name="system">yes</smart:attr-option>
-                    <smart:attr-option name="bmenu">no</smart:attr-option>
-                </smart:attr-enum>
-            </smart:attr-fieldset>
-        </smart:attributes>
+        <smart:fields>
+            <smart:field-set name="fr_basic" type="frame" label="basique" visibility="H">
+                <smart:field-text name="ba_title" label="titre" visibility="H"/>
+            </smart:field-set>
+            <smart:field-set name="fld_fr_rest" type="frame" label="Restrictions" visibility="H"/>
+            <smart:field-set name="fld_fr_prof" type="frame" label="Profils par défaut" visibility="H"/>
+            <smart:field-set name="grp_fr_ident" type="frame" label="Identification" visibility="W">
+                <smart:field-text name="grp_name" label="nom" visibility="W" needed="true" is-title="true"/>
+                <smart:field-text name="grp_mail" label="mail" visibility="R" link="mailto:%GRP_MAIL%" is-abstract="true"/>
+                <smart:field-enum name="grp_hasmail" label="sans adresse mail de groupe" visibility="W" is-abstract="true" relation="GROUP-grp_hasmail"/>
+            </smart:field-set>
+            <smart:field-set name="grp_fr" type="frame" label="Groupes" visibility="W">
+                <smart:field-account name="grp_idgroup" label="sous groupes" visibility="R" multiple="true">
+                    <smart:field-option name="showempty">Aucun sous groupe</smart:field-option>
+                </smart:field-account>
+                <smart:field-account name="grp_idpgroup" label="groupes parents" visibility="R" multiple="true">
+                    <smart:field-option name="showempty">Aucun groupe parent</smart:field-option>
+                </smart:field-account>
+                <smart:field-enum name="grp_isrefreshed" label="est rafraîchi" visibility="H" relation="GROUP-grp_isrefreshed">
+                    <smart:field-option name="system">yes</smart:field-option>
+                    <smart:field-option name="bmenu">no</smart:field-option>
+                </smart:field-enum>
+            </smart:field-set>
+        </smart:fields>
 
         <smart:defaults>
-            <smart:default attr="fld_allbut">1</smart:default>
-            <smart:default attr="fld_tfam">[{"fld_famids":129,"fld_fam":"groupe"},{"fld_famids":128,"fld_fam":"utilisateur"}]</smart:default>
+            <smart:default field="fld_allbut">1</smart:default>
+            <smart:default field="fld_tfam">[{"fld_famids":129,"fld_fam":"groupe"},{"fld_famids":128,"fld_fam":"utilisateur"}]</smart:default>
         </smart:defaults>
 
     </smart:structure-configuration>
