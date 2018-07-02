@@ -32,7 +32,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
 
     public function preConsultation()
     {
-        $famId = $this->getRawValue(\SmartStructure\Attributes\Search::se_famid);
+        $famId = $this->getRawValue(\SmartStructure\Fields\Search::se_famid);
         if ($famId) {
             $doc = new_Doc($this->dbaccess, abs($famId), true);
             if (!is_object($doc) || !$doc->isAlive() || $doc->defDoctype != 'C') {

@@ -31,7 +31,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
     {
         parent::setUpBeforeClass();
         $d = SEManager::createDocument(\SmartStructure\Base::familyName);
-        $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x1-" . $d->revision);
+        $d->setAttributeValue(\SmartStructure\Fields\Base::ba_title, "x1-" . $d->revision);
         $d->store();
 
         $d->setLogicalName("TST_X1");
@@ -41,7 +41,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
         );
 
         $d = SEManager::createDocument(\SmartStructure\Base::familyName);
-        $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x2-" . $d->revision);
+        $d->setAttributeValue(\SmartStructure\Fields\Base::ba_title, "x2-" . $d->revision);
         $d->store();
         $d->setLogicalName("TST_X2");
         self::$ids[$d->name][$d->revision] = array(
@@ -50,7 +50,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
         );
         $d->revise();
 
-        $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x2-" . $d->revision);
+        $d->setAttributeValue(\SmartStructure\Fields\Base::ba_title, "x2-" . $d->revision);
         $d->store();
         self::$ids[$d->name][$d->revision] = array(
             "id" => $d->id,
@@ -58,7 +58,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
         );
 
         $d = SEManager::createDocument(\SmartStructure\Base::familyName);
-        $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x3-" . $d->revision);
+        $d->setAttributeValue(\SmartStructure\Fields\Base::ba_title, "x3-" . $d->revision);
         $d->store();
         $d->setLogicalName("TST_X3");
         self::$ids[$d->name][$d->revision] = array(
@@ -67,14 +67,14 @@ class TestNewDoc extends TestCaseDcpCommonFamily
         );
 
         $d->revise();
-        $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x3-" . $d->revision);
+        $d->setAttributeValue(\SmartStructure\Fields\Base::ba_title, "x3-" . $d->revision);
         $d->store();
         self::$ids[$d->name][$d->revision] = array(
             "id" => $d->id,
             "title" => $d->getTitle()
         );
         $d->revise();
-        $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x3-" . $d->revision);
+        $d->setAttributeValue(\SmartStructure\Fields\Base::ba_title, "x3-" . $d->revision);
         self::$ids[$d->name][$d->revision] = array(
             "id" => $d->id,
             "title" => $d->getTitle()
@@ -82,7 +82,7 @@ class TestNewDoc extends TestCaseDcpCommonFamily
         $d->store();
 
         $d = SEManager::createDocument(\SmartStructure\Base::familyName);
-        $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x4-" . $d->revision);
+        $d->setAttributeValue(\SmartStructure\Fields\Base::ba_title, "x4-" . $d->revision);
         $d->store();
         $d->setLogicalName("TST_X4");
         self::$ids[$d->name][$d->revision] = array(
@@ -90,14 +90,14 @@ class TestNewDoc extends TestCaseDcpCommonFamily
             "title" => $d->getTitle()
         );
         $d->revise();
-        $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x4-" . $d->revision);
+        $d->setAttributeValue(\SmartStructure\Fields\Base::ba_title, "x4-" . $d->revision);
         $d->store();
         self::$ids[$d->name][$d->revision] = array(
             "id" => $d->id,
             "title" => $d->getTitle()
         );
         $d->revise();
-        $d->setAttributeValue(\SmartStructure\Attributes\Base::ba_title, "x4-" . $d->revision);
+        $d->setAttributeValue(\SmartStructure\Fields\Base::ba_title, "x4-" . $d->revision);
         self::$ids[$d->name][$d->revision] = array(
             "id" => $d->id,
             "title" => $d->getTitle()
@@ -111,16 +111,16 @@ class TestNewDoc extends TestCaseDcpCommonFamily
         $dM->initid = $d->initid;
         $dM->name = $d->name;
         $dM->revision = $d->revision + 1;
-        $dM->setAttributeValue(\SmartStructure\Attributes\Dir::ba_title, "x4M-" . $dM->revision);
-        $dM->setAttributeValue(\SmartStructure\Attributes\Dir::fld_allbut, "1");
+        $dM->setAttributeValue(\SmartStructure\Fields\Dir::ba_title, "x4M-" . $dM->revision);
+        $dM->setAttributeValue(\SmartStructure\Fields\Dir::fld_allbut, "1");
         $dM->store();
         self::$ids[$dM->name][$dM->revision] = array(
             "id" => $dM->id,
             "title" => $d->getTitle()
         );
         $dM->revise();
-        $dM->setAttributeValue(\SmartStructure\Attributes\Dir::ba_title, "x4M-" . $dM->revision);
-        $dM->setAttributeValue(\SmartStructure\Attributes\Dir::fld_allbut, "2");
+        $dM->setAttributeValue(\SmartStructure\Fields\Dir::ba_title, "x4M-" . $dM->revision);
+        $dM->setAttributeValue(\SmartStructure\Fields\Dir::fld_allbut, "2");
         $dM->store();
         self::$ids[$dM->name][$dM->revision] = array(
             "id" => $dM->id,
@@ -168,12 +168,12 @@ class TestNewDoc extends TestCaseDcpCommonFamily
         $this->assertTrue($d1->isAlive(), "document $docName not last revision");
         $this->assertEquals($expectedTitle, $d1->getTitle(), "wrong title for $docName");
 
-        $d1->setAttributeValue(\SmartStructure\Attributes\Tst_nd::tst_title, $someValues[0]);
+        $d1->setAttributeValue(\SmartStructure\Fields\Tst_nd::tst_title, $someValues[0]);
 
         $d2 = SEManager::getDocument($docName);
-        $this->assertEquals($someValues[0], $d2->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
-        $d2->setAttributeValue(\SmartStructure\Attributes\Tst_nd::tst_title, $someValues[1]);
-        $this->assertEquals($someValues[1], $d2->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
+        $this->assertEquals($someValues[0], $d2->getRawValue(\SmartStructure\Fields\Tst_nd::tst_title));
+        $d2->setAttributeValue(\SmartStructure\Fields\Tst_nd::tst_title, $someValues[1]);
+        $this->assertEquals($someValues[1], $d2->getRawValue(\SmartStructure\Fields\Tst_nd::tst_title));
         $this->assertEquals("yes", $d2->getrawValue("tst_shared"));
 
 
@@ -181,27 +181,27 @@ class TestNewDoc extends TestCaseDcpCommonFamily
         $this->assertEquals("nd revision", $d2->getrawValue("tst_data"));
 
         $this->assertEquals("yes", $d2->getrawValue("tst_shared"));
-        $d2->setAttributeValue(\SmartStructure\Attributes\Tst_nd::tst_title, $someValues[2]);
+        $d2->setAttributeValue(\SmartStructure\Fields\Tst_nd::tst_title, $someValues[2]);
 
         $d3 = SEManager::getDocument($docName);
-        $this->assertEquals($someValues[2], $d3->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
+        $this->assertEquals($someValues[2], $d3->getRawValue(\SmartStructure\Fields\Tst_nd::tst_title));
 
         $d4 = SEManager::getDocument($d3->initid, true, false);
-        $this->assertEquals($someValues[1], $d4->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
+        $this->assertEquals($someValues[1], $d4->getRawValue(\SmartStructure\Fields\Tst_nd::tst_title));
         $this->assertEquals("nd revision", $d4->getrawValue("tst_data"));
 
         $d5 = SEManager::getDocument($d3->initid, false);
 
         SEManager::cache()->addDocument($d5);
-        $this->assertEquals($someValues[1], $d5->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
-        $d5->setAttributeValue(\SmartStructure\Attributes\Tst_nd::tst_title, $someValues[3]);
+        $this->assertEquals($someValues[1], $d5->getRawValue(\SmartStructure\Fields\Tst_nd::tst_title));
+        $d5->setAttributeValue(\SmartStructure\Fields\Tst_nd::tst_title, $someValues[3]);
         $d6 = SEManager::getDocument($d3->initid, false);
-        $this->assertEquals($someValues[3], $d6->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
-        $this->assertEquals($someValues[3], $d5->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
-        $this->assertEquals($someValues[1], $d4->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
-        $this->assertEquals($someValues[2], $d3->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
-        $this->assertEquals($someValues[2], $d2->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
-        $this->assertEquals($someValues[2], $d1->getRawValue(\SmartStructure\Attributes\Tst_nd::tst_title));
+        $this->assertEquals($someValues[3], $d6->getRawValue(\SmartStructure\Fields\Tst_nd::tst_title));
+        $this->assertEquals($someValues[3], $d5->getRawValue(\SmartStructure\Fields\Tst_nd::tst_title));
+        $this->assertEquals($someValues[1], $d4->getRawValue(\SmartStructure\Fields\Tst_nd::tst_title));
+        $this->assertEquals($someValues[2], $d3->getRawValue(\SmartStructure\Fields\Tst_nd::tst_title));
+        $this->assertEquals($someValues[2], $d2->getRawValue(\SmartStructure\Fields\Tst_nd::tst_title));
+        $this->assertEquals($someValues[2], $d1->getRawValue(\SmartStructure\Fields\Tst_nd::tst_title));
     }
 
     /**

@@ -12,7 +12,7 @@ namespace Anakeen\SmartStructures\Cvdoc;
 use Anakeen\Core\Internal\DocumentAccess;
 use Anakeen\Core\SEManager;
 use Anakeen\SmartHooks;
-use \SmartStructure\Attributes\Cvdoc as MyAttributes;
+use \SmartStructure\Fields\Cvdoc as MyAttributes;
 
 class CVDocHooks extends \SmartStructure\Base
 {

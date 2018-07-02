@@ -826,7 +826,7 @@ class FamilyImport
     public static function createDocFile($dbaccess, $tdoc)
     {
         $genDir = sprintf("%s/%s/SmartStructure/", DEFAULT_PUBDIR, Settings::DocumentGenDirectory);
-        $genAttrDir = sprintf("%s/Attributes", $genDir);
+        $genAttrDir = sprintf("%s/Fields", $genDir);
         $dfile = sprintf("%s/%s.php", $genDir, $tdoc["name"]);
 
         if (!is_dir($genDir)) {

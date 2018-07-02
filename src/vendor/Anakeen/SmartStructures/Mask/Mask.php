@@ -13,7 +13,7 @@ namespace Anakeen\SmartStructures\Mask;
 
 use Anakeen\Core\SEManager;
 use Anakeen\SmartHooks;
-use \SmartStructure\Attributes\Mask as myAttr;
+use \SmartStructure\Fields\Mask as myAttr;
 
 class Mask extends \SmartStructure\Base
 {
