@@ -3,7 +3,7 @@ const signale = require("signale");
 
 exports.desc = "Build the app file";
 exports.builder = {
-  sourceDir: {
+  sourcePath: {
     defaultDescription: "path of the info.xml",
     alias: "s",
     default: ".",
@@ -13,7 +13,7 @@ exports.builder = {
 
 exports.handler = async argv => {
   try {
-    const info = await getModuleInfo(argv.sourceDir);
+    const info = await getModuleInfo(argv.sourcePath);
     for (let element in info.moduleInfo) {
       signale.info(element, " : ", info.moduleInfo[element]);
     }

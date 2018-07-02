@@ -1,7 +1,9 @@
 const gulp = require("gulp");
 const asyncCallback = require("./plugins/asyncCallback");
+const endPipe = require("./plugins/end");
 const control = require("../utils/control");
 const { Signale } = require("signale");
+const signale = require("signale");
 const { buildPipe } = require("./build");
 
 const executeTransaction = async ({
@@ -30,7 +32,7 @@ const executeTransaction = async ({
     log("Operation : " + currentOperation + " OK");
     await executeTransaction({
       log,
-      transaction,
+      transaction: nextTransaction,
       controlUrl,
       controlUsername,
       controlPassword
@@ -80,7 +82,8 @@ const deployPipe = (exports.deployPipe = ({
       errorCallback(error);
     })
     .pipe(
-      asyncCallback(async file => {
+      asyncCallback(async files => {
+        const file = files[0];
         if (file.isNull()) {
           return;
         }
@@ -141,7 +144,7 @@ exports.deploy = ({
           force,
           errorCallback: reject,
           log
-        })
+        }).pipe(endPipe())
           .on("end", () => {
             interactive.success("Deploy done");
             resolve();
@@ -169,18 +172,18 @@ exports.buildAndDeploy = ({
       try {
         const interactive = new Signale({ interactive: true, scope: "deploy" });
         const log = message => {
-          interactive.await(message);
+            interactive.info(message);
         };
-        const pipe = await buildPipe({ sourcePath, autoRelease });
+        const build = await buildPipe({ sourcePath, autoRelease });
         deployPipe({
-          gulpSrc: pipe,
+          gulpSrc: build,
           controlUrl,
           controlUsername,
           controlPassword,
           force,
           errorCallback: reject,
           log
-        })
+        }).pipe(endPipe())
           .on("end", () => {
             interactive.success("Deploy done");
             resolve();
