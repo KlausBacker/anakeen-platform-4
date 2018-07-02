@@ -13,6 +13,7 @@
     "gulp-gzip": "^1.4.2",
     "gulp-replace": "^1.0.0",
     "gulp-tar": "^2.1.0",
+    "mustache": "^2.3.0",
     "node-fetch": "^2.1.2",
     "plugin-error": "^1.0.1",
     "signale": "^1.2.1",
@@ -20,5 +21,8 @@
     "through2": "^2.0.3",
     "xml2js": "^0.4.19",
     "yargs": "^11.0.0"
+  },
+  "devDependencies": {
+    "easygettext": "^2.5.0"
   }
 }
