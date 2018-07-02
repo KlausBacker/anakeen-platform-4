@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
-  <sde:routes>
-    <sde:route name="Ui:Identity:Email">
+  <sde:routes namespace="Ui:Component">
+    <sde:route name="Identity:Email">
       <sde:callable>\Anakeen\Components\Identity\Routes\Email</sde:callable>
       <sde:method>PUT</sde:method>
       <sde:pattern>/components/identity/email</sde:pattern>

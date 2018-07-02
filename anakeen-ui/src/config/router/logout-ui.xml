@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
-  <sde:routes>
-    <sde:route name="Ui:Logout:Logout">
+  <sde:routes namespace="Ui:Component">
+    <sde:route name="Logout:Logout">
       <sde:callable>\Anakeen\Components\Logout\Routes\Session</sde:callable>
       <sde:method>DELETE</sde:method>
       <sde:pattern>/components/logout/session</sde:pattern>
