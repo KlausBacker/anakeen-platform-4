@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class Report extends \Anakeen\SmartStructures\Report\ReportHooks { const familyName="REPORT";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Rapport  */
 	class Report extends Dsearch {
 		/** [tab] Présentation */

@@ -30,7 +30,7 @@ class Attributes
     
     public function __construct()
     {
-        $this->attr[self::HIDDENFIELD] = new \Anakeen\Core\SmartStructure\FieldSetAttribute(self::HIDDENFIELD, 0, "hiddens");
+        $this->attr[self::HIDDENFIELD] = new \Anakeen\Core\SmartStructure\FieldSetAttribute(self::HIDDENFIELD, 0, "hiddens", BasicAttribute::READWRITE_ACCESS);
     }
     /**
      * @param string $id attribute identifier

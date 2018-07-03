@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class Iuser extends \Anakeen\SmartStructures\Iuser\IUserHooks { const familyName="IUSER";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** utilisateur  */
 	class Iuser {
 		/** [frame] État civil */

@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class Role extends \Anakeen\SmartStructures\Role\RoleHooks { const familyName="ROLE";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Rôle  */
 	class Role {
 		/** [frame] Identification */

@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class Dsearch extends \Anakeen\SmartStructures\Dsearch\DSearchHooks { const familyName="DSEARCH";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Recherche détaillée  */
 	class Dsearch extends Search {
 		/** [frame] Conditions */

@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class Sentmessage extends \Anakeen\SmartStructures\Sentmessage\SentMessageHooks { const familyName="SENTMESSAGE";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Message envoyé  */
 	class Sentmessage {
 		/** [frame] Identification */

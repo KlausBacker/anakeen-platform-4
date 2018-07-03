@@ -384,7 +384,7 @@ class ExportConfiguration
         $attrs = $this->sst->getNormalAttributes();
         $enumNames = [];
         foreach ($attrs as $attr) {
-            if ($attr->type === "enum" && $attr->format && $attr->docid == $this->sst->id) {
+            if ($attr->type === "enum" && $attr->format && $attr->structureId == $this->sst->id) {
                 $enumNames[] = $attr->format;
             }
         }
@@ -443,7 +443,7 @@ class ExportConfiguration
         $attrs = $this->sst->getAttributes();
         $this->fieldSets = [];
         foreach ($attrs as $attr) {
-            if ($attr->docid !== $this->sst->id) {
+            if ($attr->structureId !== $this->sst->id) {
                 continue;
             }
 
@@ -560,7 +560,7 @@ class ExportConfiguration
         $attrs = $this->sst->getNormalAttributes();
         $this->fieldSets = [];
         foreach ($attrs as $attr) {
-            if ($attr->docid !== $this->sst->id) {
+            if ($attr->structureId !== $this->sst->id) {
                 continue;
             }
 
@@ -591,7 +591,7 @@ class ExportConfiguration
         $attrs = $this->sst->getNormalAttributes();
         $this->fieldSets = [];
         foreach ($attrs as $attr) {
-            if ($attr->docid !== $this->sst->id) {
+            if ($attr->structureId !== $this->sst->id) {
                 continue;
             }
 

@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class Image extends \Anakeen\SmartStructures\Image\ImageHooks { const familyName="IMAGE";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Image  */
 	class Image {
 		/** [frame] image */

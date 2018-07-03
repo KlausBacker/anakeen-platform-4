@@ -1,17 +1,9 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
-/**
- * @author Anakeen
- * @package Dcp\Pu
- */
 
 namespace Dcp\Pu;
 
-
-//require_once 'PU_testcase_dcp_commonfamily.php';
+use Anakeen\Core\SEManager;
+use Anakeen\Ui\MaskManager;
 
 class TestMask extends TestCaseDcpCommonFamily
 {
@@ -24,49 +16,59 @@ class TestMask extends TestCaseDcpCommonFamily
     {
         return "PU_data_dcp_maskfamily.ods";
     }
+
     /**
      * apply mask
      * @dataProvider dataGoodMask
      * @param $docid
      * @param $mid
      */
-    public function testsetMask($docid, $mid, array $expectedVisibilities)
+    public function testUisetMask($docid, $mid, array $expectedVisibilities)
     {
-        $doc = new_doc(self::$dbaccess, $docid, true);
-        
+        $doc = SEManager::getDocument($docid, true);
+
         if ($doc->isAlive()) {
-            $err = $doc->setMask($mid);
-            $this->assertEmpty($err, sprintf("mask apply error %s", $err));
+            $maskMgt = new MaskManager($doc);
+            $maskMgt->setUiMask($mid);
+
             foreach ($expectedVisibilities as $attrid => $expectVis) {
-                $this->assertEquals($expectVis, $doc->getAttribute($attrid)->mvisibility, sprintf("Attribute $attrid"));
+                $mvis = $maskMgt->getVisibility($attrid);
+                $this->assertEquals($expectVis, $mvis, sprintf("Attribute $attrid"));
             }
         } else {
-            $this->markTestIncomplete(sprintf(_('Document %d not alive.') , $docid));
+            $this->markTestIncomplete(sprintf(_('Document %d not alive.'), $docid));
         }
     }
+
     /**
      * apply mask (detect errors)
      * @dataProvider dataBadMask
-     * @param $docid
-     * @param $mid
+     * @param       $docid
+     * @param       $mid
      * @param array $expectedErrors
      */
-    public function testsetMaskError($docid, $mid, array $expectedErrors)
+    public function testUisetMaskError($docid, $mid, array $expectedErrors)
     {
-        
-        $doc = new_doc(self::$dbaccess, $docid, true);
-        
-        if ($doc->isAlive()) {
-            
-            $err = $doc->applyMask($mid);
+
+        $doc = SEManager::getDocument($docid, true);
+
+        if ($doc && $doc->isAlive()) {
+            $err = "";
+            $maskMgt = new MaskManager($doc);
+            try {
+                $maskMgt->setUiMask($mid);
+            } catch (\Exception $e) {
+                $err = $e->getMessage();
+            }
             $this->assertNotEmpty($err, sprintf("mask apply need error"));
             foreach ($expectedErrors as $error) {
                 $this->assertContains($error, $err, sprintf("mask apply not correct error %s", $err));
             }
         } else {
-            $this->markTestIncomplete(sprintf(_('Document %d not alive.') , $docid));
+            $this->markTestIncomplete(sprintf(_('Document %d not alive.'), $docid));
         }
     }
+
     /**
      * @param       $file
      * @param array $expectedErrors
@@ -77,28 +79,32 @@ class TestMask extends TestCaseDcpCommonFamily
         try {
             self::importDocument($file);
             $this->assertTrue(false, "Mask import errors must not be empty");
-        }
-        catch(\Dcp\Exception $e) {
+        } catch (\Dcp\Exception $e) {
             foreach ($expectedErrors as $error) {
-                $this->assertContains($error, $e->getMessage() , sprintf("mask apply not correct error %s", $e->getMessage()));
+                $this->assertContains($error, $e->getMessage(), sprintf("mask apply not correct error %s", $e->getMessage()));
             }
         }
     }
-    
+
     public function dataBadImportMask()
     {
         return array(
-            ["PU_data_dcp_badMask.ods",
-            ["MSK0001",
-            "TST_BADMASK1",
-            "MSK0002",
-            "TST_BADMASK2",
-            "MSK0003",
-            "tst_titlex",
-            "tst_numberx",
-            "tst_p2"]]
+            [
+                "PU_data_dcp_badMask.ods",
+                [
+                    "MSK0001",
+                    "TST_BADMASK1",
+                    "MSK0002",
+                    "TST_BADMASK2",
+                    "MSK0003",
+                    "tst_titlex",
+                    "tst_numberx",
+                    "tst_p2"
+                ]
+            ]
         );
     }
+
     public function dataGoodMask()
     {
         return array(
@@ -113,7 +119,7 @@ class TestMask extends TestCaseDcpCommonFamily
                     "tst_coldate" => "W",
                     "tst_text" => "W"
                 )
-            ) ,
+            ),
             array(
                 'TST_DOCBASE1',
                 'TST_GOODMASK2',
@@ -125,7 +131,7 @@ class TestMask extends TestCaseDcpCommonFamily
                     "tst_coldate" => "H",
                     "tst_text" => "W"
                 )
-            ) ,
+            ),
             array(
                 'TST_DOCBASE1',
                 'TST_GOODMASK3',
@@ -137,7 +143,7 @@ class TestMask extends TestCaseDcpCommonFamily
                     "tst_coldate" => "H",
                     "tst_text" => "H"
                 )
-            ) ,
+            ),
             array(
                 'TST_DOCBASE1',
                 'TST_GOODMASK4',
@@ -152,7 +158,7 @@ class TestMask extends TestCaseDcpCommonFamily
             )
         );
     }
-    
+
     public function dataBadMask()
     {
         return array(
@@ -163,7 +169,7 @@ class TestMask extends TestCaseDcpCommonFamily
                     'DOC1000',
                     '878'
                 )
-            ) ,
+            ),
             array(
                 'TST_DOCBASE1',
                 'TST_UNKNOW',
@@ -171,7 +177,7 @@ class TestMask extends TestCaseDcpCommonFamily
                     'DOC1004',
                     'TST_UNKNOW'
                 )
-            ) ,
+            ),
             array(
                 'TST_DOCBASE1',
                 'TST_MASK2',
@@ -180,7 +186,7 @@ class TestMask extends TestCaseDcpCommonFamily
                     'TST_MASK2',
                     'IGROUP'
                 )
-            ) ,
+            ),
             array(
                 'TST_DOCBASE1',
                 'TST_DOCBASE1',
@@ -192,4 +198,3 @@ class TestMask extends TestCaseDcpCommonFamily
         );
     }
 }
-?>

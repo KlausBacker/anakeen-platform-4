@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class Search extends \Anakeen\SmartStructures\Search\SearchHooks { const familyName="SEARCH";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Recherche  */
 	class Search extends Base {
 		/** [account] Auteur */

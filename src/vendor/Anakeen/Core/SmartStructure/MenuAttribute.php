@@ -9,7 +9,7 @@ class MenuAttribute extends BasicAttribute
     public function __construct($id, $docid, $label, $order, $link, $visibility = "", $precond = "", $options = "", $docname = "")
     {
         $this->id = $id;
-        $this->docid = $docid;
+        $this->structureId = $docid;
         $this->labelText = $label;
         $this->ordered = $order;
         $this->link = $link;

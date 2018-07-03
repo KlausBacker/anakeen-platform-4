@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class Cvdoc extends \Anakeen\SmartStructures\Cvdoc\CVDocHooks { const familyName="CVDOC";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Contrôle de vues  */
 	class Cvdoc extends Base {
 		/** [longtext] Description */

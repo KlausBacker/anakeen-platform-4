@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class Mask extends \Anakeen\SmartStructures\Mask\Mask { const familyName="MASK";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Masque de saisie  */
 	class Mask extends Base {
 		/** [frame] Famille */

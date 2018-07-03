@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class Mailtemplate extends \Anakeen\SmartStructures\Mailtemplate\MailTemplateHooks { const familyName="MAILTEMPLATE";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Modèle de mail  */
 	class Mailtemplate {
 		/** [frame] Entête */

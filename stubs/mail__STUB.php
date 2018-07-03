@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class Mail extends \Anakeen\SmartStructures\Mail\MailHooks { const familyName="MAIL";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Mail  */
 	class Mail {
 		/** [frame] Adresses */

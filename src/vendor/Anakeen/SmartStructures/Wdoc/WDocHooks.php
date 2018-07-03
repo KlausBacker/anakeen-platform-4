@@ -861,8 +861,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         if ($err != "") {
             return $err;
         }
-        /* Set edition mask from view control if a view control is applied on the document */
-        $this->doc->setMask(\Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT);
+
 
         if ($wm0 && (!empty($tr["m0"]))) {
             // apply first method (condition for the change)

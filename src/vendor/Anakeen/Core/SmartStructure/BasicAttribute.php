@@ -25,10 +25,9 @@ class BasicAttribute
     const WRITE_ACCESS = 2;
     const READWRITE_ACCESS = 3;
     public $id;
-    public $docid;
+    public $structureId;
     public $labelText;
     public $access; // Write, Read, None
-    public $mvisibility; ///mask visibility
     public $options;
     public $docname;
     public $type; // text, longtext, date, file, ...
@@ -59,7 +58,7 @@ class BasicAttribute
     public function __construct($id, $docid, $label)
     {
         $this->id = $id;
-        $this->docid = $docid;
+        $this->structureId = $docid;
         $this->labelText = $label;
     }
 

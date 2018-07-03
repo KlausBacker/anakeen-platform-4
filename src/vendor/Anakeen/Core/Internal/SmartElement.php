@@ -7157,7 +7157,7 @@ create unique index i_docir on doc(initid, revision);";
                 $opt_searchcriteria = $v->getOption("searchcriteria", "");
                 if (($v->type != "array") && ($v->type != "frame") && ($v->type != "tab")) {
                     // values += any attribute
-                    if ($v->docid == $famId) {
+                    if ($v->structureId == $famId) {
                         $tvalues[] = array(
                             "attrid" => $k
                         );

@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class File extends \Anakeen\SmartStructures\File\FileHooks { const familyName="FILE";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Fichier  */
 	class File {
 		/** [frame] Description */

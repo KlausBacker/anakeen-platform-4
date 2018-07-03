@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class Helppage extends \Anakeen\SmartStructures\Helppage\HelpPageHooks { const familyName="HELPPAGE";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Aide en ligne  */
 	class Helppage {
 		/** [frame] Aide */

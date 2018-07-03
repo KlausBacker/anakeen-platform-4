@@ -114,7 +114,7 @@ class NormalAttribute extends BasicAttribute
         $prop = ""
     ) {
         $this->id = $id;
-        $this->docid = $docid;
+        $this->structureId = $docid;
         $this->labelText = $label;
         $this->type = $type;
         $this->format = $format;

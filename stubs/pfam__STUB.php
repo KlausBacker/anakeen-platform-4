@@ -10,7 +10,7 @@ namespace SmartStructure {
 	class Pfam extends \Anakeen\SmartStructures\Profiles\PFamHooks { const familyName="PFAM";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Profil de document  */
 	class Pdoc {
 		/** [frame] Basique */
