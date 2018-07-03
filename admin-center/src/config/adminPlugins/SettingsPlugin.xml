@@ -1,0 +1,26 @@
+<admin:config xmlns:admin="http://www.anakeen.com/ns/admin/">
+    <admin:plugins>
+        <admin:plugin name="settingsManagement">
+            <admin:title>Technical Settings</admin:title>
+            <admin:icon><![CDATA[<i class="material-icons" title="Routes management">build</i>]]></admin:icon>
+            <admin:pluginPath>/technicalSettings</admin:pluginPath>
+            <admin:order position="after" pluginName="userAdmin"/>
+            <admin:sublevel>
+                <admin:plugin name="parametersManagement" autoselect="true">
+                    <admin:title>Parameters</admin:title>
+                    <admin:pluginPath>parametersManagement</admin:pluginPath>
+                    <admin:scriptURL>/AdminCenter/prod/ank-admin-parameters.js</admin:scriptURL>
+                    <admin:debugScriptURL>/AdminCenter/debug/ank-admin-parameters.js</admin:debugScriptURL>
+                    <admin:pluginTemplate><![CDATA[<ank-admin-parameters></ank-admin-parameters>]]></admin:pluginTemplate>
+                </admin:plugin>
+                <admin:plugin name="routesManagement">
+                    <admin:title>Routes</admin:title>
+                    <admin:pluginPath>routesManagement</admin:pluginPath>
+                    <admin:scriptURL>/AdminCenter/prod/ank-admin-routes.js</admin:scriptURL>
+                    <admin:debugScriptURL>/AdminCenter/debug/ank-admin-routes.js</admin:debugScriptURL>
+                    <admin:pluginTemplate><![CDATA[<ank-admin-routes></ank-admin-routes>]]></admin:pluginTemplate>
+                </admin:plugin>
+            </admin:sublevel>
+        </admin:plugin>
+    </admin:plugins>
+</admin:config>

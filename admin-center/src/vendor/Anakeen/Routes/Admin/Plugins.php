@@ -194,8 +194,13 @@ class Plugins
                 if (!empty((string)$xmlPlugin->attributes()->override)) {
                     $plugin["override"] = (string)$xmlPlugin->attributes()->override;
                 }
+                if (isset($xmlPlugin->attributes()->autoselect)) {
+                    $plugin["autoselect"] = boolval($xmlPlugin->attributes()->autoselect);
+                }
                 if (!empty($xmlPlugin->sublevel)) {
-                    $plugin['sublevel'] = self::normalizeXMLPlugins($xmlPlugin->sublevel, $plugin['pluginPath']);
+                    $subcomponents = self::normalizeXMLPlugins($xmlPlugin->sublevel, $plugin['pluginPath']);
+                    $subcomponentsList = self::mergePlugins($subcomponents);
+                    $plugin['sublevel'] = $subcomponentsList;
                 }
                 if (isset($result[$pluginComponentName])) {
                     $result[$pluginComponentName][] = $plugin;

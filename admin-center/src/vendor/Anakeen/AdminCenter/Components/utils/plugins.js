@@ -9,7 +9,8 @@ export const PLUGIN_SCHEMA = {
     debugScriptURL: 'debugScriptURL',
     subcomponents: 'sublevel',
     pluginTemplate: 'pluginTemplate',
-    icon: 'icon'
+    icon: 'icon',
+    autoselect: 'autoselect',
 };
 
 const attachPluginEvents = (element) => {
@@ -31,7 +32,9 @@ const attachPluginEvents = (element) => {
 export const buildVueRoutes = (plugins) => {
     let routes = [];
     plugins.forEach((pluginDescription) => {
-        routes.push(buildVueRouteObject(pluginDescription));
+        if (pluginDescription[PLUGIN_SCHEMA.pluginPath]) {
+            routes.push(buildVueRouteObject(pluginDescription));
+        }
         // If plugin have sublevel components
         if (pluginDescription[PLUGIN_SCHEMA.subcomponents] && pluginDescription[PLUGIN_SCHEMA.subcomponents].length) {
             routes = routes.concat(buildVueRoutes(pluginDescription[PLUGIN_SCHEMA.subcomponents]));
@@ -45,20 +48,20 @@ export const buildVueRouteObject = (pluginDescription) => ({
     component: asyncVueComponent(pluginDescription),
 });
 
-export const asyncVueComponent = (pluginDescription) => () => ({
-    component: new Promise((resolve, reject) => {
-        let scriptURL = "";
-        if (process.env.NODE_ENV === "debug" && pluginDescription[PLUGIN_SCHEMA.debugScriptURL]) {
-            scriptURL = pluginDescription[PLUGIN_SCHEMA.debugScriptURL];
-        } else {
-            scriptURL = pluginDescription[PLUGIN_SCHEMA.scriptURL];
-        }
-        if (!scriptURL) {
-            reject("Invalid component url");
-        } else {
-            // Test network access to script with axios to handle network errors
-            Vue.axios.get(scriptURL).
-                then(() => {
+export const asyncVueComponent = (pluginDescription) => () => {
+    return {
+        component: new Promise((resolve, reject) => {
+            let scriptURL = "";
+            if (process.env.NODE_ENV === "debug" && pluginDescription[PLUGIN_SCHEMA.debugScriptURL]) {
+                scriptURL = pluginDescription[PLUGIN_SCHEMA.debugScriptURL];
+            } else {
+                scriptURL = pluginDescription[PLUGIN_SCHEMA.scriptURL];
+            }
+            if (!scriptURL && (!pluginDescription[PLUGIN_SCHEMA.subcomponents] || !pluginDescription[PLUGIN_SCHEMA.subcomponents].length)) {
+                reject("Invalid component url");
+            } else if (scriptURL) {
+                // Test network access to script with axios to handle network errors
+                Vue.axios.get(scriptURL).then(() => {
                     Vue.loadScript(scriptURL)
                         .then(() => {
                             const componentTemplate = pluginDescription[PLUGIN_SCHEMA.pluginTemplate];
@@ -78,17 +81,20 @@ export const asyncVueComponent = (pluginDescription) => () => ({
                         });
                 }).catch(reject);
 
-        }
-    })
-        .catch(err => {
-            store.dispatch('showMessage', {
-                content: {
-                    title: "Erreur de chargement",
-                    message: `Impossible de charger le composant ${pluginDescription[PLUGIN_SCHEMA.title] ||
-                    pluginDescription[PLUGIN_SCHEMA.name]}`
-                },
-                type: 'admin-error'
-            });
-            throw err;
-        }),
-});
+            } else {
+                resolve({});
+            }
+        })
+            .catch(err => {
+                store.dispatch('showMessage', {
+                    content: {
+                        title: "Erreur de chargement",
+                        message: `Impossible de charger le composant ${pluginDescription[PLUGIN_SCHEMA.title] ||
+                        pluginDescription[PLUGIN_SCHEMA.name]}`
+                    },
+                    type: 'admin-error'
+                });
+                throw err;
+            }),
+    };
+};
