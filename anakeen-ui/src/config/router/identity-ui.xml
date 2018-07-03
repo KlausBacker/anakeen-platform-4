@@ -9,5 +9,13 @@
       <sde:requiredAccess/>
       <sde:authenticated>true</sde:authenticated>
     </sde:route>
+    <sde:route name="Identity:Password">
+      <sde:callable>\Anakeen\Components\Identity\Routes\Password</sde:callable>
+      <sde:method>PUT</sde:method>
+      <sde:pattern>/components/identity/password</sde:pattern>
+      <sde:description>Modify user's password</sde:description>
+      <sde:requiredAccess/>
+      <sde:authenticated>true</sde:authenticated>
+    </sde:route>
   </sde:routes>
 </sde:config>
