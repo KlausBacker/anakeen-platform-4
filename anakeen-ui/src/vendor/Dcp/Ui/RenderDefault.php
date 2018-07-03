@@ -330,9 +330,9 @@ class RenderDefault implements IRenderConfig
      *
      * @return RenderAttributeVisibilities new attribute visibilities
      */
-    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document)
+    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null)
     {
-        return new RenderAttributeVisibilities($document);
+        return new RenderAttributeVisibilities($document, $mask);
     }
 
     /**

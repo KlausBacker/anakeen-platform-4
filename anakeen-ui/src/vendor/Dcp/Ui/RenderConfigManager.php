@@ -6,6 +6,7 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
+use Anakeen\Ui\MaskManager;
 
 class RenderConfigManager
 {
@@ -46,6 +47,8 @@ class RenderConfigManager
         if (!is_a($cvDoc, \Anakeen\Core\SEManager::getFamilyClassName("Cvdoc"))) {
             throw new Exception("UI0303", $cvDoc->getTitle());
         }
+
+        SEManager::cache()->addDocument($cvDoc);
         /**
          * @var \SmartStructure\CVDoc $cvDoc
          */
@@ -70,20 +73,11 @@ class RenderConfigManager
 
     protected static function getRenderFromVidinfo(array $vidInfo, \Anakeen\Core\Internal\SmartElement $document)
     {
-
-        $mskId = $vidInfo[\SmartStructure\Fields\Cvdoc::cv_mskid];
-        if ($mskId) {
-            $err = $document->setMask($mskId);
-            if ($err) {
-                addWarningMsg($err);
-            }
-        }
-
         $renderClass = isset($vidInfo[\SmartStructure\Fields\Cvdoc::cv_renderconfigclass]) ? $vidInfo[\SmartStructure\Fields\Cvdoc::cv_renderconfigclass] : null;
         if ($renderClass) {
             $rc = new $renderClass();
-            if (!is_a($rc, "Dcp\\Ui\\IRenderConfig")) {
-                throw new Exception("UI0306", $renderClass, "Dcp\\Ui\\IRenderConfig");
+            if (!is_a($rc, IRenderConfig::class)) {
+                throw new Exception("UI0306", $renderClass, IRenderConfig::class);
             }
             return $rc;
         } else {
@@ -111,6 +105,7 @@ class RenderConfigManager
              * @var \SmartStructure\CVDoc $cvDoc
              */
             $cvDoc = SEManager::getDocument($document->cvid);
+            SEManager::cache()->addDocument($cvDoc);
             return self::getRenderConfigCv($mode, $cvDoc, $document, $vid);
         }
 

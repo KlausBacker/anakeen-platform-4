@@ -6,9 +6,9 @@ use SmartStructure\Fields\Tst_ddui_alltype as myAttributes;
 
 class AllRenderVisibilityHidden extends \Dcp\Ui\DefaultView
 {
-    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document)
+    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null)
     {
-        $visibilities = parent::getVisibilities($document);
+        $visibilities = parent::getVisibilities($document, $mask);
         $attrs = $document->getFieldAttributes();
         foreach ($attrs as $attrid => $attr) {
 

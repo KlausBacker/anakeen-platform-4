@@ -43,14 +43,13 @@ class IgroupViewRender extends DefaultConfigViewRender
         return $options;
     }
 
-    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document)
+    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null)
     {
-        $vis = parent::getVisibilities($document);
+        $vis = parent::getVisibilities($document, $mask);
         if ($document->getRawValue(myAttributes::grp_mail)) {
             $vis->setVisibility(myAttributes::grp_hasmail, RenderAttributeVisibilities::HiddenVisibility);
         }
         $vis->setVisibility(myAttributes::us_meid, RenderAttributeVisibilities::HiddenVisibility);
         return $vis;
     }
-
 }

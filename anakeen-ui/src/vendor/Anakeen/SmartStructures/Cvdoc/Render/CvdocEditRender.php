@@ -42,9 +42,9 @@ class CvdocEditRender extends DefaultConfigEditRender
      * @return \Dcp\Ui\RenderAttributeVisibilities new attribute visibilities
      * @throws \Dcp\Ui\Exception
      */
-    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document)
+    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null)
     {
-        $visibilities = parent::getVisibilities($document);
+        $visibilities = parent::getVisibilities($document, $mask);
 
         if (!$document->getRawValue(myAttributes::cv_famid)) {
             $visibilities->setVisibility(myAttributes::cv_famid, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);

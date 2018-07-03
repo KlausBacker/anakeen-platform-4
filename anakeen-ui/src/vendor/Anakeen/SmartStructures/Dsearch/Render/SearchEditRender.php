@@ -95,9 +95,9 @@ class SearchEditRender extends DefaultEdit
         return $options;
     }
 
-    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document)
+    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null)
     {
-        $visibilities = parent::getVisibilities($document);
+        $visibilities = parent::getVisibilities($document, $mask);
 
         $visibilities->setVisibility(
             myAttr::se_key,

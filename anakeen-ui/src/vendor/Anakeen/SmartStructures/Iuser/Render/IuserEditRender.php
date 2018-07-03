@@ -45,9 +45,9 @@ HTML
      * @return \Dcp\Ui\RenderAttributeVisibilities
      * @throws \Dcp\Ui\Exception
      */
-    public function getVisibilities(SmartElement $smartElement)
+    public function getVisibilities(SmartElement $smartElement, \SmartStructure\Mask $mask = null)
     {
-        $visibilities = parent::getVisibilities($smartElement);
+        $visibilities = parent::getVisibilities($smartElement, $mask);
 
         if ($smartElement->getRawValue("us_whatid") == \Anakeen\Core\Account::ANONYMOUS_ID) {
             // Anonymous has no password

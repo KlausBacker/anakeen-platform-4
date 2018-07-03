@@ -5,6 +5,7 @@ namespace Anakeen\Routes\Ui;
 use Anakeen\Router\URLUtils;
 use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\SmartElementManager;
+use Dcp\Ui\RenderOptions;
 use SmartStructure\Fields\Cvdoc as CvdocAttribute;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
@@ -173,6 +174,9 @@ class DocumentView
          * @var \SmartStructure\Cvdoc $controlView
          */
         $controlView = SEManager::getDocument($this->document->cvid);
+        if ($controlView) {
+            SEManager::cache()->addDocument($controlView);
+        }
 
         $vid = $this->viewIdentifier;
         $messages = [];
@@ -297,8 +301,8 @@ class DocumentView
     }
 
     /**
-     * @param string $viewId view identifier
-     * @param ApiMessage[]      $messages
+     * @param string       $viewId view identifier
+     * @param ApiMessage[] $messages
      * @return array
      * @throws Exception
      * @throws \Dcp\Ui\Exception
@@ -313,11 +317,12 @@ class DocumentView
             switch ($field) {
                 case self::fieldRenderOptions:
                     $configOptions = $config->getOptions($this->document);
-                    if (!is_a($configOptions, "Dcp\\Ui\\RenderOptions")) {
+                    if (!is_a($configOptions, RenderOptions::class)) {
                         throw new \Dcp\Ui\Exception("UI0013", get_class($config));
                     }
+
                     $viewInfo[self::fieldRenderOptions] = $configOptions->jsonSerialize();
-                    $viewInfo[self::fieldRenderOptions]["visibilities"] = $config->getVisibilities($this->document)->jsonSerialize();
+                    $viewInfo[self::fieldRenderOptions]["visibilities"] = $config->getVisibilities($this->document, $this->getMask($viewId))->jsonSerialize();
                     $viewInfo[self::fieldRenderOptions]["needed"] = $config->getNeeded($this->document)->jsonSerialize();
 
                     break;
@@ -362,6 +367,26 @@ class DocumentView
             $messages = $this->getMessages($config, $this->document);
         }
         return $viewInfo;
+    }
+
+    protected function getMask($viewId)
+    {
+        if (!$viewId || $viewId[0] === "!" || !$this->document->cvid) {
+            return null;
+        }
+        /**
+         * @var \SmartStructure\Cvdoc $cvDoc
+         */
+        $cvDoc = SEManager::getDocument($this->document->cvid);
+        $vInfo = $cvDoc->getView($viewId);
+
+        if (!empty($vInfo[\SmartStructure\Fields\Cvdoc::cv_mskid])) {
+            $mskId = $vInfo[\SmartStructure\Fields\Cvdoc::cv_mskid];
+            $msk =  SEManager::getDocument($mskId);
+            SEManager::cache()->addDocument($msk);
+            return $msk;
+        }
+        return null;
     }
 
     /**
@@ -411,11 +436,9 @@ class DocumentView
     }
 
 
-
     /**
      * @param \Dcp\Ui\IRenderConfig               $config
      * @param \Anakeen\Core\Internal\SmartElement $document
-     * @throws Exception
      * @return ApiMessage[]
      */
     protected function getMessages($config, $document)
@@ -423,6 +446,7 @@ class DocumentView
         $messages = $config->getMessages($document);
         return $messages;
     }
+
     /**
      * Get the current local
      *

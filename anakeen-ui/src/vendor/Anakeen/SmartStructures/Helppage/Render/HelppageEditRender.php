@@ -6,6 +6,7 @@
 
 namespace Anakeen\SmartStructures\Helppage\Render;
 
+use Dcp\Ui\RenderAttributeVisibilities;
 use SmartStructure\Fields\Helppage as myAttributes;
 class HelppageEditRender extends \Dcp\Ui\DefaultEdit
 {
@@ -71,9 +72,9 @@ HTML
      *
      * @return RenderAttributeVisibilities new attribute visibilities
      */
-    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document)
+    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null)
     {
-        $visibilities = parent::getVisibilities($document);
+        $visibilities = parent::getVisibilities($document, $mask);
         
         if (!$document->getRawValue(myAttributes::help_family)) {
             $visibilities->setVisibility(myAttributes::help_family, RenderAttributeVisibilities::ReadWriteVisibility);
