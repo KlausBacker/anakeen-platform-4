@@ -1,0 +1,13 @@
+<admin:config xmlns:admin="http://www.anakeen.com/ns/admin/">
+    <admin:plugins>
+        <admin:plugin name="routesManagement">
+            <admin:title>Routes management</admin:title>
+            <admin:icon><![CDATA[<i class="material-icons" title="Routes management">call_split</i>]]></admin:icon>
+            <admin:pluginPath>/routesManagement</admin:pluginPath>
+            <admin:scriptURL>/AdminCenter/prod/ank-admin-routes.js</admin:scriptURL>
+            <admin:debugScriptURL>/AdminCenter/debug/ank-admin-routes.js</admin:debugScriptURL>
+            <admin:pluginTemplate><![CDATA[<ank-admin-routes></ank-admin-routes>]]></admin:pluginTemplate>
+            <admin:order position="after" pluginName="parametersManagement"/>
+        </admin:plugin>
+    </admin:plugins>
+</admin:config>
