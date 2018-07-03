@@ -19,6 +19,15 @@ export default {
             if (rootPlugin) {
                 this.enableSubMenu = (rootPlugin[PLUGIN_SCHEMA.subcomponents]
                     && rootPlugin[PLUGIN_SCHEMA.subcomponents].length);
+                this.$nextTick(() => {
+                    if (this.enableSubMenu) {
+                        const autoSelectPlugin = rootPlugin[PLUGIN_SCHEMA.subcomponents]
+                            .find(sub => sub[PLUGIN_SCHEMA.autoselect]);
+                        if (autoSelectPlugin) {
+                            this.$router.replace({path: autoSelectPlugin[PLUGIN_SCHEMA.pluginPath]});
+                        }
+                    }
+                });
             }
         });
     },

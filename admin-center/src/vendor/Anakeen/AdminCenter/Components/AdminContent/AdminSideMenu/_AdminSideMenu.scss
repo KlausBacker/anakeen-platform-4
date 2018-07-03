@@ -16,11 +16,16 @@
 .admin-center-side-submenu {
   display: flex;
   flex-direction: column;
-  padding: 0.83rem 0;
+  padding: 1rem;
   background-color: #F2F2F2;
 
   .admin-center-plugin-title {
+    display: flex;
     padding: 0 0.41rem 0.83rem 0.41rem;
+
+    .admin-center-plugin-icon-wrapper {
+      margin-right: .5rem;
+    }
   }
 
   .admin-center-side-submenu-item {

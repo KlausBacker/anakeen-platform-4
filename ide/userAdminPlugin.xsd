@@ -1,6 +1,8 @@
 <?xml version="1.1" encoding="UTF-8"?>
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.anakeen.com/ns/admin/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:element name="config" type="adm:configType" xmlns:adm="http://www.anakeen.com/ns/admin/"/>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.anakeen.com/ns/admin/"
+           xmlns:adm="http://www.anakeen.com/ns/admin/"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="config" type="adm:configType" />
   <xs:complexType name="configType">
     <xs:sequence>
       <xs:element type="adm:pluginsType" maxOccurs="1" name="plugins" xmlns:adm="http://www.anakeen.com/ns/admin/"/>
@@ -34,10 +36,17 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  <xs:complexType name="sublevelPluginType" >
+    <xs:complexContent>
+      <xs:extension base="basePluginType">
+        <xs:attribute type="xs:boolean" name="autoselect"></xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType name="orderType">
-    <xs:attribute type="adm:positionRestriction" name="position" xmlns:adm="http://www.anakeen.com/ns/admin/" use="required">
+    <xs:attribute type="adm:positionRestriction" name="position" use="required">
     </xs:attribute>
-    <xs:attribute type="xs:string" name="pluginName" xmlns:adm="http://www.anakeen.com/ns/admin/">
+    <xs:attribute type="xs:string" name="pluginName">
     </xs:attribute>
   </xs:complexType>
   <xs:simpleType name="positionRestriction">
@@ -50,7 +59,7 @@
   </xs:simpleType>
   <xs:complexType name="sublevelType">
     <xs:sequence>
-      <xs:element type="adm:basePluginType" name="plugin" xmlns:adm="http://www.anakeen.com/ns/admin/"/>
+      <xs:element type="adm:sublevelPluginType" name="plugin" xmlns:adm="http://www.anakeen.com/ns/admin/"/>
     </xs:sequence>
   </xs:complexType>
   <xs:simpleType name="overrideRestriction">
