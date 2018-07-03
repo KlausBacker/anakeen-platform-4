@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
+    <smart:structure-configuration name="TST_API_ALLTYPE" label="Test tout type">
+        <smart:usefor>N</smart:usefor>
+        <smart:fields>
+            <smart:field-set name="tst_api__f_title" type="frame" label="Titre" access="ReadWrite">
+                <smart:field-text name="tst_api__title" label="Le titre" access="ReadWrite" is-title="true" is-abstract="true"/>
+            </smart:field-set>
+            <smart:field-set name="tst_api__t_tab" type="tab" label="Basiques" access="ReadWrite">
+                <smart:field-set name="tst_api__fr_rels" type="frame" label="Relations" access="ReadWrite">
+                    <smart:field-account name="tst_api__account" label="Un compte" access="ReadWrite"/>
+                    <smart:field-account name="tst_api__account_multiple" label="Des comptes" access="ReadWrite" multiple="true"/>
+                    <smart:field-docid name="tst_api__docid" label="Un document" access="ReadWrite" relation="TST_API_ALLTYPE"/>
+                    <smart:field-docid name="tst_api__docid_multiple" label="Des documents" access="ReadWrite" relation="TST_API_ALLTYPE" multiple="true"/>
+                </smart:field-set>
+                <smart:field-set name="tst_api__fr_date" type="frame" label="Le temps" access="ReadWrite">
+                    <smart:field-date name="tst_api__date" label="Une date" access="ReadWrite"/>
+                    <smart:field-time name="tst_api__time" label="Une heure" access="ReadWrite"/>
+                    <smart:field-timestamp name="tst_api__timestamp" label="Une date avec  une heure" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_api__fr_number" type="frame" label="Les nombres" access="ReadWrite">
+                    <smart:field-int name="tst_api__integer" label="Un entier" access="ReadWrite"/>
+                    <smart:field-double name="tst_api__double" label="Un décimal" access="ReadWrite"/>
+                    <smart:field-money name="tst_api__money" label="Un sous" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_api__fr_misc" type="frame" label="Divers" access="ReadWrite">
+                    <smart:field-password name="tst_api__password" label="Un mot de passe" access="ReadWrite"/>
+                    <smart:field-color name="tst_api__color" label="Une couleur" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_api__fr_file" type="frame" label="Fichiers &amp; images" access="ReadWrite">
+                    <smart:field-file name="tst_api__file" label="Un fichier" access="ReadWrite"/>
+                    <smart:field-image name="tst_api__image" label="Une image" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_api__fr_text" type="frame" label="Les textes" access="ReadWrite">
+                    <smart:field-htmltext name="tst_api__htmltext" label="Un texte formaté" access="ReadWrite"/>
+                    <smart:field-longtext name="tst_api__longtext" label="Un texte multiligne" access="ReadWrite"/>
+                    <smart:field-text name="tst_api__text" label="Un texte simple" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_api__fr_enumsimple" type="frame" label="Énumérés directs simple" access="ReadWrite">
+                    <smart:field-enum name="tst_api__enumlist" label="Un énuméré liste" access="ReadWrite" relation="TST_API_ALLTYPE-countries">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="tst_api__enumhorizontal" label="Un énuméré multi-niveau" access="ReadWrite" relation="TST_API_ALLTYPE-colors">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                </smart:field-set>
+                <smart:field-set name="tst_api__fr_enummultiple" type="frame" label="Énumérés directs multiple" access="ReadWrite">
+                    <smart:field-enum name="tst_api__enumslist" label="Des énumérés liste" access="ReadWrite" relation="TST_API_ALLTYPE-countries" multiple="true">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="tst_api__enumshorizontal" label="Des énumérés multi-niveau" access="ReadWrite" relation="TST_API_ALLTYPE-colors" multiple="true">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_api__t_tab_date" type="tab" label="Les dates" access="ReadWrite">
+                <smart:field-set name="tst_api__frame_date" type="frame" label="Date, heures &amp; date avec l'heure" access="ReadWrite">
+                    <smart:field-set name="tst_api__array_dates" type="array" label="Le temps" access="ReadWrite">
+                        <smart:field-date name="tst_api__date_array" label="Des dates" access="ReadWrite"/>
+                        <smart:field-time name="tst_api__time_array" label="Des heures" access="ReadWrite"/>
+                        <smart:field-timestamp name="tst_api__timestamp_array" label="Des dates avec l'heure" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_api__t_tab_relations" type="tab" label="Les relations" access="ReadWrite">
+                <smart:field-set name="tst_api__frame_relation" type="frame" label="Relations à entretenir" access="ReadWrite">
+                    <smart:field-set name="tst_api__array_docid" type="array" label="Les documents" access="ReadWrite">
+                        <smart:field-docid name="tst_api__docid_array" label="Des documents" access="ReadWrite" relation="TST_API_ALLTYPE"/>
+                        <smart:field-docid name="tst_api__docid_multiple_array" label="Encore plus de documents" access="ReadWrite" relation="TST_API_ALLTYPE" multiple="true"/>
+                    </smart:field-set>
+                    <smart:field-set name="tst_api__array_account" type="array" label="Les comptes" access="ReadWrite">
+                        <smart:field-account name="tst_api__account_array" label="Des comptes" access="ReadWrite"/>
+                        <smart:field-account name="tst_api__account_multiple_array" label="Encore plus de comptes" access="ReadWrite" multiple="true"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_api__t_tab_numbers" type="tab" label="Les nombres" access="ReadWrite">
+                <smart:field-set name="tst_api__frame_numbers" type="frame" label="Entier, décimaux et monnaie" access="ReadWrite">
+                    <smart:field-set name="tst_api__array_numbers" type="array" label="Quelques nombres" access="ReadWrite">
+                        <smart:field-double name="tst_api__double_array" label="Des décimaux" access="ReadWrite"/>
+                        <smart:field-int name="tst_api__integer_array" label="Des entiers" access="ReadWrite"/>
+                        <smart:field-money name="tst_api__money_array" label="Des sous" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_api__t_tab_misc" type="tab" label="Divers" access="ReadWrite">
+                <smart:field-set name="tst_api__frame_misc" type="frame" label="Énuméré, couleur et mot de passe" access="ReadWrite">
+                    <smart:field-set name="tst_api__array_misc" type="array" label="Quelques diverses données" access="ReadWrite">
+                        <smart:field-color name="tst_api__color_array" label="Des couleurs" access="ReadWrite"/>
+                        <smart:field-password name="tst_api__password_array" label="Des mots de passe" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_api__t_tab_files" type="tab" label="Les fichiers" access="ReadWrite">
+                <smart:field-set name="tst_api__frame_files" type="frame" label="Fichiers &amp; images" access="ReadWrite">
+                    <smart:field-set name="tst_api__array_files" type="array" label="Quelques fichiers" access="ReadWrite">
+                        <smart:field-file name="tst_api__file_array" label="Des fichiers" access="ReadWrite"/>
+                        <smart:field-image name="tst_api__image_array" label="Des images" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_api__t_tab_texts" type="tab" label="Les textes" access="ReadWrite">
+                <smart:field-set name="tst_api__frame_texts" type="frame" label="Les textes non formatés" access="ReadWrite">
+                    <smart:field-set name="tst_api__array_texts" type="array" label="Textes simples et multilignes" access="ReadWrite">
+                        <smart:field-text name="tst_api__text_array" label="Des textes" access="ReadWrite"/>
+                        <smart:field-longtext name="tst_api__longtext_array" label="Des textes multiligne" access="ReadWrite"/>
+                    </smart:field-set>
+                    <smart:field-set name="tst_api__array_html" type="array" label="Les textes HTML" access="ReadWrite">
+                        <smart:field-htmltext name="tst_api__htmltext_array" label="Des textes formatés" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+        <smart:parameters/>
+        <smart:hooks/>
+        <smart:autocompletion/>
+        <smart:defaults/>
+        <smart:accesses/>
+    </smart:structure-configuration>
+    <smart:enumerates>
+        <smart:enum-configuration name="TST_API_ALLTYPE-colors">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="yellow" label="Jaune"/>
+            <smart:enum name="green" label="Vert"/>
+            <smart:enum name="blue" label="Bleu">
+                <smart:enum name="lightblue" label="Bleu ciel"/>
+                <smart:enum name="navyblue" label="Bleu marine"/>
+            </smart:enum>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="TST_API_ALLTYPE-countries">
+            <smart:enum name="AD" label="Andorre"/>
+            <smart:enum name="AE" label="Emirats Arabes unis"/>
+            <smart:enum name="AF" label="Afghanistan"/>
+            <smart:enum name="AG" label="Antigua et Barbade"/>
+            <smart:enum name="AI" label="Anguilla"/>
+            <smart:enum name="AL" label="Albanie"/>
+            <smart:enum name="AM" label="Arménie"/>
+            <smart:enum name="AN" label="Antilles néerlandaises"/>
+            <smart:enum name="AO" label="Angola"/>
+            <smart:enum name="AR" label="Argentine"/>
+            <smart:enum name="AS" label="Samoa américain"/>
+            <smart:enum name="AT" label="Autriche"/>
+            <smart:enum name="AU" label="Australie"/>
+            <smart:enum name="AW" label="Aruba"/>
+            <smart:enum name="AZ" label="Azerbaïdjan"/>
+            <smart:enum name="BB" label="Barbade"/>
+            <smart:enum name="BD" label="Bangladesh"/>
+            <smart:enum name="BE" label="Belgique"/>
+            <smart:enum name="BF" label="Burkina Faso"/>
+            <smart:enum name="BG" label="Bulgarie"/>
+            <smart:enum name="BH" label="Bahrein"/>
+            <smart:enum name="BI" label="Burundi"/>
+            <smart:enum name="BJ" label="Bénin"/>
+            <smart:enum name="BM" label="Bermudes"/>
+            <smart:enum name="BN" label="Brunei Darussalam"/>
+            <smart:enum name="BO" label="Bolivie"/>
+            <smart:enum name="BR" label="Brésil"/>
+            <smart:enum name="BS" label="Bahamas"/>
+            <smart:enum name="BT" label="Bhoutan"/>
+            <smart:enum name="BV" label="Iles Bouvet"/>
+            <smart:enum name="BW" label="Botswana"/>
+            <smart:enum name="BY" label="Biélorussie"/>
+            <smart:enum name="BZ" label="Belize"/>
+            <smart:enum name="CA" label="Canada"/>
+            <smart:enum name="CC" label="Iles Cocos"/>
+            <smart:enum name="CF" label="Centre-Afrique"/>
+            <smart:enum name="CG" label="Congo"/>
+            <smart:enum name="CH" label="Suisse"/>
+            <smart:enum name="CI" label="Côte d'Ivoire"/>
+            <smart:enum name="CK" label="Iles Cook"/>
+            <smart:enum name="CL" label="Chili"/>
+            <smart:enum name="CM" label="Cameroun"/>
+            <smart:enum name="CN" label="Chine"/>
+            <smart:enum name="CO" label="Colombie"/>
+            <smart:enum name="CR" label="Costa Rica"/>
+            <smart:enum name="CU" label="Cuba"/>
+            <smart:enum name="CV" label="Cap Vert"/>
+            <smart:enum name="CX" label="Ile Christmas"/>
+            <smart:enum name="CY" label="Chypre"/>
+            <smart:enum name="CZ" label="Tchéquie"/>
+            <smart:enum name="DE" label="Allemagne"/>
+            <smart:enum name="DJ" label="Djibouti"/>
+            <smart:enum name="DK" label="Danemark"/>
+            <smart:enum name="DM" label="Dominique"/>
+            <smart:enum name="DO" label="République dominicaine"/>
+            <smart:enum name="DZ" label="Algérie"/>
+            <smart:enum name="EC" label="Equateur"/>
+            <smart:enum name="EE" label="Estonie"/>
+            <smart:enum name="EG" label="Egypte"/>
+            <smart:enum name="EH" label="Sahara occidental"/>
+            <smart:enum name="ER" label="Erythrée"/>
+            <smart:enum name="ES" label="Espagne"/>
+            <smart:enum name="ET" label="Ethiopie"/>
+            <smart:enum name="EU" label="Union Européenne"/>
+            <smart:enum name="FI" label="Finlande"/>
+            <smart:enum name="FJ" label="Fidji"/>
+            <smart:enum name="FK" label="Falkland"/>
+            <smart:enum name="FM" label="Micronésie"/>
+            <smart:enum name="FO" label="Féroé"/>
+            <smart:enum name="FR" label="France"/>
+            <smart:enum name="GA" label="Gabon"/>
+            <smart:enum name="GD" label="Grenade"/>
+            <smart:enum name="GE" label="Géorgie"/>
+            <smart:enum name="GF" label="Guyane française"/>
+            <smart:enum name="GH" label="Ghana"/>
+            <smart:enum name="GI" label="Gibraltar"/>
+            <smart:enum name="GL" label="Groenland"/>
+            <smart:enum name="GM" label="Gambie"/>
+            <smart:enum name="GN" label="Guinée"/>
+            <smart:enum name="GP" label="Guadeloupe"/>
+            <smart:enum name="GR" label="Grèce"/>
+            <smart:enum name="GT" label="Guatemala"/>
+            <smart:enum name="GU" label="Guam (USA)"/>
+            <smart:enum name="GW" label="Guinée Bissau"/>
+            <smart:enum name="GY" label="Guyane"/>
+            <smart:enum name="HK" label="Hong Kong"/>
+            <smart:enum name="HM" label="Iles Heard et Mac Donald"/>
+            <smart:enum name="HN" label="Honduras"/>
+            <smart:enum name="HR" label="Croatie"/>
+            <smart:enum name="HT" label="Haïti"/>
+            <smart:enum name="HU" label="Hongrie"/>
+            <smart:enum name="ID" label="Indonésie"/>
+            <smart:enum name="IE" label="Irlande"/>
+            <smart:enum name="IL" label="Israël"/>
+            <smart:enum name="IN" label="Inde"/>
+            <smart:enum name="IO" label="Territoires britanniques de l'océan indien"/>
+            <smart:enum name="IQ" label="Irak"/>
+            <smart:enum name="IR" label="Iran"/>
+            <smart:enum name="IS" label="Islande"/>
+            <smart:enum name="IT" label="Italie"/>
+            <smart:enum name="JM" label="Jamaïque"/>
+            <smart:enum name="JO" label="Jordanie"/>
+            <smart:enum name="JP" label="Japon"/>
+            <smart:enum name="KE" label="Kenya"/>
+            <smart:enum name="KG" label="Kirghizistan"/>
+            <smart:enum name="KH" label="Cambodge"/>
+            <smart:enum name="KI" label="Kiribati"/>
+            <smart:enum name="KM" label="Comores"/>
+            <smart:enum name="KN" label="Saint Kitts et Nevis"/>
+            <smart:enum name="KP" label="Corée du Nord"/>
+            <smart:enum name="KR" label="Corée du Sud"/>
+            <smart:enum name="KW" label="Koweït"/>
+            <smart:enum name="KY" label="Cayman"/>
+            <smart:enum name="KZ" label="Kazakhstan"/>
+            <smart:enum name="LA" label="Laos"/>
+            <smart:enum name="LB" label="Liban"/>
+            <smart:enum name="LC" label="Sainte Lucie"/>
+            <smart:enum name="LI" label="Liechtenstein"/>
+            <smart:enum name="LK" label="Sri Lanka"/>
+            <smart:enum name="LR" label="Libéria"/>
+            <smart:enum name="LS" label="Lesotho"/>
+            <smart:enum name="LT" label="Lituanie"/>
+            <smart:enum name="LU" label="Luxembourg"/>
+            <smart:enum name="LV" label="Lettonie"/>
+            <smart:enum name="LY" label="Libye"/>
+            <smart:enum name="MA" label="Maroc"/>
+            <smart:enum name="MC" label="Monaco"/>
+            <smart:enum name="MD" label="Moldavie"/>
+            <smart:enum name="MG" label="Madagascar"/>
+            <smart:enum name="MK" label="République de Macédoine"/>
+            <smart:enum name="MM" label="Birmanie"/>
+            <smart:enum name="MN" label="Mongolie"/>
+            <smart:enum name="MO" label="Macao"/>
+            <smart:enum name="MQ" label="Martinique"/>
+            <smart:enum name="MR" label="Mauritanie"/>
+            <smart:enum name="MS" label="Montserrat"/>
+            <smart:enum name="MT" label="Malte"/>
+            <smart:enum name="MU" label="Ile Maurice"/>
+            <smart:enum name="MV" label="Maldives"/>
+            <smart:enum name="MW" label="Malawi"/>
+            <smart:enum name="MX" label="Mexice"/>
+            <smart:enum name="MY" label="Malaisie"/>
+            <smart:enum name="MZ" label="Mozambique"/>
+            <smart:enum name="NA" label="Namibie"/>
+            <smart:enum name="NC" label="Nouvelle Calédonie"/>
+            <smart:enum name="NE" label="Niger"/>
+            <smart:enum name="NF" label="Norfolk"/>
+            <smart:enum name="NG" label="Nigéria"/>
+            <smart:enum name="NI" label="Nicaragua"/>
+            <smart:enum name="NL" label="Pays-Bas"/>
+            <smart:enum name="NO" label="Norvège"/>
+            <smart:enum name="NP" label="Népal"/>
+            <smart:enum name="NR" label="Nauru"/>
+            <smart:enum name="NU" label="Niue"/>
+            <smart:enum name="NZ" label="Nouvelle Zélande"/>
+            <smart:enum name="OM" label="Oman"/>
+            <smart:enum name="PA" label="Panama"/>
+            <smart:enum name="PE" label="Pérou"/>
+            <smart:enum name="PF" label="Polynésie française"/>
+            <smart:enum name="PG" label="Papouasie Nouvelle Guinée"/>
+            <smart:enum name="PH" label="Philippines"/>
+            <smart:enum name="PK" label="Pakistan"/>
+            <smart:enum name="PL" label="Plogne"/>
+            <smart:enum name="PM" label="Saint Pierre et Miquelon"/>
+            <smart:enum name="PN" label="Pitcairn"/>
+            <smart:enum name="PR" label="Porto-Rico"/>
+            <smart:enum name="PT" label="Portugal"/>
+            <smart:enum name="PW" label="Palau"/>
+            <smart:enum name="PY" label="Paraguay"/>
+            <smart:enum name="QA" label="Qatar"/>
+            <smart:enum name="RE" label="Réunion"/>
+            <smart:enum name="RO" label="Roumanie"/>
+            <smart:enum name="RU" label="Russie"/>
+            <smart:enum name="RW" label="Rwanda"/>
+            <smart:enum name="SA" label="Arabie Saoudite"/>
+            <smart:enum name="SB" label="Iles Salomon"/>
+            <smart:enum name="SC" label="Seychelles"/>
+            <smart:enum name="SD" label="Soudan"/>
+            <smart:enum name="SE" label="Suède"/>
+            <smart:enum name="SG" label="Singapour"/>
+            <smart:enum name="SH" label="Sainte Hélène"/>
+            <smart:enum name="SI" label="Slovénie"/>
+            <smart:enum name="SJ" label="Iles Svalbaard et Jan Mayen"/>
+            <smart:enum name="SK" label="République Slovaque"/>
+            <smart:enum name="SL" label="Sierra Leone"/>
+            <smart:enum name="SM" label="San Marin"/>
+            <smart:enum name="SN" label="Sénégal"/>
+            <smart:enum name="SO" label="Somalie"/>
+            <smart:enum name="SR" label="Surinam"/>
+            <smart:enum name="ST" label="Saint Tomé et Principe"/>
+            <smart:enum name="SV" label="El Salvador"/>
+            <smart:enum name="SY" label="Syrie"/>
+            <smart:enum name="SZ" label="Swaziland"/>
+            <smart:enum name="TC" label="Iles Turques et Caïques"/>
+            <smart:enum name="TD" label="Tchad"/>
+            <smart:enum name="TF" label="Territoire austral français"/>
+            <smart:enum name="TG" label="Togo"/>
+            <smart:enum name="TH" label="Thaïlande"/>
+            <smart:enum name="TJ" label="Tadjikistan"/>
+            <smart:enum name="TK" label="Tokelau"/>
+            <smart:enum name="TM" label="Turkménistan"/>
+            <smart:enum name="TN" label="Tunisie"/>
+            <smart:enum name="TO" label="Tonga"/>
+            <smart:enum name="TP" label="Timor oriental"/>
+            <smart:enum name="TR" label="Turquie"/>
+            <smart:enum name="TT" label="Trinité et Tobago"/>
+            <smart:enum name="TV" label="Tuvalu"/>
+            <smart:enum name="TW" label="Taïwan"/>
+            <smart:enum name="TZ" label="Tanzanie"/>
+            <smart:enum name="UA" label="Ukraine"/>
+            <smart:enum name="UK" label="Grande-Bretagne"/>
+            <smart:enum name="UM" label="diverses îles des Etats-Unis"/>
+            <smart:enum name="US" label="Etats-Unis"/>
+            <smart:enum name="UY" label="Uruguay"/>
+            <smart:enum name="UZ" label="Ouzbékistan"/>
+            <smart:enum name="VA" label="Vatican"/>
+            <smart:enum name="VC" label="Saint Vincent et Grenadines"/>
+            <smart:enum name="VE" label="Vénézuela"/>
+            <smart:enum name="VG" label="Iles Vierges britanniques"/>
+            <smart:enum name="VI" label="Iles Vierges des Etats-Unis"/>
+            <smart:enum name="VN" label="Vietnam"/>
+            <smart:enum name="VU" label="Vanuatu"/>
+            <smart:enum name="WF" label="Wallis et Futuna"/>
+            <smart:enum name="WS" label="Samoa occidental"/>
+            <smart:enum name="YE" label="Yemen"/>
+            <smart:enum name="YT" label="Mayotte"/>
+            <smart:enum name="YU" label="ex-Yougoslavie"/>
+            <smart:enum name="ZA" label="Afrique du Sud"/>
+            <smart:enum name="ZM" label="Zambie"/>
+            <smart:enum name="ZR" label="Zaïre (République Démocratique du Congo)"/>
+            <smart:enum name="ZW" label="Zimbabwe"/>
+        </smart:enum-configuration>
+
+    </smart:enumerates>
+</smart:config>

@@ -79,7 +79,6 @@ class ImportSingleDocument
     }
 
 
-
     public function setTargetDirectory($dirid)
     {
         if ($dirid == '-') {
@@ -266,8 +265,8 @@ class ImportSingleDocument
         }
 
         if (count($this->orders) == 0) {
-            $lattr = $this->doc->GetImportAttributes();
-            $this->orders = array_keys($lattr);
+            $this->setError("DOC0011", $this->doc->fromname);
+            return $this;
         } else {
             $lattr = $this->doc->GetNormalAttributes();
         }
@@ -588,7 +587,7 @@ class ImportSingleDocument
                 } // not really an error add addfile must be tested after
                 if ($err == "") {
                     $this->doc->addHistoryEntry(sprintf(_("updated by import")));
-                    $msg .=  $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::POSTIMPORT, $extra);
+                    $msg .= $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::POSTIMPORT, $extra);
                 } else {
                     $this->setError("DOC0112", $this->doc->name, $err);
                 }

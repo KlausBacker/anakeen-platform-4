@@ -558,6 +558,10 @@ class ImportSmartConfiguration
          * @TODO to delete no need use flat notation
          */
         $optRaw = [];
+        if ($attrNode->getAttribute("multiple")) {
+            $optRaw[] = sprintf("multiple=%s", ($attrNode->getAttribute("multiple") === "true")?"yes":"no");
+        }
+
         foreach ($attrNode->childNodes as $optNode) {
             /**
              * @var \DOMElement $optNode

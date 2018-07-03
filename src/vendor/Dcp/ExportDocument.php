@@ -4,6 +4,7 @@ namespace Dcp;
 
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
+use Anakeen\Core\SmartStructure\FieldAccessManager;
 
 class ExportDocument
 {
@@ -309,7 +310,7 @@ class ExportDocument
         }
         // write values
         foreach ($this->lattr as $attr) {
-            if ($this->verifyAttributeAccess && !\Dcp\VerifyAttributeAccess::isAttributeAccessGranted($doc, $attr)) {
+            if ($this->verifyAttributeAccess && !FieldAccessManager::hasReadAccess($doc, $attr)) {
                 $data[] = $this->noAccessText;
                 continue;
             }

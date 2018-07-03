@@ -56,6 +56,11 @@ class ErrorCodeDOC
      * the document cannot be imported because family is not completed
      */
     const DOC0010 = 'family error detected "%s" for the document "%s" : %s';
+
+    /**
+     * @errorCode  the document cannot be imported because no order specified
+     */
+    const DOC0011 = 'family "%s" error detected  ORDER is needed';
     /**
      * @errorCode
      * error in setvalue when import document

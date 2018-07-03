@@ -8,7 +8,6 @@
             "structure": {
                 "tst_f2_f_title": {
                     "id": "tst_f2_f_title",
-                    "visibility": "W",
                     "label": "Titre",
                     "type": "frame",
                     "logicalOrder": 0,
@@ -19,7 +18,6 @@
                     "content": {
                         "tst_f2_title": {
                             "id": "tst_f2_title",
-                            "visibility": "W",
                             "label": "Le titre",
                             "type": "text",
                             "logicalOrder": 1,
@@ -31,7 +29,6 @@
                         },
                         "tst_f2_subtitle": {
                             "id": "tst_f2_subtitle",
-                            "visibility": "W",
                             "label": "Sous-titre",
                             "type": "text",
                             "logicalOrder": 2,
@@ -45,7 +42,6 @@
                 },
                 "tst_f2_fr_date": {
                     "id": "tst_f2_fr_date",
-                    "visibility": "W",
                     "label": "Le temps",
                     "type": "frame",
                     "logicalOrder": 3,
@@ -56,7 +52,6 @@
                     "content": {
                         "tst_f2_date": {
                             "id": "tst_f2_date",
-                            "visibility": "W",
                             "label": "Une date",
                             "type": "date",
                             "logicalOrder": 4,
@@ -68,7 +63,6 @@
                         },
                         "tst_f2_time": {
                             "id": "tst_f2_time",
-                            "visibility": "W",
                             "label": "Une heure",
                             "type": "time",
                             "logicalOrder": 5,
@@ -80,7 +74,6 @@
                         },
                         "tst_f2_timestamp": {
                             "id": "tst_f2_timestamp",
-                            "visibility": "W",
                             "label": "Une date avec  une heure",
                             "type": "timestamp",
                             "logicalOrder": 6,
@@ -94,7 +87,6 @@
                 },
                 "tst_f2_fr_number": {
                     "id": "tst_f2_fr_number",
-                    "visibility": "W",
                     "label": "Les nombres",
                     "type": "frame",
                     "logicalOrder": 7,
@@ -105,7 +97,6 @@
                     "content": {
                         "tst_f2_integer": {
                             "id": "tst_f2_integer",
-                            "visibility": "W",
                             "label": "Un entier",
                             "type": "int",
                             "logicalOrder": 8,
@@ -117,7 +108,6 @@
                         },
                         "tst_f2_double": {
                             "id": "tst_f2_double",
-                            "visibility": "W",
                             "label": "Un d\u00e9cimal",
                             "type": "double",
                             "logicalOrder": 9,
@@ -129,7 +119,6 @@
                         },
                         "tst_f2_money": {
                             "id": "tst_f2_money",
-                            "visibility": "W",
                             "label": "Un sous",
                             "type": "money",
                             "logicalOrder": 10,

@@ -18,6 +18,7 @@ namespace Dcp;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
+use Anakeen\Core\SmartStructure\FieldAccessManager;
 use Anakeen\Core\SmartStructure\BasicAttribute;
 use Anakeen\Core\SmartStructure\DocAttr;
 use Anakeen\Core\Utils\MiscDoc;
@@ -288,7 +289,7 @@ class FamilyImport
                             "label" => str_replace("\"", "\\\"", $v->labeltext),
                             "order" => intval($v->ordered),
                             "link" => str_replace("\"", "\\\"", $v->link),
-                            "access" => BasicAttribute::getRawAccess($v->accessibility),
+                            "access" => FieldAccessManager::getRawAccess($v->accessibility),
                             "options" => str_replace("\"", "\\\"", $v->options),
                             "precond" => self::doubleslash($v->phpfunc)
                         );
@@ -298,7 +299,7 @@ class FamilyImport
                     case "frame": // frame
                         $tfield[strtolower($v->id)] = array(
                             "attrid" => strtolower($v->id),
-                            "access" => BasicAttribute::getRawAccess($v->accessibility),
+                            "access" => FieldAccessManager::getRawAccess($v->accessibility),
                             "label" => str_replace("\"", "\\\"", $v->labeltext),
                             "usefor" => $v->usefor,
                             "type" => $v->type,
@@ -391,7 +392,7 @@ class FamilyImport
                             //(str_replace("\"", "\\\"", $v->options) ,
                             "order" => intval($v->ordered),
                             "link" => str_replace("\"", "\\\"", $v->link),
-                            "access" => BasicAttribute::getRawAccess($v->accessibility),
+                            "access" => FieldAccessManager::getRawAccess($v->accessibility),
                             "needed" => ($v->needed == "Y") ? "true" : "false",
                             "title" => ($v->title == "Y") ? "true" : "false",
                             "repeat" => $repeat,

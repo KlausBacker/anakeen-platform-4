@@ -49,7 +49,7 @@ class ExportConfiguration
         $structConfig = $this->cel("structure-configuration");
         $structConfig->setAttribute("name", $this->sst->name);
         if ($this->sst->id < 1000) {
-             $structConfig->setAttribute("id", $this->sst->id);
+            $structConfig->setAttribute("id", $this->sst->id);
         }
 
         $this->domConfig->appendChild($structConfig);
@@ -155,8 +155,8 @@ class ExportConfiguration
         $elementAccesses = [];
         $accessResults = [];
         // Add special acls - Always defined in each profil
-        $profil->acls[]="modifyacl";
-        $profil->acls[]="viewacl";
+        $profil->acls[] = "modifyacl";
+        $profil->acls[] = "viewacl";
 
         foreach ($profil->acls as $acl) {
             if (isset(DocumentAccess::$dacls[$acl])) {
@@ -298,8 +298,8 @@ class ExportConfiguration
                 throw new Exception("Attr $attrid");
             }
 
-            if ($docattr->visibility) {
-                $smartOver->setAttribute("visibility", $docattr->visibility);
+            if ($docattr->accessibility) {
+                $smartOver->setAttribute("access", $docattr->accessibility);
             }
 
             if ($docattr->needed) {
@@ -482,7 +482,7 @@ class ExportConfiguration
                     $smartAttr->setAttribute("label", $attr->labelText);
                 }
                 if (!empty($attr->access)) {
-                    $smartAttr->setAttribute("visibility", $attr->access);
+                    $smartAttr->setAttribute("access", FieldAccessManager::getTextAccess($attr->access));
                 }
                 if (!empty($attr->link)) {
                     $smartAttr->setAttribute("link", $attr->link);
@@ -507,7 +507,7 @@ class ExportConfiguration
                             $smartAttr->setAttribute("relation", $attr->format);
                         }
                     }
-                    if (in_array($type, ["int","double","money","date", "time", "timestamp"])) {
+                    if (in_array($type, ["int", "double", "money", "date", "time", "timestamp"])) {
                         if ($attr->format) {
                             $smartAttr->setAttribute("format", $attr->format);
                         }
@@ -570,7 +570,10 @@ class ExportConfiguration
 
 
             if ($attr->isNormal && $attr->phpconstraint) {
-                $smartHooks->appendChild($this->getConstraint($attr));
+                // No export computed constraint
+                if (!preg_match('/Anakeen\\\\Core\\\\Utils\\\\Numbers\\:\\:is/', $attr->phpconstraint)) {
+                    $smartHooks->appendChild($this->getConstraint($attr));
+                }
             }
 
 

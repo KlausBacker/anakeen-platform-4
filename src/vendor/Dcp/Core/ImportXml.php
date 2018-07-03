@@ -320,7 +320,6 @@ class ImportXml
         $o->analyzeOnly($analyze);
         $o->setPolicy($policy);
         $o->setFilePath($splitdir);
-        $o->setVerifyAttributeAccess($this->verifyAttributeAccess);
         if ($folders) {
             $folders = str_replace(',', ' ', $folders);
             $tfolders = explode(' ', $folders);

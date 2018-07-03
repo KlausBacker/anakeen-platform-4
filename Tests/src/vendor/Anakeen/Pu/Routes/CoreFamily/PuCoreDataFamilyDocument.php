@@ -19,9 +19,9 @@ class PuCoreDataFamilyDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
      */
     protected static function getCommonImportFile()
     {
+        self::importConfigurationFile(__DIR__ . "/Inputs/tst_f02_1.struct.xml");
+        self::importConfigurationFile(__DIR__ . "/Inputs/tst_f02_2.struct.xml");
         $import = array();
-        $import[] = __DIR__ . "/Inputs/tst_f02_1.struct.csv";
-        $import[] = __DIR__ . "/Inputs/tst_f02_2.struct.csv";
         $import[] = __DIR__ . "/Inputs/docsF2.xml";
         return $import;
     }

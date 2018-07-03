@@ -7,6 +7,7 @@
 namespace Anakeen\Core\Internal;
 
 use \Anakeen\Core\SEManager;
+use Anakeen\Core\SmartStructure\FieldAccessManager;
 
 /**
  * Format document list to be easily used in
@@ -491,7 +492,6 @@ class FormatCollection
         $r = array();
         $kdoc = 0;
         $countDoc = count($this->dl);
-        \Dcp\VerifyAttributeAccess::clearCache();
         foreach ($this->dl as $docid => $doc) {
             if ($kdoc % 10 == 0) {
                 $this->callHookStatus(sprintf(_("Doc Render %d/%d"), $kdoc, $countDoc));
@@ -510,7 +510,7 @@ class FormatCollection
 
                     $value = $doc->getRawValue($oa->id);
                     if ($value === '') {
-                        if ($this->verifyAttributeAccess === true && !\Dcp\VerifyAttributeAccess::isAttributeAccessGranted($doc, $oa)) {
+                        if ($this->verifyAttributeAccess === true && !FieldAccessManager::hasReadAccess($doc, $oa)) {
                             $attributeInfo = new Format\noAccessAttributeValue($this->noAccessText);
                         } else {
                             if ($this->useShowEmptyOption && $empty = $oa->getOption("showempty")) {
@@ -945,7 +945,7 @@ class FormatCollection
     {
         $info = null;
 
-        if ($this->verifyAttributeAccess === true && !\Dcp\VerifyAttributeAccess::isAttributeAccessGranted($doc, $oa)) {
+        if ($this->verifyAttributeAccess === true && !FieldAccessManager::hasReadAccess($doc, $oa)) {
             $info = new Format\noAccessAttributeValue($this->noAccessText);
         } else {
             switch ($oa->type) {

@@ -274,7 +274,6 @@ class SEManager
         $doc->usefor = $family->usefor; // inherit from its familly
         $doc->atags = $family->atags;
 
-        $doc->applyMask();
         return $doc;
     }
 
@@ -313,7 +312,6 @@ class SEManager
         if ($useDefaultValues) {
             $doc->setDefaultValues($family->getDefValues());
         }
-        $doc->applyMask();
 
         $doc->disableAccessControl(true);
         return $doc;
@@ -341,7 +339,6 @@ class SEManager
             $family = self::getDocument($doc->fromid, false);
             $doc->setDefaultValues($family->getDefValues());
         }
-        $doc->applyMask();
         return $doc;
     }
 

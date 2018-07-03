@@ -62,21 +62,6 @@ class BasicAttribute
         $this->labelText = $label;
     }
 
-    public static function getRawAccess(string $accessibility)
-    {
-        switch ($accessibility) {
-            case "Read":
-                return self::READ_ACCESS;
-            case "Write":
-                return self::WRITE_ACCESS;
-            case "ReadWrite":
-                return self::READWRITE_ACCESS;
-            case "None":
-                return self::NONE_ACCESS;
-        }
-        throw new Exception("ATTR0803", $accessibility);
-    }
-
     /**
      * Return attribute label
      *

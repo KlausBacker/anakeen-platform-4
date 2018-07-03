@@ -18,13 +18,15 @@ class PuCoreDataDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
      */
     protected static function getCommonImportFile()
     {
+        self::importConfigurationFile(__DIR__ . "/Inputs/tst_f01.struct.xml");
         $import = array();
-        $import[] = __DIR__ . "/Inputs/tst_f01.struct.csv";
         $import[] = __DIR__ . "/Inputs/doc1.xml";
         $import[] = __DIR__ . "/Inputs/doc2.xml";
         $import[] = __DIR__ . "/Inputs/docs.xml";
         return $import;
     }
+
+
 
     public static function setUpBeforeClass()
     {

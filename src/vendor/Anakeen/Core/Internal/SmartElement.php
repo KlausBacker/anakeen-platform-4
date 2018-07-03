@@ -1042,7 +1042,9 @@ create unique index i_docir on doc(initid, revision);";
         } // provides from waiting document or searchDOc with setReturns
 
         $err = $this->controlAccess("edit");
-
+        if ($err) {
+            return $err;
+        }
         if ($this->locked == -1) {
             $this->lmodify = 'N';
         }
@@ -2403,7 +2405,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return \Anakeen\Core\SmartStructure\BasicAttribute[]
      */
-    final public function &getAttributes($useMask = true)
+    final public function &getAttributes()
     {
         $fromname = ($this->doctype == 'C') ? $this->name : $this->fromname;
         $aFromName = isset($this->attributes->fromname) ? $this->attributes->fromname : '';
@@ -2417,10 +2419,7 @@ create unique index i_docir on doc(initid, revision);";
                 $this->attributes = new $adocClassName();
             }
         }
-        if ($useMask && !$this->_maskApplied) {
-            $this->ApplyMask();
-            reset($this->attributes->attr);
-        }
+
         return $this->attributes->attr;
     }
 
@@ -2460,198 +2459,8 @@ create unique index i_docir on doc(initid, revision);";
         return 0;
     }
 
-    /**
-     * set visibility mask
-     *
-     * @param int $mid mask ident
-     *
-     * @return string error message
-     */
-    final public function setMask($mid)
-    {
-        $this->mid = $mid;
-        if (isset($this->attributes->attr)) {
-            // reinit mask before apply
-            foreach ($this->attributes->attr as $k => $v) {
-                if ($this->attributes->attr[$k] !== null) {
-                    $this->attributes->attr[$k]->mvisibility = $v->access;
-                }
-            }
-        }
-        return $this->ApplyMask($mid);
-    }
 
-    /**
-     * apply visibility mask
-     *
-     * @param int  $mid   mask ident, if not set it is found from possible workflow
-     * @param bool $force set to true to force reapply mask even it is already applied
-     *
-     * @return string error message
-     */
-    final public function applyMask($mid = 0, $force = false)
-    {
-        // copy default visibilities
-        $err = '';
-        $this->_maskApplied = true;
-        $oas = $this->getAttributes();
-        if (is_array($oas)) {
-            foreach ($oas as $k => $v) {
-                if ($oas[$k]) {
-                    $oas[$k]->mvisibility = \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
-                        $v->access,
-                        (empty($v->fieldSet)) ? '' : $v->fieldSet->mvisibility,
-                        (!empty($v->fieldSet->fieldSet)) ? $v->fieldSet->fieldSet->mvisibility : ''
-                    );
-                }
-            }
-        }
-        $argMid = $mid;
-        if ((!$force) && (($this->doctype == 'C') || (($this->doctype == 'T') && ($mid == 0)))) {
-            return '';
-        }
-        // modify visibilities if needed
-        if ((!is_numeric($mid)) && ($mid != "")) {
-            $imid = SEManager::getIdFromName($mid);
-            if (!$imid) {
-                $err = \ErrorCode::getError('DOC1004', $argMid, $this->getTitle());
-                return $err;
-            } else {
-                $mid = $imid;
-            }
-        }
 
-        if ($mid == 0) {
-            $mid = $this->mid;
-        }
-        if ($mid == \Anakeen\Core\Internal\SmartElement::USEMASKCVVIEW || $mid == \Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT) {
-            if ($this->cvid) {
-                /**
-                 * @var \SmartStructure\CVDoc $cvdoc
-                 */
-                $cvdoc = SEManager::getDocument($this->cvid);
-                if ($cvdoc && $cvdoc->isAlive()) {
-                    $cvdoc = clone $cvdoc;
-                    $cvdoc->Set($this);
-                    $vid = $this->getDefaultView(($mid == \Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT), "id");
-                    if ($vid != '') {
-                        $tview = $cvdoc->getView($vid);
-                        $mid = ($tview !== false) ? $tview["CV_MSKID"] : 0;
-                    }
-                }
-            }
-            if ($mid == \Anakeen\Core\Internal\SmartElement::USEMASKCVVIEW || $mid == \Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT) {
-                $mid = 0;
-            }
-        }
-        if ($mid == 0) {
-            if (($this->wid > 0) && ($this->wid != $this->id)) {
-                // search mask from workflow
-
-                /**
-                 * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
-                 */
-                $wdoc = SEManager::getDocument($this->wid);
-                if ($wdoc && $wdoc->isAlive()) {
-                    if ($this->id == 0) {
-                        $wdoc->set($this);
-                    }
-                    $mid = $wdoc->getStateMask($this->state);
-                    if ((!is_numeric($mid)) && ($mid != "")) {
-                        $mid = SEManager::getIdFromName($mid);
-                    }
-                }
-            }
-        }
-
-        if ($mid) {
-            if (!$argMid) {
-                $argMid = $mid;
-            }
-            /**
-             * @var \SmartStructure\MASK $mdoc
-             */
-            $mdoc = SEManager::getDocument($mid);
-            if ($mdoc && $mdoc->isAlive()) {
-                if (is_a($mdoc, '\SmartStructure\Mask')) {
-                    $maskFam = $mdoc->getRawValue("msk_famid");
-                    if (!in_array($maskFam, $this->getFromDoc())) {
-                        $err = \ErrorCode::getError(
-                            'DOC1002',
-                            $argMid,
-                            $this->getTitle(),
-                            SEManager::getNameFromId($maskFam)
-                        );
-                    } else {
-                        $tvis = $mdoc->getVisibilities();
-                        foreach ($tvis as $k => $v) {
-                            if (isset($oas[$k])) {
-                                if ($v != "-") {
-                                    $oas[$k]->mvisibility = $v;
-                                }
-                            }
-                        }
-                        $tdiff = array_diff(array_keys($oas), array_keys($tvis));
-                        // compute frame before because has no order
-                        foreach ($tdiff as $k) {
-                            $v = $oas[$k];
-                            if ($v->type == "frame") {
-                                $oas[$k]->mvisibility = \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
-                                    $v->access,
-                                    isset($v->fieldSet) ? $v->fieldSet->mvisibility : '',
-                                    ''
-                                );
-                            }
-                        }
-                        foreach ($tdiff as $k) {
-                            $v = $oas[$k];
-                            if ($v->type == "array") {
-                                $oas[$k]->mvisibility = \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
-                                    $v->access,
-                                    isset($v->fieldSet) ? $v->fieldSet->mvisibility : '',
-                                    isset($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : ''
-                                );
-                            }
-                        }
-                        // recompute loosed attributes
-                        foreach ($tdiff as $k) {
-                            $v = $oas[$k];
-                            if ($v->type != "frame") {
-                                $oas[$k]->mvisibility = \Anakeen\Core\Utils\MiscDoc::ComputeVisibility(
-                                    $v->access,
-                                    isset($v->fieldSet) ? $v->fieldSet->mvisibility : '',
-                                    isset($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : ''
-                                );
-                            }
-                        }
-                        // modify needed attribute also
-                        $tneed = $mdoc->getNeedeeds();
-                        foreach ($tneed as $k => $v) {
-                            if (isset($oas[$k])) {
-                                if ($v == "Y") {
-                                    $oas[$k]->needed = true;
-                                } elseif ($v == "N") {
-                                    $oas[$k]->needed = false;
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    $err = \ErrorCode::getError('DOC1001', $argMid, $mdoc->fromname, $this->getTitle());
-                }
-            } else {
-                $err = \ErrorCode::getError('DOC1000', $argMid, $this->getTitle());
-            }
-        }
-        if (!empty($this->attributes->attr)) {
-            $this->attributes->orderAttributes();
-        }
-
-        if ($err) {
-            error_log($err);
-        }
-        return $err;
-    }
 
     /**
      * return all the attributes except frame & menu & action
@@ -2662,9 +2471,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getNormalAttributes($onlyopt = false)
     {
-        if (!$this->_maskApplied) {
-            $this->ApplyMask();
-        }
         if ((isset($this->attributes)) && (method_exists($this->attributes, "GetNormalAttributes"))) {
             return $this->attributes->GetNormalAttributes($onlyopt);
         } else {
@@ -2679,9 +2485,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getFieldAttributes()
     {
-        if (!$this->_maskApplied) {
-            $this->ApplyMask();
-        }
         $tsa = array();
 
         foreach ($this->attributes->attr as $k => $v) {
@@ -2701,9 +2504,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getAbstractAttributes()
     {
-        if (!$this->_maskApplied) {
-            $this->ApplyMask();
-        }
         $tsa = array();
 
         if (isset($this->attributes->attr)) {
@@ -2727,9 +2527,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getTitleAttributes()
     {
-        if (!$this->_maskApplied) {
-            $this->ApplyMask();
-        }
         $tsa = array();
         if (isset($this->attributes->attr)) {
             foreach ($this->attributes->attr as $k => $v) {
@@ -2751,9 +2548,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getProfilAttributes()
     {
-        if (!$this->_maskApplied) {
-            $this->ApplyMask();
-        }
         $tsa = array();
         $tsb = array();
         $wopt = false;
@@ -2789,9 +2583,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getParamAttributes()
     {
-        if (!$this->_maskApplied) {
-            $this->ApplyMask();
-        }
         if ((isset($this->attributes)) && (method_exists($this->attributes, "getParamAttributes"))) {
             return $this->attributes->getParamAttributes();
         } else {
@@ -2809,9 +2600,6 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getFileAttributes($onlyfile = false)
     {
-        if (!$this->_maskApplied) {
-            $this->ApplyMask();
-        }
         $tsa = array();
 
         foreach ($this->attributes->attr as $k => $v) {
@@ -3025,29 +2813,7 @@ create unique index i_docir on doc(initid, revision);";
         return $value;
     }
 
-    /**
-     * Return all the attributes object for popup menu
-     * the attribute can be defined in fathers
-     *
-     * @param bool $viewhidden set to true if need all defined menu (hidden also)
-     *
-     * @return \Anakeen\Core\SmartStructure\MenuAttribute[]
-     */
-    public function getMenuAttributes($viewhidden = false)
-    {
-        if (!$this->_maskApplied) {
-            $this->ApplyMask();
-        }
-        $tsa = array();
 
-        reset($this->attributes->attr);
-        foreach ($this->attributes->attr as $k => $v) {
-            if (((get_class($v) == \Anakeen\Core\SmartStructure\MenuAttribute::class)) && (($v->mvisibility != 'H') || $viewhidden)) {
-                $tsa[$v->id] = $v;
-            }
-        }
-        return $tsa;
-    }
 
     /**
      * return all the necessary attributes
@@ -3070,9 +2836,6 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         } else {
-            if (!$this->_maskApplied) {
-                $this->ApplyMask();
-            }
             foreach ($this->attributes->attr as $k => $v) {
                 /**
                  * @var \Anakeen\Core\SmartStructure\NormalAttribute $v
@@ -3138,14 +2901,8 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getExportAttributes($withfile = false, $forcedefault = false)
     {
-        if ($this->doctype == 'C') {
-            $famid = $this->id;
-        } else {
-            $famid = $this->fromid;
-        }
-        if (!$this->_maskApplied) {
-            $this->ApplyMask();
-        }
+
+
         $tsa = array();
         if (isset($this->attributes->attr)) {
             $pref = "";
@@ -3171,45 +2928,6 @@ create unique index i_docir on doc(initid, revision);";
         return $tsa;
     }
 
-    /**
-     * return all the attributes object for import
-     *
-     * @return \Anakeen\Core\SmartStructure\NormalAttribute[]
-     */
-    final public function getImportAttributes()
-    {
-        if (!$this->_maskApplied) {
-            $this->ApplyMask();
-        }
-        $tsa = array();
-        if (!empty($this->attributes->attr)) {
-            $this->attributes->orderAttributes();
-        }
-        $tattr = $this->attributes->attr;
-        foreach ($tattr as $k => $v) {
-            /**
-             * @var \Anakeen\Core\SmartStructure\NormalAttribute $v
-             */
-
-            if ($v->isNormal
-                && (($v->mvisibility == "W") || ($v->mvisibility == "O")
-                    || ($v->type == "docid"))
-                && ($v->type != "array")) {
-                if (preg_match("/\(([^\)]+)\):(.+)/", $v->phpfunc, $reg)) {
-                    $aout = explode(",", $reg[2]);
-                    foreach ($aout as $ka => $va) {
-                        $ra = $this->GetAttribute($va);
-                        if ($ra) {
-                            $tsa[strtolower($va)] = $ra;
-                        }
-                    }
-                }
-                $tsa[$v->id] = $v;
-            }
-        }
-
-        return $tsa;
-    }
 
     /**
      * return all the attributes which can be sorted
@@ -3807,11 +3525,7 @@ create unique index i_docir on doc(initid, revision);";
                     return sprintf(_("attribute %s unknow in family \"%s\""), $attrid, $this->fromname);
                 }
             }
-            if ($oattr->mvisibility == "I") {
-                if ($this->_setValueCompleteArray === false) {
-                    return sprintf(_("no permission to modify this attribute %s"), $attrid);
-                }
-            }
+
             if ($value === DELVALUE) {
                 if ($oattr->type != "password") {
                     $value = " ";
@@ -6328,36 +6042,7 @@ create unique index i_docir on doc(initid, revision);";
         );
     }
 
-    /**
-     * compute new \visibility with depended attributes
-     *
-     * @return array of visibilities computed with dependance between attributes
-     */
-    public function getRefreshVisibility()
-    {
-        $tv = array();
-        foreach ($this->attributes->attr as $k => $v) {
-            $tv[$v->id] = $v->mvisibility;
-        }
-        foreach ($this->paramRefresh as $k => $v) {
-            $val = true;
-            foreach ($v["in"] as $va) {
-                $val = $this->getRawValue($va);
-                if (!$val) {
-                    break;
-                }
-            }
-            if ($val) {
-                foreach ($v["out"] as $oa) {
-                    if (($tv[$oa] == "W") || ($tv[$oa] == "O")) {
-                        $tv[$oa] = "S";
-                    }
-                }
-            }
-        }
 
-        return $tv;
-    }
 
     /**
      * Special Refresh
@@ -6417,9 +6102,7 @@ create unique index i_docir on doc(initid, revision);";
         if (!$oAttr) {
             throw new \Dcp\Exception(\ErrorCode::getError('ATTR1212', $callMethod, $this->fromname));
         }
-        if ($oAttr->mvisibility == 'I') {
-            \Anakeen\LogManager::warning(\ErrorCode::getError('ATTR1800', $oAttr->id, $callMethod));
-        } else {
+
             if ($oAttr->inArray()) {
                 $this->completeArrayRow($oAttr->fieldSet->id);
                 $t = $this->getMultipleRawValues($attrId);
@@ -6429,7 +6112,7 @@ create unique index i_docir on doc(initid, revision);";
             } else {
                 $err .= $this->setValue($attrId, $this->applyMethod($callMethod));
             }
-        }
+
         return $err;
     }
 

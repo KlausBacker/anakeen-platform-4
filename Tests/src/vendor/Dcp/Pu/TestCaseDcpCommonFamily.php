@@ -64,18 +64,22 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
         $cf = static::getConfigFile();
         if ($cf) {
             if (!is_array($cf)) {
-                $cf = array(
-                    $cf
-                );
+                $cf = array($cf);
             }
             foreach ($cf as $f) {
-                try {
-                    self::importConfiguration($f);
-                } catch (\Dcp\Exception $e) {
-                    self::rollbackTransaction();
-                    throw new \Dcp\Exception(sprintf("Exception while importing file '%s': %s", $f, $e->getMessage()));
-                }
+                self::importConfigurationFile($f);
+
             }
+        }
+    }
+
+    public static function importConfigurationFile($f)
+    {
+        try {
+            self::importConfiguration($f);
+        } catch (\Dcp\Exception $e) {
+            self::rollbackTransaction();
+            throw new \Dcp\Exception(sprintf("Exception while importing file '%s': %s", $f, $e->getMessage()));
         }
     }
 

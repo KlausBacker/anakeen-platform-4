@@ -7,6 +7,7 @@
 namespace Dcp;
 
 use Anakeen\Core\SEManager;
+use Anakeen\Core\SmartStructure\FieldAccessManager;
 
 class ExportXmlDocument
 {
@@ -189,7 +190,7 @@ class ExportXmlDocument
     protected function getAttributeXmlValue(\Anakeen\Core\SmartStructure\NormalAttribute $attribute, $indexValue)
     {
         $doc = $this->document;
-        if ($this->verifyAttributeAccess && !VerifyAttributeAccess::isAttributeAccessGranted($this->document, $attribute)) {
+        if ($this->verifyAttributeAccess && !FieldAccessManager::hasReadAccess($this->document, $attribute)) {
             return sprintf("<%s granted=\"false\"/>", $attribute->id);
         }
 
