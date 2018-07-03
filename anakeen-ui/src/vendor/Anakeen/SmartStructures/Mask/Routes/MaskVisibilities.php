@@ -29,15 +29,9 @@ class MaskVisibilities
     {
 
         $this->initParameters($request, $args);
-
         $data = $this->doRequest($messages);
 
-
-        //print json_encode($data["visibilities"], 0);exit;
-        $out = sprintf("%s(%s)", $this->callback, json_encode($data["visibilities"]));
         return $response->withJson($data["visibilities"]);
-        //   return $response->write($out);
-        //  return ApiV2Response::withData($response, $data, $messages);
     }
 
 
@@ -89,7 +83,8 @@ class MaskVisibilities
         $tmpdoc->attributes->orderAttributes();
         $hasMenu = false;
 
-        $mskMgt=new MaskManager($this->family);
+        $mskMgt=new MaskManager($tmpdoc);
+        $mskMgt->setUiMask($this->_document->id);
         foreach ($tmpdoc->attributes->attr as $k => $attr) {
             /**
              * @var $attr \Anakeen\Core\SmartStructure\NormalAttribute

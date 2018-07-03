@@ -288,4 +288,11 @@ class MaskManager
         }
         return null;
     }
+
+    public function getVisibilities() {
+        if (count($this->mVisibilities) === 0) {
+        $this->applyMask();
+    }
+        return $this->mVisibilities;
+    }
 }

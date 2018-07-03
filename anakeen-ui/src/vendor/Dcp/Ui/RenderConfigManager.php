@@ -6,7 +6,6 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
-use Anakeen\Ui\MaskManager;
 
 class RenderConfigManager
 {
@@ -16,9 +15,9 @@ class RenderConfigManager
     const CreateMode = "create";
 
     /**
-     * @param        $mode
-     * @param \Anakeen\Core\Internal\SmartElement   $document
-     * @param string $vId
+     * @param                                     $mode
+     * @param \Anakeen\Core\Internal\SmartElement $document
+     * @param string                              $vId
      * @throws Exception
      * @return IRenderConfig
      */
@@ -91,9 +90,9 @@ class RenderConfigManager
     }
 
     /**
-     * @param string $mode (view, edit, create)
-     * @param \Anakeen\Core\Internal\SmartElement   $document
-     * @param string $vid  view identifier
+     * @param string                              $mode (view, edit, create)
+     * @param \Anakeen\Core\Internal\SmartElement $document
+     * @param string                              $vid  view identifier
      *
      * @return IRenderConfig
      * @throws Exception
@@ -181,7 +180,7 @@ class RenderConfigManager
     {
         static $renderParameters = null;
         if ($renderParameters === null) {
-            $renderParameters = ContextManager::getParameterValue("Ui",  "RENDER_PARAMETERS");
+            $renderParameters = ContextManager::getParameterValue("Ui", "RENDER_PARAMETERS");
             $renderParameters = json_decode($renderParameters, true);
         }
         if (isset($renderParameters["families"][$familyName][$key])) {
@@ -192,7 +191,7 @@ class RenderConfigManager
 
     /**
      * Get render designed by document class
-     * @param      $mode
+     * @param                                     $mode
      * @param \Anakeen\Core\Internal\SmartElement $document
      * @throws Exception
      * @return IRenderConfig
@@ -247,10 +246,10 @@ class RenderConfigManager
     }
 
     /**
-     * @param string                $mode view/edit/create
-     * @param \SmartStructure\CVDoc $cv
-     * @param \Anakeen\Core\Internal\SmartElement                  $document
-     * @param string                $vid  view identifier
+     * @param string                              $mode view/edit/create
+     * @param \SmartStructure\CVDoc               $cv
+     * @param \Anakeen\Core\Internal\SmartElement $document
+     * @param string                              $vid  view identifier
      *
      * @return IRenderConfig
      * @throws Exception
@@ -280,23 +279,6 @@ class RenderConfigManager
             $rc = self::getRenderFromVidinfo($vidInfo, $document);
             if ($rc) {
                 return $rc;
-            }
-        } else {
-            switch ($mode) {
-                case self::ViewMode:
-                    $document->applyMask(\Anakeen\Core\Internal\SmartElement::USEMASKCVVIEW);
-                    break;
-
-                case self::EditMode:
-                    $document->applyMask(\Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT);
-                    break;
-
-                case self::CreateMode:
-                    $document->applyMask(\Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT);
-                    break;
-
-                default:
-                    throw new Exception("UI0300", $mode);
             }
         }
         return self::getDefaultFamilyRenderConfig($mode, $document);
