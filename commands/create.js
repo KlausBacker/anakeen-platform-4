@@ -1,3 +1,4 @@
+const gulp = require('gulp');
 const { create } = require("../tasks/create");
 const signale = require("signale");
 const fs = require("fs");
@@ -95,7 +96,8 @@ exports.handler = function(argv) {
   }
   try {
     signale.time("create");
-    const task = create(argv).tasks.create.fn;
+    create(argv);
+    const task = gulp.task("create");
     task()
       .then(() => {
         signale.timeEnd("create");

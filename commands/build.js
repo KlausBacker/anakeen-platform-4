@@ -1,3 +1,4 @@
+const gulp = require('gulp');
 const {build} = require("../tasks/build");
 const signale = require("signale");
 
@@ -30,7 +31,8 @@ exports.builder = {
 exports.handler = function (argv) {
     try {
         signale.time("build");
-        const task = build(argv).tasks.build.fn;
+        build(argv);
+        const task = gulp.task('build');
         task().then(() => {
             signale.timeEnd("build");
             signale.success("build done");

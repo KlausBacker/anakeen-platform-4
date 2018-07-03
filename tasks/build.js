@@ -39,9 +39,7 @@ const buildPipe = (exports.buildPipe = async ({
     );
   }
   let gulpElements = streamqueue({ objectMode: true }, mainFiles, infoXML);
-  console.log(path.join(sourcePath, appConst.license));
   if (fs.existsSync(path.join(sourcePath, appConst.license))) {
-    console.log("With license");
     gulpElements = streamqueue(
       { objectMode: true },
       gulpElements,

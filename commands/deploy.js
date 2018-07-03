@@ -1,3 +1,4 @@
+const gulp = require('gulp');
 const { deploy, buildAndDeploy } = require("../tasks/deploy");
 const signale = require("signale");
 const { controlArguments } = require("../utils/control");
@@ -52,10 +53,12 @@ exports.handler = function(argv) {
     let task;
     if (argv.sourcePath) {
       signale.info("source mode");
-      task = buildAndDeploy(argv).tasks.buildAndDeploy.fn;
+      buildAndDeploy(argv);
+      task = gulp.task("buildAndDeploy");
     } else {
       signale.info("app deploy mode " + argv.appPath);
-      task = deploy(argv).tasks.deploy.fn;
+      deploy(argv);
+      task = gulp.task("deploy");
     }
     task()
       .then(() => {
