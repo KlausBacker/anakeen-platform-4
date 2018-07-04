@@ -13,6 +13,7 @@
     "gulp-gzip": "^1.4.2",
     "gulp-replace": "^1.0.0",
     "gulp-tar": "^2.1.0",
+    "inquirer": "^6.0.0",
     "mustache": "^2.3.0",
     "node-fetch": "^2.1.2",
     "signale": "^1.2.1",

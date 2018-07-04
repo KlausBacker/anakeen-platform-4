@@ -44,6 +44,24 @@ exports.builder = controlArguments({
     default: false,
     type: "boolean",
     implies: "sourcePath"
+  },
+  parameterValues: {
+    defaultDescription: "value for parameters in install deploy (path to a js file)",
+    type: "string",
+    coerce: (arg) => {
+      if (!arg) {
+        return false;
+      }
+      if (!fs.statSync(arg).isFile()) {
+        throw new Error("Unable to find the file "+ arg);
+      }
+      const parameter = fs.readFileSync(arg, {encoding: "utf-8"});
+      try {
+        return JSON.parse(parameter);
+      } catch (e) {
+        throw new Error("Unable to parse the parameters values");
+      }
+    }
   }
 });
 
