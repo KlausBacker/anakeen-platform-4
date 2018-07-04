@@ -1,7 +1,7 @@
 const { getModuleInfo } = require("../utils/moduleInfo");
 const signale = require("signale");
 
-exports.desc = "Build the app file";
+exports.desc = "Analyze the module content";
 exports.builder = {
   sourcePath: {
     defaultDescription: "path of the info.xml",
