@@ -23,7 +23,7 @@ $content = json_encode($data, JSON_PRETTY_PRINT);
 if (file_put_contents($build_json, $content) === false) {
 	die(sprintf("Error: error writing content to '%s'!\n", $build_json));
 }
-EOF²
+EOF
 }
 
 main "$@"
