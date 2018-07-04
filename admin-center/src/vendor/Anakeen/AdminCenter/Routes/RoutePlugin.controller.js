@@ -44,6 +44,53 @@ export default {
         this.$('.activation-switch').kendoMobileSwitch();
       },
     })
+    .on('click', '.expand-btn', () => this.expand(true))
+    .on('click', '.collapse-btn', () => this.expand(false))
+    },
+    addClassToRow(treeList) {
+      let items = treeList.items();
+      setTimeout(() => {
+        items.each(function addTypeClass() {
+          let dataItem = treeList.dataItem(this);
+          if (dataItem.rowLevel) {
+            $(this).addClass('tree-level-' + dataItem.rowLevel);
+          }
+        });
+      }, 0);
+    },
+    expand(expansion) {
+      let treeList = this.$('.routes-tree').data('kendoTreeList');
+      let $rows = this.$('tr.k-treelist-group', treeList.tbody);
+      this.$.each($rows, (idx, row) => {
+        expansion?treeList.expand(row):treeList.collapse(row);
+      });
+      this.saveTreeState();
+      this.addClassToRow(treeList);
+    },
+    saveTreeState() {
+      setTimeout(() => {
+        let treeState = [];
+        let treeList = this.$('.routes-tree').data('kendoTreeList');
+        let items = treeList.items();
+        items.each((index, item) => {
+          if ($(item).attr('aria-expanded') === 'true')
+            treeState.push(index);
+        });
+        window.localStorage.setItem('admin.routes.treeState', treeState);
+      }, 0);
+    },
+    restoreTreeState() {
+      let treeState = window.localStorage.getItem('admin.routes.treeState');
+      if (treeState) {
+        let treeList = this.$('.routes-tree').data('kendoTreeList');
+        let $rows = this.$('tr', treeList.tbody);
+        this.$.each($rows, (idx , row) => {
+          treeState.includes(idx)?treeList.expand(row):treeList.collapse(row);
+        });
+        this.addClassToRow(treeList);
+      }
+    },
+  },
 
   mounted() {
     this.initTreeList();
