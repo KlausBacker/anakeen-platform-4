@@ -27,6 +27,38 @@ class AllRoutes
 
             return $formatedRoute;
     }
+
+    private function formatTreeDataSource($routes) {
+        $route = $routes;
+//        sort($route);
+        $currentId = 1;
+        $tree = [];
+        $nameSpaceTab = [];
+        $nameTab = [];
+
+        foreach($route as $item){
+            $item['id'] = $currentId++;
+            $currentNameSpace = $nameSpaceTab[$item['nameSpace']];
+            if($currentNameSpace === null) {
+                $newId = $currentId++;
+                array_push($tree, ['id' => $newId, 'parentId' => null, 'name' => $item['nameSpace'], 'rowLevel' => 1]);
+                $nameSpaceTab[$item['nameSpace']] = $newId;
+                $currentNameSpace = $newId;
+            }
+            if($item['name']) {
+                $currentName = $nameTab[$item['nameSpace']][$item['name']];
+                if($currentName === null){
+                    $newId = $currentId++;
+                    array_push($tree,['id' => $newId, 'parentId' => $currentNameSpace, 'name' => $item['name'],'description' => $item['description'], 'priority' => $item['priority'], 'method' => $item['method'], 'pattern' => $item['pattern'], 'overrided' => $item['override'], 'rowLevel' => 2]);
+                    $nameTab[$item['nameSpace']][$item['name']] = $newId;
+                }
+            } else {
+                $item['parentId'] = $currentNameSpace;
+                $tree[] = $item;
+            }
+        }
+        return $tree;
+    }
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response)
     {
         $allRoutes = new \Anakeen\Router\RoutesConfig();
