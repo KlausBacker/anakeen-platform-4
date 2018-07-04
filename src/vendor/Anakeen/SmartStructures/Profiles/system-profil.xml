@@ -125,10 +125,10 @@
         <smart:element-access access="viewacl" login="gadmin"/>
         <smart:element-access access="modifyacl" login="gadmin"/>
         <smart:element-access access="edit" login="gadmin"/>
-        <smart:element-access access="view" attr="se_author"/>
-        <smart:element-access access="edit" attr="se_author"/>
-        <smart:element-access access="delete" attr="se_author"/>
-        <smart:element-access access="execute" attr="se_author"/>
+        <smart:element-access access="view" field="se_author"/>
+        <smart:element-access access="edit" field="se_author"/>
+        <smart:element-access access="delete" field="se_author"/>
+        <smart:element-access access="execute" field="se_author"/>
     </smart:access-configuration>
     <smart:access-configuration name="PRF_PROFILE" label="Profil profil" profil-type="PFAM">
         <smart:element-access access="view" login="all"/>
@@ -162,7 +162,6 @@
         <smart:element-access access="icreate" login="gadmin"/>
         <smart:element-access access="edit" login="gadmin"/>
     </smart:access-configuration>
-    <smart:access-configuration name="MSK_IUSER_MYACCOUNT" link="PRF_ADMIN_EDIT"/>
     <smart:access-configuration name="MSK_IUSER_ADMIN" link="PRF_ADMIN_EDIT"/>
     <smart:access-configuration name="MSK_IUSERSUBSTITUTE" link="PRF_ADMIN_EDIT"/>
     <smart:access-configuration name="mskfld" link="PRF_ADMIN_EDIT"/>
