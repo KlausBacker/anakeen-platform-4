@@ -1,18 +1,26 @@
 <template>
     <div id="user-parameters" class="user-parameters">
         <div id="user-search" class="user-search">
-            <div>To change a specific user parameter, please select a user :</div>
-            <form>
+            <form class="user-search-form">
                 <div class="form-group">
-                    <label for="user-search-input">Search a user</label>
-                    <input id="user-search-input" class="form-control" placeholder="Search...">
+                    <label class="user-search-input-label" for="user-search-input">To change a specific user parameter, please select a user :</label>
+                    <div class="input-group mb-3">
+                        <input id="user-search-input" class="form-control" placeholder="Search user by login, first name, or last name...">
+                        <div class="input-group-append reset-button">
+                            <i class="input-group-addon material-icons reset-search-btn" @click="clearSearchInput">close</i>
+                        </div>
+                        <div class="input-group-append">
+                            <button id="user-search-btn" class="btn btn-primary" @click.stop="searchUser">Search</button>
+                        </div>
+                    </div>
                 </div>
-                <button id="user-search-btn" class="btn btn-primary" @click="searchUser">Search</button>
             </form>
             <div id="users-tree" class="users-tree"></div>
         </div>
-        <div id="user-parameters-tree" class="user-parameters-tree"></div>
-        <admin-center-parameters-editor :edited-item="editedItem"></admin-center-parameters-editor>
+        <div id="parameters-div" class="parameters-div">
+            <div id="user-parameters-tree" class="user-parameters-tree"></div>
+            <admin-center-parameters-editor :edited-item="editedItem" :editRoute="editRoute" @closeEditor="updateAtEditorClose"></admin-center-parameters-editor>
+        </div>
     </div>
 </template>
 

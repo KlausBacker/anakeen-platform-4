@@ -1,7 +1,8 @@
 <template>
     <div id="parameter-plugin" class="parameter-plugin">
-        <admin-center-global-parameters :data-source="allParametersDataSource"></admin-center-global-parameters>
-        <admin-center-user-parameters></admin-center-user-parameters>
+        <button @click="switchParameters">Switch</button>
+        <admin-center-global-parameters v-if="globalParameters"></admin-center-global-parameters>
+        <admin-center-user-parameters v-else></admin-center-user-parameters>
     </div>
 </template>
 

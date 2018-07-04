@@ -9,6 +9,11 @@ export default {
             type: Object,
             default: {},
         },
+
+        editRoute: {
+            type: String,
+            default: '',
+        },
     },
 
     data() {
@@ -69,7 +74,7 @@ export default {
                 newValue = this.$('#parameter-new-value').val();
             }
 
-            Vue.ankApi.put('admin/parameters/' + this.editedItem.domainName + '/' + this.editedItem.name + '/',
+            Vue.ankApi.put(this.editRoute,
                 {
                     value: newValue,
                 })
@@ -119,6 +124,16 @@ export default {
                 rawEnum = rawEnum.slice(5);
                 rawEnum = rawEnum.slice(0, -1);
                 return rawEnum.split('|');
+            }
+        },
+
+        inputSelectedValue() {
+            if (this.editedItem.value) {
+                return this.editedItem.value;
+            } else if (this.editedItem.initialValue) {
+                return this.editedItem.initialValue;
+            } else {
+                return '';
             }
         },
     },

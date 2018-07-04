@@ -7,6 +7,14 @@ export default {
     components: { adminCenterGlobalParameters, adminCenterUserParameters },
 
     data() {
-        //
+        return {
+            globalParameters: true,
+        };
+    },
+
+    methods: {
+        switchParameters() {
+            this.globalParameters = !this.globalParameters;
+        },
     },
 };

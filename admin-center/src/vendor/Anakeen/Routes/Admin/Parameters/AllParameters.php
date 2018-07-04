@@ -7,6 +7,10 @@ use Dcp\Db\Exception;
 
 class AllParameters
 {
+    /**
+     * @param $parameter
+     * @return array|null
+     */
     private function formatParameter($parameter)
     {
         if ($parameter['usefor'] === 'A' || $parameter['usefor'] === 'G') {
@@ -41,6 +45,10 @@ class AllParameters
         }
     }
 
+    /**
+     * @param $parameters
+     * @return array
+     */
     private function formatTreeDataSource($parameters)
     {
         // Sort parameters : 1) Categorized / not categorized 2) By alphabetlical order
@@ -57,7 +65,7 @@ class AllParameters
         });
 
         // treeData to return
-        $tree = [];
+        $data = [];
 
         // Id iterator
         $currentId = 1;
@@ -80,8 +88,8 @@ class AllParameters
             }
 
             if ($param['category']) {
-                $currentCatgory = $categoryIds[$param['nameSpace']][$param['category']];
-                if ($currentCatgory === null) {
+                $currentCategory = $categoryIds[$param['nameSpace']][$param['category']];
+                if ($currentCategory === null) {
                     $newId = $currentId++;
                     $data[] = ['id' => $newId, 'parentId' => $currentNameSpace, 'name' => $param['category'], 'rowLevel' => 2];
                     $categoryIds[$param['nameSpace']][$param['category']] = $newId;
@@ -99,6 +107,11 @@ class AllParameters
         return $data;
     }
 
+    /**
+     * @param \Slim\Http\request $request
+     * @param \Slim\Http\response $response
+     * @return \Slim\Http\Response
+     */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response)
     {
         $sqlRequest = 'select paramdef.*, paramv.val as value, paramv.type as usefor  from paramdef, paramv where  paramdef.name = paramv.name;';
