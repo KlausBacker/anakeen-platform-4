@@ -156,7 +156,7 @@ export default {
             setTimeout(() => {
                 this.editedItem = null;
                 this.editRoute = '';
-            }, 3000);
+            }, 300);
 
             // TODO Modify only the modified value
             this.allParametersDataSource.read();

@@ -240,7 +240,7 @@ export default {
             setTimeout(() => {
                 this.editedItem = null;
                 this.editRoute = '';
-            }, 3000);
+            }, 300);
             this.userParametersDataSource.read();
         },
 
