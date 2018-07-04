@@ -4,6 +4,7 @@ namespace Anakeen\SmartStructures\Group\Render;
 
 use Anakeen\SmartElementManager;
 use Anakeen\Ui\DefaultConfigEditRender;
+use Dcp\Ui\RenderOptions;
 use \SmartStructure\Fields\Group as myAttributes;
 
 class GroupEditRender extends DefaultConfigEditRender
@@ -15,7 +16,7 @@ class GroupEditRender extends DefaultConfigEditRender
      * @return \Dcp\Ui\RenderOptions
      * @throws \Dcp\Ui\Exception
      */
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
         $options->enum(myAttributes::grp_hasmail)->setDisplay('bool');

@@ -8,6 +8,8 @@ namespace Anakeen\SmartStructures\Helppage\Render;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\Utils\Strings;
+use Dcp\Ui\BarMenu;
+use Dcp\Ui\RenderOptions;
 
 class HelppageViewRender extends \Dcp\Ui\DefaultView
 {
@@ -16,7 +18,7 @@ class HelppageViewRender extends \Dcp\Ui\DefaultView
      *
      * @return \Dcp\Ui\RenderOptions
      */
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document) : RenderOptions
     {
         $options = parent::getOptions($document);
         
@@ -49,7 +51,7 @@ class HelppageViewRender extends \Dcp\Ui\DefaultView
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $css = parent::getCssReferences();
-        $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
+        //$version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         //$css["dduiHelppage"] = "uiAssets/Families/helppage/helppage.css?ws=" . $version;
         return $css;
     }
@@ -58,7 +60,7 @@ class HelppageViewRender extends \Dcp\Ui\DefaultView
      *
      * @return \Dcp\Ui\BarMenu Menu configuration
      */
-    public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document) : BarMenu
     {
         $menu = parent::getMenu($document);
         $langMenuList = new \Dcp\Ui\ListMenu("helppage-langMenu", ___("Lang", "ddui helppage"));

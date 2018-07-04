@@ -26,7 +26,7 @@ class FamilyView extends RenderDefault
      * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      * @return BarMenu Menu configuration
      */
-    public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document):BarMenu
     {
         $menu = new BarMenu();
 

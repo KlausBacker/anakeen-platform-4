@@ -2,6 +2,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiAllType\Renders;
 
+use Dcp\Ui\RenderOptions;
 use SmartStructure\Fields\Tst_ddui_alltype as myAttributes;
 
 class addButtonEditTarget_self extends \Dcp\Ui\DefaultEdit
@@ -22,7 +23,7 @@ class addButtonEditTarget_self extends \Dcp\Ui\DefaultEdit
         return $cssReferences;
     }
 
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
 

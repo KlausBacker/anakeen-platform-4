@@ -4,6 +4,7 @@
 namespace Anakeen\SmartStructures\Report\Render;
 
 use Anakeen\SmartStructures\Dsearch\Render\SearchEditRender;
+use Dcp\Ui\RenderOptions;
 use SmartStructure\Fields\Report as myAttr;
 use Anakeen\Core\SEManager;
 
@@ -40,7 +41,7 @@ class ReportEditRender extends SearchEditRender
         return $templates;
     }
 
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
 

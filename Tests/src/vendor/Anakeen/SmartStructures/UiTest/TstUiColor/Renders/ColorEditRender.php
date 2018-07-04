@@ -2,6 +2,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiColor\Renders;
 
+use Dcp\Ui\RenderOptions;
 use \SmartStructure\Fields\Tst_ddui_color as myAttribute;
 
 class ColorEditRender extends \Dcp\Ui\DefaultEdit
@@ -28,7 +29,7 @@ class ColorEditRender extends \Dcp\Ui\DefaultEdit
         return $js;
     }
 
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
 

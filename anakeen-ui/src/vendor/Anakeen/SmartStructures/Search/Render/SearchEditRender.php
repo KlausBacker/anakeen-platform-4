@@ -7,15 +7,14 @@
 namespace Anakeen\SmartStructures\Search\Render;
 
 use Anakeen\Ui\DefaultConfigEditRender;
+use Dcp\Ui\RenderOptions;
 use \SmartStructure\Fields\Search as myAttributes;
 
 class SearchEditRender extends DefaultConfigEditRender
 {
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
-        $options->enum(myAttributes::gui_isrss)->setDisplay('bool');
-        $options->enum(myAttributes::se_memo)->setDisplay('bool');
         $options->enum(myAttributes::se_case)->setDisplay('vertical');
         $options->enum(myAttributes::se_trash)->setDisplay('vertical');
         $options->enum(myAttributes::se_famonly)->setDisplay('bool');

@@ -2,6 +2,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiEmployee\Renders;
 
+use Dcp\Ui\RenderOptions;
 use \SmartStructure\Fields\Tst_ddui_employee as myAttribute;
 
 class EmployeeViewRender extends \Dcp\Ui\DefaultView
@@ -17,7 +18,7 @@ class EmployeeViewRender extends \Dcp\Ui\DefaultView
      *
      * @return \Dcp\ui\RenderOptions
      */
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
 

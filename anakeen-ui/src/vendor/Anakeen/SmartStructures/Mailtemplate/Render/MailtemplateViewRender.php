@@ -1,11 +1,9 @@
 <?php
-/*
- * @author Anakeen
- * @package DDUI
-*/
 
 namespace Anakeen\SmartStructures\Mailtemplate\Render;
+
 use Anakeen\Ui\DefaultConfigViewRender;
+use Dcp\Ui\RenderOptions;
 use SmartStructure\Fields\Mailtemplate as myAttributes;
 
 class MailtemplateViewRender extends DefaultConfigViewRender
@@ -15,7 +13,7 @@ class MailtemplateViewRender extends DefaultConfigViewRender
      *
      * @return \Dcp\Ui\RenderOptions
      */
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
         $options->commonOption()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);

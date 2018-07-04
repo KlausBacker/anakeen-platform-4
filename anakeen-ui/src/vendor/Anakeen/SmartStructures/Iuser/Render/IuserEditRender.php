@@ -9,6 +9,8 @@ namespace Anakeen\SmartStructures\Iuser\Render;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\SmartElementManager;
 use Anakeen\Ui\DefaultConfigEditRender;
+use Dcp\Ui\RenderAttributeVisibilities;
+use Dcp\Ui\RenderOptions;
 use Dcp\Ui\UIGetAssetPath;
 use \SmartStructure\Fields\Iuser as myAttributes;
 
@@ -18,7 +20,7 @@ class IuserEditRender extends DefaultConfigEditRender
 
     protected $defaultGroup;
 
-    public function getOptions(SmartElement $document)
+    public function getOptions(SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
         $options->frame(myAttributes::us_fr_security)->setTemplate(
@@ -45,7 +47,7 @@ HTML
      * @return \Dcp\Ui\RenderAttributeVisibilities
      * @throws \Dcp\Ui\Exception
      */
-    public function getVisibilities(SmartElement $smartElement, \SmartStructure\Mask $mask = null)
+    public function getVisibilities(SmartElement $smartElement, \SmartStructure\Mask $mask = null) : RenderAttributeVisibilities
     {
         $visibilities = parent::getVisibilities($smartElement, $mask);
 

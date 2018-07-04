@@ -1,13 +1,12 @@
 <?php
 
-namespace Anakeen\SmartStructures\Group\Render;
+namespace Anakeen\SmartStructures\FieldAccessLayer\Render;
 
 use Anakeen\Ui\DefaultConfigViewRender;
-use Dcp\Ui\RenderAttributeVisibilities;
 use Dcp\Ui\RenderOptions;
-use \SmartStructure\Fields\Group as myAttributes;
+use \SmartStructure\Fields\Fieldaccesslayer as myAttributes;
 
-class GroupViewRender extends DefaultConfigViewRender
+class FieldAccessLayerViewRender extends DefaultConfigViewRender
 {
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
@@ -21,5 +20,4 @@ class GroupViewRender extends DefaultConfigViewRender
         );
         return $options;
     }
-
 }

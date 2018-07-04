@@ -3,6 +3,7 @@
 namespace Anakeen\SmartStructures\Report\Render;
 
 use Anakeen\SmartStructures\Dsearch\Render\SearchViewRender;
+use Dcp\Ui\BarMenu;
 use SmartStructure\Fields\Report;
 
 class ReportViewRender extends SearchViewRender
@@ -16,7 +17,7 @@ class ReportViewRender extends SearchViewRender
         return $templates;
     }
 
-    public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document):BarMenu
     {
         $menu = parent::getMenu($document);
 

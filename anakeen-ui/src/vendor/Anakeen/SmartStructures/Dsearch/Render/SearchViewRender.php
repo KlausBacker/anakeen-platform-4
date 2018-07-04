@@ -4,6 +4,8 @@
 namespace Anakeen\SmartStructures\Dsearch\Render;
 
 use Anakeen\Core\SEManager;
+use Dcp\Ui\BarMenu;
+use Dcp\Ui\DocumentTemplateContext;
 use Dcp\Ui\ItemMenu as ItemMenu;
 
 class SearchViewRender extends \Dcp\Ui\DefaultView
@@ -23,15 +25,15 @@ class SearchViewRender extends \Dcp\Ui\DefaultView
 
         $js["smartElementGrid"] = \Dcp\Ui\UIGetAssetPath::getJSSmartElementGridPath();
 
-        $js["dSearch"] =  \Dcp\Ui\UIGetAssetPath::getCustomAssetPath('uiAssets/Families/dsearch/prod/dsearch.js');
+        $js["dSearch"] = \Dcp\Ui\UIGetAssetPath::getCustomAssetPath('uiAssets/Families/dsearch/prod/dsearch.js');
         if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {
-            $js["dSearch"] =  \Dcp\Ui\UIGetAssetPath::getCustomAssetPath('uiAssets/Families/dsearch/debug/dsearch.js?');
+            $js["dSearch"] = \Dcp\Ui\UIGetAssetPath::getCustomAssetPath('uiAssets/Families/dsearch/debug/dsearch.js?');
         }
 
         return $js;
     }
 
-    public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document): BarMenu
     {
         $myMenu = parent::getMenu($document);
         $myItem = new ItemMenu("searchview");
@@ -44,7 +46,7 @@ class SearchViewRender extends \Dcp\Ui\DefaultView
         return $myMenu;
     }
 
-    public function getContextController(\Anakeen\Core\Internal\SmartElement $document)
+    public function getContextController(\Anakeen\Core\Internal\SmartElement $document): DocumentTemplateContext
     {
         $controller = parent::getContextController($document);
 
@@ -53,12 +55,12 @@ class SearchViewRender extends \Dcp\Ui\DefaultView
         $attributes = $document->getAttributeValue("se_attrids");
         $condition = $document->getAttributeValue("se_ol");
 
-        $family =  SEManager::getFamily($document->getRawValue("se_famid"));
+        $family = SEManager::getFamily($document->getRawValue("se_famid"));
 
         /**
          * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $workflow
          */
-        $workflow =  SEManager::getDocument( $document->wid);
+        $workflow = SEManager::getDocument($document->wid);
 
         foreach ($attributes as $index => $attribute) {
             $operand = $document->getAttributeValue("se_ols")[$index];
@@ -228,6 +230,4 @@ class SearchViewRender extends \Dcp\Ui\DefaultView
         $controller->offsetSet("myValues", $tabConditions);
         return $controller;
     }
-
-
 }

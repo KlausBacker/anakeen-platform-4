@@ -6,17 +6,6 @@ use Anakeen\Ui\DefaultConfigViewRender;
 
 class MaskViewRender extends DefaultConfigViewRender
 {
-    /**
-     * @param \Anakeen\Core\Internal\SmartElement $document Document instance
-     *
-     * @return \Dcp\Ui\RenderOptions
-     */
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
-    {
-        $options = parent::getOptions($document);
-        return $options;
-    }
-
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $js = parent::getJsReferences();

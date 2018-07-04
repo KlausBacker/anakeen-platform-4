@@ -12,7 +12,9 @@ use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\Routes\Ui\CallMenuResponse;
 use Anakeen\Ui\DefaultConfigViewRender;
 use Dcp\Ui\ArrayRenderOptions;
+use Dcp\Ui\BarMenu;
 use Dcp\Ui\CallableMenu;
+use Dcp\Ui\RenderOptions;
 use SmartStructure\Fields\Iuser as myAttributes;
 use SmartStructure\Iuser;
 
@@ -20,7 +22,7 @@ class IuserViewRender extends DefaultConfigViewRender
 {
     use IuserMessage;
 
-    public function getOptions(SmartElement $document)
+    public function getOptions(SmartElement $document) : RenderOptions
     {
         $options = parent::getOptions($document);
 
@@ -54,7 +56,7 @@ class IuserViewRender extends DefaultConfigViewRender
         return $options;
     }
 
-    public function getMenu(SmartElement $smartElement)
+    public function getMenu(SmartElement $smartElement) : BarMenu
     {
         $menus = parent::getMenu($smartElement);
 

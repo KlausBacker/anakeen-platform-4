@@ -9,11 +9,12 @@ namespace Anakeen\SmartStructures\Igroup\Render;
 use Anakeen\Ui\DefaultConfigViewRender;
 use Dcp\Ui\CommonRenderOptions;
 use Dcp\Ui\RenderAttributeVisibilities;
+use Dcp\Ui\RenderOptions;
 use \SmartStructure\Fields\Igroup as myAttributes;
 
 class IgroupViewRender extends DefaultConfigViewRender
 {
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
         $break2 = "50rem";
@@ -43,7 +44,7 @@ class IgroupViewRender extends DefaultConfigViewRender
         return $options;
     }
 
-    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null)
+    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null) : RenderAttributeVisibilities
     {
         $vis = parent::getVisibilities($document, $mask);
         if ($document->getRawValue(myAttributes::grp_mail)) {

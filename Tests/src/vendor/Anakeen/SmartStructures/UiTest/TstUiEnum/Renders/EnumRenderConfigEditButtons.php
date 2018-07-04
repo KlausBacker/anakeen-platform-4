@@ -2,6 +2,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiEnum\Renders;
 
+use Dcp\Ui\RenderOptions;
 use SmartStructure\Fields\Tst_ddui_enum as myAttributes;
 
 class EnumRenderConfigEditButtons extends EnumRenderConfigEditDefault
@@ -11,7 +12,7 @@ class EnumRenderConfigEditButtons extends EnumRenderConfigEditDefault
         return "Enum Edit Buttons";
     }
     
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
 

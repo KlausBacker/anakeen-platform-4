@@ -52,7 +52,7 @@ class RenderDefault implements IRenderConfig
             "kendoui" => UIGetAssetPath::getJSKendoPath()
         ];
 
-        if (ContextManager::getParameterValue("Ui",  "ACTIVATE_LOGGING") === "TRUE") {
+        if (ContextManager::getParameterValue("Ui", "ACTIVATE_LOGGING") === "TRUE") {
             $jsRef = array_merge($jsRef, [
                 "traceKit" => "$pubExternalPath/traceKit/traceKit.js?ws=" . $version,
                 "traceError" => "$pubInternalPath/dynacaseReport.js?ws=" . $version
@@ -230,7 +230,7 @@ class RenderDefault implements IRenderConfig
      *
      * @return RenderOptions
      */
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document): RenderOptions
     {
         $opt = new RenderOptions();
 
@@ -330,7 +330,7 @@ class RenderDefault implements IRenderConfig
      *
      * @return RenderAttributeVisibilities new attribute visibilities
      */
-    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null)
+    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null): RenderAttributeVisibilities
     {
         return new RenderAttributeVisibilities($document, $mask);
     }
@@ -340,7 +340,7 @@ class RenderDefault implements IRenderConfig
      *
      * @return RenderAttributeNeeded new mandatory attributes
      */
-    public function getNeeded(\Anakeen\Core\Internal\SmartElement $document)
+    public function getNeeded(\Anakeen\Core\Internal\SmartElement $document): RenderAttributeNeeded
     {
         return new RenderAttributeNeeded($document);
     }
@@ -355,7 +355,7 @@ class RenderDefault implements IRenderConfig
      *
      * @return BarMenu Menu configuration
      */
-    public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document): BarMenu
     {
         $menu = new BarMenu();
 
@@ -367,7 +367,7 @@ class RenderDefault implements IRenderConfig
      *
      * @return DocumentTemplateContext get template controller
      */
-    public function getContextController(\Anakeen\Core\Internal\SmartElement $document)
+    public function getContextController(\Anakeen\Core\Internal\SmartElement $document): DocumentTemplateContext
     {
         return new DocumentTemplateContext($document);
     }
@@ -383,8 +383,14 @@ class RenderDefault implements IRenderConfig
             $item->setTooltipLabel(___("Revision", "ddui"), "", false);
             $item->setHtmlLabel('<span class="dcpDocument__emblem__revised fa fa-archive"></span>');
         } elseif ($document->locked < -1) {
-            $item->setTooltipLabel(sprintf('%s "<b>{{document.properties.security.lock.lockedBy.title}}</b>" ', htmlspecialchars(___("Modifying by", "ddui"), ENT_QUOTES)), "",
-                true);
+            $item->setTooltipLabel(
+                sprintf(
+                    '%s "<b>{{document.properties.security.lock.lockedBy.title}}</b>" ',
+                    htmlspecialchars(___("Modifying by", "ddui"), ENT_QUOTES)
+                ),
+                "",
+                true
+            );
         } else {
             $item->setTooltipLabel(sprintf('%s "<b>{{document.properties.security.lock.lockedBy.title}}</b>" ', htmlspecialchars(___("Locked by", "ddui"), ENT_QUOTES)), "", true);
         }
@@ -417,7 +423,6 @@ class RenderDefault implements IRenderConfig
      * Add Help if Help document is associated to family
      * @param \Anakeen\Core\Internal\SmartElement $doc
      * @param BarMenu                             $menu target menu
-     * @throws \Dcp\Ui\Exception
      */
     protected function addHelpMenu(\Anakeen\Core\Internal\SmartElement $doc, BarMenu & $menu)
     {
@@ -448,7 +453,7 @@ class RenderDefault implements IRenderConfig
      * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      * @param mixed                               $data     data provided by client
      *
-     * @return mixed
+     * @return void
      */
     public function setCustomClientData(\Anakeen\Core\Internal\SmartElement $document, $data)
     {
