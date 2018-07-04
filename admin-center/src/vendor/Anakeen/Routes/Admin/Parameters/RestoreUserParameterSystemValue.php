@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Admin\Parameters;
 
 
-class DeleteUserParameter
+class RestoreUserParameterSystemValue
 {
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {

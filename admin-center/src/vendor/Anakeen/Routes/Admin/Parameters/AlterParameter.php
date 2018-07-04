@@ -2,8 +2,7 @@
 
 namespace Anakeen\Routes\Admin\Parameters;
 
-use Anakeen\Core\Internal\ApplicationParameterManager;
-use Dcp\ApplicationParameterManager\Exception;
+use Anakeen\Core\Internal\ContextParameterManager;
 
 class AlterParameter
 {
@@ -12,24 +11,21 @@ class AlterParameter
      * @param \Slim\Http\response $response
      * @param $args
      * @return \Slim\Http\Response
-     * @throws Exception
+     * @throws \Dcp\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         // Parameter to change
         $parameterName = $args['parameter_name'];
-        $domainName = $args['domain_name'];
+        $nameSpace = $args['namespace'];
 
         // New value
         $newValue = $request->getParam('value');
 
         // Change value
-        $err = ApplicationParameterManager::setParameterValue($domainName, $parameterName, $newValue);
-        if ($err) {
-            return $response->withStatus(500, $err)->write($err);
-        }
+        ContextParameterManager::setValue($nameSpace, $parameterName, $newValue);
 
-        $responseData = ['parameter_name' => $parameterName, 'domain_name' => $domainName, 'value' => $newValue];
+        $responseData = ['namespace' => $nameSpace, 'parameter_name' => $parameterName, 'value' => $newValue];
         return $response->withJson($responseData);
     }
 }

@@ -18,6 +18,7 @@ export default {
             }),
 
             editedItem: null,
+            editRoute: '',
         };
     },
 
@@ -48,12 +49,12 @@ export default {
                 columns: [
                     { field: 'name', title: 'Name', headerAttributes: headerAttributes },
                     { field: 'description', title: 'Description', headerAttributes: headerAttributes },
-                    { field: 'value', title: 'Value', headerAttributes: headerAttributes, },
+                    { field: 'value', title: 'System value', headerAttributes: headerAttributes, },
                     {
                         width: '6rem',
                         filterable: false,
                         template: '# if (!data.rowLevel && !data.isStatic && !data.isReadOnly) { #' +
-                        '<button class="btn btn-secondary edition-btn">Edit</button>' +
+                        '<button class="btn btn-secondary edition-btn" title="Edit"><i class="material-icons" style="font-size: 1.3rem">edit</i></button>' +
                         '# } #',
                     },
                 ],
@@ -94,6 +95,7 @@ export default {
 
         openEditor(dataItem) {
             this.editedItem = dataItem;
+            this.editRoute = 'admin/parameters/' + this.editedItem.nameSpace + '/' + this.editedItem.name + '/';
         },
 
         searchParameters(researchTerms) {
@@ -112,6 +114,8 @@ export default {
                     this.$('.filterable-header')
                         .append(this.$('<i class="material-icons filter-icon">filter_list</i>'));
                 }
+
+                this.expand(true);
             } else {
                 this.allParametersDataSource.filter({});
 
@@ -149,12 +153,17 @@ export default {
         },
 
         updateAtEditorClose() {
-            setTimeout(() => { this.editedItem = null; }, 300);
+            setTimeout(() => {
+                this.editedItem = null;
+                this.editRoute = '';
+            }, 300);
+
+            // TODO Modify only the modified value
             this.allParametersDataSource.read();
         },
 
         saveTreeState() {
-            // setTimeout(function, 0) to add CSS classes when all DOM content has been updated
+            // setTimeout(function, 0) to save state when all DOM content has been updated
             setTimeout(() => {
                 let treeState = [];
                 let treeList = this.$('#parameters-tree').data('kendoTreeList');
@@ -164,7 +173,7 @@ export default {
                         treeState.push(index);
                     }
                 });
-                window.localStorage.setItem('admin.parameters.treeState', treeState);
+                window.localStorage.setItem('admin.parameters.treeState', JSON.stringify(treeState));
             }, 0);
         },
 
@@ -188,6 +197,9 @@ export default {
     mounted() {
         this.initTreeList();
         this.restoreTreeState();
+
+        // Focus on filter input
+        this.$('.global-search-input').focus();
 
         // At window resize, resize the tree list to fit the window
         window.addEventListener('resize', () => {

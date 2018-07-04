@@ -1,7 +1,7 @@
 .global-parameters {
     height: 100%;
     width: 100%;
-    max-width: 1200px;
+    max-width: 100%;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -52,26 +52,14 @@
 .parameters-tree {
     height: 100%;
     width: 100%;
-
 }
 
 .grid-level-1 {
-    font-size: 1.3rem;
     background-color: rgba(135, 206, 250, 0.51) !important;
 }
 
 .grid-level-2 {
-    font-size: 1.3rem;
     background-color: rgba(144, 238, 144, 0.51) !important;
-}
-
-.grid-level-3 {
-    font-size: 1.3rem;
-    background-color: rgba(255, 160, 122, 0.5) !important;
-}
-
-.filterable-header {
-    font-size: 1.3rem;
 }
 
 .filter-icon {
@@ -84,4 +72,8 @@
 
 .k-grid tbody tr td {
     white-space: nowrap;
+}
+
+.reset-search-btn {
+    width: 0;
 }

@@ -3,20 +3,154 @@
 namespace Anakeen\Routes\Admin\Parameters;
 
 
+use Anakeen\Core\AccountManager;
 use Anakeen\Core\DbManager;
 use Dcp\Db\Exception;
 
 class UserParameters
 {
+    private function formatParameter($parameter)
+    {
+        $formatedParameter = [];
+
+        $nsName = explode('::', $parameter['name'], 2);
+
+        $formatedParameter['nameSpace'] = $nsName[0];
+        $formatedParameter['name'] = $nsName[1];
+
+        $formatedParameter['description'] = $parameter['descr'];
+        $formatedParameter['category'] = $parameter['category'];
+
+        $formatedParameter['value'] = $parameter['value'];
+        $formatedParameter['initialValue'] = $parameter['initialValue'];
+
+        $formatedParameter['isUser'] = ($parameter['isuser'] === 'Y');
+        $formatedParameter['isGlobal'] = ($parameter['isglob'] === 'Y');
+        $formatedParameter['forUser'] = $parameter['forUser'];
+
+        $formatedParameter['isStatic'] = ($parameter['kind'] === 'static');
+        $formatedParameter['isReadOnly'] = ($parameter['kind'] === 'readonly');
+
+        if (!$formatedParameter['isStatic'] && !$formatedParameter['isReadOnly']) {
+            $formatedParameter['type'] = $parameter['kind'];
+        } else {
+            $formatedParameter['type'] = '';
+        }
+
+        return $formatedParameter;
+    }
+
+    private function formatTreeDataSource($parameters)
+    {
+        // Sort parameters : 1) Categorized / not categorized 2) By alphabetlical order
+        $params = $parameters;
+        uasort($params, function ($a, $b)
+        {
+            if ($a['category'] && !$b['category']) {
+                return -1;
+            } elseif (!$a['category'] && $b['category']) {
+                return 1;
+            } else {
+                return ($a['name'] < $b['name']) ? -1 : 1;
+            }
+        });
+
+        // treeData to return
+        $data = [];
+
+        // Id iterator
+        $currentId = 1;
+
+        // Memorize  namespace / catgories id
+        $nameSpaceIds = [];
+        $categoryIds = [];
+
+
+        foreach ($params as $param)
+        {
+            $param['id'] = $currentId++;
+            $currentNameSpace = $nameSpaceIds[$param['nameSpace']];
+            if ($currentNameSpace === null) {
+                $newId = $currentId++;
+                $data[] = ['id' => $newId, 'parentId' => null, 'name' => $param['nameSpace'], 'rowLevel' => 1];
+                $nameSpaceIds[$param['nameSpace']] = $newId;
+                $categoryIds[$param['nameSpace']] = [];
+                $currentNameSpace = $newId;
+            }
+
+            if ($param['category']) {
+                $currentCategory = $categoryIds[$param['nameSpace']][$param['category']];
+                if ($currentCategory === null) {
+                    $newId = $currentId++;
+                    $data[] = ['id' => $newId, 'parentId' => $currentNameSpace, 'name' => $param['category'], 'rowLevel' => 2];
+                    $categoryIds[$param['nameSpace']][$param['category']] = $newId;
+                    $currentCategory = $newId;
+                }
+
+                $param['parentId'] = $currentCategory;
+                $data[] = $param;
+            } else {
+                $param['parentId'] = $currentNameSpace;
+                $data[] = $param;
+            }
+        }
+
+        return $data;
+    }
+
+    private function initialValue($param, $allParams)
+    {
+        foreach ($allParams as $parameter) {
+            if ($parameter['name'] === $param['name'] && ($parameter['usefor'] === 'A' || $parameter['usefor'] === 'G')) {
+                return $parameter['value'];
+            }
+        }
+
+        return null;
+    }
+
+    private function userDefined($param, $allParams, $user)
+    {
+        foreach ($allParams as $parameter) {
+            if ($parameter['name'] === $param['name'] && $parameter['usefor'] === $user) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $sqlRequest = 'select paramdef.*, paramv.val as value, paramv.type as usefor, application .name as domain  from paramdef, paramv, application where paramv.appid= application.id and paramdef.name = paramv.name;';
+        $user = $args['user'];
+        $userId = "U".AccountManager::getIdFromLogin($user);
+
+        $sqlRequest = 'select paramdef.*, paramv.val as value, paramv.type as usefor from paramdef, paramv where  paramdef.name = paramv.name;';
         $outputResult = [];
 
         try {
             DbManager::query($sqlRequest, $outputResult);
         } catch (Exception $e) {
+
         }
 
+        $data = [];
+
+        foreach ($outputResult as $param) {
+            if ($param['usefor'] === $userId) {
+                $param['initialValue'] = $this->initialValue($param, $outputResult);
+                $param['forUser'] = true;
+                $data[] = $this->formatParameter($param);
+            } elseif ($param['isuser'] === 'Y'
+                && !$this->userDefined($param, $outputResult, $userId)
+                && ($param['usefor'] === 'G' || $param['usefor'] === 'A')) {
+                $param['initialValue'] = $param['value'];
+                $param['value'] = '';
+                $param['forUser'] = false;
+                $data[] = $this->formatParameter($param);
+            }
+        }
+
+        return $response->withJson($this->formatTreeDataSource($data));
     }
 }
