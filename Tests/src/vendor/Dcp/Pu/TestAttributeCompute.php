@@ -122,15 +122,9 @@ class TestAttributeCompute extends TestCaseDcpCommonFamily
                         $y1 + $y2,
                         $z1 + $z2
                     ),
-                    'tst_count' => 2,
-                    'tst_vis_i_1' => '',
-                    'tst_vis_i_2' => '',
-                    'tst_vis_i_3' => ''
+                    'tst_count' => 2
                 ),
-                'logMatch' => array(
-                    '/WARNING.*{ATTR1800} value of attribute "tst_vis_i_1"/',
-                    '/WARNING.*{ATTR1800} value of attribute "tst_vis_i_3"/'
-                )
+                'logMatch' => array()
             );
         }
         return $out;

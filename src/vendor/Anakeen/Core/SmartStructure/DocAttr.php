@@ -63,7 +63,7 @@ class DocAttr extends DbObj
     public $properties;
 
     public $sqlcreate = "
-create table docattr ( id  name,
+create table docattr ( id  name not null,
                      docid int not null,
                      frameid  name,
                      labeltext text,
@@ -71,7 +71,7 @@ create table docattr ( id  name,
                      abstract  char,
                      type  text,
                      ordered int,
-                     accessibility text not null,
+                     accessibility text,
                      needed char,
                      link text,
                      phpfile text,

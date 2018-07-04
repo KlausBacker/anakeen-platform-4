@@ -192,9 +192,7 @@ class TestImportFamily extends TestCaseDcpDocument
                     "tst_novis",
                     "ATTR0801",
                     "tst_errvis",
-                    "ZS",
-                    "ATTR0802",
-                    "tst_noarray"
+                    "ZS"
                 )
             ),
             // test isTitle isAbstract isNeeded

@@ -9,6 +9,7 @@ namespace Anakeen\Core\SmartStructure;
 
 class FieldSetAttribute extends BasicAttribute
 {
+    /** @noinspection PhpMissingParentConstructorInspection */
     /**
      * Constructor
      *
@@ -45,7 +46,7 @@ class FieldSetAttribute extends BasicAttribute
     {
         $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "fieldattribute_schema.xml"));
         $lay->set("aname", $this->id);
-        $this->common_getXmlSchema($lay);
+        $this->commonGetXmlSchema($lay);
         
         $lay->set("minOccurs", "0");
         $lay->set("maxOccurs", "1");
@@ -62,6 +63,4 @@ class FieldSetAttribute extends BasicAttribute
         $lay->setBlockData("ATTR", $tax);
         return $lay->gen();
     }
-
 }
-

@@ -261,7 +261,7 @@ class BasicAttribute
      *
      * @param \Layout $play
      */
-    public function common_getXmlSchema(&$play)
+    public function commonGetXmlSchema(&$play)
     {
         $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "infoattribute_schema.xml"));
         $lay->set("aname", $this->id);
@@ -295,4 +295,3 @@ class BasicAttribute
         $play->set("appinfos", $lay->gen());
     }
 }
-

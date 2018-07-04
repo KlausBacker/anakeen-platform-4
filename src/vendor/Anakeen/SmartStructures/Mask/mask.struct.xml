@@ -6,10 +6,10 @@
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
         <smart:fields>
-            <smart:field-set name="msk_fr_rest" type="frame" label="Famille" access="ReadWrite">
-                <smart:field-docid name="msk_famid" label="Famille" access="ReadWrite" needed="true" relation="-1"/>
-                <smart:field-set name="msk_t_contain" type="array" label="Contenu" access="ReadWrite">
-                    <smart:field-text name="msk_attrids" label="Attrid" access="ReadWrite"/>
+            <smart:field-set name="msk_fr_rest" type="frame" label="Informtation" access="ReadWrite">
+                <smart:field-docid name="msk_famid" label="Structure" access="ReadWrite" needed="true" relation="-1"/>
+                <smart:field-set name="msk_t_contain" type="array" label="Fields" access="ReadWrite">
+                    <smart:field-text name="msk_attrids" label="Field" access="ReadWrite"/>
                     <smart:field-text name="msk_visibilities" label="Visibilité" access="ReadWrite"/>
                     <smart:field-text name="msk_needeeds" label="Obligatoire" access="ReadWrite"/>
                 </smart:field-set>

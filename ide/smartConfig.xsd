@@ -190,6 +190,7 @@
 
     <xs:complexType name="accessConfigurationType">
         <xs:sequence>
+            <xs:element type="xs:string" name="description" minOccurs="0" />
             <xs:element type="v1:accessType" name="element-access" minOccurs="0" maxOccurs="unbounded" >
                 <xs:annotation>
                     <xs:documentation>
@@ -461,7 +462,7 @@
         </xs:choice>
         <xs:attribute type="v1:attrNameType" name="name" use="required"/>
         <xs:attribute type="xs:boolean" name="extended"/>
-        <xs:attribute type="v1:fieldsetType" name="type"/>
+        <xs:attribute type="v1:fieldsetType" name="type" use="required"/>
         <xs:attribute type="xs:string" name="label"/>
         <xs:attribute type="v1:fieldAccessType" name="access"/>
         <xs:attribute type="xs:string" name="relation"/>

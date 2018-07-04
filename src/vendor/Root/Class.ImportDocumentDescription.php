@@ -2068,6 +2068,11 @@ class ImportDocumentDescription
         if (!$this->doc) {
             return;
         }
+        // Temporary deprecated visibility : used RW acccess instead if cvs file used
+        if ($this->importFileName && isset($data[8]) && strlen($data[8]) === 1) {
+            $data[8]= 'ReadWrite';
+        }
+
         $check = new CheckAttr();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {

@@ -300,7 +300,7 @@ class CheckEnd extends CheckData
             }
         }
     }
-    private function verifyMethod($strucFunc, $oa, $ctx, &$refMeth = null)
+    private function verifyMethod($strucFunc, \Anakeen\Core\SmartStructure\BasicAttribute $oa, $ctx, &$refMeth = null)
     {
         $err = '';
         $phpMethName = $strucFunc->methodName;
@@ -321,10 +321,10 @@ class CheckEnd extends CheckData
                 }
             }
         } catch (Exception $e) {
-            if ($oa->docid == $this->doc->id) {
+            if ($oa->structureId == $this->doc->id) {
                 $err = (ErrorCode::getError('ATTR1260', $phpLongName, $ctx, $oa->id));
             } else {
-                $err = (ErrorCode::getError('ATTR1266', $phpLongName, $ctx, \Anakeen\Core\SEManager::getNameFromId($oa->docid), $oa->id));
+                $err = (ErrorCode::getError('ATTR1266', $phpLongName, $ctx, \Anakeen\Core\SEManager::getNameFromId($oa->structureId), $oa->id));
             }
         }
         return $err;

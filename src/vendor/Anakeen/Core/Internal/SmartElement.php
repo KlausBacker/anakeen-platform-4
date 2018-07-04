@@ -31,6 +31,7 @@ use \Anakeen\Core\ContextManager;
 use \Anakeen\Core\SEManager;
 use Anakeen\Core\Internal\Format\StandardAttributeValue;
 use Anakeen\Core\SmartStructure\Callables\InputArgument;
+use Anakeen\Core\SmartStructure\FieldAccessManager;
 use Anakeen\LogManager;
 use Anakeen\Routes\Core\Lib\CollectionDataFormatter;
 use Anakeen\SmartHooks;
@@ -2992,7 +2993,7 @@ create unique index i_docir on doc(initid, revision);";
         $ltitle = $this->getTitleAttributes();
         $otitle = '';
         foreach ($ltitle as $at) {
-            if (($at->type == 'text') && (($at->access == 'W') || ($at->access == 'O')) && (!$at->inArray())) {
+            if (($at->type == 'text') && (!$at->inArray())) {
                 $otitle = $at;
                 break;
             }
@@ -7337,9 +7338,7 @@ create unique index i_docir on doc(initid, revision);";
             // Set the table value elements
             $this->lay->Set("S_" . strtoupper($v->id), ($value != ""));
             // don't see  non abstract if not
-            if ((($v->mvisibility == "H") && (!$viewhidden)) || ($v->mvisibility == "I")
-                || (($abstract)
-                    && (!$v->isInAbstract))) {
+            if (FieldAccessManager::hasReadAccess($this, $v) === false || (($abstract) && (!$v->isInAbstract))) {
                 $this->lay->Set("V_" . strtoupper($v->id), "");
                 $this->lay->Set("L_" . strtoupper($v->id), "");
             } else {
