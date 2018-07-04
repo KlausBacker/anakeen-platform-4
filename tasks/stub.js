@@ -1,26 +1,23 @@
-const gulp = require('gulp');
-const tar = require('gulp-tar');
-const gzip = require('gulp-gzip');
+const gulp = require("gulp");
 const { getSTUBgenerator } = require("../utils/STUBGenerator");
 const path = require("path");
-const appConst = require("../utils/appConst");
 
-exports.stub = (sourcePath, targetPath = './extraction') => {
-    return gulp.task('stub', async () => {
-        if(sourcePath === undefined) {
-        console.log("No source path specified.");
-        return;
+exports.stub = ({sourcePath, targetPath = "./stubs"}) => {
+  return gulp.task("stub", async () => {
+    if (sourcePath === undefined) {
+      console.log("No source path specified.");
+      return;
     }
     try {
-        if(targetPath.startsWith('./')) {
-            targetPath = sourcePath + targetPath.substr(1);
-        }
-        const STUBGenerator = await getSTUBgenerator(sourcePath, targetPath);
-        console.log(STUBGenerator.extractDir);
-        gulp.src(path.join(STUBGenerator.extractDir, "**"))
-            .pipe(gulp.dest(targetPath));
+      if (targetPath.startsWith("./")) {
+        targetPath = sourcePath + targetPath.substr(1);
+      }
+      const STUBGenerator = await getSTUBgenerator(sourcePath, targetPath);
+      gulp
+        .src(path.join(STUBGenerator.extractDir, "**"))
+        .pipe(gulp.dest(targetPath));
     } catch (e) {
-        throw e;
+      throw e;
     }
-});
+  });
 };
