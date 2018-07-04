@@ -17,6 +17,7 @@ class SuiteRoutes
         $suite = new FrameworkDcp();
 
         $suite->addTestSuite(\Anakeen\Pu\Routes\CoreDocument\PuCoreDataDocument::class);
+        $suite->addTestSuite(\Anakeen\Pu\Routes\CoreDocument\PuFieldAccess::class);
         $suite->addTestSuite(\Anakeen\Pu\Routes\CoreFamily\PuCoreDataFamilyDocument::class);
         $suite->addTestSuite(\Anakeen\Pu\Routes\RouteAccess\PuCoreRouteAccess::class);
 

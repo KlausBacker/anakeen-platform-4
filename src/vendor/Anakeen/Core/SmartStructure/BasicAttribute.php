@@ -1,15 +1,10 @@
 <?php
 /**
- * Document Attributes
+ * Smart Element Field
  *
  */
 
-/**
- */
-
 namespace Anakeen\Core\SmartStructure;
-
-use Dcp\Exception;
 
 /**
  *
@@ -78,6 +73,14 @@ class BasicAttribute
     }
 
     /**
+     * Get access depending of set fields access
+     */
+    public function getAccess()
+    {
+        return (!$this->fieldSet) ? $this->access : $this->fieldSet->getAccess() & $this->access;
+    }
+
+    /**
      * Return value of option $x
      *
      * @param string $x   option name
@@ -135,7 +138,6 @@ class BasicAttribute
         }
         $this->_topt[$x] = $v;
     }
-
 
 
     /**
@@ -212,22 +214,7 @@ class BasicAttribute
         return ($this->inArray() && ($this->getOption('multiple') === 'yes'));
     }
 
-    /**
-     * Get tab ancestor
-     * false if not found
-     *
-     * @return FieldSetAttribute|bool
-     */
-    public function getTab()
-    {
-        if ($this->type == 'tab') {
-            return $this;
-        }
-        if (is_object($this->fieldSet) && method_exists($this->fieldSet, 'getTab') && ($this->fieldSet->id != \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD)) {
-            return $this->fieldSet->getTab();
-        }
-        return false;
-    }
+
 
     /**
      * Export values as xml fragment

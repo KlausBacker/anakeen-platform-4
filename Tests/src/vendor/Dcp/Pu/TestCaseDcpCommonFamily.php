@@ -68,7 +68,6 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
             }
             foreach ($cf as $f) {
                 self::importConfigurationFile($f);
-
             }
         }
     }
@@ -77,6 +76,19 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
     {
         try {
             self::importConfiguration($f);
+        } catch (\Dcp\Exception $e) {
+            self::rollbackTransaction();
+            throw new \Dcp\Exception(sprintf("Exception while importing file '%s': %s", $f, $e->getMessage()));
+        }
+    }
+
+
+    public static function importAccountFile($f)
+    {
+        try {
+            $import = new \Dcp\Core\ImportAccounts();
+            $import->setFile($f);
+            $import->import();
         } catch (\Dcp\Exception $e) {
             self::rollbackTransaction();
             throw new \Dcp\Exception(sprintf("Exception while importing file '%s': %s", $f, $e->getMessage()));

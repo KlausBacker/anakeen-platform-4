@@ -2,6 +2,8 @@
 
 namespace Anakeen\Core\SmartStructure;
 
+use Anakeen\Core\Account;
+use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\SmartElement;
 use Dcp\Exception;
 
@@ -44,6 +46,8 @@ class FieldAccessManager
 
     public static function hasReadAccess(SmartElement $se, BasicAttribute $oa)
     {
-        return true;
+       // print_r([$oa->id, $oa->access, $oa->getAccess()]);
+        return (ContextManager::getCurrentUser()->id == Account::ADMIN_ID) ||
+            (($oa->getAccess() & BasicAttribute::READ_ACCESS));
     }
 }
