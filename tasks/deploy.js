@@ -3,7 +3,6 @@ const asyncCallback = require("./plugins/asyncCallback");
 const endPipe = require("./plugins/end");
 const control = require("../utils/control");
 const { Signale } = require("signale");
-const signale = require("signale");
 const { buildPipe } = require("./build");
 
 const executeTransaction = async ({
@@ -13,9 +12,26 @@ const executeTransaction = async ({
   controlUsername,
   controlPassword
 }) => {
-  const currentOperation =
-    transaction.operations[transaction.currentOperation].label;
-  log("Execute current operation : " + currentOperation);
+  if (transaction.status === "licenses") {
+    await control.validateLicenses({
+      controlUrl,
+      controlUsername,
+      controlPassword
+    });
+  }
+  if (transaction.status === "parameters") {
+    await control.completeParameters({
+      controlUrl,
+      controlUsername,
+      controlPassword,
+      parameterValues
+    });
+  }
+  log(
+    `Execute current operation : ${
+      transaction.operations[transaction.currentOperation].label
+    } (${transaction.currentOperation})`
+  );
   const nextTransaction = await control.nextStep({
     controlUrl,
     controlUsername,
@@ -27,9 +43,15 @@ const executeTransaction = async ({
   }
   if (
     nextTransaction.status === "ready" ||
-    nextTransaction.status === "pause"
+    nextTransaction.status === "pause" ||
+    nextTransaction.status === "parameters" ||
+    nextTransaction.status === "licenses"
   ) {
-    log("Operation : " + currentOperation + " OK");
+    log(
+      `Operation : ${
+        transaction.operations[transaction.currentOperation].label
+      } OK (${transaction.currentOperation})`
+    );
     await executeTransaction({
       log,
       transaction: nextTransaction,
@@ -51,7 +73,8 @@ const deployPipe = (exports.deployPipe = ({
   controlPassword,
   force,
   errorCallback,
-  log
+  log,
+  parameterValues
 }) => {
   return gulpSrc
     .pipe(
@@ -113,7 +136,8 @@ const deployPipe = (exports.deployPipe = ({
           transaction,
           controlUrl,
           controlUsername,
-          controlPassword
+          controlPassword,
+          parameterValues
         });
       })
     )
@@ -127,7 +151,8 @@ exports.deploy = ({
   controlUrl,
   controlUsername,
   controlPassword,
-  force
+  force,
+  parameterValues
 }) => {
   return gulp.task("deploy", () => {
     try {
@@ -143,8 +168,10 @@ exports.deploy = ({
           controlPassword,
           force,
           errorCallback: reject,
-          log
-        }).pipe(endPipe())
+          log,
+          parameterValues
+        })
+          .pipe(endPipe())
           .on("end", () => {
             interactive.success("Deploy done");
             resolve();
@@ -172,7 +199,7 @@ exports.buildAndDeploy = ({
       try {
         const interactive = new Signale({ interactive: true, scope: "deploy" });
         const log = message => {
-            interactive.info(message);
+          interactive.info(message);
         };
         const build = await buildPipe({ sourcePath, autoRelease });
         deployPipe({
@@ -183,7 +210,8 @@ exports.buildAndDeploy = ({
           force,
           errorCallback: reject,
           log
-        }).pipe(endPipe())
+        })
+          .pipe(endPipe())
           .on("end", () => {
             interactive.success("Deploy done");
             resolve();

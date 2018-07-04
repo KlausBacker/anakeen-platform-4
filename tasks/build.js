@@ -5,6 +5,7 @@ const streamqueue = require("streamqueue");
 const replace = require("gulp-replace");
 const { getModuleInfo } = require("../utils/moduleInfo");
 const path = require("path");
+const fs = require("fs");
 const appConst = require("../utils/appConst");
 
 const buildPipe = (exports.buildPipe = async ({
@@ -37,9 +38,15 @@ const buildPipe = (exports.buildPipe = async ({
       )
     );
   }
-  return streamqueue({ objectMode: true }, mainFiles, infoXML)
-    .pipe(tar(moduleFileName))
-    .pipe(gzip({ extension: "app" }));
+  let gulpElements = streamqueue({ objectMode: true }, mainFiles, infoXML);
+  if (fs.existsSync(path.join(sourcePath, appConst.license))) {
+    gulpElements = streamqueue(
+      { objectMode: true },
+      gulpElements,
+      gulp.src(path.join(sourcePath, appConst.license))
+    );
+  }
+  return gulpElements.pipe(tar(moduleFileName)).pipe(gzip({ extension: "app" }));
 });
 
 exports.build = ({

@@ -1,7 +1,6 @@
 "use strict";
 
 const through = require("through2");
-const PluginError = require("plugin-error");
 
 module.exports = asyncCallback => {
   const files = [];
@@ -23,7 +22,7 @@ module.exports = asyncCallback => {
             callback();
           })
           .catch(err => {
-            plugin.emit("error", new PluginError("asyncCallback", err));
+            plugin.emit("error", err);
             callback(err);
           });
       } catch (e) {
