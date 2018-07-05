@@ -15,21 +15,22 @@ export default {
       this.$('#routes-tree').kendoTreeList({
         dataSource: this.allRoutesDataSource,
         columns: [
-          { field: 'name', title:'Name'},
-          { field: 'method', title: 'Method', width: '6rem' },
-          { field: 'pattern', title: 'Pattern'},
-          { field: 'description', title: 'Description' },
-          { field: 'priority', title: 'Priority',width: '6rem' },
-          { field: 'overrided', title: 'Overrided' , width :'10rem'},
+          { field: 'name', title:'Name', sortable: true,width: '40rem'},
+          { field: 'method', title: 'Method', width: '8rem',sortable: false},
+          { field: 'pattern', title: 'Pattern', sortable: true,width: '40rem'},
+          { field: 'description', title: 'Description',sortable: false ,width: '40rem'},
+          { field: 'priority', title: 'Priority',width: '6rem', filterable: false,sortable: false },
+          { field: 'overrided', title: 'Overrided' , width :'9rem', filterable: false,sortable: false},
           {
             template: '<input type="checkbox" class="activation-switch" aria-label="Activation Switch"/>',
             width: '10rem',
             filterable: false,
+            sortable: false,
           },
         ],
-        filterable: false,
+        filterable: true,
+        sortable: true,
         resizable: false,
-        expand: true,
         expand: (e) => {
           this.addClassToRow(e.sender);
           this.saveTreeState();
