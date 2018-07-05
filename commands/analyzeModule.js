@@ -1,23 +1,24 @@
-const { getModuleInfo } = require("../utils/moduleInfo");
-const signale = require("signale");
+const signale = require('signale');
+const { getModuleInfo } = require('../utils/moduleInfo');
 
-exports.desc = "Analyze the module content";
+exports.desc = 'Analyze the module content';
 exports.builder = {
   sourcePath: {
-    defaultDescription: "path of the info.xml",
-    alias: "s",
-    default: ".",
-    type: "string"
-  }
+    defaultDescription: 'path of the info.xml',
+    alias: 's',
+    default: '.',
+    type: 'string',
+  },
 };
 
-exports.handler = async argv => {
+exports.handler = async (argv) => {
   try {
     const info = await getModuleInfo(argv.sourcePath);
-    for (let element in info.moduleInfo) {
-      signale.info(element, " : ", info.moduleInfo[element]);
-    }
-    signale.success("Done");
+    const keys = Object.keys(info.moduleInfo);
+    keys.forEach((currentKey) => {
+      signale.info(currentKey, ' : ', info.moduleInfo[currentKey]);
+    });
+    signale.success('Done');
   } catch (e) {
     signale.error(e);
   }

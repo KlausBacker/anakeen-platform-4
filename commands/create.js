@@ -1,4 +1,4 @@
-const gulp = require('gulp');
+const gulp = require("gulp");
 const { create } = require("../tasks/create");
 const signale = require("signale");
 const fs = require("fs");
@@ -92,7 +92,7 @@ exports.builder = {
 
 exports.handler = function(argv) {
   if (!argv.namespace) {
-    agv.namespace = argv.vendorName;
+    argv.namespace = argv.vendorName;
   }
   try {
     signale.time("create");

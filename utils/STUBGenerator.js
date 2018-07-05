@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const xml2js = require("xml2js");
+const signale = require("signale");
 
 /*
 * Transform XML structure to PHP STUB files
@@ -10,7 +11,7 @@ exports.getSTUBgenerator = async (sourcePath, targetPath) => {
   if (fs.existsSync(sourcePath) && fs.existsSync(targetPath)) {
     // Create temporary directory
     var dir = fs.mkdtempSync(path.join(`${targetPath}`, "tmpExt-"));
-    console.log("Temporary directory: " + dir);
+    signale.info("Temporary directory: " + dir);
 
     // Get list of XML files
     var files = fs.readdirSync(sourcePath);
@@ -21,7 +22,7 @@ exports.getSTUBgenerator = async (sourcePath, targetPath) => {
       return new Promise((resolve, reject) => {
         if (!file.endsWith(".struct.xml")) {
           // Control struct XML file format
-          resolve("Invalid format");
+          reject("Invalid format");
         } else {
           // STUB file path
           var STUBfile =
@@ -50,9 +51,9 @@ exports.getSTUBgenerator = async (sourcePath, targetPath) => {
                 "\t/** Contrôle de vues  */\r\n" +
                 "\tclass " +
                 upperCaseFirstLetter(infos.name) +
-                ` extends \\${smartClass} { const familyName=\"${
+                ` extends \\${smartClass} { const familyName="${
                   infos.name
-                }\"; }\r\n` +
+                }"; }\r\n` +
                 "}\r\n" +
                 "\r\n" +
                 "namespace SmartStructure\\Fields {\r\n" +
@@ -111,7 +112,7 @@ exports.getSTUBgenerator = async (sourcePath, targetPath) => {
       // [docid]
       if (field.fielddocid) {
         field.fielddocid.forEach(function(docid) {
-          listFields += `\t\t/** [docid(\"${docid.$.relation}\")] ${
+          listFields += `\t\t/** [docid("${docid.$.relation}")] ${
             docid.$.label
           } */\r\n`;
           listFields += `\t\tconst ${docid.$.name}='${docid.$.name}';\r\n`;
@@ -149,13 +150,13 @@ exports.getSTUBgenerator = async (sourcePath, targetPath) => {
     var listParsing = files.map(parseXML);
 
     // Run the parser over all files
-    return Promise.all(listParsing).then(results => {
-      console.log("Finished parsing");
+    return Promise.all(listParsing).then(() => {
+      signale.success("Finished parsing");
       return { extractDir: dir };
     });
   } else if (!fs.existsSync(sourcePath)) {
-    console.log("Source path not found: " + sourcePath);
+    signale.error("Source path not found: " + sourcePath);
   } else if (!fs.existsSync(targetPath)) {
-    console.log("Target path not found: " + targetPath);
+    signale.error("Target path not found: " + targetPath);
   }
 };
