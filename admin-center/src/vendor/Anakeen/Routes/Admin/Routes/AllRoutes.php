@@ -13,9 +13,12 @@ class AllRoutes
 
             $nsName = explode('::', $route->name, 2);
 
-            $formatedRoute['nameSpace'] = $nsName[0];
-            $formatedRoute['name'] = $nsName[1];
-
+            if(!empty($nsName[1])) {
+                $formatedRoute['nameSpace'] = $nsName[0];
+                $formatedRoute['name'] = $nsName[1];
+            } else {
+                $formatedRoute['name'] = $nsName[0];
+            }
             $formatedRoute['description'] = $route->description;
 
             $formatedRoute['method'] = $route->methods[0];
