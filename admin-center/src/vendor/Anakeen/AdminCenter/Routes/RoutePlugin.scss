@@ -16,3 +16,23 @@
 .tree-level-1{
  background: rgba(211,211,211,0.8) !important;
 }
+
+.tabstrip h2 {
+ font-weight: lighter;
+ font-size: 5em;
+ line-height: 1;
+ padding: 0 0 0 30px;
+ margin: 0;
+}
+
+.tabstrip h2 span {
+ background: none;
+ padding-left: 5px;
+ font-size: .3em;
+ vertical-align: top;
+}
+
+.tabstrip p {
+ margin: 0;
+ padding: 0;
+}

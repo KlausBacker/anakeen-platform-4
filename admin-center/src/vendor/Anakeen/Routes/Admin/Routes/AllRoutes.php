@@ -13,9 +13,12 @@ class AllRoutes
 
             $nsName = explode('::', $route->name, 2);
 
-            $formatedRoute['nameSpace'] = $nsName[0];
-            $formatedRoute['name'] = $nsName[1];
-
+            if(!empty($nsName[1])) {
+                $formatedRoute['nameSpace'] = $nsName[0];
+                $formatedRoute['name'] = $nsName[1];
+            } else {
+                $formatedRoute['name'] = $nsName[0];
+            }
             $formatedRoute['description'] = $route->description;
 
             $formatedRoute['method'] = $route->methods[0];
@@ -30,7 +33,16 @@ class AllRoutes
 
     private function formatTreeDataSource($routes) {
         $route = $routes;
-//        sort($route);
+        uasort($route, function ($a, $b)
+        {
+            if ($a['name'] && !$b['name']) {
+                return -1;
+            } elseif (!$a['name'] && $b['name']) {
+                return 1;
+            } else {
+                return ($a['nameSpace'] < $b['nameSpace']) ? -1 : 1;
+            }
+        });
         $currentId = 1;
         $tree = [];
         $nameSpaceTab = [];
@@ -39,7 +51,7 @@ class AllRoutes
         foreach($route as $item){
             $item['id'] = $currentId++;
             $currentNameSpace = $nameSpaceTab[$item['nameSpace']];
-            if($currentNameSpace === null) {
+            if($currentNameSpace === null && $item['nameSpace'] !== null) {
                 $newId = $currentId++;
                 array_push($tree, ['id' => $newId, 'parentId' => null, 'name' => $item['nameSpace'], 'rowLevel' => 1]);
                 $nameSpaceTab[$item['nameSpace']] = $newId;

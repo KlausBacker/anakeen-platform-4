@@ -15,21 +15,22 @@ export default {
       this.$('#routes-tree').kendoTreeList({
         dataSource: this.allRoutesDataSource,
         columns: [
-          { field: 'name', title:'Name'},
-          { field: 'method', title: 'Method', width: '6rem' },
-          { field: 'pattern', title: 'Pattern'},
-          { field: 'description', title: 'Description' },
-          { field: 'priority', title: 'Priority',width: '6rem' },
-          { field: 'overrided', title: 'Overrided' , width :'10rem'},
+          { field: 'name', title:'Name', sortable: true,width: '20%'},
+          { field: 'method', title: 'Method', width: '5%',sortable: false},
+          { field: 'pattern', title: 'Pattern', sortable: true,width: '30%'},
+          { field: 'description', title: 'Description',sortable: false ,width: '30%'},
+          { field: 'priority', title: 'Priority',width: '6rem', filterable: false,sortable: false,width: '5%' },
+          { field: 'overrided', title: 'Overrided' , width :'9rem', filterable: false,sortable: false,width: '5%'},
           {
             template: '<input type="checkbox" class="activation-switch" aria-label="Activation Switch"/>',
-            width: '10rem',
+            width: '5%',
             filterable: false,
+            sortable: false,
           },
         ],
-        filterable: false,
+        filterable: true,
+        sortable: true,
         resizable: false,
-        expand: true,
         expand: (e) => {
           this.addClassToRow(e.sender);
           this.saveTreeState();
@@ -38,11 +39,11 @@ export default {
           this.addClassToRow(e.sender);
           this.saveTreeState();
         },
-      dataBound: (e) => {
-        this.addClassToRow(e.sender);
-        this.restoreTreeState();
-        this.$('.activation-switch').kendoMobileSwitch();
-      },
+        dataBound: (e) => {
+          this.addClassToRow(e.sender);
+          this.restoreTreeState();
+          this.$('.activation-switch:not(.activation-switch[data-role=switch])').kendoMobileSwitch();
+        },
     })
     .on('click', '.expand-btn', () => this.expand(true))
     .on('click', '.collapse-btn', () => this.expand(false))
@@ -93,6 +94,13 @@ export default {
   },
 
   mounted() {
+    this.$('.tabstrip').kendoTabStrip({
+      animation: {
+        open: {
+          effects: 'fadeIn',
+        }
+      }
+    });
     this.initTreeList();
     this.restoreTreeState();
     window.addEventListener('resize', () => {
