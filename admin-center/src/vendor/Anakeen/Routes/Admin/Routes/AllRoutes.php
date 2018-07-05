@@ -33,7 +33,16 @@ class AllRoutes
 
     private function formatTreeDataSource($routes) {
         $route = $routes;
-//        sort($route);
+        uasort($route, function ($a, $b)
+        {
+            if ($a['name'] && !$b['name']) {
+                return -1;
+            } elseif (!$a['name'] && $b['name']) {
+                return 1;
+            } else {
+                return ($a['nameSpace'] < $b['nameSpace']) ? -1 : 1;
+            }
+        });
         $currentId = 1;
         $tree = [];
         $nameSpaceTab = [];
