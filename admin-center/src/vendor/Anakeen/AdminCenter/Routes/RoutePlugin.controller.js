@@ -39,11 +39,11 @@ export default {
           this.addClassToRow(e.sender);
           this.saveTreeState();
         },
-      dataBound: (e) => {
-        this.addClassToRow(e.sender);
-        this.restoreTreeState();
-        this.$('.activation-switch').kendoMobileSwitch();
-      },
+        dataBound: (e) => {
+          this.addClassToRow(e.sender);
+          this.restoreTreeState();
+          this.$('.activation-switch:not(.activation-switch[data-role=switch])').kendoMobileSwitch();
+        },
     })
     .on('click', '.expand-btn', () => this.expand(true))
     .on('click', '.collapse-btn', () => this.expand(false))
