@@ -94,6 +94,13 @@ export default {
   },
 
   mounted() {
+    this.$('.tabstrip').kendoTabStrip({
+      animation: {
+        open: {
+          effects: 'fadeIn',
+        }
+      }
+    });
     this.initTreeList();
     this.restoreTreeState();
     window.addEventListener('resize', () => {
