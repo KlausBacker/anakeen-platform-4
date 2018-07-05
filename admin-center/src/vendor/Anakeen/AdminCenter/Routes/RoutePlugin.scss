@@ -1,0 +1,18 @@
+.list-routes {
+ height: 100%;
+ width: 100%;
+ display: flex;
+ flex-direction: row;
+ align-items: flex-start;
+ justify-content: stretch;
+}
+
+.routes-tree {
+ height: 100%;
+ width: 100%;
+
+}
+
+.tree-level-1{
+ background: rgba(211,211,211,0.8) !important;
+}
