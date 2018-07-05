@@ -133,7 +133,7 @@ exports.cleanTransaction = ({
       }
       if (result.success !== true) {
         throw new Error(
-          "Unable to get transaction info" + JSON.stringify(transaction)
+          "Unable to get transaction info" + JSON.stringify(result)
         );
       }
       if (!force && result.data.status !== "end") {

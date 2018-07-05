@@ -1,11 +1,12 @@
 const gulp = require("gulp");
 const { getSTUBgenerator } = require("../utils/STUBGenerator");
 const path = require("path");
+const signale = require("signale");
 
-exports.stub = ({sourcePath, targetPath = "./stubs"}) => {
+exports.stub = ({ sourcePath, targetPath = "./stubs" }) => {
   return gulp.task("stub", async () => {
     if (sourcePath === undefined) {
-      console.log("No source path specified.");
+      signale.error("No source path specified.");
       return;
     }
     try {

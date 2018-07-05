@@ -24,6 +24,9 @@
     "yargs": "^11.0.0"
   },
   "devDependencies": {
-    "easygettext": "^2.5.0"
+    "easygettext": "^2.5.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-import": "^2.13.0"
   }
 }

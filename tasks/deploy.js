@@ -10,7 +10,8 @@ const executeTransaction = async ({
   transaction,
   controlUrl,
   controlUsername,
-  controlPassword
+  controlPassword,
+  parameterValues
 }) => {
   if (transaction.status === "licenses") {
     await control.validateLicenses({

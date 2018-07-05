@@ -1,13 +1,12 @@
 const gulp = require('gulp');
-const gzip = require('gulp-gzip');
 const { getPOExtractor } = require("../utils/POExtractor");
 const path = require("path");
-const appConst = require("../utils/appConst");
+const signale = require('signale');
 
 exports.po = (sourcePath, targetPath = './extraction', format = 'all') => {
     return gulp.task('po', async () => {
         if(sourcePath === undefined) {
-        console.log("No source path specified.");
+        signale.error("No source path specified.");
         return;
     }
     try {
