@@ -42,7 +42,7 @@ class AllRoutes
         foreach($route as $item){
             $item['id'] = $currentId++;
             $currentNameSpace = $nameSpaceTab[$item['nameSpace']];
-            if($currentNameSpace === null) {
+            if($currentNameSpace === null && $item['nameSpace'] !== null) {
                 $newId = $currentId++;
                 array_push($tree, ['id' => $newId, 'parentId' => null, 'name' => $item['nameSpace'], 'rowLevel' => 1]);
                 $nameSpaceTab[$item['nameSpace']] = $newId;
