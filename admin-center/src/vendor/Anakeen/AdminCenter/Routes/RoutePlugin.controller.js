@@ -15,15 +15,15 @@ export default {
       this.$('#routes-tree').kendoTreeList({
         dataSource: this.allRoutesDataSource,
         columns: [
-          { field: 'name', title:'Name', sortable: true,width: '40rem'},
-          { field: 'method', title: 'Method', width: '8rem',sortable: false},
-          { field: 'pattern', title: 'Pattern', sortable: true,width: '40rem'},
-          { field: 'description', title: 'Description',sortable: false ,width: '40rem'},
-          { field: 'priority', title: 'Priority',width: '6rem', filterable: false,sortable: false },
-          { field: 'overrided', title: 'Overrided' , width :'9rem', filterable: false,sortable: false},
+          { field: 'name', title:'Name', sortable: true,width: '20%'},
+          { field: 'method', title: 'Method', width: '5%',sortable: false},
+          { field: 'pattern', title: 'Pattern', sortable: true,width: '30%'},
+          { field: 'description', title: 'Description',sortable: false ,width: '30%'},
+          { field: 'priority', title: 'Priority',width: '6rem', filterable: false,sortable: false,width: '5%' },
+          { field: 'overrided', title: 'Overrided' , width :'9rem', filterable: false,sortable: false,width: '5%'},
           {
             template: '<input type="checkbox" class="activation-switch" aria-label="Activation Switch"/>',
-            width: '10rem',
+            width: '5%',
             filterable: false,
             sortable: false,
           },
