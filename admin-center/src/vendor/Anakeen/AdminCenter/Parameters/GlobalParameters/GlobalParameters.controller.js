@@ -26,17 +26,15 @@ export default {
         initTreeList() {
             let toolbarTemplate = `
                 <div class="global-parameters-toolbar">
-                    <button class="btn btn-secondary toolbar-btn refresh-btn">
-                        <i class="material-icons">refresh</i>
-                    </button>
-                    <button class="btn btn-secondary toolbar-btn expand-btn">
-                        <i class="material-icons">expand_more</i>
-                    </button>
-                    <button class="btn btn-secondary toolbar-btn collapse-btn">
-                        <i class="material-icons">expand_less</i>
-                    </button>
+                    <a class="switch-btn">User parameters</a>
+                    <a class="refresh-btn"></a>
+                    <a class="expand-btn"></a>
+                    <a class="collapse-btn"></a>
                     <div id="search-input" class="input-group">
-                        <input type="text" class="form-control global-search-input" placeholder="Filter parameters...">
+                        <input type="text"
+                               class="form-control global-search-input"
+                               placeholder="Filter parameters..."
+                               style="border-radius: .25rem;">
                         <i class="input-group-addon material-icons reset-search-btn">close</i>
                     </div>
                 </div>
@@ -54,7 +52,7 @@ export default {
                         width: '6rem',
                         filterable: false,
                         template: '# if (!data.rowLevel && !data.isStatic && !data.isReadOnly) { #' +
-                        '<button class="btn btn-secondary edition-btn" title="Edit"><i class="material-icons" style="font-size: 1.3rem">edit</i></button>' +
+                        '<a class="edition-btn" title="Edit"></a>' +
                         '# } #',
                     },
                 ],
@@ -75,6 +73,9 @@ export default {
                 dataBound: (e) => {
                     this.addClassToRow(e.sender);
                     this.restoreTreeState();
+                    this.$('.edition-btn').kendoButton({
+                        icon: 'edit',
+                    });
                 },
             })
                 .on('click', '.edition-btn', (e) => {
@@ -83,6 +84,7 @@ export default {
 
                     this.openEditor(dataItem);
                 })
+                .on('click', '.switch-btn', () => this.switchParameters())
                 .on('click', '.refresh-btn', () => this.allParametersDataSource.read())
                 .on('click', '.expand-btn', () => this.expand(true))
                 .on('click', '.collapse-btn', () => this.expand(false))
@@ -91,6 +93,22 @@ export default {
                     this.$('.global-search-input').val('');
                     this.searchParameters('');
                 });
+
+            this.$('.switch-btn').kendoButton({
+                icon: 'arrow-right',
+            });
+            this.$('.refresh-btn').kendoButton({
+                icon: 'reload',
+            });
+            this.$('.expand-btn').kendoButton({
+                icon: 'arrow-60-down',
+            });
+            this.$('.collapse-btn').kendoButton({
+                icon: 'arrow-60-up',
+            });
+            this.$('.edition-btn').kendoButton({
+                icon: 'edit',
+            });
         },
 
         openEditor(dataItem) {
@@ -191,6 +209,15 @@ export default {
                 });
                 this.addClassToRow(treeList);
             }
+        },
+
+        switchParameters() {
+            let editor = this.$('.edition-window').data('kendoWindow');
+            if (editor) {
+                editor.destroy();
+            }
+
+            this.$emit('switchParameters');
         },
     },
 

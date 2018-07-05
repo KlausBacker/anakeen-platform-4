@@ -14,6 +14,7 @@ export default {
             editedItem: null,
             editRoute: '',
             actualLogin: '',
+            inputSearchValue: '',
         };
     },
 
@@ -25,15 +26,28 @@ export default {
                     { field: 'firstname', title: 'First name' },
                     { field: 'lastname', title: 'Last name' },
                     {
-                        width: '6rem',
+                        width: '14rem',
                         filterable: false,
-                        template: '<button class="btn btn-secondary selection-btn">Select</button>',
+                        template: '<a class="selection-btn">Select user</a>',
                     },
                 ],
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: '/api/v2/admin/parameters/users/',
+                        },
+                    },
+                },
+                // height: '100%',
                 filterable: false,
                 resizable: false,
                 messages: {
                     noRows: 'Search a user to modify his settings',
+                },
+                dataBound: () => {
+                    this.$('.selection-btn').kendoButton({
+                        icon: 'user',
+                    });
                 },
             })
                 .on('click', '.selection-btn', (e) => {
@@ -46,21 +60,15 @@ export default {
         initTreeList() {
             let toolbarTemplate = `
                 <div class="user-parameters-toolbar">
-                    <button class="btn btn-primary toolbar-btn back-btn">
-                        <i class="material-icons">arrow_back</i>
-                        <span>User search</span>
-                    </button>
-                    <button class="btn btn-secondary toolbar-btn refresh-btn">
-                        <i class="material-icons">refresh</i>
-                    </button>
-                    <button class="btn btn-secondary toolbar-btn expand-btn">
-                        <i class="material-icons">expand_more</i>
-                    </button>
-                    <button class="btn btn-secondary toolbar-btn collapse-btn">
-                        <i class="material-icons">expand_less</i>
-                    </button>
+                    <a class="back-btn">Search another user</a>
+                    <a class="refresh-btn"></a>
+                    <a class="expand-btn"></a>
+                    <a class="collapse-btn"></a>
                     <div id="search-input" class="input-group">
-                        <input type="text" class="form-control global-search-input" placeholder="Filter parameters...">
+                        <input type="text"
+                               class="form-control global-search-input"
+                               placeholder="Filter parameters..."
+                               style="border-radius: .25rem">
                         <i class="input-group-addon material-icons reset-search-btn">close</i>
                     </div>
                 </div>
@@ -79,9 +87,9 @@ export default {
                         width: '10rem',
                         filterable: false,
                         template: '# if (!data.rowLevel && !data.isStatic && !data.isReadOnly) { #' +
-                        '<button class="btn btn-secondary edition-btn" title="Edit" style="margin-right: .4rem;"><i class="material-icons" style="font-size: 1.3rem;">edit</i></button>' +
+                        '<a class="edition-btn" title="Edit"></a>' +
                         '# if (data.forUser) { #' +
-                        '<button class="btn btn-secondary delete-btn" title="Restore system value"><i class="material-icons" style="font-size: 1.3rem;">settings_backup_restore</i></button>' +
+                        '<a class="delete-btn" title="Restore system value"></a>' +
                         '# } #' +
                         '# } #',
                     },
@@ -103,6 +111,14 @@ export default {
                 dataBound: (e) => {
                     this.addClassToRow(e.sender);
                     this.restoreTreeState();
+
+                    // Init kendo button in tree
+                    this.$('.edition-btn').kendoButton({
+                        icon: 'edit',
+                    });
+                    this.$('.delete-btn').kendoButton({
+                        icon: 'undo',
+                    });
                 },
             })
                 .on('click', '.edition-btn', (e) => {
@@ -127,7 +143,9 @@ export default {
                     // Focus on search input
                     this.$('#user-search-input').focus();
                 })
-                .on('click', '.refresh-btn', () => this.userParametersDataSource.read())
+                .on('click', '.refresh-btn', () => {
+                    this.userParametersDataSource.read();
+                })
                 .on('click', '.expand-btn', () => this.expand(true))
                 .on('click', '.collapse-btn', () => this.expand(false))
                 .on('input', '.global-search-input', (e) => this.searchParameters(e.currentTarget.value))
@@ -135,6 +153,20 @@ export default {
                     this.$('.global-search-input').val('');
                     this.searchParameters('');
                 });
+
+            // Init kendo button of toolbar
+            this.$('.back-btn').kendoButton({
+                icon: 'arrow-chevron-left',
+            });
+            this.$('.refresh-btn').kendoButton({
+                icon: 'reload',
+            });
+            this.$('.expand-btn').kendoButton({
+                icon: 'arrow-60-down',
+            });
+            this.$('.collapse-btn'). kendoButton({
+                icon: 'arrow-60-up',
+            });
         },
 
         selectUser(dataItem) {
@@ -143,7 +175,7 @@ export default {
             this.userParametersDataSource = new kendo.data.TreeListDataSource({
                 transport: {
                     read: {
-                        url: '/api/v2/admin/parameters/' + this.actualLogin + '/',
+                        url: '/api/v2/admin/parameters/users/' + this.actualLogin + '/',
                     },
                 },
             });
@@ -159,26 +191,44 @@ export default {
 
         openEditor(dataItem) {
             this.editedItem = dataItem;
-            this.editRoute = 'admin/parameters/' + this.actualLogin + '/' + dataItem.nameSpace + '/' + dataItem.name + '/';
+            this.editRoute = 'admin/parameters/'
+                             + this.actualLogin + '/'
+                             + dataItem.nameSpace + '/'
+                             + dataItem.name + '/';
         },
 
         deleteParameter(dataItem) {
-            Vue.ankApi.delete('parameters/' + this.actualLogin + '/' + dataItem.nameSpace + '/' + dataItem.name + '/')
+            Vue.ankApi.delete('admin/parameters/' + this.actualLogin + '/' + dataItem.nameSpace + '/' + dataItem.name + '/')
                 .then(() => {
-                    //TODO Display window to confirm deletion of parameter
+                    this.$('.delete-confirmation-window').kendoWindow({
+                        modal: true,
+                        draggable: false,
+                        resizable: false,
+                        title: 'Parameter restored',
+                        width: '30%',
+                        visible: false,
+                        actions: [],
+                    }).data('kendoWindow').center().open();
                 });
+            this.userParametersDataSource.read();
+        },
+
+        closeDeleteConfirmation() {
+            this.$('.delete-confirmation-window').data('kendoWindow').close();
         },
 
         searchUser() {
             let user = this.$('#user-search-input').val();
-            let usersDataSource = new kendo.data.TreeListDataSource({
-                transport: {
-                    read: {
-                        url: '/api/v2/admin/parameters/users/' + user,
+            if (user.trim()) {
+                let usersDataSource = new kendo.data.TreeListDataSource({
+                    transport: {
+                        read: {
+                            url: '/api/v2/admin/parameters/users/search/' + user + '/',
+                        },
                     },
-                },
-            });
-            this.$('#users-tree').data('kendoTreeList').setDataSource(usersDataSource);
+                });
+                this.$('#users-tree').data('kendoTreeList').setDataSource(usersDataSource);
+            }
         },
 
         searchParameters(researchTerms) {
@@ -216,6 +266,7 @@ export default {
                 items.each(function addTypeClass() {
                     let dataItem = treeList.dataItem(this);
                     if (dataItem.rowLevel) {
+                        $(this).addClass('grid-expandable');
                         $(this).addClass('grid-level-' + dataItem.rowLevel);
                     }
                 });
@@ -278,13 +329,49 @@ export default {
         clearSearchInput() {
             this.$('#user-search-input').val('');
         },
+
+        switchParameters() {
+            let editor = this.$('.edition-window').data('kendoWindow');
+            if (editor) {
+                editor.destroy();
+            }
+
+            this.$emit('switchParameters');
+        },
+    },
+
+    computed: {
+        isSearchButtonDisabled() {
+            return (this.inputSearchValue === '');
+        },
     },
 
     mounted() {
         this.initUserTreeList();
         this.initTreeList();
+
+        // Init switch button
+        this.$('.switch-parameters').kendoButton({
+            icon: 'arrow-left',
+        });
+
+        // Hide user parameters tree to show user search
         this.$('#parameters-div').attr('style', 'display: none !important;');
+
+        // Focus on input for quick search
         this.$('#user-search-input').focus();
+
+        // Add event listener on treeList to expand/collapse rows on click
+        this.$('#user-parameters-tree').on('mouseup', 'tbody > .grid-expandable', (e) => {
+            let treeList = this.$(e.delegateTarget).data('kendoTreeList');
+            if ($(e.currentTarget).attr('aria-expanded') === 'false') {
+                treeList.expand(e.currentTarget);
+            } else {
+                treeList.collapse(e.currentTarget);
+            }
+
+            this.saveTreeState();
+        });
 
         // At window resize, resize the treeList
         window.addEventListener('resize', () => {
@@ -302,5 +389,6 @@ export default {
                 kUserTree.resize();
             }
         });
+
     },
 };

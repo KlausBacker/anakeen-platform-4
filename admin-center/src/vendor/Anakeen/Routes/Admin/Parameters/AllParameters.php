@@ -53,14 +53,29 @@ class AllParameters
     {
         // Sort parameters : 1) Categorized / not categorized 2) By alphabetlical order
         $params = $parameters;
+
         uasort($params, function ($a, $b)
         {
-            if ($a['category'] && !$b['category']) {
+            if ($a['nameSpace'] < $b['nameSpace']) {
                 return -1;
-            } elseif (!$a['category'] && $b['category']) {
+            } elseif ($a['nameSpace'] > $b['nameSpace']) {
                 return 1;
             } else {
-                return ($a['name'] < $b['name']) ? -1 : 1;
+                if ($a['category'] && !$b['category']) {
+                    return -1;
+                } elseif (!$a['category'] && $b['category']) {
+                    return 1;
+                } elseif ($a['category'] && $b['category']) {
+                    if ($a['category'] < $b['category']) {
+                        return -1;
+                    } elseif ($a['category'] > $b['category']) {
+                        return 1;
+                    } else {
+                        return ($a['name'] < $b['name']) ? -1 : 1;
+                    }
+                } else {
+                    return ($a['name'] < $b['name']) ? -1 : 1;
+                }
             }
         });
 

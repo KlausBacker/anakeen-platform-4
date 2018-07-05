@@ -1,6 +1,6 @@
 <template>
-    <div id="edition-window" v-if="editedItem">
-        <form>
+    <div class="edition-window">
+        <form v-if="editedItem">
             <div class="form-group">
                 <label for="parameter-description" class="form-label">Description : </label>
                 <span class="description-text" id="parameter-description">
@@ -22,7 +22,7 @@
             <button class="btn btn-primary form-parameter-btn" @click="modifyParameter">Save new value</button>
             <button class="btn btn-secondary form-parameter-btn" @click="closeEditor">Cancel value modification</button>
         </form>
-        <div id="confirmation-window" v-show="false" @keyup.enter.stop="closeConfirmationAndEditor">
+        <div class="confirmation-window" v-show="false" @keyup.enter.stop="closeConfirmationAndEditor">
             <div class="information-text">Parameter successfully modified</div>
             <button class="btn btn-primary form-parameter-btn" @click="closeConfirmationAndEditor">Back to parameters</button>
         </div>

@@ -26,7 +26,7 @@ export default {
     methods: {
         openEditor() {
             if (this.editedItem) {
-                this.$('#edition-window').kendoWindow({
+                this.$('.edition-window').kendoWindow({
                     modal: true,
                     autoFocus: false,
                     draggable: false,
@@ -36,7 +36,13 @@ export default {
                     visible: false,
                     actions: ['Close'],
                     activate: () => this.$('#parameter-new-value').focus(),
-                    close: () => this.$emit('closeEditor'),
+                    close: () => {
+                        if (this.parameterInputType === 'json' && this.isJson(this.editedItem.value)) {
+                            this.jsonEditor.destroy();
+                        }
+
+                        this.$emit('closeEditor');
+                    },
                 }).data('kendoWindow').center().open();
 
                 this.$('#parameter-new-value').css('border-color', '');
@@ -52,14 +58,6 @@ export default {
                     }, this.jsonValue);
                 }
             }
-        },
-
-        closeEditor() {
-            if (this.parameterInputType === 'json' && this.isJson(this.editedItem.value)) {
-                this.jsonEditor.destroy();
-            }
-
-            this.$('#edition-window').data('kendoWindow').close();
         },
 
         modifyParameter() {
@@ -79,7 +77,7 @@ export default {
                     value: newValue,
                 })
                 .then(() => {
-                    this.$('#confirmation-window').kendoWindow({
+                    this.$('.confirmation-window').kendoWindow({
                         modal: true,
                         draggable: false,
                         resizable: false,
@@ -92,8 +90,8 @@ export default {
         },
 
         closeConfirmationAndEditor() {
-            this.$('#confirmation-window').data('kendoWindow').close();
-            this.closeEditor();
+            this.$('.confirmation-window').data('kendoWindow').close();
+            this.$('.edition-window').data('kendoWindow').close();
         },
 
         isJson(stringValue) {
@@ -144,9 +142,10 @@ export default {
     },
 
     mounted() {
+        this.openEditor();
         // When resizing the browser window, resize and center the edition window
         window.addEventListener('resize', () => {
-            let editionWindow = this.$('#edition-window').data('kendoWindow');
+            let editionWindow = this.$('.edition-window').data('kendoWindow');
             if (editionWindow) {
                 editionWindow.setOptions({
                     width: '60%',
