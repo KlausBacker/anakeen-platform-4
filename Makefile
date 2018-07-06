@@ -23,3 +23,4 @@ deploy:
 stubs:
 	npx anakeen-cli generateStubs -s ./src/vendor/Anakeen/SmartStructures/FieldAccessLayer/ -t Stubs/
 	npx anakeen-cli generateStubs -s ./src/vendor/Anakeen/SmartStructures/FieldAccessLayerList/ -t Stubs/
+	rm -fr Stubs/tmpExt*
