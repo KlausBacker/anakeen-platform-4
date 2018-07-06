@@ -436,7 +436,7 @@ class FormatCollection
     }
 
     /**
-     * @param Format\StandardAttributeValue|null                      $info
+     * @param Format\StandardAttributeValue|null               $info
      * @param \Anakeen\Core\SmartStructure\BasicAttribute|null $oa
      * @param \Anakeen\Core\Internal\SmartElement              $doc
      * @return Format\StandardAttributeValue
@@ -465,9 +465,9 @@ class FormatCollection
     }
 
     /**
-     * @param Format\StandardAttributeValue|string|null  $info
-     * @param string                              $propId
-     * @param \Anakeen\Core\Internal\SmartElement $doc
+     * @param Format\StandardAttributeValue|string|null $info
+     * @param string                                    $propId
+     * @param \Anakeen\Core\Internal\SmartElement       $doc
      * @return Format\StandardAttributeValue
      */
     protected function callPropertyRenderHook($info, $propId, \Anakeen\Core\Internal\SmartElement $doc)
@@ -764,22 +764,34 @@ class FormatCollection
                 );
                 if ($doc->dprofid > 0) {
                     $profil = SEManager::getDocument($doc->dprofid);
-                    $info["profil"]["reference"] = array(
-                        "id" => intval($profil->initid),
-                        "icon" => $profil->getIcon("", $this->familyIconSize),
-                        "activated" => ($profil->id == $profil->profid),
-                        "title" => $profil->getTitle()
-                    );
+                    if ($profil && $profil->hasPermission("view")) {
+                        $info["profil"]["reference"] = array(
+                            "id" => intval($profil->initid),
+                            "icon" => $profil->getIcon("", $this->familyIconSize),
+                            "activated" => ($profil->id == $profil->profid),
+                            "title" => $profil->getTitle()
+                        );
+                    }
                     $info["profil"]["type"] = "dynamic";
                 }
             } else {
                 $profil = SEManager::getDocument(abs($doc->profid));
-                $info["profil"] = array(
-                    "id" => intval($profil->initid),
-                    "icon" => $profil->getIcon("", $this->familyIconSize),
-                    "type" => "linked",
-                    "activated" => ($profil->id == $profil->profid),
-                    "title" => $profil->getTitle()
+                if ($profil && $profil->hasPermission("view")) {
+                    $info["profil"] = array(
+                        "id" => intval($profil->initid),
+                        "icon" => $profil->getIcon("", $this->familyIconSize),
+                        "type" => "linked",
+                        "activated" => ($profil->id == $profil->profid),
+                        "title" => $profil->getTitle()
+                    );
+                }
+            }
+            $fall = SEManager::getDocument($doc->fallid);
+            if ($fall && $fall->hasPermission("view")) {
+                $info["fieldAccess"] = array(
+                    "id" => intval($fall->initid),
+                    "icon" => $fall->getIcon("", $this->familyIconSize),
+                    "title" => $fall->getTitle()
                 );
             }
         } else {

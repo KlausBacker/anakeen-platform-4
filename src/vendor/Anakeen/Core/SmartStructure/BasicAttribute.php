@@ -80,6 +80,7 @@ class BasicAttribute
         return (!$this->fieldSet) ? $this->access : $this->fieldSet->getAccess() & $this->access;
     }
 
+
     /**
      * Return value of option $x
      *

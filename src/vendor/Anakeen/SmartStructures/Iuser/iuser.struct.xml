@@ -13,7 +13,7 @@
                 <smart:field-text name="us_mail" label="mail" access="Read" link="mailto:%US_MAIL%" is-abstract="true"/>
                 <smart:field-text name="us_extmail" label="mail principal" access="ReadWrite"/>
             </smart:field-set>
-            <smart:field-set name="us_tab_identity" type="tab" label="Système" access="Read">
+            <smart:field-set name="us_tab_sysinfo" type="tab" label="Système" access="None">
                 <smart:field-set name="us_fr_sysident" type="frame" label="Identifier" access="Read">
                     <smart:field-text name="us_login" label="login" access="Read" needed="true"/>
                 </smart:field-set>

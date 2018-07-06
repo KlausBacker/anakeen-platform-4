@@ -440,7 +440,7 @@ class ImportDocumentDescription
                     $this->doCprofid($data);
                     break;
 
-                case "CFALLFID":
+                case "CFALLID":
                     $this->doCFallid($data);
                     break;
 
