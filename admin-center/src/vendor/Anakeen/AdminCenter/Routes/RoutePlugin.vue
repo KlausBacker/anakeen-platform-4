@@ -2,15 +2,18 @@
     <div>
         <div class="tabstrip">
             <ul>
-                <li class="k-state-active">
+                <li class="routes-tab">
                     Routes
                 </li>
-                <li>
-                    Middleware
+                <li class="middlewares-tab">
+                    Middlewares
                 </li>
             </ul>
             <div id="list-routes" class="list-routes">
                 <div id="routes-tree" class="routes-tree"></div>
+            </div>
+            <div id="list-middlewares" class="list-middlewares">
+                <div id="middlewares-tree" class="middlewares-tree"></div>
             </div>
         </div>
     </div>
