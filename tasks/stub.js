@@ -16,17 +16,16 @@ exports.stub = ({ sourcePath, targetPath = "./stubs" }) => {
         const files = structureFiles.map(currentStruct => {
           return currentStruct.path;
         });
-  
+
         gulp
           .src(files)
-          .pipe(
-            asyncCallback(parseStub, true)
-          )
-          .pipe(gulp.dest(targetPath)).on("end", resolve).on("error", resolve);
+          .pipe(asyncCallback(parseStub, true))
+          .pipe(gulp.dest(targetPath))
+          .on("end", resolve)
+          .on("error", reject);
       } catch (e) {
         reject(e);
       }
     });
-    
   });
 };
