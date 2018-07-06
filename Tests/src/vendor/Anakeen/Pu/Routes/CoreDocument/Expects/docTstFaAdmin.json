@@ -14,7 +14,6 @@
                     "displayValue": "Test de contr\u00f4le"
                 }, "tst_fa__account": {
                     "familyRelation": "",
-                    "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1008&amp;latest=Y",
                     "icon": "\/api\/v2\/images\/assets\/sizes\/14x14c\/se-iuser.png",
                     "revision": -1,
                     "initid": 1008,

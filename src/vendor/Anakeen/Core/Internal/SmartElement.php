@@ -68,6 +68,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
             "domainid",
             "lockdomainid",
             "cvid",
+            "fallid",
             "name",
             "dprofid",
             "views",
@@ -471,6 +472,14 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
      */
     public $cvid;
     /**
+     * identifier of the field access layer list
+     *
+     * if 0 then no field access layer
+     *
+     * @var int
+     */
+    public $fallid;
+    /**
      * string identifier of the document
      *
      * @var string
@@ -589,21 +598,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
     private $lastRefreshError = '';
     private $formaterLevel = 0;
     private $otherFormatter = array();
-    /**
-     * identification of special views
-     *
-     * @var array
-     */
-    public $cviews
-        = array(
-            "FDL:VIEWBODYCARD",
-            "FDL:VIEWABSTRACTCARD",
-            "FDL:VIEWTHUMBCARD"
-        );
-    public $eviews
-        = array(
-            "FDL:EDITBODYCARD"
-        );
+
     /**
      * @var \Anakeen\SmartStructures\Wdoc\WDocHooks
      */
@@ -729,6 +724,7 @@ create table doc ( id int not null,
                    postitid text,
                    domainid text,
                    lockdomainid int,
+                   fallid int,
                    cvid int,
                    name text,
                    dprofid int DEFAULT 0,
@@ -750,47 +746,7 @@ create sequence seq_id_doc start 1000;
 create sequence seq_id_tdoc start 1000000000;
 create index i_docname on doc(name);
 create unique index i_docir on doc(initid, revision);";
-    // --------------------------------------------------------------------
-    //---------------------- OBJECT CONTROL PERMISSION --------------------
-    public $obj_acl = array(); // set by childs classes
-    // --------------------------------------------------------------------
 
-    /**
-     * default view to view card
-     *
-     * @var string
-     */
-    public $defaultview = "FDL:VIEWBODYCARD";
-    /**
-     * default view to edit card
-     *
-     * @var string
-     */
-    public $defaultedit = "FDL:EDITBODYCARD";
-    /**
-     * default view for abstract card
-     *
-     * @var string
-     */
-    public $defaultabstract = "FDL:VIEWABSTRACTCARD";
-    /**
-     * default view use when edit document for the first time (creation mode)
-     *
-     * @var string
-     */
-    public $defaultcreate = "";
-    /**
-     * for email : the same as $defaultview by default
-     *
-     * @var string
-     */
-    public $defaultmview = "";
-    /**
-     * use when family wants to define a special context menu
-     *
-     * @var array
-     */
-    public $specialmenu = array();
 
     public $defDoctype = 'F';
     /**
@@ -2375,20 +2331,17 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @api get attribute object
      *
-     * @param string                                      $idAttr  attribute identifier
-     * @param \Anakeen\Core\SmartStructure\BasicAttribute &$oa     object reference use this if want to modify attribute
-     * @param bool                                        $useMask set to false to not apply mask if needed (quick access mode)
+     * @param string                                      $idAttr attribute identifier
+     * @param \Anakeen\Core\SmartStructure\BasicAttribute &$oa    object reference use this if want to modify attribute
      *
      * @return \Anakeen\Core\SmartStructure\BasicAttribute|bool|\Anakeen\Core\SmartStructure\NormalAttribute
      */
-    final public function &getAttribute($idAttr, &$oa = null, $useMask = true)
+    final public function &getAttribute($idAttr, &$oa = null)
     {
         if ($idAttr !== \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD) {
             $idAttr = strtolower($idAttr);
         }
-        if ($useMask) {
-            $this->getAttributes($useMask);
-        }
+
         if (isset($this->attributes->attr[$idAttr])) {
             $oa = $this->attributes->attr[$idAttr];
         } else {
@@ -2402,7 +2355,6 @@ create unique index i_docir on doc(initid, revision);";
      * return all the attributes object
      * the attribute can be defined in fathers
      *
-     * @param bool $useMask set to false to not apply mask if needed (quick access mode)
      *
      * @return \Anakeen\Core\SmartStructure\BasicAttribute[]
      */
@@ -2459,8 +2411,6 @@ create unique index i_docir on doc(initid, revision);";
         }
         return 0;
     }
-
-
 
 
     /**
@@ -2815,7 +2765,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
 
-
     /**
      * return all the necessary attributes
      *
@@ -3080,7 +3029,7 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
          */
-        $oa = $this->getAttribute($idAttr, $nothing, false);
+        $oa = $this->getAttribute($idAttr, $nothing);
         if (!$oa) {
             throw new \Dcp\Exception('DOC0114', $idAttr, $this->title, $this->fromname);
         }
@@ -3169,7 +3118,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         $t = $this->rawValueToArray($v);
         if ($index == -1) {
-            $oa = $this->getAttribute($idAttr, $nothing, false);
+            $oa = $this->getAttribute($idAttr, $nothing);
             if ($oa && $oa->type == "xml") {
                 foreach ($t as $k => $v) {
                     $t[$k] = str_replace('<BR>', "\n", $v);
@@ -3178,7 +3127,7 @@ create unique index i_docir on doc(initid, revision);";
             return $t;
         }
         if (isset($t[$index])) {
-            $oa = $this->getAttribute($idAttr, $nothing, false);
+            $oa = $this->getAttribute($idAttr, $nothing);
             if ($oa && $oa->type == "xml") {
                 $t[$index] = str_replace('<BR>', "\n", $t[$index]);
             }
@@ -5901,7 +5850,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getIcon($idicon = "", $size = null, $otherId = null)
     {
-        $apiURL = '/'.CollectionDataFormatter::APIURL;
+        $apiURL = '/' . CollectionDataFormatter::APIURL;
         $efile = null;
 
         if ($idicon == "") {
@@ -6044,7 +5993,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
 
-
     /**
      * Special Refresh
      * called when refresh document : when view, modify document - generally when access to the document
@@ -6104,15 +6052,15 @@ create unique index i_docir on doc(initid, revision);";
             throw new \Dcp\Exception(\ErrorCode::getError('ATTR1212', $callMethod, $this->fromname));
         }
 
-            if ($oAttr->inArray()) {
-                $this->completeArrayRow($oAttr->fieldSet->id);
-                $t = $this->getMultipleRawValues($attrId);
-                foreach ($t as $k => $v) {
-                    $err .= $this->setValue($attrId, $this->applyMethod($callMethod, '', $k), $k);
-                }
-            } else {
-                $err .= $this->setValue($attrId, $this->applyMethod($callMethod));
+        if ($oAttr->inArray()) {
+            $this->completeArrayRow($oAttr->fieldSet->id);
+            $t = $this->getMultipleRawValues($attrId);
+            foreach ($t as $k => $v) {
+                $err .= $this->setValue($attrId, $this->applyMethod($callMethod, '', $k), $k);
             }
+        } else {
+            $err .= $this->setValue($attrId, $this->applyMethod($callMethod));
+        }
 
         return $err;
     }
@@ -6503,12 +6451,9 @@ create unique index i_docir on doc(initid, revision);";
                         }
                         break;
 
-                    case "ext":
-                        $ul .= "&amp;app=FDL&amp;action=VIEWEXTDOC&amp;id=$id";
-                        break;
 
                     default:
-                        $ul .= "&amp;app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=$id";
+                        $ul .= sprintf("/api/v2/documents/%s.html", $id);
                 }
                 /* Add target's specific elements to base URL */
 
@@ -7000,9 +6945,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function getZoneOption($zone = "")
     {
-        if ($zone == "") {
-            $zone = $this->defaultview;
-        }
+
 
         $zoneElements = $this->parseZone($zone);
         if ($zoneElements === false) {
@@ -7019,12 +6962,8 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return string
      */
-    public function getZoneTransform($zone = "")
+    public function getZoneTransform($zone)
     {
-        if ($zone == "") {
-            $zone = $this->defaultview;
-        }
-
         $zoneElements = $this->parseZone($zone);
         if ($zoneElements === false) {
             return '';
@@ -7227,7 +7166,7 @@ create unique index i_docir on doc(initid, revision);";
         if (strtolower($ext) == "odt") {
             $target = "ooo";
             $ulink = false;
-            $this->lay = new \OOoLayout($tplfile,  $this);
+            $this->lay = new \OOoLayout($tplfile, $this);
         } else {
             $this->lay = new \Layout($tplfile, "");
         }

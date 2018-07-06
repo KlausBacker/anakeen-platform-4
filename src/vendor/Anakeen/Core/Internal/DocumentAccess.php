@@ -662,6 +662,21 @@ class DocumentAccess
         $this->document->cvid = $cvid;
     }
 
+
+    /**
+     * set access layers for element
+     *
+     * @param int $fallid identifier for control view document
+     *
+     */
+    public function setFallid($fallid)
+    {
+        if ($fallid && !is_numeric($fallid)) {
+            $fallid = SEManager::getIdFromName($fallid);
+        }
+        $this->document->fallid = $fallid;
+    }
+
     /**
      * use to know if current user has access privilege
      *

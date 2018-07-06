@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
   <smart:access-configuration name="TST_DOCPRFBASIC" link="TST_PRFJOHN"/>
-  <smart:access-configuration name="TST_PRFDYNUSER" label="Test user dyn 1" profil-type="PDOC" linked-structure="TST_PROFIL">
+  <smart:access-configuration name="TST_PRFDYNUSER" label="Test user dyn 1" profil-type="PDOC" access-structure="TST_PROFIL">
     <smart:element-access access="view" field="tst_user"/>
     <smart:element-access access="edit" field="tst_user"/>
   </smart:access-configuration>
-  <smart:access-configuration name="TST_PRFDYNUSER_ATTR" label="Test user dyn 1" profil-type="PDOC" linked-structure="TST_PROFIL">
+  <smart:access-configuration name="TST_PRFDYNUSER_ATTR" label="Test user dyn 1" profil-type="PDOC" access-structure="TST_PROFIL">
     <smart:element-access access="view" field="tst_user"/>
     <smart:element-access access="edit" field="tst_user"/>
-    <smart:element-access access="send" login="jane"/>
+    <smart:element-access access="send" account="jane"/>
   </smart:access-configuration>
-  <smart:access-configuration name="TST_PRFDYNUSER_ACCOUNT" label="Test user dyn 1" profil-type="PDOC" linked-structure="TST_PROFIL">
+  <smart:access-configuration name="TST_PRFDYNUSER_ACCOUNT" label="Test user dyn 1" profil-type="PDOC" access-structure="TST_PROFIL">
     <smart:element-access access="view" field="tst_user"/>
     <smart:element-access access="edit" field="tst_user"/>
-    <smart:element-access access="edit" login="john"/>
-    <smart:element-access access="send" login="jane"/>
-    <smart:element-access access="send" login="john"/>
+    <smart:element-access access="edit" account="john"/>
+    <smart:element-access access="send" account="jane"/>
+    <smart:element-access access="send" account="john"/>
     <smart:element-access access="unlock" element="TST_USERJOHN"/>
   </smart:access-configuration>
-  <smart:access-configuration name="TST_PRFDYNGROUP" label="Test user dyn 1" profil-type="PDOC" linked-structure="TST_PROFIL">
+  <smart:access-configuration name="TST_PRFDYNGROUP" label="Test user dyn 1" profil-type="PDOC" access-structure="TST_PROFIL">
     <smart:element-access access="view" field="tst_group"/>
     <smart:element-access access="edit" field="tst_group"/>
   </smart:access-configuration>
-  <smart:access-configuration name="TST_PRFDYNMUSER" label="Test user dyn 1" profil-type="PDOC" linked-structure="TST_PROFIL">
+  <smart:access-configuration name="TST_PRFDYNMUSER" label="Test user dyn 1" profil-type="PDOC" access-structure="TST_PROFIL">
     <smart:element-access access="view" field="tst_muser"/>
     <smart:element-access access="edit" field="tst_muser"/>
   </smart:access-configuration>
-  <smart:access-configuration name="TST_PRFDYNUSERS" label="Test user dyn 1" profil-type="PDOC" linked-structure="TST_PROFIL">
+  <smart:access-configuration name="TST_PRFDYNUSERS" label="Test user dyn 1" profil-type="PDOC" access-structure="TST_PROFIL">
     <smart:element-access access="view" field="tst_users1"/>
     <smart:element-access access="edit" field="tst_users1"/>
   </smart:access-configuration>
-  <smart:access-configuration name="TST_PRFDYNMGROUP" label="Test user dyn 1" profil-type="PDOC" linked-structure="TST_PROFIL">
+  <smart:access-configuration name="TST_PRFDYNMGROUP" label="Test user dyn 1" profil-type="PDOC" access-structure="TST_PROFIL">
     <smart:element-access access="view" field="tst_mgroup"/>
     <smart:element-access access="delete" field="tst_mgroup"/>
   </smart:access-configuration>
@@ -42,11 +42,11 @@
     <smart:element-access access="view" element="TST_GRPALL"/>
     <smart:element-access access="edit" element="TST_GRPSUBONE"/>
   </smart:access-configuration>
-  <smart:access-configuration name="TST_PRF_RESET_DYNUSER" label="Test Profil RESET user" policy="RESET" profil-type="PDOC" linked-structure="TST_PROFIL">
+  <smart:access-configuration name="TST_PRF_RESET_DYNUSER" label="Test Profil RESET user" policy="RESET" profil-type="PDOC" access-structure="TST_PROFIL">
     <smart:element-access access="view" field="tst_user"/>
     <smart:element-access access="edit" field="tst_user"/>
   </smart:access-configuration>
-  <smart:access-configuration name="TST_PRF_SET_DYNUSER" label="Test Profil SET user" policy="SET" profil-type="PDOC" linked-structure="TST_PROFIL">
+  <smart:access-configuration name="TST_PRF_SET_DYNUSER" label="Test Profil SET user" policy="SET" profil-type="PDOC" access-structure="TST_PROFIL">
     <smart:element-access access="view" field="tst_user"/>
     <smart:element-access access="edit" field="tst_user"/>
   </smart:access-configuration>

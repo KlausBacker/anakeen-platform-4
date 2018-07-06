@@ -242,7 +242,11 @@ class CheckProfil extends CheckData
             $this->dynDoc =  \Anakeen\Core\SEManager::getDocument($dynName);
         }
         if (!$this->dynDoc || !$this->dynDoc->isAlive()) {
-            $this->addError(ErrorCode::getError('PRFL0203', $dynName, $this->prfName));
+            if ($dynName) {
+                $this->addError(ErrorCode::getError('PRFL0203', $dynName, $this->prfName, $aid));
+            } else {
+                $this->addError(ErrorCode::getError('PRFL0205', $aid, $this->prfName));
+            }
         } else {
             $aids = array_keys($this->dynDoc->getNormalAttributes());
             $adocids = array();

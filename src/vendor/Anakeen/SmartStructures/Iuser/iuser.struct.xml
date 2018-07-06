@@ -7,27 +7,36 @@
         <smart:usefor>N</smart:usefor>
         <!--<smart:tag>MAILRECIPIENT</smart:tag>-->
         <smart:fields>
-            <smart:field-set name="us_fr_ident" type="frame" label="État civil" access="ReadWrite">
+            <smart:field-set name="us_fr_ident" type="frame" label="État civil" access="Read">
                 <smart:field-text name="us_lname" label="nom" access="ReadWrite" needed="true" is-title="true"/>
                 <smart:field-text name="us_fname" label="prénom" access="ReadWrite" needed="true" is-title="true"/>
                 <smart:field-text name="us_mail" label="mail" access="Read" link="mailto:%US_MAIL%" is-abstract="true"/>
                 <smart:field-text name="us_extmail" label="mail principal" access="ReadWrite"/>
             </smart:field-set>
-            <smart:field-set name="us_tab_system" type="tab" label="Système" access="ReadWrite">
-                <smart:field-set name="us_fr_intranet" type="frame" label="Identification intranet" access="Read">
-                    <smart:field-account name="us_meid" label="utilisateur id" access="Read"/>
+            <smart:field-set name="us_tab_identity" type="tab" label="Système" access="Read">
+                <smart:field-set name="us_fr_sysident" type="frame" label="Identifier" access="Read">
                     <smart:field-text name="us_login" label="login" access="Read" needed="true"/>
-                    <smart:field-text name="us_whatid" label="identifiant" access="Read"/>
-                    <smart:field-set name="us_t_roles" type="array" label="Rôles" access="Read">
+                </smart:field-set>
+                <smart:field-set name="us_fr_userchange" type="frame" label="Mot de passe" access="None">
+                    <smart:field-password name="us_passwd1" label="nouveau mot de passe" access="None"/>
+                    <smart:field-password name="us_passwd2" label="confirmation mot de passe" access="None"/>
+                </smart:field-set>
+            </smart:field-set>
+
+            <smart:field-set name="us_tab_system" type="tab" label="Technical Settings" access="None">
+                <smart:field-set name="us_fr_intranet" type="frame" label="Identification intranet" access="Read">
+                    <smart:field-account name="us_meid" label="utilisateur id" access="None"/>
+                    <smart:field-text name="us_whatid" label="identifiant" access="None"/>
+                    <smart:field-set name="us_t_roles" type="array" label="Rôles" access="None">
                         <smart:field-account name="us_roles" label="Rôle" access="ReadWrite">
                             <smart:field-option name="match">role</smart:field-option>
                         </smart:field-account>
-                        <smart:field-enum name="us_rolesorigin" label="Origine" access="Read" relation="IUSER-us_rolesorigin"/>
-                        <smart:field-account name="us_rolegorigin" label="Groupe" access="Read" multiple="true">
+                        <smart:field-enum name="us_rolesorigin" label="Origine" access="ReadWrite" relation="IUSER-us_rolesorigin"/>
+                        <smart:field-account name="us_rolegorigin" label="Groupe" access="ReadWrite" multiple="true">
                             <smart:field-option name="match">group</smart:field-option>
                         </smart:field-account>
                     </smart:field-set>
-                    <smart:field-set name="us_groups" type="array" label="groupes d'appartenance" access="Read">
+                    <smart:field-set name="us_groups" type="array" label="groupes d'appartenance" access="None">
                         <smart:field-text name="us_group" label="groupe (titre)" access="Read"/>
                         <smart:field-account name="us_idgroup" label="Groupe" access="ReadWrite">
                             <smart:field-option name="doctitle">us_group</smart:field-option>
@@ -44,10 +53,7 @@
                     <smart:field-account name="us_substitute" label="Suppléant" access="ReadWrite"/>
                     <smart:field-account name="us_incumbents" label="Titulaires" access="Read" multiple="true"/>
                 </smart:field-set>
-                <smart:field-set name="us_fr_userchange" type="frame" label="Mot de passe" access="None">
-                    <smart:field-password name="us_passwd1" label="nouveau mot de passe" access="None"/>
-                    <smart:field-password name="us_passwd2" label="confirmation mot de passe" access="None"/>
-                </smart:field-set>
+
                 <smart:field-set name="us_fr_security" type="frame" label="Sécurité" access="Read">
                     <smart:field-enum name="us_status" label="état du compte" access="Read" relation="IUSER-us_status">
                     </smart:field-enum>

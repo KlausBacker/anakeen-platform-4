@@ -18,6 +18,7 @@ create table docfam (cprofid int ,
                      dfldid int, 
                      cfldid int, 
                      ccvid int, 
+                     cfallid int, 
                      ddocid int,
                      methods text,
                      defval text,
@@ -42,6 +43,7 @@ create unique index idx_idfam on docfam(id);";
             "dfldid",
             "cfldid",
             "ccvid",
+            "cfallid",
             "cprofid",
             "ddocid",
             "methods",
@@ -58,6 +60,7 @@ create unique index idx_idfam on docfam(id);";
     public $dfldid;
     public $cfldid;
     public $ccvid;
+    public $cfallid;
     public $cprofid;
     public $ddocid;
     public $methods;

@@ -32,7 +32,6 @@ class CVDocHooks extends \SmartStructure\Base
 
     public $usefor = 'SW';
     public $defDoctype = 'P';
-    public $attrPrefix = "CVI"; // prefix attribute
 
     /**
      * @var \Anakeen\Core\Internal\SmartElement instance document

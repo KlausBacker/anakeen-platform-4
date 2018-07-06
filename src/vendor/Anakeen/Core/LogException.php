@@ -122,7 +122,6 @@ class LogException
      */
     public static function getMessage($e, &$errorId, &$logMessage = "")
     {
-        global $action;
         $errorId = uniqid("ANK");
         self::$errId = $errorId;
 
@@ -140,7 +139,7 @@ class LogException
             $logMessage = $e->getMessage();
         }
 
-        $displayError = ($action && $action->getParam("CORE_DISPLAY_ERROR") === "yes");
+        $displayError = (ContextManager::getParameterValue(Settings::NsSde, "CORE_DISPLAY_ERROR") === "yes");
 
         if (!$displayError) {
             if ($userMsg) {

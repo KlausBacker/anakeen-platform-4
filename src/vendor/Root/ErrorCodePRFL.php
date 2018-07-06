@@ -72,19 +72,22 @@ class ErrorCodePRFL
      */
     const PRFL0201 = 'attribute "%s" is not a relation in acl for "%s" dynamic profil (not an account or a docid with isuser=yes), available are %s';
     /**
-     * @errorCode
-     * family profy cannot be dynamic
+     * @errorCode  family profy cannot be dynamic
      */
     const PRFL0202 = 'family profil"%s"  must not have dpdoc_famid';
     /**
-     * @errorCode
-     *  dynamic profil must reference a valid family document
+     * @errorCode  dynamic profil must reference a valid family document
      */
-    const PRFL0203 = 'unknow dynamic reference "%s" for "%s" dynamic profil';
+    const PRFL0203 = 'unknow dynamic reference "%s" for "%s" dynamic profil (field "%s")';
     /**
      * @errorCode user must be exists for static profil
      */
     const PRFL0204 = 'user login "%s" not found in acl for  profil';
+
+    /**
+     * @errorCode  dynamic profil must reference a valid family document
+     */
+    const PRFL0205 = 'Use of field "%s" ref and dynamic reference is set for "%s" profil';
     /**
      * @errorCode user must be exists for static profil
      * @see \Dcp\ExportDocument::setExportAccountType

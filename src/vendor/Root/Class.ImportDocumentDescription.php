@@ -440,6 +440,10 @@ class ImportDocumentDescription
                     $this->doCprofid($data);
                     break;
 
+                case "CFALLFID":
+                    $this->doCFallid($data);
+                    break;
+
                 case "PROFID":
                     $this->doProfid($data);
                     break;
@@ -1426,7 +1430,36 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
         }
     }
+    /**
+     * analyze CFALLID
+     *
+     * @param array $data line of description file
+     */
+    protected function doCFallid(array $data)
+    {
+        if (!$this->doc) {
+            return;
+        }
+        $check = new CheckCfallid();
+        $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
+        if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
+            $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
+            $this->tcr[$this->nLine]["action"] = "warning";
+            return;
+        }
+        if ($this->tcr[$this->nLine]["err"]) {
+            $this->tcr[$this->nLine]["action"] = "ignored";
+            return;
+        }
 
+        if (is_numeric($data[1])) {
+            $pid = $data[1];
+        } else {
+            $pid = \Anakeen\Core\SEManager::getIdFromName($data[1]);
+        }
+        $this->doc->cfallid = $pid;
+        $this->tcr[$this->nLine]["msg"] = sprintf(_("change default creation profile id  to '%s'"), $data[1]);
+    }
     /**
      * analyze CPROFID
      *

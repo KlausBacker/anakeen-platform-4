@@ -85,9 +85,9 @@
         </smart:accesses>
     </smart:structure-configuration>
     <smart:access-configuration name="PRF_TST_F2" label="Profil document mail">
-        <smart:element-access access="view" login="all"/>
-        <smart:element-access access="view" login="fachewie"/>
-        <smart:element-access access="edit" login="all"/>
-        <smart:element-access access="delete" login="all"/>
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="view" account="fachewie"/>
+        <smart:element-access access="edit" account="all"/>
+        <smart:element-access access="delete" account="all"/>
     </smart:access-configuration>
 </smart:config>

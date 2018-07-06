@@ -554,7 +554,7 @@ class FormatCollection
             case self::propState:
                 return $this->getState($doc);
             case self::propUrl:
-                return sprintf("?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=%d", $doc->id);
+                return sprintf("/api/v2/documents/%s.html", $doc->id);
             case self::revdate:
                 return $this->getFormatDate(date("Y-m-d H:i:s", intval($doc->$propName)), $this->propDateStyle);
             case self::cdate:

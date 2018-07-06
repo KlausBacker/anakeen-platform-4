@@ -9,7 +9,7 @@
         <smart:fields>
             <smart:field-set name="fr_basic" type="frame" label="Basique" access="ReadWrite">
                 <smart:field-text name="ba_title" label="Titre" access="ReadWrite" needed="true" is-title="true"/>
-                <smart:field-longtext name="prf_desc" label="Description" access="ReadWrite"/>
+                <smart:field-longtext name="ba_desc" label="Description" access="ReadWrite"/>
             </smart:field-set>
             <smart:field-set name="dpdoc_fr_dyn" type="frame" label="Dynamique" access="ReadWrite">
                 <smart:field-docid name="dpdoc_famid" label="Smart Structure utilisable pour les droits en fonction des attributs &quot;account&quot;" access="ReadWrite" relation="-1"/>

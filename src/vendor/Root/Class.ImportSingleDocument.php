@@ -695,9 +695,15 @@ class ImportSingleDocument
         if ($value === ' ') {
             return $res;
         }
-        $value = trim($value, " \x0B\r"); // suppress white spaces end & begin
+        if (! is_array($value)) {
+            $value = trim($value, " \x0B\r"); // suppress white spaces end & begin
+        }
         if ($oattr->repeat) {
-            $tvalues = $doc->rawValueToArray($value);
+            if (is_array($value)) {
+                $tvalues = $value;
+            } else {
+                $tvalues = $doc->rawValueToArray($value);
+            }
         } else {
             $tvalues[] = $value;
         }

@@ -12,13 +12,19 @@
 class ErrorCodeCPRF
 {
     /**
-     * @errorCode
-     * folder reference must be reference existing profil
+     * @errorCode  folder reference must be reference existing profil
      */
-    const CPRF0001 = 'CPROFID "%s" profil is not found in attribute "%s"';
+    const CPRF0001 = 'CPROFID "%s" profil is not found in structure "%s"';
     /**
-     * @errorCode
-     * folder reference must be a profil document
+     * @errorCode  folder reference must be a profil document
      */
-    const CPRF0002 = 'CPROFID "%s" is not a profil in attribute "%s"';
+    const CPRF0002 = 'CPROFID "%s" is not a profil in structure "%s"';
+    /**
+     * @errorCode  folder reference must be reference existing profil
+     */
+    const CPRF0003 = 'CFALLID "%s" field access profil is not found in structure "%s"';
+    /**
+     * @errorCode folder reference must be a profil document
+     */
+    const CPRF0004 = 'CFALLID "%s" is not a field access profil in structure "%s"';
 }
