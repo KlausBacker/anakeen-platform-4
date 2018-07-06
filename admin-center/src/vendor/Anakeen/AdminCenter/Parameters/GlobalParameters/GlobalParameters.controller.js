@@ -81,7 +81,6 @@ export default {
                 .on('click', '.edition-btn', (e) => {
                     let treeList = $(e.delegateTarget).data('kendoTreeList');
                     let dataItem = treeList.dataItem(e.currentTarget);
-
                     this.openEditor(dataItem);
                 })
                 .on('click', '.switch-btn', () => this.switchParameters())
@@ -150,7 +149,7 @@ export default {
                 items.each(function addTypeClass() {
                     let dataItem = treeList.dataItem(this);
                     if (dataItem.rowLevel) {
-                        $(this).addClass('grid-level-' + dataItem.rowLevel);
+                        $(this).addClass('grid-expandable grid-level-' + dataItem.rowLevel);
                     }
                 });
             }, 0);
@@ -170,14 +169,16 @@ export default {
             this.addClassToRow(treeList);
         },
 
-        updateAtEditorClose() {
+        updateAtEditorClose(newValue) {
             setTimeout(() => {
+                if (newValue) {
+                    this.editedItem.set('value', newValue);
+                }
+
                 this.editedItem = null;
                 this.editRoute = '';
             }, 300);
 
-            // TODO Modify only the modified value
-            this.allParametersDataSource.read();
         },
 
         saveTreeState() {
@@ -227,6 +228,21 @@ export default {
 
         // Focus on filter input
         this.$('.global-search-input').focus();
+
+        // Add event listener on treeList to expand/collapse rows on click
+        this.$('#parameters-tree')
+            .off('mousedown')
+            .on('mouseup', 'tbody > .grid-expandable', (e) => {
+            let treeList = this.$(e.delegateTarget).data('kendoTreeList');
+            if ($(e.currentTarget).attr('aria-expanded') === 'false') {
+                treeList.expand(e.currentTarget);
+            } else {
+                treeList.collapse(e.currentTarget);
+            }
+
+            this.addClassToRow(treeList);
+            this.saveTreeState();
+        });
 
         // At window resize, resize the tree list to fit the window
         window.addEventListener('resize', () => {

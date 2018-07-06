@@ -20,6 +20,7 @@ export default {
         return {
             jsonEditor: {},
             jsonValue: {},
+            responseValue: '',
         };
     },
 
@@ -35,13 +36,21 @@ export default {
                     title: this.editedItem.name,
                     visible: false,
                     actions: ['Close'],
-                    activate: () => this.$('#parameter-new-value').focus(),
+
+                    activate: () => {
+                        if (this.parameterInputType === 'enum') {
+                            this.$('#parameter-new-value').data('kendoDropDownList').focus();
+                        } else {
+                            this.$('#parameter-new-value').focus();
+                        }
+                    },
+
                     close: () => {
                         if (this.parameterInputType === 'json' && this.isJson(this.editedItem.value)) {
                             this.jsonEditor.destroy();
                         }
 
-                        this.$emit('closeEditor');
+                        this.$emit('closeEditor', this.responseValue);
                     },
                 }).data('kendoWindow').center().open();
 
@@ -57,7 +66,22 @@ export default {
                         history: false,
                     }, this.jsonValue);
                 }
+
+                if (this.parameterInputType === 'enum') {
+                    this.$('#parameter-new-value').kendoDropDownList();
+                }
+
+                this.$('.modify-btn').kendoButton({
+                    icon: 'check',
+                });
+                this.$('.cancel-btn').kendoButton({
+                    icon: 'close',
+                });
             }
+        },
+
+        closeEditor() {
+            this.$('.edition-window').data('kendoWindow').close();
         },
 
         modifyParameter() {
@@ -72,11 +96,12 @@ export default {
                 newValue = this.$('#parameter-new-value').val();
             }
 
-            Vue.ankApi.put(this.editRoute,
+            this.$ankApi.put(this.editRoute,
                 {
                     value: newValue,
                 })
-                .then(() => {
+                .then((response) => {
+                    this.responseValue = response.data.value;
                     this.$('.confirmation-window').kendoWindow({
                         modal: true,
                         draggable: false,
@@ -86,6 +111,12 @@ export default {
                         visible: false,
                         actions: [],
                     }).data('kendoWindow').center().open();
+                    this.$('.form-parameter-btn').kendoButton({
+                        icon: 'close',
+                    });
+                })
+                .catch(() => {
+                    // TODO Catch
                 });
         },
 
@@ -143,6 +174,7 @@ export default {
 
     mounted() {
         this.openEditor();
+
         // When resizing the browser window, resize and center the edition window
         window.addEventListener('resize', () => {
             let editionWindow = this.$('.edition-window').data('kendoWindow');

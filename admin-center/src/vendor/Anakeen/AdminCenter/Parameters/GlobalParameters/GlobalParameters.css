@@ -56,6 +56,10 @@
     background-color: rgba(144, 238, 144, 0.51) !important;
 }
 
+.grid-expandable {
+    cursor: pointer;
+}
+
 .filter-icon {
     vertical-align: middle;
     font-size: 1.5rem;
@@ -70,4 +74,8 @@
 
 .reset-search-btn {
     width: 0;
+}
+
+.k-icon.k-i-none {
+    width: 2rem;
 }

@@ -18,7 +18,11 @@
             <div id="users-tree" class="users-tree"></div>
             <div class="delete-confirmation-window" v-show="false" @keyup.enter.stop="closeDeleteConfirmation">
                 <div class="information-text">Parameter successfully restored to system value</div>
-                <button class="btn btn-primary form-parameter-btn" @click="closeDeleteConfirmation">Back to parameters</button>
+                <a class="delete-confirmation-btn form-parameter-btn" @click="closeDeleteConfirmation">Back to parameters</a>
+            </div>
+            <div class="delete-error-window" v-show="false" @keyup.enter.stop="closeDeleteError">
+                <div class="information-text">An error occured, parameter modification was not saved</div>
+                <a class="delete-error-btn form-parameter-btn" @click="closeDeleteError">Back to parameters</a>
             </div>
         </div>
         <div id="parameters-div" class="parameters-div">

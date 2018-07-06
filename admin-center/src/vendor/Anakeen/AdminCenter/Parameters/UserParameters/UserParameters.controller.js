@@ -38,7 +38,6 @@ export default {
                         },
                     },
                 },
-                // height: '100%',
                 filterable: false,
                 resizable: false,
                 messages: {
@@ -198,7 +197,10 @@ export default {
         },
 
         deleteParameter(dataItem) {
-            Vue.ankApi.delete('admin/parameters/' + this.actualLogin + '/' + dataItem.nameSpace + '/' + dataItem.name + '/')
+            this.$ankApi.delete('admin/parameters/'
+                + this.actualLogin + '/'
+                + dataItem.nameSpace + '/'
+                + dataItem.name + '/')
                 .then(() => {
                     this.$('.delete-confirmation-window').kendoWindow({
                         modal: true,
@@ -209,12 +211,33 @@ export default {
                         visible: false,
                         actions: [],
                     }).data('kendoWindow').center().open();
+                    this.$('.delete-confirmation-btn').kendoButton({
+                        icon: 'close',
+                    });
+                })
+                .catch(() => {
+                    this.$('.delete-error-window').kendoWindow({
+                        modal: true,
+                        draggable: false,
+                        resizable: false,
+                        title: 'Error',
+                        width: '30%',
+                        visible: false,
+                        actions: [],
+                    }).data('kendoWindow').center().open();
+                    this.$('.delete-error-btn').kendoButton({
+                        icon: 'close',
+                    });
                 });
             this.userParametersDataSource.read();
         },
 
         closeDeleteConfirmation() {
             this.$('.delete-confirmation-window').data('kendoWindow').close();
+        },
+
+        closeDeleteError() {
+            this.$('.delete-error-window').data('kendoWindow').close();
         },
 
         searchUser() {
@@ -266,8 +289,7 @@ export default {
                 items.each(function addTypeClass() {
                     let dataItem = treeList.dataItem(this);
                     if (dataItem.rowLevel) {
-                        $(this).addClass('grid-expandable');
-                        $(this).addClass('grid-level-' + dataItem.rowLevel);
+                        $(this).addClass('grid-expandable grid-level-' + dataItem.rowLevel);
                     }
                 });
             }, 0);
@@ -287,8 +309,12 @@ export default {
             this.addClassToRow(treeList);
         },
 
-        updateAtEditorClose() {
+        updateAtEditorClose(newValue) {
             setTimeout(() => {
+                if (newValue) {
+                    this.editedItem.set('value', newValue);
+                }
+
                 this.editedItem = null;
                 this.editRoute = '';
             }, 300);
@@ -362,7 +388,9 @@ export default {
         this.$('#user-search-input').focus();
 
         // Add event listener on treeList to expand/collapse rows on click
-        this.$('#user-parameters-tree').on('mouseup', 'tbody > .grid-expandable', (e) => {
+        this.$('#user-parameters-tree')
+            .off('mousedown')
+            .on('mouseup', 'tbody > .grid-expandable', (e) => {
             let treeList = this.$(e.delegateTarget).data('kendoTreeList');
             if ($(e.currentTarget).attr('aria-expanded') === 'false') {
                 treeList.expand(e.currentTarget);
@@ -370,6 +398,7 @@ export default {
                 treeList.collapse(e.currentTarget);
             }
 
+            this.addClassToRow(treeList);
             this.saveTreeState();
         });
 

@@ -74,7 +74,7 @@ class AlterUserParameter
             // Modify parameter value
             ContextParameterManager::setUserValue($nameSpace, $parameterName, $newValue, $userId);
 
-            return $response->withJson(['value' => $newValue]);
+            return $response->withJson(['namespace' => $nameSpace, 'parameter_name' => $parameterName, 'value' => $newValue]);
         } else {
             return $response->withStatus(400, 'Wrong value');
         }

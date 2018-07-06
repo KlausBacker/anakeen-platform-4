@@ -11,10 +11,10 @@
 
 .value-input {
     margin-bottom: 1.5rem;
+    width: 100%
 }
 
 .form-parameter-btn {
-    height: 3.5rem;
     float: right;
     margin-left: .5rem;
 }

@@ -10,7 +10,7 @@
             <div class="form-group">
                 <label for="parameter-new-value" class="form-label">Value : </label>
                 <input :type="parameterInputType" class="form-control value-input" id="parameter-new-value" :value="inputSelectedValue" v-if="parameterInputType === 'text' || parameterInputType === 'number' || parameterInputType === 'password'">
-                <select class="form-control value-input" id="parameter-new-value" :value="inputSelectedValue" v-else-if="parameterInputType === 'enum'">
+                <select class="value-input" id="parameter-new-value" :value="inputSelectedValue" v-else-if="parameterInputType === 'enum'">
                     <option v-for="value in enumPossibleValues">{{ value }}</option>
                 </select>
                 <div id="json-parameter-new-value" class="json-editor" v-else-if="isJson(inputSelectedValue)"></div>
@@ -19,12 +19,12 @@
                     <textarea class="form-control" id="parameter-new-value" :value="inputSelectedValue"></textarea>
                 </div>
             </div>
-            <button class="btn btn-primary form-parameter-btn" @click="modifyParameter">Save new value</button>
-            <button class="btn btn-secondary form-parameter-btn" @click="closeEditor">Cancel value modification</button>
+            <a class="modify-btn form-parameter-btn" @click="modifyParameter">Save new value</a>
+            <a class="cancel-btn form-parameter-btn" @click="closeEditor">Cancel value modification</a>
         </form>
         <div class="confirmation-window" v-show="false" @keyup.enter.stop="closeConfirmationAndEditor">
             <div class="information-text">Parameter successfully modified</div>
-            <button class="btn btn-primary form-parameter-btn" @click="closeConfirmationAndEditor">Back to parameters</button>
+            <a class="form-parameter-btn" @click="closeConfirmationAndEditor">Back to parameters</a>
         </div>
     </div>
 </template>

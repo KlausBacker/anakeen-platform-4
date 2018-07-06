@@ -30,7 +30,7 @@ class AlterParameter
                 return is_numeric($value);
                 break;
             case "integer":
-                return is_int($value);
+                return ctype_digit($value);
                 break;
             case "double":
                 return is_numeric($value);
@@ -70,7 +70,10 @@ class AlterParameter
             // Change value
             ContextParameterManager::setValue($nameSpace, $parameterName, $newValue);
 
-            $responseData = ['namespace' => $nameSpace, 'parameter_name' => $parameterName, 'value' => $newValue];
+            // Get saved new value
+            $returnNewValue = ContextParameterManager::getValue($nameSpace, $parameterName);
+
+            $responseData = ['namespace' => $nameSpace, 'parameter_name' => $parameterName, 'value' => $returnNewValue];
             return $response->withJson($responseData);
         } else {
             return $response->withStatus(400, 'Wrong value');
