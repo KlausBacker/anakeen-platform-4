@@ -4,7 +4,7 @@
         <sde:route name="AdminRoutes:AllRoutes">
             <sde:priority>0</sde:priority>
             <sde:callable>\Anakeen\Routes\Admin\Routes\AllRoutes</sde:callable>
-            <sde:method>GET</sde:method>
+            <sde:method>ANY</sde:method>
             <sde:pattern>/api/v2/admin/routes/</sde:pattern>
             <sde:description>Get all routes</sde:description>
             <sde:requiredAccess>
