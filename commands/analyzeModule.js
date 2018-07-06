@@ -1,25 +1,38 @@
-const signale = require('signale');
-const { getModuleInfo } = require('../utils/moduleInfo');
+const gulp = require('gulp');
+const signale = require("signale");
+const { getModuleInfo } = require("../tasks/moduleInfo");
 
-exports.desc = 'Analyze the module content';
+exports.desc = "Analyze the module content";
 exports.builder = {
   sourcePath: {
-    defaultDescription: 'path of the info.xml',
-    alias: 's',
-    default: '.',
-    type: 'string',
+    defaultDescription: "path of the info.xml",
+    alias: "s",
+    default: ".",
+    type: "string"
   },
+  withStructure: {
+    defaultDescription: "print the structure hierarchy",
+    default: false,
+    type: "boolean"
+  }
 };
 
-exports.handler = async (argv) => {
+exports.handler = async argv => {
   try {
-    const info = await getModuleInfo(argv.sourcePath);
-    const keys = Object.keys(info.moduleInfo);
-    keys.forEach((currentKey) => {
-      signale.info(currentKey, ' : ', info.moduleInfo[currentKey]);
-    });
-    signale.success('Done');
+    signale.time("moduleInfo");
+    getModuleInfo(argv);
+    const task = gulp.task("getModuleInfo");
+    task()
+      .then(() => {
+        signale.timeEnd("moduleInfo");
+        signale.success("moduleInfo done");
+      })
+      .catch(e => {
+        signale.timeEnd("moduleInfo");
+        signale.error(e);
+      });
   } catch (e) {
+    signale.timeEnd("moduleInfo");
     signale.error(e);
   }
 };

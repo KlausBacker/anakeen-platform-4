@@ -1,24 +1,32 @@
 const gulp = require("gulp");
-const { getSTUBgenerator } = require("../utils/STUBGenerator");
-const path = require("path");
-const signale = require("signale");
+const { parseStub } = require("../utils/STUBGenerator");
+const asyncCallback = require("./plugins/asyncCallback");
+const { getModuleInfo, getStructureFiles } = require("../utils/moduleInfo");
 
 exports.stub = ({ sourcePath, targetPath = "./stubs" }) => {
-  return gulp.task("stub", async () => {
-    if (sourcePath === undefined) {
-      signale.error("No source path specified.");
-      return;
-    }
-    try {
-      if (targetPath.startsWith("./")) {
-        targetPath = sourcePath + targetPath.substr(1);
+  return gulp.task("stub", () => {
+    return new Promise(async (resolve, reject) => {
+      if (sourcePath === undefined) {
+        throw new Error("No source path specified.");
       }
-      const STUBGenerator = await getSTUBgenerator(sourcePath, targetPath);
-      gulp
-        .src(path.join(STUBGenerator.extractDir, "**"))
-        .pipe(gulp.dest(targetPath));
-    } catch (e) {
-      throw e;
-    }
+      try {
+        const info = await getModuleInfo(sourcePath);
+        const buildPath = info.buildInfo.buildPath;
+        const structureFiles = await getStructureFiles({ buildPath });
+        const files = structureFiles.map(currentStruct => {
+          return currentStruct.path;
+        });
+  
+        gulp
+          .src(files)
+          .pipe(
+            asyncCallback(parseStub, true)
+          )
+          .pipe(gulp.dest(targetPath)).on("end", resolve).on("error", resolve);
+      } catch (e) {
+        reject(e);
+      }
+    });
+    
   });
 };

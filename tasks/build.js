@@ -20,13 +20,8 @@ const buildPipe = (exports.buildPipe = async ({
   const moduleFileName = `${moduleInfo.moduleInfo.name}-${
     moduleInfo.moduleInfo.version
   }-${release}`;
-  const buildPath = moduleInfo.buildInfo.config.sources[0].source.map(
-    currentSource => {
-      return path.join(sourcePath, currentSource.$.path, "**");
-    }
-  );
   const mainFiles = gulp
-    .src(buildPath)
+    .src(moduleInfo.buildInfo.buildPath)
     .pipe(tar("content"))
     .pipe(gzip({ extension: "tar.gz" }));
   let infoXML = gulp.src(path.join(sourcePath, appConst.infoPath));

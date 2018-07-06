@@ -16,9 +16,12 @@
     "inquirer": "^6.0.0",
     "mustache": "^2.3.0",
     "node-fetch": "^2.1.2",
+    "node-glob": "^1.2.0",
+    "saxophone": "^0.3.0",
     "signale": "^1.2.1",
     "streamqueue": "^1.1.2",
     "through2": "^2.0.3",
+    "treeify": "^1.1.0",
     "url-join": "^4.0.0",
     "xml2js": "^0.4.19",
     "yargs": "^11.0.0"
