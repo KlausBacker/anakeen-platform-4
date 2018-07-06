@@ -26,6 +26,7 @@
         </smart:field-access-layer>
         <smart:field-access-layer name="FAL_IUSER_IDENTITY" label="User Identity Access" access-name="Identity">
             <smart:description>User identity modification</smart:description>
+            <smart:field-access field="us_tab_sysinfo" access="Read"/>
             <smart:field-access field="us_fr_ident" access="ReadWrite"/>
         </smart:field-access-layer>
     </smart:field-access-layer-list>
