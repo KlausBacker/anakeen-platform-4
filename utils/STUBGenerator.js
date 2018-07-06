@@ -1,162 +1,134 @@
-const fs = require("fs");
-const path = require("path");
 const xml2js = require("xml2js");
-const signale = require("signale");
+const File = require("vinyl");
+const path = require("path");
 
-/*
-* Transform XML structure to PHP STUB files
-*/
-exports.getSTUBgenerator = async (sourcePath, targetPath) => {
-  // Check if source and target path exists
-  if (fs.existsSync(sourcePath) && fs.existsSync(targetPath)) {
-    // Create temporary directory
-    var dir = fs.mkdtempSync(path.join(`${targetPath}`, "tmpExt-"));
-    signale.info("Temporary directory: " + dir);
+const generateFields = field => {
+  var listFields = "";
+  if (field.fieldset) {
+    field.fieldset.forEach(fs => {
+      listFields += generateFields(fs);
+    });
+  }
+  // [frame] or [type]
+  var typeList = ["frame", "array"];
+  if (field.$ && typeList.indexOf(field.$.type) > 0) {
+    listFields += `        /** [${field.$.type}] ${field.$.label} */\r\n`;
+    listFields += `        const ${field.$.name}='${field.$.name}';\r\n`;
+  }
+  // [text]
+  if (field.fieldtext) {
+    field.fieldtext.forEach(text => {
+      listFields += `        /** [text] ${text.$.label} */\r\n`;
+      listFields += `        const ${text.$.name}='${text.$.name}';\r\n`;
+    });
+  }
+  // [longtext]
+  if (field.fieldlongtext) {
+    field.fieldlongtext.forEach(longtext => {
+      listFields += `        /** [longtext] ${longtext.$.label} */\r\n`;
+      listFields += `        const ${longtext.$.name}='${longtext.$.name}';\r\n`;
+    });
+  }
+  // [docid]
+  if (field.fielddocid) {
+    field.fielddocid.forEach(docid => {
+      listFields += `        /** [docid("${docid.$.relation}")] ${
+        docid.$.label
+      } */\r\n`;
+      listFields += `        const ${docid.$.name}='${docid.$.name}';\r\n`;
+    });
+  }
+  // [enum]
+  if (field.fieldenum) {
+    field.fieldenum.forEach(enuma => {
+      listFields += `        /** [enum] ${enuma.$.label} */\r\n`;
+      listFields += `        const ${enuma.$.name}='${enuma.$.name}';\r\n`;
+    });
+  }
+  // [int]
+  if (field.fieldint) {
+    field.fieldint.forEach(inta => {
+      listFields += `        /** [int] ${inta.$.label} */\r\n`;
+      listFields += `        const ${inta.$.name}='${inta.$.name}';\r\n`;
+    });
+  }
+  // [option]
+  if (field.fieldoption) {
+    field.fieldoption.forEach(option => {
+      listFields += `        /** [option] ${option.$.label} */\r\n`;
+      listFields += `        const ${option.$.name}='${option.$.name}';\r\n`;
+    });
+  }
+  return listFields;
+};
 
-    // Get list of XML files
-    var files = fs.readdirSync(sourcePath);
+const upperCaseFirstLetter = function(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
 
-    // Parser function
-    var parseXML = function parseXML2JS(file) {
-      // Return promise
-      return new Promise((resolve, reject) => {
-        if (!file.endsWith(".struct.xml")) {
-          // Control struct XML file format
-          reject("Invalid format");
-        } else {
-          // STUB file path
-          var STUBfile =
-            dir + "/" + file.substr(0, file.length - 11) + "__STUB.php";
-
-          // Read and parse file
-          var xmlContent = fs.readFileSync(sourcePath + "/" + file);
-          var stripPrefix = xml2js.processors.stripPrefix;
-          var cleanDash = function(str) {
-            return str.replace("-", "");
-          };
-          xml2js.parseString(
-            xmlContent,
-            { tagNameProcessors: [stripPrefix, cleanDash] },
-            function(err, result) {
-              // Transform content to STUB data
-              if (err) throw err;
-
-              var infos = result.config.structureconfiguration[0].$;
-              var smartClass = result.config.structureconfiguration[0].class;
-              var fields = result.config.structureconfiguration[0].fields;
-
-              var STUBcontent =
-                "<?php\r\n" +
-                "namespace SmartStructure {\r\n" +
-                "\t/** Contrôle de vues  */\r\n" +
-                "\tclass " +
-                upperCaseFirstLetter(infos.name) +
-                ` extends \\${smartClass} { const familyName="${
-                  infos.name
-                }"; }\r\n` +
-                "}\r\n" +
-                "\r\n" +
-                "namespace SmartStructure\\Fields {\r\n" +
-                "\t/** Contrôle de vues  */\r\n" +
-                "\tclass " +
-                upperCaseFirstLetter(infos.name) +
-                " extends Base {\r\n";
-
+exports.parseStub = file => {
+  return new Promise((resolve, reject) => {
+    const files = [];
+    const stripPrefix = xml2js.processors.stripPrefix;
+    const cleanDash = str => {
+      return str.replace("-", "");
+    };
+    const base = path.join(file.path, "..");
+    xml2js.parseString(
+      file.contents,
+      { tagNameProcessors: [stripPrefix, cleanDash] },
+      (err, result) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        //Analyze structure configuration
+        if (result.config.structureconfiguration) {
+          result.config.structureconfiguration.forEach(currentConf => {
+            const infos = currentConf.$;
+            const fields = currentConf.fields;
+            let fieldsString = "";
+            if (fields) {
               fields.forEach(function(fieldset) {
-                STUBcontent += generateFields(fieldset);
-              });
-
-              STUBcontent += "\t}\r\n" + "}\r\n";
-
-              fs.writeFile(STUBfile, STUBcontent, function(err) {
-                if (err) {
-                  throw err;
-                }
-                resolve();
+                fieldsString += generateFields(fieldset);
               });
             }
-          );
+
+            const extendsPart = infos.extends ? ` extends ${infos.extends}` : '';
+
+            let content = `<?php
+
+namespace SmartStructure {
+
+    use Anakeen\\Core\\Internal\\SmartElement;
+
+    /** de base  */
+    class ${upperCaseFirstLetter(infos.name)} extends ${infos.extends || "SmartElement"}
+    {
+        const familyName = "${infos.name}";
+    }
+}
+
+namespace SmartStructure\\Attributes {
+
+    /** de base  */
+    class ${upperCaseFirstLetter(infos.name)}${extendsPart}
+    {
+${fieldsString}
+    }
+}`;
+
+            files.push(
+              new File({
+                base: base,
+                path: path.join(base, infos.name + "__STUB.php"),
+                contents: Buffer.from(content)
+              })
+            );
+          });
         }
-      });
-    };
-
-    var generateFields = function(field) {
-      var listFields = "";
-      if (field.fieldset) {
-        field.fieldset.forEach(function(fs) {
-          listFields += generateFields(fs);
-        });
+        resolve(files);
       }
-      // [frame] or [type]
-      var typeList = ["frame", "array"];
-      if (field.$ && typeList.indexOf(field.$.type) > 0) {
-        listFields += `\t\t/** [${field.$.type}] ${field.$.label} */\r\n`;
-        listFields += `\t\tconst ${field.$.name}='${field.$.name}';\r\n`;
-      }
-      // [text]
-      if (field.fieldtext) {
-        field.fieldtext.forEach(function(text) {
-          listFields += `\t\t/** [text] ${text.$.label} */\r\n`;
-          listFields += `\t\tconst ${text.$.name}='${text.$.name}';\r\n`;
-        });
-      }
-      // [longtext]
-      if (field.fieldlongtext) {
-        field.fieldlongtext.forEach(function(longtext) {
-          listFields += `\t\t/** [longtext] ${longtext.$.label} */\r\n`;
-          listFields += `\t\tconst ${longtext.$.name}='${
-            longtext.$.name
-          }';\r\n`;
-        });
-      }
-      // [docid]
-      if (field.fielddocid) {
-        field.fielddocid.forEach(function(docid) {
-          listFields += `\t\t/** [docid("${docid.$.relation}")] ${
-            docid.$.label
-          } */\r\n`;
-          listFields += `\t\tconst ${docid.$.name}='${docid.$.name}';\r\n`;
-        });
-      }
-      // [enum]
-      if (field.fieldenum) {
-        field.fieldenum.forEach(function(enuma) {
-          listFields += `\t\t/** [enum] ${enuma.$.label} */\r\n`;
-          listFields += `\t\tconst ${enuma.$.name}='${enuma.$.name}';\r\n`;
-        });
-      }
-      // [int]
-      if (field.fieldint) {
-        field.fieldint.forEach(function(inta) {
-          listFields += `\t\t/** [int] ${inta.$.label} */\r\n`;
-          listFields += `\t\tconst ${inta.$.name}='${inta.$.name}';\r\n`;
-        });
-      }
-      // [option]
-      if (field.fieldoption) {
-        field.fieldoption.forEach(function(option) {
-          listFields += `\t\t/** [option] ${option.$.label} */\r\n`;
-          listFields += `\t\tconst ${option.$.name}='${option.$.name}';\r\n`;
-        });
-      }
-      return listFields;
-    };
-
-    var upperCaseFirstLetter = function(str) {
-      return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-    };
-
-    // Parsing list
-    var listParsing = files.map(parseXML);
-
-    // Run the parser over all files
-    return Promise.all(listParsing).then(() => {
-      signale.success("Finished parsing");
-      return { extractDir: dir };
-    });
-  } else if (!fs.existsSync(sourcePath)) {
-    signale.error("Source path not found: " + sourcePath);
-  } else if (!fs.existsSync(targetPath)) {
-    signale.error("Target path not found: " + targetPath);
-  }
+    );
+  });
 };
