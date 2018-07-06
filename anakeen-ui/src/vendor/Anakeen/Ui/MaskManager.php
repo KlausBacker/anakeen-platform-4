@@ -5,6 +5,7 @@ namespace Anakeen\Ui;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\BasicAttribute;
+use Anakeen\Core\SmartStructure\FieldAccessManager;
 use Anakeen\SmartStructures\Mask\Mask;
 use Dcp\Ui\Exception;
 
@@ -69,7 +70,7 @@ class MaskManager
             foreach ($oas as $k => $v) {
                 if ($oas[$k]) {
                     $this->mVisibilities[$v->id] = self::propagateVisibility(
-                        self::getDefaultVisibility($v),
+                        $this->getDefaultVisibility($v),
                         (empty($v->fieldSet->id)) ? '' : $this->mVisibilities[$v->fieldSet->id],
                         (!empty($v->fieldSet->fieldSet->id)) ? $this->mVisibilities[$v->fieldSet->fieldSet->id] : ''
                     );
@@ -166,7 +167,7 @@ class MaskManager
                             $v = $oas[$k];
                             if ($v->type == "frame") {
                                 $this->mVisibilities[$oas[$k]->id] = self::propagateVisibility(
-                                    self::getDefaultVisibility($v),
+                                    $this->getDefaultVisibility($v),
                                     isset($v->fieldSet) ? $this->mVisibilities[$v->fieldSet->id] : '',
                                     ''
                                 );
@@ -176,7 +177,7 @@ class MaskManager
                             $v = $oas[$k];
                             if ($v->type == "array") {
                                 $this->mVisibilities[$oas[$k]->id] = self::propagateVisibility(
-                                    self::getDefaultVisibility($v),
+                                    $this->getDefaultVisibility($v),
                                     isset($v->fieldSet) ? $this->mVisibilities[$v->fieldSet->id] : '',
                                     isset($v->fieldSet->fieldSet) ? $this->mVisibilities[$v->fieldSet->fieldSet->id] : ''
                                 );
@@ -187,7 +188,7 @@ class MaskManager
                             $v = $oas[$k];
                             if ($v->type != "frame") {
                                 $this->mVisibilities[$oas[$k]->id] = self::propagateVisibility(
-                                    self::getDefaultVisibility($v),
+                                    $this->getDefaultVisibility($v),
                                     isset($v->fieldSet) ? $this->mVisibilities[$v->fieldSet->id] : '',
                                     isset($v->fieldSet->fieldSet) ? $this->mVisibilities[$v->fieldSet->fieldSet->id] : ''
                                 );
@@ -228,9 +229,9 @@ class MaskManager
      * @return string
      * @throws Exception
      */
-    public static function getDefaultVisibility(BasicAttribute $v)
+    protected function getDefaultVisibility(BasicAttribute $v)
     {
-        switch ($v->access) {
+        switch (FieldAccessManager::getAccess($this->smartElement, $v)) {
             case BasicAttribute::READ_ACCESS:
                 return self::ReadOnlyVisibility;
             case BasicAttribute::WRITE_ACCESS:
@@ -289,10 +290,11 @@ class MaskManager
         return null;
     }
 
-    public function getVisibilities() {
+    public function getVisibilities()
+    {
         if (count($this->mVisibilities) === 0) {
-        $this->applyMask();
-    }
+            $this->applyMask();
+        }
         return $this->mVisibilities;
     }
 }

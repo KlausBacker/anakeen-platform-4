@@ -103,7 +103,7 @@ $(JS_FAMILY_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_FAMILY_SOUR
 	$(YARN_BIN) buildFamily
 	touch "$@"
 
-$(LOCALPUB_ANAKEEN_UI_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${ANAKEEN_UI_SRC_PATH} -type f ! -path "*/public/components/dist/*" ! -path "*.map" -print | sed 's/ /\\ /g') $(VERSION_PATH) $(RELEASE_PATH) $(PHP_LIB_PATH)/composer.lock $(JS_ASSET_PATH) $(JS_DDUI_BUILD_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_FAMILY_BUILD_PATH)
+$(LOCALPUB_ANAKEEN_UI_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${ANAKEEN_UI_SRC_PATH}/src -type f ! -path "*/public/components/dist/*" ! -path "*.map" -print | sed 's/ /\\ /g') $(VERSION_PATH) $(RELEASE_PATH) $(PHP_LIB_PATH)/composer.lock $(JS_ASSET_PATH) $(JS_DDUI_BUILD_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_FAMILY_BUILD_PATH)
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	rm -f user-interfaces-*.app
 	-mkdir -p $(LOCALPUB_ANAKEEN_UI_PATH)
