@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
+    <smart:structure-configuration name="IUSER">
+        <smart:accesses>
+            <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
+            <smart:element-access-configuration link="PRF_IUSER_OWNER"/>
+            <smart:field-access-configuration link="FALL_IUSER">
+                <smart:field-access-layer link="FAL_IUSER_PASSWORD" access-name="Password"/>
+                <smart:field-access-layer name="FAL_IUSER_ADMIN" title="Admin User Access" access-name="Admin">
+                    <smart:description>Technical information access</smart:description>
+                    <smart:field-access name="us_fr_ident" access="ReadWrite"/>
+                    <smart:field-access name="us_tab_identity" access="ReadWrite"/>
+                    <smart:field-access name="us_tab_system" access="ReadWrite"/>
+                </smart:field-access-layer>
+                <smart:field-access-layer name="FAL_IUSER_IDENTITY" title="User Identity Access" access-name="Identity">
+                    <smart:description>User identity modification</smart:description>
+                    <smart:field-access name="us_fr_ident" access="ReadWrite"/>
+                </smart:field-access-layer>
+            </smart:field-access-configuration>
+        </smart:accesses>
+    </smart:structure-configuration>
+
+    <smart:field-access-layer name="FAL_IUSER_PASSWORD" title="User password" linked-structure="IUSER">
+        <smart:description>User password modification</smart:description>
+        <smart:field-access name="us_fr_userchange" access="ReadWrite"/>
+        <smart:field-access name="us_passwd1" access="Write"/>
+        <smart:field-access name="us_passwd2" access="Write"/>
+    </smart:field-access-layer>
+
+    <smart:access-configuration name="FALL_IUSER" label="User Field Access" profil-type="FIELDACCESSLAYERLIST">
+        <smart:element-access access="Identity" login="gadmin" field="us_meid"/>
+        <smart:element-access access="Password" login="gadmin" field="us_meid"/>
+        <smart:element-access access="Admin" login="gadmin"/>
+    </smart:access-configuration>
+
+    <smart:access-configuration name="PRF_IUSER_OWNER" label="User itself" linked-structure="IUSER">
+        <smart:description>User can modify its own information</smart:description>
+        <smart:element-access access="view" login="gadmin" field="us_meid"/>
+        <smart:element-access access="edit" login="gadmin" field="us_meid"/>
+        <smart:element-access access="delete" login="gadmin"/>
+    </smart:access-configuration>
+
+    <!-- Render Access Configuration -->
+    <smart:access-configuration name="CV_IUSER_ACCOUNT" label="CV DOC IUSER" profil-type="CVDOC" linked-structure="IUSER">
+        <smart:element-access access="view" login="all"/>
+        <smart:element-access access="modifyacl" login="gadmin"/>
+        <smart:element-access access="viewacl" login="gadmin"/>
+        <smart:element-access access="EUSER" login="gadmin"/>
+        <smart:element-access access="EGROUP" login="gadmin"/>
+    </smart:access-configuration>
+    <smart:access-configuration name="MSK_IUSER_ADMIN" link="PRF_ADMIN_EDIT"/>
+    <smart:access-configuration name="MSK_IUSERSUBSTITUTE" link="PRF_ADMIN_EDIT"/>
+</smart:config>

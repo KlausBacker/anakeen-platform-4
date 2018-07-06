@@ -3,13 +3,13 @@
     <smart:structure-configuration name="MAILTEMPLATE">
         <smart:accesses>
             <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration link="PRF_ADMIN_EDIT"/>
+            <smart:element-access-configuration link="PRF_ADMIN_ACCESS"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="MASK">
         <smart:accesses>
             <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration link="PRF_ADMIN_EDIT"/>
+            <smart:element-access-configuration link="PRF_ADMIN_ACCESS"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="CVDOC">
@@ -20,15 +20,10 @@
     <smart:structure-configuration name="EXEC">
         <smart:accesses>
             <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration link="PRF_ADMIN_EDIT"/>
+            <smart:element-access-configuration link="PRF_ADMIN_ACCESS"/>
         </smart:accesses>
     </smart:structure-configuration>
-    <smart:structure-configuration name="IUSER">
-        <smart:accesses>
-            <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration link="PRF_IUSER_OWNER"/>
-        </smart:accesses>
-    </smart:structure-configuration>
+
     <smart:structure-configuration name="IGROUP">
         <smart:accesses>
             <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
@@ -38,7 +33,7 @@
     <smart:structure-configuration name="ROLE">
         <smart:accesses>
             <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration link="PRF_ADMIN_EDIT"/>
+            <smart:element-access-configuration link="PRF_ADMIN_ACCESS"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="DIR">
@@ -162,8 +157,6 @@
         <smart:element-access access="icreate" login="gadmin"/>
         <smart:element-access access="edit" login="gadmin"/>
     </smart:access-configuration>
-    <smart:access-configuration name="MSK_IUSER_ADMIN" link="PRF_ADMIN_EDIT"/>
-    <smart:access-configuration name="MSK_IUSERSUBSTITUTE" link="PRF_ADMIN_EDIT"/>
     <smart:access-configuration name="mskfld" link="PRF_ADMIN_EDIT"/>
     <smart:access-configuration name="cvfld">
         <smart:element-access access="view" login="all"/>

@@ -3,7 +3,6 @@
     <smart:structure-configuration name="FIELDACCESSLAYER">
         <smart:accesses>
             <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration link="PRF_ADMIN_ACCESS"/>
         </smart:accesses>
     </smart:structure-configuration>
 </smart:config>

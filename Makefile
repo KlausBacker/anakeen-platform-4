@@ -19,3 +19,7 @@ po:
 
 deploy:
 	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -a -s .
+
+stubs:
+	npx anakeen-cli generateStubs -s ./src/vendor/Anakeen/SmartStructures/FieldAccessLayer/ -t Stubs/
+	npx anakeen-cli generateStubs -s ./src/vendor/Anakeen/SmartStructures/FieldAccessLayerList/ -t Stubs/
