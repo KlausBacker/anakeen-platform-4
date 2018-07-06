@@ -22,7 +22,7 @@ class IuserViewRender extends DefaultConfigViewRender
 {
     use IuserMessage;
 
-    public function getOptions(SmartElement $document) : RenderOptions
+    public function getOptions(SmartElement $document): RenderOptions
     {
         $options = parent::getOptions($document);
 
@@ -56,17 +56,26 @@ class IuserViewRender extends DefaultConfigViewRender
         return $options;
     }
 
-    public function getMenu(SmartElement $smartElement) : BarMenu
+    public function getMenu(SmartElement $smartElement): BarMenu
     {
         $menus = parent::getMenu($smartElement);
 
-        $listMenu = new \Dcp\UI\ListMenu("accountManagement", ___("Account management"));
 
         try {
-            $listMenu->appendElement($menus->getElement("vid-EGROUP"));
-            $menus->removeElement("vid-EGROUP");
-            $listMenu->appendElement($menus->getElement("vid-ESUBSTITUTE"));
-            $menus->removeElement("vid-ESUBSTITUTE");
+            $vidMenuEgroup = $menus->getElement("vid-EGROUP");
+            $vidMenuESubstitute = $menus->getElement("vid-ESUBSTITUTE");
+
+            $listMenu = new \Dcp\Ui\ListMenu("accountManagement", ___("Account management", "smart iuser"));
+
+
+            if ($vidMenuEgroup) {
+                $listMenu->appendElement($vidMenuEgroup);
+                $menus->removeElement("vid-EGROUP");
+            }
+            if ($vidMenuESubstitute) {
+                $listMenu->appendElement($vidMenuESubstitute);
+                $menus->removeElement("vid-ESUBSTITUTE");
+            }
 
             /* @var \SmartStructure\Iuser $smartElement */
             if ($this->checkMenuAccess($smartElement, "resetLoginFailure")) {
@@ -92,6 +101,7 @@ class IuserViewRender extends DefaultConfigViewRender
                 });
                 $listMenu->appendElement($menu);
             }
+
 
             if ($this->checkMenuAccess($smartElement, "activateAccount")) {
                 // $menu = new \Dcp\UI\ItemMenu("activateAccount", ___("Activate account", "smart iuser"));
@@ -140,7 +150,9 @@ class IuserViewRender extends DefaultConfigViewRender
                 $listMenu->appendElement($menu);
             }
 
-            $menus->insertAfter("modify", $listMenu);
+            if ($listMenu->length() > 0) {
+                $menus->insertAfter("modify", $listMenu);
+            }
         } catch (\Exception $e) {
         }
 

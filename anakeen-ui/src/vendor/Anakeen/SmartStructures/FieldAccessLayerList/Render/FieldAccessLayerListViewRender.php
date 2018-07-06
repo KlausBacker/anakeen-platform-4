@@ -1,12 +1,12 @@
 <?php
 
-namespace Anakeen\SmartStructures\FieldAccessLayer\Render;
+namespace Anakeen\SmartStructures\FieldAccessLayerList\Render;
 
 use Anakeen\Ui\DefaultConfigViewRender;
 use Dcp\Ui\RenderOptions;
 use \SmartStructure\Fields\Fieldaccesslayer as myAttributes;
 
-class FieldAccessLayerViewRender extends DefaultConfigViewRender
+class FieldAccessLayerListViewRender extends DefaultConfigViewRender
 {
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {

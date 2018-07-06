@@ -1,10 +1,12 @@
 {
-  "families":
-  {
-    "FIELDACCESSLAYER":
-    {
-      "renderAccessClass": "Anakeen\\SmartStructures\\FieldAccessLayer\\Render\\FieldAccessLayerAccess",
-      "disableTag" : true
+    "families": {
+        "FIELDACCESSLAYER": {
+            "renderAccessClass": "Anakeen\\SmartStructures\\FieldAccessLayer\\Render\\FieldAccessLayerAccess",
+            "disableTag": true
+        },
+        "FIELDACCESSLAYERLIST": {
+            "renderAccessClass": "Anakeen\\SmartStructures\\FieldAccessLayerList\\Render\\FieldAccessLayerListAccess",
+            "disableTag": true
+        }
     }
-  }
 }

@@ -18,6 +18,7 @@ class FieldAccessLayerEditRender extends DefaultConfigEditRender
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
+        $options->arrayAttribute()->setRowMinDefault(1);
         return $options;
     }
 

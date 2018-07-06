@@ -5,6 +5,7 @@
  */
 
 namespace Dcp\Ui;
+
 /**
  * Class TMenuContent
  * @package Dcp\Ui
@@ -31,12 +32,21 @@ trait TMenuContent
      * Return elements contents in list
      * @return ElementMenu[]
      */
-    public function getElements() {
+    public function getElements()
+    {
         return $this->content;
     }
     /**
+     * Return elements contents count in list
+     * @return int
+     */
+    public function length()
+    {
+        return count($this->content);
+    }
+    /**
      * Insert Element before another Element
-     * @param string $index menu identifier to insert before; if empty insert at first place
+     * @param string      $index  menu identifier to insert before; if empty insert at first place
      * @param ElementMenu $elMenu new Element Menu to insert
      * @return $this
      * @throws Exception
@@ -60,7 +70,6 @@ trait TMenuContent
                     $new[$k] = $value;
                 }
                 $this->content = $new;
-
             } else {
                 /**
                  * @var ListMenu $parent
@@ -73,7 +82,7 @@ trait TMenuContent
 
     /**
      * Retrieve element content at any recusrion level
-     * @param string $index
+     * @param string   $index
      * @param ListMenu $parentElement (ListMenu contains element, null if top level)
      * @return ElementMenu|ItemMenu|ListMenu
      */
@@ -102,7 +111,7 @@ trait TMenuContent
 
     /**
      * Insert Element before another Element
-     * @param string $index menu identifier to insert before
+     * @param string      $index  menu identifier to insert before
      * @param ElementMenu $elMenu new Element Menu to insert
      * @return $this
      * @throws Exception
@@ -141,7 +150,6 @@ trait TMenuContent
     {
         $element = $this->getElement($index, $parent);
         if ($element !== null) {
-
             if ($parent === null) {
                 // local delete
                 unset($this->content[$index]);
