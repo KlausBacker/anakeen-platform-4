@@ -9,16 +9,23 @@ export default {
 
     data() {
         return {
+            // Data source for user parameters treeList
             userParametersDataSource: [],
 
+            // Current edited item and route url to modify it
             editedItem: null,
             editRoute: '',
+
+            // Login of the selected user
             actualLogin: '',
+
+            // Value entered in the search input
             inputSearchValue: '',
         };
     },
 
     methods: {
+        // Init the treeList containing users (1 level treeList)
         initUserTreeList() {
             this.$('#users-tree').kendoTreeList({
                 columns: [
@@ -28,9 +35,13 @@ export default {
                     {
                         width: '14rem',
                         filterable: false,
+
+                        // Button to select the user and access his parameters
                         template: '<a class="selection-btn">Select user</a>',
                     },
                 ],
+
+                // Datasource set to display the first 5 users in treeList
                 dataSource: {
                     transport: {
                         read: {
@@ -38,25 +49,31 @@ export default {
                         },
                     },
                 },
+
+                // Disable columns filters to add global filter
                 filterable: false,
                 resizable: false,
                 messages: {
                     noRows: 'Search a user to modify his settings',
                 },
                 dataBound: () => {
+                    // Init kendoButtons when users are loaded from the server
                     this.$('.selection-btn').kendoButton({
                         icon: 'user',
                     });
                 },
             })
                 .on('click', '.selection-btn', (e) => {
+                    // Select a user to display his parameters with the data item
                     let treeList = $(e.delegateTarget).data('kendoTreeList');
                     let dataItem = treeList.dataItem(e.currentTarget);
                     this.selectUser(dataItem);
                 });
         },
 
+        // Init the treeList containing all the parameters for the selected user
         initTreeList() {
+            // Custom toolbar template to add a global filter
             let toolbarTemplate = `
                 <div class="user-parameters-toolbar">
                     <a class="back-btn">Search another user</a>
@@ -73,6 +90,7 @@ export default {
                 </div>
             `;
 
+            // Add a class on filterable columns header to diplay a filter icon when filtering
             let headerAttributes = { 'class': 'user-filterable-header', }; // jscs:ignore disallowQuotedKeysInObjects
 
             this.$('#user-parameters-tree').kendoTreeList({
@@ -85,6 +103,9 @@ export default {
                     {
                         width: '10rem',
                         filterable: false,
+
+                        // Display edition button on modifiable parameters
+                        // and restore/delete button on user defined parameters
                         template: '# if (!data.rowLevel && !data.isStatic && !data.isReadOnly) { #' +
                         '<a class="edition-btn" title="Edit"></a>' +
                         '# if (data.forUser) { #' +
@@ -93,6 +114,8 @@ export default {
                         '# } #',
                     },
                 ],
+
+                // Disable filter on columns to add a global filter
                 filterable: false,
                 toolbar: toolbarTemplate,
                 resizable: false,
@@ -111,7 +134,7 @@ export default {
                     this.addClassToRow(e.sender);
                     this.restoreTreeState();
 
-                    // Init kendo button in tree
+                    // Init kendoButtons in tree
                     this.$('.edition-btn').kendoButton({
                         icon: 'edit',
                     });
@@ -121,18 +144,19 @@ export default {
                 },
             })
                 .on('click', '.edition-btn', (e) => {
+                    // Open parameter editor with selected dataItem
                     let treeList = $(e.delegateTarget).data('kendoTreeList');
                     let dataItem = treeList.dataItem(e.currentTarget);
-
                     this.openEditor(dataItem);
                 })
                 .on('click', '.delete-btn', (e) => {
+                    // Delete/Restore user parameter with selected dataItem
                     let treeList = $(e.delegateTarget).data('kendoTreeList');
                     let dataItem = treeList.dataItem(e.currentTarget);
-
                     this.deleteParameter(dataItem);
                 })
                 .on('click', '.back-btn', () => {
+                    // Reset actual login when returning to user selection
                     this.actualLogin = '';
 
                     // Display user search
@@ -142,6 +166,7 @@ export default {
                     // Focus on search input
                     this.$('#user-search-input').focus();
 
+                    // Resize user treeList when it is displayed
                     let $userTree = this.$('#users-tree');
                     let kUserTree = $userTree.data('kendoTreeList');
                     if (kUserTree) {
@@ -150,6 +175,7 @@ export default {
                     }
                 })
                 .on('click', '.refresh-btn', () => {
+                    // Re-fetch data from server
                     this.userParametersDataSource.read();
                 })
                 .on('click', '.expand-btn', () => this.expand(true))
@@ -160,7 +186,7 @@ export default {
                     this.searchParameters('');
                 });
 
-            // Init kendo button of toolbar
+            // Init kendoButtons of toolbar
             this.$('.back-btn').kendoButton({
                 icon: 'arrow-chevron-left',
             });
@@ -175,6 +201,7 @@ export default {
             });
         },
 
+        // Select a user in user treeList and display his parameters
         selectUser(dataItem) {
             // Set new DataSource
             this.actualLogin = dataItem.login;
@@ -191,6 +218,7 @@ export default {
             this.$('#user-search').css('display', 'none');
             this.$('#parameters-div').css('display', '');
 
+            // Resize user parameters treeList when displaying it
             let $tree = this.$('#user-parameters-tree');
             let kTree = $tree.data('kendoTreeList');
             if (kTree) {
@@ -202,6 +230,7 @@ export default {
             this.$('.global-search-input').focus();
         },
 
+        // Open the parameter editor with the correct dataItem and modification route url
         openEditor(dataItem) {
             this.editedItem = dataItem;
             this.editRoute = 'admin/parameters/'
@@ -210,12 +239,15 @@ export default {
                              + dataItem.name + '/';
         },
 
+        // Send a request to the server to remove the user definition of the passed parameter
+        // To restore the system value of this parameter for the user
         deleteParameter(dataItem) {
             this.$ankApi.delete('admin/parameters/'
                 + this.actualLogin + '/'
                 + dataItem.nameSpace + '/'
                 + dataItem.name + '/')
                 .then(() => {
+                    // Show a confirmation window to notify the user of the modification
                     this.$('.delete-confirmation-window').kendoWindow({
                         modal: true,
                         draggable: false,
@@ -225,12 +257,17 @@ export default {
                         visible: false,
                         actions: [],
                     }).data('kendoWindow').center().open();
+
+                    // Init the confirmation window's close kendoButton
                     this.$('.delete-confirmation-btn').kendoButton({
-                        icon: 'close',
+                        icon: 'arrow-chevron-left',
                     });
+
+                    // Re-fetch the parameters from server to display the updated values
                     this.userParametersDataSource.read();
                 })
                 .catch(() => {
+                    // Show an error window to nofity the user that the parameter restoration failed
                     this.$('.delete-error-window').kendoWindow({
                         modal: true,
                         draggable: false,
@@ -240,20 +277,25 @@ export default {
                         visible: false,
                         actions: [],
                     }).data('kendoWindow').center().open();
+
+                    // Init error window's close kendoButton
                     this.$('.delete-error-btn').kendoButton({
-                        icon: 'close',
+                        icon: 'arrow-chevron-left',
                     });
                 });
         },
 
+        // Close restoration confirmation window
         closeDeleteConfirmation() {
             this.$('.delete-confirmation-window').data('kendoWindow').close();
         },
 
+        // Close restoration error window
         closeDeleteError() {
             this.$('.delete-error-window').data('kendoWindow').close();
         },
 
+        // Search a user on the server in users treeList
         searchUser() {
             let user = this.$('#user-search-input').val();
             if (user.trim()) {
@@ -268,6 +310,7 @@ export default {
             }
         },
 
+        // Filter treeList parameters on name, description, value and initial system value
         searchParameters(researchTerms) {
             if (researchTerms) {
                 this.userParametersDataSource.filter({
@@ -286,8 +329,10 @@ export default {
                         .append(this.$('<i class="material-icons filter-icon">filter_list</i>'));
                 }
 
+                // Expand treeList to display all results
                 this.expand(true);
             } else {
+                // Reset filter passing an empty one
                 this.userParametersDataSource.filter({});
 
                 // Remove filter icon when nothing is filtered
@@ -295,6 +340,7 @@ export default {
             }
         },
 
+        // Add a class to level 1 and 2 rows of treeList, to add custom CSS
         addClassToRow(treeList) {
             let items = treeList.items();
 
@@ -309,6 +355,7 @@ export default {
             }, 0);
         },
 
+        // Expand/Collapse every rows of the user parameters tree list (true => expand / false => collapse)
         expand(expansion) {
             let treeList = this.$('#user-parameters-tree').data('kendoTreeList');
             let $rows = this.$('tr.k-treelist-group', treeList.tbody);
@@ -323,6 +370,7 @@ export default {
             this.addClassToRow(treeList);
         },
 
+        // At editor close, update the value in treeList, and reset editedItem and editionRoute
         updateAtEditorClose(newValue) {
             setTimeout(() => {
                 if (newValue) {
@@ -335,6 +383,7 @@ export default {
             this.userParametersDataSource.read();
         },
 
+        // Save the current user parameters tree state to localStorage
         saveTreeState() {
             // setTimeout(function, 0) to add CSS classes when all DOM content has been updated
             setTimeout(() => {
@@ -350,6 +399,7 @@ export default {
             }, 0);
         },
 
+        // Restore the user parameters tree state from localStorage, if it exists
         restoreTreeState() {
             let treeState = window.localStorage.getItem('admin.user-parameters.treeState');
             if (treeState) {
@@ -366,10 +416,12 @@ export default {
             }
         },
 
+        // Empty the value of the search input
         clearSearchInput() {
             this.$('#user-search-input').val('');
         },
 
+        // Destroy the parameter editor if it exists and emit event to display System parameters
         switchParameters() {
             let editor = this.$('.edition-window').data('kendoWindow');
             if (editor) {
@@ -381,13 +433,17 @@ export default {
     },
 
     computed: {
+        // Used in template to enable/disable the search input
         isSearchButtonDisabled() {
             return (this.inputSearchValue === '');
         },
     },
 
     mounted() {
+        // Init treeList to display users
         this.initUserTreeList();
+
+        // Init treeList to display user parameters
         this.initTreeList();
 
         // Init switch button
@@ -401,7 +457,8 @@ export default {
         // Focus on input for quick search
         this.$('#user-search-input').focus();
 
-        // Add event listener on treeList to expand/collapse rows on click
+        // Add event listener on treeList to expand/collapse rows on clic
+        // And remove mousedown event listener to prevent double expand/collapse at click on arrows pf treeList
         this.$('#user-parameters-tree')
             .off('mousedown')
             .on('mouseup', 'tbody > .grid-expandable', (e) => {
@@ -416,7 +473,7 @@ export default {
             this.saveTreeState();
         });
 
-        // At window resize, resize the treeList
+        // At window resize, resize the treeLists
         window.addEventListener('resize', () => {
             let $tree = this.$('#user-parameters-tree');
             let kTree = $tree.data('kendoTreeList');

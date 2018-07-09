@@ -25,7 +25,7 @@ class AlterUserParameter
         try {
             DbManager::query($sqlRequest, $output);
         } catch (Exception $e) {
-
+            return false;
         }
 
         $paramType = $output[0]['kind'];

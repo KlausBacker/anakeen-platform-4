@@ -9,6 +9,7 @@ export default {
 
     data() {
         return {
+            // Data source for system parameters
             allParametersDataSource: new kendo.data.TreeListDataSource({
                 transport: {
                     read: {
@@ -17,12 +18,16 @@ export default {
                 },
             }),
 
+            // Current edited item to pass to the parameter editor
             editedItem: null,
+
+            // Current edition route to pass to the parameter editor
             editRoute: '',
         };
     },
 
     methods: {
+        // Init system parameters treeList with toolbar
         initTreeList() {
             let toolbarTemplate = `
                 <div class="global-parameters-toolbar">
@@ -40,6 +45,7 @@ export default {
                 </div>
             `;
 
+            // class to add to the treeList headers to display a filter icon showing filtered columns
             let headerAttributes = { 'class': 'filterable-header', };// jscs:ignore disallowQuotedKeysInObjects
 
             this.$('#parameters-tree').kendoTreeList({
@@ -51,11 +57,15 @@ export default {
                     {
                         width: '6rem',
                         filterable: false,
+
+                        // Add a button only if the parameter is modifiable
                         template: '# if (!data.rowLevel && !data.isStatic && !data.isReadOnly) { #' +
                         '<a class="edition-btn" title="Edit"></a>' +
                         '# } #',
                     },
                 ],
+
+                // Disable kendo column filters => global filter in toolbar
                 filterable: false,
                 toolbar: toolbarTemplate,
                 resizable: false,
@@ -73,12 +83,15 @@ export default {
                 dataBound: (e) => {
                     this.addClassToRow(e.sender);
                     this.restoreTreeState();
+
+                    // Init kendo buttons in treeList when new data is fetched from server
                     this.$('.edition-btn').kendoButton({
                         icon: 'edit',
                     });
                 },
             })
                 .on('click', '.edition-btn', (e) => {
+                    // Open editor with the dataItem of the edited row
                     let treeList = $(e.delegateTarget).data('kendoTreeList');
                     let dataItem = treeList.dataItem(e.currentTarget);
                     this.openEditor(dataItem);
@@ -93,6 +106,7 @@ export default {
                     this.searchParameters('');
                 });
 
+            // Init kendoButtons
             this.$('.switch-btn').kendoButton({
                 icon: 'arrow-right',
             });
@@ -110,11 +124,13 @@ export default {
             });
         },
 
+        // Open editor window, passing the editedItem and the edition route url
         openEditor(dataItem) {
             this.editedItem = dataItem;
             this.editRoute = 'admin/parameters/' + this.editedItem.nameSpace + '/' + this.editedItem.name + '/';
         },
 
+        // Filter name, description and value columns
         searchParameters(researchTerms) {
             if (researchTerms) {
                 this.allParametersDataSource.filter({
@@ -132,8 +148,10 @@ export default {
                         .append(this.$('<i class="material-icons filter-icon">filter_list</i>'));
                 }
 
+                // Expand treeList to show results
                 this.expand(true);
             } else {
+                // Reset filter with an empty filter
                 this.allParametersDataSource.filter({});
 
                 // Remove filter icon when nothing is filtered
@@ -141,6 +159,7 @@ export default {
             }
         },
 
+        // Add a class to first and second level rows, to add custom CSS
         addClassToRow(treeList) {
             let items = treeList.items();
 
@@ -155,6 +174,7 @@ export default {
             }, 0);
         },
 
+        // Expand or collapse all rows of treeList (true => expand / false => collapse)
         expand(expansion) {
             let treeList = this.$('#parameters-tree').data('kendoTreeList');
             let $rows = this.$('tr.k-treelist-group', treeList.tbody);
@@ -169,6 +189,7 @@ export default {
             this.addClassToRow(treeList);
         },
 
+        // When editor is closed, update modified value, and reset editedItem and editedRoute
         updateAtEditorClose(newValue) {
             setTimeout(() => {
                 if (newValue) {
@@ -181,6 +202,7 @@ export default {
 
         },
 
+        // Save tree state (expanded and collapŝed rows) into localStorage
         saveTreeState() {
             // setTimeout(function, 0) to save state when all DOM content has been updated
             setTimeout(() => {
@@ -196,6 +218,7 @@ export default {
             }, 0);
         },
 
+        // Restore saved tree state (expanded and collapsed rows) from localStorage
         restoreTreeState() {
             let treeState = window.localStorage.getItem('admin.parameters.treeState');
             if (treeState) {
@@ -212,6 +235,7 @@ export default {
             }
         },
 
+        // Destroy editor to prevent conficts with others editors and send event to show user parameters
         switchParameters() {
             let editor = this.$('.edition-window').data('kendoWindow');
             if (editor) {
@@ -223,6 +247,7 @@ export default {
     },
 
     mounted() {
+        // Init treeList and restore its state
         this.initTreeList();
         this.restoreTreeState();
 
@@ -230,6 +255,7 @@ export default {
         this.$('.global-search-input').focus();
 
         // Add event listener on treeList to expand/collapse rows on click
+        // and remove mousedown event listerner to prevent double expand/collapse at click on arrows of treeList
         this.$('#parameters-tree')
             .off('mousedown')
             .on('mouseup', 'tbody > .grid-expandable', (e) => {

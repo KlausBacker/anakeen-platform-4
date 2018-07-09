@@ -139,7 +139,7 @@ class AllParameters
         try {
             DbManager::query($sqlRequest, $outputResult);
         } catch (Exception $e) {
-
+            return $response->withStatus(500, 'Error during parameters fetch');
         }
 
         foreach ($outputResult as $parameter) {

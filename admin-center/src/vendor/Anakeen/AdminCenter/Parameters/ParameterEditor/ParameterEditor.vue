@@ -8,15 +8,15 @@
                 </span>
             </div>
             <div class="form-group">
-                <label for="parameter-new-value" class="form-label">Value : </label>
-                <input :type="parameterInputType" class="form-control value-input parameter-new-value" :value="inputSelectedValue" v-if="parameterInputType === 'text' || parameterInputType === 'number' || parameterInputType === 'password'">
-                <select id="enum-drop-down" class="value-input parameter-new-value" :value="inputSelectedValue" v-else-if="parameterInputType === 'enum'">
+                <div class="form-label">Value : </div>
+                <input id="text-parameter-input" :type="parameterInputType" class="form-control value-input parameter-new-value" :value="inputSelectedValue" v-if="parameterInputType === 'text' || parameterInputType === 'number' || parameterInputType === 'password'" title="value">
+                <select id="enum-drop-down" class="value-input parameter-new-value" :value="inputSelectedValue" v-else-if="parameterInputType === 'enum'" title="value">
                     <option v-for="value in enumPossibleValues">{{ value }}</option>
                 </select>
                 <div id="json-parameter-new-value" class="json-editor" v-else-if="isJson(inputSelectedValue)"></div>
                 <div v-else>
                     <div class="alert alert-warning invalid-json-warning" role="alert">Parameter is not a valid json, please save it as json</div>
-                    <textarea class="form-control parameter-new-value" :value="inputSelectedValue"></textarea>
+                    <textarea class="form-control parameter-new-value" :value="inputSelectedValue" title="value"></textarea>
                 </div>
             </div>
             <a class="modify-btn form-parameter-btn" @click="modifyParameter">Save new value</a>
