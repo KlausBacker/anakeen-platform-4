@@ -1,24 +1,18 @@
-define([
-    "underscore",
-    "backbone"
-], function (_, Backbone) {
-    "use strict";
+define(["underscore", "backbone"], function(_, Backbone) {
+  "use strict";
 
-    var url = _.template("api/v2/documents/<%- initid %>/usertags/lasttab");
+  var url = _.template("api/v2/documents/<%- initid %>/usertags/lasttab");
 
-    return Backbone.Model.extend({
+  return Backbone.Model.extend({
+    typeModel: "ddui:attributeTab",
+    idAttribute: "initid",
 
-        typeModel:"ddui:attributeTab",
-        idAttribute : "initid",
+    url: function mDocumentTag_url() {
+      return url({ initid: this.get("initid") });
+    },
 
-        url : function mDocumentTag_url() {
-            return url({initid : this.get("initid")});
-        },
-
-        toJSON : function mDocumentTag_toJSON() {
-            return this.get("tabId");
-        }
-
-
-    });
+    toJSON: function mDocumentTag_toJSON() {
+      return this.get("tabId");
+    }
+  });
 });
