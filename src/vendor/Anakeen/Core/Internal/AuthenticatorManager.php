@@ -66,11 +66,12 @@ class AuthenticatorManager
                         /**
                          * @var \SmartStructure\IUSER $du
                          */
-                        $du = SEManager::getDocument($wu->fid);
+                        $du = SEManager::getDocument($wu->fid, false);
                         if ($du && $du->isAlive()) {
                             $du->disableAccessControl();
                             $du->increaseLoginFailure();
                             $du->restoreAccessControl();
+                            SEManager::cache()->addDocument($du);
                         }
                     }
                 }
@@ -423,7 +424,7 @@ class AuthenticatorManager
             /**
              * @var \SmartStructure\IUSER $du
              */
-            $du = SEManager::getDocument($wu->fid);
+            $du = SEManager::getDocument($wu->fid, false);
             if ($du === null) {
                 static::secureLog("failure", "no found account element data",
                     static::$auth->provider->parms['type'] . "/"

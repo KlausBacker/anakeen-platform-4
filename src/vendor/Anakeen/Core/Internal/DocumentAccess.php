@@ -199,8 +199,9 @@ class DocumentAccess
         $this->document->profid = $profid;
         if (($profid > 0) && ($profid != $this->document->id)) {
             // make sure that the profil is activated
-            $pdoc = \Anakeen\Core\SEManager::getDocument($profid);
+            $pdoc = \Anakeen\Core\SEManager::getDocument($profid, false);
             if ($pdoc && $pdoc->getRawValue("DPDOC_FAMID") > 0) {
+                SEManager::cache()->addDocument($pdoc);
                 // dynamic profil
                 $this->document->dprofid = $profid;
                 $this->computeDProfil($this->document->dprofid, $fromdocidvalues);
@@ -350,7 +351,7 @@ class DocumentAccess
         $vupacl = array();
 
         $tVgroup2attrid = array();
-        $pdoc = \Anakeen\Core\SEManager::getDocument($dprofid);
+        $pdoc = \Anakeen\Core\SEManager::getDocument($dprofid, false);
         if ($pdoc) {
             $pfamid = $pdoc->getRawValue("DPDOC_FAMID");
         }
@@ -416,7 +417,7 @@ class DocumentAccess
                         $tduid = \Anakeen\Core\Internal\SmartElement::rawValueToArray($duid);
                         foreach ($tduid as $duid) {
                             if ($duid > 0) {
-                                $docu = SEManager::getRawDocument(intval($duid));
+                                $docu = SEManager::getRawDocument(intval($duid), false);
                                 if (!is_array($docu)) {
                                     // No use exception because document may has been deleted
                                     $errorMessage = \ErrorCode::getError('DOC0127', var_export($duid, true), var_export($aid, true));
@@ -542,7 +543,7 @@ class DocumentAccess
                     $tduid = \Anakeen\Core\Internal\SmartElement::rawValueToArray($duid);
                     foreach ($tduid as $duid) {
                         if ($duid > 0) {
-                            $docu = SEManager::getRawDocument(intval($duid)); // not for idoc list for the moment
+                            $docu = SEManager::getRawDocument(intval($duid), false); // not for idoc list for the moment
                             $greenUid[$docu["us_whatid"] . $v["acl"]] = array(
                                 "uid" => $docu["us_whatid"],
                                 "acl" => $v["acl"]
@@ -851,7 +852,7 @@ class DocumentAccess
             }
             $uiid = SEManager::getIdFromName($accountReference);
             if ($uiid) {
-                $udoc = SEManager::getDocument($uiid);
+                $udoc = SEManager::getDocument($uiid, false);
                 if ($udoc && $udoc->isAlive()) {
                     $accountReference = $udoc->getRawValue("us_whatid");
                 }

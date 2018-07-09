@@ -52,7 +52,8 @@ class FieldAccessManager
             return $oa->getAccess();
         }
         /** @var \SmartStructure\Fieldaccesslayerlist $fall */
-        $fall = SEManager::getDocument($se->fallid);
+        $fall = SEManager::getDocument($se->fallid, false);
+        SEManager::cache()->addDocument($fall);
         return self::getFalAccess($fall, $se, $oa);
     }
 
@@ -71,7 +72,7 @@ class FieldAccessManager
             $aclNames = $fall->getMultipleRawValues(FallFields::fall_aclname);
             foreach ($layers as $k => $layerId) {
                 if ($fall->hasPermission($aclNames[$k])) {
-                    $layerData = SEManager::getRawDocument($layerId);
+                    $layerData = SEManager::getRawDocument($layerId, false);
                     $fields = SmartElement::rawValueToArray($layerData[falFields::fal_fieldid]);
                     $access = SmartElement::rawValueToArray($layerData[falFields::fal_fieldaccess]);
 
@@ -96,10 +97,10 @@ class FieldAccessManager
 
     public static function hasReadAccess(SmartElement $se, BasicAttribute $oa)
     {
-        // print_r([$oa->id, $oa->access, $oa->getAccess()]);
+       // print_r([ContextManager::getCurrentUser()->id, $oa->id, $oa->access, $oa->getAccess()]);
         $mb0 = microtime(true);
         $x = (ContextManager::getCurrentUser()->id == Account::ADMIN_ID) ||
-           // ($oa->getAccess() & BasicAttribute::READ_ACCESS) ||
+            ($oa->getAccess() & BasicAttribute::READ_ACCESS) ||
             ($se->fallid !== null && (self::getAccess($se, $oa) & BasicAttribute::READ_ACCESS));
         self::$mb += microtime(true) - $mb0;
         self::$mbc++;

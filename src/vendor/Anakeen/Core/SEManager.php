@@ -3,6 +3,7 @@
 namespace Anakeen\Core;
 
 use Anakeen\Core\DocManager\Exception;
+use Anakeen\Core\Internal\Debug;
 
 class SEManager
 {
@@ -253,12 +254,10 @@ class SEManager
         /**
          * @var \Anakeen\Core\SmartStructure $family
          */
-        $family = self::getDocument($famId);
+        $family = self::getFamily($famId);
         if ($family === null) {
             throw new Exception("APIDM0002", $familyIdentifier, $famId);
         }
-
-        self::cache()->addDocument($family);
 
         $classname = "Doc" . $famId;
         self::requireFamilyClass($family->id);
@@ -337,7 +336,7 @@ class SEManager
             /**
              * @var \Anakeen\Core\SmartStructure $family
              */
-            $family = self::getDocument($doc->fromid, false);
+            $family = self::getFamily($doc->fromid);
             $doc->setDefaultValues($family->getDefValues());
         }
         return $doc;
