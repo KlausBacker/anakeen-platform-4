@@ -7,7 +7,7 @@ const config = configPath ? JSON.parse(fs.readFileSync(configPath)) : {};
 
 require("yargs")
   .config(config)
-  .env('anakeen-cli')
+  .env("anakeen-cli")
   .commandDir("commands")
   .demandCommand()
   .help().argv;

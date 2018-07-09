@@ -63,7 +63,7 @@ const analyzeApiReturn = result => {
 
 /**
  * Check if login, password and url are OK
- * @param {*} param0 
+ * @param {*} param0
  */
 exports.checkControlConnexion = ({
   controlUrl,
@@ -108,7 +108,7 @@ exports.checkControlConnexion = ({
 
 /**
  * Clean a previous active transaction if needed
- * @param {*} param0 
+ * @param {*} param0
  */
 exports.cleanTransaction = ({
   controlUrl,
@@ -159,7 +159,7 @@ exports.cleanTransaction = ({
 
 /**
  * Send the generated or gived module for upload
- * @param {*} param0 
+ * @param {*} param0
  */
 exports.postModule = ({
   controlUrl,
@@ -182,7 +182,7 @@ exports.postModule = ({
 
 /**
  * Get and return a transaction
- * @param {*} param0 
+ * @param {*} param0
  */
 exports.checkTransaction = ({
   controlUrl,
@@ -200,7 +200,7 @@ exports.checkTransaction = ({
 
 /**
  * Go to the next step of a transaction
- * @param {*} param0 
+ * @param {*} param0
  */
 exports.nextStep = ({ controlUrl, controlUsername, controlPassword }) => {
   return fetch(urljoin(controlUrl, CONTROL_API_BASE, "/transactions/0"), {
@@ -215,7 +215,7 @@ exports.nextStep = ({ controlUrl, controlUsername, controlPassword }) => {
 
 /**
  * Add prompt to validate license
- * @param {*} param0 
+ * @param {*} param0
  */
 exports.validateLicenses = ({
   controlUrl,
@@ -283,7 +283,7 @@ exports.validateLicenses = ({
 
 /**
  * Set the parameters of all the modules
- * @param {*} 
+ * @param {*}
  */
 exports.completeParameters = ({
   controlUrl,
@@ -333,7 +333,10 @@ exports.completeParameters = ({
           return inquirer.prompt(prompt).then(promptValues => {
             let i = 0;
             //Enhance the prompted response with parameters values
-            const response = {...promptValues, ...parameterValues[currentModuleParameters.module]};
+            const response = {
+              ...promptValues,
+              ...parameterValues[currentModuleParameters.module]
+            };
             const values = Object.keys(response);
             const initParameters = function setParameters() {
               return fetch(

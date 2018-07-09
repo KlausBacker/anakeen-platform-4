@@ -1,4 +1,4 @@
-const gulp = require('gulp');
+const gulp = require("gulp");
 const signale = require("signale");
 const { getModuleInfo } = require("../tasks/moduleInfo");
 

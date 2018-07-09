@@ -70,7 +70,7 @@ const createBuildXML = () => {
       },
       "acli:sources": {
         "acli:source": {
-          "path": "src"
+          path: "src"
         }
       }
     }
@@ -91,13 +91,13 @@ exports.create = ({
     return new Promise((resolve, reject) => {
       //Check name of the element
       if (!checkModuleName(moduleName)) {
-        reject("The module name is invalid "+moduleName);
+        reject("The module name is invalid " + moduleName);
       }
       if (!checkVendorName(vendorName)) {
-        reject("The vendor name is invalid "+vendorName);
+        reject("The vendor name is invalid " + vendorName);
       }
       if (!checkNamespace(namespace)) {
-        reject("The namespace is invalid "+namespace);
+        reject("The namespace is invalid " + namespace);
       }
       fs.mkdir(path.join(sourcePath, "src"), err => {
         if (err) {
@@ -185,12 +185,11 @@ exports.create = ({
             resolve();
           });
         });
-      }).then(() => {
+      })
+      .then(() => {
         return new Promise((resolve, reject) => {
           const builder = new xml2js.Builder();
-          const xml = builder.buildObject(
-            createBuildXML()
-          );
+          const xml = builder.buildObject(createBuildXML());
           fs.writeFile(path.join(sourcePath, "build.xml"), xml, err => {
             if (err) {
               return reject(err);

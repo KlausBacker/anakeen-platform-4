@@ -6,8 +6,12 @@
   "bin": {
     "anakeen-cli": "./index.js"
   },
+  "scripts": {
+    "beautify": "npx eslint ./ --fix"
+  },
   "license": "MIT",
   "dependencies": {
+    "easygettext": "^2.5.0",
     "find-up": "^3.0.0",
     "gulp": "^4.0.0",
     "gulp-gzip": "^1.4.2",
@@ -27,9 +31,7 @@
     "yargs": "^11.0.0"
   },
   "devDependencies": {
-    "easygettext": "^2.5.0",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb-base": "^13.0.0",
-    "eslint-plugin-import": "^2.13.0"
+    "eslint-plugin-prettier": "^2.6.2",
+    "eslint": "^5.1.0"
   }
 }
