@@ -58,7 +58,8 @@ export default {
             this.restoreTreeState();
             this.$('.activation-switch:not(.activation-switch[data-role=switch])').kendoMobileSwitch({
               change: (e) => {
-                this.$ankApi.post('admin/routes/', { toggleValue: e.checked });
+                const sender = e.sender.element[0].closest('tr[role=row]');
+                this.$ankApi.post('admin/routes/', {toggleValue: e.checked, route: sender.firstElementChild.textContent});
               },
             });
           },
@@ -101,7 +102,7 @@ export default {
         items.each(function addTypeClass() {
           let dataItem = treeList.dataItem(this);
           if (dataItem.rowLevel) {
-            $(this).addClass('tree-level-' + dataItem.rowLevel);
+            $(this).addClass('tree-level-' + dataItem.rowLevel + ' '+dataItem.name);
           }
         });
       }, 0);
