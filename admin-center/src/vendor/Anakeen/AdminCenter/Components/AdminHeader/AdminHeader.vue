@@ -2,6 +2,7 @@
     <header class="admin-center-header">
         <div class="header-content header-left-content">
             <span class="header-app-title">{{appName}}</span> <span>-</span> <span class="header-app-title">{{adminTitle}}</span>
+            <span v-if="rootPlugin">></span> <span v-if="rootPlugin" class="header-app-title">{{rootPlugin.title||''}}</span>
         </div>
         <div class="header-content header-right-content">
             <ank-identity large="true" @userLoaded="onUserLoaded" email-alterable="true" password-alterable="true"></ank-identity>

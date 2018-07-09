@@ -21,16 +21,16 @@ class MainPage
         $version = \Dcp\Ui\UIGetAssetPath::getWs();
 
         $data = [
-            "JS" => [
-                ["key" =>"jquery",
-                "path" => \Dcp\Ui\UIGetAssetPath::getJSJqueryPath()],
-                [
-                    "key" =>"kendo",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getJSKendoPath()
-                ],
-                ["key" =>"ank-components",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath()]
-            ],
+//            "JS" => [
+//                ["key" =>"jquery",
+//                "path" => \Dcp\Ui\UIGetAssetPath::getJSJqueryPath()],
+//                [
+//                    "key" =>"kendo",
+//                    "path" => \Dcp\Ui\UIGetAssetPath::getJSKendoPath()
+//                ],
+//                ["key" =>"ank-components",
+//                    "path" => \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath()]
+//            ],
             "CSS" => [
                 [
                     "key" => "bootstrap",

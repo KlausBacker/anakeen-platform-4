@@ -44,6 +44,7 @@ export const buildVueRoutes = (plugins) => {
 };
 
 export const buildVueRouteObject = (pluginDescription) => ({
+    name: pluginDescription[PLUGIN_SCHEMA.name],
     path: pluginDescription[PLUGIN_SCHEMA.pluginPath],
     component: asyncVueComponent(pluginDescription),
 });
@@ -82,7 +83,9 @@ export const asyncVueComponent = (pluginDescription) => () => {
                 }).catch(reject);
 
             } else {
-                resolve({});
+                resolve({
+                    template: '<span></span>',
+                });
             }
         })
             .catch(err => {

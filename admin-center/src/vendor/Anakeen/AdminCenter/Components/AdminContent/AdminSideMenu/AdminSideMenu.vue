@@ -16,9 +16,9 @@
             </div>
         </div>
         <div class="admin-center-side-submenu" v-if="enableSubMenu">
-            <h4 class="admin-center-plugin-title"><span class="admin-center-plugin-icon-wrapper" v-html="currentPlugin[pluginSchema.icon]"></span> {{currentPlugin[pluginSchema.title]}}</h4>
+            <h4 class="admin-center-plugin-title"><span class="admin-center-plugin-icon-wrapper" v-html="rootPlugin[pluginSchema.icon]"></span> {{rootPlugin[pluginSchema.title]}}</h4>
             <div class="admin-center-side-submenu-items">
-                <router-link class="admin-center-side-submenu-item" active-class="admin-center-side-submenu-item--active" v-for="submenu in currentPlugin[pluginSchema.subcomponents]"
+                <router-link class="admin-center-side-submenu-item" active-class="admin-center-side-submenu-item--active" v-for="submenu in rootPlugin[pluginSchema.subcomponents]"
                              :key="submenu[pluginSchema.name]" :to="submenu[pluginSchema.pluginPath]" tag="div" exact>
                     <span v-if="submenu[pluginSchema.icon]" class="admin-center-plugin-icon-wrapper" v-html="submenu[pluginSchema.icon]"></span> {{submenu.title}}
                 </router-link>

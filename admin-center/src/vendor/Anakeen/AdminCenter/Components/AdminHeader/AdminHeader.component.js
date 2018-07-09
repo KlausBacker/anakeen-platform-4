@@ -8,7 +8,8 @@ export default {
     },
     computed: {
         ...mapGetters({
-            appName: 'getAppName'
+            appName: 'getAppName',
+            rootPlugin: 'getRootPlugin',
         })
     },
     methods: {

@@ -4,7 +4,7 @@ export default {
             groupTree: new kendo.data.HierarchicalDataSource({
                 transport: {
                     read: (options) => {
-                        Vue.ankApi.get("admin/account/groups/").then(response => {
+                        this.$ankApi.get("admin/account/groups/").then(response => {
                             if (response.status === 200 && response.statusText === 'OK') {
                                 let groups = response.data.groups;
                                 Object.values(groups).forEach((currentData) => {
@@ -136,7 +136,7 @@ export default {
     methods: {
         //Get the config of the creation toolbar
         fetchConfig: function() {
-            Vue.ankApi.get("admin/account/config/").then(response => {
+            this.$ankApi.get("admin/account/config/").then(response => {
                 if (response.status === 200 && response.statusText === 'OK') {
                     this.options = response.data;
                     this.bindToolbars(response.data);
@@ -155,7 +155,7 @@ export default {
                 if (event && event.target && event.target[0] && event.target[0].id) {
                     if (event.target[0].id === "groupCreateToolbar" || event.target[0].id === "userCreateToolbar") {
                         event.preventDefault();
-                        Vue.jQuery(event.target[0]).parent().data("kendoPopup").open();
+                        this.$(event.target[0]).parent().data("kendoPopup").open();
                         return;
                     }
                     openDoc.publicMethods.fetchSmartElement({
@@ -202,7 +202,7 @@ export default {
             const grid = this.$refs.grid.$el;
             const openDoc = this.$refs.openDoc;
             const toggleUserMode = this.toggleUserMode.bind(this);
-            Vue.jquery(grid).on("click", ".openButton", (event) => {
+            this.$(grid).on("click", ".openButton", (event) => {
                 event.preventDefault();
                 const userId = event.currentTarget.dataset["initid"];
                 if (userId) {
@@ -219,22 +219,22 @@ export default {
             const onContentResize = (part, $split) => {
                 return () => {
                     window.setTimeout(() => {
-                        Vue.jQuery(window).trigger("resize");
+                        this.$(window).trigger("resize");
                     }, 100);
-                    window.localStorage.setItem("admin.account." + part, Vue.jQuery($split).data("kendoSplitter")
+                    window.localStorage.setItem("admin.account." + part, this.$($split).data("kendoSplitter")
                         .size(".k-pane:first"));
                 };
             };
             const sizeContentPart = window.localStorage.getItem("admin.account.content") || "200px";
             const sizeCenterPart = window.localStorage.getItem("admin.account.center") || "200px";
-            Vue.jQuery(this.$refs.gridAndTreePart).kendoSplitter({
+            this.$(this.$refs.gridAndTreePart).kendoSplitter({
                 panes: [
                     {collapsible: true, size: sizeContentPart, min: "200px", resizable: true},
                     {collapsible: false, resizable: true}
                 ],
                 resize: onContentResize("content", this.$refs.gridAndTreePart)
             });
-            Vue.jQuery(this.$refs.centerPart).kendoSplitter({
+            this.$(this.$refs.centerPart).kendoSplitter({
                 orientation: "vertical",
                 panes: [
                     {collapsible: true, size: sizeCenterPart, min: "200px", resizable: true},

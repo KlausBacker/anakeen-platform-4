@@ -1,9 +1,8 @@
 <template>
     <section class="admin-center-main-content">
-        <admin-side-menu :plugins="getPluginsList"></admin-side-menu>
+        <admin-side-menu></admin-side-menu>
         <keep-alive>
             <router-view>
-                <router-view></router-view>
             </router-view>
         </keep-alive>
     </section>

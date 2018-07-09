@@ -1,10 +1,8 @@
 import axiosAdmin from './admin';
 import axiosApiV2 from './api';
 import axiosGlobal from './global';
-import store from '../../store/index';
 
 const identity = (r) => r;
-
 
 export default function install(Vue, options = {// jscs:ignore disallowFunctionDeclarations
     onSuccessResponse: identity,

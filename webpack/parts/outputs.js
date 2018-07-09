@@ -145,6 +145,30 @@ exports.cssLoader = (filesOutputDir, exclude) => ({
     },
 });
 
+exports.splitChunksPlugin = () => ({
+    optimization: {
+        runtimeChunk: false,
+        splitChunks: {
+            cacheGroups: {
+                default: false,
+                vendor: {
+                    test: /node_modules/,
+                    name: 'libs',
+                    chunks: 'all',
+                    minChunks: 1
+                },
+                kendo: {
+                    test:/node_modules\/@progress/,
+                    name: 'kendo',
+                    priority: 2,
+                    chunks: 'all',
+                    minChunks: 1
+                },
+            }
+        }
+    },
+});
+
 exports.useVueLoader = (exclude) => ({
     resolve: {
         extensions: ['.js', '.vue', '.json'],
