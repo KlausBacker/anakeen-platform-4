@@ -103,7 +103,6 @@ export default {
                 newValue = JSON.stringify(this.jsonEditor.get());
             } else if (this.parameterInputType === 'json' && !this.isJson(this.$('.parameter-new-value').val())) {
                 this.$('.parameter-new-value').css('border-color', 'red');
-                return;
             } else if (this.parameterInputType === 'enum') {
                 newValue = this.$('#enum-drop-down').val();
             } else {
@@ -111,46 +110,48 @@ export default {
                 newValue = this.$('.parameter-new-value').val();
             }
 
-            // Send the request at edition route passed as a prop of the component
-            this.$ankApi.put(this.editRoute,
-                {
-                    value: newValue,
-                })
-                .then((response) => {
-                    // Save the modified value sent by the server, and open a confirmation window
-                    this.responseValue = response.data.value;
-                    this.$('.confirmation-window').kendoWindow({
-                        modal: true,
-                        draggable: false,
-                        resizable: false,
-                        title: 'Parameter modified',
-                        width: '30%',
-                        visible: false,
-                        actions: [],
-                    }).data('kendoWindow').center().open();
+            if (newValue) {
+                // Send the request at edition route passed as a prop of the component
+                this.$ankApi.put(this.editRoute,
+                    {
+                        value: newValue,
+                    })
+                    .then((response) => {
+                        // Save the modified value sent by the server, and open a confirmation window
+                        this.responseValue = response.data.value;
+                        this.$('.confirmation-window').kendoWindow({
+                            modal: true,
+                            draggable: false,
+                            resizable: false,
+                            title: 'Parameter modified',
+                            width: '30%',
+                            visible: false,
+                            actions: [],
+                        }).data('kendoWindow').center().open();
 
-                    // Init confirmation window close kendoButton
-                    this.$('.close-confirmation-btn').kendoButton({
-                        icon: 'arrow-chevron-left',
-                    });
-                })
-                .catch(() => {
-                    // Open an error window to notify the user
-                    this.$('.error-window').kendoWindow({
-                        modal: true,
-                        draggable: false,
-                        resizable: false,
-                        title: 'Error',
-                        width: '30%',
-                        visible: false,
-                        actions: [],
-                    }).data('kendoWindow').center().open();
+                        // Init confirmation window close kendoButton
+                        this.$('.close-confirmation-btn').kendoButton({
+                            icon: 'arrow-chevron-left',
+                        });
+                    })
+                    .catch(() => {
+                        // Open an error window to notify the user
+                        this.$('.error-window').kendoWindow({
+                            modal: true,
+                            draggable: false,
+                            resizable: false,
+                            title: 'Error',
+                            width: '30%',
+                            visible: false,
+                            actions: [],
+                        }).data('kendoWindow').center().open();
 
-                    // Init error window close kendoButton
-                    this.$('.close-error-btn').kendoButton({
-                        icon: 'arrow-chevron-left',
+                        // Init error window close kendoButton
+                        this.$('.close-error-btn').kendoButton({
+                            icon: 'arrow-chevron-left',
+                        });
                     });
-                });
+            }
         },
 
         // Close both confirmation and editor windows
