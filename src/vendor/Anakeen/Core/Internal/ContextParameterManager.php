@@ -38,14 +38,20 @@ class ContextParameterManager
         $key = $ns . "::" . $name;
         $p = new Param("", [$key, $type]);
 
-        if (!$p->isAffected() && $type !== Param::PARAM_GLB) {
-            $p->val = $val;
-            $p->type = $type;
-            $p->name = $key;
-            $p->add();
+        if (!$p->isAffected() && $type[0] === Param::PARAM_USER) {
+            if ($val !== null) {
+                $p->val = $val;
+                $p->type = $type;
+                $p->name = $key;
+                $p->add();
+            }
         } elseif ($p->isAffected()) {
-            $p->val = $val;
-            $err = $p->modify();
+            if ($type[0] === Param::PARAM_USER && $val === null) {
+                $err = $p->delete();
+            } else {
+                $p->val = $val;
+                $err = $p->modify();
+            }
             if ($err) {
                 throw new Exception(sprintf("Cannot modify context parameter %s : %s", $key, $err));
             }
@@ -59,7 +65,7 @@ class ContextParameterManager
      * Set value to a user parameter
      * @param string $ns        parameter namespace
      * @param string $name      parameter name
-     * @param string $val       new value
+     * @param string $val       new value (if null the user value will be deleted)
      * @param int    $accountId (user system id)  - 0 means current user id
      * @throws Exception
      */
