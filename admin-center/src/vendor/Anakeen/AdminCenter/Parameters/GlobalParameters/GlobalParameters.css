@@ -6,6 +6,7 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: stretch;
+    overflow: hidden;
 }
 
 .global-parameters-toolbar {
@@ -77,5 +78,9 @@
 }
 
 .k-icon.k-i-none {
-    width: 2rem;
+    width: 3rem;
+}
+
+tr:not(.grid-expandable) > td .k-icon.k-i-none:first-child {
+    width: 0;
 }

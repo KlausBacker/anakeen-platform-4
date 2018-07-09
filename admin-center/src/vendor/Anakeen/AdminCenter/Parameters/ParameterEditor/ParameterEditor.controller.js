@@ -39,9 +39,9 @@ export default {
 
                     activate: () => {
                         if (this.parameterInputType === 'enum') {
-                            this.$('#parameter-new-value').data('kendoDropDownList').focus();
+                            this.$('#enum-drop-down').data('kendoDropDownList').focus();
                         } else {
-                            this.$('#parameter-new-value').focus();
+                            this.$('.parameter-new-value').focus();
                         }
                     },
 
@@ -54,7 +54,7 @@ export default {
                     },
                 }).data('kendoWindow').center().open();
 
-                this.$('#parameter-new-value').css('border-color', '');
+                this.$('.parameter-new-value').css('border-color', '');
 
                 if (this.parameterInputType === 'json' && this.isJson(this.editedItem.value)) {
                     this.jsonValue = JSON.parse(this.editedItem.value);
@@ -68,7 +68,7 @@ export default {
                 }
 
                 if (this.parameterInputType === 'enum') {
-                    this.$('#parameter-new-value').kendoDropDownList();
+                    this.$('#enum-drop-down').kendoDropDownList();
                 }
 
                 this.$('.modify-btn').kendoButton({
@@ -88,12 +88,14 @@ export default {
             let newValue;
             if (this.parameterInputType === 'json' && this.isJson(this.editedItem.value)) {
                 newValue = JSON.stringify(this.jsonEditor.get());
-            } else if (this.parameterInputType === 'json' && !this.isJson(this.$('#parameter-new-value').val())) {
-                this.$('#parameter-new-value').css('border-color', 'red');
+            } else if (this.parameterInputType === 'json' && !this.isJson(this.$('.parameter-new-value').val())) {
+                this.$('.parameter-new-value').css('border-color', 'red');
                 return;
+            } else if (this.parameterInputType === 'enum') {
+                newValue = this.$('#enum-drop-down').val();
             } else {
-                this.$('#parameter-new-value').css('border-color', '');
-                newValue = this.$('#parameter-new-value').val();
+                this.$('.parameter-new-value').css('border-color', '');
+                newValue = this.$('.parameter-new-value').val();
             }
 
             this.$ankApi.put(this.editRoute,
@@ -111,17 +113,33 @@ export default {
                         visible: false,
                         actions: [],
                     }).data('kendoWindow').center().open();
-                    this.$('.form-parameter-btn').kendoButton({
+                    this.$('.close-confirmation-btn').kendoButton({
                         icon: 'close',
                     });
                 })
                 .catch(() => {
-                    // TODO Catch
+                    this.$('.error-window').kendoWindow({
+                        modal: true,
+                        draggable: false,
+                        resizable: false,
+                        title: 'Error',
+                        width: '30%',
+                        visible: false,
+                        actions: [],
+                    }).data('kendoWindow').center().open();
+                    this.$('.close-error-btn').kendoButton({
+                        icon: 'close',
+                    });
                 });
         },
 
         closeConfirmationAndEditor() {
             this.$('.confirmation-window').data('kendoWindow').close();
+            this.$('.edition-window').data('kendoWindow').close();
+        },
+
+        closeErrorAndEditor() {
+            this.$('.error-window').data('kendoWindow').close();
             this.$('.edition-window').data('kendoWindow').close();
         },
 

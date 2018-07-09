@@ -141,6 +141,13 @@ export default {
 
                     // Focus on search input
                     this.$('#user-search-input').focus();
+
+                    let $userTree = this.$('#users-tree');
+                    let kUserTree = $userTree.data('kendoTreeList');
+                    if (kUserTree) {
+                        $userTree.height(this.$(window).height() - $userTree.offset().top);
+                        kUserTree.resize();
+                    }
                 })
                 .on('click', '.refresh-btn', () => {
                     this.userParametersDataSource.read();
@@ -184,6 +191,13 @@ export default {
             this.$('#user-search').css('display', 'none');
             this.$('#parameters-div').css('display', '');
 
+            let $tree = this.$('#user-parameters-tree');
+            let kTree = $tree.data('kendoTreeList');
+            if (kTree) {
+                $tree.height(this.$(window).height() - $tree.offset().top);
+                kTree.resize();
+            }
+
             // Focus on filter input
             this.$('.global-search-input').focus();
         },
@@ -214,6 +228,7 @@ export default {
                     this.$('.delete-confirmation-btn').kendoButton({
                         icon: 'close',
                     });
+                    this.userParametersDataSource.read();
                 })
                 .catch(() => {
                     this.$('.delete-error-window').kendoWindow({
@@ -229,7 +244,6 @@ export default {
                         icon: 'close',
                     });
                 });
-            this.userParametersDataSource.read();
         },
 
         closeDeleteConfirmation() {

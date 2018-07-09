@@ -5,6 +5,7 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: stretch;
+    overflow: hidden;
 }
 
 .user-parameters-toolbar {
@@ -50,7 +51,6 @@
 
 .user-parameters-tree {
     height: 100%;
-    width: 100%;
 }
 
 .grid-level-1 {
@@ -115,4 +115,8 @@
     align-items: flex-start;
     justify-content: stretch;
     margin: .5rem;
+}
+
+.users-tree {
+    height: 100%;
 }
