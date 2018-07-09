@@ -7,7 +7,7 @@ signale.config({
     displayDate: true
   });
 
-exports.desc = 'Build the app file';
+exports.desc = 'Generate the stubs';
 exports.builder = {
     sourcePath: {
         defaultDescription: 'path of the info.xml',
