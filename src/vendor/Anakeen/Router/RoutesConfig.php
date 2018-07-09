@@ -42,7 +42,7 @@ class RoutesConfig
             if (is_file($this->fileCache)) {
                 $this->data = unserialize(file_get_contents($this->fileCache));
             }
-            if ( ! $this->data) {
+            if (!$this->data) {
                 throw new Exception("ROUTES0003");
             }
         }
@@ -50,9 +50,9 @@ class RoutesConfig
 
     public function resetCache()
     {
-        $routeConfig = \Anakeen\Router\RouterLib::getRouterConfig();
-        $data["routes"] = $routeConfig->getRoutes();
-        $data["middlewares"] = $routeConfig->getMiddlewares();
+        $routerConfig = \Anakeen\Router\RouterLib::getRouterConfig();
+        $data["routes"] = $routerConfig->getFileConfigRoutes();
+        $data["middlewares"] = $routerConfig->getFileConfigMiddlewares();
 
         file_put_contents($this->fileCache, serialize($data));
     }

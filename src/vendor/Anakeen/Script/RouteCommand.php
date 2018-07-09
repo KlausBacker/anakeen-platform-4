@@ -3,6 +3,7 @@
 namespace Anakeen\Script;
 
 use Anakeen\Core\Utils\FileMime;
+use Anakeen\Router\RouterManager;
 use Slim\Container;
 use Slim\Http\Environment;
 use Slim\Http\Request;
@@ -11,22 +12,12 @@ use Slim\Http\Response;
 class RouteCommand
 {
     /**
-     * @var \Anakeen\Router\RoutesConfig
-     */
-    protected $routesConfig;
-
-    public function __construct()
-    {
-        $this->routesConfig = new \Anakeen\Router\RoutesConfig();
-    }
-
-    /**
      * @return \Anakeen\Router\Config\RouterInfo[]
      */
     public function getRouteList()
     {
 
-        $routes = $this->routesConfig->getRoutes();
+        $routes = RouterManager::getRoutes();
         return ($routes);
     }
 
@@ -40,7 +31,7 @@ class RouteCommand
      */
     public function requestRoute($routeId, $args)
     {
-        $routes = $this->routesConfig->getRoutes();
+        $routes = RouterManager::getRoutes();
         if (!isset($routes[$routeId])) {
             throw new \Anakeen\Router\Exception(sprintf("Route \"%s\" not exists", $routeId));
         }

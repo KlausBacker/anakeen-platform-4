@@ -142,7 +142,7 @@ class RouterConfig
     /**
      * @return RouterInfo[]
      */
-    public function getRoutes()
+    public function getFileConfigRoutes()
     {
         $routes = [];
         foreach ($this->routes as $k => $v) {
@@ -155,9 +155,14 @@ class RouterConfig
     /**
      * @return RouterInfo[]
      */
-    public function getMiddlewares()
+    public function getFileConfigMiddlewares()
     {
-        return $this->middlewares;
+        $routes = [];
+        foreach ($this->middlewares as $k => $v) {
+            $routes[$k] = new RouterInfo($v);
+        }
+
+        return $routes;
     }
 
 

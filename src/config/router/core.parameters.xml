@@ -66,6 +66,15 @@
             <sde:type>integer</sde:type>
             <sde:access>admin</sde:access>
         </sde:parameter>
+
+        <sde:parameter name="CORE_ROUTESSTATUSES">
+            <sde:category>System</sde:category>
+            <sde:description>List disabled routes</sde:description>
+            <sde:value>{}</sde:value>
+            <sde:type>json</sde:type>
+            <sde:access>readonly</sde:access>
+        </sde:parameter>
+
         <sde:parameter name="CORE_MAIL_LINK">
             <sde:description>produce link for</sde:description>
             <sde:value>optimal</sde:value>

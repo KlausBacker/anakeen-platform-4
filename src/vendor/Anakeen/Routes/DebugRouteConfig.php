@@ -16,8 +16,8 @@ class DebugRouteConfig
 
         return $response->withJson(
             [
-                "routes" => $routeConfig->getRoutes(),
-                "middleware" => $routeConfig->getMiddlewares()
+                "routes" => $routeConfig->getFileConfigRoutes(),
+                "middleware" => $routeConfig->getFileConfigMiddlewares()
             ]
 
         );

@@ -21,8 +21,8 @@ class TestRouteConfig
         $routeConfig = \Anakeen\Router\RouterLib::getRouterConfig();
         return $response->withJson(
             [
-                "routes" => $routeConfig->getRoutes(),
-                "middleware" => $routeConfig->getMiddlewares(),
+                "routes" => $routeConfig->getFileConfigRoutes(),
+                "middleware" => $routeConfig->getFileConfigMiddlewares(),
                 "accesses" => $routeConfig->getAccesses()
             ]
         );
