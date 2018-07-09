@@ -11,7 +11,7 @@ class AlterParameter
 
     private function isCorrect($ns, $name, $value) {
         $full = $ns.'::'.$name;
-        $sqlRequest = 'select paramdef.*, paramv.val as value, paramv.type as usefor from paramdef, paramv where paramdef.name = paramv.name and paramv.type=\'G\' and paramdef.name=\''.$full.'\';';
+        $sqlRequest = sprintf("select paramdef.*, paramv.val as value, paramv.type as usefor from paramdef, paramv where paramdef.name = paramv.name and paramv.type='G' and paramdef.name='%s';", pg_escape_string($full));
         $output = [];
 
         try {
