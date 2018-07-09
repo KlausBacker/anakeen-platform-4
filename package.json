@@ -45,6 +45,8 @@
     "document-register-element": "^1.8.1",
     "easygettext": "^2.4.0",
     "es6-promise": "^4.1.1",
+    "eslint": "^5.1.0",
+    "eslint-plugin-prettier": "^2.6.2",
     "file-loader": "^1.1.11",
     "font-awesome": "^4.7.0",
     "git-revision-webpack-plugin": "^3.0.3",

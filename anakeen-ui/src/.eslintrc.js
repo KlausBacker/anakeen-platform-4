@@ -10,10 +10,7 @@ module.exports = {
         "sourceType": "module"
     },
     "rules": {
-        "indent": [
-            "error",
-            4
-        ],
+        "prettier/prettier": "error",
         "linebreak-style": [
             "error",
             "unix"
@@ -21,7 +18,8 @@ module.exports = {
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "no-console": ["error", { allow: ["warn", "error"] }]
     },
     "globals": {
         $: false,
@@ -29,5 +27,8 @@ module.exports = {
         define: false,
         _: false,
         Mustache: false
-    }
+    },
+    "plugins": [
+        "prettier"
+    ]
 };
