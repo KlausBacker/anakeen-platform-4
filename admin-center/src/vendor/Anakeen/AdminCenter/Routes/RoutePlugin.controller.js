@@ -58,7 +58,7 @@ export default {
             this.restoreTreeState();
             this.$('.activation-switch:not(.activation-switch[data-role=switch])').kendoMobileSwitch({
               change: (e) => {
-                this.$ankApi.post('admin/routes/', { toggleValue: e.checked , route: 'lol' + $row});
+                this.$ankApi.post('admin/routes/', { toggleValue: e.checked });
               },
             });
           },

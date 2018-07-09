@@ -85,7 +85,7 @@ class AllRoutes
             }
             return $response->withJson($this->formatTreeDataSource($result));
         } else if (strToupper($request->getMethod()) === 'POST') {
-            return $response->withJson($request->getParam('route'));
+            return $response->withJson($request->getParam('toggleValue'));
         } else {
             return $response->withStatus(405, 'method unauthorized');
         }
