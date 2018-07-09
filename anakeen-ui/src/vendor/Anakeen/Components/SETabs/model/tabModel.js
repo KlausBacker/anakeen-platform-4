@@ -1,113 +1,114 @@
-import Vue from 'vue';
+import Vue from "vue";
 
 export default class TabModel {
-
-    constructor() {
-        this.openedTabs = new Vue.kendo.data.ObservableArray([]);
-        this.modelListeners = [];
-        this.openedTabs.bind('change', (e) => {
-            this.modelListeners.forEach(l => {
-                if (l.action === e.action) {
-                    l.callback.call(this, e, this);
-                }
-            });
-            this.modelListeners = this.modelListeners.filter(l => (l.action !== e.action || !l.once));
-        });
-    }
-
-    on(action, callback) {
-        this.modelListeners.push({
-            action,
-            callback,
-            once: false,
-        });
-    }
-
-    once(action, callback) {
-        this.modelListeners.push({
-            action,
-            callback,
-            once: true,
-        });
-    }
-
-    add(...tab) {
-        this.openedTabs.push(...tab);
-    }
-
-    get(identifier) {
-        if (typeof identifier === 'number') {
-            if (identifier >= 0 && identifier < this.size()) {
-                return this.openedTabs[identifier];
-            }
-
-            return null;
-        } else if (typeof identifier === 'object' && identifier !== null) {
-            if (identifier.tabId !== undefined) {
-                return this.find((item => item.tabId == identifier.tabId));
-            }
+  constructor() {
+    this.openedTabs = new Vue.kendo.data.ObservableArray([]);
+    this.modelListeners = [];
+    this.openedTabs.bind("change", e => {
+      this.modelListeners.forEach(l => {
+        if (l.action === e.action) {
+          l.callback.call(this, e, this);
         }
+      });
+      this.modelListeners = this.modelListeners.filter(
+        l => l.action !== e.action || !l.once
+      );
+    });
+  }
 
-        return null;
+  on(action, callback) {
+    this.modelListeners.push({
+      action,
+      callback,
+      once: false
+    });
+  }
+
+  once(action, callback) {
+    this.modelListeners.push({
+      action,
+      callback,
+      once: true
+    });
+  }
+
+  add(...tab) {
+    this.openedTabs.push(...tab);
+  }
+
+  get(identifier) {
+    if (typeof identifier === "number") {
+      if (identifier >= 0 && identifier < this.size()) {
+        return this.openedTabs[identifier];
+      }
+
+      return null;
+    } else if (typeof identifier === "object" && identifier !== null) {
+      if (identifier.tabId !== undefined) {
+        return this.find(item => item.tabId == identifier.tabId);
+      }
     }
 
-    findIndex(callback) {
-        return this.toJSON().findIndex(callback);
-    }
+    return null;
+  }
 
-    find(callback) {
-        return this.toJSON().find(callback);
-    }
+  findIndex(callback) {
+    return this.toJSON().findIndex(callback);
+  }
 
-    size() {
-        return this.openedTabs.length;
-    }
+  find(callback) {
+    return this.toJSON().find(callback);
+  }
 
-    isEmpty() {
-        return !this.size();
-    }
+  size() {
+    return this.openedTabs.length;
+  }
 
-    join(separator) {
-        return this.openedTabs.join(separator);
-    }
+  isEmpty() {
+    return !this.size();
+  }
 
-    remove(identifier) {
-        if (typeof identifier === 'number') {
-            if (identifier >= 0 && identifier < this.size()) {
-                return this.openedTabs.splice(identifier, 1)[0];
-            }
-        } else if (typeof identifier === 'object' && identifier !== null) {
-            if (identifier.tabId !== undefined) {
-                const index = this.findIndex(t => t.tabId == identifier.tabId);
-                if (index > -1) {
-                    return this.openedTabs.splice(index, 1)[0];
-                }
-            }
+  join(separator) {
+    return this.openedTabs.join(separator);
+  }
+
+  remove(identifier) {
+    if (typeof identifier === "number") {
+      if (identifier >= 0 && identifier < this.size()) {
+        return this.openedTabs.splice(identifier, 1)[0];
+      }
+    } else if (typeof identifier === "object" && identifier !== null) {
+      if (identifier.tabId !== undefined) {
+        const index = this.findIndex(t => t.tabId == identifier.tabId);
+        if (index > -1) {
+          return this.openedTabs.splice(index, 1)[0];
         }
-
-        return null;
+      }
     }
 
-    removeAll() {
-        this.openedTabs.splice(0, this.size());
-    }
+    return null;
+  }
 
-    replace(identifier, newItem) {
-        if (typeof identifier === 'number') {
-            if (identifier >= 0 && identifier < this.size()) {
-                return this.openedTabs.splice(identifier, 1, newItem)[0];
-            }
-        } else if (typeof identifier === 'object' && identifier !== null) {
-            if (identifier.tabId !== undefined) {
-                const index = this.findIndex(t => t.tabId == identifier.tabId);
-                if (index > -1) {
-                    return this.openedTabs.splice(index, 1, newItem)[0];
-                }
-            }
+  removeAll() {
+    this.openedTabs.splice(0, this.size());
+  }
+
+  replace(identifier, newItem) {
+    if (typeof identifier === "number") {
+      if (identifier >= 0 && identifier < this.size()) {
+        return this.openedTabs.splice(identifier, 1, newItem)[0];
+      }
+    } else if (typeof identifier === "object" && identifier !== null) {
+      if (identifier.tabId !== undefined) {
+        const index = this.findIndex(t => t.tabId == identifier.tabId);
+        if (index > -1) {
+          return this.openedTabs.splice(index, 1, newItem)[0];
         }
+      }
     }
+  }
 
-    toJSON() {
-        return this.openedTabs.toJSON();
-    }
+  toJSON() {
+    return this.openedTabs.toJSON();
+  }
 }
