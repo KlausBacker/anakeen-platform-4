@@ -8,7 +8,13 @@ use Dcp\Db\Exception;
 
 class AlterParameter
 {
-
+    /**
+     * Check if the value is correct (match a possible value)
+     * @param $ns
+     * @param $name
+     * @param $value
+     * @return bool
+     */
     private function isCorrect($ns, $name, $value) {
         $full = $ns.'::'.$name;
         $sqlRequest = sprintf("select paramdef.*, paramv.val as value, paramv.type as usefor from paramdef, paramv where paramdef.name = paramv.name and paramv.type='G' and paramdef.name='%s';", pg_escape_string($full));
@@ -51,6 +57,7 @@ class AlterParameter
     }
 
     /**
+     * Modify a system parameter's value
      * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
      * @param $args

@@ -8,6 +8,7 @@ use Dcp\Db\Exception;
 class AllParameters
 {
     /**
+     * Format correctly the parameter to send in the response
      * @param $parameter
      * @return array|null
      */
@@ -46,6 +47,7 @@ class AllParameters
     }
 
     /**
+     * sort data to organize it as treeDataSource to display it in kendo treeList
      * @param $parameters
      * @return array
      */
@@ -123,6 +125,7 @@ class AllParameters
     }
 
     /**
+     * Return all system parameters
      * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
      * @return \Slim\Http\Response

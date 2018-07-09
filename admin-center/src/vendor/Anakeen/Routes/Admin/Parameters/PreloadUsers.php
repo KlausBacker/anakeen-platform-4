@@ -5,6 +5,13 @@ namespace Anakeen\Routes\Admin\Parameters;
 
 class PreloadUsers
 {
+    /**
+     * Return the first 5 users of the database to fill the grid in parameters plugin
+     * @param \Slim\Http\request $request
+     * @param \Slim\Http\response $response
+     * @param $args
+     * @return \Slim\Http\Response
+     */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $result = [];

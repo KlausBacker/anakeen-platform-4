@@ -9,6 +9,13 @@ use Dcp\Exception;
 
 class RestoreUserParameterSystemValue
 {
+    /**
+     * Delete a user specific value to restore system value for this user
+     * @param \Slim\Http\request $request
+     * @param \Slim\Http\response $response
+     * @param $args
+     * @return \Slim\Http\Response
+     */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         // User

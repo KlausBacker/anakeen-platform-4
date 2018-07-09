@@ -10,6 +10,13 @@ use Dcp\Db\Exception;
 
 class AlterUserParameter
 {
+    /**
+     * Check if the value is correct (match a possible value)
+     * @param $ns
+     * @param $name
+     * @param $value
+     * @return bool
+     */
     private function isCorrect($ns, $name, $value) {
         $full = $ns.'::'.$name;
         $sqlRequest = sprintf("select paramdef.*, paramv.val as value, paramv.type as usefor from paramdef, paramv where paramdef.name = paramv.name and paramv.type='G' and paramdef.name='%s';", pg_escape_string($full));
@@ -52,9 +59,11 @@ class AlterUserParameter
     }
 
     /**
+     * Modify the value of a parameter for a specific user
      * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
      * @param $args
+     * @return \Slim\Http\Response
      * @throws \Dcp\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)

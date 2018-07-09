@@ -9,6 +9,11 @@ use Dcp\Db\Exception;
 
 class UserParameters
 {
+    /**
+     * Format correctly the parameter to send in the response
+     * @param $parameter
+     * @return array
+     */
     private function formatParameter($parameter)
     {
         $formatedParameter = [];
@@ -40,6 +45,11 @@ class UserParameters
         return $formatedParameter;
     }
 
+    /**
+     * sort data to organize it as treeDataSource to display it in kendo treeList
+     * @param $parameters
+     * @return array
+     */
     private function formatTreeDataSource($parameters)
     {
         // Sort parameters : 1) Categorized / not categorized 2) By alphabetlical order
@@ -112,6 +122,12 @@ class UserParameters
         return $data;
     }
 
+    /**
+     * Return the initial value of a parameter (system value)
+     * @param $param
+     * @param $allParams
+     * @return null
+     */
     private function initialValue($param, $allParams)
     {
         foreach ($allParams as $parameter) {
@@ -123,6 +139,13 @@ class UserParameters
         return null;
     }
 
+    /**
+     * Check if a parameter has been redefined for a specific user
+     * @param $param
+     * @param $allParams
+     * @param $user
+     * @return bool
+     */
     private function userDefined($param, $allParams, $user)
     {
         foreach ($allParams as $parameter) {
@@ -134,6 +157,13 @@ class UserParameters
     }
 
 
+    /**
+     * Return the list of parameters for a specific user
+     * @param \Slim\Http\request $request
+     * @param \Slim\Http\response $response
+     * @param $args
+     * @return \Slim\Http\Response
+     */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $user = $args['user'];

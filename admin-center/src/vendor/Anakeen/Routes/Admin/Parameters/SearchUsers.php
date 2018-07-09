@@ -5,6 +5,13 @@ namespace Anakeen\Routes\Admin\Parameters;
 
 class SearchUsers
 {
+    /**
+     * Return the list of users containing the research terms in their first name, last name and/or login
+     * @param \Slim\Http\request $request
+     * @param \Slim\Http\response $response
+     * @param $args
+     * @return \Slim\Http\Response
+     */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $search = preg_quote($args['user']);
