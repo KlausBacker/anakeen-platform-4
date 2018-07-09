@@ -1,4 +1,4 @@
-const gulp = require('gulp');
+const gulp = require("gulp");
 const { deploy, buildAndDeploy } = require("../tasks/deploy");
 const signale = require("signale");
 const { controlArguments } = require("../utils/control");
@@ -15,9 +15,9 @@ exports.builder = controlArguments({
     defaultDescription: "application file path",
     alias: "t",
     type: "string",
-    coerce: (arg) => {
+    coerce: arg => {
       if (!fs.statSync(arg).isFile()) {
-        throw new Error("Unable to find the file "+ arg);
+        throw new Error("Unable to find the file " + arg);
       }
       return arg;
     }
@@ -26,9 +26,9 @@ exports.builder = controlArguments({
     defaultDescription: "path of the info.xml for the autorelease mode",
     alias: "s",
     type: "string",
-    coerce: (arg) => {
+    coerce: arg => {
       if (!fs.statSync(arg).isDirectory()) {
-        throw new Error("Unable to find the source directory "+ arg);
+        throw new Error("Unable to find the source directory " + arg);
       }
       return arg;
     }
@@ -46,16 +46,17 @@ exports.builder = controlArguments({
     implies: "sourcePath"
   },
   parameterValues: {
-    defaultDescription: "value for parameters in install deploy (path to a js file)",
+    defaultDescription:
+      "value for parameters in install deploy (path to a js file)",
     type: "string",
-    coerce: (arg) => {
+    coerce: arg => {
       if (!arg) {
         return false;
       }
       if (!fs.statSync(arg).isFile()) {
-        throw new Error("Unable to find the file "+ arg);
+        throw new Error("Unable to find the file " + arg);
       }
-      const parameter = fs.readFileSync(arg, {encoding: "utf-8"});
+      const parameter = fs.readFileSync(arg, { encoding: "utf-8" });
       try {
         return JSON.parse(parameter);
       } catch (e) {

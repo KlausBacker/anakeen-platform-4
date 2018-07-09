@@ -41,7 +41,9 @@ const buildPipe = (exports.buildPipe = async ({
       gulp.src(path.join(sourcePath, appConst.license))
     );
   }
-  return gulpElements.pipe(tar(moduleFileName)).pipe(gzip({ extension: "app" }));
+  return gulpElements
+    .pipe(tar(moduleFileName))
+    .pipe(gzip({ extension: "app" }));
 });
 
 exports.build = ({

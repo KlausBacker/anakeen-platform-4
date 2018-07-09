@@ -26,7 +26,9 @@ const generateFields = field => {
   if (field.fieldlongtext) {
     field.fieldlongtext.forEach(longtext => {
       listFields += `        /** [longtext] ${longtext.$.label} */\r\n`;
-      listFields += `        const ${longtext.$.name}='${longtext.$.name}';\r\n`;
+      listFields += `        const ${longtext.$.name}='${
+        longtext.$.name
+      }';\r\n`;
     });
   }
   // [docid]
@@ -94,7 +96,9 @@ exports.parseStub = file => {
               });
             }
 
-            const extendsPart = infos.extends ? ` extends ${infos.extends}` : '';
+            const extendsPart = infos.extends
+              ? ` extends ${infos.extends}`
+              : "";
 
             let content = `<?php
 
@@ -103,7 +107,8 @@ namespace SmartStructure {
     use Anakeen\\Core\\Internal\\SmartElement;
 
     /** de base  */
-    class ${upperCaseFirstLetter(infos.name)} extends ${infos.extends || "SmartElement"}
+    class ${upperCaseFirstLetter(infos.name)} extends ${infos.extends ||
+              "SmartElement"}
     {
         const familyName = "${infos.name}";
     }
