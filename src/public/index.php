@@ -20,9 +20,8 @@ if (\Anakeen\Core\ContextManager::inMaintenance()) {
     throw $e;
 }
 
-$routeConfig = new \Anakeen\Router\RoutesConfig();
-$routes = $routeConfig->getRoutes();
-$middleWares = $routeConfig->getMiddlewares();
+$routes = \Anakeen\Router\RouterManager::getRoutes();
+$middleWares = \Anakeen\Router\RouterManager::getMiddlewares();
 
 $app = \Anakeen\Router\RouterManager::getSlimApp();
 // Add routes configuration to router

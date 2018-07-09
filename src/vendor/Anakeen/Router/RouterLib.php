@@ -224,8 +224,8 @@ class RouterLib
      */
     public static function getRouteInfo($name)
     {
-        $config = self::getRouterConfig();
-        foreach ($config->getRoutes() as $route) {
+        $routes = RouterManager::getRoutes();
+        foreach ($routes as $route) {
             if ($route->name === $name) {
                 $info = new RouterInfo($route);
                 return $info;

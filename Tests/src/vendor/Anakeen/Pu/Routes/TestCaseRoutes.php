@@ -26,8 +26,8 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
         parent::setUpBeforeClass();
 
         $routeConfig = \Anakeen\Router\RouterLib::getRouterConfig();
-        $routes = $routeConfig->getRoutes();
-        $middleWares = $routeConfig->getMiddlewares();
+        $routes = $routeConfig->getFileConfigRoutes();
+        $middleWares = $routeConfig->getFileConfigMiddlewares();
 
         self::$routerApp = \Anakeen\Router\RouterManager::getSlimApp();
         \Anakeen\Router\RouterManager::addRoutes($routes);

@@ -14,6 +14,10 @@ class RouterManager
      * @var \Slim\App $app
      */
     protected static $app;
+    /**
+     * @var RoutesConfig
+     */
+    protected static $routesConfig;
 
     public static function getSlimConfig()
     {
@@ -81,6 +85,12 @@ class RouterManager
         // Need to reverse : Slim use the last route match
         $routes = array_reverse($routes);
         foreach ($routes as $route) {
+            /**
+             * @var RouterInfo $route
+             */
+            if ($route->isActive() === false) {
+                continue;
+            }
             if (count($route->methods) && strtoupper($route->methods[0]) === "ANY") {
                 $route->methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
             }
@@ -200,6 +210,24 @@ class RouterManager
                 return $next($request, $response);
             }
         );
+    }
+
+
+    public static function getRoutes()
+    {
+        return self::getRoutesConfig()->getRoutes();
+    }
+    public static function getMiddlewares()
+    {
+        return self::getRoutesConfig()->getMiddlewares();
+    }
+
+    protected static function getRoutesConfig()
+    {
+        if (self::$routesConfig === null) {
+            self::$routesConfig = new RoutesConfig();
+        }
+        return self::$routesConfig;
     }
 
     /**
