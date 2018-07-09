@@ -85,7 +85,9 @@ class AllRoutes
             }
             return $response->withJson($this->formatTreeDataSource($result));
         } else if (strToupper($request->getMethod()) === 'POST') {
-            return $response->withJson($request->getParam('toggleValue'));
+            $route =\Anakeen\Router\RouterLib::getRouteInfo($request->getParam('route'));
+            $route->setActive($request->getParam('toggleValue'));
+            return $response->withJson($route->isActive());
         } else {
             return $response->withStatus(405, 'method unauthorized');
         }
