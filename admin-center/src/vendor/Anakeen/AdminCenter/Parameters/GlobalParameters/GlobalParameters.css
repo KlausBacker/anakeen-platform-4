@@ -6,7 +6,6 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: stretch;
-    overflow: hidden;
 }
 
 .global-parameters-toolbar {
@@ -30,7 +29,6 @@
     position: relative;
     z-index: 10;
     padding: 0;
-    left: -2rem;
     cursor: pointer;
 }
 
@@ -73,14 +71,18 @@
     white-space: nowrap;
 }
 
-.reset-search-btn {
-    width: 0;
-}
-
 .k-icon.k-i-none {
     width: 3rem;
 }
 
 tr:not(.grid-expandable) > td .k-icon.k-i-none:first-child {
     width: 0;
+}
+
+.global-search-input {
+    margin-right: -1.6rem;
+}
+
+.parameter-search-reset-btn {
+    left: -.3rem;
 }

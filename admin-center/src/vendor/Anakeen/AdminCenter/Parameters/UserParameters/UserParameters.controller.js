@@ -85,7 +85,7 @@ export default {
                                class="form-control global-search-input"
                                placeholder="Filter parameters..."
                                style="border-radius: .25rem">
-                        <i class="input-group-addon material-icons reset-search-btn">close</i>
+                        <i class="input-group-addon material-icons reset-search-btn parameter-search-reset-btn">close</i>
                     </div>
                 </div>
             `;
