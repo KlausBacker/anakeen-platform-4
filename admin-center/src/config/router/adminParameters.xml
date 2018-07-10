@@ -15,7 +15,7 @@
             <sde:priority>0</sde:priority>
             <sde:callable>\Anakeen\Routes\Admin\Parameters\SearchUsers</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/admin/parameters/users/{user}</sde:pattern>
+            <sde:pattern>/api/v2/admin/parameters/users/search/{user}/</sde:pattern>
             <sde:description>Search users to modify parameters</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
@@ -25,7 +25,7 @@
             <sde:priority>0</sde:priority>
             <sde:callable>\Anakeen\Routes\Admin\Parameters\UserParameters</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/admin/parameters/{user}/</sde:pattern>
+            <sde:pattern>/api/v2/admin/parameters/users/{user}/</sde:pattern>
             <sde:description>Get all parameters used for a specific user</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
@@ -51,12 +51,22 @@
                 <sde:access ns="AdminCenter">Admin</sde:access>
             </sde:requiredAccess>
         </sde:route>
-        <sde:route name="AdminParameters:DeleteUserParameter">
+        <sde:route name="AdminParameters:RestoreUserParameterSystemValue">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Admin\Parameters\RestoreUserParameterSystmValue</sde:callable>
+            <sde:callable>\Anakeen\Routes\Admin\Parameters\RestoreUserParameterSystemValue</sde:callable>
             <sde:method>DELETE</sde:method>
             <sde:pattern>/api/v2/admin/parameters/{user}/{name_space}/{parameter_name}/</sde:pattern>
             <sde:description>Delete the value of a parameter for a specific user</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminParameters:PreloadUsers">
+            <sde:priority>0</sde:priority>
+            <sde:callable>\Anakeen\Routes\Admin\Parameters\PreloadUsers</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/admin/parameters/users/</sde:pattern>
+            <sde:description>Get the 5 first users</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
             </sde:requiredAccess>

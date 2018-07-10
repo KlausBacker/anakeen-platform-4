@@ -5,6 +5,7 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: stretch;
+    overflow: hidden;
 }
 
 .user-parameters-toolbar {
@@ -50,7 +51,6 @@
 
 .user-parameters-tree {
     height: 100%;
-    width: 100%;
 }
 
 .grid-level-1 {
@@ -93,8 +93,8 @@
     height: 100%;
 }
 
-.user-search-input-label {
-    font-size: 1.5rem;
+.switch-parameters {
+    margin-right: .375rem;
 }
 
 .reset-button {
@@ -102,5 +102,25 @@
 }
 
 .reset-search-btn {
+    width: 0;
+}
+
+.grid-expandable {
+    cursor: pointer;
+}
+
+.search-group {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: stretch;
+    margin: .5rem;
+}
+
+.users-tree {
+    height: 100%;
+}
+
+tr:not(.grid-expandable) > td .k-icon.k-i-none:first-child {
     width: 0;
 }

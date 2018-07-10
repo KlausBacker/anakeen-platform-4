@@ -8,6 +8,7 @@ use Dcp\Db\Exception;
 class AllParameters
 {
     /**
+     * Format correctly the parameter to send in the response
      * @param $parameter
      * @return array|null
      */
@@ -46,6 +47,7 @@ class AllParameters
     }
 
     /**
+     * sort data to organize it as treeDataSource to display it in kendo treeList
      * @param $parameters
      * @return array
      */
@@ -53,14 +55,29 @@ class AllParameters
     {
         // Sort parameters : 1) Categorized / not categorized 2) By alphabetlical order
         $params = $parameters;
+
         uasort($params, function ($a, $b)
         {
-            if ($a['category'] && !$b['category']) {
+            if ($a['nameSpace'] < $b['nameSpace']) {
                 return -1;
-            } elseif (!$a['category'] && $b['category']) {
+            } elseif ($a['nameSpace'] > $b['nameSpace']) {
                 return 1;
             } else {
-                return ($a['name'] < $b['name']) ? -1 : 1;
+                if ($a['category'] && !$b['category']) {
+                    return -1;
+                } elseif (!$a['category'] && $b['category']) {
+                    return 1;
+                } elseif ($a['category'] && $b['category']) {
+                    if ($a['category'] < $b['category']) {
+                        return -1;
+                    } elseif ($a['category'] > $b['category']) {
+                        return 1;
+                    } else {
+                        return ($a['name'] < $b['name']) ? -1 : 1;
+                    }
+                } else {
+                    return ($a['name'] < $b['name']) ? -1 : 1;
+                }
             }
         });
 
@@ -108,6 +125,7 @@ class AllParameters
     }
 
     /**
+     * Return all system parameters
      * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
      * @return \Slim\Http\Response
@@ -121,7 +139,7 @@ class AllParameters
         try {
             DbManager::query($sqlRequest, $outputResult);
         } catch (Exception $e) {
-
+            return $response->withStatus(500, 'Error during parameters fetch');
         }
 
         foreach ($outputResult as $parameter) {

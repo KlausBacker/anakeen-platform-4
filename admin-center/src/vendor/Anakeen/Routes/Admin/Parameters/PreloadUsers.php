@@ -3,10 +3,10 @@
 namespace Anakeen\Routes\Admin\Parameters;
 
 
-class SearchUsers
+class PreloadUsers
 {
     /**
-     * Return the list of users containing the research terms in their first name, last name and/or login
+     * Return the first 5 users of the database to fill the grid in parameters plugin
      * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
      * @param $args
@@ -14,24 +14,23 @@ class SearchUsers
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $search = preg_quote($args['user']);
         $result = [];
 
         $searchAccount = new \SearchAccount();
         $searchAccount->setTypeFilter(\SearchAccount::userType);
-        $searchAccount->addFilter("login  ~* '%s' or lastname ~* '%s' or firstname ~* '%s' ", $search, $search, $search);
-
 
         foreach ($searchAccount->search() as $currentAccount) {
             /* @var $currentAccount \Anakeen\Core\Account */
             $result[$currentAccount->id] = [
-                "login"=> $currentAccount->login,
+                "login" => $currentAccount->login,
                 "accountId" => $currentAccount->id,
                 "firstname" => $currentAccount->firstname,
                 "lastname" => $currentAccount->lastname
             ];
         }
 
-        return $response->withJson(array_values($result));
+        $firstUsers = array_slice(array_values($result), 0, 5);
+
+        return $response->withJson($firstUsers);
     }
 }

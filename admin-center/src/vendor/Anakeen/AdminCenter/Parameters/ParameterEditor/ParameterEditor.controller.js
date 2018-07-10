@@ -5,11 +5,13 @@ export default {
     name: 'admin-center-parameter-editor',
 
     props: {
+        // Current edited item
         editedItem: {
             type: Object,
             default: {},
         },
 
+        // Route url to modify the current edited parameter
         editRoute: {
             type: String,
             default: '',
@@ -18,15 +20,20 @@ export default {
 
     data() {
         return {
+            // Json editor values
             jsonEditor: {},
             jsonValue: {},
+
+            // Saved value sent by the server in response
+            responseValue: '',
         };
     },
 
     methods: {
+        // Open the parameter editor with corresponding fields
         openEditor() {
             if (this.editedItem) {
-                this.$('#edition-window').kendoWindow({
+                this.$('.edition-window').kendoWindow({
                     modal: true,
                     autoFocus: false,
                     draggable: false,
@@ -35,12 +42,28 @@ export default {
                     title: this.editedItem.name,
                     visible: false,
                     actions: ['Close'],
-                    activate: () => this.$('#parameter-new-value').focus(),
-                    close: () => this.$emit('closeEditor'),
+
+                    activate: () => {
+                        if (this.parameterInputType === 'enum') {
+                            this.$('#enum-drop-down').data('kendoDropDownList').focus();
+                        } else {
+                            this.$('.parameter-new-value').focus();
+                        }
+                    },
+
+                    close: () => {
+                        if (this.parameterInputType === 'json' && this.isJson(this.editedItem.value)) {
+                            this.jsonEditor.destroy();
+                        }
+
+                        this.$emit('closeEditor', this.responseValue);
+                    },
                 }).data('kendoWindow').center().open();
 
-                this.$('#parameter-new-value').css('border-color', '');
+                // Reset border color of fields
+                this.$('.parameter-new-value').css('border-color', '');
 
+                // Init Json editor if edited item is a json
                 if (this.parameterInputType === 'json' && this.isJson(this.editedItem.value)) {
                     this.jsonValue = JSON.parse(this.editedItem.value);
                     let divContainer = document.getElementById('json-parameter-new-value');
@@ -51,51 +74,99 @@ export default {
                         history: false,
                     }, this.jsonValue);
                 }
+
+                // Init kendoDropDown if edited item is an enum
+                if (this.parameterInputType === 'enum') {
+                    this.$('#enum-drop-down').kendoDropDownList();
+                }
+
+                // Init kendoButtons of the parameter editor
+                this.$('.modify-btn').kendoButton({
+                    icon: 'check',
+                });
+                this.$('.cancel-btn').kendoButton({
+                    icon: 'close',
+                });
             }
         },
 
+        // Close the parameter editor
         closeEditor() {
-            if (this.parameterInputType === 'json' && this.isJson(this.editedItem.value)) {
-                this.jsonEditor.destroy();
-            }
-
-            this.$('#edition-window').data('kendoWindow').close();
+            this.$('.edition-window').data('kendoWindow').close();
         },
 
+        // Send request to modify parameter in server
         modifyParameter() {
+            // Get new value to save depending on the parameter type
             let newValue;
             if (this.parameterInputType === 'json' && this.isJson(this.editedItem.value)) {
                 newValue = JSON.stringify(this.jsonEditor.get());
-            } else if (this.parameterInputType === 'json' && !this.isJson(this.$('#parameter-new-value').val())) {
-                this.$('#parameter-new-value').css('border-color', 'red');
-                return;
+            } else if (this.parameterInputType === 'json' && !this.isJson(this.$('.parameter-new-value').val())) {
+                this.$('.parameter-new-value').css('border-color', 'red');
+            } else if (this.parameterInputType === 'enum') {
+                newValue = this.$('#enum-drop-down').val();
             } else {
-                this.$('#parameter-new-value').css('border-color', '');
-                newValue = this.$('#parameter-new-value').val();
+                this.$('.parameter-new-value').css('border-color', '');
+                newValue = this.$('.parameter-new-value').val();
             }
 
-            Vue.ankApi.put(this.editRoute,
-                {
-                    value: newValue,
-                })
-                .then(() => {
-                    this.$('#confirmation-window').kendoWindow({
-                        modal: true,
-                        draggable: false,
-                        resizable: false,
-                        title: 'Parameter modified',
-                        width: '30%',
-                        visible: false,
-                        actions: [],
-                    }).data('kendoWindow').center().open();
-                });
+            if (newValue) {
+                // Send the request at edition route passed as a prop of the component
+                this.$ankApi.put(this.editRoute,
+                    {
+                        value: newValue,
+                    })
+                    .then((response) => {
+                        // Save the modified value sent by the server, and open a confirmation window
+                        this.responseValue = response.data.value;
+                        this.$('.confirmation-window').kendoWindow({
+                            modal: true,
+                            draggable: false,
+                            resizable: false,
+                            title: 'Parameter modified',
+                            width: '30%',
+                            visible: false,
+                            actions: [],
+                        }).data('kendoWindow').center().open();
+
+                        // Init confirmation window close kendoButton
+                        this.$('.close-confirmation-btn').kendoButton({
+                            icon: 'arrow-chevron-left',
+                        });
+                    })
+                    .catch(() => {
+                        // Open an error window to notify the user
+                        this.$('.error-window').kendoWindow({
+                            modal: true,
+                            draggable: false,
+                            resizable: false,
+                            title: 'Error',
+                            width: '30%',
+                            visible: false,
+                            actions: [],
+                        }).data('kendoWindow').center().open();
+
+                        // Init error window close kendoButton
+                        this.$('.close-error-btn').kendoButton({
+                            icon: 'arrow-chevron-left',
+                        });
+                    });
+            }
         },
 
+        // Close both confirmation and editor windows
         closeConfirmationAndEditor() {
-            this.$('#confirmation-window').data('kendoWindow').close();
-            this.closeEditor();
+            this.$('.confirmation-window').data('kendoWindow').close();
+            this.$('.edition-window').data('kendoWindow').close();
         },
 
+        // Close both error and editor windows
+        closeErrorAndEditor() {
+            this.$('.error-window').data('kendoWindow').close();
+            this.$('.edition-window').data('kendoWindow').close();
+        },
+
+        // Check if a string is a correct Json
         isJson(stringValue) {
             try {
                 JSON.parse(stringValue);
@@ -107,6 +178,7 @@ export default {
     },
 
     computed: {
+        // Input type to use in template
         parameterInputType() {
             let parameterType = this.editedItem.type.toLowerCase();
             if (parameterType === 'number' || parameterType === 'integer' || parameterType === 'double') {
@@ -118,6 +190,7 @@ export default {
             }
         },
 
+        // Return the possible values of an enum parameter
         enumPossibleValues() {
             if (this.parameterInputType === 'enum') {
                 let rawEnum = this.editedItem.type;
@@ -127,6 +200,7 @@ export default {
             }
         },
 
+        // Value to display in the editor. If the parameter has no value, display initial system value (if possible)
         inputSelectedValue() {
             if (this.editedItem.value) {
                 return this.editedItem.value;
@@ -139,14 +213,16 @@ export default {
     },
 
     updated() {
-        // Show modal
+        // When updated (editedItem and editionRoute modified), open editor
         this.openEditor();
     },
 
     mounted() {
+        this.openEditor();
+
         // When resizing the browser window, resize and center the edition window
         window.addEventListener('resize', () => {
-            let editionWindow = this.$('#edition-window').data('kendoWindow');
+            let editionWindow = this.$('.edition-window').data('kendoWindow');
             if (editionWindow) {
                 editionWindow.setOptions({
                     width: '60%',
