@@ -120,3 +120,7 @@
 .users-tree {
     height: 100%;
 }
+
+tr:not(.grid-expandable) > td .k-icon.k-i-none:first-child {
+    width: 0;
+}
