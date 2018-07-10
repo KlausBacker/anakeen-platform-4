@@ -23,6 +23,9 @@ export default {
 
             // Current edition route to pass to the parameter editor
             editRoute: '',
+
+            // Value to display int the displayer window
+            displayedValue: '',
         };
     },
 
@@ -61,6 +64,8 @@ export default {
                         // Add a button only if the parameter is modifiable
                         template: '# if (!data.rowLevel && !data.isStatic && !data.isReadOnly) { #' +
                         '<a class="edition-btn" title="Edit"></a>' +
+                        '# } else if (!data.rowLevel) { #' +
+                        '<a class="display-btn" title="Show value"></a>' +
                         '# } #',
                     },
                 ],
@@ -88,6 +93,10 @@ export default {
                     this.$('.edition-btn').kendoButton({
                         icon: 'edit',
                     });
+
+                    this.$('.display-btn').kendoButton({
+                        icon: 'zoom',
+                    });
                 },
             })
                 .on('click', '.edition-btn', (e) => {
@@ -95,6 +104,11 @@ export default {
                     let treeList = this.$(e.delegateTarget).data('kendoTreeList');
                     let dataItem = treeList.dataItem(e.currentTarget);
                     this.openEditor(dataItem);
+                })
+                .on('click', '.display-btn', (e) => {
+                    let treeList = $(e.delegateTarget).data('kendoTreeList');
+                    let dataItem = treeList.dataItem(e.currentTarget);
+                    this.displayValue(dataItem);
                 })
                 .on('click', '.switch-btn', () => this.switchParameters())
                 .on('click', '.refresh-btn', () => this.allParametersDataSource.read())
@@ -119,15 +133,28 @@ export default {
             this.$('.collapse-btn').kendoButton({
                 icon: 'arrow-60-up',
             });
-            this.$('.edition-btn').kendoButton({
-                icon: 'edit',
-            });
         },
 
         // Open editor window, passing the editedItem and the edition route url
         openEditor(dataItem) {
             this.editedItem = dataItem;
             this.editRoute = 'admin/parameters/' + this.editedItem.nameSpace + '/' + this.editedItem.name + '/';
+        },
+
+        // Open a window dislaying the entire value
+        displayValue(dataItem) {
+            this.displayedValue = dataItem.value;
+            this.$('.value-displayer').kendoWindow({
+                modal: true,
+                draggable: false,
+                resizable: false,
+                maxWidth: '80%',
+                visible: false,
+                actions: ['close'],
+                maxHeight: '80%',
+
+                open: () => this.$('.value-displayer').data('kendoWindow').title('Value of ' + dataItem.name),
+            }).data('kendoWindow').center().open();
         },
 
         // Filter name, description and value columns
