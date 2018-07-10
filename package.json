@@ -17,7 +17,7 @@
     "@progress/kendo-grid-vue-wrapper": "^2018.2.516",
     "@progress/kendo-treeview-vue-wrapper": "^2018.2.516",
     "@progress/kendo-ui": "2018.1.226",
-    "ank-components": "git+ssh://git@gitlab.anakeen.com:aurelien/ank-components.git#master",
+    "ank-components": "git+ssh://git@gitlab.anakeen.com:Anakeen/Platform-4/npm/anakeen-components.git#master",
     "assets-webpack-plugin": "^3.5.1",
     "axios": "^0.18.0",
     "babel-core": "^6.26.0",

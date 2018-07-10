@@ -272,9 +272,9 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-"ank-components@git+ssh://git@gitlab.anakeen.com:aurelien/ank-components.git#master":
-  version "0.0.11"
-  resolved "git+ssh://git@gitlab.anakeen.com:aurelien/ank-components.git#a57f7361b18b8c9220181e0e4672d3c0b43c2045"
+"ank-components@git+ssh://git@gitlab.anakeen.com:Anakeen/Platform-4/npm/anakeen-components.git#master":
+  version "0.0.1"
+  resolved "git+ssh://git@gitlab.anakeen.com:Anakeen/Platform-4/npm/anakeen-components.git#182d81facb10c157c5f804b280b9461528072b65"
 
 ansi-escapes@^1.0.0:
   version "1.4.0"
