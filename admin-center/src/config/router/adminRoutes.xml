@@ -5,8 +5,19 @@
             <sde:priority>0</sde:priority>
             <sde:callable>\Anakeen\Routes\Admin\Routes\AllRoutes</sde:callable>
             <sde:method>GET</sde:method>
+            <sde:method>POST</sde:method>
             <sde:pattern>/api/v2/admin/routes/</sde:pattern>
-            <sde:description>Get all routes</sde:description>
+            <sde:description>Routes Methods GET/POST</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminRoutes:AllMiddlewares">
+            <sde:priority>0</sde:priority>
+            <sde:callable>\Anakeen\Routes\Admin\Routes\AllMiddlewares</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/admin/middlewares/</sde:pattern>
+            <sde:description>Get all middlewares</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
             </sde:requiredAccess>
