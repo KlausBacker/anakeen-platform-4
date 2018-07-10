@@ -3,7 +3,6 @@
 *~
 *#
 localpub/
-.idea/
 node_modules/
 tmpot/
 anakeen-ui/src/public/login/dist/
@@ -16,3 +15,11 @@ Tests/src/public/TEST_DOCUMENT_SELENIUM/dist/
 anakeen-ui/src/public/uiAssets/
 Tests/src/public/apps/uitest/dist/
 Makefile.local
+/.idea/deployment.xml
+/.idea/dictionaries/charles.xml
+/.idea/modules.xml
+/.idea/php.xml
+/.idea/user-interfaces.iml
+/.idea/vcs.xml
+/.idea/webServers.xml
+/.idea/workspace.xml
