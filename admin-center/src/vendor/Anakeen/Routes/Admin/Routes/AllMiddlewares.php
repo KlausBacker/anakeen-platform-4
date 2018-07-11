@@ -35,7 +35,7 @@ class AllMiddlewares
             } elseif (!$a['name'] && $b['name']) {
                 return 1;
             } else {
-                return ($a['nameSpace'] < $b['nameSpace']) ? -1 : 1;
+                return (strcmp($a['nameSpace'] ,$b['nameSpace'])) ? -1 : 1;
             }
         });
         $currentId = 1;
