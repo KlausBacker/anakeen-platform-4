@@ -65,7 +65,7 @@ export default {
             })
                 .on('click', '.selection-btn', (e) => {
                     // Select a user to display his parameters with the data item
-                    let treeList = $(e.delegateTarget).data('kendoTreeList');
+                    let treeList = this.$(e.delegateTarget).data('kendoTreeList');
                     let dataItem = treeList.dataItem(e.currentTarget);
                     this.selectUser(dataItem);
                 });
@@ -145,13 +145,13 @@ export default {
             })
                 .on('click', '.edition-btn', (e) => {
                     // Open parameter editor with selected dataItem
-                    let treeList = $(e.delegateTarget).data('kendoTreeList');
+                    let treeList = this.$(e.delegateTarget).data('kendoTreeList');
                     let dataItem = treeList.dataItem(e.currentTarget);
                     this.openEditor(dataItem);
                 })
                 .on('click', '.delete-btn', (e) => {
                     // Delete/Restore user parameter with selected dataItem
-                    let treeList = $(e.delegateTarget).data('kendoTreeList');
+                    let treeList = this.$(e.delegateTarget).data('kendoTreeList');
                     let dataItem = treeList.dataItem(e.currentTarget);
                     this.deleteParameter(dataItem);
                 })
@@ -343,13 +343,14 @@ export default {
         // Add a class to level 1 and 2 rows of treeList, to add custom CSS
         addClassToRow(treeList) {
             let items = treeList.items();
+            let _this = this;
 
             // setTimeout(function, 0) to add CSS classes when all DOM content has been updated
             setTimeout(() => {
                 items.each(function addTypeClass() {
                     let dataItem = treeList.dataItem(this);
                     if (dataItem.rowLevel) {
-                        $(this).addClass('grid-expandable grid-level-' + dataItem.rowLevel);
+                        _this.$(this).addClass('grid-expandable grid-level-' + dataItem.rowLevel);
                     }
                 });
             }, 0);
@@ -391,7 +392,7 @@ export default {
                 let treeList = this.$('#user-parameters-tree').data('kendoTreeList');
                 let items = treeList.items();
                 items.each((index, item) => {
-                    if ($(item).attr('aria-expanded') === 'true') {
+                    if (this.$(item).attr('aria-expanded') === 'true') {
                         treeState.push(index);
                     }
                 });
@@ -463,7 +464,7 @@ export default {
             .off('mousedown')
             .on('mouseup', 'tbody > .grid-expandable', (e) => {
             let treeList = this.$(e.delegateTarget).data('kendoTreeList');
-            if ($(e.currentTarget).attr('aria-expanded') === 'false') {
+            if (this.$(e.currentTarget).attr('aria-expanded') === 'false') {
                 treeList.expand(e.currentTarget);
             } else {
                 treeList.collapse(e.currentTarget);

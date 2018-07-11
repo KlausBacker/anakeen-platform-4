@@ -23,9 +23,6 @@ export default {
 
             // Current edition route to pass to the parameter editor
             editRoute: '',
-
-            // Value to display int the displayer window
-            displayedValue: '',
         };
     },
 
@@ -43,7 +40,7 @@ export default {
                                class="form-control global-search-input"
                                placeholder="Filter parameters..."
                                style="border-radius: .25rem;">
-                        <i class="input-group-addon material-icons reset-search-btn parameter-search-reset-btn">close</i>
+                        <i class="input-group-addon material-icons reset-search-btn parameter-search-reset">close</i>
                     </div>
                 </div>
             `;
@@ -106,7 +103,7 @@ export default {
                     this.openEditor(dataItem);
                 })
                 .on('click', '.display-btn', (e) => {
-                    let treeList = $(e.delegateTarget).data('kendoTreeList');
+                    let treeList = this.$(e.delegateTarget).data('kendoTreeList');
                     let dataItem = treeList.dataItem(e.currentTarget);
                     this.displayValue(dataItem);
                 })
@@ -144,6 +141,7 @@ export default {
         // Open a window dislaying the entire value
         displayValue(dataItem) {
             this.displayedValue = dataItem.value;
+            let displayedValue = (dataItem.value ? dataItem.value : '[no value for this parameter]');
             this.$('.value-displayer').kendoWindow({
                 modal: true,
                 draggable: false,
@@ -153,7 +151,11 @@ export default {
                 actions: ['close'],
                 maxHeight: '80%',
 
-                open: () => this.$('.value-displayer').data('kendoWindow').title('Value of ' + dataItem.name),
+                content: {
+                    template: '<p class="value-displayer-content">' + displayedValue + '</p>',
+                },
+
+                open: () => this.$('.value-displayer').data('kendoWindow').title('Value of ' + dataItem.name).center(),
             }).data('kendoWindow').center().open();
         },
 
@@ -190,6 +192,7 @@ export default {
         addClassToRow(treeList) {
             let items = treeList.items();
             const _vueThis = this;
+
             // setTimeout(function, 0) to add CSS classes when all DOM content has been updated
             setTimeout(() => {
                 items.each(function addTypeClass() {

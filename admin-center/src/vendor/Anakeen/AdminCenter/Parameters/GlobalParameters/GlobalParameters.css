@@ -83,6 +83,6 @@ tr:not(.grid-expandable) > td .k-icon.k-i-none:first-child {
     margin-right: -1.6rem;
 }
 
-.parameter-search-reset-btn {
+.parameter-search-reset {
     left: -.3rem;
 }
