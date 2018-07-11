@@ -5,9 +5,28 @@
             <sde:priority>0</sde:priority>
             <sde:callable>\Anakeen\Routes\Admin\Routes\AllRoutes</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:method>POST</sde:method>
             <sde:pattern>/api/v2/admin/routes/</sde:pattern>
-            <sde:description>Routes Methods GET/POST</sde:description>
+            <sde:description>Get all routes</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminRoutes:ActivateRoute">
+            <sde:priority>0</sde:priority>
+            <sde:callable>\Anakeen\Routes\Admin\Routes\ActivateRoute</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/admin/routes/{routeName}/activate/</sde:pattern>
+            <sde:description>Activate route</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminRoutes:DeactivateRoute">
+            <sde:priority>0</sde:priority>
+            <sde:callable>\Anakeen\Routes\Admin\Routes\DeactivateRoute</sde:callable>
+            <sde:method>DELETE</sde:method>
+            <sde:pattern>/api/v2/admin/routes/{routeName}/deactivate/</sde:pattern>
+            <sde:description>Deactivate route</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
             </sde:requiredAccess>

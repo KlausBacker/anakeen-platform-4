@@ -2,7 +2,7 @@
     <div>
         <div class="tabstrip">
             <ul>
-                <li class="routes-tab">
+                <li class="routes-tab k-state-active">
                     Routes
                 </li>
                 <li class="middlewares-tab">

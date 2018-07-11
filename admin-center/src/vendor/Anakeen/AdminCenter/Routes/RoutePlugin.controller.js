@@ -1,7 +1,6 @@
-
 export default {
   name: 'admin-center-list-routes',
-  data() {
+  data() {
     return {
       allRoutesDataSource: new kendo.data.TreeListDataSource({
         transport: {
@@ -16,7 +15,7 @@ export default {
     }
   },
   methods: {
-    initTreeList(){
+    initTreeList() {
       let refreshBtn = `
                 <div class="routes-toolbar">
                     <button class="btn btn-secondary toolbar-btn refresh-btn">
@@ -28,13 +27,14 @@ export default {
         this.$('.routes-tree').kendoTreeList({
           dataSource: this.allRoutesDataSource,
           columns: [
-            { field: 'name', title:'Name', sortable: true,width: '20%'},
-            { field: 'method', title: 'Method', width: '5%',sortable: false},
-            { field: 'pattern', title: 'Pattern', sortable: true,width: '30%'},
-            { field: 'description', title: 'Description',sortable: false ,width: '30%'},
-            { field: 'priority', title: 'Priority',width: '6rem', filterable: false,sortable: false,width: '5%' },
-            { field: 'overrided', title: 'Overrided' , width :'9rem', filterable: false,sortable: false,width: '5%'},
+            {field: 'name', title: 'Name', sortable: true, width: '15%'},
+            {field: 'method', title: 'Method', width: '5%', sortable: false},
+            {field: 'pattern', title: 'Pattern', sortable: true, width: '30%'},
+            {field: 'description', title: 'Description', sortable: false, width: '30%'},
+            {field: 'priority', title: 'Priority', width: '6rem', filterable: false, sortable: false, width: '5%'},
+            {field: 'overrided', title: 'Overrided', width: '9rem', filterable: false, sortable: false, width: '5%'},
             {
+              fiedl: 'active',
               template: '<input type="checkbox" class="activation-switch" aria-label="Activation Switch"/>',
               width: '5%',
               filterable: false,
@@ -42,7 +42,14 @@ export default {
             },
           ],
           toolbar: refreshBtn,
-          filterable: true,
+          filterable: {
+            extra: false,
+            operators: {
+              string: {
+                contains: "Contains...",
+              }
+            }
+          },
           sortable: true,
           resizable: false,
           expand: (e) => {
@@ -59,7 +66,38 @@ export default {
             this.$('.activation-switch:not(.activation-switch[data-role=switch])').kendoMobileSwitch({
               change: (e) => {
                 const sender = e.sender.element[0].closest('tr[role=row]');
-                this.$ankApi.post('admin/routes/', {toggleValue: e.checked, route: sender.firstElementChild.textContent});
+                if (sender.className.includes('tree-level-2')) {
+                  const parent = this.allRoutesDataSource._data.find(x => x.name === sender.firstElementChild.textContent).parentId;
+                  if (this.allRoutesDataSource._data.find(x => x.id === parent)) {
+                    // if the route has a namespace
+                    const parentName = this.allRoutesDataSource._data.find(x => x.id === parent).name;
+                    if (e.checked) {
+                      this.activateRoute(parentName + '::' + sender.firstElementChild.textContent);
+                    } else if (!e.checked) {
+                      this.deactivateRoute(parentName + '::' + sender.firstElementChild.textContent);
+                    }
+                  } else {
+                    // if the route doesn't have any namespace
+                    if (e.checked) {
+                      this.activateRoute(sender.firstElementChild.textContent);
+                    } else if (!e.checked) {
+                      this.deactivateRoute(sender.firstElementChild.textContent);
+                    }
+                  }
+                } else {
+                  const parent = this.allRoutesDataSource._data.find(x => x.name === sender.firstElementChild.textContent).id;
+                  const parentName = this.allRoutesDataSource._data.find(x => x.id === parent).name;
+                  this.allRoutesDataSource._data.forEach((elt) => {
+                    if (elt.parentId === parent) {
+                      // if the element is a child of the namespace activate/deactivate following namespace's route
+                      if (e.checked) {
+                        this.activateRoute(parentName + '::' + elt.name);
+                      } else if (!e.checked) {
+                        this.deactivateRoute(parentName + '::' + elt.name);
+                      }
+                    }
+                  });
+                }
               },
             });
           },
@@ -70,11 +108,11 @@ export default {
         this.$('.middlewares-tree').kendoTreeList({
           dataSource: this.allMiddlewareDataSource,
           columns: [
-            { field: 'name', title: 'Name', sortable: true, width: '30%',filterable: true,sortable: true},
-            { field: 'method', title: 'Method', width: '5%',filterable: true,sortable: false},
-            { field: 'pattern', title: 'Pattern', width: '30%',filterable: true,sortable: true},
-            { field: 'description', title: 'Description', width: '30%',filterable: true,sortable: false},
-            { field: 'priority', title: 'Priority',width: '5%',filterable: false,sortable: false},
+            {field: 'name', title: 'Name', sortable: true, width: '30%', filterable: true, sortable: true},
+            {field: 'method', title: 'Method', width: '5%', filterable: true, sortable: false},
+            {field: 'pattern', title: 'Pattern', width: '30%', filterable: true, sortable: true},
+            {field: 'description', title: 'Description', width: '30%', filterable: true, sortable: false},
+            {field: 'priority', title: 'Priority', width: '5%', filterable: false, sortable: false},
           ],
           toolbar: refreshBtn,
           filterable: true,
@@ -103,7 +141,7 @@ export default {
         items.each(function addTypeClass() {
           let dataItem = treeList.dataItem(this);
           if (dataItem.rowLevel) {
-              vueInstance.$(this).addClass('tree-level-' + dataItem.rowLevel + ' '+dataItem.name);
+              vueInstance.$(this).addClass('tree-level-' + dataItem.rowLevel + ' ' + dataItem.name);
           }
         });
       }, 0);
@@ -112,7 +150,7 @@ export default {
       let treeList = this.$('.routes-tree').data('kendoTreeList');
       let $rows = this.$('tr.k-treelist-group', treeList.tbody);
       this.$.each($rows, (idx, row) => {
-        expansion?treeList.expand(row):treeList.collapse(row);
+        expansion ? treeList.expand(row) : treeList.collapse(row);
       });
       this.saveTreeState();
       this.addClassToRow(treeList);
@@ -134,12 +172,34 @@ export default {
       if (treeState) {
         let treeList = this.$('.routes-tree').data('kendoTreeList');
         let $rows = this.$('tr', treeList.tbody);
-        this.$.each($rows, (idx , row) => {
-          treeState.includes(idx)?treeList.expand(row):treeList.collapse(row);
+        this.$.each($rows, (idx, row) => {
+          treeState.includes(idx) ? treeList.expand(row) : treeList.collapse(row);
         });
         this.addClassToRow(treeList);
       }
     },
+    activateRoute(route) {
+      this.$ankApi.post('admin/routes/' + route + '/activate/').then(response => {
+        if (response.status === 200 && response.statusText === 'OK') {
+          this.allRoutesDataSource._data.find(x => x.name === route).active = true;
+        } else {
+          throw new Error(response);
+        }
+      }).catch((error) => {
+        console.error("Unable to get options", error);
+      });
+    },
+    deactivateRoute(route) {
+      this.$ankApi.delete('admin/routes/' + route + '/deactivate/').then(response => {
+        if (response.status === 200 && response.statusText === 'OK') {
+          this.allRoutesDataSource._data.find(x => x.name === route).active = false;
+        } else {
+          throw new Error(response);
+        }
+      }).catch((error) => {
+        console.error("Unable to get options", error);
+      });
+    }
   },
   mounted() {
     this.$('.tabstrip').kendoTabStrip({
