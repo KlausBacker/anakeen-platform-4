@@ -225,7 +225,7 @@
         <xs:attribute type="v1:logicalNameType" name="name"/>
         <xs:attribute type="xs:string" name="label"/>
         <xs:attribute type="xs:token" name="access-name"/>
-        <xs:attribute type="v1:logicalNameType" name="link"/>
+        <xs:attribute type="v1:logicalNameType" name="ref"/>
         <xs:attribute type="v1:logicalNameType" name="access-structure"/>
     </xs:complexType>
 
@@ -282,7 +282,7 @@
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
-        <xs:attribute type="v1:logicalNameType" name="link"/>
+        <xs:attribute type="v1:logicalNameType" name="ref"/>
         <xs:attribute type="v1:logicalNameType" name="access-structure">
             <xs:annotation>
                 <xs:documentation>
@@ -408,7 +408,7 @@
     <xs:complexType name="accessType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="xs:token" name="link"/>
+                <xs:attribute type="xs:token" name="ref"/>
                 <xs:attribute type="xs:token" name="account"/>
                 <xs:attribute type="xs:token" name="access"/>
                 <xs:attribute type="v1:attrNameType" name="field"/>

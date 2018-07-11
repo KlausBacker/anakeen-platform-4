@@ -78,7 +78,7 @@ class ExportConfiguration
         $access = $this->cel("render");
         if ($this->sst->ccvid) {
             $tag = $this->cel("view-control");
-            $tag->setAttribute("link", SEManager::getNameFromId($this->sst->ccvid));
+            $tag->setAttribute("ref", SEManager::getNameFromId($this->sst->ccvid));
             $access->appendChild($tag);
             $accessControl = $this->setAccess($this->sst->ccvid);
             $this->domConfig->appendChild($accessControl);
@@ -91,7 +91,7 @@ class ExportConfiguration
         $access = $this->cel("accesses");
         if ($this->sst->cprofid) {
             $tag = $this->cel("element-access-configuration");
-            $tag->setAttribute("link", SEManager::getNameFromId($this->sst->cprofid));
+            $tag->setAttribute("ref", SEManager::getNameFromId($this->sst->cprofid));
             $access->appendChild($tag);
             $accessControl = $this->setAccess($this->sst->cprofid);
             $this->domConfig->appendChild($accessControl);
@@ -102,7 +102,7 @@ class ExportConfiguration
             $access->appendChild($tag);
             $accessControl = $this->setAccess($this->sst->profid);
             if ($this->sst->profid !== $this->sst->id) {
-                $tag->setAttribute("link", SEManager::getNameFromId($this->sst->profid));
+                $tag->setAttribute("ref", SEManager::getNameFromId($this->sst->profid));
                 $this->domConfig->appendChild($accessControl);
             } else {
                 $tag->appendChild($accessControl);
@@ -111,7 +111,7 @@ class ExportConfiguration
 
         if ($this->sst->cfallid) {
             $tag = $this->cel("field-access-configuration");
-            $tag->setAttribute("link", SEManager::getNameFromId($this->sst->cfallid) ?: $this->sst->cfallid);
+            $tag->setAttribute("ref", SEManager::getNameFromId($this->sst->cfallid) ?: $this->sst->cfallid);
             $access->appendChild($tag);
             $accessControl = $this->setAccess($this->sst->cfallid);
             $this->domConfig->appendChild($accessControl);

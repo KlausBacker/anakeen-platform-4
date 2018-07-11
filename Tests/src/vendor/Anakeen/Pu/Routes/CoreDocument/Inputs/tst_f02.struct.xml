@@ -81,7 +81,7 @@
         <smart:autocompletion/>
         <smart:defaults/>
         <smart:accesses>
-            <smart:element-access-configuration link="PRF_TST_F2"/>
+            <smart:element-access-configuration ref="PRF_TST_F2"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:access-configuration name="PRF_TST_F2" label="Profil document mail">

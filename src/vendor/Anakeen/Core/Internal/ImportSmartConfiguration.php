@@ -113,7 +113,7 @@ class ImportSmartConfiguration
                 /** @var \DOMElement $layer */
                 $name = $layer->getAttribute("name");
                 if (!$name) {
-                    $name = $layer->getAttribute("link");
+                    $name = $layer->getAttribute("ref");
                 }
                 if ($name) {
                     $layerNameList[] = $name;
@@ -192,19 +192,19 @@ class ImportSmartConfiguration
         $prfLabel = $config->getAttribute("label");
         if ($config->hasAttribute("access-structure")) {
             $prfDynamic = $config->getAttribute("access-structure");
-            if (!$prfDynamic) {
+            if ($prfDynamic === "null") {
                 // Explicit deletion
                 $prfDynamic = " ";
             }
         } else {
             $prfDynamic = null;
         }
-        $prfLink = $config->getAttribute("link");
+        $prfLink = $config->getAttribute("ref");
         $prfType = $config->getAttribute("profil-type");
 
         $prfDEsc  = $this->getDescription($config);
 
-        if ($prfName && $prfLabel && !$prfLink) {
+        if ($prfName && (($prfLabel && !$prfLink) || $prfDynamic)) {
             if (!$prfType) {
                 $prfType = "PDOC";
             }
@@ -719,17 +719,17 @@ class ImportSmartConfiguration
 
 
         $node = $this->getNode($config, "structure-access-configuration");
-        if ($node && $node->getAttribute("link")) {
-            $data[] = ["PROFID", $node->getAttribute("link")];
+        if ($node && $node->getAttribute("ref")) {
+            $data[] = ["PROFID", $node->getAttribute("ref")];
         }
 
         $node = $this->getNode($config, "element-access-configuration");
-        if ($node && $node->getAttribute("link")) {
-            $data[] = ["CPROFID", $node->getAttribute("link")];
+        if ($node && $node->getAttribute("ref")) {
+            $data[] = ["CPROFID", $node->getAttribute("ref")];
         }
         $node = $this->getNode($config, "field-access-configuration");
-        if ($node && $node->getAttribute("link")) {
-            $data[] = ["CFALLID", $node->getAttribute("link")];
+        if ($node && $node->getAttribute("ref")) {
+            $data[] = ["CFALLID", $node->getAttribute("ref")];
         }
 
         return $data;
