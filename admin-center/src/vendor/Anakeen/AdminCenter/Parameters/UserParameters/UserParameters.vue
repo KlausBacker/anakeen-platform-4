@@ -5,9 +5,9 @@
                 <div class="form-group search-group">
                     <a class="switch-parameters" @click="switchParameters">System parameters</a>
                     <div class="input-group">
-                        <input autofocus id="user-search-input" class="form-control"  v-model.trim="inputSearchValue" placeholder="Search user by login, first name, or last name...">
+                        <input autofocus id="user-search-input" class="form-control user-search-input"  v-model.trim="inputSearchValue" placeholder="Search user by login, first name, or last name...">
                         <div class="input-group-append reset-button">
-                            <i class="input-group-addon material-icons reset-search-btn" @click="clearSearchInput">close</i>
+                            <i class="input-group-addon material-icons reset-search-btn user-search-reset-btn" @click="clearSearchInput">close</i>
                         </div>
                         <div class="input-group-append">
                             <button id="user-search-btn" class="btn btn-primary" @click.stop="searchUser" :disabled="isSearchButtonDisabled">Search</button>

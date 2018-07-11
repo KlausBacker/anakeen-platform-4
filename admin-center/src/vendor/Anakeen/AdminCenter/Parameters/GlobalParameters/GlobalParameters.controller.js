@@ -40,7 +40,7 @@ export default {
                                class="form-control global-search-input"
                                placeholder="Filter parameters..."
                                style="border-radius: .25rem;">
-                        <i class="input-group-addon material-icons reset-search-btn">close</i>
+                        <i class="input-group-addon material-icons reset-search-btn parameter-search-reset">close</i>
                     </div>
                 </div>
             `;
@@ -61,6 +61,8 @@ export default {
                         // Add a button only if the parameter is modifiable
                         template: '# if (!data.rowLevel && !data.isStatic && !data.isReadOnly) { #' +
                         '<a class="edition-btn" title="Edit"></a>' +
+                        '# } else if (!data.rowLevel) { #' +
+                        '<a class="display-btn" title="Show value"></a>' +
                         '# } #',
                     },
                 ],
@@ -88,6 +90,10 @@ export default {
                     this.$('.edition-btn').kendoButton({
                         icon: 'edit',
                     });
+
+                    this.$('.display-btn').kendoButton({
+                        icon: 'zoom',
+                    });
                 },
             })
                 .on('click', '.edition-btn', (e) => {
@@ -95,6 +101,11 @@ export default {
                     let treeList = this.$(e.delegateTarget).data('kendoTreeList');
                     let dataItem = treeList.dataItem(e.currentTarget);
                     this.openEditor(dataItem);
+                })
+                .on('click', '.display-btn', (e) => {
+                    let treeList = this.$(e.delegateTarget).data('kendoTreeList');
+                    let dataItem = treeList.dataItem(e.currentTarget);
+                    this.displayValue(dataItem);
                 })
                 .on('click', '.switch-btn', () => this.switchParameters())
                 .on('click', '.refresh-btn', () => this.allParametersDataSource.read())
@@ -119,15 +130,33 @@ export default {
             this.$('.collapse-btn').kendoButton({
                 icon: 'arrow-60-up',
             });
-            this.$('.edition-btn').kendoButton({
-                icon: 'edit',
-            });
         },
 
         // Open editor window, passing the editedItem and the edition route url
         openEditor(dataItem) {
             this.editedItem = dataItem;
             this.editRoute = 'admin/parameters/' + this.editedItem.nameSpace + '/' + this.editedItem.name + '/';
+        },
+
+        // Open a window dislaying the entire value
+        displayValue(dataItem) {
+            this.displayedValue = dataItem.value;
+            let displayedValue = (dataItem.value ? dataItem.value : '[no value for this parameter]');
+            this.$('.value-displayer').kendoWindow({
+                modal: true,
+                draggable: false,
+                resizable: false,
+                maxWidth: '80%',
+                visible: false,
+                actions: ['close'],
+                maxHeight: '80%',
+
+                content: {
+                    template: '<p class="value-displayer-content">' + displayedValue + '</p>',
+                },
+
+                open: () => this.$('.value-displayer').data('kendoWindow').title('Value of ' + dataItem.name).center(),
+            }).data('kendoWindow').center().open();
         },
 
         // Filter name, description and value columns
@@ -163,6 +192,7 @@ export default {
         addClassToRow(treeList) {
             let items = treeList.items();
             const _vueThis = this;
+
             // setTimeout(function, 0) to add CSS classes when all DOM content has been updated
             setTimeout(() => {
                 items.each(function addTypeClass() {
