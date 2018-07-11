@@ -92,7 +92,7 @@ export default {
             })
                 .on('click', '.edition-btn', (e) => {
                     // Open editor with the dataItem of the edited row
-                    let treeList = $(e.delegateTarget).data('kendoTreeList');
+                    let treeList = this.$(e.delegateTarget).data('kendoTreeList');
                     let dataItem = treeList.dataItem(e.currentTarget);
                     this.openEditor(dataItem);
                 })
@@ -162,13 +162,13 @@ export default {
         // Add a class to first and second level rows, to add custom CSS
         addClassToRow(treeList) {
             let items = treeList.items();
-
+            const _vueThis = this;
             // setTimeout(function, 0) to add CSS classes when all DOM content has been updated
             setTimeout(() => {
                 items.each(function addTypeClass() {
                     let dataItem = treeList.dataItem(this);
                     if (dataItem.rowLevel) {
-                        $(this).addClass('grid-expandable grid-level-' + dataItem.rowLevel);
+                        _vueThis.$(this).addClass('grid-expandable grid-level-' + dataItem.rowLevel);
                     }
                 });
             }, 0);
@@ -210,7 +210,7 @@ export default {
                 let treeList = this.$('#parameters-tree').data('kendoTreeList');
                 let items = treeList.items();
                 items.each((index, item) => {
-                    if ($(item).attr('aria-expanded') === 'true') {
+                    if (this.$(item).attr('aria-expanded') === 'true') {
                         treeState.push(index);
                     }
                 });
@@ -260,7 +260,7 @@ export default {
             .off('mousedown')
             .on('mouseup', 'tbody > .grid-expandable', (e) => {
             let treeList = this.$(e.delegateTarget).data('kendoTreeList');
-            if ($(e.currentTarget).attr('aria-expanded') === 'false') {
+            if (this.$(e.currentTarget).attr('aria-expanded') === 'false') {
                 treeList.expand(e.currentTarget);
             } else {
                 treeList.collapse(e.currentTarget);

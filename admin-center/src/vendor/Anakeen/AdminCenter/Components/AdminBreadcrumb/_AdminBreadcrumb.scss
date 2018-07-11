@@ -1,0 +1,25 @@
+.ank-breadcrumb-wrapper {
+  display: flex;
+  align-items: center;
+
+  .ank-breadcrumb-item {
+    font-size: 1.33rem;
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+      .ank-breadcrumb-item-label {
+        text-decoration: underline;
+      }
+    }
+
+    .ank-breadcrumb-item-separator {
+      margin-right: 1rem;
+    }
+  }
+
+
+  .ank-breadcrumb-item {
+      margin-right: 1rem;
+  }
+}

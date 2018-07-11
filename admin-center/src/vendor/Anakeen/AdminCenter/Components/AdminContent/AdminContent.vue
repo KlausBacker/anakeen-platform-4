@@ -1,11 +1,8 @@
 <template>
     <section class="admin-center-main-content">
-        <admin-side-menu :plugins="getPluginsList"></admin-side-menu>
-        <keep-alive>
-            <router-view>
-                <router-view></router-view>
-            </router-view>
-        </keep-alive>
+        <admin-side-menu></admin-side-menu>
+        <router-multi-view class="admin-plugin-content">
+        </router-multi-view>
     </section>
 </template>
 <style lang="scss">

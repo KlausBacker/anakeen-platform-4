@@ -63,49 +63,6 @@ exports.setFreeVariable = (key, value) => {
     };
 };
 
-exports.addExternals = () => ({
-    externals: {
-        "./kendo.core" : "kendo",
-        "./kendo.autocomplete" : "jQuery.fn.kendoX",
-        "./kendo.binder" : "jQuery.fn.kendoX",
-        "./kendo.button" : "jQuery.fn.kendoX",
-        "./kendo.calendar" : "jQuery.fn.kendoX",
-        "./kendo.color" : "jQuery.fn.kendoX",
-        "./kendo.colorpicker" : "jQuery.fn.kendoX",
-        "./kendo.combobox" : "jQuery.fn.kendoX",
-        //"./kendo.data" : "jQuery.fn.kendoX",
-        "./kendo.data.odata" : "jQuery.fn.kendoX",
-        "./kendo.data.xml" : "jQuery.fn.kendoX",
-        "./kendo.dateinput" : "jQuery.fn.kendoX",
-        "./kendo.datepicker" : "jQuery.fn.kendoX",
-        "./kendo.datetimepicker" : "jQuery.fn.kendoX",
-        "./kendo.draganddrop" : "jQuery.fn.kendoX",
-        "./kendo.dropdownlist" : "jQuery.fn.kendoX",
-        "./kendo.editable" : "jQuery.fn.kendoX",
-        "./kendo.fx" : "jQuery.fn.kendoX",
-        "./kendo.list" : "jQuery.fn.kendoX",
-        "./kendo.listview" : "jQuery.fn.kendoX",
-        "./kendo.menu" : "jQuery.fn.kendoX",
-        "./kendo.mobile.scroller" : "jQuery.fn.kendoX",
-        "./kendo.multiselect" : "jQuery.fn.kendoX",
-        "./kendo.notification" : "jQuery.fn.kendoX",
-        "./kendo.numerictextbox" : "jQuery.fn.kendoX",
-        "./kendo.pager" : "jQuery.fn.kendoX",
-        "./kendo.popup" : "jQuery.fn.kendoX",
-        "./kendo.resizable" : "jQuery.fn.kendoX",
-        "./kendo.selectable" : "jQuery.fn.kendoX",
-        "./kendo.slider" : "jQuery.fn.kendoX",
-        "./kendo.splitter" : "jQuery.fn.kendoX",
-        "./kendo.tabstrip" : "jQuery.fn.kendoX",
-        "./kendo.timepicker" : "jQuery.fn.kendoX",
-        "./kendo.userevents" : "jQuery.fn.kendoX",
-        "./kendo.validator" : "jQuery.fn.kendoX",
-        "./kendo.virtuallist" : "jQuery.fn.kendoX",
-        "./kendo.window" : "jQuery.fn.kendoX",
-        jquery: 'jQuery'
-    },
-});
-
 exports.progressBar = () => ({
     plugins: [
         new ProgressBarPlugin({
@@ -142,6 +99,32 @@ exports.cssLoader = (filesOutputDir, exclude) => ({
                 ]
             }
         ],
+    },
+});
+
+exports.splitChunksPlugin = () => ({
+    optimization: {
+        runtimeChunk: false,
+        splitChunks: {
+            cacheGroups: {
+                default: false,
+                vendor: {
+                    test: /node_modules/,
+                    reuseExistingChunk: true,
+                    name: 'libs',
+                    chunks: 'all',
+                    minChunks: 1
+                },
+                kendo: {
+                    test:/node_modules\/@progress/,
+                    reuseExistingChunk: true,
+                    name: 'kendo',
+                    priority: 2,
+                    chunks: 'all',
+                    minChunks: 1
+                },
+            }
+        }
     },
 });
 

@@ -2,25 +2,45 @@ const path = require('path');
 
 const merge = require('webpack-merge');
 const parts = require('../parts');
+const AnalyzeBundle = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const BASE_DIR = __PROJECT_ROOT;
 const PATHS = {
     adminCenter: path.resolve(BASE_DIR, 'admin-center/src/vendor/Anakeen/AdminCenter/Components/main.js'),
+    account: path.resolve(BASE_DIR, 'admin-center/src/vendor/Anakeen/AdminCenter/Account/accountMain.js'),
+    parameters: path.resolve(BASE_DIR, 'admin-center/src/vendor/Anakeen/AdminCenter/Parameters/parametersMain.js'),
+    routes: path.resolve(BASE_DIR, 'admin-center/src/vendor/Anakeen/AdminCenter/Routes/routePluginMain.js'),
     build: path.resolve(BASE_DIR, 'admin-center/src/public'),
 };
+
+const adminPluginsChunks = ['ank-admin-account', 'ank-admin-parameters', 'ank-admin-routes'];
 
 const productionComponentConfig = merge([
     {
         mode: 'production',
         entry: {
             'ank-admin-center-components': PATHS.adminCenter,
+            'ank-admin-account': PATHS.account,
+            'ank-admin-parameters': PATHS.parameters,
+            'ank-admin-routes': PATHS.routes,
         },
         output: {
             publicPath: '/AdminCenter/prod/',
             path: path.resolve(PATHS.build, 'AdminCenter/prod/'),
-            filename: '[name]-[chunkhash].js'
+            filename: function(bundle) {
+                const bundleName = bundle.chunk.name;
+                if (adminPluginsChunks.indexOf(bundleName) >= 0) {
+                    return '[name].js';
+                }
+                return '[name]-[chunkhash].js';
+            },
         },
+        // Uncomment to enable webpack bundle analyzer
+        // plugins: [
+        //     new AnalyzeBundle(),
+        // ]
     },
+    parts.splitChunksPlugin(),
     parts.useVueLoader(/node_modules/),
     parts.setFreeVariable('process.env.NODE_ENV', 'production'),
     parts.clean(path.resolve(PATHS.build, 'AdminCenter/prod/')),
@@ -28,7 +48,8 @@ const productionComponentConfig = merge([
     parts.generateViewHtml({
         destination: 'admin-center/src/vendor/Anakeen/AdminCenter/Layout/adminCenterMainPage.html',
         template: 'admin-center/src/vendor/Anakeen/AdminCenter/Components/adminCenterMainPage.ejs',
-        env: 'prod'
+        env: 'prod',
+        excludeChunks: adminPluginsChunks
     }),
     parts.extractAssets(
         {
@@ -42,21 +63,26 @@ const debugComponentConfig = merge([
     {
         mode: 'development',
         entry: {
-            'ank-admin-center-components': PATHS.adminCenter
+            'ank-admin-center-components': PATHS.adminCenter,
+            'ank-admin-account': PATHS.account,
+            'ank-admin-parameters': PATHS.parameters,
+            'ank-admin-routes': PATHS.routes,
         },
         output: {
             publicPath: '/AdminCenter/debug/',
             filename: '[name].js',
             path: path.resolve(PATHS.build, 'AdminCenter/debug/'),
-        }
+        },
     },
+    parts.splitChunksPlugin(),
     parts.useVueLoader(/node_modules/),
     parts.setFreeVariable('process.env.NODE_ENV', 'debug'),
     parts.clean(path.resolve(PATHS.build, 'AdminCenter/debug/')),
     parts.generateViewHtml({
         destination: 'admin-center/src/vendor/Anakeen/AdminCenter/Layout/adminCenterMainPage-debug.html',
         template: 'admin-center/src/vendor/Anakeen/AdminCenter/Components/adminCenterMainPage.ejs',
-        env: 'debug'
+        env: 'debug',
+        excludeChunks: adminPluginsChunks
     }),
     parts.extractAssets(
         {
@@ -70,14 +96,18 @@ const devComponentConfig = merge([
     {
         mode: 'development',
         entry: {
-            'ank-admin-center-components': PATHS.adminCenter
+            'ank-admin-center-components': PATHS.adminCenter,
+            'ank-admin-account': PATHS.account,
+            'ank-admin-parameters': PATHS.parameters,
+            'ank-admin-routes': PATHS.routes,
         },
         output: {
             publicPath: '/AdminCenter/debug/',
             filename: '[name].js',
             path: path.resolve(PATHS.build, 'AdminCenter/debug/'),
-        }
+        },
     },
+    parts.splitChunksPlugin(),
     parts.useVueLoader(/node_modules/),
     parts.setFreeVariable('process.env.NODE_ENV', 'debug'),
     parts.devServer({
@@ -94,7 +124,8 @@ const devComponentConfig = merge([
     parts.generateViewHtml({
         destination: 'admin-center/src/vendor/Anakeen/AdminCenter/Layout/adminCenterMainPage-debug.html',
         template: 'admin-center/src/vendor/Anakeen/AdminCenter/Components/adminCenterMainPage.ejs',
-        env: 'debug'
+        env: 'debug',
+        excludeChunks: adminPluginsChunks
     }),
 ]);
 

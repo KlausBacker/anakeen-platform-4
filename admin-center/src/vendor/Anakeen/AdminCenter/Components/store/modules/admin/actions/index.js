@@ -4,7 +4,7 @@ import Vue from 'vue';
 
 export default {
     loadPluginsList ({ commit }) {
-        Vue.ankAdmin.get('plugins')
+        return Vue.ankAdmin.get('plugins')
             .then(response => {
                 if (response.status === 200 && response.statusText === 'OK') {
                     const data = response.data;
