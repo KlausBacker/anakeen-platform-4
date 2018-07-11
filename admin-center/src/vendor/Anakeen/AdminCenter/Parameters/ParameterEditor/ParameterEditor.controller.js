@@ -33,35 +33,19 @@ export default {
         // Open the parameter editor with corresponding fields
         openEditor() {
             if (this.editedItem) {
-                this.$('.edition-window').kendoWindow({
-                    modal: true,
-                    autoFocus: false,
-                    draggable: false,
-                    resizable: false,
-                    width: '60%',
-                    title: this.editedItem.name,
-                    visible: false,
-                    actions: ['Close'],
+                let kendoDropdown = null;
+                // Init kendoDropDown if edited item is an enum
+                if (this.parameterInputType === 'enum') {
+                    kendoDropdown = this.$('#enum-drop-down').kendoDropDownList().data('kendoDropDownList');
+                }
+                // Init kendoButtons of the parameter editor
+                const saveButton = this.$('.modify-btn').kendoButton({
+                    icon: 'check',
+                }).data('kendoButton');
 
-                    activate: () => {
-                        if (this.parameterInputType === 'enum') {
-                            this.$('#enum-drop-down').data('kendoDropDownList').focus();
-                        } else {
-                            this.$('.parameter-new-value').focus();
-                        }
-                    },
-
-                    close: () => {
-                        if (this.parameterInputType === 'json' && this.isJson(this.editedItem.value)) {
-                            this.jsonEditor.destroy();
-                        }
-
-                        this.$emit('closeEditor', this.responseValue);
-                    },
-                }).data('kendoWindow').center().open();
-
-                // Reset border color of fields
-                this.$('.parameter-new-value').css('border-color', '');
+                const closeButton = this.$('.cancel-btn').kendoButton({
+                    icon: 'close',
+                }).data('kendoButton');
 
                 // Init Json editor if edited item is a json
                 if (this.parameterInputType === 'json' && this.isJson(this.editedItem.value)) {
@@ -75,18 +59,39 @@ export default {
                     }, this.jsonValue);
                 }
 
-                // Init kendoDropDown if edited item is an enum
-                if (this.parameterInputType === 'enum') {
-                    this.$('#enum-drop-down').kendoDropDownList();
-                }
+                const kendoWindow = this.$('.edition-window').kendoWindow({
+                    modal: true,
+                    autoFocus: false,
+                    draggable: false,
+                    resizable: false,
+                    width: '60%',
+                    title: this.editedItem.name,
+                    visible: false,
+                    actions: ['Close'],
 
-                // Init kendoButtons of the parameter editor
-                this.$('.modify-btn').kendoButton({
-                    icon: 'check',
-                });
-                this.$('.cancel-btn').kendoButton({
-                    icon: 'close',
-                });
+                    activate: () => {
+                        if (this.parameterInputType === 'enum') {
+                            if (kendoDropdown) {
+                                kendoDropdown.focus();
+                            }
+                        } else {
+                            this.$('.parameter-new-value').focus();
+                        }
+                    },
+
+                    close: () => {
+                        if (this.parameterInputType === 'json' && this.isJson(this.editedItem.value)) {
+                            this.jsonEditor.destroy();
+                        }
+
+                        this.$emit('closeEditor', this.responseValue);
+                    },
+                }).data('kendoWindow');
+
+                // Reset border color of fields
+                this.$('.parameter-new-value').css('border-color', '');
+
+                kendoWindow.center().open();
             }
         },
 

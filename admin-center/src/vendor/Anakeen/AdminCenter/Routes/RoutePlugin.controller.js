@@ -98,11 +98,12 @@ export default {
     },
     addClassToRow(treeList) {
       let items = treeList.items();
+      const vueInstance = this;
       setTimeout(() => {
         items.each(function addTypeClass() {
           let dataItem = treeList.dataItem(this);
           if (dataItem.rowLevel) {
-            $(this).addClass('tree-level-' + dataItem.rowLevel + ' '+dataItem.name);
+              vueInstance.$(this).addClass('tree-level-' + dataItem.rowLevel + ' '+dataItem.name);
           }
         });
       }, 0);
@@ -122,7 +123,7 @@ export default {
         let treeList = this.$('.routes-tree').data('kendoTreeList');
         let items = treeList.items();
         items.each((index, item) => {
-          if ($(item).attr('aria-expanded') === 'true')
+          if (this.$(item).attr('aria-expanded') === 'true')
             treeState.push(index);
         });
         window.localStorage.setItem('admin.routes.treeState', treeState);

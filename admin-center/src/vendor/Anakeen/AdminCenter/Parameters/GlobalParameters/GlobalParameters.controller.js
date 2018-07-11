@@ -260,7 +260,7 @@ export default {
             .off('mousedown')
             .on('mouseup', 'tbody > .grid-expandable', (e) => {
             let treeList = this.$(e.delegateTarget).data('kendoTreeList');
-            if ($(e.currentTarget).attr('aria-expanded') === 'false') {
+            if (this.$(e.currentTarget).attr('aria-expanded') === 'false') {
                 treeList.expand(e.currentTarget);
             } else {
                 treeList.collapse(e.currentTarget);
