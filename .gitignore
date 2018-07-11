@@ -1,5 +1,4 @@
 # IntelliJ project files
-.idea
 *.iml
 
 /*.app
@@ -12,3 +11,11 @@ admin-center/src/public/AdminCenter/prod/
 admin-center/src/vendor/Anakeen/AdminCenter/Layout/
 localpub/
 Makefile.local
+/.idea/deployment.xml
+/.idea/dictionaries/
+/.idea/jsonSchemas.xml
+/.idea/modules.xml
+/.idea/php.xml
+/.idea/vcs.xml
+/.idea/webServers.xml
+/.idea/workspace.xml

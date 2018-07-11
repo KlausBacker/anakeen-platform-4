@@ -1,6 +1,6 @@
-import AdminSideMenu from './AdminSideMenu/AdminSideMenu.vue';
+import AdminSideMenu from "./AdminSideMenu/AdminSideMenu.vue";
 export default {
-    components: {
-        AdminSideMenu
-    },
+  components: {
+    AdminSideMenu
+  }
 };
