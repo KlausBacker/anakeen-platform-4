@@ -141,6 +141,8 @@ export default {
           filterable: false,
           toolbar: toolbarTemplate,
           resizable: false,
+          maxWidth: "100%",
+          maxHeight: "100%",
 
           expand: e => {
             this.addClassToRow(e.sender);
@@ -195,7 +197,7 @@ export default {
           let $userTree = this.$("#users-tree");
           let kUserTree = $userTree.data("kendoTreeList");
           if (kUserTree) {
-            $userTree.height(this.$(window).height() - $userTree.offset().top);
+            $userTree.height(this.$(window).height() - $userTree.offset().top - 4);
             kUserTree.resize();
           }
         })
@@ -254,7 +256,7 @@ export default {
       let $tree = this.$("#user-parameters-tree");
       let kTree = $tree.data("kendoTreeList");
       if (kTree) {
-        $tree.height(this.$(window).height() - $tree.offset().top);
+        $tree.height(this.$(window).height() - $tree.offset().top - 4);
         kTree.resize();
       }
 
@@ -557,14 +559,14 @@ export default {
       let $tree = this.$("#user-parameters-tree");
       let kTree = $tree.data("kendoTreeList");
       if (kTree) {
-        $tree.height(this.$(window).height() - $tree.offset().top);
+        $tree.height(this.$(window).height() - $tree.offset().top- 4);
         kTree.resize();
       }
 
       let $userTree = this.$("#users-tree");
       let kUserTree = $userTree.data("kendoTreeList");
       if (kUserTree) {
-        $userTree.height(this.$(window).height() - $userTree.offset().top);
+        $userTree.height(this.$(window).height() - $userTree.offset().top - 4);
         kUserTree.resize();
       }
     });
