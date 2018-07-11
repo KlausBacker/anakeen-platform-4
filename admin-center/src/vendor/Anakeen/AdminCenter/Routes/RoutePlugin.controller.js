@@ -61,24 +61,32 @@ export default {
                 if (sender.className.includes('tree-level-2')) {
                   const parent = this.allRoutesDataSource._data.find(x => x.name === sender.firstElementChild.textContent).parentId;
                   if (this.allRoutesDataSource._data.find(x => x.id === parent)) {
+                    // if the route has a namespace
                     const parentName = this.allRoutesDataSource._data.find(x => x.id === parent).name;
-                    this.$ankApi.post('admin/routes/', {
-                      toggleValue: e.checked,
-                      route: parentName + '::' + sender.firstElementChild.textContent
-                    });
+                    if (e.checked) {
+                      this.activateRoute(parentName + '::' + sender.firstElementChild.textContent);
+                    } else if (!e.checked) {
+                      this.deactivateRoute(parentName + '::' + sender.firstElementChild.textContent);
+                    }
                   } else {
-                    this.$ankApi.post('admin/routes/', {
-                      toggleValue: e.checked,
-                      route: sender.firstElementChild.textContent
-                    });
+                    // if the route doesn't have any namespace
+                    if (e.checked) {
+                      this.activateRoute(sender.firstElementChild.textContent);
+                    } else if (!e.checked) {
+                      this.deactivateRoute(sender.firstElementChild.textContent);
+                    }
                   }
                 } else {
                   const parent = this.allRoutesDataSource._data.find(x => x.name === sender.firstElementChild.textContent).id;
                   const parentName = this.allRoutesDataSource._data.find(x => x.id === parent).name;
-                  this.allRoutesDataSource._data.forEach( (elt) => {
+                  this.allRoutesDataSource._data.forEach((elt) => {
                     if (elt.parentId === parent) {
-                      // if the element is a child of the namespace activate/deactivate following namespace
-                      this.$ankApi.post('admin/routes/', {toggleValue: e.checked, route: parentName+'::'+elt.name});
+                      // if the element is a child of the namespace activate/deactivate following namespace's route
+                      if (e.checked) {
+                        this.activateRoute(parentName + '::' + elt.name);
+                      } else if (!e.checked) {
+                        this.deactivateRoute(parentName + '::' + elt.name);
+                      }
                     }
                   });
                 }
@@ -162,6 +170,28 @@ export default {
         this.addClassToRow(treeList);
       }
     },
+    activateRoute(route) {
+      this.$ankApi.post('admin/routes/' + route + '/activate/').then(response => {
+        if (response.status === 200 && response.statusText === 'OK') {
+          this.allRoutesDataSource._data.find(x => x.name === route).active = true;
+        } else {
+          throw new Error(response);
+        }
+      }).catch((error) => {
+        console.error("Unable to get options", error);
+      });
+    },
+    deactivateRoute(route) {
+      this.$ankApi.delete('admin/routes/' + route + '/deactivate/').then(response => {
+        if (response.status === 200 && response.statusText === 'OK') {
+          this.allRoutesDataSource._data.find(x => x.name === route).active = false;
+        } else {
+          throw new Error(response);
+        }
+      }).catch((error) => {
+        console.error("Unable to get options", error);
+      });
+    }
   },
   mounted() {
     this.$('.tabstrip').kendoTabStrip({
