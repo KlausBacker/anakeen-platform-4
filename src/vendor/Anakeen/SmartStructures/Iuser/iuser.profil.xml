@@ -2,9 +2,9 @@
 <smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
     <smart:structure-configuration name="IUSER">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration link="PRF_IUSER_OWNER"/>
-            <smart:field-access-configuration link="FALL_IUSER"/>
+            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
+            <smart:element-access-configuration ref="PRF_IUSER_OWNER"/>
+            <smart:field-access-configuration ref="FALL_IUSER"/>
         </smart:accesses>
     </smart:structure-configuration>
 
@@ -17,7 +17,7 @@
 
     <smart:field-access-layer-list name="FALL_IUSER" label="User Field Access">
         <smart:description>Current user can modify identity information. Admin can modify technicals setting.</smart:description>
-        <smart:field-access-layer link="FAL_IUSER_PASSWORD" access-name="Password"/>
+        <smart:field-access-layer ref="FAL_IUSER_PASSWORD" access-name="Password"/>
         <smart:field-access-layer name="FAL_IUSER_ADMIN" label="Admin User Access" access-name="Admin">
             <smart:description>Technical information access</smart:description>
             <smart:field-access field="us_fr_ident" access="ReadWrite"/>
@@ -40,6 +40,7 @@
 
     <smart:access-configuration name="PRF_IUSER_OWNER" label="User itself" access-structure="IUSER">
         <smart:description>User can modify its own information</smart:description>
+        <smart:element-access access="view" account="all" />
         <smart:element-access access="view" account="gadmin" field="us_meid"/>
         <smart:element-access access="edit" account="gadmin" field="us_meid"/>
         <smart:element-access access="delete" account="gadmin"/>
@@ -53,6 +54,6 @@
         <smart:element-access access="EUSER" account="gadmin"/>
         <smart:element-access access="EGROUP" account="gadmin"/>
     </smart:access-configuration>
-    <smart:access-configuration name="MSK_IUSER_ADMIN" link="PRF_ADMIN_EDIT"/>
-    <smart:access-configuration name="MSK_IUSERSUBSTITUTE" link="PRF_ADMIN_EDIT"/>
+    <smart:access-configuration name="MSK_IUSER_ADMIN" ref="PRF_ADMIN_EDIT"/>
+    <smart:access-configuration name="MSK_IUSERSUBSTITUTE" ref="PRF_ADMIN_EDIT"/>
 </smart:config>

@@ -11,6 +11,14 @@
     </pre-install>
     <post-install>
 
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml">
+            <label>Field Access Layer</label>
+        </process>
+
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.struct.xml">
+            <label>Field Access Layer List</label>
+        </process>
+
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/default-profil.xml">
             <label>Record default elements security</label>
         </process>
@@ -32,14 +40,8 @@
             <label>Profiling authent mail</label>
         </process>
 
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml">
-            <label>Field Access Layer</label>
-        </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.profil.xml">
             <label>Field Access Layer Security</label>
-        </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.struct.xml">
-            <label>Field Access Layer List</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.profil.xml">
             <label>Field Access Layer List Security</label>

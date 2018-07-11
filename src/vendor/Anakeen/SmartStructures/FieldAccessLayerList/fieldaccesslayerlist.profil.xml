@@ -2,7 +2,7 @@
 <smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
     <smart:structure-configuration name="FIELDACCESSLAYER">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
+            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
         </smart:accesses>
     </smart:structure-configuration>
 </smart:config>
