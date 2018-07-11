@@ -2,13 +2,35 @@
 
 namespace Anakeen\Routes\Admin\Routes;
 
-use Anakeen\Core\DbManager;
-use Dcp\Db\Exception;
-
 class AllRoutes
 {
+    /**
+     * @param \Slim\Http\request $request
+     * @param \Slim\Http\response $response
+     * @throws \Dcp\Core\Exception
+     */
+    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response)
+    {
+            $allRoutes = new \Anakeen\Router\RoutesConfig();
+            $tabRoutes = $allRoutes->getRoutes();
+            $result = [];
+            foreach ($tabRoutes as $route) {
+                $formatedRoute = $this->formatRoute($route);
+                if ($formatedRoute !== null) {
+                    $result[] = $formatedRoute;
+                }
+            }
+            return $response->withJson($this->formatTreeDataSource($result));
+    }
+    /**
+     * @param $route
+     * @return array
+     * @throws \Dcp\Core\Exception
+     * Retrieve dataSource from RoutesConfig
+     */
     private function formatRoute($route)
     {
+            $active =\Anakeen\Router\RouterLib::getRouteInfo($route->name);
             $formatedRoute = [];
 
             $nsName = explode('::', $route->name, 2);
@@ -22,15 +44,19 @@ class AllRoutes
             $formatedRoute['description'] = $route->description;
 
             $formatedRoute['method'] = $route->methods[0];
-            $formatedRoute['pattern'] = $route->pattern;
-
+            $formatedRoute['pattern'] = is_array($route->pattern) ? implode("\n",$route->pattern) : $route->pattern;
             $formatedRoute['priority'] = $route->priority;
             $formatedRoute['overrided'] = $route->override;
-
+            $formatedRoute['active'] = $active->isActive();
 
             return $formatedRoute;
     }
 
+    /**
+     * @param $routes
+     * @return array
+     * reformat treeDataSource to correspond treeList content
+     */
     private function formatTreeDataSource($routes) {
         $route = $routes;
         uasort($route, function ($a, $b)
@@ -40,7 +66,7 @@ class AllRoutes
             } elseif (!$a['name'] && $b['name']) {
                 return 1;
             } else {
-                return ($a['nameSpace'] < $b['nameSpace']) ? -1 : 1;
+                return (strcmp($a['nameSpace'], $b['nameSpace'])) ? -1 : 1;
             }
         });
         $currentId = 1;
@@ -53,7 +79,7 @@ class AllRoutes
             $currentNameSpace = $nameSpaceTab[$item['nameSpace']];
             if($currentNameSpace === null && $item['nameSpace'] !== null) {
                 $newId = $currentId++;
-                array_push($tree, ['id' => $newId, 'parentId' => null, 'name' => $item['nameSpace'], 'rowLevel' => 1]);
+                array_push($tree, ['id' => $newId, 'parentId' => null, 'name' => $item['nameSpace'], 'rowLevel' => 1, 'active' => $item['active']]);
                 $nameSpaceTab[$item['nameSpace']] = $newId;
                 $currentNameSpace = $newId;
             }
@@ -61,7 +87,7 @@ class AllRoutes
                 $currentName = $nameTab[$item['nameSpace']][$item['name']];
                 if($currentName === null){
                     $newId = $currentId++;
-                    array_push($tree,['id' => $newId, 'parentId' => $currentNameSpace, 'name' => $item['name'],'description' => $item['description'], 'priority' => $item['priority'], 'method' => $item['method'], 'pattern' => $item['pattern'], 'overrided' => $item['override'], 'rowLevel' => 2]);
+                    array_push($tree,['id' => $newId, 'parentId' => $currentNameSpace, 'name' => $item['name'],'description' => $item['description'], 'priority' => $item['priority'], 'method' => $item['method'], 'pattern' => $item['pattern'], 'overrided' => $item['override'], 'rowLevel' => 2, 'active' => $item['active']]);
                     $nameTab[$item['nameSpace']][$item['name']] = $newId;
                 }
             } else {
@@ -70,26 +96,5 @@ class AllRoutes
             }
         }
         return $tree;
-    }
-    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response)
-    {
-        if (strToupper($request->getMethod()) === 'GET') {
-            $allRoutes = new \Anakeen\Router\RoutesConfig();
-            $tabRoutes = $allRoutes->getRoutes();
-            $result = [];
-            foreach ($tabRoutes as $route) {
-                $formatedRoute = $this->formatRoute($route);
-                if ($formatedRoute !== null) {
-                    $result[] = $formatedRoute;
-                }
-            }
-            return $response->withJson($this->formatTreeDataSource($result));
-        } else if (strToupper($request->getMethod()) === 'POST') {
-            $route =\Anakeen\Router\RouterLib::getRouteInfo($request->getParam('route'));
-            $route->setActive($request->getParam('toggleValue'));
-            return $response->withJson($route->isActive());
-        } else {
-            return $response->withStatus(405, 'method unauthorized');
-        }
     }
 }

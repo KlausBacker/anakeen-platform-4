@@ -41,7 +41,14 @@ export default {
             },
           ],
           toolbar: refreshBtn,
-          filterable: true,
+          filterable: {
+            extra: false,
+            operators: {
+              string: {
+                contains: "Contains...",
+              }
+            }
+          },
           sortable: true,
           resizable: false,
           expand: (e) => {
