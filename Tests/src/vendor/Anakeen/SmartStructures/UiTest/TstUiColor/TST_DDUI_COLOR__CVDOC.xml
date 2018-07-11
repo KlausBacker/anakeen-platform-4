@@ -5,7 +5,7 @@
            modification-date="2017-11-09T09:24:18" version="" state="">
         <fr_basic>
             <ba_title>Contrôle de vue pour la famille "Color"</ba_title>
-            <cv_desc xsi:nil="true"/>
+            <ba_desc xsi:nil="true"/>
             <cv_famid name="TST_DDUI_COLOR">Color</cv_famid>
             <cv_fam>Color</cv_fam>
             <cv_t_views>

@@ -5,7 +5,7 @@
            modification-date="2017-11-09T09:42:42" version="" state="">
         <fr_basic>
             <ba_title>Rendus d'énumérés</ba_title>
-            <cv_desc xsi:nil="true"/>
+            <ba_desc xsi:nil="true"/>
             <cv_famid name="TST_DDUI_ENUM">Test énumérés</cv_famid>
             <cv_fam>Test énumérés</cv_fam>
             <cv_t_views>

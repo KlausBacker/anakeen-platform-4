@@ -1,5 +1,5 @@
 //FAM;Contrôle de vues(CVDOC);<specid>;<fldid>;Titre;Description;Identifiant de la vue;Label;Type;Classe de configuration de rendu (HTML5);Masque;Ordre de sélection;Affichable;Menu;Id création vues par défaut;Création vue;Classe d'accès au rendu (HTML5)
-ORDER;CVDOC;;;ba_title;cv_desc;cv_idview;cv_lview;cv_kview;cv_renderconfigclass;cv_mskid;cv_order;cv_displayed;cv_menu;cv_idcview;cv_lcview;cv_renderaccessclass
+ORDER;CVDOC;;;ba_title;ba_desc;cv_idview;cv_lview;cv_kview;cv_renderconfigclass;cv_mskid;cv_order;cv_displayed;cv_menu;cv_idcview;cv_lcview;cv_renderaccessclass
 DOC;CVDOC;CV_GROUP_ACCOUNT;;CV DOC IGROUP;CV DOC IGROUP;"default_view
 default_edit
 changeGroup";"Consulter
