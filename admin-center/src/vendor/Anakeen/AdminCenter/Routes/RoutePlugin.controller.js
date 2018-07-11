@@ -27,13 +27,14 @@ export default {
         this.$('.routes-tree').kendoTreeList({
           dataSource: this.allRoutesDataSource,
           columns: [
-            {field: 'name', title: 'Name', sortable: true, width: '20%'},
+            {field: 'name', title: 'Name', sortable: true, width: '15%'},
             {field: 'method', title: 'Method', width: '5%', sortable: false},
             {field: 'pattern', title: 'Pattern', sortable: true, width: '30%'},
             {field: 'description', title: 'Description', sortable: false, width: '30%'},
             {field: 'priority', title: 'Priority', width: '6rem', filterable: false, sortable: false, width: '5%'},
             {field: 'overrided', title: 'Overrided', width: '9rem', filterable: false, sortable: false, width: '5%'},
             {
+              fiedl: 'active',
               template: '<input type="checkbox" class="activation-switch" aria-label="Activation Switch"/>',
               width: '5%',
               filterable: false,
