@@ -15,6 +15,9 @@ export default {
           read: {
             url: "/api/v2/admin/parameters/"
           }
+        },
+        schema: {
+          data: "data"
         }
       }),
 

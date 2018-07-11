@@ -48,6 +48,9 @@ export default {
               read: {
                 url: "/api/v2/admin/parameters/users/"
               }
+            },
+            schema: {
+              data: "data",
             }
           },
 
@@ -86,7 +89,7 @@ export default {
                                class="form-control global-search-input"
                                placeholder="Filter parameters..."
                                style="border-radius: .25rem">
-                        <i class="input-group-addon material-icons reset-search-btn parameter-search-reset-btn">close</i>
+                        <i class="input-group-addon material-icons reset-search-btn parameter-search-reset">close</i>
                     </div>
                 </div>
             `;
@@ -234,6 +237,9 @@ export default {
           read: {
             url: "/api/v2/admin/parameters/users/" + this.actualLogin + "/"
           }
+        },
+        schema: {
+          data: "data"
         }
       });
       this.$("#user-parameters-tree")
@@ -352,6 +358,9 @@ export default {
             read: {
               url: "/api/v2/admin/parameters/users/search/" + user + "/"
             }
+          },
+          schema: {
+            data: "data"
           }
         });
         this.$("#users-tree")
@@ -446,7 +455,6 @@ export default {
         this.editedItem = null;
         this.editRoute = "";
       }, 300);
-      this.userParametersDataSource.read();
     },
 
     // Save the current user parameters tree state to localStorage

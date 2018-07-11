@@ -151,7 +151,7 @@ export default {
           })
           .then(response => {
             // Save the modified value sent by the server, and open a confirmation window
-            this.responseValue = response.data.value;
+            this.responseValue = response.data.data.value;
             this.$(".confirmation-window")
               .kendoWindow({
                 modal: true,

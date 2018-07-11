@@ -2,22 +2,41 @@
 
 namespace Anakeen\Routes\Admin\Parameters;
 
+use Anakeen\Router\ApiV2Response;
 
+/**
+ * Class PreloadUsers
+ *
+ * @note Used by route : GET /api/v2/admin/parameters/users/
+ * @package Anakeen\Routes\Admin\Parameters
+ */
 class PreloadUsers
 {
     /**
-     * Return the first 5 users of the database to fill the grid in parameters plugin
+     * Return 5 users from the server, to pre-load a list of users
+     *
      * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
      * @param $args
-     * @return \Slim\Http\Response
+     * @return \Slim\Http\response
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $result = [];
+        $return = $this->getFirstUsers();
+        return ApiV2Response::withData($response, $return);
+    }
 
+    /**
+     * Get 5 users form the database
+     *
+     * @return array
+     */
+    private function getFirstUsers()
+    {
         $searchAccount = new \SearchAccount();
         $searchAccount->setTypeFilter(\SearchAccount::userType);
+
+        $result = [];
 
         foreach ($searchAccount->search() as $currentAccount) {
             /* @var $currentAccount \Anakeen\Core\Account */
@@ -31,6 +50,6 @@ class PreloadUsers
 
         $firstUsers = array_slice(array_values($result), 0, 5);
 
-        return $response->withJson($firstUsers);
+        return $firstUsers;
     }
 }
