@@ -1,8 +1,8 @@
 export default {
-    getUserInfo: (state) => {
-        return state.user;
-    },
-    getAppName: (state) => {
-        return state.appName;
-    }
+  getUserInfo: state => {
+    return state.user;
+  },
+  getAppName: state => {
+    return state.appName;
+  }
 };

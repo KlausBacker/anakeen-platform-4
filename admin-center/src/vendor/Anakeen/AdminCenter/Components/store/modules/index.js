@@ -31,16 +31,16 @@
 // export default resultObj;
 
 export default {
-    application: {
-        state: require('./application/state').default,
-        getters: require('./application/getters').default,
-        mutations: require('./application/mutations').default,
-        actions: require('./application/actions').default
-    },
-    admin: {
-        state: require('./admin/state').default,
-        getters: require('./admin/getters').default,
-        mutations: require('./admin/mutations').default,
-        actions: require('./admin/actions').default
-    }
+  application: {
+    state: require("./application/state").default,
+    getters: require("./application/getters").default,
+    mutations: require("./application/mutations").default,
+    actions: require("./application/actions").default
+  },
+  admin: {
+    state: require("./admin/state").default,
+    getters: require("./admin/getters").default,
+    mutations: require("./admin/mutations").default,
+    actions: require("./admin/actions").default
+  }
 };
