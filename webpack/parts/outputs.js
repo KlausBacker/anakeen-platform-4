@@ -107,21 +107,26 @@ exports.splitChunksPlugin = () => ({
         runtimeChunk: false,
         splitChunks: {
             cacheGroups: {
-                default: false,
-                vendor: {
+                default: {
+                    minChunks: 2,
+                    priority: -20,
+                    reuseExistingChunk: true
+                },
+                vendors: {
                     test: /node_modules/,
                     reuseExistingChunk: true,
-                    name: 'libs',
+                    name: 'vendors',
                     chunks: 'all',
-                    minChunks: 1
+                    minChunks: 1,
+                    priority: -10
                 },
                 kendo: {
                     test:/node_modules\/@progress/,
                     reuseExistingChunk: true,
                     name: 'kendo',
-                    priority: 2,
+                    priority: -5,
                     chunks: 'all',
-                    minChunks: 1
+                    minChunks: 1,
                 },
             }
         }

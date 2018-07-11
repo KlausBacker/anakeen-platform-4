@@ -3,6 +3,7 @@ const path = require('path');
 const merge = require('webpack-merge');
 const parts = require('../parts');
 const AnalyzeBundle = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const Visualizer = require('webpack-visualizer-plugin');
 
 const BASE_DIR = __PROJECT_ROOT;
 const PATHS = {
@@ -18,6 +19,7 @@ const adminPluginsChunks = ['ank-admin-account', 'ank-admin-parameters', 'ank-ad
 const productionComponentConfig = merge([
     {
         mode: 'production',
+        devtool: 'source-map',
         entry: {
             'ank-admin-center-components': PATHS.adminCenter,
             'ank-admin-account': PATHS.account,
@@ -34,11 +36,13 @@ const productionComponentConfig = merge([
                 }
                 return '[name]-[chunkhash].js';
             },
+            chunkFilename: '[name]-[chunkhash].js',
         },
         // Uncomment to enable webpack bundle analyzer
-        // plugins: [
-        //     new AnalyzeBundle(),
-        // ]
+        plugins: [
+            // new AnalyzeBundle(),
+            // new Visualizer(),
+        ]
     },
     parts.splitChunksPlugin(),
     parts.useVueLoader(/node_modules/),
@@ -62,6 +66,7 @@ const productionComponentConfig = merge([
 const debugComponentConfig = merge([
     {
         mode: 'development',
+        devtool: 'inline-source-map',
         entry: {
             'ank-admin-center-components': PATHS.adminCenter,
             'ank-admin-account': PATHS.account,
@@ -95,6 +100,7 @@ const debugComponentConfig = merge([
 const devComponentConfig = merge([
     {
         mode: 'development',
+        devtool: 'inline-source-map',
         entry: {
             'ank-admin-center-components': PATHS.adminCenter,
             'ank-admin-account': PATHS.account,
