@@ -272,9 +272,8 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-"ank-components@git+ssh://git@gitlab.anakeen.com:Anakeen/Platform-4/npm/anakeen-components.git#master":
+ank-components@../ank-components:
   version "0.0.1"
-  resolved "git+ssh://git@gitlab.anakeen.com:Anakeen/Platform-4/npm/anakeen-components.git#182d81facb10c157c5f804b280b9461528072b65"
 
 ansi-escapes@^1.0.0:
   version "1.4.0"
@@ -7329,6 +7328,10 @@ vue-loader@^15.0.11:
 vue-plugin-load-script@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/vue-plugin-load-script/-/vue-plugin-load-script-1.0.1.tgz#ed67ab2e5e6e5b8ef6abe59f6b857534abb1bb14"
+
+vue-router-multi-view@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/vue-router-multi-view/-/vue-router-multi-view-0.0.4.tgz#6e609f5ce948b26f6727ca01f39d03afd8941a0f"
 
 vue-router@^3.0.1:
   version "3.0.1"

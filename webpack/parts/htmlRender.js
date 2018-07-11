@@ -10,6 +10,7 @@ exports.generateViewHtml = ({destination, template, excludeChunks,chunks, env}) 
             template: path.resolve(BASE_DIR, template),
             title: 'Admin Center',
             env: process.env.NODE_ENV || env,
+            chunksSortMode: 'dependency',
             excludeChunks,
             chunks
         })

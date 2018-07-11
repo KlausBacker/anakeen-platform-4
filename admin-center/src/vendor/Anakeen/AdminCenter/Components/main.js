@@ -42,7 +42,6 @@ router.afterEach((to, from) => {
 Vue.jQuery = Vue.jquery = Vue.prototype.$ = kendo.jQuery;
 Vue.kendo = Vue.prototype.$kendo = kendo;
 
-window.Vue = Vue;
 new Vue({
     el: "#admin-center",
     template:

@@ -1,10 +1,8 @@
 <template>
     <section class="admin-center-main-content">
         <admin-side-menu></admin-side-menu>
-        <keep-alive>
-            <router-view>
-            </router-view>
-        </keep-alive>
+        <router-multi-view class="admin-plugin-content">
+        </router-multi-view>
     </section>
 </template>
 <style lang="scss">

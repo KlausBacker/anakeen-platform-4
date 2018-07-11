@@ -83,6 +83,7 @@ export const asyncVueComponent = (pluginDescription) => () => {
                 }).catch(reject);
 
             } else {
+                // If no script url but have sub plugins sections, resolve an empty template
                 resolve({
                     template: '<span></span>',
                 });

@@ -49,6 +49,7 @@
     "vue-loader": "^15.0.11",
     "vue-plugin-load-script": "^1.0.1",
     "vue-router": "^3.0.1",
+    "vue-router-multi-view": "^0.0.4",
     "vue-style-loader": "^4.1.0",
     "vue-template-compiler": "^2.5.16",
     "vuex": "^3.0.1",

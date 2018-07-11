@@ -9,14 +9,12 @@ import { GridInstaller } from '@progress/kendo-grid-vue-wrapper';
 import { ButtonsInstaller } from '@progress/kendo-buttons-vue-wrapper';
 
 import AdminCenterUserAndGroup from './AdminCenterAccount';
-import AnkAxios from "../Components/utils/axios";
+import VueAdminSetup from '../Vue/vueCommonConfig.js';
 
 Vue.use(VueCustomElement);
 Vue.use(ButtonsInstaller);
 Vue.use(GridInstaller);
 Vue.use(TreeViewInstaller);
-Vue.use(AnkAxios);
-Vue.jQuery = Vue.jquery = Vue.prototype.$ = kendo.jQuery;
-Vue.kendo = Vue.prototype.$kendo = kendo;
+Vue.use(VueAdminSetup);
 
 Vue.customElement('ank-admin-account', AdminCenterUserAndGroup);

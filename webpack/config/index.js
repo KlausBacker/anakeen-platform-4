@@ -7,9 +7,6 @@ const merge = require('webpack-merge');
 const parts = require('../parts');
 
 const AdminCenterWebpackConfig = require('./AdminCenter');
-// const userAndGroupConfig = require('./AccountPlugin');
-// const parameterConfig = require('./ParametersPlugin');
-// const routeConfig = require('./RoutesPlugin');
 
 const commonConfig = merge([
     {
@@ -30,7 +27,6 @@ const commonConfig = merge([
             ],
         },
     },
-    // parts.addExternals(),
     parts.progressBar(),
     parts.friendlyErrors(),
 ]);
@@ -38,8 +34,5 @@ const commonConfig = merge([
 module.exports = env => {
     return [
         merge(commonConfig, AdminCenterWebpackConfig(env)),
-        // merge(commonConfig, userAndGroupConfig(env)),
-        // merge(commonConfig, parameterConfig(env)),
-        // merge(commonConfig, routeConfig(env))
     ];
 };

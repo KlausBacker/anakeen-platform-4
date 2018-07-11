@@ -1,4 +1,9 @@
 .admin-center-main-content {
   display: flex;
   flex: 1;
+
+  .admin-plugin-content {
+    width: 100%;
+    height: 100%;
+  }
 }
