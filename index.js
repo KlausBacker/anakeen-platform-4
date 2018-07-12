@@ -1,13 +1,27 @@
 #!/usr/bin/env node
 
-const findUp = require("find-up");
-const fs = require("fs");
-const configPath = findUp.sync([".anakeen-cli", ".anakeen-cli.json"]);
-const config = configPath ? JSON.parse(fs.readFileSync(configPath)) : {};
+const { autoconf } = require("./utils/autoconf");
+const signale = require("signale");
+const yargs = require("yargs");
 
-require("yargs")
-  .config(config)
-  .env("anakeen-cli")
-  .commandDir("commands")
-  .demandCommand()
-  .help().argv;
+(async () => {
+  const config = (await autoconf()) || {};
+  return yargs
+    .config(config)
+    .commandDir("commands")
+    .command({
+      command: "*",
+      handler: argv => {
+        if (argv._[0]) {
+          signale.error("Unknown commmand", argv._[0]);
+        } else {
+          signale.error("You need to specify a command");
+        }
+        yargs.showHelp();
+      }
+    })
+    .alias("h", "help")
+    .showHelpOnFail(true)
+    .detectLocale(false)
+    .help().argv;
+})();
