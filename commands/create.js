@@ -2,6 +2,8 @@ const gulp = require("gulp");
 const { create } = require("../tasks/create");
 const signale = require("signale");
 const fs = require("fs");
+const inquirer = require("inquirer");
+
 const {
   checkModuleName,
   checkVendorName,
@@ -13,8 +15,7 @@ signale.config({
   displayDate: true
 });
 
-exports.desc = "Create a module";
-exports.builder = {
+const builder = {
   sourcePath: {
     defaultDescription: "path to the module",
     alias: "s",
@@ -31,7 +32,6 @@ exports.builder = {
     defaultDescription: "name of the module",
     alias: "m",
     type: "string",
-    demandOption: "You must the name of the module",
     coerce: arg => {
       if (!checkModuleName(arg)) {
         throw new Error(
@@ -46,7 +46,6 @@ exports.builder = {
     defaultDescription: "vendor name of the module",
     alias: "v",
     type: "string",
-    demandOption: "You must a vendor name",
     coerce: arg => {
       if (!checkVendorName(arg)) {
         throw new Error(
@@ -90,7 +89,34 @@ exports.builder = {
   }
 };
 
-exports.handler = function(argv) {
+exports.desc = "Create a module";
+exports.builder = builder;
+
+exports.handler = async argv => {
+  if (!argv.moduleName || !argv.vendorName) {
+    // Mode question
+    argv = await inquirer.prompt(
+      Object.keys(builder).map(currentKey => {
+        const currentParam = builder[currentKey];
+        return {
+          type: currentParam.type === "boolean" ? "confirm" : "input",
+          name: currentKey,
+          message: `${currentParam.defaultDescription} : `,
+          default: currentParam.default,
+          validate: currentParam.coerce
+            ? arg => {
+                try {
+                  currentParam.coerce(arg);
+                } catch (e) {
+                  return e.message;
+                }
+                return true;
+              }
+            : () => true
+        };
+      })
+    );
+  }
   if (!argv.namespace) {
     argv.namespace = argv.vendorName;
   }

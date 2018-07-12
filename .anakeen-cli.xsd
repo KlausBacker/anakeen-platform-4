@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.anakeen.com/ns/aconf/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="config" type="ns:configType" xmlns:ns="http://www.anakeen.com/ns/aconf/1.0"/>
+  <xs:complexType name="pathType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="sourcePath"/>
+      <xs:element type="xs:string" name="targetPath"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="configType">
+    <xs:sequence>
+      <xs:element type="ns:pathType" name="path" xmlns:ns="http://www.anakeen.com/ns/aconf/1.0" minOccurs="0" />
+      <xs:element type="ns:deployType" name="deploy" xmlns:ns="http://www.anakeen.com/ns/aconf/1.0" minOccurs="0" />
+      <xs:element type="ns:controlConfigType" name="controlConfig" xmlns:ns="http://www.anakeen.com/ns/aconf/1.0" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="controlConfigType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="controlUrl"/>
+      <xs:element type="xs:string" name="controlUsername"/>
+      <xs:element type="xs:string" name="controlPassword"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="deployType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="autoRelease"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
