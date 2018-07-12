@@ -2,18 +2,18 @@
     <div class="edition-window">
         <form v-if="editedItem">
             <div class="form-group">
-                <label for="parameter-description" class="form-label">Description : </label>
-                <span class="description-text" id="parameter-description">
+                <div class="form-label">Description : </div>
+                <span class="description-text">
                     {{ editedItem.description }}
                 </span>
             </div>
             <div class="form-group">
                 <div class="form-label">Value : </div>
-                <input id="text-parameter-input" :type="parameterInputType" class="form-control value-input parameter-new-value" :value="inputSelectedValue" v-if="parameterInputType === 'text' || parameterInputType === 'number' || parameterInputType === 'password'" title="value">
-                <select id="enum-drop-down" class="value-input parameter-new-value" :value="inputSelectedValue" v-else-if="parameterInputType === 'enum'" title="value">
+                <input :type="parameterInputType" class="form-control value-input parameter-new-value" :value="inputSelectedValue" v-if="parameterInputType === 'text' || parameterInputType === 'number' || parameterInputType === 'password'" title="value">
+                <select class="value-input parameter-new-value enum-drop-down" :value="inputSelectedValue" v-else-if="parameterInputType === 'enum'" title="value">
                     <option v-for="value in enumPossibleValues">{{ value }}</option>
                 </select>
-                <div id="json-parameter-new-value" class="json-editor" v-else-if="isJson(inputSelectedValue)"></div>
+                <div class="json-editor" v-else-if="isJson(inputSelectedValue)"></div>
                 <div v-else>
                     <div class="alert alert-warning invalid-json-warning" role="alert">Parameter is not a valid json, please save it as json</div>
                     <textarea class="form-control parameter-new-value" :value="inputSelectedValue" title="value"></textarea>

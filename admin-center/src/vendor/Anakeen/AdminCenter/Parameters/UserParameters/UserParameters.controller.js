@@ -27,7 +27,7 @@ export default {
   methods: {
     // Init the treeList containing users (1 level treeList)
     initUserTreeList() {
-      this.$("#users-tree")
+      this.$(".users-tree")
         .kendoTreeList({
           columns: [
             { field: "login", title: "Login" },
@@ -50,7 +50,7 @@ export default {
               }
             },
             schema: {
-              data: "data",
+              data: "data"
             }
           },
 
@@ -97,7 +97,7 @@ export default {
       // Add a class on filterable columns header to diplay a filter icon when filtering
       let headerAttributes = { class: "user-filterable-header" }; // jscs:ignore disallowQuotedKeysInObjects
 
-      this.$("#user-parameters-tree")
+      this.$(".user-parameters-tree")
         .kendoTreeList({
           dataSource: this.userParametersDataSource,
           columns: [
@@ -184,20 +184,22 @@ export default {
           this.actualLogin = "";
 
           // Display user search
-          this.$("#user-search").css("display", "");
-          this.$("#parameters-div").attr(
+          this.$(".user-search").css("display", "");
+          this.$(".parameters-div").attr(
             "style",
             (i, s) => s + "display: none !important;"
           );
 
           // Focus on search input
-          this.$("#user-search-input").focus();
+          this.$(".user-search-input").focus();
 
           // Resize user treeList when it is displayed
-          let $userTree = this.$("#users-tree");
+          let $userTree = this.$(".users-tree");
           let kUserTree = $userTree.data("kendoTreeList");
           if (kUserTree) {
-            $userTree.height(this.$(window).height() - $userTree.offset().top - 4);
+            $userTree.height(
+              this.$(window).height() - $userTree.offset().top - 4
+            );
             kUserTree.resize();
           }
         })
@@ -244,16 +246,16 @@ export default {
           data: "data"
         }
       });
-      this.$("#user-parameters-tree")
+      this.$(".user-parameters-tree")
         .data("kendoTreeList")
         .setDataSource(this.userParametersDataSource);
 
       // Display parameters and hide user search
-      this.$("#user-search").css("display", "none");
-      this.$("#parameters-div").css("display", "");
+      this.$(".user-search").css("display", "none");
+      this.$(".parameters-div").css("display", "");
 
       // Resize user parameters treeList when displaying it
-      let $tree = this.$("#user-parameters-tree");
+      let $tree = this.$(".user-parameters-tree");
       let kTree = $tree.data("kendoTreeList");
       if (kTree) {
         $tree.height(this.$(window).height() - $tree.offset().top - 4);
@@ -353,7 +355,7 @@ export default {
 
     // Search a user on the server in users treeList
     searchUser() {
-      let user = this.$("#user-search-input").val();
+      let user = this.$(".user-search-input").val();
       if (user.trim()) {
         let usersDataSource = new kendo.data.TreeListDataSource({
           transport: {
@@ -365,7 +367,7 @@ export default {
             data: "data"
           }
         });
-        this.$("#users-tree")
+        this.$(".users-tree")
           .data("kendoTreeList")
           .setDataSource(usersDataSource);
       }
@@ -434,7 +436,7 @@ export default {
 
     // Expand/Collapse every rows of the user parameters tree list (true => expand / false => collapse)
     expand(expansion) {
-      let treeList = this.$("#user-parameters-tree").data("kendoTreeList");
+      let treeList = this.$(".user-parameters-tree").data("kendoTreeList");
       let $rows = this.$("tr.k-treelist-group", treeList.tbody);
       this.$.each($rows, (idx, row) => {
         if (expansion) {
@@ -464,7 +466,7 @@ export default {
       // setTimeout(function, 0) to add CSS classes when all DOM content has been updated
       setTimeout(() => {
         let treeState = [];
-        let treeList = this.$("#user-parameters-tree").data("kendoTreeList");
+        let treeList = this.$(".user-parameters-tree").data("kendoTreeList");
         let items = treeList.items();
         items.each((index, item) => {
           if (this.$(item).attr("aria-expanded") === "true") {
@@ -484,7 +486,7 @@ export default {
         "admin.user-parameters.treeState"
       );
       if (treeState) {
-        let treeList = this.$("#user-parameters-tree").data("kendoTreeList");
+        let treeList = this.$(".user-parameters-tree").data("kendoTreeList");
         let $rows = this.$("tr", treeList.tbody);
         this.$.each($rows, (idx, row) => {
           if (treeState.includes(idx)) {
@@ -499,7 +501,7 @@ export default {
 
     // Empty the value of the search input
     clearSearchInput() {
-      this.$("#user-search-input").val("");
+      this.$(".user-search-input").val("");
     },
 
     // Destroy the parameter editor if it exists and emit event to display System parameters
@@ -533,14 +535,14 @@ export default {
     });
 
     // Hide user parameters tree to show user search
-    this.$("#parameters-div").attr("style", "display: none !important;");
+    this.$(".parameters-div").attr("style", "display: none !important;");
 
     // Focus on input for quick search
-    this.$("#user-search-input").focus();
+    this.$(".user-search-input").focus();
 
     // Add event listener on treeList to expand/collapse rows on clic
     // And remove mousedown event listener to prevent double expand/collapse at click on arrows pf treeList
-    this.$("#user-parameters-tree")
+    this.$(".user-parameters-tree")
       .off("mousedown")
       .on("mouseup", "tbody > .grid-expandable", e => {
         let treeList = this.$(e.delegateTarget).data("kendoTreeList");
@@ -556,14 +558,14 @@ export default {
 
     // At window resize, resize the treeLists
     window.addEventListener("resize", () => {
-      let $tree = this.$("#user-parameters-tree");
+      let $tree = this.$(".user-parameters-tree");
       let kTree = $tree.data("kendoTreeList");
       if (kTree) {
-        $tree.height(this.$(window).height() - $tree.offset().top- 4);
+        $tree.height(this.$(window).height() - $tree.offset().top - 4);
         kTree.resize();
       }
 
-      let $userTree = this.$("#users-tree");
+      let $userTree = this.$(".users-tree");
       let kUserTree = $userTree.data("kendoTreeList");
       if (kUserTree) {
         $userTree.height(this.$(window).height() - $userTree.offset().top - 4);

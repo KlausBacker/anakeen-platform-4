@@ -1,8 +1,8 @@
 <template>
-    <div id="global-parameters" class="global-parameters">
-        <div id="parameters-tree" class="parameters-tree"></div>
+    <div class="global-parameters">
+        <div class="parameters-tree"></div>
         <admin-center-parameter-editor :editedItem="editedItem" :editRoute="editRoute" v-show="false" @closeEditor="updateAtEditorClose"></admin-center-parameter-editor>
-        <div id="value-displayer" class="value-displayer" v-show="false"></div>
+        <div class="value-displayer" v-show="false"></div>
     </div>
 </template>
 

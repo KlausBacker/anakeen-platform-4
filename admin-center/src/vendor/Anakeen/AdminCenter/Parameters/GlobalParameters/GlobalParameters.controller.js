@@ -33,25 +33,25 @@ export default {
     // Init system parameters treeList with toolbar
     initTreeList() {
       let toolbarTemplate = `
-                <div class="global-parameters-toolbar">
-                    <a class="switch-btn">User parameters</a>
-                    <a class="refresh-btn"></a>
-                    <a class="expand-btn"></a>
-                    <a class="collapse-btn"></a>
-                    <div id="search-input" class="input-group">
-                        <input type="text"
-                               class="form-control global-search-input"
-                               placeholder="Filter parameters..."
-                               style="border-radius: .25rem;">
-                        <i class="input-group-addon material-icons reset-search-btn parameter-search-reset">close</i>
-                    </div>
-                </div>
-            `;
+        <div class="global-parameters-toolbar">
+            <a class="switch-btn">User parameters</a>
+            <a class="refresh-btn"></a>
+            <a class="expand-btn"></a>
+            <a class="collapse-btn"></a>
+            <div class="input-group">
+                <input type="text"
+                       class="form-control global-search-input"
+                       placeholder="Filter parameters..."
+                       style="border-radius: .25rem;">
+                <i class="input-group-addon material-icons reset-search-btn parameter-search-reset">close</i>
+             </div>
+        </div>
+        `;
 
       // class to add to the treeList headers to display a filter icon showing filtered columns
       let headerAttributes = { class: "filterable-header" }; // jscs:ignore disallowQuotedKeysInObjects
 
-      this.$("#parameters-tree")
+      this.$(".parameters-tree")
         .kendoTreeList({
           dataSource: this.allParametersDataSource,
           columns: [
@@ -250,7 +250,7 @@ export default {
 
     // Expand or collapse all rows of treeList (true => expand / false => collapse)
     expand(expansion) {
-      let treeList = this.$("#parameters-tree").data("kendoTreeList");
+      let treeList = this.$(".parameters-tree").data("kendoTreeList");
       let $rows = this.$("tr.k-treelist-group", treeList.tbody);
       this.$.each($rows, (idx, row) => {
         if (expansion) {
@@ -280,7 +280,7 @@ export default {
       // setTimeout(function, 0) to save state when all DOM content has been updated
       setTimeout(() => {
         let treeState = [];
-        let treeList = this.$("#parameters-tree").data("kendoTreeList");
+        let treeList = this.$(".parameters-tree").data("kendoTreeList");
         let items = treeList.items();
         items.each((index, item) => {
           if (this.$(item).attr("aria-expanded") === "true") {
@@ -298,7 +298,7 @@ export default {
     restoreTreeState() {
       let treeState = window.localStorage.getItem("admin.parameters.treeState");
       if (treeState) {
-        let treeList = this.$("#parameters-tree").data("kendoTreeList");
+        let treeList = this.$(".parameters-tree").data("kendoTreeList");
         let $rows = this.$("tr", treeList.tbody);
         this.$.each($rows, (idx, row) => {
           if (treeState.includes(idx)) {
@@ -332,7 +332,7 @@ export default {
 
     // Add event listener on treeList to expand/collapse rows on click
     // and remove mousedown event listerner to prevent double expand/collapse at click on arrows of treeList
-    this.$("#parameters-tree")
+    this.$(".parameters-tree")
       .off("mousedown")
       .on("mouseup", "tbody > .grid-expandable", e => {
         let treeList = this.$(e.delegateTarget).data("kendoTreeList");
@@ -348,7 +348,7 @@ export default {
 
     // At window resize, resize the tree list to fit the window
     window.addEventListener("resize", () => {
-      let $tree = this.$("#parameters-tree");
+      let $tree = this.$(".parameters-tree");
       let kTree = $tree.data("kendoTreeList");
       if (kTree) {
         $tree.height(this.$(window).height() - $tree.offset().top - 4);

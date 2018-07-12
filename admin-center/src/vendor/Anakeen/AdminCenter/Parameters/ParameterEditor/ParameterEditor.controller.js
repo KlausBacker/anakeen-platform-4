@@ -36,18 +36,18 @@ export default {
         let kendoDropdown = null;
         // Init kendoDropDown if edited item is an enum
         if (this.parameterInputType === "enum") {
-          kendoDropdown = this.$("#enum-drop-down")
+          kendoDropdown = this.$(".enum-drop-down")
             .kendoDropDownList()
             .data("kendoDropDownList");
         }
         // Init kendoButtons of the parameter editor
-        const saveButton = this.$(".modify-btn")
+        this.$(".modify-btn")
           .kendoButton({
             icon: "check"
           })
           .data("kendoButton");
 
-        const closeButton = this.$(".cancel-btn")
+        this.$(".cancel-btn")
           .kendoButton({
             icon: "close"
           })
@@ -59,9 +59,7 @@ export default {
           this.isJson(this.editedItem.value)
         ) {
           this.jsonValue = JSON.parse(this.editedItem.value);
-          let divContainer = document.getElementById(
-            "json-parameter-new-value"
-          );
+          let divContainer = this.$(".json-editor")[0];
           this.jsonEditor = new JSONEditor(
             divContainer,
             {
@@ -93,6 +91,9 @@ export default {
               } else {
                 this.$(".parameter-new-value").focus();
               }
+              this.$(".edition-window")
+                .data("kendoWindow")
+                .title(this.editedItem.name);
             },
 
             close: () => {
@@ -137,7 +138,7 @@ export default {
       ) {
         this.$(".parameter-new-value").css("border-color", "red");
       } else if (this.parameterInputType === "enum") {
-        newValue = this.$("#enum-drop-down").val();
+        newValue = this.$("select.enum-drop-down").val();
       } else {
         this.$(".parameter-new-value").css("border-color", "");
         newValue = this.$(".parameter-new-value").val();
