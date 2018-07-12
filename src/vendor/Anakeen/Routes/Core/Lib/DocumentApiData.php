@@ -225,7 +225,6 @@ class DocumentApiData
                 throw new Exception("ROUTES0103", implode(",", $fields));
             }
         }
-        $return["debugFalTime(ms)"]=intval(\Anakeen\Core\SmartStructure\FieldAccessManager::$mb * 1000);
         return $return;
     }
 

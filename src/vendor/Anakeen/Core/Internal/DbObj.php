@@ -772,7 +772,9 @@ class DbObj
             $sqlt1 = microtime();
         } // to test delay of request
         $this->initDbid();
-        LogManager::debug("exec_query : $sql");
+
+        //error_log("SQL>".$sql."\n".Debug::getDebugStackString(2, 3));
+
         $this->msg_err = $this->err_code = '';
         if ($prepare) {
             if (pg_send_prepare($this->dbid, '', $sql) === false) {

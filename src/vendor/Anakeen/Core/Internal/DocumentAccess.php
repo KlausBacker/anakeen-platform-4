@@ -3,6 +3,7 @@
 namespace Anakeen\Core\Internal;
 
 use Anakeen\Core\Account;
+use Anakeen\Core\AccountManager;
 use Anakeen\Core\ContextManager;
 use \Anakeen\Core\DbManager;
 use \Anakeen\Core\SEManager;
@@ -543,9 +544,9 @@ class DocumentAccess
                     $tduid = \Anakeen\Core\Internal\SmartElement::rawValueToArray($duid);
                     foreach ($tduid as $duid) {
                         if ($duid > 0) {
-                            $docu = SEManager::getRawDocument(intval($duid), false); // not for idoc list for the moment
-                            $greenUid[$docu["us_whatid"] . $v["acl"]] = array(
-                                "uid" => $docu["us_whatid"],
+                            $sysId=AccountManager::getIdFromSEId(intval($duid));
+                            $greenUid[$sysId. $v["acl"]] = array(
+                                "uid" => $sysId,
                                 "acl" => $v["acl"]
                             );
                             //print "<br>$aid:$duid:".$docu["us_whatid"];

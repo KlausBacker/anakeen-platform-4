@@ -6,11 +6,11 @@
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
         <smart:fields>
-            <smart:field-set name="grp_fr_intranet" type="frame" label="Système" access="ReadWrite">
-                <smart:field-text name="us_login" label="identifiant" access="ReadWrite" needed="true"/>
+            <smart:field-set name="grp_fr_intranet" type="frame" label="Système" access="None">
+                <smart:field-text name="us_login" label="identifiant" access="Read" needed="true"/>
                 <smart:field-int name="us_whatid" label="identifiant système" access="Read"/>
                 <smart:field-account name="us_meid" label="groupe id" access="Read"/>
-                <smart:field-docid name="grp_roles" label="Rôles associés" access="ReadWrite" relation="ROLE" multiple="true"/>
+                <smart:field-docid name="grp_roles" label="Rôles associés" access="None" relation="ROLE" multiple="true"/>
             </smart:field-set>
         </smart:fields>
         <smart:parameters/>

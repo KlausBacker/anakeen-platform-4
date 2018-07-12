@@ -511,7 +511,8 @@ class FormatCollection
                     $value = $doc->getRawValue($oa->id);
                     if ($value === '') {
                         if ($this->verifyAttributeAccess === true && !FieldAccessManager::hasReadAccess($doc, $oa)) {
-                            $attributeInfo = new Format\noAccessAttributeValue($this->noAccessText);
+                            //$attributeInfo = new Format\noAccessAttributeValue($this->noAccessText);
+                            continue;
                         } else {
                             if ($this->useShowEmptyOption && $empty = $oa->getOption("showempty")) {
                                 $attributeInfo = new Format\StandardAttributeValue($oa, null);
@@ -523,7 +524,9 @@ class FormatCollection
                     } else {
                         $attributeInfo = $this->getInfo($oa, $value, $doc);
                     }
-                    $renderDoc["attributes"][$oa->id] = $this->callAttributeRenderHook($attributeInfo, $oa, $doc);
+                    if ($attributeInfo !== null) {
+                        $renderDoc["attributes"][$oa->id] = $this->callAttributeRenderHook($attributeInfo, $oa, $doc);
+                    }
                 } else {
                     $renderDoc["attributes"][$attrid] = $this->callAttributeRenderHook(new Format\UnknowAttributeValue($this->ncAttribute), null, $doc);
                 }
@@ -958,7 +961,8 @@ class FormatCollection
         $info = null;
 
         if ($this->verifyAttributeAccess === true && !FieldAccessManager::hasReadAccess($doc, $oa)) {
-            $info = new Format\noAccessAttributeValue($this->noAccessText);
+            //  $info = new Format\noAccessAttributeValue($this->noAccessText);
+            $info = null;
         } else {
             switch ($oa->type) {
                 case 'text':

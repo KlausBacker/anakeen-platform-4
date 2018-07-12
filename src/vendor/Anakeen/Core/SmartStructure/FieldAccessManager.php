@@ -54,12 +54,14 @@ class FieldAccessManager
         /** @var \SmartStructure\Fieldaccesslayerlist $fall */
         $fall = SEManager::getDocument($se->fallid, false);
         SEManager::cache()->addDocument($fall);
+
         return self::getFalAccess($fall, $se, $oa);
     }
 
     protected static function getFalAccess(\SmartStructure\Fieldaccesslayerlist $fall, SmartElement $se, BasicAttribute $oa)
     {
         $dynProfil = $fall->getRawValue(FallFields::dpdoc_famid);
+
         if ($dynProfil) {
             $fall->set($se);
             $seIndex = $se->id;
@@ -85,7 +87,6 @@ class FieldAccessManager
                 }
             }
         }
-
         return self::getMAccess($oa, self::$fa[$fall->id][$seIndex]);
     }
 
@@ -102,7 +103,7 @@ class FieldAccessManager
         $x = (ContextManager::getCurrentUser()->id == Account::ADMIN_ID) ||
             ($oa->getAccess() & BasicAttribute::READ_ACCESS) ||
             ($se->fallid !== null && (self::getAccess($se, $oa) & BasicAttribute::READ_ACCESS));
-        self::$mb += microtime(true) - $mb0;
+        self::$mb += (microtime(true) - $mb0);
         self::$mbc++;
         return $x;
     }
