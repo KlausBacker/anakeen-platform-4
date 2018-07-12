@@ -28,6 +28,7 @@ exports.getModuleInfo = async sourcePath => {
               (err, data) => {
                 if (err) reject(err);
                 const result = {};
+                result.vendor = data.module.$.vendor;
                 result.name = data.module.$.name;
                 result.version = data.module.$.version;
                 result.release = data.module.$.release;
