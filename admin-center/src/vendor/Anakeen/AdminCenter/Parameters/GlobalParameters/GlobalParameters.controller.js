@@ -51,7 +51,7 @@ export default {
       // class to add to the treeList headers to display a filter icon showing filtered columns
       let headerAttributes = { class: "filterable-header" }; // jscs:ignore disallowQuotedKeysInObjects
 
-      this.$(".parameters-tree")
+      this.$(".parameters-tree", this.$el)
         .kendoTreeList({
           dataSource: this.allParametersDataSource,
           columns: [
@@ -104,11 +104,11 @@ export default {
             this.restoreTreeState();
 
             // Init kendo buttons in treeList when new data is fetched from server
-            this.$(".edition-btn").kendoButton({
+            this.$(".edition-btn", this.$el).kendoButton({
               icon: "edit"
             });
 
-            this.$(".display-btn").kendoButton({
+            this.$(".display-btn", this.$el).kendoButton({
               icon: "zoom"
             });
           }
@@ -132,21 +132,21 @@ export default {
           this.searchParameters(e.currentTarget.value)
         )
         .on("click", ".reset-search-btn", () => {
-          this.$(".global-search-input").val("");
+          this.$(".global-search-input", this.$el).val("");
           this.searchParameters("");
         });
 
       // Init kendoButtons
-      this.$(".switch-btn").kendoButton({
+      this.$(".switch-btn", this.$el).kendoButton({
         icon: "arrow-right"
       });
-      this.$(".refresh-btn").kendoButton({
+      this.$(".refresh-btn", this.$el).kendoButton({
         icon: "reload"
       });
-      this.$(".expand-btn").kendoButton({
+      this.$(".expand-btn", this.$el).kendoButton({
         icon: "arrow-60-down"
       });
-      this.$(".collapse-btn").kendoButton({
+      this.$(".collapse-btn", this.$el).kendoButton({
         icon: "arrow-60-up"
       });
     },
@@ -164,7 +164,6 @@ export default {
 
     // Open a window dislaying the entire value
     displayValue(dataItem) {
-      this.displayedValue = dataItem.value;
       let displayedValue = dataItem.value
         ? dataItem.value
         : "[no value for this parameter]";
@@ -211,8 +210,11 @@ export default {
         });
 
         // Add icon to show filter effect to the user
-        if (!this.$(".filterable-header").children(".filter-icon").length) {
-          this.$(".filterable-header").append(
+        if (
+          !this.$(".filterable-header", this.$el).children(".filter-icon")
+            .length
+        ) {
+          this.$(".filterable-header", this.$el).append(
             this.$('<i class="material-icons filter-icon">filter_list</i>')
           );
         }
@@ -224,7 +226,7 @@ export default {
         this.allParametersDataSource.filter({});
 
         // Remove filter icon when nothing is filtered
-        this.$(".filterable-header")
+        this.$(".filterable-header", this.$el)
           .children(".filter-icon")
           .remove();
       }
@@ -250,7 +252,7 @@ export default {
 
     // Expand or collapse all rows of treeList (true => expand / false => collapse)
     expand(expansion) {
-      let treeList = this.$(".parameters-tree").data("kendoTreeList");
+      let treeList = this.$(".parameters-tree", this.$el).data("kendoTreeList");
       let $rows = this.$("tr.k-treelist-group", treeList.tbody);
       this.$.each($rows, (idx, row) => {
         if (expansion) {
@@ -280,7 +282,9 @@ export default {
       // setTimeout(function, 0) to save state when all DOM content has been updated
       setTimeout(() => {
         let treeState = [];
-        let treeList = this.$(".parameters-tree").data("kendoTreeList");
+        let treeList = this.$(".parameters-tree", this.$el).data(
+          "kendoTreeList"
+        );
         let items = treeList.items();
         items.each((index, item) => {
           if (this.$(item).attr("aria-expanded") === "true") {
@@ -298,7 +302,9 @@ export default {
     restoreTreeState() {
       let treeState = window.localStorage.getItem("admin.parameters.treeState");
       if (treeState) {
-        let treeList = this.$(".parameters-tree").data("kendoTreeList");
+        let treeList = this.$(".parameters-tree", this.$el).data(
+          "kendoTreeList"
+        );
         let $rows = this.$("tr", treeList.tbody);
         this.$.each($rows, (idx, row) => {
           if (treeState.includes(idx)) {
@@ -328,11 +334,11 @@ export default {
     this.restoreTreeState();
 
     // Focus on filter input
-    this.$(".global-search-input").focus();
+    this.$(".global-search-input", this.$el).focus();
 
     // Add event listener on treeList to expand/collapse rows on click
     // and remove mousedown event listerner to prevent double expand/collapse at click on arrows of treeList
-    this.$(".parameters-tree")
+    this.$(".parameters-tree", this.$el)
       .off("mousedown")
       .on("mouseup", "tbody > .grid-expandable", e => {
         let treeList = this.$(e.delegateTarget).data("kendoTreeList");
@@ -348,7 +354,7 @@ export default {
 
     // At window resize, resize the tree list to fit the window
     window.addEventListener("resize", () => {
-      let $tree = this.$(".parameters-tree");
+      let $tree = this.$(".parameters-tree", this.$el);
       let kTree = $tree.data("kendoTreeList");
       if (kTree) {
         $tree.height(this.$(window).height() - $tree.offset().top - 4);
