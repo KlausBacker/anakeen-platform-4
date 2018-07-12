@@ -457,6 +457,7 @@ export default {
       setTimeout(() => {
         if (newValue) {
           this.editedItem.set("value", newValue);
+          this.editedItem.set("forUser", true);
         }
 
         this.editedItem = null;
