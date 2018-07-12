@@ -24,12 +24,7 @@
         </smart:accesses>
     </smart:structure-configuration>
 
-    <smart:structure-configuration name="IGROUP">
-        <smart:accesses>
-            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration ref="PRF_ADMIN_DIR"/>
-        </smart:accesses>
-    </smart:structure-configuration>
+
     <smart:structure-configuration name="ROLE">
         <smart:accesses>
             <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>

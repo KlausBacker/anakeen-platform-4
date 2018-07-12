@@ -33,6 +33,9 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.profil.xml">
             <label>Profiling account structures</label>
         </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.profil.xml">
+            <label>Profiling account structures</label>
+        </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/system-profil.xml">
             <label>Profiling system structures</label>
         </process>
