@@ -773,7 +773,7 @@ class DbObj
         } // to test delay of request
         $this->initDbid();
 
-        //error_log("SQL>".$sql."\n".Debug::getDebugStackString(2, 3));
+       // error_log("SQL>".$sql."\n".Debug::getDebugStackString(2, 3));
 
         $this->msg_err = $this->err_code = '';
         if ($prepare) {

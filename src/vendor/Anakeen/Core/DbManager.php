@@ -77,7 +77,7 @@ class DbManager
 
         $dbid = self::getDbid();
 
-        //error_log("SQL>".$query."\n".Debug::getDebugStackString(2, 5));
+        // error_log("SQL>".$query."\n".Debug::getDebugStackString(2, 5));
 
         $result = array();
         $r = @pg_query($dbid, $query);
