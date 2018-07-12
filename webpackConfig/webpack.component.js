@@ -24,53 +24,22 @@ const commonConfig = merge([{
         module: {
             rules: [
                 {
-                    test: /\.vue$/,
-                    use: {
-                        loader: 'vue-loader',
-                    },
-                },
-                {
-                    test: /\.(scss|sass)$/,
-                    issuer: /\.vue$/,
-                    use: [
-                        {
-                            loader: 'vue-style-loader',
-                        },
-                        'css-loader',
-                        'sass-loader',
-                    ],
-                },
-                {
                     test: /\.js$/,
                     include: [
                         path.resolve(__dirname, '../anakeen-ui/'),
-                        path.resolve(__dirname, 'node_modules/popper.js/'),
                     ],
                     use: {
                         loader: 'babel-loader',
                     },
                 },
-                {
-                    test: /\.template.kd$/,
-                    include: [path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/Components/')],
-                    use: 'raw-loader',
-                },
             ],
         },
-        plugins: [
-            new VueLoaderPlugin(),
-        ],
         resolve: {
             alias: {
                 vue$: 'vue/dist/vue.esm.js',
             },
         },
     },
-        parts.cssLoader([
-            /loading\.css/,
-        ]),
-        parts.getSmartElementResolve(),
-        parts.providePopper(),
         parts.addExternals(),
         parts.progressBar(),
     ]
