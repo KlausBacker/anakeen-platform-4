@@ -18,7 +18,7 @@ export default {
     initTreeList() {
       let refreshBtn = `
                 <div class="routes-toolbar">
-                    <button class="btn btn-secondary toolbar-btn refresh-btn">
+                    <button class="routeRefresh-btn">
                         <i class="material-icons">refresh</i>
                     </button>
                 </div>
