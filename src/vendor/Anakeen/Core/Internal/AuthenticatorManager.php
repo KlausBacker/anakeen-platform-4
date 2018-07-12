@@ -278,7 +278,8 @@ class AuthenticatorManager
      */
     public function authenticate(&$action)
     {
-        header('WWW-Authenticate: Basic realm="' . \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_REALM", "Anakeen Platform connection") . '"');
+        header('WWW-Authenticate: Basic realm="' . \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_REALM",
+                "Anakeen Platform connection") . '"');
         header('HTTP/1.0 401 Unauthorized');
         echo _("Vous devez entrer un nom d'utilisateur valide et un mot de passe correct pour acceder a cette ressource");
         exit;
@@ -445,10 +446,14 @@ class AuthenticatorManager
             }
             // check if the account expiration date is elapsed
             if ($du->accountHasExpired()) {
-                static::secureLog("failure", "account has expired",
-                    static::$auth->provider->parms['type'] . "/"
-                    . static::$auth->provider->parms['AuthentProvider'], $_SERVER["REMOTE_ADDR"], $login,
-                    $_SERVER["HTTP_USER_AGENT"]);
+                static::secureLog(
+                    "failure",
+                    "account has expired",
+                    static::$auth->provider->parms['type'] . "/" . static::$auth->provider->parms['AuthentProvider'],
+                    $_SERVER["REMOTE_ADDR"],
+                    $login,
+                    $_SERVER["HTTP_USER_AGENT"]
+                );
                 static::clearGDocs();
                 return static::AccessAccountHasExpired;
             }

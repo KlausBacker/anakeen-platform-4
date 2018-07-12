@@ -1478,11 +1478,8 @@ create unique index i_docir on doc(initid, revision);";
             );
             return ($err);
         }
-        if (ContextManager::getCurrentUser()) {
 
-            throw new \Exception("BOO");
-        }
-        if (ContextManager::getCurrentUser()->id == \Anakeen\Core\Account::ADMIN_ID) {
+        if ($this->withoutControl || ContextManager::getCurrentUser()->id == \Anakeen\Core\Account::ADMIN_ID) {
             return "";
         } // admin can do anything but not modify fixed doc
         if ($verifyDomain && ($this->lockdomainid > 0)) {
