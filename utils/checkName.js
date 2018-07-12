@@ -5,9 +5,9 @@ exports.checkModuleName = moduleName => {
 };
 
 exports.checkVendorName = vendorName => {
-  return vendorName.test(vendorName);
+  return nameRegExp.test(vendorName);
 };
 
 exports.checkNamespace = namespace => {
-  return namespace.test(namespace);
+  return nameRegExp.test(namespace);
 };
