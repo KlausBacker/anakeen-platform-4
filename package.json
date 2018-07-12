@@ -6,6 +6,7 @@
   "author": "",
   "license": "",
   "scripts": {
+    "beautify": "eslint ./admin-center --fix",
     "build": "webpack --config webpack/index.js --env debug && webpack --config webpack/index.js --env prod",
     "dev": "webpack-dev-server --color --config webpack/index.js --env dev",
     "watch": "webpack --config webpack/index.js --env debug --watch",

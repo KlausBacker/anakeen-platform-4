@@ -5,14 +5,14 @@ export const onAuthError = store => {
     actions: [
       {
         text: "Réessayer",
-        action: e => {
+        action: () => {
           // Do something to retry
           return true;
         }
       },
       {
         text: "Go to login",
-        action: e => {
+        action: () => {
           window.location.reload();
         },
         primary: true
@@ -28,14 +28,14 @@ export const onNetworkError = store => {
     actions: [
       {
         text: "Cancel",
-        action: e => {
+        action: () => {
           // Do something to retry
           return true;
         }
       },
       {
         text: "Reload",
-        action: e => {
+        action: () => {
           window.location.reload();
         },
         primary: true

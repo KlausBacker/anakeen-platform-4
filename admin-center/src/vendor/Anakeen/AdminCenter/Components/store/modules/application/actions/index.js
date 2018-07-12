@@ -1,11 +1,11 @@
 export default {
-  showMessage({ commit }, message) {
+  showMessage() {
     // Intercepted by notification component
   },
-  showModal({ commit }, modalConfig) {
+  showModal() {
     // Intercepted by modal component
   },
-  addBreadcrumbEntries({ commit }, entries) {
+  addBreadcrumbEntries() {
     // Intercepted by breadcrumb component
   }
 };

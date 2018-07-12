@@ -1,7 +1,6 @@
 import Vue from "vue";
 import LoadScript from "vue-plugin-load-script";
 import AnkComponents from "ank-components";
-import "ank-components/lib/ank-components.css";
 import "@progress/kendo-ui/js/kendo.dialog";
 import "@progress/kendo-ui/js/kendo.notification";
 import { DialogInstaller } from "@progress/kendo-dialog-vue-wrapper";
@@ -26,7 +25,7 @@ Vue.use(AnkAxios, {
   }
 });
 
-router.afterEach((to, from) => {
+router.afterEach(to => {
   const toPluginPath = to.path;
   let rootPath = toPluginPath;
   const matched = toPluginPath.match(/(\/[a-zA-Z0-9-_]+)\/?/);
