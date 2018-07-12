@@ -232,7 +232,9 @@ export default {
         event.preventDefault();
         const userId = event.currentTarget.dataset["initid"];
         if (userId) {
-          openDoc.publicMethods.fetchSmartElement({
+          // Set props because publicMethods fetchSmartElement is not accessible
+          // until document is loaded
+          openDoc.seValue = JSON.stringify({
             initid: userId,
             viewId: "!defaultConsultation"
           });
