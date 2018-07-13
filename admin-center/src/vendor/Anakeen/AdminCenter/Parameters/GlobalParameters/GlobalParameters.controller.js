@@ -325,6 +325,15 @@ export default {
       }
 
       this.$emit("switchParameters");
+    },
+
+    // Resize tree to fit the window
+    resizeTree() {
+      let $tree = this.$(".parameters-tree", this.$el);
+      let kTree = $tree.data("kendoTreeList");
+      if (kTree) {
+        $tree.height(this.$(window).height() - $tree.offset().top - 4);
+        kTree.resize();}
     }
   },
 
@@ -353,13 +362,6 @@ export default {
       });
 
     // At window resize, resize the tree list to fit the window
-    window.addEventListener("resize", () => {
-      let $tree = this.$(".parameters-tree", this.$el);
-      let kTree = $tree.data("kendoTreeList");
-      if (kTree) {
-        $tree.height(this.$(window).height() - $tree.offset().top - 4);
-        kTree.resize();
-      }
-    });
+    window.addEventListener("resize", () => this.resizeTree());
   }
 };

@@ -194,14 +194,7 @@ export default {
           this.$(".user-search-input", this.$el).focus();
 
           // Resize user treeList when it is displayed
-          let $userTree = this.$(".users-tree", this.$el);
-          let kUserTree = $userTree.data("kendoTreeList");
-          if (kUserTree) {
-            $userTree.height(
-              this.$(window).height() - $userTree.offset().top - 4
-            );
-            kUserTree.resize();
-          }
+          this.resizeUsersTree();
         })
         .on("click", ".refresh-btn", () => {
           // Re-fetch data from server
@@ -255,12 +248,7 @@ export default {
       this.$(".parameters-div", this.$el).css("display", "");
 
       // Resize user parameters treeList when displaying it
-      let $tree = this.$(".user-parameters-tree", this.$el);
-      let kTree = $tree.data("kendoTreeList");
-      if (kTree) {
-        $tree.height(this.$(window).height() - $tree.offset().top - 4);
-        kTree.resize();
-      }
+      this.resizeUserParametersTree();
 
       // Focus on filter input
       this.$(".global-search-input", this.$el).focus();
@@ -520,6 +508,26 @@ export default {
       }
 
       this.$emit("switchParameters");
+    },
+
+    // Resize users tree
+    resizeUsersTree() {
+      let $userTree = this.$(".users-tree", this.$el);
+      let kUserTree = $userTree.data("kendoTreeList");
+      if (kUserTree) {
+        $userTree.height(this.$(window).height() - $userTree.offset().top - 4);
+        kUserTree.resize();
+      }
+    },
+
+    // Resize user parameters tree
+    resizeUserParametersTree() {
+      let $tree = this.$(".user-parameters-tree", this.$el);
+      let kTree = $tree.data("kendoTreeList");
+      if (kTree) {
+        $tree.height(this.$(window).height() - $tree.offset().top - 4);
+        kTree.resize();
+      }
     }
   },
 
@@ -569,19 +577,8 @@ export default {
 
     // At window resize, resize the treeLists
     window.addEventListener("resize", () => {
-      let $tree = this.$(".user-parameters-tree", this.$el);
-      let kTree = $tree.data("kendoTreeList");
-      if (kTree) {
-        $tree.height(this.$(window).height() - $tree.offset().top - 4);
-        kTree.resize();
-      }
-
-      let $userTree = this.$(".users-tree", this.$el);
-      let kUserTree = $userTree.data("kendoTreeList");
-      if (kUserTree) {
-        $userTree.height(this.$(window).height() - $userTree.offset().top - 4);
-        kUserTree.resize();
-      }
+      this.resizeUsersTree();
+      this.resizeUserParametersTree();
     });
   }
 };
