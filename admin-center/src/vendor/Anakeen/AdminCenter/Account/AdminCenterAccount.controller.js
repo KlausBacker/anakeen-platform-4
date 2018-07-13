@@ -16,7 +16,9 @@ export default {
                         groups[parentData].items =
                           groups[parentData].items || [];
                         groups[parentData].items.push(currentData);
-                      } catch (e) {}
+                      } catch (e) {
+                        // no test here
+                      }
                     });
                   });
                   //Suppress first level elements
@@ -74,7 +76,9 @@ export default {
                     try {
                       expandedElements = JSON.parse(expandedElements);
                       restoreExpandedTree(groups, expandedElements);
-                    } catch (e) {}
+                    } catch (e) {
+                      //no test here
+                    }
                   }
                   const toDisplay = [
                     {
@@ -352,7 +356,7 @@ export default {
       }
     },
     //Open group selected in group change mode
-    openChangeGroup: function(event) {
+    openChangeGroup: function() {
       const openDoc = this.$refs.openDoc;
       openDoc.publicMethods.fetchSmartElement({
         initid: this.selectedGroupDocumentId,
@@ -372,7 +376,7 @@ export default {
       this.updateGridData(selectedElement.login);
     },
     //Register the leaf open and closed
-    registerTreeState: function(event) {
+    registerTreeState: function() {
       const saveTreeView = function() {
         const treeview = this.$refs.groupTreeView.kendoWidget();
         const expandedItemsIds = {};
