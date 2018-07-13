@@ -1,5 +1,5 @@
 /*global define*/
-define(["underscore"], function require_transitionInterface(_) {
+define([], function require_transitionInterface() {
   "use strict";
 
   var TransitionInterfacePrototype = function TransitionInterfacePrototype() {};

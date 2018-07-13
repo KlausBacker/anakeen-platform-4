@@ -268,7 +268,6 @@ define([
 
     responsiveColumns: function vFrame_responsiveColumns() {
       var responseColumnsDefs = this.model.getOption("responsiveColumns") || [];
-      var _this = this;
       var $fake = $("<div/>").css({
         position: "absolute",
         top: 0,

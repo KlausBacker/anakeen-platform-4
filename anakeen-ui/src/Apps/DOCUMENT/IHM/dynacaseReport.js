@@ -16,6 +16,7 @@
 
     getRequest = function getRequest() {
       if (window.ActiveXObject) {
+        // eslint-disable-next-line no-undef
         return new ActiveXObject("Microsoft.XMLHTTP");
       } else if (window.XMLHttpRequest) {
         return new XMLHttpRequest();
@@ -51,7 +52,9 @@
           errorReport.stack = errorReport.stack.toString();
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      console.error(e);
+    }
     console.error(errorReport);
     if (typeof errorReport !== "string") {
       errorReport = JSON.stringify(errorReport);
@@ -64,7 +67,10 @@
   window.dcp.logger = function dcpLogger(error) {
     try {
       TraceKit.report(error);
-    } catch (e) {}
+    } catch (e) {
+      console.error(e);
+    }
     console.error(error);
   };
+  // eslint-disable-next-line no-undef
 })(TraceKit);

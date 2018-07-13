@@ -44,46 +44,51 @@ define([
       var currentView = this;
       return new Promise(
         _.bind(function vTabContentRender_Promise(resolve, reject) {
-          var hasOneContent;
-          currentView.$el
-            .empty()
-            .append(
-              $(
-                '<div class="dcpTab__content--loading"><span class="fa fa-spinner fa-spin"></span>' +
-                  i18n.___("Displaying", "ddui") +
-                  "</div>"
-              )
-            );
-          currentView.$el.attr("id", currentView.model.id);
-          currentView.$el.attr("data-attrid", currentView.model.id);
+          try {
+            var hasOneContent;
+            currentView.$el
+              .empty()
+              .append(
+                $(
+                  '<div class="dcpTab__content--loading"><span class="fa fa-spinner fa-spin"></span>' +
+                    i18n.___("Displaying", "ddui") +
+                    "</div>"
+                )
+              );
+            currentView.$el.attr("id", currentView.model.id);
+            currentView.$el.attr("data-attrid", currentView.model.id);
 
-          hasOneContent = currentView.model
-            .get("content")
-            .some(function vTabContentIsDisplayable(value) {
-              return value.isDisplayable();
-            });
+            hasOneContent = currentView.model
+              .get("content")
+              .some(function vTabContentIsDisplayable(value) {
+                return value.isDisplayable();
+              });
 
-          if (!hasOneContent) {
-            currentView.$el.append(
-              currentView.model.getOption("showEmptyContent")
-            );
-            currentView.$el.removeClass("dcpTab__content--loading");
-            currentView.model.trigger("renderDone", {
-              model: currentView.model,
-              $el: currentView.$el
-            });
-            currentView.propageShowTab();
-            resolve(currentView);
-          } else {
-            if (currentView.initializeContent === true) {
-              currentView
-                .renderContent()
-                .then(function vTabContentRender_renderContent() {
-                  resolve(currentView);
-                });
-            } else {
+            if (!hasOneContent) {
+              currentView.$el.append(
+                currentView.model.getOption("showEmptyContent")
+              );
+              currentView.$el.removeClass("dcpTab__content--loading");
+              currentView.model.trigger("renderDone", {
+                model: currentView.model,
+                $el: currentView.$el
+              });
+              currentView.propageShowTab();
               resolve(currentView);
+            } else {
+              if (currentView.initializeContent === true) {
+                currentView
+                  .renderContent()
+                  .then(function vTabContentRender_renderContent() {
+                    resolve(currentView);
+                  })
+                  .catch(reject);
+              } else {
+                resolve(currentView);
+              }
             }
+          } catch (e) {
+            reject(e);
           }
         }, this)
       );

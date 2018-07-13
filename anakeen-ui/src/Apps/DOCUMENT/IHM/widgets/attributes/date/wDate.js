@@ -1,4 +1,4 @@
-/*global define, _super*/
+/*global define */
 
 (function umdRequire(root, factory) {
   "use strict";

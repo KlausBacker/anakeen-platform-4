@@ -63,7 +63,7 @@ import i18n from "./searchCatalog";
          *  check if functions' input is still empty if you want to save the document
          *  @response object binded with functions' input that show error messages
          */
-        function checkNotEmptyFunc(response) {
+        function checkNotEmptyFunc() {
           var $documentController = $(this),
             result = [];
           $(".dcpAttribute__value[name=se_funcs]").each(
@@ -100,7 +100,7 @@ import i18n from "./searchCatalog";
             return attribute.id === "se_attrids";
           }
         },
-        function checkNotEmptyAttributes(response) {
+        function checkNotEmptyAttributes() {
           var $documentController = $(this),
             result = [];
           $(".dcpAttribute__value[name=se_attrids]").each(
@@ -139,7 +139,7 @@ import i18n from "./searchCatalog";
          *  check if keys' input is still empty if you want to save the document
          *  @response object binded with keys' input that show error messages
          */
-        function checkNotEmptyKeys(response) {
+        function checkNotEmptyKeys() {
           var $documentController = $(this),
             result = [];
           $(".dcpAttribute__value[name=se_keys]").each(
@@ -196,7 +196,7 @@ import i18n from "./searchCatalog";
          *  check if condition radio list is still empty if you want to save the document
          *  @response object binded with condition radio list that show error messages
          */
-        function checkNotEmptyFunc(response) {
+        function checkNotEmptyFunc() {
           var condition = $(this).documentController("getValues").se_ol,
             result = [];
 

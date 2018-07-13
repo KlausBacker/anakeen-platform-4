@@ -48,7 +48,9 @@ define(["underscore", "jquery", "dcpDocument/widgets/widget"], function wWindow(
                         title: currentTitle
                       });
                       $content.find("body").addClass("window-dialog");
-                    } catch (exp) {}
+                    } catch (exp) {
+                      //no test here
+                    }
                   });
 
                 // Verify if need to change title every seconds
@@ -75,7 +77,9 @@ define(["underscore", "jquery", "dcpDocument/widgets/widget"], function wWindow(
                             .html(newTitle);
                         }
                       }
-                    } catch (exp) {}
+                    } catch (exp) {
+                      //no test here
+                    }
                   },
                   1000
                 );
@@ -88,7 +92,9 @@ define(["underscore", "jquery", "dcpDocument/widgets/widget"], function wWindow(
                   .html()
               });
             }
-          } catch (exp) {}
+          } catch (exp) {
+            //no test here
+          }
         }
       },
       close: function wWindowClose() {

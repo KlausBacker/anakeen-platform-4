@@ -29,7 +29,7 @@ define(["jquery", "underscore", "dcpDocument/widgets/widget"], function wDialog(
       } else {
         this.options.window.close = _.wrap(
           this.options.window.close,
-          function dcpDialog_closeWrap(close, argument) {
+          function dcpDialog_closeWrap(close) {
             var event = arguments[1];
             close.apply(this, _.rest(arguments));
             if (!event.isDefaultPrevented()) {

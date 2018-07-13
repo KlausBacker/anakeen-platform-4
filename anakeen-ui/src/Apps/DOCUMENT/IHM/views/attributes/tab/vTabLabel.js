@@ -44,7 +44,6 @@ define([
       var tooltipLabel = this.model.getOption("tooltipLabel");
       var attrData = this.model.attributes;
       var helpId = this.model.getOption("helpLinkIdentifier");
-      var documentModel = this.model.getDocumentModel();
 
       this.$el.empty();
       if (this.displayLabel !== false) {

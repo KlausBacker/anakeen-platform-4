@@ -92,58 +92,71 @@ define([
     addNewWidget: function vColumnAddNewWidget(index, customView) {
       return new Promise(
         _.bind(function vColumnAddNewWidget_promise(resolve, reject) {
-          if (this.options) {
-            var cells = this.options.parentElement.find(
-                '.dcpArray__content__cell[data-attrid="' + this.model.id + '"]'
-              ),
-              $el,
-              data = this.getData(index),
-              event = { prevent: false };
+          try {
+            if (this.options) {
+              var cells = this.options.parentElement.find(
+                  '.dcpArray__content__cell[data-attrid="' +
+                    this.model.id +
+                    '"]'
+                ),
+                $el,
+                data = this.getData(index),
+                event = { prevent: false };
 
-            if (cells[index]) {
-              try {
-                $el = $(cells[index]);
-                this.model.trigger("beforeRender", event, {
-                  model: this.model,
-                  $el: $el,
-                  index: index
-                });
-                if (event.prevent) {
-                  return this;
-                }
-                if (customView) {
-                  $el.append(customView);
-                  this.model.trigger("renderDone", {
+              if (cells[index]) {
+                try {
+                  $el = $(cells[index]);
+                  this.model.trigger("beforeRender", event, {
                     model: this.model,
                     $el: $el,
                     index: index
                   });
-                  this.moveValueIndex({});
-                  resolve($el);
-                } else {
-                  $el.one(
-                    "dcpattributewidgetready .dcpAttribute__content",
-                    _.bind(function vcolumnRender_widgetready() {
-                      this.model.trigger("renderDone", {
-                        model: this.model,
-                        $el: $el,
-                        index: index
-                      });
-                      this.moveValueIndex({});
-                      resolve();
-                    }, this)
-                  );
-                  this.widgetInit($el, data);
-                  attributeTemplate.insertDescription(this, $el.parent());
+                  if (event.prevent) {
+                    resolve();
+                    return this;
+                  }
+                  if (customView) {
+                    $el.append(customView);
+                    this.model.trigger("renderDone", {
+                      model: this.model,
+                      $el: $el,
+                      index: index
+                    });
+                    this.moveValueIndex({});
+                    resolve($el);
+                  } else {
+                    $el.one(
+                      "dcpattributewidgetready .dcpAttribute__content",
+                      _.bind(function vcolumnRender_widgetready() {
+                        this.model.trigger("renderDone", {
+                          model: this.model,
+                          $el: $el,
+                          index: index
+                        });
+                        this.moveValueIndex({});
+                        resolve();
+                      }, this)
+                    );
+                    this.widgetInit($el, data);
+                    attributeTemplate.insertDescription(this, $el.parent());
+                    resolve();
+                  }
+                } catch (error) {
+                  if (window.dcp.logger) {
+                    window.dcp.logger(error);
+                  } else {
+                    console.error(error);
+                  }
+                  resolve();
                 }
-              } catch (error) {
-                if (window.dcp.logger) {
-                  window.dcp.logger(error);
-                } else {
-                  console.error(error);
-                }
+              } else {
+                resolve();
               }
+            } else {
+              resolve();
             }
+          } catch (e) {
+            reject(e);
           }
         }, this)
       );

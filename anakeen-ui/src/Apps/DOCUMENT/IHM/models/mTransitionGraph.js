@@ -1,8 +1,7 @@
 /*global define*/
 define(["underscore", "backbone", "dcpDocument/models/mDocument"], function(
   _,
-  Backbone,
-  mDocument
+  Backbone
 ) {
   "use strict";
 

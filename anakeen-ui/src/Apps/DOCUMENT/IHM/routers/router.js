@@ -1,5 +1,4 @@
 /*global define*/
-/*global define*/
 define(["underscore", "backbone"], function define_router(_, Backbone) {
   "use strict";
 
@@ -10,13 +9,17 @@ define(["underscore", "backbone"], function define_router(_, Backbone) {
 
       this.document = options.document;
 
+      //  eslint-disable-next-line no-useless-escape
       this.route(/api\/v2\/documents\/([^\/]+)\.html/, "viewDocument");
       this.route(
+        //  eslint-disable-next-line no-useless-escape
         /api\/v2\/documents\/(.+)\/revisions\/([^\/]+)\.html/,
         "viewRevision"
       );
+      //  eslint-disable-next-line no-useless-escape
       this.route(/api\/v2\/documents\/(.+)\/views\/([^\/]+)\.html/, "viewView");
       this.route(
+        //  eslint-disable-next-line no-useless-escape
         /api\/v2\/documents\/(.+)\/revisions\/([^\/]+)\/views\/([^\/]+)\.html/,
         "viewRevisionView"
       );
@@ -178,7 +181,9 @@ define(["underscore", "backbone"], function define_router(_, Backbone) {
               } else {
                 locationHash = "#widgetValue" + JSON.stringify(hashData);
               }
-            } catch (e) {}
+            } catch (e) {
+              //no test here
+            }
           }
 
           if (!this.useHistory) {

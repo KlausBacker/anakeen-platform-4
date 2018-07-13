@@ -201,7 +201,9 @@
         try {
           internalController.injectCSS(this.options.cssToInject);
           internalController.injectJS(this.options.jsToInject);
-        } catch (e) {}
+        } catch (e) {
+          console.error(e);
+        }
       }
     },
 
@@ -293,7 +295,7 @@
               resolve();
               currentWidget._destroy();
             })
-            ["catch"](function dcpDocument_destroy_catch(errorMessage) {
+            .catch(function dcpDocument_destroy_catch(errorMessage) {
               reject(errorMessage);
             });
           return;

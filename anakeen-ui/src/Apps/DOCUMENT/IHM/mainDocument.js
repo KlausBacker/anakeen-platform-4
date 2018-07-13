@@ -9,7 +9,7 @@ $.get("api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
   //Trigger an event when translation loaded
   window.dcp.i18n = catalog;
 
-  const _ = require("underscore");
+  var _ = require("underscore");
   require("dcpExternals/KendoUI/KendoUI");
   require("dcpDocument/widgets/documentController/documentController");
 

@@ -470,7 +470,6 @@ define([
       var kendoMenu = this.kendoMenuWidget;
       var $hamburger = barMenu.find(".menu_element--hamburger");
       var hiddenItemsCount;
-      var visibleItemCount;
       var $hiddenItems = $($hamburger.find("ul").get(0)).find("> li.k-item");
       var hiddenLeft = $hiddenItems.length;
 
@@ -497,7 +496,6 @@ define([
         barmenuWidth -= this.getScrollBarWidth(); // Supposed that scrollbar width is max 20px
       }
 
-      visibleItemCount = $itemMenu.length;
       // Detect free menu available width  and record menu items which not contains to bar menu
       $itemMenu.each(function wMenuComputeWidth() {
         currentWidth += $(this).outerWidth();
@@ -507,7 +505,6 @@ define([
         } else {
           visibleWidth += $(this).outerWidth();
         }
-        visibleItemCount--;
       });
 
       freeWidth = barmenuWidth - visibleWidth;

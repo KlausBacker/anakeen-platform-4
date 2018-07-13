@@ -1,10 +1,8 @@
 /*global define*/
-define([
-  "underscore",
-  "backbone",
-  "mustache",
-  "dcpDocument/widgets/menu/wMenu"
-], function(_, Backbone, Mustache, WidgetMenu) {
+define(["underscore", "backbone", "dcpDocument/widgets/menu/wMenu"], function(
+  _,
+  Backbone
+) {
   "use strict";
 
   return Backbone.View.extend({
@@ -40,9 +38,13 @@ define([
       var currentView = this;
       return new Promise(
         _.bind(function vMenuRenderPromise(resolve, reject) {
-          currentView.$el.dcpMenu(currentView.model.toData());
-          currentView.refresh();
-          return resolve(currentView);
+          try {
+            currentView.$el.dcpMenu(currentView.model.toData());
+            currentView.refresh();
+            return resolve(currentView);
+          } catch (e) {
+            reject(e);
+          }
         }, this)
       );
     },

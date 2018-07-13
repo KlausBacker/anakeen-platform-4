@@ -93,20 +93,22 @@
         scope._fitToContent(scope.getContentElements());
       });
       this.getContentElements()
-        .on("keyup" + this.eventNamespace, function dcpLongtext_keyUpUpdateSize(
-          event
-        ) {
-          scope._fitToContent($(this));
-        })
-        .on("focus" + this.eventNamespace, function dcpLongtext_focusUpdateSize(
-          event
-        ) {
-          scope._fitToContent($(this));
-        });
+        .on(
+          "keyup" + this.eventNamespace,
+          function dcpLongtext_keyUpUpdateSize() {
+            scope._fitToContent($(this));
+          }
+        )
+        .on(
+          "focus" + this.eventNamespace,
+          function dcpLongtext_focusUpdateSize() {
+            scope._fitToContent($(this));
+          }
+        );
 
       this.element.on(
         "show" + this.eventNamespace,
-        function dcpLongtext_showUpdateSize(event) {
+        function dcpLongtext_showUpdateSize() {
           scope._fitToContent(scope.getContentElements());
         }
       );

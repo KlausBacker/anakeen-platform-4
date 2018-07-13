@@ -295,7 +295,7 @@ define([
      * Display error message around the widget if needed
      * @param event
      */
-    refreshError: function vAttributeRefreshError(event) {
+    refreshError: function vAttributeRefreshError() {
       this.$el
         .find(".dcpAttribute__label")
         .dcpLabel("setError", this.model.get("errorMessage"));
@@ -513,8 +513,6 @@ define([
       this.model.trigger("uploadFile", widgetEvent, this.model.id, options);
     },
     uploadFileDone: function vAttributeuploadFileSEnd(widgetEvent, options) {
-      var event = { prevent: false };
-
       this.model.trigger("uploadFileDone", widgetEvent, this.model.id, options);
     },
 

@@ -313,7 +313,6 @@ define([
           targetProperties &&
           targetProperties.isModified
         ) {
-          console.log("modified", targetProperties);
           wWidget.confirmClose().then(function wcdConfirmClose() {
             wWidget.closeDialog(event, false);
           });

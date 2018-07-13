@@ -115,7 +115,6 @@ define([
       this._initializedView = false;
       this._customClientData = {};
       if (!this.options.initid) {
-        console.log("Widget initialised without document");
         return;
       }
       this._initializeWidget({}, this.options.customClientData);
@@ -402,7 +401,9 @@ define([
             currentWidget._model._customClientData = currentWidget.getCustomClientData(
               false
             );
-          } catch (e) {}
+          } catch (e) {
+            //no test here
+          }
         }
       );
       this._model.listenTo(
@@ -521,8 +522,7 @@ define([
               _.each(
                 values.current,
                 function documentController_valueIsModified(currentValue) {
-                  var result,
-                    previous = values.previous[index];
+                  var previous = values.previous[index];
                   if (!previous) {
                     changesIndex.push(index);
                   } else {
@@ -1003,7 +1003,9 @@ define([
           //Suppress customClientData after a sucessful transaction
           try {
             currentWidget.getCustomClientData(true);
-          } catch (e) {}
+          } catch (e) {
+            //no test here
+          }
         }, this)
       );
     },
@@ -1824,7 +1826,9 @@ define([
                 ) {
                   errorMessage = errorArguments[1].responseJSON.messages[0];
                 }
-              } catch (e) {}
+              } catch (e) {
+                //no error here
+              }
               if (
                 errorArguments &&
                 errorArguments[0] &&
@@ -2801,7 +2805,7 @@ define([
       this._checkInitialisedView();
       var attributeModel = this._getAttributeModel(attributeId);
       if (!attributeModel) {
-        console.log("Unable find and hide the attribute " + attributeId);
+        console.error("Unable find and hide the attribute " + attributeId);
         return;
       }
       attributeModel.trigger("hide");
@@ -2815,7 +2819,7 @@ define([
       this._checkInitialisedView();
       var attributeModel = this._getAttributeModel(attributeId);
       if (!attributeModel) {
-        console.log("Unable find and show the attribute " + attributeId);
+        console.error("Unable find and show the attribute " + attributeId);
         return;
       }
       attributeModel.trigger("show");
@@ -2880,7 +2884,7 @@ define([
       this._checkInitialisedView();
       var attributeModel = this._getAttributeModel(attributeId);
       if (!attributeModel) {
-        console.log("Unable find and show the attribute " + attributeId);
+        console.error("Unable find and show the attribute " + attributeId);
         return;
       }
       attributeModel.setErrorMessage(message, index);
@@ -2899,7 +2903,7 @@ define([
       this._checkInitialisedView();
       var attributeModel = this._getAttributeModel(attributeId);
       if (!attributeModel) {
-        console.log("Unable find and show the attribute " + attributeId);
+        console.error("Unable find and show the attribute " + attributeId);
         return;
       }
       attributeModel.setErrorMessage(null, index);

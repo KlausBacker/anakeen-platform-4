@@ -2,16 +2,12 @@
   "use strict";
 
   if (typeof define === "function" && define.amd) {
-    define([
-      "jquery",
-      "mustache",
-      "dcpDocument/widgets/attributes/file/wFile"
-    ], factory);
+    define(["jquery", "dcpDocument/widgets/attributes/file/wFile"], factory);
   } else {
     //noinspection JSUnresolvedVariable
     factory(window.jQuery, window.Mustache);
   }
-})(window, function wImageWidget($, Mustache) {
+})(window, function wImageWidget($) {
   "use strict";
 
   $.widget("dcp.dcpImage", $.dcp.dcpFile, {
@@ -33,7 +29,7 @@
         if (this.options.attributeValue.url) {
           if (!this.options.renderOptions.htmlLink.url) {
             if (this.options.renderOptions.thumbnailSize) {
-              var reSize = /sizes\/([^\/]+)/;
+              var reSize = /sizes([^/]+)/;
               this.options.attributeValue.thumbnail =
                 this.options.attributeValue.thumbnail.replace(
                   reSize,
@@ -73,7 +69,6 @@
         function wImageClick(event) {
           if (htmlLink.target === "_dialog") {
             event.preventDefault();
-            var index = $(this).data("index");
             var bdw = $(
               '<div class="dcpImage-window"><img class="img-responsive" src="' +
                 $(this).attr("href") +

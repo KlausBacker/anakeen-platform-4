@@ -13,7 +13,7 @@
     //noinspection JSUnresolvedVariable
     factory(window.jQuery, window._, window.Mustache);
   }
-})(window, function require_wenum($, _, Mustache, dcpAttribute) {
+})(window, function require_wenum($, _, Mustache) {
   "use strict";
 
   var localeCompareSupportsLocales = (function testLocaleCompareSupportsLocales() {
