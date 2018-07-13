@@ -48,7 +48,7 @@ class FieldAccessManager
 
     public static function getAccess(SmartElement $se, BasicAttribute $oa)
     {
-        if ($se->fallid === null) {
+        if (!$se->fallid) {
             return $oa->getAccess();
         }
         /** @var \SmartStructure\Fieldaccesslayerlist $fall */
