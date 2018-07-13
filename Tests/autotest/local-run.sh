@@ -73,7 +73,7 @@ function main {
 		if [ -n "${REF}" ]; then
 			GIT_DIR="${SOURCE}/.git" git archive --format=tar "${REF}" | tar -C "${WORK_DIR}" -xf -
 		else
-			tar -C "${SOURCE}" -cf - . --exclude-vcs | tar -C "${WORK_DIR}" -xf -
+			tar -C "${SOURCE}" -cf - --exclude-vcs . | tar -C "${WORK_DIR}" -xf -
 		fi
 		echo "[+] Done."
 
