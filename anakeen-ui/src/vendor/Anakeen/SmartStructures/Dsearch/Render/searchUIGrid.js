@@ -32,7 +32,7 @@ export default (searchId, $target) => {
         $r.resolve(dt);
       });
       $table.on("error.dt", function(event, settings, techNote, message) {
-        $r.reject(message, dt);
+        $r.reject(message);
       });
       $table.on("draw.dt", function(event, dt) {
         if (

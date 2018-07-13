@@ -67,7 +67,7 @@ import "./docGrid.css";
      * @param error
      */
     var onError = function onError(error) {
-      console.log(error);
+      console.error(error);
     };
 
     var htmlEncode = function htmlEncode(value) {
@@ -1327,7 +1327,7 @@ import "./docGrid.css";
               read: {
                 url: url(additionnalData)
               },
-              parameterMap: function mapsParameters(data, type) {
+              parameterMap: function mapsParameters(data) {
                 if (
                   data.filter &&
                   data.filter.filters &&

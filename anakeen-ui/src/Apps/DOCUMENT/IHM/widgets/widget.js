@@ -35,7 +35,9 @@
           if (events && events.remove) {
             $(elem).triggerHandler("remove");
           }
-        } catch (e) {}
+        } catch (e) {
+          //no test here
+        }
       }
       _cleanData(elems);
     };

@@ -6,8 +6,6 @@
 Ask for a document title in creation mode
  */
 
-const _ = require("underscore");
-
 {
   window.dcp.document.documentController(
     "addEventListener",

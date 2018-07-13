@@ -32,38 +32,42 @@ define([
       var currentView = this;
       return new Promise(
         _.bind(function vheaderRenderPromise(resolve, reject) {
-          var data = currentView.model.toData(),
-            properties = currentView.model.getModelProperties(),
-            security = properties.security || false;
+          try {
+            var data = currentView.model.toData(),
+              properties = currentView.model.getModelProperties(),
+              security = properties.security || false;
 
-          data.document.properties = properties;
+            data.document.properties = properties;
 
-          data.document.properties.security = security || {
-            lock: { lockedBy: null }
-          };
-          data.document.properties.security.lock.isLocked =
-            data.document.properties.security.lock.lockedBy &&
-            data.document.properties.security.lock.lockedBy.id > 0;
+            data.document.properties.security = security || {
+              lock: { lockedBy: null }
+            };
+            data.document.properties.security.lock.isLocked =
+              data.document.properties.security.lock.lockedBy &&
+              data.document.properties.security.lock.lockedBy.id > 0;
 
-          var headerRender = $(
-            Mustache.render(currentView.headerTemplate || "", data)
-          );
-          var $header = currentView.$el;
-          $header.empty();
-          _.each(headerRender.children(), function eachChildren(elt) {
-            $header.append(elt);
-          });
-
-          $header
-            .find(
-              ".dcpDocument__header__lock, .dcpDocument__header__readonly, .dcpDocument__header__modified"
-            )
-            .tooltip({
-              placement: "bottom",
-              html: true
+            var headerRender = $(
+              Mustache.render(currentView.headerTemplate || "", data)
+            );
+            var $header = currentView.$el;
+            $header.empty();
+            _.each(headerRender.children(), function eachChildren(elt) {
+              $header.append(elt);
             });
 
-          return resolve(currentView);
+            $header
+              .find(
+                ".dcpDocument__header__lock, .dcpDocument__header__readonly, .dcpDocument__header__modified"
+              )
+              .tooltip({
+                placement: "bottom",
+                html: true
+              });
+
+            return resolve(currentView);
+          } catch (e) {
+            reject(e);
+          }
         }, this)
       );
     },

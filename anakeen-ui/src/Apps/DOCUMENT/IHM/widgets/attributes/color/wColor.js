@@ -1,4 +1,4 @@
-/*global define, _super, kendoColorPicker*/
+/*global define*/
 
 (function umdRequire(root, factory) {
   "use strict";
@@ -7,14 +7,13 @@
     define([
       "jquery",
       "underscore",
-      "mustache",
       "dcpDocument/widgets/attributes/text/wText"
     ], factory);
   } else {
     //noinspection JSUnresolvedVariable
-    factory(window.jQuery, window._, window.Mustache);
+    factory(window.jQuery, window._);
   }
-})(window, function require_wColor($, _, Mustache) {
+})(window, function require_wColor($, _) {
   "use strict";
 
   $.widget("dcp.dcpColor", $.dcp.dcpText, {

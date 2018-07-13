@@ -145,11 +145,6 @@
               });
             scope.element.data("hasErrorTooltip", true);
             scope.element.find(".input-group").tooltip("show");
-            // Need to refresh to update position after possible change on element value
-            _.delay(function wAttributeSetErrorDelay() {
-              var $input = scope.element.find(".input-group");
-              //$input.tooltip("hide").tooltip("show");
-            }, 1);
           }
         });
       } else {

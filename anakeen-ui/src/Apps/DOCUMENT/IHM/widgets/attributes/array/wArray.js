@@ -351,7 +351,7 @@
           if (!this._isInitialized()) {
             this.addAllLines(this.options.nbLines)
               .then(resolve)
-              ["catch"](reject);
+              .catch(reject);
             this._isInitialized(true);
           }
         }, this)
@@ -608,7 +608,7 @@
               }
               Promise.all(linesPromise)
                 .then(resolve)
-                ["catch"](reject);
+                .catch(reject);
             } else if (lineNumber < currentLineNumber) {
               for (i = 0; i < currentLineNumber - lineNumber; i += 1) {
                 this.removeLine(this.options.nbLines - 1, options);
@@ -832,7 +832,7 @@
 
     copyLine: function dcpArraycopyLine(lineNumber, options) {
       return new Promise(
-        _.bind(function dcpArrayaddLine_promise(resolve, reject) {
+        _.bind(function dcpArrayaddLine() {
           var $content = this._addNewLine(lineNumber, options);
           if ($content) {
             this._trigger(

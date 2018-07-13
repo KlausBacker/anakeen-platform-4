@@ -1,4 +1,4 @@
-define(["jquery", "underscore", "dcpDocument/widgets/widget"], function($, _) {
+define(["jquery", "dcpDocument/widgets/widget"], function($) {
   "use strict";
 
   $.widget("dcp.dcpLoading", {

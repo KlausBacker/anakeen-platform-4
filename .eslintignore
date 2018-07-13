@@ -1,9 +1,12 @@
+anakeen-ui/src/vendor/Anakeen/SmartStructures/Dsearch/Render/jquery.stickytableheaders.min.js
 anakeen-ui/src/public/login/dist/
 anakeen-ui/src/public/components/debug/
 anakeen-ui/src/public/components/dist/
 anakeen-ui/src/vendor/Anakeen/Components/translation.json
 anakeen-ui/src/Apps/DOCUMENT/Layout/debug/
 anakeen-ui/src/Apps/DOCUMENT/Layout/prod/
-Tests/src/public/TEST_DOCUMENT_SELENIUM/dist/
 anakeen-ui/src/public/uiAssets/
-Tests/src/public/apps/uitest/dist/
+Tests/
+node_modules/
+webpackConfig/
+localpub/

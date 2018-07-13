@@ -31,7 +31,9 @@ import "./changeGroupView.css";
                   try {
                     groups[parentData].items = groups[parentData].items || [];
                     groups[parentData].items.push(currentData);
-                  } catch (e) {}
+                  } catch (e) {
+                    //no need to handle the error
+                  }
                 });
               });
               //Suppress first level elements

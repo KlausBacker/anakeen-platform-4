@@ -6,7 +6,6 @@
  Research result in edit mode
  */
 
-const _ = require("underscore");
 import showGrid from "./searchUIGrid";
 
 {
@@ -34,7 +33,7 @@ import showGrid from "./searchUIGrid";
             .removeClass("dcpLabel--active");
           $li.addClass("dcpLabel--active");
         },
-        show: function(event) {
+        show: function() {
           // To update responsiveColumn
           $(window).trigger("resize");
         }
@@ -93,8 +92,6 @@ import showGrid from "./searchUIGrid";
 
   function showTmpGrid(event, $documentController, $target) {
     var $dataJSON = null;
-    var famid = $documentController.documentController("getValues").se_famid
-      .value;
 
     $target.addClass("result--grid");
     $target.addClass("result--waiting");

@@ -69,7 +69,7 @@ define([
       }
     },
 
-    removeIndexValue: function mAttributeremoveIndexValue(index, options) {
+    removeIndexValue: function mAttributeremoveIndexValue(index) {
       var currentValue, oldValue;
       if (!this.get("multiple") || !_.isNumber(index)) {
         throw new Error(

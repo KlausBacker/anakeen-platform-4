@@ -271,7 +271,6 @@ import searchAttributes from "./searchAttributes";
                             $input.insertBefore($environment[0]);
                             $environment.hide();
                             var date = $($environment).val();
-                            var elem;
 
                             if (date && date.indexOf("(") === -1) {
                               $($input).val(date);
@@ -571,7 +570,6 @@ import searchAttributes from "./searchAttributes";
               }
             );
 
-            var $init = false;
             if ($funcEl !== undefined) {
               if ($funcEl.parentElement !== undefined) {
                 if ($funcEl.parentElement.style.visibility === "hidden") {
@@ -667,7 +665,6 @@ import searchAttributes from "./searchAttributes";
                   if ($environment.data("kendoComboBox") === undefined) {
                     $seKeys.each(function eachKeysIEnumAttridsChanged(key) {
                       if (key === $index) {
-                        $init = true;
                         $environment[0].aNode = $environment.parent()[0].firstElementChild;
                         initKendoComboBox(famid, $environment, $attrid);
                       }
@@ -677,7 +674,6 @@ import searchAttributes from "./searchAttributes";
                   if ($environment.data("kendoComboBox") === undefined) {
                     $seKeys.each(function eachKeysIRelationAttridsChanged(key) {
                       if (key === $index) {
-                        $init = true;
                         $environment[0].aNode = $environment.parent()[0].firstElementChild;
                         initKendoComboBoxRelation(famid, $environment, $attrid);
                       }
@@ -687,7 +683,6 @@ import searchAttributes from "./searchAttributes";
                   if ($environment.data("kendoComboBox") === undefined) {
                     $seKeys.each(function eachKeysIWorklowAttridsChanged(key) {
                       if (key === $index) {
-                        $init = true;
                         $environment[0].aNode = $environment.parent()[0].firstElementChild;
                         initKendoComboBoxWorkflow(
                           $environment,

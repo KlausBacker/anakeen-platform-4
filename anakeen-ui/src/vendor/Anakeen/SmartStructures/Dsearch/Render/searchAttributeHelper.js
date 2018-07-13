@@ -37,7 +37,6 @@ import searchAttributes from "./searchAttributes";
         function prepareAttributesReady() {
           var $documentController = $(this);
           var famid = $(this).documentController("getValues").se_famid.value;
-          var testWorkflow = false;
 
           if (famid === null) {
             famid = "";
@@ -71,10 +70,7 @@ import searchAttributes from "./searchAttributes";
               } else {
                 $wf = null;
               }
-              testWorkflow = findIfWorkflow(
-                dataAttributes,
-                $documentController
-              );
+              findIfWorkflow(dataAttributes, $documentController);
             })
             .then(function doneAttributesReady() {
               $(".dcpAttribute__value[name=se_attrids]").each(
@@ -193,7 +189,6 @@ import searchAttributes from "./searchAttributes";
         function displayChange(event, document, attribute, options) {
           var famid = $(this).documentController("getValues").se_famid.value;
           var $documentController = $(this);
-          var testWorkflow = false;
           dataAttributesNew = [];
           searchAttributes(famid)
             .then(function requestAttributesAttributesFamilychanged(data) {
@@ -221,10 +216,7 @@ import searchAttributes from "./searchAttributes";
               } else {
                 $wf = null;
               }
-              testWorkflow = findIfWorkflow(
-                dataAttributesNew,
-                $documentController
-              );
+              findIfWorkflow(dataAttributesNew, $documentController);
             })
             .then(function doneAttributesFamilychanged() {
               if (
@@ -357,13 +349,11 @@ import searchAttributes from "./searchAttributes";
     var myKeyword;
     var minorKeyword;
     var visible = false;
-    var $environment;
     $(".dcpAttribute__value[name=se_keys]").each(function eachKeysSetVisibility(
       key,
       value
     ) {
       if (key === $index) {
-        $environment = $(this);
         myKeyword = value;
       }
     });

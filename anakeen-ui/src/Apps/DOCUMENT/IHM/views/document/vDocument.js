@@ -168,7 +168,6 @@ define([
         "resize.v" + this.model.cid,
         _.bind(this.resizeForFooter, this)
       );
-      $(window).on("scroll.v" + this.model.cid, _.bind(this.fixedTab, this));
       kendo.culture(locale);
       //add document base
       try {
@@ -523,118 +522,11 @@ define([
       }
     },
 
-    fixedTab: function vDocumentfixedTab(event) {
-      // @TODO Need a decision to delete this option or not
-      return;
-      var $tabs = this.$el.find(".dcpDocument__tabs");
-      var $ul;
-      if ($tabs.length > 0) {
-        var tabPlacement = this.model.getOption("tabPlacement") || "top";
-        var menuHeight = this.$el.find(".menu__content").height();
-        var kendoTabStrip = this.kendoTabs.data("kendoTabStrip");
-        var isAlreadyFixed = $tabs.hasClass("tab--fixed");
-        var $liActive = $tabs.find("li.k-state-active");
-        var scrollTop = $(window).scrollTop();
-        var $navButtons = $tabs.find(".k-bare");
-        var resizeMode = event.type === "resize";
-        if (scrollTop > $tabs.offset().top - menuHeight) {
-          $tabs.addClass("tab--fixed");
-          $tabs.css("top", menuHeight + "px");
-          if (tabPlacement === "top") {
-            // Special case for scrolling tabs
-            $ul = $tabs.find(".dcpDocument__tabs__list");
-            if (resizeMode) {
-              kendoTabStrip.resize();
-            }
-            var $navButtonsVisible = $tabs.find(".k-bare:visible");
-            if ($navButtonsVisible.length > 0) {
-              if (!isAlreadyFixed || resizeMode) {
-                $ul.css("width", "");
-                if (!$ul.data("margins")) {
-                  if (parseInt($navButtonsVisible.width()) > 0) {
-                    $ul.data("fixMargins", {
-                      left: $navButtonsVisible.width(),
-                      right: $navButtonsVisible.width()
-                    });
-                    $ul.data("originalMargins", {
-                      left: $ul.css("margin-left"),
-                      right: $ul.css("margin-right")
-                    });
-                  }
-                }
-                if ($ul.data("fixMargins")) {
-                  $ul.css("margin-left", $ul.data("fixMargins").left);
-                  $ul.css("margin-right", $ul.data("fixMargins").right);
-                }
-
-                var ulWidth =
-                  $tabs.width() -
-                  parseInt($ul.css("margin-right")) -
-                  parseInt($ul.css("margin-left"));
-                $ul.css("width", ulWidth + "px");
-                $navButtons.css("height", $ul.outerHeight() + "px");
-
-                $ul.css("top", menuHeight + "px");
-                $tabs.find(".k-bare").css("top", menuHeight + 0 + "px");
-              }
-            } else {
-              if (parseInt($ul.css("margin-left")) > 0) {
-                $ul.data("margins", {
-                  left: $ul.css("margin-left"),
-                  right: $ul.css("margin-right")
-                });
-              }
-              $ul
-                .css("width", "")
-                .css("margin-right", "")
-                .css("margin-left", "");
-            }
-          }
-        } else {
-          var $tabContent = this.$el
-            .find(".dcpTab__content.k-state-active")
-            .first();
-          var $tabList = this.$el.find(".dcpDocument__tabs__list");
-
-          if (
-            $tabContent.length > 0 &&
-            scrollTop <
-              Math.max(
-                $tabContent.offset().top - menuHeight - $tabList.height(),
-                $tabList.height()
-              )
-          ) {
-            if (isAlreadyFixed) {
-              $tabs.removeClass("tab--fixed");
-              $tabs.css("top", "");
-              if (tabPlacement === "top") {
-                $navButtons.css("height", "");
-                $ul = $tabs.find(".dcpDocument__tabs__list");
-                $ul.css("width", "").css("top", "");
-                $tabs.find(".k-bare").css("top", "");
-                if ($ul.data("originalMargins")) {
-                  $ul.css("margin-left", $ul.data("originalMargins").left);
-                  $ul.css("margin-right", $ul.data("originalMargins").right);
-                }
-
-                kendoTabStrip.resize();
-              }
-            }
-          }
-        }
-      }
-    },
-
-    scrollTabList: function vDocumentScrollTabList(event) {
+    scrollTabList: function vDocumentScrollTabList() {
       var kendoTabStrip = this.kendoTabs.data("kendoTabStrip");
-      var $tabs = this.$el.find(".dcpDocument__tabs");
 
-      if ($tabs.hasClass("tab--fixed")) {
-        _.defer(_.bind(this.fixedTab, this, event));
-      } else {
-        if (kendoTabStrip) {
-          kendoTabStrip.resize();
-        }
+      if (kendoTabStrip) {
+        kendoTabStrip.resize();
       }
     },
     /**
@@ -896,7 +788,7 @@ define([
           $tabs.on(
             "click",
             ".dcpLabel--select .k-dropdown-wrap .k-input",
-            function vDocumentTabSelectClick(event) {
+            function vDocumentTabSelectClick() {
               var selectedTab = $kendoTabs.select().data("attrid");
               var selectedItem = $tabs
                 .data("selectFixOn")

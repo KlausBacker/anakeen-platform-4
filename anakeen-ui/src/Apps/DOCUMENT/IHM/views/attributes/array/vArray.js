@@ -58,115 +58,123 @@ define([
       var currentView = this;
       return new Promise(
         _.bind(function vArray_renderPromise(resolve, reject) {
-          var customRender,
-            data = currentView.model.toData(null, true),
-            event = { prevent: false },
-            promisesColumn = [];
+          try {
+            var customRender,
+              data = currentView.model.toData(null, true),
+              event = { prevent: false },
+              promisesColumn = [];
 
-          //Trigger the beforeRender event, and cancel display if asked
-          currentView.model.trigger("beforeRender", event, {
-            model: currentView.model,
-            $el: currentView.$el
-          });
-          if (event.prevent) {
-            resolve(currentView);
-            return currentView;
-          }
+            //Trigger the beforeRender event, and cancel display if asked
+            currentView.model.trigger("beforeRender", event, {
+              model: currentView.model,
+              $el: currentView.$el
+            });
+            if (event.prevent) {
+              resolve(currentView);
+              return currentView;
+            }
 
-          if (currentView.options.originalView !== true) {
-            if (currentView.model.getOption("template")) {
-              customRender = attributeTemplate.renderCustomView(
-                currentView.model
-              );
-              currentView.customView = customRender.$el;
-              customRender.promise.then(resolve);
-              if (
-                currentView.model.getOption("template").match("dcpArray__table")
-              ) {
-                // Two case of custom : custom line or global custom array
-                currentView.customRowView = true;
+            if (currentView.options.originalView !== true) {
+              if (currentView.model.getOption("template")) {
+                customRender = attributeTemplate.renderCustomView(
+                  currentView.model
+                );
+                currentView.customView = customRender.$el;
+                customRender.promise.then(resolve);
+                if (
+                  currentView.model
+                    .getOption("template")
+                    .match("dcpArray__table")
+                ) {
+                  // Two case of custom : custom line or global custom array
+                  currentView.customRowView = true;
+                }
               }
             }
-          }
 
-          //Extract only the displayable lines
-          data.content = _.filter(
-            data.content,
-            function vArray_filterCurrentElement(currentContent) {
-              return currentContent.isDisplayable;
+            //Extract only the displayable lines
+            data.content = _.filter(
+              data.content,
+              function vArray_filterCurrentElement(currentContent) {
+                return currentContent.isDisplayable;
+              }
+            );
+            data.nbLines = currentView.getNbLines();
+            currentView.padValues(data.nbLines);
+            data.renderOptions = currentView.model.getOptions();
+            data.templates = {};
+            data.displayLabel = currentView.displayLabel;
+            if (
+              currentView.model.getTemplates().attribute[
+                currentView.model.get("type")
+              ]
+            ) {
+              data.templates = currentView.model.getTemplates().attribute[
+                currentView.model.get("type")
+              ];
             }
-          );
-          data.nbLines = currentView.getNbLines();
-          currentView.padValues(data.nbLines);
-          data.renderOptions = currentView.model.getOptions();
-          data.templates = {};
-          data.displayLabel = currentView.displayLabel;
-          if (
-            currentView.model.getTemplates().attribute[
-              currentView.model.get("type")
-            ]
-          ) {
-            data.templates = currentView.model.getTemplates().attribute[
-              currentView.model.get("type")
-            ];
-          }
-          if (data.nbLines === 0 && data.mode === "read") {
-            data.showEmpty = currentView.model.getOption("showEmptyContent");
-          } else {
-            if (!currentView.customView || currentView.customRowView) {
-              currentView.columnViews = [];
-              currentView.model
-                .get("content")
-                .each(function vArray_analyzeContent(currentAttr) {
-                  if (!currentAttr.isDisplayable()) {
-                    return;
-                  }
-                  try {
-                    if (currentAttr.getOption("attributeLabel")) {
-                      data.content = _.map(
-                        data.content,
-                        function vArray_changeLabelCurrentElement(
-                          currentContent
-                        ) {
-                          if (currentContent.id === currentAttr.id) {
-                            currentContent.label = currentAttr.getOption(
-                              "attributeLabel"
-                            );
+            if (data.nbLines === 0 && data.mode === "read") {
+              data.showEmpty = currentView.model.getOption("showEmptyContent");
+            } else {
+              if (!currentView.customView || currentView.customRowView) {
+                currentView.columnViews = [];
+                currentView.model
+                  .get("content")
+                  .each(function vArray_analyzeContent(currentAttr) {
+                    if (!currentAttr.isDisplayable()) {
+                      return;
+                    }
+                    try {
+                      if (currentAttr.getOption("attributeLabel")) {
+                        data.content = _.map(
+                          data.content,
+                          function vArray_changeLabelCurrentElement(
+                            currentContent
+                          ) {
+                            if (currentContent.id === currentAttr.id) {
+                              currentContent.label = currentAttr.getOption(
+                                "attributeLabel"
+                              );
+                            }
+                            return currentContent;
                           }
-                          return currentContent;
-                        }
-                      );
+                        );
+                      }
+                      if (currentAttr.get("isValueAttribute")) {
+                        currentView.columnViews[
+                          currentAttr.id
+                        ] = new ViewColumn({
+                          el: currentView.el,
+                          els: function vArray_findScope() {
+                            return currentView.$el.find(
+                              '.dcpArray__cell[data-attrid="' +
+                                currentAttr.id +
+                                '"],' +
+                                '.dcpCustomTemplate--row[data-attrid="' +
+                                currentAttr.id +
+                                '"]'
+                            );
+                          },
+                          originalView: true,
+                          model: currentAttr,
+                          parentElement: currentView.$el
+                        });
+                        promisesColumn.push(
+                          currentView.columnViews[currentAttr.id].render()
+                        );
+                      }
+                    } catch (e) {
+                      if (window.dcp.logger) {
+                        window.dcp.logger(e);
+                      } else {
+                        console.error(e);
+                      }
                     }
-                    if (currentAttr.get("isValueAttribute")) {
-                      currentView.columnViews[currentAttr.id] = new ViewColumn({
-                        el: currentView.el,
-                        els: function vArray_findScope() {
-                          return currentView.$el.find(
-                            '.dcpArray__cell[data-attrid="' +
-                              currentAttr.id +
-                              '"],' +
-                              '.dcpCustomTemplate--row[data-attrid="' +
-                              currentAttr.id +
-                              '"]'
-                          );
-                        },
-                        originalView: true,
-                        model: currentAttr,
-                        parentElement: currentView.$el
-                      });
-                      promisesColumn.push(
-                        currentView.columnViews[currentAttr.id].render()
-                      );
-                    }
-                  } catch (e) {
-                    if (window.dcp.logger) {
-                      window.dcp.logger(e);
-                    } else {
-                      console.error(e);
-                    }
-                  }
-                });
+                  });
+              }
             }
+          } catch (e) {
+            reject(e);
           }
 
           if (currentView.customView) {
@@ -184,10 +192,14 @@ define([
             promisesColumn.push(
               new Promise(
                 _.bind(function onArrayReady(resolve, reject) {
-                  currentView.$el
-                    .dcpArray(data)
-                    .one("dcparraywidgetready", resolve);
-                  attributeTemplate.insertDescription(currentView);
+                  try {
+                    currentView.$el
+                      .dcpArray(data)
+                      .one("dcparraywidgetready", resolve);
+                    attributeTemplate.insertDescription(currentView);
+                  } catch (e) {
+                    reject(e);
+                  }
                 }, this)
               )
             );
@@ -374,7 +386,7 @@ define([
             options.resolve();
           }, this)
         )
-        ["catch"](options.reject);
+        .catch(options.reject);
     },
 
     moveLine: function vArray_moveLine(event, options) {

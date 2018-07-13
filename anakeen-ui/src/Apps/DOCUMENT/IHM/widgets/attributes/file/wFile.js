@@ -6,14 +6,13 @@
     define([
       "jquery",
       "underscore",
-      "mustache",
       "dcpDocument/widgets/attributes/text/wText"
     ], factory);
   } else {
     //noinspection JSUnresolvedVariable
-    factory(window.jQuery, window._, window.Mustache);
+    factory(window.jQuery, window._);
   }
-})(window, function wFileWidget($, _, Mustache) {
+})(window, function wFileWidget($, _) {
   "use strict";
 
   //noinspection JSUnusedLocalSymbols
@@ -91,7 +90,7 @@
         ) {
           this.options.attributeValue.icon = null;
         } else {
-          var reSize = /sizes\/([^\/]+)/;
+          var reSize = /sizes([^/]+)/;
           this.options.attributeValue.icon = this.options.attributeValue.icon.replace(
             reSize,
             "sizes/" + this.options.renderOptions.mimeIconSize
@@ -287,10 +286,9 @@
 
     /**
      * Condition before upload file
-     * @param file
      * @returns {boolean}
      */
-    uploadCondition: function wFileUploadCondition(file) {
+    uploadCondition: function wFileUploadCondition() {
       return true;
     },
 
@@ -320,7 +318,6 @@
       var originalBgColor = inputText.css("background-color");
       var currentWidget = this;
       var event = { prevent: false };
-      var currentFileValue = this.options.attributeValue;
       var $inputFile = this.element.find("input[type=file]");
 
       if (!this.uploadCondition(firstFile)) {

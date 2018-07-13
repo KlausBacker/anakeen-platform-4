@@ -1314,7 +1314,7 @@ define([
         currentModel._completeStructure().then(
           function onGetStructureDone() {
             currentModel.injectCurrentDocJS().then(
-              function mDocument_injectJSDone(values) {
+              function mDocument_injectJSDone() {
                 resolve({
                   documentProperties: properties,
                   successpromiseArguments: arguments
@@ -1500,7 +1500,7 @@ define([
                 success: function() {
                   lockCallback.success();
                 },
-                error: function(arg) {
+                error: function() {
                   currentModel.trigger("showMessage", {
                     title: i18n.___(
                       "Document has been locked by someone else.",
@@ -1595,7 +1595,7 @@ define([
           });
           currentModel.once(
             "uploadFileFinished",
-            function mDocumentsetValuesListenUploadUntilTheEnd(event) {
+            function mDocumentsetValuesListenUploadUntilTheEnd() {
               this.trigger("displayLoading", { isSaving: true });
               currentModel.save(attributes, saveCallback);
             }
