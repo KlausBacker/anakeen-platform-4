@@ -16,9 +16,11 @@ module.exports = {
             "error",
             "always"
         ],
-        "no-console": ["error", { allow: ["warn", "error"] }]
+        "no-console": ["error", { allow: ["warn", "error", "timeEnd", "time"] }]
     },
     "globals": {
+        i18n: false,
+        jQuery: false,
         $: false,
         kendo: false,
         define: false,
