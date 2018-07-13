@@ -65,6 +65,9 @@ class FieldAccessLayerListHooks extends \Anakeen\SmartElement
      */
     public function control($aclname, $strict = false)
     {
+        if (ContextManager::getCurrentUser()->id == \Anakeen\Core\Account::ADMIN_ID) {
+            return ""; // no profil or admin
+        }
         if (in_array($aclname, $this->originalAcl)) {
             // normal case
             return $this->originalControl($aclname, $strict);
