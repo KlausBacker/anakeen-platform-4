@@ -79,7 +79,11 @@ class RenderAttributeVisibilities implements \JsonSerializable
     {
         $oas = $this->document->getAttributes();
         $mskMgt = new MaskManager($this->document);
-        $mskMgt->setUiMask($this->mask->id);
+        if ($this->mask) {
+            $mskMgt->setUiMask($this->mask->id);
+        } else {
+            $mskMgt->setUiMask();
+        }
         foreach ($oas as $v) {
             if ($v->usefor === "Q") {
                 continue;

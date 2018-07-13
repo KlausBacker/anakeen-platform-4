@@ -105,6 +105,7 @@ HTML
 
     protected function deleteIndirectRoles(SmartElement $iuser)
     {
+        $iuser->disableAccessControl();
         $allRoles = $iuser->getArrayRawValues("us_t_roles");
         $iuser->clearArrayValues("us_t_roles");
         // get direct system role ids
@@ -115,6 +116,7 @@ HTML
             }
         }
         $iuser->setValue("us_roles", $roles);
+        $iuser->restoreAccessControl();
     }
 
     public function getJsReferences(SmartElement $smartElement = null)
