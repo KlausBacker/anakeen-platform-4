@@ -73,11 +73,11 @@ import "@progress/kendo-ui/js/kendo.treelist";
               expanded: true
             },
             data: response => {
-              response.forEach(item => {
+              response.data.forEach(item => {
                 item.mNeededLabel = item.mNeeded ? "Mandatory" : "Optional";
                 item.neededLabel = item.needed ? "Mandatory" : "Optional";
               });
-              return response;
+              return response.data;
             }
           }
         },

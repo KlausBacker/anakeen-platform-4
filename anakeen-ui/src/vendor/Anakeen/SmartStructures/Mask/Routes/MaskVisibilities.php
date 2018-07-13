@@ -3,6 +3,7 @@
 namespace Anakeen\SmartStructures\Mask\Routes;
 
 use Anakeen\Core\SEManager;
+use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use Anakeen\SmartElementManager;
 use Anakeen\Ui\MaskManager;
@@ -31,10 +32,9 @@ class MaskVisibilities
         $this->initParameters($request, $args);
         $data = $this->doRequest($messages);
 
-        return $response->withJson($data["visibilities"]);
+        return ApiV2Response::withData($response, $data["visibilities"]);
     }
-
-
+    
     protected function initParameters(\Slim\Http\request $request, $args)
     {
         $this->documentId = $args["mask"];
@@ -83,7 +83,7 @@ class MaskVisibilities
         $tmpdoc->attributes->orderAttributes();
         $hasMenu = false;
 
-        $mskMgt=new MaskManager($tmpdoc);
+        $mskMgt = new MaskManager($tmpdoc);
         $mskMgt->setUiMask($this->_document->id);
         foreach ($tmpdoc->attributes->attr as $k => $attr) {
             /**

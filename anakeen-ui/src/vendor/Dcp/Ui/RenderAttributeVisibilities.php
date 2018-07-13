@@ -38,6 +38,7 @@ class RenderAttributeVisibilities implements \JsonSerializable
     {
         $this->refreshVisibility();
         unset($this->finalVisibilities[\Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD]);
+
         return $this->finalVisibilities;
     }
 

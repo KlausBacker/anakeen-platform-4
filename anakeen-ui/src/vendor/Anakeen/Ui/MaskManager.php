@@ -78,6 +78,7 @@ class MaskManager
             }
         }
 
+
         $argMid = $mid;
         if ((!$force) && (($this->smartElement->doctype == 'C') || (($this->smartElement->doctype == 'T') && ($mid == 0)))) {
             return;
@@ -229,7 +230,7 @@ class MaskManager
      * @return string
      * @throws Exception
      */
-    protected function getDefaultVisibility(BasicAttribute $v)
+    public function getDefaultVisibility(BasicAttribute $v)
     {
         switch (FieldAccessManager::getAccess($this->smartElement, $v)) {
             case BasicAttribute::READ_ACCESS:
