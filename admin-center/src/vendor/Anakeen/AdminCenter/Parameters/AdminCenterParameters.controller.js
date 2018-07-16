@@ -15,6 +15,10 @@ export default {
   methods: {
     switchParameters() {
       this.globalParameters = !this.globalParameters;
+    },
+
+    sendEvent($eventContent) {
+      this.$emit("ank-admin-notify", $eventContent);
     }
   }
 };

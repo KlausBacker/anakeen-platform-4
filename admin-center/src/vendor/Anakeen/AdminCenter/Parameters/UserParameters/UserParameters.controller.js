@@ -59,7 +59,7 @@ export default {
           },
 
           pageable: {
-            pageSize: 10,
+            pageSize: 10
           },
 
           // Disable columns filters to add global filter
@@ -211,7 +211,35 @@ export default {
         })
         .on("click", ".refresh-btn", () => {
           // Re-fetch data from server
-          this.userParametersDataSource.read();
+          kendo.ui.progress(this.$(".user-parameters-tree", this.$el), true);
+          this.userParametersDataSource
+            .read()
+            .then(() => {
+              kendo.ui.progress(
+                this.$(".user-parameters-tree", this.$el),
+                false
+              );
+              this.$emit("ank-admin-notify", {
+                content: {
+                  title: "Parameters loaded",
+                  message: "Parameters successfully loaded from server",
+                  type: "admin-success"
+                }
+              });
+            })
+            .catch(() => {
+              kendo.ui.progress(
+                this.$("user-parameters-tree", this.$el),
+                false
+              );
+              this.$emit("ank-admin-notify", {
+                content: {
+                  title: "Parameters loading failed",
+                  message: "Loading of parameters from server failed",
+                  type: "admin-error"
+                }
+              });
+            });
         })
         .on("click", ".expand-btn", () => this.expand(true))
         .on("click", ".collapse-btn", () => this.expand(false))

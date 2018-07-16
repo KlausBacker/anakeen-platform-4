@@ -127,7 +127,31 @@ export default {
           this.displayValue(dataItem);
         })
         .on("click", ".switch-btn", () => this.switchParameters())
-        .on("click", ".refresh-btn", () => this.allParametersDataSource.read())
+        .on("click", ".refresh-btn", () => {
+          kendo.ui.progress(this.$(".parameters-tree", this.$el), true);
+          this.allParametersDataSource
+            .read()
+            .then(() => {
+              kendo.ui.progress(this.$(".parameters-tree", this.$el), false);
+              this.$emit("ank-admin-notify", {
+                content: {
+                  title: "Parameters loaded",
+                  message: "Parameters successfully loaded from server",
+                  type: "admin-success"
+                }
+              });
+            })
+            .catch(() => {
+              kendo.ui.progress(this.$(".parameters-tree", this.$el), false);
+              this.$emit("ank-admin-notify", {
+                content: {
+                  title: "Parameters loading failed",
+                  message: "Loading of parameters from server failed",
+                  type: "admin-error"
+                }
+              });
+            });
+        })
         .on("click", ".expand-btn", () => this.expand(true))
         .on("click", ".collapse-btn", () => this.expand(false))
         .on("click", ".filter-btn", () =>
