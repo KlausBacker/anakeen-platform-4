@@ -34,6 +34,11 @@ class IuserViewRender extends DefaultConfigViewRender
                 ["number" => 3, "minWidth" => $break3, "grow" => false]
             ]
         );
+        $options->frame(myAttributes::us_fr_sysident)->setResponsiveColumns(
+            [
+                ["number" => 2, "minWidth" => $break2]
+            ]
+        );
         $options->frame(myAttributes::us_fr_security)->setResponsiveColumns(
             [
                 ["number" => 2, "minWidth" => $break2]

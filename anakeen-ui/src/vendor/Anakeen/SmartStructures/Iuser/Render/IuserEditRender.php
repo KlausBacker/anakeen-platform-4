@@ -23,11 +23,6 @@ class IuserEditRender extends DefaultConfigEditRender
     public function getOptions(SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
-        $options->frame(myAttributes::us_fr_security)->setTemplate(
-            <<< 'HTML'
-            <span class="us_accexpiredate">{{{attributes.us_accexpiredate.label}}}</span> : {{{attributes.us_accexpiredate.htmlContent}}}
-HTML
-        );
 
         if (!$document->getRawValue(myAttributes::us_login)) {
             $options->text(myAttributes::us_login)->setInputTooltip(
