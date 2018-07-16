@@ -26,7 +26,7 @@
             <div class="information-text">Parameter successfully modified</div>
             <a class="close-confirmation-btn form-parameter-btn" @click="closeConfirmationAndEditor">Back to parameters</a>
         </div>
-        <div class="error-window" v-show="false" @keyup.enter.stop="closeErrornAndEditor">
+        <div class="error-window" v-show="false" @keyup.enter.stop="closeErrorAndEditor">
             <div class="information-text">An error occurred during parameter modification</div>
             <a class="close-error-btn form-parameter-btn" @click="closeErrorAndEditor">Back to parameters</a>
         </div>

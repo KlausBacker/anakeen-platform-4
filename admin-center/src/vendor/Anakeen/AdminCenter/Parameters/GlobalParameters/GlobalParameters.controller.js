@@ -41,9 +41,11 @@ export default {
             <div class="input-group">
                 <input type="text"
                        class="form-control global-search-input"
-                       placeholder="Filter parameters..."
-                       style="border-radius: .25rem;">
+                       placeholder="Filter parameters...">
                 <i class="input-group-addon material-icons reset-search-btn parameter-search-reset">close</i>
+                <div class="input-group-append">
+                    <button class="btn btn-secondary filter-btn">Filter</button>
+                </div>
              </div>
         </div>
         `;
@@ -57,17 +59,17 @@ export default {
           columns: [
             {
               field: "name",
-              title: "Name",
+              headerTemplate: '<a class="column-title">Name</a>',
               headerAttributes: headerAttributes
             },
             {
               field: "description",
-              title: "Description",
+              headerTemplate: '<a class="column-title">Description</a>',
               headerAttributes: headerAttributes
             },
             {
               field: "value",
-              title: "System value",
+              headerTemplate: '<a class="column-title">System value</a>',
               headerAttributes: headerAttributes
             },
             {
@@ -128,9 +130,16 @@ export default {
         .on("click", ".refresh-btn", () => this.allParametersDataSource.read())
         .on("click", ".expand-btn", () => this.expand(true))
         .on("click", ".collapse-btn", () => this.expand(false))
-        .on("input", ".global-search-input", e =>
-          this.searchParameters(e.currentTarget.value)
+        .on("click", ".filter-btn", () =>
+          this.searchParameters(this.$(".global-search-input", this.$el).val())
         )
+        .on("keyup", ".global-search-input", e => {
+          if (e.key === "Enter") {
+            this.searchParameters(
+              this.$(".global-search-input", this.$el).val()
+            );
+          }
+        })
         .on("click", ".reset-search-btn", () => {
           this.$(".global-search-input", this.$el).val("");
           this.searchParameters("");
@@ -224,7 +233,7 @@ export default {
           !this.$(".filterable-header", this.$el).children(".filter-icon")
             .length
         ) {
-          this.$(".filterable-header", this.$el).append(
+          this.$(".filterable-header", this.$el).prepend(
             this.$('<i class="material-icons filter-icon">filter_list</i>')
           );
         }
