@@ -29,12 +29,8 @@
         if (this.options.attributeValue.url) {
           if (!this.options.renderOptions.htmlLink.url) {
             if (this.options.renderOptions.thumbnailSize) {
-              var reSize = /sizes([^/]+)/;
-              this.options.attributeValue.thumbnail =
-                this.options.attributeValue.thumbnail.replace(
-                  reSize,
-                  "sizes/" + this.options.renderOptions.thumbnailSize
-                ) + ".png";
+              var reSize = /sizes\/([^/]+)/;
+              this.options.attributeValue.thumbnail=this.options.attributeValue.thumbnail.replace(reSize,"sizes/"+this.options.renderOptions.thumbnailSize)+".png";
             } else if (!this.options.renderOptions.thumbnailSize) {
               this.options.attributeValue.thumbnail = this.options.attributeValue.url;
             }
