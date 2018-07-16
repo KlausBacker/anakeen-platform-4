@@ -1,4 +1,4 @@
-const fs = require("fs");
+/**const fs = require("fs");
 const path = require("path");
 const appConst = require("./appConst");
 const util = require("util");
@@ -179,4 +179,4 @@ exports.getPOExtractor = async (sourcePath, targetPath, format) => {
   } else if (!fs.existsSync(targetPath)) {
     console.log("Target path not found: " + targetPath);
   }
-};
+};**/
