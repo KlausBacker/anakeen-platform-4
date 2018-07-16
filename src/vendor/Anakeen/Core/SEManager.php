@@ -308,7 +308,7 @@ class SEManager
         // inherit from its family
         $doc->accessControl()->setProfil($family->cprofid);
         $doc->accessControl()->setCvid($family->ccvid);
-        $doc->accessControl()->setFallid($family->fallid);
+        $doc->accessControl()->setFallid($family->cfallid);
         if ($useDefaultValues) {
             $doc->setDefaultValues($family->getDefValues());
         }
