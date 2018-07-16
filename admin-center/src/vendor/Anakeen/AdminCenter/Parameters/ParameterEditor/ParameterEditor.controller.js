@@ -66,7 +66,8 @@ export default {
               search: false,
               navigationBar: false,
               statusBar: false,
-              history: false
+              history: false,
+              modes: ["tree", "code"]
             },
             this.jsonValue
           );
