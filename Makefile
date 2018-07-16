@@ -75,6 +75,10 @@ stub: ## Generate stubs
 ## BUILD TARGET
 ##
 ########################################################################################################################
+# Until private npm server is available, force the update of anakeen components
+upgrade-components:
+	@${PRINT_COLOR} "${DEBUG_COLOR}Upgrade Anakeen Components ${RESET_COLOR}\n"
+	$(YARN_BIN) upgrade --force ank-components
 
 $(JS_ASSET_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${WEBPACK_CONF_PATH} -type f -print | sed 's/ /\\ /g')
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
@@ -108,7 +112,7 @@ $(LOCALPUB_ANAKEEN_UI_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${ANAKEEN_UI
 	$(DEVTOOL_BIN) generateWebinst -s $(LOCALPUB_ANAKEEN_UI_PATH) -o .
 	touch "$@"
 
-app: $(JS_CONF_PATH)/node_modules $(JS_ASSET_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_DDUI_BUILD_PATH) $(JS_FAMILY_BUILD_PATH) $(LOCALPUB_ANAKEEN_UI_PATH) ## build the project
+app: upgrade-components $(JS_CONF_PATH)/node_modules $(JS_ASSET_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_DDUI_BUILD_PATH) $(JS_FAMILY_BUILD_PATH) $(LOCALPUB_ANAKEEN_UI_PATH) ## build the project
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 
 deploy: app ## deploy the project
