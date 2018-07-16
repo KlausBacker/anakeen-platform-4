@@ -53,6 +53,10 @@ stub: ## Generate stubs
 ## BUILD TARGET
 ##
 ########################################################################################################################
+# Until private npm server is available, force the update of anakeen components
+upgrade-components:
+	@${PRINT_COLOR} "${DEBUG_COLOR}Upgrade Anakeen Components ${RESET_COLOR}\n"
+	$(YARN_BIN) upgrade --force ank-components
 
 $(JS_ADMIN_CENTER_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${ADMIN_CENTER_SRC_PATH} -type f -print | sed 's/ /\\ /g') $(shell find ${WEBPACK_CONF_PATH} -type f -print | sed 's/ /\\ /g')
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
@@ -71,7 +75,7 @@ $(LOCALPUB_ADMIN_CENTER_PATH): $(JS_CONF_PATH)/yarn.lock $(JS_ADMIN_CENTER_PATH)
 	touch "$@"
 
 
-app: $(NODE_MODULE_PATH) $(LOCALPUB_ADMIN_CENTER_PATH) $(JS_ADMIN_CENTER_PATH) ## build admin center
+app: upgrade-components $(NODE_MODULE_PATH) $(LOCALPUB_ADMIN_CENTER_PATH) $(JS_ADMIN_CENTER_PATH) ## build admin center
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 
 deploy: app ## deploy admin center
