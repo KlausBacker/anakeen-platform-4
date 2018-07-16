@@ -107,4 +107,12 @@ class FieldAccessManager
         self::$mbc++;
         return $x;
     }
+
+
+    public static function hasWriteAccess(SmartElement $se, BasicAttribute $oa)
+    {
+        return (ContextManager::getCurrentUser()->id == Account::ADMIN_ID) ||
+            ($oa->getAccess() & BasicAttribute::WRITE_ACCESS) ||
+            ($se->fallid !== null && (self::getAccess($se, $oa) & BasicAttribute::WRITE_ACCESS));
+    }
 }

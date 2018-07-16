@@ -1421,7 +1421,9 @@ create unique index i_docir on doc(initid, revision);";
             }
             if ($err == '') {
                 $this->lastRefreshError = '';
+                $this->disableAccessControl();
                 $info->refresh = $this->refresh();
+                $this->restoreAccessControl();
                 $err = $this->lastRefreshError;
                 if ($err) {
                     $info->errorCode = StoreInfo::UPDATE_ERROR;
@@ -3410,20 +3412,25 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function setValue($attrid, $value, $index = -1, &$kvalue = null)
     {
+
+        $attrid = strtolower($attrid);
+        /**
+         * @var \Anakeen\Core\SmartStructure\NormalAttribute $oattr
+         */
+        $oattr = $this->GetAttribute($attrid);
         // control edit before set values
-        if (!$this->withoutControl) {
+        if (!$this->withoutControl &&  ContextManager::getCurrentUser()->id != \Anakeen\Core\Account::ADMIN_ID) {
             if ($this->id > 0) { // no control yet if no effective doc
                 $err = $this->controlAccess("edit");
                 if ($err != "") {
                     return ($err);
                 }
             }
+            if ($oattr && FieldAccessManager::hasWriteAccess($this, $oattr) === false) {
+                return \ErrorCode::getError("DOC0132", $this->getTitle(), $oattr->id);
+            }
         }
-        $attrid = strtolower($attrid);
-        /**
-         * @var \Anakeen\Core\SmartStructure\NormalAttribute $oattr
-         */
-        $oattr = $this->GetAttribute($attrid);
+
         if ($index > -1) { // modify one value in a row
             $tval = $this->getMultipleRawValues($attrid);
             if (($index + 1) > count($tval)) {

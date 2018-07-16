@@ -29,7 +29,7 @@ class RouterAccess
         } elseif (!empty($requiredAccess->and) && count($requiredAccess->and) > 0) {
             foreach ($requiredAccess->and as $aclName) {
                 if (!self::hasPermission($aclName, $forceRecheck)) {
-                    $e = new Exception("ROUTES0131", $routeInfo->name, "AND:" . implode(", ", $requiredAccess->and));
+                    $e = new Exception("ROUTES0131", $routeInfo->name, "AND: " . implode(", ", $requiredAccess->and));
                     $e->setHttpStatus(403, "Access Forbidden");
                     throw $e;
                 }

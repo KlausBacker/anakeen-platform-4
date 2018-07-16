@@ -13,12 +13,13 @@
                 <smart:field-text name="us_mail" label="mail" access="Read" link="mailto:%US_MAIL%" is-abstract="true"/>
                 <smart:field-text name="us_extmail" label="mail principal" access="ReadWrite"/>
             </smart:field-set>
-            <smart:field-set name="us_tab_sysinfo" type="tab" label="Système" access="None">
+            <smart:field-set name="us_tab_sysinfo" type="tab" label="Identification" access="None">
                 <smart:field-set name="us_fr_sysident" type="frame" label="Identifier" access="Read">
                     <smart:field-text name="us_login" label="login" access="Read" needed="true"/>
+                    <smart:field-text name="us_whatid" label="identifiant" access="None"/>
                 </smart:field-set>
                 <smart:field-set name="us_fr_userchange" type="frame" label="Mot de passe" access="None">
-                    <smart:field-password name="us_passwd1" label="nouveau mot de passe" access="None"/>
+                    <smart:field-password name="us_passwd1" label="Nouveau mot de passe" access="None"/>
                     <smart:field-password name="us_passwd2" label="confirmation mot de passe" access="None"/>
                 </smart:field-set>
             </smart:field-set>
@@ -26,8 +27,7 @@
             <smart:field-set name="us_tab_system" type="tab" label="Technical Settings" access="None">
                 <smart:field-set name="us_fr_intranet" type="frame" label="Identification intranet" access="Read">
                     <smart:field-account name="us_meid" label="utilisateur id" access="None"/>
-                    <smart:field-text name="us_whatid" label="identifiant" access="None"/>
-                    <smart:field-set name="us_t_roles" type="array" label="Rôles" access="None">
+                    <smart:field-set name="us_t_roles" type="array" label="Rôles" access="ReadWrite">
                         <smart:field-account name="us_roles" label="Rôle" access="ReadWrite">
                             <smart:field-option name="match">role</smart:field-option>
                         </smart:field-account>
@@ -36,18 +36,18 @@
                             <smart:field-option name="match">group</smart:field-option>
                         </smart:field-account>
                     </smart:field-set>
-                    <smart:field-set name="us_groups" type="array" label="groupes d'appartenance" access="None">
+                    <smart:field-set name="us_groups" type="array" label="groupes d'appartenance" access="Read">
                         <smart:field-text name="us_group" label="groupe (titre)" access="Read"/>
                         <smart:field-account name="us_idgroup" label="Groupe" access="ReadWrite">
                             <smart:field-option name="doctitle">us_group</smart:field-option>
                             <smart:field-option name="match">group</smart:field-option>
                         </smart:field-account>
                     </smart:field-set>
-                    <smart:field-int name="us_expires" label="date d'expiration epoch" access="None"/>
-                    <smart:field-int name="us_daydelay" label="délai d'expiration en jours" access="None"/>
-                    <smart:field-date name="us_expiresd" label="date d'expiration" access="None"/>
-                    <smart:field-time name="us_expirest" label="heure d'expiration" access="None"/>
-                    <smart:field-int name="us_passdelay" label="délai d'expiration epoch" access="None"/>
+                    <smart:field-int name="us_daydelay" label="délai d'expiration en jours" access="ReadWrite"/>
+                    <smart:field-int name="us_expires" label="date d'expiration epoch" access="Read"/>
+                    <smart:field-date name="us_expiresd" label="date d'expiration" access="Read"/>
+                    <smart:field-time name="us_expirest" label="heure d'expiration" access="Read"/>
+                    <smart:field-int name="us_passdelay" label="délai d'expiration epoch" access="Read"/>
                 </smart:field-set>
                 <smart:field-set name="us_fr_substitute" type="frame" label="Suppléants" access="Read">
                     <smart:field-account name="us_substitute" label="Suppléant" access="ReadWrite"/>
@@ -57,8 +57,8 @@
                 <smart:field-set name="us_fr_security" type="frame" label="Sécurité" access="Read">
                     <smart:field-enum name="us_status" label="état du compte" access="Read" relation="IUSER-us_status">
                     </smart:field-enum>
-                    <smart:field-int name="us_loginfailure" label="échecs de connexion" access="Read"/>
-                    <smart:field-date name="us_accexpiredate" label="Date d'expiration du compte" access="Read"/>
+                    <smart:field-int name="us_loginfailure" label="échecs de connexion" access="ReadWrite"/>
+                    <smart:field-date name="us_accexpiredate" label="Date d'expiration du compte" access="ReadWrite"/>
                 </smart:field-set>
             </smart:field-set>
         </smart:fields>

@@ -233,6 +233,11 @@ class ErrorCodeDOC
      */
     const DOC0131 = 'Cannot duplicate for familu "%s"';
     /**
+     * @errorCode The requested attribute was not found in \Anakeen\Core\Internal\SmartElement::getHtmlAttrValue()
+     * @see \Anakeen\Core\Internal\SmartElement::setValue
+     */
+    const DOC0132 = 'Element "%s", field "%s" update not granted';
+    /**
      * @errorCode
      * the document cannot be inserted in folder target
      * @note when DOC has defined a folder target
