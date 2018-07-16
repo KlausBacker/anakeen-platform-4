@@ -2,6 +2,8 @@
 
 namespace Anakeen\Routes\Admin\Routes;
 
+use Anakeen\Router\ApiV2Response;
+
 class AllRoutes
 {
     /**
@@ -20,7 +22,7 @@ class AllRoutes
                     $result[] = $formatedRoute;
                 }
             }
-            return $response->withJson($this->formatTreeDataSource($result));
+            return ApiV2Response::withData($response, $this->formatTreeDataSource($result));
     }
     /**
      * @param $route

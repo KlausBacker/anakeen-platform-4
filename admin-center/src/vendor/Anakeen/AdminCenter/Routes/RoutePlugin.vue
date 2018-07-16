@@ -24,5 +24,8 @@
 </style>
 <!-- Global CSS -->
 <style lang="scss">
+    .km-switch-on .k-switch-handle.km-switch-handle {
+        transform: translateX(25px)!important;
+    }
 </style>
 <script src="./RoutePlugin.controller.js"></script>

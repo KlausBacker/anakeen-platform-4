@@ -5,11 +5,21 @@ export default {
       allRoutesDataSource: new kendo.data.TreeListDataSource({
         transport: {
           read: "/api/v2/admin/routes/"
+        },
+        schema: {
+          data: function(response) {
+            return response.data;
+          }
         }
       }),
       allMiddlewareDataSource: new kendo.data.TreeListDataSource({
         transport: {
           read: "/api/v2/admin/middlewares/"
+        },
+        schema: {
+          data: function(response) {
+            return response.data;
+          }
         }
       })
     };
@@ -18,9 +28,7 @@ export default {
     initTreeList() {
       let refreshBtn = `
                 <div class="routes-toolbar">
-                    <button class="btn btn-secondary toolbar-btn refresh-btn">
-                        <i class="material-icons">refresh</i>
-                    </button>
+                    <a class="routeRefresh-btn"><a/>
                 </div>
             `;
       this.$(".routes-tab").select(
@@ -28,7 +36,12 @@ export default {
           .kendoTreeList({
             dataSource: this.allRoutesDataSource,
             columns: [
-              { field: "name", title: "Name", sortable: true, width: "15%" },
+              {
+                field: "name",
+                title: "Name",
+                sortable: true,
+                width: "15%"
+              },
               {
                 field: "method",
                 title: "Method",
@@ -98,38 +111,44 @@ export default {
                 change: e => {
                   const sender = e.sender.element[0].closest("tr[role=row]");
                   if (sender.className.includes("tree-level-2")) {
-                    const parent = this.allRoutesDataSource._data.find(
+                    const elt = this.allRoutesDataSource._data.find(
                       x => x.name === sender.firstElementChild.textContent
-                    ).parentId;
+                    );
                     if (
-                      this.allRoutesDataSource._data.find(x => x.id === parent)
+                      this.allRoutesDataSource._data.find(
+                        x => x.id === elt.parentId
+                      )
                     ) {
                       // if the route has a namespace
                       const parentName = this.allRoutesDataSource._data.find(
-                        x => x.id === parent
+                        x => x.id === elt.parentId
                       ).name;
                       if (e.checked) {
                         this.activateRoute(
                           parentName +
                             "::" +
-                            sender.firstElementChild.textContent
+                            sender.firstElementChild.textContent,
+                          elt
                         );
                       } else if (!e.checked) {
                         this.deactivateRoute(
                           parentName +
                             "::" +
-                            sender.firstElementChild.textContent
+                            sender.firstElementChild.textContent,
+                          elt
                         );
                       }
                     } else {
                       // if the route doesn't have any namespace
                       if (e.checked) {
                         this.activateRoute(
-                          sender.firstElementChild.textContent
+                          sender.firstElementChild.textContent,
+                          elt
                         );
                       } else if (!e.checked) {
                         this.deactivateRoute(
-                          sender.firstElementChild.textContent
+                          sender.firstElementChild.textContent,
+                          elt
                         );
                       }
                     }
@@ -144,18 +163,32 @@ export default {
                       if (elt.parentId === parent) {
                         // if the element is a child of the namespace activate/deactivate following namespace's route
                         if (e.checked) {
-                          this.activateRoute(parentName + "::" + elt.name);
+                          this.activateRoute(parentName + "::" + elt.name, elt);
                         } else if (!e.checked) {
-                          this.deactivateRoute(parentName + "::" + elt.name);
+                          this.deactivateRoute(
+                            parentName + "::" + elt.name,
+                            elt
+                          );
                         }
                       }
                     });
                   }
                 }
               });
+              // activate/deactivate switch according to dataSource
+              // the point of this solution is to 'bind' kendo switch checked attribute
+              // to kendo treeList dataSource
+              this.$(".activation-switch").each((index, item) => {
+                this.$(item)
+                  .data("kendoMobileSwitch")
+                  .check(this.allRoutesDataSource._data[index].active);
+              });
             }
           })
-          .on("click", ".refresh-btn", () => this.allRoutesDataSource.read())
+          .on("click", ".routeRefresh-btn", () =>
+            this.allRoutesDataSource.read()
+          ),
+        this.$(".routeRefresh-btn").kendoButton({ icon: "reload" })
       );
       this.$(".middlewares-tab").select(
         this.$(".middlewares-tree")
@@ -270,14 +303,12 @@ export default {
         this.addClassToRow(treeList);
       }
     },
-    activateRoute(route) {
-      this.$ankApi
-        .post("admin/routes/" + route + "/activate/")
+    activateRoute(route, elt) {
+      return this.$ankApi
+        .post(encodeURI("admin/routes/" + route + "/activate/"))
         .then(response => {
           if (response.status === 200 && response.statusText === "OK") {
-            this.allRoutesDataSource._data.find(
-              x => x.name === route
-            ).active = true;
+            elt.active = true;
           } else {
             throw new Error(response);
           }
@@ -286,14 +317,12 @@ export default {
           console.error("Unable to get options", error);
         });
     },
-    deactivateRoute(route) {
-      this.$ankApi
-        .delete("admin/routes/" + route + "/deactivate/")
+    deactivateRoute(route, elt) {
+      return this.$ankApi
+        .delete(encodeURI("admin/routes/" + route + "/deactivate/"))
         .then(response => {
           if (response.status === 200 && response.statusText === "OK") {
-            this.allRoutesDataSource._data.find(
-              x => x.name === route
-            ).active = false;
+            elt.active = false;
           } else {
             throw new Error(response);
           }

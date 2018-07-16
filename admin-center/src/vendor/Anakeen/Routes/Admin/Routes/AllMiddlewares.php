@@ -2,11 +2,35 @@
 
 namespace Anakeen\Routes\Admin\Routes;
 
-use Anakeen\Core\DbManager;
-use Dcp\Db\Exception;
+use Anakeen\Router\ApiV2Response;
 
 class AllMiddlewares
 {
+    /**
+     * @param \Slim\Http\request $request
+     * @param \Slim\Http\response $response
+     * @throws \Dcp\Core\Exception
+     */
+    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response)
+    {
+        $allMiddlewares = new \Anakeen\Router\RoutesConfig();
+        $tabMiddlewares = $allMiddlewares->getMiddlewares();
+        $result = [];
+        foreach ($tabMiddlewares as $middleware) {
+            $formatedMiddleware = $this->formatMiddleware($middleware);
+            if ($formatedMiddleware !== null) {
+                $result[] = $formatedMiddleware;
+            }
+        }
+        return ApiV2Response::withData($response,$this->formatTreeDataSource($result));
+    }
+
+    /**
+     * @param $route
+     * @return array
+     * @throws \Dcp\Core\Exception
+     * Retrieve middlewares dataSource from RoutesConfig
+     */
     private function formatMiddleware($middleware)
     {
         $formatedMiddleware = [];
@@ -26,6 +50,11 @@ class AllMiddlewares
         return $formatedMiddleware;
     }
 
+    /**
+     * @param $routes
+     * @return array
+     * reformat dataSource to correspond treeList content
+     */
     private function formatTreeDataSource($middlewares) {
         $middleware = $middlewares;
         uasort($middleware, function ($a, $b)
@@ -67,17 +96,5 @@ class AllMiddlewares
         return $tree;
     }
 
-    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response)
-    {
-            $allMiddlewares = new \Anakeen\Router\RoutesConfig();
-            $tabMiddlewares = $allMiddlewares->getMiddlewares();
-            $result = [];
-            foreach ($tabMiddlewares as $middleware) {
-                $formatedMiddleware = $this->formatMiddleware($middleware);
-                if ($formatedMiddleware !== null) {
-                    $result[] = $formatedMiddleware;
-                }
-            }
-            return $response->withJson($this->formatTreeDataSource($result));
-    }
+
 }
