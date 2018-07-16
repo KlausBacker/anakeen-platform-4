@@ -1,0 +1,8 @@
+image:
+  name: php71pg96:latest
+
+autotest:
+  script: "./Tests/autotest/autotest.sh"
+  only:
+    - branches
+    - tags
