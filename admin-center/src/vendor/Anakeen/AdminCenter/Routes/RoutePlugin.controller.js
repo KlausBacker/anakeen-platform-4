@@ -50,7 +50,6 @@ export default {
               {
                 field: "priority",
                 title: "Priority",
-                width: "6rem",
                 filterable: false,
                 sortable: false,
                 width: "5%"
@@ -58,7 +57,6 @@ export default {
               {
                 field: "overrided",
                 title: "Overrided",
-                width: "9rem",
                 filterable: false,
                 sortable: false,
                 width: "5%"
@@ -169,8 +167,7 @@ export default {
                 title: "Name",
                 sortable: true,
                 width: "30%",
-                filterable: true,
-                sortable: true
+                filterable: true
               },
               {
                 field: "method",

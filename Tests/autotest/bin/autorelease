@@ -1,0 +1,52 @@
+#!/bin/bash
+
+function usage {
+	cat <<EOF
+
+Usage
+-----
+
+  $0 </path/to/build.json>
+
+EOF
+}
+
+function main {
+	local FILE=$1
+	while [ $# -ne 0 ]; do
+		case $1 in
+			-h|--help)
+				usage
+				return 1
+				;;
+			--)
+				shift
+				break
+				;;
+			*)
+				break
+				;;
+		esac
+	done
+
+	if [ -z "$FILE" ]; then
+		echo "Error: missing file!" 1>&2
+		usage
+		return 1
+	fi
+	php -- "$1" <<'EOF'
+<?php
+$build_json = $argv[1];
+if (($content = file_get_contents($build_json)) === false) {
+	die(sprintf("Error: error reading content from '%s'!\n", $build_json));
+}
+$data = json_decode($content, true);
+$data['release'] = sprintf("%s.%s", $data['release'], strftime("%Y%m%d%H%M%S", mktime()));
+$content = json_encode($data, JSON_PRETTY_PRINT);
+if (file_put_contents($build_json, $content) === false) {
+	die(sprintf("Error: error writing content to '%s'!\n", $build_json));
+}
+EOF
+}
+
+main "$@"
