@@ -28,7 +28,8 @@ export default {
     // Init the treeList containing users (1 level treeList)
     initUserTreeList() {
       this.$(".users-tree", this.$el)
-        .kendoTreeList({
+        .kendoGrid({
+          //.kendoTreeList({
           columns: [
             { field: "login", title: "Login" },
             { field: "firstname", title: "First name" },
@@ -50,13 +51,21 @@ export default {
               }
             },
             schema: {
-              data: "data"
-            }
+              data: "data.users",
+              total: "data.total"
+            },
+            serverPaging: true,
+            pageSize: 10
+          },
+
+          pageable: {
+            pageSize: 10,
           },
 
           // Disable columns filters to add global filter
           filterable: false,
           resizable: false,
+          selectable: "rows",
           messages: {
             noRows: "Search a user to modify his settings"
           },
@@ -69,9 +78,11 @@ export default {
         })
         .on("click", ".selection-btn", e => {
           // Select a user to display his parameters with the data item
-          let treeList = this.$(e.delegateTarget).data("kendoTreeList");
-          let dataItem = treeList.dataItem(e.currentTarget);
+          let treeList = this.$(e.delegateTarget).data("kendoGrid");
+          treeList.select(e.currentTarget.parentNode.parentNode);
+          let dataItem = treeList.dataItem(treeList.select());
           this.selectUser(dataItem);
+          treeList.clearSelection();
         });
     },
 
@@ -361,11 +372,14 @@ export default {
             }
           },
           schema: {
-            data: "data"
-          }
+            data: "data.users",
+            total: "data.total"
+          },
+          serverPaging: true,
+          pageSize: 10
         });
         this.$(".users-tree", this.$el)
-          .data("kendoTreeList")
+          .data("kendoGrid")
           .setDataSource(usersDataSource);
       }
     },
@@ -522,7 +536,7 @@ export default {
     // Resize users tree
     resizeUsersTree() {
       let $userTree = this.$(".users-tree", this.$el);
-      let kUserTree = $userTree.data("kendoTreeList");
+      let kUserTree = $userTree.data("kendoGrid");
       if (kUserTree) {
         $userTree.height(this.$(window).height() - $userTree.offset().top - 4);
         kUserTree.resize();
