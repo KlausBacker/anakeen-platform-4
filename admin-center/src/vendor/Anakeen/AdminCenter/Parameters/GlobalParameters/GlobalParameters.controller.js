@@ -162,11 +162,22 @@ export default {
         "/";
     },
 
-    // Open a window dislaying the entire value
+    // Open a window displaying the entire value
     displayValue(dataItem) {
       let displayedValue = dataItem.value
         ? dataItem.value
         : "[no value for this parameter]";
+
+      let template;
+      if (dataItem.value && dataItem.type === "json") {
+        template =
+          '<pre class="value-displayer-content">' +
+          JSON.stringify(JSON.parse(displayedValue), null, 2) +
+          "</pre>";
+      } else {
+        template =
+          '<p class="value-displayer-content">' + displayedValue + "</p>";
+      }
       this.$(".value-displayer")
         .kendoWindow({
           modal: true,
@@ -178,8 +189,7 @@ export default {
           maxHeight: "80%",
 
           content: {
-            template:
-              '<p class="value-displayer-content">' + displayedValue + "</p>"
+            template: template
           },
 
           open: () =>
@@ -333,7 +343,8 @@ export default {
       let kTree = $tree.data("kendoTreeList");
       if (kTree) {
         $tree.height(this.$(window).height() - $tree.offset().top - 4);
-        kTree.resize();}
+        kTree.resize();
+      }
     }
   },
 
