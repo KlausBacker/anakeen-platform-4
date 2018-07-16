@@ -8,6 +8,7 @@ const signale = require("signale");
 
 const REG_EXP_CHECK_NAMESPACE = /http:\/\/www.anakeen.com\/ns\/smart\/1.0/;
 const REG_EXP_STRUCTURE_CONF = /[\w]?:?structure-configuration/;
+const REG_EXP_CLASS_CONF = /[\w]?:?class/;
 
 exports.getModuleInfo = async sourcePath => {
   if (
@@ -51,7 +52,7 @@ exports.getModuleInfo = async sourcePath => {
                 if (err) reject(err);
                 const buildPath = data.config.sources[0].source.map(
                   currentSource => {
-                    return path.join(sourcePath, currentSource.$.path, "**");
+                    return path.join(sourcePath, currentSource.$.path);
                   }
                 );
                 resolve({ build: data, buildPath });
@@ -93,9 +94,12 @@ exports.getStructureFiles = async ({ buildPath }) => {
         paths.map(currentPath => {
           return new Promise((resolve, reject) => {
             const structure = {};
+            let currentStructName;
+            let inClassMode = false;
             let keepIt = false;
             const parser = new Saxophone();
             parser.on("tagopen", tagopen => {
+              inClassMode = false;
               if (REG_EXP_STRUCTURE_CONF.test(tagopen.name)) {
                 const attributes = Saxophone.parseAttrs(tagopen.attrs);
                 if (attributes.name) {
@@ -106,7 +110,11 @@ exports.getStructureFiles = async ({ buildPath }) => {
                     ...currentValues,
                     ...attributes
                   };
+                  currentStructName = attributes.name;
                 }
+              }
+              if (REG_EXP_CLASS_CONF.test(tagopen.name)) {
+                inClassMode = true;
               }
               if (
                 !keepIt &&
@@ -116,9 +124,20 @@ exports.getStructureFiles = async ({ buildPath }) => {
                 keepIt = true;
               }
             });
+            parser.on("tagclose", tagclose => {
+              if (REG_EXP_CLASS_CONF.test(tagclose.name)) {
+                inClassMode = false;
+              }
+            });
             parser.on("error", err => {
               signale.error(currentPath, err);
               keepIt = false;
+            });
+            parser.on("text", content => {
+              if (inClassMode && content.contents) {
+                console.log(content);
+                structure[currentStructName]["class"] = content.contents;
+              }
             });
             parser.on("finish", () => {
               if (keepIt) {
