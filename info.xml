@@ -50,6 +50,13 @@
             <label>Field Access Layer List Security</label>
         </process>
 
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/File/file.profil.xml">
+            <label>Profiling File</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Image/image.profil.xml">
+            <label>Profiling Image</label>
+        </process>
+
         <process command="./ank.php --script=refreshUserAccount">
             <label>Update user account profile</label>
         </process>

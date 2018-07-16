@@ -10,6 +10,7 @@
 
     <smart:field-access-layer name="FAL_IUSER_PASSWORD" label="User password" access-structure="IUSER">
         <smart:description>User password modification</smart:description>
+        <smart:field-access field="us_tab_sysinfo" access="ReadWrite"/>
         <smart:field-access field="us_fr_userchange" access="ReadWrite"/>
         <smart:field-access field="us_passwd1" access="Write"/>
         <smart:field-access field="us_passwd2" access="Write"/>
@@ -23,6 +24,13 @@
             <smart:field-access field="us_fr_ident" access="ReadWrite"/>
             <smart:field-access field="us_tab_identity" access="ReadWrite"/>
             <smart:field-access field="us_tab_system" access="ReadWrite"/>
+            <smart:field-access field="us_tab_sysinfo" access="ReadWrite"/>
+            <smart:field-access field="us_fr_security" access="ReadWrite"/>
+            <smart:field-access field="us_fr_substitute" access="ReadWrite"/>
+            <smart:field-access field="us_fr_sysident" access="ReadWrite"/>
+            <smart:field-access field="us_login" access="ReadWrite"/>
+            <smart:field-access field="us_whatid" access="Read"/>
+
         </smart:field-access-layer>
         <smart:field-access-layer name="FAL_IUSER_IDENTITY" label="User Identity Access" access-name="Identity">
             <smart:description>User identity modification</smart:description>
@@ -51,9 +59,9 @@
         <smart:element-access access="view" account="all"/>
         <smart:element-access access="modifyacl" account="gadmin"/>
         <smart:element-access access="viewacl" account="gadmin"/>
-        <smart:element-access access="EUSER" account="gadmin"/>
         <smart:element-access access="EGROUP" account="gadmin"/>
+        <smart:element-access access="EUSER" account="gadmin"/>
     </smart:access-configuration>
-    <smart:access-configuration name="MSK_IUSER_ADMIN" ref="PRF_ADMIN_EDIT"/>
     <smart:access-configuration name="MSK_IUSERSUBSTITUTE" ref="PRF_ADMIN_EDIT"/>
+    <smart:access-configuration name="MSK_IUSER_ADMIN" ref="PRF_ADMIN_EDIT"/>
 </smart:config>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
+
+    <smart:structure-configuration name="FILE">
+        <smart:accesses>
+            <smart:structure-access-configuration ref="PRF_FILE_STRUCT"/>
+            <smart:element-access-configuration ref="PRF_FILE_ACCESS"/>
+        </smart:accesses>
+    </smart:structure-configuration>
+
+
+    <smart:access-configuration name="PRF_FILE_STRUCT" label="Profil Structure FILE" profil-type="PFAM">
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="create" account="all"/>
+        <smart:element-access access="icreate" account="all"/>
+        <smart:element-access access="edit" account="gadmin"/>
+    </smart:access-configuration>
+    <smart:access-configuration name="PRF_FILE_ACCESS" label="Profil FILE">
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="edit" account="all"/>
+        <smart:element-access access="delete" account="gadmin"/>
+    </smart:access-configuration>
+
+</smart:config>
