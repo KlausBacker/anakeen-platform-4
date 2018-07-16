@@ -120,7 +120,7 @@ exports.create = ({
                 "src",
                 "vendor",
                 vendorName,
-                "smartStructure"
+                "SmartStructures"
               ),
               err => {
                 if (err) {
