@@ -91,7 +91,7 @@ exports.parseStub = file => {
             const fields = currentConf.fields;
             let fieldsString = "";
             if (fields) {
-              fields.forEach(function(fieldset) {
+              fields.forEach(fieldset => {
                 fieldsString += generateFields(fieldset);
               });
             }
@@ -104,19 +104,15 @@ exports.parseStub = file => {
 
 namespace SmartStructure {
 
-    use Anakeen\\Core\\Internal\\SmartElement;
-
-    /** de base  */
     class ${upperCaseFirstLetter(infos.name)} extends ${infos.extends ||
-              "SmartElement"}
+              "\\Anakeen\\SmartElement"}
     {
         const familyName = "${infos.name}";
     }
 }
 
-namespace SmartStructure\\Attributes {
+namespace SmartStructure\\Fields {
 
-    /** de base  */
     class ${upperCaseFirstLetter(infos.name)}${extendsPart}
     {
 ${fieldsString}
