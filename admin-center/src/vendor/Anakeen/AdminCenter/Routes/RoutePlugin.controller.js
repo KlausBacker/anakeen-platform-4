@@ -10,7 +10,8 @@ export default {
           data: function(response) {
             return response.data;
           }
-        }
+        },
+        sort: { field: 'rowLevel', dir: 'asc' },
       }),
       allMiddlewareDataSource: new kendo.data.TreeListDataSource({
         transport: {
