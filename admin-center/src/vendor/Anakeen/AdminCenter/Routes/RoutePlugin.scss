@@ -14,7 +14,7 @@
 }
 
 .tree-level-1{
- background: rgba(211,211,211,0.8) !important;
+ background: #DDDDDD !important;
 }
 
 .tabstrip h2 {
@@ -42,13 +42,42 @@ td[role=gridcell]:nth-child(3) {
  white-space: pre ;
 }
 
-.button {
- background-color: #4CAF50; /* Green */
- border: none;
- color: white;
- padding: 15px 32px;
+.btn {
  text-align: center;
  text-decoration: none;
  display: inline-block;
- font-size: 16px;
+}
+
+.btn.activation-btn {
+ border-color: #0EC40E;
+ color: #8AE234;
+}
+
+.btn.activation-btn:hover {
+ border-color: #0EC40E;
+ background-color: #0EC40E;
+ color: white;
+}
+
+.btn.activation-btn.active {
+ border-color: #0EC40E;
+ background-color: #0EC40E;
+ color: white;
+}
+
+.btn.deactivation-btn {
+ border-color: #FF542C;
+ color: #FF542C;
+}
+
+.btn.deactivation-btn:hover {
+ border-color: #FF542C;
+ background-color: #FF542C;
+ color: white;
+}
+
+.btn.deactivation-btn.active {
+ background-color: #FF542C;
+ color: white;
+}
 }

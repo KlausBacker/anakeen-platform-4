@@ -78,11 +78,10 @@ export default {
                 width: "5%"
               },
               {
-                field: "active",
                 template:
                   "# if(data.rowLevel === 2) { #" +
                   '<div class="btn-group" role="group" aria-label="activation group button">' +
-                  ' <button type="button" class="btn btn-primary btn-sm activation-btn">Activated</button>' +
+                  ' <button type="button" class="btn btn-outline-primary btn-sm activation-btn">Activated</button>' +
                   ' <button type="button" class="btn btn-outline-danger btn-sm deactivation-btn">Deactivated</button>' +
                   "</div>" +
                   "# } #",
@@ -121,6 +120,8 @@ export default {
               this.addClassToRow(e.sender);
               this.restoreTreeState();
               this.$(".activation-btn").on("click", event => {
+                this.$(event.target).addClass("active");
+                this.$(event.target).siblings(".deactivation-btn").removeClass("active");
                 event.target.disabled = true;
                 this.$(event.target)
                   .siblings(".deactivation-btn")
@@ -153,6 +154,8 @@ export default {
                 }
               });
               this.$(".deactivation-btn").on("click", event => {
+                this.$(event.target).addClass("active");
+                this.$(event.target).siblings(".activation-btn").removeClass("active");
                 event.target.disabled = true;
                 this.$(event.target)
                   .siblings(".activation-btn")
@@ -192,6 +195,9 @@ export default {
                     item.closest("tr[role=row]").firstElementChild.textContent
                 );
                 item.disabled = route.active;
+                if (route.active) {
+                  this.$(item).addClass("active");
+                }
               });
               this.$(".deactivation-btn").each((index, item) => {
                 let route = this.allRoutesDataSource._data.find(
@@ -200,6 +206,9 @@ export default {
                     item.closest("tr[role=row]").firstElementChild.textContent
                 );
                 item.disabled = !route.active;
+                if(!route.active) {
+                  this.$(item).addClass("active");
+                }
               });
             }
           })
