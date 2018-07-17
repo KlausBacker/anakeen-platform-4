@@ -11,7 +11,7 @@ export default {
             return response.data;
           }
         },
-        sort: { field: 'rowLevel', dir: 'asc' },
+        sort: { field: "rowLevel", dir: "asc" }
       }),
       allMiddlewareDataSource: new kendo.data.TreeListDataSource({
         transport: {
@@ -77,12 +77,13 @@ export default {
               },
               {
                 field: "active",
-                template: '# if(data.rowLevel === 2) { #'+
+                template:
+                  "# if(data.rowLevel === 2) { #" +
                   '<div class="btn-group" role="group" aria-label="activation group button">' +
                   ' <button type="button" class="btn btn-primary btn-sm activation-btn">Activated</button>' +
                   ' <button type="button" class="btn btn-outline-danger btn-sm deactivation-btn">Deactivated</button>' +
-                  '</div>'+
-                  '# } #',
+                  "</div>" +
+                  "# } #",
                 width: "10%",
                 filterable: false,
                 sortable: false
@@ -98,7 +99,7 @@ export default {
               }
             },
             filter: e => {
-              if (e.filter === null){
+              if (e.filter === null) {
                 this.allRoutesDataSource.filter({});
               } else {
                 this.expand(true);
@@ -117,47 +118,85 @@ export default {
             dataBound: e => {
               this.addClassToRow(e.sender);
               this.restoreTreeState();
-              this.$(".activation-btn").on("click", (event) => {
+              this.$(".activation-btn").on("click", event => {
                 event.target.disabled = true;
-                this.$(event.target).siblings(".deactivation-btn").prop("disabled", false);
+                this.$(event.target)
+                  .siblings(".deactivation-btn")
+                  .prop("disabled", false);
                 const sender = event.target.closest("tr[role=row]");
-                const elt = this.allRoutesDataSource._data.find(x => x.name === sender.firstElementChild.textContent);
+                const elt = this.allRoutesDataSource._data.find(
+                  x => x.name === sender.firstElementChild.textContent
+                );
                 if (sender.className.includes("tree-level-2")) {
-                  if (this.allRoutesDataSource._data.find(x => x.id === elt.parentId)) {
+                  if (
+                    this.allRoutesDataSource._data.find(
+                      x => x.id === elt.parentId
+                    )
+                  ) {
                     // if the route has a namespace
-                    const parentName = this.allRoutesDataSource._data.find(x => x.id === elt.parentId).name;
-                    this.activateRoute(parentName + "::" + sender.firstElementChild.textContent, elt);
-                  }
-                  else {
+                    const parentName = this.allRoutesDataSource._data.find(
+                      x => x.id === elt.parentId
+                    ).name;
+                    this.activateRoute(
+                      parentName + "::" + sender.firstElementChild.textContent,
+                      elt
+                    );
+                  } else {
                     // if the route doesn't have any namespace
-                    this.activateRoute(sender.firstElementChild.textContent, elt);
+                    this.activateRoute(
+                      sender.firstElementChild.textContent,
+                      elt
+                    );
                   }
                 }
               });
-              this.$(".deactivation-btn").on("click", (event) => {
+              this.$(".deactivation-btn").on("click", event => {
                 event.target.disabled = true;
-                this.$(event.target).siblings(".activation-btn").prop("disabled", false);
+                this.$(event.target)
+                  .siblings(".activation-btn")
+                  .prop("disabled", false);
                 const sender = event.target.closest("tr[role=row]");
-                const elt = this.allRoutesDataSource._data.find(x => x.name === sender.firstElementChild.textContent);
+                const elt = this.allRoutesDataSource._data.find(
+                  x => x.name === sender.firstElementChild.textContent
+                );
                 if (sender.className.includes("tree-level-2")) {
-                  if (this.allRoutesDataSource._data.find(x => x.id === elt.parentId)) {
+                  if (
+                    this.allRoutesDataSource._data.find(
+                      x => x.id === elt.parentId
+                    )
+                  ) {
                     // if the route has a namespace
-                    const parentName = this.allRoutesDataSource._data.find(x => x.id === elt.parentId).name;
-                    this.deactivateRoute(parentName + "::" + sender.firstElementChild.textContent, elt);
-                  }
-                  else {
+                    const parentName = this.allRoutesDataSource._data.find(
+                      x => x.id === elt.parentId
+                    ).name;
+                    this.deactivateRoute(
+                      parentName + "::" + sender.firstElementChild.textContent,
+                      elt
+                    );
+                  } else {
                     // if the route doesn't have any namespace
-                    this.deactivateRoute(sender.firstElementChild.textContent, elt);
+                    this.deactivateRoute(
+                      sender.firstElementChild.textContent,
+                      elt
+                    );
                   }
                 }
               });
               // activate/deactivate switch according to dataSource
-              this.$('.activation-btn').each((index, item) => {
-                let route = this.allRoutesDataSource._data.find( x => x.name === item.closest('tr[role=row]').firstElementChild.textContent);
+              this.$(".activation-btn").each((index, item) => {
+                let route = this.allRoutesDataSource._data.find(
+                  x =>
+                    x.name ===
+                    item.closest("tr[role=row]").firstElementChild.textContent
+                );
                 item.disabled = route.active;
               });
-              this.$('.deactivation-btn').each((index, item) => {
-                let route = this.allRoutesDataSource._data.find( x => x.name === item.closest('tr[role=row]').firstElementChild.textContent);
+              this.$(".deactivation-btn").each((index, item) => {
+                let route = this.allRoutesDataSource._data.find(
+                  x =>
+                    x.name ===
+                    item.closest("tr[role=row]").firstElementChild.textContent
+                );
                 item.disabled = !route.active;
               });
             }
@@ -281,7 +320,7 @@ export default {
       }
     },
     activateRoute(route, elt) {
-      kendo.ui.progress(this.$('.routes-tree'), true);
+      kendo.ui.progress(this.$(".routes-tree"), true);
       return this.$ankApi
         .post(encodeURI("admin/routes/" + route + "/activate/"))
         .then(response => {
@@ -291,19 +330,19 @@ export default {
               content: {
                 title: "Route Activation",
                 message: "The route " + elt.name + " has been activated\n",
-                type: "admin-success",
+                type: "admin-success"
               }
             });
-            kendo.ui.progress(this.$('.routes-tree'), false);
+            kendo.ui.progress(this.$(".routes-tree"), false);
           } else {
             this.$emit("ank-admin-notify", {
               content: {
                 title: "Route Activation",
                 message: "The route " + elt.name + " failed to be activated\n",
-                type: "admin-error",
+                type: "admin-error"
               }
             });
-            kendo.ui.progress(this.$('.routes-tree'), false);
+            kendo.ui.progress(this.$(".routes-tree"), false);
             throw new Error(response);
           }
         })
@@ -312,7 +351,7 @@ export default {
         });
     },
     deactivateRoute(route, elt) {
-      kendo.ui.progress(this.$('.routes-tree'), true);
+      kendo.ui.progress(this.$(".routes-tree"), true);
       return this.$ankApi
         .delete(encodeURI("admin/routes/" + route + "/deactivate/"))
         .then(response => {
@@ -322,19 +361,20 @@ export default {
               content: {
                 title: "Route Deactivation",
                 message: "The route " + elt.name + " has been deactivated\n",
-                type: "admin-success",
+                type: "admin-success"
               }
             });
-            kendo.ui.progress(this.$('.routes-tree'), false);
+            kendo.ui.progress(this.$(".routes-tree"), false);
           } else {
             this.$emit("ank-admin-notify", {
               content: {
                 title: "Route Deactivation",
-                message: "The route " + elt.name + " failed to be deactivated\n",
-                type: "admin-error",
+                message:
+                  "The route " + elt.name + " failed to be deactivated\n",
+                type: "admin-error"
               }
             });
-            kendo.ui.progress(this.$('.routes-tree'), false);
+            kendo.ui.progress(this.$(".routes-tree"), false);
             throw new Error(response);
           }
         })
