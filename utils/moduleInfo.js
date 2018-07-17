@@ -135,7 +135,6 @@ exports.getStructureFiles = async ({ buildPath }) => {
             });
             parser.on("text", content => {
               if (inClassMode && content.contents) {
-                console.log(content);
                 structure[currentStructName]["class"] = content.contents;
               }
             });
