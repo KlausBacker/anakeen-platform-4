@@ -352,6 +352,21 @@ export default {
     });
     this.initTreeList();
     this.restoreTreeState();
+    // Add event listener on treeList to expand/collapse rows on click
+    // and remove mousedown event listener to prevent double expand/collapse at click on arrows of treeList
+    this.$(".routes-tree")
+      .off("mousedown")
+      .on("mouseup", "tbody > .tree-level-1", e => {
+        let treeList = this.$(e.delegateTarget).data("kendoTreeList");
+        if (this.$(e.currentTarget).attr("aria-expanded") === "false") {
+          treeList.expand(e.currentTarget);
+        } else {
+          treeList.collapse(e.currentTarget);
+        }
+
+        this.addClassToRow(treeList);
+        this.saveTreeState();
+      });
     window.addEventListener("resize", () => {
       let $tree = this.$(".routes-tree");
       let ktree = $tree.data("kendoTreeList");
