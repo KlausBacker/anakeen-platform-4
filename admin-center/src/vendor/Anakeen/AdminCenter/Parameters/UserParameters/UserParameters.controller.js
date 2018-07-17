@@ -222,7 +222,7 @@ export default {
               this.$emit("ank-admin-notify", {
                 content: {
                   title: "Parameters loaded",
-                  message: "Parameters successfully loaded from server",
+                  message: "Parameters successfully loaded from server"
                 },
                 type: "admin-success"
               });

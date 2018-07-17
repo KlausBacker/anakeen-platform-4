@@ -25,7 +25,11 @@ export default {
       editedItem: null,
 
       // Current edition route to pass to the parameter editor
-      editRoute: ""
+      editRoute: "",
+
+      // kendo components
+      parametersTree: null,
+      valueDisplayer: null
     };
   },
 
@@ -53,7 +57,7 @@ export default {
       // class to add to the treeList headers to display a filter icon showing filtered columns
       let headerAttributes = { class: "filterable-header" }; // jscs:ignore disallowQuotedKeysInObjects
 
-      this.$(".parameters-tree", this.$el)
+      let tree = this.$(".parameters-tree", this.$el)
         .kendoTreeList({
           dataSource: this.allParametersDataSource,
           columns: [
@@ -117,12 +121,12 @@ export default {
         })
         .on("click", ".edition-btn", e => {
           // Open editor with the dataItem of the edited row
-          let treeList = this.$(e.delegateTarget).data("kendoTreeList");
+          let treeList = this.parametersTree;
           let dataItem = treeList.dataItem(e.currentTarget);
           this.openEditor(dataItem);
         })
         .on("click", ".display-btn", e => {
-          let treeList = this.$(e.delegateTarget).data("kendoTreeList");
+          let treeList = this.parametersTree;
           let dataItem = treeList.dataItem(e.currentTarget);
           this.displayValue(dataItem);
         })
@@ -169,6 +173,8 @@ export default {
           this.searchParameters("");
         });
 
+      this.parametersTree = tree.data("kendoTreeList");
+
       // Init kendoButtons
       this.$(".switch-btn", this.$el).kendoButton({
         icon: "arrow-right"
@@ -211,7 +217,7 @@ export default {
         template =
           '<p class="value-displayer-content">' + displayedValue + "</p>";
       }
-      this.$(".value-displayer")
+      this.valueDisplayer = this.$(".value-displayer")
         .kendoWindow({
           modal: true,
           draggable: false,
@@ -303,7 +309,7 @@ export default {
 
     // Expand or collapse all rows of treeList (true => expand / false => collapse)
     expand(expansion) {
-      let treeList = this.$(".parameters-tree", this.$el).data("kendoTreeList");
+      let treeList = this.parametersTree;
       let $rows = this.$("tr.k-treelist-group", treeList.tbody);
       this.$.each($rows, (idx, row) => {
         if (expansion) {
@@ -333,9 +339,7 @@ export default {
       // setTimeout(function, 0) to save state when all DOM content has been updated
       setTimeout(() => {
         let treeState = [];
-        let treeList = this.$(".parameters-tree", this.$el).data(
-          "kendoTreeList"
-        );
+        let treeList = this.parametersTree;
         let items = treeList.items();
         items.each((index, item) => {
           if (this.$(item).attr("aria-expanded") === "true") {
@@ -353,9 +357,7 @@ export default {
     restoreTreeState() {
       let treeState = window.localStorage.getItem("admin.parameters.treeState");
       if (treeState) {
-        let treeList = this.$(".parameters-tree", this.$el).data(
-          "kendoTreeList"
-        );
+        let treeList = this.parametersTree;
         let $rows = this.$("tr", treeList.tbody);
         this.$.each($rows, (idx, row) => {
           if (treeState.includes(idx)) {
@@ -370,7 +372,7 @@ export default {
       }
     },
 
-    // Destroy editor to prevent conficts with others editors and send event to show user parameters
+    // Destroy editor to prevent conflicts with others editors and send event to show user parameters
     switchParameters() {
       let editor = this.$(".edition-window").data("kendoWindow");
       if (editor) {
@@ -383,7 +385,7 @@ export default {
     // Resize tree to fit the window
     resizeTree() {
       let $tree = this.$(".parameters-tree", this.$el);
-      let kTree = $tree.data("kendoTreeList");
+      let kTree = this.parametersTree;
       if (kTree) {
         $tree.height(this.$(window).height() - $tree.offset().top - 4);
         kTree.resize();
@@ -414,7 +416,7 @@ export default {
     this.$(".parameters-tree", this.$el)
       .off("mousedown")
       .on("mouseup", "tbody > .grid-expandable", e => {
-        let treeList = this.$(e.delegateTarget).data("kendoTreeList");
+        let treeList = this.parametersTree;
         if (this.$(e.currentTarget).attr("aria-expanded") === "false") {
           treeList.expand(e.currentTarget);
         } else {
