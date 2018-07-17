@@ -63,7 +63,8 @@ It must trigger the event `ank-admin-notify` with the following parameter :
     content: {
         title: "Message title",
         message: "My message content"
-        type: "admin-error", 
+    }
+    type: "admin-error", 
 }
 ```
 
