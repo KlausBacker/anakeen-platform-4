@@ -58,14 +58,14 @@ export default {
                 field: "description",
                 title: "Description",
                 sortable: false,
-                width: "30%"
+                width: "25%"
               },
               {
                 field: "priority",
                 title: "Priority",
                 filterable: false,
                 sortable: false,
-                width: "5%"
+                width: "3%"
               },
               {
                 field: "overrided",
