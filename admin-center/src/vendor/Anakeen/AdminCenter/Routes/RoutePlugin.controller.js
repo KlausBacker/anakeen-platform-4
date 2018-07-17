@@ -321,9 +321,31 @@ export default {
               this.expand(true, ".middlewares-tree");
             }
           })
-          .on("click", ".routeRefresh-btn", () =>
-            this.allMiddlewareDataSource.read()
-          )
+          .on("click", ".routeRefresh-btn", () => {
+            kendo.ui.progress(this.$(".middlewares-tree"), true);
+            this.allMiddlewareDataSource
+              .read()
+              .then(() => {
+                kendo.ui.progress(this.$(".middlewares-tree"), false);
+                this.$emit("ank-admin-notify", {
+                  content: {
+                    title: "Middleware loading",
+                    message: "Middlewares successfully loaded from server",
+                  },
+                  type: "admin-success"
+                });
+              })
+              .catch(() => {
+                kendo.ui.progress(this.$(".middlewares-tree"), false);
+                this.$emit("ank-admin-notify", {
+                  content: {
+                    title: "Middlewares loading failed",
+                    message: "Middlewares failed to load from server",
+                  },
+                  type: "admin-error"
+                });
+              })
+          })
           .on("click", ".routeExpand-btn", () =>
             this.expand(true, ".middlewares-tree")
           )
