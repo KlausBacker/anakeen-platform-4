@@ -396,8 +396,8 @@ export default {
               content: {
                 title: "Route Activation",
                 message: "The route " + elt.name + " has been activated\n",
-                type: "admin-success"
-              }
+              },
+              type: "admin-success"
             });
             kendo.ui.progress(this.$(".routes-tree"), false);
           } else {
@@ -405,8 +405,8 @@ export default {
               content: {
                 title: "Route Activation",
                 message: "The route " + elt.name + " failed to be activated\n",
-                type: "admin-error"
-              }
+              },
+              type: "admin-error"
             });
             kendo.ui.progress(this.$(".routes-tree"), false);
             throw new Error(response);
@@ -427,8 +427,8 @@ export default {
               content: {
                 title: "Route Deactivation",
                 message: "The route " + elt.name + " has been deactivated\n",
-                type: "admin-success"
-              }
+              },
+              type: "admin-success"
             });
             kendo.ui.progress(this.$(".routes-tree"), false);
           } else {
@@ -437,8 +437,8 @@ export default {
                 title: "Route Deactivation",
                 message:
                   "The route " + elt.name + " failed to be deactivated\n",
-                type: "admin-error"
-              }
+              },
+              type: "admin-error"
             });
             kendo.ui.progress(this.$(".routes-tree"), false);
             throw new Error(response);
