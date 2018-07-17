@@ -68,7 +68,7 @@ export default {
                 title: "Priority",
                 filterable: false,
                 sortable: false,
-                width: "3%"
+                width: "4%"
               },
               {
                 field: "override",
@@ -85,7 +85,7 @@ export default {
                   ' <button type="button" class="btn btn-outline-danger btn-sm deactivation-btn">Deactivated</button>' +
                   "</div>" +
                   "# } #",
-                width: "10%",
+                width: "9%",
                 filterable: false,
                 sortable: false
               }
@@ -103,22 +103,22 @@ export default {
               if (e.filter === null) {
                 this.allRoutesDataSource.filter({});
               } else {
-                this.expand(true);
+                this.expand(true, ".routes-tree");
               }
             },
             sortable: true,
             resizable: false,
             expand: e => {
               this.addClassToRow(e.sender);
-              this.saveTreeState();
+              this.saveTreeState(".routes-tree");
             },
             collapse: e => {
               this.addClassToRow(e.sender);
-              this.saveTreeState();
+              this.saveTreeState(".routes-tree");
             },
             dataBound: e => {
               this.addClassToRow(e.sender);
-              this.restoreTreeState();
+              this.restoreTreeState(".routes-tree");
               this.$(".activation-btn").on("click", event => {
                 this.$(event.target).addClass("active");
                 this.$(event.target).siblings(".deactivation-btn").removeClass("active");
@@ -210,6 +210,7 @@ export default {
                   this.$(item).addClass("active");
                 }
               });
+              this.expand(true, ".routes-tree")
             }
           })
           .on("click", ".routeRefresh-btn", () => {
@@ -289,20 +290,35 @@ export default {
               }
             ],
             toolbar: refreshBtn,
-            filterable: true,
+            filterable: {
+              extra: false,
+              operators: {
+                string: {
+                  contains: "Contains..."
+                }
+              }
+            },
+            filter: e => {
+              if (e.filter === null) {
+                this.allMiddlewareDataSource.filter({});
+              } else {
+                this.expand(true, ".middlewares-tree");
+              }
+            },
             sortable: true,
             resizable: false,
             expand: e => {
               this.addClassToRow(e.sender);
-              this.saveTreeState();
+              this.saveTreeState(".middlewares-tree");
             },
             collapse: e => {
               this.addClassToRow(e.sender);
-              this.saveTreeState();
+              this.saveTreeState(".middlewares-tree");
             },
             dataBound: e => {
               this.addClassToRow(e.sender);
-              this.restoreTreeState();
+              this.restoreTreeState(".middlewares-tree");
+              this.expand(true, ".middlewares-tree");
             }
           })
           .on("click", ".routeRefresh-btn", () =>
@@ -335,19 +351,19 @@ export default {
         });
       }, 0);
     },
-    expand(expansion) {
-      let treeList = this.$(".routes-tree").data("kendoTreeList");
+    expand(expansion, el) {
+      let treeList = this.$(el).data("kendoTreeList");
       let $rows = this.$("tr.k-treelist-group", treeList.tbody);
       this.$.each($rows, (idx, row) => {
         expansion ? treeList.expand(row) : treeList.collapse(row);
       });
-      this.saveTreeState();
+      this.saveTreeState(el);
       this.addClassToRow(treeList);
     },
-    saveTreeState() {
+    saveTreeState(el) {
       setTimeout(() => {
         let treeState = [];
-        let treeList = this.$(".routes-tree").data("kendoTreeList");
+        let treeList = this.$(el).data("kendoTreeList");
         let items = treeList.items();
         items.each((index, item) => {
           if (this.$(item).attr("aria-expanded") === "true")
@@ -356,10 +372,10 @@ export default {
         window.localStorage.setItem("admin.routes.treeState", treeState);
       }, 0);
     },
-    restoreTreeState() {
+    restoreTreeState(el) {
       let treeState = window.localStorage.getItem("admin.routes.treeState");
       if (treeState) {
-        let treeList = this.$(".routes-tree").data("kendoTreeList");
+        let treeList = this.$(el).data("kendoTreeList");
         let $rows = this.$("tr", treeList.tbody);
         this.$.each($rows, (idx, row) => {
           treeState.includes(idx)
@@ -442,7 +458,8 @@ export default {
       }
     });
     this.initTreeList();
-    this.restoreTreeState();
+    this.restoreTreeState(".routes-tree");
+    this.restoreTreeState(".middlewares-tree");
     // Add event listener on treeList to expand/collapse rows on click
     // and remove mousedown event listener to prevent double expand/collapse at click on arrows of treeList
     this.$(".routes-tree")
@@ -456,7 +473,20 @@ export default {
         }
 
         this.addClassToRow(treeList);
-        this.saveTreeState();
+        this.saveTreeState(".routes-tree");
+      });
+    this.$(".middlewares-tree")
+      .off("mousedown")
+      .on("mouseup", "tbody > .tree-level-1", e => {
+        let treeList = this.$(e.delegateTarget).data("kendoTreeList");
+        if (this.$(e.currentTarget).attr("aria-expanded") === "false") {
+          treeList.expand(e.currentTarget);
+        } else {
+          treeList.collapse(e.currentTarget);
+        }
+
+        this.addClassToRow(treeList);
+        this.saveTreeState(".middlewares-tree");
       });
     window.addEventListener("resize", () => {
       let $tree = this.$(".routes-tree");
