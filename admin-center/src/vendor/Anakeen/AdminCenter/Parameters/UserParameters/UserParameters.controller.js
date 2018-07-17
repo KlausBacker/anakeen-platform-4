@@ -596,6 +596,7 @@ export default {
   mounted() {
     // Init treeList to display users
     this.initUsersGrid();
+    this.resizeUsersGrid();
 
     // Init treeList to display user parameters
     this.initTreeList();
