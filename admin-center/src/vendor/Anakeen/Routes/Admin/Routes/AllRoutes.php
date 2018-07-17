@@ -48,8 +48,8 @@ class AllRoutes
             $formatedRoute['method'] = $route->methods[0];
             $formatedRoute['pattern'] = is_array($route->pattern) ? implode("\n",$route->pattern) : $route->pattern;
             $formatedRoute['priority'] = $route->priority;
-            $formatedRoute['overrided'] = $route->override;
             $formatedRoute['active'] = $active->isActive();
+            $formatedRoute['override'] = $route->override;
 
             return $formatedRoute;
     }
@@ -89,7 +89,7 @@ class AllRoutes
                 $currentName = $nameTab[$item['nameSpace']][$item['name']];
                 if($currentName === null){
                     $newId = $currentId++;
-                    array_push($tree,['id' => $newId, 'parentId' => $currentNameSpace, 'name' => $item['name'],'description' => $item['description'], 'priority' => $item['priority'], 'method' => $item['method'], 'pattern' => $item['pattern'], 'overrided' => $item['override'], 'rowLevel' => 2, 'active' => $item['active']]);
+                    array_push($tree,['id' => $newId, 'parentId' => $currentNameSpace, 'name' => $item['name'],'description' => $item['description'], 'priority' => $item['priority'], 'method' => $item['method'], 'pattern' => $item['pattern'], 'override' => $item['override'], 'rowLevel' => 2, 'active' => $item['active']]);
                     $nameTab[$item['nameSpace']][$item['name']] = $newId;
                 }
             } else {

@@ -71,7 +71,7 @@ export default {
                 width: "3%"
               },
               {
-                field: "overrided",
+                field: "override",
                 title: "Overrided",
                 filterable: false,
                 sortable: false,
