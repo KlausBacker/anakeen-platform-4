@@ -18,7 +18,6 @@ const generateSmartStructureXML = ({
   withClass,
   namespace
 }) => {
-  //<smart:structure-configuration name="IUSER" id="128" label="Utilisateur">
   const structureConf = {
     "smart:config": {
       $: {
@@ -44,7 +43,7 @@ const generateSmartStructureXML = ({
   if (withClass) {
     structureConf["smart:config"]["smart:structure-configuration"][
       "smart:class"
-    ] = `${namespace}`;
+    ] = `\\${namespace}\\${name}SmartStructure`;
   }
   structureConf["smart:config"]["smart:structure-configuration"][
     "smart:fields"
@@ -58,14 +57,14 @@ const generateSmartStructureXML = ({
   return structureConf;
 };
 
-const structurePhp = ({ name, namespace }) => {
+const generateStructurePhp = ({ name, namespace }) => {
   return `<?php
 
 namespace ${namespace};
 
 use SmartStructure\\Fields\\${name} as ${name}Fields;
 
-class ${name} extends \\SmartStructure\\${name}
+class ${name}SmartStructure extends \\SmartStructure\\${name}
 {
 
     public function registerHooks()
@@ -213,7 +212,7 @@ exports.createSmartStructure = ({
         //Write the php if needed
         if (withClass) {
           return new Promise((resolve, reject) => {
-            const structurePHP = structurePhp({
+            const structurePHP = generateStructurePhp({
               name,
               namespace: convertPathInPhpNamespace({
                 vendorPath,
@@ -237,7 +236,6 @@ exports.createSmartStructure = ({
         //with render
         if (withRender) {
           //Generate the render access and two renders (one view, one edit)
-
           return new Promise((resolve, reject) => {
             const renderPath = path.join(currentPath, "Render");
             let createDirPromise;
@@ -303,6 +301,8 @@ exports.createSmartStructure = ({
                           if (err) {
                             return reject(err);
                           }
+                          //Add or update json
+
                           resolve();
                         }
                       );
@@ -354,7 +354,6 @@ exports.createSmartStructure = ({
                   }
                   resolve();
                 });
-                //postInstall[0];
               });
             });
           });
