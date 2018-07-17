@@ -88,9 +88,8 @@ exports.parseStub = file => {
         if (result.config.structureconfiguration) {
           result.config.structureconfiguration.forEach(currentConf => {
             const infos = currentConf.$;
-            const currentClass = currentConf.class
-              ? currentConf.class[0]
-              : false;
+            let currentClass =
+              currentConf.class !== undefined ? currentConf.class[0] : false;
             const fields = currentConf.fields;
             let fieldsString = "";
             if (fields) {
@@ -99,18 +98,28 @@ exports.parseStub = file => {
               });
             }
 
+            //Extends for field part
             const extendsPart = infos.extends
               ? ` extends ${infos.extends}`
               : "";
 
+            //Extend for class part
             let extendsSSPart = "";
 
-            if (infos.extends) {
+            if (currentClass) {
+              if (currentClass._) {
+                currentClass = currentClass._;
+              }
+              extendsSSPart = currentClass;
+              //Add missing \ as first char if it's not already the case
+              if (extendsSSPart[0] !== "\\") {
+                extendsSSPart = "\\" + extendsSSPart;
+              }
+            }
+
+            if (!extendsSSPart && infos.extends) {
               //the current structure extends another one
               extendsSSPart = infos.extends;
-              if (currentClass) {
-                extendsSSPart = currentClass;
-              }
             }
 
             let content = `<?php
