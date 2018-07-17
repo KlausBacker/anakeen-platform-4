@@ -13,6 +13,8 @@ use Anakeen\Router\ApiV2Response;
 class SearchUsers
 {
     protected $search;
+    protected $page;
+    protected $take;
 
     /**
      * Return the list of users containing the research terms in their first name, last name and/or login
@@ -24,9 +26,9 @@ class SearchUsers
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $this->initParameters($args);
+        $this->initParameters($request, $args);
 
-        $return = $this->searchUser($this->search);
+        $return = $this->searchUser($this->search, $this->page, $this->take);
 
         return ApiV2Response::withData($response, $return);
     }
@@ -34,10 +36,13 @@ class SearchUsers
     /**
      * Init parameters from request
      *
+     * @param \Slim\Http\request $request
      * @param $args
      */
-    private function initParameters($args)
+    private function initParameters(\Slim\Http\request $request, $args)
     {
+        $this->page = $request->getQueryParam("page");
+        $this->take = $request->getQueryParam("take");
         $this->search = $args['user'];
     }
 
@@ -45,9 +50,11 @@ class SearchUsers
      * Get users containing the search term in their first name, last name and/or login
      *
      * @param $search
+     * @param $page
+     * @param $take
      * @return array
      */
-    private function searchUser($search)
+    private function searchUser($search, $page, $take)
     {
         $searchTerm = preg_quote($search);
         $searchAccount = new \SearchAccount();
@@ -66,6 +73,8 @@ class SearchUsers
             ];
         }
 
-        return array_values($result);
+        $return['users'] = array_slice(array_values($result), ($page - 1) * $take, $take);
+        $return['total'] = sizeof($result);
+        return $return;
     }
 }

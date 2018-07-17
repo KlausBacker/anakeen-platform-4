@@ -28,7 +28,8 @@ export default {
     // Init the treeList containing users (1 level treeList)
     initUserTreeList() {
       this.$(".users-tree", this.$el)
-        .kendoTreeList({
+        .kendoGrid({
+          //.kendoTreeList({
           columns: [
             { field: "login", title: "Login" },
             { field: "firstname", title: "First name" },
@@ -50,13 +51,21 @@ export default {
               }
             },
             schema: {
-              data: "data"
-            }
+              data: "data.users",
+              total: "data.total"
+            },
+            serverPaging: true,
+            pageSize: 10
+          },
+
+          pageable: {
+            pageSize: 10
           },
 
           // Disable columns filters to add global filter
           filterable: false,
           resizable: false,
+          selectable: "rows",
           messages: {
             noRows: "Search a user to modify his settings"
           },
@@ -69,9 +78,11 @@ export default {
         })
         .on("click", ".selection-btn", e => {
           // Select a user to display his parameters with the data item
-          let treeList = this.$(e.delegateTarget).data("kendoTreeList");
-          let dataItem = treeList.dataItem(e.currentTarget);
+          let treeList = this.$(e.delegateTarget).data("kendoGrid");
+          treeList.select(e.currentTarget.parentNode.parentNode);
+          let dataItem = treeList.dataItem(treeList.select());
           this.selectUser(dataItem);
+          treeList.clearSelection();
         });
     },
 
@@ -87,9 +98,11 @@ export default {
             <div class="input-group">
                 <input type="text"
                        class="form-control global-search-input"
-                       placeholder="Filter parameters..."
-                       style="border-radius: .25rem">
+                       placeholder="Filter parameters...">
                 <i class="input-group-addon material-icons reset-search-btn parameter-search-reset">close</i>
+                <div class="input-group-append">
+                    <button class="btn btn-secondary filter-btn">Filter</button>
+                </div>
             </div>
         </div>
       `;
@@ -103,22 +116,22 @@ export default {
           columns: [
             {
               field: "name",
-              title: "Name",
+              headerTemplate: '<a class="column-title">Name</a>',
               headerAttributes: headerAttributes
             },
             {
               field: "description",
-              title: "Description",
+              headerTemplate: '<a class="column-title">Description</a>',
               headerAttributes: headerAttributes
             },
             {
               field: "value",
-              title: "User value",
+              headerTemplate: '<a class="column-title">User value</a>',
               headerAttributes: headerAttributes
             },
             {
               field: "initialValue",
-              title: "System value",
+              headerTemplate: '<a class="column-title">System value</a>',
               headerAttributes: headerAttributes
             },
             {
@@ -194,24 +207,52 @@ export default {
           this.$(".user-search-input", this.$el).focus();
 
           // Resize user treeList when it is displayed
-          let $userTree = this.$(".users-tree", this.$el);
-          let kUserTree = $userTree.data("kendoTreeList");
-          if (kUserTree) {
-            $userTree.height(
-              this.$(window).height() - $userTree.offset().top - 4
-            );
-            kUserTree.resize();
-          }
+          this.resizeUsersTree();
         })
         .on("click", ".refresh-btn", () => {
           // Re-fetch data from server
-          this.userParametersDataSource.read();
+          kendo.ui.progress(this.$(".user-parameters-tree", this.$el), true);
+          this.userParametersDataSource
+            .read()
+            .then(() => {
+              kendo.ui.progress(
+                this.$(".user-parameters-tree", this.$el),
+                false
+              );
+              this.$emit("ank-admin-notify", {
+                content: {
+                  title: "Parameters loaded",
+                  message: "Parameters successfully loaded from server",
+                  type: "admin-success"
+                }
+              });
+            })
+            .catch(() => {
+              kendo.ui.progress(
+                this.$("user-parameters-tree", this.$el),
+                false
+              );
+              this.$emit("ank-admin-notify", {
+                content: {
+                  title: "Parameters loading failed",
+                  message: "Loading of parameters from server failed",
+                  type: "admin-error"
+                }
+              });
+            });
         })
         .on("click", ".expand-btn", () => this.expand(true))
         .on("click", ".collapse-btn", () => this.expand(false))
-        .on("input", ".global-search-input", e =>
-          this.searchParameters(e.currentTarget.value)
+        .on("click", ".filter-btn", () =>
+          this.searchParameters(this.$(".global-search-input", this.$el).val())
         )
+        .on("keyup", ".global-search-input", e => {
+          if (e.key === "Enter") {
+            this.searchParameters(
+              this.$(".global-search-input", this.$el).val()
+            );
+          }
+        })
         .on("click", ".reset-search-btn", () => {
           this.$(".global-search-input", this.$el).val("");
           this.searchParameters("");
@@ -255,12 +296,7 @@ export default {
       this.$(".parameters-div", this.$el).css("display", "");
 
       // Resize user parameters treeList when displaying it
-      let $tree = this.$(".user-parameters-tree", this.$el);
-      let kTree = $tree.data("kendoTreeList");
-      if (kTree) {
-        $tree.height(this.$(window).height() - $tree.offset().top - 4);
-        kTree.resize();
-      }
+      this.resizeUserParametersTree();
 
       // Focus on filter input
       this.$(".global-search-input", this.$el).focus();
@@ -364,11 +400,14 @@ export default {
             }
           },
           schema: {
-            data: "data"
-          }
+            data: "data.users",
+            total: "data.total"
+          },
+          serverPaging: true,
+          pageSize: 10
         });
         this.$(".users-tree", this.$el)
-          .data("kendoTreeList")
+          .data("kendoGrid")
           .setDataSource(usersDataSource);
       }
     },
@@ -399,7 +438,7 @@ export default {
           !this.$(".user-filterable-header", this.$el).children(".filter-icon")
             .length
         ) {
-          this.$(".user-filterable-header", this.$el).append(
+          this.$(".user-filterable-header", this.$el).prepend(
             this.$('<i class="material-icons filter-icon">filter_list</i>')
           );
         }
@@ -520,6 +559,26 @@ export default {
       }
 
       this.$emit("switchParameters");
+    },
+
+    // Resize users tree
+    resizeUsersTree() {
+      let $userTree = this.$(".users-tree", this.$el);
+      let kUserTree = $userTree.data("kendoGrid");
+      if (kUserTree) {
+        $userTree.height(this.$(window).height() - $userTree.offset().top - 4);
+        kUserTree.resize();
+      }
+    },
+
+    // Resize user parameters tree
+    resizeUserParametersTree() {
+      let $tree = this.$(".user-parameters-tree", this.$el);
+      let kTree = $tree.data("kendoTreeList");
+      if (kTree) {
+        $tree.height(this.$(window).height() - $tree.offset().top - 4);
+        kTree.resize();
+      }
     }
   },
 
@@ -569,19 +628,8 @@ export default {
 
     // At window resize, resize the treeLists
     window.addEventListener("resize", () => {
-      let $tree = this.$(".user-parameters-tree", this.$el);
-      let kTree = $tree.data("kendoTreeList");
-      if (kTree) {
-        $tree.height(this.$(window).height() - $tree.offset().top - 4);
-        kTree.resize();
-      }
-
-      let $userTree = this.$(".users-tree", this.$el);
-      let kUserTree = $userTree.data("kendoTreeList");
-      if (kUserTree) {
-        $userTree.height(this.$(window).height() - $userTree.offset().top - 4);
-        kUserTree.resize();
-      }
+      this.resizeUsersTree();
+      this.resizeUserParametersTree();
     });
   }
 };

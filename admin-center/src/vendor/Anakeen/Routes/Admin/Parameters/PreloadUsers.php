@@ -12,6 +12,9 @@ use Anakeen\Router\ApiV2Response;
  */
 class PreloadUsers
 {
+    protected $page;
+    protected $take;
+
     /**
      * Return 5 users from the server, to pre-load a list of users
      *
@@ -22,16 +25,30 @@ class PreloadUsers
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $return = $this->getFirstUsers();
+        $this->initParameters($request);
+        $return = $this->getUsers($this->page, $this->take);
         return ApiV2Response::withData($response, $return);
     }
 
     /**
-     * Get 5 users form the database
+     * Init parameters from request
      *
+     * @param \Slim\Http\request $request
+     */
+    private function initParameters(\Slim\Http\request $request)
+    {
+        $this->page = $request->getQueryParam("page");
+        $this->take = $request->getQueryParam("take");
+    }
+
+    /**
+     * Get requested users from database
+     *
+     * @param $page
+     * @param $take
      * @return array
      */
-    private function getFirstUsers()
+    private function getUsers($page, $take)
     {
         $searchAccount = new \SearchAccount();
         $searchAccount->setTypeFilter(\SearchAccount::userType);
@@ -48,8 +65,11 @@ class PreloadUsers
             ];
         }
 
-        $firstUsers = array_slice(array_values($result), 0, 5);
+        $return["users"] = array_slice(array_values($result), ($page - 1) * $take, $take);
+        $return["total"] = sizeof($result);
+        $return["take"] = $take;
+        $return["page"] = $page;
 
-        return $firstUsers;
+        return $return;
     }
 }

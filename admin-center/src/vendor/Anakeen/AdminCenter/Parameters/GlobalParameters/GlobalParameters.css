@@ -86,3 +86,7 @@ tr:not(.grid-expandable) > td .k-icon.k-i-none:first-child {
 .parameter-search-reset {
     left: -.3rem;
 }
+
+.value-displayer-content {
+    overflow-wrap: break-word;
+}

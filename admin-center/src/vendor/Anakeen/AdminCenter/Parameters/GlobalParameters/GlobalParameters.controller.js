@@ -41,9 +41,11 @@ export default {
             <div class="input-group">
                 <input type="text"
                        class="form-control global-search-input"
-                       placeholder="Filter parameters..."
-                       style="border-radius: .25rem;">
+                       placeholder="Filter parameters...">
                 <i class="input-group-addon material-icons reset-search-btn parameter-search-reset">close</i>
+                <div class="input-group-append">
+                    <button class="btn btn-secondary filter-btn">Filter</button>
+                </div>
              </div>
         </div>
         `;
@@ -57,17 +59,17 @@ export default {
           columns: [
             {
               field: "name",
-              title: "Name",
+              headerTemplate: '<a class="column-title">Name</a>',
               headerAttributes: headerAttributes
             },
             {
               field: "description",
-              title: "Description",
+              headerTemplate: '<a class="column-title">Description</a>',
               headerAttributes: headerAttributes
             },
             {
               field: "value",
-              title: "System value",
+              headerTemplate: '<a class="column-title">System value</a>',
               headerAttributes: headerAttributes
             },
             {
@@ -125,12 +127,43 @@ export default {
           this.displayValue(dataItem);
         })
         .on("click", ".switch-btn", () => this.switchParameters())
-        .on("click", ".refresh-btn", () => this.allParametersDataSource.read())
+        .on("click", ".refresh-btn", () => {
+          kendo.ui.progress(this.$(".parameters-tree", this.$el), true);
+          this.allParametersDataSource
+            .read()
+            .then(() => {
+              kendo.ui.progress(this.$(".parameters-tree", this.$el), false);
+              this.$emit("ank-admin-notify", {
+                content: {
+                  title: "Parameters loaded",
+                  message: "Parameters successfully loaded from server",
+                  type: "admin-success"
+                }
+              });
+            })
+            .catch(() => {
+              kendo.ui.progress(this.$(".parameters-tree", this.$el), false);
+              this.$emit("ank-admin-notify", {
+                content: {
+                  title: "Parameters loading failed",
+                  message: "Loading of parameters from server failed",
+                  type: "admin-error"
+                }
+              });
+            });
+        })
         .on("click", ".expand-btn", () => this.expand(true))
         .on("click", ".collapse-btn", () => this.expand(false))
-        .on("input", ".global-search-input", e =>
-          this.searchParameters(e.currentTarget.value)
+        .on("click", ".filter-btn", () =>
+          this.searchParameters(this.$(".global-search-input", this.$el).val())
         )
+        .on("keyup", ".global-search-input", e => {
+          if (e.key === "Enter") {
+            this.searchParameters(
+              this.$(".global-search-input", this.$el).val()
+            );
+          }
+        })
         .on("click", ".reset-search-btn", () => {
           this.$(".global-search-input", this.$el).val("");
           this.searchParameters("");
@@ -162,11 +195,22 @@ export default {
         "/";
     },
 
-    // Open a window dislaying the entire value
+    // Open a window displaying the entire value
     displayValue(dataItem) {
       let displayedValue = dataItem.value
         ? dataItem.value
         : "[no value for this parameter]";
+
+      let template;
+      if (dataItem.value && dataItem.type === "json") {
+        template =
+          '<pre class="value-displayer-content">' +
+          JSON.stringify(JSON.parse(displayedValue), null, 2) +
+          "</pre>";
+      } else {
+        template =
+          '<p class="value-displayer-content">' + displayedValue + "</p>";
+      }
       this.$(".value-displayer")
         .kendoWindow({
           modal: true,
@@ -178,8 +222,7 @@ export default {
           maxHeight: "80%",
 
           content: {
-            template:
-              '<p class="value-displayer-content">' + displayedValue + "</p>"
+            template: template
           },
 
           open: () =>
@@ -214,7 +257,7 @@ export default {
           !this.$(".filterable-header", this.$el).children(".filter-icon")
             .length
         ) {
-          this.$(".filterable-header", this.$el).append(
+          this.$(".filterable-header", this.$el).prepend(
             this.$('<i class="material-icons filter-icon">filter_list</i>')
           );
         }
@@ -325,6 +368,16 @@ export default {
       }
 
       this.$emit("switchParameters");
+    },
+
+    // Resize tree to fit the window
+    resizeTree() {
+      let $tree = this.$(".parameters-tree", this.$el);
+      let kTree = $tree.data("kendoTreeList");
+      if (kTree) {
+        $tree.height(this.$(window).height() - $tree.offset().top - 4);
+        kTree.resize();
+      }
     }
   },
 
@@ -353,13 +406,6 @@ export default {
       });
 
     // At window resize, resize the tree list to fit the window
-    window.addEventListener("resize", () => {
-      let $tree = this.$(".parameters-tree", this.$el);
-      let kTree = $tree.data("kendoTreeList");
-      if (kTree) {
-        $tree.height(this.$(window).height() - $tree.offset().top - 4);
-        kTree.resize();
-      }
-    });
+    window.addEventListener("resize", () => this.resizeTree());
   }
 };

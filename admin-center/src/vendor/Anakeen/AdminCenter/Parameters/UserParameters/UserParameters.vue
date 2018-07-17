@@ -10,7 +10,7 @@
                             <i class="input-group-addon material-icons reset-search-btn user-search-reset-btn" @click="clearSearchInput">close</i>
                         </div>
                         <div class="input-group-append">
-                            <button class="btn btn-primary" @click.stop="searchUser" :disabled="isSearchButtonDisabled">Search</button>
+                            <button class="btn btn-secondary" @click.stop="searchUser" :disabled="isSearchButtonDisabled">Search</button>
                         </div>
                     </div>
                 </div>
