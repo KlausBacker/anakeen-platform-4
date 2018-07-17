@@ -96,6 +96,13 @@ export default {
                 }
               }
             },
+            filter: e => {
+              if (e.filter === null){
+                this.allRoutesDataSource.filter({});
+              } else {
+                this.expand(true);
+              }
+            },
             sortable: true,
             resizable: false,
             expand: e => {
