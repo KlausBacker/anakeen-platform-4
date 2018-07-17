@@ -68,3 +68,50 @@ It must trigger the event `ank-admin-notify` with the following parameter :
 ```
 
 `title` is optionnal and `type` can be equal to `"admin-error"` or `"admin-success"`
+
+### Plugin Hooks
+
+The plugin can self-register a hook function to bind the show/hide plugin visibility 
+in the Admin Center. These functions are only available on the top level element that represent the plugin.
+
+**On plugin show**
+```javascript
+myPlugin.onpluginshow = function (element) {
+    console.log("The plugin dom element : ", element);
+}
+```
+
+**On plugin hidden**
+```javascript
+myPlugin.onpluginhidden = function (element) {
+    console.log("The plugin dom element : ", element);
+}
+```
+
+NB: If VueJS and vue-custom-element are used to build the plugin web component, Vue-like hooks lifecycle (such as `mounted`, `updated`) can be used.
+
+Example : VueJS Plugin 
+```html
+<template>
+    <div></div>
+</template>
+
+<script>
+export default {
+    mounted() {
+        // Vuejs hook lifecycle
+        console.log("The plugin is mounted");
+    },
+    
+    // Only available on the plugin top level component
+    pluginShow() {
+        console.log("The plugin is shown");
+    },
+    
+    // Only available on the plugin top level component
+    pluginHidden() {
+        console.log("The plugin is hidden");
+    }
+}
+</script>
+```
