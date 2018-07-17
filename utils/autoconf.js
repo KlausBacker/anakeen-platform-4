@@ -6,6 +6,9 @@ const CONF_NAME = "./.anakeen-cli.xml";
 exports.autoconf = () => {
   return new Promise((resolve, reject) => {
     //read file
+    if (!fs.existsSync(CONF_NAME)) {
+      return resolve({});
+    }
     fs.readFile(CONF_NAME, { encoding: "utf-8" }, (err, content) => {
       if (err) {
         reject(err);
@@ -16,9 +19,12 @@ exports.autoconf = () => {
         { tagNameProcessors: [xml2js.processors.stripPrefix] },
         (err, data) => {
           if (err) {
-            reject(err);
+            return reject(err);
           }
           //convert xml data to arguments
+          if (!data) {
+            return resolve({});
+          }
           const conf = {};
           if (data.config.path) {
             const path = data.config.path[0];
