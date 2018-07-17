@@ -4,6 +4,7 @@
             <ul>
                 <li class="routes-tab k-state-active">
                     Routes
+                    <div class="middlewares-dialog"></div>
                 </li>
                 <li class="middlewares-tab">
                     Middlewares

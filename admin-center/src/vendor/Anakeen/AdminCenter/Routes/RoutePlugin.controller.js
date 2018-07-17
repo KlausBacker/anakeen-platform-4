@@ -2,6 +2,19 @@ export default {
   name: "admin-center-list-routes",
   data() {
     return {
+      allApplicableMiddleware: new kendo.data.TreeListDataSource({
+        schema: {
+          model: {
+            fields: {
+              Name: { type: "string", editable: false, nullable: false},
+              Method: {type: "string", editable: false, nullable: false},
+              Pattern: {type: "string", editable: false, nullable: false},
+              Description: {type: "string", editable: false, nullable: false},
+              Priority: {type: "number", editable: false, nullable: false}
+            }
+          }
+        }
+      }),
       allRoutesDataSource: new kendo.data.TreeListDataSource({
         transport: {
           read: "/api/v2/admin/routes/"
@@ -88,6 +101,16 @@ export default {
                 width: "9%",
                 filterable: false,
                 sortable: false
+              },
+              {
+                field: "middlewares",
+                sortable: false,
+                width: "7%",
+                template:
+                  "# if(data.rowLevel === 2) { #" +
+                  '<button type="button" class="btn btn-primary btn-sm mwList-btn">Middleware</button>' +
+                  " # } #",
+                filterable: false
               }
             ],
             toolbar: refreshBtn,
@@ -119,6 +142,11 @@ export default {
             dataBound: e => {
               this.addClassToRow(e.sender);
               this.restoreTreeState(".routes-tree");
+              this.$(".mwList-btn").on("click", event => {
+                // add middlewares applicable to route to the dataSource of kendo treeList
+
+                this.$(".middlewares-dialog").data("kendoDialog").open();
+              });
               this.$(".activation-btn").on("click", event => {
                 this.$(event.target).addClass("active");
                 this.$(event.target).siblings(".deactivation-btn").removeClass("active");
@@ -153,6 +181,7 @@ export default {
                   }
                 }
               });
+
               this.$(".deactivation-btn").on("click", event => {
                 this.$(event.target).addClass("active");
                 this.$(event.target).siblings(".activation-btn").removeClass("active");
@@ -187,6 +216,7 @@ export default {
                   }
                 }
               });
+
               // activate/deactivate switch according to dataSource
               this.$(".activation-btn").each((index, item) => {
                 let route = this.allRoutesDataSource._data.find(
@@ -248,6 +278,53 @@ export default {
         this.$(".routeExpand-btn").kendoButton({ icon: "arrow-60-down"}),
         this.$(".routeCollapse-btn").kendoButton({ icon: "arrow-60-up"})
       );
+      this.$(".middlewares-dialog").kendoDialog({
+        visible: false,
+        title: "Applicable middlewares to routes",
+        closable: true,
+        modal: false,
+        content: '<div class="mw-treelist"></div>',
+        initOpen: initOpenMiddlewaresDialog
+      });
+      function initOpenMiddlewaresDialog() {
+        setTimeout(function () {
+          this.$(".mw-treelist").data("kendoTreeList").refresh();
+        }, 0);
+      };
+      this.$(".mw-treelist")
+        .kendoTreeList({
+          dataSource: this.allApplicableMiddleware,
+          columns: [
+            {
+              field: "name",
+              title: "Name",
+              width: "28%",
+            },
+            {
+              field: "method",
+              title: "Method",
+              width: "7%",
+            },
+            {
+              field: "pattern",
+              title: "Pattern",
+              width: "30%",
+            },
+            {
+              field: "description",
+              title: "Description",
+              width: "30%",
+            },
+            {
+              field: "priority",
+              title: "Priority",
+              width: "5%",
+            }
+          ],
+          filterable: false,
+          sortable: false,
+          resizable: false,
+      });
       this.$(".middlewares-tab").select(
         this.$(".middlewares-tree")
           .kendoTreeList({
