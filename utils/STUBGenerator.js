@@ -54,13 +54,6 @@ const generateFields = field => {
       listFields += `        const ${inta.$.name}='${inta.$.name}';\r\n`;
     });
   }
-  // [option]
-  if (field.fieldoption) {
-    field.fieldoption.forEach(option => {
-      listFields += `        /** [option] ${option.$.label} */\r\n`;
-      listFields += `        const ${option.$.name}='${option.$.name}';\r\n`;
-    });
-  }
   return listFields;
 };
 
