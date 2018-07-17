@@ -3,7 +3,10 @@ const signale = require("signale");
 const fs = require("fs");
 const inquirer = require("inquirer");
 const { createSmartStructure } = require("../tasks/createSmartStructure");
-const { checkVendorName, checkSmartStructureName } = require("../utils/checkName");
+const {
+  checkVendorName,
+  checkSmartStructureName
+} = require("../utils/checkName");
 
 signale.config({
   displayTimestamp: true,
