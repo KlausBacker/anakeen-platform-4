@@ -88,7 +88,9 @@ exports.parseStub = file => {
         if (result.config.structureconfiguration) {
           result.config.structureconfiguration.forEach(currentConf => {
             const infos = currentConf.$;
-            const currentClass = currentConf.class[0];
+            const currentClass = currentConf.class
+              ? currentConf.class[0]
+              : false;
             const fields = currentConf.fields;
             let fieldsString = "";
             if (fields) {
