@@ -13,7 +13,7 @@ class AllRoutes
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response)
     {
-            $allRoutes = new \Anakeen\Router\RoutesConfig();
+            $allRoutes = new \Anakeen\Router\RouterManager();
             $tabRoutes = $allRoutes->getRoutes();
             $result = [];
             foreach ($tabRoutes as $route) {

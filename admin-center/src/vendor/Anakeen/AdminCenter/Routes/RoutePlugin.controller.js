@@ -10,7 +10,8 @@ export default {
           data: function(response) {
             return response.data;
           }
-        }
+        },
+        sort: { field: "rowLevel", dir: "asc" }
       }),
       allMiddlewareDataSource: new kendo.data.TreeListDataSource({
         transport: {
@@ -58,14 +59,14 @@ export default {
                 field: "description",
                 title: "Description",
                 sortable: false,
-                width: "30%"
+                width: "25%"
               },
               {
                 field: "priority",
                 title: "Priority",
                 filterable: false,
                 sortable: false,
-                width: "5%"
+                width: "3%"
               },
               {
                 field: "overrided",
@@ -75,10 +76,15 @@ export default {
                 width: "5%"
               },
               {
-                fiedl: "active",
+                field: "active",
                 template:
-                  '<input type="checkbox" class="activation-switch" aria-label="Activation Switch"/>',
-                width: "5%",
+                  "# if(data.rowLevel === 2) { #" +
+                  '<div class="btn-group" role="group" aria-label="activation group button">' +
+                  ' <button type="button" class="btn btn-primary btn-sm activation-btn">Activated</button>' +
+                  ' <button type="button" class="btn btn-outline-danger btn-sm deactivation-btn">Deactivated</button>' +
+                  "</div>" +
+                  "# } #",
+                width: "10%",
                 filterable: false,
                 sortable: false
               }
@@ -90,6 +96,13 @@ export default {
                 string: {
                   contains: "Contains..."
                 }
+              }
+            },
+            filter: e => {
+              if (e.filter === null) {
+                this.allRoutesDataSource.filter({});
+              } else {
+                this.expand(true);
               }
             },
             sortable: true,
@@ -105,83 +118,86 @@ export default {
             dataBound: e => {
               this.addClassToRow(e.sender);
               this.restoreTreeState();
-              this.$(
-                ".activation-switch:not(.activation-switch[data-role=switch])"
-              ).kendoMobileSwitch({
-                change: e => {
-                  const sender = e.sender.element[0].closest("tr[role=row]");
-                  if (sender.className.includes("tree-level-2")) {
-                    const elt = this.allRoutesDataSource._data.find(
-                      x => x.name === sender.firstElementChild.textContent
-                    );
-                    if (
-                      this.allRoutesDataSource._data.find(
-                        x => x.id === elt.parentId
-                      )
-                    ) {
-                      // if the route has a namespace
-                      const parentName = this.allRoutesDataSource._data.find(
-                        x => x.id === elt.parentId
-                      ).name;
-                      if (e.checked) {
-                        this.activateRoute(
-                          parentName +
-                            "::" +
-                            sender.firstElementChild.textContent,
-                          elt
-                        );
-                      } else if (!e.checked) {
-                        this.deactivateRoute(
-                          parentName +
-                            "::" +
-                            sender.firstElementChild.textContent,
-                          elt
-                        );
-                      }
-                    } else {
-                      // if the route doesn't have any namespace
-                      if (e.checked) {
-                        this.activateRoute(
-                          sender.firstElementChild.textContent,
-                          elt
-                        );
-                      } else if (!e.checked) {
-                        this.deactivateRoute(
-                          sender.firstElementChild.textContent,
-                          elt
-                        );
-                      }
-                    }
-                  } else {
-                    const parent = this.allRoutesDataSource._data.find(
-                      x => x.name === sender.firstElementChild.textContent
-                    ).id;
+              this.$(".activation-btn").on("click", event => {
+                event.target.disabled = true;
+                this.$(event.target)
+                  .siblings(".deactivation-btn")
+                  .prop("disabled", false);
+                const sender = event.target.closest("tr[role=row]");
+                const elt = this.allRoutesDataSource._data.find(
+                  x => x.name === sender.firstElementChild.textContent
+                );
+                if (sender.className.includes("tree-level-2")) {
+                  if (
+                    this.allRoutesDataSource._data.find(
+                      x => x.id === elt.parentId
+                    )
+                  ) {
+                    // if the route has a namespace
                     const parentName = this.allRoutesDataSource._data.find(
-                      x => x.id === parent
+                      x => x.id === elt.parentId
                     ).name;
-                    this.allRoutesDataSource._data.forEach(elt => {
-                      if (elt.parentId === parent) {
-                        // if the element is a child of the namespace activate/deactivate following namespace's route
-                        if (e.checked) {
-                          this.activateRoute(parentName + "::" + elt.name, elt);
-                        } else if (!e.checked) {
-                          this.deactivateRoute(
-                            parentName + "::" + elt.name,
-                            elt
-                          );
-                        }
-                      }
-                    });
+                    this.activateRoute(
+                      parentName + "::" + sender.firstElementChild.textContent,
+                      elt
+                    );
+                  } else {
+                    // if the route doesn't have any namespace
+                    this.activateRoute(
+                      sender.firstElementChild.textContent,
+                      elt
+                    );
+                  }
+                }
+              });
+              this.$(".deactivation-btn").on("click", event => {
+                event.target.disabled = true;
+                this.$(event.target)
+                  .siblings(".activation-btn")
+                  .prop("disabled", false);
+                const sender = event.target.closest("tr[role=row]");
+                const elt = this.allRoutesDataSource._data.find(
+                  x => x.name === sender.firstElementChild.textContent
+                );
+                if (sender.className.includes("tree-level-2")) {
+                  if (
+                    this.allRoutesDataSource._data.find(
+                      x => x.id === elt.parentId
+                    )
+                  ) {
+                    // if the route has a namespace
+                    const parentName = this.allRoutesDataSource._data.find(
+                      x => x.id === elt.parentId
+                    ).name;
+                    this.deactivateRoute(
+                      parentName + "::" + sender.firstElementChild.textContent,
+                      elt
+                    );
+                  } else {
+                    // if the route doesn't have any namespace
+                    this.deactivateRoute(
+                      sender.firstElementChild.textContent,
+                      elt
+                    );
                   }
                 }
               });
               // activate/deactivate switch according to dataSource
-              // the point of this solution is to 'bind' kendo switch checked attribute
-              // to kendo treeList dataSource
-              this.$(".activation-switch").each((index, item) => {
-                this.$(item)
-                  .data("kendoMobileSwitch")
-                  .check(this.allRoutesDataSource._data[index].active);
+              this.$(".activation-btn").each((index, item) => {
+                let route = this.allRoutesDataSource._data.find(
+                  x =>
+                    x.name ===
+                    item.closest("tr[role=row]").firstElementChild.textContent
+                );
+                item.disabled = route.active;
+              });
+              this.$(".deactivation-btn").each((index, item) => {
+                let route = this.allRoutesDataSource._data.find(
+                  x =>
+                    x.name ===
+                    item.closest("tr[role=row]").firstElementChild.textContent
+                );
+                item.disabled = !route.active;
               });
             }
           })
@@ -304,12 +320,29 @@ export default {
       }
     },
     activateRoute(route, elt) {
+      kendo.ui.progress(this.$(".routes-tree"), true);
       return this.$ankApi
         .post(encodeURI("admin/routes/" + route + "/activate/"))
         .then(response => {
           if (response.status === 200 && response.statusText === "OK") {
             elt.active = true;
+            this.$emit("ank-admin-notify", {
+              content: {
+                title: "Route Activation",
+                message: "The route " + elt.name + " has been activated\n",
+                type: "admin-success"
+              }
+            });
+            kendo.ui.progress(this.$(".routes-tree"), false);
           } else {
+            this.$emit("ank-admin-notify", {
+              content: {
+                title: "Route Activation",
+                message: "The route " + elt.name + " failed to be activated\n",
+                type: "admin-error"
+              }
+            });
+            kendo.ui.progress(this.$(".routes-tree"), false);
             throw new Error(response);
           }
         })
@@ -318,12 +351,30 @@ export default {
         });
     },
     deactivateRoute(route, elt) {
+      kendo.ui.progress(this.$(".routes-tree"), true);
       return this.$ankApi
         .delete(encodeURI("admin/routes/" + route + "/deactivate/"))
         .then(response => {
           if (response.status === 200 && response.statusText === "OK") {
             elt.active = false;
+            this.$emit("ank-admin-notify", {
+              content: {
+                title: "Route Deactivation",
+                message: "The route " + elt.name + " has been deactivated\n",
+                type: "admin-success"
+              }
+            });
+            kendo.ui.progress(this.$(".routes-tree"), false);
           } else {
+            this.$emit("ank-admin-notify", {
+              content: {
+                title: "Route Deactivation",
+                message:
+                  "The route " + elt.name + " failed to be deactivated\n",
+                type: "admin-error"
+              }
+            });
+            kendo.ui.progress(this.$(".routes-tree"), false);
             throw new Error(response);
           }
         })
@@ -342,6 +393,21 @@ export default {
     });
     this.initTreeList();
     this.restoreTreeState();
+    // Add event listener on treeList to expand/collapse rows on click
+    // and remove mousedown event listener to prevent double expand/collapse at click on arrows of treeList
+    this.$(".routes-tree")
+      .off("mousedown")
+      .on("mouseup", "tbody > .tree-level-1", e => {
+        let treeList = this.$(e.delegateTarget).data("kendoTreeList");
+        if (this.$(e.currentTarget).attr("aria-expanded") === "false") {
+          treeList.expand(e.currentTarget);
+        } else {
+          treeList.collapse(e.currentTarget);
+        }
+
+        this.addClassToRow(treeList);
+        this.saveTreeState();
+      });
     window.addEventListener("resize", () => {
       let $tree = this.$(".routes-tree");
       let ktree = $tree.data("kendoTreeList");
