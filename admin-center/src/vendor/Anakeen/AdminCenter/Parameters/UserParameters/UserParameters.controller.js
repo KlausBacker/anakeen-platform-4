@@ -562,7 +562,7 @@ export default {
     // Resize users tree
     resizeUsersGrid() {
       let $usersGrid = this.$(".users-grid", this.$el);
-      let kUsersGrid = this.usersGrid;
+      let kUsersGrid = $usersGrid.data("kendoGrid");
       if (kUsersGrid) {
         $usersGrid.height(
           this.$(window).height() - $usersGrid.offset().top - 4
@@ -574,7 +574,7 @@ export default {
     // Resize user parameters tree
     resizeUserParametersTree() {
       let $tree = this.$(".user-parameters-tree", this.$el);
-      let kTree = this.parametersTree;
+      let kTree = $tree.data("kendoTreeList");
       if (kTree) {
         $tree.height(this.$(window).height() - $tree.offset().top - 4);
         kTree.resize();

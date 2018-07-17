@@ -381,7 +381,7 @@ export default {
     // Resize tree to fit the window
     resizeTree() {
       let $tree = this.$(".parameters-tree", this.$el);
-      let kTree = this.parametersTree;
+      let kTree = $tree.data("kendoTreeList");
       if (kTree) {
         $tree.height(this.$(window).height() - $tree.offset().top - 4);
         kTree.resize();
