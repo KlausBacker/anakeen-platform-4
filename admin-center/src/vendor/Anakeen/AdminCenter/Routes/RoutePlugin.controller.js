@@ -280,12 +280,29 @@ export default {
       }
     },
     activateRoute(route, elt) {
+      kendo.ui.progress(this.$('.routes-tree'), true);
       return this.$ankApi
         .post(encodeURI("admin/routes/" + route + "/activate/"))
         .then(response => {
           if (response.status === 200 && response.statusText === "OK") {
             elt.active = true;
+            this.$emit("ank-admin-notify", {
+              content: {
+                title: "Route Activation",
+                message: "The route " + elt.name + " has been activated\n",
+                type: "admin-success",
+              }
+            });
+            kendo.ui.progress(this.$('.routes-tree'), false);
           } else {
+            this.$emit("ank-admin-notify", {
+              content: {
+                title: "Route Activation",
+                message: "The route " + elt.name + " failed to be activated\n",
+                type: "admin-error",
+              }
+            });
+            kendo.ui.progress(this.$('.routes-tree'), false);
             throw new Error(response);
           }
         })
@@ -294,12 +311,29 @@ export default {
         });
     },
     deactivateRoute(route, elt) {
+      kendo.ui.progress(this.$('.routes-tree'), true);
       return this.$ankApi
         .delete(encodeURI("admin/routes/" + route + "/deactivate/"))
         .then(response => {
           if (response.status === 200 && response.statusText === "OK") {
             elt.active = false;
+            this.$emit("ank-admin-notify", {
+              content: {
+                title: "Route Deactivation",
+                message: "The route " + elt.name + " has been deactivated\n",
+                type: "admin-success",
+              }
+            });
+            kendo.ui.progress(this.$('.routes-tree'), false);
           } else {
+            this.$emit("ank-admin-notify", {
+              content: {
+                title: "Route Deactivation",
+                message: "The route " + elt.name + " failed to be deactivated\n",
+                type: "admin-error",
+              }
+            });
+            kendo.ui.progress(this.$('.routes-tree'), false);
             throw new Error(response);
           }
         })
