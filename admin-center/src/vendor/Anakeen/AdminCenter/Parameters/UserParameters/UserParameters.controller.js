@@ -25,11 +25,10 @@ export default {
   },
 
   methods: {
-    // Init the treeList containing users (1 level treeList)
-    initUserTreeList() {
-      this.$(".users-tree", this.$el)
+    // Init the grid containing users
+    initUsersGrid() {
+      this.$(".users-grid", this.$el)
         .kendoGrid({
-          //.kendoTreeList({
           columns: [
             { field: "login", title: "Login" },
             { field: "firstname", title: "First name" },
@@ -43,7 +42,7 @@ export default {
             }
           ],
 
-          // Datasource set to display the first 5 users in treeList
+          // Datasource set to display the users in a grid
           dataSource: {
             transport: {
               read: {
@@ -74,15 +73,16 @@ export default {
             this.$(".selection-btn", this.$el).kendoButton({
               icon: "user"
             });
+            this.restoreTreeState();
           }
         })
         .on("click", ".selection-btn", e => {
           // Select a user to display his parameters with the data item
-          let treeList = this.$(e.delegateTarget).data("kendoGrid");
-          treeList.select(e.currentTarget.parentNode.parentNode);
-          let dataItem = treeList.dataItem(treeList.select());
+          let grid = this.$(e.delegateTarget).data("kendoGrid");
+          grid.select(e.currentTarget.parentNode.parentNode);
+          let dataItem = grid.dataItem(grid.select());
           this.selectUser(dataItem);
-          treeList.clearSelection();
+          grid.clearSelection();
         });
     },
 
@@ -206,8 +206,8 @@ export default {
           // Focus on search input
           this.$(".user-search-input", this.$el).focus();
 
-          // Resize user treeList when it is displayed
-          this.resizeUsersTree();
+          // Resize users grid when it is displayed
+          this.resizeUsersGrid();
         })
         .on("click", ".refresh-btn", () => {
           // Re-fetch data from server
@@ -273,7 +273,7 @@ export default {
       });
     },
 
-    // Select a user in user treeList and display his parameters
+    // Select a user in users grid and display his parameters
     selectUser(dataItem) {
       // Set new DataSource
       this.actualLogin = dataItem.login;
@@ -316,7 +316,7 @@ export default {
     },
 
     // Send a request to the server to remove the user definition of the passed parameter
-    // To restore the system value of this parameter for the user
+    // to restore the system value of this parameter for the user
     deleteParameter(dataItem) {
       this.$ankApi
         .delete(
@@ -353,7 +353,7 @@ export default {
           this.userParametersDataSource.read();
         })
         .catch(() => {
-          // Show an error window to nofity the user that the parameter restoration failed
+          // Show an error window to notify the user that the parameter restoration failed
           this.$(".delete-error-window")
             .kendoWindow({
               modal: true,
@@ -393,7 +393,7 @@ export default {
     searchUser() {
       let user = this.$(".user-search-input", this.$el).val();
       if (user.trim()) {
-        let usersDataSource = new kendo.data.TreeListDataSource({
+        let usersDataSource = new kendo.data.DataSource({
           transport: {
             read: {
               url: "/api/v2/admin/parameters/users/search/" + user + "/"
@@ -406,7 +406,7 @@ export default {
           serverPaging: true,
           pageSize: 10
         });
-        this.$(".users-tree", this.$el)
+        this.$(".users-grid", this.$el)
           .data("kendoGrid")
           .setDataSource(usersDataSource);
       }
@@ -543,6 +543,8 @@ export default {
           }
         });
         this.addClassToRow(treeList);
+      } else {
+        this.expand(true);
       }
     },
 
@@ -562,12 +564,14 @@ export default {
     },
 
     // Resize users tree
-    resizeUsersTree() {
-      let $userTree = this.$(".users-tree", this.$el);
-      let kUserTree = $userTree.data("kendoGrid");
-      if (kUserTree) {
-        $userTree.height(this.$(window).height() - $userTree.offset().top - 4);
-        kUserTree.resize();
+    resizeUsersGrid() {
+      let $usersGrid = this.$(".users-grid", this.$el);
+      let kUsersGrid = $usersGrid.data("kendoGrid");
+      if (kUsersGrid) {
+        $usersGrid.height(
+          this.$(window).height() - $usersGrid.offset().top - 4
+        );
+        kUsersGrid.resize();
       }
     },
 
@@ -591,7 +595,7 @@ export default {
 
   mounted() {
     // Init treeList to display users
-    this.initUserTreeList();
+    this.initUsersGrid();
 
     // Init treeList to display user parameters
     this.initTreeList();
@@ -628,7 +632,7 @@ export default {
 
     // At window resize, resize the treeLists
     window.addEventListener("resize", () => {
-      this.resizeUsersTree();
+      this.resizeUsersGrid();
       this.resizeUserParametersTree();
     });
   }

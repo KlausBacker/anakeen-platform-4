@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </form>
-            <div class="users-tree"></div>
+            <div class="users-grid"></div>
             <div class="delete-confirmation-window" v-show="false" @keyup.enter.stop="closeDeleteConfirmation">
                 <div class="information-text">Parameter successfully restored to system value</div>
                 <a class="delete-confirmation-btn form-parameter-btn" @click="closeDeleteConfirmation">Back to parameters</a>

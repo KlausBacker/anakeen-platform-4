@@ -202,7 +202,7 @@ export default {
         : "[no value for this parameter]";
 
       let template;
-      if (dataItem.value && dataItem.type === "json") {
+      if (dataItem.value && this.isJson(dataItem.value)) {
         template =
           '<pre class="value-displayer-content">' +
           JSON.stringify(JSON.parse(displayedValue), null, 2) +
@@ -242,13 +242,21 @@ export default {
         this.allParametersDataSource.filter({
           logic: "or",
           filters: [
-            { field: "name", operator: "contains", value: researchTerms },
+            {
+              field: "name",
+              operator: "contains",
+              value: researchTerms
+            },
             {
               field: "description",
               operator: "contains",
               value: researchTerms
             },
-            { field: "value", operator: "contains", value: researchTerms }
+            {
+              field: "value",
+              operator: "contains",
+              value: researchTerms
+            }
           ]
         });
 
@@ -357,6 +365,8 @@ export default {
           }
         });
         this.addClassToRow(treeList);
+      } else {
+        this.expand(true);
       }
     },
 
@@ -377,6 +387,16 @@ export default {
       if (kTree) {
         $tree.height(this.$(window).height() - $tree.offset().top - 4);
         kTree.resize();
+      }
+    },
+
+    // Verify if the value of the parameter is a Json
+    isJson(value) {
+      try {
+        JSON.parse(value);
+        return true;
+      } catch (e) {
+        return false;
       }
     }
   },
