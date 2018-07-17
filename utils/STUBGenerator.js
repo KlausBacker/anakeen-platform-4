@@ -88,6 +88,7 @@ exports.parseStub = file => {
         if (result.config.structureconfiguration) {
           result.config.structureconfiguration.forEach(currentConf => {
             const infos = currentConf.$;
+            const currentClass = currentConf.class[0];
             const fields = currentConf.fields;
             let fieldsString = "";
             if (fields) {
@@ -100,11 +101,21 @@ exports.parseStub = file => {
               ? ` extends ${infos.extends}`
               : "";
 
+            let extendsSSPart = "";
+
+            if (infos.extends) {
+              //the current structure extends another one
+              extendsSSPart = infos.extends;
+              if (currentClass) {
+                extendsSSPart = currentClass;
+              }
+            }
+
             let content = `<?php
 
 namespace SmartStructure {
 
-    class ${upperCaseFirstLetter(infos.name)} extends ${infos.extends ||
+    class ${upperCaseFirstLetter(infos.name)} extends ${extendsSSPart ||
               "\\Anakeen\\SmartElement"}
     {
         const familyName = "${infos.name}";

@@ -3,7 +3,10 @@ const signale = require("signale");
 const fs = require("fs");
 const inquirer = require("inquirer");
 const { createSmartStructure } = require("../tasks/createSmartStructure");
-const { checkModuleName, checkVendorName } = require("../utils/checkName");
+const {
+  checkVendorName,
+  checkSmartStructureName
+} = require("../utils/checkName");
 
 signale.config({
   displayTimestamp: true,
@@ -29,7 +32,7 @@ const builder = {
     alias: "n",
     type: "string",
     coerce: arg => {
-      if (!checkModuleName(arg)) {
+      if (!checkSmartStructureName(arg)) {
         throw new Error(
           "SmartStructure name must be only a-zA-Z0-9_ , the current value is not valid : " +
             arg
@@ -58,7 +61,7 @@ const builder = {
     type: "string",
     default: "",
     coerce: arg => {
-      if (!checkVendorName(arg)) {
+      if (!checkSmartStructureName(arg)) {
         if (!arg) {
           return arg;
         }

@@ -2,5 +2,5 @@
 
 set -eo pipefail
 
-npm install eslint eslint-plugin-prettier prettier
+npm install
 node ./node_modules/eslint/bin/eslint.js ./

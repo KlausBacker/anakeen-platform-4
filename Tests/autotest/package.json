@@ -2,9 +2,7 @@
   "name": "autotest-docker",
   "version": "1.0.0",
   "description": "",
-  "dependencies": {
-    "xunit-viewer": "^5.0.4"
-  },
+  "dependencies": {},
   "devDependencies": {},
   "author": "",
   "license": "ISC"
