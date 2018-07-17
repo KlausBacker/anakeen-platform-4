@@ -36,7 +36,7 @@ class AllParameters
      * Execute function to get all parameters
      *
      * @return array
-     * @throws Exception
+     * @throws \Dcp\Db\Exception
      */
     private function doRequest()
     {

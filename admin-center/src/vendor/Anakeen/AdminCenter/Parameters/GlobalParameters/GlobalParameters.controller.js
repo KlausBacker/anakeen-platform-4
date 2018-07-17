@@ -237,9 +237,9 @@ export default {
               .title("Value of " + dataItem.name)
               .center()
         })
-        .data("kendoWindow")
-        .center()
-        .open();
+        .data("kendoWindow");
+
+      this.valueDisplayer.center().open();
     },
 
     // Filter name, description and value columns
@@ -374,11 +374,7 @@ export default {
 
     // Destroy editor to prevent conflicts with others editors and send event to show user parameters
     switchParameters() {
-      let editor = this.$(".edition-window").data("kendoWindow");
-      if (editor) {
-        editor.destroy();
-      }
-
+      this.destroyEditor();
       this.$emit("switchParameters");
     },
 
@@ -400,7 +396,31 @@ export default {
       } catch (e) {
         return false;
       }
+    },
+
+    // Destroy editor component
+    destroyEditor() {
+      let editor = this.$(".edition-window").data("kendoWindow");
+      if (editor) {
+        editor.destroy();
+      }
+    },
+
+    // Destroy all Kendo components to free memory
+    destroyKendoComponents() {
+      if (this.valueDisplayer) {
+        this.valueDisplayer.destroy();
+      }
+      if (this.parametersTree) {
+        this.parametersTree.destroy();
+      }
+
+      this.destroyEditor();
     }
+  },
+
+  beforeDestroy() {
+    this.destroyKendoComponents();
   },
 
   mounted() {

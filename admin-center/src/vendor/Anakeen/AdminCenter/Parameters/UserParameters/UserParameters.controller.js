@@ -20,14 +20,20 @@ export default {
       actualLogin: "",
 
       // Value entered in the search input
-      inputSearchValue: ""
+      inputSearchValue: "",
+
+      // Memorize kendo components
+      deleteConfirmationWindow: null,
+      deleteErrorWindow: null,
+      usersGrid: null,
+      parametersTreeList: null
     };
   },
 
   methods: {
     // Init the grid containing users
     initUsersGrid() {
-      this.$(".users-grid", this.$el)
+      this.usersGrid = this.$(".users-grid", this.$el)
         .kendoGrid({
           columns: [
             { field: "login", title: "Login" },
@@ -78,12 +84,13 @@ export default {
         })
         .on("click", ".selection-btn", e => {
           // Select a user to display his parameters with the data item
-          let grid = this.$(e.delegateTarget).data("kendoGrid");
+          let grid = this.usersGrid;
           grid.select(e.currentTarget.parentNode.parentNode);
           let dataItem = grid.dataItem(grid.select());
           this.selectUser(dataItem);
           grid.clearSelection();
-        });
+        })
+        .data("kendoGrid");
     },
 
     // Init the treeList containing all the parameters for the selected user
@@ -110,7 +117,7 @@ export default {
       // Add a class on filterable columns header to diplay a filter icon when filtering
       let headerAttributes = { class: "user-filterable-header" }; // jscs:ignore disallowQuotedKeysInObjects
 
-      this.$(".user-parameters-tree", this.$el)
+      this.parametersTree = this.$(".user-parameters-tree", this.$el)
         .kendoTreeList({
           dataSource: this.userParametersDataSource,
           columns: [
@@ -182,13 +189,13 @@ export default {
         })
         .on("click", ".edition-btn", e => {
           // Open parameter editor with selected dataItem
-          let treeList = this.$(e.delegateTarget).data("kendoTreeList");
+          let treeList = this.parametersTree;
           let dataItem = treeList.dataItem(e.currentTarget);
           this.openEditor(dataItem);
         })
         .on("click", ".delete-btn", e => {
           // Delete/Restore user parameter with selected dataItem
-          let treeList = this.$(e.delegateTarget).data("kendoTreeList");
+          let treeList = this.parametersTree;
           let dataItem = treeList.dataItem(e.currentTarget);
           this.deleteParameter(dataItem);
         })
@@ -256,7 +263,8 @@ export default {
         .on("click", ".reset-search-btn", () => {
           this.$(".global-search-input", this.$el).val("");
           this.searchParameters("");
-        });
+        })
+        .data("kendoTreeList");
 
       // Init kendoButtons of toolbar
       this.$(".back-btn", this.$el).kendoButton({
@@ -287,9 +295,7 @@ export default {
           data: "data"
         }
       });
-      this.$(".user-parameters-tree", this.$el)
-        .data("kendoTreeList")
-        .setDataSource(this.userParametersDataSource);
+      this.parametersTree.setDataSource(this.userParametersDataSource);
 
       // Display parameters and hide user search
       this.$(".user-search", this.$el).css("display", "none");
@@ -330,7 +336,7 @@ export default {
         )
         .then(() => {
           // Show a confirmation window to notify the user of the modification
-          this.$(".delete-confirmation-window")
+          this.deleteConfirmationWindow = this.$(".delete-confirmation-window")
             .kendoWindow({
               modal: true,
               draggable: false,
@@ -340,9 +346,9 @@ export default {
               visible: false,
               actions: []
             })
-            .data("kendoWindow")
-            .center()
-            .open();
+            .data("kendoWindow");
+
+          this.deleteConfirmationWindow.center().open();
 
           // Init the confirmation window's close kendoButton
           this.$(".delete-confirmation-btn").kendoButton({
@@ -354,7 +360,7 @@ export default {
         })
         .catch(() => {
           // Show an error window to notify the user that the parameter restoration failed
-          this.$(".delete-error-window")
+          this.deleteErrorWindow = this.$(".delete-error-window")
             .kendoWindow({
               modal: true,
               draggable: false,
@@ -364,9 +370,9 @@ export default {
               visible: false,
               actions: []
             })
-            .data("kendoWindow")
-            .center()
-            .open();
+            .data("kendoWindow");
+
+          this.deleteErrorWindow.center().open();
 
           // Init error window's close kendoButton
           this.$(".delete-error-btn").kendoButton({
@@ -377,16 +383,12 @@ export default {
 
     // Close restoration confirmation window
     closeDeleteConfirmation() {
-      this.$(".delete-confirmation-window")
-        .data("kendoWindow")
-        .close();
+      this.deleteConfirmationWindow.close();
     },
 
     // Close restoration error window
     closeDeleteError() {
-      this.$(".delete-error-window")
-        .data("kendoWindow")
-        .close();
+      this.deleteErrorWindow.close();
     },
 
     // Search a user on the server in users treeList
@@ -406,9 +408,7 @@ export default {
           serverPaging: true,
           pageSize: 10
         });
-        this.$(".users-grid", this.$el)
-          .data("kendoGrid")
-          .setDataSource(usersDataSource);
+        this.usersGrid.setDataSource(usersDataSource);
       }
     },
 
@@ -555,18 +555,14 @@ export default {
 
     // Destroy the parameter editor if it exists and emit event to display System parameters
     switchParameters() {
-      let editor = this.$(".edition-window").data("kendoWindow");
-      if (editor) {
-        editor.destroy();
-      }
-
+      this.destroyEditor();
       this.$emit("switchParameters");
     },
 
     // Resize users tree
     resizeUsersGrid() {
       let $usersGrid = this.$(".users-grid", this.$el);
-      let kUsersGrid = $usersGrid.data("kendoGrid");
+      let kUsersGrid = this.usersGrid;
       if (kUsersGrid) {
         $usersGrid.height(
           this.$(window).height() - $usersGrid.offset().top - 4
@@ -578,10 +574,42 @@ export default {
     // Resize user parameters tree
     resizeUserParametersTree() {
       let $tree = this.$(".user-parameters-tree", this.$el);
-      let kTree = $tree.data("kendoTreeList");
+      let kTree = this.parametersTree;
       if (kTree) {
         $tree.height(this.$(window).height() - $tree.offset().top - 4);
         kTree.resize();
+      }
+    },
+
+    // Destroy kendo components to free memory
+    destroyKendoComponents() {
+      this.destroyWindows();
+
+      if (this.parametersTreeList) {
+        this.parametersTreeList.destroy();
+      }
+      if (this.usersGrid) {
+        this.usersGrid.destroy();
+      }
+
+      this.destroyEditor();
+    },
+
+    // Destroy editor component
+    destroyEditor() {
+      let editor = this.$(".edition-window").data("kendoWindow");
+      if (editor) {
+        editor.destroy();
+      }
+    },
+
+    // Destroy kendo windows
+    destroyWindows() {
+      if (this.deleteConfirmationWindow) {
+        this.deleteConfirmationWindow.destroy();
+      }
+      if (this.deleteErrorWindow) {
+        this.deleteErrorWindow.destroy();
       }
     }
   },
@@ -591,6 +619,10 @@ export default {
     isSearchButtonDisabled() {
       return this.inputSearchValue === "";
     }
+  },
+
+  beforeDestroy() {
+    this.destroyKendoComponents();
   },
 
   mounted() {
@@ -620,7 +652,7 @@ export default {
     this.$(".user-parameters-tree", this.$el)
       .off("mousedown")
       .on("mouseup", "tbody > .grid-expandable", e => {
-        let treeList = this.$(e.delegateTarget).data("kendoTreeList");
+        let treeList = this.parametersTree;
         if (this.$(e.currentTarget).attr("aria-expanded") === "false") {
           treeList.expand(e.currentTarget);
         } else {

@@ -25,7 +25,12 @@ export default {
       jsonValue: {},
 
       // Saved value sent by the server in response
-      responseValue: ""
+      responseValue: "",
+
+      // Memorize kendo widgets
+      editionWindow: null,
+      confirmationWindow: null,
+      errorWindow: null
     };
   },
 
@@ -73,7 +78,7 @@ export default {
           );
         }
 
-        const kendoWindow = this.$(".edition-window")
+        this.editionWindow = this.$(".edition-window")
           .kendoWindow({
             modal: true,
             autoFocus: false,
@@ -115,15 +120,13 @@ export default {
         // Reset border color of fields
         this.$(".parameter-new-value", this.$el).css("border-color", "");
 
-        kendoWindow.center().open();
+        this.editionWindow.center().open();
       }
     },
 
     // Close the parameter editor
     closeEditor() {
-      this.$(".edition-window")
-        .data("kendoWindow")
-        .close();
+      this.editionWindow.close();
     },
 
     // Send request to modify parameter in server
@@ -156,7 +159,7 @@ export default {
           .then(response => {
             // Save the modified value sent by the server, and open a confirmation window
             this.responseValue = response.data.data.value;
-            this.$(".confirmation-window")
+            this.confirmationWindow = this.$(".confirmation-window")
               .kendoWindow({
                 modal: true,
                 draggable: false,
@@ -166,9 +169,9 @@ export default {
                 visible: false,
                 actions: []
               })
-              .data("kendoWindow")
-              .center()
-              .open();
+              .data("kendoWindow");
+
+            this.confirmationWindow.center().open();
 
             // Init confirmation window close kendoButton
             this.$(".close-confirmation-btn").kendoButton({
@@ -177,7 +180,7 @@ export default {
           })
           .catch(() => {
             // Open an error window to notify the user
-            this.$(".error-window")
+            this.errorWindow = this.$(".error-window")
               .kendoWindow({
                 modal: true,
                 draggable: false,
@@ -187,9 +190,9 @@ export default {
                 visible: false,
                 actions: []
               })
-              .data("kendoWindow")
-              .center()
-              .open();
+              .data("kendoWindow");
+
+            this.errorWindow.center().open();
 
             // Init error window close kendoButton
             this.$(".close-error-btn").kendoButton({
@@ -201,22 +204,14 @@ export default {
 
     // Close both confirmation and editor windows
     closeConfirmationAndEditor() {
-      this.$(".confirmation-window")
-        .data("kendoWindow")
-        .close();
-      this.$(".edition-window")
-        .data("kendoWindow")
-        .close();
+      this.confirmationWindow.close();
+      this.editionWindow.close();
     },
 
     // Close both error and editor windows
     closeErrorAndEditor() {
-      this.$(".error-window")
-        .data("kendoWindow")
-        .close();
-      this.$(".edition-window")
-        .data("kendoWindow")
-        .close();
+      this.errorWindow.close();
+      this.editionWindow.close();
     },
 
     // Check if a string is a correct Json
@@ -274,17 +269,28 @@ export default {
     this.openEditor();
   },
 
+  beforeDestroy() {
+    if (this.confirmationWindow) {
+      this.confirmationWindow.destroy();
+    }
+    if (this.errorWindow) {
+      this.errorWindow.destroy();
+    }
+    if (this.editionWindow) {
+      this.editionWindow.destroy();
+    }
+  },
+
   mounted() {
     this.openEditor();
 
     // When resizing the browser window, resize and center the edition window
     window.addEventListener("resize", () => {
-      let editionWindow = this.$(".edition-window").data("kendoWindow");
-      if (editionWindow) {
-        editionWindow.setOptions({
+      if (this.editionWindow) {
+        this.editionWindow.setOptions({
           width: "60%"
         });
-        editionWindow.center();
+        this.editionWindow.center();
       }
     });
   }
