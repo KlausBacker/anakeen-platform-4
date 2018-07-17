@@ -103,6 +103,8 @@ export default {
                 this.isJson(this.editedItem.value)
               ) {
                 this.jsonEditor.destroy();
+              } else if (this.parameterInputType === "enum") {
+                kendoDropdown.destroy();
               }
 
               this.$emit("closeEditor", this.responseValue);
