@@ -30,6 +30,8 @@ export default {
       let refreshBtn = `
                 <div class="routes-toolbar">
                     <a class="routeRefresh-btn"><a/>
+                    <a class="routeExpand-btn"></a>
+                    <a class="routeCollapse-btn"></a>
                 </div>
             `;
       this.$(".routes-tab").select(
@@ -201,10 +203,40 @@ export default {
               });
             }
           })
-          .on("click", ".routeRefresh-btn", () =>
-            this.allRoutesDataSource.read()
+          .on("click", ".routeRefresh-btn", () => {
+            kendo.ui.progress(this.$(".routes-tree"), true);
+            this.allRoutesDataSource
+              .read()
+              .then(() => {
+                kendo.ui.progress(this.$(".routes-tree"), false);
+                this.$emit("ank-admin-notify", {
+                  content: {
+                    title: "Routes loading",
+                    message: "Routes successfully loaded from server",
+                  },
+                  type: "admin-success"
+                });
+              })
+              .catch(() => {
+                kendo.ui.progress(this.$(".routes-tree"), false);
+                this.$emit("ank-admin-notify", {
+                  content: {
+                    title: "Routes loading failed",
+                    message: "Routes failed to load from server",
+                  },
+                  type: "admin-error"
+                });
+              });
+          })
+          .on("click", ".routeExpand-btn", () =>
+            this.expand(true, ".routes-tree")
+          )
+          .on("click", ".routeCollapse-btn", () =>
+            this.expand(false, ".routes-tree")
           ),
-        this.$(".routeRefresh-btn").kendoButton({ icon: "reload" })
+        this.$(".routeRefresh-btn").kendoButton({ icon: "reload" }),
+        this.$(".routeExpand-btn").kendoButton({ icon: "arrow-60-down"}),
+        this.$(".routeCollapse-btn").kendoButton({ icon: "arrow-60-up"})
       );
       this.$(".middlewares-tab").select(
         this.$(".middlewares-tree")
@@ -264,9 +296,18 @@ export default {
               this.restoreTreeState();
             }
           })
-          .on("click", ".refresh-btn", () =>
+          .on("click", ".routeRefresh-btn", () =>
             this.allMiddlewareDataSource.read()
           )
+          .on("click", ".routeExpand-btn", () =>
+            this.expand(true, ".middlewares-tree")
+          )
+          .on("click", ".routeCollapse-btn", () =>
+            this.expand(false, ".middlewares-tree")
+          ),
+        this.$(".routeRefresh-btn").kendoButton({icon: "reload"}),
+        this.$(".routeExpand-btn").kendoButton({icon: "arrow-60-down"}),
+        this.$(".routeCollapse-btn").kendoButton({icon: "arrow-60-up"}),
       );
     },
     addClassToRow(treeList) {
