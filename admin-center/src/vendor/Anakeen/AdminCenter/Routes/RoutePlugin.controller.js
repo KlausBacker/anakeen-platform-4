@@ -6,11 +6,11 @@ export default {
         schema: {
           model: {
             fields: {
-              Name: { type: "string", editable: false, nullable: false},
-              Method: {type: "string", editable: false, nullable: false},
-              Pattern: {type: "string", editable: false, nullable: false},
-              Description: {type: "string", editable: false, nullable: false},
-              Priority: {type: "number", editable: false, nullable: false}
+              Name: { type: "string", editable: false, nullable: false },
+              Method: { type: "string", editable: false, nullable: false },
+              Pattern: { type: "string", editable: false, nullable: false },
+              Description: { type: "string", editable: false, nullable: false },
+              Priority: { type: "number", editable: false, nullable: false }
             }
           }
         }
@@ -142,14 +142,18 @@ export default {
             dataBound: e => {
               this.addClassToRow(e.sender);
               this.restoreTreeState(".routes-tree");
-              this.$(".mwList-btn").on("click", event => {
+              this.$(".mwList-btn").on("click", () => {
                 // add middlewares applicable to route to the dataSource of kendo treeList
 
-                this.$(".middlewares-dialog").data("kendoDialog").open();
+                this.$(".middlewares-dialog")
+                  .data("kendoDialog")
+                  .open();
               });
               this.$(".activation-btn").on("click", event => {
                 this.$(event.target).addClass("active");
-                this.$(event.target).siblings(".deactivation-btn").removeClass("active");
+                this.$(event.target)
+                  .siblings(".deactivation-btn")
+                  .removeClass("active");
                 event.target.disabled = true;
                 this.$(event.target)
                   .siblings(".deactivation-btn")
@@ -184,7 +188,9 @@ export default {
 
               this.$(".deactivation-btn").on("click", event => {
                 this.$(event.target).addClass("active");
-                this.$(event.target).siblings(".activation-btn").removeClass("active");
+                this.$(event.target)
+                  .siblings(".activation-btn")
+                  .removeClass("active");
                 event.target.disabled = true;
                 this.$(event.target)
                   .siblings(".activation-btn")
@@ -236,11 +242,11 @@ export default {
                     item.closest("tr[role=row]").firstElementChild.textContent
                 );
                 item.disabled = !route.active;
-                if(!route.active) {
+                if (!route.active) {
                   this.$(item).addClass("active");
                 }
               });
-              this.expand(true, ".routes-tree")
+              this.expand(true, ".routes-tree");
             }
           })
           .on("click", ".routeRefresh-btn", () => {
@@ -252,7 +258,7 @@ export default {
                 this.$emit("ank-admin-notify", {
                   content: {
                     title: "Routes loading",
-                    message: "Routes successfully loaded from server",
+                    message: "Routes successfully loaded from server"
                   },
                   type: "admin-success"
                 });
@@ -262,7 +268,7 @@ export default {
                 this.$emit("ank-admin-notify", {
                   content: {
                     title: "Routes loading failed",
-                    message: "Routes failed to load from server",
+                    message: "Routes failed to load from server"
                   },
                   type: "admin-error"
                 });
@@ -275,8 +281,8 @@ export default {
             this.expand(false, ".routes-tree")
           ),
         this.$(".routeRefresh-btn").kendoButton({ icon: "reload" }),
-        this.$(".routeExpand-btn").kendoButton({ icon: "arrow-60-down"}),
-        this.$(".routeCollapse-btn").kendoButton({ icon: "arrow-60-up"})
+        this.$(".routeExpand-btn").kendoButton({ icon: "arrow-60-down" }),
+        this.$(".routeCollapse-btn").kendoButton({ icon: "arrow-60-up" })
       );
       this.$(".middlewares-dialog").kendoDialog({
         visible: false,
@@ -287,43 +293,44 @@ export default {
         initOpen: initOpenMiddlewaresDialog
       });
       function initOpenMiddlewaresDialog() {
-        setTimeout(function () {
-          this.$(".mw-treelist").data("kendoTreeList").refresh();
+        setTimeout(function() {
+          this.$(".mw-treelist")
+            .data("kendoTreeList")
+            .refresh();
         }, 0);
-      };
-      this.$(".mw-treelist")
-        .kendoTreeList({
-          dataSource: this.allApplicableMiddleware,
-          columns: [
-            {
-              field: "name",
-              title: "Name",
-              width: "28%",
-            },
-            {
-              field: "method",
-              title: "Method",
-              width: "7%",
-            },
-            {
-              field: "pattern",
-              title: "Pattern",
-              width: "30%",
-            },
-            {
-              field: "description",
-              title: "Description",
-              width: "30%",
-            },
-            {
-              field: "priority",
-              title: "Priority",
-              width: "5%",
-            }
-          ],
-          filterable: false,
-          sortable: false,
-          resizable: false,
+      }
+      this.$(".mw-treelist").kendoTreeList({
+        dataSource: this.allApplicableMiddleware,
+        columns: [
+          {
+            field: "name",
+            title: "Name",
+            width: "28%"
+          },
+          {
+            field: "method",
+            title: "Method",
+            width: "7%"
+          },
+          {
+            field: "pattern",
+            title: "Pattern",
+            width: "30%"
+          },
+          {
+            field: "description",
+            title: "Description",
+            width: "30%"
+          },
+          {
+            field: "priority",
+            title: "Priority",
+            width: "5%"
+          }
+        ],
+        filterable: false,
+        sortable: false,
+        resizable: false
       });
       this.$(".middlewares-tab").select(
         this.$(".middlewares-tree")
@@ -407,7 +414,7 @@ export default {
                 this.$emit("ank-admin-notify", {
                   content: {
                     title: "Middleware loading",
-                    message: "Middlewares successfully loaded from server",
+                    message: "Middlewares successfully loaded from server"
                   },
                   type: "admin-success"
                 });
@@ -417,11 +424,11 @@ export default {
                 this.$emit("ank-admin-notify", {
                   content: {
                     title: "Middlewares loading failed",
-                    message: "Middlewares failed to load from server",
+                    message: "Middlewares failed to load from server"
                   },
                   type: "admin-error"
                 });
-              })
+              });
           })
           .on("click", ".routeExpand-btn", () =>
             this.expand(true, ".middlewares-tree")
@@ -429,9 +436,9 @@ export default {
           .on("click", ".routeCollapse-btn", () =>
             this.expand(false, ".middlewares-tree")
           ),
-        this.$(".routeRefresh-btn").kendoButton({icon: "reload"}),
-        this.$(".routeExpand-btn").kendoButton({icon: "arrow-60-down"}),
-        this.$(".routeCollapse-btn").kendoButton({icon: "arrow-60-up"}),
+        this.$(".routeRefresh-btn").kendoButton({ icon: "reload" }),
+        this.$(".routeExpand-btn").kendoButton({ icon: "arrow-60-down" }),
+        this.$(".routeCollapse-btn").kendoButton({ icon: "arrow-60-up" })
       );
     },
     addClassToRow(treeList) {
@@ -494,7 +501,7 @@ export default {
             this.$emit("ank-admin-notify", {
               content: {
                 title: "Route Activation",
-                message: "The route " + elt.name + " has been activated\n",
+                message: "The route " + elt.name + " has been activated\n"
               },
               type: "admin-success"
             });
@@ -503,7 +510,7 @@ export default {
             this.$emit("ank-admin-notify", {
               content: {
                 title: "Route Activation",
-                message: "The route " + elt.name + " failed to be activated\n",
+                message: "The route " + elt.name + " failed to be activated\n"
               },
               type: "admin-error"
             });
@@ -525,7 +532,7 @@ export default {
             this.$emit("ank-admin-notify", {
               content: {
                 title: "Route Deactivation",
-                message: "The route " + elt.name + " has been deactivated\n",
+                message: "The route " + elt.name + " has been deactivated\n"
               },
               type: "admin-success"
             });
@@ -534,8 +541,7 @@ export default {
             this.$emit("ank-admin-notify", {
               content: {
                 title: "Route Deactivation",
-                message:
-                  "The route " + elt.name + " failed to be deactivated\n",
+                message: "The route " + elt.name + " failed to be deactivated\n"
               },
               type: "admin-error"
             });
