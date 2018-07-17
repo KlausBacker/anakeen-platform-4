@@ -223,8 +223,8 @@ export default {
                 content: {
                   title: "Parameters loaded",
                   message: "Parameters successfully loaded from server",
-                  type: "admin-success"
-                }
+                },
+                type: "admin-success"
               });
             })
             .catch(() => {
@@ -235,9 +235,9 @@ export default {
               this.$emit("ank-admin-notify", {
                 content: {
                   title: "Parameters loading failed",
-                  message: "Loading of parameters from server failed",
-                  type: "admin-error"
-                }
+                  message: "Loading of parameters from server failed"
+                },
+                type: "admin-error"
               });
             });
         })

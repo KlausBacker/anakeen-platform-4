@@ -136,9 +136,9 @@ export default {
               this.$emit("ank-admin-notify", {
                 content: {
                   title: "Parameters loaded",
-                  message: "Parameters successfully loaded from server",
-                  type: "admin-success"
-                }
+                  message: "Parameters successfully loaded from server"
+                },
+                type: "admin-success"
               });
             })
             .catch(() => {
@@ -146,9 +146,9 @@ export default {
               this.$emit("ank-admin-notify", {
                 content: {
                   title: "Parameters loading failed",
-                  message: "Loading of parameters from server failed",
-                  type: "admin-error"
-                }
+                  message: "Loading of parameters from server failed"
+                },
+                type: "admin-error"
               });
             });
         })
@@ -205,7 +205,7 @@ export default {
       if (dataItem.value && this.isJson(dataItem.value)) {
         template =
           '<pre class="value-displayer-content">' +
-          JSON.stringify(JSON.parse(displayedValue), null, 2) +
+          JSON.stringify(JSON.parse(displayedValue), null, 5) +
           "</pre>";
       } else {
         template =
