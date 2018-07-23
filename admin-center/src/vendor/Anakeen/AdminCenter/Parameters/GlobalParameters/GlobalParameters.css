@@ -89,4 +89,6 @@ tr:not(.grid-expandable) > td .k-icon.k-i-none:first-child {
 
 .value-displayer-content {
     overflow-wrap: break-word;
+    font-family: inherit;
+    font-size: inherit;
 }

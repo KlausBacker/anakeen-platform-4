@@ -25,7 +25,11 @@ export default {
       editedItem: null,
 
       // Current edition route to pass to the parameter editor
-      editRoute: ""
+      editRoute: "",
+
+      // kendo components
+      parametersTree: null,
+      valueDisplayer: null
     };
   },
 
@@ -53,7 +57,7 @@ export default {
       // class to add to the treeList headers to display a filter icon showing filtered columns
       let headerAttributes = { class: "filterable-header" }; // jscs:ignore disallowQuotedKeysInObjects
 
-      this.$(".parameters-tree", this.$el)
+      let tree = this.$(".parameters-tree", this.$el)
         .kendoTreeList({
           dataSource: this.allParametersDataSource,
           columns: [
@@ -117,12 +121,12 @@ export default {
         })
         .on("click", ".edition-btn", e => {
           // Open editor with the dataItem of the edited row
-          let treeList = this.$(e.delegateTarget).data("kendoTreeList");
+          let treeList = this.parametersTree;
           let dataItem = treeList.dataItem(e.currentTarget);
           this.openEditor(dataItem);
         })
         .on("click", ".display-btn", e => {
-          let treeList = this.$(e.delegateTarget).data("kendoTreeList");
+          let treeList = this.parametersTree;
           let dataItem = treeList.dataItem(e.currentTarget);
           this.displayValue(dataItem);
         })
@@ -136,9 +140,9 @@ export default {
               this.$emit("ank-admin-notify", {
                 content: {
                   title: "Parameters loaded",
-                  message: "Parameters successfully loaded from server",
-                  type: "admin-success"
-                }
+                  message: "Parameters successfully loaded from server"
+                },
+                type: "admin-success"
               });
             })
             .catch(() => {
@@ -146,9 +150,9 @@ export default {
               this.$emit("ank-admin-notify", {
                 content: {
                   title: "Parameters loading failed",
-                  message: "Loading of parameters from server failed",
-                  type: "admin-error"
-                }
+                  message: "Loading of parameters from server failed"
+                },
+                type: "admin-error"
               });
             });
         })
@@ -168,6 +172,8 @@ export default {
           this.$(".global-search-input", this.$el).val("");
           this.searchParameters("");
         });
+
+      this.parametersTree = tree.data("kendoTreeList");
 
       // Init kendoButtons
       this.$(".switch-btn", this.$el).kendoButton({
@@ -202,16 +208,16 @@ export default {
         : "[no value for this parameter]";
 
       let template;
-      if (dataItem.value && dataItem.type === "json") {
+      if (dataItem.value && this.isJson(dataItem.value)) {
         template =
           '<pre class="value-displayer-content">' +
-          JSON.stringify(JSON.parse(displayedValue), null, 2) +
+          JSON.stringify(JSON.parse(displayedValue), null, 5) +
           "</pre>";
       } else {
         template =
           '<p class="value-displayer-content">' + displayedValue + "</p>";
       }
-      this.$(".value-displayer")
+      this.valueDisplayer = this.$(".value-displayer")
         .kendoWindow({
           modal: true,
           draggable: false,
@@ -231,9 +237,9 @@ export default {
               .title("Value of " + dataItem.name)
               .center()
         })
-        .data("kendoWindow")
-        .center()
-        .open();
+        .data("kendoWindow");
+
+      this.valueDisplayer.center().open();
     },
 
     // Filter name, description and value columns
@@ -242,13 +248,21 @@ export default {
         this.allParametersDataSource.filter({
           logic: "or",
           filters: [
-            { field: "name", operator: "contains", value: researchTerms },
+            {
+              field: "name",
+              operator: "contains",
+              value: researchTerms
+            },
             {
               field: "description",
               operator: "contains",
               value: researchTerms
             },
-            { field: "value", operator: "contains", value: researchTerms }
+            {
+              field: "value",
+              operator: "contains",
+              value: researchTerms
+            }
           ]
         });
 
@@ -295,7 +309,7 @@ export default {
 
     // Expand or collapse all rows of treeList (true => expand / false => collapse)
     expand(expansion) {
-      let treeList = this.$(".parameters-tree", this.$el).data("kendoTreeList");
+      let treeList = this.parametersTree;
       let $rows = this.$("tr.k-treelist-group", treeList.tbody);
       this.$.each($rows, (idx, row) => {
         if (expansion) {
@@ -325,9 +339,7 @@ export default {
       // setTimeout(function, 0) to save state when all DOM content has been updated
       setTimeout(() => {
         let treeState = [];
-        let treeList = this.$(".parameters-tree", this.$el).data(
-          "kendoTreeList"
-        );
+        let treeList = this.parametersTree;
         let items = treeList.items();
         items.each((index, item) => {
           if (this.$(item).attr("aria-expanded") === "true") {
@@ -345,9 +357,7 @@ export default {
     restoreTreeState() {
       let treeState = window.localStorage.getItem("admin.parameters.treeState");
       if (treeState) {
-        let treeList = this.$(".parameters-tree", this.$el).data(
-          "kendoTreeList"
-        );
+        let treeList = this.parametersTree;
         let $rows = this.$("tr", treeList.tbody);
         this.$.each($rows, (idx, row) => {
           if (treeState.includes(idx)) {
@@ -357,16 +367,14 @@ export default {
           }
         });
         this.addClassToRow(treeList);
+      } else {
+        this.expand(true);
       }
     },
 
-    // Destroy editor to prevent conficts with others editors and send event to show user parameters
+    // Destroy editor to prevent conflicts with others editors and send event to show user parameters
     switchParameters() {
-      let editor = this.$(".edition-window").data("kendoWindow");
-      if (editor) {
-        editor.destroy();
-      }
-
+      this.destroyEditor();
       this.$emit("switchParameters");
     },
 
@@ -378,7 +386,41 @@ export default {
         $tree.height(this.$(window).height() - $tree.offset().top - 4);
         kTree.resize();
       }
+    },
+
+    // Verify if the value of the parameter is a Json
+    isJson(value) {
+      try {
+        JSON.parse(value);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    },
+
+    // Destroy editor component
+    destroyEditor() {
+      let editor = this.$(".edition-window").data("kendoWindow");
+      if (editor) {
+        editor.destroy();
+      }
+    },
+
+    // Destroy all Kendo components to free memory
+    destroyKendoComponents() {
+      if (this.valueDisplayer) {
+        this.valueDisplayer.destroy();
+      }
+      if (this.parametersTree) {
+        this.parametersTree.destroy();
+      }
+
+      this.destroyEditor();
     }
+  },
+
+  beforeDestroy() {
+    this.destroyKendoComponents();
   },
 
   mounted() {
@@ -394,7 +436,7 @@ export default {
     this.$(".parameters-tree", this.$el)
       .off("mousedown")
       .on("mouseup", "tbody > .grid-expandable", e => {
-        let treeList = this.$(e.delegateTarget).data("kendoTreeList");
+        let treeList = this.parametersTree;
         if (this.$(e.currentTarget).attr("aria-expanded") === "false") {
           treeList.expand(e.currentTarget);
         } else {

@@ -20,16 +20,21 @@ export default {
       actualLogin: "",
 
       // Value entered in the search input
-      inputSearchValue: ""
+      inputSearchValue: "",
+
+      // Memorize kendo components
+      deleteConfirmationWindow: null,
+      deleteErrorWindow: null,
+      usersGrid: null,
+      parametersTreeList: null
     };
   },
 
   methods: {
-    // Init the treeList containing users (1 level treeList)
-    initUserTreeList() {
-      this.$(".users-tree", this.$el)
+    // Init the grid containing users
+    initUsersGrid() {
+      this.usersGrid = this.$(".users-grid", this.$el)
         .kendoGrid({
-          //.kendoTreeList({
           columns: [
             { field: "login", title: "Login" },
             { field: "firstname", title: "First name" },
@@ -43,7 +48,7 @@ export default {
             }
           ],
 
-          // Datasource set to display the first 5 users in treeList
+          // Datasource set to display the users in a grid
           dataSource: {
             transport: {
               read: {
@@ -74,16 +79,18 @@ export default {
             this.$(".selection-btn", this.$el).kendoButton({
               icon: "user"
             });
+            this.restoreTreeState();
           }
         })
         .on("click", ".selection-btn", e => {
           // Select a user to display his parameters with the data item
-          let treeList = this.$(e.delegateTarget).data("kendoGrid");
-          treeList.select(e.currentTarget.parentNode.parentNode);
-          let dataItem = treeList.dataItem(treeList.select());
+          let grid = this.usersGrid;
+          grid.select(e.currentTarget.parentNode.parentNode);
+          let dataItem = grid.dataItem(grid.select());
           this.selectUser(dataItem);
-          treeList.clearSelection();
-        });
+          grid.clearSelection();
+        })
+        .data("kendoGrid");
     },
 
     // Init the treeList containing all the parameters for the selected user
@@ -110,7 +117,7 @@ export default {
       // Add a class on filterable columns header to diplay a filter icon when filtering
       let headerAttributes = { class: "user-filterable-header" }; // jscs:ignore disallowQuotedKeysInObjects
 
-      this.$(".user-parameters-tree", this.$el)
+      this.parametersTree = this.$(".user-parameters-tree", this.$el)
         .kendoTreeList({
           dataSource: this.userParametersDataSource,
           columns: [
@@ -182,13 +189,13 @@ export default {
         })
         .on("click", ".edition-btn", e => {
           // Open parameter editor with selected dataItem
-          let treeList = this.$(e.delegateTarget).data("kendoTreeList");
+          let treeList = this.parametersTree;
           let dataItem = treeList.dataItem(e.currentTarget);
           this.openEditor(dataItem);
         })
         .on("click", ".delete-btn", e => {
           // Delete/Restore user parameter with selected dataItem
-          let treeList = this.$(e.delegateTarget).data("kendoTreeList");
+          let treeList = this.parametersTree;
           let dataItem = treeList.dataItem(e.currentTarget);
           this.deleteParameter(dataItem);
         })
@@ -206,8 +213,8 @@ export default {
           // Focus on search input
           this.$(".user-search-input", this.$el).focus();
 
-          // Resize user treeList when it is displayed
-          this.resizeUsersTree();
+          // Resize users grid when it is displayed
+          this.resizeUsersGrid();
         })
         .on("click", ".refresh-btn", () => {
           // Re-fetch data from server
@@ -222,9 +229,9 @@ export default {
               this.$emit("ank-admin-notify", {
                 content: {
                   title: "Parameters loaded",
-                  message: "Parameters successfully loaded from server",
-                  type: "admin-success"
-                }
+                  message: "Parameters successfully loaded from server"
+                },
+                type: "admin-success"
               });
             })
             .catch(() => {
@@ -235,9 +242,9 @@ export default {
               this.$emit("ank-admin-notify", {
                 content: {
                   title: "Parameters loading failed",
-                  message: "Loading of parameters from server failed",
-                  type: "admin-error"
-                }
+                  message: "Loading of parameters from server failed"
+                },
+                type: "admin-error"
               });
             });
         })
@@ -256,7 +263,8 @@ export default {
         .on("click", ".reset-search-btn", () => {
           this.$(".global-search-input", this.$el).val("");
           this.searchParameters("");
-        });
+        })
+        .data("kendoTreeList");
 
       // Init kendoButtons of toolbar
       this.$(".back-btn", this.$el).kendoButton({
@@ -273,7 +281,7 @@ export default {
       });
     },
 
-    // Select a user in user treeList and display his parameters
+    // Select a user in users grid and display his parameters
     selectUser(dataItem) {
       // Set new DataSource
       this.actualLogin = dataItem.login;
@@ -287,9 +295,7 @@ export default {
           data: "data"
         }
       });
-      this.$(".user-parameters-tree", this.$el)
-        .data("kendoTreeList")
-        .setDataSource(this.userParametersDataSource);
+      this.parametersTree.setDataSource(this.userParametersDataSource);
 
       // Display parameters and hide user search
       this.$(".user-search", this.$el).css("display", "none");
@@ -316,7 +322,7 @@ export default {
     },
 
     // Send a request to the server to remove the user definition of the passed parameter
-    // To restore the system value of this parameter for the user
+    // to restore the system value of this parameter for the user
     deleteParameter(dataItem) {
       this.$ankApi
         .delete(
@@ -330,7 +336,7 @@ export default {
         )
         .then(() => {
           // Show a confirmation window to notify the user of the modification
-          this.$(".delete-confirmation-window")
+          this.deleteConfirmationWindow = this.$(".delete-confirmation-window")
             .kendoWindow({
               modal: true,
               draggable: false,
@@ -340,9 +346,9 @@ export default {
               visible: false,
               actions: []
             })
-            .data("kendoWindow")
-            .center()
-            .open();
+            .data("kendoWindow");
+
+          this.deleteConfirmationWindow.center().open();
 
           // Init the confirmation window's close kendoButton
           this.$(".delete-confirmation-btn").kendoButton({
@@ -353,8 +359,8 @@ export default {
           this.userParametersDataSource.read();
         })
         .catch(() => {
-          // Show an error window to nofity the user that the parameter restoration failed
-          this.$(".delete-error-window")
+          // Show an error window to notify the user that the parameter restoration failed
+          this.deleteErrorWindow = this.$(".delete-error-window")
             .kendoWindow({
               modal: true,
               draggable: false,
@@ -364,9 +370,9 @@ export default {
               visible: false,
               actions: []
             })
-            .data("kendoWindow")
-            .center()
-            .open();
+            .data("kendoWindow");
+
+          this.deleteErrorWindow.center().open();
 
           // Init error window's close kendoButton
           this.$(".delete-error-btn").kendoButton({
@@ -377,23 +383,19 @@ export default {
 
     // Close restoration confirmation window
     closeDeleteConfirmation() {
-      this.$(".delete-confirmation-window")
-        .data("kendoWindow")
-        .close();
+      this.deleteConfirmationWindow.close();
     },
 
     // Close restoration error window
     closeDeleteError() {
-      this.$(".delete-error-window")
-        .data("kendoWindow")
-        .close();
+      this.deleteErrorWindow.close();
     },
 
     // Search a user on the server in users treeList
     searchUser() {
       let user = this.$(".user-search-input", this.$el).val();
       if (user.trim()) {
-        let usersDataSource = new kendo.data.TreeListDataSource({
+        let usersDataSource = new kendo.data.DataSource({
           transport: {
             read: {
               url: "/api/v2/admin/parameters/users/search/" + user + "/"
@@ -406,9 +408,7 @@ export default {
           serverPaging: true,
           pageSize: 10
         });
-        this.$(".users-tree", this.$el)
-          .data("kendoGrid")
-          .setDataSource(usersDataSource);
+        this.usersGrid.setDataSource(usersDataSource);
       }
     },
 
@@ -543,6 +543,8 @@ export default {
           }
         });
         this.addClassToRow(treeList);
+      } else {
+        this.expand(true);
       }
     },
 
@@ -553,21 +555,19 @@ export default {
 
     // Destroy the parameter editor if it exists and emit event to display System parameters
     switchParameters() {
-      let editor = this.$(".edition-window").data("kendoWindow");
-      if (editor) {
-        editor.destroy();
-      }
-
+      this.destroyEditor();
       this.$emit("switchParameters");
     },
 
     // Resize users tree
-    resizeUsersTree() {
-      let $userTree = this.$(".users-tree", this.$el);
-      let kUserTree = $userTree.data("kendoGrid");
-      if (kUserTree) {
-        $userTree.height(this.$(window).height() - $userTree.offset().top - 4);
-        kUserTree.resize();
+    resizeUsersGrid() {
+      let $usersGrid = this.$(".users-grid", this.$el);
+      let kUsersGrid = $usersGrid.data("kendoGrid");
+      if (kUsersGrid) {
+        $usersGrid.height(
+          this.$(window).height() - $usersGrid.offset().top - 4
+        );
+        kUsersGrid.resize();
       }
     },
 
@@ -579,6 +579,38 @@ export default {
         $tree.height(this.$(window).height() - $tree.offset().top - 4);
         kTree.resize();
       }
+    },
+
+    // Destroy kendo components to free memory
+    destroyKendoComponents() {
+      this.destroyWindows();
+
+      if (this.parametersTreeList) {
+        this.parametersTreeList.destroy();
+      }
+      if (this.usersGrid) {
+        this.usersGrid.destroy();
+      }
+
+      this.destroyEditor();
+    },
+
+    // Destroy editor component
+    destroyEditor() {
+      let editor = this.$(".edition-window").data("kendoWindow");
+      if (editor) {
+        editor.destroy();
+      }
+    },
+
+    // Destroy kendo windows
+    destroyWindows() {
+      if (this.deleteConfirmationWindow) {
+        this.deleteConfirmationWindow.destroy();
+      }
+      if (this.deleteErrorWindow) {
+        this.deleteErrorWindow.destroy();
+      }
     }
   },
 
@@ -589,9 +621,14 @@ export default {
     }
   },
 
+  beforeDestroy() {
+    this.destroyKendoComponents();
+  },
+
   mounted() {
     // Init treeList to display users
-    this.initUserTreeList();
+    this.initUsersGrid();
+    this.resizeUsersGrid();
 
     // Init treeList to display user parameters
     this.initTreeList();
@@ -615,7 +652,7 @@ export default {
     this.$(".user-parameters-tree", this.$el)
       .off("mousedown")
       .on("mouseup", "tbody > .grid-expandable", e => {
-        let treeList = this.$(e.delegateTarget).data("kendoTreeList");
+        let treeList = this.parametersTree;
         if (this.$(e.currentTarget).attr("aria-expanded") === "false") {
           treeList.expand(e.currentTarget);
         } else {
@@ -628,7 +665,7 @@ export default {
 
     // At window resize, resize the treeLists
     window.addEventListener("resize", () => {
-      this.resizeUsersTree();
+      this.resizeUsersGrid();
       this.resizeUserParametersTree();
     });
   }
