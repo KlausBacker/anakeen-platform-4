@@ -2,6 +2,8 @@
 import Vue from "vue";
 import store from "../store";
 
+export const PLUGIN_HOOKS = ["pluginShow", "pluginHidden"];
+
 export const PLUGIN_SCHEMA = {
   name: "name",
   title: "title",
@@ -12,6 +14,16 @@ export const PLUGIN_SCHEMA = {
   pluginTemplate: "pluginTemplate",
   icon: "icon",
   autoselect: "autoselect"
+};
+
+const callHookPlugin = (element, hookName) => {
+  if (
+    element &&
+    element[`on${hookName.toLowerCase()}`] &&
+    typeof element[`on${hookName.toLowerCase()}`] === "function"
+  ) {
+    element[`on${hookName.toLowerCase()}`].call(element);
+  }
 };
 
 const attachPluginEvents = element => {
@@ -29,6 +41,24 @@ const attachPluginEvents = element => {
     if (modalConfig) {
       store.dispatch("showModal", modalConfig);
     }
+  });
+
+  const hideObserver = new MutationObserver(mutations => {
+    for (let i = 0; i < mutations.length; i++) {
+      const mutation = mutations[i];
+      if (mutation.type === "attributes") {
+        if (mutation.attributeName === "style") {
+          if (kendo.jQuery(mutation.target).is(":visible")) {
+            callHookPlugin(mutation.target, "pluginShow");
+          } else {
+            callHookPlugin(mutation.target, "pluginHidden");
+          }
+        }
+      }
+    }
+  });
+  hideObserver.observe(element, {
+    attributes: true
   });
 };
 
