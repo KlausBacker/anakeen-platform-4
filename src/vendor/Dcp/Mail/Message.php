@@ -7,6 +7,7 @@
 namespace Dcp\Mail;
 
 use Anakeen\Core\ContextManager;
+use PHPMailer\PHPMailer\PHPMailer;
 
 /**
  * Compose a mail with body and attachments and send it using the SMTP
@@ -329,7 +330,7 @@ class Message
     {
         include_once("WHAT/Lib.Common.php");
         $lcConfig = ContextManager::getLocaleConfig();
-        $mail = new \PHPMailer();
+        $mail = new PHPMailer();
         /*
          * SMTPAutoTLS was introduced in v5.2.10 and is set to bool(true) by
          * default.
