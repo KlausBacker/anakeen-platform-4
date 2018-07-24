@@ -252,10 +252,16 @@ define([
         var currentValue = currentAttribute.get("attributeValue"),
           i,
           arrayValues = [];
-        if (currentValue === null || !currentAttribute.get("isValueAttribute")) {
+        if (
+          currentValue === null ||
+          !currentAttribute.get("isValueAttribute")
+        ) {
           return;
         }
-        if (onlyModified === true && currentAttribute.hasValueChanged() === false) {
+        if (
+          onlyModified === true &&
+          currentAttribute.hasValueChanged() === false
+        ) {
           return;
         }
         if (currentAttribute.get("multiple")) {
