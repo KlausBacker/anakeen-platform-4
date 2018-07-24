@@ -165,7 +165,7 @@ $(JS_TEST_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_TEST_SOURCE_P
 
 app-test: $(JS_CONF_PATH)/node_modules $(TEST_SRC_PATH) $(JS_TEST_BUILD_PATH) ## Build the test package
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	rm -f *app
+	rm -f user-interfaces*test*app
 	-mkdir -p ${LOCALPUB_TEST_PATH}
 	rsync -q --delete -azvr $(TEST_SRC_PATH) ${LOCALPUB_TEST_PATH}
 	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" ${LOCALPUB_TEST_PATH}/build.json
