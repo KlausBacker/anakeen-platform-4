@@ -13,3 +13,4 @@ wiff create context dynacase /var/www/html/dynacase
 wiff context dynacase repository enable --default
 
 wiff context dynacase module install --unattended user-interfaces
+wiff context dynacase module install --unattended user-interfaces-test
