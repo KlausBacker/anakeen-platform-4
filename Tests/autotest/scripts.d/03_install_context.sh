@@ -12,4 +12,4 @@ wiff repository add --default local        file:///var/www/html/repo
 wiff create context dynacase /var/www/html/dynacase
 wiff context dynacase repository enable --default
 
-wiff context dynacase module install --unattended workflow-test
+wiff context dynacase module install --unattended user-interfaces
