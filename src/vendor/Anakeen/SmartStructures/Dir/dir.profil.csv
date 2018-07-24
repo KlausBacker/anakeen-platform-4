@@ -1,11 +1,11 @@
-// controle de vue pour le dossier;;;;;;;;;;;;;;
-//FAM;masque de saisie(MASK);<specid>;<fldid>;titre;id familles;familles;attrid;visibilité;obligatoire;;;;;
-ORDER;MASK;;;ba_title;msk_famid;msk_fam;msk_attrids;msk_visibilities;msk_needeeds;;;;;
-DOC;MASK;mskfld;;Restrictions;2;dossier;fld_fr_prof\nfld_fr_rest\nfr_basic\nba_title\nba_desc\ngui_color\nfld_allbut\nfld_tfam\nfld_fam\nfld_famids\nfld_pdoc\nfld_pdocid\nfld_pdir\nfld_pdirid;W\nW\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-;-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-;;;;;
-//FAM;contrôle de vues(CVDOC);<specid>;<fldid>;titre;description;family id;famille;vues;id création vues par défaut;id vues;label;création vue;type;id masque
-ORDER;CVDOC;;;ba_title;cv_desc;cv_famid;cv_fam;cv_t_views;cv_idcview;cv_idview;cv_lview;cv_lcview;cv_kview;cv_mskid
-DOC;CVDOC;cvfld;;Restrictions;;2;dossier;;;RESTRICT;Restriction;;VEDIT;mskfld
-;;;;;;;;;;;;;;
-BEGIN;1;dossier;2;;DIR;;;;;;;;;
-CVID;cvfld;;;;;;;;;;;;;
-END;;;;;;;;;;;;;;
+// controle de vue pour le dossier;;;;;;;;;;;;;
+//FAM;masque de saisie(MASK);<specid>;<fldid>;titre;id familles;attrid;visibilité;obligatoire;;;;;
+ORDER;MASK;;;ba_title;msk_famid;msk_attrids;msk_visibilities;msk_needeeds;;;;;
+DOC;MASK;mskfld;;Restrictions;2;fld_fr_prof\nfld_fr_rest;W\nW;-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-;;;;;
+//FAM;contrôle de vues(CVDOC);<specid>;<fldid>;titre;family id;famille;vues;id création vues par défaut;id vues;label;création vue;type;id masque
+ORDER;CVDOC;;;ba_title;cv_famid;cv_t_views;cv_idcview;cv_idview;cv_lview;cv_lcview;cv_kview;cv_mskid;
+DOC;CVDOC;cvfld;;Restrictions;2;;;RESTRICT;Restriction;;VEDIT;mskfld;
+;;;;;;;;;;;;;
+BEGIN;;;;;DIR;;;;;;;;
+CVID;cvfld;;;;;;;;;;;;
+END;;;;;;;;;;;;;

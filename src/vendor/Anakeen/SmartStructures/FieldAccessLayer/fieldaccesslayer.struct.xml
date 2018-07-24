@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
+    <smart:structure-configuration name="FIELDACCESSLAYER"  label="Field Access Layer" >
+        <smart:icon file="se-fieldaccesslayer.png"/>
+        <smart:class>Anakeen\SmartStructures\FieldAccessLayer\FieldAccessLayerHooks</smart:class>
+        <smart:revisable>false</smart:revisable>
+        <smart:usefor>S</smart:usefor>
+        <smart:fields>
+            <smart:field-set name="fal_fr_ident" type="frame" label="Properties" access="ReadWrite">
+                <smart:field-text name="fal_title" label="Title" access="ReadWrite" is-title="true"/>
+                <smart:field-longtext name="fal_desc" label="Description" access="ReadWrite" />
+                <smart:field-docid name="fal_famid" label="Structure" access="ReadWrite" relation="-1" needed="true"/>
+                <smart:field-set name="fal_t_fields" type="array" label="Fields" access="ReadWrite">
+                    <smart:field-text name="fal_fieldid" label="Field id" access="ReadWrite" needed="true"/>
+                    <smart:field-text name="fal_fieldlabel" label="Field Label" access="Read"/>
+                    <smart:field-text name="fal_fieldoriginalaccess" label="Original access" access="Read"/>
+                    <smart:field-enum name="fal_fieldaccess" label="Access" access="ReadWrite" relation="FAL-Access" needed="true"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+        <smart:parameters/>
+        <smart:hooks>
+        </smart:hooks>
+        <smart:autocompletion>
+            <smart:field-autocomplete field="fal_fieldid">
+                <smart:field-callable function="Anakeen\SmartStructures\FieldAccessLayer\FieldAccessLayerAutoComplete::getFieldAccess"/>
+                <smart:field-argument name="structure" type="field">fal_famid</smart:field-argument>
+                <smart:field-returns>
+                    <smart:field-return field="fal_fieldid"/>
+                    <smart:field-return field="fal_fieldlabel"/>
+                    <smart:field-return field="fal_fieldoriginalaccess"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+        </smart:autocompletion>
+        <smart:defaults>
+        </smart:defaults>
+    </smart:structure-configuration>
+    <smart:enumerates>
+        <smart:enum-configuration name="FAL-Access">
+            <smart:enum name="ReadWrite" label="Read Write"/>
+            <smart:enum name="Read" label="Read Only"/>
+            <smart:enum name="Write" label="Write Only"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+</smart:config>

@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <module xmlns="urn:dynacase:webinst:module/1.0"
         license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3"
-        name="@moduleName@" release="@release@" version="@version@"  vendor="Anakeen">
+        name="@moduleName@" release="@release@" version="@version@" vendor="Anakeen">
     <description>Security Package</description>
     <requires>
         <module name="user-interfaces"/>
@@ -11,32 +11,50 @@
     </pre-install>
     <post-install>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Profiles/accountprofil.csv  --csv-enclosure='&quot;'">
-            <label>Profiling accounts</label>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/default-profil.xml">
+            <label>Record default elements security</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Profiles/cvdoc.profil.csv  --csv-enclosure='&quot;'">
-            <label>Set view control for accounts</label>
-        </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.profil.xml">
-            <label>Profiling system families</label>
+            <label>Profiling helppage structure</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dir/dir.profil.csv --csv-enclosure='&quot;'">
-            <label>Profiling system families</label>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dir/dir.profil.csv">
+            <label>Profiling folders structure</label>
+        </process>
+
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.profil.xml">
+            <label>Profiling account structures</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/system-profil.xml">
-            <label>Profiling system families</label>
+            <label>Profiling system structures</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Profiles/AuthentMailProfil.csv --csv-enclosure='&quot;'">
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Profiles/AuthentMailProfil.csv">
             <label>Profiling authent mail</label>
+        </process>
+
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml">
+            <label>Field Access Layer</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.profil.xml">
+            <label>Field Access Layer Security</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.struct.xml">
+            <label>Field Access Layer List</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.profil.xml">
+            <label>Field Access Layer List Security</label>
         </process>
 
         <process command="./ank.php --script=refreshUserAccount">
             <label>Update user account profile</label>
         </process>
-        <process command="programs/update_catalog"/>
     </post-install>
     <post-upgrade>
-        <process command="programs/update_catalog"/>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml">
+            <label>Field Access Layer</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.struct.xml">
+            <label>Field Access Layer List</label>
+        </process>
     </post-upgrade>
 </module>

@@ -3,13 +3,13 @@
     <smart:structure-configuration name="MAILTEMPLATE">
         <smart:accesses>
             <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration link="PRF_ADMIN_EDIT"/>
+            <smart:element-access-configuration link="PRF_ADMIN_ACCESS"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="MASK">
         <smart:accesses>
             <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration link="PRF_ADMIN_EDIT"/>
+            <smart:element-access-configuration link="PRF_ADMIN_ACCESS"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="CVDOC">
@@ -20,15 +20,10 @@
     <smart:structure-configuration name="EXEC">
         <smart:accesses>
             <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration link="PRF_ADMIN_EDIT"/>
+            <smart:element-access-configuration link="PRF_ADMIN_ACCESS"/>
         </smart:accesses>
     </smart:structure-configuration>
-    <smart:structure-configuration name="IUSER">
-        <smart:accesses>
-            <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration link="PRF_IUSER_OWNER"/>
-        </smart:accesses>
-    </smart:structure-configuration>
+
     <smart:structure-configuration name="IGROUP">
         <smart:accesses>
             <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
@@ -38,7 +33,7 @@
     <smart:structure-configuration name="ROLE">
         <smart:accesses>
             <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration link="PRF_ADMIN_EDIT"/>
+            <smart:element-access-configuration link="PRF_ADMIN_ACCESS"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="DIR">
@@ -114,61 +109,58 @@
         </smart:accesses>
     </smart:structure-configuration>
     <smart:access-configuration name="PRF_SEARCHES" label="Profil recherche" profil-type="PFAM">
-        <smart:element-access access="view" login="all"/>
-        <smart:element-access access="create" login="all"/>
-        <smart:element-access access="icreate" login="all"/>
-        <smart:element-access access="edit" login="gadmin"/>
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="create" account="all"/>
+        <smart:element-access access="icreate" account="all"/>
+        <smart:element-access access="edit" account="gadmin"/>
     </smart:access-configuration>
-    <smart:access-configuration name="PRF_DOC_SEARCHES" label="Profil document recherche" profil-type="PSEARCH" linked-structure="SEARCH">
-        <smart:element-access access="view" login="all"/>
-        <smart:element-access access="execute" login="all"/>
-        <smart:element-access access="viewacl" login="gadmin"/>
-        <smart:element-access access="modifyacl" login="gadmin"/>
-        <smart:element-access access="edit" login="gadmin"/>
-        <smart:element-access access="view" attr="se_author"/>
-        <smart:element-access access="edit" attr="se_author"/>
-        <smart:element-access access="delete" attr="se_author"/>
-        <smart:element-access access="execute" attr="se_author"/>
+    <smart:access-configuration name="PRF_DOC_SEARCHES" label="Profil document recherche" profil-type="PSEARCH" access-structure="SEARCH">
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="execute" account="all"/>
+        <smart:element-access access="viewacl" account="gadmin"/>
+        <smart:element-access access="modifyacl" account="gadmin"/>
+        <smart:element-access access="edit" account="gadmin"/>
+        <smart:element-access access="view" field="se_author"/>
+        <smart:element-access access="edit" field="se_author"/>
+        <smart:element-access access="delete" field="se_author"/>
+        <smart:element-access access="execute" field="se_author"/>
     </smart:access-configuration>
     <smart:access-configuration name="PRF_PROFILE" label="Profil profil" profil-type="PFAM">
-        <smart:element-access access="view" login="all"/>
-        <smart:element-access access="create" login="gadmin"/>
-        <smart:element-access access="icreate" login="gadmin"/>
-        <smart:element-access access="edit" login="gadmin"/>
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="create" account="gadmin"/>
+        <smart:element-access access="icreate" account="gadmin"/>
+        <smart:element-access access="edit" account="gadmin"/>
     </smart:access-configuration>
     <smart:access-configuration name="PRF_MAIL" label="Profil mail" profil-type="PFAM">
-        <smart:element-access access="view" login="all"/>
-        <smart:element-access access="create" login="all"/>
-        <smart:element-access access="edit" login="gadmin"/>
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="create" account="all"/>
+        <smart:element-access access="edit" account="gadmin"/>
     </smart:access-configuration>
     <smart:access-configuration name="PRF_DOC_MAIL" label="Profil document mail">
-        <smart:element-access access="view" login="all"/>
-        <smart:element-access access="edit" login="all"/>
-        <smart:element-access access="delete" login="all"/>
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="edit" account="all"/>
+        <smart:element-access access="delete" account="all"/>
     </smart:access-configuration>
     <smart:access-configuration name="PRF_SENTMESSAGE" label="Profil sentmessage" profil-type="PFAM">
-        <smart:element-access access="view" login="all"/>
-        <smart:element-access access="create" login="all"/>
-        <smart:element-access access="edit" login="gadmin"/>
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="create" account="all"/>
+        <smart:element-access access="edit" account="gadmin"/>
     </smart:access-configuration>
     <smart:access-configuration name="PRF_DOC_SENTMESSAGE" label="Profil document sentmessage">
-        <smart:element-access access="view" login="all"/>
-        <smart:element-access access="edit" login="all"/>
-        <smart:element-access access="delete" login="all"/>
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="edit" account="all"/>
+        <smart:element-access access="delete" account="all"/>
     </smart:access-configuration>
     <smart:access-configuration name="GROUP">
-        <smart:element-access access="view" login="all"/>
-        <smart:element-access access="create" login="gadmin"/>
-        <smart:element-access access="icreate" login="gadmin"/>
-        <smart:element-access access="edit" login="gadmin"/>
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="create" account="gadmin"/>
+        <smart:element-access access="icreate" account="gadmin"/>
+        <smart:element-access access="edit" account="gadmin"/>
     </smart:access-configuration>
-    <smart:access-configuration name="MSK_IUSER_MYACCOUNT" link="PRF_ADMIN_EDIT"/>
-    <smart:access-configuration name="MSK_IUSER_ADMIN" link="PRF_ADMIN_EDIT"/>
-    <smart:access-configuration name="MSK_IUSERSUBSTITUTE" link="PRF_ADMIN_EDIT"/>
     <smart:access-configuration name="mskfld" link="PRF_ADMIN_EDIT"/>
     <smart:access-configuration name="cvfld">
-        <smart:element-access access="view" login="all"/>
-        <smart:element-access access="RESTRICT" login="all"/>
-        <smart:element-access access="edit" login="gadmin"/>
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="RESTRICT" account="all"/>
+        <smart:element-access access="edit" account="gadmin"/>
     </smart:access-configuration>
 </smart:config>

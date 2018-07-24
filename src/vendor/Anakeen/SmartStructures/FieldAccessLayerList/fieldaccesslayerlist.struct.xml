@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
+    <smart:structure-configuration name="FIELDACCESSLAYERLIST"  label="Field Access Layer List" >
+        <smart:icon file="se-fieldaccesslayerlist.png"/>
+        <smart:class>Anakeen\SmartStructures\FieldAccessLayerList\FieldAccessLayerListHooks</smart:class>
+        <smart:revisable>false</smart:revisable>
+        <smart:usefor>S</smart:usefor>
+        <smart:fields>
+            <smart:field-set name="fall_fr_ident" type="frame" label="Properties" access="ReadWrite">
+                <smart:field-text name="ba_title" label="Title" access="ReadWrite" is-title="true"/>
+                <smart:field-longtext name="ba_desc" label="Description" access="ReadWrite" />
+                <smart:field-docid name="fall_famid" label="Structure" access="ReadWrite" relation="-1" needed="true"/>
+                <smart:field-set name="fall_t_layers" type="array" label="Access Layers" access="ReadWrite">
+                    <smart:field-text name="fall_aclname" label="Access name" access="ReadWrite" needed="true"/>
+                    <smart:field-docid name="fall_layer" label="Layer" access="ReadWrite" relation="FIELDACCESSLAYER" needed="true"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="dpdoc_fr_dyn" type="frame" label="Profil dynamique" access="ReadWrite">
+                <smart:field-docid name="dpdoc_famid" label="Structure pour le profil" access="ReadWrite" relation="-1"/>
+            </smart:field-set>
+        </smart:fields>
+        <smart:parameters/>
+        <smart:hooks>
+        </smart:hooks>
+        <smart:defaults>
+        </smart:defaults>
+    </smart:structure-configuration>
+</smart:config>
