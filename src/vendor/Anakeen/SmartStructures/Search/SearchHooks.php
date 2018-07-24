@@ -8,6 +8,7 @@ namespace Anakeen\SmartStructures\Search;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\DocumentAccess;
+use Anakeen\Core\SEManager;
 use Anakeen\SmartHooks;
 use Anakeen\SmartStructures\Dir\DirLib;
 
@@ -34,7 +35,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
     {
         $famId = $this->getRawValue(\SmartStructure\Fields\Search::se_famid);
         if ($famId) {
-            $doc = new_Doc($this->dbaccess, abs($famId), true);
+            $doc = SEManager::getFamily(abs($famId));
             if (!is_object($doc) || !$doc->isAlive() || $doc->defDoctype != 'C') {
                 $err = sprintf(_('Family [%s] not found'), abs($famId));
                 return $err;
@@ -48,6 +49,8 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
         parent::registerHooks();
         $this->getHooks()->addListener(SmartHooks::PRECREATED, function () {
             return $this->updateSearchAuthor();
+        })->addListener(SmartHooks::PREREFRESH, function () {
+            return $this->verifyQuery();
         });
     }
 
@@ -418,7 +421,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
         return "";
     }
 
-    public function preRefresh()
+    protected function verifyQuery()
     {
         $err = "";
 

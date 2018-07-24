@@ -122,6 +122,13 @@
             <sde:type>integer</sde:type>
             <sde:access>admin</sde:access>
         </sde:parameter>
+        <sde:parameter name="AUTHENT_FAILURECOUNT">
+        <sde:category>Authent</sde:category>
+        <sde:description>Number of consecutive connection attemps failure (0 means infinite)</sde:description>
+        <sde:value>0</sde:value>
+        <sde:type>integer</sde:type>
+        <sde:access>admin</sde:access>
+    </sde:parameter>
         <sde:parameter name="CORE_ALLOW_GUEST">
             <sde:description>Allow guest access</sde:description>
             <sde:value>yes</sde:value>

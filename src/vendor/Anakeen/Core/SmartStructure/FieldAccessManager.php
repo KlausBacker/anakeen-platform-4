@@ -13,8 +13,6 @@ use Dcp\Exception;
 class FieldAccessManager
 {
     protected static $fa = [];
-    public static $mb = 0;
-    public static $mbc;
 
     public static function getRawAccess(string $accessibility)
     {
@@ -97,15 +95,9 @@ class FieldAccessManager
 
     public static function hasReadAccess(SmartElement $se, BasicAttribute $oa)
     {
-       // print_r([ContextManager::getCurrentUser()->id, $oa->id, $oa->access, $oa->getAccess()]);
-        $mb0 = microtime(true);
-        $x = (ContextManager::getCurrentUser()->id == Account::ADMIN_ID) ||
+        return (ContextManager::getCurrentUser()->id == Account::ADMIN_ID) ||
             ($oa->getAccess() & BasicAttribute::READ_ACCESS) ||
             ($se->fallid !== null && (self::getAccess($se, $oa) & BasicAttribute::READ_ACCESS));
-
-        self::$mb += (microtime(true) - $mb0);
-        self::$mbc++;
-        return $x;
     }
 
 

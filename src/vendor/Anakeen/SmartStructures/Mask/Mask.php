@@ -70,16 +70,11 @@ class Mask extends \SmartStructure\Base
             return '';
         })->addListener(SmartHooks::PREIMPORT, function () {
             return $this->verifyIntegraty();
+        })->addListener(SmartHooks::PREREFRESH, function () {
+            return $this->verifyIntegraty();
         });
     }
 
-
-
-
-    public function preRefresh()
-    {
-        return $this->verifyIntegraty();
-    }
 
     /**
      * Verify if family and attributes are coherents

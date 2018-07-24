@@ -6014,21 +6014,6 @@ create unique index i_docir on doc(initid, revision);";
         return '';
     }
 
-
-    /**
-     * post Refresh
-     * called when refresh document : when view, modify document - generally when access to the document
-     * a modify is done after if attributes are chahged
-     *
-     * @note during postRefresh edit control is disabled
-     * @see  \Anakeen\Core\Internal\SmartElement::refresh
-     * @api  hook called at the end of refresh after update computed attributes
-     */
-    public function postRefresh()
-    {
-        return '';
-    }
-
     /**
      * Special Refresh Generated automatically
      * is defined in generated child classes
@@ -6095,10 +6080,10 @@ create unique index i_docir on doc(initid, revision);";
         if (!$changed) {
             $this->disableAccessControl();
         } // disabled control just to refresh
-        $msg = $this->preRefresh();
+        $msg = $this->getHooks()->trigger(SmartHooks::PREREFRESH);
         // if ($this->id == 0) return; // no refresh for no created document
         $msg .= $this->SpecRefreshGen();
-        $msg .= $this->postRefresh();
+        $msg .= $this->getHooks()->trigger(SmartHooks::POSTREFRESH);
         if ($this->hasChanged && $this->id > 0) {
             $this->lastRefreshError = $this->modify(); // refresh title
         }
