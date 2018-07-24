@@ -6,12 +6,20 @@ export default {
         schema: {
           model: {
             fields: {
+              PatternImpacted: {
+                type: "string",
+                editable: false,
+                nullable: false
+              },
               Name: { type: "string", editable: false, nullable: false },
               Method: { type: "string", editable: false, nullable: false },
               Pattern: { type: "string", editable: false, nullable: false },
               Description: { type: "string", editable: false, nullable: false },
               Priority: { type: "number", editable: false, nullable: false }
             }
+          },
+          data: function(response) {
+            return response.data;
           }
         }
       }),
@@ -142,9 +150,50 @@ export default {
             dataBound: e => {
               this.addClassToRow(e.sender);
               this.restoreTreeState(".routes-tree");
-              this.$(".mwList-btn").on("click", () => {
+              this.$(".mwList-btn").on("click", event => {
                 // add middlewares applicable to route to the dataSource of kendo treeList
-
+                const sender = event.target.closest("tr[role=row]");
+                const elt = this.allRoutesDataSource._data.find(
+                  x => x.name === sender.firstElementChild.textContent
+                );
+                if (sender.className.includes("tree-level-2")) {
+                  if (
+                    this.allRoutesDataSource._data.find(
+                      x => x.id === elt.parentId
+                    )
+                  ) {
+                    // if the route has a namespace
+                    const parentName = this.allRoutesDataSource._data.find(
+                      x => x.id === elt.parentId
+                    ).name;
+                    this.$ankApi
+                      .get(
+                        "/admin/routes/" +
+                          parentName +
+                          "::" +
+                          sender.firstElementChild.textContent +
+                          "/applicMiddlewares/"
+                      )
+                      .then(response => {
+                        this.$(".mw-treelist")
+                          .data("kendoTreeList")
+                          .setDataSource(response.data);
+                      });
+                  } else {
+                    // if the route doesn't have any namespace
+                    this.$ankApi
+                      .get(
+                        "/admin/routes/" +
+                          sender.firstElementChild.textContent +
+                          "/applicMiddlewares/"
+                      )
+                      .then(response => {
+                        this.$(".mw-treelist")
+                          .data("kendoTreeList")
+                          .setDataSource(response.data);
+                      });
+                  }
+                }
                 this.$(".middlewares-dialog")
                   .data("kendoDialog")
                   .open();
@@ -289,38 +338,36 @@ export default {
         title: "Applicable middlewares to routes",
         closable: true,
         modal: false,
-        content: '<div class="mw-treelist"></div>',
-        initOpen: initOpenMiddlewaresDialog
+        content: '<div class="mw-treelist"></div>'
       });
-      function initOpenMiddlewaresDialog() {
-        setTimeout(function() {
-          this.$(".mw-treelist")
-            .data("kendoTreeList")
-            .refresh();
-        }, 0);
-      }
+
       this.$(".mw-treelist").kendoTreeList({
         dataSource: this.allApplicableMiddleware,
         columns: [
           {
+            field: "patternImpacted",
+            title: "Concerned route",
+            width: "25%"
+          },
+          {
             field: "name",
             title: "Name",
-            width: "28%"
+            width: "15%"
           },
           {
             field: "method",
             title: "Method",
-            width: "7%"
+            width: "5%"
           },
           {
             field: "pattern",
             title: "Pattern",
-            width: "30%"
+            width: "25%"
           },
           {
             field: "description",
             title: "Description",
-            width: "30%"
+            width: "25%"
           },
           {
             field: "priority",
