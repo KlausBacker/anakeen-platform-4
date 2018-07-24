@@ -6,10 +6,10 @@
     <smart:revisable>auto</smart:revisable>
     <smart:usefor>N</smart:usefor>
     <smart:fields>
-      <smart:field-set name="fi_frdesc" type="frame" label="Description" visibility="W">
-        <smart:field-text name="fi_title" label="titre" visibility="R" is-title="true"/>
-        <smart:field-text name="fi_titlew" label="titre" visibility="O"/>
-        <smart:field-file name="fi_file" label="principal" visibility="W" needed="true" is-abstract="true"/>
+      <smart:field-set name="fi_frdesc" type="frame" label="Description" access="ReadWrite">
+        <smart:field-text name="fi_title" label="titre" access="Read" is-title="true"/>
+        <smart:field-text name="fi_titlew" label="titre" access="ReadWrite"/>
+        <smart:field-file name="fi_file" label="principal" access="ReadWrite" needed="true" is-abstract="true"/>
       </smart:field-set>
     </smart:fields>
     <smart:parameters/>

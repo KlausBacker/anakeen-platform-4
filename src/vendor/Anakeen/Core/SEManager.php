@@ -3,6 +3,7 @@
 namespace Anakeen\Core;
 
 use Anakeen\Core\DocManager\Exception;
+use Anakeen\Core\Internal\Debug;
 
 class SEManager
 {
@@ -253,12 +254,10 @@ class SEManager
         /**
          * @var \Anakeen\Core\SmartStructure $family
          */
-        $family = self::getDocument($famId);
+        $family = self::getFamily($famId);
         if ($family === null) {
             throw new Exception("APIDM0002", $familyIdentifier, $famId);
         }
-
-        self::cache()->addDocument($family);
 
         $classname = "Doc" . $famId;
         self::requireFamilyClass($family->id);
@@ -274,7 +273,6 @@ class SEManager
         $doc->usefor = $family->usefor; // inherit from its familly
         $doc->atags = $family->atags;
 
-        $doc->applyMask();
         return $doc;
     }
 
@@ -306,14 +304,14 @@ class SEManager
          */
         $family = self::getFamily($doc->fromid);
 
-
         $doc->wid = $family->wid;
-        $doc->accessControl()->setProfil($family->cprofid); // inherit from its family
-        $doc->accessControl()->setCvid($family->ccvid); // inherit from its family
+        // inherit from its family
+        $doc->accessControl()->setProfil($family->cprofid);
+        $doc->accessControl()->setCvid($family->ccvid);
+        $doc->accessControl()->setFallid($family->cfallid);
         if ($useDefaultValues) {
             $doc->setDefaultValues($family->getDefValues());
         }
-        $doc->applyMask();
 
         $doc->disableAccessControl(true);
         return $doc;
@@ -338,10 +336,9 @@ class SEManager
             /**
              * @var \Anakeen\Core\SmartStructure $family
              */
-            $family = self::getDocument($doc->fromid, false);
+            $family = self::getFamily($doc->fromid);
             $doc->setDefaultValues($family->getDefValues());
         }
-        $doc->applyMask();
         return $doc;
     }
 

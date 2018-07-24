@@ -3,7 +3,7 @@
            targetNamespace="http://www.anakeen.com/ns/smart/1.0"
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
            xmlns:v1="http://www.anakeen.com/ns/smart/1.0">
-
+    
     <xs:element name="config" type="v1:configType">
         <xs:annotation>
             <xs:documentation>
@@ -13,6 +13,23 @@
         </xs:annotation>
     </xs:element>
 
+    <xs:complexType name="configType">
+        <xs:sequence>
+            <xs:element type="v1:structure-configurationType" name="structure-configuration" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        <h1>Smart Structure Configuration</h1>
+                        <p>To configure Smart Structure parts such as attributes, parameters, default values</p>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="v1:enumeratesType" name="enumerates" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element type="v1:fieldAccessLayerType" name="field-access-layer" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element type="v1:fieldAccessLayerListType" name="field-access-layer-list" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element type="v1:accessConfigurationType" name="access-configuration" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
     <xs:complexType name="field-returnType">
         <xs:attribute type="v1:attrNameType" name="field"/>
     </xs:complexType>
@@ -42,17 +59,17 @@
             <xs:enumeration value="string"/>
         </xs:restriction>
     </xs:simpleType>
-    <xs:simpleType name="visibilityType">
+
+
+    <xs:simpleType name="fieldAccessType">
         <xs:annotation>
-            <xs:documentation>Deprecated visibilities attributes</xs:documentation>
+            <xs:documentation>Field Access</xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:token">
-            <xs:enumeration value="W"/>
-            <xs:enumeration value="R"/>
-            <xs:enumeration value="H"/>
-            <xs:enumeration value="O"/>
-            <xs:enumeration value="S"/>
-            <xs:enumeration value="U"/>
+            <xs:enumeration value="Write"/>
+            <xs:enumeration value="Read"/>
+            <xs:enumeration value="ReadWrite"/>
+            <xs:enumeration value="None"/>
         </xs:restriction>
     </xs:simpleType>
 
@@ -85,12 +102,15 @@
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
-    <xs:complexType name="enumType">
 
+    <xs:complexType name="enumType">
+        <xs:sequence maxOccurs="unbounded" minOccurs="0">
+            <xs:element type="v1:enumType" name="enum"/>
+        </xs:sequence>
         <xs:attribute type="xs:token" name="name"/>
         <xs:attribute type="xs:string" name="label"/>
-
     </xs:complexType>
+
     <xs:complexType name="enum-configurationType">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
             <xs:element type="v1:enumType" name="enum"/>
@@ -105,21 +125,18 @@
         </xs:sequence>
         <xs:attribute type="xs:string" name="label"/>
         <xs:attribute type="xs:boolean" name="needed"/>
-        <xs:attribute type="xs:string" name="access"/>
-        <xs:attribute type="v1:visibilityType" name="visibility">
+        <xs:attribute type="v1:fieldAccessType" name="access" >
             <xs:annotation>
                 <xs:documentation>
                     <p>
-                        <b>Deprecated</b>
-                        visibilities attributes
+                        <b>Field Access</b>
                     </p>
                     <hr/>
                     <ul>
-                        <li>W : For Write</li>
-                        <li>R : For ReadOnly</li>
-                        <li>H : For Hidden</li>
-                        <li>O : For WriteOnly</li>
-                        <li>S : For Disable in edition</li>
+                        <li>ReadWrite : For Read Write</li>
+                        <li>Read : For ReadOnly</li>
+                        <li>Write : For Write only</li>
+                        <li>None : For no access</li>
                     </ul>
                 </xs:documentation>
             </xs:annotation>
@@ -173,23 +190,53 @@
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:complexType name="configType">
+  
+
+    <xs:complexType name="fieldAccessLayerListType">
         <xs:sequence>
-            <xs:element type="v1:structure-configurationType" name="structure-configuration" minOccurs="0" maxOccurs="unbounded">
+            <xs:element type="xs:string" name="description" minOccurs="0" />
+            <xs:element type="v1:fieldAccessLayerType" name="field-access-layer" minOccurs="0" maxOccurs="unbounded" >
                 <xs:annotation>
                     <xs:documentation>
-                        <h1>Smart Structure Configuration</h1>
-                        <p>To configure Smart Structure parts such as attributes, parameters, default values</p>
+                        <h1>Smart Structure Access Configuration</h1>
+                        <p>To configure rights to access to data</p>
+
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="v1:enumeratesType" name="enumerates" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element type="v1:accessConfigurationType" name="access-configuration" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
+        <xs:attribute type="v1:logicalNameType" name="name"/>
+        <xs:attribute type="xs:string" name="label"/>
     </xs:complexType>
 
+
+    <xs:complexType name="fieldAccessLayerType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="description" minOccurs="0" />
+            <xs:element type="v1:fieldSetAccessType" name="field-access" minOccurs="0" maxOccurs="unbounded" >
+                <xs:annotation>
+                    <xs:documentation>
+                        <h1>Field Access Rights</h1>
+                        <p>Add new access right</p>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="v1:logicalNameType" name="name"/>
+        <xs:attribute type="xs:string" name="label"/>
+        <xs:attribute type="xs:token" name="access-name"/>
+        <xs:attribute type="v1:logicalNameType" name="ref"/>
+        <xs:attribute type="v1:logicalNameType" name="access-structure"/>
+    </xs:complexType>
+
+    <xs:complexType name="fieldSetAccessType">
+        <xs:attribute type="v1:attrNameType" name="field"/>
+        <xs:attribute type="v1:fieldAccessType" name="access"/>
+    </xs:complexType>
+    
     <xs:complexType name="accessConfigurationType">
         <xs:sequence>
+            <xs:element type="xs:string" name="description" minOccurs="0" />
             <xs:element type="v1:accessType" name="element-access" minOccurs="0" maxOccurs="unbounded" >
                 <xs:annotation>
                     <xs:documentation>
@@ -235,8 +282,8 @@
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
-        <xs:attribute type="v1:logicalNameType" name="link"/>
-        <xs:attribute type="v1:logicalNameType" name="linked-structure">
+        <xs:attribute type="v1:logicalNameType" name="ref"/>
+        <xs:attribute type="v1:logicalNameType" name="access-structure">
             <xs:annotation>
                 <xs:documentation>
                     <h1>Dynamic Profil</h1>
@@ -259,8 +306,7 @@
         </xs:choice>
         <xs:attribute type="xs:string" name="name"/>
         <xs:attribute type="xs:string" name="label"/>
-        <xs:attribute type="v1:visibilityType" name="visibility"/>
-        <xs:attribute type="xs:string" name="access"/>
+        <xs:attribute type="v1:fieldAccessType" name="access"/>
         <xs:attribute type="xs:string" name="extended"/>
         <xs:attribute type="xs:string" name="type"/>
     </xs:complexType>
@@ -347,14 +393,23 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
+
+            <xs:element type="v1:accessConfigurationType" name="field-access-configuration" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        <h1>Field Access Configuration</h1>
+                        <h2>To configure access rights of specific fields</h2>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="accessType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="xs:token" name="link"/>
-                <xs:attribute type="xs:token" name="login"/>
+                <xs:attribute type="xs:token" name="ref"/>
+                <xs:attribute type="xs:token" name="account"/>
                 <xs:attribute type="xs:token" name="access"/>
                 <xs:attribute type="v1:attrNameType" name="field"/>
                 <xs:attribute type="v1:logicalNameType" name="element"/>
@@ -464,8 +519,7 @@
         <xs:attribute type="xs:boolean" name="extended"/>
         <xs:attribute type="v1:fieldsetType" name="type"/>
         <xs:attribute type="xs:string" name="label"/>
-        <xs:attribute type="v1:visibilityType" name="visibility"/>
-        <xs:attribute type="xs:string" name="access"/>
+        <xs:attribute type="v1:fieldAccessType" name="access"/>
         <xs:attribute type="xs:string" name="relation"/>
         <xs:attribute type="xs:string" name="multiple"/>
         <xs:attribute type="xs:string" name="is-abstract"/>

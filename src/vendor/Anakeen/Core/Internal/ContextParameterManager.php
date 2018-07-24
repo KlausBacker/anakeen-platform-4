@@ -15,6 +15,7 @@ use Dcp\Exception;
  */
 class ContextParameterManager
 {
+    protected static $cacheUser;
     /**
      * @var array
      * @private
@@ -84,16 +85,17 @@ class ContextParameterManager
             return self::$volatile[$key];
         }
 
+        if (!self::$cache) {
+            self::initCache();
+        }
         $u = ContextManager::getCurrentUser();
         if ($u) {
-            if (!self::$cache) {
-                self::initCache();
+            if (!self::$cacheUser) {
+                self::initCacheUser();
             }
-            if (isset(self::$cache[$key])) {
-                return self::$cache[$key];
-            }
-        } else {
-            return self::getDbValue($key, $def);
+        }
+        if (isset(self::$cache[$key])) {
+            return self::$cache[$key];
         }
         return $def;
     }
@@ -107,21 +109,22 @@ class ContextParameterManager
             unset(self::$volatile[$key]);
         }
     }
-
-    protected static function getDbValue($name, $def)
-    {
-        $sql = sprintf("select  paramv.val from paramv where name='%s' and type='G' order by name, type", pg_escape_string($name));
-        DbManager::query($sql, $value, true, true);
-
-        return ($value !== false) ? $value : $def;
-    }
-
+    
     protected static function initCache()
     {
-        $sql = sprintf("select  paramv.* from paramv where type = 'G' or type = 'U%d' order by name, type", ContextManager::getCurrentUser()->id);
+        $sql = sprintf("select  paramv.* from paramv where type = 'G'");
         DbManager::query($sql, $params);
         foreach ($params as $param) {
             self::$cache[$param["name"]] = $param["val"];
         }
+    }
+    protected static function initCacheUser()
+    {
+        $sql = sprintf("select  paramv.* from paramv where type = 'U%d'", ContextManager::getCurrentUser()->id);
+        DbManager::query($sql, $params);
+        foreach ($params as $param) {
+            self::$cache[$param["name"]] = $param["val"];
+        }
+        self::$cacheUser=true;
     }
 }

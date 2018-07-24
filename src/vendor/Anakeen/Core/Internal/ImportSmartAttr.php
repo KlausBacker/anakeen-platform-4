@@ -11,7 +11,7 @@ class ImportSmartAttr
     public $isAbstract;
     public $type;
     public $order;
-    public $visibility;
+    public $access;
     public $need;
     public $link;
     public $phpfile;
@@ -36,7 +36,7 @@ class ImportSmartAttr
             5 => $this->isAbstract,
             6 => $this->type,
             7 => $this->order,
-            8 => $this->visibility,
+            8 => $this->access,
             9 => $this->need,
             10 => $this->link,
             11 => $this->phpfile,

@@ -49,7 +49,7 @@ class ExportConfiguration
         $structConfig = $this->cel("structure-configuration");
         $structConfig->setAttribute("name", $this->sst->name);
         if ($this->sst->id < 1000) {
-             $structConfig->setAttribute("id", $this->sst->id);
+            $structConfig->setAttribute("id", $this->sst->id);
         }
 
         $this->domConfig->appendChild($structConfig);
@@ -78,7 +78,7 @@ class ExportConfiguration
         $access = $this->cel("render");
         if ($this->sst->ccvid) {
             $tag = $this->cel("view-control");
-            $tag->setAttribute("link", SEManager::getNameFromId($this->sst->ccvid));
+            $tag->setAttribute("ref", SEManager::getNameFromId($this->sst->ccvid));
             $access->appendChild($tag);
             $accessControl = $this->setAccess($this->sst->ccvid);
             $this->domConfig->appendChild($accessControl);
@@ -91,7 +91,7 @@ class ExportConfiguration
         $access = $this->cel("accesses");
         if ($this->sst->cprofid) {
             $tag = $this->cel("element-access-configuration");
-            $tag->setAttribute("link", SEManager::getNameFromId($this->sst->cprofid));
+            $tag->setAttribute("ref", SEManager::getNameFromId($this->sst->cprofid));
             $access->appendChild($tag);
             $accessControl = $this->setAccess($this->sst->cprofid);
             $this->domConfig->appendChild($accessControl);
@@ -102,27 +102,64 @@ class ExportConfiguration
             $access->appendChild($tag);
             $accessControl = $this->setAccess($this->sst->profid);
             if ($this->sst->profid !== $this->sst->id) {
-                $tag->setAttribute("link", SEManager::getNameFromId($this->sst->profid));
+                $tag->setAttribute("ref", SEManager::getNameFromId($this->sst->profid));
                 $this->domConfig->appendChild($accessControl);
             } else {
                 $tag->appendChild($accessControl);
             }
         }
 
+        if ($this->sst->cfallid) {
+            $tag = $this->cel("field-access-configuration");
+            $tag->setAttribute("ref", SEManager::getNameFromId($this->sst->cfallid) ?: $this->sst->cfallid);
+            $access->appendChild($tag);
+            $accessControl = $this->setAccess($this->sst->cfallid);
+            $this->domConfig->appendChild($accessControl);
+            $this->setFieldAccess($tag, $this->sst->cfallid);
+        }
 
         $structConfig->appendChild($access);
     }
+
+    protected function setFieldAccess(\DOMElement $domNode, $fallid)
+    {
+        $fall = SEManager::getDocument($fallid);
+        $layers = $fall->getMultipleRawValues(\SmartStructure\Fields\Fieldaccesslayerlist::fall_layer);
+        $aclNames = $fall->getMultipleRawValues(\SmartStructure\Fields\Fieldaccesslayerlist::fall_aclname);
+        foreach ($layers as $kl => $layer) {
+            $tag = $this->cel("field-access-layer");
+            $eLayer = SEManager::getDocument($layer);
+            $tag->setAttribute("name", $eLayer->name);
+            $tag->setAttribute("label", $eLayer->getTitle());
+            $tag->setAttribute("access-name", $aclNames[$kl]);
+            $fieldIds = $eLayer->getMultipleRawValues(\SmartStructure\Fields\Fieldaccesslayer::fal_fieldid);
+            $fieldAccesses = $eLayer->getMultipleRawValues(\SmartStructure\Fields\Fieldaccesslayer::fal_fieldaccess);
+            foreach ($fieldIds as $k => $accessField) {
+                $atag = $this->cel("field-access");
+                $atag->setAttribute("field", $accessField);
+                $atag->setAttribute("access", $fieldAccesses[$k]);
+                $tag->appendChild($atag);
+            }
+            $domNode->appendChild($tag);
+        }
+    }
+
 
     protected function setAccess($profid)
     {
         $accessControl = $this->cel("access-configuration");
         $profil = SEManager::getDocument($profid);
 
-        $accessControl->setAttribute("name", $profil->name);
+        $accessControl->setAttribute("name", $profil->name ?: $profil->id);
         $accessControl->setAttribute("label", $profil->title);
         $accessControl->setAttribute("profil-type", $profil->fromname);
         if ($profil->getRawValue("dpdoc_famid")) {
-            $accessControl->setAttribute("linked-structure", SEManager::getNameFromId($profil->getRawValue("dpdoc_famid")));
+            $accessControl->setAttribute("access-structure", SEManager::getNameFromId($profil->getRawValue("dpdoc_famid")));
+        }
+        if ($profil->getRawValue("ba_desc")) {
+            $desc = $this->cel("description");
+            $desc->appendChild($this->dom->createCDATASection($profil->getRawValue("ba_desc")));
+                $accessControl->appendChild($desc);
         }
         $sql = sprintf(
             "select users.login, docperm.upacl from docperm,users where docperm.docid=%d and users.id=docperm.userid and docperm.upacl != 0 order by users.login",
@@ -155,8 +192,8 @@ class ExportConfiguration
         $elementAccesses = [];
         $accessResults = [];
         // Add special acls - Always defined in each profil
-        $profil->acls[]="modifyacl";
-        $profil->acls[]="viewacl";
+        $profil->acls[] = "modifyacl";
+        $profil->acls[] = "viewacl";
 
         foreach ($profil->acls as $acl) {
             if (isset(DocumentAccess::$dacls[$acl])) {
@@ -201,7 +238,7 @@ class ExportConfiguration
                 $elementAccesses[$acl]->setAttribute("access", $acl);
             }
             if (isset($result["login"])) {
-                $elementAccesses[$acl]->setAttribute("login", $result["login"]);
+                $elementAccesses[$acl]->setAttribute("account", $result["login"]);
             }
             if (isset($result["attrid"])) {
                 $elementAccesses[$acl]->setAttribute("field", $result["attrid"]);
@@ -278,7 +315,7 @@ class ExportConfiguration
         /**
          * @var \DOMElement[]
          */
-        $q = new QueryDb("", \DocAttr::class);
+        $q = new QueryDb("", DocAttr::class);
         $q->addQuery("id ~ '^:'");
         $q->addQuery(sprintf(" docid=%d", $this->sst->id));
         $l = $q->Query();
@@ -287,7 +324,7 @@ class ExportConfiguration
             return;
         }
         /**
-         * @var \DocAttr $docattr
+         * @var DocAttr $docattr
          */
         foreach ($l as $docattr) {
             $smartOver = $this->cel("field-override");
@@ -298,8 +335,8 @@ class ExportConfiguration
                 throw new Exception("Attr $attrid");
             }
 
-            if ($docattr->visibility) {
-                $smartOver->setAttribute("visibility", $docattr->visibility);
+            if ($docattr->accessibility) {
+                $smartOver->setAttribute("access", $docattr->accessibility);
             }
 
             if ($docattr->needed) {
@@ -384,7 +421,7 @@ class ExportConfiguration
         $attrs = $this->sst->getNormalAttributes();
         $enumNames = [];
         foreach ($attrs as $attr) {
-            if ($attr->type === "enum" && $attr->format && $attr->docid == $this->sst->id) {
+            if ($attr->type === "enum" && $attr->format && $attr->structureId == $this->sst->id) {
                 $enumNames[] = $attr->format;
             }
         }
@@ -443,7 +480,7 @@ class ExportConfiguration
         $attrs = $this->sst->getAttributes();
         $this->fieldSets = [];
         foreach ($attrs as $attr) {
-            if ($attr->docid !== $this->sst->id) {
+            if ($attr->structureId !== $this->sst->id) {
                 continue;
             }
 
@@ -481,8 +518,8 @@ class ExportConfiguration
                 if (!empty($attr->labelText)) {
                     $smartAttr->setAttribute("label", $attr->labelText);
                 }
-                if (!empty($attr->visibility)) {
-                    $smartAttr->setAttribute("visibility", $attr->visibility);
+                if (!empty($attr->access)) {
+                    $smartAttr->setAttribute("access", FieldAccessManager::getTextAccess($attr->access));
                 }
                 if (!empty($attr->link)) {
                     $smartAttr->setAttribute("link", $attr->link);
@@ -507,7 +544,7 @@ class ExportConfiguration
                             $smartAttr->setAttribute("relation", $attr->format);
                         }
                     }
-                    if (in_array($type, ["int","double","money","date", "time", "timestamp"])) {
+                    if (in_array($type, ["int", "double", "money", "date", "time", "timestamp"])) {
                         if ($attr->format) {
                             $smartAttr->setAttribute("format", $attr->format);
                         }
@@ -560,7 +597,7 @@ class ExportConfiguration
         $attrs = $this->sst->getNormalAttributes();
         $this->fieldSets = [];
         foreach ($attrs as $attr) {
-            if ($attr->docid !== $this->sst->id) {
+            if ($attr->structureId !== $this->sst->id) {
                 continue;
             }
 
@@ -570,7 +607,10 @@ class ExportConfiguration
 
 
             if ($attr->isNormal && $attr->phpconstraint) {
-                $smartHooks->appendChild($this->getConstraint($attr));
+                // No export computed constraint
+                if (!preg_match('/Anakeen\\\\Core\\\\Utils\\\\Numbers\\:\\:is/', $attr->phpconstraint)) {
+                    $smartHooks->appendChild($this->getConstraint($attr));
+                }
             }
 
 
@@ -591,7 +631,7 @@ class ExportConfiguration
         $attrs = $this->sst->getNormalAttributes();
         $this->fieldSets = [];
         foreach ($attrs as $attr) {
-            if ($attr->docid !== $this->sst->id) {
+            if ($attr->structureId !== $this->sst->id) {
                 continue;
             }
 

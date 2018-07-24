@@ -24,10 +24,7 @@ class ImportSingleDocument
     protected $policy = 'add';
     protected $orders = array();
     protected $preValues = array();
-    /**
-     * @var bool verify attribute access (visibility "I")
-     */
-    protected $verifyAttributeAccess = true;
+
     /**
      * @var array folder id where insert the new document
      */
@@ -81,13 +78,6 @@ class ImportSingleDocument
         $this->preValues = $preValues;
     }
 
-    /**
-     * @param boolean $verifyAttributeAccess
-     */
-    public function setVerifyAttributeAccess($verifyAttributeAccess)
-    {
-        $this->verifyAttributeAccess = $verifyAttributeAccess;
-    }
 
     public function setTargetDirectory($dirid)
     {
@@ -273,12 +263,10 @@ class ImportSingleDocument
         if ($this->hasError()) {
             return $this;
         }
-        if (!$this->verifyAttributeAccess) {
-            $this->inhibitInvisibleAttributes($this->doc);
-        }
+
         if (count($this->orders) == 0) {
-            $lattr = $this->doc->GetImportAttributes();
-            $this->orders = array_keys($lattr);
+            $this->setError("DOC0011", $this->doc->fromname);
+            return $this;
         } else {
             $lattr = $this->doc->GetNormalAttributes();
         }
@@ -599,7 +587,7 @@ class ImportSingleDocument
                 } // not really an error add addfile must be tested after
                 if ($err == "") {
                     $this->doc->addHistoryEntry(sprintf(_("updated by import")));
-                    $msg .=  $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::POSTIMPORT, $extra);
+                    $msg .= $this->doc->getHooks()->trigger(\Anakeen\SmartHooks::POSTIMPORT, $extra);
                 } else {
                     $this->setError("DOC0112", $this->doc->name, $err);
                 }
@@ -632,15 +620,6 @@ class ImportSingleDocument
         return $this;
     }
 
-    protected function inhibitInvisibleAttributes(\Anakeen\Core\Internal\SmartElement $doc)
-    {
-        $oas = $doc->getNormalAttributes();
-        foreach ($oas as $oa) {
-            if ($oa->mvisibility === "I") {
-                $oa->setVisibility("H");
-            }
-        }
-    }
 
     public function importHtmltextFiles($matches)
     {
@@ -716,9 +695,15 @@ class ImportSingleDocument
         if ($value === ' ') {
             return $res;
         }
-        $value = trim($value, " \x0B\r"); // suppress white spaces end & begin
+        if (! is_array($value)) {
+            $value = trim($value, " \x0B\r"); // suppress white spaces end & begin
+        }
         if ($oattr->repeat) {
-            $tvalues = $doc->rawValueToArray($value);
+            if (is_array($value)) {
+                $tvalues = $value;
+            } else {
+                $tvalues = $doc->rawValueToArray($value);
+            }
         } else {
             $tvalues[] = $value;
         }

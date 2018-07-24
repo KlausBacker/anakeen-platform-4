@@ -15,7 +15,7 @@
     </xs:complexType>
     <xs:complexType name="middlewaresType">
         <xs:sequence>
-            <xs:element type="rout:middlewareType" name="middleware"/>
+            <xs:element type="rout:middlewareType" name="middleware" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute type="xs:token" name="namespace" use="required"/>
     </xs:complexType>

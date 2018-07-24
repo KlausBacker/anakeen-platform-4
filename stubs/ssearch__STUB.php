@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class Ssearch extends \Anakeen\SmartStructures\Ssearch\SSearchHooks { const familyName="SSEARCH";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Recherche spécialisée  */
 	class Ssearch extends Search {
 		/** [frame] Fonction */

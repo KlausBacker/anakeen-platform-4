@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class Group extends \Anakeen\SmartStructures\Group\GroupHooks { const familyName="GROUP";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Groupe de personnes  */
 	class Group extends Dir {
 		/** [frame] Identification */

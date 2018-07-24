@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class Igroup extends \Anakeen\SmartStructures\Igroup\IGroupHooks { const familyName="IGROUP";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Groupe d'utilisateurs  */
 	class Igroup extends Group {
 		/** [frame] Système */

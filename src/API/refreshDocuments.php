@@ -82,11 +82,7 @@ $stopOnError = ($usage->addEmptyParameter("stop-on-error", "Stop processing when
 $usage->verify();
 
 $allrev = ($revision == "yes"); // method to use
-$dbaccess = $action->dbaccess;
-if ($dbaccess == "") {
-    print "Database not found : action->dbaccess";
-    exit();
-}
+
 
 if ($statusFile === '') {
     $statusFile = null;
@@ -105,7 +101,7 @@ if ($famId) {
     $famtitle = $f->getTitle();
 }
 
-$s = new SearchDoc($dbaccess, $famId);
+$s = new SearchDoc("", $famId);
 $s->setObjectReturn();
 $s->orderby = 'id desc';
 $s->slice = $slice;

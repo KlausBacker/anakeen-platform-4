@@ -7,7 +7,7 @@ namespace SmartStructure {
 	class Base extends SmartElement { const familyName="BASE";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** de base  */
 	class Base {
 		/** [frame] Basique */

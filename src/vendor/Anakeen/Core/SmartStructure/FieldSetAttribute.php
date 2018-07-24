@@ -9,25 +9,26 @@ namespace Anakeen\Core\SmartStructure;
 
 class FieldSetAttribute extends BasicAttribute
 {
+    /** @noinspection PhpMissingParentConstructorInspection */
     /**
      * Constructor
      *
-     * @param string $id $docid famid
-     * @param string $docid
-     * @param string $label default translation key
-     * @param string $visibility visibility option
-     * @param string $usefor Attr or Param usage
-     * @param string $type kind of
+     * @param string                                         $id       $docid famid
+     * @param string                                         $docid
+     * @param string                                         $label    default translation key
+     * @param string                                         $access   visibility option
+     * @param string                                         $usefor   Attr or Param usage
+     * @param string                                         $type     kind of
      * @param \Anakeen\Core\SmartStructure\FieldSetAttribute $fieldSet parent field
-     * @param string $options option string
-     * @param string $docname
+     * @param string                                         $options  option string
+     * @param string                                         $docname
      */
-    public function __construct($id, $docid, $label, $visibility = "", $usefor = "", $type = "frame", &$fieldSet = null, $options = "", $docname = "")
+    public function __construct($id, $docid, $label, $access = "", $usefor = "", $type = "frame", &$fieldSet = null, $options = "", $docname = "")
     {
         $this->id = $id;
-        $this->docid = $docid;
+        $this->structureId = $docid;
         $this->labelText = $label;
-        $this->visibility = $visibility;
+        $this->access = $access;
         $this->usefor = $usefor;
         $this->type = $type;
         $this->fieldSet = & $fieldSet;
@@ -45,7 +46,7 @@ class FieldSetAttribute extends BasicAttribute
     {
         $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "fieldattribute_schema.xml"));
         $lay->set("aname", $this->id);
-        $this->common_getXmlSchema($lay);
+        $this->commonGetXmlSchema($lay);
         
         $lay->set("minOccurs", "0");
         $lay->set("maxOccurs", "1");
@@ -62,6 +63,4 @@ class FieldSetAttribute extends BasicAttribute
         $lay->setBlockData("ATTR", $tax);
         return $lay->gen();
     }
-
 }
-

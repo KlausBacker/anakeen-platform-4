@@ -155,17 +155,21 @@ class ErrorCodeATTR
      */
     const ATTR0702 = 'the order is required in attribute "%s"';
     /**
-     * @errorCode  The attribute's visibility must be defined
+     * @errorCode  The attribute's access must be defined
      */
-    const ATTR0800 = 'the visibility is required in attribute "%s"';
+    const ATTR0800 = 'the access is required in field "%s"';
     /**
-     * @errorCode  The attribute's visibility is limited to defined visibilities (H,R,...)
+     * @errorCode  The attribute's access is limited to defined visibilities (H,R,...)
      */
-    const ATTR0801 = 'the visibility "%s" in attribute "%s" must be one of %s';
+    const ATTR0801 = 'the access "%s" in field "%s" must be one of %s';
     /**
      * @errorCode  The U visibility can be applied only on array attribute
      */
     const ATTR0802 = 'the U visibility is reserved to array, in attribute "%s"';
+    /**
+     * @errorCode  The attribute's access is limited to defined visibilities (Read, Write)
+     */
+    const ATTR0803 = 'the access "%s" in field is incorrect';
     /**
      * @errorCode  property isNeeded is Y or N
      */

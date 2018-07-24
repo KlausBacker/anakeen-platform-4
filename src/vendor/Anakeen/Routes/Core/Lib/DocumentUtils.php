@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Core\Lib;
 
 use Anakeen\Core\SEManager;
+use Anakeen\Core\SmartStructure\FieldAccessManager;
 use Anakeen\Router\Exception;
 use Anakeen\Core\Settings;
 use Anakeen\Router\URLUtils;
@@ -55,7 +56,7 @@ class DocumentUtils
             // get all attributes without the restricted and I and array (if we have a ref doc)
             $normalAttributes = $currentDoc->getNormalAttributes();
             foreach ($normalAttributes as $attrId => $attribute) {
-                if ($attribute->type != "array" && $attribute->mvisibility !== "I") {
+                if ($attribute->type != "array" && FieldAccessManager::hasReadAccess($currentDoc, $attribute)) {
                     if (!empty($restrictedAttributes) && !in_array($attrId, $restrictedAttributes)) {
                         continue;
                     }
@@ -128,13 +129,12 @@ class DocumentUtils
                 || $currentAttribute->type === "array"
                 || $currentAttribute->type === "tab"
                 || $currentAttribute->type === "menu"
-                || $currentAttribute->usefor === "Q"
-                || $currentAttribute->mvisibility === "I") {
+                || $currentAttribute->usefor === "Q") {
                 if ($currentAttribute) {
                     /**
                      * @var \Anakeen\Core\SmartStructure\BasicAttribute $currentAttribute
                      */
-                    if ($currentAttribute->mvisibility === "I") {
+                    if (!FieldAccessManager::hasReadAccess($currentDoc, $currentAttribute)) {
                         throw new Exception("CRUD0508", $currentElement, $currentAttribute->getLabel());
                     }
                     throw new Exception(

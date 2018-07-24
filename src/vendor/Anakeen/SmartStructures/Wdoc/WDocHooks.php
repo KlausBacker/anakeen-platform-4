@@ -8,6 +8,8 @@ namespace Anakeen\SmartStructures\Wdoc;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
+use Anakeen\Core\SmartStructure\DocAttr;
+use Anakeen\LogManager;
 use Anakeen\SmartHooks;
 use Anakeen\SmartStructures\Timer\TimerHooks;
 use Dcp\Exception;
@@ -151,7 +153,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                             } else {
                                 $subject = sprintf(_("allocation for %s document"), $this->doc->title);
                                 $commentaction = '';
-                               // $err = sendCard(\Anakeen\Core\ContextManager::getCurrentAction(), $this->doc->id, $to, "", $subject, "", true, $commentaction, "", "", "htmlnotif");
+                                // $err = sendCard(\Anakeen\Core\ContextManager::getCurrentAction(), $this->doc->id, $to, "", $subject, "", true, $commentaction, "", "", "htmlnotif");
                                 if ($err != "") {
                                     \Anakeen\Core\Utils\System::addWarningMsg($err);
                                 }
@@ -333,12 +335,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             // --------------------------
             // frame
             $aidframe = $this->_aid("_FR", $state);
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aidframe
             ));
             $oattr->docid = $cid;
-            $oattr->visibility = "W";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = "frame";
             $oattr->id = $aidframe;
             $oattr->frameid = "wf_tab_states";
@@ -355,12 +357,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             // --------------------------
             // profil id
             $aidprofilid = $this->_aid("_ID", $state); //strtolower($this->attrPrefix."_ID".strtoupper($state));
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aidprofilid
             ));
             $oattr->docid = $cid;
-            $oattr->visibility = "W";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("PROFIL")';
             $oattr->id = $aidprofilid;
             $oattr->labeltext = sprintf(_("%s profile"), _($state));
@@ -380,12 +382,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             // mask id
             $aid = $this->_aid("_MSKID", $state);
 
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->visibility = "W";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("MASK")';
             $oattr->id = $aid;
             $oattr->labeltext = sprintf(_("%s mask"), _($state));
@@ -404,12 +406,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             // --------------------------
             // state color
             $aid = $this->_aid("_COLOR", $state);
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->visibility = "W";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = "color";
             $oattr->link = "";
             $oattr->phpfile = "";
@@ -427,12 +429,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             // --------------------------
             // CV link
             $aid = $this->_aid("_CVID", $state);
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->visibility = "W";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("CVDOC")';
             $oattr->link = "";
             $oattr->phpfile = "fdl.php";
@@ -452,12 +454,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             // --------------------------
             // Mail template link
             $aid = $this->_aid("_MTID", $state);
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->visibility = "W";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("MAILTEMPLATE")';
             $oattr->link = "";
             $oattr->phpfile = "fdl.php";
@@ -478,12 +480,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             // --------------------------
             //  Timer link
             $aid = $this->_aid("_TMID", $state);
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->visibility = "W";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("TIMER")';
             $oattr->link = "";
             $oattr->phpfile = "fdl.php";
@@ -502,12 +504,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             // --------------------------
             //  Ask link
             $aid = $this->_aid("_ASKID", $state);
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->visibility = "W";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("WASK")';
             $oattr->link = "";
             $oattr->phpfile = "";
@@ -526,16 +528,16 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             // --------------------------
             // Label action
             $aid = $this->_aid("_ACTIVITYLABEL", $k);
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
             $oattr->docid = $cid;
 
             if (!(empty($this->stateactivity[$k]))) {
-                $oattr->visibility = "S";
+                $oattr->accessibility = "Read";
             } else {
-                $oattr->visibility = "W";
+                $oattr->accessibility = "ReadWrite";
             }
             $oattr->type = 'text';
             $oattr->link = "";
@@ -556,12 +558,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             //  Affected user link
             $aid = $this->_aid("_T_AFFECT", $state);
             $afaid = $aid;
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->visibility = "U";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'array';
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
@@ -576,12 +578,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
             $aid = $this->_aid("_AFFECTTYPE", $state);
             $aidtype = $aid;
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->visibility = "W";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'enum';
             $oattr->options = "autocreated=yes|system=yes";
             $oattr->phpfunc = "F|" . _("Utilisateur fixe") .
@@ -600,12 +602,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
 
             $aid = $this->_aid("_AFFECTREF", $state);
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->visibility = "W";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'text';
             $oattr->link = "";
             $oattr->options = "cwidth=160px|autocreated=yes";
@@ -622,12 +624,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
 
             $aid = $this->_aid("_AFFECTLOCK", $state);
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->visibility = "W";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'enum';
             $oattr->link = "";
             $oattr->options = "eformat=bool|autocreated=yes|system=yes";
@@ -643,12 +645,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
 
             $aid = $this->_aid("_AFFECTMAIL", $state);
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->visibility = "W";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'enum';
             $oattr->link = "";
             $oattr->options = "eformat=bool|autocreated=yes|system=yes";
@@ -668,12 +670,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             // --------------------------
             // frame
             $aidframe = $this->_aid("_TRANS_FR", $k);
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aidframe
             ));
             $oattr->docid = $cid;
-            $oattr->visibility = "W";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = "frame";
             $oattr->id = $aidframe;
             $oattr->frameid = "wf_tab_transitions";
@@ -690,12 +692,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             // --------------------------
             // Mail template link
             $aid = $this->_aid("_TRANS_MTID", $k);
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->visibility = "W";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("MAILTEMPLATE")';
             $oattr->link = "";
             $oattr->phpfile = "fdl.php";
@@ -715,12 +717,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             // --------------------------
             // Timer link
             $aid = $this->_aid("_TRANS_TMID", $k);
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->visibility = "W";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("TIMER")';
             $oattr->link = "";
             $oattr->phpfile = "fdl.php";
@@ -740,12 +742,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             // --------------------------
             // Persistent Attach Timer link
             $aid = $this->_aid("_TRANS_PA_TMID", $k);
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->visibility = "W";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("TIMER")';
             $oattr->link = "";
             $oattr->phpfile = "fdl.php";
@@ -765,12 +767,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             // --------------------------
             // Persistent UnAttach Timer link
             $aid = $this->_aid("_TRANS_PU_TMID", $k);
-            $oattr = new \DocAttr($this->dbaccess, array(
+            $oattr = new DocAttr($this->dbaccess, array(
                 $cid,
                 $aid
             ));
             $oattr->docid = $cid;
-            $oattr->visibility = "W";
+            $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("TIMER")';
             $oattr->link = "";
             $oattr->phpfile = "fdl.php";
@@ -859,8 +861,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         if ($err != "") {
             return $err;
         }
-        /* Set edition mask from view control if a view control is applied on the document */
-        $this->doc->setMask(\Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT);
+
 
         if ($wm0 && (!empty($tr["m0"]))) {
             // apply first method (condition for the change)
@@ -971,8 +972,8 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
             return $err . $err2;
         }
-        \Anakeen\Core\Utils\System::addLogMsg(sprintf(_("%s new \state %s"), $this->doc->title, _($newstate)));
 
+        LogManager::notice(sprintf(_("%s new \state %s"), $this->doc->title, _($newstate)));
         $this->doc->restoreAccessControl();
         // post action
         $msg2 = '';

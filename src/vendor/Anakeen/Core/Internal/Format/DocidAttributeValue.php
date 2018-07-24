@@ -59,14 +59,14 @@ class DocidAttributeValue extends StandardAttributeValue
         if (!$v) {
             return '';
         }
-        $ul = "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=" . $v;
+        $ul = sprintf("/api/v2/documents/%s.html", $v);
 
         if ($docrev == "latest" || $docrev == "" || !$docrev) {
-            $ul .= "&amp;latest=Y";
+
         } elseif ($docrev != "fixed") {
             // validate that docrev looks like state(xxx)
             if (preg_match('/^state\(([a-zA-Z0-9_:-]+)\)/', $docrev, $matches)) {
-                $ul .= "&amp;state=" . $matches[1];
+                $ul .= "?state=" . $matches[1];
             }
         }
         return $ul;

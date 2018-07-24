@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
+  <smart:structure-configuration name="TST_F2_1" label="Test F2 / 1">
+    <smart:usefor>N</smart:usefor>
+    <smart:fields>
+      <smart:field-set name="tst_f2_f_title" type="frame" label="Titre" access="ReadWrite">
+        <smart:field-text name="tst_f2_title" label="Le titre" access="ReadWrite" is-title="true"/>
+      </smart:field-set>
+      <smart:field-set name="tst_f2_fr_date" type="frame" label="Le temps" access="ReadWrite">
+        <smart:field-date name="tst_f2_date" label="Une date" access="ReadWrite"/>
+        <smart:field-time name="tst_f2_time" label="Une heure" access="ReadWrite"/>
+      </smart:field-set>
+      <smart:field-set name="tst_f2_fr_number" type="frame" label="Les nombres" access="ReadWrite">
+        <smart:field-int name="tst_f2_integer" label="Un entier" access="ReadWrite"/>
+        <smart:field-double name="tst_f2_double" label="Un décimal" access="ReadWrite"/>
+      </smart:field-set>
+    </smart:fields>
+    <smart:parameters/>
+    <smart:hooks/>
+    <smart:autocompletion/>
+    <smart:defaults/>
+    <smart:accesses/>
+  </smart:structure-configuration>
+</smart:config>

@@ -86,11 +86,11 @@ interface SmartHooks
      * the output message will appeared as a information message
      * @see \Anakeen\Core\Internal\SmartElement::duplicate()
      */
-    const POSTDUPLICATE= "postDuplicate";
+    const POSTDUPLICATE = "postDuplicate";
 
 
     /**
-     * Call when affect smart element object with new data 
+     * Call when affect smart element object with new data
      * The object not has new data yet
      * @see \Anakeen\Core\Internal\SmartElement::affect()
      */
@@ -101,7 +101,21 @@ interface SmartHooks
      * The data is set in object
      * @see \Anakeen\Core\Internal\SmartElement::affect()
      */
-    const POSTAFFECT= "postAffect";
+    const POSTAFFECT = "postAffect";
+
+
+    /**
+     * Call when use refresh method
+     * Call at store before computed fields are set
+     * @see \Anakeen\Core\Internal\SmartElement::refresh()
+     */
+    const PREREFRESH = "preRefresh";
+    /**
+     * Call when use refresh method
+     * Call at store after computed fields are set
+     * @see \Anakeen\Core\Internal\SmartElement::refresh()
+     */
+    const POSTREFRESH = "postRefresh";
 
     public function registerHooks();
 }

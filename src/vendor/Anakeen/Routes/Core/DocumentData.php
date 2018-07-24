@@ -113,9 +113,7 @@ class DocumentData
             $exception->setUserMessage(___("Document access not granted", "ank"));
             throw $exception;
         }
-        if ($this->_document->mid == 0) {
-            $this->_document->applyMask(\Anakeen\Core\Internal\SmartElement::USEMASKCVVIEW);
-        }
+
         return $this->getDocumentData();
     }
 

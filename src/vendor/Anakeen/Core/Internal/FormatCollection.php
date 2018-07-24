@@ -7,6 +7,7 @@
 namespace Anakeen\Core\Internal;
 
 use \Anakeen\Core\SEManager;
+use Anakeen\Core\SmartStructure\FieldAccessManager;
 
 /**
  * Format document list to be easily used in
@@ -435,7 +436,7 @@ class FormatCollection
     }
 
     /**
-     * @param Format\StandardAttributeValue|null                      $info
+     * @param Format\StandardAttributeValue|null               $info
      * @param \Anakeen\Core\SmartStructure\BasicAttribute|null $oa
      * @param \Anakeen\Core\Internal\SmartElement              $doc
      * @return Format\StandardAttributeValue
@@ -464,9 +465,9 @@ class FormatCollection
     }
 
     /**
-     * @param Format\StandardAttributeValue|string|null  $info
-     * @param string                              $propId
-     * @param \Anakeen\Core\Internal\SmartElement $doc
+     * @param Format\StandardAttributeValue|string|null $info
+     * @param string                                    $propId
+     * @param \Anakeen\Core\Internal\SmartElement       $doc
      * @return Format\StandardAttributeValue
      */
     protected function callPropertyRenderHook($info, $propId, \Anakeen\Core\Internal\SmartElement $doc)
@@ -491,7 +492,6 @@ class FormatCollection
         $r = array();
         $kdoc = 0;
         $countDoc = count($this->dl);
-        \Dcp\VerifyAttributeAccess::clearCache();
         foreach ($this->dl as $docid => $doc) {
             if ($kdoc % 10 == 0) {
                 $this->callHookStatus(sprintf(_("Doc Render %d/%d"), $kdoc, $countDoc));
@@ -510,8 +510,9 @@ class FormatCollection
 
                     $value = $doc->getRawValue($oa->id);
                     if ($value === '') {
-                        if ($this->verifyAttributeAccess === true && !\Dcp\VerifyAttributeAccess::isAttributeAccessGranted($doc, $oa)) {
-                            $attributeInfo = new Format\noAccessAttributeValue($this->noAccessText);
+                        if ($this->verifyAttributeAccess === true && !FieldAccessManager::hasReadAccess($doc, $oa)) {
+                            // No return information if no access
+                            continue;
                         } else {
                             if ($this->useShowEmptyOption && $empty = $oa->getOption("showempty")) {
                                 $attributeInfo = new Format\StandardAttributeValue($oa, null);
@@ -554,7 +555,7 @@ class FormatCollection
             case self::propState:
                 return $this->getState($doc);
             case self::propUrl:
-                return sprintf("?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=%d", $doc->id);
+                return sprintf("/api/v2/documents/%s.html", $doc->id);
             case self::revdate:
                 return $this->getFormatDate(date("Y-m-d H:i:s", intval($doc->$propName)), $this->propDateStyle);
             case self::cdate:
@@ -750,6 +751,7 @@ class FormatCollection
                 "id" => 0
             );
         }
+
         $info["readOnly"] = ($doc->canEdit() != "");
         $info["fixed"] = ($doc->locked == -1);
         if ($doc->profid != 0) {
@@ -764,22 +766,34 @@ class FormatCollection
                 );
                 if ($doc->dprofid > 0) {
                     $profil = SEManager::getDocument($doc->dprofid);
-                    $info["profil"]["reference"] = array(
-                        "id" => intval($profil->initid),
-                        "icon" => $profil->getIcon("", $this->familyIconSize),
-                        "activated" => ($profil->id == $profil->profid),
-                        "title" => $profil->getTitle()
-                    );
+                    if ($profil && $profil->hasPermission("view")) {
+                        $info["profil"]["reference"] = array(
+                            "id" => intval($profil->initid),
+                            "icon" => $profil->getIcon("", $this->familyIconSize),
+                            "activated" => ($profil->id == $profil->profid),
+                            "title" => $profil->getTitle()
+                        );
+                    }
                     $info["profil"]["type"] = "dynamic";
                 }
             } else {
                 $profil = SEManager::getDocument(abs($doc->profid));
-                $info["profil"] = array(
-                    "id" => intval($profil->initid),
-                    "icon" => $profil->getIcon("", $this->familyIconSize),
-                    "type" => "linked",
-                    "activated" => ($profil->id == $profil->profid),
-                    "title" => $profil->getTitle()
+                if ($profil && $profil->hasPermission("view")) {
+                    $info["profil"] = array(
+                        "id" => intval($profil->initid),
+                        "icon" => $profil->getIcon("", $this->familyIconSize),
+                        "type" => "linked",
+                        "activated" => ($profil->id == $profil->profid),
+                        "title" => $profil->getTitle()
+                    );
+                }
+            }
+            $fall = SEManager::getDocument($doc->fallid);
+            if ($fall && $fall->hasPermission("view")) {
+                $info["fieldAccess"] = array(
+                    "id" => intval($fall->initid),
+                    "icon" => $fall->getIcon("", $this->familyIconSize),
+                    "title" => $fall->getTitle()
                 );
             }
         } else {
@@ -945,8 +959,9 @@ class FormatCollection
     {
         $info = null;
 
-        if ($this->verifyAttributeAccess === true && !\Dcp\VerifyAttributeAccess::isAttributeAccessGranted($doc, $oa)) {
-            $info = new Format\noAccessAttributeValue($this->noAccessText);
+        if ($this->verifyAttributeAccess === true && !FieldAccessManager::hasReadAccess($doc, $oa)) {
+            //  $info = new Format\noAccessAttributeValue($this->noAccessText);
+            $info = null;
         } else {
             switch ($oa->type) {
                 case 'text':

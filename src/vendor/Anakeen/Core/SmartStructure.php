@@ -18,6 +18,7 @@ create table docfam (cprofid int ,
                      dfldid int, 
                      cfldid int, 
                      ccvid int, 
+                     cfallid int, 
                      ddocid int,
                      methods text,
                      defval text,
@@ -42,6 +43,7 @@ create unique index idx_idfam on docfam(id);";
             "dfldid",
             "cfldid",
             "ccvid",
+            "cfallid",
             "cprofid",
             "ddocid",
             "methods",
@@ -58,6 +60,7 @@ create unique index idx_idfam on docfam(id);";
     public $dfldid;
     public $cfldid;
     public $ccvid;
+    public $cfallid;
     public $cprofid;
     public $ddocid;
     public $methods;
@@ -103,7 +106,10 @@ create unique index idx_idfam on docfam(id);";
         }
         // specials characteristics R : revised on each modification
         parent::__construct($dbaccess, $id, $res, $dbid);
-        $this->doctype = 'C';
+        if ($this->id && $this->doctype !== 'C') {
+            throw new \Dcp\Exception(sprintf("Cannot use this identifier \"%d\" as Smart Structure", $this->id));
+        }
+
         if ($include && ($this->id > 0) && ($this->isAffected())) {
             $adoc = \Anakeen\Core\SEManager::getAttributesClassName($this->name);
             if (!\Anakeen\Core\Internal\Autoloader::findFile($adoc)) {
@@ -112,7 +118,7 @@ create unique index idx_idfam on docfam(id);";
                 if (file_exists($attFileClass)) {
                     require_once($attFileClass);
                 } else {
-                    throw new \Dcp\Exception(sprintf("cannot access attribute definition for %s (#%s) family", $this->name, $this->id));
+                    throw new \Dcp\Exception(sprintf("Cannot access fields definition for %s (#%s) structure", $this->name, $this->id));
                 }
             }
             $this->attributes = new $adoc();

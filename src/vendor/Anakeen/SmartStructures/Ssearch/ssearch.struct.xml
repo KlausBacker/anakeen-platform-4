@@ -5,14 +5,14 @@
         <smart:class>Anakeen\SmartStructures\Ssearch\SSearchHooks</smart:class>
         <smart:usefor>S</smart:usefor>
         <smart:fields>
-            <smart:field-set name="se_fr_function" type="frame" label="Fonction" visibility="W">
-                <smart:field-text name="se_phpfile" label="Fichier PHP" visibility="W"/>
-                <smart:field-text name="se_phpfunc" label="Fonction PHP" visibility="W"/>
-                <smart:field-text name="se_phparg" label="Argument PHP" visibility="W"/>
+            <smart:field-set name="se_fr_function" type="frame" label="Fonction" access="ReadWrite">
+                <smart:field-text name="se_phpfile" label="Fichier PHP" access="ReadWrite"/>
+                <smart:field-text name="se_phpfunc" label="Fonction PHP" access="ReadWrite"/>
+                <smart:field-text name="se_phparg" label="Argument PHP" access="ReadWrite"/>
             </smart:field-set>
         </smart:fields>
         <smart:parameters/>
-        <smart:field-override field="se_crit" visibility="H"/>
+        <smart:field-override field="se_crit" access="None"/>
         <smart:hooks/>
         <smart:autocompletion/>
         <smart:defaults>

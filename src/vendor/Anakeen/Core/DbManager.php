@@ -2,6 +2,9 @@
 
 namespace Anakeen\Core;
 
+use Anakeen\Core\Internal\Debug;
+use Anakeen\LogManager;
+
 class DbManager
 {
     protected static $inTransition = false;
@@ -73,6 +76,8 @@ class DbManager
         static $sqlStrict = null;
 
         $dbid = self::getDbid();
+
+        // error_log("SQL>".$query."\n".Debug::getDebugStackString(2, 5));
 
         $result = array();
         $r = @pg_query($dbid, $query);

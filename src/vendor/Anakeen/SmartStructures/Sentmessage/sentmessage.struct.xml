@@ -6,28 +6,28 @@
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
         <smart:fields>
-            <smart:field-set name="emsg_fr_ident" type="frame" label="Identification" visibility="R">
-                <smart:field-docid name="emsg_refid" label="Document référence" visibility="R" relation="x"/>
-                <smart:field-text name="emsg_from" label="De" visibility="S"/>
-                <smart:field-set name="emsg_t_recipient" type="array" label="Destinataires" visibility="U">
-                    <smart:field-enum name="emsg_sendtype" label="Type" visibility="S" relation="SENTMESSAGE-emsg_sendtype"/>
-                    <smart:field-text name="emsg_recipient" label="Destinataire" visibility="S"/>
+            <smart:field-set name="emsg_fr_ident" type="frame" label="Identification" access="Read">
+                <smart:field-docid name="emsg_refid" label="Document référence" access="Read" relation="x"/>
+                <smart:field-text name="emsg_from" label="De" access="Read"/>
+                <smart:field-set name="emsg_t_recipient" type="array" label="Destinataires" access="Read">
+                    <smart:field-enum name="emsg_sendtype" label="Type" access="Read" relation="SENTMESSAGE-emsg_sendtype"/>
+                    <smart:field-text name="emsg_recipient" label="Destinataire" access="Read"/>
                 </smart:field-set>
-                <smart:field-text name="emsg_subject" label="Sujet" visibility="S" is-title="true"/>
-                <smart:field-timestamp name="emsg_date" label="Date" visibility="S"/>
-                <smart:field-int name="emsg_size" label="Taille" visibility="R"/>
+                <smart:field-text name="emsg_subject" label="Sujet" access="Read" is-title="true"/>
+                <smart:field-timestamp name="emsg_date" label="Date" access="Read"/>
+                <smart:field-int name="emsg_size" label="Taille" access="Read"/>
             </smart:field-set>
-            <smart:field-set name="emsg_fr_bodies" type="frame" label="Corps de messages" visibility="R">
-                <smart:field-longtext name="emsg_textbody" label="Texte" visibility="R"/>
-                <smart:field-file name="emsg_htmlbody" label="Texte formaté" visibility="R"/>
-                <smart:field-set name="emsg_t_attach" type="array" label="Attachements" visibility="R">
-                    <smart:field-file name="emsg_attach" label="Fichier" visibility="R"/>
+            <smart:field-set name="emsg_fr_bodies" type="frame" label="Corps de messages" access="Read">
+                <smart:field-longtext name="emsg_textbody" label="Texte" access="Read"/>
+                <smart:field-file name="emsg_htmlbody" label="Texte formaté" access="Read"/>
+                <smart:field-set name="emsg_t_attach" type="array" label="Attachements" access="Read">
+                    <smart:field-file name="emsg_attach" label="Fichier" access="Read"/>
                 </smart:field-set>
             </smart:field-set>
         </smart:fields>
         <smart:parameters>
-            <smart:field-set name="emsg_fr_parameters" type="frame" label="Paramètres" visibility="W">
-                <smart:field-enum name="emsg_editcontrol" label="Force la lecture seule" visibility="W" relation="SENTMESSAGE-emsg_editcontrol"/>
+            <smart:field-set name="emsg_fr_parameters" type="frame" label="Paramètres" access="ReadWrite">
+                <smart:field-enum name="emsg_editcontrol" label="Force la lecture seule" access="ReadWrite" relation="SENTMESSAGE-emsg_editcontrol"/>
             </smart:field-set>
         </smart:parameters>
         <smart:autocompletion/>

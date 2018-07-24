@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class Exec extends \Anakeen\SmartStructures\Exec\ExecHooks { const familyName="EXEC";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Processus  */
 	class Exec {
 		/** [frame] Identification */

@@ -197,7 +197,7 @@ class IGroupHooks extends \SmartStructure\Group
     {
         $err = "";
         if ($multiple == false) {
-            $gid = $this->getRawValue("US_WHATID");
+            $gid = $this->getRawValue("us_whatid");
             if ($gid > 0) {
                 /**
                  * @var \SmartStructure\Iuser $du
@@ -210,7 +210,7 @@ class IGroupHooks extends \SmartStructure\Group
                         $g->iduser = $uid;
                         $g->idgroup = $gid;
                         $err = $g->add();
-                        if ($err == "OK") {
+                        if ($err === "OK") {
                             $err = "";
                         }
                         if ($err == "") {

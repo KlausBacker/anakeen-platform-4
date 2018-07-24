@@ -55,14 +55,11 @@ class CheckAttr extends CheckData
         "action",
         "array"
     );
-    private $visibilities = array(
-        'I',
-        'H',
-        'R',
-        'W',
-        'O',
-        'S',
-        'U'
+    private $accessibilities = array(
+        'Read',
+        'Write',
+        'ReadWrite',
+        'None'
     );
 
     private $yesno = array(
@@ -178,7 +175,7 @@ class CheckAttr extends CheckData
         $this->checkSet();
         $this->checkType();
         $this->checkOrder();
-        $this->checkVisibility();
+        $this->checkFieldAccess();
         $this->checkIsAbstract();
         $this->checkIsTitle();
         $this->checkIsNeeded();
@@ -329,7 +326,8 @@ SQL;
 
         $attrid = pg_escape_string($attrid);
         $sql = sprintf($sqlPattern, $docid, $fromid, $attrid);
-        simpleQuery('', $sql, $r);
+
+        \Anakeen\Core\DbManager::query($sql, $r);
         if (count($r) > 0) {
             return $r[0];
         }
@@ -390,25 +388,16 @@ SQL;
         }
     }
 
-    /**
-     * test syntax order
-     * must be an integer
-     * @return void
-     */
-    private function checkVisibility()
+
+    private function checkFieldAccess()
     {
-        $vis = $this->structAttr->visibility;
-        if (empty($vis)) {
+        $acs = $this->structAttr->access;
+        if (empty($acs)) {
             if (!$this->isModAttr) {
                 $this->addError(ErrorCode::getError('ATTR0800', $this->attrid));
             }
-        } elseif (!in_array($vis, $this->visibilities)) {
-            $this->addError(ErrorCode::getError('ATTR0801', $vis, $this->attrid, implode(',', $this->visibilities)));
-        } else {
-            $type = $this->getType();
-            if ($vis == "U" && $type && ($type != "array")) {
-                $this->addError(ErrorCode::getError('ATTR0802', $this->attrid));
-            }
+        } elseif (!in_array($acs, $this->accessibilities)) {
+            $this->addError(ErrorCode::getError('ATTR0801', $acs, $this->attrid, implode(',', $this->accessibilities)));
         }
     }
 
@@ -556,8 +545,6 @@ SQL;
                         $this->addError(ErrorCode::getError('ATTR1203', $phpFuncName));
                     }
                 }
-            } else {
-                // parse method for computed attribute
             }
         }
     }
@@ -594,9 +581,6 @@ SQL;
             $strucFunc = $oParse->parse($constraint, true);
             if ($strucFunc->getError()) {
                 $this->addError(ErrorCode::getError('ATTR1400', $this->attrid, $strucFunc->getError()));
-            } else {
-                // validity of method call cannot be tested here
-                // it is tested in checkEnd
             }
         }
     }
@@ -683,4 +667,3 @@ SQL;
         return (!in_array($type, $this->noValueTypes));
     }
 }
-

@@ -124,7 +124,7 @@ if [ "$1" = "I" ] ; then
     fi
 
     for CLASS in \
-        DocAttr \
+        "Anakeen\\Core\\SmartStructure\\DocAttr" \
         DocAttrLDAP \
         DocCount \
         "Anakeen\\Core\\SmartStructure" \

@@ -193,17 +193,7 @@ function exportxmlfld(
             if ($flog) {
                 fputs($flog, sprintf("EXPORT DOC OK : <%s> [%d]\n", $doc->getTitle(), $doc->id));
             }
-            if (!isset($xsd[$doc->fromid])) {
 
-                /**
-                 * @var \Anakeen\Core\SmartStructure $fam
-                 */
-                $fam = \Anakeen\Core\SEManager::getFamily($doc->fromid);
-
-                $fname = sprintf("%s/%s.xsd", $foutdir, strtolower($fam->name));
-                file_put_contents($fname, $fam->getXmlSchema());
-                $xsd[$doc->fromid] = true;
-            }
         }
     }
 

@@ -15,6 +15,8 @@
 
 include_once("FDL/import_file.php");
 
+use \Anakeen\Core\SmartStructure\DocAttr;
+
 class ImportDocumentDescription
 {
     const attributePrefix = ":ATTR:";
@@ -35,7 +37,7 @@ class ImportDocumentDescription
     /* Store erroneous family's ORDER line to prevent import of document from that family */
     private $badOrderErrors = array();
     /**
-     * @var bool verify attribute access (visibility "I")
+     * @var bool verify attribute access
      */
     private $verifyAttributeAccess = true;
     /**
@@ -436,6 +438,10 @@ class ImportDocumentDescription
 
                 case "CPROFID":
                     $this->doCprofid($data);
+                    break;
+
+                case "CFALLID":
+                    $this->doCFallid($data);
                     break;
 
                 case "PROFID":
@@ -963,7 +969,6 @@ class ImportDocumentDescription
         $oImportDocument->analyzeOnly($this->analyze);
         $oImportDocument->setPolicy($this->policy);
         $oImportDocument->setTargetDirectory($this->dirid);
-        $oImportDocument->setVerifyAttributeAccess($this->verifyAttributeAccess);
         /**
          * Append current document's logical name to list of known logical names
          * and configure the importer to use this list to check for unknown
@@ -1425,7 +1430,36 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
         }
     }
+    /**
+     * analyze CFALLID
+     *
+     * @param array $data line of description file
+     */
+    protected function doCFallid(array $data)
+    {
+        if (!$this->doc) {
+            return;
+        }
+        $check = new CheckCfallid();
+        $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
+        if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
+            $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
+            $this->tcr[$this->nLine]["action"] = "warning";
+            return;
+        }
+        if ($this->tcr[$this->nLine]["err"]) {
+            $this->tcr[$this->nLine]["action"] = "ignored";
+            return;
+        }
 
+        if (is_numeric($data[1])) {
+            $pid = $data[1];
+        } else {
+            $pid = \Anakeen\Core\SEManager::getIdFromName($data[1]);
+        }
+        $this->doc->cfallid = $pid;
+        $this->tcr[$this->nLine]["msg"] = sprintf(_("change default creation profile id  to '%s'"), $data[1]);
+    }
     /**
      * analyze CPROFID
      *
@@ -2043,7 +2077,7 @@ class ImportDocumentDescription
         $iAttr->isAbstract = $oattr->abstract;
         $iAttr->type = $oattr->type;
         $iAttr->order = $oattr->ordered;
-        $iAttr->visibility = $oattr->visibility;
+        $iAttr->access = $oattr->accessibility;
         $iAttr->need = $oattr->needed;
         $iAttr->link = $oattr->link;
         $iAttr->phpfile = $oattr->phpfile;
@@ -2067,6 +2101,11 @@ class ImportDocumentDescription
         if (!$this->doc) {
             return;
         }
+        // Temporary deprecated visibility : used RW acccess instead if cvs file used
+        if ($this->importFileName && isset($data[8]) && strlen($data[8]) === 1) {
+            $data[8]= 'ReadWrite';
+        }
+
         $check = new CheckAttr();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
@@ -2149,8 +2188,8 @@ class ImportDocumentDescription
                 if (!$updateMode || !empty($this->structAttr->order)) {
                     $oattr->ordered = $this->structAttr->order;
                 }
-                if (!$updateMode || !empty($this->structAttr->visibility)) {
-                    $oattr->visibility = $this->structAttr->visibility;
+                if (!$updateMode || !empty($this->structAttr->access)) {
+                    $oattr->accessibility = $this->structAttr->access;
                 }
                 $oattr->needed = ($this->structAttr->isneeded == "Y") ? "Y" : "N";
                 if ($modattr) {

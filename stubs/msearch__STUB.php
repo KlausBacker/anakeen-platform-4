@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class Msearch extends \Anakeen\SmartStructures\Msearch\MSearchHooks { const familyName="MSEARCH";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Recherche groupée  */
 	class Msearch extends Search {
 		/** [frame] Critère */

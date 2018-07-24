@@ -1,9 +1,11 @@
 <?php
 
+namespace Anakeen\Core\SmartStructure;
+
+use Anakeen\Core\Internal\DbObj;
+
 /**
  * Database Attribute document
- * @package FDL
- *
  */
 class DocAttr extends DbObj
 {
@@ -16,7 +18,7 @@ class DocAttr extends DbObj
         "abstract",
         "type",
         "ordered",
-        "visibility", // W, R, H, O, M, C
+        "accessibility", // None, Read, Write, ReadWrite
         "needed",
         "link",
         "phpfile",
@@ -27,20 +29,20 @@ class DocAttr extends DbObj
         "options",
         "properties"
     );
-    
+
     public $id_fields = array(
         "docid",
         "id"
     );
-    
+
     public $dbtable = "docattr";
-    
+
     public $order_by = "ordered";
-    
+
     public $fulltextfields = array(
         "labeltext"
     );
-    
+
     public $id;
     public $docid;
     public $frameid;
@@ -49,7 +51,7 @@ class DocAttr extends DbObj
     public $abstract;
     public $type;
     public $ordered;
-    public $visibility; // W, R, H, O, M, C
+    public $accessibility; // Write Read None
     public $needed;
     public $link;
     public $phpfile;
@@ -59,9 +61,9 @@ class DocAttr extends DbObj
     public $usefor;
     public $options;
     public $properties;
-    
+
     public $sqlcreate = "
-create table docattr ( id  name,
+create table docattr ( id  name not null,
                      docid int not null,
                      frameid  name,
                      labeltext text,
@@ -69,7 +71,7 @@ create table docattr ( id  name,
                      abstract  char,
                      type  text,
                      ordered int,
-                     visibility char,
+                     accessibility text,
                      needed char,
                      link text,
                      phpfile text,
@@ -96,8 +98,8 @@ create unique index idx_iddocid on docattr(id, docid);";
         "money",
         "password"
     );
-    
-    public function PreInsert()
+
+    public function preInsert()
     {
         // compute new id
         if ($this->id == "") {
@@ -119,12 +121,9 @@ create unique index idx_iddocid on docattr(id, docid);";
             if ($this->usefor == "") {
                 $this->usefor = 'N';
             }
-            if ($this->visibility == "") {
-                $this->visibility = 'W';
-            }
         }
     }
-    
+
     public function getRawType($type = '')
     {
         if (!$type) {
@@ -132,19 +131,23 @@ create unique index idx_iddocid on docattr(id, docid);";
         }
         return strtok($type, '(');
     }
+
     public function isStructure()
     {
         $rtype = $this->getRawType();
         return ($rtype == "frame" || $rtype == "tab");
     }
+
     public function isAbstract()
     {
         return (strtolower($this->abstract) == "y");
     }
+
     public function isTitle()
     {
         return (strtolower($this->title) == "y");
     }
+
     public function isNeeded()
     {
         return (strtolower($this->needed) == "y");

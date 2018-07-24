@@ -5,30 +5,30 @@
         <smart:class>Anakeen\SmartStructures\Report\ReportHooks</smart:class>
         <smart:usefor>S</smart:usefor>
         <smart:fields>
-            <smart:field-set name="rep_tab_presentation" type="tab" label="Présentation" visibility="W">
-                <smart:field-set name="rep_fr_presentation" type="frame" label="Présentation" visibility="W">
-                    <smart:field-longtext name="rep_caption" label="Description" visibility="W" is-abstract="true"/>
-                    <smart:field-text name="rep_sort" label="Tri" visibility="W"/>
-                    <smart:field-text name="rep_idsort" label="Id tri" visibility="H"/>
-                    <smart:field-enum name="rep_ordersort" label="Ordre" visibility="W" relation="REPORT-rep_ordersort"/>
-                    <smart:field-int name="rep_limit" label="Limite" visibility="W"/>
-                    <smart:field-set name="rep_tcols" type="array" label="Colonnes" visibility="W">
-                        <smart:field-text name="rep_lcols" label="Label" visibility="W"/>
-                        <smart:field-text name="rep_idcols" label="Id colonnes" visibility="H"/>
-                        <smart:field-text name="rep_displayoption" label="Option de présentation" visibility="H"/>
-                        <smart:field-color name="rep_colors" label="Couleur" visibility="W"/>
-                        <smart:field-enum name="rep_foots" label="Pied de tableau" visibility="W" relation="report-rep_foots"/>
+            <smart:field-set name="rep_tab_presentation" type="tab" label="Présentation" access="ReadWrite">
+                <smart:field-set name="rep_fr_presentation" type="frame" label="Présentation" access="ReadWrite">
+                    <smart:field-longtext name="rep_caption" label="Description" access="ReadWrite" is-abstract="true"/>
+                    <smart:field-text name="rep_sort" label="Tri" access="ReadWrite"/>
+                    <smart:field-text name="rep_idsort" label="Id tri" access="Read"/>
+                    <smart:field-enum name="rep_ordersort" label="Ordre" access="ReadWrite" relation="REPORT-rep_ordersort"/>
+                    <smart:field-int name="rep_limit" label="Limite" access="ReadWrite"/>
+                    <smart:field-set name="rep_tcols" type="array" label="Colonnes" access="ReadWrite">
+                        <smart:field-text name="rep_lcols" label="Label" access="ReadWrite"/>
+                        <smart:field-text name="rep_idcols" label="Id colonnes" access="Read"/>
+                        <smart:field-text name="rep_displayoption" label="Option de présentation" access="ReadWrite"/>
+                        <smart:field-color name="rep_colors" label="Couleur" access="ReadWrite"/>
+                        <smart:field-enum name="rep_foots" label="Pied de tableau" access="ReadWrite" relation="report-rep_foots"/>
                     </smart:field-set>
 
                 </smart:field-set>
             </smart:field-set>
         </smart:fields>
         <smart:parameters>
-            <smart:field-set name="rep_fr_param" type="frame" label="Paramètres" visibility="W">
-                <smart:field-htmltext name="rep_noaccesstext" label="Texte à afficher pour les valeurs protégées" visibility="W">
+            <smart:field-set name="rep_fr_param" type="frame" label="Paramètres" access="ReadWrite">
+                <smart:field-htmltext name="rep_noaccesstext" label="Texte à afficher pour les valeurs protégées" access="ReadWrite">
                     <smart:field-option name="elabel">Dans la cas où un attribut est protégé (visibilité I)</smart:field-option>
                 </smart:field-htmltext>
-                <smart:field-int name="rep_maxdisplaylimit" label="Limite d'affichage pour le nombre de rangées" visibility="W"/>
+                <smart:field-int name="rep_maxdisplaylimit" label="Limite d'affichage pour le nombre de rangées" access="ReadWrite"/>
             </smart:field-set>
         </smart:parameters>
         <smart:hooks>

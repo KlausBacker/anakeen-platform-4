@@ -6,23 +6,17 @@
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
         <smart:fields>
-            <smart:field-set name="msk_fr_rest" type="frame" label="Famille" visibility="W">
-                <smart:field-docid name="msk_famid" label="Famille" visibility="W" needed="true" relation="-1"/>
-                <smart:field-text name="msk_fam" label="Famille (titre)" visibility="H" is-title="true"/>
-                <smart:field-set name="msk_t_contain" type="array" label="Contenu" visibility="W">
-                    <smart:field-text name="msk_attrids" label="Attrid" visibility="W"/>
-                    <smart:field-text name="msk_visibilities" label="Visibilité" visibility="W"/>
-                    <smart:field-text name="msk_needeeds" label="Obligatoire" visibility="W"/>
+            <smart:field-set name="msk_fr_rest" type="frame" label="Informtation" access="ReadWrite">
+                <smart:field-docid name="msk_famid" label="Structure" access="ReadWrite" needed="true" relation="-1"/>
+                <smart:field-set name="msk_t_contain" type="array" label="Fields" access="ReadWrite">
+                    <smart:field-text name="msk_attrids" label="Field" access="ReadWrite"/>
+                    <smart:field-text name="msk_visibilities" label="Visibilité" access="ReadWrite"/>
+                    <smart:field-text name="msk_needeeds" label="Obligatoire" access="ReadWrite"/>
                 </smart:field-set>
             </smart:field-set>
         </smart:fields>
 
-        <smart:hooks>
-            <smart:field-hook event="onPreRefresh" field="msk_fam">
-                <smart:field-callable function="::getTitle"/>
-                <smart:field-argument type="field">msk_famid</smart:field-argument>
-            </smart:field-hook>
-        </smart:hooks>
+
 
     </smart:structure-configuration>
 </smart:config>

@@ -1,0 +1,91 @@
+{
+    "success": true,
+    "data": {
+        "document": {
+            "properties": {
+                "title": "Test de contr\u00f4le",
+                "name": "TST_FA1",
+                "revision": 0,
+                "status": "alive"
+            },
+            "attributes": {
+                "tst_fa__title": {
+                    "value": "Test de contr\u00f4le",
+                    "displayValue": "Test de contr\u00f4le"
+                },
+                "tst_fa__account": {
+                    "familyRelation": "",
+                    "url": null,
+                    "icon": null,
+                    "revision": -1,
+                    "initid": null,
+                    "fromid": null,
+                    "value": "1008",
+                    "displayValue": "Information non accessible"
+                },
+                "tst_fa__account_multiple": [],
+                "tst_fa__docid": {
+                    "value": null,
+                    "displayValue": null
+                },
+                "tst_fa__docid_multiple": [],
+                "tst_fa__date": {
+                    "value": "1977-10-19",
+                    "displayValue": "19\/10\/1977"
+                },
+                "!tst_fa__time": {
+                    "value": "13:17:00",
+                    "displayValue": "13:17:00"
+                },
+                "tst_fa__timestamp": {
+                    "value": "1977-10-19 15:56:23",
+                    "displayValue": "19\/10\/1977 15:56"
+                },
+                "!tst_fa__integer": {
+                    "value": 101,
+                    "displayValue": "101"
+                },
+                "!tst_fa__double": {
+                    "value": -3.14159,
+                    "displayValue": "-3.14159"
+                },
+                "!tst_fa__money": {
+                    "value": 4.5,
+                    "displayValue": "4,50"
+                },
+                "!tst_fa__password": {
+                    "value": "Secret Story",
+                    "displayValue": "Secret Story"
+                },
+                "!tst_fa__color": {
+                    "value": "#34ED0F",
+                    "displayValue": "#34ED0F"
+                },
+                "!tst_fa__file": {
+                    "value": null,
+                    "displayValue": null
+                },
+                "tst_fa__image": {
+                    "value": null,
+                    "displayValue": null
+                },
+                "tst_fa__htmltext": {
+                    "value": "<p>L'ours<\/p>",
+                    "displayValue": "<p>L'ours<\/p>"
+                },
+                "!tst_fa__longtext": {
+                    "value": "De la montagne\nEt des prairies.",
+                    "displayValue": "De la montagne\nEt des prairies."
+                },
+                "!tst_fa__text": {
+                    "value": "Texte de fin",
+                    "displayValue": "Texte de fin"
+                },
+                "!tst_fa__double_array": [],
+                "!tst_fa__integer_array": [],
+                "!tst_fa__money_array": []
+            }
+        }
+    },
+    "messages": []
+}

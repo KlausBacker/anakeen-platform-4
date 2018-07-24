@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
+    <smart:structure-configuration name="TST_FIELDACCESS" label="Accès contrôlé">
+        <smart:usefor>N</smart:usefor>
+        <smart:fields>
+            <smart:field-set name="tst_fa__f_title" type="frame" label="Titre" access="ReadWrite">
+                <smart:field-text name="tst_fa__title" label="Le titre" access="ReadWrite" is-title="true"/>
+            </smart:field-set>
+            <smart:field-set name="tst_fa__t_tab" type="tab" label="Basiques" access="ReadWrite">
+                <smart:field-set name="tst_fa__fr_rels" type="frame" label="Relations" access="ReadWrite">
+                    <smart:field-account name="tst_fa__account" label="Un compte" access="ReadWrite"/>
+                    <smart:field-account name="tst_fa__account_multiple" label="Des comptes" access="ReadWrite" multiple="true"/>
+                    <smart:field-docid name="tst_fa__docid" label="Un document" access="ReadWrite" relation="BASE"/>
+                    <smart:field-docid name="tst_fa__docid_multiple" label="Des documents" access="ReadWrite" relation="BASE" multiple="true"/>
+                </smart:field-set>
+                <smart:field-set name="tst_fa__fr_date" type="frame" label="Le temps" access="Read">
+                    <smart:field-date name="tst_fa__date" label="Une date" access="ReadWrite"/>
+                    <smart:field-time name="tst_fa__time" label="Une heure" access="Write"/>
+                    <smart:field-timestamp name="tst_fa__timestamp" label="Une date avec  une heure" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_fa__fr_number" type="frame" label="Les nombres" access="Write">
+                    <smart:field-int name="tst_fa__integer" label="Un entier" access="ReadWrite"/>
+                    <smart:field-double name="tst_fa__double" label="Un décimal" access="Read"/>
+                    <smart:field-money name="tst_fa__money" label="Un sous" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_fa__fr_misc" type="frame" label="Divers" access="None">
+                    <smart:field-password name="tst_fa__password" label="Un mot de passe" access="ReadWrite"/>
+                    <smart:field-color name="tst_fa__color" label="Une couleur" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_fa__fr_file" type="frame" label="Fichiers &amp; images" access="ReadWrite">
+                    <smart:field-file name="tst_fa__file" label="Un fichier" access="Write"/>
+                    <smart:field-image name="tst_fa__image" label="Une image" access="Read"/>
+                </smart:field-set>
+                <smart:field-set name="tst_fa__fr_text" type="frame" label="Les textes" access="ReadWrite">
+                    <smart:field-htmltext name="tst_fa__htmltext" label="Un texte formaté" access="ReadWrite"/>
+                    <smart:field-longtext name="tst_fa__longtext" label="Un texte multiligne" access="Write"/>
+                    <smart:field-text name="tst_fa__text" label="Un texte simple" access="None"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_fa__t_tab_date" type="tab" label="Les dates" access="ReadWrite">
+                <smart:field-set name="tst_fa__frame_date" type="frame" label="Date, heures &amp; date avec l'heure" access="ReadWrite">
+                    <smart:field-set name="tst_fa__array_dates" type="array" label="Le temps" access="ReadWrite">
+                        <smart:field-date name="tst_fa__date_array" label="Des dates" access="ReadWrite"/>
+                        <smart:field-time name="tst_fa__time_array" label="Des heures" access="ReadWrite"/>
+                        <smart:field-timestamp name="tst_fa__timestamp_array" label="Des dates avec l'heure" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_fa__t_tab_relations" type="tab" label="Les relations" access="Read">
+                <smart:field-set name="tst_fa__frame_relation" type="frame" label="Relations à entretenir" access="ReadWrite">
+                    <smart:field-set name="tst_fa__array_docid" type="array" label="Les documents" access="ReadWrite">
+                        <smart:field-docid name="tst_fa__docid_array" label="Des documents" access="ReadWrite" relation="tst_fa_ALLTYPE"/>
+                        <smart:field-docid name="tst_fa__docid_multiple_array" label="Encore plus de documents" access="ReadWrite" relation="tst_fa_ALLTYPE" multiple="true"/>
+                    </smart:field-set>
+                    <smart:field-set name="tst_fa__array_account" type="array" label="Les comptes" access="ReadWrite">
+                        <smart:field-account name="tst_fa__account_array" label="Des comptes" access="ReadWrite"/>
+                        <smart:field-account name="tst_fa__account_multiple_array" label="Encore plus de comptes" access="ReadWrite" multiple="true"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_fa__t_tab_numbers" type="tab" label="Les nombres" access="Write">
+                <smart:field-set name="tst_fa__frame_numbers" type="frame" label="Entier, décimaux et monnaie" access="ReadWrite">
+                    <smart:field-set name="tst_fa__array_numbers" type="array" label="Quelques nombres" access="ReadWrite">
+                        <smart:field-double name="tst_fa__double_array" label="Des décimaux" access="ReadWrite"/>
+                        <smart:field-int name="tst_fa__integer_array" label="Des entiers" access="ReadWrite"/>
+                        <smart:field-money name="tst_fa__money_array" label="Des sous" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_fa__t_tab_misc" type="tab" label="Divers" access="None">
+                <smart:field-set name="tst_fa__frame_misc" type="frame" label="Énuméré, couleur et mot de passe" access="ReadWrite">
+                    <smart:field-set name="tst_fa__array_misc" type="array" label="Quelques diverses données" access="ReadWrite">
+                        <smart:field-color name="tst_fa__color_array" label="Des couleurs" access="ReadWrite"/>
+                        <smart:field-password name="tst_fa__password_array" label="Des mots de passe" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+        <smart:parameters/>
+        <smart:hooks/>
+        <smart:autocompletion/>
+        <smart:defaults/>
+        <smart:accesses>
+            <smart:element-access-configuration ref="PRF_TST_F2"/>
+        </smart:accesses>
+    </smart:structure-configuration>
+    <smart:access-configuration name="PRF_TST_F2" label="Profil document mail">
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="view" account="fachewie"/>
+        <smart:element-access access="edit" account="all"/>
+        <smart:element-access access="delete" account="all"/>
+    </smart:access-configuration>
+</smart:config>

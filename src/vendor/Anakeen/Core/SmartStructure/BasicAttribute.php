@@ -1,10 +1,9 @@
 <?php
 /**
- * Document Attributes
+ * Smart Element Field
  *
  */
-/**
- */
+
 namespace Anakeen\Core\SmartStructure;
 
 /**
@@ -16,11 +15,14 @@ namespace Anakeen\Core\SmartStructure;
 class BasicAttribute
 {
     const hiddenFieldId = \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD;
+    const NONE_ACCESS = 0;
+    const READ_ACCESS = 1;
+    const WRITE_ACCESS = 2;
+    const READWRITE_ACCESS = 3;
     public $id;
-    public $docid;
+    public $structureId;
     public $labelText;
-    public $visibility; // W, R, H, O, M, I
-    public $mvisibility; ///mask visibility
+    public $access; // Write, Read, None
     public $options;
     public $docname;
     public $type; // text, longtext, date, file, ...
@@ -31,7 +33,7 @@ class BasicAttribute
     /**
      * @var AttributeOptions
      */
-    public $properties=null;
+    public $properties = null;
     /**
      * @var \Anakeen\Core\SmartStructure\FieldSetAttribute field set object
      */
@@ -40,6 +42,7 @@ class BasicAttribute
      * @var array
      */
     public $_topt = null;
+
     /**
      * Construct a basic attribute
      *
@@ -50,9 +53,10 @@ class BasicAttribute
     public function __construct($id, $docid, $label)
     {
         $this->id = $id;
-        $this->docid = $docid;
+        $this->structureId = $docid;
         $this->labelText = $label;
     }
+
     /**
      * Return attribute label
      *
@@ -67,10 +71,20 @@ class BasicAttribute
         }
         return $this->labelText;
     }
+
+    /**
+     * Get access depending of set fields access
+     */
+    public function getAccess()
+    {
+        return (!$this->fieldSet) ? $this->access : $this->fieldSet->getAccess() & $this->access;
+    }
+
+
     /**
      * Return value of option $x
      *
-     * @param string $x option name
+     * @param string $x   option name
      * @param string $def default value
      *
      * @return string
@@ -92,10 +106,11 @@ class BasicAttribute
         if ($i != $r) {
             return $i;
         }
-        
+
         $v = (isset($this->_topt[$x]) && $this->_topt[$x] !== '') ? $this->_topt[$x] : $def;
         return $v;
     }
+
     /**
      * Return all value of options
      *
@@ -108,6 +123,7 @@ class BasicAttribute
         }
         return $this->_topt;
     }
+
     /**
      * Temporary change option
      *
@@ -123,15 +139,8 @@ class BasicAttribute
         }
         $this->_topt[$x] = $v;
     }
-    /**
-     * temporary change visibility
-     * @param string $vis new visibility : R|H|W|O|I
-     * @return void
-     */
-    public function setVisibility($vis)
-    {
-        $this->mvisibility = $vis;
-    }
+
+
     /**
      * test if attribute is not a auto created attribute
      *
@@ -141,11 +150,12 @@ class BasicAttribute
     {
         return $this->getOption("autocreated") != "yes";
     }
+
     /**
      * Escape value with xml entities
      *
-     * @param string $s value
-     * @param bool $quot to encode also quote "
+     * @param string $s    value
+     * @param bool   $quot to encode also quote "
      * @return string
      */
     public static function encodeXml($s, $quot = false)
@@ -174,6 +184,7 @@ class BasicAttribute
             ), $s);
         }
     }
+
     /**
      * to see if an attribute is n item of an array
      *
@@ -183,6 +194,7 @@ class BasicAttribute
     {
         return false;
     }
+
     /**
      * verify if accept multiple value
      *
@@ -192,6 +204,7 @@ class BasicAttribute
     {
         return ($this->inArray() || ($this->getOption('multiple') === 'yes'));
     }
+
     /**
      * verify if attribute is multiple value and if is also in array multiple^2
      *
@@ -201,22 +214,9 @@ class BasicAttribute
     {
         return ($this->inArray() && ($this->getOption('multiple') === 'yes'));
     }
-    /**
-     * Get tab ancestor
-     * false if not found
-     *
-     * @return FieldSetAttribute|bool
-     */
-    public function getTab()
-    {
-        if ($this->type == 'tab') {
-            return $this;
-        }
-        if (is_object($this->fieldSet) && method_exists($this->fieldSet, 'getTab') && ($this->fieldSet->id != \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD)) {
-            return $this->fieldSet->getTab();
-        }
-        return false;
-    }
+
+
+
     /**
      * Export values as xml fragment
      *
@@ -227,11 +227,12 @@ class BasicAttribute
     {
         return sprintf("<!-- no Schema %s (%s)-->", $this->id, $this->type);
     }
+
     /**
      * export values as xml fragment
      *
      * @param \Anakeen\Core\Internal\SmartElement $doc working doc
-     * @param bool|\exportOptionAttribute $opt
+     * @param bool|\exportOptionAttribute         $opt
      * @deprecated use \Dcp\ExportXmlDocument class instead
      *
      * @return string
@@ -240,36 +241,37 @@ class BasicAttribute
     {
         return sprintf("<!-- no value %s (%s)-->", $this->id, $this->type);
     }
+
     /**
      * Get human readable textual value
      * Fallback method
      *
-     * @param \Anakeen\Core\Internal\SmartElement $doc current Doc
-     * @param int $index index if multiple
-     * @param array $configuration value
+     * @param \Anakeen\Core\Internal\SmartElement $doc           current Doc
+     * @param int                                 $index         index if multiple
+     * @param array                               $configuration value
      *
      * @return string
      */
-    public function getTextualValue(\Anakeen\Core\Internal\SmartElement $doc, $index = - 1, array $configuration = array())
+    public function getTextualValue(\Anakeen\Core\Internal\SmartElement $doc, $index = -1, array $configuration = array())
     {
         return null;
     }
+
     /**
      * Generate XML schema layout
      *
      * @param \Layout $play
      */
-    public function common_getXmlSchema(&$play)
+    public function commonGetXmlSchema(&$play)
     {
         $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "infoattribute_schema.xml"));
         $lay->set("aname", $this->id);
         $lay->set("label", $this->encodeXml($this->labelText));
         $lay->set("type", $this->type);
-        $lay->set("visibility", $this->visibility);
         $lay->set("isTitle", false);
         $lay->set("phpfile", false);
         $lay->set("phpfunc", false);
-        
+
         $lay->set("computed", false);
         $lay->set("link", '');
         $lay->set("elink", '');
@@ -280,13 +282,13 @@ class BasicAttribute
         foreach ($tops as $k => $v) {
             if ($k) {
                 $t[] = array(
-                "key" => $k,
-                "val" => $this->encodeXml($v)
-            );
+                    "key" => $k,
+                    "val" => $this->encodeXml($v)
+                );
             }
         }
         $lay->setBlockData("options", $t);
-        
+
         $play->set("minOccurs", "0");
         $play->set("isnillable", "true");
         $play->set("maxOccurs", "1");
@@ -294,4 +296,3 @@ class BasicAttribute
         $play->set("appinfos", $lay->gen());
     }
 }
-

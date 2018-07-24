@@ -5,32 +5,31 @@
         <smart:class>Anakeen\SmartStructures\Mailtemplate\MailTemplateHooks</smart:class>
         <smart:usefor>S</smart:usefor>
         <smart:fields>
-            <smart:field-set name="tmail_fr" type="frame" label="Entête" visibility="W">
-                <smart:field-text name="tmail_title" label="Titre" visibility="O" needed="true" is-title="true"/>
-                <smart:field-docid name="tmail_family" label="Smart Structure" visibility="W" relation="-1"/>
-                <smart:field-docid name="tmail_workflow" label="Workflow Structure" visibility="W" relation="-1"/>
-                <smart:field-set name="tmail_t_from" type="array" label="Émetteur" visibility="U">
-                    <smart:field-enum name="tmail_fromtype" label="Type" visibility="W" relation="MAILTEMPLATE-tmail_fromtype"/>
-                    <smart:field-text name="tmail_from" label="De" visibility="W"/>
+            <smart:field-set name="tmail_fr" type="frame" label="Entête" access="ReadWrite">
+                <smart:field-text name="tmail_title" label="Titre" access="ReadWrite" needed="true" is-title="true"/>
+                <smart:field-docid name="tmail_family" label="Smart Structure" access="ReadWrite" relation="-1"/>
+                <smart:field-docid name="tmail_workflow" label="Workflow Structure" access="ReadWrite" relation="-1"/>
+                <smart:field-set name="tmail_t_from" type="array" label="Émetteur" access="ReadWrite">
+                    <smart:field-enum name="tmail_fromtype" label="Type" access="ReadWrite" relation="MAILTEMPLATE-tmail_fromtype"/>
+                    <smart:field-text name="tmail_from" label="De" access="ReadWrite"/>
                 </smart:field-set>
-                <smart:field-set name="tmail_dest" type="array" label="Destinataires" visibility="W">
-                    <smart:field-enum name="tmail_copymode" label="-" visibility="W" relation="MAILTEMPLATE-tmail_copymode"/>
-                    <smart:field-enum name="tmail_desttype" label="Type" visibility="W" relation="MAILTEMPLATE-tmail_desttype"/>
-                    <smart:field-text name="tmail_recip" label="Destinataire" visibility="W"/>
+                <smart:field-set name="tmail_dest" type="array" label="Destinataires" access="ReadWrite">
+                    <smart:field-enum name="tmail_copymode" label="-" access="ReadWrite" relation="MAILTEMPLATE-tmail_copymode"/>
+                    <smart:field-enum name="tmail_desttype" label="Type" access="ReadWrite" relation="MAILTEMPLATE-tmail_desttype"/>
+                    <smart:field-text name="tmail_recip" label="Destinataire" access="ReadWrite"/>
                 </smart:field-set>
-                <smart:field-text name="tmail_subject" label="Sujet" visibility="W" is-abstract="true"/>
+                <smart:field-text name="tmail_subject" label="Sujet" access="ReadWrite" is-abstract="true"/>
             </smart:field-set>
-            <smart:field-set name="tmail_fr_content" type="frame" label="Contenu" visibility="W">
-                <smart:field-enum name="tmail_savecopy" label="Enregistrer une copie" visibility="W" relation="MAILTEMPLATE-tmail_savecopy"/>
-                <smart:field-enum name="tmail_ulink" label="Avec liens" visibility="W" relation="MAILTEMPLATE-tmail_ulink"/>
-                <smart:field-htmltext name="tmail_body" label="Corps" visibility="W">
+            <smart:field-set name="tmail_fr_content" type="frame" label="Contenu" access="ReadWrite">
+                <smart:field-enum name="tmail_savecopy" label="Enregistrer une copie" access="ReadWrite" relation="MAILTEMPLATE-tmail_savecopy"/>
+                <smart:field-enum name="tmail_ulink" label="Avec liens" access="ReadWrite" relation="MAILTEMPLATE-tmail_ulink"/>
+                <smart:field-htmltext name="tmail_body" label="Corps" access="ReadWrite">
                     <smart:field-option name="jsonconf">{"addPlugins": ["docattr"]}</smart:field-option>
                     <smart:field-option name="allowedcontent">all</smart:field-option>
                 </smart:field-htmltext>
-                <smart:field-set name="tmail_t_attach" type="array" label="Attachements" visibility="W">
-                    <smart:field-text name="tmail_attach" label="Attachement" visibility="W"/>
+                <smart:field-set name="tmail_t_attach" type="array" label="Attachements" access="ReadWrite">
+                    <smart:field-text name="tmail_attach" label="Attachement" access="ReadWrite"/>
                 </smart:field-set>
-                <smart:field-enum name="tmail_format" label="Format" visibility="H" relation="MAILTEMPLATE-tmail_format"/>
             </smart:field-set>
         </smart:fields>
         <smart:parameters/>
@@ -80,11 +79,6 @@
         <smart:accesses/>
     </smart:structure-configuration>
     <smart:enumerates>
-        <smart:enum-configuration name="MAILTEMPLATE-tmail_format">
-            <smart:enum name="html" label="HTML"/>
-            <smart:enum name="pdf" label="PDF"/>
-            <smart:enum name="htmlpdf" label="HTML &amp; PDF"/>
-        </smart:enum-configuration>
         <smart:enum-configuration name="MAILTEMPLATE-tmail_desttype">
             <smart:enum name="F" label="Adresse fixe"/>
             <smart:enum name="A" label="Attribut texte"/>

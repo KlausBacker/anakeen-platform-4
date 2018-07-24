@@ -4,7 +4,7 @@ namespace SmartStructure {
 	class Dir extends \Anakeen\SmartStructures\Dir\DirHooks { const familyName="DIR";}
 }
 
-namespace SmartStructure\Attributes {
+namespace SmartStructure\Fields {
 	/** Dossier  */
 	class Dir extends Base {
 		/** [longtext] Description */

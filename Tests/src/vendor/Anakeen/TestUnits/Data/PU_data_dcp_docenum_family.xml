@@ -3,10 +3,10 @@
   <smart:structure-configuration name="TST_DOCENUM" label="Test DocRel">
     <smart:usefor>N</smart:usefor>
     <smart:fields>
-      <smart:field-set name="tst_fr_info" type="frame" label="Cadre Html" visibility="W">
-        <smart:field-text name="tst_title" label="Titre" visibility="W" needed="true" is-title="true"/>
-        <smart:field-enum name="tst_enum1" label="Enum" visibility="W" relation="TST_DOCENUM-0123"/>
-        <smart:field-enum name="tst_enuma" label="Enum" visibility="W" relation="TST_DOCENUM-ABCD"/>
+      <smart:field-set name="tst_fr_info" type="frame" label="Cadre Html" access="ReadWrite">
+        <smart:field-text name="tst_title" label="Titre" access="ReadWrite" needed="true" is-title="true"/>
+        <smart:field-enum name="tst_enum1" label="Enum" access="ReadWrite" relation="TST_DOCENUM-0123"/>
+        <smart:field-enum name="tst_enuma" label="Enum" access="ReadWrite" relation="TST_DOCENUM-ABCD"/>
       </smart:field-set>
     </smart:fields>
     <smart:parameters/>

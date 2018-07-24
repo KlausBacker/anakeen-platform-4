@@ -10,7 +10,7 @@ class StructAttribute
     public $type;
     public $format;
     public $order;
-    public $visibility;
+    public $access;
     public $isneeded;
     public $link;
     public $phpfile;
@@ -27,7 +27,7 @@ class StructAttribute
         "isabstract",
         "type",
         "order",
-        "visibility",
+        "access",
         "isneeded",
         "link",
         "phpfile",

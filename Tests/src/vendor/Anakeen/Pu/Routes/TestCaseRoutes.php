@@ -121,59 +121,75 @@ class TestCaseRoutes extends \Dcp\Pu\TestCaseDcpCommonFamily
      */
     protected function verifyData(array $data, array $expectedValues, $keys = "")
     {
+
         foreach ($expectedValues as $currentKey => $expectedValue) {
-            $this->assertArrayHasKey(
-                $currentKey,
-                $data,
-                sprintf(
-                    'Unable to find the key "%s" for "%s" [api result : %s] // [expected : %s]. See file "%s".',
+            if ($currentKey[0] === "!") {
+                $currentKey = substr($currentKey, 1);
+                $this->assertArrayNotHasKey(
                     $currentKey,
-                    $keys,
-                    var_export($data, true),
-                    var_export($expectedValues, true),
-                    $this->jsonResultFile
-                )
-            );
-            if (is_array($expectedValue)) {
-                $nextKey = $keys . (empty($keys) ? $currentKey : ".$currentKey");
-                $this->verifyData($data[$currentKey], $expectedValue, $nextKey);
+                    $data,
+                    sprintf(
+                        'Find unwanted key "%s" for "%s" [api result : %s] . See file "%s".',
+                        $currentKey,
+                        $keys,
+                        json_encode($data, JSON_PRETTY_PRINT),
+                        $this->jsonResultFile
+                    )
+                );
             } else {
-                if ($expectedValue === "%isoDate%") {
-                    $this->assertGreaterThan(
-                        0,
-                        preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}/", $data[$currentKey]),
-                        "wrong date value for \"$keys.$currentKey\"   [api result : "
-                        . var_export($data[$currentKey], true)
-                        . " ] // [expected an iso date YYYY-MM-DDTHH:MM:SS ]"
-                    );
-                } elseif (preg_match('{^%regexp%(?P<regexp>.*)$}', $expectedValue, $m) === 1) {
-                    $this->assertRegExp(
-                        $m['regexp'],
-                        $data[$currentKey],
-                        sprintf(
-                            'Wrong value for key "%s.%s" [api result : %s] // [expected (regexp match) : %s].' . "\n"
-                            . 'See file "%s"',
-                            $keys,
-                            $currentKey,
-                            var_export($data[$currentKey], true),
-                            var_export($m['regexp'], true),
-                            $this->jsonResultFile
-                        )
-                    );
+                $this->assertArrayHasKey(
+                    $currentKey,
+                    $data,
+                    sprintf(
+                        'Unable to find the key "%s" for "%s" [api result : %s] // [expected : %s]. See file "%s".',
+                        $currentKey,
+                        $keys,
+                        json_encode($data, JSON_PRETTY_PRINT),
+                        json_encode($expectedValues, JSON_PRETTY_PRINT),
+                        $this->jsonResultFile
+                    )
+                );
+                if (is_array($expectedValue)) {
+                    $nextKey = $keys . (empty($keys) ? $currentKey : ".$currentKey");
+                    $this->verifyData($data[$currentKey], $expectedValue, $nextKey);
                 } else {
-                    $this->assertEquals(
-                        $expectedValue,
-                        $data[$currentKey],
-                        sprintf(
-                            'Wrong value for key "%s.%s" [api result : %s] // [expected : %s].' . "\n"
-                            . 'See file "%s"',
-                            $keys,
-                            $currentKey,
-                            var_export($data[$currentKey], true),
-                            var_export($expectedValue, true),
-                            $this->jsonResultFile
-                        )
-                    );
+                    if ($expectedValue === "%isoDate%") {
+                        $this->assertGreaterThan(
+                            0,
+                            preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}/", $data[$currentKey]),
+                            "wrong date value for \"$keys.$currentKey\"   [api result : "
+                            . var_export($data[$currentKey], true)
+                            . " ] // [expected an iso date YYYY-MM-DDTHH:MM:SS ]"
+                        );
+                    } elseif (preg_match('{^%regexp%(?P<regexp>.*)$}', $expectedValue, $m) === 1) {
+                        $this->assertRegExp(
+                            $m['regexp'],
+                            $data[$currentKey],
+                            sprintf(
+                                'Wrong value for key "%s.%s" [api result : %s] // [expected (regexp match) : %s].' . "\n"
+                                . 'See file "%s"',
+                                $keys,
+                                $currentKey,
+                                var_export($data[$currentKey], true),
+                                var_export($m['regexp'], true),
+                                $this->jsonResultFile
+                            )
+                        );
+                    } else {
+                        $this->assertEquals(
+                            $expectedValue,
+                            $data[$currentKey],
+                            sprintf(
+                                'Wrong value for key "%s.%s" [api result : %s] // [expected : %s].' . "\n"
+                                . 'See file "%s"',
+                                $keys,
+                                $currentKey,
+                                var_export($data[$currentKey], true),
+                                var_export($expectedValue, true),
+                                $this->jsonResultFile
+                            )
+                        );
+                    }
                 }
             }
         }

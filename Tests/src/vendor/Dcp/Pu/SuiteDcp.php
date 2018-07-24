@@ -50,7 +50,6 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestParseFunction');
         $suite->addTestSuite('Dcp\Pu\TestParseMethod');
         $suite->addTestSuite('Dcp\Pu\TestExportCsv');
-        $suite->addTestSuite('Dcp\Pu\TestMask');
         $suite->addTestSuite('Dcp\Pu\TestVaultDiskStorage');
         $suite->addTestSuite('Dcp\Pu\TestAutoloader');
         $suite->addTestSuite('Dcp\Pu\TestGetText');

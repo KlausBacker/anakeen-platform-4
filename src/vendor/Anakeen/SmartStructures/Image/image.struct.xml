@@ -6,9 +6,9 @@
     <smart:revisable>auto</smart:revisable>
     <smart:usefor>N</smart:usefor>
     <smart:fields>
-      <smart:field-set name="img_frfile" type="frame" label="image" visibility="W">
-        <smart:field-text name="img_title" label="titre" visibility="R" is-title="true"/>
-        <smart:field-image name="img_file" label="image" visibility="W" needed="true" is-abstract="true">
+      <smart:field-set name="img_frfile" type="frame" label="image" access="ReadWrite">
+        <smart:field-text name="img_title" label="titre" access="Read" is-title="true"/>
+        <smart:field-image name="img_file" label="image" access="ReadWrite" needed="true" is-abstract="true">
           <smart:field-option name="iwidth">80</smart:field-option>
         </smart:field-image>
       </smart:field-set>

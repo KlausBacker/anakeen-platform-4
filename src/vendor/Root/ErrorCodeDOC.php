@@ -56,6 +56,11 @@ class ErrorCodeDOC
      * the document cannot be imported because family is not completed
      */
     const DOC0010 = 'family error detected "%s" for the document "%s" : %s';
+
+    /**
+     * @errorCode  the document cannot be imported because no order specified
+     */
+    const DOC0011 = 'family "%s" error detected  ORDER is needed';
     /**
      * @errorCode
      * error in setvalue when import document
@@ -227,6 +232,11 @@ class ErrorCodeDOC
      * @see \Anakeen\Core\Internal\SmartElement::duplicate
      */
     const DOC0131 = 'Cannot duplicate for familu "%s"';
+    /**
+     * @errorCode The requested attribute was not found in \Anakeen\Core\Internal\SmartElement::getHtmlAttrValue()
+     * @see \Anakeen\Core\Internal\SmartElement::setValue
+     */
+    const DOC0132 = 'Element "%s", field "%s" update not granted';
     /**
      * @errorCode
      * the document cannot be inserted in folder target

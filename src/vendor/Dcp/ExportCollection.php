@@ -1,13 +1,9 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 namespace Dcp;
 
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\DbManager;
+use Anakeen\Core\SEManager;
 
 class ExportCollection
 {
@@ -330,8 +326,17 @@ class ExportCollection
                 if ($c % 20 == 0) {
                     $this->recordStatus(sprintf(_("Record documents %d/%d"), $c, $rc));
                 }
-                $exportDoc->csvExport($doc, $fileInfos, $this->outHandler, $this->exportProfil, $this->exportFiles, $this->exportDocumentNumericIdentiers,
-                    ($this->outputFileEncoding === self::utf8Encoding), !$this->useUserColumnParameter, $this->outputFormat);
+                $exportDoc->csvExport(
+                    $doc,
+                    $fileInfos,
+                    $this->outHandler,
+                    $this->exportProfil,
+                    $this->exportFiles,
+                    $this->exportDocumentNumericIdentiers,
+                    ($this->outputFileEncoding === self::utf8Encoding),
+                    !$this->useUserColumnParameter,
+                    $this->outputFormat
+                );
             }
         }
         fclose($this->outHandler);
@@ -350,19 +355,8 @@ class ExportCollection
     public function recordStatus($msg, $endStatus = false)
     {
         if ($this->exportStatusId) {
-            global $action;
-            $warnings = array();
-            if ($endStatus) {
-                $warnings = $action->parent->getWarningMsg();
-                if (count($warnings) > 0) {
-                    array_unshift($warnings, _("Export:Warnings"));
-                }
-
-                $action->parent->clearWarningMsg();
-            }
-            $action->register($this->exportStatusId, array(
+            ContextManager::getSession()->register($this->exportStatusId, array(
                 "status" => $msg,
-                "warnings" => $warnings,
                 "end" => $endStatus
             ));
         }
@@ -393,9 +387,8 @@ class ExportCollection
         $fpname = "";
 
         $tmoredoc = array();
-        $dbaccess = DbManager::getDbAccess();
         if ($family->profid != $family->id) {
-            $fp = getTDoc($dbaccess, $family->profid);
+            $fp = SEManager::getRawDocument($family->profid);
             $tmoredoc[$fp["id"]] = "famprof";
             $this->addDocumentToExport($fp["id"]);
             if ($fp["name"] != "") {
@@ -405,7 +398,7 @@ class ExportCollection
             }
         }
         if ($family->cprofid) {
-            $cp = getTDoc($dbaccess, $family->cprofid);
+            $cp = SEManager::getRawDocument($family->cprofid);
             if ($cp["name"] != "") {
                 $cpname = $cp["name"];
             } else {
@@ -415,7 +408,7 @@ class ExportCollection
             $this->addDocumentToExport($cp["id"]);
         }
         if ($family->ccvid > 0) {
-            $cv = getTDoc($dbaccess, $family->ccvid);
+            $cv = SEManager::getRawDocument($family->ccvid);
             if ($cv["name"] != "") {
                 $cvname = $cv["name"];
             } else {
@@ -425,7 +418,7 @@ class ExportCollection
 
             foreach ($tmskid as $kmsk => $imsk) {
                 if ($imsk != "") {
-                    $msk = getTDoc($dbaccess, $imsk);
+                    $msk = SEManager::getRawDocument($imsk);
                     if ($msk) {
                         $tmoredoc[$msk["id"]] = "mask";
                         $this->addDocumentToExport($msk["id"]);
@@ -438,7 +431,7 @@ class ExportCollection
         }
 
         if ($family->wid > 0) {
-            $wdoc = \new_doc($dbaccess, $family->wid);
+            $wdoc = SEManager::getDocument($family->wid);
             if ($wdoc->name != "") {
                 $wname = $wdoc->name;
             } else {
@@ -450,7 +443,7 @@ class ExportCollection
                     $tdid = $wdoc->getMultipleRawValues($ka);
                     foreach ($tdid as $did) {
                         if ($did != "") {
-                            $m = getTDoc($dbaccess, $did);
+                            $m = SEManager::getRawDocument($did);
                             if ($m) {
                                 if ($m["doctype"] !== "C") {
                                     $tmoredoc[$m["initid"]] = "wrel";
@@ -460,7 +453,7 @@ class ExportCollection
                                         $tmskid = $family->rawValueToArray($m["cv_mskid"]);
                                         foreach ($tmskid as $kmsk => $imsk) {
                                             if ($imsk != "") {
-                                                $msk = getTDoc($dbaccess, $imsk);
+                                                $msk = SEManager::getRawDocument($imsk);
                                                 if ($msk) {
                                                     $tmoredoc[$msk["id"]] = "wmask";
                                                     $this->addDocumentToExport($msk["initid"]);
@@ -472,7 +465,7 @@ class ExportCollection
                                         $tmskid = $family->rawValueToArray(str_replace('<BR>', "\n", $m["tm_tmail"]));
                                         foreach ($tmskid as $kmsk => $imsk) {
                                             if ($imsk != "") {
-                                                $msk = getTDoc($dbaccess, $imsk);
+                                                $msk = SEManager::getRawDocument($imsk);
                                                 if ($msk) {
                                                     $tmoredoc[$msk["id"]] = "tmask";
                                                     $this->addDocumentToExport($msk["initid"]);
@@ -544,15 +537,24 @@ class ExportCollection
         $searchDl = $more->getSearchDocument();
         $searchDl->setOrder("fromid, name, id");
         foreach ($more as $adoc) {
-            $exportDoc->csvExport($adoc, $fileInfos, $this->outHandler, false, $this->exportFiles, $this->exportDocumentNumericIdentiers,
-                ($this->outputFileEncoding === self::utf8Encoding), !$this->useUserColumnParameter, $this->outputFormat);
+            $exportDoc->csvExport(
+                $adoc,
+                $fileInfos,
+                $this->outHandler,
+                false,
+                $this->exportFiles,
+                $this->exportDocumentNumericIdentiers,
+                ($this->outputFileEncoding === self::utf8Encoding),
+                !$this->useUserColumnParameter,
+                $this->outputFormat
+            );
         }
         foreach ($more as $adoc) {
             $exportDoc->exportProfil($this->outHandler, $adoc->id);
         }
 
         foreach ($this->familyData as $famid => $aRow) {
-            $family = \new_doc("", $famid);
+            $family = SEManager::getFamily($famid);
             if ($family->profid == $family->id) {
                 $exportDoc->exportProfil($this->outHandler, $family->id);
             }
@@ -581,8 +583,13 @@ class ExportCollection
         }
 
         $zipfile = $this->outputFilePath . ".zip";
-        $cmd = sprintf("cd %s && zip -r %s -- * > /dev/null && mv %s %s", escapeshellarg($directory), escapeshellarg($zipfile), escapeshellarg($zipfile),
-            escapeshellarg($this->outputFilePath));
+        $cmd = sprintf(
+            "cd %s && zip -r %s -- * > /dev/null && mv %s %s",
+            escapeshellarg($directory),
+            escapeshellarg($zipfile),
+            escapeshellarg($zipfile),
+            escapeshellarg($this->outputFilePath)
+        );
         system($cmd, $ret);
         if (!is_file($this->outputFilePath)) {
             throw new Exception("EXPC0012", $this->outputFilePath);
@@ -597,8 +604,6 @@ class ExportCollection
         if (!mkdir($foutdir)) {
             throw new Exception("EXPC0006", $foutdir);
         }
-
-        VerifyAttributeAccess::clearCache();
 
         $exd = new \Dcp\ExportXmlDocument();
 
@@ -673,8 +678,13 @@ class ExportCollection
     protected function zipXml($directory)
     {
         $zipfile = $this->outputFilePath . ".zip";
-        $cmd = sprintf("cd %s && zip -r %s -- * > /dev/null && mv %s %s", escapeshellarg($directory), escapeshellarg($zipfile), escapeshellarg($zipfile),
-            escapeshellarg($this->outputFilePath));
+        $cmd = sprintf(
+            "cd %s && zip -r %s -- * > /dev/null && mv %s %s",
+            escapeshellarg($directory),
+            escapeshellarg($zipfile),
+            escapeshellarg($zipfile),
+            escapeshellarg($this->outputFilePath)
+        );
 
         system($cmd, $ret);
         if (!is_file($this->outputFilePath)) {

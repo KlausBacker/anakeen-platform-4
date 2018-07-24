@@ -7,13 +7,13 @@
         <smart:revisable>false</smart:revisable>
         <smart:usefor>SP</smart:usefor>
         <smart:fields>
-            <smart:field-set name="fr_basic" type="frame" label="Basique" visibility="W">
-                <smart:field-text name="ba_title" label="Titre" visibility="O" needed="true" is-title="true"/>
-                <smart:field-longtext name="prf_desc" label="Description" visibility="W"/>
+            <smart:field-set name="fr_basic" type="frame" label="Basique" access="ReadWrite">
+                <smart:field-text name="ba_title" label="Titre" access="ReadWrite" needed="true" is-title="true"/>
+                <smart:field-longtext name="ba_desc" label="Description" access="ReadWrite"/>
             </smart:field-set>
-            <smart:field-set name="dpdoc_fr_dyn" type="frame" label="Dynamique" visibility="W">
-                <smart:field-docid name="dpdoc_famid" label="Smart Structure utilisable pour les droits en fonction des attributs &quot;account&quot;" visibility="W" relation="-1"/>
-                <smart:field-text name="dpdoc_fam" label="Smart Structure (titre)" visibility="H" is-abstract="true"/>
+            <smart:field-set name="dpdoc_fr_dyn" type="frame" label="Dynamique" access="ReadWrite">
+                <smart:field-docid name="dpdoc_famid" label="Smart Structure utilisable pour les droits en fonction des attributs &quot;account&quot;" access="ReadWrite" relation="-1"/>
+                <smart:field-text name="dpdoc_fam" label="Smart Structure (titre)" access="Read" is-abstract="true"/>
             </smart:field-set>
         </smart:fields>
         <smart:parameters/>
@@ -44,7 +44,7 @@
         <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Profiles\PFamHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>SP</smart:usefor>
-        <smart:field-override field="dpdoc_fr_dyn" visibility="H"/>
+        <smart:field-override field="dpdoc_fr_dyn" access="None"/>
     </smart:structure-configuration>
 
 </smart:config>

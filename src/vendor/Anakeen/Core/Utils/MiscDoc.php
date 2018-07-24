@@ -59,6 +59,9 @@ class MiscDoc
         return $fromid;
     }
 
+    /**
+     * @deprecated use MaskManager
+     */
     public static function computeVisibility($vis, $fvis, $ffvis = '')
     {
         if ($vis == "I") {

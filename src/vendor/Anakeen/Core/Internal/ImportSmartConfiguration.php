@@ -5,6 +5,8 @@ namespace Anakeen\Core\Internal;
 
 use Anakeen\Core\SmartStructure\ExportConfiguration;
 use Dcp\Exception;
+use SmartStructure\Fields\Fieldaccesslayer as FalFields;
+use SmartStructure\Fields\Fieldaccesslayerlist as FallFields;
 
 class ImportSmartConfiguration
 {
@@ -69,6 +71,9 @@ class ImportSmartConfiguration
         foreach ($accessConfigs as $config) {
             $data = array_merge($data, $this->importSmartAccessConfig($config));
         }
+
+        $this->importFieldAccessElements(); // set data un profilElements attribute
+
         $data = array_merge($this->profilElements, $data);
         if ($this->verbose) {
             $this->print($data);
@@ -88,6 +93,96 @@ class ImportSmartConfiguration
         }
     }
 
+    protected function importFieldAccessElements()
+    {
+        $layers = $this->getNodes($this->dom->documentElement, "field-access-layer");
+        foreach ($layers as $layer) {
+            /** @var \DOMElement $layer */
+            $name = $layer->getAttribute("name");
+            if ($name) {
+                $this->addFieldLayer($layer);
+            }
+        }
+
+        $layerLists = $this->getNodes($this->dom->documentElement, "field-access-layer-list");
+        foreach ($layerLists as $layerList) {
+            /** @var \DOMElement $layerList */
+            $layers = $this->getNodes($layerList, "field-access-layer");
+            $layerNameList = $layerAccessList = [];
+            foreach ($layers as $layer) {
+                /** @var \DOMElement $layer */
+                $name = $layer->getAttribute("name");
+                if (!$name) {
+                    $name = $layer->getAttribute("ref");
+                }
+                if ($name) {
+                    $layerNameList[] = $name;
+                    $layerAccessList[] = $layer->getAttribute("access-name");
+                }
+            }
+            $prfType = "FIELDACCESSLAYERLIST";
+            $prfName = $layerList->getAttribute("name");
+            $prfLabel = $layerList->getAttribute("label");
+            $prfDesc = $this->getDescription($layerList);
+            $this->profilElements[] = ["ORDER", $prfType, "", "", FallFields::ba_title, FallFields::ba_desc, FallFields::fall_layer, FallFields::fall_aclname];
+            $this->profilElements[] = [
+                "DOC",
+                $prfType,
+                $prfName,
+                "-",
+                $prfLabel,
+                $prfDesc,
+                $layerNameList,
+                $layerAccessList
+            ];
+        }
+    }
+
+    protected function getDescription(\DOMElement $node)
+    {
+        $desc="";
+        foreach ($node->childNodes as $attrNode) {
+            if (!is_a($attrNode, \DOMElement::class)) {
+                continue;
+            }
+            if ($attrNode->tagName === "smart:description") {
+                /* @var \DOMElement $attrNode ; */
+                $desc .= $attrNode->nodeValue;
+            }
+        }
+        return $desc;
+    }
+
+    protected function addFieldLayer(\DOMElement $config)
+    {
+
+        $prfType = "FIELDACCESSLAYER";
+        $prfDEsc  = $this->getDescription($config);
+
+        $prfName = $config->getAttribute("name");
+        $prfLabel = $config->getAttribute("label");
+        $fas = $this->getNodes($config, "field-access");
+
+        $fieldId = [];
+        $fieldAccess = [];
+        foreach ($fas as $fa) {
+            /* @var \DOMElement $fa ; */
+            $fieldId[] = $fa->getAttribute("field");
+            $fieldAccess[] = $fa->getAttribute("access");
+        }
+
+        $this->profilElements[] = ["ORDER", $prfType, "", "", FalFields::fal_title, FalFields::fal_desc, FalFields::fal_fieldid, FalFields::fal_fieldaccess];
+        $this->profilElements[] = [
+            "DOC",
+            $prfType,
+            $prfName,
+            "-",
+            $prfLabel,
+            $prfDEsc,
+            $fieldId,
+            $fieldAccess
+        ];
+    }
 
     protected function importSmartAccessConfig(\DOMElement $config)
     {
@@ -95,24 +190,26 @@ class ImportSmartConfiguration
         $prfName = $config->getAttribute("name");
         $prfReset = $config->getAttribute("policy");
         $prfLabel = $config->getAttribute("label");
-        if ($config->hasAttribute("linked-structure")) {
-            $prfDynamic = $config->getAttribute("linked-structure");
-            if (!$prfDynamic) {
+        if ($config->hasAttribute("access-structure")) {
+            $prfDynamic = $config->getAttribute("access-structure");
+            if ($prfDynamic === "null") {
                 // Explicit deletion
                 $prfDynamic = " ";
             }
         } else {
             $prfDynamic = null;
         }
-        $prfLink = $config->getAttribute("link");
+        $prfLink = $config->getAttribute("ref");
         $prfType = $config->getAttribute("profil-type");
 
-        if ($prfName && $prfLabel && !$prfLink) {
+        $prfDEsc  = $this->getDescription($config);
+
+        if ($prfName && (($prfLabel && !$prfLink) || $prfDynamic)) {
             if (!$prfType) {
                 $prfType = "PDOC";
             }
-            $this->profilElements[] = ["ORDER", $prfType, "", "", "ba_title", "dpdoc_famid"];
-            $this->profilElements[] = ["DOC", $prfType, $prfName, "-", $prfLabel, $prfDynamic];
+            $this->profilElements[] = ["ORDER", $prfType, "", "", "ba_title", "ba_desc", "dpdoc_famid"];
+            $this->profilElements[] = ["DOC", $prfType, $prfName, "-", $prfLabel, $prfDEsc, $prfDynamic];
         } elseif ($prfName && $prfLink) {
             $data[] = ["PROFIL", $prfName, $prfLink];
         }
@@ -122,8 +219,8 @@ class ImportSmartConfiguration
             /**
              * @var \DOMElement $access
              */
-            if ($access->getAttribute("login")) {
-                $prfData[] = sprintf("%s=account(%s)", $access->getAttribute("access"), $access->getAttribute("login"));
+            if ($access->getAttribute("account")) {
+                $prfData[] = sprintf("%s=account(%s)", $access->getAttribute("access"), $access->getAttribute("account"));
             }
             if ($access->getAttribute("field")) {
                 $prfData[] = sprintf("%s=attribute(%s)", $access->getAttribute("access"), $access->getAttribute("field"));
@@ -308,7 +405,7 @@ class ImportSmartConfiguration
             $attr->id = $attrNode->getAttribute("field");
             $attr->label = $attrNode->getAttribute("label");
             $attr->idfield = $attrNode->getAttribute("fieldset");
-            $attr->visibility = $attrNode->getAttribute("visibility");
+            $attr->access = $attrNode->getAttribute("access");
             $attr->link = $attrNode->getAttribute("link");
             if ($attrNode->getAttribute("needed")) {
                 $attr->need = ($attrNode->getAttribute("needed") === "true") ? "Y" : "N";
@@ -475,7 +572,7 @@ class ImportSmartConfiguration
         }
         $attr->label = $attrNode->getAttribute("label");
         $attr->idfield = $fieldName;
-        $attr->visibility = $attrNode->getAttribute("visibility");
+        $attr->access = $attrNode->getAttribute("access");
         $attr->link = $attrNode->getAttribute("link");
         $attr->need = ($attrNode->getAttribute("needed") === "true") ? "Y" : "N";
         $attr->isAbstract = ($attrNode->getAttribute("is-abstract") === "true") ? "Y" : "N";
@@ -558,6 +655,10 @@ class ImportSmartConfiguration
          * @TODO to delete no need use flat notation
          */
         $optRaw = [];
+        if ($attrNode->getAttribute("multiple")) {
+            $optRaw[] = sprintf("multiple=%s", ($attrNode->getAttribute("multiple") === "true") ? "yes" : "no");
+        }
+
         foreach ($attrNode->childNodes as $optNode) {
             /**
              * @var \DOMElement $optNode
@@ -618,13 +719,17 @@ class ImportSmartConfiguration
 
 
         $node = $this->getNode($config, "structure-access-configuration");
-        if ($node && $node->getAttribute("link")) {
-            $data[] = ["PROFID", $node->getAttribute("link")];
+        if ($node && $node->getAttribute("ref")) {
+            $data[] = ["PROFID", $node->getAttribute("ref")];
         }
 
         $node = $this->getNode($config, "element-access-configuration");
-        if ($node && $node->getAttribute("link")) {
-            $data[] = ["CPROFID", $node->getAttribute("link")];
+        if ($node && $node->getAttribute("ref")) {
+            $data[] = ["CPROFID", $node->getAttribute("ref")];
+        }
+        $node = $this->getNode($config, "field-access-configuration");
+        if ($node && $node->getAttribute("ref")) {
+            $data[] = ["CFALLID", $node->getAttribute("ref")];
         }
 
         return $data;

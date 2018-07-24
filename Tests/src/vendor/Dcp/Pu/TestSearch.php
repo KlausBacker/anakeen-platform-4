@@ -38,7 +38,7 @@ class TestSearch extends TestCaseDcpCommonFamily
         $s->search();
 
         $err = $s->getError();
-        $this->assertEmpty($err, sprintf("Search error %s %s", $criteria, $arg));
+        $this->assertEmpty($err, sprintf("Search error %s %s  %s", $criteria, $arg, print_r($s->getSearchInfo(), true)));
     }
 
     protected function createDataSearch()
@@ -123,6 +123,7 @@ class TestSearch extends TestCaseDcpCommonFamily
     public function testCountSearch($criteria, $arg, $family, $count)
     {
         $this->createDataSearch();
+
         $s = new \SearchDoc(self::$dbaccess, $family);
         if ($criteria) {
             $s->addFilter($criteria, $arg);
@@ -132,7 +133,7 @@ class TestSearch extends TestCaseDcpCommonFamily
         $err = $s->getError();
         $this->assertEmpty($err, sprintf("Search error %s %s", $criteria, $arg));
 
-        $this->assertEquals($count, $s->count(), sprintf("Count must be %d (found %d) error %s %s", $count, $s->count(), $criteria, $arg));
+        $this->assertEquals($count, $s->count(), sprintf("Count must be %d (found %d) error %s %s : %s", $count, $s->count(), $criteria, $arg, print_r($s->getSearchInfo(), true)));
     }
 
     /**
