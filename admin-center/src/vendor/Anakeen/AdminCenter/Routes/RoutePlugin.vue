@@ -4,6 +4,7 @@
             <ul>
                 <li class="routes-tab k-state-active">
                     Routes
+                    <div class="middlewares-dialog"></div>
                 </li>
                 <li class="middlewares-tab">
                     Middlewares
@@ -24,8 +25,5 @@
 </style>
 <!-- Global CSS -->
 <style lang="scss">
-    .km-switch-on .k-switch-handle.km-switch-handle {
-        transform: translateX(25px)!important;
-    }
 </style>
 <script src="./RoutePlugin.controller.js"></script>
