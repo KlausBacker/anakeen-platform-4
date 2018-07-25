@@ -134,9 +134,6 @@ class DirLib
             //-------------------------------------------
             // search in all Db
             //-------------------------------------------
-            if (strpos(implode(",", $sqlfilters), "archiveid") === false) {
-                $sqlfilters[-4] = $maintabledot . "archiveid is null";
-            }
 
             if ($trash == "only") {
                 $sqlfilters[-3] = $maintabledot . "doctype = 'Z'";
@@ -177,9 +174,7 @@ class DirLib
                         $hasFilters = true;
                     }
                 }
-                if (strpos(implode(",", $sqlfilters), "archiveid") === false) {
-                    $sqlfilters[-4] = $maintabledot . "archiveid is null";
-                }
+
                 //if ($fld->getRawValue("se_trash")!="yes") $sqlfilters[-3] = "doctype != 'Z'";
                 if ($trash == "only") {
                     $sqlfilters[-1] = "locked = -1";
@@ -679,8 +674,6 @@ class DirLib
                 $t[$v["childid"]] = getLatestTDoc($dbaccess, $v["childid"], $sqlfilters, ($v["doctype"] == "C") ? -1 : $v["fromid"]);
 
                 if ($t[$v["childid"]] == false) {
-                    unset($t[$v["childid"]]);
-                } elseif ($t[$v["childid"]]["archiveid"]) {
                     unset($t[$v["childid"]]);
                 } else {
                     if ((\Anakeen\Core\ContextManager::getCurrentUser()->id != 1) && ($t[$v["childid"]]["uperm"] & (1 << \Anakeen\Core\Internal\DocumentAccess::POS_VIEW)) == 0) { // control view

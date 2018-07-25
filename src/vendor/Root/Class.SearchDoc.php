@@ -1426,9 +1426,6 @@ class SearchDoc
             //-------------------------------------------
             // search in all Db
             //-------------------------------------------
-            if (strpos(implode(",", $sqlfilters), "archiveid") === false) {
-                $sqlfilters[-4] = $maintabledot . "archiveid is null";
-            }
 
             if ($trash === "only") {
                 $sqlfilters[-3] = $maintabledot . "doctype = 'Z'";
@@ -1463,9 +1460,7 @@ class SearchDoc
                         $hasFilters = true;
                     }
                 }
-                if (strpos(implode(",", $sqlfilters), "archiveid") === false) {
-                    $sqlfilters[-4] = $maintabledot . "archiveid is null";
-                }
+
                 //if ($fld->getRawValue("se_trash")!="yes") $sqlfilters[-3] = "doctype != 'Z'";
                 if ($trash == "only") {
                     $sqlfilters[-1] = "locked = -1";

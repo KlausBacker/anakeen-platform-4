@@ -52,7 +52,6 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
             "doctype",
             "locked",
             "allocated",
-            "archiveid",
             "icon",
             "lmodify",
             "profid",
@@ -541,12 +540,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
      * @var int
      */
     public $allocated;
-    /**
-     * Archive document id
-     *
-     * @var int
-     */
-    public $archiveid;
+
     /**
      * @var string logical name family
      */
@@ -704,7 +698,6 @@ create table doc ( id int not null,
                    fromid int,
                    doctype char DEFAULT 'F',
                    locked int DEFAULT 0,
-                   archiveid int DEFAULT 0,
                    allocated int DEFAULT 0,
                    icon text,
                    lmodify char DEFAULT 'N',
@@ -5516,110 +5509,8 @@ create unique index i_docir on doc(initid, revision);";
         }
     }
 
-    /**
-     * Put document in an archive
-     *
-     * @param \Anakeen\Core\Internal\SmartElement $archive the archive document
-     *
-     * @return string error message
-     */
-    final public function archive(&$archive)
-    {
-        $err = "";
-        if ($this->archiveid == 0) {
-            if ($this->doctype == "C") {
-                $err = sprintf("families cannot be archieved");
-            } elseif (!$this->withoutControl) {
-                $err = $this->controlAccess("edit");
-            }
-            if ($err == "") {
-                $this->locked = 0;
-                $this->archiveid = $archive->id;
-                $this->dprofid = ($this->dprofid > 0) ? (-$this->dprofid) : (-abs($this->profid));
-                $archprof = $archive->getRawValue("arc_profil");
-                $this->profid = $archprof;
-                $err = $this->modify(true, array(
-                    "locked",
-                    "archiveid",
-                    "dprofid",
-                    "profid"
-                ), true);
-                if (!$err) {
-                    $this->addHistoryEntry(
-                        sprintf(_("Archiving into %s"), $archive->getTitle()),
-                        \DocHisto::MESSAGE,
-                        "ARCHIVE"
-                    );
-                    $this->addLog('archive', $archive->id, sprintf(_("Archiving into %s"), $archive->getTitle()));
-                    $err = $this->query(
-                        sprintf(
-                            "update doc%d set archiveid=%d, dprofid=-abs(profid), profid=%d where initid=%d and locked = -1",
-                            $this->fromid,
-                            $archive->id,
-                            $archprof,
-                            $this->initid
-                        )
-                    );
-                }
-            }
-        } else {
-            $err = sprintf("document is already archived");
-        }
 
-        return $err;
-    }
 
-    /**
-     * Delete document in an archive
-     *
-     * @param \Anakeen\Core\Internal\SmartElement $archive the archive document
-     *
-     * @return string error message
-     */
-    final public function unArchive(&$archive)
-    {
-        $err = "";
-
-        if ($this->archiveid == $archive->id) {
-            if (!$this->withoutControl) {
-                $err = $this->controlAccess("edit");
-            }
-            if ($err == "") {
-                $this->locked = 0;
-                $this->archiveid = ""; // set to null
-                $restoreprofil = abs($this->dprofid);
-                $this->dprofid = 0;
-                $err = $this->accessControl()->setProfil($restoreprofil);
-                if (!$err) {
-                    $err = $this->modify(true, array(
-                        "locked",
-                        "archiveid",
-                        "dprofid",
-                        "profid"
-                    ), true);
-                }
-                if (!$err) {
-                    $this->addHistoryEntry(
-                        sprintf(_("Unarchiving from %s"), $archive->getTitle()),
-                        \DocHisto::MESSAGE,
-                        "UNARCHIVE"
-                    );
-                    $this->addLog('unarchive', $archive->id, sprintf(_("Unarchiving from %s"), $archive->getTitle()));
-                    $err = $this->query(
-                        sprintf(
-                            "update doc%d set archiveid=null, profid=abs(dprofid), dprofid=null where initid=%d and locked = -1",
-                            $this->fromid,
-                            $this->initid
-                        )
-                    );
-                }
-            }
-        } else {
-            $err = sprintf("document not archived");
-        }
-
-        return $err;
-    }
 
     /**
      * lock document
