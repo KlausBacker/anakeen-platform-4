@@ -1512,7 +1512,7 @@ union
         if (\Anakeen\Router\AuthenticatorManager::$session !== null && \Anakeen\Router\AuthenticatorManager::$session->userid == $this->id) {
             \Anakeen\Router\AuthenticatorManager::$session->deleteUserSessionsExcept();
         } else {
-            $session = new \Anakeen\Core\Internal\Session($this->dbaccess);
+            $session = new \Anakeen\Core\Internal\Session();
             $session->deleteUserSessionsExcept($this->id);
         }
     }

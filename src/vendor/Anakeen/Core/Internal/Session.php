@@ -13,7 +13,7 @@ class Session extends DbObj
         "name",
         "last_seen"
     );
-    
+
     public $id_fields = array(
         "id"
     );
@@ -24,42 +24,50 @@ class Session extends DbObj
     public $status;
     private $sendCookie = true;
     public $dbtable = "sessions";
-    
+
     public $sqlcreate = "create table sessions ( id text,
                         userid   int,
                         name text not null,
                         last_seen timestamp not null DEFAULT now() );
                   create unique index sessions_idx on sessions(id);
                   create index sessions_idx_userid on sessions(userid);";
-    
+
     public $sessiondb;
-    
-    const PARAMNAME = 'dcpsession';
-    public $session_name = self::PARAMNAME;
-    public function __construct($session_name = self::PARAMNAME, $sendCookie = true)
+
+    const PARAMNAME = 'anksession';
+    protected static $session_name = self::PARAMNAME;
+
+    public function __construct()
     {
         if (!empty($_SERVER['HTTP_HOST'])) {
-            include_once(DEFAULT_PUBDIR."/config/sessionHandler.php");
+            include_once(DEFAULT_PUBDIR . "/config/sessionHandler.php");
         }
         parent::__construct();
-        if ($session_name != '') {
-            $this->session_name = $session_name;
-        }
+
         $this->last_seen = strftime('%Y-%m-%d %H:%M:%S', time());
-        $this->sendCookie = ($sendCookie === true);
     }
-    
+
+    public function useCookie(bool $useIt)
+    {
+        $this->sendCookie = $useIt;
+    }
+
+    public static function getName()
+    {
+        return self::$session_name . '-' . $_SERVER["SERVER_PORT"];
+    }
+
     public function set($id = "")
     {
         global $_SERVER;
-        
+
         if (!$this->sessionDirExistsAndIsWritable()) {
             return false;
         }
-        
+
         $this->gcSessions();
         $createNewSession = true;
-        
+
         if ($id) {
             $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \Anakeen\Core\Internal\Session::class);
             $query->addQuery("id = '" . pg_escape_string($id) . "'");
@@ -69,14 +77,14 @@ class Session extends DbObj
                 if (!$this->hasExpired()) {
                     $createNewSession = false;
                     $this->touch();
-                    session_name($this->session_name);
+                    session_name(self::getName());
                     session_id($id);
                     @session_start();
                     @session_write_close(); // avoid block
                 }
             }
         }
-        
+
         if ($createNewSession) {
             $u = new \Anakeen\Core\Account();
             if ((!empty($_SERVER['PHP_AUTH_USER'])) && $u->SetLoginName($_SERVER['PHP_AUTH_USER'])) {
@@ -92,7 +100,7 @@ class Session extends DbObj
         }
         return true;
     }
-    
+
     public static function getWebRootPath()
     {
         if (!isset($_SERVER['SCRIPT_FILENAME'])) {
@@ -111,7 +119,7 @@ class Session extends DbObj
         if ($contextRoot === false) {
             return false;
         }
-        $contextRoot.= '/';
+        $contextRoot .= '/';
         /*
          *  Get absolute script's filename:
          *
@@ -152,10 +160,12 @@ class Session extends DbObj
 
         return $webRoot;
     }
+
     public function setCookieSession($id, $ttl = 0)
     {
         $this->setcookie($this->name, $id, $ttl, '/', null, null, true);
     }
+
     /**
      * Closes session and removes all datas
      */
@@ -185,9 +195,9 @@ class Session extends DbObj
     public function closeAll($uid = null)
     {
         if ($uid === null) {
-            $this->query(sprintf("delete from sessions where name = '%s';", pg_escape_string($this->session_name)));
+            $this->query(sprintf("delete from sessions where name = '%s';", pg_escape_string(self::getName())));
         } else {
-            $this->query(sprintf("delete from sessions where name = '%s' and userid=%d;", pg_escape_string($this->session_name), $uid));
+            $this->query(sprintf("delete from sessions where name = '%s' and userid=%d;", pg_escape_string(self::getName()), $uid));
         }
         $this->status = self::SESSION_CT_CLOSE;
         return $this->status;
@@ -200,7 +210,7 @@ class Session extends DbObj
      *
      * @return int|string
      */
-    public function closeUsers($uid = - 1)
+    public function closeUsers($uid = -1)
     {
         if (!$uid > 0) {
             return '';
@@ -209,19 +219,19 @@ class Session extends DbObj
         $this->status = self::SESSION_CT_CLOSE;
         return $this->status;
     }
-    
+
     public function open($uid = \Anakeen\Core\Account::ANONYMOUS_ID)
     {
         $idsess = $this->newId();
         global $_SERVER; // use only cache with HTTP
         if (!empty($_SERVER['HTTP_HOST'])) {
-            session_name($this->session_name);
+            session_name(self::getName());
             session_id($idsess);
             @session_start();
             @session_write_close(); // avoid block
             //	$this->initCache();
         }
-        $this->name = $this->session_name;
+        $this->name = self::getName();
         $this->id = $idsess;
         $this->userid = $uid;
         $this->last_seen = strftime('%Y-%m-%d %H:%M:%S', time());
@@ -245,7 +255,7 @@ class Session extends DbObj
             $_SESSION[$k] = $v;
             @session_write_close(); // avoid block
         }
-        
+
         return true;
     }
     // --------------------------------
@@ -254,7 +264,7 @@ class Session extends DbObj
     // --------------------------------
     public function read($k = "", $d = "")
     {
-        if (empty($_SERVER['HTTP_HOST']) || ! $this->name) {
+        if (empty($_SERVER['HTTP_HOST']) || !$this->name) {
             return ($d);
         }
         /* Load session's data only once as requested by #4825 */
@@ -292,6 +302,7 @@ class Session extends DbObj
         }
         return true;
     }
+
     /**
      * Get, or generate, a "cache busting" key
      *
@@ -318,6 +329,7 @@ class Session extends DbObj
         }
         return self::randomId($byteLength);
     }
+
     /**
      * Get a new cryptographically strong random id
      *
@@ -337,6 +349,7 @@ class Session extends DbObj
         }
         return bin2hex($bytes);
     }
+
     /**
      * replace value of global parameter in session cache
      * @param string $paramName
@@ -361,6 +374,7 @@ class Session extends DbObj
         }
         return true;
     }
+
     public function setTTL()
     {
         $ttliv = $this->getSessionTTL(0);
@@ -370,7 +384,7 @@ class Session extends DbObj
         }
         return 0;
     }
-    
+
     public function getSessionTTL($default = 0, $ttlParamName = '')
     {
         if ($ttlParamName == '') {
@@ -382,37 +396,45 @@ class Session extends DbObj
         }
         return intval(\Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $ttlParamName, $default));
     }
-    
+
     public function getSessionGcProbability($default = "0.01")
     {
         return \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_SESSIONGCPROBABILITY", $default);
     }
-    
+
     public function touch()
     {
         $this->last_seen = strftime('%Y-%m-%d %H:%M:%S', time());
         $err = $this->modify();
         return $err;
     }
-    
+
     public function deleteUserExpiredSessions()
     {
         $ttl = $this->getSessionTTL(0, 'CORE_SESSIONTTL');
         if ($ttl > 0) {
-            return $this->query(sprintf("DELETE FROM sessions WHERE userid != %s AND last_seen < timestamp 'now()' - interval '%s seconds'", \Anakeen\Core\Account::ANONYMOUS_ID, pg_escape_string($ttl)));
+            return $this->query(sprintf(
+                "DELETE FROM sessions WHERE userid != %s AND last_seen < timestamp 'now()' - interval '%s seconds'",
+                \Anakeen\Core\Account::ANONYMOUS_ID,
+                pg_escape_string($ttl)
+            ));
         }
         return '';
     }
-    
+
     public function deleteGuestExpiredSessions()
     {
         $ttl = $this->getSessionTTL(0, 'CORE_GUEST_SESSIONTTL');
         if ($ttl > 0) {
-            return $this->query(sprintf("DELETE FROM sessions WHERE userid = %s AND last_seen < timestamp 'now()' - interval '%s seconds'", \Anakeen\Core\Account::ANONYMOUS_ID, pg_escape_string($ttl)));
+            return $this->query(sprintf(
+                "DELETE FROM sessions WHERE userid = %s AND last_seen < timestamp 'now()' - interval '%s seconds'",
+                \Anakeen\Core\Account::ANONYMOUS_ID,
+                pg_escape_string($ttl)
+            ));
         }
         return '';
     }
-    
+
     public function deleteMaxAgedSessions()
     {
         $maxage = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'CORE_SESSIONMAXAGE', '');
@@ -421,7 +443,7 @@ class Session extends DbObj
         }
         return '';
     }
-    
+
     public function gcSessions()
     {
         $gcP = $this->getSessionGcProbability();
@@ -445,7 +467,7 @@ class Session extends DbObj
         }
         return "";
     }
-    
+
     public function setuid($uid)
     {
         if (!is_int($uid)) {
@@ -473,11 +495,11 @@ class Session extends DbObj
                 session_write_close(); // avoid block
             }
         }
-        
+
         $this->userid = $uid;
         return $this->modify();
     }
-    
+
     public function sessionDirExistsAndIsWritable()
     {
         $sessionDir = sprintf("%s/var/session", DEFAULT_PUBDIR);
@@ -485,15 +507,15 @@ class Session extends DbObj
             trigger_error(sprintf("Session directory '%s' does not exists.", $sessionDir));
             return false;
         }
-        
+
         if (!is_writable($sessionDir)) {
             trigger_error(sprintf("Session directory '%s' is not writable.", $sessionDir));
             return false;
         }
-        
+
         return true;
     }
-    
+
     public function hasExpired()
     {
         include_once('FDL/Lib.Util.php');
@@ -507,7 +529,7 @@ class Session extends DbObj
         }
         return false;
     }
-    
+
     public function removeSessionFile($sessid = null)
     {
         if ($sessid === null) {
@@ -518,10 +540,11 @@ class Session extends DbObj
             unlink($sessionFile);
         }
     }
+
     /**
      * Delete all user's sessions except the current session.
      *
-     * @param string $userId The user id (default is $this->userid)
+     * @param string $userId          The user id (default is $this->userid)
      * @param string $exceptSessionId The session id to keep (default is $this->id)
      * @return string empty string on success, or the SQL error message
      */
@@ -535,6 +558,7 @@ class Session extends DbObj
         }
         return $this->query(sprintf("DELETE FROM sessions WHERE userid = %d AND id != '%s'", $userId, pg_escape_string($exceptSessionId)));
     }
+
     private function setcookie($name, $value = null, $expire = null, $path = null, $domain = null, $secure = null, $httponly = null)
     {
         if ($this->sendCookie) {

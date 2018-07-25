@@ -14,12 +14,13 @@ namespace Anakeen\Core\Internal;
  */
 class OpenAuthenticator extends Authenticator
 {
-    const waitDelayError=1;
+    const waitDelayError = 1;
     const openAuthorizationScheme = "AnkToken";
     const openGetId = "ank-authorization";
     private $privatelogin = false;
     public $token;
     public $auth_session = null;
+
     /**
      * no need to ask authentication
      */
@@ -35,18 +36,18 @@ class OpenAuthenticator extends Authenticator
             sleep(self::waitDelayError);
             return Authenticator::AUTH_NOK;
         }
-        
+
         $err = $this->consumeToken($privatekey);
         if ($err === false) {
             return Authenticator::AUTH_NOK;
         }
-        
+
         $session = $this->getAuthSession();
         $session->register('username', $this->getAuthUser());
         $session->setuid($this->getAuthUser());
         return Authenticator::AUTH_OK;
     }
-    
+
     public static function getTokenId()
     {
         $tokenId = getHttpVars(self::openGetId, getHttpVars("privateid"));
@@ -61,7 +62,7 @@ class OpenAuthenticator extends Authenticator
         }
         return $tokenId;
     }
-    
+
     public static function getLoginFromPrivateKey($privatekey)
     {
         $token = static::getUserToken($privatekey);
@@ -69,37 +70,38 @@ class OpenAuthenticator extends Authenticator
             error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Token '%s' not found.", $privatekey));
             return false;
         }
-        
+
         $uid = $token->userid;
         $user = new \Anakeen\Core\Account('', $uid);
         if (!is_object($user) || !$user->isAffected()) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Could not get user with uid '%s' for token '%s'.", $uid, $privatekey));
             return false;
         }
-        
+
         if (!static::verifyOpenAccess($token)) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Access deny for user '%s' with token '%s' : context not match.", $user->login, $privatekey));
-            
+
             return false;
         }
-        
+
         if (!static::verifyOpenExpire($token)) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Access deny for user '%s' with token '%s' : token has expired.", $user->login, $privatekey));
-            
+
             return false;
         }
         return $user->login;
     }
+
     public static function getUserToken($tokenId)
     {
         $token = new \UserToken('', $tokenId);
         if (!is_object($token) || !$token->isAffected()) {
             return false;
         }
-        
+
         return $token;
     }
-    
+
     public static function verifyOpenExpire(\UserToken $token)
     {
         $expiredate = $token->expire;
@@ -108,23 +110,24 @@ class OpenAuthenticator extends Authenticator
         }
         $date = new \DateTime($expiredate);
         $now = new \DateTime();
-        
+
         return $now <= $date;
     }
+
     public static function verifyOpenAccess(\UserToken $token)
     {
         $rawContext = $token->context;
-        
+
         $allow = false;
-        
+
         if ($token->type && $token->type !== "CORE") {
             return false;
         }
-        
+
         if ($rawContext === null) {
             return true;
         }
-        
+
         if ($rawContext) {
             $context = unserialize($rawContext);
             if (is_array($context)) {
@@ -136,27 +139,27 @@ class OpenAuthenticator extends Authenticator
                 }
             }
         }
-        
+
         return $allow;
     }
-    
+
     public function consumeToken($privatekey)
     {
-        
+
         $token = new \UserToken('', $privatekey);
         if (!is_object($token) || !$token->isAffected()) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Token '%s' not found.", $privatekey));
             return false;
         }
-        
+
         $this->token = $token->getValues();
         if ($token->expendable === 't') {
             $token->delete();
         }
-        
+
         return $privatekey;
     }
-    
+
     public function checkAuthorization($opt)
     {
         return true;
@@ -171,14 +174,15 @@ class OpenAuthenticator extends Authenticator
     {
         header("HTTP/1.0 403 Forbidden", true);
         print ___("Private key identifier is not valid", "authentOpen");
-        
+
         return true;
     }
-    
+
     public function getAuthUser()
     {
         return $this->privatelogin;
     }
+
     /**
      * no password needed
      */
@@ -205,16 +209,18 @@ class OpenAuthenticator extends Authenticator
         $session->register($name, $value);
         return $session->read($name);
     }
+
     public function getSessionVar($name)
     {
         $session = $this->getAuthSession();
         return $session->read($name);
     }
+
     public function getAuthSession()
     {
         if (!$this->auth_session) {
-            $this->auth_session = new \Anakeen\Core\Internal\Session(\Anakeen\Core\Internal\Session::PARAMNAME, false);
-            
+            $this->auth_session = new \Anakeen\Core\Internal\Session();
+            $this->auth_session->useCookie(false);
             $this->auth_session->Set();
         }
         return $this->auth_session;
