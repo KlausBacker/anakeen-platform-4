@@ -105,7 +105,7 @@ class Files
                     $tmpSessId = $row["id_tmp"];
                     if ($tmpSessId) {
                         // Verify if tmp file is produced by current user session
-                        if (!isset($_COOKIE[\Anakeen\Core\Internal\Session::PARAMNAME]) || $tmpSessId !== $_COOKIE[\Anakeen\Core\Internal\Session::PARAMNAME]) {
+                        if (!isset($_COOKIE[\Anakeen\Core\Internal\Session::getName()]) || $tmpSessId !== $_COOKIE[\Anakeen\Core\Internal\Session::getName()]) {
                             return false;
                         }
                     }

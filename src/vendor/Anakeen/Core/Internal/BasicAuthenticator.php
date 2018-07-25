@@ -3,16 +3,18 @@
  * @author Anakeen
  * @package FDL
 */
+
 /**
  * BasicAuthenticator class
  *
  * This class provides methods for HTTP Basic authentication
  *
- * @author Anakeen
+ * @author  Anakeen
  * @version $Id: Class.basicAuthenticator.php,v 1.3 2009/01/16 13:33:00 jerome Exp $
  * @package FDL
  * @subpackage
  */
+
 namespace Anakeen\Core\Internal;
 
 class BasicAuthenticator extends Authenticator
@@ -22,6 +24,7 @@ class BasicAuthenticator extends Authenticator
      * @var \Anakeen\Core\Internal\Session
      */
     protected $auth_session = null;
+
     public function checkAuthentication()
     {
 
@@ -65,67 +68,71 @@ class BasicAuthenticator extends Authenticator
         $session->setuid($this->getAuthUser());
         return Authenticator::AUTH_OK;
     }
-    
+
     public function checkAuthorization($opt)
     {
         return true;
     }
-    
+
     public function askAuthentication($args)
     {
         header('HTTP/1.1 401 Authentication Required');
         header('WWW-Authenticate: Basic realm="' .
-            \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 
+            \Anakeen\Core\ContextManager::getParameterValue(
+                \Anakeen\Core\Settings::NsSde,
                 "CORE_REALM",
                 "Anakeen Platform connection"
-            )  . '"');
+            ) . '"');
         header('Connection: close');
         return true;
     }
-    
+
     public function getAuthUser()
     {
         return isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : null;
     }
-    
+
     public function getAuthPw()
     {
         return isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : null;
     }
-    
+
     public function logout($redir_uri = '')
     {
         setcookie('logout', 'true', 0, "", null, null, true);
-        
+
         if ($redir_uri == '') {
             $redir_uri = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_URLINDEX", "/");
         }
         header('Location: ' . $redir_uri);
         return true;
     }
-    
+
     public function setSessionVar($name, $value)
     {
         $session = $this->getAuthSession();
         $session->register($name, $value);
         return $session->read($name);
     }
+
     public function getSessionVar($name)
     {
         $session = $this->getAuthSession();
         return $session->read($name);
     }
+
     /**
      *
      */
     public function getAuthSession()
     {
         if (!$this->auth_session) {
-            $sendCookie=!empty($_SERVER['HTTP_REFERER']);
+            $sendCookie = !empty($_SERVER['HTTP_REFERER']);
             // Send cookie if find a referer
-            $this->auth_session = new \Anakeen\Core\Internal\Session(\Anakeen\Core\Internal\Session::PARAMNAME, $sendCookie);
-            if (array_key_exists(\Anakeen\Core\Internal\Session::PARAMNAME, $_COOKIE)) {
-                $this->auth_session->Set($_COOKIE[\Anakeen\Core\Internal\Session::PARAMNAME]);
+            $this->auth_session = new \Anakeen\Core\Internal\Session();
+            $this->auth_session->useCookie($sendCookie);
+            if (array_key_exists(\Anakeen\Core\Internal\Session::getName(), $_COOKIE)) {
+                $this->auth_session->Set($_COOKIE[\Anakeen\Core\Internal\Session::getName()]);
             } else {
                 $this->auth_session->Set();
             }

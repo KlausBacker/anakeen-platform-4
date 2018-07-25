@@ -69,9 +69,9 @@ class HtmlAuthenticator extends Authenticator
     public function getAuthSession()
     {
         if (!$this->auth_session) {
-            $this->auth_session = new \Anakeen\Core\Internal\Session(\Anakeen\Core\Internal\Session::PARAMNAME);
-            if (array_key_exists(\Anakeen\Core\Internal\Session::PARAMNAME, $_COOKIE)) {
-                $this->auth_session->Set($_COOKIE[\Anakeen\Core\Internal\Session::PARAMNAME]);
+            $this->auth_session = new \Anakeen\Core\Internal\Session();
+            if (array_key_exists(\Anakeen\Core\Internal\Session::getName(), $_COOKIE)) {
+                $this->auth_session->Set($_COOKIE[\Anakeen\Core\Internal\Session::getName()]);
             } else {
                 $this->auth_session->Set();
             }
@@ -168,7 +168,7 @@ class HtmlAuthenticator extends Authenticator
     public function logout($redir_uri = '')
     {
         $session_auth = $this->getAuthSession();
-        if (array_key_exists(\Anakeen\Core\Internal\Session::PARAMNAME, $_COOKIE)) {
+        if (array_key_exists(\Anakeen\Core\Internal\Session::getName(), $_COOKIE)) {
             $session_auth->close();
         }
         if ($redir_uri == "") {
