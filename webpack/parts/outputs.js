@@ -104,24 +104,19 @@ exports.cssLoader = (filesOutputDir, exclude) => ({
 
 exports.splitChunksPlugin = () => ({
     optimization: {
-        runtimeChunk: false,
+        runtimeChunk: "single", // Very important to share same runtime instance => same imported commons modules
         splitChunks: {
             cacheGroups: {
-                default: {
-                    minChunks: 2,
-                    priority: -20,
-                    reuseExistingChunk: true
-                },
                 vendors: {
-                    test: /node_modules/,
+                    test: /[\\/]node_modules[\\/]/,
                     reuseExistingChunk: true,
                     name: 'vendors',
                     chunks: 'all',
                     minChunks: 1,
-                    priority: -10
+                    priority: -10,
                 },
                 kendo: {
-                    test:/node_modules\/@progress/,
+                    test:/[\\/]node_modules[\\/]@progress/,
                     reuseExistingChunk: true,
                     name: 'kendo',
                     priority: -5,
